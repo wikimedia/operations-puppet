@@ -15,15 +15,15 @@
     ]
   },
   "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
   "hideControls": false,
   "id": 136,
   "links": [],
-  "originalTitle": "Swift",
   "refresh": false,
   "rows": [
     {
       "collapse": false,
-      "editable": true,
       "height": "300px",
       "panels": [
         {
@@ -35,23 +35,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 10,
           "interactive": true,
-          "leftYAxisLabel": "req/s",
           "legend": {
             "avg": true,
             "current": false,
@@ -86,8 +75,13 @@
             {
               "refId": "B",
               "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.HEAD.2*.timing.sample_rate), 5), 'HEAD 2xx')"
+            },
+            {
+              "refId": "C",
+              "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.GET.3*.timing.sample_rate), 5), 'GET 3xx')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -95,14 +89,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "req/s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -115,23 +127,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 7,
           "interactive": true,
-          "leftYAxisLabel": "req/s",
           "legend": {
             "avg": true,
             "current": false,
@@ -168,6 +169,7 @@
               "target": "alias(movingAverage(sumSeries(swift.$DC-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate), 5), 'DELETE 2xx')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -175,14 +177,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "req/s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -195,23 +215,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 21,
           "interactive": true,
-          "leftYAxisLabel": "req/s",
           "legend": {
             "avg": true,
             "current": false,
@@ -242,7 +251,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.4*.timing.sample_rate), 'GET 4xx')"
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.4[0-8]*.timing.sample_rate), 'GET 4xx')"
             },
             {
               "refId": "B",
@@ -254,13 +263,22 @@
             },
             {
               "refId": "D",
-              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.4*.timing.sample_rate), 'PUT 4xx')"
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.4[0-8]*.timing.sample_rate), 'PUT 4xx')"
             },
             {
               "refId": "E",
               "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.POST.4*.timing.sample_rate), 'POST 4xx')"
+            },
+            {
+              "refId": "F",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.GET.499.timing.sample_rate), 'GET 499')"
+            },
+            {
+              "refId": "G",
+              "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.*.PUT.499.timing.sample_rate), 'PUT 499')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -268,14 +286,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "req/s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -288,23 +324,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 22,
           "interactive": true,
-          "leftYAxisLabel": "req/s",
           "legend": {
             "avg": true,
             "current": false,
@@ -357,6 +382,7 @@
               "target": "alias(sumSeries(swift.$DC-prod.*.proxy-server.errors.rate), 'proxy-server errors')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -364,24 +390,45 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "req/s",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            }
           ],
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "frontend (swift-proxy)"
+      "title": "frontend (swift-proxy)",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -393,23 +440,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 8,
           "interactive": true,
-          "leftYAxisLabel": "avail %",
           "legend": {
             "avg": true,
             "current": false,
@@ -447,6 +483,7 @@
               "target": "alias(keepLastValue(swift.$DC-prod.dispersion.object.pct_found), 'object')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -454,14 +491,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "percent",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "avail %",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -474,23 +529,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 9,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "avg": true,
             "current": false,
@@ -544,6 +588,7 @@
               "target": "alias(swift.$DC-prod.stats.AUTH_mw.objects, 'objects')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -551,24 +596,45 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "individual"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "bytes",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "cluster"
+      "title": "cluster",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -580,23 +646,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": null,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 17,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "avg": true,
             "current": false,
@@ -646,6 +701,7 @@
               "target": "alias(sumSeries(servers.ms-fe1*.network.*.rx_byte), 'rx')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -653,14 +709,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "Bps",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -673,23 +747,12 @@
           "datasource": "graphite",
           "fill": 1,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 23,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "avg": true,
             "current": false,
@@ -739,6 +802,7 @@
               "target": "alias(sumSeries(servers.ms-be1*.network.*.rx_byte), 'rx')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -746,14 +810,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "Bps",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -766,23 +848,12 @@
           "datasource": "graphite",
           "fill": 0,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 24,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "avg": true,
             "current": false,
@@ -832,6 +903,7 @@
               "target": "aliasByNode(movingAverage(highestMax(servers.ms-fe1*.loadavg.01, 3), 10), 1)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -839,14 +911,32 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            }
           ],
           "zerofill": true
         },
@@ -859,23 +949,12 @@
           "datasource": "graphite",
           "fill": 0,
           "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
             "max": null,
-            "min": null,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 25,
           "interactive": true,
-          "leftYAxisLabel": "",
           "legend": {
             "avg": true,
             "current": false,
@@ -921,6 +1000,7 @@
               "target": "aliasByNode(highestAverage(servers.ms-be1*.iostat.sd[a-z].iops,10),1,3)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -928,24 +1008,45 @@
           "tooltip": {
             "query_as_alias": true,
             "shared": true,
+            "sort": 0,
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            }
           ],
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "system stats"
+      "title": "system stats",
+      "titleSize": "h6"
     }
   ],
-  "schemaVersion": 10,
-  "sharedCrosshair": false,
+  "schemaVersion": 14,
   "style": "light",
   "tags": [
     "operations",
@@ -957,13 +1058,17 @@
     "list": [
       {
         "allFormat": "glob",
+        "allValue": null,
         "current": {
+          "selected": true,
           "tags": [],
-          "text": "codfw",
-          "value": "codfw"
+          "text": "eqiad",
+          "value": "eqiad"
         },
         "datasource": null,
+        "hide": 0,
         "includeAll": true,
+        "label": null,
         "multi": false,
         "multiFormat": "glob",
         "name": "DC",
@@ -974,12 +1079,12 @@
             "value": "{codfw,eqiad,esams}"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "codfw",
             "value": "codfw"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "eqiad",
             "value": "eqiad"
           },
@@ -990,9 +1095,15 @@
           }
         ],
         "query": "swift.*",
+        "refresh": 0,
         "refresh_on_load": false,
         "regex": "/(.*)-prod/",
-        "type": "query"
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
