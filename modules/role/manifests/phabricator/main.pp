@@ -169,23 +169,9 @@ class role::phabricator::main {
     # lint:endignore
 
     # This exists to offer git services
-    $vcs_address_ipv4 = hiera('phabricator::vcs::address::v4', undef)
-    if $vcs_address_ipv4 != undef {
-        interface::ip { 'role::phabricator::main::ipv4':
-            interface => 'eth0',
-            address   => $vcs_address_ipv4,
-            prefixlen => '21',
-        }
-    }
-    $vcs_address_ipv6 = hiera('phabricator::vcs::address::v6', undef)
-    if $vcs_address_ipv6 != undef {
-        interface::ip { 'role::phabricator::main::ipv6':
-            interface => 'eth0',
-            address   => $vcs_address_ipv6,
-            prefixlen => '128',
-            # mark as deprecated = never pick this address unless explicitly asked
-            options   => 'preferred_lft 0',
-        }
+    interface::ip { 'phabricator vcs':
+        ipv4 => hiera('phabricator::vcs::address::v4', undef),
+        ipv6 => hiera('phabricator::vcs::address::v6', undef),
     }
 
     class { '::phabricator::tools':
