@@ -155,6 +155,11 @@ host mwdebug1002 {
     fixed-address mwdebug1002.eqiad.wmnet;
 }
 
+host mwreleases1001 {
+    hardware ethernet aa:00:00:75:ee:6d;
+    fixed-address mwreleases1001.eqiad.wmnet;
+}
+
 host mx1001 {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
