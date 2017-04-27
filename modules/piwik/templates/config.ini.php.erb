@@ -10,11 +10,11 @@ tables_prefix = "<%= @database_table_prefix %>"
 
 [General]
 <%- @proxy_client_headers.each do |proxy_client_header| -%>
-proxy_client_headers[] = "<%= @proxy_client_header %>"
+proxy_client_headers[] = "<%= proxy_client_header %>"
 <%- end -%>
 salt = "<%= @password_salt %>"
 <%- @trusted_hosts.each do |trusted_host| -%>
-trusted_hosts[] = "<%= @trusted_host %>"
+trusted_hosts[] = "<%= trusted_host %>"
 <%- end -%>
 ; Disable the Piwik UI showing a maintenance message
 ; This does not disable database updates, please also check 'record_statistics'
