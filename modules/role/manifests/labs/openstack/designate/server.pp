@@ -47,7 +47,7 @@ class role::labs::openstack::designate::server {
     include network::constants
     $labs_networks = join($network::constants::labs_networks, ' ')
     ferm::rule { 'designate-api-for-labs':
-        rule => "saddr (${labs_networks} proto tcp dport (9001) ACCEPT;",
+        rule => "saddr (${labs_networks}) proto tcp dport (9001) ACCEPT;",
     }
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
