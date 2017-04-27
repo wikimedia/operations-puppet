@@ -8,5 +8,5 @@ class role::planet_server {
         description => 'Planet (venus) weblog aggregator'
     }
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    interface::add_ip6_mapped { 'main': }
 }
