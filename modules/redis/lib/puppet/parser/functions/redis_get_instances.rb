@@ -15,5 +15,9 @@ module Puppet::Parser::Functions
       end
     end
     instances.sort
+
+    if instances.empty?
+      fail("No Redis instances found for #{ip}:#{port}")
+    end
   end
 end
