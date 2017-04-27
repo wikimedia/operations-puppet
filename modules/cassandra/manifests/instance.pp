@@ -50,10 +50,9 @@ define cassandra::instance(
     $jmx_exporter_enabled = $this_instance['jmx_exporter_enabled']
 
     if $rpc_interface {
-        interface::ip { "cassandra-${instance_name}_rpc_${rpc_interface}":
+        interface::alias { "cassandra-${instance_name}_rpc_${rpc_interface}":
+            ipv4      => $rpc_address,
             interface => $rpc_interface,
-            address   => $rpc_address,
-            prefixlen => '32',
         }
     }
 
