@@ -9,9 +9,11 @@ class role::librenms {
     $sitename = 'librenms.wikimedia.org'
     $install_dir = '/srv/deployment/librenms/librenms'
 
-    package { 'librenms/librenms':
-        provider => 'trebuchet',
+    # NOTE: scap will manage the deploy user
+    scap::target { 'librenms/librenms':
+        deploy_user => 'deploy-librenms',
     }
+
     package { 'php5-ldap':
         ensure => present,
     }
@@ -106,5 +108,4 @@ class role::librenms {
     }
 
     backup::set {'librenms': }
-
 }
