@@ -1,0 +1,8 @@
+<%-
+etcd_keys = []
+@conftool.each do |x|
+  x['datacenters] ||= @default_datacenters
+  x['datacenters'].each do |dc|
+    etcd_keys << File.join('', dc, x['cluster'], x["service"])
+  end
+end -%><%= etcd_keys.join('|') %>
