@@ -2134,7 +2134,7 @@ host elastic2019 {
 }
 
 host elastic2020 {
-    hardware ethernet 3c:a8:2a:20:3e:18;
+    hardware ethernet 1c:98:ec:12:9b:a4;
     fixed-address elastic2020.codfw.wmnet;
 }
 
