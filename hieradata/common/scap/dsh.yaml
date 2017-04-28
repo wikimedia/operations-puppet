@@ -73,3 +73,6 @@ scap::dsh::groups:
       - restbase-test2002.codfw.wmnet
       - restbase-test2003.codfw.wmnet
       - xenon.eqiad.wmnet
+  librenms:
+    hosts:
+      - netmon1001.wikimedia.org
