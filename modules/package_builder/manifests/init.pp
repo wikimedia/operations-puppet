@@ -48,6 +48,7 @@ class package_builder(
         'javahelper',
         'pkg-kde-tools',
         'subversion',
+        'sphinx-common',
     ])
 
     if $::operatingsystem == 'Ubuntu' {
