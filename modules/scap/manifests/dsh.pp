@@ -23,11 +23,10 @@ class scap::dsh (
         mode   => '0444',
     }
     file { '/etc/dsh/group':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        recurse => true,
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     # Base dsh groups currently used
