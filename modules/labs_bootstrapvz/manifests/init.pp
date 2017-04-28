@@ -1,5 +1,6 @@
 class labs_bootstrapvz() {
-    package { 'python-bootstrap-vz':
+
+    package { 'bootstrap-vz':
         ensure => present,
     }
 
