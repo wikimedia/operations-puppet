@@ -16,9 +16,8 @@ define scap::dsh::group($hosts=undef, $conftool=undef,) {
     if $conftool {
         # Usual dirty trick to avoid a parser function.
         # TODO: fix this once we have the future parser
-        $keys = split(
-            inline_template('<%= @conftool.map{|x| ["", x["cluster"], x["service"]].join "/"}.join("|") %>'),
-            '\|')
+        $default_datacenters = ['eqiad', 'codfw']
+        $keys = split(template('scap/dsh/dsh_group_keys.erb'),'\|')
 
         confd::file { "/etc/dsh/group/${title}":
             ensure     => present,

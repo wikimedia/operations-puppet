@@ -60,7 +60,7 @@ scap::dsh::groups:
       - mw1265.eqiad.wmnet
   cassandra:
     conftool:
-      - {'cluster': 'aqs', 'service': 'cassandra'}
+      - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
       - {'cluster': 'maps', 'service': 'cassandra'}
       - {'cluster': 'restbase', 'service': 'cassandra'}
     hosts:
