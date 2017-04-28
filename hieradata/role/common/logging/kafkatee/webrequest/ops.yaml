@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-kafkatee:
     value: standard
+role::logging::kafkatee::webrequest::ops::logstash_host: logstash1001.eqiad.wmnet
+role::logging::kafkatee::webrequest::ops::logstash_port: 11515

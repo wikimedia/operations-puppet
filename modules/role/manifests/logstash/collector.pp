@@ -100,6 +100,18 @@ class role::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    logstash::input::tcp { 'webrequest':
+        port  => 11515,
+        codec => 'json_lines',
+    }
+
+    ferm::service { 'logstash_webrequest':
+        proto   => 'tcp',
+        port    => '11515',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
     ## Global pre-processing (15)
 
     # move files into module?
