@@ -17,12 +17,9 @@
 #        Hash containing all config settings for the [master] section of
 #        puppet.conf (ini-style)
 #    - $workers:
-#        Array of hashes in the following form
+#        Array of hashes in the form. If loadfactor is omitted, it is assumed to
+#        be equal to 1
 #         [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
-#        If loadfactor is omitted, it is assumed by apache to be equal to 1
-#        An offline parameter is supported to allow fully depooling a host
-#        without removing it from the stanza. Any of apache mod_proxy
-#        BalancerMember parameters may be added
 #    - $hiera_config:
 #        Specifies which file to use for hiera.yaml.  Defaults to $::realm
 #    - $is_git_master:
