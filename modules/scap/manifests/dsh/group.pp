@@ -17,8 +17,8 @@ define scap::dsh::group($hosts=undef, $conftool=undef,) {
         # Usual dirty trick to avoid a parser function.
         # TODO: fix this once we have the future parser
         $keys = split(
-            inline_template('<%= @conftool.map{|x| [x["cluster"], x["service"]].join "/"}.join("|") %>'),
-            '|')
+            inline_template('<%= @conftool.map{|x| ["", x["cluster"], x["service"]].join "/"}.join("|") %>'),
+            '\|')
 
         confd::file { "/etc/dsh/group/${title}":
             ensure     => present,
