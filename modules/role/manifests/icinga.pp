@@ -26,7 +26,7 @@ class role::icinga {
 
     include role::authdns::monitoring
     include netops::monitoring
-    include scap::dsh
+    include ::profile::scap::dsh
     include mysql
     include ::standard
     include ::base::firewall
