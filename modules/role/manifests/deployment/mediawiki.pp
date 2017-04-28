@@ -9,8 +9,9 @@ class role::deployment::mediawiki(
     include ::mediawiki
     include ::mediawiki::packages::php5
     include ::profile::mediawiki::nutcracker
-    include scap::master
-    include scap::ferm
+    include ::scap::master
+    include ::profile::scap::dsh
+    include ::scap::ferm
 
     # Keyholder
     require ::keyholder

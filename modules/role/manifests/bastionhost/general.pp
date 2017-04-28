@@ -10,7 +10,8 @@ class role::bastionhost::general {
     include ::profile::backup::host
 
     # Used by parsoid deployers
-    include ::scap::dsh
+
+    include ::profile::scap::dsh
 
     backup::set {'home': }
 

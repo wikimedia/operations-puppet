@@ -9,14 +9,8 @@ class scap::master(
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
-    $conftool_prefix    = hiera('conftool_prefix'),
 ) {
     include scap::scripts
-    class { 'confd':
-        interval => 300,
-        prefix   => $conftool_prefix,
-    }
-    include scap::dsh
     include rsync::server
     include network::constants
     include mediawiki::scap
