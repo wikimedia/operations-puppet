@@ -64,6 +64,12 @@ class role::labs::openstack::nova::manager {
         check_command => 'check_wikitech_static',
     }
 
+    # T163721
+    monitoring::service { 'wikitech-static-version':
+        description   => 'Does wikitech-static need a MW version upgrade?',
+        check_command => 'check_wikitech_static_version',
+    }
+
     # For Math extensions file (T126628)
     file { '/srv/math-images':
         ensure => 'directory',
