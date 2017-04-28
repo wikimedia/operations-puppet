@@ -6,11 +6,3 @@
 # or via hiera scap::dsh::group::<%= @title %>
 <%= @host_list.sort.join("\n") %>
 
-# List of hosts gathered from conftool
-<%-
-conftool_tags = Array(@conftool)
-conftool_tags.each do |tags|
-  hosts = scope.function_conftool([tags, 'node']) -%>
-# Tags: <%= tags %>
-<%= hosts.select{ |x| x['value']['pooled'] != 'inactive' }.map{|x| x['name']}.sort.join("\n") %>
-<% end -%>
