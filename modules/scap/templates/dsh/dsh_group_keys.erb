@@ -5,4 +5,4 @@ etcd_keys = []
   x['datacenters'].each do |dc|
     etcd_keys << File.join('', dc, x['cluster'], x["service"])
   end
-end -%><%= etcd_keys.join('|') %>
+end -%><%= etcd_keys.join('|') -%>
