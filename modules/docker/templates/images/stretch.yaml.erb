@@ -1,0 +1,50 @@
+---
+name: <%= @docker_registry %>/wikimedia-stretch:latest
+provider:
+  name: docker
+  labels:
+    description: Debian {system.release} {system.architecture}
+  dockerfile:
+  - CMD /bin/bash
+bootstrapper:
+  mirror: http://mirrors.wikimedia.org/debian/
+  workspace: /target
+  variant: minbase
+system:
+  release: stretch
+  architecture: amd64
+  bootloader: none
+  charmap: UTF-8
+  locale: en_US
+  timezone: UTC
+volume:
+  backing: folder
+  partitions:
+    type: none
+    root:
+      filesystem: ext4
+      size: 1GiB
+packages:
+  mirror: http://mirrors.wikimedia.org/debian/
+  sources:
+    wikimedia:
+      - deb  http://apt.wikimedia.org/wikimedia stretch-wikimedia main backports thirdparty
+    backports:
+      - deb http://mirrors.wikimedia.org/debian/ stretch-backports main contrib
+  trusted-keys:
+    - /etc/apt/trusted.gpg
+plugins:
+<%- if @proxy_address -%>
+  apt_proxy:
+    address: <%= @proxy_address %>
+    port: <%= @proxy_port %>
+<%- end -%>
+  minimize_size:
+    apt:
+      autoclean: true
+      languages: [none]
+      gzip_indexes: true
+      autoremove_suggests: true
+    dpkg:
+      locales: []
+      exclude_docs: true
