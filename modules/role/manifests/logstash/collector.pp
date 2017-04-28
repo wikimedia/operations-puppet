@@ -152,6 +152,11 @@ class role::logstash::collector (
         priority => 50,
     }
 
+    logstash::conf { 'filter_webrequest':
+        source   => 'puppet:///modules/role/logstash/filter-webrequest.conf',
+        priority => 50,
+    }
+
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
