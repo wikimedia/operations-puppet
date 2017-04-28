@@ -45,13 +45,5 @@ class role::mariadb::sanitarium2 {
         contact_group => 'admins',
     }
 
-    file { '/usr/local/sbin/redact_sanitarium.sh':
-        ensure  => file,
-        source  => 'puppet:///modules/role/mariadb/redact_sanitarium.sh',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0744',
-        require => File['/etc/mysql/filtered_tables.txt'],
-    }
 }
 

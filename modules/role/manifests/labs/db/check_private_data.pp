@@ -50,4 +50,13 @@ class role::labs::db::check_private_data {
         ],
     }
 
+    file { '/usr/local/sbin/redact_sanitarium.sh':
+        ensure  => file,
+        source  => 'puppet:///modules/role/mariadb/redact_sanitarium.sh',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0744',
+        require => File['/etc/mysql/filtered_tables.txt'],
+    }
+
 }
