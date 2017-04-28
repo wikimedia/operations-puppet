@@ -4,8 +4,8 @@ provider:
   name: docker
   labels:
     description: Debian {system.release} {system.architecture}
-  dockerfile: >
-    CMD /bin/bash
+  dockerfile:
+  - CMD /bin/bash
 bootstrapper:
   mirror: http://mirrors.wikimedia.org/debian/
   workspace: /target
