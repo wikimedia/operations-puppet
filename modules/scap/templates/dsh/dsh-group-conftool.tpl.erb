@@ -9,6 +9,6 @@
 # List of hosts gathered from etcd
 <%- @keys.each do |key| -%>
 # etcd pool: <%= key %>
-{{range $node := ls "<%= key %>/"}}{{ $key := printf "<%= key %>%s" $node }}{{ $data := json (getv $key) }}
+{{range $node := ls "<%= key %>/"}}{{ $key := printf "<%= key %>/%s" $node }}{{ $data := json (getv $key) }}
 {{ if ne $data.pooled "inactive" }}{{ $node }}{{end}}{{end}}
 <% end -%>
