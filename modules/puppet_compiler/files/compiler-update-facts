@@ -16,6 +16,6 @@ ssh $master 'sudo rm /tmp/puppet-facts-export.tar.xz'
 ssh $compiler 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
 ssh $compiler 'sudo tar Jxf puppet-facts-export.tar.xz \
     --directory /tmp/catalogs && rm puppet-facts-export.tar.xz'
+# Do not modify the files in /tmp/catalogs, the modified date counts for the rsync
 ssh $compiler 'sudo chown -R jenkins-deploy:wikidev /tmp/catalogs/yaml'
-ssh $compiler "sudo sed -i'' '/trusted:/d' /tmp/catalogs/yaml/{facts,node}/*.yaml"
 ssh $compiler 'sudo rsync -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
