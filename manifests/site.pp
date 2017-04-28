@@ -498,7 +498,7 @@ node 'db1068.eqiad.wmnet' {
     }
 }
 
-node /^db10(40|53|56|59|81|84|91)\.eqiad\.wmnet/ {
+node /^db10(40|53|56|59|81|84|91|97)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's4',
     }
