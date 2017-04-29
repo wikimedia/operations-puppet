@@ -30,6 +30,8 @@ client c1 {
     rxresp
     expect resp.status == 429
     expect resp.msg == "Too Many Requests"
+    expect resp.body ~ "See the error message at the bottom of this page"
+    expect resp.body ~ "<code>Request from"
     expect resp.http.Retry-After == 1
 
     delay 5
