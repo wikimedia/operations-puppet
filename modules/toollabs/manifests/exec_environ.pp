@@ -414,4 +414,11 @@ class toollabs::exec_environ {
             'vm.overcommit_ratio'  => 95,
         },
     }
+
+    # The hhvm deb starts a demon process automatically that we don't need
+    # running.
+    service { 'hhvm':
+        ensure  => 'stopped',
+        require => Package['hhvm'],
+    }
 }
