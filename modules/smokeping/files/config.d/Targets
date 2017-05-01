@@ -96,6 +96,16 @@ menu = einsteinium
 title = einsteinium.wikimedia.org [D3]
 host = einsteinium.wikimedia.org
 
+
+++ FRack
+menu = FRack
+title = Fund Raising Infrastructure
+
++++ pfw-eqiad
+menu = pfw-eqiad
+title = pfw-eqiad.wikimedia.org
+host = pfw-eqiad.wikimedia.org
+
 + eqord
 
 menu = eqord
@@ -195,6 +205,16 @@ menu = wasat
 title = wasat.codfw.wmnet [D5]
 host = wasat.codfw.wmnet
 
+++ FRack
+menu = FRack
+title = Fund Raising Infrastructure
+
++++ pfw-codfw
+menu = pfw-codfw
+title = pfw-codfw.wikimedia.org
+host = pfw-codfw.wikimedia.org
+
+
 + esams
 
 menu = esams
@@ -277,7 +297,7 @@ host = bast4001.wikimedia.org
 probe = DNS
 menu = DNS latency
 title = Service latency (DNS)
- 
+
 ++ ns0
 host = ns0.wikimedia.org
 
