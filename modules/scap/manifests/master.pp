@@ -2,13 +2,14 @@
 #
 # Sets up a scap master (currently tin and mira)
 class scap::master(
-    $common_path        = '/srv/mediawiki',
-    $common_source_path = '/srv/mediawiki-staging',
-    $patches_path       = '/srv/patches',
-    $rsync_host         = "deployment.${::site}.wmnet",
-    $statsd_host        = 'statsd.eqiad.wmnet',
-    $statsd_port        = 8125,
-    $deployment_group   = 'wikidev',
+    $common_path              = '/srv/mediawiki',
+    $common_source_path       = '/srv/mediawiki-staging',
+    $patches_path             = '/srv/patches',
+    $rsync_host               = "deployment.${::site}.wmnet",
+    $statsd_host              = 'statsd.eqiad.wmnet',
+    $statsd_port              = 8125,
+    $deployment_group         = 'wikidev',
+    $active_deployment_server = undef,
 ) {
     include scap::scripts
     include rsync::server
@@ -52,8 +53,11 @@ class scap::master(
         hosts_allow => $::network::constants::special_hosts[$::realm]['deployment_hosts'];
     }
 
+    $run_l10nupdate = $active_deployment_server == $::fqdn
+
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
+        run_l10nupdate   => $run_l10nupdate,
     }
 
     file { '/usr/local/bin/scap-master-sync':

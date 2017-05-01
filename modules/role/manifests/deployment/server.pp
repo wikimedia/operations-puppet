@@ -5,23 +5,12 @@ class role::deployment::server(
 ) {
 
     include ::standard
-    $base_path = '/srv/deployment'
-    include role::deployment::mediawiki
+    include profile::scap::master
 
-    ## Scap Config ##
-    require ::scap
-
-    # Create an instance of $keyholder_agents for each of the key specs.
-    create_resources('keyholder::agent', hiera('scap::keyholder_agents', {}))
-
-    # Create an instance of scap_source for each of the key specs in hiera.
-    Scap::Source {
-        base_path => $base_path,
-    }
-
-    create_resources('scap::source', hiera('scap::sources', {}))
-    ## End scap config ###
-
+    # TODO: move below to profiles
+    #
+    # Much of this is shared config of trebuchet and scap3. Fully removing
+    # trebuchet will make this much easier to sort in separate profiles.
     include ::deployment::umask_wikidev
 
     class { 'deployment::deployment_server':
@@ -36,23 +25,9 @@ class role::deployment::server(
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
 
-    if $::realm != 'labs' {
-        include role::microsites::releases::upload
-        # backup /home dirs on deployment servers
-        include ::profile::backup::host
-        backup::set {'home': }
-    }
-
-    # Firewall rules
-    ferm::service { 'rsyncd_scap_master':
-        proto  => 'tcp',
-        port   => '873',
-        srange => '$MW_APPSERVER_NETWORKS',
-    }
-
-
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
+    # Firewall rules
     # T113351
     ferm::service { 'http_deployment_server':
         desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
@@ -62,17 +37,6 @@ class role::deployment::server(
     }
 
     ### End firewall rules
-
-    #T83854
-    ::monitoring::icinga::git_merge { 'mediawiki_config':
-        dir           => '/srv/mediawiki-staging/',
-        user          => 'root',
-        remote        => 'readonly',
-        remote_branch => 'master',
-    }
-
-    # Also make sure that no files have been stolen by root ;-)
-    ::monitoring::icinga::bad_directory_owner { '/srv/mediawiki-staging': }
 
     ### Trebuchet
     file { '/srv/deployment':
@@ -89,30 +53,6 @@ class role::deployment::server(
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
     class { '::deployment::redis':
         deployment_server => $deployment_server
-    }
-
-    $deploy_ensure = $deployment_server ? {
-        $::fqdn => 'absent',
-        default => 'present'
-    }
-
-    class { '::deployment::rsync':
-        deployment_server => $deployment_server,
-        cron_ensure       => $deploy_ensure,
-    }
-
-    $main_deployment_server = hiera('scap::deployment_server')
-    motd::script { 'inactive_warning':
-        ensure   => $deploy_ensure,
-        priority => 01,
-        content  => template('role/deployment/inactive.motd.erb'),
-    }
-
-    file { '/var/lock/scap-global-lock':
-        ensure  => $deploy_ensure,
-        owner   => 'root',
-        group   => 'root',
-        content => "Not the active deployment server, use ${main_deployment_server}",
     }
 
     # Bacula backups (T125527)

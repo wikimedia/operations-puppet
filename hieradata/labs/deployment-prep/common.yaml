@@ -169,7 +169,12 @@ profile::mediawiki::jobrunner::runners:
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-tin.deployment-prep.eqiad.wmflabs
 "trebuchet::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
-"scap::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
+scap::master::deployment_server: deployment-tin.deployment-prep.eqiad.wmflabs
+scap::master::keyholder_user: mwdeploy
+scap::master::keyholder_group:
+    - 'wikidev'
+    - 'mwdeploy'
+scap::master::deployment_group: wikidev
 
 scap::dsh::scap_masters:
     - deployment-tin.deployment-prep.eqiad.wmflabs
@@ -240,7 +245,7 @@ mediawiki::web::sites::portal_dir: "portal-master"
 # deployment-prep keyholder::agent declarations.  These are created
 # by the scap::server class.  Each agent listed here
 # will be present and useable by scap on the scap deploy server.
-scap::keyholder_agents:
+scap::master::keyholder_agents:
 
   phabricator:
     trusted_groups:
@@ -257,7 +262,7 @@ scap::keyholder_agents:
 # deployment-prep scap::source declarations.  These are created
 # by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
-scap::sources:
+scap::master::sources:
 
   phabricator/deployment:
     repository: phabricator/deployment
