@@ -14,7 +14,7 @@ class role::analytics_cluster::refinery::job::project_namespace_map {
 
     # This downloads the project namespace map for a 'labsdb' public import.
     cron { 'refinery-download-project-namespace-map':
-        command  => "${env} && ${role::analytics_cluster::refinery::path}/bin/download-project-namespace-map -x ${output_directory} -s \$(/bin/date '+\\%Y-\\%m') >> ${log_file} 2>&1 ",
+        command  => "${env} && ${role::analytics_cluster::refinery::path}/bin/download-project-namespace-map -x ${output_directory} -s \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') >> ${log_file} 2>&1 ",
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
