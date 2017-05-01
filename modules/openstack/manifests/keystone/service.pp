@@ -133,11 +133,11 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
         }
 
         monitoring::service { 'keystone-http-35357':
-            description   => 'keystone http',
+            description   => 'keystone admin endpoint',
             check_command => 'check_http_on_port!35357',
         }
         monitoring::service { 'keystone-http-5000': # v2 api is limited here
-            description   => 'keystone http',
+            description   => 'keystone public endoint',
             check_command => 'check_http_on_port!5000',
         }
 
