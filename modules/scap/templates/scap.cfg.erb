@@ -20,7 +20,7 @@
 [global]
 
 # deployment git server hostname
-git_server: <%= @deployment_server %>
+git_server: <%= @active_deployment_server %>
 
 statsd_port: 8125
 
@@ -68,7 +68,7 @@ master_rsync: deployment.codfw.wmnet
 
 [wmnet]
 # Wikimedia Foundation production cluster configuration
-master_rsync: <%= @deployment_server %>
+master_rsync: <%= @active_deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 udp2log_host: mwlog1001.eqiad.wmnet
@@ -83,7 +83,7 @@ logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs:9200
 [wikimedia.org]
 # Wikimedia Foundation production cluster configuration for "public" hosts
 # This should match the [wmnet] configuration
-master_rsync: <%= @deployment_server %>
+master_rsync: <%= @active_deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 udp2log_host: mwlog1001.eqiad.wmnet
