@@ -88,4 +88,6 @@ if version == stable:
     icinga_exit(OK, '{} is running {}', TARGET, stable)
 else:
     icinga_exit(
-        WARNING, '{} is running {}, latest is {}', TARGET, version, stable)
+        WARNING, '{} is running {}, latest is {} '
+                 'Consult https://wikitech.wikimedia.org/wiki/Wikitech-static '
+                 'for details.', TARGET, version, stable)
