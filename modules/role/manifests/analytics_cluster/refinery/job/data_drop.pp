@@ -23,7 +23,7 @@ class role::analytics_cluster::refinery::job::data_drop {
     }
 
     # Keep this many days of refined webrequest data.
-    $refined_retention_days = 62
+    $refined_retention_days = 90
     cron { 'refinery-drop-webrequest-refined-partitions':
         command => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${webrequest_log_file} 2>&1",
         user    => 'hdfs',
