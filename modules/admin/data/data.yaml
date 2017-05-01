@@ -119,7 +119,7 @@ groups:
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, zareen, fdans, samtar, mlitn, shrlak, niharika29, goransm,
-              pmiazga]
+              pmiazga, phuedx]
   ldap-admins:
     gid: 715
     description: ldap admins
