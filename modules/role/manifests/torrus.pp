@@ -26,7 +26,6 @@ class role::torrus {
         'asw-a-eqiad.mgmt.eqiad.wmnet',
         'asw-b-eqiad.mgmt.eqiad.wmnet',
         'asw-c-eqiad.mgmt.eqiad.wmnet',
-        'asw-d-eqiad.mgmt.eqiad.wmnet',
         'asw2-d-eqiad.mgmt.eqiad.wmnet',
         'asw-a-codfw.mgmt.codfw.wmnet',
         'asw-b-codfw.mgmt.codfw.wmnet',
