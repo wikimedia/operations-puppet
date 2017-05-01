@@ -3,14 +3,14 @@
 # Common role for scap masters and targets
 #
 # == Parameters:
-#  [*deployment_server*]
+#  [*active_deployment_server*]
 #    Server that provides git repositories for scap3. Default 'deployment'.
 #
 #  [*wmflabs_master*]
 #    Master scap rsync host in the wmflabs domain.
 #    Default 'deployment-tin.deployment-prep.eqiad.wmflabs'.
 class scap (
-    $deployment_server = 'deployment',
+    $active_deployment_server = 'deployment',
     $wmflabs_master = 'deployment-tin.deployment-prep.eqiad.wmflabs',
     $version = '3.5.7-1',
 ) {
