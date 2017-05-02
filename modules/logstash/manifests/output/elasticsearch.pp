@@ -55,11 +55,11 @@ define logstash::output::elasticsearch(
 
     cron { "logstash_delete_index_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_delete_index.sh ${host}:${port} \"${title}-$(date -d '-31days' +\\%Y.\\%m.\\%d)\"",
+        command => "/usr/local/bin/logstash_delete_index --base-url http://${host}:${port} --max-age 31",
         user    => 'root',
         hour    => 0,
         minute  => 42,
-        require => File['/usr/local/bin/logstash_delete_index.sh'],
+        require => File['/usr/local/bin/logstash_delete_index'],
     }
 
     cron { "logstash_clear_cache_${title}":
