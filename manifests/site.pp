@@ -2248,10 +2248,6 @@ node 'netmon1001.wikimedia.org' {
     include ::base::firewall
 
     interface::add_ip6_mapped { 'main': }
-
-    class { '::ganglia::monitor::aggregator':
-        sites => ['eqiad', 'codfw'],
-    }
 }
 
 # network monitoring tool server - replacement server (T125020)
