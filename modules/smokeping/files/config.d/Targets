@@ -101,6 +101,16 @@ menu = pfw-eqiad
 title = pfw-eqiad.wikimedia.org
 host = pfw-eqiad.wikimedia.org
 
++++ tellurium
+menu = tellurium
+title = tellurium.wikimedia.org
+host = tellurium.wikimedia.org
+
++++ thulium
+menu = thulium
+title = thulium.frack.eqiad.wmnet
+host = thulium.frack.eqiad.wmnet
+
 + eqord
 
 menu = eqord
@@ -208,6 +218,16 @@ title = Fund Raising Infrastructure
 menu = pfw-codfw
 title = pfw-codfw.wikimedia.org
 host = pfw-codfw.wikimedia.org
+
++++ rigel
+menu = rigel
+title = rigel.wikimedia.org
+host = rigel.wikimedia.org
+
++++ saiph
+menu = saiph
+title = saiph.frack.codfw.wmnet
+host = saiph.frack.codfw.wmnet
 
 
 + esams
