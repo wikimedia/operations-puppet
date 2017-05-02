@@ -51,7 +51,7 @@ class profile::gerrit::server(
     ferm::service { 'ssh_gerrit_cluster':
         port   => '22',
         proto  => 'tcp',
-        srange => "@resolve((${gerrit_servers_ferm}))",
+        srange => "(@resolve((${gerrit_servers_ferm})) @resolve((${gerrit_servers_ferm}), AAAA))",
     }
 
     if !$slave {
