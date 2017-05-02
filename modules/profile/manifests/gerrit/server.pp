@@ -54,6 +54,13 @@ class profile::gerrit::server(
         srange => "@resolve((${gerrit_servers_ferm}))",
     }
 
+    $gerrit_servers_nrpe_ferm = join(hiera('gerrit::servers_nrpe'), ' ')
+    ferm::service { 'nrpe_gerrit_cluster':
+        port   => '5666',
+        proto  => 'tcp',
+        srange => "@resolve((${gerrit_servers_nrpe_ferm}))",
+    }
+
     if !$slave {
         ferm::service { 'gerrit_http':
             proto => 'tcp',
