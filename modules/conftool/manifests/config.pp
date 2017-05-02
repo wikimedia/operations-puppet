@@ -30,7 +30,9 @@ class conftool::config ($namespace, $tcpircbot_host, $tcpircbot_port, $hosts = [
             tcpircbot_host => $tcpircbot_host,
             tcpircbot_port => $tcpircbot_port,
             driver_options => {
-                allow_reconnect => true,
+                allow_reconnect       => true,
+                # requires update to python-etcd
+                suppress_san_warnings => false
             },
             namespace      => $namespace,
         }),
