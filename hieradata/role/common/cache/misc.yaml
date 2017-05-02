@@ -257,8 +257,6 @@ cache::req_handling:
     caching: 'pass'
   toolsadmin.wikimedia.org:
     director: 'californium'
-  torrus.wikimedia.org:
-    director: 'netmon1001'
   transparency.wikimedia.org:
     director: 'bromine'
   yarn.wikimedia.org:
