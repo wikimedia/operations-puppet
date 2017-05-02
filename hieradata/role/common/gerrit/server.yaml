@@ -9,6 +9,11 @@ gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
 
+# list of gerrit servers used in firewall rules
+gerrit::servers:
+ - cobalt.wikimedia.org
+ - gerrit2001.wikimedia.org
+
 # Assume all production nodes are slaves
 gerrit::jetty::git_dir: '/srv/gerrit/git'
 gerrit::jetty::ssh_host_key: 'ssh_host_key'
