@@ -3,11 +3,11 @@
 # Provision utility scripts for Logstash Elasticsearch output
 #
 class logstash::output::elasticsearch::scripts {
-    file { '/usr/local/bin/logstash_delete_index.sh':
+    file { '/usr/local/bin/logstash_delete_index':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/logstash/logstash_delete_index.sh',
+        source => 'puppet:///modules/logstash/logstash_delete_index.py',
     }
 
     file { '/usr/local/bin/logstash_clear_cache.sh':
