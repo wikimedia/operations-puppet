@@ -4,7 +4,7 @@ class swift::proxy (
     $shard_container_list,
     $accounts = $swift::params::accounts,
     $credentials = $swift::params::account_keys,
-    $memcached_servers         = ['localhost:11211'],
+    $memcached_servers         = ['127.0.0.1:11211'],
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
