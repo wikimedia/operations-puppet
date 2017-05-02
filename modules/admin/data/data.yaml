@@ -118,7 +118,7 @@ groups:
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9, zareen, fdans, samtar, mlitn, shrlak, niharika29, goransm,
+              samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
               pmiazga]
   ldap-admins:
     gid: 715
@@ -187,7 +187,7 @@ groups:
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer, zareen,
+              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans]
   statistics-users:
     gid: 726
@@ -240,7 +240,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              zareen, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh]
+              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2363,12 +2363,8 @@ users:
     gid: 500
     name: zareen
     realname: Zareen Farooqui
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKJFKzMQRJcDPrtRBIi7/b8hWbngR59UA3VCHZXbWVaNCKe+mOz9gXUvmAmeSr29p5vnmAP7tafnWYktvYbqGV02e1x5P09fvAWOvOaQob/A7/5shTGwtVxsip3/Ky2viP5Kycb8THbRHOtOt0DmeUVrWlhwie5M9AeKSWmTVJOivoME8g//nIlq7cXTCYyv+NHFSDIPKDmvlLbVFFdBbhYdDWlT6DQvTPFjTAyD23pltRBDo2WwufnSZB1sQ7spg+6+SN7e2fIcRiGXv8ar8fjwiolLtNz2I5nsLoBsb6q0ZHSwOdta4EhnkmswMrjNAgo6ayImKzXMeG35dvHvZh ZareenFarooqui@ZAREENs-MacBook.local
+    ssh_keys: []
     uid: 15813
-    email: zareenf@gmail.com
-    expiry_date: 2017-05-01
-    expiry_contact: tbayer@wikimedia.org, jkatz@wikimedia.org
   matanya:
     ensure: present
     gid: 500
