@@ -169,7 +169,12 @@ class gerrit::jetty(
         }
     }
 
+    $ensure_replication = $slave ? {
+        false   => present,
+        default => absent,
+    }
     file { '/var/lib/gerrit2/review_site/etc/replication.config':
+        ensure  => $ensure_replication,
         content => template('gerrit/replication.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
