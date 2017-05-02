@@ -94,6 +94,12 @@ class nodepool(
         priority => '1001',
         before   => Package['nodepool'],
     }
+    # Needs anti-CSRF tokens support when creating agents
+    apt::pin { 'python-jenkins':
+        pin      => 'release a=jessie-backports',
+        priority => '1001',
+        before   => Package['nodepool'],
+    }
 
     # OpenStack CLI
     package { 'python-openstackclient':
