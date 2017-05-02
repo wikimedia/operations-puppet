@@ -1,0 +1,13 @@
+debdeploy::grains:
+  debdeploy-etcd-eqiad:
+    value: standard
+profile::etcd::replication::origin:
+  cluster_name: codfw.wmnet
+  path: /conftool
+  servers:
+    - conf2001.codfw.wmnet
+    - conf2002.codfw.wmnet
+    - conf2003.codfw.wmnet
+profile::etcd::replication::destination_path: /conftool
+# only conf1002 is active if this is not the master DC.
+profile::etcd::replication::active: false

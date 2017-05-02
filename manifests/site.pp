@@ -229,13 +229,7 @@ node 'cobalt.wikimedia.org' {
 
 # conf100x are zookeeper and etcd discovery service nodes in eqiad
 node /^conf100[123]\.eqiad\.wmnet$/ {
-    role(etcd, zookeeper::server)
-    include ::base::firewall
-    include ::standard
-    if ($::fqdn == 'conf1001.eqiad.wmnet') {
-        include ::etcd::auth
-        include ::etcd::auth::users
-    }
+    role(configcluster)
 }
 
 # conf200x are etcd/zookeeper service nodes in codfw
