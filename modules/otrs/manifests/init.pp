@@ -134,7 +134,6 @@ class otrs(
         source => 'puppet:///modules/otrs/loginlogo_wmf.png',
     }
 
-    # lint:ignore:arrow_alignment
     base::service_unit { 'otrs-daemon':
         ensure  => present,
         upstart => false,
@@ -146,5 +145,4 @@ class otrs(
             hasrestart => false,
         },
     }
-    # lint:endignore
 }

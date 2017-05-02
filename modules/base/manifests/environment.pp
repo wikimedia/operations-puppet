@@ -111,13 +111,11 @@ class base::environment(
         mode   => '1773',
     }
 
-    # lint:ignore:arrow_alignment
     sysctl::parameters { 'core_dumps':
         values  => { 'kernel.core_pattern' => $core_dump_pattern, },
         require => File['/var/tmp/core'],
     }
 
-    # lint:endignore
     tidy { '/var/tmp/core':
         age     => '1w',
         recurse => 1,

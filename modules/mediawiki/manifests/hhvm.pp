@@ -23,7 +23,6 @@ class mediawiki::hhvm {
     $malloc_arenas = $max_threads
 
     class { '::hhvm':
-        # lint:ignore:arrow_alignment
         user          => $::mediawiki::users::web,
         group         => $::mediawiki::users::web,
         fcgi_settings => {
@@ -61,7 +60,6 @@ class mediawiki::hhvm {
             },
         },
         malloc_arenas => $malloc_arenas,
-        # lint:endignore
     }
 
 

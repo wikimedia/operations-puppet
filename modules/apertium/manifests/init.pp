@@ -100,7 +100,6 @@ class apertium(
         notify => Service['apertium-apy'],
     }
 
-    # lint:ignore:arrow_alignment
     base::service_unit { 'apertium-apy':
         ensure  => present,
         upstart => true,
@@ -112,7 +111,6 @@ class apertium(
             hasrestart => true,
         },
     }
-    # lint:endignore
     file { $log_dir:
         ensure => directory,
         owner  => $uid,

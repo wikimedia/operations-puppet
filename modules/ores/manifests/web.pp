@@ -39,7 +39,6 @@ class ores::web(
         },
     }
 
-    # lint:ignore:arrow_alignment
     $base_config = {
         'metrics_collectors' => {
             'wmflabs_statsd' => {
@@ -96,7 +95,6 @@ class ores::web(
     } else {
         $config = $base_config
     }
-    # lint:endignore
 
     if $extra_config {
         $final_config = deep_merge($config, $extra_config)

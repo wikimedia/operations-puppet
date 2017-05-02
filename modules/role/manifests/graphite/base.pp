@@ -39,7 +39,6 @@ class role::graphite::base(
 
     class { '::graphite':
         # First match wins with storage schemas
-        # lint:ignore:arrow_alignment
         storage_schemas     => {
             # Retain daily metrics for 25 years. Per metric size: 109528 bytes
             'daily'     => {
@@ -65,10 +64,8 @@ class role::graphite::base(
                 retentions => '1m:7d,5m:14d,15m:30d,1h:1y,1d:5y',
             },
         },
-        # lint:endignore
 
         # Aggregation methods for whisper files.
-        # lint:ignore:arrow_alignment
         storage_aggregation => {
             # Cassandra "count" metrics are treated like gauges, not like
             # statsd "counters". See also T121789 for rationale.
@@ -117,7 +114,6 @@ class role::graphite::base(
                 xFilesFactor => 0.01,
             },
         },
-        # lint:endignore
 
         # All metric data goes through a single carbon-relay instance, which
         # forwards each data point to one of eight carbon-cache instances, using

@@ -13,14 +13,12 @@ bacula::director::catalog { 'MYDB':
     dbpassword => 'bacula',
 }
 
-# lint:ignore:arrow_alignment
 bacula::director::schedule { 'Monthly-Sat':
     runs => [
                 { 'level' => 'Full', 'at'         => '1st Sat at 06:00', },
                 { 'level' => 'Differential', 'at' => '2nd Sat at 06:00', },
             ],
 }
-# lint:endignore
 
 bacula::director::pool { 'mypool':
     max_vols         => 10,

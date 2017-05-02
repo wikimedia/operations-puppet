@@ -133,7 +133,6 @@ class role::phabricator::main {
 
     $cluster_search = hiera('phabricator_cluster_search')
 
-    # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
         phabdir          => $phab_root_dir,
@@ -166,7 +165,6 @@ class role::phabricator::main {
         },
         conf_files     => $conf_files,
     }
-    # lint:endignore
 
     # This exists to offer git services
     $vcs_address_ipv4 = hiera('phabricator::vcs::address::v4', undef)
