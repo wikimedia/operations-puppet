@@ -10,6 +10,7 @@ profile::redis::master::settings:
   maxmemory: "2gb"
   save: ""
   stop-writes-on-bgsave-error: false
+  bind: "0.0.0.0"
 # This must be defined in the private repo
 # profile::redis::master::password:
 role::ocg::redis_servers:
