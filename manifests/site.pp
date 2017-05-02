@@ -220,8 +220,8 @@ node 'chromium.wikimedia.org' {
     }
 }
 
-# New https://www.mediawiki.org/wiki/Gerrit (T147597)
-node 'cobalt.wikimedia.org' {
+# All gerrit servers (swap master status in hiera)
+node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role('gerrit::server')
 
     interface::add_ip6_mapped { 'main': }
@@ -1091,12 +1091,6 @@ node 'francium.eqiad.wmnet' {
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
     include ::standard
-}
-
-# upcoming gerrit server in codfw (T152525)
-node 'gerrit2001.wikimedia.org' {
-    include ::standard
-    interface::add_ip6_mapped { 'main': }
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
