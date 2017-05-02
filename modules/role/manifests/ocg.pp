@@ -28,7 +28,7 @@ class role::ocg {
             redis                => true,
             redis_auth           => $passwords::redis::main_password,
             hash                 => 'md5',
-            listen               => '127.0.0.1:6378',
+            listen               => '127.0.0.1:11212',
             server_connections   => 1,
             server_failure_limit => 3,
             server_retry_timeout => to_milliseconds('30s'),
