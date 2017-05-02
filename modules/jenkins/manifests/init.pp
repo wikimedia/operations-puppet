@@ -78,23 +78,6 @@ class jenkins(
         ensure  => 'absent',
     }
 
-    # Workaround for a Jenkins security issue.
-    #
-    # Same fix as a previous one:
-    #   https://jenkins.io/blog/2015/11/06/mitigating-unauthenticated-remote-code-execution-0-day-in-jenkins-cli/
-    #   https://github.com/jenkinsci-cert/SECURITY-218
-    file { '/var/lib/jenkins/init.groovy.d':
-        ensure => directory,
-        owner  => 'jenkins',
-        group  => 'jenkins',
-        mode   => '0755',
-    }
-    file { '/var/lib/jenkins/init.groovy.d/cli-shutdown.groovy':
-        source => 'puppet:///modules/jenkins/cli-shutdown.groovy',
-        owner  => 'jenkins',
-        group  => 'jenkins',
-        mode   => '0755',
-    }
     file { '/etc/jenkins':
         ensure => directory,
         owner  => 'jenkins',
