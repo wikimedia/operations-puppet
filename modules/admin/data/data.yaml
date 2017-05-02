@@ -1622,7 +1622,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweYNj2Fsw5NjS+tM3JwvzpAymkw2GNE2NhgI79VuJukffj1XGPGYSJQVxRgIKuLCrmizCc/wYyF2gB+aO3iOmu1pSa84i3Xv141cO8ib5XHGdgPkfb8cvCOg0eD0OEe5esCbNLQrCe/6kzlhWLDkE9UZ++2lKt3j5IN9FEj2qLRv9zVEIBU001ciP/qA0YwIffweVzmX4FpcNF6h8pSKJpx3y+lHwIoD1Hm6d2IH39jPV3k/LmwNLHLjSxlIqXuU1EIeK4Rs+cKOpZatfT4Q8wpiZknvhGxXexhJAwSQ2DM8lONqmFF+AyWZSKahbjN4biBfsjJXLxQFw9yrn3XU2w== west1@madmax4.stanford.edu]
     uid: 1097
     comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: 2017-05-13
+    expiry_date: 2017-11-15
     expiry_contact: halfak@wikimedia.org
     email: rwest@wikimedia.org
   jhernandez:
