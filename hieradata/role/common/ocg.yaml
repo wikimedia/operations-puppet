@@ -5,3 +5,20 @@ role::ocg::tmpfs_size: '32G'
 debdeploy::grains:
   debdeploy-ocg:
     value: standard
+profile::redis::master::instances: [6379]
+profile::redis::master::settings:
+  maxmemory: "2gb"
+  save: ""
+  stop-writes-on-bgsave-error: false
+# This must be defined in the private repo
+# profile::redis::master::password:
+role::ocg::redis_servers:
+  "ocg1001":
+    host: "ocg1001.eqiad.wmnet"
+    port: 6379
+  "ocg1002":
+    host: "ocg1002.eqiad.wmnet"
+    port: 6379
+  "ocg1003":
+    host: "ocg1003.eqiad.wmnet"
+    port: 6379

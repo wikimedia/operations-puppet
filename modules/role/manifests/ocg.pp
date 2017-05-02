@@ -13,7 +13,37 @@ class role::ocg {
         description => 'offline content generator for MediaWiki Collection extension',
     }
 
-    include passwords::redis
+    # Set up the local redis instance + nutcracker
+    require ::passwords::redis
+
+    # Set the password from the password class
+    class { '::profile::redis::master':
+        password => $::passwords::redis::main_password,
+    }
+
+    $redis_pool = {
+        'redis_local' => {
+            auto_eject_hosts     => true,
+            distribution         => 'ketama',
+            redis                => true,
+            redis_auth           => $passwords::redis::main_password,
+            hash                 => 'md5',
+            listen               => '127.0.0.1:6378',
+            server_connections   => 1,
+            server_failure_limit => 3,
+            server_retry_timeout => to_milliseconds('30s'),
+            timeout              => 1000,
+            server_map           => hiera('role::ocg::redis_servers'),
+        }
+    }
+
+    class { 'nutcracker':
+        mbuf_size => '64k',
+        pools     => $redis_pool,
+    }
+
+    class { '::nutcracker::monitoring': }
+
     include ::ocg
     include ::ocg::nagios
 
