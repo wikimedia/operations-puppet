@@ -4,7 +4,7 @@
 #####################################################################
 # vim: filetype=apache
 
-ProxyPass       <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
+ProxyPass       <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %> nocanon
 ProxyPassReverse    <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
 ProxyRequests       Off
 
