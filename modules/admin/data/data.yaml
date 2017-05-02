@@ -2498,6 +2498,10 @@ ldap_only_users:
     ensure: present
     realname: Aeryn Palmer
     email: apalmer@wikimedia.org
+  audiohazel:
+    ensure: present
+    realname: Victoria Coleman
+    email: vcoleman@wikimedia.org
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
