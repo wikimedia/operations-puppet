@@ -46,6 +46,14 @@ class profile::gerrit::server(
         port  => '29418',
     }
 
+    # ssh between gerrit servers for clustering support
+    $gerrit_servers_ferm = join(hiera('gerrit::servers'), ' ')
+    ferm::service { 'ssh_gerrit_cluster':
+        port   => '22',
+        proto  => 'tcp',
+        srange => "@resolve((${gerrit_servers_ferm}))",
+    }
+
     if !$slave {
         ferm::service { 'gerrit_http':
             proto => 'tcp',
