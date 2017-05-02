@@ -126,5 +126,7 @@ def rebase_repo(repo_path, track_branch):
     return True
 
 
+rebase_repo("/var/lib/git/operations/puppet/modules/icinga2", "master")
+
 if rebase_repo("/var/lib/git/operations/puppet", "production"):
     rebase_repo("/var/lib/git/labs/private", "master")
