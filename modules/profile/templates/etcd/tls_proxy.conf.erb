@@ -28,6 +28,9 @@ server {
 
     # One year should be enough for anyone(TM)
     proxy_read_timeout 365d;
+    # Proxy buffering must be turned off in order not to interfere with
+    # watch requests.
+    proxy_buffering off;
 
     location / {
         proxy_pass http://etcd/;
