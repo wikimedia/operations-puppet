@@ -3,7 +3,7 @@ admin::groups:
   - ocg-render-admins
 ocg::temp_dir: "/mnt/tmpfs"
 ocg::redis_host: "localhost"
-ocg::redis::port: 11212
+ocg::redis_port: 11212
 ocg::statsd_host: "statsd.eqiad.wmnet"
 ocg::graylog_host: "logstash1002.eqiad.wmnet"
 role::ocg::tmpfs_size: '32G'
