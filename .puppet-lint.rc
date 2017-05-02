@@ -7,3 +7,5 @@
 # T127797 - needs at least one comment line for each class
 --no-documentation-check
 
+# aligning arrows often generates diffs with changes to unrelated lines
+--no-arrow_alignment-check
