@@ -34,7 +34,7 @@ class gridengine::master {
     }
 
     file { "${etcdir}/bin/mergeconf":
-        ensure => file,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -104,18 +104,15 @@ class gridengine::master {
         purge   => true,
     }
 
-    file { "${etcdir}/config/99-default":
+    # Changes made to global.conf will be applied to the grid only on running
+    # `qconf -Mconf global` from /var/lib/gridengine/etc/config/.
+    # See https://linux.die.net/man/5/sge_conf for docs
+    file { "${etcdir}/config/global":
         ensure => file,
         owner  => 'sgeadmin',
         group  => 'sgeadmin',
         mode   => '0664',
-        source => 'puppet:///modules/gridengine/config-99-default',
-    }
-
-    exec { 'update-config-conf':
-        onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
-        command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
-        require => File[ "${etcdir}/bin", "${etcdir}/config/99-default" ],
+        source => 'puppet:///modules/gridengine/global.conf',
     }
 
     service { 'gridengine-master':
