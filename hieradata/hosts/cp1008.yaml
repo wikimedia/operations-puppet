@@ -1,6 +1,7 @@
 debdeploy::grains:
   debdeploy-cp:
     value: canary
+bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
 cache::text::nodes:
     eqiad:
