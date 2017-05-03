@@ -378,7 +378,7 @@ glanceconfig:
 #  so changes to this table may require a manual kill of dnsmasq and restart
 #  of nova-network.
 labs_metal:
-  promethium: {MAC: '90:b1:1c:2d:6f:0c', IPv4: 10.68.16.2, project: wikitextexp }
+#  promethium: {MAC: '90:b1:1c:2d:6f:0c', IPv4: 10.68.16.2, project: wikitextexp }
 
 
 # List of all zookeeper clusters in production.

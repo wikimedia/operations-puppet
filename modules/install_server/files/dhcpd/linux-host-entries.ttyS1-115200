@@ -5652,11 +5652,6 @@ host prometheus2004 {
     fixed-address prometheus2004.codfw.wmnet;
 }
 
-host promethium {
-    hardware ethernet 90:B1:1C:2D:6F:0C;
-    fixed-address promethium.eqiad.wmflabs;
-}
-
 host puppetmaster1001 {
     hardware ethernet 18:66:DA:63:3D:08;
     fixed-address puppetmaster1001.eqiad.wmnet;
