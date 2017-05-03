@@ -54,6 +54,11 @@
 #   Hash of runtime.properties
 #   See: Default $properties
 #
+# [*java_home*]
+#   Path to JAVA_HOME.  This will be set for all daemon environemnts in their env.sh files.
+#   This is done because default Java on Debian (Jessie) systems is Java 7, and Druid 0.10+
+#   requires Java 8.
+#
 # [*use_cdh*]
 #   If this is true, the druid::cdh::hadoop::dependencies class
 #   will be included, and deep storage will be configured to use
@@ -77,9 +82,9 @@
 #   List extensions to load.  Directories matching these names must exist
 #   in druid.extensions.directory.
 #   Default: [
-#       'druid-histogram',
 #       'druid-datasketches',
-#       'druid-namespace-lookup'
+#       'druid-histogram',
+#       'druid-lookups-cached-global'
 #       'mysql-metadata-storage', # only if druid.metadata.storage.type == mysql
 #       'druid-hdfs-storage',     # only if druid.storage.type == hdfs
 #   ],
@@ -141,7 +146,8 @@
 #
 class druid(
     $properties = {},
-    $use_cdh = false,
+    $java_home  = '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
+    $use_cdh    = false,
 )
 {
     if $use_cdh {
@@ -220,11 +226,10 @@ class druid(
         $storage_extensions              = []
     }
 
-
     $default_extensions = [
-        'druid-histogram',
         'druid-datasketches',
-        'druid-namespace-lookup',
+        'druid-histogram',
+        'druid-lookups-cached-global',
     ]
     # Get a unique list of extensions to load built up from
     # the defaults configured here.  Note that if
