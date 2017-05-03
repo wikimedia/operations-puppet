@@ -52,8 +52,11 @@ class scap::master(
         hosts_allow => $::network::constants::special_hosts[$::realm]['deployment_hosts'];
     }
 
+    # TODO: pass this down from a profile (or convert this to a profile!)
+    $main_deployment_server = hiera('scap::deployment_server')
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
+        run_l10nupdate   => ($main_deployment_server == $::fqdn)
     }
 
     file { '/usr/local/bin/scap-master-sync':
