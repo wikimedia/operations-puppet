@@ -351,6 +351,12 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     role(cache::maps, ipsec)
 }
 
+# temporary entry for testing new cache node hardware setup...
+node 'cp4021.codfw.wmnet' {
+    interface::add_ip6_mapped { 'main': }
+    role(cache::upload)
+}
+
 node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
