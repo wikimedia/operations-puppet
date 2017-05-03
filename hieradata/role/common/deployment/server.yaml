@@ -1,3 +1,9 @@
+profile::base::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - codfw.wmnet
+cluster: misc
+
 admin::groups:
   - deployment
   - deploy-service
