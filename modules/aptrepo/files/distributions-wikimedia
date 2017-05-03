@@ -34,7 +34,7 @@ Label: Wikimedia
 Suite: stretch-wikimedia
 Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
-Version: 8
+Version: 9
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental
 UDebComponents: main backports thirdparty experimental
