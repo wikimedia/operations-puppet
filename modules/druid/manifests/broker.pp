@@ -11,6 +11,7 @@
 # [*env*]
 #   Hash of shell environment variables.
 #   Default: {
+#       'JAVA_HOME'            => '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
 #       'JMX_PORT'             => 9661,
 #       'DRUID_HEAP_OPTS'      => '-Xmx256m -Xms256m',
 #       'DRUID_EXTRA_JVM_OPTS' => '-XX:MaxDirectMemorySize=256m',
@@ -86,6 +87,7 @@ class druid::broker(
     }
 
     $default_env = {
+        'JAVA_HOME'            => $::druid::java_home,
         'JMX_PORT'             => 9661,
         'DRUID_HEAP_OPTS'      => '-Xmx256m -Xms256m',
         'DRUID_EXTRA_JVM_OPTS' => '-XX:MaxDirectMemorySize=256m',

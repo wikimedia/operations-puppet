@@ -79,6 +79,7 @@ class druid::historical(
     }
 
     $default_env = {
+        'JAVA_HOME'            => $::druid::java_home,
         'JMX_PORT'             => 9663,
         'DRUID_HEAP_OPTS'      => '-Xmx256m -Xms256m',
         'DRUID_EXTRA_JVM_OPTS' => '-XX:MaxDirectMemorySize=256m',
