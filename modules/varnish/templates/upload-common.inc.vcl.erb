@@ -2,10 +2,6 @@
 
 sub upload_common_recv {
 	unset req.http.X-Range;
-	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
-		return (synth(404, "Requested domainname does not exist on this server"));
-	}
-
 	if (req.http.Range) {
 		set req.hash_ignore_busy = true;
 	}

@@ -30,9 +30,15 @@ cache::app_directors:
     backends:
       eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
       # codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
+  kartotherian:
+    backends:
+      eqiad: 'kartotherian.svc.eqiad.wmnet'
+      # codfw: 'kartotherian.svc.codfw.wmnet'
 cache::req_handling:
-  default:
+  upload.wikimedia.org:
     director: 'swift'
     subpaths:
       '^/+[^/]+/[^/]+/thumb/':
         director: 'swift_thumbs'
+  maps.wikimedia.org:
+    director: 'kartotherian'
