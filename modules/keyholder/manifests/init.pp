@@ -49,13 +49,15 @@ class keyholder($require_encrypted_keys='yes') {
         mode   => '0755',
     }
 
-    file { '/etc/tmpfiles.d/keyholder.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => 'd /run/keyholder 0755 keyholder keyholder',
-        require => User['keyholder'],
+    if os_version('debian >= jessie') {
+        file { '/etc/tmpfiles.d/keyholder.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => 'd /run/keyholder 0755 keyholder keyholder',
+            require => User['keyholder'],
+        }
     }
 
     file { '/etc/keyholder.d':
