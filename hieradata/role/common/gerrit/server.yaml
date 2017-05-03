@@ -27,4 +27,10 @@ gerrit::jetty::replication:
         push:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
+    slaves:
+        url: 'gerrit2@gerrit2001.wikimedia.org:/srv/gerrit/git/${name}.git'
+        threads: '4'
+        mirror: true
+        replicateProjectDeletions: true
+        replicateHiddenProjects: true
 # gerrit::jetty::log_host: 'logstash1002.eqiad.wmnet'
