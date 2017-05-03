@@ -16,6 +16,7 @@ class profile::druid::common(
     $properties                     = hiera('profile::druid::common::properties', {}),
     $zookeeper_clusters             = hiera('zookeeper_clusters'),
     $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name', 'druid'),
+    $java_home                      = hiera('profile::druid::common::java_home', '/usr/lib/jvm/java-7-openjdk-amd64'),
     $use_cdh                        = hiera('profile::druid::common::use_cdh', false),
 ) {
     # Need Java before Druid is installed.
@@ -37,6 +38,7 @@ class profile::druid::common(
     # Druid Common Class
     class { '::druid':
         metadata_storage_database_name => $metadata_storage_database_name,
+        java_home                      => $java_home,
         use_cdh                        => $use_cdh,
         # Merge our auto configured zookeeper properties
         # with the properties from hiera.

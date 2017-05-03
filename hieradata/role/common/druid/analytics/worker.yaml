@@ -33,6 +33,8 @@ profile::druid::common::zookeeper_cluster_name: druid-analytics-eqiad
 # Make druid build an extension composed of CDH jars.
 profile::druid::common::use_cdh: true
 
+profile::druid::common::java_home: '/usr/lib/jvm/java-1.8.0-openjdk-amd64'
+
 # The default MySQL Druid metadata storage database name is just 'druid'.
 # Since the analytics-eqiad Druid cluster was originally the only one,
 # We set this to the default of 'druid', just to be explicit about it.
@@ -125,7 +127,7 @@ profile::druid::middlemanager::properties:
   druid.worker.ip: "%{::fqdn}"
   druid.worker.capacity: 12
   druid.processing.numThreads: 3
-  druid.processing.buffer.sizeBytes: 536870912
+  druid.processing.buffer.sizeBytes: 356515840
   druid.server.http.numThreads: 20
   druid.indexer.runner.javaOpts: "-server -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Dhadoop.mapreduce.job.user.classpath.first=true"
   druid.indexer.task.defaultHadoopCoordinates: ["org.apache.hadoop:hadoop-client:cdh"]
