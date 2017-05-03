@@ -7,6 +7,10 @@ username = "<%= @database_username %>"
 password = "<%= @database_password %>"
 dbname = "<%= @database_name %>"
 tables_prefix = "<%= @database_table_prefix %>"
+; Enable LOAD FILE fix
+; https://github.com/piwik/piwik/issues/9419#issuecomment-293663840
+; https://piwik.org/faq/troubleshooting/#faq_194
+adapter = MYSQLI
 
 [General]
 <%- @proxy_client_headers.each do |proxy_client_header| -%>
