@@ -99,6 +99,12 @@ class gerrit::jetty(
         content => secret('gerrit/id_rsa'),
     }
 
+    ssh::userkey { 'gerrit2-cluster-sync':
+        ensure => present,
+        user   => 'gerrit2',
+        source => 'puppet:///modules/gerrit/id_rsa.pub'
+    }
+
     file { '/var/lib/gerrit2/review_site':
         ensure  => directory,
         owner   => 'gerrit2',
