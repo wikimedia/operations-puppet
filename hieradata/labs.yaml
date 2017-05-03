@@ -51,9 +51,10 @@ cache::upload::nodes:
     eqiad:
       - 'deployment-cache-upload04.deployment-prep.eqiad.wmflabs'
 role::cache::base::zero_site: 'https://zero.wikimedia.beta.wmflabs.org'
-role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
-role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
+role::cache::base::purge_host_only_upload_re: '^(upload|maps)\.beta\.wmflabs\.org$'
+role::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
 role::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
+role::cache::upload::maps_domain: 'maps.beta.wmflabs.org'
 role::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
 role::cache::text::shortener_domain: 'w-beta.wmflabs.org'
 role::cache::text::top_domain: 'beta.wmflabs.org'

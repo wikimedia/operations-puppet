@@ -1,6 +1,7 @@
 # filtertags: labs-project-deployment-prep
 class role::cache::upload(
     $upload_domain = 'upload.wikimedia.org',
+    $maps_domain = 'maps.wikimedia.org',
 ) {
     include role::cache::base
     include role::cache::ssl::unified
@@ -9,8 +10,8 @@ class role::cache::upload(
     class { 'prometheus::node_vhtcpd': }
 
     class { 'varnish::htcppurger':
-        host_regex => 'upload',
-        mc_addrs   => [ '239.128.0.112', '239.128.0.113' ],
+        host_regex => '[um][pa][lp][os]', # like 'uplo|maps', but avoiding shell metachar...
+        mc_addrs   => [ '239.128.0.112', '239.128.0.113', '239.128.0.114' ],
     }
 
     class { '::lvs::realserver':
@@ -36,6 +37,7 @@ class role::cache::upload(
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
         'upload_domain'    => $upload_domain,
+        'maps_domain'      => $maps_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
         'req_handling'     => hiera('cache::req_handling'),
     }

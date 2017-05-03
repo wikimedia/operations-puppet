@@ -1,7 +1,7 @@
 class role::cache::base(
     $zero_site = 'https://zero.wikimedia.org',
-    $purge_host_only_upload_re = '^upload\.wikimedia\.org$',
-    $purge_host_not_upload_re = '^(?!upload\.wikimedia\.org)',
+    $purge_host_only_upload_re = '^(upload|maps)\.wikimedia\.org$',
+    $purge_host_not_upload_re = '^(?!(upload|maps)\.wikimedia\.org)',
     $storage_parts = ['sda3', 'sdb3'],
 ) {
     include ::standard
