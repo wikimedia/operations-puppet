@@ -25,6 +25,10 @@ class dumps {
         mode    => '0444',
         require => Package['nginx-extras'],
     }
+    logrotate::conf { 'nginx':
+        ensure => present,
+        source => 'puppet:///modules/dumps/logrotate.conf',
+    }
 
     file { '/data/xmldatadumps/public/favicon.ico':
         source => 'puppet:///modules/dumps/favicon.ico',
