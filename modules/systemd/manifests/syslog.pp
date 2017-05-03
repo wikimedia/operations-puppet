@@ -76,11 +76,9 @@ define systemd::syslog(
         require  => File[$local_logdir],
         before   => Base::Service_unit[$title],
     }
-
-    file { "/etc/logrotate.d/${title}":
+   
+    logrotate::conf { $title:
+        ensure => present,
         content => template('systemd/logrotate.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
     }
 }
