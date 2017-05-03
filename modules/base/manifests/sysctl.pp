@@ -106,4 +106,27 @@ class base::sysctl {
             },
         }
     }
+
+    # BBR congestion control (T147569)
+    # https://lwn.net/Articles/701165/
+    #
+    # The BBR TCP congestion control algorithm is based on Bottleneck
+    # Bandwidth, i.e. the estimated bandwidth of the slowest link, and
+    # Round-Trip Time to control outgoing traffic. Other algorithms such as
+    # CUBIC (default on Linux since 2.6.19) and Reno are instead based on
+    # packet loss.
+    #
+    # To send out data at the proper rate, BBR uses the tc-fq packet scheduler
+    # instead of the TCP congestion window.
+    #
+    # It has been added to Linux since version 4.9.
+    $use_bbr = hiera('bbr_congestion_control', false)
+    if ($use_bbr) and (versioncmp($::kernelversion, '4.9') >= 0) {
+        sysctl::parameters { 'tcp_bbr':
+            values => {
+            'net.core.default_qdisc' => 'fq',
+            'net.ipv4.tcp_congestion_control' => 'bbr',
+            },
+        }
+    }
 }
