@@ -876,6 +876,11 @@ host cp4020 {
     fixed-address cp4020.ulsfo.wmnet;
 }
 
+host cp4021 {
+    hardware ethernet f4:e9:d4:ba:91:40;
+    fixed-address cp4021.ulsfo.wmnet;
+}
+
 host contint1001 {
      hardware ethernet 14:18:77:5b:29:c7;
      fixed-address contint1001.wikimedia.org;
