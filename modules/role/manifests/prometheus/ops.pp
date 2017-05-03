@@ -231,6 +231,15 @@ class role::prometheus::ops {
             'cluster' => 'videoscaler'
         }
     }
+
+    # Special config for Apache on Piwik deployments
+    prometheus::class_config{ "apache_piwik_${::site}":
+        dest       => "${targets_path}/apache_piwik_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::piwik::webserver',
+        port       => '9117',
+    }
+
     # Job definition for etcd_exporter
     $etcd_jobs = [
       {
