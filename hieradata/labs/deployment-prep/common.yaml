@@ -202,7 +202,7 @@ scap::dsh::groups:
 "profile::elasticsearch::recover_after_nodes": 3
 "profile::elasticsearch::bulk_thread_pool_executors": 5
 "profile::elasticsearch::ferm_srange": ''
-"profile::elasticsearch::awareness_attributes": 'none'
+"profile::elasticsearch::awareness_attributes":
 "profile::elasticsearch::rack": ''
 "profile::elasticsearch::row": ''
 "profile::elasticsearch::unicast_hosts":
