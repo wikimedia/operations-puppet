@@ -4,7 +4,9 @@
 # This configuration should be improved with something more up to date like
 # mpm-event and php-fpm/hhmv.
 #
-class profile::piwik::webserver {
+class profile::piwik::webserver(
+    $prometheus_nodes = hiera('prometheus_nodes')
+){
     class { '::apache::mod::authnz_ldap': }
     class { '::apache::mod::headers': }
     class { '::apache::mod::php5': }
@@ -53,6 +55,17 @@ class profile::piwik::webserver {
         match  => '^;?memory_limit\s*\=',
         path   => '/etc/php5/apache2/php.ini',
         notify => Class['::apache'],
+    }
+
+    prometheus::apache_exporter { 'default': }
+
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+
+    ferm::service { 'prometheus-apache_exporter':
+        proto  => 'tcp',
+        port   => '9117',
+        srange => $ferm_srange,
     }
 
     ferm::service { 'piwik_http':
