@@ -18,12 +18,9 @@ class dumps {
         notify  => Service['nginx'],
     }
 
-    file { '/etc/logrotate.d/nginx':
-        source  => 'puppet:///modules/dumps/logrotate.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['nginx-extras'],
+    logrotate::conf { 'nginx':
+        ensure => present,
+        source => 'puppet:///modules/dumps/logrotate.conf',
     }
 
     file { '/data/xmldatadumps/public/favicon.ico':
