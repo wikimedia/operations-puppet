@@ -58,6 +58,11 @@
 #   This will be used as the database name / derby file name
 #   of the configured metadata storage.  Default: 'druid'
 #
+# [*java_home*]
+#   Path to JAVA_HOME.  This will be set for all daemon environemnts in their env.sh files.
+#   This is done because default Java on Debian (Jessie) systems is Java 7, and Druid 0.10+
+#   requires Java 8.
+#
 # [*use_cdh*]
 #   If this is true, the druid::cdh::hadoop::dependencies class
 #   will be included, and deep storage will be configured to use
@@ -143,7 +148,8 @@
 class druid(
     $properties = {},
     $metadata_storage_database_name = 'druid',
-    $use_cdh = false,
+    $java_home  = '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
+    $use_cdh    = false,
 )
 {
     if $use_cdh {
@@ -220,7 +226,6 @@ class druid(
         # No extra storage extensions needed
         $storage_extensions              = []
     }
-
 
     $default_extensions = [
         'druid-datasketches',
