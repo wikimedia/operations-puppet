@@ -59,6 +59,7 @@ class druid::coordinator(
     }
 
     $default_env = {
+        'JAVA_HOME'            => $::druid::java_home,
         'JMX_PORT'             => 9662,
         'DRUID_HEAP_OPTS'      => '-Xmx128m -Xms128m',
         'DRUID_EXTRA_JVM_OPTS' => '-Dderby.stream.error.file=/var/log/druid/coordinator-derby.log',

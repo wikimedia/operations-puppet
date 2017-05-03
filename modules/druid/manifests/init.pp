@@ -220,11 +220,9 @@ class druid(
         $storage_extensions              = []
     }
 
-
     $default_extensions = [
         'druid-histogram',
         'druid-datasketches',
-        'druid-namespace-lookup',
     ]
     # Get a unique list of extensions to load built up from
     # the defaults configured here.  Note that if
