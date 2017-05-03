@@ -9,9 +9,11 @@ sub cluster_fe_recv {
 		return (synth(667, "OK"));
 	}
 
-	// Homepage redirect to commons
-	if (req.url == "/") {
-		return (synth(666, "Moved Permanently"));
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Homepage redirect to commons
+		if (req.url == "/") {
+			return (synth(666, "Moved Permanently"));
+		}
 	}
 
 	call upload_common_recv;
@@ -127,12 +129,14 @@ sub cluster_fe_deliver {
 	// (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
 	set resp.http.Timing-Allow-Origin = "*";
 
-	// Restrict uploads from loading external resources. (T117618)
-	// Currently experimental and testing on large but not huge wikis.
-	if (req.url ~ "^/wikipedia/(el|fr|ru|it|de|uk|ja|id|he|fi|zh|test)") {
-		set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
-		set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
-		set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Restrict uploads from loading external resources. (T117618)
+		// Currently experimental and testing on large but not huge wikis.
+		if (req.url ~ "^/wikipedia/(el|fr|ru|it|de|uk|ja|id|he|fi|zh|test)") {
+			set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
+			set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+			set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+		}
 	}
 }
 
