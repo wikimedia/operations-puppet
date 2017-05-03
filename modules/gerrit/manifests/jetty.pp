@@ -91,10 +91,10 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/.ssh',
     }
 
-    ssh::userkey { 'gerrit2-cluster-sync':
+    ssh::userkey { 'gerrit2-replication':
         ensure => present,
         user   => 'gerrit2',
-        source => secret('gerrit/id_rsa'),
+        source => secret('gerrit/gerrit2_replication_ecda'),
     }
 
     file { '/var/lib/gerrit2/review_site':
