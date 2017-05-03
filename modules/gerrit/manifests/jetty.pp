@@ -40,7 +40,7 @@ class gerrit::jetty(
         '-XX:+UseGCLogFileRotation',
         '-XX:NumberOfGCLogFiles=10',
         '-XX:GCLogFileSize=2M',
-        '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
+        # '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
     ]
 
     require_package([
