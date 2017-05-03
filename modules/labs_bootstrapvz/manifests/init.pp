@@ -8,6 +8,10 @@ class labs_bootstrapvz() {
         ensure => present,
     }
 
+    package { 'kpartx':
+        ensure => present,
+    }
+
     $bootstrap_filepath = '/etc/bootstrap-vz/'
 
     file { $bootstrap_filepath:
