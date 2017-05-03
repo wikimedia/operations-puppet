@@ -44,6 +44,9 @@
 #   See: https://github.com/druid-io/druid/pull/2815
 #   Default: '-server -Xmx128m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Dhadoop.mapreduce.job.user.classpath.first=true'
 #
+# [*druid.indexer.runner.javaCommand*]
+#  Path to the Java executable that will be used to launch indexer Peon tasks.
+#  Default: $::druid::java_home/bin/java
 #
 # [*druid.indexer.task.baseTaskDir*]
 #   Base temporary working directory for tasks.
@@ -71,6 +74,9 @@ class druid::middlemanager(
         'druid.worker.capacity'             => 3,
 
         'druid.indexer.runner.startPort'    => 8100,
+        # Indexer tasks processes (peons) need to run
+        # with the same java that druid should use.
+        'druid.indexer.runner.javaCommand'  => "${::druid::java_home}/bin/java",
         'druid.indexer.runner.javaOpts'     => '-server -Xmx128m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -Dhadoop.mapreduce.job.user.classpath.first=true',
 
         'druid.indexer.task.baseTaskDir'    => '/var/lib/druid/task',
@@ -82,6 +88,7 @@ class druid::middlemanager(
     }
 
     $default_env = {
+        'JAVA_HOME'       => $::druid::java_home,
         'JMX_PORT'        => 9664,
         'DRUID_HEAP_OPTS' => '-Xmx64m -Xms64m',
     }
