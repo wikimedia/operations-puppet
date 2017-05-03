@@ -1,3 +1,4 @@
+# "reprepro update" doesn't work for Jenkins due to https://issues.jenkins-ci.org/browse/INFRA-165
 Name: jenkins
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
