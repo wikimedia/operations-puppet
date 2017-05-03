@@ -7,6 +7,7 @@ class profile::gerrit::server(
     $host = hiera('gerrit::server::host'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
+    $gerrit_servers = join(hiera('gerrit::servers'), ' ')
 ) {
 
     interface::ip { 'role::gerrit::server_ipv4':
@@ -41,17 +42,18 @@ class profile::gerrit::server(
 
     include ::base::firewall
 
-    ferm::service { 'gerrit_ssh':
+    # ssh from users to gerrit
+    ferm::service { 'gerrit_ssh_users':
         proto => 'tcp',
         port  => '29418',
     }
 
-    # ssh between gerrit servers for clustering support
-    $gerrit_servers_ferm = join(hiera('gerrit::servers'), ' ')
-    ferm::service { 'ssh_gerrit_cluster':
+    # ssh between gerrit servers for cluster support
+    $gerrit_servers_ferm = join($gerrit::servers, ' ')
+    ferm::service { 'gerrit_ssh_cluster':
         port   => '22',
         proto  => 'tcp',
-        srange => "(@resolve((${gerrit_servers_ferm})) @resolve((${gerrit_servers_ferm}), AAAA))",
+        srange => "(@resolve((${gerrit_servers})) @resolve((${gerrit_servers}), AAAA))",
     }
 
     if !$slave {
