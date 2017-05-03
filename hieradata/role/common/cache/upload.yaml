@@ -31,7 +31,7 @@ cache::app_directors:
       # eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
       codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
 cache::req_handling:
-  default:
+  upload.wikimedia.org:
     director: 'swift'
     subpaths:
       '^/+[^/]+/[^/]+/thumb/':

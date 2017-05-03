@@ -1,7 +1,5 @@
 # filtertags: labs-project-deployment-prep
-class role::cache::upload(
-    $upload_domain = 'upload.wikimedia.org',
-) {
+class role::cache::upload() {
     include role::cache::base
     include role::cache::ssl::unified
     include ::standard
@@ -35,7 +33,6 @@ class role::cache::upload(
 
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
-        'upload_domain'    => $upload_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
         'req_handling'     => hiera('cache::req_handling'),
     }
