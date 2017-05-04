@@ -41,7 +41,7 @@ class labs_bootstrapvz() {
 
     file { "${bootstrap_filepath}/manifests/labs-stretch.manifest.yaml":
         mode    => '0444',
-        source  => 'puppet:///modules/labs_bootstrapvz/labs-jessie.manifest.yaml',
+        source  => 'puppet:///modules/labs_bootstrapvz/labs-stretch.manifest.yaml',
         require => File["${bootstrap_filepath}/manifests"],
     }
 
