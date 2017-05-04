@@ -58,7 +58,7 @@ cache::app_directors:
     be_opts:
       port: 8092
     backends:
-      # eqiad: 'eventstreams.svc.eqiad.wmnet'
+      eqiad: 'eventstreams.svc.eqiad.wmnet'
       codfw: 'eventstreams.svc.codfw.wmnet'
   contint1001:
     backends:
@@ -83,7 +83,7 @@ cache::app_directors:
       eqiad: 'netmon1001.wikimedia.org'
   noc:
     backends:
-      # eqiad: 'terbium.eqiad.wmnet'
+      eqiad: 'terbium.eqiad.wmnet'
       codfw: 'wasat.codfw.wmnet'
   dbtree:
     backends:
@@ -94,7 +94,7 @@ cache::app_directors:
       codfw: 'planet2001.codfw.wmnet'
   pybal_config:
     backends:
-      # eqiad: 'puppetmaster1001.eqiad.wmnet'
+      eqiad: 'puppetmaster1001.eqiad.wmnet'
       codfw: 'puppetmaster2001.codfw.wmnet'
   rcstream:
     be_opts:
@@ -123,7 +123,7 @@ cache::app_directors:
       eqiad: 'kibana.svc.eqiad.wmnet'
   wdqs_director:
     backends:
-      # eqiad: 'wdqs.svc.eqiad.wmnet'
+      eqiad: 'wdqs.svc.eqiad.wmnet'
       codfw: 'wdqs.svc.codfw.wmnet'
   wdqs_director_ldf:
     backends:
@@ -132,7 +132,7 @@ cache::app_directors:
     be_opts:
       port: 8081
     backends:
-      # eqiad: 'ores.svc.eqiad.wmnet'
+      eqiad: 'ores.svc.eqiad.wmnet'
       codfw: 'ores.svc.codfw.wmnet'
 cache::req_handling:
   15.wikipedia.org:

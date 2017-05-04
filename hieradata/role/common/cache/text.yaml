@@ -48,13 +48,13 @@ cache::app_directors:
       port: 7231
       max_connections: 5000
     backends:
-      # eqiad: 'restbase.svc.eqiad.wmnet'
+      eqiad: 'restbase.svc.eqiad.wmnet'
       codfw: 'restbase.svc.codfw.wmnet'
   cxserver_backend:
     be_opts:
       port: 8080
     backends:
-      # eqiad: 'cxserver.svc.eqiad.wmnet'
+      eqiad: 'cxserver.svc.eqiad.wmnet'
       codfw: 'cxserver.svc.codfw.wmnet'
 cache::req_handling:
   cxserver.wikimedia.org:
