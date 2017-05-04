@@ -877,7 +877,7 @@ host cp4020 {
 }
 
 host cp4021 {
-    hardware ethernet f4:e9:d4:ba:91:42;
+    hardware ethernet f4:e9:d4:ba:91:40;
     fixed-address cp4021.ulsfo.wmnet;
 }
 
