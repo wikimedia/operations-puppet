@@ -92,7 +92,6 @@
     shard: s6
     role: slave
   targets:
-  - db1022:9104
   - db1023:9104
   - db1030:9104
   - db1037:9104
