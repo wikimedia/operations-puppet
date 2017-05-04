@@ -24,6 +24,8 @@ debdeploy::grains:
   debdeploy-maps-master:
     value: standard
 
+profile::maps::apps::conf_sources: 'sources.prod2.yaml'
+profile::maps::apps::storage_id: 'v3'
 profile::maps::cassandra::graphite_host: 'graphite-in.eqiad.wmnet'
 service::configuration::logstash_host: 'logstash1001.eqiad.wmnet'
 service::configuration::statsd_host: 'statsd.eqiad.wmnet'

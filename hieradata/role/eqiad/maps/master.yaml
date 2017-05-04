@@ -5,8 +5,6 @@ profile::maps::hosts:
   - 'maps1004.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1001.eqiad.wmnet'
-profile::maps::apps::conf_sources: 'sources.prod2.yaml'
-profile::maps::apps::storage_id: 'v3'
 
 profile::maps::cassandra::dc: 'eqiad'
 profile::maps::cassandra::seeds:
