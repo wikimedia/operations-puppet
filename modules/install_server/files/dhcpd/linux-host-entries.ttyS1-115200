@@ -6074,11 +6074,6 @@ host tegmen {
     fixed-address tegmen.wikimedia.org;
 }
 
-host tempdb2001 {
-    hardware ethernet 14:18:77:5B:2A:5D;
-    fixed-address tempdb2001.codfw.wmnet;
-}
-
 host terbium {
     hardware ethernet 90:B1:1C:25:9D:72;
     fixed-address terbium.eqiad.wmnet;

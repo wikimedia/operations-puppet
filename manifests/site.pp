@@ -662,12 +662,9 @@ node 'db2033.codfw.wmnet' {
     }
 }
 
-# temporary node in codfw to have redundancy #T162290
+# temporary node in codfw to be decommissioned: #T161712
 node 'tempdb2001.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'x1',
-        binlog_format => 'ROW',
-    }
+    role(spare::system)
 }
 
 ## m1 shard
