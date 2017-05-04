@@ -8,9 +8,10 @@ class profile::maps::apps(
     $pgsql_tileratorui_pass = hiera('profile::maps::osm_master::tileratorui_pass'),
     $redis_server = hiera('profile::maps::apps::redis_server'),
     $redis_pass = hiera('profile::maps::apps::redis_pass'),
-    $conf_sources = hiera('profile::maps::apps::conf_sources'),
-    $storage_id = hiera('profile::maps::apps::storage_id'),
 ) {
+
+    $conf_sources = 'sources.prod2.yaml'
+    $storage_id = 'v3'
 
 
     $contact_groups = 'admins,team-interactive'
