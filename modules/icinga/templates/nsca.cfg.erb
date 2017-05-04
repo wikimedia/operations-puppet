@@ -33,7 +33,7 @@ server_port=5667
 #
 # NOTE: This option is ignored if NSCA is running under either inetd or xinetd
 
-nsca_user=nagios
+nsca_user=icinga
 
 # NSCA GROUP
 # This determines the effective group that the NSCA daemon should run as.
@@ -41,7 +41,7 @@ nsca_user=nagios
 #
 # NOTE: This option is ignored if NSCA is running under either inetd or xinetd.
 
-nsca_group=nogroup
+nsca_group=nagios
 
 # NSCA CHROOT
 # If specified, determines a directory into which the nsca daemon
@@ -52,14 +52,14 @@ nsca_group=nogroup
 # NOTE: if you specify this option, the command file will be opened
 #       relative to this directory.
 
-nsca_chroot=/var/log/nagios/rw
+nsca_chroot=/var/lib/nagios
 
 # DEBUGGING OPTION
 # This option determines whether or not debugging
 # messages are logged to the syslog facility.
 # Values: 0 = debugging off, 1 = debugging on
 
-debug=1
+debug=0
 
 # COMMAND FILE
 # This is the location of the Nagios command file that the daemon
@@ -76,7 +76,7 @@ debug=1
 # default location for nagios3:
 # command_file=/var/lib/nagios3/rw/nagios.cmd
 
-command_file=nagios.cmd
+command_file=/rw/nagios.cmd
 
 # ALTERNATE DUMP FILE
 # This is used to specify an alternate file the daemon should
@@ -88,7 +88,7 @@ command_file=nagios.cmd
 # it starts Nagios.  Or you may simply choose to ignore any
 # check results received while Nagios was not running...
 
-alternate_dump_file=nsca.dump
+alternate_dump_file=/rw/nsca.dump
 
 # AGGREGATED WRITES OPTION
 # This option determines whether or not the nsca daemon will
