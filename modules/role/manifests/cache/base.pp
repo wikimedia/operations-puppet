@@ -128,7 +128,7 @@ class role::cache::base(
         /^cp1008$/              => 117, # Intel X-25M 160G (test host!)
         /^cp30(0[3-9]|10)$/     => 460, # Intel M320 600G via H710
         /^cp400[1234]$/         => 220, # Seagate ST9250610NS - 250G (only non-SSD left!)
-        /^cp40(2[1-9]|3[0-2])$/ => 720, # Intel S3710 800G (new default 2017)
+        /^cp40(2[1-9]|3[0-2])$/ => 730, # Intel S3710 800G (new default 2017)
         /^cp[0-9]{4}$/          => 360, # Intel S3700 400G (old default pre-2017)
         default                 => 6,   # 6 is the bare min, for e.g. virtuals
     }
