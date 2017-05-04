@@ -585,7 +585,7 @@ node 'db1061.eqiad.wmnet' {
     }
 }
 
-node /^db10(22|23|30|37|50|85|88|93)\.eqiad\.wmnet/ {
+node /^db10(23|30|37|50|85|88|93)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's6',
     }
@@ -606,6 +606,11 @@ node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
         shard         => 's6',
         binlog_format => 'ROW',
     }
+}
+
+# To be decommissioned in T163778
+node 'db1022.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
