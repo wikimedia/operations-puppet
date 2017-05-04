@@ -1037,11 +1037,6 @@ host db1039 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host db1040 {
-    hardware ethernet 78:2b:cb:03:ca:02;
-    fixed-address db1040.eqiad.wmnet;
-}
-
 host db1041 {
     hardware ethernet 78:2b:cb:03:6f:71;
     fixed-address db1041.eqiad.wmnet;
