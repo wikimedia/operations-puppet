@@ -354,7 +354,7 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 # temporary entry for testing new cache node hardware setup...
 node 'cp4021.ulsfo.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role(cache::upload)
+    role(cache::upload, ipsec)
 }
 
 node 'darmstadtium.eqiad.wmnet' {
