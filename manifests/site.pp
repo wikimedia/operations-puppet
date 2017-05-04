@@ -498,10 +498,15 @@ node 'db1068.eqiad.wmnet' {
     }
 }
 
-node /^db10(40|53|56|59|81|84|91|97)\.eqiad\.wmnet/ {
+node /^db10(53|56|59|81|84|91|97)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's4',
     }
+}
+
+# To be decommissioned in T164057
+node 'db1040.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # row-based replication to sanitarium2 (T150960)
