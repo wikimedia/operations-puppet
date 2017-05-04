@@ -672,11 +672,6 @@ node 'db2033.codfw.wmnet' {
     }
 }
 
-# temporary node in codfw to be decommissioned: #T161712
-node 'tempdb2001.codfw.wmnet' {
-    role(spare::system)
-}
-
 ## m1 shard
 
 node 'db1016.eqiad.wmnet' {
