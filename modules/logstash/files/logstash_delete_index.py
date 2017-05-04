@@ -51,7 +51,7 @@ class ESCleanup(object):
     def indices(self):
         response = requests.get(self.base_url + '/_cat/indices?h=index')
         response.raise_for_status()
-        return response.text.splitlines()
+        return [idx.strip() for idx in response.text.splitlines()]
 
     def delete(self, index):
         requests.delete(self.base_url + '/' + index).raise_for_status()
