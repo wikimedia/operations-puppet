@@ -74,6 +74,6 @@ def parse_args(argv):
 
 
 if __name__ == '__main__':
-    args = parse_args(sys.argv)
+    args = parse_args(sys.argv[1:])
     before = datetime.today().date() - timedelta(days=args.max_age)
     ESCleanup(args.base_url).cleanup(args.prefix, before)
