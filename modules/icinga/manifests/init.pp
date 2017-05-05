@@ -65,7 +65,7 @@ class icinga(
     }
 
     file { '/etc/icinga/nsca_frack.cfg':
-        content => secret('nagios/nsca_frack.cfg'),
+        content => template('icinga/nsca_frack.cfg.erb'),
         owner   => 'icinga',
         group   => 'icinga',
         mode    => '0644',
