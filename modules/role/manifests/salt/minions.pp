@@ -6,7 +6,12 @@ class role::salt::minions(
     if $::realm == 'labs' {
         $labs_master = hiera('saltmaster')
 
-        $labs_finger   = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
+        # On older systems (e.g. Jessie) use MD5 finger
+        if versioncmp($::saltminionversion, "2016.3") < 0 {
+            $labs_finger   = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
+        else {
+            $labs_finger   = 'a3:29:31:ac:79:4e:a3:9a:74:d3:c8:d6:92:08:00:50:c9:e1:b3:c8:4a:4b:03:3a:58:32:29:c6:67:4e:b5:fd'
+        }
         $master        = pick($salt_master, $labs_master)
         $master_finger = pick($salt_finger, $labs_finger)
 
