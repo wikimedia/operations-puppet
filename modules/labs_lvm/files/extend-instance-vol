@@ -15,6 +15,15 @@ mount="$1"; shift
 size="$1"; shift
 sopt="-L $size"
 
+# Getting the lvextend version is ugly but we need it because
+#  the return codes changed at version 2.02.141 as per
+#  https://bugzilla.redhat.com/show_bug.cgi?id=1354396
+#
+#  $oldlvextend will == 0 if we're running an older version.
+lvmversion=`dpkg -s lvm2 | grep Version | cut -d ' ' -f 2`
+dpkg --compare-versions $lvmversion lt 2.02.141
+oldlvextend=$?
+
 if (/bin/echo "$size"|/bin/grep -q '%'); then
   sopt="-l $size"
 fi
@@ -42,16 +51,32 @@ if /sbin/lvextend -t $sopt "$volume" >/dev/null 2>&1; then
   exit
 else
   lvextend_exitcode=$?
-  if [ $lvextend_exitcode -eq 5 ]; then
-    echo "$0: no space left to grow $mount to $size" >&2
-    exit 2
+
+  if [ $oldlvextend -eq 0 ]; then
+    if [ $lvextend_exitcode -eq 5 ]; then
+      echo "$0: no space left to grow $mount to $size" >&2
+      exit 2
+    fi
+    # This is the only case when --test should succeed: All the tests
+    # above have passed and lvextend wouldn't do anything because the
+    # partition is already of the requested size.
+    if [ $lvextend_exitcode -eq 3 ] && [ $dryrun -ne 0 ]; then
+      exit 0
+    fi
+  else
+    if [ $lvextend_exitcode -eq 11 ]; then
+      echo "$0: no space left to grow $mount to $size" >&2
+      exit 2
+    fi
+    # Return codes for modern lvextend are unclearly documented.
+    #  '5' is supposed to mean 'logical volume not active'
+    #  but it's what we get in the correct no-op case
+    #  so we'll take it.
+    if [ $lvextend_exitcode -eq 5 ] && [ $dryrun -ne 0 ]; then
+      exit 0
+    fi
   fi
-  # This is the only case when --test should succeed: All the tests
-  # above have passed and lvextend wouldn't do anything because the
-  # partition is already of the requested size.
-  if [ $lvextend_exitcode -eq 3 ] && [ $dryrun -ne 0 ]; then
-    exit 0
-  fi
+
   if [ $dryrun -ne 0 ]; then
     exit 1
   else
