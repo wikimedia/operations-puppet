@@ -59,7 +59,7 @@ class piwik (
             user        => $piwik_username,
             environment => "MAILTO=${archive_cron_email}",
             hour        => '8',
-            minute      => '*',
+            minute      => '0',
             month       => '*',
             monthday    => '*',
             weekday     => '*',
