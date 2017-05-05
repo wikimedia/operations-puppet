@@ -1,0 +1,1390 @@
+# config file for passive checks from the payments systems
+# payments system hosts report by passive checks to avoid nrpe/ssh
+
+# AUTH
+
+define host {
+    host_name                frauth1001
+    address                  10.64.40.68
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-auth
+}
+
+define host {
+    host_name                betelgeuse
+    address                  10.195.0.76
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-auth
+}
+
+# BACKUP
+
+define host {
+    host_name                frbackup2001
+    address                  10.195.0.77
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-backup
+}
+
+# FUNDRAISING-QA
+
+define host {
+    host_name                frdev1001
+    address                  10.64.40.117
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-qa
+}
+
+# FUNDRAISING-QUEUE
+
+define host {
+    host_name                alnilam
+    address                  10.195.0.35
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-queue
+}
+
+define host {
+    host_name                frqueue1001
+    address                  10.64.40.115
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-queue
+}
+
+define host {
+    host_name                frqueue1002
+    address                  10.64.40.116
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-queue
+}
+
+# FUNDRAISING-DATABASE
+
+define host {
+    host_name                frdb1001
+    address                  10.64.40.114
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-database
+}
+
+define host {
+    host_name                frdb1002
+    address                  10.64.40.99
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-database
+}
+
+define host {
+    host_name                frdb2001
+    address                  10.195.0.34
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-database
+}
+
+# FUNDRAISING-REPORTING
+
+define host {
+    host_name                samarium
+    address                  208.80.155.10
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-reporting
+}
+
+# PAYMENTS
+
+define host {
+    host_name                payments1001
+    address                  10.64.40.5
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments1002
+    address                  10.64.40.6
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments1003
+    address                  10.64.40.7
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments1004
+    address                  10.64.40.8
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments2001
+    address                  10.195.0.5
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments2002
+    address                  10.195.0.6
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments2003
+    address                  10.195.0.7
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+# FUNDRAISING-PAY-LVS
+
+define host {
+    host_name                pay-lvs1001
+    address                  10.64.40.20
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-pay-lvs
+}
+
+define host {
+    host_name                pay-lvs1002
+    address                  10.64.40.21
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-pay-lvs
+}
+
+define host {
+    host_name                pay-lvs2001
+    address                  10.195.0.20
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-pay-lvs
+}
+
+define host {
+    host_name                pay-lvs2002
+    address                  10.195.0.21
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-pay-lvs
+}
+
+# FUNDRAISING-BUILD
+
+define host {
+    host_name                frpm1001
+    address                  10.64.40.70
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-build
+}
+
+define host {
+    host_name                heka
+    address                  10.195.0.74
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-build
+}
+
+# FUNDRAISING-LOGGER
+
+define host {
+    host_name                bellatrix
+    address                  10.195.0.75
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-logger
+}
+
+define host {
+    host_name                indium
+    address                  10.64.40.67
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-logger
+}
+
+# FUNDRAISING-BASTION
+
+define host {
+    host_name                rigel
+    address                  10.195.0.66
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-bastion
+}
+
+define host {
+    host_name                tellurium
+    address                  10.64.40.34
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-bastion
+}
+
+# FUNDRAISING-CIVICRM
+
+define host {
+    host_name                civi1001
+    address                  10.64.40.109
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-civicrm
+}
+
+define host {
+    host_name                mintaka
+    address                  10.195.0.36
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-civicrm
+}
+
+# FUNDRAISING-LISTENER
+
+define host {
+    host_name                saiph
+    address                  10.195.0.82
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-listener
+}
+
+define host {
+    host_name                thulium
+    address                  208.80.155.12
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-listener
+}
+
+# NETWORK-SECURITY
+
+define host {
+    host_name                bismuth
+    address                  10.64.40.69
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-network
+}
+
+# BANNER-LOGGER
+
+define host {
+    host_name                americium
+    address                  10.64.40.113
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-banner-logger
+}
+
+define host {
+    host_name                alnitak
+    address                  10.195.0.38
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-banner-logger
+}
+
+# template for passive services
+define service {
+    name                     passive-service
+    active_checks_enabled    0
+    passive_checks_enabled   1
+    parallelize_check        1
+    notifications_enabled    1
+    event_handler_enabled    1
+    register                 0
+    is_volatile              1
+    flap_detection_enabled   0
+    register                 0
+    retry_interval           1
+    check_period             24x7
+    check_interval           5
+    check_freshness          1
+    freshness_threshold      360
+    contact_groups           fr-tech-ops
+    check_command            nsca-fail!1!'passive check is awol'
+    notification_interval    0
+    notification_period      24x7
+    notification_options     c,r,f
+    max_check_attempts       2
+}
+
+# fundraising-payments hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-payments
+    alias                    Payments Servers
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_gcsip
+    hostgroup_name           fundraising-payments
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_minfraud_primary
+    hostgroup_name           fundraising-payments
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_minfraud_secondary
+    hostgroup_name           fundraising-payments
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_nginx
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_apache2
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_payments_wiki
+    hostgroup_name           fundraising-payments
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    hostgroup_name           fundraising-payments
+}
+
+# fundraising-logger hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-logger
+    alias                    Fundraising Logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-logger
+}
+
+# fundraising-build hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-build
+    alias                    Fundraising Build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-build
+}
+
+# fundraising-pay-lvs hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-pay-lvs
+    alias                    Fundraising Payments LVS
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-pay-lvs
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-pay-lvs
+}
+
+# fundraising-queue hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-queue
+    alias                    Fundraising Queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-queue
+}
+
+define service {
+    use                      passive-service
+    service_description      check_redis
+    hostgroup_name           fundraising-queue
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+# fundraising-bastion hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-bastion
+    alias                    Fundraising Bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-bastion
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-bastion
+}
+
+
+# fundraising-reporting hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-reporting
+    alias                    Fundraising Reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-reporting
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    hostgroup_name           fundraising-reporting
+}
+
+# fundraising-database hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-database
+    alias                    Fundraising Database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
+    hostgroup_name           fundraising-database
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_contribs_missed
+    host_name                frdb1001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_failures_missed
+    host_name                frdb1001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_jobs_required
+    host_name                frdb1001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_recurring_gc_schedule_sanity
+    host_name                frdb1001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_missing_thank_yous
+    host_name                frdb1001
+}
+
+# fundraising-civicrm hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-civicrm
+    alias                    Fundraising CiviCRM
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mailq
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ipn_redir
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl_fr
+    hostgroup_name           fundraising-civicrm
+}
+
+# fundraising-listener hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-listener
+    alias                    Payments Listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_nginx
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_apache2
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_listener_gc
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_listener_ipn
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    hostgroup_name           fundraising-listener
+}
+
+# fundraising-qa hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-qa
+    alias                    Fundraising QA
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
+    hostgroup_name           fundraising-qa
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    hostgroup_name           fundraising-qa
+}
+
+# fundraising-backup hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-backup
+    alias                    Fundraising Backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-backup
+}
+
+# fundraising-auth hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-auth
+    alias                    Fundraising Backup
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-auth
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-auth
+}
+
+# fundraising-network hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-network
+    alias                    Fundraising Network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-network
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-network
+}
+
+# fundraising-banner-logger hostgroup
+
+define hostgroup {
+    hostgroup_name           fundraising-banner-logger
+    alias                    Fundraising Banner Logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_swap
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-banner-logger
+}
