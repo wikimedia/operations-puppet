@@ -9,6 +9,7 @@
 class statistics::dataset_mount {
     # need this for NFS mounts.
     require_package('nfs-common')
+    require_package('rpcbind')
 
     file { '/mnt/data':
         ensure => 'directory',
