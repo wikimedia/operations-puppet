@@ -33,14 +33,6 @@ class gridengine::master {
         purge   => true,
     }
 
-    file { "${etcdir}/bin/mergeconf":
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/gridengine/mergeconf',
-    }
-
     file { "${etcdir}/bin/tracker":
         ensure => file,
         owner  => 'root',
