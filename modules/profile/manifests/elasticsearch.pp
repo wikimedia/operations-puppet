@@ -10,23 +10,23 @@
 #
 # For documentation of other parameters, see the elasticsearch class.
 #
-class profile::elasticsearch {
-    $cluster_name = hiera('profile::elasticsearch::cluster_name')
-    $ferm_srange = hiera('profile::elasticsearch::ferm_srange')
-    $cluster_hosts = hiera('profile::elasticsearch::cluster_hosts')
-    $unicast_hosts = hiera('profile::elasticsearch::unicast_hosts')
-    $minimum_master_nodes = hiera('profile::elasticsearch::minimum_master_nodes')
-    $heap_memory = hiera('profile::elasticsearch::heap_memory')
-    $expected_nodes = hiera('profile::elasticsearch::expected_nodes')
-    $graylog_hosts = hiera('profile::elasticsearch::graylog_hosts')
-    $rack = hiera('profile::elasticsearch::rack')
-    $row = hiera('profile::elasticsearch::row')
-    $awareness_attributes = hiera('profile::elasticsearch::awareness_attributes')
-    $bulk_thread_pool_executors = hiera('profile::elasticsearch::bulk_thread_pool_executors', 6)
-    $certificate_name = hiera('profile::elasticsearch::certificate_name', $::fqdn)
-    $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s')
-    $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1)
-
+class profile::elasticsearch(
+    $cluster_name = hiera('profile::elasticsearch::cluster_name'),
+    $ferm_srange = hiera('profile::elasticsearch::ferm_srange'),
+    $cluster_hosts = hiera('profile::elasticsearch::cluster_hosts'),
+    $unicast_hosts = hiera('profile::elasticsearch::unicast_hosts'),
+    $minimum_master_nodes = hiera('profile::elasticsearch::minimum_master_nodes'),
+    $heap_memory = hiera('profile::elasticsearch::heap_memory'),
+    $expected_nodes = hiera('profile::elasticsearch::expected_nodes'),
+    $graylog_hosts = hiera('profile::elasticsearch::graylog_hosts'),
+    $rack = hiera('profile::elasticsearch::rack'),
+    $row = hiera('profile::elasticsearch::row'),
+    $awareness_attributes = hiera('profile::elasticsearch::awareness_attributes'),
+    $bulk_thread_pool_executors = hiera('profile::elasticsearch::bulk_thread_pool_executors', 6),
+    $certificate_name = hiera('profile::elasticsearch::certificate_name', $::fqdn),
+    $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s'),
+    $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
+) {
     $master_eligible = $::fqdn in $unicast_hosts
 
     ferm::service { 'elastic-http':
