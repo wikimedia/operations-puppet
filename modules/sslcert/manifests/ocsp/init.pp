@@ -52,7 +52,7 @@ class sslcert::ocsp::init {
     cron { 'update-ocsp-all':
         command => '/usr/local/sbin/update-ocsp-all 2>&1 | logger -t update-ocsp-all',
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
-        hour    => '*',
+        hour    => fqdn_rand(24, 'e663dd38dd6d3384'),
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
             File['/etc/update-ocsp.d'],
