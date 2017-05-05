@@ -115,7 +115,7 @@ class mediawiki::jobrunner (
     if ($runners_gwt > 0) {
         cron { 'periodic_hhvm_restart':
             command => '/bin/ps -C hhvm -o pmem= | awk \'{sum+=$1} END { if (sum <= 50.0) exit 1  }\'  && /usr/sbin/service hhvm restart >/dev/null 2>/dev/null',
-            minute  => fqdn_rand(59, 'periodic_hhvm_restart'),
+            minute  => fqdn_rand(60, 'periodic_hhvm_restart'),
         }
     } else {
         cron { 'periodic_hhvm_restart':
