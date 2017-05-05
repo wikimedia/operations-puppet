@@ -52,15 +52,12 @@ class base::standard_packages {
             'command-not-found-data',
             'ecryptfs-utils',
             'mlocate',
+            'ntfs-3g',
             'os-prober',
             'python3-apport',
             'wpasupplicant',
         ]:
         ensure => absent,
-    }
-
-    if os_version('ubuntu >= precise') {
-        package { 'ntfs-3g': ensure => absent }
     }
 
     # On Ubuntu, eject is installed via the ubuntu-minimal package
