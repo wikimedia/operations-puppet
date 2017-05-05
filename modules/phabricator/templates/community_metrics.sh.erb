@@ -63,10 +63,14 @@ END
 #echo "result_tasksclosed"
 result_tasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
-SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction WHERE (transactionType="mergedinto" OR
-    (transactionType="status" AND (oldValue="\"open\"" OR oldValue="\"stalled\"") AND
-    (newValue="\"resolved\"" OR newValue="\"invalid\"" OR newValue="\"declined\""))) AND
-    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction JOIN maniphest_task WHERE
+    (maniphest_transaction.transactionType="mergedinto" OR
+    (maniphest_transaction.transactionType="status" AND (maniphest_transaction.oldValue="\"open\"" OR
+    maniphest_transaction.oldValue="\"stalled\"") AND (maniphest_transaction.newValue="\"resolved\"" OR
+    maniphest_transaction.newValue="\"invalid\"" OR maniphest_transaction.newValue="\"declined\""))) AND
+    maniphest_transaction.objectPHID = maniphest_task.phid AND (maniphest_task.status = "resolved" OR
+    maniphest_task.status = "invalid" OR maniphest_task.status = "declined") AND
+    FROM_UNIXTIME(maniphest_transaction.dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
 
 END
 )
