@@ -42,8 +42,8 @@ class profile::memcached::memkeys {
         ensure  => present,
         command => '/usr/local/sbin/memkeys-snapshot',
         user    => 'root',
-        hour    => fqdn_rand(24, 'memkeys'),
-        minute  => fqdn_rand(60, 'memkeys'),
+        hour    => fqdn_rand(24, 'hour-memkeys'),
+        minute  => fqdn_rand(60, 'minute-memkeys'),
     }
 
     rsyslog::conf { 'memkeys':
