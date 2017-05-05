@@ -39,34 +39,21 @@ class toollabs::master inherits toollabs {
     }
 
     file { "${toollabs::collectors}/hostgroups":
-        ensure => directory,
+        ensure => absent,
+        force  => true,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
     file { "${toollabs::collectors}/queues":
-        ensure => directory,
+        ensure => absent,
+        force  => true,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
     }
 
-    gridengine::collectors::hostgroups { '@general':
-        store => "${toollabs::collectors}/hostgroups",
-    }
-
-    gridengine::collectors::queues { 'webgrid-lighttpd':
-        store  => "${toollabs::collectors}/queues",
-        config => 'toollabs/gridengine/queue-webgrid.erb',
-    }
-
-    gridengine::collectors::queues { 'webgrid-generic':
-        store  => "${toollabs::collectors}/queues",
-        config => 'toollabs/gridengine/queue-webgrid.erb',
-    }
-
-    #
     # These things are done on toollabs::master because they
     # need to be done exactly once per project (they live on the
     # shared filesystem), and there can only be exactly one
@@ -87,28 +74,28 @@ class toollabs::master inherits toollabs {
     }
 
     file { '/usr/local/bin/dequeugridnodes.sh':
-        ensure => file,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/dequeuegridnodes.sh',
     }
     file { '/usr/local/bin/requeugridnodes.sh':
-        ensure => file,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/requeuegridnodes.sh',
     }
     file { '/usr/local/bin/runninggridtasks.py':
-        ensure => file,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/runninggridtasks.py',
     }
     file { '/usr/local/bin/runninggridjobsmail.py':
-        ensure => file,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

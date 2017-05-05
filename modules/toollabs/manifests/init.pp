@@ -58,7 +58,8 @@ class toollabs (
     }
 
     file { $collectors:
-        ensure  => directory,
+        ensure  => absent,
+        force  => true,
         require => File[$geconf],
     }
 
