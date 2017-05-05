@@ -10,6 +10,8 @@ class labstore {
     require_package('nfs-kernel-server')
     require_package('lvm2')
     require_package('nfsd-ldap')
+    require_package('nfs-common')
+    require_package('rpcbind')
 
     # Nethogs is useful to monitor NFS client resource utilization
     # The version in jessie has a bug that shows up in linux kernel 4.2+,
