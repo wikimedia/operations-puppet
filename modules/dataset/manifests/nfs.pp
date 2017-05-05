@@ -20,9 +20,7 @@ class dataset::nfs($enable=true) {
         require => Package['nfs-kernel-server'],
     }
 
-    package { 'nfs-kernel-server':
-        ensure => present,
-    }
+    require_package('nfs-kernel-server', 'nfs-common', 'rpcbind')
 
     service { 'nfs-kernel-server':
         ensure    => $service_ensure,
