@@ -423,10 +423,15 @@ node 'db1054.eqiad.wmnet' {
     }
 }
 
-node /^db10(18|21|24|36|60|74|76|90)\.eqiad\.wmnet/ {
+node /^db10(18|21|36|60|74|76|90)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's2',
     }
+}
+
+# To be decommissioned in T162699
+node 'db1024.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # s2 (large wikis) core production dbs on codfw
