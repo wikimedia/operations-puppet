@@ -1,9 +1,6 @@
 # gridengine/resourcedir.pp
 
 define gridengine::resourcedir(
-    $addcmd,
-    $modcmd,
-    $delcmd,
     $dir = $title,
 ) {
 
@@ -22,7 +19,7 @@ define gridengine::resourcedir(
     }
 
     file { $trackerdir:
-        ensure  => directory,
+        ensure  => absent,
         force   => true,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
@@ -31,8 +28,4 @@ define gridengine::resourcedir(
         purge   => false,
     }
 
-    exec { "track-${dir}":
-        command => "${etcdir}/bin/tracker '${confdir}' '${trackerdir}' '${addcmd}' '${modcmd}' '${delcmd}'",
-        require => File["${etcdir}/bin/tracker", $confdir, $trackerdir],
-    }
 }
