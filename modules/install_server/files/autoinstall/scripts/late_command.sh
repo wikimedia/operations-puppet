@@ -33,12 +33,16 @@ case `hostname` in \
 		;; \
 esac
 
-# Use a more recent kernel on jessie
+# Use a more recent kernel on jessie and deinstall nfs-common/rpcbind
+# (we don't want these to be installed in general, only pull them in
+# where actually needed. stretch doesn't install nfs-common/rpcbind
+# any longer
 # (the upgrade is to grab our updated firmware packages first for initramfs)
 apt-install lsb-release
 if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; then
 	in-target apt-get -y upgrade
 	apt-install linux-meta-4.9
+	in-target dpkg --purge rpcbind nfs-common
 fi
 
 # Temporarily pre-provision swift user at a fixed UID on new installs.
