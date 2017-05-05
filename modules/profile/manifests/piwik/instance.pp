@@ -10,10 +10,12 @@ class profile::piwik::instance (
     $trusted_hosts     = ['piwik.wikimedia.org', 'wikimediafoundation.org'],
 ) {
     class { 'piwik':
-        database_password => $database_password,
-        admin_username    => $admin_username,
-        admin_password    => $admin_password,
-        password_salt     => $password_salt,
-        trusted_hosts     => $trusted_hosts,
+        database_password   => $database_password,
+        admin_username      => $admin_username,
+        admin_password      => $admin_password,
+        password_salt       => $password_salt,
+        trusted_hosts       => $trusted_hosts,
+        archive_cron_url    => 'piwik.wikimedia.org',
+        archive_cron_email  => 'analytics-alerts@wikimedia.org',
     }
 }

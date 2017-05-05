@@ -23,6 +23,9 @@ trusted_hosts[] = "<%= trusted_host %>"
 ; Disable the Piwik UI showing a maintenance message
 ; This does not disable database updates, please also check 'record_statistics'
 maintenance_mode = 0
+; disable browser trigger archiving for all requests (even those with a segment)
+; https://piwik.org/docs/setup-auto-archiving/#more-information-about-piwik-archiving
+browser_archiving_disabled_enforce = 1
 
 [Tracker]
 ;https://github.com/piwik/piwik/issues/6398#issuecomment-91093146
