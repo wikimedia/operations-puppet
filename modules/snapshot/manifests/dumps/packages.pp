@@ -3,6 +3,7 @@ class snapshot::dumps::packages {
     require_package('mysql-client')
     require_package('p7zip-full')
     require_package('nfs-common')
+    require_package('rpcbind')
 
     file { [ '/mnt/data' ]:
         ensure => 'directory',
