@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Discovery Dashboards | Engineering | Wikimedia Foundation</title>
+  <style type="text/css">
+  @import url(https://fonts.googleapis.com/css?family=Oswald);
+  body, html {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #F5F5F5;
+    color: #114;
+    margin: 0 0 50px 0;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+	  color: #006aff;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  a:visited {
+    color: #3954cb;
+  }
+  #title {
+    height: 120px;
+    background-color: #0055cc;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: -5px;
+  }
+  #title h1 {
+    margin: 0 auto .5em auto;
+    padding-top: 35px;
+    color: white;
+    text-align: center;
+    font-size: 36px;
+  }
+  #content {
+    margin: 1em auto 1em auto;
+    width: 900px;
+  }
+  #info {
+    width: 520px;
+    float: right;
+    padding-right: 30px;
+  }
+  #info p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  #dashes {
+    float: right;
+    width: 305px;
+    padding-left: 20px;
+    border-left: 1px solid #AAA;
+  }
+  .caption {
+    font-size: 14px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    line-height: 18px;
+  }
+  </style>
+</head>
+<body>
+
+  <div id="title">
+    <h1>Discovery Dashboards</h1>
+  </div>
+
+  <div id="content">
+    <div id="dashes">
+
+      <h2>Dashboards</h2>
+      <h3><a href = "./metrics/">Search Metrics</a></h3>
+      <p class="caption">
+        Summaries and visualizations of metrics of how search features and APIs are being used on Wikimedia sites. (<a href="https://phabricator.wikimedia.org/diffusion/WDRN/">Code Repository</a>)
+      </p>
+
+      <h3><a href = "./portal/">Portal Metrics</a></h3>
+      <p class="caption">
+        Dashboard for monitoring Wikipedia Portal usage. (<a href="https://phabricator.wikimedia.org/diffusion/WDPR/">Code Repository</a>)
+      </p>
+
+      <h3><a href = "./wdqs/">WDQS Metrics</a></h3>
+      <p class="caption">
+        Summaries and visualizations of very basic metrics of how much the Wikidata Query Service is being used. (<a href="https://phabricator.wikimedia.org/diffusion/WDTS/">Code Repository</a>)
+      </p>
+
+      <h3><a href = "./maps/">Maps Metrics</a></h3>
+      <p class="caption">
+        Summaries and visualizations of very basic metrics of how much the Wikimedia Maps service is being used. (<a href="https://phabricator.wikimedia.org/diffusion/WDWZ/">Code Repository</a>)
+      </p>
+
+      <h3><a href = "./external/">External Referral Metrics</a></h3>
+      <p class="caption">
+        Dashboard for digging into search-engine-referred traffic. (<a href="https://phabricator.wikimedia.org/diffusion/WDWO/">Code Repository</a>)
+      </p>
+
+    </div>
+    <div id="info">
+
+      <h2>What is this?</h2>
+      <p>This is a collection of dashboards and tools for exploring work and data from the <a href = "https://www.mediawiki.org/wiki/Wikimedia_Discovery">Wikimedia Discovery team</a>. It contains everything from API usage to direct user interactions, and will only grow over time. The idea is that this will provide data for internal use and external use, to see how well we're doing.</p>
+
+      <h2>What do I do if I have bug reports, or ideas for future projects?</h2>
+      <p>We're <a href = "https://lists.wikimedia.org/mailman/listinfo/discovery">always happy to hear new ideas!</a></p>
+
+      <h2>Who built it and how?</h2>
+      <p>This project was built by <a href="https://meta.wikimedia.org/wiki/User:Okeyes_(WMF)">Oliver Keyes</a>, <a href="https://meta.wikimedia.org/wiki/User:MPopov_(WMF)">Mikhail Popov</a>, and <a href="https://meta.wikimedia.org/wiki/User:CXie_(WMF)">Chelsy Xie</a> on top of RStudio's <a href = "http://shiny.rstudio.com/">Shiny</a> web application framework for R.</p>
+
+      <h2>Who maintains it?</h2>
+      <p>This project is maintained by <a href="https://meta.wikimedia.org/wiki/User:MPopov_(WMF)">Mikhail Popov</a> and <a href="https://meta.wikimedia.org/wiki/User:CXie_(WMF)">Chelsy Xie</a>.</p>
+
+      <h2>How do I make one for my team's data?</h2>
+      <p>We wrote an article to help you do that! :D Head over to <em><a href="https://wikitech.wikimedia.org/wiki/Building_a_Shiny_Dashboard">Building a Shiny Dashboard</a></em> on Wikitech. Then you might want to deploy it on <a href="https://phabricator.wikimedia.org/diffusion/WDEX/">Discovery's experimental space</a> using <a href="https://github.com/wikimedia/wikimedia-discovery-experimental#dashboards-as-submodules">these instructions</a>. If you have other questions or would like further assistance, please <a href="mailto:mpopov@wikimedia.org">Mikhail</a> or <a href="mailto:cxie@wikimedia.org">Chelsy</a>.</p>
+
+    </div>
+
+  </div>
+</body>
+</html>
