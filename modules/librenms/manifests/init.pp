@@ -32,14 +32,6 @@ class librenms(
         managehome => false,
     }
 
-    file { $install_dir:
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'librenms',
-        mode    => '0555',
-        require => Group['librenms'],
-    }
-
     file { "${install_dir}/config.php":
         ensure  => present,
         owner   => 'www-data',

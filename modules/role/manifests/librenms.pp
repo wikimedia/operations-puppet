@@ -12,6 +12,7 @@ class role::librenms {
     # NOTE: scap will manage the deploy user
     scap::target { 'librenms/librenms':
         deploy_user => 'deploy-librenms',
+        before      => Class['::librenms'],
     }
 
     package { 'php5-ldap':
