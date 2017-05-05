@@ -59,9 +59,7 @@ class base::standard_packages {
         ensure => absent,
     }
 
-    if os_version('ubuntu >= precise') {
-        package { 'ntfs-3g': ensure => absent }
-    }
+    package { 'ntfs-3g': ensure => absent }
 
     # On Ubuntu, eject is installed via the ubuntu-minimal package
     # Uninstall in on Debian since it ships a setuid helper and we don't
