@@ -57,12 +57,6 @@ class toollabs (
         require => File[$geconf],
     }
 
-    file { $collectors:
-        ensure  => absent,
-        force   => true,
-        require => File[$geconf],
-    }
-
     file { $store:
         ensure  => directory,
         owner   => 'root',
