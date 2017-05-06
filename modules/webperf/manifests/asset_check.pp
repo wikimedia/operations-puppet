@@ -1,51 +1,24 @@
 # == Class: webperf::asset_check
 #
-# Provisions a service which gather stats about static assets count
-# and size using a headless browser instance. Stats are forwarded to
-# StatsD.
+# Remnant class to uninstall asset-check (T164419).
 #
-# === Parameters
-#
-# [*statsd_host*]
-#   Write stats to this StatsD instance. Default: '127.0.0.1'.
-#
-# [*statsd_port*]
-#   Write stats to this StatsD instance. Default: 8125.
-#
-class webperf::asset_check(
-    $statsd_host = '127.0.0.1',
-    $statsd_port = 8125,
-) {
-    include ::webperf
-
-    package { 'phantomjs':
-        ensure => present,
-    }
+class webperf::asset_check {
 
     file { '/srv/webperf/asset-check.js':
-        source  => 'puppet:///modules/webperf/asset-check.js',
-        require => Package['phantomjs'],
+        ensure => absent,
     }
 
     file { '/srv/webperf/asset-check.py':
-        source  => 'puppet:///modules/webperf/asset-check.py',
-        require => File['/srv/webperf/asset-check.js'],
+        ensure => absent,
     }
 
     file { '/lib/systemd/system/asset-check.service':
-        content => template('webperf/asset-check.systemd.erb'),
-        notify  => Service['asset-check'],
-        require => [
-            File['/srv/webperf/asset-check.py'],
-            File['/srv/webperf/asset-check.js'],
-            Package['phantomjs'],
-            User['webperf']
-        ],
+        ensure => absent,
     }
 
     service { 'asset-check':
-        ensure   => running,
+        ensure   => stopped,
+        enable   => false,
         provider => 'systemd',
-        require  => File['/lib/systemd/system/asset-check.service'],
     }
 }
