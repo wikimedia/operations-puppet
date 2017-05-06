@@ -4,9 +4,55 @@ class toollabs::master inherits toollabs {
 
     include ::gridengine::master
     include ::toollabs::infrastructure
-    include ::toollabs::queue::continuous
-    include ::toollabs::queue::task
 
+    $etcdir = '/var/lib/gridengine/etc'
+
+    # Set up queues
+    queue_config_defaults = {
+        'conf_path' => '/var/lib/gridengine/etc/queues',
+    }
+    queue_config = {
+        'task'             => {
+            hostlist              => '@general',
+            seq_no                => 0,
+            terminate_method      => '/usr/local/bin/jobkill $job_pid',
+        },
+        'continuous'       => {
+            hostlist              => '@general',
+            seq_no                => 1,
+            priority              => 10,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            ckpt_list             => 'continuous',
+            terminate_method      => '/usr/local/bin/jobkill $job_pid',
+        },
+        'webgrid-lighttpd' => {
+            hostlist              => '@webgrid',
+            seq_no                => 2,
+            np_load_avg_threshold => 2.75,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            slots                 => 256,
+            terminate_method      => 'SIGTERM',
+            epilog                => '/usr/local/bin/portreleaser',
+        },
+        'webgrid-generic'  => {
+           # FIXME: webgrid-generic is set up with a list of hosts instead of hostgroups.
+           # It should just be another hostgroup
+            hostlist              => 'NONE',
+            seq_no                => 3,
+            np_load_avg_threshold => 2.75,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            slots                 => 256,
+            terminate_method      => 'SIGTERM',
+            epilog                => '/usr/local/bin/portreleaser',
+        },
+    }
+
+    create_resources(gridengine::queue, $queue_config, $queue_config_defaults)
+
+    # Set up complexes
     gridengine_resource { 'h_vmem':
         ensure      => present,
         requestable => 'FORCED',
@@ -38,21 +84,6 @@ class toollabs::master inherits toollabs {
         require     => Service['gridengine-master'],
     }
 
-    file { "${toollabs::collectors}/hostgroups":
-        ensure => absent,
-        force  => true,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { "${toollabs::collectors}/queues":
-        ensure => absent,
-        force  => true,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
     # These things are done on toollabs::master because they
     # need to be done exactly once per project (they live on the
@@ -71,35 +102,6 @@ class toollabs::master inherits toollabs {
         mode    => '0444',
         source  => 'puppet:///modules/toollabs/host_aliases',
         require => File['/var/lib/gridengine'],
-    }
-
-    file { '/usr/local/bin/dequeugridnodes.sh':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/dequeuegridnodes.sh',
-    }
-    file { '/usr/local/bin/requeugridnodes.sh':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/requeuegridnodes.sh',
-    }
-    file { '/usr/local/bin/runninggridtasks.py':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/runninggridtasks.py',
-    }
-    file { '/usr/local/bin/runninggridjobsmail.py':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
 
     file { "${toollabs::geconf}/spool":
