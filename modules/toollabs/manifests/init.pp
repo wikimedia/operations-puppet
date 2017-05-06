@@ -23,7 +23,6 @@ class toollabs (
     $sge_root     = '/var/lib/gridengine'
     $sysdir       = "${project_path}/.system"
     $geconf       = "${sysdir}/gridengine"
-    $collectors   = "${geconf}/collectors"
 
     # Weird use of NFS for config centralization.
     # Nodes drop their config into a directory.
@@ -53,12 +52,6 @@ class toollabs (
     file { $sge_root:
         ensure  => link,
         target  => $geconf,
-        force   => true,
-        require => File[$geconf],
-    }
-
-    file { $collectors:
-        ensure  => absent,
         force   => true,
         require => File[$geconf],
     }
