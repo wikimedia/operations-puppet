@@ -38,21 +38,6 @@ class toollabs::master inherits toollabs {
         require     => Service['gridengine-master'],
     }
 
-    file { "${toollabs::collectors}/hostgroups":
-        ensure => absent,
-        force  => true,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { "${toollabs::collectors}/queues":
-        ensure => absent,
-        force  => true,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
     # These things are done on toollabs::master because they
     # need to be done exactly once per project (they live on the
@@ -71,35 +56,6 @@ class toollabs::master inherits toollabs {
         mode    => '0444',
         source  => 'puppet:///modules/toollabs/host_aliases',
         require => File['/var/lib/gridengine'],
-    }
-
-    file { '/usr/local/bin/dequeugridnodes.sh':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/dequeuegridnodes.sh',
-    }
-    file { '/usr/local/bin/requeugridnodes.sh':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/requeuegridnodes.sh',
-    }
-    file { '/usr/local/bin/runninggridtasks.py':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/runninggridtasks.py',
-    }
-    file { '/usr/local/bin/runninggridjobsmail.py':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
 
     file { "${toollabs::geconf}/spool":

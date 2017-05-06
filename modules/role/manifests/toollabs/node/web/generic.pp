@@ -1,13 +1,10 @@
 # == Class: role::toollabs::node::web::generic
-# 
+#
 # Sets up a node for running generic webservices.
 # Currently explicitly supports nodejs
 #
 # filtertags: labs-project-tools
 class role::toollabs::node::web::generic inherits role::toollabs::node::web {
-    class { '::toollabs::queues':
-        queues => [ 'webgrid-generic' ],
-    }
 
     # uwsgi python support
     package {[

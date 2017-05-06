@@ -25,8 +25,6 @@ class role::toollabs::node::web::lighttpd inherits role::toollabs::node::web {
         require => File['/var/run/lighttpd'],
     }
 
-    class { '::toollabs::queues': queues => [ 'webgrid-lighttpd' ] }
-
     file { '/var/run/lighttpd':
         ensure => directory,
         owner  => 'www-data',

@@ -22,8 +22,6 @@ class role::toollabs::node::compute::general {
         require => File['/var/lib/gridengine'],
     }
 
-    class { '::toollabs::hostgroups': groups => [ '@general' ] }
-
     file { '/usr/local/bin/jobkill':
         ensure => file,
         owner  => 'root',
@@ -33,4 +31,3 @@ class role::toollabs::node::compute::general {
     }
 
 }
-
