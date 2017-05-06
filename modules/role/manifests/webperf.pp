@@ -29,10 +29,6 @@ class role::webperf {
         statsd_host       => $statsd_host,
     }
 
-    # Provisions a service which gather stats about static assets count
-    # and size using a headless browser instance. Stats are forwarded to
-    # Ganglia using gmetric.
-    class { '::webperf::asset_check':
-        statsd_host => $statsd_host,
-    }
+    # TODO: Remove (T164419)
+    class { '::webperf::asset_check': }
 }
