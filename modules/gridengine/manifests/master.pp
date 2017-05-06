@@ -16,40 +16,6 @@ class gridengine::master {
 
     $etcdir = '/var/lib/gridengine/etc'
 
-    file { "${etcdir}/tracker":
-        ensure => absent,
-        force  => true,
-        owner  => 'sgeadmin',
-        group  => 'sgeadmin',
-        mode   => '0775',
-    }
-
-    file { "${etcdir}/bin":
-        ensure  => absent,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        force   => true,
-        recurse => true,
-        purge   => true,
-    }
-
-    file { "${etcdir}/bin/tracker":
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/gridengine/tracker',
-    }
-
-    file { "${etcdir}/bin/collector":
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/gridengine/collector',
-    }
-
     gridengine::resourcedir { 'queues': }
     gridengine::resourcedir { 'hostgroups': }
     gridengine::resourcedir { 'quotas': }
