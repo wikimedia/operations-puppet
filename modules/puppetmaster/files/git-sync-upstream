@@ -62,3 +62,4 @@ function rebase_repo() {
 
 rebase_repo /var/lib/git/operations/puppet production
 rebase_repo /var/lib/git/labs/private master
+rebase_repo /var/lib/git/operations/puppet/modules/icinga2 master
