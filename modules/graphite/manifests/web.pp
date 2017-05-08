@@ -145,13 +145,9 @@ class graphite::web(
         require => File['/usr/local/sbin/graphite-auth'],
     }
 
-    file { '/etc/logrotate.d/graphite-web':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/graphite/graphite-web-logrotate',
-        require => File['/var/log/graphite-web'],
+    logrotate::conf { 'graphite-web':
+        ensure => present,
+        source => 'puppet:///modules/graphite/graphite-web-logrotate',
     }
 
 }
