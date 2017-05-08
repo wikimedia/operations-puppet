@@ -43,10 +43,14 @@ class role::eventlogging::analytics::mysql {
     # For beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
     $statsd_host          = hiera('eventlogging_statsd_host', 'statsd.eqiad.wmnet')
 
+    $filter_function          = "&function=exclude_bots"
+
+    $filter_scheme          = "filter://"
+
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
         # auto commit offsets to kafka more often for mysql consumer
-        input  => "${kafka_mixed_uri}&auto_commit_interval_ms=1000${$kafka_api_version_param}",
+        input  => "${filter_scheme}${kafka_mixed_uri}&auto_commit_interval_ms=1000${$kafka_api_version_param}${filter_function}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => $kafka_consumer_group,
         # Restrict permissions on this config file since it contains a password.
