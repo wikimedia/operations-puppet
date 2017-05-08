@@ -125,7 +125,7 @@ define service::uwsgi(
             before => Uwsgi::App[$title],
         }
         file { "/etc/logrotate.d/${title}":
-            content => template('service/logrotate.erb'),
+            content => template('service/logrotate.uwsgi.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
