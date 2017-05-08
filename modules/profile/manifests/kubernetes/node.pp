@@ -1,4 +1,5 @@
 class profile::kubernetes::node(
+  $master_fqdn = hiera('profile::kubernetes::master_fqdn'),
   $master_hosts = hiera('profile::kubernetes::master_hosts'),
   $infra_pod = hiera('profile::kubernetes::infra_pod'),
   $use_cni = hiera('profile::kubernetes::use_cni')
@@ -9,11 +10,8 @@ class profile::kubernetes::node(
         user            => 'root',
         group           => 'root',
     }
-    # TODO: Evaluate whether it makes sense to use a naive per host balancing
-    # based on fqdn_rand() here or whether a more HA solution is better
-    $master_host = $master_hosts[0]
     class { '::k8s::kubelet':
-        master_host               => $master_host,
+        master_host               => $master_fqdn,
         listen_address            => '0.0.0.0',
         cluster_dns_ip            => '192.168.0.100',
         cni                       => $use_cni,
@@ -23,7 +21,7 @@ class profile::kubernetes::node(
         tls_key                   => '/etc/kubernetes/ssl/server.key',
     }
     class { '::k8s::proxy':
-        master_host => $master_host,
+        master_host => $master_fqdn,
     }
 
     $master_hosts_ferm = join($master_hosts, ' ')
