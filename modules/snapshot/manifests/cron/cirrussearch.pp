@@ -9,10 +9,8 @@ class snapshot::cron::cirrussearch(
         owner  => $user,
     }
 
-    file { '/etc/logrotate.d/cirrusdump':
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
+    logrotate::conf { 'cirrusdump':
+        ensure => present,
         source => 'puppet:///modules/snapshot/cron/logrotate.cirrusdump',
     }
 
