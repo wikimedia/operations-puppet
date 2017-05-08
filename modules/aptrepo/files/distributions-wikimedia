@@ -22,7 +22,7 @@ Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental thirdparty/cloudera
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent kibana elasticsearch docker jenkins
+Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent kibana elasticsearch elasticsearch-curator docker jenkins
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
