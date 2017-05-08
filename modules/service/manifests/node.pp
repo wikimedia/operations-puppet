@@ -318,11 +318,9 @@ define service::node(
             mode   => '0755',
         }
 
-        file { "/etc/logrotate.d/${title}":
+        logrotate::conf { $title:
+            ensure  => present,
             content => template('service/logrotate.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
         }
     }
 

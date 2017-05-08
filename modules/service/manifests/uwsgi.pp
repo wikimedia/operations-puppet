@@ -124,11 +124,9 @@ define service::uwsgi(
             mode   => '0755',
             before => Uwsgi::App[$title],
         }
-        file { "/etc/logrotate.d/${title}":
+        logrotate::conf { $title:
+            ensure  => present,
             content => template('service/logrotate.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
         }
         $local_log_config = {
             logger => [
