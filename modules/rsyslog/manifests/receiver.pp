@@ -34,10 +34,8 @@ class rsyslog::receiver (
         priority => 10,
     }
 
-    file { '/etc/logrotate.d/rsyslog_receiver':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    logrotate::conf { 'rsyslog_receiver':
+        ensure  => present,
         content => template("${module_name}/receiver_logrotate.erb.conf"),
     }
 
