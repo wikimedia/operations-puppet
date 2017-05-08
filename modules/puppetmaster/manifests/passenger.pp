@@ -82,7 +82,7 @@ class puppetmaster::passenger(
     }
 
     # Rotate apache logs is now managed via the apache::logrotate class
-    file { '/etc/logrotate.d/passenger':
+    logrotate::conf { 'passenger':
         ensure => absent,
     }
 }
