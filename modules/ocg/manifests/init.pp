@@ -220,12 +220,9 @@ class ocg (
         }
     }
 
-    file { '/etc/logrotate.d/ocg':
+    logrotate::conf { 'ocg':
         ensure => present,
         source => 'puppet:///modules/ocg/logrotate',
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
     }
 
     # run logrotate hourly, instead of daily, to ensure that log size
