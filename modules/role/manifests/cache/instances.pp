@@ -54,14 +54,14 @@ define role::cache::instances (
 
     # Frontend memory cache sizing
     $mem_gb = $::memorysize_mb / 1024.0
-    if ($mem_gb < 60.0) {
+    if ($mem_gb < 90.0) {
         # virtuals, test hosts, etc...
         $fe_mem_gb = 1
     } else {
         # Removing a constant factor before scaling helps with
         # low-memory hosts, as they need more relative space to
         # handle all the non-cache basics.
-        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 48.0))
+        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
     }
 
     varnish::instance { "${title}-backend":
