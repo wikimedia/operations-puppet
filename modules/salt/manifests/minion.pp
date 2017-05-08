@@ -112,11 +112,9 @@ class salt::minion(
         }
     }
 
-    file { '/etc/logrotate.d/salt-common':
+    logrotate::conf { 'salt-common':
+        ensure => present,
         source => 'puppet:///modules/salt/logrotate.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
 
     if $::initsystem == 'systemd' {
