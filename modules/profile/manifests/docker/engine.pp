@@ -51,4 +51,20 @@ class profile::docker::engine(
             ensure => 'running',
         }
     }
+
+    file { '/etc/systemd/system/docker.service.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        before => File['/etc/systemd/system/docker.service.d/'],
+    }
+
+    file { '/etc/systemd/system/docker.service.d/fix-proxy.conf':
+        ensure => present,
+        source => 'puppet:///modules/docker/fix-proxy.conf',
+        mode   => '0444'
+        owner  => 'root',
+        group  => 'root',
+    }
 }
