@@ -101,10 +101,8 @@ class profile::base(
     }
 
     if os_version('ubuntu == trusty') {
-        file { '/etc/logrotate.d/upstart':
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root',
+        logrotate::conf { 'upstart':
+            ensure => present,
             source => 'puppet:///modules/base/logrotate/upstart',
         }
     }
