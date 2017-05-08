@@ -126,7 +126,7 @@ define service::uwsgi(
         }
         logrotate::conf { $title:
             ensure  => present,
-            content => template('service/logrotate.erb'),
+            content => template('service/logrotate.uwsgi.erb'),
         }
         $local_log_config = {
             logger => [

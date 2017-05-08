@@ -1,0 +1,14 @@
+# logrotate(8) config for <%= @title %>
+
+<%= @local_logdir %>/*.log {
+    daily
+    copytruncate
+    missingok
+    compress
+    delaycompress
+    notifempty
+    rotate 15
+    postrotate
+	    invoke-rc.d uwsgi-<%= @title %> reload
+    endscript
+}
