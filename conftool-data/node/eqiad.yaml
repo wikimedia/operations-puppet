@@ -308,3 +308,6 @@ eqiad:
     logstash1001.eqiad.wmnet: [kibana]
     logstash1002.eqiad.wmnet: [kibana]
     logstash1003.eqiad.wmnet: [kibana]
+  kubernetes:
+    argon.eqiad.wmnet: [kubemaster]
+    chlorine.eqiad.wmnet: [kubemaster]
