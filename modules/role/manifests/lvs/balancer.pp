@@ -49,6 +49,7 @@ class role::lvs::balancer {
             $sip['eventstreams'][$::site],
             $sip['pdfrender'][$::site],
             $sip['trendingedits'][$::site],
+            $sip['kubemaster'][$::site],
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
@@ -85,6 +86,7 @@ class role::lvs::balancer {
             $sip['eventstreams'][$::site],
             $sip['pdfrender'][$::site],
             $sip['trendingedits'][$::site],
+            $sip['kubemaster'][$::site],
             ],
 
         # esams + ulsfo

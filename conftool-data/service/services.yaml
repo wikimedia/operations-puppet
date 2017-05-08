@@ -218,3 +218,11 @@ logstash:
     default_values:
       pooled: 'no'
       weight: 10
+kubernetes:
+  kubemaster:
+    port: 6443
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
