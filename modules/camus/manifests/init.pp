@@ -22,10 +22,8 @@ class camus {
     }
 
     # logrotate camus log files
-    file { '/etc/logrotate.d/camus':
+    logrotate::conf { 'camus':
+        ensure => present,
         source => 'puppet:///modules/camus/camus.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
 }
