@@ -116,7 +116,7 @@ class confd(
 
     # Upstart will log confd output to a dedicated file in /var/log/upstart already
     if $::initsystem == 'upstart' {
-        file { '/etc/logrotate.d/confd':
+        logrotate::conf { 'confd':
             ensure => absent,
         }
 
@@ -125,11 +125,9 @@ class confd(
         }
     } else {
         # Log to a dedicated file
-        file { '/etc/logrotate.d/confd':
+        logrotate::conf { 'confd':
+            ensure => present,
             source => 'puppet:///modules/confd/logrotate.conf',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
         }
 
         rsyslog::conf { 'confd':
