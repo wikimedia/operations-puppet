@@ -31,13 +31,9 @@ class squid3(
         require => Package['squid3'],
     }
 
-    file { '/etc/logrotate.d/squid3':
+    logrotate::conf { 'squid3':
         ensure  => $ensure,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
         source  => 'puppet:///modules/squid3/squid3-logrotate',
-        require => Package['squid3'],
     }
 
     package { 'squid3':
