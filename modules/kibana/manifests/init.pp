@@ -38,10 +38,4 @@ class kibana (
             File['/etc/kibana/kibana.yml'],
         ],
     }
-
-    # kibana 4.x deployment. With 5.x things are
-    # installed normally and not in /opt
-    file { '/opt/kibana':
-        ensure => absent
-    }
 }
