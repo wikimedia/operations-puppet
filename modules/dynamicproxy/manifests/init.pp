@@ -64,11 +64,8 @@ class dynamicproxy (
         variant => 'extras',
     }
 
-    file { '/etc/logrotate.d/nginx':
+    logrotate::conf { 'nginx':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
         source => 'puppet:///modules/dynamicproxy/logrotate',
     }
 
