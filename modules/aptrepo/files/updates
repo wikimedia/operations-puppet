@@ -65,7 +65,7 @@ Architectures: amd64 source
 VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
-Name: elasticsearch
+Name: elastic
 Method: https://artifacts.elastic.co/packages/5.x/apt
 Components: main>thirdparty
 UDebComponents:
@@ -73,7 +73,7 @@ Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S elasticsearch -a -F Version --eq 5.3.2 || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -S '^elasticsearch|logstash|kibana$' -a -F Version --eq 5.3.2 || [ $? -eq 1 ]
 
 Name: elasticsearch-curator
 Method: http://packages.elastic.co/curator/5/debian
@@ -84,26 +84,6 @@ GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S elasticsearch-curator || [ $? -eq 1 ]
-
-Name: logstash
-Method: https://artifacts.elastic.co/packages/5.x/apt
-Components: main>thirdparty
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S logstash -a -F Version --eq 5.3.2 || [ $? -eq 1 ]
-
-Name: kibana
-Method: https://artifacts.elastic.co/packages/5.x/apt
-Components: main>thirdparty
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S kibana -a -F Version --eq 5.3.2 || [ $? -eq 1 ]
 
 Name: tor
 Method: http://deb.torproject.org/torproject.org/
