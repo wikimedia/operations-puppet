@@ -41,10 +41,8 @@ class librenms(
         require => Group['librenms'],
     }
 
-    file { '/etc/logrotate.d/librenms':
+    logrotate::conf { 'librenms':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
         source => 'puppet:///modules/librenms/logrotate',
     }
 
