@@ -130,10 +130,8 @@ class base::puppet(
         require => File['/usr/local/sbin/puppet-run'],
     }
 
-    file { '/etc/logrotate.d/puppet':
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
+    logrotate::conf { 'puppet':
+        ensure => present,
         source => 'puppet:///modules/base/logrotate/puppet',
     }
 
