@@ -7,6 +7,8 @@ ganeti::ganeti01.svc.codfw.wmnet::nodes:
   - ganeti2004.codfw.wmnet
   - ganeti2005.codfw.wmnet
   - ganeti2006.codfw.wmnet
+  - ganeti2007.codfw.wmnet
+  - ganeti2008.codfw.wmnet
 ganeti::ganeti01.svc.eqiad.wmnet::nodes:
   - ganeti1001.eqiad.wmnet
   - ganeti1002.eqiad.wmnet

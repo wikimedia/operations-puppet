@@ -2407,6 +2407,16 @@ host ganeti2006 {
     fixed-address ganeti2006.codfw.wmnet;
 }
 
+host ganeti2007 {
+    hardware ethernet 18:66:DA:A3:EA:25;
+    fixed-address ganeti2007.codfw.wmnet;
+}
+
+host ganeti2008 {
+    hardware ethernet 18:66:DA:A3:BB:3D;
+    fixed-address ganeti2008.codfw.wmnet;
+}
+
 host gerrit2001 {
     hardware ethernet 14:18:77:5B:0D:7E;
     fixed-address gerrit2001.wikimedia.org;
