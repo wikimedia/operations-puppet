@@ -80,18 +80,14 @@ class mediawiki::jobrunner (
         }
     }
 
-    file { '/etc/logrotate.d/mediawiki_jobchron':
+    logrotate::conf { 'mediawiki_jobchron':
+        ensure  => present,
         content => template('mediawiki/jobrunner/logrotate-jobchron.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
     }
 
-    file { '/etc/logrotate.d/mediawiki_jobrunner':
+    logrotate::conf { 'mediawiki_jobrunner':
+        ensure  => present,
         content => template('mediawiki/jobrunner/logrotate.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
     }
 
     include ::apache::mod::proxy_fcgi
