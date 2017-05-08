@@ -78,18 +78,16 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             mode    => '0644',
             notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             recurse => true;
-        '/etc/logrotate.d/keystone-public-uwsgi':
-            ensure => present,
-            source => 'puppet:///modules/openstack/keystone-public-uwsgi.logrotate',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444';
-        '/etc/logrotate.d/keystone-admin-uwsgi':
-            ensure => present,
-            source => 'puppet:///modules/openstack/keystone-admin-uwsgi.logrotate',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444';
+    }
+
+    logrotate::conf { 'keystone-public-uwsgi':
+        ensure => present,
+        source => 'puppet:///modules/openstack/keystone-public-uwsgi.logrotate',
+    }
+
+    logrotate::conf { 'keystone-admin-uwsgi':
+        ensure => present,
+        source => 'puppet:///modules/openstack/keystone-admin-uwsgi.logrotate',
     }
 
     if $::fqdn == hiera('labs_nova_controller') {

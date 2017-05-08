@@ -93,19 +93,13 @@ class openstack::designate::service (
 
     # These would be automatically included in a correct designate package...
     # probably this can be ripped out in Liberty.
-    file { '/etc/logrotate.d/designate-mdns':
+    logrotate::conf { 'designate-mdns':
         ensure => present,
         source => 'puppet:///modules/openstack/designate-mdns.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
-    file { '/etc/logrotate.d/designate-pool-manager':
+    logrotate::conf { 'designate-pool-manager':
         ensure => present,
         source => 'puppet:///modules/openstack/designate-pool-manager.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
 
     file { '/var/lib/designate/.ssh/':
