@@ -222,13 +222,12 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    file { '/etc/logrotate.d/elasticsearch':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+
+    logrotate::conf { 'elasticsearch':
+        ensure => present,
         source => 'puppet:///modules/elasticsearch/logrotate',
     }
+
     file { $data_dir:
       ensure  => directory,
       owner   => 'elasticsearch',
