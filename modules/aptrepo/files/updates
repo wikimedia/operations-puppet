@@ -73,7 +73,7 @@ Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S '^elasticsearch|logstash|kibana$' -a -F Version --eq 5.3.2 || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e \( -S '^elasticsearch|kibana$' -a -F Version --eq 5.3.2 \) -o \( -S '^logstash$' -a -F Version --eq 1:5.3.2-1 \) || [ $? -eq 1 ]
 
 Name: elasticsearch-curator
 Method: http://packages.elastic.co/curator/5/debian
