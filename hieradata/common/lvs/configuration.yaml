@@ -140,6 +140,9 @@ lvs::configuration::lvs_service_ips:
   trendingedits: &ip_block035
     eqiad: 10.2.2.9
     codfw: 10.2.1.9
+  kubemaster: &ip_block036
+    eqiad: 10.2.2.8
+    codfw: 10.2.1.8
 lvs::configuration::lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -1249,3 +1252,22 @@ lvs::configuration::lvs_services:
           hostname: trendingedits.svc.eqiad.wmnet
         codfw:
           hostname: trendingedits.svc.codfw.wmnet
+  kubemaster:
+    description: "Kubernetes master service. kubemaster.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block036
+    port: 6443
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      # Despite kubernetes being an HTTP REST API, it seems it does not yet support unauthenticated requests,
+      # so no ProxyFetch for now
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: kubemaster
+    # For now, no icinga monitoring for the same reasons as ProxyFetch
