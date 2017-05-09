@@ -1,0 +1,151 @@
+# We don't want paging
+do_paging: false
+
+#
+# RESTBase
+#
+cluster: restbase_dev
+profile::restbase::cassandra_local_dc: "%{::site}"
+profile::restbase::logging_label: restbase-dev
+profile::restbase::cassandra_datacenters:
+    - "eqiad"
+profile::restbase::parsoid_uri: "http://parsoid.discovery.wmnet:8000"
+profile::restbase::graphoid_uri: "http://graphoid.discovery.wmnet:19000"
+profile::restbase::mobileapps_uri: "http://mobileapps.discovery.wmnet:8888"
+profile::restbase::mathoid_uri: "http://mathoid.discovery.wmnet:10042"
+profile::restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.org/v1"
+profile::restbase::pdfrender_uri: "http://pdfrender.discovery.wmnet:5252"
+profile::restbase::citoid_uri: "http://citoid.discovery.wmnet:1970"
+profile::restbase::trendingedits_uri: "http://trendingedits.svc.%{::site}.wmnet:6699"
+profile::restbase::cassandra_user: restb
+profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+profile::restbase::monitoring::monitor_domain: en.wikipedia.org
+profile::restbase::cassandra_tls:
+  ca: /dev/null
+# TODO: get this from cassandra's instances?
+profile::restbase::seeds:
+      - restbase-dev1001-a.eqiad.wmnet
+      - restbase-dev1001-b.eqiad.wmnet
+      - restbase-dev1002-a.eqiad.wmnet
+      - restbase-dev1002-b.eqiad.wmnet
+      - restbase-dev1003-a.eqiad.wmnet
+      - restbase-dev1003-b.eqiad.wmnet
+profile::restbase::hosts:
+  - restbase-dev1001.eqiad.wmnet
+  - restbase-dev1002.eqiad.wmnet
+  - restbase-dev1003.eqiad.wmnet
+
+
+#
+# Cassandra
+#
+## Metrics
+graphite_host: 'graphite1003.eqiad.wmnet'
+
+profile::cassandra::metrics_whitelist:
+    - .*\.metrics\.Table\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.EstimatedRowCount\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.LiveSSTableCount\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.MaxRowSize\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.MeanRowSize\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.MinRowSize\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.PendingCompactions\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.PendingFlushes\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.RangeLatency\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.ReadLatency\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+    - .*\.metrics\.Table\.local_group_.*\.meta\.WriteLatency\..*$
+profile::cassandra::metrics_blacklist:
+      - .*\.15MinuteRate$
+      - .*\.5MinuteRate$
+      - .*\.98percentile$
+      - .*\.999percentile$
+      - .*\.max$
+      - .*\.mean$
+      - .*\.meanRate$
+      - .*\.min$
+      - .*\.stddev$
+      - .*\.metrics\.Keyspace\..*$
+      - .*\.metrics\.Client\..*$
+      - .*\.metrics\.ColumnFamily\..*$
+
+## Instances
+profile::cassandra::instances:
+  "restbase-dev1001.eqiad.wmnet":
+    a:
+      jmx_port: 7189
+      listen_address: 10.64.0.36
+      rpc_address: 10.64.0.36
+      rpc_interface: eth0
+      fqdn: restbase-dev1001-a.eqiad.wmnet
+    b:
+      jmx_port: 7190
+      listen_address: 10.64.0.37
+      rpc_address: 10.64.0.37
+      rpc_interface: eth0
+      fqdn: restbase-dev1001-b.eqiad.wmnet
+  "restbase-dev1002.eqiad.wmnet":
+    a:
+      jmx_port: 7189
+      listen_address: 10.64.32.159
+      rpc_address: 10.64.32.159
+      rpc_interface: eth0
+      fqdn: restbase-dev1002-a.eqiad.wmnet
+    b:
+      jmx_port: 7190
+      listen_address: 10.64.32.160
+      rpc_address: 10.64.32.160
+      rpc_interface: eth0
+      fqdn: restbase-dev1002-b
+  "restbase-dev1003.eqiad.wmnet":
+    a:
+      jmx_port: 7189
+      listen_address: 10.64.48.117
+      rpc_address: 10.64.48.117
+      rpc_interface: eth0
+      fqdn: restbase-dev1003-a.eqiad.wmnet
+    b:
+      jmx_port: 7190
+      listen_address: 10.64.48.118
+      rpc_address: 10.64.48.118
+      rpc_interface: eth0
+      fqdn: restbase-dev1003-b.eqiad.wmnet
+
+profile::cassandra::settings:
+  start_rpc: 'true'
+  max_heap_size: 12g
+  # 1/4 heap size, no more than 100m/thread
+  heap_newsize: 2048m
+  compaction_throughput_mb_per_sec: 20
+  concurrent_compactors: 10
+  concurrent_writes: 18
+  concurrent_reads: 18
+  tls_cluster_name: services=dev
+  internode_encryption: dc
+  dc: "%{::site}"
+  cluster_name: "services-dev"
+  application_username: restb
+  application_password: "%{passwords::cassandra::restbase}"
+  target_version: '3.7'
+  permissions_validity_in_ms: 600000
+  trickle_fsync: false
+  extra_classpath:
+    - /srv/deployment/cassandra/twcs/lib/cassandra-v2.2/TimeWindowCompactionStrategy-2.2.5.jar
+  client_encryption_enabled: true
+
+# LVS config
+role::lvs::realserver::pools:
+  restbase: {}
+
+service::configuration::log_dir: "/var/log"
+
+admin::groups:
+  - restbase-roots
+  - restbase-admins
