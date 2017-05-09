@@ -120,11 +120,6 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-8]).eqiad.wmnet/ {
     include ::standard
 }
 
-# To be decommissioned in T161597
-node 'analytics1027.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
