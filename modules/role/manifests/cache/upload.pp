@@ -74,19 +74,10 @@ class role::cache::upload(
 
     $common_runtime_params = ['default_ttl=86400']
 
-    # Experimental settings to handle T145661
-    if hiera('cache::exp_thread_rt', false) {
-        $exp_thread_params = ['exp_thread_rt=true','exp_lck_inherit=true']
-    } else {
-        $exp_thread_params = []
-    }
-    $be_runtime_params = array_concat(['nuke_limit=1000','lru_interval=31'],
-                                      $exp_thread_params)
-
     role::cache::instances { 'upload':
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
         fe_runtime_params => $common_runtime_params,
-        be_runtime_params => concat($common_runtime_params, $be_runtime_params),
+        be_runtime_params => $common_runtime_params,
         app_directors     => hiera('cache::app_directors'),
         app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $fe_vcl_config,

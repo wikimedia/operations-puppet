@@ -64,6 +64,16 @@ define role::cache::instances (
         $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
     }
 
+    # Experimental backend settings to handle T145661
+    if hiera('cache::exp_thread_rt', false) {
+        $exp_thread_params = ['exp_thread_rt=true','exp_lck_inherit=true']
+    } else {
+        $exp_thread_params = []
+    }
+
+    # backends: Should increase nuke success chances, and reduce LRU lock/modify rate
+    $nuke_lru_params = ['nuke_limit=1000','lru_interval=31']
+
     varnish::instance { "${title}-backend":
         name               => '',
         layer              => 'backend',
@@ -71,7 +81,7 @@ define role::cache::instances (
         extra_vcl          => $be_extra_vcl,
         ports              => [ 3128 ],
         admin_port         => 6083,
-        runtime_parameters => $be_runtime_params,
+        runtime_parameters => concat($be_runtime_params, $nuke_lru_params, $exp_thread_params),
         storage            => $be_storage,
         vcl_config         => $be_vcl_config,
         app_directors      => $app_directors,
