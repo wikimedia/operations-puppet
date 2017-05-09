@@ -1,0 +1,8 @@
+<%-
+seeds = []
+@all_instances.each do |host, instances|
+  seeds << host
+  instances.each do |_, data|
+    seeds << data['fqdn']
+  end
+end -%><%= seeds.join "|" -%>

@@ -8,8 +8,9 @@
 #     contact_group  => ...
 # }
 define cassandra::instance::monitoring (
-    $instances     = $::cassandra::instances,
-    $contact_group = 'admins,team-services',
+    $instances        = $::cassandra::instances,
+    $contact_group    = 'admins,team-services',
+    $tls_cluster_name = $::cassandra::tls_cluster_name,
 ) {
     $instance_name  = $title
     $this_instance  = $instances[$instance_name]
@@ -36,7 +37,7 @@ define cassandra::instance::monitoring (
     }
 
     # SSL cert expiration monitoring (T120662)
-    if hiera('cassandra::tls_cluster_name', '') {
+    if $tls_cluster_name {
         monitoring::service { "${service_name}-ssl":
             description   => "${service_name} SSL ${listen_address}:7001",
             check_command => "check_ssl_on_host_port!${::hostname}-${instance_name}!${listen_address}!7001",
