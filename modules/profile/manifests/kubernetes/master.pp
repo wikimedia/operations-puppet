@@ -8,6 +8,7 @@ class profile::kubernetes::master(
     $apiserver_count=hiera('profile::kubernetes::master::apiserver_count'),
     $admission_controllers=hiera('profile::kubernetes::master::admission_controllers'),
     $expose_puppet_certs=hiera('profile::kubernetes::master::expose_puppet_certs'),
+    $service_cert=hiera('profile::kubernetes::master::service_cert', undef),
     $ssl_cert_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $ssl_key_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $authz_mode=hiera('profile::kubernetes::master::authz_mode'),
@@ -19,6 +20,15 @@ class profile::kubernetes::master(
             provide_private => true,
             user            => 'kube',
             group           => 'kube',
+        }
+    }
+
+    if $service_cert {
+        sslcert::certificate { $service_cert:
+            ensure       => present,
+            group        => 'kube',
+            skip_private => false,
+            before       => Class['::k8s::apiserver'],
         }
     }
 
