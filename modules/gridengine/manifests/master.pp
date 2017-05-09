@@ -16,9 +16,7 @@ class gridengine::master {
 
     $etcdir = '/var/lib/gridengine/etc'
 
-    gridengine::resourcedir { 'queues': }
     gridengine::resourcedir { 'hostgroups': }
-    gridengine::resourcedir { 'quotas': }
     gridengine::resourcedir { 'checkpoints': }
     gridengine::resourcedir { 'exechosts': }
     gridengine::resourcedir { 'submithosts': }
@@ -44,6 +42,21 @@ class gridengine::master {
         mode   => '0664',
         source => 'puppet:///modules/gridengine/global.conf',
     }
+
+    # Set up config directory for grid compononents
+    $config_dirs_defaults = {
+        ensure => directory,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0775',
+    }
+
+    $config_dirs = {
+        'queues' => { path => "${etcdir}/queues", },
+        'quotas' => { path => "${etcdir}/quotas", },
+    }
+
+    create_resources(file, $config_dirs, $config_dirs_defaults)
 
     service { 'gridengine-master':
         ensure    => running,
