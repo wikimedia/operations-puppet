@@ -4,9 +4,86 @@ class toollabs::master inherits toollabs {
 
     include ::gridengine::master
     include ::toollabs::infrastructure
-    include ::toollabs::queue::continuous
-    include ::toollabs::queue::task
 
+    $etcdir = '/var/lib/gridengine/etc'
+
+    # Set up queues
+    $queue_config_path = "${etcdir}/queues"
+
+    file { $queue_config_path:
+        ensure => directory,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0775',
+    }
+
+    $queue_config_defaults = {
+        'config_path' => $queue_config_path,
+    }
+
+    $queue_config = {
+        'task'             => {
+            hostlist              => '@general',
+            seq_no                => 0,
+            terminate_method      => '/usr/local/bin/jobkill $job_pid',
+        },
+        'continuous'       => {
+            hostlist              => '@general',
+            seq_no                => 1,
+            priority              => 10,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            ckpt_list             => 'continuous',
+            terminate_method      => '/usr/local/bin/jobkill $job_pid',
+        },
+        'webgrid-lighttpd' => {
+            hostlist              => '@webgrid',
+            seq_no                => 2,
+            np_load_avg_threshold => 2.75,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            slots                 => 256,
+            terminate_method      => 'SIGTERM',
+            epilog                => '/usr/local/bin/portreleaser',
+        },
+        'webgrid-generic'  => {
+            # FIXME: webgrid-generic is set up with a list of hosts instead of hostgroups.
+            # It should just be another hostgroup
+            hostlist              => 'NONE',
+            seq_no                => 3,
+            np_load_avg_threshold => 2.75,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            slots                 => 256,
+            terminate_method      => 'SIGTERM',
+            epilog                => '/usr/local/bin/portreleaser',
+        },
+    }
+
+    $dedicated_queue_config_defaults = {
+        'config_path'           => $queue_config_path,
+        'np_load_avg_threshold' => 2.0,
+        'priority'              => 10,
+        'qtype'                 => 'BATCH',
+        'rerun'                 => true,
+        'slots'                 => 1000,
+        'ckpt_list'             => 'continuous',
+    }
+
+    $dedicated_queue_config = {
+        'giftbot' => {
+            #FIXME: Make this a hostgroup
+            hostlist   => 'NONE'
+            seq_no     => 5,
+            owner_list => 'giftbot',
+            user_lists => 'giftbot'
+        }
+    }
+
+    create_resources(gridengine::queue, $queue_config, $queue_config_defaults)
+    create_resources(gridengine::queue, $dedicated_queue_config, $dedicated_queue_config_defaults)
+
+    # Set up complexes
     gridengine_resource { 'h_vmem':
         ensure      => present,
         requestable => 'FORCED',
