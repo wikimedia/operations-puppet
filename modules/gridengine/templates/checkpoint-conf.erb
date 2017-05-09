@@ -1,0 +1,10 @@
+# This file is managed by puppet
+ckpt_name          <%= @title %>
+interface          userdefined
+ckpt_command       none
+migr_command       none
+restart_command    none
+clean_command      none
+ckpt_dir           <%= @ckpt_dir %>
+signal             USR1
+when               xsr
