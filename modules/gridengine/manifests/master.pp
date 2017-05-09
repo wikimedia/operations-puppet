@@ -16,7 +16,6 @@ class gridengine::master {
 
     $etcdir = '/var/lib/gridengine/etc'
 
-    gridengine::resourcedir { 'queues': }
     gridengine::resourcedir { 'hostgroups': }
     gridengine::resourcedir { 'quotas': }
     gridengine::resourcedir { 'checkpoints': }
