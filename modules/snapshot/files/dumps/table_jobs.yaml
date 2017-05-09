@@ -119,10 +119,6 @@ tables:
       job: wbterms
       description: For each Wikidata item, this contains rows with a label, an alias and a description of the item in a given language.
       type: public
-    wb_entity_per_page:
-      job: wbentityperpage
-      description: Contains a mapping of page ids and entity ids, with an additional entity type column.
-      type: public
     wb_property_info:
       job: wbpropertyinfo
       description: Contains a mapping of Wikidata property ids and data types.
