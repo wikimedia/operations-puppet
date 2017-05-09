@@ -7,6 +7,12 @@ Description=Kafka MirrorMaker Instance of <%= @mirror_name %>
 User=kafka
 Group=kafka
 
+# Mirror Maker often fails when a Kafka broker is not reachable
+# (for example due to maintenance) or when a preferred replica election
+# triggers a change in the leaders of a Topic (T157705).
+Restart=on-failure
+RestartSec=3
+
 # Set java.awt.headless=true if JAVA_OPTS is not set so the
 # Xalan XSL transformer can work without X11 display on JDK 1.4+
 Environment="JAVA_OPTS=-Djava.awt.headless=true"
