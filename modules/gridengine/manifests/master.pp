@@ -16,10 +16,6 @@ class gridengine::master {
 
     $etcdir = '/var/lib/gridengine/etc'
 
-    gridengine::resourcedir { 'queues': }
-    gridengine::resourcedir { 'hostgroups': }
-    gridengine::resourcedir { 'quotas': }
-    gridengine::resourcedir { 'checkpoints': }
     gridengine::resourcedir { 'exechosts': }
     gridengine::resourcedir { 'submithosts': }
     gridengine::resourcedir { 'adminhosts': }
@@ -34,9 +30,7 @@ class gridengine::master {
         purge   => true,
     }
 
-    # Changes made to global.conf will be applied to the grid only on running
-    # `qconf -Mconf global` from /var/lib/gridengine/etc/config/.
-    # See https://linux.die.net/man/5/sge_conf for docs
+    # Set up global grid config
     file { "${etcdir}/config/global":
         ensure => file,
         owner  => 'sgeadmin',
@@ -44,6 +38,32 @@ class gridengine::master {
         mode   => '0664',
         source => 'puppet:///modules/gridengine/global.conf',
     }
+
+    # Set up grid scheduler config
+    file { "${etcdir}/config/grid-scheduler-conf":
+        ensure => file,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0664',
+        source => 'puppet:///modules/gridengine/grid-scheduler.conf',
+    }
+
+    # Set up config directory for grid compononents
+    $config_dirs_defaults = {
+        ensure => directory,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0775',
+    }
+
+    $config_dirs = {
+        'hostgroups'  => { path => "${etcdir}/hostgroups",},
+        'queues'      => { path => "${etcdir}/queues", },
+        'quotas'      => { path => "${etcdir}/quotas", },
+        'checkpoints' => { path => "${etcdir}/checkpoints", },
+    }
+
+    create_resources(file, $config_dirs, $config_dirs_defaults)
 
     service { 'gridengine-master':
         ensure    => running,
