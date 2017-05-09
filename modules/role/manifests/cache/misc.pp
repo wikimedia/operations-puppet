@@ -35,12 +35,6 @@ class role::cache::misc {
         'req_handling'     => hiera('cache::req_handling'),
     }
 
-    $be_vcl_config = $common_vcl_config
-
-    $fe_vcl_config = merge($common_vcl_config, {
-        'ttl_cap'            => '1d',
-    })
-
     $common_runtime_params = ['default_ttl=3600']
 
     # The default timeout_idle setting, 5s, seems to be causing sc_rx_timeout
@@ -53,8 +47,8 @@ class role::cache::misc {
         be_runtime_params => concat($common_runtime_params, $be_runtime_params),
         app_directors     => hiera('cache::app_directors'),
         app_def_be_opts   => hiera('cache::app_def_be_opts'),
-        fe_vcl_config     => $fe_vcl_config,
-        be_vcl_config     => $be_vcl_config,
+        fe_vcl_config     => $common_vcl_config,
+        be_vcl_config     => $common_vcl_config,
         fe_extra_vcl      => ['misc-common'],
         be_extra_vcl      => ['misc-common'],
         be_storage        => $::role::cache::base::file_storage_args,

@@ -50,10 +50,9 @@ class role::cache::text(
 
     $fe_vcl_config = merge($common_vcl_config, {
         'enable_geoiplookup' => true,
-        'ttl_cap'            => '1d',
     })
 
-    $common_runtime_params = ['default_ttl=2592000']
+    $common_runtime_params = ['default_ttl=86400']
 
     $text_storage_args = $::role::cache::base::file_storage_args
 

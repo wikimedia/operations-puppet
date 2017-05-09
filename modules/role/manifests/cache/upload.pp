@@ -48,12 +48,11 @@ class role::cache::upload(
     # upload-frontend case.  All tiers of backend share the same policies.
 
     $be_vcl_config = merge($common_vcl_config, {
-        'pass_random'               => true,
+        'pass_random' => true,
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'ttl_cap'          => '1d',
-        'pass_random'      => false,
+        'pass_random' => false,
     })
 
     # See T145661 for storage binning rationale
@@ -73,8 +72,7 @@ class role::cache::upload(
         "-s bin4=file,/srv/${sda}/varnish.bin4,${bin4_size}M",
     ], ' ')
 
-    # default_ttl=7d
-    $common_runtime_params = ['default_ttl=604800']
+    $common_runtime_params = ['default_ttl=86400']
 
     # Experimental settings to handle T145661
     if hiera('cache::exp_thread_rt', false) {

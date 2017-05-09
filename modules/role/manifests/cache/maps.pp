@@ -31,7 +31,6 @@ class role::cache::maps {
 
     $common_vcl_config = {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-        'ttl_cap'          => '1d',
         'pass_random'      => true,
         'req_handling'     => hiera('cache::req_handling'),
     }
