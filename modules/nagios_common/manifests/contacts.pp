@@ -62,12 +62,12 @@ class nagios_common::contacts(
 
         # This 'new' file exists only temp during careful transition of contacts
         # from private repo and is not actually included by Icinga. --dz 20170505
-        file { "${config_dir}/contacts-new.cfg":
-            ensure  => $ensure,
-            content => template('nagios_common/contacts-new.cfg.erb'),
-            owner   => $owner,
-            group   => $group,
-            mode    => '0400',
-        }
+        #file { "${config_dir}/contacts-new.cfg":
+        #    ensure  => $ensure,
+        #    content => template('nagios_common/contacts-new.cfg.erb'),
+        #    owner   => $owner,
+        #    group   => $group,
+        #    mode    => '0400',
+        #}
     }
 }
