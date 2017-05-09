@@ -4,9 +4,89 @@ class toollabs::master inherits toollabs {
 
     include ::gridengine::master
     include ::toollabs::infrastructure
-    include ::toollabs::queue::continuous
-    include ::toollabs::queue::task
 
+    # Set up hostgroups
+    # TODO: Add hostgroups for webgrid-generic and giftbot
+    gridengine::hostgroup{'@general': }
+    gridengine::hostgroup{'@webgrid': }
+
+    # Set up queues
+    $queue_config = {
+        'task'             => {
+            hostlist              => '@general',
+            seq_no                => 0,
+            terminate_method      => '/usr/local/bin/jobkill $job_pid',
+        },
+        'continuous'       => {
+            hostlist              => '@general',
+            seq_no                => 1,
+            priority              => 10,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            ckpt_list             => 'continuous',
+            terminate_method      => '/usr/local/bin/jobkill $job_pid',
+        },
+        'webgrid-lighttpd' => {
+            hostlist              => '@webgrid',
+            seq_no                => 2,
+            np_load_avg_threshold => 2.75,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            slots                 => 256,
+            terminate_method      => 'SIGTERM',
+            epilog                => '/usr/local/bin/portreleaser',
+        },
+        'webgrid-generic'  => {
+            # FIXME: webgrid-generic is set up with a list of hosts instead of hostgroups.
+            # It should just be another hostgroup
+            hostlist              => 'NONE',
+            seq_no                => 3,
+            np_load_avg_threshold => 2.75,
+            qtype                 => 'BATCH',
+            rerun                 => true,
+            slots                 => 256,
+            terminate_method      => 'SIGTERM',
+            epilog                => '/usr/local/bin/portreleaser',
+        },
+        'mailq' => {
+            hostlist              => '@general',
+            seq_no                => 4,
+            np_load_avg_threshold => 2.25,
+            priority              => 0,
+            qtype                 => 'BATCH',
+            pe_list               => 'make',
+            slots                 => 5,
+            s_rt                  => '00:01:45',
+            h_rt                  => '00:02:00',
+            s_cpu                 => '00:00:30',
+            h_cpu                 => '00:01:00',
+            h_vmem                => '500M',
+        }
+    }
+
+    $dedicated_queue_config_defaults = {
+        'np_load_avg_threshold' => 2.0,
+        'priority'              => 10,
+        'qtype'                 => 'BATCH',
+        'rerun'                 => true,
+        'slots'                 => 1000,
+        'ckpt_list'             => 'continuous',
+    }
+
+    $dedicated_queue_config = {
+        'giftbot' => {
+            #FIXME: Make this a hostgroup
+            hostlist   => 'NONE',
+            seq_no     => 5,
+            owner_list => 'giftbot',
+            user_lists => 'giftbot',
+        }
+    }
+
+    create_resources(gridengine::queue, $queue_config)
+    create_resources(gridengine::queue, $dedicated_queue_config, $dedicated_queue_config_defaults)
+
+    # Set up complexes
     gridengine_resource { 'h_vmem':
         ensure      => present,
         requestable => 'FORCED',
@@ -38,6 +118,25 @@ class toollabs::master inherits toollabs {
         require     => Service['gridengine-master'],
     }
 
+    # Set up Resource Quota Sets
+    gridengine::quota { 'user_slots':
+        description => 'Users have 60 user_slots to allocate',
+        limit       => 'users {*} hosts * to user_slot=60',
+    }
+
+    # Set up Checkpoints
+    $ckpt_dir = "${toollabs::geconf}/ckpt"
+
+    file { $ckpt_dir:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'sgeadmin',
+        mode   => '0775',
+    }
+
+    gridengine::checkpoint {'continuous':
+        ckpt_dir => $ckpt_dir,
+    }
 
     # These things are done on toollabs::master because they
     # need to be done exactly once per project (they live on the
