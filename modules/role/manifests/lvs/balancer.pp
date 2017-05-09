@@ -142,7 +142,6 @@ class role::lvs::balancer {
 
     # production-only tweaks
     if $::realm == 'production' {
-        include ::base::no_nfs_client
         # Bump min_free_kbytes a bit to ensure network buffers are available quickly
         vm::min_free_kbytes { 'lvs':
             pct => 3,

@@ -19,10 +19,9 @@ class role::cache::base(
         description => "${cache_cluster} Varnish cache server",
     }
 
-    # Only production needs system perf tweaks and NFS client disable
+    # Only production needs system perf tweaks
     if $::realm == 'production' {
         include role::cache::perf
-        include ::base::no_nfs_client
     }
 
     # Not ideal factorization to put this here, but works for now
