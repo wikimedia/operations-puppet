@@ -15,28 +15,23 @@ lvs::configuration::lvs_service_ips:
   upload: &ip_block002
     codfw:
       uploadlb: 208.80.153.240
-      uploadlb6: 2620:0:860:ed1a::2:b
-    eqiad:
-      uploadlb: 208.80.154.240
-      uploadlb6: 2620:0:861:ed1a::2:b
-    esams:
-      uploadlb: 91.198.174.208
-      uploadlb6: 2620:0:862:ed1a::2:b
-    ulsfo:
-      uploadlb: 198.35.26.112
-      uploadlb6: 2620:0:863:ed1a::2:b
-  maps: &ip_block003
-    codfw:
       mapslb: 208.80.153.244
+      uploadlb6: 2620:0:860:ed1a::2:b
       mapslb6: 2620:0:860:ed1a::2:d
     eqiad:
+      uploadlb: 208.80.154.240
       mapslb: 208.80.154.244
+      uploadlb6: 2620:0:861:ed1a::2:b
       mapslb6: 2620:0:861:ed1a::2:d
     esams:
+      uploadlb: 91.198.174.208
       mapslb: 91.198.174.209
+      uploadlb6: 2620:0:862:ed1a::2:b
       mapslb6: 2620:0:862:ed1a::2:d
     ulsfo:
+      uploadlb: 198.35.26.112
       mapslb: 198.35.26.113
+      uploadlb6: 2620:0:863:ed1a::2:b
       mapslb6: 2620:0:863:ed1a::2:d
   apaches: &ip_block007
     eqiad: 10.2.2.1
@@ -246,59 +241,6 @@ lvs::configuration::lvs_services:
         max-delay: 300
     conftool:
       cluster: cache_upload
-      service: nginx
-  maps:
-    description: "Maps service maps-lb.%{::site}.wikimedia.org"
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *ip_block003
-    scheduler: sh
-    bgp: 'yes'
-    depool-threshold: '.5'
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_maps
-      service: varnish-fe
-    icinga:
-      uri: maps.wikimedia.org!/osm-intl/6/23/24.png
-      sites:
-        eqiad:
-          hostname: maps-lb.eqiad.wikimedia.org
-        codfw:
-          hostname: maps-lb.codfw.wikimedia.org
-        esams:
-          hostname: maps-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: maps-lb.ulsfo.wikimedia.org
-  maps-https:
-    description: "Maps service maps-lb.%{::site}.wikimedia.org"
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *ip_block003
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - https://varnishcheck.wikimedia.org/from/pybal
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_maps
       service: nginx
   dns_rec_udp:
     description: Recursive DNS - UDP

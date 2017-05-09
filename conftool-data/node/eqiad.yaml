@@ -164,11 +164,6 @@ eqiad:
     cp1073.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1074.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1099.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  cache_maps:
-    cp1046.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1047.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1059.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-    cp1060.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   pdf:
     ocg1001.eqiad.wmnet: [ocg]
     ocg1002.eqiad.wmnet: [ocg]
