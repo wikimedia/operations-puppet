@@ -21,11 +21,6 @@ esams:
     cp3047.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3048.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3049.esams.wmnet: [varnish-fe, varnish-be, nginx]
-  cache_maps:
-    cp3003.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3004.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3005.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3006.esams.wmnet: [varnish-fe, varnish-be, nginx]
   cache_misc:
     cp3007.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3008.esams.wmnet: [varnish-fe, varnish-be, nginx]
