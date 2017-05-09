@@ -210,11 +210,6 @@ codfw:
     cp2022.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2024.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2026.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-  cache_maps:
-    cp2003.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-    cp2009.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-    cp2015.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-    cp2021.codfw.wmnet: [varnish-fe, varnish-be, nginx]
   cache_misc:
     cp2006.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2012.codfw.wmnet: [varnish-fe, varnish-be, nginx]
