@@ -7,11 +7,7 @@ profile::kubernetes::master::etcd_urls:
  - https://etcd1002.eqiad.wmnet:2379
  - https://etcd1003.eqiad.wmnet:2379
 profile::kubernetes::master::docker_registry: darmstadtium.eqiad.wmnet
-profile::kubernetes::master::accessible_to:
- - kubernetes1001.eqiad.wmnet
- - kubernetes1002.eqiad.wmnet
- - kubernetes1003.eqiad.wmnet
- - kubernetes1004.eqiad.wmnet
+profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::service_cluster_ip_range: 192.168.30.0/24
 profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::admission_controllers:
@@ -21,8 +17,9 @@ profile::kubernetes::master::admission_controllers:
  - RegistryEnforcer
  - DefaultStorageClass
 profile::kubernetes::master::expose_puppet_certs: true
-profile::kubernetes::master::ssl_cert_path: /etc/kubernetes/ssl/cert.pem
-profile::kubernetes::master::ssl_key_path: /etc/kubernetes/ssl/server.key
+profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::authz_mode: ''
 profile::kubernetes::master::host_automounts: []
 profile::kubernetes::master::host_path_prefixes_allowed: []
