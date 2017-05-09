@@ -16,7 +16,6 @@ class gridengine::master {
 
     $etcdir = '/var/lib/gridengine/etc'
 
-    gridengine::resourcedir { 'queues': }
     gridengine::resourcedir { 'hostgroups': }
     gridengine::resourcedir { 'quotas': }
     gridengine::resourcedir { 'checkpoints': }
@@ -43,6 +42,16 @@ class gridengine::master {
         group  => 'sgeadmin',
         mode   => '0664',
         source => 'puppet:///modules/gridengine/global.conf',
+    }
+
+    # Set up config directory for queues
+    $queue_config_dir = "${etcdir}/queues"
+
+    file { $queue_config_dir:
+        ensure => directory,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0775',
     }
 
     service { 'gridengine-master':
