@@ -253,8 +253,7 @@ node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(spare::system)
 }
 
 node /^cp10(4[89]|50|6[234]|7[1-4]|99)\.eqiad\.wmnet$/ {
@@ -278,8 +277,7 @@ node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
 }
 
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(spare::system)
 }
 
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
@@ -288,8 +286,7 @@ node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
 }
 
 node /^cp300[3-6]\.esams\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(spare::system)
 }
 
 node /^cp30(0[789]|10)\.esams\.wmnet$/ {
@@ -331,8 +328,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::maps, ipsec)
+    role(spare::system)
 }
 
 # temporary entry for testing new cache node hardware setup...

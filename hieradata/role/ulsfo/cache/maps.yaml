@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-cp-ulsfo-maps:
-    value: standard

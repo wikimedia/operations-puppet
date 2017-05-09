@@ -36,14 +36,6 @@ monitoring::groups:
     description: Misc caches esams
   cache_misc_ulsfo:
     description: Misc caches ulsfo
-  cache_maps_codfw:
-    description: Maps caches codfw
-  cache_maps_eqiad:
-    description: Maps caches eqiad
-  cache_maps_esams:
-    description: Maps caches esams
-  cache_maps_ulsfo:
-    description: Maps caches ulsfo
 
 # Elasticsearch
   elasticsearch_eqiad:

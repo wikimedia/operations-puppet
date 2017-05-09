@@ -231,14 +231,6 @@ ganglia_clusters:
     id: 50
     sites:
       codfw: []
-  cache_maps:
-    description: "Maps caches"
-    id: 51
-    sites:
-      eqiad: []
-      codfw: []
-      esams: []
-      ulsfo: []
   ganeti:
     description: "Ganeti Virt cluster"
     id: 52
