@@ -8,10 +8,14 @@ $config['rrd_dir']     = "<%= @rrd_dir %>";
 $config['log_file']    = "/var/log/librenms.log";
 $config['user']        = "librenms";
 
-$config['alert']['macros']['rule']['is_main_intf'] = '%ports.ifDescr ~ "^(Cust|Transit|Peering|Core).*"';
+$config['alert']['macros']['rule']['is_main_intf'] = '%ports.ifAlias ~ "^(Cust|Transit|Peering|Core).*"';
+
+# State sensor of type "jnxFruState" that is not "online" or "empty"
+$config['alert']['macros']['rule']['junos_state_down'] = '%sensors.sensor_class = "state" && %sensors.sensor_current != "6" && %sensors.sensor_type = "jnxFruState" && %sensors.sensor_current != "2"';
+
+# All types of Junos Alarms that is not "off"/(no alarm)
+$config['alert']['macros']['rule']['junos_alarm'] = '%sensors.sensor_class = "state" && %sensors.sensor_type ~ "Jnx.*AlarmState" && %sensors.sensor_current != "2"';
 
 $puppet_config = <%= scope.function_phpdump([@config]) %>;
 
 $config = array_merge($config, $puppet_config);
-
-?>
