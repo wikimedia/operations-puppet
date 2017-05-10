@@ -31,6 +31,9 @@ cache::app_directors:
       eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
       # codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
   kartotherian:
+    be_opts:
+      port:               6533
+      max_connections:    1000
     backends:
       eqiad: 'kartotherian.svc.eqiad.wmnet'
       # codfw: 'kartotherian.svc.codfw.wmnet'
