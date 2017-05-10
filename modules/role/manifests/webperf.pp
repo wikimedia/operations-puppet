@@ -28,7 +28,4 @@ class role::webperf {
         eventlogging_path => $eventlogging_path,
         statsd_host       => $statsd_host,
     }
-
-    # TODO: Remove (T164419)
-    class { '::webperf::asset_check': }
 }
