@@ -1083,7 +1083,6 @@ node 'francium.eqiad.wmnet' {
 # Virtualization hosts
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
-    include ::standard
 }
 
 # Hosts visualization / monitoring of EventLogging event streams
