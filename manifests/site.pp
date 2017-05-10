@@ -2389,12 +2389,12 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 
 # restbase eqiad cluster
 node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
-    role(restbase::server, cassandra)
+    role(restbase::production)
 }
 
 # restbase codfw cluster
 node /^restbase20[01][0-9]\.codfw\.wmnet$/ {
-    role(restbase::server, cassandra)
+    role(restbase::production)
 }
 
 # cassandra multi-dc temporary test T111382
