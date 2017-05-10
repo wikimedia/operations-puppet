@@ -36,6 +36,14 @@ class role::librenms {
         'snmp'             => {
             'community' => [ $passwords::network::snmp_ro_community ],
         },
+        'irc_host'         => 'irc.freenode.org',
+        'irc_port'         => '+6697',
+        'irc_chan'         => '#wikimedia-netops',
+        'irc_alert'        => true,
+        'irc_debug'        => false,
+        'irc_alert_chan'   => '#wikimedia-netops',
+        'irc_alert_utf8'   => true,
+        'irc_nick'         => 'librenms-wmf',
 
         'autodiscovery'    => {
             'xdp'      => true,
@@ -43,9 +51,27 @@ class role::librenms {
             'bgp'      => false,
             'snmpscan' => false,
         },
+        'geoloc'             => {
+            'latlng' => true,
+            'engine' => 'google',
+        },
+        'leaflet'             => {
+            'tile_url' => 'maps.wikimedia.org',
+        },
+        'location_map'       => {
+            'eqiad' => 'Equinix, Ashburn, Virginia, USA',
+            'codfw' => 'CyrusOne, Carrollton, Texas, USA',
+            'eqdfw' => 'Equinix, Carrollton, Texas, USA',
+            'ulsfo' => 'United Layer, San Francisco, California, USA',
+            'eqord' => 'Equinix, Chicago, Illinois, USA',
+            'knams' => 'Vancis, Amsterdam, The Netherlands',
+            'esams' => 'EvoSwitch, Amsterdam, The Netherlands',
 
+        },
+        'email_from' => 'librenms',
         'enable_inventory' => 1,
         'enable_syslog'    => 1,
+        'enable_billing'   => 1,
         'syslog_filter'    => [
             'message repeated',
             'Connection from UDP: [',
@@ -53,6 +79,9 @@ class role::librenms {
             'CMD (newsyslog)',
             'CMD (adjkerntz -a)',
             'kernel time sync enabled',
+            'fatal: Write failed: Broken pipe [preauth]',
+            'fatal: Read from socket failed: Connection reset by peer [preauth]',
+            'fatal: no hostkey alg [preauth]',
         ],
 
         'auth_mechanism'     => 'ldap',
