@@ -37,6 +37,14 @@ logger.indexing_slowlog.level = info
 logger.indexing_slowlog.additivity = false
 logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
 
+# parse field deprecation are spammy see https://gerrit.wikimedia.org/r/#/c/353100/
+logger.org.elasticsearch.deprecation.common.ParseField.level = error
+
+# Elastica does not support setting a content-type and generates spam on the
+# RestController logger. This can be removed once Elastica is fixed. See
+# https://github.com/ruflin/Elastica/issues/1301.
+logger.org.elasticsearch.deprecation.rest.RestController.level
+
 appender.file.name = file
 appender.file.type = File
 appender.file.fileName = ${sys:es.logs}.log
