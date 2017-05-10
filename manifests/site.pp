@@ -2675,6 +2675,7 @@ node /^thumbor100[12].eqiad.wmnet/ {
 # deployment servers
 node 'tin.eqiad.wmnet', 'naos.codfw.wmnet' {
     role(deployment_server)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # test system for performance team (T117888)
