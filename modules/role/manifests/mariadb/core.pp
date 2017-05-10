@@ -36,9 +36,21 @@ class role::mariadb::core(
         mysql_role  => $mysql_role,
     }
 
-
-    include mariadb::packages_wmf
-    include mariadb::service
+    # FIXME: Get package, socket, datadir, etc. from hiera
+    # FIXME: Support multiple instances per host
+    # db2062 is a one-time test of MariaDB 10.1, which doesn't have yet
+    # proper support (see T148507 & T116557)
+    if ($::hostname == 'db2062') {
+        class {'mariadb::packages_wmf':
+            package => 'wmf-mariadb101',
+        }
+        class {'mariadb::service':
+            package => 'wmf-mariadb101',
+        }
+    } else {
+        include mariadb::packages_wmf
+        include mariadb::service
+    }
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
