@@ -35,8 +35,6 @@ class role::icinga {
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
 
-    interface::add_ip6_mapped { 'main': }
-
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => 'check_ssl_http_letsencrypt!icinga.wikimedia.org',

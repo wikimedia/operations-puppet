@@ -7,6 +7,4 @@ class role::planet_server {
     system::role { 'role::planet_server':
         description => 'Planet (venus) weblog aggregator'
     }
-
-    interface::add_ip6_mapped { 'main': }
 }

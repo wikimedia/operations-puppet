@@ -22,6 +22,7 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
 # url-downloaders
 node /^(alsafi|aluminium)\.wikimedia\.org$/ {
     role(url_downloader)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # analytics1001 is the Hadoop master node:
@@ -908,6 +909,7 @@ node 'eeden.wikimedia.org' {
 # icinga based monitoring hosts (einsteinium = eqiad, tegmen = codfw)
 node 'einsteinium.wikimedia.org', 'tegmen.wikimedia.org' {
     role(icinga, tendril, tcpircbot, certspotter)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^elastic101[7-9]\.eqiad\.wmnet/ {
@@ -1072,6 +1074,7 @@ node 'eventlog2001.codfw.wmnet' {
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
     role(lists)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
@@ -1126,6 +1129,7 @@ node 'hydrogen.wikimedia.org' {
 # irc.wikimedia.org (replaced argon)
 node 'kraz.wikimedia.org' {
     role(mw_rc_irc)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
@@ -2294,6 +2298,7 @@ node 'pc2006.codfw.wmnet' {
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(planet_server)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # LDAP servers relied on by OIT for mail
@@ -2352,6 +2357,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 # Tor relay
 node 'radium.wikimedia.org' {
     role(tor_relay)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'radon.wikimedia.org' {
@@ -2602,6 +2608,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
 node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
     role(mediawiki_maintenance)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Thumbor servers for MediaWiki image scaling
@@ -2623,11 +2630,13 @@ node 'tungsten.eqiad.wmnet' {
 # replaced magnesium (RT) (T119112 T123713)
 node 'ununpentium.wikimedia.org' {
     role(requesttracker_server)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Ganglia Web UI
 node 'uranium.wikimedia.org' {
     role(ganglia::web)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^labvirt100[0-9].eqiad.wmnet/ {

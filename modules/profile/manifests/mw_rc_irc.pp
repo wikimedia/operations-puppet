@@ -1,7 +1,5 @@
 class profile::mw_rc_irc {
 
-    interface::add_ip6_mapped { 'main': }
-
     $udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
 
     class { '::mw_rc_irc::irc_echo':
