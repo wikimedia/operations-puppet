@@ -18,15 +18,15 @@ class profile::kubernetes::master(
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
             provide_private => true,
-            user            => 'kube',
-            group           => 'kube',
+            user            => 'kubernetes',
+            group           => 'kubernetes',
         }
     }
 
     if $service_cert {
         sslcert::certificate { $service_cert:
             ensure       => present,
-            group        => 'kube',
+            group        => 'kubernetes',
             skip_private => false,
             before       => Class['::k8s::apiserver'],
         }
