@@ -17,7 +17,6 @@ class role::lvs::balancer {
             ],
         /^(lvs10(0[25]|08|11))$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
-            $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
             $sip['misc_web'][$::site],
             $sip['git-ssh'][$::site],
@@ -58,7 +57,6 @@ class role::lvs::balancer {
             ],
         /^(lvs200[25])$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
-            $sip['maps'][$::site],
             $sip['misc_web'][$::site],
             $sip['dns_rec'][$::site],
             ],
@@ -95,13 +93,11 @@ class role::lvs::balancer {
             ],
         /^(lvs300[24])$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
-            $sip['maps'][$::site],
             $sip['misc_web'][$::site],
             $sip['dns_rec'][$::site],
             ],
         /^(lvs400[24])$/ => [ # IPs must be high-traffic2 subnet
             $sip['upload'][$::site],
-            $sip['maps'][$::site],
             $sip['misc_web'][$::site],
             ],
     }
