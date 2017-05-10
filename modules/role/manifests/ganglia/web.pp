@@ -5,8 +5,6 @@ class role::ganglia::web {
     include role::ganglia::config
     include role::ganglia::views
 
-    interface::add_ip6_mapped { 'main': }
-
     letsencrypt::cert::integrated { 'ganglia':
         subjects   => 'ganglia.wikimedia.org',
         puppet_svc => 'apache2',

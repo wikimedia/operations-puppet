@@ -2,8 +2,6 @@
 # https://bestpractical.com/request-tracker
 class profile::requesttracker::server {
 
-    interface::add_ip6_mapped { 'main': }
-
     include ::passwords::misc::rt
 
     class { '::requesttracker':

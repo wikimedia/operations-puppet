@@ -6,8 +6,6 @@ class profile::mediawiki::maintenance {
     # Deployment
     include ::scap::scripts
 
-    interface::add_ip6_mapped { 'main': }
-
     file { $::mediawiki::scap::mediawiki_staging_dir:
         ensure => link,
         target => '/srv/mediawiki'

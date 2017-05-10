@@ -1,8 +1,6 @@
 # sets up a tor relay
 class profile::tor::relay {
 
-    interface::add_ip6_mapped { 'main': }
-
     include passwords::tor
     $controlpassword = $passwords::tor::hashed_control_password
 
