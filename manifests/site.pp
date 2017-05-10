@@ -1427,7 +1427,6 @@ node 'labstore2004.codfw.wmnet' {
 
 node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
-    include ::standard
 }
 
 node /^logstash100[1-2]\.eqiad\.wmnet$/ {
@@ -2660,7 +2659,6 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
 
 node 'wezen.codfw.wmnet' {
     role(syslog::centralserver)
-    include ::standard
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
