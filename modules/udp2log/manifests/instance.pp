@@ -90,11 +90,8 @@ define udp2log::instance(
 
     # if the logs in $log_directory should be rotated
     # then configure a logrotate.d script to do so.
-    file { "/etc/logrotate.d/udp2log-${name}":
+    logrotate::conf { "udp2log-${name}":
         ensure  => $logrotation,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
         content => template($logrotate_template),
     }
 
