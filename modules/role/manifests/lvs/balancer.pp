@@ -50,6 +50,7 @@ class role::lvs::balancer {
             $sip['pdfrender'][$::site],
             $sip['trendingedits'][$::site],
             $sip['kubemaster'][$::site],
+            $sip['logstash'][$::site],
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
