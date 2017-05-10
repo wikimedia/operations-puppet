@@ -52,12 +52,21 @@ class base::standard_packages {
             'command-not-found-data',
             'ecryptfs-utils',
             'mlocate',
-            'ntfs-3g',
             'os-prober',
             'python3-apport',
             'wpasupplicant',
         ]:
         ensure => absent,
+    }
+
+    # Installed by default on Ubuntu, but not used (and it's setuid root, so
+    # a potential security risk).
+    #
+    # Limited to Ubuntu, since Debian doesn't pull it in by default and at
+    # least on labnodepool1001 we have a real world use case since libguestfs0
+    # pulls in ntfs-3g.
+    if os_version('ubuntu >= trusty') {
+        package { 'ntfs-3g': ensure => absent }
     }
 
     # On Ubuntu, eject is installed via the ubuntu-minimal package
