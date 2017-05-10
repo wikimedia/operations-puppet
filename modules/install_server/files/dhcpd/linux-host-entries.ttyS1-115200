@@ -2560,6 +2560,26 @@ host kubernetes1004 {
      fixed-address kubernetes1004.eqiad.wmnet;
 }
 
+host kubernetes2001 {
+     hardware ethernet 18:66:DA:9B:BE:17;
+     fixed-address kubernetes2001.codfw.wmnet;
+}
+
+host kubernetes2002 {
+     hardware ethernet 18:66:DA:99:77:D3;
+     fixed-address kubernetes2002.codfw.wmnet;
+}
+
+host kubernetes2003 {
+     hardware ethernet 18:66:DA:9B:E8:6E;
+     fixed-address kubernetes2003.codfw.wmnet;
+}
+
+host kubernetes2004 {
+     hardware ethernet 18:66:DA:9C:12:4F;
+     fixed-address kubernetes2004.codfw.wmnet;
+}
+
 host labcontrol1001 {
     hardware ethernet 84:2b:2b:77:cf:ca;
     fixed-address labcontrol1001.wikimedia.org;
