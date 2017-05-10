@@ -187,7 +187,7 @@ node 'bohrium.eqiad.wmnet' {
 
 # VM with webserver for misc. static sites
 node 'bromine.eqiad.wmnet' {
-    role('webserver_misc_static')
+    role(webserver_misc_static)
 }
 
 # Californium hosts openstack-dashboard AKA horizon
@@ -218,7 +218,7 @@ node 'chromium.wikimedia.org' {
 
 # All gerrit servers (swap master status in hiera)
 node 'cobalt.wikimedia.org', 'gerrit2001.wikimedia.org' {
-    role('gerrit::server')
+    role(gerrit::server)
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -2332,7 +2332,7 @@ node 'pc2006.codfw.wmnet' {
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
-    role('planet_server')
+    role(planet_server)
 }
 
 # LDAP servers relied on by OIT for mail
@@ -2401,7 +2401,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 
 # Tor relay
 node 'radium.wikimedia.org' {
-    role('tor_relay')
+    role(tor_relay)
 }
 
 node 'radon.wikimedia.org' {
@@ -2662,7 +2662,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
 node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
-    role('mediawiki_maintenance')
+    role(mediawiki_maintenance)
 }
 
 # Thumbor servers for MediaWiki image scaling
@@ -2685,7 +2685,7 @@ node 'tungsten.eqiad.wmnet' {
 
 # replaced magnesium (RT) (T119112 T123713)
 node 'ununpentium.wikimedia.org' {
-    role('requesttracker_server')
+    role(requesttracker_server)
 }
 
 # Ganglia Web UI
@@ -2734,7 +2734,6 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 # T138650 - tools for the security team
 node 'zosma.codfw.wmnet' {
     role(security::tools)
-
     interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
