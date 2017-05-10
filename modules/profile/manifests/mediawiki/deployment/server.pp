@@ -4,7 +4,7 @@ class profile::mediawiki::deployment::server(
     $deployment_group = hiera('deployment_group', 'wikidev'),
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet'),
     $main_deployment_server = hiera('scap::deployment_server'),
-    $base_path = hiera('base_[ath', '/srv/deployment'),
+    $base_path = hiera('base_path', '/srv/deployment'),
 ) {
 
     ## Scap Config ##
