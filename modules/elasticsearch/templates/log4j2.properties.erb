@@ -37,6 +37,9 @@ logger.indexing_slowlog.level = info
 logger.indexing_slowlog.additivity = false
 logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
 
+# parse field deprecation are spammy see https://gerrit.wikimedia.org/r/#/c/353100/
+logger.org.elasticsearch.deprecation.common.ParseField.level = error
+
 appender.file.name = file
 appender.file.type = File
 appender.file.fileName = ${sys:es.logs}.log
