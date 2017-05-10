@@ -377,11 +377,8 @@ define service::node(
         include service::monitoring
 
         $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
-        $check_command = "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}"
         file { "/usr/local/bin/check-${title}":
-            content => inline_template(
-                '<%= ["#!/bin/sh", @check_command].join("\n") %>'
-            ),
+            content => template('service/check-service.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
