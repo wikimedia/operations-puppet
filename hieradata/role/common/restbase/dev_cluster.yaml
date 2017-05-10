@@ -82,42 +82,24 @@ profile::cassandra::metrics_blacklist:
 profile::cassandra::instances:
   "restbase-dev1001.eqiad.wmnet":
     a:
-      jmx_port: 7189
       listen_address: 10.64.0.36
-      rpc_address: 10.64.0.36
-      rpc_interface: eth0
       fqdn: restbase-dev1001-a.eqiad.wmnet
     b:
-      jmx_port: 7190
       listen_address: 10.64.0.37
-      rpc_address: 10.64.0.37
-      rpc_interface: eth0
       fqdn: restbase-dev1001-b.eqiad.wmnet
   "restbase-dev1002.eqiad.wmnet":
     a:
-      jmx_port: 7189
       listen_address: 10.64.32.159
-      rpc_address: 10.64.32.159
-      rpc_interface: eth0
       fqdn: restbase-dev1002-a.eqiad.wmnet
     b:
-      jmx_port: 7190
       listen_address: 10.64.32.160
-      rpc_address: 10.64.32.160
-      rpc_interface: eth0
       fqdn: restbase-dev1002-b.eqiad.wmnet
   "restbase-dev1003.eqiad.wmnet":
     a:
-      jmx_port: 7189
       listen_address: 10.64.48.117
-      rpc_address: 10.64.48.117
-      rpc_interface: eth0
       fqdn: restbase-dev1003-a.eqiad.wmnet
     b:
-      jmx_port: 7190
       listen_address: 10.64.48.118
-      rpc_address: 10.64.48.118
-      rpc_interface: eth0
       fqdn: restbase-dev1003-b.eqiad.wmnet
 
 profile::cassandra::settings:
