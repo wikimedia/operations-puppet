@@ -2,7 +2,8 @@
 seeds = []
 @all_instances.each do |host, instances|
   seeds << host
-  instances.each do |_, data|
-    seeds << data['fqdn']
+  hostname = host.split(".").shift()
+  instances.each do |instance, _|
+    seeds << host.gsub(hostname, "#{hostname}-#{instance}")
   end
 end -%><%= seeds.join "|" -%>
