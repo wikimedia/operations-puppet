@@ -42,14 +42,19 @@ define cassandra::instance(
         fail("instance ${instance_name} not found in ${instances}")
     }
 
-    $this_instance        = $instances[$instance_name]
-    $jmx_port             = $this_instance['jmx_port']
-    $listen_address       = $this_instance['listen_address']
-    $rpc_address          = $this_instance['rpc_address']
-    $rpc_interface        = $this_instance['rpc_interface']
-    $jmx_exporter_enabled = $this_instance['jmx_exporter_enabled']
+    # Default jmx port; only works with 1-letter instnaces
+    $default_jmx_port     = 7189 + inline_template("<%= @title.ord - 'a'.ord %>")
 
-    if $rpc_interface {
+    # Relevant values, choosing convention over configuration
+    $this_instance        = $instances[$instance_name]
+    $jmx_port             = pick($this_instance['jmx_port'], $default_jmx_port)
+    $listen_address       = $this_instance['listen_address']
+    $rpc_address          = pick($this_instance['rpc_address'], $listen_address)
+    $jmx_exporter_enabled = pick($this_instance['jmx_exporter_enabled'], false)
+
+    # Add the IP address if not present
+    if $rpc_address != $facts['ipaddress'] {
+        $rpc_interface = $facts['interface_primary']
         interface::ip { "cassandra-${instance_name}_rpc_${rpc_interface}":
             interface => $rpc_interface,
             address   => $rpc_address,
