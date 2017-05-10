@@ -4,6 +4,7 @@
 #
 class role::syslog::centralserver {
 
+    include ::standard
     include ::base::firewall
     include ::profile::backup::host
 
