@@ -107,12 +107,6 @@ class nodepool(
         ensure => present,
     }
 
-    # guest disk image management system - tools
-    # eg: virt-inspector, virt-ls ...
-    package { 'libguestfs-tools':
-        ensure => present,
-    }
-
     # Script to nicely stop Nodepool scheduler from systemd
     file { '/usr/bin/nodepool-graceful-stop':
         ensure => present,
