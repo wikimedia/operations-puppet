@@ -67,6 +67,12 @@ class lvs::configuration {
         default           => 'unknown',
     }
 
+    if $ipaddress {
+        $v6_ip = $ipaddress
+    } else {
+        $v6_ip = '::'
+    }
+
     $pybal = {
         'bgp' => hiera('lvs::configuration::bgp', 'yes'),
         'bgp-peer-address' => $::hostname ? {
@@ -83,7 +89,7 @@ class lvs::configuration {
             default         => '(unspecified)'
             },
         'bgp-nexthop-ipv4' => $facts['ipaddress'],
-        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
+        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@v6_ip).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
         'instrumentation' => 'yes',
     }
 
