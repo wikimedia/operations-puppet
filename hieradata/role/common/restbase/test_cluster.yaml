@@ -1,0 +1,143 @@
+cluster: restbase_test
+debdeploy::grains:
+  debdeploy-restbase:
+    value: canary
+profile::restbase::cassandra_local_dc: "%{::site}"
+profile::restbase::logging_label: restbase-test
+profile::restbase::cassandra_datacenters:
+    - "eqiad"
+    - "codfw"
+profile::restbase::parsoid_uri: "http://parsoid.discovery.wmnet:8000"
+profile::restbase::graphoid_uri: "http://graphoid.discovery.wmnet:19000"
+profile::restbase::mobileapps_uri: "http://mobileapps.discovery.wmnet:8888"
+profile::restbase::mathoid_uri: "http://mathoid.discovery.wmnet:10042"
+profile::restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.org/v1"
+profile::restbase::pdfrender_uri: "http://pdfrender.discovery.wmnet:5252"
+profile::restbase::citoid_uri: "http://citoid.discovery.wmnet:1970"
+profile::restbase::trendingedits_uri: "http://trendingedits.svc.%{::site}.wmnet:6699"
+profile::restbase::eventlogging_service_uri: "http://eventbus.discovery.wmnet:8085/v1/events"
+profile::restbase::cxserver_uri: "http://cxserver.discovery.wmnet:8080"
+profile::restbase::cassandra_user: restb
+profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+profile::restbase::monitor_domain: en.wikipedia.org
+profile::restbase::cassandra_tls:
+  ca: /dev/null
+# TODO: get this from cassandra's instances?
+profile::restbase::seeds:
+  - cerium-a.eqiad.wmnet
+  - praseodymium-a.eqiad.wmnet
+  - xenon-a.eqiad.wmnet
+  - restbase-test2001-a.codfw.wmnet
+  - restbase-test2001-b.codfw.wmnet
+  - restbase-test2002-a.codfw.wmnet
+  - restbase-test2002-b.codfw.wmnet
+  - restbase-test2003-a.codfw.wmnet
+  - restbase-test2003-b.codfw.wmnet
+
+#
+# Cassandra
+#
+## Metrics
+graphite_host: 'graphite1003.eqiad.wmnet'
+
+profile::cassandra::metrics_whitelist:
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
+profile::cassandra::metrics_blacklist:
+  - .*\.15MinuteRate$
+  - .*\.5MinuteRate$
+  - .*\.98percentile$
+  - .*\.999percentile$
+  - .*\.max$
+  - .*\.mean$
+  - .*\.meanRate$
+  - .*\.min$
+  - .*\.stddev$
+  - .*\.metrics\.Keyspace\..*$
+  - .*\.metrics\.Client\..*$
+  - .*\.metrics\.Table\..*$
+
+## Instances
+profile::cassandra::instances:
+  "cerium.eqiad.wmnet":
+    a:
+      listen_address: 10.64.16.153
+      jmx_exporter_enabled: true
+      fqdn: cerium-a.eqiad.wmnet
+  "praseodymium.eqiad.wmnet":
+    a:
+      listen_address: 10.64.16.188
+      jmx_exporter_enabled: true
+      fqdn: praseodymium-a.eqiad.wmnet
+  "xenon.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.202
+      jmx_exporter_enabled: true
+      fqdn: xenon-a.eqiad.wmnet
+  "restbase-test2001.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.154
+      fqdn: "restbase-test2001-a.codfw.wmnet"
+    b:
+      listen_address: 10.192.16.155
+      fqdn: "restbase-test2001-b.codfw.wmnet"
+  "restbase-test2002.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.156
+      fqdn: "restbase-test2002-a.codfw.wmnet"
+    b:
+      listen_address: 10.192.16.157
+      fqdn: "restbase-test2002-b.codfw.wmnet"
+  "restbase-test2003.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.158
+      fqdn: "restbase-test2003-a.codfw.wmnet"
+    b:
+      listen_address: 10.192.16.159
+      fqdn: "restbase-test2003-b.codfw.wmnet"
+
+profile::cassandra::rack: "rack1"
+profile::cassandra::settings:
+  start_rpc: 'true'
+  max_heap_size: 4g
+  # 1/4 heap size, no more than 100m/thread
+  heap_newsize: 1g
+  compaction_throughput_mb_per_sec: 20
+  concurrent_compactors: 10
+  concurrent_writes: 18
+  concurrent_reads: 18
+  tls_cluster_name: "services-test"
+  internode_encryption: dc
+  dc: "%{::site}"
+  cluster_name: "services-test"
+  application_username: restb
+  application_password: "%{passwords::cassandra::restbase}"
+  target_version: '2.2'
+  permissions_validity_in_ms: 600000
+  trickle_fsync: false
+  extra_classpath:
+    - /srv/deployment/cassandra/twcs/lib/cassandra-v2.2/TimeWindowCompactionStrategy-2.2.5.jar
+  client_encryption_enabled: true
+
+service::configuration::log_dir: "/var/log"
+
+admin::groups:
+  - restbase-roots
+  - restbase-admins

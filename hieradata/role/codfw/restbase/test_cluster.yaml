@@ -1,0 +1,12 @@
+profile::restbase::hosts:
+  - restbase-test2001.codfw.wmnet
+  - restbase-test2002.codfw.wmnet
+  - restbase-test2003.codfw.wmnet
+# We don't want paging
+do_paging: false
+debdeploy::grains:
+  debdeploy-restbase:
+    value: standard
+debdeploy::grains:
+  debdeploy-restbase-codfw:
+    value: standard
