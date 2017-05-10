@@ -83,24 +83,18 @@ profile::cassandra::instances:
   "restbase-dev1001.eqiad.wmnet":
     a:
       listen_address: 10.64.0.36
-      fqdn: restbase-dev1001-a.eqiad.wmnet
     b:
       listen_address: 10.64.0.37
-      fqdn: restbase-dev1001-b.eqiad.wmnet
   "restbase-dev1002.eqiad.wmnet":
     a:
       listen_address: 10.64.32.159
-      fqdn: restbase-dev1002-a.eqiad.wmnet
     b:
       listen_address: 10.64.32.160
-      fqdn: restbase-dev1002-b.eqiad.wmnet
   "restbase-dev1003.eqiad.wmnet":
     a:
       listen_address: 10.64.48.117
-      fqdn: restbase-dev1003-a.eqiad.wmnet
     b:
       listen_address: 10.64.48.118
-      fqdn: restbase-dev1003-b.eqiad.wmnet
 
 profile::cassandra::settings:
   start_rpc: 'true'
