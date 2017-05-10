@@ -2720,12 +2720,10 @@ node 'wezen.codfw.wmnet' {
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role(parsoid)
-    include ::standard
 }
 
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(parsoid)
-    include ::standard
 }
 
 # T138650 - tools for the security team

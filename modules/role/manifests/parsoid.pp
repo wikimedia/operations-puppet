@@ -7,6 +7,7 @@ class role::parsoid {
         description => "Parsoid ${::realm}"
     }
 
+    include ::standard
     include ::base::firewall
 
     if hiera('has_lvs', true) {
