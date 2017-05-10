@@ -3,6 +3,7 @@
 class role::dnsrecursor {
     system::role { 'role::dnsrecursor': description => 'Recursive DNS server' }
 
+    include ::standard
     include ::lvs::configuration
     include ::network::constants
     include ::base::firewall
