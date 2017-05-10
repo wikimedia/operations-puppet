@@ -44,6 +44,12 @@ class lvs::configuration {
         },
     }
 
+    if $::ipaddress6 {
+        $v6_ip = $::ipaddress6
+    } else {
+        $v6_ip = '::'
+    }
+
     # NOTE: This is for informational purposes only. The actual configuration
     # that decides primary/secondary is done at the BGP level on the routers.
     $lvs_grain = $::hostname ? {
@@ -83,7 +89,7 @@ class lvs::configuration {
             default         => '(unspecified)'
             },
         'bgp-nexthop-ipv4' => $facts['ipaddress'],
-        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
+        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@v6_ip).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
         'instrumentation' => 'yes',
     }
 
