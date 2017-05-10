@@ -2661,8 +2661,6 @@ node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[12].eqiad.wmnet/ {
     role(thumbor::mediawiki)
-
-    include ::standard
 }
 
 # deployment servers
