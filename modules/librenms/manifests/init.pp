@@ -41,6 +41,14 @@ class librenms(
         require => Group['librenms'],
     }
 
+    file { "${rrd_dir}":
+        ensure  => directory,
+        mode    => '0775',
+        owner   => 'www-data',
+        group   => 'librenms',
+        require => Group['librenms'],
+    }
+
     logrotate::conf { 'librenms':
         ensure => present,
         source => 'puppet:///modules/librenms/logrotate',
@@ -48,6 +56,7 @@ class librenms(
 
     package { [
             'php5-cli',
+            'php5-curl',
             'php5-gd',
             'php5-mcrypt',
             'php5-mysql',
@@ -105,6 +114,27 @@ class librenms(
         user    => 'librenms',
         command => "${install_dir}/alerts.php >/dev/null 2>&1",
         minute  => '*',
+        require => User['librenms'],
+    }
+    cron { 'librenms-poll-billing':
+        ensure  => present,
+        user    => 'librenms',
+        command => "${install_dir}/poll-billing.php >/dev/null 2>&1",
+        minute  => '*/5',
+        require => User['librenms'],
+    }
+    cron { 'librenms-billing-calculate':
+        ensure  => present,
+        user    => 'librenms',
+        command => "${install_dir}/billing-calculate.php >/dev/null 2>&1",
+        minute  => '01',
+        require => User['librenms'],
+    }
+    cron { 'librenms-daily':
+        ensure  => present,
+        user    => 'librenms',
+        command => "${install_dir}/daily.sh >/dev/null 2>&1",
+        hour    => '0',
         require => User['librenms'],
     }
 

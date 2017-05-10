@@ -43,9 +43,24 @@ class role::librenms {
             'bgp'      => false,
             'snmpscan' => false,
         },
+        'geoloc'             => {
+            'latlng' => true,
+            'engine' => 'google',
+        },
+        'location_map'       => {
+            'eqiad' => 'Equinix, Ashburn, Virginia, USA',
+            'codfw' => 'CyrusOne, Carrollton, Texas, USA',
+            'eqdfw' => 'Equinix, Carrollton, Texas, USA',
+            'ulsfo' => 'United Layer, San Francisco, California, USA',
+            'eqord' => 'Equinix, Chicago, Illinois, USA',
+            'knams' => 'Vancis, Amsterdam, The Netherlands',
+            'esams' => 'EvoSwitch, Amsterdam, The Netherlands',
 
+        },
+        'email_from' => 'librenms',
         'enable_inventory' => 1,
         'enable_syslog'    => 1,
+        'enable_billing'   => 1,
         'syslog_filter'    => [
             'message repeated',
             'Connection from UDP: [',
