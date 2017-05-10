@@ -214,6 +214,33 @@ class openstack::horizon::service(
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
     }
 
+    # sudo dashboard
+    file { '/usr/lib/python2.7/dist-packages/wikimediasudodashboard':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/sudo",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
+        recurse => true,
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1926_project_sudo_panel.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/sudo_enable.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Exec['djangorefresh'],
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_72_sudoers_add_group.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/sudo_group_add.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Exec['djangorefresh'],
+        require => Package['python-designate-dashboard', 'openstack-dashboard'],
+    }
+
     if $openstack_version != 'liberty' {
         # Override some .js files to provide a simplified user experience.  Alas
         #  we can't do this via the overrides.py monkeypatch below
