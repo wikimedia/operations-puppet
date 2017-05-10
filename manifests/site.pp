@@ -2336,12 +2336,10 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
 
 node 'poolcounter1001.eqiad.wmnet' {
     role(poolcounter::server)
-    include ::standard
 }
 
 node 'poolcounter1002.eqiad.wmnet' {
     role(poolcounter::server)
-    include ::standard
 }
 
 node /^prometheus200[34]\.codfw\.wmnet$/ {
@@ -2650,7 +2648,6 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
     role(poolcounter::server)
-    include ::standard
 }
 
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
