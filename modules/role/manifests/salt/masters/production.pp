@@ -12,7 +12,6 @@ class role::salt::masters::production {
         salt_runner_dirs    => ['/srv/runners'],
         salt_peer_run       => {
             'tin.eqiad.wmnet'              => ['deploy.*'],
-            'mira.codfw.wmnet'             => ['deploy.*'],
             'naos.codfw.wmnet'             => ['deploy.*'],
             'puppetmaster1001.eqiad.wmnet' => ['keys.*', 'test.*'],
             'puppetmaster2001.codfw.wmnet' => ['keys.*', 'test.*'],
