@@ -2,7 +2,7 @@ varnishtest "Derive original URL and set X-MediaWiki-Original"
 
 server s1 {
     rxreq
-    txresp
+    txresp -bodylen 1024
 } -start
 
 varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
