@@ -19,7 +19,7 @@ profile::kubernetes::master::admission_controllers:
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
-profile::kubernetes::master::ssl_key_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::authz_mode: ''
 profile::kubernetes::master::host_automounts: []
 profile::kubernetes::master::host_path_prefixes_allowed: []
