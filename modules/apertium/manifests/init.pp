@@ -121,11 +121,8 @@ class apertium(
         before => Service['apertium-apy'],
     }
 
-    file { '/etc/logrotate.d/apertium-apy':
+    logrotate::conf { '/etc/logrotate.d/apertium-apy':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
         content => template('apertium/logrotate.erb'),
     }
 }
