@@ -2377,10 +2377,7 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
 
 node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
-    include ::standard
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 
@@ -2530,11 +2527,7 @@ node 'sodium.wikimedia.org' {
 
 node /^rhodium.eqiad.wmnet/ {
     role(puppetmaster::backend)
-    include ::standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 
