@@ -5,9 +5,12 @@ class profile::mediawiki::deployment::server(
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet'),
     $main_deployment_server = hiera('scap::deployment_server'),
     $base_path = hiera('base_[ath', '/srv/deployment'),
+    $ipv6 = hiera('deployment_server_ipv6', true),
 ) {
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    if $ipv6 === true {
+      interface::add_ip6_mapped { 'main': interface => 'eth0', }
+    }
 
     ## Scap Config ##
     require ::scap
