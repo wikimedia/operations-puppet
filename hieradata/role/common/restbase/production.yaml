@@ -1,0 +1,265 @@
+#
+# RESTBase
+#
+cluster: restbase
+profile::restbase::cassandra_local_dc: "%{::site}"
+profile::restbase::logging_label: restbase
+profile::restbase::cassandra_datacenters:
+    - "eqiad"
+    - "codfw"
+profile::restbase::parsoid_uri: "http://parsoid.discovery.wmnet:8000"
+profile::restbase::graphoid_uri: "http://graphoid.discovery.wmnet:19000"
+profile::restbase::mobileapps_uri: "http://mobileapps.discovery.wmnet:8888"
+profile::restbase::mathoid_uri: "http://mathoid.discovery.wmnet:10042"
+profile::restbase::aqs_uri: "http://aqs.svc.%{::aqs_site}.wmnet:7232/analytics.wikimedia.org/v1"
+profile::restbase::pdfrender_uri: "http://pdfrender.discovery.wmnet:5252"
+profile::restbase::citoid_uri: "http://citoid.discovery.wmnet:1970"
+profile::restbase::trendingedits_uri: "http://trendingedits.svc.%{::site}.wmnet:6699"
+profile::restbase::eventlogging_service_uri: "http://eventbus.discovery.wmnet:8085/v1/events"
+profile::restbase::cxserver_uri: "http://cxserver.discovery.wmnet:8080"
+profile::restbase::cassandra_user: restb
+profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+profile::restbase::monitor_domain: en.wikipedia.org
+profile::restbase::cassandra_tls:
+  ca: /dev/null
+#
+# Cassandra
+#
+profile::cassandra::metrics::whitelist:
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
+profile::cassandra::metrics::blacklist:
+  - .*\.15MinuteRate$
+  - .*\.5MinuteRate$
+  - .*\.98percentile$
+  - .*\.999percentile$
+  - .*\.mean$
+  - .*\.meanRate$
+  - .*\.min$
+  - .*\.stddev$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\..*$
+  - .*\.metrics\.Keyspace\..*$
+  - .*\.metrics\.Client\..*$
+  - .*\.metrics\.Table\..*$
+## Instances
+profile::cassandra::instances:
+  "restbase1007.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.230
+    b:
+      listen_address: 10.64.0.231
+    c:
+      listen_address: 10.64.0.232
+  "restbase1008.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.187
+    b:
+      listen_address: 10.64.32.195
+    c:
+      listen_address: 10.64.32.196
+  "restbase1009.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.120
+    b:
+      listen_address: 10.64.48.130
+    c:
+      listen_address: 10.64.48.131
+  "restbase1010.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.114
+    b:
+      listen_address: 10.64.0.115
+    c:
+      listen_address: 10.64.0.116
+  "restbase1011.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.117
+    b:
+      listen_address: 10.64.0.118
+    c:
+      listen_address: 10.64.0.119
+  "restbase1012.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.202
+    b:
+      listen_address: 10.64.32.203
+    c:
+      listen_address: 10.64.32.204
+  "restbase1013.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.205
+    b:
+      listen_address: 10.64.32.206
+    c:
+      listen_address: 10.64.32.207
+  "restbase1014.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.135
+    b:
+      listen_address: 10.64.48.136
+    c:
+      listen_address: 10.64.48.137
+  "restbase1015.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.138
+    b:
+      listen_address: 10.64.48.139
+    c:
+      listen_address: 10.64.48.140
+  "restbase1016.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.32
+    b:
+      listen_address: 10.64.0.33
+    c:
+      listen_address: 10.64.0.34
+  "restbase1017.eqiad.wmnet":
+    a:
+      listen_address: 10.64.32.130
+    b:
+      listen_address: 10.64.32.131
+    c:
+      listen_address: 10.64.32.132
+  "restbase1018.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.98
+    b:
+      listen_address: 10.64.48.99
+    c:
+      listen_address: 10.64.48.100
+  "restbase2001.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.162
+    b:
+      listen_address: 10.192.16.163
+    c:
+      listen_address: 10.192.16.164
+  "restbase2002.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.165
+    b:
+      listen_address: 10.192.16.166
+    c:
+      listen_address: 10.192.16.167
+  "restbase2003.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.134
+    b:
+      listen_address: 10.192.32.135
+    c:
+      listen_address: 10.192.32.136
+  "restbase2004.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.137
+    b:
+      listen_address: 10.192.32.138
+    c:
+      listen_address: 10.192.32.139
+  "restbase2005.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.46
+    b:
+      listen_address: 10.192.48.47
+    c:
+      listen_address: 10.192.48.48
+  "restbase2006.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.49
+    b:
+      listen_address: 10.192.48.50
+    c:
+      listen_address: 10.192.48.51
+  "restbase2007.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.176
+    b:
+      listen_address: 10.192.16.177
+    c:
+      listen_address: 10.192.16.178
+  "restbase2008.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.143
+    b:
+      listen_address: 10.192.32.144
+    c:
+      listen_address: 10.192.32.145
+  "restbase2009.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.54
+    b:
+      listen_address: 10.192.48.55
+    c:
+      listen_address: 10.192.48.56
+  "restbase2010.codfw.wmnet":
+    a:
+      listen_address: 10.192.16.186
+    b:
+      listen_address: 10.192.16.187
+    c:
+      listen_address: 10.192.16.188
+  "restbase2011.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.152
+    b:
+      listen_address: 10.192.32.153
+    c:
+      listen_address: 10.192.32.154
+  "restbase2012.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.68
+    b:
+      listen_address: 10.192.48.69
+    c:
+      listen_address: 10.192.48.70
+
+
+profile::cassandra::settings:
+  start_rpc: 'false'
+  max_heap_size: 12g
+  # 1/4 heap size, no more than 100m/thread
+  heap_newsize: 2048m
+  compaction_throughput_mb_per_sec: 20
+  concurrent_compactors: 10
+  concurrent_writes: 18
+  concurrent_reads: 18
+  tls_cluster_name: "services"
+  internode_encryption: dc
+  dc: "%{::site}"
+  cluster_name: "eqiad" # This is the name for historical reasons, see T112257 for context
+  application_username: restb
+  application_password: "%{passwords::cassandra::restbase}"
+  target_version: '2.2'
+  permissions_validity_in_ms: 600000
+  trickle_fsync: false
+  extra_classpath:
+    - /srv/deployment/cassandra/twcs/lib/cassandra-v2.2/TimeWindowCompactionStrategy-2.2.5.jar
+  client_encryption_enabled: true
+
+
+#
+# General
+#
+role::lvs::realserver::pools:
+  restbase: {}
+service::configuration::log_dir: "/var/log"
+
+admin::groups:
+  - restbase-roots
+  - restbase-admins
