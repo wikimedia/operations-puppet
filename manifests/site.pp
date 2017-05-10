@@ -14,7 +14,6 @@ if $cluster == undef {
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
     role(dnsrecursor, ntp)
-    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -208,7 +207,6 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1130,7 +1128,6 @@ node 'heze.codfw.wmnet' {
 # DNS recursor
 node 'hydrogen.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1819,7 +1816,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
 node 'maerlant.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2214,7 +2210,6 @@ node 'neodymium.eqiad.wmnet' {
 
 node 'nescio.wikimedia.org' {
     role(dnsrecursor, ntp)
-    include ::standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
