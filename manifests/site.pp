@@ -134,11 +134,7 @@ node 'auth2001.codfw.wmnet' {
 
 node 'baham.wikimedia.org' {
     role(authdns::server)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include ::standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 # Bastion in Virginia
@@ -905,11 +901,7 @@ node /^druid100[123].eqiad.wmnet$/ {
 
 node 'eeden.wikimedia.org' {
     role(authdns::server)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include ::standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 # icinga based monitoring hosts (einsteinium = eqiad, tegmen = codfw)
@@ -2394,11 +2386,7 @@ node 'radium.wikimedia.org' {
 
 node 'radon.wikimedia.org' {
     role(authdns::server)
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include ::standard
+    interface::add_ip6_mapped { 'main': interface => 'eth0', }
 }
 
 # Live Recent Changes WebSocket stream
