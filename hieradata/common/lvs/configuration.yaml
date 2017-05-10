@@ -143,6 +143,9 @@ lvs::configuration::lvs_service_ips:
   kubemaster: &ip_block036
     eqiad: 10.2.2.8
     codfw: 10.2.1.8
+  logstash: &ip_block037
+    eqiad: 10.2.2.36
+
 lvs::configuration::lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -1271,3 +1274,124 @@ lvs::configuration::lvs_services:
       cluster: kubernetes
       service: kubemaster
     # For now, no icinga monitoring for the same reasons as ProxyFetch
+  logstash-log4j:
+    description: Logstash ingestion log4j
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    port: 4560
+    bgp: 'yes'
+    depool-threshold: '.5'
+    scheduler: sh
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-log4j
+    icinga:
+      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!4560"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-gelf:
+    description: Logstash ingestion gelf
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 12201
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
+      RunCommand:
+        command: /bin/true
+        interval: 60
+        timeout: 10
+    conftool:
+      cluster: logstash
+      service: logstash-gelf
+  logstash-json-udp:
+    description: Logstash ingestion json udp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 11514
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      IdleConnection:  # Monitors the TCP session as it's the same process listening on TCP and UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-json
+  logstash-json-tcp:
+    description: Logstash ingestion json tcp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    port: 11514
+    bgp: 'yes'
+    depool-threshold: '.5'
+    scheduler: sh
+    monitors:
+      IdleConnection:  # Monitors the TCP session, same process listening on UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-json
+    icinga:
+      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!11514"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-syslog:
+    description: Logstash ingestion syslog
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 10514
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      IdleConnection:  # Monitors the TCP session, same process listening on UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-syslog
+    icinga:
+      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!10514"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-udp2log:
+    description: Logstash ingestion syslog
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 8324
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
+      RunCommand:
+        command: /bin/true
+        interval: 60
+        timeout: 10
+    conftool:
+      cluster: logstash
+      service: logstash-udp2log

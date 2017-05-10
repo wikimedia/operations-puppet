@@ -210,6 +210,14 @@ wdqs:
     default_values:
       pooled: 'no'
       weight: 10
+kubernetes:
+  kubemaster:
+    port: 6443
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
 logstash:
   kibana:
     port: 80
@@ -218,11 +226,38 @@ logstash:
     default_values:
       pooled: 'no'
       weight: 10
-kubernetes:
-  kubemaster:
-    port: 6443
+  logstash-log4j:
+    port: 4560
     datacenters:
     - eqiad
     default_values:
-      pooled: 'yes'
+      pooled: 'no'
+      weight: 10
+  logstash-gelf:
+    port: 12201 # UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-json:
+    port: 11514 # TCP & UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-syslog:
+    port: 10514 # UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-udp2log:
+    port: 8324 # UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
       weight: 10
