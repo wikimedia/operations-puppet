@@ -75,10 +75,8 @@ class role::logging::kafkatee::webrequest::base {
 
     # if the logs in $log_directory should be rotated
     # then configure a logrotate.d script to do so.
-    file { '/etc/logrotate.d/kafkatee-webrequest':
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+    logrotate::conf { '/etc/logrotate.d/kafkatee-webrequest':
+        ensure  => 'present',
         content => template('role/logging/kafkatee_logrotate.erb'),
     }
 
