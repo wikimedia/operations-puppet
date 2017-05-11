@@ -235,8 +235,6 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
         zuul::merger,
         zuul::server)
 
-
-    include ::standard
     interface::add_ip6_mapped { 'main': }
     include ::contint::firewall
 }
