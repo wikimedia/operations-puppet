@@ -6,6 +6,10 @@ Environment=RUN_AS_USER=www-data
 <%- if !@malloc_arenas.nil? && @malloc_arenas != ''  -%>
 Environment="MALLOC_CONF=narenas:<%= @malloc_arenas %>"
 <%- end -%>
+
+# For T107128
+Environment=LANG=C.UTF-8
+
 EnvironmentFile=
 EnvironmentFile=/etc/default/hhvm
 ExecStart=
