@@ -9,6 +9,8 @@ cache::text::nodes:
     codfw:
       - 'cp1008.wikimedia.org'
 cache::lua_support: true
+cache::fe_transient_gb: 10
+cache::be_transient_gb: 5
 cache::app_directors:
   appservers:
     backends:
