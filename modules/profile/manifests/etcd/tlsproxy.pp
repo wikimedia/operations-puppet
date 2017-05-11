@@ -1,7 +1,8 @@
 class profile::etcd::tlsproxy(
     $cert_name = hiera('profile::etcd::tlsproxy::cert_name'),
     $acls = hiera('profile::etcd::tlsproxy::acls'),
-    $salt = hiera('profile::etcd::tlsproxy::salt')
+    $salt = hiera('profile::etcd::tlsproxy::salt'),
+    $read_only = hiera('profile::etcd::tlsproxy::read_only'),
 ){
     require ::tlsproxy::instance
     require ::passwords::etcd
