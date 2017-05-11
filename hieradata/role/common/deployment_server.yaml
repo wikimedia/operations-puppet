@@ -132,9 +132,9 @@ scap::sources:
     repository: wikidata/query/deploy
 #    lvs_service: wdqs
   zotero/translation-server: {}
-#    lvs_service: zotero
+    lvs_service: zotero
   zotero/translators: {}
-#    lvs_service: zotero
+    lvs_service: zotero
   # Time-window compaction strategy for Cassandra
   cassandra/twcs:
     repository: operations/software/cassandra-twcs
