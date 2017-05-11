@@ -1078,9 +1078,7 @@ node 'fermium.wikimedia.org' {
 
 # ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
 node 'francium.eqiad.wmnet' {
-
     role(dumps::zim)
-    include ::standard
 }
 
 # Virtualization hosts

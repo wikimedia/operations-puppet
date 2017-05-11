@@ -3,6 +3,7 @@ class role::dumps::zim {
 
     system::role { 'dumps::zim': description => 'ZIM dumps' }
 
+    include ::standard
     include ::dumps::zim
     include ::base::firewall
 
