@@ -37,8 +37,15 @@ class role::logstash::collector (
         port => 10514,
     }
 
-    ferm::service { 'logstash_syslog':
+    ferm::service { 'logstash_syslog_udp':
         proto   => 'udp',
+        port    => '10514',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
+    ferm::service { 'logstash_syslog_tcp':
+        proto   => 'tcp',
         port    => '10514',
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
@@ -226,4 +233,3 @@ class role::logstash::collector (
         increment       => [ '%{level}' ],
     }
 }
-
