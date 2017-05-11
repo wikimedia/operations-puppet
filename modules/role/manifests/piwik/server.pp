@@ -1,6 +1,7 @@
 # == Class: role::piwik::server
 #
 class role::piwik::server {
+    include ::standard
     include ::profile::piwik::webserver
     include ::profile::piwik::instance
 
