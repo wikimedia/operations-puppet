@@ -32,7 +32,7 @@ class role::mariadb::wikitech {
     ferm::service { 'mysql_deployment_terbium':
         proto  => 'tcp',
         port   => '3306',
-        srange => '@resolve((tin.eqiad.wmnet mira.codfw.wmnet naos.codfw.wmnet terbium.eqiad.wmnet wasat.codfw.wmnet))',
+        srange => '@resolve((tin.eqiad.wmnet naos.codfw.wmnet terbium.eqiad.wmnet wasat.codfw.wmnet))',
     }
 
     service { 'mariadb':
