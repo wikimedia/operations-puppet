@@ -1292,7 +1292,7 @@ lvs::configuration::lvs_services:
       cluster: logstash
       service: logstash-log4j
     icinga:
-      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!4560"
+      check_command: "check_tcp!4560"
       sites:
         eqiad:
           hostname: logstash.svc.eqiad.wmnet
@@ -1351,7 +1351,7 @@ lvs::configuration::lvs_services:
       cluster: logstash
       service: logstash-json
     icinga:
-      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!11514"
+      check_command: "check_tcp!11514"
       sites:
         eqiad:
           hostname: logstash.svc.eqiad.wmnet
@@ -1373,7 +1373,7 @@ lvs::configuration::lvs_services:
       cluster: logstash
       service: logstash-syslog
     icinga:
-      check_command: "check_tcp_ip!logstash.svc.%{::site}.wmnet!10514"
+      check_command: "check_tcp!10514"
       sites:
         eqiad:
           hostname: logstash.svc.eqiad.wmnet
