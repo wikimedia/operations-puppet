@@ -72,3 +72,5 @@ cache::req_handling:
       '^/w/thumb(_handler)?\.php':
         director: 'rendering'
         debug_director: 'appservers_debug'
+cache::fe_transient_gb: 15
+cache::be_transient_gb: 3
