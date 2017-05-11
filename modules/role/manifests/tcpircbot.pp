@@ -15,8 +15,6 @@ class role::tcpircbot($ensure='present') {
             '::ffff:10.64.32.167/128',          # logging: eventlog1001
             '::ffff:10.64.0.196/128',           # deployment eqiad v4: tin
             '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
-            '::ffff:10.192.16.132/128',         # deployment codfw v4: mira
-            '2620:0:860:102:10:192:16:132/128', # deployment codfw v6: mira
             '::ffff:10.192.32.22/128',          # deployment codfw v4: naos
             '2620:0:860:103:10:192:32:22/128',  # deployment codfw v6: naos
             '::ffff:10.64.32.13/128',           # maintenance eqiad v4: terbium
@@ -43,7 +41,6 @@ class role::tcpircbot($ensure='present') {
     $allowed_hosts = [
         'eventlog1001.eqiad.wmnet',     # logging eqiad
         'tin.eqiad.wmnet',              # deployment eqiad
-        'mira.codfw.wmnet',             # deployment codfw
         'naos.codfw.wmnet',             # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
         'puppetmaster2001.codfw.wmnet', # puppet codfw
