@@ -1113,7 +1113,6 @@ node 'helium.eqiad.wmnet' {
 # Bacula storage
 node 'heze.codfw.wmnet' {
     role(backup::offsite)
-    include ::standard
 }
 
 # DNS recursor
