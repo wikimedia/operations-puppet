@@ -1189,8 +1189,6 @@ node 'labtestservices2001.wikimedia.org' {
 node 'graphite1001.eqiad.wmnet' {
     role(graphite::production, statsd, performance::site, graphite::alerts,
         restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts)
-    include ::standard
-    include ::base::firewall
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
@@ -1201,22 +1199,16 @@ node 'graphite1002.eqiad.wmnet' {
 # graphite additional machine, for additional space
 node 'graphite1003.eqiad.wmnet' {
     role(graphite::production, statsd)
-    include ::standard
-    include ::base::firewall
 }
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
     role(graphite::production, statsd, performance::site)
-    include ::standard
-    include ::base::firewall
 }
 
 # graphite additional machine, for additional space
 node 'graphite2002.codfw.wmnet' {
     role(graphite::production, statsd)
-    include ::standard
-    include ::base::firewall
 }
 
 # replaced carbon and install1001/install2001 (T132757, T84380, T156440)
