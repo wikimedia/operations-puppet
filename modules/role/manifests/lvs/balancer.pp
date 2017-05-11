@@ -7,7 +7,8 @@ class role::lvs::balancer {
         nrpe_command => "/usr/lib/nagios/plugins/check_sysctl ${rp_args}",
     }
 
-    include lvs::configuration
+    include ::lvs::configuration
+    include ::lvs::pybal_configuration
     $sip = $lvs::configuration::service_ips
 
     $lvs_balancer_ips = $::hostname ? {
@@ -125,7 +126,7 @@ class role::lvs::balancer {
         service_ips          => $lvs_balancer_ips,
         lvs_services         => $lvs::configuration::lvs_services,
         lvs_class_hosts      => $lvs::configuration::lvs_class_hosts,
-        pybal_global_options => $lvs::configuration::pybal,
+        pybal_global_options => $lvs::pybal_configuration::pybal,
         site                 => $::site,
         conftool_prefix      => hiera('conftool_prefix'),
     }
