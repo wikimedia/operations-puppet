@@ -45,3 +45,5 @@ cache::req_handling:
         director: 'swift_thumbs'
   maps.wikimedia.org:
     director: 'kartotherian'
+cache::fe_transient_gb: 10
+cache::be_transient_gb: 5

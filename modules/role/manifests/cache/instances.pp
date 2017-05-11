@@ -64,6 +64,17 @@ define role::cache::instances (
         $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
     }
 
+    # Transient storage limits T164768
+    $fe_transient_gb = hiera('cache::fe_transient_gb', 0)
+    if $fe_transient_gb > 0 {
+        $fe_transient_storage = "-s Transient=malloc,${fe_transient_gb}G"
+    }
+
+    $be_transient_gb = hiera('cache::be_transient_gb', 0)
+    if $be_transient_gb > 0 {
+        $be_transient_storage = "-s Transient=malloc,${be_transient_gb}G"
+    }
+
     # Experimental backend settings to handle T145661
     if hiera('cache::exp_thread_rt', false) {
         $exp_thread_params = ['exp_thread_rt=true','exp_lck_inherit=true']
@@ -82,7 +93,7 @@ define role::cache::instances (
         ports              => [ 3128 ],
         admin_port         => 6083,
         runtime_parameters => concat($be_runtime_params, $nuke_lru_params, $exp_thread_params),
-        storage            => $be_storage,
+        storage            => "${be_storage} ${be_transient_storage}",
         vcl_config         => $be_vcl_config,
         app_directors      => $app_directors,
         app_def_be_opts    => $app_def_be_opts,
@@ -98,7 +109,7 @@ define role::cache::instances (
         ports              => [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ],
         admin_port         => 6082,
         runtime_parameters => $fe_runtime_params,
-        storage            => "-s malloc,${fe_mem_gb}G",
+        storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
         backend_caches     => {
             'cache_local' => {
