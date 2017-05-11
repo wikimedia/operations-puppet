@@ -64,6 +64,13 @@ class docker::baseimages(
             environment => $env,
             require     => File['/srv/images'],
         }
+
+        file { '/usr/local/bin/build-alpine':
+            content => template('docker/images/build-alpine.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0544',
+        }
     }
 
     file { '/usr/local/bin/build-base-images':

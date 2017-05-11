@@ -1,0 +1,34 @@
+#!/bin/bash
+# Build the desired alpine version, defaulting to the latest one
+set -e
+AP_VERSION=${1:-'latest'}
+<%- if @proxy_address -%>
+# Proxy needed to reach github
+export https_proxy=http://<%= @proxy_address %>:<%= @proxy_port %>
+<%- end -%>
+AP_BASEDIR="/srv/images/alpine"
+(cd ${AP_BASEDIR} && git checkout master && git pull --rebase)
+# If no version was provided, figure out the latest
+if [ "${AP_VERSION}"="latest" ]; then
+    AP_BASE="${AP_BASEDIR}/versions"
+    AP_VERSIONS=( ${AP_BASE}/library-?.? )
+    AP_DIR="${AP_VERSIONS[-1]}"
+    AP_BRANCH="rootfs${AP_DIR#$AP_BASE}"
+else
+    AP_BRANCH="rootfs/library-${AP_VERSION}"
+fi
+(cd "$AP_DIR" && git remote update && \
+     git checkout "$AP_BRANCH")
+# Now get the release tag from the repos own variables
+source "${AP_DIR}/options"
+(cd "${AP_DIR}" && docker build . -t "${TAGS[0]}")
+for tag in $TAGS; do
+    docker tag "${TAGS[0]}" <%= @docker_registry %>/${tag};
+    docker push <%= @docker_registry %>/${tag};
+done
+
+if [ "${AP_VERSION}"="latest" ]; then
+    # This is the latest version, so...
+    docker tag ${TAGS[0]} <%= @docker_registry %>/alpine:latest
+    docker push <%= @docker_registry %>/alpine:latest
+fi
