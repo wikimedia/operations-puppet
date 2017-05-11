@@ -4,6 +4,9 @@
 # into StatsD.
 #
 class role::webperf {
+
+    include ::standard
+    include ::base::firewall
     include ::eventlogging
     include ::webperf::statsv
 

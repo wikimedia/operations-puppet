@@ -1090,9 +1090,6 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 # and MediaWiki errors.
 node 'hafnium.eqiad.wmnet' {
     role(webperf)
-
-    include ::standard
-    include ::base::firewall
 }
 
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
