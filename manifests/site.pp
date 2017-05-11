@@ -179,7 +179,6 @@ node 'bast4001.wikimedia.org' {
 
 node 'bohrium.eqiad.wmnet' {
     role(piwik::server)
-    include ::standard
 }
 
 # VM with webserver for misc. static sites
