@@ -119,7 +119,7 @@ define scap::source(
     # cluster / service it's referring to.
     if $lvs_service {
         include ::lvs::configuration
-        $service = $::lvs::configuration::lvs_config[$lvs_service]
+        $service = $::lvs::configuration::lvs_services[$lvs_service]
         $conftool = merge($service['conftool'], {'datacenters' => $service['sites']})
     } else {
         $conftool = undef
@@ -127,7 +127,7 @@ define scap::source(
 
     if ($conftool or $hosts){
         ::scap::dsh::group { $dsh_groupname:
-            conftool => $conftool,
+            conftool => [$conftool],
             hosts    => $hosts,
         }
     }
