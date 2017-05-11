@@ -19,6 +19,8 @@ class role::ci::master(
 
     system::role { 'role::ci::master': description => 'CI Jenkins master' }
 
+    include ::standard
+
     # We require the CI website to be on the same box as the master
     # as of July 2013.  So make sure the website has been included on the node.
     require role::ci::website
