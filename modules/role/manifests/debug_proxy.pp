@@ -9,6 +9,9 @@ class role::debug_proxy {
         description => 'X-Wikimedia-Debug proxy',
     }
 
+    include ::standard
+    include ::base::firewall
+
     # Backward compatibility
     $aliases = {
         '1'                  => 'mwdebug1001.eqiad.wmnet',
