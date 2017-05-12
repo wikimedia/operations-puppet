@@ -142,39 +142,25 @@ node 'baham.wikimedia.org' {
 # Bastion in Virginia
 node 'bast1001.wikimedia.org' {
     role(bastionhost::general)
-
     interface::add_ip6_mapped { 'main': }
 }
 
 # Bastion in Texas
 node 'bast2001.wikimedia.org' {
     role(bastionhost::general)
-
     interface::add_ip6_mapped { 'main': }
 }
 
 # Bastion in the Netherlands (replaced bast3001)
 node 'bast3002.wikimedia.org' {
-    role(bastionhost::general,
-        installserver::tftp,
-        prometheus::ops)
-
+    role(bastionhost::install)
     interface::add_ip6_mapped { 'main': }
-    class { '::ganglia::monitor::aggregator': sites =>  'esams', }
 }
 
 # Bastion in California
 node 'bast4001.wikimedia.org' {
-    role(bastionhost::general,
-        ipmi::mgmt,
-        installserver::tftp,
-        prometheus::ops)
-
+    role(bastionhost::install)
     interface::add_ip6_mapped { 'main': }
-
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'ulsfo',
-    }
 }
 
 node 'bohrium.eqiad.wmnet' {
@@ -1247,11 +1233,8 @@ node /^(iridium\.eqiad|phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 }
 
 node 'iron.wikimedia.org' {
-    system::role { 'misc':
-        description => 'Experimental Yubico two factor authentication bastion',
-    }
+    role(bastionhost::twofa)
     interface::add_ip6_mapped { 'main': }
-    role(bastionhost::twofa, access_new_install)
 }
 
 # Analytics Kafka Brokers
