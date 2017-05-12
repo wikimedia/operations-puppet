@@ -1355,8 +1355,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: logstash.svc.eqiad.wmnet
-  logstash-syslog:
-    description: Logstash ingestion syslog
+  logstash-syslog-udp:
+    description: Logstash ingestion syslog udp
     class: low-traffic
     sites:
     - eqiad
@@ -1367,6 +1367,28 @@ lvs::configuration::lvs_services:
     depool-threshold: '.5'
     monitors:
       IdleConnection:  # Monitors the TCP session, same process listening on UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-syslog
+    icinga:
+      check_command: "check_tcp!10514"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-syslog-tcp:
+    description: Logstash ingestion syslog tcp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: tcp
+    port: 10514
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
     conftool:
