@@ -1,25 +1,16 @@
 # bastion host for all users
 class role::bastionhost::general {
+
     system::role { 'bastionhost::general':
         description => 'Bastion host for all shell users',
     }
 
-    include ::bastionhost
     include ::standard
     include ::base::firewall
+    include ::bastionhost
     include ::profile::backup::host
-
-    # Used by parsoid deployers
-
-    include ::profile::scap::dsh
-
+    include ::profile::bastionhost::general
+    include ::profile::scap::dsh  # Used by parsoid deployers
     backup::set {'home': }
-
-    ferm::service { 'ssh':
-        desc  => 'SSH open from everywhere, this is a bastion host',
-        prio  => '01',
-        proto => 'tcp',
-        port  => 'ssh',
-    }
 
 }
