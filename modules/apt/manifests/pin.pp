@@ -9,7 +9,9 @@ define apt::pin (
         fail('$name must not have a ".pref" suffix.')
     }
 
-    file { "/etc/apt/preferences.d/${name}.pref":
+    $filename = regsubst( $name, '\W', '_', 'G' )
+
+    file { "/etc/apt/preferences.d/${filename}.pref":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
