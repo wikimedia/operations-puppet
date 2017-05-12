@@ -7,17 +7,18 @@ AP_VERSION=${1:-'latest'}
 export https_proxy=http://<%= @proxy_address %>:<%= @proxy_port %>
 <%- end -%>
 AP_BASEDIR="/srv/images/alpine"
-(cd ${AP_BASEDIR} && git checkout master && git pull --rebase)
+(cd ${AP_BASEDIR} && git checkout master && git pull --rebase --force)
+AP_BASE="${AP_BASEDIR}/versions"
 # If no version was provided, figure out the latest
-if [ "${AP_VERSION}"="latest" ]; then
-    AP_BASE="${AP_BASEDIR}/versions"
+if [ "${AP_VERSION}" = "latest" ]; then
     AP_VERSIONS=( ${AP_BASE}/library-?.? )
     AP_DIR="${AP_VERSIONS[-1]}"
     AP_BRANCH="rootfs${AP_DIR#$AP_BASE}"
 else
+    AP_DIR="${AP_BASE}/library-${AP_VERSION}"
     AP_BRANCH="rootfs/library-${AP_VERSION}"
 fi
-(cd "$AP_DIR" && git remote update && \
+(cd "$AP_DIR" && git remote update && git branch -D "$AP_BRANCH" && \
      git checkout "$AP_BRANCH")
 # Now get the release tag from the repos own variables
 source "${AP_DIR}/options"
@@ -27,7 +28,7 @@ for tag in $TAGS; do
     docker push <%= @docker_registry %>/${tag};
 done
 
-if [ "${AP_VERSION}"="latest" ]; then
+if [ "${AP_VERSION}" = "latest" ]; then
     # This is the latest version, so...
     docker tag ${TAGS[0]} <%= @docker_registry %>/alpine:latest
     docker push <%= @docker_registry %>/alpine:latest
