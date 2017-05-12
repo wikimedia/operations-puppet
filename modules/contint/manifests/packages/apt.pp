@@ -25,6 +25,13 @@ class contint::packages::apt {
             source     => false,
             keyfile    => 'puppet:///modules/contint/sury-php.gpg',
         }
+
+        # Packages from experimental are explicitly pinned
+        apt::pin { 'wikimedia-experimental-lowest-priority':
+            package  => '*',
+            pin      => 'release o=Wikimedia,c=experimental',
+            priority => 1,
+        }
     }
 
 
