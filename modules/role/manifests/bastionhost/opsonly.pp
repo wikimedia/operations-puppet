@@ -4,18 +4,10 @@ class role::bastionhost::opsonly {
         description => 'Bastion host restricted to the ops team',
     }
 
-    include ::bastionhost
     include ::standard
     include ::base::firewall
+    include ::bastionhost
+    inlcude ::profile::bastionhost::opsonly
     include ::profile::backup::host
-
     backup::set {'home': }
-
-    ferm::service { 'ssh':
-        desc  => 'SSH open from everywhere, this is a bastion host',
-        prio  => '01',
-        proto => 'tcp',
-        port  => 'ssh',
-    }
-
 }
