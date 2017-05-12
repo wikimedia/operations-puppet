@@ -54,7 +54,14 @@ class ESCleanup(object):
         return [idx.strip() for idx in response.text.splitlines()]
 
     def delete(self, index):
-        requests.delete(self.base_url + '/' + index).raise_for_status()
+        response = requests.delete(self.base_url + '/' + index)
+        if response.status_code == requests.codes.not_found:
+            # If the index to delete does not exist, deletion is not necessary
+            # we can assume that this call is successful.
+            # In our case, this happens as index cleanup is run from multiple
+            # servers for redundancy.
+            return
+        response.raise_for_status()
 
 
 def parse_args(argv):
