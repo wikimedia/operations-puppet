@@ -1,10 +1,7 @@
 #!/usr/bin/python
 
 import argparse
-import fileinput
-import subprocess
-import novastats
-
+import mwopenstackclients
 
 parser = argparse.ArgumentParser(description='Learn about image usage.')
 parser.add_argument('--project',
@@ -17,31 +14,31 @@ parser.add_argument('--imageid',
                     default=None)
 args = parser.parse_args()
 
-bigDict = novastats.instanceData(args.project)
+allinstances = mwopenstackclients.Clients().allinstances(args.project)
+bigDict = {instance.id: instance for instance in allinstances}
 
 usedimages = set()
 activeimages = set()
 usinginstances = []
 
-images = novastats.imageData()
+imagelist = mwopenstackclients.Clients().globalimages()
+images = {image.id: image for image in imagelist}
 allimages = set(images.keys())
 
 for ID in bigDict.keys():
-    instanceDict = bigDict[ID]
+    instance = bigDict[ID]
 
-    imagestring = instanceDict["image"]
-    imagepieces = imagestring.split(" ")
-    imageid = imagepieces[len(imagepieces) - 1].lstrip('(').rstrip(')')
+    imageid = instance.image['id']
 
     usedimages.add(imageid)
-    if instanceDict["status"] == "ACTIVE":
+    if instance.status == "ACTIVE":
         activeimages.add(imageid)
 
     if args.imageid:
         if imageid == args.imageid:
             usinginstances.append([ID,
-                                   instanceDict["name"],
-                                   instanceDict["tenant_id"]])
+                                   instance.name,
+                                   instance.tenant_id])
 
 
 orphanimages = allimages.difference(usedimages)
