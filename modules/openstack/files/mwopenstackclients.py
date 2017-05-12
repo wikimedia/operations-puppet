@@ -118,13 +118,16 @@ class Clients(object):
         client = self.keystoneclient()
         return client.projects.list()
 
-    def allinstances(self):
-        instances = []
-        for project in self.allprojects():
-            if project.id == 'admin':
-                continue
-            instances.extend(self.novaclient(project.id).servers.list())
-        return instances
+    def allinstances(self, projectid=None):
+        if projectid:
+            return self.novaclient(projectid).servers.list()
+        else:
+            instances = []
+            for project in self.allprojects():
+                if project.id == 'admin':
+                    continue
+                instances.extend(self.novaclient(project.id).servers.list())
+            return instances
 
     def globalimages(self):
         client = self.glanceclient()
