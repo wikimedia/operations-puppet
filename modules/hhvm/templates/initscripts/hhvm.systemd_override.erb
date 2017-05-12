@@ -1,3 +1,7 @@
+[Unit]
+After=nutcracker.service
+Wants=nutcracker.service
+
 [Service]
 Environment=
 Environment=CONFIG_FILE=/etc/hhvm/server.ini
