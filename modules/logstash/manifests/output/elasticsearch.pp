@@ -55,7 +55,7 @@ define logstash::output::elasticsearch(
 
     cron { "logstash_delete_index_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_delete_index --base-url http://${host}:${port} --max-age 31",
+        command => "/usr/local/bin/logstash_delete_index --prefix ${title} --base-url http://${host}:${port} --max-age 31",
         user    => 'root',
         hour    => 0,
         minute  => 42,
