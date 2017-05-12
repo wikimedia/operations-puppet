@@ -47,25 +47,25 @@ class openstack::adminscripts(
         owner  => 'root',
     }
 
-    file { '/root/novastats/novastats.py':
+    file { '/root/novastats/imagestats.py':
         ensure => present,
-        source => 'puppet:///modules/openstack/novastats/novastats.py',
+        source => 'puppet:///modules/openstack/novastats/imagestats.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
-    file { '/root/novastats/saltstats':
+    file { '/root/novastats/flavorreport.py':
         ensure => present,
-        source => 'puppet:///modules/openstack/novastats/saltstats',
+        source => 'puppet:///modules/openstack/novastats/flavorreport.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
-    file { '/root/novastats/imagestats':
+    file { '/root/novastats/alltrusty.py':
         ensure => present,
-        source => 'puppet:///modules/openstack/novastats/imagestats',
+        source => 'puppet:///modules/openstack/novastats/alltrusty.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
