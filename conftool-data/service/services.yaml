@@ -248,7 +248,7 @@ logstash:
       pooled: 'no'
       weight: 10
   logstash-syslog:
-    port: 10514 # UDP
+    port: 10514  # TCP & UDP 
     datacenters:
     - eqiad
     default_values:
