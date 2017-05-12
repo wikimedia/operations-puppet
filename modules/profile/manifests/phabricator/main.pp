@@ -1,11 +1,7 @@
-# production phabricator instance
+# phabricator instance
 #
 # filtertags: labs-project-deployment-prep labs-project-phabricator
-class role::phabricator::main {
-
-    system::role { 'role::phabricator::main':
-        description => 'Phabricator (Main)'
-    }
+class profile::phabricator::main {
 
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -13,12 +9,6 @@ class role::phabricator::main {
 
     include passwords::phabricator
     include passwords::mysql::phabricator
-    include phabricator::monitoring
-    include phabricator::mpm
-    include ::lvs::realserver
-    include ::base::firewall
-    include ::apache::mod::remoteip
-    include ::profile::backup::host
 
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
@@ -209,7 +199,6 @@ class role::phabricator::main {
         config  => template('role/exim/exim4.conf.phab.erb'),
         filter  => template('role/exim/system_filter.conf.erb'),
     }
-    include exim4::ganglia
 
     class { '::phabricator::mailrelay':
         default                 => {
@@ -299,6 +288,4 @@ class role::phabricator::main {
         weekday      => 1, # Monday
         require      => Package[$deploy_target],
     }
-
-    include role::phabricator::rsync
 }
