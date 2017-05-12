@@ -89,6 +89,9 @@ define role::cache::instances (
         backend_caches     => $our_backend_caches,
     }
 
+    # Set a reduced keep value for frontends
+    $fe_keep_vcl_config = merge($fe_vcl_config, { 'keep' => '1d', })
+
     # lint:ignore:arrow_alignment
     varnish::instance { "${title}-frontend":
         name               => 'frontend',
@@ -108,7 +111,7 @@ define role::cache::instances (
                 'be_opts'  => $fe_cache_be_opts,
             },
         },
-        vcl_config         => $fe_vcl_config,
+        vcl_config         => $fe_keep_vcl_config,
     }
     # lint:endignore
 }
