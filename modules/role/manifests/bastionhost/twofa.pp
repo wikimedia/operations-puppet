@@ -1,33 +1,16 @@
+# bastion host using two-factor auth
 class role::bastionhost::twofa {
+
     system::role { 'bastionhost::twofa':
-        description => 'Bastion host using two factor authentication',
+        description => 'experimental Bastion host using YubiKey two factor authentication',
     }
 
-    include ::bastionhost
     include ::standard
     include ::base::firewall
+    include ::bastionhost
+    include ::profile::bastionhost::twofa
     include ::profile::backup::host
     include ::passwords::yubiauth
-
+    include ::role::access_new_install
     backup::set {'home': }
-
-    require_package('libpam-yubico')
-
-    ferm::service { 'ssh':
-        desc  => 'SSH open from everywhere, this is a bastion host',
-        prio  => '01',
-        proto => 'tcp',
-        port  => 'ssh',
-    }
-
-    $api_key = $passwords::yubiauth::api_key
-
-    file { '/etc/pam.d/sshd':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
-        content => template('role/bastionhost/pam-sshd.erb'),
-        require => Package['openssh-server'],
-    }
 }
