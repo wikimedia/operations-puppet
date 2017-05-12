@@ -386,18 +386,20 @@ sub wm_common_backend_response {
 	// Set keep, which influences the amount of time objects are kept available
 	// in cache for IMS requests (TTL+grace+keep). Scale keep to the app-provided
 	// TTL.
-	if (beresp.ttl < <%= @vcl_config.fetch("keep", "7d") %>) {
-		set beresp.keep = beresp.ttl;
-	} else {
-		set beresp.keep = <%= @vcl_config.fetch("keep", "7d") %>;
-	}
+	if (beresp.ttl > 0s) {
+		if (beresp.ttl < <%= @vcl_config.fetch("keep", "7d") %>) {
+			set beresp.keep = beresp.ttl;
+		} else {
+			set beresp.keep = <%= @vcl_config.fetch("keep", "7d") %>;
+		}
 
-	// Hard TTL cap on all fetched objects (default 1d)
-	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
-		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
-	}
+		// Hard TTL cap on all fetched objects (default 1d)
+		if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
+			set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
+		}
 
-	set beresp.grace = <%= @vcl_config.fetch("grace_sick", "60m") %>;
+		set beresp.grace = <%= @vcl_config.fetch("grace_sick", "60m") %>;
+	}
 
 	// Compress compressible things if the backend didn't already
 	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
@@ -419,6 +421,8 @@ sub wm_common_backend_response {
 		&& (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
 	) {
 		set beresp.ttl = 601s;
+		set beresp.grace = 31s;
+		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);

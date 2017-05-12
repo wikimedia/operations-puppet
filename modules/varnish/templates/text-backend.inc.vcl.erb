@@ -67,6 +67,8 @@ sub cluster_be_backend_response {
 		std.log("Cacheable object with Set-Cookie found. bereq.url: " + bereq.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
 		set beresp.ttl = 0s;
+		set beresp.grace = 0s;
+		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);

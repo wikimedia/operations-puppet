@@ -38,6 +38,8 @@ sub upload_common_backend_response {
 	// Debugging T144257. Don't cache 200 responses with CL:0.
 	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
 		set beresp.ttl = 0s;
+		set beresp.grace = 0s;
+		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
 	}
 }
