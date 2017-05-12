@@ -1,7 +1,7 @@
 class contint::hhvm {
 
     if $::operatingsystem == 'Debian' {
-        apt::pin { 'Pin HHVM from experimental':
+        apt::pin { 'hhvm-from-experimental':
             package  => '/^hhvm.*/',
             pin      => 'release o=Wikimedia,c=experimental',
             priority => '1002',
@@ -9,11 +9,11 @@ class contint::hhvm {
     }
 
     class { '::contint::packages::hhvm':
-        require => Apt::Pin['Pin HHVM from experimental'],
+        require => Apt::Pin['hhvm-from-experimental'],
     }
 
     class { '::hhvm':
-        require        => Apt::Pin['Pin HHVM from experimental'],
+        require        => Apt::Pin['hhvm-from-experimental'],
 
         # No need for a hhvm service on CI slaves T126594
         # lint:ignore:ensure_first_param
