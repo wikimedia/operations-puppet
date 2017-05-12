@@ -1240,10 +1240,9 @@ node /^install[12]002\.wikimedia\.org$/ {
 
 # Phabricator
 node /^(iridium\.eqiad|phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(phabricator::main)
-    include ::standard
+    role(phabricator_server)
     include ::ganglia
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'iron.wikimedia.org' {
