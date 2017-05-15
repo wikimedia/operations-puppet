@@ -5,6 +5,7 @@ class swift::params (
     $replication_accounts = {},
     $replication_keys     = {},
     $graphite_host        = 'graphite-in.eqiad.wmnet',
+    $storage_policies     = undef,
 ) {
     # Noop class
 }
