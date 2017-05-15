@@ -37,6 +37,18 @@ class wikistats (
         ensure => 'directory',
     }
 
+    file { '/usr/local/bin/wikistats':
+        ensure => 'directory',
+    }
+
+    file { '/usr/local/bin/wikistats/deploy-wikistats':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+        source => 'puppet:///modules/wikistats/deploy-wikistats.sh',
+    }
+
     # FIXME rename repo, it was a deb in the past
     # but not anymore and also not operations
     git::clone { 'operations/debs/wikistats':
