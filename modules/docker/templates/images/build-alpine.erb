@@ -18,8 +18,9 @@ else
     AP_DIR="${AP_BASE}/library-${AP_VERSION}"
     AP_BRANCH="rootfs/library-${AP_VERSION}"
 fi
-(cd "$AP_DIR" && git remote update && git branch -D "$AP_BRANCH" && \
-     git checkout "$AP_BRANCH")
+(cd "${AP_DIR}" && git branch -D "$AP_BRANCH" || /bin/true)
+(cd "${AP_DIR}" && git remote update && \
+     git checkout "${AP_BRANCH}")
 # Now get the release tag from the repos own variables
 source "${AP_DIR}/options"
 (cd "${AP_DIR}" && docker build . -t "${TAGS[0]}")
