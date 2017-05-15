@@ -305,3 +305,6 @@ codfw:
     wdqs2001.codfw.wmnet: [wdqs]
     wdqs2002.codfw.wmnet: [wdqs]
     wdqs2003.codfw.wmnet: [wdqs]
+  kubernetes:
+    acrab.codfw.wmnet: [kubemaster]
+    acrux.codfw.wmnet: [kubemaster]

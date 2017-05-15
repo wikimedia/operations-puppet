@@ -1036,7 +1036,7 @@ node /^etcd100[123]\.eqiad\.wmnet$/ {
 }
 
 # kubernetes masters
-node /^(argon|chlorine)\.eqiad\.wmnet$/ {
+node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
 }
 
@@ -1117,7 +1117,7 @@ node 'hydrogen.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# irc.wikimedia.org (replaced argon)
+# irc.wikimedia.org
 node 'kraz.wikimedia.org' {
     role(mw_rc_irc)
     interface::add_ip6_mapped { 'main': }

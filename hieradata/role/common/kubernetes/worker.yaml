@@ -10,6 +10,8 @@ profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master_hosts:
 - argon.eqiad.wmnet
 - chlorine.eqiad.wmnet
+- acrab.codfw.wmnet
+- acrux.codfw.wmnet
 profile::kubernetes::infra_pod: 'darmstadtium.eqiad.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:

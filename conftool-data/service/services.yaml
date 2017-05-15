@@ -215,6 +215,7 @@ kubernetes:
     port: 6443
     datacenters:
     - eqiad
+    - codfw
     default_values:
       pooled: 'yes'
       weight: 10
