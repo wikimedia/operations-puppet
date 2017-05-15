@@ -1,3 +1,15 @@
 [swift-hash]
 # random unique string that can never change (DO NOT LOSE)
 swift_hash_path_suffix = <%= @hash_path_suffix %>
+
+# Store objects 3x on spinning disks.
+# Default policy for new containers unless overridden.
+[storage-policy:0]
+name = standard
+aliases = hdd-three
+default = yes
+
+# Store on SSD with 3x replication, aka "lowlatency"
+[storage-policy:1]
+name = lowlatency
+aliases = ssd-three
