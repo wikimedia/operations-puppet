@@ -1,9 +1,13 @@
 # the database server setup for the wikistats site
 class wikistats::db {
 
-    package { [ 'mariadb-server', 'php5-mysql']:
-        ensure => present,
+    if os_version('debian >= stretch') {
+        require_package('php7.0-mysql')
+    } else {
+        require_package('php5-mysql')
     }
+
+    require_package('mariadb-server')
 
     $backupdir = '/root/wsbackup'
 
