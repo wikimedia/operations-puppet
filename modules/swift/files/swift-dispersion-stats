@@ -5,7 +5,6 @@
 
 import argparse
 import json
-import os
 import subprocess
 import sys
 
@@ -24,19 +23,27 @@ def main():
                         help='Send metrics to this statsd host as well')
     parser.add_argument('--statsd-port', dest='statsd_port', default='8125',
                         metavar="PORT", type=int, help='Send metrics to this statsd port')
+    parser.add_argument('--policy-name', dest='policy_name', default=None, metavar="NAME",
+                        help='Use the storage policy NAME')
     args = parser.parse_args()
 
     dispersion_stats = {}
 
     try:
-        output = subprocess.check_output(['swift-dispersion-report', '-j'])
+        report_command = ['swift-dispersion-report', '--dump-json']
+        if args.policy_name:
+            report_command.extend(['--policy-name', args.policy_name])
+        output = subprocess.check_output(report_command)
     except subprocess.CalledProcessError, e:
-        print >>sys.stderr, 'swift-dispersion-report failed %s: %r' % (
-            e.returncode, e.output)
+        print >>sys.stderr, '%r failed %s: %r' % (
+            report_command, e.returncode, e.output)
         return e.returncode
 
     try:
-        json_stats = json.loads(output)
+        json_data = output
+        if 'Using storage policy:' in output:
+            _, json_data = output.splitlines()
+        json_stats = json.loads(json_data)
     except ValueError, e:
         print >>sys.stderr, 'failed to load json from %r' % output
         return 1
