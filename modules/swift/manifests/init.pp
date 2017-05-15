@@ -2,6 +2,7 @@
 class swift (
     $hash_path_suffix,
     $swift_cluster = $swift::params::swift_cluster,
+    $storage_policies = $swift::params::storage_policies,
 ) {
     # Recommendations from Swift -- see <http://tinyurl.com/swift-sysctl>.
     sysctl::parameters { 'swift_performance':

@@ -1,5 +1,6 @@
 class swift::stats::dispersion(
     $swift_cluster = $::swift::params::swift_cluster,
+    $storage_policies = $::swift::params::storage_policies,
     $statsd_host   = 'statsd.eqiad.wmnet',
     $statsd_prefix = "swift.${::swift::params::swift_cluster}.dispersion",
 ) {
@@ -26,5 +27,16 @@ class swift::stats::dispersion(
         hour    => '*',
         minute  => '*/15',
         require => File['/usr/local/bin/swift-dispersion-stats'],
+    }
+
+    if $storage_policies {
+        cron { 'swift-dispersion-stats':
+            ensure  => present,
+            command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix}.lowlatency --statsd-host ${statsd_host} --policy-name lowlatency >/dev/null 2>&1",
+            user    => 'root',
+            hour    => '*',
+            minute  => '*/15',
+            require => File['/usr/local/bin/swift-dispersion-stats'],
+        }
     }
 }
