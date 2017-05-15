@@ -55,9 +55,6 @@ class role::librenms {
             'latlng' => true,
             'engine' => 'google',
         },
-        'leaflet'             => {
-            'tile_url' => 'maps.wikimedia.org',
-        },
         'location_map'       => {
             'eqiad' => 'Equinix, Ashburn, Virginia, USA',
             'codfw' => 'CyrusOne, Carrollton, Texas, USA',
@@ -79,9 +76,7 @@ class role::librenms {
             'CMD (newsyslog)',
             'CMD (adjkerntz -a)',
             'kernel time sync enabled',
-            'fatal: Write failed: Broken pipe [preauth]',
-            'fatal: Read from socket failed: Connection reset by peer [preauth]',
-            'fatal: no hostkey alg [preauth]',
+            'preauth',
         ],
 
         'auth_mechanism'     => 'ldap',
