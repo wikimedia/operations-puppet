@@ -24,6 +24,7 @@ class package_builder(
         'debhelper',
         'cdbs',
         'devscripts',
+        'patchutils',
         'debian-keyring',
         'dh-make',
         'dh-autoreconf',
