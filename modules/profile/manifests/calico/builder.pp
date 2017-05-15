@@ -1,17 +1,24 @@
-class profile::calico::builder {
-    # Calico builder version
-    $calico_version=hiera('profile::calico::builder::version')
-    $k8s_policy_version=hiera('profile::calico::builder::k8s_policy_version')
+class profile::calico::builder(
+    $calico_release=hiera('profile::calico::builder::calico_release'),
     # Calico builder directory
-    $directory=hiera('profile::calico::builder::directory')
+    $directory=hiera('profile::calico::builder::directory'),
     # Proxy url, if present
-    $proxy_address=hiera('profile::calico::builder::proxy_address')
-    $registry_address=hiera('docker::registry')
-    $registry_user=hiera('docker::registry_user')
+    $proxy_address=hiera('profile::calico::builder::proxy_address'),
+    $registry_address=hiera('docker::registry'),
+    $registry_user=hiera('docker::registry_user'),
+) {
 
     # Needs docker to be installed and working
     require ::docker
 
+    # Taken from http://docs.projectcalico.org/$version/releases/
+    $releases = {
+        'v2.2.0' => { 'node' => '1.2.0', 'cni' => '1.8.3', 'kube-policy-controller' => '0.6.0' }
+    }
+    $release = $releases[$calico_release]
+    $node_version = $release['node']
+    $k8s_policy_version = $release['kube-policy-controller']
+    $cni_version = $release['cni']
     # Needed to build calicoctl
     apt::pin { 'go':
         package  => 'golang-go',
@@ -60,7 +67,7 @@ class profile::calico::builder {
     }
 
     git::clone{ 'operations/calico-containers':
-        branch    => $calico_version,
+        branch    => $node_version,
         owner     => 'calicobuild',
         require   => User['calicobuild'],
         directory => "${directory}/calico-containers",

@@ -8,7 +8,7 @@ pushd $_dir
 export HTTPS_PROXY=<%= @proxy_address %>; export http_proxy=<%= @proxy_address %>
 <%- end -%>
 # Releasing
-export VERSION=<%= @calico_version %>
+export VERSION=<%= @node_version %>
 git tag | fgrep -q $VERSION || git tag $VERSION
 CALICOCONTAINERS_VERSION=$VERSION make release-caliconode
 <%- if @registry_address != "" -%>
