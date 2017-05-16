@@ -1,0 +1,14 @@
+#!/usr/bin/env perl
+# Url decode strings passed on stdin.
+# $Id$
+
+use URI::Escape;
+
+while (<>) {
+  chomp($_);
+  $_ =~ s/\+/%20/g;
+	$_ = uri_unescape($_);
+  print $_ . "\n";
+}
+
+# vim: set ft=perl sw=2 ts=2 sts=2 et :

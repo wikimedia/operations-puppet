@@ -1,0 +1,6 @@
+#!/bin/sh
+# Add up the numbers provided one per line on stdin
+# Useful in a pipeline
+# @author: Bryan Davis <bpd@keynetics.com>
+# @version: $Id: add 103 2007-12-26 21:49:10Z bpd $
+awk 'BEGIN { tot=0 } { tot+=$1 } END { print tot }'
