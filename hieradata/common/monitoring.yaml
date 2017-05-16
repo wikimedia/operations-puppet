@@ -80,6 +80,8 @@ monitoring::groups:
 # Kubernetes
   kubernetes_eqiad:
     description: Kubernetes cluster
+  kubernetes_codfw:
+    description: Kubernetes cluster
 
 # Labs OpenStack Nova (labvirt***)
   labvirt_eqiad:
