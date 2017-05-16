@@ -3,6 +3,7 @@ mailman::lists_servername: 'lists.wikimedia.org'
 mailman::lists_ip:
   - '208.80.154.75'
   - '2620:0:861:3::2'
+  - '2620:0:861:3:208:80:154:75'
 debdeploy::grains:
   debdeploy-lists:
     value: standard
