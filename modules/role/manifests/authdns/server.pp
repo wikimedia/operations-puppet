@@ -8,7 +8,7 @@ class role::authdns::server {
     include role::authdns::data
 
     create_resources(
-        interface::ip,
+        interface::alias,
         $role::authdns::data::ns_addrs,
         { interface => 'lo' }
     )
