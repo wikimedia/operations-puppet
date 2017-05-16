@@ -2,6 +2,7 @@
 class wikistats::web (
     $wikistats_host,
     ) {
+
     # Apache site from template
     apache::site { $wikistats_host:
         content => template('wikistats/apache/wikistats.erb'),
@@ -17,4 +18,7 @@ class wikistats::web (
 
     include ::apache::mod::rewrite
 
+    if os_version('debian >= stretch') {
+        require_package('libapache2-mod-php7.0')
+    }
 }
