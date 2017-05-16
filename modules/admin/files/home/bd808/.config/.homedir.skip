@@ -1,0 +1,9 @@
+.
+..
+.git
+.gitignore
+.homedir.fixups
+.homedir.known
+.homedir.skip
+.svn
+_darcs

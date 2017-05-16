@@ -1,0 +1,5 @@
+#!/bin/sh
+# Make an ssl connection to a host
+# $Id$
+
+openssl s_client -connect "$@"
