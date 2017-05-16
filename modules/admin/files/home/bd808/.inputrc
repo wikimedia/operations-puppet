@@ -1,0 +1,81 @@
+# the following line is actually
+# equivalent to "\C-?": delete-char
+"\e[3~": delete-char
+
+# VT
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+
+# kvt
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+
+# rxvt and konsole (i.e. the KDE-app...)
+"\e[7~": beginning-of-line
+"\e[8~": end-of-line
+
+# VT220
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+# Allow 8-bit input/output
+set meta-flag on
+set convert-meta off
+set input-meta on
+set output-meta on
+
+# By default up/down are bound to previous-history
+# and next-history respectively. The following does the
+# same but gives the extra functionality where if you
+# type any text (or more accurately, if there is any text
+# between the start of the line and the cursor),
+# the subset of the history starting with that text
+# is searched (like 4dos for e.g.).
+# Note to get rid of a line just Ctrl-C
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+$if Bash
+  # Don't ring bell on completion
+  #set bell-style none
+
+  # or, don't beep at me - show me
+  set bell-style visible
+
+  # Filename completion/expansion
+  set completion-ignore-case on
+  set show-all-if-ambiguous on
+
+  # Expand homedir name
+  set expand-tilde on
+
+  # Append "/" to all dirnames
+  set mark-directories on
+  set mark-symlinked-directories on
+
+  set visible-stats on
+
+  # Match all files
+  set match-hidden-files on
+
+  # 'Magic Space'
+  # Insert a space character then performs
+  # a history expansion in the line
+  #Space: magic-space
+
+  # don't page completions
+  set page-completions off
+  # only ask for huge lists
+  set completion-query-items 500
+
+  # Try to stay at the same the cursor position when moving through the
+  # history.
+  set history-preserve-point on
+
+  # Be more intelligent when autocompleting by also looking at the text after
+  # the cursor. For example, when the current line is "cd ~/src/mozil", and
+  # the cursor is on the "z", pressing Tab will not autocomplete it to "cd
+  # ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
+  # Readline used by Bash 4.)
+  set skip-completed-text on
+$endif

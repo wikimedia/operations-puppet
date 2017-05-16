@@ -1,0 +1,5 @@
+#!/bin/bash
+P=${1:-No process name provided}
+PP=$(ps aux | grep -v grep | grep -v $0 | grep $P | awk '{print $2}')
+echo "watching proc ${PP}"
+top -n 100 -d 0.5 -b -p ${PP} | grep ${PP}
