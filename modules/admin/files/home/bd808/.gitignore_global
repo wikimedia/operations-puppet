@@ -1,0 +1,34 @@
+# global git ignores
+# git config --global core.excludesfile ~/.gitignore_global
+
+# osx cruft
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# backups
+*~
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# mercurial
+/.hg/*
+*/.hg/*
+.hgignore
+
+# cvs
+/CVS/*
+*/CVS/*
+.cvsignore
+*/.cvsignore
+
+# svn
+.svn/
+*/.svn/*
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+.tox/
