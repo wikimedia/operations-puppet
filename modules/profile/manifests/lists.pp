@@ -38,8 +38,7 @@ class profile::lists (
         filter  => template('profile/exim/system_filter.conf.mailman.erb'),
         require => [
             Class['spamassassin'],
-            Interface::Ip['lists.wikimedia.org_v4'],
-            Interface::Ip['lists.wikimedia.org_v6'],
+            Interface::Alias['lists.wikimedia.org'],
         ],
     }
 
