@@ -33,14 +33,25 @@ class wikistats (
         ensure => 'directory',
     }
 
+    # directory used by deploy-script to store backups
     file { '/usr/lib/wikistats/wsbackup':
         ensure => 'directory',
+    }
+
+    # stash random db password in the wikistats-user home dir,
+    # so that deploy-script can bootstrap a new system
+    exec { 'generate-wikistats-db-pass':
+        command => '/usr/bin/openssl rand -base64 12 > /usr/lib/wikistats/wikistats-db-pass',
+        creates => '/usr/lib/wikistats/wikistats-db-pass',
+        user    => 'root',
+        timeout => '10',
     }
 
     file { '/usr/local/bin/wikistats':
         ensure => 'directory',
     }
 
+    # deployment script that copies files in place after puppet git clones to /srv/
     file { '/usr/local/bin/wikistats/deploy-wikistats':
         ensure => 'present',
         owner  => 'root',
