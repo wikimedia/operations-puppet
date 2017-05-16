@@ -1,0 +1,124 @@
+# brew-completion: bash completion function for Homebrew (brew command)
+# Copyright (c)2010 Alexander Barton <alex@barton.de>
+# This is free software and published under the terms of the GNU
+# General Public License, see the file COPYING for details.
+
+have brew &&
+{
+_brew_formula()
+{
+	local formulae prefix
+	
+	prefix=`brew --prefix`
+	formulae=`brew search`
+	COMPREPLY=( $(compgen -W '$formulae' -- "$1") )
+}
+
+_brew_formula_installed()
+{
+	local formulae prefix
+	
+	prefix=`brew --prefix`
+	formulae=`brew list`
+	COMPREPLY=( $(compgen -W '$formulae' -- "$1") )
+}
+
+_brew()
+{
+	local cur prev cmd i
+
+	COMPREPLY=()
+	cur=`_get_cword`
+	prev=${COMP_WORDS[COMP_CWORD-1]}
+	cmd=""
+
+	# Get list of all available external commands
+	extpath="`brew --prefix`/Library/Contributions/examples"
+	if [ -d "$extpath" ]; then
+		EXTCMD=`cd "$extpath"; ls -1 brew-* 2>/dev/null \
+			| cut -d'.' -f1 | cut -d'-' -f2- | sed -e 's/\*//g'`
+	fi
+
+	declare -i i=$COMP_CWORD-1
+	while [ $i -gt 0 ]; do
+		if [[ ${COMP_WORDS[i]} != -* \
+		   || ${COMP_WORDS[i]} == "--cache" \
+		   || ${COMP_WORDS[i]} == "--cellar" \
+		   || ${COMP_WORDS[i]} == "--config" \
+		   || ${COMP_WORDS[i]} == "--prefix" ]]; then
+			cmd=${COMP_WORDS[i]}
+			break
+		fi
+		i=$i-1
+	done
+
+	case "$cmd" in
+		"cat"|"cleanup"|"deps"|"edit"|"home"|"log"|"prune"|"uses" \
+		|"--cache"|"--cellar"|"--prefix")
+			_brew_formula "$cur"
+			return 0
+			;;
+		"link"|"remove"|"rm"|"uninstall"|"unlink")
+			_brew_formula_installed "$cur"
+			return 0
+			;;
+		"create")
+			if [[ "$cur" == -* ]]; then
+				COMPREPLY=( $(compgen -W '--macports --fink \
+					--cache' -- "$cur") )
+			fi
+			return 0
+			;;
+		"info")
+			if [[ "$cur" == -* ]]; then
+				COMPREPLY=( $(compgen -W '--all --github' \
+					-- "$cur") )
+			else
+				_brew_formula "$cur"
+			fi
+			return 0
+			;;
+		"install")
+			if [[ "$cur" == -* ]]; then
+				COMPREPLY=( $(compgen -W '--git --HEAD -H \
+					--debug -d --force -f \
+					--interactive -i --verbose -v \
+					--ignore-dependencies --use-llvm' \
+					-- "$cur") )
+			else
+				_brew_formula "$cur"
+			fi
+			return 0
+			;;
+		"list")
+			if [[ "$cur" == -* ]]; then
+				COMPREPLY=( $(compgen -W '
+					--unbrewed' -- "$cur") )
+			else
+				_brew_formula "$cur"
+			fi
+			return 0
+			;;
+		*)
+			for c in $EXTCMD; do
+				if [ "$cmd" = "$c" ]; then
+					_brew_formula "$cur"
+					return 0
+				fi
+			done
+	esac
+
+	if [[ "$cur" == -* ]]; then
+		COMPREPLY=( $(compgen -W '--cache --cellar --config \
+			--env --help --prefix --version -v -H' \
+			-- "$cur") )
+	elif [ "$cmd" = "" ]; then
+		COMPREPLY=( $(compgen -W 'cat cleanup create deps doctor \
+			edit home info install link list log outdated prune \
+			remove rm search uninstall unlink up update uses \
+			$EXTCMD' \
+			-- "$cur") )
+	fi
+}
+complete -F _brew brew
+}

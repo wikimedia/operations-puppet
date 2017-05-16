@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# git pull --rebase
+# http://jasoncodes.com/posts/gup-git-rebase
+
+# fail immediately if there's a problem
+set -e
+#set -x
+
+# fetch upstream changes
+git fetch -v
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+[[ ( -z "$(git config branch.$BRANCH.remote)" ) ||
+   ( -z "$(git config branch.$BRANCH.merge)" ) ]] && {
+  echo "'$BRANCH' is not a tracking branch." >&2
+  exit 1
+}
+
+# create a temp file for capturing command output
+TEMPFILE="`mktemp -t gup.XXXXXX`"
+trap '{ rm -f "$TEMPFILE"; }' EXIT
+
+# if we're behind upstream, we need to update
+git status | grep "Your branch " | grep -v "is up-to-date" > "$TEMPFILE" && {
+
+  # extract tracking branch from message
+  UPSTREAM=$(cat "$TEMPFILE" | cut -d "'" -f 2)
+  [[ -z "$UPSTREAM" ]] && {
+    echo Could not detect upstream branch >&2
+    exit 1
+  }
+
+  # can we fast-forward?
+  CAN_FF=1
+  grep -q "can be fast-forwarded" "$TEMPFILE" || CAN_FF=0
+
+  # stash any uncommitted changes
+  git stash | tee "$TEMPFILE"
+  [[ "${PIPESTATUS[0]}" -eq 0 ]] || exit 1
+
+  # take note if anything was stashed
+  HAVE_STASH=0
+  grep -q "No local changes" "$TEMPFILE" || HAVE_STASH=1
+
+  if [[ "$CAN_FF" -ne 0 ]] ; then
+    # if nothing has changed locally, just fast foward.
+    git merge --ff "$UPSTREAM"
+
+  else
+    # rebase our changes on top of upstream, but keep any merges
+    git rebase -p "$UPSTREAM"
+  fi
+
+  # update submodules
+  git submodule update --init --recursive
+
+  # show an abbreviated commit log of stuff that was just merged.
+  echo "Log:"
+  git log --color --pretty=oneline --abbrev-commit HEAD@{1}.. |
+  sed 's/^/  /'
+
+  # restore any stashed changes
+  [[ "$HAVE_STASH" -ne 0 ]] && git stash pop
+}
