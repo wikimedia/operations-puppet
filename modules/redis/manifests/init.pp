@@ -44,15 +44,6 @@ class redis {
         before => File['/etc/redis/redis.conf'],
     }
 
-    # Distro-specific common directives go here
-    file { '/etc/redis/redis.conf':
-        ensure => present,
-        source => "puppet:///modules/redis/redis-${::lsbdistcodename}.conf",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-
     # ensure that /var/run/redis is created at boot
     if os_version('debian >= jessie') {
         file { '/etc/tmpfiles.d/redis-startup.conf':
