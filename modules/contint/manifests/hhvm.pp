@@ -6,10 +6,12 @@ class contint::hhvm {
             pin      => 'release o=Wikimedia,c=experimental',
             priority => '1002',
         }
-    }
 
-    class { '::contint::packages::hhvm':
-        require => Apt::Pin['hhvm-from-experimental'],
+        class { '::contint::packages::hhvm':
+            require => Apt::Pin['hhvm-from-experimental'],
+        }
+    } else {
+        class { '::contint::packages::hhvm': }
     }
 
     class { '::hhvm':
