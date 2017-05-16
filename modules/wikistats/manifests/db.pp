@@ -9,7 +9,7 @@ class wikistats::db {
 
     require_package('mariadb-server')
 
-    $backupdir = '/root/wsbackup'
+    $backupdir = '/usr/lib/wikistats/backup'
 
     # db backup
     cron { 'mysql-dump-wikistats':
@@ -27,5 +27,20 @@ class wikistats::db {
         user    => 'root',
         hour    => '23',
         minute  => '23',
+    }
+
+    file { '/usr/lib/wikistats/schema.sql':
+        ensure => 'present',
+        user   => 'wikistatsuser',
+        group  => 'wikistatsuser',
+        mode   => '0444',
+        source => 'puppet:///modules/wikistats/schema.sql',
+    }
+
+    exec { 'bootstrap-mysql-schema':
+        command => '/usr/bin/mysql -u root -Bs < /usr/lib/wikistats/schema.sql',
+        creates => '/usr/lib/wikistats/db_init',
+        user    => 'root',
+        timeout => '30',
     }
 }
