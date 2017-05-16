@@ -122,14 +122,13 @@ END
 # echo "result_inactive_users_assigned_tasks"
 # see https://phabricator.wikimedia.org/T157740
 result_inactive_users_assigned_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
-SELECT u.userName, count(u.userName) AS n
+SELECT u.userName, t.id
     FROM phabricator_maniphest.maniphest_task t
     JOIN phabricator_user.user u
     WHERE u.isDisabled = 1
     AND t.ownerPHID = u.phid
     AND (t.status = "open" OR t.status = "stalled")
-    GROUP BY u.userName
-    ORDER BY n DESC;
+    ORDER BY u.userName;
 
 END
 )
