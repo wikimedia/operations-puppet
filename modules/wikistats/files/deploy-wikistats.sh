@@ -7,7 +7,7 @@ pn="wikistats"
 dps=('var/www' 'etc' 'usr/lib' 'usr/share/php' 'usr/local/bin')
 pp="/srv"
 bp="/usr/lib/wikistats/wsbackup"
-dbpass=$(cat /root/wikistats-db-pass)
+dbpass=$(cat /usr/lib/wikistats/wikistats-db-pass)
 
 function deploy {
 
