@@ -1,0 +1,4 @@
+profile::kubernetes::master::etcd_urls:
+ - https://kubetcd2001.codfw.wmnet:2379
+ - https://kubetcd2002.codfw.wmnet:2379
+ - https://kubetcd2003.codfw.wmnet:2379
