@@ -236,19 +236,14 @@ begin transports
 
 remote_smtp:
 	driver = smtp
-<% if !@outbound_ips.empty? then -%>
-	interface = <; <%= @outbound_ips.join(" ; ") %>
-<% end -%>
-
+        interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
 remote_smtp_signed:
 	driver = smtp
 	dkim_domain = wikimedia.org
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed
-<% if !@outbound_ips.empty? then -%>
-	interface = <; <%= @outbound_ips.join(" ; ") %>
-<% end -%>
+        interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
 
 list_smtp:
 	driver = smtp
