@@ -1,5 +1,4 @@
 class profile::lists (
-    $outbound_ips = hiera_array('mailman::server_ip'),
     $list_outbound_ips = hiera_array('mailman::lists_ip'),
 ) {
 
@@ -12,6 +11,8 @@ class profile::lists (
     mailalias { 'root': recipient => 'root@wikimedia.org' }
 
     $lists_ip = hiera('mailman::lists_ip')
+
+    $outbound_ips = [ $::ipaddress_eth0, $::ipaddress6_eth0 ]
 
     interface::ip { 'lists.wikimedia.org_v4':
         interface => 'eth0',
