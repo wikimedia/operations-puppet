@@ -1031,7 +1031,8 @@ node /^es200[234]\.codfw\.wmnet/ {
 }
 
 # Etcd cluster for kubernetes
-node /^etcd100[123]\.eqiad\.wmnet$/ {
+# TODO: Rename the eqiad etcds to the codfw etcds naming scheme
+node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::kubernetes)
 }
 
