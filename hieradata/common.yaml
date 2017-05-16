@@ -63,6 +63,7 @@ ganglia_clusters:
     id: 9
     sites:
       eqiad: []
+      codfw: []
   appserver:
     description: "Application servers"
     id: 11
