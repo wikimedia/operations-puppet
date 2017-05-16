@@ -1,8 +1,7 @@
 standard::has_default_mail_relay: false
 mailman::lists_servername: 'lists.wikimedia.org'
-mailman::lists_ip:
-  - '208.80.154.75'
-  - '2620:0:861:3::2'
+mailman::lists::ipv4: '208.80.154.75'
+mailman::lists::ipv6: '2620:0:861:3::2'
 debdeploy::grains:
   debdeploy-lists:
     value: standard
