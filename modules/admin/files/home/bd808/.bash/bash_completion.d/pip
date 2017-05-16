@@ -1,0 +1,16 @@
+# bash completion for pip
+have pip && {
+    _pip_completion() {
+        COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
+            COMP_CWORD=$COMP_CWORD \
+            PIP_AUTO_COMPLETE=1 $1 ) )
+    }
+    complete -o default -F _pip_completion pip
+}
+# Local variables:
+# mode: shell-script
+# sh-basic-offset: 4
+# sh-indent-comment: t
+# indent-tabs-mode: nil
+# End:
+# ex: ts=4 sw=4 et filetype=sh

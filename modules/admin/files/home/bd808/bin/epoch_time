@@ -1,0 +1,328 @@
+#!/usr/bin/nawk -f
+#----------------------------------------------------------------------#
+#                            epoch_time.awk                            #
+# -------------------------------------------------------------------- #
+#                                                                      #
+#   Copyright (c) 2006 by Bob Orlando.  All rights reserved.           #
+#                                                                      #
+#   Permission to use, copy, modify and distribute this software       #
+#   and its documentation for any purpose and without fee is hereby    #
+#   granted, provided that the above copyright notice appear in all    #
+#   copies, and that both the copyright notice and this permission     #
+#   notice appear in supporting documentation, and that the name of    #
+#   Bob Orlando not be used in advertising or publicity pertaining     #
+#   to distribution of the software without specific, written prior    #
+#   permission.  Bob Orlando makes no representations about the        #
+#   suitability of this software for any purpose.  It is provided      #
+#   "as is" without express or implied warranty.                       #
+#                                                                      #
+#   BOB ORLANDO DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS           #
+#   SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY      #
+#   AND FITNESS.  IN NO EVENT SHALL BOB ORLANDO BE LIABLE FOR ANY      #
+#   SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES          #
+#   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER    #
+#   IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,     #
+#   ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF     #
+#   THIS SOFTWARE.                                                     #
+#                                                                      #
+#----------------------------------------------------------------------#
+BEGIN \
+{
+  #----------------------------#
+  # Process options -h and -z. #
+  #----------------------------#
+  for (n=1; n<ARGC; n++)
+  {
+    if (ARGV[1] == "-z") # Timezone option
+    {
+      if (tz_adj !~ /^[0-9]+$/)
+      {
+        Usage_and_exit("Time zone must be integer (represents hours)!")
+      }
+      tz_adj  = ARGV[2] * 3600
+      ARGV[2] = ""
+      ARGV[1] = ""
+      shift_ARGV()
+    }
+    else if (ARGV[1] == "-h") # Help
+    {
+      Usage_and_exit()
+    }
+  }
+
+  if (ARGV[1] == "") # No options/arguments returns current epoch seconds.
+  {
+    print secs_since_epoch() # Since Jan. 1, 1970 00:00:00
+    exit 0
+  }
+
+  julian_table()
+
+  #----------------------------------------------------------#
+  # Using user supplied yyyymmddhhmiss (+\%Y\%m\%d\%H\%M\%S) #
+  #----------------------------------------------------------#
+  if (ARGV[1] ~ /[0-9][0-9][0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9]/)
+  {
+    print secs_since_epoch()
+    exit 0
+  }
+
+  #----------------------------------------------------------#
+  # Looks like epoch seconds argument.                       #
+  #----------------------------------------------------------#
+  epoch_sss = ARGV[1] + tz_adj # ET timezone adjustment = 5 (hours)
+  days = sprintf("%d",(epoch_sss / 86400))
+  sss  = sprintf("%d",(epoch_sss % 86400))
+  sub(/^-/,"",sss) # Remove any sign.
+  int(sss)
+
+  ddddd = (basedate(1970,01,01) + days)
+
+  yyyymmdd = ddddd_to_yyyymmdd(ddddd)
+
+  hh  =  (sss / 3600.000000)
+  sss =  (sss % 3600.000000)
+  mm  =  (sss / 60.000000)
+  ss  =  (sss % 60)
+  printf("%8s%02d%02d%02d\n", yyyymmdd, hh, mm, ss)
+
+  exit 0
+} # E.O.BEGIN
+
+#======================================================================#
+#                     U S E R    F U N C T I O N S                     #
+#                        (in alphabetical order)                       #
+#----------------------------------------------------------------------#
+function basedate(                                               \
+                   YYYY,MM,DD,                                   \
+                   yyyy,cc,ddddd,leapdays,cc_leapdays,accum_days \
+                 )
+# -------------------------------------------------------------------- #
+# Globals: julian_days[] and julian_leap[]                             #
+#   Calls: leap_year()                                                 #
+#----------------------------------------------------------------------#
+{
+  julian_table() # Start with a new julian table.
+
+  #--------------------------------------------------------#
+  # First, decrement the year and get the number of days   #
+  # for all the years preceeding it (in the Common Era).   #
+  #--------------------------------------------------------#
+  yyyy = YYYY
+  if ((yyyy - 1) > 0)
+  {
+    yyyy--
+    cc          = int(yyyy / 100)
+    ddddd       = yyyy * 365
+    leapdays    = int(yyyy / 4)
+    cc_leapdays = (cc > 0) ? (int(cc / 4)) : 0
+    ddddd       = ddddd + leapdays - cc + cc_leapdays
+    yyyy++
+  }
+  ddddd += DD
+
+  #--------------------------------------------------------#
+  # Add the previous month YTD days to our ddddd.  If it   #
+  # is a leap year, assign julian_leap[] to accum_days[].  #
+  # Then add in YTD days for previous months of this year  #
+  #--------------------------------------------------------#
+  if (leap_year(yyyy))
+    for (i=0; i<13; i++) accum_days[i] = julian_leap[i]
+  else
+    for (i=0; i<13; i++) accum_days[i] = julian_days[i]
+  ddddd += accum_days[MM += 0] # 'MM += 0' removes leading zero
+
+  return (ddddd)
+} # function basedate
+
+#----------------------------------------------------------------------#
+function ddddd_to_yyyymmdd(DDDDD,                   ddddd,yyyy,mmdd,i) #
+# -------------------------------------------------------------------- #
+# Globals: julian_days[] and julian_leap[].                            #
+#----------------------------------------------------------------------#
+{
+  yyyy = ddddd = reduce(DDDDD)
+  sub(/-.*$/,"", yyyy); yyyy  += 0 # "+= 0" ensures numeric context
+  sub(/^.*-/,"",ddddd); ddddd += 0
+
+  if (leap_year(yyyy))
+    for (i in julian_leap)
+      julian[i] = julian_leap[i]
+  else
+    for (i in julian_days)
+      julian[i] = julian_days[i]
+
+  #------------------------------------------------------------#
+  # Reduce ddddd to month and day (we already have the year).  #
+  #------------------------------------------------------------#
+  for (i=13; i>0; i--)
+  {
+    if (julian[i] < ddddd)
+    {
+      if (leap_year(yyyy) && i > 2) ddddd++
+      ddddd -= julian[i]
+      mmdd = sprintf("%02d%02d", i, ddddd)
+      break
+    }
+  }
+
+  return (yyyy""mmdd)
+} # function ddddd_to_yyyymmdd
+
+#----------------------------------------------------------------------#
+function julian_table()
+#----------------------------------------------------------------------#
+{
+  split("0 31 59 90 120 151 181 212 243 273 304 334 365", julian_days)
+  split("0 31 60 91 121 152 182 213 244 274 305 335 366", julian_leap)
+}
+
+#----------------------------------------------------------------------#
+function leap_year(YYYY) # YYYY = year.  Returns true|false (1|0).
+#----------------------------------------------------------------------#
+{
+  return (((YYYY%4 == 0 && YYYY%100 != 0) || (YYYY%400 == 0)) ? 1 : 0)
+} # function leap_year
+
+#----------------------------------------------------------------------#
+function reduce(DDDDD,           yyyy,ddddd,cc,leapdays,cc_leapdays,i) #
+#----------------------------------------------------------------------#
+{
+  for (i=1; ; i++)
+  {
+    yyyy        = int(DDDDD / 365) - i
+    ddddd       = DDDDD - yyyy * 365
+    cc          = int(yyyy / 100)
+    leapdays    = int(yyyy / 4)
+    cc_leapdays = (cc > 0) ? (int(cc / 4)) : 0
+    leapdays    = leapdays - cc + cc_leapdays
+    ddddd      -= leapdays
+    yyyy++
+    if (ddddd > 0) break
+  }
+  return yyyy"-"ddddd
+} # function reduce
+
+#----------------------------------------------------------------------#
+function secs_since_epoch(ddddd,ddddd_yyyy,sss)
+#----------------------------------------------------------------------#
+{
+  #-------------------------------------------------------#
+  # Calling date with "+\%Y\%m\%d" (with escaped percent  #
+  # signs) avoids hassles with SCCS and percentYpercent.  #
+  #-------------------------------------------------------#
+  if (ARGV[1] == "")
+    "date +\%Y\%m\%d\%H\%M\%S" | getline yyyymmddhhmiss
+  else                                           # yyyymmddhhmiss
+    yyyymmddhhmiss = sprintf("%14s",substr(ARGV[1]"00000000000000",1,14))
+
+  yyyy = substr(yyyymmddhhmiss, 1,4)
+  mm   = substr(yyyymmddhhmiss, 5,2)
+  dd   = substr(yyyymmddhhmiss, 7,2)
+  hh   = substr(yyyymmddhhmiss, 9,2)
+  mi   = substr(yyyymmddhhmiss,11,2)
+  ss   = substr(yyyymmddhhmiss,13,2)
+
+  ddddd = basedate(yyyy,mm,dd)
+  ddddd_yyyy = basedate(1970,01,01)
+  ddddd -= ddddd_yyyy
+
+  sss = (ddddd * 86400) + (hh * 3600) + (mi * 60) + ss
+  sss += tz_adj
+
+  return sss
+} # function secs_since_epoch
+
+#----------------------------------------------------------------------#
+function shift_ARGV(i,j,k)
+#----------------------------------------------------------------------#
+{
+  k = ARGC
+  for (i=1; i<=ARGC; i++)
+  {
+    if (ARGV[i] == "")     # If the argument is empty, see is we
+    {                      # can shift the next one down to it.
+      for (j=i+1; j<=k; j++)
+      {
+        if (ARGV[j] == "") # If the next one is empty, try the one
+          continue         # following that.
+        ARGV[i] = ARGV[j]  # Once we find an argument, move it down,
+        ARGV[j] = ""       # null where it was, decrement arg counter,
+        break              # can do this with the next argument.
+      }
+    }
+  }
+
+  for (i=1; i<=k; i++)     # Adjust ARGC
+    if (ARGV[i] == "")     # If the argument is empty,
+      ARGC--               # decrement ARGC
+  return ARGC
+} # function shift_ARGV
+
+#----------------------------------------------------------------------#
+function Usage_and_exit(SPECIFIC_ERROR)
+#----------------------------------------------------------------------#
+{
+  if (SPECIFIC_ERROR) print "\n"SPECIFIC_ERROR
+
+  print "\nPurpose: Return current Unix Epoch time (ssssssssss) or",
+      "\n         convert specified Unix Epoch time to yyyymmddhhmiss",
+      "\n         datetime, or convert yyyymmddhhmiss datetime to",
+      "\n         Unix Epoch seconds.\n",
+      "\n  Usage: epoch_time.awk -h -z [-]hh [yyyymmddhhmiss|ssssssssss]",
+      "\n    e.g. epoch_time.awk [no options or arguments]",
+      "\n         epoch_time.awk 20070121132053",
+      "\n         epoch_time.awk 1169385653"
+  exit 1
+}
+
+
+#======================================================================#
+#                       D O C U M E N T A T I O N                      #
+#======================================================================#
+#                                                                      #
+#      Author: Bob Orlando (Bob@OrlandoKuntao.com)                     #
+#                                                                      #
+#        Date: May 2, 2006                                             #
+#                                                                      #
+#  Program ID: epoch_time.awk                                          #
+#                                                                      #
+#     Purpose: Return current Unix Epoch time (ssssssssss) or          #
+#              convert an Epoch seconds argument (seconds since        #
+#              January 1, 1970 00:00:00) into yyyymmddhhmiss datetime  #
+#              form -- OR -- convert yyyymmddhhmiss datetime argument  #
+#              into Unix Epoch seconds.                                #
+#                                                                      #
+#              The script uses the host's time zone, but adjustments   #
+#              can be made via the time zone (-z) option.  The optarg  #
+#              is specified in hours and may be specified negatively.  #
+#                                                                      #
+#       Usage: [gn]awk -f epoch_time.awk -- -h -z [-]hh \              #
+#                                        [yyyymmddhhmiss|ssssssssss]   #
+#                                                                      #
+#                 --             = This option must come first for it  #
+#                                  tells Awk to pass on all options    #
+#                                  that follow to the script itself.   #
+#                 -h             = Help (usage brief)                  #
+#                 -z [-]hh       = Timezone adjustment in hours        #
+#                 yyyymmddhhmiss = Converts to epoch seconds           #
+#                 ssssssssss     = Converts to yyyymmddhhmiss datetime #
+#                                                                      #
+#    Examples: 1. epoch_time.awk # No options or argument              #
+#              2. epoch_time.awk          1164718505                   #
+#              3. epoch_time.awk          20061128125505               #
+#              4. epoch_time.awk -- -z  2 1164718505                   #
+#              5. epoch_time.awk -- -z  2 20061128125505               #
+#              6. epoch_time.awk -- -z -2 1164718505                   #
+#                                                                      #
+#    Displays: 1. 1164718505     # Current datetime to Epoch seconds   #
+#              2. 20061128125505 # Epoch seconds to yyyymmddhhmiss     #
+#              3. 1164718505     # yyyymmddhhmiss to epoch seconds     #
+#              4. 20061128145505 # Adjusted by 2 hour timezone         #
+#              5. 1164725705     # Adjusted by 2 hours                 #
+#              6. 20061128105505 # Adjusted by -2 hours                #
+#                                                                      #
+#    Modified: 2006-05-02 Bob Orlando                                  #
+#                 v1.1  * Initial release.                             #
+#                                                                      #
+#----------------------------------------------------------------------#

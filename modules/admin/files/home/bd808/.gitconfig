@@ -1,0 +1,139 @@
+# vim:sw=2 ts=2 sts=2 noet:
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
+	autocrlf = input
+
+[color]
+	ui = auto
+[color "diff"]
+	plain = normal
+	meta = green
+	frag = yellow
+	old = magenta
+	new = cyan
+	commit = yellow
+	whitespace = red reverse
+[color "branch"]
+	current = yellow
+	local = normal
+	remote = magenta
+	plain = normal
+[color "status"]
+	header = black bold
+	added = cyan
+	updated = magenta
+	changed = yellow
+	untracked = white bold
+	nobranch = red
+[color "grep"]
+	match = yellow
+
+[diff]
+	mnemonicprefix = true
+
+[rerere]
+	# Remember my merges
+	# http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
+	enabled = true
+
+[format]
+	pretty = oneline
+
+[pretty]
+	# SHA description (rel date, user) (branches)
+	concise = %C(yellow)%h%C(reset) %s %C(bold black)(%C(reset)%C(green)%ar%C(reset)%C(bold black),%C(reset) %C(magenta)%an%C(reset)%C(bold black))%C(reset)%C(cyan)%d%C(reset)
+	# SHA - (branches) description (rel date) <user>
+	bd808 = %C(yellow)%h%C(reset) -%C(cyan)%d%C(reset) %s %C(green)(%cr)%C(reset) %C(magenta)<%an>%C(reset)
+
+[push]
+	# Make "git push" or "git push <remote>" only push the current branch to
+	# the tracked branch (regardless of its remote name) as opposed to pushing
+	# all branches with a matching name on the remote. See "An asymmetry
+	# between git pull and push": http://longair.net/blog/?p=572
+	default = tracking
+
+[alias]
+	# add
+	a = add
+
+	# alias mgmt
+	alias = !sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -
+	aliases = !git config --get-regexp 'alias.*'|colrm 1 6|sed 's/[ ]/ = /'|sort
+
+	# branches
+	br = branch
+	brs = branch --all
+
+	# commit
+	ci = commit
+	cia = commit --all
+	amend = commit --amend --all
+
+	# checkout
+	co = checkout
+
+	# diff
+	df = diff
+	dc = diff --cached
+	ds = diff --staged
+	last = diff HEAD^
+	wdiff = diff --word-diff=plain
+
+	# empty tree sha1
+	empty-tree-sha1 = hash-object -t tree /dev/null
+
+	# exec stuff
+	exec = !/usr/bin/env   # executes relative to working copy root
+	git = !git             # for `git git foo` typos
+	panic = !tar cvf ../panic_$(basename $(git root)).tar *   # backup repo
+	root = !pwd            # git full path of working copy root
+
+	# fetch
+	fetchall = fetch --verbose --prune --all
+
+	# information
+	info = remote --verbose show -n origin
+
+	# ls
+	ls = ls-files
+
+	# log
+	l = log --pretty=format:'%C(yellow)%h%C(reset) %s %C(bold green)(%C(reset)%C(green)%ar%C(reset)%C(bold green),%C(reset) %C(magenta)%an%C(reset)%C(bold green))%C(reset)%C(cyan)%d%C(reset)' --abbrev-commit --graph
+	lg = log --pretty=format:'%C(yellow)%h%C(reset) %s %C(bold green)(%C(reset)%C(green)%ar%C(reset)%C(bold green),%C(reset) %C(magenta)%an%C(reset)%C(bold green))%C(reset)%C(cyan)%d%C(reset)' --abbrev-commit --graph --stat --decorate --date=relative
+	ll = log --decorate --pretty=full --name-status
+	ahead = log --stat --abbrev-commit @{upstream}..HEAD
+	who = shortlog --summary --
+	showlast = log -n 1 --patch
+
+	# reset
+	unstage = rm --cached
+	unstage-all = reset HEAD
+	uncommit = reset --soft HEAD^
+
+	# review
+	r = review --verbose --no-rebase
+	rs = review --setup
+	rd = review --download
+	pfr = push origin HEAD:refs/for/master # push for review
+
+	# status
+	s = status --short --branch
+	st = status
+
+	# stash
+	ss = stash
+	sl = stash list
+	sp = stash pop
+	sa = stash apply
+	sd = stash drop
+
+[user]
+	name = Bryan Davis
+	email = bd808@wikimedia.org
+
+[gitreview]
+	username = bd808
+
+[bash]
+	showDirtyState = false
