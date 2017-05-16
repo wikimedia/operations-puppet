@@ -63,7 +63,16 @@ class role::librenms {
             'eqord' => 'Equinix, Chicago, Illinois, USA',
             'knams' => 'Vancis, Amsterdam, The Netherlands',
             'esams' => 'EvoSwitch, Amsterdam, The Netherlands',
-
+        },
+        'astext'       => {
+            '64600' => 'PyBal',
+            '64601' => 'Kubernetes',
+            '64700' => 'frack-eqiad',
+            '64701' => 'frack-codfw',
+            '65001' => 'confed-eqiad-eqord',
+            '65002' => 'confed-eqdfw-codfw',
+            '65004' => 'confed-ulsfo',
+            '65517' => 'Equinix',
         },
         'email_from' => 'librenms',
         'enable_inventory' => 1,
