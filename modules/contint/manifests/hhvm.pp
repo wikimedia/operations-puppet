@@ -6,14 +6,20 @@ class contint::hhvm {
             pin      => 'release o=Wikimedia,c=experimental',
             priority => '1002',
         }
-    }
 
-    class { '::contint::packages::hhvm':
-        require => Apt::Pin['hhvm-from-experimental'],
+        class { '::contint::packages::hhvm':
+            require => Apt::Pin['hhvm-from-experimental'],
+        }
+
+        $hhvm_experimental = Apt::Pin['hhvm-from-experimental']
+    } else {
+        include ::contint::packages::hhvm
+
+        $hhvm_experimental = ''
     }
 
     class { '::hhvm':
-        require        => Apt::Pin['hhvm-from-experimental'],
+        require        => $hhvm_experimental,
 
         # No need for a hhvm service on CI slaves T126594
         # lint:ignore:ensure_first_param
