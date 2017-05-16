@@ -38,15 +38,6 @@ class wikistats (
         ensure => 'directory',
     }
 
-    # stash random db password in the wikistats-user home dir,
-    # so that deploy-script can bootstrap a new system
-    exec { 'generate-wikistats-db-pass':
-        command => '/usr/bin/openssl rand -base64 12 > /usr/lib/wikistats/wikistats-db-pass',
-        creates => '/usr/lib/wikistats/wikistats-db-pass',
-        user    => 'root',
-        timeout => '10',
-    }
-
     file { '/usr/local/bin/wikistats':
         ensure => 'directory',
     }
