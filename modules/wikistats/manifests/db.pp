@@ -29,6 +29,16 @@ class wikistats::db {
         minute  => '23',
     }
 
+    # stash random db password in the wikistats-user home dir,
+    # so that deploy-script can bootstrap a new system
+    exec { 'generate-wikistats-db-pass':
+        command => '/usr/bin/openssl rand -base64 12 > /usr/lib/wikistats/wikistats-db-pass',
+        creates => '/usr/lib/wikistats/wikistats-db-pass',
+        user    => 'root',
+        timeout => '10',
+    }
+
+    # database schema
     file { '/usr/lib/wikistats/schema.sql':
         ensure => 'present',
         owner  => 'wikistatsuser',
@@ -37,9 +47,9 @@ class wikistats::db {
         source => 'puppet:///modules/wikistats/schema.sql',
     }
 
+    # import db schema on the first run
     exec { 'bootstrap-mysql-schema':
         command => '/usr/bin/mysql -u root -Bs < /usr/lib/wikistats/schema.sql',
-        creates => '/usr/lib/wikistats/db_init',
         user    => 'root',
         timeout => '30',
         unless  => '/usr/bin/test -f /usr/lib/wikistats/db_init_done',
@@ -53,4 +63,32 @@ class wikistats::db {
         group   => 'wikistatsuser',
         mode    => '0444',
     }
+
+    # grant db permissions on the first run
+
+    file { '/usr/lib/wikistats/grants.sql':
+        ensure  => 'present',
+        content => template('wikistats/db/grants.sql.erb'),
+        owner   => 'wikistatsuser',
+        group   => 'wikistatsuser',
+        mode    => '0444',
+    }
+
+    exec { 'bootstrap-mysql-grants':
+        command  => '/usr/bin/mysql -u root -Bs < /usr/lib/wikistats/grants.sql',
+        user     => 'root',
+        timeout  => '30',
+        unless   => '/usr/bin/test -f /usr/lib/wikistats/db_grants_done',
+        before   => File['/usr/lib/wikistats/db_grants_done'],
+        requires => File['/usr/lib/wikistats/grants.sql'],
+    }
+
+    file { '/usr/lib/wikistats/db_grants_done':
+        ensure  => 'present',
+        content => 'database grants have been applied',
+        owner   => 'wikistatsuser',
+        group   => 'wikistatsuser',
+        mode    => '0444',
+    }
+
 }
