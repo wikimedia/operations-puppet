@@ -131,6 +131,21 @@ host krypton {
     fixed-address krypton.eqiad.wmnet;
 }
 
+host kubetcd2001 {
+    hardware ethernet aa:00:00:70:df:e9;
+    fixed-address kubetcd2001.codfw.wmnet;
+}
+
+host kubetcd2002 {
+    hardware ethernet aa:00:00:fd:89:d2;
+    fixed-address kubetcd2002.codfw.wmnet;
+}
+
+host kubetcd2003 {
+    hardware ethernet aa:00:00:cd:aa:4b;
+    fixed-address kubetcd2003.codfw.wmnet;
+}
+
 host labsdb1001 {
     hardware ethernet 00:22:BD:D3:61:8C;
     fixed-address labsdb1001.eqiad.wmnet;
