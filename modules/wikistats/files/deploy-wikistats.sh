@@ -6,7 +6,7 @@
 pn="wikistats"
 dps=('var/www' 'etc' 'usr/lib' 'usr/share/php' 'usr/local/bin')
 pp="/srv"
-bp="/root/wsbackup"
+bp="/usr/lib/wikistats/wsbackup"
 dbpass=$(cat /root/wikistats-db-pass)
 
 function deploy {
@@ -28,7 +28,7 @@ function deploy {
 
 function backup {
 
-  mkdir -p /root/wsbackup
+  mkdir -p ${bp}
   echo -e "\nbacking up files to to backup location {${bp})\n"
 
   for dp in "${dps[@]}" ; do

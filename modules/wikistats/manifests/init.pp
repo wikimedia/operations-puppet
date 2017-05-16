@@ -33,7 +33,7 @@ class wikistats (
         ensure => 'directory',
     }
 
-    file { '/root/wsbackup':
+    file { '/usr/lib/wikistats/wsbackup':
         ensure => 'directory',
     }
 
