@@ -31,7 +31,7 @@ class wikistats::db {
 
     file { '/usr/lib/wikistats/schema.sql':
         ensure => 'present',
-        user   => 'wikistatsuser',
+        owner  => 'wikistatsuser',
         group  => 'wikistatsuser',
         mode   => '0444',
         source => 'puppet:///modules/wikistats/schema.sql',
