@@ -35,6 +35,18 @@ class profile::mediawiki::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
+    $git_packages = [
+        'git',
+        'git-man'
+    ]
+
+    if os_version('debian == jessie') {
+        apt::pin { $git_packages:
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+        }
+    }
+
     # Firewall rules
     ferm::service { 'rsyncd_scap_master':
         proto  => 'tcp',
