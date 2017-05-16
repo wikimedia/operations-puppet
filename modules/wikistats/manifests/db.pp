@@ -42,5 +42,15 @@ class wikistats::db {
         creates => '/usr/lib/wikistats/db_init',
         user    => 'root',
         timeout => '30',
+        unless  => '/usr/bin/test -f /usr/lib/wikistats/db_init_done',
+        before  => File['/usr/lib/wikistats/db_init_done'],
+    }
+
+    file { '/usr/lib/wikistats/db_init_done':
+        ensure  => 'present',
+        content => 'database has been initialized',
+        owner   => 'wikistatsuser',
+        group   => 'wikistatsuser',
+        mode    => '0444',
     }
 }
