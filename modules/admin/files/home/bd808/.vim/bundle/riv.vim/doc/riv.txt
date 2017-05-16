@@ -1,0 +1,26 @@
+*riv.txt*           Riv         reStructuredText in Vim
+                     __________  .__  ____   ____                ~
+                     \______   \ |__| \   \ /   /                ~
+                      |       _/ |  |  \   Y   /                 ~
+                      |    |   \ |  |   \     /                  ~
+                      |____|_  / |__|    \___/                   ~
+                             \/                                  ~
+======================================================================
+
+                                               *:RivIntro*
+    Riv Intro   
+
+                                               *:RivInstruction*
+    Riv Instruction
+
+                                               *:RivQuickStart*
+    Riv QuickStart
+
+                                               *:RivPrimer*
+    RST Primer
+
+                                               *:RivSpecification*
+    RST Specification
+
+======================================================================
+vim:ft=help:tw=76

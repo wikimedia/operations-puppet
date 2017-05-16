@@ -1,0 +1,10 @@
+*.pyc
+*.swp
+
+doc/tags
+
+README.html
+README.latex
+README.xml
+README.odt
+README.s5
