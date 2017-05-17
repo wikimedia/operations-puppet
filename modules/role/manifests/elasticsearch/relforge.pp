@@ -8,7 +8,7 @@ class role::elasticsearch::relforge {
     include ::profile::elasticsearch
     include ::elasticsearch::nagios::check
 
-    system::role { 'role::elasticsearch::relforge':
+    system::role { 'elasticsearch::relforge':
         ensure      => 'present',
         description => 'elasticsearch relforge',
     }

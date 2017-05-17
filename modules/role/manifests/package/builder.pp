@@ -7,7 +7,7 @@ class role::package::builder {
     include ::package_builder
     include ::base::firewall
 
-    system::role { 'role::package::builder':
+    system::role { 'package::builder':
         description => 'Debian package builder'
     }
 

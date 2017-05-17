@@ -5,7 +5,7 @@
 
 class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
 
-    system::role { 'role::labs::nfs::misc':
+    system::role { 'labs::nfs::misc':
         description => 'Labs NFS service (misc)',
     }
 

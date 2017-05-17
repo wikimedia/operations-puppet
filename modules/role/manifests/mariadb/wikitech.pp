@@ -1,7 +1,7 @@
 # wikitech instance (silver)
 class role::mariadb::wikitech {
 
-    system::role { 'role::mariadb::wikitech':
+    system::role { 'mariadb::wikitech':
         description => 'Wikitech Database',
     }
 

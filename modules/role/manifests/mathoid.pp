@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::mathoid{
-    system::role { 'role::mathoid':
+    system::role { 'mathoid':
         description => 'mathoid server'
     }
 

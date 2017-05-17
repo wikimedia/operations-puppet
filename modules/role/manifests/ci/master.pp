@@ -17,7 +17,7 @@ class role::ci::master(
     $jenkins_prefix = '/ci'
 ) {
 
-    system::role { 'role::ci::master': description => 'CI Jenkins master' }
+    system::role { 'ci::master': description => 'CI Jenkins master' }
 
     include ::standard
 

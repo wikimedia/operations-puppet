@@ -1,6 +1,6 @@
 # (stat1002)
 class role::statistics::private inherits role::statistics::base {
-    system::role { 'role::statistics::private':
+    system::role { 'statistics::private':
         description => 'Statistics private data host and general compute node'
     }
 

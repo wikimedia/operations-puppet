@@ -4,7 +4,7 @@ class role::trendingedits {
     $kafka_config = kafka_config('main')
     $port = 6699
 
-    system::role { 'role::trendingedits':
+    system::role { 'trendingedits':
         description => 'computes the list of currently-trending articles',
     }
 

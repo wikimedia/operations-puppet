@@ -195,7 +195,7 @@ class %(name)s() {
 # Role class for %(name)s
 class role::%(name)s {
 
-    system::role { 'role::%(name)s':
+    system::role { '%(name)s':
         description => '%(description)s',
     }
 

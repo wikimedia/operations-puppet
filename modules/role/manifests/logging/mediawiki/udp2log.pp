@@ -9,7 +9,7 @@ class role::logging::mediawiki::udp2log(
     $forward_messages = false,
     $mirror_destinations = undef,
 ) {
-    system::role { 'role::logging:mediawiki::udp2log':
+    system::role { 'logging:mediawiki::udp2log':
         description => 'MediaWiki log collector',
     }
 

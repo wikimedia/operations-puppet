@@ -36,7 +36,7 @@ class role::cassandra {
         ensure => absent,
     }
 
-    system::role { 'role::cassandra':
+    system::role { 'cassandra':
         description => 'Cassandra server',
     }
 

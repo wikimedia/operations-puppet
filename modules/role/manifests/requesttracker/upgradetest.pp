@@ -1,6 +1,6 @@
 #  temp. setup for testing RT migration to jessie
 class role::requesttracker::upgradetest {
-    system::role { 'role::requesttracker::upgradetest': description => 'temp test setup for RT migration to jessie' }
+    system::role { 'requesttracker::upgradetest': description => 'temp test setup for RT migration to jessie' }
 
     include ::standard
     include ::base::firewall

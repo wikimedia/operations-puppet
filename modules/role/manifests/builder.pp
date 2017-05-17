@@ -8,7 +8,7 @@ class role::builder {
     include ::profile::docker::builder
     include role::systemtap::devserver
 
-    system::role { 'role::builder':
+    system::role { 'builder':
         description => 'Docker images builder',
     }
 }

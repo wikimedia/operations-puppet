@@ -5,7 +5,7 @@ class role::ganeti {
     # Ganeti hosts have KSM enabled. So get stats about it
     diamond::collector { 'KSM': }
 
-    system::role { 'role::ganeti':
+    system::role { 'ganeti':
         description => 'Ganeti Node',
     }
 

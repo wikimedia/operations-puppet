@@ -5,7 +5,7 @@
 class role::ci::slave::browsertests {
     requires_realm('labs')
 
-    system::role { 'role::ci::slave::browsertests':
+    system::role { 'ci::slave::browsertests':
         description => 'CI Jenkins slave for browser tests',
     }
 

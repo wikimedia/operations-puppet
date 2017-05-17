@@ -4,7 +4,7 @@
 class role::apertium(
     $port = '2737',
 ) {
-    system::role { 'role::apertium':
+    system::role { 'apertium':
         description => 'Apertium APY server'
     }
 

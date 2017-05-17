@@ -1,6 +1,6 @@
 class role::labs::db::slave {
 
-    system::role { 'role::labs::db::slave':
+    system::role { 'labs::db::slave':
         description => 'Labs user database slave',
     }
 

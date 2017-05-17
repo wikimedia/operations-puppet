@@ -1,6 +1,6 @@
 class role::labs::nfs::secondary($monitor = 'eth0') {
 
-    system::role { 'role::labs::nfs::secondary':
+    system::role { 'labs::nfs::secondary':
         description => 'NFS secondary share cluster',
     }
 

@@ -4,7 +4,7 @@
 # role provisions a metric module that reports error counts to StatsD.
 #
 class role::logging::mediawiki::errors {
-    system::role { 'role::logging::mediawiki::errors':
+    system::role { 'logging::mediawiki::errors':
         description => 'Report MediaWiki exceptions and fatals to StatsD',
     }
 

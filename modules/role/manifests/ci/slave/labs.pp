@@ -2,7 +2,7 @@
 class role::ci::slave::labs {
     requires_realm('labs')
 
-    system::role { 'role::ci::slave::labs':
+    system::role { 'ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
     # Debian slaves are used to build Debian packages for all our distributions
