@@ -119,13 +119,10 @@ class profile::lists {
         source => 'puppet:///modules/icinga/check_iostat.sh',
     }
 
-    # lint:ignore:quoted_booleans
-    $iostat_device = $::is_virtual ? {
-        'true'    => 'vda',
-        'false'   => 'sda',
-        default   => 'sda',
+    $iostat_device = str2bool($facts['is_virtual']) ? {
+        true    => 'vda',
+        false   => 'sda',
     }
-    # lint:endignore
 
     nrpe::monitor_service { 'mailman_iostat':
         description  => 'mailman I/O stats',

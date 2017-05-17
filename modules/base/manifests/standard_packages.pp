@@ -77,10 +77,7 @@ class base::standard_packages {
     # real-hardware specific
     # As of September 2015, mcelog still does not support newer AMD processors.
     # See <http://www.mcelog.org/faq.html#18>.
-    # Note: False is quoted on purpose
-    # lint:ignore:quoted_booleans
-    if $::is_virtual == 'false' and $::processor0 !~ /AMD/ {
-    # lint:endignore
+    if str2bool($facts['is_virtual']) == false and $::processor0 !~ /AMD/ {
         require_package('mcelog')
     }
 
