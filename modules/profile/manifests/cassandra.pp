@@ -8,6 +8,7 @@ class profile::cassandra(
     $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist'),
     $graphite_host = hiera('graphite_host'),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $allow_analytics = hiera('profile::cassandra::allow_analytics')
 ) {
     include ::passwords::cassandra
     $instances = $all_instances[$::fqdn]
@@ -38,8 +39,12 @@ class profile::cassandra(
         vm_dirty_background_bytes => 25165824,
     }
 
-    $tls_cluster_name = $cassandra_settings['tls_cluster_name']
-    if $instances != {} {
+    if $cassandra_settings['tls_cluster_name'] {
+        $tls_cluster_name = $cassandra_settings['tls_cluster_name']
+    } else {
+        $tls_cluster_name = ''
+    }
+    if $instances {
         $instance_names = keys($instances)
         ::cassandra::instance::monitoring{ $instance_names:
             instances        => $instances,
@@ -74,12 +79,16 @@ class profile::cassandra(
         port   => '7000',
         srange => "@resolve((${cassandra_hosts_ferm}))",
     }
-    # Cassandra intra-node SSL messaging
-    ferm::service { 'cassandra-intra-node-ssl':
-        proto  => 'tcp',
-        port   => '7001',
-        srange => "@resolve((${cassandra_hosts_ferm}))",
+
+    if $cassandra_settings['tls_cluster_name'] {
+        # Cassandra intra-node SSL messaging
+        ferm::service { 'cassandra-intra-node-ssl':
+            proto  => 'tcp',
+            port   => '7001',
+            srange => "@resolve((${cassandra_hosts_ferm}))",
+        }
     }
+
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-jmx-rmi':
         proto  => 'tcp',
@@ -98,6 +107,16 @@ class profile::cassandra(
         proto  => 'tcp',
         port   => '7800',
         srange => "@resolve((${prometheus_nodes_ferm}))",
+    }
+    if $allow_analytics {
+        include ::network::constants
+        $analytics_networks = join($network::constants::analytics_networks, ' ')
+        ferm::service { 'cassandra-analytics-cql':
+            proto  => 'tcp',
+            port   => '9042',
+            srange => "(@resolve((${cassandra_hosts_ferm})) ${analytics_networks})",
+        }
+
     }
 
 }
