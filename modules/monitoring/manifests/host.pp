@@ -54,9 +54,11 @@ define monitoring::host (
         # functionality in the case of an exported host
         if $parents {
             $real_parents = $parents
-        } elsif $facts['lldp_parent'] {
-            # we could use lldp_neighbors here, but not all of our neighbors
-            # are necessarily our parents, so just use the lldp_parent alone
+        } elsif ($facts['is_virtual'] == false) and $facts['lldp_parent'] {
+            # Only set the (automatic) parent for physical hosts. We want to
+            # still alert for each individual VM when the hosts die, as:
+            # a) just a host DOWN alert for the VM node is too inconspicuous,
+            # b) it's usually the case that VMs can be relocated to other nodes
             $real_parents = $facts['lldp_parent']
         } else {
             $real_parents = undef
