@@ -11,6 +11,8 @@ class gerrit::jetty(
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
     $log_port = '4560'
+    $ipv4 = hiera('gerrit::server::ipv4'),
+    $ipv4 = hiera('gerrit::server::ipv6'),
     ) {
 
     include ::nrpe
