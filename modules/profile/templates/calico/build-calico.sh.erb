@@ -1,55 +1,33 @@
 #!/bin/bash
 set -e
+_registry="<%= @registry_address %>"
+_registry_user="<%= @registry_user %>"
 _dir="<%= @directory %>/calico-containers"
 _cni_dir="<%= @directory %>/calico-cni"
 _pol_dir="<%= @directory %>/calico-k8s-policy-controller"
-pushd $_dir
+_node_version="<%= @node_version %>"
+_pol_version="<%= @k8s_policy_version %>"
 <%- if @proxy_address != "" -%>
 export HTTPS_PROXY=<%= @proxy_address %>; export http_proxy=<%= @proxy_address %>
 <%- end -%>
-# Releasing
-export VERSION=<%= @node_version %>
-git tag | fgrep -q $VERSION || git tag $VERSION
-CALICOCONTAINERS_VERSION=$VERSION make release-caliconode
-<%- if @registry_address != "" -%>
-docker login --username <%= @registry_user %> <%= @registry_address %>
-docker push  calico/node:$VERSION <%= @registry_address %>
-<%- end %>
-popd
-# Now build calicoctl
-base=$(mktemp -d)
-export GOPATH="${base}/gopath"
-_go_base="${GOPATH}/src/github.com/projectcalico/"
-mkdir -p $_go_base
-cp -r $_dir $_go_base
-(cd "${_go_base}/calico-containers" && glide install && \
-   make dist-calicoctl)
-base_deb=${base}/debian
-# Debian control file
-mkdir -p ${base_deb}/DEBIAN
-cp -ax ${_dir}/debian/control ${base_deb}/DEBIAN
+# Calicoctl
+(cd $_dir && git checkout master && gbp buildpackage)
+# Calico/node. To be run *after* the debian build.
 
-# The actual binary
-mkdir -p ${base_deb}/usr/bin
-cp "${_go_base}/calico-containers/dist/calicoctl" ${base_deb}/usr/bin/calicoctl
-
-# Changelog, etc
-deb_doc="${base_deb}/usr/share/doc/calicoctl"
-mkdir -p ${deb_doc}
-gzip -c ${_dir}/debian/changelog > ${deb_doc}/changelog.Debian.gz
-gzip -c ${_dir}/debian/changelog > ${deb_doc}/changelog.gz
-cp -ax ${_dir}/debian/copyright ${deb_doc}/copyright
-
-# Lintian, forgive me
-mkdir -p ${base_deb}/usr/share/doc/lintian/overrides
-cp -ax ${_dir}/debian/calicoctl.lintian-overrides ${base_deb}/usr/share/doc/lintian/overrides/calicoctl
-pkg_dst="/tmp/calicoctl_$VERSION~wmf1_amd64.deb"
-cd ${base} && fakeroot dpkg-deb --build debian && mv debian.deb $pkg_dst
-echo "calicoctl built in ${pkg_dst}"
-rm -rf ${base}
+(cd $_dir && CALICOCONTAINERS_VERSION=$VERSION make calico/node node-test-containerized )
 
 # Calico-cni
-cd $_cin_dir && git checkout master && gbp buildpackage
+cd $_cni_dir && git checkout master && gbp buildpackage
 
 # Calico policy controller
 cd $_pol_dir && make clean docker-image
+
+if [ !-z "${_registry}"]; then
+    docker login --username $_registry_user $_registry
+    node_image="calico/node:${_node_version}"
+    pol_image="calico/kube-policy-controller:$_pol_version"
+    docker tag $node_image "${_registry}/${node_image}"
+    docker tag $pol_image "${_registry}/${pol_image}"
+    docker push "${_registry}/${node_image}"
+    docker push "${_registry}/${pol_image}"
+fi
