@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# NOTE:  This file is managed by Puppet
+# NOTE: This file is managed by Puppet.
 
 SCRIPT_NAME=$(basename "$0")
 
@@ -22,10 +22,12 @@ Commands:
 $commands
 
 Environment Variables:
+  KAFKA_JAVA_HOME         - Value of JAVA_HOME to use for invoking Kafka commands.
   KAFKA_ZOOKEEPER_URL     - If this is set, any commands that take a --zookeeper
                             flag will be given this value.
   KAFKA_BOOTSTRAP_SERVERS - If this is set, any commands that take a --broker-list or
                             --bootstrap-server flag will be given this value.
+
 "
 
 # Print usage if no <command> given, or $1 starts with '-'
@@ -38,7 +40,14 @@ fi
 command="kafka-${1}"
 shift
 
-# Set KAFKA_ZOOKEEPER_OPT if ZOOKEEPER_URL is set and --zookeeper has not
+# Export JAVA_HOME as KAFKA_JAVA_HOME if it is set.
+# This makes kafka-run-class use the preferred JAVA_HOME for Kafka.
+if [ -n "${KAFKA_JAVA_HOME}" ]; then
+    : ${JAVA_HOME="$KAFKA_JAVA_HOME"}
+    export JAVA_HOME
+fi
+
+# Set ZOOKEEPER_OPT if ZOOKEEPER_URL is set and --zookeeper has not
 # also been passed in as a CLI arg.  This will be included
 # in command functions that take a --zookeeper argument.
 if [ -n "${KAFKA_ZOOKEEPER_URL}" -a -z "$(echo $@ | grep -- --zookeeper)" ]; then
