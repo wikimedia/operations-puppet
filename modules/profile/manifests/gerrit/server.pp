@@ -2,8 +2,8 @@
 #
 # filtertags: labs-project-git labs-project-ci-staging
 class profile::gerrit::server(
-    $ipv4 = hiera('gerrit::server::ipv4'),
-    $ipv6 = hiera('gerrit::server::ipv6'),
+    $ipv4 = hiera('gerrit::service::ipv4'),
+    $ipv6 = hiera('gerrit::service::ipv6'),
     $host = hiera('gerrit::server::host'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
