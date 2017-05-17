@@ -148,9 +148,6 @@
 #   The broker process' number of open files ulimit.
 #   Default: 8192
 #
-# [*java_home*]
-#   Value for the JAVA_HOME environment variable.  Default: undef
-#
 # [*java_opts*]
 #   Extra Java options.  Default: undef
 #
@@ -224,7 +221,6 @@ class confluent::kafka::broker(
 
     $inter_broker_protocol_version       = '0.9.0.X',
     $nofiles_ulimit                      = 8192,
-    $java_home                           = undef,
     $java_opts                           = undef,
     $classpath                           = undef,
     $jmx_port                            = 9999,
@@ -254,6 +250,9 @@ class confluent::kafka::broker(
     else {
         $port = $default_port
     }
+
+    # Local variable for rendering in templates.
+    $java_home = $::confluent::kafka::client::java_home
 
     group { 'kafka':
         ensure  => 'present',
