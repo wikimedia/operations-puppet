@@ -19,9 +19,16 @@ class mysql (
 ) inherits mysql::params {
 # lint:endignore
 
-  package { 'mysql_client':
-    ensure => $package_ensure,
-    name   => $package_name,
+  if os_version('debian >= stretch') {
+      package { 'mariadb_client':
+        ensure => $package_ensure,
+        name   => 'mariadb-client-10.1',
+      }
+  } else {
+      package { 'mysql_client':
+        ensure => $package_ensure,
+        name   => $package_name,
+      }
   }
 
 }
