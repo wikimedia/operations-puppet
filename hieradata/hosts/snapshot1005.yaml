@@ -1,4 +1,4 @@
-snapshot::dumps::runtype: hugewikis
+snapshot::dumps::runtype: enwiki
 snapshot::dumps::maxjobs: 28
 snapshot::dumps::monitor: false
 snapshot::cron::misc: false
