@@ -7,6 +7,7 @@ class gerrit(
 ) {
 
     class { '::gerrit::jetty':
+        host   => $host,
         slave  => $slave,
         config => $config,
     }
