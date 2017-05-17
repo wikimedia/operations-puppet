@@ -54,10 +54,10 @@ define monitoring::host (
         # functionality in the case of an exported host
         if $parents {
             $real_parents = $parents
-        } elsif $facts['lldppeer_eth0'] {
-            # TODO: Make this better by getting all LLDP peers on all physical (only!) interfaces
-            # map() would have been great for this.
-            $real_parents = $facts['lldppeer_eth0']
+        } elsif $facts['lldp_parent'] {
+            # we could use lldp_neighbors here, but not all of our neighbors
+            # are necessarily our parents, so just use the lldp_parent alone
+            $real_parents = $facts['lldp_parent']
         } else {
             $real_parents = undef
         }
