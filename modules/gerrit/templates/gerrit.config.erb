@@ -169,7 +169,12 @@
     connectTimeout = 1 min
     smtpServer = <%= @mail_smarthost[0] %>
 [sshd]
-    listenAddress = *:29418
+    <%- if @slave %>
+    listenAddress = <%= @slave %>:29418
+    <%- else -%>
+    listenAddress = <%= @host %>:29418
+    <%- end -%>
+
     threads = 8
     batchThreads = 2
     idleTimeout = 864000
