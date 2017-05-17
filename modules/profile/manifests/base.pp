@@ -81,11 +81,9 @@ class profile::base(
     class { '::base::kernel': }
     class { '::base::debdeploy': }
 
-    # lint:ignore:quoted_booleans
-    if $::is_virtual == 'false' {
+    if str2bool($facts['is_virtual']) == false {
         class { '::ipmi::monitor': }
     }
-    # lint:endignore
 
     if os_version('debian >= jessie') {
         class { '::base::initramfs': }
