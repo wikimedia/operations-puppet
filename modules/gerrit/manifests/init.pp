@@ -1,5 +1,7 @@
 # Manifest to setup a Gerrit instance
 class gerrit(
+    $ipv4,
+    $ipv6,
     $config,
     $host,
     $slave_hosts = [],
@@ -7,6 +9,8 @@ class gerrit(
 ) {
 
     class { '::gerrit::jetty':
+        ipv4   => $ipv4,
+        ipv6   => $ipv6,
         slave  => $slave,
         config => $config,
     }
