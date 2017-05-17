@@ -7,9 +7,14 @@
 
 # slots_used numcommands on_failure error_notify command
 
-<% if @stagestype == 'normal_huge' or @stagestype == 'partial_huge' or @stagestype == 'create_huge' %>
-# mark the start of the run for all huge wikis
-1 1 continue none <%= @stages['hugewikis']['firststage'] -%> --job createdirs --sleep 5
+<% if @stagestype == 'normal_enwiki' or @stagestype == 'partial_enwiki' or @stagestype == 'create_enwiki' %>
+# mark the start of the run for enwiki
+1 1 continue none <%= @stages['enwiki']['firststage'] -%> --job createdirs --sleep 5
+<% end -%>
+
+<% if @stagestype == 'normal_wikidatawiki' or @stagestype == 'partial_wikidatawiki' or @stagestype == 'create_wikidatawiki' %>
+# mark the start of the run for wikidatawiki
+1 1 continue none <%= @stages['wikidatawiki']['firststage'] -%> --job createdirs --sleep 5
 <% end -%>
 
 <% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'create' %>
@@ -62,26 +67,50 @@
 
 <% end -%>
 
-<% if @stagestype == 'normal_huge' or @stagestype == 'partial_huge' or @stagestype == 'normal_nocreate_huge' or @stagestype == 'partial_nocreate_huge' %>
+<% if @stagestype == 'normal_enwiki' or @stagestype == 'partial_enwiki' or @stagestype == 'normal_nocreate_enwiki' or @stagestype == 'partial_nocreate_enwiki' %>
 # stubs, stubs recombine
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
 # tables next so inconsistencies between stubs and tables aren't too huge
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job tables
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job tables
 
 # regular articles, recombine, multistream
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
 
 # articles plus meta pages
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 
-<% if @stagestype == 'normal_huge' or @stagestype == 'normal_nocreate_huge' %>
+<% if @stagestype == 'normal_enwiki' or @stagestype == 'normal_nocreate_enwiki' %>
 # all remaining jobs
-27 1 continue none <%= @stages['hugewikis']['rest'] %>
+27 1 continue none <%= @stages['enwiki']['rest'] %>
 <% end -%>
 
-<% if @stagestype == 'partial_huge' or @stagestype == 'partial_nocreate_huge' %>
+<% if @stagestype == 'partial_enwiki' or @stagestype == 'partial_nocreate_enwiki' %>
 # all remaining jobs except for the history revs
-27 1 continue none <%= @stages['hugewikis']['rest'] %> <%= @stages['skipjob_args'] %>
+27 1 continue none <%= @stages['enwiki']['rest'] %> <%= @stages['skipjob_args'] %>
+<% end -%>
+
+<% end -%>
+
+<% if @stagestype == 'normal_wikidatawiki' or @stagestype == 'partial_wikidatawiki' or @stagestype == 'normal_nocreate_wikidatawiki' or @stagestype == 'partial_nocreate_wikidatawiki' %>
+# stubs, stubs recombine
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
+# tables next so inconsistencies between stubs and tables aren't too huge
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job tables
+
+# regular articles, recombine, multistream
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
+
+# articles plus meta pages
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+
+<% if @stagestype == 'normal_wikidatawiki' or @stagestype == 'normal_nocreate_wikidatawiki' %>
+# all remaining jobs
+27 1 continue none <%= @stages['wikidatawiki']['rest'] %>
+<% end -%>
+
+<% if @stagestype == 'partial_wikidatawiki' or @stagestype == 'partial_nocreate_wikidatawiki' %>
+# all remaining jobs except for the history revs
+27 1 continue none <%= @stages['wikidatawiki']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
 <% end -%>

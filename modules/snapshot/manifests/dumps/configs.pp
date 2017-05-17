@@ -8,6 +8,9 @@ class snapshot::dumps::configs {
     $enchunkhistory1 = '30303,58141,112065,152180,212624,327599,375779,522388,545343,710090,880349,1113575,1157158,1547206'
     $enchunkhistory2 = '1773248,2021218,2153807,2427469,2634193,2467421,2705827,2895677,3679790,3449365,4114387,4596259,6533612'
 
+    $wikidatachunkhistory1 = '235321,350222,430401,531179,581039,600373,762298,826545,947305,1076978,1098243,993874,1418919,2399950'
+    $wikidatachunkhistory2 = '2587436,951696,942913,837759,1568292,1293747,2018593,1461235,1797642,1487121,2012246,874850,1486799'
+
     $config = {
         smallwikis => {
             dblist        => "${apachedir}/dblists/all.dblist",
@@ -83,15 +86,6 @@ class snapshot::dumps::configs {
                     chunksForAbstract     => '4',
                     checkpointTime        => '720',
                 },
-                wikidatawiki => {
-                    pagesPerChunkHistory  => '2421529,4883997,8784997,8199134',
-                    pagesPerChunkAbstract => '5800000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                    orderrevs             => '1',
-                    minpages              => '10',
-                    maxrevs               => '20000',
-                },
                 zhwiki => {
                     pagesPerChunkHistory  => '231819,564192,1300322,3112369',
                     pagesPerChunkAbstract => '1300000',
@@ -104,8 +98,30 @@ class snapshot::dumps::configs {
                 },
             },
         },
-        hugewikis => {
-            dblist           => "${dblistsdir}/hugewikis.dblist",
+        wikidatawiki => {
+            dblist           => "${dblistsdir}/wikidatawiki.dblist",
+            skipdblist       => "${dblistsdir}/skipnone.dblist",
+            keep             => '7',
+            chunksEnabled    => '1',
+            recombineHistory => '0',
+            checkpointTime        => '720',
+            revsPerJob       => '1500000',
+            retryWait        => '30',
+            maxRetries       => '3',
+            revsMargin       => '100',
+            wikis => {
+                wikidatawiki => {
+                    jobsperbatch          => 'xmlstubsdump=14',
+                    pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",
+                    pagesPerChunkAbstract => '2000000',
+                    orderrevs             => '1',
+                    minpages              => '10',
+                    maxrevs               => '20000',
+                },
+            },
+        }
+        enwiki => {
+            dblist           => "${dblistsdir}/enwiki.dblist",
             skipdblist       => "${dblistsdir}/skipnone.dblist",
             keep             => '7',
             chunksEnabled    => '1',
@@ -118,7 +134,7 @@ class snapshot::dumps::configs {
             wikis => {
                 enwiki => {
                     jobsperbatch          => 'xmlstubsdump=14',
-                  pagesPerChunkHistory  => "${enchunkhistory1},${enchunkhistory2}",
+                    pagesPerChunkHistory  => "${enchunkhistory1},${enchunkhistory2}",
                     pagesPerChunkAbstract => '2000000',
                 },
             },
@@ -145,8 +161,12 @@ class snapshot::dumps::configs {
         configtype => 'bigwikis',
         config     => $config,
     }
-    snapshot::dumps::wikiconf { 'wikidump.conf.hugewikis':
-        configtype => 'hugewikis',
+    snapshot::dumps::wikiconf { 'wikidump.conf.enwiki':
+        configtype => 'enwiki',
+        config     => $config,
+    }
+    snapshot::dumps::wikiconf { 'wikidump.conf.wikidatawiki':
+        configtype => 'wikidatawiki',
         config     => $config,
     }
     snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
