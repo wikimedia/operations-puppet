@@ -111,6 +111,7 @@ for my $slot (sort @controllers) {
 	my @drives;
 	my $nodrives = 0;
 	my %status;
+	my @freetext;
 
 	my $ldallshow = runcmd("controller slot=$slot ld all show");
 	my @logicaldrives;
@@ -300,12 +301,12 @@ for my $slot (sort @controllers) {
 		next;
 	};
 
-	my $cst = runcmd("controller slot=$slot show status");
+	my $cst = runcmd("controller slot=$slot show detail");
 	for (@$cst) {
 		chomp;
 		next if /^$/;
 		next if (/^\S.*in Slot $slot/);
-		if (/^ *(.*) Status: (.*)$/) {
+		if (/^ *(Controller|Cache|Battery\/Capacitor) Status: (.*)$/) {
 			my $system = $1;
 			my $status = $2;
 
@@ -318,17 +319,23 @@ for my $slot (sort @controllers) {
 				next if $status =~ /^(OK|Not Configured)$/;
 			}
 
-			push @{$status{$status}}, $system;
+			push @freetext, "$system: $status";
 			if ($status ne 'OK') {
 				next if ($params->{'no-battery'} && $system eq 'Battery/Capacitor');
 				record('WARNING');
 			};
-		} else {
-			die ("Cannot read line '$_' gotten from hpssacli controller slot=$slot show status\n");
+		} elsif (/^ *(Cache Status Details): (Cable Error)/) {
+			push @freetext, $2;
+			record('CRITICAL');
+		} elsif (/^ *(Battery\/Capacitor Count): (.*)/) {
+			next if $params->{'no-battery'} || int($2) > 0;
+			push @freetext, "Battery count: $2";
+			record('CRITICAL');
 		};
 	};
 
-	my $status = join(" - ", (map { $_.": ".join(", ", @{$status{$_}}) } keys %status));
+	my $status = join(" - ", ((map { $_.": ".join(", ", @{$status{$_}}) } keys %status), @freetext));
+
 	push @resultstr, "Slot $slot: $status";
 };
 
