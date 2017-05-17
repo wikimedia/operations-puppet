@@ -1,5 +1,7 @@
 # sets up a TLS proxy for Gerrit
 class gerrit::proxy(
+    $ipv4,
+    $ipv6,
     $host         = $::gerrit::host,
     $slave_hosts  = $::gerrit::slave_hosts,
     $slave        = false,
@@ -28,6 +30,15 @@ class gerrit::proxy(
 
     apache::site { $tls_host:
         content => template('gerrit/apache.erb'),
+    }
+
+    # Let Apache only listen on the service IP.
+    file { '/etc/apache2/ports.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('gerrit/apache.ports.conf.erb'),
     }
 
     # Error page stuff
