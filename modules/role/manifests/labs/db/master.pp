@@ -1,6 +1,6 @@
 class role::labs::db::master {
 
-    system::role { 'role::labs::db::master':
+    system::role { 'labs::db::master':
         description => 'Labs user database master',
     }
 

@@ -13,7 +13,7 @@
 #
 # === Example
 #
-#  system::role { 'role::analytics::hadoop::master':
+#  system::role { 'analytics::hadoop::master':
 #    description => 'Hadoop Master (NameNode & ResourceManager)'
 #  }
 #

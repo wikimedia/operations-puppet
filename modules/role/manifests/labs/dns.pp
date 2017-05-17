@@ -1,6 +1,6 @@
 class role::labs::dns {
 
-    system::role { 'role::labs::dns':
+    system::role { 'labs::dns':
         description => 'DNS server for Labs instances',
     }
 

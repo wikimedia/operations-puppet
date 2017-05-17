@@ -4,7 +4,7 @@
 class role::dataset::secondary {
     include role::dataset::common
 
-    system::role { 'role::dataset::secondary':
+    system::role { 'dataset::secondary':
         description => 'dataset secondary host',
     }
 

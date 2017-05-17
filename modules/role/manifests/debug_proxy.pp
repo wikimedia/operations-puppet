@@ -5,7 +5,7 @@
 # the value of the X-Wikimedia-Debug HTTP header.
 #
 class role::debug_proxy {
-    system::role { 'role::debug_proxy':
+    system::role { 'debug_proxy':
         description => 'X-Wikimedia-Debug proxy',
     }
 

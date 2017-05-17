@@ -18,7 +18,7 @@
 #       role(installserver::tftp)
 
 class role::installserver::tftp {
-    system::role { 'role::installserver::tftp':
+    system::role { 'installserver::tftp':
         description => 'WMF TFTP server',
     }
 

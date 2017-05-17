@@ -39,7 +39,7 @@ class role::xhgui::app {
         ],
     }
 
-    system::role { 'role::xhgui::app': }
+    system::role { 'xhgui::app': }
 
     require_package('php5-mongo')
 

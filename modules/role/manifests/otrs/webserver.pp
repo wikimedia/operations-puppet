@@ -5,7 +5,7 @@
 # filtertags: labs-project-otrs
 class role::otrs::webserver {
 
-    system::role { 'role::otrs::webserver':
+    system::role { 'otrs::webserver':
         description => 'OTRS Web Application Server',
     }
     include ::standard

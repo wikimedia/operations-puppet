@@ -15,7 +15,7 @@ class role::cache::base(
 
     $cache_cluster = hiera('cache::cluster')
 
-    system::role { "role::cache::${cache_cluster}":
+    system::role { "cache::${cache_cluster}":
         description => "${cache_cluster} Varnish cache server",
     }
 

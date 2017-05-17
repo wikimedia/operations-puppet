@@ -8,7 +8,7 @@ class role::openldap::labtest {
     $ldapconfig = hiera_hash('labsldapconfig', {})
     $ldap_labs_hostname = $ldapconfig['hostname']
 
-    system::role { 'role::openldap::labtest':
+    system::role { 'openldap::labtest':
         description => 'LDAP servers for labs test cluster (based on OpenLDAP)'
     }
 

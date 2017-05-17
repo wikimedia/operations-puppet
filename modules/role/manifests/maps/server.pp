@@ -29,7 +29,7 @@ class role::maps::server {
         pgsql_kartotherian_pass     => hiera('maps::postgresql_kartotherian_pass'),
     }
 
-    system::role { 'role::maps':
+    system::role { 'maps':
         description => 'A vector and raster map tile generation service',
     }
 

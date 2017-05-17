@@ -8,7 +8,7 @@
 #
 class role::ci::slave {
 
-    system::role { 'role::ci::slave': description => 'CI slave runner' }
+    system::role { 'ci::slave': description => 'CI slave runner' }
 
     include contint::packages::base
     include ::zuul

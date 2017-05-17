@@ -8,7 +8,7 @@
 # renamed, but for now, both have to coexist.
 
 class role::mariadb::sanitarium2 {
-    system::role { 'role::mariadb::sanitarium':
+    system::role { 'mariadb::sanitarium':
         description => 'Sanitarium DB Server',
     }
 
