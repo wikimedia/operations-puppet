@@ -1,21 +1,34 @@
 #!/bin/bash
-# update facts from puppet master to the puppet compiler machine
+# Update facts from all puppet masters to the puppet compiler machine
+#
+# This script must be run from the root of the operations/puppet repository
+# locally from a computer that has root access to all puppet masters and the
+# puppet compiler machine.
 
 set -e
 set -u
 set -x
 
-master=${PUPPET_MASTER:-puppet.eqiad.wmnet}
-compiler=${PUPPET_COMPILER:-compiler02.puppet3-diffs.eqiad.wmflabs}
+COMPILER=${PUPPET_COMPILER:-compiler02.puppet3-diffs.eqiad.wmflabs}
+RUBY_SCRIPT=$(cat <<'RUBY_SCRIPT'
+require 'safe_yaml'
+SafeYAML::OPTIONS[:default_mode] = :safe
+a = YAML.load(STDIN.read)['puppetmaster::servers']
+puts a.map{|k, v| a[k].map {|v| v['worker']}}.flatten().join(' ')
+RUBY_SCRIPT
+)
 
-ssh $master 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
-# tunnel via your localhost without ever the file touching the disk
-ssh $master cat /tmp/puppet-facts-export.tar.xz | \
-    ssh $compiler 'cat > puppet-facts-export.tar.xz'
-ssh $master 'sudo rm /tmp/puppet-facts-export.tar.xz'
-ssh $compiler 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
-ssh $compiler 'sudo tar Jxf puppet-facts-export.tar.xz \
-    --directory /tmp/catalogs && rm puppet-facts-export.tar.xz'
-# Do not modify the files in /tmp/catalogs, the modified date counts for the rsync
-ssh $compiler 'sudo chown -R jenkins-deploy:wikidev /tmp/catalogs/yaml'
-ssh $compiler 'sudo rsync -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
+MASTERS=$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)
+
+for master in $MASTERS; do
+    echo -e "\n### Syncing facts from $master"
+    ssh "$master" 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
+    # tunnel via your localhost without ever the file touching the disk
+    ssh "$master" cat /tmp/puppet-facts-export.tar.xz | ssh "$COMPILER" 'cat > puppet-facts-export.tar.xz'
+    ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
+    ssh "$COMPILER" 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
+    ssh "$COMPILER" 'sudo tar Jxf puppet-facts-export.tar.xz --directory /tmp/catalogs && rm puppet-facts-export.tar.xz'
+    # Do not modify the files in /tmp/catalogs, the modified date counts for the rsync
+    ssh "$COMPILER" 'sudo chown -R jenkins-deploy:wikidev /tmp/catalogs/yaml'
+    ssh "$COMPILER" 'sudo rsync -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
+done
