@@ -43,7 +43,7 @@ profile::restbase::hosts:
 #
 ## Metrics
 graphite_host: 'graphite1003.eqiad.wmnet'
-
+profile::cassandra::allow_analytics: false
 profile::cassandra::metrics_whitelist:
     - .*\.metrics\.Table\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
     - .*\.metrics\.Table\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
