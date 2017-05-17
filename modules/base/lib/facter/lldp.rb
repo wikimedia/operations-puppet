@@ -3,7 +3,6 @@ require 'rexml/document'
 
 Facter.add(:lldp) do
   confine :kernel => %w{Linux FreeBSD OpenBSD}
-  confine :virtual => "physical"
   confine do
     File.exists?('/usr/sbin/lldpctl')
   end
