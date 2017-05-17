@@ -31,7 +31,7 @@ class role::graphite::base(
         require role::labs::lvm::srv
     }
 
-    system::role { 'role::graphite':
+    system::role { 'graphite':
         description => 'real-time metrics processor',
     }
 

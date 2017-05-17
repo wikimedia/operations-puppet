@@ -3,7 +3,7 @@
 # filtertags: labs-project-deployment-prep
 class role::citoid {
 
-    system::role { 'role::citoid': }
+    system::role { 'citoid': }
 
     include ::citoid
 }

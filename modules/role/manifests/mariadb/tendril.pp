@@ -1,7 +1,7 @@
 # tendril.wikimedia.org db
 class role::mariadb::tendril {
 
-    system::role { 'role::mariadb::tendril':
+    system::role { 'mariadb::tendril':
         description => 'tendril database server',
     }
 

@@ -11,5 +11,5 @@ class role::spare::system {
     include ::standard
     include ::base::firewall
 
-    system::role { 'role::spare::system': description => 'Unused spare system' }
+    system::role { 'spare::system': description => 'Unused spare system' }
 }

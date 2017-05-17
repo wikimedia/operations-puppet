@@ -9,7 +9,7 @@ class role::piwik::server {
     # Ref: T159136
     require_package('mysql-server')
 
-    system::role { 'role::piwik::server':
+    system::role { 'piwik::server':
         description => 'Analytics piwik server',
     }
 }

@@ -4,7 +4,7 @@ class role::mariadb::misc(
     $master = false,
     ) {
 
-    system::role { 'role::mariadb::misc':
+    system::role { 'mariadb::misc':
         description => "Misc Services Database ${shard}",
     }
 

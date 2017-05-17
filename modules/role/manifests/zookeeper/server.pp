@@ -20,7 +20,7 @@ class role::zookeeper::server {
     include role::zookeeper::client
     $cluster_name = $::role::zookeeper::client::cluster_name
 
-    system::role { 'role::zookeeper::server':
+    system::role { 'zookeeper::server':
         description => "${cluster_name} Cluster Zookeeper Server"
     }
 

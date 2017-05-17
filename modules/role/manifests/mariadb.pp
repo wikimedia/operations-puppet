@@ -4,7 +4,7 @@
 # lint:ignore:autoloader_layout
 class role::mariadb {
 
-    system::role { 'role::mariadb':
+    system::role { 'mariadb':
         description => 'database server',
     }
 

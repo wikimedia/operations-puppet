@@ -6,7 +6,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::aqs {
-    system::role { 'role::aqs':
+    system::role { 'aqs':
         description => 'Analytics Query Service Node',
     }
 

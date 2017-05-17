@@ -5,7 +5,7 @@ class role::mariadb::dbstore(
     $warn_stopped = true,
     ) {
 
-    system::role { 'role::mariadb::dbstore':
+    system::role { 'mariadb::dbstore':
         description => 'Delayed Slave',
     }
 

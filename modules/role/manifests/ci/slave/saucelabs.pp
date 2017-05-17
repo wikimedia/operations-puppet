@@ -9,7 +9,7 @@
 # filtertags: labs-project-git labs-project-integration labs-project-ci-staging
 class role::ci::slave::saucelabs {
 
-    system::role { 'role::ci::slave::saucelabs':
+    system::role { 'ci::slave::saucelabs':
         description => 'CI Jenkins slave for jobs running on SauceLabs',
     }
 

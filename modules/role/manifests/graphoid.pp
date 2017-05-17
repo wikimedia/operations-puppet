@@ -3,7 +3,7 @@
 # filtertags: labs-project-deployment-prep labs-project-maps-team
 class role::graphoid {
 
-    system::role { 'role::graphoid':
+    system::role { 'graphoid':
         description => 'node.js service converting graph definitions into PNG'
     }
 

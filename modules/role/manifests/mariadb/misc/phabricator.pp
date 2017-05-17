@@ -10,7 +10,7 @@ class role::mariadb::misc::phabricator(
     $mariadb10 = true,
     ) {
 
-    system::role { 'role::mariadb::misc':
+    system::role { 'mariadb::misc':
         description => "Misc Services Database ${shard} (phabricator)",
     }
 

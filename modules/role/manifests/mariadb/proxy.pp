@@ -3,7 +3,7 @@ class role::mariadb::proxy(
     $shard
     ) {
 
-    system::role { 'role::mariadb::proxy':
+    system::role { 'mariadb::proxy':
         description => "DB Proxy ${shard}",
     }
 

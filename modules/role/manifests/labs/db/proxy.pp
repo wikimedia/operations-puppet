@@ -3,7 +3,7 @@
 # labs-support network
 
 class role::labs::db::proxy {
-    system::role { 'role::labs::db::proxy':
+    system::role { 'labs::db::proxy':
         description => 'LabsDB proxy',
     }
 
