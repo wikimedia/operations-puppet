@@ -309,8 +309,14 @@ for my $slot (sort @controllers) {
 			my $system = $1;
 			my $status = $2;
 
-			# skip the cache check, we track the LD Acceleration Method above
-			next if ($system eq 'Cache');
+			if ($system eq 'Cache') {
+				# Can be:
+				# - 'OK'
+				# - 'Not Configured' (for e.g. HP SSD Smart Path)
+				# - 'Permanently Disabled'
+				# - ...?
+				next if $status =~ /^(OK|Not Configured)$/;
+			}
 
 			push @{$status{$status}}, $system;
 			if ($status ne 'OK') {
