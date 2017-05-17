@@ -8,6 +8,7 @@ class profile::cassandra(
     $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist'),
     $graphite_host = hiera('graphite_host'),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $allow_analytics = hiera('profile::cassandra::allow_analytics')
 ) {
     include ::passwords::cassandra
     $instances = $all_instances[$::fqdn]
@@ -98,6 +99,16 @@ class profile::cassandra(
         proto  => 'tcp',
         port   => '7800',
         srange => "@resolve((${prometheus_nodes_ferm}))",
+    }
+    if $allow_analytics {
+        include ::network::constants
+        $analytics_networks = join($network::constants::analytics_networks, ' ')
+        ferm::service { 'cassandra-analytics-cql':
+            proto  => 'tcp',
+            port   => '9042',
+            srange => "(@resolve((${cassandra_hosts_ferm})) ${analytics_networks})",
+        }
+
     }
 
 }
