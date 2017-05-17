@@ -6,7 +6,7 @@ class role::changeprop {
     include ::passwords::redis
     $kafka_config = kafka_config('main')
 
-    system::role { 'role::changeprop':
+    system::role { 'changeprop':
         description => 'propagates events from the EventBus',
     }
 

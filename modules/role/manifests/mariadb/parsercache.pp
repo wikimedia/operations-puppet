@@ -16,7 +16,7 @@ class role::mariadb::parsercache(
         mysql_role  => 'master',
     }
 
-    system::role { 'role::mariadb::parsercache':
+    system::role { 'mariadb::parsercache':
         description => "Parser Cache Database ${shard}",
     }
 

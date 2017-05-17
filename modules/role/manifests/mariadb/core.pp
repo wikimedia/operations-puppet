@@ -5,7 +5,7 @@ class role::mariadb::core(
     $master        = false,
     ) {
 
-    system::role { 'role::mariadb::core':
+    system::role { 'mariadb::core':
         description => "Core DB Server ${shard}",
     }
 

@@ -6,7 +6,7 @@ class role::snapshot::dumper {
     # cron job for running the dumps
     class { 'snapshot::dumps::cron': user => 'datasets' }
 
-    system::role { 'role::snapshot::dumper':
+    system::role { 'snapshot::dumper':
         description => 'dumper of XML/SQL wiki content',
     }
 }

@@ -1,7 +1,7 @@
 # role/dns.pp
 
 class role::dnsrecursor {
-    system::role { 'role::dnsrecursor': description => 'Recursive DNS server' }
+    system::role { 'dnsrecursor': description => 'Recursive DNS server' }
 
     include ::standard
     include ::lvs::configuration

@@ -13,7 +13,7 @@ class role::wdqs  {
         include role::labs::lvm::srv
     }
 
-    system::role { 'role::wdqs':
+    system::role { 'wdqs':
         ensure      => 'present',
         description => 'Wikidata Query Service',
     }

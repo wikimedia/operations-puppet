@@ -4,7 +4,7 @@ class role::jobqueue_redis::slave {
 
     include ::profile::redis::slave
 
-    system::role { 'role::jobqueue_redis::slave':
+    system::role { 'jobqueue_redis::slave':
         description => 'Jobqueue slave',
     }
 }

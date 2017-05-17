@@ -5,7 +5,7 @@
 # a git-fat store.
 #
 class role::archiva {
-    system::role { 'role::archiva': description => 'Apache Archiva Host' }
+    system::role { 'archiva': description => 'Apache Archiva Host' }
 
     include ::base::firewall
 

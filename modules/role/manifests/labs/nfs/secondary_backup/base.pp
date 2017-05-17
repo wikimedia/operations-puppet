@@ -1,6 +1,6 @@
 class role::labs::nfs::secondary_backup::base {
 
-    system::role { 'role::labs::nfs::secondary_backup':
+    system::role { 'labs::nfs::secondary_backup':
         description => 'NFS shares secondary backup',
     }
 

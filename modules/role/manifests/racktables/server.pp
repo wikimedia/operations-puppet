@@ -8,7 +8,7 @@
 # filtertags: labs-project-servermon
 class role::racktables::server {
 
-    system::role { 'role::racktables::server': description => 'Racktables server' }
+    system::role { 'racktables::server': description => 'Racktables server' }
 
     include ::standard
     include ::base::firewall

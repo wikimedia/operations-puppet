@@ -6,7 +6,7 @@
 class role::elasticsearch::beta {
     include ::profile::elasticsearch
 
-    system::role { 'role::elasticsearch::beta':
+    system::role { 'elasticsearch::beta':
         ensure      => 'present',
         description => 'elasticsearch beta',
     }
