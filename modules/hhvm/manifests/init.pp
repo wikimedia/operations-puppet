@@ -83,6 +83,8 @@ class hhvm(
         ensure => present,
     }
 
+    # Helpful for debugging luasandbox crashes
+    require_package('liblua5.1-0-dbg')
 
     ## Settings
 
