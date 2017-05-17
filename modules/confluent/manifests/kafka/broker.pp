@@ -255,6 +255,9 @@ class confluent::kafka::broker(
         $port = $default_port
     }
 
+    # Local variable for rendering in templates.
+    $java_home = $::confluent::kafka::client::java_home
+
     group { 'kafka':
         ensure  => 'present',
         system  => true,
