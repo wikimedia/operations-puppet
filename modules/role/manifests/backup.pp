@@ -5,7 +5,7 @@ class role::backup {
     include ::profile::backup::storage
     include ::standard
 
-    system::role { 'role::backup':
+    system::role { 'backup':
         description => 'Backup server',
     }
 }

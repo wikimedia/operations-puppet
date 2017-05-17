@@ -1,6 +1,6 @@
 #
 class role::pmacct {
-    system::role { 'role::pmacct':
+    system::role { 'pmacct':
         description => 'pmacct netflow accounting',
     }
 

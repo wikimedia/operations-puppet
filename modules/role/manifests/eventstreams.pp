@@ -39,7 +39,7 @@
 #   Default: {}
 #
 class role::eventstreams {
-    system::role { 'role::eventstreams':
+    system::role { 'eventstreams':
         description => 'Exposes configured event streams from Kafka to public internet via HTTP SSE',
     }
 

@@ -8,7 +8,7 @@ class role::elasticsearch::cirrus {
     include ::role::lvs::realserver
     include ::profile::elasticsearch
 
-    system::role { 'role::elasticsearch::cirrus':
+    system::role { 'elasticsearch::cirrus':
         ensure      => 'present',
         description => 'elasticsearch cirrus',
     }

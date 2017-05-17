@@ -1,6 +1,6 @@
 # filtertags: labs-project-ci-staging
 class role::zuul::server {
-    system::role { 'role::zuul::server': description => 'Zuul server (scheduler)' }
+    system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
     include contint::proxy_zuul
 

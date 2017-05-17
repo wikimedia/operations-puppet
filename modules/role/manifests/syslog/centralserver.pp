@@ -8,7 +8,7 @@ class role::syslog::centralserver {
     include ::base::firewall
     include ::profile::backup::host
 
-    system::role { 'role::syslog::centralserver':
+    system::role { 'syslog::centralserver':
         description => 'Central syslog server'
     }
 

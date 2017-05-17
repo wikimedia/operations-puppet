@@ -1,6 +1,6 @@
 # filtertags: labs-project-deployment-prep
 class role::mediawiki::videoscaler {
-    system::role { 'role::mediawiki::videoscaler': }
+    system::role { 'mediawiki::videoscaler': }
 
     # Parent role
     include ::role::mediawiki::scaler

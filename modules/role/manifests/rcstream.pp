@@ -8,7 +8,7 @@
 class role::rcstream {
     include ::standard
 
-    system::role { 'role::rcstream':
+    system::role { 'rcstream':
         description => 'MediaWiki Recent Changes stream',
     }
 

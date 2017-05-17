@@ -9,7 +9,7 @@ class role::snapshot::cronrunner {
         # cron jobs
         class { '::snapshot::cron': user   => 'datasets' }
 
-        system::role { 'role::snapshot::cronrunner':
+        system::role { 'snapshot::cronrunner':
             description => 'runner of misc dump-related cron jobs',
         }
     }

@@ -23,7 +23,7 @@
 
 class role::labs::dnsrecursor {
 
-    system::role { 'role::labs::dnsrecursor':
+    system::role { 'labs::dnsrecursor':
         description => 'Recursive DNS server for Labs instances',
     }
 

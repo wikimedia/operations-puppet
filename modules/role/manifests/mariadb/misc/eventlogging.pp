@@ -6,7 +6,7 @@ class role::mariadb::misc::eventlogging(
     $master = false,
     ) {
 
-    system::role { 'role::mariadb::misc':
+    system::role { 'mariadb::misc':
         description => 'Eventlogging Database',
     }
 

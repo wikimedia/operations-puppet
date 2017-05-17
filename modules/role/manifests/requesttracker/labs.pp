@@ -1,6 +1,6 @@
 #  Labs/testing RT
 class role::requesttracker::labs {
-    system::role { 'role::requesttracker::labs': description => 'RT (Labs)' }
+    system::role { 'requesttracker::labs': description => 'RT (Labs)' }
 
     include passwords::misc::rt
 

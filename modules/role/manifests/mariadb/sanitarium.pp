@@ -4,7 +4,7 @@
 
 class role::mariadb::sanitarium {
 
-    system::role { 'role::mariadb::sanitarium':
+    system::role { 'mariadb::sanitarium':
         description => 'Sanitarium DB Server',
     }
 

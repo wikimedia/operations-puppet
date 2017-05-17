@@ -41,7 +41,7 @@ class role::osm::master(
         prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',
     }
 
-    system::role { 'role::osm::master':
+    system::role { 'osm::master':
         ensure      => 'present',
         description => 'openstreetmaps db master',
     }

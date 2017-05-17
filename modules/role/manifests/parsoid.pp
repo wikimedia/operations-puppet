@@ -3,7 +3,7 @@
 # filtertags: labs-project-deployment-prep
 class role::parsoid {
 
-    system::role { 'role::parsoid':
+    system::role { 'parsoid':
         description => "Parsoid ${::realm}"
     }
 

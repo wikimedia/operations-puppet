@@ -3,7 +3,7 @@
 # A role class used to setup our mirrors server.
 
 class role::mirrors {
-    system::role { 'role::mirrors':
+    system::role { 'mirrors':
         description => 'Mirrors server',
     }
 

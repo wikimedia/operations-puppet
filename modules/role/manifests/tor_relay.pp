@@ -4,7 +4,7 @@ class role::tor_relay {
     include ::base::firewall
     include ::profile::tor::relay
 
-    system::role { 'role::tor_relay':
+    system::role { 'tor_relay':
         description => 'Tor relay'
     }
 }

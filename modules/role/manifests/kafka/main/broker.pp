@@ -16,7 +16,7 @@ class role::kafka::main::broker {
     $zookeeper_url  = $config['zookeeper']['url']
     $brokers_string = $config['brokers']['string']
 
-    system::role { 'role::kafka::main::broker':
+    system::role { 'kafka::main::broker':
         description => "Kafka Broker Server in the ${cluster_name} cluster",
     }
 

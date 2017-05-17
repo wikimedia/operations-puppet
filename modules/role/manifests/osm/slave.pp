@@ -9,7 +9,7 @@ class role::osm::slave (
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
 
-    system::role { 'role::osm::slave':
+    system::role { 'osm::slave':
         ensure      => 'present',
         description => 'openstreetmaps db slave',
     }

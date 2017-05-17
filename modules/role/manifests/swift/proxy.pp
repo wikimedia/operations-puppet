@@ -2,7 +2,7 @@
 class role::swift::proxy (
     $use_tls = hiera('role::swift::proxy::use_tls', false),
 ) {
-    system::role { 'role::swift::proxy':
+    system::role { 'swift::proxy':
         description => 'swift frontend proxy',
     }
 

@@ -1,7 +1,7 @@
 # filtertags: labs-project-toolsbeta labs-project-puppet3-diffs
 class role::puppet_compiler {
 
-    system::role { 'role::puppet_compiler': description => 'Puppet compiler jenkins slave'}
+    system::role { 'puppet_compiler': description => 'Puppet compiler jenkins slave'}
 
     case $::realm {
         'labs'      : {

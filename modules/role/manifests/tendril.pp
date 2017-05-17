@@ -5,7 +5,7 @@ class role::tendril {
     include ::base::firewall
     include ::standard
 
-    system::role { 'role::tendril': description => 'tendril server' }
+    system::role { 'tendril': description => 'tendril server' }
 
     # T62183 | TODO/FIXME: remove hiera condition once T150771 is resolved
     # aware that there should not be a permanent hiera lookup here
