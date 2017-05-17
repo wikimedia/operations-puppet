@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# NOTE: This file is managed by Puppet.
+
 SCRIPT_NAME=$(basename "$0")
 
 commands=$(ls /usr/bin/kafka-* | xargs -n 1 basename | sed 's@kafka-@  @g')
@@ -32,6 +34,11 @@ fi
 # All kafka scripts start with kafka-.
 command="kafka-${1}"
 shift
+
+<% if @java_home -%>
+# Set JAVA_HOME to the configured default, if it isn't already set.
+: ${JAVA_HOME="<%= @java_home %>"}
+<% end -%>
 
 # Set ZOOKEEPER_OPT if ZOOKEEPER_URL is set and --zookeeper has not
 # also been passed in as a CLI arg.  This will be included
