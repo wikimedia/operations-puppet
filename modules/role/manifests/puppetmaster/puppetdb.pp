@@ -25,7 +25,7 @@ class role::puppetmaster::puppetdb (
         }
     }
 
-    system::role { "role::puppetmaster::puppetdb (postgres ${role})":
+    system::role { "puppetmaster::puppetdb (postgres ${role})":
         ensure      => 'present',
         description => 'PuppetDB server',
     }

@@ -3,7 +3,7 @@ class role::maps::slave {
     include ::postgresql::slave
     include ::role::maps::postgresql_common
 
-    system::role { 'role::maps::slave':
+    system::role { 'maps::slave':
         ensure      => 'present',
         description => 'Maps Postgres slave',
     }

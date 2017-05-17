@@ -1,6 +1,6 @@
 class role::labs::db::replica {
 
-    system::role { 'role::labs::db::replica':
+    system::role { 'labs::db::replica':
         description => 'Labs replica database',
     }
 

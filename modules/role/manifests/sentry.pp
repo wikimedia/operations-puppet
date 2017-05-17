@@ -8,7 +8,7 @@
 class role::sentry {
     include ::sentry
 
-    system::role { 'role::sentry':
+    system::role { 'sentry':
         description => 'Sentry server (error aggregation & presentation service)',
     }
 }

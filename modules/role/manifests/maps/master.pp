@@ -10,7 +10,7 @@ class role::maps::master(
     include ::osm
     include ::osm::import_waterlines
 
-    system::role { 'role::maps::master':
+    system::role { 'maps::master':
         ensure      => 'present',
         description => 'Maps Postgres master',
     }

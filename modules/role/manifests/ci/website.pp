@@ -6,7 +6,7 @@
 # http://integration.wikimedia.org/
 class role::ci::website {
 
-    system::role { 'role::ci::website': description => 'CI Websites' }
+    system::role { 'ci::website': description => 'CI Websites' }
 
     # Needed at least for the jenkins-slave user
     require ::role::ci::slave

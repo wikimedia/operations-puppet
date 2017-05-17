@@ -2,7 +2,7 @@
 # Common role class that all other eventlogging analytics role classes should include.
 #
 class role::eventlogging::analytics::server {
-    system::role { 'role::eventlogging::analytics':
+    system::role { 'eventlogging::analytics':
         description => 'EventLogging analytics processes',
     }
 

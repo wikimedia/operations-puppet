@@ -3,7 +3,7 @@
 # Use role::labs::db::replica instead
 class role::mariadb::labs_deprecated {
 
-    system::role { 'role::mariadb::labs_deprecated':
+    system::role { 'mariadb::labs_deprecated':
         description => 'Labs DB Slave (deprecated role)',
     }
 

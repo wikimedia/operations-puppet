@@ -1,7 +1,7 @@
 # Class for installing an Html5Depurate service
 # https://www.mediawiki.org/wiki/Html5Depurate
 class role::html5depurate::server {
-    system::role { 'role::html5depurate::server':
+    system::role { 'html5depurate::server':
         description => 'Html5Depurate server'
     }
 

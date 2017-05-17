@@ -3,7 +3,7 @@ class role::labs::nfs::secondary(
   $data_iface    = 'eth1',
 ) {
 
-    system::role { 'role::labs::nfs::secondary':
+    system::role { 'labs::nfs::secondary':
         description => 'NFS secondary share cluster',
     }
 

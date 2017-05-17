@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::memcached {
-    system::role { 'role::memcached': }
+    system::role { 'memcached': }
 
     include ::standard
     include ::base::mysterious_sysctl

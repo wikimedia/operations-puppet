@@ -5,7 +5,7 @@
 class role::snapshot::testbed {
     include role::snapshot::common
 
-    system::role { 'role::snapshot::testbed':
+    system::role { 'snapshot::testbed':
         description => 'testbed for dumps of XML/SQL wiki content',
     }
 }

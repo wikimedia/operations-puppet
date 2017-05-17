@@ -5,7 +5,7 @@ class role::snapshot::monitor {
         # monitor job
         include ::snapshot::dumps::monitor
 
-        system::role { 'role::snapshot::monitor':
+        system::role { 'snapshot::monitor':
             description => 'monitor of XML dumps',
         }
     }
