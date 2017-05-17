@@ -66,6 +66,8 @@ class profile::gerrit::server(
 
     class { '::gerrit':
         host        => $host,
+        ipv4        => $ipv4,
+        ipv6        => $ipv6,
         slave       => $slave,
         slave_hosts => $slave_hosts,
         config      => $config,

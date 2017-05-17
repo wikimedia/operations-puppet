@@ -1,6 +1,8 @@
 # sets up jetty for gerrit
 # https://projects.eclipse.org/projects/rt.jetty/developer
 class gerrit::jetty(
+    $ipv4,
+    $ipv6,
     $db_host = 'localhost',
     $replication = '',
     $url = "https://${::gerrit::host}/r",
