@@ -19,6 +19,8 @@ class gerrit(
     class { '::gerrit::proxy':
         require     => Class['gerrit::jetty'],
         host        => $host,
+        ipv4        => $ipv4,
+        ipv6        => $ipv6,
         slave_hosts => $slave_hosts,
         slave       => $slave,
     }
