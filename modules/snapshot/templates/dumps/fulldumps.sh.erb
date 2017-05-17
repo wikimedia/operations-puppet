@@ -15,13 +15,14 @@
 # some if there are errors or parts that need to be rerun,
 # without requiring manual intervention for the next cron run.
 #
-# The script runs on a dedicated snapshot host for huge wikis
-# and on the rest of the snapshot hosts for regular wikis.
+# The script runs on a dedicated snapshot host for enwiki,
+# a dedicated host for wikidatawiki, and on the rest of the
+# snapshot hosts for regular wikis.
 
 usage(){
-    echo "Usage: $0 startdate enddate huge|regular full|partial"
-    echo "where huge or regular is the type of wikis to be dumped"
-    echo "(huge wikis or small/big wikis),"
+    echo "Usage: $0 startdate enddate enwiki|wikidatawiki|regular full|partial"
+    echo "where enwiki, wikidatawiki, or regular is the type of wikis to be dumped"
+    echo "(enwiki/wikidatawiki or small/big wikis),"
     echo "full or partial is the the type of wiki dump to be run"
     echo "(all steps including full page content history, or"
     echo "a partial dump excluding that step)"
@@ -150,10 +151,15 @@ logfile="${logdir}/fulldumps_${today}_$$.log"
 find "$logdir" -maxdepth 1 -name fulldumps_\* -a -mtime +90 -exec rm {} \;
 
 # create directories for the dump run for each group of wikis
-# (small, big, huge) as needed
+# (small, big, enwiki, wikidatawiki) as needed
 case $wikitype in
-    'hugewikis')
-        maybe_do_createdirs "wikidump.conf.hugewikis" "stages_create_hugewikis" "hugewikis"
+    'enwiki')
+        maybe_do_createdirs "wikidump.conf.enwiki" "stages_create_enwiki" "enwiki"
+        maybe_do_createdirs "wikidump.conf.bigwikis" "stages_create_bigwikis" "bigwikis"
+        maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
+        ;;
+    'wikidatawiki')
+        maybe_do_createdirs "wikidump.conf.wikidatawiki" "stages_create_wikidatawiki" "wikidatawiki"
         maybe_do_createdirs "wikidump.conf.bigwikis" "stages_create_bigwikis" "bigwikis"
         maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
         ;;
@@ -172,11 +178,13 @@ maxjobs=<%= scope.lookupvar('snapshot::dumps::cron::maxjobs') %>
 
 case $dumptype in
     'full')
-	hugestages="stages_normal_nocreate_hugewikis"
+	enstages="stages_normal_nocreate_enwiki"
+	wikidatastages="stages_normal_nocreate_wikidatawiki"
 	regularstages="stages_normal_nocreate"
 	;;
     'partial')
-	hugestages="stages_partial_nocreate_hugewikis"
+	enstages="stages_partial_nocreate_enwiki"
+	wikidatastages="stages_partial_nocreate_wikidatawiki"
 	regularstages="stages_partial_nocreate"
 	;;
     '*')
@@ -186,9 +194,21 @@ case $dumptype in
 esac
 
 case $wikitype in
-    'hugewikis')
-        maybe_do_dumps "wikidump.conf.hugewikis" "$hugestages" "hugewikis" "$maxjobs"
-        # After huge wikis are done, check and do some of the rest if needed
+    'enwiki')
+        maybe_do_dumps "wikidump.conf.enwiki" "$enstages" "enwiki" "$maxjobs"
+        # After enwiki is done, check and do some of the rest if needed
+        # If not all the big wikis are done we will start a dump run covering small and big wikis
+        # Only wikis without complete dumps will be updated.
+        maybe_do_dumps "wikidump.conf.bigwikis" "$regularstages" "bigwikis" "$maxjobs"
+	if [ $? -ne 0 ]; then
+            # If we did not start a dump run above for small and big wikis, and the small wikis
+            # are not done, start such a run now.  Only wikis without complete dumps will be updated.
+            maybe_do_dumps "wikidump.conf" "$regularstages" "smallwikis" "$maxjobs"
+        fi
+        ;;
+    'wikidatawiki')
+        maybe_do_dumps "wikidump.conf.wikidatawiki" "$wikidatastages" "wikidatawiki" "$maxjobs"
+        # After wikidatawiki is done, check and do some of the rest if needed
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
         maybe_do_dumps "wikidump.conf.bigwikis" "$regularstages" "bigwikis" "$maxjobs"
