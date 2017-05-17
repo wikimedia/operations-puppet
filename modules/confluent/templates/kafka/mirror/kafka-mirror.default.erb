@@ -1,5 +1,9 @@
 # NOTE: This file is managed by Puppet.
 
+<% if @java_home -%>
+JAVA_HOME="<%= @java_home %>"
+<% end -%>
+
 # User and group to run as
 KAFKA_USER=kafka
 KAFKA_GROUP=kafka

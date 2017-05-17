@@ -119,6 +119,9 @@ define confluent::kafka::mirror::instance(
 
     $mirror_name = $title
 
+    # Local variable for rendering in templates.
+    $java_home = $::confluent::kafka::client::java_home
+
     file { "/etc/kafka/mirror/${mirror_name}":
         ensure  => 'directory',
         recurse => true,
