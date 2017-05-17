@@ -1,58 +1,72 @@
 require 'facter'
 require 'rexml/document'
 
-if Facter.value('virtual') == 'physical' && File.exists?('/usr/sbin/lldpctl')
+Facter.add(:lldp) do
+  confine :kernel => %w{Linux FreeBSD OpenBSD}
+  confine :virtual => "physical"
+  confine do
+    File.exists?('/usr/sbin/lldpctl')
+  end
 
-    lldppeers = nil
-
+  setcode do
+    lldp = {}
     data = Facter::Util::Resolution.exec('/usr/sbin/lldpctl -f xml')
     document = REXML::Document.new(data)
-    document.elements.each('lldp/interface') do |iface|
-        eth = iface.attributes['name']
-        iface.elements.each('chassis/name') do |switch|
-            Facter.add('lldppeer_%s' % eth) do
-                confine :kernel => %w{Linux FreeBSD OpenBSD}
-                setcode do
-                    switch.text
-                end
-            end
-            if lldppeers
-                lldppeers = lldppeers + ',' + switch.text
-            else
-                lldppeers = switch.text
-            end
-        end
-        iface.elements.each('port/descr') do |port|
-            Facter.add('lldpswport_%s' % eth) do
-                confine :kernel => %w{Linux FreeBSD OpenBSD}
-                setcode do
-                    port.text
-                end
-            end
-        end
-        iface.elements.each('port/id') do |port|
-            Facter.add('lldpswportid_%s' % eth) do
-                confine :kernel => %w{Linux FreeBSD OpenBSD}
-                setcode do
-                    port.text
-                end
-            end
-        end
-        iface.elements.each('vlan') do |vlan|
-            Facter.add('lldpswport_vlan_%s' % eth) do
-                confine :kernel => %w{Linux FreeBSD OpenBSD}
-                setcode do
-                    vlan.text
-                end
-            end
-        end
+
+    document.elements.each('lldp/interface') do |interface|
+      eth = interface.attributes['name']
+      lldp[eth] = {}
+
+      interface.elements.each('chassis/name') do |switch|
+        lldp[eth]['neighbor'] = switch.text
+      end
+      interface.elements.each('port/descr') do |port|
+        lldp[eth]['port'] = port.text
+      end
+      interface.elements.each('vlan') do |vlan|
+        lldp[eth]['vlan'] = vlan.text
+      end
     end
 
-    # Aggregate all the lldp peers on one single variable
-    Facter.add('lldppeers') do
-        confine :kernel => %w{Linux FreeBSD OpenBSD}
-        setcode do
-            lldppeers
-        end
+    lldp
+  end
+end
+
+Facter.add(:lldp_parent) do
+  confine :kernel => %w{Linux FreeBSD OpenBSD}
+
+  setcode do
+    begin
+      # Facter 3
+      primary = Facter.value(:networking)['primary']
+    rescue
+      # fallback to our own implementation
+      primary = Facter.value(:interface_primary)
     end
+
+    begin
+      Facter.value(:lldp)[primary]['neighbor']
+    rescue
+      nil
+    end
+  end
+end
+
+Facter.add(:lldp_neighbors) do
+  confine :kernel => %w{Linux FreeBSD OpenBSD}
+  confine do
+    !Facter.value(:lldp).nil?
+  end
+
+  setcode do
+    neighbors = []
+    Facter.value(:lldp).each do |_, values|
+      neighbor = values['neighbor']
+      if neighbor
+        neighbors.push(neighbor)
+      end
+    end
+
+    neighbors
+  end
 end
