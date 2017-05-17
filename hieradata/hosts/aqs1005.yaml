@@ -1,15 +1,3 @@
 # Analytics Query Service - rack2 instances
 
-cassandra::rack: 'rack2'
-
-cassandra::instances:
-  a:
-    jmx_port: 7189
-    listen_address: 10.64.32.189 #aqs1005-a.eqiad.wmnet
-    rpc_address: 10.64.32.189
-    rpc_interface: eth0
-  b:
-    jmx_port: 7190
-    listen_address: 10.64.32.190 #aqs1005-b.eqiad.wmnet
-    rpc_address: 10.64.32.190
-    rpc_interface: eth0
+profile::cassandra::rack: 'rack2'

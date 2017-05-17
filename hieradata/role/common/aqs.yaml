@@ -1,4 +1,7 @@
 # Analytics Query Service
+#
+# General
+#
 cluster: aqs
 
 admin::groups:
@@ -12,70 +15,78 @@ debdeploy::grains:
 #
 # Cassandra for AQS
 #
-cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
-cassandra::metrics::blacklist:
+graphite_host: 'graphite-in.eqiad.wmnet'
+profile::cassandra::allow_analytics: false
+
+# We use false to make all if statements fail in cassandra::metrics
+profile::cassandra::metrics_whitelist: false
+profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
 
-cassandra::start_rpc: 'false'
+# Instances
+profile::cassandra::instances:
+  "aqs1004.eqiad.wmnet":
+    "a": { listen_address: 10.64.0.126 }
+    "b": { listen_address: 10.64.0.127 }
+  "aqs1005.eqiad.wmnet":
+    "a": { listen_address: 10.64.32.189 }
+    "b": { listen_address: 10.64.32.190 }
+  "aqs1006.eqiad.wmnet":
+    "a": { listen_address: 10.64.48.148 }
+    "b": { listen_address: 10.64.48.149 }
+  "aqs1007.eqiad.wmnet":
+    "a": { listen_address: 10.64.0.213 }
+    "b": { listen_address: 10.64.0.237 }
+  "aqs1008.eqiad.wmnet":
+    "a": { listen_address: 10.64.16.74 }
+    "b": { listen_address: 10.64.16.78 }
+  "aqs1009.eqiad.wmnet":
+    "a": { listen_address: 10.64.48.122 }
+    "b": { listen_address: 10.64.48.123 }
 
-cassandra::target_version: '2.2'
 
-# TODO: set up a cluster variable similar to MySQL clusters to share
-# cassandra cluster configs between cassandra & clients
+profile::cassandra::settings:
+  dc: "%{::site}"
+  cluster_name: "Analytics Query Service Storage"
+  start_rpc: 'false'
+  target_version: '2.2'
+  max_heap_size: 16g
+  # 1/4 heap size, no more than 100m/thread
+  heap_newsize: 2048m
 
-cassandra::seeds:
-    - aqs1004-a.eqiad.wmnet
-    - aqs1004-b.eqiad.wmnet
-    - aqs1005-a.eqiad.wmnet
-    - aqs1005-b.eqiad.wmnet
-    - aqs1006-a.eqiad.wmnet
-    - aqs1006-b.eqiad.wmnet
-    - aqs1007-a.eqiad.wmnet
-    - aqs1007-b.eqiad.wmnet
-    - aqs1008-a.eqiad.wmnet
-    - aqs1008-b.eqiad.wmnet
-    - aqs1009-a.eqiad.wmnet
-    - aqs1009-b.eqiad.wmnet
-cassandra::max_heap_size: 16g
-# 1/4 heap size, no more than 100m/thread
-cassandra::heap_newsize: 2048m
+  # Special compaction settings, following suggesions in:
+  # https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
+  # All values are divided by two since we have two instances running on each node
+  # Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
+  # in the calculations.
+  compaction_throughput_mb_per_sec: 256
+  concurrent_compactors: 12
+  concurrent_writes: 64
+  concurrent_reads: 64
 
-# Special compaction settings, following suggesions in:
-# https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
-# All values are divided by two since we have two instances running on each node
-# Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
-# in the calculations.
-cassandra::compaction_throughput_mb_per_sec: 256
-cassandra::concurrent_compactors: 12
-cassandra::concurrent_writes: 64
-cassandra::concurrent_reads: 64
+  # The CassandraAuthorizer Auth mandates non trivial checks for
+  # each read/write operation to make sure that permissions are honored.
+  # This could be a problem in already heavy loaded clusters like AQS,
+  # so we need to increase caching to allow better performances
+  # (default value 2s).
+  permissions_validity_in_ms: 600000
 
-# The CassandraAuthorizer Auth mandates non trivial checks for
-# each read/write operation to make sure that permissions are honored.
-# This could be a problem in already heavy loaded clusters like AQS,
-# so we need to increase caching to allow better performances
-# (default value 2s).
-cassandra::permissions_validity_in_ms: 600000
+  # AQS Cassandra user
 
-# AQS Cassandra user
+  # This configuration creates the adduser.cql script that must be used
+  # to create the new user on the Cassandra cluster. This configuration alone
+  # does not create any user on the Cassandra cluster.
+  application_username: aqs
+  application_password: "%{passwords::aqs::aqs_user}"
 
-# This configuration creates the adduser.cql script that must be used
-# to create the new user on the Cassandra cluster. This configuration alone
-# does not create any user on the Cassandra cluster.
-cassandra::application_username: aqs
-cassandra::application_password: "%{passwords::aqs::aqs_user}"
-
+#
+# AQS service
+#
 # This configuration forces Restbase to use a specific user. Please make sure
 # to create the user first.
 aqs::cassandra_user: aqs
 aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
-cassandra::dc: "%{::site}"
-cassandra::cluster_name: "Analytics Query Service Storage"
-
-#
-# AQS service
-#
 aqs::seeds:
     - aqs1004-a.eqiad.wmnet
     - aqs1004-b.eqiad.wmnet
