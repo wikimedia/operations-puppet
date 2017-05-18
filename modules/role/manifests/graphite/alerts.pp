@@ -79,7 +79,7 @@ class role::graphite::alerts {
     # Monitor MediaWiki CentralAuth bad tokens
     monitoring::graphite_threshold { 'mediawiki_centralauth_errors':
         description => 'MediaWiki centralauth errors',
-        metric      => 'sum(MediaWiki.centralauth.centrallogin_errors.*.rate)',
+        metric      => 'sumSeries(MediaWiki.centralauth.centrallogin_errors.*.rate)',
         warning     => 0.5,
         critical    => 1,
         from        => '15min',
