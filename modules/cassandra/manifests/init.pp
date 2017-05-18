@@ -433,7 +433,7 @@ class cassandra(
     # Create non-default cassandra instances if requested.
     # Default is to keep Debian package behaviour,
     # in other words create a "default" instance.
-    if $instances {
+    unless empty($instances) {
         $instance_names = keys($instances)
         cassandra::instance{ $instance_names: }
         service { 'cassandra':

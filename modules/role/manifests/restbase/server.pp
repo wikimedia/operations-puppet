@@ -4,7 +4,7 @@
 # filtertags: labs-project-deployment-prep
 class role::restbase::server {
     system::role { 'restbase': description => "Restbase ${::realm}" }
-
+    warning('This role is deprecated; please use role::restbase::base or equivalent.')
     include ::passwords::cassandra
     include ::base::firewall
     include ::standard
