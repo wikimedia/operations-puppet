@@ -18,7 +18,7 @@
 # ALTER TABLE fact_values drop index index_fact_values_on_host_id, add index
 # index_fact_values_on_host_id(host_id,fact_name_id);
 #
-# Copyright © 2016 Alexandros Kosiaris and Wikimedia Foundation.
+# Copyright 2016 Alexandros Kosiaris and Wikimedia Foundation.
 # License http://www.apache.org/licenses/LICENSE-2.0
 
 require 'puppet'
