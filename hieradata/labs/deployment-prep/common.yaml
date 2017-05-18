@@ -88,38 +88,55 @@ lvs::configuration::lvs_service_ips:
   text: {}
   upload: {}
   zotero: {}
+# AQS
 aqs_hosts:
   - deployment-aqs01.deployment-prep.eqiad.wmflabs
   - deployment-aqs02.deployment-prep.eqiad.wmflabs
   - deployment-aqs03.deployment-prep.eqiad.wmflabs
 aqs::cassandra_default_consistency: localOne
-cassandra::listen_address: '%{::ipaddress}'
-cassandra::rpc_address: '%{::ipaddress}'
-cassandra::seeds:
-  - deployment-restbase01.deployment-prep.eqiad.wmflabs
-  - deployment-restbase02.deployment-prep.eqiad.wmflabs
-cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
-cassandra::target_version: '2.2'
-cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
-cassandra::metrics::blacklist:
-    - .*\.metrics\.Table\..*$
+# END AQS
+# Restbase (profile::restbase)
+profile::restbase::cassandra_local_dc: "%{::site}"
+profile::restbase::logging_label: restbase
+profile::restbase::cassandra_datacenters:
+    - "eqiad"
+profile::restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
+profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
+profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
+profile::restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
+profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
+profile::restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
+profile::restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
+profile::restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
+profile::restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
+profile::restbase::cxserver_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:8080
 
-cassandra::additional_jvm_opts:
-  - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-SNAPSHOT.jar=7800:/etc/cassandra/jmx_exporter.yaml'
-# used for rate limiting
-restbase::hosts:
+profile::restbase::cassandra_user: cassandra
+profile::restbase::cassandra_password: cassandra
+profile::restbase::monitor_domain: en.wikipedia.org
+profile::restbase::cassandra_tls: {}
+profile::restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
-restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
-restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
-restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
-restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
-restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
-restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
-restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
-restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
-restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
-restbase::cxserver_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:8080
+profile::restbase::seeds:
+  - deployment-restbase01.deployment-prep.eqiad.wmflabs
+  - deployment-restbase02.deployment-prep.eqiad.wmflabs
+# Cassandra (profile::cassandra)
+graphite_host: labmon1001.eqiad.wmnet
+profile::cassandra::metrics_whitelist: false
+profile::cassandra::metrics_blacklist:
+    - .*\.metrics\.Table\..*$
+profile::cassandra::instances:
+  "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
+  "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
+profile::cassandra::settings:
+  listen_address: '%{::ipaddress}'
+  rpc_address: '%{::ipaddress}'
+  logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+  target_version: '2.2'
+  additional_jvm_opts:
+    - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-SNAPSHOT.jar=7800:/etc/cassandra/jmx_exporter.yaml'
+# end cassandra
 "udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
 "logstash_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:
