@@ -17,6 +17,14 @@ scap::dsh::scap_masters:
 
 
 scap::dsh::groups:
+  jobrunner-canaries:
+    hosts:
+      - mw1299.eqiad.wmnet
+      - mw2247.codfw.wmnet
+  jobrunner:
+    conftool:
+      - {'cluster': 'videoscaler', 'service': 'apache2'}
+      - {'cluster': 'jobrunner', 'service': 'apache2'}
   mediawiki-installation:
     conftool:
       - {'cluster': 'appserver', 'service': 'apache2'}
