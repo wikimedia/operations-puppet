@@ -1,7 +1,4 @@
 role::deployment::repo_config:
-  jobrunner/jobrunner:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
-    service_name: jobrunner
   eventlogging/eventlogging:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true
