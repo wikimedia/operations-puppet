@@ -50,6 +50,10 @@
   CustomLog /var/log/apache2/phabricator_access.log wmf
   ServerSignature Off
 
+
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 <% if !@serveraliases.empty? -%>
 <%- @serveraliases.each do |name| -%>
   # Redirect server alias home to the main server name
