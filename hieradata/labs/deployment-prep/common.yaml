@@ -96,10 +96,11 @@ aqs_hosts:
 aqs::cassandra_default_consistency: localOne
 # END AQS
 # Restbase (profile::restbase)
-profile::restbase::cassandra_local_dc: "%{::site}"
+profile::restbase::salt_key: secretkey
 profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
-    - "eqiad"
+    - "datacenter1"
+profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
 profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
@@ -126,6 +127,7 @@ graphite_host: labmon1001.eqiad.wmnet
 profile::cassandra::metrics_whitelist: false
 profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
+profile::cassandra::rack: rack1
 profile::cassandra::instances:
   "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
   "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
