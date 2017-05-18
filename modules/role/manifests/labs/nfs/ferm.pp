@@ -12,4 +12,10 @@ class role::labs::nfs::ferm {
         port   => '111',
         srange => '$LABS_NETWORKS',
     }
+
+    ferm::service { 'labstore_nfs_rpc_statd':
+        proto  => 'tcp',
+        port   => '55659',
+        srange => '$LABS_NETWORKS',
+    }
 }
