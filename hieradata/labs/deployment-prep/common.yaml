@@ -299,6 +299,9 @@ scap::sources:
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
 
+  jobrunner/jobrunner:
+    repository: mediawiki/services/jobrunner
+
   # RESTBase
   restbase/deploy: {}
 
