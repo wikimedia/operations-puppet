@@ -1,0 +1,22 @@
+[Unit]
+Description=Nagios Remote Plugin Executor
+Documentation=http://www.nagios.org/documentation
+After=var-run.mount nss-lookup.target network.target local-fs.target remote-fs.target time-sync.target
+Before=getty@tty1.service plymouth-quit.service xdm.service
+Conflicts=nrpe.socket
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+Restart=on-abort
+PIDFile=/var/run/nagios/nrpe.pid
+ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStopPost=/bin/rm -f /var/run/nagios/nrpe.pid
+TimeoutStopSec=60
+User=nagios
+Group=nagios
+PrivateTmp=true
+OOMScoreAdjust=-500
