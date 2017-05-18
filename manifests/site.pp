@@ -1289,7 +1289,7 @@ node 'krypton.eqiad.wmnet' {
     include ::standard
 }
 
-node /kubernetes100[1-4].eqiad.wmnet/ {
+node /kubernetes[12]00[1-4]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
     include ::standard
 }
