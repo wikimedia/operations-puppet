@@ -102,6 +102,8 @@ scap::sources:
     repository: mediawiki/services/eventstreams/deploy
   graphoid/deploy: {}
 #    lvs_service: graphoid
+  jobrunner/jobrunner:
+    repository: mediawiki/services/jobrunner
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
 #    lvs_service: kartotherian
