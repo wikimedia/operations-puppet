@@ -12,6 +12,12 @@
 # storeconfig_backend = puppetdb
 # NOTE: This is probably quite inefficient, but let's evaluate first
 #
+# NOTE: On 2017-05-05 an inefficiency was indeed found. The fix was to alter the
+# puppet schema by changing the index on fact_values table. The command issued:
+#
+# ALTER TABLE fact_values drop index index_fact_values_on_host_id, add index
+# index_fact_values_on_host_id(host_id,fact_name_id);
+#
 # Copyright © 2016 Alexandros Kosiaris and Wikimedia Foundation.
 # License http://www.apache.org/licenses/LICENSE-2.0
 
