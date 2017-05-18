@@ -20,10 +20,9 @@ class mediawiki::jobrunner (
 
     include ::passwords::redis
 
-    package { 'jobrunner':
-        ensure   => latest,
-        provider => 'trebuchet',
-        notify   => Service['jobrunner'],
+    scap::target { 'jobrunner/jobrunner':
+        deploy_user => 'mwdeploy',
+        manage_user =>  false,
     }
 
     $dispatcher = template('mediawiki/jobrunner/dispatcher.erb')
