@@ -38,7 +38,7 @@ class profile::cassandra(
         vm_dirty_background_bytes => 25165824,
     }
 
-    $tls_cluster_name = pick($cassandra_settings['tls_cluster_name'], '')
+    $tls_cluster_name = $cassandra_settings['tls_cluster_name']
     if $instances != {} {
         $instance_names = keys($instances)
         ::cassandra::instance::monitoring{ $instance_names:
