@@ -44,6 +44,9 @@
 #   rules. See also https://prometheus.io/docs/querying/rules/ and
 #   https://prometheus.io/docs/alerting/rules/. Note that defining alerting
 #   rules won't trigger any notifications of any kind.
+#
+# [*alertmanager_url*]
+#   An url where alertmanager is listening for alerts.
 
 define prometheus::server (
     $listen_address,
@@ -56,6 +59,7 @@ define prometheus::server (
     $global_config_extra = {},
     $scrape_configs_extra = [],
     $rule_files_extra = [],
+    $alertmanager_url = undef,
 ) {
     include ::prometheus
 
