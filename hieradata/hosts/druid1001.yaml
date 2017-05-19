@@ -1,5 +1,5 @@
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
-zookeeper_cluster_name: druid-eqiad
+profile::zookeeper::zookeeper_cluster_name: druid-eqiad
 # Don't page if a zookeeper server in this cluster goes down.
-zookeeper_cluster_is_critical: false
+profile::zookeeper::zookeeper_cluster_is_critical: false
