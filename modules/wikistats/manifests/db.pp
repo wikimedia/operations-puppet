@@ -1,5 +1,5 @@
 # the database server setup for the wikistats site
-class wikistats::db {
+class wikistats::db($db_pass) {
 
     if os_version('debian >= stretch') {
         require_package('php7.0-mysql')
@@ -29,14 +29,12 @@ class wikistats::db {
         minute  => '23',
     }
 
-    # stash random db password in the wikistats-user home dir,
-    # so that deploy-script can bootstrap a new system
-    exec { 'generate-wikistats-db-pass':
-        command => '/usr/bin/openssl rand -base64 12 > /usr/lib/wikistats/wikistats-db-pass',
-        creates => '/usr/lib/wikistats/wikistats-db-pass',
-        user    => 'root',
-        timeout => '10',
-        unless  => '/usr/bin/test -f /usr/lib/wikistats/wikistats-db-pass',
+    file { '/usr/lib/wikistats/wikistats-db-pass':
+        ensure => 'present',
+        owner  => 'wikistatsuser',
+        group  => 'wikistatsuser',
+        mode   => '0400',
+        content => $db_pass,
     }
 
     # database schema
