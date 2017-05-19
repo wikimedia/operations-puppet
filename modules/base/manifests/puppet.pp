@@ -149,4 +149,6 @@ class base::puppet(
         priority => 97,
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
     }
+
+    include ::prometheus::node_puppet_agent
 }
