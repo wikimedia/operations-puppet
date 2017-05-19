@@ -1,3 +1,6 @@
 debdeploy::grains:
   debdeploy-zookeeper-eqiad:
     value: standard
+# Default zookeeper cluster to use in eqiad.
+# The cluster config is in common.yaml in zookeeper_clusters.
+zookeeper_cluster_name: 'main-eqiad'
