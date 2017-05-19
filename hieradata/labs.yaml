@@ -66,7 +66,7 @@ varnish::dynamic_backend_caches: false
 swift::proxy::tld: 'beta.wmflabs.org'
 
 
-zookeeper_cluster_name: "%{::labsproject}"
+profile::zookeeper::zookeeper_cluster_name: "%{::labsproject}"
 zookeeper_clusters:
   "%{::labsproject}":
     hosts:

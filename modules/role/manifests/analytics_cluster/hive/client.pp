@@ -12,7 +12,7 @@ class role::analytics_cluster::hive::client {
     $auxpath = $hcatalog_jar
 
     $zookeeper_clusters     = hiera('zookeeper_clusters')
-    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
+    $zookeeper_cluster_name = hiera('profile::zookeeper::zookeeper_cluster_name')
     $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     # You must set at least:
