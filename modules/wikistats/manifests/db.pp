@@ -76,12 +76,12 @@ class wikistats::db($db_pass) {
     }
 
     exec { 'bootstrap-mysql-grants':
-        command  => '/usr/bin/mysql -u root -Bs < /usr/lib/wikistats/grants.sql',
-        user     => 'root',
-        timeout  => '30',
-        unless   => '/usr/bin/test -f /usr/lib/wikistats/db_grants_done',
-        before   => File['/usr/lib/wikistats/db_grants_done'],
-        requires => File['/usr/lib/wikistats/grants.sql'],
+        command => '/usr/bin/mysql -u root -Bs < /usr/lib/wikistats/grants.sql',
+        user    => 'root',
+        timeout => '30',
+        unless  => '/usr/bin/test -f /usr/lib/wikistats/db_grants_done',
+        before  => File['/usr/lib/wikistats/db_grants_done'],
+        require => File['/usr/lib/wikistats/grants.sql'],
     }
 
     file { '/usr/lib/wikistats/db_grants_done':
