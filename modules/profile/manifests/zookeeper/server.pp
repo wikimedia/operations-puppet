@@ -1,29 +1,15 @@
-# Classes for Zookeeper nodes.
-# These role classes will configure Zookeeper properly in either
-# the labs or production environments.
-#
-# Usage:
-#
-# If you only need Zookeeper client configs to talk to Zookeeper servers:
-#   include role::zookeeper::client
-#
-# If you want to set up a Zookeeper server:
-#   include role::zookeeper::server
-#
-# == Class role::zookeeper::server
+# == Class profile::zookeeper::server
 #
 # zookeeper_cluster_name in hiera will be used to make jmxtrans
 # properly prefix zookeeper statsd (and graphite) metrics.
 #
 # filtertags: labs-project-deployment-prep labs-project-analytics
-class role::zookeeper::server {
-    include role::zookeeper::client
-    $cluster_name = $::role::zookeeper::client::cluster_name
-
-    system::role { 'role::zookeeper::server':
-        description => "${cluster_name} Cluster Zookeeper Server"
-    }
-
+class profile::zookeeper::server (
+    $cluster_name           = hiera('zookeeper_cluster_name'),
+    $is_critical            = hiera('profile::zookeeper::is_critical'),
+    $max_client_connections = hiera('profile::zookeeper::max_client_connections'),
+    $statsd_host            = hiera('statsd'),
+) {
     class { '::zookeeper::server':
         # If zookeeper runs in environments where JAVA_TOOL_OPTIONS is defined,
         # (like all the analytics hosts after T128295)
@@ -48,23 +34,24 @@ class role::zookeeper::server {
     # Use jmxtrans for sending metrics to ganglia
     class { 'zookeeper::jmxtrans':
         group_prefix => $group_prefix,
-        statsd       => hiera('statsd', undef),
+        statsd       => $statsd_host,
     }
 
-    if $::realm == 'production' {
-        # Configure service pages via hiera.
-        $zookeeper_cluster_is_critical = hiera('zookeeper_cluster_is_critical', false)
-
+    if $is_critical {
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
             description  => 'Zookeeper Server',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
-            critical     => $zookeeper_cluster_is_critical,
+            critical     => $is_critical,
         }
+
+        # More info about port allocation for JMX:
+        # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Ports#JMX
+        $jmxtrans_port = 9998
 
         # jmxtrans statsd writer emits fqdns in keys
         # by substituting '.' with '_' and suffixing the jmx port.
-        $graphite_broker_key = regsubst("${::fqdn}_${::zookeeper::jmxtrans::jmx_port}", '\.', '_', 'G')
+        $graphite_broker_key = regsubst("${::fqdn}_${jmxtrans_port}", '\.', '_', 'G')
 
         # Alert if NumAliveConnections approaches max client connections
         # Alert if any Kafka Broker replica lag is too high
@@ -72,9 +59,9 @@ class role::zookeeper::server {
             description => 'Zookeeper Alive Client Connections too high',
             metric      => "${group_prefix}zookeeper.${graphite_broker_key}.zookeeper.NumAliveConnections",
             # Warn if we go over 50% of max
-            warning     => $::zookeeper::max_client_connections * 0.5,
+            warning     => $max_client_connections * 0.5,
             # Critical if we go over 90% of max
-            critical    => $::zookeeper::max_client_connections * 0.9,
+            critical    => $max_client_connections * 0.9,
         }
 
         # Experimental Analytics alarms on JVM usage
@@ -82,7 +69,7 @@ class role::zookeeper::server {
         # on a fixed Max Heap size of 1G.
         monitoring::graphite_threshold { 'zookeeper-server-heap-usage':
             description   => 'Zookeeper node JVM Heap usage',
-            metric        => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${::zookeeper::jmxtrans::jmx_port}.memory.HeapMemoryUsage_used.upper",
+            metric        => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${jmxtrans_port}.memory.HeapMemoryUsage_used.upper",
             from          => '60min',
             warning       => '921000000',  # 90% of the Heap used
             critical      => '972000000',  # 95% of the Heap used
