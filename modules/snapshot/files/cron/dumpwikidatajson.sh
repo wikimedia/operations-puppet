@@ -75,7 +75,7 @@ while [ $i -lt $shards ]; do
 		exit 1
 	fi
 	fileSize=`stat --printf="%s" $tempFile`
-	if [ $fileSize -lt 2100000000 ]; then
+	if [ $fileSize -lt `expr 10500000000 / $shards` ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi

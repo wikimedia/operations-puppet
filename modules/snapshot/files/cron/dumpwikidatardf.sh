@@ -12,8 +12,6 @@
 
 declare -A dumpNameToFlavor
 dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump")
-# Sanity check: Minimal size we expect each shard of a certain dump to have
-dumpNameToMinSize=(["all"]=2500000000 ["truthy"]=1500000000)
 
 dumpName=$1
 
@@ -42,6 +40,10 @@ failureFile=/tmp/dumpwikidata$dumpFormat-$dumpName-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-main.log
 
 shards=5
+
+declare -A dumpNameToMinSize
+# Sanity check: Minimal size we expect each shard of a certain dump to have
+dumpNameToMinSize=(["all"]=`expr 12500000000 / $shards` ["truthy"]=`expr 7500000000 / $shards`)
 
 # Try to create the dump (up to three times).
 retries=0
