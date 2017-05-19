@@ -404,7 +404,6 @@ zookeeper_clusters:
       druid1002.eqiad.wmnet: '1002'
       druid1003.eqiad.wmnet: '1003'
 
-
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
   # historical reasons.
