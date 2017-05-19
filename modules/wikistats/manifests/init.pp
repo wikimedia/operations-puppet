@@ -68,6 +68,8 @@ class wikistats (
     class { 'wikistats::updates': }
 
     # install a db on localhost
-    class { 'wikistats::db': }
+    class { 'wikistats::db':
+        db_pass => fqdn_rand_string(23, 'Random9Fn0rd8Seed'),
+    }
 }
 
