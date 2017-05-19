@@ -74,3 +74,8 @@ scap::dsh::groups:
   librenms:
     hosts:
       - netmon1001.wikimedia.org
+  logstash:
+    hosts:
+      - logstash1001.eqiad.wmnet
+      - logstash1002.eqiad.wmnet
+      - logstash1003.eqiad.wmnet
