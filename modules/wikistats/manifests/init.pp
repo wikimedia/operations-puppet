@@ -37,7 +37,10 @@ class wikistats (
 
     # directory used by deploy-script to store backups
     file { '/usr/lib/wikistats/backup':
-        ensure => 'directory',
+        ensure  => 'directory',
+        owner   => 'wikistatsuser',
+        group   => 'wikistatsuser',
+        require => User['wikistatsuser'],
     }
 
     file { '/usr/local/bin/wikistats':
