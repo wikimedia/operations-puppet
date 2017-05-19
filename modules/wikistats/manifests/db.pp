@@ -55,6 +55,7 @@ class wikistats::db($db_pass) {
         timeout => '30',
         unless  => '/usr/bin/test -f /usr/lib/wikistats/db_init_done',
         before  => File['/usr/lib/wikistats/db_init_done'],
+        require => File['/usr/lib/wikistats/schema.sql'],
     }
 
     file { '/usr/lib/wikistats/db_init_done':
