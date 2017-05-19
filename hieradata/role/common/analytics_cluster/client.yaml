@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-hue:
-    value: standard
 # FIXME:
 # indirect hiera lookup due to includes in the role:
 # role::analytics_cluster::hadoop::client
