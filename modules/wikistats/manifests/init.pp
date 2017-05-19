@@ -31,6 +31,8 @@ class wikistats (
 
     file { '/srv/wikistats':
         ensure => 'directory',
+        user   => 'wikistatsuser',
+        group  => 'wikistatsuser',
     }
 
     # directory used by deploy-script to store backups
@@ -57,6 +59,8 @@ class wikistats (
         ensure    => 'latest',
         directory => '/srv/wikistats',
         branch    => 'master',
+        owner     => 'wikistatsuser',
+        group     => 'wikistatsuser',
     }
 
     # webserver setup for wikistats
