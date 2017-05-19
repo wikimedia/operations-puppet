@@ -14,6 +14,7 @@ class role::prometheus::tools {
 
     prometheus::server { 'tools':
         listen_address       => '127.0.0.1:9902',
+        external_url         => 'https://tools-prometheus.wmflabs.org/tools',
         scrape_configs_extra => [
             {
                 'job_name'              => 'k8s-api',
