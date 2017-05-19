@@ -27,8 +27,9 @@ class logstash(
         require => Package[$java_package],
     }
 
-    package { 'logstash/plugins':
-        provider       => 'trebuchet',
+    # This creates the deploy-service user on targets
+    scap::target { 'logstash/plugins':
+        deploy_user => 'deploy-service',
     }
 
     $plugin_zip_path = '/srv/deployment/logstash/plugins/target/releases/plugins-latest.zip'

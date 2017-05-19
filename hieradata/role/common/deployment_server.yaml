@@ -60,6 +60,7 @@ scap::keyholder_agents:
       - deploy-service
       - aqs-admins
       - deploy-aqs
+      - deployment
 
   dumpsdeploy:
     trusted_groups:
@@ -107,6 +108,8 @@ scap::sources:
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
 #    lvs_service: kartotherian
+  logstash/plugins:
+    repository: operations/software/logstash/plugins
   analytics/pivot/deploy:
     repository: analytics/pivot/deploy
   mathoid/deploy: {}
