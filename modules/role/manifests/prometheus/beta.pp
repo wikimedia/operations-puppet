@@ -68,6 +68,7 @@ class role::prometheus::beta {
         listen_address       => '127.0.0.1:9903',
         scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
             $cassandra_jobs),
+        alertmanager_url     => 'http://localhost:9093/am',
     }
 
     prometheus::web { 'beta':
