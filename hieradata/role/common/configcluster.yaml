@@ -16,3 +16,14 @@ profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"], /
 #profile::etcd::tlsproxy::accounts
 #profile::etcd::tlsproxy::salt
 profile::etcd::tlsproxy::read_only: false
+# Page if a zookeeper server in this cluster goes down.
+profile::zookeeper::is_critical: true
+# Max number of connections per IP for Zookeeper
+profile::zookeeper::max_client_connections: 1024
+# Default tick_time is 2000ms, this should allow a max
+# of 16 seconds of latency for Zookeeper client sessions.
+# See comments in role::kafka::analytics::broker for more info.
+profile::zookeeper::sync_limit: 8
+# To avoid version conflics with Cloudera zookeeper package, this
+# class manually specifies which debian package version should be installed.
+profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2'
