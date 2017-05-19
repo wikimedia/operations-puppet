@@ -1,3 +1,6 @@
 debdeploy::grains:
   debdeploy-zookeeper-codfw:
     value: standard
+# Default zookeeper cluster to use in codfw.
+# The cluster config is in common.yaml in zookeeper_clusters.
+zookeeper_cluster_name: 'main-codfw'
