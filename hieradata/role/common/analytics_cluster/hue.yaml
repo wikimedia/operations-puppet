@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-hue:
     value: standard
+hadoop_zookeeper_cluster_name: main-eqiad
