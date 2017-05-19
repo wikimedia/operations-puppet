@@ -3,3 +3,4 @@ admin::groups:
 debdeploy::grains:
   debdeploy-druid:
     value: standard
+druid_zookeeper_cluster_name: druid-eqiad
