@@ -3,3 +3,12 @@ admin::groups:
 debdeploy::grains:
   debdeploy-druid:
     value: standard
+# FIXME:
+# indirect hiera lookup due to includes in the role:
+# role::analytics::druid::common
+zookeeper_cluster_name: druid-eqiad
+# FIXME:
+# indirect hiera lookup due to includes in the role:
+# role::analytics::hadoop::client
+# This value should be set to the proper zookeeper cluster (main-eqiad)
+hadoop_zookeeper_cluster_name: druid-eqiad

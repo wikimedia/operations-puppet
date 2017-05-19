@@ -12,3 +12,4 @@ profile::etcd::replication::destination_path: /conftool
 # only conf2002 is active
 profile::etcd::replication::active: false
 profile::etcd::tlsproxy::read_only: true
+profile::zookeeper::cluster_name: main-codfw
