@@ -14,7 +14,7 @@ class role::analytics_cluster::druid::common
     # Need Java before Druid is installed.
     require ::role::analytics_cluster::java
 
-    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
+    $zookeeper_cluster_name = hiera('profile::zookeeper::zookeeper_cluster_name')
     $zookeeper_clusters     = hiera('zookeeper_clusters')
     $zookeeper_hosts        = join(keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts']), ',')
 

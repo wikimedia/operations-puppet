@@ -30,7 +30,7 @@ class role::analytics_cluster::hadoop::client {
     #
 
     $zookeeper_clusters     = hiera('zookeeper_clusters')
-    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
+    $zookeeper_cluster_name = hiera('profile::zookeeper::zookeeper_cluster_name')
     $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     class { '::cdh::hadoop':
