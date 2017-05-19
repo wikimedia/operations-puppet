@@ -31,7 +31,7 @@ class wikistats (
 
     file { '/srv/wikistats':
         ensure => 'directory',
-        user   => 'wikistatsuser',
+        owner  => 'wikistatsuser',
         group  => 'wikistatsuser',
     }
 
