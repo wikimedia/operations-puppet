@@ -13,7 +13,7 @@
 declare -A dumpNameToFlavor
 dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump")
 # Sanity check: Minimal size we expect each shard of a certain dump to have
-dumpNameToMinSize=(["all"]=2000000000 ["truthy"]=145000000)
+dumpNameToMinSize=(["all"]=2500000000 ["truthy"]=1500000000)
 
 dumpName=$1
 
@@ -61,7 +61,7 @@ while true; do
 				echo 1 > $failureFile
 
 				#  Kill all remaining dumpers and start over.
-				pkill -P $$
+				kill -- -$$
 			fi
 		) &
 		let i++

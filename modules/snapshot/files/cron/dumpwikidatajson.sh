@@ -36,7 +36,7 @@ while true; do
 				echo 1 > $failureFile
 
 				#  Kill all remaining dumpers and start over.
-				pkill -P $$
+				kill -- -$$
 			fi
 		) &
 		let i++
@@ -75,7 +75,7 @@ while [ $i -lt $shards ]; do
 		exit 1
 	fi
 	fileSize=`stat --printf="%s" $tempFile`
-	if [ $fileSize -lt 1800000000 ]; then
+	if [ $fileSize -lt 2100000000 ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
