@@ -23,8 +23,6 @@ ganglia_aggregators: install2002.wikimedia.org:10649
 # Default zookeeper cluster to use in codfw.
 # The cluster config is in common.yaml in zookeeper_clusters.
 zookeeper_cluster_name: 'main-codfw'
-# Page if a zookeeper server in this cluster goes down.
-zookeeper_cluster_is_critical: true
 
 #
 # LABS
