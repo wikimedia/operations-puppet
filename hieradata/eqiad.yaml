@@ -26,6 +26,10 @@ mediawiki_memcached_servers:
 #
 ganglia_aggregators: install1002.wikimedia.org:9649
 
+# Default zookeeper cluster to use in eqiad.
+# The cluster config is in common.yaml in zookeeper_clusters.
+zookeeper_cluster_name: 'main-eqiad'
+
 # Eventlogging
 eventlogging_host: 10.64.32.167 # eventlog1001
 
@@ -63,12 +67,6 @@ eventlogging_mysql_consumers:
 
 
 labs_certmanager_hostname: "labservices1001.wikimedia.org"
-
-# Default zookeeper cluster to use in eqiad.
-# The cluster config is in common.yaml in zookeeper_clusters.
-zookeeper_cluster_name: 'main-eqiad'
-# Page if a zookeeper server in this cluster goes down.
-zookeeper_cluster_is_critical: true
 
 #
 # Labs
