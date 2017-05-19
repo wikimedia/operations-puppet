@@ -888,10 +888,7 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
 node /^druid100[123].eqiad.wmnet$/ {
     role(analytics_cluster::druid::worker,
         analytics_cluster::hadoop::client,
-        # zookeeper_cluster_name is set in hiera
-        # in hieradata/hosts/druid100*.yaml.  This
-        # is a separate druid zookeeper cluster.
-        zookeeper::server)
+        analytics_cluster::druid::zookeeper)
 
     include ::base::firewall
     include ::standard
