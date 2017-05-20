@@ -1,0 +1,8 @@
+Code-Review+1: Addshore <addshorewiki@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+2: Volans <rcoccioli@wikimedia.org>
+Submitted-by: Volans <rcoccioli@wikimedia.org>
+Submitted-at: Sat, 20 May 2017 17:07:24 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/354743
+Project: operations/puppet
+Branch: refs/heads/production
