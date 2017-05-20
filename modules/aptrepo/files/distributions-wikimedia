@@ -6,7 +6,7 @@ Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty thirdparty/cloudera
 UDebComponents: main
-Update: hwraid cloudera-trusty elastic hp-mcp-trusty confluent
+Update: hwraid cloudera-trusty elastic hp-mcp-trusty confluent cran-ubuntu
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -22,7 +22,7 @@ Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental thirdparty/cloudera
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins
+Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins cran-debian
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
