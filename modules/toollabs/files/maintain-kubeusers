@@ -254,14 +254,16 @@ def write_kubeconfig(user, master):
     dirpath = os.path.join('/data', 'project', user.name, '.kube')
     path = os.path.join(dirpath, 'config')
     # exist_ok=True is fine here, and not a security issue (Famous last words?).
-    # We also keep it owned by root, which is fine.
     os.makedirs(dirpath, mode=0o775, exist_ok=True)
+    os.fchown(f, int(user.id), int(user.id))
     f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
     try:
         os.write(f, json.dumps(config, indent=4, sort_keys=True).encode('utf-8'))
         # uid == gid
         os.fchown(f, int(user.id), int(user.id))
         os.fchmod(f, 0o400)
+        # Prevent removal or modification of the credentials file by users
+        subprocess.check_output(['/usr/bin/chattr', '+i', file_path])
         logging.info('Write config in %s', path)
     except:
         logging.exception()
