@@ -123,6 +123,7 @@ $private_wikis = [
     'searchcomwiki',
     'spcomwiki',
     'stewardwiki',
+	'techconductwiki',
     'transitionteamwiki',
     'wg_enwiki',
     'wikimaniateamwiki',
