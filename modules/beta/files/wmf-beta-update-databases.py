@@ -44,6 +44,7 @@ def run_updates(staging, cores):
     with open(staging, "r") as dblist:
         for db in dblist:
             db = db.strip()
+            print db
             f = os.tmpfile()
             cmd = "/usr/local/bin/mwscript update.php --wiki=%s --quick" % db
             p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True)
