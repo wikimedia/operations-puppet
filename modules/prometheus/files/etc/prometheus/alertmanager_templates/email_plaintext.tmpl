@@ -1,0 +1,19 @@
+{{/* Note: Content-Type will still be text/html for now :( */}}
+{{ define "email.default.html" }}
+
+== Summary ==
+{{ .Alerts | len }} alert{{ if gt (len .Alerts) 1 }}s{{ end }} for {{ range .GroupLabels.SortedPairs }}
+  {{ .Name }} = {{ .Value }}
+{{ end }}
+
+== Alert List ==
+{{ range .Alerts.Firing }}
+Summary: {{ range .Annotations.SortedPairs }}{{ if eq .Name "SUMMARY" }}{{ .Value }}{{end}}{{end}}
+Description: {{ range .Annotations.SortedPairs }}{{ if eq .Name "DESCRIPTION" }}{{ .Value }}{{end}}{{end}}
+Labels:{{ range .Labels.SortedPairs }}
+  {{ .Name }} = {{ .Value }} {{ end }}
+{{ end }}
+
+Alertmanager: {{ template "__alertmanagerURL" . }}
+
+{{ end }}

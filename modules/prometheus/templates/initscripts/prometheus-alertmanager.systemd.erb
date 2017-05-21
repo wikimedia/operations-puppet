@@ -1,0 +1,10 @@
+[Unit]
+Description=Prometheus Alertmanager
+
+[Service]
+User=prometheus
+ExecStart=/usr/bin/prometheus-alertmanager <% if @external_url != nil %>-web.external-url <%= @external_url %><% end %> -storage.path <%= @storage_path %> -config.file <%= @config_file %>
+Restart=on-failure
+RestartSec=2s
+ExecReload=/bin/kill -HUP $MAINPID
+SendSIGKILL=no
