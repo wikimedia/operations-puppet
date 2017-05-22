@@ -15,7 +15,7 @@ fi
 
 if [ $cpu_freq -lt $min_mhz ] ; then
     echo "CRIT, CPU frequency is < ${min_mhz} MHz ($cpu_freq)"
-    exit 1
+    exit 2
 fi
 
 
