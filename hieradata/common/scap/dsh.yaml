@@ -15,6 +15,9 @@ scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
   - "naos.codfw.wmnet"
 
+scap::dsh::scap_masters_aliases:
+  - "deployment.eqiad.wmnet"
+  - "deployment.codfw.wmnet"
 
 scap::dsh::groups:
   mediawiki-installation:
