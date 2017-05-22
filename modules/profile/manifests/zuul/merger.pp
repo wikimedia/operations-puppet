@@ -1,5 +1,4 @@
-class role::zuul::merger {
-    system::role { 'role::zuul::merger': description => 'Zuul merger' }
+class profile::zuul::merger {
 
     include ::zuul::monitoring::merger
 
