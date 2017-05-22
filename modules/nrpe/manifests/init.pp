@@ -55,9 +55,8 @@ class nrpe($allowed_hosts='127.0.0.1') {
         require => File['/usr/local/lib/nagios/'],
     }
 
-    base::service_unit { 'nagios-nrpe-server':
-        systemd => true,
-        strict  => false,
+    service { 'nagios-nrpe-server':
+        ensure  => running,
         require => Package['nagios-nrpe-server'],
     }
 
