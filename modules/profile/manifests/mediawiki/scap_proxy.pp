@@ -23,6 +23,10 @@ class profile::mediawiki::scap_proxy(
             port   => '873',
             srange => '$MW_APPSERVER_NETWORKS',
         }
-    }
 
+        class { '::scap::vhost':
+            deployable_networks => $::network::constants::deployable_networks,
+            scap_proxies        => $scap_proxies,
+        }
+    }
 }
