@@ -26,6 +26,10 @@ server {
 	internal;
     }
 
+    <%- if @read_only %>
+    error_page 403 /readonly.json
+    <%- end -%>
+
     # One year should be enough for anyone(TM)
     proxy_read_timeout 365d;
     # Proxy buffering must be turned off in order not to interfere with

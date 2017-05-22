@@ -37,6 +37,12 @@ class profile::etcd::tlsproxy(
         content => '{"errorCode":110,"message":"The request requires user authentication","cause":"Insufficient credentials","index":0}',
     }
 
+    file { '/etc/nginx/etcd-errors/readonly.json':
+        ensure  => present,
+        mode    => '0444',
+        content => '{"errorCode":107,"message":"This cluster is in read-only mode","cause":"Cluster configured to be read-only","index":0}',
+    }
+
     # I know, this is pretty horrible. Puppet is too, with its
     # allergy for any form of data-structure mangling.
     $htpasswd_files = keys($acls)
