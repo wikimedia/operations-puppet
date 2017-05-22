@@ -25,9 +25,14 @@ server {
 	root /etc/nginx/etcd-errors;
 	internal;
     }
-
     <%- if @read_only %>
+
     error_page 403 /readonly.json
+
+    location /401.json {
+	root /etc/nginx/etcd-errors;
+	internal;
+    }    
     <%- end -%>
 
     # One year should be enough for anyone(TM)
