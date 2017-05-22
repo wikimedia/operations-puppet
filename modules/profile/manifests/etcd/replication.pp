@@ -32,7 +32,7 @@ class profile::etcd::replication(
     etcdmirror::instance { $resource_title:
         src      => "https://${hosts[0]}:2379",
         src_path => $origin['path'],
-        dst      => "https://root:${accounts['root']}@${::fqdn}:2379",
+        dst      => 'http://localhost:2378',
         dst_path => $destination_path,
         enable   => $active,
     }
