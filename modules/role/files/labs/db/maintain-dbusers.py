@@ -9,18 +9,6 @@ functions are not 'pure' - they could even be separate scripts. They
 mutate the DB in some way. They are also supposed to be idempotent -
 if they have nothing to do, they should not do anything.
 
-Some of the functions are one-time only. These are:
-
-## harvest_cnf_files ##
-
- - Look through NFS for replica.my.cnf files
- - For those found, but no entry in `accounts` table, make an entry
-
-## harvest_dbaccounts ##
- - Look through all accounts in account db
- - Look through all users in all provisioned labsdbs
- - Make entries in `account_host` table with status of all accounts.
-
 Most of these functions should be run in a continuous loop, maintaining
 mysql accounts for new tool/user accounts as they appear.
 
@@ -253,30 +241,6 @@ def get_replica_path(account_type, name):
             'replica.my.cnf'
         )
 
-
-def harvest_cnf_files(config, account_type='tool'):
-    accounts_to_create = find_tools(config) if account_type == 'tool' \
-        else find_tools_users(config)
-    acct_db = get_accounts_db_conn(config)
-    cur = acct_db.cursor()
-    try:
-        for account_name, uid in accounts_to_create:
-            replica_path = get_replica_path(account_type, account_name)
-            if os.path.exists(replica_path):
-                mysql_user, pwd_hash = read_replica_cnf(replica_path)
-                cur.execute("""
-                INSERT INTO account (mysql_username, type, username, password_hash)
-                VALUES (%s, %s, %s, %s)
-                ON DUPLICATE KEY UPDATE
-                password_hash = %s
-                """, (mysql_user, account_type, account_name, pwd_hash, pwd_hash)
-                )
-            else:
-                logging.info('Found no replica.my.cnf to harvest for %s %s',
-                             account_type, account_name)
-        acct_db.commit()
-    finally:
-        cur.close()
 
 
 def harvest_replica_accts(config):
@@ -549,10 +513,7 @@ if __name__ == '__main__':
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    if args.action == 'harvest':
-        harvest_cnf_files(config, args.account_type)
-        harvest_replica_accts(config)
-    elif args.action == 'maintain':
+    if args.action == 'maintain':
         while True:
             # Check if we're the primary NFS server.
             # If we aren't, just loop lamely, not exit. This allows this script to
