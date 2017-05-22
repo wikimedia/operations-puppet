@@ -178,14 +178,14 @@ maxjobs=<%= scope.lookupvar('snapshot::dumps::cron::maxjobs') %>
 
 case $dumptype in
     'full')
-	enstages="stages_normal_nocreate_enwiki"
-	wikidatastages="stages_normal_nocreate_wikidatawiki"
-	regularstages="stages_normal_nocreate"
+	enstages="stages_full_enwiki"
+	wikidatastages="stages_full_wikidatawiki"
+	regularstages="stages_full"
 	;;
     'partial')
-	enstages="stages_partial_nocreate_enwiki"
-	wikidatastages="stages_partial_nocreate_wikidatawiki"
-	regularstages="stages_partial_nocreate"
+	enstages="stages_partial_enwiki"
+	wikidatastages="stages_partial_wikidatawiki"
+	regularstages="stages_partial"
 	;;
     '*')
         echo "unknown dumptype $dumptype"
