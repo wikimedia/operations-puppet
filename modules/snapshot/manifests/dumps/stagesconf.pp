@@ -1,5 +1,5 @@
 define snapshot::dumps::stagesconf(
-    $stagestype = 'normal',
+    $stagestype = 'normal_nocreate',
     $stages     = undef,
     ) {
 
