@@ -1,41 +1,7 @@
 #!/usr/bin/python3
-"""
-This script keeps canonical source of mysql labsdb accounts in a
-database, and ensures that it is kept up to date with reality.
 
-The code pattern here is that you have a central data store (the db),
-that is then read/written to by various independent functions. These
-functions are not 'pure' - they could even be separate scripts. They
-mutate the DB in some way. They are also supposed to be idempotent -
-if they have nothing to do, they should not do anything.
+"""wikitech: Portal:Data_Services/Admin/Labstore#maintain-dbusers"""
 
-Most of these functions should be run in a continuous loop, maintaining
-mysql accounts for new tool/user accounts as they appear.
-
-## populate_new_accounts ##
-
- - Find list of tools/users (From LDAP) that aren't in the `accounts` table
- - Create a replica.my.cnf for each of these tools/users
- - Make an entry in the `accounts` table for each of these tools/users
- - Make entries in `account_host` for each of these tools/users, marking them as
-   absent
-
-## create_accounts ##
-
- - Look through `account_host` table for accounts that are marked as 'absent'
- - Create those accounts, and mark them as present.
-
-If we need to add a new labsdb, we can do so the following way:
- - Add it to the config file
- - Insert entries into `account_host` for each tool/user with the new host.
- - Run `create_accounts`
-
-In normal usage, just a continuous process running `populate_new_accounts` and
-`create_accounts` in a loop will suffice.
-
-TODO:
-  - Support for maintaining per-tool restrictions (number of connections + time)
-"""
 import sys
 import ldap3
 import logging
