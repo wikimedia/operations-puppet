@@ -9,10 +9,10 @@ Conflicts=nrpe.socket
 WantedBy=multi-user.target
 
 [Service]
-Type=simple
+Type=forking
 Restart=on-abort
 PIDFile=/var/run/nagios/nrpe.pid
-ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg
+ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStopPost=/bin/rm -f /var/run/nagios/nrpe.pid
 TimeoutStopSec=60
