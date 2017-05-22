@@ -10,19 +10,13 @@
 <% if @stagestype == 'create_enwiki' %>
 # mark the start of the run for enwiki
 1 1 continue none <%= @stages['enwiki']['firststage'] -%> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'create_wikidatawiki' %>
+<% elsif @stagestype == 'create_wikidatawiki' %>
 # mark the start of the run for wikidatawiki
 1 1 continue none <%= @stages['wikidatawiki']['firststage'] -%> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'create_small' %>
+<% elsif @stagestype == 'create_small' %>
 # mark the start of the run for all small wikis
 1 8 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'create_big' %>
+<% elsif @stagestype == 'create_big' %>
 # mark the start of the run for all big wikis
 1 8 continue none <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 <% end -%>
@@ -47,19 +41,16 @@
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
 # articles, recombine plus meta pages for big wikis
 4 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+<% end -%>
 
 <% if @stagestype == 'full' %>
 # all remaining jobs
 1 max continue none <%= @stages['smallwikis']['rest'] %>
 4 max continue none <%= @stages['bigwikis']['rest'] %>
-<% end -%>
-
-<% if @stagestype == 'partial' %>
+<% elsif @stagestype == 'partial' %>
 # all remaining jobs except for the history revs
 1 max continue none <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 4 max continue none <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
-<% end -%>
-
 <% end -%>
 
 <% if @stagestype == 'full_enwiki' or @stagestype == 'partial_enwiki' %>
@@ -73,17 +64,14 @@
 
 # articles plus meta pages
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+<% end -%>
 
 <% if @stagestype == 'full_enwiki' %>
 # all remaining jobs
 27 1 continue none <%= @stages['enwiki']['rest'] %>
-<% end -%>
-
-<% if @stagestype == 'partial_enwiki' %>
+<% elsif @stagestype == 'partial_enwiki' %>
 # all remaining jobs except for the history revs
 27 1 continue none <%= @stages['enwiki']['rest'] %> <%= @stages['skipjob_args'] %>
-<% end -%>
-
 <% end -%>
 
 <% if @stagestype == 'full_wikidatawiki' or @stagestype == 'partial_wikidatawiki' %>
@@ -97,15 +85,13 @@
 
 # articles plus meta pages
 27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+<% end -%>
 
 <% if @stagestype == 'full_wikidatawiki' %>
 # all remaining jobs
 27 1 continue none <%= @stages['wikidatawiki']['rest'] %>
-<% end -%>
-
-<% if @stagestype == 'partial_wikidatawiki' %>
+<% elsif @stagestype == 'partial_wikidatawiki' %>
 # all remaining jobs except for the history revs
 27 1 continue none <%= @stages['wikidatawiki']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
-<% end -%>
