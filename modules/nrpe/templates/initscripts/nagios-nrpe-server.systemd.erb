@@ -12,12 +12,13 @@ WantedBy=multi-user.target
 Type=forking
 Restart=on-abort
 PIDFile=/var/run/nagios/nrpe.pid
-ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d
+EnvironmentFile=-/etc/default/nagios-nrpe-server
+PermissionsStartOnly=true
+ExecStartPre=-/bin/mkdir -p /var/run/nagios/
+ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d $DAEMON_OPTS
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStopPost=/bin/rm -f /var/run/nagios/nrpe.pid
 TimeoutStopSec=60
-User=nagios
-Group=nagios
 # TODO: Re-enable this after mysql/maria unix sockets get moved out of /tmp. See T148507
 #PrivateTmp=true
 OOMScoreAdjust=-500
