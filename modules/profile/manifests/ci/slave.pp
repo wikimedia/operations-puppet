@@ -6,9 +6,7 @@
 #
 # You should look instaed at role::ci::labs::slave
 #
-class role::ci::slave {
-
-    system::role { 'role::ci::slave': description => 'CI slave runner' }
+class profile::ci::slave {
 
     include contint::packages::base
     include ::zuul
