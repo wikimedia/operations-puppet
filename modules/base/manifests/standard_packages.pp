@@ -59,6 +59,15 @@ class base::standard_packages {
         ensure => absent,
     }
 
+    # Use gdb from Jessie backports on jessie systems
+    if os_version('debian == jessie') {
+        apt::pin { 'gdb':
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['gdb'],
+        }
+    }
+
     # Installed by default on Ubuntu, but not used (and it's setuid root, so
     # a potential security risk).
     #
