@@ -1,5 +1,6 @@
 <VirtualHost *:80>
     ServerName <%= @apache_fqdn %>
+    ServerAlias <%= Array(@scap_masters_aliases).join(' ') %>
     ServerAdmin noc@wikimedia.org
     DocumentRoot /srv/deployment
 

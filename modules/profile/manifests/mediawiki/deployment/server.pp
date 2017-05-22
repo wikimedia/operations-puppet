@@ -83,9 +83,8 @@ class profile::mediawiki::deployment::server(
         group  => $deployment_group,
     }
 
-    apache::site { 'deployment':
-        content => template('role/deployment/apache-vhost.erb'),
-        require => File['/srv/deployment'],
+    class { '::scap::vhost':
+        deployable_networks => $deployable_networks,
     }
 
     class { '::deployment::redis':
