@@ -37,28 +37,12 @@ class snapshot::dumps::stagesconfig {
         skipjob_args => "--skipjobs ${jobs_to_skip}",
     }
 
-    snapshot::dumps::stagesconf { 'stages_normal':
-        stagestype => 'normal',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_partial':
-        stagestype => 'partial',
-        stages     => $stages,
-    }
     snapshot::dumps::stagesconf { 'stages_normal_nocreate':
         stagestype => 'normal_nocreate',
         stages     => $stages,
     }
     snapshot::dumps::stagesconf { 'stages_partial_nocreate':
         stagestype => 'partial_nocreate',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_normal_enwiki':
-        stagestype => 'normal_enwiki',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_partial_enwiki':
-        stagestype => 'partial_enwiki',
         stages     => $stages,
     }
     snapshot::dumps::stagesconf { 'stages_normal_nocreate_enwiki':
@@ -69,24 +53,12 @@ class snapshot::dumps::stagesconfig {
         stagestype => 'partial_nocreate_enwiki',
         stages     => $stages,
     }
-    snapshot::dumps::stagesconf { 'stages_normal_wikidatawiki':
-        stagestype => 'normal_wikidatawiki',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_partial_wikidatawiki':
-        stagestype => 'partial_wikidatawiki',
-        stages     => $stages,
-    }
     snapshot::dumps::stagesconf { 'stages_normal_nocreate_wikidatawiki':
         stagestype => 'normal_nocreate_wikidatawiki',
         stages     => $stages,
     }
     snapshot::dumps::stagesconf { 'stages_partial_nocreate_wikidatawiki':
         stagestype => 'partial_nocreate_wikidatawiki',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_create':
-        stagestype => 'create',
         stages     => $stages,
     }
     snapshot::dumps::stagesconf { 'stages_create_smallwikis':

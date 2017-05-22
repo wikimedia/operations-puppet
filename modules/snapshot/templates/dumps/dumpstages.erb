@@ -7,19 +7,14 @@
 
 # slots_used numcommands on_failure error_notify command
 
-<% if @stagestype == 'normal_enwiki' or @stagestype == 'partial_enwiki' or @stagestype == 'create_enwiki' %>
+<% if @stagestype == 'create_enwiki' %>
 # mark the start of the run for enwiki
 1 1 continue none <%= @stages['enwiki']['firststage'] -%> --job createdirs --sleep 5
 <% end -%>
 
-<% if @stagestype == 'normal_wikidatawiki' or @stagestype == 'partial_wikidatawiki' or @stagestype == 'create_wikidatawiki' %>
+<% if @stagestype == 'create_wikidatawiki' %>
 # mark the start of the run for wikidatawiki
 1 1 continue none <%= @stages['wikidatawiki']['firststage'] -%> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'create' %>
-# mark the start of the run for all small, big wikis
-1 8 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5; <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 <% end -%>
 
 <% if @stagestype == 'create_small' %>
@@ -32,7 +27,7 @@
 1 8 continue none <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 <% end -%>
 
-<% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'normal_nocreate' or @stagestype == 'partial_nocreate' %>
+<% if @stagestype == 'normal_nocreate' or @stagestype == 'partial_nocreate' %>
 # stubs and then tables so inconsistencies between stubs and tables aren't too huge
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
 # stubs, recombines, tables for big wikis
@@ -53,13 +48,13 @@
 # articles, recombine plus meta pages for big wikis
 4 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 
-<% if @stagestype == 'normal' or @stagestype == 'normal_nocreate' %>
+<% if @stagestype == 'normal_nocreate' %>
 # all remaining jobs
 1 max continue none <%= @stages['smallwikis']['rest'] %>
 4 max continue none <%= @stages['bigwikis']['rest'] %>
 <% end -%>
 
-<% if @stagestype == 'partial' or @stagestype == 'partial_nocreate' %>
+<% if @stagestype == 'partial_nocreate' %>
 # all remaining jobs except for the history revs
 1 max continue none <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 4 max continue none <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
@@ -67,7 +62,7 @@
 
 <% end -%>
 
-<% if @stagestype == 'normal_enwiki' or @stagestype == 'partial_enwiki' or @stagestype == 'normal_nocreate_enwiki' or @stagestype == 'partial_nocreate_enwiki' %>
+<% if @stagestype == 'normal_nocreate_enwiki' or @stagestype == 'partial_nocreate_enwiki' %>
 # stubs, stubs recombine
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
 # tables next so inconsistencies between stubs and tables aren't too huge
@@ -79,19 +74,19 @@
 # articles plus meta pages
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 
-<% if @stagestype == 'normal_enwiki' or @stagestype == 'normal_nocreate_enwiki' %>
+<% if @stagestype == 'normal_nocreate_enwiki' %>
 # all remaining jobs
 27 1 continue none <%= @stages['enwiki']['rest'] %>
 <% end -%>
 
-<% if @stagestype == 'partial_enwiki' or @stagestype == 'partial_nocreate_enwiki' %>
+<% if @stagestype == 'partial_nocreate_enwiki' %>
 # all remaining jobs except for the history revs
 27 1 continue none <%= @stages['enwiki']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
 <% end -%>
 
-<% if @stagestype == 'normal_wikidatawiki' or @stagestype == 'partial_wikidatawiki' or @stagestype == 'normal_nocreate_wikidatawiki' or @stagestype == 'partial_nocreate_wikidatawiki' %>
+<% if @stagestype == 'normal_nocreate_wikidatawiki' or @stagestype == 'partial_nocreate_wikidatawiki' %>
 # stubs, stubs recombine
 27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
 # tables next so inconsistencies between stubs and tables aren't too huge
@@ -103,12 +98,12 @@
 # articles plus meta pages
 27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 
-<% if @stagestype == 'normal_wikidatawiki' or @stagestype == 'normal_nocreate_wikidatawiki' %>
+<% if @stagestype == 'normal_nocreate_wikidatawiki' %>
 # all remaining jobs
 27 1 continue none <%= @stages['wikidatawiki']['rest'] %>
 <% end -%>
 
-<% if @stagestype == 'partial_wikidatawiki' or @stagestype == 'partial_nocreate_wikidatawiki' %>
+<% if @stagestype == 'partial_nocreate_wikidatawiki' %>
 # all remaining jobs except for the history revs
 27 1 continue none <%= @stages['wikidatawiki']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
