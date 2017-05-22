@@ -27,9 +27,9 @@ server {
     }
     <%- if @read_only %>
 
-    error_page 403 /readonly.json
+    error_page 403 /readonly.json;
 
-    location /401.json {
+    location /readonly.json {
 	root /etc/nginx/etcd-errors;
 	internal;
     }
