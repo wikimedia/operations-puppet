@@ -18,5 +18,6 @@ ExecStopPost=/bin/rm -f /var/run/nagios/nrpe.pid
 TimeoutStopSec=60
 User=nagios
 Group=nagios
-PrivateTmp=true
+# TODO: Re-enable this after mysql/maria unix sockets get moved out of /tmp. See T148507
+#PrivateTmp=true
 OOMScoreAdjust=-500
