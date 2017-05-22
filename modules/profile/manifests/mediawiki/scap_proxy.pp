@@ -3,7 +3,7 @@
 # Sets up an rsync proxy for scap, if the server is set up to be one
 #
 class profile::mediawiki::scap_proxy(
-    $scap_proxies = hiera('scap::dsh::scap_proxies',[])
+    $scap_masters_aliases = hiera('scap::dsh::scap_masters_aliases',[])
 ) {
     include ::network::constants
 
@@ -23,6 +23,10 @@ class profile::mediawiki::scap_proxy(
             port   => '873',
             srange => '$MW_APPSERVER_NETWORKS',
         }
-    }
 
+        class { '::scap::vhost':
+            deployable_networks  => $::network::constants::deployable_networks,
+            scap_masters_aliases => $scap_masters_aliases,
+        }
+    }
 }
