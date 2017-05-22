@@ -12,6 +12,7 @@ WantedBy=multi-user.target
 Type=forking
 Restart=on-abort
 PIDFile=/var/run/nagios/nrpe.pid
+ExecStartPre=-/bin/mkdir -p /var/run/nagios/
 ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStopPost=/bin/rm -f /var/run/nagios/nrpe.pid
