@@ -29,7 +29,7 @@ server {
 
     error_page 403 /readonly.json
 
-    location /401.json {
+    location /403.json {
 	root /etc/nginx/etcd-errors;
 	internal;
     }
