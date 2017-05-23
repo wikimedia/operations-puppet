@@ -20,6 +20,8 @@ class elasticsearch::packages (
     require_package('python-elasticsearch')
     require_package('python-ipaddr')
 
+    require_package('elasticsearch-curator')
+
     ### install and link additional log4j appender to send logs over GELF
 
     # we only require the packages, we do not remove them as there might be
