@@ -12,6 +12,9 @@
 # [*filepath*]
 #   The file path for File resource. (Required)
 #
+# [*favicon*]
+#   URL for favicon. (Optional)
+#
 # [*doctitle*]
 #   HTML Document title. (Required)
 #
@@ -22,24 +25,53 @@
 #
 #   Default: ''
 #
+# [*logo_link*]
+#   URL for anchor link around logo. Set to undef to disable link. (Optional)
+#
+#   Default: 'https://www.wikimedia.org'
+#
+#   Default: 'Wikimedia Error'
+#
+# [*logo_src*]
+#   URL for logo image. (Required)
+#
+#   Default: 'https://www.wikimedia.org/static/images/wmf.png'
+#
+# [*logo_srcset*]
+#   HTML srcset attribute value for logo image. (Required)
+#
+#   Default: 'https://www.wikimedia.org/static/images/wmf-2x.png 2x'
+#
 # [*footer*]
 #   Optional HTML content for the footer. (Optional)
 #
 define mediawiki::errorpage(
     $filepath = $name,
+    $owner = 'root',
+    $group = 'root',
+    $mode = '0444',
+    $favicon = undef,
     $doctitle = 'Wikimedia Error',
+    $title = 'Wikimedia Error',
+    $logo_link = 'https://www.wikimedia.org',
+    $logo_src = 'https://www.wikimedia.org/static/images/wmf.png',
+    $logo_srcset = 'https://www.wikimedia.org/static/images/wmf-2x.png 2x',
     $content = '',
     $footer = undef,
 ) {
     $errorpage  = {
-        title   => $doctitle,
-        content => $content,
-        footer  => $footer,
+        favicon     => $favicon,
+        title       => $doctitle,
+        logo_link   => $logo_link,
+        logo_src    => $logo_src,
+        logo_srcset => $logo_srcset,
+        content     => $content,
+        footer      => $footer,
     }
     file { $filepath:
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        owner  => $owner,
+        group  => $group,
+        mode   => $mode,
         source => template('mediawiki/errorpage.html.erb'),
     }
 }
