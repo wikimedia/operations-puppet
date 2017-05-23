@@ -67,7 +67,7 @@ class profile::calico::builder(
     }
 
     git::clone{ 'operations/calico-containers':
-        branch    => $node_version,
+        branch    => 'master',
         owner     => 'calicobuild',
         require   => User['calicobuild'],
         directory => "${directory}/calico-containers",
