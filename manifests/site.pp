@@ -1516,10 +1516,10 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
 
     lvs::interface_tweaks {
-        'eth0': rss_pattern => 'eth0-%d';
-        'eth1': rss_pattern => 'eth1-%d';
-        'eth2': rss_pattern => 'eth2-%d';
-        'eth3': rss_pattern => 'eth3-%d';
+        'eth0':;
+        'eth1':;
+        'eth2':;
+        'eth3':;
     }
 }
 
@@ -1615,10 +1615,10 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
     }
 
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
-        'eth1': bnx2x => true, txqlen => 10000, rss_pattern => 'eth1-fp-%d';
-        'eth2': bnx2x => true, txqlen => 10000, rss_pattern => 'eth2-fp-%d';
-        'eth3': bnx2x => true, txqlen => 10000, rss_pattern => 'eth3-fp-%d';
+        'eth0': bnx2x => true, txqlen => 10000;
+        'eth1': bnx2x => true, txqlen => 10000;
+        'eth2': bnx2x => true, txqlen => 10000;
+        'eth3': bnx2x => true, txqlen => 10000;
     }
 }
 
@@ -1715,10 +1715,10 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     }
 
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
-        'eth1': bnx2x => true, txqlen => 10000, rss_pattern => 'eth1-fp-%d';
-        'eth2': bnx2x => true, txqlen => 10000, rss_pattern => 'eth2-fp-%d';
-        'eth3': bnx2x => true, txqlen => 10000, rss_pattern => 'eth3-fp-%d';
+        'eth0': bnx2x => true, txqlen => 10000;
+        'eth1': bnx2x => true, txqlen => 10000;
+        'eth2': bnx2x => true, txqlen => 10000;
+        'eth3': bnx2x => true, txqlen => 10000;
     }
 }
 
@@ -1754,7 +1754,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     #  and driver updates for XPS).
 
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 20000, rss_pattern => 'eth0-fp-%d';
+        'eth0': bnx2x => true, txqlen => 20000;
     }
 }
 
@@ -1768,7 +1768,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
+        'eth0': bnx2x => true, txqlen => 10000;
     }
 }
 
