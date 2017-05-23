@@ -16,11 +16,6 @@ class role::cache::perf {
         value => 65536,
     }
 
-    # RPS/RSS to spread network i/o evenly
-    interface::rps { 'primary':
-        interface => $facts['interface_primary'],
-    }
-
     # flush vm more steadily in the background. helps avoid large performance
     #   spikes related to flushing out disk write cache.
     sysctl::parameters { 'cache_role_vm_settings':
@@ -29,6 +24,14 @@ class role::cache::perf {
             'vm.dirty_background_ratio' => 5,   # default 10
             'vm.dirty_expire_centisecs' => 500, # default 3000
         },
+    }
+
+    # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
+    # which must be enabled before turning on BBR congestion control below
+    interface::rps { 'primary':
+        interface => $facts['interface_primary'],
+        qdisc     => 'fq flow_limit 200 buckets 8192',
+        before    => Sysctl::Parameters['cache proxy network tuning'],
     }
 
     # Network tuning for high-load HTTP caches
@@ -166,6 +169,15 @@ class role::cache::perf {
             # Kernel boot param 'tcpmhash_entries' sets hash table slots for
             # this.
             'net.ipv4.tcp_no_metrics_save'       => 0,
+
+            # BBR congestion control.  This *requires* fq qdisc to work
+            # properly at this time (kernel 4.9).  We're setting the default
+            # qdisc here so that we at least get an un-tuned FQ initially
+            # before interface-rps kicks in on bootup.  interface::rps above
+            # sets the tuned mq+fq setup properly, and should execute before
+            # these sysctl settings when being applied at runtime.
+            'net.core.default_qdisc'          => 'fq',
+            'net.ipv4.tcp_congestion_control' => 'bbr',
         },
     }
 }
