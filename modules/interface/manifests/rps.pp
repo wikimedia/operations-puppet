@@ -1,15 +1,12 @@
 # Definition: interface::rps
 #
-# Automagically sets RPS (and optionally, RSS) for an interface
+# Automagically sets RPS/RSS/XPS for an interface
 #
 # Parameters:
 # - $interface:
 #   The network interface to operate on
 # - $rss_pattern:
-#   Optional RSS IRQ name pattern
-#   If set (to hw-specific value), RSS will be enabled as well
-#   Must contain a single "%d" format character for the queue number
-#   (on bnx2x, this would be "eth0-fp-%d")
+#   Optional RSS IRQ name pattern (normally auto-detected)
 define interface::rps($interface=$name, $rss_pattern='') {
     require interface::rpstools
     require interface::rps::modparams
@@ -21,10 +18,8 @@ define interface::rps($interface=$name, $rss_pattern='') {
         $cmd = "/usr/local/sbin/interface-rps ${interface}"
     }
 
-    # Disable irqbalance if RSS in use
-    if $rss_pattern != '' {
-        require irqbalance::disable
-    }
+    # Disable irqbalance
+    require irqbalance::disable
 
     # Add to ifup commands in /etc/network/interfaces
     interface::up_command { "rps-${interface}":
