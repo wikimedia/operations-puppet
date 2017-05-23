@@ -1,4 +1,6 @@
 # NOTE:  This file is managed by Puppet
 
-export ZOOKEEPER_URL=<%= @zookeeper_connect %>
-export BROKER_LIST=<%= @brokers.map { |host, conf| "#{host}:#{conf['port'] || @default_port}" }.sort.join(',') %>
+# These environment variables are used by /usr/local/bin/kafka
+# to automatically set common kafka CLI options.
+export KAFKA_ZOOKEEPER_URL=<%= @zookeeper_connect %>
+export KAFKA_BOOTSTRAP_SERVERS=<%= @brokers.map { |host, conf| "#{host}:#{conf['port'] || @default_port}" }.sort.join(',') %>
