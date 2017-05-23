@@ -5,7 +5,8 @@ define lvs::interface_tweaks(
   $interface=$name,
   $bnx2x=false,
   $txqlen=false,
-  $rss_pattern=false,
+  $rss_pattern='',
+  $do_rps=true,
 ) {
     if $interface != $facts['interface_primary'] {
         interface::manual { $name:
@@ -14,7 +15,7 @@ define lvs::interface_tweaks(
     }
 
     # RSS/RPS/XPS-type perf stuff ( https://www.kernel.org/doc/Documentation/networking/scaling.txt )
-    if $rss_pattern {
+    if $do_rps {
         interface::rps { $name:
             interface   => $interface,
             rss_pattern => $rss_pattern,
