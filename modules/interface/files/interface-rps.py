@@ -53,6 +53,7 @@ import sys
 import re
 import warnings
 import ConfigParser
+import subprocess
 
 
 def get_value(path):
@@ -64,6 +65,18 @@ def write_value(path, value):
     """Write a (sysfs) value to path"""
     print '%s = %s' % (path, value)
     open(path, 'w').write(value)
+
+
+def cmd_nofail(cmd):
+    """echo + exec cmd with normal output, raises on rv!=0"""
+    print 'Executing: %s' % cmd
+    subprocess.check_call(cmd, Shell=True)
+
+
+def cmd_failable(cmd):
+    """echo + exec cmd with normal output, ignores errors"""
+    print 'Executing: %s' % cmd
+    subprocess.call(cmd, Shell=True)
 
 
 def get_cpu_list():
@@ -200,6 +213,19 @@ def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
             set_cpus(device, cpus, rxq, rx_irqs[rxq], tx_qmap[rxq])
 
 
+def setup_qdisc(device, num_queues, qdisc):
+    """Sets up transmit qdiscs"""
+    cmd_failable('/sbin/tc qdisc del dev %s root' % device)
+    if num_queues < 2:
+        cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: %s'
+                   % (device, qdisc))
+    else:
+        cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: mq' % (device))
+        for slot in range(1, num_queues + 1):
+            cmd_nofail('/sbin/tc qdisc add dev %s handle %x: parent 100:%x %s',
+                       % (device, slot, slot, qdisc))
+
+
 def get_options(device):
     """Get configured options from /etc/interface-rps.d/$device"""
 
@@ -256,6 +282,8 @@ def main():
         tx_queue_map = {rxq: None for rxq in rx_queues}
 
     dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_queue_map)
+    if opts['qdisc']:
+        setup_qdisc(device, len(tx_queues), opts['qdisc'])
 
 if __name__ == '__main__':
     main()
