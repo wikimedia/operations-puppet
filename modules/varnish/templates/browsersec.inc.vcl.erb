@@ -1,26 +1,4 @@
 sub browser_sec_synth {
-synthetic({"<!DOCTYPE html>
-<html lang=en>
-<meta charset=utf-8>
-<title>Browser Connection Security Issues</title>
-<style>
-* { margin: 0; padding: 0; }
-body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
-.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 640px; }
-img { float: left; margin: 0 2em 2em 0; }
-a img { border: 0; }
-h1 { margin-top: 1em; font-size: 1.2em; }
-p { margin: 0.7em 0 1em 0; }
-a { color: #0645AD; text-decoration: none; }
-a:hover { text-decoration: underline; }
-</style>
-<div class="content" role="main">
-<a href="https://www.wikimedia.org"><img src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
-<h1>Your Browser's Connection Security is Outdated</h1>
-<p>Your browser is connecting to our servers with outdated connection security.  The most common causes of this are using Internet Explorer on Windows XP (upgrade your operating system or use Firefox!), or interference from corporate or personal "Web Security" software which actually downgrades connection security.</p>
-<p>Less than 0.2% of our users fall into this insecure category.  Currently, we randomly send a small percentage of such requests to this warning page (you can try again and still view content), but we'll be removing support for these insecure connections completely in the future, which will block your access to our sites if you haven't upgraded in time.</p>
-<p>Our <a href="https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations">HTTPS: Browser Recommendations</a> page on wikitech has more-detailed information on fixing this situation.</p>
-</div>
-</html>
-"});
+	set resp.http.Content-Type = "text/html; charset=utf-8";
+	synthetic(std.fileread("/etc/varnish/error-browsersec.html"));
 }
