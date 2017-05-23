@@ -7,7 +7,10 @@
 #   The network interface to operate on
 # - $rss_pattern:
 #   Optional RSS IRQ name pattern (normally auto-detected)
-define interface::rps($interface=$name, $rss_pattern='') {
+# - $qdisc
+#   Options qdisc string to populate mq subqueues, e.g.:
+#   "fq flow_limit 422"
+define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
     require interface::rpstools
     require interface::rps::modparams
 
