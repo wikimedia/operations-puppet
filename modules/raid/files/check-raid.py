@@ -275,11 +275,8 @@ def checkMegaSas():
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
-    writePolicyRegex = re.compile('^Current Cache Policy\s*:\s*([^,]*)')
-
-    numPD = numLD = failedLD = noWriteBackLD = 0
+    numPD = numLD = failedLD = 0
     states = []
-    writePolicies = []
     lines = 0
     match = False
 
@@ -308,15 +305,6 @@ def checkMegaSas():
             match = True
             continue
 
-        m = writePolicyRegex.match(line)
-        if m is not None:
-            match = True
-            writePolicy = m.group(1)
-            if writePolicy != 'WriteBack':
-                noWriteBackLD += 1
-                writePolicies.append(writePolicy)
-            continue
-
     ret = proc.wait()
     if ret != 0:
         print 'WARNING: megacli returned exit status %d' % (ret)
@@ -338,12 +326,7 @@ def checkMegaSas():
         print 'CRITICAL: %d failed LD(s) (%s)' % (failedLD, ", ".join(states))
         return 2
 
-    if noWriteBackLD > 0:
-        print 'CRITICAL: %d LD(s) not in WriteBack policy (%s)' % (
-            noWriteBackLD, ", ".join(writePolicies))
-        return 2
-
-    print 'OK: optimal, %d logical, %d physical, WB policy' % (numLD, numPD)
+    print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
     return 0
 
 
@@ -452,6 +435,5 @@ def checkSoftwareRaid():
     else:
         print 'OK: ' + msg
         return 0
-
 
 main()
