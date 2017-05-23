@@ -328,3 +328,7 @@ labtest:
   admin::groups:
     - labtest-roots
   openstack::version: 'liberty'
+
+raid_policy:
+  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
+  raid::write_cache_policy: 'WriteBack'
