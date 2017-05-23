@@ -25,9 +25,6 @@ class role::statistics::private inherits role::statistics::base {
     # backup eventlogging logs
     backup::set { 'a-eventlogging' : }
 
-    # kafkatee is useful here for adhoc processing of kafkadata
-    require_package('kafkatee')
-
     # Although it is in the "private" role, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
     include ::statistics::aggregator::projectview
