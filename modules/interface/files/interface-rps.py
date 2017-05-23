@@ -9,12 +9,17 @@
 # what's common advice out there (all CPUs to all queues), as experience has
 # shown a tremendous difference.
 #
-# The first param is the ethernet interfaces (e.g. 'eth0') and is required.
+# The only param is the ethernet interfaces (e.g. 'eth0') and is required.
 #
-# The second param is an optional RSS (Receive Side Scaling) IRQ name
-# pattern for finding device IRQs in /proc/interrupts.  It must contain a
-# single '%d' to match the queue number in the IRQ name.  For example, for
-# bnx2x this is 'eth0-fp-%d', and for bnx2 and tg3 it is 'eth0-%d'.
+# If the file /etc/interface-rps.d/$device exists, it will be parsed with
+# ConfigParser for an Options section to specify additional parameters for
+# this interface.
+#
+# The only currently-supported parameter is 'rss_pattern'.  This specifies an
+# optional RSS (Receive Side Scaling) IRQ name pattern for finding device IRQs
+# in /proc/interrupts.  It must contain a single '%d' to match the queue
+# number in the IRQ name.  For example, for bnx2x this is 'eth0-fp-%d', and
+# for bnx2 and tg3 it is 'eth0-%d'.
 #
 # If the RSS IRQ name parameter is not specified, the code will try to
 # auto-detect the pattern by searching /proc/interrupts for the 0th RSS
@@ -40,13 +45,14 @@
 # need to be addressed individually when we encounter them.
 #
 # Authors: Faidon Liambotis and Brandon Black
-# Copyright (c) 2013-2015 Wikimedia Foundation, Inc.
+# Copyright (c) 2013-2017 Wikimedia Foundation, Inc.
 
 import os
 import glob
 import sys
 import re
 import warnings
+import ConfigParser
 
 
 def get_value(path):
@@ -194,6 +200,20 @@ def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
             set_cpus(device, cpus, rxq, rx_irqs[rxq], tx_qmap[rxq])
 
 
+def get_options(device):
+    """Get configured options from /etc/interface-rps.d/$device"""
+
+    config_file = os.path.join('/etc/interface-rps.d/', device)
+    if os.path.isfile(config_file):
+        config = ConfigParser.SafeConfigParser()
+        config.read([config_file])
+        opts = dict(config.items('Options'))
+    else:
+        opts = {}
+
+    return opts
+
+
 def main():
     """Simple main() function with sensible defaults"""
     try:
@@ -201,9 +221,11 @@ def main():
     except IndexError:
         device = 'eth0'
 
-    try:
-        rss_pattern = sys.argv[2]
-    except IndexError:
+    opts = get_options(device)
+
+    if 'rss_pattern' in opts:
+        rss_pattern = opts['rss_pattern']
+    else:
         rss_pattern = detect_rss_pattern(device)
 
     cpu_list = get_cpu_list()
