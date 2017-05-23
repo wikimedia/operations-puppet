@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import argparse
 import os
 import os.path
 import re
@@ -9,14 +10,11 @@ import glob
 
 
 def main():
-    try:
-        argv_driver = sys.argv[1]
-    except:
-        argv_driver = None
-
+    
+    options = parse_args()
     osName = os.uname()[0]
-    if argv_driver:
-        driver = argv_driver
+    if options.driver:
+        driver = options.driver
     elif osName == 'SunOS':
         driver = 'zpool'
     elif osName == 'Linux':
@@ -35,7 +33,7 @@ def main():
         elif driver == 'twe':
             status = check3ware()
         elif driver == 'megacli':
-            status = checkMegaSas()
+            status = checkMegaSas(options.policy)
         elif driver == 'zpool':
             status = checkZfs()
         elif driver == 'mpt':
@@ -54,6 +52,23 @@ def main():
     if status == 0:
         print 'OK'
     sys.exit(status)
+
+
+def parse_args():
+    """Parse command line arguments"""
+
+    parser = argparse.ArgumentParser(
+        description=('Checks the state of the raid, trying to autodetect'
+                     'of all detected MegaRAID controllers'))
+    parser.add_argument(
+        'driver', nargs='?', default=None,
+        help='Optional argument indicating the driver to use.')
+    parser.add_argument(
+        '-p', '--policy', default=None,
+        help=('Check that the given cache write policy is currently applied '
+              '(for example WriteBack or WriteThrough)'))
+
+    return parser.parse_args()
 
 
 def autoDetectDriver():
@@ -262,7 +277,7 @@ def check3ware():
         return 0
 
 
-def checkMegaSas():
+def checkMegaSas(policy=None):
     try:
         proc = subprocess.Popen(['/usr/sbin/megacli',
                                 '-LDInfo', '-LALL', '-aALL', '-NoLog'],
@@ -275,8 +290,11 @@ def checkMegaSas():
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
-    numPD = numLD = failedLD = 0
+    writePolicyRegex = re.compile('^Current Cache Policy\s*:\s*([^,]*)')
+
+    numPD = numLD = failedLD = wrongPolicyLD = 0
     states = []
+    currentWrongPolicies = []
     lines = 0
     match = False
 
@@ -305,6 +323,16 @@ def checkMegaSas():
             match = True
             continue
 
+        if policy is not None:
+            m = writePolicyRegex.match(line)
+            if m is not None:
+                match = True
+                currentPolicy = m.group(1)
+                if currentPolicy != policy:
+                   wrongPolicyLD += 1
+                   currentWrongPolicies.append(currentPolicy)
+            continue
+
     ret = proc.wait()
     if ret != 0:
         print 'WARNING: megacli returned exit status %d' % (ret)
@@ -326,7 +354,15 @@ def checkMegaSas():
         print 'CRITICAL: %d failed LD(s) (%s)' % (failedLD, ", ".join(states))
         return 2
 
-    print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
+    if wrongPolicyLD > 0:
+        print 'CRITICAL: %d LD(s) not in %s policy (%s)' % (
+            wrongPolicyLD, policy, ", ".join(currentWrongPolicies))
+        return 2
+
+    if policy is None:
+        print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
+    else:
+        print 'OK: optimal, %d logical, %d physical, %s policy' % (numLD, numPD, policy)
     return 0
 
 
