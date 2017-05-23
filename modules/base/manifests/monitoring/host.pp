@@ -28,11 +28,14 @@ class base::monitoring::host(
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
+    $raid_write_cache_policy = undef,
 ) {
     include ::base::puppet::params # In order to be able to use some variables
 
     # RAID checks
-    include ::raid
+    class { 'raid':
+        write_cache_policy => $raid_write_cache_policy,
+    }
 
     ::monitoring::host { $::hostname: }
 
