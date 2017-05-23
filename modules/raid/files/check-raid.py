@@ -275,7 +275,8 @@ def checkMegaSas():
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
-    numPD = numLD = failedLD = 0
+    writeThroughRegex = re.compile('^Current Cache Policy: WriteThrough')
+    numPD = numLD = failedLD = writeThroughLD = 0
     states = []
     lines = 0
     match = False
@@ -305,6 +306,11 @@ def checkMegaSas():
             match = True
             continue
 
+        m = writeThroughRegex.match(line)
+        if m is not None:
+            match = True
+            writeThroughLD += 1
+            continue
     ret = proc.wait()
     if ret != 0:
         print 'WARNING: megacli returned exit status %d' % (ret)
@@ -324,6 +330,10 @@ def checkMegaSas():
 
     if failedLD > 0:
         print 'CRITICAL: %d failed LD(s) (%s)' % (failedLD, ", ".join(states))
+        return 2
+
+    if writeThroughLD > 0:
+        print 'CRITICAL: %d LD(s) are in WriteThrough policy' % (writeThroughLD)
         return 2
 
     print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
