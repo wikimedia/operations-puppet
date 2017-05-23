@@ -19,7 +19,8 @@ SERVICE_STATE_TYPES = ('SOFT', 'HARD')
 RAID_TYPES = ('megacli', 'hpssacli', 'mpt', 'md', 'n/a')
 COMPRESSED_RAID_TYPES = ('megacli', 'hpssacli')
 
-SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds')
+SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds',
+                'must have write cache policy')
 
 LOG_PATH = '/var/log/icinga/raid_handler.log'
 COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'

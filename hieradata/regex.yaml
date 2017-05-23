@@ -328,3 +328,11 @@ labtest:
   admin::groups:
     - labtest-roots
   openstack::version: 'liberty'
+
+# require WriteBack policy to all hosts (independent of the role) that look
+# like databases. Currently this only works for megacli systems, but it will
+# be applied to HP RAIDs when available. Systems where this is not currently
+# compatible are ignored and do not send any alert.
+db_like_raid_policy:
+  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
+  profile::base::check_raid_policy: 'WriteBack'

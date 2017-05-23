@@ -355,8 +355,9 @@ def checkMegaSas(policy=None):
         return 2
 
     if wrongPolicyLD > 0:
-        print 'CRITICAL: %d LD(s) not in %s policy (%s)' % (
-            wrongPolicyLD, policy, ", ".join(currentWrongPolicies))
+        print(('CRITICAL: %d LD(s) must have write cache policy %s, '
+               'currently using: %s') % (wrongPolicyLD, policy,
+                                         ", ".join(currentWrongPolicies)))
         return 2
 
     if policy is None:
