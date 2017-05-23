@@ -11,11 +11,14 @@ define interface::rps($interface=$name, $rss_pattern='') {
     require interface::rpstools
     require interface::rps::modparams
 
-    if $rss_pattern != '' {
-        $cmd = "/usr/local/sbin/interface-rps ${interface} ${rss_pattern}"
-    }
-    else {
-        $cmd = "/usr/local/sbin/interface-rps ${interface}"
+    $cmd = "/usr/local/sbin/interface-rps ${interface}"
+    $cfg = "/etc/interface-rps.d/${interface}"
+
+    file { $cfg:
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template("${module_name}/interface-rps-config.erb"),
     }
 
     # Disable irqbalance
@@ -27,11 +30,14 @@ define interface::rps($interface=$name, $rss_pattern='') {
         command   => $cmd,
     }
 
-    # Exec immediately if newly-added
+    # Exec immediately on script or config change
     exec { "rps-${interface}":
         command     => $cmd,
-        subscribe   => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,
+        subscribe   => [
+            File['/usr/local/sbin/interface-rps'],
+            File[$cfg],
+        ],
     }
 }
 

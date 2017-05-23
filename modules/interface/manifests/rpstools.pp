@@ -12,4 +12,11 @@ class interface::rpstools {
         mode   => '0555',
         source => 'puppet:///modules/interface/interface-rps.py',
     }
+
+    file { '/etc/interface-rps.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 }
