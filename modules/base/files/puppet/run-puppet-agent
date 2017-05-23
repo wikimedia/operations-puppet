@@ -18,7 +18,7 @@ Options:
     -e --enable MSG Will enable puppet if it was disabled with reason MSG.
     -f --force      Will forcibly enable puppet if it is not enabled.
     --failed-only   Will run puppet only if the last run had failed. Will
-                    silently skip if puppet is disabled and implies -q/--quiet.
+                    silently skip if puppet is disabled.
     -a --attempts N When waiting for a preceding puppet run, wait N*10 seconds
                     before giving up.
 EOF
@@ -34,7 +34,6 @@ while :; do
             ;;
         --failed-only)
             failed_only=1
-            verbose_opts=""
             ;;
         -a|--attempts)
             if [ -n "$2" ]; then
@@ -86,7 +85,7 @@ if ! wait_for_puppet "$attempts"; then
 fi
 
 # Skip hosts where puppet didn't fail if --failed-only is set
-if [[ -n "${failed_only}" && $(last_run_success) ]]; then
+if [[ -n "${failed_only}" ]] && last_run_success; then
     exit 0
 fi
 
