@@ -21,11 +21,6 @@ define interface::rps($interface=$name, $rss_pattern='') {
         $cmd = "/usr/local/sbin/interface-rps ${interface}"
     }
 
-    # Disable irqbalance if RSS in use
-    if $rss_pattern != '' {
-        require irqbalance::disable
-    }
-
     # Add to ifup commands in /etc/network/interfaces
     interface::up_command { "rps-${interface}":
         interface => $interface,
