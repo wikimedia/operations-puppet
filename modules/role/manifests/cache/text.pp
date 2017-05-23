@@ -56,6 +56,12 @@ class role::cache::text(
 
     $text_storage_args = $::role::cache::base::file_storage_args
 
+    mediawiki::errorpage { '/etc/varnish/error-browsersec.html':
+        doctitle => 'Browser Connection Security Issue',
+        pagetitle => "Your Browser's Connection Security is Outdated",
+        content  => "<p>Your browser is connecting to our servers with outdated connection security.  The most common causes of this are using Internet Explorer on Windows XP (upgrade your operating system or use Firefox!), or interference from corporate or personal \"Web Security\" software which actually downgrades connection security.</p><p>Less than 0.2% of our users fall into this insecure category.  Currently, we randomly send a small percentage of such requests to this warning page (you can try again and still view content), but we'll be removing support for these insecure connections completely in the future, which will block your access to our sites if you haven't upgraded in time.</p><p>Our <a href=\"https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations\">HTTPS: Browser Recommendations</a> page on wikitech has more-detailed information on fixing this situation.</p>",
+    }
+
     role::cache::instances { 'text':
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
