@@ -14,7 +14,12 @@ class raid {
     # following line should be then removed.
     $raid = split($::raid, ',')
 
-    $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+    $write_cache_policy = hiera('raid::write_cache_policy', undef)
+    if $write_cache_policy {
+        $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
+    } else {
+        $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+    }
 
     # for 'forking' checks (i.e. all but mdadm, which essentially just reads
     # kernel memory from /proc/mdstat) check every $check_interval
