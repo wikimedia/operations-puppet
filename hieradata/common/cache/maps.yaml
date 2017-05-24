@@ -19,3 +19,5 @@ cache::maps::nodes:
     - 'cp4012.ulsfo.wmnet'
     - 'cp4019.ulsfo.wmnet'
     - 'cp4020.ulsfo.wmnet'
+prometheus::node_exporter::collectors_extra:
+    - qdisc

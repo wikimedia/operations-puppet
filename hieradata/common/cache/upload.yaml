@@ -43,3 +43,5 @@ cache::upload::nodes:
     - 'cp4014.ulsfo.wmnet'
     - 'cp4015.ulsfo.wmnet'
     - 'cp4021.ulsfo.wmnet'
+prometheus::node_exporter::collectors_extra:
+    - qdisc

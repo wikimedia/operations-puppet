@@ -33,3 +33,5 @@ cache::text::nodes:
     - 'cp4016.ulsfo.wmnet'
     - 'cp4017.ulsfo.wmnet'
     - 'cp4018.ulsfo.wmnet'
+prometheus::node_exporter::collectors_extra:
+    - qdisc

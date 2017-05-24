@@ -19,3 +19,5 @@ cache::misc::nodes:
     - 'cp4002.ulsfo.wmnet'
     - 'cp4003.ulsfo.wmnet'
     - 'cp4004.ulsfo.wmnet'
+prometheus::node_exporter::collectors_extra:
+    - qdisc
