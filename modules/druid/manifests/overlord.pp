@@ -60,7 +60,6 @@ class druid::overlord(
     }
 
     $default_env = {
-        'JAVA_HOME'            => $::druid::java_home,
         'JMX_PORT'        => 9665,
         'DRUID_HEAP_OPTS' => '-Xmx128m -Xms128m',
     }
