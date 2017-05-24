@@ -15,3 +15,6 @@ debdeploy::grains:
     value: standard
 
 openstack::version: mitaka
+
+admin::groups:
+  - wmcs-roots

@@ -596,6 +596,12 @@ groups:
     gid: 792
     members: [bd808]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  wmcs-admin:
+    description: root for cloud services infrastructure
+    gid: 793
+    members: [bd808]
+    privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
+                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p']
 
 users:
   rush:

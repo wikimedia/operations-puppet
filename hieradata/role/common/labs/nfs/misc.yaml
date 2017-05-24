@@ -27,3 +27,5 @@ role::labs::nfs::misc::maps_project_internal_ips:
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
+admin::groups:
+  - wmcs-roots
