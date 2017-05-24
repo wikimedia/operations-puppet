@@ -13,7 +13,6 @@ get_puppet_config() {
 PUPPETLOCK="$(get_puppet_config agent_catalog_run_lockfile)"
 PUPPET_DISABLEDLOCK="$(get_puppet_config agent_disabled_lockfile)"
 PUPPET_SUMMARY="$(get_puppet_config lastrunfile)"
-PUPPET_REPORT="$(get_puppet_config lastrunreport)"
 
 # Function to test if puppet is running or not
 puppet_is_running() {
@@ -51,11 +50,22 @@ wait_for_puppet() {
 }
 
 last_run_success() {
-    local failures
+    local ruby_script
 
-    failures=$(ruby -e "require 'safe_yaml'; SafeYAML::OPTIONS[:default_mode] = :safe; a = YAML.load(STDIN.read); puts a['resources']['failed'] + a['events']['failure']" < "${PUPPET_SUMMARY}")
+    ruby_script=$(cat <<'RUBY_SCRIPT'
+    require 'safe_yaml'
+    SafeYAML::OPTIONS[:default_mode] = :safe
+    begin
+        a = YAML.load(STDIN.read)
+        puts a['resources']['failed'] + a['events']['failure']
+    rescue
+        # Consider malformed yaml as a failure
+        puts 1
+    end
+RUBY_SCRIPT
+    )
 
-    if [[ "${failures}" -eq "0" ]]; then
+    if [[ "$(ruby -e "${ruby_script}" < "${PUPPET_SUMMARY}")" -eq "0" ]]; then
         return 0
     fi
 
