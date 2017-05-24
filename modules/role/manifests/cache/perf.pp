@@ -30,7 +30,7 @@ class role::cache::perf {
     # which must be enabled before turning on BBR congestion control below
     interface::rps { 'primary':
         interface => $facts['interface_primary'],
-        qdisc     => 'fq flow_limit 300 buckets 8192',
+        qdisc     => 'fq flow_limit 300 buckets 8192 maxrate 1gbit',
         before    => Sysctl::Parameters['cache proxy network tuning'],
     }
 
