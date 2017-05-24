@@ -10,3 +10,5 @@ profile::base::check_disk_options: -w 10% -c 5% -l -e -A -i /run/lock/storage-re
 debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
+admin::groups:
+  - wmcs-roots
