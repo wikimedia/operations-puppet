@@ -9,6 +9,6 @@
     notifempty
     rotate 15
     postrotate
-	    invoke-rc.d uwsgi-<%= @title %> reload
+	    service uwsgi-<%= @title %> reload
     endscript
 }
