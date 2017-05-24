@@ -82,7 +82,6 @@ class druid::middlemanager(
     }
 
     $default_env = {
-        'JAVA_HOME'            => $::druid::java_home,
         'JMX_PORT'        => 9664,
         'DRUID_HEAP_OPTS' => '-Xmx64m -Xms64m',
     }
