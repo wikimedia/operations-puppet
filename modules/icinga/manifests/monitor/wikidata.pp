@@ -2,9 +2,8 @@
 #
 # Monitor wikidata dispatch lag
 class icinga::monitor::wikidata {
-
-    @monitoring::host { 'wikidata':
-        ip_address => '91.198.174.192',
+    @monitoring::host { 'www.wikidata.org':
+        host_fqdn => 'www.wikidata.org',
     }
 
     monitoring::service { 'wikidata.org dispatch lag':
