@@ -30,23 +30,21 @@ LOG = logging.getLogger(__name__)
 
 
 class AddRule(tables.LinkAction):
-    name = "adda"
+    name = "addsudorule"
     verbose_name = _("Add Rule")
     url = "horizon:project:sudo:create"
     classes = ("ajax-modal",)
     icon = "plus"
-    # todo:  Make real nova policy rules for this
-    policy_rules = (("dns", "create_record"),)
+    policy_rules = (("compute", "sudorule:create"),)
 
 
 class ModifyRule(tables.LinkAction):
-    name = "modify"
+    name = "modifysudorule"
     verbose_name = _("Modify Rule")
     url = "horizon:project:sudo:modify"
     classes = ("ajax-modal",)
 
-    # todo:  Make real nova policy rules for this
-    policy_rules = (("dns", "create_record"),)
+    policy_rules = (("compute", "sudorule:modify"),)
 
 
 class DeleteRule(tables.DeleteAction):
@@ -59,8 +57,7 @@ class DeleteRule(tables.DeleteAction):
     def action_past(count):
         return ungettext_lazy(u"Deleted Rule", u"Deleted Rules", count)
 
-    # todo:  Make real nova policy rules for this
-    policy_rules = (("dns", "create_record"),)
+    policy_rules = (("compute", "sudorule:delete"),)
 
     def delete(self, request, obj_id):
         project_id = request.user.tenant_id

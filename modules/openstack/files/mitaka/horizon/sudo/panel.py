@@ -25,3 +25,4 @@ LOG = logging.getLogger(__name__)
 class ProjectSudoPanel(horizon.Panel):
     name = _("Project Sudo")
     slug = "sudo"
+    policy_rules = (("compute", "sudorule:list"),)
