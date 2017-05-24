@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import ldap
 import logging
 
 from django.utils.translation import ugettext_lazy as _
@@ -173,6 +174,14 @@ class CreateRuleInfoAction(workflows.Action):
         slug = "rule_info"
 
 
+class ModifyRuleInfoAction(CreateRuleInfoAction):
+    def __init__(self, request, *args, **kwargs):
+        super(ModifyRuleInfoAction, self).__init__(request,
+                                                   *args,
+                                                   **kwargs)
+        self.fields['rulename'].widget.attrs['readonly'] = True
+
+
 class CreateRuleInfo(workflows.Step):
     action_class = CreateRuleInfoAction
     template_name = COMMON_HORIZONTAL_TEMPLATE
@@ -194,12 +203,16 @@ class CreateRuleInfo(workflows.Step):
         return context
 
 
+class ModifyRuleInfo(CreateRuleInfo):
+    action_class = ModifyRuleInfoAction
+
+
 class CreateRule(workflows.Workflow):
     slug = "create_sudo_rule"
     name = _("Create Rule")
     finalize_button_name = _("Create Rule")
     success_message = _('Created sudo rule "%s".')
-    failure_message = _('Unable to create sudo rule "%s".')
+    failure_message = _('Unable to create sudo rule.')
     success_url = "horizon:project:sudo:index"
     default_steps = (CreateRuleInfo,
                      UpdateRuleUsers,
@@ -221,7 +234,13 @@ class CreateRule(workflows.Workflow):
                                   commands=data['commands'],
                                   options=data['options'])
 
-        return sudorules.add_rule(rule)
+        try:
+            sudorules.add_rule(rule)
+        except ldap.ALREADY_EXISTS:
+            exceptions.handle(request, _("A rule named %s already exists.") % data['rulename'])
+            return False
+
+        return True
 
 
 class ModifyRule(workflows.Workflow):
@@ -231,7 +250,7 @@ class ModifyRule(workflows.Workflow):
     success_message = _('Changed sudo rule "%s".')
     failure_message = _('Unable to change sudo rule "%s".')
     success_url = "horizon:project:sudo:index"
-    default_steps = (CreateRuleInfo,
+    default_steps = (ModifyRuleInfo,
                      UpdateRuleUsers,
                      UpdateRuleRunAsUsers)
 
