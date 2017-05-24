@@ -37,6 +37,12 @@ class calico(
             $calico_cni_version = '1.5.1-1~wmf1'
             $cni_version = '0.3.0-1~wmf1'
         }
+        '2.2.0': {
+            $calicoctl_version = '1.2.0-1~wmf1'
+            $calico_node_version = '1.2.0'
+            $calico_cni_version = '1.8.3-1~wmf1'
+            $cni_version = '0.3.0-1~wmf1'
+        }
         default: { fail('Unsupported calico version') }
     }
 
