@@ -2,6 +2,8 @@ cluster: cache_text
 cache::cluster: text
 admin::groups:
   - perf-roots
+prometheus::node_exporter::collectors_extra:
+  - qdisc
 # The contents of this hash control our DC->DC routing for varnish backend
 # daemons.  There should be a key for every cache datacenter.  The values must
 # be a core datacenter (eqiad or codfw), or at least must lead indirectly to

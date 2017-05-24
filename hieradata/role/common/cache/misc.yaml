@@ -1,5 +1,7 @@
 cluster: cache_misc
 cache::cluster: misc
+prometheus::node_exporter::collectors_extra:
+  - qdisc
 # note this only affects tlsproxy now, should be moved to param there...
 cache::websocket_support: true
 # The contents of this hash control our DC->DC routing for varnish backend
