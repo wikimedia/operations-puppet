@@ -5562,6 +5562,51 @@ host ocg1003{
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host ores2001 {
+    hardware ethernet 18:66:DA:A7:40:5F;
+    fixed-address ores2001.codfw.wmnet;
+}
+
+host ores2002 {
+    hardware ethernet 18:66:DA:A2:B7:C0;
+    fixed-address ores2002.codfw.wmnet;
+}
+
+host ores2003 {
+    hardware ethernet 18:66:DA:A7:36:E1;
+    fixed-address ores2003.codfw.wmnet;
+}
+
+host ores2004 {
+    hardware ethernet 18:66:DA:A7:42:D5;
+    fixed-address ores2004.codfw.wmnet;
+}
+
+host ores2005 {
+    hardware ethernet 18:66:DA:A7:6B:C3;
+    fixed-address ores2005.codfw.wmnet;
+}
+
+host ores2006 {
+    hardware ethernet 18:66:DA:A6:02:52;
+    fixed-address ores2006.codfw.wmnet;
+}
+
+host ores2007 {
+    hardware ethernet 18:66:DA:A7:43:35;
+    fixed-address ores2007.codfw.wmnet;
+}
+
+host ores2008 {
+    hardware ethernet 18:66:DA:A7:80:EC;
+    fixed-address ores2008.codfw.wmnet;
+}
+
+host ores2009 {
+    hardware ethernet 18:66:DA:A7:2A:1B;
+    fixed-address ores2009.codfw.wmnet;
+}
+
 host oresrdb1001{
     hardware ethernet C8:1F:66:BF:71:72;
     fixed-address oresrdb1001.eqiad.wmnet;
