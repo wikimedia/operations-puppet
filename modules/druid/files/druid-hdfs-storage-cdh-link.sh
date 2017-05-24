@@ -19,7 +19,7 @@ for storage_jar in $source/*.jar; do
 
     # We need to link to the druid-hdfs-storage jar from the $source directory.
     if [ "${base_jar}" == 'druid-hdfs-storage.jar' ]; then
-        ln -sfv $storage_jar ${dest}/
+        ln -sfv $storage_jar ${dest}/${base_jar}
     # Otherwise assume this jar is provided by cdh in /var/lib/hadoop/client.
     # Symlink it into our new extension from here.
     else
