@@ -13,7 +13,7 @@ define phabricator::redirector(
     $rootdir     = '/srv/phab',
     $field_index = '',
     $phab_host   = 'phabricator.wikimedia.org',
-    $alt_host    = 'fab.wmfusercontent.org'
+    $alt_host    = 'phab.wmfusercontent.org'
 ) {
     file { "${rootdir}/phabricator/support/preamble.php":
         content => template('phabricator/preamble.php.erb'),
