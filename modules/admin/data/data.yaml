@@ -240,7 +240,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh]
+              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh, kaldari]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
