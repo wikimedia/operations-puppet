@@ -15,6 +15,11 @@
     "compute:get_all": [],
     "compute:get_console_output": "rule:admin_or_member",
 
+    "sudo:list": "",
+    "sudo:delete": "rule:admin_or_projectadmin",
+    "sudo:create": "rule:admin_or_projectadmin",
+    "sudo:modify": "rule:admin_or_projectadmin",
+
     "admin_api": [["is_admin:True"]],
     "compute_extension:accounts": [["rule:admin_api"]],
     "compute_extension:admin_actions": [["rule:admin_api"]],
