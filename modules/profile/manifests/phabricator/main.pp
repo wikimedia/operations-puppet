@@ -3,8 +3,10 @@
 # filtertags: labs-project-deployment-prep labs-project-phabricator
 class profile::phabricator::main {
 
+    $root_mail_alias = hiera('phabricator_root_mail_alias', 'root@wmflabs.org')
+
     mailalias { 'root':
-        recipient => 'root@wikimedia.org',
+        recipient => $root_mail_alias,
     }
 
     include passwords::phabricator
