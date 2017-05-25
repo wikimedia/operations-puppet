@@ -1,7 +1,7 @@
 sub backend_error_errorpage {
 	set beresp.http.Content-Type = "text/html; charset=utf-8";
 
-	synthetic(regsub(std.fileread("/etc/varnish/errorpage.html"), "%error%",
+	synthetic(regsub({"<%= @errorpage_html %>"}, "%error%",
 		"Request from " + bereq.http.X-Client-IP +
 		" via " + server.hostname + " " + server.identity +
 		", Varnish XID " + bereq.xid + "<br>" +
@@ -15,7 +15,7 @@ sub backend_error_errorpage {
 sub synth_errorpage {
 	set resp.http.Content-Type = "text/html; charset=utf-8";
 
-	synthetic(regsub(std.fileread("/etc/varnish/errorpage.html"), "%error%",
+	synthetic(regsub({"<%= @errorpage_html %>"}, "%error%",
 		"Request from " + req.http.X-Client-IP +
 		" via " + server.hostname + " " + server.identity +
 		", Varnish XID " + req.xid + "<br>" +
