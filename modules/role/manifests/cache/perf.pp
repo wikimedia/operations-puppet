@@ -26,6 +26,19 @@ class role::cache::perf {
         },
     }
 
+    # Larger TX queue len for 10Gbps+
+    interface::txqueuelen { $name:
+        interface => $facts['interface_primary'],
+        len       => 10000,
+    }
+
+    # Max for bnx2x/BCM57800, seems to eliminate the spurious rx drops under heavy traffic
+    interface::ring { "${name} rxring":
+        interface => $facts['interface_primary'],
+        setting   => 'rx',
+        value     => 4078,
+    }
+
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
     interface::rps { 'primary':
