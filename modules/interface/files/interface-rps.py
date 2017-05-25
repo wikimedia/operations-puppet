@@ -30,6 +30,13 @@
 #     root.  In the normal (2+ queues) case, it will set up "mq" as the root
 #     qdisc and use the specified qdisc for each sub-queue within mq.
 #
+# numa_filter - Normally this script ignores NUMA considerations.  If this
+#     option is set to any true-like value (1, yes, true, on), the script will
+#     attempt to find the NUMA node the ethernet device is attached to, and
+#     only utilize CPU cores which share the same NUMA node as the device.  If
+#     sysfs doesn't have information about the device being attached to a
+#     specific node, NUMA-level information will be ignored.
+#
 # If the rss_pattern option is not specified, the code will try to auto-detect
 # the pattern by searching /proc/interrupts for the 0th RSS IRQ based on the
 # supplied device name, e.g. /eth0[^\s0-9]+0$/.  If detection fails, RSS will
@@ -57,6 +64,7 @@
 # [Options]
 # rss_pattern = eth0-%%d
 # qdisc = fq flow_limit 300 buckets 8192 maxrate 1gbit
+# numa_filter = true
 # -----cut------
 #
 # Authors: Faidon Liambotis and Brandon Black
@@ -94,15 +102,26 @@ def cmd_failable(cmd):
     subprocess.call(cmd, shell=True)
 
 
-def get_cpu_list():
+def get_cpu_list(device, numa_filter):
     """Get a list of all CPUs by their number (e.g. [0, 1, 2, 3])"""
     path_cpu = '/sys/devices/system/cpu/'
     cpu_nodes = glob.glob(os.path.join(path_cpu, 'cpu[0-9]*'))
     cpus = [int(os.path.basename(c)[3:]) for c in cpu_nodes]
 
+    cpus_numa = cpus
+    if numa_filter:
+        path_dev_numa = '/sys/class/net/%s/device/numa_node' % device
+        if os.path.exists(path_dev_numa):
+            dev_numa = int(get_value(path_dev_numa))
+            if dev_numa >= 0:
+                path_numa = '/sys/devices/system/node/node%d' % dev_numa
+                cpus_numa = [cpu for cpu in cpus if os.path.exists(
+                    os.path.join(path_numa, 'cpu%d' % cpu)
+                )]
+
     # filter-out HyperThreading siblings
     cores = []
-    for cpu in cpus:
+    for cpu in cpus_numa:
         path_threads = os.path.join(path_cpu, 'cpu%d' % cpu,
                                     'topology', 'thread_siblings_list')
         thread_siblings = get_value(path_threads).split(',')
@@ -247,6 +266,7 @@ def get_options(device):
     opts = {
         'rss_pattern': None,
         'qdisc':       None,
+        'numa_filter': False,
     }
     config_file = os.path.join('/etc/interface-rps.d/', device)
     if os.path.isfile(config_file):
@@ -256,6 +276,8 @@ def get_options(device):
             opts['rss_pattern'] = config.get('Options', 'rss_pattern')
         if config.has_option('Options', 'qdisc'):
             opts['qdisc'] = config.get('Options', 'qdisc')
+        if config.has_option('Options', 'numa_filter'):
+            opts['numa_filter'] = config.getboolean('Options', 'numa_filter')
 
     return opts
 
@@ -274,7 +296,7 @@ def main():
     else:
         rss_pattern = detect_rss_pattern(device)
 
-    cpu_list = get_cpu_list()
+    cpu_list = get_cpu_list(device, opts['numa_filter'])
     rx_queues = get_queues(device, 'rx')
     tx_queues = get_queues(device, 'tx')
     driver = os.path.basename(
