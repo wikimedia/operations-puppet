@@ -1,48 +1,63 @@
 #!/usr/bin/env python
 
-# Sets up scalable network stuff (RPS/RSS/XPS) for a given interface.
+# Set up scalable network stuff (RPS/RSS/XPS) for a given interface.
 #
 # For basic technical background:
 # https://www.kernel.org/doc/Documentation/networking/scaling.txt
 #
 # Tries to allocate separate queues to separate CPUs, rather than follow
 # what's common advice out there (all CPUs to all queues), as experience has
-# shown a tremendous difference.
+# shown a tremendous difference.  This attempts to configure all of RPS, RSS,
+# and XPS if possible using matching queue/IRQ arrangements.  It's aware of
+# hyperthreading and only maps one IRQ/queue per physical cpu core, using only
+# the first virtual core of each hyperthread sibling pair.
 #
-# The only param is the ethernet interfaces (e.g. 'eth0') and is required.
+# The only param is the ethernet device name (e.g. 'eth0') and is required.
 #
 # If the file /etc/interface-rps.d/$device exists, it will be parsed with
 # ConfigParser for an Options section to specify additional parameters for
-# this interface.
+# this interface.  Current options:
 #
-# The only currently-supported parameter is 'rss_pattern'.  This specifies an
-# optional RSS (Receive Side Scaling) IRQ name pattern for finding device IRQs
-# in /proc/interrupts.  It must contain a single '%d' to match the queue
-# number in the IRQ name.  For example, for bnx2x this is 'eth0-fp-%d', and
-# for bnx2 and tg3 it is 'eth0-%d'.
+# rss_pattern - This specifies an optional RSS (Receive Side Scaling) IRQ name
+#     regex for finding device IRQs in /proc/interrupts.  It must contain a
+#     single '%%d' to match the queue number in the IRQ name.  For example,
+#     for bnx2x this is 'eth0-fp-%%d', and for bnx2 and tg3 it is 'eth0-%%d'.
+#     The double-percent form is due to ConfigParser limitations.
 #
-# If the RSS IRQ name parameter is not specified, the code will try to
-# auto-detect the pattern by searching /proc/interrupts for the 0th RSS
-# IRQ based on the supplied device name, e.g. /eth0[^\s0-9]+0$/.  If
-# detection fails, RSS will not be set up.
+# qdisc - This specifies an optional transmit qdisc (and its parameters) as a
+#     single string.  If this script (oddly) found less than two hardware
+#     queues for XPS, the specified qdisc will be configured on the device
+#     root.  In the normal (2+ queues) case, it will set up "mq" as the root
+#     qdisc and use the specified qdisc for each sub-queue within mq.
 #
-# Sets up matching Transmit Packet Steering (XPS) queues if possible as
-# well.  There are only two XPS cases currently covered: generic support
-# for assuming 1:1 tx:rx mapping if the queue counts look even (which
-# works for at least bnx2), and special support for bnx2x:
+# If the rss_pattern option is not specified, the code will try to auto-detect
+# the pattern by searching /proc/interrupts for the 0th RSS IRQ based on the
+# supplied device name, e.g. /eth0[^\s0-9]+0$/.  If detection fails, RSS will
+# not be set up.
 #
-# For cards driven by bnx2x which appear to have a set of tx queues that
-# match up with 3x CoS bands multiplied by the rx queue count, we enable
-# XPS and group the bands as appropriate.
-# This is the behavior exhibited by current bnx2x drivers that have
-# working XPS implementations (e.g. in the Ubuntu 3.13.0-30 kernel), on
-# our hardware and config.  The CoS band count could vary on different
-# bnx2x cards, and depending on whether you're using stuff like iSCSI/FCoE.
-# I don't yet know of a way to simply query the CoS band count or tx queue
-# mapping directly at runtime from the driver.
+# The Transmit Packet Steering (XPS) queue support is limited.  There are only
+# two XPS cases currently covered: generic support for assuming 1:1 tx:rx
+# mapping if the queue counts look even (which works for at least bnx2), and
+# special support for bnx2x:
+#
+# For cards driven by bnx2x which appear to have a set of tx queues that match
+# up with 3x CoS bands multiplied by the rx queue count, we enable XPS and
+# group the bands as appropriate.  This is the behavior exhibited by current
+# bnx2x drivers that have working XPS implementations (e.g. in the Ubuntu
+# 3.13.0-30 kernel), on our hardware and config.  The CoS band count could
+# vary on different bnx2x cards, and depending on whether you're using stuff
+# like iSCSI/FCoE.  I don't yet know of a way to simply query the CoS band
+# count or tx queue mapping directly at runtime from the driver.
 #
 # Different cards/drivers will likely have different XPS mappings that will
 # need to be addressed individually when we encounter them.
+#
+# Config example:
+# -----cut------
+# [Options]
+# rss_pattern = eth0-%%d
+# qdisc = fq flow_limit 300 buckets 8192 maxrate 1gbit
+# -----cut------
 #
 # Authors: Faidon Liambotis and Brandon Black
 # Copyright (c) 2013-2017 Wikimedia Foundation, Inc.
@@ -284,6 +299,7 @@ def main():
     dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_queue_map)
     if 'qdisc' in opts:
         setup_qdisc(device, len(tx_queues), opts['qdisc'])
+
 
 if __name__ == '__main__':
     main()
