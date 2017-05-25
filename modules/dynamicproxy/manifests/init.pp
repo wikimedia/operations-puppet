@@ -26,7 +26,7 @@ class dynamicproxy (
         logo     => '/.error/labs-logo.png',
         logo_2x  => '/.error/labs-logo-2x.png',
         logo_alt => 'Wikimedia Labs',
-        favicon  => '//wikitech.wikimedia.org/static/favicon/wikitech.ico',
+        favicon  => 'https://wikitech.wikimedia.org/static/favicon/wikitech.ico',
     },
     $error_description    = 'Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.',
     $error_details        = undef,
@@ -102,28 +102,36 @@ class dynamicproxy (
         mode   => '0444',
     }
 
-
-    file { '/var/www/error/errorpage.html':
-        ensure  => file,
-        content => template('dynamicproxy/errorpage.erb'),
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0444',
-        require => [File['/var/www/error'],
-                    File['/var/www/error/labs-logo.png'],
-                    File['/var/www/error/labs-logo-2x.png']
+    mediawiki::errorpage { '/var/www/error/errorpage.html':
+        favicon     => $error_config['favicon'],
+        title       => $error_config['title'],
+        logo_src    => $error_config['logo'],
+        logo_srcset => "${error_config['logo_2x']} 2x",
+        logo_alt    => $error_config['logo_alt'],
+        content     => "<p>${error_description}</p>",
+        footer      => $error_details,
+        owner       => 'www-data',
+        group       => 'www-data',
+        mode        => '0444',
+        require     => [File['/var/www/error'],
+                        File['/var/www/error/labs-logo.png'],
+                        File['/var/www/error/labs-logo-2x.png']
         ],
     }
 
-    file { '/var/www/error/banned.html':
-        ensure  => file,
-        content => template('dynamicproxy/banned.erb'),
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0444',
-        require => [File['/var/www/error'],
-                    File['/var/www/error/labs-logo.png'],
-                    File['/var/www/error/labs-logo-2x.png']
+    mediawiki::errorpage { '/var/www/error/banned.html':
+        favicon     => $error_config['favicon'],
+        title       => $error_config['title'],
+        logo_src    => $error_config['logo'],
+        logo_srcset => "${error_config['logo_2x']} 2x",
+        logo_alt    => $error_config['logo_alt'],
+        content     => "<p>${banned_description}</p>",
+        owner       => 'www-data',
+        group       => 'www-data',
+        mode        => '0444',
+        require     => [File['/var/www/error'],
+                        File['/var/www/error/labs-logo.png'],
+                        File['/var/www/error/labs-logo-2x.png']
         ],
     }
 
