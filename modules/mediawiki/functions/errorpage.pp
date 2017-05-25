@@ -25,21 +25,11 @@
 # [*footer*]
 #   Optional HTML content for the footer. (Optional)
 #
-define mediawiki::errorpage(
-    $filepath = $name,
-    $doctitle = 'Wikimedia Error',
-    $content = '',
-    $footer = undef,
-) {
-    $errorpage  = {
-        title   => $doctitle,
-        content => $content,
-        footer  => $footer,
-    }
-    file { $filepath:
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => template('mediawiki/errorpage.html.erb'),
-    }
+function mediawiki::errorpage(Hash $params) {
+    $errorpage = merge({
+        title   => 'Wikimedia Error',
+        content => '',
+        footer  => undef,
+    }, $params)
+    inline_template('mediawiki/errorpage.html.erb')
 }
