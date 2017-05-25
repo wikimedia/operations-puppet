@@ -194,8 +194,10 @@ class profile::phabricator::main {
     # Backup repositories
     backup::set { 'srv-repos': }
 
+    $exim4_variant = hiera('phabricator_exim4_variant', 'heavy')
+
     class { 'exim4':
-        variant => 'heavy',
+        variant => $exim4_variant,
         config  => template('role/exim/exim4.conf.phab.erb'),
         filter  => template('role/exim/system_filter.conf.erb'),
     }
