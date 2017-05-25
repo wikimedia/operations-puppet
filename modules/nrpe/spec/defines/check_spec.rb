@@ -11,6 +11,7 @@ describe 'nrpe::check', :type => :define do
     end
 
     context 'with nrpe class defined' do
+        let(:facts) { { :initsystem => 'systemd' } }
         let(:pre_condition) { "class { 'nrpe': }" }
         it 'should create /etc/nagios/nrpe.d/something.cfg' do
             should contain_file('/etc/nagios/nrpe.d/something.cfg')

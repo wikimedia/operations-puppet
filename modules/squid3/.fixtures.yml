@@ -1,5 +1,6 @@
 fixtures:
     symlinks:
         squid3: "#{source_dir}"
+        logrotate: "../../../../logrotate"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"

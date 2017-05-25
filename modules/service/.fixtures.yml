@@ -3,6 +3,7 @@ fixtures:
         service: "#{source_dir}"
         base: "../../../../base"
         ferm: "../../../../ferm"
+        logrotate: "../../../../logrotate"
         monitoring: "../../../../monitoring"
         rsyslog: "../../../../rsyslog"
         scap: "../../../../scap"

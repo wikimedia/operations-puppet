@@ -3,6 +3,7 @@ fixtures:
         jenkins: "#{source_dir}"
         base: "../../../../base"
         alternatives: "../../../../alternatives"
+        logrotate: "../../../../logrotate"
         monitoring: "../../../../monitoring"
         nrpe: "../../../../nrpe"
         rsyslog: "../../../../rsyslog"
