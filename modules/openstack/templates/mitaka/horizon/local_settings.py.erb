@@ -545,5 +545,6 @@ CONSOLE_TYPE = False
 PUPPETMASTER_API  = "https://<%= @novaconfig['controller_hostname'] %>:8140/puppet"
 PUPPET_CONFIG_BACKEND  = "http://<%= @novaconfig['controller_hostname'] %>:8100/v1"
 
-LDAP_USER_NAME = "novaadmin"
+LDAP_USER = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+LDAP_PROJECTS_BASE = 'ou=projects,dc=wikimedia,dc=org'
 LDAP_USER_PASSWORD = "<%= @novaconfig['ldap_user_pass'] %>"
