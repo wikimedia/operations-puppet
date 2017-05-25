@@ -103,7 +103,7 @@ def get_cpu_list():
     # filter-out HyperThreading siblings
     cores = []
     for cpu in cpus:
-        path_threads = os.path.join(path_cpu, 'cpu%s' % cpu,
+        path_threads = os.path.join(path_cpu, 'cpu%d' % cpu,
                                     'topology', 'thread_siblings_list')
         thread_siblings = get_value(path_threads).split(',')
         cores.append(int(thread_siblings[0]))
@@ -164,7 +164,7 @@ def get_rx_irqs(rss_pattern, rx_queues):
     for line in irq_file:
         match = rss_re.match(line)
         if match:
-            irqs[int(match.group(2))] = match.group(1)
+            irqs[int(match.group(2))] = int(match.group(1))
 
     # If we don't get an *exact* match for the rx_queues list, give up
     if len(irqs) != len(rx_queues):
@@ -185,15 +185,15 @@ def set_cpus(device, cpus, rxq, rx_irq, txqs):
     txt_bitmask = format(bitmask, 'x')
 
     if rx_irq:
-        irq_node = '/proc/irq/%s/smp_affinity' % rx_irq
+        irq_node = '/proc/irq/%d/smp_affinity' % rx_irq
         write_value(irq_node, txt_bitmask)
 
-    rx_node = '/sys/class/net/%s/queues/rx-%s/rps_cpus' % (device, rxq)
+    rx_node = '/sys/class/net/%s/queues/rx-%d/rps_cpus' % (device, rxq)
     write_value(rx_node, txt_bitmask)
 
     if txqs:
         for i in txqs:
-            tx_node = '/sys/class/net/%s/queues/tx-%s/xps_cpus' % (device, i)
+            tx_node = '/sys/class/net/%s/queues/tx-%d/xps_cpus' % (device, i)
             write_value(tx_node, txt_bitmask)
 
 
