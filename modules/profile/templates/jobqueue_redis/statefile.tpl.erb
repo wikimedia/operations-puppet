@@ -12,7 +12,7 @@ shard = nil
     shard = name
   end
 end
-if shard['replica'] != false
+if shards[site][shard]['replica'] != false
 -%>
 {{ $site := json ( getv "/<%= site %>" ) }}{{ if $site.pooled }}
 # This redis server is a global master as it's in an active datacenter
