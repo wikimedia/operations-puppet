@@ -5,6 +5,7 @@ class wikistats::web (
 
     if os_version('debian >= stretch') {
         $php_version = '7.0'
+        require_package('php7.0-xml')
     } else {
         $php_version = '5'
     }
