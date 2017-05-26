@@ -18,8 +18,6 @@ class profile::requesttracker::server {
         filter  => template('role/exim/system_filter.conf.erb'),
     }
 
-    include exim4::ganglia
-
     include ::base::firewall
 
     # allow RT to receive mail from mail smarthosts

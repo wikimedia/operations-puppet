@@ -16,5 +16,4 @@ class role::phabricator_server {
     include ::profile::phabricator::rsync
     include ::phabricator::monitoring
     include ::phabricator::mpm
-    # include ::exim4::ganglia
 }
