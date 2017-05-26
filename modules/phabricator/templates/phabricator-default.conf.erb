@@ -56,4 +56,11 @@
   RewriteRule ^/maniphest/task/create/? /maniphest/task/edit/form/1/ [L,QSA,NE,R=301]
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
 
+<% if !@serveraliases.empty? -%>
+<%- @serveraliases.each do |name| -%>
+  # Redirect server alias home to the main server name
+  RewriteCond "%{HTTP_HOST}" "<%= name.gsub('.', '\.') %>"
+  RewriteRule ^/$ "<%= @phab_servername %>" [R,L]
+<%- end %>
+
 </VirtualHost>
