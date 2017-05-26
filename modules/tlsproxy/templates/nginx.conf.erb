@@ -10,6 +10,8 @@ user www-data www-data;
 #  if HT is detected, we map 2 process per physical core onto both siblings
 worker_processes  <%= @processorcount %>;
 <%
+    # XXX if function_hiera('numa_networking', true)
+    # XXX   ... use @facts['numa'] + default interface...
     ht_mode = false
     if @processorcount.to_i == (2 * @physicalcorecount.to_i)
         ht_mode = true
