@@ -41,7 +41,6 @@ class role::mail::mx(
         filter  => template('role/exim/system_filter.conf.erb'),
         require => Class['spamassassin'],
     }
-    include exim4::ganglia
 
     file { '/etc/exim4/defer_domains':
         ensure  => present,
