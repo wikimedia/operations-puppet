@@ -3,7 +3,7 @@
 # These environment variables are used by /usr/local/bin/kafka
 # to automatically set common kafka CLI options.
 export KAFKA_ZOOKEEPER_URL=<%= @zookeeper_connect %>
-export KAFKA_BOOTSTRAP_SERVERS=<%= @brokers.map { |host, conf| "#{host}:#{conf['port'] || @default_port}" }.sort.join(',') %>
+export KAFKA_BOOTSTRAP_SERVERS=<%= @brokers.map { |host, conf| "#{host}:#{@default_port}" }.sort.join(',') %>
 <% if @java_home -%>
 export KAFKA_JAVA_HOME=<%= @java_home %>
 <% end -%>
