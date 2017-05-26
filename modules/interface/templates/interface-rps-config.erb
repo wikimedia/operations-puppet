@@ -1,3 +1,4 @@
 [Options]
 <% if @rss_pattern != '' %>rss_pattern = <%= @rss_pattern %><% end %>
 <% if @qdisc != '' %>qdisc = <%= @qdisc %><% end %>
+<% if @numa_networking %>numa_filter = yes<% end %>
