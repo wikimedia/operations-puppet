@@ -1349,7 +1349,6 @@ host db1106 {
     fixed-address db1106.eqiad.wmnet;
 }
 
-
 host db2010 {
     hardware ethernet 78:2b:cb:6b:c6:ef;
     fixed-address db2010.codfw.wmnet;
@@ -1517,8 +1516,6 @@ host db2048 {
 host db2049 {
     hardware ethernet 40:a8:f0:35:1d:ec;
     fixed-address db2049.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db2050 {
