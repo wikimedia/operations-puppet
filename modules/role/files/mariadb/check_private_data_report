@@ -24,5 +24,5 @@ DATA=$(/bin/egrep -v "^--|^Start time|wmf_checksums" -c "$REPORT_PATH")
 
 if [ "$DATA" -gt "0" ]
 then
-    echo "Private data detected at $HOSTNAME check: $REPORT_PATH" | /usr/bin/mail -s "Private data found at $HOSTNAME" marostegui@wikimedia.org
+    echo "Private data detected at $HOSTNAME check: $REPORT_PATH" | /usr/bin/mail -s "Private data found at $HOSTNAME" marostegui@wikimedia.org jcrespo@wikimedia.org
 fi
