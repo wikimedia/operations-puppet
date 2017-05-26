@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Cassandra certificate management
+Certificate management for Java and other tools.
+
+This manages creation of certificate and Java keytool files for services
+that require encryption and authentication.
 
 First, you need a manifest that specifies the Certificate Authority, and
 each of the keystores.  For example:
@@ -59,7 +62,7 @@ each of the keystores.  For example:
 
 Next, run the script with the manifest as its only argument:
 
-    $ cassandra-ca manifest.yaml
+    $ ca-manager manifest.yaml
     $ tree /path/to/base/directory
     /path/to/base/directory
     ├── restbase1001-a
