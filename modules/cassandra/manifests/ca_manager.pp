@@ -1,6 +1,9 @@
 # == Class: cassandra::ca_manager
 #
-# Install Cassandra CA manager.
+# Install a symlink as cassandra-ca-manager to ca-manager.
+# This maintains backwards compatibility for anyone who doesn't
+# yet know that cassandra-ca-manager has been made generic.
+# See: https://phabricator.wikimedia.org/T166167
 #
 # The manager will accept a manifest file as input and generate a CA plus all
 # related certificates to be installed on cassandra nodes.
@@ -10,15 +13,10 @@
 # class { '::cassandra::ca_manager': }
 
 class cassandra::ca_manager {
-    file { '/usr/local/bin/cassandra-ca-manager':
-        source => 'puppet:///modules/cassandra-ca-manager',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
+    require ::ca::manager
 
-    # keytool dependency
-    package { 'default-jre':
-        ensure => present,
+    file { '/usr/local/bin/cassandra-ca-manager':
+        ensure => 'link',
+        target => '/usr/local/bin/ca-manager',
     }
 }

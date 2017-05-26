@@ -187,37 +187,17 @@ define cassandra::instance(
         }
     }
 
+    # Copy TLS cert keystore files from puppetmaster.
+    # TLS cert keystore files were generated using ca-manager
+    # and are checked into the puppet private repository
+    # in the secret module.
     if ($tls_cluster_name) {
-        file { "${config_directory}/tls":
-            ensure  => directory,
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => Package['cassandra'],
-        }
-
-        file { "${config_directory}/tls/server.key":
-            content => secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => File["${config_directory}/tls"],
-        }
-
-        file { "${config_directory}/tls/server.trust":
-            content => secret("cassandra/${tls_cluster_name}/truststore"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => File["${config_directory}/tls"],
-        }
-
-        file { "${config_directory}/tls/rootCa.crt":
-            content => secret("cassandra/${tls_cluster_name}/rootCa.crt"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => File["${config_directory}/tls"],
+        ::ca::certs { "cassandra/${tls_cluster_name}/${tls_hostname}":
+            destination    => "${config_directory}/tls",
+            local_key_name => 'server',
+            owner          => 'cassandra',
+            group          => 'cassandra',
+            require        => Package['cassandra'],
         }
     }
 
