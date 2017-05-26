@@ -50,6 +50,14 @@
   CustomLog /var/log/apache2/phabricator_access.log wmf
   ServerSignature Off
 
+<% if !@serveraliases.empty? -%>
+<%- @serveraliases.each do |name| -%>
+  # Redirect server alias home to the main server name
+  RewriteCond "%{HTTP_HOST}" "<%= name.gsub('.', '\.') %>"
+  RewriteRule ^/$ "<%= @phab_servername %>" [R,L]
+<%- end %>
+<%- end %>
+
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
   RewriteRule ^/favicon.ico   -                       [L,QSA]
   RewriteRule ^/project/sprint/board/(.*) /project/board/$1 [L,QSA,R=301]
