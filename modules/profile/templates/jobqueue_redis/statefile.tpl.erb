@@ -11,7 +11,9 @@ shard = nil
   if instance['host'] == @ip && instance['port'] == @title.to_i
     shard = name
   end
-end -%>
+end
+if shard['replica'] != false
+-%>
 {{ $site := json ( getv "/<%= site %>" ) }}{{ if $site.pooled }}
 # This redis server is a global master as it's in an active datacenter
 {{ else }}<%-
@@ -22,3 +24,6 @@ datacenters.each do |dc|
 {{ $site := json ( getv "/<%= dc %>" ) }}{{ if $site.pooled }}<%= slaveof %>{{ end }}
 <%- end -%>
 {{ end }}
+<%- else -%>
+# This redis instance is a global master and replication is disabled for this shard
+<%- end -%>

@@ -13,6 +13,10 @@ redis::shards:
       rdb1-6381:
         host: 10.64.32.76
         port: 6381
+      changeprop-1: # Reserved for use by the ChangePropagation service
+        host: 10.64.32.76
+        port: 6382
+        replica: false
       rdb2-aggr: # rdb1003
         host: 10.64.0.201
         port: 6378
@@ -25,6 +29,10 @@ redis::shards:
       rdb2-6381:
         host: 10.64.0.201
         port: 6381
+      changeprop-2: # Reserved for use by the ChangePropagation service
+        host: 10.64.0.201
+        port: 6382
+        replica: false
       rdb3-aggr: # rdb1005
         host: 10.64.0.24
         port: 6378
@@ -62,6 +70,10 @@ redis::shards:
       rdb1-6381:
         host: 10.192.0.119
         port: 6381
+      changeprop-1: # Reserved for use by the ChangePropagation service
+        host: 10.192.0.119
+        port: 6382
+        replica: false
       rdb2-aggr: # rdb2003
         host: 10.192.16.122
         port: 6378
@@ -74,6 +86,10 @@ redis::shards:
       rdb2-6381:
         host: 10.192.16.122
         port: 6381
+      changeprop-2: # Reserved for use by the ChangePropagation service
+        host: 10.192.16.122
+        port: 6382
+        replica: false
       rdb3-aggr: # rdb2005
         host: 10.192.32.133
         port: 6378

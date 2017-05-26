@@ -1,4 +1,6 @@
 # TODO: extract this information from redis::shards
+# but we'd need to filter out the changeprop dedicated
+# instances in that case.
 profile::mediawiki::jobrunner::queue_servers:
   - rdb1001.eqiad.wmnet
   - rdb1001.eqiad.wmnet:6380
