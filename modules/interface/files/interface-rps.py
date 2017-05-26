@@ -244,13 +244,18 @@ def setup_qdisc(device, num_queues, qdisc):
 def get_options(device):
     """Get configured options from /etc/interface-rps.d/$device"""
 
+    opts = {
+        'rss_pattern': None,
+        'qdisc':       None,
+    }
     config_file = os.path.join('/etc/interface-rps.d/', device)
     if os.path.isfile(config_file):
         config = ConfigParser.SafeConfigParser()
-        config.read([config_file])
-        opts = dict(config.items('Options'))
-    else:
-        opts = {}
+        config.read(config_file)
+        if config.has_option('Options', 'rss_pattern'):
+            opts['rss_pattern'] = config.get('Options', 'rss_pattern')
+        if config.has_option('Options', 'qdisc'):
+            opts['qdisc'] = config.get('Options', 'qdisc')
 
     return opts
 
@@ -264,7 +269,7 @@ def main():
 
     opts = get_options(device)
 
-    if 'rss_pattern' in opts:
+    if opts['rss_pattern']:
         rss_pattern = opts['rss_pattern']
     else:
         rss_pattern = detect_rss_pattern(device)
@@ -297,7 +302,7 @@ def main():
         tx_queue_map = {rxq: None for rxq in rx_queues}
 
     dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_queue_map)
-    if 'qdisc' in opts:
+    if opts['qdisc']:
         setup_qdisc(device, len(tx_queues), opts['qdisc'])
 
 
