@@ -1,0 +1,480 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Certificate management for Java and other tools.
+
+This manages creation of certificate and Java keytool and .pem files for services
+that require encryption and authentication.
+
+First, you need a manifest that specifies the Certificate Authority, and
+each of the keystores.  For example:
+
+    # The top-level working directory
+    base_directory: /path/to/base/directory
+
+    # The Certificate Authority
+    authority:
+      key:
+        size: 2048
+      cert:
+        subject:
+          organization: WMF
+          country: US
+          unit: Services
+        valid: 365
+      password: qwerty
+
+    # Java keystores
+    keystores:
+      - name: restbase1001-a
+        key:
+          size: 2048
+        cert:
+          subject:
+            organization: WMF
+            country: US
+            unit: Services
+          valid: 365
+        password: qwerty
+
+      - name: restbase1001-b
+        key:
+          size: 2048
+        cert:
+          subject:
+            organization: WMF
+            country: US
+            unit: Services
+          valid: 365
+        password: qwerty
+
+      - name: restbase1002-a
+        key:
+          size: 2048
+        cert:
+          subject:
+            organization: WMF
+            country: US
+            unit: Services
+          valid: 365
+        password: qwerty
+
+Next, run the script with the manifest as its only argument:
+
+    $ ca-manager manifest.yaml
+    $ tree /path/to/base/directory
+    /path/to/base/directory
+    ├── restbase1001-a
+    │   ├── restbase1001-a.crt
+    │   └── restbase1001-a.csr
+    │   └── restbase1001-a.jks
+    │   └── restbase1001-a.key
+    │   └── restbase1001-a.p12
+    ├── restbase1001-b
+    │   ├── restbase1001-b.crt
+    │   └── restbase1001-b.csr
+    │   └── restbase1001-b.jks
+    │   └── restbase1001-b.key
+    │   └── restbase1001-b.p12
+    ├── restbase1002-a
+    │   ├── restbase1002-a.crt
+    │   └── restbase1002-a.csr
+    │   └── restbase1002-a.jks
+    │   └── restbase1002-a.key
+    │   └── restbase1002-a.p12
+    ├── rootCa.crt
+    ├── rootCa.key
+    ├── rootCa.srl
+    └── truststore.jks
+
+Files:
+
+    <name>/<name>.crt   - Public certificate in .pem format.
+    <name>/<name>.csr   - Certificate signing request.
+    <name>/<name>.jks   - Java keystore.  Contains the private key, the signed certificate,
+                          and the public CA certificate.
+    <name>/<name>.key   - Private key in .pem format.
+    <name>/<name>.p12   - keystore in PKCS#12 format.  Contains the private key and the
+                          signed certificate.
+
+    rootCa.crt          - Public CA certificate in .pem format.
+    rootCa.key          - Private CA key in .pem format.
+    rootCa.srl          - CA serial number file
+    truststore.jks      - Java keystore containing the CA cert.
+
+"""
+
+import logging
+import os
+import os.path
+import subprocess
+import yaml    # PyYAML (python-yaml)
+
+
+logging.basicConfig(level=logging.DEBUG)
+
+
+class Subject(object):
+    def __init__(self, common_name, **kwargs):
+        self.common_name = common_name
+        self.organization = kwargs.get("organization", "WMF")
+        self.country = kwargs.get("country", "US")
+        self.unit = kwargs.get("unit", "Services")
+
+    def __repr__(self):
+        return "%s(cn=%s, o=%s, c=%s, u=%s)" \
+            % (self.__class__.__name__, self.common_name, self.organization, self.country, self.unit)
+
+
+class KeytoolSubject(Subject):
+    def __str__(self):
+        return "cn=%s, ou=%s, o=%s, c=%s" % (self.common_name, self.unit, self.organization, self.country)
+
+
+class Keystore(object):
+    """
+    Generates a Java Keystore with a new key pair, signs the key with a CA,
+    and imports the signed key into the Keystore.  This key pair is also exported
+    into PKCS#12, and the private key is exported into .pem.  Ultimately, you will
+    end up with a .jks (java keystore), .p12 (PKCS#12 'keystore'), a .csr,
+    a public .crt in .pem format, and a private .key in .pem format.
+    """
+    def __init__(self, path, authority, **kwargs):
+        name = kwargs.get("name")
+        password = kwargs.get("password")
+
+        if name is None:
+            raise RuntimeError("corrupt keystore entry; missing keystore name")
+        if password is None:
+            raise RuntimeError("corrupt keystore entry; missing keystore password")
+
+        key = kwargs.get("key", dict(size=2048))
+        size = int(key.get("size", 2048))
+        cert = kwargs.get("cert", dict(valid=365))
+
+        self.base = os.path.abspath(path)
+        self.name = name
+        self.authority = authority
+
+        # Java Keystore
+        self.jks_file = os.path.join(self.base, name, "%s.jks" % self.name)
+        # PKCS#12 'keystore' file
+        self.p12_file = os.path.join(self.base, name, "%s.p12" % self.name)
+        # Certificate Signing Request
+        self.csr_file = os.path.join(self.base, name, "%s.csr" % name)
+        # Public Signed Certificate in .pem format
+        self.crt_file = os.path.join(self.base, name, "%s.crt" % name)
+        # Private Key in .pem format
+        self.key_file = os.path.join(self.base, name, "%s.key" % name)
+
+        self.password = password
+        self.size = size
+        self.subject = KeytoolSubject(self.name, **cert["subject"])
+        self.valid = int(cert.get("valid", 365))
+
+        mkdirs(os.path.join(self.base, name))
+
+
+    def generate(self):
+        # Generate the node keypair in a Java Keystore file.
+        #
+        # It looks as though a key password is required (if you do not pass the
+        # argument, then keytool prompts for the password on STDIN).  Cassandra
+        # it seems, depends upon the key and store passwords being identical, (and
+        # indeed, keytool itself will attempt to use the -storepass when -keypass
+        # is omitted).  So much WTF.
+        if os.path.exists(self.jks_file):
+            logging.warn(
+                "%s already exists, skipping Java keystore key pair generation and certificate signing",
+                self.jks_file,
+            )
+        else:
+            command = [
+                "keytool",
+                "-genkeypair",
+                "-dname",     str(self.subject),
+                "-keyalg",    "RSA",
+                "-alias",     self.name,
+                "-validity",  str(self.valid),
+                "-storepass", self.password,
+                "-keypass",   self.password,
+                "-keystore",  self.jks_file
+            ]
+            logging.debug('Generating Java keystore key pair in %s', self.jks_file)
+            if not run_command(command):
+                raise RuntimeError("%s Java keystore key pair generation failed", self.name)
+
+
+            # Generate a certificate signing request.
+            command = [
+                "keytool",
+                "-certreq",
+                "-dname",     str(self.subject),
+                "-alias",     self.name,
+                "-file",      self.csr_file,
+                "-keypass",   self.password,
+                "-storepass", self.password,
+                "-keystore",  self.jks_file
+            ]
+            if not run_command(command):
+                raise RuntimeError("Certificate request generation failed to %s", self.csr_file)
+
+            # Sign (and verify).
+            command = [
+                "openssl",
+                "x509",
+                "-req",
+                "-CAcreateserial",
+                "-in",    self.csr_file,
+                "-CA",    self.authority.certificate.crt_file,
+                "-CAkey", self.authority.key.key_file,
+                "-days",  str(self.valid),
+                "-out",   self.crt_file
+            ]
+            logging.debug("Signing certificate at %s with %s", self.crt_file, self.authority)
+            if not run_command(command):
+                raise RuntimeError("Certificate %s signing failed", self.crt_file)
+
+            command = [
+                "openssl",
+                "verify",
+                "-CAfile", self.authority.certificate.crt_file,
+                self.crt_file
+            ]
+            if not run_command(command):
+                raise RuntimeError("Certificate %s verification failed", self.crt_file)
+
+            # Before we can import the signed certificate, the signer must be trusted,
+            # either with a trust entry in this keystore, or with one in the system
+            # truststore, aka 'cacerts', (provided -trustcacerts is passed).
+            command = [
+                "keytool",
+                "-importcert",
+                "-noprompt",
+                "-file",      self.authority.certificate.crt_file,
+                "-storepass", self.password,
+                "-keystore",  self.jks_file
+            ]
+            logging.debug(
+                "Importing CA cert %s into %s",
+                self.authority.certificate.crt_file,
+                self.jks_file
+            )
+            if not run_command(command):
+                raise RuntimeError("Import of CA certificate into %s failed", self.jks_file)
+
+            # Import the CA signed certificate into the Java Keystore.
+            command = [
+                "keytool",
+                "-importcert",
+                "-noprompt",
+                "-file",      self.crt_file,
+                "-alias",     self.name,
+                "-storepass", self.password,
+                "-keystore",  self.jks_file
+            ]
+            logging.debug("Importing signed certificate %s into %s", self.crt_file, self.jks_file)
+            if not run_command(command):
+                raise RuntimeError(
+                    "Import of signed certificate %s into %s failed", self.crt_file, self.jks_file
+                )
+
+
+        if os.path.exists(self.p12_file):
+            logging.warn(
+                "%s already exists, skipping PKCS#12 export...",
+                self.p12_file,
+            )
+        else:
+            # Export the keypair in pkcs12 format.
+            command = [
+                "keytool",
+                "-importkeystore",
+                "-alias", self.name,
+                "-srckeystore", self.jks_file,
+                "-srcstorepass", self.password,
+                "-deststorepass", self.password,
+                "-deststoretype", "PKCS12",
+                "-destkeystore", self.p12_file,
+            ]
+            logging.debug("Exporting key pair into PKCS12 format at %s", self.p12_file)
+            if not run_command(command):
+                raise RuntimeError("Export of key pair into PKCS12 format at %s failed", self.p12_file)
+
+        if os.path.exists(self.key_file):
+            logging.warn(
+                "%s already exists, skipping private key .pem export...",
+                self.key_file,
+            )
+        else:
+            # Export the private key from the p12 file in .pem format.
+            command = [
+                "openssl",
+                "pkcs12",
+                "-nocerts",
+                "-nodes",
+                "-in", self.p12_file,
+                "-out", self.key_file,
+                "-passin", "pass:%s" % self.password,
+            ]
+            logging.debug("Exporting private key into .pem format at %s", self.key_file)
+            if not run_command(command):
+                raise RuntimeError("Export of private key in .pem format at %s failed", self.key_file)
+
+    def __repr__(self):
+        return "%s(name=%s, filename=%s, size=%s, subject=%s)" \
+            % (self.__class__.__name__, self.name, self.jks_file, self.size, self.subject)
+
+
+class OpensslSubject(Subject):
+    def __str__(self):
+        return "/CN=%s/OU=%s/O=%s/C=%s/" % (self.common_name, self.unit, self.organization, self.country)
+
+
+class OpensslCertificate(object):
+    def __init__(self, name, path, key, password, **kwargs):
+        self.name = name
+        self.base = os.path.abspath(path)
+        # Public Key Certificate
+        self.crt_file = os.path.join(self.base, "%s.crt" % self.name)
+        # Truststore - Java keystore containing the CA certs
+        self.truststore_file = os.path.join(self.base, "truststore.jks")
+        # Openssl Key class
+        self.key = key
+        self.password = password
+        self.subject = OpensslSubject(name, **kwargs["subject"])
+        self.valid = int(kwargs.get("valid", 365))
+
+    def generate(self):
+        if os.path.exists(self.crt_file):
+            logging.warn("%s already exists, skipping certificate generation...", self.crt_file)
+            return
+
+        # Generate the CA certificate
+        command = [
+            "openssl",
+            "req",
+            "-x509",
+            "-new",
+            "-nodes",
+            "-subj", str(self.subject),
+            "-days", str(self.valid),
+            "-key", self.key.key_file,
+            "-out", self.crt_file
+        ]
+
+        if not run_command(command):
+            raise RuntimeError("CA certificate generation failed")
+
+        if os.path.exists(self.truststore_file):
+            logging.warn("%s already exists, skipping truststore generation...", self.truststore_file)
+            return
+
+        # Import the CA certificate to a Java truststore
+        # FIXME: -storepass should use :file or :env specifier to avoid exposing password to process list
+        command = [
+            "keytool",
+            "-importcert",
+            "-v",
+            "-noprompt",
+            "-trustcacerts",
+            "-alias", "rootCa",
+            "-file", self.crt_file,
+            "-storepass", self.password,
+            "-keystore", self.truststore_file
+        ]
+        if not run_command(command):
+            raise RuntimeError("CA truststore generation failed")
+
+    def __repr__(self):
+        return "%s(name=%s, filename=%s, subject=%s, valid=%d)" \
+            % (self.__class__.__name__, self.name, self.crt_file, self.subject, self.valid)
+
+
+class OpensslKey(object):
+    def __init__(self, name, path, **kwargs):
+        self.name = name
+        self.base = os.path.abspath(path)
+        self.key_file = os.path.join(self.base, "%s.key" % self.name)
+        self.size = kwargs.get("size", 2048)
+
+        mkdirs(self.base)
+
+    def generate(self):
+        if os.path.exists(self.key_file):
+            logging.warn("%s already exists, skipping key generation...", self.key_file)
+            return
+
+        if not run_command(["openssl", "genrsa", "-out", self.key_file, str(self.size)]):
+            raise RuntimeError("CA key generation failed")
+
+    def __repr__(self):
+        return "%s(name=%s, filename=%s, size=%s)" % (self.__class__.__name__, self.name, self.key_file, self.size)
+
+
+class Authority(object):
+    def __init__(self, base_directory, **kwargs):
+        self.password = kwargs.get("password")
+        if self.password is None:
+            raise RuntimeError("authority is missing mandatory password entry")
+
+        self.base_directory = base_directory
+        self.key = OpensslKey("rootCa", self.base_directory, **(kwargs.get("key", dict())))
+        self.certificate = OpensslCertificate("rootCa", self.base_directory, self.key, self.password, **(kwargs.get("cert", dict())))
+
+    def generate(self):
+        self.key.generate()
+        self.certificate.generate()
+
+    def __repr__(self):
+        return "%s(key=%s, certifcate=%s)" % (self.__class__.__name__, self.key, self.certificate)
+
+
+def read_manifest(manifest):
+    with open(manifest, 'r') as f:
+        return yaml.load(f.read())
+
+
+def run_command(command):
+    try:
+        logging.debug("Running command: " + " ".join(command))
+        output = subprocess.check_output(command, stderr=subprocess.STDOUT)
+        for ln in output.splitlines(): logging.debug(ln)
+        logging.debug("command succeeded: %s", " ".join(command))
+    except subprocess.CalledProcessError, e:
+        for ln in e.output.splitlines(): logging.error(ln)
+        logging.error("command returned status %d: %s", e.returncode, " ".join(command))
+        return False
+    return True
+
+
+def mkdirs(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Manage a certificate authority')
+    parser.add_argument("manifest", type=str,
+                        help="YAML specification of managed keys and certificates")
+    parser.add_argument("--base_directory", type=str, default=None,
+                        help="Override base_directory from manifest")
+    args = parser.parse_args()
+
+    manifest = read_manifest(args.manifest)
+
+    base_directory = args.base_directory or manifest.get("base_directory")
+    if base_directory is None:
+        parser.error("base_directory not specified")
+
+    authority = Authority(base_directory, **(manifest.get("authority")))
+
+    authority.generate()
+
+    entities = manifest.get("keystores")
+
+    for entity in entities:
+        Keystore(base_directory, authority, **entity).generate()
