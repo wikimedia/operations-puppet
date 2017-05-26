@@ -59,6 +59,9 @@ $network_zone = $facts['ipaddress'] ? {
     default => 'public'
 }
 
+# Hiera->Global to configure various classes for NUMA-aware networking
+$numa_networking = hiera('numa_networking', false)
+
 # TODO: create hash of all LVS service IPs
 
 # Set some basic variables
