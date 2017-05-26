@@ -17,6 +17,8 @@ define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
     $cmd = "/usr/local/sbin/interface-rps ${interface}"
     $cfg = "/etc/interface-rps.d/${interface}"
 
+    $numa_networking = hiera('numa_networking', false)
+
     file { $cfg:
         owner   => 'root',
         group   => 'root',
