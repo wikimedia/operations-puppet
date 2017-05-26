@@ -109,6 +109,9 @@ lvs::configuration::lvs_service_ips:
     eqiad:
       git-ssh4: 208.80.154.250
       git-ssh6: 2620:0:861:ed1a::3:16
+    codfw:
+      git-ssh4: 208.80.153.250
+      git-ssh6: 2620:0:860:ed1a::3:fa
   aqs: &ip_block025
     eqiad: 10.2.2.12
   eventbus: &ip_block026
