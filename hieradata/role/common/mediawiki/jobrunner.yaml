@@ -7,7 +7,7 @@ profile::mediawiki::jobrunner::runners:
   gwt: 1
   translate: 1
   upload: 7
-  html: 3
+  html: 6
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
