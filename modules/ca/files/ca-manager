@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Cassandra certificate management
+Certificate management for Java and other tools.
+
+This manages creation of certificate and Java keytool files for services
+that require encryption and authentication.
 
 First, you need a manifest that specifies the Certificate Authority, and
 each of the keystores.  For example:
@@ -59,7 +62,7 @@ each of the keystores.  For example:
 
 Next, run the script with the manifest as its only argument:
 
-    $ cassandra-ca manifest.yaml
+    $ ca-manager manifest.yaml
     $ tree /path/to/base/directory
     /path/to/base/directory
     ├── restbase1001-a
@@ -129,8 +132,10 @@ class Keystore(object):
         self.name = name
         self.authority = authority
         self.filename = os.path.join(self.base, name, "%s.kst" % self.name)
+        self.filename_pkcs12 = os.path.join(self.base, name, "%s.p12" % self.name)
         self.csr = os.path.join(self.base, name, "%s.csr" % name)
         self.crt = os.path.join(self.base, name, "%s.crt" % name)
+        self.filename_key = os.path.join(self.base, name, "%s.key" % name)
         self.password = password
         self.size = size
         self.subject = KeytoolSubject(self.name, **cert["subject"])
@@ -229,6 +234,33 @@ class Keystore(object):
         if not run_command(command):
             raise RuntimeError("import of CA-signed cert failed")
 
+        # Export the keystore in pkcs12 and then the key into .pem format
+        command = [
+            "keytool",
+            "-importkeystore",
+            "-alias", self.name,
+            "-srckeystore", self.filename,
+            "-srcstorepass", self.password,
+            "-deststorepass", self.password,
+            "-deststoretype", "PKCS12",
+            "-destkeystore", self.filename_pkcs12,
+        ]
+        if not run_command(command):
+            raise RuntimeError("Export of PKCS12 keystore failed")
+
+        command = [
+            "openssl",
+            "pkcs12",
+            "-nocerts",
+            "-nodes",
+            "-in", self.filename_pkcs12,
+            "-out", self.filename_key,
+            "-passin", "pass:" + self.password,
+        ]
+        if not run_command(command):
+            raise RuntimeError("Export of private key in .pem format failed")
+
+
     def __repr__(self):
         return "%s(name=%s, filename=%s, size=%s, subject=%s)" \
             % (self.__class__.__name__, self.name, self.filename, self.size, self.subject)
@@ -299,7 +331,7 @@ class OpensslKey(object):
     def __init__(self, name, path, **kwargs):
         self.name = name
         self.base = os.path.abspath(path)
-        self.filename = os.path.join(self.base, "%s.key" % self.name)
+        self.filename = os.path.join(self.base, "%s.key.pem" % self.name)
         self.size = kwargs.get("size", 2048)
 
         mkdirs(self.base)
@@ -341,6 +373,7 @@ def read_manifest(manifest):
 
 def run_command(command):
     try:
+        logging.debug("Running command: " + " ".join(command))
         output = subprocess.check_output(command, stderr=subprocess.STDOUT)
         for ln in output.splitlines(): logging.debug(ln)
         logging.debug("command succeeded: %s", " ".join(command))
