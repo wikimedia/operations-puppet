@@ -11,12 +11,12 @@ user www-data www-data;
 worker_processes  <%= @processorcount %>;
 <%
     ht_mode = false
-    if @processorcount.to_i == (2 * @physicalcorecount.to_i)
+    if @processorcount == (2 * @physicalcorecount)
         ht_mode = true
     end
     affinity_mask = Array.new
     cpupos = 0
-    ncpus = @physicalcorecount.to_i
+    ncpus = @physicalcorecount
     (0...ncpus).each do |worker|
         bitmask = (1 << cpupos).to_s(2)
         bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s

@@ -21,7 +21,7 @@ ExecStart=/usr/sbin/varnishd \
 <%= @ports.map { |p| "-a :"+p }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
 -f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
--p thread_pool_min=250 -p thread_pool_max=<%= @processorcount.to_i * 250 -%> -p thread_pool_timeout=120 \
+-p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \
 -p vsl_reclen=2048 \
 -p workspace_backend=128k \
 -p vcc_allow_inline_c=true \
