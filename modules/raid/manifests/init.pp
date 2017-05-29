@@ -14,11 +14,7 @@
 
 class raid (
     $write_cache_policy = undef,
-    ){
-    # unfortunately, we don't support stringify_facts=false yet; when we
-    # eventually do, the fact should be adjusted to not join with ",", and the
-    # following line should be then removed.
-    $raid = split($::raid, ',')
+){
 
     if $write_cache_policy {
         $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
@@ -33,7 +29,7 @@ class raid (
     $check_interval = 10
     $retry_interval = 5
 
-    if 'megaraid' in $raid {
+    if 'megaraid' in $facts['raid'] {
         require_package('megacli')
         $get_raid_status_megacli = '/usr/local/lib/nagios/plugins/get-raid-status-megacli'
 
@@ -63,7 +59,7 @@ class raid (
         }
     }
 
-    if 'hpsa' in $raid {
+    if 'hpsa' in $facts['raid'] {
         require_package('hpssacli')
 
         file { '/usr/local/lib/nagios/plugins/check_hpssacli':
@@ -123,7 +119,7 @@ class raid (
         }
     }
 
-    if 'mpt' in $raid {
+    if 'mpt' in $facts['raid'] {
         package { 'mpt-status':
             ensure => present,
         }
@@ -150,7 +146,7 @@ class raid (
         }
     }
 
-    if 'md' in $raid {
+    if 'md' in $facts['raid'] {
         # if there is an "md" RAID configured, mdadm is already installed
 
         nrpe::monitor_service { 'raid_md':
@@ -164,7 +160,7 @@ class raid (
         }
     }
 
-    if 'aac' in $raid {
+    if 'aac' in $facts['raid'] {
         require_package('arcconf')
 
         nrpe::monitor_service { 'raid_aac':
@@ -175,7 +171,7 @@ class raid (
         }
     }
 
-    if 'twe' in $raid {
+    if 'twe' in $facts['raid'] {
         require_package('tw-cli')
 
         nrpe::monitor_service { 'raid_twe':
