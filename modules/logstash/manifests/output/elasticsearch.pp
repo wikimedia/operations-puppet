@@ -55,10 +55,6 @@ define logstash::output::elasticsearch(
         default => 'absent'
     }
 
-    #TODO: to remove once cleanup is done
-    cron { "logstash_delete_index_${title}":
-        ensure => absent,
-    }
     elasticsearch::curator::config { "cleanup_${title}":
         content => template('logstash/curator/cleanup.yaml.erb')
     }
