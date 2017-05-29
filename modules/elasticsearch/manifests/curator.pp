@@ -10,6 +10,7 @@ class elasticsearch::curator (
         group  => 'root',
         mode   => '0755',
     }
+
     elasticsearch::curator::config {
         'config':
             content => template('elasticsearch/curator/config.yaml.erb');
@@ -17,5 +18,10 @@ class elasticsearch::curator (
             source => 'puppet:///modules/elasticsearch/curator/disable-shard-allocation.yaml';
         'enable-shard-allocation.yaml':
             source => 'puppet:///modules/elasticsearch/curator/enable-shard-allocation.yaml';
+    }
+
+    logrotate::conf { 'curator':
+        ensure => present,
+        source => 'puppet:///modules/elasticsearch/curator/logrotate.conf',
     }
 }
