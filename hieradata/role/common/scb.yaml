@@ -91,7 +91,7 @@ profile::nutcracker::pools:
         host: 10.64.32.76
         port: 6382
       cp-2:
-        host: 10.64.0.2012
+        host: 10.64.0.201
         port: 6382
     listen: '/var/run/nutcracker/redis_eqiad.sock 0666'
   redis_codfw:
@@ -106,9 +106,9 @@ profile::nutcracker::pools:
     timeout: 1000
     server_map:
       cp-1:
-        host: 10.64.32.76
+        host: 10.192.0.119
         port: 6382
       cp-2:
-        host: 10.64.0.2012
+        host: 10.192.16.122
         port: 6382
     listen: '/var/run/nutcracker/redis_codfw.sock 0666'
