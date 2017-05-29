@@ -42,6 +42,8 @@ define logstash::output::elasticsearch(
 ) {
     require ::logstash::output::elasticsearch::scripts
 
+    $prefix = "${title}-"
+
     logstash::conf{ "output-elasticsearch-${title}":
         ensure   => $ensure,
         content  => template('logstash/output/elasticsearch.erb'),
@@ -53,21 +55,21 @@ define logstash::output::elasticsearch(
         default => 'absent'
     }
 
+    #TODO: to remove once cleanup is done
     cron { "logstash_delete_index_${title}":
+        ensure => absent,
+    }
+    elasticsearch::curator::config { "cleanup_${title}":
+        content => template('logstash/curator/cleanup.yaml')
+    }
+
+    cron { "logstash_cleanup_indices_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_delete_index --prefix ${title} --base-url http://${host}:${port} --max-age 31",
+        command => "/usr/bin/curator --config /etc/curator/config.yaml /etc/curator/cleanup_${title}.yaml > /dev/null",
         user    => 'root',
         hour    => 0,
         minute  => 42,
-        require => File['/usr/local/bin/logstash_delete_index'],
-    }
-
-    cron { "logstash_clear_cache_${title}":
-        ensure  => absent, # T144396 - removing the clear cache mechanism to validate it is not needed anymore
-        command => "/usr/local/bin/logstash_clear_cache.sh ${host}:${port} '${title}-*'",
-        user    => 'root',
-        minute  => 5 * fqdn_rand(12, "logstash_clear_cache_${title}"),
-        require => File['/usr/local/bin/logstash_clear_cache.sh'],
+        require => Elasticsearch::Curator::Config["cleanup_${title}"],
     }
 }
 # vim:sw=4 ts=4 sts=4 et:
