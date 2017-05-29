@@ -75,3 +75,40 @@ role::eventstreams::rdkafka_config:
   statistics.interval.ms: 60000
 
 changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
+profile::nutcracker::pools:
+  redis_eqiad:
+    auto_eject_hosts: true
+    distribution: 'ketama'
+    redis: true
+    redis_auth: "%{::passwords::redis::main_password}"
+    hash: md5
+    server_connections: 1
+    server_failure_limit: 3
+    server_retry_timeout: 10000
+    timeout: 1000
+    server_map:
+      cp-1:
+        host: 10.64.32.76
+        port: 6382
+      cp-2:
+        host: 10.64.0.2012
+        port: 6382
+    listen: '/var/run/nutcracker/redis_eqiad.sock 0666'
+  redis_codfw:
+    auto_eject_hosts: true
+    distribution: 'ketama'
+    redis: true
+    redis_auth: "%{::passwords::redis::main_password}"
+    hash: md5
+    server_connections: 1
+    server_failure_limit: 3
+    server_retry_timeout: 10000
+    timeout: 1000
+    server_map:
+      cp-1:
+        host: 10.64.32.76
+        port: 6382
+      cp-2:
+        host: 10.64.0.2012
+        port: 6382
+    listen: '/var/run/nutcracker/redis_codfw.sock 0666'
