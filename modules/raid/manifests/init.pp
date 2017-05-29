@@ -86,6 +86,7 @@ class raid (
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] show status',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] show detail',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller all show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] ld all show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] ld * show',
@@ -94,6 +95,7 @@ class raid (
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] show status',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] show detail',
             ],
         }
 
