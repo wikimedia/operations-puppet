@@ -3,9 +3,13 @@ class role::pmacct {
         description => 'pmacct netflow accounting',
     }
 
-    include ::pmacct
-    include ::base::firewall
+    $kafka_config  = kafka_config('analytics')
+    class { '::pmacct':
+        kafka_brokers => $kafka_config['brokers']['string'],
+    }
+
     include ::standard
+    include ::base::firewall
 
     ferm::service { 'bgp':
         proto  => 'tcp',
