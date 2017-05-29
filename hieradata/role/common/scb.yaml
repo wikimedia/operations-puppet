@@ -75,17 +75,9 @@ role::eventstreams::rdkafka_config:
   statistics.interval.ms: 60000
 
 changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
-profile::nutcracker::pools:
+profile::nutcracker::redis_pools:
   redis_eqiad:
-    auto_eject_hosts: true
-    distribution: 'ketama'
-    redis: true
-    redis_auth: "%{::passwords::redis::main_password}"
-    hash: md5
-    server_connections: 1
-    server_failure_limit: 3
     server_retry_timeout: 10000
-    timeout: 1000
     server_map:
       cp-1:
         host: 10.64.32.76
@@ -95,15 +87,7 @@ profile::nutcracker::pools:
         port: 6382
     listen: '/var/run/nutcracker/redis_eqiad.sock 0666'
   redis_codfw:
-    auto_eject_hosts: true
-    distribution: 'ketama'
-    redis: true
-    redis_auth: "%{::passwords::redis::main_password}"
-    hash: md5
-    server_connections: 1
-    server_failure_limit: 3
     server_retry_timeout: 10000
-    timeout: 1000
     server_map:
       cp-1:
         host: 10.192.0.119
@@ -112,3 +96,5 @@ profile::nutcracker::pools:
         host: 10.192.16.122
         port: 6382
     listen: '/var/run/nutcracker/redis_codfw.sock 0666'
+profile::nutcracker::memcached_pools: {}
+profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
