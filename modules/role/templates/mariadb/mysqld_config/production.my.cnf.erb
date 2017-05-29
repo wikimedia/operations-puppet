@@ -82,7 +82,7 @@ transaction-isolation          = REPEATABLE-READ
 log-bin
 log-slave-updates
 sync-binlog                    = 1
-binlog-cache-size              = 1M
+binlog_cache_size              = 10M
 max-binlog_size                = 1000M
 binlog-format                  = <%= @binlog_format %>
 <% if @replication_role == 'master' -%>
