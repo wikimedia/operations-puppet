@@ -64,7 +64,7 @@ class recommendation_api {
                 'http-socket' => '0.0.0.0:8080',
                 'socket'      => '/run/uwsgi/recommendation_api.sock',
                 'pythonpath'  => $lib_dir,
-                'processes'   => inline_template('<%= @processorcount.to_i %>'),
+                'processes'   => $facts['processorcount'],
             },
         },
         require  => [
