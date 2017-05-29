@@ -567,10 +567,15 @@ node 'db1061.eqiad.wmnet' {
     }
 }
 
-node /^db10(23|30|37|50|85|88|93)\.eqiad\.wmnet/ {
+node /^db10(30|37|50|85|88|93)\.eqiad\.wmnet/ {
     class { '::role::mariadb::core':
         shard => 's6',
     }
+}
+
+# To be decommissioned in T166486
+node 'db1023.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # s6 core production dbs on codfw
