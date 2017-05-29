@@ -1,4 +1,4 @@
-profile::kubernetes::master::service_cluster_ip_range: 10.192.72.0/24
+profile::kubernetes::master::service_cluster_ip_range: 10.64.72.0/24
 profile::kubernetes::master::etcd_urls:
  - https://etcd1001.eqiad.wmnet:2379
  - https://etcd1002.eqiad.wmnet:2379
