@@ -24,6 +24,14 @@
 #   A list of urls for the ORES service. Defaults to:
 #   [http://ores.svc.eqiad.wmnet:8081, http://ores.svc.codfw.wmnet:8081]
 #
+# [*redis_path*]
+#   The UNIX socket file path of the Redis/Nutcracker server. Default:
+#   "/var/run/nutcracker/redis_${::site}.sock"
+#
+# [*redis_pass*]
+#   The password to use when authenticating with Redis/Nutcracker. Default:
+#   'abc1234'
+#
 class changeprop(
     $broker_list,
     $purge_host   = '239.128.0.112',
@@ -33,6 +41,8 @@ class changeprop(
         'http://ores.svc.eqiad.wmnet:8081',
         'http://ores.svc.codfw.wmnet:8081',
     ],
+    $redis_path   = "/var/run/nutcracker/redis_${::site}.sock",
+    $redis_pass   = 'abc1234',
 ) {
 
     include ::service::configuration
@@ -54,6 +64,8 @@ class changeprop(
             purge_host   => $purge_host,
             purge_port   => $purge_port,
             site         => $::site,
+            redis_path   => $redis_path,
+            redis_pass   => $redis_pass,
         },
         auto_refresh      => false,
         init_restart      => false,
