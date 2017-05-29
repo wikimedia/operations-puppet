@@ -1,0 +1,12 @@
+actions:
+  1:
+    action: cluster_routing
+    description: >-
+      Enable all allocation for the entire cluster.
+    options:
+      routing_type: allocation
+      value: all
+      setting: enable
+      wait_for_completion: True
+      max_wait: 300
+      wait_interval: 10
