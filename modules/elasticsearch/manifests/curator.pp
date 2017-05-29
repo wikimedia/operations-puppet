@@ -10,6 +10,7 @@ class elasticsearch::curator (
         group  => 'root',
         mode   => '0755',
     }
+
     elasticsearch::curator::config {
         'config':
             content => template('elasticsearch/curator/config.yaml.erb');
