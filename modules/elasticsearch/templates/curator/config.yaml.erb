@@ -10,3 +10,9 @@ client:
   use_ssl: False
   timeout: 30
   master_only: False
+
+logging:
+  loglevel: INFO
+  logfile: /var/log/elasticsearch/curator.log
+  logformat: default
+  blacklist: ['elasticsearch', 'urllib3']
