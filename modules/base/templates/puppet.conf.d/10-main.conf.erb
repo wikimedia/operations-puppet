@@ -27,3 +27,6 @@ prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = true
 report = true
+<%- if scope.lookupvar('::realm') == 'prod' -%>
+stringify_facts = false
+<%- end -%>
