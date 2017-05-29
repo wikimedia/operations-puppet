@@ -1879,8 +1879,12 @@ node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/ {
+node /^ms-be201[3-5]\.codfw\.wmnet$/ {
     role(swift::storage)
+}
+
+node /^ms-be20(0[1-9]|1[0-2])\.codfw\.wmnet$/ {
+    role(spare::system)
 }
 
 # HP machines have different disk ordering T90922
