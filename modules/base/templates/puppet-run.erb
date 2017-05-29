@@ -21,11 +21,11 @@ if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
     if [ -f $CMDLINE_FILE ]; then
         grep -q puppet $CMDLINE_FILE
         if [ $? -eq 0 ]; then
-            echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK` >>/var/log/puppet.log
+            echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK` | ts >>/var/log/puppet.log
             exit 0
         fi
     fi
-    echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
+    echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` | ts >>/var/log/puppet.log
 fi
 
 <%- if @auto_puppetmaster_switching -%>
@@ -38,14 +38,14 @@ curl --cacert /var/lib/puppet/ssl/certs/ca.pem https://<%= @puppetmaster %>:8140
 # the puppet run at the bottom of this script generates a new one and sends it to
 # the new puppetmaster for signing
 if [[ $? -eq 60 ]]; then
-    echo "Removing current puppet certs" >> /var/log/puppet.log
+    echo "Removing current puppet certs" | ts >> /var/log/puppet.log
     rm -r /var/lib/puppet/ssl || exit 1
 fi
 
 set -e
 <%- end -%>
 
-timeout -k 60 300 apt-get update -qq >> /var/log/puppet.log 2>&1
+timeout -k 60 300 apt-get update -qq | ts >> /var/log/puppet.log 2>&1
 
 timeout -k 60 1800 puppet agent \
   --onetime \
@@ -54,4 +54,4 @@ timeout -k 60 1800 puppet agent \
   --show_diff \
   --splay \
   --splaylimit 59 \
-  >> /var/log/puppet.log 2>&1
+  | ts >> /var/log/puppet.log 2>&1
