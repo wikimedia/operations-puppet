@@ -4,8 +4,6 @@ daemonize: true
 pidfile: /var/run/nfacctd.pid
 syslog: daemon
 
-geoip_ipv4_file: /usr/share/GeoIP/GeoIP.dat
-
 aggregate: tag,dst_as,as_path,peer_dst_as
 
 ! Disable some warnings due to JunOS bugs
@@ -16,4 +14,16 @@ nfacctd_renormalize: true
 
 bgp_daemon: true
 bgp_daemon_max_peers: 20
+bgp_peer_as_skip_subas: true
+bgp_aspath_radius: 2
 nfacctd_as_new: bgp
+
+<% if @kafka_brokers -%>
+plugins: kafka
+kafka_output: json
+kafka_topic: netflow
+kafka_broker_host: <%= @kafka_brokers %>
+kafka_refresh_time: 60
+kafka_history: 1m
+kafka_history_roundoff: m
+<% end -%>

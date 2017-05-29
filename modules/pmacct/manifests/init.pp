@@ -8,9 +8,9 @@
 #
 #  include pmacct
 
-class pmacct {
-    require ::geoip
-
+class pmacct(
+  $kafka_brokers = undef,
+) {
     package { 'pmacct':
         ensure => present,
     }
