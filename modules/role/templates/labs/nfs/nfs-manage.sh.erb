@@ -27,10 +27,10 @@ case $CMD in
         fi
 
         /sbin/drbdadm primary all
-        /bin/ip address add <%= @cluster_ip %>/24 dev eth0
+        /bin/ip address add <%= @cluster_ip %>/24 dev <%= @monitor_iface %>
 
         /usr/sbin/arping -c 3 -S <%= @cluster_ip %> \
-            -i eth0 <%= @subnet_gateway_ip %> &> /dev/null
+            -i <%= @monitor_iface %> <%= @subnet_gateway_ip %> &> /dev/null
 
         <% @drbd_resource_config.each do |resource, config| %>
         mount -o noatime <%= config['device'] %> <%= config['mount_path'] -%>
@@ -54,7 +54,7 @@ case $CMD in
         <% end %>
 
         /sbin/drbdadm secondary all
-        /bin/ip a del <%= @cluster_ip %>/24 dev eth0
+        /bin/ip a del <%= @cluster_ip %>/24 dev <%= @monitor_iface %>
         /usr/sbin/drbd-overview
         ;;
     status)
