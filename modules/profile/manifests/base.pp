@@ -82,7 +82,7 @@ class profile::base(
     class { '::base::kernel': }
     class { '::base::debdeploy': }
 
-    if str2bool($facts['is_virtual']) == false {
+    if $facts['is_virtual'] == false {
         class { '::ipmi::monitor': }
     }
 

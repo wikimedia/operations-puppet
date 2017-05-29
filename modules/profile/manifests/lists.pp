@@ -119,7 +119,7 @@ class profile::lists {
         source => 'puppet:///modules/icinga/check_iostat.sh',
     }
 
-    $iostat_device = str2bool($facts['is_virtual']) ? {
+    $iostat_device = $facts['is_virtual'] ? {
         true    => 'vda',
         false   => 'sda',
     }
