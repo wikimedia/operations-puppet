@@ -18,7 +18,7 @@ class toollabs::node::all(
 
     if $swap_partition {
         labs_lvm::swap { 'big':
-            size => inline_template('<%= @memorysize_mb.to_i * 3 %>MB'),
+            size => inline_template('<%= @memorysize_mb * 3 %>MB'),
         }
     }
 }

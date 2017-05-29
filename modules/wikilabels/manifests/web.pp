@@ -49,7 +49,7 @@ class wikilabels::web (
                 chdir       => $config_path,
                 http-socket => '0.0.0.0:8080',
                 venv        => $venv_path,
-                processes   => inline_template('<%= @processorcount.to_i * 4 %>'),
+                processes   => $facts['processorcount'] * 4,
                 die-on-term => true,
                 harakiri    => 30,
             }

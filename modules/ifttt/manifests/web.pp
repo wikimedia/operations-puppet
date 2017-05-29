@@ -15,7 +15,7 @@ class ifttt::web(
                 chdir       => $ifttt::base::source_path,
                 http-socket => '0.0.0.0:8080',
                 venv        => $ifttt::base::venv_path,
-                processes   => inline_template("<%= @processorcount.to_i * ${workers_per_core} %>"),
+                processes   => $facts['processorcount'] * $workers_per_core,
             }
         }
     }

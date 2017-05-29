@@ -1,5 +1,5 @@
 hostname              <%= @fqdn %>
-complex_values        slots=<%= 32*(@processorcount.to_i) %>,release=<%= @lsbdistcodename %>
+complex_values        slots=<%= 32 * @processorcount %>,release=<%= @lsbdistcodename %>
 load_scaling          NONE
 user_lists            NONE
 xuser_lists           NONE
