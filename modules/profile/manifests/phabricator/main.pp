@@ -4,7 +4,7 @@
 class profile::phabricator::main {
 
     mailalias { 'root':
-        recipient => 'root@wikimedia.org',
+        recipient => 'root@wmflabs.org',
     }
 
     include passwords::phabricator
@@ -211,8 +211,8 @@ class profile::phabricator::main {
             ops-eqiad   => '*',
             ops-esams   => '*',
             ops-ulsfo   => '*',
-            domains     => 'markmonitor.com,wikimedia.org',
-            procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
+            domains     => 'markmonitor.com,wikimedia.org,wmflabs.org',
+            procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,wmflabs.org,zayo.com',
         },
         phab_bot                => {
             root_dir    => '/srv/phab/phabricator/',
