@@ -13,9 +13,9 @@ class elasticsearch::curator (
     elasticsearch::curator::config {
         'config':
             content => template('elasticsearch/curator/config.yaml.erb');
-        'disable-shard-allocation.yaml':
+        'disable-shard-allocation':
             source => 'puppet:///modules/elasticsearch/curator/disable-shard-allocation.yaml';
-        'enable-shard-allocation.yaml':
+        'enable-shard-allocation':
             source => 'puppet:///modules/elasticsearch/curator/enable-shard-allocation.yaml';
     }
 }
