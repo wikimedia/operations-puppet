@@ -42,7 +42,7 @@ class prometheus::node_exporter (
     file { $textfile_directory:
         ensure  => directory,
         mode    => '0470',
-        owner   => 'root',
+        owner   => 'prometheus',
         group   => 'prometheus-node-exporter',
         require => [Package['prometheus-node-exporter'],
                     Group['prometheus-node-exporter']],
