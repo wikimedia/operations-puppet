@@ -146,6 +146,10 @@ class elasticsearch(
         java_package => $java_package,
     }
 
+    class { '::elasticsearch::curator':
+        hosts => $unicast_hosts,
+    }
+
     # Package defaults this to 0750, which is annoying
     # for debugging. There are no secrets here so make
     # visible.
