@@ -117,7 +117,7 @@ labtest:
   cluster: labtest
 
 swift_be_codfw_dell:
-  __regex: !ruby/regexp /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
   swift_storage_drives: [
           '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
           '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
