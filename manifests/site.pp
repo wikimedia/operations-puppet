@@ -1282,6 +1282,8 @@ node 'krypton.eqiad.wmnet' {
 node /kubernetes[12]00[1-4]\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
     include ::standard
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'labcontrol1001.wikimedia.org' {
