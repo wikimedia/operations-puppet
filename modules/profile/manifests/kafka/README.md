@@ -1,7 +1,10 @@
-# Role classes for configuring Kafka Clusters
+# Profile classes for configuring Kafka
 
 
-Each config class is configurable via 2 hiera variables:
+## Global Hiera variables
+
+Aside from the profile level variables that are documented in the profile::kafka::broker class,
+3 top level hiera variables are important.
 
 ##### `kafka_cluster_name`
 This string identifies the kafka cluster in the `kafka_cluster_config`, as well
@@ -21,6 +24,7 @@ It should be of the form:
 ```yaml
 kafka_clusters:
   clusterA-eqiad:
+    zookeeper_cluster_name: zkclusterA-eqiad
     brokers:
       kafka1001.eqiad.wmnet:
         id: 1001
@@ -28,6 +32,7 @@ kafka_clusters:
         id: 1002
         port: 9093
   clusterB-codfw:
+    zookeeper_cluster_name: zkclusterA-codfw
     brokers:
       kafka2001.codfw.wmnet:
         id: 2001
@@ -38,15 +43,15 @@ kafka_clusters:
 ```
 
 Each key in `kafka_clusters` is a cluster name.  This name will be used
-for the zookeeper chroot.  If not found in hiera, this variable will default to:
+for the zookeeper chroot.  zookeeper_cluster_name should be a key in another
+top level hiera variable `zookeeper_clusters`.  The zookeeper hostnames
+for `zookeeper_cluster_name` are looked up in `zookeeper_clusters` config
+and provided to Kafka configuration properties.
 
-```yaml
-$kafka_cluster_name:
-  brokers:
-    $::fqdn:
-      id: 1
-```
-
-This allows you to easily stand up a single node kafka 'cluster' in labs without
-having any hiera configs set.
-
+##### `zookeeper_clusters`
+This hash is similar to the `kafka_clusters` one, except that it contains
+configuration information for zookeeper, rather than Kafka.  The `zookeeper_clusters`
+hash should be keyed by zookeeper cluster names, and a key corresponding
+to each `zookeeper_cluster_name` in `kafka_clusters` should exist and specific
+the zookeeper hosts in that cluster.  See role::zookeeper::client (TODO move that into
+a profile) class documentation for more information.

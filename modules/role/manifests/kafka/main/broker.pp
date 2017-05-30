@@ -42,6 +42,9 @@ class role::kafka::main::broker {
         nofiles_ulimit               => $nofiles_ulimit,
         jmx_port                     => $config['jmx_port'],
 
+        # Should be changed if brokers are upgraded.
+        inter_broker_protocol_version   => '0.9.0.X',
+
         # I don't trust auto.leader.rebalance :)
         auto_leader_rebalance_enable => false,
 

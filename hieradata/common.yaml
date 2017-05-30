@@ -459,6 +459,23 @@ kafka_clusters:
       kafka2003.codfw.wmnet:
         id: 2003
 
+  # TODO: Add rack/row comments once these are racked.
+  jumbo-eqiad:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      kafka-jumbo1001.eqiad.wmnet:
+        id: 1001
+      kafka-jumbo1002.eqiad.wmnet:
+        id: 1002
+      kafka-jumbo1003.eqiad.wmnet:
+        id: 1003
+      kafka-jumbo1004.eqiad.wmnet:
+        id: 1004
+      kafka-jumbo1005.eqiad.wmnet:
+        id: 1005
+      kafka-jumbo1006.eqiad.wmnet:
+        id: 1006
+
 deployment_server: tin.eqiad.wmnet
 
 install_server: install1002.wikimedia.org
