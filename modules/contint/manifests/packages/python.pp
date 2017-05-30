@@ -7,13 +7,20 @@ class contint::packages::python {
         'build-essential',
         'python-dev',
         'python-pip',  # Needed to install pip from pypi
-        'libmysqlclient-dev',  # For python SQLAlchemy
         'libxml2-dev',   # For python lxml
         'libxslt1-dev',  # For python lxml
         'libffi-dev', # For python requests[security]
         'libssl-dev', # python cryptography
     )
 
+    if os_version('ubuntu == trusty || debian == jessie') {
+        # For python SQLAlchemy
+        require_package('libmysqlclient-dev')
+    }
+    if os_version('debian == stretch') {
+        # For python SQLAlchemy
+        require_package('libmariadbclient-dev')
+    }
     if os_version('debian jessie') {
         # Debian only has: Suggests: libgnutls28-dev
         # Whereas on Ubuntu libgnutls-dev is a dependency
