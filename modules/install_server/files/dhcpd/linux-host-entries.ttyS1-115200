@@ -3610,8 +3610,8 @@ host ms-be1039 {
 host ms-be2001 {
     hardware ethernet 90:B1:1C:18:A7:74;
     fixed-address ms-be2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2002 {
