@@ -22,5 +22,6 @@ def main():
         print yaml.dump({'groups': dict_sort(admins['groups'])})
         print yaml.dump({'users': dict_sort(admins['users'])})
 
+
 if __name__ == '__main__':
     main()

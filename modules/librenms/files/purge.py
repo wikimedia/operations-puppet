@@ -96,6 +96,7 @@ def get_config_data():
         sys.exit(2)
     return proc.communicate()[0]
 
+
 try:
     with open(config_file) as f:
         pass

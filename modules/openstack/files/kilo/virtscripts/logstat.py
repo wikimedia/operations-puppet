@@ -264,5 +264,7 @@ def main(argv=None):
     searches.printStats(outfile)
     outfile.write("Done\n")
     outfile.close()
+
+
 if __name__ == "__main__":
     sys.exit(main())

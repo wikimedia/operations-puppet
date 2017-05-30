@@ -28,6 +28,7 @@ def merge(skel, stat):
     d.update(stat)
     return d
 
+
 # Maximum time to server stale stats
 LAST_FETCH_THRESHOLD = 600
 

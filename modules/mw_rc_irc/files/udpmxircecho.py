@@ -85,4 +85,6 @@ def main():
     sthr = EchoReader(bot)
     sthr.start()
     bot.start()
+
+
 main()

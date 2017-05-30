@@ -33,6 +33,7 @@ def _is_valid_hostname(name):
 
     return True
 
+
 if __name__ == '__main__':
     hostname = sys.argv[1]
     project = hostname.split('.')[1]

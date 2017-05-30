@@ -141,6 +141,7 @@ def main():
         print "%-30s | %06.3f%% (%d)" % \
               (kv[0], 100 * float(kv[1]) / total, kv[1])
 
+
 if __name__ == '__main__':
     main()
 

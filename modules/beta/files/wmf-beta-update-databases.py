@@ -96,5 +96,6 @@ def main():
     dblist = check_dblist(args.dblist)
     run_updates(dblist, args.batch)
 
+
 if __name__ == '__main__':
     sys.exit(main())
