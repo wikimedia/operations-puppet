@@ -2,6 +2,7 @@ class swift::storage (
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
+    $memcached_servers         = ['127.0.0.1:11211'],
 ) {
     package {
         [ 'swift-account',
@@ -57,6 +58,10 @@ class swift::storage (
 
     file { '/etc/swift/object-server.conf':
         content => template('swift/object-server.conf.erb'),
+    }
+
+    file { '/etc/swift/container-reconciler.conf':
+        content => template('swift/container-reconciler.conf.erb'),
     }
 
     file { '/srv/swift-storage':
