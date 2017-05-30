@@ -419,6 +419,7 @@ def main():
     else:
         phab_handoff(stdin)
 
+
 if __name__ == '__main__':
     contact = 'Please contact a WMF Phabricator admin.'
 

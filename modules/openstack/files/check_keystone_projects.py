@@ -42,5 +42,6 @@ def main():
     print "Keystone projects exist and have matching names and ids."
     sys.exit(OK)
 
+
 if __name__ == '__main__':
     main()

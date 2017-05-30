@@ -58,6 +58,7 @@ def bdsync(local_device, r_host, r_vg, r_snapshot_name, r_user):
     patch = subprocess.Popen(shlex.split(patch_cmd), stdin=progress.stdout)
     patch.communicate()[0]
 
+
 if __name__ == '__main__':
 
     if os.geteuid() != 0:

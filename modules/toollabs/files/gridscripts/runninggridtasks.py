@@ -41,6 +41,7 @@ def get_jobs(stream):
 def groupkey(x):
     return x['job_owner']
 
+
 proc = subprocess.Popen(
     ['qhost', '-j', '-xml', '-h'] + sys.argv[1:],
     stdout=subprocess.PIPE

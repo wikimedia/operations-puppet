@@ -96,5 +96,6 @@ def main():
     rotate_logs(args.cluster_name, args.backup_dir, args.keep)
     etcd_backup(args.cluster_name, args.backup_dir)
 
+
 if __name__ == '__main__':
     main()

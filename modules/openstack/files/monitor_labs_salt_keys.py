@@ -349,5 +349,6 @@ def main():
             else:
                 print "would delete", bad_key
 
+
 if __name__ == '__main__':
     main()

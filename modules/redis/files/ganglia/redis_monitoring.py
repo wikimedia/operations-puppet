@@ -114,6 +114,7 @@ def metric_init(params={}):
 def metric_cleanup():
     pass
 
+
 # For testing
 if __name__ == "__main__":
     desc = metric_init({"host": "127.0.0.1"})

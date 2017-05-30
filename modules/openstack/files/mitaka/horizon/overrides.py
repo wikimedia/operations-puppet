@@ -151,6 +151,7 @@ def _get_tenant_compute_usages_fixed(request, usages, disabled_quotas, tenant_id
         usages.tally('cores', 0)
         usages.tally('ram', 0)
 
+
 from openstack_dashboard.usage import quotas
 quotas._get_tenant_compute_usages = _get_tenant_compute_usages_fixed
 
@@ -173,6 +174,7 @@ def _can_access_fixed(self, request):
 
     # default to allowed
     return True
+
 
 from horizon import base as horizonbase
 horizonbase.HorizonComponent._can_access = _can_access_fixed

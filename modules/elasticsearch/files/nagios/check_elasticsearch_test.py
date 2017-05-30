@@ -25,5 +25,6 @@ class ThresholdTest(unittest.TestCase):
     def _breach(self, threshold, *args):
         return Threshold(threshold).breach(*args)
 
+
 if __name__ == '__main__':
     unittest.main()

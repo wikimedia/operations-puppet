@@ -346,6 +346,7 @@ def metric_of(name):
 def metric_cleanup():
     _Worker_Thread.shutdown()
 
+
 if __name__ == '__main__':
     try:
         params = {

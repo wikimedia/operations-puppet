@@ -34,5 +34,6 @@ class RedirectsDatTest(unittest.TestCase):
             'redirects.conf not regenerated. Run ./refreshDomainRedirects.'
         )
 
+
 if __name__ == '__main__':
     unittest.main()

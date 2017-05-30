@@ -250,6 +250,8 @@ def update_redis_from_db():
         for route in project.routes:
             print("Refreshing route:  %s " % route)
             redis_store.refresh_route(route)
+
+
 update_redis_from_db()
 
 

@@ -202,6 +202,7 @@ def varnishlog(vsl_args, callback):
 
     vlog.execute()
 
+
 if __name__ == '__main__':
     args = [
         ('c', None),
