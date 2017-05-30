@@ -14,15 +14,20 @@ broker.id.generation.enable=false
 inter.broker.protocol.version=<%= @inter_broker_protocol_version %>
 
 <% end -%>
-######################### Socket Server Settings ########################
-
-<% if @port -%>
-# The port the socket server listens on
-port=<%= @port %>
+<% if @log_message_format_version -%>
+# Specify the message format version the broker will use to append messages to the logs.
+# By setting a particular message format version, the user is certifying that all the
+# existing messages on disk are smaller or equal than the specified version.
+log.message.format.version=<%= @log_message_format_version %>
 
 <% end -%>
+######################### Socket Server Settings ########################
+
 <% if @listeners -%>
 listeners=<%= Array(@listeners).join(',') %>
+<% else -%>
+listeners=PLAINTEXT://:9092
+<% end -%>
 
 <% end -%>
 <% if @num_network_threads -%>

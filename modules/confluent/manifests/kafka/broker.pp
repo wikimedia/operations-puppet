@@ -11,17 +11,12 @@
 # [*brokers*]
 #   Hash of Kafka Broker configs keyed by fqdn of each kafka broker node.
 #   This Hash should be of the form:
-#   { 'hostA' => { 'id' => 1, 'port' => 12345 }, 'hostB' => { 'id' => 2 }, ... }
-#   'port' is optional, and will default to 9092.
-#   Default: { $::fqdn => { 'id'   => 1, 'port' => 9092  } }
+#   { 'hostA' => { 'id' => 1 }, 'hostB' => { 'id' => 2 }, ... }
+#   Default: { $::fqdn => { 'id'   => 1 } }
 #
 # [*listeners*]
-#   Comma-separated array of URIs Kafka will listen on.
-#   Default: undef
-#
-#   NOTE:  This has not yet been tested, and by default will not be used.
-#   If you are configuring listeners and want to disable the default
-#   port on 9092, you should set port to false in the $brokers hash.
+#   Array of URIs Kafka will listen on.
+#   Default: ['PLAINTEXT://:9092']
 #
 # [*log_dirs*]
 #   Array of directories in which the broker will store its received message
@@ -142,7 +137,15 @@
 #
 # [*inter_broker_protocol_version*]
 #   Specify which version of the inter-broker protocol will be used. This is
-#   typically bumped after all brokers were upgraded to a new version.
+#   typically bumped after all brokers were upgraded to a new version. Default: undef
+#
+# [*log_message_format_version*]
+#   Specify the message format version the broker will use to append messages to the logs.
+#   By setting a particular message format version, the user is certifying that all the
+#   existing messages on disk are smaller or equal than the specified version.
+#   Setting this value incorrectly will cause consumers with older versions to break as
+#   they will receive messages with a format that they don't understand.
+#   Default: inter_broker_protocol_version
 #
 # [*nofiles_ulimit*]
 #   The broker process' number of open files ulimit.
@@ -181,6 +184,7 @@ class confluent::kafka::broker(
             'port' => 9092,
         },
     },
+    $listeners                           = ['PLAINTEXT://:9092'],
     $log_dirs                            = ['/var/spool/kafka'],
 
     $zookeeper_connect                   = 'localhost:2181',
@@ -219,7 +223,8 @@ class confluent::kafka::broker(
 
     $offsets_retention_minutes           = 10080,   # 1 week
 
-    $inter_broker_protocol_version       = '0.9.0.X',
+    $inter_broker_protocol_version       = undef,
+    $log_message_format_version          = $inter_broker_protocol_version,
     $nofiles_ulimit                      = 8192,
     $java_opts                           = undef,
     $classpath                           = undef,
@@ -240,16 +245,10 @@ class confluent::kafka::broker(
     # configuration hash.
     $id = $brokers[$::fqdn]['id']
 
-    $default_port = 9092
-    # Using a conditional assignment selector with a
-    # Hash value results in a puppet syntax error.
-    # Using an if/else instead.
-    if ($brokers[$::fqdn]['port'] != false) {
-        $port = $brokers[$::fqdn]['port']
-    }
-    else {
-        $port = $default_port
-    }
+    # The default Kafka port for KAFKA_BOOTSTRAP_SERVERS will be the port
+    # first port specified in the $listeners array.  This is used
+    # in the kafka shell wrapper to automatically provide broker list.
+    $default_port = inline_template("<%= Array(@listeners)[0].split(':')[-1] %>")
 
     # Local variable for rendering in templates.
     $java_home = $::confluent::kafka::client::java_home
