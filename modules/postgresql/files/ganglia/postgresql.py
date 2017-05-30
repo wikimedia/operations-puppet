@@ -218,13 +218,6 @@ metric_defs = {
         "query": "SELECT sum(tidx_blks_hit) as tidx_blks_hit FROM " +
                  "pg_statio_all_tables;",
     },
-    "pg_tidx_blks_hit": {
-        "description": "Toast index blocks hit",
-        "slope": "positive",
-        "units": "blocks",
-        "query": "SELECT sum(tidx_blks_hit) as tidx_blks_hit FROM " +
-                 "pg_statio_all_tables;",
-    },
     "pg_bgwriter_buffers_checkpoint": {
         "description": "Buffers written at checkpoint",
         "slope": "positive",
