@@ -70,14 +70,16 @@ class role::swift::proxy (
         port    => '6002',
     }
 
+    $swift_backends = hiera('swift::storagehosts')
     $swift_frontends = hiera('swift::proxyhosts')
-    $swift_frontends_ferm = join($swift_frontends, ' ')
+    $swift_access = concat($swift_backends, $swift_frontends)
+    $swift_access_ferm = join($swift_access, ' ')
 
     ferm::service { 'swift-memcached':
         proto   => 'tcp',
         port    => '11211',
         notrack => true,
-        srange  => "@resolve((${swift_frontends_ferm}))",
+        srange  => "@resolve((${swift_access_ferm}))",
     }
 
     monitoring::service { 'swift-http-frontend':
