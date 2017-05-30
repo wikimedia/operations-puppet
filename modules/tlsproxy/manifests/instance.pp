@@ -21,6 +21,7 @@ class tlsproxy::instance {
     $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
     $nginx_tune_for_media = hiera('cache::tune_for_media', false)
+    $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m')
 
     class { 'nginx': managed => false, }
 
