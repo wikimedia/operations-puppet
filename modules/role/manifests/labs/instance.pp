@@ -62,5 +62,11 @@ class role::labs::instance {
         source => 'puppet:///modules/diamond/collector/sshsessions.py',
     }
 
+    if os_version('ubuntu >= trusty') {
+        package { 'bikeshed':
+            ensure => present,
+        }
+    }
+
     hiera_include('classes', [])
 }
