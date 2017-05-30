@@ -4,6 +4,13 @@
 #
 class jenkins::slave::requisites() {
 
-    ensure_packages(['openjdk-7-jre-headless'])
+    if os_version('debian >= stretch') {
+        $jdk_version = '8'
+    } else {
+        $jdk_version = '7'
+    }
 
+    $jdk_package = "openjdk-${jdk_version}-jre-headless"
+
+    ensure_packages($jdk_package)
 }
