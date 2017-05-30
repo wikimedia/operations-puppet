@@ -64,6 +64,7 @@ Puppet::Reports.register_report(:servermon) do
                 # This part of the code causes highly concurrent queries to the
                 # DB, so extra care is taken to avoid LOCKs, deadlocks etc
                 node_facts.values.each do |key, value|
+                    string_value = value.to_s
                     # First try to see if the fact_name already exists
                     con.query('BEGIN')
                     select_fact_name = "SELECT id from fact_names \
@@ -93,7 +94,7 @@ Puppet::Reports.register_report(:servermon) do
                     # Now try to update the fact_value, it is fails, insert it
                     update_fact_value = "UPDATE fact_values SET \
                     updated_at = '#{self.time}', \
-                    value = '#{value}' \
+                    value = '#{string_value}' \
                     WHERE fact_name_id=#{fact_id} AND host_id=#{host_id}"
                     if log_level == 'debug'
                         puts(update_fact_value)
@@ -103,7 +104,7 @@ Puppet::Reports.register_report(:servermon) do
                     if con.affected_rows == 0
                         insert_fact_value = "INSERT INTO fact_values( \
                         value,fact_name_id,host_id,updated_at,created_at) \
-                        VALUES('#{value}', #{fact_id}, #{host_id}, '#{self.time}', '#{self.time}')"
+                        VALUES('#{string_value}', #{fact_id}, #{host_id}, '#{self.time}', '#{self.time}')"
                         if log_level == 'debug'
                             puts(insert_fact_value)
                         end
