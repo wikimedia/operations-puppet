@@ -526,6 +526,7 @@ def metric_cleanup():
     logging.shutdown()
     # pass
 
+
 if __name__ == '__main__':
     from optparse import OptionParser
 

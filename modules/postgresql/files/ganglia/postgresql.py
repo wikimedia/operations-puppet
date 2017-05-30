@@ -15,6 +15,7 @@ def metric_of(name):
     global metric_results
     return metric_results.get(name, 0)
 
+
 # These are the defaults set for the metric attributes
 Desc_Skel = {
     "name": "N/A",
@@ -349,6 +350,7 @@ def create_desc(metric_name, skel, prop):
 
 def metric_cleanup():
     _Worker_Thread.shutdown()
+
 
 if __name__ == '__main__':
     import argparse

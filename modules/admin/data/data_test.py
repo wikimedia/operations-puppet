@@ -21,5 +21,6 @@ class DataTest(unittest.TestCase):
         dupes = [k for k, v in Counter(gids).items() if v > 1]
         self.assertEqual([], dupes, 'Duplicate group GIDs: %r' % dupes)
 
+
 if __name__ == '__main__':
     unittest.main()

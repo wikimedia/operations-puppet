@@ -92,5 +92,6 @@ def main():
 
     print 'nodepool state management is OK'
 
+
 if __name__ == '__main__':
     main()

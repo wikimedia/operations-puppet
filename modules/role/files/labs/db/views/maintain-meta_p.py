@@ -355,5 +355,6 @@ def main():
         VALUES ('gadget-%'), ('language'), ('skin'), ('variant');""")
     ops.write_execute("COMMIT;")
 
+
 if __name__ == '__main__':
     main()
