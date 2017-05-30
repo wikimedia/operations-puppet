@@ -1,10 +1,16 @@
 [Unit]
 Description=Zuul merger
+After=network.target
 
 [Service]
 User=zuul
-ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
+Type=forking
+PIDFile=/var/run/zuul/zuul-merger.pid
+ExecStartPre=-/bin/mkdir /var/run/zuul
+ExecStartPre=/bin/chown -R zuul /var/run/zuul/
 EnvironmentFile=/etc/default/zuul-merger
+ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
+ExecStop=/bin/rm /var/run/zuul/zuul-merger.pid
 
 [Install]
 WantedBy=multi-user.target
