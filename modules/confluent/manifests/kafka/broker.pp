@@ -16,12 +16,30 @@
 #   Default: { $::fqdn => { 'id'   => 1, 'port' => 9092  } }
 #
 # [*listeners*]
-#   Comma-separated array of URIs Kafka will listen on.
-#   Default: undef
+#   Array of URIs Kafka will listen on.
+#   Default: undef (PLAINTEXT://:9092)
 #
-#   NOTE:  This has not yet been tested, and by default will not be used.
-#   If you are configuring listeners and want to disable the default
-#   port on 9092, you should set port to false in the $brokers hash.
+# [*security_inter_broker_protocol*]
+#   Security protocol used to communicate between brokers.  Default: undef
+#
+# [*ssl_keystore_location*]
+#   The location of the key store file. Default: undef
+#
+# [*ssl_keystore_password*]
+#   The store password for the key store file.  Default: undef
+#
+# [*ssl_key_password*]
+#   The password of the private key in the key store file.  Default: undef
+#
+# [*ssl_truststore_location*]
+#   The location of the trust store file.  Default: undef
+#
+# [*ssl_truststore_password*]
+#   The password for the trust store file.  Default: undef
+#
+# [*ssl_client_auth*]
+#   Configures kafka broker to request client authentication.  Must be one of
+#   'none', 'requested', or 'required'.  Default: undef
 #
 # [*log_dirs*]
 #   Array of directories in which the broker will store its received message
@@ -176,11 +194,20 @@
 class confluent::kafka::broker(
     $enabled                             = true,
     $brokers                             = {
-        "${::fqdn}" => {
-            'id'   => 1,
-            'port' => 9092,
+        "${::fqdn}"                      => {
+            'id'                         => 1,
         },
     },
+    $listeners                           = undef,
+    $security_inter_broker_protocol      = undef,
+
+    $ssl_keystore_location               = undef,
+    $ssl_keystore_password               = undef,
+    $ssl_key_password                    = undef,
+    $ssl_truststore_location             = undef,
+    $ssl_truststore_password             = undef,
+    $ssl_client_auth                     = undef,
+
     $log_dirs                            = ['/var/spool/kafka'],
 
     $zookeeper_connect                   = 'localhost:2181',
@@ -231,6 +258,7 @@ class confluent::kafka::broker(
     $server_properties_template          = 'confluent/kafka/server.properties.erb',
     $default_template                    = 'confluent/kafka/kafka.default.erb',
     $log4j_properties_template           = 'confluent/kafka/log4j.properties.erb',
+
 ) {
     # confluent::kafka::client installs the kafka package
     # and a handy wrapper script.
@@ -240,15 +268,11 @@ class confluent::kafka::broker(
     # configuration hash.
     $id = $brokers[$::fqdn]['id']
 
-    $default_port = 9092
-    # Using a conditional assignment selector with a
-    # Hash value results in a puppet syntax error.
-    # Using an if/else instead.
-    if ($brokers[$::fqdn]['port'] != false) {
-        $port = $brokers[$::fqdn]['port']
-    }
-    else {
-        $port = $default_port
+    $default_port = $listeners ? {
+        undef   => 9092,
+        # The default Kafka port for KAFKA_BOOTSTRAP_SERVERS will be the port
+        # first port specified in the $listeners array.
+        default => inline_template("<%= Array(@listeners)[0].split(':')[-1] %>")
     }
 
     # Local variable for rendering in templates.
