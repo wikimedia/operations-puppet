@@ -16,13 +16,34 @@ inter.broker.protocol.version=<%= @inter_broker_protocol_version %>
 <% end -%>
 ######################### Socket Server Settings ########################
 
-<% if @port -%>
-# The port the socket server listens on
-port=<%= @port %>
-
-<% end -%>
 <% if @listeners -%>
 listeners=<%= Array(@listeners).join(',') %>
+<% else -%>
+listeners=PLAINTEXT://:9092
+<% end -%>
+
+<% if @security_inter_broker_protocol -%>
+security.inter.broker.protocol=<%= @security_inter_broker_protocol %>
+
+<% end -%>
+<% if @ssl_keystore_location -%>
+ssl.keystore.location=<%= @ssl_keystore_location %>
+<% end -%>
+<% if @ssl_keystore_password -%>
+ssl.keystore.password=<%= @ssl_keystore_password %>
+<% end -%>
+<% if @ssl_key_password -%>
+ssl.key.password=<%= @ssl_key_password %>
+<% end -%>
+<% if @ssl_truststore_location -%>
+ssl.truststore.location=<%= @ssl_truststore_location %>
+<% end -%>
+<% if @ssl_truststore_password -%>
+ssl.truststore.password=<%= @ssl_truststore_password %>
+<% end -%>
+
+<% if @ssl_client_auth -%>
+ssl.client.auth=<%= @ssl_client_auth %>
 
 <% end -%>
 <% if @num_network_threads -%>
