@@ -452,6 +452,23 @@ kafka_clusters:
       kafka2003.codfw.wmnet:
         id: 2003
 
+  # TODO: replace these with real broker names and row commends
+  aggregate-eqiad:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      kafka1101.eqiad.wmnet:
+        id: 1101  # Row A
+      kafka1102.eqiad.wmnet:
+        id: 1102  # Row A
+      kafka1103.eqiad.wmnet:
+        id: 1103  # Row C
+      kafka1104.eqiad.wmnet:
+        id: 1104  # Row D
+      kafka1105.eqiad.wmnet:
+        id: 1105  # Row D
+      kafka1106.eqiad.wmnet:
+        id: 1106  # Row C
+
 deployment_server: tin.eqiad.wmnet
 
 install_server: install1002.wikimedia.org
