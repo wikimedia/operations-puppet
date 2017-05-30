@@ -2485,6 +2485,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweEnau/EYh0Hdyon4KoT/WRnEUBwdh8Cw+1Mvs1wOxSzBqPg2M9U5JADm20WG+SfyeCyrMXlIDjG5SyBTfALKwez4ExonQ5FyGvt8v4ipQRx+U+tdewIu9n2aAdmZia+0pS1ZgbyhkJtwNO8D95axlmeOab46HyQqZs0BVxPPdXM4ysPUgPZpSIyQ3rfFVerrVClLBNxqHvi7ZuyKH1zBAxSURhT60oRRNGI74G0+78nAA1c/cTeY/DbEKsJNpo7VK5slh9XQNUS2/6X4mgYg5IUK3AtaXIDnA6H5HCgghba0pZN4AmVR4dwVmILWeb8HpMInlLowQUQ5jNXM+hnYQ== xionox@laptop
     uid: 16756
     email: ayounsi@wikimedia.org
+  herron:
+    ensure: present
+    gid: 500
+    name: herron
+    realname: Keith Herron
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjuVAhEH0j3RgCiVI8iWK0TIx7wR1ITXQbb92WizSNS7bufl6LksGS87u2fJc0QmfMQMvNYgTfj6ie9wnekARRJ/shIVLx2C44PXV8/veg5yZtOt07vRfqGmE0rdU/7GKB2h3688yB3uecNYkTatqVUH9hG2Z4C/zC3XRWJ6SWXy2FUhBqAsUXKvpfoQgx1jNLm1TWKBbbKYT2VjAYuXbtRhAhTXfz4oCHDZeNnOKg57rIEnen+FKXr4cMpL8pJMQNAk+jSDOJyyBdmDN3fnNY0Rdp7eFn3l6PhoTEqDUicVj6OH+zye+q5oK6S0EoGocCV1nHsP8t1ZFLkXY7oWMzKlbj9G7eG/Tf/p+xgRYL3F9wegLGwyBb6g5btS1CRb4FPE8OF1AZOU+9B9c+qL+Q33rAC3XfUb0Dqzv1OInZYFkkKoWpblpAiG6S9y1KaKOIeFYGJioCvs0dI89hjjxGZWR5EMIfclyvpdrWVitoLcZ6iVvVF73CsR0OpiHNwBGXX3fOw6IlP5T0lXOoPQImPEqlAZoaChvrH+GMCAmW6bEgMvW4iwsE8ajKKT/2riql2ZtTdUwiQCcSYCjAzhQCgsn43K0o/P5RME8dQTiprKC1rqQYYZSJryqZ7cUoBeE5nB+p3wpF4jPqcrKXuCrAuRvXEmWPX1y0e0qBZJNjlQ== kherron@wikimedia.org
+    uid: 17187
+    email: kherron@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
