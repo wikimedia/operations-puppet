@@ -11,6 +11,7 @@ class role::swift::storage {
     include ::swift::ring
     class { '::swift::storage':
         statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
+        memcached_servers    => hiera('swift::proxy::memcached_servers'),
     }
     include ::swift::container_sync
     include ::swift::storage::monitoring
