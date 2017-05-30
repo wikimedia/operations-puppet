@@ -66,6 +66,9 @@ class role::kafka::analytics::broker {
         # I don't trust auto.leader.rebalance :)
         auto_leader_rebalance_enable    => false,
 
+        # Should be changed if brokers are upgraded.
+        inter_broker_protocol_version   => '0.9.0.X',
+
         default_replication_factor      => min(3, $config['brokers']['size']),
 
         # The default for log segment bytes has changed in the puppet
