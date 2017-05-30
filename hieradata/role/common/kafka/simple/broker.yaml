@@ -1,0 +1,13 @@
+kafka_cluster_name: simple
+
+profile::kafka::broker::log_dirs: [/srv/kafka/data]
+profile::kafka::broker::plaintext: true
+profile::kafka::broker::tls_secrets_path: null
+profile::kafka::broker::tls_key_password: null
+profile::kafka::broker::auto_leader_rebalance_enable: true
+profile::kafka::broker::nofiles_ulimit: 8192
+
+profile::kafka::broker::num_replica_fetchers: 1
+profile::kafka::broker::log_retention_hours: 168  # 1 week
+profile::kafka::broker::replica_maxlag_warning: "1000"
+profile::kafka::broker::replica_maxlag_critical: "10000"
