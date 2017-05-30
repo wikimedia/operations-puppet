@@ -88,6 +88,20 @@ class network::constants {
                     '10.192.32.150',                      # kafka2003.codfw.wmnet
                     '2620:0:860:103:1a66:daff:fe7f:23f0', # kafka2003.codfw.wmnet
                 ],
+            'kafka_brokers_analytics' => [
+                    '10.64.5.12',                  # kafka1012.eqiad.wmnet
+                    '2620:0:861:104:10:64:5:12',   # kafka1012.eqiad.wmnet
+                    '10.64.5.13',                  # kafka1013.eqiad.wmnet
+                    '2620:0:861:104:10:64:5:13',   # kafka1013.eqiad.wmnet
+                    '10.64.36.114',                # kafka1014.eqiad.wmnet
+                    '2620:0:861:106:10:64:36:114', # kafka1014.eqiad.wmnet
+                    '10.64.53.10',                 # kafka1018.eqiad.wmnet
+                    '2620:0:861:108:10:64:53:10',  # kafka1018.eqiad.wmnet
+                    '10.64.53.12',                 # kafka1020.eqiad.wmnet
+                    '2620:0:861:108:10:64:53:12',  # kafka1020.eqiad.wmnet
+                    '10.64.36.122',                # kafka1022.eqiad.wmnet
+                    '2620:0:861:106:10:64:36:122', # kafka1022.eqiad.wmnet
+                ],
             },
         'labs' => {
             'bastion_hosts' => concat([
