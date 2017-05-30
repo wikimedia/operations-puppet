@@ -1,0 +1,14 @@
+kafka_cluster_name: aggregate
+
+profile::kafka::broker::log_dirs: [/srv/kafka/data] # TBD
+profile::kafka::broker::plaintext: false
+profile::kafka::broker::tls: true
+profile::kafka::broker::tls_key_password: qwerty # TODO: put this in puppet private
+profile::kafka::broker::auto_leader_rebalance_enable: true
+profile::kafka::broker::nofiles_ulimit: 65536
+
+# Bump this up to get a little more parallelism between replicas.
+profile::kafka::broker::num_replica_fetchers: 12
+profile::kafka::broker::log_retention_hours: 168  # 1 week
+profile::kafka::broker::replica_maxlag_warning: "1000000"
+profile::kafka::broker::replica_maxlag_critical: "5000000"
