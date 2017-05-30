@@ -26,7 +26,7 @@ class prometheus::node_exporter (
 ) {
     require_package('prometheus-node-exporter')
 
-    $collectors_default = ['diskstats', 'filefd', 'filesystem', 'loadavg',
+    $collectors_default = ['diskstats', 'filefd', 'filesystem', 'hwmon', 'loadavg',
         'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat',
         'tcpstat', 'textfile', 'time', 'uname']
     $textfile_directory = '/var/lib/prometheus/node.d'
