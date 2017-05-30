@@ -14,6 +14,12 @@ class contint::packages::python {
         'libssl-dev', # python cryptography
     )
 
+    if os_version('ubuntu == trusty || debian == jessie') {
+        require_package('libmysqlclient-dev')
+    }
+    if os_version('debian == stretch') {
+        require_package('libmariadbclient-dev')
+    }
     if os_version('debian jessie') {
         # Debian only has: Suggests: libgnutls28-dev
         # Whereas on Ubuntu libgnutls-dev is a dependency
