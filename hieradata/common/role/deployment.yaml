@@ -13,9 +13,6 @@ role::deployment::repo_config:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride
   statsv/statsv:
     upstream: https://gerrit.wikimedia.org/r/analytics/statsv
-  test/testrepo:
-    service_name: puppet
-    checkout_submodules: true
   elasticsearch/plugins:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins
