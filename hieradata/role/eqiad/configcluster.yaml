@@ -11,4 +11,3 @@ profile::etcd::replication::origin:
 profile::etcd::replication::destination_path: /conftool
 # only conf1002 is active if this is not the master DC.
 profile::etcd::replication::active: false
-profile::etcd::tlsproxy::read_only: true
