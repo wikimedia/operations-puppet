@@ -21,12 +21,12 @@ actions:
     action: forcemerge
     description: >-
       forceMerge <%= @prefix %> prefixed indices older than 2 days (based on index
-      creation_date) to 2 segments per shard.  Delay 120 seconds between each
+      creation_date) to 10 segments per shard.  Delay 120 seconds between each
       forceMerge operation to allow the cluster to quiesce.
       This action will ignore indices already forceMerged to the same or fewer
       number of segments per shard, so the 'forcemerged' filter is unneeded.
     options:
-      max_num_segments: 1
+      max_num_segments: 10
       delay: 120
       timeout_override:
       continue_if_exception: False
