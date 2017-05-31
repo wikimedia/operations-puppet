@@ -34,7 +34,9 @@ define motd::script(
     include ::motd
 
     validate_ensure($ensure)
-    validate_re($priority, '^\d?\d$', '"priority" must be between 0 - 99')
+    if !is_integer($priority) or $priority < 0 or $priority > 99 {
+        fail('"priority" must be between 0 - 99')
+    }
     if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
     if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
 
