@@ -1,5 +1,6 @@
 class gerrit::proxy(
     $host         = $::gerrit::host,
+    $slave_hosts  = [],
     $maint_mode   = false,
     ) {
 
