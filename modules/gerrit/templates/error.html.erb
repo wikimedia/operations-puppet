@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Gerrit - Error</title>
-	<style>
-		body {
-			color: #353535 !important;
-			background: #fff url(/page-bkg.cache.jpg) no-repeat 0 0 !important;
-			position: static;
-		}
-		h1 {
-			margin: 0;
-			padding: 14px 0 0 17px;
-			font-family: 'PT Sans', sans-serif;
-			font-weight: normal;
-			letter-spacing: -1px;
-			/* This color isn't used since there is an image there,
-			 * but it kept for consistency when used for display of alt-text
-			 */
-			color: #990000;
-			min-height: 59px;
-			background: transparent url(/wikimedia-codereview-logo.cache.png) no-repeat 0 0;
-			text-indent: -9999px;
-			overflow: hidden;
-		}
-		p {
-			font-size: 150%;
-		}
-	</style>
-  </head>
-  <body>
-	<h1> Wikimedia Code Review</h1>
-	<p>
-        <%- if @maint_mode -%>
-        Gerrit is currently down for planned maintenance. Current ETA is <b><%= @maint_mode %></b>.
-        <%- else -%>
-        Gerrit is down. We're working on bringing it back as soon as possible.
-        <br />
-        Please follow along the discussion at #wikimedia-operations on Freenode as we debug.
-        <%- end -%>
-	</p>
-    <p>
-        Please try again later!
-    </p>
-  </body>
+	<head>
+		<meta charset="utf-8">
+		<title>Gerrit - Error</title>
+		<style>
+			body {
+				color: #353535 !important;
+				background: #fff url(/page-bkg.cache.jpg) no-repeat 0 0 !important;
+				position: static;
+			}
+			h1 {
+				margin: 0;
+				padding: 14px 0 0 17px;
+				font-family: 'PT Sans', sans-serif;
+				font-weight: normal;
+				letter-spacing: -1px;
+				/* This color isn't used since there is an image there,
+				 * but it kept for consistency when used for display of alt-text
+				 */
+				color: #990000;
+				min-height: 59px;
+				background: transparent url(/wikimedia-codereview-logo.cache.png) no-repeat 0 0;
+				text-indent: -9999px;
+				overflow: hidden;
+			}
+			p {
+				font-size: 150%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Wikimedia Code Review</h1>
+		<p>
+			<%- if @maint_mode -%>
+			Gerrit is currently down for planned maintenance. Current ETA is <b><%= @maint_mode %></b>.
+			<%- else -%>
+			Gerrit is down. We're working on bringing it back as soon as possible.
+			<br />
+			Please follow along the discussion at #wikimedia-operations on Freenode as we debug.
+			<%- end -%>
+		</p>
+		<p>
+			Please try again later!
+		</p>
+	</body>
 </html>
