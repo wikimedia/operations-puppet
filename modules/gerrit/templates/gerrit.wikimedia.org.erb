@@ -11,6 +11,9 @@ MaxClients 50
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
+    <%- if @slave_hosts -%>
+    ServerAlias <%= Array(@slave_hosts).join(' ') %>
+    <%- else -%>
 
     DocumentRoot /var/www
     <Directory />
@@ -41,6 +44,10 @@ NameVirtualHost *:443
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
+    <%- if @slave_hosts -%>
+    ServerAlias <%= Array(@slave_hosts).join(' ') %>
+    <%- else -%>
+
     # https://httpoxy.org/
     RequestHeader unset Proxy early
 

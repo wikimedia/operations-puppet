@@ -5,6 +5,7 @@ class profile::gerrit::server(
     $ipv4 = hiera('gerrit::service::ipv4'),
     $ipv6 = hiera('gerrit::service::ipv6'),
     $host = hiera('gerrit::server::host'),
+    $slave_hosts = hiera('gerrit::server::slave_hosts'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
     $gerrit_servers = join(hiera('gerrit::servers'), ' ')
@@ -46,16 +47,14 @@ class profile::gerrit::server(
         srange => "(@resolve((${gerrit_servers})) @resolve((${gerrit_servers}), AAAA))",
     }
 
-    if !$slave {
-        ferm::service { 'gerrit_http':
-            proto => 'tcp',
-            port  => 'http',
-        }
+    ferm::service { 'gerrit_http':
+        proto => 'tcp',
+        port  => 'http',
+    }
 
-        ferm::service { 'gerrit_https':
-            proto => 'tcp',
-            port  => 'https',
-        }
+    ferm::service { 'gerrit_https':
+        proto => 'tcp',
+        port  => 'https',
     }
 
     if $bacula != undef and !$slave {
@@ -63,7 +62,8 @@ class profile::gerrit::server(
     }
 
     class { '::gerrit':
-        host  => $host,
-        slave => $slave,
+        host        => $host,
+        slave       => $slave,
+        slave_hosts => $slave_hosts,
     }
 }
