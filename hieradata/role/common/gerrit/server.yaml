@@ -6,6 +6,8 @@ debdeploy::grains:
     value: standard
 
 gerrit::server::host: 'gerrit.wikimedia.org'
+gerrit::server::slave_hosts:
+    - 'gerrit.wikimedia.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
 
