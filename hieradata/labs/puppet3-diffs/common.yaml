@@ -5,7 +5,7 @@ profile::base::ssh_server_settings:
   explicit_macs: false
   disable_agent_forwarding: false
   challenge_response_auth: false
-puppet_compiler::version: 0.1.6
+puppet_compiler::version: 0.1.7
 etcd::peers_list: compiler02=http://127.0.0.1:2380
 etcd::client::globalconfig::host: 127.0.0.1
 etcd::client::globalconfig::port: 2379
