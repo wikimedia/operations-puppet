@@ -2288,7 +2288,7 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
 }
 
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
-    role(prometheus::ops)
+    role(prometheus::ops, prometheus::global)
 
     include ::lvs::realserver
 
