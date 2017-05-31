@@ -209,6 +209,14 @@ class role::mariadb::analytics::custom_repl_slave {
     # Only 'replicate' this many rows at a time.
     $batch_size  = 1000
 
+    file { '/usr/local/bin/eventlogging_cleaner.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0700',
+        source => 'puppet:///modules/role/mariadb/eventlogging_cleaner.py',
+    }
+
     file { '/usr/local/bin/eventlogging_sync.sh':
         ensure => present,
         owner  => 'root',
