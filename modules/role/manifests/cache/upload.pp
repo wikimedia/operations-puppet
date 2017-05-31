@@ -61,11 +61,11 @@ class role::cache::upload(
     $sda = $::role::cache::base::storage_parts[0]
     $sdb = $::role::cache::base::storage_parts[1]
     $ssm = $::role::cache::base::storage_size * 2 * 1024
-    $bin0_size = floor($ssm * 0.03)
-    $bin1_size = floor($ssm * 0.20)
-    $bin2_size = floor($ssm * 0.43)
-    $bin3_size = floor($ssm * 0.30)
-    $bin4_size = floor($ssm * 0.04)
+    $bin0_size = floor($ssm * 0.04)
+    $bin1_size = floor($ssm * 0.23)
+    $bin2_size = floor($ssm * 0.40)
+    $bin3_size = floor($ssm * 0.27)
+    $bin4_size = floor($ssm * 0.06)
     $upload_storage_args = join([
         "-s bin0=file,/srv/${sda}/varnish.bin0,${bin0_size}M",
         "-s bin1=file,/srv/${sdb}/varnish.bin1,${bin1_size}M",
