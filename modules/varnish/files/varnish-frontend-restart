@@ -16,11 +16,6 @@ sleep 15
 
 sleep 5
 
-# Fix VSM files permissions
-chmod 644 /var/lib/varnish/*/*.vsm
-
-sleep 5
-
 # Repool varnish-fe
 confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=yes
 
