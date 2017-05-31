@@ -3,6 +3,8 @@ admin::groups:
   - gerrit-admin
 
 gerrit::server::host: 'gerrit.wikimedia.org'
+gerrit::server::slave_hosts:
+    - 'gerrit-slave.wikimedia.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'
 gerrit::server::bacula: 'srv-gerrit-git'
 gerrit::server::config: 'gerrit.config.erb'
