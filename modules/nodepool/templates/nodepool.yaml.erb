@@ -54,9 +54,10 @@ targets:
 # Make sure all labels run the 'ready.sh' script
 #
 # To balance number of min-ready per labels, see the repartition of builds
-# between nodes on the Grafana dashboard:
+# between nodes on the Grafana dashboards:
 #
 # https://grafana.wikimedia.org/dashboard/db/continuous-integration?panelId=8&fullscreen
+# https://grafana.wikimedia.org/dashboard/db/zuul?panelId=18&fullscreen
 #
 labels:
   - name: ci-jessie-wikimedia
@@ -68,7 +69,7 @@ labels:
   - name: ci-trusty-wikimedia
     image: snapshot-ci-trusty
     ready-script: ready.sh
-    min-ready: 5
+    min-ready: 4
     providers:
       - name: wmflabs-eqiad
 
