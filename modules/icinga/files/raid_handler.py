@@ -240,11 +240,12 @@ def main():
                     args.message))
             return
 
+    raid_status = '{}\n'.format(args.message)
     if args.skip_nrpe or args.raid_type == 'n/a':
         logger.debug('Skipping NRPE RAID status gathering')
-        raid_status = '{}\n{}'.format(args.message, args.message_remain)
+        raid_status += args.message_remain
     else:
-        raid_status = get_raid_status(args.host_address, args.raid_type)
+        raid_status += get_raid_status(args.host_address, args.raid_type)
 
     phab_client = get_phabricator_client()
     project_ids = get_phabricator_project_ids(phab_client, args.datacenter)
