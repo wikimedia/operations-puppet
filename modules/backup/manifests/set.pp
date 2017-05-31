@@ -11,7 +11,7 @@ define backup::set($extras=undef) {
         $motd_content = "#!/bin/sh\necho \"Backed up on this host: ${name}\""
         @motd::script { "backups-${name}":
             ensure   => present,
-            priority => 06,
+            priority => 16,
             content  => $motd_content,
             tag      => 'backup-motd',
         }

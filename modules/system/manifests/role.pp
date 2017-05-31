@@ -28,7 +28,7 @@ define system::role(
 
     motd::script { "role-${title}":
         ensure   => $ensure,
-        priority => 05,
+        priority => 15,
         content  => "#!/bin/sh\necho '${message}'\n",
     }
 }
