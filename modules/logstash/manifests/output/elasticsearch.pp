@@ -60,7 +60,7 @@ define logstash::output::elasticsearch(
         ensure => absent,
     }
     elasticsearch::curator::config { "cleanup_${title}":
-        content => template('logstash/curator/cleanup.yaml')
+        content => template('logstash/curator/cleanup.yaml.erb')
     }
 
     cron { "logstash_cleanup_indices_${title}":
