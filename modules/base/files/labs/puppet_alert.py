@@ -72,7 +72,7 @@ You are receiving this email because you are listed as an administrator
 for the project that contains this instance.  Please take steps to repair
 this instance or contact a Labs admin for assistance.
 
-For further support, visit #wikimedia-labs on freenode or visit
+For further support, visit #wikimedia-cloud on freenode or visit
 https://wikitech.wikimedia.org
 """.format(fqdn=fqdn)
 
