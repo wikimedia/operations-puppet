@@ -145,7 +145,6 @@ groups:
                  'ALL = (gerritslave) NOPASSWD: ALL',
                  'ALL = (nodepool) NOPASSWD: ALL',
                  'ALL = (zuul) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /etc/init.d/jenkins',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool start',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool restart',

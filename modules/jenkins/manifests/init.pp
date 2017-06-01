@@ -130,6 +130,14 @@ class jenkins(
         default     => ensure_service($service_ensure),
     }
 
+    file { '/etc/init.d/jenkins':
+        # We use systemd, prevent admins from using the init script that comes
+        # in the Debian package.
+        ensure  => absent,
+        require => Package['jenkins'],
+        before  => Service['jenkins'],
+    }
+
     base::service_unit { 'jenkins':
         ensure         => 'present',
         sysvinit       => false,
