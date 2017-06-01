@@ -75,7 +75,7 @@ define role::cache::instances (
     $nuke_lru_params = ['nuke_limit=1000','lru_interval=31']
 
     varnish::instance { "${title}-backend":
-        name               => '',
+        instance_name      => '',
         layer              => 'backend',
         vcl                => "${title}-backend",
         extra_vcl          => $be_extra_vcl,
@@ -94,7 +94,7 @@ define role::cache::instances (
 
     # lint:ignore:arrow_alignment
     varnish::instance { "${title}-frontend":
-        name               => 'frontend',
+        instance_name      => 'frontend',
         layer              => 'frontend',
         vcl                => "${title}-frontend",
         extra_vcl          => $fe_extra_vcl,
