@@ -9,13 +9,11 @@
 #   Port the admin site should listen on (default: 9002).
 #
 class hhvm::admin(
-    $ensure = present,
-    $port   = 9002,
+    String $ensure = present,
+    Integer $port   = 9002,
 ) {
     include ::network::constants
     include ::apache::mod::proxy_fcgi
-
-    if $port !~ /^\d+$/ { fail('port must be numeric') }
 
     apache::conf { 'hhvm_admin_port':
         ensure   => $ensure,

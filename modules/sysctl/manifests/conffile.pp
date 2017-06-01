@@ -34,11 +34,11 @@ define sysctl::conffile(
     $ensure   = present,
     $content  = undef,
     $source   = undef,
-    $priority = 70
+    Integer $priority = 70
 ) {
     include ::sysctl
 
-    if $priority !~ /^\d?\d$/ {
+    if ($priority < 0 or $priority > 99) {
         fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
     }
 

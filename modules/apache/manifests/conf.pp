@@ -45,7 +45,7 @@
 define apache::conf(
     $ensure    = present,
     $conf_type = 'conf',
-    $priority  = 50,
+    Integer $priority  = 50,
     $content   = undef,
     $source    = undef,
     $replaces  = undef,
@@ -53,10 +53,6 @@ define apache::conf(
     include ::apache
 
     validate_ensure($ensure)
-
-    if $priority  !~ /^\d?\d$/ {
-        fail('"priority" must be between 0 - 99')
-    }
 
     if !($conf_type in $::apache::conf_types)  {
         fail("invalid conf_type '${conf_type}'")

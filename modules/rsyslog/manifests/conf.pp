@@ -30,11 +30,11 @@ define rsyslog::conf(
     $ensure   = present,
     $content  = undef,
     $source   = undef,
-    $priority = 60
+    Integer $priority = 60
 ) {
     include ::rsyslog
 
-    if $priority !~ /^\d?\d$/ {
+    if ($priority < 0 or $priority > 99) {
         fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
     }
 
