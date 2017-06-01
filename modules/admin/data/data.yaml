@@ -2384,7 +2384,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDR23MLJl52/9i2syrOF+mSSHBCpyIEvymOarSFgc0FufWukmb04xTKLRNBjDdWtGzmROqhG9aiD8pptcanzBHXTryoPHDZxnpjik+BmY9IRNXqfhI8hoYE914epFIyM5I14tXra76LFbnVfc3dU2H0V3YCxiMqZkzglxU53Vr25N7e5nSPGdYlwIn3vt3WcF1h9AZdw67659kVX3dKJ0NLWvPJz+odPkJbPwxl3v3XWRW+a+TG42TOVFnoTMkgJ3Vh0Q/0hv00fSb7HzqtlyVfWqNR0KgvilLWkOfH+IX2dAZcPInPk6x9JhFRyfehi7X9t2FXgFlT2T8kmCf215H Adrian.Bielefeldt@mailbox.tu-dresden.de
     uid: 15336
     email: Adrian.Bielefeldt@mailbox.tu-dresden.de
-    expiry_date: 2017-05-30
+    expiry_date: 2017-11-30
     expiry_contact: leila@wikimedia.org
   jgonsior:
     ensure: present
@@ -2395,7 +2395,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1r7OXp7M2oYoTVw/e7ccbF6tHdmM0ZeLpwwMzPAS07zfY31TQ9F3Ww0KPDyKcDt0Cndbg5izpkGlQ6rwTVaeeBlp3IbAwn+YtuZjVjoNny3OyTM1WRjmGbimxglrfUWWjn5yhu4VzrVkA9XYGn7mlJtCmV/kQzXzcAXgF19L9YCOnfBILy7HB5CPpj7H/N+ACmZVAaTiOCLpXb60P3ffVp93Lfzzlau7sPmel/MJOSSWAH8MUhIdGlUXTyk6+b06pSIGk3kAJjtAvtvT1ACjNeyPE1QYJSYm/Lk3MbrjxHvdJipquq3tgxp7StfqY9ppXq5GwvoEecFLd9D59WTHD ragada@thinkpad
     uid: 15338
     email: julius@gaenseri.ch
-    expiry_date: 2017-05-30
+    expiry_date: 2017-11-30
     expiry_contact: leila@wikimedia.org
   piccardi:
     ensure: present
