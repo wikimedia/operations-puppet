@@ -197,11 +197,17 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/static',
     }
 
-    service { 'gerrit':
-        ensure    => running,
-        enable    => true,
-        hasstatus => false,
-        status    => '/etc/init.d/gerrit check',
+    base::service_unit { 'gerrit':
+        ensure           => present, # implies ensure => running
+        sysvinit         => true,    # still working fine
+        systemd          => false,   # coming soon
+        systemd_override => false,   # if we wanted to use unit file from deb package
+        upstart          => false,   # skip that
+        refresh          => false,   # do not restart on config changes
+        service_params   => {
+            hasstatus => false,
+            status    => '/etc/init.d/gerrit check',
+        }
     }
 
     file { '/etc/default/gerritcodereview':
