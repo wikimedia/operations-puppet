@@ -1138,7 +1138,7 @@ node 'labtestneutron2001.codfw.wmnet' {
     include ::standard
 }
 
-node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
+node /^labtestvirt200[12]\.codfw\.wmnet$/ {
     role(labs::openstack::nova::compute)
     include ::standard
 }
