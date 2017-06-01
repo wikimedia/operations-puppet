@@ -3,7 +3,7 @@ define varnish::instance(
     $vcl_config,
     $ports,
     $admin_port,
-    $name='',
+    $instance_name='',
     $vcl = '',
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
@@ -17,7 +17,7 @@ define varnish::instance(
     include ::varnish::common
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
-    if $name == '' {
+    if $instance_name == '' {
         $instancesuffix = ''
         $extraopts = ''
     }
@@ -39,10 +39,10 @@ define varnish::instance(
     }
 
     # Write the dynamic backend caches configuration, if we need it
-    if $name == '' {
+    if $instance_name == '' {
         $inst = 'backend'
     } else {
-        $inst = $name
+        $inst = $instance_name
     }
 
     varnish::common::directors { $vcl:
