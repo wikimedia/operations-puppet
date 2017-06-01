@@ -77,8 +77,16 @@ class phabricator (
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")
 
+    if ($libraries) {
+        phabricator::libext { $libraries:
+            rootdir => $phabdir,
+            require => $base_requirements,
+        }
+        $library_settings = { 'load-libraries' => $libraries }
+    }
+
     #per stdlib merge the dynamic settings will take precendence for conflicts
-    $phab_settings = merge($fixed_settings, $settings)
+    $phab_settings = merge($fixed_settings, $library_settings, $settings)
 
     if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
@@ -185,14 +193,6 @@ class phabricator (
         mode    => '0755',
         recurse => true,
         require => $base_requirements,
-    }
-
-    if ($libraries) {
-        phabricator::libext { $libraries:
-            rootdir => $phabdir,
-            require => $base_requirements,
-        }
-        $phab_settings['load-libraries'] = $libraries
     }
 
     $opcache_validate = hiera('phabricator_opcache_validate', 0)
