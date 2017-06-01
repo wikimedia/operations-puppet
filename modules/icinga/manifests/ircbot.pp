@@ -9,7 +9,7 @@ class icinga::ircbot(
             '/var/log/icinga/irc.log'             => '#wikimedia-operations',
             '/var/log/icinga/irc-wikidata.log'    => '#wikidata',
             '/var/log/icinga/irc-releng.log'      => '#wikimedia-releng',
-            '/var/log/icinga/irc-labs.log'        => '#wikimedia-labs',
+            '/var/log/icinga/irc-labs.log'        => '#wikimedia-cloud',
             '/var/log/icinga/irc-analytics.log'   => '#wikimedia-analytics',
             '/var/log/icinga/irc-ores.log'        => '#wikimedia-ai',
             '/var/log/icinga/irc-interactive.log' => '#wikimedia-interactive',
