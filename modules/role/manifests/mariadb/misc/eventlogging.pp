@@ -55,5 +55,14 @@ class role::mariadb::misc::eventlogging(
         datacenter => $::site,
         enabled    => $master,
     }
+
+    # Required for TokuDB to start
+    # See https://mariadb.com/kb/en/mariadb/enabling-tokudb/#check-for-transparent-hugepage-support-on-linux
+    sysfs::parameters { 'disable-transparent-hugepages':
+        values => {
+            'kernel/mm/transparent_hugepage/enabled' => 'never',
+            'kernel/mm/transparent_hugepage/defrag'  => 'never',
+        }
+    }
 }
 
