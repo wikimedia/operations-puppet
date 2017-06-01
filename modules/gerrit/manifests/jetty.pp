@@ -200,7 +200,7 @@ class gerrit::jetty(
     base::service_unit { 'gerrit':
         ensure           => present, # implies ensure => running
         sysvinit         => true,    # still working fine
-        systemd          => false,   # coming soon
+        systemd          => true,   # coming soon
         systemd_override => false,   # if we wanted to use unit file from deb package
         upstart          => false,   # skip that
         refresh          => false,   # do not restart on config changes
