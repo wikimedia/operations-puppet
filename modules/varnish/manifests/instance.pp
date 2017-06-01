@@ -3,7 +3,7 @@ define varnish::instance(
     $vcl_config,
     $ports,
     $admin_port,
-    $name='',
+    $instance_name='',
     $vcl = '',
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
