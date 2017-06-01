@@ -1,0 +1,21 @@
+[Unit]
+Description=Gerrit code review tool
+After=network.target
+
+[Service]
+User=gerrit2
+Group=gerrit2
+Type=simple
+PIDFile=/var/lib/gerrit2/review_site/logs/gerrit.pid
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gerrit2
+EnvironmentFile=/etc/default/gerrit
+ExecStart=/var/lib/gerrit2/review_site/bin/gerrit.sh start
+ExecReload=/var/lib/gerrit2/review_site/bin/gerrit.sh reload
+ExecStop=/var/lib/gerrit2/review_site/bin/gerrit.sh stop
+# NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script
+LimitNOFILE=6000
+
+[Install]
+WantedBy=multi-user.target
