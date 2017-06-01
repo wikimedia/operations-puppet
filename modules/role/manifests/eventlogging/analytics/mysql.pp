@@ -48,7 +48,7 @@ class role::eventlogging::analytics::mysql {
     $statsd_host          = hiera('eventlogging_statsd_host', 'statsd.eqiad.wmnet')
 
     # Filtering function to use on events consumed by mysql
-    $filter_function      = '&function=is_not_bot'
+    $filter_function      = '&function=should_insert_event'
 
     # Custom URI scheme to pass events through filter
     $filter_scheme        = 'filter://'
