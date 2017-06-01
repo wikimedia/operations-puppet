@@ -75,7 +75,6 @@ class profile::restbase(
     $cassandra_tls = hiera('profile::restbase::cassandra_tls', {}),
     $salt_key = hiera('profile::restbase::salt_key'),
     $logging_label = hiera('profile::restbase::logging_label'),
-    $hosts = hiera('profile::restbase::hosts'),
     $parsoid_uri = hiera('profile::restbase::parsoid_uri'),
     $graphoid_uri = hiera('profile::restbase::graphoid_uri'),
     $mobileapps_uri = hiera('profile::restbase::mobileapps_uri'),
