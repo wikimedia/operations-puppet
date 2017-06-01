@@ -20,13 +20,15 @@ sub cluster_fe_recv {
 
 	call upload_common_recv;
 
-	// Look for a "download" request parameter
-	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
-		set req.http.X-Content-Disposition = "attachment";
-	}
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Look for a "download" request parameter
+		if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
+			set req.http.X-Content-Disposition = "attachment";
+		}
 
-	// Strip away all query parameters
-	set req.url = regsub(req.url, "\?.*$", "");
+		// Strip away all query parameters
+		set req.url = regsub(req.url, "\?.*$", "");
+	}
 
 	// Replace double slashes
 	set req.url = regsuball(req.url, "/{2,}", "/");
