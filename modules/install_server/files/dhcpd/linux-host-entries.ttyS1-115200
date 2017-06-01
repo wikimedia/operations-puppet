@@ -2729,6 +2729,13 @@ host labtestvirt2002 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host labtestvirt2003 {
+    hardware ethernet 30:e1:71:60:e9:7c;
+    fixed-address labtestvirt2003.codfw.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host labtestnet2001 {
     hardware ethernet 90:B1:1C:23:20:4D;
     fixed-address labtestnet2001.codfw.wmnet;
