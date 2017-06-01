@@ -9,9 +9,7 @@ sub cluster_fe_recv {
 		if (req.method == "OPTIONS" && req.http.Origin) {
 			return (synth(667, "OK"));
 		}
-	}
 
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
 		// Homepage redirect to commons
 		if (req.url == "/") {
 			return (synth(666, "Moved Permanently"));
@@ -147,27 +145,29 @@ sub cluster_fe_deliver {
 }
 
 sub cluster_fe_err_synth {
-	// Handle CORS preflight requests
-	if (resp.status == 667) {
-		set resp.status = 200;
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0";
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Handle CORS preflight requests
+		if (resp.status == 667) {
+			set resp.status = 200;
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Content-Length = "0";
 
-		// allow Range requests, used by ogv.js
-		set resp.http.Access-Control-Allow-Origin = "*";
-		set resp.http.Access-Control-Allow-Headers = "Range";
-		set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
-		set resp.http.Access-Control-Max-Age = "86400";
+			// allow Range requests, used by ogv.js
+			set resp.http.Access-Control-Allow-Origin = "*";
+			set resp.http.Access-Control-Allow-Headers = "Range";
+			set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+			set resp.http.Access-Control-Max-Age = "86400";
 
-		return (deliver);
-	}
+			return (deliver);
+		}
 
-	// Homepage redirect to commons
-	if (resp.status == 666) {
-		set resp.status = 301;
-		set resp.http.Location = "https://commons.wikimedia.org/";
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0";
-		return (deliver);
+		// Homepage redirect to commons
+		if (resp.status == 666) {
+			set resp.status = 301;
+			set resp.http.Location = "https://commons.wikimedia.org/";
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Content-Length = "0";
+			return (deliver);
+		}
 	}
 }

@@ -71,9 +71,11 @@ sub cluster_be_backend_response {
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
-	// Derive the corresponding original URL and store it with the object
-	if (!beresp.http.X-MediaWiki-Original && bereq.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
-		set beresp.http.X-MediaWiki-Original = regsub(bereq.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+	if (bereq.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Derive the corresponding original URL and store it with the object
+		if (!beresp.http.X-MediaWiki-Original && bereq.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
+			set beresp.http.X-MediaWiki-Original = regsub(bereq.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+		}
 	}
 
 	call upload_common_backend_response;
