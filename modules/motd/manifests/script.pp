@@ -27,14 +27,13 @@
 #
 define motd::script(
     $ensure    = present,
-    $priority  = 50,
+    Integer $priority  = 50,
     $content   = undef,
     $source    = undef,
 ) {
     include ::motd
 
     validate_ensure($ensure)
-    validate_re($priority, '^\d?\d$', '"priority" must be between 0 - 99')
     if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
     if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
 

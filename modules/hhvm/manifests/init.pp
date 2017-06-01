@@ -167,12 +167,12 @@ class hhvm(
             admin_server      => { port => 9001 },
             server            => {
                 port                   => 9000,
-                type                   => 'fastcgi',
+                'type'                 => 'fastcgi',
                 gzip_compression_level => 0,
                 stat_cache             => true,
                 dns_cache              => {
-                    enable => true,
-                    ttl    => to_seconds('5 minutes'),
+                    enable             => true,
+                    ttl                => to_seconds('5 minutes'),
                 },
             },
         },

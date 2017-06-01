@@ -30,13 +30,9 @@ define sysfs::conffile(
     $ensure   = present,
     $content  = undef,
     $source   = undef,
-    $priority = 70
+    Integer $priority = 70
 ) {
     include ::sysfs
-
-    if $priority !~ /^\d?\d$/ {
-        fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
-    }
 
     $basename = regsubst($title, '\W', '-', 'G')
     $filename = sprintf('/etc/sysfs.d/%02d-%s.conf', $priority, $basename)
