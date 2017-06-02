@@ -55,6 +55,14 @@ class openstack::adminscripts(
         group  => 'root',
     }
 
+    file { '/root/novastats/diskspace.py':
+        ensure => present,
+        source => 'puppet:///modules/openstack/novastats/diskspace.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/root/novastats/flavorreport.py':
         ensure => present,
         source => 'puppet:///modules/openstack/novastats/flavorreport.py',
