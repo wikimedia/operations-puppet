@@ -4,28 +4,32 @@
 # types of time-stamped data. It integrates with ElasticSearch and LogStash.
 #
 # == Parameters:
-# - $default_app_id: Default landing page. You can specify files, scripts or
-#     saved dashboards here. Default: '/dashboard/file/default.json'.
+# - $settings: hash of settings used to generate the kibanal.yaml configuration
+#   file. See https://www.elastic.co/guide/en/kibana/current/settings.html
+#   Note: logging.quiet is made to default to true unlike Kibana
 #
 # == Sample usage:
 #
 #   class { 'kibana':
-#       default_app_id => 'dashboard/default',
+#       settings = {
+#           kibana.defaultAppId => 'dashboard/default',
+#           logging.quiet       => false,
+#           elasticsearch_url   => 'http://localhost:9200',
+#       }
 #   }
 #
-class kibana (
-    $default_app_id = 'dashboard/default'
-) {
+class kibana ( $settings ) {
     require_package('kibana')
+
+    $default_settings = {
+        'logging.quiet' => true,
+    }
 
     file { '/etc/kibana/kibana.yml':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => ordered_yaml({
-            'kibana.defaultAppId' => $default_app_id,
-            'logging.quiet'       => true,
-        }),
+        content => ordered_yaml( merge( $default_settings, $settings ) ),
         mode    => '0444',
         require => Package['kibana'],
     }
