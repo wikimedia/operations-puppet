@@ -35,11 +35,12 @@ class role::logstash::elasticsearch {
     }
 
     class { '::elasticsearch':
-      require     => [
-          Package['elasticsearch/plugins'],
-          File['/usr/share/elasticsearch/plugins'],
-      ],
-      plugins_dir => $plugins_dir,
+        require                    => [
+            Package['elasticsearch/plugins'],
+            File['/usr/share/elasticsearch/plugins'],
+        ],
+        plugins_dir                => $plugins_dir,
+        curator_uses_unicast_hosts => false, # elasticsearch API is only exposed to localhost
     }
 
     $logstash_nodes = hiera('logstash::cluster_hosts')
