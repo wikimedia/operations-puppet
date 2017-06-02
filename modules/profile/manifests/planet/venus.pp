@@ -60,6 +60,15 @@ class profile::planet::venus (
             'wikimedia'     => 'Wikimedia',
             'planetarium'   => 'Planetarium',
         },
+        el => {
+            'subscribe'     => 'Παρακολούθηση',
+            'subscriptions' => 'Συνδρομές',
+            'lastupdated'   => 'Τελευταία ενημέρωση',
+            'alltimesutc'   => 'Όλες οι ώρες είναι UTC.',
+            'poweredby'     => 'Υποστηρίζεται από το',
+            'wikimedia'     => 'Wikimedia',
+            'planetarium'   => 'Planetarium',
+        },
         en => {
             'subscribe'     => 'Subscribe',
             'subscriptions' => 'Subscriptions',
