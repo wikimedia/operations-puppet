@@ -43,7 +43,9 @@ config = etcd://<%= @config_host %><%= @conftool_prefix %>/pools/<%= @site %>/<%
 config = http://<%= @config_host %>/pybal/<%= @site %>/<%= servicename %>
 <% end -%>
 
-bgp = <%= service.fetch('bgp', "no") %>
+<%- if service.has_key? 'bgp' -%>
+bgp = <%= service.fetch('bgp') %>
+<%- end -%>
 depool-threshold = <%= service.fetch('depool-threshold', ".5") %>
 monitors = <%= service['monitors'].keys.sort.inspect %>
 
