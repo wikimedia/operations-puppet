@@ -13,6 +13,8 @@ LimitNOFILE=<%= @max_open_files %>
 Environment=JENKINS_HOME=/var/lib/jenkins
 ExecStart=/usr/bin/java <%= @java_args -%> \
     -jar /usr/share/jenkins/jenkins.war \
+    -Djavax.net.ssl.trustStore=/var/lib/jenkins/.keystore/cacerts \
+    -Djavax.net.ssl.trustStorePassword=changeit \
 <%- if @jenkins_access_log_arg -%>
     <%= @jenkins_access_log_arg -%> \
 <%- end -%>
