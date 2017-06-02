@@ -65,6 +65,13 @@
 # - $gelf_port: port on which the logs will be sent
 # - $gc_log: set to true to activate garbage collection logs
 #        Default: true
+# - $curator_uses_unicast_hosts: should curator try to connect to hosts
+#        configured for unicast discovery or only to localhost. Curator
+#        configuration allows to configure multiple hosts instead of just
+#        localhost, which make sense for robustness. In some cases, we do not
+#        want the API exposed outside of localhost, so using just localhost
+#        is useful in those cases.
+#        Default: true (use all hosts defined in unicast_hosts)
 #
 # == Sample usage:
 #
@@ -101,6 +108,7 @@ class elasticsearch(
     $java_package = 'openjdk-8-jdk',
     $version = 5,
     $search_shard_count_limit = 1000,
+    $curator_uses_unicast_hosts = true,
 ) {
 
     # Check arguments
@@ -146,8 +154,13 @@ class elasticsearch(
         java_package => $java_package,
     }
 
+    $curator_hosts = $curator_uses_unicast_hosts ? {
+        true    => $unicast_hosts,
+        default => [],
+    }
+
     class { '::elasticsearch::curator':
-        hosts => $unicast_hosts,
+        hosts => $curator_hosts,
     }
 
     # Package defaults this to 0750, which is annoying
