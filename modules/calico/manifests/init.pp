@@ -50,6 +50,14 @@ class calico(
         ensure => $calicoctl_version,
     }
 
+    file { '/etc/calico/calicoctl.cfg':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('calico/calicoctl.cfg.erb'),
+    }
+
     package { "${registry}/calico/node":
         ensure   => $calico_node_version,
         provider => 'docker',
