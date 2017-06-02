@@ -29,6 +29,7 @@ class ircecho (
         content => template('ircecho/default.erb'),
         owner   => 'root',
         mode    => '0755',
+        notify  => Service['ircecho'],
     }
 
     base::service_unit { 'ircecho':
@@ -36,7 +37,7 @@ class ircecho (
         systemd        => true,
         upstart        => false,
         sysvinit       => true,
-        require        => File['/etc/default/ircecho'],
+        require        => File['/usr/local/bin/ircecho'],
         service_params => {
             hasrestart => true,
         },
