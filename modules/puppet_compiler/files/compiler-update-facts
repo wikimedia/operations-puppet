@@ -20,15 +20,17 @@ RUBY_SCRIPT
 
 MASTERS=$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)
 
+ssh "$COMPILER" 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
+# Gather all the facts from all the masters
 for master in $MASTERS; do
     echo -e "\n### Syncing facts from $master"
     ssh "$master" 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
     # tunnel via your localhost without ever the file touching the disk
     ssh "$master" cat /tmp/puppet-facts-export.tar.xz | ssh "$COMPILER" 'cat > puppet-facts-export.tar.xz'
     ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
-    ssh "$COMPILER" 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
-    ssh "$COMPILER" 'sudo tar Jxf puppet-facts-export.tar.xz --directory /tmp/catalogs && rm puppet-facts-export.tar.xz'
+    ssh "$COMPILER" 'sudo mkdir -p /tmp/catalogs.$$ && tar Jxf puppet-facts-export.tar.xz --directory /tmp/catalogs.$$ && rsync -au /tmp/catalogs.$$ /tmp/catalogs && rm -rf /tmp/catalogs.$$ && rm puppet-facts-export.tar.xz'
     # Do not modify the files in /tmp/catalogs, the modified date counts for the rsync
     ssh "$COMPILER" 'sudo chown -R jenkins-deploy:wikidev /tmp/catalogs/yaml'
-    ssh "$COMPILER" 'sudo rsync -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
 done
+# Finally, copy all the facts to destination and cleanup
+ssh "$COMPILER" 'sudo rsync --delete -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
