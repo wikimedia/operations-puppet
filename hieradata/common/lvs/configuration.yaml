@@ -144,7 +144,6 @@ lvs::configuration::lvs_services:
     - ulsfo
     ip: *ip_block001
     scheduler: sh
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: cache_text
@@ -175,7 +174,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block001
     port: 443
     scheduler: sh
-    bgp: 'no'
     depool-threshold: '.5'
     conftool:
       cluster: cache_text
@@ -197,7 +195,6 @@ lvs::configuration::lvs_services:
     - ulsfo
     ip: *ip_block002
     scheduler: sh
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -228,7 +225,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block002
     port: 443
     scheduler: sh
-    bgp: 'no'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -250,7 +246,6 @@ lvs::configuration::lvs_services:
     protocol: udp
     ip: *ip_block005
     port: 53
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       DNSQuery:
@@ -274,7 +269,6 @@ lvs::configuration::lvs_services:
     protocol: tcp
     ip: *ip_block005
     port: 53
-    bgp: 'no'
     depool-threshold: '.5'
     monitors:
       DNSQuery:
@@ -297,7 +291,6 @@ lvs::configuration::lvs_services:
     - esams
     ip: *ip_block006
     scheduler: sh
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -325,7 +318,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block006
     port: 443
     scheduler: sh
-    bgp: 'no'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -344,7 +336,6 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block007
-    bgp: 'yes'
     depool-threshold: '.9'
     monitors:
       ProxyFetch:
@@ -376,7 +367,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block007
     port: 443
-    bgp: 'yes'
     depool-threshold: '.6'
     monitors:
       ProxyFetch:
@@ -402,7 +392,6 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block008
-    bgp: 'yes'
     depool-threshold: '.74'
     monitors:
       ProxyFetch:
@@ -434,7 +423,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block008
     port: 443
-    bgp: 'yes'
     depool-threshold: '.74'
     monitors:
       ProxyFetch:
@@ -460,7 +448,6 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block009
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -492,7 +479,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block009
     port: 443
-    bgp: 'yes'
     depool-threshold: '.6'
     monitors:
       ProxyFetch:
@@ -518,7 +504,6 @@ lvs::configuration::lvs_services:
     - codfw
     - eqiad
     ip: *ip_block010
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -545,7 +530,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block010
     port: 443
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -572,7 +556,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block011
     port: 8000
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -600,7 +583,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block013
     port: 9200
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -627,7 +609,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block013
     port: 9243
-    bgp: 'no' # BGP already defined for plain HTTP, no need to re-define it here
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -653,7 +634,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block015
     port: 8000
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -678,7 +658,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block016
     port: 10042
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -705,7 +684,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block017
     port: 1970
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -733,7 +711,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block018
     port: 8080
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -760,7 +737,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block019
     port: 19000
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -788,7 +764,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block020
     port: 7231
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -815,7 +790,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block021
     port: 1969
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -839,7 +813,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block022
     port: 6533
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -863,7 +836,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block023
     port: 8888
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -886,7 +858,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block024
     port: 22
-    bgp: 'yes'
     depool-threshold: '.6'
     monitors:
       IdleConnection:
@@ -902,7 +873,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block025
     port: 7232
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -927,7 +897,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block026
     port: 8085
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: eventbus
@@ -954,7 +923,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block027
     port: 2737
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: scb
@@ -981,7 +949,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block028
     port: 8081
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: scb
@@ -1008,7 +975,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block029
     port: 8800
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1035,7 +1001,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block030
     port: 80
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1062,7 +1027,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block031
     port: 80
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1088,7 +1052,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block032
     port: 80
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1113,7 +1076,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block033
     port: 8092
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: scb
@@ -1141,7 +1103,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block034
     port: 5252
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1168,7 +1129,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block035
     port: 6699
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1195,7 +1155,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block036
     port: 6443
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       # Despite kubernetes being an HTTP REST API, it seems it does not yet support unauthenticated requests,
@@ -1214,7 +1173,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block037
     port: 4560
-    bgp: 'yes'
     depool-threshold: '.5'
     scheduler: sh
     monitors:
@@ -1237,7 +1195,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block037
     protocol: udp
     port: 12201
-    bgp: 'yes'
     depool-threshold: '.5'
     scheduler: sh
     monitors:
@@ -1257,7 +1214,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block037
     protocol: udp
     port: 11514
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:  # Monitors the TCP session as it's the same process listening on TCP and UDP
@@ -1273,7 +1229,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block037
     port: 11514
-    bgp: 'yes'
     depool-threshold: '.5'
     scheduler: sh
     monitors:
@@ -1296,7 +1251,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block037
     protocol: udp
     port: 10514
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:  # Monitors the TCP session, same process listening on UDP
@@ -1318,7 +1272,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block037
     protocol: tcp
     port: 10514
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -1340,7 +1293,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block037
     protocol: udp
     port: 8324
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
