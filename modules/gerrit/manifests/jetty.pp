@@ -81,6 +81,15 @@ class gerrit::jetty(
         require => Package['gerrit'],
     }
 
+    file { '/var/lib/gerrit2/.gitconfig':
+        ensure  => directory,
+        mode    => '0644',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        require => File['/var/lib/gerrit2'],
+        source  => 'puppet:///modules/gerrit/.gitconfig',
+    }
+
     file { '/var/lib/gerrit2/.ssh':
         ensure  => directory,
         recurse => remote,
