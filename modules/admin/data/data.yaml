@@ -2028,6 +2028,7 @@ users:
     realname: Emanuele Rocca
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfoCT4+pXcLRk3jsZsxFsAtVP38Rs4pfdxSS05+hkMcN1yxi2R1ZeNFkQkCPo6s25Gq863ru5E/vxSjy9mDS4HeaxNSJlPPWD0iEmGdyCg+wEGAZ01n1muFDyb+oiSNy5JcgOk0ZqAPNPYlISKVp+vLro5txdEK8cySy4BIbiM5ygKIjmq1xP+dM9zVdd/UbVQPPBFS2UDBzLX3AeYen4biMx2GkHBpZ/nJLqtb9JE4LLzQAtrqi4+J9jKQGepeTemVQ/n3lbheiGmTDZbRsUx7GTXmdIOPqN4k6FEXEgMIe5plxV8YeAoWqMsGpln4J4bz9HCtM1dL5mdLsa7tkq/ ema@orion
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCRnslJn2YZnqA5ZIk+YJmyf73hdohq8GV9T2GQYmUq0GrJjwB93MJOyvCVw+OTVK6auf7P1iR1xmDBMvqnJa3ZNTlKER7hL51PQq8VtFrE+YahZClSo0BS92A2iemLe6DPT2qhPIce/cVO0LbZGhSfL8B/oHuVlfdT0PgGj+pmrzV2+S4iOi042Vr+go2C33ueoVyNM0C3ESpho7Y6FCQH0BYLAnCAGC6YPyT0S5tscDjFK2zLDuEJMRc/s6joQ6cuSZAQGIEPymx9XblTQTuIxNlELwAkEfdlDoPRfBxmj3wr+h0VzPcLaM+KbEHd8sHpVCQsPrdHWgOquWPw64c1 ema@yubikey
     uid: 4565
     email: erocca@wikimedia.org
   elukey:
