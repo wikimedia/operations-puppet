@@ -1,2 +1,3 @@
-gc.auto=0
-gc.autopacklimit=0
+[gc]
+        auto = 0
+        autopacklimit = 0
