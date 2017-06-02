@@ -30,5 +30,5 @@ for master in $MASTERS; do
     ssh "$COMPILER" 'sudo tar Jxf puppet-facts-export.tar.xz --directory /tmp/catalogs && rm puppet-facts-export.tar.xz'
     # Do not modify the files in /tmp/catalogs, the modified date counts for the rsync
     ssh "$COMPILER" 'sudo chown -R jenkins-deploy:wikidev /tmp/catalogs/yaml'
-    ssh "$COMPILER" 'sudo rsync -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
+    ssh "$COMPILER" 'sudo rsync --delete -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
 done
