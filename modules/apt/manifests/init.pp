@@ -127,6 +127,14 @@ class apt(
         }
     }
 
+    if os_version('debian >= stretch') {
+        apt::repository { 'debian-debug':
+            uri        => 'http://deb.debian.org/debian-debug',
+            dist       => "${::lsbdistcodename}-debug",
+            components => 'main contrib non-free',
+        }
+    }
+
     # apt-get should not install recommended packages
     apt::conf { 'no-recommends':
         ensure   => 'present',
