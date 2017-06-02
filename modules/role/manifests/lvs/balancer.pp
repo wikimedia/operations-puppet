@@ -11,47 +11,64 @@ class role::lvs::balancer {
     include ::lvs::pybal_configuration
     $sip = $lvs::configuration::service_ips
 
+    # This is a temporary refactoring, we should do more to clean up here.
+    # The whole point of $lvs_balancer_ips is to set up the current LVS node
+    # puppet is executing on, yet we're subbing in $::site after selecting a
+    # site-specific hostname, etc.  There's also a great deal of redundancy
+    # between information here and in configuration.
+
+    $ips_eqiad_high_traffic1 = [ # IPs must be high-traffic1 subnet
+        $sip['text'][$::site],
+    ]
+
+    $ips_eqiad_high_traffic2 = [ # IPs must be high-traffic2 subnet
+        $sip['upload'][$::site],
+        $sip['dns_rec'][$::site],
+        $sip['misc_web'][$::site],
+        $sip['git-ssh'][$::site],
+    ]
+
+    $ips_eqiad_low_traffic = [ # IPs must be low-traffic subnet
+        $sip['apaches'][$::site],
+        $sip['api'][$::site],
+        $sip['rendering'][$::site],
+        $sip['swift'][$::site],
+        $sip['parsoid'][$::site],
+        $sip['mathoid'][$::site],
+        $sip['citoid'][$::site],
+        $sip['cxserver'][$::site],
+        $sip['search'][$::site],
+        $sip['restbase'][$::site],
+        $sip['zotero'][$::site],
+        $sip['graphoid'][$::site],
+        $sip['mobileapps'][$::site],
+        $sip['kartotherian'][$::site],
+        $sip['aqs'][$::site],
+        $sip['eventbus'][$::site],
+        $sip['apertium'][$::site],
+        $sip['ores'][$::site],
+        $sip['thumbor'][$::site],
+        $sip['prometheus'][$::site],
+        $sip['ocg'][$::site],
+        $sip['wdqs'][$::site],
+        $sip['kibana'][$::site],
+        $sip['eventstreams'][$::site],
+        $sip['pdfrender'][$::site],
+        $sip['trendingedits'][$::site],
+        $sip['kubemaster'][$::site],
+        $sip['logstash'][$::site],
+    ]
+
     $lvs_balancer_ips = $::hostname ? {
         # eqiad
-        /^(lvs10(0[14]|07|10))$/ => [ # IPs must be high-traffic1 subnet
-            $sip['text'][$::site],
-            ],
-        /^(lvs10(0[25]|08|11))$/ => [ # IPs must be high-traffic2 subnet
-            $sip['upload'][$::site],
-            $sip['dns_rec'][$::site],
-            $sip['misc_web'][$::site],
-            $sip['git-ssh'][$::site],
-            ],
-        /^(lvs10(0[36]|09|12))$/ => [ # IPs must be low-traffic subnet
-            $sip['apaches'][$::site],
-            $sip['api'][$::site],
-            $sip['rendering'][$::site],
-            $sip['swift'][$::site],
-            $sip['parsoid'][$::site],
-            $sip['mathoid'][$::site],
-            $sip['citoid'][$::site],
-            $sip['cxserver'][$::site],
-            $sip['search'][$::site],
-            $sip['restbase'][$::site],
-            $sip['zotero'][$::site],
-            $sip['graphoid'][$::site],
-            $sip['mobileapps'][$::site],
-            $sip['kartotherian'][$::site],
-            $sip['aqs'][$::site],
-            $sip['eventbus'][$::site],
-            $sip['apertium'][$::site],
-            $sip['ores'][$::site],
-            $sip['thumbor'][$::site],
-            $sip['prometheus'][$::site],
-            $sip['ocg'][$::site],
-            $sip['wdqs'][$::site],
-            $sip['kibana'][$::site],
-            $sip['eventstreams'][$::site],
-            $sip['pdfrender'][$::site],
-            $sip['trendingedits'][$::site],
-            $sip['kubemaster'][$::site],
-            $sip['logstash'][$::site],
-            ],
+        /^lvs100[147]$/ => $ips_eqiad_high_traffic1,
+        /^lvs100[258]$/ => $ips_eqiad_high_traffic2,
+        /^lvs100[369]$/ => $ips_eqiad_low_traffic,
+        'lvs1010'       => array_concat(
+            $ips_eqiad_high_traffic1,
+            $ips_eqiad_high_traffic2,
+            $ips_eqiad_low_traffic
+        ),
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
         /^(lvs200[14])$/ => [ # IPs must be high-traffic1 subnet

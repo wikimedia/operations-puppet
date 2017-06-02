@@ -1523,9 +1523,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
 }
 
-node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
+node /^lvs10(0[789]|10)\.eqiad\.wmnet$/ {
 
-    # lvs1008,11 are LVS balancers for the eqiad recursive DNS IP,
+    # lvs1008,10 are LVS balancers for the eqiad recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (chromium and hydrogen) with fallback to codfw
     # (doing this for all lvs for now, see T103921)
@@ -1620,6 +1620,10 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
         'eth2': bnx2x => true, txqlen => 10000;
         'eth3': bnx2x => true, txqlen => 10000;
     }
+}
+
+node /^lvs101[12]\.eqiad\.wmnet$/ {
+    role(spare::system)
 }
 
 # codfw lvs
