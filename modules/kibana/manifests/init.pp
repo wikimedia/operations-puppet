@@ -6,6 +6,8 @@
 # == Parameters:
 # - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
+# - $elasticsearch_url: The URL of the Elasticsearch instance to use for all
+#     your queries. Default: 'http://localhost:9200'.
 #
 # == Sample usage:
 #
@@ -14,7 +16,8 @@
 #   }
 #
 class kibana (
-    $default_app_id = 'dashboard/default'
+    $default_app_id = 'dashboard/default',
+    $elasticsearch_url = 'http://localhost:9200',
 ) {
     require_package('kibana')
 
@@ -24,6 +27,7 @@ class kibana (
         group   => 'root',
         content => ordered_yaml({
             'kibana.defaultAppId' => $default_app_id,
+            'elasticsearch.url'   => $elasticsearch_url,
             'logging.quiet'       => true,
         }),
         mode    => '0444',
