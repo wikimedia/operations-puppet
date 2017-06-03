@@ -169,7 +169,7 @@ class base::monitoring::host(
             nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -ST Temperature',
             check_interval => 30,
             retry_interval => 10,
-            timeout        => 30,
+            timeout        => 60,
         }
     }
 }
