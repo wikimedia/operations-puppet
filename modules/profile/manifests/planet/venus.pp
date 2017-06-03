@@ -33,15 +33,6 @@ class profile::planet::venus (
             'wikimedia'     => '&#1059;&#1080;&#1082;&#1080;&#1084;&#1077;&#1076;&#1080;&#1103;',
             'planetarium'   => '&#1087;&#1083;&#1072;&#1085;&#1077;&#1090;&#1072;&#1088;&#1080;&#1081;',
         },
-        ca => {
-            'subscribe'     => 'Subscriure\'s',
-            'subscriptions' => 'Subscripcions',
-            'lastupdated'   => '&#218;ltima actualitzaci&#243;',
-            'alltimesutc'   => 'Tots els temps s&#243;n UTC.',
-            'poweredby'     => 'Basat en',
-            'wikimedia'     => 'Wikimedia',
-            'planetarium'   => 'Planetari',
-        },
         cs => {
             'subscribe'     => 'P&#345;ihl&#225;sit odb&#283;r',
             'subscriptions' => 'Odb&#283;ry',
@@ -122,15 +113,6 @@ class profile::planet::venus (
             'poweredby'     => 'Reso possibile da',
             'wikimedia'     => 'Wikimedia',
             'planetarium'   => 'Planetarium',
-        },
-        ja => {
-            'subscribe'     => '&#36092;&#35501;&#12377;&#12427;',
-            'subscriptions' => '&#30331;&#37682;&#12373;&#12428;&#12390;&#12356;&#12427;&#12502;&#12525;&#12464;',
-            'lastupdated'   => '&#26368;&#32066;&#26356;&#26032;&#26085;&#26178;',
-            'alltimesutc'   => '&#26178;&#21051;&#12399;&#12377;&#12409;&#12390;UTC&#34920;&#35352;&#12391;&#12377;&#12290;',
-            'poweredby'     => 'Powered by',
-            'wikimedia'     => '&#12454;&#12451;&#12461;&#12513;&#12487;&#12451;&#12450;',
-            'planetarium'   => '&#12503;&#12521;&#12493;&#12479;&#12522;&#12454;&#12512;',
         },
         pl => {
             'subscribe'     => 'Subskrybuj',
