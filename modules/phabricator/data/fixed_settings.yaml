@@ -48,7 +48,7 @@ maniphest.priorities:
   '100':
     name: 'Unbreak Now!'
     short: 'Unbreak!'
-    color: indigo
+    color: pink
     keywords: ['unbreak']
   '90':
     name: 'Needs Triage'
