@@ -1,1 +1,3 @@
-tlsproxy::nginx_client_max_body_size: 4096m
+# Disable client body buffer on disk, also don't check client Content-Length
+# (swift proxy-server will do the checking)
+tlsproxy::nginx_client_max_body_size: 0
