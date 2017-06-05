@@ -11,7 +11,4 @@ class profile::etcd::auth(
         active        => $enabled,
     }
 
-    class { '::etcd::auth': }
-    class { '::etcd::auth::users': }
-
 }
