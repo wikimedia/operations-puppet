@@ -104,7 +104,7 @@ class dynamicproxy (
 
     mediawiki::errorpage { '/var/www/error/errorpage.html':
         favicon     => $error_config['favicon'],
-        pagetitle   => $error_config['title'],
+        title       => $error_config['title'],
         logo_src    => $error_config['logo'],
         logo_srcset => "${error_config['logo_2x']} 2x",
         logo_alt    => $error_config['logo_alt'],
@@ -121,7 +121,7 @@ class dynamicproxy (
 
     mediawiki::errorpage { '/var/www/error/banned.html':
         favicon     => $error_config['favicon'],
-        pagetitle   => $error_config['title'],
+        title       => $error_config['title'],
         logo_src    => $error_config['logo'],
         logo_srcset => "${error_config['logo_2x']} 2x",
         logo_alt    => $error_config['logo_alt'],
