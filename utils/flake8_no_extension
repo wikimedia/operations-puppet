@@ -1,0 +1,103 @@
+#!/usr/bin/env python
+"""
+Find all Python scripts in basepath that have no extensions or are ERB
+templates and run flake8 for each of them.
+
+On Mac OS the libmagic library must be installed:
+brew install libmagic
+"""
+import os
+import sys
+
+import magic
+
+# List of entire paths to skip, all subdirectories will be skipped too
+EXCLUDED_PATHS = (
+    'modules/admin/files/home',
+)
+
+# List of files to skip, usually 3rd party scripts
+EXCLUDED_FILES = (
+    'modules/openstack/files/kilo/nova/virt-libvirt-driver',
+    'modules/openstack/files/rabbitmq/rabbitmqadmin',
+    'modules/swift/files/swift-drive-audit',
+)
+
+
+def main(virtualenv, basepath):
+    """Run flake8 on all Python files without extension in basepath."""
+    files_to_check = find_files(basepath)
+    base_command = os.path.join(virtualenv, 'bin', 'flake8')
+
+    # Shell out to run flake8 because it doesn't have public, stable Python API.
+    files = ' '.join(["'{filepath}'".format(filepath=filepath) for filepath in files_to_check])
+    ret = os.system('{base_command} {files}'.format(base_command=base_command, files=files))
+
+    # Temporarily make the check non voting until all errors have been fixed
+    ret = 0
+    return ret
+
+
+def skip_path(root, basepath):
+    """Return True if the path should be skipped, False otherwise."""
+    relative_path = os.path.relpath(root, basepath)
+    for excluded_path in EXCLUDED_PATHS:
+        if relative_path.startswith(excluded_path):
+            return True
+
+    return False
+
+
+def find_files(basepath):
+    """Find all Python files without extension or ERB templates in basepath."""
+    mime = magic.Magic(mime=True)
+    files_to_check = []
+
+    for root, dirnames, filenames in os.walk(basepath, topdown=True):
+        # Filter out some top directories
+        dirnames[:] = [d for d in dirnames if d not in ('.git', '.tox')]
+
+        if skip_path(root, basepath):
+            continue
+
+        for filename in filenames:
+            filepath = os.path.join(root, filename)
+            relative_filepath = os.path.relpath(filepath, basepath)
+
+            # Add Python ERB templates
+            if filename.endswith('.py.erb'):
+                files_to_check.append(relative_filepath)
+                continue
+
+            if '.' in filename and not filename.endswith('.erb'):
+                continue  # Skip filenames with extensions that are not ERB templates
+
+            if relative_filepath in EXCLUDED_FILES:
+                continue  # Skip excluded files
+
+            mimetype = mime.from_file(filepath)
+
+            if mimetype == 'text/x-python':
+                files_to_check.append(relative_filepath)
+            elif mimetype == 'text/plain' and not filename.endswith('.erb'):
+                # At least on Mac OS some files were not properly detected, falling back
+                # detecting the shebang, if present in the first line, for non-ERB templates.
+                with open(filepath, 'r') as f:
+                    if 'python' in f.readline():
+                        files_to_check.append(relative_filepath)
+
+    return files_to_check
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        raise RuntimeError('Usage: {script} basepath'.format(script=sys.argv[0]))
+
+    basepath = sys.argv[1]
+
+    # The VIRTUAL_ENV environment variable is set by tox
+    virtualenv = os.getenv('VIRTUAL_ENV')
+    if virtualenv is None:
+        raise RuntimeError('Unable to get VIRTUAL_ENV environment variable.')
+
+    sys.exit(main(virtualenv, basepath))
