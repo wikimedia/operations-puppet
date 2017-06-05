@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+"""
+Find all Python scripts in basepath that have no extensions or are ERB
+templates and run flake8 for each of them.
+
+On Mac OS the libmagic library must be installed:
+brew install libmagic
+"""
+import os
+import subprocess
+import sys
+
+import magic
+
+
+def main():
+    """Run flake8 to all Python files not automatically detected by flake8 itself."""
+    # Shell out to run flake8 because it doesn't have public, stable Python API.
+    ret = subprocess.call(['flake8'] + find_files())
+
+    # Temporarily make the check non voting until all errors have been fixed
+    ret = 0
+    return ret
+
+
+def find_files():
+    """Find all Python files without extension or ERB templates in the current directory."""
+    mime = magic.Magic(mime=True)
+    files_to_check = []
+
+    for root, dirnames, filenames in os.walk('.', topdown=True):
+        # Filter out some top directories to speed up the loop
+        dirnames[:] = [d for d in dirnames if d not in ('.git', '.tox')]
+
+        for filename in filenames:
+            filepath = os.path.join(root, filename)
+
+            # Add Python ERB templates
+            if filename.endswith('.py.erb'):
+                files_to_check.append(filepath)
+                continue
+
+            if '.' in filename and not filename.endswith('.erb'):
+                continue  # Skip filenames with extensions that are not ERB templates
+
+            mimetype = mime.from_file(filepath)
+
+            if mimetype == 'text/x-python':
+                files_to_check.append(filepath)
+            elif mimetype == 'text/plain' and not filename.endswith('.erb'):
+                # At least on Mac OS some files were not properly detected, falling back
+                # detecting the shebang, if present in the first line, for non-ERB templates.
+                with open(filepath, 'r') as f:
+                    if 'python' in f.readline():
+                        files_to_check.append(filepath)
+
+    return files_to_check
+
+
+if __name__ == '__main__':
+    sys.exit(main())
