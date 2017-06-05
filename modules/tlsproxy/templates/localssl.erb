@@ -64,6 +64,7 @@ server {
 
 		proxy_redirect off;
 		proxy_buffering off;
+		proxy_request_buffering <%= @nginx_proxy_request_buffering %>;
 
 		# With proxy buffering off, proxy_buffer_size is still used to
 		# define the singular chunk of buffer the content passes
