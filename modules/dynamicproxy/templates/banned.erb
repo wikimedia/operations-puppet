@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang=en>
+<link rel="shortcut icon" href="<%= @error_config['favicon'] %>" />
+<title><%= @error_config['title'] %></title>
+<style>
+* { margin: 0; padding: 0; }
+body { background: #fff; font: 14px/1.6 sans-serif; color: #333; }
+.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 560px; }
+.footer { clear: both; margin-top: 14%; border-top: 1px solid #e5e5e5; padding: 2em 0; background: #f9f9f9; font-size: 0.8em; text-align: center; }
+img { float: left; margin: 0 2em 2em 0; }
+a img { border: 0; }
+h1 { margin-top: 1em; font-size: 1.2em; }
+p { margin: 0.7em 0 1em 0; }
+a { color: #0645AD; text-decoration: none; }
+a:hover { text-decoration: underline; }
+em { font-style: normal; color: #777; }
+</style>
+<div class="content" role="main">
+    <img src="<%= @error_config['logo'] %>" <% if @error_config['logo_2x'] %>srcset="<%= @error_config['logo_2x'] %> 2x"<% end %> alt="<% @error_config['logo_alt'] %>" width=135></a>
+    <h1>Error</h1>
+    <p><%= @banned_description %></p>
+</div>
+</html>
