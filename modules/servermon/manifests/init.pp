@@ -61,16 +61,23 @@ class servermon(
     $ensure='present',
 ) {
 
-    package { [
+    $packages = [
         'python-django',
         'python-django-south',
         'python-whoosh',
         'python-ipy',
         'gunicorn',
-    ]:
-        ensure => $ensure,
+        'python-ldap',
+    ]
+    require_package($packages)
+
+    # Note: we re-use the librenms deploy user as both servermon and librenms
+    # are tools deployed by ops solely currently and adding a user just for
+    # servermon makes no sense. At some point, if this patterns is done for
+    # multiple softwares we could rename the user to better reflect that
+    scap::target { 'servermon/servermon':
+        deploy_user => 'deploy-librenms',
     }
-    require_package('python-ldap')
 
     service { 'gunicorn':
         ensure    => ensure_service($ensure),
