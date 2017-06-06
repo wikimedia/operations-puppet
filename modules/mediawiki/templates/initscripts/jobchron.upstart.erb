@@ -4,6 +4,8 @@ description "MediaWiki job queue chron loop"
 start on (runlevel [2345] and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
 
+normal exit 0 129 137 143
+
 pre-start script
   mkdir -p -m0755 /var/run/jobchron
   [ ! -r /etc/default/jobrunner ] && { stop; exit 0; }
