@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-hue:
-    value: standard
