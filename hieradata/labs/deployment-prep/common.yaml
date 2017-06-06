@@ -124,6 +124,7 @@ profile::restbase::seeds:
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
 # Cassandra (profile::cassandra)
 graphite_host: labmon1001.eqiad.wmnet
+profile::cassandra::allow_analytics: false
 profile::cassandra::metrics_whitelist: false
 profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
