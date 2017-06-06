@@ -9,6 +9,7 @@ Group=<%= scope.lookupvar('::mediawiki::users::web') %>
 SyslogIdentifier=jobrunner
 ExecStart=/usr/bin/php /srv/deployment/jobrunner/jobrunner/redisJobRunnerService --config-file=${JOBRUNNER_CONFIG} ${DAEMON_OPTS}
 Restart=always
+SuccessExitStatus=0 129 137 143
 
 [Install]
 WantedBy=multi-user.target
