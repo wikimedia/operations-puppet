@@ -45,6 +45,7 @@ flavordict['bb5bf060-cdbb-4448-b436-a015ae2d4aaf'] = '160'
 flavordict['8af1f1cc-d95f-4380-bf10-bcfa0321b10f'] = '60'
 flavordict['2d59cc0d-538c-4bbd-b975-8e696a4f7207'] = '80'
 flavordict['cc0f1723-38d7-42da-aa2c-cef28d5f4250'] = '300'
+flavordict['deea3460-069e-44c7-98ca-ae30bb0de772'] = '80'
 
 
 def printstat(string, alert=False):
@@ -158,7 +159,7 @@ for hostname in computenodedict.keys():
     maxusage = 0
     for instance in hostdict['novainstances']:
         if instance.flavor['id'] not in flavordict:
-            print "flavordict missing %s?" % instance.flavor['id']
+            print "flavordict missing %s" % instance.flavor['id']
         else:
             maxusage += int(flavordict[instance.flavor['id']]) * ONEMEG
 
