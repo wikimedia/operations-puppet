@@ -73,6 +73,14 @@ class swift (
         mode    => '0755',
     }
 
+    # Create swift user home. Once T123918 is resolved this should be moved as
+    # part of a user resource declaration.
+    file { '/var/lib/swift':
+        ensure  => directory,
+        require => Package['swift'],
+        mode    => '0755',
+    }
+
     file { '/var/log/swift':
         ensure  => directory,
         require => Package['swift'],

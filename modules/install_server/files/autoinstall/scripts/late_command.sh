@@ -51,6 +51,7 @@ fi
 case `hostname` in \
 	ms-be[123]*|ms-fe[123]*)
 		in-target /usr/sbin/groupadd --gid 130 --system swift
-		in-target /usr/sbin/useradd --gid 130 --uid 130 --system --shell /bin/false swift
+		in-target /usr/sbin/useradd --gid 130 --uid 130 --system --shell /bin/false \
+			--create-home --home /var/lib/swift swift
 	;; \
 esac
