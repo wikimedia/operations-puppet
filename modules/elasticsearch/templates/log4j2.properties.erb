@@ -47,6 +47,11 @@ logger.parsefield.level = error
 logger.restcontroller.name = org.elasticsearch.deprecation.rest.RestController
 logger.restcontroller.level = error
 
+# This logger is noisy at DEBUG level, let's raise it to WARN
+# see https://phabricator.wikimedia.org/T167091 for details.
+logger.TransportShardBulkAction.name = org.elasticsearch.action.bulk.TransportShardBulkAction
+logger.TransportShardBulkAction.level = warn
+
 appender.file.name = file
 appender.file.type = File
 appender.file.fileName = ${sys:es.logs}.log
