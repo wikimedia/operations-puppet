@@ -36,9 +36,9 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental
+Components: main backports thirdparty thirdparty/hwraid experimental
 UDebComponents: main backports thirdparty experimental
-Update: hwraid
+Update: hwraid hp-mcp-stretch
 Description: Wikimedia packages for Debian stretch
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
