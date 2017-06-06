@@ -73,6 +73,12 @@ class swift (
         mode    => '0755',
     }
 
+    file { '/var/lib/swift':
+        ensure  => directory,
+        require => Package['swift'],
+        mode    => '0755',
+    }
+
     file { '/var/log/swift':
         ensure  => directory,
         require => Package['swift'],
