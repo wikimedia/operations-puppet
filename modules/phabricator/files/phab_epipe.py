@@ -139,11 +139,19 @@ def main():
     def external_user_comment(task, text):
         """update a task with a comment by id
         :param task: int id
-        :param email: address of source user
         :param text: main comment string
         :returns: json
         """
-        return phab.maniphest.update(id=task, comments=text)
+
+        taskid = "T%s" % task
+        trns = [
+            {
+                "type": "comment",
+                "value": text
+            }
+        ]
+
+        return phab.maniphest.edit(objectIdentifier=taskid, transactions=trns)
 
     def mail2comment(task, name, date, subject, body, uploads):
         """update a task with a comment by id
