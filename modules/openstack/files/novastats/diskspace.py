@@ -115,15 +115,25 @@ instances = clients.allinstances()
 
 all_nova_instances = [instance.id for instance in instances]
 for instance in instances:
-    host = all_disk_instances[instance.id][0]
-    computenodedict[host]['novainstances'] += [instance]
-
+    if instance.id in all_disk_instances:
+        host = all_disk_instances[instance.id][0]
+        computenodedict[host]['novainstances'] += [instance]
 
 novaduplicates = [instance for instance, count in
                   collections.Counter(all_nova_instances).items() if count > 1]
 if novaduplicates:
     printstat("Instances in nova twice: %s" % novaduplicates, True)
 
+novaset = set(all_nova_instances)
+diskset = set(all_disk_instances.keys())
+
+diskstrays = diskset - novaset
+for stray in diskstrays:
+    printstat("On disk but not in nova: %s on %s" % (stray, all_disk_instances[stray]), True)
+
+novastrays = novaset - diskset
+if novastrays:
+    printstat("These instances are in nova but can't be found on disk: %s" % novastrays, True)
 
 for hostname in computenodedict.keys():
     hostdict = computenodedict[hostname]
