@@ -124,6 +124,16 @@ novaduplicates = [instance for instance, count in
 if novaduplicates:
     printstat("Instances in nova twice: %s" % novaduplicates, True)
 
+novaset = set(all_nova_instances)
+diskset = set(all_disk_instances.keys())
+
+diskstrays = diskset - novaset
+for stray in diskstrays:
+    printstat("On disk but not in nova: %s on %s" % (stray, all_disk_instances[stray]), True)
+
+novastrays = novaset - diskset
+if novastrays:
+    printstat("These instances are in nova but can't be found on disk: %s" % novastrays, True)
 
 for hostname in computenodedict.keys():
     hostdict = computenodedict[hostname]
