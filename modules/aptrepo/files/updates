@@ -56,6 +56,16 @@ Architectures: amd64
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
+Name: hp-mcp-stretch
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty
+UDebComponents:
+GetInRelease: no
+Suite: stretch/current
+Architectures: amd64
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+
 Name: cassandra
 Method: http://www.apache.org/dist/cassandra/debian
 Components: main>thirdparty
