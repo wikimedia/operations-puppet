@@ -128,9 +128,9 @@ profile::cassandra::metrics_whitelist: false
 profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
 profile::cassandra::rack: rack1
-profile::cassandra::instances:
-  "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
-  "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
+# profile::cassandra::instances:
+#   "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
+#   "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
   rpc_address: '%{::ipaddress}'
