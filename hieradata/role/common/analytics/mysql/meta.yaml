@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-mysql-analytics:
-    value: standard
