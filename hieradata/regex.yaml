@@ -336,3 +336,6 @@ labtest:
 db_like_raid_policy:
   __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
   profile::base::check_raid_policy: 'WriteBack'
+analytics_workers_raid_policy:
+  __regex: !ruby/regexp /^analytics10[23456][0-9]\.eqiad\.wmnet$/
+  profile::base::check_raid_policy: 'WriteBack'
