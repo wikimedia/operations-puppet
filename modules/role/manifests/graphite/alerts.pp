@@ -60,7 +60,7 @@ class role::graphite::alerts {
     # See https://grafana.wikimedia.org/dashboard/db/edit-count
     monitoring::graphite_threshold { 'mediawiki_session_loss':
         description => 'MediaWiki edit session loss (https://grafana.wikimedia.org/dashboard/db/edit-count)',
-        metric      => 'scale(consolidateBy(MediaWiki.edit.failures.session_loss.rate, "max"), 60)',
+        metric      => 'transformNull(scale(consolidateBy(MediaWiki.edit.failures.session_loss.rate, "max"), 60), 0)',
         warning     => 10,
         critical    => 50,
         from        => '15min',
@@ -69,7 +69,7 @@ class role::graphite::alerts {
 
     monitoring::graphite_threshold { 'mediawiki_bad_token':
         description => 'MediaWiki edit failure due to bad token (https://grafana.wikimedia.org/dashboard/db/edit-count)',
-        metric      => 'scale(consolidateBy(MediaWiki.edit.failures.bad_token.rate, "max"), 60)',
+        metric      => 'transformNull(scale(consolidateBy(MediaWiki.edit.failures.bad_token.rate, "max"), 60), 0)',
         warning     => 10,
         critical    => 50,
         from        => '15min',
@@ -79,7 +79,7 @@ class role::graphite::alerts {
     # Monitor MediaWiki CentralAuth bad tokens
     monitoring::graphite_threshold { 'mediawiki_centralauth_errors':
         description => 'MediaWiki centralauth errors',
-        metric      => 'sumSeries(MediaWiki.centralauth.centrallogin_errors.*.rate)',
+        metric      => 'transformNull(sumSeries(MediaWiki.centralauth.centrallogin_errors.*.rate), 0)',
         warning     => 0.5,
         critical    => 1,
         from        => '15min',
