@@ -32,7 +32,7 @@ class role::ci::slave::labs {
     # Include package unsafe for production
     include contint::packages::labs
 
-    if os_version('ubuntu >= trusty') {
+    if os_version('debian >= jessie') {
         include contint::hhvm
     }
 
