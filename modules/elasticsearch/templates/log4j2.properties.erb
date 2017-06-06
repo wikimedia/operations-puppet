@@ -5,10 +5,6 @@ rootLogger.appenderRef.file.ref = file
 rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
 <% end %>
 
-# log action execution errors for easier debugging
-logger.action.name = org.elasticsearch.action
-logger.action.level = debug
-
 # This is noisy and already filed upstream:
 # https://github.com/elasticsearch/elasticsearch/issues/4203
 # @TODO: Still needed?
