@@ -132,11 +132,8 @@ default_limit_admin = 1000
 # Keystone Middleware
 #-----------------------
 [keystone_authtoken]
-auth_host = <%= @keystone_host_ip %>
-auth_port = <%= @keystoneconfig["auth_port"] %>
-auth_protocol = <%= @keystoneconfig['auth_protocol'] %>
-admin_token = <%= @keystoneconfig['admin_token'] %>
-auth_uri = http://<%= @nova_controller_ip %>:5000
+identity_uri = <%= @keystoneconfig["auth_protocol"] %>://<%= @keystone_host_ip %>:<%= @keystoneconfig['auth_port'] %>
+admin_token = <%= @keystoneconfig["admin_token"] %>
 
 #-----------------------
 # Sink Service
