@@ -92,10 +92,12 @@ module Puppet::Parser::Functions
 
       # emit a warning if the release given to compare with is not supported
       min_version = min_supported_versions[other_id]
+      # rubocop:disable Style/NumericPredicate
       if Puppet::Util::Package.versioncmp(other_release, min_version) < 0 ||
         (Puppet::Util::Package.versioncmp(other_release, min_version) == 0 &&
             (operator == '<=' || operator == '<'))
         message = "os_version(): obsolete distribution check in #{clause}"
+      # rubocop:enable Style/NumericPredicate
 
         if defined? Puppet::Pops::PuppetStack.stacktrace
           stacktrace = Puppet::Pops::PuppetStack.stacktrace()[0]
@@ -116,6 +118,7 @@ module Puppet::Parser::Functions
       end
 
       cmp = Puppet::Util::Package.versioncmp(self_release, other_release)
+      # rubocop:disable Style/NumericPredicate
       case operator
       when '', '==' then cmp == 0
       when '!=' then cmp != 0
@@ -126,6 +129,7 @@ module Puppet::Parser::Functions
       else fail(ArgumentError,
                 "os_version(): unknown comparison operator '#{operator}'")
       end
+      # rubocop:enable Style/NumericPredicate
     end
   end
 end
