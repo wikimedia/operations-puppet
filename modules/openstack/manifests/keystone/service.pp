@@ -50,8 +50,8 @@ class openstack::keystone::service($keystoneconfig, $openstack_version=$::openst
             notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
             require => Package['keystone'],
             mode    => '0444';
-        '/etc/keystone/keystone-api.ini':
-            source  => "puppet:///modules/openstack/${openstack_version}/keystone/keystone-api.ini",
+        '/etc/keystone/keystone-paste.ini':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/keystone-paste.ini",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
