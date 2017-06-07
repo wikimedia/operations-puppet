@@ -73,12 +73,6 @@ Style/CommandLiteral:
     - 'modules/ganeti/lib/facter/ganeti.rb'
     - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/DefWithParentheses:
-  Exclude:
-    - 'utils/hiera_lookup'
-
 # Offense count: 16
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -169,7 +163,6 @@ Style/MethodCallParentheses:
     - 'modules/wmflib/spec/functions/role_spec.rb'
     - 'modules/wmflib/spec/hiera/proxy_backend_spec.rb'
     - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
-    - 'utils/hiera_lookup'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -192,7 +185,6 @@ Style/NestedTernaryOperator:
 Style/Not:
   Exclude:
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'utils/hiera_lookup'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -257,7 +249,6 @@ Style/RegexpLiteral:
     - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
-    - 'utils/hiera_lookup'
 
 # Offense count: 7
 # Cop supports --auto-correct.
