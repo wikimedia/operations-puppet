@@ -89,10 +89,12 @@ class apt(
         }
     }
 
-    if $::operatingsystem == 'ubuntu' {
+    if os_version('ubuntu trusty') {
         $components = 'main universe thirdparty'
-    } else {
+    } elsif os_version('debian jessie') {
         $components = 'main backports thirdparty'
+    } else {
+        $components = 'main'
     }
 
     apt::repository { 'wikimedia':
