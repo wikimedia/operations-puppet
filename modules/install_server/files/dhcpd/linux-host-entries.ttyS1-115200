@@ -3709,14 +3709,14 @@ host ms-be2014 {
     hardware ethernet 54:9F:35:08:38:10;
     fixed-address ms-be2014.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/ubuntu-installer/amd64/pxelinux.0";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2015 {
     hardware ethernet 54:9F:35:08:40:F0;
     fixed-address ms-be2015.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/ubuntu-installer/amd64/pxelinux.0";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2016 {
@@ -3737,28 +3737,28 @@ host ms-be2018 {
     hardware ethernet 3C:A8:2A:17:15:D8;
     fixed-address ms-be2018.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/ubuntu-installer/amd64/pxelinux.0";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2019 {
     hardware ethernet 3C:A8:2A:17:95:98;
     fixed-address ms-be2019.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/ubuntu-installer/amd64/pxelinux.0";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2020 {
     hardware ethernet 3C:A8:2A:17:D5:98;
     fixed-address ms-be2020.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/ubuntu-installer/amd64/pxelinux.0";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2021 {
     hardware ethernet 3C:A8:2A:17:D7:88;
     fixed-address ms-be2021.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/ubuntu-installer/amd64/pxelinux.0";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2022 {
