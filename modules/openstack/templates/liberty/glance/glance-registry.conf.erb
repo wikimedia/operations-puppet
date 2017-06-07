@@ -55,12 +55,10 @@ use_syslog = False
 #ca_file = /path/to/cafile
 
 [keystone_authtoken]
-service_host = <%= @keystone_host_ip %>
-service_protocol = <%= @keystoneconfig['auth_protocol'] %>
-service_port = 5000
-identity_uri = <%= @keystoneconfig["auth_protocol"] %>://<%= @keystone_host_ip %>:<%= @keystoneconfig['auth_port'] %>
-admin_token = <%= @keystoneconfig["admin_token"] %>
-auth_uri = <%= @keystone_auth_uri %>
+auth_uri = <%= @keystone_public_uri %>
+identity_uri = <%= @keystone_admin_uri %>
+admin_user = <%= @keystoneconfig["ldap_user_dn"] %>
+admin_password = <%= @keystoneconfig["ldap_user_pass"] %>
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
