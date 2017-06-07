@@ -38,7 +38,7 @@ Log.formatter = proc do |severity, datetime, _, msg|
   format("%s %-5s (puppet-ecdsacert): %s\n", date_format, severity, msg)
 end
 
-# Ecdsa certificates generator class
+# ECDSA certificates generator class
 # Generates the cert, the CSR, and sends the signing request to the puppetmaster
 class PuppetECDSAGen
   class << self; attr_accessor :confkeys; end
@@ -143,10 +143,12 @@ class PuppetECDSAGen
     req.body = File.read csr_path
     Log.info "Submitting CSR for signing to #{@config[:puppetca]}"
     resp, _ = https.request(req)
-    fail(PuppetECDSAGenError,
-         format('Signing request to %s failed with code %s: %s',
-                @config[:puppetca], resp.code, resp.body)
-        ) unless resp.code == '200'
+    unless resp.code == '200'
+      fail(PuppetECDSAGenError,
+           format('Signing request to %s failed with code %s: %s',
+                  @config[:puppetca], resp.code, resp.body)
+          )
+    end
     Log.info "CSR request succeeded"
   end
 
