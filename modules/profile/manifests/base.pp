@@ -56,6 +56,7 @@ class profile::base(
     class { '::base::sysctl': }
     class { '::motd': }
     class { '::base::standard_packages': }
+    class { '::base::apt_sources': }
     class { '::base::environment':
         core_dump_pattern => $core_dump_pattern,
     }
