@@ -12,4 +12,4 @@ gem 'safe_yaml', '~> 1.0.4'
 gem 'rake', '~> 10.4', '>= 10.4.2'
 gem 'git', '1.3.0'
 gem 'puppet-lint', '2.0.2'
-gem 'rubocop', '~> 0.35.1', require: false
+gem 'rubocop', '~> 0.49.1', require: false
