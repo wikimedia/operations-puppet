@@ -78,8 +78,8 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   def checkout(name, path)
-    umask = 002
-    file_mode = 02775
+    umask = 0o002
+    file_mode = 0o02775
     unless Dir.exists?(path)
       FileUtils.makedirs path, :mode => file_mode
       FileUtils.chown_R resource[:owner], resource[:group], path
@@ -100,7 +100,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
         ],
         :uid => uid,
         :gid => gid,
-        :failonfail => true,
+        :failonfail => true
       )
     }
   end
@@ -128,7 +128,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     # Create the parent directory
     unless Dir.exists?(deploy_root)
       Puppet.debug("Creating #{deploy_root}")
-      FileUtils.makedirs deploy_root, :mode => 0755
+      FileUtils.makedirs deploy_root, :mode => 0o0755
       FileUtils.chown_R resource[:owner], resource[:group], deploy_root
     end
 
