@@ -69,7 +69,6 @@ packages:
     - lockfile-progs
     - lshw
     - lvm2
-    - megacli
     - molly-guard
     - moreutils
     - nagios-nrpe-server
