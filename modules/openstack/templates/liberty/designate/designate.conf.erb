@@ -133,6 +133,7 @@ default_limit_admin = 1000
 #-----------------------
 [keystone_authtoken]
 auth_uri = <%= @keystone_public_uri %>
+identity_uri = <%= @keystone_admin_uri %>
 admin_user = novaadmin
 admin_password = <%= @keystoneconfig["ldap_user_pass"] %>
 

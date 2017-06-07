@@ -18,7 +18,8 @@ class openstack::designate::service (
     $keystone_host_ip   = ipresolve($keystone_host,4)
     $nova_controller_ip = ipresolve($nova_controller)
     $designate_host = $active_server
-    $keystone_public_uri = "http://${active_server}:${keystoneconfig['public_port']}"
+    $keystone_public_uri = "http://${keystone_host}:${keystoneconfig['public_port']}"
+    $keystone_admin_uri = "http://${keystone_host}:${keystoneconfig['admin_port']}"
 
     require_package(
         'python-designateclient',
