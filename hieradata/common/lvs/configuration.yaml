@@ -15,24 +15,16 @@ lvs::configuration::lvs_service_ips:
   upload: &ip_block002
     codfw:
       uploadlb: 208.80.153.240
-      mapslb: 208.80.153.244
       uploadlb6: 2620:0:860:ed1a::2:b
-      mapslb6: 2620:0:860:ed1a::2:d
     eqiad:
       uploadlb: 208.80.154.240
-      mapslb: 208.80.154.244
       uploadlb6: 2620:0:861:ed1a::2:b
-      mapslb6: 2620:0:861:ed1a::2:d
     esams:
       uploadlb: 91.198.174.208
-      mapslb: 91.198.174.209
       uploadlb6: 2620:0:862:ed1a::2:b
-      mapslb6: 2620:0:862:ed1a::2:d
     ulsfo:
       uploadlb: 198.35.26.112
-      mapslb: 198.35.26.113
       uploadlb6: 2620:0:863:ed1a::2:b
-      mapslb6: 2620:0:863:ed1a::2:d
   apaches: &ip_block007
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
