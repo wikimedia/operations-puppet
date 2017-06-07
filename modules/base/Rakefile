@@ -14,7 +14,6 @@ symlinks = { 'spec/fixtures/modules/%s/files' % modulename => '../../../../files
   'spec/fixtures/modules/%s/templates' % modulename => '../../../../templates',
 }
 
-
 task :setup do
   FileUtils.mkdir_p('spec/fixtures/modules/%s' % modulename)
   extra_modules.each do |x|

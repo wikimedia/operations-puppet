@@ -14,5 +14,4 @@ Puppet::Type.newtype(:etcd_role) do
       is == should
     end
   end
-
 end

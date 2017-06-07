@@ -30,7 +30,6 @@ args = {
   asn1_oid: 'prime256v1'
 }
 
-
 Log = Logger.new(STDOUT)
 
 Log.level = Logger::INFO
@@ -38,7 +37,6 @@ Log.formatter = proc do |severity, datetime, _, msg|
   date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
   format("%s %-5s (puppet-ecdsacert): %s\n", date_format, severity, msg)
 end
-
 
 # Ecdsa certificates generator class
 # Generates the cert, the CSR, and sends the signing request to the puppetmaster
@@ -178,7 +176,6 @@ module Puppet
     end
   end
 end
-
 
 OptionParser.new do |opts|
   opts.banner = "Usage: puppetecdsamanager [-c configfile] [-a SAN1,SAN2] common-name "

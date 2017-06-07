@@ -33,7 +33,6 @@ describe 'base::service_unit' do
         should contain_file('/etc/init.d/nginx').that_notifies('Exec[systemd reload for nginx]').that_notifies('Service[nginx]')
         should contain_exec('systemd reload for nginx').that_comes_before('Service[nginx]')
       end
-
     end
   end
   context 'with refresh false' do
@@ -54,7 +53,6 @@ describe 'base::service_unit' do
     it 'should refresh service' do
         should contain_file('/etc/init.d/nginx').that_notifies('Service[nginx]')
     end
-
   end
   context 'with upstart as init' do
     let(:facts) { {:initsystem => 'upstart'} }

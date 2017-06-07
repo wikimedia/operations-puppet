@@ -4,7 +4,6 @@ require 'optparse'
 require 'net/http'
 require 'facter'
 
-
 PATH_ROOT = '/usr/local/bin/'
 
 # default values
@@ -106,7 +105,6 @@ def check_pooled_state(ip, port, pool, host, want_pooled)
     end
   end
 end
-
 
 # do the whole procedure args[:cycles] times
 (1..args[:cycles]).each do

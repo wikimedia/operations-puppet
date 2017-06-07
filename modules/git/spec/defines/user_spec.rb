@@ -7,7 +7,6 @@
 require 'spec_helper'
 
 describe 'git::userconfig', :type => :define do
-
   let(:title) { 'gitconfig' }
 
   context "Setting up user name and email" do
@@ -26,5 +25,4 @@ describe 'git::userconfig', :type => :define do
       .with_content(/email = hashar@free.fr\n/)
     }
   end
-
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'service::node', :type => :define do
-
   let(:title) { 'my_service_name' }
   let(:facts) { { :initsystem => 'systemd' } }
 
@@ -16,5 +15,4 @@ describe 'service::node', :type => :define do
                          .with_content(/name: my_service_name/)
     end
   end
-
 end

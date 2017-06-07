@@ -1,6 +1,6 @@
 require 'spec_helper'
-describe 'ipresolve' do
 
+describe 'ipresolve' do
   it "should resolve ipv4 addresses by default" do
     should run.with_params('install1002.wikimedia.org').and_return('208.80.154.86')
   end

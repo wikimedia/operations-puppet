@@ -111,7 +111,6 @@ def time_ago(s)
   "Indeterminate amount of time (see time_ago)"
 end
 
-
 if failcount == :failed
     puts "CRITICAL: Catalog fetch fail. Either compilation failed or puppetmaster has issues"
     exit 2

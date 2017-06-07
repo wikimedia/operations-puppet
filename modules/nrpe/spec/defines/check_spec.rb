@@ -23,5 +23,4 @@ describe 'nrpe::check', :type => :define do
             should_not contain_file('/etc/nagios/nrpe.d/something.cfg')
         end
     end
-
 end

@@ -76,7 +76,6 @@ namespace :syntax do
         'syntax:hiera',
         'syntax:templates',
     ]
-
 end
 
 RuboCop::RakeTask.new(:rubocop)
@@ -93,7 +92,6 @@ PuppetLint::RakeTask.new :puppetlint_head do |config|
     config.pattern = git_changed_in_head ['.pp']
 end
 
-
 task :default => [:help]
 
 desc 'Run all build/tests commands (CI entry point)'
@@ -104,7 +102,6 @@ task lint: [:typos, :rubocop, :syntax, :puppetlint]
 
 desc 'Run all linting commands against HEAD'
 task lint_head: [:typos, :rubocop, :"syntax:head", :puppetlint_head]
-
 
 desc 'Show the help'
 task :help do
@@ -121,8 +118,8 @@ Welcome #{ENV['USER']} to WMFs wonderful rake helper to play with puppet.
     # Show our tasks list.
     system "rake -T"
 
-puts "-----------------------------------------------------------------------"
-puts "
+    puts "-----------------------------------------------------------------------"
+    puts "
 Examples:
 
 Validate syntax for all puppet manifests:
@@ -134,7 +131,6 @@ Validate manifests/nfs.pp and manifests/apaches.pp
 Run puppet-lint style checker:
   rake puppetlint
 "
-
 end
 
 desc "Build documentation"
@@ -170,7 +166,6 @@ end
 
 desc "Run spec tests found in modules"
 task :spec do
-
     # Hold a list of modules not passing tests.
     failed_modules = []
     ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs']

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'aptrepo', :type => :class do
-
     let(:params) {{ :basedir => '/srv/wikimedia' }}
 
     it { should compile }

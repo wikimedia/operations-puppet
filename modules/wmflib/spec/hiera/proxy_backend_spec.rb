@@ -48,5 +48,4 @@ describe 'proxy_backend' do
     @scope.function_role(['test'])
     expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['go-spurs'],['FooBar']])
   end
-
 end

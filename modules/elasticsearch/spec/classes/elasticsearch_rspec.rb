@@ -16,5 +16,4 @@ describe 'elasticsearch', :type => :class do
             .with_content(/-XX:\+PrintGCDateStamps$/)
     }
   end
-
 end
