@@ -21,12 +21,6 @@ Lint/HandleExceptions:
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
 
 # Offense count: 2
-Lint/RescueException:
-  Exclude:
-    - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
-
-# Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
 Lint/UnusedMethodArgument:
@@ -47,12 +41,6 @@ Lint/UselessAssignment:
 # Configuration parameters: AllowURI, URISchemes.
 Metrics/LineLength:
   Max: 159
-
-# Offense count: 1
-Style/AsciiComments:
-  Exclude:
-    - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
 
 # Offense count: 58
 # Cop supports --auto-correct.
@@ -75,7 +63,6 @@ Style/ClassVars:
 Style/ColonMethodCall:
   Exclude:
     - 'modules/base/lib/facter/physicalcorecount.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -254,8 +241,6 @@ Style/RedundantReturn:
 Style/RedundantSelf:
   Exclude:
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/servermon.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
 
 # Offense count: 23
@@ -301,7 +286,6 @@ Style/SpaceAfterComma:
     - 'modules/base/lib/facter/physicalcorecount.rb'
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
     - 'modules/strongswan/spec/functions/ipresolve_spec.rb'
     - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
