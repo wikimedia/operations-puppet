@@ -11,7 +11,8 @@ class openstack::glance::service(
 
     $glance_images_dir = "${glance_data}/images"
     $keystone_host_ip  = ipresolve($keystone_host,4)
-    $keystone_auth_uri = "http://${active_server}:5000/v2.0"
+    $keystone_admin_uri = "http://${active_server}:${keystoneconfig['auth_port']}"
+    $keystone_public_uri = "http://${active_server}:${keystoneconfig['public_port']"
 
     # Set up a keypair and rsync image files between active and standby
     user { 'glancesync':
