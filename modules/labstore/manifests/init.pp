@@ -39,6 +39,14 @@ class labstore {
         source => 'puppet:///modules/labstore/snapshot-manager.py',
     }
 
+    file { '/etc/modprobe.d/nfs-lockd.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
+    }
+
     file { '/etc/default/nfs-common':
         ensure => present,
         owner  => 'root',
