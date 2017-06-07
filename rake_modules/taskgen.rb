@@ -308,13 +308,6 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:admin'
         end
-        if @changed_files.include?('modules/mediawiki/files/apache/sites/redirects/redirects.dat')
-          desc 'Run tox for the redirects file'
-          task :redirects do
-            res = system('tox -e apache')
-            raise "Tox tests for redirects.dat failed!" unless res
-          end
-        end
         mtail_files = filter_files_by("modules/mtail/files/**")
         unless mtail_files.empty?
           desc 'Run tox for mtail'
