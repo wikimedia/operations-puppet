@@ -84,7 +84,7 @@ domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
 
 if [ -z $domain ]; then
    echo "hostname -d failed, trying to parse dhcp lease"
-   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.eth0.leases | head -n1 | cut -d \" -f2`
+   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.*.leases | head -n1 | cut -d \" -f2`
 fi
 
 if [ -z $domain ]; then
