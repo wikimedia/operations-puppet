@@ -137,7 +137,7 @@ profile::cassandra::settings:
   logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
   target_version: '2.2'
   additional_jvm_opts:
-    - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-20170117.190412-1.jar=7800:/etc/cassandra/jmx_exporter.yaml'
+    - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-20170117.190412-1.jar=7800:/etc/cassandra/prometheus_jmx_exporter.yaml'
 # end cassandra
 "udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
 "logstash_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
