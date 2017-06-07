@@ -76,7 +76,7 @@ Style/CommandLiteral:
 # Offense count: 16
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/DotPosition:
+Layout/DotPosition:
   Enabled: false
 
 # Offense count: 2
@@ -137,12 +137,12 @@ Style/IfUnlessModifier:
 # Offense count: 276
 # Cop supports --auto-correct.
 # Configuration parameters: Width.
-Style/IndentationWidth:
+Layout/IndentationWidth:
   Enabled: false
 
 # Offense count: 6
 # Cop supports --auto-correct.
-Style/LeadingCommentSpace:
+Layout/LeadingCommentSpace:
   Exclude:
     - 'modules/base/lib/facter/lldp.rb'
     - 'modules/base/spec/defines/service_unit_spec.rb'
@@ -152,7 +152,7 @@ Style/LeadingCommentSpace:
 
 # Offense count: 15
 # Cop supports --auto-correct.
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Exclude:
     - 'modules/base/lib/facter/physicalcorecount.rb'
     - 'modules/base/spec/defines/service_unit_spec.rb'
@@ -271,7 +271,7 @@ Style/Semicolon:
 
 # Offense count: 23
 # Cop supports --auto-correct.
-Style/SpaceAfterComma:
+Layout/SpaceAfterComma:
   Exclude:
     - 'modules/base/lib/facter/labsproject.rb'
     - 'modules/base/lib/facter/physicalcorecount.rb'
@@ -290,13 +290,13 @@ Style/SpaceAfterComma:
 # Offense count: 6
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/SpaceAroundEqualsInParameterDefault:
+Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
 
 # Offense count: 11
 # Cop supports --auto-correct.
 # Configuration parameters: MultiSpaceAllowedForOperators.
-Style/SpaceAroundOperators:
+Layout/SpaceAroundOperators:
   Exclude:
     - 'modules/librenms/lib/puppet/parser/functions/phpdump.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
@@ -304,18 +304,18 @@ Style/SpaceAroundOperators:
 
 # Offense count: 39
 # Cop supports --auto-correct.
-Style/SpaceInsideBrackets:
+Layout/SpaceInsideBrackets:
   Enabled: false
 
 # Offense count: 36
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
 # Offense count: 7
 # Cop supports --auto-correct.
-Style/SpaceInsideParens:
+Layout/SpaceInsideParens:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'utils/expanderb.rb'
@@ -335,5 +335,18 @@ Style/StringLiterals:
 # Offense count: 117
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+# should be fixed with %i[] in Ruby >= 2.0 (>= jessie)
+Style/SymbolArray:
+  Enabled: false
+
+# we can't depend on ActiveRecord etc., but we can use squiggly heredocs (<<~)
+# when we move to Ruby >= 2.3 (>= stretch)
+Layout/IndentHeredoc:
+  Enabled: false
+
+# bad advice
+Style/GuardClause:
   Enabled: false
