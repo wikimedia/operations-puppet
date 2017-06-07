@@ -100,4 +100,10 @@ class role::mail::mx(
         weekday => 0,
         command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
     }
+
+    # Customize logrotate settings to support longer retention (T167333)
+    logrotate::conf { 'exim4-base':
+        ensure  => 'present',
+        content => template('role/exim/logrotate/exim4-base.mx.erb'),
+    }
 }
