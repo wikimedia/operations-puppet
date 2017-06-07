@@ -78,16 +78,6 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
     # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
     # was split from the bridge kernel module into a separate module (br_netfilter)
     if (versioncmp($::kernelversion, '3.18') >= 0) {
-
-        # This directory is shipped by systemd, but trusty's upstart job for kmod also
-        # parses /etc/modules-load.d/ (but doesn't create the directory).
-        file { '/etc/modules-load.d/':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-
         file { '/etc/modules-load.d/brnetfilter.conf':
             ensure  => present,
             owner   => 'root',
