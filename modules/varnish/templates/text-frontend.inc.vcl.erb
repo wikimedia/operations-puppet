@@ -150,6 +150,10 @@ sub cluster_fe_recv {
 		return (synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
+	if (req.http.User-Agent ~ "wikiScrape/0.0.0") {
+		return (synth(742, "Too many requests"));
+	}
+
 	call mobile_redirect;
 
 	# normalize all /static to the same hostname for caching
@@ -300,6 +304,12 @@ sub cluster_fe_err_synth {
 	if (resp.status == 741) {
 		set resp.status = 401;
 		set resp.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
+		return (deliver);
+	}
+
+	// Clients performing too many requests
+	if (resp.status == 742) {
+		set resp.status = 420;
 		return (deliver);
 	}
 
