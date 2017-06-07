@@ -37,29 +37,29 @@ Puppet::Reports.register_report(:servermon) do
             con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
             # First we try to update the host, if it fails, insert it
             update_host = "UPDATE hosts SET \
-            environment = '#{self.environment}', \
-            updated_at = '#{self.time}', \
-            last_compile = '#{self.time}' \
-            WHERE name='#{self.host}'"
+            environment = '#{environment}', \
+            updated_at = '#{time}', \
+            last_compile = '#{time}' \
+            WHERE name='#{host}'"
             con.query(update_host)
-            if con.affected_rows == 0
+            if con.affected_rows.zero?
                 insert_host = "INSERT INTO hosts(
                 name, environment, last_compile, updated_at, created_at) \
-                VALUES('#{self.host}', '#{self.environment}', '#{self.time}', '#{self.time}', '#{self.time}')"
+                VALUES('#{host}', '#{environment}', '#{time}', '#{time}', '#{time}')"
                 con.query(insert_host)
             end
             # Now we know the host is there, get the id
             query = "SELECT id from hosts \
-            WHERE name='#{self.host}'"
+            WHERE name='#{host}'"
             rs = con.query(query)
             host_id = rs.fetch_row[0]
             if log_level == 'debug'
-                puts "Got host: #{self.host} with id: #{host_id}"
+                puts "Got host: #{host} with id: #{host_id}"
             end
 
             # if facts file found, read it and update facts for host:
-            if File.exists?("#{Puppet[:vardir]}/yaml/facts/#{self.host}.yaml")
-                node_facts = YAML.load_file("#{Puppet[:vardir]}/yaml/facts/#{self.host}.yaml")
+            if File.exists?("#{Puppet[:vardir]}/yaml/facts/#{host}.yaml")
+                node_facts = YAML.load_file("#{Puppet[:vardir]}/yaml/facts/#{host}.yaml")
                 # We got a Ruby object, get the values attributes and walk it
                 # This part of the code causes highly concurrent queries to the
                 # DB, so extra care is taken to avoid LOCKs, deadlocks etc
@@ -74,9 +74,9 @@ Puppet::Reports.register_report(:servermon) do
                     end
                     rs = con.query(select_fact_name)
                     # So we need to insert a fact_name
-                    if rs.num_rows == 0
+                    if rs.num_rows.zero?
                         insert_fact_name = "INSERT INTO fact_names(name, updated_at, created_at) \
-                        VALUES('#{key}', '#{self.time}', '#{self.time}')"
+                        VALUES('#{key}', '#{time}', '#{time}')"
                         if log_level == 'debug'
                             puts(insert_fact_name)
                         end
@@ -93,7 +93,7 @@ Puppet::Reports.register_report(:servermon) do
                     con.query('COMMIT')
                     # Now try to update the fact_value, it is fails, insert it
                     update_fact_value = "UPDATE fact_values SET \
-                    updated_at = '#{self.time}', \
+                    updated_at = '#{time}', \
                     value = '#{string_value}' \
                     WHERE fact_name_id=#{fact_id} AND host_id=#{host_id}"
                     if log_level == 'debug'
@@ -101,10 +101,10 @@ Puppet::Reports.register_report(:servermon) do
                     end
                     con.query(update_fact_value)
                     # rubocop:disable Style/Next
-                    if con.affected_rows == 0
+                    if con.affected_rows.zero?
                         insert_fact_value = "INSERT INTO fact_values( \
                         value,fact_name_id,host_id,updated_at,created_at) \
-                        VALUES('#{string_value}', #{fact_id}, #{host_id}, '#{self.time}', '#{self.time}')"
+                        VALUES('#{string_value}', #{fact_id}, #{host_id}, '#{time}', '#{time}')"
                         if log_level == 'debug'
                             puts(insert_fact_value)
                         end
@@ -117,8 +117,10 @@ Puppet::Reports.register_report(:servermon) do
             puts "Mysql error: #{e.errno}, #{e.error}"
             puts e.errno
             puts e.error
+        # rubocop:disable Lint/RescueException
         rescue Exception => e
             puts "Exception caught: #{e.errno}, #{e.error}"
+        # rubocop:enable Lint/RescueException
         ensure
             con.close if con
         end
