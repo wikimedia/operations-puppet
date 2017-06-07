@@ -92,7 +92,11 @@ class apt(
     if $::operatingsystem == 'ubuntu' {
         $components = 'main universe thirdparty'
     } else {
-        $components = 'main backports thirdparty'
+        if os_version('debian == jessie') {
+            $components = 'main backports thirdparty'
+        } else {
+            $components = 'main thirdparty/hwraid'
+        }
     }
 
     apt::repository { 'wikimedia':
