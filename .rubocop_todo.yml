@@ -152,7 +152,7 @@ Style/LeadingCommentSpace:
 
 # Offense count: 15
 # Cop supports --auto-correct.
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Exclude:
     - 'modules/base/lib/facter/physicalcorecount.rb'
     - 'modules/base/spec/defines/service_unit_spec.rb'
@@ -335,5 +335,18 @@ Style/StringLiterals:
 # Offense count: 117
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+# should be fixed with %i[] in Ruby >= 2.0 (>= jessie)
+Style/SymbolArray:
+  Enabled: false
+
+# we can't depend on ActiveRecord etc., but we can use squiggly heredocs (<<~)
+# when we move to Ruby >= 2.3 (>= stretch)
+Style/IndentHeredoc:
+  Enabled: false
+
+# bad advice
+Style/GuardClause:
   Enabled: false
