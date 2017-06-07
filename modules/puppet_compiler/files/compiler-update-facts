@@ -7,7 +7,6 @@
 
 set -e
 set -u
-set -x
 
 COMPILER=${PUPPET_COMPILER:-compiler02.puppet3-diffs.eqiad.wmflabs}
 RUBY_SCRIPT=$(cat <<'RUBY_SCRIPT'
