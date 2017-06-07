@@ -158,6 +158,16 @@ class base::monitoring::host(
 
     # check temperature sensors via IPMI, unless VM (T125205)
     if str2bool($facts['is_virtual']) == false {
+        # ipmi_devintf needs to be loaded for the checks to work properly
+        # (T167121)
+        file { '/etc/modules-load.d/ipmi.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "ipmi_devintf\n",
+            require => File['/etc/modules-load.d/'],
+        }
 
         ::sudo::user { 'nagios_ipmi_temp':
             user       => 'nagios',
