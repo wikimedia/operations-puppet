@@ -75,6 +75,8 @@ class role::librenms {
             '65517' => 'Equinix',
         },
         'email_from' => 'librenms',
+        'twofactor' => true,
+        'twofactor_lock' => 300,
         'enable_inventory' => 1,
         'enable_syslog'    => 1,
         'enable_billing'   => 1,
