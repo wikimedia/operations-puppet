@@ -16,7 +16,6 @@ class role::labs::openstack::nova::common {
         bind_ip                => ipresolve($keystone_host,4),
         keystone_auth_host     => $keystoneconfig['auth_host'],
         keystone_auth_port     => $keystoneconfig['auth_port'],
-        keystone_admin_token   => $keystoneconfig['admin_token'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
         auth_uri               => "http://${nova_controller}:5000",
         admin_uri              => "http://${nova_controller}:35357",
