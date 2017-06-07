@@ -132,8 +132,9 @@ default_limit_admin = 1000
 # Keystone Middleware
 #-----------------------
 [keystone_authtoken]
-identity_uri = <%= @keystoneconfig["auth_protocol"] %>://<%= @keystone_host_ip %>:<%= @keystoneconfig['auth_port'] %>
-admin_token = <%= @keystoneconfig["admin_token"] %>
+auth_uri = <%= @keystone_public_uri %>
+admin_user = novaadmin
+admin_password = <%= @keystoneconfig["ldap_user_pass"] %>
 
 #-----------------------
 # Sink Service
