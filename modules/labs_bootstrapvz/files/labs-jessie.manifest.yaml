@@ -98,8 +98,6 @@ packages:
     - nagios-plugins-basic
     - jq
     - debdeploy-minion
-    - arcconf
-    - megacli
     - apt-transport-https
     - tcpdump
     - molly-guard
