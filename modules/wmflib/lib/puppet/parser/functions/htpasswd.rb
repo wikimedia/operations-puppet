@@ -70,9 +70,9 @@ class Apr1Md5
     1000.times do |x|
       ctx = ::Digest::MD5.new
       ctx << (((x & 1) == 1) ? password : pd[0, DIGEST_LENGTH])
-      (ctx << @salt) unless (x % 3) == 0
-      (ctx << password) unless (x % 7) == 0
-      ctx << (((x & 1) == 0) ? password : pd[0, DIGEST_LENGTH])
+      (ctx << @salt) unless (x % 3).zero?
+      (ctx << password) unless (x % 7).zero?
+      ctx << (((x & 1).zero?) ? password : pd[0, DIGEST_LENGTH])
       pd = ctx.digest
     end
 

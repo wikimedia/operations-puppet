@@ -205,7 +205,6 @@ Style/NestedTernaryOperator:
 Style/Not:
   Exclude:
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
     - 'utils/hiera_lookup'
 
 # Offense count: 3
