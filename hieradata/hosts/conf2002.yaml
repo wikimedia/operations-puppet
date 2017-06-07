@@ -1,1 +1,2 @@
 profile::etcd::replication::active: true
+zookeeper_version: 3.4.5+dfsg-2+deb8u2
