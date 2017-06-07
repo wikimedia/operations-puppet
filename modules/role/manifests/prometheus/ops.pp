@@ -81,13 +81,6 @@ class role::prometheus::ops {
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
       {
-        'job_name'        => 'varnish-maps',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/varnish-maps_*.yaml"] },
-        ],
-        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
-      },
-      {
         'job_name'        => 'varnish-misc',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-misc_*.yaml"] },
@@ -372,11 +365,6 @@ class role::prometheus::ops {
     prometheus::rule { 'rules_ops.conf':
         instance => 'ops',
         source   => 'puppet:///modules/role/prometheus/rules_ops.conf',
-    }
-
-    prometheus::varnish_2layer{ 'maps':
-        targets_path => $targets_path,
-        cache_name   => 'maps',
     }
 
     prometheus::varnish_2layer{ 'misc':

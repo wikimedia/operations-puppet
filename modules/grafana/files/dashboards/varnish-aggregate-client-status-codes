@@ -446,16 +446,11 @@
           },
           {
             "selected": false,
-            "text": "maps",
-            "value": "maps"
-          },
-          {
-            "selected": false,
             "text": "misc",
             "value": "misc"
           }
         ],
-        "query": "text,upload,maps,misc",
+        "query": "text,upload,misc",
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "",
