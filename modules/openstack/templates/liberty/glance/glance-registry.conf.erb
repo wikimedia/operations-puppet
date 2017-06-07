@@ -57,7 +57,7 @@ use_syslog = False
 [keystone_authtoken]
 auth_uri = <%= @keystone_public_uri %>
 identity_uri = <%= @keystone_admin_uri %>
-admin_user = <%= @keystoneconfig["ldap_user_dn"] %>
+admin_user = novaadmin
 admin_password = <%= @keystoneconfig["ldap_user_pass"] %>
 
 [paste_deploy]
