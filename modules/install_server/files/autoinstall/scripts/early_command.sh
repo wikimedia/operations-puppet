@@ -3,7 +3,8 @@
 set -e
 
 ## redo network configuration statically
-IP=$(ip address show dev eth0 | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)
+IFACE=$(ip -4 route list 0/0 | sed -r 's/.*dev ([^ ]*) .*/\1/' | head -1)
+IP=$(ip address show dev $IFACE | egrep '^[[:space:]]+inet ' | cut -d ' ' -f 6 | cut -d '/' -f 1)
 
 cat > /tmp/static_net.cfg <<EOF
 d-i netcfg/get_ipaddress string $IP
