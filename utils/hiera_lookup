@@ -46,8 +46,8 @@ rescue LoadError
   abort("Hiera not found - try 'apt-get install ruby-hiera' or 'gem install hiera'.")
 end
 
-# Get the scope from the command line arguments
-def get_scope()
+# Determine the scope from the command line arguments
+def determine_scope
   # Transform the CL arguments in a dictionary in the form "::option" => argument
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
   abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
@@ -87,7 +87,7 @@ class Hiera
     class << self
       alias_method :old_datadir, :datadir
       def datadir(backend, scope)
-        old_datadir(backend, scope).gsub(/^.*(?=\/hieradata)/, $DIR)
+        old_datadir(backend, scope).gsub(%r{^.*(?=/hieradata)}, $DIR)
       end
     end
   end
@@ -104,18 +104,18 @@ end
 $DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
 $LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
 
-scope = get_scope()
+scope = determine_scope
 
 cfg = File.join($DIR, "modules/puppetmaster/files/#{scope['::realm']}.hiera.yaml")
 if !File.exist?(cfg)
   Kernel.abort("Hiera cfg file not found for realm '#{scope['::realm']}': #{cfg}")
 end
 
-key = ARGV.pop()
+key = ARGV.pop
 abort(usage "\nError: KEY is required") if key.match('^--')
 
 hiera = Hiera.new(:config => cfg)
-if not verbose || scope.include?('::debug')
+if !verbose || scope.include?('::debug')
     Hiera.logger = "noop"
 end
 
