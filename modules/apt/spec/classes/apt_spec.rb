@@ -1,9 +1,21 @@
 require 'spec_helper'
 
 describe 'apt' do
-    ['Debian', 'Ubuntu'].each do |os|
-        context "with OS #{os}" do
-            let(:facts) { { :operatingsystem => os } }
+    os = [
+        {
+            :lsbdistid => 'Debian',
+            :lsbdistrelease => '8.0',
+            :operatingsystem => 'Debian',
+        },
+        {
+            :lsbdistid => 'Ubuntu',
+            :lsbdistrelease => '14.04',
+            :operatingsystem => 'Ubuntu',
+        },
+    ]
+    os.each do |os_facts|
+        context "with OS #{os_facts[:lsbdistid]} #{os_facts[:lsbdistrelease]}" do
+            let(:facts) { os_facts }
 
             it { should compile }
 
