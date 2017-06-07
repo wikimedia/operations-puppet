@@ -1434,8 +1434,8 @@
       {
         "allFormat": "glob",
         "current": {
-          "text": "eth0",
-          "value": "eth0",
+          "text": "*",
+          "value": "*",
           "tags": []
         },
         "datasource": "graphite",
