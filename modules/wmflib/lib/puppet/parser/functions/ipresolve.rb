@@ -110,7 +110,6 @@ class DNSCached
   end
 end
 
-
 module Puppet::Parser::Functions
   dns = DNSCached.new
   newfunction(:ipresolve, :type => :rvalue, :arity => -1) do |args|

@@ -7,7 +7,6 @@ def calc_url(aggregator, ip_octet)
   format('%s:%d', url, port)
 end
 
-
 module Puppet::Parser::Functions
   newfunction(:ganglia_aggregator_config, :type => :rvalue) do |_|
     config = {}

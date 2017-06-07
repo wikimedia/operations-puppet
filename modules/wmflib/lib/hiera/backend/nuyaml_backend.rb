@@ -67,7 +67,6 @@
 class Hiera
   module Backend
     class Nuyaml_backend
-
       def initialize(cache=nil)
         require 'yaml'
         @cache = cache || Filecache.new

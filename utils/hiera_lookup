@@ -30,7 +30,7 @@ Examples:
 
 
 end
-    msg << error
+  msg << error
 end
 
 begin

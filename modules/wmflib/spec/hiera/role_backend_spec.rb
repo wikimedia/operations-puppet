@@ -4,7 +4,6 @@ require 'hiera'
 
 describe 'role_backend' do
   before :each do
-
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.yaml')
     @backend = Hiera::Backend::Role_backend.new()

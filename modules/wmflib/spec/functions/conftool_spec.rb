@@ -3,7 +3,6 @@ require 'mocha/test_unit'
 require 'json'
 
 describe 'conftool' do
-
   def gen_conftool_call(selector)
     ['/usr/bin/conftool', '--object-type', 'node', 'select', selector, 'get']
   end

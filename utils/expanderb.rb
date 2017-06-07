@@ -18,7 +18,6 @@ $filename = nil
 
 # Parsing the options
 optparse = OptionParser.new do |opts|
-
   opts.banner = "Usage: expanderb.rb -f FILENAME [key=val [key2=val]]"
 
   opts.on( '-f', '--filename FILENAME', 'ERB filename to expand') do |f|
@@ -36,7 +35,7 @@ begin
   # -f is mandatory
   optparse.parse!
   if $filename.nil?
-     puts "You must specify an ERB filename."
+    puts "You must specify an ERB filename."
     puts optparse
     exit
   end
@@ -53,8 +52,6 @@ ARGV.each do |val|
   template_values[key] = value
 end
 p template_values
-
-
 
 def render_erb(template, locals)
   # Make sure we can render templates with -%> closing tags.

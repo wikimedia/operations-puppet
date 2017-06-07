@@ -7,7 +7,6 @@ require 'erb'
 Puppet::Reports.register_report(:statsd) do
     desc = 'Send Puppet metrics to StatsD'
 
-
     def load_config
         config_file = File.join Puppet.settings[:confdir], 'statsd.yaml'
         raise Puppet::ParseError, "#{config_file} is missing" unless File.exists? config_file

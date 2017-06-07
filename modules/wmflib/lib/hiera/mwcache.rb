@@ -96,7 +96,6 @@ class Hiera
       return {:ts => now, :revision => revision}
     end
 
-
     def get_from_mediawiki(path,want_content)
       what = want_content ? 'content' : 'ids'
       query_string = "action=query&prop=revisions&format=json&rvprop=#{what}&titles=Hiera:#{path}"

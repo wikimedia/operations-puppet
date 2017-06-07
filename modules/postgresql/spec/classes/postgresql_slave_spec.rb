@@ -31,7 +31,7 @@ describe 'postgresql::slave', :type => :class do
         :ensure           => 'present',
         :master_server    => 'test',
         :replication_pass => 'pass',
-        :root_dir          => '/srv/postgres',
+        :root_dir         => '/srv/postgres',
         }
     }
     let(:facts) { { :lsbdistcodename => 'jessie' } }

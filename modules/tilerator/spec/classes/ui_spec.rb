@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'tilerator::ui', :type => :class do
-
   context 'with default parameters' do
     # there is an issue with secret() that is a transitive dependency of service::node
     # not sure how to fix it...
@@ -20,5 +19,4 @@ describe 'tilerator::ui', :type => :class do
                             .without_content(/-j.deleteEmpty/)
     }
   end
-
 end

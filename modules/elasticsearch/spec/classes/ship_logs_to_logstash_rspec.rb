@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'elasticsearch', :type => :class do
-
   describe 'when NOT sending logs to logstash' do
     let(:params) { { :cluster_name  => 'my_cluster_name' } }
     let(:facts) { { :lsbdistrelease => 'ubuntu',

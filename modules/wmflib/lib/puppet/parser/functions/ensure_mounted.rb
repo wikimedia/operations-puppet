@@ -24,7 +24,6 @@
 #
 module Puppet::Parser::Functions
   newfunction(:ensure_mounted, :type => :rvalue, :arity => 1) do |args|
-
     ensure_param = args.first
     case ensure_param
     when 'present', 'true', true then 'mounted'

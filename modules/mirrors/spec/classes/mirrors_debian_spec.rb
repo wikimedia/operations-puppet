@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'mirrors::debian', :type => :class do
-
     it do
         should contain_file('/srv/mirrors/debian').with({
             'ensure' => 'directory',

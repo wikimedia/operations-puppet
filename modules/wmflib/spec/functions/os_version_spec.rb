@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'os_version' do
-
   it 'should be defined' do
     expect(subject).to_not be_nil
   end
@@ -53,5 +52,4 @@ describe 'os_version' do
       expect(subject).to run.with_params('Debian < stretch').and_return(true)
     end
   end
-
 end

@@ -1,6 +1,5 @@
 require 'spec_helper'
 describe 'role' do
-
   before :each do
     @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
     @scope = Puppet::Parser::Scope.new(@compiler)

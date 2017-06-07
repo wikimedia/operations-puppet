@@ -12,7 +12,6 @@ require 'stringio'
 # Original code Copyright (c) 2008 Jeremy Hinegardner
 # Modifications Copyright (c) 2017 Giuseppe Lavagetto, Wikimedia Foundation, Inc.
 class Apr1Md5
-
   DIGEST_LENGTH = 16
 
   def initialize(salt)
@@ -34,7 +33,6 @@ class Apr1Md5
     end
     r.string
   end
-
 
   # this algorithm pulled straight from apr_md5_encode() and converted to ruby syntax
   def encode(password)
@@ -78,7 +76,6 @@ class Apr1Md5
       pd = ctx.digest
     end
 
-
     pd = pd.bytes.to_a
 
     l = (pd[0] << 16) | (pd[6] << 8) | pd[12]
@@ -100,7 +97,6 @@ class Apr1Md5
     encoded_password
   end
 end
-
 
 module Puppet::Parser::Functions
   newfunction(:htpasswd, :type => :rvalue, :arity => 2) do |args|
