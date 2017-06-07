@@ -85,6 +85,14 @@ class swift::storage (
         ensure => running,
     }
 
+    if os_version('debian >= jessie') {
+        # object reconstructor is used with erasures codes, mask it so it
+        # doesn't fail pointlessly
+        exec { 'mask_swift_object_reconstructor':
+            command => '/bin/systemctl mask swift-object-reconstructor.service',
+            creates => '/etc/systemd/system/swift-object-reconstructor.service',
+        }
+    }
 
     # install swift-drive-audit as a cronjob;
     # it checks the disks every 60 minutes
