@@ -6,6 +6,8 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   StyleGuideCopsOnly: true
   Exclude:
+    # not a Ruby script
+    - 'modules/smokeping/files/smokeping.fcgi'
     # third party modules
     - 'modules/mysql/**/*'
     - 'modules/rsync/**/*'
