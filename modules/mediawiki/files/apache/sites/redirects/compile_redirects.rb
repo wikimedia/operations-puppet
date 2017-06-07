@@ -1,1 +1,0 @@
-../../../../lib/puppet/parser/functions/compile_redirects.rb
