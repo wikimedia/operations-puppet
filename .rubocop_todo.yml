@@ -37,7 +37,6 @@ Lint/UnusedMethodArgument:
 # Offense count: 10
 Lint/UselessAssignment:
   Exclude:
-    - 'modules/base/files/monitoring/check_puppetrun'
     - 'modules/ganeti/lib/facter/ganeti.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/service/Rakefile'
@@ -205,7 +204,6 @@ Style/NestedTernaryOperator:
 # Cop supports --auto-correct.
 Style/Not:
   Exclude:
-    - 'modules/base/files/monitoring/check_puppetrun'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
     - 'utils/hiera_lookup'
@@ -365,8 +363,3 @@ Style/StringLiterals:
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
 Style/TrailingComma:
   Enabled: false
-
-# Offense count: 1
-Style/UnlessElse:
-  Exclude:
-    - 'modules/base/files/monitoring/check_puppetrun'
