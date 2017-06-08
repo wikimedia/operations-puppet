@@ -6,6 +6,7 @@ class profile::pybal(
     $conftool_prefix = hiera('conftool_prefix'),
     $config_source = hiera('profile::pybal::config_source'),
     $config_host = hiera('profile::pybal::config_host'),
+    $ganglia_clusters = hiera('ganglia_clusters'),
 ) {
 
     requires_os('debian >= jessie')
@@ -50,5 +51,10 @@ class profile::pybal(
     }
 
     class { '::pybal::monitoring': }
+
+    # Sites with MediaWiki appservers need runcommand
+    if $::site in keys($ganglia_clusters['appserver']['sites']) {
+        class { '::lvs::balancer::runcommand': }
+    }
 
 }
