@@ -2619,16 +2619,6 @@ host kubernetes2004 {
      fixed-address kubernetes2004.codfw.wmnet;
 }
 
-host kubestage1001 {
-     hardware ethernet 18:66:DA:A3:F3:13;
-     fixed-address kubestage1001.eqiad.wmnet;
-}
-
-host kubestage1002 {
-     hardware ethernet 18:66:DA:A3:7A:F0;
-     fixed-address kubestage1002.eqiad.wmnet;
-}
-
 host labcontrol1001 {
     hardware ethernet 84:2b:2b:77:cf:ca;
     fixed-address labcontrol1001.wikimedia.org;
