@@ -150,7 +150,7 @@ sub cluster_fe_recv {
 		return (synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
-	if (req.http.User-Agent ~ "wikiScrape/0.0.0") {
+	if (req.http.User-Agent ~ "(?i)^wikiScrape/[0-9]+\.[0-9]+\.[0-9]+$") {
 		return (synth(742, "Too many requests"));
 	}
 
