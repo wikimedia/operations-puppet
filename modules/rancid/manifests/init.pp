@@ -19,7 +19,10 @@ class rancid {
         home       => '/var/lib/rancid',
     }
 
-    include ::passwords::rancid
+    ::keyholder::agent { 'rancid':
+        require        => Group['rancid'],
+        trusted_groups => ['rancid'],
+    }
 
     file { '/etc/rancid/rancid.conf':
         require => Package['rancid'],
