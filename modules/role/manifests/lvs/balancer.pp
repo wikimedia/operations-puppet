@@ -8,7 +8,7 @@ class role::lvs::balancer {
     }
 
     include ::lvs::configuration
-    include ::lvs::pybal_configuration
+
     $sip = $lvs::configuration::service_ips
 
     # This is a temporary refactoring, we should do more to clean up here.
@@ -137,17 +137,14 @@ class role::lvs::balancer {
 
     # TODO: refactor the whole set of classes
     class { '::lvs::balancer':
-        service_ips          => $lvs_balancer_ips,
-        lvs_services         => $lvs::configuration::lvs_services,
-        lvs_class_hosts      => $lvs::configuration::lvs_class_hosts,
-        pybal_global_options => $lvs::pybal_configuration::pybal,
-        site                 => $::site,
-        conftool_prefix      => hiera('conftool_prefix'),
+        service_ips     => $lvs_balancer_ips,
+        lvs_services    => $lvs::configuration::lvs_services,
+        lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+        site            => $::site,
+        conftool_prefix => hiera('conftool_prefix'),
     }
 
-    if os_version('debian >= jessie') {
-        include ::pybal::monitoring
-    }
+    include ::profile::pybal
 
     if $::site in ['eqiad', 'codfw'] {
         include ::lvs::balancer::runcommand
