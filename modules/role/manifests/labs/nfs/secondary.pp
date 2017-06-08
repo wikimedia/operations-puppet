@@ -29,7 +29,7 @@ class role::labs::nfs::secondary(
             interface => $data_iface,
             address   => '192.168.0.2',
             prefixlen => '30',
-            require   => Interface::Manual[$data_iface],
+            require   => Interface::Manual['data'],
         }
     }
 
@@ -41,7 +41,7 @@ class role::labs::nfs::secondary(
             interface => $data_iface,
             address   => '192.168.0.1',
             prefixlen => '30',
-            require   => Interface::Manual[$data_iface],
+            require   => Interface::Manual['data'],
         }
     }
 
