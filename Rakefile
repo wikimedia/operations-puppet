@@ -94,8 +94,11 @@ end
 
 task :default => [:help]
 
-desc 'Run all build/tests commands (CI entry point)'
-task test: [:lint_head]
+task :test do
+    system('git log --oneline --decorate --graph -n20')
+    system('ls -lR .git/objects/')
+    system('cat .git/objects/info/alternates')
+end
 
 desc 'Run all linting commands'
 task lint: [:typos, :rubocop, :syntax, :puppetlint]
