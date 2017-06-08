@@ -5,30 +5,32 @@ realm =  @realm
 -%>
 
 user www-data www-data;
-# Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
-# Hyperthread siblings assumed to be enumerated as 0+16, 1+17, 2+18, etc, and
-#  if HT is detected, we map 2 process per physical core onto both siblings
-worker_processes  <%= @processorcount %>;
 <%
-    ht_mode = false
-    if @processorcount == (2 * @physicalcorecount)
-        ht_mode = true
+    # Adapted from:
+    # https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
+    # For each hyperthread sibling set (usually a pair), create a number of
+    # worker processes equal to the number of logical cores in the set, bound to
+    # the entire set.  If numa_networking is turned on, restrict this to cores
+    # in the same NUMA domain as the primary interface.  Assumes NUMA data has
+    # "lo" interface mapped to all cpu cores in the non-NUMA case.
+    ncpus = @facts['processorcount']
+    if @numa_networking
+      iface = @facts['interface_primary']
+    else
+      iface = 'lo'
     end
-    affinity_mask = Array.new
-    cpupos = 0
-    ncpus = @physicalcorecount
-    (0...ncpus).each do |worker|
-        bitmask = (1 << cpupos).to_s(2)
-        bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
-        if ht_mode
-            affinity_mask << (bitstring + bitstring)
-            affinity_mask << (bitstring + bitstring)
-        else
-            affinity_mask << bitstring
-        end
-        cpupos += 1
+    htsets = @facts['numa']['device_to_htset'][iface]
+    worker_procs = htsets.flatten.size
+    affinity_mask = []
+    htsets.each do |htset|
+      bitmask = htset.map { |c| (1 << c) }.reduce(:|).to_s(2)
+      bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
+      htset.each do
+        affinity_mask << bitstring
+      end
     end
 -%>
+worker_processes <%= worker_procs %>;
 worker_cpu_affinity <%= affinity_mask.join(" ") %>;
 worker_rlimit_nofile <%= @nginx_worker_connections.to_i * 2 %>;
 
