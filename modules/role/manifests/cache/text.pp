@@ -17,8 +17,9 @@ class role::cache::text(
         mc_addrs => [ '239.128.0.112' ],
     }
 
+    $realserver_ip = $::lvs::configuration::service_ips['text'][$::site]
     class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['text'][$::site]
+        realserver_ips => $realserver_ip,
     }
 
     $fe_cache_be_opts = {
@@ -88,5 +89,14 @@ class role::cache::text(
     # ResourceLoader browser cache hit rate and request volume stats.
     ::varnish::logging::rls { 'rls':
         statsd_server => hiera('statsd'),
+    }
+
+    # Monitor Restbase at the SSL termination level
+    class { '::service::monitoring': }
+
+    nrpe::monitor_service { 'endpoints_restbase':
+        ensure       => present,
+        description  => 'Restbase edge endpoints',
+        nrpe_command => "/usr/bin/service-checker-swagger -t 5 ${realserver_ip} https://en.wikipedia.org/api/rest_v1",
     }
 }

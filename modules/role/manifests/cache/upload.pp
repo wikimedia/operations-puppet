@@ -14,8 +14,9 @@ class role::cache::upload(
         mc_addrs   => [ '239.128.0.112', '239.128.0.113', '239.128.0.114' ],
     }
 
+    $realserver_ip = $::lvs::configuration::service_ips['upload'][$::site]
     class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
+        realserver_ips => $realserver_ip,
     }
 
     $fe_cache_be_opts = {
@@ -96,4 +97,14 @@ class role::cache::upload(
     ::varnish::logging::media { 'media':
         statsd_server => hiera('statsd'),
     }
+
+    # Monitor Restbase at the SSL termination level
+    class { '::service::monitoring': }
+
+    nrpe::monitor_service { 'endpoints_maps':
+        ensure       => present,
+        description  => 'Maps edge endpoints',
+        nrpe_command => "/usr/bin/service-checker-swagger -t 5 ${realserver_ip} https://maps.wikimedia.org",
+    }
+
 }
