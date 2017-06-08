@@ -1,1 +1,2 @@
 bbr_congestion_control: true
+numa_networking: true
