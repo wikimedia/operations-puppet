@@ -1,22 +1,10 @@
-# lvs/balancer.pp
-
-# Class: lvs::balancer
-# Parameters:
-#   - $service_ips: list of service IPs to bind to loopback
-#   - $lvs_services: A configuration hash of LVS services
-#   - $lvs_class_hosts: A configuration hash of PyBal class hosts
-class lvs::balancer(
-    $lvs_services,
-    $lvs_class_hosts,
-    $service_ips=[],
-    $conftool_prefix = '/conftool/v1',
-    ) {
-
-    include ::cpufrequtils # defaults to "performance", Ubuntu default is "ondemand"
-    include ::initramfs
+# Class: lvs::kernel_config
+#
+# Sets up kernel-level parameters for lvs
+#
+class lvs::kernel_config {
 
     # ethtool is also a package needed but it is included from base
-
     file { '/etc/modprobe.d/lvs.conf':
         ensure  => present,
         owner   => 'root',
@@ -24,9 +12,6 @@ class lvs::balancer(
         content => template('lvs/lvs.conf.erb'),
         notify  => Exec['update-initramfs'],
     }
-
-    # Bind balancer IPs to the loopback interface
-    class { '::lvs::realserver': realserver_ips => $service_ips }
 
     sysctl::parameters { 'lvs':
         values => {
@@ -80,4 +65,13 @@ class lvs::balancer(
         mode    => '0444',
         content => "ip_vs\n",
     }
+
+    # Bump min_free_kbytes a bit to ensure network buffers are available quickly
+    vm::min_free_kbytes { 'lvs':
+        pct => 3,
+        min => 131072,
+        max => 524288,
+    }
+
+
 }
