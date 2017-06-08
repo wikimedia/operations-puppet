@@ -6384,7 +6384,7 @@ host wtp1024 {
     hardware ethernet 90:B1:1C:3D:0E:1C;
     fixed-address wtp1024.eqiad.wmnet;
 }
-i
+
 host wtp1025 {
 	hardware ethernet 18:66:DA:92:92:6D;
 	fixed-address wtp1025.eqiad.wmnet;
