@@ -237,7 +237,7 @@ define cassandra::instance(
         require => File['/etc/cassandra-instances.d'],
     }
 
-    if ($target_version >= '3.7') {
+    if ($target_version == '3.x') {
         file { "${config_directory}/jvm.options":
             ensure  => present,
             content => template("${module_name}/jvm.options-${target_version}.erb"),
