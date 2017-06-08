@@ -11,9 +11,10 @@ class role::puppetmaster::backend {
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
     class { '::role::puppetmaster::common':
-        base_config => {
-            'ca'        => false,
-            'ca_server' => $ca_server,
+        base_config           => {
+            'ca'              => false,
+            'ca_server'       => $ca_server,
+            'stringify_facts' => false,
         }
     }
 
