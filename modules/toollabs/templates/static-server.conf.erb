@@ -70,6 +70,42 @@ server {
         root /srv/; # Is ok, nginx ensures that this is /cdnjs/* only
     }
 
+    location = /fontcdn {
+        return 302 "https://<%= @web_domain %>/fontcdn/";
+    }
+
+    location = /fontcdn/ {
+        return 302 "https://<%= @web_domain %>/fontcdn/";
+    }
+
+    location /fontcdn/ {
+        # Don't mess with the cookie in any case
+        proxy_hide_header       Set-Cookie;
+        proxy_set_header        Cookie "";
+
+        # And hide the referrer for privacy reasons
+        proxy_set_header        Referer "https://<%= @web_domain %>/fontcdn/";
+
+        add_header Access-Control-Allow-Origin '*';
+
+        # rewrite is an action directive and does not inherit
+
+        location /fontcdn/s/ {
+            rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_pass https://fonts.gstatic.com;
+        }
+
+        location /fontcdn/css {
+            rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_pass https://fonts.googleapis.com;
+
+            # subs_filter works only on uncompressed data
+            proxy_set_header Accept-Encoding "";
+            subs_filter_types text/css;
+            subs_filter '//fonts.gstatic.com/' '//$host/fontcdn/';
+        }
+    }
+
     location ~ ^/([^/]+)(/.*)?$ {
         autoindex on;
         add_header Access-Control-Allow-Origin '*';
