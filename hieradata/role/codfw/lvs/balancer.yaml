@@ -1,5 +1,4 @@
 debdeploy::grains:
   debdeploy-lvs-codfw:
     value: standard
-pybal::configuration::config: etcd
-pybal::configuration::config_host: conf2001.codfw.wmnet
+profile::pybal::config_host: conf2001.codfw.wmnet
