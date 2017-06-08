@@ -2,7 +2,6 @@
 
 # Supporting the PyBal RunCommand monitor
 class lvs::balancer::runcommand {
-    Class[lvs::balancer] -> Class[lvs::balancer::runcommand]
 
     file {
         '/etc/pybal/runcommand':
