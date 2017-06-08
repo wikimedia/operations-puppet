@@ -1,0 +1,28 @@
+<%-
+# TODO: un-copy this from lvs/wikimedia-lvs-realserver.erb.
+def flatten_ips(ips)
+  result = []
+
+  if ips.is_a?(Hash) then
+    ips.values.each do |v|
+      result += flatten_ips(v)
+    end
+  elsif ips.is_a?(Array) then
+    ips.each do |v|
+      result += flatten_ips(v)
+    end
+  else
+    result << ips
+  end
+
+  return result
+end
+
+var lvs_class = scope.lookupvar("::lvs::configuration::lvs_grain_class")
+var lvs_services = scope.lookupvar("::lvs::configuration::lvs_services")
+services = lvs_services.values.select do |srv|
+  lvs_class == srv['class'] && srv['sites'].include?(@site)
+end
+ips = flatten_ips(services.map{ |srv| srv['ip'][@site] })
+-%>
+<%= ips.sort.join(" ") -%>
