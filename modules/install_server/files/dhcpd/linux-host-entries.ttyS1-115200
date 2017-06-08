@@ -1825,6 +1825,16 @@ host druid1003 {
     fixed-address druid1003.eqiad.wmnet;
 }
 
+host dumpsdata1001 {
+    hardware ethernet 18:66:DA:FA:5E:A0;
+    fixed-address dumpsdata1001.eqiad.wmnet;
+}
+
+host dumpsdata1002 {
+    hardware ethernet 18:66:DA:FA:5E:A8;
+    fixed-address dumpsdata1002.eqiad.wmnet;
+}
+
 host eeden {
     hardware ethernet a4:ba:db:30:d8:80;
     fixed-address eeden.wikimedia.org;
