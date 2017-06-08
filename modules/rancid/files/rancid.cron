@@ -1,4 +1,4 @@
 # Run config differ hourly
-1 * * * *	rancid	/usr/lib/rancid/bin/rancid-run
+1 * * * *	rancid	SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/lib/rancid/bin/rancid-run
 # Clean out rancid logs
 50 23 * * *	rancid	/usr/bin/find /var/log/rancid -type f -mtime +2 -exec rm {} \;
