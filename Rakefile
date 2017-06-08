@@ -44,7 +44,7 @@ if Puppet.version.to_f < 4.0
 end
 
 # Find files modified in HEAD
-def git_changed_in_head(file_exts=[])
+def git_changed_in_head(file_exts=[''])
     unless defined? @changed_files
         g = Git.open('.')
         diff = g.diff('HEAD^')
@@ -105,7 +105,7 @@ desc 'Run all linting commands'
 task lint: [:typos, :rubocop, :syntax, :puppetlint]
 
 desc 'Run all linting commands against HEAD'
-task lint_head: [:typos, :rubocop, :"syntax:head", :puppetlint_head]
+task lint_head: [:typos_head, :rubocop, :"syntax:head", :puppetlint_head]
 
 desc 'Show the help'
 task :help do
@@ -207,9 +207,10 @@ task :tags do
     puts "integration with the vim tagbar plugin."
 end
 
-desc "Check common typos from /typos"
-task :typos do
-    system("git grep --color=always -I -P -f typos -- . ':(exclude)typos'")
+def find_typos(pathspecs=['.'])
+    puts "Looking for typos..."
+    files = Shellwords.join(pathspecs)
+    system("git grep --color=always -I -P -f typos -- #{files} ':(exclude)typos'")
     # 0   One or more lines were selected.
     # 1   No lines were selected.
     # >1  An error occurred.
@@ -222,6 +223,22 @@ task :typos do
         puts "No typo found."
     else
         fail "Some error occured"
+    end
+end
+
+desc "Check common typos from /typos"
+task :typos do
+    find_typos ['.']
+end
+
+desc "Check common typos from /typos"
+task :typos_head do
+    changed_files = git_changed_in_head('')
+    if changed_files.include? 'typos'
+        puts 'typos file has been altered. Checking all files'
+        Rake::Task['typos'].invoke
+    else
+        find_typos changed_files
     end
 end
 
