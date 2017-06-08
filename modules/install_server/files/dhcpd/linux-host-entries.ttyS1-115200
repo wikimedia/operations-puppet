@@ -234,11 +234,6 @@ host analytics1068 {
     fixed-address analytics1068.eqiad.wmnet;
 }
 
-host analytics1069 {
-	hardware ethernet 8:66:DA:FB:BA:24;
-	fixed-address analytics1069.eqiad.wmnet;
-}
-
 host aqs1004 {
     hardware ethernet 1c:98:ec:2a:94:e0;
     fixed-address aqs1004.eqiad.wmnet;
@@ -1830,16 +1825,6 @@ host druid1003 {
     fixed-address druid1003.eqiad.wmnet;
 }
 
-host dumpsdata1001 {
-	hardware ethernet 18:66:DA:FA:5E:A0;
-	fixed-address dumpsdata1001.eqiad.wmnet;
-}
-
-host dumpsdata1002 {
-	hardware ethernet 18:66:DA:FA:5E:A8;
-	fixed-address dumpsdata1002.eqiad.wmnet;
-}
-
 host eeden {
     hardware ethernet a4:ba:db:30:d8:80;
     fixed-address eeden.wikimedia.org;
@@ -2369,26 +2354,6 @@ host ganeti1004 {
     fixed-address ganeti1004.eqiad.wmnet;
 }
 
-host ganeti1005 {
-	hardware ethernet 18:66:DA:94:08:DF;
-	fixed-address ganeti1005.eqiad.wmnet;
-}
-
-host ganeti1006 {
-	hardware ethernet 18:66:DA:A3:45:5D;
-	fixed-address ganeti1006.eqiad.wmnet;
-}
-
-host ganeti1007 {
-	hardware ethernet 118:66:DA:A3:AC:69;
-	fixed-address ganeti1007.eqiad.wmnet;
-}
-
-host ganeti1008 {
-	hardware ethernet 18:66:DA:A3:EC:3D;
-	fixed-address ganeti1008.eqiad.wmnet;
-}
-
 host ganeti2001 {
     hardware ethernet 44:A8:42:12:C8:FE;
     fixed-address ganeti2001.codfw.wmnet;
@@ -2567,16 +2532,6 @@ host kafka2002 {
 host kafka2003 {
     hardware ethernet 18:66:DA:7F:23:F0;
     fixed-address kafka2003.codfw.wmnet;
-}
-
-host kubestage1001 {
-	hardware ethernet 18:66:DA:A3:F3:13;
-	fixed-address kubestage1001.eqiad.wmnet;
-}
-
-host kubestage1002 {
-	hardware ethernet 18:66:DA:A3:7A:F0;
-	fixed-address kubestage1002.eqiad.wmnet;
 }
 
 host kubernetes1001 {
@@ -2905,26 +2860,6 @@ host labvirt1014 {
     fixed-address labvirt1014.eqiad.wmnet;
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host labvirt1015 {
-	hardware ethernet 18:66:DA:FC:9F:98;
-	fixed-address labvirt1015.eqiad.wmnet;
-}
-
-host labvirt1016 {
-	hardware ethernet 118:66:DA:FC:9C:68;
-	fixed-address labvirt1016.eqiad.wmnet;
-}
-
-host labvirt1017 {
-	hardware ethernet 18:66:DA:FC:9F:A8;
-	fixed-address labvirt1017.eqiad.wmnet;
-}
-
-host labvirt1018 {
-	hardware ethernet 18:66:DA:FC:9C:58;
-	fixed-address labvirt1018.eqiad.wmnet;
 }
 
 host lithium {
@@ -6169,16 +6104,6 @@ host stat1004 {
     fixed-address stat1004.eqiad.wmnet;
 }
 
-host stat1005 {
-	hardware ethernet 18:66:DA:FA:0B:C4;
-	fixed-address stat1005.eqiad.wmnet;
-}
-
-host stat1006 {
-	hardware ethernet 130:E1:71:51:54:48;
-	fixed-address stat1006.eqiad.wmnet;
-}
-
 host subra {
     hardware ethernet D4:AE:52:AD:62:75;
     fixed-address subra.codfw.wmnet;
@@ -6383,126 +6308,6 @@ host wtp1023 {
 host wtp1024 {
     hardware ethernet 90:B1:1C:3D:0E:1C;
     fixed-address wtp1024.eqiad.wmnet;
-}
-
-host wtp1025 {
-	hardware ethernet 18:66:DA:92:92:6D;
-	fixed-address wtp1025.eqiad.wmnet;
-}
-
-host wtp1026 {
-	hardware ethernet 18:66:DA:92:7C:D6;
-	fixed-address wtp1026.eqiad.wmnet;
-}
-
-host wtp1027 {
-	hardware ethernet 18:66:DA:92:85:89;
-	fixed-address wtp1027.eqiad.wmnet;
-}
-
-host wtp1028 {
-	hardware ethernet 18:66:DA:92:A9:12;
-	fixed-address wtp1028.eqiad.wmnet;
-}
-
-host wtp1029 {
-	hardware ethernet 18:66:DA:93:C6:EC;
-	fixed-address wtp1029.eqiad.wmnet;
-}
-
-host wtp1030 {
-	hardware ethernet 18:66:DA:93:F0:3A;
-	fixed-address wtp1030.eqiad.wmnet;
-}
-
-host wtp1031 {
-	hardware ethernet 18:66:DA:92:80:21;
-	fixed-address wtp1031.eqiad.wmnet;
-}
-
-host wtp1032 {
-	hardware ethernet 18:66:DA:93:F5:47;
-	fixed-address wtp1032.eqiad.wmnet;
-}
-
-host wtp1033 {
-	hardware ethernet 18:66:DA:93:F0:A6;
-	fixed-address wtp1033.eqiad.wmnet;
-}
-
-host wtp1034 {
-	hardware ethernet 18:66:DA:93:FD:51;
-	fixed-address wtp1034.eqiad.wmnet;
-}
-
-host wtp1035 {
-	hardware ethernet 18:66:DA:93:F1:C3;
-	fixed-address wtp1035.eqiad.wmnet;
-}
-
-host wtp1036 {
-	hardware ethernet 18:66:DA:93:FF:A5;
-	fixed-address wtp1036.eqiad.wmnet;
-}
-
-host wtp1037 {
-	hardware ethernet 18:66:DA:93:F0:16;
-	fixed-address wtp1037.eqiad.wmnet;
-}
-
-host wtp1038 {
-	hardware ethernet 18:66:DA:93:EB:A4;
-	fixed-address wtp1038.eqiad.wmnet;
-}
-
-host wtp1039 {
-	hardware ethernet 18:66:DA:93:F1:5A;
-	fixed-address wtp1039.eqiad.wmnet;
-}
-
-host wtp1040 {
-	hardware ethernet 18:66:DA:92:D6:12;
-	fixed-address wtp1040.eqiad.wmnet;
-}
-
-host wtp1041 {
-	hardware ethernet 18:66:DA:93:EC:F6;
-	fixed-address wtp1041.eqiad.wmnet;
-}
-
-host wtp1042 {
-	hardware ethernet 18:66:DA:94:09:4B;
-	fixed-address wtp1042.eqiad.wmnet;
-}
-
-host wtp1043 {
-	hardware ethernet 18:66:DA:93:E2:6C;
-	fixed-address wtp1043.eqiad.wmnet;
-}
-
-host wtp1044 {
-	hardware ethernet 18:66:DA:93:EA:D8;
-	fixed-address wtp1044.eqiad.wmnet;
-}
-
-host wtp1045 {
-	hardware ethernet 18:66:DA:93:F5:41;
-	fixed-address wtp1045.eqiad.wmnet;
-}
-
-host wtp1046 {
-	hardware ethernet 18:66:DA:94:06:9D;
-	fixed-address wtp1046.eqiad.wmnet;
-}
-
-host wtp1047 {
-	hardware ethernet 18:66:DA:93:EE:22;
-	fixed-address wtp1047.eqiad.wmnet;
-}
-
-host wtp1048 {
-	hardware ethernet 18:66:DA:94:08:DF;
-	fixed-address wtp1048.eqiad.wmnet;
 }
 
 host wtp2001 {
