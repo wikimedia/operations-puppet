@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'nagios_common::contacts' do
-
     it { is_expected.to compile }
 
     context 'with a dummy contact' do
@@ -100,5 +99,4 @@ describe 'nagios_common::contacts' do
                 .with_content(/service_notification_commands\s+host-notify-cmdone,host-notify-cmdtwo$/)
         end
     end
-
 end
