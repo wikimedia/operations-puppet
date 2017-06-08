@@ -31,9 +31,10 @@ class role::puppetmaster::frontend {
 
 
     class { '::role::puppetmaster::common':
-        base_config => {
-            'ca'        => $ca,
-            'ca_server' => $ca_server,
+        base_config           => {
+            'ca'              => $ca,
+            'ca_server'       => $ca_server,
+            'stringify_facts' => false,
         }
     }
 
