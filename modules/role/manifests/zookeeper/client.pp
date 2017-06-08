@@ -41,7 +41,7 @@ class role::zookeeper::client {
 
     $version = hiera('zookeeper_version',
         $::lsbdistcodename ? {
-            'jessie'  => '3.4.5+dfsg-2',
+            'jessie'  => '3.4.5+dfsg-2+deb8u2',
             'trusty'  => '3.4.5+dfsg-1',
         }
     )
