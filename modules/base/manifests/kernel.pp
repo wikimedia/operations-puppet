@@ -1,20 +1,18 @@
 # == Class: base::kernel
 #
 # Settings related to the Linux kernel (currently only blacklisting
-# risky kernel modules and adding /etc/modules-load.d/ on Trusty)
+# risky kernel modules and adding /etc/modules-load.d/)
 #
 class base::kernel
 {
-    if os_version('ubuntu == trusty') {
-        # This directory is shipped by systemd, but trusty's upstart job for
-        # kmod also parses /etc/modules-load.d/ (but doesn't create the
-        # directory).
-        file { '/etc/modules-load.d/':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
+    # This directory is shipped by systemd, but trusty's upstart job for
+    # kmod also parses /etc/modules-load.d/ (but doesn't create the
+    # directory).
+    file { '/etc/modules-load.d/':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/etc/modprobe.d/blacklist-wmf.conf':
