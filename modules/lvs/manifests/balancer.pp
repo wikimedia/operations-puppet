@@ -5,31 +5,17 @@
 #   - $service_ips: list of service IPs to bind to loopback
 #   - $lvs_services: A configuration hash of LVS services
 #   - $lvs_class_hosts: A configuration hash of PyBal class hosts
-#   - $pybal_global_options: A configuration hash of PyBal global options
-#   - $site: Site name used in PyBal configuration
 class lvs::balancer(
     $lvs_services,
     $lvs_class_hosts,
-    $pybal_global_options,
-    $site,
     $service_ips=[],
     $conftool_prefix = '/conftool/v1',
     ) {
 
-    include ::pybal
-    include ::pybal::confd
     include ::cpufrequtils # defaults to "performance", Ubuntu default is "ondemand"
     include ::initramfs
 
     # ethtool is also a package needed but it is included from base
-
-    class { '::pybal::configuration':
-        global_options  => $pybal_global_options,
-        lvs_services    => $lvs_services,
-        lvs_class_hosts => $lvs_class_hosts,
-        site            => $site,
-        conftool_prefix => $conftool_prefix,
-    }
 
     file { '/etc/modprobe.d/lvs.conf':
         ensure  => present,

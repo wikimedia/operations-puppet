@@ -1,5 +1,4 @@
 debdeploy::grains:
   debdeploy-lvs-esams:
     value: standard
-pybal::configuration::config: etcd
-pybal::configuration::config_host: conf2002.codfw.wmnet
+profile::pybal::config_host: conf2002.codfw.wmnet
