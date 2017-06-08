@@ -20,14 +20,8 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
 # optimized mkfs for all cache nodes
-# (the crazy PHYS_CORES thing is to get the bnx2x option set before the first boot,
-#  otherwise we'd need a reboot after puppet sets up the same file on the first run)
 case `hostname` in \
 	cp[1234]*)
-		mount -t sysfs none /target/sys
-		PHYS_CORES=$(chroot /target /usr/bin/ruby -e "require 'pathname'; print Pathname::glob('/sys/devices/system/cpu/cpu[0-9]*/topology/thread_siblings_list').map{|x| File.open(x,'r').read().split(',')[0] }.sort.uniq.count")
-		umount /target/sys
-		chroot /target /bin/sh -c "echo options bnx2x num_queues=$PHYS_CORES >/etc/modprobe.d/rps.conf"
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
 		;; \
