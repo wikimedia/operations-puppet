@@ -166,7 +166,6 @@ class base::monitoring::host(
             group   => 'root',
             mode    => '0444',
             content => "ipmi_devintf\n",
-            require => File['/etc/modules-load.d/'],
         }
 
         ::sudo::user { 'nagios_ipmi_temp':
