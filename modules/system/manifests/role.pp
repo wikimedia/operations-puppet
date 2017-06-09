@@ -26,7 +26,9 @@ define system::role(
         default => "${::hostname} is a ${description} (${title})",
     }
 
-    motd::script { "role-${title}":
+    $role_title = regsubst($title, '^role::', '')
+
+    motd::script { "role-${role_title}":
         ensure   => $ensure,
         priority => 05,
         content  => "#!/bin/sh\necho '${message}'\n",
