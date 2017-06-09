@@ -1,0 +1,37 @@
+varnishtest "cache_text rate limiting"
+
+server s1 {
+    rxreq
+    txresp
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    # First request is fine
+    txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
+    # Multiple requests within one second from the first one are rate limited
+    loop 5 {
+        txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+        rxresp
+        expect resp.status == 429
+    }
+
+    # After one second a new request goes through
+    delay 1
+
+    txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+} -run
