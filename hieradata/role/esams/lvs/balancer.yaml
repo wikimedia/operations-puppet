@@ -2,3 +2,5 @@ debdeploy::grains:
   debdeploy-lvs-esams:
     value: standard
 profile::pybal::config_host: conf2002.codfw.wmnet
+profile::lvs::tagged_subnets:
+  - public1-esams
