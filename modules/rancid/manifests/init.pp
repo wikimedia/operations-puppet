@@ -36,7 +36,7 @@ class rancid {
         require => [ Package['rancid'], User['rancid'] ],
         owner   => 'rancid',
         group   => 'rancid',
-        mode    => '0770',
+        mode    => '0774',
         recurse => remote,
         source  => 'puppet:///modules/rancid/core',
     }
