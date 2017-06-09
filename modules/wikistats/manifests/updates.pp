@@ -2,7 +2,9 @@
 # and writing it to local mariadb
 #FIXME - this was used in labs in the past but is gone unfortunately
 #require misc::mariadb::server
-class wikistats::updates {
+class wikistats::updates (
+    $db_pass,
+) {
 
     # update scripts are PHP-cli
     if os_version('debian >= stretch') {
@@ -54,6 +56,12 @@ class wikistats::updates {
                 'ga@22', # Gamepedias
                 'w3@23', # W3C
                 ]: }
+
+    # dump xml data: usage: <project prefix>@<hour>
+    wikistats::cronjob::xmldump ( {
+        'wp' : db_pass => $db_pass, table => 'wikipedias',   minute => '3';
+        'wt' : db_pass => $db_pass, table => 'wiktionaries', minute => '5';
+    }
 
     # imports (fetching lists of wikis itself) usage: <project name>@<weekday>
     wikistats::cronjob::import { [
