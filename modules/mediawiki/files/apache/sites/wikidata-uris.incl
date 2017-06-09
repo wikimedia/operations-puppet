@@ -18,5 +18,6 @@ RewriteRule ^/prop/qualifier/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Propert
 RewriteRule ^/prop/reference/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
 RewriteRule ^/prop/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
 # https://meta.wikimedia.org/wiki/Wikidata/Notes/URI_scheme
-RewriteRule ^/entity/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Special:EntityData/$1 [R=303,QSA]
+RewriteRule ^/entity/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Special:EntityData/([^.]*) [QSA]
+RewriteRule ^/entity/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Special:EntityData/(.*\..*)$ [R=303,QSA]
 
