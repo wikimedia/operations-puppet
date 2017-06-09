@@ -24,6 +24,7 @@ role::lvs::realserver::pools:
   eventstreams: {}
   pdfrender: {}
   trendingedits: {}
+  recommendation_api: {}
 graphoid::allowed_domains:
   https:
     - mediawiki.org

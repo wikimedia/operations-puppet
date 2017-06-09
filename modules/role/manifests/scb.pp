@@ -15,6 +15,7 @@ class role::scb {
     include role::eventstreams
     include role::pdfrender
     include role::trendingedits
+    include role::recommendation_api
 
     include ::standard
     include ::base::firewall
