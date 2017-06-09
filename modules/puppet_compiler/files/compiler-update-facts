@@ -20,10 +20,14 @@ RUBY_SCRIPT
 MASTERS=$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)
 
 ssh "$COMPILER" 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
-# Gather all the facts from all the masters
+# Gather all the facts from all the masters. This can't really be atomic and We
+# want to minimize race conditions in the generation without using background
+# processes and multiconcurrency to avoid complexity so do this in 2 for loops
 for master in $MASTERS; do
     echo -e "\n### Syncing facts from $master"
     ssh "$master" 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
+done
+for master in $MASTERS; do
     # tunnel via your localhost without ever the file touching the disk
     ssh "$master" cat /tmp/puppet-facts-export.tar.xz | ssh "$COMPILER" 'cat > puppet-facts-export.tar.xz'
     ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
