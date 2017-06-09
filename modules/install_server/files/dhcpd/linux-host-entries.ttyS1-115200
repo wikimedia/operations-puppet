@@ -1831,6 +1831,7 @@ host druid1003 {
 }
 
 host dumpsdata1001 {
+<<<<<<< HEAD   (97129a Fixing a typo in dhcpd file)
 	hardware ethernet 18:66:DA:FA:5E:A0;
 	fixed-address dumpsdata1001.eqiad.wmnet;
 }
@@ -1838,6 +1839,15 @@ host dumpsdata1001 {
 host dumpsdata1002 {
 	hardware ethernet 18:66:DA:FA:5E:A8;
 	fixed-address dumpsdata1002.eqiad.wmnet;
+=======
+    hardware ethernet 18:66:DA:FA:5E:A0;
+    fixed-address dumpsdata1001.eqiad.wmnet;
+}
+
+host dumpsdata1002 {
+    hardware ethernet 18:66:DA:FA:5E:A8;
+    fixed-address dumpsdata1002.eqiad.wmnet;
+>>>>>>> BRANCH (2827f4 cache: add monitoring of services at the SSL termination lev)
 }
 
 host eeden {
@@ -2617,6 +2627,16 @@ host kubernetes2003 {
 host kubernetes2004 {
      hardware ethernet 18:66:DA:9C:12:4F;
      fixed-address kubernetes2004.codfw.wmnet;
+}
+
+host kubestage1001 {
+     hardware ethernet 18:66:DA:A3:F3:13;
+     fixed-address kubestage1001.eqiad.wmnet;
+}
+
+host kubestage1002 {
+     hardware ethernet 18:66:DA:A3:7A:F0;
+     fixed-address kubestage1002.eqiad.wmnet;
 }
 
 host labcontrol1001 {

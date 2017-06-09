@@ -1,7 +1,23 @@
 # phabricator instance
 #
 # filtertags: labs-project-deployment-prep labs-project-phabricator
-class profile::phabricator::main {
+class profile::phabricator::main (
+    $cache_misc_nodes = hiera('cache::misc::nodes', []),
+    $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org'),
+    $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org'),
+    $mysql_host = hiera('phabricator::mysql::master', 'localhost'),
+    $mysql_slave = hiera('phabricator::mysql::slave', 'localhost'),
+    $phab_root_dir = '/srv/phab',
+    $deploy_target = 'phabricator/deployment',
+    $phab_app_user = hiera('phabricator_app_user', undef),
+    $phab_app_pass = hiera('phabricator_app_pass', undef),
+    $phab_daemons_user = hiera('phabricator_daemons_user', undef),
+    $phab_daemons_pass = hiera('phabricator_daemons_pass', undef),
+    $phab_mysql_admin_user = hiera('phabricator_admin_user', undef),
+    $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef),
+    $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org'),
+    $cluster_search = hiera('phabricator_cluster_search'),
+){
 
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -9,16 +25,6 @@ class profile::phabricator::main {
 
     include passwords::phabricator
     include passwords::mysql::phabricator
-
-    # this site's misc-lb caching proxies hostnames
-    $cache_misc_nodes = hiera('cache::misc::nodes', [])
-    $domain = hiera('phabricator_domain', 'phabricator.wikimedia.org')
-    $altdom = hiera('phabricator_altdomain', 'phab.wmfusercontent.org')
-
-    $mysql_host = hiera('phabricator::mysql::master', 'localhost')
-    $mysql_slave = hiera('phabricator::mysql::slave', 'localhost')
-    $phab_root_dir = '/srv/phab'
-    $deploy_target = 'phabricator/deployment'
 
     # logmail and dumps are only enabled on the active server set in Hiera
     $phabricator_active_server = hiera('phabricator_active_server')
@@ -31,11 +37,6 @@ class profile::phabricator::main {
         $dump_rsync_ensure ='absent'
         $dump_enabled = false
     }
-
-    $phab_app_user = hiera('phabricator_app_user', undef)
-    $phab_app_pass = hiera('phabricator_app_pass', undef)
-    $phab_daemons_user = hiera('phabricator_daemons_user', undef)
-    $phab_daemons_pass = hiera('phabricator_daemons_pass', undef)
 
     # todo: change the password for app_user
     if $phab_app_user == undef {
@@ -104,9 +105,6 @@ class profile::phabricator::main {
         },
     }
 
-    $phab_mysql_admin_user = hiera('phabricator_admin_user', undef)
-    $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef)
-
     if $phab_mysql_admin_user == undef {
         $mysql_admin_user = $passwords::mysql::phabricator::admin_user
     } else {
@@ -118,10 +116,6 @@ class profile::phabricator::main {
     } else {
         $mysql_admin_pass = $phab_mysql_admin_pass
     }
-
-    $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org')
-
-    $cluster_search = hiera('phabricator_cluster_search')
 
     # lint:ignore:arrow_alignment
     class { '::phabricator':

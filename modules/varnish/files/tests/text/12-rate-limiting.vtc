@@ -1,0 +1,38 @@
+varnishtest "cache_text rate limiting"
+
+server s1 {
+    loop 26 {
+        rxreq
+        # Cached responses are not rate limited, send CC: private
+        txresp -hdr "Cache-Control: private"
+    }
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    # First 25 requests are fine
+    loop 25 {
+        txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+        rxresp
+        expect resp.status == 200
+        expect resp.http.X-Cache ~ "pass"
+    }
+
+    # The 26th request gets rate limited
+    txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 429
+
+    delay 5
+
+    txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+} -run

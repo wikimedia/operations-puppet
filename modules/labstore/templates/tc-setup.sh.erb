@@ -7,24 +7,23 @@
 
 # intended as idempotent
 
-# tc -s qdisc show
+# /sbin/tc -s qdisc show
 # http://lartc.org/manpages/tc.txt
 
 modules='act_mirr ifb'
 nfs_write='<%= @nfs_write %>'
 nfs_read='<%= @nfs_read %>'
 nfs_dumps_read='<%= @nfs_dumps_read %>'
-eth0_egress='<%= @eth0_egress %>'
-
-TC=$(which tc)
+egress='<%= @egress %>'
+iface='<%= @interface %>'
 
 function clean_ingress {
-    $TC qdisc del dev eth0 handle ffff: ingress
-    $TC qdisc del dev ifb0 root
+    /sbin/tc qdisc del dev $iface handle ffff: ingress
+    /sbin/tc qdisc del dev ifb0 root
 }
 
 function clean_egress {
-    $TC qdisc del dev eth0 root
+    /sbin/tc qdisc del dev $iface root
 }
 
 function ensure_mod {
@@ -51,34 +50,34 @@ done
 
 clean_egress
 
-$TC qdisc add dev eth0 root handle 1: htb default 100
+/sbin/tc qdisc add dev $iface root handle 1: htb default 100
 
-$TC class add dev eth0 parent 1: classid 1:1 htb rate $nfs_write
+/sbin/tc class add dev $iface parent 1: classid 1:1 htb rate $nfs_write
 
-$TC class add dev eth0 parent 1: classid 1:2 htb rate $nfs_write
+/sbin/tc class add dev $iface parent 1: classid 1:2 htb rate $nfs_write
 
-$TC class add dev eth0 parent 1: classid 1:3 htb rate $nfs_write
+/sbin/tc class add dev $iface parent 1: classid 1:3 htb rate $nfs_write
 
-$TC class add dev eth0 parent 1: classid 1:4 htb rate $nfs_write
+/sbin/tc class add dev $iface parent 1: classid 1:4 htb rate $nfs_write
 
-$TC class add dev eth0 parent 1: classid 1:5 htb rate $nfs_write
+/sbin/tc class add dev $iface parent 1: classid 1:5 htb rate $nfs_write
 
-$TC class add dev eth0 parent 1: classid 1:100 htb rate $eth0_egress
+/sbin/tc class add dev $iface parent 1: classid 1:100 htb rate $egress
 
-$TC filter add dev eth0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 10.64.37.6 flowid 1:1
 
-$TC filter add dev eth0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 10.64.37.7 flowid 1:2
 
-$TC filter add dev eth0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 10.64.37.10 flowid 1:3
 
 # scratch is on labstore1003 for now
-$TC filter add dev eth0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 10.64.4.10 flowid 1:4
 
-$TC filter add dev eth0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 10.64.37.18 flowid 1:5
 
 #-------------------------------------
@@ -86,7 +85,7 @@ $TC filter add dev eth0 parent 1: protocol ip prio 0 u32 \
 clean_ingress
 
 # Create ingress on external interface
-$TC qdisc add dev eth0 handle ffff: ingress
+/sbin/tc qdisc add dev $iface handle ffff: ingress
 
 # this link has to come up for ingress shaping
 /sbin/ip link set dev ifb0 up
@@ -99,32 +98,32 @@ then
 fi
 
 # pass engress traffic through ifb0
-$TC filter add dev eth0 parent ffff: protocol all u32 \
+/sbin/tc filter add dev $iface parent ffff: protocol all u32 \
     match u32 0 0 action mirred egress redirect dev ifb0
 
-$TC qdisc add dev ifb0 root handle 1: htb
+/sbin/tc qdisc add dev ifb0 root handle 1: htb
 
-$TC class add dev ifb0 parent 1: classid 1:1 htb rate $nfs_read
+/sbin/tc class add dev ifb0 parent 1: classid 1:1 htb rate $nfs_read
 
-$TC class add dev ifb0 parent 1: classid 1:2 htb rate $nfs_read
+/sbin/tc class add dev ifb0 parent 1: classid 1:2 htb rate $nfs_read
 
-$TC class add dev ifb0 parent 1: classid 1:3 htb rate $nfs_read
+/sbin/tc class add dev ifb0 parent 1: classid 1:3 htb rate $nfs_read
 
-$TC class add dev ifb0 parent 1: classid 1:4 htb rate $nfs_dumps_read
+/sbin/tc class add dev ifb0 parent 1: classid 1:4 htb rate $nfs_dumps_read
 
-$TC class add dev ifb0 parent 1: classid 1:5 htb rate $nfs_read
+/sbin/tc class add dev ifb0 parent 1: classid 1:5 htb rate $nfs_read
 
-$TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.37.6 flowid 1:1
 
-$TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.37.7 flowid 1:2
 
-$TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.37.10 flowid 1:3
 
-$TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.4.10 flowid 1:4
 
-$TC filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.37.18 flowid 1:5

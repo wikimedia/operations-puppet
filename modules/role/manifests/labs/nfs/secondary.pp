@@ -1,4 +1,7 @@
-class role::labs::nfs::secondary($monitor = 'eth0') {
+class role::labs::nfs::secondary(
+  $monitor_iface = 'eth0',
+  $data_iface    = 'eth1',
+) {
 
     system::role { 'role::labs::nfs::secondary':
         description => 'NFS secondary share cluster',
@@ -10,10 +13,12 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     include role::labs::db::maintain_dbusers
 
     # Enable RPS to balance IRQs over CPUs
-    interface::rps { $monitor: }
+    interface::rps { 'monitor':
+        interface => $monitor_iface,
+    }
 
-    interface::manual{ 'eth1':
-        interface => 'eth1',
+    interface::manual{ 'data':
+        interface => $data_iface,
     }
 
     if $::hostname == 'labstore1005' {
@@ -21,10 +26,10 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         $drbd_role = 'primary'
 
         interface::ip { 'drbd-replication':
-            interface => 'eth1',
+            interface => $data_iface,
             address   => '192.168.0.2',
             prefixlen => '30',
-            require   => Interface::Manual['eth1'],
+            require   => Interface::Manual['data'],
         }
     }
 
@@ -33,10 +38,10 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         $drbd_role = 'secondary'
 
         interface::ip { 'drbd-replication':
-            interface => 'eth1',
+            interface => $data_iface,
             address   => '192.168.0.1',
             prefixlen => '30',
-            require   => Interface::Manual['eth1'],
+            require   => Interface::Manual['data'],
         }
     }
 
@@ -98,12 +103,15 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
     }
 
     include labstore::monitoring::exports
-    include labstore::monitoring::interfaces
     include labstore::monitoring::ldap
     include labstore::monitoring::nfsd
+    class { 'labstore::monitoring::interfaces':
+        monitor_iface => $monitor_iface,
+    }
     class { 'labstore::monitoring::secondary':
-        drbd_role  => $drbd_role,
-        cluster_ip => $cluster_ip,
+        drbd_role     => $drbd_role,
+        cluster_iface => $monitor_iface,
+        cluster_ip    => $cluster_ip,
     }
 
     if($drbd_role == 'primary') {

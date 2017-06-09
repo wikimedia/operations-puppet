@@ -5,6 +5,9 @@ vcl 4.0;
 // only used in recv_fe_ip_processing on frontends
 import netmapper;
 
+// rate limiting
+import vsthrottle;
+
 include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
 

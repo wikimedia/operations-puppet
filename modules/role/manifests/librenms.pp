@@ -77,6 +77,8 @@ class role::librenms {
         'email_from' => 'librenms',
         'twofactor' => true,
         'twofactor_lock' => 300,
+        'rancid_configs'         => ['/var/lib/rancid/core/configs/'],
+        'rancid_ignorecomments'  => 1,
         'enable_inventory' => 1,
         'enable_syslog'    => 1,
         'enable_billing'   => 1,
