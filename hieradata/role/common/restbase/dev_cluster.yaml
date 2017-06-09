@@ -111,7 +111,7 @@ profile::cassandra::settings:
   cluster_name: "services-dev"
   application_username: restb
   application_password: "%{passwords::cassandra::restbase}"
-  target_version: '3.7'
+  target_version: '3.x'
   permissions_validity_in_ms: 600000
   trickle_fsync: false
   extra_classpath:

@@ -160,28 +160,6 @@ class raid (
         }
     }
 
-    if 'aac' in $facts['raid'] {
-        require_package('arcconf')
-
-        nrpe::monitor_service { 'raid_aac':
-            description    => 'Adaptec RAID',
-            nrpe_command   => "${check_raid} aac",
-            check_interval => $check_interval,
-            retry_interval => $retry_interval,
-        }
-    }
-
-    if 'twe' in $facts['raid'] {
-        require_package('tw-cli')
-
-        nrpe::monitor_service { 'raid_twe':
-            description    => '3ware TW',
-            nrpe_command   => "${check_raid} twe",
-            check_interval => $check_interval,
-            retry_interval => $retry_interval,
-        }
-    }
-
     file { '/usr/local/lib/nagios/plugins/check_raid':
         ensure => present,
         owner  => 'root',
