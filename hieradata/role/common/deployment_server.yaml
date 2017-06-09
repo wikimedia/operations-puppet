@@ -119,6 +119,7 @@ scap::sources:
 #    lvs_service: parsoid
   phabricator/deployment:
     repository: phabricator/deployment
+  recommendation-api/deploy: {}
   restbase/deploy: {}
   servermon/servermon:
     repository: operations/software/servermon
