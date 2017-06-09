@@ -21,7 +21,7 @@ def main():
             print 'OK: no RAID installed'
             status = 0
         elif driver == 'megacli':
-            status = checkMegaSas(options.policy)
+            status = checkMegaSas()
         elif driver == 'mpt':
             status = checkmptsas()
         elif driver == 'md':
@@ -130,7 +130,7 @@ def checkmptsas():
     return status
 
 
-def checkMegaSas(policy=None):
+def checkMegaSas():
     try:
         proc = subprocess.Popen(['/usr/sbin/megacli',
                                 '-LDInfo', '-LALL', '-aALL', '-NoLog'],
@@ -143,11 +143,13 @@ def checkMegaSas(policy=None):
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
-    writePolicyRegex = re.compile('^Current Cache Policy\s*:\s*([^,]*)')
+    defaultPolicyRegex = re.compile('^Default Cache Policy\s*:\s*([^,]*)')
+    currentPolicyRegex = re.compile('^Current Cache Policy\s*:\s*([^,]*)')
 
-    numPD = numLD = failedLD = wrongPolicyLD = 0
+    numPD = numLD = failedLD = 0
     states = []
-    currentWrongPolicies = []
+    defaultPolicy = None
+    wrongPolicies = []
     lines = 0
     match = False
 
@@ -176,14 +178,17 @@ def checkMegaSas(policy=None):
             match = True
             continue
 
-        if policy is not None:
-            m = writePolicyRegex.match(line)
-            if m is not None:
-                match = True
-                currentPolicy = m.group(1)
-                if currentPolicy != policy:
-                    wrongPolicyLD += 1
-                    currentWrongPolicies.append(currentPolicy)
+        m = defaultPolicyRegex.match(line)
+        if m is not None:
+            defaultPolicy = m.group(1)
+            continue
+
+        m = currentPolicyRegex.match(line)
+        if m is not None:
+            currentPolicy = m.group(1)
+            if currentPolicy != defaultPolicy:
+                wrongPolicyLD += 1
+                wrongPolicies.append(currentPolicy)
             continue
 
     ret = proc.wait()
@@ -208,15 +213,11 @@ def checkMegaSas(policy=None):
         return 2
 
     if wrongPolicyLD > 0:
-        print 'CRITICAL: %d LD(s) not in %s policy (%s)' % (
-            wrongPolicyLD, policy, ", ".join(currentWrongPolicies))
+        print 'CRITICAL: %d LD(s) policy mismatch (%s)' % (
+            wrongPolicyLD, ", ".join(currentWrongPolicies))
         return 2
 
-    if policy is None:
-        print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
-    else:
-        print 'OK: optimal, %d logical, %d physical, %s policy' % (
-            numLD, numPD, policy)
+    print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
     return 0
 
 
