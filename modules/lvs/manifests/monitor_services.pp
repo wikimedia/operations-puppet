@@ -111,4 +111,62 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         critical      => true,
     }
 
+    # External monitoring for restbase and kartotherian, at the TLS terminators
+
+    monitoring::service { 'check_maps_eqiad':
+        host          => 'upload-lb.eqiad.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Maps edge eqiad',
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+    }
+
+    monitoring::service { 'check_restbase_eqiad':
+        host          => 'text-lb.eqiad.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Restbase edge eqiad',
+        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+    }
+
+    monitoring::service { 'check_maps_codfw':
+        host          => 'upload-lb.codfw.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Maps edge codfw',
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+    }
+
+    monitoring::service { 'check_restbase_codfw':
+        host          => 'text-lb.codfw.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Restbase edge codfw',
+        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+    }
+
+    monitoring::service { 'check_maps_esams':
+        host          => 'upload-lb.esams.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Maps edge esams',
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+    }
+
+    monitoring::service { 'check_restbase_esams':
+        host          => 'text-lb.esams.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Restbase edge esams',
+        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+    }
+
+    monitoring::service { 'check_maps_ulsfo':
+        host          => 'upload-lb.ulsfo.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Maps edge ulsfo',
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+    }
+
+    monitoring::service { 'check_restbase_ulsfo':
+        host          => 'text-lb.ulsfo.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Restbase edge ulsfo',
+        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+    }
+
 }
