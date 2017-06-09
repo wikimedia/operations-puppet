@@ -32,7 +32,7 @@ class base::monitoring::host(
     include ::base::puppet::params # In order to be able to use some variables
 
     # RAID checks
-    include ::raid
+    include ::raid::monitoring
 
     ::monitoring::host { $::hostname: }
 
