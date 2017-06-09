@@ -3,24 +3,14 @@
 # Class to set up monitoring for software and hardware RAID
 #
 # === Parameters
-# * write_cache_policy: if set, it will check that the write cache
-#                       policy of all logical drives matches the one
-#                       given, normally 'WriteBack' or 'WriteThrough'.
-#                       Currently only works for Megacli systems, it is
-#                       ignored in all other cases.
+#
 # === Examples
 #
 #  include raid
 
-class raid (
-    $write_cache_policy = undef,
-){
+class raid {
 
-    if $write_cache_policy {
-        $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
-    } else {
-        $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
-    }
+    $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
 
     # for 'forking' checks (i.e. all but mdadm, which essentially just reads
     # kernel memory from /proc/mdstat) check every $check_interval

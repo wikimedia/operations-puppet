@@ -11,7 +11,6 @@ class profile::base(
     $group_contact = hiera('contactgroups', 'admins'),
     $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
-    $check_raid_policy = hiera('profile::base::check_raid_policy', undef),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -96,7 +95,6 @@ class profile::base(
             contact_group            => $group_contact,
             nrpe_check_disk_options  => $check_disk_options,
             nrpe_check_disk_critical => $check_disk_critical,
-            raid_write_cache_policy  => $check_raid_policy,
         }
     }
 
