@@ -7,8 +7,6 @@
 import webob
 import webob.exc
 import re
-import eventlet
-from eventlet.green import urllib2
 import urlparse
 from swift.common.utils import get_logger
 from swift.common.wsgi import WSGIContext
@@ -50,37 +48,12 @@ class _WMFRewriteContext(WSGIContext):
         self.backend_url_format = conf['backend_url_format'].strip()  # asis, sitelang
         self.tld = conf['tld'].strip()
 
-    def collectHttpStatusCodes(self, url, thumbor_thread, mediawiki_code):
-        self.logger.debug("Mediawiki: %d %s" % (mediawiki_code, url))
-
-        if thumbor_thread is None:
-            return
-
-        try:
-            # Waits for Thumbor if it took longer than Mediawiki to process the image
-            # Otherwise returns/throws exceptions immediately
-            thumbor_result = thumbor_thread.wait()
-            code = thumbor_result.getcode()
-        except urllib2.HTTPError, error:
-            code = error.code
-        except urllib2.URLError, error:
-            code = 503
-
-        self.logger.debug("Thumbor: %d %s" % (code, url))
-
-        if code != mediawiki_code:
-            self.logger.warn(
-                "HTTP status code mismatch. Mediawiki: %d Thumbor: %d URL: %s"
-                % (mediawiki_code, code, url)
-            )
-
     def handle404(self, reqorig, url, container, obj):
         """
         Return a webob.Response which fetches the thumbnail from the thumb
         host and returns it. Note also that the thumb host might write it out
         to Swift so it won't 404 next time.
         """
-        original_request_url = reqorig.url
         # go to the thumb media store for unknown files
         reqorig.host = self.thumbhost
         # upload doesn't like our User-agent, otherwise we could call it
@@ -175,24 +148,13 @@ class _WMFRewriteContext(WSGIContext):
                 else:
                     self.logger.warn("no sitelang match on encodedurl: %s" % encodedurl)
 
-            thumbor_thread = None
-
-            # call thumbor first, otherwise if Mediawiki image scalers return an error,
-            # thumbor doesn't get a change to try to generate that thumbnail
             if self.thumborhost:
                 if not self.thumbor_wiki_list or '-'.join((proj, lang)) in self.thumbor_wiki_list:
-                    # call Thumbor but don't wait for the result
-                    thumbor_thread = eventlet.spawn(thumbor_opener.open, thumbor_encodedurl)
-
-            # ok, call the encoded url
-            upcopy = opener.open(encodedurl)
-            eventlet.spawn(
-                self.collectHttpStatusCodes,
-                original_request_url,
-                thumbor_thread,
-                upcopy.getcode()
-            )
-
+                    upcopy = thumbor_opener.open(thumbor_encodedurl)
+                else:
+                    upcopy = opener.open(encodedurl)
+            else:
+                upcopy = opener.open(encodedurl)
         except urllib2.HTTPError, error:
             # copy the urllib2 HTTPError into a webob HTTPError class as-is
 
@@ -208,25 +170,11 @@ class _WMFRewriteContext(WSGIContext):
                         detail="".join(error.readlines()),
                         headers=error.hdrs.items())
 
-            resp = CopiedHTTPError()
-            eventlet.spawn(
-                self.collectHttpStatusCodes,
-                original_request_url,
-                thumbor_thread,
-                resp.code
-            )
-            return resp
+            return CopiedHTTPError()
         except urllib2.URLError, error:
             msg = 'There was a problem while contacting the image scaler: %s' % \
                   error.reason
-            resp = webob.exc.HTTPServiceUnavailable(msg)
-            eventlet.spawn(
-                self.collectHttpStatusCodes,
-                original_request_url,
-                thumbor_thread,
-                resp.code
-            )
-            return resp
+            return webob.exc.HTTPServiceUnavailable(msg)
 
         # get the Content-Type.
         uinfo = upcopy.info()
