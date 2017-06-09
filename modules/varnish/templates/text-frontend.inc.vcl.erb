@@ -42,7 +42,7 @@ sub mobile_redirect {
 			} else {
 				set req.http.Location = "http://" + req.http.MobileHost + req.url;
 			}
-			return (synth(666, "Found"));
+			return (synth(302, "Mobile Redirect"));
 		}
 		unset req.http.MobileHost;
 	}
@@ -147,7 +147,7 @@ sub cluster_fe_recv_pre_purge {
 sub cluster_fe_recv {
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
 	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && req.http.X-Connection-Properties ~ "SSL=TLSv1.1; C=ECDHE-ECDSA-AES128-SHA;") {
-		return (synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
+		return (synth(401, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
 	call mobile_redirect;
@@ -189,7 +189,7 @@ sub cluster_fe_recv {
 	   || (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;"
 	   && req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
 	   && std.random(0,100) < 1.0)) {
-		return (synth(787, "Browser Connection Security Warning"));
+		return (synth(418, "Browser Connection Security Warning"));
 	}
 
 	call text_common_recv;
@@ -204,7 +204,7 @@ sub cluster_fe_hit { }
 sub cluster_fe_ratelimit {
 	if (req.http.User-Agent ~ "^wikiScrape") {
 		if (vsthrottle.is_denied("wikiScrape:" + req.http.X-Client-IP, 25, 5s)) {
-			return (synth(742, "Too Many Requests"));
+			return (synth(429, "Too Many Requests"));
 		}
 	}
 
@@ -212,7 +212,7 @@ sub cluster_fe_ratelimit {
 	// seemingly-authenticated requests
 	if (req.http.Cookie !~ "([sS]ession|Token)=") {
 		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 300, 60s)) {
-			return (synth(742, "Too Many Requests"));
+			return (synth(429, "Too Many Requests"));
 		}
 	}
 }
@@ -306,24 +306,16 @@ sub cluster_fe_deliver {
 
 sub cluster_fe_err_synth {
 	// Support mobile redirects
-	if (resp.status == 666) {
+	if (resp.reason == "Mobile Redirect") {
+		set resp.reason = "Found";
 		set resp.http.Location = req.http.Location;
-		set resp.status = 302;
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Content-Length = "0"; // BZ #62245
-		return (deliver);
 	}
 
 	// Chrome/41-on-Windows: T141786
-	if (resp.status == 741) {
-		set resp.status = 401;
+	if (resp.reason == "Buggy request, please report at https://phabricator.wikimedia.org/T141786") {
 		set resp.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
-		return (deliver);
-	}
-
-	// Clients performing too many requests
-	if (resp.status == 742) {
-		set resp.status = 429;
 		return (deliver);
 	}
 
@@ -333,8 +325,7 @@ sub cluster_fe_err_synth {
 	// confusing to extract from stats because they have other legitimate
 	// causes.  We could also invent a new unique from unused 4xx space,
 	// but I don't think it would be any better than 418 in practice.
-	if (resp.status == 787) {
-		set resp.status = 418;
+	if (resp.reason == "Browser Connection Security Warning") {
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Cache-Control = "max-age=0, must-revalidate, no-cache, no-store";
 		set resp.http.Content-Type = "text/html; charset=utf-8";

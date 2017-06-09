@@ -26,7 +26,7 @@ sub https_recv_redirect {
 				}
 				else {
 					set req.http.Location = "https://" + req.http.Host + req.url;
-					return (synth(751, "TLS Redirect"));
+					return (synth(301, "TLS Redirect"));
 				}
 			}
 		}
@@ -38,9 +38,8 @@ sub https_recv_redirect {
 
 // *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
-	if (resp.status == 751) {
+	if (resp.reason == "TLS Redirect") {
 		set resp.http.Location = req.http.Location;
-		set resp.status = 301;
 		set resp.http.Content-Length = "0"; // T64245
 		return(deliver);
 	}
