@@ -2,3 +2,12 @@ debdeploy::grains:
   debdeploy-lvs-eqiad:
     value: standard
 profile::pybal::config_host: conf2002.codfw.wmnet
+profile::lvs::tagged_subnets:
+  - private1-a-eqiad
+  - private1-b-eqiad
+  - private1-c-eqiad
+  - private1-d-eqiad
+  - public1-a-eqiad
+  - public1-b-eqiad
+  - public1-c-eqiad
+  - public1-d-eqiad
