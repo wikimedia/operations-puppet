@@ -29,6 +29,7 @@ client c1 {
     txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 429
+    expect resp.msg == "Too Many Requests"
 
     delay 5
 
