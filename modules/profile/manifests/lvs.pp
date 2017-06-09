@@ -2,7 +2,10 @@
 #
 # Sets up a linux load-balancer.
 #
-class profile::lvs {
+class profile::lvs(
+    $tagged_subnets = hiera('profile::lvs::tagged_subnets'),
+    $vlan_data = hiera('lvs::interfaces::vlan_data'),
+){
     require ::lvs::configuration
 
     ## Kernel setup
@@ -13,6 +16,8 @@ class profile::lvs {
     # kernel-level parameters
     class { '::lvs::kernel_config': }
 
+    # Network interfaces setup
+    interface::add_ip6_mapped { 'main': }
 
     ## LVS IPs setup
     # Obtain all the IPs configured for this class of load-balancers,
@@ -44,6 +49,12 @@ class profile::lvs {
         grain   => 'lvs_class',
         value   => $lvs::configuration::lvs_grain_class,
         replace => true,
+    }
+
+    # Set up tagged interfaces to all subnets with real servers in them
+
+    profile::lvs::tagged_interface {$tagged_subnets:
+        vlan_data => $vlan_data
     }
 
 }
