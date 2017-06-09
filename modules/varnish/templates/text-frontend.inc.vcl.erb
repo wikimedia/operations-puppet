@@ -150,10 +150,6 @@ sub cluster_fe_recv {
 		return (synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
-	if (req.http.User-Agent ~ "wikiScrape/0.0.0") {
-		return (synth(742, "Too many requests"));
-	}
-
 	call mobile_redirect;
 
 	# normalize all /static to the same hostname for caching
@@ -205,10 +201,20 @@ sub cluster_fe_hash {
 
 sub cluster_fe_hit { }
 
+sub cluster_fe_ratelimit {
+	if (req.http.User-Agent ~ "^wikiScrape/[0-9]+\.[0-9]+\.[0-9]+$") {
+		if (vsthrottle.is_denied(client.identity, 1, 1s)) {
+			return (synth(742, "Too Many Requests"));
+		}
+	}
+}
+
 sub cluster_fe_miss {
+	call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_pass {
+	call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_backend_fetch {
