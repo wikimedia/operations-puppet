@@ -71,12 +71,16 @@ class wikistats (
         wikistats_host => $wikistats_host,
     }
 
-    # data update scripts/crons for wikistats
-    class { 'wikistats::updates': }
+    $db_pass = fqdn_rand_string(23, 'Random9Fn0rd8Seed')
 
     # install a db on localhost
     class { 'wikistats::db':
-        db_pass => fqdn_rand_string(23, 'Random9Fn0rd8Seed'),
+        db_pass => $db_pass,
+    }
+
+    # scripts and crons to update data and dump XML files
+    class { 'wikistats::updates':
+        db_pass => $db_pass,
     }
 }
 
