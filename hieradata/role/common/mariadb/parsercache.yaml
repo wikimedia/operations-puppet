@@ -1,3 +1,4 @@
+mariadb::monitor_disk::pct_critical: 4
 debdeploy::grains:
   debdeploy-parsercache:
     value: standard
