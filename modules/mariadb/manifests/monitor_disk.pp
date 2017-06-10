@@ -6,7 +6,7 @@ class mariadb::monitor_disk(
     $is_critical   = true,
     $contact_group = 'dba',
     $pct_warning   = 10,
-    $pct_critical  = 5,
+    $pct_critical  = 4,
     ) {
     nrpe::monitor_service { 'mariadb_disk_space':
         description   => 'MariaDB disk space',
