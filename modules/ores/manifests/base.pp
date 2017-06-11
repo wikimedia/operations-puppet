@@ -2,6 +2,9 @@ class ores::base(
     $config_path = '/srv/deployment/ores/deploy',
     $venv_path = '/srv/deployment/ores/venv',
 ) {
+    # Sets up icinga check_plugins and notification commands
+    require ::icinga::plugins
+
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
     # because they are needed by pip to install scikit.
