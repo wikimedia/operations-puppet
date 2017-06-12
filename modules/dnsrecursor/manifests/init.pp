@@ -30,11 +30,6 @@ class dnsrecursor(
     $wmf_authdns_semi = join($wmf_authdns, ';')
     $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}"
 
-    system::role { 'dnsrecursor':
-        ensure      => 'absent',
-        description => 'Recursive DNS server',
-    }
-
     if os_version('debian >= jessie') {
         $pdns_rec_ver = '4'
 
