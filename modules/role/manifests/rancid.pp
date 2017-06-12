@@ -1,10 +1,11 @@
 # Really Awful Notorious CIsco config Differ
-class role::rancid::server {
+class role::rancid {
 
-    system::role { 'rancid::server':
+    system::role { 'rancid':
         description => 'Really Awful Notorious CIsco config Differ (sp)'
     }
 
+    include ::standard
     include ::rancid
     include ::profile::backup::host
 
