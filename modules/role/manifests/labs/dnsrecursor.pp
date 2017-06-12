@@ -104,7 +104,7 @@ class role::labs::dnsrecursor {
         'arwikiquote', 'arwikisource', 'arwikiversity',
         'arwiktionary', 'arzwiki', 'astwiki', 'astwikibooks',
         'astwikiquote', 'astwiktionary', 'aswiki', 'aswikibooks',
-        'aswikisource', 'aswiktionary', 'avwiki', 'avwiktionary',
+        'aswikisource', 'aswiktionary', 'atjwiki', 'avwiki', 'avwiktionary',
         'aywiki', 'aywikibooks', 'aywiktionary', 'azwiki', 'azbwiki',
         'azwikibooks', 'azwikiquote', 'azwikisource', 'azwiktionary',
         'barwiki', 'bat_smgwiki', 'bawiki', 'bawikibooks', 'bclwiki',
