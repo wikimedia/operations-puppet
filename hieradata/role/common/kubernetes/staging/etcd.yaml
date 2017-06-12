@@ -1,0 +1,10 @@
+debdeploy::grains:
+  debdeploy-kubernetes-eqiad:
+    value: etcd
+cluster: kubernetes
+profile::etcd::cluster_name: "k8s-staging.%{::site}"
+profile::etcd::discovery: "dns:k8s-staging.%{::site}.wmnet"
+profile::etcd::use_client_certs: false
+profile::etcd::do_backup: true
+profile::etcd::use_proxy: false
+profile::etcd::allow_from: "$DOMAIN_NETWORKS"

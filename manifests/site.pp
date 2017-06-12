@@ -1030,9 +1030,20 @@ node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::kubernetes)
 }
 
+# Etcd cluster for kubernetes staging
+# TODO: Rename the eqiad etcds to the codfw etcds naming scheme
+node /^kubstagetcd100[123]\.eqiad\.wmnet$/ {
+    role(kubernetes::staging::etcd)
+}
+
 # kubernetes masters
 node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
+}
+
+# kubernetes staging master
+node 'neon.eqiad.wmnet' {
+    role(kubernetes::staging::master)
 }
 
 # Etcd cluster for "virtual" networking
