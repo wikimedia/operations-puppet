@@ -1,8 +1,17 @@
+<%
+# Must check for :undef as well in below 'if' statements.
+# Puppet 'undef' values normally become 'nil' in ERB (Ruby), which are falsey.
+# But, in Puppet 3, when undef is put inside a hash or passed indirectly,
+# it becomes ':undef' which is not falsey. This is fixed in Puppet 4.
+# https://tickets.puppetlabs.com/browse/PUP-1467
+-%>
 <!DOCTYPE html>
 <html lang=en>
 <meta charset=utf-8>
 <title><%= @errorpage['title'] %></title>
-<% if @errorpage['favicon'] %><link rel="shortcut icon" href="<%= @errorpage['favicon'] %>"><% end %>
+<% if @errorpage['favicon'] && @errorpage['favicon'] != :undef -%>
+<link rel="shortcut icon" href="<%= @errorpage['favicon'] %>">
+<% end -%>
 <style>
 * { margin: 0; padding: 0; }
 body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
@@ -18,9 +27,14 @@ code { font-family: sans-serif; }
 .text-muted { color: #777; }
 </style>
 <div class="content" role="main">
-<% if @errorpage['logo_link'] %><a href="<%= @errorpage['logo_link'] %>"><% end %><img src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width=135 height=135><% if @errorpage['logo_link'] %></a><% end %>
+<% if @errorpage['logo_link'] && @errorpage['logo_link'] != undef -%>
+<a href="<%= @errorpage['logo_link'] %>"><% end %><img src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width="135">
+<% if @errorpage['logo_link'] && @errorpage['logo_link'] != undef %></a>
+<% end -%>
 <h1><%= @errorpage['pagetitle'] %></h1>
 <%= @errorpage['content'] %>
 </div>
-<% if @errorpage['footer'] %><div class="footer"><%= @errorpage['footer'] %></div><% end %>
+<% if @errorpage['footer'] && @errorpage['footer'] != undef -%>
+<div class="footer"><%= @errorpage['footer'] %></div>
+<% end -%>
 </html>
