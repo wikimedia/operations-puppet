@@ -118,7 +118,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)
         for proxy in project_proxies:
-            if len(proxy['backends'] > 1):
+            if len(proxy['backends']) > 1:
                 LOG.warning("This proxy record has multiple backends. "
                             "That's unexpected and not handled, "
                             "we may be leaking proxy records.")
@@ -165,7 +165,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                     serviceid = service.id
                     break
 
-            endpoints = keystone.endpoints.list(serviceid)
+            endpoints = keystone.endpoints.list(service=serviceid)
             for endpoint in endpoints:
                 if endpoint.interface == 'public':
                     self.proxy_endpoint = endpoint.url
