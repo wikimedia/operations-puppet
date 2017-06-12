@@ -277,7 +277,7 @@ class hhvm(
     ## Run-time data and logging
 
     rsyslog::conf { 'hhvm':
-        source   => 'puppet:///modules/hhvm/hhvm.rsyslog.conf',
+        content  => template('hhvm/hhvm.rsyslog.conf.erb'),
         priority => 20,
         require  => File['/etc/logrotate.d/hhvm'],
         before   => Service['hhvm'],
