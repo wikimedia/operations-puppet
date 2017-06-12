@@ -97,7 +97,7 @@ class elasticsearch(
     $rack = undef,
     $unicast_hosts = [],
     $bind_networks = ['_local_', '_site_'],
-    $publish_host = '_eth0_',
+    $publish_host = $facts['ipaddress'],
     $filter_cache_size = '10%',
     $bulk_thread_pool_executors = undef,
     $bulk_thread_pool_capacity = undef,
