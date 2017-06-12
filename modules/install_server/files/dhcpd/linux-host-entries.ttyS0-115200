@@ -146,6 +146,21 @@ host kubetcd2003 {
     fixed-address kubetcd2003.codfw.wmnet;
 }
 
+host kubstagetcd1001 {
+    hardware ethernet FIXME;
+    fixed-address kubetcd1001.eqiad.wmnet;
+}
+
+host kubstagetcd1002 {
+    hardware ethernet FIXME;
+    fixed-address kubetcd1002.eqiad.wmnet;
+}
+
+host kubstagetcd1003 {
+    hardware ethernet FIXME;
+    fixed-address kubetcd1003.eqiad.wmnet;
+}
+
 host labsdb1001 {
     hardware ethernet 00:22:BD:D3:61:8C;
     fixed-address labsdb1001.eqiad.wmnet;
@@ -198,6 +213,11 @@ host mx2001 {
 host nihal {
      hardware ethernet aa:00:00:27:56:f0;
      fixed-address nihal.codfw.wmnet;
+}
+
+host neon {
+    hardware ethernet FIXME;
+    fixed-address neon.eqiad.wmnet;
 }
 
 host nitrogen {

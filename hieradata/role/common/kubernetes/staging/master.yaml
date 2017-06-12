@@ -1,0 +1,26 @@
+debdeploy::grains:
+  debdeploy-kubernetes-eqiad:
+    value: standard
+cluster: kubernetes
+profile::kubernetes::master::docker_registry: darmstadtium.eqiad.wmnet
+profile::kubernetes::master::accessible_to:
+ - kubestage1001.eqiad.wmnet
+ - kubestage1002.eqiad.wmnet
+profile::kubernetes::master::apiserver_count: 1
+profile::kubernetes::master::admission_controllers:
+ - NamespaceLifecycle
+ - ResourceQuota
+ - LimitRanger
+ - RegistryEnforcer
+ - DefaultStorageClass
+profile::kubernetes::master::expose_puppet_certs: true
+profile::kubernetes::master::ssl_cert_path: "/etc/kubernetes/ssl/server.pem"
+profile::kubernetes::master::ssl_key_path: "/etc/kuberenetes/ssl/server.key"
+profile::kubernetes::master::authz_mode: ''
+profile::kubernetes::master::host_automounts: []
+profile::kubernetes::master::host_path_prefixes_allowed: []
+profile::kubernetes::master::service_cluster_ip_range: 10.64.76.0/24
+profile::kubernetes::master::etcd_urls:
+ - https://kubestagetcd1001.eqiad.wmnet:2379
+ - https://kubestagetcd1002.eqiad.wmnet:2379
+ - https://kubestagetcd1003.eqiad.wmnet:2379
