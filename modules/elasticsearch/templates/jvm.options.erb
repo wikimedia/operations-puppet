@@ -33,7 +33,8 @@
 ################################################################
 
 ## GC configuration
--XX:+UseConcMarkSweepGC
+# disabling ConcMarkSweepGC, see https://phabricator.wikimedia.org/T167685
+# -XX:+UseConcMarkSweepGC
 -XX:CMSInitiatingOccupancyFraction=75
 -XX:+UseCMSInitiatingOccupancyOnly
 
