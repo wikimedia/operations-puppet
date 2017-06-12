@@ -44,6 +44,18 @@ cfg.CONF.register_opts([
     cfg.StrOpt('salt_master_host', default=None),
 ], group='handler:wmf_sink')
 
+cfg.CONF.register_group(cfg.OptGroup(
+    name='keystone_authtoken',
+    title="Settings for designate to talk to keystone"
+))
+
+cfg.CONF.register_opts([
+    cfg.StrOpt('auth_uri', default=''),
+    cfg.StrOpt('identity_uri', default=''),
+    cfg.StrOpt('admin_user', default=''),
+    cfg.StrOpt('admin_password', default=''),
+], group='keystone_authtoken')
+
 
 class NovaFixedWMFHandler(BaseAddressWMFHandler):
     """ Handler for Nova's notifications """
