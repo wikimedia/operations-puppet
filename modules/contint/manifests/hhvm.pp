@@ -1,17 +1,5 @@
 class contint::hhvm {
 
-    if $::operatingsystem == 'Debian' {
-        apt::pin { 'hhvm-from-experimental':
-            package  => '/^hhvm.*/',
-            pin      => 'release o=Wikimedia,c=experimental',
-            priority => '1002',
-            before   => [
-                Class['::contint::packages::hhvm'],
-                Class['::hhvm'],
-            ]
-        }
-    }
-
     include ::contint::packages::hhvm
 
     class { '::hhvm':
