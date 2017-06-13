@@ -148,17 +148,17 @@ host kubetcd2003 {
 
 host kubstagetcd1001 {
     hardware ethernet aa:00:00:3b:54:53;
-    fixed-address kubetcd1001.eqiad.wmnet;
+    fixed-address kubestagetcd1001.eqiad.wmnet;
 }
 
 host kubstagetcd1002 {
     hardware ethernet aa:00:00:5c:31:1c;
-    fixed-address kubetcd1002.eqiad.wmnet;
+    fixed-address kubestagetcd1002.eqiad.wmnet;
 }
 
 host kubstagetcd1003 {
     hardware ethernet aa:00:00:60:a7:fe;
-    fixed-address kubetcd1003.eqiad.wmnet;
+    fixed-address kubestagetcd1003.eqiad.wmnet;
 }
 
 host labsdb1001 {
