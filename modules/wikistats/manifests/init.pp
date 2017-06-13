@@ -79,6 +79,13 @@ class wikistats (
     }
 
     # scripts and crons to update data and dump XML files
+    file { $file_path:
+        ensure => directory,
+        owner  => 'wikistatsuser',
+        group  => 'wwww-data',
+        mode   => '0644',
+    }
+
     class { 'wikistats::updates':
         db_pass => $db_pass,
     }
