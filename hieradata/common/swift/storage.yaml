@@ -1,1 +1,3 @@
-swift::storage::statsd_host: 'localhost'
+# Use an IP since nscd is so slow
+# https://phabricator.wikimedia.org/T160990#3345809
+swift::storage::statsd_host: '127.0.0.1'
