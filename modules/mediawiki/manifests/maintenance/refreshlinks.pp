@@ -1,4 +1,4 @@
-# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
+# Include this to add cron jobs calling refreshLinks.php on all clusters. (T80599)
 class mediawiki::maintenance::refreshlinks( $ensure = present ) {
 
     require ::mediawiki
