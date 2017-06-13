@@ -109,9 +109,12 @@ while [ $i -lt $shards ]; do
 done
 
 mv $tempDir/wikidata$dumpFormat-$dumpName.gz $targetFileGzip
+ln -fs "$today/$filename.$dumpFormat.gz" "$targetDirBase/latest-$dumpName.$dumpFormat.gz"
 
 gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidata$dumpFormat-$dumpName.bz2
 mv $tempDir/wikidata$dumpFormat-$dumpName.bz2 $targetFileBzip2
+ln -fs "$today/$filename.$dumpFormat.bz2" "$targetDirBase/latest-$dumpName.$dumpFormat.bz2"
+
 
 pruneOldDirectories
 pruneOldLogs
