@@ -19,20 +19,20 @@ varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -
 client c1 {
     # First 25 requests are fine
     loop 25 {
-        txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+        txreq -url "/w/api.php" -hdr "X-Forwarded-Proto: https"
         rxresp
         expect resp.status == 200
         expect resp.http.X-Cache ~ "pass"
     }
 
     # The 26th request gets rate limited
-    txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/w/api.php" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 429
 
     delay 5
 
-    txreq -hdr "User-Agent: wikiScrape/0.0.0" -hdr "X-Forwarded-Proto: https"
+    txreq -url "/w/api.php" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
 } -run
