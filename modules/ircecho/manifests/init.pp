@@ -14,7 +14,7 @@ class ircecho (
     $ircecho_server = 'chat.freenode.net',
 ) {
 
-    require_package(['python-pyinotify', 'python-irclib'])
+    require_package(['python-pyinotify', 'python-irc'])
 
     file { '/usr/local/bin/ircecho':
         ensure => 'present',
