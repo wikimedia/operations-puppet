@@ -30,7 +30,7 @@ cache::app_directors:
       codfw: 'ms-fe.svc.codfw.wmnet'
   swift_thumbs:
     backends:
-      eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
+      # eqiad: 'ms-fe-thumbs.svc.eqiad.wmnet'
       codfw: 'ms-fe-thumbs.svc.codfw.wmnet'
   kartotherian:
     be_opts:
