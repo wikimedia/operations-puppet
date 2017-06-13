@@ -92,9 +92,9 @@ title = einsteinium.wikimedia.org [D3]
 host = einsteinium.wikimedia.org
 
 
-++ FRack
-menu = FRack
-title = Fund Raising Infrastructure
+++ frack
+menu = frack
+title = Fundraising Infrastructure
 
 +++ pfw-eqiad
 menu = pfw-eqiad
@@ -210,9 +210,9 @@ menu = wasat
 title = wasat.codfw.wmnet [D5]
 host = wasat.codfw.wmnet
 
-++ FRack
-menu = FRack
-title = Fund Raising Infrastructure
+++ frack
+menu = frack
+title = Fundraising Infrastructure
 
 +++ pfw-codfw
 menu = pfw-codfw
