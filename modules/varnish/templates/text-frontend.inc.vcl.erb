@@ -202,8 +202,16 @@ sub cluster_fe_hash {
 sub cluster_fe_hit { }
 
 sub cluster_fe_ratelimit {
-	if (req.http.User-Agent ~ "^wikiScrape/[0-9]+\.[0-9]+\.[0-9]+$") {
-		if (vsthrottle.is_denied(req.http.X-Client-IP, 25, 5s)) {
+	if (req.http.User-Agent ~ "^wikiScrape") {
+		if (vsthrottle.is_denied("wikiScrape:" + req.http.X-Client-IP, 25, 5s)) {
+			return (synth(742, "Too Many Requests"));
+		}
+	}
+
+	// Limit miss/pass requests from the same IP to 300/60s. Exempt
+	// seemingly-authenticated requests
+	if (req.http.Cookie !~ "([sS]ession|Token)=") {
+		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 300, 60s)) {
 			return (synth(742, "Too Many Requests"));
 		}
 	}
