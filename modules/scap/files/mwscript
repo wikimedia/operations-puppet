@@ -17,7 +17,7 @@ if [ -z "$TERM" ] || [ "$TERM" = unknown ] || [ "$TERM" = dumb ]; then
 fi
 
 if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then
-	sudo -u "$MEDIAWIKI_WEB_USER" php5 "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
+	sudo -u "$MEDIAWIKI_WEB_USER" php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 else
-	php5 "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
+	php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 fi
