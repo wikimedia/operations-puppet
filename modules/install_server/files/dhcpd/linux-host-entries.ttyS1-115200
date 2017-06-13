@@ -5480,6 +5480,8 @@ host netmon1001 {
 host netmon1002 {
     hardware ethernet 18:66:da:9f:80:08;
     fixed-address netmon1002.wikimedia.org;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host nescio {
