@@ -208,10 +208,10 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
-	// Limit miss/pass requests from the same IP to 300/60s. Exempt
+	// Limit miss/pass requests from the same IP to 600/60s. Exempt
 	// seemingly-authenticated requests
 	if (req.http.Cookie !~ "([sS]ession|Token)=") {
-		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 300, 60s)) {
+		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 600, 60s)) {
 			return (synth(742, "Too Many Requests"));
 		}
 	}
