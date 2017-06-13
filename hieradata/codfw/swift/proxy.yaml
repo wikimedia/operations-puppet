@@ -6,3 +6,5 @@ swift::proxy::memcached_servers: [
   'ms-fe2008.codfw.wmnet:11211'
 # no trailing comma!
 ]
+
+swift::proxy::thumborhost: 'thumbor.svc.eqiad.wmnet:8800'
