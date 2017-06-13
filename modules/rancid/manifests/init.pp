@@ -1,6 +1,12 @@
 # Really Awful Notorious CIsco config Differ
 class rancid {
 
+    apt::pin { 'rancid':
+        pin      => 'release a=jessie-backports',
+        priority => '1001',
+        before   => Package['rancid'],
+    }
+
     package { 'rancid':
         ensure => present,
     }
