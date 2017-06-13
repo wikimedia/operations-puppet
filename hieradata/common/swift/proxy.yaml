@@ -57,6 +57,9 @@ swift::proxy::shard_container_list: [
  ]
 
 swift::proxy::thumbor_wiki_list: [
-  'wikipedia-test'
+  'wikipedia-mediawiki',
+  'wikipedia-test',
+  'wikipedia-test2',
+  'wikipedia-zero'
 # no trailing comma!
 ]
