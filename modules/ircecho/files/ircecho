@@ -14,9 +14,9 @@ import threading
 import random
 import string
 import re
-import irclib  # for exceptions.
+import irc.client  # for exceptions.
 from optparse import OptionParser
-from ircbot import SingleServerIRCBot
+from irc.bot import SingleServerIRCBot
 
 
 def beautify_message(m):
@@ -145,8 +145,8 @@ class EventHandler(pyinotify.ProcessEvent):
 			chans = reader.getchannels(event.pathname)
 			try:
 				bot.connection.privmsg(chans, s)
-			except irclib.ServerNotConnectedError, e:
-				print ("Error writing: %s\n"
+			except irc.client.ServerNotConnectedError, e:
+				print ("Error writing: %s"
 					"Dropping this message: '%s'") % (e, s)
 
 	def process_IN_CREATE(self, event):
