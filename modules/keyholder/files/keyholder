@@ -41,7 +41,7 @@ is_valid_private_key() {
   chmod 0400 "$1"
   RETURN=0
   # Check that the key is a password-protected private key file.
-  /usr/bin/ssh-keygen -y -f "$1" -P "" 2>&1 | /bin/grep -q "load failed" || RETURN=1
+  /usr/bin/ssh-keygen -y -f "$1" -P "" 2>&1 | /bin/grep -Eq "load failed|incorrect passphrase" || RETURN=1
   # Restore permissions
   chmod 0$PERM "$1"
   return $RETURN
