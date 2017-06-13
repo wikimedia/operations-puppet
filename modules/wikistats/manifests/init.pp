@@ -82,7 +82,7 @@ class wikistats (
     file { '/var/www/wikistats/xml':
         ensure => directory,
         owner  => 'wikistatsuser',
-        group  => 'wwww-data',
+        group  => 'wikistatsuser',
         mode   => '0644',
     }
 

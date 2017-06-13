@@ -13,7 +13,7 @@ define wikistats::cronjob::xmldump(
         default      => "SELECT *,good/total AS ratio FROM ${table} ORDER BY good desc,total desc",
     }
 
-    $command = "mysql -X -u ${db_user} -p${db_pass} -e '${query}' ${db_name} > ${file_path}/${table}.xml"
+    $command = "mysql -X -u ${db_user} -e '${query}' ${db_name} > ${file_path}/${table}.xml 2>&1"
 
     cron { "cron-wikistats-xmldump-${name}":
         ensure  => present,
