@@ -15,13 +15,6 @@ define wikistats::cronjob::xmldump(
 
     $command = "mysql -X -u ${db_user} -p${db_pass} -e '${query}' ${db_name} > ${file_path}/${table}.xml"
 
-    file { $file_path:
-        ensure => directory,
-        owner  => 'wikistatsuser',
-        group  => 'wwww-data',
-        mode   => '0644',
-    }
-
     cron { "cron-wikistats-xmldump-${name}":
         ensure  => present,
         command => $command,
