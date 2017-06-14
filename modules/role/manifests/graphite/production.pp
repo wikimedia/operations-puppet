@@ -41,6 +41,21 @@ class role::graphite::production {
         keep_days => 10,
     }
 
+    # Cleanup zuul data
+    graphite::whisper_cleanup { 'graphite-zuul':
+        directory => "${storage_dir}/whisper/zuul",
+    }
+    # Zuul also generates metrics related to Gerrit
+    graphite::whisper_cleanup { 'graphite-zuul-gerrit':
+        directory => "${storage_dir}/whisper/gerrit",
+    }
+
+    # Nodepool, which has several metrics for each of the Jenkins jobs
+    graphite::whisper_cleanup { 'graphite-nodepool':
+        directory => "${storage_dir}/whisper/nodepool",
+        keep_days => 15,
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
