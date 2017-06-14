@@ -88,8 +88,8 @@ character_set_filesystem       = binary
 collation_server               = binary
 
 default-storage-engine         = InnoDB
-# disable file-per-table to avoid multiple small objects
-innodb_file_per_table          = 0
+# enable innodb_file_per_table to allow size purging
+innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size           = 2G
 # reduce durability - this is a cache server
