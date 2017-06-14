@@ -140,7 +140,7 @@ class EchoBot(SingleServerIRCBot):
 class EventHandler(pyinotify.ProcessEvent):
 	def process_IN_MODIFY(self, event):
 		s = reader.readfile(event.pathname)
-		s = '\n'.join(beautify_message(m) for m in s.split('\n') if m)
+		s = beautify_message(s)
 		if s:
 			chans = reader.getchannels(event.pathname)
 			try:
