@@ -1,0 +1,19 @@
+[Unit]
+Description=Zuul Server
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=zuul
+Group=zuul
+PIDFile=/var/run/zuul/zuul.pid
+PermissionsStartOnly=true
+ExecStartPre=-/bin/mkdir /var/run/zuul
+ExecStartPre=/bin/chown -R zuul:zuul /var/run/zuul/
+EnvironmentFile=/etc/default/zuul
+ExecStart=/usr/bin/zuul-server
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/rm -f /var/run/zuul/zuul.pid
+
+[Install]
+WantedBy=multi-user.target
