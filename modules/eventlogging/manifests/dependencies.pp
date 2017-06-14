@@ -19,6 +19,8 @@ class eventlogging::dependencies {
         'python-jsonschema',
         'python-confluent-kafka',
         'python-kafka',
+        # Python snappy allows python-kafka to consume Snappy compressed data.
+        'python-snappy',
         'python-mysqldb',
         'python-pygments',
         'python-pykafka',

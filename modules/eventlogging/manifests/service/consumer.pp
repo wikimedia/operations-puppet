@@ -24,6 +24,12 @@
 #   subscribing to the input stream. Defaults to the resource title.
 #   Should contain only URL-safe characters.
 #
+# [*schemas_path*]
+#   If given, this path will be passed to eventlogging-consumer --schemas-path,
+#   which causes schemas to be loaded and cached from a local file path before
+#   consumption begins.  This does not restrict the consumer from finding
+#   schemas on meta.wikimedia.org if they don't exist in schemas_path.
+#
 # [*ensure*]
 #   Specifies whether the consumer should be provisioned or destroyed.
 #   Value may be 'present' (provisions the resource; the default) or
@@ -48,11 +54,12 @@
 define eventlogging::service::consumer(
     $input,
     $output,
-    $sid    = $title,
-    $ensure = present,
-    $owner  = 'root',
-    $group  = 'root',
-    $mode   = '0644',
+    $sid          = $title,
+    $schemas_path = undef,
+    $ensure       = present,
+    $owner        = 'root',
+    $group        = 'root',
+    $mode         = '0644',
 ) {
     Class['eventlogging::server'] -> Eventlogging::Service::Consumer[$title]
 
