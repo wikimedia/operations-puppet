@@ -12,6 +12,7 @@ class ircecho (
     $ircecho_logs,
     $ircecho_nick,
     $ircecho_server = 'chat.freenode.net',
+    $ensure = 'present',
 ) {
 
     require_package(['python-pyinotify', 'python-irc'])
@@ -33,7 +34,7 @@ class ircecho (
     }
 
     base::service_unit { 'ircecho':
-        ensure         => 'present',
+        ensure         => $ensure,
         systemd        => true,
         upstart        => false,
         sysvinit       => true,
