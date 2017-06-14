@@ -2,5 +2,4 @@
 # This file is managed by Puppet.
 if ($programname startswith 'hhvm') then {
     action(type="omfile" file="/var/log/hhvm/error.log" FileCreateMode="0640" FileOwner="<%= @user %>" FileGroup="<%= @group %>")
-    stop
 }
