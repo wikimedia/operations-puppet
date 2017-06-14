@@ -321,6 +321,10 @@ sub cluster_fe_err_synth {
 		set resp.http.Content-Length = "0"; // BZ #62245
 	}
 
+	if (resp.reason == "Too Many Requests") {
+		set resp.http.Retry-After = 1;
+	}
+
 	// Chrome/41-on-Windows: T141786
 	if (resp.reason == "Buggy request, please report at https://phabricator.wikimedia.org/T141786") {
 		set resp.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
