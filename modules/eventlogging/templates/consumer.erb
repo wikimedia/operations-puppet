@@ -1,3 +1,7 @@
+<% if @schemas_path 0%>
+--schemas-path
+<%= @schemas_path %>
+<% end -%
 <% if @sid -%>
 <%= @input %><%= @input.include?('?') ? '&' : '?' %>identity=<%= @sid %>
 <% else -%>
