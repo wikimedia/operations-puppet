@@ -2228,44 +2228,42 @@ node 'pc1004.eqiad.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc1',
     }
-
-    include ::base::firewall
 }
 node 'pc1005.eqiad.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc2',
     }
-
-    include ::base::firewall
 }
 node 'pc1006.eqiad.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc3',
     }
-
-    include ::base::firewall
+}
+node 'db1096.eqiad.wmnet' {
+    class { '::role::mariadb::parsercache':
+        shard  => 'pc1',
+    }
 }
 # codfw
 node 'pc2004.codfw.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc1',
     }
-
-    include ::base::firewall
 }
 node 'pc2005.codfw.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc2',
     }
-
-    include ::base::firewall
 }
 node 'pc2006.codfw.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc3',
     }
-
-    include ::base::firewall
+}
+node 'db2072.codfw.wmnet' {
+    class { '::role::mariadb::parsercache':
+        shard  => 'pc1',
+    }
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
