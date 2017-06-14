@@ -120,12 +120,15 @@ class zuul::server (
         'unmanaged' => undef,
         default     => $service_ensure,
     }
-    service { 'zuul':
-        ensure     => $real_ensure,
-        name       => 'zuul',
-        enable     => $service_enable,
-        hasrestart => true,
-        require    => [
+
+    base::service_unit { 'zuul':
+        ensure         => 'present',
+        systemd        => true,
+        service_params => {
+            ensure     => $real_ensure,
+            hasrestart => true,
+        },
+        require        => [
             File['/etc/default/zuul'],
             File['/etc/zuul/zuul-server.conf'],
             File['/etc/zuul/gearman-logging.conf'],
@@ -133,7 +136,7 @@ class zuul::server (
     }
 
     exec { 'zuul-reload':
-        command     => '/etc/init.d/zuul reload',
+        command     => '/usr/sbin/service zuul reload',
         refreshonly => true,
     }
 }
