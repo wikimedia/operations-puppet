@@ -45,10 +45,10 @@ class role::labs::puppetmaster(
             rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8140 ACCEPT;",
         },
         puppetbackend => {
-            rule => "saddr (${horizon_host_ip}) proto tcp dport 8100 ACCEPT;",
+            rule => "saddr (${horizon_host_ip}) proto tcp dport 8101 ACCEPT;",
         },
         puppetbackendgetter => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8101 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8100 ACCEPT;",
         },
     }
     create_resources (ferm::rule, $fwrules)

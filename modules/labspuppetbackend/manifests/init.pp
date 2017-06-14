@@ -27,7 +27,7 @@ class labspuppetbackend(
                 'wsgi-file'         => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
                 callable            => 'app',
                 master              => true,
-                http-socket         => '0.0.0.0:8100',
+                http-socket         => '0.0.0.0:8101',
                 env                 => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
@@ -51,7 +51,7 @@ class labspuppetbackend(
         subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
     }
 
-    # This is a GET-only front end that sits on port 8101.  We can
+    # This is a GET-only front end that sits on port 8100.  We can
     #  open this up to the public even though the actual API has no
     #  auth protections.
     nginx::site { 'labspuppetbackendgetter':

@@ -33,7 +33,7 @@ class puppet_config():
         self.tenant_id = tenant_id
         self.apiurl = getattr(settings,
                               "PUPPET_CONFIG_BACKEND",
-                              "http://labcontrol1001.wikimedia.org:8100/v1"
+                              "http://labcontrol1001.wikimedia.org:8101/v1"
                               )
         self.refresh()
 
@@ -189,7 +189,7 @@ class puppet_config():
     def delete_prefix(tenant_id, prefix):
         apiurl = getattr(settings,
                          "PUPPET_CONFIG_BACKEND",
-                         "http://labcontrol1001.wikimedia.org:8100/v1")
+                         "http://labcontrol1001.wikimedia.org:8101/v1")
         prefixurl = "%s/%s/prefix/%s" % (apiurl, tenant_id, prefix)
         req = requests.delete(prefixurl, verify=False)
         req.raise_for_status()
@@ -198,7 +198,7 @@ class puppet_config():
     def get_prefixes(tenant_id):
         apiurl = getattr(settings,
                          "PUPPET_CONFIG_BACKEND",
-                         "http://labcontrol1001.wikimedia.org:8100/v1")
+                         "http://labcontrol1001.wikimedia.org:8101/v1")
         prefixurl = "%s/%s/prefix" % (apiurl, tenant_id)
         req = requests.get(prefixurl, verify=False)
         if req.status_code == 404:
