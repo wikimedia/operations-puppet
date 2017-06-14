@@ -3,6 +3,7 @@
     role: master
   targets:
   - pc2004:9104
+  - db2072:9104
 
 - labels:
     shard: pc2
