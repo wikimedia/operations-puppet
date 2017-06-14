@@ -204,6 +204,7 @@ sub cluster_fe_hit { }
 sub cluster_fe_ratelimit {
 	if (req.http.User-Agent ~ "^wikiScrape") {
 		if (vsthrottle.is_denied("wikiScrape:" + req.http.X-Client-IP, 25, 5s)) {
+			set req.http.Retry-After = 5;
 			return (synth(429, "Too Many Requests"));
 		}
 	}
@@ -219,6 +220,7 @@ sub cluster_fe_ratelimit {
 			}
 		} else {
 			if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 600, 60s)) {
+				set req.http.Retry-After = 1;
 				return (synth(429, "Too Many Requests"));
 			}
 		}
@@ -319,6 +321,12 @@ sub cluster_fe_err_synth {
 		set resp.http.Location = req.http.Location;
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Content-Length = "0"; // BZ #62245
+	}
+
+	if (resp.reason == "Too Many Requests") {
+		if (req.http.Retry-After) {
+			set resp.http.Retry-After = req.http.Retry-After;
+		}
 	}
 
 	// Chrome/41-on-Windows: T141786
