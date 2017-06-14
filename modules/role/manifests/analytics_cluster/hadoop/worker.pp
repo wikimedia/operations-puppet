@@ -144,7 +144,7 @@ class role::analytics_cluster::hadoop::worker {
     # issues that force us to use the package resource
     # directly.
     package { ['python-numpy', 'python3-numpy']:
-        ensure => '1:1.12.0-2~bpo8+1',
+        ensure => '1:1.12.1-2~bpo8+1',
     }
     package { ['python3-sklearn','python3-sklearn-lib']:
         ensure  => 'installed',
