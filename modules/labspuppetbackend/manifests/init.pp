@@ -50,4 +50,11 @@ class labspuppetbackend(
         },
         subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
     }
+
+    # This is a GET-only front end that sits on port 8101.  We can
+    #  open this up to the public even though the actual API has no
+    #  auth protections.
+    nginx::site { 'labspuppetbackendgetter':
+        source => 'puppet:///modules/labspuppetbackend/labspuppetbackendgetter.conf',
+    }
 }
