@@ -87,9 +87,10 @@ define base::expose_puppet_certs(
     }
     if $provide_keypair {
         exec { "create-${title}-keypair":
-            before  => File["${target_basedir}/ssl/server-keypair.pem"],
-            creates => "${target_basedir}/ssl/server-keypair.pem",
-            command => "/bin/cat \
+            before   => File["${target_basedir}/ssl/server-keypair.pem"],
+            requires => File["${target_basedir}/ssl"],
+            creates  => "${target_basedir}/ssl/server-keypair.pem",
+            command  => "/bin/cat \
                          ${ssldir}/private_keys/${puppet_cert_name}.pem \
                          ${ssldir}/certs/${puppet_cert_name}.pem \
                         > ${target_basedir}/ssl/server-keypair.pem",
