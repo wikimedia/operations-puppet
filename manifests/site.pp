@@ -1032,7 +1032,7 @@ node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
 
 # Etcd cluster for kubernetes staging
 # TODO: Rename the eqiad etcds to the codfw etcds naming scheme
-node /^kubstagetcd100[123]\.eqiad\.wmnet$/ {
+node /^kubestagetcd100[123]\.eqiad\.wmnet$/ {
     role(kubernetes::staging::etcd)
 }
 
