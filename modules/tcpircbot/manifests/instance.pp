@@ -68,7 +68,7 @@ define tcpircbot::instance(
     $listen_port = 9200,
     $ensure      = 'present',
 ) {
-    include tcpircbot
+    require tcpircbot
 
     file { "${tcpircbot::dir}/tcpircbot-${title}.json":
         ensure  => $ensure,
@@ -85,8 +85,5 @@ define tcpircbot::instance(
         systemd       => true,
         template_name => 'tcpircbot',
         subscribe     => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
-        require       => [
-            Package['python-irclib'],
-        ],
     }
 }

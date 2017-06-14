@@ -25,9 +25,9 @@ CONFIGFILE should be a JSON file with the following structure:
   }
 
 Requirements:
- * irclib >=0.4.8
+ * irc >=0.4.8
    <http://bitbucket.org/jaraco/irc>
-   Ubuntu package: 'python-irclib'
+   Debian package: 'python-irc'
  * netaddr >=0.7.5
    <https://pypi.python.org/pypi/netaddr>
    Ubuntu package: 'python-netaddr'
@@ -49,7 +49,7 @@ import select
 import socket
 
 try:
-    # irclib 0.7+
+    # irc 0.7+
     import irc.bot as ircbot
 except ImportError:
     import ircbot
