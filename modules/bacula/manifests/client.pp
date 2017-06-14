@@ -49,6 +49,7 @@ class bacula::client(
         provide_keypair => true,
         user            => 'bacula',
         group           => 'bacula',
+        require         => Package['bacula-fd'],
     }
 
     file { '/etc/bacula/bacula-fd.conf':
