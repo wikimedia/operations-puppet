@@ -6,7 +6,7 @@ class role::mariadb::parsercache(
     ) {
 
     include ::standard
-
+    include ::base::firewall
     include role::mariadb::monitor
     include role::mariadb::ferm
     include passwords::misc::scripts
