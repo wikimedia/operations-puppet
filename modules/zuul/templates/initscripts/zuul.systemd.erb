@@ -1,0 +1,16 @@
+[Unit]
+Description=Zuul Server
+After=syslog.target network.target
+
+[Service]
+User=zuul
+Group=zuul
+<% if @statsd_host != "" %>
+Environment=STATSD_HOST=<%= @statsd_host %>
+Environment=STATSD_PORT=8125
+<% end %>
+ExecStart=/usr/share/python/zuul/bin/python /usr/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
+TimeoutStopSec=infinity
+
+[Install]
+WantedBy=multi-user.target

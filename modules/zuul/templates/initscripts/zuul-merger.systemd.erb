@@ -3,6 +3,7 @@ Description=Zuul merger
 
 [Service]
 User=zuul
+Group=zuul
 ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
 EnvironmentFile=/etc/default/zuul-merger
 
