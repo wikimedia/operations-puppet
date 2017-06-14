@@ -102,7 +102,7 @@ class EchoReader(threading.Thread):
 					s = raw_input()
 					# this throws an exception if not connected.
 					s = beautify_message(s)
-					self.bot.connection.privmsg(self.chans, s)
+					self.bot.connection.privmsg(self.chans, s.replace('\n', ''))
 				except EOFError:
 					# Once the input is finished, the bot should exit
 					break
@@ -144,7 +144,7 @@ class EventHandler(pyinotify.ProcessEvent):
 		if s:
 			chans = reader.getchannels(event.pathname)
 			try:
-				bot.connection.privmsg(chans, s)
+				bot.connection.privmsg(chans, s.replace('\n', ''))
 			except irc.client.ServerNotConnectedError, e:
 				print ("Error writing: %s"
 					"Dropping this message: '%s'") % (e, s)
