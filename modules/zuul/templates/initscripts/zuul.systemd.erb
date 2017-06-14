@@ -1,0 +1,16 @@
+[Unit]
+Description=Zuul Server
+After=syslog.target network.target
+
+[Service]
+Type=pid
+User=zuul
+Group=zuul
+PIDFile=/var/run/zuul/zuul.pid
+EnvironmentFile=/etc/default/zuul
+ExecStart=/usr/bin/zuul-server
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/rm /var/run/zuul/zuul.pid
+
+[Install]
+WantedBy=multi-user.target
