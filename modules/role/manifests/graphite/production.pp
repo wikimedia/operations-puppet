@@ -41,6 +41,11 @@ class role::graphite::production {
         keep_days => 15,
     }
 
+    # Cleanup zuul data
+    graphite::whisper_cleanup { 'graphite-zuul':
+        directory => "${storage_dir}/whisper/zuul",
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
