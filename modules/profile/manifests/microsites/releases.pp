@@ -10,6 +10,13 @@ class profile::microsites::releases {
         sitename => 'releases.wikimedia.org',
     }
 
+    class { '::jenkins':
+        access_log => true,
+        http_port  => '8080',
+        prefix     => '/jenkins',
+        umask      => '0002',
+    }
+
     class { '::releases::reprepro': }
 
     # ssh-based uploads from deployment servers
@@ -26,4 +33,3 @@ class profile::microsites::releases {
     include ::profile::backup::host
     backup::set { 'srv-org-wikimedia': }
 }
-
