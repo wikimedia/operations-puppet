@@ -4,8 +4,8 @@ profile::base::domain_search:
   - codfw.wmnet
   - esams.wmnet
   - ulsfo.wmnet
-# Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
-role::tcpircbot::ensure: absent
-do_acme: false
 role::icinga::partner: tegmen.wikimedia.org
-role::icinga::passive: true
+# Note that our paging infrastructure (AQL as of 20161101) may need an update of it's sender whitelist
+role::tcpircbot::ensure: present
+do_acme: true
+role::icinga::passive: false
