@@ -262,6 +262,56 @@ def get_prefixes(project):
         cur.close()
 
 
+@statsd.timer('get_prefixes_for_project_and_role')
+@app.route('/v1/<string:project>/prefix/<string:role>', methods=['GET'])
+def get_prefixes_for_project_and_role(project, role):
+    cur = g.db.cursor()
+    try:
+        cur.execute("""
+            SELECT prefix.prefix FROM prefix, roleassignment
+                WHERE prefix.project = %s AND
+                      roleassignment.role = %s AND
+                      prefix.id = roleassignemnt.prefix_id
+        """, (project, role))
+        # Do the inverse of _preprocess_prefix, so callers get a consistent view
+        return Response(
+            yaml.safe_dump({
+                'prefixes':
+                ['_' if r[0] == b'' or r[0] == ''
+                 else r[0] for r in cur.fetchall()]}),
+            status=200,
+            mimetype='application/x-yaml'
+        )
+    finally:
+        cur.close()
+
+
+@statsd.timer('get_prefixes_for_role')
+@app.route('/v1/prefix/<string:role>', methods=['GET'])
+def get_prefixes_for_role(role):
+    cur = g.db.cursor()
+    try:
+        cur.execute("""
+            SELECT prefix.project, prefix.prefix FROM prefix, roleassignment
+                WHERE roleassignment.role = %s AND
+                      prefix.id = roleassignemnt.prefix_id
+        """, (role))
+        # Return a list of project dicts with '_' meaning 'everything':
+        rdict = {}
+        for r in cur.fetchall():
+            project = r[0]
+            prefix = r[1]
+            if project not in rdict:
+                rdict[project] = {'prefixes': []}
+            rdict[project]['prefixes'].append('_' if prefix == b''
+                                              or prefix == '' else r[0])
+        return Response(yaml.safe_dump(rdict),
+                        status=200,
+                        mimetype='application/x-yaml')
+    finally:
+        cur.close()
+
+
 @statsd.timer('delete_prefix')
 @app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
 def delete_prefix(project, prefix):
