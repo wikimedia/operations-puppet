@@ -31,20 +31,14 @@ class role::graphite::production {
     }
 
     # Cleanup stale labs instances data - T143405
-    cron { 'graphite-labs-instances':
-        command => "[ -d ${storage_dir}/whisper/instances ] && find ${storage_dir}/whisper/instances -type f -mtime +30 -delete && find ${storage_dir}/whisper/instances -type d -empty -delete",
-        user    => '_graphite',
-        hour    => '8',
-        minute  => fqdn_rand(60, 'graphite-labs-instances-cron'),
+    graphite::whisper_cleanup { 'graphite-labs-instances':
+        directory => "${storage_dir}/whisper/instances",
     }
 
     # Cleanup eventstreams rdkafka stale data - T160644
-    $eventstreams_rdkafka = "${storage_dir}/whisper/eventstreams/rdkafka"
-    cron { 'graphite-eventstreams':
-        command => "[ -d ${eventstreams_rdkafka} ] && find ${eventstreams_rdkafka} -type f -mtime +15 -delete && find ${eventstreams_rdkafka} -type d -empty -delete",
-        user    => '_graphite',
-        hour    => '9',
-        minute  => fqdn_rand(60, 'graphite-eventstreams-cron'),
+    graphite::whisper_cleanup { 'graphite-eventstreams':
+        directory => "${storage_dir}/whisper/eventstreams/rdkafka",
+        keep_days => 15,
     }
 
     $graphite_hosts = [
