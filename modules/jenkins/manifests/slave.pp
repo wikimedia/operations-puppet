@@ -19,6 +19,7 @@ class jenkins::slave(
         managehome => true,
         system     => true,
         home       => '/var/lib/jenkins-slave',
+        require    => Group[$user],
     }
 
     file { $workdir:
