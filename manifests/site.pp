@@ -2362,6 +2362,13 @@ node /^rdb200[246]\.codfw\.wmnet/ {
     role(jobqueue_redis::slave)
 }
 
+# upcoming VM for releases (mwreleases and other)
+node 'releases1001.eqiad.wmnet' {
+    include ::standard
+    include ::base::firewall
+    interface::add_ip6_mapped { 'main': }
+}
+
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
     role(elasticsearch::relforge)
 }
