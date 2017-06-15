@@ -38,10 +38,10 @@ cfg.CONF.register_opts([
     cfg.ListOpt('puppetdefaultvars', default=[]),
 
     cfg.StrOpt('certmanager_user', default='certmanager'),
-    cfg.StrOpt('puppet_key_format', default=None),
-    cfg.StrOpt('salt_key_format', default=None),
+    cfg.StrOpt('fqdn_format', default=None),
     cfg.StrOpt('puppet_master_host', default=None),
     cfg.StrOpt('salt_master_host', default=None),
+    cfg.StrOpt('puppet_config_backend', default=None),
 ], group='handler:wmf_sink')
 
 cfg.CONF.register_group(cfg.OptGroup(
