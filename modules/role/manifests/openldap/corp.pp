@@ -13,7 +13,6 @@ class role::openldap::corp {
     $master = 'ldap1.corp.wikimedia.org'
     $sync_pass = $passwords::openldap::corp::sync_pass
 
-    sslcert::certificate { 'ldap-mirror.wikimedia.org': ensure => absent }
     # Certificate needs to be readable by slapd
     sslcert::certificate { "ldap-corp.${::site}.wikimedia.org":
         group => 'openldap',
