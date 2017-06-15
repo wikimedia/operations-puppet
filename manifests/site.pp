@@ -1294,6 +1294,13 @@ node /kubernetes[12]00[1-4]\.(codfw|eqiad)\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+node /kubestage100[12]\.eqiad\.wmnet/ {
+    role(kubernetes::staging::worker)
+    include ::standard
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'labcontrol1001.wikimedia.org' {
     role(labs::openstack::nova::controller,
           labs::puppetmaster,

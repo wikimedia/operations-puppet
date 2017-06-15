@@ -1,0 +1,28 @@
+profile::calico::kubernetes::etcd_endpoints:
+- https://kubestagetcd1001.eqiad.wmnet:2379
+- https://kubestagetcd1001.eqiad.wmnet:2379
+profile::calico::kubernetes::bgp_peers:
+- kubestage1001.eqiad.wmnet
+- kubestage1002.eqiad.wmnet
+- cr1-eqiad.wikimedia.org
+- cr2-eqiad.wikimedia.org
+debdeploy::grains:
+  debdeploy-kubernetes-eqiad:
+    value: standard
+cluster: kubernetes
+profile::docker::storage::physical_volumes: "/dev/md2"
+profile::docker::storage::vg_to_remove: ''
+profile::docker::engine::version: "1.12.6-0~debian-jessie"
+profile::docker::engine::declare_service: true
+profile::kubernetes::master_fqdn: neon.eqiad.wmnet
+profile::kubernetes::master_hosts:
+- neon.eqiad.wmnet
+profile::kubernetes::infra_pod: 'darmstadtium.eqiad.wmnet/pause'
+profile::kubernetes::use_cni: true
+profile::docker::engine::settings:
+   iptables: false
+   ip-masq: false
+   live-restore: true
+profile::base::check_disk_options: -w 10% -c 5% -l -e -A -i /var/lib/docker/containers/* -i /run/docker/netns/* --exclude-type=tracefs
+profile::calico::kubernetes::calico_version: 2.2.0
+profile::calico::kubernetes::docker::registry: darmstadtium.eqiad.wmnet
