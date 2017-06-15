@@ -6,7 +6,7 @@ class role::mariadb::wikitech {
     }
 
     include ::standard
-    include role::mariadb::grants::wikitech
+    include role::mariadb::grants::core
     include role::mariadb::monitor
     include passwords::misc::scripts
     class { 'role::mariadb::groups':
