@@ -73,7 +73,7 @@ class jenkins(
     # double checking everything went fine.
     package { 'jenkins':
         ensure  => present,
-        require => Package['openjdk-7-jdk'],
+        require => Package[$jdk_package],
     }
 
     file { '/var/lib/jenkins/.daemonrc':
