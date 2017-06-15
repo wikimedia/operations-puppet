@@ -257,7 +257,7 @@ host pybal-test2003 {
 }
 
 host releases1001 {
-    hardware ethernet aa:00:00:75:ee:6d;
+    hardware ethernet aa:00:00:11:7b:19;
     fixed-address releases1001.eqiad.wmnet;
 }
 
