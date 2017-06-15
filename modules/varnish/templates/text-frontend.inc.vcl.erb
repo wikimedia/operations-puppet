@@ -213,7 +213,7 @@ sub cluster_fe_ratelimit {
 	// networks (including labs for now)
 	if (req.http.Cookie !~ "([sS]ession|Token)=" &&
 	    std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		if (req.url ~ "^/api/rest_v1/") {
+		if (req.url ~ "^/(api/rest_v1/|w/api.php)") {
 			if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
 				return (synth(429, "Too Many Requests"));
 			}
