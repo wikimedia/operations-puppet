@@ -2364,8 +2364,7 @@ node /^rdb200[246]\.codfw\.wmnet/ {
 
 # upcoming VM for releases (mwreleases and other)
 node 'releases1001.eqiad.wmnet' {
-    include ::standard
-    include ::base::firewall
+    role(releases)
     interface::add_ip6_mapped { 'main': }
 }
 
