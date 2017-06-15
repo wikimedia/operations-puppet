@@ -208,9 +208,15 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
-	// Limit miss/pass requests from the same IP to 600/60s (RB at 1000/10s)
-	// Exempt seemingly-authenticated requests and IPs in wikimedia
-	// networks (including labs for now)
+	// Ratelimit miss/pass requests per IP:
+	//   * Excluded for now:
+	//       * all WMF IPs (including labs)
+	//       * seemingly-authenticated requests (simple cookie check)
+	//   * RB and MW API: 1000/10s (100/s long term, with 1000 burst)
+	//   * All others: 1000/50s (20/s long term, with 1000 burst)
+	//       (current data leads us to believe sustaining 20/s should be
+	//       nearly impossible against standard MW outputs without
+	//       concurrency>1)
 	if (req.http.Cookie !~ "([sS]ession|Token)=" &&
 	    std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
 		if (req.url ~ "^/(api/rest_v1/|w/api.php)") {
@@ -218,7 +224,7 @@ sub cluster_fe_ratelimit {
 				return (synth(429, "Too Many Requests"));
 			}
 		} else {
-			if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 600, 60s)) {
+			if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
 				return (synth(429, "Too Many Requests"));
 			}
 		}
