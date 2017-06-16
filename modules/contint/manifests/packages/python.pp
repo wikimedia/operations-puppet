@@ -3,18 +3,23 @@
 # This class sets up packages needed for general python testing
 #
 class contint::packages::python {
+    if os_version('debian >= stretch') {
+        require_package('libmariadbclient-dev') # For python SQLAlchemy
+    } else {
+        require_package('libmysqlclient-dev') # For python SQLAlchemy
+    }
+
     require_package( # Let us compile python modules:
         'build-essential',
         'python-dev',
         'python-pip',  # Needed to install pip from pypi
-        'libmysqlclient-dev',  # For python SQLAlchemy
         'libxml2-dev',   # For python lxml
         'libxslt1-dev',  # For python lxml
         'libffi-dev', # For python requests[security]
         'libssl-dev', # python cryptography
     )
 
-    if os_version('debian jessie') {
+    if os_version('debian >= jessie') {
         # Debian only has: Suggests: libgnutls28-dev
         # Whereas on Ubuntu libgnutls-dev is a dependency
         require_package('libgnutls28-dev')
