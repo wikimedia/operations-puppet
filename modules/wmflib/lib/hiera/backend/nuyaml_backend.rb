@@ -49,7 +49,7 @@
 #
 # === Example
 # Say you have a lookup for "cluster", and you have
-#"regex/%{hostname}" in your hierarchy; also, let's say that your
+# "regex/%{hostname}" in your hierarchy; also, let's say that your
 # scope contains hostname = "web1001.local". So if your regex.yaml
 # file contains:
 #
@@ -66,8 +66,9 @@
 #
 class Hiera
   module Backend
+    # This naming is required by puppet.
     class Nuyaml_backend
-      def initialize(cache=nil)
+      def initialize(cache = nil)
         require 'yaml'
         @cache = cache || Filecache.new
         config = Config[:nuyaml]
@@ -77,7 +78,7 @@ class Hiera
       def get_path(key, scope, source)
         config_section = :nuyaml
         # Special case: regex
-        if m = /^regex\//.match(source)
+        if %r{^regex/}.match(source)
           Hiera.debug("Regex match going on - using regex.yaml")
           return Backend.datafile(config_section, scope, 'regex', "yaml")
         end
@@ -86,18 +87,18 @@ class Hiera
         # We use a different datadir in this case.
         # Example: private/common will search in the common source
         # within the private datadir
-        if m = /private\/(.*)/.match(source)
+        if %r{private/(.*)} =~ source
           config_section = :private
-          source = m[1]
+          source = Regexp.last_match(1)
         end
 
         # Special case: 'secret' repository. This is practically labs only
         # We use a different datadir in this case.
         # Example: private/common will search in the common source
         # within the private datadir
-        if m = /secret\/(.*)/.match(source)
-            config_section = :secret
-            source = m[1]
+        if %r{secret/(.*)} =~ source
+          config_section = :secret
+          source = Regexp.last_match(1)
         end
 
         Hiera.debug("The source is: #{source}")
@@ -108,7 +109,7 @@ class Hiera
         # $apache::mpm::worker will be in common/apache/mpm.yaml
         paths = @expand_path.map{ |x| Backend.parse_string(x, scope) }
         if paths.include? source
-          namespaces = key.gsub(/^::/,'').split('::')
+          namespaces = key.gsub(/^::/, '').split('::')
           namespaces.pop
 
           unless namespaces.empty?
@@ -116,12 +117,12 @@ class Hiera
           end
         end
 
-        return Backend.datafile(config_section, scope, source, "yaml")
+        Backend.datafile(config_section, scope, source, "yaml")
       end
 
       def plain_lookup(key, data, scope)
           return nil unless data.include?(key)
-          return Backend.parse_answer(data[key], scope)
+          Backend.parse_answer(data[key], scope)
       end
 
       def regex_lookup(key, matchon, data, scope)
@@ -163,8 +164,8 @@ class Hiera
 
           next if data.nil?
 
-          if m = /regex\/(.*)$/.match(source)
-            matchto = m[1]
+          if %r{regex/(.*)$} =~ source
+            matchto = Regexp.last_match(1)
             new_answer = regex_lookup(key, matchto, data, scope)
           else
             new_answer = plain_lookup(key, data, scope)
@@ -192,14 +193,14 @@ class Hiera
           when :hash
             raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
             answer ||= {}
-            answer = Backend.merge_answer(new_answer,answer)
+            answer = Backend.merge_answer(new_answer, answer)
           else
             answer = new_answer
             break
           end
         end
 
-        return answer
+        answer
       end
     end
   end
