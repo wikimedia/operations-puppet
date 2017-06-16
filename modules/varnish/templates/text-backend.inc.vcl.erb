@@ -9,6 +9,9 @@ sub cluster_be_recv_pre_purge {
 }
 
 sub cluster_be_recv {
+	// Used to compute X-Applayer-Cost
+	unset req.http.X-Applayer-Cost-Start;
+
 	call text_common_recv;
 <% if @realm != "production" %>
 	// This only applies for beta, which only has a fake "eqiad" and always goes "direct"...
@@ -53,6 +56,11 @@ sub cluster_be_pass {
 sub cluster_be_backend_fetch {
 	call misspass_mangle;
 	call text_common_misspass_restore_cookie;
+
+	// Header to compute X-Applayer-Cost
+	if (!bereq.http.X-Next-Is-Cache) {
+		set bereq.http.X-Applayer-Cost-Start = now;
+	}
 }
 
 sub cluster_be_backend_response_early {
@@ -83,6 +91,13 @@ sub cluster_be_backend_response {
 		} else {
 			set beresp.http.Vary = "X-Forwarded-Proto";
 		}
+	}
+
+	// Compute X-Applayer-Cost
+	if (!bereq.http.X-Next-Is-Cache && bereq.http.X-Applayer-Cost-Start) {
+		set beresp.http.X-Applayer-Cost = now - std.time(bereq.http.X-Applayer-Cost-Start, now);
+		// Convert to milliseconds
+		set beresp.http.X-Applayer-Cost = 1000 * std.real(beresp.http.X-Applayer-Cost, 0.0);
 	}
 
 	call text_common_backend_response;
