@@ -4,7 +4,6 @@ Lint/HandleExceptions:
 
 Lint/UselessAssignment:
   Exclude:
-    - 'modules/service/Rakefile'
     - 'modules/wmflib/lib/puppet/parser/functions/validate_array_re.rb'
 
 Metrics/LineLength:
@@ -27,21 +26,6 @@ Style/EmptyLiteral:
 
 Style/For:
   Enabled: false
-
-Style/FormatString:
-  Exclude:
-    - 'modules/backup/Rakefile'
-    - 'modules/bacula/Rakefile'
-    - 'modules/base/Rakefile'
-    - 'modules/install_server/Rakefile'
-    - 'modules/mirrors/Rakefile'
-    - 'modules/nrpe/Rakefile'
-    - 'modules/osm/Rakefile'
-    - 'modules/postgresql/Rakefile'
-    - 'modules/servermon/Rakefile'
-    - 'modules/squid3/Rakefile'
-    - 'modules/strongswan/Rakefile'
-    - 'modules/wmflib/Rakefile'
 
 Style/GlobalVars:
   Exclude:
