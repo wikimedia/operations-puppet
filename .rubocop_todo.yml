@@ -16,7 +16,6 @@ Lint/UnusedMethodArgument:
 
 Lint/UselessAssignment:
   Exclude:
-    - 'modules/ganeti/lib/facter/ganeti.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/service/Rakefile'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
@@ -42,8 +41,6 @@ Style/ColonMethodCall:
 
 Style/CommandLiteral:
   Exclude:
-    - 'modules/apt/lib/facter/apt.rb'
-    - 'modules/ganeti/lib/facter/ganeti.rb'
     - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
 
 Layout/DotPosition:
@@ -108,10 +105,6 @@ Style/MethodCallWithoutArgsParentheses:
     - 'modules/wmflib/spec/functions/role_spec.rb'
     - 'modules/wmflib/spec/hiera/proxy_backend_spec.rb'
     - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
-
-Style/MultilineIfThen:
-  Exclude:
-    - 'modules/ganeti/lib/facter/ganeti.rb'
 
 Style/NegatedIf:
   Enabled: false
