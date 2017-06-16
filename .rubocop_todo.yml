@@ -12,13 +12,6 @@ Style/ClassVars:
   Exclude:
     - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
 
-Style/EmptyLiteral:
-  Exclude:
-    - 'modules/admin/lib/puppet/parser/functions/unique_users.rb'
-
-Style/For:
-  Enabled: false
-
 Style/GlobalVars:
   Exclude:
     - 'utils/expanderb.rb'
