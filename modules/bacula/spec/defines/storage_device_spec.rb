@@ -21,7 +21,7 @@ describe 'bacula::storage::device', :type => :define do
             .with_content(/Name = something/) \
             .with_content(/Device Type = File/) \
             .with_content(/Media Type = File/) \
-            .with_content(/Archive Device = \/dev\/nst0/) \
+            .with_content(%r{Archive Device = /dev/nst0}) \
             .with_content(/Maximum Concurrent Jobs = 10/)
         end
     end
@@ -40,7 +40,7 @@ describe 'bacula::storage::device', :type => :define do
         it 'should create /etc/bacula/sd-devices.d/something.conf' do
             should contain_file('/etc/bacula/sd-devices.d/something.conf') \
             .with_content(/Maximum Spool Size = 100/) \
-            .with_content(/Spool Directory = \/tmp/)
+            .with_content(%r{Spool Directory = /tmp})
         end
     end
 end

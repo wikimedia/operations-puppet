@@ -51,16 +51,6 @@ Style/NegatedIf:
 Style/NumericLiterals:
   MinDigits: 6
 
-Style/RegexpLiteral:
-  Exclude:
-    - 'modules/bacula/spec/classes/bacula_client_spec.rb'
-    - 'modules/bacula/spec/classes/bacula_director_spec.rb'
-    - 'modules/bacula/spec/classes/bacula_storage_spec.rb'
-    - 'modules/bacula/spec/defines/fileset_spec.rb'
-    - 'modules/bacula/spec/defines/storage_device_spec.rb'
-    - 'modules/servermon/spec/classes/servermon_app_spec.rb'
-    - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
-
 Style/RescueModifier:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'

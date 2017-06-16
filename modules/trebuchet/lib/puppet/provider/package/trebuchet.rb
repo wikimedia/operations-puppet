@@ -42,7 +42,7 @@ Puppet::Type.type(:package).provide(
 
   def repo
     case @resource[:name]
-    when /\// then @resource[:name]
+    when %r{/} then @resource[:name]
     else ([@resource[:name]] * 2).join('/')
     end
   end
@@ -134,7 +134,7 @@ Puppet::Type.type(:package).provide(
     @cached_sha1 || begin
       source = master
       source = ('http://' + source) unless source.include?('://')
-      source.gsub!(/\/?$/, "/#{repo}/.git/deploy/deploy")
+      source.gsub!(%r{\/?$}, "/#{repo}/.git/deploy/deploy")
       tag = open(source) { |raw| PSON.load(raw)['tag'] }
       @cached_sha1 = resolve_tag(tag) || tag
     end
