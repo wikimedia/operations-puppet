@@ -39,10 +39,6 @@ Style/ColonMethodCall:
   Exclude:
     - 'modules/base/lib/facter/physicalcorecount.rb'
 
-Style/CommandLiteral:
-  Exclude:
-    - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
-
 Layout/DotPosition:
   Enabled: false
 
@@ -175,7 +171,6 @@ Style/RescueModifier:
 
 Style/Semicolon:
   Exclude:
-    - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/ordered_yaml.rb'
 
 Layout/SpaceAfterComma:
