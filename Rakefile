@@ -21,6 +21,8 @@
 #
 # Continuous integration invokes 'bundle exec rake test'.
 
+STDOUT.sync = true
+
 require 'bundler/setup'
 require 'English'
 require 'git'
