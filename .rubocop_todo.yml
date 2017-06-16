@@ -43,10 +43,6 @@ Style/EmptyLiteral:
     - 'modules/admin/lib/puppet/parser/functions/unique_users.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/array_concat.rb'
 
-Style/FileName:
-  Exclude:
-    - 'modules/bacula/spec/defines/mysql-bpipe_spec.rb'
-
 Style/For:
   Enabled: false
 
