@@ -74,10 +74,7 @@ class otrs(
         'mysql-client',
         'perl-doc',
     ]
-
-    package { $packages:
-        ensure => 'present',
-    }
+    require_package($packages)
 
     user { 'otrs':
         home       => '/var/lib/otrs',
