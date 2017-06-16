@@ -118,8 +118,11 @@ class BaseAddressWMFHandler(BaseAddressHandler):
     def _delete_puppet_config(self, projectid, fqdn):
         endpoint = cfg.CONF[self.name].puppet_config_backend
         url = "%s/%s/prefix/%s" % (endpoint, projectid, fqdn)
-        requests.delete(url, verify=False)
-        # Maybe there isn't such a prefix, and this will fail.  No problem!
+        try:
+            requests.delete(url, verify=False)
+        except requests.exceptions.ConnectionError:
+            # No prefix, no problem!
+            pass
 
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)
