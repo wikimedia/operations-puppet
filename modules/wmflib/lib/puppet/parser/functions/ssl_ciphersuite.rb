@@ -165,7 +165,7 @@ END
     nginx_always_ok = true
     dhe_ok = true
     libssl_has_x25519 = true
-    if !function_os_version(['debian >= jessie'])
+    unless function_os_version(['debian >= jessie'])
       nginx_always_ok = false
       libssl_has_x25519 = false
       if server == 'apache'

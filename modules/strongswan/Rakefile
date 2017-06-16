@@ -14,7 +14,7 @@ symlinks = {
 task :setup do
   FileUtils.mkdir_p(format('spec/fixtures/modules/%s', modulename))
   symlinks.each do |x|
-    if !File.exist?(x[0])
+    unless File.exist?(x[0])
       FileUtils.ln_s(x[1], x[0])
     end
   end
