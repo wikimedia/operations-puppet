@@ -2,6 +2,7 @@ inherit_from: .rubocop_todo.yml
 
 # Copied from
 # https://www.mediawiki.org/wiki/Manual:Coding_conventions/Ruby#Base_configuration
+# and modified
 
 AllCops:
   StyleGuideCopsOnly: true
@@ -41,6 +42,19 @@ Style/TrivialAccessors:
   ExactNameMatch: true
 
 Style/WordArray:
+  Enabled: false
+
+# should be fixed with %i[] in Ruby >= 2.0 (>= jessie)
+Style/SymbolArray:
+  Enabled: false
+
+# we can't depend on ActiveRecord etc., but we can use squiggly heredocs (<<~)
+# when we move to Ruby >= 2.3 (>= stretch)
+Layout/IndentHeredoc:
+  Enabled: false
+
+# bad advice
+Style/GuardClause:
   Enabled: false
 
 # This cannot be enabled because of the naming conventions
