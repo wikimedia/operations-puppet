@@ -133,6 +133,8 @@ def purge_leaks(delete=False):
             continue
         if domain == 'wmflabs.org.':
             continue
+        if domain == 'proxy-eqiad.wmflabs.org.':
+            continue
         rset = proxy_recordsets[domain]
         print "found record unassociated with a proxy: %s" % rset
         # Let's make sure there's really nothing there.
