@@ -79,14 +79,6 @@ Style/NestedTernaryOperator:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
 
-Style/ParallelAssignment:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/to_milliseconds.rb'
-
-Style/PerlBackrefs:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/to_milliseconds.rb'
-
 Style/RedundantReturn:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
