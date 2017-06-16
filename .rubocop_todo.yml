@@ -36,10 +36,6 @@ Style/RescueModifier:
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
-Style/SpecialGlobalVars:
-  Exclude:
-    - 'utils/expanderb.rb'
-
 Style/StringLiterals:
   Enabled: false
 
