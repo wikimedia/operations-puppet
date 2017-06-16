@@ -3,20 +3,20 @@
 # Serialize a hash into PHP array with lexicographically sorted keys.
 #
 
-def phpdump(o, level=1)
-  indent = " "*4
+def phpdump(o, level = 1)
+  indent = " " * 4
 
   case o
   when Hash
     contents = ''
     o.sort.each do |k, v|
-      contents += indent*level
-      contents += k.to_pson + " => " + phpdump(v, level+1)
+      contents += indent * level
+      contents += k.to_pson + " => " + phpdump(v, level + 1)
       contents += ",\n"
     end
-    "array(\n" + contents + indent*(level-1) + ")"
+    "array(\n" + contents + indent * (level - 1) + ")"
   when Array
-    "array(" + o.map { |x| phpdump(x, level+1) }.join(', ') + ")"
+    "array(" + o.map { |x| phpdump(x, level + 1) }.join(', ') + ")"
   when TrueClass
     "TRUE"
   when FalseClass
@@ -24,7 +24,11 @@ def phpdump(o, level=1)
   when nil
     "NULL"
   else
-    o.include?('.') ? Float(o).to_s : Integer(o).to_s rescue o.to_pson
+    begin
+      o.include?('.') ? Float(o).to_s : Integer(o).to_s
+    rescue
+      o.to_pson
+    end
   end
 end
 
