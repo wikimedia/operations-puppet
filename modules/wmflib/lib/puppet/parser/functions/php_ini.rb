@@ -17,7 +17,9 @@ def ini_flatten(map, prefix = nil)
 end
 
 def ini_cast(v)
-  v.include?('.') ? Float(v) : Integer(v) rescue v
+    v.include?('.') ? Float(v) : Integer(v)
+  rescue
+    v
 end
 
 module Puppet::Parser::Functions
