@@ -95,11 +95,6 @@ sub text_common_recv {
 sub text_common_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
-		// Split the cache for the images-disabled variant of the mobile site.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
-			hash_data("disableImages=1");
-		}
-
 		// Split the cache for the beta variant of the mobile site.
 		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
 			hash_data("optin=beta");
