@@ -26,6 +26,7 @@ class base::standard_packages {
         'lshw',
         'molly-guard',
         'moreutils',
+        'numactl',
         'ncdu',
         'ngrep',
         'pv',
