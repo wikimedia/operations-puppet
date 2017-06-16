@@ -1,8 +1,9 @@
 require "hiera/mwcache"
 class Hiera
   module Backend
+    # This naming is required by puppet.
     class Mwyaml_backend
-      def initialize(cache=nil)
+      def initialize(cache = nil)
         @cache = cache || Mwcache.new
       end
 
@@ -40,14 +41,14 @@ class Hiera
           when :hash
             raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
             answer ||= {}
-            answer = Backend.merge_answer(new_answer,answer)
+            answer = Backend.merge_answer(new_answer, answer)
           else
             answer = new_answer
             break
           end
         end
 
-        return answer
+        answer
       end
     end
   end

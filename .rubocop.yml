@@ -42,3 +42,9 @@ Style/TrivialAccessors:
 
 Style/WordArray:
   Enabled: false
+
+# This cannot be enabled because of the naming conventions
+# on hiera backend classes imposed by puppet itself
+Style/ClassAndModuleCamelCase:
+   Exclude:
+     - 'modules/wmflib/lib/hiera/backend/*_backend.rb'
