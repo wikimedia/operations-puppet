@@ -1,0 +1,3 @@
+<%- nnodes = @facts['numa']['device_to_node'][@numa_iface].join(',') -%>
+[Service]
+ExecStart=/usr/bin/numactl -a -N <% nnodes %> -m <% nnodes %> /usr/sbin/nginx -g 'daemon on; master_process on;'
