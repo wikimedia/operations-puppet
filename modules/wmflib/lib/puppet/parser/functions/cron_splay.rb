@@ -78,7 +78,7 @@ within each DC uniquely.
     end
 
     # split hosts into N lists based the first digit of /NNNN/, defaulting to zero
-    sublists = [ [], [], [], [], [], [], [], [], [], [] ]
+    sublists = [[], [], [], [], [], [], [], [], [], []]
     for h in hosts
       match = /([1-9])[0-9]{3}/.match(h)
       if match

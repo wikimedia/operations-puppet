@@ -16,9 +16,6 @@ Style/ClassVars:
   Exclude:
     - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
 
-Layout/DotPosition:
-  Enabled: false
-
 Style/EmptyLiteral:
   Exclude:
     - 'modules/admin/lib/puppet/parser/functions/unique_users.rb'
@@ -40,10 +37,6 @@ Style/IfUnlessModifier:
 
 Layout/IndentationWidth:
   Enabled: false
-
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'modules/base/spec/defines/service_unit_spec.rb'
 
 Style/MethodCallWithoutArgsParentheses:
   Exclude:
@@ -67,18 +60,8 @@ Style/RescueModifier:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
 
-Layout/SpaceAroundEqualsInParameterDefault:
-  Enabled: false
-
-Layout/SpaceInsideBrackets:
-  Enabled: false
-
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
-
-Layout/SpaceInsideParens:
-  Exclude:
-    - 'utils/expanderb.rb'
 
 Style/SpecialGlobalVars:
   Exclude:

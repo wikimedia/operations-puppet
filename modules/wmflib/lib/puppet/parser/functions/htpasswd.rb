@@ -90,7 +90,7 @@ class Apr1Md5
     l = (pd[3] << 16) | (pd[9] << 8) | pd[15]
     encoded_password << to_64(l, 4)
 
-    l = (pd[4] << 16) | (pd[10] << 8) | pd[ 5]
+    l = (pd[4] << 16) | (pd[10] << 8) | pd[5]
     encoded_password << to_64(l, 4)
     encoded_password << to_64(pd[11], 2)
 

@@ -30,7 +30,7 @@ Facter.add('raid') do
       end
     end
 
-    supported_devs = [ 'aac', 'twe' ]
+    supported_devs = ['aac', 'twe']
     dev_re = Regexp.new(/^\s*\d+\s+(\w+)/)
     IO.foreach('/proc/devices') do |x|
       m = x.match(dev_re)

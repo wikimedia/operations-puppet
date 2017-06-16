@@ -73,7 +73,7 @@ Puppet::Type.type(:package).provide(
   #
   # Note: package_settings would be a cleaner solution for this, however,
   # that feature requires puppet >= 3.5 and we must support version 3.4
-  def install_option(key, default=nil)
+  def install_option(key, default = nil)
     return unless install_options
     install_options.each do |val|
       case val
