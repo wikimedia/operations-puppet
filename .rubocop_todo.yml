@@ -65,27 +65,10 @@ Style/RegexpLiteral:
 
 Style/RescueModifier:
   Exclude:
-    - 'modules/librenms/lib/puppet/parser/functions/phpdump.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ordered_json.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ordered_yaml.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/php_ini.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
-
-Style/Semicolon:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/ordered_yaml.rb'
-
-Layout/SpaceAfterComma:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
 
 Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
-
-Layout/SpaceAroundOperators:
-  Exclude:
-    - 'modules/librenms/lib/puppet/parser/functions/phpdump.rb'
 
 Layout/SpaceInsideBrackets:
   Enabled: false
