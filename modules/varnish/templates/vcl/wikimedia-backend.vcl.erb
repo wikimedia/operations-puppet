@@ -83,6 +83,9 @@ sub vcl_recv {
 	// Used to signal to other logic whether this request jumps next to another cache or the applayer
 	unset req.http.X-Next-Is-Cache;
 
+	// Used to compute X-Applayer-Cost
+	unset req.http.X-Applayer-Cost-Start;
+
 	call wm_common_recv_early;
 
 	// Backend loop detection: if a mistake is made in the code or config
@@ -163,9 +166,20 @@ sub vcl_pipe {
 
 sub vcl_backend_fetch {
     call cluster_be_backend_fetch;
+    // Header to compute X-Applayer-Cost
+    if (!bereq.http.X-Next-Is-Cache) {
+        set bereq.http.X-Applayer-Cost-Start = now;
+    }
 }
 
 sub vcl_backend_response {
+	// Compute X-Applayer-Cost
+	if (!bereq.http.X-Next-Is-Cache && bereq.http.X-Applayer-Cost-Start) {
+		set beresp.http.X-Applayer-Cost = now - std.time(bereq.http.X-Applayer-Cost-Start, now);
+		// Convert to milliseconds
+		set beresp.http.X-Applayer-Cost = 1000.0 * std.real(beresp.http.X-Applayer-Cost, 0.0);
+	}
+
 	call cluster_be_backend_response_early; // e.g. to fix up Vary-slotting in bereq
 	call wm_common_backend_response;
 	call cluster_be_backend_response;
