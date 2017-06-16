@@ -32,7 +32,8 @@ class role::ci::slave::labs {
     # Include package unsafe for production
     include contint::packages::labs
 
-    if os_version('debian >= jessie') {
+    # Only install hhvm on jessie for now.
+    if os_version('debian == jessie') {
         include contint::hhvm
     }
 
