@@ -71,16 +71,8 @@ Style/MethodCallWithoutArgsParentheses:
 Style/NegatedIf:
   Enabled: false
 
-Style/NestedTernaryOperator:
-  Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-
 Style/NumericLiterals:
   MinDigits: 6
-
-Style/RedundantReturn:
-  Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
 
 Style/RegexpLiteral:
   Exclude:
@@ -108,7 +100,6 @@ Style/Semicolon:
 Layout/SpaceAfterComma:
   Exclude:
     - 'modules/base/lib/facter/labsproject.rb'
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
 
 Layout/SpaceAroundEqualsInParameterDefault:
@@ -126,7 +117,6 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Layout/SpaceInsideParens:
   Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'utils/expanderb.rb'
 
 Style/SpecialGlobalVars:
