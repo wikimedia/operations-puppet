@@ -35,10 +35,6 @@ Style/ClassVars:
   Exclude:
     - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
 
-Style/ColonMethodCall:
-  Exclude:
-    - 'modules/base/lib/facter/physicalcorecount.rb'
-
 Layout/DotPosition:
   Enabled: false
 
@@ -94,7 +90,6 @@ Layout/LeadingCommentSpace:
 
 Style/MethodCallWithoutArgsParentheses:
   Exclude:
-    - 'modules/base/lib/facter/physicalcorecount.rb'
     - 'modules/base/spec/defines/service_unit_spec.rb'
     - 'modules/install_server/spec/classes/install_server_preseed_server_spec.rb'
     - 'modules/squid3/spec/classes/squid3_spec.rb'
@@ -176,7 +171,6 @@ Style/Semicolon:
 Layout/SpaceAfterComma:
   Exclude:
     - 'modules/base/lib/facter/labsproject.rb'
-    - 'modules/base/lib/facter/physicalcorecount.rb'
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/strongswan/spec/functions/ipresolve_spec.rb'
