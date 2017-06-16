@@ -93,7 +93,6 @@ Style/MethodCallWithoutArgsParentheses:
     - 'modules/base/spec/defines/service_unit_spec.rb'
     - 'modules/install_server/spec/classes/install_server_preseed_server_spec.rb'
     - 'modules/squid3/spec/classes/squid3_spec.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/secret.rb'
     - 'modules/wmflib/spec/functions/role_spec.rb'
     - 'modules/wmflib/spec/hiera/proxy_backend_spec.rb'
@@ -117,17 +116,9 @@ Style/ParallelAssignment:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/to_milliseconds.rb'
 
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
-
 Style/PerlBackrefs:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/to_milliseconds.rb'
-
-Style/PredicateName:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
 
 Style/RedundantReturn:
   Exclude:
@@ -136,7 +127,6 @@ Style/RedundantReturn:
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
     - 'modules/wmflib/lib/hiera/mwcache.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
 
 Style/RedundantSelf:
   Exclude:
@@ -173,7 +163,6 @@ Layout/SpaceAfterComma:
     - 'modules/base/lib/facter/labsproject.rb'
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-    - 'modules/strongswan/spec/functions/ipresolve_spec.rb'
     - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
