@@ -107,7 +107,7 @@ $LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
 scope = determine_scope
 
 cfg = File.join($DIR, "modules/puppetmaster/files/#{scope['::realm']}.hiera.yaml")
-if !File.exist?(cfg)
+unless File.exist?(cfg)
   Kernel.abort("Hiera cfg file not found for realm '#{scope['::realm']}': #{cfg}")
 end
 
