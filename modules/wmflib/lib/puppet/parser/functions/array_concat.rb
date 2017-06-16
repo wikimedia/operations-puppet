@@ -15,7 +15,7 @@
 #
 module Puppet::Parser::Functions
   newfunction(:array_concat, :type => :rvalue) do |args|
-    retval = Array.new
+    retval = []
     args.each do |arg|
         if arg.is_a? Array
             retval += arg

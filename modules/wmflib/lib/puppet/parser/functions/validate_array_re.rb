@@ -15,7 +15,7 @@ module Puppet::Parser::Functions
   newfunction(:validate_array_re, :arity => 2) do |args|
     items, re = args
     re = Regexp.new(re)
-    invalid = args.first.find { |item| item.to_s !~ re }
+    invalid = items.find { |item| item.to_s !~ re }
     unless invalid.nil?
       fail(Puppet::ParseError, "Array element \"#{invalid}\" does not match regular expression \"#{re.source}\".")
     end
