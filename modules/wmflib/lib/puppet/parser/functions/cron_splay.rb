@@ -79,7 +79,7 @@ within each DC uniquely.
 
     # split hosts into N lists based the first digit of /NNNN/, defaulting to zero
     sublists = [[], [], [], [], [], [], [], [], [], []]
-    for h in hosts
+    hosts.each do |h|
       match = /([1-9])[0-9]{3}/.match(h)
       if match
         sublists[match[1].to_i].push(h)
@@ -89,7 +89,7 @@ within each DC uniquely.
     end
 
     # sort each sublist into a determinstic order based on seed
-    for s in sublists
+    sublists.each do |s|
       s.sort_by! { |x| Digest::MD5.hexdigest(seed + x) }
     end
 
@@ -127,7 +127,7 @@ within each DC uniquely.
       output['weekday'] = '*'
     end
 
-    return output
+    output
   end
 end
 
