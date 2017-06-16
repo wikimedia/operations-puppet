@@ -2,10 +2,6 @@ Lint/HandleExceptions:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
 
-Lint/UselessAssignment:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/validate_array_re.rb'
-
 Metrics/LineLength:
   Max: 159
 
@@ -19,7 +15,6 @@ Style/ClassVars:
 Style/EmptyLiteral:
   Exclude:
     - 'modules/admin/lib/puppet/parser/functions/unique_users.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/array_concat.rb'
 
 Style/For:
   Enabled: false
