@@ -70,14 +70,6 @@ Style/MethodCallWithoutArgsParentheses:
 Style/NegatedIf:
   Enabled: false
 
-Style/NestedTernaryOperator:
-  Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-
-Style/RedundantReturn:
-  Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-
 Style/RegexpLiteral:
   Exclude:
     - 'modules/bacula/spec/classes/bacula_client_spec.rb'
@@ -102,7 +94,6 @@ Style/Semicolon:
 
 Layout/SpaceAfterComma:
   Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
 
 Layout/SpaceAroundEqualsInParameterDefault:
@@ -120,7 +111,6 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Layout/SpaceInsideParens:
   Exclude:
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'utils/expanderb.rb'
 
 Style/SpecialGlobalVars:
