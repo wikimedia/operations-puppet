@@ -23,6 +23,16 @@ class tlsproxy::instance {
     $nginx_tune_for_media = hiera('cache::tune_for_media', false)
     $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m')
 
+    # If numa_networking is turned on, use interface_primary for NUMA hinting,
+    # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
+    # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
+    # in turn consumed by the systemd unit and config templates.
+    if $::numa_networking {
+        $numa_iface = $facts['interface_primary']
+    } else {
+        $numa_iface = 'lo'
+    }
+
     class { 'nginx': managed => false, }
 
     if $lua_support {
@@ -48,15 +58,26 @@ class tlsproxy::instance {
         tag    => 'nginx',
     }
 
-    # systemd unit fragment for additional security restrictions:
-    $sysd_sec_dir = '/etc/systemd/system/nginx.service.d'
-    $sysd_sec_conf = "${sysd_sec_dir}/security.conf"
+    # systemd unit fragments for NUMA and security
+    $sysd_nginx_dir = '/etc/systemd/system/nginx.service.d'
+    $sysd_numa_conf = "${sysd_nginx_dir}/numa.conf"
+    $sysd_sec_conf = "${sysd_nginx_dir}/security.conf"
 
     file { $sysd_sec_dir:
         ensure => directory,
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
+    }
+
+    file { $sysd_numa_conf:
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('tlsproxy/nginx-numa.conf.erb'),
+        before  => Class['nginx'],
+        require => File[$sysd_sec_dir],
     }
 
     file { $sysd_sec_conf:
@@ -69,9 +90,9 @@ class tlsproxy::instance {
         require => File[$sysd_sec_dir],
     }
 
-    exec { "systemd reload for ${sysd_sec_conf}":
+    exec { "systemd reload for nginx systemd fragments":
         refreshonly => true,
         command     => '/bin/systemctl daemon-reload',
-        subscribe   => File[$sysd_sec_conf],
+        subscribe   => [File[$sysd_numa_conf],File[$sysd_sec_conf]],
     }
 }

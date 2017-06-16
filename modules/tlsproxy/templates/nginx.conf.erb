@@ -10,16 +10,10 @@ user www-data www-data;
     # https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
     # For each hyperthread sibling set (usually a pair), create a number of
     # worker processes equal to the number of logical cores in the set, bound to
-    # the entire set.  If numa_networking is turned on, restrict this to cores
-    # in the same NUMA domain as the primary interface.  Assumes NUMA data has
-    # "lo" interface mapped to all cpu cores in the non-NUMA case.
+    # the entire set.  It also restricts itself to the cpus sharing the NUMA
+    # domain of @numa_iface
     ncpus = @facts['processorcount']
-    if @numa_networking
-      iface = @facts['interface_primary']
-    else
-      iface = 'lo'
-    end
-    htsets = @facts['numa']['device_to_htset'][iface]
+    htsets = @facts['numa']['device_to_htset'][numa_iface]
     worker_procs = htsets.flatten.size
     affinity_mask = []
     htsets.each do |htset|
