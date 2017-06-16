@@ -71,6 +71,14 @@ class openstack::adminscripts(
         group  => 'root',
     }
 
+    file { '/root/novastats/proxyleaks.py':
+        ensure => present,
+        source => 'puppet:///modules/openstack/novastats/proxyleaks.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/root/novastats/puppetleaks.py':
         ensure => present,
         source => 'puppet:///modules/openstack/novastats/puppetleaks.py',
