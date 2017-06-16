@@ -26,6 +26,9 @@
 #           tests depend on modules that have been modified.
 # * tox - run the tox tests if needed.
 #
+
+STDOUT.sync = true
+
 require 'git'
 require 'set'
 require 'rake'
