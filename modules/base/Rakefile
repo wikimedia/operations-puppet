@@ -5,22 +5,23 @@ require 'rspec/core/rake_task'
 
 # Note: The nginx puppet module is a git submodule right now, so don't forget to
 # checkout submodules before testing
-extra_modules = [ 'wmflib' ]
+extra_modules = ['wmflib']
 
 modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
 
-symlinks = { 'spec/fixtures/modules/%s/files' % modulename => '../../../../files',
-  'spec/fixtures/modules/%s/manifests' % modulename => '../../../../manifests',
-  'spec/fixtures/modules/%s/templates' % modulename => '../../../../templates',
+symlinks = {
+  format('spec/fixtures/modules/%s/files', modulename)     => '../../../../files',
+  format('spec/fixtures/modules/%s/manifests', modulename) => '../../../../manifests',
+  format('spec/fixtures/modules/%s/templates', modulename) => '../../../../templates',
 }
 
 task :setup do
-  FileUtils.mkdir_p('spec/fixtures/modules/%s' % modulename)
+  FileUtils.mkdir_p(format('spec/fixtures/modules/%s', modulename))
   extra_modules.each do |x|
-      FileUtils.ln_s('../../../../%s' % x, 'spec/fixtures/modules/%s' % x)
+      FileUtils.ln_s(format('../../../../%s', x), format('spec/fixtures/modules/%s', x))
   end
   symlinks.each do |x|
-    if !File.exist?(x[0])
+    unless File.exist?(x[0])
       FileUtils.ln_s(x[1], x[0])
     end
   end
@@ -28,9 +29,9 @@ end
 
 task :teardown do
   symlinks.each { |x| FileUtils.rm(x[0], :force => true) }
-  FileUtils.rmdir('spec/fixtures/modules/%s' % modulename)
+  FileUtils.rmdir(format('spec/fixtures/modules/%s', modulename))
   extra_modules.each do |x|
-      FileUtils.rm('spec/fixtures/modules/%s' % x, :force => true)
+      FileUtils.rm(format('spec/fixtures/modules/%s', x), :force => true)
   end
   FileUtils.rmdir('spec/fixtures/modules')
 end
@@ -40,7 +41,7 @@ RSpec::Core::RakeTask.new(:realspec) do |t|
   t.pattern = 'spec/*/*_spec.rb'
 end
 
-task :spec => [ :setup, :realspec, :teardown]
+task :spec => [:setup, :realspec, :teardown]
 
 task :default => :spec do
 end
