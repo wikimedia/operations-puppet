@@ -54,7 +54,7 @@ Puppet::Reports.register_report(:servermon) do
         end
         # We failed to get all of our configs, let's bail early to avoid causing
         # puppet issues
-        if !(dbserver && dbuser && dbpassword && log_level)
+        unless dbserver && dbuser && dbpassword && log_level
           return true
         end
         begin

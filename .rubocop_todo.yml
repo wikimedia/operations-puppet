@@ -26,9 +26,6 @@ Style/IfUnlessModifier:
 Layout/IndentationWidth:
   Enabled: false
 
-Style/NegatedIf:
-  Enabled: false
-
 Style/RescueModifier:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
