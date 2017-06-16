@@ -159,7 +159,7 @@ namespace :spec do
             puts "Running rspec tests for module #{module_name}"
             puts '-' * 80
             spec_result = system("cd 'modules/#{module_name}' && rake spec")
-            raise "Module #{module_name} failed to pass spec" if !spec_result
+            raise "Module #{module_name} failed to pass spec" unless spec_result
         end
     end
 end

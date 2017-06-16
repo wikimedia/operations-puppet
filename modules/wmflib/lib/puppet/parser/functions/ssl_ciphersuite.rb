@@ -162,7 +162,7 @@ END
     # OS / Server -dependant feature flags:
     nginx_always_ok = true
     dhe_ok = true
-    if !function_os_version(['debian >= jessie'])
+    unless function_os_version(['debian >= jessie'])
       nginx_always_ok = false
       if server == 'apache'
         dhe_ok = false

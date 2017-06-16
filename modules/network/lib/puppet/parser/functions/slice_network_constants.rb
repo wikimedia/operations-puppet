@@ -47,7 +47,7 @@ module Puppet::Parser::Functions
     af = options['af'] if options
     description = options['description'] if options
 
-    if !all_network_subnets.key?(realm)
+    unless all_network_subnets.key?(realm)
         fail ArgumentError, 'slice_network_constants() realm non existant in network::subnets'
     end
     if requested_site && (!all_network_subnets[realm].key? requested_site)

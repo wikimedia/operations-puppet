@@ -27,9 +27,6 @@ Style/IfUnlessModifier:
 Layout/IndentationWidth:
   Enabled: false
 
-Style/NegatedIf:
-  Enabled: false
-
 Style/NumericLiterals:
   MinDigits: 6
 
