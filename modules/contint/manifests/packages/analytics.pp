@@ -12,13 +12,14 @@ class contint::packages::analytics {
         ensure => 'installed',
     }
 
+    require_package('libtemplate-perl')
+
     # these packages are used by the tests for wikistats to parse the
     # generated reports to see if they are correct
     package { [
         'libhtml-treebuilder-xpath-perl',
         'libjson-xs-perl',
         'libnet-patricia-perl',
-        'libtemplate-perl',
         'libweb-scraper-perl',
         ]:
         ensure => 'installed',
