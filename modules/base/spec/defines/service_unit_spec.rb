@@ -43,7 +43,7 @@ describe 'base::service_unit' do
     it 'should not refresh service' do
       expect {
         should contain_file('/etc/init.d/nginx').that_notifies('Service[nginx]')
-      }.to raise_error()
+      }.to raise_error
     end
   end
 
