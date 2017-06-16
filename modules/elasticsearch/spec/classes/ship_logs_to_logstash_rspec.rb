@@ -12,7 +12,7 @@ describe 'elasticsearch', :type => :class do
 
   describe 'when sending logs to logstash' do
     let(:params) { { :cluster_name  => 'my_cluster_name',
-                     :graylog_hosts => [ 'logstash.example.net', 'other' ] } }
+                     :graylog_hosts => ['logstash.example.net', 'other'] } }
     let(:facts) { { :lsbdistrelease => 'ubuntu',
                     :lsbdistid      => 'trusty'
     } }

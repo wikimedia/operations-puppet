@@ -19,17 +19,17 @@ describe provider_class do
     allow(Etc).to receive(:getpwnam).with('mwdeploy').and_return(OpenStruct.new(uid: 666))
 
     # Stub the existance of our deploy-local command
-    allow(@provider.class).to receive(:command).
-      with(:scap).
-      and_return('/usr/bin/scap')
+    allow(@provider.class).to receive(:command)
+      .with(:scap)
+      .and_return('/usr/bin/scap')
   end
 
   describe '#install' do
     it 'should specify the right repo' do
       allow(FileUtils).to receive(:cd)
-      expect(@provider).to receive(:execute).
-        with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
-             uid: 666, failonfail: true)
+      expect(@provider).to receive(:execute)
+        .with(['/usr/bin/scap', 'deploy-local', '--repo', 'foo/deploy', '-D', 'log_json:False'],
+              uid: 666, failonfail: true)
       @provider.install
     end
   end
@@ -39,9 +39,9 @@ describe provider_class do
 
     context 'when the package is installed' do
       before do
-        expect(@provider).to receive(:git).
-          with('-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD').
-          and_return(tag)
+        expect(@provider).to receive(:git)
+          .with('-C', '/srv/deployment/foo/deploy', 'tag', '--points-at', 'HEAD')
+          .and_return(tag)
       end
 
       context 'and the tag exists' do

@@ -42,7 +42,7 @@ if Puppet.version.to_f < 4.0
 end
 
 # Find files modified in HEAD
-def git_changed_in_head(file_exts=[])
+def git_changed_in_head(file_exts = [])
     g = Git.open('.')
     diff = g.diff('HEAD^')
     files = diff.name_status.select { |_, status| 'ACM'.include? status}.keys

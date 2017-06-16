@@ -20,11 +20,11 @@ $filename = nil
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: expanderb.rb -f FILENAME [key=val [key2=val]]"
 
-  opts.on( '-f', '--filename FILENAME', 'ERB filename to expand') do |f|
+  opts.on('-f', '--filename FILENAME', 'ERB filename to expand') do |f|
     $filename = f
   end
 
-  opts.on_tail( '-h', '--help', 'Show this message' ) do
+  opts.on_tail('-h', '--help', 'Show this message') do
     puts opts
     exit
   end
@@ -48,7 +48,7 @@ end
 
 template_values = {}
 ARGV.each do |val|
-  key, value = val.split( '=' )
+  key, value = val.split('=')
   template_values[key] = value
 end
 p template_values

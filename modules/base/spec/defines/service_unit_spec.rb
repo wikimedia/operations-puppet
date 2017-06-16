@@ -82,6 +82,6 @@ describe 'base::service_unit' do
       end
     end
 
-    #MARK
+    # MARK
   end
 end
