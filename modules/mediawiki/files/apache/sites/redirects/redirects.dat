@@ -173,7 +173,7 @@ override	*wikipedie.cz/experti-na-prirodu	//cs.wikipedia.org/wiki/Wikipedie:Wiki
 rewrite	*wikipedie.cz	//cs.wikipedia.org
 rewrite	*wikipedia.cz	//cs.wikipedia.org
 
-# wikimedia.ee / wikipedia.ee - RT #4566
+# wikimedia.ee / wikipedia.ee - T165733#3355736
 rewrite	*wikimedia.ee	//ee.wikimedia.org
 
 rewrite	*wikipedia.ee	//et.wikipedia.org
@@ -208,7 +208,7 @@ rewrite	www.*.wikipedia.info	//*.wikipedia.org
 rewrite	*.wiki-pedia.org	//*.wikipedia.org
 rewrite	wiki-pedia.org	//www.wikipedia.org
 
-# wikipedia typo domains to www. instead of en - RT #4679,#4681
+# wikipedia typo domains to www. instead of en - T165733#3355736
 funnel	*wiikipedia.com	//www.wikipedia.org
 funnel	*wikiepdia.com	//www.wikipedia.org
 funnel	*wikiepdia.org	//www.wikipedia.org
@@ -283,13 +283,13 @@ rewrite	wikivoyage.de	//www.wikivoyage.org
 rewrite	wikivoyage.eu	//www.wikivoyage.org
 rewrite	wikivoyage.net	//www.wikivoyage.org
 
-# Wikivoyager (RT-4333)
+# Wikivoyager (T165733#3355736)
 rewrite	*.wikivoyager.org	//*.wikivoyage.org
 rewrite	*.wikivoyager.de	//*.wikivoyage.org
 rewrite	wikivoyager.org	//www.wikivoyage.org
 rewrite	wikivoyager.de	//www.wikivoyage.org
 
-# Voyagewiki (RT-5539)
+# Voyagewiki (T165733#3355736)
 rewrite	*.voyagewiki.com	//*.wikivoyage.org
 rewrite	*.voyagewiki.org	//*.wikivoyage.org
 rewrite	voyagewiki.com	//www.wikivoyage.org
