@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # hiera_lookup: hiera lookup tool
 
-def usage(error='')
+def usage(error = '')
   msg = <<-end
 hiera_lookup: hiera lookup tool
 

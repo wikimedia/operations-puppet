@@ -11,16 +11,16 @@ describe 'postgresql::master', :type => :class do
     context 'ensure present' do
         it { should contain_class('postgresql::server') }
         it do
-            should contain_file('/etc/postgresql/9.4/main/postgresql.conf').
-                with_ensure('present').
-                with_content(/include 'master.conf'/)
+            should contain_file('/etc/postgresql/9.4/main/postgresql.conf')
+                .with_ensure('present')
+                .with_content(/include 'master.conf'/)
         end
         it do
-            should contain_file('/etc/postgresql/9.4/main/master.conf').
-                with_ensure('present').
-                with_content(/max_wal_senders = 5/).
-                with_content(/checkpoint_segments = 64/).
-                with_content(/wal_keep_segments = 128/)
+            should contain_file('/etc/postgresql/9.4/main/master.conf')
+                .with_ensure('present')
+                .with_content(/max_wal_senders = 5/)
+                .with_content(/checkpoint_segments = 64/)
+                .with_content(/wal_keep_segments = 128/)
         end
     end
 end
