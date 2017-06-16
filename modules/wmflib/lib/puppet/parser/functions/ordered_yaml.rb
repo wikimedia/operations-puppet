@@ -24,13 +24,20 @@ def sort_keys_recursive(value)
     def map.each_pair
       map.sort.each { |p| yield p }
     end
-    value.sort.reduce(map) { |h, (k, v)| h[k] = sort_keys_recursive(v); h }
+    value.sort.reduce(map) { |h, (k, v)|
+      h[k] = sort_keys_recursive(v)
+      h
+    }
   when 'true', 'false'
     value == 'true'
   when :undef
     nil
   else
-    value.include?('.') ? Float(value) : Integer(value) rescue value
+    begin
+      value.include?('.') ? Float(value) : Integer(value)
+    rescue
+      value
+    end
   end
 end
 
