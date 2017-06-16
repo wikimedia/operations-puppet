@@ -65,8 +65,8 @@ describe 'bacula::director', :type => :class do
         }) \
         .with_content(/Name = "testhost.example.com"/) \
         .with_content(/Password = "bconsolepass"/) \
-        .with_content(/TLS Certificate = "\/etc\/bacula\/director\/ssl\/cert.pem"/) \
-        .with_content(/TLS Key = "\/etc\/bacula\/director\/ssl\/server.key"/) \
+        .with_content(%r{TLS Certificate = "/etc/bacula/director/ssl/cert.pem"}) \
+        .with_content(%r{TLS Key = "/etc/bacula/director/ssl/server.key"}) \
         .with_content(/DIRport = 9900/) \
         .with_content(/Maximum Concurrent Jobs = 10/)
     end
