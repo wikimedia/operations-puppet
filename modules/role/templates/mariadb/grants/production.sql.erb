@@ -37,6 +37,10 @@ GRANT PROCESS, REPLICATION CLIENT, SELECT, SHOW DATABASES
     ON *.* TO '<%= @tendril_user %>'@'10.%'
     IDENTIFIED BY '<%= @tendril_pass %>';
 
+GRANT PROCESS, REPLICATION CLIENT, SELECT, SHOW DATABASES
+    ON *.* TO '<%= @tendril_user %>'@'208.80.154.82'
+    IDENTIFIED BY '<%= @tendril_pass %>';
+
 -- Grants for 'repl'@'10.%' (replication)
 GRANT REPLICATION SLAVE
     ON *.* TO 'repl'@'10.%'
