@@ -2369,6 +2369,26 @@ host ganeti1004 {
     fixed-address ganeti1004.eqiad.wmnet;
 }
 
+host ganeti1005 {
+    hardware ethernet 18:66:da:a3:af:25;
+    fixed-address ganeti1005.eqiad.wmnet;
+}
+
+host ganeti1006 {
+    hardware ethernet 18:66:da:a3:45:5d;
+    fixed-address ganeti1006.eqiad.wmnet;
+}
+
+host ganeti1007 {
+    hardware ethernet 18:66:da:a3:ac:69;
+    fixed-address ganeti1007.eqiad.wmnet;
+}
+
+host ganeti1008 {
+    hardware ethernet 18:66:da:a3:ec:3d;
+    fixed-address ganeti1008.eqiad.wmnet;
+}
+
 host ganeti2001 {
     hardware ethernet 44:A8:42:12:C8:FE;
     fixed-address ganeti2001.codfw.wmnet;
