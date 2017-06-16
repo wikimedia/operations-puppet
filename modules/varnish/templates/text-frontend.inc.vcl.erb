@@ -212,14 +212,14 @@ sub cluster_fe_ratelimit {
 	//   * Excluded for now:
 	//       * all WMF IPs (including labs)
 	//       * seemingly-authenticated requests (simple cookie check)
-	//   * RB and MW API: 1000/10s (100/s long term, with 1000 burst)
+	//   * RB and MW API, Wikidata: 1000/10s (100/s long term, with 1000 burst)
 	//   * All others: 1000/50s (20/s long term, with 1000 burst)
 	//       (current data leads us to believe sustaining 20/s should be
 	//       nearly impossible against standard MW outputs without
 	//       concurrency>1)
 	if (req.http.Cookie !~ "([sS]ession|Token)=" &&
 	    std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		if (req.url ~ "^/(api/rest_v1/|w/api.php)") {
+		if (req.url ~ "^/(api/rest_v1/|w/api.php|wiki/Special:EntityData)") {
 			if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
 				return (synth(429, "Too Many Requests"));
 			}
