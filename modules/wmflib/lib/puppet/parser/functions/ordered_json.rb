@@ -25,7 +25,11 @@ def ordered_json(o)
   when Hash
     '{' + o.sort.map { |k, v| k.to_pson + ': ' + ordered_json(v) }.join(', ') + '}'
   else
-    o.include?('.') ? Float(o).to_s : Integer(o).to_s rescue o.to_pson
+    begin
+      o.include?('.') ? Float(o).to_s : Integer(o).to_s
+    rescue
+      o.to_pson
+    end
   end
 end
 

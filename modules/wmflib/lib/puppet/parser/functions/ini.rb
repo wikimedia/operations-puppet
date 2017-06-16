@@ -22,7 +22,9 @@ def ini_flatten(map, prefix = nil)
 end
 
 def ini_cast(v)
-  v.include?('.') ? Float(v) : Integer(v) rescue v
+    v.include?('.') ? Float(v) : Integer(v)
+  rescue
+    v
 end
 
 module Puppet::Parser::Functions
@@ -30,7 +32,7 @@ module Puppet::Parser::Functions
     if args.map(&:class).uniq != [Hash]
       fail(ArgumentError, 'ini(): hash arguments required')
     end
-    args.reduce(&:merge).map do |section,items|
+    args.reduce(&:merge).map do |section, items|
       ini_flatten(items).map do |k, vs|
         case vs
         when Array then vs.map { |v| "#{k}[#{v}] = #{ini_cast(v)}" }
