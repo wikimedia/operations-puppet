@@ -70,7 +70,7 @@ end
 if File.exists?(summaryfile)
     begin
         summary = YAML.load_file(summaryfile)
-        if !enabled
+        unless enabled
             summary["time"]["last_disabled_check"] = Time.now.to_i
             File.open(summaryfile, 'w') { |f| f.write(YAML.dump summary) }
         end
@@ -134,7 +134,7 @@ if enabled_only && enabled == false
     exit 0
 end
 
-if !enabled
+unless enabled
     puts "WARNING: Puppet is currently disabled, message: #{disabled_message}, last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
 end
