@@ -69,7 +69,7 @@ namespace :global do
       module_name = Regexp.last_match(1)
       task module_name do
         spec_result = system("cd 'modules/#{module_name}' && rake spec")
-        spec_failed << module_name if !spec_result
+        spec_failed << module_name unless spec_result
       end
       spec_tasks << "spec:#{module_name}"
     end

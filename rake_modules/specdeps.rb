@@ -16,7 +16,7 @@ class SpecDependencies
   def specs_to_run(filelist)
     specs = Set.new
     modules = modules_modified(filelist)
-    return [] if !modules
+    return [] unless modules
     modules.each do |mod|
       next unless Dir.exists?("modules/#{mod}/spec")
       specs.add(mod)

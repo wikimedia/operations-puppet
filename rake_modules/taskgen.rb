@@ -241,7 +241,7 @@ class TaskGen < ::Rake::TaskLib
         task module_name do
           puts "---> spec:#{module_name}"
           spec_result = system("cd 'modules/#{module_name}' && rake spec")
-          if !spec_result
+          unless spec_result
             @failed_specs << module_name
           end
           puts "---> spec:#{module_name}"
@@ -250,7 +250,7 @@ class TaskGen < ::Rake::TaskLib
     end
     desc "Run spec tests found in modules"
     multitask :spec => spec_modules.map{ |m| "spec:#{m}" } do
-      raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}" if !@failed_specs.empty?
+      raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}" unless @failed_specs.empty?
     end
     [:spec]
   end
@@ -269,7 +269,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for the admin data file'
           task :admin do
             res = system('tox -e admin')
-            raise "Tox tests for admin/data/data.yaml failed!" if !res
+            raise "Tox tests for admin/data/data.yaml failed!" unless res
           end
           tasks << 'tox:admin'
         end
@@ -277,7 +277,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for the redirects file'
           task :redirects do
             res = system('tox -e apache')
-            raise "Tox tests for redirects.dat failed!" if !res
+            raise "Tox tests for redirects.dat failed!" unless res
           end
         end
         webperf_files = filter_files_by("modules/webperf/files/*.*")
@@ -285,7 +285,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for webperf'
           task :webperf do
             res = system("tox -e webperf")
-            raise 'Tests for webperf failed!' if !res
+            raise 'Tests for webperf failed!' unless res
           end
           tasks << 'tox:webperf'
         end
@@ -294,7 +294,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run tox for mtail'
           task :mtail do
             res = system("tox -e mtail")
-            raise 'Tests for mtail failed!' if !res
+            raise 'Tests for mtail failed!' unless res
           end
           tasks << 'tox:mtail'
         end
