@@ -41,7 +41,7 @@ class TaskGen < ::Rake::TaskLib
     end
   end
 
-  def print_wmf_style_violations(problems, other=nil, format='%{path}:%{line} %{message}')
+  def print_wmf_style_violations(problems, other = nil, format = '%{path}:%{line} %{message}')
     # Prints the wmf style violations
     other ||= {}
     events = problems.select do |p|
@@ -66,7 +66,7 @@ class TaskGen < ::Rake::TaskLib
     tasks
   end
 
-  def puppet_changed_files(files=@changed_files)
+  def puppet_changed_files(files = @changed_files)
     files.select{ |x| File.fnmatch("*.pp", x) }
   end
 

@@ -20,7 +20,7 @@ module Puppet::Parser::Functions
         if arg.is_a? Array
             retval += arg
         else
-            retval += [ arg ]
+            retval += [arg]
         end
     end
     retval
