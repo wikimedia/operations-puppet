@@ -1,7 +1,5 @@
 Lint/AssignmentInCondition:
   Exclude:
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/secret.rb'
 
 Lint/HandleExceptions:
@@ -9,16 +7,10 @@ Lint/HandleExceptions:
     - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
 
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'modules/wmflib/lib/hiera/backend/*_backend.rb'
-    - 'modules/wmflib/lib/hiera/*cache.rb'
-
 Lint/UselessAssignment:
   Exclude:
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/service/Rakefile'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/validate_array_re.rb'
 
 Metrics/LineLength:
@@ -26,10 +18,6 @@ Metrics/LineLength:
 
 Style/BlockDelimiters:
   Enabled: false
-
-Style/ClassAndModuleCamelCase:
-  Exclude:
-    - 'modules/wmflib/lib/hiera/backend/*_backend.rb'
 
 Style/ClassVars:
   Exclude:
@@ -82,9 +70,6 @@ Layout/IndentationWidth:
 Layout/LeadingCommentSpace:
   Exclude:
     - 'modules/base/spec/defines/service_unit_spec.rb'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'modules/wmflib/lib/hiera/mwcache.rb'
 
 Style/MethodCallWithoutArgsParentheses:
   Exclude:
@@ -92,9 +77,6 @@ Style/MethodCallWithoutArgsParentheses:
     - 'modules/install_server/spec/classes/install_server_preseed_server_spec.rb'
     - 'modules/squid3/spec/classes/squid3_spec.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/secret.rb'
-    - 'modules/wmflib/spec/functions/role_spec.rb'
-    - 'modules/wmflib/spec/hiera/proxy_backend_spec.rb'
-    - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
 
 Style/NegatedIf:
   Enabled: false
@@ -102,10 +84,6 @@ Style/NegatedIf:
 Style/NestedTernaryOperator:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-
-Style/Not:
-  Exclude:
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
 
 Style/NumericLiterals:
   MinDigits: 6
@@ -121,15 +99,10 @@ Style/PerlBackrefs:
 Style/RedundantReturn:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-    - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
-    - 'modules/wmflib/lib/hiera/mwcache.rb'
 
 Style/RedundantSelf:
   Exclude:
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
 
 Style/RegexpLiteral:
   Exclude:
@@ -140,8 +113,6 @@ Style/RegexpLiteral:
     - 'modules/bacula/spec/defines/storage_device_spec.rb'
     - 'modules/servermon/spec/classes/servermon_app_spec.rb'
     - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
 
 Style/RescueModifier:
   Exclude:
@@ -161,14 +132,7 @@ Layout/SpaceAfterComma:
     - 'modules/base/lib/facter/labsproject.rb'
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-    - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
-    - 'modules/wmflib/lib/hiera/mwcache.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
-    - 'modules/wmflib/spec/hiera/proxy_backend_spec.rb'
-    - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
 
 Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
@@ -176,8 +140,6 @@ Layout/SpaceAroundEqualsInParameterDefault:
 Layout/SpaceAroundOperators:
   Exclude:
     - 'modules/librenms/lib/puppet/parser/functions/phpdump.rb'
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
 
 Layout/SpaceInsideBrackets:
   Enabled: false
