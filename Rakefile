@@ -39,6 +39,7 @@ if Puppet.version.to_f < 4.0
         'modules/stdlib/types/compat/*.pp',
         'modules/stdlib/spec/fixtures/test/manifests/*.pp',
     ]
+    PuppetSyntax.future_parser = true
 end
 
 # Find files modified in HEAD
