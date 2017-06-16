@@ -19,12 +19,12 @@ class DNSCacheEntry
     @ttl = Time.now.to_i + ttl
   end
 
-  def is_valid?(time)
-    return @ttl > time
+  def valid?(time)
+    @ttl > time
   end
 
   def value
-    return @value.to_s
+    @value.to_s
   end
 end
 
@@ -41,27 +41,28 @@ class BasicTTLCache
     @cache.delete(key) if @cache.key?(key)
   end
 
-  def is_valid?(key)
+  def valid?(key)
     # If the key exists, and its ttl has not expired, return true.
     # Return false (and maybe clean up the stale entry) otherwise.
     return false unless @cache.key?(key)
     t = Time.now.to_i
-    return true if @cache[key].is_valid?t
-    return false
+    return true if @cache[key].valid?t
+
+    false
   end
 
   def read(key)
-    if is_valid?key
+    if valid?key
       return @cache[key].value
     end
-    return nil
+    nil
   end
 
   def read_stale(key)
     if @cache.key?(key)
       return @cache[key].value
     end
-    return nil
+    nil
   end
 end
 
@@ -74,13 +75,13 @@ class DNSCached
 
   def get_resource(name, type, nameserver)
     if nameserver.nil?
-      dns = Resolv::DNS.open()
+      dns = Resolv::DNS.open
     else
       dns = Resolv::DNS.open(:nameserver => [nameserver])
     end
     cache_key = "#{name}_#{type}_#{nameserver}"
     res = @cache.read(cache_key)
-    if (res.nil?)
+    if res.nil?
       begin
         res = dns.getresource(name, type)
         # Ruby < 1.9 returns nil as the ttl...
