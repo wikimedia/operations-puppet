@@ -1,7 +1,7 @@
 require "hiera/httpcache"
 class Hiera
   module Backend
-    class Httpyaml_backend
+    class HttpyamlBackend
       def initialize
         @cache = Httpcache.new
       end
