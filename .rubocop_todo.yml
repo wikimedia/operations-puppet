@@ -66,7 +66,6 @@ Style/FormatString:
     - 'modules/backup/Rakefile'
     - 'modules/bacula/Rakefile'
     - 'modules/base/Rakefile'
-    - 'modules/base/lib/facter/lldp.rb'
     - 'modules/install_server/Rakefile'
     - 'modules/mirrors/Rakefile'
     - 'modules/nrpe/Rakefile'
@@ -93,7 +92,6 @@ Layout/IndentationWidth:
 
 Layout/LeadingCommentSpace:
   Exclude:
-    - 'modules/base/lib/facter/lldp.rb'
     - 'modules/base/spec/defines/service_unit_spec.rb'
     - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
