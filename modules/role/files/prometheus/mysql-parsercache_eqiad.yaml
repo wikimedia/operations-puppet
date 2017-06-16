@@ -10,10 +10,12 @@
     role: master
   targets:
   - pc1005:9104
+  - db1099:9104
 
 - labels:
     shard: pc3
     role: master
   targets:
   - pc1006:9104
+  - db1101:9104
 
