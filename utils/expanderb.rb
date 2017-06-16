@@ -12,6 +12,7 @@
 require 'optparse'
 require 'erb'
 require 'ostruct'
+require 'English'
 
 # Filename of the ERB template we are going to expand
 $filename = nil
@@ -41,7 +42,7 @@ begin
   end
 rescue
   # Catch all
-  puts $!.to_s
+  puts $ERROR_INFO.to_s
   puts optparse
   exit
 end
@@ -65,5 +66,5 @@ begin
   puts render_erb(File.read($filename), template_values)
 rescue
   p "Something went wrong, usually because you are missing a variable."
-  p $!.to_s
+  p $ERROR_INFO.to_s
 end
