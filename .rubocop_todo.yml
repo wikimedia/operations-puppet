@@ -26,12 +26,6 @@ Style/IfUnlessModifier:
 Layout/IndentationWidth:
   Enabled: false
 
-Style/MethodCallWithoutArgsParentheses:
-  Exclude:
-    - 'modules/base/spec/defines/service_unit_spec.rb'
-    - 'modules/install_server/spec/classes/install_server_preseed_server_spec.rb'
-    - 'modules/squid3/spec/classes/squid3_spec.rb'
-
 Style/NegatedIf:
   Enabled: false
 
