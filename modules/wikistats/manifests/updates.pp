@@ -76,7 +76,6 @@ class wikistats::updates (
         'ws' : db_pass => $db_pass, table => 'wikisources', minute => '13';
         'wy' : db_pass => $db_pass, table => 'wikivoyage', minute => '15';
         'wx' : db_pass => $db_pass, table => 'wmspecials', minute => '17';
-        'wi' : db_pass => $db_pass, table => 'wikia', minute => '19';
         'et' : db_pass => $db_pass, table => 'editthis', minute => '23';
         'wr' : db_pass => $db_pass, table => 'wikitravel', minute => '25';
         'mw' : db_pass => $db_pass, table => 'mediawikis', minute => '32';
