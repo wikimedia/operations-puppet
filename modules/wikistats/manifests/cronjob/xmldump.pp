@@ -9,7 +9,7 @@ define wikistats::cronjob::xmldump(
 ){
 
     $query = $table ? {
-        'wikipedias' => 'SELECT *,good/total AS ratio FROM wikipedias WHERE lang NOT LIKE \"%articles%\" ORDER BY good desc,total desc',
+        'wikipedias' => 'SELECT *,good/total AS ratio FROM wikipedias WHERE lang NOT LIKE "%articles%" ORDER BY good desc,total desc',
         default      => "SELECT *,good/total AS ratio FROM ${table} ORDER BY good desc,total desc",
     }
 
