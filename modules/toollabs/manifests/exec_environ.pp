@@ -257,6 +257,7 @@ class toollabs::exec_environ {
         'inkscape',                    # T126933
         'iotop',                       # useful for labs admins to monitor tools
         'ksh',
+        'lame',                        # T168128
         'libaio1',                     # T70615
         'libav-tools',                 # T55870.
         'libdmtx0a',                   # T55867.
