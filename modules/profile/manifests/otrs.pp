@@ -1,25 +1,18 @@
 # vim: set ts=4 et sw=4:
 # sets up an instance of the 'Open-source Ticket Request System'
 # https://en.wikipedia.org/wiki/OTRS
-#
-# filtertags: labs-project-otrs
-class role::otrs::webserver {
-
-    system::role { 'otrs::webserver':
-        description => 'OTRS Web Application Server',
-    }
-    include ::standard
+class profile::otrs(
+    $otrs_database_host = hiera('profile::otrs::database_host'),
+    $otrs_database_name = hiera('profile::otrs::database_name'),
+    $otrs_database_user = hiera('profile::otrs::database_user'),
+    $otrs_database_pw   = hiera('profile::otrs::database_pass'),
+    $exim_database_name = hiera('profile::otrs::exim_database_name'),
+    $exim_database_user = hiera('profile::otrs::exim_database_user'),
+    $exim_database_pass = hiera('profile::otrs::exim_database_pass'),
+){
     include ::base::firewall
 
-    include passwords::mysql::otrs
-    include passwords::exim
     include network::constants
-    $otrs_database_user = $::passwords::mysql::otrs::user
-    $otrs_database_pw   = $::passwords::mysql::otrs::pass
-    $exim_database_pass = $passwords::exim::otrs_mysql_password
-
-    $otrs_database_host = hiera('otrs::otrs_database_host')
-    $otrs_database_name = hiera('otrs::otrs_database_name')
 
     class { '::otrs':
         otrs_database_host => $otrs_database_host,

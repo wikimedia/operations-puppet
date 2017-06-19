@@ -1,0 +1,8 @@
+profile::otrs::database_host: m2-master.eqiad.wmnet
+profile::otrs::database_name: otrs
+profile::otrs::database_user: otrs
+profile::otrs::exim_database_name: otrs
+profile::otrs::exim_database_user: exim
+# Set up in the private repo
+#profile::otrs::database_pass:
+#profile::otrs::exim_database_pass:
