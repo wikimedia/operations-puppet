@@ -1842,7 +1842,7 @@ node 'meitnerium.wikimedia.org' {
 
 # OTRS - ticket.wikimedia.org
 node 'mendelevium.eqiad.wmnet' {
-    role(otrs::webserver)
+    role(otrs)
 }
 
 # misc. test server, keep (T156208)
