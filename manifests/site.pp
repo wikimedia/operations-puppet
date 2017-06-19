@@ -1044,6 +1044,7 @@ node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
 # kubernetes staging master
 node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Etcd cluster for "virtual" networking
