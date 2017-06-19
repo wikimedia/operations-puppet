@@ -196,27 +196,33 @@ class Terminator(object):
             result = self.database.execute(command, params, dry_run=self.dry_run)
             time.sleep(self.sleep_between_batches)
 
-    def _get_old_uuids(self, table, offset):
+    def _get_uuids_and_endtime_since(self, table, uuids_start):
         """
-        Return a list of uuids between self.start and self.end limiting
-        the batch with an offset.
+        Return the first <batch_size> uuids of the events between uuids_start
+        and self.end. Also return the timestamp of the last of those events.
+        NOTE: If there exist several events that share the last timestamp,
+        it might be that some of them are listed in the uuid batch, and some
+        others aren't (are yet to come). In the next call to this method,
+        uuids_start will be last_timestamp, and so the script might re-purge
+        the events that share the last_timestamp.
         """
         command = (
-            "SELECT uuid from {} WHERE timestamp >= %(start_ts)s "
-            "AND timestamp < %(end_ts)s LIMIT %(batch_size)s OFFSET %(offset)s"
+            "SELECT timestamp, uuid from {} WHERE timestamp >= %(start_ts)s "
+            "AND timestamp < %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s"
             .format(table)
         )
         params = {
-            'start_ts': self.start,
+            'start_ts': uuids_start,
             'end_ts': self.end,
             'batch_size': self.batch_size,
-            'offset': offset,
         }
         result = self.database.execute(command, params, self.dry_run)
         if result['rows']:
-            return [x[0] for x in result['rows']]
+            uuids = [x[1] for x in result['rows']]
+            last_timestamp = result['rows'][-1][0]
+            return (uuids, last_timestamp)
         else:
-            return []
+            return ([], None)
 
     def sanitize(self, table):
         """
@@ -251,8 +257,7 @@ class Terminator(object):
         fields_to_purge = filter(lambda f: f not in fields_to_keep, fields)
 
         values_string = ','.join([field + ' = NULL' for field in fields_to_purge])
-        offset = 0
-        uuids_current_batch = self._get_old_uuids(table, offset)
+        uuids_current_batch, offset = self._get_uuids_and_endtime_since(table, self.start)
         command_template = (
             "UPDATE {0} "
             "SET {1} "
@@ -292,9 +297,7 @@ class Terminator(object):
                 # to sanitize.
                 uuids_current_batch = []
             else:
-                offset += self.batch_size
-                uuids_current_batch = self._get_old_uuids(table, offset)
-
+                uuids_current_batch, offset = self._get_uuids_and_endtime_since(table, offset)
             time.sleep(self.sleep_between_batches)
 
 
@@ -652,22 +655,25 @@ class TestTerminator(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.terminator.purge("AwesomeTable")
 
-    def test_get_old_uuids(self):
-        random_uuids = [(str(uuid.uuid4()),) for r in range(self.batch_size)]
+    def test_get_uuids_and_endtime_since(self):
+        random_uuids = []
+        for ts in range(400):
+            random_uuids.append((str(ts).zfill(3), str(uuid.uuid4())))
         self.terminator.database.execute.side_effect = [{'rows': random_uuids}]
-        result = self.terminator._get_old_uuids("AwesomeTable", 10)
-        expected_result = [x[0] for x in random_uuids]
+        result = self.terminator._get_uuids_and_endtime_since("AwesomeTable", 10)
+        expected_result = ([x[1] for x in random_uuids], random_uuids[-1][0])
         self.assertEqual(result, expected_result)
 
     def test_sanitize_one_batch(self):
         """
-        Sanitize called on a number of uuids less or equal than one batch size
+        Sanitize called on a number of uuids less than one batch size
         """
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
-        BATCH_SIZE_TEST = 400
+        BATCH_SIZE_TEST = 400  # less than terminator's batch size
         random_uuids = [str(uuid.uuid4()) for r in range(BATCH_SIZE_TEST)]
-        self.terminator._get_old_uuids = Mock(return_value=random_uuids)
+        self.terminator._get_uuids_and_endtime_since = Mock(
+            return_value=(random_uuids, '20010101000000'))
         self.terminator.database.execute.return_value = {'numrows': BATCH_SIZE_TEST}
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
         expected_fields_to_sanitize = ','.join(
@@ -677,14 +683,12 @@ class TestTerminator(unittest.TestCase):
         command_template = (
             "UPDATE AwesomeTable "
             "SET {0} "
-            "WHERE uuid IN ({1})"
-        ).format(expected_fields_to_sanitize, '{}')
+            "WHERE uuid IN ({{}})"
+        ).format(expected_fields_to_sanitize)
         expected_command = command_template.format(expected_uuids_in_where)
         self.terminator.sanitize("AwesomeTable")
-        self.terminator.database.execute.assert_has_calls([
-            call(expected_command, dry_run=False),
-        ])
-        self.terminator.database.execute.assert_called_once()
+        self.terminator.database.execute.assert_called_once_with(
+            expected_command, dry_run=False)
 
     def test_sanitize_multi_batches(self):
         """
@@ -696,7 +700,10 @@ class TestTerminator(unittest.TestCase):
                                                                   'field2', 'field3', 'field4']
         random_uuids = [str(uuid.uuid4()) for r in range(self.batch_size)]
         random_uuids2 = [str(uuid.uuid4()) for r in range(5)]
-        self.terminator._get_old_uuids = Mock(side_effect=[random_uuids, random_uuids2])
+        self.terminator._get_uuids_and_endtime_since = Mock(side_effect=[
+            (random_uuids, '20170101000000'),
+            (random_uuids2, '20170102000000')
+        ])
         self.terminator.database.execute.side_effect = [{'numrows': self.batch_size},
                                                         {'numrows': 5}]
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
@@ -755,7 +762,8 @@ class TestTerminator(unittest.TestCase):
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
         random_uuids = [str(uuid.uuid4()) for r in range(self.batch_size * 2)]
-        self.terminator._get_old_uuids = Mock(side_effect=[random_uuids])
+        self.terminator._get_uuids_and_endtime_since = Mock(
+            side_effect=[(random_uuids, '20170101000000')])
         self.terminator.database.execute.side_effect = [{'numrows': self.batch_size}]
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
         with self.assertRaisesRegex(RuntimeError, 'Sanitization stopped as precautionary step.'):
@@ -769,7 +777,8 @@ class TestTerminator(unittest.TestCase):
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
         random_uuids = [str(uuid.uuid4()) + "'" for r in range(self.batch_size)]
-        self.terminator._get_old_uuids = Mock(side_effect=[random_uuids])
+        self.terminator._get_uuids_and_endtime_since = Mock(
+            side_effect=[(random_uuids, '20170101000000')])
         self.terminator.database.execute.side_effect = [{'numrows': self.batch_size * 2}]
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
         with self.assertRaisesRegex(RuntimeError, 'Sanitization stopped as precautionary step.'):
