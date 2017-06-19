@@ -43,14 +43,16 @@ end
 
 # Find files modified in HEAD
 def git_changed_in_head(file_exts=[])
-    g = Git.open('.')
-    diff = g.diff('HEAD^')
-    files = diff.name_status.select { |_, status| 'ACM'.include? status}.keys
+    unless defined? @changed_files
+        g = Git.open('.')
+        diff = g.diff('HEAD^')
+        @changed_files = diff.name_status.select { |_, status| 'ACM'.include? status}.keys
+    end
 
     if file_exts.empty?
-        files
+        @changed_files
     else
-        files.select { |fname| fname.end_with?(*file_exts) }
+        @changed_files.select { |fname| fname.end_with?(*file_exts) }
     end
 end
 
