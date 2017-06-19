@@ -54,7 +54,7 @@ class profile::kubernetes::master(
         $accessible_range = undef
     } else {
         $accessible_to_ferm = join($accessible_to, ' ')
-        $accessible_range = "(@resolve((${accessible_to_ferm})))"
+        $accessible_range = "(@resolve((${accessible_to_ferm})) @resolve((${accessible_to_ferm}), AAAA))"
     }
 
     ferm::service { 'apiserver-https':
