@@ -147,4 +147,11 @@ class pdfrender(
         systemd        => true,
         service_params => $params,
     }
+
+    # Ugly work-around: Restart pdfrender service once per day. See T159922.
+    cron { 'periodic_pdfrender_restart':
+        command => '/usr/sbin/service pdfrender restart >/dev/null 2>/dev/null',
+        hour    => 5,
+        minute  => fqdn_rand(60, 'periodic_pdfrender_restart'),
+    }
 }
