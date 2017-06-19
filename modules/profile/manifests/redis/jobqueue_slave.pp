@@ -13,9 +13,9 @@ class profile::redis::jobqueue_slave {
         owner  => 'root',
         group  => 'root',
     }
-
+    $instance_str = join($::profile::redis::slave::instances, ' ')
     cron { 'jobqueue-redis-conditional-restart':
-        command => "/usr/local/bin/restart-redis-if-slave ${::profile::redis::slave::instances}",
+        command => "/usr/local/bin/restart-redis-if-slave ${instance_str}",
         hour    => 1,
         minute  => 0,
     }
