@@ -388,7 +388,7 @@ node 'db2016.codfw.wmnet' {
     }
 }
 
-node /^db20(34|42|48|55|62|69|70|71)\.codfw\.wmnet/ {
+node /^db20(34|42|48|55|62|69|70|71|72)\.codfw\.wmnet/ {
     class { '::role::mariadb::core':
         shard         => 's1',
         binlog_format => 'ROW',
@@ -2281,11 +2281,6 @@ node 'pc2005.codfw.wmnet' {
 node 'pc2006.codfw.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc3',
-    }
-}
-node 'db2072.codfw.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc1',
     }
 }
 
