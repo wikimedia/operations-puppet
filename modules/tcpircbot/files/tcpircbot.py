@@ -25,7 +25,7 @@ CONFIGFILE should be a JSON file with the following structure:
   }
 
 Requirements:
- * irc >=0.4.8
+ * irc >=8.5.3
    <http://bitbucket.org/jaraco/irc>
    Debian package: 'python-irc'
  * netaddr >=0.7.5
@@ -47,13 +47,10 @@ import json
 import logging
 import select
 import socket
+import ssl
+import irc
 
-try:
-    # irc 0.7+
-    import irc.bot as ircbot
-except ImportError:
-    import ircbot
-
+import irc.bot as ircbot
 
 BUFSIZE = 460  # Read from socket in IRC-message-sized chunks.
 
@@ -67,24 +64,17 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
     """Minimal IRC bot; joins channels."""
 
     def __init__(self, network, nickname, channels, **options):
-        ircbot.SingleServerIRCBot.__init__(self, [network], nickname, nickname)
+        ircbot.SingleServerIRCBot.__init__(self, [network], nickname, nickname, **options)
         self.target_channels = channels
-        self.options = options
         for event in ['disconnect', 'join', 'part', 'welcome']:
             self.connection.add_global_handler(event, self.log_event)
 
-    def connect(self, *args, **kwargs):
-        """Intercepts call to ircbot.SingleServerIRCBot.connect to add support
-        for ssl and ipv6 params."""
-        kwargs.update(self.options)
-        ircbot.SingleServerIRCBot.connect(self, *args, **kwargs)
-
     def on_privnotice(self, connection, event):
-        logging.info('%s %s', event.source(), event.arguments())
+        logging.info('%s %s', event.source, event.arguments)
 
     def log_event(self, connection, event):
-        if connection.real_nickname in [event._source, event._target]:
-            logging.info('%(_eventtype)s [%(_source)s -> %(_target)s]'
+        if connection.real_nickname in [event.source, event.target]:
+            logging.info('%(type)s [%(source)s -> %(target)s]'
                          % vars(event))
 
     def on_welcome(self, connection, event):
@@ -106,6 +96,13 @@ with open(sys.argv[1]) as f:
     config = json.load(f)
 
 # Create a bot and connect to IRC
+# Mangle the config a bit for newer python-irc libraries
+ipv6 = config['irc'].pop(u'ipv6', False)
+if config['irc'].pop(u'ssl', False):
+    factory = irc.connection.Factory(ipv6=ipv6, wrapper=ssl.wrap_socket)
+else:
+    factory = irc.connection.Factory(ipv6=ipv6)
+config['irc']['connect_factory'] = factory
 bot = ForwarderBot(**config['irc'])
 bot._connect()
 
