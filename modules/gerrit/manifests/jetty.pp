@@ -122,22 +122,30 @@ class gerrit::jetty(
         require => [File['/var/lib/gerrit2'],Package['gerrit']],
     }
 
+    file { '/var/lib/gerrit2/review_site/lib':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0644',
+        require => [File['/var/lib/gerrit2/review_site'],Package['gerrit']],
+    }
+
     file { '/var/lib/gerrit2/review_site/lib/bcprov-1.49.jar':
         ensure  => 'link',
         target  => '/usr/share/java/bcprov-1.49.jar',
-        require => [Package['gerrit'], Package['libbcprov-java']],
+        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcprov-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/bcpkix-1.49.jar':
         ensure  => 'link',
         target  => '/usr/share/java/bcpkix-1.49.jar',
-        require => [Package['gerrit'], Package['libbcpkix-java']],
+        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcpkix-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
         ensure  => 'link',
         target  => '/usr/share/java/mysql-connector-java.jar',
-        require => [Package['gerrit'], Package['libmysql-java']],
+        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/etc':
