@@ -1956,8 +1956,8 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     include ::base::firewall
 }
 
-#mw1236-mw1258 are apaches
-node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
+#mw1238-mw1258 are apaches
+node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
@@ -2611,7 +2611,7 @@ node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
 }
 
 # Thumbor servers for MediaWiki image scaling
-node /^thumbor100[12].eqiad.wmnet/ {
+node /^thumbor100[1234].eqiad.wmnet/ {
     role(thumbor::mediawiki)
 }
 
