@@ -145,8 +145,23 @@ class EventHandler(pyinotify.ProcessEvent):
         if s:
             chans = reader.getchannels(event.pathname)
             try:
-                bot.connection.privmsg(chans, s.replace('\n', ''))
-            except irc.client.ServerNotConnectedError as e:
+                s = s.replace('\n', '')
+                # python irc library enforces a 512 maximum byte limit per
+                # message per RFC 2812. While this is overly strict, let's try
+                # to conform. Split the message into multiple messages.
+                # Unfortunately the library enforces this limit at the protocol
+                # level meaning we have to account for the entire IRC command,
+                # the format of which is:
+                #     :source PRIVMSG <target> :Message
+                # which is not easy to calculate as the channel is of variable
+                # size. Using #wikimedia-operations means this is 40 bytes, so
+                # set a 450 max message size and hope is enough.
+                # We anyway catch and silently drop the message later on if that
+                # turns out to not be true
+                outputs = [s[0+i:510+i] for i in range(0, len(s), 510)]
+                for out in outputs:
+                    bot.connection.privmsg(chans, out)
+            except (irc.client.ServerNotConnectedError, irc.client.MessageTooLong) as e:
                 print('Error writing: %s'
                       'Dropping this message: "%s"') % (e, s)
 
