@@ -145,7 +145,11 @@ class EventHandler(pyinotify.ProcessEvent):
         if s:
             chans = reader.getchannels(event.pathname)
             try:
-                bot.connection.privmsg(chans, s.replace('\n', ''))
+                s = s.replace('\n', '')
+                # Maximum 510 chars (512 including CR/LF)
+                outputs = [s[0+i:510+i] for i in range(0, len(s), 510)]
+                for out in outputs:
+                    bot.connection.privmsg(chans, out)
             except irc.client.ServerNotConnectedError as e:
                 print('Error writing: %s'
                       'Dropping this message: "%s"') % (e, s)
