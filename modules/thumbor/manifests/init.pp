@@ -29,8 +29,12 @@ class thumbor (
 ) {
     requires_os('debian >= jessie')
 
-    require_package('python-thumbor-wikimedia')
     require_package('firejail')
+
+    package { 'python-thumbor-wikimedia':
+        ensure          => installed,
+        install_options => ['-t', 'jessie-backports'],
+    }
 
     file { '/usr/local/lib/thumbor/':
         ensure => directory,
@@ -70,6 +74,7 @@ class thumbor (
         group   => 'thumbor',
         mode    => '0440',
         content => template('thumbor/server.conf.erb'),
+        require => Package['python-thumbor-wikimedia'],
     }
 
     file { '/etc/firejail/thumbor.profile':
@@ -105,6 +110,7 @@ class thumbor (
         ensure          => present,
         systemd         => true,
         declare_service => false,
+        require         => Package['python-thumbor-wikimedia'],
     }
 
     base::service_unit { 'thumbor-instances':
