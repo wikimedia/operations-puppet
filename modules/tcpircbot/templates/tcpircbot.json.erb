@@ -2,7 +2,6 @@
     "irc": {
         "channels": <%= Array(@channels).to_pson %>,
         "network": ["<%= @server_host %>", <%= @server_port %>, "<%= @nickname %>:<%= @password %>"],
-        <% if @ssl %>"ssl": true,<% end %>
         "nickname": "<%= @nickname %>"
     },
     <% if @infiles %>"infiles": <%= Array(@infiles).to_pson %>,<% end %>

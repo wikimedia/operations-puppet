@@ -27,9 +27,10 @@
 #
 class tcpircbot(
     $dir         = '/srv/tcpircbot',
+    $ssl         = true,
 ) {
 
-    require_package(['python-irc', 'python-netaddr'])
+    require_package(['python-ssl', 'python-irc', 'python-netaddr'])
 
     group { 'tcpircbot':
         ensure => present,
@@ -48,7 +49,7 @@ class tcpircbot(
 
     file { "${dir}/tcpircbot.py":
         ensure => present,
-        source => 'puppet:///modules/tcpircbot/tcpircbot.py',
+        content => template('tcpircbot/tcpircbot.py.erb'),
         owner  => 'tcpircbot',
         group  => 'tcpircbot',
         mode   => '0555',
