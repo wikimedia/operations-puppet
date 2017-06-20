@@ -21,12 +21,12 @@ from irc.bot import SingleServerIRCBot
 
 
 def beautify_message(m):
-    """Clean up formatting of alert messages."""
-    m = m.strip()             # Strip trailing whitespace
-    m = re.sub(r'(\w+): \1:\b', r'\1', m) # Dedupe severity
-    m = re.sub(r' {2,}', ' ', m)      # Collapse whitespace
-    m = m.replace(': -', ':')         # Combine separators
-    m = m.strip(':-')             # Strip trailing separators
+    '''Clean up formatting of alert messages.'''
+    m = m.strip()                           # Strip trailing whitespace
+    m = re.sub(r'(\w+): \1:\b', r'\1', m)   # Dedupe severity
+    m = re.sub(r' {2,}', ' ', m)            # Collapse whitespace
+    m = m.replace(': -', ':')               # Combine separators
+    m = m.strip(':-')                       # Strip trailing separators
     return m
 
 
@@ -44,9 +44,9 @@ class EchoReader(threading.Thread):
         threading.Thread.__init__(self)
         self.infile = infile
         self.associatedchannel = associatedchannel
-        self.uniques = {';': "UNIQ_" + self.get_unique_string() + "_QINU",
-                ':': "UNIQ_" + self.get_unique_string() + "_QINU",
-                ',': "UNIQ_" + self.get_unique_string() + "_QINU"}
+        self.uniques = {';': 'UNIQ_' + self.get_unique_string() + '_QINU',
+                        ':': 'UNIQ_' + self.get_unique_string() + '_QINU',
+                        ',': 'UNIQ_' + self.get_unique_string() + '_QINU'}
 
     def get_unique_string(self):
         unique = ''
@@ -68,7 +68,7 @@ class EchoReader(threading.Thread):
 
     def run(self):
         if self.infile:
-            print "Using infile"
+            print('Using infile')
             self.notifiers = []
             self.associations = {}
             self.files = {}
@@ -77,12 +77,12 @@ class EchoReader(threading.Thread):
                 temparr = filechan.split(':')
                 filename = self.unescape(temparr[0])
                 try:
-                    print "Opening: " + filename
+                    print('Opening: ' + filename)
                     f = open(filename)
                     f.seek(0, 2)
                     self.files[filename] = f
                 except IOError:
-                    print "Failed to open file: " + filename
+                    print('Failed to open file: ' + filename)
                     self.files[filename] = None
                     pass
                 wm = pyinotify.WatchManager()
@@ -95,7 +95,7 @@ class EchoReader(threading.Thread):
                     chans = self.unescape(temparr[1])
                     self.associations[filename] = chans
             for notifier in self.notifiers:
-                print "Starting notifier loop"
+                print('Starting notifier loop')
                 notifier.start()
         else:
             while True:
@@ -125,15 +125,15 @@ class EchoReader(threading.Thread):
 
 class EchoBot(SingleServerIRCBot):
     def __init__(self, chans, nickname, server):
-        print "*** Connecting to IRC server %s..." % server
-        SingleServerIRCBot.__init__(self, [(server, 6667)], nickname, "IRC echo bot")
+        print('*** Connecting to IRC server %s...' % server)
+        SingleServerIRCBot.__init__(self, [(server, 6667)], nickname, 'IRC echo bot')
         self.chans = chans
 
     def on_nicknameinuse(self, c, e):
-        c.nick(c.get_nickname() + "_")
+        c.nick(c.get_nickname() + '_')
 
     def on_welcome(self, c, e):
-        print "*** Connected"
+        print('*** Connected')
         for chan in [self.chans]:
             c.join(chan)
 
@@ -146,22 +146,23 @@ class EventHandler(pyinotify.ProcessEvent):
             chans = reader.getchannels(event.pathname)
             try:
                 bot.connection.privmsg(chans, s.replace('\n', ''))
-            except irc.client.ServerNotConnectedError, e:
-                print ("Error writing: %s"
-                    "Dropping this message: '%s'") % (e, s)
+            except irc.client.ServerNotConnectedError as e:
+                print('Error writing: %s'
+                      'Dropping this message: "%s"') % (e, s)
 
     def process_IN_CREATE(self, event):
         try:
-            print "Reopening file: " + event.pathname
+            print('Reopening file: ' + event.pathname)
             reader.files[event.pathname] = open(event.pathname)
         except IOError:
-            print "Failed to reopen file: " + event.pathname
+            print('Failed to reopen file: ' + event.pathname)
             pass
 
-parser = OptionParser(conflict_handler="resolve")
-parser.set_usage("ircecho [--infile=<filename>] <channel> <nickname> <server>")
-parser.add_option("--infile", dest="infile",
-    help="Read input from the specific file instead of from stdin")
+
+parser = OptionParser(conflict_handler='resolve')
+parser.set_usage('ircecho [--infile=<filename>] <channel> <nickname> <server>')
+parser.add_option('--infile', dest='infile',
+                  help='Read input from the specific file instead of from stdin')
 (options, args) = parser.parse_args()
 chans = args[0]
 nickname = args[1]
