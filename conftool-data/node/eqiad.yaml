@@ -95,8 +95,6 @@ eqiad:
     mw1218.eqiad.wmnet: [apache2,nginx]
     mw1219.eqiad.wmnet: [apache2,nginx]
     mw1220.eqiad.wmnet: [apache2,nginx]
-    mw1236.eqiad.wmnet: [apache2,nginx]
-    mw1237.eqiad.wmnet: [apache2,nginx]
     mw1238.eqiad.wmnet: [apache2,nginx]
     mw1239.eqiad.wmnet: [apache2,nginx]
     mw1240.eqiad.wmnet: [apache2,nginx]
@@ -282,6 +280,8 @@ eqiad:
   thumbor:
     thumbor1001.eqiad.wmnet: [thumbor]
     thumbor1002.eqiad.wmnet: [thumbor]
+    thumbor1003.eqiad.wmnet: [thumbor]
+    thumbor1004.eqiad.wmnet: [thumbor]
   prometheus:
     prometheus1003.eqiad.wmnet: [prometheus]
     prometheus1004.eqiad.wmnet: [prometheus]
