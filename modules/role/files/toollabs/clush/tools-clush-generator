@@ -44,6 +44,8 @@ TOOLS_PREFIX_CLASSIFIER = {
     'precise-dev': 'precise-dev',
     'docker-builder': 'docker-builder',
     'prometheus': 'prometheus',
+    'paws-master': 'paws-master',
+    'paws-worker': 'paws-worker',
     '': 'all',
 }
 
