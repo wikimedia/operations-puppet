@@ -3,6 +3,15 @@ class role::zuul::merger {
 
     include ::zuul::monitoring::merger
 
+    if os_version('debian == jessie') {
+        apt::pin { 'git_from_backports':
+            package  => 'git',
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Class['contint::zuul::git_daemon'],
+        }
+    }
+
     $conf_common = hiera('zuul::common')
     $conf_merger = hiera('zuul::merger')
     class { '::zuul::merger':
