@@ -92,8 +92,9 @@ dump_data="mysqldump -h $master_host $dump_opts --no-create-info --insert-ignore
 master_tables_query="select table_name from information_schema.tables where table_schema = '$database'"
 slave_tables_query="select table_name from information_schema.tables where table_schema = '$slave_database'"
 
-# Add and table_name = $table at the end of this query to use it
+# Add and table_name = $table at the end of these queries to use them
 has_id_column_query="select count(*) from information_schema.columns where table_schema = '$database' and column_name = 'id'"
+has_timestamp_column_query="select count(*) from information_schema.columns where table_schema = '$database' and column_name = 'timestamp'"
 
 set -e
 
@@ -107,12 +108,17 @@ while true; do
 
         # If no new events for this table since cutoff_days ago, don't attempt to replicate.
         if [ $cutoff_days -ne 0 ]; then
-            cutoff_timestamp=$(date --date="$cutoff_days days ago" +'%Y%m%d%H%M%S')
 
-            max_master_timestamp=$($master $database -e "select max(timestamp) from \`$table\` where timestamp >= '$cutoff_timestamp'")
-            if [ "${max_master_timestamp}" = "NULL" ]; then
-                echo " (no new data on master in last $cutoff_days days, skipping)"
-                continue
+            # only run this query if the table has a timestamp column
+            # i.e. is an EventLogging Capsule based table.
+            if [ $($master -e "$has_timestamp_column_query and table_name = '$table'") -eq 1 ]; then
+                cutoff_timestamp=$(date --date="$cutoff_days days ago" +'%Y%m%d%H%M%S')
+
+                max_master_timestamp=$($master $database -e "select max(timestamp) from \`$table\` where timestamp >= '$cutoff_timestamp'")
+                if [ "${max_master_timestamp}" = "NULL" ]; then
+                    echo " (no new data on master in last $cutoff_days days, skipping)"
+                    continue
+                fi
             fi
         fi
 
