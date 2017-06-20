@@ -19,7 +19,7 @@ class ircecho (
 
     file { '/usr/local/bin/ircecho':
         ensure => 'present',
-        source => 'puppet:///modules/ircecho/ircecho',
+        source => 'puppet:///modules/ircecho/ircecho.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
