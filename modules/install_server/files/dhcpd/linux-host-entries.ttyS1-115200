@@ -4301,16 +4301,6 @@ host mw1235 {
     fixed-address mw1235.eqiad.wmnet;
 }
 
-host mw1236 {
-    hardware ethernet B0:83:FE:CF:0C:3A;
-    fixed-address mw1236.eqiad.wmnet;
-}
-
-host mw1237 {
-    hardware ethernet B0:83:FE:CF:0C:72;
-    fixed-address mw1237.eqiad.wmnet;
-}
-
 host mw1238 {
     hardware ethernet B0:83:FE:CF:13:47;
     fixed-address mw1238.eqiad.wmnet;
@@ -4589,6 +4579,16 @@ host thumbor1001 {
 host thumbor1002 {
     hardware ethernet 14:18:77:61:B0:87;
     fixed-address thumbor1002.eqiad.wmnet;
+}
+
+host thumbor1003 {
+    hardware ethernet B0:83:FE:CF:0C:3A;
+    fixed-address thumbor1003.eqiad.wmnet;
+}
+
+host thumbor1004 {
+    hardware ethernet B0:83:FE:CF:0C:72;
+    fixed-address thumbor1004.eqiad.wmnet;
 }
 
 host mw1293 {
