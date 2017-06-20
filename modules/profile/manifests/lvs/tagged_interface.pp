@@ -1,6 +1,4 @@
 define profile::lvs::tagged_interface($interfaces) {
-    warning($title)
-    warning($interfaces[$title])
     $vlan_info = $interfaces[$title]
     $vlan_id = $vlan_info['id']
     if $::hostname in $vlan_info['iface'] {
