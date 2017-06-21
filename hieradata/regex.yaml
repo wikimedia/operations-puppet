@@ -138,7 +138,7 @@ swift_be_codfw_hp:
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
 
 swift_be_eqiad_dell:
-  __regex: !ruby/regexp /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^ms-be101[3-5]\.eqiad\.wmnet$/
   swift_storage_drives: [
           '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
           '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
