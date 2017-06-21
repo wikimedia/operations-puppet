@@ -1602,11 +1602,7 @@ node /^ms-fe100[6-8]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-be10(0[0-9]|1[0-2])\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-node /^ms-be101[3-5]\.eqiad\.wmnet$/ {
+node /^ms-be1001[3-5]\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
