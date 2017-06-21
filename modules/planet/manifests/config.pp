@@ -2,9 +2,6 @@
 define planet::config {
 
     if os_version('debian == stretch') {
-        file { '/etc/rawdog':
-            ensure => 'directory'
-        }
         $config_path = '/etc/rawdog'
     } else {
         $config_path = '/usr/share/planet-venus/wikimedia'

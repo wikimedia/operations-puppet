@@ -34,13 +34,18 @@ class planet (
     include ::planet::user
     include ::planet::index_site
 
-    # TODO change this to be one per language
     if os_version('debian == stretch') {
         $logo_file = '/var/www/planet/planet-wm2.png'
+
+        # package doesn't come with /etc/ dir
+        file { '/etc/rawdog':
+            ensure => 'directory'
+        }
     } else {
-        $logo_file = '/usr/share/planet-venus/wikimedia/theme/common/images/planet-wm2.png'
+        $logo_file = '/usr/share/planet-venus/theme/common/images/planet-wm2.png'
     }
 
+    # TODO change this to be one per language
     file { $logo_file:
         source  => $logo_file;
     }
