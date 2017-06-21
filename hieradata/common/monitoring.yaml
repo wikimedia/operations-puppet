@@ -120,6 +120,8 @@ monitoring::groups:
     description: eqiad maps servers
   maps_codfw:
     description: codfw maps servers
+  maps-test_codfw:
+    description: codfw maps test servers
 
 # MediaWiki
   appserver_eqiad:
