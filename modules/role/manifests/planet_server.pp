@@ -5,6 +5,6 @@ class role::planet_server {
     include ::profile::planet::venus
 
     system::role { 'planet_server':
-        description => 'Planet (venus) weblog aggregator'
+        description => 'Planet-venus or rawdog RSS feed aggregator'
     }
 }

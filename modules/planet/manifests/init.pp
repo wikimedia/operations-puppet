@@ -35,8 +35,14 @@ class planet (
     include ::planet::index_site
 
     # TODO change this to be one per language
-    file { '/usr/share/planet-venus/theme/common/images/planet-wm2.png':
-        source  => 'puppet:///modules/planet/theme/images/planet-wm2.png';
+    if os_version('debian == stretch') {
+        $logo_file = '/var/www/planet/planet-wm2.png'
+    } else {
+        $logo_file = '/usr/share/planet-venus/wikimedia/theme/common/images/planet-wm2.png'
+    }
+
+    file { $logo_file:
+        source  => $logo_file;
     }
 
     # things done per each language version
