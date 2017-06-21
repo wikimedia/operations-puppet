@@ -1,4 +1,4 @@
-# defined type: index.html and css theme for a planet-venus language
+# defined type: index.html and css theme for a planet-venus or rawdog language
 define planet::theme {
 
     # file permission defaults
@@ -14,21 +14,28 @@ define planet::theme {
         default => 'planet.css',
     }
 
+
+    if os_version('debian == stretch') {
+        $theme_path = '/etc/rawdog/theme/wikimedia'
+    } else {
+        $theme_path = '/usr/share/planet-venus/theme/wikimedia'
+    }
+
     # theme directory
-    file { "/usr/share/planet-venus/theme/wikimedia/${title}":
+    file { "${theme_path}/${title}":
         ensure  => 'directory',
     }
     # index.html template
-    file { "/usr/share/planet-venus/theme/wikimedia/${title}/index.html.tmpl":
+    file { "${theme_path}/${title}/index.html.tmpl":
         ensure  => 'present',
         content => template('planet/html/index.html.tmpl.erb');
     }
     # theme config file
-    file { "/usr/share/planet-venus/theme/wikimedia/${title}/config.ini":
+    file { "${theme_path}/${title}/config.ini":
         source  => 'puppet:///modules/planet/theme/config.ini';
     }
     # style sheet
-    file { "/usr/share/planet-venus/theme/wikimedia/${title}/planet.css":
+    file { "${theme_path}/${title}/planet.css":
         source  => "puppet:///modules/planet/theme/${css_file}";
     }
 
