@@ -36,11 +36,6 @@ class planet (
 
     if os_version('debian == stretch') {
         $logo_file = '/var/www/planet/planet-wm2.png'
-
-        # package doesn't come with /etc/ dir
-        file { '/etc/rawdog':
-            ensure => 'directory'
-        }
     } else {
         $logo_file = '/usr/share/planet-venus/theme/common/images/planet-wm2.png'
     }
