@@ -7,7 +7,7 @@ groups:
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
-              yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen]
+              yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -237,7 +237,7 @@ groups:
               joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
-              dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
+              dcausse, bd808, tjones, mobrovac, drewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
@@ -1997,11 +1997,11 @@ users:
     uid: 4891
     email: agomez@wikimedia.org
   jgirault:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jgirault
     realname: Julien Girault
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMR2TEdzI8TP4Khbvm7AOqX/dTKWoxtrcb4fb0gDzocfdiiONAPPhTQc4zsN5RtGUnNhZYm/iUTH2wUQi40uvupjdcKr0RcfAlfrShiqouNQemdOjcy9YQ7CPHmFjs+o3qmpS+STT+FBiRKHC9upy25/UXwW1FXizq1/BINB83WRdeLO5SgRsp1gEKXNeClhPYW8YTUMLC2TqP9P5fdel+mcFKCKhO4HH0SIAXHDoMht2spdLAW+PMxdX0t1iSrXM4x4cV1bQ9AFm+4Pji4zSr+lliv7/G5dR5hw6JCjJJ3DaDM1j5T+oRpc+VfwIIrzl/DgcpAl9pohZJ5Gt8GXT8EyJsDo0crN0aI7+n1sqW/mncNqYHzcZ+EaVsZEXMLrH/hF794dss+rSyBMHZ4/+rN2x1RGLZMyseaAceAh5Zp26hDuHVHg0GZLl5hZ9toadNJHIag/WfNkJiJ4Z5lEwc7kMJV/LHalCi+tdwNN7Ai6m4hLohiCIDn2p+G1umtta8eUJRTnS0qWyn6W72PHXqJlXit4WUzDtOWo5oWdvMcvN26WC10oA1QtbYoLdNulNdpJCk8Aszl9NkoraVt3GWTWpWEvisCFdmNS859vhKjw+cyDJ4jO9rAwFSO8rNK3NxPD9OLEBL8ysjMyB8R4swhwxS+Fof5hgp/Ldr7PSWlw== jgirault@wikimedia.org]
+    ssh_keys: []
     uid: 13211
     email: jgirault@wikimedia.org
   jdrewniak:
