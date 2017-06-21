@@ -131,7 +131,7 @@ sed -i "s%^URI.*%URI             ${ldaphosts}%g" /etc/ldap/ldap.conf
 echo "" > /sbin/resolvconf
 mkdir /etc/dhcp/dhclient-enter-hooks.d
 cat > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate <<EOF
-:#!/bin/sh
+#!/bin/sh
 make_resolv_conf() {
         :
 }

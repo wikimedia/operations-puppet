@@ -81,7 +81,7 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 echo "" > /sbin/resolvconf
 mkdir /etc/dhcp/dhclient-enter-hooks.d
 cat > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate <<EOF
-:#!/bin/sh
+#!/bin/sh
 make_resolv_conf() {
         :
 }
