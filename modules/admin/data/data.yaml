@@ -237,7 +237,7 @@ groups:
               joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
-              dcausse, bd808, tjones, mobrovac, drewniak, ejegg, jdcc, ori,
+              dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
@@ -2003,7 +2003,6 @@ users:
     realname: Julien Girault
     ssh_keys: []
     uid: 13211
-    email: jgirault@wikimedia.org
   jdrewniak:
     ensure: present
     gid: 500
