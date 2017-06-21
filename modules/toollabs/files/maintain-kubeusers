@@ -263,8 +263,8 @@ def write_kubeconfig(user, master):
         os.fchown(f, int(user.id), int(user.id))
         os.fchmod(f, 0o400)
         # Prevent removal or modification of the credentials file by users
-        subprocess.check_output(['/usr/bin/chattr', '+i', file_path])
-        logging.info('Write config in %s', path)
+        subprocess.check_output(['/usr/bin/chattr', '+i', path])
+        logging.info('Wrote config in %s', path)
     except:
         logging.exception()
         raise
