@@ -8,11 +8,8 @@ class role::statistics::web inherits role::statistics::base {
     include ::statistics::web
 
     # # include statistics web sites
-    include ::statistics::sites::datasets
     include ::statistics::sites::metrics
     include ::statistics::sites::stats
-    # analytics.wikimedia.org will eventually supercede
-    # datasets and stats.
     include ::statistics::sites::analytics
     # Proxy to securely access Yarn (authentication via LDAP)
     include ::statistics::sites::yarn
