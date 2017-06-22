@@ -47,6 +47,13 @@ class role::mariadb::core(
         class {'mariadb::service':
             package => 'wmf-mariadb101',
         }
+    } elsif (os_version('debian >= stretch')) {
+        # No init.d hack needed for now on stretch
+        # But we may need user-systemd sub-unit
+        class {'mariadb::packages_wmf':
+            package => 'wmf-mariadb101',
+        }
+        # TODO: manage custom systemd preferences like ulimits
     } else {
         include mariadb::packages_wmf
         include mariadb::service
