@@ -96,7 +96,8 @@ class role::kafka::analytics::broker {
         # This should guarantee 4 big partitions like text/upload to co-exist
         # on the same disk partition leaving enough space for other ones.
         # More info in: T136690
-        log_retention_bytes             => 375809638400,
+        log_retention_bytes             => hiera('confluent::kafka::broker::log_retention_bytes', 375809638400),
+        log_retention_hours             => hiera('confluent::kafka::broker::log_retention_hours', 168),
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
