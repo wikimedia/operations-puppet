@@ -42,7 +42,9 @@ class planet (
 
     # TODO change this to be one per language
     file { $logo_file:
-        source  => 'puppet:///modules/planet/theme/images/planet-wm2.png';
+        source => 'puppet:///modules/planet/theme/images/planet-wm2.png';
+        owner  => 'planet',
+        group  => 'www-data',
     }
 
     # things done per each language version
