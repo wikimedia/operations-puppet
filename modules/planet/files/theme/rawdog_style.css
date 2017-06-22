@@ -1,0 +1,113 @@
+/* Default stylesheet for rawdog. Customise this as you like.
+   Adam Sampson <ats@offog.org> */
+.xmlbutton {
+	/* From Dylan Greene's suggestion:
+           http://www.dylangreene.com/blog.asp?blogID=91 */
+	border: 1px solid;
+	border-color: #FC9 #630 #330 #F96;
+	padding: 0 3px;
+	font: bold 10px sans-serif;
+	color: #FFF;
+	background: #F60;
+	text-decoration: none;
+	margin: 0;
+}
+/* Scale down large images in feeds */
+img {
+	max-width: 100%;
+	height: auto;
+}
+html {
+	margin: 0;
+	padding: 0;
+}
+body {
+	color: black;
+	background-color: white;
+	margin: 0;
+	padding: 10px;
+	font-size: medium;
+}
+#header {
+	background-color: #ffe;
+	border: 1px solid gray;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+h1 {
+	font-weight: bold;
+	font-size: xx-large;
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+#items {
+}
+.day {
+	clear: both;
+}
+h2 {
+	font-weight: bold;
+	font-size: x-large;
+	text-align: left;
+	margin: 10px 0;
+	padding: 0;
+}
+.time {
+	clear: both;
+}
+h3 {
+	font-weight: bold;
+	font-size: large;
+	text-align: left;
+	margin: 10px 0;
+	padding: 0;
+}
+.item {
+	margin: 20px 30px;
+	border: 1px solid gray;
+	clear: both;
+}
+.itemheader {
+	padding: 6px;
+	margin: 0;
+	background-color: #eee;
+}
+.itemtitle {
+	font-weight: bold;
+}
+.itemfrom {
+	font-style: italic;
+}
+.itemdescription {
+	border-top: 1px solid gray;
+	margin: 0;
+	padding: 6px;
+}
+#feedstatsheader {
+}
+#feedstats {
+}
+#feeds {
+	margin: 10px 0;
+	border: 1px solid gray;
+	border-spacing: 0;
+}
+#feedsheader TH {
+	background-color: #eee;
+	border-bottom: 1px solid gray;
+	padding: 5px;
+	margin: 0;
+}
+.feedsrow TD {
+	padding: 5px 10px;
+	margin: 0;
+}
+#footer {
+	background-color: #ffe;
+	border: 1px solid gray;
+	margin-top: 20px;
+	padding: 10px;
+}
+#aboutrawdog {
+}
