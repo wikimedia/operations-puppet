@@ -40,7 +40,8 @@ class statistics::packages {
         # GNU Scientific Library (GSL) requested by bearloga (Mikhail)
         'libgsl0ldbl',     # GSL part 1/3
         'gsl-bin',         # GSL part 2/3
-        'libgsl0-dev'      # GSL part 3/3
+        'libgsl0-dev',     # GSL part 3/3
+        'pandoc'           # Requested by bearloga (Mikhail); necessary for using RMarkdown and performing format conversions
     ])
 
     # Python packages
@@ -67,7 +68,7 @@ class statistics::packages {
         'python-pymysql',
     ])
 
-    # This is a custom package and currently not available on jessie, don't install on jessie for now 
+    # This is a custom package and currently not available on jessie, don't install on jessie for now
     if os_version('ubuntu >= trusty') {
         ensure_packages([
             'python-pygeoip', # For geo-encoding IP addresses
