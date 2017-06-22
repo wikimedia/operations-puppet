@@ -38,25 +38,24 @@ class role::mariadb::core(
 
     # FIXME: Get package, socket, datadir, etc. from hiera
     # FIXME: Support multiple instances per host
-    # db2062 is a one-time test of MariaDB 10.1, which doesn't have yet
-    # proper support (see T148507 & T116557)
-    if ($::hostname == 'db2062') {
-        class {'mariadb::packages_wmf':
-            package => 'wmf-mariadb101',
-        }
-        class {'mariadb::service':
-            package => 'wmf-mariadb101',
-        }
-    } elsif (os_version('debian >= stretch')) {
-        # No init.d hack needed for now on stretch
-        # But we may need user-systemd sub-unit
-        class {'mariadb::packages_wmf':
-            package => 'wmf-mariadb101',
-        }
+    if (os_version('debian >= stretch')) {
+        # stretch defaults to MariaDB 10.1 with systemd
+        $package = 'wmf-mariadb101'
         # TODO: manage custom systemd preferences like ulimits
+        # ignore service managing for now
+        $initd = false;
     } else {
-        include mariadb::packages_wmf
-        include mariadb::service
+        # jessie, trusty defaults to MariaDB 10.0 with init.d
+        $package = 'wmf-mariadb10'
+        $initd = true;
+    }
+    class {'mariadb::packages_wmf':
+        package => $package,
+    }
+    if $initd {
+        class {'mariadb::service':
+            package => $package;
+        }
     }
 
     # Read only forced on also for the masters of the primary datacenter
