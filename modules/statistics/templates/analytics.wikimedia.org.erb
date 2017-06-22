@@ -1,5 +1,6 @@
 <VirtualHost *:80>
   ServerName analytics.wikimedia.org
+  ServerAlias datasets.wikimedia.org
 
   DocumentRoot <%= @document_root %>
 
@@ -24,6 +25,13 @@
        ExpiresActive On
        ExpiresDefault "modification plus 1 hour"
    </IfModule>
+
+  <IfModule mod_rewrite.c>
+      # Redirect all requests to datasets.wikimedia.org to analytics.wikimedia.org/datasets/archive
+      RewriteEngine On
+      RewriteCond %{HTTP_HOST}  ^datasets.wikimedia.org [nocase]
+      RewriteRule ^(.*)$        https://analytics.wikimedia.org/datasets/archive$1 [last,redirect=301]
+  </IfModule>
 
   LogLevel warn
   ErrorLog /var/log/apache2/analytics_error.log
