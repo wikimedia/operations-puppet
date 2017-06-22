@@ -1758,10 +1758,10 @@ node /^mw211[89]\.codfw\.wmnet$/ {
     role(mediawiki::videoscaler)
 }
 
-# ROW C codfw appservers: mw2148-mw2234
+# ROW C codfw appservers: mw2150-mw2234
 
-#mw2148-mw2151 are imagescalers
-node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
+#mw2150-mw2151 are imagescalers
+node /^mw215[01]\.codfw\.wmnet$/ {
     role(mediawiki::imagescaler)
 }
 
@@ -1824,8 +1824,8 @@ node /^mw225[1-3]\.codfw\.wmnet$/ {
     include ::base::firewall
 }
 
-#mw2254-2260 are appservers
-node /^mw22(5[4-9]|60)\.codfw\.wmnet$/ {
+#mw2254-2258 are appservers
+node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
@@ -2330,7 +2330,11 @@ node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
 }
 
 # Thumbor servers for MediaWiki image scaling
-node /^thumbor100[1234].eqiad.wmnet/ {
+node /^thumbor100[1234]\.eqiad\.wmnet/ {
+    role(thumbor::mediawiki)
+}
+
+node /^thumbor200[1234]\.codfw\.wmnet/ {
     role(thumbor::mediawiki)
 }
 

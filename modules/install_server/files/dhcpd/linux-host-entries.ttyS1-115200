@@ -4535,6 +4535,26 @@ host thumbor1004 {
     fixed-address thumbor1004.eqiad.wmnet;
 }
 
+host thumbor2001 {
+    hardware ethernet B0:83:FE:DE:F7:BF;
+    fixed-address thumbor2001.codfw.wmnet;
+}
+
+host thumbor2002 {
+    hardware ethernet B0:83:FE:DF:10:A0;
+    fixed-address thumbor2002.codfw.wmnet;
+}
+
+host thumbor2003 {
+    hardware ethernet 18:66:DA:84:31:40;
+    fixed-address thumbor2003.codfw.wmnet;
+}
+
+host thumbor2004 {
+    hardware ethernet 18:66:DA:84:0E:A4;
+    fixed-address thumbor2004.codfw.wmnet;
+}
+
 host mw1293 {
     hardware ethernet 14:18:77:61:4A:5D;
     fixed-address mw1293.eqiad.wmnet;
@@ -4862,16 +4882,6 @@ host mw2146 {
 host mw2147 {
     hardware ethernet B0:83:FE:DE:F4:99;
     fixed-address mw2147.codfw.wmnet;
-}
-
-host mw2148 {
-    hardware ethernet B0:83:FE:DE:F7:BF;
-    fixed-address mw2148.codfw.wmnet;
-}
-
-host mw2149 {
-    hardware ethernet B0:83:FE:DF:10:A0;
-    fixed-address mw2149.codfw.wmnet;
 }
 
 host mw2150 {
@@ -5421,16 +5431,6 @@ host mw2257 {
 host mw2258 {
     hardware ethernet 18:66:DA:84:14:49;
     fixed-address mw2258.codfw.wmnet;
-}
-
-host mw2259 {
-    hardware ethernet 18:66:DA:84:31:40;
-    fixed-address mw2259.codfw.wmnet;
-}
-
-host mw2260 {
-    hardware ethernet 18:66:DA:84:0E:A4;
-    fixed-address mw2260.codfw.wmnet;
 }
 
 host naos {
