@@ -29,6 +29,7 @@ class base::standard_packages {
         'ncdu',
         'ngrep',
         'pv',
+        'psmisc',
         'quickstack',
         'screen',
         'strace',
