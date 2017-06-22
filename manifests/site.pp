@@ -2213,7 +2213,8 @@ node /^rhodium.eqiad.wmnet/ {
 node 'thorium.eqiad.wmnet' {
     # thorium is mainly used to host Analytics websites like:
     # - https://stats.wikimedia.org (Wikistats)
-    # - https://datasets.wikimedia.org
+    # - https://analytics.wikimedia.org (Analytics dashboards and datasets)
+    # - https://datasets.wikimedia.org (deprecated, redirects to analytics.wm.org/datasets/archive)
     # - https://metrics.wikimedia.org (https://metrics.wmflabs.org/ (Wikimetrics))
     # - https://pivot.wikimedia.org (Imply's Pivot UI for Druid data)
     # - https://hue.wikimedia.org (Hadoop User Experience GUI)
