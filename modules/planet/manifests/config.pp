@@ -3,9 +3,11 @@ define planet::config {
 
     if os_version('debian == stretch') {
         $config_path = '/etc/rawdog'
+        $config_file = 'config'
         $feed_src = 'feeds_rawdog'
     } else {
         $config_path = '/usr/share/planet-venus/wikimedia'
+        $config_file = 'config.ini'
         $feed_src = 'feeds'
     }
 
@@ -17,9 +19,9 @@ define planet::config {
         group  => 'planet',
     }
 
-    file { "${config_path}/${title}/config.ini":
+    file { "${config_path}/${title}/${config_file}":
         ensure  => 'present',
-        path    => "${config_path}/${title}/config.ini",
+        path    => "${config_path}/${title}/${config_file}",
         owner   => 'planet',
         group   => 'planet',
         mode    => '0444',
