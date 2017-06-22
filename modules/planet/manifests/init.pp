@@ -42,7 +42,7 @@ class planet (
 
     # TODO change this to be one per language
     file { $logo_file:
-        source  => $logo_file;
+        source  => 'puppet:///modules/planet/theme/images/planet-wm2.png';
     }
 
     # things done per each language version
