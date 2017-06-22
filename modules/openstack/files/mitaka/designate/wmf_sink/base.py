@@ -51,26 +51,26 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         event_data = data.copy()
 
+        fqdn = cfg.CONF[self.name].fqdn_format % event_data
+        fqdn = fqdn.rstrip('.').encode('utf8')
+
         # Clean salt and puppet keys for deleted instance
-        if (cfg.CONF[self.name].puppet_key_format and
-                cfg.CONF[self.name].puppet_master_host):
-            puppetkey = cfg.CONF[self.name].puppet_key_format % event_data
-            puppetkey = puppetkey.rstrip('.').encode('utf8')
-            LOG.debug('Cleaning puppet key %s' % puppetkey)
+        if cfg.CONF[self.name].puppet_master_host:
+            LOG.debug('Cleaning puppet key %s' % fqdn)
             self._run_remote_command(cfg.CONF[self.name].puppet_master_host,
                                      cfg.CONF[self.name].certmanager_user,
                                      'sudo puppet cert clean %s' %
-                                     pipes.quote(puppetkey))
+                                     pipes.quote(fqdn))
 
-        if (cfg.CONF[self.name].salt_key_format and
-                cfg.CONF[self.name].salt_master_host):
-            saltkey = cfg.CONF[self.name].salt_key_format % event_data
-            saltkey = saltkey.rstrip('.').encode('utf8')
-            LOG.debug('Cleaning salt key %s' % saltkey)
+        if cfg.CONF[self.name].salt_master_host:
+            LOG.debug('Cleaning salt key %s' % fqdn)
             self._run_remote_command(cfg.CONF[self.name].salt_master_host,
                                      cfg.CONF[self.name].certmanager_user,
                                      'sudo salt-key -y -d  %s' %
-                                     pipes.quote(saltkey))
+                                     pipes.quote(fqdn))
+
+        # Clean up the puppet config for this instance, if there is one
+        self._delete_puppet_config(data['tenant_id'], fqdn)
 
         # Finally, delete any proxy records pointing to this instance.
         #
@@ -115,6 +115,15 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             return False
         return True
 
+    def _delete_puppet_config(self, projectid, fqdn):
+        endpoint = cfg.CONF[self.name].puppet_config_backend
+        url = "%s/%s/prefix/%s" % (endpoint, projectid, fqdn)
+        try:
+            requests.delete(url, verify=False)
+        except requests.exceptions.ConnectionError:
+            # No prefix, no problem!
+            pass
+
     def _delete_proxies_for_ip(self, project, ip):
         project_proxies = self._get_proxy_list_for_project(project)
         for proxy in project_proxies:
@@ -130,6 +139,37 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 requrl = endpoint.replace("$(tenant_id)s", project)
                 req = requests.delete(requrl + '/mapping/' + domain)
                 req.raise_for_status()
+
+                LOG.warning("We also need to delete the dns entry for %s" % proxy)
+                self._delete_proxy_dns_record(proxy['domain'])
+
+    def _delete_proxy_dns_record(self, proxydomain):
+        if not proxydomain.endswith('.'):
+            proxydomain += '.'
+        context = DesignateContext().elevated()
+        context.all_tenants = True
+        context.edit_managed_records = True
+
+        parentdomain = '.'.join(proxydomain.split('.')[1:])
+        crit = {'name': parentdomain}
+
+        domainrecords = central_api.find_domains(context, crit)
+        if len(domainrecords) != 1:
+            LOG.warning("Unable to clean up this DNS proxy record. "
+                        "Looked for domain %s and found %s" % (parentdomain,
+                                                               domainrecords))
+            return
+
+        crit = {'domain_id': domainrecords[0].id, 'name': proxydomain}
+        recordsets = central_api.find_recordsets(context, crit)
+        if len(recordsets) != 1:
+            LOG.warning("Unable to clean up this DNS proxy record. "
+                        "Looked for recordsets for %s and found %s" (proxydomain,
+                                                                     recordsets))
+            return
+
+        LOG.warning("Deleting DNS entry for proxy: %s" % recordsets[0])
+        central_api.delete_recordset(context, domainrecords[0].id, recordsets[0].id)
 
     def _get_proxy_list_for_project(self, project):
         endpoint = self._get_proxy_endpoint()
