@@ -7,4 +7,4 @@ swift::proxy::memcached_servers: [
 # no trailing comma!
 ]
 
-swift::proxy::thumborhost: 'thumbor.svc.eqiad.wmnet:8800'
+swift::proxy::thumborhost: 'thumbor.svc.codfw.wmnet:8800'
