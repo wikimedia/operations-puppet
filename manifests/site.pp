@@ -1185,6 +1185,12 @@ node 'labtestcontrol2001.wikimedia.org' {
 
 }
 
+node 'labtestpuppetmaster2001.wikimedia.org' {
+    include ::standard
+    include ::base::firewall
+    role(labs::puppetmaster)
+}
+
 node 'labtestservices2001.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest,
         labs::dns_floating_ip_updater)
