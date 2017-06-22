@@ -17,6 +17,11 @@ define planet::theme {
 
     if os_version('debian == stretch') {
         $theme_path = '/etc/rawdog/theme/wikimedia'
+
+        file { "/var/www/planet/${title}/style.css":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/rawdog_style.css';
+        }
     } else {
         $theme_path = '/usr/share/planet-venus/theme/wikimedia'
     }
@@ -34,9 +39,8 @@ define planet::theme {
     file { "${theme_path}/${title}/config.ini":
         source  => 'puppet:///modules/planet/theme/config.ini';
     }
-    # style sheet
+    # style sheet for planet-venus
     file { "${theme_path}/${title}/planet.css":
         source  => "puppet:///modules/planet/theme/${css_file}";
     }
-
 }
