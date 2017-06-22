@@ -140,6 +140,37 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 req = requests.delete(requrl + '/mapping/' + domain)
                 req.raise_for_status()
 
+                LOG.warning("We also need to delete the dns entry for %s" % proxy)
+                self._delete_proxy_dns_record(proxy['domain'])
+
+    def _delete_proxy_dns_record(self, proxydomain):
+        if not proxydomain.endswith('.'):
+            proxydomain += '.'
+        context = DesignateContext().elevated()
+        context.all_tenants = True
+        context.edit_managed_records = True
+
+        parentdomain = '.'.join(proxydomain.split('.')[1:])
+        crit = {'name': parentdomain}
+
+        domainrecords = central_api.find_domains(context, crit)
+        if len(domainrecords) != 1:
+            LOG.warning("Unable to clean up this DNS proxy record. "
+                        "Looked for domain %s and found %s" % (parentdomain,
+                                                               domainrecords))
+            return
+
+        crit = {'domain_id': domainrecords[0].id, 'name': proxydomain}
+        recordsets = central_api.find_recordsets(context, crit)
+        if len(recordsets) != 1:
+            LOG.warning("Unable to clean up this DNS proxy record. "
+                        "Looked for recordsets for %s and found %s" (proxydomain,
+                                                                     recordsets))
+            return
+
+        LOG.warning("Deleting DNS entry for proxy: %s" % recordsets[0])
+        central_api.delete_recordset(context, domainrecords[0].id, recordsets[0].id)
+
     def _get_proxy_list_for_project(self, project):
         endpoint = self._get_proxy_endpoint()
         requrl = endpoint.replace("$(tenant_id)s", project)
