@@ -242,7 +242,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema]
+              kaldari, goransm, ema, dworley]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2503,6 +2503,17 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjuVAhEH0j3RgCiVI8iWK0TIx7wR1ITXQbb92WizSNS7bufl6LksGS87u2fJc0QmfMQMvNYgTfj6ie9wnekARRJ/shIVLx2C44PXV8/veg5yZtOt07vRfqGmE0rdU/7GKB2h3688yB3uecNYkTatqVUH9hG2Z4C/zC3XRWJ6SWXy2FUhBqAsUXKvpfoQgx1jNLm1TWKBbbKYT2VjAYuXbtRhAhTXfz4oCHDZeNnOKg57rIEnen+FKXr4cMpL8pJMQNAk+jSDOJyyBdmDN3fnNY0Rdp7eFn3l6PhoTEqDUicVj6OH+zye+q5oK6S0EoGocCV1nHsP8t1ZFLkXY7oWMzKlbj9G7eG/Tf/p+xgRYL3F9wegLGwyBb6g5btS1CRb4FPE8OF1AZOU+9B9c+qL+Q33rAC3XfUb0Dqzv1OInZYFkkKoWpblpAiG6S9y1KaKOIeFYGJioCvs0dI89hjjxGZWR5EMIfclyvpdrWVitoLcZ6iVvVF73CsR0OpiHNwBGXX3fOw6IlP5T0lXOoPQImPEqlAZoaChvrH+GMCAmW6bEgMvW4iwsE8ajKKT/2riql2ZtTdUwiQCcSYCjAzhQCgsn43K0o/P5RME8dQTiprKC1rqQYYZSJryqZ7cUoBeE5nB+p3wpF4jPqcrKXuCrAuRvXEmWPX1y0e0qBZJNjlQ== kherron@wikimedia.org
     uid: 17187
     email: kherron@wikimedia.org
+  dworley:
+    ensure: present
+    gid: 500
+    name: dworley
+    realname: Daniel Worley
+    ssh_keys:
+      - ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlyZ7OS3200wsY9HIv2i0FlN3tbUBvzXL/AqvGXADDZscRK3DOUTAAyv/oYDoiYGe8V/5GIujrN2EQ1BPo4FFqmQfHIjNv5yJ5xZJmPeFUtBlOLLMa1sknfAcYiOpvhn0T7gLpipf0JUq+0J5RmbILD0xq5GHZAu3rYAJUtz4ameoPkDy1mGJk66ajZw+ufnv+g4zTXG7RFAT4r1Tui9wHfNmQdxuLGhUsdjOWxUwJXIqSzhdXfhQGx0JkZLPPwLuKPmNo58GQESe3kZM6a7GqSBhvU8sDdLP21LbOKKyeISpn+V2WAa+XPFF6FI0cbhIHF7RGMvV1CK2g86TAPngl dworley@slippy
+    uid: 17235
+    email: dworley@opensourceconnections.com
+    expiry_date: 2017-08-31
+    expiry_contact: ebernhardson@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
