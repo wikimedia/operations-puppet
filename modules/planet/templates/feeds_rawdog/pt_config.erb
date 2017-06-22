@@ -1,0 +1,53 @@
+# rawdog config file for pt.planet
+
+plugindirs plugins
+splitstate yes
+maxarticles 200
+maxage 0
+expireage 7d
+keepmin 20
+currentonly false
+daysections true
+
+dayformat %Y-%m-%d
+timesections true
+timeformat %H:%M
+datetimeformat %Y-%m-%d %H:%M
+
+pagetemplate default
+itemtemplate default
+feedlisttemplate default
+feeditemtemplate default
+
+outputfile /var/www/planet/pt/index.html
+
+userefresh true
+showfeeds true
+
+numthreads 1
+timeout 30s
+
+ignoretimeouts false
+showtracebacks false
+verbose false
+
+blocklevelhtml true
+tidyhtml true
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+newfeedperiod 3h
+
+changeconfig false
+
+# the actual feed list
+
+feed 1h https://feeds.feedburner.com/Rei-artur_planetwikimedia
+feed 1h https://wikificacoes.blogspot.com/atom.xml
+feed 1h http://wiking.blogs.sapo.pt/data/rss?tag=wiki
+feed 1h https://cultivandoojardim.blogspot.com/atom.xml
+feed 1h http://gpshumano.blogs.dri.pt/category/wikipedia/feed/
+feed 1h http://bitsebots.blogs.sapo.pt/data/rss?tag=planet
+feed 1h http://blog.wikimedia.pt/feed/
+feed 1h https://andersbateva.wordpress.com/tag/wikipedia/feed/

@@ -1,0 +1,64 @@
+# rawdog config file for it.planet
+
+plugindirs plugins
+splitstate yes
+maxarticles 200
+maxage 0
+expireage 7d
+keepmin 20
+currentonly false
+daysections true
+
+dayformat %Y-%m-%d
+timesections true
+timeformat %H:%M
+datetimeformat %Y-%m-%d %H:%M
+
+pagetemplate default
+itemtemplate default
+feedlisttemplate default
+feeditemtemplate default
+
+outputfile /var/www/planet/it/index.html
+
+userefresh true
+showfeeds true
+
+numthreads 1
+timeout 30s
+
+ignoretimeouts false
+showtracebacks false
+verbose false
+
+blocklevelhtml true
+tidyhtml true
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+newfeedperiod 3h
+
+changeconfig false
+
+# the actual feed list
+
+#feed 1h http://appuntisui.polsini.net/?cat=11
+feed 1h http://appuntisui.polsini.net/?feed=rss2&cat=11
+feed 1h https://doppiequadre.wordpress.com/category/wikilife/feed/atom/
+#feed 1h https://drachinobello.wordpress.com/category/wikimedia/
+feed 1h https://drachinobello.wordpress.com/category/wikimedia/feed/atom/
+feed 1h http://www.fcvg.it/category/wikipedia/feed/
+feed 1h http://xmau.com/wp/notiziole/category/wikipedia/feed/
+#feed 1h https://wikilibri.wordpress.com/
+feed 1h https://wikilibri.wordpress.com/feed/atom/
+feed 1h http://www.wikimedia.it/feed/
+feed 1h https://aubreymcfato.com/tag/wiki/feed/atom/
+feed 1h https://wikirumors.wordpress.com/feed/atom/
+feed 1h http://dieciannidisapere.it/feed/atom/
+feed 1h https://nonnawiki.wordpress.com/feed/atom/
+feed 1h http://doppiequadre.tumblr.com/tagged/wikimedia/rss
+feed 1h http://voices.telecomitaliahub.it/tag/wikipedia/feed
+feed 1h https://nonbibliofili.wordpress.com/tag/wikimedia/feed/
+feed 1h https://medium.com/feed/@.mau./
+feed 1h https://librarianscape.com/tag/wikipedia/feed/

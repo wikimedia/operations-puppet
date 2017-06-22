@@ -1,0 +1,58 @@
+# rawdog config file for gmq.planet
+
+plugindirs plugins
+splitstate yes
+maxarticles 200
+maxage 0
+expireage 7d
+keepmin 20
+currentonly false
+daysections true
+
+dayformat %Y-%m-%d
+timesections true
+timeformat %H:%M
+datetimeformat %Y-%m-%d %H:%M
+
+pagetemplate default
+itemtemplate default
+feedlisttemplate default
+feeditemtemplate default
+
+outputfile /var/www/planet/gmq/index.html
+
+userefresh true
+showfeeds true
+
+numthreads 1
+timeout 30s
+
+ignoretimeouts false
+showtracebacks false
+verbose false
+
+blocklevelhtml true
+tidyhtml true
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+newfeedperiod 3h
+
+changeconfig false
+
+# the actual feed list
+
+feed 1h http://blog.desainali.com/category/wikipedia/feed/
+feed 1h https://calandrella.wordpress.com/tag/wikipedia/feed/atom/
+feed 1h https://newth.net/eirik/category/wikipedia/feed/
+feed 1h https://grillblogg.blogspot.com/feeds/posts/default/-/Wikipedia
+feed 1h https://jhsoby-nb.blogspot.com/feeds/posts/default/-/Wikimedia
+feed 1h https://kjetilr.blogspot.com/feeds/posts/default
+feed 1h https://kamfjord.org/feed/?cat=32
+feed 1h https://mika.elnord.in/index.php/category/wikimedia/feed/
+feed 1h https://palnatoke.org/wordpress/tag/wikipedia/feed/
+feed 1h https://blog.wegge.dk/tag/wikipedia/feed/
+feed 1h https://wikimediasverige.wordpress.com/feed/atom/
+feed 1h http://blogg.wikimedia.no/feed/
+feed 1h http://www.bepsays.com/tag/wikipedia/feed/atom/

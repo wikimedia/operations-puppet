@@ -1,0 +1,49 @@
+# rawdog config file for cs.planet
+
+plugindirs plugins
+splitstate yes
+maxarticles 200
+maxage 0
+expireage 7d
+keepmin 20
+currentonly false
+daysections true
+
+dayformat %Y-%m-%d
+timesections true
+timeformat %H:%M
+datetimeformat %Y-%m-%d %H:%M
+
+pagetemplate default
+itemtemplate default
+feedlisttemplate default
+feeditemtemplate default
+
+outputfile /var/www/planet/cs/index.html
+
+userefresh true
+showfeeds true
+
+numthreads 1
+timeout 30s
+
+ignoretimeouts false
+showtracebacks false
+verbose false
+
+blocklevelhtml true
+tidyhtml true
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+newfeedperiod 3h
+
+changeconfig false
+
+# the actual feed list
+
+feed 1h https://blog.wikimedia.cz/feed/atom/
+feed 1h https://wikipediste.blogspot.com/feeds/posts/default
+feed 1h https://okinokynko.blogspot.com/feeds/posts/default/-/wiki
+feed 1h https://okinokynko.blogspot.com/feeds/posts/default/-/Wikipedie

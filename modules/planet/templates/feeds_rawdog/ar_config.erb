@@ -1,0 +1,52 @@
+# rawdog config file for ar.planet
+
+plugindirs plugins
+splitstate yes
+maxarticles 200
+maxage 0
+expireage 7d
+keepmin 20
+currentonly false
+daysections true
+
+dayformat %Y-%m-%d
+timesections true
+timeformat %H:%M
+datetimeformat %Y-%m-%d %H:%M
+
+pagetemplate default
+itemtemplate default
+feedlisttemplate default
+feeditemtemplate default
+
+outputfile /var/www/planet/ar/index.html
+
+userefresh true
+showfeeds true
+
+numthreads 1
+timeout 30s
+
+ignoretimeouts false
+showtracebacks false
+verbose false
+
+blocklevelhtml true
+tidyhtml true
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+newfeedperiod 3h
+
+changeconfig false
+
+# the actual feed list
+
+feed 1h https://khalidyousif.wordpress.com/tag/wiki/feed/atom/
+feed 1h https://osamak.wordpress.com/category/wikipedia/feed/atom/
+feed 1h https://teqnia01.blogspot.com/feeds/posts/default/-/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7
+feed 1h http://itwadi.com/taxonomy/term/68/0/feed
+feed 1h https://akhbaraltknia.blogspot.com/feeds/posts/default/-/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7
+feed 1h https://medbachounda.blogspot.be/feeds/posts/default/-/Wiki-ar/
+feed 1h https://walaaabdelmanaem.wordpress.com/feed/

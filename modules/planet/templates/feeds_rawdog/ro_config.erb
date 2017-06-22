@@ -1,0 +1,51 @@
+# rawdog config file for ro.planet
+
+plugindirs plugins
+splitstate yes
+maxarticles 200
+maxage 0
+expireage 7d
+keepmin 20
+currentonly false
+daysections true
+
+dayformat %Y-%m-%d
+timesections true
+timeformat %H:%M
+datetimeformat %Y-%m-%d %H:%M
+
+pagetemplate default
+itemtemplate default
+feedlisttemplate default
+feeditemtemplate default
+
+outputfile /var/www/planet/ro/index.html
+
+userefresh true
+showfeeds true
+
+numthreads 1
+timeout 30s
+
+ignoretimeouts false
+showtracebacks false
+verbose false
+
+blocklevelhtml true
+tidyhtml true
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+newfeedperiod 3h
+
+changeconfig false
+
+# the actual feed list
+
+feed 1h https://www.strainu.ro/category/projects/wikipedia-projects/feed/
+feed 1h https://promitt.wordpress.com/category/wikipedia/feed/atom/
+feed 1h https://wpdist.blogspot.com/feeds/posts/default?alt=rss
+feed 1h https://rowiki.wordpress.com/feed/atom/
+feed 1h http://www.smash.ro/teme/wikipedia/feed/
+feed 1h http://wikilovesmonuments.ro/feed/
