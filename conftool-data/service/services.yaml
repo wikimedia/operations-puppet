@@ -198,8 +198,9 @@ thumbor:
     port: 8800
     datacenters:
     - eqiad
+    - codfw
     default_values:
-      pooled: 'no'
+      pooled: 'inactive'
       weight: 10
 wdqs:
   wdqs:

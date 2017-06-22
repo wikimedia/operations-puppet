@@ -1,7 +1,5 @@
 codfw:
   appserver:
-    mw2097.codfw.wmnet: [apache2,nginx]
-    mw2100.codfw.wmnet: [apache2,nginx]
     mw2101.codfw.wmnet: [apache2,nginx]
     mw2102.codfw.wmnet: [apache2,nginx]
     mw2103.codfw.wmnet: [apache2,nginx]
@@ -139,8 +137,6 @@ codfw:
     mw2252.codfw.wmnet: [apache2,nginx]
     mw2253.codfw.wmnet: [apache2,nginx]
   imagescaler:
-    mw2148.codfw.wmnet: [apache2,nginx]
-    mw2149.codfw.wmnet: [apache2,nginx]
     mw2150.codfw.wmnet: [apache2,nginx]
     mw2151.codfw.wmnet: [apache2,nginx]
     mw2244.codfw.wmnet: [apache2,nginx]
@@ -292,6 +288,11 @@ codfw:
     kafka2001.codfw.wmnet: [eventbus]
     kafka2002.codfw.wmnet: [eventbus]
     kafka2003.codfw.wmnet: [eventbus]
+  thumbor:
+    thumbor2001.codfw.wmnet: [thumbor]
+    thumbor2002.codfw.wmnet: [thumbor]
+    thumbor2003.codfw.wmnet: [thumbor]
+    thumbor2004.codfw.wmnet: [thumbor]
   prometheus:
     prometheus2003.codfw.wmnet: [prometheus]
     prometheus2004.codfw.wmnet: [prometheus]
