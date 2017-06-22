@@ -11,7 +11,6 @@ class mariadb::packages_wmf(
     package { [
         'libaio1',            # missing dependency on packages < 10.0.27
         'percona-toolkit',
-        'percona-xtrabackup',
         'libjemalloc1',       # missing dependency on packages < 10.0.27
         'pigz',
         'grc',
@@ -19,7 +18,14 @@ class mariadb::packages_wmf(
         ensure => present,
     }
 
-    # mariadb10 parameter is deprecated, and it will be eliminates as soon
+    # Do not try to install xtrabackup on stretch, it has been removed.
+    # Maybe mariabackup is enough?
+    if (os_version('debian < stretch || ubuntu >= trusty')) {
+        package { 'percona-xtrabackup':
+            ensure => present,
+        }
+    }
+    # mariadb10 parameter is deprecated, and it will be eliminated as soon
     # as the last mariadb 5.5 server is upgraded
     if ($mariadb10 == false) {
         package { 'wmf-mariadb':
