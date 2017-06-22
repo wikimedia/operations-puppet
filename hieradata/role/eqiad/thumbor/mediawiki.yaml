@@ -1,2 +1,9 @@
 lvs::realserver::realserver_ips:
   - '10.2.2.24' # thumbor.svc.eqiad.wmnet
+
+thumbor_memcached_servers:
+  - thumbor1001.eqiad.wmnet
+  - thumbor1002.eqiad.wmnet
+thumbor_memcached_servers_nutcracker:
+  - '10.64.16.56:11211:1 "shard01"' # thumbor1001
+  - '10.64.16.57:11211:1 "shard02"' # thumbor1002
