@@ -6084,6 +6084,11 @@ host stat1005 {
     fixed-address stat1005.eqiad.wmnet;
 }
 
+host stat1006 {
+    hardware ethernet 130:E1:71:51:54:48;
+    fixed-address stat1006.eqiad.wmnet;
+}
+
 host subra {
     hardware ethernet D4:AE:52:AD:62:75;
     fixed-address subra.codfw.wmnet;
