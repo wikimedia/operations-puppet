@@ -1,113 +1,142 @@
 /* Default stylesheet for rawdog. Customise this as you like.
-   Adam Sampson <ats@offog.org> */
+   Adam Sampson <azz@us-lot.org> */
 .xmlbutton {
-    /* From Dylan Greene's suggestion:
+	/* From Dylan Greene's suggestion:
            http://www.dylangreene.com/blog.asp?blogID=91 */
-    border: 1px solid;
-    border-color: #FC9 #630 #330 #F96;
-    padding: 0 3px;
-    font: bold 10px sans-serif;
-    color: #FFF;
-    background: #F60;
-    text-decoration: none;
-    margin: 0;
-}
-/* Scale down large images in feeds */
-img {
-    max-width: 100%;
-    height: auto;
+	border: 1px solid;
+	border-color: #FC9 #630 #330 #F96;
+	padding: 0 3px;
+	font: bold 10px sans-serif;
+	color: #FFF;
+	background: #F60;
+	text-decoration: none;
+	margin: 0;
 }
 html {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 body {
-    color: black;
-    background-color: white;
-    margin: 0;
-    padding: 10px;
-    font-size: medium;
+	color: black;
+	background-color: #999;
+	margin: 0;
+	padding: 10px;
+	font-size: medium;
 }
-#header {
-    background-color: #ffe;
-    border: 1px solid gray;
-    padding: 10px;
-    margin-bottom: 20px;
+a:link {
+	color: #337;
+}
+a:visited {
+	color: #733;
+}
+h1, h2, h3 {
+	font-weight: bold;
+	margin: 4px 0;
+	padding: 0 4px;
 }
 h1 {
-    font-weight: bold;
-    font-size: xx-large;
-    text-align: left;
-    margin: 0;
-    padding: 0;
-}
-#items {
-}
-.day {
-    clear: both;
+	font-size: 120%;
+	text-align: left;
 }
 h2 {
-    font-weight: bold;
-    font-size: x-large;
-    text-align: left;
-    margin: 10px 0;
-    padding: 0;
-}
-.time {
-    clear: both;
+	font-size: 170%;
+	text-align: left;
 }
 h3 {
-    font-weight: bold;
-    font-size: large;
-    text-align: left;
-    margin: 10px 0;
-    padding: 0;
+	font-size: 150%;
+	text-align: left;
+}
+#page {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 60em;
+}
+.day {
+	background-color: #bbb;
+	border: 1px solid #777;
+	margin: 10px 0;
+	padding: 0 4px;
+	clear: both;
+}
+.time {
+	background-color: #ddd;
+	border: 1px solid #999;
+	margin: 10px 0;
+	padding: 0 4px;
+	clear: both;
 }
 .item {
-    margin: 20px 30px;
-    border: 1px solid gray;
-    clear: both;
+	background-color: white;
+	border: 1px solid #bbb;
+/*
+	border-radius-bottomleft: 15px;
+	border-radius-bottomright: 15px;
+	-moz-border-radius-bottomleft: 15px;
+	-moz-border-radius-bottomright: 15px;
+*/
+	margin: 10px 0;
+	clear: both;
+
+	/* Try to restore as much as possible to "normal" settings, so that
+	   invalid HTML doesn't affect later items too much. */
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	text-align: left;
+	white-space: normal;
+	text-transform: none;
+	color: black;
+	background-color: white;
 }
 .itemheader {
-    padding: 6px;
-    margin: 0;
-    background-color: #eee;
+	padding: 4px;
+	padding-left: 10px;
+	margin: 0;
+	background-color: #eee;
 }
-.itemtitle {
-    font-weight: bold;
+h4 {
+	font-weight: bold;
+	font-size: 110%;
+	padding: 0;
+	margin: 2px 0;
+}
+.itembyline {
+	padding: 0;
+	margin: 0 0 2px 0;
 }
 .itemfrom {
-    font-style: italic;
+	font-style: italic;
 }
 .itemdescription {
-    border-top: 1px solid gray;
-    margin: 0;
-    padding: 6px;
+	margin-left: 30px;
 }
 #feedstatsheader {
 }
 #feedstats {
 }
 #feeds {
-    margin: 10px 0;
-    border: 1px solid gray;
-    border-spacing: 0;
+	margin: 10px 0;
+	border: 1px solid gray;
+	border-spacing: 0;
 }
 #feedsheader TH {
-    background-color: #eee;
-    border-bottom: 1px solid gray;
-    padding: 5px;
-    margin: 0;
+	background-color: #eee;
+	border-bottom: 1px solid gray;
+	padding: 5px;
+	margin: 0;
 }
 .feedsrow TD {
-    padding: 5px 10px;
-    margin: 0;
+	padding: 5px 10px;
+	margin: 0;
 }
 #footer {
-    background-color: #ffe;
-    border: 1px solid gray;
-    margin-top: 20px;
-    padding: 10px;
+	background-color: #ffe;
+	border: 1px solid gray;
+	margin-top: 20px;
+	padding: 10px;
 }
 #aboutrawdog {
 }
