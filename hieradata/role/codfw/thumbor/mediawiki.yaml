@@ -10,5 +10,5 @@ thumbor_memcached_servers:
 thumbor_memcached_servers_nutcracker:
   - '10.192.32.36:11211:1 "shard01"' # thumbor2001
   - '10.192.32.37:11211:1 "shard02"' # thumbor2002
-  - '10.192.16.58:11211:1 "shard01"' # thumbor2003
-  - '10.192.16.59:11211:1 "shard02"' # thumbor2004
+  - '10.192.16.58:11211:1 "shard03"' # thumbor2003
+  - '10.192.16.59:11211:1 "shard04"' # thumbor2004
