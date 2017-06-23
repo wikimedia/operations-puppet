@@ -1916,7 +1916,7 @@ node 'netmon1001.wikimedia.org' {
 # network monitoring tool server - replacement server (T125020)
 node 'netmon1002.wikimedia.org' {
     # role(rancid, librenms, servermon::wmf, torrus, smokeping)
-    role(rancid)
+    role(rancid, smokeping)
 
     include ::passwords::network
     include ::base::firewall
