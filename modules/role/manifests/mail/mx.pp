@@ -100,4 +100,27 @@ class role::mail::mx(
         weekday => 0,
         command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
     }
+
+    # monitor mail queue size (T133110)
+
+    file { '/usr/local/lib/nagios/plugins/check_exim_queue':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/icinga/check_exim_queue.sh',
+    }
+
+    ::sudo::user { 'nagios_exim_queue':
+        user       => 'nagios',
+        privileges => ['ALL = NOPASSWD: /usr/sbin/exipick -i'],
+    }
+
+    nrpe::monitor_service { 'check_exim_queue':
+        description    => 'exim queue',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_exim_queue -w 1000 -c 3000',
+        check_interval => 30,
+        retry_interval => 10,
+        timeout        => 20,
+    }
 }
