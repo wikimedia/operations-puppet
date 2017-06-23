@@ -59,6 +59,8 @@ class role::eventlogging::analytics::mysql {
         # Various mediawiki events (via EventBus)
         'eqiad.mediawiki.revision-create',
         'codfw.mediawiki.revision-create',
+        'eqiad.mediawiki.page-create',
+        'codfw.mediawiki.page-create',
         'eqiad.mediawiki.page-move',
         'codfw.mediawiki.page-move',
         'eqiad.mediawiki.page-delete',
