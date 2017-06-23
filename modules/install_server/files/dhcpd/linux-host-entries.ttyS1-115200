@@ -6079,6 +6079,13 @@ host stat1004 {
     fixed-address stat1004.eqiad.wmnet;
 }
 
+host stat1005 {
+    hardware ethernet 18:66:DA:FA:0B:C4;
+    fixed-address stat1005.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host subra {
     hardware ethernet D4:AE:52:AD:62:75;
     fixed-address subra.codfw.wmnet;
