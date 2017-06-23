@@ -62,7 +62,7 @@ class nutcracker(
         versioncmp($::serverversion, '3.5') >= 0
         ) {
         File['/etc/nutcracker/nutcracker.yml'] {
-          validate_cmd => '/usr/bin/test \! -f /etc/nutcracker/nutcracker.yml || /usr/sbin/nutcracker --test-conf %',
+          validate_cmd => '/usr/sbin/nutcracker --test-conf --conf-file %',
         }
     }
 
