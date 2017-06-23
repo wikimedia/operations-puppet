@@ -901,7 +901,7 @@ node 'eeden.wikimedia.org' {
 
 # icinga based monitoring hosts (einsteinium = eqiad, tegmen = codfw)
 node 'einsteinium.wikimedia.org', 'tegmen.wikimedia.org' {
-    role(icinga, tendril, tcpircbot, certspotter)
+    role(icinga, tcpircbot, certspotter)
     interface::add_ip6_mapped { 'main': }
 }
 
