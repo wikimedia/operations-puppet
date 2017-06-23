@@ -22,17 +22,6 @@ metadata:
 # Tables we 1:1 to a view
 fullviews:
   - abuse_filter_action
-  - aft_article_answer
-  - aft_article_answer_text
-  - aft_article_feedback_properties
-  - aft_article_feedback_ratings_rollup
-  - aft_article_feedback_select_rollup
-  - aft_article_field
-  - aft_article_field_group
-  - aft_article_field_option
-  - aft_article_filter_count
-  - aft_article_revision_feedback_ratings_rollup
-  - aft_article_revision_feedback_select_rollup
   - article_assessment
   - article_assessment_pages
   - article_assessment_ratings
@@ -103,8 +92,6 @@ fullviews:
   - pagetriage_page_tags
   - pagetriage_tags
   - pif_edits
-  - povwatch_log
-  - povwatch_subscribers
   - protected_titles
   - pr_index
   - redirect
@@ -188,17 +175,6 @@ customviews:
       select afl_id, afl_filter, afl_user, afl_user_text, NULL as
       afl_ip, afl_action, afl_actions, afl_var_dump, afl_timestamp, afl_namespace,
       afl_title, afl_wiki, afl_deleted, afl_patrolled_by, afl_rev_id, afl_log_id
-  aft_article_feedback:
-    source: aft_article_feedback
-    view: >
-      select af_id, af_page_id, af_user_id, NULL as af_user_ip, af_user_anon_token,
-      af_revision_id, af_cta_id, af_link_id, af_created, af_abuse_count, af_helpful_count,
-      af_unhelpful_count, af_oversight_count, af_is_deleted, af_is_hidden,
-      af_net_helpfulness, af_has_comment, af_is_unhidden, af_is_undeleted, af_is_declined,
-      af_activity_count, af_form_id, af_experiment, af_suppress_count, af_last_status,
-      af_last_status_user_id, af_last_status_timestamp, af_is_autohide, af_is_unrequested,
-      af_is_featured, af_is_unfeatured, af_is_resolved, af_is_unresolved, af_relevance_score,
-      af_relevance_sort, af_last_status_notes
   archive:
     source: archive
     view: >
