@@ -30,14 +30,6 @@ define planet::theme {
             ensure  => 'present',
             content => template('planet/html/rd_item.html.tmpl.erb');
         }
-        file { "/etc/rawdog/theme/wikimedia/${title}/rd_feedlist.tmpl":
-            ensure  => 'present',
-            content => template('planet/html/rd_feedlist.html.tmpl.erb');
-        }
-        file { "/etc/rawdog/theme/wikimedia/${title}/rd_feeditem.tmpl":
-            ensure  => 'present',
-            content => template('planet/html/rd_feeditem.html.tmpl.erb');
-        }
     } else {
         $theme_path = '/usr/share/planet-venus/theme/wikimedia'
         file { "${theme_path}/${title}":
