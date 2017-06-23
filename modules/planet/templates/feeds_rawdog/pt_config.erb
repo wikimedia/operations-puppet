@@ -9,15 +9,13 @@ keepmin 20
 currentonly false
 daysections true
 
-dayformat %Y-%m-%d
+dayformat %A, %d %B
 timesections true
-timeformat %H:%M
-datetimeformat %Y-%m-%d %H:%M
+timeformat %I:%M %p
+datetimeformat %H:%M, %A, %d %B
 
-pagetemplate /etc/rawdog/theme/wikimedia/pt/rd_page.tmpl
+template /etc/rawdog/theme/wikimedia/pt/rd_page.tmpl
 itemtemplate /etc/rawdog/theme/wikimedia/pt/rd_item.tmpl
-feedlisttemplate /etc/rawdog/theme/wikimedia/pt/rd_feedlist.tmpl
-feeditemtemplate /etc/rawdog/theme/wikimedia/pt/rd_feeditem.tmpl
 
 outputfile /var/www/planet/pt/index.html
 
