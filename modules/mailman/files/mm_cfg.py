@@ -1,3 +1,5 @@
+# This file is managed by puppet
+
 # -*- python -*-
 
 # Copyright (C) 1998,1999,2000 by the Free Software Foundation, Inc.
@@ -132,3 +134,13 @@ RESPONSE_INCLUDE_LEVEL = 0
 # set a secret to be included in HTML subscription forms to help
 # with bots subscription
 SUBSCRIBE_FORM_SECRET = open('/etc/machine-id', 'r').readline().rstrip()
+
+# Default action for posts whose From: address domain has a DMARC policy of
+# reject or quarantine.  See DEFAULT_FROM_IS_LIST below.  Whatever is set as
+# the default here precludes the list owner from setting a lower value.
+# 0 = Accept
+# 1 = Munge From
+# 2 = Wrap Message
+# 3 = Reject
+# 4 = Discard
+DEFAULT_DMARC_MODERATION_ACTION = 1
