@@ -19,20 +19,20 @@ define planet::theme {
             ensure  => 'directory',
         }
         file { "/var/www/planet/${title}/style.css":
-            ensure => 'present',
-            source => 'puppet:///modules/planet/theme/rawdog_style.css';
+            ensure  => 'present',
+            content => 'puppet:///modules/planet/theme/rawdog_style.css';
         }
         file { "/etc/rawdog/theme/wikimedia/${title}/rd_page.tmpl":
-            ensure => 'present',
-            source => template('planet/html/rd_page.html.tmpl.erb');
+            ensure  => 'present',
+            content => template('planet/html/rd_page.html.tmpl.erb');
         }
         file { "/etc/rawdog/theme/wikimedia/${title}/rd_item.tmpl":
-            ensure => 'present',
-            source => template('planet/html/rd_item.html.tmpl.erb');
+            ensure  => 'present',
+            content => template('planet/html/rd_item.html.tmpl.erb');
         }
         file { "/etc/rawdog/theme/wikimedia/${title}/rd_feedlist.tmpl":
-            ensure => 'present',
-            source => template('planet/html/rd_feedlist.html.tmpl.erb');
+            ensure  => 'present',
+            content => template('planet/html/rd_feedlist.html.tmpl.erb');
         }
         file { "/etc/rawdog/theme/wikimedia/${title}/rd_feeditem.tmpl":
             ensure => 'present',
