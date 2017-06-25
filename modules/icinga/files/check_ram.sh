@@ -38,7 +38,7 @@ if [ ! "$1" -o ! "$2" ]; then
         crit=`echo $((10))`
 fi
 
-if [ "$buffer" != "b" ];then
+if [ "$buffer" != "b" ]; then
     full=`free | grep Mem | sed -r 's/\ +/\ /g' | cut -d \  -f 3`
     free=`free | grep Mem | sed -r 's/\ +/\ /g' | cut -d \  -f 4`
 else
