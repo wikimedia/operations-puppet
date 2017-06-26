@@ -34,11 +34,7 @@ class _WMFRewriteContext(WSGIContext):
 
         self.account = conf['account'].strip()
         self.thumbhost = conf['thumbhost'].strip()
-        self.thumborhost = conf['thumborhost'].strip() if 'thumborhost' in conf else None
-        if 'thumbor_wiki_list' in conf:
-            self.thumbor_wiki_list = [item.strip() for item in conf['thumbor_wiki_list'].split(',')]
-        else:
-            self.thumbor_wiki_list = None
+        self.thumborhost = conf['thumborhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
         self.shard_container_list = [
@@ -149,13 +145,7 @@ class _WMFRewriteContext(WSGIContext):
                 else:
                     self.logger.warn("no sitelang match on encodedurl: %s" % encodedurl)
 
-            if self.thumborhost:
-                if not self.thumbor_wiki_list or '-'.join((proj, lang)) in self.thumbor_wiki_list:
-                    upcopy = thumbor_opener.open(thumbor_encodedurl)
-                else:
-                    upcopy = opener.open(encodedurl)
-            else:
-                upcopy = opener.open(encodedurl)
+            upcopy = thumbor_opener.open(thumbor_encodedurl)
         except urllib2.HTTPError, error:
             # copy the urllib2 HTTPError into a webob HTTPError class as-is
 
