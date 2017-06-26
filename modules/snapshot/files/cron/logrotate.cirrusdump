@@ -8,4 +8,5 @@
     delaycompress
     missingok
     maxage 22
+    nocreate
 }
