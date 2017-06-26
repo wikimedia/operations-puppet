@@ -112,7 +112,7 @@ class jenkins(
             before  => Service['jenkins'],
         }
     } else {
-        $jenkins_access_log_arg = ''
+        $jenkins_access_log_arg = undef
     }
 
     $java_args = join([
