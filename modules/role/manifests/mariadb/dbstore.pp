@@ -27,6 +27,7 @@ class role::mariadb::dbstore(
     class {'role::mariadb::groups':
         mysql_group => 'dbstore',
         mysql_role  => 'slave',
+        socket      => '/tmp/mysql.sock',
     }
 
     class { 'mariadb::config':
@@ -44,5 +45,6 @@ class role::mariadb::dbstore(
         lag_warn      => $lag_warn,
         lag_crit      => $lag_crit,
         warn_stopped  => $warn_stopped,
+        socket        => '/tmp/mysql.sock',
     }
 }

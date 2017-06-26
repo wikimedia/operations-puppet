@@ -19,6 +19,7 @@ class role::mariadb::labs_deprecated {
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
+        socket      => '/tmp/mysql.sock',
     }
 
     include mariadb::packages_wmf

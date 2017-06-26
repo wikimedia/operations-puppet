@@ -24,6 +24,7 @@ class role::mariadb::misc::eventlogging(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
+        socket      => '/tmp/mysql.sock',
     }
 
     include mariadb::packages_wmf
@@ -54,6 +55,7 @@ class role::mariadb::misc::eventlogging(
         shard      => $shard,
         datacenter => $::site,
         enabled    => $master,
+        socket     => '/tmp/mysql.sock',
     }
 }
 
