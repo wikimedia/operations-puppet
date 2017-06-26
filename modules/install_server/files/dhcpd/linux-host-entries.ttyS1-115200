@@ -3921,56 +3921,6 @@ host mw1169 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host mw1170 {
-    hardware ethernet 90:B1:1C:27:8C:33;
-    fixed-address mw1170.eqiad.wmnet;
-}
-
-host mw1171 {
-    hardware ethernet 90:B1:1C:27:91:FA;
-    fixed-address mw1171.eqiad.wmnet;
-}
-
-host mw1172 {
-    hardware ethernet 90:B1:1C:27:8D:B9;
-    fixed-address mw1172.eqiad.wmnet;
-}
-
-host mw1173 {
-    hardware ethernet 90:B1:1C:27:96:01;
-    fixed-address mw1173.eqiad.wmnet;
-}
-
-host mw1174 {
-    hardware ethernet 90:B1:1C:26:EA:52;
-    fixed-address mw1174.eqiad.wmnet;
-}
-
-host mw1175 {
-    hardware ethernet 90:B1:1C:27:8C:D5;
-    fixed-address mw1175.eqiad.wmnet;
-}
-
-host mw1176 {
-    hardware ethernet 90:B1:1C:27:86:88;
-    fixed-address mw1176.eqiad.wmnet;
-}
-
-host mw1177 {
-    hardware ethernet 90:B1:1C:28:CA:3A;
-    fixed-address mw1177.eqiad.wmnet;
-}
-
-host mw1178 {
-    hardware ethernet 90:B1:1C:28:DE:B5;
-    fixed-address mw1178.eqiad.wmnet;
-}
-
-host mw1179 {
-    hardware ethernet 90:B1:1C:27:8B:47;
-    fixed-address mw1179.eqiad.wmnet;
-}
-
 host mw1180 {
     hardware ethernet 90:B1:1C:27:81:64;
     fixed-address mw1180.eqiad.wmnet;

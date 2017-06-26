@@ -1661,11 +1661,6 @@ node /^mw116[1-7]\.eqiad\.wmnet$/ {
     include ::base::firewall
 }
 
-# mw1170-79 are now decommissioned
-node /^mw117[0-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # mw1180-1188 are apaches
 node /^mw118[0-8]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
