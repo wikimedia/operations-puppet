@@ -1,11 +1,6 @@
 class smokeping {
-    package { 'smokeping':
-        ensure => present,
-    }
 
-    package { 'curl':
-        ensure => present,
-    }
+    require_package('smokeping', 'curl', 'dnsutils')
 
     file { '/etc/smokeping/config.d':
         ensure  => directory,
