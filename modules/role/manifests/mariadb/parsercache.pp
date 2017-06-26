@@ -14,6 +14,7 @@ class role::mariadb::parsercache(
         mysql_group => 'parsercache',
         mysql_shard => $shard,
         mysql_role  => 'master',
+        socket      => '/tmp/mysql.sock',
     }
 
     system::role { 'mariadb::parsercache':
@@ -42,6 +43,7 @@ class role::mariadb::parsercache(
         shard      => $shard,
         datacenter => $::site,
         enabled    => true,
+        socket     => '/tmp/mysql.sock',
     }
 
     # mysql monitoring access from tendril (db1011)

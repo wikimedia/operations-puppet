@@ -16,6 +16,7 @@ class role::mariadb::tendril {
     class {'role::mariadb::groups':
         mysql_group => 'tendril',
         mysql_role  => 'standalone',
+        socket      => '/tmp/mysql.sock',
     }
 
     class { 'mariadb::config':

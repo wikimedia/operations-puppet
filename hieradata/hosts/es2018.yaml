@@ -1,0 +1,4 @@
+mariadb::shard: 'es3'
+mariadb::mysql_role: 'master'
+mariadb::binlog_format: 'ROW'
+mariadb::socket: '/tmp/mysql.sock'
