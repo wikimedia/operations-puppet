@@ -1,10 +1,13 @@
 require 'spec_helper'
 
 describe 'tilerator::ui', :type => :class do
+  before(:each) do
+    Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) {
+      'fake_secret'
+    }
+  end
   context 'with default parameters' do
-    # there is an issue with secret() that is a transitive dependency of service::node
-    # not sure how to fix it...
-    xit { is_expected.to contain_file('/usr/local/bin/notify-tilerator')
+    it { is_expected.to contain_file('/usr/local/bin/notify-tilerator')
                             .with_mode('0555')
                             .with_content(/-j.deleteEmpty \\/)
     }
@@ -12,10 +15,8 @@ describe 'tilerator::ui', :type => :class do
 
   context 'with delete_empty => false' do
     let(:params) { {:delete_empty => false} }
-    # there is an issue with secret() that is a transitive dependency of service::node
-    # not sure how to fix it...
-    xit { is_expected.to contain_file('/usr/local/bin/notify-tilerator')
-                             .with_mode('0555')
+    it { is_expected.to contain_file('/usr/local/bin/notify-tilerator')
+                            .with_mode('0555')
                             .without_content(/-j.deleteEmpty/)
     }
   end
