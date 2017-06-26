@@ -1,9 +1,18 @@
-class role::mariadb::core(
-    $shard,
-    $ssl           = 'puppet-cert',
-    $binlog_format = 'MIXED',
-    $master        = false,
-    ) {
+class role::mariadb::core {
+    if os_version('debian >= stretch') {
+        $default_package = 'wmf-mariadb101'
+    } else {
+        $default_package = 'wmf-mariadb10'
+    }
+    $package = hiera('mariadb::package', $default_package)
+    $basedir = hiera('mariadb::basedir',  "/opt/${package}")
+    $socket = hiera('mariadb::socket', '/run/mysqld/mysqld.sock')
+    $datadir = hiera('mariadb::datadir', '/srv/sqldata')
+    $tmpdir = hiera('mariadb::tmpdir', '/srv/tmp')
+    $shard = hiera('mariadb::shard', undef)
+    $mysql_role = hiera('mariadb::mysql_role', 'slave')
+    $ssl = hiera('mariadb::ssl', 'on')
+    $binlog_format = hiera('mariadb::binlog_format', 'STATEMENT')
 
     system::role { 'mariadb::core':
         description => "Core DB Server ${shard}",
@@ -19,14 +28,11 @@ class role::mariadb::core(
     # off: for shard(s) of a single machine, with no slaves
     # slave: for all slaves
     # both: for masters (they are slaves and masters at the same time)
-    if ($shard == 'es1') {
-        $mysql_role = 'standalone'
+    if ($mysql_role == 'standalone') {
         $semi_sync = 'off'
-    } elsif $master == true {
-        $mysql_role = 'master'
+    } elsif $mysql_role == 'master' {
         $semi_sync = 'both'
     } else {
-        $mysql_role = 'slave'
         $semi_sync = 'slave'
     }
 
@@ -36,33 +42,19 @@ class role::mariadb::core(
         mysql_role  => $mysql_role,
     }
 
-    # FIXME: Get package, socket, datadir, etc. from hiera
-    # FIXME: Support multiple instances per host
-    if (os_version('debian >= stretch')) {
-        # stretch defaults to MariaDB 10.1 with systemd
-        $package = 'wmf-mariadb101'
-        # TODO: manage custom systemd preferences like ulimits
-        # ignore service managing for now
-        $initd = false
-    } else {
-        # jessie, trusty defaults to MariaDB 10.0 with init.d
-        $package = 'wmf-mariadb10'
-        $initd = true
-    }
     class {'mariadb::packages_wmf':
         package => $package,
     }
-    if $initd {
-        class {'mariadb::service':
-            package => $package,
-        }
+    class {'mariadb::service':
+        package => $package,
     }
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
         config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
-        datadir          => '/srv/sqldata',
-        tmpdir           => '/srv/tmp',
+        basedir          => $basedir,
+        datadir          => $datadir,
+        tmpdir           => $tmpdir,
         p_s              => 'on',
         ssl              => $ssl,
         binlog_format    => $binlog_format,
