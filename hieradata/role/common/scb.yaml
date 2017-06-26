@@ -63,6 +63,11 @@ role::eventstreams::streams:
     topics:
       - eqiad.mediawiki.recentchange
       - codfw.mediawiki.recentchange
+  revision-create:
+    description: "Mediawiki Revision Create feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/revision/create"
+    topics:
+      - eqiad.mediawiki.revision-create
+      - codfw.mediawiki.revision-create
   test:
     description: "Test event stream. A new event is posted about once a minute. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/test/event"
     topics:
