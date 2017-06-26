@@ -357,58 +357,33 @@ node 'dataset1001.wikimedia.org' {
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
 node 'db1052.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's1',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
-
-node /^db10(51|55|66|67|72|73|80|83|89)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's1',
-    }
-}
-
-# row-based replication to sanitarium2 (T150960)
-node 'db1065.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's1',
-        binlog_format => 'ROW',
-    }
+# eqiad replicas
+node /^db10(51|55|65|66|67|72|73|80|83|89)\.eqiad\.wmnet/ {
+    role(mariadb::core)
 }
 
 # s1 (enwiki) core production dbs on codfw
 # codfw master
 node 'db2016.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's1',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
+# codfw replicas
 node /^db20(34|42|48|55|62|69|70|71|72)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's1',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # s2 (large wikis) core production dbs on eqiad
 # eqiad master
 node 'db1054.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's2',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
+# eqiad replicas
 node /^db10(18|21|36|60|74|76|90)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's2',
-    }
+    role(mariadb::core)
 }
 
 # To be decommissioned in T162699
@@ -419,158 +394,87 @@ node 'db1024.eqiad.wmnet' {
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2017.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's2',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's2',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # s3 (default) core production dbs on eqiad
 # Lots of tables!
 # eqiad master
 node 'db1075.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's3',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
-node /^db10(15|35|38|77|78)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's3',
-    }
-}
-
-# Testing row-based replication to sanitarium2 (T150802)
-node 'db1044.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's3',
-        binlog_format => 'ROW',
-    }
+node /^db10(15|35|38|44|77|78)\.eqiad\.wmnet/ {
+    role(mariadb::core)
 }
 
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2018.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's3',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db20(36|43|50|57)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's3',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # s4 (commons) core production dbs on eqiad
 # eqiad master
 node 'db1068.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's4',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
-node /^db10(53|56|59|81|84|91|97)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's4',
-    }
+node /^db10(53|56|59|64|81|84|91|97)\.eqiad\.wmnet/ {
+    role(mariadb::core)
 }
 
 # row-based replication to sanitarium2 (T150960)
 node 'db1064.eqiad.wmnet' {
-    class { 'role::mariadb::core':
-        shard         => 's4',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2019.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's4',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db20(37|44|51|58|65)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's4',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # s5 (wikidata/dewiki) core production dbs on eqiad
 # eqiad master
 node 'db1063.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's5',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
-# row-based replication to sanitarium2 (T153743)
-node 'db1070.eqiad.wmnet' {
-    class { 'role::mariadb::core':
-        shard         => 's5',
-        binlog_format => 'ROW',
-    }
-}
-
-node /^db10(26|45|49|71|82|87|92)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's5',
-    }
+node /^db10(26|45|49|70|71|82|87|92)\.eqiad\.wmnet/ {
+    role(mariadb::core)
 }
 
 # s5 (wikidata/dewiki) core production dbs on codfw
 # codfw master
 node 'db2023.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's5',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db20(38|45|52|59|66)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's5',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # s6 core production dbs on eqiad
 # eqiad master
 node 'db1061.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's6',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db10(30|37|50|85|88|93)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's6',
-    }
+    role(mariadb::core)
 }
 
 # To be decommissioned in T166486
@@ -581,18 +485,11 @@ node 'db1023.eqiad.wmnet' {
 # s6 core production dbs on codfw
 # codfw master
 node 'db2028.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's6',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db20(39|46|53|60|67)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's6',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # To be decommissioned in T163778
@@ -603,60 +500,36 @@ node 'db1022.eqiad.wmnet' {
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # eqiad master
 node 'db1062.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's7',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db10(28|33|34|39|41|79|86|94)\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 's7',
-    }
+    role(mariadb::core)
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
 node 'db2029.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 's7',
-        master        => true,
-        binlog_format => 'STATEMENT',
-    }
+    role(mariadb::core)
 }
 
 node /^db20(40|47|54|61|68)\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 's7',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 ## x1 shard
 # eqiad
 node 'db1031.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'x1',
-        master        => true,
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 node 'db1029.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'x1',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # codfw
 node 'db2033.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'x1',
-        master        => true,
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 ## m1 shard
@@ -925,85 +798,52 @@ node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
 
 ## eqiad servers
 node /^es101[268]\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard => 'es1',
-    }
+    role(mariadb::core)
 }
 
 ## codfw servers
 node /^es201[123]\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 'es1',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
 node 'es1011.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'es2',
-        master        => true,
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 node /^es101[35]\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 'es2',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 ## codfw servers
 node 'es2016.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'es2',
-        master        => true,
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 node /^es201[45]\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 'es2',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # External Storage, Shard 3 (es3) databases
 
 ## eqiad servers
 node 'es1014.eqiad.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'es3',
-        master        => true,
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 node /^es101[79]\.eqiad\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 'es3',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 ## codfw servers
 node 'es2018.codfw.wmnet' {
-    class { '::role::mariadb::core':
-        shard         => 'es3',
-        master        => true,
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 node /^es201[79]\.codfw\.wmnet/ {
-    class { '::role::mariadb::core':
-        shard         => 'es3',
-        binlog_format => 'ROW',
-    }
+    role(mariadb::core)
 }
 
 # Disaster recovery hosts for external storage
