@@ -11,6 +11,7 @@ server {
 
     location / {
         ssi on;
+        chunked_transfer_encoding off;
         # We want swift to rotate between thumbor instances, not stick to one. This disables
         # keep-alive client connections.
         keepalive_timeout 0;
