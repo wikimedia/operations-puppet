@@ -58,6 +58,7 @@ swift::proxy::shard_container_list: [
 
 swift::proxy::thumbor_wiki_list: [
   'mediawiki-www',
+  'wikimedia-commons',
   'wikipedia-aa',
   'wikipedia-ab',
   'wikipedia-ace',
