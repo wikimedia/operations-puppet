@@ -22,6 +22,7 @@ class role::mariadb::sanitarium2 {
     class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
+        socket      => '/tmp/mysql.sock',
     }
 
     class {'mariadb::packages_wmf':

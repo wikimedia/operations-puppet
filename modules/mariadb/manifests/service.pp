@@ -15,38 +15,46 @@
 
 class mariadb::service (
     $package = 'wmf-mariadb10',
+    $basedir = '',
     $manage  = false,
     $ensure  = stopped,
     $enable  = false,
     ) {
 
-    $basedir = "/opt/${package}"
-    file { "${basedir}/service":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        content => template('mariadb/mariadb.server.erb'),
-        require => Package[$package],
+    if $basedir == '' {
+        $basedir = "/opt/${package}"
     }
 
-    file { '/etc/init.d/mysql':
-        ensure  => 'link',
-        target  => "${basedir}/service",
-        require => File["${basedir}/service"],
-    }
+    if os_version('debian >= stretch') {
+        #TODO: setup optional systemd options
+    } else {
+        file { "${basedir}/service":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            content => template('mariadb/mariadb.server.erb'),
+            require => Package[$package],
+        }
 
-    file { '/etc/init.d/mariadb':
-        ensure  => 'link',
-        target  => "${basedir}/service",
-        require => File["${basedir}/service"],
-    }
+        file { '/etc/init.d/mysql':
+            ensure  => 'link',
+            target  => "${basedir}/service",
+            require => File["${basedir}/service"],
+        }
 
-    if $manage {
-        service { 'mysql':
-            ensure  => $ensure,
-            enable  => $enable,
-            require => File['/etc/init.d/mysql'],
+        file { '/etc/init.d/mariadb':
+            ensure  => 'link',
+            target  => "${basedir}/service",
+            require => File["${basedir}/service"],
+        }
+
+        if $manage {
+            service { 'mysql':
+                ensure  => $ensure,
+                enable  => $enable,
+                require => File['/etc/init.d/mysql'],
+            }
         }
     }
 

@@ -155,7 +155,7 @@ class role::mariadb::groups(
     $mysql_group,
     $mysql_role,
     $mysql_shard = '',
-    $socket = '/tmp/mysql.sock',
+    $socket = '/run/mysqld/mysqld.sock',
     ) {
 
     salt::grain { 'mysql_group':

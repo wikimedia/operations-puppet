@@ -12,6 +12,7 @@ class role::mariadb::wikitech {
     class { 'role::mariadb::groups':
         mysql_group => 'wikitech',
         mysql_role  => 'standalone',
+        socket      => '/tmp/mysql.sock',
     }
 
     include mariadb::packages_wmf
