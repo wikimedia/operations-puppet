@@ -15,7 +15,6 @@ class swift::proxy (
     $dispersion_account        = undef,
     $tld                       = 'org',
     $thumborhost               = '',
-    $thumbor_wiki_list         = [],
 ) {
     package {[
         'swift-proxy',
