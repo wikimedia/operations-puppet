@@ -1905,7 +1905,7 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
-    role(rancid, librenms, servermon::wmf, smokeping,
+    role(librenms, servermon::wmf, smokeping,
       network::monitor)
     include ::passwords::network
     include ::base::firewall
