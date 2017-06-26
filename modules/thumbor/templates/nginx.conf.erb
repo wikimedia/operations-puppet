@@ -11,6 +11,9 @@ server {
 
     location / {
         ssi on;
+        # Nginx uses chunked encoding for 404s, which rewrite.py can't handle properly,
+        # sending a malformed response to Varnish.
+        chunked_transfer_encoding off;
         # We want swift to rotate between thumbor instances, not stick to one. This disables
         # keep-alive client connections.
         keepalive_timeout 0;
