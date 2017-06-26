@@ -541,7 +541,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [halfak, ladsgroup]
+    members: [awight, halfak, ladsgroup]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *']
   sectools-roots:
