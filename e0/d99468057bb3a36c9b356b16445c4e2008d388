@@ -1,0 +1,9 @@
+Code-Review+1: Bearloga <mpopov@wikimedia.org>
+Code-Review+1: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Gehel <guillaume.lederrey@wikimedia.org>
+Submitted-by: Gehel <guillaume.lederrey@wikimedia.org>
+Submitted-at: Mon, 26 Jun 2017 15:42:38 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/360685
+Project: operations/puppet
+Branch: refs/heads/production
