@@ -1,0 +1,2 @@
+mariadb::shard: 'x1'
+mariadb::binlog_format: 'ROW'
