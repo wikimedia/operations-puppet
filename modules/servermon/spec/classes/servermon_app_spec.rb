@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe 'servermon', :type => :class do
+    before(:each) do
+        # rubocop:disable Lint/UnusedBlockArgument
+        Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |args|
+        # rubocop:enable Lint/UnusedBlockArgument
+            'fake_secret'
+        }
+    end
+
     let(:params) { {
         :ensure     => 'present',
         :directory  => '/tmp/test',
