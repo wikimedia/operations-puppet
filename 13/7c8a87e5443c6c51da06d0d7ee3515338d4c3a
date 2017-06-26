@@ -1,0 +1,9 @@
+Code-Review+1: Chelsyx <cxie@wikimedia.org>
+Code-Review+1: Bearloga <mpopov@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Gehel <guillaume.lederrey@wikimedia.org>
+Submitted-by: Gehel <guillaume.lederrey@wikimedia.org>
+Submitted-at: Mon, 26 Jun 2017 15:51:21 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/360592
+Project: operations/puppet
+Branch: refs/heads/production
