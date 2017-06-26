@@ -2,11 +2,11 @@
 # TODO: Revisit the is_critical part. We probably want pages for DB problems for
 # at least a group of people
 define mariadb::monitor_replication(
-    $is_critical   = true,
-    $contact_group = 'dba',
+    $is_critical   = false,
+    $contact_group = 'admins',
     $lag_warn      = 60,
     $lag_crit      = 300,
-    $socket        = '/tmp/mysql.sock',
+    $socket        = '/run/mysqld/mysqld.sock',
     $multisource   = true,
     $warn_stopped  = true,
     ) {

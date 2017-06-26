@@ -12,9 +12,10 @@ class mariadb::config(
     $config                 = 'mariadb/default.my.cnf.erb',
     $prompt                 = '\u@\h(\d)> ',
     $password               = 'undefined',
+    $basedir                = '/opt/wmf-mariadb10',
     $datadir                = '/srv/sqldata',
     $tmpdir                 = '/srv/tmp',
-    $socket                 = '/var/run/mysqld/mysqld.sock',
+    $socket                 = '/run/mysqld/mysqld.sock',
     $port                   = 3306,
     $sql_mode               = '',
     $read_only              = 0,
@@ -65,8 +66,8 @@ class mariadb::config(
     # if the socket location is different from the default, it is the role
     # class' reponsability to handle it (otherwise this could have side
     # efects, like changing / or /tmp permissions
-    if $socket == '/var/run/mysqld/mysqld.sock' {
-        file { '/var/run/mysqld':
+    if $socket == '/run/mysqld/mysqld.sock' {
+        file { '/run/mysqld':
             ensure => directory,
             mode   => '0775',
             owner  => 'root',
@@ -85,7 +86,7 @@ class mariadb::config(
     file { "${datadir}/my.cnf":
         ensure => absent,
     }
-    file { '/opt/wmf-mariadb10/my.cnf':
+    file { "${basedir}/my.cnf":
         ensure => absent,
     }
 
