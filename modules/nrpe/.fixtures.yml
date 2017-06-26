@@ -4,4 +4,5 @@ fixtures:
         base: "../../../../base"
         ferm: "../../../../ferm"
         monitoring: "../../../../monitoring"
+        stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
