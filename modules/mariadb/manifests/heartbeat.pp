@@ -4,6 +4,7 @@ class mariadb::heartbeat (
     $interval   = 1,
     $shard      = 'unknown',
     $datacenter = 'none',
+    $socket     = '/run/mysqld/mysqld.sock',
 ) {
 
 
@@ -21,11 +22,12 @@ class mariadb::heartbeat (
         exec { 'pt-heartbeat':
             command => "/usr/bin/perl \
             /usr/local/bin/pt-heartbeat-wikimedia \
-            --defaults-file=/root/.my.cnf -D heartbeat \
+            --defaults-file=/dev/null \
+            --user=root --host=localhost -D heartbeat \
             --shard=${shard} --datacenter=${datacenter} \
             --update --replace --interval=${interval} \
             --set-vars=\"binlog_format=STATEMENT\" \
-            -S /tmp/mysql.sock --daemonize \
+            -S ${socket} --daemonize \
             --pid /var/run/pt-heartbeat.pid",
             unless  => '/bin/ps --pid $(cat /var/run/pt-heartbeat.pid) \
             > /dev/null 2>&1',
