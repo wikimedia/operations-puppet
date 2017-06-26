@@ -14,53 +14,6 @@
     SSLVerifyDepth  1
     SSLOptions +StdEnvVars
 
-    <%- if @server_type == 'frontend' -%>
-    ServerName <%= scope.lookupvar('puppetmaster::server_name') %>
-    # These request headers are used to pass the client certificate
-    # authentication information on to the puppet master process
-    RequestHeader set X-SSL-Subject %{SSL_CLIENT_S_DN}e
-    RequestHeader set X-Client-DN %{SSL_CLIENT_S_DN}e
-    RequestHeader set X-Client-Verify %{SSL_CLIENT_VERIFY}e
-
-    SSLProxyEngine on
-    # Certificates should only be in the frontend. It is terminating SSL connections from clients and authenticating them
-    # The connection to the backends is also SSL encrypted but by frontend and backends do not authenticate connections
-    ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @fqdn %>:8141
-    # Reports should only be in one place. Choosing the frontend by default for simplicity
-    ProxyPassMatch ^/([^/]+/report/.*)$ https://<%= @fqdn %>:8141
-    # File buckets should only be in one place. Choosing the frontend by default for simplicity
-    ProxyPassMatch ^/([^/]+/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
-    # Volatile should only be in one place. Choosing the frontend by default for simplicity
-    ProxyPassMatch ^/([^/]+/file_metadata(s)?/volatile/.*)$ https://<%= @fqdn %>:8141
-    ProxyPassMatch ^/([^/]+/file_content/volatile/.*)$ https://<%= @fqdn %>:8141
-    # The rest gets balanced
-    ProxyPass / balancer://mycluster/
-    <Proxy balancer://mycluster>
-      <%- @workers.each do |workerhash| -%>
-        <% unless workerhash['offline'] %>BalancerMember https://<%= workerhash['worker'] %>:8141 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %><% end %>
-      <%- end -%>
-      Require all granted
-    </Proxy>
-    <%- else -%>
-    RackBaseURI /
-
-    <Location />
-        <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
-        Require ip <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-        <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
-        Require not ip <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-    </Location>
-
-    DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
-    <Directory /usr/share/puppet/rack/puppetmasterd/>
-        Options None
-        AllowOverride None
-        Require all granted
-    </Directory>
-    <%- end -%>
-
     CustomLog /var/log/apache2/puppetmaster.log wmf
 </VirtualHost>
 
