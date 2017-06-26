@@ -1,0 +1,2 @@
+mariadb::shard: 's5'
+mariadb::socket: '/tmp/mysql.sock'
