@@ -124,7 +124,7 @@ class base::monitoring::host(
     }
     ::nrpe::monitor_service { 'check_salt_minion':
         description  => 'salt-minion processes',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1: -c 1:4 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1: -c 1:5 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
     }
     if $::initsystem == 'systemd' {
         file { '/usr/local/lib/nagios/plugins/check_systemd_state':
