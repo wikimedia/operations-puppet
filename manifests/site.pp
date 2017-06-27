@@ -316,8 +316,8 @@ node /^cp30[34][4-9]\.esams\.wmnet$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::misc, ipsec)
+    # ex-cache_misc, to be decommed
+    role(spare::system)
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {

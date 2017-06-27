@@ -57,9 +57,6 @@ lvs::configuration::lvs_service_ips:
     esams:
       misc_weblb: 91.198.174.217
       misc_weblb6: 2620:0:862:ed1a::3:d
-    ulsfo:
-      misc_weblb: 198.35.26.120
-      misc_weblb6: 2620:0:863:ed1a::3:d
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
@@ -295,7 +292,6 @@ lvs::configuration::lvs_services:
     - codfw
     - eqiad
     - esams
-    - ulsfo
     ip: *ip_block006
     scheduler: sh
     bgp: 'yes'
@@ -316,8 +312,6 @@ lvs::configuration::lvs_services:
           hostname: misc-web-lb.codfw.wikimedia.org
         esams:
           hostname: misc-web-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: misc-web-lb.ulsfo.wikimedia.org
   misc_web-https:
     description: Miscellaneous web sites Varnish cluster (HTTPS)
     class: high-traffic2
@@ -325,7 +319,6 @@ lvs::configuration::lvs_services:
     - codfw
     - eqiad
     - esams
-    - ulsfo
     ip: *ip_block006
     port: 443
     scheduler: sh
