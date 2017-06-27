@@ -97,12 +97,6 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_ram.sh':
-        source => 'puppet:///modules/icinga/check_ram.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     # Google safebrowsing lookup API client
     file { '/usr/lib/nagios/plugins/check_gsb.py':
         source => 'puppet:///modules/icinga/check_gsb.py',
