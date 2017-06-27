@@ -91,7 +91,7 @@ class _WMFRewriteContext(WSGIContext):
                 thumbor_reqorig.host = self.thumborhost
                 thumbor_urlobj = list(urlparse.urlsplit(thumbor_reqorig.url))
                 thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
-                # thumbor_encodedurl = urlparse.urlunsplit(thumbor_urlobj)
+                thumbor_encodedurl = urlparse.urlunsplit(thumbor_urlobj)
 
             # if sitelang, we're supposed to mangle the URL so that
             # http://upload.wm.o/wikipedia/commons/thumb/a/a2/Foo_.jpg/330px-Foo_.jpg
@@ -147,8 +147,8 @@ class _WMFRewriteContext(WSGIContext):
 
             # To turn thumbor off and have thumbnail traffic served by image scalers,
             # replace the line below with this one:
-            upcopy = opener.open(encodedurl)
-            # upcopy = thumbor_opener.open(thumbor_encodedurl)
+            # upcopy = opener.open(encodedurl)
+            upcopy = thumbor_opener.open(thumbor_encodedurl)
         except urllib2.HTTPError, error:
             # copy the urllib2 HTTPError into a webob HTTPError class as-is
 
