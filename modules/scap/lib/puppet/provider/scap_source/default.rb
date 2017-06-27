@@ -80,13 +80,15 @@ Puppet::Type.type(:scap_source).provide(:default) do
   def checkout(name, path)
     umask = 0o002
     file_mode = 0o2775
+
     unless Dir.exists?(path)
       FileUtils.makedirs path, :mode => file_mode
       FileUtils.chown_R resource[:owner], resource[:group], path
     end
-    pwd = Etc.getpwnam(resource[:owner])
-    uid = pwd.uid
-    gid = pwd.gid
+
+    uid = Etc.getpwnam(resource[:owner]).uid
+    gid = Etc.getgrnam(resource[:group]).gid
+
     Puppet::Util.withumask(
       umask) {
       Puppet::Util::Execution.execute(
