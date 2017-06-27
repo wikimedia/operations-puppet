@@ -330,11 +330,6 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
     role(cache::text, ipsec)
 }
 
-node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-    # ex-cache_maps, to be decommed
-    role(spare::system)
-}
-
 # temporary entry for testing new cache node hardware setup...
 node 'cp4021.ulsfo.wmnet' {
     interface::add_ip6_mapped { 'main': }

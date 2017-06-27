@@ -824,16 +824,6 @@ host cp4010 {
     fixed-address cp4010.ulsfo.wmnet;
 }
 
-host cp4011 {
-    hardware ethernet 90:b1:1c:43:35:fc;
-    fixed-address cp4011.ulsfo.wmnet;
-}
-
-host cp4012 {
-    hardware ethernet 90:b1:1c:42:e6:e9;
-    fixed-address cp4012.ulsfo.wmnet;
-}
-
 host cp4013 {
     hardware ethernet 90:b1:1c:42:fa:f5;
     fixed-address cp4013.ulsfo.wmnet;
@@ -862,16 +852,6 @@ host cp4017 {
 host cp4018 {
     hardware ethernet 90:b1:1c:45:4d:59;
     fixed-address cp4018.ulsfo.wmnet;
-}
-
-host cp4019 {
-    hardware ethernet 90:b1:1c:45:61:2a;
-    fixed-address cp4019.ulsfo.wmnet;
-}
-
-host cp4020 {
-    hardware ethernet 90:b1:1c:43:13:cb;
-    fixed-address cp4020.ulsfo.wmnet;
 }
 
 host cp4021 {
