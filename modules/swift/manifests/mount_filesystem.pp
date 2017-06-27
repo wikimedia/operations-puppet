@@ -1,9 +1,11 @@
 define swift::mount_filesystem (
     $mount_base = '/srv/swift-storage',
 ){
-    $dev         = $title
-    $dev_suffix  = regsubst($dev, '^\/dev\/(.*)$', '\1')
-    $mount_point = "${mount_base}/${dev_suffix}"
+    if ($title !~ /^[hvs]d[a-z]+[0-9]+$/) {
+        fail("Invalid name ${title} for swift::mount_filesystem")
+    }
+
+    $mount_point = "${mount_base}/${title}"
 
     file { "mountpoint-${mount_point}":
         ensure => directory,
@@ -28,7 +30,7 @@ define swift::mount_filesystem (
         # it would conflict with swift-drive-auditor trying to keep FS
         # unmounted.
         ensure   => present,
-        device   => "LABEL=swift-${dev_suffix}",
+        device   => "LABEL=swift-${title}",
         name     => $mount_point,
         fstype   => 'xfs',
         options  => $mount_options,

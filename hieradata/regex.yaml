@@ -119,44 +119,44 @@ labtest:
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
   swift_storage_drives: [
-          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+          'sda', 'sdb', 'sdc', 'sdd',
+          'sde', 'sdf', 'sdg', 'sdh',
+          'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
+  swift_aux_partitions: ['sdm3', 'sdn3', 'sdm4', 'sdn4']
 
 # HP machines have different disk ordering T90922
 swift_be_codfw_hp:
   __regex: !ruby/regexp /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/
   swift_storage_drives: [
-        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
-        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+        'sdm', 'sdn', 'sdc', 'sdd',
+        'sde', 'sdf', 'sdg', 'sdh',
+        'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
+  swift_aux_partitions: ['sda3', 'sdb3', 'sda4', 'sdb4']
 
 swift_be_eqiad_dell:
   __regex: !ruby/regexp /^ms-be101[3-5]\.eqiad\.wmnet$/
   swift_storage_drives: [
-          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+          'sda', 'sdb', 'sdc', 'sdd',
+          'sde', 'sdf', 'sdg', 'sdh',
+          'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
+  swift_aux_partitions: ['sdm3', 'sdn3', 'sdm4', 'sdn4']
 
 # HP machines have different disk ordering T90922
 swift_be_eqiad_hp:
   __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/
   swift_storage_drives: [
-        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
-        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+        'sdm', 'sdn', 'sdc', 'sdd',
+        'sde', 'sdf', 'sdg', 'sdh',
+        'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
+  swift_aux_partitions: ['sda3', 'sdb3', 'sda4', 'sdb4']
 
 lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
