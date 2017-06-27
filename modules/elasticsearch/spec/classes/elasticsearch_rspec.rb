@@ -9,6 +9,7 @@ describe 'elasticsearch', :type => :class do
     let(:params) { {
         :cluster_name => 'my_cluster_name',
         :gc_log       => true,
+        :publish_host => '127.0.0.1',
     } }
     it {
         is_expected.to contain_file('/etc/elasticsearch/jvm.options')
