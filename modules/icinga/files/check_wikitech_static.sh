@@ -10,8 +10,8 @@ API_QUERY="action=query&titles=Server_Admin_Log&list=recentchanges&format=xml"
 AGE_LIMIT=200000 # seconds
 
 # MAIN
-TS_WIKITECH=$(curl $WIKITECH/?$API_QUERY 2> /dev/null | grep -o "timestamp.*" | cut -d\" -f2)
-TS_STATIC=$(curl $WIKITECHSTATIC/?$API_QUERY 2> /dev/null | grep -o "timestamp.*" | cut -d\" -f2)
+TS_WIKITECH=$(curl $WIKITECH?$API_QUERY 2> /dev/null | grep -o "timestamp.*" | cut -d\" -f2)
+TS_STATIC=$(curl $WIKITECHSTATIC?$API_QUERY 2> /dev/null | grep -o "timestamp.*" | cut -d\" -f2)
 
 # echo "wikitech: ${TS_WIKITECH} static: ${TS_STATIC}"
 
@@ -50,4 +50,3 @@ fi
 
 echo "wikitech-static UNKNOWN - please check $0"
 exit 3
-
