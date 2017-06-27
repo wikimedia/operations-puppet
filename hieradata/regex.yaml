@@ -119,55 +119,55 @@ labtest:
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
   swift_storage_drives: [
-          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+          'sda', 'sdb', 'sdc', 'sdd',
+          'sde', 'sdf', 'sdg', 'sdh',
+          'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+  swift_aux_partitions: ['sdm3', 'sdn3']
 
 # HP machines have different disk ordering T90922
 swift_be_codfw_hp:
   __regex: !ruby/regexp /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/
   swift_storage_drives: [
-        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
-        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+        'sdm', 'sdn', 'sdc', 'sdd',
+        'sde', 'sdf', 'sdg', 'sdh',
+        'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['sda3', 'sdb3']
 
 swift_be_eqiad_dell:
   __regex: !ruby/regexp /^ms-be101[3-5]\.eqiad\.wmnet$/
   swift_storage_drives: [
-          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+          'sda', 'sdb', 'sdc', 'sdd',
+          'sde', 'sdf', 'sdg', 'sdh',
+          'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+  swift_aux_partitions: ['sdm3', 'sdn3']
 
 # HP machines have different disk ordering T90922
 swift_be_eqiad_hp:
   __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/
   swift_storage_drives: [
-        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
-        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+        'sdm', 'sdn', 'sdc', 'sdd',
+        'sde', 'sdf', 'sdg', 'sdh',
+        'sdi', 'sdj', 'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['sda3', 'sdb3']
 
 # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
 swift_be_esams:
   __regex: !ruby/regexp /^ms-be300[1-4]\.esams\.wmnet$/
   swift_storage_drives: [
-        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
-        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-        '/dev/sdk', '/dev/sdl'
+        'sdc', 'sdd', 'sde', 'sdf',
+        'sdg', 'sdh', 'sdi', 'sdj',
+        'sdk', 'sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['sda3', 'sdb3']
 debdeploy_dbstore:
   __regex: !ruby/regexp /^dbstore[12]00[12]\.(eqiad|codfw)\.wmnet$/
   debdeploy::grains:
