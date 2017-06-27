@@ -97,9 +97,6 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_ram.sh':
-        ensure => 'absent',
-    }
     # Google safebrowsing lookup API client
     file { '/usr/lib/nagios/plugins/check_gsb.py':
         source => 'puppet:///modules/icinga/check_gsb.py',
