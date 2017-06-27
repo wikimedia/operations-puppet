@@ -1,31 +1,33 @@
 # == Class contint::packages::php
 class contint::packages::php {
 
-    include ::mediawiki::packages::php5
+    if os_version('ubuntu == trusty || debian == jessie') {
+      include ::mediawiki::packages::php5
 
-    require_package( [
-        'php5-dev',  # phpize
-        'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
-        'php5-gd',
-        'php5-gmp',
-        # mcrypt is used by fundraising's CiviCRM setup, deprecated in PHP 7
-        'php5-mcrypt',
-        'php5-pgsql',
-        'php5-sqlite',
-        'php5-tidy',
-        'php5-xdebug',
-        # MediaWikiFarm extension
-        # phpdocumentor/template-zend
-        'php5-xsl',
-    ] )
-    package { [
-        'php5-parsekit',
-        ]:
-        ensure => absent,
+      require_package( [
+          'php5-dev',  # phpize
+          'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
+          'php5-gd',
+          'php5-gmp',
+          # mcrypt is used by fundraising's CiviCRM setup, deprecated in PHP 7
+          'php5-mcrypt',
+          'php5-pgsql',
+          'php5-sqlite',
+          'php5-tidy',
+          'php5-xdebug',
+          # MediaWikiFarm extension
+          # phpdocumentor/template-zend
+          'php5-xsl',
+      ] )
+      package { [
+          'php5-parsekit',
+          ]:
+          ensure => absent,
+      }
     }
 
-    if os_version('debian == jessie') {
-        package { [
+    if os_version('debian >= jessie') {
+        $php7_packages = [
             # PHP 7.0 version of packages in mediawiki::packages::php5
             'php7.0-cli',
             'php7.0-common',
@@ -58,7 +60,17 @@ class contint::packages::php {
             'php-tideways',
             # for phan (T132636)
             'php-ast',
-            ]:
+        ]
+    }
+
+    if os_version('debian >= stretch') {
+        package { $php7_packages :
+            ensure  => latest,
+        }
+    }
+
+    if os_version('debian == jessie') {
+        package { $php7_packages :
             ensure  => latest,
             require => Apt::Repository['sury-php'],
         }
