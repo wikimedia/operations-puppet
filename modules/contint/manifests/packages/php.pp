@@ -78,7 +78,6 @@ class contint::packages::php {
         'libthai-dev',      # wikidiff2
         'luajit',           # luasandbox
         'liblua5.1.0-dev',  # luasandbox
-        'libtidy-dev',      # tidy
     ]:
         ensure => present
     }
