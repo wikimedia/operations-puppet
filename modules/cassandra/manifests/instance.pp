@@ -50,7 +50,7 @@ define cassandra::instance(
     $listen_address       = $this_instance['listen_address']
     $rpc_address          = pick($this_instance['rpc_address'], $listen_address)
     $jmx_exporter_enabled = pick($this_instance['jmx_exporter_enabled'], false)
-
+    $data_directories = pick($this_instance['data_file_directories'], ['base'])
     # Add the IP address if not present
     if $rpc_address != $facts['ipaddress'] {
         interface::alias { "cassandra-${instance_name}":
@@ -77,7 +77,7 @@ define cassandra::instance(
         $tls_hostname        = "${::hostname}-${instance_name}"
         $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
         $instance_id         = "${::hostname}-${instance_name}"
-        $data_file_directories  = ["${data_directory_base}/data"]
+        $data_file_directories  = prefix($data_directories, $data_directory_base)
         $commitlog_directory    = "${data_directory_base}/commitlog"
         $hints_directory        = "${data_directory_base}/data/hints"
         $heapdump_directory     = $data_directory_base
