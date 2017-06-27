@@ -34,8 +34,6 @@ monitoring::groups:
     description: Misc caches eqiad
   cache_misc_esams:
     description: Misc caches esams
-  cache_misc_ulsfo:
-    description: Misc caches ulsfo
 
 # Elasticsearch
   elasticsearch_eqiad:

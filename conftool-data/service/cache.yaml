@@ -70,7 +70,6 @@ cache_misc:
       - codfw
       - eqiad
       - esams
-      - ulsfo
   varnish-be:
     port: 3128
     default_values:
