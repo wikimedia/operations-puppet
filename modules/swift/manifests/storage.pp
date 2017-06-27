@@ -126,4 +126,17 @@ class swift::storage (
         require => [File['/usr/bin/swift-drive-audit'],
                     File['/etc/swift/swift-drive-audit.conf']],
     }
+
+    file { '/lib/udev/rules.d/80-swift-disks.rules':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/swift/80-swift-disks.rules',
+        notify => Exec['swift_udev_reload'],
+    }
+
+    exec { 'swift_udev_reload':
+        command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
+        refreshonly => true,
+    }
 }
