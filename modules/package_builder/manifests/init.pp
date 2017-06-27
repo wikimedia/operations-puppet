@@ -17,6 +17,13 @@ class package_builder(
         basepath => $basepath,
     }
 
+    if os_version('ubuntu == trusty || debian == jessie') {
+        require_package('php5-dev')
+    }
+    if os_version('debian >= stretch') {
+        require_package('php-dev')
+    }
+
     require_package([
         'cowbuilder',
         'build-essential',
@@ -44,7 +51,6 @@ class package_builder(
         'maven-repo-helper',
         'gradle',
         'pkg-php-tools',
-        'php5-dev',
         'kernel-wedge',
         'javahelper',
         'pkg-kde-tools',
