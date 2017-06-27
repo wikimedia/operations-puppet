@@ -226,10 +226,6 @@ class profile::backup::director(
         includes => [ '/var/lib/librenms', '/srv/librenms' ]
     }
 
-    bacula::director::fileset { 'torrus':
-        includes => [ '/var/lib/torrus', '/var/cache/torrus' ]
-    }
-
     bacula::director::fileset { 'smokeping':
         includes => [ '/var/lib/smokeping', '/var/cache/smokeping' ]
     }
