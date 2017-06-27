@@ -16,7 +16,7 @@
 
     RackBaseURI /
 
-    <Location />
+    <Location "/">
         <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
         Require ip <%= entry.gsub(/^\*/, "") %>
         <%- end -%>
@@ -26,7 +26,7 @@
     </Location>
 
     DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
-    <Directory /usr/share/puppet/rack/puppetmasterd/>
+    <Directory "/usr/share/puppet/rack/puppetmasterd/">
         Options None
         AllowOverride None
         Require all granted
