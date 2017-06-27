@@ -1,0 +1,14 @@
+debdeploy::grains:
+  debdeploy-labtest:
+    value: standard
+
+puppetmaster::hiera_config: labtest
+
+labspuppetbackend::mysql_host: labtestcontrol2001.wikimedia.org
+labspuppetbackend::mysql_db:   labspuppet
+labspuppetbackend::mysql_username: labspuppet
+labspuppetbackend::statsd_host: labmon1001.eqiad.wmnet
+labspuppetbackend::statsd_prefix: labtest.puppetbackend
+role::labs::puppetmaster::use_enc: true
+
+puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
