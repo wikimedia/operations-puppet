@@ -147,8 +147,8 @@ class _WMFRewriteContext(WSGIContext):
 
             # To turn thumbor off and have thumbnail traffic served by image scalers,
             # replace the line below with this one:
-            # upcopy = opener.open(encodedurl)
-            upcopy = thumbor_opener.open(thumbor_encodedurl)
+            upcopy = opener.open(encodedurl)
+            # upcopy = thumbor_opener.open(thumbor_encodedurl)
         except urllib2.HTTPError, error:
             # copy the urllib2 HTTPError into a webob HTTPError class as-is
 
