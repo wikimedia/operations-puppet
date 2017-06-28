@@ -12,6 +12,27 @@ class role::cache::base(
     include conftool::scripts
     include ::role::prometheus::varnish_exporter
 
+    if $::hostname == 'cp1008' {
+        ferm::service { 'nginx-https':
+            proto => 'tcp',
+            port  => '443',
+        }
+
+        ferm::service { 'varnish-http':
+            proto => 'tcp',
+            port  => '80',
+        }
+
+        ferm::service { 'gdnsd-udp':
+            proto => 'udp',
+            port  => '53',
+        }
+
+        ferm::service { 'gdnsd-tcp':
+            proto => 'tcp',
+            port  => '53',
+        }
+    }
 
     $cache_cluster = hiera('cache::cluster')
 
