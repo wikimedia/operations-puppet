@@ -41,6 +41,7 @@ class role::labs::db::replica {
 
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/labsdb-replica.my.cnf.erb',
+        basedir       => '/opt/wmf-mariadb101',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => 'ON',
