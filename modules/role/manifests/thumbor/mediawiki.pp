@@ -7,6 +7,7 @@
 class role::thumbor::mediawiki {
     include ::standard
     include ::base::firewall
+    include ::mediawiki::packages::fonts
     include role::statsite
 
     class { '::thumbor::nutcracker':
