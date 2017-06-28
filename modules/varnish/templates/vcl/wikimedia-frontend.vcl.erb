@@ -46,7 +46,7 @@ sub https_deliver_hsts {
 	if (req.http.X-Forwarded-Proto == "https") {
 		// Same regex as above in https_recv_redirect
 		if (req.http.Host ~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent)\.org|^w\.wiki)$") {
-			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
+			set resp.http.Strict-Transport-Security = "max-age=106384710; includeSubDomains; preload";
 		}
 	}
 }
