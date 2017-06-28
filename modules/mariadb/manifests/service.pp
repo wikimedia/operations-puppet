@@ -22,13 +22,15 @@ class mariadb::service (
     ) {
 
     if $basedir == '' {
-        $basedir = "/opt/${package}"
+        $current_basedir = "/opt/${package}"
+    } else {
+        $current_basedir = $basedir
     }
 
     if os_version('debian >= stretch') {
         #TODO: setup optional systemd options
     } else {
-        file { "${basedir}/service":
+        file { "${current_basedir}/service":
             ensure  => present,
             owner   => 'root',
             group   => 'root',
@@ -39,14 +41,14 @@ class mariadb::service (
 
         file { '/etc/init.d/mysql':
             ensure  => 'link',
-            target  => "${basedir}/service",
-            require => File["${basedir}/service"],
+            target  => "${current_basedir}/service",
+            require => File["${current_basedir}/service"],
         }
 
         file { '/etc/init.d/mariadb':
             ensure  => 'link',
-            target  => "${basedir}/service",
-            require => File["${basedir}/service"],
+            target  => "${current_basedir}/service",
+            require => File["${current_basedir}/service"],
         }
 
         if $manage {
