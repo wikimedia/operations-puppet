@@ -9,6 +9,8 @@ class ores::web(
     $deployment = 'scap3',
     $celery_workers = 45,
     $extra_config = undef,
+    $ores_config_user = hiera('ores_config_user', 'deploy-service'),
+    $ores_config_group = hiera('ores_config_group', 'deploy-service'),
 ) {
     require ::ores::base
 
@@ -109,8 +111,8 @@ class ores::web(
         config   => $final_config,
         priority => '99',
         mode     => '0444',
-        owner    => 'deploy-service',
-        group    => 'deploy-service',
+        owner    => $ores_config_user,
+        group    => $ores_config_group,
     }
 
 }
