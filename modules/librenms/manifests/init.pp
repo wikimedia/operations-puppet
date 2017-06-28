@@ -54,16 +54,38 @@ class librenms(
         source => 'puppet:///modules/librenms/logrotate',
     }
 
+    if os_version('debian >= stretch') {
+
+        package { [
+                'php-cli',
+                'php-curl',
+                'php-gd',
+                'php-mcrypt',
+                'php-mysql',
+                'php-snmp',
+            ]:
+            ensure => present,
+        }
+
+    } else {
+
+        package { [
+                'php5-cli',
+                'php5-curl',
+                'php5-gd',
+                'php5-mcrypt',
+                'php5-mysql',
+                'php5-snmp',
+                'php-net-ipv4',
+                'snmp-mibs-downloader',
+            ]:
+            ensure => present,
+        }
+    }
+
     package { [
-            'php5-cli',
-            'php5-curl',
-            'php5-gd',
-            'php5-mcrypt',
-            'php5-mysql',
-            'php5-snmp',
-            'php-net-ipv4',
-            'php-net-ipv6',
             'php-pear',
+            'php-net-ipv6',
             'fping',
             'graphviz',
             'ipmitool',
