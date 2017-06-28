@@ -1,3 +1,3 @@
-class role::microsites::releases::upload {
+class profile::releases::upload {
     class { '::releases::reprepro::upload': }
 }

@@ -5,6 +5,6 @@ class role::deployment_server {
     include ::profile::mediawiki::deployment::server
     include ::profile::backup::host
     include ::role::deployment::mediawiki
-    include ::role::microsites::releases::upload
+    include ::profile::releases::upload
     backup::set {'home': }
 }
