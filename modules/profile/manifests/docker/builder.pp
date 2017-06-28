@@ -15,6 +15,8 @@ class profile::docker::builder(
     $proxy_address = hiera('profile::docker::builder::proxy_address', undef),
     $proxy_port = hiera('profile::docker::builder::proxy_port', undef),
     $registry = hiera('docker::registry'),
+    $username = hiera('docker::registry::username'),
+    $password = hiera('docker::registry::password')
     ) {
 
     class { '::docker::baseimages':
@@ -24,5 +26,21 @@ class profile::docker::builder(
         distributions   => ['jessie', 'alpine'],
     }
 
-    # TODO: create a repo for base images in prod for this
+    git::clone { 'operations/docker-images/production-images':
+        ensure    => present,
+        directory => '/srv/images/production-images'
+    }
+
+    file {'/etc/production-images':
+        ensure => directory,
+        mode   => '0700',
+    }
+
+    file { '/etc/production-images/config.yaml':
+        ensure  => present,
+        content => template('profile/docker/production-images-config.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444'
+    }
 }
