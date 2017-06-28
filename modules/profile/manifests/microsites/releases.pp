@@ -26,4 +26,3 @@ class profile::microsites::releases {
     include ::profile::backup::host
     backup::set { 'srv-org-wikimedia': }
 }
-
