@@ -109,8 +109,8 @@ class ores::web(
         config   => $final_config,
         priority => '99',
         mode     => '0444',
-        owner    => 'deploy-service',
-        group    => 'deploy-service',
+        owner    => 'www-data',
+        group    => 'www-data',
     }
 
 }
