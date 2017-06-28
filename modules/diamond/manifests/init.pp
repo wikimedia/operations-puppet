@@ -117,6 +117,11 @@ class diamond(
     }
 
     diamond::collector { 'Network': }
+    diamond::collector { 'DiskSpace': }
+    diamond::collector { 'LoadAvg': }
+    diamond::collector { 'Memory': }
+    diamond::collector { 'VMStat': }
+
 
     diamond::collector { 'TCP':
         settings => {
