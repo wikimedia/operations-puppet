@@ -12,7 +12,6 @@ class role::cache::base(
     include conftool::scripts
     include ::role::prometheus::varnish_exporter
 
-
     $cache_cluster = hiera('cache::cluster')
 
     system::role { "cache::${cache_cluster}":
