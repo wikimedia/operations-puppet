@@ -81,8 +81,8 @@ PermissionsStartOnly=true
 # Use the [service] section and Environment="MYSQLD_OPTS=...".
 # This isn't a replacement for my.cnf.
 # _WSREP_NEW_CLUSTER is for the exclusive use of the script galera_new_cluster
-WorkingDirectory=<%= @basedir -%>
-ExecStart=<%= @basedir -%>/bin/mysqld $MYSQLD_OPTS
+WorkingDirectory=<%= @init_basedir -%>
+ExecStart=<%= @init_basedir -%>/bin/mysqld $MYSQLD_OPTS
 
 # Unset _WSREP_START_POSITION environment variable.
 #ExecStartPost=/bin/sh -c "systemctl unset-environment _WSREP_START_POSITION"
