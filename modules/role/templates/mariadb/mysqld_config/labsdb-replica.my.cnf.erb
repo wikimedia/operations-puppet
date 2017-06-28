@@ -23,6 +23,7 @@ ssl-verify-server-cert
 user       = mysql
 socket     = /tmp/mysql.sock
 port       = 3306
+basedir    = <%= @basedir %>
 datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
 server_id  = <%= @server_id %>

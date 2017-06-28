@@ -15,22 +15,20 @@
 
 class mariadb::service (
     $package = 'wmf-mariadb10',
-    $basedir = '',
     $manage  = false,
     $ensure  = stopped,
     $enable  = false,
+    $basedir,
     ) {
 
-    if $basedir == '' {
-        $current_basedir = "/opt/${package}"
-    } else {
-        $current_basedir = $basedir
+    if $basedir == undef {
+        $basedir = "/opt/${package}"
     }
 
     if os_version('debian >= stretch') {
         #TODO: setup optional systemd options
     } else {
-        file { "${current_basedir}/service":
+        file { "${basedir}/service":
             ensure  => present,
             owner   => 'root',
             group   => 'root',
@@ -41,14 +39,14 @@ class mariadb::service (
 
         file { '/etc/init.d/mysql':
             ensure  => 'link',
-            target  => "${current_basedir}/service",
-            require => File["${current_basedir}/service"],
+            target  => "${basedir}/service",
+            require => File["${basedir}/service"],
         }
 
         file { '/etc/init.d/mariadb':
             ensure  => 'link',
-            target  => "${current_basedir}/service",
-            require => File["${current_basedir}/service"],
+            target  => "${basedir}/service",
+            require => File["${basedir}/service"],
         }
 
         if $manage {
