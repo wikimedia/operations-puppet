@@ -215,33 +215,31 @@ class Terminator(object):
             result = self.database.execute(command, params, dry_run=self.dry_run)
             time.sleep(self.sleep_between_batches)
 
-    def _get_uuids_and_last_ts(self, table, start_ts):
-        """
-        Return the first <batch_size> uuids of the events between start_ts
-        and self.end. Also return the timestamp of the last of those events.
-        NOTE: If there exist several events that share the last timestamp,
-        it might be that some of them are listed in the uuid batch, and some
-        others aren't (do not fit in the batch size limit). In the next iteration
-        start_ts will be this iteration's last_ts, and so the script might
-        re-purge some events, which is OK, because the outcome does not change.
-        """
+    def _get_sanitize_batches(self):
         command = (
-            "SELECT timestamp, uuid from {} WHERE timestamp >= %(start_ts)s "
-            "AND timestamp < %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s"
-            .format(table)
+            "SELECT timestamp, uuid FROM {} "
+            "WHERE timestamp >= %(batch_start_timestamp)s AND timestamp < '{}' "
+            "ORDER BY timestamp, uuid LIMIT {} OFFSET %(already_processed_events)s"
+            .format(table, self.end, self.batch_size)
         )
         params = {
-            'start_ts': start_ts,
-            'end_ts': self.end,
-            'batch_size': self.batch_size,
+            'batch_start_timestamp': self.start,
+            'already_processed_events': 0
         }
-        result = self.database.execute(command, params, self.dry_run)
-        if result['rows']:
-            uuids = [x[1] for x in result['rows']]
-            last_ts = result['rows'][-1][0]
-            return (uuids, last_ts)
-        else:
-            return ([], None)
+        results = self.database.execute(command, params, self.dry_run)['rows']
+        yield [x[1] for x in results]
+        while len(results) == self.batch_size:
+            last_event_timestamp = result[-1][0]
+            params = {
+                'batch_start_timestamp': last_event_timestamp,
+                'already_processed_events': (
+                    params['already_processed_events'] + len(results)
+                    if last_event_timestamp == params['batch_start_timestamp'] else
+                    sum(x[0] == last_event_timestamp for x in results)
+                )
+            }
+            results = self.database.execute(command, params, self.dry_run)['rows']
+            yield [x[1] for x in results]
 
     def sanitize(self, table):
         """
@@ -265,14 +263,13 @@ class Terminator(object):
         fields_to_purge = filter(lambda f: f not in fields_to_keep, fields)
 
         values_string = ','.join([field + ' = NULL' for field in fields_to_purge])
-        uuids_current_batch, last_ts = self._get_uuids_and_last_ts(table, self.start)
         command_template = (
             "UPDATE {0} "
             "SET {1} "
             "WHERE uuid IN ({{}})"
         ).format(table, values_string)
 
-        while uuids_current_batch:
+        for uuids_current_batch in self._get_sanitize_batches():
             uuids_no = len(uuids_current_batch)
             if uuids_no > self.batch_size:
                 log.error("The number of uuids to sanitize {} is bigger "
@@ -293,14 +290,6 @@ class Terminator(object):
                           .format(uuids_no, result['numrows']))
                 raise RuntimeError('Sanitization stopped as precautionary step.')
 
-            if uuids_no < self.batch_size:
-                # Avoid an extra SQL query to the database if the number of
-                # uuids returned are less than BATCH_SIZE, since this value
-                # means that we have already reached the last batch of uuids
-                # to sanitize.
-                uuids_current_batch = []
-            else:
-                uuids_current_batch, last_ts = self._get_uuids_and_last_ts(table, last_ts)
             time.sleep(self.sleep_between_batches)
 
 
