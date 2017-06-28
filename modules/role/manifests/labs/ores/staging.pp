@@ -1,7 +1,10 @@
 # filtertags: labs-project-ores-staging
 class role::labs::ores::staging {
     include ::ores::base
-    include ::ores::web
+    class { '::ores::web':
+        ores_config_user => 'nobody',
+        ores_config_group => 'nogroup',
+    }
     include ::ores::worker
 
     include ::role::labs::ores::lb
