@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/rsync -a rsync://<%= @source_host %>/<%= @title %>/<%= @file_path %> <%= @module_path %>/<%= @file_path %>
