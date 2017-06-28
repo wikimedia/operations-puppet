@@ -242,8 +242,7 @@ node 'copper.eqiad.wmnet' {
 
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
-    role(cache::text, authdns::testns)
-    include ::tlsproxy::prometheus
+    role(cache::text_test, authdns::testns)
     interface::add_ip6_mapped { 'main': }
 }
 
