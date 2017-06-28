@@ -22,7 +22,9 @@ class mariadb::service (
     ) {
 
     if $basedir == undef {
-        $basedir = "/opt/${package}"
+        $initd_basedir = "/opt/${package}"
+    } else {
+        $initd_basedir = $basedir
     }
 
     if os_version('debian >= stretch') {
