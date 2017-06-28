@@ -215,7 +215,7 @@ class Terminator(object):
             result = self.database.execute(command, params, dry_run=self.dry_run)
             time.sleep(self.sleep_between_batches)
 
-    def _get_uuids_and_last_ts(self, table, start_ts):
+    def _get_uuid_info(self, table, start_ts, already_processed):
         """
         Return the first <batch_size> uuids of the events between start_ts
         and self.end. Also return the timestamp of the last of those events.
@@ -227,7 +227,8 @@ class Terminator(object):
         """
         command = (
             "SELECT timestamp, uuid from {} WHERE timestamp >= %(start_ts)s "
-            "AND timestamp < %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s"
+            "AND timestamp < %(end_ts)s ORDER BY timestamp, uuid "
+            "LIMIT %(batch_size)s OFFSET %(already_processed)s"
             .format(table)
         )
         params = {
@@ -235,13 +236,17 @@ class Terminator(object):
             'end_ts': self.end,
             'batch_size': self.batch_size,
         }
-        result = self.database.execute(command, params, self.dry_run)
-        if result['rows']:
-            uuids = [x[1] for x in result['rows']]
-            last_ts = result['rows'][-1][0]
-            return (uuids, last_ts)
+        results = self.database.execute(command, params, self.dry_run)['rows']
+        if results:
+            uuids = [x[1] for x in results]
+            last_ts = results[-1][0]
+            if start_ts == last_ts:
+                uuids_with_last_ts = already_processed + len(results)
+            else:
+                uuids_with_last_ts = sum(x[0] == last_ts for x in results)
+            return (uuids, last_ts, uuids_with_last_ts)
         else:
-            return ([], None)
+            return ([], None, 0)
 
     def sanitize(self, table):
         """
@@ -265,7 +270,8 @@ class Terminator(object):
         fields_to_purge = filter(lambda f: f not in fields_to_keep, fields)
 
         values_string = ','.join([field + ' = NULL' for field in fields_to_purge])
-        uuids_current_batch, last_ts = self._get_uuids_and_last_ts(table, self.start)
+        uuid_info = self._get_uuid_info(table, self.start, 0)
+        uuids_current_batch, last_ts, uuids_with_last_ts = uuid_info
         command_template = (
             "UPDATE {0} "
             "SET {1} "
@@ -300,7 +306,8 @@ class Terminator(object):
                 # to sanitize.
                 uuids_current_batch = []
             else:
-                uuids_current_batch, last_ts = self._get_uuids_and_last_ts(table, last_ts)
+                uuid_info = self._get_uuid_info(table, last_ts, uuids_with_last_ts)
+                uuids_current_batch, last_ts, uuids_with_last_ts = uuid_info
             time.sleep(self.sleep_between_batches)
 
 
