@@ -9,5 +9,20 @@ class profile::releases::mediawiki {
         umask      => '0002',
     }
 
+    class { '::releases':
+        sitename => 'releases.wikimedia.org',
+    }
+
+    monitoring::service { 'http':
+        description   => 'HTTP',
+        check_command => 'check_http',
+    }
+
+
+    ferm::service { 'releases_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
     backup::set { 'srv-org-wikimedia': }
 }

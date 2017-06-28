@@ -1,3 +1,6 @@
+# == Class: role::releases
+#
+# Sets up a machine to generate and host releases of software
 class role::releases {
 
     system::role { 'releases':
