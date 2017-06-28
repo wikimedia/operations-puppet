@@ -30,7 +30,7 @@ class mariadb::service (
     if os_version('debian >= stretch') {
         #TODO: setup optional systemd options
     } else {
-        file { "${basedir}/service":
+        file { "${initd_basedir}/service":
             ensure  => present,
             owner   => 'root',
             group   => 'root',
@@ -41,14 +41,14 @@ class mariadb::service (
 
         file { '/etc/init.d/mysql':
             ensure  => 'link',
-            target  => "${basedir}/service",
-            require => File["${basedir}/service"],
+            target  => "${initd_basedir}/service",
+            require => File["${initd_basedir}/service"],
         }
 
         file { '/etc/init.d/mariadb':
             ensure  => 'link',
-            target  => "${basedir}/service",
-            require => File["${basedir}/service"],
+            target  => "${initd_basedir}/service",
+            require => File["${initd_basedir}/service"],
         }
 
         if $manage {
