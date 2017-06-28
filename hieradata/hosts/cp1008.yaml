@@ -3,6 +3,7 @@ debdeploy::grains:
     value: canary
 bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
+cache::cluster: text
 cache::text::nodes:
     eqiad:
       - 'cp1008.wikimedia.org'
