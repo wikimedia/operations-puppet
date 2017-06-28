@@ -120,7 +120,7 @@ module Puppet::Parser::Functions
   }
 
   # Our standard HSTS for all public canonical domains
-  hsts_val = "max-age=31536000; includeSubDomains; preload"
+  hsts_val = "max-age=106384710; includeSubDomains; preload"
 
   newfunction(
               :ssl_ciphersuite,

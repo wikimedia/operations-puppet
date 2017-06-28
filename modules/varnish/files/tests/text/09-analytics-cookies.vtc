@@ -40,7 +40,7 @@ logexpect l3 -v v1 -g request {
 client c1 {
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
-    expect resp.http.Strict-Transport-Security == "max-age=31536000; includeSubDomains; preload"
+    expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
     expect resp.http.X-Analytics == "https=1;nocookies=1"
     expect resp.http.X-Client-IP == "91.198.174.192"
 
