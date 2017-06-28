@@ -13,4 +13,10 @@ class role::releases {
     include ::profile::backup::host
     include ::profile::releases::mediawiki
     include ::profile::releases::reprepro
+
+    rsync::quickdatacopy { 'srv-org-wikimedia':
+      ensure      => present,
+      source_host => 'bromine.eqiad.wmnet',
+      module_path => '/srv/org/wikimedia',
+    }
 }
