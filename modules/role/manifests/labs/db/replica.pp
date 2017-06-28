@@ -10,6 +10,7 @@ class role::labs::db::replica {
     }
     class { 'mariadb::service':
         package => 'wmf-mariadb101',
+        basedir => '/opt/wmf-mariadb101',
     }
     include role::mariadb::monitor
     include ::base::firewall
@@ -41,7 +42,9 @@ class role::labs::db::replica {
 
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/labsdb-replica.my.cnf.erb',
+        basedir       => '/opt/wmf-mariadb101',
         datadir       => '/srv/sqldata',
+        socket        => '/tmp/mysql.sock',
         tmpdir        => '/srv/tmp',
         read_only     => 'ON',
         p_s           => 'on',
