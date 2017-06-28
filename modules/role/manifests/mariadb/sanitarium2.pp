@@ -30,12 +30,15 @@ class role::mariadb::sanitarium2 {
     }
 
     class { 'mariadb::config':
-        config => 'role/mariadb/mysqld_config/sanitarium2.my.cnf.erb',
-        ssl    => 'puppet-cert',
+        basedir => '/opt/wmf-mariadb101',
+        socket  => '/tmp/mysql.sock',
+        config  => 'role/mariadb/mysqld_config/sanitarium2.my.cnf.erb',
+        ssl     => 'puppet-cert',
     }
 
     class {'mariadb::service':
         package => 'wmf-mariadb101',
+        basedir => '/opt/wmf-mariadb101',
     }
 
     class { 'mariadb::monitor_disk':
