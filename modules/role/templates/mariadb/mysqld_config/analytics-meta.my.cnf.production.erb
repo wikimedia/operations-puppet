@@ -22,6 +22,7 @@ user      = mysql
 socket    = /tmp/mysql.sock
 port      = 3306
 datadir   = <%= @datadir %>
+basedir   = <%= @basedir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
