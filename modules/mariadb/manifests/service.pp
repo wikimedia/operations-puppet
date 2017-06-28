@@ -15,13 +15,13 @@
 
 class mariadb::service (
     $package = 'wmf-mariadb10',
-    $basedir = undef,
+    $basedir = '',
     $manage  = false,
     $ensure  = stopped,
     $enable  = false,
     ) {
 
-    if $basedir == undef {
+    if $basedir == '' {
         $initd_basedir = "/opt/${package}"
     } else {
         $initd_basedir = $basedir
