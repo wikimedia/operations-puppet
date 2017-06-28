@@ -118,7 +118,7 @@ class diamond(
 
     diamond::collector { 'Network': }
     diamond::collector { 'DiskSpace': }
-    diamond::collector { 'LoadAvg': }
+    diamond::collector { 'LoadAverage': }
     diamond::collector { 'Memory': }
     diamond::collector { 'VMStat': }
 
