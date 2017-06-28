@@ -2615,6 +2615,20 @@ host labcontrol1002 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host labcontrol1003 {
+    hardware ethernet 30:e1:71:5f:6e:5c;
+    fixed-address labcontrol1003.wikimedia.org;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labcontrol1004 {
+    hardware ethernet 30:e1:71:60:f0:50;
+    fixed-address labcontrol1004.wikimedia.org;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host labtestweb2001 {
     hardware ethernet 90:B1:1C:2D:7F:19;
     fixed-address labtestweb2001.wikimedia.org;
