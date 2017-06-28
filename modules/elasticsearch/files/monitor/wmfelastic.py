@@ -116,6 +116,8 @@ class WMFElasticCollector(diamond.collector.Collector):
             'indices.search.groups.regex.query_time_in_millis',
             'indices.search.groups.mwgrep.query_total',
             'indices.search.groups.mwgrep.query_time_in_millis',
+            'indices.search.groups.load_test_rewrite.query_total',
+            'indices.search.groups.load_test_rewrite.query_time_in_millis',
             'indices.suggest.total',
             'indices.suggest.time_in_millis',
             'indices.merges.current',
