@@ -2,7 +2,7 @@ class librenms::web(
     $sitename,
     $install_dir,
 ) {
-    include ::apache::mod::php5
+    include ::apache::mod::php7
     include ::apache::mod::rewrite
 
     include ::apache::mod::ssl
