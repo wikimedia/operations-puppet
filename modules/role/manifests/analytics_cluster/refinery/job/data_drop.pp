@@ -5,13 +5,17 @@
 class role::analytics_cluster::refinery::job::data_drop {
     require ::role::analytics_cluster::refinery
 
-    $webrequest_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-webrequest-partitions.log"
-    $eventlogging_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-eventlogging-partitions.log"
-    $wdqs_extract_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-wdqs-extract-partitions.log"
-    $mediawiki_log_file      = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-log-partitions.log"
+    $webrequest_log_file       = "${role::analytics_cluster::refinery::log_dir}/drop-webrequest-partitions.log"
+    $eventlogging_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-eventlogging-partitions.log"
+    $wdqs_extract_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-wdqs-extract-partitions.log"
+    $mediawiki_log_file        = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-log-partitions.log"
+    $druid_webrequest_log_file = "${role::analytics_cluster::refinery::log_dir}/drop-druid-webrequest.log"
 
     # Shortcut var to DRY up cron commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python"
+
+    # Send an email to analytics in case of failure
+    $mail_to = 'analytics-alerts@wikimedia.org'
 
     # Keep this many days of raw webrequest data.
     $raw_retention_days = 31
@@ -62,5 +66,14 @@ class role::analytics_cluster::refinery::job::data_drop {
         user    => 'hdfs',
         minute  => '25',
         hour    => '*/4',
+    }
+    # keep this many days of druid webrequest sampled
+    $druid_webrequest_sampled_retention_days = 60
+    cron {'refinery-drop-webrequest-sampled-druid':
+        command => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest >> ${druid_webrequest_log_file}",
+        environment => "MAILTO=${mail_to}",
+        user    => 'hdfs',
+        minute  => '15',
+        hour    => '5'
     }
 }
