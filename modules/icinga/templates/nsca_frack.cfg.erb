@@ -1049,19 +1049,7 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_ipn_redir
-    hostgroup_name           fundraising-civicrm
-}
-
-define service {
-    use                      passive-service
     service_description      check_ssl
-    hostgroup_name           fundraising-civicrm
-}
-
-define service {
-    use                      passive-service
-    service_description      check_ssl_fr
     hostgroup_name           fundraising-civicrm
 }
 
@@ -1135,6 +1123,18 @@ define service {
 define service {
     use                      passive-service
     service_description      check_ssl
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl_fr
+    hostgroup_name           fundraising-listener
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ipn_redir
     hostgroup_name           fundraising-listener
 }
 
