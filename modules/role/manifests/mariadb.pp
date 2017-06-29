@@ -192,6 +192,7 @@ class role::mariadb::analytics {
         is_critical   => false,
         contact_group => 'admins', # only show on nagios/irc
         multisource   => true,
+        socket        => '/tmp/mysql.sock',
     }
 }
 
