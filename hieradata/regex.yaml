@@ -124,7 +124,7 @@ swift_be_codfw_dell:
           '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
 
 # HP machines have different disk ordering T90922
 swift_be_codfw_hp:
@@ -135,7 +135,7 @@ swift_be_codfw_hp:
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
 swift_be_eqiad_dell:
   __regex: !ruby/regexp /^ms-be101[3-5]\.eqiad\.wmnet$/
@@ -145,7 +145,7 @@ swift_be_eqiad_dell:
           '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
 
 # HP machines have different disk ordering T90922
 swift_be_eqiad_hp:
@@ -156,7 +156,7 @@ swift_be_eqiad_hp:
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
 # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
 swift_be_esams:
