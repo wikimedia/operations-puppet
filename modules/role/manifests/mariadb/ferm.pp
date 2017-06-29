@@ -12,6 +12,6 @@ class role::mariadb::ferm {
 
     # for DBA purposes
     ferm::rule { 'mariadb_dba':
-        rule => 'saddr @resolve((db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
+        rule => 'saddr @resolve((db1011.eqiad.wmnet neodymium.eqiad.wmnet sarin.codfw.wmnet)) proto tcp dport (3307) ACCEPT;',
     }
 }
