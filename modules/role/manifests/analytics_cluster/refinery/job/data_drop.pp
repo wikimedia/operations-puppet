@@ -63,4 +63,12 @@ class role::analytics_cluster::refinery::job::data_drop {
         minute  => '25',
         hour    => '*/4',
     }
+    # keep this many days of druid webrequest sampled
+    $druid_webrequest_sampled_retention_days = 60
+    cron {'refinery-drop-webrequest-sampled-druid':
+        command => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest >> ${webrequest_log_file} 2>&1",
+        user    => 'hdfs',
+        minute  => '15',
+        hour    => '5'
+    }
 }
