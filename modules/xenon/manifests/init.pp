@@ -41,7 +41,8 @@ class xenon(
             port => $redis_port,
         },
         logs      => [
-            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 24 },
+            # 336 hours is 14 days * 24 hours (T166624)
+            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 336 },
             { period => 'daily',   format => '%Y-%m-%d',    retain => 90 },
         ],
     }
