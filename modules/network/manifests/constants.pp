@@ -77,6 +77,12 @@ class network::constants {
                     '10.192.0.140',                # sarin.codfw.wmnet
                     '2620:0:860:101:10:192:0:140', # sarin.codfw.wmnet
                 ],
+            'mysql_root_clients' => [
+                    # ipv6 interfaces are not yet allowed due to mysql grants
+                    '10.64.0.15',                  # db1011.eqiad.wmnet
+                    '10.64.32.20',                 # neodymium.eqiad.wmnet
+                    '10.192.0.140',                # sarin.codfw.wmnet
+                ],
             'kafka_brokers_main' => [
                     '10.64.0.11',                         # kafka1001.eqiad.wmnet
                     '2620:0:861:101:1618:77ff:fe33:5242', # kafka1001.eqiad.wmnet
