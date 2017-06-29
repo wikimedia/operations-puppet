@@ -14,11 +14,12 @@
 # With $manage = true this class will set $ensure and $enabled as specified.
 
 class mariadb::service (
-    $package = 'wmf-mariadb10',
-    $basedir = 'undefined',
-    $manage  = false,
-    $ensure  = stopped,
-    $enable  = false,
+    $package  = 'wmf-mariadb10',
+    $basedir  = 'undefined',
+    $manage   = false,
+    $ensure   = stopped,
+    $enable   = false,
+    $override = false,
     ) {
 
     if $basedir == 'undefined' {
@@ -27,8 +28,45 @@ class mariadb::service (
         $initd_basedir = $basedir
     }
 
+    # stretch and later use systemd, others use init.d
     if os_version('debian >= stretch') {
-        #TODO: setup optional systemd options
+        case $package {
+            'wmf-mysql57', 'wmf-mysql80': { $vendor = 'mysql' }
+            default:                      { $vendor = 'mariadb' }
+        }
+
+        if $manage {
+            service { $vendor:
+                ensure  => $ensure,
+                enable  => $enable,
+                # shouldn't systemd unit be on /lib/systemd/system ?
+                require => File["/etc/systemd/system/${vendor}.service"],
+            }
+        }
+        # handle per-host special configuration
+        if $override {
+            file { "/etc/systemd/system/${vendor}.service.d":
+                ensure => directory,
+                mode   => '0755',
+                owner  => 'root',
+                group  => 'root',
+            }
+            file { "/etc/systemd/system/${vendor}.service.d/override.conf":
+                ensure  => present,
+                mode    => '0755',
+                owner   => 'root',
+                group   => 'root',
+                content => $override,
+            }
+        } else {
+            file { "/etc/systemd/system/${vendor}.service.d/override.conf":
+                ensure => absent,
+                notify => File["/etc/systemd/system/${vendor}.service.d"]
+            }
+            file { "/etc/systemd/system/${vendor}.service.d":
+                ensure => absent,
+            }
+        }
     } else {
         file { "${initd_basedir}/service":
             ensure  => present,
