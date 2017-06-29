@@ -107,7 +107,7 @@ define scap::target(
         install_options => [{
                   owner => $deploy_user}],
         provider        => 'scap3',
-        require         => [Package['scap'], User[$deploy_user]],
+        require         => [Package['scap'], User[$deploy_user], Service::Node::Config::Scap3[$title],
     }
 
     # XXX: Temporary work-around for switching services from Trebuchet to Scap3
