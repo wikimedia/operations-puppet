@@ -2,7 +2,13 @@ class librenms::web(
     $sitename,
     $install_dir,
 ) {
-    include ::apache::mod::php5
+
+    if os_version('debian >= stretch') {
+        include ::apache::mod::php7
+    } else {
+        include ::apache::mod::php5
+    }
+
     include ::apache::mod::rewrite
 
     include ::apache::mod::ssl
