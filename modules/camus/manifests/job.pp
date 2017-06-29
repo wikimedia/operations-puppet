@@ -94,6 +94,10 @@ define camus::job (
 
     $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opt} ${properties_file} >> ${log_file} 2>&1"
 
+
+    $mail_to = 'analytics-alerts@wikimedia.org'
+
+
     cron { "camus-${title}":
         command  => $command,
         user     => $user,
