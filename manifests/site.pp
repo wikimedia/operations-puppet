@@ -1741,10 +1741,7 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
-    role(librenms, servermon::wmf,
-      network::monitor)
-    include ::passwords::network
-    include ::base::firewall
+    role(network::monitor, librenms, servermon::wmf)
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -1752,10 +1749,8 @@ node 'netmon1001.wikimedia.org' {
 # network monitoring tool server - replacement server (T125020)
 node 'netmon1002.wikimedia.org' {
     # TODO: role(librenms, servermon::wmf)
-    role(rancid, smokeping)
+    role(network::monitor, rancid, smokeping)
 
-    include ::passwords::network
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
