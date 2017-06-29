@@ -55,6 +55,7 @@ class striker::uwsgi(
             venv         => $venv_dir,
             wsgi         => 'striker.wsgi',
             vacuum       => true,
+            http-socket  => "127.0.0.1:${port}",
 
             logger       => [
                 "local file:${log_dir}/main.log",
