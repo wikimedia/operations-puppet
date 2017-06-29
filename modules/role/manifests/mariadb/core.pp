@@ -47,7 +47,10 @@ class role::mariadb::core {
         package => $package,
     }
     class {'mariadb::service':
-        package => $package,
+        package  => $package,
+        # for now we will keep things simple, we probably should have a
+        # higher-level interface with templates
+        override => '[Service]\nLimitNOFILE=200000',
     }
 
     # Read only forced on also for the masters of the primary datacenter
