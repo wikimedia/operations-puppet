@@ -130,8 +130,11 @@ class apache::mod::passenger       { apache::mod_conf { 'passenger':      } <- p
 # https://httpd.apache.org/docs/current/mod/mod_perl.html
 class apache::mod::perl            { apache::mod_conf { 'perl':           } <- package { 'libapache2-mod-perl2':     } }
 
-# https://httpd.apache.org/docs/current/mod/mod_php5.html
+# mod_php (PHP 5)
 class apache::mod::php5            { apache::mod_conf { 'php5':           } <- package { 'libapache2-mod-php5':      } }
+
+# mod_php (PHP 7)
+class apache::mod::php7            { apache::mod_conf { 'php7.0':         } <- package { 'libapache2-mod-php7.0':    } }
 
 # https://httpd.apache.org/docs/current/mod/mod_python.html
 class apache::mod::python          { apache::mod_conf { 'python':         } <- package { 'libapache2-mod-python':    } }
