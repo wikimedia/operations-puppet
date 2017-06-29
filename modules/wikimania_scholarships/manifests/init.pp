@@ -31,9 +31,14 @@ class wikimania_scholarships(
 
     include ::passwords::mysql::wikimania_scholarships
     include ::apache
-    include ::apache::mod::php5
 
-    require_package('php5-mysql')
+    if os_version('debian == stretch') {
+        include ::apache::mod::php7
+        require_package('php7.0-mysql')
+    } else {
+        include ::apache::mod::php5
+        require_package('php5-mysql')
+    }
 
     $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
     $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
