@@ -100,36 +100,60 @@ class phabricator (
         $storage_pass = $mysql_admin_pass
     }
 
+    # stretch - PHP (7.0) packages and Apache module
+    if os_version('debian >= stretch') {
+        package { [
+            'php-mysql',
+            'php-gd',
+            'php-mailparse',
+            'php-dev',
+            'php-curl',
+            'php-cli',
+            'php-json',
+            'php-ldap']:
+                ensure => present;
+        }
+        include ::apache::mod::php7
+    }
+    # jessie or trusty - PHP (5.5/5.6) packages and Apache module
+    if os_version('ubuntu == trusty || debian == jessie') {
+        package { [
+            'php5-mysql',
+            'php5-gd',
+            'php5-mailparse',
+            'php5-dev',
+            'php5-curl',
+            'php5-cli',
+            'php5-json',
+            'php5-ldap']:
+                ensure => present;
+        }
+        include ::apache::mod::php5
+    }
+
+    # common packages that exist in trusty/jessie/stretch
     package { [
         'python-pygments',
         'python-phabricator',
-        'php5-mysql',
-        'php5-gd',
-        'php5-mailparse',
-        'php5-dev',
-        'php5-curl',
-        'php5-cli',
-        'php5-json',
-        'php5-ldap',
         'apachetop',
         'subversion']:
-
             ensure => present;
     }
 
-    if os_version('debian >= jessie') {
-      package { 'php5-apcu':
-              ensure => present;
-      }
-    } else {
-      package { 'php-apc':
-              ensure => present;
-      }
-    }
-
-    include ::apache::mod::php5
+    # common Apache modules
     include ::apache::mod::rewrite
     include ::apache::mod::headers
+
+    # APC(u) package is different in all 3 releases
+    if os_version('debian == jessie') {
+        package { 'php5-apcu': ensure => present; }
+    }
+   if os_version('debian == stretch') {
+        package { 'php-apcu': ensure => present; }
+    }
+    if os_version('ubuntu == trusty') {
+        package { 'php-apc': ensure => present; }
+    }
 
     $docroot = "${phabdir}/phabricator/webroot"
 
