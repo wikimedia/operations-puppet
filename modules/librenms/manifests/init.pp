@@ -32,13 +32,20 @@ class librenms(
         managehome => false,
     }
 
+    file { $install_dir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { "${install_dir}/config.php":
         ensure  => present,
         owner   => 'www-data',
         group   => 'librenms',
         mode    => '0440',
         content => template('librenms/config.php.erb'),
-        require => Group['librenms'],
+        require => [Group['librenms'], File[$install_dir]]
     }
 
     file { $rrd_dir:
@@ -46,7 +53,7 @@ class librenms(
         mode    => '0775',
         owner   => 'www-data',
         group   => 'librenms',
-        require => Group['librenms'],
+        require => [Group['librenms'], File[$install_dir]]
     }
 
     logrotate::conf { 'librenms':
