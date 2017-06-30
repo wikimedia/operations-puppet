@@ -13,6 +13,16 @@ host acrux {
     fixed-address acrux.codfw.wmnet;
 }
 
+host actinium {
+    hardware ethernet aa:00:00:1c:4b:fe;
+    fixed-address actinium.wikimedia.org;
+}
+
+host alcyone {
+    hardware ethernet aa:00:00:e9:8a:d0;
+    fixed-address alcyone.wikimedia.org;
+}
+
 host alsafi {
     hardware ethernet aa:00:00:c7:16:43;
     fixed-address alsafi.wikimedia.org;
