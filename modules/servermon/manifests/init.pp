@@ -94,13 +94,21 @@ class servermon(
         content => template('servermon/settings.py.erb'),
     }
 
+    file { '/etc/gunicorn.d':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0775',
+        require => File['/srv/gerrit'],
+    }
+
     file { '/etc/gunicorn.d/servermon':
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
         content => template('servermon/gunicorn.erb'),
-        require => Package['gunicorn'],
+        require => [Package['gunicorn'], File['/etc/gunicorn.d']],
     }
 
     cron { 'servermon_make_updates':
