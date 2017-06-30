@@ -78,11 +78,21 @@ class servermon(
     scap::target { 'servermon/servermon':
         deploy_user => 'deploy-librenms',
     }
-
-    service { 'gunicorn':
-        ensure    => ensure_service($ensure),
-        enable    => true,
-        hasstatus => false,
+    if os_version('debian >= stretch') {
+        base::service_unit { 'gunicorn':
+            ensure         => 'present',
+            systemd        => true,
+            service_params => {
+                ensure     => ensure_service($ensure),
+                provider   => $::initsystem,
+            },
+        }
+    } else {
+        service { 'gunicorn':
+            ensure    => ensure_service($ensure),
+            enable    => true,
+            hasstatus => false,
+        }
     }
 
     file { "${directory}/settings.py":
