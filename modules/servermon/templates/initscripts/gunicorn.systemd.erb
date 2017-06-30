@@ -1,0 +1,26 @@
+[Unit]
+Description=servermon
+After=network.target
+
+[Service]
+PermissionsStartOnly=true
+PIDFile=/run/gunicorn/servermon.pid
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/srv/deployment/servermon/servermon/servermon
+ExecStartPre=-/bin/mkdir -p /run/gunicorn/
+ExecStartPre=/bin/chown -R www-data:www-data /run/gunicorn/
+ExecStart=/usr/bin/python /usr/bin/gunicorn \
+          --pid /run/gunicorn/servermon.pid  \
+          --name servermon \
+          --user www-data \
+          --group www-data \
+          --log-file /var/log/gunicorn/servermon.log \
+          --bind 0.0.0.0:8090 \
+          --workers 4 \
+          --timeout 10 wsgi
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
