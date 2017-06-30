@@ -68,6 +68,7 @@ class servermon(
         'python-ipy',
         'gunicorn',
         'python-ldap',
+        'python-mysqldb',
     ]
     require_package($packages)
 
