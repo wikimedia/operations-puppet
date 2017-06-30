@@ -16,7 +16,7 @@ Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%
 Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 <% end -%>
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
-ExecStart=/usr/sbin/varnishd \
+ExecStart=<%= @start_cmd_prefix %>/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
