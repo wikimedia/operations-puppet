@@ -10,6 +10,7 @@ class role::labs::db::replica {
     }
     class { 'mariadb::service':
         package => 'wmf-mariadb101',
+        socket => '/tmp/mysql.sock',
     }
     include role::mariadb::monitor
     include ::base::firewall
@@ -37,6 +38,7 @@ class role::labs::db::replica {
         mysql_group => 'labs',
         mysql_role  => 'slave',
         mysql_shard => 'multi',
+        socket      => '/tmp/mysql.sock',
     }
 
     class { 'mariadb::config':
