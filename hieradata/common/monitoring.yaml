@@ -34,6 +34,8 @@ monitoring::groups:
     description: Misc caches eqiad
   cache_misc_esams:
     description: Misc caches esams
+  cache_canary_eqiad:
+    description: Canary caches eqiad
 
 # Elasticsearch
   elasticsearch_eqiad:
