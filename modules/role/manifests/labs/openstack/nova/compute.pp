@@ -64,18 +64,6 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
     }
 
-    diamond::collector { 'LibvirtKVM':
-        ensure   => 'absent',
-        source   => 'puppet:///modules/diamond/collector/libvirtkvm.py',
-        settings => {
-            # lint:ignore:quoted_booleans
-            # This is jammed straight into a config file, needs quoting.
-            'sort_by_uuid' => 'true',
-            'disk_stats'   => 'true',
-            # lint:endignore
-        }
-    }
-
     # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
     # was split from the bridge kernel module into a separate module (br_netfilter)
     if (versioncmp($::kernelversion, '3.18') >= 0) {
