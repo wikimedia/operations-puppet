@@ -10,7 +10,7 @@ class librenms::web(
     }
 
     include ::apache::mod::rewrite
-
+    include ::apache::mod::headers
     include ::apache::mod::ssl
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
