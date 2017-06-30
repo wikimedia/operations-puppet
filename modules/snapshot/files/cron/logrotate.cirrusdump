@@ -6,6 +6,6 @@
     compress
     delaycompress
     missingok
-    rotate 3
+    maxage 22
     nocreate
 }
