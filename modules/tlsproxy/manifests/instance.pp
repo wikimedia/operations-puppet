@@ -27,7 +27,7 @@ class tlsproxy::instance {
     # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
     # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
     # in turn consumed by the systemd unit and config templates.
-    if $::numa_networking {
+    if $::numa_networking != 'off' {
         $numa_iface = $facts['interface_primary']
     } else {
         $numa_iface = 'lo'
