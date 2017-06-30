@@ -3,10 +3,9 @@
 #
 /var/log/cirrusdump/*.log {
     daily
-    dateext
     compress
     delaycompress
     missingok
-    maxage 22
+    rotate 3
     nocreate
 }
