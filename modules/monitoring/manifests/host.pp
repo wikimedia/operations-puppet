@@ -88,11 +88,42 @@ define monitoring::host (
             statusmap_image       => $statusmap_image,
         },
     }
+    if facts['has_ipmi'] {
+        $mgmt_host = {
+            "${title}_mgmt" => {
+                ensure                => $ensure,
+                host_name             => "${title}.mgmt.${::site}.wmnet",
+                address               => $facts['ipmi_lan']['ipaddress'],
+                hostgroups            => 'mgmt',
+                check_command         => 'check_ping!500,20%!2000,100%',
+                check_period          => '24x7',
+                max_check_attempts    => 2,
+                contact_groups        => $real_contact_groups,
+                notification_interval => 0,
+                notification_period   => '24x7',
+                notification_options  => 'd,u,r,f',
+                icon_image            => undef,
+                vrml_image            => undef,
+                statusmap_image       => undef,
+            }
+        }
+    }
     # This is a hack. We detect if we are running on the scope of an icinga
     # host and avoid exporting the resource if yes
     if defined(Class['icinga']) {
-        create_resources(nagios_host, $host)
+        $rtype = 'nagios_host'
     } else {
-        create_resources('@@nagios_host', $host)
+        $rtype = '@@nagios_host'
+    }
+    create_resources($rtype, $host)
+    if facts['has_ipmi'] {
+        create_resources($rtype, $mgmt_host)
+        monitoring::service { "DNS ${title}.mgmt.${::site}.wmnet":
+            host           =>  "${title}.mgmt.${::site}.wmnet",
+            check_command  => "check_fqdn!${facts['ipmi_lan']['ipaddress']}",
+            group          => 'mgmt',
+            check_interval => 60,
+            retry_interval => 60,
+        }
     }
 }
