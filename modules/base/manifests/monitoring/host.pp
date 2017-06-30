@@ -74,14 +74,6 @@ class base::monitoring::host(
         source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
-    }
-
     ::sudo::user { 'nagios_puppetrun':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
@@ -153,32 +145,6 @@ class base::monitoring::host(
         ::nrpe::monitor_service { 'check_cpufreq':
             description  => 'CPU frequency',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
-        }
-    }
-
-    # check temperature sensors via IPMI, unless VM (T125205)
-    if str2bool($facts['is_virtual']) == false {
-        # ipmi_devintf needs to be loaded for the checks to work properly
-        # (T167121)
-        file { '/etc/modules-load.d/ipmi.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "ipmi_devintf\n",
-        }
-
-        ::sudo::user { 'nagios_ipmi_temp':
-            user       => 'nagios',
-            privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
-        }
-
-        nrpe::monitor_service { 'check_ipmi_temp':
-            description    => 'IPMI Temperature',
-            nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -ST Temperature --nosel',
-            check_interval => 30,
-            retry_interval => 10,
-            timeout        => 60,
         }
     }
 }
