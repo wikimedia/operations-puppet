@@ -32,6 +32,13 @@ class librenms(
         managehome => false,
     }
 
+    file { '/srv/librenms':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { "${install_dir}/config.php":
         ensure  => present,
         owner   => 'www-data',
