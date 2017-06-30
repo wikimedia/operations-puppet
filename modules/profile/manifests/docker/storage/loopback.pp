@@ -13,6 +13,15 @@ class profile::docker::storage::loopback {
 
     # This will be used in profile::docker::engine
     $options = {'storage-driver' => 'devicemapper'}
+
+    file { $dm_target_dir:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+
     if $dm_source_dir != $dm_target_dir {
         file { $dm_source_dir:
             ensure => directory,
@@ -21,17 +30,12 @@ class profile::docker::storage::loopback {
             mode   => '0755',
         }
 
-        file { $dm_target_dir:
-            ensure => link,
-            target => $dm_source_dir,
-            before => Service['docker'],
-        }
-    } else {
-        file { $dm_target_dir:
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
+        mount { $dm_target_dir:
+            ensure  => mounted,
+            device  => $dm_source_dir,
+            fstype  => 'none',
+            options => 'rw,bind',
         }
     }
+
 }
