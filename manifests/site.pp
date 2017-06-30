@@ -19,7 +19,7 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
 }
 
 # url-downloaders
-node /^(alsafi|aluminium)\.wikimedia\.org$/ {
+node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
     role(url_downloader)
     interface::add_ip6_mapped { 'main': }
 }
