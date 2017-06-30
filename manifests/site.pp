@@ -1850,11 +1850,7 @@ node /(dubnium|pollux)\.wikimedia\.org/ {
     include ::standard
 }
 
-node 'poolcounter1001.eqiad.wmnet' {
-    role(poolcounter::server)
-}
-
-node 'poolcounter1002.eqiad.wmnet' {
+node /poolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
     role(poolcounter::server)
 }
 
