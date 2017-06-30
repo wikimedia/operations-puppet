@@ -108,4 +108,21 @@ class profile::base(
             source => 'puppet:///modules/base/logrotate/upstart',
         }
     }
+
+    if $::numa_networking == 'isolate' {
+        grub::bootparam { 'isolcpus':
+            value => join(sort(flatten($facts['numa']['device_to_htset'][$facts['interface_primary']])), ',')
+        }
+
+        sysctl::parameters { 'numa_isolation':
+            'vm.zone_reclaim_mode' => 7,
+        }
+
+        sysfs::parameters { 'cache_numa_isolate':
+            values => {
+                'bus/workqueue/devices/writeback/numa'    => 0,
+                'bus/workqueue/devices/writeback/cpumask' => $facts['numa']['device_to_cpumask_invert'][$facts['interface_primary']],
+            }
+        }
+    }
 }

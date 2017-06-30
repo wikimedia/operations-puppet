@@ -1,7 +1,7 @@
 class interface::rps::modparams {
     include initramfs
 
-    if $::numa_networking {
+    if $::numa_networking != 'off' {
         # note this assumes if bnx2x queue counts matter at all, that the
         # primary interface is bnx2x.  This is true for current cases, but may
         # need to evolve later for hosts with multiple interfaces with distinct
