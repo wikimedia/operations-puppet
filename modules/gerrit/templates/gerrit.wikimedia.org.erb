@@ -37,7 +37,6 @@ MaxClients 50
     RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
 </VirtualHost>
 
-NameVirtualHost *:443
 <VirtualHost *:443>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @host %>
