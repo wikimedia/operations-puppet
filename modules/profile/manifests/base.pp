@@ -106,4 +106,17 @@ class profile::base(
             source => 'puppet:///modules/base/logrotate/upstart',
         }
     }
+
+    if $::numa_networking == 'isolate' {
+        grub::bootparam { 'isolcpus':
+            value => join(sort(flatten($facts['numa']['device_to_htset'][$facts['interface_primary']])), ',')
+        }
+        # XXX TODO: move disk writeback off the isolated node, needs inverted (or opposite-node) cpumask...
+        # sysfs::parameters { 'cache_numa_isolate':
+        #     values => {
+        #         'bus/workqueue/devices/writeback/numa'    => 0,
+        #         'bus/workqueue/devices/writeback/cpumask' => XXX,
+        #     }
+        # }
+    }
 }
