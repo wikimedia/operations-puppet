@@ -1,0 +1,22 @@
+[Unit]
+Description=servermon
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=<% @working_directory %>
+ExecStart=/usr/bin/gunicorn \
+          --name servermon \
+          --user www-data \
+          --group www-data \
+          --log-file /var/log/gunicorn/servermon.log \
+          --bind 0.0.0.0:8090 \
+          --workers 4 \
+          --timeout 10 \
+          wsgi
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
