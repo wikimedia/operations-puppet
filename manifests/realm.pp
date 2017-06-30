@@ -60,7 +60,15 @@ $network_zone = $facts['ipaddress'] ? {
 }
 
 # Hiera->Global to configure various classes for NUMA-aware networking
-$numa_networking = hiera('numa_networking', false)
+# 3 possible values:
+# off: default, no NUMA awareness
+# on: try confine network stuff to the NUMA node of the adapter
+# isolate: also exclude all other tasks from the NUMA node of the adapter
+#   Note that "isolate" will probably be dysfunctional on nodes which do not
+#   have true multi-node NUMA hardware with the relevant interface(s) attached
+#   to less than all nodes!  Therefore setting 'isolate' should only be done in
+#   cases with known-compatible hardware.
+$numa_networking = hiera('numa_networking', 'off')
 
 # TODO: create hash of all LVS service IPs
 
