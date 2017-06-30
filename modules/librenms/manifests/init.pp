@@ -63,6 +63,7 @@ class librenms(
                 'php-mcrypt',
                 'php-mysql',
                 'php-snmp',
+                'php-ldap',
             ]:
             ensure => present,
         }
@@ -76,6 +77,7 @@ class librenms(
                 'php5-mcrypt',
                 'php5-mysql',
                 'php5-snmp',
+                'php5-ldap',
                 'php-net-ipv4',
             ]:
             ensure => present,

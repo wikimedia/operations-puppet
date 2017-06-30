@@ -15,10 +15,6 @@ class role::librenms {
         before      => Class['::librenms'],
     }
 
-    package { 'php5-ldap':
-        ensure => present,
-    }
-
     $config = {
         'title_image'      => '//upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg/140px-Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg.png',
 
