@@ -85,7 +85,6 @@ class librenms(
                 'php5-mysql',
                 'php5-snmp',
                 'php5-ldap',
-                'php-net-ipv4',
             ]:
             ensure => present,
         }
@@ -94,6 +93,7 @@ class librenms(
     package { [
             'php-net-ipv6',
             'php-pear',
+            'php-net-ipv4',
             'fping',
             'graphviz',
             'ipmitool',
