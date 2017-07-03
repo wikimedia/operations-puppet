@@ -12,6 +12,18 @@ class ores::web(
 ) {
     require ::ores::base
 
+    user { 'deploy-service':
+        home       => '/home/deploy-service',
+        groups     => [ 'deploy-service' ],
+        managehome => true,
+        system     => true,
+    }
+
+    group { 'deploy-service':
+        ensure => present,
+        system => true,
+    }
+
     # Need to be able to also restart the worker. The uwsgi service is
     # hopefully temporary
     $sudo_rules = [
