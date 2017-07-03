@@ -2763,6 +2763,13 @@ host labtestcontrol2001 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host labtestcontrol2003 {
+    hardware ethernet 30:e1:71:63:0e:dc;
+    fixed-address labtestcontrol2003.wikimedia.org;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host labtestvirt2002 {
     hardware ethernet 78:2b:cb:49:00:15;
     fixed-address labtestvirt2002.codfw.wmnet;
@@ -2773,6 +2780,13 @@ host labtestvirt2002 {
 host labtestvirt2003 {
     hardware ethernet 30:e1:71:60:e9:7c;
     fixed-address labtestvirt2003.codfw.wmnet;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labtestmetal2001 {
+    hardware ethernet 30:e1:71:63:0e:88;
+    fixed-address labtestmetal2001.codfw.wmnet;
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
@@ -2818,6 +2832,21 @@ host labtestservices2001 {
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
+
+host labtestservices2002 {
+    hardware ethernet 30:e1:71:70:a3:34;
+    fixed-address labtestservices2002.wikimedia.org;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labtestservices2003 {
+    hardware ethernet 30:e1:71:63:0e:f8;
+    fixed-address labtestservices2003.wikimedia.org;
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 
 host labtestvirt2001 {
     hardware ethernet 90:B1:1C:2D:7E:B9;
