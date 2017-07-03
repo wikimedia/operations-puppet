@@ -241,8 +241,6 @@ monitoring::groups:
 # Facilities
   pdus:
     description: PDUs
-  mgmt:
-    description: Management Interfaces
 
 # Network
   routers:
