@@ -23,7 +23,7 @@ class toollabs::static(
     # Also gerrit will probably die from a 11Gig repo
     # This does not mean it's ok to clone other things from github on ops/puppet :)
     exec { 'clone-cdnjs':
-        command => '/usr/bin/git clone --depth 1 https://github.com/cdnjs/cdnjs.git /srv/cdnjs',
+        command => '/usr/bin/git clone --depth 1 --branch master https://github.com/cdnjs/cdnjs.git /srv/cdnjs',
         creates => '/srv/cdnjs',
         # This is okay because puppet-run defines a timeout, and this takes longer than the default
         # exec timeout of 300s
@@ -32,7 +32,7 @@ class toollabs::static(
     }
 
     cron { 'update-cdnjs':
-        command => 'cd /srv/cdnjs && /usr/bin/git pull --depth 1 https://github.com/cdnjs/cdnjs.git && /usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
+        command => 'cd /srv/cdnjs && /usr/bin/git fetch --depth 1 origin && /usr/bin/git reset --hard origin/master && /usr/bin/git clean -dffx && /usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
         user    => 'root',
         hour    => 0,
         minute  => 0,
