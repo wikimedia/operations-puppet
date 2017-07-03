@@ -88,7 +88,7 @@ define monitoring::host (
             statusmap_image       => $statusmap_image,
         },
     }
-    if facts['has_ipmi'] {
+    if $facts['has_ipmi'] {
         $mgmt_host = {
             "${title}_mgmt" => {
                 ensure                => $ensure,
@@ -116,7 +116,7 @@ define monitoring::host (
         $rtype = '@@nagios_host'
     }
     create_resources($rtype, $host)
-    if facts['has_ipmi'] {
+    if $facts['has_ipmi'] {
         create_resources($rtype, $mgmt_host)
         monitoring::service { "dns_${title}.mgmt.${::site}.wmnet":
             description    => "DNS ${title}.mgmt.${::site}.wmnet",
