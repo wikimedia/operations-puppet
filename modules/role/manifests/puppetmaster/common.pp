@@ -1,5 +1,18 @@
-class role::puppetmaster::common ( $base_config ) {
+class role::puppetmaster::common (
+    $base_config,
+    $directory_environments = hiera('role::puppetmaster::common::directory_environments', false),
+) {
     include passwords::puppet::database
+
+    if $directory_environments {
+        $env_config = {
+            'environmentpath' => '$confdir/environments',
+            'default_manifest' => '$confdir/manifests/site.pp'
+        }
+    } else {
+        $env_config = {}
+    }
+
     $activerecord_config =   {
         'storeconfigs'      => true,
         'thin_storeconfigs' => true,
@@ -28,9 +41,9 @@ class role::puppetmaster::common ( $base_config ) {
         class { 'puppetmaster::puppetdb::client':
             host => $puppetdb_host,
         }
-        $config = merge($base_config, $puppetdb_config, $active_record_db)
+        $config = merge($base_config, $puppetdb_config, $active_record_db, $env_config)
     }
     else {
-        $config = merge($base_config, $activerecord_config, $active_record_db)
+        $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
     }
 }
