@@ -8,8 +8,6 @@ swift::proxyhosts:
   - ms-fe2006.codfw.wmnet
   - ms-fe2007.codfw.wmnet
   - ms-fe2008.codfw.wmnet
-  - ms-fe3001.esams.wmnet
-  - ms-fe3002.esams.wmnet
 
 swift::storagehosts:
   - ms-be1013.eqiad.wmnet
@@ -66,7 +64,3 @@ swift::storagehosts:
   - ms-be2037.codfw.wmnet
   - ms-be2038.codfw.wmnet
   - ms-be2039.codfw.wmnet
-  - ms-be3001.esams.wmnet
-  - ms-be3002.esams.wmnet
-  - ms-be3003.esams.wmnet
-  - ms-be3004.esams.wmnet

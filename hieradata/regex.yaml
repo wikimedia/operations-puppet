@@ -158,16 +158,6 @@ swift_be_eqiad_hp:
   ]
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
-# 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
-swift_be_esams:
-  __regex: !ruby/regexp /^ms-be300[1-4]\.esams\.wmnet$/
-  swift_storage_drives: [
-        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
-        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-        '/dev/sdk', '/dev/sdl'
-  # no trailing comma!
-  ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
 debdeploy_dbstore:
   __regex: !ruby/regexp /^dbstore[12]00[12]\.(eqiad|codfw)\.wmnet$/
   debdeploy::grains:

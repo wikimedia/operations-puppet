@@ -1452,11 +1452,11 @@ node /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    role(swift::proxy)
+    role(spare::system)
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    role(swift::storage)
+    role(spare::system)
 }
 
 node /^ms-fe2005\.codfw\.wmnet$/ {
