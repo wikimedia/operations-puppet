@@ -19,6 +19,7 @@ module.exports = function (config) {
 	config.redis.host = "<%= @redis_host %>";
 	config.redis.port = <%= @redis_port %>;
 	config.redis.password = "<%= @redis_password %>";
+	config.redis.no_ready_check = true;
 
 	config.frontend.port = <%= @service_port %>;
 
