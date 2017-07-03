@@ -26,6 +26,8 @@ class profile::docker::builder(
         distributions   => ['jessie', 'alpine'],
     }
 
+    require_package('python3-virtualenv', 'virtualenv')
+
     git::clone { 'operations/docker-images/production-images':
         ensure    => present,
         directory => '/srv/images/production-images'
