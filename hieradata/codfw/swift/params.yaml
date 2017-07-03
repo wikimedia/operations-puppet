@@ -1,4 +1,5 @@
 swift::params::swift_cluster: codfw-prod
+swift::params::storage_policies: true
 swift::params::accounts:
     super_admin:
         access:       '.admin .reseller_admin'
