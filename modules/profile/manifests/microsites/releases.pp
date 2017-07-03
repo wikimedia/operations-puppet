@@ -23,6 +23,12 @@ class profile::microsites::releases {
         port  => '80',
     }
 
+    rsync::quickdatacopy { 'srv-org-wikimedia-releases':
+        ensure      => present,
+        source_host => 'bromine.eqiad.wmnet',
+        module_path => '/srv/org/wikimedia/releases',
+    }
+
     include ::profile::backup::host
     backup::set { 'srv-org-wikimedia': }
 }
