@@ -1142,6 +1142,11 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+node 'labcontrol100[34]\.wikimedia.org' {
+    include ::base::firewall
+    include ::standard
+}
+
 node 'labcontrol1001.wikimedia.org' {
     role(labs::openstack::nova::controller,
           labs::puppetmaster,
