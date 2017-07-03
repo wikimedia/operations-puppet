@@ -18,3 +18,4 @@ cluster: puppet
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
 profile::discovery::watch_interval: 60
+role::puppetmaster::common::directory_environments: true
