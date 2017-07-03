@@ -84,19 +84,6 @@ class profile::base(
 
     if $facts['has_ipmi'] {
         class { '::ipmi::monitor': }
-    } else {
-        # temporary, cleanup
-        package { 'freeipmi-tools':
-            ensure => absent,
-        }
-
-        file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
-            ensure => absent,
-        }
-    }
-    # temporary, cleanup
-    package { ['freeipmi-ipmidetect', 'freeipmi-bmc-watchdog']:
-        ensure => absent,
     }
 
     if os_version('debian >= jessie') {
