@@ -18,6 +18,28 @@
   "rows": [
     {
       "collapse": false,
+      "height": "50px",
+      "panels": [
+        {
+          "content": "Data comes from `varnishreqstats` ([varnish::logging::reqstats](https://github.com/wikimedia/puppet/blob/HEAD/modules/varnish/manifests/logging/reqstats.pp)) and is sent to Graphite via [statsd](https://wikitech.wikimedia.org/wiki/Statsd).",
+          "height": "",
+          "id": 8,
+          "links": [],
+          "mode": "markdown",
+          "span": 12,
+          "title": "",
+          "type": "text"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Legend",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
       "height": "300px",
       "panels": [
         {
