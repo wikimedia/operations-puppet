@@ -232,7 +232,7 @@ ep_courses,course_students,K
 ep_courses,course_online_ambs,K
 ep_courses,course_campus_ambs,K
 ep_courses,course_instructors,K
-ep_courses,course_token,K
+ep_courses,course_token,F
 ep_courses,course_field,K
 ep_courses,course_level,K
 ep_courses,course_term,K
