@@ -26,6 +26,7 @@ class profile::microsites::releases {
     rsync::quickdatacopy { 'srv-org-wikimedia-releases':
         ensure      => present,
         source_host => 'bromine.eqiad.wmnet',
+        dest_host   => 'releases1001.eqiad.wmnet',
         module_path => '/srv/org/wikimedia/releases',
     }
 
