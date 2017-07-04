@@ -633,8 +633,7 @@ node 'db1069.eqiad.wmnet' {
 }
 
 node 'db1102.eqiad.wmnet' {
-    role(mariadb::sanitarium)
-    include ::base::firewall
+    role(mariadb::dbstore_multiinstance)
 }
 
 node 'db1095.eqiad.wmnet' {
