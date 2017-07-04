@@ -3489,135 +3489,171 @@ host ms-be1015 {
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 host ms-be1016 {
-        hardware ethernet c4:34:6b:b9:5a:e4;
-        fixed-address ms-be1016.eqiad.wmnet;
+    hardware ethernet c4:34:6b:b9:5a:e4;
+    fixed-address ms-be1016.eqiad.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1017 {
-        hardware ethernet c4:34:6b:b9:d9:e4;
-        fixed-address ms-be1017.eqiad.wmnet;
+    hardware ethernet c4:34:6b:b9:d9:e4;
+    fixed-address ms-be1017.eqiad.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1018 {
-        hardware ethernet c4:34:6b:b9:b9:3c;
-        fixed-address ms-be1018.eqiad.wmnet;
+    hardware ethernet c4:34:6b:b9:b9:3c;
+    fixed-address ms-be1018.eqiad.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1019 {
-        hardware ethernet 3C:A8:2A:0D:5F:E8;
-        fixed-address ms-be1019.eqiad.wmnet;
+    hardware ethernet 3C:A8:2A:0D:5F:E8;
+    fixed-address ms-be1019.eqiad.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1020 {
-        hardware ethernet 3C:A8:2A:0D:0C:24;
-        fixed-address ms-be1020.eqiad.wmnet;
+    hardware ethernet 3C:A8:2A:0D:0C:24;
+    fixed-address ms-be1020.eqiad.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1021 {
-        hardware ethernet 5c:b9:01:fe:f0:50;
-        fixed-address ms-be1021.eqiad.wmnet;
+    hardware ethernet 5c:b9:01:fe:f0:50;
+    fixed-address ms-be1021.eqiad.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1022 {
-        hardware ethernet 1c:98:ec:30:92:00;
-        fixed-address ms-be1022.eqiad.wmnet;
+    hardware ethernet 1c:98:ec:30:92:00;
+    fixed-address ms-be1022.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1023 {
-        hardware ethernet 1c:98:ec:30:e2:54;
-        fixed-address ms-be1023.eqiad.wmnet;
+    hardware ethernet 1c:98:ec:30:e2:54;
+    fixed-address ms-be1023.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1024 {
-        hardware ethernet 14:02:ec:3c:1d:f8;
-        fixed-address ms-be1024.eqiad.wmnet;
+    hardware ethernet 14:02:ec:3c:1d:f8;
+    fixed-address ms-be1024.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1025 {
-        hardware ethernet 14:02:ec:3c:3d:f8;
-        fixed-address ms-be1025.eqiad.wmnet;
+    hardware ethernet 14:02:ec:3c:3d:f8;
+    fixed-address ms-be1025.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1026 {
-        hardware ethernet 14:02:ec:3c:fd:b8;
-        fixed-address ms-be1026.eqiad.wmnet;
+    hardware ethernet 14:02:ec:3c:fd:b8;
+    fixed-address ms-be1026.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1027 {
-        hardware ethernet 14:02:ec:3c:9c:c8;
-        fixed-address ms-be1027.eqiad.wmnet;
+    hardware ethernet 14:02:ec:3c:9c:c8;
+    fixed-address ms-be1027.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1028 {
-        hardware ethernet E0:07:1B:EF:16:60;
-        fixed-address ms-be1028.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:16:60;
+    fixed-address ms-be1028.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1029 {
-        hardware ethernet E0:07:1B:EF:44:80;
-        fixed-address ms-be1029.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:44:80;
+    fixed-address ms-be1029.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1030 {
-        hardware ethernet E0:07:1B:EF:56:80;
-        fixed-address ms-be1030.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:56:80;
+    fixed-address ms-be1030.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1031 {
-        hardware ethernet 94:18:82:80:1E:F4;
-        fixed-address ms-be1031.eqiad.wmnet;
+    hardware ethernet 94:18:82:80:1E:F4;
+    fixed-address ms-be1031.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1032 {
-        hardware ethernet 94:18:82:80:96:94;
-        fixed-address ms-be1032.eqiad.wmnet;
+    hardware ethernet 94:18:82:80:96:94;
+    fixed-address ms-be1032.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1033 {
-        hardware ethernet 94:18:82:7C:98:B0;
-        fixed-address ms-be1033.eqiad.wmnet;
+    hardware ethernet 94:18:82:7C:98:B0;
+    fixed-address ms-be1033.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1034 {
-        hardware ethernet E0:07:1B:EF:76:30;
-        fixed-address ms-be1034.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:76:30;
+    fixed-address ms-be1034.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1035 {
-        hardware ethernet E0:07:1B:EF:E4:28;
-        fixed-address ms-be1035.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:E4:28;
+    fixed-address ms-be1035.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1036 {
-        hardware ethernet 14:02:ec:3d:57:d8;
-        fixed-address ms-be1036.eqiad.wmnet;
+    hardware ethernet 14:02:ec:3d:57:d8;
+    fixed-address ms-be1036.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1037 {
-        hardware ethernet E0:07:1B:EF:44:40;
-        fixed-address ms-be1037.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:44:40;
+    fixed-address ms-be1037.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1038 {
-        hardware ethernet E0:07:1B:EF:26:E8;
-        fixed-address ms-be1038.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:26:E8;
+    fixed-address ms-be1038.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be1039 {
-        hardware ethernet E0:07:1B:EF:54:48;
-        fixed-address ms-be1039.eqiad.wmnet;
+    hardware ethernet E0:07:1B:EF:54:48;
+    fixed-address ms-be1039.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2013 {
@@ -3686,91 +3722,127 @@ host ms-be2021 {
 host ms-be2022 {
     hardware ethernet 14:02:ec:3d:50:a0;
     fixed-address ms-be2022.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2023 {
     hardware ethernet 14:02:ec:3c:cf:78;
     fixed-address ms-be2023.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2024 {
     hardware ethernet 14:02:ec:3c:ff:10;
     fixed-address ms-be2024.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2025 {
     hardware ethernet 14:02:ec:3c:6f:98;
     fixed-address ms-be2025.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2026 {
     hardware ethernet 14:02:ec:3c:de:98;
     fixed-address ms-be2026.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2027 {
     hardware ethernet 14:02:ec:3c:3f:e0;
     fixed-address ms-be2027.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2028 {
     hardware ethernet e0:07:1b:ef:15:98;
     fixed-address ms-be2028.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2029 {
     hardware ethernet e0:07:1b:ef:55:40;
     fixed-address ms-be2029.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2030 {
     hardware ethernet e0:07:1b:ef:55:98;
     fixed-address ms-be2030.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2031 {
     hardware ethernet e0:07:1b:ef:b4:d8;
     fixed-address ms-be2031.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2032 {
     hardware ethernet e0:07:1b:ef:34:a0;
     fixed-address ms-be2032.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2033 {
     hardware ethernet e0:07:1b:ef:85:e0;
     fixed-address ms-be2033.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2034 {
     hardware ethernet e0:07:1b:ef:94:e0;
     fixed-address ms-be2034.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2035 {
     hardware ethernet e0:07:1b:ef:b4:d0;
     fixed-address ms-be2035.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2036 {
     hardware ethernet e0:07:1b:ef:54:e0;
     fixed-address ms-be2036.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2037 {
     hardware ethernet e0:07:1b:ef:b5:f8;
     fixed-address ms-be2037.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2038 {
     hardware ethernet e0:07:1b:ef:35:80;
     fixed-address ms-be2038.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be2039 {
     hardware ethernet e0:07:1b:ef:26:70;
     fixed-address ms-be2039.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-be3001 {
@@ -3804,41 +3876,57 @@ host ms-be3004-B {
 host ms-fe1005 {
     hardware ethernet F4:E9:D4:AE:F4:E0;
     fixed-address ms-fe1005.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe1006 {
     hardware ethernet F4:E9:D4:AE:DC:30;
     fixed-address ms-fe1006.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe1007 {
     hardware ethernet F4:E9:D4:AF:01:F0;
     fixed-address ms-fe1007.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe1008 {
     hardware ethernet F4:E9:D4:AE:BC:70;
     fixed-address ms-fe1008.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe2005 {
     hardware ethernet F4:E9:D4:AE:B5:C0;
     fixed-address ms-fe2005.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe2006 {
     hardware ethernet F4:E9:D4:AF:02:60;
     fixed-address ms-fe2006.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe2007 {
     hardware ethernet F4:E9:D4:AE:F5:10;
     fixed-address ms-fe2007.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe2008 {
     hardware ethernet F4:E9:D4:AE:F8:A0;
     fixed-address ms-fe2008.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe3001 {
