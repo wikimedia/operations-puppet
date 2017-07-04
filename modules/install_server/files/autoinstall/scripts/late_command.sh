@@ -49,3 +49,6 @@ case `hostname` in \
 			--create-home --home /var/lib/swift swift
 	;; \
 esac
+
+# Enable structured puppet facts on first puppet run, same as production - T169612
+puppet config set --section agent stringify_facts false
