@@ -14,7 +14,7 @@
 #
 # [*module_path*] What path are we giving to rsync as the docroot for syncing from
 #
-# [*file_path*] What file within that document root do we need?
+# [*file_path*] What file within that document root do we need? (currently not used)
 #
 # [*ensure*] The usual meaning, set to absent to clean up when done
 #
