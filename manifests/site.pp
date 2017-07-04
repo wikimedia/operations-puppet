@@ -2150,9 +2150,9 @@ node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     role(snapshot::dumper, snapshot::monitor, snapshot::cronrunner)
 }
 
-# codfw poolcounters
+# formerly codfw poolcounters, now spares
 node /(subra|suhail)\.codfw\.wmnet/ {
-    role(poolcounter::server)
+    role(spare::system)
 }
 
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
