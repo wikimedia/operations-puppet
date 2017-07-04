@@ -92,6 +92,39 @@ class role::analytics_cluster::hadoop::master {
             ],
         }
 
+        # Alert if the HDFS space consumption raises above a safe threshold.
+        monitoring::graphite_threshold { 'hadoop-hdfs-percent-used':
+            description   => 'HDFS capacity used percentage',
+            metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.NameNodeInfo.PercentUsed.mean",
+            from          => '30min',
+            warning       => 70,
+            critical      => 80,
+            percentage    => '60',
+            contact_group => 'analytics',
+        }
+
+        # Alert in case of HDFS currupted or missing blocks. In the ideal state
+        # these values should always be 0.
+        monitoring::graphite_threshold { 'hadoop-hdfs-corrupt-blocks':
+            description   => 'HDFS missing blocks',
+            metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.CorruptBlocks.mean",
+            from          => '30min',
+            warning       => 2,
+            critical      => 5,
+            percentage    => '60',
+            contact_group => 'analytics',
+        }
+
+        monitoring::graphite_threshold { 'hadoop-hdfs-missing-blocks':
+            description   => 'HDFS corrupted blocks',
+            metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.MissingBlocks.mean",
+            from          => '180min',
+            warning       => 2,
+            critical      => 5,
+            percentage    => '60',
+            contact_group => 'analytics',
+        }
+
         # Java heap space used alerts.
         # The goal is to get alarms for long running memory leaks like T153951.
         # Only include heap size alerts if heap size is configured.
