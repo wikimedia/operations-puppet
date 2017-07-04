@@ -6167,20 +6167,6 @@ host stat1006 {
     fixed-address stat1006.eqiad.wmnet;
 }
 
-host subra {
-    hardware ethernet D4:AE:52:AD:62:75;
-    fixed-address subra.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host suhail {
-    hardware ethernet 90:B1:1C:00:AE:28;
-    fixed-address suhail.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host tegmen {
     hardware ethernet 14:18:77:33:42:F8;
     fixed-address tegmen.wikimedia.org;
