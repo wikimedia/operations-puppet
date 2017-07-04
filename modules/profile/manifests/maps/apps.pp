@@ -35,7 +35,6 @@ class profile::maps::apps(
         conf_sources      => $conf_sources,
         contact_groups    => $contact_groups,
         storage_id        => $storage_id,
-        require           => Class['::tilerator'],
     }
 
     class { 'kartotherian':
