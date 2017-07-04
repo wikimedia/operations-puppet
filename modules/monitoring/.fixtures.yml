@@ -1,0 +1,11 @@
+fixtures:
+    symlinks:
+        monitoring: "#{source_dir}"
+        icinga: "../../../../icinga"
+        nagios_common: "../../../../nagios_common"
+        wmflib: "../../../../wmflib"
+        logrotate: "../../../../logrotate"
+        elasticsearch: "../../../../elasticsearch"
+        #TODO: These 2 are more difficult as they need to be mocked
+        secret: "../../../../../../labs/private/modules/secret"
+        passwords: "../../../../../../labs/private/modules/passwords"
