@@ -764,7 +764,7 @@ def wait_puppet_run(hosts, start=None):
 
     while True:
         retries += 1
-        logger.debug('Wating for Puppet ({retries})'.format(retries=retries))
+        logger.debug('Waiting for Puppet ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
             logger.info('Still waiting for Puppet after {min} minutes'.format(
                 min=(retries * WATCHER_LONG_SLEEP) / 60.0))
@@ -836,7 +836,7 @@ def wait_reboot(hosts):
 
     while True:
         retries += 1
-        logger.debug('Wating for reboot ({retries})'.format(retries=retries))
+        logger.debug('Waiting for reboot ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
             logger.info('Still waiting for reboot after {min} minutes'.format(
                 min=(retries * WATCHER_LONG_SLEEP) / 60.0))
@@ -1031,6 +1031,9 @@ def run(args, user, log_path):
     hosts = reimage_hosts(puppetmaster_host, hosts, custom_mgmts=custom_mgmts,
                           ipmi_password=ipmi_password, is_new=args.new)
     hosts = check_reimage(puppetmaster_host, hosts)
+    logger.info("Waiting for the first puppet run to complete "
+                "and salt minion to be online")
+    time.sleep(60)
     hosts = check_uptime(
         hosts, maximum=int((datetime.now() - reimage_time).total_seconds()))
 
