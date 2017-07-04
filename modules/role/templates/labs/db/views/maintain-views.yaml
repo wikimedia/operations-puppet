@@ -37,7 +37,6 @@ fullviews:
   - change_tag
   - ep_articles
   - ep_cas
-  - ep_courses
   - ep_events
   - ep_instructors
   - ep_oas
@@ -191,6 +190,14 @@ customviews:
       as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
       if(ar_deleted&1,null,ar_sha1) as ar_sha1
     where: (ar_deleted&4)=0
+  ep_courses:
+    source: ep_courses
+    view: >
+      select course_id, course_org_id, course_title, course_name, course_start,
+      course_end, course_description, course_students, course_online_ambs,
+      course_campus_ambs, course_instructors, NULL as course_token, course_field,
+      course_level, course_term, course_lang, course_instructor_count, course_oa_count,
+      course_ca_count, course_student_count, course_touched
   filearchive:
     source: filearchive
     view: >
