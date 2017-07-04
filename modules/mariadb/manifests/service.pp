@@ -14,7 +14,7 @@
 # With $manage = true this class will set $ensure and $enabled as specified.
 
 class mariadb::service (
-    $package  = 'wmf-mariadb10',
+    $package  = 'undefined',
     $basedir  = 'undefined',
     $manage   = false,
     $ensure   = stopped,
@@ -30,6 +30,10 @@ class mariadb::service (
 
     # stretch and later use systemd, others use init.d
     if os_version('debian >= stretch') {
+        # On stretch+, default to MariaDB 10.1
+        if $package == 'undefined' {
+            $package = 'wmf-mariadb101'
+        }
         case $package {
             'wmf-mysql57', 'wmf-mysql80': { $vendor = 'mysql' }
             default:                      { $vendor = 'mariadb' }
@@ -73,6 +77,11 @@ class mariadb::service (
             }
         }
     } else {
+        # Before stretch, default to MariaDB 10.0
+        if $package == 'undefined' {
+            $package = 'wmf-mariadb10'
+        }
+
         file { "${initd_basedir}/service":
             ensure  => present,
             owner   => 'root',
