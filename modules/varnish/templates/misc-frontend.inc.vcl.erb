@@ -1,6 +1,15 @@
 include "misc-common.inc.vcl";
 
-sub cluster_fe_recv_pre_purge { }
+sub cluster_fe_recv_pre_purge {
+    // Block WP Zero users from accessing Phabricator uploads to prevent abuse (T168142)
+    if (req.http.Host == "phab.wmfusercontent.org" && req.url ~"^/file/data/") {
+        call tag_carrier;
+        if (req.http.X-CS) {
+            return (synth(403, "Disallowed"));
+        }
+        unset req.http.X-CS;
+    }
+}
 
 sub cluster_fe_recv {
     if (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
