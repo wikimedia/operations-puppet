@@ -22,14 +22,6 @@ class profile::requesttracker::server {
 
     include ::base::firewall
 
-    # allow RT to receive mail from mail smarthosts
-    ferm::service { 'rt-smtp':
-        port   => '25',
-        proto  => 'tcp',
-        srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
-
-    }
-
     ferm::service { 'rt-http':
         proto => 'tcp',
         port  => '80',
