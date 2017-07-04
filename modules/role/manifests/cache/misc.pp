@@ -49,7 +49,7 @@ class role::cache::misc {
         app_def_be_opts   => hiera('cache::app_def_be_opts'),
         fe_vcl_config     => $common_vcl_config,
         be_vcl_config     => $common_vcl_config,
-        fe_extra_vcl      => ['misc-common'],
+        fe_extra_vcl      => ['misc-common', 'zero'],
         be_extra_vcl      => ['misc-common'],
         be_storage        => $::role::cache::base::file_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
