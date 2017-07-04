@@ -1,0 +1,10 @@
+fixtures:
+    symlinks:
+        monitoring: "#{source_dir}"
+        icinga: "../../../../icinga"
+        nagios_common: "../../../../nagios_common"
+        wmflib: "../../../../wmflib"
+        logrotate: "../../../../logrotate"
+        secret: "../../../../../../labs/private/modules/secret"
+        passwords: "../../../../../../labs/private/modules/passwords"
+        elasticsearch: "../../../../elasticsearch"
