@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 3.8.5'
 gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
 gem 'puppet-strings', '~> 1.0.0'
-gem 'rspec-puppet', '~> 2.3.2'
+gem 'rspec-puppet', '~> 2.4.0'
 gem 'puppetlabs_spec_helper', '< 2.0.0'
 # Puppet 3.7 fails on ruby 2.2+
 # https://tickets.puppetlabs.com/browse/PUP-3796
