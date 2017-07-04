@@ -17,15 +17,21 @@ end
 Facter.add(:ipmi_lan) do
   confine :has_ipmi => true
   confine do
-    File.exists?('/usr/sbin/bmc-config')
+    File.exists?('/usr/sbin/bmc-config') || File.exists?('/usr/bin/ipmitool')
   end
 
   setcode do
     ipmi_lan = {}
-    conf = Facter::Util::Resolution.exec('bmc-config -o -S Lan_Conf')
-    conf.each_line do |line|
-      next unless /^\s+(?<key>[^#][^\s]+)\s+(?<value>[^\s]+)/ =~ line
-      case key
+    if File.exists?('/usr/sbin/bmc-config')
+      cmd = '/usr/sbin/bmc-config -o -S Lan_Conf'
+    else
+      cmd = '/usr/bin/ipmitool lan print'
+    end
+    Facter::Util::Resolution.exec(cmd).each_line do |line|
+      # compatible with both bmc-config and ipmitool's output
+      next unless /^\s*(?<key>[^#].+[^\s])\s+:?\s(?<value>[^\s]+)/ =~ line
+      # bmc-config uses underscores, ipmitool uses spaces; handle both
+      case key.gsub(' ', '_')
       when 'IP_Address_Source' then
         unless value == 'Static'
           ipmi_lan = nil
@@ -34,10 +40,10 @@ Facter.add(:ipmi_lan) do
       when 'IP_Address' then
         ipmi_lan['ipaddress'] = value
       when 'MAC_Address' then
-        ipmi_lan['macaddress'] = value
+        ipmi_lan['macaddress'] = value.downcase
       when 'Subnet_Mask' then
         ipmi_lan['netmask'] = value
-      when 'Default_Gateway_IP_Address' then
+      when 'Default_Gateway_IP_Address', 'Default_Gateway_IP' then
         ipmi_lan['gateway'] = value
       end
     end
