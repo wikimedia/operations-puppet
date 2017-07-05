@@ -32,6 +32,7 @@ fullviews:
   - article_feedback_revisions
   - article_feedback_stats
   - article_feedback_stats_types
+  - babel
   - category
   - categorylinks
   - change_tag
