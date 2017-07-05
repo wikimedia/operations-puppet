@@ -53,7 +53,7 @@ debdeploy::grains:
     value: standard
 citoid::zotero_port: 1969
 citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
-profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
+profile::ores::web::redis_host: localhost
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing
 
