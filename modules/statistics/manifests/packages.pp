@@ -6,7 +6,7 @@ class statistics::packages {
     include ::geoip
     include ::imagemagick::install
 
-    ensure_packages([
+    require_package([
         'emacs',
         'mc',
         'zip',
