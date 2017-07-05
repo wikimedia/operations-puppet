@@ -68,6 +68,11 @@ host dbmonitor2001 {
      fixed-address dbmonitor2001.wikimedia.org;
 }
 
+host diadem {
+     hardware ethernet aa:00:00:eb:b1:27;
+     fixed-address diadem.wikimedia.org;
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
@@ -79,6 +84,11 @@ host d-i-test {
 host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
+}
+
+host dysprosium {
+     hardware ethernet aa:00:00:a9:4b:3c;
+     fixed-address dysprosium.wikimedia.org;
 }
 
 host etcd1001 {

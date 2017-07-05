@@ -339,6 +339,10 @@ node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
 
+node /^(diadem|dysprosium)\.wikimedia\.org$/ {
+    include ::standard
+}
+
 node 'dataset1001.wikimedia.org' {
 
     role(dataset::primary, dumps::server)
