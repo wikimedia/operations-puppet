@@ -148,3 +148,5 @@ scap::sources:
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms
+  relforge/mjolnir:
+    repository: search/MjoLniR

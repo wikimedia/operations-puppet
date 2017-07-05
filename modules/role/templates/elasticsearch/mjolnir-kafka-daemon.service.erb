@@ -1,0 +1,16 @@
+[Unit]
+Description=MjoLniR kafka daemon
+After=network.target
+
+[Service]
+User=nobody
+Group=nogroup
+WorkingDirectory=/src/search/mjolnir
+ExecStart=/usr/bin/python2 /srv/deployment/relforge/mjolnir/mjolnir/cli/kafka_daemon.py --brokers <%= @kafka_config['brokers']['string'] %>
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
