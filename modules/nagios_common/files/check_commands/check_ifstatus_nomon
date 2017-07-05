@@ -178,11 +178,11 @@ foreach $key (keys %ifStatus) {
 				if ($ifStatus{$key}{$snmpIfOperStatus} == 2 ) {
 								$ifdown++ ;
 								if (defined $ifXTable) {
-									$ifmessage .= sprintf("%s: down -> %s<BR>",
+									$ifmessage .= sprintf("%s: down -> %s; \n",
                                 $ifStatus{$key}{$snmpIfName},
 																$ifStatus{$key}{$snmpIfAlias});
 								}else{
-									$ifmessage .= sprintf("%s: down <BR>",
+									$ifmessage .= sprintf("%s: down; \n",
 																$ifStatus{$key}{$snmpIfDescr});
 								}
 				}
@@ -199,14 +199,14 @@ foreach $key (keys %ifStatus) {
 
    if ($ifdown > 0) {
       $state = 'CRITICAL';
-      $answer = sprintf("host '%s', interfaces up: %d, down: %d, dormant: %d, excluded: %d, unused: %d<BR>",
+      $answer = sprintf("host '%s', interfaces up: %d, down: %d, dormant: %d, excluded: %d, unused: %d;\n",
                         $hostname,
 			$ifup,
 			$ifdown,
 			$ifdormant,
 			$ifexclude,
 			$ifunused);
-      $answer = $answer . $ifmessage . "\n";
+      $answer = $answer . $ifmessage . " https://wikitech.wikimedia.org/wiki/Network_monitoring#Router_interface_down \n";
    }
    else {
       $state = 'OK';
