@@ -18,7 +18,7 @@ opt <- parse_args(OptionParser(option_list = option_list))
 
 if (is.na(opt$package)) {
   update.packages(ask = FALSE, checkBuilt = TRUE, repos = c(CRAN = opt$mirror))
-  message("If any CRAN-installed packages were updated, restart shiny-server")
+  message("If any CRAN-installed packages were updated, restart shiny-server via `sudo service shiny-server restart`")
   message("To update all git-installed package, run devtools::update_packages()")
   message("Unfortunately, it must be run in interactive mode")
   q(save = "no", status = 0)
@@ -76,7 +76,7 @@ if (pkg_source == "cran" || update_pkg) {
     q(save = "no", status = 1)
   } else {
     if (update_output) {
-      message("Successfully updated ", opt$package, ". Now run: sudo restart shiny-server")
+      message("Successfully updated ", opt$package, ". Now run: sudo service shiny-server restart")
       q(save = "no", status = 0)
     } else {
       message("Attempted to update ", opt$package, " but failed")
