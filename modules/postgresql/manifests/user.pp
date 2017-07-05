@@ -65,7 +65,7 @@ define postgresql::user(
             exec { "pass_set-${name}":
                 command   => $pass_set,
                 user      => 'postgres',
-                onlyif    => "/usr/bin/test -n \"\$(/usr/bin/psql -Atc \"SELECT 1 FROM pg_shadow WHERE usename = '${user}' AND passwd <> 'md5${password_md5}';\")\"",
+                onlyif    => "/usr/bin/test -n \"\$(/usr/bin/psql -Atc \"SELECT 1 FROM pg_authid WHERE rolname = '${user}' AND rolpassword IS DISTINCT FROM 'md5${password_md5}';\")\"",
                 subscribe => Exec["create_user-${name}"],
             }
         }
