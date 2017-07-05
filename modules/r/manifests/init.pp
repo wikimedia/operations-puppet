@@ -43,6 +43,7 @@ class r (
         $devtools_essentials = [
             'git-core',             # for git2r
             'libxml2',              # for xml2
+            'libxml2-dev',          # for xml2
             'libssl-dev',           # for openssl
             'libcurl4-openssl-dev', # for curl
             'libssh2-1-dev'         # for git2r
