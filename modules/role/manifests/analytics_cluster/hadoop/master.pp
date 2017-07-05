@@ -46,6 +46,14 @@ class role::analytics_cluster::hadoop::master {
         require => Class['cdh::hadoop::master'],
     }
 
+    file { '/usr/local/lib/nagios/plugins/check_hdfs_topology':
+        ensure => present,
+        source => 'puppet:///modules/role/analytics_cluster/hadoop/check_hdfs_topology',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
@@ -76,10 +84,21 @@ class role::analytics_cluster::hadoop::master {
             require       => Class['cdh::hadoop::master'],
         }
 
-        # Allow nagios to run the check_hdfs_active_namenode as hdfs user.
+        # Allow nagios to run some scripts as hdfs user.
         sudo::user { 'nagios-check_hdfs_active_namenode':
             user       => 'nagios',
-            privileges => ['ALL = NOPASSWD: /usr/local/bin/check_hdfs_active_namenode'],
+            privileges => [
+                'ALL = NOPASSWD: /usr/local/bin/check_hdfs_active_namenode',
+                'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_hdfs_topology',
+            ],
+        }
+        # Alert if the HDFS topology shows any inconsistency.
+        nrpe::monitor_service { 'check_hdfs_topology':
+            description    => 'HDFS topology check',
+            nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_hdfs_topology',
+            check_interval => 30,
+            retries        => 2,
+            require        => File['/usr/local/lib/nagios/plugins/check_hdfs_topology'],
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
