@@ -7,6 +7,7 @@ class role::elasticsearch::relforge {
     include ::base::firewall
     include ::profile::elasticsearch
     include ::elasticsearch::nagios::check
+    include ::profile::mjolnir::kafka_daemon
 
     system::role { 'elasticsearch::relforge':
         ensure      => 'present',
