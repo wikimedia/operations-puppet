@@ -347,6 +347,21 @@ host conf1003 {
     fixed-address conf1003.eqiad.wmnet;
 }
 
+host conf1004 {
+    hardware ethernet 30:e1:71:52:05:18;
+    fixed-address conf1004.eqiad.wmnet;
+}
+
+host conf1005 {
+    hardware ethernet 30:e1:71:52:89:28;
+    fixed-address conf1005.eqiad.wmnet;
+}
+
+host conf1006 {
+    hardware ethernet 30:e1:71:52:89:f4;
+    fixed-address conf1006.eqiad.wmnet;
+}
+
 host conf2001 {
     hardware ethernet 14:18:77:5E:A7:2C;
     fixed-address conf2001.codfw.wmnet;
