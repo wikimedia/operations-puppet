@@ -4,6 +4,7 @@
 import argparse
 import ConfigParser
 import logging
+import re
 import subprocess
 import sys
 import time
@@ -20,7 +21,8 @@ RAID_TYPES = ('megacli', 'hpssacli', 'mpt', 'md', 'n/a')
 COMPRESSED_RAID_TYPES = ('megacli', 'hpssacli')
 
 SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds',
-                'must have write cache policy', 'Could not complete SSL handshake')
+                'must have write cache policy', 'Could not complete SSL handshake',
+                r'Command check_raid_[^ ]+ not defined')
 
 LOG_PATH = '/var/log/icinga/raid_handler.log'
 COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'
@@ -232,12 +234,12 @@ def main():
 
     message_lower = args.message.lower()
     for skip_string in SKIP_STRINGS:
-        if skip_string in message_lower:
+        if re.search(skip_string, message_lower) is not None:
             logger.info(
-                ("Skipping RAID Handler execution for host '{}' and "
-                 "RAID type '{}', skip string '{}' detected in '{}'").format(
-                    args.host_address, args.raid_type, skip_string,
-                    args.message))
+                ("Skipping RAID Handler execution for host '{host}' and RAID type "
+                 "'{raid}', skip string '{pattern}' detected in '{str}'").format(
+                    host=args.host_address, raid=args.raid_type, pattern=skip_string,
+                    str=args.message))
             return
 
     raid_status = '{}\n'.format(args.message)
