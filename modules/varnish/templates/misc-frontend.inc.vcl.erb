@@ -12,9 +12,7 @@ sub cluster_fe_recv_pre_purge {
         }
 
         // Unset request headers potentially set by tag_carrier
-        unset req.http.X-CS;
-        unset req.http.X-CS2;
-        unset req.http.X-Forwarded-By;
+        call tag_carrier_cleanup;
     }
 }
 
