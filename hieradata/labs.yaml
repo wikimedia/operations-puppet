@@ -116,3 +116,11 @@ novaconfig:
   spice_hostname: 'labspice.wikimedia.org'
   scheduler_pool:
     - labvirt1001
+
+profile::diffscan::ipranges:
+  - 185.15.56.0/22
+  - 91.198.174.0/24
+  - 198.35.26.0/23
+  - 208.80.152.0/22
+profile::diffscan::emailto: root@wikimedia.org
+profile::diffscan::groupname: Labs-to-public-v4
