@@ -233,6 +233,14 @@ class role::prometheus::ops {
         port       => '9117',
     }
 
+    # Special config for Apache on OTRS deployment
+    prometheus::class_config{ "apache_otrs_${::site}":
+        dest       => "${targets_path}/apache_otrs_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::otrs',
+        port       => '9117',
+    }
+
     # Job definition for etcd_exporter
     $etcd_jobs = [
       {

@@ -9,6 +9,7 @@ class profile::otrs(
     $exim_database_name = hiera('profile::otrs::exim_database_name'),
     $exim_database_user = hiera('profile::otrs::exim_database_user'),
     $exim_database_pass = hiera('profile::otrs::exim_database_pass'),
+    $prometheus_nodes = hiera('prometheus_nodes'),
 ){
     include ::base::firewall
 
@@ -62,6 +63,17 @@ class profile::otrs(
     nrpe::monitor_service{ 'freshclam':
         description  => 'freshclam running',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C freshclam'
+    }
+
+    prometheus::apache_exporter { 'default': }
+
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+
+    ferm::service { 'prometheus-apache_exporter':
+        proto  => 'tcp',
+        port   => '9117',
+        srange => $ferm_srange,
     }
 
     # can conflict with ferm module
