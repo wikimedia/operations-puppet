@@ -3,9 +3,9 @@
 // Note: This requires "import header" in the including VCL
 
 sub tag_carrier {
-    // clear the 4 headers we may set below, nobody else should be setting them...
+    // clear the 3 headers we may set below, nobody else should be setting
+    // them...
     unset req.http.X-Forwarded-By;
-    unset req.http.X-Forwarded-By2;
     unset req.http.X-CS;
     unset req.http.X-CS2;
 
