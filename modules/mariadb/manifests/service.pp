@@ -39,8 +39,9 @@ class mariadb::service (
             service { $vendor:
                 ensure  => $ensure,
                 enable  => $enable,
-                # shouldn't systemd unit be on /lib/systemd/system ?
-                require => File["/etc/systemd/system/${vendor}.service"],
+                # $manage assumes only the main instance is managed-
+                # multiple instances have to be managed manually
+                require => File["/lib/systemd/system/${vendor}.service"],
             }
         }
         # handle per-host special configuration
