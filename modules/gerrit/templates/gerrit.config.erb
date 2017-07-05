@@ -116,7 +116,7 @@
     server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
     accountBase = ou=people,<%= @ldap_base_dn %>
     accountPattern = (&(objectClass=person)(cn=${username}))
-    accountFullName = cn
+    accountFullName = ""
     groupBase = ou=groups,<%= @ldap_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
