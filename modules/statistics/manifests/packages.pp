@@ -6,7 +6,7 @@ class statistics::packages {
     include ::geoip
     include ::imagemagick::install
 
-    ensure_packages([
+    require_package([
         'emacs',
         'mc',
         'zip',
@@ -45,7 +45,7 @@ class statistics::packages {
     ])
 
     # Python packages
-    ensure_packages ([
+    require_package ([
         'python-geoip',
         'libapache2-mod-python',
         'python-mysqldb',
@@ -70,13 +70,13 @@ class statistics::packages {
 
     # This is a custom package and currently not available on jessie, don't install on jessie for now
     if os_version('ubuntu >= trusty') {
-        ensure_packages([
+        require_package([
             'python-pygeoip', # For geo-encoding IP addresses
         ])
     }
 
     # FORTRAN packages (T89414)
-    ensure_packages([
+    require_package([
         'gfortran',        # GNU Fortran 95 compiler
         'gfortran-4.8',    # Requested by bearloga (Mikhail); see T147682 and http://stackoverflow.com/a/36034866/1091835 for more info
         'liblapack-dev',   # FORTRAN library of linear algebra routines
@@ -84,7 +84,7 @@ class statistics::packages {
     ])
 
     # Plotting packages
-    ensure_packages([
+    require_package([
         'ploticus',
         'libploticus0',
         'libcairo2',
@@ -119,7 +119,7 @@ class statistics::packages {
         # spell checker/dictionary packages for research (halfak)
         # T99030 - for machine learning and natural language processing
         # T121011 - for vandalism detection
-        ensure_packages([
+        require_package([
             'enchant', # generic spell checking library (uses myspell as backend)
             'aspell-id',   # Indonesian dictionary for GNU aspell
             'hunspell-vi', # Vietnamese dictionary for hunspell
