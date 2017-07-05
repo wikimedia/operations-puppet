@@ -12,14 +12,6 @@ class profile::requesttracker::server {
         dbpass      => $passwords::misc::rt::rt_mysql_pass,
     }
 
-    class { 'exim4':
-        variant => 'heavy',
-        config  => template('role/exim/exim4.conf.rt.erb'),
-        filter  => template('role/exim/system_filter.conf.erb'),
-    }
-
-    include exim4::ganglia
-
     include ::base::firewall
 
     ferm::service { 'rt-http':
