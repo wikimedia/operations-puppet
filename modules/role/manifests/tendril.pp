@@ -31,8 +31,12 @@ class role::tendril {
         auth_name    => 'WMF Labs (use wiki login name not shell) - nda/ops/wmf',
     }
 
-    ferm::service { 'tendril-http-https':
-        proto => 'tcp',
-        port  => '(http https)',
+    # Make tendril active-passive cross-datacenter until a local db backend is
+    # available on codfw to avoid cross-dc queries or TLS is used to connect
+    if hiera('do_acme', true) {
+        ferm::service { 'tendril-http-https':
+            proto => 'tcp',
+            port  => '(http https)',
+        }
     }
 }
