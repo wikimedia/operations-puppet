@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'monitoring::host' do
+  # We abuse RSpec a bit throughout the spec setting site to a fact
+  # Unfortunately RSpec node level parameters do not seem to work
   context 'with a standard physical host' do
     let(:facts) {
       {
@@ -9,6 +11,9 @@ describe 'monitoring::host' do
         :ipaddress       => '1.2.3.4',
         :is_virtual      => false,
         :lldp_parent     => 'ahosts_parent',
+        :has_ipmi        => true,
+        :ipmi_lan        => { :ipaddress => '2.2.2.2', },
+        :site            => 'blabla',
       }
     }
     let(:title) { 'ahost' }
@@ -22,6 +27,10 @@ describe 'monitoring::host' do
           'parents'    => 'ahosts_parent',
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
+        )
+        should contain_nagios_host('ahost_mgmt').with(
+          'host_name'  => 'ahost.mgmt.blabla.wmnet',
+          'address'    => '2.2.2.2',
         )
       end
     end
@@ -40,6 +49,10 @@ describe 'monitoring::host' do
           'parents'    => 'aparent',
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
+        )
+        should contain_nagios_host('ahost_mgmt').with(
+          'host_name'  => 'ahost.mgmt.blabla.wmnet',
+          'address'    => '2.2.2.2',
         )
       end
     end
@@ -53,6 +66,7 @@ describe 'monitoring::host' do
         :ipaddress       => '1.2.3.4',
         :is_virtual      => true,
         :lldp_parent     => 'ahosts_parent',
+        :has_ipmi        => false,
       }
     }
     let(:title) { 'ahost' }
@@ -67,6 +81,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
+        should_not contain_nagios_host('ahost_mgmt')
       end
     end
     describe 'with a parents parameters' do
@@ -83,6 +98,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
+        should_not contain_nagios_host('ahost_mgmt')
       end
     end
   end
@@ -95,6 +111,9 @@ describe 'monitoring::host' do
         :ipaddress       => '1.2.3.4',
         :is_virtual      => false,
         :lldp_parent     => 'ahosts_parent',
+        :has_ipmi        => true,
+        :ipmi_lan        => { :ipaddress => '2.2.2.2', },
+        :site            => 'blabla',
       }
     }
     let(:pre_condition) { 'include icinga' }
@@ -108,6 +127,10 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
+        should contain_nagios_host('icingahost_mgmt').with(
+          'host_name'  => 'icingahost.mgmt.blabla.wmnet',
+          'address'    => '2.2.2.2',
+        )
       end
     end
 
@@ -120,6 +143,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => '1.2.3.4'
         )
+        should_not contain_nagios_host('service.svc.wmnet_mgmt')
       end
     end
     describe 'monitoring a service, with ip_address,parents' do
@@ -136,6 +160,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => '4.3.2.1'
         )
+        should_not contain_nagios_host('service.svc.wmnet_mgmt')
       end
     end
     describe 'monitoring a service, with fqdn' do
@@ -151,6 +176,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => 'blah.foo.bar'
         )
+        should_not contain_nagios_host('service.svc.wmnet_mgmt')
       end
     end
   end
