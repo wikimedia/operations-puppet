@@ -82,7 +82,8 @@ function reset_postgres() {
 
 function ensure_sql_grants() {
   cat /usr/local/bin/maps-grants-gis.sql | sudo -u postgres psql -d gis -f -
-  cat /usr/local/bin/maps-grants-tiles.sql | sudo -u postgres psql -d tiles -f -
+  # uncomment the next line if you want to store tiles in a postgresql database
+  # cat /usr/local/bin/maps-grants-tiles.sql | sudo -u postgres psql -d tiles -f -
 }
 
 function initial_osm_import() {
