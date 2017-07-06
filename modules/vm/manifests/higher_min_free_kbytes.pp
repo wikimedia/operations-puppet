@@ -9,6 +9,6 @@ class vm::higher_min_free_kbytes {
 # FIXME: Is this setting appropriate to the nodes on which it is applied? Is
 # the value optimal? Investigate.
     sysctl::parameters { 'higher_min_free_kbytes':
-        values => { 'vm.min_free_kbytes' => 1024 * 256,},
+        values => { 'vm.min_free_kbytes' => 1024 * 2048,},
     }
 }
