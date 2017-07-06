@@ -3,6 +3,7 @@
 #
 class role::gerrit::server {
     include ::standard
-    include ::profile::gerrit::server
     include ::profile::backup::host
+
+    include ::profile::gerrit::server
 }
