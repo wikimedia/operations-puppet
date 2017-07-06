@@ -10,7 +10,11 @@ class gerrit::jetty(
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
-    $log_port = '4560'
+    $log_port = '4560',
+    $deploy_user = 'gerrit2',
+    $deploy_group = 'gerrit2',
+    $deploy_target = 'gerrit/gerrit',
+    $deploy_key = 'puppet:///modules/gerrit/gerrit-deploy-key.prod',
     ) {
 
     include ::nrpe
@@ -50,6 +54,12 @@ class gerrit::jetty(
         'libbcpkix-java',
         'libmysql-java',
     ])
+
+    scap::target { $deploy_target:
+        deploy_user       => $deploy_user,
+        manage_user       => true,
+        public_key_source => $deploy_key,
+    }
 
     file { '/srv/gerrit':
         ensure => directory,
