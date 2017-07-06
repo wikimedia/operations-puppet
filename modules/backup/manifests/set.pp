@@ -11,7 +11,7 @@ define backup::set(
         }
         @bacula::client::job { "${name}-${jobdefaults}":
             fileset     => $name,
-            jobdefaults => $jobdefaults,
+            jobdefaults => $real_jobdefaults,
             extras      => $extras,
         }
 
