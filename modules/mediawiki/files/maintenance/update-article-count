@@ -2,11 +2,4 @@
 
 . /etc/profile.d/mediawiki.sh
 
-cd "$MEDIAWIKI_DEPLOYMENT_DIR/multiversion"
-# All language subdomains of content projects, unless they use comma count
-for set in wikinews wikipedia wikiquote wikisource wikiversity wikivoyage wiktionary; do
-	echo $set
-	/usr/local/bin/mwscriptwikiset updateArticleCount.php $set.dblist --update
-	echo
-	echo
-done
+/usr/local/bin/mwscriptwikiset updateArticleCount.php all.dblist --update
