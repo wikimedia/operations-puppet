@@ -19,4 +19,3 @@ do_rsync (){
 }
 
 do_rsync "download.kiwix.org/zim/wikipedia/" "kiwix/zim/wikipedia/"
-chown -R datasets:datasets "${destroot}/${destpath}"

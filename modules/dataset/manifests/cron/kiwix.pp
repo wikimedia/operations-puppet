@@ -11,24 +11,11 @@ class dataset::cron::kiwix(
 
     include ::dataset::common
 
-    group { 'mirror':
-        ensure => 'present',
-    }
-
-    user { 'mirror':
-        name       => 'mirror',
-        gid        => 'mirror',
-        groups     => 'www-data',
-        membership => minimum,
-        home       => '/data/home',
-        shell      => '/bin/bash',
-    }
-
     file { '/data/xmldatadumps/public/kiwix':
         ensure => 'link',
         target => '/data/xmldatadumps/public/other/kiwix',
-        owner  => 'mirror',
-        group  => 'mirror',
+        owner  => 'datasets',
+        group  => 'datasets',
         mode   => '0644',
     }
 
@@ -43,7 +30,7 @@ class dataset::cron::kiwix(
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         command     => '/bin/bash /usr/local/bin/kiwix-rsync-cron.sh',
-        user        => 'mirror',
+        user        => 'datasets',
         minute      => '15',
         hour        => '*/2',
         require     => File['/usr/local/bin/kiwix-rsync-cron.sh'],
