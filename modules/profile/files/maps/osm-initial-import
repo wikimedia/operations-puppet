@@ -5,7 +5,7 @@ set -e
 download_dir="/srv/downloads/"
 osmosis_dir="/srv/osmosis"
 kartotherian_dir="/srv/deployment/kartotherian/deploy"
-osm_bright_source_dir="${kartotherian_dir}/node_modules/osm-bright-source"
+postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/postgis-vt-util/lib.sql"
 modules_with_sql="osm-bright-source kartotherian-geoshapes"
 replicate_lock="${osmosis_dir}/replicate-osm.lck"
 proxy=
@@ -111,7 +111,7 @@ function import_water_lines() {
 
 function custom_functions_and_indexes() {
   echo "starting creation of custom functions and indexes"
-  sudo -u postgres psql -Xd gis -f "${osm_bright_source_dir}/node_modules/postgis-vt-util/lib.sql"
+  sudo -u postgres psql -Xd gis -f ${postgis_vt_util_sql_lib}
 
   for module in ${modules_with_sql}; do
     echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}/sql"
