@@ -26,6 +26,7 @@ class thumbor (
     $statsd_host = 'localhost',
     $statsd_port = '8125',
     $statsd_prefix = "thumbor.${::hostname}",
+    $poolcounter_server = undef,
 ) {
     requires_os('debian >= jessie')
 
