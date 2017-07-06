@@ -341,6 +341,7 @@ node 'darmstadtium.eqiad.wmnet' {
 
 node /^(diadem|dysprosium)\.wikimedia\.org$/ {
     include ::standard
+    include ::base::firewall
 }
 
 node 'dataset1001.wikimedia.org' {
