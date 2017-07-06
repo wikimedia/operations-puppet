@@ -15,6 +15,7 @@ admin::groups:
   - deploy-aqs
   - deploy-phabricator
   - analytics-admins
+  - gerrit-admin
 
 # Newer git version, not needed on stretch - T140927
 apt::use_experimental: true
@@ -50,6 +51,10 @@ scap::keyholder_agents:
   phabricator:
     trusted_groups:
       - deploy-phabricator
+
+  gerri-root:
+    trusted_groups:
+      - gerrit-admin
 
   eventlogging:
     trusted_groups:
@@ -101,6 +106,8 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+  gerrit/gerrit:
+    repository: operations/software/gerrit
   graphoid/deploy: {}
 #    lvs_service: graphoid
   jobrunner/jobrunner:
