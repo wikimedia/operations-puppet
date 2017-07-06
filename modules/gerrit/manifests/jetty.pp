@@ -10,7 +10,8 @@ class gerrit::jetty(
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
-    $log_port = '4560'
+    $log_port = '4560',
+    $deploy_target = 'gerrit/gerrit',
     ) {
 
     include ::nrpe
@@ -50,6 +51,11 @@ class gerrit::jetty(
         'libbcpkix-java',
         'libmysql-java',
     ])
+
+    scap::target { $deploy_target:
+        deploy_user => 'gerrit-migrate',
+        key_name    => 'gerrit',
+    }
 
     file { '/srv/gerrit':
         ensure => directory,
@@ -106,12 +112,6 @@ class gerrit::jetty(
         mode    => '0400',
         require => File['/var/lib/gerrit2/.ssh'],
         content => secret('gerrit/id_rsa'),
-    }
-
-    ssh::userkey { 'gerrit2-cluster-sync':
-        ensure => present,
-        user   => 'gerrit2',
-        source => 'puppet:///modules/gerrit/id_rsa.pub'
     }
 
     file { '/var/lib/gerrit2/review_site':
