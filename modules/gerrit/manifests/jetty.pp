@@ -14,6 +14,19 @@ class gerrit::jetty(
     $config = 'gerrit.config.erb',
     ) {
 
+    group { 'gerrit2':
+        ensure => present,
+    }
+
+    user { 'gerrit2':
+        ensure     => 'present',
+        gid        => 'gerrit2',
+        shell      => '/bin/bash',
+        home       => '/var/lib/gerrit2',
+        system     => true,
+        managehome => false,
+    }
+
     include ::nrpe
 
     # Private config
@@ -51,6 +64,12 @@ class gerrit::jetty(
         'libbcpkix-java',
         'libmysql-java',
     ])
+
+    scap::target { 'gerrit/gerrit':
+        deploy_user => 'gerrit2',
+        manage_user => false,
+        key_name    => 'gerrit',
+    }
 
     file { '/srv/gerrit':
         ensure => directory,
