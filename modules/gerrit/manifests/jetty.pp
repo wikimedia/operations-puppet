@@ -10,8 +10,22 @@ class gerrit::jetty(
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
-    $log_port = '4560'
+    $log_port = '4560',
+    $scap_deploy = false,
     ) {
+
+    group { 'gerrit2':
+        ensure => present,
+    }
+
+    user { 'gerrit2':
+        ensure     => 'present',
+        gid        => 'gerrit2',
+        shell      => '/bin/bash',
+        home       => '/var/lib/gerrit2',
+        system     => true,
+        managehome => false,
+    }
 
     include ::nrpe
 
@@ -51,6 +65,12 @@ class gerrit::jetty(
         'libmysql-java',
     ])
 
+    scap::target { 'gerrit/gerrit':
+        deploy_user => 'gerrit2',
+        manage_user => false,
+        key_name    => 'gerrit',
+    }
+
     file { '/srv/gerrit':
         ensure => directory,
         owner  => 'gerrit2',
@@ -74,121 +94,148 @@ class gerrit::jetty(
         require => File['/srv/gerrit'],
     }
 
-    file { '/var/lib/gerrit2/':
+    if $scap_deploy {
+        $gerrit_location = '/srv/deployment/gerrit/'
+    } else {
+        $gerrit_location = '/var/lib/gerrit2/'
+    }
+
+    file { "${gerrit_location}":
         ensure  => directory,
         mode    => '0755',
         owner   => 'gerrit2',
-        require => Package['gerrit'],
+        require => [Package['gerrit'],Scap::Target['gerrit/gerrit']],
     }
 
-    file { '/var/lib/gerrit2/.gitconfig':
+    file { "${gerrit_location}.gitconfig":
         ensure  => directory,
         mode    => '0644',
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        require => File['/var/lib/gerrit2'],
+        require => File["${gerrit_location}"],
         source  => 'puppet:///modules/gerrit/.gitconfig',
     }
 
-    file { '/var/lib/gerrit2/.ssh':
+    file { "${gerrit_location}.ssh":
         ensure  => directory,
         recurse => remote,
         mode    => '0644',
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        require => File['/var/lib/gerrit2'],
+        require => File["${gerrit_location}"],
         source  => 'puppet:///modules/gerrit/.ssh',
     }
 
-    file { '/var/lib/gerrit2/.ssh/id_rsa':
+    file { "${gerrit_location}.ssh/id_rsa":
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0400',
-        require => File['/var/lib/gerrit2/.ssh'],
+        require => File["${gerrit_location}.ssh"],
         content => secret('gerrit/id_rsa'),
     }
 
-    ssh::userkey { 'gerrit2-cluster-sync':
-        ensure => present,
-        user   => 'gerrit2',
-        source => 'puppet:///modules/gerrit/id_rsa.pub'
-    }
-
-    file { '/var/lib/gerrit2/review_site':
+    file { "${gerrit_location}review_site":
         ensure  => directory,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0644',
-        require => [File['/var/lib/gerrit2'],Package['gerrit']],
+        require => [File["${gerrit_location}"],Package['gerrit']],
     }
 
-    file { '/var/lib/gerrit2/review_site/lib':
+    if $scap_deploy {
+        file { "${gerrit_location}gerrit/review_site":
+            ensure  => link,
+            target  => '/srv/deployment/gerrit/review_site',
+            owner   => 'gerrit2',
+            group   => 'gerrit2',
+            mode    => '0644',
+            require => [File["${gerrit_location}"],Package['gerrit']],
+        }
+
+        file { '/srv/deployment/gerrit/review_site/git':
+            ensure  => 'link',
+            target  => '/srv/gerrit/git',
+            owner   => 'gerrit2',
+            group   => 'gerrit2',
+            require => [Scap::Target['gerrit/gerrit'],File["${gerrit_location}review_site"]],
+        }
+
+        file { '/srv/deployment/gerrit/review_site/plugins':
+            ensure  => 'link',
+            target  => '/srv/deployment/gerrit/gerrit/plugins',
+            owner   => 'gerrit2',
+            group   => 'gerrit2',
+            require => [Scap::Target['gerrit/gerrit'],File["${gerrit_location}review_site"]],
+        }
+    }
+
+    file { "${gerrit_location}review_site/lib":
         ensure  => directory,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0555',
-        require => [File['/var/lib/gerrit2/review_site'],Package['gerrit']],
+        require => [File["${gerrit_location}review_site"],Package['gerrit']],
     }
 
-    file { '/var/lib/gerrit2/review_site/lib/bcprov-1.49.jar':
+    file { "${gerrit_location}review_site/lib/bcprov-1.49.jar":
         ensure  => 'link',
         target  => '/usr/share/java/bcprov-1.49.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcprov-java']],
+        require => [File["${gerrit_location}review_site/lib"], Package['libbcprov-java']],
     }
 
-    file { '/var/lib/gerrit2/review_site/lib/bcpkix-1.49.jar':
+    file { "${gerrit_location}review_site/lib/bcpkix-1.49.jar":
         ensure  => 'link',
         target  => '/usr/share/java/bcpkix-1.49.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcpkix-java']],
+        require => [File["${gerrit_location}review_site/lib"], Package['libbcpkix-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
         ensure  => 'link',
         target  => '/usr/share/java/mysql-connector-java.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
+        require => [File["${gerrit_location}review_site/lib"], Package['libmysql-java']],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc':
+    file { "${gerrit_location}review_site/etc":
         ensure  => directory,
         recurse => remote,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/etc',
-        require => File['/var/lib/gerrit2/review_site'],
+        require => File["${gerrit_location}review_site"],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
+    file { "${gerrit_location}review_site/etc/gerrit.config":
         content => template('gerrit/gerrit.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2/review_site/etc'],
+        require => File["${gerrit_location}review_site/etc"],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/secure.config':
+    file { "${gerrit_location}review_site/etc/secure.config":
         content => template('gerrit/secure.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0440',
-        require => File['/var/lib/gerrit2/review_site/etc'],
+        require => File["${gerrit_location}review_site/etc"],
     }
 
-    file { '/var/lib/gerrit2/review_site/etc/log4j.properties':
+    file { "${gerrit_location}review_site/etc/log4j.properties":
         content => template('gerrit/log4j.properties.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2/review_site/etc'],
+        require => File["${gerrit_location}review_site/etc"],
     }
 
     if $ssh_host_key != undef {
-        file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
+        file { "${gerrit_location}review_site/etc/ssh_host_key":
             content => secret("gerrit/${ssh_host_key}"),
             owner   => 'gerrit2',
             group   => 'gerrit2',
             mode    => '0440',
-            require => File['/var/lib/gerrit2/review_site/etc'],
+            require => File["${gerrit_location}review_site/etc"],
         }
     }
 
@@ -196,22 +243,33 @@ class gerrit::jetty(
         false   => present,
         default => absent,
     }
-    file { '/var/lib/gerrit2/review_site/etc/replication.config':
+
+    file { "${gerrit_location}review_site/etc/replication.config":
         ensure  => $ensure_replication,
         content => template('gerrit/replication.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2/review_site/etc'],
+        require => File["${gerrit_location}review_site/etc"],
     }
 
-    file { '/var/lib/gerrit2/review_site/static':
+    file { "${gerrit_location}review_site/static":
         ensure  => directory,
         recurse => remote,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/static',
+    }
+
+    if $scap_deploy == false {
+        file { '/srv/deployment/gerrit/gerrit/review_site':
+            ensure  => 'link',
+            target  => '/var/lib/gerrit2/review_site',
+            owner   => 'gerrit2',
+            group   => 'gerrit2',
+            require => [Scap::Target['gerrit/gerrit'],File['/var/lib/gerrit2/review_site']],
+        }
     }
 
     service { 'gerrit':
@@ -228,13 +286,13 @@ class gerrit::jetty(
 
     nrpe::monitor_service { 'gerrit':
         description  => 'gerrit process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^GerritCodeReview .*-jar ${gerrit_location}review_site/bin/gerrit.war'",
     }
 
     cron { 'clear_gerrit_logs':
     # Gerrit rotates their own logs, but doesn't clean them out
     # Delete logs older than a week
-        command => 'find /var/lib/gerrit2/review_site/logs/ -name "*.gz" -mtime +7 -delete',
+        command => "find ${gerrit_location}review_site/logs/ -name *.gz -mtime +7 -delete",
         user    => 'root',
         hour    => 1,
     }
