@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+#############################################################
+# This file is maintained by puppet!
+# modules/dataset/check_nfsd
+#############################################################
+
+nfsd_pids=$( /usr/bin/pgrep nfsd )
+if [ -z "$nfsd_pids" ]; then
+    echo "UNKNOWN: no nfsd processes running"
+    exit 3
+fi
+
+nfsd_usage=$( /bin/ps -o pcpu= $nfsd_pids )
+for percentage in $nfsd_usage; do
+    if [[ $percentage == "100*" ]]; then
+        echo "CRITICAL: nfsd pegged at 100%"
+	exit 2
+    fi
+done
+echo "OK: nfsd running normally"
+exit 0
