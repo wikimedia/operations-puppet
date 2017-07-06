@@ -12,15 +12,15 @@ class webperf::statsv {
     $kafka_brokers = $kafka_config['brokers']['string']
     $statsd        = hiera('statsd')
 
-    package { 'statsv':
-        ensure   => present,
-        provider => 'trebuchet',
+    scap::target { 'statsv/statsv':
+        service_name => 'statsv',
+        deploy_user  => 'deploy-service',
     }
 
     file { '/lib/systemd/system/statsv.service':
         ensure  => 'present',
         content => template('webperf/statsv.service.erb'),
-        require => Package['statsv'],
+        require => Package['statsv/statsv'],
     }
 
     service { 'statsv':
