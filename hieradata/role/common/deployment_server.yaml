@@ -150,3 +150,5 @@ scap::sources:
     repository: operations/software/librenms
   relforge/mjolnir:
     repository: search/MjoLniR
+  statsv/statsv:
+    repository: analytics/statsv

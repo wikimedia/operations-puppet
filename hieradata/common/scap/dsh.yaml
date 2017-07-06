@@ -90,3 +90,6 @@ scap::dsh::groups:
     hosts:
       - relforge1001.eqiad.wmnet
       - relforge1002.eqiad.wmnet
+  webperf:
+    hosts:
+      - hafnium.eqiad.wmnet
