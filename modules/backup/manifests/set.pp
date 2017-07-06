@@ -9,7 +9,7 @@ define backup::set(
         } else {
             $real_jobdefaults = $profile::backup::host::jobdefaults
         }
-        @bacula::client::job { "${name}-${jobdefaults}":
+        @bacula::client::job { "${name}-${real_jobdefaults}":
             fileset     => $name,
             jobdefaults => $real_jobdefaults,
             extras      => $extras,
