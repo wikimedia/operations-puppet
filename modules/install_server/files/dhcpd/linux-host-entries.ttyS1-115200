@@ -1300,7 +1300,7 @@ host db1097 {
 }
 
 host db1098 {
-    hardware ethernet 18:66:DA:F8:D5:E1;
+    hardware ethernet 18:66:DA:F8:D5:E0;
     fixed-address db1098.eqiad.wmnet;
 }
 
