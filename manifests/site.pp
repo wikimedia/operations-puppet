@@ -1810,27 +1810,12 @@ node 'pc1004.eqiad.wmnet' {
         shard  => 'pc1',
     }
 }
-node 'db1096.eqiad.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc1',
-    }
-}
 node 'pc1005.eqiad.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc2',
     }
 }
-node 'db1099.eqiad.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc2',
-    }
-}
 node 'pc1006.eqiad.wmnet' {
-    class { '::role::mariadb::parsercache':
-        shard  => 'pc3',
-    }
-}
-node 'db1101.eqiad.wmnet' {
     class { '::role::mariadb::parsercache':
         shard  => 'pc3',
     }
