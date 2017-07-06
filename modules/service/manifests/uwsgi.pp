@@ -182,13 +182,6 @@ define service::uwsgi(
         }
     }
 
-
-    # Basic firewall
-    ferm::service { $title:
-        proto => 'tcp',
-        port  => $port,
-    }
-
     if $has_spec {
         # Advanced monitoring
         include service::monitoring

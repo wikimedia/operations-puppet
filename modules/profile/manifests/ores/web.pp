@@ -6,4 +6,9 @@ class profile::ores::web(
         redis_password => $redis_password,
         redis_host     => $redis_host,
     }
+
+    ferm::service { 'ores':
+        proto => 'tcp',
+        port  => '8081',
+    }
 }
