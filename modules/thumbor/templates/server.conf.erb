@@ -144,9 +144,11 @@ APP_CLASS = 'wikimedia_thumbor.app.App'
 
 # PoolCounter configuration
 
-POOLCOUNTER_SERVER = 'poolcounter1002.eqiad.wmnet'
+<% if @poolcounter_server != nil %>
+POOLCOUNTER_SERVER = '<%= @poolcounter_server %>'
 POOLCOUNTER_PORT = 7531
 POOLCOUNTER_RELEASE_TIMEOUT = 120
+<% end %>
 
 # Up to "workers" thumbnails can be generated at once for a given IP
 # address, with up to "maxqueue" thumbnails queued per IP
