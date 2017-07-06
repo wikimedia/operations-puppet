@@ -76,5 +76,5 @@ class profile::dumps::nfs(
         srange => '$PRODUCTION_NETWORKS',
     }
 
-
+    class { '::dumps::monitoring': }
 }
