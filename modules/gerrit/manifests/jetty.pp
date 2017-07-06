@@ -10,8 +10,22 @@ class gerrit::jetty(
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
-    $log_port = '4560'
+    $log_port = '4560',
+    $scap_deploy = false,
     ) {
+
+    group { 'gerrit2':
+        ensure => present,
+    }
+
+    user { 'gerrit2':
+        ensure     => 'present',
+        gid        => 'gerrit2',
+        shell      => '/bin/bash',
+        home       => '/var/lib/gerrit2',
+        system     => true,
+        managehome => false,
+    }
 
     include ::nrpe
 
@@ -50,6 +64,12 @@ class gerrit::jetty(
         'libbcpkix-java',
         'libmysql-java',
     ])
+
+    scap::target { 'gerrit/gerrit':
+        deploy_user => 'gerrit2',
+        manage_user => false,
+        key_name    => 'gerrit',
+    }
 
     file { '/srv/gerrit':
         ensure => directory,
@@ -108,18 +128,20 @@ class gerrit::jetty(
         content => secret('gerrit/id_rsa'),
     }
 
-    ssh::userkey { 'gerrit2-cluster-sync':
-        ensure => present,
-        user   => 'gerrit2',
-        source => 'puppet:///modules/gerrit/id_rsa.pub'
-    }
-
     file { '/var/lib/gerrit2/review_site':
         ensure  => directory,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0644',
         require => [File['/var/lib/gerrit2'],Package['gerrit']],
+    }
+
+    file { '/srv/deployment/gerrit/gerrit/review_site':
+        ensure  => 'link',
+        target  => '/var/lib/gerrit2/review_site',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        require => [Scap::Target['gerrit/gerrit'],File['/var/lib/gerrit2/review_site']],
     }
 
     file { '/var/lib/gerrit2/review_site/lib':
@@ -196,6 +218,7 @@ class gerrit::jetty(
         false   => present,
         default => absent,
     }
+
     file { '/var/lib/gerrit2/review_site/etc/replication.config':
         ensure  => $ensure_replication,
         content => template('gerrit/replication.config.erb'),
@@ -203,6 +226,16 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
+    if $scap_deploy {
+        file { '/var/lib/gerrit2/review_site/plugins':
+            ensure  => 'link',
+            target  => '/srv/deployment/gerrit/gerrit/plugins',
+            owner   => 'gerrit2',
+            group   => 'gerrit2',
+            require => [Scap::Target['gerrit/gerrit'],File['/var/lib/gerrit2/review_site']],
+        }
     }
 
     file { '/var/lib/gerrit2/review_site/static':
