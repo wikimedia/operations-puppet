@@ -11,8 +11,6 @@ role::deployment::repo_config:
     service_name: rcstream
   fluoride/fluoride:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride
-  statsv/statsv:
-    upstream: https://gerrit.wikimedia.org/r/analytics/statsv
   elasticsearch/plugins:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins

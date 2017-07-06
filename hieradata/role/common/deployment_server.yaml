@@ -148,3 +148,5 @@ scap::sources:
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms
+  statsv/statsv:
+    repository: analytics/statsv

@@ -86,3 +86,6 @@ scap::dsh::groups:
       - logstash1001.eqiad.wmnet
       - logstash1002.eqiad.wmnet
       - logstash1003.eqiad.wmnet
+  webperf:
+    hosts:
+      - hafnium.eqiad.wmnet
