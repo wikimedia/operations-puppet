@@ -1029,6 +1029,11 @@ node 'labtestcontrol2001.wikimedia.org' {
 
 }
 
+node 'labtestcontrol2003.wikimedia.org' {
+    include ::base::firewall
+    include ::standard
+}
+
 node 'labtestpuppetmaster2001.wikimedia.org' {
     include ::standard
     include ::base::firewall
@@ -1040,6 +1045,11 @@ node 'labtestservices2001.wikimedia.org' {
         labs::dns_floating_ip_updater)
     include ::standard
     include ::base::firewall
+}
+
+node /labtestservices200[23]\.wikimedia\.org/ {
+    include ::base::firewall
+    include ::standard
 }
 
 # Primary graphite machines
