@@ -1,6 +1,6 @@
-class role::puppetmaster::common (
+class profile::puppetmaster::common (
     $base_config,
-    $directory_environments = hiera('role::puppetmaster::common::directory_environments', false),
+    $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
 ) {
     include passwords::puppet::database
 
