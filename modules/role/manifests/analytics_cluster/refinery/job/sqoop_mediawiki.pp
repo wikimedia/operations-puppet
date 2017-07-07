@@ -23,10 +23,13 @@ class role::analytics_cluster::refinery::job::sqoop_mediawiki {
     $log_file         = "${::role::analytics_cluster::refinery::log_dir}/sqoop-mediawiki.log"
     # number of parallel processors to use when sqooping (querying MySQL)
     $num_processors   = 3
+    # number of sqoop mappers to use, but only for tables on big wiki
+    $num_mappers      = 4
+    # pre-compiled set of java classes for sqoop's convenience
     $orm_jar_file     = "${::role::analytics_cluster::refinery::path}/artifacts/mediawiki-tables-sqoop-orm.jar"
 
     cron { 'refinery-sqoop-mediawiki':
-        command  => "${env} && /usr/bin/python3 ${role::analytics_cluster::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --labsdb --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --jar-file ${orm_jar_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+\\%Y\\%m01000000') --snapshot \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -k ${num_processors} >> ${log_file} 2>&1",
+        command  => "${env} && /usr/bin/python3 ${role::analytics_cluster::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --labsdb --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --jar-file ${orm_jar_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+\\%Y\\%m01000000') --snapshot \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --mappers ${num_mappers} --processors ${num_processors} >> ${log_file} 2>&1",
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
