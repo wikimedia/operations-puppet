@@ -10,4 +10,4 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
 cluster: puppet
-role::puppetmaster::common::directory_environments: true
+profile::puppetmaster::common::directory_environments: true
