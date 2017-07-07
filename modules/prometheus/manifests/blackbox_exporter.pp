@@ -9,7 +9,7 @@ class prometheus::blackbox_exporter{
 
     require_package('prometheus-blackbox-exporter')
 
-    file { '/etc/prometheus-blackbox_exporter.yml':
+    file { '/etc/prometheus/blackbox.yml':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -18,10 +18,10 @@ class prometheus::blackbox_exporter{
         notify  => Service['prometheus-blackbox-exporter'],
     }
 
-    systemd::service { 'prometheus-blackbox-exporter':
-        ensure  => present,
-        restart => true,
-        content => systemd_template('prometheus-blackbox-exporter'),
-        require => Package['prometheus-blackbox-exporter'],
+    service { 'prometheus-blackbox-exporter':
+        ensure     => running,
+        hasrestart => true,
+        provider   => 'systemd',
+        require    => Package['prometheus-blackbox-exporter'],
     }
 }
