@@ -9,6 +9,9 @@ vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
+<%- if @environment -%>
+environment = <%= @environment %>
+<%- end -%>
 
 [agent]
 <%- if @use_srv_record -%>
