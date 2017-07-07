@@ -1,6 +1,10 @@
 # monitoring of https://meta.wikimedia.org/wiki/ORES
 class icinga::monitor::ores {
 
+    monitoring::grafana_alert { 'db/ores':
+        contact_group   => 'team-ores',
+    }
+
     @monitoring::host { 'ores.wmflabs.org':
         host_fqdn => 'ores.wmflabs.org',
     }
