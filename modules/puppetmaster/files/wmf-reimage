@@ -17,6 +17,7 @@ function clean_puppet {
     nodename=${1}
     log "cleaning puppet facts and certificate for ${nodename}"
     puppet node clean ${nodename} 2> /dev/null
+    puppet node deactivate ${nodename} 2> /dev/null
     # An additional, paranoid check.
     if puppet cert list --all 2> /dev/null | fgrep -q ${nodename}; then
         log "unable to clean puppet cert, please check manually"
