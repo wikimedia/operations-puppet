@@ -1777,6 +1777,10 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     role(ocg)
 }
 
+node /^ores100[1-9]\.eqiad\.wmnet$/ {
+    role(ores::stresstest)
+}
+
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
     role(ores::redis)
     include ::standard
