@@ -9,19 +9,12 @@ class prometheus::blackbox_exporter{
 
     require_package('prometheus-blackbox-exporter')
 
-    file { '/etc/prometheus-blackbox_exporter.yml':
+    file { '/etc/prometheus/blackbox.yml':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
         content => template('prometheus/blackbox_exporter.yml.erb'),
         notify  => Service['prometheus-blackbox-exporter'],
-    }
-
-    base::service_unit { 'prometheus-blackbox-exporter':
-        ensure  => present,
-        refresh => true,
-        systemd => true,
-        require => Package['prometheus-blackbox-exporter'],
     }
 }
