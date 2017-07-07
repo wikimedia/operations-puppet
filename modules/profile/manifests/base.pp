@@ -1,6 +1,7 @@
 class profile::base(
     $puppetmaster  = hiera('puppetmaster'),
     $dns_alt_names = hiera('profile::base::dns_alt_names', false),
+    $environment   = hiera('profile::base::environment', undef)
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $domain_search = hiera('profile::base::domain_search', $::domain),
     $remote_syslog = hiera('profile::base:remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
@@ -28,6 +29,7 @@ class profile::base(
     class { '::base::puppet':
         server        => $puppetmaster,
         dns_alt_names => $dns_alt_names,
+        environment   => $environment
     }
 
     # Temporary workaround for T140100. Remove as soon as Labs instances get
