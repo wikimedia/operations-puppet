@@ -32,9 +32,11 @@ class mariadb::service (
     if os_version('debian >= stretch') {
         # On stretch+, default to MariaDB 10.1
         if $package == 'undefined' {
-            $package = 'wmf-mariadb101'
+            $installed_package = 'wmf-mariadb101'
+        } else {
+            $installed_package = $package
         }
-        case $package {
+        case $installed_package {
             'wmf-mysql57', 'wmf-mysql80': { $vendor = 'mysql' }
             default:                      { $vendor = 'mariadb' }
         }
@@ -80,7 +82,9 @@ class mariadb::service (
     } else {
         # Before stretch, default to MariaDB 10.0
         if $package == 'undefined' {
-            $package = 'wmf-mariadb10'
+            $installed_package = 'wmf-mariadb10'
+        } else {
+            $installed_package = $package
         }
 
         file { "${initd_basedir}/service":
@@ -89,7 +93,7 @@ class mariadb::service (
             group   => 'root',
             mode    => '0755',
             content => template('mariadb/mariadb.server.erb'),
-            require => Package[$package],
+            require => Package[$installed_package],
         }
 
         file { '/etc/init.d/mysql':
