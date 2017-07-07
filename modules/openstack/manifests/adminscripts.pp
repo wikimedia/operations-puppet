@@ -103,6 +103,14 @@ class openstack::adminscripts(
         group  => 'root',
     }
 
+    file { '/usr/local/sbin/wikitech-grep':
+        ensure => present,
+        source => 'puppet:///modules/openstack/utils/wikitech-grep.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/root/.ssh/compute-hosts-key':
         content => secret('ssh/nova/nova.key'),
         owner   => 'nova',
