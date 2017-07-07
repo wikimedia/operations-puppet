@@ -1,7 +1,0 @@
-[Unit]
-Description=prometheus-blackbox-exporter
-
-[Service]
-User=prometheus
-ExecStart=/usr/bin/blackbox_exporter -config.file /etc/prometheus-blackbox_exporter.yml
-Restart=on-failure
