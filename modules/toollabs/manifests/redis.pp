@@ -49,6 +49,7 @@ class toollabs::redis (
                 'KEYS'      => '""',
                 'MONITOR'   => '""',
                 'RANDOMKEY' => '""',
+                'SCAN'      => '""',
                 'SHUTDOWN'  => '""',
                 'SLAVEOF'   => '""',
             },
