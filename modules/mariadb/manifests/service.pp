@@ -22,12 +22,6 @@ class mariadb::service (
     $override = false,
     ) {
 
-    if $basedir == 'undefined' {
-        $initd_basedir = "/opt/${package}"
-    } else {
-        $initd_basedir = $basedir
-    }
-
     # stretch and later use systemd, others use init.d
     if os_version('debian >= stretch') {
         # On stretch+, default to MariaDB 10.1
@@ -85,6 +79,12 @@ class mariadb::service (
             $installed_package = 'wmf-mariadb10'
         } else {
             $installed_package = $package
+        }
+
+        if $basedir == 'undefined' {
+            $initd_basedir = "/opt/${installed_package}"
+        } else {
+            $initd_basedir = $basedir
         }
 
         file { "${initd_basedir}/service":
