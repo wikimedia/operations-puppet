@@ -268,7 +268,7 @@
     {
       "collapse": false,
       "editable": true,
-      "height": "25px",
+      "height": "100px",
       "panels": [
         {
           "cacheTimeout": null,
