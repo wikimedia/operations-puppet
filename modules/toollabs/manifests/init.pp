@@ -163,7 +163,7 @@ class toollabs (
         mode   => '0440',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning.sh',
+        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
     }
 
     file { '/usr/local/bin/log-command-invocation':
