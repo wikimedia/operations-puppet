@@ -61,7 +61,7 @@ groups:
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
-              ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
+              bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
@@ -200,7 +200,7 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva]
+              ovasileva]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -241,7 +241,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
+              piccardi, fdans, eevans, anomie, demon, musikanimal, joewalsh,
               kaldari, goransm, ema, dworley]
   analytics-admins:
     gid: 732
@@ -411,7 +411,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
-              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
+              bsitzmann, mholloway-shell, kartik, halfak, smalyshev, hoo,
               ssastry, cscott, arlolra, jdlrobson, maxsem]
     privileges: []
 
@@ -541,7 +541,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [awight, halfak, ladsgroup]
+    members: [awight, halfak]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *']
   sectools-roots:
@@ -989,13 +989,11 @@ users:
     uid: 2008
     email: ttijhof@wikimedia.org
   ladsgroup:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
-    ssh_keys:
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4VTfdeTSboPh/af2zT6ov13A7kSygXEspRgq3/d2BWcNFvwIIpgtpCnHzA6YPvuhrjksw34jk3OvuuQoTyWYfuwql8Wu8O9f32WD4dhrKhB8Rchxj6rrncBrGS5k0HeLr+HMrknVSSXGH60GAFNRGYLCGA+zBXLAja+xROTipIRHOF0SLlsfpY04HTrEtKcKdj8n9BnGpbT7vFp+AmXeSHg9DwRn6yvem3x1ghBFdfg+XwmIqsV4wR2b7GLX2Y6+ei53657v2VxVsORdfn4yV7FcjeVYnwNxMOVMfYcFCz+1LU9ROPDw5sCqyDPMtyQPxExiprKNT9UHkUj7aqE61o4AF1vSb9AEdUpjGgiMl+Dr8Sd+T2sNOq5uFxtWSfuNqgGHY+nOYPmSHsxthwXc7CH7x/eBDefUZwTdwX8Vf/FYOAyiviknCzwLoAbkQwRjOwFZVqJMwRwRyMToKODTTgOM0s3g/5P8n5AYwTLt1I6dLeC3nju3lywyeWb6DkFOB48mg561AU1soTnSKffse7AtJ5Ye3GFEBKxBCRJUpc7EVesOhjTdcmBWYeSSmwxHCjiCact4tyk8ZiLuRqd3EZ0KFT/6W5d4csrJUwBDNWo+7M69gVIMn/zDCy3ZViGMsqPFfXSrpKw8k0WtPBTKdHFPJ0KoLERctzkrNkfBTVw== Ladsgroup @ prod
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCY5EyIRrtuxDgh8SOkTQl8tYAu5ZOGMO0MA9RiqMb6za8ossDmKCwD5JKwooYmT8yFA5JnvyOC0adsCCA+enylrX6r6FK0ur+dekfCGF/dsyxSJU9aw6WwVr2BThrfPjzbMR1IuN4I0t134fYE0VUvibod1kGoxSGYdWvqEFf+v7b2MqWtU+xASBFEbrx2knqVBjyy6+O8sUikfKX+vyCSxiQa2GE66LM8SuX+0JnhlDNuXleQzdFpJ9novw/+/1KqOJOg3i8/Jb1/AEMf/eChombWdjNccGtPueRyJAXEl2tCuLvt9Vf7PBZaoxhAV0Bo0GcwRVBwvsyaNDuVabLJ
+    ssh_keys: []
     uid: 3182
     email: amir.tafreshi_ext@wikimedia.de
   manybubbles:
