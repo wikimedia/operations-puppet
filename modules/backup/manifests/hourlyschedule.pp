@@ -7,7 +7,7 @@ define backup::hourlyschedule($pool) {
               'at'    => "${name} at 02:05",
             },
             { 'level' => 'Incremental',
-              'at'    => "${name} hourly",
+              'at'    => 'hourly',
             },
                 ],
         # lint:endignore
