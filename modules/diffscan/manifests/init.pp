@@ -18,9 +18,11 @@
 #
 class diffscan(
     $ipranges={},
-    $emailto='root@wikimedia.org',
-    $groupname='diffscan'
+    $emailto='',
+    $groupname='diffscan-default'
 ) {
+    require_package('nmap')
+
     file { '/srv/diffscan':
         ensure => 'directory',
         owner  => 'root',
@@ -44,7 +46,7 @@ class diffscan(
     cron { "diffscan-${groupname}":
         ensure  => present,
         user    => 'root',  # nmap needs root privileges
-        command => "/srv/diffscan/diffscan.py targets-${groupname}.txt ${emailto} ${groupname}",
+        command => "cd /srv/diffscan/; /srv/diffscan/diffscan.py /srv/diffscan/targets-${groupname}.txt ${emailto} ${groupname}",
         hour    => '0',
     }
 
