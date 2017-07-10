@@ -6,9 +6,6 @@ role::deployment::repo_config:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection
     service_name: ocg
     checkout_submodules: true
-  rcstream/rcstream:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/rcstream
-    service_name: rcstream
   fluoride/fluoride:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride
   statsv/statsv:
