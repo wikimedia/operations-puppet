@@ -7,23 +7,29 @@ define mariadb::instance(
     $socket  = 'undefined',
 ) {
     if $datadir == 'undefined' {
-        $datadir = "/srv/sqldata.${title}"
+        $datadir_instance = "/srv/sqldata.${title}"
+    } else {
+        $datadir_instance = $datadir
     }
     if $tmpdir == 'undefined' {
-        $tmpdir  = "/srv/tmp.${title}"
+        $tmpdir_instance = "/srv/tmp.${title}"
+    } else {
+        $tmpdir_instance = $tmpdir
     }
     if $tmpdir == 'undefined' {
-        $socket  = "/run/mysqld/mysqld.${title}.sock"
+        $socket_instance = "/run/mysqld/mysqld.${title}.sock"
+    } else {
+        $socket_instance = $socket
     }
 
-    file { $datadir:
+    file { $datadir_instance:
         ensure => directory,
         owner  => 'mysql',
         group  => 'mysql',
         mode   => '0755',
     }
 
-    file { $tmpdir:
+    file { $tmpdir_instance:
         ensure => directory,
         owner  => 'mysql',
         group  => 'mysql',
