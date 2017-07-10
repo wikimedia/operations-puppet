@@ -206,11 +206,6 @@ ganglia_clusters:
     id: 43
     sites:
       eqiad: []
-  rcstream:
-    description: "RCStream cluster"
-    id: 44
-    sites:
-      eqiad: []
   analytics_kafka:
     description: "Analytics Kafka cluster"
     id: 45
