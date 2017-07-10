@@ -4,11 +4,15 @@ debdeploy::grains:
 
 puppetmaster::hiera_config: labtest
 
-labspuppetbackend::mysql_host: labtestcontrol2001.wikimedia.org
-labspuppetbackend::mysql_db:   labspuppet
-labspuppetbackend::mysql_username: labspuppet
-labspuppetbackend::statsd_host: labmon1001.eqiad.wmnet
-labspuppetbackend::statsd_prefix: labtest.puppetbackend
+profile::pupetmaster::labsencapi::mysql_host: labtestcontrol2001.wikimedia.org
+profile::pupetmaster::labsencapi::mysql_db:   labspuppet
+profile::pupetmaster::labsencapi::mysql_username: labspuppet
+profile::pupetmaster::labsencapi::statsd_host: labmon1001.eqiad.wmnet
+profile::pupetmaster::labsencapi::statsd_prefix: labtest.puppetbackend
 role::labs::puppetmaster::use_enc: true
 
 puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
+
+puppetmaster::servers:
+  labtestpuppetmaster2001.wikimedia.org
+    - { worker: labtestpuppetmaster2001.wikimedia.org, loadfactor: 10 }
