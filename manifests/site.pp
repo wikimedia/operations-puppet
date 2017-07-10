@@ -1923,11 +1923,10 @@ node 'radon.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Live Recent Changes WebSocket stream
+# Live Recent Changes WebSocket stream # Decommed: T156919
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role(rcstream)
-    include ::base::firewall
+    role(spare::system)
 }
 
 
