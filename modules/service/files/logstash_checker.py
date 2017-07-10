@@ -171,6 +171,14 @@ class CheckService(object):
                                     "type": "phrase"
                                 }
                             }
+                        },
+                        {
+                            "match": {
+                                "message": {
+                                    "query": "LuaSandbox/Engine.php",
+                                    "type": "phrase"
+                                }
+                            }
                         }
                     ]
                 }
