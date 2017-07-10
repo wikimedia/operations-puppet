@@ -100,11 +100,6 @@ cache::app_directors:
     backends:
       eqiad: 'puppetmaster1001.eqiad.wmnet'
       codfw: 'puppetmaster2001.codfw.wmnet'
-  rcstream:
-    be_opts:
-      max_connections: 1000
-    backends:
-      eqiad: 'rcs1001.eqiad.wmnet'
   ruthenium:
     be_opts:
       port: 8001
@@ -253,9 +248,6 @@ cache::req_handling:
       '^/v2/stream/.+':
         director: 'eventstreams'
         caching: 'pipe'
-      '^/(socket\.io|rc(stream_status)?)(/|$)':
-        director: 'rcstream'
-        caching: 'websockets'
   ticket.wikimedia.org:
     director: 'mendelevium'
     caching: 'pass'
