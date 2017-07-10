@@ -174,10 +174,6 @@ monitoring::groups:
   parsoid_codfw:
     description: codfw parsoid servers
 
-# RCStream
-  rcstream_eqiad:
-    description: eqiad rcstream
-
 # RedisDB
   redis_eqiad:
     description: eqiad Redis
