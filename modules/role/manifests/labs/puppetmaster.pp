@@ -1,4 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
+# This is the old puppetmaster class running on labcontrol1001.  It's being phased out
+#  in favor of labs:puppetmasterfrontend and labs:puppetmasterbackend
 
 class role::labs::puppetmaster(
     $use_enc = true,

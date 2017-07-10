@@ -1040,9 +1040,7 @@ node 'labtestcontrol2003.wikimedia.org' {
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
-    include ::standard
-    include ::base::firewall
-    role(labs::puppetmaster)
+    role(labs::puppetmasterfrontend)
 }
 
 node 'labtestservices2001.wikimedia.org' {
