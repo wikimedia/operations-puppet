@@ -32,6 +32,12 @@ class role::mariadb::dbstore_multiinstance {
         binlog_format => 'ROW',
     }
 
+    file {'/etc/mysql/mysqld.conf.d':
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+    }
     mariadb::instance {'s1':
         port => 3311,
     }
