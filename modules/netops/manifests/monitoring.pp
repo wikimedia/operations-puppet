@@ -92,4 +92,12 @@ class netops::monitoring {
         'ripe-atlas-ulsfo' => { ipv4 => '198.35.26.244',  ipv6 => '2620:0:863:201:198:35:26:244',  },
     }
     create_resources(netops::check, $atlas)
+
+    # RIPE Atlas Anchor measurements -- implicit dependency on the above host checks
+    $atlas_measurements = {
+        'eqiad' => { ipv4 => '1790945', ipv6 => '1790947', },
+        'codfw' => { ipv4 => '1791210', ipv6 => '1791212', },
+        'ulsfo' => { ipv4 => '1791307', ipv6 => '1791309', },
+    }
+    create_resources(netops::ripeatlas, $atlas_measurements)
 }
