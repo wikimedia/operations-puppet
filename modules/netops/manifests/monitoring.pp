@@ -84,4 +84,12 @@ class netops::monitoring {
         'asw-ulsfo'     => { ipv4 => '10.128.128.6', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
     }
     create_resources(netops::check, $switches, $switches_defaults)
+
+    # RIPE Atlases -- no SNMP for these
+    $atlas = {
+        'ripe-atlas-eqiad' => { ipv4 => '208.80.155.69',  ipv6 => '2620:0:861:202:208:80:155:69',  },
+        'ripe-atlas-codfw' => { ipv4 => '208.80.152.244', ipv6 => '2620:0:860:201:208:80:152:244', },
+        'ripe-atlas-ulsfo' => { ipv4 => '198.35.26.244',  ipv6 => '2620:0:863:201:198:35:26:244',  },
+    }
+    create_resources(netops::check, $atlas)
 }
