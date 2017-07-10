@@ -3,10 +3,6 @@
 class icinga::monitor::ripeatlas {
 
     # eqiad
-    @monitoring::host { 'ripe-atlas-eqiad':
-        ip_address => '208.80.155.69',
-    }
-
     monitoring::service { 'atlas-ping-eqiad-ipv4':
         description    => 'IPv4 ping to eqiad',
         check_command  => 'check_ripe_atlas!1790945!50!19',
@@ -25,10 +21,6 @@ class icinga::monitor::ripeatlas {
     }
 
     # codfw
-    @monitoring::host { 'ripe-atlas-codfw':
-        ip_address => '208.80.152.244',
-    }
-
     monitoring::service { 'atlas-ping-codfw-ipv4':
         description    => 'IPv4 ping to codfw',
         check_command  => 'check_ripe_atlas!1791210!50!19',
@@ -48,10 +40,6 @@ class icinga::monitor::ripeatlas {
     }
 
     # ulsfo
-    @monitoring::host { 'ripe-atlas-ulsfo':
-        ip_address => '198.35.26.244',
-    }
-
     monitoring::service { 'atlas-ping-ulsfo-ipv4':
         description    => 'IPv4 ping to ulsfo',
         check_command  => 'check_ripe_atlas!1791307!50!19',
