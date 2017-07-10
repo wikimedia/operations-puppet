@@ -683,6 +683,11 @@ node 'dbstore2002.codfw.wmnet' {
     include ::base::firewall
 }
 
+# Temporary test multiinstance role host
+node 'db1096.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
+
 # Proxies for misc databases
 node /^dbproxy100(1|6)\.eqiad\.wmnet$/ {
     class { '::role::mariadb::proxy::master':
