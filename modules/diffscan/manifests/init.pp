@@ -18,8 +18,8 @@
 #
 class diffscan(
     $ipranges={},
-    $emailto='root@wikimedia.org',
-    $groupname='diffscan'
+    $emailto='',
+    $groupname='diffscan-default'
 ) {
     file { '/srv/diffscan':
         ensure => 'directory',
@@ -34,17 +34,21 @@ class diffscan(
         mode    => '0444',
         content => template('diffscan/targets.txt.erb'),
     }
-    file { '/srv/diffscan/diffscan.py':
+    package { 'nmap':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0554',
-        source => 'puppet:///modules/diffscan/diffscanpy',
+    }
+    file { '/srv/diffscan/diffscan.py':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0554',
+        source  => 'puppet:///modules/diffscan/diffscanpy',
+        require => Package['nmap'],
     }
     cron { "diffscan-${groupname}":
         ensure  => present,
         user    => 'root',  # nmap needs root privileges
-        command => "/srv/diffscan/diffscan.py targets-${groupname}.txt ${emailto} ${groupname}",
+        command => "cd /srv/diffscan/; /srv/diffscan/diffscan.py /srv/diffscan/targets-${groupname}.txt ${emailto} ${groupname}",
         hour    => '0',
     }
 
