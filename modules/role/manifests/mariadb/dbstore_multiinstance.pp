@@ -18,7 +18,7 @@ class role::mariadb::dbstore_multiinstance {
 
     class {'mariadb::packages_wmf': }
     class {'mariadb::service':
-        multiinstance => true,
+        # multiinstance => true, # for now, we will not do anything special
         # for now we will keep things simple, we probably should have a
         # higher-level interface with templates
         override      => "[Service]\nLimitNOFILE=200000",
