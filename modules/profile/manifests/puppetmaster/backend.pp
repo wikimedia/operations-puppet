@@ -1,8 +1,8 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class profile::puppetmaster::backend(
-    $config = {},
-    $secure_private = true,
+    $config = hiera('profile::puppetmater::backed::config', {}),
+    $secure_private = hiera('profile::puppetmater::backed::config', true),
 ) {
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
