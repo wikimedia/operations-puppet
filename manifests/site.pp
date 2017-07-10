@@ -2208,7 +2208,7 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     include ::standard
 }
 
-node /^labvirt101[0-4].eqiad.wmnet/ {
+node /^labvirt101[0-8].eqiad.wmnet/ {
     role(labs::openstack::nova::compute)
     include ::standard
 }
