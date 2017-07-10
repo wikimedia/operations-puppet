@@ -245,9 +245,5 @@ monitoring::groups:
     description: Management Interfaces
 
 # Network
-  routers:
-    description: IP routers
-  switches:
-    description: IP switches
-  storage:
-    description: Storage equipment
+  network:
+    description: Networking equipment (routers/switches/etc.)

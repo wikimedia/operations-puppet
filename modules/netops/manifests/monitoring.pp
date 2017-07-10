@@ -14,7 +14,6 @@ class netops::monitoring {
     # core/mgmt routers
     $routers_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
-        group          => 'routers',
         alarms         => true,
         interfaces     => true,
         os             => 'Junos',
@@ -58,7 +57,6 @@ class netops::monitoring {
     # access/management/peering switches
     $switches_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
-        group          => 'switches',
         alarms         => true,
         os             => 'Junos',
     }

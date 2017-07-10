@@ -40,7 +40,7 @@ define netops::check(
     $ipv4,
     $ipv6=undef,
     $snmp_community=undef,
-    $group='routers',
+    $group='network',
     $alarms=false,
     $bgp=false,
     $interfaces=false,
