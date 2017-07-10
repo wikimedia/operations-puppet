@@ -14,7 +14,7 @@ Facter.add(:has_ipmi) do
   end
 end
 
-Facter.add(:ipmi_lan, :timeout => 5) do
+Facter.add(:ipmi_lan) do
   confine :has_ipmi => true
   confine do
     File.exists?('/usr/sbin/bmc-config') || File.exists?('/usr/bin/ipmitool')
