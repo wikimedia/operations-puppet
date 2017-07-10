@@ -57,8 +57,6 @@ class role::eventlogging::analytics::mysql {
         # Valid eventlogging analytics events are all in this one topic.
         'eventlogging-valid-mixed',
         # Various mediawiki events (via EventBus)
-        'eqiad.mediawiki.revision-create',
-        'codfw.mediawiki.revision-create',
         'eqiad.mediawiki.page-create',
         'codfw.mediawiki.page-create',
         'eqiad.mediawiki.page-move',
