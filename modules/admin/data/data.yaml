@@ -526,6 +526,8 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
+               'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
+               'ALL = (recommendation_api) NOPASSWD: ALL'
                'ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
@@ -603,6 +605,12 @@ groups:
     members: [bd808]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p']
+  recommendation-admin:
+    description: Group of recommendation-api admins
+    gid: 794
+    members: [gwicke, ppchelko, eevans, mobrovac]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
+                 'ALL = (recommendation_api) NOPASSWD: ALL']
 
 users:
   rush:
