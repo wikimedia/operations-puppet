@@ -56,6 +56,11 @@ class striker::uwsgi(
             wsgi         => 'striker.wsgi',
             vacuum       => true,
             http-socket  => "127.0.0.1:${port}",
+            # T170189: make sure Python has a sane default encoding
+            env          => [
+                'LANG=C.UTF-8',
+                'PYTHONENCODING=utf-8',
+            ],
 
             logger       => [
                 "local file:${log_dir}/main.log",
