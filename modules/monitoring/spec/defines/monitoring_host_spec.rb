@@ -33,7 +33,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should contain_nagios_host('ahost_mgmt').with(
+        should contain_nagios_host('ahost.mgmt.blabla.wmnet').with(
           'host_name'  => 'ahost.mgmt.blabla.wmnet',
           'address'    => '2.2.2.2'
         )
@@ -55,7 +55,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should contain_nagios_host('ahost_mgmt').with(
+        should contain_nagios_host('ahost.mgmt.blabla.wmnet').with(
           'host_name'  => 'ahost.mgmt.blabla.wmnet',
           'address'    => '2.2.2.2'
         )
@@ -137,7 +137,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should contain_nagios_host('icingahost_mgmt').with(
+        should contain_nagios_host('icingahost.mgmt.blabla.wmnet').with(
           'host_name'  => 'icingahost.mgmt.blabla.wmnet',
           'address'    => '2.2.2.2'
         )
