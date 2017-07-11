@@ -33,10 +33,16 @@ class statistics::wmde {
     $wmde_secrets = hiera('wmde_secrets')
 
     require_package(
-        'openjdk-7-jdk',
         'php5',
         'php5-cli',
     )
+
+    if os_version('debian >= stretch') {
+        require_package('openjdk-8-jdk')
+    }
+    else {
+        require_package('openjdk-7-jdk')
+    }
 
     include ::passwords::mysql::research
     # This file will render at
