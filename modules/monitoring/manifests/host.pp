@@ -120,8 +120,16 @@ define monitoring::host (
         create_resources($rtype, $mgmt_host)
         monitoring::service { "dns_${title}.mgmt.${::site}.wmnet":
             description    => "DNS ${title}.mgmt.${::site}.wmnet",
-            host           =>  "${title}.mgmt.${::site}.wmnet",
+            host           => "${title}.mgmt.${::site}.wmnet",
             check_command  => "check_fqdn!${facts['ipmi_lan']['ipaddress']}",
+            group          => 'mgmt',
+            check_interval => 60,
+            retry_interval => 60,
+        }
+        monitoring::service { "ssh_${title}.mgmt.${::site}.wmnet":
+            description    => "SSH ${title}.mgmt.${::site}.wmnet",
+            host           => "${title}.mgmt.${::site}.wmnet",
+            check_command  => 'check_ssh',
             group          => 'mgmt',
             check_interval => 60,
             retry_interval => 60,
