@@ -4,7 +4,7 @@
 
 class mariadb::packages_wmf(
     $mariadb10 = true,        # deprecated parameter, do not use
-    $package   = 'wmf-mariadb10',
+    $package   = 'undefined',
 #    $version   = None,          # reserved for future usage
     ) {
 
@@ -36,25 +36,36 @@ class mariadb::packages_wmf(
         }
     }
     else {
-        case $package {
+        # if not defined, default to 10.1 on stretch, 10.0 elsewhere
+        if $package == 'undefined' {
+            if os_version('debian >= stretch') {
+                $mariadb_package = 'wmf-mariadb101'
+            } else {
+                $mariadb_package = 'wmf-mariadb10'
+            }
+        } else {
+            $mariadb_package = $package
+        }
+
+        case $mariadb_package {
             'wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101', 'wmf-mysql57' :
             {
-                package { $package:
+                package { $mariadb_package:
                     ensure => present,
                 }
-
-                # if you have installed the wmf mariadb package,
-                # create a custom, safer mysqld_safe
-                # New packages include it, but old packages have
-                # to be overwritten still - do not retire at least
-                # until version > 10.0.27
-                class { 'mariadb::mysqld_safe':
-                    package => $package,
-                }
+                if !os_version('debian >= stretch') {
+                    # if you have installed the wmf mariadb package,
+                    # create a custom, safer mysqld_safe
+                    # New packages include it, but old packages have
+                    # to be overwritten still - do not retire at least
+                    # until version > 10.0.27
+                    class { 'mariadb::mysqld_safe':
+                        package => $mariadb_package,
+                    }
             }
             default :
             {
-                fail("Invalid package version \"${package}\". \
+                fail("Invalid package version \"${mariadb_package}\". \
 The only allowed versions are: wmf-mariadb10, wmf-mariadb101 or wmf-mysql57")
             }
         }
