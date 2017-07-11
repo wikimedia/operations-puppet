@@ -18,10 +18,11 @@ class package_builder(
     }
 
     if os_version('ubuntu == trusty || debian == jessie') {
-        require_package('php5-dev')
-    }
-    if os_version('debian >= stretch') {
-        require_package('php-dev')
+        $php_dev='php5-dev'
+        $dh_php='dh-php5'
+    } else {
+        $php_dev='php-dev'
+        $dh_php='dh-php'
     }
 
     require_package([
@@ -35,7 +36,6 @@ class package_builder(
         'debian-keyring',
         'dh-make',
         'dh-autoreconf',
-        'dh-php5',
         'dh-golang',
         'openstack-pkg-tools',
         'git-buildpackage',
@@ -56,6 +56,8 @@ class package_builder(
         'pkg-kde-tools',
         'subversion',
         'sphinx-common',
+        $php_dev,
+        $dh_php,
     ])
 
     if $::operatingsystem == 'Ubuntu' {
