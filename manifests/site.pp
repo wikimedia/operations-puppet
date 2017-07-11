@@ -1773,8 +1773,8 @@ node 'netmon1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# network monitoring tool server - replacement server (T125020)
-node 'netmon1002.wikimedia.org' {
+# network monitoring tool server - replacement servers (T125020, T166180)
+node /^netmon(1002|2001)\.wikimedia\.org$/ {
     # TODO: role(librenms, servermon::wmf)
     role(network::monitor, librenms, rancid, smokeping)
 
