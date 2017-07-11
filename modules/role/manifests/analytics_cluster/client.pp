@@ -24,7 +24,6 @@ class role::analytics_cluster::client {
 
     # These packages are useful, install them.
     require_package(
-        'ipython-notebook',
         'kafkacat',
         'heirloom-mailx',
         'python-docopt',
@@ -32,6 +31,13 @@ class role::analytics_cluster::client {
         # Really nice pure python hdfs client
         'snakebite',
     )
+
+    if os_version('debian >= stretch') {
+        require_package('jupyter-notebook')
+    }
+    else {
+        require_package('ipython-notebook')
+    }
 
     # include maven to build jars for Hadoop.
     include ::maven
