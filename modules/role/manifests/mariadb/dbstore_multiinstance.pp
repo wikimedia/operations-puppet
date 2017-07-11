@@ -59,4 +59,5 @@ class role::mariadb::dbstore_multiinstance {
     mariadb::instance {'s7':
         port => 3317,
     }
+
 }
