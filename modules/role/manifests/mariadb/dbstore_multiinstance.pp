@@ -39,24 +39,25 @@ class role::mariadb::dbstore_multiinstance {
         mode   => '0755',
     }
     mariadb::instance {'s1':
-        port => 3311,
+        port   => 3311,
     }
     mariadb::instance {'s2':
-        port => 3312,
+        port   => 3312,
     }
     mariadb::instance {'s3':
-        port => 3313,
+        port   => 3313,
     }
     mariadb::instance {'s4':
-        port => 3314,
+        port   => 3314,
     }
     mariadb::instance {'s5':
-        port => 3315,
+        port   => 3315,
     }
     mariadb::instance {'s6':
-        port => 3316,
+        port   => 3316,
     }
     mariadb::instance {'s7':
-        port => 3317,
+        port   => 3317,
     }
+
 }

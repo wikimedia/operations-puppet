@@ -42,4 +42,10 @@ define mariadb::instance(
         mode    => '0644',
         content => template('mariadb/instance.cnf.erb'),
     }
+
+    # TODO: Allow non-defaults replication monitoring, such as
+    # allowing it to be critical
+    mariadb::monitor_replication{"${title}":
+        socket => $socket_instance,
+    }
 }

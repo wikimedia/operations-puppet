@@ -46,5 +46,6 @@ class role::mariadb::dbstore(
         lag_crit      => $lag_crit,
         warn_stopped  => $warn_stopped,
         socket        => '/tmp/mysql.sock',
+        multisource   => true, 
     }
 }
