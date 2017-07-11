@@ -82,6 +82,9 @@ discovery::services:
   trendingedits:
     lvs: trendingedits
     active_active: true
+  "recommendation-api":
+    lvs: "recommendation-api"
+    active_active: true
   wdqs:
     lvs: wdqs
     active_active: true
