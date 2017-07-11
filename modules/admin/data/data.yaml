@@ -603,6 +603,12 @@ groups:
     members: [bd808]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p']
+  recommendation-admin:
+    description: Group of recommendation-api admins
+    gid: 794
+    members: [gwicke, ppchelko, eevans, mobrovac]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation-api *',
+                 'ALL = (recommendation-api) NOPASSWD: ALL']
 
 users:
   rush:
