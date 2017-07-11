@@ -3,5 +3,6 @@
     shard: multi
   targets:
   - dbstore2001:9104
-  - dbstore2002:9104
-
+  - dbstore2002:13311
+  - dbstore2002:13312
+  - dbstore2002:13320
