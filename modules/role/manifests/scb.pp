@@ -5,6 +5,8 @@ class role::scb {
     include ::profile::ores::web
     include ::profile::nutcracker
 
+    include ::profile::recommendation_api
+
     include role::mobileapps
     include role::mathoid
     include role::graphoid

@@ -1,18 +1,19 @@
 cluster: scb
 admin::groups:
-- sc-admins
-- citoid-admin
-- citoid-users
-- cxserver-admin
-- apertium-admins
-- graphoid-admin
-- mathoid-admin
-- zotero-admin
-- mobileapps-admin
-- changeprop-admin
-- ores-admin
-- pdfrender-admin
-- trendingedits-admin
+  - sc-admins
+  - citoid-admin
+  - citoid-users
+  - cxserver-admin
+  - apertium-admins
+  - graphoid-admin
+  - mathoid-admin
+  - zotero-admin
+  - mobileapps-admin
+  - changeprop-admin
+  - ores-admin
+  - pdfrender-admin
+  - trendingedits-admin
+  - recommendation-admin
 role::lvs::realserver::pools:
   ores: {}
   apertium: {}
@@ -24,6 +25,7 @@ role::lvs::realserver::pools:
   eventstreams: {}
   pdfrender: {}
   trendingedits: {}
+  recommendation: {}
 graphoid::allowed_domains:
   https:
     - mediawiki.org
@@ -84,3 +86,6 @@ role::eventstreams::rdkafka_config:
 changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
+
+# Recommendation API
+profile::recommendation_api::wdqs_uri: "http://wdqs.discovery.wmnet"

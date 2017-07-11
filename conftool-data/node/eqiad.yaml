@@ -160,10 +160,10 @@ eqiad:
     sca1003.eqiad.wmnet: [zotero]
     sca1004.eqiad.wmnet: [zotero]
   scb:
-    scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
-    scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
-    scb1003.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
-    scb1004.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits]
+    scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, recommendation]
+    scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, recommendation]
+    scb1003.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, recommendation]
+    scb1004.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, recommendation]
   dns:
     chromium.wikimedia.org: [pdns_recursor]
     hydrogen.wikimedia.org: [pdns_recursor]
