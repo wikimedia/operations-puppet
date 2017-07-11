@@ -85,6 +85,7 @@ class striker::uwsgi(
             log-format   => '%(addr) - %(user) [%(ltime)] "%(method) %(uri) (proto)" %(status) %(size) "%(referer)" "%(uagent)" %(micros)',
         },
         healthcheck_url => '/',
+        icinga_check    => false,
         repo            => 'striker/deploy',
         sudo_rules      => [
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-striker restart',

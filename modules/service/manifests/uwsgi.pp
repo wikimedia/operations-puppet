@@ -37,6 +37,9 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+# [*icinga_check*]
+#   Whether to include an Icinga check for monitoring the service. Default: true
+#
 # [*deployment*]
 #   What deployment system to use for deploying this service.
 #   Options: scap3, fabric
@@ -81,6 +84,7 @@ define service::uwsgi(
     $has_spec               = false,
     $repo                   = "${title}/deploy",
     $firejail               = true,
+    $icinga_check           = true,
     $local_logging          = true,
     $deployment_user        = 'deploy-service',
     $deployment_manage_user = true,
@@ -182,27 +186,29 @@ define service::uwsgi(
         }
     }
 
-    if $has_spec {
-        # Advanced monitoring
-        include service::monitoring
+    if $icinga_check {
+        if $has_spec {
+            # Advanced monitoring
+            include service::monitoring
 
-        $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
-        nrpe::monitor_service{ "endpoints_${title}":
-            description   => "${title} endpoints health",
-            nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
-            contact_group => $contact_groups,
-        }
-        # we also support smart-releases
-        # TODO: Enable has_autorestart
-        service::deployment_script { $name:
-            monitor_url     => $monitor_url,
-        }
-    } else {
-        # Basic monitoring
-        monitoring::service { $title:
-            description   => $title,
-            check_command => "check_http_port_url!${port}!${healthcheck_url}",
-            contact_group => $contact_groups,
+            $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
+            nrpe::monitor_service{ "endpoints_${title}":
+                description   => "${title} endpoints health",
+                nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
+                contact_group => $contact_groups,
+            }
+            # we also support smart-releases
+            # TODO: Enable has_autorestart
+            service::deployment_script { $name:
+                monitor_url     => $monitor_url,
+            }
+        } else {
+            # Basic monitoring
+            monitoring::service { $title:
+                description   => $title,
+                check_command => "check_http_port_url!${port}!${healthcheck_url}",
+                contact_group => $contact_groups,
+            }
         }
     }
 }
