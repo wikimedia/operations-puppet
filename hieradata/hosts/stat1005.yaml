@@ -1,0 +1,9 @@
+# TODO: remove this file once role::statistics::private is applied to stat1005.
+admin::groups:
+  - analytics-users
+  - analytics-privatedata-users
+  - analytics-admins
+debdeploy::grains:
+  debdeploy-stat:
+    value: standard
+cluster: analytics
