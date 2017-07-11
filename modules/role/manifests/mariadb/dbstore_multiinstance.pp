@@ -23,8 +23,14 @@ class role::mariadb::dbstore_multiinstance {
         override      => "[Service]\nLimitNOFILE=200000",
     }
 
+    if os_version('debian >= stretch') {
+        $basedir = '/opt/wmf-mariadb101'
+    } else {
+        $basedir = '/opt/wmf-mariadb10'
+    }    
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
+        basedir       => $basedir,
         config        => 'role/mariadb/mysqld_config/dbstore3.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',
