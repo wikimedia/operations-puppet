@@ -23,3 +23,9 @@ GRANT USAGE
 
 GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, LOCK TABLES, SELECT, UPDATE
     ON `log`.* TO 'eventlog'@'10.64.32.158';
+
+
+-- eventlog script responsible to sanitize/delete sensitive data over time
+
+GRANT ALTER, SELECT, UPDATE
+    ON `log`.* TO 'eventlogcleaner'@'localhost' IDENTIFIED VIA unix_socket;

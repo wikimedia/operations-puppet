@@ -210,6 +210,21 @@ class role::mariadb::analytics::custom_repl_slave {
     # Only 'replicate' this many rows at a time.
     $batch_size  = 1000
 
+    group { 'eventlog':
+        ensure => 'present',
+        system => true,
+    }
+
+    user { 'eventlogcleaner':
+        gid        => 'eventlog',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        comment    => 'EventLogging cleaner user',
+        system     => true,
+        managehome => false,
+        require    => Group['eventlog'],
+    }
+
     file { '/usr/local/bin/eventlogging_sync.sh':
         ensure => present,
         owner  => 'root',
