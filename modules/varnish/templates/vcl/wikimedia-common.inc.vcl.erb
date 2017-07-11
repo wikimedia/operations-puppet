@@ -336,22 +336,12 @@ sub wm_common_recv_early {
 }
 
 sub wm_common_hit_grace {
-	if (obj.ttl < 0s) {
-		# TTL expired
-		if (std.healthy(req.backend_hint) && obj.grace > <%= @vcl_config.fetch("grace_healthy", "5m") %>) {
-			# Backend is healthy. Limit age to max vcl_config['grace_healthy']
-			if (obj.ttl + <%= @vcl_config.fetch("grace_healthy", "5m") %> <= 0s) {
-				# No candidate for grace. Fetch a fresh object.
-				return (miss);
-			}
-		} else {
-			# Backend is sick, or object grace was < grace_healthy, so use full grace.
-			# We set beresp.grace in wm_common_backend_response.
-			if (obj.ttl + obj.grace <= 0s) {
-				# No candidate for grace.
-				return (miss);
-			}
-		}
+	// Grace is managed during backend_response, and we don't have health
+	// info for the apps that matter the most anyways
+	if (obj.ttl + obj.grace > 0s) {
+		return (deliver);
+	} else {
+		return (miss);
 	}
 }
 
@@ -393,7 +383,40 @@ sub wm_common_backend_response {
 			set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
 		}
 
-		set beresp.grace = <%= @vcl_config.fetch("grace_sick", "60m") %>;
+		// Set grace-within-ttl at a randomized 8-12% of the TTL value
+		// for those with 3750s+ TTLs.
+		// This results in a minimum grace of 3750s * .08 = 300s (5m),
+		// and a maximum grace of 86400s * .12 = 10368s (~2.9h).
+		if (beresp.ttl >= 3750s) {
+			set beresp.grace = beresp.ttl * std.random(0.08, 0.12);
+		}
+
+		// Our randomized grace-within-TTL floor for objects with
+		// <3750s but >=600s is 5m +/- 5% (15s), which can be up to
+		// ~half the TTL in the shortest case:
+		elsif (beresp.ttl >= 600s) {
+			set beresp.grace = 300s * std.random(0.95, 1.05);
+		}
+
+		// In the 599-300 range, scale the above ~5 minutes
+		// grace-within-ttl down to zero with no randomization
+		elsif (beresp.ttl >= 300s) {
+			set beresp.grace = beresp.ttl - 300s;
+		}
+
+		// Below 300s, no grace-within-TTL, to avoid recursing down by
+		// halves all the way to an accurate TTL rollover from the
+		// application.
+		else {
+			set beresp.grace = 0s;
+		}
+
+		// Move the above grace value within the TTL:
+		set beresp.ttl = beresp.ttl - beresp.grace;
+
+		// Add a standard 5 minute window *after* the TTL, to catch
+		// cases where the TTL was counting down accurately:
+		set beresp.grace = beresp.grace + 5m;
 	}
 
 	// Compress compressible things if the backend didn't already
