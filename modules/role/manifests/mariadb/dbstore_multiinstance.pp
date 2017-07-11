@@ -5,7 +5,12 @@ class role::mariadb::dbstore_multiinstance {
 
     include ::standard
     include ::base::firewall
-    #TODO: Custom firewall rules
+    #FIXME:
+    ferm::service { 'dbstore_multiinstance':
+        proto  => 'tcp',
+        port   => '3311:3317',
+        srange => '$PRODUCTION_NETWORKS',
+    }
 
     #TODO: define one group per shard
     class {'mariadb::groups':
