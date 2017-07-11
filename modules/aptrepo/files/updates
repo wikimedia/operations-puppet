@@ -26,20 +26,6 @@ Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
 ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
 
-# NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
-# along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
-# which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
-# point this at those instead of the Jessie ones.
-Name: cloudera-stretch
-Method: http://archive.cloudera.com/cdh5/debian/jessie/amd64/cdh/
-Components: contrib>thirdparty/cloudera
-UDebComponents:
-Suite: jessie-cdh5.10.0
-Architectures: amd64 source
-VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
-
-
 Name: hwraid
 Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty

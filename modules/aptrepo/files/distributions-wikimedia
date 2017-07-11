@@ -38,7 +38,13 @@ Version: 9
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental thirdparty/cloudera
 UDebComponents: main backports thirdparty experimental
-Update: hwraid hp-mcp-jessie cloudera-stretch
+Update: hwraid hp-mcp-jessie
+# NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
+# along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
+# which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
+# use updates to mirror from Cloudera, rather than pulling them into stretch from
+# jessie-wikimedia distribution.
+Pull: cloudera-jessie-pull
 Description: Wikimedia packages for Debian stretch
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
