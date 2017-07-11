@@ -98,6 +98,14 @@ class aptrepo (
         source => 'puppet:///modules/aptrepo/updates',
     }
 
+    file { "${basedir}/conf/pulls":
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/pulls',
+    }
+
     file { "${basedir}/conf/options":
         ensure  => file,
         owner   => $user,
