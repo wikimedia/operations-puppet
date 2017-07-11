@@ -16,6 +16,8 @@
 #
 # [*file_path*] What file within that document root do we need? (currently not used)
 #
+# [*auto_sync*] Whether to also have a cronjob that automatically syncs data or not (default: true)
+#
 # [*ensure*] The usual meaning, set to absent to clean up when done
 #
 define rsync::quickdatacopy(
@@ -23,6 +25,7 @@ define rsync::quickdatacopy(
   $dest_host,
   $module_path,
   $file_path = '*',
+  $auto_sync = true,
   $ensure = present,
   ) {
 
@@ -54,8 +57,13 @@ define rsync::quickdatacopy(
               content => template('rsync/quickdatacopy.erb'),
           }
 
+          if $auto_sync {
+              $cron_ensure = $ensure
+          } else {
+              $cron_ensure = 'absent'
+          } 
           cron { 'sync-rsync-data':
-              ensure  => $ensure,
+              ensure  => $cron_ensure,
               minute  => '*/10',
               command => "/usr/local/sbin/${title} >/dev/null 2>&1",
           }
