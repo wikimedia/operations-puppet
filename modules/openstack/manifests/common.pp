@@ -26,6 +26,16 @@ class openstack::common(
 
     require_package($packages)
 
+    # For some reason the Mitaka nova-common package installs
+    #  a logrotate rule for nova/*.log and also a nova/nova-manage.log.
+    #  This is redundant and makes log-rotate unhappy.
+    # Not to mention, nova-manage.log is very low traffic and doesn't
+    #  really need to be rotated anyway.
+    file { '/etc/logrotate.d/nova-manage':
+        ensure  => absent,
+        require => Package['nova-common'],
+    }
+
     # Allow unprivileged users to look at nova logs
     file { '/var/log/nova':
         ensure => directory,
