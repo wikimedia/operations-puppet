@@ -1,4 +1,3 @@
-# filtertags: labs-project-packaging
 class role::kubernetes::worker {
     include ::standard
     include ::base::firewall
