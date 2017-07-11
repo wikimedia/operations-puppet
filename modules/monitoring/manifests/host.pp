@@ -65,7 +65,7 @@ define monitoring::host (
         }
         if $facts['has_ipmi'] {
             $mgmt_host = {
-                "${title}_mgmt" => {
+                "${title}.mgmt.${::site}.wmnet" => {
                     ensure                => $ensure,
                     host_name             => "${title}.mgmt.${::site}.wmnet",
                     address               => $facts['ipmi_lan']['ipaddress'],
