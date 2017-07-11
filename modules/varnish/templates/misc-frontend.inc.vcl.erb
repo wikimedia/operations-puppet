@@ -4,7 +4,7 @@ include "zero.inc.vcl";
 sub cluster_fe_recv_pre_purge {
     // Block WP Zero users from accessing Phabricator uploads to prevent abuse
     // (T168142)
-    if (req.http.Host == "phab.wmfusercontent.org" && req.url ~ "^/file/data/") {
+    if (req.http.Host == "phabricator.wikimedia.org" && req.url ~ "^/file/upload/") {
         call tag_carrier;
 
         if (req.http.X-CS) {
