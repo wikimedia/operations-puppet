@@ -86,7 +86,8 @@ class role::logging::mediawiki::udp2log(
     # Allow rsyncing of udp2log generated files to
     # analysis hosts.
     class { 'udp2log::rsyncd':
-        path => $log_directory,
+        path        => $log_directory,
+        hosts_allow => hiera('statistics_servers', 'stat1005.eqiad.wmnet')
     }
 
     cron { 'mw-log-cleanup':

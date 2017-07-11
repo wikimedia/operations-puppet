@@ -292,6 +292,9 @@ active_labstore_host: 'labstore1001'
 statistics_servers:
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
+  - stat1004.eqiad.wmnet
+  - stat1005.eqiad.wmnet
+  - stat1006.eqiad.wmnet
   - dataset1001.wikimedia.org
   - thorium.eqiad.wmnet
 dataset_clients_snapshots:
@@ -302,6 +305,8 @@ dataset_clients_snapshots:
 dataset_clients_other:
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
+  - stat1005.eqiad.wmnet
+  - stat1006.eqiad.wmnet
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
