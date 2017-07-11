@@ -7,7 +7,7 @@ define mariadb::monitor_replication(
     $lag_warn      = 60,
     $lag_crit      = 300,
     $socket        = '/run/mysqld/mysqld.sock',
-    $multisource   = true,
+    $multisource   = false,
     $warn_stopped  = true,
     ) {
 
