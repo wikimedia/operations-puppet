@@ -59,4 +59,15 @@ class role::mariadb::dbstore_multiinstance {
     mariadb::instance {'s7':
         port => 3317,
     }
+
+    class { 'mariadb::monitor_disk':
+        is_critical   => false,
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        process_count => 7,
+        is_critical   => false,
+        contact_group => 'admins',
+    }
 }
