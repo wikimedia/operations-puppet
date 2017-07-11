@@ -5519,6 +5519,11 @@ host neodymium {
     fixed-address neodymium.eqiad.wmnet;
 }
 
+host nescio {
+    hardware ethernet a4:ba:db:30:d0:df;
+    fixed-address nescio.wikimedia.org;
+}
+
 host netmon1001 {
     hardware ethernet 84:2b:2b:51:91:ff;
     fixed-address netmon1001.wikimedia.org;
@@ -5536,16 +5541,6 @@ host netmon2001 {
     fixed-address netmon2001.wikimedia.org;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host nescio {
-    hardware ethernet a4:ba:db:30:d0:df;
-    fixed-address nescio.wikimedia.org;
-}
-
-host netmon2001 {
-    hardware ethernet 30:e1:71:70:2b:94;
-    fixed-address netmon2001.codfw.wmnet;
 }
 
 host notebook1001 {
