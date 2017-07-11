@@ -34,7 +34,6 @@ class statistics::packages {
         'libmaxminddb-dev',
         'build-essential', # Requested by halfak to install SciPy
         'nodejs',
-        'openjdk-7-jdk',
         'openjdk-8-jdk',
         'g++-4.8',         # Requested by bearloga (Mikhail) to ensure that there is a compiler with C++11 support that can compile R package 'Boom'; see T147682 and http://stackoverflow.com/a/36034866/1091835 for more info
         # GNU Scientific Library (GSL) requested by bearloga (Mikhail)
@@ -43,6 +42,11 @@ class statistics::packages {
         'libgsl0-dev',     # GSL part 3/3
         'pandoc'           # Requested by bearloga (Mikhail); necessary for using RMarkdown and performing format conversions
     ])
+
+    # If available, isntall openjdk-7-jdk
+    if os_version('debian <= jessie') || os_version('ubuntu >= trusty') {
+        require_package('openjdk-7-jdk')
+    }
 
     # Python packages
     require_package ([
