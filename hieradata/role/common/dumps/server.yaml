@@ -6,6 +6,8 @@ dumps::rsync_clients:
   - ms1001.wikimedia.org
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
+  - stat1005.eqiad.wmnet
+  - stat1006.eqiad.wmnet
   - sagres.c3sl.ufpr.br
   - odysseus.fi.muni.cz
   - odysseus.linux.cz

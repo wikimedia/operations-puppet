@@ -35,7 +35,7 @@ class role::statistics::private inherits role::statistics::base {
     # This is so that users in the statistics-privatedata-users
     # group who want to access the research slave dbs do not
     # have to be in the research group, which is not included
-    # in the private role (stat1002).
+    # in the private role.
     mysql::config::client { 'statistics-private':
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
@@ -44,13 +44,13 @@ class role::statistics::private inherits role::statistics::base {
     }
 
     # Set up reportupdater to be executed on this machine.
-    # Reportupdater on stat1002 launches Hadoop jobs, and
+    # Reportupdater launches Hadoop jobs, and
     # the 'hdfs' user is the only 'system' user that has
     # access to required files in Hadoop.
     class { 'reportupdater':
         base_path => "${::statistics::working_path}/reportupdater",
         user      => 'hdfs',
-        # We know that this is included on stat1002, but unfortunetly
+        # We know that this is included, but unfortunetly
         # it is done so outside of this role.  Perhaps
         # reportupdater should have its own role!
         require   => Class['cdh::hadoop'],

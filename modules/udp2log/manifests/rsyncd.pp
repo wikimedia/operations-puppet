@@ -26,9 +26,8 @@ class udp2log::rsyncd(
         hosts_allow => $hosts_allow;
     }
 
-    ferm::service { 'udp2log_rsyncd':
-        proto  => 'tcp',
-        port   => '873',
-        srange => '@resolve(stat1002.eqiad.wmnet)',
+    ferm::service { 'rsyncd':
+        proto => 'tcp',
+        port  => '873',
     }
 }
