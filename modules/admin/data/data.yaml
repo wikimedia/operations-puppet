@@ -74,8 +74,8 @@ groups:
     description: access to terbium, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
-              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry, smalyshev,
-              nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
+              ezachte, jamesur, jdlrobson, tparscal, smalyshev,
+              leila, santhosh, amire80, foks, chelsyx]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
