@@ -5,7 +5,6 @@ class role::mariadb::dbstore_multiinstance {
 
     include ::standard
     include ::base::firewall
-    include role::mariadb::monitor
     #TODO: Custom firewall rules
 
     #TODO: define one group per shard
