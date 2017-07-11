@@ -111,12 +111,10 @@ labs:
 labtestvirt:
   __regex: !ruby/regexp /^labtestvirt20[0-9][0-9]\.codfw\.wmnet$/
   cluster: labtestvirt
-  profile::base::monitoring: false
 
 labtest:
   __regex: !ruby/regexp /^labtest(net200[1-9]\.codfw\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labtest
-  profile::base::monitoring: false
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
