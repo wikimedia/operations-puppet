@@ -19,4 +19,8 @@ class mediawiki::packages::multimedia {
     ]:
         ensure => present,
     }
+
+    if os_version('debian == jessie') {
+        require_package('libav-tools')
+    }
 }
