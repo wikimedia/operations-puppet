@@ -19,12 +19,4 @@ class mediawiki::packages::multimedia {
     ]:
         ensure => present,
     }
-
-    if os_version('debian == jessie') {
-        apt::pin { 'ffmpeg':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['ffmpeg'],
-        }
-    }
 }
