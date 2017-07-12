@@ -1,9 +1,15 @@
 # TODO: remove this file once role::statistics::private is applied to stat1005.
+cluster: analytics
 admin::groups:
-  - analytics-users
+  - statistics-privatedata-users
+  - statistics-admins
   - analytics-privatedata-users
   - analytics-admins
+  # elasticsearch::analytics creates the analytics-search user and group
+  # that analytics-search-users are allowed to sudo to.  This is used
+  # for deploying files to HDFS.
+  - analytics-search-users
+  - analytics-wmde-users
 debdeploy::grains:
   debdeploy-stat:
     value: standard
-cluster: analytics
