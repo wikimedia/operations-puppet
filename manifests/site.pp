@@ -2076,16 +2076,12 @@ node 'tureis.codfw.wmnet' {
     role(failoid)
 }
 
+# stat1002 is intended to be the private data analytics compute node.
+# Users should not use it for app development.
+# Data processing on this machine is fine.
 node 'stat1002.eqiad.wmnet' {
-    # stat1002 is intended to be the private
-    # webrequest access log storage host.
-    # Users should not use it for app development.
-    # Data processing on this machine is fine.
-
-    # Include classes needed for storing and crunching
-    # private data on stat1002.
     role(statistics::private,
-        # stat1002 is also a Hadoop client, and should
+        # This is also a Hadoop client, and should
         # have any special analytics system users on it
         # for interacting with HDFS.
         analytics_cluster::users,
@@ -2097,9 +2093,11 @@ node 'stat1002.eqiad.wmnet' {
 
         # Include analytics/refinery deployment target.
         analytics_cluster::refinery,
+
         # Include analytics/refinery checks that send email about
         # webrequest partitions faultyness.
         analytics_cluster::refinery::job::data_check,
+
         # Include analytics/refinery/source guard checks
         # Disabled due to T166937
         # analytics_cluster::refinery::job::guard,
@@ -2110,22 +2108,8 @@ node 'stat1002.eqiad.wmnet' {
 
         # Deploy wikimedia/discovery/analytics repository
         # to this node.
-        elasticsearch::analytics)
-
-    include ::standard
-
-    # Include the MySQL research password at
-    # /etc/mysql/conf.d/analytics-research-client.cnf
-    # and only readable by users in the
-    # analytics-privatedata-users group.
-    statistics::mysql_credentials { 'analytics-research':
-        group => 'analytics-privatedata-users',
-    }
-
-    # The eventlogging code is useful for scripting
-    # EventLogging consumers.  Install this on
-    # stat1002, but don't run any daemons.
-    include ::eventlogging
+        elasticsearch::analytics
+    )
 }
 
 # stat1003 is a general purpose number cruncher for

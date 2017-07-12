@@ -28,6 +28,14 @@ class profile::statistics::private(
         group => 'statistics-privatedata-users',
     }
 
+    # Include the MySQL research password at
+    # /etc/mysql/conf.d/analytics-research-client.cnf
+    # and only readable by users in the
+    # analytics-privatedata-users group.
+    statistics::mysql_credentials { 'analytics-research':
+        group => 'analytics-privatedata-users',
+    }
+
     # eventlogging logs are not private, but they
     # are here for convenience
     include ::statistics::rsync::eventlogging
@@ -50,4 +58,9 @@ class profile::statistics::private(
     # Although it is in the "private" profile, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
     include ::statistics::aggregator::projectview
+
+    # The eventlogging code is useful for scripting
+    # EventLogging consumers.  Install this,
+    # but don't run any daemons.
+    include ::eventlogging
 }
