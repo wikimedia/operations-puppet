@@ -11,6 +11,8 @@ class role::mariadb::dbstore_multiinstance {
         port   => '3311:3320',
         srange => '$PRODUCTION_NETWORKS',
     }
+    # Temporary extra instance on port 3306:
+    include role::mariadb::ferm
 
     #TODO: define one group per shard
     class {'mariadb::groups':
