@@ -36,31 +36,33 @@ class profile::statistics::private(
         group => 'analytics-privatedata-users',
     }
 
-    # eventlogging logs are not private, but they
-    # are here for convenience
+    # The eventlogging codebase is useful for scripting
+    # EventLogging consumers.  Install this on
+    # stat1002, but don't run any daemons.
+    include ::eventlogging
+
+    # EventLogging Analytics data logs are not private, but they
+    # are rsynced here for convenience and backup redundancy.
     include ::statistics::rsync::eventlogging
 
-    # TODO remove this after stat1002 is gone: T152712
+    # TODO: Piecemeal migrate cron jobs from stat1002 -> stat1005: T152712
     if $::hostname == 'stat1002' {
+        # TODO remove this after stat1002 is gone: T152712
+
         # backup eventlogging logs.
         backup::set { 'a-eventlogging' : }
+
+        # rsync mediawiki logs from logging hosts
+        include ::statistics::rsync::mediawiki
+
+        # WMDE statistics scripts and cron jobs
+        include ::statistics::wmde
+
+        # Discovery statistics generating scripts
+        include ::statistics::discovery
+
+        # Although it is in the "private" profile, the dataset actually isn't
+        # private. We just keep it here to spare adding a separate role.
+        include ::statistics::aggregator::projectview
     }
-
-    # rsync mediawiki logs from logging hosts
-    include ::statistics::rsync::mediawiki
-
-    # WMDE statistics scripts and cron jobs
-    include ::statistics::wmde
-
-    # Discovery statistics generating scripts
-    include ::statistics::discovery
-
-    # Although it is in the "private" profile, the dataset actually isn't
-    # private. We just keep it here to spare adding a separate role.
-    include ::statistics::aggregator::projectview
-
-    # The eventlogging code is useful for scripting
-    # EventLogging consumers.  Install this,
-    # but don't run any daemons.
-    include ::eventlogging
 }
