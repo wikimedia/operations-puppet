@@ -56,15 +56,6 @@ class role::eventlogging::analytics::mysql {
     $topics_to_consume = [
         # Valid eventlogging analytics events are all in this one topic.
         'eventlogging-valid-mixed',
-        # Various mediawiki events (via EventBus)
-        'eqiad.mediawiki.page-create',
-        'codfw.mediawiki.page-create',
-        'eqiad.mediawiki.page-move',
-        'codfw.mediawiki.page-move',
-        'eqiad.mediawiki.page-delete',
-        'codfw.mediawiki.page-delete',
-        'eqiad.mediawiki.page-undelete',
-        'codfw.mediawiki.page-undelete',
     ]
     $topics_string = join($topics_to_consume, ',')
     $kafka_consumer_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topics=${topics_string}"
@@ -82,7 +73,36 @@ class role::eventlogging::analytics::mysql {
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
         # auto commit offsets to kafka more often for mysql consumer
-        input        => "${filter_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${$kafka_api_version_param}${filter_function}",
+        input        => "${filter_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${kafka_api_version_param}${filter_function}",
+        output       => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
+        sid          => $kafka_consumer_group,
+        # Restrict permissions on this config file since it contains a password.
+        owner        => 'root',
+        group        => 'eventlogging',
+        mode         => '0640',
+    }
+
+
+    $eventbus_topics_to_consume = [
+        # Various mediawiki events (via EventBus)
+        'eqiad.mediawiki.page-create',
+        'codfw.mediawiki.page-create',
+        'eqiad.mediawiki.page-move',
+        'codfw.mediawiki.page-move',
+        'eqiad.mediawiki.page-delete',
+        'codfw.mediawiki.page-delete',
+        'eqiad.mediawiki.page-undelete',
+        'codfw.mediawiki.page-undelete',
+    ]
+    $eventbus_topics_string = join($topics_to_consume, ',')
+    $kafka_consumer_uri_eventbus = "${kafka_consumer_scheme}/${kafka_brokers_string}?topics=${eventbus_topics_string}"
+
+    # Use a separate mysql consumer process to insert eventbus events.
+    # The schemas for these types of events are managed differently, and we don't
+    # want bugs in one to affect the other.
+    eventlogging::service::consumer { 'mysql-eventbus':
+        # auto commit offsets to kafka more often for mysql consumer
+        input        => "${kafka_consumer_uri_eventbus}&auto_commit_interval_ms=1000${kafka_api_version_param}",
         output       => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         # Load and cache local (EventBus) schemas so those events can be inserted into MySQL too.
         # This will require a restart of the consumer process(es) when there are any new schemas.
@@ -92,6 +112,5 @@ class role::eventlogging::analytics::mysql {
         owner        => 'root',
         group        => 'eventlogging',
         mode         => '0640',
-
     }
 }
