@@ -7,7 +7,7 @@ class role::statistics::private {
     include ::profile::statistics::private
 
     # will be removed as part of T152712
-    if $::hostname == 'stat1002' {
+    if $::hostname != 'stat1002' {
         # Run Hadoop/Hive reportupdater jobs here.
         include ::profile::reportupdater::jobs::hadoop
     }
