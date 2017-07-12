@@ -2096,7 +2096,8 @@ node 'stat1002.eqiad.wmnet' {
 
         # Include analytics/refinery checks that send email about
         # webrequest partitions faultyness.
-        analytics_cluster::refinery::job::data_check,
+        # MOVED TO stat1005
+        # analytics_cluster::refinery::job::data_check,
 
         # Include analytics/refinery/source guard checks
         # Disabled due to T166937
@@ -2144,10 +2145,9 @@ node 'stat1005.eqiad.wmnet' {
         # Include analytics/refinery deployment target.
         analytics_cluster::refinery,
 
-        # TODO: include this role piecemeal: T152712
         # Include analytics/refinery checks that send email about
         # webrequest partitions faultyness.
-        # analytics_cluster::refinery::job::data_check,
+        analytics_cluster::refinery::job::data_check,
 
         # Include analytics/refinery/source guard checks
         # Disabled due to T166937
