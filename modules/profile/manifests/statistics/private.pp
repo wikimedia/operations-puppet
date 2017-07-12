@@ -55,14 +55,19 @@ class profile::statistics::private(
         # backup eventlogging logs.
         backup::set { 'a-eventlogging' : }
 
-        # WMDE statistics scripts and cron jobs
-        include ::statistics::wmde
-
-        # Discovery statistics generating scripts
-        include ::statistics::discovery
-
+        # TODO: Otto believes this data and job are no longer being used.
+        # Let's not migrate it to stat1005 unless someone needs it.
         # Although it is in the "private" profile, the dataset actually isn't
         # private. We just keep it here to spare adding a separate role.
         include ::statistics::aggregator::projectview
+
+        # Discovery statistics generating scripts
+        include ::statistics::discovery
+    }
+
+    # Else moved to stat1005
+    else {
+        # WMDE statistics scripts and cron jobs
+        include ::statistics::wmde
     }
 }
