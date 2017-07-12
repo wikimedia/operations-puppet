@@ -679,8 +679,7 @@ node 'dbstore2001.codfw.wmnet' {
 }
 
 node 'dbstore2002.codfw.wmnet' {
-    role(mariadb::dbstore)
-    include ::base::firewall
+    role(mariadb::dbstore_multiinstance)
 }
 
 # Temporary test multiinstance role host
