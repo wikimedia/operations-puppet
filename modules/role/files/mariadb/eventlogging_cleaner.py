@@ -39,6 +39,7 @@ import configparser
 import csv
 import logging
 import os
+import pwd
 import re
 import sys
 import time
@@ -495,8 +496,9 @@ if __name__ == '__main__':
         # Priority to the local unix socket, default to username/password
         try:
             unix_socket = config.get('client', 'socket')
-            db_user = os.getlogin()
+            db_user = pwd.getpwuid(os.getuid())[0]
             db_password = None
+            db_port = None
         except configparser.NoOptionError as e:
             log.info(
                 "No local unix socket configured for myql, default to username/password"
@@ -504,12 +506,13 @@ if __name__ == '__main__':
             unix_socket = None
             db_user = config.get('client', 'user')
             db_password = config.get('client', 'password')
+            db_port = args.dbport
 
         # Connect to the database in localhost (no other option
         # available). This is a design choice to simplify auth
         # and to restrict the actions taken to the local db only.
         database = Database('localhost', args.dbname, db_user, db_password=db_password,
-                            db_port=args.dbport, unix_socket=unix_socket)
+                            db_port=db_port, unix_socket=unix_socket)
 
         # Apply the retention policy to each table
         tables = database.get_all_tables()
