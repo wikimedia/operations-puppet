@@ -1225,7 +1225,8 @@ node 'labnet1002.eqiad.wmnet' {
     include ::standard
 }
 
-node 'labnodepool1001.eqiad.wmnet' {
+node /labnodepool100[12]\.eqiad\.wmnet/ {
+
     $nagios_contact_group = 'admins,contint'
     role(labs::openstack::nodepool)
     include ::standard
