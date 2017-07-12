@@ -679,12 +679,6 @@ node 'dbstore2001.codfw.wmnet' {
 }
 
 node 'dbstore2002.codfw.wmnet' {
-    role(mariadb::dbstore)
-    include ::base::firewall
-}
-
-# Temporary test multiinstance role host
-node 'db1096.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 

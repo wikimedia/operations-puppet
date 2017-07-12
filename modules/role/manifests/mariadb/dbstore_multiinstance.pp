@@ -8,16 +8,16 @@ class role::mariadb::dbstore_multiinstance {
     #FIXME:
     ferm::service { 'dbstore_multiinstance':
         proto  => 'tcp',
-        port   => '3311:3317',
+        port   => '3311:3320',
         srange => '$PRODUCTION_NETWORKS',
     }
 
     #TODO: define one group per shard
     class {'mariadb::groups':
         mysql_group => 'dbstore',
-        mysql_shard => 's1',
+        mysql_shard => 's2',
         mysql_role  => 'slave',
-        socket      => '/run/mysqld/mysqld.s1.sock',
+        socket      => '/run/mysqld/mysqld.s2.sock',
     }
 
     class {'mariadb::packages_wmf': }
@@ -47,26 +47,29 @@ class role::mariadb::dbstore_multiinstance {
         group  => root,
         mode   => '0755',
     }
-    mariadb::instance {'s1':
-        port => 3311,
-    }
+    #mariadb::instance {'s1':
+    #    port => 3311,
+    #}
     mariadb::instance {'s2':
         port => 3312,
     }
-    mariadb::instance {'s3':
-        port => 3313,
-    }
-    mariadb::instance {'s4':
-        port => 3314,
-    }
-    mariadb::instance {'s5':
-        port => 3315,
-    }
-    mariadb::instance {'s6':
-        port => 3316,
-    }
-    mariadb::instance {'s7':
-        port => 3317,
+    #mariadb::instance {'s3':
+    #    port => 3313,
+    #}
+    #mariadb::instance {'s4':
+    #    port => 3314,
+    #}
+    #mariadb::instance {'s5':
+    #    port => 3315,
+    #}
+    #mariadb::instance {'s6':
+    #    port => 3316,
+    #}
+    #mariadb::instance {'s7':
+    #    port => 3317,
+    #}
+    mariadb::instance {'x1':
+        port => 3320,
     }
 
     class { 'mariadb::monitor_disk':
@@ -75,7 +78,7 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     class { 'mariadb::monitor_process':
-        process_count => 7,
+        process_count => 3,
         is_critical   => false,
         contact_group => 'admins',
     }
