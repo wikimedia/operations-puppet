@@ -49,7 +49,7 @@ define rsync::quickdatacopy(
 
       if $dest_host == $::fqdn {
 
-          file { "/usr/local/sbin/${title}":
+          file { "/usr/local/sbin/sync-${title}":
               ensure  => $ensure,
               owner   => 'root',
               group   => 'root',
