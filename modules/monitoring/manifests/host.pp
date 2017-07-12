@@ -122,7 +122,7 @@ define monitoring::host (
         monitoring::service { "dns_${title}.mgmt.${::site}.wmnet":
             description    => "DNS ${title}.mgmt.${::site}.wmnet",
             host           => "${title}.mgmt.${::site}.wmnet",
-            check_command  => "check_fqdn!${facts['ipmi_lan']['ipaddress']}",
+            check_command  => 'check_fqdn',
             group          => 'mgmt',
             check_interval => 60,
             retry_interval => 60,
