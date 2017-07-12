@@ -527,7 +527,7 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
-               'ALL = (recommendation_api) NOPASSWD: ALL'
+               'ALL = (recommendation_api) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
