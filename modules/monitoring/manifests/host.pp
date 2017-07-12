@@ -63,7 +63,8 @@ define monitoring::host (
         } else {
             $real_parents = undef
         }
-        if $facts['has_ipmi'] {
+        # We have a BMC, and the BMC is configured and it has an IP address
+        if $facts['has_ipmi'] and $facts['ipmi_lan'] and 'ipaddress' in $facts['ipmi_lan'] {
             $mgmt_host = {
                 "${title}.mgmt.${::site}.wmnet" => {
                     ensure                => $ensure,
