@@ -6,10 +6,13 @@ class role::statistics::cruncher {
 
     include ::profile::statistics::cruncher
 
-    # Reportupdater jobs that get data from MySQL analytics slaves
-    include ::profile::reportupdater::jobs::mysql
+    # will be removed as part of T152712
+    if $::hostname == 'stat1003' {
+        # Reportupdater jobs that get data from MySQL analytics slaves
+        include ::profile::reportupdater::jobs::mysql
 
-    # Geowiki jobs that get data from MySQL analytics slave and save the data
-    # in a private locally hosted git repository.
-    include ::profile::geowiki
+        # Geowiki jobs that get data from MySQL analytics slave and save the data
+        # in a private locally hosted git repository.
+        include ::profile::geowiki
+    }
 }

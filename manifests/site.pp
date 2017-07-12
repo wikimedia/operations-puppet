@@ -2130,7 +2130,7 @@ node 'stat1004.eqiad.wmnet' {
 
 # WIP: stat1002 replacement (T152712)
 node 'stat1005.eqiad.wmnet' {
-    role(statistics::private_new,
+    role(statistics::private,
         # This is a Hadoop client, and should
         # have any special analytics system users on it
         # for interacting with HDFS.
@@ -2168,7 +2168,7 @@ node 'stat1005.eqiad.wmnet' {
 # query results for further processing on this node.
 # WIP: stat1003 replacement (T152712)
 node 'stat1006.eqiad.wmnet' {
-    role(statistics::cruncher_new)
+    role(statistics::cruncher)
 }
 
 
