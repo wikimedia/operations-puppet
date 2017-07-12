@@ -19,7 +19,6 @@ class statistics::packages {
         'make', # halfak wants make to manage dependencies
         'libwww-perl', # For wikistats stuff
         'sqlite3', # For storing and interacting with intermediate results
-        'libgdal1-dev', # Requested by lzia for rgdal
         'libproj-dev', # Requested by lzia for rgdal
         'libbz2-dev', # for compiling some python libs. T84378
         'libboost-regex-dev', # Ironholds wants these
@@ -43,6 +42,7 @@ class statistics::packages {
             'libgsl2',
             'gsl-bin',
             'libgsl0-dev',
+            'libgdal-dev', # Requested by lzia for rgdal
             'g++',
             'libyaml-cpp0.3v5',
             'php-cli',
@@ -61,7 +61,8 @@ class statistics::packages {
             # support that can compile R package 'Boom'; see T147682 and
             # http://stackoverflow.com/a/36034866/1091835 for more info)
             'g++-4.8',
-            'libgdal-dev', # Requested by lzia for rgdal
+            'libgdal1-dev', # Requested by lzia for rgdal
+
             'libyaml-cpp0.3',
             # Requested by bearloga (Mikhail); see T147682 and
             # http://stackoverflow.com/a/36034866/1091835 for more info.
