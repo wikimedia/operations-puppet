@@ -6,7 +6,6 @@ class role::rancid {
     }
 
     include ::standard
-    include ::rancid
     include ::profile::backup::host
 
     backup::set { 'rancid': }
@@ -17,5 +16,11 @@ class role::rancid {
       source_host => 'netmon1002.wikimedia.org',
       dest_host   => 'netmon2001.wikimedia.org',
       module_path => '/var/lib/rancid',
+    }
+
+    $active_server = hiera('netmon_server', 'netmon1002.wikimedia.org')
+
+    class { '::rancid':
+        active_server => $active_server,
     }
 }
