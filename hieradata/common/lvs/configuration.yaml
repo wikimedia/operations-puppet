@@ -1362,9 +1362,6 @@ lvs::configuration::lvs_services:
     bgp: 'yes'
     depool-threshold: '.5'
     monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
