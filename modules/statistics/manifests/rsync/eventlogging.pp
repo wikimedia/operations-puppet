@@ -11,18 +11,33 @@ class statistics::rsync::eventlogging {
     # the rsync_job define.
     $retention_days = 90
 
-    file { "${working_path}/eventlogging":
-        ensure => 'directory',
-        owner  => 'stats',
-        group  => 'wikidev',
-        mode   => '0775',
+    # TODO: remove these conditionals after stat1002/3 are gone.
+    $destination = $::hostname ? {
+        'stat1002' => '/a/eventlogging/archive',
+        'stat1003' => '/srv/eventlogging/archive',
+        default    => '/srv/log/eventlogging/archive',
+    }
+    if $destination == '/srv/log/eventlogging/archive' {
+        file { ['/srv/log/eventlogging', '/srv/log/eventlogging/archive']:
+            ensure => 'directory',
+            owner  => 'stats',
+            group  => 'wikidev',
+            mode   => '0775',
+        }
+    }
+    else {
+        file { "${working_path}/eventlogging":
+            ensure => 'directory',
+            owner  => 'stats',
+            group  => 'wikidev',
+            mode   => '0775',
+        }
     }
 
-    # eventlogging logs from eventlog1001
+    # eventlogging data logs from eventlog1001
     statistics::rsync_job { 'eventlogging':
         source         => 'eventlog1001.eqiad.wmnet::eventlogging/archive/*.gz',
-        destination    => "${working_path}/eventlogging/archive",
+        destination    => $destination,
         retention_days => $retention_days,
-
     }
 }
