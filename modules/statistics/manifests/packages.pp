@@ -40,7 +40,9 @@ class statistics::packages {
     if os_version('debian < stretch') {
         require_package(
             'openjdk-7-jdk',
-            'libgsl0ldbl', 'gsl-bin', 'libgsl0-dev',
+            'libgsl0ldbl',
+            'gsl-bin',
+            'libgsl0-dev',
             # Requested by bearloga (Mikhail) to ensure that there is a compiler with C++11
             # support that can compile R package 'Boom'; see T147682 and
             # http://stackoverflow.com/a/36034866/1091835 for more info)
@@ -53,6 +55,7 @@ class statistics::packages {
              'php5-cli',
              'php5-curl',
              'php5-mysql',
+         )
     }
     else {
         require_package(
