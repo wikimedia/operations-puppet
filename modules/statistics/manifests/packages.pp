@@ -37,7 +37,21 @@ class statistics::packages {
 
     # TODO: remove after T152712
     # If available, install openjdk-7-jdk
-    if os_version('debian < stretch') {
+
+    if os_version('debian >= stretch') {
+        require_package(
+            'libgsl2',
+            'gsl-bin',
+            'libgsl0-dev',
+            'g++',
+            'libyaml-cpp0.3v5',
+            'php-cli',
+            'php-curl',
+            'php-mysql',
+        )
+    }
+
+    else {
         require_package(
             'openjdk-7-jdk',
             'libgsl0ldbl',
@@ -56,18 +70,6 @@ class statistics::packages {
              'php5-curl',
              'php5-mysql',
          )
-    }
-    else {
-        require_package(
-            'libgsl2',
-            'gsl-bin',
-            'libgsl0-dev',
-            'g++',
-            'libyaml-cpp0.3v5',
-            'php-cli',
-            'php-curl',
-            'php-mysql',
-        )
     }
 
     # Python packages
