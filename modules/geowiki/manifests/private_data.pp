@@ -17,6 +17,7 @@ class geowiki::private_data {
     # Other hosts need to rsync it over
     if $::fqdn == $::geowiki::private_data_bare_host {
         include ::profile::backup::host
+        # TODO: fix bakcup set path to use /srv after stat1002 is gone.
         backup::set { 'a-geowiki-data-private-bare': }
     }
     else {
