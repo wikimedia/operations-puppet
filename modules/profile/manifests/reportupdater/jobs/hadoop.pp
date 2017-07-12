@@ -38,7 +38,7 @@ class profile::reportupdater::jobs::hadoop {
     }
     file { "${::statistics::compute::published_datasets_path}/periodic/reports":
         ensure  => 'link',
-        target  => "${::statistics::working_path}/reportupdater/output",
+        target  => "${base_path}/output",
         require => Class['reportupdater'],
     }
 
