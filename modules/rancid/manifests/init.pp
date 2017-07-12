@@ -1,5 +1,7 @@
 # Really Awful Notorious CIsco config Differ
-class rancid {
+class rancid (
+    $active_server
+    ){
 
     package { 'rancid':
         ensure => present,
@@ -48,16 +50,22 @@ class rancid {
         mode    => '0440',
         content => template('rancid/cloginrc.erb'),
     }
+ 
+    if $active_server == $::fqdn {
+        $cron_ensure = 'present',
+    } else {
+        $cron_ensure = 'absent',
+    }
 
     cron { 'rancid_differ':
-        ensure  => 'present',
+        ensure  => $cron_ensure,
         command => 'SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/lib/rancid/bin/rancid-run',
         user    => 'rancid',
         minute  => '1',
     }
 
     cron { 'rancid_clean_logs':
-        ensure  => 'present',
+        ensure  => $cron_ensure,
         command => '/usr/bin/find /var/log/rancid -type f -mtime +2 -exec rm {} \;',
         user    => 'rancid',
         minute  => '50',

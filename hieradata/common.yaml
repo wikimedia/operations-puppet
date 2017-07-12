@@ -467,6 +467,8 @@ deployment_server: tin.eqiad.wmnet
 install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
 
+netmon_server: netmon1002.wikimedia.org
+
 # Etcd client global configuration
 etcd_client_srv_domain: "conftool.%{::site}.wmnet"
 etcd_host: ''
@@ -484,3 +486,4 @@ udp2log_aggregator: "udplog:8420"
 
 tcpircbot_host: 'icinga.wikimedia.org'
 tcpircbot_port: 9200
+
