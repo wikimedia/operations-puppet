@@ -248,7 +248,7 @@ class role::mariadb::analytics::custom_repl_slave {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/role/mariadb/whitelist.tsv',
+        source  => 'puppet:///modules/role/mariadb/eventlogging_purging_whitelist.tsv',
         require => File['/etc/eventlogging'],
     }
 
