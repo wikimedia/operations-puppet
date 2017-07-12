@@ -33,8 +33,8 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should contain_nagios_host('ahost.mgmt.blabla.wmnet').with(
-          'host_name'  => 'ahost.mgmt.blabla.wmnet',
+        should contain_nagios_host('ahost.mgmt').with(
+          'host_name'  => 'ahost.mgmt',
           'address'    => '2.2.2.2'
         )
       end
@@ -55,8 +55,8 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should contain_nagios_host('ahost.mgmt.blabla.wmnet').with(
-          'host_name'  => 'ahost.mgmt.blabla.wmnet',
+        should contain_nagios_host('ahost.mgmt').with(
+          'host_name'  => 'ahost.mgmt',
           'address'    => '2.2.2.2'
         )
       end
@@ -86,7 +86,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should_not contain_nagios_host('ahost_mgmt')
+        should_not contain_nagios_host('ahost.mgmt')
       end
     end
     describe 'with a parents parameters' do
@@ -103,7 +103,7 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should_not contain_nagios_host('ahost_mgmt')
+        should_not contain_nagios_host('ahost.mgmt')
       end
     end
   end
@@ -137,8 +137,8 @@ describe 'monitoring::host' do
           'icon_image' => 'vendors/debian.png',
           'address'    => '1.2.3.4'
         )
-        should contain_nagios_host('icingahost.mgmt.blabla.wmnet').with(
-          'host_name'  => 'icingahost.mgmt.blabla.wmnet',
+        should contain_nagios_host('icingahost.mgmt').with(
+          'host_name'  => 'icingahost.mgmt',
           'address'    => '2.2.2.2'
         )
       end
@@ -153,7 +153,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => '1.2.3.4'
         )
-        should_not contain_nagios_host('service.svc.wmnet.mgmt.blabla.wmnet')
+        should_not contain_nagios_host('service.svc.wmnet.mgmt')
       end
     end
     describe 'monitoring a service, with ip_address,parents' do
@@ -170,7 +170,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => '4.3.2.1'
         )
-        should_not contain_nagios_host('service.svc.wmnet.mgmt.blabla.wmnet')
+        should_not contain_nagios_host('service.svc.wmnet.mgmt')
       end
     end
     describe 'monitoring a service, with fqdn' do
@@ -186,7 +186,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => 'blah.foo.bar'
         )
-        should_not contain_nagios_host('service.svc.wmnet.mgmt.blabla.wmnet')
+        should_not contain_nagios_host('service.svc.wmnet.mgmt')
       end
     end
   end
