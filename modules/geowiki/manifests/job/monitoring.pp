@@ -4,16 +4,17 @@
 #
 # Disabled for now due to restructuring of geowiki.
 #
-class geowiki::job::monitoring inherits geowiki::job {
+class geowiki::job::monitoring {
+    require ::geowiki::job
     include ::passwords::geowiki
 
     $geowiki_http_user    = $passwords::geowiki::user
     $geowiki_http_pass    = $passwords::geowiki::pass
-    $geowiki_http_password_file = "${::geowiki::params::path}/.http_password"
+    $geowiki_http_password_file = "${::geowiki::path}/.http_password"
 
     file { $geowiki_http_password_file:
-        owner   => $::geowiki::params::user,
-        group   => $::geowiki::params::user,
+        owner   => $::geowiki::user,
+        group   => $::geowiki::user,
         mode    => '0400',
         content => $geowiki_http_pass,
     }
@@ -25,7 +26,7 @@ class geowiki::job::monitoring inherits geowiki::job {
     cron { 'geowiki-monitoring':
         minute  => 30,
         hour    => 21,
-        user    => $::geowiki::params::user,
-        command => "${::geowiki::params::scripts_path}/scripts/check_web_page.sh --private-part-user ${geowiki_http_user} --private-part-password-file ${geowiki_http_password_file}",
+        user    => $::geowiki::user,
+        command => "${::geowiki::scripts_path}/scripts/check_web_page.sh --private-part-user ${geowiki_http_user} --private-part-password-file ${geowiki_http_password_file}",
     }
 }

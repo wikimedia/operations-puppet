@@ -3,17 +3,18 @@
 # from the research slave databases and generate
 # editor geocoding statistics, saved back into a db.
 #
-class geowiki::job::data inherits geowiki::job {
+class geowiki::job::data {
+    require ::geowiki::job
     include ::passwords::mysql::globaldev
 
     # install MySQL conf files for db acccess
     $globaldev_mysql_user = $passwords::mysql::globaldev::user
     $globaldev_mysql_pass = $passwords::mysql::globaldev::pass
 
-    $geowiki_mysql_globaldev_conf_file = "${::geowiki::params::path}/.globaldev.my.cnf"
+    $geowiki_mysql_globaldev_conf_file = "${::geowiki::path}/.globaldev.my.cnf"
     file { $geowiki_mysql_globaldev_conf_file:
-        owner   => $::geowiki::params::user,
-        group   => $::geowiki::params::user,
+        owner   => $::geowiki::user,
+        group   => $::geowiki::user,
         mode    => '0400',
         content => "
 [client]
@@ -29,8 +30,8 @@ password=${globaldev_mysql_pass}
     cron { 'geowiki-process-data':
         minute  => 0,
         hour    => 12,
-        user    => $::geowiki::params::user,
-        command => "/usr/bin/python ${::geowiki::params::scripts_path}/geowiki/process_data.py -o ${::geowiki::params::log_path} --wpfiles ${::geowiki::params::scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${::geowiki::mysql_conf::conf_file} >${::geowiki::params::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stdout 2>${::geowiki::params::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stderr",
-        require => File[$::geowiki::params::log_path],
+        user    => $::geowiki::user,
+        command => "/usr/bin/python ${::geowiki::scripts_path}/geowiki/process_data.py -o ${::geowiki::log_path} --wpfiles ${::geowiki::scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${::geowiki::mysql_conf::conf_file} >${::geowiki::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stdout 2>${::geowiki::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stderr",
+        require => File[$::geowiki::log_path],
     }
 }

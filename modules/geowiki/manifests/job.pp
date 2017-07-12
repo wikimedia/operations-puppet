@@ -4,7 +4,6 @@
 class geowiki::job {
     require ::geowiki
 
-    include ::geowiki::params
     include ::geowiki::mysql_conf
     include ::geoip
 
@@ -17,9 +16,9 @@ class geowiki::job {
     require_package('python-geoip')
     require_package('python-mysqldb')
 
-    file { $::geowiki::params::log_path:
+    file { $::geowiki::log_path:
         ensure => 'directory',
-        owner  => $::geowiki::params::user,
-        group  => $::geowiki::params::user,
+        owner  => $::geowiki::user,
+        group  => $::geowiki::user,
     }
 }
