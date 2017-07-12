@@ -89,9 +89,8 @@ class profile::backup::director(
     bacula::director::fileset { 'a-eventlogging':
         includes => [ '/a/eventlogging' ]
     }
-    # TODO change this to /srv after stat1002 is gone. T152712
     bacula::director::fileset { 'a-geowiki-data-private-bare':
-        includes => [ '/a/geowiki/data-private-bare' ]
+        includes => [ '/srv/geowiki/data-private-bare' ]
     }
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
