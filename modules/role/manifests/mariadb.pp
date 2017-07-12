@@ -236,6 +236,22 @@ class role::mariadb::analytics::custom_repl_slave {
         require => Package['python3-pymysql'],
     }
 
+    file { '/etc/eventlogging':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/eventlogging/whitelist.tsv':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/role/mariadb/whitelist.tsv',
+        require => File['/etc/eventlogging'],
+    }
+
     file { '/usr/local/bin/eventlogging_sync.sh':
         ensure => present,
         owner  => 'root',
