@@ -66,9 +66,9 @@ define monitoring::host (
         # We have a BMC, and the BMC is configured and it has an IP address
         if $facts['has_ipmi'] and $facts['ipmi_lan'] and 'ipaddress' in $facts['ipmi_lan'] {
             $mgmt_host = {
-                "${title}.mgmt.${::site}.wmnet" => {
+                "${title}.mgmt" => {
                     ensure                => $ensure,
-                    host_name             => "${title}.mgmt.${::site}.wmnet",
+                    host_name             => "${title}.mgmt",
                     address               => $facts['ipmi_lan']['ipaddress'],
                     hostgroups            => 'mgmt',
                     check_command         => 'check_ping!500,20%!2000,100%',
@@ -119,17 +119,17 @@ define monitoring::host (
     create_resources($rtype, $host)
     if $mgmt_host {
         create_resources($rtype, $mgmt_host)
-        monitoring::service { "dns_${title}.mgmt.${::site}.wmnet":
-            description    => "DNS ${title}.mgmt.${::site}.wmnet",
-            host           => "${title}.mgmt.${::site}.wmnet",
-            check_command  => 'check_fqdn',
+        monitoring::service { "dns_${title}.mgmt":
+            description    => "DNS ${title}.mgmt",
+            host           => "${title}.mgmt",
+            check_command  => "check_fqdn!${title}.mgmt.${::site}.wmnet",
             group          => 'mgmt',
             check_interval => 60,
             retry_interval => 60,
         }
-        monitoring::service { "ssh_${title}.mgmt.${::site}.wmnet":
-            description    => "SSH ${title}.mgmt.${::site}.wmnet",
-            host           => "${title}.mgmt.${::site}.wmnet",
+        monitoring::service { "ssh_${title}.mgmt":
+            description    => "SSH ${title}.mgmt",
+            host           => "${title}.mgmt",
             check_command  => 'check_ssh',
             group          => 'mgmt',
             check_interval => 60,
