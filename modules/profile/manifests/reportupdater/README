@@ -1,0 +1,4 @@
+ReportUpdater is an Analytics owned set of scripts and conventions that make it easier
+for users interested in generating regular reports, usually by running SQL queries and
+outputting publically accessible TSVs.
+
