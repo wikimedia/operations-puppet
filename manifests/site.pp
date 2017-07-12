@@ -1353,7 +1353,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     #   so they need to use the recursive DNS backends directly
     #   (acamar and achernar) with fallback to eqiad
     # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.153.12', '208.80.154.254' ]
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
     role(lvs::balancer)
     lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000;
