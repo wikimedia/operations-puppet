@@ -13,6 +13,7 @@ class role::rancid {
 
     rsync::quickdatacopy { 'var-lib-rancid':
       ensure      => present,
+      auto_sync   => false,
       source_host => 'netmon1002.wikimedia.org',
       dest_host   => 'netmon2001.wikimedia.org',
       module_path => '/var/lib/rancid',
