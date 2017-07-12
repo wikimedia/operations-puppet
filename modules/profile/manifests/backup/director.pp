@@ -13,7 +13,6 @@ class profile::backup::director(
     $dbpass = hiera('profile::backup::director::dbpass'),
 ){
     include ::base::firewall
-    require geowiki::params
 
     class { 'bacula::director':
         sqlvariant          => 'mysql',
@@ -90,9 +89,9 @@ class profile::backup::director(
     bacula::director::fileset { 'a-eventlogging':
         includes => [ '/a/eventlogging' ]
     }
-
+    # TODO change this to /srv after stat1002 is gone. T152712
     bacula::director::fileset { 'a-geowiki-data-private-bare':
-        includes => [ $::geowiki::params::private_data_bare_path ]
+        includes => [ '/a/geowiki/data-private-bare' ]
     }
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
