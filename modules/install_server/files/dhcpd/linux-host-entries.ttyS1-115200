@@ -6172,6 +6172,8 @@ host stat1005 {
 host stat1006 {
     hardware ethernet 30:e1:71:51:54:48;
     fixed-address stat1006.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host tegmen {
