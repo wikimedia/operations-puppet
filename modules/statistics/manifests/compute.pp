@@ -8,8 +8,6 @@ class statistics::compute {
     include ::statistics::dataset_mount
     include ::statistics::packages
 
-    require_package('udp-filter')
-
     $working_path = $::statistics::working_path
     $published_datasets_path = "${working_path}/published-datasets"
     # Create $working_path/published-datasets.  Anything in this directory

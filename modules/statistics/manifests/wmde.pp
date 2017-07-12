@@ -32,16 +32,22 @@ class statistics::wmde {
 
     $wmde_secrets = hiera('wmde_secrets')
 
-    require_package(
-        'php5',
-        'php5-cli',
-    )
 
+
+    # TODO: remove after stat1002/3 is gone: T152712
     if os_version('debian >= stretch') {
         require_package('openjdk-8-jdk')
+        require_package(
+            'php',
+            'php-cli',
+        )
     }
     else {
         require_package('openjdk-7-jdk')
+        require_package(
+            'php5',
+            'php5-cli',
+        )
     }
 
     include ::passwords::mysql::research
