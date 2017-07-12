@@ -490,7 +490,11 @@ if __name__ == '__main__':
             whitelist = {}
 
         # Parse the db my.cnf config file
-        config = configparser.ConfigParser()
+        # my.cn may contain duplicate entries within the same section
+        # (like multiple plugin-load) and also empty statements (not followed by
+        # by any '=') so configparser needs to be relaxed a bit to avoid
+        # unnecessary runtime exceptions.
+        config = configparser.ConfigParser(strict=False, allow_no_value=True)
         config.read(args.my_cnf)
 
         # Priority to the local unix socket, default to username/password
