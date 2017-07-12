@@ -18,4 +18,10 @@ class role::rancid {
       dest_host   => 'netmon2001.wikimedia.org',
       module_path => '/var/lib/rancid',
     }
+
+    $active_server = hiera('netmon_server', 'netmon1002.wikimedia.org')
+
+    class { '::rancid':
+        active_server => $active_server,
+    }
 }
