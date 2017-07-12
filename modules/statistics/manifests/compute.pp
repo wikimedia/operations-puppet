@@ -35,6 +35,7 @@ class statistics::compute {
     # will sync them into /srv/analytics.wikimedia.org/datasets.
     # See: statistics::sites::analytics.
     cron { 'rsync-published-datasets':
+        # TODO: hiera-ize thorium.eqiad.wmnet
         command => "/usr/bin/rsync -rtL --delete ${published_datasets_path}/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
         require => File[$published_datasets_path],
         user    => 'root',

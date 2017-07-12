@@ -2176,6 +2176,16 @@ node 'stat1005.eqiad.wmnet' {
     include ::eventlogging
 }
 
+# stat1006 is a general purpose number cruncher for
+# researchers and analysts.  It is primarily used
+# to connect to MySQL research databases and save
+# query results for further processing on this node.
+# WIP: stat1003 replacement (T152712)
+node 'stat1006.eqiad.wmnet' {
+    role(statistics::cruncher_new)
+}
+
+
 node /^snapshot1001\.eqiad\.wmnet/ {
     role(snapshot::testbed)
     include ::standard
