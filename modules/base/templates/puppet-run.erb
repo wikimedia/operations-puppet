@@ -15,6 +15,18 @@ PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
 # From here out, make a best effort to continue in the face of failure
 set +e
 
+# Splay sleep at the top, so that the remaining lock checks and acquisitions,
+# while not perfect, at least execute reasonably quickly.  The intent of this
+# splay is only to dither the cron execution time anyways, and having it dither
+# before the apt run is probably more helpful than just the agent run at the
+# bottom.  Also, puppet's built-in splay sleep only checks for agent-disable
+# before the sleep (but not after), and does not create the agent lockfile
+# until after the sleep, which creates a wide race window against tools trying
+# to avoid puppet agent concurrency with the "disable and then poll lockfile".
+SLEEPVAL=$(($RANDOM % 60))
+echo "Sleeping $SLEEPVAL for random splay" >> /var/log/puppet.log
+sleep $SLEEPVAL
+
 if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
     PUPPETPID=$(cat $PUPPETLOCK)
     CMDLINE_FILE="/proc/$PUPPETPID/cmdline"
@@ -52,6 +64,4 @@ timeout -k 60 1800 puppet agent \
   --no-daemonize \
   --verbose \
   --show_diff \
-  --splay \
-  --splaylimit 59 \
   >> /var/log/puppet.log 2>&1
