@@ -149,4 +149,16 @@ class profile::lists {
     ferm::rule { 'mailman-spamd-local':
         rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
+
+    class { '::clamav': }
+
+    nrpe::monitor_service{ 'clamd':
+        description  => 'clamd running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C clamd'
+    }
+    nrpe::monitor_service{ 'freshclam':
+        description  => 'freshclam running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u clamav -C freshclam'
+    }
+
 }

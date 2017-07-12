@@ -61,6 +61,9 @@ rfc1413_hosts =
 # Content filtering
 spamd_address = 127.0.0.1 783
 
+# Malware scanning
+av_scanner = clamd:/var/run/clamav/clamd.ctl
+
 # Other
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
@@ -151,6 +154,12 @@ acl_check_data:
 	deny message = This message scored $spam_score spam points.
 		spam = nonexistent/defer_ok
 		condition = ${if >{$spam_score_int}{120}{1}{0}}
+
+	# log warning message if malware is attached (initially)
+	# change warn to discard after validating detection of EICAR file
+	# defer_ok fails open if clamd is down or slower than 2m
+	warn log_message = malware detected ($malware_name)
+		malware = * / defer_ok
 
 	accept
 
