@@ -229,9 +229,9 @@ class role::mariadb::analytics::custom_repl_slave {
 
     file { '/usr/local/bin/eventlogging_cleaner':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
+        owner   => 'eventlogcleaner',
+        group   => 'eventlog',
+        mode    => '0550',
         source  => 'puppet:///modules/role/mariadb/eventlogging_cleaner.py',
         require => Package['python3-pymysql'],
     }
