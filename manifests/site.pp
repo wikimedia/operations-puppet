@@ -1035,6 +1035,7 @@ node 'labtestcontrol2003.wikimedia.org' {
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
     role(labs::puppetmaster::frontend)
+    include ::standard
 }
 
 node 'labtestservices2001.wikimedia.org' {
