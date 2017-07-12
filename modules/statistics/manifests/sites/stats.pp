@@ -3,8 +3,13 @@
 class statistics::sites::stats {
     require ::statistics::web
 
+    # TODO: make this a hiera param.
+    $geowiki_private_data_bare_host = 'stat1003.eqiad.wmnet'
+
+    class { '::geowiki':
+        private_data_bare_host => $geowiki_private_data_bare_host
+    }
     require ::geowiki::private_data
-    include ::geowiki::params
 
     $geowiki_private_directory     = '/srv/stats.wikimedia.org/htdocs/geowiki-private'
     $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
