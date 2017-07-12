@@ -56,6 +56,12 @@ class role::graphite::production {
         keep_days => 15,
     }
 
+    # Stale "servers" data T169972
+    graphite::whisper_cleanup { 'graphite-servers':
+        directory => "${storage_dir}/whisper/servers",
+        keep_days => 60,
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
