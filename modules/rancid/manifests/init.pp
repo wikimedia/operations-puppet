@@ -49,12 +49,19 @@ class rancid {
         content => template('rancid/cloginrc.erb'),
     }
 
-    file { '/etc/cron.d/rancid':
-        require => File['/var/lib/rancid/core'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/rancid/rancid.cron',
+    cron { 'rancid_differ':
+        ensure  => 'present',
+        command => 'SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/lib/rancid/bin/rancid-run',
+        user    => 'rancid',
+        minute  => '1',
+    }
+
+    cron { 'rancid_clean_logs':
+        ensure  => 'present',
+        command => '/usr/bin/find /var/log/rancid -type f -mtime +2 -exec rm {} \;',
+        user    => 'rancid',
+        minute  => '50',
+        hour    => '23',
     }
 
     file { '/var/log/rancid':
