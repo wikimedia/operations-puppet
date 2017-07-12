@@ -37,7 +37,7 @@ define rsync::quickdatacopy(
               ensure => $ensure,
               proto  => 'tcp',
               port   => 873,
-              srange => "@resolve(${dest_host})",
+              srange => "(@resolve((${dest_host})) @resolve((${dest_host}), AAAA))",
           }
 
           rsync::server::module { $title:
