@@ -153,7 +153,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => '1.2.3.4'
         )
-        should_not contain_nagios_host('service.svc.wmnet_mgmt')
+        should_not contain_nagios_host('service.svc.wmnet.mgmt.blabla.wmnet')
       end
     end
     describe 'monitoring a service, with ip_address,parents' do
@@ -170,7 +170,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => '4.3.2.1'
         )
-        should_not contain_nagios_host('service.svc.wmnet_mgmt')
+        should_not contain_nagios_host('service.svc.wmnet.mgmt.blabla.wmnet')
       end
     end
     describe 'monitoring a service, with fqdn' do
@@ -186,7 +186,7 @@ describe 'monitoring::host' do
           'icon_image' => nil,
           'address'    => 'blah.foo.bar'
         )
-        should_not contain_nagios_host('service.svc.wmnet_mgmt')
+        should_not contain_nagios_host('service.svc.wmnet.mgmt.blabla.wmnet')
       end
     end
   end
