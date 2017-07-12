@@ -1,0 +1,10 @@
+# TODO move this to role cruncher T152712
+cluster: analytics
+admin::groups:
+  - statistics-privatedata-users
+  - statistics-admins
+  - statistics-users
+  - researchers
+debdeploy::grains:
+  debdeploy-stat:
+    value: standard

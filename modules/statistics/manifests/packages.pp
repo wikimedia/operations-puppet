@@ -1,10 +1,9 @@
 # = Class: statistics::packages
 # Various packages useful for statistics crunching on stat-type hosts
 class statistics::packages {
-    # include mysql module base class to install mysql client
-    include ::mysql
     include ::geoip
     include ::imagemagick::install
+
 
     require_package([
         'emacs',
@@ -48,6 +47,7 @@ class statistics::packages {
             'php-cli',
             'php-curl',
             'php-mysql',
+            'mariadb-client-10.1',
         )
     }
 
@@ -70,6 +70,7 @@ class statistics::packages {
              'php5-cli',
              'php5-curl',
              'php5-mysql',
+             'mysql-client-5.5',
          )
     }
 

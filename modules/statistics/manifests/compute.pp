@@ -40,11 +40,15 @@ class statistics::compute {
         minute  => '*/30',
     }
 
+    file { "${::statistics::working_path}/mediawiki":
+        ensure    => 'directory',
+        owner     => 'mwdeploy',
+        group     => 'wikidev',
+    }
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.
     # T80444
     $statistics_mediawiki_directory = "${::statistics::working_path}/mediawiki/core"
-
     git::clone { 'statistics_mediawiki':
         ensure    => 'latest',
         directory => $statistics_mediawiki_directory,
