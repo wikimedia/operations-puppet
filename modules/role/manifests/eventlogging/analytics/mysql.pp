@@ -94,7 +94,7 @@ class role::eventlogging::analytics::mysql {
         'eqiad.mediawiki.page-undelete',
         'codfw.mediawiki.page-undelete',
     ]
-    $eventbus_topics_string = join($topics_to_consume, ',')
+    $eventbus_topics_string = join($eventbus_topics_to_consume, ',')
     $kafka_consumer_uri_eventbus = "${kafka_consumer_scheme}/${kafka_brokers_string}?topics=${eventbus_topics_string}"
 
     # Use a separate mysql consumer process to insert eventbus events.
