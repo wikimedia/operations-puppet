@@ -45,15 +45,15 @@ class profile::statistics::private(
     # are rsynced here for convenience and backup redundancy.
     include ::statistics::rsync::eventlogging
 
+    # rsync mediawiki logs from logging hosts
+    include ::statistics::rsync::mediawiki
+
     # TODO: Piecemeal migrate cron jobs from stat1002 -> stat1005: T152712
     if $::hostname == 'stat1002' {
         # TODO remove this after stat1002 is gone: T152712
 
         # backup eventlogging logs.
         backup::set { 'a-eventlogging' : }
-
-        # rsync mediawiki logs from logging hosts
-        include ::statistics::rsync::mediawiki
 
         # WMDE statistics scripts and cron jobs
         include ::statistics::wmde
