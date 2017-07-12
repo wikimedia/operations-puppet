@@ -1530,7 +1530,7 @@ node /^mw118[0-8]\.eqiad\.wmnet$/ {
 }
 
 # mw1189-1208 are api apaches
-node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
+node /^mw1(189|19[0-5]||19[7-9]|20[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
     include ::base::firewall
 }

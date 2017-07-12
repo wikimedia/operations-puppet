@@ -4129,11 +4129,6 @@ host mw1195 {
     fixed-address mw1195.eqiad.wmnet;
 }
 
-host mw1196 {
-    hardware ethernet 90:B1:1C:27:88:D8;
-    fixed-address mw1196.eqiad.wmnet;
-}
-
 host mw1197 {
     hardware ethernet 90:B1:1C:26:E9:CE;
     fixed-address mw1197.eqiad.wmnet;
