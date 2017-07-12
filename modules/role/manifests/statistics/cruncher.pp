@@ -19,13 +19,10 @@ class role::statistics::cruncher inherits role::statistics::base {
     # rsync logs from logging hosts
     include ::statistics::rsync::eventlogging
 
+    # Reportupdater jobs that get data from MySQL analytics slaves
     include ::profile::reportupdater::jobs::mysql
 
-    # geowiki: bringing data from production slave db to research db
-    include geowiki::job::data
-    # geowiki: generate limn files from research db and push them
-    include geowiki::job::limn
-    # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
-    include geowiki::job::monitoring
-
+    # Geowiki jobs that get data from MySQL analytics slave and save the data
+    # in a private locally hosted git repository.
+    include ::profile::geowiki
 }

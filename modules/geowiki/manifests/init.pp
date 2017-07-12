@@ -1,19 +1,27 @@
 # == Class geowiki
 # Clones analytics/geowiki python scripts
 #
-class geowiki {
-    include ::geowiki::params
+class geowiki(
+    $private_data_bare_host,
+    $user                   = 'stats',
+    $path                   = '/srv/geowiki',
+) {
+    $scripts_path           = "${path}/scripts"
+    $private_data_path      = "${path}/data-private"
+    $private_data_bare_path = "${path}/data-private-bare"
+    $public_data_path       = "${path}/data-public"
+    $log_path               = "${path}/logs"
 
-    file { $::geowiki::params::path:
+    file { $path:
         ensure => 'directory',
     }
 
     git::clone { 'geowiki-scripts':
         ensure    => 'latest',
-        directory => $::geowiki::params::scripts_path,
+        directory => $scripts_path,
         origin    => 'https://gerrit.wikimedia.org/r/p/analytics/geowiki.git',
-        owner     => $::geowiki::params::user,
-        group     => $::geowiki::params::user,
-        require   => File[$::geowiki::params::path],
+        owner     => $user,
+        group     => $user,
+        require   => File[$path],
     }
 }

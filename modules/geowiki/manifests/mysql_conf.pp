@@ -3,16 +3,16 @@
 # research mysql instance
 #
 class geowiki::mysql_conf {
-    include ::geowiki::params
+    require ::geowiki
     include ::passwords::mysql::research
 
     $research_mysql_user = $passwords::mysql::research::user
     $research_mysql_pass = $passwords::mysql::research::pass
 
-    $conf_file = "${::geowiki::params::path}/.research.my.cnf"
+    $conf_file = "${::geowiki::path}/.research.my.cnf"
     file { $conf_file:
-        owner   => $::geowiki::params::user,
-        group   => $::geowiki::params::user,
+        owner   => $::geowiki::user,
+        group   => $::geowiki::user,
         mode    => '0400',
         content => "
 [client]
