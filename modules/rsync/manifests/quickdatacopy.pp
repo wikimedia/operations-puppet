@@ -49,7 +49,7 @@ define rsync::quickdatacopy(
 
       if $dest_host == $::fqdn {
 
-          file { "/usr/local/sbin/${title}":
+          file { "/usr/local/sbin/sync-${title}":
               ensure  => $ensure,
               owner   => 'root',
               group   => 'root',
@@ -65,7 +65,7 @@ define rsync::quickdatacopy(
           cron { 'sync-rsync-data':
               ensure  => $cron_ensure,
               minute  => '*/10',
-              command => "/usr/local/sbin/${title} >/dev/null 2>&1",
+              command => "/usr/local/sbin/sync-${title} >/dev/null 2>&1",
           }
       }
 }
