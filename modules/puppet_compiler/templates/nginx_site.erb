@@ -5,8 +5,24 @@ server {
        root <%= scope.lookupvar('::puppet_compiler::workdir') -%>/output;
        index index.html index.htm;
 
-       location / {
+       location = / {
+                autoindex on;
+                try_files $uri $uri/ 404;                              
+       }
+
+       # Old-style urls get treated as usual
+       location ~ ^/\d+/.* {
                 autoindex on;
                 try_files $uri $uri/ 404;
+       }
+
+       # New-style urls that are local should be served locally
+       location /<%= @hostname %> {
+                rewrite ^/<%= @hostname %>/(.*)$ /$1 last;
+       }
+
+       # Proxy-pass the request to the host specified.
+       location ~ ^/(?<host>compiler\d+)/.*$ {
+                proxy_pass http://$host
        }
 }
