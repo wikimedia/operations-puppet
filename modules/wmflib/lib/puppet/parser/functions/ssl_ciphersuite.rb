@@ -165,8 +165,10 @@ END
     # OS / Server -dependant feature flags:
     nginx_always_ok = true
     dhe_ok = true
+    libssl_has_x25519 = true
     if !function_os_version(['debian >= jessie'])
       nginx_always_ok = false
+      libssl_has_x25519 = false
       if server == 'apache'
         dhe_ok = false
       end
@@ -194,6 +196,7 @@ END
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
       output.push("SSLCipherSuite #{cipherlist}")
+      # Note: missing config to restrict ECDH curves
       output.push('SSLHonorCipherOrder On')
       if dhe_ok
         output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
@@ -208,6 +211,11 @@ END
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
       output.push("ssl_ciphers #{cipherlist};")
+      if libssl_has_x25519
+        output.push("ssl_ecdh_curve X25519:prime256v1;")
+      else
+        output.push("ssl_ecdh_curve prime256v1;")
+      end
       output.push('ssl_prefer_server_ciphers on;')
       if dhe_ok
         output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
