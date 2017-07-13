@@ -2,6 +2,7 @@ class role::cache::misc {
     include role::cache::base
     include role::cache::ssl::unified
 
+    class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
     class { 'varnish::htcppurger':
