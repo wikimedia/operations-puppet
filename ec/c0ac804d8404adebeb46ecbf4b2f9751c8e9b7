@@ -1,0 +1,10 @@
+Code-Review+1: Addshore <addshorewiki@gmail.com>
+Code-Review+1: Legoktm <legoktm@member.fsf.org>
+Code-Review+1: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Thu, 13 Jul 2017 20:45:42 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/364469
+Project: operations/puppet
+Branch: refs/heads/production
