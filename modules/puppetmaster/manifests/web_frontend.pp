@@ -29,7 +29,7 @@ define puppetmaster::web_frontend(
     $alt_names=undef,
 ){
     $server_name = $title
-    $ssldir = '/var/lib/puppet/ssl'
+    $ssldir = '/var/lib/puppet/server/ssl'
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
     if $server_name != $::fqdn {
