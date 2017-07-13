@@ -1,7 +1,16 @@
+# Shared profile for front- and back-end puppetmasters.
+#
+# $config:  Dict merged with front- or back- specifics and then passed
+#           to ::puppetmaster as $config
+#
+# $directory_environments: boolean, when True adds boilerplate environment config
+#
+# $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
+
 class profile::puppetmaster::common (
     $base_config,
     $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
-    $use_puppetdb = hiera('profile::puppetmaster::common::use_puppetdb', false),
+    $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
 ) {
     include passwords::puppet::database
 
@@ -35,14 +44,15 @@ class profile::puppetmaster::common (
         reports              => 'servermon',
     }
 
-    if $use_puppetdb {
+    if $storeconfigs == 'puppetdb' {
         $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
         class { 'puppetmaster::puppetdb::client':
             host => $puppetdb_host,
         }
         $config = merge($base_config, $puppetdb_config, $active_record_db, $env_config)
-    }
-    else {
-        $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
+    } elsif $storeconfigs == 'activerecord' {
+            $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
+    } else {
+            $config = merge($base_config, $env_config, {'thin_storeconfigs' => true} )
     }
 }
