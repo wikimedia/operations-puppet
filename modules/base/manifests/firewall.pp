@@ -1,5 +1,5 @@
 # Don't include this sub class on all hosts yet
-# NOTE: Policy is DROP by default
+# NOTE: Policy is DROP by default.  If $ensure => absent, expected Policy is ACCEPT
 class base::firewall($ensure = 'present') {
     include ::network::constants
     include ::ferm
@@ -83,10 +83,15 @@ class base::firewall($ensure = 'present') {
         mode   => '0555',
     }
 
+    $expected_input_policy = $ensure ? {
+        'present' => 'DROP',
+        default   => 'ACCEPT',
+    },
+
     nrpe::monitor_service { 'ferm_active':
         ensure        => 'present',
         description   => 'Check whether ferm is active by checking the default input chain',
-        nrpe_command  => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
+        nrpe_command  => "/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm ${expected_input_policy}",
         require       =>  [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
         contact_group => 'admins',
     }
