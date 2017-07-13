@@ -83,6 +83,9 @@ profile::cassandra::instances:
   "restbase-dev1001.eqiad.wmnet":
     a:
       listen_address: 10.64.0.36
+      data_file_directories:
+        - data
+        - data_0
     b:
       listen_address: 10.64.0.37
   "restbase-dev1002.eqiad.wmnet":
