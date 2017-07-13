@@ -1,6 +1,7 @@
 class profile::puppetmaster::common (
     $base_config,
     $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
+    $use_puppetdb = hiera('profile::puppetmaster::common::use_puppetdb', false),
 ) {
     include passwords::puppet::database
 
@@ -34,10 +35,8 @@ class profile::puppetmaster::common (
         reports              => 'servermon',
     }
 
-    $use_puppetdb = hiera('puppetmaster::config::use_puppetdb', false)
-
     if $use_puppetdb {
-        $puppetdb_host = hiera('puppetmaster::config::puppetdb_host')
+        $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
         class { 'puppetmaster::puppetdb::client':
             host => $puppetdb_host,
         }

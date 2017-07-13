@@ -11,3 +11,4 @@ profile::base::domain_search:
   - ulsfo.wmnet
 cluster: puppet
 profile::puppetmaster::common::directory_environments: true
+profile::puppetmaster::common::use_puppetdb: true
