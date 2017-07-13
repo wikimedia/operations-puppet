@@ -84,7 +84,7 @@ class base::firewall($ensure = 'present') {
     }
 
     nrpe::monitor_service { 'ferm_active':
-        ensure        => 'present',
+        ensure        => $ensure,
         description   => 'Check whether ferm is active by checking the default input chain',
         nrpe_command  => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
         require       =>  [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
