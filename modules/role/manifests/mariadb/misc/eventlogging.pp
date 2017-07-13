@@ -30,16 +30,18 @@ class role::mariadb::misc::eventlogging(
     include mariadb::packages_wmf
     include mariadb::service
 
-    $read_only = $master ? {
-        true  => 0,
-        false => 1,
-    }
 
+    # History context: there used to be a distinction between
+    # EL master and slaves, namely that only the master was not
+    # in read only mode. The Analytics team removed this constraint
+    # before deploying the eventlogging_cleaner script (T156933),
+    # that needed to DELETE/UPDATE rows on the job database without
+    # running as root for obvious reasons.
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
-        read_only     => $read_only,
+        read_only     => 0,
         ssl           => 'puppet-cert',
         p_s           => 'off',
         binlog_format => 'MIXED',
