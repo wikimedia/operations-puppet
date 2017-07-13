@@ -1,6 +1,6 @@
 # === Class puppet_compiler::web
 #
-class puppet_compiler::web($ensure='present') {
+class puppet_compiler::web($ensure='present', $host_regex = 'compiler\d+',) {
     nginx::site {'puppet-compiler':
         ensure  => $ensure,
         content => template('puppet_compiler/nginx_site.erb'),
