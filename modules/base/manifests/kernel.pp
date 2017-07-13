@@ -68,3 +68,33 @@ class base::kernel
         }
     }
 }
+
+define base::kernel::module($ensure=present) {
+    case $ensure {
+        'present': {
+            file { "/etc/modules-load.d/${name}.conf":
+                ensure  => present,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => "${name}\n",
+                require => File['/etc/modules-load.d/'],
+                notify  => Exec["modprobe ${name}"],
+            }
+
+            exec { "modprobe ${name}":
+                unless => "/bin/lsmod | /bin/grep -q '^${name}'",
+            }
+        }
+        'absent': {
+            file { "/etc/modules-load.d/${name}.conf":
+                ensure => absent,
+                notify => Exec["modprobe -r ${name}"],
+            }
+
+            exec { "modprobe -r ${name}":
+                onlyif => "/bin/lsmod | /bin/grep -q '^${name}'",
+            }
+        }
+    }
+}
