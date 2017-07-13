@@ -436,6 +436,7 @@ if __name__ == '__main__':
 
     log.addHandler(stdout_h)
     log.addHandler(stderr_h)
+    log.setLevel(logging.DEBUG)
 
     # Args basic checks
     if args.no_whitelist and args.whitelist:
