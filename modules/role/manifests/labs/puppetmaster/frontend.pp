@@ -26,6 +26,8 @@ class role::labs::puppetmaster::frontend() {
     include ::profile::conftool::client
     include ::profile::conftool::master
 
+    include puppetmaster::labsrootpass
+
     # config-master.wikimedia.org
     include ::profile::configmaster
     include ::profile::discovery::client

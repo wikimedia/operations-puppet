@@ -11,6 +11,8 @@ class role::labs::puppetmaster::backend {
     include ::profile::puppetmaster::labsenc
     include ::profile::puppetmaster::labsencapi
 
+    include puppetmaster::labsrootpass
+
     $config = {
         'node_terminus'     => 'exec',
         'external_nodes'    => '/usr/local/bin/puppet-enc',
