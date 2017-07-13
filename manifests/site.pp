@@ -1036,6 +1036,7 @@ node 'labtestcontrol2003.wikimedia.org' {
 node 'labtestpuppetmaster2001.wikimedia.org' {
     role(labs::puppetmaster::frontend)
     include ::standard
+    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
