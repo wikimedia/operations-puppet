@@ -11,6 +11,12 @@ class labspuppetbackend(
                     'python3-flask',
                     'python3-yaml')
 
+    if os_version('|| debian >= jessie') {
+        require_package('python-flask',
+                        'python-pymysql',
+                        'python-statsd',
+                        'python-yaml')
+
 
     file { '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py':
         source => 'puppet:///modules/labspuppetbackend/labspuppetbackend.py',
