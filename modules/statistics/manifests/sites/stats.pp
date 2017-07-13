@@ -12,7 +12,7 @@ class statistics::sites::stats {
     require ::geowiki::private_data
 
     $wikistats_web_directory       = '/srv/stats.wikimedia.org'
-    $wikistats_v2_link             = "${wikistats_web_directory}/v2"
+    $wikistats_v2_link             = "${wikistats_web_directory}/htdocs/v2"
     $source_directory              = '/srv/src'
     $wikistats_source_directory    = '/srv/src/wikistats-v2'
     $geowiki_private_directory     = "${wikistats_web_directory}/htdocs/geowiki-private"
