@@ -119,7 +119,7 @@ class icinga(
         atboot  => true,
         fstype  => 'tmpfs',
         device  => 'none',
-        options => 'size=128m,uid=icinga,gid=icinga,mode=755',
+        options => 'size=1024m,uid=icinga,gid=icinga,mode=755',
         require => File['/var/icinga-tmpfs'],
     }
     # Fix the ownerships of some files. This is ugly but will do for now
