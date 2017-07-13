@@ -1,5 +1,6 @@
 cluster: cache_misc
 cache::cluster: misc
+cache::lua_support: true
 prometheus::node_exporter::collectors_extra:
   - qdisc
 # note this only affects tlsproxy now, should be moved to param there...
