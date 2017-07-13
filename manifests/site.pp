@@ -1054,6 +1054,7 @@ node 'labtestservices2001.wikimedia.org' {
         labs::dns_floating_ip_updater)
     include ::standard
     include ::base::firewall
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /labtestservices200[23]\.wikimedia\.org/ {
@@ -1064,6 +1065,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 node /labweb100[12]\.wikimedia\.org/ {
     include ::base::firewall
     include ::standard
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Primary graphite machines
