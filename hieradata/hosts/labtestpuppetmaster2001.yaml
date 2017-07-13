@@ -11,6 +11,7 @@ profile::puppetmaster::labsencapi::statsd_host: labmon1001.eqiad.wmnet
 profile::puppetmaster::labsencapi::statsd_prefix: labtest.puppetbackend
 
 profile::puppetmaster::common::use_puppetdb: false
+profile::puppetmaster::common::use_active_record: false
 
 puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
 

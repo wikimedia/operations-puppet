@@ -2,6 +2,7 @@ class profile::puppetmaster::common (
     $base_config,
     $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
     $use_puppetdb = hiera('profile::puppetmaster::common::use_puppetdb', false),
+    $use_active_record = hiera('profile::puppetmaster::common::use_active_record', true),
 ) {
     include passwords::puppet::database
 
@@ -43,6 +44,10 @@ class profile::puppetmaster::common (
         $config = merge($base_config, $puppetdb_config, $active_record_db, $env_config)
     }
     else {
-        $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
+        if $use_active_record {
+            $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
+        } else {
+            $config = merge($base_config, $env_config, {'thin_storeconfigs' => true} )
+        }
     }
 }
