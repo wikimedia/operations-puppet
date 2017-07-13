@@ -17,12 +17,14 @@ server {
        }
 
        # New-style urls that are local should be served locally
-       location /<%= @hostname %> {
+       # The ^~ operator ensures the regex below is not evaluated.
+       location ^~ /<%= @hostname %> {
                 rewrite ^/<%= @hostname %>/(.*)$ /$1 last;
        }
 
        # Proxy-pass the request to the host specified.
        location ~ ^/(?<fwd_host><%= @host_regex %>)/.*$ {
-                proxy_pass http://$fwd_host;
+                resolver <%= scope.lookupvar('::nameservers')[0] %>;
+                proxy_pass http://$fwd_host.<%= @domain %>;
        }
 }
