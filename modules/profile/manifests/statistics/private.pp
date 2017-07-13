@@ -4,6 +4,12 @@ class profile::statistics::private(
     $statistics_servers = hiera('statistics_servers'),
 ) {
     include ::standard
+    # Can't include base firewall on statistics private boxes.
+    # Hadoop clients (like spark) can start up CLIs that interact
+    # with Hadoop via ephemeral ports.
+    class { '::base::firewall':
+        ensure => 'absent'
+    }
 
     include ::deployment::umask_wikidev
 
