@@ -1010,9 +1010,13 @@ node 'labtestcontrol2001.wikimedia.org' {
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
     $horizon = ipresolve(hiera('labs_horizon_host'),4)
     $wikitech = ipresolve(hiera('labs_osm_host'),4)
+    $puppetmaster = ipresolve('labtestpuppetmaster2001.wikimedia.org'),4)
     $fwrules = {
         mysql_designate => {
             rule  => "saddr ${designate} proto tcp dport (3306) ACCEPT;",
+        },
+        mysql_puppetmaster => {
+            rule  => "saddr ${puppetmaster} proto tcp dport (3306) ACCEPT;",
         },
         mysql_horizon => {
             rule  => "saddr ${horizon} proto tcp dport (3306) ACCEPT;",
