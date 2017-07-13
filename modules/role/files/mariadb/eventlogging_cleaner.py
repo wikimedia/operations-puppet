@@ -60,6 +60,15 @@ COMMON_PERSISTENT_FIELDS = ('id', 'uuid', 'timestamp')
 log = logging.getLogger(__name__)
 
 
+class MaxLevelFilter(logging.Filter):
+
+    def __init__(self, level):
+        self.level = level
+
+    def filter(self, record):
+        return record.levelno < self.level
+
+
 class Database(object):
 
     def __init__(self, db_host, db_name, db_user, db_password=None,
@@ -402,9 +411,6 @@ if __name__ == '__main__':
                         ' (default: 91)')
     parser.add_argument('--dry-run', dest='dry_run', action='store_true',
                         help='Only print sql commands without executing them')
-    parser.add_argument('--logfile', dest='logfile', default=None,
-                        help='Redirect the script\'s output to a file rather '
-                             'than stdout')
     parser.add_argument('--batch-size', dest='batch_size', default=1000, type=int,
                         help='Maximum number of DB rows to update/delete in one go.'
                              ' (default: 1000)')
@@ -419,20 +425,17 @@ if __name__ == '__main__':
                              'option is preferred). Default: /etc/my.cnf')
     args = parser.parse_args()
 
-    log_format = ('%(levelname)s: line %(lineno)d: %(message)s')
+    log_format = logging.Formatter('%(levelname)s: line %(lineno)d: %(message)s')
+    stdout_h = logging.StreamHandler(sys.stdout)
+    stdout_h.addFilter(MaxLevelFilter(logging.WARNING))
+    stdout_h.setFormatter(log_format)
 
-    if args.logfile:
-        logging.basicConfig(
-            filename=args.logfile,
-            level=logging.INFO,
-            format=log_format
-        )
-    else:
-        logging.basicConfig(
-            stream=sys.stdout,
-            level=logging.INFO,
-            format=log_format
-        )
+    stderr_h = logging.StreamHandler(sys.stderr)
+    stderr_h.setLevel(logging.ERROR)
+    stderr_h.setFormatter(log_format)
+
+    log.addHandler(stdout_h)
+    log.addHandler(stderr_h)
 
     # Args basic checks
     if args.no_whitelist and args.whitelist:
