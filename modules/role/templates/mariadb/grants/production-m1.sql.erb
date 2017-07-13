@@ -112,4 +112,6 @@ GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT,
 SELECT, TRIGGER, UPDATE
     ON `puppet`.* TO 'servermon'@'10.64.16.159';
 
-
+-- rddmarc
+GRANT ALTER, CREATE, SELECT, INSERT, UPDATE, DELETE
+    ON rddmarc.* TO 'rddmarc'@'<missing ip>' IDENTIFIED BY '<%=@rddmark_pass%>';
