@@ -4,7 +4,6 @@ class profile::statistics::private(
     $statistics_servers = hiera('statistics_servers'),
 ) {
     include ::standard
-    include ::base::firewall
 
     include ::deployment::umask_wikidev
 
