@@ -2682,6 +2682,16 @@ host labnet1002 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host labnet1003 {
+    hardware ethernet 30:e1:71:60:52:40;
+    fixed-address labnet1003.eqiad.wmnet;
+}
+
+host labnet1004 {
+    hardware ethernet 30:e1:71:60:42:20;
+    fixed-address labnet1004.eqiad.wmnet;
+}
+
 host labnodepool1001 {
     hardware ethernet 84:2b:2b:fd:be:fd;
     fixed-address labnodepool1001.eqiad.wmnet;

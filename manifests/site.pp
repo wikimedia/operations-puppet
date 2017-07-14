@@ -1235,6 +1235,12 @@ node 'labnet1001.eqiad.wmnet' {
     include ::standard
 }
 
+node /labnet1001[34]\.eqiad\.wmnet/ {
+    include ::standard
+    include ::base::firewall
+}
+
+
 node 'labnet1002.eqiad.wmnet' {
     role(labs::openstack::nova::api)
     include ::standard
