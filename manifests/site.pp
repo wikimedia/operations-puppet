@@ -1055,6 +1055,11 @@ node /labtestservices200[23]\.wikimedia\.org/ {
     include ::standard
 }
 
+node /labweb100[12]\.wikimedia\.org/ {
+    include ::base::firewall
+    include ::standard
+}
+
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
     role(graphite::production, statsd, performance::site, graphite::alerts,
