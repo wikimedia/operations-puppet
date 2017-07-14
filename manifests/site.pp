@@ -970,6 +970,12 @@ node 'kraz.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+
+node /labpuppetmaster100[12]\.wikimedia\.org/ {
+    include ::standard
+    include ::base::firewall
+}
+
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
     role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor,
