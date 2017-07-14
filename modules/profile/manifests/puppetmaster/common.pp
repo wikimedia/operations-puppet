@@ -5,7 +5,8 @@
 #
 # $directory_environments: boolean, when True adds boilerplate environment config
 #
-# $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
+# $storeconfigs: Accepts values of 'puppetdb', 'activerecord',
+#  'thin', and 'none'
 
 class profile::puppetmaster::common (
     $base_config,
@@ -51,8 +52,10 @@ class profile::puppetmaster::common (
         }
         $config = merge($base_config, $puppetdb_config, $active_record_db, $env_config)
     } elsif $storeconfigs == 'activerecord' {
-            $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
+        $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
+    } elseif $storeconfigs == 'thin' {
+        $config = merge($base_config, $env_config, {'thin_storeconfigs' => true} )
     } else {
-            $config = merge($base_config, $env_config, {'thin_storeconfigs' => true} )
+        $config = merge($base_config, $env_config)
     }
 }
