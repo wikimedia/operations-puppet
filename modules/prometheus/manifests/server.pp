@@ -60,6 +60,7 @@ define prometheus::server (
     $scrape_configs_extra = [],
     $rule_files_extra = [],
     $alertmanager_url = undef,
+    $external_url = "http://prometheus/${title}",
 ) {
     include ::prometheus
 
@@ -71,7 +72,6 @@ define prometheus::server (
       'scrape_interval' => $scrape_interval,
     }
     $global_config = merge($global_config_default, $global_config_extra)
-    $external_url = "http://prometheus/${title}"
     $metrics_path = "${base_path}/metrics"
     $targets_path = "${base_path}/targets"
     $service_name = "prometheus@${title}"
