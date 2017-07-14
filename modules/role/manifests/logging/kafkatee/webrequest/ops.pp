@@ -23,9 +23,15 @@ class role::logging::kafkatee::webrequest::ops {
         type        => 'pipe',
     }
 
-    # Send 5xx to logstash, append "type: webrequest" for logstash to pick up
+    # Send 5xx and 4xx (but not 404s due to volume) to logstash
+    # Append "type: webrequest" to JSON records for logstash to pick up
     kafkatee::output { 'logstash-5xx':
         destination => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | socat - TCP:${logstash_host}:${logstash_port}",
+        type        => 'pipe',
+    }
+
+    kafkatee::output { 'logstash-4xx':
+        destination => "/bin/grep --extended-regexp --line-buffered '\"http_status\":\"4(0[^4]|[1-9][0-9])' | jq --compact-output --arg type webrequest '. + {type: \$type}' | socat - TCP:${logstash_host}:${logstash_port}",
         type        => 'pipe',
     }
 }
