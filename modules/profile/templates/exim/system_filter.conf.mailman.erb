@@ -17,3 +17,8 @@ if foranyaddress $h_To:,$h_Cc: ( $thisaddress matches "\\N^(<%= scope.lookupvar(
 		fail text "Message rejected for privacy protection: The list of recipients contains both private and public mail lists"
 	endif
 endif
+
+# Filter spam observed from qq.com with matching subject.
+if $header_subject: contains "只要投紸荭宝天天" and $header_from: ends "qq.com" then
+        fail text "Message rejected"
+endif
