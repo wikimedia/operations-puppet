@@ -11,3 +11,40 @@ modules:
   icmp:
     prober: icmp
     timeout: 5s
+  http_connect:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      no_follow_redirects: false
+      fail_if_ssl: true
+  https_connect:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      no_follow_redirects: false
+      fail_if_not_ssl: true
+      tls_config:
+        insecure_skip_verify: false
+  # Check for a MediaWiki page, hosted by WMF
+  https_mediawiki:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      no_follow_redirects: false
+      fail_if_not_ssl: true
+      fail_if_not_matches_regexp:
+        - 'href="https://(m\.)?wikimediafoundation.org/wiki/Terms_of_Use"'
+      tls_config:
+        insecure_skip_verify: false
+  # Mimick check_http_url_at_address_for_string!tools.wmflabs.org!/!Magnus
+  http_tools:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      no_follow_redirects: false
+      fail_if_not_matches_regexp:
+        - 'Magnus'
