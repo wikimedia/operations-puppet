@@ -19,7 +19,8 @@ class ores::base(
     # Spellcheck packages for supported languages
     # NOTE: aspell-id is imported in our apt:
     # https://apt.wikimedia.org/wikimedia/pool/thirdparty/a/aspell-id/
-    require_package('aspell-ar', 'aspell-id', 'aspell-pl', 'aspell-sv',
+    require_package('aspell-ar', 'aspell-el', 'aspell-id', 'aspell-pl',
+                    'aspell-sv',
                     'aspell-ro',
                     'hunspell-vi',
                     'myspell-cs',
