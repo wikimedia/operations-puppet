@@ -1060,6 +1060,7 @@ node 'labtestservices2001.wikimedia.org' {
 node /labtestservices200[23]\.wikimedia\.org/ {
     include ::base::firewall
     include ::standard
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
