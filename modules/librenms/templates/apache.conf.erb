@@ -1,10 +1,10 @@
 <VirtualHost *:80>
-    ServerName librenms.wikimedia.org
+    ServerName <%= @sitename %>
     ServerAdmin noc@wikimedia.org
     Include /etc/acme/challenge-apache.conf
     RewriteEngine on
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
-    RewriteRule ^/(.*)$ https://<%= @site_name %>/$1 [L,R=301]
+    RewriteRule ^/(.*)$ https://<%= @sitename %>/$1 [L,R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
