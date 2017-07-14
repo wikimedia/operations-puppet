@@ -53,6 +53,6 @@ class profile::puppetmaster::common (
     } elsif $storeconfigs == 'activerecord' {
             $config = merge($base_config, $activerecord_config, $active_record_db, $env_config)
     } else {
-            $config = merge($base_config, $env_config, {'thin_storeconfigs' => true} )
+            $config = merge($base_config, $env_config)
     }
 }
