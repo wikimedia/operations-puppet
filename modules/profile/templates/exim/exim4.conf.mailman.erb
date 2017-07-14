@@ -146,11 +146,12 @@ acl_check_data:
 		condition = ${if >{$spam_score_int}{10}{1}{0}}
 		set acl_m0 = $spam_score ($spam_bar)
 		set acl_m1 = $spam_report
+		log_message = Spam-score: $spam_score
 
-	# Reject spam at high scores (> 12)
+	# Reject spam at high scores (> 6)
 	deny message = This message scored $spam_score spam points.
 		spam = nonexistent/defer_ok
-		condition = ${if >{$spam_score_int}{120}{1}{0}}
+		condition = ${if >{$spam_score_int}{60}{1}{0}}
 
 	accept
 
