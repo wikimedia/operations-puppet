@@ -1785,7 +1785,7 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
-    role(network::monitor, librenms, servermon::wmf)
+    role(network::monitor, librenms)
 
     interface::add_ip6_mapped { 'main': }
 }
