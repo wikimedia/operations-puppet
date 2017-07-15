@@ -239,7 +239,7 @@ cache::req_handling:
   scholarships.wikimedia.org:
     director: 'krypton'
   servermon.wikimedia.org:
-    director: 'netmon1001'
+    director: 'netmon1003'
   smokeping.wikimedia.org:
     director: 'netmon1002'
   static-bugzilla.wikimedia.org:
