@@ -19,6 +19,11 @@ if foranyaddress $h_To:,$h_Cc: ( $thisaddress matches "\\N^(<%= scope.lookupvar(
 endif
 
 # Filter spam observed from qq.com with matching subject.
-if $header_subject: contains "只要投紸荭宝天天" and $header_from: ends "qq.com" then
-        fail text "Message rejected"
+if $header_subject: contains "只要投紸荭宝天天" and $header_from: contains "@qq.com" then
+        fail text "Message rejected ref1"
+endif
+
+# Filter spam observed from qq.com with matching subject.
+if $header_subject: matches "8。COM.*天天" and $header_from: contains "@qq.com" then
+        fail text "Message rejected ref2"
 endif
