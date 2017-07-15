@@ -290,6 +290,7 @@ labtest:
     public_port: '5000'
     db_host: 'labtestcontrol2001.wikimedia.org'
     ldap_host: 'labtestservices2001.wikimedia.org'
+    ldap_host_secondary: 'labtestservices2001.wikimedia.org'
     token_driver: 'normal'
     auth_port: '35357'
     auth_protocol: 'http'

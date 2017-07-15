@@ -371,6 +371,7 @@ keystoneconfig:
   public_port: '5000'
   db_host: 'm5-master.eqiad.wmnet'
   ldap_host: 'ldap-labs.eqiad.wikimedia.org'
+  ldap_host_secondary: 'ldap-labs.codfw.wikimedia.org'
   token_driver: 'normal'
 
 glanceconfig:

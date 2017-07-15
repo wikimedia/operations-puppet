@@ -377,7 +377,7 @@ driver = rules
 #token_format = PKI
 
 [ldap]
-url = ldap://<%= @keystoneconfig["ldap_host"] %>
+url = ldap://<%= @keystoneconfig["ldap_host"] %>,ldap://<%= @keystoneconfig["ldap_host_secondary"] %>
 tree_dn = <%= @keystoneconfig["ldap_base_dn"] %>
 user_tree_dn = ou=people,<%= @keystoneconfig["ldap_base_dn"] %>
 user_id_attribute = <%= @keystoneconfig["ldap_user_id_attribute"] %>
