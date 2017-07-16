@@ -9,4 +9,13 @@ User=<%= @username %>
 StandardOutput=journal+console
 Restart=always
 
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=full
+ProtectHome=yes
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadOnlyDirectories=/
+ReadWriteDirectories=/tmp /var/tmp /var/log/wdqs <%= @package_dir %>
+
 [Install]
