@@ -9,4 +9,19 @@ User=<%= @username %>
 StandardOutput=journal+console
 Restart=always
 
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=full
+ProtectHome=yes
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+ReadOnlyDirectories=/
+# data storage
+ReadWriteDirectories=/srv/wdqs
+# logs
+ReadWriteDirectories=/var/log/wdqs
+# already protected by PrivateTmp
+ReadWriteDirectories=/tmp /var/tmp
+
 [Install]
