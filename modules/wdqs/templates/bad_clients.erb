@@ -1,0 +1,5 @@
+real_ip_header X-Client-IP;
+set_real_ip_from 10.0.0.0/8;
+<% @bad_clients.each do |client| -%>
+deny <%= client %>;
+<% end -%>
