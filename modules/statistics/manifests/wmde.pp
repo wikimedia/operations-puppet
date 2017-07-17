@@ -125,7 +125,7 @@ class statistics::wmde {
     # Note: some of the scripts run by this cron need access to secrets!
     # Docs can be seen at https://github.com/wikimedia/analytics-wmde-scripts/blob/master/README.md
     cron { 'daily.03':
-        command => "${scripts_dir}/cron/daily.03.sh ${scripts_dir} >> ${log_dir}/daily.03.log 2>&1",
+        command => "time ${scripts_dir}/cron/daily.03.sh ${scripts_dir} >> ${log_dir}/daily.03.log 2>&1",
         hour    => '3',
         minute  => '0',
         require => [
@@ -136,7 +136,7 @@ class statistics::wmde {
     }
 
     cron { 'daily.12':
-        command => "${scripts_dir}/cron/daily.12.sh ${scripts_dir} >> ${log_dir}/daily.12.log 2>&1",
+        command => "time ${scripts_dir}/cron/daily.12.sh ${scripts_dir} >> ${log_dir}/daily.12.log 2>&1",
         hour    => '12',
         minute  => '0',
         require => [
@@ -146,7 +146,7 @@ class statistics::wmde {
     }
 
     cron { 'weekly':
-        command => "${scripts_dir}/cron/weekly.sh ${scripts_dir} >> ${log_dir}/weekly.log 2>&1",
+        command => "time ${scripts_dir}/cron/weekly.sh ${scripts_dir} >> ${log_dir}/weekly.log 2>&1",
         weekday => '7',
         hour    => '01',
         minute  => '0',
@@ -157,7 +157,7 @@ class statistics::wmde {
     }
 
     cron { 'wmde/toolkit-analyzer-build':
-        command => "java -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
+        command => "time java -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
         hour    => '12',
         minute  => '0',
     }
