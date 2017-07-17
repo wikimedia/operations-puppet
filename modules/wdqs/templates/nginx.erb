@@ -54,6 +54,8 @@ server {
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
     location ~ ^/bigdata/(namespace/wdq/sparql|ldf|assets) {
+        include /etc/nginx/bad_clients.conf;
+
         if ( $uri ~ ^/bigdata/assets ) {
             add_header Cache-Control "public, max-age=604800, s-maxage=604800";
         }

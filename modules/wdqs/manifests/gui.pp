@@ -12,9 +12,15 @@ class wdqs::gui(
     $package_dir = $::wdqs::package_dir,
     $port = 80,
     $additional_port = 8888,
+    $bad_clients = undef,
 ) {
+    file { '/etc/nginx/bad_clients.conf':
+        content => template('wdqs/bad_clients.erb'),
+    }
+
     ::nginx::site { 'wdqs':
         content => template('wdqs/nginx.erb'),
+        require => File['/etc/nginx/bad_clients.conf']
     }
 
     # The directory for operator-controlled nginx flags
