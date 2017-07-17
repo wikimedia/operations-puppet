@@ -67,6 +67,10 @@ class role::logstash::collector (
         port => 12201,
     }
 
+    logstash::input::json { 'json':
+        port => 12202,
+    }
+
     ferm::service { 'logstash_gelf':
         proto   => 'udp',
         port    => '12201',
@@ -179,6 +183,11 @@ class role::logstash::collector (
     logstash::conf { 'filter_de_dot':
         source   => 'puppet:///modules/role/logstash/filter-de_dot.conf',
         priority => 70,
+    }
+
+    logstash::conf { 'filter_thumbor':
+        source   => 'puppet:///modules/role/logstash/filter-thumbor.conf',
+        priority => 20,
     }
 
     ## Outputs (90)
