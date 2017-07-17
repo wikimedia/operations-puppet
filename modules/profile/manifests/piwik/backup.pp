@@ -21,7 +21,7 @@ class profile::piwik::backup (
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => "[client]\nuser=${backup_username}\npassword=${backup_password}\n",
+        content => "[client]\nuser=${backup_username}\npassword=\'${backup_password}\'\n",
     }
 
     cron { 'delete_old_backups':
