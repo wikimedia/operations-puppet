@@ -135,7 +135,7 @@ class aptrepo (
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/aptrepo/log',
+        content => template('aptrepo/log.erb'),
     }
 
     file { "${basedir}/db":
