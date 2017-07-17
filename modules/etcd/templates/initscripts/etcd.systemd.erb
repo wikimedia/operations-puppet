@@ -5,7 +5,7 @@ Description=etcd
 User=etcd
 PermissionsStartOnly=true
 LimitNOFILE=infinity
-Environment=ETCD_DATA_DIR=<%= @etcd_data_dir %>
+Environment=ETCD_DATA_DIR=<%= @etcd::etcd_data_dir %>
 Environment=ETCD_NAME=<%= @hostname %>
 <% if @cluster_state -%>
 Environment="ETCD_INITIAL_CLUSTER_STATE=<%= @cluster_state %>"
