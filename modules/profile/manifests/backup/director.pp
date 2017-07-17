@@ -85,9 +85,15 @@ class profile::backup::director(
     bacula::director::fileset { 'a-backup':
         includes => [ '/a/backup' ]
     }
-    # TODO: remove this backup set after stat1002 is gone. T152712
+
+    # TODO: remove backup set a-eventlogging.  eventlogging data logs
+    # for backup have been moved to /srv/log/eventlogging on stat1005 as part of
+    # T152712
     bacula::director::fileset { 'a-eventlogging':
         includes => [ '/a/eventlogging' ]
+    }
+    bacula::director::fileset { 'srv-log-eventlogging':
+        includes => [ '/srv/log/eventlogging' ]
     }
     bacula::director::fileset { 'a-geowiki-data-private-bare':
         includes => [ '/srv/geowiki/data-private-bare' ]

@@ -55,11 +55,6 @@ class profile::statistics::private(
 
     # TODO: Piecemeal migrate cron jobs from stat1002 -> stat1005: T152712
     if $::hostname == 'stat1002' {
-        # TODO remove this after stat1002 is gone: T152712
-
-        # backup eventlogging logs.
-        backup::set { 'a-eventlogging' : }
-
         # TODO: Otto believes this data and job are no longer being used.
         # Let's not migrate it to stat1005 unless someone needs it.
         # Although it is in the "private" profile, the dataset actually isn't
@@ -72,6 +67,9 @@ class profile::statistics::private(
 
     # Else moved to stat1005
     else {
+        # backup eventlogging logs.
+        backup::set { 'srv-log-eventlogging' : }
+
         # WMDE statistics scripts and cron jobs
         include ::statistics::wmde
     }
