@@ -5253,7 +5253,7 @@ host mw2200 {
 }
 
 host mw2201 {
-    hardware ethernet B0:83:FE:DB:D6:22;
+    hardware ethernet B0:83:FE:DE:F7:72;
     fixed-address mw2201.codfw.wmnet;
 }
 
