@@ -23,7 +23,7 @@ class base::remote_syslog (
 
         rsyslog::conf { 'remote_syslog':
             content  => template('base/remote_syslog.conf.erb'),
-            priority => 30,
+            priority => '30',
         }
     }
     # No ensure=>absent handling is needed for the $enable == false case

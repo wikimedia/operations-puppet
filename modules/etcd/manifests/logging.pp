@@ -10,7 +10,7 @@ class etcd::logging {
 
     rsyslog::conf { 'etcd':
         source   => 'puppet:///modules/etcd/rsyslog.conf',
-        priority => 20,
+        priority => '20',
         require  => File['/etc/logrotate.d/etcd'],
     }
 }

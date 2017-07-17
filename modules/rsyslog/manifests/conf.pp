@@ -23,19 +23,19 @@
 #
 #  rsyslog::conf { 'hadoop':
 #    content  => template('hadoop/hadoop.conf.erb'),
-#    priority => 90,
+#    priority => '90',
 #  }
 #
 define rsyslog::conf(
     $ensure   = present,
     $content  = undef,
     $source   = undef,
-    $priority = 60
+    $priority = '60',
 ) {
     include ::rsyslog
 
     if $priority !~ /^\d?\d$/ {
-        fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
+        fail("'priority' must be a 2-digit integer between 0 - 99 (got: ${priority}).")
     }
 
     $basename = regsubst($title, '[\W_]', '-', 'G')

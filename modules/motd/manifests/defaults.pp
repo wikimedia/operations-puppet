@@ -16,7 +16,7 @@ class motd::defaults {
     #   hasn't observed here so far.
     motd::script { 'header':
         ensure   => present,
-        priority => 00,
+        priority => '00',
         content  => "#!/bin/sh\nuname -snrvm\nlsb_release -s -d\n\n",
     }
 
@@ -25,7 +25,7 @@ class motd::defaults {
     # - Debian used to support motd.tail pre-wheezy
     motd::script { 'footer':
         ensure   => present,
-        priority => 99,
+        priority => '99',
         content  => "#!/bin/sh\n[ -f /etc/motd.tail ] && cat /etc/motd.tail || true\n",
     }
 }
