@@ -9,3 +9,4 @@ contactgroups: admins,wdqs-admins
 debdeploy::grains:
   debdeploy-wdqs:
     value: standard
+wdqs::gui::bad_clients: []
