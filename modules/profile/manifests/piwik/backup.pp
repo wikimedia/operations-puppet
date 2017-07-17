@@ -24,14 +24,8 @@ class profile::piwik::backup (
         content => "[client]\nuser=${backup_username}\npassword=\'${backup_password}\'\n",
     }
 
-    cron { 'delete_old_backups':
-        command => "/usr/bin/find /srv/backup -mtime +${retention_days} -exec /bin/rm {} \\;",
-        weekday => 0,
-        hour    => 0,
-        minute  => 0,
-        user    => 'root',
-    }
-
+    # Backups older than 15 days will be deleted by the predump script before
+    # the mysqldump, so a cron is not needed.
     backup::mysqlset {'piwik':
         xtrabackup       => false,
         per_db           => true,
