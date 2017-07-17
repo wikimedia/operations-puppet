@@ -131,11 +131,11 @@ class aptrepo (
     }
 
     file { "${basedir}/conf/log":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/aptrepo/log',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('aptrepo/log.erb'),
     }
 
     file { "${basedir}/db":
