@@ -14,6 +14,8 @@
   Optional arguments:
     --api-token TOKEN      Jenkins API token. Defaults to JENKINS_API_TOKEN.
     --username USERNAME    Jenkins user name. Defaults to JENKINS_USERNAME.
+    --future               If present, will run the change through the future
+                           parser
 
   Examples:
     $ pcc latest mw1031,mw1032
@@ -109,6 +111,7 @@ ap.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
                 help='Jenkins API token. Defaults to JENKINS_API_TOKEN.')
 ap.add_argument('--username', default=os.environ.get('JENKINS_USERNAME'),
                 help='Jenkins user name. Defaults to JENKINS_USERNAME.')
+ap.add_argument('--future', action='store_true', help='Check compilation against the future parser as well.')
 args = ap.parse_args()
 
 if not args.api_token or not args.username:
@@ -128,6 +131,10 @@ build_params = {
     'GERRIT_CHANGE_NUMBER': str(args.change),
     'LIST_OF_NODES': args.nodes,
 }
+
+if args.future:
+    build_params['COMPILER_MODE'] = 'change,future'
+
 invocation = job.invoke(build_params=build_params)
 
 try:
