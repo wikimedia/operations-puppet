@@ -27,7 +27,7 @@
 #
 define motd::script(
     $ensure    = present,
-    $priority  = 50,
+    $priority  = '50',
     $content   = undef,
     $source    = undef,
 ) {
