@@ -11,6 +11,9 @@ class role::statistics::cruncher {
         # Reportupdater jobs that get data from MySQL analytics slaves
         include ::profile::reportupdater::jobs::mysql
 
+    }
+    # else moved to stat1006
+    else {
         # Geowiki jobs that get data from MySQL analytics slave and save the data
         # in a private locally hosted git repository.
         include ::profile::geowiki
