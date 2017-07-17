@@ -8,7 +8,7 @@ class geowiki::job::limn {
     git::clone { 'geowiki-data-public':
         ensure    => 'latest',
         directory => $::geowiki::public_data_path,
-        origin    => 'ssh://gerrit.wikimedia.org:29418/analytics/geowiki/data-public.git',
+        origin    => "https://${::geowiki::user}@gerrit.wikimedia.org/r/a/analytics/geowiki/data-public",
         owner     => $::geowiki::user,
         group     => $::geowiki::user,
     }
