@@ -27,13 +27,17 @@ define etcdmirror::instance($src, $src_path, $dst, $dst_path, $enable) {
     }
 
     $service_params = { ensure => $service_status, }
-    base::service_unit { $prefix:
-        ensure          => present,
-        systemd         => true,
-        declare_service => true,
-        refresh         => false,
-        service_params  => $service_params,
-        template_name   => 'etcd-mirror',
+    service { $prefix:
+        ensure   => $service_status,
+        enable   => true,
+        provider => 'systemd'
+
+    }
+
+    systemd::unit { $prefix:
+        ensure  => present,
+        content => template('etcdmirror/initscripts/etcd-mirror.systemd.erb'),
+        restart => false,
     }
 
     systemd::syslog { $prefix:
