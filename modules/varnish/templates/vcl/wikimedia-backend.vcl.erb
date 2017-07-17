@@ -182,6 +182,7 @@ sub vcl_backend_response {
 sub vcl_deliver {
 	call wm_common_deliver_hitcount;
 	call wm_common_xcache_deliver;
+	call wm_common_deliver_error_with_empty_body;
 	call cluster_be_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }

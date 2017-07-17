@@ -413,6 +413,7 @@ sub deliver_synth_ {
 
 sub vcl_deliver {
 	call wm_common_deliver_hitcount;
+	call wm_common_deliver_error_with_empty_body;
 	call deliver_synth_;
 	call cluster_fe_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
