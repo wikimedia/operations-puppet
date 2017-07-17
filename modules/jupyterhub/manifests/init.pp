@@ -42,14 +42,7 @@ class jupyterhub (
                     'pwgen',
                     ])
 
-    package { 'nginx-common':
-        ensure => '1.9.10-1~bpo8+3',
-    }
-
-    package { 'nginx-extras':
-        ensure  => '1.9.10-1~bpo8+3',
-        require => Package['nginx-common'],
-    }
+    require_package('nginx-extras')
 
     file { $base_path:
         ensure => directory,
