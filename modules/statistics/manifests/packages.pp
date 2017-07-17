@@ -6,6 +6,7 @@ class statistics::packages {
 
 
     require_package([
+        'time',
         'emacs',
         'mc',
         'zip',
