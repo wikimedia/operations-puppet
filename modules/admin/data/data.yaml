@@ -412,7 +412,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, smalyshev, hoo,
-              ssastry, cscott, arlolra, jdlrobson, maxsem]
+              ssastry, cscott, arlolra, jdlrobson, maxsem, nschaaf]
     privileges: []
 
   deploy-aqs:
@@ -608,7 +608,7 @@ groups:
   recommendation-admin:
     description: Group of recommendation-api admins
     gid: 794
-    members: [gwicke, ppchelko, eevans, mobrovac]
+    members: [gwicke, ppchelko, eevans, mobrovac, nschaaf]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
 
