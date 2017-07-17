@@ -19,6 +19,15 @@
 # [*statsd_prefix*]
 #   Prefix to use when sending statistics.
 #
+# [*poolcounter_server*]
+#   Poolcounter server.
+#
+# [*logstash_host*]
+#   Logstash server.
+#
+# [*logstash_port*]
+#   Logstash port.
+#
 
 class thumbor (
     $listen_port = 8800,
@@ -27,10 +36,13 @@ class thumbor (
     $statsd_port = '8125',
     $statsd_prefix = "thumbor.${::hostname}",
     $poolcounter_server = undef,
+    $logstash_host = undef,
+    $logstash_port = 11514,
 ) {
     requires_os('debian >= jessie')
 
     require_package('firejail')
+    require_package('python-logstash')
 
     package { 'python-thumbor-wikimedia':
         ensure          => installed,

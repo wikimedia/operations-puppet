@@ -181,6 +181,11 @@ class role::logstash::collector (
         priority => 70,
     }
 
+    logstash::conf { 'filter_thumbor':
+        source   => 'puppet:///modules/role/logstash/filter-thumbor.conf',
+        priority => 20,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
