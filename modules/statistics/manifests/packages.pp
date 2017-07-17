@@ -67,12 +67,12 @@ class statistics::packages {
             'libyaml-cpp0.3',
             # Requested by bearloga (Mikhail); see T147682 and
             # http://stackoverflow.com/a/36034866/1091835 for more info.
-             'gfortran-4.8',
-             'php5-cli',
-             'php5-curl',
-             'php5-mysql',
-             'mysql-client-5.5',
-         )
+            'gfortran-4.8',
+            'php5-cli',
+            'php5-curl',
+            'php5-mysql',
+            'mysql-client-5.5',
+        )
     }
 
     # Python packages
