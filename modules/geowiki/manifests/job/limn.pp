@@ -14,7 +14,6 @@ class geowiki::job::limn {
         command => "${::geowiki::scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir_private=${::geowiki::private_data_path} --source_sql_cnf=${::geowiki::mysql_conf::conf_file}",
         require => [
             Git::Clone['geowiki-scripts'],
-            Git::Clone['geowiki-data-public'],
             Git::Clone['geowiki-data-private'],
             File[$::geowiki::mysql_conf::conf_file],
         ],

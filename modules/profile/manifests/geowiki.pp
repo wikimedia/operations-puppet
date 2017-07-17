@@ -14,6 +14,6 @@ class profile::geowiki {
     include ::geowiki::job::data
     # geowiki: generate limn files from research db and push them
     include ::geowiki::job::limn
-    # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
+    # geowiki: monitors the geowiki files of https://stats.wikimedia/geowiki-private
     include ::geowiki::job::monitoring
 }

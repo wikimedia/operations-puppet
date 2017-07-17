@@ -19,8 +19,7 @@ class geowiki::job::monitoring {
         content => $geowiki_http_pass,
     }
 
-    # cron job to fetch geowiki data via http://gp.wmflabs.org/ (public data)
-    # and https://stats.wikimedia/geowiki-private (private data)
+    # cron job to fetch geowiki data via https://stats.wikimedia/geowiki-private (private data)
     # and checks that the files are up-to-date and within
     # meaningful ranges.
     cron { 'geowiki-monitoring':
