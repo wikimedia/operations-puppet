@@ -412,7 +412,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, smalyshev, hoo,
-              ssastry, cscott, arlolra, jdlrobson, maxsem, nschaaf]
+              ssastry, cscott, arlolra, jdlrobson, maxsem, nschaaf, awight]
     privileges: []
 
   deploy-aqs:
