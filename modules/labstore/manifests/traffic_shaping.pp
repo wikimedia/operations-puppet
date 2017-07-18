@@ -44,8 +44,11 @@ class labstore::traffic_shaping(
     }
 
     # ifb by default creates 2 interfaces
+    kmod::options { 'ifb':
+        options => 'numifbs=1',
+    }
+
     file { '/etc/modprobe.d/ifb.conf':
-        ensure  => present,
-        content => 'options ifb numifbs=1',
+        ensure  => absent,
     }
 }

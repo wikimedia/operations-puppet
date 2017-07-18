@@ -58,12 +58,12 @@ class lvs::kernel_config {
     # systemd-sysctl.service. Add the module to modules-load.d, causing it to
     # be loaded statically before sysctl settings are applied as described in
     # sysctl.d(5).
+    kmod::module { 'ip_vs':
+        ensure => present,
+    }
+
     file { '/etc/modules-load.d/lvs.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => "ip_vs\n",
+        ensure => absent,
     }
 
     # Bump min_free_kbytes a bit to ensure network buffers are available quickly
