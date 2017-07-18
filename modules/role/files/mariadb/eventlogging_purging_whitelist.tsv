@@ -1007,3 +1007,13 @@ ReadingDepth	event_sessionToken
 ReadingDepth	event_skin
 ReadingDepth	event_totalLength
 ReadingDepth	event_visibleLength
+MediaWikiPingback	webHost
+MediaWikiPingback	wiki
+MediaWikiPingback	event_MediaWiki
+MediaWikiPingback	event_OS
+MediaWikiPingback	event_PHP
+MediaWikiPingback	event_arch
+MediaWikiPingback	event_curl
+MediaWikiPingback	event_database
+MediaWikiPingback	event_machine
+MediaWikiPingback	event_webServer
