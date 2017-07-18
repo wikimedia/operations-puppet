@@ -27,5 +27,5 @@ GRANT ALTER, CREATE, CREATE TEMPORARY TABLES, DELETE, DROP, INDEX, INSERT, LOCK 
 
 -- eventlog script responsible to sanitize/delete sensitive data over time
 
-GRANT ALTER, SELECT, UPDATE
+GRANT ALTER, SELECT, UPDATE, DELETE
     ON `log`.* TO 'eventlogcleaner'@'localhost' IDENTIFIED VIA unix_socket;
