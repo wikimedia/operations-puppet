@@ -47,8 +47,4 @@ class labstore::traffic_shaping(
     kmod::options { 'ifb':
         options => 'numifbs=1',
     }
-
-    file { '/etc/modprobe.d/ifb.conf':
-        ensure  => absent,
-    }
 }

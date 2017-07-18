@@ -55,8 +55,4 @@ class dataset::nfs($enable=true) {
     kmod::options { 'lockd':
         options => 'nlm_udpport=32768 nlm_tcpport=32769',
     }
-
-    file { '/etc/modprobe.d/nfs-lockd.conf':
-        ensure  => absent,
-    }
 }
