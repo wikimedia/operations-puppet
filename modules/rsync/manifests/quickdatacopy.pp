@@ -62,7 +62,7 @@ define rsync::quickdatacopy(
           } else {
               $cron_ensure = 'absent'
           }
-          cron { 'sync-rsync-data':
+          cron { "rsync-${title}":
               ensure  => $cron_ensure,
               minute  => '*/10',
               command => "/usr/local/sbin/sync-${title} >/dev/null 2>&1",
