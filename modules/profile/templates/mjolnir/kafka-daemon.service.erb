@@ -6,6 +6,7 @@ After=network.target
 User=nobody
 Group=nogroup
 WorkingDirectory=/srv/deployment/relforge/mjolnir
+Environment=PYTHONPATH=/srv/deployment/relforge/mjolnir
 ExecStart=/usr/bin/python2 /srv/deployment/relforge/mjolnir/mjolnir/cli/kafka_daemon.py --brokers <%= @kafka_config['brokers']['string'] %>
 StandardInput=null
 StandardOutput=journal
