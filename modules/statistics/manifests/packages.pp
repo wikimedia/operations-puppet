@@ -16,21 +16,21 @@ class statistics::packages {
         'mercurial',
         'tofrodos',
         'git-review',
-        'make', # halfak wants make to manage dependencies
-        'libwww-perl', # For wikistats stuff
-        'sqlite3', # For storing and interacting with intermediate results
-        'libproj-dev', # Requested by lzia for rgdal
-        'libbz2-dev', # for compiling some python libs. T84378
-        'libboost-regex-dev', # Ironholds wants these
+        'make',                   # halfak wants make to manage dependencies
+        'libwww-perl',            # For wikistats stuff
+        'sqlite3',                # For storing and interacting with intermediate results
+        'libproj-dev',            # Requested by lzia for rgdal
+        'libbz2-dev',             # for compiling some python libs. T84378
+        'libboost-regex-dev',     # Ironholds wants these
         'libboost-system-dev',
-        'libyaml-cpp0.3-dev',
         'libgoogle-glog-dev',
         'libboost-iostreams-dev',
         'libmaxminddb-dev',
-        'build-essential', # Requested by halfak to install SciPy
+        'build-essential',        # Requested by halfak to install SciPy
         'nodejs',
         'openjdk-8-jdk',
-        'pandoc'           # Requested by bearloga (Mikhail); necessary for using RMarkdown and performing format conversions
+        'pandoc',                 # Requested by bearloga; necessary for using RMarkdown and performing format conversions
+        'libssl-dev',             # Requested by bearloga; necessary for an essential R package (openssl)
     ])
 
 
@@ -42,9 +42,10 @@ class statistics::packages {
             'libgsl2',
             'gsl-bin',
             'libgsl0-dev',
-            'libgdal-dev', # Requested by lzia for rgdal
+            'libgdal-dev',      # Requested by lzia for rgdal
             'g++',
-            'libyaml-cpp0.3v5',
+            'libyaml-cpp-dev',  # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
+            'libyaml-cpp0.5v5', # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
             'php-cli',
             'php-curl',
             'php-mysql',
@@ -58,16 +59,14 @@ class statistics::packages {
             'libgsl0ldbl',
             'gsl-bin',
             'libgsl0-dev',
-            # Requested by bearloga (Mikhail) to ensure that there is a compiler with C++11
+            # Requested by bearloga to ensure that there is a compiler with C++11
             # support that can compile R package 'Boom'; see T147682 and
             # http://stackoverflow.com/a/36034866/1091835 for more info)
             'g++-4.8',
-            'libgdal1-dev', # Requested by lzia for rgdal
-
-            'libyaml-cpp0.3',
-            # Requested by bearloga (Mikhail); see T147682 and
-            # http://stackoverflow.com/a/36034866/1091835 for more info.
             'gfortran-4.8',
+            'libgdal1-dev',      # Requested by lzia for rgdal
+            'libyaml-cpp0.3-dev' # Requested by Ironholds (old version of uaparser requires v0.3)
+            'libyaml-cpp0.3',    # Requested by Ironholds (old version of uaparser requires v0.3)
             'php5-cli',
             'php5-curl',
             'php5-mysql',
@@ -84,17 +83,17 @@ class statistics::packages {
         'python-dateutil',
         'python-numpy',
         'python-scipy',
-        'python-boto',      # Amazon S3 access (needed to get zero sms logs)
-        'python-pandas',    # Pivot tables processing
-        'python-requests',  # Simple lib to make API calls
-        'python-unidecode', # Unicode simplification - converts everything to latin set
-        'python-ua-parser', # For parsing User Agents
-        'python-matplotlib',  # For generating plots of data
+        'python-boto',       # Amazon S3 access (needed to get zero sms logs)
+        'python-pandas',     # Pivot tables processing
+        'python-requests',   # Simple lib to make API calls
+        'python-unidecode',  # Unicode simplification - converts everything to latin set
+        'python-ua-parser',  # For parsing User Agents
+        'python-matplotlib', # For generating plots of data
         'python-netaddr',
         'python-virtualenv', # T84378
         # Aaron Halfaker (halfak) wants python{,3}-dev environments for module oursql
-        'python-dev',  # T83316
-        'python3-dev', # T83316
+        'python-dev',        # T83316
+        'python3-dev',       # T83316
         'python-kafka',
         'python-pymysql',
     ])
