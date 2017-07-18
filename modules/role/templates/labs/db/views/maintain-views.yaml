@@ -124,6 +124,7 @@ fullviews:
   - wb_property_info
   - wb_terms
   - wbc_entity_usage
+  - wbqc_constraints
   - wbs_propertypairs
   - watchlist_count
 
