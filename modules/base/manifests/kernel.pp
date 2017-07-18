@@ -17,21 +17,31 @@ class base::kernel
         }
     }
 
-    file { '/etc/modprobe.d/blacklist-wmf.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/kernel/blacklist-wmf.conf',
+    kmod::blacklist { "wmf":
+        modules => [
+            'overlayfs',
+            'overlay',
+            'aufs',
+            'usbip-core',
+            'usbip-host',
+            'vhci-hcd',
+            'dccp',
+            'dccp_ipv6',
+            'dccp_ipv4',
+            'dccp_probe',
+            'dccp_diag',
+            'n_hdlc',
+            'intel_uncore',
+            'parport',
+            'parport_pc',
+            'ppdev',
+            'acpi_power_meter',
+        ],
     }
 
     if (versioncmp($::kernelversion, '4.4') >= 0) {
-        file { '/etc/modprobe.d/blacklist-linux44.conf':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/kernel/blacklist-linux44.conf',
+        kmod::blacklist { "linux44":
+            modules => [ 'asn1_decoder', 'macsec' ],
         }
     }
 
@@ -40,12 +50,8 @@ class base::kernel
     # but is meant to be extended as needed.
     case $::productname {
       'PowerEdge R320': {
-        file { '/etc/modprobe.d/blacklist-r320.conf':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/kernel/blacklist-r320.conf',
+        kmod::blacklist { 'r320':
+            modules => [ 'acpi_pad' ],
         }
       }
       default: {}

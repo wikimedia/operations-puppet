@@ -26,23 +26,19 @@ class ganeti(
     }
 
     if $with_drbd {
+        kmod::options { 'drbd':
+            options => 'minor_count=128 usermode_helper=/bin/true',
+        }
+
         file { '/etc/modprobe.d/drbd.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            content => "options drbd minor_count=128 usermode_helper=/bin/true\n",
+            ensure => absent,
         }
 
         # Enable drbd
-        exec { 'enable-module-drbd':
-            unless  => "/bin/grep -q '^drbd$' /etc/modules",
-            command => '/bin/echo drbd >> /etc/modules',
+        kmod::module { 'drbd':
+            ensure => 'present',
         }
-        exec { 'load-module-drbd' :
-            unless  => "/bin/lsmod | /bin/grep -q '^drbd'",
-            command => '/sbin/modprobe drbd',
-        }
+
         # Disable the systemd service shipped with drbd8-utils. Ganeti handles
         # DRBD on its own
         service { 'drbd':
@@ -50,14 +46,10 @@ class ganeti(
             enable => false,
         }
     }
+
     # Enable vhost_net
-    exec { 'enable-module-vhost_net' :
-        unless  => "/bin/grep -q '^vhost_net$' /etc/modules",
-        command => '/bin/echo vhost_net >> /etc/modules',
-    }
-    exec { 'load-module-vhost_net' :
-        unless  => "/bin/lsmod | /bin/grep -q '^vhost_net'",
-        command => '/sbin/modprobe vhost_net',
+    kmod::module { 'vhost_net'
+        ensure => 'present',
     }
 
     # lvm.conf

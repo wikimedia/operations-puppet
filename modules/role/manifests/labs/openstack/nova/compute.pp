@@ -56,24 +56,23 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         },
     }
 
+    kmod::options { 'nf_conntrack':
+        options => 'hashsize=32768',
+    }
+
     file { '/etc/modprobe.d/nf_conntrack.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
+        ensure => absent,
     }
 
     # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
     # was split from the bridge kernel module into a separate module (br_netfilter)
     if (versioncmp($::kernelversion, '3.18') >= 0) {
         file { '/etc/modules-load.d/brnetfilter.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            require => File['/etc/modules-load.d/'],
-            content => "br_netfilter\n",
+            ensure => absent,
+        }
+
+        kmod::module { 'br_netfilter':
+            ensure => present,
         }
     }
 
