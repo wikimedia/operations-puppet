@@ -14,5 +14,11 @@ class role::smokeping {
 
     backup::set {'smokeping': }
 
+    rsync::quickdatacopy { 'var-lib-smokeping':
+        ensure      => present,
+        auto_sync   => false,
+        source_host => 'netmon1002.wikimedia.org',
+        dest_host   => 'netmon2001.wikimedia.org',
+        module_path => '/var/lib/smokeping',
+    }
 }
-
