@@ -1,4 +1,4 @@
-# = Define: shiny_server::github_pkg
+# = Define: r::github
 #
 # Facilitates installation of R packages from GitHub.
 #
@@ -12,23 +12,28 @@
 # [*ensure*]
 #     default 'present' but also accepts 'absent'
 #     hoping to support 'latest' eventually
+# [*library*]
+#     default '/usr/local/lib/R/site-library', used
+#     for specifying the path of the library for
+#     installing the R package
 #
-define shiny_server::github_pkg (
+define r::github (
     $repo,
-    $ensure = 'present'
+    $ensure = 'present',
+    $library = '/usr/local/lib/R/site-library'
 ) {
-    $pkg_path = "/usr/local/lib/R/site-library/${title}"
+    $pkg_path = "${library}/${title}"
     case $ensure {
         'absent': {
             exec { "remove-${title}":
-                command => "/usr/bin/R -e \"remove.packages('${title}', lib = '/usr/local/lib/R/site-library')\"",
+                command => "/usr/bin/R -e \"remove.packages('${title}', lib = '${library}')\"",
                 notify  => Service['shiny-server'],
             }
         }
         default: {
             exec { "package-${title}":
-                require => Shiny_server::Cran_pkg['devtools'],
-                command => "/usr/bin/R -e \"devtools::install_github('${repo}', lib = '/usr/local/lib/R/site-library')\"",
+                require => R::Cran['devtools'],
+                command => "/usr/bin/R -e \"devtools::install_github('${repo}', lib = '${library}')\"",
                 creates => $pkg_path,
             }
         }

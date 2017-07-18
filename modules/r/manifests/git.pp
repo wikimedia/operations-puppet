@@ -1,4 +1,4 @@
-# = Define: shiny_server::git_pkg
+# = Define: r::git
 #
 # Facilitates installation of R packages from a remote Git repository.
 #
@@ -13,22 +13,28 @@
 #     default 'present' but also accepts 'absent'
 #     hoping to support 'latest' eventually
 #
-define shiny_server::git_pkg (
+# [*library*]
+#     default '/usr/local/lib/R/site-library', used
+#     for specifying the path of the library for
+#     installing the R package
+#
+define r::git (
     $url,
-    $ensure = 'present'
+    $ensure = 'present',
+    $library = '/usr/local/lib/R/site-library'
 ) {
-    $pkg_path = "/usr/local/lib/R/site-library/${title}"
+    $pkg_path = "${library}/${title}"
     case $ensure {
         'absent': {
             exec { "remove-${title}":
-                command => "/usr/bin/R -e \"remove.packages('${title}', lib = '/usr/local/lib/R/site-library')\"",
+                command => "/usr/bin/R -e \"remove.packages('${title}', lib = '${library}')\"",
                 notify  => Service['shiny-server'],
             }
         }
         default: {
             exec { "package-${title}":
-                require => Shiny_server::Cran_pkg['devtools'],
-                command => "/usr/bin/R -e \"devtools::install_git('${url}', lib = '/usr/local/lib/R/site-library')\"",
+                require => R::Cran['devtools'],
+                command => "/usr/bin/R -e \"devtools::install_git('${url}', lib = '${library}')\"",
                 creates => $pkg_path,
             }
         }

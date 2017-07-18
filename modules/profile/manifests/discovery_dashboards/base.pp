@@ -5,7 +5,7 @@
 #
 # filtertags: labs-project-search labs-project-shiny-r
 class profile::discovery_dashboards::base {
-    include shiny_server
+    include ::shiny_server
 
     $cran_packages = [
         # Needed by Search metrics dashboard:
@@ -15,17 +15,17 @@ class profile::discovery_dashboards::base {
         'highcharter',
         'countrycode'
     ]
-    shiny_server::cran_pkg { $cran_packages:
+    r::cran { $cran_packages:
         mirror => 'https://cran.cnr.berkeley.edu',
     }
 
     # 'polloi' contains common functions & data used by all the dashboards
-    shiny_server::git_pkg { 'polloi':
+    r::git { 'polloi':
         url => 'https://gerrit.wikimedia.org/r/wikimedia/discovery/polloi',
     }
 
     # 'googleCharts' is used on the Wikipedia.org portal metrics dashboard
-    shiny_server::github_pkg { 'googleCharts':
+    r::github { 'googleCharts':
         repo => 'jcheng5/googleCharts',
     }
 
