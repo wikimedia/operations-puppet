@@ -1004,7 +1004,7 @@ node 'labtestnet2001.codfw.wmnet' {
 node 'labtestcontrol2001.wikimedia.org' {
     include ::standard
     include ::base::firewall
-    role(labs::openstack::nova::controller, labs::puppetmaster)
+    role(wmcloud::openstack::control, labs::openstack::nova::controller, labs::puppetmaster)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
     #  we need some special fw rules to allow that
