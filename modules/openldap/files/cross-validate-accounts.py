@@ -189,7 +189,7 @@ def validate_all_ldap_group_members_are_defined(known_users):
     return log
 
 
-# Warn if an account expires in 14 days or less
+# Warn if an account expires in 7 days or less
 def print_pending_account_expirys(users):
     log = ""
     current_date = datetime.datetime.now().date()
@@ -198,7 +198,7 @@ def print_pending_account_expirys(users):
         if 'expiry_date' in attrs.keys():
             expiry = datetime.datetime.strptime(str(attrs['expiry_date']), "%Y-%m-%d").date()
             delta = expiry - current_date
-            if delta.days <= 14:
+            if delta.days <= 7:
                 log += "The NDA/MOU for " + i + " will lapse in " + str(delta.days) + " days.\n"
                 log += "  Please get in touch with " + str(attrs['expiry_contact']) + "\n"
     return log
