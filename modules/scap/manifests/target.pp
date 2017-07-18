@@ -72,10 +72,12 @@ define scap::target(
             user { $deploy_user:
                 ensure     => present,
                 shell      => '/bin/bash',
-                home       => '/var/lib/scap',
+                home       => "/var/lib/${deploy_user}",
                 system     => true,
                 managehome => true,
             }
+        } else {
+            notice("manage_user=true but user ${deploy_user} already defined")
         }
         if !defined(Ssh::Userkey[$deploy_user]) {
             $key_name_safe = regsubst($key_name, '\W', '_', 'G')
