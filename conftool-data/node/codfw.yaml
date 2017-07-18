@@ -111,7 +111,6 @@ codfw:
     mw2147.codfw.wmnet: [apache2,nginx]
     mw2200.codfw.wmnet: [apache2,nginx]
     mw2201.codfw.wmnet: [apache2,nginx]
-    mw2202.codfw.wmnet: [apache2,nginx]
     mw2203.codfw.wmnet: [apache2,nginx]
     mw2204.codfw.wmnet: [apache2,nginx]
     mw2205.codfw.wmnet: [apache2,nginx]
