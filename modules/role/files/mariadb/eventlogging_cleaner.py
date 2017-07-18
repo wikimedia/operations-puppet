@@ -236,8 +236,14 @@ class Terminator(object):
         re-purge some events, which is OK, because the outcome does not change.
         """
         batch_size = override_batch_size or self.batch_size
+        # July 2017
+        # There are currently some tables on analtics-store that have their uuid
+        # field set as 'binary', not 'char' as in the master
+        # and the analytics-slave.
+        # Since altering all the inconsistent tables is a demanding task for the
+        # current hardware, we just force an explicit cast to char in the query.
         command = (
-            "SELECT timestamp, uuid from {} WHERE timestamp >= %(start_ts)s "
+            "SELECT timestamp, CAST(uuid AS CHAR) from {} WHERE timestamp >= %(start_ts)s "
             "AND timestamp < %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s"
             .format(table)
         )
