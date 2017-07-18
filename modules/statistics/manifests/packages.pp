@@ -4,7 +4,6 @@ class statistics::packages {
     include ::geoip
     include ::imagemagick::install
 
-
     require_package([
         'time',
         'emacs',
@@ -122,15 +121,16 @@ class statistics::packages {
         'libxt-dev',
     ])
 
-    $r_packages = [
-        'r-base',
-        'r-base-dev',      # Needed for R packages that have to compile C++ code; see T147682
-        'r-cran-rmysql',
-        'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
-    ]
+
 
     # Use R from Jessie Backports on jessie boxes.
     if os_version('debian == jessie') {
+        $r_packages = [
+            'r-base',
+            'r-base-dev',      # Needed for R packages that have to compile C++ code; see T147682
+            'r-cran-rmysql',
+            'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
+        ]
         apt::pin { $r_packages:
             pin      => 'release a=jessie-backports',
             priority => '1001',
@@ -138,8 +138,9 @@ class statistics::packages {
         }
     }
 
-    package { $r_packages:
-        ensure => present,
+    else {
+        include ::r
+        require_package('r-cran-rmysql') # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
     }
 
     if os_version('ubuntu >= trusty') {
