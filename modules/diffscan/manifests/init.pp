@@ -46,7 +46,7 @@ class diffscan(
     cron { "diffscan-${groupname}":
         ensure  => present,
         user    => 'root',  # nmap needs root privileges
-        command => "cd /srv/diffscan/; /srv/diffscan/diffscan.py /srv/diffscan/targets-${groupname}.txt ${emailto} ${groupname}",
+        command => "cd /srv/diffscan/; /srv/diffscan/diffscan.py -q /srv/diffscan/targets-${groupname}.txt ${emailto} ${groupname}",
         hour    => '0',
     }
 
