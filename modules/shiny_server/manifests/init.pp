@@ -17,56 +17,41 @@
 # For a list of CRAN mirrors, see https://cran.r-project.org/mirrors.html
 #
 class shiny_server {
+    include ::r
 
     $essentials = [
         'gfortran', 'g++-4.8', 'gfortran-4.8',
         'libssl-dev', 'libcurl4-openssl-dev', 'libxml2-dev', 'libssh2-1-dev',
-        'libcairo2-dev', 'git-core', 'gdebi', 'pandoc',
-        'r-base', 'r-base-dev', 'r-recommended'
+        'libcairo2-dev', 'git-core', 'gdebi', 'pandoc'
     ]
     require_package($essentials)
 
-    file { '/usr/local/lib/R/site-library':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'staff',
-        mode   => '0770',
-    }
-
-    # R script for updating any particular installed R package:
-    file { '/etc/R/update-library.R':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/shiny_server/update-library.R'
-    }
-
     # Install R packages from CRAN, Gerrit, and GitHub:
     $cran_mirror = 'https://cran.cnr.berkeley.edu'
-    shiny_server::cran_pkg { 'curl':
+    r::cran { 'curl':
         require => Package['libcurl4-openssl-dev'],
         mirror  => $cran_mirror,
     }
-    shiny_server::cran_pkg { 'xml2':
+    r::cran { 'xml2':
         require => Package['libxml2-dev'],
         mirror  => $cran_mirror,
     }
-    shiny_server::cran_pkg { 'devtools':
+    r::cran { 'devtools':
         require => [
             Package['git-core'],
-            Shiny_server::Cran_pkg['curl']
+            R::Cran['curl']
         ],
         mirror  => $cran_mirror,
     }
-    shiny_server::cran_pkg { 'rmarkdown':
+    r::cran { 'rmarkdown':
         require => Package['pandoc'],
         mirror  => $cran_mirror,
     }
     # tidyverse includes packages such as dplyr, tidyr, magrittr, readr,
     # ggplot2, broom, purrr, rvest, forcats, lubridate, and jsonlite
-    shiny_server::cran_pkg { 'tidyverse':
-        timeout => 2700,
+    # It's a lot of packages so we *really* need to extend the timeout.
+    r::cran { 'tidyverse':
+        timeout => 6000,
         mirror  => $cran_mirror
     }
     $cran_packages = [
@@ -86,7 +71,7 @@ class shiny_server {
         'knitr', 'markdown',
         'optparse'                          # needed for /etc/update-pkg.R
     ]
-    shiny_server::cran_pkg { $cran_packages: mirror => $cran_mirror }
+    r::cran { $cran_packages: mirror => $cran_mirror }
 
     # Set up files, directories, and users required for RStudio's Shiny Server:
     user { 'shiny':

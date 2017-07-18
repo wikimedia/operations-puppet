@@ -9,7 +9,12 @@ option_list <- list(
   make_option("--mirror", default = "https://cloud.r-project.org",
               action = "store", type = "character",
               help = "The CRAN mirror to use [default %default].
-                See https://cran.r-project.org/mirrors.html for more")
+                See https://cran.r-project.org/mirrors.html for more"),
+  make_option(c("-l", "--library"), default = NULL,
+              help = paste(
+                "Default (%default) uses .libPaths():\n                -",
+                paste0(.libPaths(), collapse = "\n                - ")
+              ))
 )
 
 # Get command line options, if help option encountered print help and exit,
@@ -17,7 +22,7 @@ option_list <- list(
 opt <- parse_args(OptionParser(option_list = option_list))
 
 if (is.na(opt$package)) {
-  update.packages(ask = FALSE, checkBuilt = TRUE, repos = c(CRAN = opt$mirror))
+  update.packages(ask = FALSE, checkBuilt = TRUE, repos = c(CRAN = opt$mirror), lib.loc = opt$library)
   message("If any CRAN-installed packages were updated, restart shiny-server via `sudo service shiny-server restart`")
   message("To update all git-installed package, run devtools::update_packages()")
   message("Unfortunately, it must be run in interactive mode")
@@ -64,7 +69,7 @@ if (any(grepl("Repository: CRAN", pkg_description))) {
 update_pkg <- FALSE
 if (pkg_source %in% c("github", "git")) {
   if (pkg_sha != remote_sha) {
-    message("Installed version's SHA differets from remote version's SHA")
+    message("Installed version's SHA is different from remote version's SHA")
     update_pkg <- TRUE
   }
 }
