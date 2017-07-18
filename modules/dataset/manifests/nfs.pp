@@ -52,11 +52,11 @@ class dataset::nfs($enable=true) {
         check_command => 'check_tcp!2049',
     }
 
+    kmod::options { 'lockd':
+        options => 'nlm_udpport=32768 nlm_tcpport=32769',
+    }
+
     file { '/etc/modprobe.d/nfs-lockd.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
+        ensure  => absent,
     }
 }

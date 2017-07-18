@@ -11,11 +11,11 @@ class ipmi::monitor {
     }
 
     file { '/etc/modules-load.d/ipmi.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => "ipmi_devintf\n",
+        ensure => absent,
+    }
+
+    kmod::module { 'ipmi_devintf':
+        ensure => present,
     }
 
     ::sudo::user { 'nagios_ipmi_temp':
