@@ -789,26 +789,6 @@ host cp3049 {
     fixed-address cp3049.esams.wmnet;
 }
 
-host cp4001 {
-    hardware ethernet 90:b1:1c:43:32:20;
-    fixed-address cp4001.ulsfo.wmnet;
-}
-
-host cp4002 {
-    hardware ethernet 90:b1:1c:45:48:56;
-    fixed-address cp4002.ulsfo.wmnet;
-}
-
-host cp4003 {
-    hardware ethernet 90:b1:1c:43:1e:37;
-    fixed-address cp4003.ulsfo.wmnet;
-}
-
-host cp4004 {
-    hardware ethernet 90:b1:1c:45:61:f4;
-    fixed-address cp4004.ulsfo.wmnet;
-}
-
 host cp4005 {
     hardware ethernet 90:b1:1c:42:dc:fc;
     fixed-address cp4005.ulsfo.wmnet;
