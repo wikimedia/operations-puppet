@@ -62,10 +62,6 @@ class lvs::kernel_config {
         ensure => present,
     }
 
-    file { '/etc/modules-load.d/lvs.conf':
-        ensure => absent,
-    }
-
     # Bump min_free_kbytes a bit to ensure network buffers are available quickly
     vm::min_free_kbytes { 'lvs':
         pct => 3,
