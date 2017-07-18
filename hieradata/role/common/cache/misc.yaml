@@ -87,6 +87,9 @@ cache::app_directors:
   netmon1003:
     backends:
       eqiad: 'netmon1003.wikimedia.org'
+  netmon2001:
+    backends:
+      eqiad: 'netmon2001.wikimedia.org'
   noc:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
