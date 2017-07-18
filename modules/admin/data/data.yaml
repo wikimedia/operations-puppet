@@ -2059,6 +2059,8 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
     uid: 13978
     email: jclark@cyber.law.harvard.edu
+    expiry_date: 2018-01-01
+    expiry_contact: zzhou@wikimedia.org
   gehel:
     ensure: present
     gid: 500
@@ -2352,6 +2354,8 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBSqKkOktF20xShNmJgeOpkhDYXFgcCvNPKbexn67on5M0hPNTKZjptFPCeoQh/i3suAvPDFakDt0pEcCZzzzcwArM21LJ2EFWeqwl6il20L45aD52y8zYYPrTtAi2YaqP77kbSl7/jVW0AFzM6m/G9e5550oeZKDbHGkANpi9uAqn7EjTI88i0txnTEGG6Bwu4G4H/08BsKbkW2C3sB2/h4V1GEHMhxlDEfhlEsVqfaYgrxmXJsTyAjsgawx+fIuqDJsrIFCWlu7IIfur+g0o+DVIDE5kCzZLUeD7FfwP0ym03f7fXF/yjg0sQzXKPF1eXLKXod+7Mn+KOnxLnj+d Swalton@wikimedia.org
     uid: 15557
     email: swalton@wikimedia.org
+    expiry_date: 2018-01-01
+    expiry_contact: legoktm@wikimedia.org
   volker-e:
     ensure: present
     gid: 500
@@ -2446,6 +2450,8 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAthC8yN9ImF+F6DQsI4GqYdAKhEtwfZ/+S7xBg2V5Kz5LLrN/KWUN9uiKsUZJfyl2xD12mpu5Mf3nU7c9QoSyZz40Z2GCN/J3IsYLI+6bPFKM7iA65lWHkWcX93JBH0QBlvua9wOAEMMndzeZrloVzJW3PwDa42UikznWYSyoaF60L6eEh+cUs91zZk14GS1gpD+5h+99nzNlBBmgv5aTv53q5JqzdaWXA83X7sZAjQNfLjpT1EDna0z97Agt7DKcKhHbhJqQ67EEZyVH66DtaoNod2cgn0Os74MDX6aNXu69u4pBxGHD7Oh/TY63kY9sB6pHuZ44X5iC2RbhvKSBjw==
     uid: 12744
     email: samtar.on.en.wp@gmail.com
+    expiry_date: 2018-01-01
+    expiry_contact: legoktm@wikimedia.org
   nithum:
     ensure: present
     gid: 500
@@ -2478,6 +2484,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDqwfn3ofrvHW/tLwTlVnQW0J5bD6LXJWRiVnmwILhDZK7JzWxKHDWXylO865AuHPHii6i5A6vFIu9/R72iKtAmd+X+MhIOH3+K7ErqX2S8tIIHghAac96VSNZnlDW/XTuOvFOB8TUhh+SEctlvNes3a9C5Ysxp+VYW7YLRQG+PYs3/A6ifWsPS1dwtGQtysWhkjfGvFNy31VmVVJMng54SH14uxpS+Fc87xRLbpXUVL6Pd7ixKsEfF0z6Rf0V8zS8VmchiJf7Q/EllH7c/6UFZu/fHvVnY653/Miei/6wgdtKrOX5ajai5ZbM6tWbHX4GUz3BncjrrD8Qe6nSJIMz goransm@Ubuntu-1604-xenial-64-minimal
     uid: 16664
     email: goran.milovanovic_ext@wikimedia.de
+    expiry_date: 2018-01-01
   pnorman:
     ensure: present
     gid: 500
