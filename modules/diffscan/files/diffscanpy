@@ -218,6 +218,11 @@ class ScanState(object):
         for i in self._alerts_closed:
             self._outfile.write('%s\n' % str(i))
 
+    def outstanding_alerts(self):
+        if self._alerts_open or self._alerts_closed:
+            return True
+        return False
+
 lockfile = None
 state = None
 tmpfile = None
@@ -228,6 +233,7 @@ groupname = None
 topports = 2000
 portspec = None
 nosmtp = False
+quiet = False
 
 statefile = './diffscan.state'
 outdir = './diffscan_out'
@@ -350,7 +356,8 @@ def usage():
         '\t-n\t\tno smtp, write output to stdout (recipient ignored)\n' \
         '\t-o path\t\tdirectory to save nmap output (./diffscan_out)\n' \
         '\t-p spec\t\tinstead of top ports use port spec (see nmap -p)\n' \
-        '\t-s path\t\tpath to state file (./diffscan.state)\n\n')
+        '\t-s path\t\tpath to state file (./diffscan.state)\n' \
+        '\t-q\t\tDon\'t send email if no changes \n\n')
     sys.exit(0)
 
 def create_lock():
@@ -380,11 +387,12 @@ def domain():
     global topports
     global portspec
     global nosmtp
+    global quiet
 
     os.environ['PATH'] = os.environ['PATH'] + append_path
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'dhm:no:p:s:')
+        opts, args = getopt.getopt(sys.argv[1:], 'dhm:no:p:s:q')
     except getopt.GetoptError:
         usage()
     for o, a in opts:
@@ -402,6 +410,8 @@ def domain():
             nosmtp = True
         elif o == '-s':
             statefile = a
+        elif o == '-q':
+            quiet = True
     if len(args) < 3:
         usage()
     targetfile = args[0]
@@ -467,8 +477,9 @@ def domain():
         f.close()
         if debugging:
             sys.stdout.write(buf)
-        sp = subprocess.Popen(['sendmail', '-t'], stdin=subprocess.PIPE)
-        sp.communicate(buf)
+        if not (quiet and not state.outstanding_alerts()):
+            sp = subprocess.Popen(['sendmail', '-t'], stdin=subprocess.PIPE)
+            sp.communicate(buf)
         os.remove(tmpout[1])
 
     release_lock()
