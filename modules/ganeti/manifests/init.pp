@@ -30,10 +30,6 @@ class ganeti(
             options => 'minor_count=128 usermode_helper=/bin/true',
         }
 
-        file { '/etc/modprobe.d/drbd.conf':
-            ensure => absent,
-        }
-
         # Enable drbd
         kmod::module { 'drbd':
             ensure => 'present',

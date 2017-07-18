@@ -10,10 +10,6 @@ class ipmi::monitor {
         source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
     }
 
-    file { '/etc/modules-load.d/ipmi.conf':
-        ensure => absent,
-    }
-
     kmod::module { 'ipmi_devintf':
         ensure => present,
     }

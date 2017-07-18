@@ -60,17 +60,9 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         options => 'hashsize=32768',
     }
 
-    file { '/etc/modprobe.d/nf_conntrack.conf':
-        ensure => absent,
-    }
-
     # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
     # was split from the bridge kernel module into a separate module (br_netfilter)
     if (versioncmp($::kernelversion, '3.18') >= 0) {
-        file { '/etc/modules-load.d/brnetfilter.conf':
-            ensure => absent,
-        }
-
         kmod::module { 'br_netfilter':
             ensure => present,
         }
