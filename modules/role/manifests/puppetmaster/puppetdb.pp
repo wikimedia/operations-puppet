@@ -51,15 +51,6 @@ class role::puppetmaster::puppetdb (
         srange => '$CUMIN_MASTERS',
     }
 
-    if $::standard::has_ganglia {
-        class { 'postgresql::ganglia':
-            pgstats_user => $passwords::postgres::ganglia_user,
-            pgstats_pass => $passwords::postgres::ganglia_pass,
-        }
-
-        ganglia::plugin::python { 'diskstat': }
-    }
-
     # Tuning
     file { '/etc/postgresql/9.4/main/tuning.conf':
         ensure  => 'present',
