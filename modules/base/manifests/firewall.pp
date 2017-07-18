@@ -1,6 +1,6 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
-class base::firewall($ensure = 'present') {
+class base::firewall {
     include ::network::constants
     include ::ferm
 
@@ -9,9 +9,6 @@ class base::firewall($ensure = 'present') {
         default => template('base/firewall/defs.erb'),
     }
     ferm::conf { 'defs':
-        # defs can always be present.
-        # They don't actually do firewalling.
-        ensure  => 'present',
         prio    => '00',
         content => $defscontent,
     }
@@ -32,24 +29,20 @@ class base::firewall($ensure = 'present') {
     }
 
     ferm::conf { 'main':
-        ensure => $ensure,
         prio   => '00',
         source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
     }
 
     ferm::rule { 'bastion-ssh':
-        ensure => $ensure,
         rule   => 'proto tcp dport ssh saddr $BASTION_HOSTS ACCEPT;',
     }
 
     ferm::rule { 'monitoring-all':
-        ensure => $ensure,
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
 
     if $::realm == 'production' {
         ::ferm::service { 'ssh-from-cumin-masters':
-            ensure => $ensure,
             proto  => 'tcp',
             port   => '22',
             srange => '$CUMIN_MASTERS',
@@ -62,7 +55,6 @@ class base::firewall($ensure = 'present') {
     }
 
     nrpe::monitor_service { 'conntrack_table_size':
-        ensure        => 'present',
         description   => 'Check size of conntrack table',
         nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
         require       => File['/usr/lib/nagios/plugins/check_conntrack'],
@@ -70,7 +62,6 @@ class base::firewall($ensure = 'present') {
     }
 
     sudo::user { 'nagios_check_ferm':
-        ensure     => 'present',
         user       => 'nagios',
         privileges => [ 'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm' ],
         require    => File['/usr/lib/nagios/plugins/check_ferm'],
@@ -84,7 +75,6 @@ class base::firewall($ensure = 'present') {
     }
 
     nrpe::monitor_service { 'ferm_active':
-        ensure        => 'present',
         description   => 'Check whether ferm is active by checking the default input chain',
         nrpe_command  => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
         require       =>  [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
