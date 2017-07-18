@@ -241,7 +241,7 @@ cache::req_handling:
   servermon.wikimedia.org:
     director: 'netmon1003'
   smokeping.wikimedia.org:
-    director: 'netmon1002'
+    director: 'netmon2001'
   static-bugzilla.wikimedia.org:
     director: 'bromine'
   stats.wikimedia.org:
