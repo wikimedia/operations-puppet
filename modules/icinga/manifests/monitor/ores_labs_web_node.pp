@@ -4,6 +4,6 @@ define icinga::monitor::ores_labs_web_node () {
         description   => "ORES web node labs ${title}",
         check_command => "check_ores_workers!oresweb/node/${title}",
         host          => 'ores.wmflabs.org',
-        contact_group => 'team-ores',
+        contact_group => 'team-scoring',
     }
 }
