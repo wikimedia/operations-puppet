@@ -148,4 +148,12 @@ class role::librenms {
     }
 
     backup::set {'librenms': }
+
+    rsync::quickdatacopy { 'srv-librenms-rrd':
+        ensure      => present,
+        auto_sync   => false,
+        source_host => 'netmon1001.wikimedia.org',
+        dest_host   => 'netmon1002.wikimedia.org',
+        module_path => '/srv/librenms/rrd',
+    }
 }
