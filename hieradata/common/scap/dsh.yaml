@@ -80,7 +80,7 @@ scap::dsh::groups:
       - xenon.eqiad.wmnet
   librenms:
     hosts:
-      - netmon1001.wikimedia.org
+      - netmon1002.wikimedia.org
   logstash:
     hosts:
       - logstash1001.eqiad.wmnet
