@@ -26,16 +26,16 @@ profile::restbase::cassandra_tls:
   ca: /dev/null
 # TODO: get this from cassandra's instances?
 profile::restbase::seeds:
-      - restbase-dev1001-a.eqiad.wmnet
-      - restbase-dev1001-b.eqiad.wmnet
-      - restbase-dev1002-a.eqiad.wmnet
-      - restbase-dev1002-b.eqiad.wmnet
-      - restbase-dev1003-a.eqiad.wmnet
-      - restbase-dev1003-b.eqiad.wmnet
+      - restbase-dev1004-a.eqiad.wmnet
+      - restbase-dev1004-b.eqiad.wmnet
+      - restbase-dev1005-a.eqiad.wmnet
+      - restbase-dev1005-b.eqiad.wmnet
+      - restbase-dev1006-a.eqiad.wmnet
+      - restbase-dev1006-b.eqiad.wmnet
 profile::restbase::hosts:
-  - restbase-dev1001.eqiad.wmnet
-  - restbase-dev1002.eqiad.wmnet
-  - restbase-dev1003.eqiad.wmnet
+  - restbase-dev1004.eqiad.wmnet
+  - restbase-dev1005.eqiad.wmnet
+  - restbase-dev1006.eqiad.wmnet
 
 
 #
@@ -80,24 +80,39 @@ profile::cassandra::metrics_blacklist:
 
 ## Instances
 profile::cassandra::instances:
-  "restbase-dev1001.eqiad.wmnet":
+  "restbase-dev1004.eqiad.wmnet":
     a:
-      listen_address: 10.64.0.36
+      listen_address: xx.xx.x.xx
       data_file_directories:
-        - data
         - data_0
+        - data_1
     b:
-      listen_address: 10.64.0.37
-  "restbase-dev1002.eqiad.wmnet":
+      listen_address: xx.xx.x.xx
+      data_file_directories:
+        - data_0
+        - data_1
+  "restbase-dev1005.eqiad.wmnet":
     a:
-      listen_address: 10.64.32.159
+      listen_address: xx.xx.x.xx
+      data_file_directories:
+        - data_0
+        - data_1
     b:
-      listen_address: 10.64.32.160
-  "restbase-dev1003.eqiad.wmnet":
+      listen_address: xx.xx.x.xx
+      data_file_directories:
+        - data_0
+        - data_1
+  "restbase-dev1006.eqiad.wmnet":
     a:
-      listen_address: 10.64.48.117
+      listen_address: xx.xx.x.xx
+      data_file_directories:
+        - data_0
+        - data_1
     b:
-      listen_address: 10.64.48.118
+      listen_address: xx.xx.x.xx
+      data_file_directories:
+        - data_0
+        - data_1
 
 profile::cassandra::settings:
   start_rpc: 'true'
