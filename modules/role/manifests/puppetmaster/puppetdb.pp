@@ -72,7 +72,9 @@ class role::puppetmaster::puppetdb (
         master => $master,
     }
 
+    # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
-        master => $master,
+        master    => $master,
+        heap_size => '6G',
     }
 }
