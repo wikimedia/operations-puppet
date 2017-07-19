@@ -142,6 +142,9 @@ scap::sources:
   # Time-window compaction strategy for Cassandra
   cassandra/twcs:
     repository: operations/software/cassandra-twcs
+  # Cassandra metrics collection
+  cassandra/metrics-collector:
+    repository: operations/software/cassandra-metrics-collector
   # Prometheus JMX exporter
   prometheus/jmx_exporter:
     repository: operations/software/prometheus_jmx_exporter
