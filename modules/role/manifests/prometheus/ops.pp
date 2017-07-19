@@ -309,6 +309,26 @@ class role::prometheus::ops {
         site => $::site,
     }
 
+    # Job definition for nginx exporter
+    $nginx_jobs = [
+      {
+        'job_name'        => 'nginx',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/nginx_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::cluster_config{ "nginx_cache_misc_${::site}":
+        dest    => "${targets_path}/nginx_cache_misc_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_misc',
+        port    => 9145,
+        labels  => {
+            'cluster' => 'cache_misc'
+        },
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -317,7 +337,8 @@ class role::prometheus::ops {
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
+            $nginx_jobs
         ),
         global_config_extra   => $config_extra,
     }
