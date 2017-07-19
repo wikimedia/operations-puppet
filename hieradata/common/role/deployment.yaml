@@ -26,9 +26,6 @@ role::deployment::repo_config:
     upstream: https://gerrit.wikimedia.org/r/operations/software/cassandra-metrics-collector
   sentry/sentry:
     upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
-  cassandra/logstash-logback-encoder:
-    gitfat_enabled: true
-    upstream: https://gerrit.wikimedia.org/r/operations/software/logstash-logback-encoder
   wikimedia/discovery/analytics:
     upstream: https://gerrit.wikimedia.org/r/wikimedia/discovery/analytics
   analytics/aqs/deploy:
