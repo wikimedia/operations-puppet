@@ -38,13 +38,6 @@ class profile::zookeeper::server (
         java_opts           => '-Xms1g -Xmx1g',
     }
 
-    ferm::service { 'zookeeper':
-        proto  => 'tcp',
-        # Zookeeper client, protocol ports
-        port   => '(2181 2182 2183)',
-        srange => '$DOMAIN_NETWORKS',
-    }
-
     $group_prefix = "zookeeper.cluster.${cluster_name}."
     # Use jmxtrans for sending metrics to ganglia
     class { 'zookeeper::jmxtrans':
