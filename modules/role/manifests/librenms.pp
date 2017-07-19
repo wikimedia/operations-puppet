@@ -9,6 +9,11 @@ class role::librenms {
     $sitename = 'librenms.wikimedia.org'
     $install_dir = '/srv/deployment/librenms/librenms'
 
+    # Which of the netmon servers should actually poll data and
+    # have active cron jobs. We don't want both to do it at the same time.
+    # Switch it in hieradata/common.yaml, the default is just a fallback.
+    $active_server = hiera('netmon_server', 'netmon1002.wikimedia.org')
+
     # NOTE: scap will manage the deploy user
     scap::target { 'librenms/librenms':
         deploy_user => 'deploy-librenms',
@@ -111,10 +116,11 @@ class role::librenms {
     }
 
     class { '::librenms':
-        install_dir => $install_dir,
-        rrd_dir     => '/srv/librenms/rrd',
-        config      => $config,
-        require     => Package['librenms/librenms'],
+        install_dir   => $install_dir,
+        rrd_dir       => '/srv/librenms/rrd',
+        config        => $config,
+        require       => Package['librenms/librenms'],
+        active_server => $active_server,
     }
     class { '::librenms::syslog':
         require => Class['::librenms']

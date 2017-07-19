@@ -18,6 +18,7 @@ class librenms(
     $config={},
     $install_dir='/srv/librenms',
     $rrd_dir="${install_dir}/rrd",
+    $active_server,
 ) {
     group { 'librenms':
         ensure => present,
@@ -110,8 +111,14 @@ class librenms(
 
     include ::imagemagick::install
 
+    if $active_server == $::fqdn {
+        $cron_ensure = 'present'
+    } else {
+        $cron_ensure = 'absent'
+    }
+
     cron { 'librenms-discovery-all':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h all >/dev/null 2>&1",
         hour    => '*/6',
@@ -119,49 +126,49 @@ class librenms(
         require => User['librenms'],
     }
     cron { 'librenms-discovery-new':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h new >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-poller-all':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "python ${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-check-services':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/check-services.php >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-alerts':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/alerts.php >/dev/null 2>&1",
         minute  => '*',
         require => User['librenms'],
     }
     cron { 'librenms-poll-billing':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/poll-billing.php >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-billing-calculate':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/billing-calculate.php >/dev/null 2>&1",
         minute  => '01',
         require => User['librenms'],
     }
     cron { 'librenms-daily':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/daily.sh >/dev/null 2>&1",
         hour    => '0',
@@ -183,7 +190,7 @@ class librenms(
         source => 'puppet:///modules/librenms/purge.py',
     }
     cron { 'purge-syslog-eventlog':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "python ${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
         hour    => '0',
