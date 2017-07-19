@@ -24,9 +24,8 @@ class role::mariadb::dbstore_multiinstance {
 
     class {'mariadb::packages_wmf': }
     class {'mariadb::service':
-        # multiinstance => true, # for now, we will not do anything special
-        # for now we will keep things simple, we probably should have a
-        # higher-level interface with templates
+        override => 'ExecStartPre=/bin/sh -c "echo 'mariadb main service is disabled, \
+use mariadb@<instance_name> instead'; exit 1"',
     }
 
     if os_version('debian >= stretch') {
