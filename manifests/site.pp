@@ -1781,25 +1781,21 @@ node 'nescio.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# network monitoring tool server
+# to be decom'ed (T171018)
 node 'netmon1001.wikimedia.org' {
-    role(network::monitor, librenms)
-
+    role(spare)
     interface::add_ip6_mapped { 'main': }
 }
 
-# network monitoring tool server - replacement servers (T125020, T166180)
+# network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
-    # TODO: role(librenms)
     role(network::monitor, librenms, rancid, smokeping)
-
     interface::add_ip6_mapped { 'main': }
 }
 
 # jessie VM for servermon until it supports stretch (T170653)
 node 'netmon1003.wikimedia.org' {
     role(network::monitor, servermon::wmf)
-
     interface::add_ip6_mapped { 'main': }
 }
 
