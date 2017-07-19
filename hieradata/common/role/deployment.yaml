@@ -21,9 +21,6 @@ role::deployment::repo_config:
   dropwizard/metrics:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics
-  cassandra/metrics-collector:
-    gitfat_enabled: true
-    upstream: https://gerrit.wikimedia.org/r/operations/software/cassandra-metrics-collector
   sentry/sentry:
     upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
   wikimedia/discovery/analytics:
