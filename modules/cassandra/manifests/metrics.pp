@@ -57,9 +57,9 @@ class cassandra::metrics(
         $collector_version = '4.0.1'
     }
 
-    package { 'cassandra/metrics-collector':
-        ensure   => present,
-        provider => 'trebuchet',
+    scap::target { 'cassandra/metrics-collector':
+        deploy_user => 'deploy-service',
+        manage_user => true,
     }
 
     file { '/etc/cassandra-metrics-collector':
@@ -87,7 +87,7 @@ class cassandra::metrics(
     file { $collector_jar:
         ensure  => 'link',
         target  => "/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-${collector_version}-jar-with-dependencies.jar",
-        require => Package['cassandra/metrics-collector'],
+        require => Scap::Target['cassandra/metrics-collector'],
     }
 
     cron { 'cassandra-metrics-collector':
