@@ -52,4 +52,40 @@ class snapshot::dumps::cron(
         monthday    => '20-25',
     }
 
+    file { '/usr/local/bin/save_prefetches.sh':
+        ensure  => 'present',
+        path    => '/usr/local/bin/save_prefetches.sh',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/dumps/save_prefetches.sh.erb'),
+    }
+
+    file { '/usr/local/bin/cleanup_old_dumps.sh':
+        ensure  => 'present',
+        path    => '/usr/local/bin/cleanup_old_dumps.sh',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/dumps/cleanup_old_dumps.sh.erb'),
+    }
+
+    file { '/usr/local/bin/cleanup_prefetches.sh':
+        ensure  => 'present',
+        path    => '/usr/local/bin/cleanup_prefetches.sh',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('snapshot/dumps/cleanup_prefetches.sh.erb'),
+    }
+
+    cron { 'cleanup':
+        ensure      => 'present',
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => $user,
+        command     => "/usr/local/bin/save_prefetches.sh; /usr/local/bin/cleanup_old_dumps.sh; /usr/local/bin/cleanup_prefetches.sh",
+        minute      => '05',
+        hour        => '7',
+        weekday    => '7',
+    }
 }
