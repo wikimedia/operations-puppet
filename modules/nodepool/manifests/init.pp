@@ -95,6 +95,14 @@ class nodepool(
         before   => Package['nodepool'],
     }
 
+    # We need python-jenkins 0.4.12+ to support anti-CSRF tokens when creating
+    # agents. jessie-wikimedia/backports has 0.4.14
+    apt::pin { 'python-jenkins':
+        pin      => 'release a=jessie-wikimedia,c=backports'
+        priority => '1001',
+        before   => Package['nodepool'],
+    }
+
     # OpenStack CLI
     package { 'python-openstackclient':
         ensure  => present,
