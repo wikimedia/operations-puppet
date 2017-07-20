@@ -99,7 +99,6 @@ novaconfig:
   rabbit_host: *labsnovacontroller
   cc_host: *labsnovacontroller
   controller_hostname: *labsnovacontroller
-  ldap_host: *labsnovacontroller
   puppet_host: *labsnovacontroller
   puppet_db_host: *labsnovacontroller
   dhcp_domain: 'eqiad.wmflabs'
