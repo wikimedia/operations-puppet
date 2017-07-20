@@ -2,7 +2,7 @@ class profile::base::certificates {
     include ::sslcert
 
     sslcert::ca { 'wmf_ca_2014_2017':
-        source  => 'puppet:///modules/base/ca/wmf_ca_2014_2017.crt',
+        ensure  => 'absent',
     }
     sslcert::ca { 'wmf_ca_2017_2020':
         source  => 'puppet:///modules/base/ca/wmf_ca_2017_2020.crt',
