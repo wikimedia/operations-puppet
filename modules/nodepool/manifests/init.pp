@@ -217,11 +217,12 @@ class nodepool(
         ensure => absent,
     }
     file { '/var/lib/nodepool/.ssh/id_rsa':
-        ensure  => present,
-        content => $jenkins_ssh_private_key,
-        owner   => 'nodepool',
-        group   => 'nodepool',
-        mode    => '0600',
+        ensure    => present,
+        content   => $jenkins_ssh_private_key,
+        owner     => 'nodepool',
+        group     => 'nodepool',
+        mode      => '0600',
+        show_diff => false,
     }
     # Matching public SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa.pub':
@@ -245,7 +246,8 @@ class nodepool(
     }
 
     file { '/etc/nodepool/nodepool.yaml':
-        content => template('nodepool/nodepool.yaml.erb'),
+        content   => template('nodepool/nodepool.yaml.erb'),
+        show_diff => false,
         require => [
             Package['nodepool'],
         ]

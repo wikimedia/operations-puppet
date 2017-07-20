@@ -8,11 +8,11 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
     }
 
     file { '/etc/fancycaptcha/words':
-        ensure  => $ensure,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => secret('fancycaptcha/words');
+        ensure    => $ensure,
+        mode      => '0444',
+        owner     => 'root',
+        group     => 'root',
+        content   => secret('fancycaptcha/words');
     }
 
     file { '/etc/fancycaptcha/badwords':

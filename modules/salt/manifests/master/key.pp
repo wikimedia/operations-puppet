@@ -44,10 +44,11 @@ Z9Tp7NpKVjKDut1WC23F55ECAwEAAQ==
     }
 
     file { '/etc/salt/pki/master/master.pem':
-        content => $salt_master_privkey,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        notify  => Service['salt-master'],
+        content   => $salt_master_privkey,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        notify    => Service['salt-master'],
+        show_diff => false,
     }
 }

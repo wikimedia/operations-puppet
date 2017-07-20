@@ -60,12 +60,13 @@ define ssh::userkey(
     }
 
     file { $path:
-        ensure  => $ensure,
-        force   => true,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444', # sshd drops perms before trying to read public keys
-        content => $content,
-        source  => $source,
+        ensure    => $ensure,
+        force     => true,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444', # sshd drops perms before trying to read public keys
+        content   => $content,
+        source    => $source,
+        show_diff => false,
     }
 }

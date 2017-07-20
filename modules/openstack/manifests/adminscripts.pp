@@ -104,11 +104,12 @@ class openstack::adminscripts(
     }
 
     file { '/root/.ssh/compute-hosts-key':
-        content => secret('ssh/nova/nova.key'),
-        owner   => 'nova',
-        group   => 'nova',
-        mode    => '0600',
-        require => Package['nova-common'],
+        content   => secret('ssh/nova/nova.key'),
+        owner     => 'nova',
+        group     => 'nova',
+        mode      => '0600',
+        require   => Package['nova-common'],
+        show_diff => false,
     }
 
     # Script to rsync shutoff instances between compute nodes.

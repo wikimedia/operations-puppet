@@ -48,11 +48,12 @@ class zuul::merger (
     }
 
     file { '/var/lib/zuul/.ssh/id_rsa':
-        ensure  => present,
-        owner   => 'zuul',
-        group   => 'zuul',
-        mode    => '0400',
-        content => secret($gerrit_ssh_key_file),
+        ensure    => present,
+        owner     => 'zuul',
+        group     => 'zuul',
+        mode      => '0400',
+        content   => secret($gerrit_ssh_key_file),
+        show_diff => false,
         require => [
             User['zuul'],
             File['/var/lib/zuul/.ssh'],
