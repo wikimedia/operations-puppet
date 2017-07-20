@@ -9,7 +9,7 @@
   Subclasses are responsible for dealing with the details of parsing the log
   entries and generating stats.
 
-  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
+  Copyright 2016-2017 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -66,6 +66,8 @@ class CacheStatsSender(object):
 
         ap.add_argument('--statsd-server', help='statsd server',
                         type=parse_statsd_server_string, default=None)
+        ap.add_argument('--statsd-ip-ttl', help='statsd IP TTL',
+                        type=int, default=60)
         ap.add_argument('--key-prefix', help='metric key prefix',
                         type=parse_prefix_string, default=self.key_prefix)
         ap.add_argument('--interval', help='send interval',
@@ -73,11 +75,25 @@ class CacheStatsSender(object):
         self.args = ap.parse_args(argument_list)
 
         self.next_pub = time.time() + self.args.interval
+        self.next_statsd_ip_refresh = time.time() + self.args.statsd_ip_ttl
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         # Initialize stats to default values
         self.stats = self.default_stats
+
+    def resolve_statsd_ip(self, now=None):
+        """Resolve statsd's server IP. We do that every statsd_ip_ttl instead
+        of every time a metric is sent.
+
+        See https://phabricator.wikimedia.org/T151643"""
+        if now is None:
+            now = time.time()
+
+        if now >= self.next_statsd_ip_refresh:
+            statsd_ip = socket.gethostbyname(self.args.statsd_server[0])
+            self.args.statsd_server = statsd_ip, self.args.statsd_server[1]
+            self.next_statsd_ip_refresh = now + self.args.statsd_ip_ttl
 
     @property
     def default_stats(self):
@@ -109,6 +125,7 @@ class CacheStatsSender(object):
                 buf.write(metric.encode('utf-8'))
             buf.seek(io.SEEK_SET)
             if self.args.statsd_server:
+                self.resolve_statsd_ip(now)
                 self.sock.sendto(buf.read(), self.args.statsd_server)
             else:
                 print(buf.read().decode('utf-8', errors='replace').rstrip())
