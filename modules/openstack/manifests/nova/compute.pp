@@ -9,7 +9,7 @@ class openstack::nova::compute(
 
     if ( $::realm == 'production' ) {
         $certname = "labvirt-star.${::site}.wmnet"
-        $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem'
+        $ca_target = '/etc/ssl/certs/wmf_ca_2017_2020.pem'
         sslcert::certificate { $certname: }
 
         file { "/var/lib/nova/${certname}.key":
