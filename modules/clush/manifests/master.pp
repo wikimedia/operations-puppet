@@ -33,12 +33,13 @@ class clush::master(
     }
 
     file { "/root/.ssh/${username}":
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        require => File['/root/.ssh'],
-        content => secret("clush/${username}"),
+        ensure    => $ensure,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        require   => File['/root/.ssh'],
+        content   => secret("clush/${username}"),
+        show_diff => false,
     }
 
     require_package('clustershell')

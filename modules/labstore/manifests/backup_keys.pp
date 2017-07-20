@@ -15,10 +15,11 @@ class labstore::backup_keys {
     }
 
     file { '/root/.ssh/id_labstore':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => secret('labstore/id_labstore'),
+        ensure    => present,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => secret('labstore/id_labstore'),
+        show_diff => false,
     }
 }

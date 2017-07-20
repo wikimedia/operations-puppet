@@ -26,18 +26,20 @@ class statistics::sites::stats (
 
     # add htpasswd file for stats.wikimedia.org
     file { '/etc/apache2/htpasswd.stats':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => secret('apache/htpasswd.stats'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0644',
+        content   => secret('apache/htpasswd.stats'),
+        show_diff => false,
     }
 
     # add htpasswd file for private geowiki data
     file { $geowiki_private_htpasswd_file:
-        owner   => 'root',
-        group   => 'www-data',
-        mode    => '0640',
-        content => secret('apache/htpasswd.stats-geowiki'),
+        owner     => 'root',
+        group     => 'www-data',
+        mode      => '0640',
+        content   => secret('apache/htpasswd.stats-geowiki'),
+        show_diff => false,
     }
 
     # link geowiki checkout from docroot
