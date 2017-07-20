@@ -116,6 +116,32 @@ class network::constants {
                     '10.64.53.103',                       # druid1003.eqiad.wmnet
                     '2620:0:861:108:1e98:ecff:fe29:e278', # druid1003.eqiad.wmnet
                 ],
+            'cache_misc' => [
+                    '10.64.32.97',                        # cp1045.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:97',         # cp1045.eqiad.wmnet
+                    '10.64.32.103',                       # cp1051.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:103',        # cp1051.eqiad.wmnet
+                    '10.64.0.95',                         # cp1058.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:95',          # cp1058.eqiad.wmnet
+                    '10.64.0.98',                         # cp1061.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:98',          # cp1061.eqiad.wmnet
+                    '10.192.0.127',                       # cp2006.codfw.wmnet
+                    '2620:0:860:101:10:192:0:127',        # cp2006.codfw.wmnet
+                    '10.192.16.138',                      # cp2012.codfw.wmnet
+                    '2620:0:860:102:10:192:16:138',       # cp2012.codfw.wmnet
+                    '10.192.32.117',                      # cp2018.codfw.wmnet
+                    '2620:0:860:103:10:192:32:117',       # cp2018.codfw.wmnet
+                    '10.192.48.29',                       # cp2025.codfw.wmnet
+                    '2620:0:860:104:10:192:48:29',        # cp2025.codfw.wmnet
+                    '10.20.0.107',                        # cp3007.esams.wmnet
+                    '2620:0:862:102:10:20:0:107',         # cp3007.esams.wmnet
+                    '10.20.0.108',                        # cp3008.esams.wmnet
+                    '2620:0:862:102:10:20:0:108',         # cp3008.esams.wmnet
+                    '10.20.0.109',                        # cp3009.esams.wmnet
+                    '2620:0:862:102:10:20:0:109',         # cp3009.esams.wmnet
+                    '10.20.0.110',                        # cp3010.esams.wmnet
+                    '2620:0:862:102:10:20:0:110',         # cp3010.esams.wmnet
+                ],
             },
         'labs' => {
             'bastion_hosts' => concat([
