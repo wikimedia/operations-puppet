@@ -1984,7 +1984,7 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 
 # cassandra/restbase dev cluster
 node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
-    role(restbase::dev_cluster)
+    role(spare::system)
 }
 
 # network insights (netflow/pmacct, etc.)
