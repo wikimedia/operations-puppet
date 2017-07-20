@@ -138,13 +138,15 @@ class role::librenms {
     }
 
     ferm::service { 'librenms-http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     ferm::service { 'librenms-https':
-        proto => 'tcp',
-        port  => '443',
+        proto  => 'tcp',
+        port   => '443',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     backup::set {'librenms': }
