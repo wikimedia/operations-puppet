@@ -16,8 +16,9 @@ class role::racktables::server {
     $racktables_host = hiera('racktables_host', $::fqdn)
 
     ferm::service { 'racktables-http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$PRODUCTION_NETWORKS',
     }
 
     class { '::racktables':
