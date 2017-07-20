@@ -6009,19 +6009,19 @@ host restbase2012 {
     fixed-address restbase2012.codfw.wmnet;
 }
 
-host restbase-dev1001 {
-    hardware ethernet 90:B1:1C:06:BF:01;
-    fixed-address restbase-dev1001.eqiad.wmnet;
+host restbase-dev1004 {
+    hardware ethernet 30:e1:71:5c:a2:f8;
+    fixed-address restbase-dev1004.eqiad.wmnet;
 }
 
-host restbase-dev1002 {
-    hardware ethernet 90:B1:1C:12:68:32;
-    fixed-address restbase-dev1002.eqiad.wmnet;
+host restbase-dev1005 {
+    hardware ethernet 30:e1:71:5c:a2:dc;
+    fixed-address restbase-dev1005.eqiad.wmnet;
 }
 
-host restbase-dev1003 {
-    hardware ethernet 90:B1:1C:12:88:48;
-    fixed-address restbase-dev1003.eqiad.wmnet;
+host restbase-dev1006 {
+    hardware ethernet 30:e1:71:5c:92:54;
+    fixed-address restbase-dev1006.eqiad.wmnet;
 }
 
 host restbase-test2001 {
