@@ -13,11 +13,12 @@ class openstack::nova::compute(
         sslcert::certificate { $certname: }
 
         file { "/var/lib/nova/${certname}.key":
-            owner   => 'nova',
-            group   => 'libvirtd',
-            mode    => '0440',
-            content => secret("ssl/${certname}.key"),
-            require => Package['nova-common'],
+            owner     => 'nova',
+            group     => 'libvirtd',
+            mode      => '0440',
+            content   => secret("ssl/${certname}.key"),
+            require   => Package['nova-common'],
+            show_diff => false,
         }
         file { '/var/lib/nova/clientkey.pem':
             ensure => link,
@@ -56,11 +57,12 @@ class openstack::nova::compute(
             require => Package['nova-common'],
         }
         file { '/var/lib/nova/.ssh/id_rsa':
-            content => secret('ssh/nova/nova.key'),
-            owner   => 'nova',
-            group   => 'nova',
-            mode    => '0600',
-            require => File['/var/lib/nova/.ssh'],
+            content   => secret('ssh/nova/nova.key'),
+            owner     => 'nova',
+            group     => 'nova',
+            mode      => '0600',
+            require   => File['/var/lib/nova/.ssh'],
+            show_diff => false,
         }
         file { '/var/lib/nova/.ssh/id_rsa.pub':
             content => secret('ssh/nova/nova.pub'),

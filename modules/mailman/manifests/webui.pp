@@ -19,11 +19,12 @@ class mailman::webui {
 
     # htdigest file for private list archives
     file { '/etc/apache2/arbcom-l.htdigest':
-        content => secret('mailman/arbcom-l.htdigest'),
-        owner   => 'root',
-        group   => 'www-data',
-        mode    => '0440',
-        require => Class['apache'],
+        content   => secret('mailman/arbcom-l.htdigest'),
+        owner     => 'root',
+        group     => 'www-data',
+        mode      => '0440',
+        require   => Class['apache'],
+        show_diff => false,
     }
 
     # Add files in /var/www (docroot)

@@ -39,11 +39,12 @@ class nagios_common::contacts(
 ) {
     if ($source != undef) {
         file { "${config_dir}/contacts.cfg":
-            ensure => $ensure,
-            source => $source,
-            owner  => $owner,
-            group  => $group,
-            mode   => '0600', # Only $owner:$group can read/write
+            ensure    => $ensure,
+            source    => $source,
+            owner     => $owner,
+            group     => $group,
+            mode      => '0600', # Only $owner:$group can read/write
+            show_diff => false,
         }
     } else {
         if ($content == undef) {
@@ -53,11 +54,12 @@ class nagios_common::contacts(
         }
 
         file { "${config_dir}/contacts.cfg":
-            ensure  => $ensure,
-            content => $real_content,
-            owner   => $owner,
-            group   => $group,
-            mode    => '0600', # Only $owner:$group can read/write
+            ensure    => $ensure,
+            content   => $real_content,
+            owner     => $owner,
+            group     => $group,
+            mode      => '0600', # Only $owner:$group can read/write
+            show_diff => false,
         }
 
         # This 'new' file exists only temp during careful transition of contacts

@@ -15,9 +15,10 @@ class lvs::balancer::runcommand {
             mode   => '0555',
             source => "puppet:///modules/${module_name}/pybal/check-apache";
         '/root/.ssh/pybal-check':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0600',
-            content => secret('pybal/pybal-check');
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0600',
+            content   => secret('pybal/pybal-check'),
+            show_diff => false;
     }
 }

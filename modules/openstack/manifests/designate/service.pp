@@ -111,10 +111,11 @@ class openstack::designate::service (
     }
 
     file { '/var/lib/designate/.ssh/id_rsa':
-        owner   => 'designate',
-        group   => 'designate',
-        mode    => '0400',
-        content => secret('ssh/puppet_cert_manager/cert_manager'),
+        owner     => 'designate',
+        group     => 'designate',
+        mode      => '0400',
+        content   => secret('ssh/puppet_cert_manager/cert_manager'),
+        show_diff => false,
     }
 
     # include rootwrap.d entries

@@ -102,11 +102,12 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/.ssh/id_rsa':
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0400',
-        require => File['/var/lib/gerrit2/.ssh'],
-        content => secret('gerrit/id_rsa'),
+        owner     => 'gerrit2',
+        group     => 'gerrit2',
+        mode      => '0400',
+        require   => File['/var/lib/gerrit2/.ssh'],
+        content   => secret('gerrit/id_rsa'),
+        show_diff => false,
     }
 
     ssh::userkey { 'gerrit2-cluster-sync':
@@ -185,11 +186,12 @@ class gerrit::jetty(
 
     if $ssh_host_key != undef {
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
-            content => secret("gerrit/${ssh_host_key}"),
-            owner   => 'gerrit2',
-            group   => 'gerrit2',
-            mode    => '0440',
-            require => File['/var/lib/gerrit2/review_site/etc'],
+            content   => secret("gerrit/${ssh_host_key}"),
+            owner     => 'gerrit2',
+            group     => 'gerrit2',
+            mode      => '0440',
+            require   => File['/var/lib/gerrit2/review_site/etc'],
+            show_diff => false,
         }
     }
 

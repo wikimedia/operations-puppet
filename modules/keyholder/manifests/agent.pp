@@ -47,19 +47,21 @@ define keyholder::agent(
     $key_name_safe = regsubst($key_name, '\W', '_', 'G')
 
     file { "/etc/keyholder.d/${key_name_safe}":
-        ensure  => $ensure,
-        content => secret("keyholder/${key_name_safe}"),
-        owner   => 'root',
-        group   => 'keyholder',
-        mode    => '0440',
+        ensure    => $ensure,
+        content   => secret("keyholder/${key_name_safe}"),
+        show_diff => false,
+        owner     => 'root',
+        group     => 'keyholder',
+        mode      => '0440',
     }
 
     file { "/etc/keyholder.d/${key_name_safe}.pub":
-        ensure  => $ensure,
-        content => secret("keyholder/${key_name_safe}.pub"),
-        owner   => 'root',
-        group   => 'keyholder',
-        mode    => '0440',
+        ensure    => $ensure,
+        content   => secret("keyholder/${key_name_safe}.pub"),
+        show_diff => false,
+        owner     => 'root',
+        group     => 'keyholder',
+        mode      => '0440',
     }
 
     # generate the mapping between groups and keys. Used by ssh-agent-proxy

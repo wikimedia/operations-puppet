@@ -37,11 +37,12 @@ class openstack::nova::fullstack(
 
     $keyfile = '/var/lib/osstackcanary/osstackcanary_id'
     file { $keyfile:
-        ensure  => present,
-        mode    => '0600',
-        owner   => 'osstackcanary',
-        group   => 'osstackcanary',
-        content => secret('nova/osstackcanary'),
+        ensure    => present,
+        mode      => '0600',
+        owner     => 'osstackcanary',
+        group     => 'osstackcanary',
+        content   => secret('nova/osstackcanary'),
+        show_diff => false,
     }
 
     base::service_unit { 'nova-fullstack':
