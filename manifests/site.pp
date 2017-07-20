@@ -1783,7 +1783,7 @@ node 'nescio.wikimedia.org' {
 
 # to be decom'ed (T171018)
 node 'netmon1001.wikimedia.org' {
-    role(network::monitor, librenms)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
