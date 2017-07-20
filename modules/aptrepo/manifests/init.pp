@@ -16,8 +16,8 @@
 #   - *incominguser*: The user name that owns the incoming directory.
 #   - *incominggroup*: The group name that owns the incoming directory.
 #   - *default_distro*: The default distribution if none specified.
-#   - *gpg_secring*: The GPG secret keyring for reprepro to use.
-#   - *gpg_pubring*: The GPG public keyring for reprepro to use.
+#   - *gpg_secring*: The GPG secret keyring for reprepro to use. Will be passed to secret()
+#   - *gpg_pubring*: The GPG public keyring for reprepro to use. Will be passed to secret()
 #   - *authorized_keys*: A list of ssh public keys allowed to upload and process the incoming queue
 #
 # === Example
@@ -192,12 +192,13 @@ class aptrepo (
 
     if $gpg_secring != undef {
         file { "${homedir}/.gnupg/secring.gpg":
-            ensure  => file,
-            owner   => $user,
-            group   => $group,
-            mode    => '0400',
-            source  => $gpg_secring,
-            require => User['reprepro'],
+            ensure    => file,
+            owner     => $user,
+            group     => $group,
+            mode      => '0400',
+            content   => secret($gpg_secring),
+            show_diff => false,
+            require   => User['reprepro'],
         }
     }
 
@@ -207,7 +208,7 @@ class aptrepo (
             owner   => $user,
             group   => $group,
             mode    => '0400',
-            source  => $gpg_pubring,
+            content => secret($gpg_pubring),
             require => User['reprepro'],
         }
     }

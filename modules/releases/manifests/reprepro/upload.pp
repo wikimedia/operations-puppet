@@ -1,6 +1,6 @@
 class releases::reprepro::upload (
     # lint:ignore:puppet_url_without_modules
-    $private_key  = 'puppet:///private/releases/id_rsa.upload',
+    $private_key  = 'releases/id_rsa.upload',
     # lint:endignore
     $user         = 'releases',
     $group        = 'releases',
@@ -33,12 +33,13 @@ class releases::reprepro::upload (
     }
 
     file { "${homedir}/.ssh/id_rsa.${upload_host}":
-        ensure  => file,
-        owner   => $user,
-        group   => $group,
-        mode    => '0600',
-        require => User['releases'],
-        source  => $private_key,
+        ensure    => file,
+        owner     => $user,
+        group     => $group,
+        mode      => '0600',
+        require   => User['releases'],
+        content   => secret($private_key),
+        show_diff => false,
     }
 
     file { "${homedir}/.ssh/config":
