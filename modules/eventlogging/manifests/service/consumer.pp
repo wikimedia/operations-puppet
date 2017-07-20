@@ -44,6 +44,12 @@
 # [*mode*]
 #   File permission mode of config file.  Default: 0644
 #
+# [*reload_on]
+#   Reload eventlogging-consumer if any of the provided Puppet
+#   resources have changed.  This should be an array of alreday
+#   declared puppet resources.  E.g.
+#   [File['/path/to/topicconfig.yaml'], Class['::something::else']]
+#
 # === Examples
 #
 #  eventlogging::service::consumer { 'all events':
@@ -60,15 +66,34 @@ define eventlogging::service::consumer(
     $owner        = 'root',
     $group        = 'root',
     $mode         = '0644',
+    $reload_on    = undef,
 ) {
+    # eventlogging-consumer puppetization currently only works on Ubuntu with upstart
+    if $::operatingsystem == 'Ubuntu' {
+        fail('eventlogging::service::consumer currently only works on Ubuntu with upstart.')
+    }
+
     Class['eventlogging::server'] -> Eventlogging::Service::Consumer[$title]
 
     $basename = regsubst($title, '\W', '-', 'G')
-    file { "/etc/eventlogging.d/consumers/${basename}":
+    $config_file = "/etc/eventlogging.d/consumers/${basename}"
+    file { $config_file:
         ensure  => $ensure,
         content => template('eventlogging/consumer.erb'),
         owner   => $owner,
         group   => $group,
         mode    => $mode,
+    }
+
+    # Upstart specific reload command for this eventlogging consumer task.
+    $reload_cmd = "/sbin/reload eventlogging/consumer NAME=${basename} CONFIG=${config_file}"
+    # eventlogging-consumer can be SIGHUPed via reload.
+    # Note that this does not restart the service, so no
+    # events in flight should be lost.
+    # This will only happen if $reload_on is provided.
+    exec { "reload eventlogging-consumer-${basename}":
+        command     => $reload_cmd,
+        refreshonly => true,
+        subscribe   => $reload_on,
     }
 }
