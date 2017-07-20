@@ -79,6 +79,12 @@ class CacheStatsSender(object):
         # Initialize stats to default values
         self.stats = self.default_stats
 
+        # Resolve statsd's server IP once at startup instead of doing it every
+        # time a metric is sent. T151643
+        if self.args.statsd_server:
+            statsd_ip = socket.gethostbyname(self.args.statsd_server[0])
+            self.args.statsd_server = statsd_ip, self.args.statsd_server[1]
+
     @property
     def default_stats(self):
         """Return default stats"""
