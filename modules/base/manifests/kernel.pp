@@ -31,6 +31,8 @@ class base::kernel
             'dccp_probe',
             'dccp_diag',
             'n_hdlc',
+            'intel_cstate',
+            'intel_rapl_perf',
             'intel_uncore',
             'parport',
             'parport_pc',
