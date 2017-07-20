@@ -120,6 +120,7 @@ novaconfig:
     - labvirt1012
     - labvirt1013
     - labvirt1014
+    - labvirt1015
 
 wikitech_db_name: 'labswiki'
 
