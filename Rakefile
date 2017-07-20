@@ -1,111 +1,351 @@
-# This rakefile is meant to run linters and tests.
-#
+# This rakefile is meant to run linters and tests
+# tailored to a specific changeset.
 # You will need 'bundler' to install dependencies:
 #
 #  $ apt-get install bundler
 #  $ bundle install
 #
-# Then run the linter using rake (a ruby build helper) inside the env set by
-# bundler:
+# Then run all the tests, in parallel, that are pertinent to the current changeset
 #
-#   $ bundle exec rake puppetlint
+#   $ bundle exec rake test
 #
-# puppet-lint doc is at https://github.com/rodjek/puppet-lint
+# If you just want to check which tests would be ran, run
 #
+#   $ bundle exec rake debug
 #
-# Another target is spec, which runs unit/integration tests. You will need some
-# more gems installed using bundler:
+# Based on the contents of the change, this rakefile will define and run
+# all or just some of the following tests:
 #
-#   $ bundle install
-#   $ bundle exec rake spec
+# * puppet_lint - runs puppet lint on the changed puppet files
+# * typos - checks the changed files against a predefined list of typos defined
+#            in ./typos
+# * syntax - run syntax checks for puppet files, hiera files, and templates
+#            changed in the current changeset
+# * rubocop - run rubocop style checks on ruby files changed in this changeset
+# * spec - run the spec tests on the modules where files are changed, or whose
+#           tests depend on modules that have been modified.
+# * tox - run the tox tests if needed.
 #
-# Continuous integration invokes 'bundle exec rake test'.
-
-require 'bundler/setup'
-require 'English'
 require 'git'
+require 'set'
+require 'rake'
+require 'rake/tasklib'
+require 'shellwords'
+
 require 'puppet-lint/tasks/puppet-lint'
-require 'puppet-strings/tasks/generate'
+require 'puppet-syntax'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'rubocop/rake_task'
-require 'rake/testtask'
 
-# site.pp still uses an import statement for realm.pp (T154915)
-PuppetSyntax.fail_on_deprecation_notices = false
 
-if Puppet.version.to_f < 4.0
-    PuppetSyntax.exclude_paths = [
+
+# Monkey-patch PuppetSyntax and its rake task
+module PuppetSyntax
+  @manifests_paths = ["**/*.pp"]
+  @templates_paths = ["**/*.erb"]
+  class << self
+    attr_accessor :manifests_paths, :templates_paths
+  end
+end
+
+class PuppetSyntax::RakeTask
+  def filelist_manifests
+    filelist(PuppetSyntax.manifests_paths)
+  end
+
+  def filelist_templates
+    filelist(PuppetSyntax.templates_paths)
+  end
+end
+
+class SpecDependencies
+  # Finds all specs to run based on the changed modules.
+
+  def initialize
+    @deps = {}
+    FileList["modules/*/.fixtures.yml"].each do |file|
+      module_name = module_from_filename(file)
+      symlinks = YAML.safe_load(File.open(file))['fixtures']['symlinks'].keys.select{ |x| x != module_name }
+      symlinks.each do |dependency|
+        @deps[dependency]||= []
+        @deps[dependency] << module_name
+      end
+    end
+  end
+
+  def specs_to_run(filelist)
+    specs = Set.new
+    modules = modules_modified(filelist)
+    return [] if !modules
+    modules.each do |mod|
+      next unless Dir.exists?("modules/#{mod}/spec")
+      specs.add(mod)
+      if @deps.include?mod
+        @deps[mod].each{ |m| specs.add(m) }
+      end
+    end
+    specs.to_a
+  end
+
+  private
+  def modules_modified(filelist)
+    modules = Set.new
+    filelist.each do |file|
+      module_name = module_from_filename(file)
+
+      modules.add(module_name) if module_name
+    end
+    modules.to_a
+  end
+
+
+  def module_from_filename(name)
+    if %r{modules/([^/]+)} =~ name
+      Regexp.last_match(1)
+    else
+      nil
+    end
+  end
+end
+
+class TaskGen < ::Rake::TaskLib
+
+  attr_accessor :tasks, :failed_specs
+
+  def initialize(path)
+    @tasks_categories = [
+      :puppet_lint,
+      :typos,
+      :syntax,
+      :rubocop,
+      :spec,
+      :tox
+    ]
+    @changed_files = git_changed_in_head(path)
+    @tasks = setup_tasks
+    @failed_specs = []
+  end
+
+  private
+
+  def git_changed_in_head(path)
+    g = Git.open(path)
+    diff = g.diff('HEAD^')
+    diff.name_status.select { |_, status| 'ACM'.include? status}.keys
+  end
+
+  def setup_tasks
+    tasks = []
+    @tasks_categories.each do |cat|
+      method_name = "setup_#{cat}"
+      tasks.concat send(method_name)
+    end
+    tasks
+  end
+
+  def puppet_changed_files
+    @changed_files.select{ |x| File.fnmatch("*.pp", x) }
+  end
+
+  def filter_files_by(*globs)
+    changed = FileList[@changed_files]
+    changed.exclude(*PuppetSyntax.exclude_paths).select do |file|
+      # If at least one glob pattern matches, the file is included.
+      !globs.select{ |glob| File.fnmatch(glob, file)}.empty?
+    end
+  end
+
+  def setup_puppet_lint
+    changed = puppet_changed_files
+    return [] if changed.empty?
+    # Reset puppet-lint tasks, define a new one
+    Rake::Task[:lint].clear
+    PuppetLint::RakeTask.new :puppet_lint do |config|
+      config.fail_on_warnings = true  # be strict
+      config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+      config.pattern = changed
+    end
+    [:puppet_lint]
+  end
+
+  def setup_typos
+    return [] if @changed_files.empty?
+    # Exclude the typos file itself
+    shell_files = Shellwords.join(@changed_files - ['typos'])
+    desc "Check common typos from /typos"
+    task :typos do
+      system("git grep -q -I -P -f typos -- #{shell_files}")
+      case $CHILD_STATUS.exitstatus
+      when 0
+        fail "Typo found!"
+      when 1
+        puts "No typo found."
+      else
+        fail "Some error occured"
+      end
+    end
+    [:typos]
+  end
+
+  def setup_syntax
+    # Reset puppet-syntax tasks, define a new one
+    Rake::Task[:syntax].clear
+
+    # site.pp still uses an import statement for realm.pp (T154915)
+    # We can think of activating this once we've moved to the future parser
+    PuppetSyntax.fail_on_deprecation_notices = false
+    if Puppet.version.to_f < 4.0
+      PuppetSyntax.exclude_paths = [
         'modules/stdlib/types/*.pp',
         'modules/stdlib/types/compat/*.pp',
         'modules/stdlib/spec/fixtures/test/manifests/*.pp',
-    ]
-end
-
-# Find files modified in HEAD
-def git_changed_in_head(file_exts=[])
-    g = Git.open('.')
-    diff = g.diff('HEAD^')
-    files = diff.name_status.select { |_, status| 'ACM'.include? status}.keys
-
-    if file_exts.empty?
-        files
-    else
-        files.select { |fname| fname.end_with?(*file_exts) }
+      ]
     end
-end
+    # Set up filelists
+    PuppetSyntax.manifests_paths = puppet_changed_files
+    PuppetSyntax.templates_paths = filter_files_by("**/templates/**/*.erb", "**/templates/**/*.epp")
+    PuppetSyntax.hieradata_paths = filter_files_by("hieradata/**/*.yaml", "conftool-data/**/*.yaml")
+    tasks = []
+    unless PuppetSyntax.manifests_paths.empty?
+      tasks << 'syntax:manifests'
+    end
+    unless PuppetSyntax.templates_paths.empty?
+      tasks << 'syntax:templates'
+    end
+    unless PuppetSyntax.hieradata_paths.empty?
+      tasks << 'syntax:hiera'
+    end
+    return tasks if tasks.empty?
+    # Now re-set up the jobs by instantiating the class
+    PuppetSyntax::RakeTask.new
+    tasks
+  end
 
-namespace :syntax do
-    desc 'Syntax check Puppet manifests against HEAD'
-    task :manifests_head do
-        Puppet::Util::Log.newdestination(:console)
-        files = git_changed_in_head ['.pp']
-        files << 'manifests/site.pp'
+  def setup_rubocop
+    # Files that require a full tree compilation.
+    # If the gemfile changed, we might have updated rubocop.
+    # Err on the side of caution and scan all files in that case.
+    # Also, if the rubocop exceptions changed, check the whole tree
+    global_files = ['Gemfile', '.rubocop.todo.yml']
 
-        # XXX This is copy pasted from the puppet-syntax rake task. It does not
-        # support injecting a specific list of files but always uses:
-        #   FileList['**/*.pp']
-        c = PuppetSyntax::Manifests.new
-        output, has_errors = c.check(files)
-        Puppet::Util::Log.close_all
-        fail if has_errors || (output.any? && PuppetSyntax.fail_on_deprecation_notices)
+    ruby_files = filter_files_by("**/*.rb", "**/Rakefile").concat global_files
+    return [] if ruby_files.empty?
+    rubocop_task = RuboCop::RakeTask.new(:rubocop)
+    if @changed_files.select{ |f| global_files.include?f }
+      rubocop_task.patterns = ruby_files
+    end
+    [:rubocop]
+  end
+
+  def setup_spec
+    # Modules known not to pass tests
+    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs', 'tilerator', 'wmflib']
+    deps = SpecDependencies.new
+    spec_modules = deps.specs_to_run(@changed_files).select do |m|
+      !ignored_modules.include?(m)
+    end
+    return [] if spec_modules.empty?
+
+    namespace :spec do
+      spec_modules.each do |module_name|
+        desc "Run spec for module #{module_name}"
+        task module_name do
+          puts "---> spec:#{module_name}"
+          spec_result = system("cd 'modules/#{module_name}' && rake spec")
+          if !spec_result
+            @failed_specs << module_name
+          end
+          puts "---> spec:#{module_name}"
+        end
+      end
+    end
+    desc "Run spec tests found in modules"
+    multitask :spec => spec_modules.map{ |m| "spec:#{m}" } do
+
+      raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}" if !@failed_specs.empty?
+    end
+    [:spec]
+  end
+
+  def setup_tox
+    tasks = []
+    namespace :tox do
+      if @changed_files.include?('tox.ini')
+        desc 'Refresh the tox environment'
+        task :update do
+          raise "Running tox failed" unless system('tox -r')
+        end
+        tasks << 'tox:update'
+      else
+        if @changed_files.include?('admin/modules/data/data.yaml')
+          desc 'Run tox for the admin data file'
+          task :admin do
+            res = system('tox -e testenv')
+            raise "Tox tests for admin/data/data.yaml failed!" if !res
+          end
+          tasks << 'tox:admin'
+        end
+        tox_files = filter_files_by("*.py")
+        unless tox_files.empty?
+          desc 'Run flake8 on python files via tox'
+          task :flake8 do
+            shell_tox_files = Shellwords.join(tox_files)
+            raise "Flake8 failed" unless system("tox -e pep8 #{shell_tox_files}")
+          end
+          tasks << 'tox:flake8'
+        end
+        desc 'Check commit message'
+        task :commit_message do
+          raise 'Invalid commit message' unless system("tox -e commit-message")
+        end
+        tasks << 'tox:commit_message'
+      end
     end
 
-    desc 'Syntax checks against HEAD'
-    task :head => [
-        'syntax:manifests_head',
-        'syntax:hiera',
-        'syntax:templates',
-    ]
+    desc 'Run all the tox-related tasks'
+    task :tox => tasks
+    [:tox]
+  end
 end
 
-RuboCop::RakeTask.new(:rubocop)
 
-# Remane and customize puppet-lint built-in task
-Rake::Task[:lint].clear
-PuppetLint::RakeTask.new :puppetlint do |config|
+t = TaskGen.new('.')
+
+desc 'Run all actual tests in parallel for changes in HEAD'
+multitask :test => t.tasks
+# Show what we would run
+task :debug do
+  puts "Tasks that would be run: "
+  puts t.tasks
+end
+
+
+# Now set up some global jobs, that can be used to run
+# validators on the whole tree if needed.
+namespace :global do
+  # Puppet-syntax global job
+  PuppetSyntax.fail_on_deprecation_notices = false
+  PuppetSyntax.manifests_paths = ["**/*.pp"]
+  PuppetSyntax.templates_paths = ["**/*.erb"]
+  PuppetSyntax.hieradata_paths = ["hieradata/**/*.yaml", "conftool-data/**/*.yaml"]
+  PuppetSyntax::RakeTask.new
+  # Puppet-lint global job
+  PuppetLint::RakeTask.new :lint do |config|
     config.fail_on_warnings = true  # be strict
     config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+  end
+
+  desc 'Run tox tests'
+  task :tox do
+    raise "Running tox failed" unless system('tox')
+  end
 end
-PuppetLint::RakeTask.new :puppetlint_head do |config|
-    config.fail_on_warnings = true  # be strict
-    config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
-    config.pattern = git_changed_in_head ['.pp']
-end
 
-task :default => [:help]
 
-desc 'Run all build/tests commands (CI entry point)'
-task test: [:lint_head]
-
-desc 'Run all linting commands'
-task lint: [:typos, :rubocop, :syntax, :puppetlint]
-
-desc 'Run all linting commands against HEAD'
-task lint_head: [:typos, :rubocop, :"syntax:head", :puppetlint_head]
 
 desc 'Show the help'
 task :help do
-    puts "Puppet helper for operations/puppet.git
+  puts "Puppet helper for operations/puppet.git
 
 Welcome #{ENV['USER']} to WMFs wonderful rake helper to play with puppet.
 
@@ -115,112 +355,8 @@ Welcome #{ENV['USER']} to WMFs wonderful rake helper to play with puppet.
 
 ---[Available rake tasks]----------------------------------------------"
 
-    # Show our tasks list.
-    system "rake -T"
+  # Show our tasks list.
+  system "rake -T"
 
-    puts "-----------------------------------------------------------------------"
-    puts "
-Examples:
-
-Validate syntax for all puppet manifests:
-  rake validate
-
-Validate manifests/nfs.pp and manifests/apaches.pp
-  rake \"validate[manifests/nfs.pp manifests/apaches.pp]\"
-
-Run puppet-lint style checker:
-  rake puppetlint
-"
+  puts "-----------------------------------------------------------------------"
 end
-
-desc "Build documentation"
-task :doc do
-    Rake::Task['strings:generate'].invoke(
-        '**/*.pp **/*.rb',  # patterns
-        'false', # debug
-        'false', # backtrace
-        'rdoc',  # markup format
-    )
-end
-
-def spec_modules
-    module_names = []
-    FileList['modules/*/spec'].each do |m|
-        module_names << m.match('modules/(.+)/')[1]
-    end
-    module_names
-end
-
-namespace :spec do
-    spec_modules.each do |module_name|
-        desc "Run spec for module #{module_name}"
-        task module_name do
-            puts '-' * 80
-            puts "Running rspec tests for module #{module_name}"
-            puts '-' * 80
-            spec_result = system("cd 'modules/#{module_name}' && rake spec")
-            raise "Module #{module_name} failed to pass spec" if !spec_result
-        end
-    end
-end
-
-desc "Run spec tests found in modules"
-task :spec do
-    # Hold a list of modules not passing tests.
-    failed_modules = []
-    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs']
-
-    # Invoke rake whenever a module has a Rakefile.
-    spec_modules.each do |module_name|
-        next if ignored_modules.include? module_name
-        begin
-            Rake::Task["spec:#{module_name}"].invoke
-        rescue
-            failed_modules << module_name  # recording
-        end
-        puts "\n"
-    end
-
-    puts '-' * 80
-    puts 'Finished running tests for all modules'
-    puts '-' * 80
-
-    unless failed_modules.empty?
-        puts "\nThe following modules are NOT passing tests:\n"
-        puts '- ' + failed_modules * "\n- "
-        puts
-        raise "Some modules had failures, sorry."
-    end
-end
-
-desc "Generates ctags"
-task :tags do
-    puts "Generating ctags file.."
-    system('ctags -R .')
-    puts "Done"
-    puts
-    puts "See https://github.com/majutsushi/tagbar/wiki#puppet for vim"
-    puts "integration with the vim tagbar plugin."
-end
-
-desc "Check common typos from /typos"
-task :typos do
-    system("git grep --color=always -I -P -f typos -- . ':(exclude)typos'")
-    # 0   One or more lines were selected.
-    # 1   No lines were selected.
-    # >1  An error occurred.
-    #
-    # Flip 0 and 1 meanings.
-    case $CHILD_STATUS.exitstatus
-    when 0
-        fail "Typo found!"
-    when 1
-        puts "No typo found."
-    else
-        fail "Some error occured"
-    end
-end
-
-# lint
-# amass profit
-# donate!
