@@ -87,11 +87,12 @@ class openstack::glance::service(
     }
 
     file { '/home/glancesync/.ssh/id_rsa':
-        content => secret('ssh/glancesync/glancesync.key'),
-        owner   => 'glancesync',
-        group   => 'glance',
-        mode    => '0600',
-        require => File['/home/glancesync/.ssh'],
+        content   => secret('ssh/glancesync/glancesync.key'),
+        owner     => 'glancesync',
+        group     => 'glance',
+        mode      => '0600',
+        require   => File['/home/glancesync/.ssh'],
+        show_diff => false,
     }
 
     if $::fqdn == $active_server {

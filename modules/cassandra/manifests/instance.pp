@@ -197,11 +197,12 @@ define cassandra::instance(
         }
 
         file { "${config_directory}/tls/server.key":
-            content => secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => File["${config_directory}/tls"],
+            content   => secret("cassandra/${tls_cluster_name}/${tls_hostname}/${tls_hostname}.kst"),
+            owner     => 'cassandra',
+            group     => 'cassandra',
+            mode      => '0400',
+            require   => File["${config_directory}/tls"],
+            show_diff => false,
         }
 
         file { "${config_directory}/tls/server.trust":

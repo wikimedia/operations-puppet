@@ -4,10 +4,11 @@
 # Also install a convenience script to ssh in using this key
 class role::access_new_install {
     file { '/root/.ssh/new_install':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => secret('ssh/new_install/new_install'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => secret('ssh/new_install/new_install'),
+        show_diff => false,
     }
     file { '/root/.ssh/new_install.pub':
         owner   => 'root',

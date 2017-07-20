@@ -21,9 +21,10 @@ class profile::cumin::target(
     $cumin_master_pub_key = secret('keyholder/cumin_master.pub')
 
     ssh::userkey { 'root-cumin':
-        ensure  => present,
-        user    => 'root',
-        skey    => 'cumin',
-        content => template('profile/cumin/userkey.erb'),
+        ensure    => present,
+        user      => 'root',
+        skey      => 'cumin',
+        content   => template('profile/cumin/userkey.erb'),
+        show_diff => false,
     }
 }

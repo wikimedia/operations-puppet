@@ -31,18 +31,20 @@ class authdns::account {
         require => [ User[$user], Group[$group] ],
     }
     file { "${home}/.ssh/id_ed25519":
-        ensure  => 'present',
-        owner   => $user,
-        group   => $group,
-        mode    => '0400',
-        content => secret('authdns/id_ed25519'),
+        ensure    => 'present',
+        owner     => $user,
+        group     => $group,
+        mode      => '0400',
+        content   => secret('authdns/id_ed25519'),
+        show_diff => false,
     }
     file { "${home}/.ssh/id_ed25519.pub":
-        ensure  => 'present',
-        owner   => $user,
-        group   => $group,
-        mode    => '0400',
-        content => secret('authdns/id_ed25519.pub'),
+        ensure    => 'present',
+        owner     => $user,
+        group     => $group,
+        mode      => '0400',
+        content   => secret('authdns/id_ed25519.pub'),
+        show_diff => false,
     }
     ssh::userkey { $user:
         content => secret('authdns/id_ed25519.pub'),

@@ -39,19 +39,21 @@ define puppetmaster::web_frontend(
         # We use the private repo for the public key as well as it gets
         # generated on the puppet ca server.
         file { "${ssldir}/certs/${server_name}.pem":
-            content => secret("puppetmaster/${server_name}_pubkey.pem"),
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0640',
-            before  => Apache::Site[$server_name],
+            content   => secret("puppetmaster/${server_name}_pubkey.pem"),
+            owner     => 'puppet',
+            group     => 'puppet',
+            mode      => '0640',
+            before    => Apache::Site[$server_name],
+            show_diff => false,
         }
 
         file { "${ssldir}/private_keys/${server_name}.pem":
-            content => secret("puppetmaster/${server_name}_privkey.pem"),
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0640',
-            before  => Apache::Site[$server_name],
+            content   => secret("puppetmaster/${server_name}_privkey.pem"),
+            owner     => 'puppet',
+            group     => 'puppet',
+            mode      => '0640',
+            before    => Apache::Site[$server_name],
+            show_diff => false,
         }
     }
     apache::site { $server_name:
