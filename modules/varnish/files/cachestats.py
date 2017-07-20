@@ -9,7 +9,7 @@
   Subclasses are responsible for dealing with the details of parsing the log
   entries and generating stats.
 
-  Copyright 2016 Emanuele Rocca <ema@wikimedia.org>
+  Copyright 2016-2017 Emanuele Rocca <ema@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -66,6 +66,9 @@ class CacheStatsSender(object):
 
         ap.add_argument('--statsd-server', help='statsd server',
                         type=parse_statsd_server_string, default=None)
+        ap.add_argument('--statsd-ip-refresh-interval',
+                        help='statsd IP refresh interval',
+                        type=int, default=60)
         ap.add_argument('--key-prefix', help='metric key prefix',
                         type=parse_prefix_string, default=self.key_prefix)
         ap.add_argument('--interval', help='send interval',
@@ -73,11 +76,21 @@ class CacheStatsSender(object):
         self.args = ap.parse_args(argument_list)
 
         self.next_pub = time.time() + self.args.interval
+        self.next_statsd_ip_refresh = (
+            time.time() + self.args.statsd_ip_refresh_interval)
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         # Initialize stats to default values
         self.stats = self.default_stats
+
+    def resolve_statsd_ip(self):
+        """Resolve statsd's server IP. We do that every
+        statsd_ip_refresh_interval instead of every time a metric is sent.
+
+        See https://phabricator.wikimedia.org/T151643"""
+        statsd_ip = socket.gethostbyname(self.args.statsd_server[0])
+        self.args.statsd_server = statsd_ip, self.args.statsd_server[1]
 
     @property
     def default_stats(self):
@@ -95,6 +108,13 @@ class CacheStatsSender(object):
         self.gen_stats(record)
 
         now = time.time()
+
+        # Refresh the cached statsd server IP
+        if self.args.statsd_server and now >= self.next_statsd_ip_refresh:
+            self.resolve_statsd_ip()
+            self.next_statsd_ip_refresh = (
+                now + self.args.statsd_ip_refresh_interval)
+
         if now >= self.next_pub:
             self.next_pub = now + self.args.interval
             buf = io.BytesIO()
