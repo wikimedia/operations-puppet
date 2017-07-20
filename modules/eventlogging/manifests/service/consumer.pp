@@ -69,7 +69,7 @@ define eventlogging::service::consumer(
     $reload_on    = undef,
 ) {
     # eventlogging-consumer puppetization currently only works on Ubuntu with upstart
-    if $::operatingsystem == 'Ubuntu' {
+    if $::operatingsystem != 'Ubuntu' {
         fail('eventlogging::service::consumer currently only works on Ubuntu with upstart.')
     }
 
