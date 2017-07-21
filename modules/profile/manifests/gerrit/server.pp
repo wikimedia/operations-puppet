@@ -8,6 +8,7 @@ class profile::gerrit::server(
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
     $gerrit_servers = join(hiera('gerrit::servers'), ' ')
+    $config = hiera('gerrit::server::config'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -65,7 +66,8 @@ class profile::gerrit::server(
     }
 
     class { '::gerrit':
-        host  => $host,
-        slave => $slave,
+        host   => $host,
+        slave  => $slave,
+        config => $config,
     }
 }
