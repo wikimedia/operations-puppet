@@ -10,7 +10,9 @@ class gerrit::jetty(
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
-    $log_port = '4560'
+    $log_port = '4560',
+    $use_prod_ldap = true,
+    $labs_ldap_server = '',
     ) {
 
     include ::nrpe

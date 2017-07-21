@@ -113,7 +113,7 @@
     commentOnPatchSetCreated = false
     commentOnRefUpdatedGitWeb = false
 [ldap]
-    server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
+    server = <% @use_prod_ldap %><% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %><% else %><% @labs_ldap_server %><% end %>
     accountBase = ou=people,<%= @ldap_base_dn %>
     accountPattern = (&(objectClass=person)(cn=${username}))
     accountFullName = cn
