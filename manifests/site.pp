@@ -1107,10 +1107,14 @@ node /^install[12]002\.wikimedia\.org$/ {
 }
 
 # Phabricator
-node /^(iridium\.eqiad|phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
+node /^(iridium\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator_server)
     include ::ganglia
     interface::add_ip6_mapped { 'main': }
+}
+
+node 'phab1001.eqiad.wmnet' {
+    role(spare::system)
 }
 
 node 'iron.wikimedia.org' {
