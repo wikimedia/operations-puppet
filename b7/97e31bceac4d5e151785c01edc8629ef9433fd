@@ -1,0 +1,10 @@
+Code-Review+1: WMDE-leszek <leszek.manicki@wikimedia.de>
+Code-Review+1: Ladsgroup <Ladsgroup@gmail.com>
+Code-Review+1: Thiemo Mättig (WMDE) <thiemo.maettig@wikimedia.de>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Fri, 21 Jul 2017 20:00:46 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/363180
+Project: operations/puppet
+Branch: refs/heads/production
