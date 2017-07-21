@@ -113,11 +113,11 @@
     commentOnPatchSetCreated = false
     commentOnRefUpdatedGitWeb = false
 [ldap]
-    server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
-    accountBase = ou=people,<%= @ldap_base_dn %>
-    accountPattern = (&(objectClass=person)(cn=${username}))
+    server = <% if @use_prod_ldap %><% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %> <% else %><%= @labs_ldap_server %><% end %>
+    accountBase = <% if @use_prod_ldap %><%= @ldap_base_dn %><% else %><%= @labs_ldap_base_dn %><% end %>
+    accountPattern = (&(objectClass=<% if @use_prod_ldap %>person<% else %><%= @labs_ldap_object_class %><% end %>)(cn=${username}))
     accountFullName = cn
-    groupBase = ou=groups,<%= @ldap_base_dn %>
+    groupBase = ou=groups,<% if @use_prod_ldap %><%= @ldap_base_dn %><% else %><%= @labs_ldap_base_dn %><% end %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
     # Fixes T152640
