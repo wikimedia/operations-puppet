@@ -2,10 +2,12 @@
 class gerrit(
     $host,
     $slave = false,
+    $config,
 ) {
 
     class { '::gerrit::jetty':
-        slave => $slave,
+        slave  => $slave,
+        config => $config,
     }
 
     if !$slave {
