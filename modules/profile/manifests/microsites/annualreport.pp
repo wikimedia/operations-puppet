@@ -9,8 +9,9 @@ class profile::microsites::annualreport {
     include ::apache::mod::headers
 
     ferm::service { 'annualreport_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     apache::site { 'annual.wikimedia.org':
@@ -26,5 +27,7 @@ class profile::microsites::annualreport {
         directory => '/srv/org/wikimedia/annualreport',
         branch    => 'master',
     }
+=======
+>>>>>>> fc88f11073... profile::microsites::annualreport: Switch to $CACHE_MISC
 }
 
