@@ -10,6 +10,6 @@ class profile::ores::web(
     ferm::service { 'ores':
         proto  => 'tcp',
         port   => '8081',
-        srange => '$DOMAIN_NETWORKS',
+        srange => '$CACHE_MISC',
     }
 }
