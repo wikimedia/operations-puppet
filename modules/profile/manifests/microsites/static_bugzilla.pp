@@ -4,8 +4,9 @@ class profile::microsites::static_bugzilla {
     include ::base::firewall
 
     ferm::service { 'bugzilla_static_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     include ::profile::backup::host
