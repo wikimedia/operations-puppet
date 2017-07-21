@@ -97,6 +97,9 @@ cache::app_directors:
   dbtree:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
+  phabricator:
+    backends:
+      eqiad: 'iridium.eqiad.wmnet'
   planet:
     backends:
       eqiad: 'planet1001.eqiad.wmnet'
@@ -145,9 +148,9 @@ cache::req_handling:
   annual.wikimedia.org:
     director: 'bromine'
   bugs.wikimedia.org:
-    director: 'iridium'
+    director: 'phabricator'
   bugzilla.wikimedia.org:
-    director: 'iridium'
+    director: 'phabricator'
   config-master.wikimedia.org:
     director: 'pybal_config'
     caching: 'pass'
@@ -166,7 +169,7 @@ cache::req_handling:
     director: 'etherpad1001'
     caching: 'websockets'
   git.wikimedia.org:
-    director: 'iridium'
+    director: 'phabricator'
   grafana-admin.wikimedia.org:
     director: 'krypton'
     caching: 'pass'
@@ -215,9 +218,9 @@ cache::req_handling:
   performance.wikimedia.org:
     director: 'graphite1001'
   phabricator.wikimedia.org:
-    director: 'iridium'
+    director: 'phabricator'
   phab.wmfusercontent.org:
-    director: 'iridium'
+    director: 'phabricator'
   pivot.wikimedia.org:
     director: 'thorium'
   piwik.wikimedia.org:
