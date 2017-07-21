@@ -11,6 +11,7 @@ class gerrit::jetty(
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
     $log_port = '4560'
+    $gerrit_config = 'gerrit.config.erb',
     ) {
 
     include ::nrpe
@@ -158,8 +159,9 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site'],
     }
 
+    1G
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
-        content => template('gerrit/gerrit.config.erb'),
+        content => template('gerrit/${gerrit_config}'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
