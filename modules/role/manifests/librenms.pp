@@ -14,6 +14,9 @@ class role::librenms {
     # Switch it in hieradata/common.yaml, the default is just a fallback.
     $active_server = hiera('netmon_server', 'netmon1002.wikimedia.org')
 
+    $graphite_host = hiera('graphite_host', 'graphite-in.eqiad.wmnet')
+    $graphite_prefix = hiera('graphite_prefix', 'librenms')
+
     # NOTE: scap will manage the deploy user
     scap::target { 'librenms/librenms':
         deploy_user => 'deploy-librenms',
@@ -113,6 +116,12 @@ class role::librenms {
         # Give all ops full read/write permissions
         'auth_ldap_group'  => ['cn=ops,ou=groups,dc=wikimedia,dc=org', 'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org'],
         'auth_ldap_groups' => {'ops' => {'level' => 10}, 'librenms-readers' => {'level' => 5}},
+
+        'graphite'   => {
+            'enable' => true,
+            'host'   => $graphite_host,
+            'prefix' => "${graphite_prefix}.${hostname}",
+        },
     }
 
     class { '::librenms':
