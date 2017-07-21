@@ -49,9 +49,9 @@ class role::mariadb::dbstore_multiinstance {
         group  => root,
         mode   => '0755',
     }
-    #mariadb::instance {'s1':
-    #    port => 3311,
-    #}
+    mariadb::instance {'s1':
+        port => 3311,
+    }
     mariadb::instance {'s2':
         port => 3312,
     }
@@ -80,7 +80,7 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     class { 'mariadb::monitor_process':
-        process_count => 3,
+        process_count => 4,
         is_critical   => false,
         contact_group => 'admins',
     }
