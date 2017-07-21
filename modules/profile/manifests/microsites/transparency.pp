@@ -46,7 +46,8 @@ class profile::microsites::transparency {
     include ::base::firewall
 
     ferm::service { 'transparency_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 }
