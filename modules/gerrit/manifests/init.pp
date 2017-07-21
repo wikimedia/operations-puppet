@@ -1,11 +1,13 @@
 # Manifest to setup a Gerrit instance
 class gerrit(
+    $config,
     $host,
     $slave = false,
 ) {
 
     class { '::gerrit::jetty':
-        slave => $slave,
+        slave  => $slave,
+        config => $config,
     }
 
     if !$slave {
