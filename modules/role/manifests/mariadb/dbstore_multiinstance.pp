@@ -17,9 +17,9 @@ class role::mariadb::dbstore_multiinstance {
     #TODO: define one group per shard
     class {'mariadb::groups':
         mysql_group => 'dbstore',
-        mysql_shard => 's2',
+        mysql_shard => 's1',
         mysql_role  => 'slave',
-        socket      => '/run/mysqld/mysqld.s2.sock',
+        socket      => '/run/mysqld/mysqld.s1.sock',
     }
 
     class {'mariadb::packages_wmf': }
@@ -80,7 +80,7 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     class { 'mariadb::monitor_process':
-        process_count => 4,
+        process_count => 3,
         is_critical   => false,
         contact_group => 'admins',
     }
