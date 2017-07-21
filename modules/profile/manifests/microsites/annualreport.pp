@@ -4,13 +4,12 @@
 class profile::microsites::annualreport {
 
     include ::annualreport
-
     include ::base::firewall
 
     ferm::service { 'annualreport_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
-
 }
 
