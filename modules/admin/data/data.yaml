@@ -2325,7 +2325,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoD/Zl3L6h+F3gWsN+D/URX1vo8xNGN+FU/NvlU61NEBfmlDYsP+Qses8BOA1xVzj21G6CDZDwWyBaY8TXJJ0FEVeZaisW7y2tf8UKPh7t55ttVIQQUrt5oWm4ZCObWYI+As52VZJbKulpA0Ihzp6tQryqJsdh5OlVQIzwIjEMQ/9WTvn45ZESIiYbpTJjFKqKv/uNU5HbZJzDDOGcvXmhirO3t3kOF3zgrrTROFqjn/rD/nK1uGRD/pSrNWOLnePBT2z/mn1vRWwOlHPUBe915Rwl+bGpGkr0aaljwp39gdeyEpPMJBLCAEv2mLOVT7Dw2dK25sZKSxIaecKDwhJsQ==
     uid: 15329
     email: alexander.krause@tu-dresden.de
-    expiry_date: 2017-07-29
+    expiry_date: 2018-01-29
     expiry_contact: leila@wikimedia.org
   debt:
     ensure: present
