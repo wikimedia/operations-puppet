@@ -20,6 +20,9 @@ class role::analytics_cluster::refinery::job::data_drop {
     # Keep this many days of raw webrequest data.
     $raw_retention_days = 31
     cron { 'refinery-drop-webrequest-raw-partitions':
+        # Temporarily disable webrequest deletion while lawyers do some research (Otto, Dan, Nuria)
+        # This should only be disabled for a week or so.
+        ensure  => 'absent',
         command => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/webrequest -w raw >> ${webrequest_log_file} 2>&1",
         user    => 'hdfs',
         minute  => '15',
@@ -29,6 +32,9 @@ class role::analytics_cluster::refinery::job::data_drop {
     # Keep this many days of refined webrequest data.
     $refined_retention_days = 90
     cron { 'refinery-drop-webrequest-refined-partitions':
+        # Temporarily disable webrequest deletion while lawyers do some research (Otto, Dan, Nuria)
+        # This should only be disabled for a week or so.
+        ensure  => 'absent',
         command => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${webrequest_log_file} 2>&1",
         user    => 'hdfs',
         minute  => '45',
