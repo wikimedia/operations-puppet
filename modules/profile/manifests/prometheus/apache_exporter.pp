@@ -1,7 +1,7 @@
-class role::prometheus::apache_exporter {
+class profile::prometheus::apache_exporter (
+    $prometheus_nodes = hiera('prometheus_nodes'),
+) {
     prometheus::apache_exporter { 'default': }
-
-    $prometheus_nodes = hiera('prometheus_nodes')
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
@@ -11,4 +11,3 @@ class role::prometheus::apache_exporter {
         srange => $ferm_srange,
     }
 }
-

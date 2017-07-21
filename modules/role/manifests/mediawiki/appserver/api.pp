@@ -2,7 +2,7 @@ class role::mediawiki::appserver::api {
     system::role { 'mediawiki::appserver::api': }
 
     include ::role::mediawiki::webserver
-    include ::role::prometheus::apache_exporter
+    include ::profile::prometheus::apache_exporter
     include ::role::prometheus::hhvm_exporter
 
     # Using fastcgi we need more local ports
