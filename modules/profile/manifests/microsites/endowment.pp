@@ -5,8 +5,9 @@ class profile::microsites::endowment {
     include ::base::firewall
 
     ferm::service { 'endowment_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 }
 
