@@ -73,7 +73,7 @@ class profile::docker::registry {
     ferm::service { 'docker_registry_http_81':
         proto  => 'tcp',
         port   => '81',
-        srange => '$DOMAIN_NETWORKS',
+        srange => '$CACHE_MISC',
     }
 
     # Monitoring
