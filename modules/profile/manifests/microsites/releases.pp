@@ -19,8 +19,9 @@ class profile::microsites::releases {
     }
 
     ferm::service { 'releases_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     rsync::quickdatacopy { 'srv-org-wikimedia-releases':
