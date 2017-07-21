@@ -5,8 +5,8 @@ class role::mediawiki::jobrunner {
     # Parent role (we don't use inheritance by choice)
     include ::role::mediawiki::common
 
-    # These should really be profiles
-    include ::role::prometheus::apache_exporter
+    include ::profile::prometheus::apache_exporter
+    # This should really be a profile
     include ::role::prometheus::hhvm_exporter
 
     include ::profile::mediawiki::jobrunner
