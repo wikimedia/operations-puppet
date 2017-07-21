@@ -17,6 +17,6 @@ class profile::requesttracker::server {
     ferm::service { 'rt-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$CACHE_MISC',
     }
 }
