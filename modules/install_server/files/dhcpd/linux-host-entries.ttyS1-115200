@@ -5534,11 +5534,6 @@ host nescio {
     fixed-address nescio.wikimedia.org;
 }
 
-host netmon1001 {
-    hardware ethernet 84:2b:2b:51:91:ff;
-    fixed-address netmon1001.wikimedia.org;
-}
-
 host netmon1002 {
     hardware ethernet 18:66:da:9f:80:08;
     fixed-address netmon1002.wikimedia.org;

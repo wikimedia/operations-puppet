@@ -1781,12 +1781,6 @@ node 'nescio.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# to be decom'ed (T171018)
-node 'netmon1001.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
     role(network::monitor, librenms, rancid, smokeping)
