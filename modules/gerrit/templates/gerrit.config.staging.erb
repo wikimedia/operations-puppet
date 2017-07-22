@@ -1,4 +1,3 @@
-# When updating this file also update gerrit.config.staging.erb too
 [auth]
     type = LDAP
     cookieSecure = true
@@ -114,11 +113,11 @@
     commentOnPatchSetCreated = false
     commentOnRefUpdatedGitWeb = false
 [ldap]
-    server = <% @ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
-    accountBase = ou=people,<%= @ldap_base_dn %>
-    accountPattern = (&(objectClass=person)(cn=${username}))
+    server = <%= @ldap_labs_server %>
+    accountBase = <%= @ldap_labs_base_dn %>
+    accountPattern = (&(objectClass=<%= @ldap_labs_object_class %>)(cn=${username}))
     accountFullName = cn
-    groupBase = ou=groups,<%= @ldap_base_dn %>
+    groupBase = ou=groups,<%= @ldap_labs_group_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
     # Fixes T152640

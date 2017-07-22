@@ -12,6 +12,10 @@ class gerrit::jetty(
     $log_host = undef,
     $log_port = '4560',
     $config = 'gerrit.config.erb',
+    $ldap_labs_server = '',
+    $ldap_labs_base_dn = '',
+    $ldap_labs_group_base_dn = '',
+    $ldap_labs_object_class = '',
     ) {
 
     include ::nrpe
