@@ -44,7 +44,7 @@ wiki_opts = [
                help='Hard-coded region name for wiki page.  A bit of a hack.'),
     cfg.StrOpt('wiki_instance_dns_domain',
                default='',
-               help='Hard-coded domain for wiki page. E.g. pmtpa.wmflabs'),
+               help='Hard-coded domain for wiki page. E.g. example.wmflabs'),
     cfg.StrOpt('wiki_login',
                default='login',
                help='Account used to edit wiki pages.'),
