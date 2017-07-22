@@ -254,8 +254,7 @@ def canonicalize(salt_hostname, region):
     convert the hostname we get back from a salt
     command to the standard form, tossing the region
     and the 'wmflabs' stuff on the end
-    'region' should be eqiad/pmtpa/ etc depending
-    on the dc this script runs in
+    'region' should be the dc this script runs in (e.g. eqiad)
     '''
     domain = '.' + region + '.wmflabs'
     truncate_by = -1 * len(domain)
