@@ -7,18 +7,10 @@ class visualdiff {
     # of indic and other language wiki pages
     include ::mediawiki::packages::fonts
 
-    # build-essential and g++ are required to build uprightdiff
-    # They can be skipped once we get a packaged version # from elsewhere.
     $visualdiff_packages = [
         'nodejs',
         'npm',
         'uprightdiff',
-        # TODO: Remove packages needed for building once
-        # packaged version of uprightdiff is tested
-        'build-essential',
-        'g++',
-        'libopencv-highgui-dev',
-        'libboost-program-options-dev',
     ]
 
     require_package($visualdiff_packages)
@@ -64,11 +56,5 @@ class visualdiff {
         owner  => 'testreduce',
         group  => 'testreduce',
         mode   => '0775',
-    }
-
-    git::clone { 'integration/uprightdiff':
-        owner     => 'root',
-        group     => 'wikidev',
-        directory => '/srv/uprightdiff',
     }
 }
