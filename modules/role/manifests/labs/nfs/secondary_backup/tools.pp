@@ -8,7 +8,7 @@ class role::labs::nfs::secondary_backup::tools {
     }
 
     labstore::device_backup { 'secondary-tools':
-        remotehost          => 'labstore1004.eqiad.wmnet',
+        remotehost          => 'labstore1005.eqiad.wmnet',
         remote_vg           => 'tools',
         remote_lv           => 'tools-project',
         remote_snapshot     => 'tools-snap',

@@ -8,7 +8,7 @@ class role::labs::nfs::secondary_backup::misc {
     }
 
     labstore::device_backup { 'secondary-misc':
-        remotehost          => 'labstore1004.eqiad.wmnet',
+        remotehost          => 'labstore1005.eqiad.wmnet',
         remote_vg           => 'misc',
         remote_lv           => 'misc-project',
         remote_snapshot     => 'misc-snap',
