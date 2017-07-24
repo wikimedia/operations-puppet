@@ -20,18 +20,15 @@
 # [*size*]
 #   Memcached max memory allocated size.
 #
-# [*prometheus_nodes*]
-#   Hosts allowed by the firewall to poll the memcached exporter
-#   to retrieve memcached metrics.
-#
 class profile::memcached::instance (
     $growth_factor    = hiera('profile::memcached::growth_factor'),
     $extended_options = hiera_array('profile::memcached::extended_options'),
     $version          = hiera('profile::memcached::version'),
     $port             = hiera('profile::memcached::port'),
     $size             = hiera('profile::memcached::size'),
-    $prometheus_nodes = hiera('prometheus_nodes')
 ) {
+    include ::profile::prometheus::memcached_exporter
+
     class { '::memcached':
         size          => $size,
         port          => $port,
@@ -46,21 +43,5 @@ class profile::memcached::instance (
     ferm::service { 'memcached':
         proto => 'tcp',
         port  => $port,
-    }
-
-    $prometheus_port  = '9150'
-    prometheus::memcached_exporter { 'default': }
-
-    if $::realm == 'labs' {
-        $ferm_srange = '$LABS_NETWORKS'
-    } else {
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-    }
-
-    ferm::service { 'prometheus-memcached-exporter':
-        proto  => 'tcp',
-        port   => $prometheus_port,
-        srange => $ferm_srange,
     }
 }
