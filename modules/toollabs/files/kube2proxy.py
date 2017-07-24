@@ -210,7 +210,7 @@ def main():
     logging.basicConfig(format=LOG_FORMAT, level=level)
 
     with open(args.config, 'r') as fh:
-        config = yaml.load(fh)
+        config = yaml.safe_load(fh)
 
     rhost, rport = config['redis'].split(':')
     conn = redis.Redis(host=rhost, port=rport)
