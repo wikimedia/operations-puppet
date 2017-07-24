@@ -56,5 +56,6 @@ define prometheus::mysqld_exporter::instance (
 
     service { $service:
         ensure  => running,
+        require => File['/lib/systemd/system/prometheus-mysqld-exporter@.service'],
     }
 }
