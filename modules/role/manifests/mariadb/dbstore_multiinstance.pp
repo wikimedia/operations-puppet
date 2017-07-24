@@ -24,8 +24,8 @@ class role::mariadb::dbstore_multiinstance {
 
     class {'mariadb::packages_wmf': }
     class {'mariadb::service':
-        override => "ExecStartPre=/bin/sh -c \"echo 'mariadb main service is disabled, \
-use mariadb@<instance_name> instead'; exit 1\"",
+        override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
+disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     if os_version('debian >= stretch') {
