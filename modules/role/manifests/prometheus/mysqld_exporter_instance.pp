@@ -12,10 +12,9 @@ define role::prometheus::mysqld_exporter_instance (
         arguments      => "-collect.global_status \
 -collect.global_variables \
 -collect.info_schema.processlist \
--collect.info_schema.processlist.min_time=0 \
+-collect.info_schema.processlist.min_time 0 \
 -collect.slave_status \
--collect.info_schema.tables=false \
-",
+-collect.info_schema.tables false",
         listen_address => ":${port}",
     }
 

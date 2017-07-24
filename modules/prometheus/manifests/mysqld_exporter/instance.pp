@@ -39,7 +39,7 @@ define prometheus::mysqld_exporter::instance (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"-web.listen-address=${listen_address} -config.my-cnf=${my_cnf} ${arguments}\"",
+        content => "ARGS='-web.listen-address \"${listen_address}\" -config.my-cnf \"${my_cnf}\" ${arguments}'",
         notify  => Service[$service],
     }
 
