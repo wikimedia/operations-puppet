@@ -2091,8 +2091,9 @@ node 'tureis.codfw.wmnet' {
 # stat1002 is intended to be the private data analytics compute node.
 # Users should not use it for app development.
 # Data processing on this machine is fine.
+# NOTE: This node is being deprecated and decomissioned as part of T152712.
 node 'stat1002.eqiad.wmnet' {
-    role(statistics::private,
+    role(
         # This is also a Hadoop client, and should
         # have any special analytics system users on it
         # for interacting with HDFS.
@@ -2122,6 +2123,8 @@ node 'stat1002.eqiad.wmnet' {
         # Deploy wikimedia/discovery/analytics repository
         # to this node.
         elasticsearch::analytics)
+
+    include ::standard
 }
 
 # stat1003 is a general purpose number cruncher for
