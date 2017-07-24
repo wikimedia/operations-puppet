@@ -186,7 +186,7 @@ def verify_puppet(address, user, keyfile, timeout):
 
     logging.debug(out)
     try:
-        yprun = yaml.load(out)
+        yprun = yaml.safe_load(out)
     except:
         logging.warning("Yaml conversion failed for Puppet results")
         yprun = {}
