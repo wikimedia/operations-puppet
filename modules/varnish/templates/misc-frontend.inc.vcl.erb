@@ -4,15 +4,18 @@ include "zero.inc.vcl";
 sub cluster_fe_recv_pre_purge {
     // Block WP Zero users from accessing Phabricator uploads to prevent abuse
     // (T168142)
-    if (req.http.Host == "phab.wmfusercontent.org" && req.url ~ "^/file/data/") {
-        call tag_carrier;
+    if (req.http.Host == "phab.wmfusercontent.org") {
+        if ((req.method == "GET" && req.url ~ "^/file/data/") ||
+            (req.method == "POST" && req.url ~ "^/file/dropupload/")) {
+            call tag_carrier;
 
-        if (req.http.X-CS) {
-            return (synth(403, "Disallowed"));
+            if (req.http.X-CS) {
+                return (synth(403, "Disallowed"));
+            }
+
+            // Unset request headers potentially set by tag_carrier
+            call tag_carrier_cleanup;
         }
-
-        // Unset request headers potentially set by tag_carrier
-        call tag_carrier_cleanup;
     }
 }
 
@@ -45,7 +48,7 @@ sub cluster_fe_backend_response_early { }
 sub cluster_fe_backend_response {
     // hit_for_pass on objects >= ~10MB or no CL
     if (!beresp.http.Content-Length || beresp.http.Content-Length ~ "^[0-9]{8}") {
-	set beresp.http.X-CDIS = "pass";
+        set beresp.http.X-CDIS = "pass";
         set beresp.uncacheable = true;
         return (deliver);
     }
