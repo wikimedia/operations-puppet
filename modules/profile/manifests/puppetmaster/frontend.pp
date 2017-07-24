@@ -1,8 +1,8 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class profile::puppetmaster::frontend(
-    $config = hiera('profile::puppetmater::backed::config', {}),
-    $secure_private = hiera('profile::puppetmater::backed::config', true),
+    $config = hiera('profile::puppetmaster::frontend::config', {}),
+    $secure_private = hiera('profile::puppetmaster::frontend::config', true),
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
