@@ -147,25 +147,4 @@ class pdfrender(
         systemd        => true,
         service_params => $params,
     }
-
-    # TODO: work-around for T159922
-    # We put a script in the cron hourly directory to check whether the
-    # service is running, and if it is not, it will try to restart it.
-    # Note: we explicitly put it in /etc/cron.hourly/ instead of using the
-    # Puppet cron resource as that makes it easier to remove it later
-    if ($running) {
-        file { '/etc/cron.hourly/pdfrender-check':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            content => template('pdfrender/cron.erb'),
-            require => Base::Service_unit['pdfrender'],
-        }
-    } else {
-        file { '/etc/cron.hourly/pdfrender-check':
-            ensure  => absent,
-        }
-    }
-
 }
