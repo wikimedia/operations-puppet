@@ -46,26 +46,10 @@ class profile::statistics::private(
     # rsync mediawiki logs from logging hosts
     include ::statistics::rsync::mediawiki
 
-    # TODO: Piecemeal migrate cron jobs from stat1002 -> stat1005: T152712
-    if $::hostname == 'stat1002' {
-        # TODO remove this after stat1002 is gone: T152712
+    # Discovery statistics generating scripts
+    # This needs work to move to stat1005: T170471
+    # include ::statistics::discovery
 
-        # backup eventlogging logs.
-        backup::set { 'a-eventlogging' : }
-
-        # TODO: Otto believes this data and job are no longer being used.
-        # Let's not migrate it to stat1005 unless someone needs it.
-        # Although it is in the "private" profile, the dataset actually isn't
-        # private. We just keep it here to spare adding a separate role.
-        include ::statistics::aggregator::projectview
-
-        # Discovery statistics generating scripts
-        include ::statistics::discovery
-    }
-
-    # Else moved to stat1005
-    else {
-        # WMDE statistics scripts and cron jobs
-        include ::statistics::wmde
-    }
+    # WMDE statistics scripts and cron jobs
+    include ::statistics::wmde
 }
