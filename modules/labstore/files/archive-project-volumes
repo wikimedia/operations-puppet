@@ -98,7 +98,7 @@ class VolumeArchiver:
             vol_list = [options.volume]
         else:
             with open(self.active_volumes_file, 'r') as f:
-                y = yaml.load(f)
+                y = yaml.safe_load(f)
                 projects_in_yaml = y['private']
 
                 projects_on_disk = os.listdir(self.base_dir)
