@@ -6,8 +6,7 @@ class role::mediawiki::jobrunner {
     include ::role::mediawiki::common
 
     include ::profile::prometheus::apache_exporter
-    # This should really be a profile
-    include ::role::prometheus::hhvm_exporter
+    include ::profile::prometheus::hhvm_exporter
 
     include ::profile::mediawiki::jobrunner
 }

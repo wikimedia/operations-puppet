@@ -7,7 +7,7 @@ class role::mediawiki::videoscaler {
 
     # Profiles
     include ::profile::prometheus::apache_exporter
-    include ::role::prometheus::hhvm_exporter
+    include ::profile::prometheus::hhvm_exporter
     include ::profile::mediawiki::jobrunner
     include ::base::firewall
 
