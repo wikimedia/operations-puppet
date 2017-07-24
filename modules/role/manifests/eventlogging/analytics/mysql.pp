@@ -35,7 +35,6 @@ class role::eventlogging::analytics::mysql {
         'eventlogging_mysql_consumers',
         ['mysql-m4-master-00']
     )
-    $kafka_consumer_group = 'eventlogging_consumer_mysql_00'
 
     # Where possible, if this is set, it will be included in client configuration
     # to avoid having to do API version for Kafka < 0.10 (where there is not a version API).
@@ -75,7 +74,7 @@ class role::eventlogging::analytics::mysql {
         # auto commit offsets to kafka more often for mysql consumer
         input  => "${filter_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${kafka_api_version_param}${filter_function}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
-        sid    => $kafka_consumer_group,
+        sid    => 'eventlogging_consumer_mysql_00',
         # Restrict permissions on this config file since it contains a password.
         owner  => 'root',
         group  => 'eventlogging',
@@ -107,7 +106,7 @@ class role::eventlogging::analytics::mysql {
         # Load and cache local (EventBus) schemas so those events can be inserted into MySQL too.
         # This will require a restart of the consumer process(es) when there are any new schemas.
         schemas_path => "${::eventschemas::path}/jsonschema",
-        sid          => $kafka_consumer_group,
+        sid          => 'eventlogging_consumer_mysql_eventbus_00',
         # Restrict permissions on this config file since it contains a password.
         owner        => 'root',
         group        => 'eventlogging',
