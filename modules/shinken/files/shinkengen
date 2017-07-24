@@ -103,7 +103,7 @@ if __name__ == '__main__':
     args = argparser.parse_args()
 
     with open('/etc/shinkengen.yaml') as f:
-        config = yaml.load(f)
+        config = yaml.safe_load(f)
 
     for project in config['projects']:
         instances = get_instances(project, config['observer_pass'])
