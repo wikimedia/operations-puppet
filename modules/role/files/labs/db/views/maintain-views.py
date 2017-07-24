@@ -344,7 +344,7 @@ if __name__ == "__main__":
 
     with open(args.config_location, 'r') as stream:
         try:
-            config = yaml.load(stream)
+            config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             logging.critical(exc)
             sys.exit(1)
