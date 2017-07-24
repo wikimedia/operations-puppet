@@ -4,3 +4,5 @@ puppetmaster::servers:
   labpuppetmaster1001.wikimedia.org:
     - { worker: labpuppetmaster1001.wikimedia.org, loadfactor: 10 }
     - { worker: labpuppetmaster1002.wikimedia.org, loadfactor: 20 }
+
+profile::puppetmaster::frontend::web_hostname: labs-puppetmaster.wikimedia.org

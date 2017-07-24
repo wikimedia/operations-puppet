@@ -3,6 +3,7 @@
 class profile::puppetmaster::frontend(
     $config = hiera('profile::puppetmaster::frontend::config', {}),
     $secure_private = hiera('profile::puppetmaster::frontend::config', true),
+    $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
@@ -45,7 +46,7 @@ class profile::puppetmaster::frontend(
     }
 
     # Main site to respond to
-    ::puppetmaster::web_frontend { 'puppet':
+    ::puppetmaster::web_frontend { $web_hostname:
         master       => $ca_server,
         workers      => $workers,
         bind_address => $::puppetmaster::bind_address,
