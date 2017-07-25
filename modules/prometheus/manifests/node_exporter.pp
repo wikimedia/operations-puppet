@@ -21,10 +21,20 @@
 
 
 class prometheus::node_exporter (
-    $ignored_devices  = '^(ram|loop|fd)\\d+$',
+    $ignored_devices  = undef,
     $collectors_extra = [],
 ) {
     require_package('prometheus-node-exporter')
+    # Horrible workaround for https://phabricator.wikimedia.org/P5797
+    if $ignored_devices {
+        $actual_ignored_devices = $ignored_devices
+    }
+    else {
+        $actual_ignored_devices = $settings::parser ? {
+            'future' => '^(ram|loop|fd)\\\d+$',
+            default  => '^(ram|loop|fd)\\d+$',
+        }
+    }
 
     $collectors_default = ['diskstats', 'filefd', 'filesystem', 'hwmon', 'loadavg',
         'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat',
