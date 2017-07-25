@@ -117,7 +117,12 @@ class diamond(
     }
 
     diamond::collector { 'Network': }
-    diamond::collector { 'DiskSpace': }
+    diamond::collector { 'DiskSpace':
+        settings => {
+            filesystems => 'ext2,ext3,ext4,xfs,fuse.fuse_dfs,fat32,fat16,btrfs',
+        },
+    }
+
     diamond::collector { 'LoadAverage': }
     diamond::collector { 'Memory': }
     diamond::collector { 'VMStat': }
