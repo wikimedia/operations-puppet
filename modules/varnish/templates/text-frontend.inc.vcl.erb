@@ -37,11 +37,7 @@ sub mobile_redirect {
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!commons|meta|nostalgia|quote|quality|sep11|sources|species|textbook|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
 
 		if (req.http.Host != req.http.MobileHost) {
-			if (req.http.X-Forwarded-Proto) {
-				set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
-			} else {
-				set req.http.Location = "http://" + req.http.MobileHost + req.url;
-			}
+			set req.http.Location = "https://" + req.http.MobileHost + req.url;
 			return (synth(302, "Mobile Redirect"));
 		}
 		unset req.http.MobileHost;
