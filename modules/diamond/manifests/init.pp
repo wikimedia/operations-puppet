@@ -158,4 +158,15 @@ class diamond(
             devices => 'PhysicalDrive[0-9]+$|md[0-9]+$|sd[a-z]+$|x?vd[a-z]+$|disk[0-9]+$|dm-[0-9]+$',
         },
     }
+
+    if os_version('debian >= jessie') {
+        base::service_unit { 'diamond':
+            ensure           => present,
+            refresh          => true,
+            systemd          => false,
+            systemd_override => true,
+            upstart          => false,
+            require          => Package['diamond'],
+        }
+    }
 }

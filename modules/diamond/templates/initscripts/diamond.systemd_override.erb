@@ -1,0 +1,12 @@
+[Service]
+SyslogIdentifier=diamond
+
+# See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=854842 and
+# https://github.com/python-diamond/Diamond/issues/595
+# Fixed upstream in fd4146dc3
+TimeoutStopSec=3
+
+# Omit --log-stdout to honour logging config
+# Fixed upstream in a8e474dc44
+ExecStart=
+ExecStart=/usr/bin/python /usr/bin/diamond --foreground
