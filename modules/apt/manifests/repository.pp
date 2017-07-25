@@ -41,7 +41,7 @@ define apt::repository(
         }
     }
 
-    if $keyfile {
+    if $keyfile and $keyfile != '' {
         file { "/var/lib/apt/keys/${name}.gpg":
             ensure  => present,
             owner   => 'root',
