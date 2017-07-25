@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import csv
 import os
 import re
@@ -183,14 +184,14 @@ def update_columns(cols):
                "   SET `{}` = NULL;").format(col[0], col[1], col[2]))
 
 
-def main():
+def main(mysql_socket):
     (private_dblist, private_tables, filtered_tables, public_wiki_dbs,
      public_view_dbs, public_dbs) = get_lists(all_dblist_path,
                                               private_dblist_path,
                                               deleted_dblist_path,
                                               filtered_tables_path)
     db = pymysql.connect(host='localhost', user='root',
-                         unix_socket='/tmp/mysql.sock')
+                         unix_socket=mysql_socket)
 
     print('-- Non-public databases that are present:')
     private_databases_present = get_private_databases(db, public_dbs,
@@ -211,4 +212,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', action='store', dest='mysql_socket',
+                        default='/tmp/mysql.sock',
+                        help='Set MySQL socket file')
+    results = parser.parse_args()
+    main(results.mysql_socket)
