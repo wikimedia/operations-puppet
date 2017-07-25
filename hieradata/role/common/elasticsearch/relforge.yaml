@@ -18,3 +18,5 @@ profile::elasticsearch::row: ''
 
 # Allow reindex from eqiad or codfw to relforge
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243,search.svc.codfw.wmnet:9243'
+# Limitation of the ltr plugin (see T171579)
+profile::elasticsearch::script_max_compilations_per_minute: 10000

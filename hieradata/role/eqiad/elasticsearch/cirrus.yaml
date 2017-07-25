@@ -68,3 +68,6 @@ profile::base::dns_alt_names:             'search.svc.eqiad.wmnet'
 
 # Allow reindex from codfw to eqiad
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.codfw.wmnet:9243'
+
+# Limitation of the ltr plugin (see T171579)
+profile::elasticsearch::script_max_compilations_per_minute: 10000
