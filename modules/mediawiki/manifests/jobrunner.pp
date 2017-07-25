@@ -20,10 +20,18 @@ class mediawiki::jobrunner (
 
     include ::passwords::redis
 
+    # a rule for the `jobrunner` service:
+    #
+    #     ALL=(root) NOPASSWD: /usr/sbin/service jobrunner *
+    #
+    # will be added by scap::target as a result of defining `service_name`
     scap::target { 'jobrunner/jobrunner':
         deploy_user  => 'mwdeploy',
         manage_user  => false,
         service_name => 'jobrunner',
+        sudo_rules   => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service jobchron *'
+        ],
     }
 
     $dispatcher = template('mediawiki/jobrunner/dispatcher.erb')
