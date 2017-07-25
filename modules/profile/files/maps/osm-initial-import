@@ -75,9 +75,9 @@ function download_pbf() {
 
 function reset_postgres() {
   echo "starting reset of prosgresql database"
-  sudo -u postgres psql -d gis -c 'DROP TABLE IF EXISTS admin, planet_osm_line, planet_osm_point, planet_osm_polygon, planet_osm_roads, water_polygons;'
+  sudo -u postgres psql -d gis -c 'DROP TABLE IF EXISTS admin, planet_osm_line, planet_osm_point, planet_osm_polygon, planet_osm_roads, water_polygons CASCADE;'
   ensure_sql_grants
-  echo "reset of prosgresql database comleted"
+  echo "reset of prosgresql database completed"
 }
 
 function ensure_sql_grants() {
