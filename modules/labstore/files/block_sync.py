@@ -2,6 +2,7 @@
 
 import argparse
 import fcntl
+import logging
 import os
 import shlex
 import subprocess
@@ -62,7 +63,7 @@ def bdsync(local_device, r_host, r_vg, r_snapshot_name, r_user):
 if __name__ == '__main__':
 
     if os.geteuid() != 0:
-        print("Script needs to be run as root")
+        logging.error("Script needs to be run as root")
         sys.exit(1)
 
     argparser = argparse.ArgumentParser()
@@ -105,7 +106,19 @@ if __name__ == '__main__':
         help='Remote user to run commands over ssh as',
         default='root',
     )
+    argparser.add_argument(
+        '--debug',
+        help='Turn on debug logging',
+        action='store_true'
+    )
+
     args = argparser.parse_args()
+
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s',
+        level=logging.DEBUG if args.debug else logging.INFO)
+
+    logging.debug(args)
 
     local_device = '/dev/{}/{}'.format(args.l_vg, args.l_lv)
 
@@ -115,7 +128,7 @@ if __name__ == '__main__':
     try:
         try:
             run_local('/bin/findmnt --notruncate -P -n -c {}'.format(local_device))
-            print('Local device is mounted. Operations may be unsafe')
+            logging.error('Local device is mounted. Operations may be unsafe')
             sys.exit(1)
         except subprocess.CalledProcessError:
             # Continue if the local device is not mounted
