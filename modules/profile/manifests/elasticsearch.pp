@@ -62,39 +62,40 @@ class profile::elasticsearch(
 
     # Install
     class { '::elasticsearch':
-        require                    => [
+        require                            => [
             Package['elasticsearch/plugins'],
             File['/usr/share/elasticsearch/plugins'],
         ],
         # Production elasticsearch needs these plugins to be loaded in order
         # to work properly.  This will keep elasticsearch from starting
         # if these plugins are  not available.
-        plugins_mandatory          => [
+        plugins_mandatory                  => [
             'experimental-highlighter',
             'extra',
             'analysis-icu',
         ],
-        plugins_dir                => $plugins_dir,
+        plugins_dir                        => $plugins_dir,
         # Let apifeatureusage create their indices
-        auto_create_index          => '+apifeatureusage-*,-*',
+        auto_create_index                  => '+apifeatureusage-*,-*',
         # Production can get a lot of use out of the filter cache.
-        filter_cache_size          => '20%',
-        bulk_thread_pool_executors => $bulk_thread_pool_executors,
-        bulk_thread_pool_capacity  => 1000,
-        rack                       => $rack,
-        row                        => $row,
-        awareness_attributes       => $awareness_attributes,
-        cluster_name               => $cluster_name,
-        unicast_hosts              => $unicast_hosts,
-        minimum_master_nodes       => $minimum_master_nodes,
-        recover_after_time         => $recover_after_time,
-        recover_after_nodes        => $recover_after_nodes,
-        heap_memory                => $heap_memory,
-        expected_nodes             => $expected_nodes,
-        master_eligible            => $master_eligible,
-        graylog_hosts              => $graylog_hosts,
-        version                    => 5,
-        reindex_remote_whitelist   => $reindex_remote_whitelist,
+        filter_cache_size                  => '20%',
+        bulk_thread_pool_executors         => $bulk_thread_pool_executors,
+        bulk_thread_pool_capacity          => 1000,
+        rack                               => $rack,
+        row                                => $row,
+        awareness_attributes               => $awareness_attributes,
+        cluster_name                       => $cluster_name,
+        unicast_hosts                      => $unicast_hosts,
+        minimum_master_nodes               => $minimum_master_nodes,
+        recover_after_time                 => $recover_after_time,
+        recover_after_nodes                => $recover_after_nodes,
+        heap_memory                        => $heap_memory,
+        expected_nodes                     => $expected_nodes,
+        master_eligible                    => $master_eligible,
+        graylog_hosts                      => $graylog_hosts,
+        version                            => 5,
+        reindex_remote_whitelist           => $reindex_remote_whitelist,
+        script_max_compilations_per_minute => 10000,
     }
 
     class { '::elasticsearch::https':

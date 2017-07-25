@@ -438,3 +438,7 @@ index.load_fixed_bitset_filters_eagerly: false
 # Hosts allowed as data sources for reindexing
 reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
 <% end %>
+
+<% if @script_max_compilations_per_minute and @script_max_compilations_per_minute > 0 %>
+script.max_compilations_per_minute: <%=script_max_compilations_per_minute%>
+<% end %>
