@@ -92,7 +92,7 @@ function initial_osm_import() {
   PGPASSWORD="$(< ${password_file})" flock -xn ${replicate_lock} \
     sudo -E -u osmupdater osm2pgsql \
       --create --slim --flat-nodes nodes.bin -C 40000 --number-processes 8 \
-      --hstore --host ${database_host} -U osmimporter -d gis -E 900913 \
+      --hstore --host ${database_host} -U osmimporter -d gis -E 3857 \
       ${download_dir}/${filename} 2>&1 | tee ${log_file}
 
   if [ ${PIPESTATUS[0]} -ne 0 ]; then
