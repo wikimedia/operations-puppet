@@ -24,7 +24,7 @@ describe 'systemd::syslog' do
             end
             it 'should configure rsyslog before the service' do
                 should contain_rsyslog__conf('dummyservice')
-                    .that_comes_before('Base::Service_unit[dummyservice]')
+                    .that_comes_before('Service[dummyservice]')
             end
             it 'should configure rsyslog to match programname dummyservice' do
                 should contain_file('/etc/rsyslog.d/20-dummyservice.conf')

@@ -74,7 +74,10 @@ define systemd::syslog(
         content  => template('systemd/rsyslog.conf.erb'),
         priority => 20,
         require  => File[$local_logdir],
-        before   => Base::Service_unit[$title],
+    }
+
+    if defined(Service[$title]) {
+        Rsyslog::Conf[$title] -> Service[$title]
     }
 
     logrotate::conf { $title:
