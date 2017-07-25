@@ -56,6 +56,8 @@
 # - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
+# - $search_thread_pool_executors: number of executors for search actions on
+#       each node.
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
@@ -107,6 +109,7 @@ class elasticsearch(
     $filter_cache_size = '10%',
     $bulk_thread_pool_executors = undef,
     $bulk_thread_pool_capacity = undef,
+    $search_thread_pool_executors = undef,
     $load_fixed_bitset_filters_eagerly = true,
     $graylog_hosts = undef,
     $graylog_port = 12201,
