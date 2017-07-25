@@ -104,6 +104,14 @@ class diamond(
         ],
     }
 
+    if os_version('debian >= jessie') {
+        systemd::unit { 'diamond':
+            ensure   => present,
+            restart  => true,
+            override => true,
+            content  => template('diamond/initscripts/diamond.systemd_override.erb'),
+        }
+    }
 
     diamond::collector { 'CPU':
         settings => {
