@@ -90,4 +90,25 @@ class base::standard_packages {
     debconf::seen { 'wireshark-common/install-setuid':
         require => Package['tshark'],
     }
+
+    # An upgrade from jessie to stretch leaves some old binary
+    # packages around, remove those
+    if os_version('debian == stretch') {
+        package { [
+                  'libdns-export100',
+                  'libirs-export91',
+                  'libisc-export95',
+                  'libisccfg-export90',
+                  'liblwres90',
+                  'libgnutls-deb0-28',
+                  'libhogweed2',
+                  'libicu52',
+                  'libjasper1',
+                  'libnettle4',
+                  'libruby2.1',
+                  'ruby2.1'
+            ]:
+            ensure => absent,
+        }
+    }
 }
