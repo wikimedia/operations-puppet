@@ -1,8 +1,9 @@
 upstream thumbor {
+    zone thumbor 128k;
     least_conn;
 
     <%- @ports.each do |port| -%>
-    server 127.0.0.1:<%= port -%>;
+    server 127.0.0.1:<%= port -%> max_conns=1;
     <%- end -%>
 }
 
