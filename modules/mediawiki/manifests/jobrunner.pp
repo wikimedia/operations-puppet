@@ -24,6 +24,9 @@ class mediawiki::jobrunner (
         deploy_user  => 'mwdeploy',
         manage_user  => false,
         service_name => 'jobrunner',
+        sudo_rules   => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service jobchron *'
+        ],
     }
 
     $dispatcher = template('mediawiki/jobrunner/dispatcher.erb')
