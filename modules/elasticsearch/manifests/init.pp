@@ -76,6 +76,8 @@
 #        host and port combinations (e.g. otherhost:9243, another:9243,
 #        127.0.10.*:9243, localhost:*). Scheme is ignored by the whitelist - only host
 #        and port are used. Defaults to undef, which means no remote reindex can occur.
+# - $script_max_compilations_per_minute: integer, max number of script
+#        compilations per minute, defaults to undef (see T171579).
 #
 # == Sample usage:
 #
@@ -114,6 +116,7 @@ class elasticsearch(
     $search_shard_count_limit = 1000,
     $curator_uses_unicast_hosts = true,
     $reindex_remote_whitelist = undef,
+    $script_max_compilations_per_minute = undef,
 ) {
 
     # Check arguments
@@ -127,6 +130,10 @@ class elasticsearch(
     }
 
     validate_bool($gc_log)
+
+    if $script_max_compilations_per_minute != undef and $script_max_compilations_per_minute < 0 {
+        fail('script_max_compilations_per_minute should be > 0')
+    }
 
     # if no graylog_host is given, do not send logs
     $send_logs_to_logstash = is_array($graylog_hosts)
