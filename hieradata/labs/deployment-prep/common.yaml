@@ -242,6 +242,14 @@ scap::dsh::groups:
 "profile::elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 "profile::elasticsearch::reindex_remote_whitelist": ''
+profile::elasticsearch::search_shard_count_limit: 1000
+# By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
+# which works out to 49 for our servers. When search is stalled on IO it makes sense
+# to have more threads than cores, but we never see our servers stalled out on IO.
+# We have seen (T169498) servers completely exhaust their CPU though, so setting
+# this to match cpu counts to prevent overcommit of CPU resources.
+profile::elasticsearch::search_thread_pool_executors: 4
+
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 "redis::shards":
   jobqueue: &labs_shards

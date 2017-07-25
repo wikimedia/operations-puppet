@@ -15,6 +15,14 @@ profile::base::check_disk_options: -w 18% -c 15% -W 6% -K 3% -l -e -A -i "/srv/s
 profile::elasticsearch::awareness_attributes: ''
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''
+profile::elasticsearch::search_shard_count_limit: 1000
 
 # Allow reindex from eqiad or codfw to relforge
 profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243,search.svc.codfw.wmnet:9243'
+
+# By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
+# which works out to 49 for our servers. When search is stalled on IO it makes sense
+# to have more threads than cores, but we never see our servers stalled out on IO.
+# We have seen (T169498) servers completely exhaust their CPU though, so setting
+# this to match cpu counts to prevent overcommit of CPU resources.
+profile::elasticsearch::search_thread_pool_executors: 32
