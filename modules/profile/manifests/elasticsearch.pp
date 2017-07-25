@@ -23,9 +23,11 @@ class profile::elasticsearch(
     $row = hiera('profile::elasticsearch::row'),
     $awareness_attributes = hiera('profile::elasticsearch::awareness_attributes'),
     $bulk_thread_pool_executors = hiera('profile::elasticsearch::bulk_thread_pool_executors', 6),
+    $search_thread_pool_executors = hiera('profile::elasticsearch::search_thread_pool_executors'),
     $certificate_name = hiera('profile::elasticsearch::certificate_name', $::fqdn),
     $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s'),
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
+    $search_shard_count_limit = hiera('profile::elasticsearch::search_shard_count_limit'),
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
@@ -81,6 +83,7 @@ class profile::elasticsearch(
         filter_cache_size                  => '20%',
         bulk_thread_pool_executors         => $bulk_thread_pool_executors,
         bulk_thread_pool_capacity          => 1000,
+        search_thread_pool_executors       => $search_thread_pool_executors,
         rack                               => $rack,
         row                                => $row,
         awareness_attributes               => $awareness_attributes,
@@ -94,6 +97,7 @@ class profile::elasticsearch(
         master_eligible                    => $master_eligible,
         graylog_hosts                      => $graylog_hosts,
         version                            => 5,
+        search_shard_count_limit           => $search_shard_count_limit,
         reindex_remote_whitelist           => $reindex_remote_whitelist,
         script_max_compilations_per_minute => 10000,
     }
