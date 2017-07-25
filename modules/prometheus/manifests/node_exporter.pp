@@ -21,7 +21,7 @@
 
 
 class prometheus::node_exporter (
-    $ignored_devices  = '^(ram|loop|fd)\\d+$',
+    $ignored_devices  = "^(ram|loop|fd)\\\\d+\$",
     $collectors_extra = [],
 ) {
     require_package('prometheus-node-exporter')
