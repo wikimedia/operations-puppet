@@ -104,11 +104,10 @@ class etcd (
         mode   => '0700',
     }
 
-    base::service_unit{ 'etcd':
+    systemd::service{ 'etcd':
         ensure  => present,
-        systemd => true,
-        refresh => true,
+        content => template('etcd/initscripts/etcd.systemd.erb'),
+        restart => true,
         require => File[$etcd_data_dir],
     }
-
 }
