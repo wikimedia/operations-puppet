@@ -199,7 +199,8 @@ def verify_create(nova_connection,
                   name,
                   image,
                   flavor,
-                  timeout):
+                  timeout,
+                  on_host=None):
     """ Create and ensure creation for an instance
     :param nova_connection: nova connection obj
     :param name: str
@@ -211,9 +212,15 @@ def verify_create(nova_connection,
 
     with Timer() as vc:
         logging.info("Creating {}".format(name))
+        if on_host:
+            availability_zone = "server:{}".format(on_host)
+        else:
+            availability_zone = None
+
         cserver = nova_connection.servers.create(name=name,
                                                  image=image.id,
-                                                 flavor=flavor.id)
+                                                 flavor=flavor.id,
+                                                 availability_zone=availability_zone)
         while True:
             server = nova_connection.servers.get(cserver.id)
             if server.status == 'ACTIVE':
@@ -397,6 +404,13 @@ def main():
     )
 
     argparser.add_argument(
+        '--virthost',
+        default=None,
+        help='Specify a particular host to launch on, e.g. labvirt1001.  Default'
+             'behavior is to use the standard scheduling pool.',
+    )
+
+    argparser.add_argument(
         '--adhoc-command',
         default='',
         help='Specify a command over SSH prior to deletion',
@@ -475,7 +489,8 @@ def main():
                                    name,
                                    cimage,
                                    cflavor,
-                                   args.creation_timeout)
+                                   args.creation_timeout,
+                                   args.virthost)
         stat('verify.creation', vc)
 
         addr = server.addresses['public'][0]['addr']
