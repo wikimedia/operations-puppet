@@ -63,7 +63,7 @@ do
 	cd $GITDIR/$path
 	# Update checkout of repo
 	if git pull &&
-		git submodule update --init --recursive
+		git submodule update --init
 	then
 		echo "Updated $path"
 	else
