@@ -117,7 +117,14 @@ class diamond(
     }
 
     diamond::collector { 'Network': }
-    diamond::collector { 'DiskSpace': }
+    diamond::collector { 'DiskSpace':
+        settings => {
+            # lint:ignore:quoted_booleans
+            filesystems => 'ext2,ext3,ext4,xfs,fuse.fuse_dfs,nfs,ntfs,hfs,fat32,fat16,btrfs',
+            # lint:endignore
+        },
+    }
+
     diamond::collector { 'LoadAverage': }
     diamond::collector { 'Memory': }
     diamond::collector { 'VMStat': }
