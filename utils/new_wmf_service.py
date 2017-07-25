@@ -91,7 +91,7 @@ QUESTIONS = [
 
 # Yaml formatting primitives.
 # From: http://stackoverflow.com/questions/5121931
-def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
+def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
     class OrderedLoader(Loader):
         pass
 

@@ -31,7 +31,7 @@ def main():
                 shutil.copyfileobj(f.buffer, tmpconfig)
 
         tmpconfig.seek(0)
-        if yaml.load(tmpconfig) is None:
+        if yaml.safe_load(tmpconfig) is None:
             log.error('Empty YAML assembled')
             return 1
 

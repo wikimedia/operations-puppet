@@ -69,7 +69,7 @@ class MinimalPuppetAgentCollector(diamond.collector.Collector):
         proc = subprocess.Popen(process_path, stdout=subprocess.PIPE)
         out, _ = proc.communicate()
 
-        summary = yaml.load(out)
+        summary = yaml.safe_load(out)
 
         return summary
 
