@@ -188,8 +188,10 @@ class openstack::nova::compute(
             ensure  => absent,
     }
 
+    # The weird [n] is an attempt to keep check_procs from counting itself.
+    #  https://serverfault.com/questions/359958/nagios-nrpe-check-procs-wrong-return-value
     nrpe::monitor_service { 'check_nova_compute_process':
         description  => 'nova-compute process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/bin/nova-compute'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
     }
 }
