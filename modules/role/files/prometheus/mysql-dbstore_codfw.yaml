@@ -3,6 +3,21 @@
     shard: multi
   targets:
   - dbstore2001:9104
+
+- labels:
+    shard: s1
+    role: slave
+  targets:
   - dbstore2002:13311
+
+- labels:
+    shard: s2
+    role: slave
+  targets:
   - dbstore2002:13312
+
+- labels:
+    shard: x1
+    role: slave
+  targets:
   - dbstore2002:13320
