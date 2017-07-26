@@ -6,3 +6,24 @@ profile::puppetmaster::backend::config:
   autosign: true
 
 profile::puppetmaster::backend::secure_private: false
+
+profile::conftool::master::sync_dir: "/etc/conftool/data"
+
+profile::puppetmaster::frontend::web_hostname: labs-puppetmaster.wikimedia.org
+profile::puppetmaster::common::storeconfigs: none
+
+profile::puppetmaster::labsencapi::mysql_host: m5-master
+profile::puppetmaster::labsencapi::mysql_db:   labspuppet
+profile::puppetmaster::labsencapi::mysql_username: labspuppet
+profile::puppetmaster::labsencapi::statsd_host: labmon1001.eqiad.wmnet
+profile::puppetmaster::labsencapi::statsd_prefix: labs.puppetbackend
+
+puppetmaster::servers:
+  labpuppetmaster1001.wikimedia.org:
+    - { worker: labpuppetmaster1001.wikimedia.org, loadfactor: 10 }
+    - { worker: labpuppetmaster1002.wikimedia.org, loadfactor: 20 }
+puppetmaster::ca_server: labs-puppetmaster.wikimedia.org
+
+labs_puppet_master: labs-puppetmaster.wikimedia.org
+
+puppetmaster::hiera_config: labs
