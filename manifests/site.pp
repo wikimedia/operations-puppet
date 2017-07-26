@@ -12,8 +12,20 @@ if $cluster == undef {
 
 # Node definitions (alphabetic order)
 
-node /^(acamar|achernar)\.wikimedia\.org$/ {
+node 'acamar.wikimedia.org' {
     role(dnsrecursor, ntp)
+
+    # use achernar (directly) + eqiad LVS (avoid self-dep)
+    $nameservers_override = [ '208.80.153.42', '208.80.154.254' ]
+
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'achernar.wikimedia.org' {
+    role(dnsrecursor, ntp)
+
+    # use acamar (directly) + eqiad LVS (avoid self-dep)
+    $nameservers_override = [ '208.80.153.12', '208.80.154.254' ]
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -202,6 +214,9 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(dnsrecursor, ntp)
+
+    # use hydrogen (directly) + codfw LVS (avoid self-dep)
+    $nameservers_override = [ '208.80.154.50', '208.80.153.254' ]
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -767,6 +782,10 @@ node /^druid100[123].eqiad.wmnet$/ {
 
 node 'eeden.wikimedia.org' {
     role(authdns::server)
+
+    # use eqiad LVS + codfw LVS (avoid self-dep)
+    $nameservers_override = [ '208.80.154.254', '208.80.153.254' ]
+
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -955,6 +974,9 @@ node 'heze.codfw.wmnet' {
 # DNS recursor
 node 'hydrogen.wikimedia.org' {
     role(dnsrecursor, ntp)
+
+    # use chromium (directly) + codfw LVS (avoid self-dep)
+    $nameservers_override = [ '208.80.154.157', '208.80.153.254' ]
 
     interface::add_ip6_mapped { 'main': }
 }
