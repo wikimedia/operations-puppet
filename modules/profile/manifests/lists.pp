@@ -105,32 +105,6 @@ class profile::lists {
         nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
     }
 
-    # on list servers we monitor I/O with iostat
-    # the icinga plugin needs bc to compare floating point numbers
-    package { 'bc':
-        ensure => present,
-    }
-
-    file { '/usr/local/lib/nagios/plugins/check_iostat':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/icinga/check_iostat.sh',
-    }
-
-    $iostat_device = $facts['is_virtual'] ? {
-        true    => 'vda',
-        false   => 'sda',
-    }
-
-    nrpe::monitor_service { 'mailman_iostat':
-        description  => 'mailman I/O stats',
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_iostat \
-                        -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000 -d ${iostat_device}",
-        timeout      => '30',
-    }
-
     ferm::service { 'mailman-smtp':
         proto => 'tcp',
         port  => '25',
