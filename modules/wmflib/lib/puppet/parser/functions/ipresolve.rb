@@ -1,14 +1,14 @@
-# == Function: ipresolve( string $name_to_resolve, bool $ipv6 = false)
+# == Function: ipresolve(string $name_to_resolve, string $type = '4', string $nameserver = nil)
 #
-# Copyright (c) 2015 Wikimedia Foundation Inc.
+# Copyright (c) 2015-2017 Wikimedia Foundation Inc.
 #
-# Performs a name resolution (for A AND AAAA records only) and returns
-# an hash of arrays.
+# Performs a name resolution (for A, AAAA and PTR records only) and returns a
+# string.
 #
-# Takes one or more names to resolve, and returns an array of all the
-# A or AAAA records found. The resolution is actually only done when
-# the ttl has expired. A particular nameserver can also be specified
-# so only that is used, rather than the system default.
+# Takes one names to resolve, and returns a string of the A, AAAA or PTR record
+# found. The resolution is actually only done when the ttl has expired. A
+# particular nameserver can also be specified so only that is used, rather than
+# the system default.
 #
 require 'resolv'
 
