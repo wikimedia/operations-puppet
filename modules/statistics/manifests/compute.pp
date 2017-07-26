@@ -7,6 +7,7 @@ class statistics::compute {
 
     include ::statistics::dataset_mount
     include ::statistics::packages
+    include ::statistics::discovery
 
     $working_path = $::statistics::working_path
     $published_datasets_path = "${working_path}/published-datasets"
@@ -37,7 +38,7 @@ class statistics::compute {
         command => "/usr/bin/rsync -rtL --delete ${published_datasets_path}/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
         require => File[$published_datasets_path],
         user    => 'root',
-        minute  => '*/30',
+        minute  => '*/15',
     }
 
     file { "${::statistics::working_path}/mediawiki":
