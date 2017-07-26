@@ -1,0 +1,9 @@
+Code-Review+1: Ayounsi <ayounsi@wikimedia.org>
+Code-Review+1: Faidon Liambotis <faidon@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Wed, 26 Jul 2017 08:31:03 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/366836
+Project: operations/puppet
+Branch: refs/heads/production
