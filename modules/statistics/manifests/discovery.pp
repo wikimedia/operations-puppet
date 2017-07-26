@@ -1,83 +1,80 @@
-
+# = Class: statistics::discovery
 class statistics::discovery {
-  Class['::statistics'] -> Class['::statistics::discovery']
+    Class['::statistics'] -> Class['::statistics::discovery']
 
-  include ::passwords::mysql::research
+    include ::passwords::mysql::research
 
-  $statistics_working_path = $::statistics::working_path
-  $dir = "${statistics_working_path}/discovery-stats"
-  $user = 'discovery-stats'
+    $working_path = $::statistics::working_path
+    # Homedir for everything Wikimedia Discovery Analytics related
+    $dir = "${working_path}/discovery"
+    # Path in which daily runs will log to
+    $log_dir = "${dir}/log"
+    # Path in which the R library will reside
+    $rlib_dir = "${dir}/r-library"
 
-  group { $user:
-    ensure => present,
-  }
+    $user = 'discovery-stats'
+    # Setting group to 'wikidev' so that Discovery's Analysts (as members of wikidev) have some privileges
+    $group ='wikidev'
+    group { $group:
+        ensure => present,
+    }
+    user { $user:
+        ensure     => present,
+        home       => $dir,
+        shell      => '/bin/bash',
+        managehome => false,
+        system     => true,
+        groups     => $group,
+    }
 
-  user { $user:
-    ensure     => present,
-    home       => $dir,
-    shell      => '/bin/bash',
-    managehome => false,
-    system     => true,
-  }
+    # This file will render at
+    # /etc/mysql/conf.d/discovery-stats-client.cnf.
+    ::mysql::config::client { 'discovery-stats':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => $group,
+        mode  => '0440',
+    }
 
-  ::mysql::config::client { 'discovery-stats':
-    user    => $::passwords::mysql::research::user,
-    pass    => $::passwords::mysql::research::pass,
-    group   => $user,
-    mode    => '0440',
-    require => User[$user],
-  }
+    $directories = [
+        $dir,
+        $log_dir,
+        $rlib_dir
+    ]
 
-  # Path in which all crons will log to
-  $log_dir = "${dir}/log"
+    file { $directories:
+        ensure => 'directory',
+        owner  => $user,
+        group  => $group,
+        mode   => '0775', # so Discovery's Analysts (as members of wikidev group) can read, write, execute
+    }
 
-  $scripts_dir = "${dir}/scripts"
+    git::clone { 'wikimedia/discovery/golden':
+        ensure             => 'latest',
+        branch             => 'master',
+        recurse_submodules => true,
+        directory          => "${dir}/golden",
+        owner              => $user,
+        group              => $group,
+        require            => File[$dir],
+    }
 
-  require_package(
-    'php5',
-    'php5-cli',
-  )
+    logrotate::conf { 'wikimedia-discovery-stats':
+        ensure  => present,
+        content => template('statistics/discovery-stats.logrotate.erb'),
+        require => File[$log_dir],
+    }
 
-  $directories = [
-    $dir,
-    $log_dir,
-  ]
+    cron { 'wikimedia-discovery-golden':
+        command => "sh ${dir}/golden/main.sh >> ${log_dir}/golden-daily.log 2>&1",
+        hour    => '5',
+        minute  => '0',
+        require => [
+            Class['::statistics::compute'],
+            Git::Clone['wikimedia/discovery/golden'],
+            Mysql::Config::Client['discovery-stats']
+        ]
+        user    => $user,
+    }
 
-  file { $directories:
-    ensure => 'directory',
-    owner  => $user,
-    group  => $user,
-    mode   => '0755',
-  }
-
-  git::clone { 'analytics/discovery-stats':
-    ensure    => 'latest',
-    branch    => 'production',
-    directory => $scripts_dir,
-    origin    => 'https://gerrit.wikimedia.org/r/analytics/discovery-stats',
-    owner     => $user,
-    group     => $user,
-    require   => File[$dir],
-  }
-
-  logrotate::conf { 'analytics-discovery-stats':
-    ensure  => present,
-    content => template('statistics/discovery-stats.logrotate.erb'),
-    require => File[$log_dir],
-  }
-
-  cron { 'discovery-stats':
-    command => "${scripts_dir}/bin/hourly.sh >> ${log_dir}/hourly.log 2>&1",
-    minute  => '14',
-    require => Git::Clone['analytics/discovery-stats'],
-    user    => $user,
-  }
-
-  cron { 'discovery-stats-daily':
-    command => "${scripts_dir}/bin/daily.sh >> ${log_dir}/daily.log 2>&1",
-    hour    => '3',
-    minute  => '14',
-    require => Git::Clone['analytics/discovery-stats'],
-    user    => $user,
-  }
 }
