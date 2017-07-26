@@ -120,6 +120,7 @@ class role::librenms {
         'graphite'   => {
             'enable' => true,
             'host'   => $graphite_host,
+            'port'   => '2003',
             'prefix' => $graphite_prefix,
         },
     }
