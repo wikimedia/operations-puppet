@@ -28,7 +28,8 @@ class Hiera
       end
     end
 
-    def read(path, expected_type, default = nil, &_block)
+    # rubocop: disable Lint/UnusedMethodArgument
+    def read(path, expected_type, default = nil, &block)
       read_file(path, expected_type)
     rescue Hiera::MediawikiPageNotFoundError => detail
       # Any errors other than this will cause hiera to raise an error and puppet to fail.
@@ -40,7 +41,7 @@ class Hiera
       raise error
     end
 
-    def read_file(path, expected_type = Object)
+    def read_file(path, expected_type = Object, &block)
       if stale?(path)
         resp = get_from_mediawiki(path, true)
         data = resp["*"]
@@ -53,6 +54,7 @@ class Hiera
 
       @cache[path][:data]
     end
+    # rubocop: enable Lint/Unusedmethodargument
 
     private
 
