@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export SYMFONY_ENV=prod
+cd /var/www
+
+## See if there's any update.
+GITFETCH=$(git fetch 2>&1)
+if [ -z "$GITFETCH" ]; then
+        exit 0
+fi
+
+## If there's an update, pull and install it.
+git checkout master
+git pull origin master
+/usr/local/bin/composer install --no-dev --optimize-autoloader
+./bin/console cache:clear --env prod
+./bin/console doctrine:migrations:migrate --env prod --no-interaction
+./bin/console assetic:dump --env prod

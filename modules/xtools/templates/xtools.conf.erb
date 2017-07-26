@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+        DocumentRoot /srv/xtools/web
+        ServerName <%= @host %>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        <Directory /srv/xtools/web/>
+             Options Indexes FollowSymLinks
+             AllowOverride All
+             Require all granted
+        </Directory>
+
+        Alias /awstatsclasses "/usr/share/awstats/lib/"
+        Alias /awstats-icon/ "/usr/share/awstats/icon/"
+        Alias /awstatscss "/usr/share/doc/awstats/examples/css"
+        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+        ScriptAlias /awstats/ /usr/lib/cgi-bin/
+        <Directory /usr/lib/cgi-bin/>
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Require all granted
+        </Directory>
+
+</VirtualHost>
