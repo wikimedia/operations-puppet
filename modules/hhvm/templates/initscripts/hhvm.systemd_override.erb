@@ -3,8 +3,8 @@ Environment=
 Environment=CONFIG_FILE=/etc/hhvm/server.ini
 Environment=ADDITIONAL_ARGS=
 Environment=RUN_AS_USER=www-data
-<%- if !@malloc_arenas.nil? && @malloc_arenas != ''  -%>
-Environment="MALLOC_CONF=narenas:<%= @malloc_arenas %>"
+<%- if !scope['hhvm::malloc_arenas'].nil? && scope['hhvm::malloc_arenas'] != ''  -%>
+Environment="MALLOC_CONF=narenas:<%= scope['hhvm::malloc_arenas'] %>"
 <%- end -%>
 EnvironmentFile=
 EnvironmentFile=/etc/default/hhvm
