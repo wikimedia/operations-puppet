@@ -10,12 +10,10 @@
 #
 class hhvm::admin(
     $ensure = present,
-    $port   = 9002,
+    $port   = 9002, # TODO/puppet4 declare as integer
 ) {
     include ::network::constants
     include ::apache::mod::proxy_fcgi
-
-    if $port !~ /^\d+$/ { fail('port must be numeric') }
 
     apache::conf { 'hhvm_admin_port':
         ensure   => $ensure,

@@ -1,6 +1,11 @@
 # hhvm - HipHop Virtual Machine
 # Starts HHVM in server (FastCGI) mode.
 # Configured via /etc/default/hhvm.
+<%-
+cache_dir = scope['hhvm::cache_dir']
+log_dir = scope['hhvm::log_dir']
+tmp_dir = scope['hhvm::tmp_dir']
+-%>
 description "HipHop Virtual Machine for PHP"
 
 start on (local-filesystems and net-device-up IFACE!=lo)
@@ -9,12 +14,12 @@ pre-start script
   [ ! -r /etc/default/hhvm ] && { stop; exit 0; }
   . /etc/default/hhvm
   mkdir -p -m0755 "${HHVM_RUN_DIR:=/var/run/hhvm}"
-  mkdir -p -m0750 "<%= @cache_dir %>"
-  mkdir -p -m0775 "<%= @log_dir %>"
-  mkdir -p -m0775 "<%= @tmp_dir %>"
+  mkdir -p -m0750 "<%= cache_dir %>"
+  mkdir -p -m0775 "<%= log_dir %>"
+  mkdir -p -m0775 "<%= tmp_dir %>"
   chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "${HHVM_RUN_DIR:=/run/hhvm}"
-  chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "<%= @cache_dir %>" "<%= @tmp_dir %>"
-  chown "root:${HHVM_GROUP}" "<%= @log_dir %>"
+  chown -R "${HHVM_USER:=www-data}:${HHVM_GROUP:=www-data}" "<%= cache_dir %>" "<%= tmp_dir %>"
+  chown "root:${HHVM_GROUP}" "<%= log_dir %>"
 end script
 
 # Decomment this to start HHVM with memory profiling capabilities enabled but inactive.
@@ -45,7 +50,7 @@ post-stop script
   rm -f /var/run/hhvm/hhvm.pid
 
   # Check if HHVM wrote a stack trace before exiting.
-  TRACE="<%= @log_dir %>/stacktrace.${PID}.log"
+  TRACE="<%= log_dir %>/stacktrace.${PID}.log"
   [ -r "$TRACE" ] || exit 0
 
   # If a stack trace exists and a handler is defined, invoke it.
