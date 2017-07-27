@@ -11,7 +11,7 @@ profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
 profile::discovery::watch_interval: 60
 
-profile::puppetmaster::frontend::web_hostname: labs-puppetmaster.wikimedia.org
+profile::puppetmaster::backend::web_hostname: labs-puppetmaster.wikimedia.org
 profile::puppetmaster::common::storeconfigs: none
 
 profile::puppetmaster::labsencapi::mysql_host: m5-master
