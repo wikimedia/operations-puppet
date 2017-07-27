@@ -5,6 +5,17 @@ class role::labs::puppetmaster::backend {
         description => 'Puppetmaster backend'
     }
 
+    include network::constants
+    $labs_metal = hiera('labs_baremetal_servers', [])
+    $novaconfig = hiera_hash('novaconfig', {})
+    $labs_instance_range = $novaconfig['fixed_range']
+    $horizon_host = hiera('labs_horizon_host')
+    $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+    $designate_host_ip = ipresolve(hiera('labs_designate_hostname'), 4)
+
+    # Only allow puppet access from the instances
+    $allow_from = flatten([$labs_instance_range, '208.80.154.14', '208.80.155.119', '208.80.153.74', $horizon_host_ip, $labs_metal])
+
     include ::standard
     include ::base::firewall
 
@@ -23,7 +34,22 @@ class role::labs::puppetmaster::backend {
     class { '::profile::puppetmaster::backend':
         config         => $config,
         secure_private => false,
+        allow_from     => $allow_from,
     }
 
     require ::profile::conftool::client
+
+
+    $fwrules = {
+        puppetmaster => {
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8140 ACCEPT;",
+        },
+        puppetbackend => {
+            rule => "saddr (${horizon_host_ip} ${designate_host_ip}) proto tcp dport 8101 ACCEPT;",
+        },
+        puppetbackendgetter => {
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8100 ACCEPT;",
+        },
+    }
+    create_resources (ferm::rule, $fwrules)
 }
