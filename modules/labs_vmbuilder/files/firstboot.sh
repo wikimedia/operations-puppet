@@ -1,6 +1,9 @@
 #!/bin/bash
 set -x
 
+# Prevent non-root logins while the VM is being setup
+echo "This VM is work in progress" > /etc/nologin
+
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
@@ -120,3 +123,16 @@ apt-get update
 apt-get -y install openssh-server
 
 puppet agent -t
+
+# Ensure all NFS mounts are mounted
+mount_attempts=1
+until [ $mount_attempts -gt 10 ]
+do
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/nologin
+    ((mount_attempts++))
+    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
+done
+
+# Remove the non-root login restriction
+rm /etc/nologin
