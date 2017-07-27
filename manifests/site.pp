@@ -199,7 +199,10 @@ node 'bromine.eqiad.wmnet' {
 # and Tool Labs admin console AKA Striker
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
-    role(horizon, striker::web, labs::instance_info_dumper)
+    role(wmcs::openstack::main::horizon,
+          horizon,
+          striker::web,
+          labs::instance_info_dumper)
     include ::standard
     include ::base::firewall
     include ::openstack::horizon::puppetpanel
@@ -1002,38 +1005,50 @@ node 'labpuppetmaster1002.wikimedia.org' {
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
-    role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor,
-        labs::dns_floating_ip_updater)
+    role(wmcs::openstack::main::services,
+          labs::dns,
+          labs::openstack::designate::server,
+          labs::dnsrecursor,
+          labs::dns_floating_ip_updater)
     include ::standard
     include ::base::firewall
     include ::ldap::role::client::labs
 }
 
 node 'labservices1002.wikimedia.org' {
-    role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor)
+    role(wmcs::openstack::main::services,
+          labs::dns,
+          labs::openstack::designate::server,
+          labs::dnsrecursor)
     include ::standard
     include ::base::firewall
     include ::ldap::role::client::labs
 }
 
 node 'labtestneutron2001.codfw.wmnet' {
+    role(wmcs::openstack::labtestn::net)
     include ::standard
 }
 
 node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
-    role(labs::openstack::nova::compute)
+    role(wmcs::openstack::labtest::virt,
+          labs::openstack::nova::compute)
     include ::standard
 }
 
 node 'labtestnet2001.codfw.wmnet' {
-    role(labs::openstack::nova::api, labs::openstack::nova::network)
+    role(wmcs::openstack::labtest::net,
+         labs::openstack::nova::api,
+         labs::openstack::nova::network)
     include ::standard
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
     include ::standard
     include ::base::firewall
-    role(labs::openstack::nova::controller, labs::puppetmaster)
+    role(wmcs::openstack::labtest::control,
+         labs::openstack::nova::controller,
+         labs::puppetmaster)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
     #  we need some special fw rules to allow that
@@ -1063,6 +1078,7 @@ node 'labtestcontrol2001.wikimedia.org' {
 }
 
 node 'labtestcontrol2003.wikimedia.org' {
+    role(wmcs::openstack::labtestn::control)
     include ::base::firewall
     include ::standard
 }
@@ -1074,20 +1090,26 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
 }
 
 node 'labtestservices2001.wikimedia.org' {
-    role(labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest,
-        labs::dns_floating_ip_updater)
+    role(wmcs::openstack::labtest::services,
+          labs::dns,
+          labs::openstack::designate::server,
+          labs::dnsrecursor,
+          openldap::labtest,
+          labs::dns_floating_ip_updater)
     include ::standard
     include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 node /labtestservices200[23]\.wikimedia\.org/ {
+    role(wmcs::openstack::labtestn::services)
     include ::base::firewall
     include ::standard
     interface::add_ip6_mapped { 'main': }
 }
 
 node /labweb100[12]\.wikimedia\.org/ {
+    role(wmcs::openstack::main::web)
     include ::base::firewall
     include ::standard
     interface::add_ip6_mapped { 'main': }
@@ -1213,7 +1235,8 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 }
 
 node 'labcontrol1001.wikimedia.org' {
-    role(labs::openstack::nova::controller,
+    role(wmcs::openstack::main::control,
+          labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters)
@@ -1229,7 +1252,8 @@ node 'labcontrol1001.wikimedia.org' {
 #  basically repeated use of 'keystone endpoint-list,'
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
-    role(labs::openstack::nova::controller,
+    role(wmcs::openstack::main::control,
+          labs::openstack::nova::controller,
           labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters)
@@ -1243,7 +1267,10 @@ node 'labcontrol1002.wikimedia.org' {
 #  - silver (wikitech.wikimedia.org), and
 #  - californium (horizon.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
-    role(labs::openstack::nova::manager, mariadb::wikitech, horizon)
+    role(wmcs::openstack::labtest::web,
+          labs::openstack::nova::manager,
+          mariadb::wikitech,
+          horizon)
     include ::base::firewall
     include ::standard
     include ::openstack::horizon::puppetpanel
@@ -1260,9 +1287,10 @@ node 'labmon1001.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    role(labs::openstack::nova::api,
-        labs::openstack::nova::network,
-        labs::openstack::nova::fullstack)
+    role(wmcs::openstack::main::net,
+          labs::openstack::nova::api,
+          labs::openstack::nova::network,
+          labs::openstack::nova::fullstack)
     include ::standard
 }
 
@@ -1273,7 +1301,8 @@ node /labnet1001[34]\.eqiad\.wmnet/ {
 
 
 node 'labnet1002.eqiad.wmnet' {
-    role(labs::openstack::nova::api)
+    role(wmcs::openstack::main::net_secondary,
+          labs::openstack::nova::api)
     include ::standard
 }
 
@@ -2070,7 +2099,9 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    role(labs::openstack::nova::manager, mariadb::wikitech)
+    role(wmcs::openstack::main::wikitech,
+          labs::openstack::nova::manager,
+          mariadb::wikitech)
     include ::base::firewall
     include ::standard
 
@@ -2265,7 +2296,8 @@ node 'uranium.wikimedia.org' {
 
 node /^labvirt100[0-9].eqiad.wmnet/ {
     openstack::nova::partition{ '/dev/sdb': }
-    role(labs::openstack::nova::compute)
+    role(wmcs::openstack::main::virt,
+          labs::openstack::nova::compute)
     include ::standard
 }
 
@@ -2276,7 +2308,8 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 #  and also as potential transitional hosts
 #  during the upcoming neutron migration.
 node /^labvirt101[0-8].eqiad.wmnet/ {
-    role(labs::openstack::nova::compute)
+    role(wmcs::openstack::main::virt,
+          labs::openstack::nova::compute)
     include ::standard
 }
 
