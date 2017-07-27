@@ -236,7 +236,7 @@ cache::req_handling:
   racktables.wikimedia.org:
     director: 'krypton'
   releases.wikimedia.org:
-    director: 'bromine'
+    director: 'releases'
   rt.wikimedia.org:
     director: 'ununpentium'
   scholarships.wikimedia.org:
