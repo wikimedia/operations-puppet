@@ -4,6 +4,11 @@ class profile::puppetmaster::frontend(
     $config = hiera('profile::puppetmaster::frontend::config', {}),
     $secure_private = hiera('profile::puppetmaster::frontend::config', true),
     $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
+    $allow_from = ['*.wikimedia.org',
+                   '*.eqiad.wmnet',
+                   '*.ulsfo.wmnet',
+                   '*.esams.wmnet',
+                   '*.codfw.wmnet'],
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
@@ -43,6 +48,7 @@ class profile::puppetmaster::frontend(
         workers        => $workers,
         config         => $::profile::puppetmaster::common::config,
         secure_private => $secure_private,
+        allow_from     => $allow_from,
     }
 
     # Main site to respond to
