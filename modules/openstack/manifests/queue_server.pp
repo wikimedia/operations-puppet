@@ -4,11 +4,8 @@ class openstack::queue_server(
         $rabbit_monitor_password
     ) {
 
-    include ::openstack::repo
-
     package { [ 'rabbitmq-server' ]:
         ensure  => present,
-        require => Class['openstack::repo'];
     }
 
     # Turn up the number of allowed file handles for rabbitmq
