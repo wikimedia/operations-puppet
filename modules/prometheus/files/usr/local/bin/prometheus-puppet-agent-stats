@@ -39,6 +39,9 @@ def _summary_stats(puppet_state_dir, registry):
     resources_failed = Gauge('resources_failed', 'Number of failed resources on last run',
                              namespace='puppet_agent', registry=registry)
     resources_failed.set(0)
+    collection_error = Gauge('collection_error', 'Error collecting data',
+                             namespace='puppet_agent', registry=registry)
+    collection_error.set(0)
 
     summary_file = os.path.join(puppet_state_dir, 'last_run_summary.yaml')
     try:
@@ -48,6 +51,14 @@ def _summary_stats(puppet_state_dir, registry):
     except yaml.YAMLError as e:
         log.exception(e)
         summary_parse_fail.set(1)
+        return
+    except IOError as e:
+        log.exception(e)
+        collection_error.set(1)
+        return
+
+    if not summary_yaml:
+        failed.set(1)
         return
 
     if 'time' in summary_yaml:
