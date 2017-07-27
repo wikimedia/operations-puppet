@@ -360,12 +360,12 @@ node /^db10(51|55|65|66|67|72|73|80|83|89)\.eqiad\.wmnet/ {
 
 # s1 (enwiki) core production dbs on codfw
 # codfw master
-node 'db2016.codfw.wmnet' {
+node 'db2048.codfw.wmnet' {
     role(mariadb::core)
 }
 
 # codfw replicas
-node /^db20(34|42|48|55|62|69|70|71|72)\.codfw\.wmnet/ {
+node /^db20(16|34|42|55|62|69|70|71|72)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
