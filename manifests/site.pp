@@ -1984,7 +1984,7 @@ node /^rdb200[246]\.codfw\.wmnet/ {
     role(jobqueue_redis::slave)
 }
 
-# upcoming VM for releases (mwreleases and other)
+# https://releases.wikimedia.org - VM for releases (mediawiki and other)
 node 'releases1001.eqiad.wmnet' {
     role(releases)
     interface::add_ip6_mapped { 'main': }
