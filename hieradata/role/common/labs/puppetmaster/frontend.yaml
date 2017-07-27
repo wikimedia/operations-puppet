@@ -6,6 +6,7 @@ profile::puppetmaster::frontend::config:
   autosign: true
 
 profile::puppetmaster::frontend::secure_private: false
+profile::puppetmaster::frontend::prevent_cherrypicks: false
 
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"

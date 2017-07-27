@@ -4,6 +4,7 @@ class profile::puppetmaster::frontend(
     $config = hiera('profile::puppetmaster::frontend::config', {}),
     $secure_private = hiera('profile::puppetmaster::frontend::config', true),
     $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
+    $prevent_cherrypicks = hiera('profile::puppetmaster::frontend::prevent_cherrypicks', true),
     $allow_from = [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
@@ -43,13 +44,14 @@ class profile::puppetmaster::frontend(
     }
 
     class { '::puppetmaster':
-        bind_address   => '*',
-        server_type    => 'frontend',
-        is_git_master  => true,
-        workers        => $workers,
-        config         => $::profile::puppetmaster::common::config,
-        secure_private => $secure_private,
-        allow_from     => $allow_from,
+        bind_address        => '*',
+        server_type         => 'frontend',
+        is_git_master       => true,
+        workers             => $workers,
+        config              => $::profile::puppetmaster::common::config,
+        secure_private      => $secure_private,
+        prevent_cherrypicks => $prevent_cherrypicks,
+        allow_from          => $allow_from,
     }
 
     # Main site to respond to

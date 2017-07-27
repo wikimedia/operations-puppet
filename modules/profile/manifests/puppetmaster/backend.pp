@@ -3,6 +3,7 @@
 class profile::puppetmaster::backend(
     $config = hiera('profile::puppetmaster::backend::config', {}),
     $secure_private = hiera('profile::puppetmaster::backend::config', true),
+    $prevent_cherrypicks = hiera('profile::puppetmaster::backend::prevent_cherrypicks', true),
     $allow_from = [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
@@ -24,10 +25,11 @@ class profile::puppetmaster::backend(
     }
 
     class { '::puppetmaster':
-        server_type    => 'backend',
-        config         => $::profile::puppetmaster::common::config,
-        secure_private => $secure_private,
-        allow_from     => $allow_from,
+        server_type         => 'backend',
+        config              => $::profile::puppetmaster::common::config,
+        secure_private      => $secure_private,
+        prevent_cherrypicks => $prevent_cherrypicks,
+        allow_from          => $allow_from,
     }
 
     $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
