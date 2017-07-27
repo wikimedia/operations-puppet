@@ -27,7 +27,7 @@ Environment Variables:
                             flag will be given this value.
   KAFKA_BOOTSTRAP_SERVERS - If this is set, any commands that take a --broker-list or
                             --bootstrap-server flag will be given this value.
-                            Also any command that take a --authorized-property
+                            Also any command that take a --authorizer-properties
                             will get the correct zookeeper.connect value.
 
 "
@@ -70,11 +70,11 @@ if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" -a -z "$(echo $@ | grep -- --bootstrap-serv
     BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS}"
 fi
 
-# Set ZOOKEEPER_CONNECT_OPT if KAFKA_ZOOKEEPER_URL is set and '--authorized-property zookeeper.connect'
+# Set ZOOKEEPER_CONNECT_OPT if KAFKA_ZOOKEEPER_URL is set and '--authorizer-properties zookeeper.connect'
 # has not also been passed in as a CLI arg.  This will be included
-# in command functions that take '--authorized-property zookeeper.connect' argument.
-if [ -n "${KAFKA_ZOOKEEPER_URL}" -a -z "$(echo $@ | egrep -- '--authorized-property\ *zookeeper\.connect')" ]; then
-    ZOOKEEPER_CONNECT_OPT="--authorized-property zookeeper.connect=${KAFKA_ZOOKEEPER_URL}"
+# in command functions that take '--authorizer-properties zookeeper.connect' argument.
+if [ -n "${KAFKA_ZOOKEEPER_URL}" -a -z "$(echo $@ | egrep -- '--authorizer-properties\ *zookeeper\.connect')" ]; then
+    ZOOKEEPER_CONNECT_OPT="--authorizer-properties zookeeper.connect=${KAFKA_ZOOKEEPER_URL}"
 fi
 
 # Each of these lists signifies that either --broker-list, --bootstrap-server,
