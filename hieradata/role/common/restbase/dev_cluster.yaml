@@ -86,12 +86,16 @@ profile::cassandra::instances:
       data_file_directories:
         - data_0
         - data_1
+        - data_2
+        - data_3
       jmx_exporter_enabled: true
     b:
       listen_address: 10.64.0.168
       data_file_directories:
         - data_0
         - data_1
+        - data_2
+        - data_3
       jmx_exporter_enabled: true
   "restbase-dev1005.eqiad.wmnet":
     a:
