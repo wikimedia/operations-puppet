@@ -34,6 +34,13 @@ class role::labs::puppetmaster::frontend() {
         secure_private => false,
     }
 
+    # Update git checkout.  This is done via a cron
+    #  rather than via puppet_merge to increase isolation
+    #  between these puppetmasters and the production ones.
+    class { 'puppetmaster::gitsync':
+        run_every_minutes => '1',
+    }
+
     include ::profile::conftool::client
     include ::profile::conftool::master
 

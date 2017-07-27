@@ -37,6 +37,13 @@ class role::labs::puppetmaster::backend {
         allow_from     => $allow_from,
     }
 
+    # Update git checkout.  This is done via a cron
+    #  rather than via puppet_merge to increase isolation
+    #  between these puppetmasters and the production ones.
+    class { 'puppetmaster::gitsync':
+        run_every_minutes => '1',
+    }
+
     require ::profile::conftool::client
 
     $labs_vms = $novaconfig['fixed_range']
