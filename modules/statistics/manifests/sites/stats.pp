@@ -1,10 +1,16 @@
 # == Class statistics::sites::stats
+#
 # stats.wikimedia.org
-class statistics::sites::stats {
+#
+# === Parameters
+#
+# [*geowiki_private_data_bare_host*]
+#   Hostname used to rsync the geowiki private repository.
+#
+class statistics::sites::stats (
+    $geowiki_private_data_bare_host,
+) {
     require ::statistics::web
-
-    # TODO: make this a hiera param.
-    $geowiki_private_data_bare_host = 'stat1003.eqiad.wmnet'
 
     class { '::geowiki':
         private_data_bare_host => $geowiki_private_data_bare_host

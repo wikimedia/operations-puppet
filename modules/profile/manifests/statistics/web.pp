@@ -2,6 +2,7 @@
 #
 class profile::statistics::web(
     $statistics_servers = hiera('statistics_servers'),
+    $geowiki_host       = hiera('profile::statistics::web::geowiki_host'),
 ) {
     include ::standard
     include ::base::firewall
@@ -13,18 +14,20 @@ class profile::statistics::web(
     }
 
     # include stuff common to statistics webserver nodes.
-    include ::statistics::web
+    class { '::statistics::web': }
 
     # # include statistics web sites
-    include ::statistics::sites::metrics
-    include ::statistics::sites::stats
-    include ::statistics::sites::analytics
+    class { '::statistics::sites::metrics': }
+    class { '::statistics::sites::stats':
+        geowiki_private_data_bare_host => $geowiki_host,
+    }
+    class { '::statistics::sites::analytics': }
     # Proxy to securely access Yarn (authentication via LDAP)
-    include ::statistics::sites::yarn
+    class { '::statistics::sites::yarn': }
     # Proxy to securely access Pivot (authentication via LDAP)
-    include ::statistics::sites::pivot
+    class { '::statistics::sites::pivot': }
     # Proxy to Hue (not authenticated via LDAP, delegated to app)
-    include ::statistics::sites::hue
+    class { '::statistics::sites::hue': }
 
     ferm::service {'statistics-web':
         proto => 'tcp',

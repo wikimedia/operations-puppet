@@ -5,3 +5,4 @@ admin::groups:
 debdeploy::grains:
   debdeploy-analytics-web:
     value: standard
+profile::statistics::web::geowiki_host: 'stat1006.eqiad.wmnet'
