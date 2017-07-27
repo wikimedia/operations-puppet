@@ -26,27 +26,12 @@ class shiny_server {
     $essentials = [
         'gfortran', 'g++-4.8', 'gfortran-4.8',
         'libssl-dev', 'libcurl4-openssl-dev', 'libxml2-dev', 'libssh2-1-dev',
-        'libcairo2-dev', 'git-core', 'gdebi', 'pandoc'
+        'libcairo2-dev', 'gdebi', 'pandoc'
     ]
     require_package($essentials)
 
     # Install R packages from CRAN, Gerrit, and GitHub:
     $cran_mirror = 'https://cran.cnr.berkeley.edu'
-    r::cran { 'curl':
-        require => Package['libcurl4-openssl-dev'],
-        mirror  => $cran_mirror,
-    }
-    r::cran { 'xml2':
-        require => Package['libxml2-dev'],
-        mirror  => $cran_mirror,
-    }
-    r::cran { 'devtools':
-        require => [
-            Package['git-core'],
-            R::Cran['curl']
-        ],
-        mirror  => $cran_mirror,
-    }
     r::cran { 'rmarkdown':
         require => Package['pandoc'],
         mirror  => $cran_mirror,
@@ -56,7 +41,7 @@ class shiny_server {
     # It's a lot of packages so we *really* need to extend the timeout.
     r::cran { 'tidyverse':
         timeout => 6000,
-        mirror  => $cran_mirror
+        mirror  => $cran_mirror,
     }
     $cran_packages = [
         # Shiny Dashboarding

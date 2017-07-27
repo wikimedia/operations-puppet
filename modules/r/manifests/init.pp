@@ -36,12 +36,16 @@ class r (
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        source => 'puppet:///modules/r/update-library.R'
+        source => 'puppet:///modules/r/update-library.R',
     }
 
     if $devtools {
         $devtools_essentials = [
-            'libssl-dev', 'libcurl4-openssl-dev', 'libicu-dev', 'libssh2-1-dev'
+            'git-core',
+            'libssl-dev',
+            'libcurl4-openssl-dev',
+            'libicu-dev',
+            'libssh2-1-dev'
         ]
         require_package($devtools_essentials)
 
@@ -51,11 +55,13 @@ class r (
 
         $r_packages = [
             'xml2',
+            'curl',
             'testthat',
             'devtools'
         ]
         r::cran { $r_packages:
             require => [
+                Package['git-core'],
                 Package['libxml2'],
                 Package['libxml2-dev'],
                 R::Cran['openssl'],
