@@ -14,6 +14,7 @@
 
 class raid (
     $write_cache_policy = undef,
+    $ensure = present,
 ){
 
     if $write_cache_policy {
@@ -34,7 +35,7 @@ class raid (
         $get_raid_status_megacli = '/usr/local/lib/nagios/plugins/get-raid-status-megacli'
 
         file { $get_raid_status_megacli:
-            ensure => present,
+            ensure => $ensure,
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
@@ -42,15 +43,18 @@ class raid (
         }
 
         sudo::user { 'nagios_megaraid':
+            ensure     => $ensure,
             user       => 'nagios',
             privileges => ["ALL = NOPASSWD: ${get_raid_status_megacli}"],
         }
 
         nrpe::check { 'get_raid_status_megacli':
+            ensure  => $ensure,
             command => "/usr/bin/sudo ${get_raid_status_megacli} -c",
         }
 
         nrpe::monitor_service { 'raid_megaraid':
+            ensure         => $ensure,
             description    => 'MegaRAID',
             nrpe_command   => "${check_raid} megacli",
             check_interval => $check_interval,
@@ -63,7 +67,7 @@ class raid (
         require_package('hpssacli')
 
         file { '/usr/local/lib/nagios/plugins/check_hpssacli':
-            ensure => present,
+            ensure => $ensure,
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
@@ -71,6 +75,7 @@ class raid (
         }
 
         sudo::user { 'nagios_hpssacli':
+            ensure     => $ensure,
             user       => 'nagios',
             privileges => [
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller all show',
@@ -96,6 +101,7 @@ class raid (
         }
 
         nrpe::monitor_service { 'raid_hpssacli':
+            ensure         => $ensure,
             description    => 'HP RAID',
             nrpe_command   => '/usr/local/lib/nagios/plugins/check_hpssacli',
             timeout        => 60, # can take > 10s on servers with lots of disks
@@ -107,7 +113,7 @@ class raid (
         $get_raid_status_hpssacli = '/usr/local/lib/nagios/plugins/get-raid-status-hpssacli'
 
         file { $get_raid_status_hpssacli:
-            ensure => present,
+            ensure => $ensure,
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
@@ -115,17 +121,18 @@ class raid (
         }
 
         nrpe::check { 'get_raid_status_hpssacli':
+            ensure  => $ensure,
             command => "${get_raid_status_hpssacli} -c",
         }
     }
 
     if 'mpt' in $facts['raid'] {
         package { 'mpt-status':
-            ensure => present,
+            ensure => $ensure,
         }
 
         file { '/etc/default/mpt-statusd':
-            ensure  => present,
+            ensure  => $ensure,
             owner   => 'root',
             group   => 'root',
             mode    => '0555',
@@ -134,6 +141,7 @@ class raid (
         }
 
         nrpe::monitor_service { 'raid_mpt':
+            ensure         => $ensure,
             description    => 'MPT RAID',
             nrpe_command   => "${check_raid} mpt",
             check_interval => $check_interval,
@@ -142,6 +150,7 @@ class raid (
         }
 
         nrpe::check { 'get_raid_status_mpt':
+            ensure  => $ensure,
             command => "${check_raid} mpt",
         }
     }
@@ -150,18 +159,20 @@ class raid (
         # if there is an "md" RAID configured, mdadm is already installed
 
         nrpe::monitor_service { 'raid_md':
+            ensure        => $ensure,
             description   => 'MD RAID',
             nrpe_command  => "${check_raid} md",
             event_handler => "raid_handler!md!${::site}",
         }
 
         nrpe::check { 'get_raid_status_md':
+            ensure  => $ensure,
             command => 'cat /proc/mdstat',
         }
     }
 
     file { '/usr/local/lib/nagios/plugins/check_raid':
-        ensure => present,
+        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -169,6 +180,7 @@ class raid (
     }
 
     sudo::user { 'nagios_raid':
+        ensure     => $ensure,
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_raid'],
     }

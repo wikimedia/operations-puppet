@@ -93,13 +93,12 @@ class profile::base(
     }
 
     # unless disabled in Hiera, have Icinga monitoring (T151632)
-    if $monitoring {
-        class { '::base::monitoring::host':
-            contact_group            => $group_contact,
-            nrpe_check_disk_options  => $check_disk_options,
-            nrpe_check_disk_critical => $check_disk_critical,
-            raid_write_cache_policy  => $check_raid_policy,
-        }
+    class { '::base::monitoring::host':
+        ensure                   => $monitoring,
+        contact_group            => $group_contact,
+        nrpe_check_disk_options  => $check_disk_options,
+        nrpe_check_disk_critical => $check_disk_critical,
+        raid_write_cache_policy  => $check_raid_policy,
     }
 
     if os_version('ubuntu == trusty') {
