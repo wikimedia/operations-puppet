@@ -19,8 +19,4 @@ class role::toollabs::services(
     class { '::toollabs::updatetools':
         active => ($::fqdn == $active_host),
     }
-
-    class { '::toollabs::admin_web_updater':
-        active => ($::fqdn == $active_host),
-    }
 }
