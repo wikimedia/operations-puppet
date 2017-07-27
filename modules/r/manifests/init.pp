@@ -42,6 +42,7 @@ class r (
     if $devtools {
         $devtools_essentials = [
             'git-core',
+            'libxml2',
             'libssl-dev',
             'libcurl4-openssl-dev',
             'libicu-dev',
