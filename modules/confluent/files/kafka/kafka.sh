@@ -27,6 +27,8 @@ Environment Variables:
                             flag will be given this value.
   KAFKA_BOOTSTRAP_SERVERS - If this is set, any commands that take a --broker-list or
                             --bootstrap-server flag will be given this value.
+                            Also any command that take a --authorized-property
+                            will get the correct zookeeper.connect value.
 
 "
 
@@ -68,6 +70,13 @@ if [ -n "${KAFKA_BOOTSTRAP_SERVERS}" -a -z "$(echo $@ | grep -- --bootstrap-serv
     BOOTSTRAP_SERVER_OPT="--bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS}"
 fi
 
+# Set ZOOKEEPER_CONNECT_OPT if KAFKA_ZOOKEEPER_URL is set and '--authorized-property zookeeper.connect'
+# has not also been passed in as a CLI arg.  This will be included
+# in command functions that take '--authorized-property zookeeper.connect' argument.
+if [ -n "${KAFKA_ZOOKEEPER_URL}" -a -z "$(echo $@ | egrep -- '--authorized-property\ *zookeeper\.connect')" ]; then
+    ZOOKEEPER_CONNECT_OPT="--authorized-property zookeeper.connect=${KAFKA_ZOOKEEPER_URL}"
+fi
+
 # Each of these lists signifies that either --broker-list, --bootstrap-server,
 # or --zookeeper needs to be given to the $command.  If $command matches one of these,
 # then we will add the opt if it is not provided already in $@.
@@ -87,18 +96,20 @@ bootstrap_server_commands="kafka-console-consumer "\
 "kafka-broker-api-versions "\
 "kafka-consumer-groups "
 
-zookeeper_commands="kafka-acls "\
-"kafka-configs "\
+zookeeper_commands="kafka-configs "\
 "kafka-consumer-offset-checker.sh "\
 "kafka-preferred-replica-election "\
 "kafka-reassign-partitions "\
 "kafka-replay-log-producer "\
 "kafka-topics"
 
+zookeeper_connect_commands="kafka-acls"
+
 EXTRA_OPTS=""
 echo "${broker_list_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${BROKER_LIST_OPT} "
 echo "${bootstrap_server_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_OPTS}${BOOTSTRAP_SERVER_OPT} "
 echo "${zookeeper_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_OPTS}${ZOOKEEPER_OPT} "
+echo "${zookeeper_connect_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_OPTS}${ZOOKEEPER_CONNECT_OPT} "
 
 # Print out the command we are about to exec, and then run it
 echo "${command} ${EXTRA_OPTS}$@"
