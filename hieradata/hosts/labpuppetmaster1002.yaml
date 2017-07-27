@@ -1,1 +1,3 @@
 puppetmaster::ca_server: labpuppetmaster1001.wikimedia.org
+
+labs_puppet_master: labs-puppetmaster.wikimedia.org
