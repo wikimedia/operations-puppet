@@ -1,11 +1,11 @@
 # Use the special labs enc
-profile::puppetmaster::backend::config:
+profile::puppetmaster::frontend::config:
   node_terminus: 'exec'
   external_nodes: '/usr/local/bin/puppet-enc'
   thin_storeconfigs: false
   autosign: true
 
-profile::puppetmaster::backend::secure_private: false
+profile::puppetmaster::frontend::secure_private: false
 
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
