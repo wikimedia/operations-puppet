@@ -55,6 +55,7 @@ server {
         return 302 "https://<%= @web_domain %>";
     }
 
+    # Special handling for /cdnjs, our local cdnjs mirror
     location = /cdnjs {
         return 302 "https://<%= @web_domain %>/cdnjs/";
     }
@@ -70,6 +71,7 @@ server {
         root /srv/; # Is ok, nginx ensures that this is /cdnjs/* only
     }
 
+    # Special handling for /fontcdn, reverse proxy to google's fonts service
     location = /fontcdn {
         return 302 "https://<%= @web_domain %>/fontcdn/";
     }
@@ -90,19 +92,23 @@ server {
 
         # rewrite is an action directive and does not inherit
 
-        location ^~ /fontcdn/s/ {
-            rewrite ^/fontcdn(/.*)$ $1 break;
-            proxy_pass https://fonts.gstatic.com;
-        }
-
+        # Proxy /fontcdn/css to fonts.googleapis.com
         location ^~ /fontcdn/css {
             rewrite ^/fontcdn(/.*)$ $1 break;
             proxy_pass https://fonts.googleapis.com;
 
             # subs_filter works only on uncompressed data
             proxy_set_header Accept-Encoding "";
+
+            # Rewrite references to the upstream to point to our proxy
             subs_filter_types text/css;
             subs_filter '//fonts.gstatic.com/' '//$host/fontcdn/';
+        }
+
+        # Proxy anything else to fonts.gstatic.com
+        location ^~ /fontcdn/ {
+            rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_pass https://fonts.gstatic.com;
         }
     }
 
