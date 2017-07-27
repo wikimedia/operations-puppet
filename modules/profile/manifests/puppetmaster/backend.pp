@@ -3,6 +3,12 @@
 class profile::puppetmaster::backend(
     $config = hiera('profile::puppetmaster::backend::config', {}),
     $secure_private = hiera('profile::puppetmaster::backend::config', true),
+    $allow_from = [
+      '*.wikimedia.org',
+      '*.eqiad.wmnet',
+      '*.ulsfo.wmnet',
+      '*.esams.wmnet',
+      '*.codfw.wmnet'],
 ) {
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
@@ -21,6 +27,7 @@ class profile::puppetmaster::backend(
         server_type    => 'backend',
         config         => $::profile::puppetmaster::common::config,
         secure_private => $secure_private,
+        allow_from     => $allow_from,
     }
 
     $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
