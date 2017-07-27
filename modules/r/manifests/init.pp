@@ -41,12 +41,11 @@ class r (
 
     if $devtools {
         $devtools_essentials = [
-            'git-core',
-            'libxml2',
-            'libssl-dev',
-            'libcurl4-openssl-dev',
-            'libicu-dev',
-            'libssh2-1-dev'
+            'git-core',             # for git2r
+            'libxml2',              # for xml2
+            'libssl-dev',           # for openssl
+            'libcurl4-openssl-dev', # for curl
+            'libssh2-1-dev'         # for git2r
         ]
         require_package($devtools_essentials)
 
@@ -57,8 +56,7 @@ class r (
         $r_packages = [
             'xml2',
             'curl',
-            'testthat',
-            'devtools'
+            'devtools',
         ]
         r::cran { $r_packages:
             require => [
