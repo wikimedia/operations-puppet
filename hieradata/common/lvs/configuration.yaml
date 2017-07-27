@@ -247,6 +247,7 @@ lvs::configuration::lvs_services:
     ip: *ip_block005
     port: 53
     depool-threshold: '.5'
+    ops: true
     monitors:
       DNSQuery:
         hostnames:
