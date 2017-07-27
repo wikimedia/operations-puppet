@@ -3,5 +3,6 @@ admin::groups:
 
 apache::logrotate::rotate: 12
 
+profile::openstack::main::version: 'mitaka'
 openstack::version: mitaka
 profile::backup::host::enable: false

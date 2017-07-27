@@ -13,8 +13,6 @@ class openstack::designate::service (
 )
     {
 
-    require ::openstack::repo
-
     $keystone_host_ip   = ipresolve($keystone_host,4)
     $nova_controller_ip = ipresolve($nova_controller)
     $designate_host = $active_server
