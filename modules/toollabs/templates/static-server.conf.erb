@@ -88,10 +88,6 @@ server {
         # And hide the referrer for privacy reasons
         proxy_set_header        Referer "https://<%= @web_domain %>/fontcdn/";
 
-        add_header Access-Control-Allow-Origin '*';
-
-        # rewrite is an action directive and does not inherit
-
         # Proxy /fontcdn/css to fonts.googleapis.com
         location ^~ /fontcdn/css {
             rewrite ^/fontcdn(/.*)$ $1 break;
