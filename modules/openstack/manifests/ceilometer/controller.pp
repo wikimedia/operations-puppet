@@ -2,11 +2,8 @@
 # https://wiki.openstack.org/wiki/Ceilometer
 class openstack::ceilometer::controller ($novaconfig, $openstack_version=$::openstack::version) {
 
-    include ::openstack::repo
-
     package { [ceilometer-api, ceilometer-collector, ceilometer-agent-central, python-ceilometerclient]:
         ensure  => present,
-        require => Class['openstack::repo'];
     }
 
     service {'ceilometer-api':
