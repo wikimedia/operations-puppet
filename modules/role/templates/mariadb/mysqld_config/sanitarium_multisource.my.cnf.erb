@@ -1,17 +1,9 @@
-# Sanitarium2 -- now in a single instance + InnoDB
+# Sanitarium multisource -- now in a single instance + InnoDB
 
 [client]
 port           = 3306
-socket         = /tmp/mysql.sock
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-# skip server cert validation until we generate one cert per server
-# it would check the cert's common name against the host
-# ssl-verify-server-cert
-<% elsif @ssl == 'puppet-cert' %>
+socket         = <%= @socket %>
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
@@ -22,10 +14,10 @@ ssl-verify-server-cert
 [mysqld]
 user           = mysql
 port           = 3306
-socket         = /tmp/mysql.sock
+socket         = <%= @socket %>
 basedir        = <%= @basedir %>
-datadir        = /srv/sqldata
-tmpdir         = /srv/tmp
+datadir        = <%= @datadir %>
+tmpdir         = <%= @tmpdir %>
 server_id      = <%= @server_id %>
 
 # gtid_domain_id flag is needed for multisource replication and GTID.
