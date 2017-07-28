@@ -441,7 +441,7 @@ node /^db10(53|56|59|64|81|84|91|97)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# row-based replication to sanitarium2 (T150960)
+# row-based replication to sanitarium (T150960)
 node 'db1064.eqiad.wmnet' {
     role(mariadb::core)
 }
@@ -648,7 +648,7 @@ node 'db1102.eqiad.wmnet' {
 }
 
 node 'db1095.eqiad.wmnet' {
-    role(mariadb::sanitarium2)
+    role(mariadb::sanitarium_multisource)
 }
 
 # tendril db
