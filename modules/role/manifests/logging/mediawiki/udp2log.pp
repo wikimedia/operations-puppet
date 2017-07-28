@@ -104,13 +104,6 @@ class role::logging::mediawiki::udp2log(
         source => 'puppet:///modules/role/logging/mw-log-cleanup',
     }
 
-    file { '/usr/local/bin/exceptionmonitor':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('role/logging/exceptionmonitor.erb'),
-    }
-
     file { '/etc/profile.d/mw-log.sh':
         owner   => 'root',
         group   => 'root',
