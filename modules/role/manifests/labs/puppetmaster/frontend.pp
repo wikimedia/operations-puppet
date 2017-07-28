@@ -14,7 +14,7 @@ class role::labs::puppetmaster::frontend() {
     $designate_host_ip = ipresolve(hiera('labs_designate_hostname'), 4)
 
     # Only allow puppet access from the instances
-    $allow_from = flatten([$labs_instance_range, '208.80.154.14', '208.80.155.119', '208.80.153.74', $horizon_host_ip, $labs_metal])
+    $allow_from = flatten([$labs_instance_range, $labs_metal, '.wikimedia.org'])
 
     include ::base::firewall
 
