@@ -7,8 +7,6 @@ class openstack::glance::service(
     $openstack_version=$::openstack::version,
     $glance_data = '/srv/glance/',
 ) {
-    include ::openstack::repo
-
     $glance_images_dir = "${glance_data}/images"
     $keystone_host_ip  = ipresolve($keystone_host,4)
     $keystone_admin_uri = "http://${active_server}:${keystoneconfig['auth_port']}"
@@ -34,7 +32,6 @@ class openstack::glance::service(
 
     package { 'glance':
         ensure  => present,
-        require => Class['openstack::repo'],
     }
 
     file { $glance_data:
