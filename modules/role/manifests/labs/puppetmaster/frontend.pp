@@ -22,11 +22,22 @@ class role::labs::puppetmaster::frontend() {
     include ::profile::puppetmaster::labsenc
     include ::profile::puppetmaster::labsencapi
 
+    # validatelabsfqdn will look up an instance certname in nova
+    #  and make sure it's for an actual instance before signing
+    include ::openstack::clientlib
+    file { '/usr/local/sbin/validatelabsfqdn.py':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/validatelabsfqdn.py',
+    }
+
     $config = {
         'node_terminus'     => 'exec',
         'external_nodes'    => '/usr/local/bin/puppet-enc',
         'thin_storeconfigs' => false,
-        'autosign'          => true,
+        'autosign'          => '/usr/local/sbin/validatelabsfqdn.py',
     }
 
     class { '::profile::puppetmaster::frontend':
