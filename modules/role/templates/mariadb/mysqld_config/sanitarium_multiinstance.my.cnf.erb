@@ -15,6 +15,7 @@ ssl-verify-server-cert
 
 user      = mysql
 read_only = 1
+basedir   = <%= @basedir %>
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
