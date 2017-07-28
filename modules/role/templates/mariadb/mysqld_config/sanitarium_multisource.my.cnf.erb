@@ -1,8 +1,8 @@
-# Sanitarium2 -- now in a single instance + InnoDB
+# Sanitarium multisource -- now in a single instance + InnoDB
 
 [client]
 port           = 3306
-socket         = /tmp/mysql.sock
+socket         = <%= @socket %>
 <% if @ssl == 'on' %>
 # ssl
 ssl-ca=/etc/mysql/ssl/cacert.pem
@@ -22,10 +22,10 @@ ssl-verify-server-cert
 [mysqld]
 user           = mysql
 port           = 3306
-socket         = /tmp/mysql.sock
+socket         = <%= @socket %>
 basedir        = <%= @basedir %>
-datadir        = /srv/sqldata
-tmpdir         = /srv/tmp
+datadir        = <%= @datadir %>
+tmpdir         = <%= @tmpdir %>
 server_id      = <%= @server_id %>
 
 # gtid_domain_id flag is needed for multisource replication and GTID.
