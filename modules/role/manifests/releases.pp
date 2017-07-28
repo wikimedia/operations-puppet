@@ -16,8 +16,8 @@ class role::releases {
 
     rsync::quickdatacopy { 'srv-org-wikimedia-releases':
       ensure      => present,
-      source_host => 'bromine.eqiad.wmnet',
-      dest_host   => 'releases1001.eqiad.wmnet',
+      source_host => 'releases1001.eqiad.wmnet',
+      dest_host   => 'releases2001.codfw.wmnet',
       module_path => '/srv/org/wikimedia/releases',
     }
 }

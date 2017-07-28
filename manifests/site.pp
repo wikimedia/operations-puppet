@@ -2017,8 +2017,8 @@ node /^rdb200[246]\.codfw\.wmnet/ {
     role(jobqueue_redis::slave)
 }
 
-# https://releases.wikimedia.org - VM for releases (mediawiki and other)
-node 'releases1001.eqiad.wmnet' {
+# https://releases.wikimedia.org - VMs for releases (mediawiki and other)
+node /^releases[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
     interface::add_ip6_mapped { 'main': }
 }
