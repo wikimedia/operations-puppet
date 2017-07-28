@@ -345,6 +345,11 @@ node 'cp4021.ulsfo.wmnet' {
     role(cache::upload, ipsec)
 }
 
+# temporary entry for new cache nodes
+node /^cp402[34]\.ulsfo\.wmnet$/ {
+    role(spare::system)
+}
+
 node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
