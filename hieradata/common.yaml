@@ -466,6 +466,9 @@ install_server_failover: install2002.wikimedia.org
 
 netmon_server: netmon1002.wikimedia.org
 
+releases_server: releases1001.eqiad.wmnet
+releases_server: releases2001.codfw.wmnet
+
 # Etcd client global configuration
 etcd_client_srv_domain: "conftool.%{::site}.wmnet"
 etcd_host: ''
