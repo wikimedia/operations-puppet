@@ -319,10 +319,6 @@ eventlogging_kafka_producer_scheme: "kafka-confluent://"
 
 # LABS
 
-profile::openstack::main::version: 'liberty'
-profile::openstack::labtest::version: 'liberty'
-profile::openstack::labtestn::version: 'liberty'
-
 labs_tld: "wmflabs"
 labs_private_ips_reverse_dns: "68.10.in-addr.arpa"
 labs_designate_hostname: &labsdesignatehostname "labservices1001.wikimedia.org"

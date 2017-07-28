@@ -5,6 +5,8 @@ class openstack::common(
             $openstack_version=$::openstack::version,
     ) {
 
+    include ::openstack::repo
+
     $packages = [
         'unzip',
         'nova-common',

@@ -5,9 +5,11 @@
 class openstack::nova::spiceproxy(
     $openstack_version=$::openstack::version,
 ){
+    include ::openstack::repo
 
     package { ['nova-spiceproxy', 'nova-consoleauth', 'spice-html5', 'websockify']:
         ensure  => present,
+        require => Class['openstack::repo'];
     }
 
     # The default spice_auto.html file doesn't support wss so won't

@@ -1,9 +1,11 @@
 # This is the api service for Openstack Nova.
 # It provides a REST api that  Wikitech and Horizon use to manage VMs.
 class openstack::nova::api($novaconfig, $openstack_version=$::openstack::version) {
+    include ::openstack::repo
 
     package { 'nova-api':
         ensure  => present,
+        require => Class['openstack::repo'];
     }
 
     service { 'nova-api':

@@ -3,9 +3,11 @@
 class openstack::nova::scheduler(
     $openstack_version=$::openstack::version,
 ){
+    include ::openstack::repo
 
     package { 'nova-scheduler':
         ensure  => present,
+        require => Class['openstack::repo'];
     }
 
     file { '/usr/lib/python2.7/dist-packages/nova/scheduler/filters/scheduler_pool_filter.py':

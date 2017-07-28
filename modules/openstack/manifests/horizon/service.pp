@@ -6,10 +6,12 @@ class openstack::horizon::service(
     $openstack_version  = $::openstack::version,
     $webserver_hostname = 'horizon.wikimedia.org'
 ) {
+    # basic horizon packages and config
+    include ::openstack::repo
 
     package { 'openstack-dashboard':
         ensure  => present,
-        require => Class['::apache::mod::wsgi'];
+        require => Class['openstack::repo',  '::apache::mod::wsgi'];
     }
 
     require_package('python-keystoneclient')

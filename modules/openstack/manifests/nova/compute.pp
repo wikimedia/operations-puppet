@@ -5,6 +5,7 @@ class openstack::nova::compute(
     $novaconfig,
     $openstack_version=$::openstack::version
 ){
+    include ::openstack::repo
 
     if ( $::realm == 'production' ) {
         $certname = "labvirt-star.${::site}.wmnet"
@@ -131,7 +132,7 @@ class openstack::nova::compute(
                       'virt-top',
                 ]:
             ensure  => present,
-            require => Package['qemu-system'],
+            require => [Class['openstack::repo'], Package['qemu-system']],
         }
     }
 
@@ -154,6 +155,7 @@ class openstack::nova::compute(
     # which is somewhat broken.
     package { 'qemu-system':
         ensure  => present,
+        require => Class['openstack::repo'],
     }
 
     # qemu-kvm and qemu-system are alternative packages to meet the needs of
