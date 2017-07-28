@@ -1,1 +1,4 @@
 profile::openstack::labtestn::version: 'liberty'
+profile::openstack::labtestn::nova_controller: 'labtestcontrol2003.wikimedia.org'
+profile::openstack::labtestn::rabbit_monitor_user: 'monitoring'
+profile::openstack::labtestn::rabbit_file_handles: 8192

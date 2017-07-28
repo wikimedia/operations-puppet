@@ -17,7 +17,8 @@
 #  rabbitmq-plugins enable rabbitmq_management
 
 class rabbitmq(
-    $file_handles='1024',
+    $running = false,
+    $file_handles = '1024',
     ) {
 
     package { [ 'rabbitmq-server' ]:
@@ -43,7 +44,7 @@ class rabbitmq(
     }
 
     service { 'rabbitmq-server':
-        ensure  => running,
+        ensure  => $running,
         require => Package['rabbitmq-server'],
     }
 }
