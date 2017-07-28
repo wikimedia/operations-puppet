@@ -52,28 +52,21 @@ class role::labs::puppetmaster::frontend() {
 
     $labs_vms = $novaconfig['fixed_range']
     $monitoring = '208.80.154.14 208.80.155.119 208.80.153.74'
+    $all_puppetmasters = inline_template('<%= scope.function_hiera([\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
 
     $fwrules = {
         puppetmaster_balancer => {
             rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8140 ACCEPT;",
         },
         puppetmaster => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8141 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} @resolve((${all_puppetmasters}))) proto tcp dport 8141 ACCEPT;",
         },
         puppetbackend => {
             rule => "saddr (${horizon_host_ip} ${designate_host_ip}) proto tcp dport 8101 ACCEPT;",
         },
         puppetbackendgetter => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8100 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} @resolve((${all_puppetmasters}))) proto tcp dport 8100 ACCEPT;",
         },
     }
     create_resources (ferm::rule, $fwrules)
-
-    # Let the puppetmasters talk to each other as well
-    $puppetmasters_ferm = inline_template('<%= scope.function_hiera([\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
-    ferm::service { 'puppetdb':
-        proto  => 'tcp',
-        port   => 8141,
-        srange => "@resolve((${puppetmasters_ferm}))",
-    }
 }
