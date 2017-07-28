@@ -1,3 +1,8 @@
 puppetmaster::ca_server: labpuppetmaster1001.wikimedia.org
 
 labs_puppet_master: labs-puppetmaster.wikimedia.org
+
+puppetmaster::servers:
+  labpuppetmaster1001.wikimedia.org:
+    - { worker: labpuppetmaster1001.wikimedia.org, loadfactor: 10 }
+    - { worker: labpuppetmaster1002.wikimedia.org, loadfactor: 20 }
