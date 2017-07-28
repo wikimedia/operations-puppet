@@ -60,4 +60,12 @@ class role::labs::puppetmaster::backend {
         },
     }
     create_resources (ferm::rule, $fwrules)
+
+    # Let the puppetmasters talk to each other as well
+    $puppetmasters_ferm = inline_template('<%= scope.function_hiera([\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
+    ferm::service { 'puppetdb':
+        proto  => 'tcp',
+        port   => 8141,
+        srange => "@resolve((${puppetmasters_ferm}))",
+    }
 }
