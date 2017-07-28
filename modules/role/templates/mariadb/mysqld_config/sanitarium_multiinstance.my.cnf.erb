@@ -16,6 +16,14 @@ ssl-verify-server-cert
 user      = mysql
 read_only = 1
 basedir   = <%= @basedir %>
+server_id = <%= @server_id %>
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# # Strictly it is only needed on masters or servers that can potentially be
+# # masters but for consistency it should be set in all of them.
+# # https://mariadb.com/kb/en/mariadb/gtid/
+#
+gtid_domain_id  = <%= @gtid_domain_id %>
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
@@ -41,8 +49,15 @@ thread_cache_size              = 300
 interactive_timeout            = 28800
 wait_timeout                   = 3600
 transaction-isolation          = REPEATABLE-READ
-slave_transaction_retries      = 4294967295
+
+# binary log an replication options
+log-bin
+log-slave-updates
+sync-binlog                    = 1
+binlog_cache_size              = 10M
+max-binlog_size                = 1000M
 binlog-format                  = ROW
+slave_transaction_retries      = 4294967295
 expire_logs_days               = 30
 sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
 
