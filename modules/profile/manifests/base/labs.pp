@@ -58,7 +58,7 @@ class profile::base::labs {
     # Compare IPs rather than hostnames since we use an alias for the
     #  actual labs_puppet_master variable.  We only store passwords
     #  on the frontend puppetmaster, not on the workers.
-    if ipresolve($::servername, 4) == ipresolve(hiera('labs_puppet_master'), 4) {
+    if $::servername == "labs-puppetmaster.wikimedia.org" {
         # Create a root password and store it on the puppetmaster
         user { 'root':
             password => regsubst(
