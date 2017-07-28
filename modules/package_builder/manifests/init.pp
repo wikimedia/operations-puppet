@@ -56,6 +56,7 @@ class package_builder(
         'pkg-kde-tools',
         'subversion',
         'sphinx-common',
+        'scons',
         $php_dev,
         $dh_php,
     ])
