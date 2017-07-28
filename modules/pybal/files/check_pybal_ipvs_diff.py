@@ -102,6 +102,7 @@ class PyBalIPVSDiff(object):
                   (ipvs_hosts - pybal_hosts))
             return 2
 
+        print("OK: no difference between hosts in IPVS/PyBal")
         return 0
 
 
