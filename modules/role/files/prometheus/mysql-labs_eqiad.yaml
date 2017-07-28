@@ -4,12 +4,26 @@
   targets:
   - db1069:9104
   - db1095:9104
-  - db1102:9104
   - labsdb1001:9104
   - labsdb1003:9104
   - labsdb1009:9104
   - labsdb1010:9104
   - labsdb1011:9104
+- labels:
+    shard: s2
+    role: slave
+  targets:
+  - db1102:13312
+- labels:
+    shard: s6
+    role: slave
+  targets:
+  - db1102:13316
+- labels:
+    shard: s7
+    role: slave
+  targets:
+  - db1102:13317
 
 - labels:
     shard: tools
