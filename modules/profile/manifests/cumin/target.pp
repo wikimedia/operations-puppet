@@ -25,6 +25,5 @@ class profile::cumin::target(
         user      => 'root',
         skey      => 'cumin',
         content   => template('profile/cumin/userkey.erb'),
-        show_diff => false,
     }
 }
