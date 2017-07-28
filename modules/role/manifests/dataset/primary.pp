@@ -33,14 +33,14 @@ class role::dataset::primary {
     # from an rsyncable location.
     dataset::cron::job { 'mediacounts':
         ensure      => present,
-        source      => 'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
+        source      => 'stat1005.eqiad.wmnet::hdfs-archive/mediacounts',
         destination => '/data/xmldatadumps/public/other/mediacounts',
         minute      => '41',
     }
 
     class { '::dataset::cron::rsync::nginxlogs':
         enable => true,
-        dest   => 'stat1002.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
+        dest   => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
     }
 
     class { '::dataset::cron::wikitech_dumps':
@@ -67,7 +67,7 @@ class role::dataset::primary {
     # is the same.
     dataset::cron::job { 'pageview':
         ensure      => present,
-        source      => 'stat1002.eqiad.wmnet::hdfs-archive/{pageview,projectview}/legacy/hourly',
+        source      => 'stat1005.eqiad.wmnet::hdfs-archive/{pageview,projectview}/legacy/hourly',
         destination => '/data/xmldatadumps/public/other/pageviews',
         minute      => '51',
     }
@@ -88,7 +88,7 @@ class role::dataset::primary {
     #           (docs on the table from which these statistics are computed)
     dataset::cron::job { 'unique_devices':
         ensure      => present,
-        source      => 'stat1002.eqiad.wmnet::hdfs-archive/unique_devices',
+        source      => 'stat1005.eqiad.wmnet::hdfs-archive/unique_devices',
         destination => '/data/xmldatadumps/public/other/unique_devices',
         minute      => '31',
     }
