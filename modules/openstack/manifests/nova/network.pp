@@ -2,13 +2,11 @@
 #  we hope to replace it with Neutron.
 # http://docs.openstack.org/openstack-ops/content/nova-network-deprecation.html
 class openstack::nova::network($novaconfig, $openstack_version=$::openstack::version) {
-    include ::openstack::repo
 
     $tftp_host = 'install1002.wikimedia.org'
 
     package {  [ 'nova-network', 'dnsmasq' ]:
         ensure  => present,
-        require => Class['openstack::repo'];
     }
 
     # dnsmasq is run manually by nova-network, we don't want the service running
