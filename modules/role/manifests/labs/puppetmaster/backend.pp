@@ -50,7 +50,7 @@ class role::labs::puppetmaster::backend {
     $monitoring = '208.80.154.14 208.80.155.119 208.80.153.74'
     $fwrules = {
         puppetmaster => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8140 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip}) proto tcp dport 8141 ACCEPT;",
         },
         puppetbackend => {
             rule => "saddr (${horizon_host_ip} ${designate_host_ip}) proto tcp dport 8101 ACCEPT;",
