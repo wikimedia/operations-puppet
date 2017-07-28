@@ -1,7 +1,9 @@
 # server hosting Mediawiki releases
 # https://releases.wikimedia.org/mediawiki/
-class profile::releases::mediawiki {
-
+class profile::releases::mediawiki (
+    $active_server = hiera('releases_server'),
+    $passive_server = hiera('releases_server_failover'),
+){
     class { '::jenkins':
         access_log => true,
         http_port  => '8080',
@@ -25,4 +27,11 @@ class profile::releases::mediawiki {
     }
 
     backup::set { 'srv-org-wikimedia': }
+
+    rsync::quickdatacopy { 'srv-org-wikimedia-releases':
+      ensure      => present,
+      source_host => $active_server,
+      dest_host   => $passive_server,
+      module_path => '/srv/org/wikimedia/releases',
+    }
 }

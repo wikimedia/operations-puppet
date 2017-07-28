@@ -14,10 +14,4 @@ class role::releases {
     include ::profile::releases::mediawiki
     include ::profile::releases::reprepro
 
-    rsync::quickdatacopy { 'srv-org-wikimedia-releases':
-      ensure      => present,
-      source_host => 'releases1001.eqiad.wmnet',
-      dest_host   => 'releases2001.codfw.wmnet',
-      module_path => '/srv/org/wikimedia/releases',
-    }
 }
