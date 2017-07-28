@@ -855,12 +855,12 @@ host cp4021 {
 }
 
 host cp4023 {
-    hardware ethernet 18:66:DA:A3:02:0E;
+    hardware ethernet F4:E9:D4:BA:8C:90;
     fixed-address cp4023.ulsfo.wmnet;
 }
 
 host cp4024 {
-    hardware ethernet 18:66:DA:A3:B6:98;
+    hardware ethernet f4:e9:d4:ba:62:d0;
     fixed-address cp4024.ulsfo.wmnet;
 }
 
