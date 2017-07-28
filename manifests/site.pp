@@ -642,13 +642,12 @@ node 'db1069.eqiad.wmnet' {
     include ::base::firewall
 }
 
-node 'db1102.eqiad.wmnet' {
-    role(mariadb::sanitarium3)
-    include ::base::firewall
-}
-
 node 'db1095.eqiad.wmnet' {
     role(mariadb::sanitarium_multisource)
+}
+
+node 'db1102.eqiad.wmnet' {
+    role(mariadb::sanitarium_multiinstance)
 }
 
 # tendril db
