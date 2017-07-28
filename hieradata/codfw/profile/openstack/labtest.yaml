@@ -1,1 +1,3 @@
 profile::openstack::labtest::version: 'liberty'
+profile::openstack::labtest::rabbit_monitor_user: 'monitoring'
+profile::openstack::labtest::rabbit_file_handles: 1024
