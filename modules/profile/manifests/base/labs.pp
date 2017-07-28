@@ -54,7 +54,11 @@ class profile::base::labs {
     #  puppetmaster.  Self- and locally-hosted instances are on their own,
     #  but most likely already registered a password during their initial
     #  setup.
-    if $::servername =~ /\.wikimedia\.org$/ {
+    #
+    # Compare IPs rather than hostnames since we use an alias for the
+    #  actual labs_puppet_master variable.  We only store passwords
+    #  on the frontend puppetmaster, not on the workers.
+    if ipresolve($::servername, 4) == ipresolve(hiera('labs_puppet_master'), 4) {
         # Create a root password and store it on the puppetmaster
         user { 'root':
             password => regsubst(
