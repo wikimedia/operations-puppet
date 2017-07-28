@@ -15,7 +15,7 @@ class contint::packages::javascript {
     #
     # https://wikitech.wikimedia.org/wiki/Nova_Resource:Integration/Setup
     $versions = {
-        'npm'       => '2.15.2',
+        'npm'       => '3.8.3',
     }
 
     # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
