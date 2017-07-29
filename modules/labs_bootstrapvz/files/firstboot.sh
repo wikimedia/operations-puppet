@@ -97,17 +97,17 @@ fqdn=${hostname}.${project}.${domain}
 saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
 then
-	master="labs-puppetmaster-eqiad.wikimedia.org"
+	master="labs-puppetmaster.wikimedia.org"
 	ldaphosts="ldap://ldap-labs.eqiad.wikimedia.org:389 ldap://ldap-labs.codfw.wikimedia.org:389"
 fi
 if [ "${domain}" == "codfw.wmflabs" ]
 then
-	master="labs-puppetmaster-codfw.wikimedia.org"
+	master="labs-puppetmaster.wikimedia.org"
 	ldaphosts="ldap://ldap-labs.codfw.wikimedia.org:389 ldap://ldap-labs.eqiad.wikimedia.org:389"
 fi
 if [ "${domain}" == "codfw.labtest" ]
 then
-	master="labtestcontrol2001.wikimedia.org"
+	master="labtestpuppetmaster2001.wikimedia.org"
 	ldaphosts="ldap://labtestservices2001.wikimedia.org:389"
 
 	# The labtest ldap password is the prod password prepended with lt-
