@@ -242,7 +242,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, dworley]
+              kaldari, goransm, ema, dworley, ironholds]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1280,12 +1280,15 @@ users:
     ssh_keys: []
     uid: 3558
   ironholds:
-    ensure: absent
+    ensure: present
     gid: 500
     name: ironholds
     realname: Oliver Keyes
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhoduFU5nb0bgM4vxrv/jiQY0680ctenidqlYDS7mOzDqJ3Op2jnhxEjISE5k4pWiq7X3x9GS950LNEbLVcT+s5TbQUjCB8pFf61IxpmbwGT6pTOkrNOK9ngF/diPMLLc+hFhODYM4KWiXvFfXoqbGiO1AsJJP522Z8xllZe67yaEkyKHRQWRXr4P/eAl8dQPAKamJnP9mKjVlPB5hrAWKCkA/2auHbcNF1kdrivUPRRbO5ifoeHiRQiJV0KxhLI/Er356wsrNK/NZnn12U8Gx5F4wGvjcINYzM7GvYLiLvUgtTqAVE7eMBID8B0t8cc0XZATx2aD/80EGiXj0ZZ/1 okeyes@uw.edu]
     uid: 5004
+    expiry_date: 2017-09-01
+    expiry_contact: nuria@wikimedia.org
+    email: okeyes@uw.edu
   nuria:
     ensure: present
     gid: 500
