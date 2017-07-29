@@ -21,13 +21,21 @@ if $realm == undef {
 }
 
 if $realm == 'labs' {
+    # Pull the project name from the certname.
+    # Labs certs are <hostname>.<projname>.<site>.wmflabs
+    $pieces = split($trusted['certname'], '[.]')
 
-    $labs_metal = hiera('labs_metal', {})
-    if has_key($labs_metal, $::hostname) {
-        $labsproject = $labs_metal[$::hostname]['project']
-    } else {
-        $labsproject = $::labsprojectfrommetadata
+    if $pieces[3] != 'wmflabs' {
+        fail("Badly-formed puppet certname: ${trusted['certname']}")
     }
+    if $pieces[2] != $site {
+        fail("Incorrect site in certname.  Should be ${site} but is ${pieces[2]}")
+    }
+    if $pieces[0] != $::hostname {
+        fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
+    }
+
+    $labsproject = $pieces[1]
 
     if $::labsproject == undef {
         fail('Failed to determine $::labsproject')
