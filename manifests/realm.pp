@@ -21,13 +21,10 @@ if $realm == undef {
 }
 
 if $realm == 'labs' {
-
-    $labs_metal = hiera('labs_metal', {})
-    if has_key($labs_metal, $::hostname) {
-        $labsproject = $labs_metal[$::hostname]['project']
-    } else {
-        $labsproject = $::labsprojectfrommetadata
-    }
+    # Pull the project name from the certname.
+    # Labs certs are <hostname>.<projname>.<site>.wmflabs
+    $pieces = split($trusted['certname'], '[.]')
+    $labsproject = $pieces[1]
 
     if $::labsproject == undef {
         fail('Failed to determine $::labsproject')
