@@ -208,6 +208,22 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
+    file { '/var/lib/gerrit2/review_site/plugins':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0555',
+        require => File['/var/lib/gerrit2/review_site'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/plugins/wikimedia_polygerrit_style.html':
+        content => template('gerrit/wikimedia-polygerrit-style.html.erb'),
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0555',
+        require => File['/var/lib/gerrit2/review_site/plugins'],
+    }
+
     file { '/var/lib/gerrit2/review_site/static':
         ensure  => directory,
         recurse => remote,
