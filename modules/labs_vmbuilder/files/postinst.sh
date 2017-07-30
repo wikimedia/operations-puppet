@@ -27,7 +27,7 @@ else
   puppet agent --disable
   /etc/init.d/puppet stop
   /usr/bin/killall puppet
-  rm /etc/init.d/puppet
+  update-rc.d -f puppet remove
   mv /etc/puppet/puppet.conf.install /etc/puppet/puppet.conf
   mv /etc/default/puppet.install /etc/default/puppet
   rm /etc/ssh/ssh_host*key*
