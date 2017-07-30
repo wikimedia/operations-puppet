@@ -93,13 +93,19 @@ class statistics::packages {
         'python-matplotlib', # For generating plots of data
         'python-netaddr',
         'python-virtualenv', # T84378
-        'virtualenv',
+
         # Aaron Halfaker (halfak) wants python{,3}-dev environments for module oursql
         'python-dev',        # T83316
         'python3-dev',       # T83316
         'python-kafka',
         'python-pymysql',
     ])
+
+    if os_version('debian >= jessie') {
+        require_package([
+            'virtualenv',
+        ])
+    }
 
     # This is a custom package and currently not available on jessie, don't install on jessie for now
     if os_version('ubuntu >= trusty') {
