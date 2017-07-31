@@ -7,7 +7,6 @@ class statistics::compute {
 
     include ::statistics::dataset_mount
     include ::statistics::packages
-    include ::statistics::discovery
 
     $working_path = $::statistics::working_path
     $published_datasets_path = "${working_path}/published-datasets"
