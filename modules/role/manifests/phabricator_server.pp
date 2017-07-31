@@ -13,7 +13,6 @@ class role::phabricator_server {
     include ::apache::mod::remoteip
     include ::profile::backup::host
     include ::profile::phabricator::main
-    include ::profile::phabricator::rsync
     include ::phabricator::monitoring
     include ::phabricator::mpm
     include ::exim4::ganglia
