@@ -1170,6 +1170,7 @@ node /^(iridium\.eqiad|phab2001\.codfw)\.wmnet$/ {
 
 node 'phab1001.eqiad.wmnet' {
     role(spare::system)
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'iron.wikimedia.org' {
