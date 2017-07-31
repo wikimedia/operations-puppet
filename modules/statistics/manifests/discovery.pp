@@ -15,9 +15,7 @@ class statistics::discovery {
     $user = 'discovery-stats'
     # Setting group to 'wikidev' so that Discovery's Analysts (as members of wikidev) have some privileges
     $group ='wikidev'
-    group { $group:
-        ensure => present,
-    }
+
     user { $user:
         ensure     => present,
         home       => $dir,
