@@ -52,4 +52,7 @@ class profile::statistics::private(
 
     # WMDE statistics scripts and cron jobs
     include ::statistics::wmde
+
+    # Discovery team statistics scripts and cron jobs
+    include ::statistics::discovery
 }
