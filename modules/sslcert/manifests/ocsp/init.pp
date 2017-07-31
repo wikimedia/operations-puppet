@@ -49,10 +49,12 @@ class sslcert::ocsp::init {
         mode   => '0755',
     }
 
+    # Twice a day, 12h apart
+    $cron_h12 = fqdn_rand(12, 'e663dd38dd6d3384')
     cron { 'update-ocsp-all':
         command => '/usr/local/sbin/update-ocsp-all 2>&1 | logger -t update-ocsp-all',
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
-        hour    => fqdn_rand(24, 'e663dd38dd6d3384'),
+        hour    => [ $cron_h12, $cron_h12 + 12 ],
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
             File['/etc/update-ocsp.d'],

@@ -19,13 +19,14 @@ class tlsproxy::ocsp {
     # fetch of data has a 4-7 day lifetime depending on the vendor (GlobalSign
     # or Digicert)
     #
-    # The crit/warn values of 259500 and 86700 correspond to "1d5m" and
-    # "3d5m", so those are basically warning if 1 updates in a row failed
-    # for a given cert, and critical if 3 updates in a row failed (at which
-    # point we have ~24h left to fix the situation before the validity window
-    # expires).
+    # The warn and crit values of 173100 and 259200 correspond to "2d5m" and
+    # "3d5m", and are checking the mtime of the files (not the internal expiry
+    # times).  This should give us ~24h to fix, assuming we're getting minimum
+    # 4-day staples.  The live ssl checker also checks for internal timestamps
+    # nearing expiry as well (warn at 2 days left, crit at 1 day left), so
+    # we're covered on two fronts here.
 
-    $check_args = '-c 259500 -w 86700 -d /var/cache/ocsp -g "*.ocsp"'
+    $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
     nrpe::monitor_service { 'ocsp-freshness':
         description  => 'Freshness of OCSP Stapling files',
         nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
