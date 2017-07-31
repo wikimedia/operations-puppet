@@ -105,8 +105,12 @@ if __name__ == '__main__':
     with open('/etc/shinkengen.yaml') as f:
         config = yaml.safe_load(f)
 
+    with open('/etc/novaobserver.yaml') as n:
+        nova_observer = yaml.safe_load(n)
+        observer_pass = nova_observer['OS_PASSWORD']
+
     for project in config['projects']:
-        instances = get_instances(project, config['observer_pass'])
+        instances = get_instances(project, observer_pass)
         host_configs = []
         for instance in instances:
             co = ConfigObject('host')

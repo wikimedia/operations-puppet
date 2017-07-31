@@ -1,0 +1,2 @@
+profile::openstack::base::region: "%{::site}"
+profile::openstack::base::observer_user: 'novaobserver'
