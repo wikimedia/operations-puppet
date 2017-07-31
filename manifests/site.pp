@@ -388,7 +388,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db20(16|34|42|55|62|69|70|71|72)\.codfw\.wmnet/ {
+node /^db20(16|34|42|55|62|69|70|71|72|73)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
