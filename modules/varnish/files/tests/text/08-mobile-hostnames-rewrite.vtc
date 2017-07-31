@@ -29,15 +29,11 @@ server s1 {
     expect req.http.x-dt-host == "zh-classical.wikipedia.org"
     txresp
 
-    rxreq
-    expect req.http.x-dt-host == <undef>
-    txresp
-
-    rxreq
-    txresp
-
-    rxreq
-    txresp
+    loop 7 {
+        rxreq
+        expect req.http.x-dt-host == <undef>
+        txresp
+    }
 } -start
 
 varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
@@ -70,6 +66,8 @@ client c1 {
     txreq -url "/" -hdr "Host: zh-classical.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
+    #
+
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
@@ -82,4 +80,24 @@ client c1 {
     rxresp
     expect resp.status == 302
     expect resp.http.location == "https://zh-classical.m.wikipedia.org/wiki/Main_Page"
+
+    txreq -url "/?title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.location == "https://en.m.wikipedia.org/?title=foo"
+
+    txreq -url "/?title=foo&bar=baz" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.location == "https://en.m.wikipedia.org/?title=foo&bar=baz"
+
+    txreq -url "/?bar=baz&title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.location == "https://en.m.wikipedia.org/?bar=baz&title=foo"
+
+    txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
 } -run

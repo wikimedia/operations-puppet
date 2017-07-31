@@ -23,9 +23,10 @@ sub mobile_redirect {
 			|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
 		&& req.http.User-Agent !~ "(SMART-TV.*SamsungBrowser)"
+		&& req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
 		&& (
 			req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
-			|| req.url ~ "^/(w/index\.php)?\?title=[^&]*$"
+			|| ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
 		)) {
 
 		// Separate regexps for clarity, but multiple regsubs instead of
