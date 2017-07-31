@@ -17,6 +17,7 @@ class statistics::packages {
         'git-review',
         'make',                   # halfak wants make to manage dependencies
         'libwww-perl',            # For wikistats stuff
+        'libcgi-pm-perl',         # For wikistats stuff
         'sqlite3',                # For storing and interacting with intermediate results
         'libproj-dev',            # Requested by lzia for rgdal
         'libbz2-dev',             # for compiling some python libs. T84378
