@@ -15,6 +15,7 @@ class statistics::wmde(
     Class['::statistics'] -> Class['::statistics::wmde']
 
     $statistics_working_path = $::statistics::working_path
+
     $homedir = "${statistics_working_path}/analytics-wmde"
 
     group { $group:

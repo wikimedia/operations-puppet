@@ -38,8 +38,7 @@ class profile::statistics::private(
     }
 
     # The eventlogging codebase is useful for scripting
-    # EventLogging consumers.  Install this on
-    # stat1002, but don't run any daemons.
+    # EventLogging consumers.  Install this but don't run any daemons.
     include ::eventlogging
 
     # EventLogging Analytics data logs are not private, but they

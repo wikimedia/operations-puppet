@@ -11,9 +11,8 @@ class statistics::rsync::eventlogging {
     # the rsync_job define.
     $retention_days = 90
 
-    # TODO: remove these conditionals after stat1002/3 are gone.
+    # TODO: remove these conditionals after stat1003 is gone.
     $destination = $::hostname ? {
-        'stat1002' => '/a/eventlogging/archive',
         'stat1003' => '/srv/eventlogging/archive',
         default    => '/srv/log/eventlogging/archive',
     }
