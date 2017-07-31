@@ -10,13 +10,7 @@ class statistics::rsync::mediawiki {
     # the rsync_job define.
     $retention_days = 90
 
-    # TODO: remove once stat1002 is gone.
-    $mw_log_dir = $::hostname ? {
-        'stat1002' => '/a/mw-log',
-        default    => '/srv/log/mw-log'
-    }
-
-    file { [$mw_log_dir, "${mw_log_dir}/archive", "${mw_log_dir}/archive/api"]:
+    file { ['/srv/log/mw-log', "${mw_log_dir}/archive", "${mw_log_dir}/archive/api"]:
         ensure => 'directory',
         owner  => 'stats',
         group  => 'wikidev',
