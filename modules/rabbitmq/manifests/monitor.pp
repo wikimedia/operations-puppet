@@ -10,6 +10,6 @@ class rabbitmq::monitor(
             'user'     => $rabbit_monitor_username,
             'password' => $rabbit_monitor_password,
         },
-        source   => 'puppet:///modules/openstack/rabbitmq/rabbitmq.py',
+        source   => 'puppet:///modules/rabbitmq/rabbitmq.py',
     }
 }
