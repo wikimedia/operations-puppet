@@ -12,19 +12,13 @@ class profile::reportupdater::jobs::hadoop {
 
     require ::statistics::compute
 
-    # TODO: This can be removed once stat1002 is gone.  T152712
-    $base_path = $::hostname ? {
-        'stat1002' => '/a/reportupdater',
-        default => '/srv/reportupdater',
-    }
-
     # Set up reportupdater.
     # Reportupdater here launches Hadoop jobs, and
     # the 'hdfs' user is the only 'system' user that has
     # access to required files in Hadoop.
     class { 'reportupdater':
         user      => 'hdfs',
-        base_path => $base_path,
+        base_path => '/srv/reportupdater',
     }
 
     # And set up a link for periodic jobs to be included in published reports.

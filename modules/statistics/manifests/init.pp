@@ -11,12 +11,6 @@ class statistics(
 ) {
     include ::statistics::user
 
-    # TODO: remove statistics::working_path once stat1002 is gone: T152712
-    $working_path = $::hostname ? {
-        'stat1002' => '/a',
-        default => '/srv',
-    }
-
     # Ensure /srv/log exists.
     file { '/srv/log':
         ensure => 'directory',
@@ -25,7 +19,7 @@ class statistics(
     # set up rsync modules for copying files
     # on statistic servers in $working_path
     class { '::statistics::rsyncd':
-        path        => $working_path,
+        path        => '/srv',
         hosts_allow => $servers,
     }
 }
