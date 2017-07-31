@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source='<%= @published_datasets_path %>'
+dest='<%= @published_datasets_destination %>'
+
+verbose="-v"
+if [ "${1}" == "-q" ]; then
+    verbose=""
+elif [ "${1}" == "-h" ]; then
+    echo "
+$(basename $0) [-q]
+
+Rsyncs ${source} to ${dest}, preserving group, timestamp and permissions with deletion.
+
+  -q  Silent instead of the default verbose
+"
+    exit 0
+else
+    echo /usr/bin/rsync -rgptL $verbose --delete $source/ $dest/
+fi
+
+/usr/bin/rsync -rgptL $verbose --delete $source/ $dest/

@@ -27,23 +27,35 @@ class statistics::compute {
         mode   => '0644',
     }
 
+    # Install a simple rsync script for published-datasets, so that
+    # stat users can push their work out manually if they want.
+    # TODO: hiera-ize thorium.eqiad.wmnet
+    $published_datasets_destination = "thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/"
+    file { '/usr/local/bin/published-datasets-sync':
+        content => template('statistics/published-datasets-sync.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    =>  '0755',
+    }
+
     # Rync push published-datasets from this host to thorium,
     # the analytics.wikimedia.org web host.  These will end up at
     # /srv/published-datasets-rsynced/$hostname, and then the hardsync script
     # will sync them into /srv/analytics.wikimedia.org/datasets.
     # See: statistics::sites::analytics.
     cron { 'rsync-published-datasets':
-        # TODO: hiera-ize thorium.eqiad.wmnet
-        command => "/usr/bin/rsync -rtL --delete ${published_datasets_path}/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
-        require => File[$published_datasets_path],
+        # -gp preserve group (wikidev, usually) and permissions, but not
+        # ownership, as the owner users might not exist on the destination.
+        command => '/usr/local/bin/published-datasets-sync -q',
+        require => [File['/usr/local/bin/published-datasets-sync'], File[$published_datasets_path]],
         user    => 'root',
-        minute  => '*/30',
+        minute  => '*/15',
     }
 
     file { "${::statistics::working_path}/mediawiki":
-        ensure    => 'directory',
-        owner     => $::statistics::user,
-        group     => 'wikidev',
+        ensure => 'directory',
+        owner  => $::statistics::user,
+        group  => 'wikidev',
     }
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.

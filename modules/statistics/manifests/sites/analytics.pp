@@ -39,7 +39,7 @@ class statistics::sites::analytics {
         # This script is installed by ::statistics::web.
         command => "/usr/local/bin/hardsync -t ${working_path} ${working_path}/published-datasets-rsynced/* ${document_root}/datasets 2>&1 > /dev/null",
         user    => 'root',
-        minute  => '*/30',
+        minute  => '*/15',
         require => [
             File["${working_path}/published-datasets-rsynced"],
             Git::Clone['analytics.wikimedia.org'],
