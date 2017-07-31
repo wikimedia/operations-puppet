@@ -282,4 +282,11 @@ class profile::phabricator::main (
         weekday      => 1, # Monday
         require      => Package[$deploy_target],
     }
+
+    rsync::quickdatacopy { 'srv-repos':
+      ensure      => present,
+      source_host => 'iridium.eqiad.wmnet',
+      dest_host   => 'phab1001.eqiad.wmnet',
+      module_path => '/srv/repos',
+    }
 }
