@@ -100,3 +100,4 @@ cdh::hadoop::yarn_scheduler_maximum_allocation_mb:       57344
 # Setting minimum_allocation_vcores to 0 to allow Impala to submit small
 # reservation requests.
 cdh::hadoop::yarn_scheduler_minimum_allocation_vcores:   0
+cdh::hadoop::yarn_scheduler_maximum_allocation_vcores:   32
