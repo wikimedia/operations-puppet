@@ -104,7 +104,7 @@ class profile::mediawiki::deployment::server(
 
     motd::script { 'inactive_warning':
         ensure   => $deploy_ensure,
-        priority => 01,
+        priority => 1,
         content  => template('role/deployment/inactive.motd.erb'),
     }
 

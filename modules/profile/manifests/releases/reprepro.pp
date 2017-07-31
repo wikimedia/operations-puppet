@@ -28,7 +28,7 @@ class profile::releases::reprepro(
 
     @motd::script { 'releases':
         ensure   => present,
-        priority => 06,
+        priority => 6,
         content  => $motd_content,
         tag      => 'releases-motd',
     }
