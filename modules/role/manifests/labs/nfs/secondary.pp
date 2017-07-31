@@ -7,6 +7,7 @@ class role::labs::nfs::secondary(
         description => 'NFS secondary share cluster',
     }
 
+    require ::profile::openstack::main::observerenv
     include labstore::fileserver::exports
     include labstore::fileserver::secondary
     include labstore::backup_keys

@@ -31,10 +31,15 @@ WHISPER_PATH = '/srv/carbon/whisper'
 
 
 def get_keystone_session(project_name):
+
+    with open('/etc/novaobserver.yaml') as n:
+        nova_observer = yaml.safe_load(n)
+        observer_pass = nova_observer['OS_PASSWORD']
+
     return KeystoneSession(auth=KeystonePassword(
         auth_url="http://labcontrol1001.wikimedia.org:5000/v3",
         username="novaobserver",
-        password=sys.argv[1],
+        password=observer_pass,
         project_name=project_name,
         user_domain_name='default',
         project_domain_name='default'
