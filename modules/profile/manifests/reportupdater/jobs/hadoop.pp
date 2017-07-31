@@ -12,11 +12,7 @@ class profile::reportupdater::jobs::hadoop {
 
     require ::statistics::compute
 
-    # TODO: This can be removed once stat1002 is gone.  T152712
-    $base_path = $::hostname ? {
-        'stat1002' => '/a/reportupdater',
-        default => '/srv/reportupdater',
-    }
+    $base_path = '/srv/reportupdater'
 
     # Set up reportupdater.
     # Reportupdater here launches Hadoop jobs, and

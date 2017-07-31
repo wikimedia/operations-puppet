@@ -85,10 +85,6 @@ class profile::backup::director(
     bacula::director::fileset { 'a-backup':
         includes => [ '/a/backup' ]
     }
-    # TODO: remove this backup set after stat1002 is gone. T152712
-    bacula::director::fileset { 'a-eventlogging':
-        includes => [ '/a/eventlogging' ]
-    }
     bacula::director::fileset { 'a-geowiki-data-private-bare':
         includes => [ '/srv/geowiki/data-private-bare' ]
     }
