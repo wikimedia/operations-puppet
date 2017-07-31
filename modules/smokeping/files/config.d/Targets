@@ -219,6 +219,16 @@ menu = pfw-codfw
 title = pfw-codfw.wikimedia.org
 host = pfw-codfw.wikimedia.org
 
++++ pfw3-codfw
+menu = pfw3-codfw
+title = pfw3-codfw.wikimedia.org
+host = pfw3-codfw.wikimedia.org
+
++++ fasw-c-codfw
+menu = fasw-c-codfw
+title = fasw-c-codfw.mgmt.codfw.wmnet
+host = fasw-c-codfw.mgmt.codfw.wmnet
+
 +++ rigel
 menu = rigel
 title = rigel.wikimedia.org

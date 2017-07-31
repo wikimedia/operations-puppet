@@ -20,28 +20,29 @@ class netops::monitoring {
     }
     $routers = {
         # eqiad
-        'cr1-eqiad' => { ipv4 => '208.80.154.196',  ipv6 => '2620:0:861:ffff::1', bgp => true, },
-        'cr2-eqiad' => { ipv4 => '208.80.154.197',  ipv6 => '2620:0:861:ffff::2', bgp => true, },
-        'mr1-eqiad' => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', },
-        'pfw-eqiad' => { ipv4 => '208.80.154.218',  },
+        'cr1-eqiad'  => { ipv4 => '208.80.154.196',  ipv6 => '2620:0:861:ffff::1', bgp => true, },
+        'cr2-eqiad'  => { ipv4 => '208.80.154.197',  ipv6 => '2620:0:861:ffff::2', bgp => true, },
+        'mr1-eqiad'  => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', },
+        'pfw-eqiad'  => { ipv4 => '208.80.154.218',  },
         # eqord
-        'cr1-eqord' => { ipv4 => '208.80.154.198',  ipv6 => '2620:0:861:ffff::5', bgp => true, },
+        'cr1-eqord'  => { ipv4 => '208.80.154.198',  ipv6 => '2620:0:861:ffff::5', bgp => true, },
         # codfw
-        'cr1-codfw' => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', bgp => true, },
-        'cr2-codfw' => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', bgp => true, },
-        'mr1-codfw' => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
-        'pfw-codfw' => { ipv4 => '208.80.153.195',  },
+        'cr1-codfw'  => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', bgp => true, },
+        'cr2-codfw'  => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', bgp => true, },
+        'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
+        'pfw-codfw'  => { ipv4 => '208.80.153.195',  },
+        'pfw3-codfw' => { ipv4 => '208.80.153.197', parents => ['cr1-codfw', 'cr2-codfw'], bgp => true, },
         # eqdfw
-        'cr1-eqdfw' => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', bgp => true, },
+        'cr1-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', bgp => true, },
         # esams
-        'cr1-esams' => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', bgp => true, },
-        'cr2-esams' => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3', bgp => true, },
-        'cr2-knams' => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4', bgp => true, },
-        'mr1-esams' => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', },
+        'cr1-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', bgp => true, },
+        'cr2-esams'  => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3', bgp => true, },
+        'cr2-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4', bgp => true, },
+        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', },
         # ulsfo
-        'cr1-ulsfo' => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', bgp => true, },
-        'cr2-ulsfo' => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, },
-        'mr1-ulsfo' => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6',   },
+        'cr1-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', bgp => true, },
+        'cr2-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, },
+        'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6',   },
     }
     create_resources(netops::check, $routers, $routers_defaults)
 
@@ -77,6 +78,7 @@ class netops::monitoring {
         'asw-c-codfw'   => { ipv4 => '10.193.0.18',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-d-codfw'   => { ipv4 => '10.193.0.19',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['cr1-codfw', 'cr2-codfw'] },
+        'fasw-c-codfw'  => { ipv4 => '10.193.0.57',  parents => ['pfw3-codfw'] },
         # esams
         'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr1-esams', 'cr2-esams'] },
         'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
