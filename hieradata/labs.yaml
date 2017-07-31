@@ -17,6 +17,12 @@ labsdnsconfig:
   recursor: 'labs-recursor0.wikimedia.org'
   recursor_secondary: 'labs-recursor1.wikimedia.org'
 
+profile::openstack::base::region: "%{::site}"
+profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
+profile::openstack::base::observer_user: 'novaobserver'
+# publicly available read-only credentials
+profile::openstack::main::observer_password: 'main-observer-'
+
 # Additional base overrides
 standard::has_admin: false
 profile::base::remote_syslog: false
