@@ -1,6 +1,5 @@
 # Utilities for querying openstack
 class openstack::clientlib {
-    include ::openstack::observerenv
     include ::openstack
     require openstack2::cloudrepo
 

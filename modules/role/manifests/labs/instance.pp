@@ -4,7 +4,7 @@ class role::labs::instance {
     include ::profile::base::labs
     include sudo
     include ::base::instance_upstarts
-    include ::openstack::observerenv
+    include ::profile::openstack::main::observerenv
 
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],

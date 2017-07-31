@@ -13,9 +13,6 @@ class shinken::shinkengen {
         ensure => present,
     }
 
-    $novaconfig = hiera_hash('novaconfig', {})
-    $observer_pass = $novaconfig['observer_password']
-
     if $::openstack::version == 'liberty' or ! $::openstack::version {
         fail('openstack::version must be set to Mitaka or later for python3 dependencies.')
     }
