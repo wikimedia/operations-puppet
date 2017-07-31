@@ -9,7 +9,7 @@ vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
-<%- if @environment != '' -%>
+<%- unless @environment.nil? || @environment == '' -%>
 environment = <%= @environment %>
 <%- end -%>
 
