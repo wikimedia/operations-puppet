@@ -23,3 +23,6 @@ hhvm::extra::cli:
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
+
+# Use the future parser here
+profile::base::environment: "future"
