@@ -17,6 +17,8 @@ class profile::phabricator::main (
     $phab_mysql_admin_pass = hiera('phabricator_admin_pass', undef),
     $phab_diffusion_ssh_host = hiera('phabricator_diffusion_ssh_host', 'git-ssh.wikimedia.org'),
     $cluster_search = hiera('phabricator_cluster_search'),
+    $active_server = hiera('phabricator_server_maint', undef),
+    $passive_server = hiera('phabricator_server_failover', undef),
 ){
 
     mailalias { 'root':
@@ -281,5 +283,14 @@ class profile::phabricator::main (
         monthday     => '*',
         weekday      => 1, # Monday
         require      => Package[$deploy_target],
+    }
+
+    if $active_server != undef {
+      rsync::quickdatacopy { 'srv-repos':
+        ensure      => present,
+        source_host => $active_server,
+        dest_host   => $passive_server,
+        module_path => '/srv/repos',
+      }
     }
 }
