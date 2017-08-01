@@ -64,6 +64,10 @@
 # [*cxserver_uri*]
 #   CXServer service uri. Format: http://cxserver.discovery.wmnet:8080
 #
+# [*recommendation_uri*]
+#   Recommendation API service URI. Format:
+#   http://recommendation-api.discovery.wmnet:9632
+#
 
 class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
@@ -85,6 +89,7 @@ class profile::restbase(
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
     $trendingedits_uri = hiera('profile::restbase::trendingedits_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
+    $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
 ) {
     # Default values that need no overriding
@@ -123,6 +128,7 @@ class profile::restbase(
             pdfrender_key            => $pdfrender_key,
             trendingedits_uri        => $trendingedits_uri,
             cxserver_uri             => $cxserver_uri,
+            recommendation_uri       => $recommendation_uri,
             aqs_uri                  => $aqs_uri,
             salt_key                 => $salt_key,
             page_size                => $page_size,
