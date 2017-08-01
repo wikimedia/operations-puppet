@@ -166,6 +166,13 @@ sub vcl_backend_fetch {
 }
 
 sub vcl_backend_response {
+	// Various fairly severe privacy/security/uptime risks
+	// exist if we allow possibly compromised or misconfigured
+	// internal apps to emit these headers through our
+	// terminators blindly:
+	unset beresp.http.Public-Key-Pins;
+	unset beresp.http.Public-Key-Pins-Report-Only;
+
 	call cluster_be_backend_response_early; // e.g. to fix up Vary-slotting in bereq
 	call wm_common_backend_response;
 	call cluster_be_backend_response;
