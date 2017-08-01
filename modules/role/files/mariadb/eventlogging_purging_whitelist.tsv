@@ -1042,3 +1042,14 @@ QuickSurveysResponses	event_surveySessionToken
 QuickSurveysResponses	event_userLanguage
 QuickSurveysResponses	event_pageId
 QuickSurveysResponses	event_pageTitle
+Kartographer	webHost
+Kartographer	wiki
+Kartographer	event_feature
+Kartographer	event_action
+Kartographer	event_extra
+Kartographer	event_firstInteraction
+Kartographer	event_fullscreen
+Kartographer	event_mobile
+Kartographer	event_duration
+Kartographer	event_sampling
+Kartographer	event_userToken
