@@ -1284,7 +1284,7 @@ users:
     gid: 500
     name: ironholds
     realname: Oliver Keyes
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhoduFU5nb0bgM4vxrv/jiQY0680ctenidqlYDS7mOzDqJ3Op2jnhxEjISE5k4pWiq7X3x9GS950LNEbLVcT+s5TbQUjCB8pFf61IxpmbwGT6pTOkrNOK9ngF/diPMLLc+hFhODYM4KWiXvFfXoqbGiO1AsJJP522Z8xllZe67yaEkyKHRQWRXr4P/eAl8dQPAKamJnP9mKjVlPB5hrAWKCkA/2auHbcNF1kdrivUPRRbO5ifoeHiRQiJV0KxhLI/Er356wsrNK/NZnn12U8Gx5F4wGvjcINYzM7GvYLiLvUgtTqAVE7eMBID8B0t8cc0XZATx2aD/80EGiXj0ZZ/1 okeyes@uw.edu]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2P1KNuHnoFLRFFqwj5cg9qOh5mN3rTz1ei2TTl95FC2toQI2CWGl8b1MK/Oic20OmR2HpX+wcrPGvJlCKJaUlD6EPxLtO5FCfnlK7qSQNQweI77ZNyvZCZsam85D+D+gJmEowyWX8g/WptqaUh0XEgHNjH9yf/LvLQTx8PV2ZfzAqOdQwvfo6JUNFXlZgKw5q/k/kxs2beqxsvm79SQGfwRjG+r64m+0g+fy2TG4Ph+6k9HCEFnL/fFmYavxCaHtWpFWpDYYaq225HKbDPqG77M1Z4Qshe6w45aR0MDUfbAmPUTLQtDoqVcC3gU3NmbD28OPsZGFkmPcxVVHLn5aR okeyes@uw.edu]
     uid: 5004
     expiry_date: 2017-09-01
     expiry_contact: nuria@wikimedia.org
