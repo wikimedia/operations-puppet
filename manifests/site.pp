@@ -349,7 +349,7 @@ node 'cp4021.ulsfo.wmnet' {
 }
 
 # temporary entry for new cache nodes
-node /^cp402[34]\.ulsfo\.wmnet$/ {
+node /^cp402[2-8]\.ulsfo\.wmnet$/ {
     role(spare::system)
 }
 

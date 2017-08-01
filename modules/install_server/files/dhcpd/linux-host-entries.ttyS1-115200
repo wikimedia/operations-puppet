@@ -854,6 +854,11 @@ host cp4021 {
     fixed-address cp4021.ulsfo.wmnet;
 }
 
+host cp4022 {
+    hardware ethernet F4:E9:D4:BA:67:00;
+    fixed-address cp4022.ulsfo.wmnet;
+}
+
 host cp4023 {
     hardware ethernet F4:E9:D4:BA:8C:90;
     fixed-address cp4023.ulsfo.wmnet;
@@ -862,6 +867,26 @@ host cp4023 {
 host cp4024 {
     hardware ethernet f4:e9:d4:ba:62:d0;
     fixed-address cp4024.ulsfo.wmnet;
+}
+
+host cp4025 {
+    hardware ethernet F4:E9:D4:BA:B4:A0;
+    fixed-address cp4025.ulsfo.wmnet;
+}
+
+host cp4026 {
+    hardware ethernet F4:E9:D4:BA:5B:20;
+    fixed-address cp4026.ulsfo.wmnet;
+}
+
+host cp4027 {
+    hardware ethernet F4:E9:D4:BA:D0:F0;
+    fixed-address cp4027.ulsfo.wmnet;
+}
+
+host cp4028 {
+    hardware ethernet F4:E9:D4:BA:70:60;
+    fixed-address cp4028.ulsfo.wmnet;
 }
 
 host contint1001 {
