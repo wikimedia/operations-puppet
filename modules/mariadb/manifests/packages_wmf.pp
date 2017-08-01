@@ -14,6 +14,7 @@ class mariadb::packages_wmf(
         'libjemalloc1',       # missing dependency on packages < 10.0.27
         'pigz',
         'grc',
+        'python3-pymysql',    # for mariadb_check.py
     ]:
         ensure => present,
     }
