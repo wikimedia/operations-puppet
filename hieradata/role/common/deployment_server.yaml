@@ -52,7 +52,7 @@ scap::keyholder_agents:
     trusted_groups:
       - deploy-phabricator
 
-  gerrit-root:
+  gerrit:
     trusted_groups:
       - gerrit-root
 
