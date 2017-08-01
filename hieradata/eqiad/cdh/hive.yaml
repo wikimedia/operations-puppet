@@ -6,3 +6,7 @@ cdh::hive::metastore_host: analytics1003.eqiad.wmnet
 # The WMF webrequest table uses HCatalog's JSON Serde.
 # Automatically include this in Hive client classpaths.
 cdh::hive::auxpath: file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar
+
+# Following Cloudera recommandations for ~20 users
+cdh::hive::hive_metastore_opts: '-Xmx10g'
+cdh::hive::hive_server_opts: '-Xmx6g'

@@ -1,4 +1,0 @@
-#
-# Following Cloudera recommandations for ~20 users
-#
-cdh::hive::server::heapsize: 6144
