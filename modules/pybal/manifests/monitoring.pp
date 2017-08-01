@@ -36,8 +36,10 @@ class pybal::monitoring {
     }
 
     nrpe::monitor_service { 'pybal_ipvs_diff':
-        description  => 'PyBal IPVS diff check',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff --req-timeout=5.0',
-        require      => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
+        description    => 'PyBal IPVS diff check',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff --req-timeout=10.0',
+        check_interval => 5,
+        timeout        => 60,
+        require        => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
     }
 }
