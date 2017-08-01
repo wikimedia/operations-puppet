@@ -68,7 +68,7 @@ class statistics::discovery {
     # - It's ~9/10p Pacific time, so we're not likely to hinder people's work
     #   on analytics cluster, although we use `nice` & `ionice` as a courtesy.
     cron { 'wikimedia-discovery-golden':
-        command => "sh ${dir}/golden/main.sh >> ${log_dir}/golden-daily.log 2>&1",
+        command => "cd ${dir}/golden && sh main.sh >> ${log_dir}/golden-daily.log 2>&1",
         hour    => '5',
         minute  => '0',
         require => [
