@@ -77,9 +77,9 @@
 #   List extensions to load.  Directories matching these names must exist
 #   in druid.extensions.directory.
 #   Default: [
-#       'druid-histogram',
 #       'druid-datasketches',
-#       'druid-namespace-lookup'
+#       'druid-histogram',
+#       'druid-lookups-cached-global'
 #       'mysql-metadata-storage', # only if druid.metadata.storage.type == mysql
 #       'druid-hdfs-storage',     # only if druid.storage.type == hdfs
 #   ],
@@ -222,9 +222,9 @@ class druid(
 
 
     $default_extensions = [
-        'druid-histogram',
         'druid-datasketches',
-        'druid-namespace-lookup',
+        'druid-histogram',
+        'druid-lookups-cached-global',
     ]
     # Get a unique list of extensions to load built up from
     # the defaults configured here.  Note that if
