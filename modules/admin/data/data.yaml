@@ -42,14 +42,8 @@ groups:
   gerrit-root:
     gid: 703
     description: manage gerrit server
-    members: [demon, catrope, twentyafterfour]
+    members: [dduvall, demon, hashar, thcipriani, twentyafterfour, zfilipin]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  gerrit-admin:
-    gid: 704
-    description: assist in managing gerrit server
-    # qchris is RT 6720
-    # Rest is the Release Engineering team
-    members: [qchris, demon, dduvall, hashar, thcipriani, twentyafterfour, zfilipin]
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
