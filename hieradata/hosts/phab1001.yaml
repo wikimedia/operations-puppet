@@ -1,2 +1,0 @@
-phabricator::logmail::ensure: absent
-phabricator::tools::dump: false
