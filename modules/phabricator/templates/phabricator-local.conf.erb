@@ -4,9 +4,9 @@
 <VirtualHost 127.0.0.1:80>
   # Change this to the domain which points to your host.
   ServerName http://<%= @fqdn %>
-  DocumentRoot /srv/phab/phabricator/webroot
+  DocumentRoot <%= @basedir %>/phabricator/webroot
 
-  <Directory "/srv/phab/phabricator/webroot">
+  <Directory "<%= @basedir %>/phabricator/webroot">
     Options Indexes FollowSymLinks MultiViews
     Require all granted
   </Directory>
