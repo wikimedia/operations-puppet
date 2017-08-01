@@ -113,6 +113,7 @@ profile::restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.
 profile::restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
 profile::restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
 profile::restbase::cxserver_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:8080
+profile::restbase::recommendation_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:9632
 
 profile::restbase::cassandra_user: cassandra
 profile::restbase::cassandra_password: cassandra
