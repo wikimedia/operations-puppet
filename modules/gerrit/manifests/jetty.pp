@@ -24,7 +24,7 @@ class gerrit::jetty(
         shell      => '/bin/bash',
         home       => '/var/lib/gerrit2',
         system     => true,
-        managehome => false,
+        managehome => true,
     }
 
     include ::nrpe
@@ -127,6 +127,13 @@ class gerrit::jetty(
         require   => File['/var/lib/gerrit2/.ssh'],
         content   => secret('gerrit/id_rsa'),
         show_diff => false,
+    }
+
+    ssh::userkey { 'gerrit2-scap':
+        ensure  => present,
+        user    => 'gerrit2',
+        skey    => 'gerrit-scap',
+        content => secret('keyholder/gerrit.pub'),
     }
 
     ssh::userkey { 'gerrit2-cluster-sync':
