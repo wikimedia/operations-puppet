@@ -71,12 +71,16 @@ define netops::check(
     }
 
     if $alarms {
-        @monitoring::service { "${title} Juniper alarms":
-            host          => $title,
-            group         => $group,
-            description   => 'Juniper alarms',
-            check_command => "check_jnx_alarms!${snmp_community}",
-        }
+      $monitor_enable='present'
+    } else {
+      $monitor_enable='absent'
+    }
+    @monitoring::service { "${title} Juniper alarms":
+        ensure        => $monitor_enable,
+        host          => $title,
+        group         => $group,
+        description   => 'Juniper alarms',
+        check_command => "check_jnx_alarms!${snmp_community}",
     }
 
     if $interfaces {
