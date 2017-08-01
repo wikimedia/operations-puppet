@@ -1,6 +1,2 @@
 phabricator::logmail::ensure: absent
 phabricator::tools::dump: false
-
-admin::groups:
-  - phabricator-admin
-  - phabricator-roots
