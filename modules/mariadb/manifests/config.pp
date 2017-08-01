@@ -134,6 +134,14 @@ class mariadb::config(
         source => 'puppet:///modules/icinga/check_mariadb.pl',
     }
 
+    # new script to check the health of a server
+    file { '/usr/bin/check_mariadb.py':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/mariadb/check_mariadb.py',
+    }
+
     if ($ssl == 'on' or $ssl == 'puppet-cert') {
 
         # This creates also /etc/mysql/ssl
