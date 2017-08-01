@@ -11,6 +11,11 @@ class role::analytics_cluster::hive::metastore {
     # Setup hive-metastore
     class { '::cdh::hive::metastore': }
 
+    # Use jmxtrans for sending metrics
+    class { '::cdh::hive::jmxtrans::metastore':
+        statsd  => hiera('statsd'),
+    }
+
     ferm::service{ 'hive_metastore':
         proto  => 'tcp',
         port   => '9083',

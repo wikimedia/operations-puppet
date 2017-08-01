@@ -11,6 +11,11 @@ class role::analytics_cluster::hive::server {
     # Setup hive-server
     class { '::cdh::hive::server': }
 
+    # Use jmxtrans for sending metrics
+    class { '::cdh::hive::jmxtrans::server':
+        statsd  => hiera('statsd'),
+    }
+
     ferm::service{ 'hive_server':
         proto  => 'tcp',
         port   => '10000',
