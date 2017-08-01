@@ -154,10 +154,16 @@ class profile::phabricator::main (
     }
     # lint:endignore
 
-    # This exists to offer git services
-    interface::alias { 'phabricator vcs':
-        ipv4 => hiera('phabricator::vcs::address::v4', undef),
-        ipv6 => hiera('phabricator::vcs::address::v6', undef),
+
+
+    # This exists to offer git services at git-ssh.wikimedia.org
+    $vcs_ip_v4 = hiera('phabricator::vcs::address::v4', undef)
+    $vcs_ip_v6 = hiera('phabricator::vcs::address::v6', undef)
+    if $vcs_ip_v4 || $vcs_ip_v6 {
+        interface::alias { 'phabricator vcs':
+            ipv4 => $vcs_ip_v4,
+            ipv6 => $vcs_ip_v6,
+        }
     }
 
     class { '::phabricator::tools':

@@ -15,7 +15,7 @@
 #  Port SSH should listen on
 
 class phabricator::vcs (
-    $basedir               = '/',
+    $basedir               = '/srv/phab',
     $settings              = {},
     $listen_addresses      = [],
     $ssh_port              = '22',
@@ -49,31 +49,44 @@ class phabricator::vcs (
 
     # Configure all git repositories we host
     file { '/etc/gitconfig':
-        content => template('phabricator/system.gitconfig.erb'),
+        content => template('phabricator/vcs/system.gitconfig.erb'),
         require => Package['git'],
         owner   => 'root',
         group   => 'root',
     }
 
     file { $ssh_hook_path:
-        content => template('phabricator/phabricator-ssh-hook.sh.erb'),
+        content => template('phabricator/vcs/phabricator-ssh-hook.sh.erb'),
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
     }
 
-    # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
-    ferm::rule { 'ssh_public':
-        rule => template('phabricator/ferm_rule-ssh_public.erb'),
-    }
+    if empty($listen_addresses) {
+        # Emit a warning but allow listen_address to be empty, this is needed
+        # for easier migration from iridium to phab1001
+        notify { "Warning: phabricator::vcs::listen_address is empty" }
+    } else {
+        # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
+        ferm::rule { 'ssh_public':
+            rule => template('phabricator/vcs/ferm_rule-ssh_public.erb'),
+        }
 
-    file { $sshd_config:
-        content => template('phabricator/sshd_config.phabricator.erb'),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['openssh-server'],
-        notify  => Service['ssh-phab'],
+        file { $sshd_config:
+            content => template('phabricator/vcs/sshd_config.phabricator.erb'),
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['openssh-server'],
+            notify  => Service['ssh-phab'],
+        }
+
+        base::service_unit { 'ssh-phab':
+            ensure  => 'present',
+            systemd => true,
+            upstart => true,
+            require => Package['openssh-server'],
+        }
     }
 
     # phd.user owns repo resources and both vcs and web user
@@ -92,10 +105,5 @@ class phabricator::vcs (
         require    => File['/usr/local/bin/git-http-backend'],
     }
 
-    base::service_unit { 'ssh-phab':
-        ensure  => 'present',
-        systemd => true,
-        upstart => true,
-        require => Package['openssh-server'],
-    }
+
 }
