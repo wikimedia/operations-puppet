@@ -24,7 +24,7 @@ class gerrit::jetty(
         shell      => '/bin/bash',
         home       => '/var/lib/gerrit2',
         system     => true,
-        managehome => false,
+        managehome => true,
     }
 
     include ::nrpe
