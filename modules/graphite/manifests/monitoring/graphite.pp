@@ -54,8 +54,8 @@ class graphite::monitoring::graphite {
         description     => 'carbon-cache too many creates',
         metric          => 'sumSeries(carbon.agents.graphite1001-*.creates)',
         from            => '1hour',
-        warning         => 500,
-        critical        => 1000,
+        warning         => 1500,
+        critical        => 2000,
         nagios_critical => false,
     }
 }
