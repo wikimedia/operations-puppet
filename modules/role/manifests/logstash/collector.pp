@@ -37,9 +37,23 @@ class role::logstash::collector (
         port => 10514,
     }
 
+    # T166126 Testing a different syslog method
+    logstash::input::udp { 'syslog-udp':
+        port  => 10515,
+        type  => 'syslog',
+        codec => 'plain',
+    }
+
     ferm::service { 'logstash_syslog_udp':
         proto   => 'udp',
         port    => '10514',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
+    ferm::service { 'logstash_syslog_udp-2':
+        proto   => 'udp',
+        port    => '10515',
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
     }
