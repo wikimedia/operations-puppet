@@ -53,9 +53,10 @@ class graphite::monitoring::graphite {
     monitoring::graphite_threshold { 'carbon-cache_many_creates':
         description     => 'carbon-cache too many creates',
         metric          => 'sumSeries(carbon.agents.graphite1001-*.creates)',
-        from            => '1hour',
+        from            => '30min',
         warning         => 500,
         critical        => 1000,
         nagios_critical => false,
+        percentage      => 80,
     }
 }
