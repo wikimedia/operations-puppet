@@ -18,6 +18,8 @@
 #
 # filtertags: labs-project-toolsbeta labs-project-tools
 class role::toollabs::clush::master {
+
+    require ::profile::openstack::main::clientlib
     include ::toollabs::infrastructure
 
     class { '::clush::master':
@@ -26,7 +28,6 @@ class role::toollabs::clush::master {
 
     require_package('python3-yaml')
 
-    include ::openstack::clientlib
     file { '/usr/local/sbin/tools-clush-generator':
         ensure => file,
         source => 'puppet:///modules/role/toollabs/clush/tools-clush-generator',

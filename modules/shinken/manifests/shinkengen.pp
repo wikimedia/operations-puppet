@@ -4,7 +4,6 @@
 # config for Shinken by hittig the wikitech API
 class shinken::shinkengen {
     include shinken
-    include ::openstack::clientlib
 
     package { [
         'python3-yaml',

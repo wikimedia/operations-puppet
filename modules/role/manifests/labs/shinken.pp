@@ -7,9 +7,13 @@
 #   Setup an ircbot using ircecho to support echoing notifications
 #
 # filtertags: labs-project-shinken
+
 class role::labs::shinken(
     $ircbot = true,
 ){
+
+    require ::profile::openstack::main::clientlib
+
     class { '::shinken':
         auth_secret => 'This is insecure, should switch to using private repo',
     }

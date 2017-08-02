@@ -1,6 +1,7 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::labs::puppetmaster::frontend() {
+
     system::role { 'puppetmaster':
         description => 'Puppetmaster frontend'
     }
@@ -13,6 +14,18 @@ class role::labs::puppetmaster::frontend() {
     $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
     $designate_host_ip = ipresolve(hiera('labs_designate_hostname'), 4)
 
+    # XXX: break this up into profiles and
+    # then make roles for each openstack deployment for hiera
+    $openstack_version = 'liberty'
+    class {'openstack2::cloudrepo':
+        version => $openstack_version
+    }
+
+    class {'openstack2::clientlib':
+        version => $openstack_version,
+        require => Class['openstack2::cloudrepo'],
+    }
+
     # Only allow puppet access from the instances
     $allow_from = flatten([$labs_instance_range, $labs_metal, '.wikimedia.org'])
 
@@ -24,7 +37,6 @@ class role::labs::puppetmaster::frontend() {
 
     # validatelabsfqdn will look up an instance certname in nova
     #  and make sure it's for an actual instance before signing
-    include ::openstack::clientlib
     file { '/usr/local/sbin/validatelabsfqdn.py':
         ensure => 'present',
         owner  => 'root',
