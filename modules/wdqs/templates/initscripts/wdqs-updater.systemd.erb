@@ -2,14 +2,14 @@
 Description=Wikidate Query Service Updater
 Wants=wdqs-blazegraph.service
 After=wdqs-blazegraph.service
-ConditionPathExists=<%= @data_dir %>/wikidata.jnl
-ConditionPathExists=<%= @data_dir %>/data_loaded
+ConditionPathExists=<%= scope.lookupvar("wdqs::updater::data_dir") %>/wikidata.jnl
+ConditionPathExists=<%= scope.lookupvar("wdqs::updater::data_dir") %>/data_loaded
 
 [Service]
 Type=simple
-WorkingDirectory=<%= @package_dir %>
-ExecStart=/bin/bash <%= @package_dir %>/runUpdate.sh <%= @options %>
-User=<%= @username %>
+WorkingDirectory=<%= scope.lookupvar("wdqs::updater::package_dir") %>
+ExecStart=/bin/bash <%= scope.lookupvar("wdqs::updater::package_dir") %>/runUpdate.sh <%= scope.lookupvar("wdqs::updater::options") %>
+User=<%= scope.lookupvar("wdqs::updater::username") %>
 StandardOutput=journal+console
 Restart=always
 

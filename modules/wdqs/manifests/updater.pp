@@ -5,6 +5,7 @@
 class wdqs::updater(
     $options,
     $package_dir = $::wdqs::package_dir,
+    $data_dir = $wdqs::data_dir,
     $username = $::wdqs::username,
 ){
 
