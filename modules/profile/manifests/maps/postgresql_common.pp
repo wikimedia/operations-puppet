@@ -1,13 +1,25 @@
-class profile::maps::postgresql_common {
+# = Class: profile::maps::postgresql_common
+#
+# Manages the postgresql configuration commone to master and slaves.
+#
+# == Parameters:
+# - $shared_buffers: postgresql shared buffer. Default: 7680MB (should only be
+#                    overriden for tests or VMs on lab).
+# - $maintenance_work_mem: postgresql work mem. Default: 4GB (should only be
+#                    overriden for tests or VMs on lab).
+class profile::maps::postgresql_common(
+    $shared_buffers = hiera('profile::maps::postgresql_common::shared_buffers', '7680MB'),
+    $maintenance_work_mem = hiera('profile::maps::postgresql_common::maintenance_work_mem', '4GB')
+) {
     class { '::postgresql::postgis': }
 
     # Tuning
     file { '/etc/postgresql/9.4/main/tuning.conf':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/maps/tuning.conf',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/maps/tuning.conf'),
     }
 
     sysctl::parameters { 'postgres_shmem':
