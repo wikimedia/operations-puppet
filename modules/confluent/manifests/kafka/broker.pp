@@ -221,21 +221,22 @@ class confluent::kafka::broker(
     $log_dirs                            = ['/var/spool/kafka'],
 
     $zookeeper_connect                   = 'localhost:2181',
-    $zookeeper_connection_timeout_ms     = 6000,
-    $zookeeper_session_timeout_ms        = 6000,
+    $zookeeper_connection_timeout_ms     = undef,
+    $zookeeper_session_timeout_ms        = undef,
 
     $auto_create_topics_enable           = true,
     $auto_leader_rebalance_enable        = true,
 
     $num_partitions                      = 1,
     $default_replication_factor          = 1,
+    $offsets_topic_replication_factor    = undef,
     $min_insync_replicas                 = 1,
     $replica_lag_time_max_ms             = undef,
     $num_recovery_threads_per_data_dir   = undef,
     $replica_socket_timeout_ms           = undef,
     $replica_socket_receive_buffer_bytes = undef,
     $num_replica_fetchers                = 1,
-    $replica_fetch_max_bytes             = 1048576,
+    $replica_fetch_max_bytes             = undef,
 
     $num_network_threads                 = undef,
     $num_io_threads                      = size($log_dirs),
@@ -243,16 +244,15 @@ class confluent::kafka::broker(
     $socket_receive_buffer_bytes         = 1048576,
     $socket_request_max_bytes            = undef,
 
-    # TODO: Tune these defaults?
-    $log_flush_interval_messages         = 10000,
-    $log_flush_interval_ms               = 1000,
+    $log_flush_interval_messages         = undef,
+    $log_flush_interval_ms               = undef,
 
     $log_retention_hours                 = 168,     # 1 week
     $log_retention_bytes                 = undef,
     $log_segment_bytes                   = undef,
 
     $log_retention_check_interval_ms     = undef,
-    $log_cleanup_policy                  = 'delete',
+    $log_cleanup_policy                  = undef,
 
     $offsets_retention_minutes           = 10080,   # 1 week
 

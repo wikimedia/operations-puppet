@@ -59,20 +59,22 @@
 #   Hiera: profile::kafka::broker::replica_maxlag_critical
 #
 class profile::kafka::broker(
-    $kafka_cluster_name           = hiera('kafka_cluster_name'),
-    $statsd                       = hiera('statsd'),
+    $kafka_cluster_name                = hiera('kafka_cluster_name'),
+    $statsd                            = hiera('statsd'),
 
-    $plaintext                    = hiera('profile::kafka::broker::plaintext'),
-    # $tls_secrets_path             = hiera('profile::kafka::broker::tls_secrets_path'),
-    # $tls_key_password             = hiera('profile::kafka::broker::tls_key_password'),
+    $plaintext                         = hiera('profile::kafka::broker::plaintext'),
+    # $tls_secrets_path                = hiera('profile::kafka::broker::tls_secrets_path'),
+    # $tls_key_password                = hiera('profile::kafka::broker::tls_key_password'),
 
-    $log_dirs                     = hiera('profile::kafka::broker::log_dirs'),
-    $auto_leader_rebalance_enable = hiera('profile::kafka::broker::auto_leader_rebalance_enable'),
-    $log_retention_hours          = hiera('profile::kafka::broker::log_retention_hours'),
-    $num_replica_fetchers         = hiera('profile::kafka::broker::num_replica_fetchers'),
-    $nofiles_ulimit               = hiera('profile::kafka::broker::nofiles_ulimit'),
-    $replica_maxlag_warning       = hiera('profile::kafka::broker::replica_maxlag_warning'),
-    $replica_maxlag_critical      = hiera('profile::kafka::broker::replica_maxlag_critical'),
+    $log_dirs                          = hiera('profile::kafka::broker::log_dirs'),
+    $auto_leader_rebalance_enable      = hiera('profile::kafka::broker::auto_leader_rebalance_enable'),
+    $log_retention_hours               = hiera('profile::kafka::broker::log_retention_hours'),
+    $num_recovery_threads_per_data_dir = hiera('profile::kafka::broker::num_recovery_threads_per_data_dir'),
+    $num_io_threads                    = hiera('profile::kafka::broker::num_io_threads'),
+    $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers'),
+    $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit'),
+    $replica_maxlag_warning            = hiera('profile::kafka::broker::replica_maxlag_warning'),
+    $replica_maxlag_critical           = hiera('profile::kafka::broker::replica_maxlag_critical'),
 ) {
     # TODO: WIP
     $tls_secrets_path = undef
@@ -150,32 +152,32 @@ class profile::kafka::broker(
     }
 
     class { '::confluent::kafka::broker':
-        log_dirs                       => $log_dirs,
-        brokers                        => $config['brokers']['hash'],
-        zookeeper_connect              => $config['zookeeper']['url'],
-        nofiles_ulimit                 => $nofiles_ulimit,
-        default_replication_factor     => min(3, $config['brokers']['size']),
-
+        log_dirs                         => $log_dirs,
+        brokers                          => $config['brokers']['hash'],
+        zookeeper_connect                => $config['zookeeper']['url'],
+        nofiles_ulimit                   => $nofiles_ulimit,
+        default_replication_factor       => min(3, $config['brokers']['size']),
+        offsets_topic_replication_factor => min(3,  $config['brokers']['size']),
         # TODO: This can be removed once it is a default
         # in ::confluent::kafka module
-        inter_broker_protocol_version  => '0.11.0',
+        inter_broker_protocol_version    => '0.11.0',
         # Use Kafka/LinkedIn recommended settings with G1 garbage collector.
         # https://kafka.apache.org/documentation/#java
         # Note that MetaspaceSize is a Java 8 setting.
-        jvm_performance_opts           => '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80',
+        jvm_performance_opts             => '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80',
 
-        listeners                      => $listeners,
+        listeners                        => $listeners,
 
-        security_inter_broker_protocol => $security_inter_broker_protocol,
-        ssl_keystore_location          => $ssl_keystore_location,
-        ssl_keystore_password          => $ssl_keystore_password,
-        ssl_key_password               => $ssl_key_password,
-        ssl_truststore_location        => $ssl_truststore_location,
-        ssl_truststore_password        => $ssl_truststore_password,
-        ssl_client_auth                => $ssl_client_auth,
+        security_inter_broker_protocol   => $security_inter_broker_protocol,
+        ssl_keystore_location            => $ssl_keystore_location,
+        ssl_keystore_password            => $ssl_keystore_password,
+        ssl_key_password                 => $ssl_key_password,
+        ssl_truststore_location          => $ssl_truststore_location,
+        ssl_truststore_password          => $ssl_truststore_password,
+        ssl_client_auth                  => $ssl_client_auth,
 
-        auto_leader_rebalance_enable   => $auto_leader_rebalance_enable,
-        num_replica_fetchers           => $num_replica_fetchers,
+        auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
+        num_replica_fetchers             => $num_replica_fetchers,
     }
 
     class { '::confluent::kafka::broker::jmxtrans':

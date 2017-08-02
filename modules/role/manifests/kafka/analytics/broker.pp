@@ -103,6 +103,14 @@ class role::kafka::analytics::broker {
         log_retention_hours             => hiera('confluent::kafka::broker::log_retention_hours', 168),
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+
+        # These defaults are set to keep no-ops from changes
+        # made in confluent module for T166162.
+        # They should be removed (since they are the kafka or module defaults)
+        # when this role gets converted to a profile.
+        replica_fetch_max_bytes         => 1048576,
+        log_flush_interval_messages     => 10000,
+        log_cleanup_policy              => 'delete',
     }
 
     class { '::confluent::kafka::broker::jmxtrans':
