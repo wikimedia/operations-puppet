@@ -96,14 +96,16 @@ class profile::kafka::broker(
             before => Package['kafkacat'],
         }
     }
-
     # kafkacat is handy!
-    require_package('kafkacat')
+    if !defined(Package['kafkacat']) {
+        # not using require_package to allow dependency on librdkafka1 in stretch
+        package { 'kafkacat': }
+    }
 
-    $plaintext_port = 9092
+    $plaintext_port     = 9092
     $plaintext_listener = "PLAINTEXT://:${plaintext_port}"
-    $tls_port = 9093
-    $tls_listener = "SSL://:${tls_port}"
+    $tls_port           = 9093
+    $tls_listener       = "SSL://:${tls_port}"
 
     # Conditionally set $listeners and $ssl_client_auth
     # based on values of $tls and $plaintext.
