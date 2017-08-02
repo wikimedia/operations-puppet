@@ -8,14 +8,15 @@ class wdqs::updater(
     $username = $::wdqs::username,
 ){
 
-    base::service_unit { 'wdqs-updater':
-        template_name  => 'wdqs-updater',
-        systemd        => true,
-        upstart        => true,
-        service_params => {
-            enable => true,
-        },
-        require        => [ File['/etc/wdqs/updater-logs.xml'],
-                            Service['wdqs-blazegraph'] ],
+    # Blazegraph service
+    systemd::unit { 'wdqs-updater':
+        content => template('wdqs/initscripts/wdqs-updater.systemd.erb'),
+        require => [
+            File['/etc/wdqs/updater-logs.xml'],
+            Service['wdqs-blazegraph']
+        ],
+    }
+    service { 'wdqs-updater':
+        ensure => 'running',
     }
 }
