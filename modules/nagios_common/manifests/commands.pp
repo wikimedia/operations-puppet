@@ -31,6 +31,8 @@ class nagios_common::commands(
         # check_prometheus_metric
         'jq',
         'curl',
+        'python-ipaddress',
+        'python-snimpy',
     ])
 
     file { "${config_dir}/commands":
@@ -42,6 +44,7 @@ class nagios_common::commands(
 
     nagios_common::check_command { [
         'check_all_memcached.php',
+        'check_bfd',
         'check_bgp',
         'check_dsh_groups',
         'check_grafana_alert',
