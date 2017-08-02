@@ -6,6 +6,16 @@ network::external:
 - 185.15.56.0/22
 - 2a02:ec80::/32
 
+network::infrastructure:
+  - 91.198.174.224/27 # esams
+  - 2620:0:862:fe00::/55 # esams
+  - 198.35.26.192/27 # ulsfo
+  - 2620:0:863:fe00::/55 # ulsfo
+  - 208.80.153.192/27 # codfw
+  - 2620:0:860:fe00::/55 # codfw
+  - 208.80.154.192/27 # eqiad
+  - 2620:0:861:fe00::/55 # eqiad
+
 network::subnets:
   production:
     eqiad:
