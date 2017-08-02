@@ -1,7 +1,11 @@
-wdqs::gui::log_aggregator:  'logstash1001.eqiad.wmnet:10514'
-wdqs::updater::options: '-n wdq -- -b 500 -T 1200'
-wdqs::service::config_file: /etc/wdqs/RWStore.properties
-wdqs::endpoint: 'https://query.wikidata.org'
+profile::wdqs::log_aggregator: 'logstash1001.eqiad.wmnet:10514'
+profile::wdqs::use_git_deploy: true
+profile::wdqs::package_dir: '/srv/deployment/wdqs/wdqs'
+profile::wdqs::data_dir: '/srv/wdqs'
+profile::wdqs::endpoint: 'https://query.wikidata.org'
+profile::wdqs::updater_options: '-n wdq -- -b 500 -T 1200'
+profile::wdqs::blazegraph_config_file: '/etc/wdqs/RWStore.properties'
+profile::wdqs::blazegraph_heap_size: '16g'
 admin::groups:
   - wdqs-admins
 cluster: wdqs
@@ -9,3 +13,5 @@ contactgroups: admins,wdqs-admins
 debdeploy::grains:
   debdeploy-wdqs:
     value: standard
+role::lvs::realserver::pools:
+  wdqs: {}
