@@ -1,7 +1,9 @@
-"wdqs::gui::log_aggregator":  'deployment-logstash2.deployment-prep.eqiad.wmflabs:10514'
-"wdqs::updater::options": '-n wdq -s'
-"wdqs::use_git_deploy": false
-"wdqs::package_dir": '/srv/wdqs/blazegraph'
-"wdqs::data_dir": '/srv/wdqs/blazegraph'
-"wdqs::endpoint": ''
-"wdqs::blazegraph_heap_size": '8g'
+profile::wdqs::log_aggregator: 'deployment-logstash2.deployment-prep.eqiad.wmflabs:10514'
+profile::wdqs::use_git_deploy: false
+profile::wdqs::package_dir: '/srv/wdqs/blazegraph'
+profile::wdqs::data_dir: '/srv/wdqs/blazegraph'
+profile::wdqs::endpoint: ''
+profile::wdqs::updater_options: '-n wdq -s'
+profile::wdqs::blazegraph_config_file: 'RWStore.properties'
+profile::wdqs::blazegraph_options: ''
+profile::wdqs::blazegraph_heap_size: '8g'

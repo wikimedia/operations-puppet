@@ -3,7 +3,7 @@
 # Wikidata Query Service updater service.
 #
 class wdqs::updater(
-    $options = '-n wdq -s',
+    $options,
     $package_dir = $::wdqs::package_dir,
     $username = $::wdqs::username,
 ){

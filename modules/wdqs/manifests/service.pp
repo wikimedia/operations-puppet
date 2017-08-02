@@ -6,7 +6,7 @@ class wdqs::service(
     $deploy_user,
     $package_dir,
     $username,
-    $config_file='RWStore.properties',
+    $config_file,
 ) {
 
     include ::wdqs::packages

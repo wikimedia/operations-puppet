@@ -10,7 +10,8 @@
 # - $log_dir: Directory where the logs go
 # - $endpoint: External endpoint name
 # - $blazegraph_heap_size: heapsize for blazegraph
-# - $blazegraph_options: options for Blazegraph statrup script
+# - $blazegraph_options: options for Blazegraph startup script
+# - $updater_options: options for updater startup script
 class wdqs(
     $use_git_deploy = true,
     $username = 'blazegraph',
@@ -18,8 +19,9 @@ class wdqs(
     $data_dir = '/srv/wdqs',
     $log_dir = '/var/log/wdqs',
     $endpoint = '',
-    $blazegraph_heap_size = '16g',
     $blazegraph_options = '',
+    $blazegraph_heap_size = '16g',
+    $blazegraph_config_file = 'RWStore.properties',
 ) {
 
     $deploy_user = 'deploy-service'
@@ -43,6 +45,7 @@ class wdqs(
         deploy_user => $deploy_user,
         package_dir => $package_dir,
         username    => $username,
+        config_file => $blazegraph_config_file,
     }
 
     file { $log_dir:
@@ -108,9 +111,6 @@ class wdqs(
         group   => 'root',
         mode    => '0644',
     }
-
-    # WDQS Updater service
-    include wdqs::updater
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This cron takes care of cleaning up
