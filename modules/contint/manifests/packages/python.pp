@@ -40,12 +40,12 @@ class contint::packages::python {
         apt::pin { 'python-tox':
             pin      => 'release a=jessie-backports',
             priority => '1001',
-            before   => Package['tox'],
+            before   => Package['python-tox'],
             require  => Package['pip'],
         }
     }
 
-    package { 'tox':
+    package { 'python-tox':
         ensure  => present,
         require => Package['pip'],
     }
