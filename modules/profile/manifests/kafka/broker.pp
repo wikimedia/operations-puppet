@@ -145,8 +145,8 @@ class profile::kafka::broker(
         # TODO: These should be removed once they are
         # the default in ::confluent::kafka module
         scala_version => '2.11',
-        kafka_version => '0.10.2.1-1',
-        java_home     => '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
+        kafka_version => '0.11.0.0-1',
+        java_home     => '/usr/lib/jvm/java-8-openjdk-amd64',
     }
 
     class { '::confluent::kafka::broker':
