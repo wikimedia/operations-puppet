@@ -6,6 +6,7 @@ class network::constants {
     $network_data = loadyaml("${module_path}/data/data.yaml")
     $all_network_subnets = $network_data['network::subnets']
     $external_networks = $network_data['network::external']
+    $network_infra = $network_data['network::infrastructure']
 
     # are you really sure you want to use this? maybe what you really
     # the trusted/production networks. See $production_networks for this.
