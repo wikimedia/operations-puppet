@@ -68,6 +68,9 @@ class role::kafka::analytics::broker {
 
         default_replication_factor      => min(3, $config['brokers']['size']),
 
+        # Should be changed if brokers are upgraded.
+        inter_broker_protocol_version   => '0.9.0.X',
+
         # The default for log segment bytes has changed in the puppet
         # module / packaging.  536870912 is what we have always used on
         # analytics brokers, no need to change it now.
