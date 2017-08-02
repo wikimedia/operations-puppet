@@ -28,26 +28,19 @@ class contint::packages::python {
         require_package('librdkafka-dev') # For confluent-kafka
     }
 
-    # Bring in fresh pip. The Trusty or Jessie packages do not provide wheels
-    # cache https://pip.pypa.io/en/latest/news.html
+    # Bring in fresh pip. The Trusty package does not provide wheels cache
+    # https://pip.pypa.io/en/latest/news.html
     package { 'pip':
         ensure   => '8.1.2',
         provider => 'pip',
         require  => Package['python-pip'],  # eggs and chicken
     }
 
-    if os_version( 'debian == jessie' ) {
-        apt::pin { 'python-tox':
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['python-tox'],
-            require  => Package['pip'],
-        }
-    }
-
-    package { 'python-tox':
-        ensure  => present,
-        require => Package['pip'],
+    # Bring tox/virtualenv... from pip  T46443
+    package { 'tox':
+        ensure   => '1.9.2',
+        provider => 'pip',
+        require  => Package['pip'],  # Fresh pip version
     }
 
     # 'pip install pip' deletes /usr/bin/pip :(
