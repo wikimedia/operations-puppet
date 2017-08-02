@@ -93,6 +93,7 @@ class profile::kafka::broker(
     if !defined(Package['librdkafka1']) and os_version('debian == stretch') {
         package { 'librdkafka1':
             ensure => '0.9.3-1',
+            before => Package['kafkacat'],
         }
     }
 
