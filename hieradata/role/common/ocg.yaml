@@ -10,7 +10,7 @@ role::ocg::tmpfs_size: '32G'
 debdeploy::grains:
   debdeploy-ocg:
     value: standard
-profile::redis::master::instances: [6379]
+profile::redis::master::instances: ['6379']
 profile::redis::master::settings:
   maxmemory: "2gb"
   save: ""
