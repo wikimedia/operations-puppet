@@ -65,7 +65,8 @@ class NutcrackerCollector(diamond.collector.Collector):
             sock.shutdown(socket.SHUT_RDWR)
 
         # does not properly escape quotation marks in server aliases.
-        data = re.sub(r'"("\w+")"(?=:)', r'\1', raw_data.strip())
+        # https://github.com/twitter/twemproxy/issues/532
+        data = re.sub(r'"("[^"]+")"(?=:)', r'\1', raw_data.strip())
         stats = json.loads(data)
 
         # The pool names are all the keys
