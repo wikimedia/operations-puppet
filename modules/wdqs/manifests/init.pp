@@ -94,7 +94,7 @@ class wdqs(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        before  => Base::Service_unit['wdqs-blazegraph'],
+        before  => Systemd::Unit['wdqs-blazegraph'],
     }
 
     file { '/etc/wdqs/vars.yaml':
@@ -115,7 +115,10 @@ class wdqs(
 
     # WDQS Updater service
     class { 'wdqs::updater':
-        options => $updater_options,
+        options     => $updater_options,
+        package_dir => $package_dir,
+        data_dir    => $data_dir,
+        username    => $username,
     }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
