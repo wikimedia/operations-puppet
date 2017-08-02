@@ -4,7 +4,6 @@
 #
 # This also checks the functionality of the keystone API generally.
 class openstack::keystonechecks() {
-    include ::openstack::clientlib
 
     # Script to check all keystone projects for a given user and role
     file { '/usr/local/bin/check_keystone_roles.py':

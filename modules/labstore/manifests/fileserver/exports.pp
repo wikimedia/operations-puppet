@@ -52,7 +52,6 @@ class labstore::fileserver::exports {
     }
 
 
-    include ::openstack::clientlib
     file { '/usr/local/bin/nfs-exportd':
         owner   => 'root',
         group   => 'root',

@@ -1,7 +1,7 @@
 # Utilities for querying openstack
-class openstack::clientlib {
-    include ::openstack
-    require openstack2::cloudrepo
+class openstack2::clientlib(
+    $version,
+  ) {
 
     $packages = [
         'python-novaclient',
@@ -14,13 +14,14 @@ class openstack::clientlib {
     # Wrapper python class to easily query openstack clients
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
         ensure => present,
-        source => 'puppet:///modules/openstack/mwopenstackclients.py',
+        source => 'puppet:///modules/openstack2/clientlib/mwopenstackclients.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
-    if $::openstack::version != 'liberty' {
+    # assumption is any version not liberty is newer
+    if $version != 'liberty' {
         # Python3 client packages are only available in Mitaka
         #  and later repos
 
@@ -33,7 +34,7 @@ class openstack::clientlib {
 
         file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
             ensure => present,
-            source => 'puppet:///modules/openstack/mwopenstackclients.py',
+            source => 'puppet:///modules/openstack2/clientlib/mwopenstackclients.py',
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
