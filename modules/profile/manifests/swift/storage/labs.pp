@@ -20,7 +20,7 @@ class profile::swift::storage::labs {
     require => Lvm::Logical_volume['lv-a1'],
   }
 
-  exec { 'swift_udev_reload':
+  exec { 'swift_labs_udev_reload':
     command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
     refreshonly => true,
   }
