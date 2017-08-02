@@ -208,6 +208,16 @@ class confluent::kafka::broker(
         },
     },
     $listeners                           = ['PLAINTEXT://:9092'],
+
+    $security_inter_broker_protocol      = undef,
+
+    $ssl_keystore_location               = undef,
+    $ssl_keystore_password               = undef,
+    $ssl_key_password                    = undef,
+    $ssl_truststore_location             = undef,
+    $ssl_truststore_password             = undef,
+    $ssl_client_auth                     = undef,
+
     $log_dirs                            = ['/var/spool/kafka'],
 
     $zookeeper_connect                   = 'localhost:2181',
