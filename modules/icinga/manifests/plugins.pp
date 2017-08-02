@@ -104,25 +104,6 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
-    # mib files for check_bfd - T83992
-    file { '/usr/lib/nagios/plugins/mib-jnx-bfd-exp.txt':
-        source => 'puppet:///modules/icinga/mib-jnx-bfd-exp.txt',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/mib-jnx-exp.txt':
-        source => 'puppet:///modules/icinga/mib-jnx-exp.txt',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/mib-jnx-smi.txt':
-        source => 'puppet:///modules/icinga/mib-jnx-smi.txt',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
     class { '::nagios_common::commands':
     }
