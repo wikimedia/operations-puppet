@@ -88,6 +88,14 @@ class profile::kafka::broker(
 
     require_package('openjdk-8-jdk')
 
+    # WMF's librdkafka is overriding that in Debian stretch. Require the Stretch version.
+    # https://packages.debian.org/stretch/librdkafka1
+    if !defined(Package['librdkafka1']) and os_version('debian == stretch') {
+        package { 'librdkafka1':
+            ensure => '0.9.3-1',
+        }
+    }
+
     # kafkacat is handy!
     require_package('kafkacat')
 
