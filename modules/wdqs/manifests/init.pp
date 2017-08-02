@@ -93,7 +93,7 @@ class wdqs(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        before  => Base::Service_unit['wdqs-blazegraph'],
+        before  => Systemd::Unit['wdqs-blazegraph'],
     }
 
     file { '/etc/wdqs/vars.yaml':
