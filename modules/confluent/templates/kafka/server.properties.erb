@@ -12,6 +12,12 @@ broker.id.generation.enable=false
 broker.rack=<%= @rack %>
 
 <% end -%>
+<% if @listeners -%>
+listeners=<%= Array(@listeners).join(',') %>
+<% else -%>
+listeners=PLAINTEXT://:9092
+
+<% end -%>
 <% if @inter_broker_protocol_version -%>
 # Specify which version of the inter-broker protocol will be used. This is
 # typically bumped after all brokers were upgraded to a new version.
@@ -26,12 +32,6 @@ log.message.format.version=<%= @log_message_format_version %>
 
 <% end -%>
 ######################### Socket Server Settings ########################
-<% if @listeners -%>
-listeners=<%= Array(@listeners).join(',') %>
-<% else -%>
-listeners=PLAINTEXT://:9092
-
-<% end -%>
 <% if @security_inter_broker_protocol -%>
 security.inter.broker.protocol=<%= @security_inter_broker_protocol %>
 
