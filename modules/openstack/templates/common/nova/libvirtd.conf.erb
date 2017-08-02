@@ -60,8 +60,8 @@
 # Alternatively can disable for all services on a host by
 # stopping the Avahi daemon
 #
-# This is enabled by default, uncomment this to disable it
-#mdns_adv = 0
+# This is disabled by default, uncomment this to enable it
+#mdns_adv = 1
 
 # Override the default mDNS advertizement name. This must be
 # unique on the immediate broadcast network.
@@ -164,6 +164,15 @@ auth_tcp = "sasl"
 #auth_tls = "none"
 
 
+# Change the API access control scheme
+#
+# By default an authenticated user is allowed access
+# to all APIs. Access drivers can place restrictions
+# on this. By default the 'nop' driver is enabled,
+# meaning no access control checks are done once a
+# client has authenticated with libvirtd
+#
+#access_drivers = [ "polkit" ]
 
 #################################################################
 #
@@ -255,8 +264,18 @@ tls_allowed_dn_list = ["C=US,ST=California,O=Wikimedia Foundation,OU=Operations,
 
 # The maximum number of concurrent client connections to allow
 # over all sockets combined.
-#max_clients = 20
+#max_clients = 5000
 
+# The maximum length of queue of connections waiting to be
+# accepted by the daemon. Note, that some protocols supporting
+# retransmission may obey this so that a later reattempt at
+# connection succeeds.
+#max_queued_clients = 1000
+
+# The maximum length of queue of accepted but not yet not
+# authenticated clients. The default value is zero, meaning
+# the feature is disabled.
+#max_anonymous_clients = 20
 
 # The minimum limit sets the number of workers to start up
 # initially. If the number of active clients exceeds this,
@@ -306,8 +325,11 @@ tls_allowed_dn_list = ["C=US,ST=California,O=Wikimedia Foundation,OU=Operations,
 # of logs
 # The format for a filter is one of:
 #    x:name
-#      where name is a match string e.g. remote or qemu
-# the x prefix is the minimal level where matching messages should be logged
+#    x:+name
+#      where name is a string which is matched against source file name,
+#      e.g., "remote", "qemu", or "util/json", the optional "+" prefix
+#      tells libvirt to log stack trace for each message matching name,
+#      and x is the minimal level where matching messages should be logged:
 #    1: DEBUG
 #    2: INFO
 #    3: WARNING
@@ -329,6 +351,8 @@ tls_allowed_dn_list = ["C=US,ST=California,O=Wikimedia Foundation,OU=Operations,
 #      use syslog for the output and use the given name as the ident
 #    x:file:file_path
 #      output to a file, with the given filepath
+#    x:journald
+#      output to journald logging system
 # In all case the x prefix is the minimal level, acting as a filter
 #    1: DEBUG
 #    2: INFO
