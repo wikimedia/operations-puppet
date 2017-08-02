@@ -3,9 +3,9 @@ Description=Wikidate Query Service Updater
 
 [Service]
 Type=simple
-WorkingDirectory=<%= @package_dir %>
-ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
-User=<%= @username %>
+WorkingDirectory=<%= scope.lookupvar("wdqs::service::package_dir") %>
+ExecStart=/bin/bash <%= scope.lookupvar("wdqs::service::package_dir") %>/runBlazegraph.sh -f <%= scope.lookupvar("wdqs::service::config_file") %>
+User=<%= scope.lookupvar("wdqs::service::username") %>
 StandardOutput=journal+console
 Restart=always
 
