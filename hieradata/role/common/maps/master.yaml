@@ -27,6 +27,6 @@ service::configuration::statsd_host: 'statsd.eqiad.wmnet'
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
 
-profile::redis::master::instances: [6379]
+profile::redis::master::instances: ['6379']
 profile::redis::master::settings:
   bind: "0.0.0.0"
