@@ -34,8 +34,9 @@
 #
 # [*log_dirs*]
 #   Array of Kafka log data directories.  The confluent::kafka::broker class
-#   manages these directories but not anything above them.
-#   You must ensure that any parent directories exist outside of this class.
+#   manages these directories but not anything above them.  Unless the prefix
+#   is /srv/kafka, then this profile tries to be nice.  Otherwise,
+#   you must ensure that any parent directories exist outside of this class.
 #   Hiera: profile::kafka::broker::log_dirs
 #
 # [*auto_leader_rebalance_enable*]
@@ -141,6 +142,15 @@ class profile::kafka::broker(
         $ssl_key_password               = undef
         $ssl_truststore_location        = undef
         $ssl_truststore_password        = undef
+    }
+
+    # Be nice, and manage /srv/kafka if it is the prefix for kafka data directories.
+    # This is the common case.
+    if '/srv/kafka' in $log_dirs[0] and !defined(File['/srv/kafka']) {
+        file { '/srv/kafka':
+            ensure => 'directory',
+            mode   => '0755',
+        }
     }
 
     class { '::confluent::kafka::client':

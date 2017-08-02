@@ -242,15 +242,19 @@ offsets.retention.minutes=<%= @offsets_retention_minutes %>
 # root directory for all kafka znodes.
 zookeeper.connect=<%= @zookeeper_connect %>
 
+<% if @zookeeper_connection_timeout_ms -%>
 # Timeout in ms for connecting to zookeeper
 zookeeper.connection.timeout.ms=<%= @zookeeper_connection_timeout_ms %>
 
+<% end -%>
+<% if @zookeeper_session_timeout_ms -%>
 # Zookeeper session timeout. If the server fails to heartbeat to Zookeeper
 # within this period of time it is considered dead. If you set this too low
 # the server may be falsely considered dead; if you set it too high it may
 # take too long to recognize a truly dead server.
 zookeeper.session.timeout.ms=<%= @zookeeper_session_timeout_ms %>
 
+<% end -%>
 ##################### Confluent Proactive Support ######################
 # If set to true, and confluent-support-metrics package is installed
 # then the feature to collect and report support metrics
