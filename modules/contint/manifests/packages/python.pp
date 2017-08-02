@@ -38,7 +38,7 @@ class contint::packages::python {
 
     # Bring tox/virtualenv... from pip  T46443
     package { 'tox':
-        ensure   => '1.9.2',
+        ensure   => '2.5.0',
         provider => 'pip',
         require  => Package['pip'],  # Fresh pip version
     }
