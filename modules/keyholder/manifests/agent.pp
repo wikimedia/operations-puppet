@@ -61,7 +61,7 @@ define keyholder::agent(
         show_diff => false,
         owner     => 'root',
         group     => 'keyholder',
-        mode      => '0440',
+        mode      => '0444',
     }
 
     # generate the mapping between groups and keys. Used by ssh-agent-proxy
