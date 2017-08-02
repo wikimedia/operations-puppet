@@ -2323,12 +2323,10 @@ node /^labvirt101[0-8].eqiad.wmnet/ {
 # Wikidata query service
 node /^wdqs100[1-3]\.eqiad\.wmnet$/ {
     role(wdqs)
-    include ::lvs::realserver
 }
 
 node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
-    include ::lvs::realserver
 }
 
 node 'wezen.codfw.wmnet' {
