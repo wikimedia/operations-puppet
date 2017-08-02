@@ -27,3 +27,6 @@ service::configuration::statsd_host: 'statsd.eqiad.wmnet'
 
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
+
+profile::maps::postgresql_common::shared_buffers: '4GB'
+profile::maps::postgresql_common::maintenance_work_mem: '3GB'
