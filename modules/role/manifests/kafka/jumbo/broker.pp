@@ -1,8 +1,8 @@
-# == Class role::kafka::aggregate::broker
+# == Class role::kafka::jumbo::broker
 # Sets up a Kafka broker in the 'jumbo' Kafka cluster.
 #
 class role::kafka::jumbo::broker {
-    system::role { 'role::kafka::aggregate::broker':
+    system::role { 'role::kafka::jumbo::broker':
         description => "Kafka Broker in an 'jumbo' Kafka cluster",
     }
 

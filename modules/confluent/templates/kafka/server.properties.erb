@@ -96,6 +96,12 @@ num.partitions=<%= @num_partitions %>
 # Default to the number of brokers in this cluster.
 default.replication.factor=<%= @default_replication_factor %>
 
+<% if @offsets_topic_replication_factor -%>
+# The replication factor for the group metadata internal topics "__consumer_offsets" and "__transaction_state"
+# For anything other than development testing, a value greater than 1 is recommended for to ensure availability such as 3.
+offsets.topic.replication.factor=<%= @offsets_topic_replication_factor %>
+
+<% end -%>
 # When a producer sets acks to "all" (or "-1"), min.insync.replicas specifies the minimum number of
 # replicas that must acknowledge a write for the write to be considered successful. If this minimum
 # cannot be met, then the producer will raise an exception (either NotEnoughReplicas or
@@ -154,22 +160,17 @@ replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
 <% if @log_flush_interval_messages or @log_flush_interval_ms -%>
 ############################# Log Flush Policy #############################
 
-# Messages are immediately written to the filesystem but by default we only
-# fsync() to sync the OS cache lazily. The following configurations control the
-# flush of data to disk.
+# Messages are immediately written to the filesystem but by default we only fsync() to sync
+# the OS cache lazily. The following configurations control the flush of data to disk.
 # There are a few important trade-offs here:
 #    1. Durability: Unflushed data may be lost if you are not using replication.
-#    2. Latency: Very large flush intervals may lead to latency spikes when the
-#       flush does occur as there will be a lot of data to flush.
-#    3. Throughput: The flush is generally the most expensive operation, and a
-#       small flush interval may lead to exceessive seeks.
-# The settings below allow one to configure the flush policy to flush data
-# after a period of time or every N messages (or both). This can be done
-# globally and overridden on a per-topic basis.
+#    2. Latency: Very large flush intervals may lead to latency spikes when the flush does occur as there will be a lot of data to flush.
+#    3. Throughput: The flush is generally the most expensive operation, and a small flush interval may lead to exceessive seeks.
+# The settings below allow one to configure the flush policy to flush data after a period of time or
+# every N messages (or both). This can be done globally and overridden on a per-topic basis.
 
 <% if @log_flush_interval_messages -%>
-# The number of messages accumulated on a log partition before messages
-# are flushed to disk.
+# The number of messages to accept before forcing a flush of data to disk
 log.flush.interval.messages=<%= @log_flush_interval_messages %>
 
 <% end -%>
@@ -195,25 +196,24 @@ log.flush.interval.ms=<%= @log_flush_interval_ms %>
 # criteria are met. Deletion always happens from the end of the log.
 
 <% if @log_retention_hours -%>
-# The minimum age of a log file to be eligible for deletion
+# The minimum age of a log file to be eligible for deletion due to age
 log.retention.hours=<%= @log_retention_hours %>
 
 <% end -%>
 <% if @log_retention_bytes -%>
-# A size-based retention policy for logs. Segments are pruned from the log as
-# long as the remaining segments don't drop below log.retention.bytes.
+# A size-based retention policy for logs. Segments are pruned from the log as long as the remaining
+# segments don't drop below log.retention.bytes. Functions independently of log.retention.hours.
 log.retention.bytes=<%= @log_retention_bytes %>
 
 <% end -%>
 <% if @log_segment_bytes -%>
-# The maximum size of a log segment file. When this size is reached a new log
-# segment will be created.
+# The maximum size of a log segment file. When this size is reached a new log segment will be created.
 log.segment.bytes=<%= @log_segment_bytes %>
 
 <% end -%>
 <% if @log_retention_check_interval_ms -%>
-# The interval at which log segments are checked to see if they can be deleted
-# according to the retention policies
+# The interval at which log segments are checked to see if they can be deleted according
+# to the retention policies
 log.retention.check.interval.ms=<%= @log_retention_check_interval_ms %>
 
 <% end -%>
@@ -242,8 +242,7 @@ offsets.retention.minutes=<%= @offsets_retention_minutes %>
 # root directory for all kafka znodes.
 zookeeper.connect=<%= @zookeeper_connect %>
 
-# The maximum amount of time in ms that the client waits to establish a
-# connection to zookeeper
+# Timeout in ms for connecting to zookeeper
 zookeeper.connection.timeout.ms=<%= @zookeeper_connection_timeout_ms %>
 
 # Zookeeper session timeout. If the server fails to heartbeat to Zookeeper
@@ -253,10 +252,8 @@ zookeeper.connection.timeout.ms=<%= @zookeeper_connection_timeout_ms %>
 zookeeper.session.timeout.ms=<%= @zookeeper_session_timeout_ms %>
 
 ##################### Confluent Proactive Support ######################
-
-# If set to true, then the feature to collect and report support metrics
-# ("Metrics") is enabled.  If set to false, the feature is disabled.
-#
+# If set to true, and confluent-support-metrics package is installed
+# then the feature to collect and report support metrics
 confluent.support.metrics.enable=false
 
 # The customer ID under which support metrics will be collected and

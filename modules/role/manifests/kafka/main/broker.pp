@@ -36,27 +36,38 @@ class role::kafka::main::broker {
     }
 
     class { '::confluent::kafka::broker':
-        log_dirs                      => ['/srv/kafka/data'],
-        brokers                       => $config['brokers']['hash'],
-        zookeeper_connect             => $config['zookeeper']['url'],
-        nofiles_ulimit                => $nofiles_ulimit,
-        jmx_port                      => $config['jmx_port'],
+        log_dirs                        => ['/srv/kafka/data'],
+        brokers                         => $config['brokers']['hash'],
+        zookeeper_connect               => $config['zookeeper']['url'],
+        nofiles_ulimit                  => $nofiles_ulimit,
+        jmx_port                        => $config['jmx_port'],
 
         # I don't trust auto.leader.rebalance :)
-        auto_leader_rebalance_enable  => false,
+        auto_leader_rebalance_enable    => false,
 
-        default_replication_factor    => $replication_factor,
+        default_replication_factor      => $replication_factor,
 
         # Should be changed if brokers are upgraded.
-        inter_broker_protocol_version => '0.9.0.X',
+        inter_broker_protocol_version   => '0.9.0.X',
 
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
         # topics if necessary.
-        num_partitions                => 1,
+        num_partitions                  => 1,
 
         # Use LinkedIn recommended settings with G1 garbage collector.
-        jvm_performance_opts          => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+        jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+
+        # These defaults are set to keep no-ops from changes
+        # made in confluent module for T166162.
+        # They should be removed (since they are the kafka or module defaults)
+        # when this role gets converted to a profile.
+        replica_fetch_max_bytes         => 1048576,
+        log_flush_interval_messages     => 10000,
+        log_flush_interval_ms           => 1000,
+        log_cleanup_policy              => 'delete',
+        zookeeper_connection_timeout_ms => 6000,
+        zookeeper_session_timeout_ms    => 6000,
     }
 
     # Include Kafka Broker Jmxtrans class to

@@ -69,6 +69,8 @@ class profile::kafka::broker(
     $log_dirs                     = hiera('profile::kafka::broker::log_dirs'),
     $auto_leader_rebalance_enable = hiera('profile::kafka::broker::auto_leader_rebalance_enable'),
     $log_retention_hours          = hiera('profile::kafka::broker::log_retention_hours'),
+    $num_recovery_threads_per_data_dir = hiera('profile::kafka::broker::num_recovery_threads_per_data_dir'),
+    $num_io_threads               = hiera('profile::kafka::broker::num_io_threads'),
     $num_replica_fetchers         = hiera('profile::kafka::broker::num_replica_fetchers'),
     $nofiles_ulimit               = hiera('profile::kafka::broker::nofiles_ulimit'),
     $replica_maxlag_warning       = hiera('profile::kafka::broker::replica_maxlag_warning'),
@@ -155,7 +157,7 @@ class profile::kafka::broker(
         zookeeper_connect              => $config['zookeeper']['url'],
         nofiles_ulimit                 => $nofiles_ulimit,
         default_replication_factor     => min(3, $config['brokers']['size']),
-
+        offsets_topic_replication_factor => min(3,  $config['brokers']['size']),
         # TODO: This can be removed once it is a default
         # in ::confluent::kafka module
         inter_broker_protocol_version  => '0.11.0',
