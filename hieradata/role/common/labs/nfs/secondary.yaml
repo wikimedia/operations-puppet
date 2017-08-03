@@ -14,8 +14,5 @@ debdeploy::grains:
   debdeploy-labsnfs:
     value: standard
 
-profile::openstack::main::version: 'mitaka'
-openstack::version: mitaka
-
 admin::groups:
   - wmcs-roots

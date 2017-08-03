@@ -21,9 +21,10 @@ class openstack2::clientlib(
     }
 
     # assumption is any version not liberty is newer
-    if $version != 'liberty' {
-        # Python3 client packages are only available in Mitaka
-        #  and later repos
+    # Debian Jessie on liberty has py3 packages
+    # Ubuntu on liberty /does not/
+
+    if os_version('debian jessie') or os_version('ubuntu trusty') and $version != 'liberty' {
 
         $python3packages = [
             'python3-keystoneclient',
