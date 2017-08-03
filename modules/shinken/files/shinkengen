@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 #   Copyright 2014 Yuvi Panda <yuvipanda@gmail.com>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,7 +58,7 @@ class ConfigObject():
     def __str__(self):
         max_key_len = max(len(key) for key in self.properties.keys())
         config_str = ''.join('    %-*s   %s\n' % (max_key_len, key, value)
-                             for key, value in self.properties.items())
+                             for key, value in self.properties.iteritems())
         return 'define %s {\n%s}\n' % (self.type, config_str)
 
 
