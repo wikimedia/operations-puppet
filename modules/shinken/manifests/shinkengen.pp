@@ -8,12 +8,10 @@ class shinken::shinkengen {
     package { [
         'python3-yaml',
         'python3-requests',
+        'python-yaml',
+        'python-requests',
     ]:
         ensure => present,
-    }
-
-    if $::openstack::version == 'liberty' or ! $::openstack::version {
-        fail('openstack::version must be set to Mitaka or later for python3 dependencies.')
     }
 
     file { '/etc/shinkengen.yaml':
