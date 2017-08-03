@@ -90,7 +90,7 @@ class statistics::wmde::graphite(
         require   => File["${dir}/src"],
     }
 
-    logrotate::conf { 'statistics-wmde':
+    logrotate::conf { 'statistics-wmde-graphite':
         ensure  => present,
         content => template('statistics/wmde/logrotate.erb'),
         require => File[$log_dir],
