@@ -1,7 +1,5 @@
 # Licence AGPL version 3 or later
 #
-# Class for running WMDE releated analytics scripts.
-#
 # @author Addshore
 #
 # These scripts get metrics from a variety of places including:
@@ -11,28 +9,20 @@
 #  - Dumps
 #
 # And send the data to statsd or graphite directly
-class statistics::wmde {
-    Class['::statistics'] -> Class['::statistics::wmde']
+#
+# == Parameters
+#   dir           - string. Directory to use.
+#   user          - string. User to run scripts as.
+#   statsd_host   - string. Host to use for statsd data.
+#   graphite_host - string. Host to use for graphite data.
+#   wmde_secrets
+class statistics::wmde::graphite($dir, $user, $statsd_host, $graphite_host, $wmde_secrets)
+{
 
-    $statistics_working_path = $::statistics::working_path
-    class { '::statistics::wmde::user':
-        homedir => "${statistics_working_path}/analytics-wmde",
-    }
-    $user = $statistics::wmde::user::username
-    $dir = $statistics::wmde::user::homedir
     $data_dir  = "${dir}/data"
     $scripts_dir  = "${dir}/src/scripts"
-
-    $statsd_host = hiera('statsd')
-    # TODO graphite hostname should be in hiera
-    $graphite_host = 'graphite.eqiad.wmnet'
-
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
-
-    $wmde_secrets = hiera('wmde_secrets')
-
-
 
     # TODO: remove after stat1002/3 is gone: T152712
     if os_version('debian >= stretch') {

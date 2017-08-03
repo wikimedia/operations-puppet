@@ -50,8 +50,13 @@ class profile::statistics::private(
     # This needs work to move to stat1005: T170471
     # include ::statistics::discovery
 
-    # WMDE statistics scripts and cron jobs
-    include ::statistics::wmde
+    # WMDE releated statistics & analytics scripts.
+    class { '::statistics::wmde':
+        statsd_host   => hiera('statsd'),
+        # TODO graphite hostname should be in hiera
+        graphite_host => 'graphite.eqiad.wmnet',
+        wmde_secrets  => hiera('wmde_secrets'),
+    }
 
     # Discovery team statistics scripts and cron jobs
     include ::statistics::discovery
