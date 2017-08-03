@@ -8,4 +8,4 @@ uid = root
 gid = root
 read only = false
 path = /data/xmldatadumps/public/other/misc
-hosts allow = iridium.eqiad.wmnet
+hosts allow = iridium.eqiad.wmnet, phab1001.eqiad.wmnet
