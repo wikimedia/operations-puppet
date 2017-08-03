@@ -40,4 +40,7 @@ class statistics::wmde(
         wmde_secrets  => $wmde_secrets,
         require       => User[$user],
     }
+
+    includes ::statistics::wmde::wikidata_concepts
+
 }
