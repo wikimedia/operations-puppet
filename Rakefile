@@ -314,6 +314,70 @@ task :debug do
   puts t.tasks
 end
 
+
+# Global tasks. Only the ones deemed useful are added here.
+namespace :global do
+  desc "Build documentation"
+  task :doc do
+    Rake::Task['strings:generate'].invoke(
+      '**/*.pp **/*.rb',  # patterns
+      'false', # debug
+      'false', # backtrace
+      'rdoc',  # markup format
+    )
+  end
+
+  spec_failed = []
+  spec_tasks = []
+  namespace :spec do
+    Filelist['modules/*/spec'].each do path
+      next unless m.match('modules/(.+)/')
+      module_name = Regexp.last_match(1)
+      desc "Run spec for module #{module_name}"
+      task module_name do
+        spec_result = system("cd 'modules/#{module_name}' && rake spec")
+        spec_failed << module_name if !spec_result
+      end
+      spec_tasks << "spec:#{module_name}"
+    end
+  end
+  desc "Run all spec tests found in modules"
+  multitask :spec => tasks do
+    raise "Modules that failed to pass the spec tests: #{spec_failed.join ', '}" unless spec_failed.empty?
+  end
+end
+
+desc "Run spec tests found in modules"
+task :spec do
+    # Hold a list of modules not passing tests.
+    failed_modules = []
+    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs']
+
+    # Invoke rake whenever a module has a Rakefile.
+    spec_modules.each do |module_name|
+        next if ignored_modules.include? module_name
+        begin
+            Rake::Task["spec:#{module_name}"].invoke
+        rescue
+            failed_modules << module_name  # recording
+        end
+        puts "\n"
+    end
+
+    puts '-' * 80
+    puts 'Finished running tests for all modules'
+    puts '-' * 80
+
+    unless failed_modules.empty?
+        puts "\nThe following modules are NOT passing tests:\n"
+        puts '- ' + failed_modules * "\n- "
+        puts
+        raise "Some modules had failures, sorry."
+    end
+end
+end
+
+
 desc 'Show the help'
 task :help do
   puts "Puppet helper for operations/puppet.git
