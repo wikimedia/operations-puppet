@@ -16,27 +16,8 @@ class openstack2::cloudrepo(
             components => 'main',
             keyfile    => 'puppet:///modules/openstack/ubuntu-cloud.key';
         }
-    } elsif os_version('debian jessie') {
-        # Stock Jessie seems to come with Liberty packages, so only set
-        #  up a special repo for non-Liberty packages
-        if ($version != 'liberty') {
-            apt::conf { "mirantis-${version}-jessie-proxy":
-                priority => '80',
-                key      => "Acquire::http::Proxy::${version}-jessie.pkgs.mirantis.com",
-                value    => "http://webproxy.${::site}.wmnet:8080",
-            }
-            apt::repository { 'mirantis':
-                uri        => "http://${version}-jessie.pkgs.mirantis.com/debian",
-                dist       => "jessie-${version}-backports",
-                components => 'main',
-                keyfile    => "puppet:///modules/openstack/mirantis-${version}.key";
-            }
-            apt::repository { 'mirantis-nochange':
-                uri        => "http://${version}-jessie.pkgs.mirantis.com/debian",
-                dist       => "jessie-${version}-backports-nochange",
-                components => 'main',
-                keyfile    => "puppet:///modules/openstack/mirantis-${version}.key";
-            }
-        }
+    } elsif os_version('debian jessie') and ($version != 'liberty') {
+        # Stock Jessie seems to come with Liberty packages
+        fail("T169099: There is no plan for ${version} on Jessie")
     }
 }
