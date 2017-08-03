@@ -5,14 +5,8 @@
 class shinken::shinkengen {
     include shinken
 
-    package { [
-        'python3-yaml',
-        'python3-requests',
-        'python-yaml',
-        'python-requests',
-    ]:
-        ensure => present,
-    }
+    require_package('python-requests',
+                    'python-yaml')
 
     file { '/etc/shinkengen.yaml':
         content => template('shinken/shinkengen.yaml.erb'),
