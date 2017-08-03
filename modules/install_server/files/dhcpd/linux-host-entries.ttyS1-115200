@@ -1855,7 +1855,7 @@ host druid1005 {
 }
 
 host druid1006 {
-    hardware ethernet ;
+    hardware ethernet 18:66:da:ac:75:cd;
     fixed-address druid1006.eqiad.wmnet;
 }
 
