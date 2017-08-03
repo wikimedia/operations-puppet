@@ -35,6 +35,12 @@ class role::labs::puppetmaster::frontend() {
     include ::profile::puppetmaster::labsenc
     include ::profile::puppetmaster::labsencapi
 
+    if ! defined(Class['puppetmaster::certmanager']) {
+        class { 'puppetmaster::certmanager':
+            remote_cert_cleaner => hiera('labs_certmanager_hostname'),
+        }
+    }
+
     # validatelabsfqdn will look up an instance certname in nova
     #  and make sure it's for an actual instance before signing
     file { '/usr/local/sbin/validatelabsfqdn.py':
