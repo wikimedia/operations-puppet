@@ -31,6 +31,7 @@ class role::icinga {
     include mysql
     include ::standard
     include ::base::firewall
+    include snmp::mibs
 
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
