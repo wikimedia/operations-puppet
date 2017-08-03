@@ -25,6 +25,8 @@ class rsyslog::receiver (
     $archive_directory  = '/srv/syslog/archive',
 ) {
 
+    ensure_package('rsyslog-gnutls')
+
     if ($log_directory == $archive_directory) {
         fail("rsyslog log and archive are the same: ${log_directory}")
     }
