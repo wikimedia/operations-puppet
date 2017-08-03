@@ -41,4 +41,12 @@ class statistics::wmde(
         wmde_secrets  => $wmde_secrets,
         require       => User[$user],
     }
+
+    # Wikidata concepts processing
+    class { '::statistics::wmde::wikidata_concepts':
+        dir           => "${homedir}/wikidata_concepts",
+        user          => $user,
+        require       => User[$user],
+    }
+
 }
