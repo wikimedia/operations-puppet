@@ -28,4 +28,9 @@ class webperf::statsv {
         provider  => 'systemd',
         subscribe => File['/lib/systemd/system/statsv.service'],
     }
+
+    nrpe::monitor_service { 'statsv':
+        description  => 'statsv process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C python -a statsv',
+    }
 }
