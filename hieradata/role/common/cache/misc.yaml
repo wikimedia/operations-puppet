@@ -97,9 +97,6 @@ cache::app_directors:
   phabricator:
     backends:
       eqiad: 'iridium.eqiad.wmnet'
-  phabricator-new:
-    backends:
-      eqiad: 'phab1001.eqiad.wmnet'
   planet:
     backends:
       eqiad: 'planet1001.eqiad.wmnet'
