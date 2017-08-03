@@ -13,7 +13,6 @@ class role::labs::puppetmaster::frontend() {
     $horizon_host = hiera('labs_horizon_host')
     $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
     $designate_host_ip = ipresolve(hiera('labs_designate_hostname'), 4)
-    $designate_host_ipv6 = ipresolve(hiera('labs_designate_hostname'), 6)
 
     # XXX: break this up into profiles and
     # then make roles for each openstack deployment for hiera
@@ -89,7 +88,7 @@ class role::labs::puppetmaster::frontend() {
             rule => "saddr (${horizon_host_ip} ${designate_host_ip}) proto tcp dport 8101 ACCEPT;",
         },
         puppetcertcleaning => {
-            rule => "saddr (${designate_host_ip} ${designate_host_ipv6}) proto tcp dport 22 ACCEPT;",
+            rule => "saddr (${designate_host_ip}) proto tcp dport 22 ACCEPT;",
         },
         puppetbackendgetter => {
             rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA)) proto tcp dport 8100 ACCEPT;",
