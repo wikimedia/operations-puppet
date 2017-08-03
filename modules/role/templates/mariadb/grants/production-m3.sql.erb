@@ -1,3 +1,4 @@
+-- start updating grants
 -- haproxy@dbproxy1003
 
 GRANT USAGE
@@ -8,14 +9,14 @@ GRANT USAGE
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.32.157';
 
--- phadmin@iridium
+-- phadmin@phab1001
 
 GRANT USAGE
-    ON *.* TO 'phadmin'@'10.64.32.150'
+    ON *.* TO 'phadmin'@'10.64.16.8'
     IDENTIFIED BY PASSWORD '*4882BF5FB61F6C0D5935BFA407BB6B6086421A5F';
 
 GRANT ALL PRIVILEGES
-    ON `phabricator%`.* TO 'phadmin'@'10.64.32.150';
+    ON `phabricator%`.* TO 'phadmin'@'10.64.16.8';
 
 -- phadmin@dbproxy1003
 GRANT USAGE
@@ -33,17 +34,17 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.32.157';
 
--- phuser@iridium
+-- phuser@phab1001
 
 GRANT REPLICATION CLIENT
-    ON *.* TO 'phuser'@'10.64.32.150'
+    ON *.* TO 'phuser'@'10.64.16.8'
     IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
 
 GRANT CREATE, DROP
-    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.32.150';
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.8';
 
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
-    ON `phabricator%`.* TO 'phuser'@'10.64.32.150';
+    ON `phabricator%`.* TO 'phuser'@'10.64.16.8';
 
 -- phuser@dbproxy1003
 
@@ -52,7 +53,7 @@ GRANT REPLICATION CLIENT
     IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
 
 GRANT CREATE, DROP
-    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.0.198';
+    ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.8';
 
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.64.0.198';
@@ -69,15 +70,15 @@ GRANT CREATE, DROP
 GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
     ON `phabricator%`.* TO 'phuser'@'10.64.32.157';
 
--- phstats@iridium
+-- phstats@phab1001
 
 GRANT USAGE
-    ON *.* TO 'phstats'@'10.64.32.150'
+    ON *.* TO 'phstats'@'10.64.16.8'
     IDENTIFIED BY PASSWORD '*FB8AA9D0E19A01A13E7FB1037FC964F7887D22F5';
-GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.32.150';
-GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.32.150';
-GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.32.150';
-GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.32.150';
+GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.16.8';
+GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.16.8';
+GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.16.8';
+GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.16.8';
 
 -- phstats@dbproxy1003
 
@@ -99,14 +100,14 @@ GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.32.157';
 GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.32.157';
 GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.32.157';
 
--- phmanifest@iridium
+-- phmanifest@phab1001
 
 GRANT USAGE
-    ON *.* TO 'phmanifest'@'10.64.32.150'
+    ON *.* TO 'phmanifest'@'10.64.16.8'
     IDENTIFIED BY PASSWORD '*57879C423C685FDF9F3F4E3DB71207E76A8384C4';
 
 GRANT SELECT
-    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.32.150';
+    ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.8';
 
 -- phmanifest@dbproxy1003
 
