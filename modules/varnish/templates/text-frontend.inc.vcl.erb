@@ -44,7 +44,26 @@ sub mobile_redirect {
 	}
 }
 
+sub chunked_te_exploit_workaround {
+	if (req.http.transfer-encoding ~ "(?i)chunked") {
+		C{
+		struct dummy_req {
+			unsigned magic;
+			int step;
+			int req_body_status;
+		};
+		((struct dummy_req *)ctx->req)->req_body_status = 5;
+		}C
+
+		return (synth(503, "Bad request"));
+	}
+}
+
 sub cluster_fe_recv_pre_purge {
+	// VSV00001 - DoS vulnerability in Varnish Cache
+	// https://www.varnish-cache.org/lists/pipermail/varnish-announce/2017-August/000722.html
+	call chunked_te_exploit_workaround;
+
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
 		return (synth(403, "Noise"));
