@@ -8,22 +8,19 @@ class mariadb::packages_wmf(
 #    $version   = None,          # reserved for future usage
     ) {
 
-    package { [
+    require_package (
         'libaio1',            # missing dependency on packages < 10.0.27
         'percona-toolkit',
         'libjemalloc1',       # missing dependency on packages < 10.0.27
         'pigz',
         'grc',
         'python3-pymysql',    # for mariadb_check.py
-    ]:
-        ensure => present,
-    }
+    )
 
     # Do not try to install xtrabackup on stretch, it has been removed.
     # Maybe mariabackup is enough?
     if (os_version('debian < stretch || ubuntu >= trusty')) {
-        package { 'percona-xtrabackup':
-            ensure => present,
+        require_package ('percona-xtrabackup')
         }
     }
     # mariadb10 parameter is deprecated, and it will be eliminated as soon
@@ -51,9 +48,8 @@ class mariadb::packages_wmf(
         case $mariadb_package {
             'wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101', 'wmf-mysql57' :
             {
-                package { $mariadb_package:
-                    ensure => present,
-                }
+                require_package( $mariadb_package )
+
                 if !os_version('debian >= stretch') {
                     # if you have installed the wmf mariadb package,
                     # create a custom, safer mysqld_safe
