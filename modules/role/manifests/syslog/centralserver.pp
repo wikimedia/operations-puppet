@@ -19,6 +19,13 @@ class role::syslog::centralserver {
         srange  => '$PRODUCTION_NETWORKS',
     }
 
+    ferm::service { 'rsyslog-receiver':
+        proto   => 'tcp',
+        port    => 6514,
+        notrack => true,
+        srange  => '$PRODUCTION_NETWORKS',
+    }
+
     class { 'rsyslog::receiver': }
 
     mtail::program { 'kernel':
