@@ -37,8 +37,6 @@ require 'puppet-syntax'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'rubocop/rake_task'
 
-
-
 # Monkey-patch PuppetSyntax and its rake task
 module PuppetSyntax
   @manifests_paths = ["**/*.pp"]
@@ -67,7 +65,7 @@ class SpecDependencies
       module_name = module_from_filename(file)
       symlinks = YAML.safe_load(File.open(file))['fixtures']['symlinks'].keys.select{ |x| x != module_name }
       symlinks.each do |dependency|
-        @deps[dependency]||= []
+        @deps[dependency] ||= []
         @deps[dependency] << module_name
       end
     end
@@ -88,6 +86,7 @@ class SpecDependencies
   end
 
   private
+
   def modules_modified(filelist)
     modules = Set.new
     filelist.each do |file|
@@ -97,7 +96,6 @@ class SpecDependencies
     end
     modules.to_a
   end
-
 
   def module_from_filename(name)
     if %r{modules/([^/]+)} =~ name
@@ -109,7 +107,6 @@ class SpecDependencies
 end
 
 class TaskGen < ::Rake::TaskLib
-
   attr_accessor :tasks, :failed_specs
 
   def initialize(path)
@@ -227,13 +224,13 @@ class TaskGen < ::Rake::TaskLib
     # Err on the side of caution and scan all files in that case.
     # Also, if the rubocop exceptions changed, check the whole tree
     global_files = ['Gemfile', '.rubocop.todo.yml']
-
-    ruby_files = filter_files_by("**/*.rb", "**/Rakefile").concat global_files
+    ruby_files = filter_files_by("**/*.rb", "**/Rakefile", 'Rakefile', 'Gemfile', '**/.rubocop.todo.yml')
     return [] if ruby_files.empty?
     rubocop_task = RuboCop::RakeTask.new(:rubocop)
-    if @changed_files.select{ |f| global_files.include?f }
+    if @changed_files.select{ |f| global_files.include?f }.empty?
       rubocop_task.patterns = ruby_files
     end
+
     [:rubocop]
   end
 
@@ -261,7 +258,6 @@ class TaskGen < ::Rake::TaskLib
     end
     desc "Run spec tests found in modules"
     multitask :spec => spec_modules.map{ |m| "spec:#{m}" } do
-
       raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}" if !@failed_specs.empty?
     end
     [:spec]
@@ -308,7 +304,6 @@ class TaskGen < ::Rake::TaskLib
   end
 end
 
-
 t = TaskGen.new('.')
 
 desc 'Run all actual tests in parallel for changes in HEAD'
@@ -318,30 +313,6 @@ task :debug do
   puts "Tasks that would be run: "
   puts t.tasks
 end
-
-
-# Now set up some global jobs, that can be used to run
-# validators on the whole tree if needed.
-namespace :global do
-  # Puppet-syntax global job
-  PuppetSyntax.fail_on_deprecation_notices = false
-  PuppetSyntax.manifests_paths = ["**/*.pp"]
-  PuppetSyntax.templates_paths = ["**/*.erb"]
-  PuppetSyntax.hieradata_paths = ["hieradata/**/*.yaml", "conftool-data/**/*.yaml"]
-  PuppetSyntax::RakeTask.new
-  # Puppet-lint global job
-  PuppetLint::RakeTask.new :lint do |config|
-    config.fail_on_warnings = true  # be strict
-    config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
-  end
-
-  desc 'Run tox tests'
-  task :tox do
-    raise "Running tox failed" unless system('tox')
-  end
-end
-
-
 
 desc 'Show the help'
 task :help do
