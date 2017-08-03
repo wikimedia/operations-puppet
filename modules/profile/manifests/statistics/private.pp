@@ -2,6 +2,8 @@
 #
 class profile::statistics::private(
     $statistics_servers = hiera('statistics_servers'),
+    $statsd_host = hiera('statsd'),
+    $wmde_secrets = hiera('wmde_secrets')
 ) {
     include ::standard
     include ::deployment::umask_wikidev
@@ -50,8 +52,13 @@ class profile::statistics::private(
     # This needs work to move to stat1005: T170471
     # include ::statistics::discovery
 
-    # WMDE statistics scripts and cron jobs
-    include ::statistics::wmde
+    # WMDE releated statistics & analytics scripts.
+    class { '::statistics::wmde':
+        statsd_host   => $statsd_host,
+        # TODO graphite hostname should be in hiera
+        graphite_host => 'graphite.eqiad.wmnet',
+        wmde_secrets  => $wmde_secrets,
+    }
 
     # Discovery team statistics scripts and cron jobs
     include ::statistics::discovery
