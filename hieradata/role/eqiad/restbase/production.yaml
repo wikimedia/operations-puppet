@@ -1,18 +1,25 @@
 profile::restbase::seeds:
-    - restbase1007-a.eqiad.wmnet
-    - restbase1007-b.eqiad.wmnet
-    - restbase1008-a.eqiad.wmnet
-    - restbase1008-b.eqiad.wmnet
-    - restbase1009-a.eqiad.wmnet
-    - restbase1009-b.eqiad.wmnet
-    - restbase1010-a.eqiad.wmnet
-    - restbase1010-b.eqiad.wmnet
-    - restbase1011-a.eqiad.wmnet
-    - restbase1011-b.eqiad.wmnet
-    - restbase1012-a.eqiad.wmnet
-    - restbase1012-b.eqiad.wmnet
-    - restbase1013-a.eqiad.wmnet
-    - restbase1013-b.eqiad.wmnet
+  - restbase1007-a.eqiad.wmnet
+  - restbase1007-b.eqiad.wmnet
+  - restbase1008-a.eqiad.wmnet
+  - restbase1008-b.eqiad.wmnet
+  - restbase1009-a.eqiad.wmnet
+  - restbase1009-b.eqiad.wmnet
+  - restbase1010-a.eqiad.wmnet
+  - restbase1010-b.eqiad.wmnet
+  - restbase1011-a.eqiad.wmnet
+  - restbase1011-b.eqiad.wmnet
+  - restbase1012-a.eqiad.wmnet
+  - restbase1012-b.eqiad.wmnet
+  - restbase1013-a.eqiad.wmnet
+  - restbase1013-b.eqiad.wmnet
+profile::restbase::seeds_ng:
+  - restbase1016-a.eqiad.wmnet
+  - restbase1016-b.eqiad.wmnet
+  # - restbase1017-a.eqiad.wmnet
+  # - restbase1017-b.eqiad.wmnet
+  # - restbase1018-a.eqiad.wmnet
+  # - restbase1018-b.eqiad.wmnet
 # used for rate limiting
 profile::restbase::hosts:
   - restbase1007.eqiad.wmnet
@@ -24,6 +31,9 @@ profile::restbase::hosts:
   - restbase1013.eqiad.wmnet
   - restbase1014.eqiad.wmnet
   - restbase1015.eqiad.wmnet
+  - restbase1016.eqiad.wmnet
+  - restbase1017.eqiad.wmnet
+  - restbase1018.eqiad.wmnet
 
 debdeploy::grains:
   debdeploy-restbase-eqiad:
