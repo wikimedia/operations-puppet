@@ -2332,6 +2332,10 @@ node /^wdqs100[1-3]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+node /^wdqs100[45]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
     include ::lvs::realserver
