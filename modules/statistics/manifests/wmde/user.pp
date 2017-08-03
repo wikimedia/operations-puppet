@@ -3,9 +3,10 @@
 # Class containing a user for running WMDE releated analytics scripts.
 #
 # @author Addshore
-class statistics::wmde::user($homedir = '/srv/analytics-wmde') {
-
-    $username = 'analytics-wmde'
+class statistics::wmde::user(
+    $username = 'analytics-wmde',
+    $homedir = '/srv/analytics-wmde'
+) {
 
     group { $username:
         ensure => 'present',
