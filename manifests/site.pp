@@ -463,11 +463,11 @@ node 'db1064.eqiad.wmnet' {
 
 # s4 (commons) core production dbs on codfw
 # codfw master
-node 'db2019.codfw.wmnet' {
+node 'db2051.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(37|44|51|58|65|73)\.codfw\.wmnet/ {
+node /^db20(19|37|44|58|65|73)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
