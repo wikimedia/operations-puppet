@@ -38,4 +38,4 @@ gerrit::jetty::replication:
 
 # Allow use of supplemental key for scap deployment
 profile::base::ssh_server_settings:
-    ssh_authorized_keys_file: '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap'
+    authorized_keys_file: '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap'
