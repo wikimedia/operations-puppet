@@ -33,7 +33,7 @@ class statistics::wmde(
 
     # Scripts & crons that generate data for graphite
     class { '::statistics::wmde::graphite':
-        dir           => $homedir,
+        dir           => "${homedir}/graphite",
         user          => $user,
         statsd_host   => $statsd_host,
         graphite_host => $graphite_host,
