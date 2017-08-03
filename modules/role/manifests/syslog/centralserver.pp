@@ -12,9 +12,16 @@ class role::syslog::centralserver {
         description => 'Central syslog server'
     }
 
-    ferm::service { 'rsyslog-receiver':
+    ferm::service { 'rsyslog-receiver_udp':
         proto   => 'udp',
         port    => 514,
+        notrack => true,
+        srange  => '$PRODUCTION_NETWORKS',
+    }
+
+    ferm::service { 'rsyslog-receiver_tcp':
+        proto   => 'tcp',
+        port    => 6514,
         notrack => true,
         srange  => '$PRODUCTION_NETWORKS',
     }
