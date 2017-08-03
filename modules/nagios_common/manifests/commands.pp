@@ -36,6 +36,9 @@ class nagios_common::commands(
         'libtime-duration-perl',
         # check_etcd_mw_config_lastindex
         'python3-requests',
+        # check_bfd
+        'python3-cffi-backend',
+        'python3-snimpy',
     ])
 
     file { "${config_dir}/commands":
@@ -47,6 +50,7 @@ class nagios_common::commands(
 
     nagios_common::check_command { [
         'check_all_memcached.php',
+        'check_bfd.py',
         'check_bgp',
         'check_dsh_groups',
         'check_etcd_mw_config_lastindex',

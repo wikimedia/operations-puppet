@@ -54,6 +54,7 @@ class profile::icinga(
     include ::profile::cache::kafka::alerts
 
     class { '::icinga::monitor::etcd_mw_config': }
+    class { '::snmp::mibs': }
 
     create_resources(monitoring::group, $monitoring_groups)
 

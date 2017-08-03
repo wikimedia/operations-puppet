@@ -7,9 +7,7 @@
 #   include ::snmp
 
 class snmp {
-    package { 'snmp':
-        ensure => present,
-    }
+    require_package('snmp')
 
     file { '/etc/snmp/snmp.conf':
         owner  => 'root',
