@@ -36,6 +36,8 @@ require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'rubocop/rake_task'
+# Needed by docs
+require 'puppet-strings/tasks/generate'
 
 # Monkey-patch PuppetSyntax and its rake task
 module PuppetSyntax
@@ -312,6 +314,38 @@ multitask :test => t.tasks
 task :debug do
   puts "Tasks that would be run: "
   puts t.tasks
+end
+
+# Global tasks. Only the ones deemed useful are added here.
+namespace :global do
+  desc "Build documentation"
+  task :doc do
+    Rake::Task['strings:generate'].invoke(
+      '**/*.pp **/*.rb',  # patterns
+      'false', # debug
+      'false', # backtrace
+      'rdoc',  # markup format
+    )
+  end
+
+  spec_failed = []
+  spec_tasks = []
+  namespace :spec do
+    FileList['modules/*/spec'].each do |path|
+      next unless path.match('modules/(.+)/')
+      module_name = Regexp.last_match(1)
+      desc "Run spec for module #{module_name}"
+      task module_name do
+        spec_result = system("cd 'modules/#{module_name}' && rake spec")
+        spec_failed << module_name if !spec_result
+      end
+      spec_tasks << "spec:#{module_name}"
+    end
+  end
+  desc "Run all spec tests found in modules"
+  multitask :spec => spec_tasks do
+    raise "Modules that failed to pass the spec tests: #{spec_failed.join ', '}" unless spec_failed.empty?
+  end
 end
 
 desc 'Show the help'
