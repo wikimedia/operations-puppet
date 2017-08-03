@@ -7,6 +7,9 @@
 # [*udp_port*]
 #   Listen for UDP syslog on this port
 #
+# [*tcp_port*]
+#   Listen for TCP syslog on this port (TLS only)
+#
 # [*log_retention_days*]
 #   How long to keep logs in $archive_directory for
 #
@@ -20,13 +23,28 @@
 
 class rsyslog::receiver (
     $udp_port           = 514,
+    $tcp_port           = 6514,
     $log_retention_days = 90,
     $log_directory      = '/srv/syslog',
     $archive_directory  = '/srv/syslog/archive',
 ) {
+    require_package('rsyslog-gnutls')
 
     if ($log_directory == $archive_directory) {
         fail("rsyslog log and archive are the same: ${log_directory}")
+    }
+
+    # SSL configuration
+    ::base::expose_puppet_certs { '/etc/rsyslog-receiver/':
+        provide_private => true,
+    }
+
+    file { '/etc/rsyslog-receiver':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500',
+        before => Base::Expose_Puppet_Certs['/etc/rsyslog-receiver'],
     }
 
     rsyslog::conf { 'receiver':
