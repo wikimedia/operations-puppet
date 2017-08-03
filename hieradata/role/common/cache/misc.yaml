@@ -97,6 +97,9 @@ cache::app_directors:
   phabricator:
     backends:
       eqiad: 'iridium.eqiad.wmnet'
+  phabricator_new:
+    backends:
+      eqiad: 'phab1001.eqiad.wmnet'
   planet:
     backends:
       eqiad: 'planet1001.eqiad.wmnet'
@@ -220,6 +223,8 @@ cache::req_handling:
     director: 'graphite1001'
   phabricator.wikimedia.org:
     director: 'phabricator'
+  phabricator-new.wikimedia.org:
+    director: 'phabricator_new'
   phab.wmfusercontent.org:
     director: 'phabricator'
   pivot.wikimedia.org:
