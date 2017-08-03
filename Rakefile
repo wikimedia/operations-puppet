@@ -227,13 +227,13 @@ class TaskGen < ::Rake::TaskLib
     # Err on the side of caution and scan all files in that case.
     # Also, if the rubocop exceptions changed, check the whole tree
     global_files = ['Gemfile', '.rubocop.todo.yml']
-
-    ruby_files = filter_files_by("**/*.rb", "**/Rakefile").concat global_files
+    ruby_files = filter_files_by("**/*.rb", "**/Rakefile", 'Gemfile', '.rubocop.todo.yml')
     return [] if ruby_files.empty?
     rubocop_task = RuboCop::RakeTask.new(:rubocop)
-    if @changed_files.select{ |f| global_files.include?f }
+    unless @changed_files.select{ |f| global_files.include?f }
       rubocop_task.patterns = ruby_files
     end
+
     [:rubocop]
   end
 
@@ -312,35 +312,12 @@ end
 t = TaskGen.new('.')
 
 desc 'Run all actual tests in parallel for changes in HEAD'
-multitask :test => t.tasks
+task :test => t.tasks
 # Show what we would run
 task :debug do
   puts "Tasks that would be run: "
   puts t.tasks
 end
-
-
-# Now set up some global jobs, that can be used to run
-# validators on the whole tree if needed.
-namespace :global do
-  # Puppet-syntax global job
-  PuppetSyntax.fail_on_deprecation_notices = false
-  PuppetSyntax.manifests_paths = ["**/*.pp"]
-  PuppetSyntax.templates_paths = ["**/*.erb"]
-  PuppetSyntax.hieradata_paths = ["hieradata/**/*.yaml", "conftool-data/**/*.yaml"]
-  PuppetSyntax::RakeTask.new
-  # Puppet-lint global job
-  PuppetLint::RakeTask.new :lint do |config|
-    config.fail_on_warnings = true  # be strict
-    config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
-  end
-
-  desc 'Run tox tests'
-  task :tox do
-    raise "Running tox failed" unless system('tox')
-  end
-end
-
 
 
 desc 'Show the help'
