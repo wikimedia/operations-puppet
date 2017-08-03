@@ -39,6 +39,7 @@ class webperf::navtiming(
     }
 
     file { '/lib/systemd/system/navtiming.service':
+        # uses $endpoint, $eventlogging_path, $statsd_host, $statsd_port
         content => template('webperf/navtiming.systemd.erb'),
         notify  => Service['navtiming'],
     }
