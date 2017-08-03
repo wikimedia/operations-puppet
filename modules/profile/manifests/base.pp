@@ -74,7 +74,11 @@ class profile::base(
 
     # TODO: Fix the whole top-scope variable override thing
     # we currently have for these two
-    include ::role::salt::minions
+    class { '::role::salt::minions':
+        # The minion id comes from DNS and we need /etc/resolv.conf to have
+        # search <project>.<site>.wmflabs to have a minion id matching the fqdn
+        require => Class['::base::resolving'],
+    }
     include ::trebuchet
 
     class { '::nrpe':
