@@ -12,3 +12,4 @@ admin::groups:
 debdeploy::grains:
   debdeploy-stat:
     value: standard
+graphite_host: 'graphite-in.eqiad.wmnet'
