@@ -88,7 +88,7 @@ class role::labs::puppetmaster::frontend() {
             rule => "saddr (${horizon_host_ip} ${designate_host_ip}) proto tcp dport 8101 ACCEPT;",
         },
         puppetcertcleaning => {
-            rule => "saddr (${designate_host_ip}) proto tcp dport 22 ACCEPT;",
+            rule => "saddr (${designate_host_ip} @resolve(hiera('labs_designate_hostname'), AAAA)) proto tcp dport 22 ACCEPT;",
         },
         puppetbackendgetter => {
             rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA)) proto tcp dport 8100 ACCEPT;",
