@@ -24,7 +24,6 @@ class statistics::wmde::graphite(
     $wmde_secrets,
 ) {
 
-    $data_dir  = "${dir}/data"
     $scripts_dir  = "${dir}/src/scripts"
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
