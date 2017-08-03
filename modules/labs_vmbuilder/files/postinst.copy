@@ -7,7 +7,6 @@
 /etc/ldap.conf /etc/ldap.conf
 /etc/nscd.conf /etc/nscd.conf
 /etc/nsswitch.conf /etc/nsswitch.conf
-/etc/ssh/sshd_config /etc/ssh/sshd_config
 /etc/sudoers.d/ops /etc/sudoers.d/ops
 /etc/sudoers /etc/sudoers
 /etc/vmbuilder/files/install_sudo.sh /root/install_sudo.sh
