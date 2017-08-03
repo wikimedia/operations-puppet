@@ -163,7 +163,7 @@ class role::labs::dnsrecursor {
         'hawiktionary', 'hawwiki', 'hewiki', 'hewikibooks',
         'hewikinews', 'hewikiquote', 'hewikisource', 'hewikivoyage',
         'hewiktionary', 'hifwiki', 'hiwiki', 'hiwikibooks',
-        'hiwikiquote', 'hiwiktionary', 'howiki', 'hrwiki',
+        'hiwikiquote', 'hiwiktionary', 'hiwikiversity', 'howiki', 'hrwiki',
         'hrwikibooks', 'hrwikiquote', 'hrwikisource', 'hrwiktionary',
         'hsbwiki', 'hsbwiktionary', 'htwiki', 'htwikisource',
         'huwiki', 'huwikibooks', 'huwikinews', 'huwikiquote',
