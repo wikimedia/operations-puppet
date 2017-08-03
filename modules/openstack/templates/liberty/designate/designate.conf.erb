@@ -306,9 +306,9 @@ control_exchange = nova
 
 certmanager_user = certmanager
 fqdn_format = '%(hostname)s.%(project_name)s.%(domain)s'
-puppet_master_host = "<%= @designateconfig['controller_hostname'] %>"
+puppet_master_host = "<%= @designateconfig['puppetmaster_hostname'] %>"
 salt_master_host = "<%= @designateconfig['controller_hostname'] %>"
-puppet_config_backend  = "http://<%= @designateconfig['controller_hostname'] %>:8101/v1"
+puppet_config_backend  = "http://<%= @designateconfig['puppetmaster_hostname'] %>:8101/v1"
 
 #------------------------
 # Neutron Floating Handler
