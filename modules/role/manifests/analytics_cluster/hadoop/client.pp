@@ -6,15 +6,15 @@ class role::analytics_cluster::hadoop::client {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
     # to install CDH packages from our apt repo mirror.
-    require ::role::analytics_cluster::apt
+    require ::profile::cdh::apt
 
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
-    # and are made available by role::analytics_cluster::apt.
+    # and are made available by profile::cdh::apt.
     Exec['apt-get update'] -> Class['::role::analytics_cluster::hadoop::client']
 
     # Need Java before Hadoop is installed.
-    require ::role::analytics_cluster::java
+    class { '::java::analytics': }
 
     $hadoop_var_directory                     = '/var/lib/hadoop'
     $hadoop_name_directory                    = "${hadoop_var_directory}/name"
@@ -82,9 +82,8 @@ class role::analytics_cluster::hadoop::client {
             'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
         },
     }
-    # This will only enable logstash logging if
-    # $cdh::hadoop::gelf_logging_enabled is true.
-    include ::role::analytics_cluster::hadoop::logstash
+
+    include ::profile::hadoop::logstash
 
     # Include ores::base class to get dependencies for using ORES in Hadoop.
     # NOTE: This conditional is temporary, and will be removed once stat1002
