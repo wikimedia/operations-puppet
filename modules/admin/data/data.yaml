@@ -370,7 +370,9 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl mask wdqs-updater',
                  'ALL = NOPASSWD: /bin/systemctl unmask wdqs-updater',
                  'ALL = (blazegraph) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+                 'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = NOPASSWD: /usr/local/bin/depool',
+                 'ALL = NOPASSWD: /usr/local/bin/pool']
   mailman-admins:
     gid: 757
     description: Admins for mailman
