@@ -24,7 +24,7 @@ class phabricator::vcs (
 
     $phd_user = $settings['phd.user']
     $vcs_user = $settings['diffusion.ssh-user']
-    $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
+    $ssh_hook_path = "/usr/libexec/phabricator-ssh-hook.sh"
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
 
     user { $vcs_user:
@@ -55,11 +55,19 @@ class phabricator::vcs (
         group   => 'root',
     }
 
+    file { '/usr/libexec':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { $ssh_hook_path:
         content => template('phabricator/vcs/phabricator-ssh-hook.sh.erb'),
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
+        require => File['/usr/libexec'],
     }
 
     if empty($listen_addresses) {
