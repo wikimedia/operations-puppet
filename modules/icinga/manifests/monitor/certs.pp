@@ -68,4 +68,11 @@ class icinga::monitor::certs {
         host          => 'wikitech-static.wikimedia.org',
         contact_group => 'wikitech-static',
     }
+
+    monitoring::service { 'https_status-wikimedia':
+        description   => 'HTTPS-status-wikimedia-org',
+        check_command => 'check_ssl_http_letsencrypt!status.wikimedia.org',
+        host          => 'wikitech-static.wikimedia.org',
+        contact_group => 'wikitech-static',
+    }
 }
