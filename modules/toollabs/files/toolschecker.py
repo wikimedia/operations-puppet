@@ -38,7 +38,7 @@ def check(endpoint):
 @check('/labs-puppetmaster/eqiad')
 def puppet_catalog_check():
     # Verify that we can get this host's catalog from the puppet server
-    puppetmaster = "labs-puppetmaster-eqiad.wikimedia.org"
+    puppetmaster = "labs-puppetmaster.wikimedia.org"
     fqdn = socket.getfqdn()
     keyfile = "/var/lib/toolschecker/puppetcerts/key.pem"
     certfile = "/var/lib/toolschecker/puppetcerts/cert.pem"
