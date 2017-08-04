@@ -39,11 +39,9 @@ class base {
     include base::kernel
     include base::debdeploy
 
-    # lint:ignore:quoted_booleans
-    if $::is_virtual == 'false' {
+    if $::is_virtual == false {
         include ipmi::monitor
     }
-    # lint:endignore
 
     if os_version('debian >= jessie') {
         include base::initramfs
