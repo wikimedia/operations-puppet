@@ -329,6 +329,13 @@ if __name__ == "__main__":
               " values can be given space-separated."),
         default="/usr/local/lib/mediawiki-config"
     )
+
+    argparser.add_argument(
+        "--mysql-socket",
+        help=("Path to MySQL socket file"),
+        default="/tmp/mysql.sock"
+    )
+
     argparser.add_argument(
         '--debug',
         help='Turn on debug logging',
@@ -376,7 +383,7 @@ if __name__ == "__main__":
     dbh = pymysql.connect(
         user=config["mysql_user"],
         passwd=config["mysql_password"],
-        unix_socket="/tmp/mysql.sock",
+        unix_socket=args.mysql_socket,
         charset="utf8"
     )
 

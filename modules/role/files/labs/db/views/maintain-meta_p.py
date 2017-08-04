@@ -153,6 +153,12 @@ def main():
     )
 
     argparser.add_argument(
+        "--mysql-socket",
+        help=("Path to MySQL socket file"),
+        default="/tmp/mysql.sock"
+    )
+
+    argparser.add_argument(
         '--debug',
         help='Turn on debug logging',
         action='store_true'
@@ -177,7 +183,7 @@ def main():
     dbh = pymysql.connect(
         user=config["mysql_user"],
         passwd=config["mysql_password"],
-        unix_socket="/tmp/mysql.sock",
+        unix_socket=args.mysql_socket,
         charset="utf8"
     )
 
