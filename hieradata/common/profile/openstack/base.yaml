@@ -1,2 +1,6 @@
 profile::openstack::base::region: "%{::site}"
 profile::openstack::base::observer_user: 'novaobserver'
+profile::openstack::base::ldap_base_dn: 'dc=wikimedia,dc=org'
+profile::openstack::base::ldap_user_id_attribute: 'uid'
+profile::openstack::base::ldap_user_name_attribute: 'cn'
+profile::openstack::base::ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'

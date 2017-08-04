@@ -4,8 +4,8 @@ class profile::openstack::labtest::rabbitmq(
     $monitor_password = hiera('profile::openstack::labtest::rabbit_monitor_pass'),
     $file_handles = hiera('profile::openstack::labtest::rabbit_file_handles'),
 ){
-    require ::profile::openstack::labtest::cloudrepo
 
+    require ::profile::openstack::labtest::cloudrepo
     class {'::profile::openstack::base::rabbitmq':
         nova_controller  => $nova_controller,
         monitor_user     => $monitor_user,
