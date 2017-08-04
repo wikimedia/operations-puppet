@@ -1,6 +1,6 @@
-# == Class role::analytics_cluster::java
+# == Class profile::cdh::java
 # Installs the version of Java used for Analytics Cluster.
-class role::analytics_cluster::java {
+class profile::cdh::java {
     if os_version('debian >= stretch') {
         require_package('openjdk-8-jdk')
     }
