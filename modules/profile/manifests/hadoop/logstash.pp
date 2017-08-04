@@ -1,17 +1,17 @@
-# == Class role::analytics_cluster::hadoop::logstash
+# == Class profile::hadoop::logstash
 # Enables gelf logging to logstash from Hadoop.
 # As of 2016-02, this  is not used.
-class role::analytics_cluster::hadoop::logstash {
-    Class['cdh::hadoop'] -> Class['role::analytics_cluster::hadoop::logstash']
-
+class profile::hadoop::logstash { (
+    gelf_logging_enabled = hiera('profile::hadoop::logstash::enabled'),
+) {
     file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
-        content => template('role/analytics_cluster/hadoop/hadoop-yarn-logging-helper.erb'),
+        content => template('profile/hadoop/hadoop-yarn-logging-helper.erb'),
         mode    => '0744',
     }
 
     $patched_jar_exists_command = '/bin/ls /usr/lib/hadoop-yarn | /bin/grep -E  "hadoop-yarn-server-nodemanager.+gelf"'
 
-    if $cdh::hadoop::gelf_logging_enabled {
+    if $gelf_logging_enabled {
         ensure_packages([
             # library dependency
             'libjson-simple-java',
