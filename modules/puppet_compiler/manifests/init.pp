@@ -93,4 +93,17 @@ class puppet_compiler(
         age     => '6w',
         rmdirs  => true,
     }
+
+    # Add a puppetdb instance with a local database.
+    class { 'puppetdb::app':
+        db_driver  => 'hsqldb',
+        heap_size  => '2G',
+        db_rw_host => undef,
+        perform_gc => true,
+    }
+
+    class { 'puppetmaster::puppetdb::client':
+        host => 'localhost',
+        port => 8081,
+    }
 }
