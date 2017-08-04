@@ -46,4 +46,13 @@ class profile::wdqs (
     class { '::wdqs::monitor::blazegraph': }
     class { '::wdqs::monitor::updater': }
     class { '::wdqs::monitor::services': }
+
+    sudo::group { 'wdqs-admins-depool-pool':
+        user       => 'wdqs-admins',
+        privileges => [
+            'ALL = NOPASSWD: /usr/local/bin/depool',
+            'ALL = NOPASSWD: /usr/local/bin/pool',
+        ],
+    }
+
 }
