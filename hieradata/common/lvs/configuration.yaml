@@ -49,14 +49,20 @@ lvs::configuration::lvs_service_ips:
       dns_rec6: 2620:0:862:ed1a::3:fe
   misc_web: &ip_block006
     codfw:
-      misc_weblb: 208.80.153.248
-      misc_weblb6: 2620:0:860:ed1a::3:d
+      old_misc_weblb: 208.80.153.248
+      old_misc_weblb6: 2620:0:860:ed1a::3:d
+      misc_weblb: 208.80.152.216
+      misc_weblb6: 2620:0:860:ed14::d
     eqiad:
-      misc_weblb: 208.80.154.251
-      misc_weblb6: 2620:0:861:ed1a::3:d
+      old_misc_weblb: 208.80.154.251
+      old_misc_weblb6: 2620:0:861:ed1a::3:d
+      misc_weblb: 208.80.155.80
+      misc_weblb6: 2620:0:861:ed14::d
     esams:
-      misc_weblb: 91.198.174.217
-      misc_weblb6: 2620:0:862:ed1a::3:d
+      old_misc_weblb: 91.198.174.217
+      old_misc_weblb6: 2620:0:862:ed1a::3:d
+      misc_weblb: 91.198.174.184
+      misc_weblb6: 2620:0:862:ed14::d
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
