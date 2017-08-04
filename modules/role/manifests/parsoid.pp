@@ -10,7 +10,7 @@ class role::parsoid {
     include ::standard
     include ::base::firewall
 
-    if hiera('has_lvs', true) {
+    if hiera('has_lvs', false) {
         include role::lvs::realserver
     }
 
