@@ -65,7 +65,7 @@ class puppetdb::app(
         $db_settings = $default_db_settings
     }
 
-    puppetmaster::puppetdb::config { 'database':
+    puppetdb::config { 'database':
         settings => $db_settings,
     }
 
@@ -75,19 +75,19 @@ class puppetdb::app(
             $default_db_settings,
             {'subname' => "//${db_ro_host}:5432/puppetdb?ssl=true"}
         )
-        puppetmaster::puppetdb::config { 'read-database':
+        puppetdb::config { 'read-database':
             settings => $read_db_settings,
         }
     }
 
-    puppetmaster::puppetdb::config { 'global':
+    puppetdb::config { 'global':
         settings => {
             'vardir'         => '/var/lib/puppetdb',
             'logging-config' => '/etc/puppetdb/logback.xml',
         },
     }
 
-    puppetmaster::puppetdb::config { 'repl':
+    puppetdb::config { 'repl':
         settings => {'enabled' => false},
     }
 
@@ -99,7 +99,7 @@ class puppetdb::app(
 
     }
 
-    puppetmaster::puppetdb::config { 'jetty':
+    puppetdb::config { 'jetty':
         settings => {
             'port'        => 8080,
             'ssl-port'    => 8081,
