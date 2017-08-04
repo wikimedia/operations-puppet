@@ -2,7 +2,7 @@
 ### puppet:///modules/dataset/rsync/rsyncd.conf.phab_dump
 #####################################################################
 
-# write access from iridium to other/misc directory.
+# write access from phab1001 to other/misc directory.
 [other_misc]
 uid = root
 gid = root

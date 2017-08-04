@@ -64,7 +64,7 @@ class phabricator::vcs (
 
     if empty($listen_addresses) {
         # Emit a warning but allow listen_address to be empty, this is needed
-        # for easier migration from iridium to phab1001
+        # for easier migrations from one server to another
         notify { 'Warning: phabricator::vcs::listen_address is empty': }
     } else {
         # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
