@@ -78,7 +78,7 @@ labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
 labs_nova_controller_spare: &labsnovacontrollerspare "labcontrol1002.wikimedia.org"
 
 labs_glance_controller: &labsglancecontroller "labcontrol1001.wikimedia.org"
-labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
+labs_puppet_master: &labspuppetmaster "labs-puppetmaster.wikimedia.org"
 labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"
 
 labs_osm_host: "wikitech.wikimedia.org"
