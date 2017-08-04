@@ -6,11 +6,11 @@
 #
 # [*endpoint*]
 #   URI of EventLogging event publisher to subscribe to.
-#   Example: 'tcp://eventlogging.corp.org:8600'.
+#   Example: 'tcp://eventlogging.example.org:8600'.
 #
 # [*eventlogging_path*]
 #   Path where the EventLogging python library is installed.
-#   Example: '/srv/deployment/eventlogging'.
+#   Example: '/srv/deployment/eventlogging/eventlogging'.
 #
 # [*statsd_host*]
 #   Write stats to this StatsD instance. Default: '127.0.0.1'.
