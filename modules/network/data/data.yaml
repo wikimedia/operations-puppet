@@ -25,6 +25,9 @@ network::subnets:
         public1-lvs-eqiad:
           ipv4: 208.80.154.224/27
           ipv6: 2620:0:861:ed1a::/64
+        public1-lvs-nonzero-eqiad:
+          ipv4: 208.80.155.80/29
+          ipv6: 2620:0:861:ed14::/64
       private:
         private1-a-eqiad:
           ipv4: 10.64.0.0/22
@@ -88,6 +91,9 @@ network::subnets:
         public1-lvs-codfw:
           ipv4: 208.80.153.224/27
           ipv6: 2620:0:860:ed1a::/64
+        public1-lvs-nonzero-codfw:
+          ipv4: 208.80.152.216/29
+          ipv6: 2620:0:860:ed14::/64
       private:
         private1-a-codfw:
           ipv4: 10.192.0.0/22
@@ -121,6 +127,9 @@ network::subnets:
         public1-lvs-esams:
           ipv4: 91.198.174.192/27
           ipv6: 2620:0:862:ed1a::/64
+        public1-lvs-nonzero-esams:
+          ipv4: 91.198.174.184/29
+          ipv6: 2620:0:862:ed14::/64
       private:
         private1-esams:
           ipv4: 10.20.0.0/24
@@ -135,6 +144,9 @@ network::subnets:
         public1-lvs-ulsfo:
           ipv4: 198.35.26.96/27
           ipv6: 2620:0:863:ed1a::/64
+        public1-lvs-nonzero-ulsfo:
+          ipv4: 198.35.26.128/29
+          ipv6: 2620:0:863:ed14::/64
       private:
         private1-ulsfo:
           ipv4: 10.128.0.0/24
