@@ -1,4 +1,3 @@
-puppet()     { sudo puppet "$@"; }
 alias ls="ls -hals"
 alias tulpen="netstat -tulpen"
 export VISUAL="vim" EDITOR="vim"
@@ -11,6 +10,8 @@ BLACK="$(tput setaf 0)"
 HOSTCOLOR="$(tput setaf $(($(cksum<<<$HOSTNAME|cut -d' ' -f-1)%6+1)))"
 
 export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\[$GREY\]\w\[$BRIGHT\]\[$BLACK\]]\[$RESET\] $ '
+
+alias pa="sudo puppet agent -tv"
 
 alias cachemiscpuppet="sudo cumin -b 3 -s 10 'R:class = role::cache::misc' 'run-puppet-agent -q'"
 
