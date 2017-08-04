@@ -4,7 +4,7 @@
 #
 class role::analytics_cluster::database::meta {
     # Some CDH database init scripts need Java to run.
-    require ::role::analytics_cluster::java
+    require ::profile::java::analytics
 
     include ::mariadb::packages_wmf
 

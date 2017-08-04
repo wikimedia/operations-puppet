@@ -1,6 +1,11 @@
-# == Class role::analytics_cluster::java
-# Installs the version of Java used for Analytics Cluster.
-class role::analytics_cluster::java {
+# == Class profile::java::analytics
+#
+# Installs Java packages chosen by the Analytics
+# team and used among various projects like Hadoop,
+# Druid, etc. Consistency is essential to allow
+# interoperability among various clusters.
+#
+class profile::java::analytics {
     if os_version('debian >= stretch') {
         require_package('openjdk-8-jdk')
     }
