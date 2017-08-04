@@ -1,6 +1,8 @@
-# == Class role::analytics_cluster::apt
+# == Class profile::cdh::apt
 #
-class role::analytics_cluster::apt {
+# Set Cloudera's apt repository to the host.
+#
+class profile::cdh::apt {
     apt::repository { 'thirdparty-cloudera':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
