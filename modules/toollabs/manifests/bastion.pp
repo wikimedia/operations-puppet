@@ -235,4 +235,12 @@ class toollabs::bastion(
         mode   => '0655',
         source => 'puppet:///modules/toollabs/exec-manage',
     }
+
+    file { '/usr/local/sbin/qstat-full':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/toollabs/qstat-full',
+    }
 }
