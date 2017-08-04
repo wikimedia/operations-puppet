@@ -66,12 +66,12 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     #role::prometheus::mysqld_exporter_instance {'s3':
     #    port => 13313,
     #}
-    #mariadb::instance {'s4':
-    #    port => 3314,
-    #}
-    #role::prometheus::mysqld_exporter_instance {'s4':
-    #    port => 13314,
-    #}
+    mariadb::instance {'s4':
+        port => 3314,
+    }
+    role::prometheus::mysqld_exporter_instance {'s4':
+        port => 13314,
+    }
     #mariadb::instance {'s5':
     #    port => 3315,
     #}
@@ -103,7 +103,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_process':
-        process_count => 3,
+        process_count => 4,
         is_critical   => false,
         contact_group => 'admins',
     }
