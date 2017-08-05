@@ -32,8 +32,7 @@ class mediawiki (
 
     # This profile is used to contain the convert command of imagemagick using
     # firejail Profiles specific to the image/video scalers are handled via
-    # mediawiki::firejail, but imagemagick is also used on the general purpose
-    # appscalers for scaling musical typesheets in the Score extension
+    # mediawiki::firejail
     file { '/etc/firejail/mediawiki-imagemagick.profile':
         source  => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
         owner   => 'root',
@@ -58,6 +57,28 @@ class mediawiki (
 
     file { '/usr/local/bin/mediawiki-firejail-ghostscript':
         source => 'puppet:///modules/mediawiki/mediawiki-firejail-ghostscript',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    # The Score extension uses Lilypond, which requires the use of Firejail
+    file { '/usr/local/bin/mediawiki-firejail-lilypond':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-lilypond',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-abc2ly':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-abc2ly',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-timidity':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-timidity',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
