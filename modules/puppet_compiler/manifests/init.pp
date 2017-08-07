@@ -99,10 +99,11 @@ class puppet_compiler(
     # created.
 
     exec { 'Generate CA for the compiler':
-        command => "/usr/bin/puppet cert generate --confdir ${libdir}/production ${::fqdn}",
-        user    => $user,
-        creates => "${libdir}/production/ssl/certs/${::fqdn}",
-        require => Git::Clone['operations/puppet'],
+        command     => "/usr/bin/puppet cert generate --confdir ${libdir}/production ${::fqdn}",
+        user        => $user,
+        creates     => "${libdir}/production/ssl/certs/${::fqdn}",
+        require     => Git::Clone['operations/puppet'],
+        environment => "HOME=${homedir}"
     }
 
     require_package('openjdk-8-jdk')
