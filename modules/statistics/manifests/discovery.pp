@@ -22,7 +22,7 @@ class statistics::discovery {
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
-        groups     => $group,
+        gid        => $group,
     }
 
     # This file will render at
