@@ -13,6 +13,7 @@ class puppetdb::app(
     $perform_gc=false,
     $heap_size='4G',
     $bind_ip=undef,
+    $ssldir=puppet_ssldir(),
 ) {
     requires_os('debian >= jessie')
 
@@ -97,8 +98,9 @@ class puppetdb::app(
         provide_private => true,
         user            => 'puppetdb',
         group           => 'puppetdb',
-
+        ssldir          => $ssldir,
     }
+
     $jetty_settings = {
         'port'        => 8080,
         'ssl-port'    => 8081,

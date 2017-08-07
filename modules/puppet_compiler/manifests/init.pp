@@ -95,6 +95,16 @@ class puppet_compiler(
     }
 
 
+    # Hack: we need to ensure the CA for the jenkins-deploy user is
+    # created.
+
+    exec { 'Generate CA for the compiler':
+        command => "/usr/bin/puppet cert generate --confdir ${libdir}/production ${::fqdn}",
+        user    => $user,
+        creates => "${libdir}/production/ssl/certs/${::fqdn}",
+        require => Git::Clone['operations/puppet'],
+    }
+
     require_package('openjdk-8-jdk')
 
     # Add a puppetdb instance with a local database.
@@ -104,10 +114,18 @@ class puppet_compiler(
         db_rw_host => undef,
         perform_gc => true,
         bind_ip    => '0.0.0.0',
+        ssldir     => "${libdir}/production/ssl",
+        require    => Exec['Generate CA for the compiler']
     }
 
     class { 'puppetmaster::puppetdb::client':
         host => $::fqdn,
         port => 8081,
+    }
+    # puppetdb configuration
+    file { "${libdir}/production/puppetdb.conf":
+        source  => '/etc/puppet/puppetdb.conf',
+        owner   => $user,
+        require => File['/etc/puppet/puppetdb.conf']
     }
 }
