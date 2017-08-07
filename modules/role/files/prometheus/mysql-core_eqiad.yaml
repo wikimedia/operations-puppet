@@ -97,6 +97,7 @@
   - db1085:9104
   - db1088:9104
   - db1093:9104
+  - db1098:9104
 - labels:
     shard: s6
     role: master
