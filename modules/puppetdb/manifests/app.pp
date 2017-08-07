@@ -12,6 +12,7 @@ class puppetdb::app(
     $db_password=undef,
     $perform_gc=false,
     $heap_size='4G',
+    $bind_ip=undef,
 ) {
     requires_os('debian >= jessie')
 
@@ -98,15 +99,22 @@ class puppetdb::app(
         group           => 'puppetdb',
 
     }
+    $jetty_settings = {
+        'port'        => 8080,
+        'ssl-port'    => 8081,
+        'ssl-key'     => '/etc/puppetdb/ssl/server.key',
+        'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
+        'ssl-ca-cert' => $ca_path,
+    }
+    if $bind_ip {
+        $actual_jetty_settings = merge($jetty_settings, {'ssl-host' => $bind_ip})
+    }
+    else {
+        $actual_jetty_settings = $jetty_settings
+    }
 
     puppetdb::config { 'jetty':
-        settings => {
-            'port'        => 8080,
-            'ssl-port'    => 8081,
-            'ssl-key'     => '/etc/puppetdb/ssl/server.key',
-            'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
-            'ssl-ca-cert' => $ca_path,
-        },
+        settings => $actual_jetty_settings,
         require  => Base::Expose_puppet_certs['/etc/puppetdb'],
     }
 

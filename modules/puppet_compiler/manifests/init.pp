@@ -94,16 +94,20 @@ class puppet_compiler(
         rmdirs  => true,
     }
 
+
+    require_pacakge('openjdk-8-jdk')
+
     # Add a puppetdb instance with a local database.
     class { 'puppetdb::app':
         db_driver  => 'hsqldb',
         heap_size  => '2G',
         db_rw_host => undef,
         perform_gc => true,
+        bind_ip    => '0.0.0.0',
     }
 
     class { 'puppetmaster::puppetdb::client':
-        host => 'localhost',
+        host => $::fqdn,
         port => 8081,
     }
 }
