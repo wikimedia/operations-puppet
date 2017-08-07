@@ -8,8 +8,9 @@ class openstack::nova::fullstack(
     $password,
     $interval = 300,
     $max_pool = 7,
-    $creation_timeout = 1200,
-    $ssh_timeout = 1200,
+    $creation_timeout = 600,
+    $ssh_timeout = 600,
+    $puppet_timeout = 600,
     ) {
 
     group { 'osstackcanary':
