@@ -103,7 +103,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_process':
-        process_count => 4,
+        process_count => 5,
         is_critical   => false,
         contact_group => 'admins',
     }
