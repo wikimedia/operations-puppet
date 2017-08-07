@@ -61,14 +61,16 @@ class role::labs::openstack::nova::manager {
 
     # T89323
     monitoring::service { 'wikitech-static-sync':
-        description   => 'are wikitech and wt-static in sync',
-        check_command => 'check_wikitech_static',
+        description    => 'are wikitech and wt-static in sync',
+        check_command  => 'check_wikitech_static',
+        check_interval => 120,
     }
 
     # T163721
     monitoring::service { 'wikitech-static-version':
-        description   => 'Does wikitech-static need a MW version upgrade?',
-        check_command => 'check_wikitech_static_version',
+        description    => 'Does wikitech-static need a MW version upgrade?',
+        check_command  => 'check_wikitech_static_version',
+        check_interval => 720,
     }
 
     # For Math extensions file (T126628)
