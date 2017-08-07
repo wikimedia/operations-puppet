@@ -69,6 +69,7 @@ define cassandra::instance(
         $hints_directory        = $this_instance['hints_directory']
         $heapdump_directory     = $this_instance['heapdump_directory']
         $saved_caches_directory = $this_instance['saved_caches_directory']
+        $no_instances           = 1
     } else {
         $data_directory_base = "/srv/cassandra-${instance_name}"
         $config_directory    = "/etc/cassandra-${instance_name}"
@@ -82,6 +83,7 @@ define cassandra::instance(
         $hints_directory        = "${data_directory_base}/data/hints"
         $heapdump_directory     = $data_directory_base
         $saved_caches_directory = "${data_directory_base}/saved_caches"
+        $no_instances           = size($instances)
     }
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
