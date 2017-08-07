@@ -178,6 +178,8 @@ $private_tables = [
     'moodbar_feedback_response',
     'msg_resource',
     'oathauth_users',
+    'oauth_accepted_consumer',
+    'oauth_registered_consumer',
     'objectcache',
     'old_growth',
     'oldimage_old',
