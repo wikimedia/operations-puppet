@@ -69,7 +69,11 @@ define cassandra::instance(
         $hints_directory        = $this_instance['hints_directory']
         $heapdump_directory     = $this_instance['heapdump_directory']
         $saved_caches_directory = $this_instance['saved_caches_directory']
+        $instance_count         = 1
     } else {
+        unless $instance_name =~ /^[a-z]$/ {
+            fail("instance name should match /^[a-z]$/, but have ${instance_name}")
+        }
         $data_directory_base = "/srv/cassandra-${instance_name}"
         $config_directory    = "/etc/cassandra-${instance_name}"
         $service_name        = "cassandra-${instance_name}"
@@ -81,6 +85,7 @@ define cassandra::instance(
         $hints_directory        = pick($this_instance['hints_directory'], "${data_directory_base}/data/hints")
         $heapdump_directory     = pick($this_instance['heapdump_directory'], $data_directory_base)
         $saved_caches_directory = pick($this_instance['saved_caches_directory'], "${data_directory_base}/saved_caches")
+        $instance_count         = size($instances)
     }
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
