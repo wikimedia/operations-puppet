@@ -20,7 +20,10 @@ class puppetmaster::puppetdb::client($host, $port=443) {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/puppetmaster/routes.yaml',
-        notify => Service['apache2'],
+    }
+
+    if defined(Service['apache2']) {
+        File['/etc/puppet/routes.yaml'] -> Service['apache2']
     }
 
     # Absence of this directory causes the puppetmaster to spit out
