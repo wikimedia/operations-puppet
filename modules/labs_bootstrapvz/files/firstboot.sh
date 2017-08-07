@@ -75,7 +75,7 @@ do
     echo `date`
     echo "Waiting for hostname to return the actual hostname."
     sleep 10
-    /sbin/dhclient -1
+    /sbin/dhclient -1 eth0
     hostname=`hostname`
 done
 
