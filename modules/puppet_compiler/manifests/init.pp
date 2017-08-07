@@ -95,7 +95,7 @@ class puppet_compiler(
     }
 
 
-    require_pacakge('openjdk-8-jdk')
+    require_package('openjdk-8-jdk')
 
     # Add a puppetdb instance with a local database.
     class { 'puppetdb::app':
