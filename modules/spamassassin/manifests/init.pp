@@ -63,6 +63,14 @@ class spamassassin(
         ensure => present,
     }
 
+    package { 'libmail-spf-perl':
+        ensure => present,
+    }
+
+    package { 'libmail-dkim-perl':
+        ensure => present,
+    }
+
     file { '/etc/spamassassin/local.cf':
         content => template('spamassassin/local.cf'),
         owner   => 'root',
@@ -84,7 +92,7 @@ class spamassassin(
         require   => [
             File['/etc/default/spamassassin'],
             File['/etc/spamassassin/local.cf'],
-            Package['spamassassin'],
+            Package['spamassassin','libmail-spf-perl','libmail-dkim-perl'],
         ],
         subscribe => [
             File['/etc/default/spamassassin'],
