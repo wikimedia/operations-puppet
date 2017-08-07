@@ -138,7 +138,8 @@ class phabricator (
         'python-pygments',
         'python-phabricator',
         'apachetop',
-        'subversion']:
+        'subversion',
+        'heirloom-mailx']:
             ensure => present;
     }
 
