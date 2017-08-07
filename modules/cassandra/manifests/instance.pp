@@ -40,6 +40,9 @@ define cassandra::instance(
     if ! has_key($instances, $instance_name) {
         fail("instance ${instance_name} not found in ${instances}")
     }
+    unless $instance_name =~ /^[a-z]$/ {
+        fail("instance name should match /^[a-z]$/, but have ${instance_name}")
+    }
 
     # Default jmx port; only works with 1-letter instnaces
     $default_jmx_port     = 7189 + inline_template("<%= @title.ord - 'a'.ord %>")
@@ -69,6 +72,7 @@ define cassandra::instance(
         $hints_directory        = $this_instance['hints_directory']
         $heapdump_directory     = $this_instance['heapdump_directory']
         $saved_caches_directory = $this_instance['saved_caches_directory']
+        $instance_count         = 1
     } else {
         $data_directory_base = "/srv/cassandra-${instance_name}"
         $config_directory    = "/etc/cassandra-${instance_name}"
@@ -82,6 +86,7 @@ define cassandra::instance(
         $hints_directory        = "${data_directory_base}/data/hints"
         $heapdump_directory     = $data_directory_base
         $saved_caches_directory = "${data_directory_base}/saved_caches"
+        $instance_count         = size($instances)
     }
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
