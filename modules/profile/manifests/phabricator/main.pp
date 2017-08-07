@@ -34,10 +34,12 @@ class profile::phabricator::main (
         $logmail_ensure = 'present'
         $dump_rsync_ensure = 'present'
         $dump_enabled = true
+        $ferm_ensure = 'present'
     } else {
         $logmail_ensure = 'absent'
         $dump_rsync_ensure ='absent'
         $dump_enabled = false
+        $ferm_ensure = 'absent'
     }
 
     # todo: change the password for app_user
@@ -225,23 +227,27 @@ class profile::phabricator::main (
     }
 
     ferm::service { 'phabmain_http':
-        proto => 'tcp',
-        port  => '80',
+        ensure => $ferm_ensure,
+        proto  => 'tcp',
+        port   => '80',
     }
 
     ferm::service { 'phabmain_https':
+        ensure => $ferm_ensure,
         proto => 'tcp',
         port  => '443',
     }
 
     # receive mail from mail smarthosts
     ferm::service { 'phabmain-smtp':
+        ensure => $ferm_ensure,
         port   => '25',
         proto  => 'tcp',
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
     }
 
     ferm::service { 'phabmain-smtp_ipv6':
+        ensure => $ferm_ensure,
         port   => '25',
         proto  => 'tcp',
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x}, AAAA)" }.join(" ") %>)'),
@@ -250,6 +256,7 @@ class profile::phabricator::main (
     # ssh between phabricator servers for clustering support
     $phabricator_servers_ferm = join(hiera('phabricator_servers'), ' ')
     ferm::service { 'ssh_cluster':
+        ensure => $ferm_ensure,
         port   => '22',
         proto  => 'tcp',
         srange => "@resolve((${phabricator_servers_ferm}))",
