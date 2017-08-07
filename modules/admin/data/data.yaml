@@ -2540,10 +2540,6 @@ ldap_only_users:
     ensure: present
     realname: Aeryn Palmer
     email: apalmer@wikimedia.org
-  ashahrestani:
-    ensure: present
-    realname: A Shahrestani
-    email: ashahrestani@wikimedia.org
   audiohazel:
     ensure: present
     realname: Victoria Coleman
