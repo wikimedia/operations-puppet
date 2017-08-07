@@ -117,8 +117,9 @@ class phabricator (
         }
         include ::apache::mod::php7
     }
-    # jessie or trusty - PHP (5.5/5.6) packages and Apache module
-    if os_version('ubuntu == trusty || debian == jessie') {
+
+    # jessie - PHP 5.6 packages and Apache module
+    if os_version('debian == jessie') {
         package { [
             'php5-mysql',
             'php5-gd',
@@ -152,9 +153,6 @@ class phabricator (
     }
     if os_version('debian >= stretch') {
         package { 'php-apcu': ensure => present; }
-    }
-    if os_version('ubuntu == trusty') {
-        package { 'php-apc': ensure => present; }
     }
 
     $docroot = "${phabdir}/phabricator/webroot"
