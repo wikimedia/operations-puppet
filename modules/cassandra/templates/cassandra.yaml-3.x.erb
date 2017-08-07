@@ -401,7 +401,8 @@ seed_provider:
                                                       x != @hostname \
                                                       && ! (x.start_with? "#{@hostname}-") \
                                                       && x != @ipaddress \
-                                                      && x != @fqdn
+                                                      && x != @fqdn \
+                                                      && /^.+-.\.\w+\.\w+$/ =~ x
                                                   }.join(',') : @seeds.join(',') %>
          - seeds: <%= clean_seeds %>
 # For workloads with more data than can fit in memory, Cassandra's
