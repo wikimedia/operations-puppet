@@ -12,6 +12,7 @@ class puppetdb::app(
     $db_password=undef,
     $perform_gc=false,
     $heap_size='4G',
+    $bind_ip='localhost',
 ) {
     requires_os('debian >= jessie')
 
@@ -106,6 +107,7 @@ class puppetdb::app(
             'ssl-key'     => '/etc/puppetdb/ssl/server.key',
             'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
             'ssl-ca-cert' => $ca_path,
+            'ssl-host'    => $bind_ip,
         },
         require  => Base::Expose_puppet_certs['/etc/puppetdb'],
     }
