@@ -27,3 +27,8 @@ endif
 if $header_subject: matches "8。C(O|0)M.*天天" and $header_from: contains "@qq.com" then
         fail text "Message rejected ref2"
 endif
+
+# Filter spam observed from qq.com to list owner addresses with only digits in user part
+if $header_from: matches "^[0-9]+@qq.com" and $header_to: contains "owner" then
+        fail text "Message rejected ref3"
+endif
