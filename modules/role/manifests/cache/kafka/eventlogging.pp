@@ -15,8 +15,9 @@
 #   Default 'varnish-frontend'
 #
 class role::cache::kafka::eventlogging(
-    $varnish_name = 'frontend',
-    $varnish_svc_name = 'varnish-frontend'
+    $varnish_name           = 'frontend',
+    $varnish_svc_name       = 'varnish-frontend',
+    $kafka_protocol_version = '0.9.0.1',
 ) inherits role::cache::kafka
 {
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
@@ -39,6 +40,7 @@ class role::cache::kafka::eventlogging(
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
         conf_template               => $conf_template,
+        force_protocol_version      => $kafka_protocol_version,
     }
 
     include ::standard
