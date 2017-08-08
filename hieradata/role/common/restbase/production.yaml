@@ -23,6 +23,11 @@ profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls:
   ca: /dev/null
+profile::restbase::seeds_ng:
+  - restbase1016-a.codfw.wmnet
+  # - restbase1016-b.codfw.wmnet
+  # - restbase1016-c.codfw.wmnet
+
 #
 # Cassandra
 #
@@ -127,13 +132,13 @@ profile::cassandra::instances:
       listen_address: 10.64.48.139
     c:
       listen_address: 10.64.48.140
-  "restbase1016.eqiad.wmnet":
-    a:
-      listen_address: 10.64.0.32
-    b:
-      listen_address: 10.64.0.33
-    c:
-      listen_address: 10.64.0.34
+  # "restbase1016.eqiad.wmnet":
+  #   a:
+  #     listen_address: 10.64.0.32
+  #   b:
+  #     listen_address: 10.64.0.33
+  #   c:
+  #     listen_address: 10.64.0.34
   "restbase1017.eqiad.wmnet":
     a:
       listen_address: 10.64.32.130
