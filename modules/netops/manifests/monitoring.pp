@@ -30,7 +30,6 @@ class netops::monitoring {
         'cr1-codfw'  => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', bgp => true, },
         'cr2-codfw'  => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', bgp => true, },
         'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
-        'pfw-codfw'  => { ipv4 => '208.80.153.195',  },
         'pfw3-codfw' => { ipv4 => '208.80.153.197', parents => ['cr1-codfw', 'cr2-codfw'], bgp => true, alarms => false, },
         # eqdfw
         'cr1-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', bgp => true, },
