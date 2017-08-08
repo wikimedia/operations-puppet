@@ -101,7 +101,7 @@ class puppet_compiler(
     exec { 'Generate CA for the compiler':
         command     => "/usr/bin/puppet cert generate --confdir ${libdir}/production ${::fqdn}",
         user        => $user,
-        creates     => "${libdir}/production/ssl/certs/${::fqdn}",
+        creates     => "${libdir}/production/ssl/certs/${::fqdn}.pem",
         require     => Git::Clone['operations/puppet'],
         environment => "HOME=${homedir}"
     }
