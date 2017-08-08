@@ -111,12 +111,20 @@ class puppet_compiler(
     # Add a puppetdb instance with a local database.
     class { 'puppetdb::app':
         db_driver  => 'hsqldb',
+        ca_path    => '/etc/puppetdb/ssl/ca.pem'
         heap_size  => '2G',
         db_rw_host => undef,
         perform_gc => true,
         bind_ip    => '0.0.0.0',
         ssldir     => "${libdir}/production/ssl",
         require    => Exec['Generate CA for the compiler']
+    }
+
+    file { '/etc/puppetdb/ssl/ca.pem':
+        source => "${libdir}/production/ssl/certs/ca.pem",
+        owner  => $user,
+        group  => $group,
+        before => Service['puppetdb']
     }
 
     class { 'puppetmaster::puppetdb::client':
