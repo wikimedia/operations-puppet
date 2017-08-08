@@ -2027,13 +2027,17 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 }
 
 # restbase eqiad cluster
-node /^restbase10[01][0-9]\.eqiad\.wmnet$/ {
+node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
     role(restbase::production)
 }
 
 # restbase codfw cluster
-node /^restbase20[01][0-9]\.codfw\.wmnet$/ {
+node /^restbase20(0[23456789]|1[012])\.codfw\.wmnet$/ {
     role(restbase::production)
+}
+
+node /^restbase2001\.codfw\.wmnet$/ {
+    role(restbase::production_ng)
 }
 
 # cassandra multi-dc temporary test T111382
