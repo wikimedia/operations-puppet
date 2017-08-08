@@ -56,4 +56,11 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         ensure  => $ensure,
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
+
+    cron { 'wikibase-rebuildTermSqlIndex':
+        ensure  => $ensure,
+        command => 'timeout 3500s /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildTermSqlIndex.php --wiki wikidatawiki --entity-type=item --batch-size 500 --sleep 50 --from-id $(tail -100 /tmp/rebuildTermSqlIndex.log | grep -E "Processed up to page (\d+?)" | sed -E "s/Processed up to page //; s/ \(Q.+?//" | tail -1) >>/tmp/rebuildTermSqlIndex.log 2>&1',
+        user    => $::mediawiki::users::web,
+        minute  => 30,
+    }
 }
