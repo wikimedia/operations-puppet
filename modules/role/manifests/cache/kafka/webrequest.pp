@@ -13,11 +13,15 @@
 # [*varnish_svc_name*]
 #   The name of the init unit for the above.
 #   Default 'varnish-frontend'
+# [*kafka_protocol_version*]
+#   Kafka API version to use, needed for brokers < 0.10
+#   https://issues.apache.org/jira/browse/KAFKA-3547
 #
 class role::cache::kafka::webrequest(
     $topic,
-    $varnish_name = 'frontend',
-    $varnish_svc_name = 'varnish-frontend'
+    $varnish_name           = 'frontend',
+    $varnish_svc_name       = 'varnish-frontend',
+    $kafka_protocol_version = '0.9.0.1',
 ) inherits role::cache::kafka
 {
     # Background task: T136314
@@ -113,6 +117,7 @@ class role::cache::kafka::webrequest(
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
         conf_template                => $conf_template,
+        force_protocol_version       => $kafka_protocol_version,
     }
 
     include ::standard
