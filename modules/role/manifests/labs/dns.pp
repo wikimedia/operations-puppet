@@ -16,7 +16,6 @@ class role::labs::dns {
 
     # install mysql locally on all dns servers
     include role::mariadb::monitor::dba
-    include role::mariadb::ferm
 
     # Note:  This will install mariadb but won't set up the
     #  pdns database.  Manual steps are:
