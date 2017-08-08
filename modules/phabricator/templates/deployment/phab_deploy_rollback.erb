@@ -1,0 +1,5 @@
+#!/bin/bash
+puppet agent --test
+puppet agent --enable
+service apache2 reload
+service phd start
