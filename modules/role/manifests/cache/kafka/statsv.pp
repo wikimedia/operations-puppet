@@ -39,6 +39,7 @@ class role::cache::kafka::statsv(
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
         conf_template               => $conf_template,
+        force_protocol_version      => '0.9.0.1',
     }
 
     include ::standard

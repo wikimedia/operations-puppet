@@ -113,6 +113,7 @@ class role::cache::kafka::webrequest(
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
         conf_template                => $conf_template,
+        force_protocol_version       => '0.9.0.1',
     }
 
     include ::standard
