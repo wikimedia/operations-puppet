@@ -1,0 +1,114 @@
+cluster: restbase
+
+#
+# Cassandra
+#
+graphite_host: 'graphite1003.eqiad.wmnet'
+profile::cassandra::allow_analytics: false
+
+profile::cassandra::metrics_whitelist:
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
+profile::cassandra::metrics_blacklist:
+  - .*\.15MinuteRate$
+  - .*\.5MinuteRate$
+  - .*\.98percentile$
+  - .*\.999percentile$
+  - .*\.mean$
+  - .*\.meanRate$
+  - .*\.min$
+  - .*\.stddev$
+  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\..*$
+  - .*\.metrics\.Keyspace\..*$
+  - .*\.metrics\.Client\..*$
+  - .*\.metrics\.Table\..*$
+## Instances
+profile::cassandra::instances:
+  "restbase1016.eqiad.wmnet":
+    a:
+      listen_address: 10.64.0.32
+    b:
+      listen_address: 10.64.0.33
+    c:
+      listen_address: 10.64.0.34
+  # "restbase1017.eqiad.wmnet":
+  #   a:
+  #     listen_address: 10.64.32.130
+  #   b:
+  #     listen_address: 10.64.32.131
+  #   c:
+  #     listen_address: 10.64.32.132
+  # "restbase1018.eqiad.wmnet":
+  #   a:
+  #     listen_address: 10.64.48.98
+  #   b:
+  #     listen_address: 10.64.48.99
+  #   c:
+  #     listen_address: 10.64.48.100
+  # "restbase2010.codfw.wmnet":
+  #   a:
+  #     listen_address: 10.192.16.186
+  #   b:
+  #     listen_address: 10.192.16.187
+  #   c:
+  #     listen_address: 10.192.16.188
+  # "restbase2011.codfw.wmnet":
+  #   a:
+  #     listen_address: 10.192.32.152
+  #   b:
+  #     listen_address: 10.192.32.153
+  #   c:
+  #     listen_address: 10.192.32.154
+  # "restbase2012.codfw.wmnet":
+  #   a:
+  #     listen_address: 10.192.48.68
+  #   b:
+  #     listen_address: 10.192.48.69
+  #   c:
+  #     listen_address: 10.192.48.70
+
+
+profile::cassandra::settings:
+  start_rpc: 'false'
+  max_heap_size: 12g
+  # 1/4 heap size, no more than 100m/thread
+  heap_newsize: 2048m
+  compaction_throughput_mb_per_sec: 20
+  concurrent_compactors: 10
+  concurrent_writes: 18
+  concurrent_reads: 18
+  tls_cluster_name: "services"
+  internode_encryption: dc
+  dc: "%{::site}"
+  cluster_name: "restbase"
+  application_username: restb
+  application_password: "%{passwords::cassandra::restbase}"
+  target_version: '3.x'
+  permissions_validity_in_ms: 600000
+  trickle_fsync: false
+  client_encryption_enabled: true
+
+
+#
+# General
+#
+admin::groups:
+  - restbase-roots
+  - restbase-admins

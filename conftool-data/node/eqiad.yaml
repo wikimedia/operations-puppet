@@ -213,7 +213,6 @@ eqiad:
     restbase1013.eqiad.wmnet: [restbase, cassandra]
     restbase1014.eqiad.wmnet: [restbase, cassandra]
     restbase1015.eqiad.wmnet: [restbase, cassandra]
-    restbase1016.eqiad.wmnet: [restbase, cassandra]
     restbase1017.eqiad.wmnet: [restbase, cassandra]
     restbase1018.eqiad.wmnet: [restbase, cassandra]
   maps:
