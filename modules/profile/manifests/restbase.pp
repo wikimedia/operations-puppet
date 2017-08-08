@@ -13,6 +13,9 @@
 # [*seeds*]
 #   Array of cassandra hosts (IP or host names) to contact.
 #
+# [*seeds_ng*]
+#   Array of cassandra hosts (IP or host names) to contact (next-gen storage module).
+#
 # [*cassandra_local_dc*]
 #   Which DC should be considered local.
 #
@@ -73,6 +76,7 @@ class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
     $cassandra_password = hiera('profile::restbase::cassandra_password'),
     $seeds = hiera('profile::restbase::seeds'),
+    $seeds_ng = hiera('profile::restbase::seeds_ng', []),
     $hosts = hiera('profile::restbase::hosts'),
     $cassandra_local_dc = hiera('profile::restbase::cassandra_local_dc'),
     $cassandra_datacenters = hiera('profile::restbase::cassandra_datacenters'),
@@ -113,6 +117,7 @@ class profile::restbase(
             ipaddress                => $::ipaddress,
             rl_seeds                 => reject(reject($hosts, $::hostname), $::ipaddress),
             seeds                    => $seeds,
+            seeds_ng                 => $seeds_ng,
             cassandra_local_dc       => $cassandra_local_dc,
             cassandra_datacenters    => $cassandra_datacenters,
             cassandra_user           => $cassandra_user,
