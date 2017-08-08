@@ -17,7 +17,6 @@ class role::torrus {
         'cr2-eqiad.wikimedia.org',
         'cr2-knams.wikimedia.org',
         'cr2-ulsfo.wikimedia.org',
-        'pfw1-codfw.wikimedia.org',
         'pfw1-eqiad.wikimedia.org',
     ]
 
