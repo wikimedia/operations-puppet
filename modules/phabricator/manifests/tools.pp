@@ -32,6 +32,13 @@ class phabricator::tools (
         mode    => '0660',
     }
 
+    file { '/srv/dumps':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755'
+    }
+,
     $dump_script = "${directory}/public_task_dump.py"
 
     file { $dump_script:
