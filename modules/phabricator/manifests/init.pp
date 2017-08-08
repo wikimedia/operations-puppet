@@ -197,9 +197,11 @@ class phabricator (
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
+        require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service phd *',
-            'ALL=(root) NOPASSWD: /usr/sbin/service apache2 *',
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
         ],
     }
 
@@ -243,6 +245,28 @@ class phabricator (
         group   => 'www-data',
         mode    => '0644',
     }
+
+    file { '/usr/local/sbin/phab_deploy_promote':
+        content => template('phabricator/deployment/phab_deploy_promote.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_finalize':
+        content => template('phabricator/deployment/phab_deploy_finalize.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_rollback':
+        content => template('phabricator/deployment/phab_deploy_rollback.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
 
     if !empty($conf_files) {
         create_resources(phabricator::conf_env, $conf_files)
