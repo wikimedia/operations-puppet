@@ -13,6 +13,9 @@
 # [*varnish_svc_name*]
 #   The name of the init unit for the above.
 #   Default 'varnish-frontend'
+# [*kafka_protocol_version*]
+#   Kafka API version to use, needed for brokers < 0.10
+#   https://issues.apache.org/jira/browse/KAFKA-3547
 #
 class role::cache::kafka::eventlogging(
     $varnish_name           = 'frontend',
