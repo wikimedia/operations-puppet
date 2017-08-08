@@ -15,8 +15,9 @@
 #   Default 'varnish-frontend'
 #
 class role::cache::kafka::statsv(
-    $varnish_name = 'frontend',
-    $varnish_svc_name = 'varnish-frontend'
+    $varnish_name           = 'frontend',
+    $varnish_svc_name       = 'varnish-frontend',
+    $kafka_protocol_version = '0.9.0.1',
 ) inherits role::cache::kafka
 {
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
@@ -39,6 +40,7 @@ class role::cache::kafka::statsv(
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
         conf_template               => $conf_template,
+        force_protocol_version      => $kafka_protocol_version,
     }
 
     include ::standard
