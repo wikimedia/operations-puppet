@@ -1,1 +1,0 @@
-labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
