@@ -691,15 +691,7 @@ node 'dbstore1002.eqiad.wmnet' {
 }
 
 node 'dbstore2001.codfw.wmnet' {
-    # 24h delay on all repl streams
-    class { 'role::mariadb::dbstore2':
-        lag_warn     => 90000,
-        lag_crit     => 180000,
-        # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
-        # don't spam Icinga with warnings. This will not block properly critical alerts.
-        warn_stopped => false,
-    }
-    include ::base::firewall
+    role(mariadb::dbstore_multiinstance)
 }
 
 node 'dbstore2002.codfw.wmnet' {
