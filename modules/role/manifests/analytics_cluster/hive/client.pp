@@ -3,7 +3,7 @@
 #
 # filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hive::client {
-    require ::role::analytics_cluster::hadoop::client
+    require ::profile::hadoop::client
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
