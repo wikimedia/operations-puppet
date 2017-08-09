@@ -6,8 +6,10 @@ class role::analytics_cluster::hadoop::standby {
     system::role { 'analytics_cluster::hadoop::standby':
         description => 'Hadoop Standby NameNode',
     }
-    require ::role::analytics_cluster::hadoop::client
+    require ::profile::hadoop::client
     include ::role::analytics_cluster::monitoring::disks
+
+    class {'::druid::cdh::hadoop::setup' }
 
     class { '::cdh::hadoop::namenode::standby': }
 
