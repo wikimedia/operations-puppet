@@ -141,6 +141,8 @@ class statistics::packages {
             'r-cran-rmysql',
             'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
         ]
+        require_package($r_packages)
+
         apt::pin { $r_packages:
             pin      => 'release a=jessie-backports',
             priority => '1001',
