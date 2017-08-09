@@ -4,6 +4,12 @@
 
 cdh::hadoop::cluster_name: analytics-hadoop
 
+cdh::hadoop::zookeeper_cluster_name: main-eqiad
+
+cdh::hadoop::resource_manager_hosts:
+    - analytics1001.eqiad.wmnet
+    - analytics1002.eqiad.wmnet
+
 cdh::hadoop::namenode_hosts:
     - analytics1001.eqiad.wmnet
     - analytics1002.eqiad.wmnet

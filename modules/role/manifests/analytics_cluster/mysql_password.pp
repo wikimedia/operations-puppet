@@ -5,7 +5,7 @@
 # out of MySQL into Hadoop.
 #
 class role::analytics_cluster::mysql_password {
-    Class['role::analytics_cluster::hadoop::client'] -> Class['role::analytics_cluster::mysql_password']
+    require profile::hadoop::client
 
     include ::passwords::mysql::research
     $research_user = $::passwords::mysql::research::user
