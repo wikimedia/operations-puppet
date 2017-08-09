@@ -80,6 +80,10 @@
 #        and port are used. Defaults to undef, which means no remote reindex can occur.
 # - $script_max_compilations_per_minute: integer, max number of script
 #        compilations per minute, defaults to undef (see T171579).
+# - $index_store: Sets the storage implementation elasticsearch will use to
+#        access index data. Defaults to fs which lets elasticsearch decide.
+#        This should almost always be fs unless there is a specific issue to
+#        be solved.
 #
 # == Sample usage:
 #
@@ -120,6 +124,7 @@ class elasticsearch(
     $curator_uses_unicast_hosts = true,
     $reindex_remote_whitelist = undef,
     $script_max_compilations_per_minute = undef,
+    $index_store = 'fs',
 ) {
 
     # Check arguments
