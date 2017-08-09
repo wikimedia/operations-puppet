@@ -27,6 +27,7 @@ class profile::elasticsearch(
     $recover_after_time = hiera('profile::elasticsearch::recover_after_time', '1s'),
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
+    $index_store = hiera('profile::elasticsearch::index_store', undef),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
 
@@ -96,6 +97,7 @@ class profile::elasticsearch(
         version                            => 5,
         reindex_remote_whitelist           => $reindex_remote_whitelist,
         script_max_compilations_per_minute => 10000,
+        index_store                        => $index_store,
     }
 
     class { '::elasticsearch::https':
