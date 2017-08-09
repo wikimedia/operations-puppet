@@ -7,8 +7,10 @@ class role::analytics_cluster::hadoop::master {
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 
-    require ::role::analytics_cluster::hadoop::client
+    require ::profile::hadoop::client
     include ::role::analytics_cluster::monitoring::disks
+
+    class { '::druid::cdh::hadoop::setup': }
 
     class { '::cdh::hadoop::master': }
 

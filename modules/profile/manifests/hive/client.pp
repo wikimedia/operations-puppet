@@ -1,9 +1,14 @@
-# == Class role::analytics_cluster::hive::client
+# == Class profile::hive::client
 # Installs base configs and packages for hive client nodes.
 #
 # filtertags: labs-project-analytics labs-project-math
-class role::analytics_cluster::hive::client {
-    require ::role::analytics_cluster::hadoop::client
+class profile::hive::client(
+    $zookeeper_clusters     = hiera('zookeeper_clusters'),
+    $zookeeper_cluster_name = hiera('profile::hive::client::zookeeper_cluster_name'),
+    $hiveserver_host        = hiera('profile::hive::client::server_host'),
+    $hiveserver_port        = hiera('profile::hive::client::server_port'),
+) {
+    require ::profile::hadoop::client
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
@@ -11,8 +16,7 @@ class role::analytics_cluster::hive::client {
 
     $auxpath = $hcatalog_jar
 
-    $zookeeper_clusters     = hiera('zookeeper_clusters')
-    $zookeeper_cluster_name = hiera('hadoop_zookeeper_cluster_name')
+
     $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     # You must set at least:
@@ -36,9 +40,6 @@ class role::analytics_cluster::hive::client {
     # Set up a wrapper script for beeline, the command line
     # interface to HiveServer2 and install it at
     # /usr/local/bin/beeline
-
-    $hiveserver_host = hiera('hive_server_host', $::cdh::hive::metastore_host)
-    $hiveserver_port = hiera('hive_server_port', '10000')
 
     file { '/usr/local/bin/beeline':
         content => template('role/analytics_cluster/hive/beeline_wrapper.py.erb'),
