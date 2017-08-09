@@ -59,8 +59,9 @@ class role::labs::puppetmaster::frontend() {
     }
 
     class { '::profile::puppetmaster::frontend':
-        config         => $config,
-        secure_private => false,
+        config           => $config,
+        secure_private   => false,
+        extra_auth_rules => template('role/labs/puppetmaster/extra_auth_rules.conf.erb'),
     }
 
     # Update git checkout.  This is done via a cron

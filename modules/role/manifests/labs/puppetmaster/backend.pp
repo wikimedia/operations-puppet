@@ -32,9 +32,10 @@ class role::labs::puppetmaster::backend {
     }
 
     class { '::profile::puppetmaster::backend':
-        config         => $config,
-        secure_private => false,
-        allow_from     => $allow_from,
+        config           => $config,
+        secure_private   => false,
+        allow_from       => $allow_from,
+        extra_auth_rules => template('role/labs/puppetmaster/extra_auth_rules.conf.erb'),
     }
 
     # Update git checkout.  This is done via a cron
