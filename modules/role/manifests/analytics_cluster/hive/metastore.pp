@@ -6,7 +6,7 @@ class role::analytics_cluster::hive::metastore {
     system::role { 'analytics_cluster::hive::metastore':
         description => 'hive-metastore service',
     }
-    require ::role::analytics_cluster::hive::client
+    require ::profile::hive::client
 
     # Setup hive-metastore
     class { '::cdh::hive::metastore': }
