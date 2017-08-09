@@ -141,6 +141,13 @@ class statistics::packages {
             'r-cran-rmysql',
             'r-recommended'    # CRAN-recommended packages (e.g. MASS, Matrix, boot)
         ]
+
+        # Explicitly list package dependencies, instead of using require_package,
+        # to avoid dependency issues with the 'before' clause in apt::pin.
+        package { $r_packages:
+            ensure => present,
+        }
+
         apt::pin { $r_packages:
             pin      => 'release a=jessie-backports',
             priority => '1001',
