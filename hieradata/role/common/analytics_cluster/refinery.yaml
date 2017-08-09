@@ -1,4 +1,1 @@
-# FIXME:
-# indirect hiera lookup due to includes in the role:
-# role::analytics_cluster::hadoop::client
-hadoop_zookeeper_cluster_name: main-eqiad
+profile::hadoop::client::zookeeper_cluster_name: main-eqiad
