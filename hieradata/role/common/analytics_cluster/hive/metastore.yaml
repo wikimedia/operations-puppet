@@ -1,0 +1,3 @@
+profile::hive::client::zookeeper_cluster_name: main-eqiad
+profile::hive::client::server_host: analytics1003.eqiad.wmnet
+profile::hive::client::server_port: 10000

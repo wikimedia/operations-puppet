@@ -41,9 +41,7 @@ node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
 # - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::master,
-        analytics_cluster::users,
-        # Need druid user and HDFS directories
-        analytics_cluster::druid::hadoop)
+        analytics_cluster::users)
 
     include ::standard
     include ::base::firewall
@@ -60,9 +58,7 @@ node 'analytics1002.eqiad.wmnet' {
         # (MySQL analytics-meta) instance.  If you move this,
         # make sure /srv/backup/mysql/analytics-meta has
         # enough space to store backups.
-        analytics_cluster::database::meta::backup_dest,
-        # Need druid user and HDFS directories
-        analytics_cluster::druid::hadoop)
+        analytics_cluster::database::meta::backup_dest)
 
     include ::standard
     include ::base::firewall
@@ -778,9 +774,7 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[123].eqiad.wmnet$/ {
-    role(analytics_cluster::druid::worker,
-        analytics_cluster::hadoop::client,
-        analytics_cluster::druid::zookeeper)
+    role(analytics_cluster::druid::worker)
 
     include ::base::firewall
     include ::standard
