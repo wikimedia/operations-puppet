@@ -15,3 +15,8 @@ admin::groups:
 debdeploy::grains:
   debdeploy-hadoop-standby:
     value: standard
+
+profile::hadoop::client::zookeeper_cluster_name: 'main-eqiad'
+profile::hadoop::client::resourcemanager_hosts:
+  - analytics1001.eqiad.wmnet
+  - analytics1002.eqiad.wmnet

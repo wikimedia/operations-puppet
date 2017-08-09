@@ -8,7 +8,7 @@ class role::analytics_cluster::oozie::server {
     system::role { 'analytics_cluster::oozie::server':
         description => 'Oozie Server',
     }
-    require ::role::analytics_cluster::oozie::client
+    require ::profile::oozie::client
 
     # cdh::oozie::server will ensure that its MySQL DB is
     # properly initialized.  For puppet to do this,

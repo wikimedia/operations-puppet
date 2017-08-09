@@ -8,8 +8,14 @@
 #
 # filtertags: labs-project-analytics
 class role::analytics_cluster::druid::worker {
+
     # Require common druid package and configuration.
-    require ::role::analytics_cluster::druid::common
+    require ::profile::druid::common
+    require ::profile::hadoop::client
+
+    # Zookeeper is co-located on the same host
+    include profile::zookeeper::server
+    include profile::zookeeper::firewall
 
     # Auto reload daemons in labs, but not in production.
     $should_subscribe = $::realm ? {
