@@ -7,7 +7,7 @@ class role::analytics_cluster::hadoop::worker {
         description => 'Hadoop Worker (DataNode & NodeManager)',
     }
 
-    require ::role::analytics_cluster::hadoop::client
+    require ::profile::hadoop::client
     include ::role::analytics_cluster::monitoring::disks
 
     class { '::cdh::hadoop::worker': }

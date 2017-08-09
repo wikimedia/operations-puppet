@@ -1,4 +1,4 @@
-# == Class role::analytics_cluster::druid::common
+# == Class profile::druid::common
 # Installs the druid common package and common configuration settings.
 # You will likely not have to include this class directly.
 #
@@ -9,13 +9,15 @@
 # Druid Zookeeper chroot will be set according to $site in production, or
 # $labsproject in labs.
 #
-class role::analytics_cluster::druid::common
-{
+class profile::druid::common(
+    $zookeeper_cluster_name = hiera('profile::druid::common::zookeeper_cluster_name'),
+    $zookeeper_clusters     = hiera('zookeeper_clusters'),
+    $druid_properties       = hiera_hash('druid::properties'),
+) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics
 
-    $zookeeper_cluster_name = hiera('zookeeper_cluster_name')
-    $zookeeper_clusters     = hiera('zookeeper_clusters')
+
     $zookeeper_hosts        = join(keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts']), ',')
 
     $zookeeper_chroot = $::realm ? {
@@ -28,10 +30,6 @@ class role::analytics_cluster::druid::common
         'druid.discovery.curator.path' => "${zookeeper_chroot}/discovery",
         'druid.zk.service.host'        => $zookeeper_hosts,
     }
-
-    # Look up druid::properties out of hiera.  Since class path
-    # lookup does not do hiera hash merging, we do so manually here.
-    $hiera_druid_properties = hiera_hash('druid::properties', {})
 
     # Druid Common Class
     class { '::druid':

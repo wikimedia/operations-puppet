@@ -778,9 +778,7 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[123].eqiad.wmnet$/ {
-    role(analytics_cluster::druid::worker,
-        analytics_cluster::hadoop::client,
-        analytics_cluster::druid::zookeeper)
+    role(analytics_cluster::druid::worker)
 
     include ::base::firewall
     include ::standard
