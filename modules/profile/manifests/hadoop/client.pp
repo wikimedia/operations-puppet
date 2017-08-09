@@ -1,8 +1,12 @@
-# == Class role::analytics_cluster::hadoop::client
+# == Class profile::hadoop::client
 # Installs Hadoop client pacakges and configuration.
 #
 # filtertags: labs-project-analytics
-class role::analytics_cluster::hadoop::client {
+class profile::hadoop::client (
+    $zookeeper_clusters      = hiera('zookeeper_clusters'),
+    $zookeeper_cluster_name  = hiera('cdh::hadoop::zookeeper_cluster_name'),
+    $hadoop_resourcemanagers = hiera('cdh::hadoop::resourcemanager_hosts'),
+) {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
     # to install CDH packages from our apt repo mirror.
@@ -11,7 +15,7 @@ class role::analytics_cluster::hadoop::client {
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
     # and are made available by profile::cdh::apt.
-    Exec['apt-get update'] -> Class['::role::analytics_cluster::hadoop::client']
+    Exec['apt-get update'] -> Class['::profile::hadoop::client']
 
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
@@ -28,17 +32,12 @@ class role::analytics_cluster::hadoop::client {
     #  zookeeper_clusters
     #  zookeeper_cluster_name
     #
-
-    $zookeeper_clusters     = hiera('zookeeper_clusters')
-    $zookeeper_cluster_name = hiera('hadoop_zookeeper_cluster_name')
-    $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
+    $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
-        resourcemanager_hosts                       => hiera(
-            'cdh::hadoop::resourcemanager_hosts', hiera('cdh::hadoop::namenode_hosts')
-        ),
+        resourcemanager_hosts                       => $hadoop_resourcemanagers,
         zookeeper_hosts                             => $zookeeper_hosts,
         dfs_name_dir                                => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
@@ -89,7 +88,7 @@ class role::analytics_cluster::hadoop::client {
     # NOTE: This conditional is temporary, and will be removed once stat1002
     # is replaced with a Jessie box as part of T159838.
     if os_version('debian >= jessie') {
-        include ::ores::base
+        class { '::ores::base': }
     }
 
     # If in production AND the current node is a journalnode, then
