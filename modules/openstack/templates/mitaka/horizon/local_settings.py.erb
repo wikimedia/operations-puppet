@@ -542,8 +542,8 @@ INSTANCE_TLD = '<%= scope.lookupvar('::site') %>.<%= @designateconfig['private_t
 # Disable instance consoles for Horizon users
 CONSOLE_TYPE = False
 
-PUPPETMASTER_API  = "https://<%= @novaconfig['controller_hostname'] %>:8140/puppet"
-PUPPET_CONFIG_BACKEND  = "http://<%= @novaconfig['controller_hostname'] %>:8101/v1"
+PUPPETMASTER_API  = "https://<%= scope.function_hiera(['labs_puppet_master']) %>:8140/puppet"
+PUPPET_CONFIG_BACKEND  = "http://<%= scope.function_hiera(['labs_puppet_master']) %>:8101/v1"
 
 LDAP_USER = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
 LDAP_PROJECTS_BASE = "ou=projects,dc=wikimedia,dc=org"
