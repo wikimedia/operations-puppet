@@ -14,7 +14,6 @@ class mediawiki::packages::fonts {
         'fonts-liberation',
         'fonts-linuxlibertine',
         'fonts-manchufont',
-        'fonts-mgopen',
         'fonts-nafees',
         'fonts-sil-abyssinica',
         'fonts-sil-ezra',
@@ -28,7 +27,6 @@ class mediawiki::packages::fonts {
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
         'ttf-alee',
-        'ttf-ubuntu-font-family',    # T32288, T103325
         'ttf-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
@@ -42,8 +40,6 @@ class mediawiki::packages::fonts {
         'fonts-vlgothic',            # T66002
         'fonts-dejavu-core',         # T65206
         'fonts-dejavu-extra',        # T65206
-        'ttf-kochi-gothic',          # T66002
-        'ttf-kochi-mincho',          # T66002
         'fonts-lyx',                 # T40299
         'fonts-crosextra-carlito',   # T84842
         'fonts-crosextra-caladea',   # T84842
@@ -55,11 +51,11 @@ class mediawiki::packages::fonts {
     }
 
     if os_version('ubuntu >= trusty') {
-        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts')
+        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts', 'ttf-kochi-gothic', 'ttf-kochi-mincho', 'fonts-mgopen', 'ttf-ubuntu-font-family')
     }
 
     if os_version('debian >= jessie') {
-        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra', 'fonts-noto-cjk', 'fonts-sil-lateef')
+        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra', 'fonts-noto-cjk', 'fonts-sil-lateef', 'fonts-ipafont-gothic', 'fonts-ipafont-mincho', 'fonts-mgopen')
     }
 
     # In older releases (up to the version present in trusty), fontconfig-config provided
