@@ -2,5 +2,5 @@ projects: [ 'tools', 'deployment-prep', 'extdist', 'analytics', 'integration', '
 output_path: '/etc/shinken/generated'
 site: <%= scope.lookupvar("::site") %>
 keystone_host: <%= scope.function_hiera(['labs_keystone_host']) %>
-keystone_port: <%= scope.function_hiera(['keystoneconfig:public_port']) %>
+keystone_port: <%= scope.function_hiera(['keystone_public_port']) %>
 puppet_enc_host: <%= scope.function_hiera(['labs_puppet_master']) %>
