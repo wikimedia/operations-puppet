@@ -10,6 +10,7 @@ class profile::puppetmaster::backend(
       '*.ulsfo.wmnet',
       '*.esams.wmnet',
       '*.codfw.wmnet'],
+    $extra_auth_rules = '',
 ) {
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
@@ -30,6 +31,7 @@ class profile::puppetmaster::backend(
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
+        extra_auth_rules    => $extra_auth_rules,
     }
 
     $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')

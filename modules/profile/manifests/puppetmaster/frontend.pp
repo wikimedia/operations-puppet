@@ -11,6 +11,7 @@ class profile::puppetmaster::frontend(
       '*.ulsfo.wmnet',
       '*.esams.wmnet',
       '*.codfw.wmnet'],
+    $extra_auth_rules = '',
 ) {
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
@@ -52,6 +53,7 @@ class profile::puppetmaster::frontend(
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
+        extra_auth_rules    => $extra_auth_rules,
     }
 
     # Main site to respond to
