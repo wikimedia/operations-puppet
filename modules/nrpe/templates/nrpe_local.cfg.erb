@@ -4,3 +4,5 @@
 allowed_hosts=<%= @allowed_hosts %>
 server_address=<%= @ipaddress %>
 
+# Override command_timeout to support longer running nrpe checks
+command_timeout=90
