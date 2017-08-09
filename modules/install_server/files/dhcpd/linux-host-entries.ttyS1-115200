@@ -1302,6 +1302,8 @@ host db1094 {
 host db1095 {
     hardware ethernet 14:02:EC:3D:5D:CC;
     fixed-address db1095.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1096 {
@@ -1339,6 +1341,8 @@ host db1101 {
 host db1102 {
     hardware ethernet 18:66:DA:F8:D5:D0;
     fixed-address db1102.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1103 {
@@ -1593,6 +1597,8 @@ host db2061 {
 host db2062 {
     hardware ethernet 40:a8:f0:35:3b:a0;
     fixed-address db2062.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2063 {
@@ -1817,11 +1823,15 @@ host dbstore1002 {
 host dbstore2001 {
     hardware ethernet 40:a8:f0:26:b9:84;
     fixed-address dbstore2001.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbstore2002 {
     hardware ethernet 40:a8:f0:26:8a:14;
     fixed-address dbstore2002.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cp1099 {
@@ -2802,16 +2812,22 @@ host labsdb1007 {
 host labsdb1009 {
     hardware ethernet 1c:98:ec:1a:6b:68;
     fixed-address labsdb1009.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labsdb1010 {
     hardware ethernet 1c:98:ec:1a:6b:80;
     fixed-address labsdb1010.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labsdb1011 {
     hardware ethernet 1c:98:ec:1a:6b:04;
     fixed-address labsdb1011.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labservices1001 {
