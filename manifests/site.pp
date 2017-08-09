@@ -1054,8 +1054,7 @@ node 'labtestcontrol2001.wikimedia.org' {
     include ::standard
     include ::base::firewall
     role(wmcs::openstack::labtest::control,
-          labs::openstack::nova::controller,
-          labs::puppetmaster)
+          labs::openstack::nova::controller)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
     #  we need some special fw rules to allow that
@@ -1240,7 +1239,6 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control,
           labs::openstack::nova::controller,
-          labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters)
 
@@ -1257,7 +1255,6 @@ node 'labcontrol1001.wikimedia.org' {
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control,
           labs::openstack::nova::controller,
-          labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters)
 
