@@ -89,6 +89,7 @@
   - db2053:9104
   - db2060:9104
   - db2067:9104
+  - db2076:9104
 - labels:
     shard: s6
     role: master
