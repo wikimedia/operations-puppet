@@ -12,7 +12,7 @@ class role::analytics_cluster::hive::metastore::database {
     require ::role::analytics_cluster::database::meta
     # Need to have hive package installed to
     # get /usr/lib/hive/bin/schematool.
-    # require role::analytics_cluster::hive::client
+    # require ::profile::hive::client
 
     # Ensure that the hive_metastore db is created.
     # TODO: In CDH 5.4,

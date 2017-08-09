@@ -7,7 +7,7 @@ class role::analytics_cluster::hadoop::worker {
         description => 'Hadoop Worker (DataNode & NodeManager)',
     }
 
-    require ::role::analytics_cluster::hadoop::client
+    require ::profile::hadoop::client
     include ::role::analytics_cluster::monitoring::disks
 
     class { '::cdh::hadoop::worker': }
@@ -98,7 +98,7 @@ class role::analytics_cluster::hadoop::worker {
     # This installs hive-hcatalog package on worker nodes to get
     # hcatalog jars, including Hive JsonSerde for using
     # JSON backed Hive tables.
-    include ::role::analytics_cluster::hive::client
+    include ::profile::hive::client
 
     # Spark Python stopped working in Spark 1.5.0 with Oozie,
     # for complicated reasons.  We need to be able to set
