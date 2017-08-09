@@ -10,6 +10,8 @@
 class role::analytics_cluster::druid::worker {
     # Require common druid package and configuration.
     require ::role::analytics_cluster::druid::common
+    require ::profile::hadoop::client
+    require ::role::analytics_cluster::zookeeper
 
     # Auto reload daemons in labs, but not in production.
     $should_subscribe = $::realm ? {
