@@ -25,6 +25,13 @@ class package_builder::hooks(
         basepath     => $basepath,
     }
 
+    package_builder::pbuilder_hook { 'stretch':
+        distribution => 'stretch',
+        components   => 'main backports thirdparty',
+        basepath     => $basepath,
+    }
+
     File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook['trusty']
     File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook['jessie']
+    File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook['stretch']
 }
