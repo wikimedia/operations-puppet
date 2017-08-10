@@ -8,7 +8,10 @@ class role::eventlogging::analytics::server {
 
     # EventLogging for analytics processing is deployed
     # as the eventlogging/analytics scap target.
-    eventlogging::deployment::target { 'analytics': }
+    eventlogging::deployment::target { 'analytics':
+        deploy_user => 'eventlogging',
+    }
+
     class { 'eventlogging::server':
         eventlogging_path => '/srv/deployment/eventlogging/analytics'
     }

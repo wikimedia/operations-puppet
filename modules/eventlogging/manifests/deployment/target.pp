@@ -18,6 +18,9 @@
 #   Array of extra sudo rules to pass to scap::target.
 #   Default: undef
 #
+# [*deploy_user*]
+#   The scap deploy-user.
+#
 # == Usage
 #
 #   # Deploy eventlogging/eventbus here, and allow
@@ -36,13 +39,14 @@ define eventlogging::deployment::target(
     $package_name = "eventlogging/${title}",
     $service_name = undef,
     $sudo_rules   = undef,
+    $deploy_user,
 ) {
     # Install eventlogging dependencies from .deb packages.
     include ::eventlogging::dependencies
 
     scap::target { "eventlogging/${title}":
         package_name => $package_name,
-        deploy_user  => 'eventlogging',
+        deploy_user  => $deploy_user,
         service_name => $service_name,
         sudo_rules   => $sudo_rules,
         manage_user  => false,

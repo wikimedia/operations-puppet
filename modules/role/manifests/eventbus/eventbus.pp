@@ -25,7 +25,8 @@ class role::eventbus::eventbus {
     # from the eventlogging/eventbus deploy target
     # via scap/scap.cfg on the deployment host.
     eventlogging::deployment::target { 'eventbus':
-        service_name        => 'eventlogging-service-eventbus',
+        service_name => 'eventlogging-service-eventbus',
+        deploy_user  => 'deploy-service',
     }
 
     # Include eventlogging server configuration, including
