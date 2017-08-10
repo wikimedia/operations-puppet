@@ -8,6 +8,9 @@
 #
 # == Parameters
 #
+# [*deploy_user*]
+#   The scap deploy-user.
+#
 # [*package_name*]
 #   The name of the scap3 deployment package Default: eventlogging/$title
 #
@@ -33,6 +36,7 @@
 #   }
 #
 define eventlogging::deployment::target(
+    $deploy_user,
     $package_name = "eventlogging/${title}",
     $service_name = undef,
     $sudo_rules   = undef,
@@ -42,7 +46,7 @@ define eventlogging::deployment::target(
 
     scap::target { "eventlogging/${title}":
         package_name => $package_name,
-        deploy_user  => 'eventlogging',
+        deploy_user  => $deploy_user,
         service_name => $service_name,
         sudo_rules   => $sudo_rules,
         manage_user  => false,
