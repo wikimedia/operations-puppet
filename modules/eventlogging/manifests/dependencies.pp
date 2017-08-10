@@ -3,8 +3,7 @@
 # EventLogging is a platform for modeling, logging and processing
 # arbitrary schemaed JSON data.
 #
-# This class only installs dependencies.  To set up a deployment target, use
-# the eventlogging::deployment::target define.  If you want to configure an
+# This class only installs dependencies. If you want to configure an
 # eventlogging server that will run eventlogging service daemons, include the
 # eventlogging::server class, or use one or more of the
 # eventlogging::service::* defines.
