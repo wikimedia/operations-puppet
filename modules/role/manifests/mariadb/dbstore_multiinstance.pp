@@ -48,53 +48,28 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         group  => root,
         mode   => '0755',
     }
-    mariadb::instance {'s1':
-        port => 3311,
-    }
-    role::prometheus::mysqld_exporter_instance {'s1':
-        port => 13311,
-    }
-    mariadb::instance {'s2':
-        port => 3312,
-    }
-    role::prometheus::mysqld_exporter_instance {'s2':
-        port => 13312,
-    }
-    mariadb::instance {'s3':
-        port => 3313,
-    }
-    role::prometheus::mysqld_exporter_instance {'s3':
-        port => 13313,
-    }
-    mariadb::instance {'s4':
-        port => 3314,
-    }
-    role::prometheus::mysqld_exporter_instance {'s4':
-        port => 13314,
-    }
-    #mariadb::instance {'s5':
-    #    port => 3315,
-    #}
-    #role::prometheus::mysqld_exporter_instance {'s5':
-    #    port => 13315,
-    #}
-    #mariadb::instance {'s6':
-    #    port => 3316,
-    #}
-    #role::prometheus::mysqld_exporter_instance {'s6':
-    #    port => 13316,
-    #}
-    #mariadb::instance {'s7':
-    #    port => 3317,
-    #}
-    #role::prometheus::mysqld_exporter_instance {'s7':
-    #    port => 13317,
-    #}
-    mariadb::instance {'x1':
-        port => 3320,
-    }
-    role::prometheus::mysqld_exporter_instance {'x1':
-        port => 13320,
+
+    mariadb::instance {'s1': port => 3311, }
+    role::prometheus::mysqld_exporter_instance {'s1': port => 13311, }
+    mariadb::instance {'s2': port => 3312, }
+    role::prometheus::mysqld_exporter_instance {'s2': port => 13312, }
+    mariadb::instance {'s3': port => 3313, }
+    role::prometheus::mysqld_exporter_instance {'s3': port => 13313, }
+    mariadb::instance {'s4': port => 3314, }
+    role::prometheus::mysqld_exporter_instance {'s4': port => 13314, }
+    mariadb::instance {'x1': port => 3320, }
+    role::prometheus::mysqld_exporter_instance {'x1': port => 13320, }
+
+    if $::hostname != 'dbstore2002' {
+        $num_instances = 8
+        mariadb::instance {'s5': port => 3315, }
+        role::prometheus::mysqld_exporter_instance {'s5': port => 13315, }
+        mariadb::instance {'s6': port => 3316, }
+        role::prometheus::mysqld_exporter_instance {'s6': port => 13316, }
+        mariadb::instance {'s7': port => 3317, }
+        role::prometheus::mysqld_exporter_instance {'s7': port => 13317, }
+    } else {
+        $num_instances = 5
     }
 
     class { 'mariadb::monitor_disk':
@@ -103,7 +78,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
 
     class { 'mariadb::monitor_process':
-        process_count => 5,
+        process_count => $num_instances,
         is_critical   => false,
         contact_group => 'admins',
     }
