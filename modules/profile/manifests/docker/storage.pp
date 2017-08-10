@@ -19,7 +19,7 @@ class profile::docker::storage(
 
     Class['::profile::docker::storage'] -> Service['docker']
 
-    if $vg_to_remove {
+    if ($vg_to_remove  and ! empty($vg_to_remove)) {
         volume_group { $vg_to_remove:
             ensure           => absent,
             physical_volumes => [],
