@@ -159,26 +159,6 @@ class role::mariadb::groups(
     $socket = '/run/mysqld/mysqld.sock',
     ) {
 
-    salt::grain { 'mysql_group':
-        ensure  => present,
-        replace => true,
-        value   => $mysql_group,
-    }
-
-    salt::grain { 'mysql_role':
-        ensure  => present,
-        replace => true,
-        value   => $mysql_role,
-    }
-
-    if $mysql_shard != '' {
-        salt::grain { 'mysql_shard':
-            ensure  => present,
-            replace => true,
-            value   => $mysql_shard,
-        }
-    }
-
     include role::prometheus::node_exporter
     class { 'role::prometheus::mysqld_exporter':
         socket => $socket,
