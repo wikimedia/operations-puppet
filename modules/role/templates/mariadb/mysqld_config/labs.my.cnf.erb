@@ -66,7 +66,7 @@ character_set_server           = binary
 character_set_filesystem       = binary
 collation_server               = binary
 
-default-storage-engine         = Aria
+default-storage-engine         = InnoDB
 aria_pagecache_buffer_size     = <%= (Float(@memorysize.split[0]) * 0.05).round %>G
 innodb_data_home_dir           = /srv/innodb
 innodb_file_per_table          = 0
