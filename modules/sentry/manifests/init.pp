@@ -115,8 +115,9 @@ class sentry (
         require   => Exec['initialize_sentry_database'],
     }
 
+    # TODO: convert to systemd::service
     base::service_unit { 'sentry':
-        systemd   => true,
+        systemd   => systemd_template('sentry'),
         subscribe => File['/etc/sentry.conf.py'],
         require   => Base::Service_unit['sentry-worker'],
     }

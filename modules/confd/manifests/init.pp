@@ -50,8 +50,8 @@ class confd(
     base::service_unit { 'confd':
         ensure         => $ensure,
         refresh        => true,
-        systemd        => true,
-        upstart        => true,
+        systemd        => systemd_template('confd'),
+        upstart        => upstart_template('confd'),
         service_params => $params,
         require        => Package['confd'],
     }
