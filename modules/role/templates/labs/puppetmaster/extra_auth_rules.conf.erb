@@ -2,3 +2,6 @@
 path /resource_type
 auth any
 allow <%= @horizon_host %>
+<%= scope.function_hiera(['puppetmaster::servers']).values.each do |puppetworker| %>
+allow <%= puppetworker %>
+<%end %>
