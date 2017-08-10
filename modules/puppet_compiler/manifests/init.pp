@@ -1,6 +1,6 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
-    $version = '0.0.4',
+    $version = '0.3.3',
     $workdir = '/mnt/jenkins-workspace/puppet-compiler',
     $libdir  = '/var/lib/catalog-differ',
     $ensure  = 'present',
@@ -124,5 +124,14 @@ class puppet_compiler(
         source  => '/etc/puppet/puppetdb.conf',
         owner   => $user,
         require => File['/etc/puppet/puppetdb.conf']
+    }
+
+    # periodic script to populate puppetdb. Run at 4 AM every sunday.
+    cron { 'Populate puppetdb':
+        command => "/usr/local/bin/puppetdb-populate --basedir ${libdir} > ${homedir}/puppetdb-populate.log 2>&1",
+        user    => $user,
+        hour    => 4,
+        minute  => 0,
+        weekday => 0,
     }
 }
