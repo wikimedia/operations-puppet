@@ -6,9 +6,19 @@ class role::eventlogging::analytics::server {
         description => 'EventLogging analytics processes',
     }
 
-    # EventLogging for analytics processing is deployed
-    # as the eventlogging/analytics scap target.
-    eventlogging::deployment::target { 'analytics': }
+    include ::eventlogging::dependencies
+
+    scap::target { 'eventlogging/analytics':
+        deploy_user => 'eventlogging',
+        manage_user => false,
+    }
+
+    # Needed because scap::target doesn't manage_user.
+    ssh::userkey { 'eventlogging':
+        ensure  => 'present',
+        content => secret('keyholder/eventlogging.pub'),
+    }
+
     class { 'eventlogging::server':
         eventlogging_path => '/srv/deployment/eventlogging/analytics'
     }
