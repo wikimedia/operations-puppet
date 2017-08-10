@@ -16,22 +16,19 @@
 #  ensure => running and conversely 'absent' will ensure => stopped.
 #
 # [*template_name*]
-#  String, default $name.  Init file template pathnames are formed
+#  String, default $name. Now deprecated. Init file template pathnames are formed
 #  using the pattern "$module/initscripts/$template_name.$initsystem.erb"
 #
 # [*systemd*]
-#  Boolean - set it to true to make the resource include personalized
-#  init file. As this is used to You are expected to put them in a
-#  specific subdirectory of the current module, which is
-#  $module/initscripts/$template_name.systemd.erb for systemd  (and
-#  similarly for other init systems)
+#  String or false. If it is a string, the content will be used as the content
+#  of the custom systemd service file. If you set it to true (now deprecated),
+#  the resource will fetch the templates from a default location. Same thing applies
+#  to all the cases below.
 #
 # [*systemd_override*]
-#  Boolean - if enabled, make the resource use a systemd unit provided
+#  String or false. If enabled, make the resource use a systemd unit provided
 #  by a Debian package, while applying an override file with site-
 #  specific changes.
-#  You are expected to place the override file in specific subdirectory of
-#  the current module: $module/initscripts/$template_name.systemd_override.erb
 #
 # [*upstart*]
 #  As the preceding param, but for upstart scripts
@@ -85,6 +82,17 @@ define base::service_unit (
 ) {
 
     validate_ensure($ensure)
+    # Issue deprecation warnings
+    if $template_name != $name {
+        warning('Setting base::service_unit::template_name is deprecated. Pass the content directly to the define. See https://wikitech.wikimedia.org/wiki/User:Giuseppe_Lavagetto/PuppetFutureParser#Variable_scope_is_now_respected_in_templates')
+    }
+
+    $custom_inits = {
+        'systemd'          => $systemd,
+        'systemd_override' => $systemd_override,
+        'upstart'          => $upstart,
+        'sysvinit'         => $sysvinit
+    }
 
     # Validates the service name, and picks the valid init script
     $initscript = pick_initscript(
@@ -92,10 +100,18 @@ define base::service_unit (
 
     # we assume init scripts are templated
     if $initscript {
-        if $caller_module_name {
-            $template = "${caller_module_name}/initscripts/${template_name}.${initscript}.erb"
-        } else {
-            $template = "initscripts/${template_name}.${initscript}.erb"
+        $custom_init =$custom_inits[$initscript]
+        if $custom_init == true {
+            warning('Please pass the content of the template to base::service_unit directly - See https://wikitech.wikimedia.org/wiki/User:Giuseppe_Lavagetto/PuppetFutureParser#Variable_scope_is_now_respected_in_templates')
+            if $caller_module_name {
+                $template = "${caller_module_name}/initscripts/${template_name}.${initscript}.erb"
+            } else {
+                $template = "initscripts/${template_name}.${initscript}.erb"
+            }
+            $content = template($template)
+        }
+        else {
+            $content = $custom_init
         }
 
         $path = $initscript ? {
@@ -124,7 +140,7 @@ define base::service_unit (
 
         file { $path:
             ensure  => $ensure,
-            content => template($template),
+            content => $content,
             mode    => $i_mode,
             owner   => 'root',
             group   => 'root',

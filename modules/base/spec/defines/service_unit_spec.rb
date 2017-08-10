@@ -6,7 +6,7 @@ describe 'base::service_unit' do
   context 'with systemd as init' do
     let(:facts) { {:initsystem => 'systemd'} }
     context 'with a systemd unit file' do
-      let(:params) { { :ensure => 'present', :systemd => true}}
+      let(:params) { { :ensure => 'present', :systemd => 'test'}}
 
       it 'should activate the service' do
         should contain_service('nginx')
@@ -14,6 +14,7 @@ describe 'base::service_unit' do
 
       it 'should install a service file' do
         should contain_file('/lib/systemd/system/nginx.service')
+                 .with_content('test')
       end
 
       it 'should execute daemon-reload' do
