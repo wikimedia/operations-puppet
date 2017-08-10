@@ -1,23 +1,27 @@
 <%-
-if @interval
-   opts = "-interval=#{@interval}"
+if scope['confd::interval']
+   opts = "-interval=#{scope['confd::interval']}"
 else
    opts = "-watch"
 end
 if @prefix and !@prefix.empty?
-   opts += " -prefix=#{@prefix}"
+   opts += " -prefix=#{scope['confd::prefix']}"
 end
+backend = scope['confd::backend']
+node = scope['confd::node']
+srv_dns = scope['confd::srv_dns']
+scheme = scope['confd::scheme']
 -%>
 [Unit]
 Description=confd
 
 [Service]
 User=root
-Environment="CONFD_BACKEND=<%= @backend %>"
-<%- if @node -%>
-Environment="CONFD_DISCOVERY=-node <%= @node %>"
+Environment="CONFD_BACKEND=<%= backend %>"
+<%- if node -%>
+Environment="CONFD_DISCOVERY=-node <%= node %>"
 <%- else -%>
-Environment="CONFD_DISCOVERY=-srv-domain <%= @srv_dns %> -scheme <%= @scheme %>"
+Environment="CONFD_DISCOVERY=-srv-domain <%= srv_dns %> -scheme <%= scheme %>"
 <%- end -%>
 Environment="CONFD_OPTS=<%= opts %>"
 ExecStart=/usr/bin/confd -backend $CONFD_BACKEND $CONFD_DISCOVERY $CONFD_OPTS
