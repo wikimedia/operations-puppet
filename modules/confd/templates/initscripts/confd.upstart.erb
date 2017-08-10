@@ -1,16 +1,23 @@
+<%-
+backend = scope['confd::backend']
+node = scope['confd::node']
+srv_dns = scope['confd::srv_dns']
+scheme = scope['confd::scheme']
+interval = scope['confd::interval']
+-%>
 # confd config management daemon
 description "Confd config management daemon"
 
 start on (local-filesystem and net-device-up IFACE!=lo)
 
 script
-    CONFD_BACKEND="<%= @backend %>"
-    <%- if @node -%>
-    CONFD_DISCOVERY="-node <%= @node %>"
+    CONFD_BACKEND="<%= backend %>"
+    <%- if node -%>
+    CONFD_DISCOVERY="-node <%= node %>"
     <%- else -%>
-    CONFD_DISCOVERY="-srv-domain <%= @srv_dns %> -scheme <%= @scheme %>"
+    CONFD_DISCOVERY="-srv-domain <%= srv_dns %> -scheme <%= scheme %>"
     <%- end -%>
-    CONFD_OPTS="<% if @interval %>-interval <%= @interval %><% else %>-watch<% end %>"
+    CONFD_OPTS="<% if interval %>-interval <%= interval %><% else %>-watch<% end %>"
     /usr/bin/confd -backend $CONFD_BACKEND $CONFD_DISCOVERY $CONFD_OPTS
 end script
 
