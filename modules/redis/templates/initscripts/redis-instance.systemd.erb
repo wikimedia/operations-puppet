@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/redis-server /etc/redis/<%= @instance_name %>.conf
+ExecStart=/usr/bin/redis-server /etc/redis/<%= scope['redis::instance::instance_name'] %>.conf
 Restart=always
 User=redis
 Group=redis
