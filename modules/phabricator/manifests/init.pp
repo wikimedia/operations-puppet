@@ -296,9 +296,8 @@ class phabricator (
 
     base::service_unit { 'phd':
         ensure         => 'present',
-        systemd        => true,
-        upstart        => true,
-        sysvinit       => false,
+        systemd        => systemd_template('phd'),
+        upstart        => upstart_template('phd'),
         require        => $base_requirements,
         service_params => {
             ensure     => $phd_service_ensure,

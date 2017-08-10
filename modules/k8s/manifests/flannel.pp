@@ -4,7 +4,7 @@ class k8s::flannel(
     require_package('flannel')
 
     base::service_unit { 'flannel':
-        systemd => true,
-        upstart => true,
+        systemd => systemd_template('flannel'),
+        upstart => upstart_template('flannel'),
     }
 }

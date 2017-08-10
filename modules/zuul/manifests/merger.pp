@@ -84,8 +84,7 @@ class zuul::merger (
 
     base::service_unit { 'zuul-merger':
         ensure    => present,
-        sysvinit  => false,
-        systemd   => true,
+        systemd   => systemd_template('zuul-merger'),
         subscribe => File['/etc/zuul/zuul-merger.conf'],
         require   => [
             File['/etc/default/zuul-merger'],

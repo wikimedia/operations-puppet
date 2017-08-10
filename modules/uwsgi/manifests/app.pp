@@ -50,8 +50,8 @@ define uwsgi::app(
             base::service_unit { "uwsgi-${title}":
                 ensure        => present,
                 template_name => 'uwsgi',
-                systemd       => true,
-                upstart       => true,
+                systemd       => systemd_template('uwsgi'),
+                upstart       => upstart_template('uwsgi'),
                 subscribe     => File["/etc/uwsgi/apps-available/${basename}.ini"],
             }
 

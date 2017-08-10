@@ -22,7 +22,7 @@ class k8s::proxy(
       # Split this out into two, since we want to use the systemd unit
       # file from the deb but from puppet on upstart
       base::service_unit { 'kube-proxy':
-          upstart         => true,
+          upstart         => upstart_template('kube-proxy'),
           declare_service => false,
       }
     }

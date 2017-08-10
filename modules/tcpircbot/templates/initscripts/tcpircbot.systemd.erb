@@ -1,9 +1,9 @@
 [Unit]
-Description=TCP socket to IRC bot: <%= @title %>
+Description=TCP socket to IRC bot: <%= @service_name %>
 
 [Service]
 
-ExecStart=/usr/bin/python tcpircbot.py <%= @title %>.json
+ExecStart=/usr/bin/python tcpircbot.py <%= @service_name %>.json
 Restart=always
 RestartSec=5s
 WorkingDirectory=/srv/tcpircbot

@@ -92,7 +92,7 @@ class role::labs::db::maintain_dbusers {
 
     base::service_unit { 'maintain-dbusers':
         ensure        => present,
-        systemd       => true,
+        systemd       => systemd_template( 'labs/db/maintain-dbusers'),
         require       => File['/usr/local/sbin/maintain-dbusers'],
         template_name => 'labs/db/maintain-dbusers',
     }

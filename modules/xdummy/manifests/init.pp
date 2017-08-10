@@ -42,8 +42,8 @@ class xdummy(
     base::service_unit { 'xdummy':
         ensure  => present,
         refresh => true,
-        upstart => true,
-        systemd => true,
+        upstart => upstart_template('xdummy'),
+        systemd => systemd_template('xdummy'),
         require => [
             Package['Xorg'],
             Package['xpra'],

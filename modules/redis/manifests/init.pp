@@ -65,8 +65,7 @@ class redis {
     } else {
         base::service_unit { 'redis-startup':
             ensure          => present,
-            template_name   => 'redis-startup',
-            upstart         => true,
+            upstart         => upstart_template('redis-startup'),
             declare_service => false,
         }
     }

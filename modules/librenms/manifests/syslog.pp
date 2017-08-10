@@ -30,8 +30,8 @@ class librenms::syslog {
 
     base::service_unit { 'librenms-syslog':
         ensure    => present,
-        upstart   => true,
-        systemd   => true,
+        upstart   => upstart_template('librenms-syslog'),
+        systemd   => systemd_template('librenms-syslog'),
         subscribe => File['/etc/librenms-rsyslog.conf'],
     }
 }

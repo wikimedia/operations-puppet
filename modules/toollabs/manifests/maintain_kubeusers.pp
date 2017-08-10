@@ -26,6 +26,6 @@ class toollabs::maintain_kubeusers(
 
     base::service_unit { 'maintain-kubeusers':
         ensure  => present,
-        systemd => True,
+        systemd => systemd_template('maintain-kubeusers'),
     }
 }
