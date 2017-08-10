@@ -79,11 +79,12 @@ define tcpircbot::instance(
         require => User['tcpircbot'],
     }
 
-    base::service_unit { "tcpircbot-${title}":
-        ensure        => $ensure,
-        upstart       => true,
-        systemd       => true,
-        template_name => 'tcpircbot',
-        subscribe     => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
+    $service_name = "tcpircbot-${title}"
+
+    base::service_unit { $service_name:
+        ensure    => $ensure,
+        upstart   => upstart_template('tcpircbot'),
+        systemd   => systemd_template('tcpircbot'),
+        subscribe => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
     }
 }

@@ -81,9 +81,8 @@ class phabricator::aphlict(
 
     base::service_unit { 'aphlict':
         ensure         => $ensure,
-        systemd        => true,
-        upstart        => true,
-        sysvinit       => false,
+        systemd        => systemd_template('aphlict'),
+        upstart        => upstart_template('aphlict'),
         require        => User[$user],
         service_params => {
             ensure     => $service_ensure,

@@ -87,7 +87,7 @@ class labstore::fileserver::exports {
     $novaconfig = hiera_hash('novaconfig', {})
     $observer_pass = $novaconfig['observer_password']
     base::service_unit { 'nfs-exportd':
-        systemd        => true,
+        systemd        => systemd_template('nfs-exportd'),
         service_params => {
             enable => true,
         },

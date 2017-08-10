@@ -60,9 +60,8 @@ class prometheus::node_exporter (
     base::service_unit { 'prometheus-node-exporter':
         ensure           => present,
         refresh          => true,
-        systemd          => false,
-        systemd_override => true,
-        upstart          => true,
+        systemd_override => init_template('prometheus-node-exporter', 'systemd_override'),
+        upstart          => upstart_template('prometheus-node-exporter'),
         require          => Package['prometheus-node-exporter'],
     }
 }

@@ -1,6 +1,6 @@
 # This file is managed by puppet!
 [Unit]
-Description = <%= @title %> uwsgi app
+Description = uwsgi-<%= @title %> uwsgi app
 
 [Service]
 ExecStart = /usr/bin/uwsgi <%= @service_settings %> --ini <%= @inipath %>

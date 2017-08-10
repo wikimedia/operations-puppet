@@ -61,8 +61,7 @@ class uwsgi {
     } else {
         base::service_unit { 'uwsgi-startup':
             ensure          => present,
-            template_name   => 'uwsgi-startup',
-            upstart         => true,
+            upstart         => upstart_template('uwsgi-startup'),
             declare_service => false,
         }
     }

@@ -136,9 +136,15 @@ class openstack::designate::service (
 
         # In the perfect future when the designate packages set up
         #  an init script for this, some of this can be removed.
-        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
+        base::service_unit { 'designate-pool-manager':
             ensure  =>  present,
-            upstart =>  true,
+            upstart =>  upstart_template('designate-pool-manager'),
+            require =>  Package['designate'],
+        }
+
+        base::service_unit { 'designate-mdns':
+            ensure  =>  present,
+            upstart =>  upstart_template('designate-mdns'),
             require =>  Package['designate'],
         }
 
@@ -189,14 +195,26 @@ class openstack::designate::service (
             require => Package['designate-central'];
         }
 
-        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
-            upstart        =>  true,
-            require        =>  Package['designate'],
+        base::service_unit { 'designate-pool-manager':
+            ensure         => present,
+            upstart        => upstart_template('designate-pool-manager'),
+            require        => Package['designate'],
             service_params => {
-            # lint:ignore:ensure_first_param
+                # lint:ignore:ensure_first_param
                 ensure => stopped,
-            # lint:endignore
-            },
+                # lint:endignore
+            }
+        }
+
+        base::service_unit { 'designate-mdns':
+            ensure         => present,
+            upstart        => upstart_template('designate-mdns'),
+            require        => Package['designate'],
+            service_params => {
+                # lint:ignore:ensure_first_param
+                ensure => stopped,
+                # lint:endignore
+            }
         }
     }
 }
