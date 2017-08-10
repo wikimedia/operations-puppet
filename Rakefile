@@ -217,7 +217,9 @@ class TaskGen < ::Rake::TaskLib
     return tasks if tasks.empty?
     # Now re-set up the jobs by instantiating the class
     PuppetSyntax::RakeTask.new
-    tasks
+    # The jobs we select here need to be run in sequence for some thread-safety reasons
+    task :syntax_all => tasks
+    [:syntax_all]
   end
 
   def setup_rubocop
