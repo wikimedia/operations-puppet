@@ -10,8 +10,8 @@ class wdqs::updater(
 
     base::service_unit { 'wdqs-updater':
         template_name  => 'wdqs-updater',
-        systemd        => true,
-        upstart        => true,
+        systemd        => systemd_template('wdqs-updater'),
+        upstart        => upstart_template('wdqs-updater'),
         service_params => {
             enable => true,
         },

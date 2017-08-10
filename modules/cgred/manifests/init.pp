@@ -36,7 +36,7 @@ class cgred {
 
     base::service_unit { 'cgrulesengd':
         ensure         => present,
-        sysvinit       => true,
+        sysvinit       => sysvinit_template('cgrulesengd'),
         refresh        => true,
         service_params => {
             hasrestart => true,

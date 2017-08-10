@@ -35,13 +35,11 @@ class ircecho (
 
     base::service_unit { 'ircecho':
         ensure         => $ensure,
-        systemd        => true,
-        upstart        => false,
-        sysvinit       => true,
+        systemd        => systemd_template('ircecho'),
+        sysvinit       => sysvinit_template('ircecho'),
         require        => File['/usr/local/bin/ircecho'],
         service_params => {
             hasrestart => true,
         },
     }
 }
-

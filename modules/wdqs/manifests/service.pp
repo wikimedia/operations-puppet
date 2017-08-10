@@ -54,9 +54,8 @@ class wdqs::service(
 
     # Blazegraph service
     base::service_unit { 'wdqs-blazegraph':
-        template_name  => 'wdqs-blazegraph',
-        systemd        => true,
-        upstart        => true,
+        systemd        => systemd_template('wdqs-blazegraph'),
+        upstart        => upstart_template('wdqs-blazegraph'),
         service_params => {
             enable => true,
         }

@@ -48,6 +48,6 @@ class openstack::nova::fullstack(
 
     base::service_unit { 'nova-fullstack':
         ensure  => present,
-        upstart => true,
+        upstart => upstart_template('nova-fullstack'),
     }
 }

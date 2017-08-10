@@ -71,9 +71,15 @@ class mediawiki::jobrunner (
 
     # We declare the service, but override its status with
     # $service_ensure
-    base::service_unit { ['jobrunner', 'jobchron']:
-        systemd        => true,
-        upstart        => true,
+    base::service_unit { 'jobrunner':
+        systemd        => systemd_template('jobrunner'),
+        upstart        => upstart_template('jobrunner'),
+        service_params => $params,
+    }
+
+    base::service_unit { 'jobchron':
+        systemd        => systemd_template('jobchron'),
+        upstart        => upstart_template('jobchron'),
         service_params => $params,
     }
 
