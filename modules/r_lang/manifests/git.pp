@@ -1,4 +1,4 @@
-# = Define: r::git
+# = Define: r_lang::git
 #
 # Facilitates installation of R packages from a remote Git repository.
 #
@@ -18,7 +18,7 @@
 #     for specifying the path of the library for
 #     installing the R package
 #
-define r::git (
+define r_lang::git (
     $url,
     $ensure = 'present',
     $library = '/usr/local/lib/R/site-library'
@@ -33,7 +33,7 @@ define r::git (
         }
         default: {
             exec { "package-${title}":
-                require => R::Cran['devtools'],
+                require => R_lang::Cran['devtools'],
                 command => "/usr/bin/R -e \"devtools::install_git('${url}', lib = '${library}')\"",
                 creates => $pkg_path,
             }

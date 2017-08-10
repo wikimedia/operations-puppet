@@ -156,7 +156,7 @@ class statistics::packages {
     }
 
     else {
-        include ::r
+        include ::r_lang
         require_package('r-cran-rmysql') # Note: RMariaDB (https://github.com/rstats-db/RMariaDB) will replace RMySQL, but is currently not on CRAN
     }
 

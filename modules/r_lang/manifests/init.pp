@@ -1,18 +1,18 @@
-# = Class: r
+# = Class: r_lang
 #
 # Class containing stuff for installing R and its packages from different sources:
-# - r::cran for installing from Comprehensive R Archive Network (CRAN)
-# - r::git for installing from any Git repository (e.g. Gerrit)
-# - r::github for installing from a GitHub-hosted repository
+# - r_lang::cran for installing from Comprehensive R Archive Network (CRAN)
+# - r_lang::git for installing from any Git repository (e.g. Gerrit)
+# - r_lang::github for installing from a GitHub-hosted repository
 #
 # Also provides a utility script for updating library of installed R packages.
 #
-# Heads-up that by default r::git and r::github are technically not available
+# Heads-up that by default r_lang::git and r_lang::github are technically not available
 # because those require the R package 'devtools' which is not installed by
 # default and cannot be installed because its dependencies are not installed
 # unless the `$devtools$` parameter is set to `true`.
 #
-class r (
+class r_lang (
     $devtools = false
 ) {
 
@@ -42,14 +42,14 @@ class r (
     if $devtools {
         $devtools_essentials = [
             'git-core',             # for git2r
-            'libxml2',              # for xml2
+            'libxml2-dev',          # for xml2
             'libssl-dev',           # for openssl
             'libcurl4-openssl-dev', # for curl
             'libssh2-1-dev'         # for git2r
         ]
         require_package($devtools_essentials)
 
-        r::cran { 'openssl':
+        r_lang::cran { 'openssl':
             require => Package['libssl-dev'],
         }
 
@@ -58,13 +58,9 @@ class r (
             'curl',
             'devtools',
         ]
-        r::cran { $r_packages:
+        r_lang::cran { $r_packages:
             require => [
-                Package['git-core'],
-                Package['libxml2'],
-                Package['libxml2-dev'],
-                R::Cran['openssl'],
-                Package['libcurl4-openssl-dev']
+                R_lang::Cran['openssl']
             ],
         }
     }

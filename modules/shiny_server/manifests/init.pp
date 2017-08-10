@@ -19,7 +19,7 @@
 class shiny_server {
     # `include ::r` would not install devtools, which would mean that we could
     # not install R packages from Git/GitHub
-    class { 'r':
+    class { 'r_lang':
         devtools => true,
     }
 
@@ -32,14 +32,14 @@ class shiny_server {
 
     # Install R packages from CRAN, Gerrit, and GitHub:
     $cran_mirror = 'https://cran.cnr.berkeley.edu'
-    r::cran { 'rmarkdown':
+    r_lang::cran { 'rmarkdown':
         require => Package['pandoc'],
         mirror  => $cran_mirror,
     }
     # tidyverse includes packages such as dplyr, tidyr, magrittr, readr,
     # ggplot2, broom, purrr, rvest, forcats, lubridate, and jsonlite
     # It's a lot of packages so we *really* need to extend the timeout.
-    r::cran { 'tidyverse':
+    r_lang::cran { 'tidyverse':
         timeout => 6000,
         mirror  => $cran_mirror,
     }
@@ -60,7 +60,7 @@ class shiny_server {
         'knitr', 'markdown',
         'optparse'                          # needed for /etc/update-pkg.R
     ]
-    r::cran { $cran_packages: mirror => $cran_mirror }
+    r_lang::cran { $cran_packages: mirror => $cran_mirror }
 
     # Set up files, directories, and users required for RStudio's Shiny Server:
     user { 'shiny':
