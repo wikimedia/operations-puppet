@@ -21,6 +21,16 @@ class gerrit::proxy(
         content => template('gerrit/gerrit.wikimedia.org.erb'),
     }
 
+    # Let Apache only listen on the service IP.
+    # Other comment
+    file { '/etc/apache2/ports.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('gerrit/apache.ports.conf.erb'),
+    }
+
     # Error page stuff
     file { '/var/www/error.html':
         ensure  => present,

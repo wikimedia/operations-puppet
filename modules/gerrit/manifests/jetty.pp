@@ -12,6 +12,8 @@ class gerrit::jetty(
     $log_host = undef,
     $log_port = '4560',
     $config = 'gerrit.config.erb',
+    $ipv4 = hiera('gerrit::service::ipv4'),
+    $ipv6 = hiera('gerrit::service::ipv6'),
     ) {
 
     group { 'gerrit2':
