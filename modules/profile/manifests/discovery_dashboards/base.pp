@@ -15,17 +15,17 @@ class profile::discovery_dashboards::base {
         'highcharter',
         'countrycode'
     ]
-    r::cran { $cran_packages:
+    r_lang::cran { $cran_packages:
         mirror => 'https://cran.cnr.berkeley.edu',
     }
 
     # 'polloi' contains common functions & data used by all the dashboards
-    r::git { 'polloi':
+    r_lang::git { 'polloi':
         url => 'https://gerrit.wikimedia.org/r/wikimedia/discovery/polloi',
     }
 
     # 'googleCharts' is used on the Wikipedia.org portal metrics dashboard
-    r::github { 'googleCharts':
+    r_lang::github { 'googleCharts':
         repo => 'jcheng5/googleCharts',
     }
 
