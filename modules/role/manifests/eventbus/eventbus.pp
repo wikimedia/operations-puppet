@@ -21,19 +21,19 @@ class role::eventbus::eventbus {
     }
     $config = kafka_config('main')
 
+    include ::eventlogging::dependencies
+
     # eventlogging code for eventbus is configured to deploy
     # from the eventlogging/eventbus deploy target
     # via scap/scap.cfg on the deployment host.
-    eventlogging::deployment::target { 'eventbus':
-        service_name        => 'eventlogging-service-eventbus',
+    scap::target { 'eventlogging/eventbus':
+        deploy_user  => 'deploy-service',
+        service_name => 'eventlogging-service-eventbus',
     }
 
     # Include eventlogging server configuration, including
     # /etc/eventlogging.d directories and eventlogging user and group.
     class { 'eventlogging::server':
-        # eventlogging::deployment::target { 'eventbus':
-        # Will deploy eventlogging code to
-        # /srv/deployment/eventlogging/eventbus.
         eventlogging_path => '/srv/deployment/eventlogging/eventbus',
     }
 
