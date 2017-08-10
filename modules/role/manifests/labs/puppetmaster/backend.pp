@@ -11,6 +11,7 @@ class role::labs::puppetmaster::backend {
     $labs_instance_range = $novaconfig['fixed_range']
     $horizon_host = hiera('labs_horizon_host')
     $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
+    $horizon_host_ipv6 = ipresolve(hiera('labs_horizon_host'), 6)
     $designate_host_ip = ipresolve(hiera('labs_designate_hostname'), 4)
 
     # Only allow puppet access from the instances
@@ -53,13 +54,13 @@ class role::labs::puppetmaster::backend {
 
     $fwrules = {
         puppetmaster => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} @resolve((${all_puppetmasters}))) proto tcp dport 8141 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} ${horizon_host_ipv6} @resolve((${all_puppetmasters}))) proto tcp dport 8141 ACCEPT;",
         },
         puppetbackend => {
-            rule => "saddr (${horizon_host_ip} ${designate_host_ip}) proto tcp dport 8101 ACCEPT;",
+            rule => "saddr (${horizon_host_ip} ${designate_host_ip} ${horizon_host_ipv6}) proto tcp dport 8101 ACCEPT;",
         },
         puppetbackendgetter => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA)) proto tcp dport 8100 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} ${horizon_host_ipv6} @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA)) proto tcp dport 8100 ACCEPT;",
         },
     }
     create_resources (ferm::rule, $fwrules)
