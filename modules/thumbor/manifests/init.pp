@@ -34,7 +34,7 @@ class thumbor (
 
     package { 'python-thumbor-wikimedia':
         ensure          => installed,
-        install_options => ['-t', 'jessie-backports'],
+        install_options => ['-t', "${::lsbdistcodename}-backports"],
     }
 
     file { '/usr/local/lib/thumbor/':
