@@ -58,8 +58,9 @@ class cassandra::metrics(
     }
 
     scap::target { 'cassandra/metrics-collector':
-        deploy_user => 'deploy-service',
-        manage_user => true,
+        deploy_user  => 'deploy-service',
+        manage_user  => true,
+        service_name => 'cassandra-metrics-collector',
     }
 
     file { '/etc/cassandra-metrics-collector':
