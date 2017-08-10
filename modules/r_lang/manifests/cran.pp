@@ -1,4 +1,4 @@
-# = Define: r::cran
+# = Define: r_lang::cran
 #
 # Facilitates installation of R packages from Comprehensive R Archive Network.
 #
@@ -22,7 +22,7 @@
 #     for specifying the path of the library for
 #     installing the R package
 #
-define r::cran (
+define r_lang::cran (
     $timeout = 300,
     $ensure  = 'present',
     $mirror  = 'https://cloud.r-project.org',

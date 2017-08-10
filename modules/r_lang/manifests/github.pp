@@ -1,4 +1,4 @@
-# = Define: r::github
+# = Define: r_lang::github
 #
 # Facilitates installation of R packages from GitHub.
 #
@@ -17,7 +17,7 @@
 #     for specifying the path of the library for
 #     installing the R package
 #
-define r::github (
+define r_lang::github (
     $repo,
     $ensure = 'present',
     $library = '/usr/local/lib/R/site-library'
@@ -32,7 +32,7 @@ define r::github (
         }
         default: {
             exec { "package-${title}":
-                require => R::Cran['devtools'],
+                require => R_lang::Cran['devtools'],
                 command => "/usr/bin/R -e \"devtools::install_github('${repo}', lib = '${library}')\"",
                 creates => $pkg_path,
             }

@@ -8,7 +8,7 @@ Installs `r-base`, `r-base-dev`, `r-recommended` and Optimized BLAS (linear
 algebra) library, and makes the following resources available for installing
 R packages from various sources:
 
-- **r::cran** for installing from Comprehensive R Archive Network
+- **r_lang::cran** for installing from Comprehensive R Archive Network
     - the resource ID should be name of the package to be installed
     - *timeout*: default 300 (seconds)
     - *ensure*: default 'present', but also supports 'absent'
@@ -16,14 +16,14 @@ R packages from various sources:
       redirection to servers worldwide, sponsored by Rstudio. In practice, the
       module uses [UC Berkeley mirror](https://cran.cnr.berkeley.edu/). For a
       list of CRAN mirrors, see https://cran.r-project.org/mirrors.html
-- **r::git** for installing from any Git repository
+- **r_lang::git** for installing from any Git repository
     - the resource ID should be name of the package to be installed
     - *url* is forwarded to `devtools::install_git()`
       e.g. 'https://gerrit.wikimedia.org/r/wikimedia/discovery/polloi'
     - *ensure*: default 'present', but also supports 'absent'
     - **Notice**: this is only available if the `devtools` parameter is set to
       `true`. Refer to [Disclaimer](#disclaimer) section below for details.
-- **r::github** for installing from a GitHub-hosted repository
+- **r_lang::github** for installing from a GitHub-hosted repository
     - the resource ID should be name of the package to be installed
     - *repo* is forwarded to `devtools::install_github()`
       e.g. 'wikimedia/wikimedia-discovery-polloi'
@@ -37,7 +37,7 @@ service.
 ## Disclaimer
 
 By default, the *devtools* R package (and its dependencies) are not installed,
-which means that **r::git** and **r::github** will not work without specifying
+which means that **r_lang::git** and **r_lang::github** will not work without specifying
 `devtools => true` when using this module. This is because we do not yet allow
 installing R packages via Puppet in Production until we have some kind of our
 own, trusted CRAN mirror to install from. The work and discussion for setting
@@ -47,7 +47,7 @@ up a Wikimedia-hosted mirror of CRAN is tracked in Phabricator ticket
 In **_Production_** (e.g. in **statistics::packages**), use
 
 ```Puppet
-include ::r
+include ::r_lang
 ```
 
 This will _not_ install any packages from CRAN except for the ones in the
@@ -58,7 +58,7 @@ manually by users.
 On **_Labs_**, use
 
 ```Puppet
-class { 'r':
+class { 'r_lang':
     devtools => true,
 }
 ```
