@@ -31,6 +31,10 @@ class role::eventbus::eventbus {
         service_name => 'eventlogging-service-eventbus',
     }
 
+    # The deploy-service user needs to be able to depool/pool
+    # during the deployment.
+    include ::scap::conftool
+
     # Include eventlogging server configuration, including
     # /etc/eventlogging.d directories and eventlogging user and group.
     class { 'eventlogging::server':
