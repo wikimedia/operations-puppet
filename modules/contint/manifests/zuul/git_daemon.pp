@@ -29,9 +29,9 @@ class contint::zuul::git_daemon(
       readable_by => 'all',
   }
 
-  base::service_unit { 'git-daemon':
+  systemd::service { 'git-daemon':
     ensure  => present,
-    systemd => true,
+    content => systemd_template('git-daemon'),
     require =>  User['gitdaemon'],
   }
 
