@@ -1834,7 +1834,6 @@ node 'notebook1001.eqiad.wmnet' {
     include ::standard
 }
 node 'notebook1002.eqiad.wmnet' {
-    # Equivalent to stat1002
     role(paws_internal::jupyterhub, analytics_cluster::client)
     include ::standard
 }
@@ -2156,41 +2155,6 @@ node 'thorium.eqiad.wmnet' {
 # Failoid service (Ganeti VM)
 node 'tureis.codfw.wmnet' {
     role(failoid)
-}
-
-# stat1002 is intended to be the private data analytics compute node.
-# Users should not use it for app development.
-# Data processing on this machine is fine.
-# NOTE: This node is being deprecated and decomissioned as part of T152712.
-node 'stat1002.eqiad.wmnet' {
-    role(
-        # This is also a Hadoop client, and should
-        # have any special analytics system users on it
-        # for interacting with HDFS.
-        analytics_cluster::users,
-
-        # Include Hadoop and other analytics cluster
-        # clients so that analysts can access Hadoop
-        # from here.
-        analytics_cluster::client,
-
-        # Include analytics/refinery deployment target.
-        analytics_cluster::refinery,
-
-        # Include analytics/refinery checks that send email about
-        # webrequest partitions faultyness.
-        # MOVED TO stat1005
-        # analytics_cluster::refinery::job::data_check,
-
-        # Include analytics/refinery/source guard checks
-        # Disabled due to T166937
-        # analytics_cluster::refinery::job::guard,
-
-        # Deploy wikimedia/discovery/analytics repository
-        # to this node.
-        elasticsearch::analytics)
-
-    include ::standard
 }
 
 # stat1003 is a general purpose number cruncher for
