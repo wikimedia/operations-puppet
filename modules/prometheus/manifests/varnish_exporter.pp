@@ -19,11 +19,10 @@ define prometheus::varnish_exporter (
         creates => '/etc/systemd/system/prometheus-varnish-exporter.service',
     }
 
-    base::service_unit { "prometheus-varnish-exporter@${instance}":
-        ensure        => present,
-        refresh       => true,
-        systemd       => true,
-        template_name => 'prometheus-varnish-exporter@',
-        require       => Package['prometheus-varnish-exporter'],
+    systemd::service { "prometheus-varnish-exporter@${instance}":
+        ensure  => present,
+        restart => true,
+        content => systemct_template('prometheus-varnish-exporter@'),
+        require => Package['prometheus-varnish-exporter'],
     }
 }

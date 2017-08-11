@@ -13,12 +13,9 @@ class prometheus::mysqld_exporter::common {
         group  => 'prometheus',
     }
 
-    base::service_unit { 'prometheus-mysqld-exporter@':
-        ensure          => present,
-        refresh         => true,
-        systemd         => true,
-        template_name   => 'prometheus-mysqld-exporter@',
-        require         => Package['prometheus-mysqld-exporter'],
-        declare_service => false, # it will only be used parametrized
+    systemd::unit { 'prometheus-mysqld-exporter@':
+        ensure  => present,
+        content => systemd_template('prometheus-mysqld-exporter@'),
+        require => Package['prometheus-mysqld-exporter'],
     }
 }

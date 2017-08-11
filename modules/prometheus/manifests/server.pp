@@ -145,10 +145,10 @@ define prometheus::server (
         }
     }
 
-    base::service_unit { $service_name:
+    systemd::service { $service_name:
         ensure         => present,
-        systemd        => true,
-        template_name  => 'prometheus@',
+        restart        => true,
+        content        => systemd_template('prometheus@'),
         service_params => {
             enable     => true,
             hasrestart => true,
