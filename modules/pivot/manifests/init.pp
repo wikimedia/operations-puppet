@@ -114,9 +114,10 @@ class pivot(
         group       => 'root',
     }
 
-    base::service_unit { 'pivot':
+    systemd::service { 'pivot':
         ensure  => present,
-        systemd => true,
+        systemd => systemd_template('pivot'),
+        restart => true,
         require => [
             Scap::Target['analytics/pivot/deploy'],
             File['/etc/firejail/pivot.profile'],
@@ -130,6 +131,6 @@ class pivot(
         description   => 'pivot',
         check_command => "check_tcp!${port}",
         contact_group => $contact_group,
-        require       => Base::Service_unit['pivot'],
+        require       => Systemd::Service['pivot'],
     }
 }
