@@ -29,10 +29,11 @@ class contint::zuul::git_daemon(
       readable_by => 'all',
   }
 
-  base::service_unit { 'git-daemon':
-    ensure  => present,
-    systemd => true,
-    require =>  User['gitdaemon'],
+  systemd::service { 'git-daemon':
+      ensure  => present,
+      content => systemd_template('git-daemon'),
+      restart => true,
+      require => User['gitdaemon'],
   }
 
 }

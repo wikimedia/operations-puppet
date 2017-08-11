@@ -74,16 +74,16 @@ class statsite {
             before  => Package['statsite'],
         }
 
-        base::service_unit { 'statsite@':
-            ensure          => present,
-            systemd         => true,
-            declare_service => false,
+        systemd::unit { 'statsite@':
+            ensure  => present,
+            restart => true,
+            content => systemd_template('statsite@')
         }
 
-        base::service_unit { 'statsite-instances':
-            ensure          => present,
-            systemd         => true,
-            declare_service => false,
+        systemd::unit { 'statsite-instances':
+            ensure  => present,
+            restart => true,
+            content => systemd_template('statsite-instances')
         }
     }
 

@@ -124,12 +124,12 @@ class nodepool(
         mode   => '0555',
     }
 
-    base::service_unit { 'nodepool':
-        ensure         => present,
-        refresh        => true,
-        systemd        => true,
-        service_params => {},
-        require        => [
+
+    systemd::service { 'nodepool':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('nodepool'),
+        require => [
             Package['nodepool'],
             File['/usr/bin/nodepool-graceful-stop'],
         ],

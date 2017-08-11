@@ -86,12 +86,16 @@ class jupyterhub (
         mode   => '0700',
     }
 
-    base::service_unit { 'jupyterhub':
-        systemd => true,
+    systemd::service { 'jupyterhub':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('jupyterhub')
     }
 
-    base::service_unit { 'nchp':
-        systemd => true,
+    systemd::service { 'nchp':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('nchp')
     }
 
     file { "${venv_path}/nchp_config.py":
@@ -100,7 +104,7 @@ class jupyterhub (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Base::Service_unit['nchp'],
+        notify  => Systemd::Service['nchp'],
         require => Exec['setup-virtualenv'],
     }
 
@@ -110,7 +114,7 @@ class jupyterhub (
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
-        notify  => Base::Service_unit['jupyterhub'],
+        notify  => Systemd::Service['jupyterhub'],
         require => Exec['setup-virtualenv'],
     }
 
@@ -121,8 +125,8 @@ class jupyterhub (
         user    => 'root',
         group   => 'root',
         notify  => [
-            Base::Service_unit['nchp'],
-            Base::Service_unit['jupyterhub'],
+            Systemd::Service['nchp'],
+            Systemd::Service['jupyterhub'],
         ],
     }
 
@@ -133,7 +137,7 @@ class jupyterhub (
         umask   => '0377',
         user    => 'root',
         group   => 'root',
-        notify  => Base::Service_unit['jupyterhub'],
+        notify  => Systemd::Service['jupyterhub'],
     }
 
 }
