@@ -18,10 +18,10 @@ class prometheus::blackbox_exporter{
         notify  => Service['prometheus-blackbox-exporter'],
     }
 
-    base::service_unit { 'prometheus-blackbox-exporter':
+    systemd::service { 'prometheus-blackbox-exporter':
         ensure  => present,
-        refresh => true,
-        systemd => true,
+        restart => true,
+        content => systemd_template('prometheus-blackbox-exporter'),
         require => Package['prometheus-blackbox-exporter'],
     }
 }
