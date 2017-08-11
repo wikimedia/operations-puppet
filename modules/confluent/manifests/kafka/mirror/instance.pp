@@ -173,7 +173,7 @@ define confluent::kafka::mirror::instance(
             group_prefix => $group_prefix,
             statsd       => hiera('statsd', undef),
             jmx_port     => $jmx_port,
-            require      => Base::Service_unit["kafka-mirror-${mirror_name}"],
+            require      => Systemd::Service["kafka-mirror-${mirror_name}"],
         }
 
         # Monitor kafka in production
