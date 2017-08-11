@@ -28,7 +28,7 @@ class statistics::wmde::graphite(
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
 
-    # TODO: remove after stat1002/3 is gone: T152712
+    # TODO: remove after stat1003 is gone: T152712
     if os_version('debian >= stretch') {
         require_package('openjdk-8-jdk')
         require_package(
