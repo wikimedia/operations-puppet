@@ -16,7 +16,7 @@ class profile::swift::storage::labs {
     group   => 'root',
     mode    => '0444',
     content => 'ENV{DM_LV_NAME}=="lv-a1", ENV{DM_VG_NAME}=="vd", SYMLINK+="swift/lv-a1"',
-    notify  => Exec['swift_udev_reload'],
+    notify  => Exec['swift_labs_udev_reload'],
     require => Lvm::Logical_volume['lv-a1'],
   }
 
