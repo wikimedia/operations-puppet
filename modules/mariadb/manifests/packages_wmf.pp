@@ -45,25 +45,28 @@ class mariadb::packages_wmf(
         }
 
         case $mariadb_package {
-            'wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101', 'wmf-mysql57' :
+            'wmf-mariadb101', 'wmf-mariadb102', wmf-mariadb103, 'wmf-mysql57', 'wmf-mysql80':
+            {
+                require_package( $mariadb_package )
+            }
+            'wmf-mariadb', 'wmf-mariadb10':
             {
                 require_package( $mariadb_package )
 
-                if !os_version('debian >= stretch') {
-                    # if you have installed the wmf mariadb package,
-                    # create a custom, safer mysqld_safe
-                    # New packages include it, but old packages have
-                    # to be overwritten still - do not retire at least
-                    # until version > 10.0.27
-                    class { 'mariadb::mysqld_safe':
-                        package => $mariadb_package,
-                    }
+                # if you have installed a non-systemd compatible package,
+                # create a custom, safer mysqld_safe
+                # New packages include it, but old packages have
+                # to be overwritten still - do not take out at least
+                # until all hosts are on version > 10.0.27
+                class { 'mariadb::mysqld_safe':
+                    package => $mariadb_package,
                 }
             }
             default :
             {
                 fail("Invalid package version \"${mariadb_package}\". \
-The only allowed versions are: wmf-mariadb10, wmf-mariadb101 or wmf-mysql57")
+The only allowed versions are: wmf-mariadb10, wmf-mariadb101, wmf-mariadb102, \
+wmf-mysql57 or wmf-mysql80")
             }
         }
     }
