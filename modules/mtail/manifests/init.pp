@@ -39,8 +39,9 @@ class mtail (
         notify  => Service['mtail'],
     }
 
-    base::service_unit { 'mtail':
+    systemd::service { 'mtail':
         ensure  => present,
-        systemd => true
+        content => systemd_template('mtail'),
+        restart => true,
     }
 }

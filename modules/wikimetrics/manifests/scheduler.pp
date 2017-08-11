@@ -10,7 +10,8 @@ class wikimetrics::scheduler {
     $config_path      = $::wikimetrics::base::config_path
     $venv_path        = $::wikimetrics::base::venv_path
 
-    base::service_unit { 'wikimetrics-scheduler':
-        systemd => true,
+    systemd::service { 'wikimetrics-scheduler':
+        content => systemd_template('wikimetrics-scheduler'),
+        restart => true,
     }
 }

@@ -175,15 +175,15 @@ class graphite(
             source => 'puppet:///modules/graphite/logrotate.conf',
         }
 
-        base::service_unit { 'carbon-cache@':
-            ensure          => present,
-            systemd         => true,
-            declare_service => false,
+        systemd::unit { 'carbon-cache@.service':
+            ensure  => present,
+            content => systemd_template('carbon-cache@')
         }
 
-        base::service_unit { 'carbon':
+        systemd::service { 'carbon':
             ensure  => present,
-            systemd => true,
+            content => systemd_template('carbon'),
+            restart => true,
         }
 
         graphite::carbon_cache_instance { 'a': }
