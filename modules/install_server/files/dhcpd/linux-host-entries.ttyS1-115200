@@ -6199,13 +6199,6 @@ host snapshot1007 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host stat1002 {
-    hardware ethernet 78:2b:cb:0a:0e:fc;
-    fixed-address stat1002.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host stat1003 {
     hardware ethernet F0:1F:AF:E8:BA:E3;
     fixed-address stat1003.eqiad.wmnet;
