@@ -1,8 +1,8 @@
 # Make /etc/init/mysql managed by puppet. This allows us to make quick
 # changes to harden the wrapper without rebuilding the custom wmf-mariadb10
 # package
-# Once all trusty dbs are gone, we can hopefully discard init.d in favour
-# of a custom systemd service unit
+# Once all trusty dbs and jessies with 10.0 are gone, we can hopefully
+# discard init.d in favour of the package systemd service unit
 #
 # Default behavior is for the service to be unmanaged and manually
 # started/stopped.
@@ -22,19 +22,44 @@ class mariadb::service (
     $override = false,
     ) {
 
-    # stretch and later use systemd, others use init.d
-    if os_version('debian >= stretch') {
-        # On stretch+, default to MariaDB 10.1
-        if $package == 'undefined' {
-            $installed_package = 'wmf-mariadb101'
-        } else {
-            $installed_package = $package
-        }
-        case $installed_package {
-            'wmf-mysql57', 'wmf-mysql80': { $vendor = 'mysql' }
-            default:                      { $vendor = 'mariadb' }
-        }
+    # default strech to mariadb 10.1, others to 10.0
+    if os_version('debian >= stretch') and $package == 'undefined' {
+        $installed_package = 'wmf-mariadb101'
+    } elsif $package == 'undefined' {
+        $installed_package = 'wmf-mariadb10'
+    } else {
+        $installed_package = $package
+    }
 
+    # mariadb 10.1 and later use systemd, others use init.d
+    # Also identify vendor
+
+    case $installed_package {
+        'wmf-mariadb', 'wmf-mariadb10': {
+            $systemd = false
+            $vendor  = 'mariadb'
+        }
+        'wmf-mariadb101', 'wmf-mariadb102', 'wmf-mariadb103': {
+            $systemd = true
+            $vendor  = 'mariadb'
+        }
+        'wmf-mysql57', 'wmf-mysql80': {
+            $systemd = true
+            $vendor = 'mysql'
+        }
+        'wmf-mysql56': {
+            $systemd = false
+            $vendor = 'mysql'
+        }
+        default: {
+            fail("Invalid package version \"${installed_package}\". \
+The only allowed versions are: wmf-mariadb10, wmf-mariadb101, wmf-mariadb102, \
+wmf-mariadb103, wmf-mysql57 or wmf-mysql80")
+        }
+    }
+
+    if $systemd {
+        # TODO: use the base::service configuration
         if $manage {
             service { $vendor:
                 ensure  => $ensure,
@@ -73,14 +98,9 @@ class mariadb::service (
                 ensure => absent,
             }
         }
-    } else {
-        # Before stretch, default to MariaDB 10.0
-        if $package == 'undefined' {
-            $installed_package = 'wmf-mariadb10'
-        } else {
-            $installed_package = $package
-        }
 
+    } else {
+        # using still init.d
         if $basedir == 'undefined' {
             $initd_basedir = "/opt/${installed_package}"
         } else {
@@ -116,5 +136,4 @@ class mariadb::service (
             }
         }
     }
-
 }
