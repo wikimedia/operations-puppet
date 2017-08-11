@@ -6,8 +6,8 @@ define celery::worker(
     $celery_bin_path = '/usr/bin/celery',
     $log_level = 'ERROR',
 ) {
-    base::service_unit { "celery-${title}":
-        template_name => 'celery',
-        systemd       => true,
+    systemd::service { "celery-${title}":
+        content => systemd_template('celery'),
+        restart => true,
     }
 }
