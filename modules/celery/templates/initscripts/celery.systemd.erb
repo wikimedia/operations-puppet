@@ -9,7 +9,7 @@ WorkingDirectory=<%= @working_dir %>
 ExecStart=<%= @celery_bin_path %> worker \
     --app <%= @app %> \
     --loglevel <%= @log_level %>
-SyslogIdentifier=<%= @title %>
+SyslogIdentifier=celery-<%= @title %>
 
 [Install]
 WantedBy=multi-user.target
