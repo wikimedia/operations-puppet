@@ -152,12 +152,10 @@ define confluent::kafka::mirror::instance(
     }
     # Start the MirrorMaker instance.
     # We don't want to subscribe to the config files here.
-    base::service_unit{ "kafka-mirror-${mirror_name}":
-        ensure        => $service_ensure,
-        template_name => 'kafka-mirror',
-        systemd       => true,
-        refresh       => false,
-        require       => [
+    systemd::service { "kafka-mirror-${mirror_name}":
+        ensure  => $service_ensure,
+        content => systemd_template('kafka-mirror'),
+        require => [
             File["/etc/kafka/mirror/${mirror_name}/log4j.properties"],
             File["/etc/kafka/mirror/${mirror_name}/consumer.properties"],
             File["/etc/kafka/mirror/${mirror_name}/producer.properties"],

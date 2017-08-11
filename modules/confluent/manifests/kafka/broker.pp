@@ -354,10 +354,9 @@ class confluent::kafka::broker(
     # We don't want to subscribe to the config files here.
     # It will be better to manually restart Kafka when
     # the config files changes.
-    base::service_unit{ 'kafka':
+    systemd::service { 'kafka':
         ensure  => $service_ensure,
-        systemd => true,
-        refresh => false,
+        content => systemd_template('kafka'),
         require => [
             File[$log_dirs],
             File['/etc/kafka/server.properties'],
