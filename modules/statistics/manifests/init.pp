@@ -16,6 +16,8 @@ class statistics(
         ensure => 'directory',
     }
 
+    $working_path = '/srv'
+
     # set up rsync modules for copying files
     # on statistic servers in $working_path
     class { '::statistics::rsyncd':
