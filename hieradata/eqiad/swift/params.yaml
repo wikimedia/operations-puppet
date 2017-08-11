@@ -32,6 +32,11 @@ swift::params::accounts:
         account_name: 'AUTH_docker'
         auth:         'http://swift.svc.eqiad.wmnet'
         user:         'docker:registry'
+    pagecompilation:
+        access:       '.admin'
+        account_name: 'AUTH_pagecompilation'
+        auth:         'http://swift.svc.eqiad.wmnet'
+        user:         'pagecompilation:zim'
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
 #    super_admin: <key>
