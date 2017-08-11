@@ -96,11 +96,11 @@ class cassandra::metrics(
         user   => 'cassandra',
     }
 
-    base::service_unit { 'cassandra-metrics-collector':
-        ensure        => present,
-        template_name => 'cassandra-metrics-collector',
-        systemd       => true,
-        require       => [
+    systemd::service { 'cassandra-metrics-collector':
+        ensure  => present,
+        content => systemd_template('cassandra-metrics-collector'),
+        restart => true,
+        require => [
             File[$collector_jar],
             File[$filter_file],
         ],
