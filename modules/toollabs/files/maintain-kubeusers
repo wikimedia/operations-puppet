@@ -10,6 +10,9 @@ Source of canonical truth is the tokenauth.csv file.
    - .kube/config on the user's homedir
    - abac.json for access config
    - create the namespace with appropriate annotation
+
+Additional context available in the k8s admin guide:
+https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Kubernetes#Authentication_.26_Authorization
 """
 import logging
 import argparse
