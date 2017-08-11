@@ -63,9 +63,10 @@ class calico(
         provider => 'docker',
     }
 
-    base::service_unit { 'calico-node':
+    systemd::service { 'calico-node':
         ensure  => present,
-        systemd => true,
+        content => systemd_template('calico-node'),
+        restart => true,
         require => Package["${registry}/calico/node"],
     }
 }
