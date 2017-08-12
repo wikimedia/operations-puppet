@@ -53,9 +53,8 @@ class swift::proxy (
     # start swift-proxy, our proxy binds to port 80 so it isn't going to work.
     # Use a modified version of 'swift-proxy' systemd unit from jessie-backports.
     if os_version('debian >= jessie') {
-        base::service_unit { 'swift-proxy':
-            systemd => true,
-            refresh => false,
+        systemd::service { 'swift-proxy':
+            content => systemd_template('swift-proxy'),
         }
     }
 
