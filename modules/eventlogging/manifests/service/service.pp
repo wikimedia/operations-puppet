@@ -142,11 +142,9 @@ define eventlogging::service::service(
     }
 
     # Use systemd for this eventlogging-service instance.
-    base::service_unit { $service_name:
-        template_name => 'service',
-        systemd       => true,
-        refresh       => false,
-        require       => [
+    systemd::service { $service_name:
+        content => systemd_template('service'),
+        require => [
             File[$config_file],
             File["/etc/rsyslog.d/80-${service_name}.conf"],
             Package['python-tornado'],

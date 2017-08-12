@@ -8,10 +8,10 @@ class ores::precached {
     $host = 'https://ores.wmflabs.org'
     $config_dir = "${working_dir}/config"
 
-    base::service_unit { 'precached':
+    systemd::service { 'precached':
         require        => Class['ores::web'],
-        template_name  => 'precached',
-        systemd        => true,
+        content        => systemd_template('precached'),
+        restart        => true,
         service_params => {
             enable     => true,
             hasstatus  => true,
