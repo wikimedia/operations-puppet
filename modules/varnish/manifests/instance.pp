@@ -115,10 +115,8 @@ define varnish::instance(
         content => template("${module_name}/varnish-default.erb"),
     }
 
-    base::service_unit { "varnish${instancesuffix}":
-        template_name  => 'varnish',
-        systemd        => true,
-        refresh        => false,
+    systemd::service { "varnish${instancesuffix}":
+        content        => systemd_template('varnish'),
         service_params => {
             tag     => 'varnish_instance',
             enable  => true,

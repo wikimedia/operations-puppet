@@ -47,11 +47,9 @@ define varnish::logging::statsd(
         }
     }
 
-    base::service_unit { $service_unit_name:
+    systemd::service { $service_unit_name:
         ensure         => present,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishstatsd',
+        content        => systemd_template('varnishstatsd'),
         require        => File['/usr/local/bin/varnishstatsd'],
         subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {

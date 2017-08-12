@@ -45,11 +45,10 @@ define varnish::logging::reqstats(
         }
     }
 
-    base::service_unit { $service_unit_name:
+    systemd::service { $service_unit_name:
         ensure         => $ensure,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishreqstats',
+        content        => systemd_template('varnishreqstats'),
+        restart        => true,
         require        => File['/usr/local/bin/varnishreqstats'],
         subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
