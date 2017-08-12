@@ -1,0 +1,358 @@
+let SessionLoad = 1
+if &cp | set nocp | endif
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/neoinfo/proOrg/code
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +164 ~/.vim/.session
+badd +29 behaviour.js
+badd +1 booth.js
+badd +1 index.html
+badd +1 utils.js
+badd +1 settings.js
+badd +1 flashnav.js
+args behaviour.js
+set lines=73 columns=273
+edit flashnav.js
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+2wincmd k
+wincmd w
+wincmd w
+wincmd w
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+exe '1resize ' . ((&lines * 47 + 36) / 73)
+exe 'vert 1resize ' . ((&columns * 67 + 136) / 273)
+exe '2resize ' . ((&lines * 16 + 36) / 73)
+exe 'vert 2resize ' . ((&columns * 67 + 136) / 273)
+exe '3resize ' . ((&lines * 5 + 36) / 73)
+exe 'vert 3resize ' . ((&columns * 67 + 136) / 273)
+exe 'vert 4resize ' . ((&columns * 87 + 136) / 273)
+exe '5resize ' . ((&lines * 48 + 36) / 73)
+exe 'vert 5resize ' . ((&columns * 117 + 136) / 273)
+exe '6resize ' . ((&lines * 21 + 36) / 73)
+exe 'vert 6resize ' . ((&columns * 117 + 136) / 273)
+argglobal
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+31
+normal zo
+53
+normal zo
+167
+normal zo
+167
+normal zo
+202
+normal zo
+222
+normal zo
+let s:l = 173 - ((32 * winheight(0) + 23) / 47)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+173
+normal! 031l
+wincmd w
+argglobal
+edit utils.js
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+154
+normal zo
+181
+normal zo
+let s:l = 193 - ((13 * winheight(0) + 8) / 16)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+193
+normal! 010l
+wincmd w
+argglobal
+edit settings.js
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 1 - ((0 * winheight(0) + 2) / 5)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+wincmd w
+argglobal
+edit booth.js
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+91
+normal zo
+149
+normal zo
+171
+normal zo
+200
+normal zo
+234
+normal zo
+239
+normal zo
+239
+normal zo
+269
+normal zo
+292
+normal zo
+312
+normal zo
+330
+normal zo
+346
+normal zo
+353
+normal zo
+366
+normal zo
+373
+normal zo
+389
+normal zo
+396
+normal zo
+415
+normal zo
+421
+normal zo
+448
+normal zo
+460
+normal zo
+473
+normal zo
+485
+normal zo
+511
+normal zo
+519
+normal zo
+528
+normal zo
+534
+normal zo
+575
+normal zo
+588
+normal zo
+612
+normal zo
+619
+normal zo
+630
+normal zo
+636
+normal zo
+652
+normal zo
+659
+normal zo
+677
+normal zo
+684
+normal zo
+694
+normal zo
+700
+normal zo
+707
+normal zo
+714
+normal zo
+730
+normal zo
+737
+normal zo
+753
+normal zo
+761
+normal zo
+773
+normal zo
+782
+normal zo
+794
+normal zo
+801
+normal zo
+811
+normal zo
+818
+normal zo
+828
+normal zo
+835
+normal zo
+851
+normal zo
+let s:l = 240 - ((39 * winheight(0) + 35) / 70)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+240
+normal! 0
+wincmd w
+argglobal
+edit behaviour.js
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+30
+normal zo
+35
+normal zo
+44
+normal zo
+49
+normal zo
+57
+normal zo
+63
+normal zo
+91
+normal zo
+94
+normal zo
+105
+normal zo
+121
+normal zo
+130
+normal zo
+150
+normal zo
+130
+normal zo
+166
+normal zo
+169
+normal zo
+181
+normal zo
+169
+normal zo
+193
+normal zo
+196
+normal zo
+212
+normal zo
+215
+normal zo
+230
+normal zo
+215
+normal zo
+244
+normal zo
+247
+normal zo
+91
+normal zo
+let s:l = 108 - ((23 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+108
+normal! 036l
+wincmd w
+argglobal
+edit index.html
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 19 - ((11 * winheight(0) + 10) / 21)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+19
+normal! 07l
+wincmd w
+5wincmd w
+exe '1resize ' . ((&lines * 47 + 36) / 73)
+exe 'vert 1resize ' . ((&columns * 67 + 136) / 273)
+exe '2resize ' . ((&lines * 16 + 36) / 73)
+exe 'vert 2resize ' . ((&columns * 67 + 136) / 273)
+exe '3resize ' . ((&lines * 5 + 36) / 73)
+exe 'vert 3resize ' . ((&columns * 67 + 136) / 273)
+exe 'vert 4resize ' . ((&columns * 87 + 136) / 273)
+exe '5resize ' . ((&lines * 48 + 36) / 73)
+exe 'vert 5resize ' . ((&columns * 117 + 136) / 273)
+exe '6resize ' . ((&lines * 21 + 36) / 73)
+exe 'vert 6resize ' . ((&columns * 117 + 136) / 273)
+tabnext 1
+if exists('s:wipebuf')
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 shortmess=filnxtToO
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . s:sx
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :
