@@ -1,0 +1,313 @@
+" ***********
+" * General *
+" ***********
+
+" don't be compatible with VI
+set nocompatible
+
+" set the temp dir for temp files
+set backupdir=~/tmp/vim
+set directory=~/tmp/vim//
+
+" enable pathogen
+execute pathogen#infect()
+
+" backspace hack
+set bs=2
+
+" shortcut for opening new tabs
+map <C-T> <Esc>:tabnew<CR>
+
+" shortcuts for moving across tabs
+map <F4> <Esc>:tabp<CR>
+map <F5> <Esc>:tabn<CR>
+
+" shortcut for splitting the window horizontally/vertically
+map <F2> <Esc>:vsplit<CR>
+map <F3> <Esc>:sp<CR>
+
+" make tab in v mode ident code
+vmap <tab> >gv
+vmap <s-tab> <gv
+
+" make tab in normal mode ident code
+nmap <tab> I<tab><esc>
+nmap <s-tab> ^i<bs><esc>
+
+
+" *********************
+" * Terminal Settings *
+" *********************
+
+" `XTerm', `RXVT', `Gnome Terminal', and `Konsole' all claim to be "xterm";
+" `KVT' claims to be "xterm-color":
+"if &term =~ 'xterm'
+	"`Gnome Terminal' fortunately sets $COLORTERM; it needs <BkSpc> and <Del>
+	" fixing, and it has a bug which causes spurious "c"s to appear, which
+	"can be fixed by unsetting t_RV:
+"	if $COLORTERM == 'gnome-terminal'
+"		execute 'set t_kb=' . nr2char(8)
+		"[Char 8 is <Ctrl>+H.]
+"		fixdel
+"		set t_RV=
+	"XTerm', `Konsole', and `KVT' all also need <BkSpc> and <Del> fixing;
+	"there's no easy way of distinguishing these terminals from other things
+	"that claim to be "xterm", but `RXVT' sets $COLORTERM to "rxvt" and these don't:
+"	elseif $COLORTERM == ''
+"		execute 'set t_kb=' . nr2char(8)
+"		fixdel
+	"The above won't work if an `XTerm' or `KVT' is started from within a `Gnome
+	"Terminal' or an `RXVT': the $COLORTERM setting will propagate; it's always
+	"OK with `Konsole' which explicitly sets $COLORTERM to "".
+"  endif
+"endif
+
+
+" ******************
+" * User Interface *
+" ******************
+
+" enable 256 colours
+set t_Co=256
+
+" use the github color scheme
+colo github
+
+" have syntax highlighting in terminals which can display colours:
+if has('syntax') && (&t_Co > 2)
+	syntax on
+endif
+
+" have fifty lines of command-line (etc) history:
+set history=50
+
+" have command-line completion <Tab> (for filenames, help topics, option names)
+" first list the available options and complete the longest common part, then
+" have further <Tab>s cycle through the possibilities:
+set wildmode=list:longest,full
+
+" display the current mode and partially-typed commands in the status line:
+set showmode
+set showcmd
+
+" when using list, keep tabs at their full width and display `arrows':
+execute 'set listchars+=tab:' . nr2char(187) . nr2char(183)
+
+" have the mouse enabled all the time:
+set mouse=a
+
+" highlight line under cursor
+set cursorline cursorcolumn
+"highlight CursorLine term=none cterm=none ctermbg=8
+"highlight CursorColumn term=none cterm=none ctermbg=8
+
+" show line numbers
+set number
+
+" set the command window height
+set cmdheight=2
+
+" project plugin settings
+" let g:proj_flags="imstvcg"
+"let loaded_project=0
+
+" status line format
+set statusline=%F%m%r%h%w\ [A=\%03.3b\|H=\%02.2B]\ [P=%04l,%04v][%p%%]\ [L=%L]
+" by def, always show the status line
+set laststatus=2
+
+
+" *******************
+" * Text Formatting *
+" *******************
+
+" General
+" -------
+
+" no word-wrapping by default
+set nowrap
+" but allow shortcuts to enable/disable the wrapping
+map <F7> <Esc>:set wrap<CR>
+map <F8> <Esc>:set nowrap<CR>
+
+" use indents of 2 spaces, and have them copied down lines:
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
+set shiftround
+set autoindent
+set noexpandtab
+
+" general format options
+""set formatoptions=croqt
+""set formatoptions-=l
+
+" Specific File Formats
+" ---------------------
+
+" enable filetype detection
+filetype on
+filetype plugin on
+
+" detect Markdown files properly
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" for python code, turn on omnicomplete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+" for C-like programming, have automatic indentation:
+autocmd FileType c,cpp,slang set cindent
+"
+" for actual C (not C++) programming where comments have explicit end
+" characters, if starting a new line in the middle of a comment automatically
+" insert the comment leader characters:
+autocmd FileType c set formatoptions+=ro
+
+" for Perl programming, have things in braces indenting themselves:
+autocmd FileType perl set smartindent
+" for Perl, expand tabs to 2 spaces
+autocmd FileType perl set tabstop=2 shiftwidth=2 expandtab softtabstop=2
+" my perl includes pod
+let perl_include_pod = 1
+" syntax color complex things like @{${"foo"}}
+let perl_extended_vars = 1
+" tidy selected lines (or entire file) with _t:
+nnoremap <silent> _t :%!perltidy -q<Enter>
+vnoremap <silent> _t :!perltidy -q<Enter>
+" check perl code with :make
+autocmd FileType perl set makeprg=perl\ -c\ %\ $*
+autocmd FileType perl set errorformat=%f:%l:%m
+autocmd FileType perl set autowrite
+" in perl files, bind f6 to :make
+autocmd FileType perl map <F6> <Esc>:w<CR>:make<CR>
+
+" check ruby code with :make
+autocmd FileType ruby set makeprg=ruby\ -c\ %\ $*
+autocmd FileType ruby set errorformat=%f:%l:%m
+autocmd FileType ruby set autowrite
+" in ruby files, bind f6 to :make
+autocmd FileType ruby map <F6> <Esc>:w<CR>:make<CR>
+" set the right ruby indents
+autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab smarttab
+
+" for CSS, also have things in braces indented:
+autocmd FileType css set smartindent
+"
+" for HTML, generally format text, but if a long line has been created leave
+" it alone when editing:
+autocmd FileType html set formatoptions+=tl
+
+" for both CSS and HTML, use genuine tab characters for indentation, to make
+" files a few bytes smaller:
+autocmd FileType html,css set noexpandtab tabstop=2
+"
+" in makefiles, don't expand tabs to spaces, since actual tab characters are
+" needed, and have indentation at 8 chars to be sure that all indents are tabs
+" (despite the mappings later):
+autocmd FileType make set noexpandtab shiftwidth=8
+
+" in text files, set automatically the text width to 80 chars
+autocmd FileType text,markdown set textwidth=80
+" in text files, show the margin (at textwidth+1)
+autocmd FileType text,markdown set colorcolumn=+1
+
+" in tex files, set automatically the text width to 80 chars
+autocmd FileType tex set textwidth=80
+" in tex files, show the margin (at textwidth+1)
+autocmd FileType tex set colorcolumn=+1
+" in tex files, format correctly when editing text also
+""autocmd FileType tex setlocal formatoptions+=wa
+" in tex files, add shortcuts for opening and closing the envs
+autocmd FileType tex imap <buffer> [[ \begin{}
+autocmd FileType tex imap <buffer> ]] \end{}
+autocmd FileType tex imap <buffer> [ff \begin{frame}<CR><CR>\frametitle{ }<CR><CR>\end{frame}<CR>
+" in tex files, bind f6 to :!make
+autocmd FileType tex map <F6> <Esc>:wa<CR>:!make<CR>
+
+" detect puppet filetype
+autocmd BufRead,BufNewFile *.pp set filetype=puppet
+autocmd BufRead,BufNewFile *.pp setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
+
+" ********************
+" * Search & Replace *
+" ********************
+
+" make searches case-insensitive, unless they contain upper-case letters:
+set ignorecase
+set smartcase
+
+" show the `best match so far' as search strings are typed:
+set incsearch
+
+" assume the /g flag on :s substitutions to replace all matches in a line:
+set gdefault
+
+" enable grep to find filenames
+set grepprg=grep\ -nH\ $*
+
+" create a shortcut for <Ctrl-F>
+map <C-F> <Esc>/
+
+
+" ************
+" * Spelling *
+" ************
+
+" turn spelling on for most common text file types
+autocmd BufRead *.txt,*.html,README,*.tex,*.bib,*.md setlocal spell spelllang=en_gb
+
+" in any other case, allow the user to spell the document on demand
+map <F9> <Esc>:setlocal spell spelllang=en_gb<CR>
+map <F10> <Esc>:setlocal nospell<CR>
+
+
+" *******************
+" * Session options *
+" *******************
+
+set sessionoptions=blank,buffers,curdir,folds,help,tabpages
+map <C-X> <Esc>:mksession! ~/.vim/.session<CR>
+map <C-D> <Esc>:source ~/.vim/.session<CR>
+
+
+" *************************
+" * Terminal title update *
+" *************************
+
+set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)
+if &term == "screen"
+  set t_ts=^[k
+  set t_fs=^[\
+endif
+"if &term == "screen" || &term == "xterm"
+  set title
+"endif
+
+
+" ********************
+" * NERDTree options *
+" ********************
+
+" change the dir each time we change the root
+let NERDTreeChDirMode = 2
+" show hidden (dot) files by default
+let NERDTreeShowHidden = 1
+" do not automatically open dirs with only one subdir
+let NERDTreeCasadeOpenSingleChildDir = 0
+" show bookmarks on startup
+let NERDTreeShowBookmarks = 1
+
+""" vim-nerdtree-tabs
+" start vim-nerdtree-tabs automatically
+let nerdtree_tabs_open_on_console_startup = 1
+" in tabs, always put the focus on files
+let nerdtree_tabs_focus_on_files = 1
+
+
+" *******************
+" * TagList options *
+" *******************
+
+" open the taglist window on the right side
+let Tlist_Use_Right_Window = 1
+

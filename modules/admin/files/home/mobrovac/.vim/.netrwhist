@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/doorman/crossvallia/code/ui/lib'
+let g:netrw_dirhist_2='/home/doorman/crossvallia/code/ui/lib/Reflected'
+let g:netrw_dirhist_3='/home/doorman/crossvallia/staging-home/ui'
+let g:netrw_dirhist_4='/var/lib/gems/1.9.1/gems/msgpack-0.5.5/doclib/msgpack'
