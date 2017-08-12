@@ -107,16 +107,15 @@ class thumbor (
         creates => '/etc/systemd/system/thumbor.service',
     }
 
-    base::service_unit { 'thumbor@':
-        ensure          => present,
-        systemd         => true,
-        declare_service => false,
-        require         => Package['python-thumbor-wikimedia'],
+    systemd::unit { 'thumbor@':
+        ensure  => present,
+        content => systemd_template('thumbor@'),
+        require => Package['python-thumbor-wikimedia'],
     }
 
-    base::service_unit { 'thumbor-instances':
+    systemd::service { 'thumbor-instances':
         ensure  => present,
-        systemd => true,
+        content => systemd_template('thumbor-instances'),
     }
 
     logrotate::conf { 'thumbor':
