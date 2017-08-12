@@ -228,6 +228,8 @@ translation.override:
   'Do you want to export the query results to Excel?': 'Do you want to export the query results?'
   # T865
   'You can also create tasks by sending an email to: %s': 'You can also create tasks by sending an email to: %s (<a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Phabricator/Help#Using_e-mail" tabindex="-1" target="_blank">learn more</a>)'
+  # T173208
+  'Dat Boi': 'Insectivore'
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
