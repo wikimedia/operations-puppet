@@ -151,17 +151,6 @@ class role::labs::nfs::secondary(
             config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
             require     => Sudo::User['diamond_dir_size_tracker'],
         }
-
-        cron { 'logcleanup':
-            ensure      => present,
-            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
-            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
-            user        => 'root',
-            minute      => '0',
-            hour        => '14',
-            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
-
-        }
     }
 
     if($drbd_role != 'primary') {
