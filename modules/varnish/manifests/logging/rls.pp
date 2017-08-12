@@ -27,11 +27,10 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
         notify  => Service['varnishrls'],
     }
 
-    base::service_unit { 'varnishrls':
+    systemd::service { 'varnishrls':
         ensure         => present,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishrls',
+        content        => systemd_template('varnishrls'),
+        restart        => true,
         require        => File['/usr/local/bin/varnishrls'],
         subscribe      => File['/usr/local/lib/python2.7/dist-packages/cachestats.py'],
         service_params => {

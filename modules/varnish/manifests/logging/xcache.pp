@@ -35,11 +35,9 @@ define varnish::logging::xcache(
         notify  => Service['varnishxcache'],
     }
 
-    base::service_unit { 'varnishxcache':
+    systemd::service { 'varnishxcache':
         ensure         => present,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishxcache',
+        content        => systemd_template('varnishxcache'),
         require        => File['/usr/local/bin/varnishxcache'],
         subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
