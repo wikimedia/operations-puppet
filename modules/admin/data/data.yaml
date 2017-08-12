@@ -54,7 +54,7 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
-              brion, cscott, demon, ebernhardson, esanders, gilles,
+              brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry,
@@ -73,7 +73,7 @@ groups:
     gid: 706
     description: access to terbium, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [daniel, dartar, ellery, bearloga,
+    members: [dartar, ellery, bearloga,
               ezachte, jamesur, jdlrobson, tparscal, smalyshev,
               leila, santhosh, amire80, foks, chelsyx]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
