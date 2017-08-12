@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 from glob import glob
 from datetime import date
@@ -27,7 +27,7 @@ has occurred.
 
 If a '.norotate' file exists in a directory we will skip it.
 
-Defaults are stored in the config file at /etc/logcleanup.yaml
+Defaults are stored in the config file at /etc/logcleanup-config.yaml
 """
 
 
@@ -185,7 +185,7 @@ def main():
         type=str,
         help='''YAML config file, arguments specified on command line will
              override config specifed in file''',
-        default='/etc/logcleanup.yaml',
+        default='/etc/logcleanup-config.yaml',
     )
 
     args = argparser.parse_args()
