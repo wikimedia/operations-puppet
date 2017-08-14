@@ -117,7 +117,7 @@ define eventlogging::service::service(
     rsyslog::conf { $service_name:
         content  => template('eventlogging/rsyslog.conf.erb'),
         priority => 80,
-        before   => Base::Service_unit[$service_name],
+        before   => Systemd::Service[$service_name],
     }
     # Python logging conf file that properly formats
     # output with $programname prefix so that rsyslog
