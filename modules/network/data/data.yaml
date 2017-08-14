@@ -16,6 +16,12 @@ network::infrastructure:
   - 208.80.154.192/27 # eqiad
   - 2620:0:861:fe00::/55 # eqiad
 
+network::management:
+  - 10.65.0.0/16 # eqiad
+  - 10.128.128.0/17 # ulsfo
+  - 10.193.0.0/16 # codfw
+  - 10.21.0.0/24 # esams
+
 network::subnets:
   production:
     eqiad:

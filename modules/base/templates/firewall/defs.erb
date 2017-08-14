@@ -9,6 +9,8 @@ frack_networks = scope.lookupvar('network::constants::frack_networks')
 analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
 network_infra = scope.lookupvar('network::constants::network_infra')
+mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
+
 -%>
 
 @def $INTERNAL = (10.0.0.0/8 2620:0:860:100::/56 2620:0:861:100::/56 2620:0:862:100::/56 2620:0:863:100::/56);
@@ -27,6 +29,8 @@ network_infra = scope.lookupvar('network::constants::network_infra')
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
 
 @def $NETWORK_INFRA = (<%- network_infra.each do |net| -%><%= net %> <% end -%>);
+@def $MGMT_NETWORKS = (<%- mgmt_networks.each do |net| -%><%= net %> <% end -%>);
+
 
 <%- special_hosts.sort.map do |realm, services | -%>
 	<%- if @realm != realm then next end -%>
