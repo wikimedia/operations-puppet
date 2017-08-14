@@ -34,6 +34,15 @@ class statistics::discovery {
         mode  => '0440',
     }
 
+    file { "${working_path}/published-datasets/discovery":
+        ensure  => 'directory',
+        owner   => $user,
+        group   => $group,
+        mode    => '0664', # so Discovery's Analysts (as members of wikidev group) can read and write
+        recurse => true,
+        replace => false,
+    }
+
     $directories = [
         $dir,
         $log_dir,
