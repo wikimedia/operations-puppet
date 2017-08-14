@@ -56,7 +56,7 @@ while true; do
 		(
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-$i.log
-			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format $dumpFormat --flavor $dumpFlavor 2>> $errorLog | gzip > $tempDir/wikidata$dumpFormat-$dumpName.$i.gz
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format $dumpFormat --flavor $dumpFlavor 2>> $errorLog | gzip -9 > $tempDir/wikidata$dumpFormat-$dumpName.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
