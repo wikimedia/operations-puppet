@@ -7,6 +7,8 @@ class wdqs::service(
     $package_dir,
     $username,
     $config_file,
+    $logstash_host,
+    $logstash_json_tcp_port,
 ) {
 
     include ::wdqs::packages
