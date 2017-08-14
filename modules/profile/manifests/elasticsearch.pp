@@ -63,6 +63,20 @@ class profile::elasticsearch(
         require => Package['elasticsearch/plugins'],
     }
 
+    file { '/etc/udev/rules.d/elasticsearch-md2.rules':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => 'SUBSYSTEM=="block", KERNEL=="md2", ACTION=="add|change", ATTR{bdi/read_ahead_kb}="128"',
+        notify  => Exec['elasticsearch_udev_reload'],
+    }
+
+    exec { 'elasticsearch_udev_reload':
+        command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
+        refreshonly => true,
+    }
+
     # Install
     class { '::elasticsearch':
         require                            => [
