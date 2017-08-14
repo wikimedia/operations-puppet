@@ -253,6 +253,8 @@ profile::elasticsearch::search_shard_count_limit: 1000
 # this to match cpu counts to prevent overcommit of CPU resources.
 profile::elasticsearch::search_thread_pool_executors: 4
 
+profile::elasticsearch::storage_device: dm-0
+
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
 "redis::shards":
   jobqueue: &labs_shards
