@@ -4,6 +4,8 @@
 # for now a manual process.
 #
 # == Parameters:
+# - $logstash_host: hostname where to send logs
+# - $logstash_json_tcp_port: port on which to send logs in json format
 # - $username: Username owning the service
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
@@ -12,6 +14,8 @@
 # - $blazegraph_heap_size: heapsize for blazegraph
 # - $blazegraph_options: options for Blazegraph statrup script
 class wdqs(
+    $logstash_host,
+    $logstash_json_tcp_port = 11514,
     $use_git_deploy = true,
     $username = 'blazegraph',
     $package_dir = '/srv/deployment/wdqs/wdqs',
@@ -110,7 +114,10 @@ class wdqs(
     }
 
     # WDQS Updater service
-    include wdqs::updater
+    class { 'wdqs::updater':
+        logstash_host          => $logstash_host,
+        logstash_json_tcp_port => $logstash_json_tcp_port,
+    }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This cron takes care of cleaning up

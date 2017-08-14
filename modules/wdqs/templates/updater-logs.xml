@@ -20,9 +20,17 @@
     </encoder>
   </appender>
 
-  <root level="warn">
+  <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination><%= @logstash_host %>:<%= @logstash_json_tcp_port %></destination>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"type":"wdqs-updater"}</customFields>
+    </encoder>
+  </appender>
+
+    <root level="warn">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILES" />
+    <appender-ref ref="logstash" />
   </root>
   <logger name="org.wikidata.query.rdf" level="info" />
 </configuration>
