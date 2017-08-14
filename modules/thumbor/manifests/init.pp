@@ -84,7 +84,7 @@ class thumbor (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/thumbor/thumbor.profile.firejail',
-        before => Base::Service_Unit['thumbor@'],
+        before => Systemd::Unit['thumbor@'],
     }
 
     # XXX using a literal integer as the first argument results in
