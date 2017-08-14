@@ -7,6 +7,8 @@ class network::constants {
     $all_network_subnets = $network_data['network::subnets']
     $external_networks = $network_data['network::external']
     $network_infra = $network_data['network::infrastructure']
+    $mgmt_networks = $network_data['network::management']
+
 
     # are you really sure you want to use this? maybe what you really
     # the trusted/production networks. See $production_networks for this.

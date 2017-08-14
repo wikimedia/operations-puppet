@@ -41,14 +41,14 @@ class role::logstash::collector (
         proto   => 'udp',
         port    => '10514',
         notrack => true,
-        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA)',
+        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
     }
 
     ferm::service { 'logstash_syslog_tcp':
         proto   => 'tcp',
         port    => '10514',
         notrack => true,
-        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA)',
+        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
     }
 
     ferm::service { 'grafana_dashboard_definition_storage':
