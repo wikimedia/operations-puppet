@@ -72,6 +72,8 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         $num_instances = 5
     }
 
+    require_package ('mydumper')
+
     class { 'mariadb::monitor_disk':
         is_critical   => false,
         contact_group => 'admins',
