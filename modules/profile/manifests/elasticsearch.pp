@@ -29,7 +29,6 @@ class profile::elasticsearch(
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
     $search_shard_count_limit = hiera('profile::elasticsearch::search_shard_count_limit'),
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
-    $index_store = hiera('profile::elasticsearch::index_store', 'fs'),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
 
@@ -101,7 +100,6 @@ class profile::elasticsearch(
         search_shard_count_limit           => $search_shard_count_limit,
         reindex_remote_whitelist           => $reindex_remote_whitelist,
         script_max_compilations_per_minute => 10000,
-        index_store                        => $index_store,
     }
 
     class { '::elasticsearch::https':

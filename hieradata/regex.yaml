@@ -38,10 +38,6 @@ es_codfw_rack_d5:
   profile::elasticsearch::rack: D5
   profile::elasticsearch::row:  D
 
-es_eqiad_niofs:
-    __regex: !ruby/regexp /^elastic10(1\d|2\d|30|31)\.eqiad\.wmnet$/
-    profile::elasticsearch::index_store: niofs
-
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^(elastic10(30|31|32|33|34|35)|relforge1001)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A3
