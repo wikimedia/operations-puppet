@@ -22,7 +22,7 @@ define prometheus::varnish_exporter (
     systemd::service { "prometheus-varnish-exporter@${instance}":
         ensure  => present,
         restart => true,
-        content => systemct_template('prometheus-varnish-exporter@'),
+        content => systemd_template('prometheus-varnish-exporter@'),
         require => Package['prometheus-varnish-exporter'],
     }
 }
