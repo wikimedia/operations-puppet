@@ -167,7 +167,7 @@ define eventlogging::service::service(
     nrpe::monitor_service { $service_name:
         description  => "Check that ${service_name} is running",
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
-        require      => Base::Service_unit[$service_name],
+        require      => Systemd::Service[$service_name],
     }
 
     # Spec-based monitoring
