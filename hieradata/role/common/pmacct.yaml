@@ -1,3 +1,12 @@
 debdeploy::grains:
   debdeploy-pmacct:
     value: standard
+
+# The analytics Kafka cluster is currently running the 0.9.0.1
+# protocol version, librkafka 0.11 needs to be explicity configured
+# as stated in:
+# https://github.com/edenhill/librdkafka/wiki/Broker-version-compatibility
+# https://github.com/edenhill/librdkafka/releases/tag/v0.11.0
+profile::pmacct::librdkafka_config:
+  - 'global, api.version.request, false'
+  - 'global, broker.version.fallback, 0.9.0.1'
