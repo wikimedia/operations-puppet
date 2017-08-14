@@ -1,4 +1,4 @@
-profile::wdqs::log_aggregator: 'deployment-logstash2.deployment-prep.eqiad.wmflabs:10514'
+profile::wdqs::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
 profile::wdqs::use_git_deploy: false
 profile::wdqs::package_dir: '/srv/wdqs/blazegraph'
 profile::wdqs::data_dir: '/srv/wdqs/blazegraph'

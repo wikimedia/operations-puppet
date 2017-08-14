@@ -104,8 +104,8 @@ server {
             deny all;
         }
 
-<% if @log_aggregator -%>
-        access_log syslog:server=<%= @log_aggregator %>,facility=local7,tag=wdqs,severity=info logstash;
+<% if @logstash_host -%>
+        access_log syslog:server=<%= @logstash_host %>:<%= @logstash_syslog_port %>,facility=local7,tag=wdqs,severity=info logstash;
 <% end -%>
     }
 }
