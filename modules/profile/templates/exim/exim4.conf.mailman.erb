@@ -128,7 +128,11 @@ acl_check_rcpt:
 	accept
 
 acl_check_connect:
+	# Insert a 5 second delay before sending SMTP banner.  If (poorly
+	# written/spammy) client speaks before the banner the connection is
+	# closed and synchronization error logged.
 	accept
+		delay = 5s
 
 acl_check_data:
 	# Let's trust local senders to not send out spam
