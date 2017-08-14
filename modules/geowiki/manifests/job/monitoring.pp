@@ -24,7 +24,7 @@ class geowiki::job::monitoring {
     # meaningful ranges.
     cron { 'geowiki-monitoring':
         minute  => 30,
-        hour    => 21,
+        hour    => 23,
         user    => $::geowiki::user,
         command => "${::geowiki::scripts_path}/scripts/check_web_page.sh --private-part-user ${geowiki_http_user} --private-part-password-file ${geowiki_http_password_file}",
     }

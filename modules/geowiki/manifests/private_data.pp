@@ -25,7 +25,7 @@ class geowiki::private_data {
             command => "/usr/bin/rsync -rt --delete rsync://${::geowiki::private_data_bare_host}${::geowiki::private_data_bare_path}/ ${::geowiki::private_data_bare_path}/",
             require => File[$::geowiki::private_data_bare_path],
             user    => $::geowiki::user,
-            hour    => '20',
+            hour    => '22',
             minute  => '0',
             before  => Git::Clone['geowiki-data-private'],
         }
