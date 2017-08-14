@@ -5,10 +5,11 @@
 # == Parameters:
 # - $package_dir:  Directory where the service is installed.
 # GUI files are expected to be under its gui/ directory.
-# - $log_aggregator: Where to send the logs for the service.
+# - $log_aggregator: Where to send the logs for the service in syslog format.
 #
 class wdqs::gui(
-    $log_aggregator = undef,
+    $logstash_host = undef,
+    $logstash_syslog_port = 10514,
     $package_dir = $::wdqs::package_dir,
     $port = 80,
     $additional_port = 8888,

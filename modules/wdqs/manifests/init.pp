@@ -4,6 +4,8 @@
 # for now a manual process.
 #
 # == Parameters:
+# - $logstash_host: hostname where to send logs
+# - $logstash_json_tcp_port: port on which to send logs in json format
 # - $username: Username owning the service
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
@@ -13,6 +15,8 @@
 # - $blazegraph_options: options for Blazegraph startup script
 # - $updater_options: options for updater startup script
 class wdqs(
+    $logstash_host,
+    $logstash_json_tcp_port = 11514,
     $use_git_deploy = true,
     $username = 'blazegraph',
     $package_dir = '/srv/deployment/wdqs/wdqs',
@@ -42,10 +46,12 @@ class wdqs(
     }
 
     class { 'wdqs::service':
-        deploy_user => $deploy_user,
-        package_dir => $package_dir,
-        username    => $username,
-        config_file => $blazegraph_config_file,
+        deploy_user            => $deploy_user,
+        package_dir            => $package_dir,
+        username               => $username,
+        config_file            => $blazegraph_config_file,
+        logstash_host          => $logstash_host,
+        logstash_json_tcp_port => $logstash_json_tcp_port,
     }
 
     file { $log_dir:
@@ -104,12 +110,9 @@ class wdqs(
         mode    => '0644',
     }
 
-    file { '/etc/wdqs/updater-logs.xml':
-        ensure  => present,
-        content => template('wdqs/updater-logs.xml'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
+    wdqs::logback_config { 'blazegraph':
+        logstash_host => $logstash_host,
+        logstash_port => $logstash_json_tcp_port,
     }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by

@@ -1,5 +1,5 @@
 class profile::wdqs (
-    $log_aggregator = hiera('profile::wdqs::log_aggregator'),
+    $logstash_host = hiera('profile::wdqs::logstash_host'),
     $use_git_deploy = hiera('profile::wdqs::use_git_deploy'),
     $package_dir = hiera('profile::wdqs::package_dir'),
     $data_dir = hiera('profile::wdqs::data_dir'),
@@ -20,16 +20,18 @@ class profile::wdqs (
         blazegraph_options     => $blazegraph_options,
         blazegraph_heap_size   => $blazegraph_heap_size,
         blazegraph_config_file => $blazegraph_config_file,
+        logstash_host          => $logstash_host,
     }
 
     # WDQS Updater service
     class { 'wdqs::updater':
-        options => $updater_options,
+        options       => $updater_options,
+        logstash_host => $logstash_host,
     }
 
     # Service Web proxy
     class { '::wdqs::gui':
-        log_aggregator => $log_aggregator,
+        logstash_host => $logstash_host,
     }
 
     # Firewall
