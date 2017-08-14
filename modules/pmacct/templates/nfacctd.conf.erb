@@ -26,4 +26,7 @@ kafka_broker_host: <%= @kafka_brokers %>
 kafka_refresh_time: 60
 kafka_history: 1m
 kafka_history_roundoff: m
+<% if @kafka_config_file -%>
+kafka_config_file: <%= @kafka_config_file %>
+<% end -%>
 <% end -%>
