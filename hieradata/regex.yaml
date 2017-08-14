@@ -1,3 +1,11 @@
+es_eqiad_17_to_31:
+  __regex: !ruby/regexp /^elastic10(1[789]|2[0-9]|30|31)\.eqiad\.wmnet$/
+  profile::elasticsearch::block_device: md2
+
+es_eqiad_32_to_52:
+  __regex: !ruby/regexp /^elastic10(3[2-9]|4[0-9]|5[012])\.eqiad\.wmnet$/
+  profile::elasticsearch::block_device: dm-0
+
 es_codfw_rack_a5:
   __regex: !ruby/regexp /^elastic20(01|02|03|25)\.codfw\.wmnet$/
   profile::elasticsearch::rack: A5
