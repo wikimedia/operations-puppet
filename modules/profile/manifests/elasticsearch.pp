@@ -29,6 +29,7 @@ class profile::elasticsearch(
     $recover_after_nodes = hiera('profile::elasticsearch::recover_after_nodes', 1),
     $search_shard_count_limit = hiera('profile::elasticsearch::search_shard_count_limit'),
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
+    $storage_device = hiera('profile::elasticsearch::storage_device', 'md2'),
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
 
@@ -60,6 +61,20 @@ class profile::elasticsearch(
         target  => $plugins_dir,
         force   => true,
         require => Package['elasticsearch/plugins'],
+    }
+
+    file { '/etc/udev/rules.d/elasticsearch-readahead.rules':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "SUBSYSTEM==\"block\", KERNEL==\"$storage_device\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"128\"",
+        notify  => Exec['elasticsearch_udev_reload'],
+    }
+
+    exec { 'elasticsearch_udev_reload':
+        command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
+        refreshonly => true,
     }
 
     # Install
