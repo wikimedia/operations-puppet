@@ -36,7 +36,7 @@ class r_lang (
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        source => 'puppet:///modules/r/update-library.R',
+        source => 'puppet:///modules/r_lang/update-library.R',
     }
 
     if $devtools {
