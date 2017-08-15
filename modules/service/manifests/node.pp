@@ -213,9 +213,7 @@ define service::node(
     }
 
     # sanity check since a default port cannot be assigned
-    unless $port and $port =~ /^\d+$/ {
-        fail('Service port must be specified and must be a number!')
-    }
+    validate_lecacy('Integer[0,65535]', 'validate_integer', $port)
 
     # the local log directory
     $local_logdir = "${service::configuration::log_dir}/${title}"
