@@ -348,8 +348,9 @@ define service::node(
     # service init script and activation
     base::service_unit { $title:
         ensure         => present,
-        systemd        => systemd_template('node'),
-        upstart        => upstart_template('node'),
+        systemd        => true,
+        upstart        => true,
+        template_name  => 'node',
         refresh        => $auto_refresh,
         service_params => {
             enable     => $enable,
