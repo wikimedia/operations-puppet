@@ -104,6 +104,9 @@
 #   partition in the fetch requests the replicas send to the leader.
 #   Default: undef (1048576)
 #
+# [*kafka_message_max_bytes*]
+#   The maximum size of a message that the server can receive. Default: undef
+#
 # [*num_network_threads*]
 #   The number of threads handling network requests.  Default: undef (3)
 #
@@ -237,6 +240,7 @@ class confluent::kafka::broker(
     $replica_socket_receive_buffer_bytes = undef,
     $num_replica_fetchers                = 1,
     $replica_fetch_max_bytes             = undef,
+    $kafka_message_max_bytes             = undef,
 
     $num_network_threads                 = undef,
     $num_io_threads                      = size($log_dirs),
