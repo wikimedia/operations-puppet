@@ -7,14 +7,15 @@ class profile::cassandra::single_instance(
 ) {
 
   class { '::cassandra':
-    cluster_name           => $cluster_name,
-    data_directory_base    => '/srv/cassandra',
-    data_file_directories  => [ '/srv/cassandra/data' ],
-    commitlog_directory    => '/srv/cassandra/commitlog',
-    saved_caches_directory => '/srv/cassandra/saved_caches',
-    dc                     => $dc,
-    seeds                  => $cassandra_hosts,
-    super_password         => $super_pass,
+    cluster_name            => $cluster_name,
+    seeds                   => $cassandra_hosts,
+    dc                      => $dc,
+    default_instance_params => {
+      data_directory_base    => '/srv/cassandra',
+      commitlog_directory    => '/srv/cassandra/commitlog',
+      saved_caches_directory => '/srv/cassandra/saved_caches',
+      super_password         => $super_pass,
+    }
   }
   class { '::cassandra::metrics':
     graphite_host => $graphite_host,
