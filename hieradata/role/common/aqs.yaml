@@ -47,26 +47,27 @@ profile::cassandra::settings:
   cluster_name: "Analytics Query Service Storage"
   start_rpc: 'false'
   target_version: '2.2'
-  max_heap_size: 16g
-  # 1/4 heap size, no more than 100m/thread
-  heap_newsize: 2048m
+  default_instance_params:
+    max_heap_size: 16g
+    # 1/4 heap size, no more than 100m/thread
+    heap_newsize: 2048m
 
-  # Special compaction settings, following suggesions in:
-  # https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
-  # All values are divided by two since we have two instances running on each node
-  # Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
-  # in the calculations.
-  compaction_throughput_mb_per_sec: 256
-  concurrent_compactors: 12
-  concurrent_writes: 64
-  concurrent_reads: 64
+    # Special compaction settings, following suggesions in:
+    # https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
+    # All values are divided by two since we have two instances running on each node
+    # Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
+    # in the calculations.
+    compaction_throughput_mb_per_sec: 256
+    concurrent_compactors: 12
+    concurrent_writes: 64
+    concurrent_reads: 64
 
-  # The CassandraAuthorizer Auth mandates non trivial checks for
-  # each read/write operation to make sure that permissions are honored.
-  # This could be a problem in already heavy loaded clusters like AQS,
-  # so we need to increase caching to allow better performances
-  # (default value 2s).
-  permissions_validity_in_ms: 600000
+    # The CassandraAuthorizer Auth mandates non trivial checks for
+    # each read/write operation to make sure that permissions are honored.
+    # This could be a problem in already heavy loaded clusters like AQS,
+    # so we need to increase caching to allow better performances
+    # (default value 2s).
+    permissions_validity_in_ms: 600000
 
   # AQS Cassandra user
 
