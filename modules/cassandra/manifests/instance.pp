@@ -35,53 +35,38 @@
 #
 define cassandra::instance(
     $instances = $::cassandra::instances,
+    $max_heap_size = $::cassandra::max_heap_size,
+    $heap_new_size = $::cassandra::heap_newsize,
+    $jmx_port = undef,
+    $listen_address = undef,
+    $rpc_address = undef,
+    $jmx_exporter_enabled = false,
+    $data_directory_base = "/srv/cassandra-${title}",
+
+    $config_directory = "/etc/cassandra-${title}",
+    $service_name = "cassandra-${title}",
+    $tls_hostname = "${::hostname}-${title}",
+    $pid_file = "/var/run/cassandra/cassandra-${title}.pid",
+    $instance_id = "${::hostname}-${title}",
+    $data_file_directories = ['data'],
+    $commitlog_directory = "/srv/cassandra-${title}/commitlog",
+    $hints_directory = "/srv/cassandra-${title}/data/hints",
+    $heapdump_directory = "/srv/cassandra-${title}/",
+    $saved_caches_directory = "/srv/cassandra-${title}/saved_caches",
 ) {
     $instance_name = $title
-    if ! has_key($instances, $instance_name) {
-        fail("instance ${instance_name} not found in ${instances}")
-    }
 
     # Default jmx port; only works with 1-letter instnaces
     $default_jmx_port     = 7189 + inline_template("<%= @title.ord - 'a'.ord %>")
 
     # Relevant values, choosing convention over configuration
-    $this_instance        = $instances[$instance_name]
-    $jmx_port             = pick($this_instance['jmx_port'], $default_jmx_port)
-    $listen_address       = $this_instance['listen_address']
-    $rpc_address          = pick($this_instance['rpc_address'], $listen_address)
-    $jmx_exporter_enabled = pick($this_instance['jmx_exporter_enabled'], false)
+    $actual_jmx_port    = pick($jmx_port, $default_jmx_port)
+    $actual_rpc_address = pick($rpc_address, $listen_address)
     # Add the IP address if not present
-    if $rpc_address != $facts['ipaddress'] {
+    if $actual_rpc_address != $facts['ipaddress'] {
         interface::alias { "cassandra-${instance_name}":
-            ipv4      => $rpc_address,
+            ipv4      => $actual_rpc_address,
         }
-    }
-
-    if $instance_name == 'default' {
-        $data_directory_base = $this_instance['data_directory_base']
-        $config_directory    = '/etc/cassandra'
-        $service_name        = 'cassandra'
-        $tls_hostname        = $::hostname
-        $pid_file            = '/var/run/cassandra/cassandra.pid'
-        $instance_id         = $::hostname
-        $data_file_directories  = $this_instance['data_file_directories']
-        $commitlog_directory    = $this_instance['commitlog_directory']
-        $hints_directory        = $this_instance['hints_directory']
-        $heapdump_directory     = $this_instance['heapdump_directory']
-        $saved_caches_directory = $this_instance['saved_caches_directory']
-    } else {
-        $data_directory_base = "/srv/cassandra-${instance_name}"
-        $config_directory    = "/etc/cassandra-${instance_name}"
-        $service_name        = "cassandra-${instance_name}"
-        $tls_hostname        = "${::hostname}-${instance_name}"
-        $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
-        $instance_id         = "${::hostname}-${instance_name}"
-        $data_directories    = pick($this_instance['data_file_directories'], ['data'])
-        $data_file_directories  = prefix($data_directories, "${data_directory_base}/")
-        $commitlog_directory    = "${data_directory_base}/commitlog"
-        $hints_directory        = "${data_directory_base}/data/hints"
-        $heapdump_directory     = $data_directory_base
-        $saved_caches_directory = "${data_directory_base}/saved_caches"
     }
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
@@ -121,7 +106,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/cassandra.yaml":
@@ -130,7 +114,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/cassandra-rackdc.properties":
@@ -139,7 +122,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/logback.xml":
@@ -148,7 +130,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/logback-tools.xml":
@@ -157,7 +138,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/cqlshrc":
@@ -201,7 +181,6 @@ define cassandra::instance(
             owner     => 'cassandra',
             group     => 'cassandra',
             mode      => '0400',
-            require   => File["${config_directory}/tls"],
             show_diff => false,
         }
 
@@ -210,7 +189,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0400',
-            require => File["${config_directory}/tls"],
         }
 
         file { "${config_directory}/tls/rootCa.crt":
@@ -218,7 +196,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0400',
-            require => File["${config_directory}/tls"],
         }
     }
 
@@ -235,7 +212,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File['/etc/cassandra-instances.d'],
     }
 
     if ($target_version == '3.x') {
@@ -245,7 +221,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0444',
-            require => File[$config_directory],
         }
 
         file { "${config_directory}/hotspot_compiler":
@@ -254,7 +229,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0444',
-            require => File[$config_directory],
         }
 
         file { "${config_directory}/commitlog_archiving.properties":
@@ -263,7 +237,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0444',
-            require => File[$config_directory],
         }
     }
 
