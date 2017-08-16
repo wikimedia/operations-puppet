@@ -50,9 +50,10 @@ profile::cassandra::settings:
   cluster_name: "Analytics Query Service Storage"
   start_rpc: 'false'
   target_version: '2.2'
-  max_heap_size: 16g
-  # 1/4 heap size, no more than 100m/thread
-  heap_newsize: 2048m
+  default_instance_params:
+    - max_heap_size: 16g
+    # 1/4 heap size, no more than 100m/thread
+    - heap_newsize: 2048m
 
   # Special compaction settings, following suggesions in:
   # https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
