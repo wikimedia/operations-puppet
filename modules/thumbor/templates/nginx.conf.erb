@@ -1,11 +1,8 @@
 upstream thumbor {
-    zone thumbor 128k;
     least_conn;
 
-    # Thumbor handles one request per instance, thus force one connection (and
-    # one request) per instance.
     <%- @ports.each do |port| -%>
-    server 127.0.0.1:<%= port -%> max_conns=1;
+    server 127.0.0.1:<%= port -%>;
     <%- end -%>
 }
 
