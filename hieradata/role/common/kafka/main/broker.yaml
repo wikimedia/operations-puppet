@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-kafka-main:
     value: standard
+# Used to sync the setting between main kafka cluster and change-prop
+kafka_message_max_bytes: 4194304
