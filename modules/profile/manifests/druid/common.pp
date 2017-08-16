@@ -12,7 +12,7 @@
 class profile::druid::common(
     $zookeeper_cluster_name = hiera('profile::druid::common::zookeeper_cluster_name'),
     $zookeeper_clusters     = hiera('zookeeper_clusters'),
-    $druid_properties       = hiera('druid::properties'),
+    $druid_properties       = hiera_hash('druid::properties'),
 ) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics
