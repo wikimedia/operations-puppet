@@ -5,3 +5,5 @@ nagios_group: analytics_eqiad
 debdeploy::grains:
   debdeploy-kafka:
     value: standard
+# Reset to default
+kafka_message_max_bytes: 1048576
