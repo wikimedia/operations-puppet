@@ -199,6 +199,10 @@
 # [*log4j_properties_template*]
 #   Default: 'confluent/kafka/log4j.properties.erb'
 #
+# [*message_max_bytes*]
+#   The maximum message size allowed.
+#   Default: 1048576
+#
 class confluent::kafka::broker(
     $enabled                             = true,
     $brokers                             = {
@@ -269,6 +273,8 @@ class confluent::kafka::broker(
     $server_properties_template          = 'confluent/kafka/server.properties.erb',
     $default_template                    = 'confluent/kafka/kafka.default.erb',
     $log4j_properties_template           = 'confluent/kafka/log4j.properties.erb',
+
+    $message_max_bytes                   = 1048576,
 ) {
     # confluent::kafka::client installs the kafka package
     # and a handy wrapper script.
