@@ -50,6 +50,11 @@ class role::eventbus::eventbus {
         undef   => '',
         default => "&api_version=${kafka_api_version}"
     }
+    $kafka_message_max_bytes = hiera('kafka_message_max_bytes', 1048576)
+    # The requests not only contain the message but also a small metadata overhead.
+    # So if we want to produce a kafka_message_max_bytes payload the max request size should be a bit higher.
+    # The 48564 value isn't arbitrary - it's the difference between default message.max.size and default max.request.size
+    $producer_request_max_size = $kafka_message_max_bytes + 48564
 
     $outputs = [
         # When events are produced to kafka, the
@@ -65,7 +70,7 @@ class role::eventbus::eventbus {
         # In normal cases, this will be much much faster than 10 seconds, but during
         # broker restarts, it can take a few seconds for meta data and leadership
         # info to propagate to the kafka client.
-        "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}"
+        "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}"
     ]
 
     $access_log_level = $::realm ? {
