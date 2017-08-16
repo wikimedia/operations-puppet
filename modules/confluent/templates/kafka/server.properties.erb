@@ -273,3 +273,11 @@ confluent.support.metrics.enable=false
 # that additional support metrics will be collected and reported.
 #
 confluent.support.customer.id=anonymous
+
+<%-
+max_bytes = scope.function_hiera(['kafka_message_max_bytes', 'default'])
+if max_bytes != 'default'
+-%>
+# For the JobQueue we need larger messages then default
+message.max.bytes=<%= max_bytes %>
+<% end -%>

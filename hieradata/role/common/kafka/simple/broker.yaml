@@ -1,4 +1,5 @@
 kafka_cluster_name: simple
+kafka_message_max_bytes: default
 
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true

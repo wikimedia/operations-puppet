@@ -4,6 +4,7 @@ debdeploy::grains:
     value: standard
 
 kafka_cluster_name: jumbo
+kafka_message_max_bytes: default
 
 profile::kafka::broker::log_dirs: [/srv/kafka/data] # TBD
 profile::kafka::broker::plaintext: true
