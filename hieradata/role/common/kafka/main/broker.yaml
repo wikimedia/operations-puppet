@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-kafka-main:
     value: standard
+profile::kafka::broker::max_bytes: 2097152
