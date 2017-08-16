@@ -32,6 +32,7 @@ message_logs = false
 
 # Policy control
 acl_smtp_connect = acl_check_connect
+acl_smtp_helo = acl_check_helo
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
 
@@ -128,6 +129,24 @@ acl_check_rcpt:
 	accept
 
 acl_check_connect:
+	accept
+
+acl_check_helo:
+
+	# warn if remote tries to send HELO < a local domain > (change from warn to delay & drop after testing)
+	warn message = HELO failure ref1
+		condition   = ${if match_domain{$sender_helo_name}{+local_domains}{yes}{no}}
+		!hosts	    = +wikimedia_nets : +relay_from_hosts
+		log_message = HELO failure ref1 (Remote said: HELO $sender_helo_name which matches a domain listed in local_domains)
+		#delay       = 45s
+
+	# warn if remote tries to send HELO < my primary hostname > (change from warn to delay & drop after testing)
+	warn message = HELO failure ref2
+		condition   = ${if match{$sender_helo_name}{$primary_hostname}}
+		!hosts	    = +wikimedia_nets : +relay_from_hosts
+		log_message = HELO failure ref2 (Remote said: HELO $sender_helo_name which equals my primary_hostname of $primary_hostname)
+		#delay       = 45s
+
 	accept
 
 acl_check_data:
