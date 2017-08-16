@@ -8,7 +8,6 @@ class role::analytics_cluster::hadoop::worker {
     }
 
     require ::profile::hadoop::client
-    include ::role::analytics_cluster::monitoring::disks
 
     class { '::cdh::hadoop::worker': }
 
