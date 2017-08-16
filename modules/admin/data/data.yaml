@@ -627,7 +627,9 @@ users:
     gid: 500
     name: dzahn
     realname: Daniel Zahn
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJicQDgLeltqbsYvdBnOop53ArkX1pjwKU1lPMpiW111 dzahn@wmf
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/QVaUYG9PZb5OMirnHmqNGmKF7FgoPnCUzD/Zfgaf74nIQ3R30OuGU5Al9om9Cpdq9SFjfaSC0Ul/pX1bPqWsZt711EUrLPDs4GgZ8FFuurujsPMKw27WcLJHWFlvxAWzDBRc8DoO9EXRpHu9xm5oZHtbQEvoZEm4u9DZvxAljTOEHV/LQNgG/f1llHg8SSfJbirFKxBAzBuxCXVj1rfgsqIudWCMMVEQKqU0j3Nj3vyOCPLV06tozgMtQbk2iLjdUhClfxg7FJmkpvI4NkaJUKn0ooOIZlFdlMH234MyhVU0mgqDaEU+GnERrnqtVsJHugATXbkt7Jg83TOLclpO1N+Mc9xW38GXYsIUAQNJMjvj5Ekz5KaTILBWKBEIDOzDNBzPjzVwcoAX3FYqxnJS82PEHo/W8/39n02fBHrSpCcEhhZzzr68QNu2r2XhQoe1120Srf+FzXWvJGp6a/e4lKIaY/D4QgsS0/xtkZJynylbUZsFn798wrvq74y39fW0v8BsnBoyE15H+Qwd3tcWBagb8dCPW/CXKxympbrimwAdoihnWAXfSxkpW1MeHf5Ja6/fBmi3mqdfVSzPwI8b6BmMu/Hnh8MJfOQhmoHTACBhO6u53qRKdlPVGPUzuikqhDsk4TYRZN9bHvx1xLIyb0kZNpQWfAe1IS73Qd6DGw== dzahn@wmf
     uid: 2075
     email: dzahn@wikimedia.org
   jzerebecki:
