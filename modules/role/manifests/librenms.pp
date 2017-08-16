@@ -137,9 +137,10 @@ class role::librenms {
     }
 
     class { '::librenms::web':
-        sitename    => $sitename,
-        install_dir => $install_dir,
-        require     => Class['::librenms'],
+        sitename      => $sitename,
+        install_dir   => $install_dir,
+        require       => Class['::librenms'],
+        active_server => $active_server,
     }
 
     ferm::service { 'librenms-rsyslog':
