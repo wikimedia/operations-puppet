@@ -32,17 +32,22 @@
 #   The password to use when authenticating with Redis/Nutcracker. Default:
 #   'abc1234'
 #
+# [*kafka_msg_max_bytes*]
+#   The maximum number of bytes allowed in a Kafka message. Default:
+#   '1048576'
+#
 class changeprop(
     $broker_list,
-    $purge_host   = '239.128.0.112',
-    $purge_port   = 4827,
-    $restbase_uri = 'http://restbase.svc.eqiad.wmnet:7231',
-    $ores_uris    = [
+    $purge_host          = '239.128.0.112',
+    $purge_port          = 4827,
+    $restbase_uri        = 'http://restbase.svc.eqiad.wmnet:7231',
+    $ores_uris           = [
         'http://ores.svc.eqiad.wmnet:8081',
         'http://ores.svc.codfw.wmnet:8081',
     ],
-    $redis_path   = "/var/run/nutcracker/redis_${::site}.sock",
-    $redis_pass   = 'abc1234',
+    $redis_path          = "/var/run/nutcracker/redis_${::site}.sock",
+    $redis_pass          = 'abc1234',
+    $kafka_msg_max_bytes = 1048576,
 ) {
 
     include ::service::configuration
@@ -57,15 +62,16 @@ class changeprop(
         deployment        => 'scap3',
         deployment_config => true,
         deployment_vars   => {
-            broker_list  => $broker_list,
-            mwapi_uri    => $::service::configuration::mwapi_uri,
-            restbase_uri => $restbase_uri,
-            ores_uris    => $ores_uris,
-            purge_host   => $purge_host,
-            purge_port   => $purge_port,
-            site         => $::site,
-            redis_path   => $redis_path,
-            redis_pass   => $redis_pass,
+            broker_list     => $broker_list,
+            mwapi_uri       => $::service::configuration::mwapi_uri,
+            restbase_uri    => $restbase_uri,
+            ores_uris       => $ores_uris,
+            purge_host      => $purge_host,
+            purge_port      => $purge_port,
+            site            => $::site,
+            redis_path      => $redis_path,
+            redis_pass      => $redis_pass,
+            kafka_max_bytes => $kafka_msg_max_bytes,
         },
         auto_refresh      => false,
         init_restart      => false,
