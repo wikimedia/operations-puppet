@@ -33,6 +33,12 @@
   - dbstore2001:13315
 
 - labels:
+    shard: s6
+    role: slave
+  targets:
+  - dbstore2001:13316
+
+- labels:
     shard: x1
     role: slave
   targets:
