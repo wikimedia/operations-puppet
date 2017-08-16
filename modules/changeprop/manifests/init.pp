@@ -48,7 +48,7 @@ class changeprop(
     include ::service::configuration
 
     require ::changeprop::packages
-
+    
     service::node { 'changeprop':
         enable            => true,
         port              => 7272,
@@ -66,6 +66,7 @@ class changeprop(
             site         => $::site,
             redis_path   => $redis_path,
             redis_pass   => $redis_pass,
+            kafka_max_bytes => $::kafka_clusters::main_eqiad::kafka_message_max_bytes,
         },
         auto_refresh      => false,
         init_restart      => false,
