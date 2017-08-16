@@ -64,50 +64,8 @@ node 'analytics1002.eqiad.wmnet' {
     include ::base::firewall
 }
 
-# This node hosts Oozie and Hive servers,
-# as well as a MySQL instance that stores
-# meta data associated with those and other
-# Analytics Cluster services.
-#
-# This node is also is a launch pad for various cron based Hadoop jobs.
-# Many ingestion jobs need a starting point.  Oozie is a great
-# Hadoop job scheduler, but it is not better than cron
-# for some jobs that need to be launched at regular time
-# intervals.  Cron is used for those.  These crons
-# do not use local resources, instead, they launch
-# Hadoop jobs that run throughout the cluster.
-#
 node 'analytics1003.eqiad.wmnet' {
-    role(analytics_cluster::client,
-        analytics_cluster::database::meta,
-        # Back up analytics-meta MySQL instance
-        # to analytics1002. $dest is configured in
-        # hieradata/role/eqiad/analytics_cluster/database/meta/backup.yaml
-        analytics_cluster::database::meta::backup,
-        analytics_cluster::hive::metastore::database,
-        analytics_cluster::oozie::server::database,
-        analytics_cluster::hive::metastore,
-        analytics_cluster::hive::server,
-        analytics_cluster::oozie::server,
-
-        # Include a weekly cron job to run hdfs balancer.
-        analytics_cluster::hadoop::balancer,
-
-        # We need hive-site.xml in HDFS.  This can be included
-        # on any node with a Hive client, but we really only
-        # want to include it in one place.  analytics1003
-        # is a little special and standalone, so we do it here.
-        analytics_cluster::hive::site_hdfs,
-
-        # Camus crons import data into
-        # from Kafka into HDFS.
-        analytics_cluster::refinery::job::camus,
-
-        # Various crons that launch Hadoop jobs.
-        analytics_cluster::refinery,
-        analytics_cluster::refinery::job::data_drop,
-        analytics_cluster::refinery::job::project_namespace_map,
-        analytics_cluster::refinery::job::sqoop_mediawiki)
+    role(analytics_cluster::coordinator)
 
     include ::standard
     include ::base::firewall
