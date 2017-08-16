@@ -273,3 +273,10 @@ confluent.support.metrics.enable=false
 # that additional support metrics will be collected and reported.
 #
 confluent.support.customer.id=anonymous
+
+<% if @kafka_message_max_bytes -%>
+
+# For the JobQueue we need larger messages then default
+message.max.bytes=<%= @kafka_message_max_bytes %>
+
+<% end -%>

@@ -68,6 +68,7 @@ class role::kafka::main::broker {
         log_cleanup_policy              => 'delete',
         zookeeper_connection_timeout_ms => 6000,
         zookeeper_session_timeout_ms    => 6000,
+        kafka_message_max_bytes         => hiera('profile::kafka::broker::max_bytes'),
     }
 
     # Include Kafka Broker Jmxtrans class to
