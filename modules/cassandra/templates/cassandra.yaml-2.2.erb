@@ -137,7 +137,7 @@ partitioner: org.apache.cassandra.dht.Murmur3Partitioner
 # If not set, the default directory is $CASSANDRA_HOME/data/data.
 <%
 # accept string or array values for data_file_directroy
-@data_file_directories = (@data_file_directories.class == String ? @data_file_directories.split(',') : @data_file_directories)
+@data_file_directories = (@actual_data_file_directories.class == String ? @actual_data_file_directories.split(',') : @actual_data_file_directories)
 -%>
 data_file_directories:
 <% @data_file_directories.each do |data_file_directory| -%>
