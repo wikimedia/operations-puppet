@@ -137,7 +137,6 @@ profile::cassandra::instances:
   "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
-  rpc_address: '%{::ipaddress}'
   logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
   target_version: '2.2'
   additional_jvm_opts:
