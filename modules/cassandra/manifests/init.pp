@@ -29,6 +29,13 @@
 #     * rpc_address     address to use for cassandra cluster traffic
 #   See also cassandra::instance
 #
+#   Unless default behaviour (as in Cassandra's Debian package) is wanted, each
+#   instance will have its configuration deployed at /etc/cassandra-<TITLE>
+#   with data at /srv/cassandra-<TITLE> and a corresponding nodetool
+#   binary named nodetool-<TITLE> to be used to access instances individually.
+#   Similarly each instance service will be available under
+#   "cassandra-<TITLE>".
+#
 # [*seeds*]
 #   Array of seed IPs for this Cassandra cluster.
 #   Default: [$::ipaddress]
@@ -256,145 +263,33 @@
 #   The Cassandra version to configure for.  Valid choices are '2.1', '2.2', and '3.x'.
 #   Default: 2.1
 
-class cassandra(
-    $cluster_name                     = 'Test Cluster',
-    $instances                        = undef,
-    $seeds                            = [$::ipaddress],
-    $num_tokens                       = 256,
-    $authenticator                    = true,
-    $authorizor                       = true,
-    $permissions_validity_in_ms       = 2000,
-    $data_directory_base              = '/var/lib/cassandra',
-    $data_file_directories            = ['/var/lib/cassandra/data'],
-    $commitlog_directory              = '/var/lib/cassandra/commitlog',
-    $hints_directory                  = '/var/lib/cassandra/data/hints',
-    $heapdump_directory               = '/var/lib/cassandra/',
-    $disk_failure_policy              = 'stop',
-    $row_cache_size_in_mb             = 200,
-    $memory_allocator                 = 'JEMallocAllocator',
-    $saved_caches_directory           = '/var/lib/cassandra/saved_caches',
-    $concurrent_reads                 = 32,
-    $concurrent_writes                = 32,
-    $concurrent_counter_writes        = 32,
-    $trickle_fsync                    = true,
-    $trickle_fsync_interval_in_kb     = 30240,
-    $storage_port                     = 7000,
-    $listen_address                   = $::ipaddress,
-    $broadcast_address                = undef,
-    $start_native_transport           = true,
-    $native_transport_port            = 9042,
-    $start_rpc                        = true,
-    $rpc_address                      = $::ipaddress,
-    $rpc_port                         = 9160,
-    $rpc_server_type                  = 'sync',
-    $incremental_backups              = false,
-    $snapshot_before_compaction       = false,
-    $auto_snapshot                    = true,
-    $compaction_throughput_mb_per_sec = 16,
-    $concurrent_compactors            = 1,
-    $streaming_socket_timeout_in_ms   = 0,
-    $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
-    $internode_compression            = 'all',
-    $max_heap_size                    = undef,
-    $heap_newsize                     = undef,
-    $jmx_port                         = 7199,
-    $additional_jvm_opts              = [],
-    $extra_classpath                  = [],
-    $dc                               = 'datacenter1',
-    $rack                             = 'rack1',
-    $key_cache_size_in_mb             = 400,
-    $tls_cluster_name                 = undef,
-    $internode_encryption             = none,
-    $client_encryption_enabled        = false,
-    $super_username                   = 'cassandra',
-    $super_password                   = 'cassandra',
-    $application_username             = undef,
-    $application_password             = undef,
-    $auto_bootstrap                   = true,
-    $target_version                   = '2.1',
-
-    $logstash_host                    = 'logstash1003.eqiad.wmnet',
-    $logstash_port                    = 11514,
+class cassandra (
+    $cluster_name            = 'Test Cluster',
+    $tls_cluster_name        = undef,
+    $instances               = undef,
+    $default_instance_params = {},
+    $seeds                   = [$::ipaddress],
+    $listen_address          = $::ipaddress,
+    $additional_jvm_opts     = [],
+    $extra_classpath         = [],
+    $target_version          = '2.1',
+    $memory_allocator        = 'JEMallocAllocator',
+    $application_username    = undef,
+    $application_password    = undef,
+    $native_transport_port   = 9042,
+    $dc                      = 'datacenter1',
+    $rack                    = 'rack1',
+    $logstash_host           = 'logstash1003.eqiad.wmnet',
+    $logstash_port           = 11514,
+    $start_rpc               = true,
 ) {
     validate_string($cluster_name)
 
-    validate_absolute_path($commitlog_directory)
-    validate_absolute_path($hints_directory)
-    validate_absolute_path($saved_caches_directory)
-
-    validate_string($endpoint_snitch)
-
-    validate_re($rpc_server_type, '^(hsha|sync|async)$')
-    # lint:ignore:only_variable_string
-    validate_re("${concurrent_reads}", '^[0-9]+$')
-    validate_re("${concurrent_writes}", '^[0-9]+$')
-    validate_re("${num_tokens}", '^[0-9]+$')
-    # lint:endignore
-    validate_re($internode_compression, '^(all|dc|none)$')
-    validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
-
-    validate_array($additional_jvm_opts)
     validate_array($extra_classpath)
 
-    validate_string($logstash_host)
-    # lint:ignore:only_variable_string
-    validate_re("${logstash_port}", '^[0-9]+$')
-    # lint:endignore
-
-    if (!is_integer($trickle_fsync_interval_in_kb)) {
-        fail('trickle_fsync_interval_in_kb must be number')
-    }
-
-    if (!is_integer($jmx_port)) {
-        fail('jmx_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_ip_address($listen_address)) {
-        fail('listen_address must be an IP address')
-    }
-
-    if (!empty($broadcast_address) and !is_ip_address($broadcast_address)) {
-        fail('broadcast_address must be an IP address')
-    }
-
-    if (!is_ip_address($rpc_address)) {
-        fail('rpc_address must be an IP address')
-    }
-
-    if (!is_integer($rpc_port)) {
-        fail('rpc_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_integer($native_transport_port)) {
-        fail('native_transport_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_integer($storage_port)) {
-        fail('storage_port must be a port number between 1 and 65535')
-    }
-
-    if (!is_array($seeds) or empty($seeds)) {
-        fail('seeds must be an array and not be empty')
-    }
-
-    if (empty($data_file_directories)) {
-        fail('data_file_directories must not be empty')
-    }
 
     if (!($target_version in ['2.1', '2.2', '3.x'])) {
         fail("${target_version} is not a valid Cassandra target version!")
-    }
-
-    # Choose real authenticator and authorizor values
-    $authenticator_value = $authenticator ? {
-        true    => 'PasswordAuthenticator',
-        false   => 'AllowAllAuthenticator',
-        default => $authenticator,
-    }
-    $authorizor_value = $authorizor ? {
-        true    => 'CassandraAuthorizer',
-        false   => 'AllowAllAuthorizer',
-        default => $authorizor,
     }
 
     package { 'openjdk-8-jdk':
@@ -415,7 +310,7 @@ class cassandra(
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
         '2.2' => hiera('cassandra::version', '2.2.6-wmf1'),
-        '3.x' => hiera('cassandra::version', '3.11.0')
+        '3.x' => hiera('cassandra::version', '3.11.0'),
     }
     package { 'cassandra':
         ensure  => $package_version,
@@ -433,29 +328,61 @@ class cassandra(
     # Create non-default cassandra instances if requested.
     # Default is to keep Debian package behaviour,
     # in other words create a "default" instance.
-    if (! empty($instances)) {
-        $instance_names = keys($instances)
-        cassandra::instance{ $instance_names: }
+    $default_for_multi_instances = {
+        cluster_name          => $cluster_name,
+        tls_cluster_name      => $tls_cluster_name,
+        seeds                 => $seeds,
+        additional_jvm_opts   => $additional_jvm_opts,
+        extra_classpath       => $extra_classpath,
+        memory_allocator      => $memory_allocator,
+        listen_address        => $listen_address,
+        tls_cluster_name      => $tls_cluster_name,
+        application_username  => $application_username,
+        application_password  => $application_password,
+        native_transport_port => $native_transport_port,
+        target_version        => $target_version,
+        dc                    => $dc,
+        rack                  => $rack,
+        logstash_host         => $logstash_host,
+        logstash_port         => $logstash_port,
+        start_rpc             => $start_rpc,
+    }
+
+    if empty($instances) {
+        $defaults_for_single_instance = {
+            config_directory       => '/etc/cassandra',
+            service_name           => 'cassandra',
+            tls_hostname           => $::hostname,
+            pid_file               => '/var/run/cassandra/cassandra.pid',
+            instance_id            => $::hostname,
+            jmx_port               => 7199,
+            data_directory_base    => '/var/lib/cassandra',
+            data_directories       => ['data'],
+            commitlog_directory    => '/var/lib/cassandra/commitlog',
+            hints_directory        => '/var/lib/cassandra/data/hints',
+            heapdump_directory     => '/var/lib/cassandra/',
+            saved_caches_directory => '/var/lib/cassandra/saved_caches',
+        }
+        $actual_defaults = merge(
+            $default_for_multi_instances,
+            $defaults_for_single_instance,
+            $default_instance_params
+        )
+        $instances_to_create = {
+            'default' => {}
+        }
+    } else {
+        $instances_to_create = $instances
+        $actual_defaults = merge(
+            $default_for_multi_instances,
+            $default_instance_params
+        )
+        # if running multi-instances, make sure the default instance is stopped
         service { 'cassandra':
             ensure => stopped,
         }
-    } else {
-        $default_instances = {
-            'default' => {
-                'jmx_port'               => $jmx_port,
-                'listen_address'         => $listen_address,
-                'rpc_address'            => $rpc_address,
-                'data_directory_base'    => $data_directory_base,
-                'data_file_directories'  => $data_file_directories,
-                'commitlog_directory'    => $commitlog_directory,
-                'hints_directory'        => $hints_directory,
-                'heapdump_directory'     => $heapdump_directory,
-                'saved_caches_directory' => $saved_caches_directory,
-        }}
-        cassandra::instance{ 'default':
-            instances => $default_instances,
-        }
     }
+    create_resources(cassandra::instance, $instances_to_create, $actual_defaults)
 
     # nodetool wrapper to handle multiple instances, for each instance there
     # will be symlinks from /usr/local/bin/nodetool-<INSTANCE_NAME> to
