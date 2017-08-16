@@ -137,7 +137,7 @@ partitioner: org.apache.cassandra.dht.Murmur3Partitioner
 # If not set, the default directory is $CASSANDRA_HOME/data/data.
 <%
 # accept string or array values for data_file_directroy
-@data_file_directories = (@data_file_directories.class == String ? @data_file_directories.split(',') : @data_file_directories)
+@data_file_directories = (@actual_data_file_directories.class == String ? @actual_data_file_directories.split(',') : @actual_data_file_directories)
 -%>
 data_file_directories:
 <% @data_file_directories.each do |data_file_directory| -%>
@@ -503,7 +503,7 @@ start_rpc: <%= @start_rpc %>
 # you can specify which should be chosen using rpc_interface_prefer_ipv6. If false the first ipv4
 # address will be used. If true the first ipv6 address will be used. Defaults to false preferring
 # ipv4. If there is only one address it will be selected regardless of ipv4/ipv6.
-rpc_address: <%= @rpc_address %>
+rpc_address: <%= @actual_rpc_address %>
 # rpc_interface: eth1
 # rpc_interface_prefer_ipv6: false
 
