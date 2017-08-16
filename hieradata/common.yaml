@@ -315,6 +315,9 @@ eventlogging_valid_mixed_schema_blacklist: ^(Analytics|CentralNoticeBannerHistor
 # Used to specify writer handler for eventlogging processor producer.
 eventlogging_kafka_producer_scheme: "kafka-confluent://"
 
+# Used to sync the setting between kafka and change-prop
+kafka_message_max_bytes: 2097152
+
 # LABS
 
 labs_tld: "wmflabs"
