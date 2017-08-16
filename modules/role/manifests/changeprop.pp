@@ -11,8 +11,11 @@ class role::changeprop {
     }
 
     class { '::changeprop':
-        broker_list => $kafka_config['brokers']['string'],
-        redis_pass  => $::passwords::redis::main_password
+        broker_list         => $kafka_config['brokers']['string'],
+        redis_pass          => $::passwords::redis::main_password,
+        # FIXME: this needs to be refactored when the role
+        # is moved to profiles.
+        kafka_msg_max_bytes => hiera('kafka_message_max_bytes', 1048576),
     }
 
 }

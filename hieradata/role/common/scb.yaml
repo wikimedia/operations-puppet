@@ -89,6 +89,8 @@ role::eventstreams::rdkafka_config:
   broker.version.fallback: '0.9.0.1'
 
 changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
+# Used to sync the setting between main kafka cluster and change-prop
+kafka_message_max_bytes: 4194304
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
 
