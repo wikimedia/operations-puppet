@@ -68,6 +68,11 @@ class role::kafka::main::broker {
         log_cleanup_policy              => 'delete',
         zookeeper_connection_timeout_ms => 6000,
         zookeeper_session_timeout_ms    => 6000,
+
+        # JobQueues-Eventbus needs a bigger msg size
+        # FIXME: this needs to be refactored when the role
+        # is moved to profiles.
+        message_max_bytes               => hiera('kafka_message_max_bytes', 1048576),
     }
 
     # Include Kafka Broker Jmxtrans class to
