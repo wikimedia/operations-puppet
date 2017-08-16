@@ -30,3 +30,4 @@ profile::kafka::broker::num_io_threads: 12
 
 profile::kafka::broker::replica_maxlag_warning: "1000000"
 profile::kafka::broker::replica_maxlag_critical: "5000000"
+
