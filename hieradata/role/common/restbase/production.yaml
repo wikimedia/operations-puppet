@@ -256,25 +256,26 @@ profile::cassandra::instances:
 
 profile::cassandra::settings:
   start_rpc: 'false'
-  max_heap_size: 12g
-  # 1/4 heap size, no more than 100m/thread
-  heap_newsize: 2048m
-  compaction_throughput_mb_per_sec: 20
-  concurrent_compactors: 10
-  concurrent_writes: 18
-  concurrent_reads: 18
   tls_cluster_name: "services"
-  internode_encryption: dc
   dc: "%{::site}"
   cluster_name: "eqiad" # This is the name for historical reasons, see T112257 for context
   application_username: restb
   application_password: "%{passwords::cassandra::restbase}"
   target_version: '2.2'
-  permissions_validity_in_ms: 600000
-  trickle_fsync: false
   extra_classpath:
     - /srv/deployment/cassandra/twcs/lib/cassandra-v2.2/TimeWindowCompactionStrategy-2.2.5.jar
-  client_encryption_enabled: true
+  default_instance_params:
+    max_heap_size: 12g
+    # 1/4 heap size, no more than 100m/thread
+    heap_newsize: 2048m
+    compaction_throughput_mb_per_sec: 20
+    concurrent_compactors: 10
+    concurrent_writes: 18
+    concurrent_reads: 18
+    internode_encryption: dc
+    permissions_validity_in_ms: 600000
+    trickle_fsync: false
+    client_encryption_enabled: true
 
 
 #
