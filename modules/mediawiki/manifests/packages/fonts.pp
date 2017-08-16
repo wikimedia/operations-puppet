@@ -27,6 +27,7 @@ class mediawiki::packages::fonts {
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
         'ttf-alee',
+        'ttf-ubuntu-font-family',    # Not in Debian. T32288, T103325
         'ttf-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
@@ -51,7 +52,7 @@ class mediawiki::packages::fonts {
     }
 
     if os_version('ubuntu >= trusty') {
-        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts', 'ttf-kochi-gothic', 'ttf-kochi-mincho', 'fonts-mgopen', 'ttf-ubuntu-font-family')
+        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts', 'ttf-kochi-gothic', 'ttf-kochi-mincho', 'fonts-mgopen')
     }
 
     if os_version('debian >= jessie') {
