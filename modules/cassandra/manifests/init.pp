@@ -29,6 +29,13 @@
 #     * rpc_address     address to use for cassandra cluster traffic
 #   See also cassandra::instance
 #
+#   Unless default behaviour (as in Cassandra's Debian package) is wanted, each
+#   instance will have its configuration deployed at /etc/cassandra-<TITLE>
+#   with data at /srv/cassandra-<TITLE> and a corresponding nodetool
+#   binary named nodetool-<TITLE> to be used to access instances individually.
+#   Similarly each instance service will be available under
+#   "cassandra-<TITLE>".
+#
 # [*seeds*]
 #   Array of seed IPs for this Cassandra cluster.
 #   Default: [$::ipaddress]
@@ -434,26 +441,36 @@ class cassandra(
     # Default is to keep Debian package behaviour,
     # in other words create a "default" instance.
     if (! empty($instances)) {
-        $instance_names = keys($instances)
-        cassandra::instance{ $instance_names: }
+        create_resources(
+            cassandra::instance,
+            $instances,
+            # pass defaults from the main cassandra class
+            {
+                listen_address      => $listen_address,
+                rpc_address         => $rpc_address,
+                additional_jvm_opts => $additional_jvm_opts,
+            }
+        )
         service { 'cassandra':
             ensure => stopped,
         }
     } else {
-        $default_instances = {
-            'default' => {
-                'jmx_port'               => $jmx_port,
-                'listen_address'         => $listen_address,
-                'rpc_address'            => $rpc_address,
-                'data_directory_base'    => $data_directory_base,
-                'data_file_directories'  => $data_file_directories,
-                'commitlog_directory'    => $commitlog_directory,
-                'hints_directory'        => $hints_directory,
-                'heapdump_directory'     => $heapdump_directory,
-                'saved_caches_directory' => $saved_caches_directory,
-        }}
-        cassandra::instance{ 'default':
-            instances => $default_instances,
+        cassandra::instance { 'default':
+            jmx_port               => $jmx_port,
+            listen_address         => $listen_address,
+            rpc_address            => $rpc_address,
+            data_directory_base    => $data_directory_base,
+            data_file_directories  => $data_file_directories,
+            commitlog_directory    => $commitlog_directory,
+            hints_directory        => $hints_directory,
+            heapdump_directory     => $heapdump_directory,
+            saved_caches_directory => $saved_caches_directory,
+            config_directory       => '/etc/cassandra',
+            service_name           => 'cassandra',
+            tls_hostname           => $::hostname,
+            pid_file               => '/var/run/cassandra/cassandra.pid',
+            instance_id            => $::hostname,
+            additional_jvm_opts    => $additional_jvm_opts,
         }
     }
 
