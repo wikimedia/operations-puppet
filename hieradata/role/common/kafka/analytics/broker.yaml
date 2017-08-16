@@ -5,3 +5,4 @@ nagios_group: analytics_eqiad
 debdeploy::grains:
   debdeploy-kafka:
     value: standard
+kafka_message_max_bytes:
