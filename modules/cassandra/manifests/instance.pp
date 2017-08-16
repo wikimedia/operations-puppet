@@ -10,84 +10,176 @@
 # === Parameters
 #
 # [*title*]
-#   The name of this cassandra instance, it must have a corresponding key in
-#   $instances, see below. The name "default" can be used as instance name to
-#   obtain cassandra's standard behaviour with a single instance.
-#
-#   Unless default behaviour (as in Cassandra's Debian package) is wanted, each
-#   instance will have its configuration deployed at /etc/cassandra-<TITLE>
-#   with data at /srv/cassandra-<TITLE> and a corresponding nodetool
-#   binary named nodetool-<TITLE> to be used to access instances individually.
-#   Similarly each instance service will be available under
-#   "cassandra-<TITLE>".
-#
-# [*instances*]
-#   An hash from instance name to several instance-specific parameters,
-#   including:
-#     * jmx_port        must be unique per-host
-#     * listen_address  address to use for cassandra clients
-#     * rpc_address     address to use for cassandra cluster traffic
-#
-#   Note any other parameter from the "cassandra" class is in scope and
-#   will be inherited here and can be used e.g. in templates.
-#
-#   Default: $::cassandra::instances
+#   The name of this cassandra instance. The name "default" can be used as
+#   instance name to obtain cassandra's standard behaviour with a single
+#   instance.
 #
 define cassandra::instance(
-    $instances = $::cassandra::instances,
+    # the following parameters are injected by the main cassandra class
+    $cluster_name,
+    $memory_allocator,
+    $listen_address,
+    $tls_cluster_name,
+    $application_username,
+    $application_password,
+    $native_transport_port,
+    $target_version,
+    $seeds,
+    $dc,
+    $rack,
+    $additional_jvm_opts,
+    $extra_classpath,
+    $logstash_host,
+    $logstash_port,
+    $start_rpc,
+
+    # the following parameters need specific default values for single instance
+    $config_directory       = "/etc/cassandra-${title}",
+    $service_name           = "cassandra-${title}",
+    $tls_hostname           = "${::hostname}-${title}",
+    $pid_file               = "/var/run/cassandra/cassandra-${title}.pid",
+    $instance_id            = "${::hostname}-${title}",
+    $jmx_port               = undef,
+    $data_directory_base    = "/srv/cassandra-${title}",
+    $data_directories       = ['data'],
+    $data_file_directories  = undef,
+    $commitlog_directory    = "/srv/cassandra-${title}/commitlog",
+    $hints_directory        = "/srv/cassandra-${title}/data/hints",
+    $heapdump_directory     = "/srv/cassandra-${title}/",
+    $saved_caches_directory = "/srv/cassandra-${title}/saved_caches",
+
+    # the following parameters have defaults that are sane both for single-
+    # and multi-instances
+    $jmx_exporter_enabled = false,
+    $num_tokens                       = 256,
+    $authenticator                    = true,
+    $authorizor                       = true,
+    $permissions_validity_in_ms       = 2000,
+    $disk_failure_policy              = 'stop',
+    $row_cache_size_in_mb             = 200,
+    $concurrent_reads                 = 32,
+    $concurrent_writes                = 32,
+    $concurrent_counter_writes        = 32,
+    $trickle_fsync                    = true,
+    $trickle_fsync_interval_in_kb     = 30240,
+    $storage_port                     = 7000,
+    $broadcast_address                = undef,
+    $start_native_transport           = true,
+    $rpc_address                      = $::ipaddress,
+    $rpc_port                         = 9160,
+    $rpc_server_type                  = 'sync',
+    $incremental_backups              = false,
+    $snapshot_before_compaction       = false,
+    $auto_snapshot                    = true,
+    $compaction_throughput_mb_per_sec = 16,
+    $concurrent_compactors            = 1,
+    $streaming_socket_timeout_in_ms   = 0,
+    $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
+    $internode_compression            = 'all',
+    $max_heap_size                    = undef,
+    $heap_newsize                     = undef,
+    $additional_jvm_opts              = [],
+    $key_cache_size_in_mb             = 400,
+    $internode_encryption             = none,
+    $client_encryption_enabled        = false,
+    $super_username                   = 'cassandra',
+    $super_password                   = 'cassandra',
+    $auto_bootstrap                   = true,
 ) {
-    $instance_name = $title
-    if ! has_key($instances, $instance_name) {
-        fail("instance ${instance_name} not found in ${instances}")
+    validate_absolute_path($commitlog_directory)
+    validate_absolute_path($hints_directory)
+    validate_absolute_path($saved_caches_directory)
+    validate_absolute_path($data_directory_base)
+
+    validate_string($endpoint_snitch)
+
+    validate_re($rpc_server_type, '^(hsha|sync|async)$')
+    # lint:ignore:only_variable_string
+    validate_re("${concurrent_reads}", '^[0-9]+$')
+    validate_re("${concurrent_writes}", '^[0-9]+$')
+    validate_re("${num_tokens}", '^[0-9]+$')
+    # lint:endignore
+    validate_re($internode_compression, '^(all|dc|none)$')
+    validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
+
+    validate_array($additional_jvm_opts)
+
+    validate_string($logstash_host)
+    # lint:ignore:only_variable_string
+    validate_re("${logstash_port}", '^[0-9]+$')
+    # lint:endignore
+
+    if (!is_integer($trickle_fsync_interval_in_kb)) {
+        fail('trickle_fsync_interval_in_kb must be number')
     }
+
+    if (!is_ip_address($listen_address)) {
+        fail('listen_address must be an IP address')
+    }
+
+    if (!empty($broadcast_address) and !is_ip_address($broadcast_address)) {
+        fail('broadcast_address must be an IP address')
+    }
+
+    if (!is_ip_address($rpc_address)) {
+        fail('rpc_address must be an IP address')
+    }
+
+    if (!is_integer($rpc_port)) {
+        fail('rpc_port must be a port number between 1 and 65535')
+    }
+
+    if (!is_integer($native_transport_port)) {
+        fail('native_transport_port must be a port number between 1 and 65535')
+    }
+
+    if (!is_integer($storage_port)) {
+        fail('storage_port must be a port number between 1 and 65535')
+    }
+
+    if (!is_array($seeds) or empty($seeds)) {
+        fail('seeds must be an array and not be empty')
+    }
+
+    $actual_data_file_directories = $data_file_directories ? {
+        undef => prefix($data_directories, "${data_directory_base}/"),
+        default => $data_file_directories,
+    }
+
+    if (empty($actual_data_file_directories)) {
+        fail('data_file_directories must not be empty')
+    }
+
+    # Choose real authenticator and authorizor values
+    $authenticator_value = $authenticator ? {
+        true    => 'PasswordAuthenticator',
+        false   => 'AllowAllAuthenticator',
+        default => $authenticator,
+    }
+    $authorizor_value = $authorizor ? {
+        true    => 'CassandraAuthorizer',
+        false   => 'AllowAllAuthorizer',
+        default => $authorizor,
+    }
+
+    $instance_name = $title
 
     # Default jmx port; only works with 1-letter instnaces
     $default_jmx_port     = 7189 + inline_template("<%= @title.ord - 'a'.ord %>")
 
     # Relevant values, choosing convention over configuration
-    $this_instance        = $instances[$instance_name]
-    $jmx_port             = pick($this_instance['jmx_port'], $default_jmx_port)
-    $listen_address       = $this_instance['listen_address']
-    $rpc_address          = pick($this_instance['rpc_address'], $listen_address)
-    $jmx_exporter_enabled = pick($this_instance['jmx_exporter_enabled'], false)
+    $actual_jmx_port    = pick($jmx_port, $default_jmx_port)
+    if (!is_integer($actual_jmx_port)) {
+        fail('jmx_port must be a port number between 1 and 65535')
+    }
+
+    $actual_rpc_address = pick($rpc_address, $listen_address)
     # Add the IP address if not present
-    if $rpc_address != $facts['ipaddress'] {
+    if $actual_rpc_address != $facts['ipaddress'] {
         interface::alias { "cassandra-${instance_name}":
-            ipv4      => $rpc_address,
+            ipv4      => $actual_rpc_address,
         }
     }
-
-    if $instance_name == 'default' {
-        $data_directory_base = $this_instance['data_directory_base']
-        $config_directory    = '/etc/cassandra'
-        $service_name        = 'cassandra'
-        $tls_hostname        = $::hostname
-        $pid_file            = '/var/run/cassandra/cassandra.pid'
-        $instance_id         = $::hostname
-        $data_file_directories  = $this_instance['data_file_directories']
-        $commitlog_directory    = $this_instance['commitlog_directory']
-        $hints_directory        = $this_instance['hints_directory']
-        $heapdump_directory     = $this_instance['heapdump_directory']
-        $saved_caches_directory = $this_instance['saved_caches_directory']
-    } else {
-        $data_directory_base = "/srv/cassandra-${instance_name}"
-        $config_directory    = "/etc/cassandra-${instance_name}"
-        $service_name        = "cassandra-${instance_name}"
-        $tls_hostname        = "${::hostname}-${instance_name}"
-        $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
-        $instance_id         = "${::hostname}-${instance_name}"
-        $data_directories    = pick($this_instance['data_file_directories'], ['data'])
-        $data_file_directories  = prefix($data_directories, "${data_directory_base}/")
-        $commitlog_directory    = "${data_directory_base}/commitlog"
-        $hints_directory        = "${data_directory_base}/data/hints"
-        $heapdump_directory     = $data_directory_base
-        $saved_caches_directory = "${data_directory_base}/saved_caches"
-    }
-
-    $tls_cluster_name       = $::cassandra::tls_cluster_name
-    $application_username   = $::cassandra::application_username
-    $native_transport_port  = $::cassandra::native_transport_port
-    $target_version         = $::cassandra::target_version
 
     file { $config_directory:
         ensure  => directory,
@@ -121,7 +213,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/cassandra.yaml":
@@ -130,7 +221,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/cassandra-rackdc.properties":
@@ -139,7 +229,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/logback.xml":
@@ -148,16 +237,14 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File[$config_directory],
     }
 
     file { "${config_directory}/logback-tools.xml":
-        ensure  => present,
-        source  => "puppet:///modules/${module_name}/logback-tools.xml",
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-        require => File[$config_directory],
+        ensure => present,
+        source => "puppet:///modules/${module_name}/logback-tools.xml",
+        owner  => 'cassandra',
+        group  => 'cassandra',
+        mode   => '0444',
     }
 
     file { "${config_directory}/cqlshrc":
@@ -201,7 +288,6 @@ define cassandra::instance(
             owner     => 'cassandra',
             group     => 'cassandra',
             mode      => '0400',
-            require   => File["${config_directory}/tls"],
             show_diff => false,
         }
 
@@ -210,7 +296,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0400',
-            require => File["${config_directory}/tls"],
         }
 
         file { "${config_directory}/tls/rootCa.crt":
@@ -218,7 +303,6 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0400',
-            require => File["${config_directory}/tls"],
         }
     }
 
@@ -235,7 +319,6 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
-        require => File['/etc/cassandra-instances.d'],
     }
 
     if ($target_version == '3.x') {
@@ -245,25 +328,22 @@ define cassandra::instance(
             owner   => 'cassandra',
             group   => 'cassandra',
             mode    => '0444',
-            require => File[$config_directory],
         }
 
         file { "${config_directory}/hotspot_compiler":
-            ensure  => present,
-            source  => "puppet:///modules/${module_name}/hotspot_compiler",
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0444',
-            require => File[$config_directory],
+            ensure => present,
+            source => "puppet:///modules/${module_name}/hotspot_compiler",
+            owner  => 'cassandra',
+            group  => 'cassandra',
+            mode   => '0444',
         }
 
         file { "${config_directory}/commitlog_archiving.properties":
-            ensure  => present,
-            source  => "puppet:///modules/${module_name}/commitlog_archiving.properties",
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0444',
-            require => File[$config_directory],
+            ensure => present,
+            source => "puppet:///modules/${module_name}/commitlog_archiving.properties",
+            owner  => 'cassandra',
+            group  => 'cassandra',
+            mode   => '0444',
         }
     }
 
