@@ -31,6 +31,15 @@ inter.broker.protocol.version=<%= @inter_broker_protocol_version %>
 log.message.format.version=<%= @log_message_format_version %>
 
 <% end -%>
+<% if @message_max_bytes -%>
+message.max.bytes=<%= @message_max_bytes %>
+replica.fetch.max.bytes=<%= @message_max_bytes %>
+<% else -%>
+<% if @replica_fetch_max_bytes -%>
+replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
+<% end -%>
+<% end -%>
+
 ######################### Socket Server Settings ########################
 <% if @security_inter_broker_protocol -%>
 security.inter.broker.protocol=<%= @security_inter_broker_protocol %>
@@ -151,12 +160,6 @@ replica.socket.receive.buffer.bytes=<%= @replica_socket_receive_buffer_bytes %>
 # to catch up on messages to get back into the ISR.
 num.replica.fetchers=<%= @num_replica_fetchers %>
 
-<% if @replica_fetch_max_bytes -%>
-# The number of byes of messages to attempt to fetch for each partition in the
-# fetch requests the replicas send to the leader.
-replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
-
-<% end -%>
 <% if @log_flush_interval_messages or @log_flush_interval_ms -%>
 ############################# Log Flush Policy #############################
 
