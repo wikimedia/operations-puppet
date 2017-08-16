@@ -9,7 +9,7 @@ class role::pdfrender {
 
     class { '::pdfrender':
         port        => $port,
-        no_browsers => 8,
+        no_browsers => 4,
         running     => $is_active,
     }
 
