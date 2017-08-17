@@ -145,7 +145,7 @@ class role::cache::kafka::webrequest(
     monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
         ensure      => 'present',
         description => 'Varnishkafka Delivery Errors per minute',
-        metric      => "sumSeries(summarize(perSecond(${graphite_metric_prefix}.varnishkafka.kafka_drerr), '2h', 'sum', false))",
+        metric      => "sumSeries(summarize(perSecond(${graphite_metric_prefix}.varnishkafka.kafka_drerr), 2h, sum, false))",
         # More than 0 errors is warning threshold.
         warning     => 0,
         # More than 20000 errors is critical threshold.
