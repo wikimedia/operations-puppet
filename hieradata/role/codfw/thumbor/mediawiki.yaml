@@ -1,6 +1,8 @@
 lvs::realserver::realserver_ips:
   - '10.2.1.24' # thumbor.svc.codfw.wmnet
 
+nginx::variant: extras
+
 thumbor_memcached_servers:
   - thumbor2001.codfw.wmnet
   - thumbor2002.codfw.wmnet
