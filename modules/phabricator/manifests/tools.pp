@@ -39,7 +39,7 @@ class phabricator::tools (
         mode   => '0755',
     }
 
-    $dump_script = "${directory}/public_task_dump.py"
+    $dump_script = "${directory}/public_task_dump.py > /dev/null 2>&1"
 
     file { $dump_script:
         mode    => '0555',
