@@ -85,44 +85,44 @@ profile::cassandra::instances:
     a:
       listen_address: 10.64.0.167
       data_file_directories:
-        - data_0
-        - data_1
-        - data_2
-        - data_3
+        - /srv/cassandra-a/data_0
+        - /srv/cassandra-a/data_1
+        - /srv/cassandra-a/data_2
+        - /srv/cassandra-a/data_3
       jmx_exporter_enabled: true
     b:
       listen_address: 10.64.0.168
       data_file_directories:
-        - data_0
-        - data_1
-        - data_2
-        - data_3
+        - /srv/cassandra-b/data_0
+        - /srv/cassandra-b/data_1
+        - /srv/cassandra-b/data_2
+        - /srv/cassandra-b/data_3
       jmx_exporter_enabled: true
   "restbase-dev1005.eqiad.wmnet":
     a:
       listen_address: 10.64.16.97
       data_file_directories:
-        - data_0
-        - data_1
+        - /srv/cassandra-a/data_0
+        - /srv/cassandra-a/data_1
       jmx_exporter_enabled: true
     b:
       listen_address: 10.64.16.98
       data_file_directories:
-        - data_0
-        - data_1
+        - /srv/cassandra-b/data_0
+        - /srv/cassandra-b/data_1
       jmx_exporter_enabled: true
   "restbase-dev1006.eqiad.wmnet":
     a:
       listen_address: 10.64.48.168
       data_file_directories:
-        - data_0
-        - data_1
+        - /srv/cassandra-a/data_0
+        - /srv/cassandra-a/data_1
       jmx_exporter_enabled: true
     b:
       listen_address: 10.64.48.169
       data_file_directories:
-        - data_0
-        - data_1
+        - /srv/cassandra-b/data_0
+        - /srv/cassandra-b/data_1
       jmx_exporter_enabled: true
 
 profile::cassandra::settings:

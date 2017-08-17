@@ -76,8 +76,7 @@ define cassandra::instance(
         $tls_hostname        = "${::hostname}-${instance_name}"
         $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
         $instance_id         = "${::hostname}-${instance_name}"
-        $data_directories    = pick($this_instance['data_file_directories'], ['data'])
-        $data_file_directories  = prefix($data_directories, "${data_directory_base}/")
+        $data_file_directories  = pick($this_instance['data_file_directories'], ["${data_directory_base}/data"])
         $commitlog_directory    = "${data_directory_base}/commitlog"
         $hints_directory        = "${data_directory_base}/data/hints"
         $heapdump_directory     = $data_directory_base
