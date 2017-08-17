@@ -2528,12 +2528,11 @@ users:
     expiry_date: 2017-08-31
     expiry_contact: ebernhardson@wikimedia.org
   diego:
-    ensure: present
+    ensure: absent
     gid: 500
     name: diego
     realname: Diego Saez
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlyZ7OS3200wsY9HIv2i0FlN3tbUBvzXL/AqvGXADDZscRK3DOUTAAyv/oYDoiYGe8V/5GIujrN2EQ1BPo4FFqmQfHIjNv5yJ5xZJmPeFUtBlOLLMa1sknfAcYiOpvhn0T7gLpipf0JUq+0J5RmbILD0xq5GHZAu3rYAJUtz4ameoPkDy1mGJk66ajZw+ufnv+g4zTXG7RFAT4r1Tui9wHfNmQdxuLGhUsdjOWxUwJXIqSzhdXfhQGx0JkZLPPwLuKPmNo58GQESe3kZM6a7GqSBhvU8sDdLP21LbOKKyeISpn+V2WAa+XPFF6FI0cbhIHF7RGMvV1CK2g86TAPngl dworley@slippy
+    ssh_keys: []
     uid: 17677
     email: diego@wikimedia.org
 ldap_only_users:
