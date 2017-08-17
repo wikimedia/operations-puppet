@@ -35,7 +35,7 @@ swift::params::accounts:
     pagecompilation_zim:
         access:       '.admin'
         account_name: 'AUTH_pagecompilation'
-        auth:         'https://swift.svc.codfw.wmnet'
+        auth:         'https://ms-fe.svc.codfw.wmnet'
         user:         'pagecompilation:zim'
 # keys are to be defined in private repo, e.g.:
 #swift::params::account_keys:
