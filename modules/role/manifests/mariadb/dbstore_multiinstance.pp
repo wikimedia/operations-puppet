@@ -34,7 +34,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
         basedir       => $basedir,
-        config        => 'role/mariadb/mysqld_config/dbstore3.my.cnf.erb',
+        config        => 'role/mariadb/mysqld_config/dbstore_multiinstance.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',

@@ -21,7 +21,8 @@ server_id = <%= @server_id %>
 #
 gtid_domain_id  = <%= @gtid_domain_id %>
 
-read_only = 0
+read_only       = <%= @read_only %>
+key_buffer_size = 1048576
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
@@ -45,6 +46,7 @@ character_set_filesystem = binary
 collation_server         = binary
 
 innodb_file_per_table          = 1
+# this can get overiden by per-instance configuration
 innodb_buffer_pool_size        = 15G
 innodb_log_file_size           = 4G
 innodb_flush_log_at_trx_commit = 0
