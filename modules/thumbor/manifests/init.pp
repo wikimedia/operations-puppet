@@ -92,8 +92,14 @@ class thumbor (
     # /etc/puppet/modules/thumbor/manifests/init.pp:62
     $ports = range("${listen_port + 1}", $listen_port + $instance_count)
 
+    file { '/etc/nginx/prometheus.lua':
+        ensure => present,
+        source => 'puppet:///modules/thumbor/prometheus.lua',
+    }
+
     nginx::site { 'thumbor':
         content => template('thumbor/nginx.conf.erb'),
+        require => File['/etc/nginx/prometheus.lua'],
     }
 
     # Multi instance setup.
