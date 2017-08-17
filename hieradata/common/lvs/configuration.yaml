@@ -981,6 +981,7 @@ lvs::configuration::lvs_services:
       ProxyFetch:
         url:
         - http://localhost/healthcheck
+        timeout: 10
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
