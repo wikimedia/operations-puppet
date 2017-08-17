@@ -6,14 +6,6 @@
 #
 # === Parameters
 #
-# [*endpoint*]
-#   URI of EventLogging event publisher to subscribe to.
-#   Example: 'tcp://eventlogging.corp.org:8600'.
-#
-# [*eventlogging_path*]
-#   Path where the EventLogging python library is installed.
-#   Example: '/srv/deployment/eventlogging'.
-#
 # [*statsd_host*]
 #   Write stats to this StatsD instance. Default: '127.0.0.1'.
 #
@@ -21,14 +13,15 @@
 #   Write stats to this StatsD instance. Default: 8125.
 #
 class webperf::navtiming(
-    $endpoint,
-    $eventlogging_path,
     $statsd_host = '127.0.0.1',
     $statsd_port = 8125,
 ) {
     include ::webperf
 
     require_package('python-yaml')
+
+    $kafka_config  = kafka_config('analytics')
+    $kafka_brokers = $kafka_config['brokers']['string']
 
     file { '/srv/webperf/navtiming.py':
         source => 'puppet:///modules/webperf/navtiming.py',
@@ -39,7 +32,7 @@ class webperf::navtiming(
     }
 
     file { '/lib/systemd/system/navtiming.service':
-        # uses $endpoint, $eventlogging_path, $statsd_host, $statsd_port
+        # uses $statsd_host, $statsd_port, $kafka_brokers
         content => template('webperf/navtiming.systemd.erb'),
         notify  => Service['navtiming'],
     }
