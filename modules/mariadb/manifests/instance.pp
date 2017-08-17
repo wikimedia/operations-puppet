@@ -5,6 +5,7 @@ define mariadb::instance(
     $datadir = 'undefined',
     $tmpdir  = 'undefined',
     $socket  = 'undefined',
+    $innodb_buffer_pool_size,
 ) {
     if $datadir == 'undefined' {
         $datadir_instance = "/srv/sqldata.${title}"

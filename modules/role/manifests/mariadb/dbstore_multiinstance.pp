@@ -57,7 +57,10 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     role::prometheus::mysqld_exporter_instance {'s3': port => 13313, }
     mariadb::instance {'s4': port => 3314, }
     role::prometheus::mysqld_exporter_instance {'s4': port => 13314, }
-    mariadb::instance {'x1': port => 3320, }
+    mariadb::instance {'x1':
+        port                    => 3320,
+        innodb_buffer_pool_size => '5G',
+    }
     role::prometheus::mysqld_exporter_instance {'x1': port => 13320, }
 
     if $::hostname != 'dbstore2002' {
