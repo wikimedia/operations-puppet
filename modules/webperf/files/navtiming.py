@@ -6,15 +6,14 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 
 import argparse
+import json
 import logging
 import re
 import socket
 import unittest
-
-import eventlogging
 import yaml
 
-import json
+from kafka import KafkaConsumer
 
 handlers = {}
 
@@ -396,7 +395,10 @@ def handle_navigation_timing(meta):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
-    ap.add_argument('endpoint', help='URI of EventLogging endpoint')
+    ap.add_argument('--brokers', required=True,
+                    help='Comma-separated list of kafka brokers')
+    ap.add_argument('--consumer-group', required=True,
+                    help='Consumer group to register with Kafka')
     ap.add_argument('--statsd-host', default='localhost',
                     type=socket.gethostbyname)
     ap.add_argument('--statsd-port', default=8125, type=int)
@@ -408,12 +410,30 @@ if __name__ == '__main__':
     addr = args.statsd_host, args.statsd_port
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    events = eventlogging.connect(args.endpoint)
+    kafka_bootstrap_servers = tuple(args.brokers.split(','))
+    kafka_topics = ('eventlogging_' + key for key in handlers.keys())
+    kafka_consumer_timeout_seconds = 60
+    consumer = KafkaConsumer(
+        *kafka_topics,
+        bootstrap_servers=kafka_bootstrap_servers,
+        group_id=args.consumer_group,
+        auto_offset_reset='latest',
+        enable_auto_commit=False,
+        consumer_timeout_ms=kafka_consumer_timeout_seconds * 1000
+    )
 
-    for meta in events:
-        f = handlers.get(meta['schema'])
-        if f is not None:
-            f(meta)
+    logging.info('Starting statsv Kafka consumer.')
+    try:
+        for message in consumer:
+            meta = json.loads(message.value)
+            if 'schema' in meta:
+                f = handlers.get(meta['schema'])
+                if f is not None:
+                    f(meta)
+        # If we reach this line, consumer_timeout_ms elapsed without events
+        raise RuntimeError('No messages received in %d seconds.' % kafka_consumer_timeout_seconds)
+    finally:
+        consumer.close()
 
 
 # ##### Tests ######
