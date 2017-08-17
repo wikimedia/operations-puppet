@@ -65,10 +65,28 @@ profile::cassandra::instances:
   "restbase2001.codfw.wmnet":
     a:
       listen_address: 10.192.16.162
+      data_file_directories:
+        - /srv/sda/cassandra-a/data
+        - /srv/sdb/cassandra-a/data
+        - /srv/sdc/cassandra-a/data
+        - /srv/sdd/cassandra-a/data
+        - /srv/sde/cassandra-a/data
     b:
       listen_address: 10.192.16.163
+      data_file_directories:
+        - /srv/sda/cassandra-b/data
+        - /srv/sdb/cassandra-b/data
+        - /srv/sdc/cassandra-b/data
+        - /srv/sdd/cassandra-b/data
+        - /srv/sde/cassandra-b/data
     c:
       listen_address: 10.192.16.164
+      data_file_directories:
+        - /srv/sda/cassanrda-c/data
+        - /srv/sdb/cassanrda-c/data
+        - /srv/sdc/cassanrda-c/data
+        - /srv/sdd/cassanrda-c/data
+        - /srv/sde/cassanrda-c/data
   # "restbase2003.codfw.wmnet":
   #   a:
   #     listen_address: 10.192.32.134
