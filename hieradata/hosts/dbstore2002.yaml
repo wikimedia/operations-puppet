@@ -1,0 +1,6 @@
+# Buffer pool sizes/instance enabled
+role::mariadb::dbstore_multisource::x1: '15G'
+role::mariadb::dbstore_multisource::s2: '20G'
+role::mariadb::dbstore_multisource::s3: '20G'
+role::mariadb::dbstore_multisource::s1: '25G'
+role::mariadb::dbstore_multisource::s4: '25G'
