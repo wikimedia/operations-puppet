@@ -29,18 +29,23 @@ class profile::phabricator::main (
     include passwords::phabricator
     include passwords::mysql::phabricator
 
-    # logmail and dumps are only enabled on the active server set in Hiera
+    # dumps are only enabled on the active server set in Hiera
     $phabricator_active_server = hiera('phabricator_active_server')
     if $::hostname == $phabricator_active_server {
-        $logmail_ensure = 'present'
         $dump_rsync_ensure = 'present'
         $dump_enabled = true
         $ferm_ensure = 'present'
     } else {
-        $logmail_ensure = 'absent'
         $dump_rsync_ensure ='absent'
         $dump_enabled = false
         $ferm_ensure = 'absent'
+    }
+
+    # logmail must be explictly enabled in Hiera with 'phabricator_logmail: true'
+    # to avoid duplicate mails from labs and standby (T173297)
+    $logmail_ensure = $logmail ? {
+        true    => 'present',
+        default => 'absent',
     }
 
     # todo: change the password for app_user
@@ -156,8 +161,6 @@ class profile::phabricator::main (
         conf_files     => $conf_files,
     }
     # lint:endignore
-
-
 
     # This exists to offer git services at git-ssh.wikimedia.org
     $vcs_ip_v4 = hiera('phabricator::vcs::address::v4', undef)
@@ -275,27 +278,25 @@ class profile::phabricator::main (
         require     => Package[$deploy_target],
     }
 
-    if $logmail {
-      # community metrics mail (T81784, T1003)
-      phabricator::logmail {'communitymetrics':
-          ensure       => $logmail_ensure,
-          script_name  => 'community_metrics.sh',
-          rcpt_address => 'wikitech-l@lists.wikimedia.org',
-          sndr_address => 'communitymetrics@wikimedia.org',
-          monthday     => '1',
-          require      => Package[$deploy_target],
-      }
+    # community metrics mail (T81784, T1003)
+    phabricator::logmail {'communitymetrics':
+        ensure       => $logmail_ensure,
+        script_name  => 'community_metrics.sh',
+        rcpt_address => 'wikitech-l@lists.wikimedia.org',
+        sndr_address => 'communitymetrics@wikimedia.org',
+        monthday     => '1',
+        require      => Package[$deploy_target],
+    }
 
-      # project changes mail (T85183)
-      phabricator::logmail {'projectchanges':
-          ensure       => $logmail_ensure,
-          script_name  => 'project_changes.sh',
-          rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
-          sndr_address => 'aklapper@wikimedia.org',
-          monthday     => '*',
-          weekday      => 1, # Monday
-          require      => Package[$deploy_target],
-      }
+    # project changes mail (T85183)
+    phabricator::logmail {'projectchanges':
+        ensure       => $logmail_ensure,
+        script_name  => 'project_changes.sh',
+        rcpt_address => [ 'phabricator-reports@lists.wikimedia.org' ],
+        sndr_address => 'aklapper@wikimedia.org',
+        monthday     => '*',
+        weekday      => 1, # Monday
+       require       => Package[$deploy_target],
     }
 
     if $active_server != undef {
