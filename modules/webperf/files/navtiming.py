@@ -292,12 +292,16 @@ def parse_ua_legacy(ua):
     return ('Other', '_')
 
 
-def dispatch_stat(*args):
+def dispatch_stat(stat):
+    sock.sendto(stat, addr)
+
+
+def make_stat(*args):
     args = list(args)
     value = args.pop()
     name = '.'.join(arg.replace(' ', '_') for arg in args)
     stat = '%s:%s|ms' % (name, value)
-    sock.sendto(stat.encode('utf-8'), addr)
+    return stat.encode('utf-8')
 
 
 def handles(schema):
@@ -319,9 +323,9 @@ def handle_save_timing(meta):
     if duration is None:
         duration = event.get('duration')
     if duration and is_sane(duration):
-        dispatch_stat('mw.performance.save', duration)
+        yield make_stat('mw.performance.save', duration)
         if version:
-            dispatch_stat('mw.performance.save_by_version',
+            yield make_stat('mw.performance.save_by_version',
                           version.replace('.', '_'), duration)
 
 
@@ -378,19 +382,19 @@ def handle_navigation_timing(meta):
         prefix = 'frontend.navtiming'
 
         if is_sane(value):
-            dispatch_stat(prefix, metric, site, auth, value)
-            dispatch_stat(prefix, metric, site, 'overall', value)
-            dispatch_stat(prefix, metric, 'overall', value)
+            yield make_stat(prefix, metric, site, auth, value)
+            yield make_stat(prefix, metric, site, 'overall', value)
+            yield make_stat(prefix, metric, 'overall', value)
 
             ua = parse_ua(meta['userAgent']) or ('Other', '_')
-            dispatch_stat(prefix, metric, 'by_browser', ua[0], ua[1], value)
-            dispatch_stat(prefix, metric, 'by_browser', ua[0], 'all', value)
+            yield make_stat(prefix, metric, 'by_browser', ua[0], ua[1], value)
+            yield make_stat(prefix, metric, 'by_browser', ua[0], 'all', value)
 
         if continent is not None:
-            dispatch_stat(prefix, metric, 'by_continent', continent, value)
+            yield make_stat(prefix, metric, 'by_continent', continent, value)
 
         if country_name is not None:
-            dispatch_stat(prefix, metric, 'by_country', country_name, value)
+            yield make_stat(prefix, metric, 'by_country', country_name, value)
 
 
 if __name__ == '__main__':
@@ -429,7 +433,8 @@ if __name__ == '__main__':
             if 'schema' in meta:
                 f = handlers.get(meta['schema'])
                 if f is not None:
-                    f(meta)
+                    for stat in f(meta):
+                        dispatch_stat(stat)
         # If we reach this line, consumer_timeout_ms elapsed without events
         raise RuntimeError('No messages received in %d seconds.' % kafka_consumer_timeout_seconds)
     finally:
@@ -438,10 +443,9 @@ if __name__ == '__main__':
 
 # ##### Tests ######
 # To run:
-#   python -m unittest navtiming
+#   python -m unittest -v navtiming
 #
-class TestParseUa(unittest.TestCase):
-
+class TestNavTiming(unittest.TestCase):
     def test_parse_ua(self):
         with open('navtiming_ua_data.yaml') as f:
             data = yaml.safe_load(f)
@@ -453,3 +457,15 @@ class TestParseUa(unittest.TestCase):
                         parse_ua(ua),
                         expect
                     )
+
+    def test_handlers(self):
+        with open('navtiming_fixture.yaml') as f:
+            fixture = yaml.safe_load(f)
+            actual = []
+            for meta in fixture:
+                f = handlers.get(meta['schema'])
+                assert f is not None
+                for stat in f(meta):
+                    actual.append(stat)
+            expected = open('navtiming_expected.txt')
+            self.assertItemsEqual(actual, expected.read().splitlines())
