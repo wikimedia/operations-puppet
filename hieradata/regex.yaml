@@ -327,3 +327,8 @@ labtest:
 db_like_raid_policy:
   __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
   profile::base::check_raid_policy: 'WriteBack'
+
+# NUMA isolation for newest cache hardware generation
+cache_numa_isolate:
+  __regex: !ruby/regexp /^cp40(2[1-9]|3[0-2])\./
+  numa_networking: isolate
