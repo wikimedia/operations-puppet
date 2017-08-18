@@ -1,4 +1,4 @@
-class mediawiki::maintenance::wikidata( $ensure = present ) {
+class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = present ) {
     require ::mediawiki::users
 
     # Starts a dispatcher instance every 3 minutes
@@ -14,7 +14,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
     }
 
     cron { 'wikibase-dispatch-changes-test':
-        ensure  => $ensure,
+        ensure  => $ensure_testwiki,
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >/dev/null 2>&1',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
@@ -30,7 +30,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
     }
 
     cron { 'wikibase-repo-prune-test':
-        ensure  => $ensure,
+        ensure  => $ensure_testwiki,
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
