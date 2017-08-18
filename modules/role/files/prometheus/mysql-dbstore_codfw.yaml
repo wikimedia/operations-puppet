@@ -39,6 +39,12 @@
   - dbstore2001:13316
 
 - labels:
+    shard: s7
+    role: slave
+  targets:
+  - dbstore2001:13317
+
+- labels:
     shard: x1
     role: slave
   targets:
