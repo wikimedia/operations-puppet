@@ -19,7 +19,7 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::pagetriage': ensure => $ensure }
     class { 'mediawiki::maintenance::translationnotifications': ensure => $ensure }
     class { 'mediawiki::maintenance::updatetranslationstats': ensure => $ensure }
-    class { 'mediawiki::maintenance::wikidata': ensure => $ensure }
+    class { 'mediawiki::maintenance::wikidata': ensure => $ensure, ensureTestwiki => $ensure }
     class { 'mediawiki::maintenance::echo_mail_batch': ensure => $ensure }
     class { 'mediawiki::maintenance::parsercachepurging': ensure => $ensure }
     class { 'mediawiki::maintenance::cleanup_upload_stash': ensure => $ensure }
