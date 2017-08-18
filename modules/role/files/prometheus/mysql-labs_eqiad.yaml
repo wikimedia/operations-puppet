@@ -15,6 +15,11 @@
   targets:
   - db1102:13312
 - labels:
+    shard: s4
+    role: slave
+  targets:
+  - db1102:13314
+- labels:
     shard: s6
     role: slave
   targets:
