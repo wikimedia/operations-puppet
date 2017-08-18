@@ -2533,7 +2533,7 @@ users:
     name: diego
     realname: Diego Saez
     ssh_keys:
-      - ssh rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/oA9hk3snx7Y66ZR3sEMukK6tOk4esFT02irhqB0jr9osstyZN9KhPVeWMzhip+93ToDzX+aDHeXqsu5grXsqGQZBZSU850GSNt0pgi8+4E1yGQngLNhFv+z7EemWUQH0XT4atoDXbmfXdRv6NpVlcr1vAPBQpjBZuFe5vaxLKRrhZpm+YNvl4RHdGbZorz6WI0NvzuOTerKUOyUZS/KQpT4FxlvVRoTIO3H05EtJEv3745rUH5wHCcyr7m9Hdsjh8RMrWF3okKLk9WOxQTesfvvstmu8GpBbauzmQYMKwRcKQqoc0/qo3ZGvwXPwrYjv4wpPZhDexjOfUPLGvtGf dsaeztrumper@dsaeztrumper
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/oA9hk3snx7Y66ZR3sEMukK6tOk4esFT02irhqB0jr9osstyZN9KhPVeWMzhip+93ToDzX+aDHeXqsu5grXsqGQZBZSU850GSNt0pgi8+4E1yGQngLNhFv+z7EemWUQH0XT4atoDXbmfXdRv6NpVlcr1vAPBQpjBZuFe5vaxLKRrhZpm+YNvl4RHdGbZorz6WI0NvzuOTerKUOyUZS/KQpT4FxlvVRoTIO3H05EtJEv3745rUH5wHCcyr7m9Hdsjh8RMrWF3okKLk9WOxQTesfvvstmu8GpBbauzmQYMKwRcKQqoc0/qo3ZGvwXPwrYjv4wpPZhDexjOfUPLGvtGf dsaeztrumper@dsaeztrumper
     uid: 17677
     email: diego@wikimedia.org
 ldap_only_users:
