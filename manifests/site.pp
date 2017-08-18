@@ -345,15 +345,14 @@ node 'cp4018.ulsfo.wmnet' {
     class { 'tlsproxy::prometheus': }
 }
 
-# temporary entry for testing new cache node hardware setup...
-node 'cp4021.ulsfo.wmnet' {
+node /^cp402[1-6]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::upload, ipsec)
 }
 
-# temporary entry for new cache nodes
-node /^cp402[2-8]\.ulsfo\.wmnet$/ {
-    role(spare::system)
+node /^cp402[78]\.ulsfo\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role(cache::text, ipsec)
 }
 
 node 'darmstadtium.eqiad.wmnet' {
