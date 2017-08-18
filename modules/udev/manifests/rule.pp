@@ -21,7 +21,7 @@ define udev::rule (
 ) {
     validate_ensure($ensure)
 
-    require ::udev
+    include udev
 
     file { "/etc/udev/rules.d/${priority}-${title}.rules":
         ensure  => $ensure,
