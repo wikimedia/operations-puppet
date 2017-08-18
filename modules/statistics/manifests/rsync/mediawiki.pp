@@ -12,11 +12,18 @@ class statistics::rsync::mediawiki {
 
     $mw_log_dir = '/srv/log/mw-log'
 
-    file { [$mw_log_dir, "${mw_log_dir}/archive", "${mw_log_dir}/archive/api"]:
+    file { [$mw_log_dir, "${mw_log_dir}/archive", "${mw_log_dir}/archive/api", "${mw_log_dir}/archive/wmde"]:
         ensure => 'directory',
         owner  => 'stats',
         group  => 'wikidev',
         mode   => '0775',
+    }
+
+    # WMDE temporary debug logs - T171958
+    statistics::rsync_job { 'mw-wmde-temp':
+        source         => 'mwlog1001.eqiad.wmnet::udp2log/archive/WMDE.log-*.gz',
+        destination    => "${$mw_log_dir}/archive/wmde",
+        retention_days => 90,
     }
 
     # MediaWiki API logs
