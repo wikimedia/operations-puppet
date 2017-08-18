@@ -118,7 +118,7 @@ class sentry (
     base::service_unit { 'sentry':
         systemd   => true,
         subscribe => File['/etc/sentry.conf.py'],
-        require   => Base::Service_unit['sentry-worker'],
+        require   => Systemd::Service['sentry-worker'],
     }
 
     nginx::site { 'sentry':
