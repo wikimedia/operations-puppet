@@ -31,7 +31,7 @@ class role::mariadb::core {
     if ($mysql_role == 'standalone') {
         $semi_sync = 'off'
     } elsif $mysql_role == 'master' {
-        $semi_sync = 'both'
+        $semi_sync = 'master'
     } else {
         $semi_sync = 'slave'
     }
