@@ -105,7 +105,7 @@ define role::cache::instances (
 
     if $::numa_networking == 'isolate' {
         $nnodes = join($facts['numa']['device_to_node'][$facts['interface_primary']],',')
-        $fe_cmd_prefix = "/usr/bin/numactl -a -N ${nnodes} -m ${nnodes}"
+        $fe_cmd_prefix = "/usr/bin/numactl -a -N ${nnodes} -m ${nnodes} "
     } else {
         $fe_cmd_prefix = ''
     }
