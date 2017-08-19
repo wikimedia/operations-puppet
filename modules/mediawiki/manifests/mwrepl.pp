@@ -21,10 +21,12 @@ class mediawiki::mwrepl {
         mode   => '0444',
     }
 
+    include ::scap::scripts
     file { '/usr/local/bin/mwrepl':
         source => 'puppet:///modules/mediawiki/mwrepl',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+        require => File['/usr/local/bin/expanddblist']
     }
 }
