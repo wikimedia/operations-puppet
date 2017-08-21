@@ -41,6 +41,7 @@ class role::mail::mx(
         filter  => template('role/exim/system_filter.conf.erb'),
         require => Class['spamassassin'],
     }
+
     include exim4::ganglia
 
     file { '/etc/exim4/defer_domains':
@@ -68,6 +69,22 @@ class role::mail::mx(
         source  => 'puppet:///modules/role/exim/legacy_mailing_lists',
         require => Class['exim4'],
     }
+
+    file { '/etc/exim4/bounce_message_file':
+        ensure => present,
+        owner  => 'root',
+        group  => 'Debian-exim',
+        mode   => '0444',
+        source => 'puppet:///modules/role/exim/bounce_message_file',
+    }
+    file { '/etc/exim4/warn_message_file':
+        ensure => present,
+        owner  => 'root',
+        group  => 'Debian-exim',
+        mode   => '0444',
+        source => 'puppet:///modules/role/exim/warn_message_file',
+    }
+
     exim4::dkim { 'wikimedia.org':
         domain   => 'wikimedia.org',
         selector => 'wikimedia',
