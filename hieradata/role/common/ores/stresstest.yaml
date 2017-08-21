@@ -2,6 +2,7 @@ cluster: misc
 admin::groups:
 - ores-admin
 profile::ores::web::redis_host: "ores1001.eqiad.wmnet"
-profile::ores::celery::workers: 120
+profile::ores::celery::workers: 480
+profile::ores::celery::queue_maxsize: 400
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing

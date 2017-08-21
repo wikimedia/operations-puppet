@@ -11,6 +11,7 @@ class ores::web(
     $extra_config = undef,
     $ores_config_user = 'deploy-service',
     $ores_config_group = 'deploy-service',
+    $celery_queue_maxsize = 100,
 ) {
     require ::ores::base
 
@@ -64,6 +65,7 @@ class ores::web(
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
                 'CELERYD_CONCURRENCY'   => $celery_workers,
+                'queue_maxsize'         => $celery_queue_maxsize,
             },
         },
         'scoring_systems' => {
@@ -71,6 +73,7 @@ class ores::web(
                 'BROKER_URL'            => "redis://${redis_host}:6379",
                 'CELERY_RESULT_BACKEND' => "redis://${redis_host}:6379",
                 'CELERYD_CONCURRENCY'   => $celery_workers,
+                'queue_maxsize'         => $celery_queue_maxsize,
             },
         },
     }
