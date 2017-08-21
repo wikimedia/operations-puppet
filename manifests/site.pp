@@ -785,7 +785,8 @@ node /^druid100[123].eqiad.wmnet$/ {
 }
 
 node /^druid100[456].eqiad.wmnet$/ {
-    role(spare::system)
+    include ::base::firewall
+    include ::standard
 }
 
 
