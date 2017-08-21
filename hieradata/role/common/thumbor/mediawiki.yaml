@@ -4,3 +4,5 @@ debdeploy::grains:
 
 admin::groups:
     - perf-roots
+
+cluster: thumbor

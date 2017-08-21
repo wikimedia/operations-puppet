@@ -282,6 +282,13 @@ ganglia_clusters:
     id: 60
     sites:
       codfw: []
+  thumbor:
+    description: "Thumbor"
+    id: 61
+    sites:
+      codfw: []
+      eqiad: []
+
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
 statistics_servers:
