@@ -427,8 +427,13 @@ node 'db1075.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(15|35|38|44|77|78)\.eqiad\.wmnet/ {
+node /^db10(35|38|44|77|78)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# To be decommissioned in T173570 
+node 'db1015.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # s3 (default) core production dbs on codfw
