@@ -12,13 +12,13 @@ class profile::hadoop::client (
     # to install CDH packages from our apt repo mirror.
     require ::profile::cdh::apt
 
+    # Need Java before Hadoop is installed.
+    require ::profile::java::analytics
+
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
     # and are made available by profile::cdh::apt.
-    Class['::profile::cdh::apt'] -> Exec['apt-get update'] -> Class['::profile::hadoop::client']
-
-    # Need Java before Hadoop is installed.
-    require ::profile::java::analytics
+    Class['::profile::cdh::apt'] -> Exec['apt-get update'] -> Class['::cdh::hadoop']
 
     $hadoop_var_directory                     = '/var/lib/hadoop'
     $hadoop_name_directory                    = "${hadoop_var_directory}/name"
