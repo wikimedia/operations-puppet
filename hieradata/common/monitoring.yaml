@@ -243,3 +243,9 @@ monitoring::groups:
 # Network
   network:
     description: Networking equipment (routers/switches/etc.)
+
+# Thumbor
+  thumbor_eqiad:
+    description: Thumbor image scaling (eqiad)
+  thumbor_codfw:
+    description: Thumbor image scaling (codfw)
