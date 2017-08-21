@@ -777,18 +777,12 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
 
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[123].eqiad.wmnet$/ {
+node /^druid100[123456].eqiad.wmnet$/ {
     role(analytics_cluster::druid::worker)
 
     include ::base::firewall
     include ::standard
 }
-
-node /^druid100[456].eqiad.wmnet$/ {
-    include ::base::firewall
-    include ::standard
-}
-
 
 
 node 'eeden.wikimedia.org' {
