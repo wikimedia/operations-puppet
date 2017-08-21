@@ -13,9 +13,11 @@ class profile::druid::common(
     $zookeeper_cluster_name = hiera('profile::druid::common::zookeeper_cluster_name'),
     $zookeeper_clusters     = hiera('zookeeper_clusters'),
     $druid_properties       = hiera_hash('druid::properties'),
+    $use_cdh                = hiera('profile::druid::common::use_cdh')
 ) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics
+    require ::profile::hadoop::client
 
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
@@ -32,6 +34,7 @@ class profile::druid::common(
 
     # Druid Common Class
     class { '::druid':
+        use_cdh    => $use_cdh,
         # Merge our auto configured zookeeper properties
         # with the properties from hiera.
         properties => merge(

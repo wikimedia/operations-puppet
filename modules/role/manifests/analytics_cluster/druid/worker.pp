@@ -15,7 +15,6 @@ class role::analytics_cluster::druid::worker {
 
     # Require common druid package and configuration.
     require ::profile::druid::common
-    require ::profile::hadoop::client
 
     # Zookeeper is co-located on some druid hosts, but not all.
     if $::fqdn in $::profile::druid::common::zookeeper_hosts {
