@@ -15,7 +15,7 @@ class profile::hadoop::client (
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
     # and are made available by profile::cdh::apt.
-    Exec['apt-get update'] -> Class['::profile::hadoop::client']
+    Class['::profile::cdh::apt'] -> Exec['apt-get update'] -> Class['::profile::hadoop::client']
 
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
