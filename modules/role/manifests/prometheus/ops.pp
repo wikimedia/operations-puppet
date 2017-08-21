@@ -334,7 +334,9 @@ class role::prometheus::ops {
         site    => $::site,
         cluster => 'thumbor',
         port    => 8800,
-        labels  => {},
+        labels  => {
+            'cluster' => 'thumbor'
+        },
     }
 
     prometheus::server { 'ops':
