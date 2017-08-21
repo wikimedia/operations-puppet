@@ -75,7 +75,7 @@ class role::labs::db::maintain_dbusers {
     }
 
     file { '/etc/dbusers.yaml':
-        content => ordered_json($creds),
+        content => ordered_yaml($creds),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
