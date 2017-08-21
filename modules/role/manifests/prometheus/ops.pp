@@ -329,6 +329,13 @@ class role::prometheus::ops {
         },
     }
 
+    prometheus::cluster_config{ "nginx_thumbor_${::site}":
+        dest    => "${targets_path}/nginx_thumbor_${::site}.yaml",
+        site    => $::site,
+        cluster => 'thumbor',
+        port    => 8800,
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
