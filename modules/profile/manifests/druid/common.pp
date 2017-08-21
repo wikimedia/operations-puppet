@@ -17,7 +17,7 @@ class profile::druid::common(
     # Need Java before Druid is installed.
     require ::profile::java::analytics
 
-    $zookeeper_hosts        = join(keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts']), ',')
+    $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     $zookeeper_chroot = $::realm ? {
         'labs'       => "/druid/analytics-${::labsproject}",
@@ -27,7 +27,7 @@ class profile::druid::common(
     $zookeeper_properties   = {
         'druid.zk.paths.base'          => $zookeeper_chroot,
         'druid.discovery.curator.path' => "${zookeeper_chroot}/discovery",
-        'druid.zk.service.host'        => $zookeeper_hosts,
+        'druid.zk.service.host'        => join($zookeeper_hosts, ',')
     }
 
     # Druid Common Class

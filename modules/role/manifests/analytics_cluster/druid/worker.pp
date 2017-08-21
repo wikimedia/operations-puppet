@@ -3,6 +3,10 @@
 # in the Analytics Cluster.  This may change if and when we expand
 # the Druid cluster beyond 3 nodes.
 #
+# A colocated zookeeper cluster is also provisioned
+# with this role, but only on hosts in the
+# $::profile::druid::comon::zookeeper_hosts variable.
+#
 # Note that if /etc/hadoop/conf files exist, they will
 # be added to druid daemon
 #
@@ -13,9 +17,11 @@ class role::analytics_cluster::druid::worker {
     require ::profile::druid::common
     require ::profile::hadoop::client
 
-    # Zookeeper is co-located on the same host
-    include profile::zookeeper::server
-    include profile::zookeeper::firewall
+    # Zookeeper is co-located on some druid hosts, but not all.
+    if $::fqdn in $::profile::druid::common::zookeeper_hosts {
+        include profile::zookeeper::server
+        include profile::zookeeper::firewall
+    }
 
     # Auto reload daemons in labs, but not in production.
     $should_subscribe = $::realm ? {
