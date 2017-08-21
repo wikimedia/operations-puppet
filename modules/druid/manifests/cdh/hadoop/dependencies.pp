@@ -39,7 +39,7 @@ class druid::cdh::hadoop::dependencies {
         # symlink target does not exist.  This symlinks to a versioned jar in druid-hdfs-storage/.
         # During a druid upgrade, the version name of this jar will change, causing the symlink
         # to break, which in turn will this puppet exec.
-        unless  => "/usr/bin/test -e $(/usr/bin/realpath ${dest_dir}/druid-hdfs-storage.jar)",
+        unless  => "/usr/bin/test -e ${dest_dir} && /usr/bin/test -e $(/usr/bin/realpath ${dest_dir}/druid-hdfs-storage.jar)",
         require => File['/usr/local/bin/druid-hdfs-storage-cdh-link'],
     }
 }
