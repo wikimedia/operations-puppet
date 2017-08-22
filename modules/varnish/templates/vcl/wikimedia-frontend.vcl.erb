@@ -10,6 +10,7 @@ import vsthrottle;
 
 include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 include "analytics.inc.vcl";
+include "browsersec.inc.vcl";
 
 /* Include the VCL file for this role */
 include "<%= @varnish_include_path %><%= @vcl %>.inc.vcl";
@@ -281,6 +282,25 @@ sub vcl_recv {
 
 	call cluster_fe_recv_pre_purge;
 	call wm_common_recv_purge;
+
+	// The idea here is to occasionally warn some of our worst clients (in
+	// TLS terms: those using DES-CBC3-SHA, which is not forward-secret,
+	// and the bulk of which are also IE[78]/XP) that their connection
+	// security is awful and point them at our wikitech page for more info.
+	// The X-Conn-Props cipher filter matches ~0.1% of traffic.  We
+	// further restrict to the GET method on /wiki/ URLs which do not
+	// contain colons (e.g. Special:, which is localized on many wikis) in
+	// an attempt to mostly apply this only to article pageview fetches.
+	// We then only apply the synth to 5% of matching traffic randomly.
+	// Note that a magic test URL is also included for viewing
+	// the warning content with modern browsers.
+	if (req.url == "/test-sec-warning"
+	   || (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;"
+	   && req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
+	   && std.random(0,100) < 5.0)) {
+		return (synth(418, "Browser Connection Security Warning"));
+	}
+
 	call cluster_fe_recv;
 	call wm_common_recv_pass;
 
@@ -425,6 +445,21 @@ sub vcl_synth {
 		call deliver_synth_;
 		call https_error_redirect;
 		call cluster_fe_err_synth;
+
+		// Browser sec warning
+		// Note we're using status 418, which is the teapot code.  Most other
+		// 4xx codes would be inappropriate, and generic ones like 400 would be
+		// confusing to extract from stats because they have other legitimate
+		// causes.  We could also invent a new unique from unused 4xx space,
+		// but I don't think it would be any better than 418 in practice.
+		if (resp.reason == "Browser Connection Security Warning") {
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Cache-Control = "max-age=0, must-revalidate, no-cache, no-store";
+			set resp.http.Content-Type = "text/html; charset=utf-8";
+			call browser_sec_synth;
+			return (deliver);
+		}
+
 		if (resp.status >= 400) {
 			call synth_errorpage;
 		}
