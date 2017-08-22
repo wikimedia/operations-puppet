@@ -13,4 +13,10 @@ class role::statsite {
     statsite::instance { '8125': }
 
     diamond::collector { 'UDPCollector': }
+
+    ferm::service { 'statsite':
+        proto   => 'udp',
+        notrack => true,
+        port    => '8125',
+    }
 }
