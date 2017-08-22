@@ -19,6 +19,94 @@ class role::prometheus::ops {
         },
     }
 
+    include ::prometheus::blackbox_exporter
+    $blackbox_jobs = [
+      {
+        'job_name'        => 'blackbox_icmp',
+        'params'          => {
+          'module' => [ 'icmp' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_icmp_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_tcp',
+        'params'          => {
+          'module' => [ 'tcp_connect' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_tcp_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_http',
+        'params'          => {
+          'module' => [ 'http_connect' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_http_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_https',
+        'params'          => {
+          'module' => [ 'https_connect' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_https_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+    ]
+
+    # Ping all bastions from all machines running prometheus::ops
+    file { "${targets_path}/blackbox_icmp_bastions.yaml":
+      content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
+    }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
@@ -348,7 +436,7 @@ class role::prometheus::ops {
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
-            $nginx_jobs
+            $nginx_jobs, $blackbox_jobs
         ),
         global_config_extra   => $config_extra,
     }
