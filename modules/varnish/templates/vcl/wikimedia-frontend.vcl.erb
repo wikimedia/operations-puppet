@@ -294,6 +294,9 @@ sub vcl_recv {
 	if (req.url == "/test-sec-warning"
 	   || (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;"
 	   && req.method == "GET"
+<%- if @cache_cluster == "text" -%>
+	   && req.url ~ "^/wiki/" && req.url !~ ":"
+<%- end -%>
 	   && std.random(0,100) < 5.0)) {
 		return (synth(418, "Browser Connection Security Warning"));
 	}
