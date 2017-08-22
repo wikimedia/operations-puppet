@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/cron/dump-global-block.sh
+# modules/snapshot/cron/dump-global-blocks.sh
 #############################################################
 
 source /usr/local/etc/set_dump_dirs.sh
@@ -25,7 +25,6 @@ getsetting() {
 get_db_host() {
     apachedir=$1
 
-    wmfconfigdir="${apachedir}/wmf-config"
     multiversionscript="${apachedir}/multiversion/MWScript.php"
     if [ -e "$multiversionscript" ]; then
         host=`php -q "$multiversionscript" extensions/CentralAuth/maintenance/getCentralAuthDBInfo.php --wiki="aawiki"` || (echo $host >& 2; host="")
@@ -38,21 +37,31 @@ get_db_host() {
 }
 
 get_db_user() {
-    db_user=`echo 'echo $wgDBadminuser;' | php "$multiversionscript" eval.php $wiki`
+    apachedir=$1
 
+    multiversionscript="${apachedir}/multiversion/MWScript.php"
+    if [ -e "$multiversionscript" ]; then
+        db_user=`echo 'echo $wgDBadminuser;' | php "$multiversionscript" eval.php aawiki`
+    fi
     if [ -z "$db_user" ]; then
         echo "can't get db user name, exiting." >& 2
         exit 1
     fi
+    echo $db_user
 }
 
 get_db_pass() {
-    db_pass=`echo 'echo $wgDBadminpassword;' | php "$multiversionscript" eval.php $wiki`
+    apachedir=$1
 
+    multiversionscript="${apachedir}/multiversion/MWScript.php"
+    if [ -e "$multiversionscript" ]; then
+        db_pass=`echo 'echo $wgDBadminpassword;' | php "$multiversionscript" eval.php aawiki`
+    fi
     if [ -z "$db_pass" ]; then
         echo "can't get db password, exiting." >& 2
         exit 1
     fi
+    echo $db_pass
 }
 
 dump_tables() {
@@ -115,11 +124,11 @@ for settingname in "apachedir" "gzip" "mysqldump"; do
     checkval "$settingname" "${!settingname}"
 done
 
-outputdir="${datadir}/public/other/globalblock"
+outputdir="${datadir}/public/other/globalblocks"
 
 host=`get_db_host "$apachedir"` || exit 1
-db_user=`get_db_user` || exit 1
-db_pass=`get_db_pass` || exit 1
+db_user=`get_db_user "$apachedir"` || exit 1
+db_pass=`get_db_pass "$apachedir"` || exit 1
 
-dump_tables "globalblock" "$outputdir" "$mysqldump" "$gzip" "$db_user" "$db_pass"
+dump_tables "globalblocks" "$outputdir" "$mysqldump" "$gzip" "$db_user" "$db_pass"
 
