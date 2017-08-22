@@ -2710,3 +2710,11 @@ ldap_only_users:
     ensure: present
     realname: Zachary McCune
     email: zmccune@wikimedia.org
+  cooltey:
+    ensure: present
+    realname: Cooltey Feng
+    email: cfeng@wikimedia.org
+  sharvaniharan:
+    ensure: present
+    realname: Sharvani Haran
+    email: sharan@wikimedia.org
