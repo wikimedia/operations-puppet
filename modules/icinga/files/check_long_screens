@@ -1,0 +1,64 @@
+#!/bin/bash
+# icinga/nagios plugin to detect long-running screen sessions
+#
+# https://phabricator.wikimedia.org/T165348
+#
+# Daniel Zahn (<dzahn@wikimedia.org>) - Wikimedia Foundation Inc.
+#
+
+set -eu
+usage() { echo "Usage: $0 -w <warn> -c <crit>" 1>&2; exit 1; }
+
+declare -i WARN_TIME="60"
+declare -i CRIT_TIME="120"
+
+DEBUG=false
+
+while getopts "w:c:" o; do
+    case "${o}" in
+    w)
+       WARN_TIME=${OPTARG}
+       ;;
+    c)
+       CRIT_TIME=${OPTARG}
+       ;;
+    *)
+       usage
+       ;;
+    esac
+done
+
+if [ $WARN_TIME == 0 ] || [ $CRIT_TIME == 0 ]; then
+    usage
+fi
+
+SCREEN_PID=""
+RUN_TIME=0
+PGREP=$(which pgrep)
+PS=$(which ps)
+XARGS=$(which xargs)
+
+for SCREEN_PID in $(${PGREP} -f SCREEN)
+  do
+     RUN_TIME=$(${PS} -o etimes= -p ${SCREEN_PID} | ${XARGS})
+     if $DEBUG; then
+         echo "Found a screen with PID ${SCREEN_PID}. It's been running since ${RUN_TIME} seconds."
+     fi
+     if [ $RUN_TIME -gt $CRIT_TIME ]; then
+         echo "CRIT: Long running screen session. (PID ${SCREEN_PID}, ${RUN_TIME}s > ${CRIT_TIME}s)"
+         exit 2
+     fi
+     if [ $RUN_TIME -gt $WARN_TIME ]; then
+         echo "WARN: Long running screen session. (PID ${SCREEN_PID}, ${RUN_TIME}s > ${WARN_TIME}s)"
+         exit 1
+     fi
+     if [ $RUN_TIME -le $WARN_TIME ] && [ $RUN_TIME -le $CRIT_TIME ] ; then
+         echo "OK: No long running screen sessions detected."
+         exit 0
+     fi
+done
+
+echo "UNKNOWN: something went wrong with the plugin. check $0"
+exit 3
+
+
