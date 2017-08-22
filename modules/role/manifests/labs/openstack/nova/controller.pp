@@ -4,7 +4,6 @@ class role::labs::openstack::nova::controller {
 
     require openstack
     include role::labs::openstack::glance::server
-    include role::labs::openstack::keystone::server
     include ::openstack::nova::conductor
     include ::openstack::nova::spiceproxy
     include ::openstack::nova::scheduler
