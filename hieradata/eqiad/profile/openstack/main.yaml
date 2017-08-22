@@ -1,5 +1,6 @@
 profile::openstack::main::version: 'liberty'
 profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
+profile::openstack::main::nova_controller_standby: 'labcontrol1002.wikimedia.org'
 profile::openstack::main::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::main::rabbit_monitor_user: 'monitoring'
 profile::openstack::main::rabbit_file_handles: 8192
