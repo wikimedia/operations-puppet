@@ -307,6 +307,11 @@ dataset_clients_other:
   - stat1003.eqiad.wmnet
   - stat1005.eqiad.wmnet
   - stat1006.eqiad.wmnet
+dumps_clients_snapshots:
+  - snapshot1001.eqiad.wmnet
+  - snapshot1005.eqiad.wmnet
+  - snapshot1006.eqiad.wmnet
+  - snapshot1007.eqiad.wmnet
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
