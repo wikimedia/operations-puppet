@@ -3,4 +3,4 @@ profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
 profile::openstack::main::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::main::rabbit_monitor_user: 'monitoring'
 profile::openstack::main::rabbit_file_handles: 8192
-profile::openstack::main::ldap_hosts: ['ldap://ldap-labs.eqiad.wikimedia.org', 'ldap://ldap-labs.codfw.wikimedia.org']
+profile::openstack::main::ldap_hosts: ['ldap-labs.eqiad.wikimedia.org', 'ldap-labs.codfw.wikimedia.org']
