@@ -1,0 +1,4 @@
+profile::openstack::base::glance::db_user: 'glance'
+profile::openstack::base::glance::db_name: 'glance'
+profile::openstack::base::glance::data_dir: '/srv/glance'
+profile::openstack::base::glance::image_dir: '/srv/glance/images'
