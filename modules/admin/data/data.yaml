@@ -120,7 +120,7 @@ groups:
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
-              pmiazga, diego]
+              pmiazga, diego, shiladsen]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -189,7 +189,7 @@ groups:
               leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans]
+              fdans, shiladsen]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -200,7 +200,7 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva]
+              ladsgroup, ovasileva, shiladsen]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -2536,6 +2536,16 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/oA9hk3snx7Y66ZR3sEMukK6tOk4esFT02irhqB0jr9osstyZN9KhPVeWMzhip+93ToDzX+aDHeXqsu5grXsqGQZBZSU850GSNt0pgi8+4E1yGQngLNhFv+z7EemWUQH0XT4atoDXbmfXdRv6NpVlcr1vAPBQpjBZuFe5vaxLKRrhZpm+YNvl4RHdGbZorz6WI0NvzuOTerKUOyUZS/KQpT4FxlvVRoTIO3H05EtJEv3745rUH5wHCcyr7m9Hdsjh8RMrWF3okKLk9WOxQTesfvvstmu8GpBbauzmQYMKwRcKQqoc0/qo3ZGvwXPwrYjv4wpPZhDexjOfUPLGvtGf dsaeztrumper@dsaeztrumper
     uid: 17677
     email: diego@wikimedia.org
+  shiladsen:
+    ensure: present
+    gid: 500
+    name: shiladsen
+    realname: Shilad Sen
+    ssh_keys:
+      - ssh-dss AAAAB3NzaC1kc3MAAACBAKBspbywXptKB4djp8jYjfk0fAQUAhsEM03zvRhuCpIwB5BYQl2mIeIwADHqM5DA0plGtFZLLwZvFR/LpHIiK3zcDuvz5N6LBkTulKQ5TrjnMkAeTk1SA900u6jCoKitF7j6ZO3Q4diLgFSY5F4EJI80GiWkOx+JAnzhS3kHbkibAAAAFQDzFcnzFRA7bawBb0ZVhCYDU2v+2wAAAIBzWSGg2rEvV0UT+cDzGZMl6LGWT+3oC1pJviW8vilOhIKvdbXYeQeGpqpJjxZToN/5Ok+P0kAMNTacdPWyYiDDepb+zgB9tbW+DPB3HgH2y6u7SMNWnOXK+C9VAT62LEX4zQsD41NC3kMijDjLuAzAkyKPAVmgtFWCXpYDDU/+zgAAAIAW66EVt/6tp7o6GlfU3TS3JnYLA3cFzWqmbuHuV2dFhW3h7OAbmCRivhOVuhJuu56C/AJeKdGzIA10p/eo39YXUX3iOjUTO8/YFFAAnh9m4Fb1YDTMG3JzwBi8jT6r8iOm9414ITX48y9zzD3smXku3o3At/w5Up6rl/lDeywI4g== a558989@600308a4c4c6
+    uid: 10339
+    email: shilad@gmail.com
+
 ldap_only_users:
   abartov:
     ensure: present
