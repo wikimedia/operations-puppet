@@ -1286,6 +1286,11 @@ node 'labmon1001.eqiad.wmnet' {
     include ::base::firewall
 }
 
+# role spare until pushed into service via T165784
+node 'labmon1002.eqiad.wmnet' {
+    role(spare::system)
+}
+
 node 'labnet1001.eqiad.wmnet' {
     role(wmcs::openstack::main::net,
           labs::openstack::nova::api,
