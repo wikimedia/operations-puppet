@@ -2,3 +2,4 @@ debdeploy::grains:
   debdeploy-spare:
     value: standard
 
+profile::base::notifications_enable: '0'
