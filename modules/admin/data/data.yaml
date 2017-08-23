@@ -7,7 +7,7 @@ groups:
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
-              yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault]
+              yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -73,7 +73,7 @@ groups:
     gid: 706
     description: access to terbium, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [dartar, ellery, bearloga,
+    members: [dartar, bearloga,
               ezachte, jamesur, jdlrobson, tparscal, smalyshev,
               leila, santhosh, amire80, foks, chelsyx]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
@@ -109,7 +109,7 @@ groups:
                  statistics-users) and also provides access to research mysql
                  credentials on stat1003 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, deskana,
-              dduvall, ellery, ezachte, gilles, halfak,
+              dduvall, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, yuvipanda,
@@ -186,7 +186,7 @@ groups:
                  you should put them in the analytics-privatedata-users
                  group.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
-              leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
+              leila, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans, shiladsen]
@@ -232,7 +232,7 @@ groups:
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak,
               halfak, dr0ptp4kt, bearloga, cwdent, elukey, gwicke, ppchelko,
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
-              bsitzmann, dbrant, ellery, nettrom, leila,
+              bsitzmann, dbrant, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
@@ -1567,13 +1567,12 @@ users:
     ssh_keys: []
     uid: 2042
   ellery:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ellery
     realname: Ellery Wulczyn
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCKFGOn5NPv0el5EtWWwffENDgrt8GKzXTUdhOOWOBemPc98MGEMkKoeAY3RAZW1xbJo+b+ZDTDORVWw3A5Lw6b8Es/fBnJR2rfChKOwj7VzeMLyIFzjgkzI+UekgfWcCsEk24ic6aJAAFLvhVV6Ib9vg1l8p+ZJFL+5+54XMt0MphZtN2w3pgv/SccJzF/kodPyu7N7jRmzweOosH7dY20cSXbnkoz8jCDs6HeLTvLErLsjYWUtwnzjhDp4lBvvZVpzkMXpp/Ju44ksypgyfzEBa/+iP1QQpls6KqRMb6wD56Z8E5BFm2s/nbff3BP3Hk7dsTLJPXYGZw48pWMwWD ellerywulczyn@administorsair4.corp.wikimedia.org]
+    ssh_keys: []
     uid: 10517
-    email: ellerywulczyn@gmail.com
   dduvall:
     ensure: present
     gid: 500
