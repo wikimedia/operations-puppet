@@ -134,7 +134,9 @@ class role::prometheus::ops {
       content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
     }
     file { "${targets_path}/blackbox_ssh_bastions.yaml":
-      content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
+      content => ordered_yaml([{
+        'targets' => regsubst($::network::constants::special_hosts[$::realm]['bastion_hosts'], '(.*)', '[\0]:22')
+        }]),
     }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
