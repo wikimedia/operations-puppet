@@ -2594,6 +2594,11 @@ host kafka2003 {
     fixed-address kafka2003.codfw.wmnet;
 }
 
+host kafka-jumbo1001 {
+    hardware ethernet 18:66:DA:FC:D5:30;
+    fixed-address kafka-jumbo1001.eqiad.wmnet;
+}
+
 host kubernetes1001 {
      hardware ethernet 18:66:DA:56:64:A1;
      fixed-address kubernetes1001.eqiad.wmnet;
