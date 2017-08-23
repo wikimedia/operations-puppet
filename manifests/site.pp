@@ -787,6 +787,9 @@ node /^druid100[123456].eqiad.wmnet$/ {
     include ::standard
 }
 
+node /^dumpsdata100[12].eqiad.wmnet$/ {
+    role(dumpsdata)
+}
 
 node 'eeden.wikimedia.org' {
     role(authdns::server)
