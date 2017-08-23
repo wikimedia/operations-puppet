@@ -2710,3 +2710,7 @@ ldap_only_users:
     ensure: present
     realname: Zachary McCune
     email: zmccune@wikimedia.org
+  mnoor:
+    ensure: present
+    realname: Moska Noor
+    email: mnoor@wikimedia.org
