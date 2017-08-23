@@ -32,7 +32,7 @@ class role::prometheus::global {
             '{__name__=~"^.*:memcached_.*"}',
             '{__name__=~"^.*:varnish_.*"}',
             # blackbox_exporter probes results
-            '{__name__=~"^probe_"}',
+            '{__name__=~"^probe_.*"}',
           ],
         },
         'static_configs' => [
