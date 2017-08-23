@@ -13,6 +13,7 @@ define monitoring::service(
     $contact_group         = hiera('contactgroups', 'admins'),
     $config_dir            = '/etc/nagios',
     $event_handler         = undef,
+    $notifications_enabled = $::profile::base::notifications_enabled,
 )
 {
     # the list of characters is the default for illegal_object_name_chars
@@ -71,6 +72,23 @@ define monitoring::service(
         default => undef,
     }
 
+    # Safeguard against notifications enabled not being defined due to class
+    # declarations
+    if $notifications_enabled {
+        $real_notifications_enabled = $notifications_enabled
+    } else {
+        $real_notifications_enabled = '1'
+    }
+    # XXX: Actually setup an event handler
+    # We setup a specific event handler for services that have no notifications
+    # enabled and do not already have a service handler defined. This should
+    # maintain backwards compatibility
+    if $real_notifications_enabled == '0' and !event_handler {
+        $real_event_handler = 'XXX: Figure this out'
+    } else {
+        $real_event_handler = $event_handler
+    }
+
     # the nagios service instance
     $service = {
         "${::hostname} ${title}" => {
@@ -86,13 +104,14 @@ define monitoring::service(
             notification_interval  => $notification_interval,
             notification_period    => '24x7',
             notification_options   => 'c,r,f',
+            notifications_enabled  => $real_notifications_enabled,
             contact_groups         => $real_contact_groups,
             passive_checks_enabled => 1,
             active_checks_enabled  => $is_active,
             is_volatile            => $check_volatile,
             check_freshness        => $check_fresh,
             freshness_threshold    => $is_fresh,
-            event_handler          => $event_handler,
+            event_handler          => $real_event_handler,
         },
     }
     # This is a hack. We detect if we are running on the scope of an icinga
