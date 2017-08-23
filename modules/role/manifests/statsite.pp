@@ -19,4 +19,10 @@ class role::statsite {
         notrack => true,
         port    => '8125',
     }
+
+    ferm::client { 'statsite':
+        proto   => 'udp',
+        notrack => true,
+        port    => '8125',
+    }
 }
