@@ -43,6 +43,27 @@ class role::prometheus::ops {
         ],
       },
       {
+        'job_name'        => 'blackbox_ssh',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'ssh_banner' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_ssh_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
         'job_name'        => 'blackbox_tcp',
         'metrics_path'    => '/probe',
         'params'          => {
@@ -107,8 +128,12 @@ class role::prometheus::ops {
       },
     ]
 
-    # Ping all bastions from all machines running prometheus::ops
+    # Ping and SSH probes for all bastions from all machines running
+    # prometheus::ops
     file { "${targets_path}/blackbox_icmp_bastions.yaml":
+      content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
+    }
+    file { "${targets_path}/blackbox_ssh_bastions.yaml":
       content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
     }
 
