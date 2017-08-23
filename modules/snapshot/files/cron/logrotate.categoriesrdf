@@ -1,0 +1,11 @@
+# This file is managed by puppet
+# puppet:///modules/snapshot/cron/logrotate.categoriesrdf
+#
+/var/log/categoriesrdf/*.log {
+    daily
+    compress
+    delaycompress
+    missingok
+    maxage 22
+    nocreate
+}
