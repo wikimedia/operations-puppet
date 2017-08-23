@@ -2,14 +2,15 @@
 # Exports the resource that monitors hosts in icinga/shinken
 #
 define monitoring::host (
-    $ip_address    = $facts['ipaddress'],
-    $os            = $facts['operatingsystem'],
-    $host_fqdn     = undef,
-    $group         = undef,
-    $ensure        = present,
-    $critical      = false,
-    $parents       = undef,
-    $contact_group = hiera('contactgroups', 'admins'),
+    $ip_address            = $facts['ipaddress'],
+    $os                    = $facts['operatingsystem'],
+    $host_fqdn             = undef,
+    $group                 = undef,
+    $ensure                = present,
+    $critical              = false,
+    $parents               = undef,
+    $contact_group         = hiera('contactgroups', 'admins'),
+    $notifications_enabled = '1',
     ) {
 
     $nagios_address = $host_fqdn ? {
@@ -64,6 +65,7 @@ define monitoring::host (
             $real_parents = undef
         }
         # We have a BMC, and the BMC is configured and it has an IP address
+        # We always monitor the BMC so never skip notifications
         if $facts['has_ipmi'] and $facts['ipmi_lan'] and 'ipaddress' in $facts['ipmi_lan'] {
             $mgmt_host = {
                 "${title}.mgmt" => {
@@ -100,6 +102,7 @@ define monitoring::host (
             check_command         => 'check_ping!500,20%!2000,100%',
             check_period          => '24x7',
             max_check_attempts    => 2,
+            notifications_enabled => $notifications_enabled,
             contact_groups        => $real_contact_groups,
             notification_interval => 0,
             notification_period   => '24x7',
@@ -119,21 +122,24 @@ define monitoring::host (
     create_resources($rtype, $host)
     if $mgmt_host {
         create_resources($rtype, $mgmt_host)
+        # We always monitor the BMC so never skip notifications
         monitoring::service { "dns_${title}.mgmt":
-            description    => "DNS ${title}.mgmt",
-            host           => "${title}.mgmt",
-            check_command  => "check_fqdn!${title}.mgmt.${::site}.wmnet",
-            group          => 'mgmt',
-            check_interval => 60,
-            retry_interval => 60,
+            description           => "DNS ${title}.mgmt",
+            host                  => "${title}.mgmt",
+            check_command         => "check_fqdn!${title}.mgmt.${::site}.wmnet",
+            notifications_enabled => '1',
+            group                 => 'mgmt',
+            check_interval        => 60,
+            retry_interval        => 60,
         }
         monitoring::service { "ssh_${title}.mgmt":
-            description    => "SSH ${title}.mgmt",
-            host           => "${title}.mgmt",
-            check_command  => 'check_ssh',
-            group          => 'mgmt',
-            check_interval => 60,
-            retry_interval => 60,
+            description           => "SSH ${title}.mgmt",
+            host                  => "${title}.mgmt",
+            check_command         => 'check_ssh',
+            notifications_enabled => '1',
+            group                 => 'mgmt',
+            check_interval        => 60,
+            retry_interval        => 60,
         }
     }
 }

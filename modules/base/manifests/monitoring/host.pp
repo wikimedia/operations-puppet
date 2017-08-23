@@ -29,6 +29,7 @@ class base::monitoring::host(
     $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
     $raid_write_cache_policy = undef,
+    $notifications_enabled = '1',
 ) {
     include ::base::puppet::params # In order to be able to use some variables
 
@@ -37,7 +38,9 @@ class base::monitoring::host(
         write_cache_policy => $raid_write_cache_policy,
     }
 
-    ::monitoring::host { $::hostname: }
+    ::monitoring::host { $::hostname:
+        notifications_enabled => $notifications_enabled,
+    }
 
     ::monitoring::service { 'ssh':
         description   => 'SSH',
