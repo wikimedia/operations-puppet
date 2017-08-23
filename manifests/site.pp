@@ -1213,6 +1213,12 @@ node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
     include ::standard
 }
 
+# kakfa-jumbo nodes set to role spare until analytics pushes into service T167992
+node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+
 # virtual machine for misc. PHP apps
 node 'krypton.eqiad.wmnet' {
     # kafka::analytics::burrow is a Kafka consumer lag monitor.
