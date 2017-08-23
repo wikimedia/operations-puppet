@@ -527,7 +527,7 @@ node 'db1062.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(28|33|34|39|79|86|94)\.eqiad\.wmnet/ {
+node /^db10(28|33|34|39|69|79|86|94)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -658,11 +658,6 @@ node 'db2030.codfw.wmnet' {
 }
 
 # sanitarium
-node 'db1069.eqiad.wmnet' {
-    role(mariadb::sanitarium)
-    include ::base::firewall
-}
-
 node 'db1095.eqiad.wmnet' {
     role(mariadb::sanitarium_multisource)
 }
