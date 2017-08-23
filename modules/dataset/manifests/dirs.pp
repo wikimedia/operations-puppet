@@ -16,6 +16,7 @@ class dataset::dirs {
     $medialistsdir            = "${otherdir}/imageinfo"
     $pagetitlesdir            = "${otherdir}/pagetitles"
     $mediatitlesdir           = "${otherdir}/mediatitles"
+    $categoriesrdf            = "${otherdir}/categoriesrdf"
 
     file { $datadir:
         ensure => 'directory',
@@ -124,6 +125,13 @@ class dataset::dirs {
     }
 
     file { $pagetitlesdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $categoriesrdf:
         ensure => 'directory',
         mode   => '0755',
         owner  => 'datasets',
