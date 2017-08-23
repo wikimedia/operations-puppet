@@ -59,8 +59,9 @@ innodb_locks_unsafe_for_binlog = 1
 
 # don't dump and load innodb buffer at start and stop
 # these servers will have the buffer pool in a bad state due to dumps
-innodb_buffer_pool_load_at_startup  = 0
-innodb_buffer_pool_dump_at_shutdown = 0
+# so not sure if these will be useful, but we leave them here for now
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
 
 optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8

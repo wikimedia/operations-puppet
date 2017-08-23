@@ -2,7 +2,6 @@
     shard: s1
     role: slave
   targets:
-  - dbstore2001:13311
   - dbstore2002:13311
 
 - labels:
@@ -23,7 +22,6 @@
     shard: s4
     role: slave
   targets:
-  - dbstore2001:13314
   - dbstore2002:13314
 
 - labels:
