@@ -22,6 +22,11 @@
         HeaderName ./releases-header-mw.html
     </Directory>
 
+    ProxyRequests Off
+    ProxyVia Off
+    ProxyPreserveHost On
+    ProxyPass /ci/ http://127.0.0.1:8080/ci/ retry=0 nocanon
+
     ErrorLog /var/log/apache2/<%= @sitename %>.error.log
 
     LogLevel warn
