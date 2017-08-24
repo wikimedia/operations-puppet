@@ -23,4 +23,7 @@ class role::analytics_cluster::users {
         gid    => 'analytics-search',
         system => true,
     }
+
+    # Include the discovery-stats user so that automated Hive queries can be made.
+    include ::statistics::discovery::user
 }
