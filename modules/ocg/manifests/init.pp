@@ -220,9 +220,16 @@ class ocg (
         }
     }
 
-    logrotate::conf { 'ocg':
-        ensure => present,
-        source => 'puppet:///modules/ocg/logrotate',
+    logrotate::rule { 'ocg':
+        ensure     => present,
+        file_glob  => '/srv/deployment/ocg/log/ocg.log',
+        notifempty => true,
+        dateext    => true,
+        compress   => true,
+        missingok  => true,
+        create     => '644 syslog adm',
+        rotate     => 7,
+        size       => '256M',
     }
 
     # run logrotate hourly, instead of daily, to ensure that log size
