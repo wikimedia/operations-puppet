@@ -36,6 +36,9 @@
 <% if @no_create -%>
     nocreate
 <% end -%>
+<% if @su -%>
+    su <%= @su %>
+<% end -%>
 <% if @post_rotate -%>
     sharedscripts
     postrotate
