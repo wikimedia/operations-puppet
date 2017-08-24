@@ -1,23 +1,27 @@
 # Scripts to set up shell environment for openstack commandline
-class openstack::envscripts(
-    $novaconfig,
-    $designateconfig
+class openstack2::util::envscripts(
+    $ldap_user_pass,
+    $nova_controller,
+    $region,
+    $nova_db_pass,
+    $wmflabsdotorg_admin,
+    $wmflabsdotorg_pass,
+    $wmflabsdotorg_project,
     ) {
 
-    $nova_region = $::site
     # Handy script to set up environment for commandline nova magic
     file { '/root/novaenv.sh':
-        content => template('openstack/novaenv.sh.erb'),
-        mode    => '0755',
         owner   => 'root',
         group   => 'root',
+        mode    => '0755',
+        content => template('openstack2/util/novaenv.sh.erb'),
     }
 
     # Handy script to set up environment for commandline glance magic
     file { '/root/wmflabsorg-domainadminenv.sh':
-        content => template('openstack/wmflabsorg-domainadminenv.sh.erb'),
-        mode    => '0755',
         owner   => 'root',
         group   => 'root',
+        mode    => '0755',
+        content => template('openstack2/util/wmflabsorg-domainadminenv.sh.erb'),
     }
 }
