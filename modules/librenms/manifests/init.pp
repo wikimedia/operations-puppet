@@ -60,9 +60,14 @@ class librenms(
         require => Group['librenms'],
     }
 
-    logrotate::conf { 'librenms':
-        ensure => present,
-        source => 'puppet:///modules/librenms/logrotate',
+    logrotate::rule { 'librenms':
+        ensure    => present,
+        file_glob => '/var/log/librenms.log',
+        rotate    => 7,
+        frequency => 'daily',
+        compress  => true,
+        missingok => true,
+        create    => '0660 librenms root',
     }
 
     if os_version('debian >= stretch') {

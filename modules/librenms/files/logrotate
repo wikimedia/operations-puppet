@@ -1,8 +1,0 @@
-/var/log/librenms.log {
-    rotate 7
-    daily
-    compress
-    delaycompress
-    missingok
-    create 0660 librenms root
-}
