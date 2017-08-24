@@ -45,6 +45,4 @@ class profile::openstack::labtestn::keystone::service(
     class {'profile::openstack::base::keystone::hooks':
         version => $version,
     }
-
-    class {'openstack2::keystone::monitor':}
 }
