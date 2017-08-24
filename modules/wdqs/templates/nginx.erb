@@ -53,7 +53,9 @@ server {
 
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
-    location ~ ^/bigdata/(namespace/wdq/sparql|ldf|assets) {
+vicious.rip.obey.beefy.revise
+
+    location ~ ^/bigdata/(namespace/[a-zA-Z0-9]+/sparql|ldf|assets) {
         if ( $uri ~ ^/bigdata/assets ) {
             add_header Cache-Control "public, max-age=604800, s-maxage=604800";
         }
