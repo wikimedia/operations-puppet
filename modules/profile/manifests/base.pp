@@ -107,9 +107,24 @@ class profile::base(
     }
 
     if os_version('ubuntu == trusty') {
-        logrotate::conf { 'upstart':
-            ensure => present,
-            source => 'puppet:///modules/base/logrotate/upstart',
+        # This should be identical to the packaged config, with the addition
+        #  of 'copytruncate'.  copytruncate isn't great,  but without it
+        #  we wind up with a lot of .1 logfiles that grow without bound and
+        #  are ignored by logrotate, e.g. prometheus-node-exporter.log.1
+        #
+        # Also somewhat related:
+        #
+        #    https://bugs.launchpad.net/ubuntu/+source/upstart/+bug/1350782
+        logrotate::rule { 'upstart':
+            ensure       => present,
+            file_glob    => '/var/log/upstart/*.log',
+            frequency    => 'daily',
+            missingok    => true,
+            rotate       => 7,
+            compress     => true,
+            notifempty   => true,
+            nocreate     => true,
+            copytruncate => true,
         }
     }
 
