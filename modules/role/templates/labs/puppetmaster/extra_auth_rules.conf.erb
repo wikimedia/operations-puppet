@@ -2,8 +2,6 @@
 path /resource_type
 auth any
 allow <%= @horizon_host %>
-
-# This should come from scope.function_hiera(['puppetmaster::servers']).values.flatten(1).map
-# but I absolutely can't make erb work properly
-allow labpuppetmaster1001.wikimedia.org
-allow labpuppetmaster1002.wikimedia.org
+<% scope.function_hiera(['puppetmaster::servers']).values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
+allow <%= server %>
+<% end -%>
