@@ -18,9 +18,16 @@ class dumps {
         notify  => Service['nginx'],
     }
 
-    logrotate::conf { 'nginx':
-        ensure => present,
-        source => 'puppet:///modules/dumps/logrotate.conf',
+    logrotate::rule { 'nginx':
+        ensure      => present,
+        file_glob   => '/var/log/nginx/*.log',
+        frequency   => 'daily',
+        rotate      => 30,
+        dateext     => true,
+        missingok   => true,
+        compress    => true,
+        create      => '0640 www-data adm',
+        post_rotate => '[ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`',
     }
 
     file { '/data/xmldatadumps/public/favicon.ico':
