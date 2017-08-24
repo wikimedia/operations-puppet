@@ -1,13 +1,9 @@
 # helper scripts for Labs openstack administration
-class openstack::adminscripts(
-    $novaconfig,
-    $openstack_version = $::openstack::version,
-    $nova_region = $::site,
+class openstack2::util::admin_scripts(
+    $version,
     ) {
 
-    $wikitech_nova_ldap_user_pass = $novaconfig['ldap_user_pass']
-    $nova_controller_hostname = $novaconfig['controller_hostname']
-
+    require_package('nova-common')
     # Installing this package ensures that we have all the UIDs that
     #  are used to store an instance volume.  That's important for
     #  when we rsync files via this host.
@@ -18,28 +14,28 @@ class openstack::adminscripts(
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-nova-migrate':
         ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/cold-nova-migrate",
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/cold-nova-migrate",
     }
 
     # Script to migrate (with suspension) instances between compute nodes
     file { '/root/live-migrate':
         ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/live-migrate",
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/live-migrate",
     }
 
     # Set up keystone services (example script)
     file { '/root/prod-example.sh':
         ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/prod.sh",
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/prod.sh",
     }
 
     file { '/root/novastats':
@@ -48,69 +44,72 @@ class openstack::adminscripts(
     }
 
     file { '/root/novastats/imagestats.py':
-        ensure => present,
-        source => 'puppet:///modules/openstack/novastats/imagestats.py',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/imagestats.py",
+        require => File['/root/novastats'],
     }
 
     file { '/root/novastats/diskspace.py':
-        ensure => present,
-        source => 'puppet:///modules/openstack/novastats/diskspace.py',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/diskspace.py",
+        require => File['/root/novastats'],
     }
 
     file { '/root/novastats/dnsleaks.py':
-        ensure => present,
-        source => 'puppet:///modules/openstack/novastats/dnsleaks.py',
-        mode   => '0755',
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/dnsleaks.py",
     }
 
     file { '/root/novastats/proxyleaks.py':
-        ensure => present,
-        source => 'puppet:///modules/openstack/novastats/proxyleaks.py',
-        mode   => '0755',
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/proxyleaks.py",
     }
 
     file { '/root/novastats/puppetleaks.py':
-        ensure => present,
-        source => 'puppet:///modules/openstack/novastats/puppetleaks.py',
-        mode   => '0755',
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/puppetleaks.py",
     }
 
     file { '/root/novastats/flavorreport.py':
         ensure => present,
-        source => 'puppet:///modules/openstack/novastats/flavorreport.py',
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/flavorreport.py",
     }
 
     file { '/root/novastats/alltrusty.py':
         ensure => present,
-        source => 'puppet:///modules/openstack/novastats/alltrusty.py',
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/novastats/alltrusty.py",
     }
 
     file { '/usr/local/sbin/wikitech-grep':
         ensure => present,
-        source => 'puppet:///modules/openstack/utils/wikitech-grep.py',
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/wikitech-grep.py",
     }
 
+    # XXX: per deployment?
     file { '/root/.ssh/compute-hosts-key':
         content   => secret('ssh/nova/nova.key'),
         owner     => 'nova',
@@ -125,9 +124,9 @@ class openstack::adminscripts(
     #  when nova is misbehaving.
     file { '/root/cold-migrate':
         ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/cold-migrate",
-        mode   => '0755',
         owner  => 'root',
         group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack2/${version}/admin_scripts/cold-migrate",
     }
 }

@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-#####################################################################
-# THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/liberty/virtscripts/logstat.py
-#####################################################################
 # encoding: utf-8
 """
 logstat.py
