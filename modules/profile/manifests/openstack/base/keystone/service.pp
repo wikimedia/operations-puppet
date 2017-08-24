@@ -1,11 +1,13 @@
 class profile::openstack::base::keystone::service(
     $version = hiera('profile::openstack::base::version'),
+    $region = hiera('profile::openstack::base::region'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $db_name = hiera('profile::openstack::base::keystone::db_name'),
     $db_user = hiera('profile::openstack::base::keystone::db_user'),
     $db_pass = hiera('profile::openstack::base::keystone::db_pass'),
     $db_host = hiera('profile::openstack::base::keystone::db_host'),
+    $nova_db_pass = hiera('profile::openstack::base::nova::db_pass'),
     $token_driver = hiera('profile::openstack::base::keystone::token_driver'),
     $ldap_hosts = hiera('profile::openstack::base::ldap_hosts'),
     $ldap_base_dn = hiera('profile::openstack::base::ldap_base_dn'),
@@ -25,6 +27,9 @@ class profile::openstack::base::keystone::service(
     $wiki_consumer_secret = hiera('profile::openstack::base::keystone::wiki_consumer_secret'),
     $wiki_access_token = hiera('profile::openstack::base::keystone::wiki_access_token'),
     $wiki_access_secret = hiera('profile::openstack::base::keystone::wiki_access_secret'),
+    $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
+    $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
+    $wmflabsdotorg_project = hiera('profile::openstack::base::designate::wmflabsdotorg_project'),
     ) {
 
     class {'openstack2::keystone::service':
@@ -60,5 +65,19 @@ class profile::openstack::base::keystone::service(
         active      => $::fqdn == $nova_controller,
         auth_port   => $auth_port,
         public_port => $public_port,
+    }
+
+    class {'openstack2::util::envscripts':
+        ldap_user_pass        => $ldap_user_pass,
+        nova_controller       => $nova_controller,
+        region                => $region,
+        nova_db_pass          => $nova_db_pass,
+        wmflabsdotorg_admin   => $wmflabsdotorg_admin,
+        wmflabsdotorg_pass    => $wmflabsdotorg_pass,
+        wmflabsdotorg_project => $wmflabsdotorg_project,
+    }
+
+    class {'openstack2::util::admin_scripts':
+        version => $version,
     }
 }

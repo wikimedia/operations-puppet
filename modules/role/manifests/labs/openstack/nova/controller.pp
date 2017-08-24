@@ -10,19 +10,6 @@ class role::labs::openstack::nova::controller {
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
     $designateconfig = hiera_hash('designateconfig', {})
 
-    class { '::openstack::adminscripts':
-        novaconfig => $novaconfig
-    }
-
-    class { '::openstack::envscripts':
-        novaconfig      => $novaconfig,
-        designateconfig => $designateconfig
-    }
-
-    class { '::openstack::spreadcheck':
-        novaconfig => $novaconfig
-    }
-
     # TOBE: hiera'd
     $labs_vms = $novaconfig['fixed_range']
     $labs_metal = join(hiera('labs_baremetal_servers', []), ' ')

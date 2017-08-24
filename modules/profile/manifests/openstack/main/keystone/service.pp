@@ -7,6 +7,7 @@ class profile::openstack::main::keystone::service(
     $db_pass = hiera('profile::openstack::main::keystone::db_pass'),
     $db_name = hiera(profile::openstack::base::keystone::db_name),
     $db_user = hiera(profile::openstack::base::keystone::db_user),
+    $nova_db_pass = hiera('profile::openstack::main::nova::db_pass'),
     $ldap_hosts = hiera('profile::openstack::main::ldap_hosts'),
     $ldap_user_pass = hiera('profile::openstack::main::ldap_user_pass'),
     $wiki_status_consumer_token = hiera('profile::openstack::main::keystone::wiki_status_consumer_token'),
@@ -17,6 +18,8 @@ class profile::openstack::main::keystone::service(
     $wiki_consumer_secret = hiera('profile::openstack::main::keystone::wiki_consumer_secret'),
     $wiki_access_token = hiera('profile::openstack::main::keystone::wiki_access_token'),
     $wiki_access_secret = hiera('profile::openstack::main::keystone::wiki_access_secret'),
+    $spread_check_user = hiera('profile::openstack::main::monitor::spread_check_user'),
+    $spread_check_password = hiera('profile::openstack::main::monitor::spread_check_password'),
     ) {
 
     require profile::openstack::main::clientlib
@@ -27,6 +30,7 @@ class profile::openstack::main::keystone::service(
         db_host                     => $db_host,
         token_driver                => $token_driver,
         db_pass                     => $db_pass,
+        nova_db_pass                => $nova_db_pass,
         ldap_hosts                  => $ldap_hosts,
         ldap_user_pass              => $ldap_user_pass,
         wiki_status_consumer_token  => $wiki_status_consumer_token,
@@ -37,6 +41,9 @@ class profile::openstack::main::keystone::service(
         wiki_consumer_secret        => $wiki_consumer_secret,
         wiki_access_token           => $wiki_access_token,
         wiki_access_secret          => $wiki_access_secret,
+        wmflabsdotorg_admin         => $wmflabsdotorg_admin,
+        wmflabsdotorg_pass          => $wmflabsdotorg_pass,
+        wmflabsdotorg_project       => $wmflabsdotorg_project,
     }
 
     class {'profile::openstack::base::keystone::hooks':
@@ -49,5 +56,12 @@ class profile::openstack::main::keystone::service(
         db_pass => $db_pass,
         db_host => $db_host,
         db_name => $db_name,
+    }
+
+    class {'openstack2::monitor::spreadcheck':
+        active          => $::fqdn == $nova_controller,
+        nova_controller => $nova_controller,
+        nova_user       => $spread_check_user,
+        nova_password   => $spread_check_password,
     }
 }

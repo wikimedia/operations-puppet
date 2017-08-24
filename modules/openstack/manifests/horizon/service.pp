@@ -264,7 +264,7 @@ class openstack::horizon::service(
 
     # Arbitrary handy script that needs to be on the horizon host because it only works with Liberty
     file { '/root/makedomain':
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/makedomain",
+        source => "puppet:///modules/openstack2/${openstack_version}/admin_scripts/makedomain",
         owner  => 'root',
         group  => 'root',
         mode   => '0744',
