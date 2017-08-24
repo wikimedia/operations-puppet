@@ -43,8 +43,6 @@ class profile::openstack::main::keystone::service(
         version => $version,
     }
 
-    class {'openstack2::keystone::monitor':}
-
     class {'openstack2::keystone::cleanup':
         active  => $::fqdn == $nova_controller,
         db_user => $db_user,

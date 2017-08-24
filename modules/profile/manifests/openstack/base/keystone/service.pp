@@ -15,6 +15,7 @@ class profile::openstack::base::keystone::service(
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $auth_protocol = hiera('profile::openstack::base::keystone::auth_protocol'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
+    $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $wiki_status_page_prefix = hiera('profile::openstack::base::keystone::wiki_status_page_prefix'),
     $wiki_status_consumer_token = hiera('profile::openstack::base::keystone::wiki_status_consumer_token'),
     $wiki_status_consumer_secret = hiera('profile::openstack::base::keystone::wiki_status_consumer_secret'),
@@ -53,5 +54,11 @@ class profile::openstack::base::keystone::service(
         wiki_consumer_secret        => $wiki_consumer_secret,
         wiki_access_token           => $wiki_access_token,
         wiki_access_secret          => $wiki_access_secret,
+    }
+
+    class {'openstack2::keystone::monitor':
+        active      => $::fqdn == $nova_controller,
+        auth_port   => $auth_port,
+        public_port => $public_port,
     }
 }
