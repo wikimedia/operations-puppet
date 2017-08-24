@@ -255,9 +255,14 @@ class elasticsearch(
         require => Package['elasticsearch'],
     }
 
-    logrotate::conf { 'elasticsearch':
+    logrotate::rule { 'elasticsearch':
         ensure => present,
-        source => 'puppet:///modules/elasticsearch/logrotate',
+        frequency => 'daily',
+        copy_truncate => true,
+        missing_ok => true,
+        not_if_empty => true,
+        rotate => 7,
+        compress => true,
     }
 
     file { $data_dir:
