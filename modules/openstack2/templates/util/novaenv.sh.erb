@@ -1,0 +1,10 @@
+export OS_USERNAME="novaadmin"
+export OS_PROJECT_DOMAIN_ID="default"
+export OS_USER_DOMAIN_ID="default"
+export OS_PASSWORD="<%= @ldap_user_pass %>"
+export OS_AUTH_URL="http://<%= @nova_controller %>:35357/v3"
+export OS_REGION_NAME="<%= @region %>"
+export OS_TENANT_NAME="admin"
+export OS_NO_CACHE=1
+export OS_IDENTITY_API_VERSION=3
+export NOVA_MYSQL_PASS="<%= @nova_db_pass %>"

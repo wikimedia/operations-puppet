@@ -1,8 +1,4 @@
 #!/usr/bin/python
-#####################################################################
-# THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/mitaka/virtscripts/live-migrate
-#####################################################################
 """
  live-migrate is a wrapper around nova's built-in block migrate
  service.
