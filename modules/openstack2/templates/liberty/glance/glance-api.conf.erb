@@ -21,7 +21,7 @@ debug = False
 #image_size_cap = 1099511627776
 
 # Address to bind the API server
-bind_host = <%= @nova_controller_ip %>
+bind_host = <%= @ipaddress %>
 
 # Port the bind the API server to
 bind_port = 9292
@@ -96,7 +96,7 @@ use_syslog = False
 # ============ Registry Options ===============================
 
 # Address to find the registry server
-registry_host = <%= @nova_controller_ip %>
+registry_host = <%= @ipaddress %>
 
 # Port the registry server is listening on
 registry_port = 9191
