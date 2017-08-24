@@ -1,0 +1,132 @@
+#!/bin/bash
+# icinga/nagios plugin to detect long-running screen and tmux processes
+#
+# https://phabricator.wikimedia.org/T165348
+#
+# Daniel Zahn (<dzahn@wikimedia.org>) - Wikimedia Foundation Inc.
+#
+
+set -eu
+
+usage() { echo "Usage: $0 -w <warn> -c <crit>" 1>&2; exit 1; }
+
+declare -i warn_time=0
+declare -i crit_time=0
+
+debug=false
+
+while getopts "w:c:" o; do
+    case "${o}" in
+    w)
+       warn_time=${OPTARG}
+       ;;
+    c)
+       crit_time=${OPTARG}
+       ;;
+    *)
+       usage
+       ;;
+    esac
+done
+
+if [ $warn_time == 0 ] || [ $crit_time == 0 ]; then
+    usage
+fi
+
+if [ $crit_time -le $warn_time ]; then
+    echo "Error. The value for CRIT must be higher than the value for WARN."
+    exit 1
+fi
+
+# check for long running processes
+# checkprocess <pattern>
+# example: checkprocess SCREEN
+# possible results:
+# 0 = no process (pattern) found (OK)
+# 1 = process found and running longer than warn_time, but not longer than crit_time (WARN)
+# 2 = process found and running longer than crit_time (CRIT)
+# 4 = process found but not running longer than warn_time (OK)
+function checkprocess {
+
+    pattern=$1
+    check_pid=""
+    run_time=0
+    declare -A result
+
+    if /usr/bin/pgrep -fc $pattern > /dev/null; then
+        for check_pid in $(/usr/bin/pgrep -f ${pattern}) ; do
+            run_time=$(/bin/ps -o etimes= -p ${check_pid} | /usr/bin/xargs)
+            if $debug; then
+                echo "Found a '${pattern}'-process with PID ${check_pid}. It has been running ${run_time} seconds."
+            fi
+            if [ $run_time -gt $crit_time ]; then
+		result[$pattern]=2
+            fi
+            if [ $run_time -gt $warn_time ]; then
+                result[$pattern]=1
+            fi
+            if [ $run_time -le $warn_time ] && [ $run_time -le $crit_time ] ; then
+                result[$pattern]=4
+	    fi
+        done
+    else
+        result[$pattern]=0
+    fi
+
+echo "${result["${pattern}"]},${check_pid},${run_time}"
+
+}
+
+result_screen=$(checkprocess SCREEN)
+result_tmux=$(checkprocess tmux)
+
+return_code_screen=$(echo $result_screen | cut -d, -f1)
+pid_screen=$(echo $result_screen | cut -d, -f2)
+run_time_screen=$(echo $result_screen | cut -d, -f3)
+
+return_code_tmux=$(echo $result_tmux | cut -d, -f1)
+pid_tmux=$(echo $result_tmux | cut -d, -f2)
+run_time_tmux=$(echo $result_tmux | cut -d, -f3)
+
+if [ $return_code_screen -eq 2 ]; then
+    echo "CRIT: Long running SCREEN process. (PID: ${pid_screen}, ${run_time_screen}s > ${crit_time}s)."
+    exit 2
+fi
+
+if [ $return_code_tmux -eq 2 ]; then
+    echo "CRIT: Long running tmux process. (PID: ${pid_tmux}, ${run_time_tmux}s > ${crit_time}s)."
+    exit 2
+fi
+
+if [ $return_code_screen -eq 1 ]; then
+    echo "WARN: Long running SCREEN process. (PID: ${pid_screen}, ${run_time_screen}s > ${warn_time}s)."
+    exit 1
+fi
+
+if [ $return_code_tmux -eq 1 ]; then
+    echo "WARN: Long running tmux process. (PID: ${pid_tmux}, ${run_time_tmux}s > ${warn_time}s)."
+    exit 1
+fi
+
+return_code_global="${return_code_screen}${return_code_tmux}"
+case "$return_code_global" in
+	00)
+            echo "OK: No SCREEN or tmux processes detected."
+            exit 0
+	;;
+        04) echo "OK: Tmux detected but not long running."
+            exit 0
+	;;
+        40) echo "OK: SCREEN detected but not long running."
+	    exit 0
+	;;
+        44) echo "OK: SCREEN and tmux detected but not long running."
+            exit 0
+	;;
+        *)  echo "UNKNOWN: This should not happen. check ${0}."
+            exit 3
+        ;;
+esac
+
+echo "UNKNOWN: This should not happen. check ${0}."
+
