@@ -2,7 +2,6 @@
     shard: multi
     role: slave
   targets:
-  - db1069:9104
   - db1095:9104
   - labsdb1001:9104
   - labsdb1003:9104
