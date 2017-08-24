@@ -27,6 +27,7 @@ class profile::openstack::base::keystone::service(
     ) {
 
     class {'openstack2::keystone::service':
+        active                      => $::fqdn == $nova_controller,
         version                     => $version,
         nova_controller             => $nova_controller,
         osm_host                    => $osm_host,
