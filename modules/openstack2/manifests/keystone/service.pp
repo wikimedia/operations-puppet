@@ -2,6 +2,7 @@
 # http://docs.openstack.org/developer/keystone/
 
 class openstack2::keystone::service(
+    $active,
     $version,
     $nova_controller,
     $osm_host,
@@ -56,11 +57,6 @@ class openstack2::keystone::service(
             owner  => 'keystone',
             group  => 'www-data',
             mode   => '0775';
-        '/var/log/keystone/uwsgi':
-            ensure => directory,
-            owner  => 'www-data',
-            group  => 'www-data',
-            mode   => '0755';
         '/etc/keystone':
             ensure => directory,
             owner  => 'keystone',
@@ -70,149 +66,48 @@ class openstack2::keystone::service(
             content => template("openstack2/${version}/keystone/keystone.conf.erb"),
             owner   => 'keystone',
             group   => 'keystone',
-            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
-            require => Package['keystone'],
-            mode    => '0444';
+            mode    => '0444',
+            notify  => Service['keystone'],
+            require => Package['keystone'];
         '/etc/keystone/keystone-paste.ini':
             source  => "puppet:///modules/openstack2/${version}/keystone/keystone-paste.ini",
-            mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
+            mode    => '0644',
+            notify  => Service['keystone'],
             require => Package['keystone'];
         '/etc/keystone/policy.json':
             source  => "puppet:///modules/openstack2/${version}/keystone/policy.json",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
+            notify  => Service['keystone'],
             require => Package['keystone'];
         '/etc/keystone/logging.conf':
             source  => "puppet:///modules/openstack2/${version}/keystone/logging.conf",
-            mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
+            mode    => '0644',
+            notify  => Service['keystone'],
             require => Package['keystone'];
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
             source  => "puppet:///modules/openstack2/${version}/keystone/wmfkeystoneauth",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
+            notify  => Service['keystone'],
             recurse => true;
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth.egg-info':
             source  => "puppet:///modules/openstack2/${version}/keystone/wmfkeystoneauth.egg-info",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['uwsgi-keystone-admin', 'uwsgi-keystone-public'],
+            notify  => Service['keystone'],
             recurse => true;
     }
 
-    logrotate::conf { 'keystone-public-uwsgi':
-        ensure => present,
-        source => 'puppet:///modules/openstack2/keystone-public-uwsgi.logrotate',
-    }
-
-    logrotate::conf { 'keystone-admin-uwsgi':
-        ensure => present,
-        source => 'puppet:///modules/openstack2/keystone-admin-uwsgi.logrotate',
-    }
-
-    if $::fqdn == $nova_controller {
-
-        monitoring::service { 'keystone-http-35357':
-            description   => 'keystone admin endpoint',
-            check_command => 'check_http_on_port!35357',
-        }
-
-        monitoring::service { 'keystone-http-5000': # v2 api is limited here
-            description   => 'keystone public endoint',
-            check_command => 'check_http_on_port!5000',
-        }
-
-        if ($version == 'liberty') {
-            # Keystone says that you should run it with uwsgi in Liberty,
-            #  but it's actually buggy and terrible in that config.  So, use eventlet
-            #  ('keystone' service) on liberty, and we'll try uwsgi again on mitaka.
-            $enable_uwsgi = false
-
-            service { 'keystone':
-                ensure    => running,
-                subscribe => File['/etc/keystone/keystone.conf'],
-                require   => Package['keystone'];
-            }
-            service { 'uwsgi-keystone-admin':
-                ensure => stopped,
-            }
-            service { 'uwsgi-keystone-public':
-                ensure => stopped,
-            }
-        } else {
-            $enable_uwsgi = true
-
-            # stop the keystone process itself; this will be handled
-            #  by uwsgi
-            service { 'keystone':
-                ensure  => stopped,
-                require => Package['keystone'];
-            }
-            file {'/etc/init/keystone.conf':
-                ensure  => 'absent';
-            }
-        }
-    } else {
-        $enable_uwsgi = false
-
-        # Because of the enabled => false, the uwsgi::app
-        #  declarations below don't actually define
-        #  services for the keystone processes.  We need
-        #  to define them here (even though they're stopped)
-        #  so we can refer to them elsewhere.
-        service { 'uwsgi-keystone-admin':
-            ensure => stopped,
-        }
-        service { 'uwsgi-keystone-public':
-            ensure => stopped,
-        }
-        service { 'keystone':
-            ensure  => stopped,
-            require => Package['keystone'];
-        }
-    }
-
-    # Set up uwsgi services
-
-    # Keystone admin API
-    uwsgi::app { 'keystone-admin':
-        enabled  => $enable_uwsgi,
-        settings => {
-            uwsgi => {
-                die-on-term => true,
-                http        => "0.0.0.0:${auth_port}",
-                logger      => 'file:/var/log/keystone/uwsgi/keystone-admin-uwsgi.log',
-                master      => true,
-                name        => 'keystone',
-                plugins     => 'python, python3, logfile',
-                processes   => '20',
-                wsgi-file   => '/usr/bin/keystone-wsgi-admin',
-            },
-        },
-    }
-    uwsgi::app { 'keystone-public':
-        enabled  => $enable_uwsgi,
-        settings => {
-            uwsgi => {
-                die-on-term => true,
-                http        => '0.0.0.0:5000',
-                logger      => 'file:/var/log/keystone/uwsgi/keystone-public-uwsgi.log',
-                master      => true,
-                name        => 'keystone',
-                plugins     => 'python, python3, logfile',
-                processes   => '20',
-                wsgi-file   => '/usr/bin/keystone-wsgi-public',
-            },
-        },
+    service { 'keystone':
+        ensure  => $active,
+        require => Package['keystone'];
     }
 }

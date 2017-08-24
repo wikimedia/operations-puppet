@@ -6,6 +6,16 @@
 
 class openstack2::keystone::monitor() {
 
+    monitoring::service { 'keystone-http-35357':
+        description   => 'keystone admin endpoint',
+        check_command => 'check_http_on_port!35357',
+    }
+
+    monitoring::service { 'keystone-http-5000': # v2 api is limited here
+        description   => 'keystone public endoint',
+        check_command => 'check_http_on_port!5000',
+    }
+
     # Script to check all keystone projects for a given user and role
     file { '/usr/local/bin/check_keystone_roles.py':
         ensure => present,
