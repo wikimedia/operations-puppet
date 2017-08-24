@@ -1,8 +1,15 @@
 # = Class: statistics::discovery
+#
+# NOTE:  This class includes the statistics::discovery::user class, which ensures that
+# the discovery-stats user is in the analytics-privatedata-users group.  This means
+# that you CANNOT include statistics::discovery somewhere that does not have the
+# analytics-privatedata-users present.
+#
 class statistics::discovery {
     Class['::statistics'] -> Class['::statistics::discovery']
 
     include ::passwords::mysql::research
+    include ::statistics::discovery::user
 
     $working_path = $::statistics::working_path
     # Homedir for everything Wikimedia Discovery Analytics related
@@ -12,24 +19,13 @@ class statistics::discovery {
     # Path in which the R library will reside
     $rlib_dir = "${dir}/r-library"
 
-    $user = 'discovery-stats'
-    # Setting group to 'analytics-privatedata-users' so that Discovery's Analysts
-    # (as members of analytics-privatedata-users) have some privileges, and so
-    # the discovery-stats user can access private data in Hive.
-    $group ='analytics-privatedata-users'
 
-    user { $user:
-        ensure     => present,
-        home       => $dir,
-        shell      => '/bin/bash',
-        managehome => false,
-        system     => true,
-        gid        => $group,
-    }
+    $user = $::statistics::discovery::user::user
+    $group = $::statistics::discovery::user::group
 
     # This file will render at
     # /etc/mysql/conf.d/discovery-stats-client.cnf.
-    ::mysql::config::client { 'discovery-stats':
+    ::mysql::config::client { $user:
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
         group => $group,
@@ -46,7 +42,7 @@ class statistics::discovery {
         ensure => 'directory',
         owner  => $user,
         group  => $group,
-        mode   => '0775', # so Discovery's Analysts (as members of wikidev group) can read, write, execute
+        mode   => '0775', # so Discovery's Analysts (as members of analytics-privatedata-users group) can read, write, execute
     }
 
     git::clone { 'wikimedia/discovery/golden':
@@ -76,7 +72,7 @@ class statistics::discovery {
         require => [
             Class['::statistics::compute'],
             Git::Clone['wikimedia/discovery/golden'],
-            Mysql::Config::Client['discovery-stats']
+            Mysql::Config::Client[$user]
         ],
         user    => $user,
     }
