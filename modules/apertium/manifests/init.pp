@@ -124,8 +124,14 @@ class apertium(
         before => Service['apertium-apy'],
     }
 
-    logrotate::conf { 'apertium-apy':
-        ensure  => present,
-        content => template('apertium/logrotate.erb'),
+    logrotate::rule { 'apertium-apy':
+        ensure       => present,
+        file_glob    => "${log_dir}/apertium-apy.log ${log_dir}/apertium-apy.err",
+        frequency    => 'daily',
+        copytruncate => true,
+        missingok    => true,
+        compress     => true,
+        notifempty   => true,
+        rotate       => 15,
     }
 }
