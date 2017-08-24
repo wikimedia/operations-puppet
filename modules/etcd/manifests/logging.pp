@@ -3,9 +3,17 @@
 # Manages all the logging logic for etcd.
 class etcd::logging {
 
-    logrotate::conf { 'etcd':
-        ensure => present,
-        source => 'puppet:///modules/etcd/logrotate.conf',
+    logrotate::rule { 'etcd':
+        ensure        => present,
+        file_glob     => '/var/log/etcd.log',
+        frequency     => 'daily',
+        dateext       => true,
+        dateyesterday => true,
+        rotate        => 10,
+        missingok     => true,
+        nocreate      => true,
+        compress      => true,
+        post_rotate   => 'service rsyslog rotate >/dev/null 2>&1 || true',
     }
 
     rsyslog::conf { 'etcd':
