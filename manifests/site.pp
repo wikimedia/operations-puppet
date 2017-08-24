@@ -203,6 +203,8 @@ node 'californium.wikimedia.org' {
     include ::base::firewall
     include ::openstack::horizon::puppetpanel
     include ::ldap::role::client::labs
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # cerium, praseodymium and xenon are Cassandra test hosts
