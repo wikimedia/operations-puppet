@@ -13,8 +13,10 @@ class statistics::discovery {
     $rlib_dir = "${dir}/r-library"
 
     $user = 'discovery-stats'
-    # Setting group to 'wikidev' so that Discovery's Analysts (as members of wikidev) have some privileges
-    $group ='wikidev'
+    # Setting group to 'analytics-privatedata-users' so that Discovery's Analysts
+    # (as members of analytics-privatedata-users) have some privileges, and so
+    # the discovery-stats user can access private data in Hive.
+    $group ='analytics-privatedata-users'
 
     user { $user:
         ensure     => present,
