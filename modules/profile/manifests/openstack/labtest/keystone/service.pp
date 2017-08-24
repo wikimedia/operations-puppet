@@ -16,9 +16,9 @@ class profile::openstack::labtest::keystone::service(
     $wiki_consumer_secret = hiera('profile::openstack::labtest::keystone::wiki_consumer_secret'),
     $wiki_access_token = hiera('profile::openstack::labtest::keystone::wiki_access_token'),
     $wiki_access_secret = hiera('profile::openstack::labtest::keystone::wiki_access_secret'),
-    $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
-    $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
-    $wmflabsdotorg_project = hiera('profile::openstack::base::designate::wmflabsdotorg_project'),
+    $wmflabsdotorg_admin = hiera('profile::openstack::labtest::designate::wmflabsdotorg_admin'),
+    $wmflabsdotorg_pass = hiera('profile::openstack::labtest::designate::wmflabsdotorg_pass'),
+    $wmflabsdotorg_project = hiera('profile::openstack::labtest::designate::wmflabsdotorg_project'),
     ) {
 
     package {'mysql-server':
