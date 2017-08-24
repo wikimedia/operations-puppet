@@ -1,7 +1,6 @@
 class openstack2::glance::service(
     $active,
     $version,
-    $nova_controller_ip,
     $nova_controller_standby,
     $db_user,
     $db_pass,

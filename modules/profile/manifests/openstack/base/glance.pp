@@ -15,12 +15,10 @@ class profile::openstack::base::glance(
 
     $keystone_admin_uri = "http://${nova_controller}:${auth_port}"
     $keystone_public_uri = "http://${nova_controller}:${public_port}"
-    $nova_controller_ip  = ipresolve($nova_controller,4)
 
     class { 'openstack2::glance::service':
         version                 => $version,
         active                  => $::fqdn == $nova_controller,
-        nova_controller_ip      => $nova_controller_ip,
         keystone_admin_uri      => $keystone_admin_uri,
         keystone_public_uri     => $keystone_public_uri,
         db_user                 => $db_user,
