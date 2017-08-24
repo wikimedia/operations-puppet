@@ -80,6 +80,7 @@
   - db1082:9104
   - db1087:9104
   - db1092:9104
+  - db1096:9104
 - labels:
     shard: s5
     role: master
