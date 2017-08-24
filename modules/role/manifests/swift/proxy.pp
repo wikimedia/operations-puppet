@@ -52,19 +52,19 @@ class role::swift::proxy (
         port    => '80',
     }
 
-    ferm::client { 'swift-object-server':
+    ferm::service { 'swift-object-server':
         proto   => 'tcp',
         notrack => true,
         port    => '6000',
     }
 
-    ferm::client { 'swift-container-server':
+    ferm::service { 'swift-container-server':
         proto   => 'tcp',
         notrack => true,
         port    => '6001',
     }
 
-    ferm::client { 'swift-account-server':
+    ferm::service { 'swift-account-server':
         proto   => 'tcp',
         notrack => true,
         port    => '6002',
