@@ -8,6 +8,7 @@ class openstack2::clientlib(
         'python-glanceclient',
         'python-keystoneclient',
         'python-openstackclient',
+        'python-designateclient',
     ]
     require_package($packages)
 

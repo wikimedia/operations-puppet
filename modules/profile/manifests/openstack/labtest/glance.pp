@@ -5,6 +5,7 @@ class profile::openstack::labtest::glance(
     $db_pass = hiera('profile::openstack::labtest::glance::db_pass'),
     $db_host = hiera('profile::openstack::labtest::glance::db_host'),
     $ldap_user_pass = hiera('profile::openstack::labtest::ldap_user_pass'),
+    $labs_hosts_range = hiera('profile::openstack::labtest::labs_hosts_range'),
     ) {
 
     require ::profile::openstack::labtest::cloudrepo
@@ -15,6 +16,7 @@ class profile::openstack::labtest::glance(
         db_pass                 => $db_pass,
         db_host                 => $db_host,
         ldap_user_pass          => $ldap_user_pass,
+        labs_hosts_range        => $labs_hosts_range,
     }
 
     class {'openstack2::glance::monitor':
