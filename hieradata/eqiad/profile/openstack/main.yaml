@@ -1,6 +1,12 @@
 profile::openstack::main::version: 'liberty'
 profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
 profile::openstack::main::nova_controller_standby: 'labcontrol1002.wikimedia.org'
+profile::openstack::main::nova_api_host: 'labnet1001.eqiad.wmnet'
+profile::openstack::main::nova_network_host: 'labnet1001.eqiad.wmnet'
+profile::openstack::main::designate_host: 'labservices1001.eqiad.wmnet'
+profile::openstack::main::designate_host_standby: 'labservices1002.wikimedia.org'
+profile::openstack::main::horizon_host: 'californium.wikimedia.org'
+profile::openstack::main::labs_hosts_range: '10.64.20.0/24'
 profile::openstack::main::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::main::rabbit_monitor_user: 'monitoring'
 profile::openstack::main::rabbit_file_handles: 8192
