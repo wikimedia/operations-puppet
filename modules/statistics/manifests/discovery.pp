@@ -69,7 +69,10 @@ class statistics::discovery {
     # - Remaining data from previous day is likely to have finished processing.
     # - It's ~9/10p Pacific time, so we're not likely to hinder people's work
     #   on analytics cluster, although we use `nice` & `ionice` as a courtesy.
+
+    # Disabled for now until T174110 is resolved
     cron { 'wikimedia-discovery-golden':
+        ensure  => absent,
         command => "cd ${dir}/golden && sh main.sh >> ${log_dir}/golden-daily.log 2>&1",
         hour    => '5',
         minute  => '0',
