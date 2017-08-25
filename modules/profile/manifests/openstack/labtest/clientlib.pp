@@ -3,7 +3,7 @@ class profile::openstack::labtest::clientlib(
     ) {
 
     require ::profile::openstack::labtest::cloudrepo
-    class {'profile::openstack::base::clientlib':
+    class {'::profile::openstack::base::clientlib':
         version => $version
     }
 }

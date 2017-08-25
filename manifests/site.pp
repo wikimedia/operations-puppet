@@ -1068,15 +1068,12 @@ node 'labtestneutron2001.codfw.wmnet' {
 }
 
 node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
-    role(wmcs::openstack::labtest::virt,
-          labs::openstack::nova::compute)
+    role(wmcs::openstack::labtest::virt)
     include ::standard
 }
 
 node 'labtestnet2001.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net,
-          labs::openstack::nova::api,
-          labs::openstack::nova::network)
+    role(wmcs::openstack::labtest::net)
     include ::standard
 }
 
@@ -1328,10 +1325,7 @@ node 'labmon1002.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    role(wmcs::openstack::main::net,
-          labs::openstack::nova::api,
-          labs::openstack::nova::network,
-          labs::openstack::nova::fullstack)
+    role(wmcs::openstack::main::net)
     include ::standard
 }
 
@@ -2310,9 +2304,7 @@ node 'uranium.wikimedia.org' {
 }
 
 node /^labvirt100[0-9].eqiad.wmnet/ {
-    openstack::nova::partition{ '/dev/sdb': }
-    role(wmcs::openstack::main::virt,
-          labs::openstack::nova::compute)
+    role(wmcs::openstack::main::virt)
     include ::standard
 }
 
@@ -2323,8 +2315,7 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 #  and also as potential transitional hosts
 #  during the upcoming neutron migration.
 node /^labvirt101[0-8].eqiad.wmnet/ {
-    role(wmcs::openstack::main::virt,
-          labs::openstack::nova::compute)
+    role(wmcs::openstack::main::virt)
     include ::standard
 }
 
