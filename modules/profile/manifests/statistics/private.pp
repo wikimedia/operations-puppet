@@ -60,5 +60,6 @@ class profile::statistics::private(
     }
 
     # Discovery team statistics scripts and cron jobs
-    include ::statistics::discovery
+    # Disabled for now until T174110 is resolved
+    # include ::statistics::discovery
 }
