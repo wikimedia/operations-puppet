@@ -1,0 +1,16 @@
+# Much of this is a placeholder config for now
+profile::openstack::labtestn::nova::dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
+profile::openstack::labtestn::nova::dhcp_domain: 'codfw.labtestn'
+profile::openstack::labtestn::nova::dhcp_start: '127.0.0.1'
+profile::openstack::labtestn::nova::quota_floating_ips: '0'
+profile::openstack::labtestn::nova::network_flat_tagged_base_interface: 'eth1'
+profile::openstack::labtestn::nova::network_flat_interface_vlan: '2103'
+profile::openstack::labtestn::nova::network_flat_interface: 'eth1.2103'
+profile::openstack::labtestn::nova::flat_network_bridge: 'br2103'
+profile::openstack::labtestn::nova::fixed_range: '127.0.0.1/32'
+profile::openstack::labtestn::nova::network_public_interface: 'eth0'
+profile::openstack::labtestn::nova::network_public_ip: '127.0.0.2'
+profile::openstack::labtestn::nova::zone: 'codfw'
+profile::openstack::labtestn::nova::scheduler_pool: []
+profile::openstack::labtestn::nova::db_host: 'labtestcontrol2003.wikimedia.org'
+profile::openstack::labtestn::nova::live_migration_uri: 'test'

@@ -11,6 +11,7 @@ class profile::openstack::base::glance(
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $glance_data = hiera('profile::openstack::base::glance::data_dir'),
     $glance_image_dir = hiera('profile::openstack::base::glance::image_dir'),
+    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     ) {
 
     $keystone_admin_uri = "http://${nova_controller}:${auth_port}"
@@ -29,5 +30,21 @@ class profile::openstack::base::glance(
         nova_controller_standby => $nova_controller_standby,
         glance_data             => $glance_data,
         glance_image_dir        => $glance_image_dir,
+    }
+
+    include ::network::constants
+    $prod_networks = join($network::constants::production_networks, ' ')
+    $labs_networks = join($network::constants::labs_networks, ' ')
+
+    ferm::rule {'glance_registry_all':
+        ensure => 'present',
+        rule   => "saddr (${prod_networks} ${labs_networks}
+                             ) proto tcp dport (9292) ACCEPT;",
+    }
+
+    # XXX: seems dupe of glance_registry_all?
+    ferm::rule{'glance-registry-labs-hosts':
+        ensure => 'present',
+        rule   => "saddr ${labs_hosts_range} proto tcp dport 9292 ACCEPT;",
     }
 }
