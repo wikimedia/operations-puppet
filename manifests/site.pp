@@ -1068,23 +1068,19 @@ node 'labtestneutron2001.codfw.wmnet' {
 }
 
 node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
-    role(wmcs::openstack::labtest::virt,
-          labs::openstack::nova::compute)
+    role(wmcs::openstack::labtest::virt)
     include ::standard
 }
 
 node 'labtestnet2001.codfw.wmnet' {
-    role(wmcs::openstack::labtest::net,
-          labs::openstack::nova::api,
-          labs::openstack::nova::network)
+    role(wmcs::openstack::labtest::net)
     include ::standard
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
     include ::standard
     include ::base::firewall
-    role(wmcs::openstack::labtest::control,
-          labs::openstack::nova::controller)
+    role(wmcs::openstack::labtest::control)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
     #  we need some special fw rules to allow that
@@ -1274,7 +1270,6 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control,
-          labs::openstack::nova::controller,
           salt::masters::labs,
           deployment::salt_masters)
 
@@ -1290,7 +1285,6 @@ node 'labcontrol1001.wikimedia.org' {
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control,
-          labs::openstack::nova::controller,
           salt::masters::labs,
           deployment::salt_masters)
 
@@ -1328,10 +1322,7 @@ node 'labmon1002.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    role(wmcs::openstack::main::net,
-          labs::openstack::nova::api,
-          labs::openstack::nova::network,
-          labs::openstack::nova::fullstack)
+    role(wmcs::openstack::main::net)
     include ::standard
 }
 
@@ -1342,8 +1333,7 @@ node /labnet100[34]\.eqiad\.wmnet/ {
 
 
 node 'labnet1002.eqiad.wmnet' {
-    role(wmcs::openstack::main::net_secondary,
-          labs::openstack::nova::api)
+    role(wmcs::openstack::main::net_secondary)
     include ::standard
 }
 
@@ -2313,9 +2303,7 @@ node 'uranium.wikimedia.org' {
 }
 
 node /^labvirt100[0-9].eqiad.wmnet/ {
-    openstack::nova::partition{ '/dev/sdb': }
-    role(wmcs::openstack::main::virt,
-          labs::openstack::nova::compute)
+    role(wmcs::openstack::main::virt)
     include ::standard
 }
 
@@ -2326,8 +2314,7 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 #  and also as potential transitional hosts
 #  during the upcoming neutron migration.
 node /^labvirt101[0-8].eqiad.wmnet/ {
-    role(wmcs::openstack::main::virt,
-          labs::openstack::nova::compute)
+    role(wmcs::openstack::main::virt)
     include ::standard
 }
 
