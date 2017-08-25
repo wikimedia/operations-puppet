@@ -1,5 +1,5 @@
 Subject: Mail delivery failed ${if eq{$sender_address}{$bounce_recipient} {: returning message to sender}}
-References: $h_subject
+References: $h_message-id
 ****
 ****
 ****
