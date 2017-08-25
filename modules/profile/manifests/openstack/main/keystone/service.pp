@@ -23,6 +23,12 @@ class profile::openstack::main::keystone::service(
     $wmflabsdotorg_project = hiera('profile::openstack::main::designate::wmflabsdotorg_project'),
     $spread_check_user = hiera('profile::openstack::main::monitor::spread_check_user'),
     $spread_check_password = hiera('profile::openstack::main::monitor::spread_check_password'),
+    $labs_hosts_range = hiera('profile::openstack::main::labs_hosts_range'),
+    $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
+    $nova_api_host = hiera('profile::openstack::main::nova_api_host'),
+    $designate_host = hiera('profile::openstack::main::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
+    $horizon_host = hiera('profile::openstack::main::horizon_host'),
     ) {
 
     require profile::openstack::main::clientlib
@@ -47,6 +53,12 @@ class profile::openstack::main::keystone::service(
         wmflabsdotorg_admin         => $wmflabsdotorg_admin,
         wmflabsdotorg_pass          => $wmflabsdotorg_pass,
         wmflabsdotorg_project       => $wmflabsdotorg_project,
+        labs_hosts_range            => $labs_hosts_range,
+        nova_controller_standby     => $nova_controller_standby,
+        nova_api_host               => $nova_api_host,
+        designate_host              => $designate_host,
+        designate_host_standby      => $designate_host_standby,
+        horizon_host                => $horizon_host,
     }
 
     class {'profile::openstack::base::keystone::hooks':

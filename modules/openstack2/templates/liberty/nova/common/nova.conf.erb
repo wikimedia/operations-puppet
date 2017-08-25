@@ -1,0 +1,190 @@
+[DEFAULT]
+
+verbose=True
+auth_strategy=keystone
+compute_driver=nova.virt.libvirt.LibvirtDriver
+notification_topics=notifications,ceilometer_notifications
+connection_type=libvirt
+root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
+instance_name_template=i-%08x
+daemonize=1
+
+
+# Turn off ec2 APIs
+enabled_apis=osapi_compute, metadata
+
+# Don't allow duplicate instance names
+osapi_compute_unique_server_name_scope='global'
+
+# Security groups for big projects (e.g. tools) are too hard to
+#  organize and cause a timeout between conductor and compute.
+# This is /maybe/ fixed in mitaka, so we can investigate reverting
+#  this to 60 (the proper default) in future versions.
+rpc_response_timeout=180
+
+my_ip=<%= @ipaddress %>
+log_dir=/var/log/nova
+state_path=/var/lib/nova
+image_service=nova.image.glance.GlanceImageService
+remove_unused_base_images=True
+s3_host=<%= @nova_controller %>
+glance_api_servers=<%= @nova_controller %>:9292
+cc_host=<%= @nova_controller %>
+ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
+ec2_dmz_host=<%= @nova_api_host_ip %>
+dmz_cidr=<%= @dmz_cidr %>
+dhcpbridge_flagfile=/etc/nova/nova.conf
+dhcpbridge=/usr/bin/nova-dhcpbridge
+dhcp_domain=<%= @dhcp_domain %>
+
+# Default quotas for new projects:  1 xlarge instance
+#  (or 4 medium, or 8 small)
+quota_cores = 8
+quota_instances = 8
+quota_ram = 16384
+quota_floating_ips=<%= @quota_floating_ips %>
+quota_fixed_ips=200
+
+# Quota drift is a common problem
+max_age = 30
+
+
+api_paste_config=/etc/nova/api-paste.ini
+#use_ipv6=True
+allow_same_net_traffic=False
+force_dhcp_release=True
+# set the lease time to 12 hours
+dhcp_lease_time=43200
+# timeout expired leases after 3 minutes.  The default for this is 10 minutes,
+#  and for the longest time we had it set to 48 hours for unknown reasons.
+fixed_ip_disassociate_timeout=180
+iscsi_helper=tgtadm
+
+network_api_class=nova.network.api.API
+flat_network_dhcp_start=<%= @dhcp_start %>
+network_manager=nova.network.manager.FlatDHCPManager
+flat_interface=<%= @network_flat_interface %>
+flat_injected=False
+flat_network_bridge=<%= @flat_network_bridge %>
+fixed_range=<%= @fixed_range %>
+public_interface=<%= @network_public_interface %>
+routing_source_ip=<%= @network_public_ip %>
+multi_host=False
+
+dnsmasq_config_file=/etc/dnsmasq-nova.conf
+
+# Designate things:
+notification_driver = messagingv2
+
+# Ceilometer things:
+instance_usage_audit = True
+instance_usage_audit_period = hour
+notify_on_state_change = vm_and_task_state
+
+# When user doesn't specify a scheduling zone, use 'nova' which
+#  has been the only zone (and, hence, the de-facto default)
+#  for ages.
+default_schedule_zone = nova
+
+# ==== Scheduling things =====
+
+# On the compute nodes, gather up metrics so we can weigh
+#  candidate hosts by performance (specifically, CPU usage).
+compute_monitors=virt_driver
+
+
+# For the scheduler, first filter based on available resources.
+#  The filter is binary, either a node has the necessary resources
+#  or it doesn't and is fully excluded.
+scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
+
+# For the RAM filter:  Only allow scheduling on hosts that have
+#  enough RAM to support a fully active instance.  No overprovisioning
+#  here because RAM overruns lead to spontaneous instance shutdown.
+ram_allocation_ratio=1.0
+
+# For the disk filter: Allow some overprovisioning.  Our instances are
+#  copy-on-write, and most users don't come anywhere close to filling
+#  up their allocated space (in many cases that space isn't even partitioned.)
+disk_allocation_ratio=1.5
+
+# A WMF custom filter: only schedule on nodes that are in the
+#  'scheduler_pool' list.  This lets us pool and depool nodes
+#  via puppet, as needed.
+wmf_scheduler_hosts_pool=<%= @scheduler_pool.join(",") %>
+
+# Here's the complete list of filters that we use.  Most are fine with default
+#  settings.
+scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
+
+# Now that we have a list of candidate compute nodes (any of which is
+#  technically able to run the new VM), we compare those candidates
+#  to pick the best one.
+#
+# The 'MetricsWeigher' will compare metrics for available nodes and
+#  recommend the best choice.  Which metrics to use in comparison
+#  are determined below, in the 'metrics' config section.
+scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
+
+# Choose from the two best weighted candidates.
+scheduler_host_subset_size = 2
+
+
+[METRICS]
+# For scheduling purposes, just pick the compute node with the least busy
+#  CPU numbers.  This could be a much more complicated formula using many
+#  different metrics, but in combination with the filters this seems to be
+#  a pretty good first approximation.
+weight_setting = cpu.percent=-1.0
+
+
+[database]
+# http://docs.sqlalchemy.org/en/latest/core/pooling.html
+connection=mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_overflow = 25
+max_pool_size = 10
+pool_timeout = 60
+
+[glance]
+host=<%= @glance_host %>
+
+[libvirt]
+virt_type=<%= @libvirt_type %>
+use_virtio_for_bridges=True
+# live_migration_bandwidth is documented in the code, and nowhere else.
+# 'Maximum bandwidth to be used during migration, in Mbps'
+# Limit this to around a third of available 1Gbps connection so we don't
+# throttle running instances when migrating.
+live_migration_bandwidth=300
+live_migration_uri=<%= @live_migration_uri %>
+
+[oslo_messaging_rabbit]
+rabbit_host=<%= @rabbit_host %>
+rabbit_port = 5672
+rabbit_use_ssl = False
+rabbit_userid = <%= @rabbit_user %>
+rabbit_password = <%= @rabbit_pass %>
+
+[oslo_concurrency]
+lock_path=/var/lock/nova
+
+[vnc]
+enabled=False
+
+[spice]
+html5proxy_host=<%= @nova_controller %>
+html5proxy_port=6082
+html5proxy_base_url=https://<%= @spice_hostname %>/spice_sec_auto.html
+
+# These two only matter on the compute hosts:
+server_listen=0.0.0.0
+server_proxyclient_address=<%= @ipaddress %>
+
+# Enable spice related features (boolean value)
+enabled=True
+
+# Enable spice guest agent support (boolean value)
+agent_enabled=True
+
+# Keymap for spice (string value)
+keymap=en-us
