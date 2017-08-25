@@ -19,10 +19,17 @@ class profile::openstack::labtestn::keystone::service(
     $wmflabsdotorg_admin = hiera('profile::openstack::labtestn::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::labtestn::designate::wmflabsdotorg_pass'),
     $wmflabsdotorg_project = hiera('profile::openstack::labtestn::designate::wmflabsdotorg_project'),
+    $labs_hosts_range = hiera('profile::openstack::labtestn::labs_hosts_range'),
+    $nova_controller_standby = hiera('profile::openstack::labtestn::nova_controller_standby'),
+    $nova_api_host = hiera('profile::openstack::labtestn::nova_api_host'),
+    $designate_host = hiera('profile::openstack::labtestn::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::labtestn::designate_host_standby'),
+    $horizon_host = hiera('profile::openstack::labtestn::horizon_host'),
     ) {
 
-    package {'mysql-server':
-        ensure => present,
+
+    class{'profile::openstack::base::keystone::db':
+        labs_hosts_range => $labs_hosts_range,
     }
 
     require profile::openstack::labtestn::clientlib
@@ -47,7 +54,13 @@ class profile::openstack::labtestn::keystone::service(
         wmflabsdotorg_admin         => $wmflabsdotorg_admin,
         wmflabsdotorg_pass          => $wmflabsdotorg_pass,
         wmflabsdotorg_project       => $wmflabsdotorg_project,
-        require                     => Package['mysql-server'],
+        labs_hosts_range            => $labs_hosts_range,
+        nova_controller_standby     => $nova_controller_standby,
+        nova_api_host               => $nova_api_host,
+        designate_host              => $designate_host,
+        designate_host_standby      => $designate_host_standby,
+        horizon_host                => $horizon_host,
+        require                     => Class['profile::openstack::base::keystone::db'],
     }
 
     class {'profile::openstack::base::keystone::hooks':

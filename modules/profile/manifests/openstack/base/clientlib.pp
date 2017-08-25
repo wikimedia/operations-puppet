@@ -5,4 +5,6 @@ class profile::openstack::base::clientlib(
     class {'openstack2::clientlib':
         version => $version
     }
+
+    class {'openstack2::common':}
 }
