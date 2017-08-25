@@ -3,6 +3,9 @@ class profile::openstack::main::rabbitmq(
     $monitor_user = hiera('profile::openstack::main::rabbit_monitor_user'),
     $monitor_password = hiera('profile::openstack::main::rabbit_monitor_pass'),
     $file_handles = hiera('profile::openstack::main::rabbit_file_handles'),
+    $labs_hosts_range = hiera('profile::openstack::main::labs_hosts_range'),
+    $nova_api_host = hiera('profile::openstack::main::nova_api_host'),
+    $designate_host = hiera('profile::openstack::main::designate_host'),
 ){
 
     require ::profile::openstack::main::cloudrepo
@@ -11,5 +14,8 @@ class profile::openstack::main::rabbitmq(
         monitor_user     => $monitor_user,
         monitor_password => $monitor_password,
         file_handles     => $file_handles,
+        labs_hosts_range => $labs_hosts_range,
+        nova_api_host    => $nova_api_host,
+        designate_host   => $designate_host,
     }
 }
