@@ -30,7 +30,17 @@ class profile::openstack::base::keystone::service(
     $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
     $wmflabsdotorg_project = hiera('profile::openstack::base::designate::wmflabsdotorg_project'),
+    $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    $nova_controller_standby = hiera('profile::openstack::base::nova_controller_standby'),
+    $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
+    $designate_host = hiera('profile::openstack::base::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
+    $horizon_host = hiera('profile::openstack::base::horizon_host'),
     ) {
+
+    include ::network::constants
+    $prod_networks = join($::network::constants::production_networks, ' ')
+    $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'openstack2::keystone::service':
         active                      => $::fqdn == $nova_controller,
@@ -79,5 +89,20 @@ class profile::openstack::base::keystone::service(
 
     class {'openstack2::util::admin_scripts':
         version => $version,
+    }
+
+    # keystone admin API only for openstack services that might need it
+    ferm::rule{'keystone_admin':
+        ensure => 'present',
+        rule   => "saddr (${labs_hosts_range} @resolve(${nova_controller_standby}) @resolve(${nova_api_host})
+                             @resolve(${designate_host}) @resolve(${designate_host_standby}) @resolve(${horizon_host})
+                             @resolve(${osm_host})
+                             ) proto tcp dport (35357) ACCEPT;",
+    }
+
+    ferm::rule{'keystone_public':
+        ensure => 'present',
+        rule   => "saddr (${prod_networks} ${labs_networks}
+                             ) proto tcp dport (5000) ACCEPT;",
     }
 }
