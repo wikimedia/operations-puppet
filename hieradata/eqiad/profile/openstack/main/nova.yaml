@@ -1,0 +1,30 @@
+profile::openstack::labtestn::nova::dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
+profile::openstack::labtestn::nova::dhcp_domain: 'eqiad.wmflabs'
+profile::openstack::labtestn::nova::dhcp_start: '10.68.16.4'
+profile::openstack::labtestn::nova::quota_floating_ips: '0'
+profile::openstack::labtestn::nova::network_flat_tagged_base_interface: 'eth1'
+profile::openstack::labtestn::nova::network_flat_interface_vlan: '1102'
+profile::openstack::labtestn::nova::network_flat_interface: 'eth1.1102'
+profile::openstack::labtestn::nova::flat_network_bridge: 'b12102'
+profile::openstack::labtestn::nova::fixed_range: '10.68.16.0/21'
+profile::openstack::labtestn::nova::network_public_interface: 'eth0'
+profile::openstack::labtestn::nova::network_public_ip: '208.80.155.255'
+profile::openstack::labtestn::nova::zone: 'eqiad'
+profile::openstack::labtestn::nova::db_host: 'm5-master.eqiad.wmnet'
+profile::openstack::labtestn::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
+profile::openstack::labtestn::nova::scheduler_pool:
+  - labvirt1001
+  - labvirt1002
+  - labvirt1003
+  - labvirt1004
+  - labvirt1005
+  - labvirt1006
+  - labvirt1007
+  - labvirt1008
+  - labvirt1009
+  - labvirt1010
+  - labvirt1011
+  - labvirt1012
+  - labvirt1013
+  - labvirt1014
+  - labvirt1016
