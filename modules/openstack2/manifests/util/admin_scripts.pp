@@ -7,9 +7,7 @@ class openstack2::util::admin_scripts(
     # Installing this package ensures that we have all the UIDs that
     #  are used to store an instance volume.  That's important for
     #  when we rsync files via this host.
-    package { 'libvirt-bin':
-        ensure => present,
-    }
+    require_package('libvirt-bin')
 
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-nova-migrate':
