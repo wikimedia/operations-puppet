@@ -66,8 +66,8 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
 
     # rebuildTermSqlIndex is temporarilly stopped
     cron { 'wikibase-rebuildTermSqlIndex':
-        ensure  => absent,
-        command => 'timeout 3500s /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildTermSqlIndex.php --wiki wikidatawiki --entity-type=item --batch-size 500 --sleep 50 --from-id $(tail -100 /var/log/wikidata/rebuildTermSqlIndex.log | grep -E "Processed up to page (\d+?)" | sed -E "s/Processed up to page //; s/ \(Q.+?//" | tail -1) >> /var/log/wikidata/rebuildTermSqlIndex.log 2>&1',
+        ensure  => $ensure,
+        command => 'timeout 3500s /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildTermSqlIndex.php --wiki wikidatawiki --entity-type=item --batch-size 500 --sleep 50 --from-id $(ls /var/log/wikidata/rebuildTermSqlIndex.log{,*[0-9]} | sort -r | xargs -d "\n" awk '/Processed up to page (\d+?)/ { print $5; exit }') >> /var/log/wikidata/rebuildTermSqlIndex.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
         hour    => '*',
