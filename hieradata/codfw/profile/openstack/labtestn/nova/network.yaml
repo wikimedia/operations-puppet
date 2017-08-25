@@ -1,0 +1,21 @@
+profile::openstack::labtestn::nova::network::labs_metal: []
+profile::openstack::labtestn::nova::network::dns_recursor: 'labtest-recursor0.wikimedia.org'
+profile::openstack::labtestn::nova::network::dns_recursor_secondary: 'labtest-recursor0.wikimedia.org'
+
+# A wide variety of hosts are reachable via a public web proxy
+profile::openstack::labtestn::nova::network::nova_dnsmasq_aliases:
+  deployment-cache-text04:
+    'public_ip': '208.80.155.135'
+    'private_ip': '10.68.18.103'
+  deployment-cache-upload04:
+    'public_ip': '208.80.155.136'
+    'private_ip': '10.68.18.109'
+  relic:
+    'public_ip': '208.80.155.197'
+    'private_ip': '10.68.16.162'
+  tools-webproxy:
+    'public_ip': '208.80.155.131'
+    'private_ip': '10.68.21.49'
+  labs_shared_proxy:
+    'public_ip': '208.80.155.156'
+    'private_ip': '10.68.21.68'
