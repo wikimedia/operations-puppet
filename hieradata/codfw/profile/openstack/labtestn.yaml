@@ -1,7 +1,13 @@
 profile::openstack::labtestn::version: 'liberty'
 profile::openstack::labtestn::nova_controller: 'labtestcontrol2003.wikimedia.org'
-profile::openstack::labtestn::nova_controller_standby: ''
+profile::openstack::labtestn::nova_controller_standby: 'labtestcontrol2003.wikimedia.org'
+profile::openstack::labtestn::nova_api_host: 'labtestcontrol2003.wikimedia.org'
+profile::openstack::labtestn::designate_host: 'labtestservices2003.wikimedia.org'
+profile::openstack::labtestn::designate_host_standby: 'labtestservices2003.wikimedia.org'
+profile::openstack::labtestn::labs_hosts_range: '127.0.0.1/32'
+profile::openstack::labtestn::horizon_host: 'labtestweb2001.wikimedia.org'
+profile::openstack::labtestn::nova_network_host: 'labtestnet2002.codfw.wmnet'
 profile::openstack::labtestn::rabbit_monitor_user: 'monitoring'
 profile::openstack::labtestn::rabbit_file_handles: 8192
-profile::openstack::labtestn::osm_host: 'labtestnwikitech.wikimedia.org'
+profile::openstack::labtestn::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::labtestn::ldap_hosts: ['labtestservices2001.wikimedia.org']

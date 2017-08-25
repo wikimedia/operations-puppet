@@ -19,14 +19,20 @@ class profile::openstack::labtest::keystone::service(
     $wmflabsdotorg_admin = hiera('profile::openstack::labtest::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::labtest::designate::wmflabsdotorg_pass'),
     $wmflabsdotorg_project = hiera('profile::openstack::labtest::designate::wmflabsdotorg_project'),
+    $labs_hosts_range = hiera('profile::openstack::labtest::labs_hosts_range'),
+    $nova_controller_standby = hiera('profile::openstack::labtest::nova_controller_standby'),
+    $nova_api_host = hiera('profile::openstack::labtest::nova_api_host'),
+    $designate_host = hiera('profile::openstack::labtest::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::labtest::designate_host_standby'),
+    $horizon_host = hiera('profile::openstack::labtest::horizon_host'),
     ) {
 
-    package {'mysql-server':
-        ensure => 'present',
+    class{'::profile::openstack::base::keystone::db':
+        labs_hosts_range => $labs_hosts_range,
     }
 
-    require profile::openstack::labtest::clientlib
-    class {'profile::openstack::base::keystone::service':
+    require ::profile::openstack::labtest::clientlib
+    class {'::profile::openstack::base::keystone::service':
         version                     => $version,
         nova_controller             => $nova_controller,
         osm_host                    => $osm_host,
@@ -47,10 +53,16 @@ class profile::openstack::labtest::keystone::service(
         wmflabsdotorg_admin         => $wmflabsdotorg_admin,
         wmflabsdotorg_pass          => $wmflabsdotorg_pass,
         wmflabsdotorg_project       => $wmflabsdotorg_project,
-        require                     => Package['mysql-server'],
+        labs_hosts_range            => $labs_hosts_range,
+        nova_controller_standby     => $nova_controller_standby,
+        nova_api_host               => $nova_api_host,
+        designate_host              => $designate_host,
+        designate_host_standby      => $designate_host_standby,
+        horizon_host                => $horizon_host,
+        require                     => Class['profile::openstack::base::keystone::db'],
     }
 
-    class {'profile::openstack::base::keystone::hooks':
+    class {'::profile::openstack::base::keystone::hooks':
         version => $version,
     }
 }

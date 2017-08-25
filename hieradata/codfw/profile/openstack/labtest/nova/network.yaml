@@ -1,0 +1,2 @@
+profile::openstack::labtestn::nova::network::dns_recursor: 'labtest-recursor0.wikimedia.org'
+profile::openstack::labtestn::nova::network::dns_recursor_secondary: 'labtest-recursor0.wikimedia.org'
