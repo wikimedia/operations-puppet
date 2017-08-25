@@ -1,0 +1,23 @@
+#default is 150, not enough.
+cache-size=1200
+#dnsmasq sets TTL to 0 if the record is coming out of the DHCP leases it maintans
+#This doesn't sound very good, and is causing a fair amount of load. Incrase it.
+local-ttl=300
+<% @nova_dnsmasq_aliases.sort.map do |k,v| -%>
+# <%= k %>
+alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
+<% end -%>
+
+# Special entries for labs baremetal
+<% @labs_metal.sort.map do |k,v| -%>
+dhcp-host=<%= v['MAC'] %>,<%= k %>,<%= v['IPv4'] %>,10m
+<% end -%>
+
+#Clients should use the designate-backed dns server rather than dnsmasq
+dhcp-option=option:dns-server,<%= @recursor_ip %>,<%= @recursor_secondary_ip %>
+
+dhcp-boot=jessie-installer/pxelinux.0,<%= @tftp_host -%>,<%= scope.function_ipresolve([@tftp_host, 4]) %>
+
+# This next line is a bit of a hack, supporting only a single
+#  serial port/baud speed for labs metal
+dhcp-option-force=209,pxelinux.cfg/ttyS1-115200
