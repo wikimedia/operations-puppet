@@ -99,7 +99,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski]
+    members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski, cooltey, sharvaniharan]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
@@ -2543,6 +2543,24 @@ users:
     email: shilad@gmail.com
     expiry_date: 2018-02-17
     expiry_contact: ahalfaker@wikimedia.org
+  cooltey:
+    ensure: present
+    gid: 500
+    name: cooltey
+    realname: Cooltey Feng
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRx1jtryuO3u8yAV975FGwZz3aalELPHfnT2ANaWX+zGIrf6HbLFCF3gXuSxbRI934xDzJmTwij9c5zKTbk6iKL+aNgKic6713e8O1758+vJHc/vmYCDX2guNmFTvAyDyafc4vBy5iYXKi3fAT7VglNFH/WcjzLKCLa2qfpsLVwauPsq+zBrCntPJFx67KKqOwOmZhFaasu5fQuq8QIM0SmqORT51zQwKm6RMk+A8jKs45kAaiXHNC69E4axGaf+FF68C4wawmB42L+IkHJ8LKR4nHd+Py2TfgLjWYf66gunb7zeeIeQxYtYVNbFdv4pwy92c4gxNT2PAvSzrowe8nwd4zLmGLn+IKBf6cqOQh/eNU4Z9Ugwa7znCmElis09AIVs42tb1T018jwIqSjJgpiZpkm94/4V1eGIbcICKKnBOwBYlYdEK98IbaxDAiQqlM/vyYkmCQoz4Ai1ZTxamjga/KZJ1DR30S1A/QbRz0bN23s0H98RCrhJHaX45ICtfppJODPodIGa0mzh8UA3/9Yz8sygF1+4nzlt7wmd428Af82mnMwmF59gEJcD4/eJcBFy8lNK6ZaanFogRyuLbzKsd5r3UvY/y6vcwP+VNArGeRUX66ntV7PbLoxPLj++1YRsHM27WAI5fQRR3mNkn74V8+SOBb4gMJGIwDL4fbow== cfeng@wikimedia.org
+    uid: 17764
+    email: cfeng@wikimedia.org
+  sharvaniharan:
+    ensure: present
+    gid: 500
+    name: sharvaniharan
+    realname: Sharvani Haran
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgCXufB/3I6HqjNjSXYrhy1m7x1GBsxGnGDnR/EcSXu5gPXPldFL17GsLURGn1m+QE8APnv1lvVuaxvP/aP/vkAm581/upddJDuM9+reMYhpjF+mrGq2b4JRMhuBkztZJ8CYv8wULqTG8jzAl5omW9y3swj9Zq4TfDWzOz4WRFDPturgMwm8mtalTTE8NHYSIRuRgTL7XcT7lrY80zlCYLnzjldX5GJZ5VTJBFp1OU/RXA7+V4CqQwnXnnBoo3xS19nVwpUanJbg9kXpIkpwI9i1RrUugYzmvjt6fyIZ2S2OTmGZr0j/vFnNBMAdgJ3QRMA0rcriKXe+jYltGjCXtl sharvaniharan@gerrit.wikimedia.org
+    uid: 17744
+    email: sharan@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
