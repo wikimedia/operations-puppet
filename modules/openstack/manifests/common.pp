@@ -57,3 +57,4 @@ class openstack::common(
             require => Package['nova-common'];
     }
 }
+
