@@ -297,7 +297,7 @@ sub vcl_recv {
 	<%- if scope.function_hiera(['cache::cluster']) == "text" -%>
 	   && req.url ~ "^/wiki/" && req.url !~ ":"
 	<%- end -%>
-	   && std.random(0,100) < 5.0)) {
+	   && std.random(0,100) < 8.0)) {
 		return (synth(418, "Browser Connection Security Warning"));
 	}
 
