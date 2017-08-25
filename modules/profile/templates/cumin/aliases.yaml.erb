@@ -1,4 +1,4 @@
 all: P{*}
 <% @datacenters.each do |dc| -%>
-<%= dc %>: P{R:class = profile::cumin::target R:class%site = <%= dc %>}
+<%= dc %>: P{R:class = profile::cumin::target and R:class%site = <%= dc %>}
 <% end -%>
