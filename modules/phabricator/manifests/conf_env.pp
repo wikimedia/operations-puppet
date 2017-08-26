@@ -11,7 +11,7 @@ define phabricator::conf_env(
     $owner          = 'root',
     $group          = 'root',
 ) {
-    file { "${phabricator::phabdir}/phabricator/conf/local/${environment}.json":
+    file { "${phabricator::confdir}/local/${environment}.json":
         owner   => $owner,
         group   => $group,
         mode    => '0640',
