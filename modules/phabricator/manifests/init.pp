@@ -53,6 +53,7 @@
 
 class phabricator (
     $phabdir          = '/srv/phab',
+    $confdir         = '/srv/phab/phabricator/conf',
     $timezone         = 'UTC',
     $trusted_proxies  = [],
     $libraries        = [],
@@ -236,7 +237,21 @@ class phabricator (
         notify  => Service['apache2'],
     }
 
-    file { "${phabdir}/phabricator/conf/local/local.json":
+    file { $confdir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { "${confdir}/local":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { "${confdir}/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => $base_requirements,
         owner   => 'root',
