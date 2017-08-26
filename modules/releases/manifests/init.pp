@@ -48,6 +48,7 @@ class releases (
 
     include ::apache::mod::rewrite
     include ::apache::mod::headers
+    include ::apache::mod::proxy
 
     apache::site { $sitename:
         content => template('releases/apache.conf.erb'),
