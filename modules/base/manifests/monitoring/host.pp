@@ -147,4 +147,20 @@ class base::monitoring::host(
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
         }
     }
+
+    if hiera('monitor_screens', false) {
+
+        file { '/usr/local/lib/nagios/plugins/check_long_procs':
+            ensure => present,
+            source => 'puppet:///modules/base/monitoring/check_long_procs',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+        }
+
+        ::nrpe::monitor_service { 'check_long_procs':
+            description  => 'Long running screen/tmux',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_long_procs -w 1 -c ',
+        }
+    }
 }
