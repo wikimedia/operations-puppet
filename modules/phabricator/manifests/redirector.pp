@@ -15,12 +15,22 @@ define phabricator::redirector(
     $phab_host   = 'phabricator.wikimedia.org',
     $alt_host    = 'phab.wmfusercontent.org'
 ) {
+    $preamble = "${phabricator::confdir}/preamble.php"
+    $redirect_config = "${phabricator::confdir}/redirect_config.json"
+
     file { "${rootdir}/phabricator/support/preamble.php":
+        ensure => 'link',
+        target => $preamble
+    }
+    file { $preamble:
         content => template('phabricator/preamble.php.erb'),
-        require => File["${rootdir}/phabricator/support/redirect_config.json"],
     }
 
-    file { "${rootdir}/phabricator/support/redirect_config.json":
+    file { $redirect_config:
         content => template('phabricator/redirect_config.json.erb'),
+    }
+    file { "${rootdir}/phabricator/support/redirect_config.json":
+        ensure => 'link',
+        target => $redirect_config,
     }
 }
