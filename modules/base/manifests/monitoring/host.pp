@@ -158,9 +158,14 @@ class base::monitoring::host(
             mode   => '0555',
         }
 
+        ::sudo::user { 'nagios_long_procs':
+            user       => 'nagios',
+            privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_long_procs'],
+        }
+
         ::nrpe::monitor_service { 'check_long_procs':
             description  => 'Long running screen/tmux',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_long_procs -w 1 -c ',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_long_procs -w 1 -c 3',
         }
     }
 }
