@@ -8,5 +8,9 @@
 <% end -%>
 
 <% if @notrack == true %>
+<% if @drange -%>
+&NO_TRACK_R_CLIENT(<%= @proto %>, <%= @port %>, <%= @drange %>);
+<% else -%>
 &NO_TRACK_CLIENT(<%= @proto %>, <%= @port %>);
+<% end -%>
 <% end -%>
