@@ -181,11 +181,13 @@ groups:
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
-                 sampled webrequest logs.  This does not (necessarily)
-                 grant access to Hadoop.  If someone wants access to
+                 sampled webrequest logs.  This group should not be used just to
+                 grant someone Hadoop access.  If someone wants access to
                  access webrequest logs in the Hadoop cluster
                  you should put them in the analytics-privatedata-users
-                 group.
+                 group.  If they want Hadoop access without rights to private data,
+                 add them instead to the analytics-users group.  statistics-* groups
+                 DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
@@ -243,7 +245,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, dworley, ironholds, diego]
+              kaldari, goransm, ema, dworley, ironholds, diego, shiladsen]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
