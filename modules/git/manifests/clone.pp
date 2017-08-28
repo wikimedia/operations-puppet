@@ -113,14 +113,14 @@ define git::clone(
                 default => '',
             }
             # if branch was specified
-            if $branch {
+            if !empty($branch) {
                 $brancharg = "-b ${branch} "
             }
             # else don't checkout a non-default branch
             else {
                 $brancharg = ''
             }
-            if $ssh {
+            if !empty($ssh) {
                 $env = "GIT_SSH=${ssh}"
             }
 
