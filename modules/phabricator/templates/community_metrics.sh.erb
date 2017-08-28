@@ -9,7 +9,7 @@
 declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
 declare sndr_address='<%= @sndr_address %>'
 
-declare sql_host='<%= @mysql_slave %>'
+declare sql_host='<%= scope['::profile:phabricator::main::mysql_slave'] %>'
 declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
 declare sql_name='phabricator_maniphest'
 declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
