@@ -131,6 +131,7 @@ $private_wikis = [
     'checkuserwiki',
     'collabwiki',
     'ecwikimedia',
+    'electcomwiki',
     'execwiki',
     'fdcwiki',
     'grantswiki',
