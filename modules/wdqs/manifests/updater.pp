@@ -20,7 +20,7 @@ class wdqs::updater(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        before  => Base::Service_unit['wdqs-updater'],
+        before  => Systemd::Unit['wdqs-updater'],
     }
 
     wdqs::logback_config { 'updater':
