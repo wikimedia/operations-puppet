@@ -1864,7 +1864,6 @@ node 'mx2001.wikimedia.org' {
 
 # Experimental Jupyter notebook servers
 node 'notebook1001.eqiad.wmnet' {
-    # Equivalent of stat1003
     role(paws_internal::jupyterhub, paws_internal::mysql_access)
 
     include ::standard
@@ -2197,12 +2196,9 @@ node 'tureis.codfw.wmnet' {
     role(failoid)
 }
 
-# stat1003 is a general purpose number cruncher for
-# researchers and analysts.  It is primarily used
-# to connect to MySQL research databases and save
-# query results for further processing on this node.
+# To be fully decom as part of T152712
 node 'stat1003.eqiad.wmnet' {
-    role(statistics::cruncher)
+    role(spare::system)
 }
 
 node 'stat1004.eqiad.wmnet' {
