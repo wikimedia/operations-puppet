@@ -1137,7 +1137,6 @@ users:
     name: demon
     realname: Chad Horohoe
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyrZy5Pvx1/gmFXtvO3SCB4lpvsKaxoeJd8h+FHdPLkvjExQpgY0ERcWdUzMwuoeCz1xLiyx7rYL4jYQZyLiOeZBSVZwwwvHKRs2h2NL70twx9GN4ZDcq+yQjhhrPk6Fbw1MDgogIemAJRf+v7r06tEdl6Ejve/BZWOp8CRs/WIyhY0mvCTFFUpAkv4hf/Uf93Gd3ltM552CIFKF2modyCRQfkp6JEawia4Q7werOtBHbHYOE6VnBRQwWX+dotsU0YJ+mwm5lPmOXDjR6ynzEo9C9z6fMK18LjEblHKLe9hn28Z75YXM2frdxPcGQ86tL1WiWgI0DQ7Wdro0GWN0GD chad@wmf2
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID3cCf8KZ1UqZvUjg3HbaDvV/X1isC2L30cKBpw/3cFH demon@wmf
     uid: 1145
     email: chorohoe@wikimedia.org
