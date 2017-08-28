@@ -59,4 +59,11 @@ class profile::dumpsdata(
         description   => 'NFS',
         check_command => 'check_tcp!2049',
     }
+
+    class { '::dumpsuser': }
+
+    class { '::dumpsdirs':
+        user  => $dumpsuser::user,
+        group => $dumpsuser::group,
+    }
 }
