@@ -1,7 +1,8 @@
 class profile::base(
     $puppetmaster  = hiera('puppetmaster'),
     $dns_alt_names = hiera('profile::base::dns_alt_names', false),
-    $environment   = hiera('profile::base::environment', undef),
+    # TODO/puppet4: revert to using "undef"
+    $environment   = hiera('profile::base::environment', ''),
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $domain_search = hiera('profile::base::domain_search', $::domain),
     $remote_syslog = hiera('profile::base:remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
@@ -12,7 +13,8 @@ class profile::base(
     $group_contact = hiera('contactgroups', 'admins'),
     $check_disk_options = hiera('profile::base::check_disk_options', '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs'),
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
-    $check_raid_policy = hiera('profile::base::check_raid_policy', undef),
+    # TODO/puppet4: revert to using "undef"
+    $check_raid_policy = hiera('profile::base::check_raid_policy', ''),
 ) {
     require ::profile::base::certificates
     class { '::apt':
