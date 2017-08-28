@@ -48,11 +48,10 @@ define uwsgi::app(
             }
 
             base::service_unit { "uwsgi-${title}":
-                ensure        => present,
-                template_name => 'uwsgi',
-                systemd       => systemd_template('uwsgi'),
-                upstart       => upstart_template('uwsgi'),
-                subscribe     => File["/etc/uwsgi/apps-available/${basename}.ini"],
+                ensure    => present,
+                systemd   => systemd_template('uwsgi'),
+                upstart   => upstart_template('uwsgi'),
+                subscribe => File["/etc/uwsgi/apps-available/${basename}.ini"],
             }
 
             nrpe::monitor_service { "uwsgi-${title}":

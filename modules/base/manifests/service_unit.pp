@@ -15,10 +15,6 @@
 #  (unless $declare_service is false), in other words 'present' will
 #  ensure => running and conversely 'absent' will ensure => stopped.
 #
-# [*template_name*]
-#  String, default $name. Now deprecated. Init file template pathnames are formed
-#  using the pattern "$module/initscripts/$template_name.$initsystem.erb"
-#
 # [*systemd*]
 #  String. If it is a non-empty string, the content will be used as the content
 #  of the custom systemd service file.
@@ -74,7 +70,6 @@ define base::service_unit (
     $sysvinit         = undef,
     $strict           = true,
     $refresh          = true,
-    $template_name    = $name,
     $declare_service  = true,
     $service_params   = {},
 ) {
