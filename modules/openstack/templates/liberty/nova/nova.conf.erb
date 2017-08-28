@@ -81,13 +81,10 @@ instance_usage_audit = True
 instance_usage_audit_period = hour
 notify_on_state_change = vm_and_task_state
 
-
-
-# Deprecated, remove in Kilo:
-node_availability_zone=<%= @novaconfig["zone"] %>
-zone_name=<%= @novaconfig["zone"] %>
-# Should be:
-#default_availability_zone = <%= @novaconfig["zone"] %>
+# When user doesn't specify a scheduling zone, use 'nova' which
+#  has been the only zone (and, hence, the de-facto default)
+#  for ages.
+default_schedule_zone = nova
 
 # ==== Scheduling things =====
 
