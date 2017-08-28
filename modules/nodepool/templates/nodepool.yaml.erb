@@ -78,6 +78,8 @@ providers:
     service-type: 'compute'
     service-name: 'nova'
     project-id: '<%= @openstack_tenant_id -%>'
+    availability-zones:
+      - 'nova'
     region-name: 'eqiad'
     username: '<%= @openstack_username -%>'
     password: '<%= @openstack_password -%>'
