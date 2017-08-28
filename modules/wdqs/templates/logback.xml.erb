@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashSocketAppender">
         <host><%= @logstash_host %></host>
         <port><%= @logstash_port %></port>
         <customFields>{"program":"<%= @title %>"}</customFields>
