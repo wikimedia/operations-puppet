@@ -2482,7 +2482,6 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDqwfn3ofrvHW/tLwTlVnQW0J5bD6LXJWRiVnmwILhDZK7JzWxKHDWXylO865AuHPHii6i5A6vFIu9/R72iKtAmd+X+MhIOH3+K7ErqX2S8tIIHghAac96VSNZnlDW/XTuOvFOB8TUhh+SEctlvNes3a9C5Ysxp+VYW7YLRQG+PYs3/A6ifWsPS1dwtGQtysWhkjfGvFNy31VmVVJMng54SH14uxpS+Fc87xRLbpXUVL6Pd7ixKsEfF0z6Rf0V8zS8VmchiJf7Q/EllH7c/6UFZu/fHvVnY653/Miei/6wgdtKrOX5ajai5ZbM6tWbHX4GUz3BncjrrD8Qe6nSJIMz goransm@Ubuntu-1604-xenial-64-minimal
     uid: 16664
     email: goran.milovanovic_ext@wikimedia.de
-    expiry_date: 2018-01-01
   pnorman:
     ensure: present
     gid: 500
