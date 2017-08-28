@@ -43,6 +43,14 @@ class rabbitmq(
         source => 'puppet:///modules/rabbitmq/rabbitmqadmin',
     }
 
+    file { '/etc/rabbitmq/rabbitmq.config':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/rabbitmq/rabbitmq.config',
+    }
+
     service { 'rabbitmq-server':
         ensure  => $running,
         require => Package['rabbitmq-server'],
