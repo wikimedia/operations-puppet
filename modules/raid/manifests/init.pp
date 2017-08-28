@@ -16,10 +16,10 @@ class raid (
     $write_cache_policy = undef,
 ){
 
-    if $write_cache_policy {
-        $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
-    } else {
+    if empty($write_cache_policy) {
         $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+    } else {
+        $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
     }
 
     # for 'forking' checks (i.e. all but mdadm, which essentially just reads
