@@ -11,26 +11,13 @@ class statistics::rsync::eventlogging {
     # the rsync_job define.
     $retention_days = 90
 
-    # TODO: remove these conditionals after stat1003 is gone.
-    $destination = $::hostname ? {
-        'stat1003' => '/srv/eventlogging/archive',
-        default    => '/srv/log/eventlogging/archive',
-    }
-    if $destination == '/srv/log/eventlogging/archive' {
-        file { ['/srv/log/eventlogging', '/srv/log/eventlogging/archive']:
-            ensure => 'directory',
-            owner  => 'stats',
-            group  => 'wikidev',
-            mode   => '0775',
-        }
-    }
-    else {
-        file { "${working_path}/eventlogging":
-            ensure => 'directory',
-            owner  => 'stats',
-            group  => 'wikidev',
-            mode   => '0775',
-        }
+    $destination = '/srv/log/eventlogging/archive'
+
+    file { ['/srv/log/eventlogging', '/srv/log/eventlogging/archive']:
+        ensure => 'directory',
+        owner  => 'stats',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 
     # eventlogging data logs from eventlog1001
