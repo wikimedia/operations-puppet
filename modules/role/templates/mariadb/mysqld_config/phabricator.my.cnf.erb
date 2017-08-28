@@ -87,7 +87,7 @@ innodb_buffer_pool_instances    = 8
 innodb_log_file_size            = 1G
 innodb_flush_log_at_trx_commit  = 1
 innodb_flush_method             = O_DIRECT
-innodb_ft_server_stopword_table = <%= @stopwords_database %>/phabricator_stopwords
+innodb_ft_server_stopword_table = <%= scope['role::mariadb::misc::phabricator::stopwords_database'] %>/phabricator_stopwords
 innodb_ft_enable_stopword       = 1
 innodb_ft_min_token_size        = 3
 innodb_ft_max_token_size        = 84
