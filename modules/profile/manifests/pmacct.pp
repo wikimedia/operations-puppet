@@ -28,6 +28,17 @@ class profile::pmacct (
         librdkafka_config => $librdkafka_config,
     }
 
+    # https://phabricator.wikimedia.org/T173489
+    # Until librdkafka is configurable on pmacct (1.6.2)
+    # we need to make sure that 0.11 is not deployed,
+    # since it may cause unwanted timeouts to the Kafka brokers.
+    apt::pin { 'librdkafka1':
+        package  => 'librdkafka1',
+        pin      => 'release a=stretch',
+        priority => '1001',
+        before   => Package['pmacct'],
+    }
+
     include ::standard
     include ::base::firewall
 
