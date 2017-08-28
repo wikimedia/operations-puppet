@@ -190,3 +190,10 @@ agent_enabled=True
 
 # Keymap for spice (string value)
 keymap=en-us
+
+[conductor]
+# The default worker count is == the number of CPUs.  This
+#  results in a whole lot of idle connections staying open on
+#  the mysql backend.  Until we see actual performance
+#  issues, let's keep a lid on it.
+workers = 8
