@@ -44,9 +44,6 @@ class role::labs::openstack::nova::controller {
         spice_consoles => {
             rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 6082 ACCEPT;',
         },
-        keystone_redis_replication => {
-            rule  => "saddr (${spare_master}) proto tcp dport (6379) ACCEPT;",
-        },
         # keystone admin API only for openstack services that might need it
         keystone_admin => {
             rule  => "saddr (${labs_nodes} ${spare_master} ${api_host}
