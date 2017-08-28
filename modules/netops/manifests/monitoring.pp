@@ -30,7 +30,8 @@ class netops::monitoring {
         'cr1-codfw'  => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', bgp => true, },
         'cr2-codfw'  => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', bgp => true, },
         'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', },
-        'pfw3-codfw' => { ipv4 => '208.80.153.197', parents => ['cr1-codfw', 'cr2-codfw'], bgp => true, alarms => false, },
+        'pfw-codfw'  => { ipv4 => '208.80.153.195',  },
+        'pfw3-codfw' => { ipv4 => '208.80.153.197',  parents => ['cr1-codfw', 'cr2-codfw'], bgp => true, alarms => false, },
         # eqdfw
         'cr1-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', bgp => true, },
         # esams
@@ -51,6 +52,15 @@ class netops::monitoring {
         'mr1-codfw.oob' => { ipv4 => '216.117.46.36',   },
         'mr1-esams.oob' => { ipv4 => '164.138.24.90',   },
         'mr1-ulsfo.oob' => { ipv4 => '209.237.234.242', },
+        're0.cr1-eqiad' => { ipv4 => '10.65.0.12',      parents => ['mr1-eqiad'] },
+        're0.cr2-eqiad' => { ipv4 => '10.65.0.14',      parents => ['mr1-eqiad'] },
+        're0.cr1-codfw' => { ipv4 => '10.193.0.10',     parents => ['mr1-codfw'] },
+        're0.cr2-codfw' => { ipv4 => '10.193.0.12',     parents => ['mr1-codfw'] },
+        're0.cr1-esams' => { ipv4 => '10.21.0.116',     parents => ['mr1-esams'] },
+        're0.cr2-esams' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
+        're0.cr1-ulsfo' => { ipv4 => '10.128.128.2',    parents => ['mr1-ulsfo'] },
+        're0.cr2-ulsfo' => { ipv4 => '10.128.128.3',    parents => ['mr1-ulsfo'] },
+
     }
     create_resources(netops::check, $oob)
 
