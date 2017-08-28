@@ -16,6 +16,7 @@ class role::labs::openstack::nova::controller {
     $wikitech = ipresolve(hiera('labs_osm_host'),4)
     $horizon = ipresolve(hiera('labs_horizon_host'),4)
     $api_host = ipresolve(hiera('labs_nova_api_host'),4)
+    $master = ipresolve(hiera('labs_nova_controller'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
     $designate_secondary = ipresolve(hiera('labs_designate_hostname_secondary'))
@@ -43,6 +44,11 @@ class role::labs::openstack::nova::controller {
     $fwrules = {
         saltcertcleaning => {
             rule  => "saddr (${designate}) proto tcp dport (ssh) ACCEPT;",
+        },
+        # This is a no-op on the primary controller; on the spare master
+        #  it allows us to sync up glance images with rsync.
+        glancesync => {
+            rule  => "saddr (${master}) proto tcp dport (ssh) ACCEPT;",
         },
         spice_consoles => {
             rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 6082 ACCEPT;',
