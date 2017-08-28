@@ -5584,7 +5584,7 @@ host mw2255 {
 }
 
 host mw2256 {
-    hardware ethernet 18:66:DA:83:16:47;
+    hardware ethernet 14:18:77:5F:43:64;
     fixed-address mw2256.codfw.wmnet;
 }
 
