@@ -1880,8 +1880,7 @@ node 'notebook1002.eqiad.wmnet' {
 
 # cluster management (salt master, cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
-    role(deployment::salt_masters, debdeploy::master, ipmi::mgmt,
-      access_new_install, mgmt::drac_ilo, cluster::management)
+    role(deployment::salt_masters, debdeploy::master, mgmt::drac_ilo, cluster::management)
 
     interface::add_ip6_mapped { 'main': }
 }
