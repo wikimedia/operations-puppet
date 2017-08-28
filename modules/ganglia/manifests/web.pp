@@ -9,6 +9,7 @@ class ganglia::web(
     include ::apache::mod::ssl
     include ::apache::mod::rewrite
     include ::apache::mod::headers
+    include ::apache::mod::authnz_ldap
 
     $ganglia_servername = 'ganglia.wikimedia.org'
     $ganglia_serveralias = 'uranium.wikimedia.org'
@@ -27,6 +28,18 @@ class ganglia::web(
                 'ganglia-webfrontend',
             ]:
         ensure => $ensure,
+    }
+
+    $auth_ldap = {
+        name          => 'nda/ops/wmf',
+        bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
+        bind_password => $passwords::ldap::production::proxypass,
+        url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
+        groups        => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+        ],
     }
 
     apache::site { $ganglia_servername:
