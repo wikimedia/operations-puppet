@@ -76,7 +76,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [dartar, bearloga,
               ezachte, jamesur, jdlrobson, tparscal, smalyshev,
-              leila, santhosh, amire80, foks, chelsyx]
+              leila, santhosh, amire80, foks, chelsyx, dbarratt]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -2562,6 +2562,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgCXufB/3I6HqjNjSXYrhy1m7x1GBsxGnGDnR/EcSXu5gPXPldFL17GsLURGn1m+QE8APnv1lvVuaxvP/aP/vkAm581/upddJDuM9+reMYhpjF+mrGq2b4JRMhuBkztZJ8CYv8wULqTG8jzAl5omW9y3swj9Zq4TfDWzOz4WRFDPturgMwm8mtalTTE8NHYSIRuRgTL7XcT7lrY80zlCYLnzjldX5GJZ5VTJBFp1OU/RXA7+V4CqQwnXnnBoo3xS19nVwpUanJbg9kXpIkpwI9i1RrUugYzmvjt6fyIZ2S2OTmGZr0j/vFnNBMAdgJ3QRMA0rcriKXe+jYltGjCXtl sharvaniharan@gerrit.wikimedia.org
     uid: 17744
     email: sharan@wikimedia.org
+  dbarratt:
+    ensure: present
+    gid: 500
+    name: dbarratt
+    realname: David Barratt
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrRP96tPtNAw4XAiTdDaxbwfDIwN5c4rCg3vArfDQSqOutIICgY30CGC1nadOmEqJxqAn6xQYnMgA94qb3pyPln/DLYtcseE185UHvqNqbOpXT+a9EnV/o1uHPP0/riQHF5k27SBUZS6RyAj14JkgbTutz5Z35aYfULTmhP3yMTdhd+/Fl3rA7d+bZdZCLwiikwJ0DY1dKXmSCKalFAub/FVjEGLpSLGu2gkKufx6sm4W+U0nBku9tLxBJ3B/rJdXVoudeAM3NWBJErPEqvyv3SYTnxthGIuqI9ZayjtzVNuuK5eETxdFVMwoxV1V/AvtqgSHxa9Tr1aTMkZZ8IdmP dbarratt@wikimedia.org
+    uid: 17204
+    email: dbarratt@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
