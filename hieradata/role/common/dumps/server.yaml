@@ -4,7 +4,6 @@ dumps::rsync_clients:
   - mwlog2001.codfw.wmnet
   - phab1001.eqiad.wmnet
   - ms1001.wikimedia.org
-  - stat1003.eqiad.wmnet
   - stat1005.eqiad.wmnet
   - stat1006.eqiad.wmnet
   - sagres.c3sl.ufpr.br

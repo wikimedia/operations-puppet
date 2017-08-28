@@ -28,21 +28,11 @@ class statistics::wmde::graphite(
     # Path in which all crons will log to.
     $log_dir = "${dir}/log"
 
-    # TODO: remove after stat1003 is gone: T152712
-    if os_version('debian >= stretch') {
-        require_package('openjdk-8-jdk')
-        require_package(
-            'php',
-            'php-cli',
-        )
-    }
-    else {
-        require_package('openjdk-7-jdk')
-        require_package(
-            'php5',
-            'php5-cli',
-        )
-    }
+    require_package('openjdk-8-jdk')
+    require_package(
+        'php',
+        'php-cli',
+    )
 
     include ::passwords::mysql::research
     # This file will render at
