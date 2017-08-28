@@ -1,0 +1,19 @@
+transport: clustershell
+log_file: <%= @cumin_log_path %>/cumin-installer.log
+default_backend: direct
+
+puppetdb:
+    host: <%= @puppetdb_host %>
+    port: 443
+    urllib3_disable_warnings:
+        - SubjectAltNameWarning  # Temporary fix for T158757
+
+clustershell:
+    ssh_options:
+        - '-o BatchMode=yes'
+        - '-o ConnectTimeout=2'
+        - '-o StrictHostKeyChecking=no'
+        - '-o UserKnownHostsFile=/dev/null'
+        - '-o GlobalKnownHostsFile=/dev/null'
+        - '-o LogLevel=QUIET'
+        - '-i /root/.ssh/new_install'
