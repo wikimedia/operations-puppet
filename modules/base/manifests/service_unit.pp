@@ -43,6 +43,9 @@
 # [*declare_service*]
 #  Boolean - tells puppet if a service {} stanza is required or not
 #
+# [*mask*]
+#  Boolean - tells puppet if a systemd service should be masked
+#
 # [*service_params*]
 #  An hash of parameters that we want to apply to the service resource
 #
@@ -71,6 +74,7 @@ define base::service_unit (
     $strict           = true,
     $refresh          = true,
     $declare_service  = true,
+    $mask             = false,
     $service_params   = {},
 ) {
 
@@ -122,12 +126,21 @@ define base::service_unit (
             }
         }
 
-        file { $path:
-            ensure  => $ensure,
-            content => $content,
-            mode    => $i_mode,
-            owner   => 'root',
-            group   => 'root',
+        if $initscript == 'systemd' and $mask {
+            file { $path:
+                ensure => 'link',
+                target => '/dev/null',
+                owner  => 'root',
+                group  => 'root',
+            }
+        } else {
+            file { $path:
+                ensure  => $ensure,
+                content => $content,
+                mode    => $i_mode,
+                owner   => 'root',
+                group   => 'root',
+            }
         }
 
         if $declare_service {
