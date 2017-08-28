@@ -108,7 +108,7 @@ groups:
     gid: 714
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
-                 credentials on stat1003 (currently the only such host)
+                 credentials on stat1006 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, deskana,
               dduvall, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
