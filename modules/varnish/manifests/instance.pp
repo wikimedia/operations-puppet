@@ -141,6 +141,8 @@ define varnish::instance(
         require     => Service["varnish${instancesuffix}"],
         subscribe   => [
                 Class['varnish::common::vcl'],
+                Class['varnish::common::errorpage'],
+                Class['varnish::common::browsersec'],
                 File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
