@@ -1,4 +1,4 @@
-class profile::dumpsdata(
+class profile::dumpsdata::base(
     $clients = hiera('dumps_clients_snapshots'),
 ) {
     $mountd_port     = '32767'
