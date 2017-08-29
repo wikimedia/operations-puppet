@@ -2640,6 +2640,8 @@ host kubernetes1003 {
 host kubernetes1004 {
      hardware ethernet 18:66:DA:56:79:7A;
      fixed-address kubernetes1004.eqiad.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes2001 {
