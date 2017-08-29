@@ -17,6 +17,7 @@ class dumpsdirs(
     $othermiscdir                 = "${otherdir}/misc"
     $pagetitlesdir                = "${otherdir}/pagetitles"
     $othertestfilesdir            = "${otherdir}/testfiles"
+    $wikidatawikidir              = "${otherdir}/wikidatawiki"
     $otherwikibasedir             = "${otherdir}/wikibase/"
     $otherwikidatalegacydir       = "${otherdir}/wikidata"
     $otherwikidatawikirelativedir  = 'other/wikibase/wikidatawiki'
@@ -110,6 +111,16 @@ class dumpsdirs(
     # wikidata-related items
     #
     ########################
+
+    # although this directory would be created in the course
+    # of xml dumps runs, we must create it here so that symlinks
+    # for the other types of wikidata dumps can be made
+    file { $wikidatawikidir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => $user,
+        group  => $group,
+    }
 
     file { $otherwikibasedir:
         ensure => 'directory',
