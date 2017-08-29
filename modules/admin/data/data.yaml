@@ -2561,7 +2561,7 @@ users:
     name: sharvaniharan
     realname: Sharvani Haran
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgCXufB/3I6HqjNjSXYrhy1m7x1GBsxGnGDnR/EcSXu5gPXPldFL17GsLURGn1m+QE8APnv1lvVuaxvP/aP/vkAm581/upddJDuM9+reMYhpjF+mrGq2b4JRMhuBkztZJ8CYv8wULqTG8jzAl5omW9y3swj9Zq4TfDWzOz4WRFDPturgMwm8mtalTTE8NHYSIRuRgTL7XcT7lrY80zlCYLnzjldX5GJZ5VTJBFp1OU/RXA7+V4CqQwnXnnBoo3xS19nVwpUanJbg9kXpIkpwI9i1RrUugYzmvjt6fyIZ2S2OTmGZr0j/vFnNBMAdgJ3QRMA0rcriKXe+jYltGjCXtl sharvaniharan@gerrit.wikimedia.org
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpJeP2DCd3LgKRDfMze3kthHjiXnFQldQyvJ1LVbkqzgzzcYR8E7fSF0PFygX5OkUMU9Lii2w+7L4uHR9nsBIHDtSHlPWlEmQ35VRGGtJ/eaRjuOjQO/qI20Hwq4eYsMFpGFc20D6OWOYii/dFQjFYqqAfeWG9LMn1zScedSiZ9SRIZkTLcWx/otoHCQGG6UQ3zEbvp4NPGPqjNPyDsCI1+RXgPjaack0E+hrsagncAg03SC9rPAdeQ80X/d49+8WJt/n5R0skKjFSZkqbAUDNOJENXbwWoRK8YlNgTGLpdkEModlcBTuDqwz+FAzKAA45MIOgXV2xoviV/DaFH8DV sharan@wikimedia.org
     uid: 17744
     email: sharan@wikimedia.org
   dbarratt:
