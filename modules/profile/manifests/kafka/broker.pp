@@ -59,6 +59,12 @@
 #   Mac messages a replica can lag before a critical alert is generated.
 #   Hiera: profile::kafka::broker::replica_maxlag_critical
 #
+# [*message_max_bytes*]
+#   The largest record batch size allowed by Kafka.
+#   If this is increased and there are consumers older
+#   than 0.10.2, the consumers' fetch size must also be increased
+#   so that the they can fetch record batches this large.
+#
 class profile::kafka::broker(
     $kafka_cluster_name                = hiera('kafka_cluster_name'),
     $statsd                            = hiera('statsd'),
@@ -76,6 +82,8 @@ class profile::kafka::broker(
     $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit'),
     $replica_maxlag_warning            = hiera('profile::kafka::broker::replica_maxlag_warning'),
     $replica_maxlag_critical           = hiera('profile::kafka::broker::replica_maxlag_critical'),
+    # This is set via top level hiera variable so it can be synchronized between roles and clients.
+    $message_max_bytes                 = hiera('kafka_message_max_bytes')
 ) {
     # TODO: WIP
     $tls_secrets_path = undef
@@ -199,6 +207,7 @@ class profile::kafka::broker(
 
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
+        message_max_bytes                => $message_max_bytes,
     }
 
     class { '::confluent::kafka::broker::jmxtrans':

@@ -27,6 +27,17 @@ class role::kafka::analytics::mirror {
 
     $destination_config       = kafka_config('analytics')
 
+
+    # TODO: fix this hiera lookup when this is moved into profiles
+    $kafka_message_max_bytes = hiera('kafka_message_max_bytes', 1048576)
+    # The requests not only contain the message but also a small metadata overhead.
+    # So if we want to produce a kafka_message_max_bytes payload the max request size should be a bit higher.
+    # The 48564 value isn't arbitrary - it's the difference between default message.max.size and default max.request.size
+    $producer_request_max_size = $kafka_message_max_bytes + 48564
+    $producer_properties = {
+        'max.request.size' => $producer_request_max_size,
+    }
+
     ::confluent::kafka::mirror::instance { "${source_cluster_name}_to_analytics":
         source_zookeeper_url      => $source_config['zookeeper']['url'],
         destination_brokers       => split($destination_config['brokers']['string'], ','),
@@ -42,5 +53,6 @@ class role::kafka::analytics::mirror {
         # we should be able to use acks=all, but for analytics purposes
         # this should be acceptable (for now).
         acks                      => 1,
+        producer_properites       => $producer_properties,
     }
 }
