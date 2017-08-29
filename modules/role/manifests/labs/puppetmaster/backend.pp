@@ -51,16 +51,17 @@ class role::labs::puppetmaster::backend {
     $labs_vms = $novaconfig['fixed_range']
     $monitoring = '208.80.154.14 208.80.155.119 208.80.153.74'
     $all_puppetmasters = inline_template('<%= scope.function_hiera([\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
+    $labs_metal_str = inline_template('<%= @labs_metal.join " " %>')
 
     $fwrules = {
         puppetmaster => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} ${horizon_host_ipv6} @resolve((${all_puppetmasters}))) proto tcp dport 8141 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal_str} ${monitoring} ${horizon_host_ip} ${horizon_host_ipv6} @resolve((${all_puppetmasters}))) proto tcp dport 8141 ACCEPT;",
         },
         puppetbackend => {
             rule => "saddr (${horizon_host_ip} ${designate_host_ip} ${horizon_host_ipv6}) proto tcp dport 8101 ACCEPT;",
         },
         puppetbackendgetter => {
-            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring} ${horizon_host_ip} ${horizon_host_ipv6} @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA)) proto tcp dport 8100 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal_str} ${monitoring} ${horizon_host_ip} ${horizon_host_ipv6} @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA)) proto tcp dport 8100 ACCEPT;",
         },
     }
     create_resources (ferm::rule, $fwrules)
