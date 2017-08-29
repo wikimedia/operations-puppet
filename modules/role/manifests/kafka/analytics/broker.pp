@@ -111,6 +111,10 @@ class role::kafka::analytics::broker {
         replica_fetch_max_bytes         => 1048576,
         log_flush_interval_messages     => 10000,
         log_cleanup_policy              => 'delete',
+
+        # FIXME: this needs to be refactored when the role
+        # is moved to profiles.
+        message_max_bytes               => hiera('kafka_message_max_bytes', 1048576),
     }
 
     class { '::confluent::kafka::broker::jmxtrans':
