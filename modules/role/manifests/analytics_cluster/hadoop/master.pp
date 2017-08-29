@@ -126,7 +126,7 @@ class role::analytics_cluster::hadoop::master {
         # Alert in case of HDFS currupted or missing blocks. In the ideal state
         # these values should always be 0.
         monitoring::graphite_threshold { 'hadoop-hdfs-corrupt-blocks':
-            description   => 'HDFS missing blocks',
+            description   => 'HDFS corrupt blocks',
             metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.CorruptBlocks.mean",
             from          => '30min',
             warning       => 2,
@@ -136,7 +136,7 @@ class role::analytics_cluster::hadoop::master {
         }
 
         monitoring::graphite_threshold { 'hadoop-hdfs-missing-blocks':
-            description   => 'HDFS corrupted blocks',
+            description   => 'HDFS missing blocks',
             metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.MissingBlocks.mean",
             from          => '180min',
             warning       => 2,
