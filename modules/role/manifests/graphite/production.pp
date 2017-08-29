@@ -38,7 +38,7 @@ class role::graphite::production {
     # Cleanup eventstreams rdkafka stale data - T160644
     graphite::whisper_cleanup { 'graphite-eventstreams':
         directory => "${storage_dir}/whisper/eventstreams/rdkafka",
-        keep_days => 10,
+        keep_days => 5,
     }
 
     # Cleanup zuul data
