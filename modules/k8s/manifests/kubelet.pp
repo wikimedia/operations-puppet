@@ -24,6 +24,7 @@ class k8s::kubelet(
         group   => 'root',
         mode    => '0644',
         content => template('k8s/kubelet.default.erb'),
+        notify  => Service['kubelet'],
     }
 
     file { [
