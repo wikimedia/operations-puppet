@@ -421,6 +421,8 @@ zookeeper_clusters:
       druid1002.eqiad.wmnet: '1002'
       druid1003.eqiad.wmnet: '1003'
 
+# Used to sync the setting between all Kafka clusters and clients.
+kafka_message_max_bytes: 4194304
 
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for

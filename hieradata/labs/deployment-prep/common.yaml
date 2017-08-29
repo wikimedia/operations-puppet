@@ -20,7 +20,7 @@ changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
 changeprop::ores_uris: ['http://deployment-sca03.deployment-prep.eqiad.wmflabs:8081']
 # Need to redefine RESTBase URI as Change-Prop redefines it in order to provide a different value for async updates
 changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
-# Used to sync the setting between main kafka cluster and change-prop
+# Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
 graphoid::allowed_domains:
   http:
