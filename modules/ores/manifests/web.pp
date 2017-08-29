@@ -17,9 +17,11 @@ class ores::web(
 
     # Need to be able to also restart the worker. The uwsgi service is
     # hopefully temporary
+    # lsof is temporary, to diagnose T174402
     $sudo_rules = [
         'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-ores *',
         'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
+        'ALL=(root) NOPASSWD: /usr/bin/lsof *',
     ]
 
     $processes = $::processorcount * $workers_per_core
