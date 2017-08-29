@@ -14,6 +14,9 @@
 # [*$collectors_extra*]
 #  List of extra collectors to be enabled.
 #
+# [*$web_listen_address*]
+#  IP:Port combination to listen on
+#
 #  Available collectors: (from "prometheus-node-exporter -collectors.print")
 #  bonding diskstats filefd filesystem gmond interrupts ipvs lastlogin loadavg
 #  mdadm megacli meminfo netdev netstat ntp runit sockstat stat supervisord
@@ -23,6 +26,7 @@
 class prometheus::node_exporter (
     $ignored_devices  = "^(ram|loop|fd)\\\\d+\$",
     $collectors_extra = [],
+    $web_listen_address = ':9100',
 ) {
     require_package('prometheus-node-exporter')
 
