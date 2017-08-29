@@ -61,11 +61,11 @@ class zuul::merger (
     }
 
     # Configuration file for the zuul merger
-    zuul::configfile { '/etc/zuul/zuul-merger.conf':
-        zuul_role => 'merger',
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0444',
+    file { '/etc/zuul/zuul-merger.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('zuul/zuul.conf.erb'),
     }
 
     file { '/etc/default/zuul-merger':

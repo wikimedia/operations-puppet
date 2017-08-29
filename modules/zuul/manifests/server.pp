@@ -71,12 +71,13 @@ class zuul::server (
         source => 'puppet:///modules/zuul/gearman-logging.conf',
     }
 
-    zuul::configfile { '/etc/zuul/zuul-server.conf':
-        zuul_role => 'server',
-        owner     => 'zuul',
-        group     => 'root',
-        mode      => '0400',
-        notify    => Exec['craft public zuul conf'],
+    file { '/etc/zuul/zuul-server.conf':
+        owner   => 'zuul',
+        group   => 'root',
+        mode    => '0400',
+        content => template('zuul/zuul.conf.erb'),
+        notify  => Exec['craft public zuul conf'],
+
     }
 
     package { 'python-gear':
