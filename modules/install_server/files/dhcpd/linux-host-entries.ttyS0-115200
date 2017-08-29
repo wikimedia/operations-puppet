@@ -51,6 +51,8 @@ host bromine {
 host chlorine {
     hardware ethernet aa:00:00:37:a8:4d;
     fixed-address chlorine.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host darmstadtium {
