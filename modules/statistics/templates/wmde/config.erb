@@ -1,8 +1,8 @@
 <% @wmde_secrets.keys.sort.each do |k| -%>
 <%= k %> <%= @wmde_secrets[k] %>
 <% end -%>
-api_log_dir <%= @statistics_working_path %>/log/mw-log/archive/api
-dump_log_dir <%= @statistics_working_path %>/log/webrequest/archive/dumps.wikimedia.org
+api_log_dir <%= scope['statistics::wmde::statistics_working_path'] %>/log/mw-log/archive/api
+dump_log_dir <%= scope['statistics::wmde::statistics_working_path'] %>/log/webrequest/archive/dumps.wikimedia.org
 dump-dir <%= @dir %>/data
 statsd_host <%= @statsd_host %>
 graphite_host <%= @graphite_host %>
