@@ -38,6 +38,12 @@ class role::kafka::analytics::mirror {
         'max.request.size' => $producer_request_max_size,
     }
 
+    $consumer_properties = {
+        'fetch.message.max.bytes'   => $producer_request_max_size,
+        # TODO: This property will only be used by new consumers, which we don't use yet.
+        # 'max.partition.fetch.bytes' => $producer_request_max_size
+    }
+
     ::confluent::kafka::mirror::instance { "${source_cluster_name}_to_analytics":
         source_zookeeper_url      => $source_config['zookeeper']['url'],
         destination_brokers       => split($destination_config['brokers']['string'], ','),
@@ -54,5 +60,6 @@ class role::kafka::analytics::mirror {
         # this should be acceptable (for now).
         acks                      => 1,
         producer_properties       => $producer_properties,
+        consumer_properties       => $consumer_properties,
     }
 }

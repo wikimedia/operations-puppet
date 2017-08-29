@@ -48,6 +48,11 @@ class role::kafka::main::mirror {
     $producer_properties = {
         'max.request.size' => $producer_request_max_size,
     }
+    $consumer_properties = {
+        'fetch.message.max.bytes'   => $producer_request_max_size,
+        # TODO: This property will only be used by new consumers, which we don't use yet.
+        # 'max.partition.fetch.bytes' => $producer_request_max_size
+    }
 
 
     ::confluent::kafka::mirror::instance { "main-${source_site}_to_main-${::site}":
@@ -60,5 +65,6 @@ class role::kafka::main::mirror {
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
         producer_properties       => $producer_properties,
+        consumer_properties       => $consumer_properties,
     }
 }
