@@ -41,6 +41,12 @@ class role::labs::openstack::nova::controller {
     $labs_networks = join($network::constants::labs_networks, ' ')
 
     $fwrules = {
+        wikitech_ssh_public => {
+            rule  => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
+        },
+        dns_public => {
+            rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
+        },
         spice_consoles => {
             rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 6082 ACCEPT;',
         },
