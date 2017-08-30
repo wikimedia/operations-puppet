@@ -213,9 +213,8 @@ define service::node(
     }
 
     # sanity check since a default port cannot be assigned
-    unless $port and $port =~ /^\d+$/ {
-        fail('Service port must be specified and must be a number!')
-    }
+    # TODO/puppet4 convert parameter to integer
+    validate_numeric($port)
 
     # the local log directory
     $local_logdir = "${service::configuration::log_dir}/${title}"
