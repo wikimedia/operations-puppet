@@ -23,7 +23,7 @@ class wdqs::updater(
         before  => Systemd::Unit['wdqs-updater'],
     }
 
-    wdqs::logback_config { 'updater':
+    wdqs::logback_config { 'wdqs-updater':
         pattern       => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n',
         logstash_host => $logstash_host,
         logstash_port => $logstash_json_port,
