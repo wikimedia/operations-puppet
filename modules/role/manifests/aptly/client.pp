@@ -4,9 +4,11 @@
 class role::aptly::client(
     $servername = "${::labsproject}-packages.${::labsproject}.${::site}.wmflabs",
     $components = 'main',
+    $protocol = 'http',
 ) {
     class { '::aptly::client':
         servername => $servername,
         components => $components,
+        protocol   => $protocol,
     }
 }
