@@ -71,4 +71,8 @@ class profile::reportupdater::jobs::mysql {
         repository => 'discovery-stats',
         output_dir => 'metrics/interactive',
     }
+    reportupdater::job { 'page-creation':
+        repository => 'reportupdater-queries',
+        output_dir => 'metrics/page-creation',
+    }
 }
