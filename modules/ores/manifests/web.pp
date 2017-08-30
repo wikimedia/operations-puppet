@@ -21,7 +21,6 @@ class ores::web(
     $sudo_rules = [
         'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-ores *',
         'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
-        'ALL=(root) NOPASSWD: /usr/bin/lsof *',
     ]
 
     $processes = $::processorcount * $workers_per_core
