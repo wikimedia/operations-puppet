@@ -22,36 +22,42 @@ class role::toollabs::k8s::master(
         $ssl_key_path = "/etc/ssl/private/${ssl_certificate_name}.key"
     }
 
+    # Set our host allowed paths
+    $host_automounts = [
+        '/etc/ldap.conf',
+        '/etc/ldap.yaml',
+        '/etc/novaobserver.yaml',
+        '/var/run/nslcd/socket',
+    ]
+    $host_path_prefixes_allowed = [
+        '/data/project/',
+        '/public/dumps/',
+        '/data/scratch/',
+    ]
+    $host_automounts_string = join($host_automounts, ',')
+    $host_path_prefixes_allowed_string = join($host_path_prefixes_allowed, ',')
+
+
+    $docker_registry = hiera('docker::registry')
+
     class { '::profile::kubernetes::master':
-        etcd_urls                  => $etcd_url,
-        service_cluster_ip_range   => '192.168.0.0/17',
-        apiserver_count            => 1,
-        accessible_to              => 'all',
-        expose_puppet_certs        => $use_puppet_certs,
-        ssl_cert_path              => $ssl_cert_path,
-        ssl_key_path               => $ssl_key_path,
-        host_path_prefixes_allowed => [
-            '/data/project/',
-            '/public/dumps/',
-            '/data/scratch/',
-        ],
-        docker_registry            => hiera('docker::registry'),
-        host_automounts            => [
-            '/etc/ldap.conf',
-            '/etc/ldap.yaml',
-            '/etc/novaobserver.yaml',
-            '/var/run/nslcd/socket',
-        ],
-        authz_mode                 => 'abac',
-        admission_controllers      => [
-            'NamespaceLifecycle',
-            'ResourceQuota',
-            'LimitRanger',
-            'UidEnforcer',
-            'RegistryEnforcer',
-            'HostAutomounter',
-            'HostPathEnforcer',
-        ],
+        etcd_urls                => $etcd_url,
+        service_cluster_ip_range => '192.168.0.0/17',
+        apiserver_count          => 1,
+        accessible_to            => 'all',
+        expose_puppet_certs      => $use_puppet_certs,
+        ssl_cert_path            => $ssl_cert_path,
+        ssl_key_path             => $ssl_key_path,
+        authz_mode               => 'abac',
+        admission_controllers    => {
+            'NamespaceLifecycle' => '',
+            'ResourceQuota'      => '',
+            'LimitRanger'        => '',
+            'UidEnforcer'        => '',
+            'RegistryEnforcer'   => "--enforced-docker-registry=${docker_registry}",
+            'HostAutomounter'    => "--host-automounts=${host_automounts_string}",
+            'HostPathEnforcer'   => "--host-paths-allowed=${host_automounts_string} --host-path-prefixes-allowed=${host_path_prefixes_allowed_string}",
+        },
     }
 
     class { '::toollabs::maintain_kubeusers':
