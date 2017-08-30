@@ -77,7 +77,6 @@ zookeeper_clusters:
     hosts:
       "%{::fqdn}": 1
 
-profile::base::nrpe_allowed_hosts: '10.68.16.195' # icinga
 profile::base::ssh_server_settings:
   disable_agent_forwarding: false
   challenge_response_auth: false
