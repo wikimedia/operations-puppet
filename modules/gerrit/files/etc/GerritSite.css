@@ -76,7 +76,9 @@ table.changeTable a.gwt-Anchor {
 	color: #990000;
 
 	min-height: 59px;
-	background: transparent url(/r/static/wikimedia-codereview-logo.cache.png) no-repeat 0 0;
+	background: transparent no-repeat 0 0;
+	background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
+	background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
 	text-indent: -9999px;
 	overflow: hidden;
 }
