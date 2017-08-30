@@ -1,4 +1,4 @@
-class varnish::common::vcl {
+class varnish::common::vcl($vcl_config={}) {
     require ::varnish::common
     require ::varnish::common::errorpage
     require ::varnish::common::browsersec
