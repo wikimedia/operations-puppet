@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
+    <!-- ugly trick to ensure ${HOSTNAME} is evaluated -->
+    <property scope="context" name="hostname" value="${HOSTNAME}" />
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern><%= @pattern %></pattern>

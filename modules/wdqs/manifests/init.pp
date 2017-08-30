@@ -110,7 +110,7 @@ class wdqs(
         mode    => '0644',
     }
 
-    wdqs::logback_config { 'blazegraph':
+    wdqs::logback_config { 'wdqs-blazegraph':
         logstash_host => $logstash_host,
         logstash_port => $logstash_json_port,
     }
