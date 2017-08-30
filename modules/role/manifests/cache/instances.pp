@@ -85,6 +85,11 @@ define role::cache::instances (
     # backends: Should increase nuke success chances, and reduce LRU lock/modify rate
     $nuke_lru_params = ['nuke_limit=1000','lru_interval=31']
 
+    # VCL files common to all instances
+    class { 'varnish::common::vcl':
+        vcl_config => $fe_vcl_config,
+    }
+
     varnish::instance { "${title}-backend":
         instance_name      => '',
         layer              => 'backend',
