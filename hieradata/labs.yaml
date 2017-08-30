@@ -86,7 +86,6 @@ labs_keystone_host: "labcontrol1001.wikimedia.org"
 puppetmaster: "labs-puppetmaster.wikimedia.org"
 saltmaster: "labcontrol1001.wikimedia.org"
 mysql::server::use_apparmor: false  # The images we have for debian don't support it
-keystone_public_port: '5000'
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::use_apt_proxy: false

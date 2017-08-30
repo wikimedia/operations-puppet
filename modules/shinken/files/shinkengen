@@ -40,6 +40,7 @@ from collections import OrderedDict
 from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 
+from keystoneclient.v3 import Client as KeystoneClient
 from novaclient import client as novaclient
 
 
@@ -61,21 +62,18 @@ class ConfigObject():
                              for key, value in self.properties.iteritems())
         return 'define %s {\n%s}\n' % (self.type, config_str)
 
+def get_keystone_session(project, observer_config):
+    return KeystoneSession(auth=KeystonePassword(
+        auth_url=observer_config['OS_AUTH_URL'],
+        username=observer_config['OS_USERNAME'],
+        password=observer_config['OS_PASSWORD'],
+        project_name=project,
+        user_domain_name='default',
+        project_domain_name='default'
+    ))
 
-def get_instances(project, observer_pass, keystone_host, keystone_port):
-    client = novaclient.Client(
-        "2.0",
-        session=KeystoneSession(auth=KeystonePassword(
-            auth_url="http://{host}:{port}/v3".format(host=keystone_host,
-                                                      port=keystone_port),
-            username="novaobserver",
-            password=observer_pass,
-            project_name=project,
-            user_domain_name='default',
-            project_domain_name='default'
-        ))
-    )
-
+def get_instances(project, keystone_session):
+    client = novaclient.Client("2.0", session=keystone_session)
     hosts = []
     for instance in client.servers.list():
         hosts.append({
@@ -112,10 +110,14 @@ if __name__ == '__main__':
         nova_observer = yaml.safe_load(n)
         observer_pass = nova_observer['OS_PASSWORD']
 
-    for project in config['projects']:
-        instances = get_instances(project, observer_pass,
-                                  config['keystone_host'],
-                                  config['keystone_port'])
+    client = KeystoneClient(
+        session=get_keystone_session('bastion', nova_observer),
+        endpoint=nova_observer['OS_AUTH_URL'],
+        interface='public'
+    )
+
+    for project in client.projects.list():
+        instances = get_instances(project.name, get_keystone_session(project.name, nova_observer))
         host_configs = []
         for instance in instances:
             co = ConfigObject('host')
@@ -127,7 +129,7 @@ if __name__ == '__main__':
             # particular roles with checks.  role::labs::instance is
             # implicitly applied to all instances via
             # manifests/site.pp, so we need to add it here explicitly.
-            hostgroups = [project, 'role::labs::instance']
+            hostgroups = [project.name, 'role::labs::instance']
             hostgroups += get_instance_roles(instance['project'],
                                              instance['fqdn'],
                                              config['puppet_enc_host'])
@@ -135,13 +137,13 @@ if __name__ == '__main__':
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.
             # FIXME: Implement access mechanism more fine grained than per-project
-            co.properties['contact_groups'] = project
+            co.properties['contact_groups'] = project.name
             # Used to auto derive metric paths in graphite, which is of the form
             # <projectname>.<instancename>.<metric-path>.
-            co.properties['notes'] = project  # Used for auto deriving graphite path
+            co.properties['notes'] = project.name  # Used for auto deriving graphite path
             host_configs.append(co)
         hosts_config_path = '%s/%s.cfg' % (
-            config['output_path'], project
+            config['output_path'], project.name
         )
         file_content = ''.join([str(hc) for hc in host_configs])
         if args.test_if_up_to_date:
