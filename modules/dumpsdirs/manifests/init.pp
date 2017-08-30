@@ -7,7 +7,7 @@ class dumpsdirs(
     # directories with incoming rsyncs of datasets
     $datadir                      = '/data/xmldatadumps'
     $publicdir                    = '/data/xmldatadumps/public'
-    $otherdir                     = "${publicdir}/other"
+    $otherdir                     = '/data/other'
     $cirrussearchdir              = "${otherdir}/cirrussearch"
     $xlationdir                   = "${otherdir}/contenttranslation"
     $globalblocksdir              = "${otherdir}/globalblocks"
@@ -18,9 +18,7 @@ class dumpsdirs(
     $pagetitlesdir                = "${otherdir}/pagetitles"
     $othertestfilesdir            = "${otherdir}/testfiles"
     $wikidatawikidir              = "${publicdir}/wikidatawiki"
-    $otherwikibasedir             = "${otherdir}/wikibase/"
-    $otherwikidatalegacydir       = "${otherdir}/wikidata"
-    $otherwikidatawikirelativedir  = 'other/wikibase/wikidatawiki'
+    $otherwikibasedir             = "${otherdir}/wikibase"
 
     file { $datadir:
         ensure => 'directory',
@@ -106,51 +104,11 @@ class dumpsdirs(
         group  => $group,
     }
 
-    ########################
-    #
-    # wikidata-related items
-    #
-    ########################
-
-    # although this directory would be created in the course
-    # of xml dumps runs, we must create it here so that symlinks
-    # for the other types of wikidata dumps can be made
-    file { $wikidatawikidir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
     file { $otherwikibasedir:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
         group  => $group,
-    }
-
-    # Legacy
-    file { $otherwikidatalegacydir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { "${publicdir}/${otherwikidatawikirelativedir}":
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    # T72385
-    # needs to be relative so that it can be referenced on dumpsdata hosts
-    # via the path $publicdir/... and on the snapshot hosts via
-    # via NFS mount path /mnt$publicdir/...
-    file { "${publicdir}/wikidatawiki/entities":
-        ensure => 'link',
-        target => "../${otherwikidatawikirelativedir}",
     }
 
 }
