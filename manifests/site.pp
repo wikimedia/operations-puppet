@@ -1318,7 +1318,7 @@ node 'labnet1001.eqiad.wmnet' {
     include ::standard
 }
 
-node /labnet1001[34]\.eqiad\.wmnet/ {
+node /labnet100[34]\.eqiad\.wmnet/ {
     include ::standard
     include ::base::firewall
 }
