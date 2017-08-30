@@ -550,7 +550,8 @@ groups:
     gid: 782
     members: [awight, halfak, ladsgroup]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
-                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *']
+                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
+                 'ALL = NOPASSWD: /usr/bin/lsof *']
   sectools-roots:
     description: root access on servers for security tools
     gid: 783
