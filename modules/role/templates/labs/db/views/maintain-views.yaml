@@ -36,6 +36,21 @@ fullviews:
   - category
   - categorylinks
   - change_tag
+  - cn_assignments
+  - cn_known_devices
+  - cn_known_mobile_carriers
+  - cn_notice_countries
+  - cn_notice_languages
+  - cn_notice_log
+  - cn_notice_mixin_params
+  - cn_notice_mixins
+  - cn_notice_mobile_carriers
+  - cn_notice_projects
+  - cn_notices
+  - cn_template_devices
+  - cn_template_log
+  - cn_template_mixins
+  - cn_templates
   - ep_articles
   - ep_cas
   - ep_events
