@@ -18,7 +18,7 @@ Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
 ExecStart=<%= @start_cmd_prefix %>/usr/sbin/varnishd \
 -P %t/%p.pid \
-<%= @ports.map { |p| "-a :"+p }.join(" ") -%> \
+<%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
 -f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
 -p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \
