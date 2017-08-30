@@ -27,8 +27,8 @@ Important notes:
    if any of DB username/password are provided by the user as my.cnf configuration
    file (the conf file needs to have a [client] section with 'user' and 'password').
 2) If a table is listed in the whitelist, then some of its fields are automatically
-   added to it (see COMMON_PERSISTENT_FIELDS). This ensures that important fields
-   like timestamp or primary keys are preserved.
+   added to it (see COMMON_PERSISTENT_FIELDS). This ensures that important non-sensitive
+   fields like timestamp or primary keys are preserved.
 3) The script runs updates/deletes in batches to avoid blocking the database for too
    long creating contention with other write operations (like inserts).
 """
@@ -44,7 +44,6 @@ import re
 import sys
 import time
 import unittest
-import uuid
 
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock, Mock, call, patch
@@ -225,53 +224,36 @@ class Terminator(object):
             result = self.database.execute(command, params, dry_run=self.dry_run)
             time.sleep(self.sleep_between_batches)
 
-    def _get_uuids_and_last_ts(self, table, start_ts, override_batch_size=None):
+    def _get_last_ts(self, table, start_ts):
         """
-        Return the first <batch_size> uuids of the events between start_ts
-        and self.end. Also return the timestamp of the last of those events.
-        NOTE: If there exist several events that share the last timestamp,
-        it might be that some of them are listed in the uuid batch, and some
-        others aren't (do not fit in the batch size limit). In the next iteration
-        start_ts will be this iteration's last_ts, and so the script might
-        re-purge some events, which is OK, because the outcome does not change.
+        Return the timestamp of the Nth event between start_ts and self.end,
+        where N is equal to the batch size. If there are less than N events
+        between start_ts and self.end, return the timestamp of the last one.
+        If there are no events between start_ts and self.end, return None.
         """
-        batch_size = override_batch_size or self.batch_size
-        # July 2017
-        # There are currently some tables on analtics-store that have their uuid
-        # field set as 'binary', not 'char' as in the master
-        # and the analytics-slave.
-        # Since altering all the inconsistent tables is a demanding task for the
-        # current hardware, we just force an explicit cast to char in the query.
+        if start_ts > self.end:
+            return None
+
         command = (
-            "SELECT timestamp, CAST(uuid AS CHAR) from {} WHERE timestamp >= %(start_ts)s "
-            "AND timestamp < %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s"
+            "SELECT timestamp from `{}` WHERE timestamp >= %(start_ts)s "
+            "AND timestamp <= %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s, 1"
             .format(table)
         )
         params = {
             'start_ts': start_ts,
             'end_ts': self.end,
-            'batch_size': batch_size,
+            'batch_size': self.batch_size - 1,
         }
         result = self.database.execute(command, params, self.dry_run)
         if result['rows']:
-            last_ts = result['rows'][-1][0]
-            if last_ts == start_ts:
-                if batch_size > 4 * self.batch_size:
-                    raise RuntimeError(
-                        "The number of events with the same timestamp ({}) "
-                        "for table {} exceeded 4 times the configured batch size. "
-                        "Aborting as a precautionary measure."
-                        .format(start_ts, table)
-                    )
-                log.warning("All events in the batch have the same timestamp ({}) for table {}. "
-                            "Growing the batch size to {}."
-                            .format(start_ts, table, 2 * batch_size))
-                return self._get_uuids_and_last_ts(table, start_ts,
-                                                   override_batch_size=batch_size*2)
-            uuids = [x[1] for x in result['rows']]
-            return (uuids, last_ts)
+            return result['rows'][0][0]
         else:
-            return ([], None)
+            return self.end
+
+    def _add_one_second(self, timestamp):
+        dt = datetime.strptime(timestamp, DATE_FORMAT)
+        dt1 = dt + timedelta(seconds=1)
+        return dt1.strftime(DATE_FORMAT)
 
     def sanitize(self, table):
         """
@@ -297,42 +279,55 @@ class Terminator(object):
             log.warning("No fields to purge for table {}.".format(table))
             return
 
+        select_template = (
+            "SELECT COUNT(*) FROM `{}` "
+            "WHERE timestamp >= %(start_ts)s AND timestamp <= %(end_ts)s"
+        ).format(table)
         values_string = ','.join([field + ' = NULL' for field in fields_to_purge])
-        uuids_current_batch, last_ts = self._get_uuids_and_last_ts(table, self.start)
-        command_template = (
-            "UPDATE {0} "
-            "SET {1} "
-            "WHERE uuid IN ({{}})"
+        update_template = (
+            "UPDATE `{}` "
+            "SET {} "
+            "WHERE timestamp >= %(start_ts)s AND timestamp <= %(end_ts)s"
         ).format(table, values_string)
 
-        while uuids_current_batch:
-            uuids_no = len(uuids_current_batch)
-            if uuids_no > self.batch_size:
-                log.warning("The number of uuids to sanitize {} is bigger "
-                            "than the batch size {}, this condition should not "
-                            "be possible, please review the code/data. "
-                            .format(str(uuids_no), str(self.batch_size)))
-
-            uuids_current_batch_escaped = ["'" + x + "'" for x in uuids_current_batch]
-            result = self.database.execute(
-                command_template.format(",".join(uuids_current_batch_escaped)),
+        start_ts = self.start
+        end_ts = self._get_last_ts(table, start_ts)
+        while end_ts:
+            # First, check if the start_ts-end_ts interval has an expected
+            # number of events (<= 2 * batch_size), given that the end_ts
+            # may contain a theoretically undefined number of events.
+            # This corner case is unlikely to happen with the current
+            # data stored in the EventLogging database, but it might be
+            # generated by a future bug so it must be taken into account.
+            # The solution is to simply use a safe threshold (2 * batch_size)
+            # and abort the script in case it is breached; this should
+            # prevent accidental huge UPDATE queries to the database
+            # without overcomplicating the code.
+            select_result = self.database.execute(
+                select_template,
+                {'start_ts': start_ts, 'end_ts': end_ts},
                 dry_run=self.dry_run
             )
-            if result['numrows'] > uuids_no:
-                log.error("The number of uuids to sanitize {} is lower "
-                          "than the number of updated rows in this batch {}. "
-                          "This is definitely an error in the code, please review it."
-                          .format(uuids_no, result['numrows']))
+            if select_result['numrows'] > 2 * self.batch_size:
+                log.error("The table {} has more than 2 * batch size events "
+                          "between {} and {}. You may need to increase the "
+                          "batch size or review the elements in the time"
+                          "window."
+                          .format(table, start_ts, end_ts))
                 raise RuntimeError('Sanitization stopped as precautionary step.')
 
-            if uuids_no < self.batch_size:
-                # Avoid an extra SQL query to the database if the number of
-                # uuids returned are less than BATCH_SIZE, since this value
-                # means that we have already reached the last batch of uuids
-                # to sanitize.
-                uuids_current_batch = []
-            else:
-                uuids_current_batch, last_ts = self._get_uuids_and_last_ts(table, last_ts)
+            # Batch size verified: sanitize the start_ts-end_ts interval.
+            self.database.execute(
+                update_template,
+                {'start_ts': start_ts, 'end_ts': end_ts},
+                dry_run=self.dry_run
+            )
+
+            # As end_ts is inclusive in the update statement
+            # start next batch 1 second after end_ts
+            # (Eventlogging's minimum timestamp granularity is 1s).
+            start_ts = self._add_one_second(end_ts)
+            end_ts = self._get_last_ts(table, start_ts)
             time.sleep(self.sleep_between_batches)
 
 
@@ -728,102 +723,159 @@ class TestTerminator(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.terminator.purge("AwesomeTable")
 
-    def test_get_uuids_and_last_ts(self):
-        random_uuids = []
-        for ts in range(400):
-            random_uuids.append((str(ts).zfill(3), str(uuid.uuid4())))
-        self.terminator.database.execute.side_effect = [{'rows': random_uuids}]
-        result = self.terminator._get_uuids_and_last_ts("AwesomeTable", 10)
-        expected_result = ([x[1] for x in random_uuids], random_uuids[-1][0])
+    def test_add_one_second(self):
+        result = self.terminator._add_one_second('20170101000000')
+        expected_result = '20170101000001'
         self.assertEqual(result, expected_result)
 
     def test_sanitize_one_batch(self):
         """
-        Sanitize called on a number of uuids less than one batch size
+        Sanitize called on a time window containing less than batch size elements
         """
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
-        BATCH_SIZE_TEST = 400  # less than terminator's batch size
-        random_uuids = [str(uuid.uuid4()) for r in range(BATCH_SIZE_TEST)]
-        self.terminator._get_uuids_and_last_ts = Mock(
-            return_value=(random_uuids, '20010101000000'))
-        self.terminator.database.execute.return_value = {'numrows': BATCH_SIZE_TEST}
+        self.terminator._get_last_ts = Mock(side_effect=[
+            ('20170101000000'),
+            None
+        ])
+        self.terminator.database.execute.return_value = {'numrows': 400}
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
         expected_fields_to_sanitize = ','.join(
             [field + ' = NULL' for field in ['field3', 'field4']]
         )
-        expected_uuids_in_where = ','.join(["'" + x + "'" for x in random_uuids])
-        command_template = (
-            "UPDATE AwesomeTable "
-            "SET {0} "
-            "WHERE uuid IN ({{}})"
+
+        expected_command1 = (
+            "SELECT COUNT(*) FROM `AwesomeTable` WHERE timestamp >= %(start_ts)s "
+            "AND timestamp <= %(end_ts)s"
+        )
+
+        expected_command2 = (
+            "UPDATE `AwesomeTable` SET {} WHERE "
+            "timestamp >= %(start_ts)s AND timestamp <= %(end_ts)s"
         ).format(expected_fields_to_sanitize)
-        expected_command = command_template.format(expected_uuids_in_where)
+
+        params = {
+            'start_ts': self.terminator.start,
+            'end_ts': '20170101000000',
+        }
+
         self.terminator.sanitize("AwesomeTable")
-        self.terminator.database.execute.assert_called_once_with(
-            expected_command, dry_run=False)
+        self.terminator.database.execute.assert_has_calls([
+            call(expected_command1, params, dry_run=False),
+            call(expected_command2, params, dry_run=False),
+        ])
 
     def test_sanitize_multi_batches(self):
         """
-        Sanitize called on a number of uuids that requires multiple batches.
-        This test ensure that the update statements are executed in the right
-        order and in the right number.
+        Sanitize called on a time window containing more than batch size elements,
+        therefore requiring multiple UPDATE queries to the database.
         """
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
-        random_uuids = [str(uuid.uuid4()) for r in range(self.batch_size)]
-        random_uuids2 = [str(uuid.uuid4()) for r in range(5)]
-        self.terminator._get_uuids_and_last_ts = Mock(side_effect=[
-            (random_uuids, '20170101000000'),
-            (random_uuids2, '20170102000000')
+        self.terminator._get_last_ts = Mock(side_effect=[
+            ('20170101000000'),
+            ('20170101000010'),
+            ('20170101000020'),
+            None
         ])
-        self.terminator.database.execute.side_effect = [{'numrows': self.batch_size},
-                                                        {'numrows': 5}]
+        self.terminator.database.execute.return_value = {'numrows': 400}
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
         expected_fields_to_sanitize = ','.join(
             [field + ' = NULL' for field in ['field3', 'field4']]
         )
-        expected_uuids_in_where_1 = ','.join(["'" + x + "'" for x in random_uuids])
-        expected_uuids_in_where_2 = ','.join(["'" + x + "'" for x in random_uuids2])
-        command_template = (
-            "UPDATE AwesomeTable "
-            "SET {0} "
-            "WHERE uuid IN ({1})"
-        ).format(expected_fields_to_sanitize, '{}')
-        expected_command1 = command_template.format(expected_uuids_in_where_1)
-        expected_command2 = command_template.format(expected_uuids_in_where_2)
+
+        expected_command1 = (
+            "SELECT COUNT(*) FROM `AwesomeTable` WHERE timestamp >= %(start_ts)s "
+            "AND timestamp <= %(end_ts)s"
+        )
+        expected_command2 = (
+            "UPDATE `AwesomeTable` SET {} WHERE "
+            "timestamp >= %(start_ts)s AND timestamp <= %(end_ts)s"
+        ).format(expected_fields_to_sanitize)
+
+        # The parameters are following a specific logic: the last end_ts
+        # returned will not be used as the start_ts of the new batch to
+        # avoid repetition of work. The function _add_one_second (tested above)
+        # ensures that a second is added to each end_ts.
+        params1 = {
+            'start_ts': self.terminator.start,
+            'end_ts': '20170101000000',
+        }
+        params2 = {
+            'start_ts': '20170101000001',  # last end_ts + 1
+            'end_ts': '20170101000010',
+        }
+        params3 = {
+            'start_ts': '20170101000011',  # last end_ts + 1
+            'end_ts': '20170101000020',
+        }
+
         self.terminator.sanitize("AwesomeTable")
         self.terminator.database.execute.assert_has_calls([
-            call(expected_command1, dry_run=False),
-            call(expected_command2, dry_run=False),
+            call(expected_command1, params1, dry_run=False),
+            call(expected_command2, params1, dry_run=False),
+            call(expected_command1, params2, dry_run=False),
+            call(expected_command2, params2, dry_run=False),
+            call(expected_command1, params3, dry_run=False),
+            call(expected_command2, params3, dry_run=False),
         ])
 
-    def test_sanitize_input_error_condition(self):
+    def test_sanitize_toobig_update_batch_error_condition(self):
         """
-        The table name that the sanitize will work on needs to have its prefix
-        contained in the whitelist.
-        """
-        self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
-        error_msg = (
-            'Sanitize has been called for table NotAwesomeTable_1234, '
-            'but its prefix NotAwesomeTable'
-        )
-        with self.assertRaisesRegex(RuntimeError, error_msg):
-            self.terminator.sanitize("NotAwesomeTable_1234")
-
-    def test_sanitize_multi_batches_error_condition(self):
-        """
-        The number of updated rows is bigger than the number of uuids in a batch.
+        Sanitize called on a time window containing more elements
+        than the safe threshold of 2 * batch size. This corner case
+        may happen for example if the end_ts of a batch is used by
+        a lot of events due to a software bug or an unexpected event.
+        In this case we don't want to hammer the database with a huge
+        UPDATE query but fail gracefully.
         """
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
-        random_uuids = [str(uuid.uuid4()) + "'" for r in range(self.batch_size)]
-        self.terminator._get_uuids_and_last_ts = Mock(
-            side_effect=[(random_uuids, '20170101000000')])
-        self.terminator.database.execute.side_effect = [{'numrows': self.batch_size * 2}]
+        self.terminator._get_last_ts = Mock(side_effect=[
+            ('20170101000000'),
+            ('20170101000010'),
+            ('20170101000020'),
+            None
+        ])
+        self.terminator.database.execute.side_effect = [
+            {'numrows': self.terminator.batch_size},
+            {'numrows': self.terminator.batch_size},
+            {'numrows': 2 * self.terminator.batch_size + 1},
+            {'numrows': 2 * self.terminator.batch_size + 1},
+            {'numrows': self.terminator.batch_size},
+            {'numrows': self.terminator.batch_size}
+        ]
+
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2']}
-        with self.assertRaisesRegex(RuntimeError, 'Sanitization stopped as precautionary step.'):
+        expected_fields_to_sanitize = ','.join(
+            [field + ' = NULL' for field in ['field3', 'field4']]
+        )
+
+        expected_command1 = (
+            "SELECT COUNT(*) FROM `AwesomeTable` WHERE timestamp >= %(start_ts)s "
+            "AND timestamp <= %(end_ts)s"
+        )
+        expected_command2 = (
+            "UPDATE `AwesomeTable` SET {} WHERE "
+            "timestamp >= %(start_ts)s AND timestamp <= %(end_ts)s"
+        ).format(expected_fields_to_sanitize)
+
+        params1 = {
+            'start_ts': self.terminator.start,
+            'end_ts': '20170101000000',
+        }
+        params2 = {
+            'start_ts': '20170101000001',  # last end_ts + 1
+            'end_ts': '20170101000010',
+        }
+
+        with self.assertRaises(RuntimeError):
             self.terminator.sanitize("AwesomeTable")
+            self.terminator.database.assert_has_calls([
+                call(expected_command1, params1, dry_run=False),
+                call(expected_command2, params1, dry_run=False),
+                call(expected_command1, params2, dry_run=False),
+            ])
 
     def test_sanitize_table_without_fields_to_purge(self):
         """
@@ -832,6 +884,6 @@ class TestTerminator(unittest.TestCase):
         self.terminator.database.get_table_fields.return_value = ['id', 'uuid', 'field1',
                                                                   'field2', 'field3', 'field4']
         self.terminator.whitelist = {'AwesomeTable': ['field1', 'field2', 'field3', 'field4']}
-        self.terminator._get_uuids_and_last_ts = MagicMock()
+        self.terminator._get_last_ts = MagicMock()
         self.terminator.sanitize("AwesomeTable")
-        self.assertFalse(self.terminator._get_uuids_and_last_ts.called)
+        self.assertFalse(self.terminator._get_last_ts.called)
