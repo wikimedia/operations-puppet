@@ -34,7 +34,7 @@ define prometheus::class_config(
     validate_string($dest)
     validate_string($site)
     validate_string($class_name)
-    validate_re($port, '^[0-9]+$')
+    validate_numeric($port)
     validate_hash($labels)
     validate_hash($class_parameters)
 
