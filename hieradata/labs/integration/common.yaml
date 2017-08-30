@@ -13,3 +13,5 @@ contint::zuul_merger_hosts:
     - '::1'  # uses quotes for hiera
     - 127.0.0.1
 puppetmaster::autosigner: true
+
+role::aptly::client::servername: aptly.integration.eqiad.wmflabs
