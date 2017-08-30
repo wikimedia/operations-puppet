@@ -243,6 +243,12 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/static',
     }
 
+    file { '/var/lib/gerrit2/review_site/plugins':
+      ensure  => 'link',
+      target  => '/srv/deployment/gerrit/gerrit/plugins',
+      require => [File['/var/lib/gerrit2/review_site'], Scap::Target['gerrit/gerrit']],
+    }
+
     service { 'gerrit':
         ensure    => running,
         enable    => true,
