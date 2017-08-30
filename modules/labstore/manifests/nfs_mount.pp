@@ -130,24 +130,30 @@ define labstore::nfs_mount(
 
     if ($ensure == 'present') and mount_nfs_volume($project, $mount_name) {
 
-        if $block {
-            if !defined(File['/usr/local/sbin/block-for-export']) {
-                # This script will block until the NFS volume is available
-                file { '/usr/local/sbin/block-for-export':
-                    ensure => present,
-                    owner  => 'root',
-                    group  => 'root',
-                    mode   => '0555',
-                    source => 'puppet:///modules/labstore/block-for-export',
+        # This project!=testlabs check is a super temporary check put in place to
+        # test new VM images that include alternative functionality to block until
+        # all the mounts are available, that would deprecate the following showmount
+        # based mechanism if it works correctly.
+        # TODO: Revert this check after testing
+        if ($project != 'testlabs') {
+            if $block {
+                if !defined(File['/usr/local/sbin/block-for-export']) {
+                    # This script will block until the NFS volume is available
+                    file { '/usr/local/sbin/block-for-export':
+                        ensure => present,
+                        owner  => 'root',
+                        group  => 'root',
+                        mode   => '0555',
+                        source => 'puppet:///modules/labstore/block-for-export',
+                    }
+                }
+                exec { "block-for-nfs-${name}":
+                    command => "/usr/local/sbin/block-for-export ${server} project/${project} ${block_timeout}",
+                    require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], File['/usr/local/sbin/block-for-export']],
+                    unless  => "/bin/mountpoint -q ${mount_path}",
                 }
             }
-            exec { "block-for-nfs-${name}":
-                command => "/usr/local/sbin/block-for-export ${server} project/${project} ${block_timeout}",
-                require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], File['/usr/local/sbin/block-for-export']],
-                unless  => "/bin/mountpoint -q ${mount_path}",
-            }
         }
-
         # 'present' is meant to manage only the status of entries in /etc/fstab
         # a notable exception to this is in the case of an entry managed as 'present'
         # puppet will attempt to remount that entry when options change /but/ only
