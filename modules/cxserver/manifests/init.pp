@@ -7,6 +7,8 @@
 #
 # [*apertium*]
 #   Url to Apertium service.
+# [*matxin*]
+#   Url to Matxin service.
 # [*yandex_api_key*]
 #   API key for Yandex service.
 # [*youdao_api_key*]
@@ -15,6 +17,7 @@
 #   JWT secret token.
 class cxserver(
     $apertium = "http://apertium.svc.${::site}.wmnet:2737",
+    $matxin = 'http://matxin.elhuyar.eus/API',
     $yandex_api_key = undef,
     $youdao_api_key = undef,
     $jwt_secret = undef,
@@ -29,6 +32,7 @@ class cxserver(
         deployment_vars   => {
             jwt_token    => $jwt_secret,
             apertium_uri => $apertium,
+            matxin_uri   => $matxin,
             yandex_key   => $yandex_api_key,
             youdao_key   => $youdao_api_key,
         },
