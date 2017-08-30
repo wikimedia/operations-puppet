@@ -2,9 +2,10 @@ class aptly::client(
     $servername,
     $source=false,
     $components='main',
+    $protocol='http',
 ) {
     apt::repository { 'project-aptly':
-        uri        => "http://${servername}/repo",
+        uri        => "${protocol}://${servername}/repo",
         dist       => "${::lsbdistcodename}-${::labsproject}",
         components => $components,
         source     => $source,
