@@ -108,6 +108,7 @@ define base::service_unit (
             'upstart'          => "/etc/init/${name}.conf",
             default            => "/etc/init.d/${name}"
         }
+        $systemd_mask_path = "/etc/systemd/system/${name}.service"
 
         # systemd complains if unit files are executable
         if $initscript == 'systemd' or $initscript == 'systemd_override' {
@@ -126,20 +127,20 @@ define base::service_unit (
             }
         }
 
+        file { $path:
+            ensure  => $ensure,
+            content => $content,
+            mode    => $i_mode,
+            owner   => 'root',
+            group   => 'root',
+        }
+
         if $initscript == 'systemd' and $mask {
-            file { $path:
+            file { $systemd_mask_path:
                 ensure => 'link',
                 target => '/dev/null',
                 owner  => 'root',
                 group  => 'root',
-            }
-        } else {
-            file { $path:
-                ensure  => $ensure,
-                content => $content,
-                mode    => $i_mode,
-                owner   => 'root',
-                group   => 'root',
             }
         }
 
