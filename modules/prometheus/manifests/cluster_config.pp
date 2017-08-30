@@ -30,10 +30,11 @@ define prometheus::cluster_config(
   $port,
   $labels,
 ) {
+        # TODO/puppet4: convert this class to use typed parameters
     validate_string($dest)
     validate_string($site)
     validate_string($cluster)
-    validate_re($port, '^[0-9]+$')
+    validate_numeric($port)
     validate_hash($labels)
 
     file { $dest:
