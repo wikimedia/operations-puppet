@@ -457,6 +457,9 @@ class cassandra(
         }
     }
 
+    $jbod_devices = hiera('cassandra::jbod_devices', [])
+    cassandra::jbod_device { $jbod_devices: }
+
     # nodetool wrapper to handle multiple instances, for each instance there
     # will be symlinks from /usr/local/bin/nodetool-<INSTANCE_NAME> to
     # nodetool-instance
