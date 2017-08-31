@@ -1,6 +1,8 @@
 # == Class contint::packages::php
 class contint::packages::php {
 
+    include ::mediawiki::packages::php5
+
     require_package( [
         'php5-dev',  # phpize
         'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
