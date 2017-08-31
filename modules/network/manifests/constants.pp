@@ -105,6 +105,20 @@ class network::constants {
                     '10.64.36.122',                # kafka1022.eqiad.wmnet
                     '2620:0:861:106:10:64:36:122', # kafka1022.eqiad.wmnet
                 ],
+            'zookeeper_hosts_main' => [
+                    '10.64.0.18',                           # conf1001.codfw.wmnet
+                    '2620:0:861:101:d6ae:52ff:fe73:60e6',   # conf1001.codfw.wmnet
+                    '10.64.32.180',                         # conf1002.codfw.wmnet
+                    '2620:0:861:103:d6ae:52ff:fe7c:c9ec',   # conf1002.codfw.wmnet
+                    '10.64.48.111',                         # conf1003.codfw.wmnet
+                    '2620:0:861:107:d6ae:52ff:fe7c:b5ed',   # conf1003.codfw.wmnet
+                    '10.192.0.143',                         # conf2001.codfw.wmnet
+                    '2620:0:860:101:1618:77ff:fe5e:a72c',   # conf2001.codfw.wmnet
+                    '10.192.32.141',                        # conf2002.codfw.wmnet
+                    '2620:0:860:103:1618:77ff:fe5e:a175',   # conf2002.codfw.wmnet
+                    '10.192.48.52',                         # conf2003.codfw.wmnet
+                    '2620:0:860:104:1618:77ff:fe5e:a4c2',   # conf2003.codfw.wmnet
+                ],
             'hadoop_masters' => [
                     '10.64.36.118',                       # analytics1001.eqiad.wmnet
                     '2620:0:861:106:f21f:afff:fee8:af06', # analytics1001.eqiad.wmnet
