@@ -161,4 +161,11 @@ class openstack::util::admin_scripts(
         mode   => '0755',
         source => 'puppet:///modules/openstack/util/wikireplica_dns.py',
     }
+
+    file { '/root/makedomain':
+        source => "puppet:///modules/openstack/${version}/admin_scripts/makedomain",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0744',
+    }
 }

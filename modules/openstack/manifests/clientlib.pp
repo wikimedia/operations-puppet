@@ -25,6 +25,15 @@ class openstack::clientlib(
         group  => 'root',
     }
 
+    # Functions to create or delete designate domains under .wmflabs.org
+    file { '/usr/lib/python2.7/dist-packages/designatemakedomain.py':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/clientlib/designatemakedomain.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     if os_version('debian jessie') and $version == 'liberty' {
 
         $debian_jessie_packages = [

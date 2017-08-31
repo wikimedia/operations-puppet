@@ -31,6 +31,7 @@ from keystone.common import validation
 from keystone.resource import schema
 from keystone import notifications
 
+import designatemakedomain
 import ldapgroups
 import pageeditor
 
@@ -138,6 +139,13 @@ class KeystoneHooks(notifier.Driver):
     def _on_project_delete(self, project_id):
         ldapgroups.delete_ldap_project_group(project_id)
         self.page_editor.edit_page("", project_id, True)
+        designatemakedomain.deleteDomain(
+            CONF.wmfhooks.auth_url,
+            CONF.wmfhooks.admin_user,
+            CONF.wmfhooks.admin_pass,
+            project_id,
+            all=True,
+        )
 
     def _create_project_page(self, project_id):
         # Create wikitech project page
@@ -255,6 +263,15 @@ class KeystoneHooks(notifier.Driver):
         # Set up default sudoers in ldap
         ldapgroups.create_sudo_defaults(project_id)
         self._create_project_page(project_id)
+
+        # This bit will take a while:
+        designatemakedomain.createDomain(
+            CONF.wmfhooks.auth_url,
+            CONF.wmfhooks.admin_user,
+            CONF.wmfhooks.admin_pass,
+            project_id,
+            '{}.wmflabs.org'.format(project_id)
+        )
 
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')

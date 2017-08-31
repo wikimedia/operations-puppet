@@ -17,77 +17,7 @@ import argparse
 import os
 import time
 
-from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
-from designateclient.v2 import client
-
-
-def deleteDomain(url, user, password, project, domain, all=False, ttl=120):
-    auth = generic.Password(
-        auth_url=url,
-        username=user,
-        password=password,
-        user_domain_name='Default',
-        project_domain_name='Default',
-        tenant_name=project)
-
-    targetSession = keystone_session.Session(auth=auth)
-    targetClient = client.Client(session=targetSession)
-
-    domains = targetClient.zones.list()
-    for thisdomain in domains:
-        if all:
-            print("Deleting %s" % thisdomain['name'])
-            targetClient.zones.delete(thisdomain['id'])
-        else:
-            if thisdomain['name'] == domain:
-                targetClient.zones.delete(thisdomain['id'])
-                return
-    if not all:
-        print("Domain %s not found" % domain)
-
-
-def createDomain(url, user, password, project, domain, ttl=120):
-    auth = generic.Password(
-        auth_url=url,
-        username=user,
-        password=password,
-        user_domain_name='Default',
-        project_domain_name='Default',
-        tenant_name='wmflabsdotorg')
-
-    createSession = keystone_session.Session(auth=auth)
-    createClient = client.Client(session=createSession)
-
-    auth = generic.Password(
-        auth_url=url,
-        username=user,
-        password=password,
-        user_domain_name='Default',
-        project_domain_name='Default',
-        tenant_name=project)
-
-    targetSession = keystone_session.Session(auth=auth)
-    targetClient = client.Client(session=targetSession)
-
-    # Create the zone in the initial wmflabsdotorg project.  This
-    #  is needed since wmflabs.org lives in that project and
-    #  designate prevents subdomain creation elsewhere.
-    zone = createClient.zones.create(domain, email='root@wmflabs.org', ttl=ttl)
-    status = 'PENDING'
-    # Wait for the domain to actually exist before we transfer it
-    while status == 'PENDING':
-        zone = createClient.zones.get(domain)
-        status = zone['status']
-        time.sleep(2)
-
-    transferRequest = createClient.zone_transfers.create_request(domain, project)
-    transferId = transferRequest['id']
-    transferKey = transferRequest['key']
-
-    targetClient.zone_transfers.accept_request(transferId, transferKey)
-
-
+import designatemakedomain
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser('makesubdomain',
                                         description="Create a subdomain of wmflabs.org")
@@ -142,15 +72,15 @@ if __name__ == "__main__":
                 args.domain = "%s." % args.domain
 
     if args.delete:
-            deleteDomain(args.keystone_url,
-                         args.designate_user,
-                         args.designate_pass,
-                         args.project,
-                         args.domain,
-                         args.all)
+        designatemakedomain.deleteDomain(args.keystone_url,
+                                         args.designate_user,
+                                         args.designate_pass,
+                                         args.project,
+                                         args.domain,
+                                         args.all)
     else:
-        createDomain(args.keystone_url,
-                     args.designate_user,
-                     args.designate_pass,
-                     args.project,
-                     args.domain)
+        designatemakedomain.createDomain(args.keystone_url,
+                                         args.designate_user,
+                                         args.designate_pass,
+                                         args.project,
+                                         args.domain)
