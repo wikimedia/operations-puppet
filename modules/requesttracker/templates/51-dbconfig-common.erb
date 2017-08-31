@@ -13,8 +13,8 @@ my %typemap = (
 Set($DatabaseType, $typemap{mysql} || "UNKNOWN");
 
 Set($DatabaseName, 'rt');
-Set($DatabaseHost, '<%scope['::requesttracker::rt_mysql_host'] %>');
-Set($DatabasePort, '<%scope['::requesttracker::rt_mysql_port'] %>');
+Set($DatabaseHost, '<%= scope['::requesttracker::rt_mysql_host'] %>');
+Set($DatabasePort, '<%= scope['::requesttracker::rt_mysql_port'] %>');
 
-Set($DatabaseUser , '<%scope['::requesttracker::rt_mysql_user'] %>');
-Set($DatabasePassword , '<%scope['::requesttracker::rt_mysql_pass'] %>');
+Set($DatabaseUser , '<%= scope['::requesttracker::rt_mysql_user'] %>');
+Set($DatabasePassword , '<%= scope['::requesttracker::rt_mysql_pass'] %>');
