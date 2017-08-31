@@ -1,3 +1,6 @@
+admin::groups:
+  - wmcs-roots
+
 # Use the special labs enc
 profile::puppetmaster::frontend::config:
   node_terminus: 'exec'
