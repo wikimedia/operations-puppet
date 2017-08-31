@@ -1,0 +1,15 @@
+# This file managed by Puppet
+#
+# Standalone nginx config file intended for systems that utilize
+# letsencrypt certs for non-http protocols (smtps, ldaps, etc.) and do
+# not have an existing http server to include the acme challenge file.
+
+server {
+    listen 80;
+    server_name <%= @facts['fqdn'] %>;
+
+    include /etc/acme/challenge-nginx.conf;
+    location / {
+        return 403;
+    }
+}
