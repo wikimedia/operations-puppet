@@ -72,6 +72,11 @@ class statistics::compute {
     include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/stats-research-client.cnf.
+    # NOTE: This file is referenced and used by various
+    # reportupdate repository configs, e.g.
+    # https://github.com/wikimedia/analytics-limn-ee-data/blob/master/ee/config.yaml
+    # If you think about changing or removing this file, make sure you also
+    # consider reportupdater's usage.
     mysql::config::client { 'stats-research':
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,
