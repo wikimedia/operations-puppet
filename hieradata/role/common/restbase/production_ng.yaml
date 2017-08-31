@@ -71,6 +71,7 @@ profile::cassandra::instances:
         - /srv/sdc/cassandra-a/data
         - /srv/sdd/cassandra-a/data
         - /srv/sde/cassandra-a/data
+      heapdump_directory: /srv/sda/cassandra-a
     b:
       listen_address: 10.192.16.163
       data_file_directories:
@@ -79,6 +80,7 @@ profile::cassandra::instances:
         - /srv/sdc/cassandra-b/data
         - /srv/sdd/cassandra-b/data
         - /srv/sde/cassandra-b/data
+      heapdump_directory: /srv/sdb/cassandra-a
     c:
       listen_address: 10.192.16.164
       data_file_directories:
@@ -87,6 +89,7 @@ profile::cassandra::instances:
         - /srv/sdc/cassanrda-c/data
         - /srv/sdd/cassanrda-c/data
         - /srv/sde/cassanrda-c/data
+      heapdump_directory: /srv/sdc/cassandra-a
   # "restbase2003.codfw.wmnet":
   #   a:
   #     listen_address: 10.192.32.134
