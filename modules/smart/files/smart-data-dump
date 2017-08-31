@@ -1,0 +1,291 @@
+#!/usr/bin/python3
+
+import argparse
+import collections
+import json
+import logging
+import re
+import subprocess
+import sys
+
+from logging.handlers import SysLogHandler
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
+from prometheus_client.exposition import generate_latest
+
+
+log = logging.getLogger(__name__)
+# Represent a single Physical Disk and its attributes
+PD = collections.namedtuple('PD', ['driver', 'smart_args', 'disk_id'])
+
+# Parse and report these attributes (lowercased) as gauges
+REPORT_ATTRIBUTES = [
+    'airflow_temperature_cel',
+    'command_timeout',
+    'current_pending_sector',
+    'end_to_end_error',
+    'erase_fail_count',
+    'g_sense_error_rate',
+    'hardware_ecc_recovered',
+    'host_reads_32mib',
+    'host_reads_mib',
+    'host_writes_32mib',
+    'host_writes_mib',
+    'load_cycle_count',
+    'media_wearout_indicator',
+    'nand_writes_1gib',
+    'offline_uncorrectable',
+    'power_cycle_count',
+    'power_on_hours',
+    'program_fail_count',
+    'raw_read_error_rate',
+    'reallocated_sector_ct',
+    'reported_uncorrect',
+    'sata_downshift_count',
+    'spin_retry_count',
+    'spin_up_time',
+    'start_stop_count',
+    'temperature_celsius',
+    'total_lbas_read',
+    'total_lbas_written',
+    'udma_crc_error_count',
+    'unsafe_shutdown_count',
+    'workld_host_reads_perc',
+    'workld_media_wear_indic',
+    'workload_minutes',
+]
+
+# Do not log these attributes as "unreported" (i.e. found but not in REPORT_ATTRIBUTES)
+IGNORE_ATTRIBUTES = [
+    'calibration_retry_count',
+    'multi_zone_error_rate',
+    'power-off_retract_count'
+    'reallocated_event_count',
+    'seek_error_rate',
+    'seek_time_performance',
+    'throughput_performance',
+]
+
+
+def get_fact(fact_name):
+    """Ask 'facter' for the given fact name. Return the fact's value or None."""
+
+    raw_output = subprocess.check_output(['/usr/bin/facter', '--puppet', '--json', fact_name])
+    try:
+        fact_value = json.loads(str(raw_output, 'utf8')).get(fact_name, None)
+    except ValueError:
+        return None
+
+    log.debug('Fact %r discovered: %r', fact_name, fact_value)
+    return fact_value
+
+
+def megaraid_list_pd():
+    """List physical disks attached to megaraid controller. Generator to yield PD objects."""
+
+    raw_output = subprocess.check_output(['/usr/bin/timeout', '30', '/usr/sbin/smartctl',
+                                          '--scan-open'])
+    for line in raw_output.splitlines():
+        line = str(line, 'utf8')
+        if 'megaraid,' not in line:
+            continue
+        bus, _, device, _ = line.split(' ', 3)
+        yield PD(driver='megaraid', smart_args=['-d', device, bus],
+                 disk_id=device)
+
+
+def hpsa_list_pd():
+    """List physical disks attached to hpsa controller. Generator to yield PD objects."""
+
+    raw_output = subprocess.check_output(['/usr/bin/timeout', '30', '/usr/sbin/hpssacli',
+                                          'controller', 'all', 'show', 'config'])
+    in_controller = False
+    for line in raw_output.splitlines():
+        line = str(line, 'utf8')
+        m = re.match('^Smart Array .* in Slot (\d+)', line)
+        if m:
+            in_controller = True
+            disk_id = 0
+
+        m = re.match('^\s+physicaldrive', line)
+        if m and in_controller:
+            device = 'cciss,%s' % disk_id
+            # TODO(filippo) assumes /dev/sda
+            yield PD(driver='cciss', disk_id=device,
+                     smart_args=['-d', device, '/dev/sda'])
+            disk_id += 1
+
+
+def noraid_list_pd():
+    """List all physical disks. Generator to yield PD objects."""
+
+    # starting with stretch, lsblk has --json but not on trusty/jessie
+    raw_output = subprocess.check_output(['/usr/bin/timeout', '30', '/bin/lsblk', '--noheadings',
+                                          '--output', 'NAME,TYPE', '--raw'])
+    for line in raw_output.splitlines():
+        line = str(line, 'utf8')
+        name, disk_type = line.split(' ', 1)
+        if disk_type != 'disk':
+            continue
+        yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name],
+                 disk_id=name)
+
+
+def _run_smartctl(args, timeout=30):
+    try:
+        cmd_args = ['/usr/bin/timeout', str(timeout), '/usr/sbin/smartctl']
+        cmd_args.extend(args)
+        log.debug('Running: %s', ' '.join(cmd_args))
+        raw_output = subprocess.check_output(cmd_args)
+    except subprocess.CalledProcessError as e:
+        # TODO(filippo) handle non-fatal exit codes
+        raw_output = e.output
+        pass
+    return raw_output
+
+
+def collect_smart_metrics(disks, registry):
+    """Collect SMART metrics from 'disks' (list of PD objects) into Prometheus registry."""
+
+    smart_healthy = Gauge('healthy', 'SMART health', namespace='device_smart', registry=registry,
+                          labelnames=['device'])
+
+    device_info = Gauge('info', 'Disk info', namespace='device_smart', registry=registry,
+                        labelnames=['device', 'model', 'firmware'])
+
+    smart_attributes = {}
+    for attribute in REPORT_ATTRIBUTES:
+        smart_attributes[attribute] = Gauge(attribute, 'SMART attribute %s' % attribute,
+                                            namespace='device_smart', registry=registry,
+                                            labelnames=['device'])
+
+    for disk in disks:
+        args = ['--info', '--health']
+        args.extend(disk.smart_args)
+        _parse_smart_info(str(_run_smartctl(args), 'utf8'), disk, smart_healthy, device_info)
+
+        args = ['--attributes']
+        args.extend(disk.smart_args)
+        _parse_smart_attributes(str(_run_smartctl(args), 'utf8'), disk, smart_attributes)
+
+
+def _parse_smart_attributes(output, disk, attributes):
+    in_attributes = False
+
+    for line in output.splitlines():
+        if line.startswith('ID#'):
+            in_attributes = True
+            continue
+
+        if not in_attributes or not line:
+            continue
+
+        try:
+            attribute_id, name, flag, value, worst, thresh, attribute_type, updated, when_failed, \
+                raw_value = re.split(' +', line.strip(), 9)
+        except ValueError as e:
+            log.error('Unparseable line from smartctl: %r %r', e, line)
+            continue
+
+        metric_name = name.lower()
+        if metric_name not in attributes:
+            if metric_name not in IGNORE_ATTRIBUTES:
+                log.info('Unreported attribute %r: %r', metric_name, line)
+            continue
+
+        try:
+            metric_value = raw_value.split(' ')[0]
+            attributes[metric_name].labels(disk.disk_id).set(metric_value)
+        except ValueError as e:
+            log.error('Unparseable %r', line)
+
+
+def _parse_smart_info(output, disk, smart_healthy, device_info):
+    smart_healthy.labels(disk.disk_id).set(0)
+    model, firmware = None, None
+
+    for line in output.splitlines():
+        if ':' not in line:
+            continue
+        key, value = line.split(':', 1)
+        key = key.lower()
+        value = value.strip()
+
+        if key in ('product', 'device model'):
+            model = value
+        if key in ('firmware version'):
+            firmware = value
+        m = re.match('^smart (overall-)?health', key)
+        if m and value.lower() in ('ok', 'passed'):
+            smart_healthy.labels(disk.disk_id).set(1)
+
+    device_info.labels(disk.disk_id, model or 'NA', firmware or 'NA').set(1)
+
+
+# TODO(filippo): handle machines with more than one controller
+# TODO(filippo): handle mpt controllers
+DRIVER_HANDLERS = {
+    'megaraid': megaraid_list_pd,
+    'hpsa': hpsa_list_pd,
+}
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Collect SMART information from all physical disks'
+                                                 'and report as Prometheus metrics')
+    parser.add_argument('--outfile', metavar='FILE.prom',
+                        help='Output file (stdout)')
+    parser.add_argument('--syslog', action='store_true', default=False,
+                        help='Log to syslog (%(default)s)')
+    parser.add_argument('-d', '--debug', action='store_true', default=False,
+                        help='Enable debug logging (%(default)s)')
+    args = parser.parse_args()
+    script_name = parser.prog
+
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.WARNING)
+
+    if args.syslog:
+        handler = SysLogHandler(address='/dev/log')
+        handler.setFormatter(logging.Formatter(script_name + ': %(message)s'))
+        root_logger = logging.getLogger()
+        root_logger.handlers = []
+        root_logger.addHandler(handler)
+
+    if args.outfile and not args.outfile.endswith('.prom'):
+        parser.error('Output file does not end with .prom')
+
+    physical_disks = []
+
+    raid_drivers = get_fact('raid')
+    if raid_drivers is None:
+        log.error('Invalid value for "raid" fact: %r', raid_drivers)
+        return 1
+
+    for driver in raid_drivers:
+        handler = DRIVER_HANDLERS.get(driver)
+        if handler is None:
+            continue
+        for pd in handler():
+            physical_disks.append(pd)
+
+    # TODO(filippo): handle machines with disks attached to raid controllers _and_ regular sata
+    if not raid_drivers or raid_drivers == ['md']:
+        for pd in noraid_list_pd():
+            physical_disks.append(pd)
+
+    log.debug('Gathering SMART data from physical disks: %r',
+              [x.disk_id for x in physical_disks])
+
+    registry = CollectorRegistry()
+    collect_smart_metrics(physical_disks, registry)
+
+    if args.outfile:
+        write_to_textfile(args.outfile, registry)
+    else:
+        sys.stdout.write(generate_latest(registry).decode('utf-8'))
+
+
+if __name__ == '__main__':
+    sys.exit(main())
