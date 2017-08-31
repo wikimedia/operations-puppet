@@ -8,7 +8,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger]
+              psinger, dworley]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -245,7 +245,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, dworley, ironholds, diego, shiladsen]
+              kaldari, goransm, ema, ironholds, diego, shiladsen]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2516,16 +2516,12 @@ users:
     uid: 17187
     email: kherron@wikimedia.org
   dworley:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dworley
     realname: Daniel Worley
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlyZ7OS3200wsY9HIv2i0FlN3tbUBvzXL/AqvGXADDZscRK3DOUTAAyv/oYDoiYGe8V/5GIujrN2EQ1BPo4FFqmQfHIjNv5yJ5xZJmPeFUtBlOLLMa1sknfAcYiOpvhn0T7gLpipf0JUq+0J5RmbILD0xq5GHZAu3rYAJUtz4ameoPkDy1mGJk66ajZw+ufnv+g4zTXG7RFAT4r1Tui9wHfNmQdxuLGhUsdjOWxUwJXIqSzhdXfhQGx0JkZLPPwLuKPmNo58GQESe3kZM6a7GqSBhvU8sDdLP21LbOKKyeISpn+V2WAa+XPFF6FI0cbhIHF7RGMvV1CK2g86TAPngl dworley@slippy
+    ssh_keys: []
     uid: 17235
-    email: dworley@opensourceconnections.com
-    expiry_date: 2017-08-31
-    expiry_contact: ebernhardson@wikimedia.org
   diego:
     ensure: present
     gid: 500
