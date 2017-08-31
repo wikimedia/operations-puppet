@@ -30,4 +30,4 @@ profile::zookeeper::sync_limit: 8
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
 profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
-profile::zookeeper::firewall::srange: '(($HADOOP_MASTERS $KAFKA_BROKERS_ANALYTICS $KAFKA_BROKERS_MAIN $DRUID_HOSTS @resolve(krypton.eqiad.wmnet)))'
+profile::zookeeper::firewall::srange: '(($HADOOP_MASTERS $KAFKA_BROKERS_ANALYTICS $KAFKA_BROKERS_MAIN $DRUID_HOSTS $ZOOKEEPER_HOSTS_MAIN @resolve(krypton.eqiad.wmnet)))'
