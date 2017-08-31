@@ -4796,6 +4796,117 @@ host mw1306 {
     fixed-address mw1306.eqiad.wmnet;
 }
 
+host mw1307 {
+	hardware ethernet 18:66:DA:99:49:75;
+	fixed-address mw1307.eqiad.wmnet;
+}
+
+host mw1308 {
+	hardware ethernet 18:66:DA:99:4D:3B;
+	fixed-address mw1308.eqiad.wmnet;
+}
+
+host mw1309 {
+	hardware ethernet 18:66:DA:97:F8:86;
+	fixed-address mw1309.eqiad.wmnet;
+}
+
+host mw1310 {
+	hardware ethernet 18:66:DA:99:4E:5A;
+	fixed-address mw1310.eqiad.wmnet;
+}
+
+host mw1311 {
+	hardware ethernet 18:66:DA:99:4E:72;
+	fixed-address mw1311.eqiad.wmnet;
+}
+
+host mw1312 {
+	hardware ethernet 18:66:DA:99:4A:AD;
+	fixed-address mw1312.eqiad.wmnet;
+}
+
+host mw1313 {
+	hardware ethernet 18:66:DA:99:44:E4;
+	fixed-address mw1313.eqiad.wmnet;
+}
+
+host mw1314 {
+	hardware ethernet 18:66:DA:99:44:00;
+	fixed-address mw1314.eqiad.wmnet;
+}
+
+host mw1315 {
+	hardware ethernet 18:66:DA:99:50:B2;
+	fixed-address mw1315.eqiad.wmnet;
+}
+
+host mw1316 {
+	hardware ethernet 18:66:DA:99:49:FF;
+	fixed-address mw1316.eqiad.wmnet;
+}
+
+host mw1317 {
+	hardware ethernet 18:66:DA:99:53:CA;
+	fixed-address mw1317.eqiad.wmnet;
+}
+
+host mw1318 {
+	hardware ethernet 18:66:DA:99:4F:44;
+	fixed-address mw1318.eqiad.wmnet;
+}
+
+host mw1319 {
+	hardware ethernet 18:66:DA:99:4F:AA;
+	fixed-address mw1319.eqiad.wmnet;
+}
+
+host mw1320 {
+	hardware ethernet 18:66:DA:99:48:FD;
+	fixed-address mw1320.eqiad.wmnet;
+}
+
+host mw1321 {
+	hardware ethernet 18:66:DA:99:4D:47;
+	fixed-address mw1321.eqiad.wmnet;
+}
+
+host mw1322 {
+	hardware ethernet 18:66:DA:99:2E:4E;
+	fixed-address mw1322.eqiad.wmnet;
+}
+
+host mw1323 {
+	hardware ethernet 18:66:DA:99:58:6D;
+	fixed-address mw1323.eqiad.wmnet;
+}
+
+host mw1324 {
+	hardware ethernet 18:66:DA:99:51:1E;
+	fixed-address mw1324.eqiad.wmnet;
+}
+
+host mw1325 {
+	hardware ethernet 18:66:DA:99:52:86;
+	fixed-address mw1325.eqiad.wmnet;
+}
+
+host mw1326 {
+	hardware ethernet 18:66:DA:98:5F:88;
+	fixed-address mw1326.eqiad.wmnet;
+}
+
+
+host mw1327 {
+	hardware ethernet 18:66:DA:99:23:BF;
+	fixed-address mw1327.eqiad.wmnet;
+}
+
+host mw1328 {
+	hardware ethernet 18:66:DA:99:24:97;
+	fixed-address mw1328.eqiad.wmnet;
+}
+
 host mw2017 {
     hardware ethernet 78:2b:cb:2e:3c:1f;
     fixed-address mw2017.codfw.wmnet;
