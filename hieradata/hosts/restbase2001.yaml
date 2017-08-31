@@ -1,1 +1,2 @@
 profile::cassandra::rack: 'b'
+cassandra::jbod_devices: ['sda', 'sdb', 'sdc', 'sdd', 'sde']
