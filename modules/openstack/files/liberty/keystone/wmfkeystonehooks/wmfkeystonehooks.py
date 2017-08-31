@@ -18,6 +18,7 @@ from keystone.common import dependency
 from keystone import exception
 from novaclient import client as nova_client
 from novaclient import exceptions
+import designatemakedomain
 
 from oslo_log import log as logging
 from oslo_config import cfg
@@ -161,6 +162,14 @@ class KeystoneHooks(notifier._Driver):
         self.assignment_api.add_role_to_user_and_project(CONF.wmfhooks.observer_user,
                                                          project_id,
                                                          roledict[CONF.wmfhooks.observer_role_name])
+
+        designatemakedomain.createdomain(
+            CONF.wmfhooks.auth_url,
+            CONF.wmfhooks.admin_user,
+            CONF.wmfhooks.admin_pass,
+            project_id,
+            '{}.wmflabs.org'.format(project_id)
+        )
 
         # Use the nova api to set up security groups for the new project
         auth = generic.Password(
