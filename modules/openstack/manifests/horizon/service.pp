@@ -262,7 +262,7 @@ class openstack::horizon::service(
         mode    => '0644',
     }
 
-    # Arbitrary handy script that needs to be on the horizon host because it only works with Liberty
+    # Arbitrary handy script that historically needed to be on the horizon host because it only works with Liberty and above. From an era when everything else ran Kilo
     file { '/root/makedomain':
         source => "puppet:///modules/openstack2/${openstack_version}/admin_scripts/makedomain",
         owner  => 'root',

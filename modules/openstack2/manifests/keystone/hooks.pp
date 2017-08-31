@@ -5,6 +5,13 @@ class openstack2::keystone::hooks(
     ) {
     include openstack2::keystone::service
 
+    file { '/usr/lib/python2.7/dist-packages/designatemakedomain.py':
+        source => "puppet:///modules/openstack2/${openstack_version}/admin_scripts/makedomain",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0744',
+    }
+
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks':
         source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystonehooks",
         owner   => 'root',

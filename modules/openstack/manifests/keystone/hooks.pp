@@ -3,6 +3,13 @@
 class openstack::keystone::hooks(
     $openstack_version  = $::openstack::version)
 {
+    file { '/usr/lib/python2.7/dist-packages/designatemakedomain.py':
+        source => "puppet:///modules/openstack2/${openstack_version}/admin_scripts/makedomain",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0744',
+    }
+
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks':
         source  => "puppet:///modules/openstack/${openstack_version}/keystone/wmfkeystonehooks",
         owner   => 'root',
