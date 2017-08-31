@@ -1373,10 +1373,16 @@ node 'labstore1003.eqiad.wmnet' {
     include ::standard
 }
 
-node /labstore100[45]\.eqiad\.wmnet/ {
     role(labs::nfs::secondary)
     include ::standard
 }
+
+# new labstore nodes, set to spare until pushed into service T167984
+node /labstore100[67]\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
+
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
     include ::standard

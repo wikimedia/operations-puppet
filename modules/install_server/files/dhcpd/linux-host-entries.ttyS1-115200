@@ -2790,6 +2790,16 @@ host labstore1005 {
     fixed-address labstore1005.eqiad.wmnet;
 }
 
+host labstore1006 {
+    hardware ethernet 30:e1:71:5d:72:bc;
+    fixed-address labstore1006.wikimedia.org;
+}
+
+host labstore1007 {
+    hardware ethernet 30:e1:71:5f:9d:94;
+    fixed-address labstore1007.wikimedia.org;
+}
+
 host labstore2001 {
     hardware ethernet 78:2b:cb:76:1c:d2;
     fixed-address labstore2001.codfw.wmnet;
