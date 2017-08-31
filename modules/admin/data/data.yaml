@@ -2738,3 +2738,7 @@ ldap_only_users:
     ensure: present
     realname: Moska Noor
     email: mnoor@wikimedia.org
+  samwilson:
+    ensure: present
+    realname: Sam Wilson
+    email: swilson@wikimedia.org
