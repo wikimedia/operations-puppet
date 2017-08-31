@@ -79,7 +79,7 @@ define cassandra::instance(
         $data_file_directories  = pick($this_instance['data_file_directories'], ["${data_directory_base}/data"])
         $commitlog_directory    = "${data_directory_base}/commitlog"
         $hints_directory        = "${data_directory_base}/data/hints"
-        $heapdump_directory     = $data_directory_base
+        $heapdump_directory     = pick($this_instance['heapdump_directory'], $data_directory_base)
         $saved_caches_directory = "${data_directory_base}/saved_caches"
     }
 
