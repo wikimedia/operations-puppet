@@ -160,6 +160,8 @@ define varnish::instance(
         path    => '/bin:/usr/bin',
     }
 
+    # TODO/puppet4: convert this to be a define that uses instance name as title and ports as a parameter
+    # to allow having non-strigified port numbers.
     varnish::monitoring::instance { $ports:
         instance => $title,
     }
