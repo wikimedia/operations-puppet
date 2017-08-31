@@ -268,7 +268,7 @@ class cassandra(
     $data_file_directories            = ['/var/lib/cassandra/data'],
     $commitlog_directory              = '/var/lib/cassandra/commitlog',
     $hints_directory                  = '/var/lib/cassandra/data/hints',
-    $heapdump_directory               = '/var/lib/cassandra/',
+    $heapdump_directory               = undef,
     $disk_failure_policy              = 'stop',
     $row_cache_size_in_mb             = 200,
     $memory_allocator                 = 'JEMallocAllocator',
@@ -449,7 +449,7 @@ class cassandra(
                 'data_file_directories'  => $data_file_directories,
                 'commitlog_directory'    => $commitlog_directory,
                 'hints_directory'        => $hints_directory,
-                'heapdump_directory'     => $heapdump_directory,
+                'heapdump_directory'     => pick($heapdump_directory, '/var/lib/cassandra/'),
                 'saved_caches_directory' => $saved_caches_directory,
         }}
         cassandra::instance{ 'default':
