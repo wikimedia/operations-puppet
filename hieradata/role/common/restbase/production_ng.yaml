@@ -125,6 +125,7 @@ profile::cassandra::settings:
   permissions_validity_in_ms: 600000
   trickle_fsync: false
   client_encryption_enabled: true
+  disk_failure_policy: best_effort
 
 
 #
