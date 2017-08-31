@@ -4,8 +4,11 @@ profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
+  ServiceAccount: ''
+  PersistentVolumeLabel: ''
   DefaultStorageClass: ''
   ResourceQuota: ''
+  DefaultTolerationSeconds: ''
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
