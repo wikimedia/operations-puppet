@@ -198,7 +198,6 @@ $private_tables = [
     'old_growth',
     'oldimage_old',
     'optin_survey',
-    'pr_index',
     'prefstats',
     'prefswitch_survey',
     'profiling',
