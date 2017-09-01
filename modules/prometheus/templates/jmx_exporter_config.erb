@@ -3,14 +3,23 @@
 all = []
 
 
-# Find all servers in the current site, and filter them by the servers list we just found
+# Find all hosts in the current site, grouped by cluster
 @site_clusters.each do |cluster, val|
-  targets = val[@site].select { |server| @resources.include?(server) }
-  if targets.length > 0
+  cluster_hosts = val[@site].select { |host| @resources.include?(host) }
+  if cluster_hosts.length > 0
+    # For each host found, accumulate the resources we found for it into
+    # targets in the title:port form.
+    targets = []
+    cluster_hosts.each{ |host|
+      @resources[host].each{ |instance|
+        targets.push("#{instance['title']}:#{instance['parameters']['port']}")
+      }
+    }
+
     all.push(
       {
         'labels' => @labels.merge({'cluster' => cluster}),
-        'targets' => targets.map{|t| "#{@resources[t]['title']}:#{@resources[t]['port']}" },
+        'targets' => targets,
       }
     )
   end
