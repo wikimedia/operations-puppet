@@ -110,6 +110,9 @@ scap::sources:
     repository: operations/software/gerrit
   graphoid/deploy: {}
 #    lvs_service: graphoid
+  iegreview/iegreview:
+    repository: wikimedia/iegreview
+    origin: phabricator
   jobrunner/jobrunner:
     repository: mediawiki/services/jobrunner
   kartotherian/deploy:
