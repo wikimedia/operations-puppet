@@ -1,16 +1,12 @@
 # == Class: webperf::ve
 #
 # Captures VisualEditor timing data and sends it to StatsD.
+# See <https://meta.wikimedia.org/wiki/Schema:Edit>.
 #
 # === Parameters
 #
-# [*endpoint*]
-#   URI of EventLogging event publisher to subscribe to.
-#   Example: 'tcp://eventlogging.corp.org:8600'.
-#
-# [*eventlogging_path*]
-#   Path where the EventLogging python library is installed.
-#   Example: '/srv/deployment/eventlogging'.
+# [*kafka_brokers*]
+#   String of comma separated Kafka bootstrap brokers.
 #
 # [*statsd_host*]
 #   Write stats to this StatsD instance. Default: '127.0.0.1'.
@@ -19,12 +15,14 @@
 #   Write stats to this StatsD instance. Default: 8125.
 #
 class webperf::ve(
-    $endpoint,
-    $eventlogging_path,
+    $kafka_brokers,
     $statsd_host = '127.0.0.1',
     $statsd_port = 8125,
 ) {
     include ::webperf
+
+    require_package('python-kafka')
+    require_package('python-yaml')
 
     file { '/srv/webperf/ve.py':
         source => 'puppet:///modules/webperf/ve.py',
@@ -35,6 +33,7 @@ class webperf::ve(
     }
 
     file { '/lib/systemd/system/ve.service':
+        # uses $statsd_host, $statsd_port, $kafka_brokers
         content => template('webperf/ve.systemd.erb'),
         notify  => Service['ve'],
     }

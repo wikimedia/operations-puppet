@@ -6,11 +6,12 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 
 import argparse
+import json
 import socket
 import unittest
 import yaml
 
-import eventlogging
+from kafka import KafkaConsumer
 
 
 def handle_edit(meta):
@@ -31,8 +32,11 @@ def handle_edit(meta):
 
 
 if __name__ == '__main__':
-    ap = argparse.ArgumentParser(description='PerfData StatsD module')
-    ap.add_argument('endpoint', help='URI of EventLogging endpoint')
+    ap = argparse.ArgumentParser(description='Send VisualEditor PerfData to StatsD')
+    ap.add_argument('--brokers', required=True,
+                    help='Comma-separated list of kafka brokers')
+    ap.add_argument('--consumer-group', required=True,
+                    help='Consumer group to register with Kafka')
     ap.add_argument('--statsd-host', default='localhost',
                     type=socket.gethostbyname)
     ap.add_argument('--statsd-port', default=8125, type=int)
@@ -41,15 +45,31 @@ if __name__ == '__main__':
     addr = args.statsd_host, args.statsd_port
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    events = eventlogging.connect(args.endpoint)
+    kafka_bootstrap_servers = tuple(args.brokers.split(','))
+    kafka_topic = 'eventlogging_Edit'
+    kafka_consumer_timeout_seconds = 600
+    consumer = KafkaConsumer(
+        kafka_topic,
+        bootstrap_servers=kafka_bootstrap_servers,
+        group_id=args.consumer_group,
+        auto_offset_reset='latest',
+        enable_auto_commit=False,
+        consumer_timeout_ms=kafka_consumer_timeout_seconds * 1000
+    )
 
-    for meta in events.filter(schema='Edit'):
-        try:
-            stat = handle_edit(meta)
-            if stat is not None:
-                sock.sendto(stat.encode('utf-8'), addr)
-        except (ValueError, KeyError):
-            continue
+    try:
+        for message in consumer:
+            meta = json.loads(message.value)
+            try:
+                stat = handle_edit(meta)
+                if stat is not None:
+                    sock.sendto(stat.encode('utf-8'), addr)
+            except (ValueError, KeyError):
+                continue
+        # If we reach this line, consumer_timeout_ms elapsed without events
+        raise RuntimeError('No messages received in %d seconds.' % kafka_consumer_timeout_seconds)
+    finally:
+        consumer.close()
 
 
 # ##### Tests ######
