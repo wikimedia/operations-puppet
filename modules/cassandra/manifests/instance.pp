@@ -77,10 +77,10 @@ define cassandra::instance(
         $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
         $instance_id         = "${::hostname}-${instance_name}"
         $data_file_directories  = pick($this_instance['data_file_directories'], ["${data_directory_base}/data"])
-        $commitlog_directory    = "${data_directory_base}/commitlog"
-        $hints_directory        = "${data_directory_base}/data/hints"
+        $commitlog_directory    = pick($this_instance['commitlog_directory'], "${data_directory_base}/commitlog")
+        $hints_directory        = pick($this_instance['hints_directory'], "${data_directory_base}/data/hints")
         $heapdump_directory     = pick($this_instance['heapdump_directory'], $data_directory_base)
-        $saved_caches_directory = "${data_directory_base}/saved_caches"
+        $saved_caches_directory = pick($this_instance['saved_caches_directory'], "${data_directory_base}/saved_caches")
     }
 
     $tls_cluster_name       = $::cassandra::tls_cluster_name
