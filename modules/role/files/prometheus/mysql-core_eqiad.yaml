@@ -72,7 +72,6 @@
     shard: s5
     role: slave
   targets:
-  - db1026:9104
   - db1045:9104
   - db1049:9104
   - db1070:9104
