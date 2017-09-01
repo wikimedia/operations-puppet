@@ -266,13 +266,13 @@ class cassandra(
     $permissions_validity_in_ms       = 2000,
     $data_directory_base              = '/var/lib/cassandra',
     $data_file_directories            = ['/var/lib/cassandra/data'],
-    $commitlog_directory              = '/var/lib/cassandra/commitlog',
-    $hints_directory                  = '/var/lib/cassandra/data/hints',
+    $commitlog_directory              = undef,
+    $hints_directory                  = undef,
     $heapdump_directory               = undef,
     $disk_failure_policy              = 'stop',
     $row_cache_size_in_mb             = 200,
     $memory_allocator                 = 'JEMallocAllocator',
-    $saved_caches_directory           = '/var/lib/cassandra/saved_caches',
+    $saved_caches_directory           = undef,
     $concurrent_reads                 = 32,
     $concurrent_writes                = 32,
     $concurrent_counter_writes        = 32,
@@ -317,11 +317,6 @@ class cassandra(
     $logstash_port                    = 11514,
 ) {
     validate_string($cluster_name)
-
-    validate_absolute_path($commitlog_directory)
-    validate_absolute_path($hints_directory)
-    validate_absolute_path($saved_caches_directory)
-
     validate_string($endpoint_snitch)
 
     validate_re($rpc_server_type, '^(hsha|sync|async)$')
@@ -447,10 +442,10 @@ class cassandra(
                 'rpc_address'            => $rpc_address,
                 'data_directory_base'    => $data_directory_base,
                 'data_file_directories'  => $data_file_directories,
-                'commitlog_directory'    => $commitlog_directory,
-                'hints_directory'        => $hints_directory,
+                'commitlog_directory'    => pick($commitlog_directory, '/var/lib/cassandra/commitlog'),
+                'hints_directory'        => pick($hints_directory, '/var/lib/cassandra/data/hints'),
                 'heapdump_directory'     => pick($heapdump_directory, '/var/lib/cassandra/'),
-                'saved_caches_directory' => $saved_caches_directory,
+                'saved_caches_directory' => pick($saved_caches_directory, '/var/lib/cassandra/saved_caches'),
         }}
         cassandra::instance{ 'default':
             instances => $default_instances,
