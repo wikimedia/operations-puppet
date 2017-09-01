@@ -26,6 +26,17 @@ class role::prometheus::services {
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/cassandra_*.yaml" ]}
         ],
+        # Drop restbase table/cf 'meta' metrics, not needed
+        'relabel_configs' => [
+          { 'source_labels' => ['columnfamily'],
+            'regex'  => 'meta',
+            'action' => 'drop',
+          },
+          { 'source_labels' => ['table'],
+            'regex'  => 'meta',
+            'action' => 'drop',
+          },
+        ],
       },
     ]
 
