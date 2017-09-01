@@ -43,7 +43,19 @@ sub cluster_fe_hit {
 	call upload_common_hit;
 }
 
+sub cluster_fe_ratelimit {
+	// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
+	if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
+		if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		}
+	}
+}
+
 sub cluster_fe_miss {
+	call cluster_fe_ratelimit;
 	call upload_common_miss;
 
 	// Make sure If-Cached requests won't pollute the cache
@@ -52,7 +64,9 @@ sub cluster_fe_miss {
 	}
 }
 
-sub cluster_fe_pass { }
+sub cluster_fe_pass {
+	call cluster_fe_ratelimit;
+}
 
 sub cluster_fe_backend_fetch {
 	call upload_common_set_range;
