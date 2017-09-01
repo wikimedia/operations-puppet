@@ -32,13 +32,8 @@ class role::webperf {
         statsd_port   => $statsd_port,
     }
 
-    # TODO: Remove eventlogging specific things once ve uses Kafka: T110903
-    include ::eventlogging
-    $eventlogging_host = 'eventlog1001.eqiad.wmnet'
-    # Installed by eventlogging class using trebuchet
-    $eventlogging_path = '/srv/deployment/eventlogging/eventlogging'
     # Report VisualEditor performance measurements to Graphite.
-    # See <https://meta.wikimedia.org/wiki/Schema:TimingData>
+    # See <https://meta.wikimedia.org/wiki/Schema:Edit>
     class { '::webperf::ve':
         endpoint          => "tcp://${eventlogging_host}:8600",
         eventlogging_path => $eventlogging_path,
