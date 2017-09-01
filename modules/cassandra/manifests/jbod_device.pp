@@ -29,7 +29,7 @@ define cassandra::jbod_device (
 
     mount { $mount_point:
         ensure   => mounted,
-        device   => $device,
+        device   => "/dev/${device}",
         name     => $mount_point,
         fstype   => 'ext4',
         options  => $mount_options,
