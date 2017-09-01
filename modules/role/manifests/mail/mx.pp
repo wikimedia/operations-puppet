@@ -23,6 +23,26 @@ class role::mail::mx(
         before => Class['exim4'],
     }
 
+    letsencrypt::cert::integrated { $facts['hostname']:
+        subjects   => $facts['fqdn'],
+        key_group  => 'Debian-exim',
+        puppet_svc => 'nginx',
+        system_svc => 'nginx',
+    }
+
+    class { 'nginx':
+        variant => 'light',
+    }
+
+    nginx::site { 'letsencrypt-standalone':
+        content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
+    }
+
+    ferm::service { 'nginx-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '1',
