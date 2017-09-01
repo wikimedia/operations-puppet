@@ -57,8 +57,9 @@ class iegreview(
         description => 'Grants review application server - iegreview.wikimedia.org',
     }
 
-    package { 'iegreview/iegreview':
-        provider => 'trebuchet',
+    scap::target { 'iegreview/iegreview':
+        service_name => 'iegreview',
+        deploy_user  => 'deploy-service',
     }
 
     require_package('php5-mysql')
@@ -70,17 +71,12 @@ class iegreview(
 
     ensure_resource('file', '/srv/deployment', {'ensure' => 'directory' })
 
-    file { [ '/srv/deployment/iegreview', $deploy_dir ]:
-        ensure => directory,
-    }
-
-    file { "${deploy_dir}/.env":
+    file { '/etc/iegreview.ini':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('iegreview/env.erb'),
-        require => Package['iegreview/iegreview'],
         notify  => Service['apache2'],
     }
 

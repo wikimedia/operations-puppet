@@ -318,6 +318,11 @@ scap::sources:
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
 
+  # IEG grant review
+  iegreview/iegreview:
+    repository: iegreview
+    origin: phabricator
+
   jobrunner/jobrunner:
     repository: mediawiki/services/jobrunner
 
