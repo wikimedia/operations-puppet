@@ -2742,3 +2742,7 @@ ldap_only_users:
     ensure: present
     realname: Sam Wilson
     email: swilson@wikimedia.org
+  dmaza:
+    ensure: present
+    realname: Dayllan Maza
+    email: dmaza@wikimedia.org
