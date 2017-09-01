@@ -1,0 +1,11 @@
+VisualEditor.load:1955|ms
+VisualEditor.load:33097|ms
+VisualEditor.load:3077|ms
+VisualEditor.load:2963|ms
+VisualEditor.load:1769|ms
+VisualEditor.save:14379|ms
+VisualEditor.load:1067|ms
+VisualEditor.load:9615|ms
+VisualEditor.load:2391|ms
+VisualEditor.load:16085|ms
+VisualEditor.load:2711|ms

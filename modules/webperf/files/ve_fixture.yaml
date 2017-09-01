@@ -1,0 +1,44 @@
+# Random sample from August 2017
+# Anonimised by removing all fields, except:
+# - event.action
+# - event.action.*
+# - event.editor
+# - event.version
+# - schema
+
+- {"event": {"action": "saveSuccess", "editor": "wikitext", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "saveAttempt", "editor": "wikitext", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 309305, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 59002, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 1955, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "saveIntent", "editor": "wikitext", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 2903, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 33097, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 206, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 3077, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 817, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 2963, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 5502, "action.abort.type": "switchwithout", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 214, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 1769, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 3766, "action.abort.type": "switchwithout", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "saveIntent", "action.saveIntent.timing": 32831, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "saveAttempt", "action.saveAttempt.timing": 1987, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 3834, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 435, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "saveSuccess", "action.saveSuccess.timing": 14379, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 128254, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 147, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "saveFailure", "action.saveFailure.type": "responseUnknown", "editor": "wikitext", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 311, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 619, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 1067, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 656, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 9615, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 237, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 2391, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "click", "action.init.timing": 142771, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "abort", "action.abort.mechanism": "navigate", "action.abort.timing": 6249, "action.abort.type": "nochange", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 16085, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "init", "action.init.mechanism": "url", "action.init.timing": 345, "action.init.type": "page", "editor": "visualeditor", "version": 1}, "schema": "Edit"}
+- {"event": {"action": "ready", "action.ready.timing": 2711, "editor": "visualeditor", "version": 1}, "schema": "Edit"}
