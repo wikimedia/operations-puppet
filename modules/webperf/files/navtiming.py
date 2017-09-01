@@ -315,6 +315,10 @@ def is_sane(value):
     return isinstance(value, int) and value > 0 and value < 180000
 
 
+def is_sanev2(value):
+    return isinstance(value, int) and value >= 0 and value < 180000
+
+
 @handles('SaveTiming')
 def handle_save_timing(meta):
     event = meta['event']
@@ -375,6 +379,8 @@ def handle_navigation_timing(meta):
     continent = iso_3166_countries.get(country_code)
     country_name = iso_3166_top_40_plus_australia.get(country_code)
 
+    ua = parse_ua(meta['userAgent']) or ('Other', '_')
+
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
 
@@ -386,7 +392,6 @@ def handle_navigation_timing(meta):
             yield make_stat(prefix, metric, site, 'overall', value)
             yield make_stat(prefix, metric, 'overall', value)
 
-            ua = parse_ua(meta['userAgent']) or ('Other', '_')
             yield make_stat(prefix, metric, 'by_browser', ua[0], ua[1], value)
             yield make_stat(prefix, metric, 'by_browser', ua[0], 'all', value)
 
@@ -395,6 +400,67 @@ def handle_navigation_timing(meta):
 
         if country_name is not None:
             yield make_stat(prefix, metric, 'by_country', country_name, value)
+
+    # This is the new setup that could potentially replace the old one
+    # but to do that, we need to keep part of the above code
+    metrics_nav2 = {}
+    isSane = True
+
+    for metric in (
+        'domComplete',
+        'domInteractive',
+        'firstPaint',
+        'loadEventEnd',
+        'loadEventStart',
+        'mediaWikiLoadEnd',
+        'mediaWikiLoadStart',
+        'responseStart',
+    ):
+        if metric in event:
+            # The new way is to fetch start as base, so if we got it, rebase
+            if 'fetchStart' in event:
+                metrics_nav2[metric] = event[metric] - event['fetchStart']
+            else:
+                metrics_nav2[metric] = event[metric]
+    # https://www.w3.org/TR/navigation-timing/#process
+    for difference, minuend, subtrahend in (
+        # ('unload', 'unloadEventEnd', 'unloadEventStart'),
+        ('redirect', 'redirectEnd', 'redirectStart'),
+        ('appCache', 'domainLookupStart', 'fetchStart'),
+        ('dns', 'domainLookupEnd', 'domainLookupStart'),
+        ('tcp', 'connectEnd', 'connectStart'),
+        ('request', 'responseStart', 'requestStart'),
+        ('response', 'responsetEnd', 'responseStart'),
+        ('processing', 'domComplete', 'domLoading'),
+        ('onLoad', 'loadEventEnd', 'loadEventStart'),
+        ('mediaWikiLoad', 'mediaWikiLoadEnd', 'mediaWikiLoadStart'),
+        ('ssl', 'connectEnd', 'secureConnectionStart'),
+    ):
+        if minuend in event and subtrahend in event:
+            metrics_nav2[difference] = event[minuend] - event[subtrahend]
+
+    # If one of the metrics are wrong, don't send them at all
+    for metric, value in metrics_nav2.items():
+        isSane = is_sanev2(value)
+        if not isSane:
+            break
+
+    # If one of the metrics are over the max then skip it entirely
+    if (isSane):
+        for metric, value in metrics_nav2.items():
+            prefix = 'frontend.navtiming2'
+            yield make_stat(prefix, metric, site, auth, value)
+            yield make_stat(prefix, metric, site, 'overall', value)
+            yield make_stat(prefix, metric, 'overall', value)
+
+            yield make_stat(prefix, metric, 'by_browser', ua[0], ua[1], value)
+            yield make_stat(prefix, metric, 'by_browser', ua[0], 'all', value)
+
+            if continent is not None:
+                yield make_stat(prefix, metric, 'by_continent', continent, value)
+
+            if country_name is not None:
+                yield make_stat(prefix, metric, 'by_country', country_name, value)
 
 
 if __name__ == '__main__':
@@ -468,7 +534,8 @@ class TestNavTiming(unittest.TestCase):
                 for stat in f(meta):
                     actual.append(stat)
             with open('navtiming_expected.txt') as expected_file:
+                expect = expected_file.read().splitlines()
                 self.assertItemsEqual(
                     actual,
-                    expected_file.read().splitlines()
+                    expect
                 )
