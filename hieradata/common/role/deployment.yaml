@@ -13,9 +13,6 @@ role::deployment::repo_config:
     upstream: https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins
   librenms/librenms:
     upstream: https://gerrit.wikimedia.org/r/operations/software/librenms
-  iegreview/iegreview:
-    grain: iegreview
-    upstream: https://gerrit.wikimedia.org/r/wikimedia/iegreview
   dropwizard/metrics:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics
