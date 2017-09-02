@@ -113,7 +113,11 @@ def get_raid_status(host, raid_type):
     if raid_type in COMPRESSED_RAID_TYPES:
         # NRPE doesn't handle NULL bytes, decoding them.
         # Given the specific domain there was no need of a full yEnc encoding.
-        status = zlib.decompress(stdout.replace('###NULL###', '\x00'))
+        try:
+            status = zlib.decompress(stdout.replace('###NULL###', '\x00'))
+        except zlib.error as e:
+            status = 'Failed to decompress Raid status: {err}'.format(err=e)
+            logger.error(status)
     else:
         status = stdout
 
@@ -242,12 +246,15 @@ def main():
                     str=args.message))
             return
 
-    raid_status = '{}\n'.format(args.message)
+    raid_status = '{msg}\n{msg_remain}\n'.format(
+        msg=args.message, msg_remain=args.message_remain)
+
     if args.skip_nrpe or args.raid_type == 'n/a':
         logger.debug('Skipping NRPE RAID status gathering')
-        raid_status += args.message_remain
     else:
-        raid_status += get_raid_status(args.host_address, args.raid_type)
+        raid_status += '$ sudo /usr/local/lib/nagios/plugins/{command}\n{status}'.format(
+            command=NRPE_REMOTE_COMMAND.format(args.raid_type),
+            status=get_raid_status(args.host_address, args.raid_type))
 
     phab_client = get_phabricator_client()
     project_ids = get_phabricator_project_ids(phab_client, args.datacenter)
