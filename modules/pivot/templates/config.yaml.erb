@@ -172,7 +172,119 @@ dataCubes:
     # * autofill-dimensions-only - Introspect the datasource, automatically generate dimensions only
     # * autofill-measures-only - Introspect the datasource, automatically generate measures only
     # * autofill-all - (default) Introspect the datasource, automatically generate dimensions and measures
-    introspection: autofill-all
+    #
+    # Disabling introspection as it fails to get all dimensions and measures
+    introspection: none
+
+    dimensions:
+      # A general dimension looks like so:
+      #
+      # name: channel
+      # ^ the name of the dimension as used in the URL (you should try not to change these)
+      #
+      # title: The Channel
+      # ^ (optional) the human readable title. If not set a title is generated from the 'name'
+      #
+      # kind: string
+      # ^ (optional) the kind of the dimension. Can be 'string', 'time', 'number', or 'boolean'. Defaults to 'string'
+      #
+      # formula: $channel
+      # ^ (optional) the Plywood bucketing expression for this dimension. Defaults to '$name'
+      #   if, say, channel was called 'cnl' in the data you would put '$cnl' here
+      #   See also the expressions API reference: https://plywood.imply.io/expressions
+      #
+      # url: string
+      # ^ (optional) a url (including protocol) associated with the dimension, with optional token '%s'
+      #   that is replaced by the dimension value to generate links specific to each value.
+
+      - name: __time
+        title: Time
+        kind: time
+        formula: $__time
+
+      - name: anonymous
+        title: Anonymous
+        formula: $anonymous
+
+      - name: banner
+        title: Banner
+        formula: $banner
+
+      - name: bucket
+        title: Bucket
+        formula: $bucket
+
+      - name: campaign
+        title: Campaign
+        formula: $campaign
+
+      - name: country
+        title: Country
+        formula: $country
+
+      - name: country_matches_geocode
+        title: Country Matches Geocode
+        formula: $country_matches_geocode
+
+      - name: device
+        title: Device
+        formula: $device
+
+      - name: project
+        title: Project
+        formula: $project
+
+      - name: region
+        title: Region
+        formula: $region
+
+      - name: sample_rate
+        title: Sample Rate
+        formula: $sample_rate
+
+      - name: status_code
+        title: Status Code
+        formula: $status_code
+
+      - name: uselang
+        title: Uselang
+        formula: $uselang
+
+    # The list of measures defined in the UI. The order here will be reflected in the UI
+    measures:
+      # A general measure looks like so:
+      #
+      # name: avg_revenue
+      # ^ the name of the dimension as used in the URL (you should try not to change these)
+      #
+      # title: Average Revenue
+      # ^ (optional) the human readable title. If not set a title is generated from the 'name'
+      #
+      # formula: $main.sum($revenue) / $main.sum($volume) * 10
+      # ^ (optional) the Plywood bucketing expression for this dimension.
+      #   Usually defaults to '$main.sum($name)' but if the name contains 'min' or 'max' will use that as the aggregate instead of sum.
+      #   this is the place to define your fancy formulas
+
+      - name: request_count
+        title: Request Count
+        formula: $main.sum($request_count)
+
+      - name: normalized_request_count
+        title: Normalized Request Count
+        formula: $main.sum($normalized_request_count)
+
+      # This is the place where you might want to add derived measures (a.k.a Post Aggregators).
+      #
+      # Here are some examples of possible derived measures:
+      #
+      # - name: ecpm
+      #   title: eCPM
+      #   formula: $main.sum($revenue) / $main.sum($impressions) * 1000
+      #
+      # - name: usa_revenue
+      #   title: USA Revenue
+      #   formula: $main.filter($country == 'United States').sum($revenue)
+
 
   - name: unique-devices-per-domain-daily
     title: Unique Devices Per Domain Daily
