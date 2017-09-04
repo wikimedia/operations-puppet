@@ -19,6 +19,12 @@
 # [*statsd_prefix*]
 #   Prefix to use when sending statistics.
 #
+# [*poolcounter_server*]
+#   Address of poolcounter server, if any.
+#
+# [*stl_support*]
+#   Whether STL support should be enabled.
+#
 
 class thumbor (
     $listen_port = 8800,
@@ -27,6 +33,7 @@ class thumbor (
     $statsd_port = '8125',
     $statsd_prefix = "thumbor.${::hostname}",
     $poolcounter_server = undef,
+    $stl_support = undef,
 ) {
     requires_os('debian >= jessie')
 
