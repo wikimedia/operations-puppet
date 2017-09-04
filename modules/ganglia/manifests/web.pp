@@ -10,6 +10,7 @@ class ganglia::web(
     include ::apache::mod::rewrite
     include ::apache::mod::headers
     include ::apache::mod::authnz_ldap
+    include ::passwords::ldap::production
 
     $ganglia_servername = 'ganglia.wikimedia.org'
     $ganglia_serveralias = 'uranium.wikimedia.org'
