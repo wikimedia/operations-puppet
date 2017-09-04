@@ -9,7 +9,6 @@ profile::restbase::seeds:
 profile::restbase::hosts:
   - restbase2002.codfw.wmnet
   - restbase2004.codfw.wmnet
-  - restbase2005.codfw.wmnet
   - restbase2006.codfw.wmnet
   - restbase2007.codfw.wmnet
   - restbase2008.codfw.wmnet
