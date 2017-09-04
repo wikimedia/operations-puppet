@@ -17,4 +17,11 @@ class profile::mediawiki::jobrunner_tls {
         upstream_ports => [$::profile::mediawiki::jobrunner::port],
         access_log     => false,
     }
+    ::ferm::service { 'mediawiki-jobrunner-https':
+        proto   => 'tcp',
+        port    => 'https',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
 }
