@@ -175,7 +175,7 @@ class TaskGen < ::Rake::TaskLib
     return [] if shell_files.empty?
     desc "Check common typos from /typos"
     task :typos do
-      system("git grep -q -I -P -f typos -- #{shell_files}")
+      system("git grep -I -n -P -f typos -- #{shell_files}")
       case $CHILD_STATUS.exitstatus
       when 0
         fail "Typo found!"
