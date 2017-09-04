@@ -23,7 +23,7 @@ define cassandra::jbod_device (
         path   => $mount_point,
         owner  => 'root',
         group  => 'root',
-        mode   => '0750',
+        mode   => '0751',
         before => Mount[$mount_point],
     }
 
