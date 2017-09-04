@@ -16,3 +16,6 @@ thumbor_memcached_servers_nutcracker:
   - '10.64.48.72:11211:1 "shard04"' # thumbor1004
 
 thumbor::poolcounter_server: 'poolcounter1001.eqiad.wmnet'
+
+thumbor::logstash_host: 'logstash.svc.eqiad.wmnet'
+thumbor::logstash_port: 11514
