@@ -1,0 +1,11 @@
+# This file is managed by puppet
+# puppet:///modules/dumps/otherdumps/logrot/logrotate.cirrusdump
+#
+/var/log/cirrusdump/*.log {
+    daily
+    compress
+    delaycompress
+    missingok
+    maxage 22
+    nocreate
+}

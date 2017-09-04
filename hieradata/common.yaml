@@ -312,6 +312,12 @@ dumps_clients_snapshots:
   - snapshot1005.eqiad.wmnet
   - snapshot1006.eqiad.wmnet
   - snapshot1007.eqiad.wmnet
+dumps_client_config:
+  repodir: /srv/deployment/dumps/dumps/xmldumps-backup
+  confsdir: /etc/dumps/confs
+  nfsmount: /mnt/dumpsdata
+  otherdumpsdir: /mnt/dumpsdata/other
+  apachedir: /srv/mediawiki
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed

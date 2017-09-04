@@ -1,0 +1,69 @@
+#!/bin/bash
+#############################################################
+# This file is maintained by puppet!
+# modules/dumps/otherdumps/wikidata/wikidatadumps-shared.sh
+#############################################################
+#
+# Shared variable and function declarations for creating Wikidata dumps
+#
+# Marius Hoch < hoo@online.de >
+
+source /usr/local/etc/dump_functions.sh
+configfile="${confsdir}/wikidump.conf"
+
+today=`date +'%Y%m%d'`
+daysToKeep=70
+
+args="wiki:dir;output:public,temp;tools:php,gzip,bzip2"
+results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+
+apacheDir=`getsetting "$results" "wiki" "dir"` || exit 1
+publicDir=`getsetting "$results" "output" "public"` || exit 1
+tempDir=`getsetting "$results" "output" "temp"` || exit 1
+php=`getsetting "$results" "tools" "php"` || exit 1
+gzip=`getsetting "$results" "tools" "gzip"` || exit 1
+bzip2=`getsetting "$results" "tools" "bzip2"` || exit 1
+
+for settingname in "apacheDir" "publicDir" "tempDir" "php" "gzip" "bzip2"; do
+    checkval "$settingname" "${!settingname}"
+done
+
+targetDirBase=$publicDir/other/wikibase/wikidatawiki
+targetDir=$targetDirBase/$today
+
+multiversionscript="${apacheDir}/multiversion/MWScript.php"
+
+# Create the dir for the day: This may or may not already exist, we don't care
+mkdir -p $targetDir
+
+# Remove dump-folders we no longer need (keep $daysToKeep days)
+function pruneOldDirectories {
+	# Just to be sure: If this were empty the below would work on /
+	if [ -z "$targetDirBase" ]; then
+		echo "Empty \$targetDirBase"
+		exit 1
+	fi
+
+	cutOff=$(( `date +%s` - `expr $daysToKeep + 1` * 24 * 3600)) # Timestamp from $daysToKeep + 1 days ago
+	foldersToDelete=`ls -d -r $targetDirBase/*` # $targetDirBase is known to be non-empty
+	for folder in $foldersToDelete; do
+		# Try to get the unix time from the folder name, if this fails we'll just
+		# keep the folder (as it's not a valid date, thus hasn't been created by this script).
+		creationTime=$(date --utc --date="$(basename $folder)" +%s 2>/dev/null)
+		if [ -n "$creationTime" ] && [ "$cutOff" -gt "$creationTime" ]; then
+			/bin/rm -rf $folder
+		fi
+	done
+}
+
+function pruneOldLogs {
+	# Remove old logs (keep 35 days)
+	find /var/log/wikidatadump/ -name 'dumpwikidata*-*-*.log' -mtime +36 -delete
+}
+
+function runDcat {
+        "$php" /usr/local/share/dcat/DCAT.php \
+                --config=/usr/local/etc/dcatconfig.json \
+                "--dumpDir=${targetDirBase}" \
+                "--outputDir=${targetDirBase}"
+}

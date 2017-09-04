@@ -10,7 +10,7 @@ class dumpsnfs(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('dumpsnfs/nfs_exports.erb'),
+        content => template('dumps/nfs/nfs_exports.erb'),
         require => Package['nfs-kernel-server'],
     }
 
@@ -29,7 +29,7 @@ class dumpsnfs(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('dumpsnfs/default-nfs-common.erb'),
+        content => template('dumps/nfs/default-nfs-common.erb'),
         require => Package['nfs-kernel-server'],
     }
 
@@ -37,7 +37,7 @@ class dumpsnfs(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('dumpsnfs/default-nfs-kernel-server.erb'),
+        content => template('dumps/nfs/default-nfs-kernel-server.erb'),
         require => Package['nfs-kernel-server'],
     }
 
