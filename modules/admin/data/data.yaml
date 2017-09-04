@@ -1275,7 +1275,6 @@ users:
     realname: Trevor Parscal
     ssh_keys: []
     uid: 541
-    email: tparscal@wikimedia.org
   tnegrin:
     ensure: absent
     gid: 500
