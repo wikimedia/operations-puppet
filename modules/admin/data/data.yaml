@@ -8,7 +8,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley]
+              psinger, midom, tparscal, dworley, ironholds]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -245,7 +245,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, ironholds, diego, shiladsen]
+              kaldari, goransm, ema, diego, shiladsen]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1283,15 +1283,12 @@ users:
     ssh_keys: []
     uid: 3558
   ironholds:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ironholds
     realname: Oliver Keyes
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2P1KNuHnoFLRFFqwj5cg9qOh5mN3rTz1ei2TTl95FC2toQI2CWGl8b1MK/Oic20OmR2HpX+wcrPGvJlCKJaUlD6EPxLtO5FCfnlK7qSQNQweI77ZNyvZCZsam85D+D+gJmEowyWX8g/WptqaUh0XEgHNjH9yf/LvLQTx8PV2ZfzAqOdQwvfo6JUNFXlZgKw5q/k/kxs2beqxsvm79SQGfwRjG+r64m+0g+fy2TG4Ph+6k9HCEFnL/fFmYavxCaHtWpFWpDYYaq225HKbDPqG77M1Z4Qshe6w45aR0MDUfbAmPUTLQtDoqVcC3gU3NmbD28OPsZGFkmPcxVVHLn5aR okeyes@uw.edu]
+    ssh_keys: []
     uid: 5004
-    expiry_date: 2017-09-01
-    expiry_contact: nuria@wikimedia.org
-    email: okeyes@uw.edu
   nuria:
     ensure: present
     gid: 500
