@@ -22,4 +22,6 @@ class base::debdeploy
         group  => 'root',
         mode   => '0555',
     }
+
+    require_package('debdeploy-client')
 }
