@@ -67,6 +67,14 @@ jobrunner:
     datacenters:
       - eqiad
       - codfw
+  nginx:
+    port: 443
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
 testserver:
   apache2:
     port: 80
