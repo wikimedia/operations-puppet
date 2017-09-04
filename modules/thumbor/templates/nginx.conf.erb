@@ -1,3 +1,4 @@
+<%- if scope.lookupvar('::nginx::variant') == 'extras' -%>
 lua_shared_dict prometheus_metrics 10M;
 lua_package_path "/etc/nginx/prometheus.lua";
 
@@ -17,6 +18,7 @@ log_by_lua '
   metric_requests:inc(1, {host, ngx.var.status})
   metric_latency:observe(ngx.now() - ngx.req.start_time(), {host})
 ';
+<%- end -%>
 
 upstream thumbor {
     least_conn;
@@ -53,6 +55,7 @@ server {
         add_header X-Upstream $upstream_addr;
     }
 
+<%- if scope.lookupvar('::nginx::variant') == 'extras' -%>
     location /metrics {
         content_by_lua '
             metric_connections:set(ngx.var.connections_reading, {"reading"})
@@ -61,4 +64,5 @@ server {
             prometheus:collect()
         ';
     }
+<%- end -%>
 }
