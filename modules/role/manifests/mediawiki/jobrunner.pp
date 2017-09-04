@@ -9,4 +9,10 @@ class role::mediawiki::jobrunner {
     include ::profile::prometheus::hhvm_exporter
 
     include ::profile::mediawiki::jobrunner
+
+    # TODO: change role used in beta
+    if hiera('has_lvs', true) {
+        include ::profile::mediawiki::jobrunner_tls
+    }
+
 }
