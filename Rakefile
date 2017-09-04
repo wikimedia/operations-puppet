@@ -171,6 +171,8 @@ class TaskGen < ::Rake::TaskLib
     return [] if @changed_files.empty?
     # Exclude the typos file itself
     shell_files = Shellwords.join(@changed_files - ['typos'])
+    # If only typos was modified, bail out immediately
+    return [] if shell_files.empty?
     desc "Check common typos from /typos"
     task :typos do
       system("git grep -q -I -P -f typos -- #{shell_files}")
