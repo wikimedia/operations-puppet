@@ -8,17 +8,25 @@
 #
 # Marius Hoch < hoo@online.de >
 
-source /usr/local/etc/set_dump_dirs.sh
+source /usr/local/etc/dump_functions.sh
 configfile="${confsdir}/wikidump.conf"
 
 today=`date +'%Y%m%d'`
 daysToKeep=70
 
-apacheDir=`awk -Fdir= '/^dir=/ { print $2 }' "$configfile"`
-publicDir=`awk -Fpublic= '/^public=/ { print $2 }' "$configfile"`
+args="wiki:dir;output:public,temp"
+results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+
+apacheDir=`getsetting "$results" "wiki" "dir"` || exit 1
+publicDir=`getsetting "$results" "output" "public"` || exit 1
+tempDir=`getsetting "$results" "output" "temp"` || exit 1
+
+for settingname in "apacheDir" "publicDir" "tempDir"; do
+    checkval "$settingname" "${!settingname}"
+done
+
 targetDirBase=$publicDir/other/wikibase/wikidatawiki
 targetDir=$targetDirBase/$today
-tempDir=`awk -Ftemp= '/^temp=/ { print $2 }' "$configfile"`
 
 multiversionscript="${apacheDir}/multiversion/MWScript.php"
 
