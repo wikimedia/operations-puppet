@@ -99,13 +99,43 @@ profile::cassandra::instances:
       commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
       hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
-  # "restbase2003.codfw.wmnet":
-  #   a:
-  #     listen_address: 10.192.32.134
-  #   b:
-  #     listen_address: 10.192.32.135
-  #   c:
-  #     listen_address: 10.192.32.136
+  "restbase2003.codfw.wmnet":
+    a:
+      listen_address: 10.192.32.134
+      data_file_directories:
+        - /srv/sda4/cassandra-a/data
+        - /srv/sdb4/cassandra-a/data
+        - /srv/sdc4/cassandra-a/data
+        - /srv/sdd4/cassandra-a/data
+        - /srv/sde4/cassandra-a/data
+      heapdump_directory: /srv/sda4/cassandra-a
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
+    b:
+      listen_address: 10.192.32.135
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+        - /srv/sdd4/cassandra-b/data
+        - /srv/sde4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+    c:
+      listen_address: 10.192.32.136
+      data_file_directories:
+        - /srv/sda4/cassandra-c/data
+        - /srv/sdb4/cassandra-c/data
+        - /srv/sdc4/cassandra-c/data
+        - /srv/sdd4/cassandra-c/data
+        - /srv/sde4/cassandra-c/data
+      heapdump_directory: /srv/sdc4/cassandra-c
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-c/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-c/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   # "restbase2005.codfw.wmnet":
   #   a:
   #     listen_address: 10.192.48.46
