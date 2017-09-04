@@ -2073,8 +2073,12 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 }
 
 # restbase eqiad cluster
-node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
+node /^restbase10(0[78]|1[012345678])\.eqiad\.wmnet$/ {
     role(restbase::production)
+}
+
+node /^restbase100[9]\.eqiad\.wmnet$/ {
+    role(restbase::production_ng)
 }
 
 # restbase codfw cluster

@@ -33,6 +33,9 @@ profile::restbase::seeds_ng:
   - restbase2005-a.codfw.wmnet
   - restbase2005-b.codfw.wmnet
   - restbase2005-c.codfw.wmnet
+  - restbase1009-a.eqiad.wmnet
+  - restbase1009-b.eqiad.wmnet
+  - restbase1009-c.eqiad.wmnet
 
 #
 # Cassandra
@@ -89,13 +92,13 @@ profile::cassandra::instances:
       listen_address: 10.64.32.195
     c:
       listen_address: 10.64.32.196
-  "restbase1009.eqiad.wmnet":
-    a:
-      listen_address: 10.64.48.120
-    b:
-      listen_address: 10.64.48.130
-    c:
-      listen_address: 10.64.48.131
+  #"restbase1009.eqiad.wmnet":
+  #  a:
+  #    listen_address: 10.64.48.120
+  #  b:
+  #    listen_address: 10.64.48.130
+  #  c:
+  #    listen_address: 10.64.48.131
   "restbase1010.eqiad.wmnet":
     a:
       listen_address: 10.64.0.114
