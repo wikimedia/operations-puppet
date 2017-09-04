@@ -30,7 +30,7 @@
     link = https://bugzilla.wikimedia.org/$1
 [commentlink "changeid"]
     match = \\b(I[0-9a-f]{7,40})\\b
-    link = "#/q/$1"
+    link = "<%= @url %>#/q/$1"
 [commentlink "ci-test-result"]
     match = <li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\" rel=\"nofollow\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>
     html = <li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>
@@ -39,7 +39,7 @@
     link = https://phabricator.wikimedia.org/rSVN$1
 [commentlink "commit"]
     match = (^|\\s|[:,!?\\(\\[\\{])([0-9a-f]{7,40})\\b
-    html = "$1<a href=\"#/q/$2\">$2</a>"
+    html = "$1<a href=\"<%= @url %>#/q/$2\">$2</a>"
 [commentlink "cve"]
     match = \\b(CVE\\-\\d{4}\\-\\d+)\\b
     link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
