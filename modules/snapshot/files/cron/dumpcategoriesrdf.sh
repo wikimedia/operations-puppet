@@ -9,6 +9,22 @@
 
 source /usr/local/etc/set_dump_dirs.sh
 
+checkval() {
+    setting=$1
+    value=$2
+    if [ -z "$value" -o "$value" == "null" ]; then
+        echo "failed to retrieve value of $setting from $configfile" >& 2
+        exit 1
+    fi
+}
+
+getsetting() {
+    results=$1
+    section=$2
+    setting=$3
+    echo "$results" | /usr/bin/jq -M -r ".$section.$setting"
+}
+
 usage() {
 	echo "Usage: $0 --list wikis.dblist [--config <pathtofile>] [--dryrun]"
 	echo
@@ -52,20 +68,17 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-deployDir=$(egrep "^dir=" "$configFile" | mawk -Fdir= '{ print $2 }')
-gzip=$(egrep "^gzip=" "$configFile" | mawk -Fgzip= '{ print $2 }')
-privateList=$(egrep "^privatelist=" "$configFile" | mawk -Fprivatelist= '{ print $2 }')
-publicDir=$(egrep "^public=" "$configFile" | mawk -Fpublic= '{ print $2 }')
+args="wiki:dir,privatelist;tools:gzip;output:public"
+results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
-if [ -z "$deployDir" -o -z "$gzip" -o -z "$privateList" -o -z "$publicDir" ]; then
-	echo "failed to find value of one of the following from config file $configFile:"
-	echo "gzip: $gzip"
-	echo "dir: $deployDir"
-	echo "privatelist: $privateList"
-	echo "public: $publicDir"
-	echo "exiting..."
-	exit 1
-fi
+deployDir=`getsetting "$results" "wiki" "dir"` || exit 1
+privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
+gzip=`getsetting "$results" "tools" "gzip"` || exit 1
+publicDir=`getsetting "$results" "output" "public"` || exit 1
+
+for settingname in "deployDir" "gzip" "privateList" "publicDir"; do
+    checkval "$settingname" "${!settingname}"
+done
 
 today=$(date +'%Y%m%d')
 targetDirBase="${publicDir}/other/categoriesrdf"
