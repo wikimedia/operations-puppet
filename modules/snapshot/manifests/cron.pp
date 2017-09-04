@@ -1,6 +1,15 @@
 class snapshot::cron(
     $user = undef,
 ) {
+    file { '/usr/local/etc/dump_functions.sh':
+        ensure => 'present',
+        path   => '/usr/local/etc/dump_functions.sh',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/dump_functions.sh',
+    }
+
     class { '::snapshot::cron::mediaperprojectlists': user => $user }
     class { '::snapshot::cron::pagetitles': user   => $user }
     class { '::snapshot::cron::cirrussearch': user   => $user }
