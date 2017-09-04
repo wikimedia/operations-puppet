@@ -98,6 +98,9 @@ EXIF_TINYRGB_ICC_REPLACE = 'sRGB IEC61966-2.1'
 
 PROXY_ENGINE_ENGINES = [
     ('wikimedia_thumbor.engine.svg', ['svg']),
+<%- if @stl_support != nil -%>
+    ('wikimedia_thumbor.engine.stl', ['stl']),
+<% end %>
     ('wikimedia_thumbor.engine.xcf', ['xcf']),
     ('wikimedia_thumbor.engine.djvu', ['djvu']),
     ('wikimedia_thumbor.engine.vips', ['tiff', 'png']),
@@ -181,6 +184,10 @@ FAILURE_THROTTLING_MEMCACHE = ['127.0.0.1:11212']
 FAILURE_THROTTLING_MAX = 4
 FAILURE_THROTTLING_DURATION = 3600
 FAILURE_THROTTLING_PREFIX = 'thumbor-failure-'
+
+<%- if @stl_support != nil -%>
+THREED2PNG_PATH = '/srv/deployment/3d2png/deploy/src/3d2png.js'
+<% end %>
 
 
 ################################### Logging ##################################
