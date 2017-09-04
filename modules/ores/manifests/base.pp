@@ -37,7 +37,8 @@ class ores::base(
                     'myspell-nl',
                     'myspell-pt',
                     'myspell-ru',
-                    'myspell-uk')
+                    'myspell-uk',
+                    'myspell-hr')
 
     if os_version('debian >= stretch') {
         require_package('hunspell-en-us')
