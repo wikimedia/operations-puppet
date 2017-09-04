@@ -246,12 +246,25 @@ THUMBOR_LOG_CONFIG = {
             'encoding': 'utf8',
             'delay': False,
             'filters': ['context', '404only']
+<% if @logstash_host != nil %>
+        },
+        'logstash': {
+            'level': 'ERROR',
+            'class': 'logstash.LogstashHandler',
+            'host': '<%= @logstash_host %>',
+            'port': <%= @logstash_port %>,
+            'version': 1,
+            'message_type': 'thumbor',
+            'fqdn': False,
+            'tags': ['thumbor'],
+            'filters': ['context', '404exclude']
+<% end %>
         }
     },
     'loggers': {
         '': {
             'level': 'DEBUG',
-            'handlers': ['debugstream', 'errorstream', 'http404']
+            'handlers': ['debugstream', 'errorstream', 'http404', 'logstash']
         }
     }
 }

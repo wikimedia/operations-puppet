@@ -22,6 +22,12 @@
 # [*poolcounter_server*]
 #   Address of poolcounter server, if any.
 #
+# [*logstash_host*]
+#   Logstash server.
+#
+# [*logstash_port*]
+#   Logstash port.
+#
 # [*stl_support*]
 #   Whether STL support should be enabled.
 #
@@ -33,11 +39,14 @@ class thumbor (
     $statsd_port = '8125',
     $statsd_prefix = "thumbor.${::hostname}",
     $poolcounter_server = undef,
+    $logstash_host = undef,
+    $logstash_port = 11514,
     $stl_support = undef,
 ) {
     requires_os('debian >= jessie')
 
     require_package('firejail')
+    require_package('python-logstash')
 
     package { 'python-thumbor-wikimedia':
         ensure          => installed,
