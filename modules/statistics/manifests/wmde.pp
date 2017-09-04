@@ -7,8 +7,7 @@ class statistics::wmde(
     $statsd_host,
     $graphite_host,
     $wmde_secrets,
-    $user  = 'analytics-wmde',
-    $group = 'analytics-wmde',
+    $user  = 'analytics-wmde'
 ) {
 
     # The statistics module needs to be loaded before this one
@@ -18,7 +17,7 @@ class statistics::wmde(
 
     $homedir = "${statistics_working_path}/analytics-wmde"
 
-    group { $group:
+    group { $user:
         ensure => 'present',
         name   => $user,
     }
@@ -29,7 +28,7 @@ class statistics::wmde(
         managehome => false,
         home       => $homedir,
         system     => true,
-        require    => Group[$group],
+        require    => Group[$user],
     }
 
     # Scripts & crons that generate data for graphite
