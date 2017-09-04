@@ -36,6 +36,9 @@ profile::restbase::seeds_ng:
   - restbase1009-a.eqiad.wmnet
   - restbase1009-b.eqiad.wmnet
   - restbase1009-c.eqiad.wmnet
+  - restbase1010-a.eqiad.wmnet
+  - restbase1010-b.eqiad.wmnet
+  - restbase1010-c.eqiad.wmnet
 
 #
 # Cassandra
@@ -99,13 +102,13 @@ profile::cassandra::instances:
   #    listen_address: 10.64.48.130
   #  c:
   #    listen_address: 10.64.48.131
-  "restbase1010.eqiad.wmnet":
-    a:
-      listen_address: 10.64.0.114
-    b:
-      listen_address: 10.64.0.115
-    c:
-      listen_address: 10.64.0.116
+  #"restbase1010.eqiad.wmnet":
+  #  a:
+  #    listen_address: 10.64.0.114
+  #  b:
+  #    listen_address: 10.64.0.115
+  #  c:
+  #    listen_address: 10.64.0.116
   "restbase1011.eqiad.wmnet":
     a:
       listen_address: 10.64.0.117
