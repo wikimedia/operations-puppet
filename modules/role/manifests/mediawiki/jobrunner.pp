@@ -12,6 +12,7 @@ class role::mediawiki::jobrunner {
 
     # TODO: change role used in beta
     if hiera('has_lvs', true) {
+        include ::role::lvs::realserver
         include ::profile::mediawiki::jobrunner_tls
     }
 

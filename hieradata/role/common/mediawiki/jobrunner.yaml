@@ -17,6 +17,8 @@ hhvm::extra::fcgi:
       size: 30
     "namedPools.cirrus-eqiad":
       size: 30
+role::lvs::realserver::pools:
+  jobrunner: {}
 
 # Use the future parser here
 profile::base::environment: "future"
