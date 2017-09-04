@@ -31,17 +31,7 @@ class ganglia::web(
         ensure => $ensure,
     }
 
-    $auth_ldap = {
-        name          => 'nda/ops/wmf',
-        bind_dn       => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-        bind_password => $passwords::ldap::production::proxypass,
-        url           => 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
-        groups        => [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ],
-    }
+    $proxypass = $passwords::ldap::production::proxypass
 
     apache::site { $ganglia_servername:
         content => template("ganglia/${ganglia_servername}.erb"),
