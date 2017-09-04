@@ -25,8 +25,11 @@ profile::restbase::cassandra_tls:
   ca: /dev/null
 profile::restbase::seeds_ng:
   - restbase2001-a.codfw.wmnet
-  # - restbase2001-b.codfw.wmnet
-  # - restbase2001-c.codfw.wmnet
+  - restbase2001-b.codfw.wmnet
+  - restbase2001-c.codfw.wmnet
+  - restbase2003-a.codfw.wmnet
+  - restbase2003-b.codfw.wmnet
+  - restbase2003-c.codfw.wmnet
 
 #
 # Cassandra
@@ -167,13 +170,13 @@ profile::cassandra::instances:
       listen_address: 10.192.16.166
     c:
       listen_address: 10.192.16.167
-  "restbase2003.codfw.wmnet":
-    a:
-      listen_address: 10.192.32.134
-    b:
-      listen_address: 10.192.32.135
-    c:
-      listen_address: 10.192.32.136
+  #"restbase2003.codfw.wmnet":
+  #  a:
+  #    listen_address: 10.192.32.134
+  #  b:
+  #    listen_address: 10.192.32.135
+  #  c:
+  #    listen_address: 10.192.32.136
   "restbase2004.codfw.wmnet":
     a:
       listen_address: 10.192.32.137
