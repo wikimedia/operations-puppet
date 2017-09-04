@@ -2077,7 +2077,7 @@ node /^restbase10(0[78]|1[012345678])\.eqiad\.wmnet$/ {
     role(restbase::production)
 }
 
-node /^restbase10(0[9]|10)\.eqiad\.wmnet$/ {
+node /^restbase10(0[89]|10)\.eqiad\.wmnet$/ {
     role(restbase::production_ng)
 }
 
