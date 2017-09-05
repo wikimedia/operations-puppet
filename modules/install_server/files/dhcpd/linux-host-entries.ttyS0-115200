@@ -6,11 +6,15 @@
 host acrab {
     hardware ethernet aa:00:00:81:ee:df;
     fixed-address acrab.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host acrux {
     hardware ethernet aa:00:00:9f:ec:d4;
     fixed-address acrux.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host actinium {
@@ -36,6 +40,8 @@ host aluminium {
 host argon {
     hardware ethernet aa:00:00:fe:6b:df;
     fixed-address argon.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bohrium {
@@ -235,6 +241,8 @@ host nihal {
 host neon {
     hardware ethernet aa:00:00:7d:1a:57;
     fixed-address neon.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host nitrogen {

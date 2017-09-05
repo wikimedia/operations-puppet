@@ -2604,16 +2604,22 @@ host kafka-jumbo1006 {
 host kubernetes1001 {
      hardware ethernet 18:66:DA:56:64:A1;
      fixed-address kubernetes1001.eqiad.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes1002 {
      hardware ethernet 18:66:DA:56:79:BC;
      fixed-address kubernetes1002.eqiad.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes1003 {
      hardware ethernet 18:66:DA:56:43:7E;
      fixed-address kubernetes1003.eqiad.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes1004 {
@@ -2626,31 +2632,43 @@ host kubernetes1004 {
 host kubernetes2001 {
      hardware ethernet 18:66:DA:9B:BE:17;
      fixed-address kubernetes2001.codfw.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes2002 {
      hardware ethernet 18:66:DA:99:77:D3;
      fixed-address kubernetes2002.codfw.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes2003 {
      hardware ethernet 18:66:DA:9B:E8:6E;
      fixed-address kubernetes2003.codfw.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes2004 {
      hardware ethernet 18:66:DA:9C:12:4F;
      fixed-address kubernetes2004.codfw.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubestage1001 {
      hardware ethernet 18:66:DA:A3:F3:13;
      fixed-address kubestage1001.eqiad.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubestage1002 {
      hardware ethernet 18:66:DA:A3:7A:F0;
      fixed-address kubestage1002.eqiad.wmnet;
+     option pxelinux.pathprefix "stretch-installer/";
+     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labcontrol1001 {
