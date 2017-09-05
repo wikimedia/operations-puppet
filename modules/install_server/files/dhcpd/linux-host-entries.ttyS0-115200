@@ -203,6 +203,21 @@ host labsdb1003 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host logstash1007 {
+    hardware ethernet aa:00:00:83:d6:d4;
+    fixed-address logstash1007.eqiad.wmnet;
+}
+
+host logstash1008 {
+    hardware ethernet aa:00:00:dd:60:7b;
+    fixed-address logstash1008.eqiad.wmnet;
+}
+
+host logstash1009 {
+    hardware ethernet aa:00:00:bf:62:dc;
+    fixed-address logstash1009.eqiad.wmnet;
+}
+
 host meitnerium {
     hardware ethernet aa:00:00:8c:71:ea;
     fixed-address meitnerium.wikimedia.org;
