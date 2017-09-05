@@ -14,9 +14,10 @@ class profile::mediawiki::jobrunner_tls {
         certs_active   => [$certname],
         default_server => true,
         do_ocsp        => false,
-        upstream_ports => [$::profile::mediawiki::jobrunner::port],
+        upstream_ports => [$::profile::mediawiki::jobrunner::local_only_port],
         access_log     => false,
     }
+
     ::ferm::service { 'mediawiki-jobrunner-https':
         proto   => 'tcp',
         port    => 'https',
