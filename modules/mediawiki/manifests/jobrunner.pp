@@ -105,33 +105,4 @@ class mediawiki::jobrunner (
         ensure  => present,
         content => template('mediawiki/jobrunner/logrotate.conf.erb'),
     }
-
-    include ::apache::mod::proxy_fcgi
-
-    class { '::apache::mpm':
-        mpm => 'worker',
-    }
-
-    apache::conf { 'hhvm_jobrunner_port':
-        priority => 1,
-        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\n"),
-    }
-
-    apache::site{ 'hhvm_jobrunner':
-        priority => 1,
-        content  => template('mediawiki/jobrunner/site.conf.erb'),
-    }
-
-    # Hack for T122069: on servers running GWT jobs, restart HHVM
-    # once it occupies more than 60% of the available memory
-    if ($runners_gwt > 0) {
-        cron { 'periodic_hhvm_restart':
-            command => '/bin/ps -C hhvm -o pmem= | awk \'{sum+=$1} END { if (sum <= 50.0) exit 1  }\'  && /usr/sbin/service hhvm restart >/dev/null 2>/dev/null',
-            minute  => fqdn_rand(60, 'periodic_hhvm_restart'),
-        }
-    } else {
-        cron { 'periodic_hhvm_restart':
-            ensure => absent,
-        }
-    }
 }
