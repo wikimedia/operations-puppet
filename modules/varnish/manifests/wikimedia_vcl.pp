@@ -1,4 +1,4 @@
-define varnish::wikimedia_vcl($varnish_testing, $template_path) {
+define varnish::wikimedia_vcl($varnish_testing, $template_path, $vcl_config) {
     if $varnish_testing  {
         $varnish_include_path = '/usr/share/varnish/tests/'
         $dynamic_backend_caches = false

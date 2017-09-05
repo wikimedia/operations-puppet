@@ -83,12 +83,14 @@ define varnish::instance(
         require         => File['/usr/share/varnish/tests'],
         varnish_testing => true,
         template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
+        vcl_config      => $vcl_config,
     }
 
     varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl}.vcl":
         require         => File['/usr/share/varnish/tests'],
         varnish_testing => true,
         template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
+        vcl_config      => $vcl_config,
     }
 
     file { "/etc/varnish/${vcl}.inc.vcl":
@@ -103,6 +105,7 @@ define varnish::instance(
         require         => File['/usr/share/varnish/tests'],
         varnish_testing => true,
         template_path   => "varnish/${vcl}.inc.vcl.erb",
+        vcl_config      => $vcl_config,
     }
 
     # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
