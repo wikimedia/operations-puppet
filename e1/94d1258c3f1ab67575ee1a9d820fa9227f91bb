@@ -1,0 +1,10 @@
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Code-Review+1: Greg Grossmeier <greg@wikimedia.org>
+Code-Review-1: Chad <chadh@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Tue, 05 Sep 2017 16:16:50 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/374838
+Project: operations/puppet
+Branch: refs/heads/production
