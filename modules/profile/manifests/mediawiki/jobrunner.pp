@@ -6,6 +6,8 @@ class profile::mediawiki::jobrunner(
 ) {
     # Parameters we don't need to override
     $port = 9005
+
+    # The jobrunner script that submits jobs to hhvm
     $active = ($::mw_primary == $::site)
     class { '::mediawiki::jobrunner':
         port                          => $port,
@@ -22,6 +24,22 @@ class profile::mediawiki::jobrunner(
         runners_translate             => pick($runners['translate'], 0)
     }
 
+    # Special HHVM setup
+    class { '::apache::mod::proxy_fcgi': }
+
+    class { '::apache::mpm':
+        mpm => 'worker',
+    }
+
+    apache::conf { 'hhvm_jobrunner_port':
+        priority => 1,
+        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\n"),
+    }
+
+    apache::site{ 'hhvm_jobrunner':
+        priority => 1,
+        content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
+    }
 
     ::monitoring::service { 'jobrunner_http_hhvm':
         description   => 'HHVM jobrunner',
