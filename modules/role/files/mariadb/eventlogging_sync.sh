@@ -164,7 +164,7 @@ while true; do
             if [  $dry_run -eq 1 ]; then
                 echo -n " (dry-run) $dump_data --where=\"$column >= $max_slave ORDER BY $column LIMIT $batch_size\" $database \"$table\" | $slave $slave_database"
             else
-                $dump_data --where="id >= $max_slave ORDER BY id LIMIT $batch_size" $database "$table" | $slave $slave_database
+                $dump_data --where="$column >= $max_slave ORDER BY $column LIMIT $batch_size" $database "$table" | $slave $slave_database
             fi
         fi
 
