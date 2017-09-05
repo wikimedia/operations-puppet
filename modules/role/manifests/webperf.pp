@@ -31,12 +31,4 @@ class role::webperf {
         statsd_host   => $statsd_host,
         statsd_port   => $statsd_port,
     }
-
-    # Report VisualEditor performance measurements to Graphite.
-    # See <https://meta.wikimedia.org/wiki/Schema:Edit>
-    class { '::webperf::ve':
-        kafka_brokers => $kafka_brokers,
-        statsd_host   => $statsd_host,
-        statsd_port   => $statsd_port,
-    }
 }
