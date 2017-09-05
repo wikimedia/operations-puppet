@@ -1,0 +1,10 @@
+Code-Review+1: Reedy <reedy@wikimedia.org>
+Code-Review+1: Hashar <hashar@free.fr>
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Code-Review+2: Elukey <ltoscano@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Elukey <ltoscano@wikimedia.org>
+Submitted-at: Tue, 05 Sep 2017 16:18:11 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/354932
+Project: operations/puppet
+Branch: refs/heads/production
