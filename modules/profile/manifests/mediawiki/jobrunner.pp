@@ -6,6 +6,7 @@ class profile::mediawiki::jobrunner(
 ) {
     # Parameters we don't need to override
     $port = 9005
+    $local_only_port = 9006
 
     # The jobrunner script that submits jobs to hhvm
     $active = ($::mw_primary == $::site)
@@ -31,7 +32,7 @@ class profile::mediawiki::jobrunner(
 
     apache::conf { 'hhvm_jobrunner_port':
         priority => 1,
-        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\n"),
+        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>Listen <%= @local_only_port %>\n"),
     }
 
     apache::site{ 'hhvm_jobrunner':
@@ -55,11 +56,11 @@ class profile::mediawiki::jobrunner(
         source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
     }
 
+    # TODO: restrict this to monitoring and localhost only.
     ::ferm::service { 'mediawiki-jobrunner':
         proto   => 'tcp',
         port    => $port,
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
     }
-
 }
