@@ -2,3 +2,170 @@ all: P{*}
 <% @datacenters.each do |dc| -%>
 <%= dc %>: P{R:class = profile::cumin::target and R:class%site = <%= dc %>}
 <% end -%>
+
+deployment-servers: P{R:class = role::deployment_server}
+hadoop-worker-canary: P{analytics1030.eqiad.wmnet}
+hadoop-worker: P{R:class = role::analytics_cluster::hadoop::worker}
+hadoop-master: P{R:class = role::analytics_cluster::hadoop::master}
+hadoop-standby: P{R:class = role::analytics_cluster::hadoop::standby}
+hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
+aqs-canary: P{aqs1004.eqiad.wmnet}
+aqs: P{R:class = role::aqs}
+mx: P{R:class =role::mail::mx}
+mx-canary: P{mx2001.wikimedia.org}
+restbase-test: P{R:class = role::restbase::test_cluster or R:class = role::restbase::dev_cluster}
+restbase-canary: P{restbase1007.eqiad.wmnet}
+restbase: P{R:class = role::restbase::production}
+restbase-eqiad: A:restbase and A:eqiad
+restbase-codfw: A:restbase and A:codfw
+sca: P{R:class = role::sca}
+sca-canary: P{sca1003.codfw.wmnet}
+scb: P{R:class = role::scb}
+scb-eqiad: A:scb and A:eqiad
+scb-codfw: A:scb and A:codfw
+scb-canary: P{scb1001.codfw.wmnet}
+ocg: P{R:class = role::ocg}
+elastic: P{R:class = role::elasticsearch::cirrus}
+elastic-eqiad: A:elastic and A:eqiad
+elastic-codfw: A:elastic and A:codfw
+elastic-canary: P{elastic1017.eqiad.wmnet}
+labs-nfs: P{R:class = role::labs::nfs::secondary or R:class = role::labs::nfs::secondary_backup::tools or R:class = role::labs::nfs::secondary_backup::misc}
+graphite: P{R:class = role::graphite::production or R:class = role::labs::graphite}
+yubiauth: P{R:class = role::yubiauth_server}
+oresrdb: P{R:class: role::ores::redis}
+oresrdb-eqiad: A:oresrdb and A:eqiad
+oresrdb-codfw: A:oresrdb and A:codfw
+labtest: P{R:class = role::wmcs::openstack::labtestn::net or R:class = role::wmcs::openstack::labtest::virt or R:class = role::wmcs::openstack::labtest::net or R:class = role::wmcs::openstack::labtest::control or R:class = role::wmcs::openstack::labtestn::control or R:class = role::labs::puppetmaster::frontend or R:class = role::wmcs::openstack::labtest::services or R:class = role::wmcs::openstack::labtestn::services}
+notebook: P{R:class = role::paws_internal::jupyterhub}
+druid: P{R:class = role::analytics_cluster::druid::worker}
+prometheus: P{R:class = role::prometheus::ops}
+thumbor: P{R:class = role::thumbor::mediawiki}
+thumbor-eqiad: A:thumbor and A:eqiad
+thumbor-codfw: A:thumbor and A:codfw
+dbmonitor: P{R:class = role::tendril}
+labcontrol: P{R:class = role::wmcs::openstack::main::control}
+labnet: P{R:class = role::wmcs::openstack::main::net or R:class = role::wmcs::openstack::main::net_secondary}
+bastion: P{R:class = role::bastionhost::general or R:class = role::bastionhost::twofa}
+bastion-canary: P{bast4001.wikimedia.org}
+dns-auth: P{R:class = role::authdns::server}
+dns-auth-canary: P{eeden.wikimedia.org}
+dns-rec: P{R:class = role::dnsrecursor}
+dns-rec-canary: P{hydrogen.wikimedia.org}
+swift-fe: {R:class = role::swift::proxy}
+swift-fe-eqiad: A:swift-fe and A:eqiad
+swift-fe-codfw: A:swift-fe and A:codfw
+swift-fe-canary: P{ms-fe1005.eqiad.wmnet}
+swift-be: P{R:class = role::swift::storage}
+swift-be-eqiad: A:swift-be and A:eqiad
+swift-be-codfw: A:swift-fe and A:codfw
+swift-be-canary: P{ms-be1013.eqiad.wmnet}
+swift: A:swift-fe or A:swift-be
+ganeti: P{R:class = role::ganeti}
+ganeti-eqiad: A:ganeti and A:eqiad
+ganeti-codfw: A:ganeti and A:codfw
+ganeti-canary: P{ganeti2001.codfw.wmnet}
+lvs: P{R:class = role::lvs::balancer}
+lvs-eqiad: A:lvs and A:eqiad
+lvs-codfw: A:lvs and A:codfw
+lvs-esams: A:lvs and A:esams
+lvs-ulsfo: A:lvs and A:ulsfo
+lvs-canary: P{lvs4001.ulsfo.wmnet}
+stat: P{R:class = role::statistics::private or R:class = role::statistics::cruncher or R:class = role::analytics_cluster::client}
+logstash: P{R:class = role::logstash::collector or R:class = role::logstash::elasticsearch}
+logstash-canary: P{logstash1001.eqiad.wmnet}
+parsoid: P{R:class = role::parsoid}
+parsoid-eqiad: A:parsoid and A:eqiad
+parsoid-codfw: A:parsoid and A:codfw
+parsoid-canary: P{wtp1001.eqiad.wmnet}
+maps-test: P{R:class = role::maps::test::master or R:class = role::maps::test::slave}
+maps: P{R:class = role::maps::master or R:class = role::maps::slave}
+maps_canary: P{maps1001.eqiad.wmnet}
+labvirt: P{R:class = role::wmcs::openstack::main::virt}
+labvirt-canary: P{labvirt1001.eqiad.wmnet}
+wdqs: P{R:class = role::wdqs}
+wdqs-canary: P{wdqs1001.eqiad.wmnet}
+poolcounter: P{R:class = role::poolcounter::server}
+poolcounter-eqiad: A:poolcounter and A:eqiad
+poolcounter-codfw: A:poolcounter and A:codfw
+kubernetes-etcd: P{R:class = role::etcd::kubernetes}
+kubernetes-workers: P{R:class = role::kubernetes::worker}
+kubernetes-masters: P{R:class = role::kubernetes::master}
+kubernetes-staging: P{R:class = role::kubernetes::staging::etcd or R:class = role::kubernetes::staging::master}
+snapshot: P{R:class = role::snapshot::dumper}
+snapshot-canary: P{R:class = role::snapshot::testbed}
+dumps: P{R:class = role::dumps::server or R:class = role::dumpsdata or R:class = role::dumps::zim}
+installserver: P{R:class = role::installserver::http}
+eventlogging: P{R:class = role::eventlogging::analytics::processor}
+memcached: P{R:class = role::mediawiki::memcached}
+memcached-eqiad: A:memcached and A:eqiad
+memcached-codfw: A:memcached and A:codfw
+memcached-canary: P{mc1019.eqiad.wmnet}
+videoscaler: P{R:class = role::mediawiki::videoscaler}
+videoscaler-eqiad: A:videoscaler and A:eqiad
+videoscaler-codfw: A:videoscaler and A:codfw
+videoscaler-canary: P{mw1168.eqiad.wmnet}
+imagescaler: P{R:class = role::mediawiki::imagescaler}
+imagescaler-eqiad: A:imagescaler and A:eqiad
+imagescaler-codfw: A:imagescaler and A:codfw
+imagescaler-canary: P{mw1293.eqiad.wmnet}
+mw-api: P{R:class = role::mediawiki::appserver::api}
+mw-api-eqiad: A:mw-api and A:eqiad
+mw-api-codfw: A:mw-api and A:codfw
+mw-api-canary: P{R:class = role::mediawiki::appserver::canary_api}
+mw: P{R:class = role::mediawiki::appserver}
+mw-eqiad: A:mw and A:eqiad
+mw-codfw: A:mw and A:codfw
+mw-canary: P{R:class = role::mediawiki::canary_appserver}
+jobrunner: P{R:class = role::mediawiki::jobrunner}
+jobrunner-eqiad: A:jobrunner and A:eqiad
+jobrunner-codfw: A:jobrunner and A:codfw
+jobrunner-canary: P{mw1161.eqiad.wmnet}
+all-mw-eqiad: (A:videoscaler or A:imagescaler or A:mw-api or A:mw or A:jobrunner) and A:eqiad
+all-mw-codfw: (A:videoscaler or A:imagescaler or A:mw-api or A:mw or A:jobrunner) and A:codfw
+mw-maintenance: P{R:class = role::mediawiki_maintenance}
+cp: P{R:class = role::cache::misc or R:class = role::cache::upload or R:class = role::cache::text}
+cp-eqiad: A:cp and A:eqiad
+cp-codfw: A:cp and A:codfw
+cp-esams: A:cp and A:esams
+cp-ulsfo: A:cp and A:ulsfo
+cp-canary: P{R:class = role::cache::canary}
+osm-master: P{R:class = role::osm::master}
+osm-slave: P{R:class =role::osm::slave}
+osm: A:osm-master or A:osm-slave
+puppetmaster-backend: P{R:class = role::puppetmaster::backend}
+puppetmaster-frontend: P{R:class = role::puppetmaster::frontend}
+puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
+puppetdb: P{R:class = role::puppetmaster::puppetdb}
+openldap: P{R:class = role::openldap::corp or R:class = role::openldap::labs}
+openldap-canary: P{dubnium.wikimedia.org}
+jobqueue-redis-master: P{R:class = role::jobqueue_redis::master}
+jobqueue-redis-slave: P{R:class = role::jobqueue_redis::slave}
+jobqueue-redis-eqiad: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:eqiad
+jobqueue-redis-codfw: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:codfw
+db-parsercache: P{R:class = role::mariadb::parsercache}
+db-labsdb: P{R:class = role::labs::db::replica}
+db-dbstore: P{R:class = role::mariadb::backup or R:class = role::mariadb::dbstore or R:class = role::mariadb::dbstore_multiinstance}
+db-misc-servers: P{R:class = role::mariadb::labs_deprecated}
+db-core: P{R:class = role::mariadb::core or R:class = role::mariadb::misc or R:class = role::mariadb::misc::phabricator or R:class = role::mariadb::misc::eventlogging}
+db-core-eqiad: A:db-core and A:eqiad
+db-core-codfw: A:db-core and A:codfw
+db-all-eqiad: (A:db-parsercache and A:db-labsdb and A:db-dbstore and A:db-core and A:db-misc-servers) and A:eqiad
+db-all-codfw: (A:db-parsercache and A:db-labsdb and A:db-dbstore and A:db-core and A:db-misc-servers) and A:codfw
+db-dbproxy: P{R:class = role::mariadb::proxy::master}
+kafka-analytics: P{R:class = role::kafka::analytics::broker}
+kafka-analytics-canary: P{kafka1012.eqiad.wmnet}
+kafka-main: P{R:class = role::kafka::main::broker}
+kafka-main-eqiad: A:kafka-main and A:eqiad
+kafka-main-codfw: A:kafka-main and A:codfw
+kafka-main-canary: P{kafka2001.codfw.wmnet}
+conf: P{R:class = role::configcluster}
+conf-eqiad: A:conf and A:eqiad
+conf-codfw: A:conf and A:codfw
+conf-canary: P{conf2001.codfw.wmnet}
+labservices: P{R:class = role::wmcs::openstack::main::services}
+failoid: P{R:class = role::failoid}
+misc-others: P{R:class = role::spare::system or R:class = role::test::system or R:class = role::security::tools}
+cumin: P{R:class = role::cluster::management}
+url-downloader: P{R:class = role::url_downloader}
+misc-ops: A:installserver or A:cumin or A:url-downloader
+misc-apache: P{R:class = role::microsites::peopleweb or R:class = grafana::production or R:class = role::requesttracker_server}
