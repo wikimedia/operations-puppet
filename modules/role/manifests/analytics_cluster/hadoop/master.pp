@@ -117,8 +117,8 @@ class role::analytics_cluster::hadoop::master {
             description   => 'HDFS capacity used percentage',
             metric        => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.NameNodeInfo.PercentUsed.mean",
             from          => '30min',
-            warning       => 70,
-            critical      => 80,
+            warning       => 85,
+            critical      => 90,
             percentage    => '60',
             contact_group => 'analytics',
         }
