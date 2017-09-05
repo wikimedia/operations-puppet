@@ -1918,11 +1918,9 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
     include ::standard
 }
 
-# VisualEditor performance testing rig
+# To be decommissioned in T175093
 node 'osmium.eqiad.wmnet' {
-    role(ve)
-    include ::standard
-    include ::base::firewall
+    role(spare::system)
 }
 
 # oxygen runs a kafkatee instance that consumes webrequest from Kafka
