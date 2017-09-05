@@ -63,6 +63,6 @@ class profile::mediawiki::jobrunner(
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
+        srange  => '$MONITORING_HOSTS',
     }
 }
