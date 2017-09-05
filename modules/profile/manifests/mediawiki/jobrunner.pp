@@ -51,12 +51,4 @@ class profile::mediawiki::jobrunner(
     ::diamond::collector { 'NfConntrackCount':
         source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
     }
-
-    # TODO: restrict this to monitoring and localhost only.
-    ::ferm::service { 'mediawiki-jobrunner':
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
 }
