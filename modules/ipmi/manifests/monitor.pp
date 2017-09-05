@@ -14,14 +14,21 @@ class ipmi::monitor {
         ensure => present,
     }
 
+    # rename nagios_ipmi_temp to nagios_ipmi_sensor
+    # this ensure absent can be removed after propagation
     ::sudo::user { 'nagios_ipmi_temp':
+        ensure     => absent,
+        privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
+    }
+
+    ::sudo::user { 'nagios_ipmi_sensor':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
     }
 
-    nrpe::monitor_service { 'check_ipmi_temp':
-        description    => 'IPMI Temperature',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -ST Temperature --nosel',
+    nrpe::monitor_service { 'check_ipmi_sensor':
+        description    => 'IPMI Sensor Status',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -T Power_Supply --nosel',
         check_interval => 30,
         retry_interval => 10,
         timeout        => 60,
