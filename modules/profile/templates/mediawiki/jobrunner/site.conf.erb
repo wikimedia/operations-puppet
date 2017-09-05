@@ -6,3 +6,16 @@
     ErrorLog ${APACHE_LOG_DIR}/jobqueue-error.log
     CustomLog ${APACHE_LOG_DIR}/jobqueue-access.log wmf
 </VirtualHost>
+
+<VirtualHost *:<%= @local_only_port %>>
+    ServerName jobrunner.svc.<%= scope['::site'] %>.wmnet
+    ServerAlias jobrunner.discovery.wmnet
+    DocumentRoot "/srv/mediawiki"
+    # Only selected paths are allowed here
+    # TODO: move monitoring directly to RunSingleJob.php when it's ready?
+    ProxyPass /wiki/health-check.php fcgi://127.0.0.1:9000/srv/mediawiki/w/health-check.php retry=0
+    ProxyPass /rpc/RunJobs.php fcgi://127.0.0.1:9000/srv/mediawiki/rpc/runJobs.php retry=0
+    ProxyPass /rpc/RunSingleJob.php fcgi://127.0.0.1:9000/srv/mediawiki/rpc/runJobs.php retry=0
+    ErrorLog ${APACHE_LOG_DIR}/jobqueue-error.log
+    CustomLog ${APACHE_LOG_DIR}/jobqueue-access.log wmf
+</VirtualHost>
