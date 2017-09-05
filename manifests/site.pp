@@ -2068,11 +2068,11 @@ node /^restbase10(0[789]|1[012345678])\.eqiad\.wmnet$/ {
 }
 
 # restbase codfw cluster
-node /^restbase20(0[2456789]|1[012])\.codfw\.wmnet$/ {
+node /^restbase20(0[246789]|1[012])\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
-node /^restbase200[13]\.codfw\.wmnet$/ {
+node /^restbase200[135]\.codfw\.wmnet$/ {
     role(restbase::production_ng)
 }
 
