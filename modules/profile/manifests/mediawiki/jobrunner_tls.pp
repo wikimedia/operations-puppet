@@ -25,4 +25,11 @@ class profile::mediawiki::jobrunner_tls {
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    monitoring::service { 'jobrunner https':
+        description    => 'Nginx local proxy to apache',
+        check_command  => 'check_https_url!jobrunner.discovery.wmnet!/rpc/RunJobs.php',
+        retries        => 2,
+        retry_interval => 2,
+    }
+
 }
