@@ -1431,6 +1431,11 @@ node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
 }
 
+# new logstash nodes are set to spare until pressed into service T175045
+node /^logstash100[7-8]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 node /lvs100[1-6]\.wikimedia\.org/ {
 
     # lvs100[25] are LVS balancers for the eqiad recursive DNS IP,
