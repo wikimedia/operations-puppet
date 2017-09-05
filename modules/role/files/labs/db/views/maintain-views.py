@@ -333,7 +333,7 @@ if __name__ == "__main__":
     argparser.add_argument(
         "--mysql-socket",
         help=("Path to MySQL socket file"),
-        default="/tmp/mysql.sock"
+        default="/run/mysqld/mysqld.sock"
     )
 
     argparser.add_argument(
