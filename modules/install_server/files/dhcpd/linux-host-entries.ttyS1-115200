@@ -3142,21 +3142,6 @@ host logstash1006 {
     fixed-address logstash1006.eqiad.wmnet;
 }
 
-host logstash1007 {
-    hardware ethernet aa:00:00:83:d6:d4;
-    fixed-address logstash1007.eqiad.wmnet;
-}
-
-host logstash1008 {
-    hardware ethernet aa:00:00:dd:60:7b;
-    fixed-address logstash1008.eqiad.wmnet;
-}
-
-host logstash1009 {
-    hardware ethernet aa:00:00:bf:62:dc;
-    fixed-address logstash1009.eqiad.wmnet;
-}
-
 host lvs1001 {
     hardware ethernet 18:03:73:f0:89:69;
     fixed-address lvs1001.wikimedia.org;
