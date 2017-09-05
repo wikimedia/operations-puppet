@@ -235,7 +235,7 @@ class Terminator(object):
             return None
 
         command = (
-            "SELECT timestamp from `{}` WHERE timestamp >= %(start_ts)s "
+            "SELECT CAST(timestamp AS CHAR) from `{}` WHERE timestamp >= %(start_ts)s "
             "AND timestamp <= %(end_ts)s ORDER BY timestamp LIMIT %(batch_size)s, 1"
             .format(table)
         )
