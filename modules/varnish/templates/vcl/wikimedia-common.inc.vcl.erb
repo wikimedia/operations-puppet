@@ -179,7 +179,7 @@ backend <%= name %> {
 <% end # !varnish_testing -%>
 
 sub wm_common_directors_init {
-<% if @dynamic_backend_caches -%>
+<% if @dynamic_backend_caches and not @varnish_testing -%>
 include "directors.<%= @inst %>.vcl";
 <% else -%>
 <% @backend_caches.keys.sort.each do |director_name|

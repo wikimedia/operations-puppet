@@ -216,8 +216,8 @@ sub vcl_init {
 	call wm_common_directors_init;
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	netmapper.init("proxies", "<%= @netmapper_dir %>/proxies.json", 89);
-	netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
+	netmapper.init("proxies", "<%= @vcl_config.fetch('netmapper_dir', '/var/netmapper') %>/proxies.json", 89);
+	netmapper.init("carriers", "<%= @vcl_config.fetch('netmapper_dir', '/var/netmapper') %>/carriers.json", 89);
 	/* Function vcl_init in <%= @vcl %>.inc.vcl will be appended here */
 }
 
