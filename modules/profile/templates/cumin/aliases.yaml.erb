@@ -15,6 +15,7 @@ conf: P{R:class = role::configcluster}
 conf-canary: P{conf2001.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
 conf-eqiad: A:conf and A:eqiad
+contint: P{R:class = role::ci::master}
 cp: P{R:class = role::cache::misc or R:class = role::cache::upload or R:class = role::cache::text}
 cp-canary: P{R:class = role::cache::canary}
 cp-codfw: A:cp and A:codfw
@@ -33,6 +34,7 @@ db-labsdb: P{R:class = role::labs::db::replica}
 db-misc-servers: P{R:class = role::mariadb::labs_deprecated}
 db-parsercache: P{R:class = role::mariadb::parsercache}
 dbmonitor: P{R:class = role::tendril}
+debugproxy: P{R:class = role::debug_proxy}
 deployment-servers: P{R:class = role::deployment_server}
 dns-auth: P{R:class = role::authdns::server}
 dns-auth-canary: P{eeden.wikimedia.org}
@@ -50,12 +52,14 @@ ganeti: P{R:class = role::ganeti}
 ganeti-canary: P{ganeti2001.codfw.wmnet}
 ganeti-codfw: A:ganeti and A:codfw
 ganeti-eqiad: A:ganeti and A:eqiad
+gerrit: P{R:class = role::gerrit::server}
 graphite: P{R:class = role::graphite::production or R:class = role::labs::graphite}
 hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
 hadoop-master: P{R:class = role::analytics_cluster::hadoop::master}
 hadoop-standby: P{R:class = role::analytics_cluster::hadoop::standby}
 hadoop-worker: P{R:class = role::analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1030.eqiad.wmnet}
+icinga: P{R:class = role::icinga}
 installserver: P{R:class = role::installserver::http}
 jobqueue-redis-codfw: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:codfw
 jobqueue-redis-eqiad: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:eqiad
@@ -78,6 +82,7 @@ labservices: P{R:class = role::wmcs::openstack::main::services}
 labtest: P{R:class = role::wmcs::openstack::labtestn::net or R:class = role::wmcs::openstack::labtest::virt or R:class = role::wmcs::openstack::labtest::net or R:class = role::wmcs::openstack::labtest::control or R:class = role::wmcs::openstack::labtestn::control or R:class = role::labs::puppetmaster::frontend or R:class = role::wmcs::openstack::labtest::services or R:class = role::wmcs::openstack::labtestn::services}
 labvirt: P{R:class = role::wmcs::openstack::main::virt}
 labvirt-canary: P{labvirt1001.eqiad.wmnet}
+labweb: P{R:class = role::wmcs::openstack::main::web or R:class = role::wmcs::openstack::main::wikitech or R:class = role::wmcs::openstack::main::horizon}
 logstash: P{R:class = role::logstash::collector or R:class = role::logstash::elasticsearch}
 logstash-canary: P{logstash1001.eqiad.wmnet}
 lvs: P{R:class = role::lvs::balancer}
@@ -93,7 +98,6 @@ memcached: P{R:class = role::mediawiki::memcached}
 memcached-canary: P{mc1019.eqiad.wmnet}
 memcached-codfw: A:memcached and A:codfw
 memcached-eqiad: A:memcached and A:eqiad
-misc-others: P{R:class = role::spare::system or R:class = role::test::system or R:class = role::security::tools}
 mw: P{R:class = role::mediawiki::appserver}
 mw-api: P{R:class = role::mediawiki::appserver::api}
 mw-api-canary: P{R:class = role::mediawiki::appserver::canary_api}
@@ -115,8 +119,10 @@ mw-videoscaler: P{R:class = role::mediawiki::videoscaler}
 mw-videoscaler-canary: P{mw1168.eqiad.wmnet}
 mw-videoscaler-codfw: A:mw-videoscaler and A:codfw
 mw-videoscaler-eqiad: A:mw-videoscaler and A:eqiad
+mwlog: P{R:class = role::xenon}
 mx: P{R:class = role::mail::mx}
 mx-canary: P{mx2001.wikimedia.org}
+netmon: P{R:class = role::network::monitor}
 notebook: P{R:class = role::paws_internal::jupyterhub}
 ocg: P{R:class = role::ocg}
 openldap: P{R:class = role::openldap::corp or R:class = role::openldap::labs}
@@ -131,6 +137,7 @@ parsoid: P{R:class = role::parsoid}
 parsoid-canary: P{wtp1001.eqiad.wmnet}
 parsoid-codfw: A:parsoid and A:codfw
 parsoid-eqiad: A:parsoid and A:eqiad
+planet: P{R:class = role::planet_server}
 poolcounter: P{R:class = role::poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
 poolcounter-eqiad: A:poolcounter and A:eqiad
@@ -171,5 +178,11 @@ wdqs-canary: P{wdqs1001.eqiad.wmnet}
 yubiauth: P{R:class = role::yubiauth_server}
 
 # Miscellaneous groups
-misc-apache: P{R:class = role::microsites::peopleweb or R:class = grafana::production or R:class = role::requesttracker_server}
-misc-ops: A:installserver or A:cumin or A:url-downloader
+misc-analytics: P{R:class = role::statistics::web or R:class = role::piwik::server} or A:eventlogging
+misc-apache: P{R:class = role::microsites::peopleweb or R:class = grafana::production or R:class = role::requesttracker_server or R:class = role::releases or R:class = role::otrs or R:class = role::ganglia::web} or A:planet
+misc-devel: P{R:class = role::webperf or R:class = role::ve or R:class = role::archiva} or A:debugproxy or A:mwlog
+misc-nonprod: P{R:class = role::spare::system or R:class = role::test::system or R:class = role::security::tools}
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{R:class = role::logging::kafkatee::webrequest::ops or R:class = role::builder or R:class = role::syslog::centralserver or R:class = role::pmacct or R:class = role::backup::offsite or R:class = role::backup} or A:netmon
+misc-others: P{R:class = role::mw_rc_irc or R:class = role::etherpad or R:class = role::tor_relay or R:class = role::lists}
+misc-releng: P{R:class = role::labs::openstack::nodepool or R:class = role::phabricator_server} or A:contint or A:gerrit
+misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb
