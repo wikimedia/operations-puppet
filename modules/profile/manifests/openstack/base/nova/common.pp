@@ -20,7 +20,7 @@ class profile::openstack::base::nova::common(
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $libvirt_type = hiera('profile::openstack::base::nova::libvirt_type'),
     $live_migration_uri = hiera('profile::openstack::base::nova::live_migration_uri'),
-    $rabbit_user = hiera('profile::openstack::base::rabbit_user'),
+    $rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = hiera('profile::openstack::base::rabbit_pass'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
