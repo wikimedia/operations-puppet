@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-kubernetes-eqiad:
-    value: standard
 cluster: kubernetes
 profile::docker::storage::physical_volumes: "/dev/md2"
 profile::docker::storage::vg_to_remove: ''
