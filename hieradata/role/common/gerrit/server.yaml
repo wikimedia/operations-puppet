@@ -1,9 +1,6 @@
 admin::groups:
   - gerrit-root
   - gerrit-admin
-debdeploy::grains:
-  debdeploy-gerrit:
-    value: standard
 
 gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::master_host: 'cobalt.wikimedia.org'

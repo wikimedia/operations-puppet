@@ -4,9 +4,6 @@ admin::groups:
   - phabricator-roots
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
-debdeploy::grains:
-  debdeploy-phabricator:
-    value: standard
 
 phabricator_active_server: 'phab1001'
 phabricator_active_server_fqdn: 'phab1001.eqiad.wmnet'

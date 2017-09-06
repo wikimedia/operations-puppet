@@ -4,7 +4,3 @@ admin::groups:
   - contint-roots
 cluster: misc
 contactgroups: 'admins,contint'
-
-debdeploy::grains:
-  debdeploy-ci:
-    value: standard
