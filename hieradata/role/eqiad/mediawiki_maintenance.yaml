@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-mediawiki-maintenance-eqiad:
-    value: standard

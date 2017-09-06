@@ -1,4 +1,0 @@
-debdeploy::grains:
-  debdeploy-appserver-eqiad:
-    value: canary
-

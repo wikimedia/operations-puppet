@@ -1,4 +1,0 @@
-debdeploy::grains:
-  debdeploy-appserverapi-eqiad:
-    value: standard
-
