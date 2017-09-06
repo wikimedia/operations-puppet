@@ -267,16 +267,17 @@ sub vcl_recv {
 	// The idea here is to occasionally warn some of our worst clients (in
 	// TLS terms: those using DES-CBC3-SHA, which is not forward-secret,
 	// and the bulk of which are also IE[78]/XP) that their connection
-	// security is awful and point them at our wikitech page for more info.
-	// The X-Conn-Props cipher filter matches ~0.1% of traffic.  We further
-	// restrict to the GET method.  We then only apply the synth to 5% of
-	// matching traffic randomly.  Note that a magic test URL is also
-	// included for viewing the warning content with modern browsers.
+	// security is awful.  The X-Conn-Props cipher filter matches ~0.1% of
+	// traffic.  We then only apply the synth to a subset of matching
+	// traffic randomly.  Note that a magic test URL is also included for
+	// viewing the warning content with modern browsers.
 	if (req.url == "/test-sec-warning"
 	   || (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;"
-	   && req.method == "GET"
 	<%- if scope.function_hiera(['cache::cluster']) == "text" -%>
-	   && req.url ~ "^/wiki/" && req.url !~ ":"
+	   && (
+		( req.url ~ "^/wiki/" && req.url !~ ":" )
+		|| req.url ~ "^(/w/api\.php|/api/rest_v1)"
+	   )
 	<%- end -%>
 	   && std.random(0,100) < 11.0)) {
 		return (synth(418, "Browser Connection Security Warning"));
