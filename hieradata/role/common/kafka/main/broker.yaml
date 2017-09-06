@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-kafka-main:
-    value: standard
