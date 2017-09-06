@@ -9,7 +9,4 @@ admin::groups:
   # for deploying files to HDFS.
   - analytics-search-users
   - analytics-wmde-users
-debdeploy::grains:
-  debdeploy-stat:
-    value: standard
 profile::statistics::private::graphite_host: 'graphite-in.eqiad.wmnet'

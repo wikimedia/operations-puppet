@@ -1,7 +1,3 @@
-debdeploy::grains:
-  debdeploy-hue:
-    value: standard
-
 profile::hadoop::client::zookeeper_cluster_name: main-eqiad
 profile::hadoop::client::resourcemanager_hosts:
   - analytics1001.eqiad.wmnet

@@ -8,9 +8,6 @@ admin::groups:
     - aqs-admins
     - aqs-users
     - deploy-aqs
-debdeploy::grains:
-  debdeploy-aqs:
-    value: standard
 
 #
 # Cassandra for AQS

@@ -1,8 +1,5 @@
 admin::groups:
   - druid-admins
-debdeploy::grains:
-  debdeploy-druid:
-    value: standard
 
 profile::druid::common::zookeeper_cluster_name: druid-eqiad
 
