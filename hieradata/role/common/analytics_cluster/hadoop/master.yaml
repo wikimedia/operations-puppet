@@ -12,9 +12,6 @@ admin::groups:
   # that analytics-search-users are allowed to sudo to.  This is used
   # for deploying files to HDFS.
   - analytics-search-users
-debdeploy::grains:
-  debdeploy-hadoop-master:
-    value: standard
 
 profile::hadoop::client::zookeeper_cluster_name: 'main-eqiad'
 profile::hadoop::client::resourcemanager_hosts:
