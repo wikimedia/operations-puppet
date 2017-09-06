@@ -22,12 +22,15 @@ class openstack2::nova::common(
     $libvirt_type,
     $live_migration_uri,
     $glance_host,
+    $rabbit_user,
     $rabbit_host,
     $rabbit_pass,
     $spice_hostname,
     $keystone_auth_uri,
     $keystone_admin_uri,
     ) {
+
+    $nova_controller_ip = ipresolve($nova_controller,4)
 
     $packages = [
         'nova-common',
