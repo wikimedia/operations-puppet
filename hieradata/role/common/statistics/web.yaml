@@ -2,7 +2,4 @@ cluster: analytics
 admin::groups:
   - statistics-web-users
   - statistics-admins
-debdeploy::grains:
-  debdeploy-analytics-web:
-    value: standard
 profile::statistics::web::geowiki_host: 'stat1006.eqiad.wmnet'
