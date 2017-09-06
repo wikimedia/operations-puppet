@@ -7,7 +7,7 @@
 # [*kafka_cluster_name*]
 #   Kafka cluster name.  This should be the non DC/project suffixed cluster name,
 #   e.g. main, aggregate, simple, etc.  The kafka_cluster_name puppet parser
-#   function will determine the proper full cluster name based on $::realm
+#   function will determine the proper full cluster name based on $::site
 #   and/or $::labsproject.  Hiera: kafka_cluster_name
 #
 # [*statsd*]
@@ -66,7 +66,7 @@
 #   so that the they can fetch record batches this large.
 #
 class profile::kafka::broker(
-    $kafka_cluster_name                = hiera('kafka_cluster_name'),
+    $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
     $statsd                            = hiera('statsd'),
 
     $plaintext                         = hiera('profile::kafka::broker::plaintext'),

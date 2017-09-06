@@ -15,5 +15,5 @@ class role::kafka::jumbo::broker {
     $kafka_cluster_name = 'jumbo'
     $n = kafka_cluster_name($kafka_cluster_name)
     notify { "kafka cluster name is given as ${kafka_cluster_name}, function returns ${n}": }
-    # include profile::kafka::broker
+    include profile::kafka::broker
 }
