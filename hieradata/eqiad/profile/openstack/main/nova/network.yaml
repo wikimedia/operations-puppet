@@ -1,4 +1,9 @@
-profile::openstack::main::nova::network::labs_metal: ['10.64.20.12']
+profile::openstack::main::nova::network::labs_metal:
+  promethium:
+    'MAC': '90:b1:1c:2d:6f:0c'
+    'IPv4': 10.68.16.2
+    'project': wikitextexp
+
 profile::openstack::main::nova::network::dns_recursor: 'labs-recursor0.wikimedia.org'
 profile::openstack::main::nova::network::dns_recursor_secondary: 'labs-recursor1.wikimedia.org'
 
