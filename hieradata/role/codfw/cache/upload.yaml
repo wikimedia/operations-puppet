@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-cp-codfw-upload:
-    value: standard
