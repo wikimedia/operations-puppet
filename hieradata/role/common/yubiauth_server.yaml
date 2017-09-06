@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-yubiauth:
-    value: standard
 yubiauth_server_primary: auth1001.eqiad.wmnet
 yubiauth_servers:
   - auth1001.eqiad.wmnet
