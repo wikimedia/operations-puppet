@@ -112,6 +112,20 @@ class network::constants {
                     '10.64.36.122',                # kafka1022.eqiad.wmnet
                     '2620:0:861:106:10:64:36:122', # kafka1022.eqiad.wmnet
                 ],
+            'kafka_brokers_jumbo' => [
+                    '10.64.5.25',                         # kafka-jumbo1001.eqiad.wmnet
+                    '2620:0:861:104:1a66:daff:fefc:d530', # kafka-jumbo1001.eqiad.wmnet
+                    '10.64.5.26',                         # kafka-jumbo1002.eqiad.wmnet
+                    '2620:0:861:104:1a66:daff:fefc:c8f8', # kafka-jumbo1002.eqiad.wmnet
+                    '10.64.21.110',                       # kafka-jumbo1003.eqiad.wmnet
+                    '2620:0:861:105:1a66:daff:fefc:ccbc', # kafka-jumbo1003.eqiad.wmnet
+                    '10.64.36.107',                       # kafka-jumbo1004.eqiad.wmnet
+                    '2620:0:861:106:1a66:daff:fefb:5e68', # kafka-jumbo1004.eqiad.wmnet
+                    '10.64.36.108',                       # kafka-jumbo1005.eqiad.wmnet
+                    '2620:0:861:106:1a66:daff:fefc:d59c', # kafka-jumbo1005.eqiad.wmnet
+                    '10.64.53.34',                        # kafka-jumbo1006.eqiad.wmnet
+                    '2620:0:861:108:1a66:daff:fefc:d27c', # kafka-jumbo1006.eqiad.wmnet
+                ],
             'zookeeper_hosts_main' => [
                     '10.64.0.18',                         # conf1001.eqiad.wmnet
                     '2620:0:861:101:d6ae:52ff:fe73:60e6', # conf1001.eqiad.wmnet
