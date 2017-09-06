@@ -8,8 +8,6 @@ define varnish::instance(
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
     $runtime_parameters=[],
-    $app_directors={},
-    $app_def_be_opts={},
     $backend_caches={},
     $extra_vcl = [],
     $start_cmd_prefix = '',
@@ -31,7 +29,12 @@ define varnish::instance(
     require ::varnish::common::vcl
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
-    extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy:
+    $extra_vcl_name = regsubst($extra_vcl_variable_to_make_puppet_parser_happy, '^([^ ]+) .*$', '\1')
+
+    varnish::wikimedia_vcl { "/etc/varnish/${extra_vcl_name}.inc.vcl":
+        template_path  => "varnish/${extra_vcl_name}.inc.vcl.erb",
+        vcl            => $extra_vcl_name,
+        vcl_config     => $vcl_config,
         before => Service["varnish${instancesuffix}"],
     }
 
@@ -53,12 +56,18 @@ define varnish::instance(
     }
 
     varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl}.inc.vcl":
-        template_path => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
+        template_path  => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
+        vcl_config     => $vcl_config,
+        backend_caches => $backend_caches,
+        inst           => $inst,
     }
 
     varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl}.vcl":
-        require       => File["/etc/varnish/${vcl}.inc.vcl"],
-        template_path => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
+        require        => File["/etc/varnish/${vcl}.inc.vcl"],
+        template_path  => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
+        vcl_config     => $vcl_config,
+        backend_caches => $backend_caches,
+        vcl            => $vcl,
     }
 
     # These versions of wikimedia-common_${vcl}.vcl and wikimedia_${vcl}.vcl
@@ -70,23 +79,33 @@ define varnish::instance(
         require         => File['/usr/share/varnish/tests'],
         varnish_testing => true,
         template_path   => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
+        vcl_config      => $vcl_config,
+        backend_caches  => $backend_caches,
+        inst            => $inst,
     }
 
     varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl}.vcl":
         require         => File['/usr/share/varnish/tests'],
         varnish_testing => true,
         template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
+        vcl_config      => $vcl_config,
+        backend_caches  => $backend_caches,
+        vcl             => $vcl,
     }
 
     varnish::wikimedia_vcl { "/etc/varnish/${vcl}.inc.vcl":
-        template_path => "varnish/${vcl}.inc.vcl.erb",
-        notify        => Exec["load-new-vcl-file${instancesuffix}"],
+        template_path  => "varnish/${vcl}.inc.vcl.erb",
+        notify         => Exec["load-new-vcl-file${instancesuffix}"],
+        vcl_config     => $vcl_config,
+        backend_caches => $backend_caches,
     }
 
     varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl}.inc.vcl":
         require         => File['/usr/share/varnish/tests'],
         varnish_testing => true,
         template_path   => "varnish/${vcl}.inc.vcl.erb",
+        vcl_config      => $vcl_config,
+        backend_caches  => $backend_caches,
     }
 
     # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
