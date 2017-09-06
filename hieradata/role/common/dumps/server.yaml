@@ -23,6 +23,3 @@ dumps::rsync_clients:
 dumps::rsync_clients_ipv6:
   - odysseus.ip6.fi.muni.cz
   - poincare.acc.umu.se
-debdeploy::grains:
-  debdeploy-dumps:
-    value: standard
