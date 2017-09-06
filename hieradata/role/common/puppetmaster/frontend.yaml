@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-puppetmaster-frontend:
-    value: standard
 admin::groups:
   - gitpuppet
   - datacenter-ops
