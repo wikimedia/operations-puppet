@@ -73,6 +73,9 @@
 #   The default replication factor for automatically created topics.
 #   Default: 1
 #
+# [*delete_topic_enable*]
+#   Enables topic deletion.  Default: undef (false)
+#
 # [*min_insync_replicas*]
 #   When producing with acks=all, this specifiies the number of replicas that should be in
 #   a partition's ISR.  If fewer than this are present, the produce request will fail.
@@ -233,6 +236,7 @@ class confluent::kafka::broker(
 
     $num_partitions                      = 1,
     $default_replication_factor          = 1,
+    $delete_topic_enable                 = undef,
     $offsets_topic_replication_factor    = undef,
     $min_insync_replicas                 = 1,
     $replica_lag_time_max_ms             = undef,

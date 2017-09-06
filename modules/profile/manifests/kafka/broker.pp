@@ -187,6 +187,7 @@ class profile::kafka::broker(
         nofiles_ulimit                   => $nofiles_ulimit,
         default_replication_factor       => min(3, $config['brokers']['size']),
         offsets_topic_replication_factor => min(3,  $config['brokers']['size']),
+        delete_topic_enable              => true,
         # TODO: This can be removed once it is a default
         # in ::confluent::kafka module
         inter_broker_protocol_version    => '0.11.0',
