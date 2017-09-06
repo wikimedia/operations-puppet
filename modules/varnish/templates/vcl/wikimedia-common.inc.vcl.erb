@@ -1,6 +1,10 @@
 # This file is managed by Puppet!
 // layer-common code for all clusters
 
+<%
+backend_caches = scope['varnish::instance::backend_caches']
+-%>
+
 import std;
 
 # this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
@@ -124,8 +128,8 @@ probe varnish {
 
 <%
 becache_seen = {}
-@backend_caches.keys.sort.each do |director_name|
-	director = @backend_caches[director_name]
+backend_caches.keys.sort.each do |director_name|
+	director = backend_caches[director_name]
 	be_opts	= director['be_opts']
 	[*director['backends']].each do |backend|
 		next if becache_seen.key?(backend)
@@ -182,8 +186,8 @@ sub wm_common_directors_init {
 <% if @dynamic_backend_caches -%>
 include "directors.<%= @inst %>.vcl";
 <% else -%>
-<% @backend_caches.keys.sort.each do |director_name|
-director = @backend_caches[director_name]
+<% backend_caches.keys.sort.each do |director_name|
+director = backend_caches[director_name]
 backends = director['backends'] -%>
 	new <%= director_name %> = vslp.vslp();
 	new <%= director_name %>_random = directors.random();
