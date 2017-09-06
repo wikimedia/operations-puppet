@@ -158,36 +158,6 @@ swift_be_eqiad_hp:
   ]
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
-debdeploy_dbstore:
-  __regex: !ruby/regexp /^dbstore[12]00[12]\.(eqiad|codfw)\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-dbstore:
-      value: standard
-debdeploy_es-eqiad:
-  __regex: !ruby/regexp /^es1\d\d\d\.eqiad\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-es-eqiad:
-      value: standard
-debdeploy_es-codfw:
-  __regex: !ruby/regexp /^es2\d\d\d\.codfw\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-es-codfw:
-      value: standard
-debdeploy_dbproxy:
-  __regex: !ruby/regexp /^dbproxy100\d\.eqiad\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-dbproxy:
-      value: standard
-debdeploy_dbcore-eqiad:
-  __regex: !ruby/regexp /^db10\d\d.eqiad\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-core-eqiad:
-      value: standard
-debdeploy_dbcore-codfw:
-  __regex: !ruby/regexp /^db20\d\d.codfw\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-core-codfw:
-      value: standard
 lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
   profile::pybal::bgp: no
