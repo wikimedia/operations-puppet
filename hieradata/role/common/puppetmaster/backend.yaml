@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-puppetmaster-backend:
-    value: standard
 admin::groups:
   - gitpuppet
 profile::base::domain_search:
