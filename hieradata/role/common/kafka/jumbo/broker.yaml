@@ -1,7 +1,4 @@
 cluster: jumbo_kafka
-debdeploy::grains:
-  debdeploy-kafka:
-    value: standard
 
 kafka_cluster_name: jumbo
 
