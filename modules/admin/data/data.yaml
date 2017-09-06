@@ -2678,6 +2678,10 @@ ldap_only_users:
     ensure: present
     realname: Tim Landscheidt
     email: tim@tim-landscheidt.de
+  schoenbaechler:
+    ensure: present
+    realname: Robin Schoenbaechler
+    email: rschoenbaechler@wikimedia.org
   seddon:
     ensure: present
     realname: Joseph Seddon
