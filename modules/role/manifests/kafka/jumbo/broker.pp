@@ -6,7 +6,10 @@ class role::kafka::jumbo::broker {
         description => "Kafka Broker in a 'jumbo' Kafka cluster",
     }
 
-    include standard
+    # Don't use ganglia
+    class { '::standard':
+        has_ganglia => false
+    }
     include base::firewall
     include profile::kafka::broker
 }
