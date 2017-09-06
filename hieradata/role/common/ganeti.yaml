@@ -18,6 +18,3 @@ ganeti::ganeti01.svc.eqiad.wmnet::nodes:
   - ganeti1006.eqiad.wmnet
   - ganeti1007.eqiad.wmnet
   - ganeti1008.eqiad.wmnet
-debdeploy::grains:
-  debdeploy-ganeti:
-    value: standard
