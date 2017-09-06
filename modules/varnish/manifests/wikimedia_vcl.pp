@@ -1,6 +1,9 @@
 define varnish::wikimedia_vcl(
     $varnish_testing = false,
     $template_path = '',
+    $vcl_config = {},
+    $backend_caches = {},
+    $vcl = '',
 ) {
     if $varnish_testing  {
         $varnish_include_path = '/usr/share/varnish/tests/'
@@ -14,6 +17,13 @@ define varnish::wikimedia_vcl(
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
     $traffic_shutdown = hiera('cache::traffic_shutdown', false)
+
+    $app_directors = hiera('cache::app_directors')
+    $app_def_be_opts = hiera('cache::app_def_be_opts')
+
+    $site = $::site
+    $cache_route_table = hiera('cache::route_table')
+    $cache_route = $cache_route_table[$site]
 
     file { $title:
         owner   => 'root',
