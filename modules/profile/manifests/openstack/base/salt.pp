@@ -6,7 +6,7 @@ class profile::openstack::base::salt(
 
     ferm::rule{'saltcertcleaning':
         ensure => 'present',
-        rule   => "saddr (${designate_host}) proto tcp dport (ssh) ACCEPT;",
+        rule   => "saddr @resolve(${designate_host}) proto tcp dport (ssh) ACCEPT;",
     }
 
     ferm::rule{ 'salt_hosts':
