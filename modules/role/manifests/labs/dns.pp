@@ -18,7 +18,7 @@ class role::labs::dns {
     include role::mariadb::monitor::dba
     # for DBA admin root purposes
     ferm::rule { 'mariadb_dba':
-        rule => 'saddr @resolve(($MYSQL_ROOT_CLIENTS)) proto tcp dport (3306) ACCEPT;',
+        rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3306) ACCEPT;',
     }
 
     # Note:  This will install mariadb but won't set up the
