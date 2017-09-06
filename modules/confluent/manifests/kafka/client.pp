@@ -58,5 +58,6 @@ class confluent::kafka::client(
         recurse => true,
         purge   => true,
         force   => true,
+        require => Package[$package],
     }
 }

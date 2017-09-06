@@ -11,9 +11,5 @@ class role::kafka::jumbo::broker {
         has_ganglia => false
     }
     include base::firewall
-
-    $kafka_cluster_name = 'jumbo'
-    $n = kafka_cluster_name($kafka_cluster_name)
-    notify { "kafka cluster name is given as ${kafka_cluster_name}, function returns ${n}": }
     include profile::kafka::broker
 }
