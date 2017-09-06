@@ -24,6 +24,7 @@ class profile::openstack::base::nova::common(
     $rabbit_pass = hiera('profile::openstack::base::rabbit_pass'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
+    $spice_hostname = hiera('profile::openstack::base::spice_hostname'),
     ) {
 
     $keystone_admin_uri = "http://${nova_controller}:${auth_port}"
@@ -57,7 +58,7 @@ class profile::openstack::base::nova::common(
         rabbit_user              => $rabbit_user,
         rabbit_host              => $nova_controller,
         rabbit_pass              => $rabbit_pass,
-        spice_hostname           => $nova_controller,
+        spice_hostname           => $spice_hostname,
         keystone_auth_uri        => $keystone_auth_uri,
         keystone_admin_uri       => $keystone_admin_uri,
     }

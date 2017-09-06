@@ -18,6 +18,7 @@ class profile::openstack::labtestn::nova::common(
     $ldap_user_pass = hiera('profile::openstack::labtestn::ldap_user_pass'),
     $live_migration_uri = hiera('profile::openstack::labtestn::nova::live_migration_uri'),
     $rabbit_pass = hiera('profile::openstack::labtestn::nova::rabbit_pass'),
+    $spice_hostname = hiera('profile::openstack::labtestn::spice_hostname'),
     ) {
 
     require ::profile::openstack::labtestn::cloudrepo
@@ -41,5 +42,6 @@ class profile::openstack::labtestn::nova::common(
         ldap_user_pass           => $ldap_user_pass,
         live_migration_uri       => $live_migration_uri,
         rabbit_pass              => $rabbit_pass,
+        spice_hostname           => $spice_hostname,
     }
 }
