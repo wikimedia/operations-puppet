@@ -1,6 +1,2 @@
-debdeploy::grains:
-  debdeploy-labsdb:
-    value: standard
-
 admin::groups:
   - wmcs-admin
