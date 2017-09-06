@@ -2256,7 +2256,6 @@ node 'stat1005.eqiad.wmnet' {
 # researchers and analysts.  It is primarily used
 # to connect to MySQL research databases and save
 # query results for further processing on this node.
-# WIP: stat1003 replacement (T152712)
 node 'stat1006.eqiad.wmnet' {
     role(statistics::cruncher)
 }
