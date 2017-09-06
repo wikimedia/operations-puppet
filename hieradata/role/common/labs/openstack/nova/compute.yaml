@@ -1,6 +1,2 @@
-debdeploy::grains:
-  debdeploy-nova-compute:
-    value: standard
-
 admin::groups:
   - wmcs-roots
