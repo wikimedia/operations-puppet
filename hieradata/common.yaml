@@ -469,22 +469,31 @@ kafka_clusters:
       kafka2003.codfw.wmnet:
         id: 2003
 
-  # TODO: Add rack/row comments once these are racked.
+  # NOTE:  The 'rack' here is used by the confluent kafka module
+  # to assign broker.rack for Kafka rack awareness.  We are actually setting
+  # the row letter, not the full row-rack number, since each of these brokers
+  # are in different racks anyway.  We do awareness at the row level.
   jumbo-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
       kafka-jumbo1001.eqiad.wmnet:
         id: 1001
+        rack: A
       kafka-jumbo1002.eqiad.wmnet:
         id: 1002
+        rack: A
       kafka-jumbo1003.eqiad.wmnet:
         id: 1003
+        rack: B
       kafka-jumbo1004.eqiad.wmnet:
         id: 1004
+        rack: C
       kafka-jumbo1005.eqiad.wmnet:
         id: 1005
+        rack: C
       kafka-jumbo1006.eqiad.wmnet:
         id: 1006
+        rack: D
 
 deployment_server: tin.eqiad.wmnet
 
