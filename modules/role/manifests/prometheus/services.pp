@@ -52,6 +52,12 @@ class role::prometheus::services {
         site       => $::site,
     }
 
+    prometheus::jmx_exporter_config{ "cassandra_restbase_production_ng_${::site}":
+        dest       => "${targets_path}/cassandra_restbase_production_ng_${::site}.yaml",
+        class_name => 'role::restbase::production_ng',
+        site       => $::site,
+    }
+
     prometheus::server { 'services':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9903',
