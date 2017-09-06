@@ -264,22 +264,11 @@ sub vcl_recv {
 	call cluster_fe_recv_pre_purge;
 	call wm_common_recv_purge;
 
-	// The idea here is to occasionally warn some of our worst clients (in
-	// TLS terms: those using DES-CBC3-SHA, which is not forward-secret,
-	// and the bulk of which are also IE[78]/XP) that their connection
-	// security is awful.  The X-Conn-Props cipher filter matches ~0.1% of
-	// traffic.  We then only apply the synth to a subset of matching
-	// traffic randomly.  Note that a magic test URL is also included for
-	// viewing the warning content with modern browsers.
-	if (req.url == "/test-sec-warning"
-	   || (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;"
-	<%- if scope.function_hiera(['cache::cluster']) == "text" -%>
-	   && (
-		( req.url ~ "^/wiki/" && req.url !~ ":" )
-		|| req.url ~ "^(/w/api\.php|/api/rest_v1)"
-	   )
-	<%- end -%>
-	   && std.random(0,100) < 29.0)) {
+	// The idea here is to block our worst clients (in TLS terms: those
+	// using DES-CBC3-SHA, which is not forward-secret, and the bulk of
+	// which are also IE[78]/XP).  This will remain in place until the
+	// future removal of protocol-level support.
+	if (req.url == "/test-sec-warning" || req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;") {
 		return (synth(418, "Browser Connection Security Warning"));
 	}
 
