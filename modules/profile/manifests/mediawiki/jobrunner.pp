@@ -32,7 +32,7 @@ class profile::mediawiki::jobrunner(
 
     apache::conf { 'hhvm_jobrunner_port':
         priority => 1,
-        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>Listen <%= @local_only_port %>\n"),
+        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\nListen <%= @local_only_port %>\n"),
     }
 
     apache::site{ 'hhvm_jobrunner':
