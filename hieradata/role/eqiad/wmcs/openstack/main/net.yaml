@@ -7,3 +7,8 @@ openstack::log_group: labnet-users
 debdeploy::grains:
   debdeploy-nova-api:
     value: standard
+
+# routing and nat host with lots of addresses
+# lock down SSH to administrative IP only
+profile::base::ssh_server_settings:
+  listen_address: "%{::ipaddress}"
