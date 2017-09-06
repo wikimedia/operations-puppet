@@ -6,6 +6,7 @@ class profile::openstack::labtest::nova::network::service(
     $network_flat_interface = hiera('profile::openstack::labtest::nova::network_flat_interface'),
     $network_flat_tagged_base_interface = hiera('profile::openstack::labtest::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtest::nova::network_flat_interface_vlan'),
+    $network_public_ip = hiera('profile::openstack::labtest::nova::network_public_ip'),
     ) {
 
     require ::profile::openstack::labtest::nova::common
@@ -17,6 +18,7 @@ class profile::openstack::labtest::nova::network::service(
         network_flat_interface             => $network_flat_interface,
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
+        network_public_ip                  => $network_public_ip,
     }
 
     class {'::openstack2::nova::network::monitor':

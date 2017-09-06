@@ -8,7 +8,7 @@ class profile::openstack::base::nova::network::service(
     $network_flat_interface = hiera('profile::openstack::base::nova::network_flat_interface'),
     $network_flat_tagged_base_interface = hiera('profile::openstack::base::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::base::nova::network_flat_interface_vlan'),
-    $network_public_ip = hiera('profile::openstack::labtestn::nova::network_public_ip'),
+    $network_public_ip = hiera('profile::openstack::base::nova::network_public_ip'),
     ) {
 
     if ($::fqdn == $nova_network_host) {
