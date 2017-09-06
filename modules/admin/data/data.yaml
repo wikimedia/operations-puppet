@@ -2670,6 +2670,10 @@ ldap_only_users:
     ensure: present
     realname: Rita Ho
     email: rho@wikimedia.org
+  rschoenbaechler:
+    ensure: present
+    realname: Robin Schoenbaechler
+    email: rschoenbaechler@wikimedia.org
   ryasmeen:
     ensure: present
     realname: Rummana Yasmeen
