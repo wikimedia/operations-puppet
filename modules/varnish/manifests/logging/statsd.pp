@@ -30,7 +30,7 @@ define varnish::logging::statsd(
     $statsd_server = 'statsd',
     $key_prefix    = 'varnish.backends',
 ) {
-    if $instance_name {
+    if $instance_name != '' {
         $service_unit_name = "varnishstatsd-${instance_name}"
     } else {
         $service_unit_name = 'varnishstatsd-default'
