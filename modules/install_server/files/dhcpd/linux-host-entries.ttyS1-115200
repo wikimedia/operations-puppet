@@ -2574,31 +2574,43 @@ host kafka2003 {
 host kafka-jumbo1001 {
     hardware ethernet 18:66:DA:FC:D5:30;
     fixed-address kafka-jumbo1001.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka-jumbo1002 {
     hardware ethernet 18:66:DA:FC:C8:F8;
     fixed-address kafka-jumbo1002.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka-jumbo1003 {
     hardware ethernet 18:66:DA:FC:CC:BC;
     fixed-address kafka-jumbo1003.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka-jumbo1004 {
     hardware ethernet 18:66:DA:FB:5E:68;
     fixed-address kafka-jumbo1004.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka-jumbo1005 {
     hardware ethernet 18:66:DA:FC:D5:9C;
     fixed-address kafka-jumbo1005.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka-jumbo1006 {
     hardware ethernet 18:66:DA:FC:D2:7C;
     fixed-address kafka-jumbo1006.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kubernetes1001 {
