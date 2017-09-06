@@ -1,7 +1,4 @@
 cluster: swift
 nagios_group: swift
-debdeploy::grains:
-  debdeploy-swift-fe-esams:
-    value: standard
 admin::groups:
   - swift-roots

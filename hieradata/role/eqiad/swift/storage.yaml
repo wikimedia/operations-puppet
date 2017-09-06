@@ -1,5 +1,2 @@
-debdeploy::grains:
-  debdeploy-swift-be-eqiad:
-    value: standard
 admin::groups:
   - swift-roots
