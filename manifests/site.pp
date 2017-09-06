@@ -1233,9 +1233,11 @@ node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
     include ::standard
 }
 
-# kafka-jumbo nodes set to role spare until analytics pushes into service T167992
+# kafka-jumbo is a large general purpose Kafka cluster.
+# This cluster exists only in eqiad, and serves various uses, including
+# mirroring all data from the main Kafka clusters in both main datacenters.
 node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(kafka::jumbo::broker)
 }
 
 

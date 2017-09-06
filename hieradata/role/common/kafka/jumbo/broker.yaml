@@ -2,7 +2,7 @@ cluster: jumbo_kafka
 
 kafka_cluster_name: jumbo
 
-profile::kafka::broker::log_dirs: [/srv/kafka/data] # TBD
+profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
 # TODO: does not yet work.
 # # ca-manager will use a self signed CA cert to authenticate clients.

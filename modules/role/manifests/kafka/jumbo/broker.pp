@@ -3,7 +3,7 @@
 #
 class role::kafka::jumbo::broker {
     system::role { 'role::kafka::jumbo::broker':
-        description => "Kafka Broker in an 'jumbo' Kafka cluster",
+        description => "Kafka Broker in a 'jumbo' Kafka cluster",
     }
 
     include standard
