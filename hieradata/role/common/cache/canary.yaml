@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-cp:
-    value: canary
 bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
 cache::lua_support: true
