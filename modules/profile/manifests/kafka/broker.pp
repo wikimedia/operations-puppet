@@ -89,10 +89,7 @@ class profile::kafka::broker(
     $tls_secrets_path = undef
     $tls_key_password = undef
 
-    $n = kafka_cluster_name($kafka_cluster_name)
-    notify { "kafka cluster name is given as ${kafka_cluster_name}, function returns ${n}": }
     $config         = kafka_config($kafka_cluster_name)
-    notify { "got kafka config $config ": }
     $cluster_name   = $config['name']
     $zookeeper_url  = $config['zookeeper']['url']
     $brokers_string = $config['brokers']['string']
