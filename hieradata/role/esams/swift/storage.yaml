@@ -1,5 +1,2 @@
-debdeploy::grains:
-  debdeploy-swift-be-esams:
-    value: standard
 admin::groups:
   - swift-roots
