@@ -28,6 +28,7 @@ KUBE_ADMISSION_CONTROL="--admission-control=<%= @admission_control %>"
 
 DAEMON_ARGS=" \
 --token-auth-file=/etc/kubernetes/tokenauth \
+--storage-backend=<%= @storage_backend %> \
 <%- if @authz_mode == 'abac' -%>
 --authorization-mode=ABAC \
 --authorization-policy-file=/etc/kubernetes/abac \

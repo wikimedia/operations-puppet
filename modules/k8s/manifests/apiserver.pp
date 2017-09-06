@@ -13,6 +13,7 @@ class k8s::apiserver(
         'ResourceQuota' => '',
     },
     $authz_mode = 'abac',
+    $storage_backend = 'etcd2',
     $apiserver_count = undef,
 ) {
     file { '/etc/kubernetes':
