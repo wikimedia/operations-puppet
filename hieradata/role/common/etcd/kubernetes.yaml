@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-kubernetes-eqiad:
-    value: etcd
 cluster: kubernetes
 profile::etcd::cluster_name: "k8s.%{::site}"
 profile::etcd::discovery: "dns:k8s.%{::site}.wmnet"

@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-kubernetes-eqiad:
-    value: standard
 cluster: kubernetes
 profile::kubernetes::master::accessible_to:
  - kubestage1001.eqiad.wmnet
