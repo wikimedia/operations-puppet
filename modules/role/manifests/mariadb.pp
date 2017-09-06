@@ -189,7 +189,7 @@ class role::mariadb::analytics::custom_repl_slave {
     $cutoff_days = 90
 
     # Only 'replicate' this many rows at a time.
-    $batch_size  = 1000
+    $batch_size  = 10000
 
     group { 'eventlog':
         ensure => 'present',
