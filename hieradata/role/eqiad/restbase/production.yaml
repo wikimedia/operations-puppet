@@ -15,7 +15,3 @@ profile::restbase::hosts:
   - restbase1013.eqiad.wmnet
   - restbase1014.eqiad.wmnet
   - restbase1015.eqiad.wmnet
-
-debdeploy::grains:
-  debdeploy-restbase-eqiad:
-    value: standard

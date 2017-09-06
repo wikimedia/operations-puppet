@@ -2,6 +2,3 @@ profile::restbase::hosts:
   - cerium.eqiad.wmnet
   - praseodymium.eqiad.wmnet
   - xenon.eqiad.wmnet
-debdeploy::grains:
-  debdeploy-restbase-eqiad:
-    value: standard
