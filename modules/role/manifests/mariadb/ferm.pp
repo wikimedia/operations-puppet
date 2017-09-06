@@ -12,6 +12,6 @@ class role::mariadb::ferm {
 
     # for DBA purposes
     ferm::rule { 'mariadb_dba':
-        rule => 'saddr @resolve(($MYSQL_ROOT_CLIENTS)) proto tcp dport (3307) ACCEPT;',
+        rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3307) ACCEPT;',
     }
 }

@@ -79,6 +79,7 @@ class network::constants {
                 ],
             'mysql_root_clients' => [
                     # ipv6 interfaces are not yet allowed due to mysql grants
+                    # do not put dns names or hostnames here, only ipv4
                     '10.64.0.15',                  # db1011.eqiad.wmnet
                     '10.64.32.20',                 # neodymium.eqiad.wmnet
                     '10.192.0.140',                # sarin.codfw.wmnet
