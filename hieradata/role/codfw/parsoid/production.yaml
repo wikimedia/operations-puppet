@@ -1,5 +1,2 @@
-debdeploy::grains:
-  debdeploy-parsoid-codfw:
-    value: standard
 lvs::realserver::realserver_ips:
   - 10.2.1.28
