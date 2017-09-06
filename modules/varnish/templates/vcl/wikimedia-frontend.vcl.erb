@@ -281,7 +281,7 @@ sub vcl_recv {
 		|| req.url ~ "^(/w/api\.php|/api/rest_v1)"
 	   )
 	<%- end -%>
-	   && std.random(0,100) < 23.0)) {
+	   && std.random(0,100) < 26.0)) {
 		return (synth(418, "Browser Connection Security Warning"));
 	}
 
