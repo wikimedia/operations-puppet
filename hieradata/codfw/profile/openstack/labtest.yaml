@@ -6,6 +6,7 @@ profile::openstack::labtest::designate_host_standby: 'labtestservices2001.wikime
 profile::openstack::labtest::nova_api_host: 'labtestnet2001.codfw.wmnet'
 profile::openstack::labtest::labs_hosts_range: '10.192.20.0/24'
 profile::openstack::labtest::horizon_host: 'labtestweb2001.wikimedia.org'
+profile::openstack::labtest::spice_hostname: 'labtestspice'
 profile::openstack::labtest::nova_network_host: 'labtestnet2001.codfw.wmnet'
 profile::openstack::labtest::rabbit_monitor_user: 'monitoring'
 profile::openstack::labtest::rabbit_file_handles: 8192
