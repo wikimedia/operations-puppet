@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-lvs-esams:
-    value: standard
 profile::pybal::config_host: conf1003.eqiad.wmnet
 profile::lvs::tagged_subnets:
   - public1-esams
