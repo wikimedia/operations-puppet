@@ -33,9 +33,10 @@ class openstack2::nova::common(
     $nova_controller_ip = ipresolve($nova_controller,4)
 
     $packages = [
+        'unzip',
+        'bridge-utils',
         'nova-common',
     ]
-
     require_package($packages)
 
     # For some reason the Mitaka nova-common package installs
