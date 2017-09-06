@@ -3,8 +3,6 @@ define role::cache::instances (
     $fe_jemalloc_conf,
     $fe_runtime_params,
     $be_runtime_params,
-    $app_directors,
-    $app_def_be_opts,
     $fe_vcl_config,
     $be_vcl_config,
     $fe_extra_vcl,
@@ -14,9 +12,6 @@ define role::cache::instances (
     $be_storage,
     $cluster_nodes
 ) {
-
-    $cache_route_table = hiera('cache::route_table')
-    $cache_route = $cache_route_table[$::site]
 
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
@@ -100,8 +95,6 @@ define role::cache::instances (
         runtime_parameters => concat($be_runtime_params, $nuke_lru_params, $exp_thread_params),
         storage            => "${be_storage} ${be_transient_storage}",
         vcl_config         => $be_vcl_config,
-        app_directors      => $app_directors,
-        app_def_be_opts    => $app_def_be_opts,
         backend_caches     => $our_backend_caches,
     }
 
