@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-jobrunner-eqiad:
-    value: standard
 profile::mediawiki::jobrunner::queue_servers:
   - rdb1001.eqiad.wmnet
   - rdb1001.eqiad.wmnet:6380

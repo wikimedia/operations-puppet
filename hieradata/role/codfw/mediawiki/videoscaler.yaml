@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-videoscaler-codfw:
-    value: standard
