@@ -105,6 +105,11 @@ num.partitions=<%= @num_partitions %>
 # Default to the number of brokers in this cluster.
 default.replication.factor=<%= @default_replication_factor %>
 
+<% if @delete_topic_enable -%>
+# Enables topic deletion
+delete.topic.enable=<%= @delete_topic_enable %>
+<% end -%>
+
 <% if @offsets_topic_replication_factor -%>
 # The replication factor for the group metadata internal topics "__consumer_offsets" and "__transaction_state"
 # For anything other than development testing, a value greater than 1 is recommended for to ensure availability such as 3.
