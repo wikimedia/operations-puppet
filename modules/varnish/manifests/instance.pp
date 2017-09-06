@@ -27,10 +27,6 @@ define varnish::instance(
         $extraopts = "-n ${instance_name}"
     }
 
-    $netmapper_dir = '/var/netmapper'
-
-    $dynamic_backend_caches = hiera('varnish::dynamic_backend_caches', true)
-
     # Install VCL include files shared by all instances
     require ::varnish::common::vcl
 
@@ -56,22 +52,13 @@ define varnish::instance(
         ],
     }
 
-    # Hieradata switch to shut users out of a DC/cluster. T129424
-    $traffic_shutdown = hiera('cache::traffic_shutdown', false)
-
-    file { "/etc/varnish/wikimedia-common_${vcl}.inc.vcl":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/vcl/wikimedia-common.inc.vcl.erb"),
+    varnish::wikimedia_vcl { "/etc/varnish/wikimedia-common_${vcl}.inc.vcl":
+        template_path => "${module_name}/vcl/wikimedia-common.inc.vcl.erb",
     }
 
-    file { "/etc/varnish/wikimedia_${vcl}.vcl":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File["/etc/varnish/${vcl}.inc.vcl"],
-        content => template("${module_name}/vcl/wikimedia-${layer}.vcl.erb"),
+    varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl}.vcl":
+        require       => File["/etc/varnish/${vcl}.inc.vcl"],
+        template_path => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
     }
 
     # These versions of wikimedia-common_${vcl}.vcl and wikimedia_${vcl}.vcl
@@ -91,12 +78,9 @@ define varnish::instance(
         template_path   => "${module_name}/vcl/wikimedia-${layer}.vcl.erb",
     }
 
-    file { "/etc/varnish/${vcl}.inc.vcl":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("varnish/${vcl}.inc.vcl.erb"),
-        notify  => Exec["load-new-vcl-file${instancesuffix}"],
+    varnish::wikimedia_vcl { "/etc/varnish/${vcl}.inc.vcl":
+        template_path => "varnish/${vcl}.inc.vcl.erb",
+        notify        => Exec["load-new-vcl-file${instancesuffix}"],
     }
 
     varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl}.inc.vcl":
