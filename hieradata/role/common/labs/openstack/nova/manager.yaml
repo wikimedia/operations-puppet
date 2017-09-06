@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-nova-manager:
-    value: standard
