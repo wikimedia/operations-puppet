@@ -30,7 +30,6 @@ class openstack2::keystone::service(
     $wiki_access_secret,
     ) {
 
-    #include ::openstack::keystone::hooks
     include ::network::constants
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks

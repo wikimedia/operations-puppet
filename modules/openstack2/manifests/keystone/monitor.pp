@@ -60,7 +60,7 @@ class openstack2::keystone::monitor(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/openstack/check_keystone_roles.py',
+        source => 'puppet:///modules/openstack2/monitor/keystone/check_keystone_roles.py',
     }
 
     # Script to make sure that service projects e.g. 'admin' exists
@@ -69,7 +69,7 @@ class openstack2::keystone::monitor(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/openstack/check_keystone_projects.py',
+        source => 'puppet:///modules/openstack2/monitor/keystone/check_keystone_projects.py',
     }
 
 }
