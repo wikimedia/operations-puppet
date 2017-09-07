@@ -2562,6 +2562,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrRP96tPtNAw4XAiTdDaxbwfDIwN5c4rCg3vArfDQSqOutIICgY30CGC1nadOmEqJxqAn6xQYnMgA94qb3pyPln/DLYtcseE185UHvqNqbOpXT+a9EnV/o1uHPP0/riQHF5k27SBUZS6RyAj14JkgbTutz5Z35aYfULTmhP3yMTdhd+/Fl3rA7d+bZdZCLwiikwJ0DY1dKXmSCKalFAub/FVjEGLpSLGu2gkKufx6sm4W+U0nBku9tLxBJ3B/rJdXVoudeAM3NWBJErPEqvyv3SYTnxthGIuqI9ZayjtzVNuuK5eETxdFVMwoxV1V/AvtqgSHxa9Tr1aTMkZZ8IdmP dbarratt@wikimedia.org
     uid: 17204
     email: dbarratt@wikimedia.org
+  rho:
+    ensure: present
+    gid: 500
+    name: rho
+    realname: Rita Ho
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHuPUUK0SGl+S/G6jiCd1UWOZ/abghr4qEqNepM06kpV rho@Ritas-MBP
+    uid: 14485
+    email: rho@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -2666,10 +2675,6 @@ ldap_only_users:
     ensure: present
     realname: Rachel Stallman
     email: rstallman@wikimedia.org
-  rho:
-    ensure: present
-    realname: Rita Ho
-    email: rho@wikimedia.org
   ryasmeen:
     ensure: present
     realname: Rummana Yasmeen
