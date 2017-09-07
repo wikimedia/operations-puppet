@@ -6,7 +6,7 @@ class openstack2::keystone::hooks(
     include openstack2::keystone::service
 
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks':
-        source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystonehooks",
+        source  => "puppet:///modules/openstack2/${version}/keystone/wmfkeystonehooks",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
@@ -15,7 +15,7 @@ class openstack2::keystone::hooks(
     }
 
     file { '/usr/lib/python2.7/dist-packages/wmfkeystonehooks.egg-info':
-        source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystonehooks.egg-info",
+        source  => "puppet:///modules/openstack2/${version}/keystone/wmfkeystonehooks.egg-info",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
