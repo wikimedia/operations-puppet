@@ -1382,6 +1382,8 @@ node /^logstash100[1-2]\.eqiad\.wmnet$/ {
 }
 
 node /^logstash1003\.eqiad\.wmnet$/ {
+    # Before decommissionning logstash1003, role::logstash::eventlogging needs
+    # to be moved to another node
     role(logstash::collector, kibana, logstash::apifeatureusage, logstash::eventlogging)
     include ::lvs::realserver
 }
@@ -1389,9 +1391,9 @@ node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
 }
 
-# new logstash nodes are set to spare until pressed into service T175045
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(logstash::collector, kibana, logstash::apifeatureusage)
+    include ::lvs::realserver
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
