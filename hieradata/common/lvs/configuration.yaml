@@ -129,7 +129,7 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.8
   logstash: &ip_block037
     eqiad: 10.2.2.36
-  "recommendation-api": &ip_block038
+  recommendation-api: &ip_block038
     eqiad: 10.2.2.37
     codfw: 10.2.1.37
   jobrunner: &ip_block039
