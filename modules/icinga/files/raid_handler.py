@@ -236,9 +236,8 @@ def main():
         logger.debug('Nothing to do, exiting')
         return
 
-    message_lower = args.message.lower()
     for skip_string in SKIP_STRINGS:
-        if re.search(skip_string, message_lower) is not None:
+        if re.search(skip_string, args.message, re.IGNORECASE) is not None:
             logger.info(
                 ("Skipping RAID Handler execution for host '{host}' and RAID type "
                  "'{raid}', skip string '{pattern}' detected in '{str}'").format(
