@@ -20,6 +20,9 @@ discovery::services:
   api-rw:
     lvs: api
     active_active: false
+  jobrunner:
+    lvs: jobrunner
+    active_active: false
   imagescaler-rw:
     lvs: rendering
     active_active: false
