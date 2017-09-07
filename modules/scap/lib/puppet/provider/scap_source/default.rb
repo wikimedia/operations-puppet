@@ -41,7 +41,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     when :gerrit
       "https://gerrit.wikimedia.org/r/p/#{repo_name}.git"
     when :phabricator
-      "https://phabricator.wikimedia.org/diffusion/#{repo_name}.git"
+      "https://phabricator.wikimedia.org/source/#{repo_name}.git"
     end
   end
 
@@ -50,7 +50,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     when :gerrit
       origin.slice! "https://gerrit.wikimedia.org/r/p/"
     when :phabricator
-      origin.slice! "https://phabricator.wikimedia.org/diffusion/"
+      origin.slice! "https://phabricator.wikimedia.org/source/"
     end
     origin.gsub(/\.git$/, '')
   end
