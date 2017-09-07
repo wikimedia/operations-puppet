@@ -10,6 +10,7 @@ class role::analytics_cluster::refinery::job::data_drop {
     $wdqs_extract_log_file     = "${role::analytics_cluster::refinery::log_dir}/drop-wdqs-extract-partitions.log"
     $mediawiki_log_file        = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-log-partitions.log"
     $druid_webrequest_log_file = "${role::analytics_cluster::refinery::log_dir}/drop-druid-webrequest.log"
+    $mediawiki_history_log_file = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-history.log"
 
     # Shortcut var to DRY up cron commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python"
@@ -82,4 +83,14 @@ class role::analytics_cluster::refinery::job::data_drop {
         minute      => '15',
         hour        => '5'
     }
+    
+    # keep this many mediawiki history snapshots, 6 minimum
+    # cron runs once a month
+    $keep_snapshots = 6
+    cron {'mediawiki-history-drop-snapshot':
+        command     => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-mediawiki-snapshots -s ${keep_snapshots} >> ${mediawiki_history_log_file}",
+        environment => "MAILTO=${mail_to}",
+        monthday    => '15'
+    }
+    
 }
