@@ -76,7 +76,8 @@ class role::cache::upload(
 
     $common_runtime_params = ['default_ttl=86400']
 
-    role::cache::instances { 'upload':
+    class { 'role::cache::instances':
+        cache_type        => 'upload',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,

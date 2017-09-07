@@ -42,7 +42,8 @@ class role::cache::misc {
     # issues in our setup. See T159429
     $be_runtime_params = ['timeout_idle=120']
 
-    role::cache::instances { 'misc':
+    class { 'role::cache::instances':
+        cache_type        => 'misc',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => concat($common_runtime_params, $be_runtime_params),
