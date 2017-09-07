@@ -45,6 +45,10 @@
 #   Base path for deployments.
 #   Default: /srv/deployment
 #
+# [*origin*]
+#   Origin of cloned repository, either gerrit or phabricator
+#   Default: phabricator
+#
 # [*lvs_service*]
 #   Name of the lvs service associated with this deployment, if any
 #
@@ -91,6 +95,7 @@ define scap::source(
     $owner                = 'trebuchet',
     $group                = 'wikidev',
     $base_path            = '/srv/deployment',
+    $origin               = 'gerrit',
     $canaries             = undef,
     $lvs_service          = undef,
     $hosts                = undef,
@@ -103,6 +108,7 @@ define scap::source(
         owner           => $owner,
         group           => $group,
         base_path       => $base_path,
+        origin          => $origin,
     }
 
     # Scap dsh lists.
