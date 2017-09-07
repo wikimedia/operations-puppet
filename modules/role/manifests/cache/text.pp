@@ -57,7 +57,8 @@ class role::cache::text(
 
     $text_storage_args = $::role::cache::base::file_storage_args
 
-    role::cache::instances { 'text':
+    class { 'role::cache::instances':
+        cache_type        => 'text',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
         be_runtime_params => $common_runtime_params,

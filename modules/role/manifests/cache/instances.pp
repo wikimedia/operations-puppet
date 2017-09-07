@@ -1,5 +1,6 @@
 # This defines the pair of varnish::instance for a 2-layer (fe+be) cache node
-define role::cache::instances (
+class role::cache::instances (
+    $cache_type,
     $fe_jemalloc_conf,
     $fe_runtime_params,
     $be_runtime_params,
@@ -90,10 +91,10 @@ define role::cache::instances (
         vcl_config => $fe_vcl_config,
     }
 
-    varnish::instance { "${title}-backend":
+    varnish::instance { "${cache_type}-backend":
         instance_name      => '',
         layer              => 'backend',
-        vcl                => "${title}-backend",
+        vcl                => "${cache_type}-backend",
         extra_vcl          => $be_extra_vcl,
         ports              => [ '3128' ],
         admin_port         => 6083,
@@ -116,10 +117,10 @@ define role::cache::instances (
     }
 
     # lint:ignore:arrow_alignment
-    varnish::instance { "${title}-frontend":
+    varnish::instance { "${cache_type}-frontend":
         instance_name      => 'frontend',
         layer              => 'frontend',
-        vcl                => "${title}-frontend",
+        vcl                => "${cache_type}-frontend",
         extra_vcl          => $fe_extra_vcl,
         ports              => [ '80', '3120', '3121', '3122', '3123', '3124', '3125', '3126', '3127' ],
         admin_port         => 6082,
