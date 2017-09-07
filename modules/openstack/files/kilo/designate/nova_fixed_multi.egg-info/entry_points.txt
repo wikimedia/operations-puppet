@@ -1,2 +1,0 @@
-[designate.notification.handler]
-nova_fixed_multi = nova_fixed_multi.novamulti:NovaFixedMultiHandler
