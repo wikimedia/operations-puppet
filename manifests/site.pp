@@ -801,6 +801,11 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
 }
 
+# will become a deployment server and fold into deployment stanza with tin/naos T175288
+node 'deploy1001.eqiad.wmnet' {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
 
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
