@@ -93,13 +93,13 @@ pid_tmux=$(echo $result_tmux | cut -d, -f2)
 run_time_tmux=$(echo $result_tmux | cut -d, -f3)
 
 if [ $return_code_screen -eq 2 ]; then
-    echo "CRIT: Long running SCREEN process. (PID: ${pid_screen}, ${run_time_screen}s > ${crit_seconds}s)."
-    exit 2
+    echo "WARN: Long running SCREEN process. (PID: ${pid_screen}, ${run_time_screen}s > ${crit_seconds}s)."
+    exit 1
 fi
 
 if [ $return_code_tmux -eq 2 ]; then
-    echo "CRIT: Long running tmux process. (PID: ${pid_tmux}, ${run_time_tmux}s > ${crit_seconds}s)."
-    exit 2
+    echo "WARN: Long running tmux process. (PID: ${pid_tmux}, ${run_time_tmux}s > ${crit_seconds}s)."
+    exit 1
 fi
 
 if [ $return_code_screen -eq 1 ]; then
