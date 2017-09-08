@@ -134,33 +134,30 @@ class openstack2::nova::compute::service(
         require => File['/var/lib/nova/.ssh'],
     }
 
-    # Temp exclude
-    #   notify  => Service['libvirt-bin'],
     file { '/etc/libvirt/libvirtd.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template("openstack2/${version}/nova/compute/libvirtd.conf.erb"),
+        notify  => Service['libvirt-bin'],
         require => Package['nova-compute'],
     }
 
-    # Temp exclude
-    #   notify  => Service['libvirt-bin'],
     file { '/etc/default/libvirt-bin':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template("openstack2/${version}/nova/compute/libvirt-bin.default.erb"),
+        notify  => Service['libvirt-bin'],
         require => Package['nova-compute'],
     }
 
-    # Temp exclude
-    #   notify  => Service['nova-compute'],
     file { '/etc/nova/nova-compute.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template("openstack2/${version}/nova/compute/nova-compute.conf.erb"),
+        notify  => Service['nova-compute'],
         require => Package['nova-compute'],
     }
 
@@ -175,14 +172,13 @@ class openstack2::nova::compute::service(
         require => Package['libvirt-bin'],
     }
 
-    # Temp exclude
-    #   subscribe => [
-    #                 File['/etc/nova/nova.conf'],
-    #                 File['/etc/nova/nova-compute.conf'],
-    #       ],
     service { 'nova-compute':
-        ensure  => 'running',
-        require => Package['nova-compute'],
+        ensure    => 'running',
+        subscribe => [
+                      File['/etc/nova/nova.conf'],
+                      File['/etc/nova/nova-compute.conf'],
+            ],
+        require   => Package['nova-compute'],
     }
 
     # By default trusty allows the creation of user namespaces by unprivileged users
