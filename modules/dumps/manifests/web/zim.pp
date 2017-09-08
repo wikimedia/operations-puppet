@@ -1,5 +1,5 @@
 # ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
-class dumps::zim {
+class dumps::web::zim {
 
     # imagemagick for ZIM dumps
     include ::imagemagick::install
@@ -45,7 +45,7 @@ class dumps::zim {
     }
 
     nginx::site { 'zim':
-        source => 'puppet:///modules/dumps/nginx.zim.conf',
+        source => 'puppet:///modules/dumps/web/nginx.zim.conf',
         notify => Service['nginx'],
     }
 }

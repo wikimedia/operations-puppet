@@ -1,5 +1,5 @@
 # https://wikitech.wikimedia.org/wiki/Dumps
-class dumps {
+class dumps::web {
 
     class { '::nginx':
         variant => 'extras',
@@ -14,17 +14,17 @@ class dumps {
     }
 
     nginx::site { 'dumps':
-        content => template('dumps/nginx.dumps.conf.erb'),
+        content => template('dumps/web/nginx.dumps.conf.erb'),
         notify  => Service['nginx'],
     }
 
     logrotate::conf { 'nginx':
         ensure => present,
-        source => 'puppet:///modules/dumps/logrotate.conf',
+        source => 'puppet:///modules/dumps/web/logrotate.conf',
     }
 
     file { '/data/xmldatadumps/public/favicon.ico':
-        source => 'puppet:///modules/dumps/favicon.ico',
+        source => 'puppet:///modules/dumps/web/favicon.ico',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
