@@ -16,6 +16,21 @@ class profile::dnsrecursor {
 
     ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }
 
+    ::diamond::collector { 'PowerDNSRecursor':
+        ensure   => present,
+        source   => 'puppet:///modules/diamond/collector/powerdns_recursor.py',
+        settings => {
+            # lint:ignore:quoted_booleans
+            use_sudo => 'true',
+            # lint:endignore
+        },
+        require  => Sudo::User['diamond_sudo_for_pdns_recursor'],
+    }
+    sudo::user { 'diamond_sudo_for_pdns_recursor':
+        user       => 'diamond',
+        privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
+    }
+
     ferm::service { 'udp_dns_rec':
         proto => 'udp',
         port  => '53',
