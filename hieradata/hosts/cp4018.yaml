@@ -1,4 +1,1 @@
-debdeploy::grains:
-  debdeploy-cp:
-    value: canary
 cache::lua_support: true

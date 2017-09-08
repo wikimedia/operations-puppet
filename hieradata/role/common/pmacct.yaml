@@ -1,7 +1,3 @@
-debdeploy::grains:
-  debdeploy-pmacct:
-    value: standard
-
 # The analytics Kafka cluster is currently running the 0.9.0.1
 # protocol version, librkafka 0.11 needs to be explicity configured
 # as stated in:

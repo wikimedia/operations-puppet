@@ -1,6 +1,3 @@
 admin::groups:
   - perf-roots
   - eventlogging-admins
-debdeploy::grains:
-  debdeploy-webperf:
-    value: standard

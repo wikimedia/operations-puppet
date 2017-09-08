@@ -1,5 +1,1 @@
-debdeploy::grains:
-  debdeploy-failoid:
-    value: standard
-
 profile::base::environment: "future"

@@ -1,4 +1,0 @@
-debdeploy::grains:
-  debdeploy-spare:
-    value: standard
-
