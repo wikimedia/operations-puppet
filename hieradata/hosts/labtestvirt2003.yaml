@@ -1,4 +1,1 @@
 profile::openstack::base::nova::instance_dev: "/dev/mapper/labtestvirt2003--vg-data"
-debdeploy::grains:
-  debdeploy-labtest:
-    value: standard
