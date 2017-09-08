@@ -6,21 +6,21 @@
 # === Parameters
 #
 # [*num_of_processes*]
-#   Number of APY instance processes to run.
-# [*max_idle_seconds*]
-#   Seconds to wait before shutdown idle process.
-# [*uid*]
-#   The username apertium-apy will run with.
-# [*gid*]
-#   The group apertium-apy will run with.
-class apertium(
-    $num_of_processes = 1,
-    $max_idle_seconds = 300,
-    $uid = 'apertium',
-    $gid = 'apertium',
-) {
 
-    include ::service::configuration
+# [*max_idle_seconds*]
+#
+class profile::apertium {
+    require ::service::configuration
+
+    # Port we're listening on
+    $port = 2737
+    # Number of APY instance processes to run.
+    $num_of_processes = 1
+    # Seconds to wait before shutting down an idle process.
+    $max_idle_seconds = 300
+    # User and group
+    $uid = 'apertium'
+    $gid = 'apertium'
 
     $log_dir = "${::service::configuration::log_dir}/apertium"
 
@@ -133,5 +133,15 @@ class apertium(
         compress      => true,
         not_if_empty  => true,
         rotate        => 15,
+    }
+
+    ferm::service { 'apertium_http':
+        proto => 'tcp',
+        port  => $port,
+    }
+
+    monitoring::service { 'apertium':
+        description   => 'apertium apy',
+        check_command => "check_http_hostheader_port_url!apertium.svc.${::site}.wmnet!${port}!/listPairs",
     }
 }
