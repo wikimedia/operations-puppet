@@ -5,5 +5,5 @@ class role::mobileapps {
         description => 'A service for use by mobile apps. Provides DOM manipulation, aggregation, JSON flattening'
     }
 
-    include ::mobileapps
+    include ::profile::mobileapps
 }

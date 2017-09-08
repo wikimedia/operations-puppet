@@ -1,4 +1,4 @@
-# Class: mobileapps
+# Class: profile::mobileapps
 #
 # This class installs and configures mobileapps
 #
@@ -7,7 +7,7 @@
 # classes as well as conform to a de-facto standard of having a module for every
 # service
 #
-class mobileapps() {
+class profile::mobileapps {
     service::node { 'mobileapps':
         port              => 8888,
         has_spec          => true,
