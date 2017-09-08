@@ -168,7 +168,6 @@ profile::base::ssh_server_settings:
   explicit_macs: false
   disable_agent_forwarding: false
   challenge_response_auth: false
-"role::apertium::apertium_port": 2737
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
 "profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
