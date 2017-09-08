@@ -1,0 +1,30 @@
+class profile::openstck::designate::service(
+    $version = hiera('profile::openstack::base::version'),
+    $designate_host = hiera('profile::openstack::base::designate_host'),
+    $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
+    $db_user = hiera('profile::openstack::base::designate::db_user'),
+    $db_pass = hiera('profile::openstack::base::designate::db_pass'),
+    $db_host = hiera('profile::openstack::base::designate::db_host'),
+    $db_name = hiera('profile::openstack::base::designate::db_name'),
+    $domain_id_internal_forward = hiera('profile::openstack::base::designate::domain_id_internal_forward'),
+    $domain_id_internal_reverse = hiera('profile::openstack::base::designate::domain_id_internal_reverse'),
+    $pool_manager_db_name = hiera('profile::openstack::base::designate::pool_manager_db_name'),
+    $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
+    $pdns_db_user  = hiera('profile::openstack::base::designate::pdns_db_user
+    $pdns_db_pass  = hiera('profile::openstack::base::designate::pdns_db_pass
+    $pdns_db_name  = hiera('profile::openstack::base::designate::pdns_db_name
+    $db_admin_user  = hiera('profile::openstack::base::designate::db_admin_user
+    $db_admin_pass = hiera('profile::openstack::base::designate::db_admin_pass
+    $primary_pdns_ip = 
+    $secondary_pdns_ip,
+    $rabbit_user,
+    $rabbit_pass,
+    $rabbit_host,
+    $nova_controller,
+    $keystone_host,
+    $keystone_public_port,
+    $keystone_auth_port,
+    $primary_pdns_ip,
+    $secondary_pdns_ip,
+    ) {
