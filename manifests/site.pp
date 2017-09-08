@@ -1007,7 +1007,6 @@ node 'labpuppetmaster1002.wikimedia.org' {
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services,
           labs::dns,
-          labs::openstack::designate::server,
           labs::dnsrecursor,
           labs::dns_floating_ip_updater)
     include ::standard
@@ -1018,7 +1017,6 @@ node 'labservices1001.wikimedia.org' {
 node 'labservices1002.wikimedia.org' {
     role(wmcs::openstack::main::services,
           labs::dns,
-          labs::openstack::designate::server,
           labs::dnsrecursor)
     include ::standard
     include ::base::firewall
@@ -1087,7 +1085,6 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
 node 'labtestservices2001.wikimedia.org' {
     role(wmcs::openstack::labtest::services,
           labs::dns,
-          labs::openstack::designate::server,
           labs::dnsrecursor,
           openldap::labtest,
           labs::dns_floating_ip_updater)
