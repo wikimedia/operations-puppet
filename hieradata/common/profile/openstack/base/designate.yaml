@@ -1,0 +1,7 @@
+profile::openstack::base::designate::db_user: 'designate'
+profile::openstack::base::designate::db_name: 'designate'
+profile::openstack::base::designate::pdns_db_user: 'pdns'
+profile::openstack::base::designate::pdns_db_name: 'pdns'
+profile::openstack::base::designate::pdns_db_user: 'pdns'
+profile::openstack::base::designate::db_admin_user: 'pdns_admin'
+profile::openstack::base::designate::pool_manager_db_name: 'designate_pool_manager'
