@@ -10,9 +10,6 @@ admin::groups:
   - wdqs-admins
 cluster: wdqs
 contactgroups: admins,wdqs-admins
-debdeploy::grains:
-  debdeploy-wdqs:
-    value: standard
 role::lvs::realserver::pools:
   wdqs: {}
 

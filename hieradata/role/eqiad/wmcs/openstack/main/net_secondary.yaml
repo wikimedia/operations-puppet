@@ -3,7 +3,3 @@ admin::groups:
   - wmcs-roots
 
 openstack::log_group: labnet-users
-
-debdeploy::grains:
-  debdeploy-nova-api:
-    value: standard

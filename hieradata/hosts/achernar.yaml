@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-dnsrecursor:
-    value: canary

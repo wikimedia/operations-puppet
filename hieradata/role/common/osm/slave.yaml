@@ -1,4 +1,1 @@
-debdeploy::grains:
-  debdeploy-osm-slave:
-    value: standard
 role::osm::slave::osm_master: 'labsdb1007.eqiad.wmnet'

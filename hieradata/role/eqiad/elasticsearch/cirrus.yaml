@@ -54,10 +54,6 @@ profile::elasticsearch::expected_nodes: 36
 # We should be able to run "OK" with 24 servers.
 profile::elasticsearch::recover_after_nodes: 24
 
-debdeploy::grains:
-  debdeploy-elastic-eqiad:
-    value: standard
-
 profile::elasticsearch::graylog_hosts:
   - logstash1001.eqiad.wmnet
   - logstash1002.eqiad.wmnet

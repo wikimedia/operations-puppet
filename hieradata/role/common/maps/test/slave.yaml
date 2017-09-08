@@ -17,10 +17,6 @@ admin::groups:
 
 cluster: 'maps-test'
 
-debdeploy::grains:
-  debdeploy-maps-slave:
-    value: standard
-
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 service::configuration::logstash_host: 'logstash1001.eqiad.wmnet'
 service::configuration::statsd_host: 'statsd.eqiad.wmnet'

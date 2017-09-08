@@ -1,7 +1,4 @@
 admin::groups:
   - perf-roots
-debdeploy::grains:
-  debdeploy-graphite:
-    value: standard
 
 graphite::web::uwsgi_processes: 16

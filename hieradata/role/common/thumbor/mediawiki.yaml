@@ -1,7 +1,3 @@
-debdeploy::grains:
-  debdeploy-thumbor:
-    value: standard
-
 admin::groups:
     - perf-roots
 

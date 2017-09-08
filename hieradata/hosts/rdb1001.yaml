@@ -1,4 +1,0 @@
-debdeploy::grains:
-  debdeploy-redis-eqiad:
-    value: canary
-

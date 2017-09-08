@@ -20,9 +20,6 @@ admin::groups:
 # Newer git version, not needed on stretch - T140927
 apt::use_experimental: true
 
-debdeploy::grains:
-  debdeploy-deployment:
-    value: standard
 # LightProcesses print an alarming error message when HHVM shuts down,
 # which is often on the deployment servers, which run a bunch of scripts
 # with a short runtime as part of the deployment process.

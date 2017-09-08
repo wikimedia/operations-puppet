@@ -1,6 +1,2 @@
-debdeploy::grains:
-  debdeploy-labsdns:
-    value: standard
-
 admin::groups:
   - wmcs-roots

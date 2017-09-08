@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-etcd-codfw:
-    value: standard
 profile::etcd::replication::origin:
   cluster_name: eqiad.wmnet
   path: /conftool
