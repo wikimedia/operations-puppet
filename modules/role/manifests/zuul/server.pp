@@ -25,6 +25,9 @@ class role::zuul::server {
         url_pattern          => $conf_server['url_pattern'],
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
+
+        # Enable email configuration
+        email_server         => $::mail_smarthost[0],
     }
 
     # Deploy Wikimedia Zuul configuration files.
