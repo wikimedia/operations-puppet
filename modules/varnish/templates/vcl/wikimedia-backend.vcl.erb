@@ -80,8 +80,25 @@ sub vcl_recv {
 		return (synth(403, "Access denied"));
 	}
 
-	// Used to signal to other logic whether this request jumps next to another cache or the applayer
-	unset req.http.X-Next-Is-Cache;
+	// X-Next-Is-Cache is used to signal to other logic whether this
+	// request jumps next to another cache or the applayer.  We also
+	// convert such a signal sent by a previous backend cache to
+	// X-MISS2PASS, which converts misses to passes (we're only looking for
+	// opporunistic hits on these, but don't want to disturb the local
+	// backend cache's object hotness/distribution).  hash_ignore_busy is
+	// to avoid stalling on those passes (like a cheaper hfp).  The
+	// backend_warming setting is meant to be set temporarily from
+	// hieradata to disable this behavior (when we want to use the misses
+	// from an outer-layer backend to pre-warm some data in the next layer
+	// deep of backend).
+	unset req.http.X-MISS2PASS;
+	if (req.http.X-Next-Is-Cache) {
+		unset req.http.X-Next-Is-Cache;
+		<% if not @backend_warming -%> // XXX no implementation of setting this flag yet
+		set req.http.X-MISS2PASS = 1;
+		set req.hash_ignore_busy = true;
+		<% end -%>
+	}
 
 	call wm_common_recv_early;
 
@@ -133,6 +150,10 @@ sub vcl_hit {
 sub vcl_miss {
 	call wm_common_miss;
 	call cluster_be_miss;
+	if (req.http.X-MISS2PASS) {
+		unset req.http.X-MISS2PASS;
+		return (pass);
+	}
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
