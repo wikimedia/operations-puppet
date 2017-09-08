@@ -41,6 +41,10 @@ class zuul::server (
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $gerrit_event_delay = '5',
     $status_url     = "https://${::fqdn}/zuul/status",
+    $email_server = undef,
+    $email_server_port = 25,
+    $email_default_from = 'jenkins-bot@wikimedia.org',
+    $email_default_to = 'qa-alerts@lists.wikimedia.org',
 ) {
 
     require ::zuul

@@ -2,4 +2,6 @@ fixtures:
     symlinks:
         zuul: "#{source_dir}"
         apt: "../../../../apt"
+        stdlib: "../../../../stdlib"
+        systemd: "../../../../systemd"
         wmflib: "../../../../wmflib"

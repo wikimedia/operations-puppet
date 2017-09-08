@@ -46,3 +46,12 @@ git_user_email=<%= @git_email %>
 git_user_name=<%= @git_name %>
 <% end -%>
 <% end -%>
+
+<% if @zuul_role == 'server' && ! @email_server.nil? -%>
+[connection smtp]
+driver=smtp
+server=<%= @email_server %>
+port=<%= @email_server_port %>
+default_from=<%= @email_default_from %>
+default_to=<%= @email_default_to %>
+<% end -%>

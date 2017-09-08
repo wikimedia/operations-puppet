@@ -29,6 +29,8 @@ profile::zuul::server::conf:
     url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
     status_url: 'https://integration.wikimedia.org/zuul/'
 
+profile::zuul::server::email_server: localhost
+
 profile::ci::docker::settings:
   iptables: false
 

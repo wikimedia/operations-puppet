@@ -3,6 +3,7 @@ class profile::zuul::server(
     $conf_server = hiera('profile::zuul::server::conf'),
     $service_enable = hiera('profile::zuul::server::service_enable', true),
     $service_ensure = hiera('profile::zuul::server::service_ensure', 'running'),
+    $email_server = hiera('profile::zuul::server::email_server', undef),
 ) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
@@ -26,6 +27,9 @@ class profile::zuul::server(
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
         service_ensure       => $service_ensure,
+
+        # Enable email configuration
+        email_server         => $email_server,
     }
 
     # Deploy Wikimedia Zuul configuration files.
