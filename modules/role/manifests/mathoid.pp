@@ -6,5 +6,5 @@ class role::mathoid{
         description => 'mathoid server'
     }
 
-    include ::mathoid
+    include ::profile::mathoid
 }
