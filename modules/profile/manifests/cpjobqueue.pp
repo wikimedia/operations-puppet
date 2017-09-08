@@ -29,8 +29,7 @@ class profile::cpjobqueue(
 
     $kafka_config = kafka_config('main')
 
-    service::node { 'cp-jobqueue':
-        repo              => 'cp-jobqueue',
+    service::node { 'cpjobqueue':
         port              => 7200,
         healthcheck_url   => '',
         has_spec          => true,
