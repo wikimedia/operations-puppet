@@ -91,6 +91,7 @@ scap::sources:
 #    lvs_service: changeprop
   citoid/deploy: {}
 #    lvs_service: citoid
+  cp-jobqueue: {}
   cxserver/deploy: {}
 #    lvs_service: cxserver
   dumps/dumps:
