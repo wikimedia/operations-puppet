@@ -107,4 +107,12 @@ class profile::etcd(
         srv_domain => $srv_dns,
     }
 
+    # T162013 - reduce raid resync speeds on clustered etcd noes with software RAID
+    # in order to mitigate the risk of losing consensus due to I/O latencies
+    if 'md' in $facts['raid'] {
+        sysctl::parameters { 'raid_resync_speed':
+            ensure => present,
+            values => { 'dev.raid.speed_limit_max' => '20000' },
+        }
+    }
 }
