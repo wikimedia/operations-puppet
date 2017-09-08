@@ -91,7 +91,9 @@ scap::sources:
 #    lvs_service: changeprop
   citoid/deploy: {}
 #    lvs_service: citoid
-  cp-jobqueue: {}
+  cpjobqueue/deploy: {
+    repository: mediawiki/services/change-propagation/jobqueue-deploy
+  }
   cxserver/deploy: {}
 #    lvs_service: cxserver
   dumps/dumps:
