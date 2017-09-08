@@ -10,20 +10,18 @@ class openstack2::nova::scheduler::service(
         ensure  => 'present',
     }
 
-    # Temp exclude
-    #  notify  => Service['nova-scheduler'],
     file { '/usr/lib/python2.7/dist-packages/nova/scheduler/filters/scheduler_pool_filter.py':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => "puppet:///modules/openstack2/${version}/nova/scheduler/scheduler_pool_filter.py",
+        notify  => Service['nova-scheduler'],
         require => Package['nova-scheduler'],
     }
 
-    # Temp exclude
-    #   subscribe => File['/etc/nova/nova.conf'],
     service { 'nova-scheduler':
         ensure  => $active,
+        subscribe => File['/etc/nova/nova.conf'],
         require => Package['nova-scheduler'];
     }
 }

@@ -13,10 +13,9 @@ class openstack2::nova::conductor::service(
         ensure  => present,
     }
 
-    # Temp exclude
-    #   subscribe => File['/etc/nova/nova.conf'],
     service { 'nova-conductor':
         ensure  => $active,
+        subscribe => File['/etc/nova/nova.conf'],
         require => Package['nova-conductor'];
     }
 }

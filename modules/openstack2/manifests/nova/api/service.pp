@@ -10,13 +10,12 @@ class openstack2::nova::api::service(
         ensure  => present,
     }
 
-    # Temp exclude
-    #    subscribe => [
-    #                  File['/etc/nova/nova.conf'],
-    #                  File['/etc/nova/policy.json'],
-    #        ],
     service { 'nova-api':
         ensure  => $active,
+        subscribe => [
+                      File['/etc/nova/nova.conf'],
+                      File['/etc/nova/policy.json'],
+            ],
         require => Package['nova-api'];
     }
 }

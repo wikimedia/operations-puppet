@@ -18,27 +18,25 @@ class openstack2::nova::network::service(
         ensure  => present,
     }
 
-    # Temp exclude
-    #    notify  => Service['nova-network'],
     file { '/etc/dnsmasq-nova.conf':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template("openstack2/${version}/nova/network/dnsmasq-nova.conf.erb"),
+        notify  => Service['nova-network'],
     }
 
     # Firewall is managed by nova-network outside of ferm
     # Do Not Include Base::Firewall
 
-    # Temp exclude
-    #   notify => Service['nova-network'],
     file { '/etc/modprobe.d/nf_conntrack.conf':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
+        notify => Service['nova-network'],
     }
 
     # dnsmasq is run manually by nova-network, we don't want the service running
@@ -48,10 +46,9 @@ class openstack2::nova::network::service(
         require => Package['dnsmasq'];
     }
 
-    # Temp exclude
-    #    subscribe => File['/etc/nova/nova.conf'],
     service { 'nova-network':
         ensure  => $active,
+        subscribe => File['/etc/nova/nova.conf'],
         require => Package['nova-network'];
     }
 
