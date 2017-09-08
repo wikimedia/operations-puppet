@@ -171,7 +171,7 @@ profile::base::ssh_server_settings:
 "role::apertium::apertium_port": 2737
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
-"cxserver::apertium": http://apertium-beta.wmflabs.org
+"profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
 "role::deployment::salt_masters::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 "hhvm::extra::fcgi":
