@@ -368,7 +368,7 @@ node /^(diadem|dysprosium)\.wikimedia\.org$/ {
 
 node 'dataset1001.wikimedia.org' {
 
-    role(dataset::primary, dumps::server)
+    role(dataset::primary, dumps::web::server)
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -977,7 +977,7 @@ node 'fermium.wikimedia.org' {
 
 # ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
 node 'francium.eqiad.wmnet' {
-    role(dumps::zim)
+    role(dumps::web::htmldumps)
 }
 
 # Virtualization hosts
@@ -1571,7 +1571,7 @@ node 'multatuli.wikimedia.org' {
 # also see dataset1001
 node 'ms1001.wikimedia.org' {
 
-    role(dataset::secondary, dumps::server)
+    role(dataset::secondary, dumps::web::xmldumps)
 
     interface::add_ip6_mapped { 'main': }
 }

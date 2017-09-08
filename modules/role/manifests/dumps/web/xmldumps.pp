@@ -1,8 +1,9 @@
-# role classes for dumps.wikimedia.org
-class role::dumps::server {
-    include ::dumps
+# role class for dumps.wikimedia.org
+# serving xml/sql dumps and other datasets via the web
+class role::dumps::web::xmldumps {
+    include ::profile::dumps::xmldumps
 
-    system::role { 'dumps': description => 'dumps.wikimedia.org' }
+    system::role { 'dumps::web::xmldumps': description => 'dumps.wikimedia.org' }
 
     monitoring::service { 'http':
         description   => 'HTTP',
