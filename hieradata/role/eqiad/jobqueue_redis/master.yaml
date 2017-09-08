@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-redis-eqiad:
-    value: standard
