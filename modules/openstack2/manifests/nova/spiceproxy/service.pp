@@ -27,17 +27,15 @@ class openstack2::nova::spiceproxy::service(
     # These services aren't on by default, pending some
     #  security discussions.
 
-    # Temp exclude
-    #   subscribe => File['/etc/nova/nova.conf'],
     service { 'nova-spiceproxy':
         ensure  => $active,
+        subscribe => File['/etc/nova/nova.conf'],
         require => Package['nova-spiceproxy'];
     }
 
-    # Temp exclue
-    #   subscribe => File['/etc/nova/nova.conf'],
     service { 'nova-consoleauth':
         ensure  => $active,
+        subscribe => File['/etc/nova/nova.conf'],
         require => Package['nova-consoleauth'];
     }
 }
