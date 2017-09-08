@@ -2629,6 +2629,10 @@ ldap_only_users:
     ensure: present
     realname: Jessica Robell
     email: jrobell@wikimedia.org
+  knissen:
+    ensure: present
+    realname: Kai Nissen
+    email: kai.nissen@wikimedia.de
   kemayo:
     ensure: present
     realname: David Lynch
