@@ -121,7 +121,7 @@ groups:
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
-              pmiazga, diego, shiladsen]
+              pmiazga, dsaez, shiladsen]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -245,7 +245,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, diego, shiladsen]
+              kaldari, goransm, ema, dsaez, shiladsen]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2515,10 +2515,10 @@ users:
     realname: Daniel Worley
     ssh_keys: []
     uid: 17235
-  diego:
+  dsaez:
     ensure: present
     gid: 500
-    name: diego
+    name: dsaez
     realname: Diego Saez
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/oA9hk3snx7Y66ZR3sEMukK6tOk4esFT02irhqB0jr9osstyZN9KhPVeWMzhip+93ToDzX+aDHeXqsu5grXsqGQZBZSU850GSNt0pgi8+4E1yGQngLNhFv+z7EemWUQH0XT4atoDXbmfXdRv6NpVlcr1vAPBQpjBZuFe5vaxLKRrhZpm+YNvl4RHdGbZorz6WI0NvzuOTerKUOyUZS/KQpT4FxlvVRoTIO3H05EtJEv3745rUH5wHCcyr7m9Hdsjh8RMrWF3okKLk9WOxQTesfvvstmu8GpBbauzmQYMKwRcKQqoc0/qo3ZGvwXPwrYjv4wpPZhDexjOfUPLGvtGf dsaeztrumper@dsaeztrumper
