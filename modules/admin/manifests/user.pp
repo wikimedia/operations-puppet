@@ -78,7 +78,7 @@ define admin::user (
             ],
             sourceselect => 'first',
             recurse      => 'remote',
-            mode         => '0644',
+            mode         => 'a=rX,u+w',  # Allow +x to be controlled in git
             owner        => $name,
             group        => $gid,
             force        => true,
