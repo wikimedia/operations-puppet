@@ -83,6 +83,15 @@ class role::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
+    logstash::input::beats { 'beats': }
+
+    ferm::service { 'logstash_beats':
+        proto   => 'tcp',
+        port    => '5044',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',
