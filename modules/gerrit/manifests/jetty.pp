@@ -10,7 +10,7 @@ class gerrit::jetty(
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
     $log_host = undef,
-    $log_port = '4560',
+    $log_port = '5044',
     $config = 'gerrit.config.erb',
     ) {
 
@@ -241,6 +241,15 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/static',
+    }
+
+    if $log_host != undef {
+      require_package('filebeat')
+
+      file { '/etc/filebeat/filebeat.yml':
+          content => template('gerrit/filebeat.yml.erb'),
+          require => Package['filebeat'],
+      }
     }
 
     service { 'gerrit':
