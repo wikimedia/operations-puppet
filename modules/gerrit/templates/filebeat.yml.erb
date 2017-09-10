@@ -1,0 +1,10 @@
+# filebeat.yml
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /var/lib/gerrit2/review_site/logs/error_log
+      input_type: log
+output:
+  logstash:
+    hosts: ["<%= @log_host %>:<%= @log_port %>"]
