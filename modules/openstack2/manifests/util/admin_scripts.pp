@@ -9,6 +9,14 @@ class openstack2::util::admin_scripts(
     #  when we rsync files via this host.
     require_package('libvirt-bin')
 
+    file { '/usr/local/sbin/drain_queue':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/openstack2/${version}/admin_scripts/drain_queue',
+    }
+
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-nova-migrate':
         ensure => present,
