@@ -40,7 +40,7 @@ packages:
     - command-not-found
     - coreutils
     - curl
-    - debdeploy-minion
+    - debdeploy-client
     - debian-goodies
     - diamond
     - dnsutils
