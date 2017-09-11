@@ -134,14 +134,3 @@ AuthorizedKeysCommandUser ssh-key-ldap-lookup
 Match Group yubiauth
       AuthenticationMethods publickey,keyboard-interactive
 <% end %>
-
-<%-
-if @deployment_hosts then
-  @deployment_hosts.each do |address|
--%>
-Match Address <%= address %>
-      MaxAuthTries 7
-<%-
-end
-end
--%>

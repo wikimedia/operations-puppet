@@ -40,9 +40,6 @@ class ssh::server (
         purge   => true,
     }
 
-    # TODO: Revisit this once scap can declare which SSH identity wants to use
-    include network::constants
-    $deployment_hosts = $network::constants::special_hosts[$::realm]['deployment_hosts']
     file { '/etc/ssh/sshd_config':
         ensure  => present,
         owner   => 'root',
