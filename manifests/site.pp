@@ -54,10 +54,12 @@ node 'analytics1002.eqiad.wmnet' {
         analytics_cluster::users,
         # analytics1002 is usually inactive, and it has a
         # decent amount of disk space.  We use it to
-        # store backups of the analytics_cluster::database::meta
-        # (MySQL analytics-meta) instance.  If you move this,
-        # make sure /srv/backup/mysql/analytics-meta has
+        # store some backups, including fsimage snapshots
+        # of Hadoop NameNode metadata, and of the
+        # analytics_cluster::database::meta (MySQL analytics-meta) instance.
+        # If you move these, make sure /srv/backup has
         # enough space to store backups.
+        analytics_cluster::hadoop::backup::namenode,
         analytics_cluster::database::meta::backup_dest)
 
     include ::standard
