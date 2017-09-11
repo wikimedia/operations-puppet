@@ -341,3 +341,14 @@ scap::sources:
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
+
+# Eventstreams config
+profile::eventstreams::kafka_cluster_name: main
+profile::eventstreams::streams:
+  test:
+    topics: ["%{::site}.test.event"]
+  revision-create:
+    topics: ["%{::site}.mediawiki.revision-create"]
+  recentchange:
+    topics: ["%{::site}.mediawiki.recentchange"]
+profile::eventstreams::rdkafka_config: {}
