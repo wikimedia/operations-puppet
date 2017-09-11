@@ -526,6 +526,7 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
                'ALL = NOPASSWD: /usr/sbin/service changeprop *',
                'ALL = NOPASSWD: /usr/sbin/service citoid *',
+               'ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
                'ALL = NOPASSWD: /usr/sbin/service cxserver *',
                'ALL = NOPASSWD: /usr/sbin/service graphoid *',
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
@@ -617,6 +618,12 @@ groups:
     members: [gwicke, ppchelko, eevans, mobrovac, nschaaf]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
+  cpjobqueue-admin:
+    description: Group of cpjobqueue admins
+    gid: 795
+    members: [mobrovac, gwicke, ppchelko, eevans]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
+                 'ALL = (cpjobqueue) NOPASSWD: ALL']
 
 users:
   rush:
