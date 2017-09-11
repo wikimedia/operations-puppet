@@ -18,6 +18,14 @@ modules:
       preferred_ip_protocol: "ip4"
       no_follow_redirects: false
       fail_if_ssl: true
+  http_200_300_connect:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      no_follow_redirects: false
+      fail_if_ssl: true
+      valid_status_codes: [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308]
   https_connect:
     prober: http
     timeout: 5s
