@@ -3,6 +3,7 @@ admin::groups:
   - sc-admins
   - citoid-admin
   - citoid-users
+  - cpjobqueue-admin
   - cxserver-admin
   - apertium-admins
   - graphoid-admin

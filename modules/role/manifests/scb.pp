@@ -5,6 +5,11 @@ class role::scb {
     include ::profile::ores::web
     include ::profile::nutcracker
 
+    include ::profile::cpjobqueue
+    system::role { 'cpjobqueue':
+        description => 'ChangeProp instance for the JobQueue',
+    }
+
     include ::profile::recommendation_api
 
     include role::mobileapps
@@ -24,4 +29,5 @@ class role::scb {
     if hiera('has_lvs', true) {
         include role::lvs::realserver
     }
+
 }
