@@ -53,6 +53,33 @@ class role::analytics_cluster::hadoop::standby {
         }
     }
 
+    if $::realm == 'production' {
+        include ::role::analytics_cluster::backup
+
+        file { [
+                '/srv/backup/hadoop',
+                '/srv/backup/hadoop/namenode',
+            ]:
+            ensure => 'directory',
+            owner  => 'hdfs',
+            group  => 'analytics-admins',
+            mode   => '0750',
+        }
+
+        # Use this standby name node to also take daily fsimage namenode
+        # metadata backups, backed up with bacula.
+        class { '::cdh::hadoop::namenode::backup':
+            destination    => '/srv/backup/hadoop/namenode',
+            # Delete fsimages older than $retention_days
+            retention_days => 30,
+            hour           => 0
+        }
+
+        class { 'backup::host':
+           sets => ['hadoop-namenode-backup', ]
+        }
+    }
+
     # Firewall
     include ::role::analytics_cluster::hadoop::ferm::namenode
 
