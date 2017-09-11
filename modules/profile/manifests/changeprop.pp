@@ -11,15 +11,12 @@ class profile::changeprop(
 
     include ::passwords::redis
     include ::service::configuration
+    require ::profile::changeprop::packages
+
     $kafka_config = kafka_config('main')
     $broker_list = $kafka_config['brokers']['string']
     $redis_path = "/var/run/nutcracker/redis_${::site}.sock"
     $redis_pass = $::passwords::redis::main_password
-
-    service::packages { 'changeprop':
-        pkgs     => ['librdkafka++1', 'librdkafka1'],
-        dev_pkgs => ['librdkafka-dev'],
-    }
 
     service::node { 'changeprop':
         enable            => true,
