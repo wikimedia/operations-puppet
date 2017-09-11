@@ -1,8 +1,10 @@
 # == Class role::analytics_cluster::database::meta::backup_dest
 #
 class role::analytics_cluster::database::meta::backup_dest {
+    # Ensure /srv/backup exists
+    include ::role::analytics_cluster::backup
+
     file { [
-            '/srv/backup',
             '/srv/backup/mysql',
             '/srv/backup/mysql/analytics-meta',
         ]:
