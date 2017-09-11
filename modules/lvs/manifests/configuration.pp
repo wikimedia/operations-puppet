@@ -44,18 +44,9 @@ class lvs::configuration {
         },
     }
 
-    # NOTE: This is for informational purposes only. The actual configuration
-    # that decides primary/secondary is done at the BGP level on the routers.
-    $lvs_grain = $::hostname ? {
-        /^lvs100[123789]$/  => 'primary',
-        /^lvs200[123]$/     => 'primary',
-        /^lvs[34]00[1256]$/ => 'primary',
-        default => 'secondary'
-    }
-
     # This is technically redundant information from $lvs_class_hosts, but
     # transforming one into the other in puppet is a huge PITA.
-    $lvs_grain_class = $::hostname ? {
+    $lvs_class = $::hostname ? {
         'lvs1007'          => 'high-traffic1',
         'lvs1008'          => 'high-traffic2',
         'lvs1009'          => 'low-traffic',
