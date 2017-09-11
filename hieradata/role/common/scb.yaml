@@ -55,8 +55,8 @@ profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=300, max-age=300'
 ### END GRAPHOID ###
 
-citoid::zotero_port: 1969
-citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
+profile::citoid::zotero_port: 1969
+profile::citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
 profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing
