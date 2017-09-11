@@ -367,15 +367,10 @@ sub deliver_synth_ {
 			set resp.http.X-Cache-Status = "hit";
 		} elsif (resp.http.X-Cache ~ "int") {
 			set resp.http.X-Cache-Status = "int";
-		} elsif (resp.http.X-Cache ~ "pass,[^,]+$") {
-			// The special pass regex above is because we have
-			// layer-differential pass rules where a frontend may
-			// intentionally pass traffic that a backend does not,
-			// which should still count as a true 'miss' if the
-			// backend misses it.
-			set resp.http.X-Cache-Status = "pass";
 		} elsif (resp.http.X-Cache ~ "miss") {
 			set resp.http.X-Cache-Status = "miss";
+		} elsif (resp.http.X-Cache ~ "pass") {
+			set resp.http.X-Cache-Status = "pass";
 		} else {
 			set resp.http.X-Cache-Status = "bug";
 		}

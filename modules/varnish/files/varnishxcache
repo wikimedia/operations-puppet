@@ -62,14 +62,14 @@ class XCacheStatsSender(CacheStatsSender):
             'cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?')
 
         self.state_finder = [
-            [re.compile(r'hit$'),        'hit-front'],
-            [re.compile(r'hit,[^,]+$'),  'hit-local'],
-            [re.compile(r'hit'),         'hit-remote'],
-            [re.compile(r'int$'),        'int-front'],
-            [re.compile(r'int,[^,]+$'),  'int-local'],
-            [re.compile(r'int'),         'int-remote'],
-            [re.compile(r'pass,[^,]+$'), 'pass'],
-            [re.compile(r'miss'),        'miss'],
+            [re.compile(r'^hit$'),                'hit-front'],
+            [re.compile(r'^(?:miss|pass), hit$'), 'hit-local'],
+            [re.compile(r'hit'),                  'hit-remote'],
+            [re.compile(r'^int$'),                'int-front'],
+            [re.compile(r'^(?:miss|pass), int$'), 'int-local'],
+            [re.compile(r'int'),                  'int-remote'],
+            [re.compile(r'miss'),                 'miss'],
+            [re.compile(r'pass'),                 'pass'],
         ]
 
     def gen_stats(self, record):
