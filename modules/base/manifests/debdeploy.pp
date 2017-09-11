@@ -5,10 +5,6 @@
 #
 class base::debdeploy
 {
-    package { ['debdeploy-minion', 'debdeploy-common']:
-        ensure => absent,
-    }
-
     file { '/usr/local/bin/apt-upgrade-activity':
         ensure => present,
         source => 'puppet:///modules/base/apt-upgrade-activity.py',
