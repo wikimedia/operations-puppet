@@ -106,7 +106,7 @@ MaxClients 50
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
     <%- else -%>
-    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
+    ProxyPass /r/ http://127.0.0.1:<%= @proxy_http_port %>/r/ retry=0 nocanon
     ErrorDocument 503 "/error.html#"
     <%- end -%>
 

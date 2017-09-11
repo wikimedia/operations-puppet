@@ -12,6 +12,7 @@ class gerrit::jetty(
     $log_host = undef,
     $log_port = '4560',
     $config = 'gerrit.config.erb',
+    $proxy_http_port = '8080',
     ) {
 
     group { 'gerrit2':

@@ -95,7 +95,7 @@
     linkname = diffusion
     urlEncode = false
 [httpd]
-    listenUrl = proxy-https://127.0.0.1:8080/r/
+    listenUrl = proxy-https://127.0.0.1:<%= @proxy_http_port %>/r/
     maxQueued = 500
     minThreads = 10
     maxThreads = 60
