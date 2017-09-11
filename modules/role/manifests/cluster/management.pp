@@ -16,6 +16,7 @@ class role::cluster::management {
     include ::role::access_new_install
     include ::profile::conftool::client
     include ::profile::switchdc
+    include ::profile::debdeploy
     include ::standard
     include ::base::firewall
 }
