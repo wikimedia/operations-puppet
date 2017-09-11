@@ -229,7 +229,9 @@ sub vcl_recv {
 	error 403 "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching";
 <% end -%>
 
-	unset req.http.X-DCPath; // no injection from outside our stack
+	// no injection from outside our stack allowed for these
+	unset req.http.X-DCPath;
+	unset req.http.X-Next-Is-Cache;
 	unset req.http.Proxy; // https://httpoxy.org/
 
 	if (req.restarts == 0) {
