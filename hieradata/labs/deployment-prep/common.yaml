@@ -22,7 +22,7 @@ profile::changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.
 profile::changeprop::purge_port: 4827
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
-graphoid::allowed_domains:
+profile::graphoid::allowed_domains:
   http:
     - wmflabs.org
   https:
@@ -47,9 +47,9 @@ graphoid::allowed_domains:
     - wdqs-test.wmflabs.org
   geoshape:
     - maps.wikimedia.org
-graphoid::headers:
+profile::graphoid::headers:
   'Cache-Control': 'public, s-maxage=360, max-age=360'
-graphoid::error_headers:
+profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=30, max-age=30'
 lvs::configuration::lvs_services:
   apaches:
