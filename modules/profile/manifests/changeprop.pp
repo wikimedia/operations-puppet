@@ -11,7 +11,7 @@ class profile::changeprop(
 
     include ::passwords::redis
     include ::service::configuration
-    require ::profile::changeprop::packages
+    require ::profile::kafka::librdkafka
 
     $kafka_config = kafka_config('main')
     $broker_list = $kafka_config['brokers']['string']
