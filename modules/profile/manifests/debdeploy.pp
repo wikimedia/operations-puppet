@@ -1,5 +1,5 @@
-# sets up a debdeploy master
-class debdeploy::master {
+# Sets up a debdeploy server
+class profile::debdeploy {
 
     require_package('debdeploy-server')
 
@@ -7,6 +7,6 @@ class debdeploy::master {
             mode    => '0444',
             owner   => 'root',
             group   => 'root',
-            content => template('debdeploy/debdeploy.erb');
+            content => template('profile/debdeploy/debdeploy.erb');
     }
 }
