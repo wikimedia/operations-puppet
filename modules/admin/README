@@ -205,6 +205,23 @@ Getting your /home/ stuff wherever you are:
 #* Groups with no members get root by default
 #* admin::user and admin::group are not dependent on yaml
 
+Renaming Users:
+
+https://wikitech.wikimedia.org/wiki/Ops_Clinic_Duty#Renaming_shell_users
+
+Sometimes we have to rename a shell user.  This is typically when their shell name doesn't
+match their login name, and they have issues logging into items requiring LDAP credentials
+
+Private data that isn't allowed to be copied off the cluster should not be backed up to 
+laptops.  So we need to move user home data for the user.
+
+* Patchset is prepared, but not merged.
+* All affected hosts have puppet halted.
+* Affected hosts should have the user (to be replaced) deleted.  
+** DO NOT DELETE THE USER'S HOME DIRECTORY.
+* Merge patchset with username change (UID remains the same).
+* Run puppet on affected hosts, and they will create the new user (using the same UID.)
+* Batch move the contents of the old user home into the new user home.
 
 Rarely used feature (USE WITH CARE AND CAUTION):
 
