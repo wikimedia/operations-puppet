@@ -233,6 +233,10 @@ class profile::backup::director(
         includes => [ '/var/lib/rancid' ]
     }
 
+    bacula::director::fileset { 'hadoop-namenode-backup':
+        includes => [ '/srv/backup/hadoop/namenode' ]
+    }
+
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,
