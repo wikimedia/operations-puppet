@@ -14,20 +14,23 @@ define prometheus::web (
 ) {
     include ::prometheus
 
-    # Nginx configuration snippet with proxy pass.
+    include ::apache::mod::proxy
+    include ::apache::mod::proxy_http
+
+    # Apache configuration snippet with proxy pass.
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
-    file { "/etc/prometheus-nginx/${title_safe}.conf":
+    file { "/etc/prometheus-apache/${title_safe}.conf":
         ensure  => $ensure,
-        content => template('prometheus/prometheus-nginx.erb'),
+        content => template('prometheus/prometheus-apache.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
     }
 
     # Single prometheus nginx site, will include /etc/prometheus-nginx/*.conf
-    if !defined(Nginx::Site['prometheus']) {
-        nginx::site{ 'prometheus':
-            source  => 'puppet:///modules/prometheus/prometheus-nginx.conf',
+    if !defined(Apache::Site['prometheus']) {
+        apache::site{ 'prometheus':
+            source  => 'puppet:///modules/prometheus/prometheus-apache.conf'
         }
     }
 }
