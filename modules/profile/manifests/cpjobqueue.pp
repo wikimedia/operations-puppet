@@ -25,7 +25,7 @@ class profile::cpjobqueue(
 ) {
 
     include ::passwords::redis
-    require ::profile::changeprop::packages
+    require ::profile::kafka::librdkafka
 
     $kafka_config = kafka_config('main')
 

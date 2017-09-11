@@ -1,13 +1,10 @@
 # Profile class for trendingedits
 class profile::trendingedits {
 
+    require ::profile::kafka::librdkafka
+
     $kafka_config = kafka_config('main')
     $port = 6699
-
-    service::packages { 'trendingedits':
-        pkgs     => ['librdkafka++1', 'librdkafka1'],
-        dev_pkgs => ['librdkafka-dev'],
-    }
 
     service::node { 'trendingedits':
         port              => $port,

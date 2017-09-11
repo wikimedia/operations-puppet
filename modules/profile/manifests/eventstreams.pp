@@ -37,11 +37,11 @@ class profile::eventstreams(
     $streams = hiera('profile::eventstreams::streams'),
     $rdkafka_config = hiera('profile::eventstreams::rdkafka_config')
 ) {
+
+    require ::profile::kafka::librdkafka
+
     $kafka_config = kafka_config($kafka_cluster_name)
     $broker_list = $kafka_config['brokers']['string']
-    service::packages { 'eventstreams':
-        pkgs     => ['librdkafka++1', 'librdkafka1'],
-    }
 
     service::node { 'eventstreams':
         enable            => true,
@@ -61,6 +61,5 @@ class profile::eventstreams(
         environment       => {
             'UV_THREADPOOL_SIZE' => 128,
         },
-        require           => Service::Packages['eventstreams'],
     }
 }
