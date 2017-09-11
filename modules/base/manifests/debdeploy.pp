@@ -9,12 +9,6 @@ class base::debdeploy
         ensure => present,
     }
 
-    $grains = hiera_hash('debdeploy::grains', {})
-
-    if $grains != {} {
-        create_resources(salt::grain, $grains)
-    }
-
     file { '/usr/local/bin/apt-upgrade-activity':
         ensure => present,
         source => 'puppet:///modules/base/apt-upgrade-activity.py',
