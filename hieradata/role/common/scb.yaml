@@ -56,9 +56,12 @@ profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing
 
+
+### BEGIN EVENTSTREAMS ###
+profile::eventstreams::kafka_cluster_name: analytics
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
-role::eventstreams::streams:
+profile::eventstreams::streams:
   recentchange:
     description: "Mediawiki RecentChanges feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange"
     topics:
@@ -76,7 +79,7 @@ role::eventstreams::streams:
       - codfw.test.event
 
 # rdkafka config for Public EventStreams service.
-role::eventstreams::rdkafka_config:
+profile::eventstreams::rdkafka_config:
   # Send rdkafka stats to statsd once per minute.
   statistics.interval.ms: 60000
   # Specify Kafka API version as workaround for Brokers < 0.10
@@ -84,6 +87,7 @@ role::eventstreams::rdkafka_config:
   # This will not be necessary when the target Kafka cluster will be running 0.10
   # librdkafka 0.9.4.x default for api.version.request is false, no need to set it
   broker.version.fallback: '0.9.0.1'
+### END EVENTSTREAMS ###
 
 changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
 profile::nutcracker::memcached_pools: {}
