@@ -1,9 +1,7 @@
 # sets up a debdeploy master
 class debdeploy::master {
 
-    package { 'debdeploy-master':
-        ensure => present,
-    }
+    require_package('debdeploy-server')
 
     file { '/etc/debdeploy.conf':
             mode    => '0444',
