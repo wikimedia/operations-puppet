@@ -97,7 +97,7 @@ packages:
     - tree
     - nagios-plugins-basic
     - jq
-    - debdeploy-minion
+    - debdeploy-client
     - apt-transport-https
     - tcpdump
     - molly-guard
