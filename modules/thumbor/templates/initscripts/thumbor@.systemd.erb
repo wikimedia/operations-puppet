@@ -10,7 +10,7 @@ User=thumbor
 PrivateTmp=yes
 Restart=always
 SyslogIdentifier=thumbor@%i
-MemoryLimit=15%
+MemoryLimit=<% @memorysize_mb.to_i * 0.15 -%>M
 
 [Install]
 WantedBy=multi-user.target
