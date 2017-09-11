@@ -1500,7 +1500,7 @@ Accepts arguments for:
 Example:
 
 ```
-validate_legacy("Optional[String]", "validate_re", "Value to be validated", ["."])
+validate_legacy('Optional[String]', 'validate_re', 'Value to be validated', ["."])
 ```
 
 This function supports updating modules from Puppet 3 style argument validation (using the stdlib `validate_*` functions) to Puppet 4 data types, without breaking functionality for those depending on Puppet 3 style validation.
