@@ -5,5 +5,5 @@ class role::citoid {
 
     system::role { 'citoid': }
 
-    include ::citoid
+    include ::profile::citoid
 }

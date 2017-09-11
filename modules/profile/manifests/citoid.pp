@@ -1,11 +1,6 @@
-# == Class: citoid
+# == Class: profile::citoid
 #
 # This class installs and configures citoid
-#
-# While only being a thin wrapper around service::node, this class exists to
-# accomodate future citoid needs that are not suited for the service module
-# classes as well as conform to a de-facto standard of having a module for every
-# service
 #
 # === Parameters
 #
@@ -18,10 +13,10 @@
 # [*wskey*]
 #   The WorldCat Search API key to use. Default: ''
 #
-class citoid(
-    $zotero_host,
-    $zotero_port,
-    $wskey = '',
+class profile::citoid(
+    $zotero_host=hiera('profile::citoid::zotero_host'),
+    $zotero_port=hiera('profile::citoid::zotero_port'),
+    $wskey = hiera('citoid::wskey', ''), # TODO: fix namespace
 ) {
     service::node { 'citoid':
         port              => 1970,
