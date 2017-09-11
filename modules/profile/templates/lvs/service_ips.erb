@@ -19,7 +19,6 @@ def flatten_ips(ips)
 end
 
 # TODO: maybe split primary/secondary and classes?
-lvs_class = scope.lookupvar("::lvs::configuration::lvs_grain_class")
 lvs_services = scope.lookupvar("::lvs::configuration::lvs_services")
 services = lvs_services.values.select do |srv|
   # We select objects in all classes if class is "secondary"
