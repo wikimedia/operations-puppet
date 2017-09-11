@@ -132,7 +132,7 @@ class elasticsearch(
         default: { fail("Unsupported elasticsearch version: ${version}") }
     }
 
-    validate_bool($gc_log)
+    validate_legacy('Optional[Boolean]', 'validate_bool', $gc_log)
 
     if $script_max_compilations_per_minute != undef and $script_max_compilations_per_minute < 0 {
         fail('script_max_compilations_per_minute should be > 0')
