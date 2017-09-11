@@ -267,7 +267,11 @@ THUMBOR_LOG_CONFIG = {
     'loggers': {
         '': {
             'level': 'DEBUG',
+<%- if @logstash_host != nil -%>
             'handlers': ['debugstream', 'errorstream', 'http404', 'logstash']
+<% else %>
+            'handlers': ['debugstream', 'errorstream', 'http404']
+<%- end -%>
         }
     }
 }
