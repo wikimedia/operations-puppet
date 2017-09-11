@@ -75,6 +75,7 @@ kubernetes-etcd: P{R:class = role::etcd::kubernetes}
 kubernetes-masters: P{R:class = role::kubernetes::master}
 kubernetes-staging: P{R:class = role::kubernetes::staging::etcd or R:class = role::kubernetes::staging::master}
 kubernetes-workers: P{R:class = role::kubernetes::worker}
+kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers
 labcontrol: P{R:class = role::wmcs::openstack::main::control}
 labnet: P{R:class = role::wmcs::openstack::main::net or R:class = role::wmcs::openstack::main::net_secondary}
 labs-nfs: P{R:class = role::labs::nfs::secondary or R:class = role::labs::nfs::secondary_backup::tools or R:class = role::labs::nfs::secondary_backup::misc}
