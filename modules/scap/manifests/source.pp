@@ -105,6 +105,17 @@ define scap::source(
         base_path       => $base_path,
     }
 
+    # Go ahead and init the DEPLOY_HEAD too
+    exec { "scap::source init ${repository} for ${title}":
+        creates     => "${base_path}/${title}/.git/DEPLOY_HEAD",
+        command     => '/usr/bin/scap deploy --init',
+        cwd         => "${base_path}/${title}",
+        user        => $owner,
+        group       => $group,
+        refreshonly => true,
+        require     => Scap_source[$title],
+    }
+
     # Scap dsh lists.
     #
     # Each scap installation in production should be tied to a dsh group
