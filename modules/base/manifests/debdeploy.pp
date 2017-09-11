@@ -5,8 +5,8 @@
 #
 class base::debdeploy
 {
-    package { 'debdeploy-minion':
-        ensure => present,
+    package { ['debdeploy-minion', 'debdeploy-common']:
+        ensure => absent,
     }
 
     file { '/usr/local/bin/apt-upgrade-activity':
