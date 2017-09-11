@@ -84,8 +84,8 @@ define monitoring::check_prometheus(
     $contact_group   = 'admins'
 )
 {
-    validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
-    validate_bool($nan_ok)
+    validate_legacy("Optional[String]", "validate_re", $method, '^(gt|ge|lt|le|eq|ne)$')
+    validate_legacy("Optional[Boolean]", "validate_bool", $nan_ok)
 
     $command = $nan_ok ? {
         true    => 'check_prometheus_nan_ok',
