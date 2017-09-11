@@ -33,11 +33,12 @@ class ores::base(
                     'myspell-he',
                     'myspell-hu',
                     'myspell-it',
+                    'myspell-lv',
                     'myspell-nb',
                     'myspell-nl',
                     'myspell-pt',
                     'myspell-ru',
-                    'myspell-uk',
+                    'aspell-uk',
                     'myspell-hr')
 
     if os_version('debian >= stretch') {
