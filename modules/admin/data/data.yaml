@@ -192,7 +192,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen, rho]
+              fdans, shiladsen]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -245,7 +245,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, dsaez, shiladsen]
+              kaldari, goransm, ema, dsaez, shiladsen, rho]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
