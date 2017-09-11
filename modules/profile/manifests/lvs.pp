@@ -39,18 +39,6 @@ class profile::lvs(
         nrpe_command => "/usr/lib/nagios/plugins/check_sysctl ${rp_args}",
     }
 
-    salt::grain { 'lvs':
-        grain   => 'lvs',
-        value   => $lvs::configuration::lvs_grain,
-        replace => true,
-    }
-
-    salt::grain { 'lvs_class':
-        grain   => 'lvs_class',
-        value   => $lvs::configuration::lvs_grain_class,
-        replace => true,
-    }
-
     # Set up tagged interfaces to all subnets with real servers in them
 
     profile::lvs::tagged_interface {$tagged_subnets:
