@@ -47,7 +47,7 @@ class nagios_common::contacts(
             show_diff => false,
         }
     } else {
-        if ($content == undef) {
+        if ($content == undef or empty($content)) {
             $real_content = template('nagios_common/contacts.cfg.erb')
         } else {
             $real_content = $content

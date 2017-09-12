@@ -6,3 +6,4 @@ fixtures:
         wmflib: "../../../../wmflib"
         logrotate: "../../../../logrotate"
         elasticsearch: "../../../../elasticsearch"
+        stdlib: "../../../../stdlib"
