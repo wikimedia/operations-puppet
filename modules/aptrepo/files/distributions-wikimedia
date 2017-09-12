@@ -20,7 +20,7 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental thirdparty/cloudera
+Components: main backports thirdparty experimental thirdparty/cloudera component/ci
 UDebComponents: main backports thirdparty experimental
 Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins
 Description: Wikimedia packages for Debian Jessie
