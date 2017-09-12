@@ -10,6 +10,11 @@ class profile::kubernetes::node(
         user            => 'root',
         group           => 'root',
     }
+
+    class { '::k8s::infrastructure_config':
+        master_host => $master_fqdn,
+    }
+
     class { '::k8s::kubelet':
         master_host               => $master_fqdn,
         listen_address            => '0.0.0.0',

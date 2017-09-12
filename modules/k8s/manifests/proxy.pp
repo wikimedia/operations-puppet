@@ -3,7 +3,7 @@ class k8s::proxy(
     $proxy_mode = 'iptables',
     $masquerade_all = true,
 ) {
-    include ::k8s::infrastructure_config
+    require ::k8s::infrastructure_config
 
     $master_ip = ipresolve($master_host, 4, $::nameservers[0])
 
