@@ -33,8 +33,8 @@ class statsd_proxy(
 ) {
     validate_ensure($ensure)
     validate_array($backend_ports)
-    validate_re(join($backend_ports, ' '), '^\d+( \d+)*$', '$backend_ports must be an array of port numbers')
-    validate_re($server_port, '^\d+$', '$server_port must be a port number')
+    validate_numeric($backend_ports)
+    validate_numeric($server_port)
 
     package { 'statsd-proxy':
         ensure => $ensure,
