@@ -3,9 +3,9 @@
 #  what kind of a drive setup they have.
 define openstack2::nova::compute::partition(
     $partition_nr='1',
-    ) {
+) {
 
-    if (! $title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
+    if ($title !~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
         fail("unable to init ${title} for nova")
     }
 
