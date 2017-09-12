@@ -64,6 +64,13 @@ class role::graphite::production {
         keep_days => 182,
     }
 
+    # Diamond, catchup decomissioned servers and servers changing diamond
+    # plugins (eg when changing roles)
+    graphite::whisper_cleanup { 'graphite-diamond':
+        directory => "${storage_dir}/whisper/servers",
+        keep_days => 90,  # arbitrary
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
