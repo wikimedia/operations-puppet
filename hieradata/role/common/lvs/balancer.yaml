@@ -4,5 +4,6 @@ profile::base::ssh_server_settings:
   listen_address: "%{::ipaddress}"
 prometheus::node_exporter::collectors_extra:
   - ipvs
+  - meminfo_numa
 profile::pybal::config_source: etcd
 profile::pybal::bgp: "yes"

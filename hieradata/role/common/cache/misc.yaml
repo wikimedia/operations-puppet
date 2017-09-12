@@ -3,6 +3,7 @@ cache::cluster: misc
 cache::lua_support: true
 prometheus::node_exporter::collectors_extra:
   - qdisc
+  - meminfo_numa
 # note this only affects tlsproxy now, should be moved to param there...
 cache::websocket_support: true
 # The contents of this hash control our DC->DC routing for varnish backend
