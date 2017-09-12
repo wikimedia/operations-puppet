@@ -1,4 +1,4 @@
-class k8s::infrastructure_config {
+class k8s::infrastructure_config($master_host) {
     file { '/etc/kubernetes':
         ensure => directory,
         owner  => 'root',

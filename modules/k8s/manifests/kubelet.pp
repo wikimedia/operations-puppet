@@ -11,7 +11,7 @@ class k8s::kubelet(
     $cni_bin_dir='/opt/cni/bin',
     $cni_conf_dir='/etc/cni/net.d',
 ) {
-    include ::k8s::infrastructure_config
+    require ::k8s::infrastructure_config
 
     require_package('kubernetes-node')
 
