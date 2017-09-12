@@ -8,7 +8,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley, ironholds]
+              psinger, midom, tparscal, dworley, ironholds, moushira]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -116,7 +116,7 @@ groups:
               nuria, ori, otto, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
+              neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
@@ -237,7 +237,7 @@ groups:
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
+              joal, jamesur, akosiaris, jkatz, madhuvishy,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -1763,14 +1763,6 @@ users:
     realname: Jeff Hobson
     ssh_keys: []
     uid: 10542
-  lpintscher:
-    ensure: present
-    gid: 500
-    name: lpintscher
-    realname: Lydia Pintscher
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA38VRVZ7vOG5Ltv8PdPWShwHb934pIWNav2cRc4qRiaU71YT5Rc9QGQV3t0Cs3fYJ+eh8O2Xr1K6t+2KKJLuDJE84MXq9G9ptGCis9vDb/JimZuaL3Jol16rB5wbzekoCNZyysIHQ4t+gNKnjUA3OXjeAoJy9m76tUvh+cp31LN5DPNJ29QuVO4aTP4IgAl/BYf+j6GBOpkTd4RicUnS9lGGckAcfETk4AYyYqMf4sw5RSyBQESV8Bb0MtTcNNHTSErSFhxT67ijfC1FA5eKTY5MgvHjItNI16lM+Z3SoASlyIIPz4cyQVnM7TswsuF6oYyE1JV4Rlywv6WvWWMm4/w== lydia@hel]
-    uid: 2222
-    email: lydia.pintscher@wikimedia.de
   jmm:
     ensure: present
     gid: 500
@@ -1805,14 +1797,6 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdyvoQsiHzWPlPfDR4KgonyRDTNORh74Yt0KUuXaME7j58FfURe82oFLa40W/lIwEUB2lDYX1297kQUkiL1DvsrWcFnV0phk55s/Lh4KB5mCvQyGy/1oXumzGN3osI6hSQoi+hwTzJNCZFmg2XRc2FiyLoYgPQxy77OjxBtnwavvSwJ79Fu+nM9o5ZVfYQnO72Jk9uAOYIfLiqlB+2V5Al+16WTayRDULZW/YORA9haHntVjJYo0ioQ7+fmczVPtY5HbN13PQJoy9n/8eoVsn31OcJ+HqN62NtV7YlpA2qgDz5gWq31vptDXGvSP74w0ncWSt/XlRC3uQXjFwye7CrmBHzx8lTVUdafEGHUszycYOpG0mnqcVGsU+44B3D+FEfSIwJOy5DQhCDn0a+BcpAnnn0Qy2NS6DvRVECnx08rK8RUMFUFHpFV/4hxDm/YmBl1XXkgUhTXPFY7PC91F3vpdNA0bja/N6ADMuJp5Jhoj/rs9SfkuI6rhAlM2J8RAKhW9Eq1jf6HXHmV9xKRxxwziTradWc9z2Pidv+kWNuOAk+NN25enN0IUeQzOr/Zn0UMH1fMaJ60HPtOXero1MNi7gOnzBdBOKEH2cPDdDMbb1wZwi0HECuQTNlh4NzZ4JLKK6yuD3X8yZxNHbKmAOzarpdo5gF3AbOfdDgd78n9w== mviswanathan@wikimedia.org]
     uid: 11511
     email: mviswanathan@wikimedia.org
-  gpaumier:
-    ensure: present
-    gid: 500
-    name: gpaumier
-    realname: Guillaume Paumier
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxE/ZWep1KH3AEenFtT+8+RJIzbbQfMoTxFPpGhvXZcBijxj+SajDzzgF5lyv+j+pjFsty524R3rEK+Dxu8zpORsVLODuAHMcFDoPeC6IgQKCxnJlWMcNfhUX0VXcm+sjPPTlSKkPsvXypiErB/LWlMT5splo7debfRXRgr4Kh1fZAcrkaoZCW66Ipn7g6Mw2efS1WbJLtpwQDrhzHlL7XuoDJZWwpch1ZcKbBW8TSh3haPFpMhNow2Qtb7V0ZCk+f3dzT6D1vEL1aKQQwskR/GM9nrBgLIGB0ucgue3GcDnpI6W+nLRmamKMc1JX4HfP0J3RrkZgaK661XxHmHOq/ gpaumier@wikimedia.org]
-    uid: 2047
-    email: gpaumier@wikimedia.org
   niedzielski:
     ensure: present
     gid: 500
@@ -1847,14 +1831,6 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWNAMYh92QyZNjHcTyoapyWSKkQBSFJVgKWNW+5of3fiJ0frczz9R+MW2RiRPjdh2VoOzEdMboRogr7O5I1D2x07cVYpTNYEx4cPmzg7xLKUqPY0zxJGZz7g2zlXr1RtiM21MTNiG+tF1ndnB3KYa1LB9fA8pSgQkGz+UjFWGg2/LD6tLzNA8yB+MjV0X+nEtC+i58L5nchMN/m3RsyfCGOnJxPAsOCbQpolITCKSVceRPI/FvBAbaaUidL7MvfkgFTUjf+NX2b25ZdIVYD4BVGHrkw3fFQpPYdidEyLMN/wnu5leZskoOnuMzn2AgHQEBdsrKeV/umdFq3SjGJkkR jynus@yuvi
     uid: 12161
     email: jcrespo@wikimedia.org
-  moushira:
-    ensure: present
-    gid: 500
-    name: moushira
-    realname: Moushira Elamrawy
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlLVCGLVRhQeS0w/xDYFsc53o0t0FV2Vi5MsTv9NlNIVAPvmQOPvLtp55qqb1ix7q2tOktTgFA1yVCW+CfQKoCRqAflAca1CJhNe4xve3FBX2E9zpwjm7ivfKDvfPTRh4ls4n2NdBXke8WKmAbggLE+uaP9G4eIVKy2RKrKZp7EM/25CqxWZe/cRQ9JegmkhVqb2s8s8kEB4aa9to4u4FulCuYyU5WrvCEa4T8oI/mtVQabRO4kjvL5TOdn2tzjnD+4YC9SL4JtcyllVbdpsYa7PpsV9/Ix1MLEqjucFDUVoGd9v5JCsSQclSCxbqn3R7O4bGlYC04WLGBPDpvjaOx melamrawy@wikimedia.org]
-    uid: 12239
-    email: moushirah@gmail.com
   aklapper:
     ensure: present
     gid: 500
@@ -2609,6 +2585,10 @@ ldap_only_users:
     ensure: present
     realname: Frederic Bolduc
     email: fbolduc@wikimedia.org
+  gpaumier:
+    ensure: present
+    realname: Guillaume Paumier
+    email: gpaumier@wikimedia.org
   heather:
     ensure: present
     realname: Heather Walls
@@ -2645,6 +2625,10 @@ ldap_only_users:
     email: lmixter@wikimedia.org
     expiry_date: 2017-10-01
     expiry_contact: rstallman@wikimedia.org
+  lpintscher:
+    ensure: present
+    realname: Lydia Pintscher
+    email: lydia.pintscher@wikimedia.de
   mhernandez:
     ensure: present
     realname: Megan Hernandez
