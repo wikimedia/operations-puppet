@@ -8,7 +8,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley, ironholds]
+              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -116,7 +116,7 @@ groups:
               nuria, ori, otto, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
+              neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
@@ -237,7 +237,7 @@ groups:
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
+              joal, jamesur, akosiaris, jkatz, madhuvishy,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -1764,11 +1764,11 @@ users:
     ssh_keys: []
     uid: 10542
   lpintscher:
-    ensure: present
+    ensure: absent
     gid: 500
     name: lpintscher
     realname: Lydia Pintscher
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA38VRVZ7vOG5Ltv8PdPWShwHb934pIWNav2cRc4qRiaU71YT5Rc9QGQV3t0Cs3fYJ+eh8O2Xr1K6t+2KKJLuDJE84MXq9G9ptGCis9vDb/JimZuaL3Jol16rB5wbzekoCNZyysIHQ4t+gNKnjUA3OXjeAoJy9m76tUvh+cp31LN5DPNJ29QuVO4aTP4IgAl/BYf+j6GBOpkTd4RicUnS9lGGckAcfETk4AYyYqMf4sw5RSyBQESV8Bb0MtTcNNHTSErSFhxT67ijfC1FA5eKTY5MgvHjItNI16lM+Z3SoASlyIIPz4cyQVnM7TswsuF6oYyE1JV4Rlywv6WvWWMm4/w== lydia@hel]
+    ssh_keys: []
     uid: 2222
     email: lydia.pintscher@wikimedia.de
   jmm:
@@ -1806,11 +1806,11 @@ users:
     uid: 11511
     email: mviswanathan@wikimedia.org
   gpaumier:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gpaumier
     realname: Guillaume Paumier
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxE/ZWep1KH3AEenFtT+8+RJIzbbQfMoTxFPpGhvXZcBijxj+SajDzzgF5lyv+j+pjFsty524R3rEK+Dxu8zpORsVLODuAHMcFDoPeC6IgQKCxnJlWMcNfhUX0VXcm+sjPPTlSKkPsvXypiErB/LWlMT5splo7debfRXRgr4Kh1fZAcrkaoZCW66Ipn7g6Mw2efS1WbJLtpwQDrhzHlL7XuoDJZWwpch1ZcKbBW8TSh3haPFpMhNow2Qtb7V0ZCk+f3dzT6D1vEL1aKQQwskR/GM9nrBgLIGB0ucgue3GcDnpI6W+nLRmamKMc1JX4HfP0J3RrkZgaK661XxHmHOq/ gpaumier@wikimedia.org]
+    ssh_keys: []
     uid: 2047
     email: gpaumier@wikimedia.org
   niedzielski:
@@ -1848,11 +1848,11 @@ users:
     uid: 12161
     email: jcrespo@wikimedia.org
   moushira:
-    ensure: present
+    ensure: absent
     gid: 500
     name: moushira
     realname: Moushira Elamrawy
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlLVCGLVRhQeS0w/xDYFsc53o0t0FV2Vi5MsTv9NlNIVAPvmQOPvLtp55qqb1ix7q2tOktTgFA1yVCW+CfQKoCRqAflAca1CJhNe4xve3FBX2E9zpwjm7ivfKDvfPTRh4ls4n2NdBXke8WKmAbggLE+uaP9G4eIVKy2RKrKZp7EM/25CqxWZe/cRQ9JegmkhVqb2s8s8kEB4aa9to4u4FulCuYyU5WrvCEa4T8oI/mtVQabRO4kjvL5TOdn2tzjnD+4YC9SL4JtcyllVbdpsYa7PpsV9/Ix1MLEqjucFDUVoGd9v5JCsSQclSCxbqn3R7O4bGlYC04WLGBPDpvjaOx melamrawy@wikimedia.org]
+    ssh_keys: []
     uid: 12239
     email: moushirah@gmail.com
   aklapper:
@@ -2609,6 +2609,10 @@ ldap_only_users:
     ensure: present
     realname: Frederic Bolduc
     email: fbolduc@wikimedia.org
+  gpaumier:
+    ensure: present
+    realname: Guillaume Paumier
+    email: gpaumier@wikimedia.org
   heather:
     ensure: present
     realname: Heather Walls
@@ -2645,6 +2649,10 @@ ldap_only_users:
     email: lmixter@wikimedia.org
     expiry_date: 2017-10-01
     expiry_contact: rstallman@wikimedia.org
+  lpintscher:
+    ensure: present
+    realname: Lydia Pintscher
+    email: lydia.pintscher@wikimedia.de
   mhernandez:
     ensure: present
     realname: Megan Hernandez
