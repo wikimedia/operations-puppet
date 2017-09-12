@@ -41,7 +41,7 @@ class nutcracker(
 ) {
     validate_hash($pools)
     validate_re($ensure, '^(present|absent)$')
-    validate_re($verbosity, '^(\d|10|11)$')
+    validate_numeric($verbosity, 11, 0)
 
     package { 'nutcracker':
         ensure => $ensure,
