@@ -1,0 +1,107 @@
+# This file has the default egress policy for kubernetes pods in WMF.
+# It denies everything and only allows specific outgoing communications
+# This file is meant to be fed as a ConfigMap to calico-policy-controller in a pretty specific way
+# To do so, first delete the old one and create the new one (faster that way)
+# $ kubectl --namespace=kube-system delete configmap wmf-default-policy
+# $ kubectl --namespace=kube-system create configmap wmf-default-policy --from-file=egress=default-kubernetes-policy.yaml
+#
+# Allow DNS
+- action: allow
+  dst_ports:
+    - 53
+  dst_net: 208.80.153.254/32
+  protocol: udp
+- action: allow
+  dst_ports:
+    - 53
+  dst_net: 208.80.154.254/32
+  protocol: udp
+  # Allow url-downloaders
+- action: allow
+  dst_ports:
+    - 8080
+  dst_net: 208.80.154.49/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 8080
+  dst_net: 208.80.153.16/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 8080
+  dst_net: 208.80.153.50/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 8080
+  dst_net: 208.80.154.80/32
+  protocol: tcp
+  # Allow statsd
+- action: allow
+  dst_ports:
+    - 8125
+  dst_net: 10.64.32.155/32
+  protocol: udp
+- action: allow
+  dst_ports:
+    - 8125
+  dst_net: 10.192.16.33/32
+  protocol: udp
+  # Allow graphite
+  # Re-evaluate this at some later point in time. For now deny
+  # Allow logstash
+- action: allow
+  dst_ports:
+    - 4560
+    - 10514
+    - 11514
+  dst_net: 10.2.2.36/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 8324
+    - 10514
+    - 11514
+    - 12201
+  dst_net: 10.2.2.36/32
+  protocol: udp
+  # Allow restbase
+- action: allow
+  dst_ports:
+    - 7231
+  dst_net: 10.2.2.17/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 7231
+  dst_net: 10.2.1.17/32
+  protocol: tcp
+  # Allow uncached API
+- action: allow
+  dst_ports:
+    - 80
+    - 443
+  dst_net: 10.2.2.22/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 80
+    - 443
+  dst_net: 10.2.1.22/32
+  protocol: tcp
+  # Allow EventBus
+- action: allow
+  dst_ports:
+    - 8085
+  dst_net: 10.2.1.23/32
+  protocol: tcp
+- action: allow
+  dst_ports:
+    - 8085
+  dst_net: 10.2.2.23/32
+  protocol: tcp
+  # Allow cached API
+  # Re-evaluate this at some later point in time. For now deny
+  # Deny everything else
+- action: deny
