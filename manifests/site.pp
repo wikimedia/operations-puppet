@@ -412,7 +412,7 @@ node 'db1068.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(53|56|59|64|81|84|91|97)\.eqiad\.wmnet/ {
+node /^db10(53|56|64|81|84|91|97)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -598,6 +598,11 @@ node 'db1048.eqiad.wmnet' {
         shard => 'm3',
     }
     include ::base::firewall
+}
+node 'db1059.eqiad.wmnet' {
+    class { '::role::mariadb::misc::phabricator':
+        shard => 'm3',
+    }
 }
 
 node 'db2012.codfw.wmnet' {
