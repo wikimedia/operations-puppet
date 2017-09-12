@@ -60,6 +60,39 @@ class contint::packages::php {
             ensure  => latest,
             require => Apt::Repository['sury-php'],
         }
+
+        apt::repository { 'aptly-integration-php55':
+            uri        => 'https://integration-aptly.wmflabs.org/repo/',
+            dist       => 'jessie-integration',
+            components => 'php55',
+            source     => false,
+            trust_repo => true,
+        }
+
+        package { [
+            'php5.5-cli',
+            'php5.5-common',
+            'php5.5-curl',
+            'php5.5-dev',
+            'php5.5-gd',
+            'php5.5-gmp',
+            'php5.5-intl',
+            'php5.5-ldap',
+            'php5.5-luasandbox',
+            'php5.5-mbstring',
+            'php5.5-mcrypt',
+            'php5.5-mysql',
+            'php5.5-redis',
+            'php5.5-sqlite3',
+            'php5.5-tidy',
+            'php5.5-xsl',
+            ]:
+            ensure  => present,
+            require => [
+                Apt::Repository['aptly-integration-php55'],
+                Exec['apt-get update'],
+            ],
+        }
     }
 
     if os_version('ubuntu == trusty') {
