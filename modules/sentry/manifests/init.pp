@@ -37,7 +37,7 @@ class sentry (
 
     require sentry::packages
 
-    redis::instance { 6379: }
+    redis::instance { '6379': }
 
     git::clone { 'operations/software/sentry':
         ensure    => latest,

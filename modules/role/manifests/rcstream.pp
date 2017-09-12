@@ -12,7 +12,7 @@ class role::rcstream {
         description => 'MediaWiki Recent Changes stream',
     }
 
-    redis::instance { 6379:
+    redis::instance { '6379':
         settings => {
             maxmemory                   => '100mb',
             maxmemory_policy            => 'volatile-lru',
