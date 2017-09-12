@@ -553,21 +553,24 @@ node 'db1016.eqiad.wmnet' {
         shard  => 'm1',
         master => true,
     }
-    include ::base::firewall
 }
 
 node 'db1001.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
     }
-    include ::base::firewall
 }
 
 node 'db2010.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm1',
     }
-    include ::base::firewall
+}
+
+node 'db2078.codfw.wmnet' {
+    class { '::role::mariadb::misc':
+        shard => 'm1',
+    }
 }
 
 ## m2 shard
@@ -590,21 +593,18 @@ node 'db1043.eqiad.wmnet' {
         shard  => 'm3',
         master => true,
     }
-    include ::base::firewall
 }
 
 node 'db1048.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
     }
-    include ::base::firewall
 }
 
 node 'db2012.codfw.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
     }
-    include ::base::firewall
 }
 
 # m4 shard
@@ -613,7 +613,6 @@ node 'db1046.eqiad.wmnet' {
         shard  => 'm4',
         master => true,
     }
-    include ::base::firewall
 }
 node 'db1047.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
@@ -623,7 +622,6 @@ node 'db1047.eqiad.wmnet' {
         shard  => 'm4',
         master => false,
     }
-    include ::base::firewall
 }
 
 # m5 shard
@@ -638,7 +636,6 @@ node 'db2030.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }
-    include ::base::firewall
 }
 
 # sanitarium
