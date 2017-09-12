@@ -57,6 +57,7 @@ class package_builder(
         'subversion',
         'sphinx-common',
         'scons',
+        'apache2-dev',
         $php_dev,
         $dh_php,
     ])
