@@ -13,14 +13,13 @@ class role::racktables::server {
     include ::standard
     include ::base::firewall
 
-    $racktables_host = hiera('racktables_host', $::fqdn)
-
     ferm::service { 'racktables-http':
         proto => 'tcp',
         port  => '80',
     }
 
     class { '::racktables':
+        racktables_host    => hiera('racktables_host', $facts['fqdn']),
         racktables_db_host => 'm1-master.eqiad.wmnet',
         racktables_db      => 'racktables',
     }
