@@ -3,11 +3,7 @@
 ## into its web directory root.  This means that puppet cannot fully automate
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
-class racktables (
-    $racktables_db_host = 'm1-master.eqiad.wmnet',
-    $racktables_db      = 'racktables',
-) {
-
+class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
     include ::mysql
     include ::passwords::racktables
     include ::apache
