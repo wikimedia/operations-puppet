@@ -66,12 +66,6 @@ labels:
     min-ready: 12
     providers:
       - name: wmflabs-eqiad
-  - name: ci-trusty-wikimedia
-    image: snapshot-ci-trusty
-    ready-script: ready.sh
-    min-ready: 2
-    providers:
-      - name: wmflabs-eqiad
 
 providers:
   - name: wmflabs-eqiad
@@ -94,13 +88,6 @@ providers:
       # RelEng manually build and upload the images to Glance
       - name: snapshot-ci-jessie
         base-image: image-ci-jessie
-        min-ram: 0
-        name-filter: 'm1.medium'
-        setup: setup_node.sh
-        username: jenkins
-        private-key: /var/lib/nodepool/.ssh/id_rsa
-      - name: snapshot-ci-trusty
-        base-image: image-ci-trusty
         min-ram: 0
         name-filter: 'm1.medium'
         setup: setup_node.sh
