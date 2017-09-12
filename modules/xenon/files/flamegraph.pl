@@ -495,6 +495,11 @@ foreach (<>) {
 		# there may be an extra samples column for differentials
 		# XXX todo: redo these REs as one. It's repeated below.
 		my ($stack, $samples) = (/^(.*)\s+?(\d+(?:\.\d*)?)$/);
+		unless (defined $samples and defined $stack) {
+			# Invalid line will be ignored later on
+			unshift @Data, $line;
+			next;
+		}
 		my $samples2 = undef;
 		if ($stack =~ /^(.*)\s+?(\d+(?:\.\d*)?)$/) {
 			$samples2 = $samples;
