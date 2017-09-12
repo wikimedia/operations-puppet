@@ -10,7 +10,7 @@ class role::xenon {
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
 
-    redis::instance { 6379:
+    redis::instance { '6379':
         settings => {
             maxmemory                   => '1Mb',
             stop_writes_on_bgsave_error => 'no',

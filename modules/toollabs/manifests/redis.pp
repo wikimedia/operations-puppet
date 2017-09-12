@@ -27,7 +27,7 @@ class toollabs::redis (
         $slaveof = undef
     }
 
-    redis::instance { 6379:
+    redis::instance { '6379':
         settings => {
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
             dbfilename                  => "${::hostname}-6379.rdb",

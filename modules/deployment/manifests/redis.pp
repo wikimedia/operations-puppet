@@ -12,7 +12,7 @@ class deployment::redis($deployment_server) {
     if ($::fqdn != $deployment_server) {
         $deployment_ipv4 = ipresolve($deployment_server, 4)
         # Just a read-only slave for now
-        redis::instance { 6379:
+        redis::instance { '6379':
             settings => {
                 daemonize       => $daemonize_redis,
                 slave_read_only => true,
@@ -21,7 +21,7 @@ class deployment::redis($deployment_server) {
             },
         }
     } else {
-        redis::instance{ 6379:
+        redis::instance { '6379':
             settings => {
                 daemonize => $daemonize_redis,
                 bind      => '0.0.0.0',
