@@ -103,10 +103,9 @@ class thumbor (
         before => Systemd::Unit['thumbor@'],
     }
 
-    # XXX using a literal integer as the first argument results in
-    # Error 400 on SERVER: undefined method `match' for 8801:Fixnum at
-    # /etc/puppet/modules/thumbor/manifests/init.pp:62
-    $ports = range("${listen_port + 1}", $listen_port + $instance_count)
+    # use range(), which returns an array of integers, then interpolate it into
+    # an array of strings, to use it as a parameter to thumbor::instance below
+    $ports = prefix(range($listen_port + 1, $listen_port + $instance_count), '')
 
     nginx::site { 'thumbor':
         content => template('thumbor/nginx.conf.erb'),
