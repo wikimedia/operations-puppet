@@ -8,7 +8,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier]
+              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier, cwdent]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -233,7 +233,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak,
-              halfak, dr0ptp4kt, bearloga, cwdent, elukey, gwicke, ppchelko,
+              halfak, dr0ptp4kt, bearloga, elukey, gwicke, ppchelko,
               nuria, otto, deskana, zhousquared, arnad, jgonsior,
               bsitzmann, dbrant, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
@@ -2027,11 +2027,11 @@ users:
     uid: 2501
     email: bdziewonski@wikimedia.org
   cwdent:
-    ensure: present
+    ensure: absent
     gid: 500
     name: cwdent
     realname: Casey Dentinger
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhB5NxsYxf82q8N2/xUZXRUJNlgUB8moiLxFnrS8989pXs4wiilEFpYgMIZ0V30lu7xIeHzCWdJYEq0ySeQ8Wm5BVdM8APpiLZ4YNheG+gTtRaESSjyj6x/VcCxLjiXwzuXSEikmwXKhXeVFIO8s2FaOrb3JYizaWJxbA6DAQiD3ILR8pjuJtaUkZcmVO86qjdOFGqeRMMB1kVye9JYDRYow8QM13v0TDeP+5EY+6yTG5jlGNscTwYO6Xn/BPi+LS/X1AJYQ6qmWjUky3g6TJEREDmpZBmSfl5bGWBVohOZLuQWTxXAuQ/a5tuCbF+fVsJLZv4dRlEINgxyuEbTSwN]
+    ssh_keys: []
     uid: 12179
     email: cdentinger@wikimedia.org
   ema:
@@ -2605,6 +2605,10 @@ ldap_only_users:
     ensure: present
     realname: Corey Floyd
     email: cfloyd@wikimedia.org
+  cwdent:
+    ensure: present
+    realname: Casey Dentinger
+    email: cdentinger@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
