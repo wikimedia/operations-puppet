@@ -22,6 +22,7 @@ class role::prometheus::services {
     $jmx_exporter_jobs = [
       {
         'job_name'        => 'cassandra',
+        'scrape_timeout'  => '25s',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/cassandra_*.yaml" ]}
