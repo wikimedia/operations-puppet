@@ -7,11 +7,8 @@ ALGORITHM=UNDEFINED
 DEFINER=`root`@`localhost`
 SQL SECURITY DEFINER VIEW
 `heartbeat_p`.`heartbeat` AS
-SELECT
-`shard` AS `shard`,
-max(`heartbeat`.`heartbeat`.`ts`) AS `last_updated`,
-timestampdiff(SECOND, max(`heartbeat`.`heartbeat`.`ts`), utc_timestamp()) AS `lag`
+SELECT shard` AS `shard`,
+       max(`heartbeat`.`heartbeat`.`ts`) AS `last_updated`,
+       greatest(timestampdiff(MICROSECOND, max(`heartbeat`.`heartbeat`.`ts`), utc_timestamp()), 0)/1000.0 AS `lag` 
 FROM `heartbeat`.`heartbeat`
 GROUP BY `shard`;
--- Change SECOND precission to MICROSECOND when this bug disappears:
--- https://mariadb.atlassian.net/browse/MDEV-9175
