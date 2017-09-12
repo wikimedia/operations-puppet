@@ -25,6 +25,7 @@ class role::mariadb::misc::phabricator(
 
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include ::base::firewall
     include role::mariadb::ferm
 
     class { 'role::mariadb::groups':
