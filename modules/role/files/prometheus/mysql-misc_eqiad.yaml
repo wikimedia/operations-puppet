@@ -20,13 +20,14 @@
     shard: m3
     role: master
   targets:
-  - db1048:9104
+  - db1043:9104
 
 - labels:
     shard: m3
     role: slave
   targets:
-  - db1043:9104
+  - db1048:9104
+  - db1059:9104
 
 - labels:
     shard: m4
