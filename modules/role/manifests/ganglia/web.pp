@@ -97,6 +97,6 @@ class role::ganglia::web {
     backup::set { 'var-lib-ganglia': }
     backup::set { 'srv-ganglia': }
 
-    Class['ganglia::gmetad::rrdcached'] -> Class['ganglia::gmetad']
-    Class['ganglia::gmetad'] -> Class['ganglia::web']
+    Class['ganglia::gmetad::rrdcached'] -> Class['::ganglia::gmetad']
+    Class['ganglia::gmetad'] -> Class['::ganglia::web']
 }
