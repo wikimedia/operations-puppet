@@ -483,7 +483,6 @@ my @Data;
 my $last = [];
 my $time = 0;
 my $delta = undef;
-my $ignored = 0;
 my $line;
 my $maxdelta = 1;
 
@@ -495,6 +494,10 @@ foreach (<>) {
 		# there may be an extra samples column for differentials
 		# XXX todo: redo these REs as one. It's repeated below.
 		my ($stack, $samples) = (/^(.*)\s+?(\d+(?:\.\d*)?)$/);
+		unless (defined $samples and defined $stack) {
+			warn "Ignored line with invalid format: $line\n";
+			next;
+		}
 		my $samples2 = undef;
 		if ($stack =~ /^(.*)\s+?(\d+(?:\.\d*)?)$/) {
 			$samples2 = $samples;
@@ -511,11 +514,12 @@ foreach (<>) {
 # process and merge frames
 foreach (sort @Data) {
 	chomp;
+	$line = $_;
 	# process: folded_stack count
 	# eg: func_a;func_b;func_c 31
 	my ($stack, $samples) = (/^(.*)\s+?(\d+(?:\.\d*)?)$/);
 	unless (defined $samples and defined $stack) {
-		++$ignored;
+		warn "Ignored line with invalid format: $line\n";
 		next;
 	}
 
@@ -544,7 +548,6 @@ foreach (sort @Data) {
 }
 flow($last, [], $time, $delta);
 
-warn "Ignored $ignored lines with invalid format\n" if $ignored;
 unless ($time) {
 	warn "ERROR: No stack counts found\n";
 	my $im = SVG->new();
