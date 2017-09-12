@@ -62,6 +62,37 @@ class contint::packages::php {
             ensure  => latest,
             require => Apt::Repository['sury-php'],
         }
+
+        apt::repository { 'jessie-ci-php55':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'jessie-wikimedia',
+            components => 'component/ci',
+            source     => false,
+        }
+
+        package { [
+            'php5.5-cli',
+            'php5.5-common',
+            'php5.5-curl',
+            'php5.5-dev',
+            'php5.5-gd',
+            'php5.5-gmp',
+            'php5.5-intl',
+            'php5.5-ldap',
+            'php5.5-luasandbox',
+            'php5.5-mbstring',
+            'php5.5-mcrypt',
+            'php5.5-mysql',
+            'php5.5-redis',
+            'php5.5-sqlite3',
+            'php5.5-tidy',
+            'php5.5-xsl',
+            ]:
+            ensure  => present,
+            require => [
+                Apt::Repository['jessie-ci-php55'],
+            ],
+        }
     }
 
     # PHP Extensions dependencies (mediawiki/php/*.git)
