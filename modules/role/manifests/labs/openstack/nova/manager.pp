@@ -27,8 +27,6 @@ class role::labs::openstack::nova::manager {
         check_command => "check_ssl_http_letsencrypt!${sitename}",
     }
 
-    $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
-
     ferm::service { 'wikitech_http':
         proto => 'tcp',
         port  => '80',
