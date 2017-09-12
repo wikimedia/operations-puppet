@@ -5,6 +5,6 @@ class role::analytics_cluster::backup {
         ensure => 'directory',
         owner  => 'root',
         group  => 'analytics-admins',
-        mode   => '0750',
+        mode   => '0755',
     }
 }
