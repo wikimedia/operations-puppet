@@ -59,6 +59,7 @@ class openstack::openstack_manager(
         'wikitech.wikimedia.org'        => '208.80.154.136',
         'labtestwikitech.wikimedia.org' => '208.80.153.14'
     }
+    $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
     apache::site { $webserver_hostname:
         content => template('openstack/common/wikitech.wikimedia.org.erb'),
     }
