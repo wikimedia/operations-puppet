@@ -4,7 +4,7 @@
 #
 
 class profile::ci::docker {
-    include ::docker
+    include ::contint::docker
     include phabricator::arcanist
     include ::zuul
 
