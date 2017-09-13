@@ -31,7 +31,7 @@ db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{R:class = role::mariadb::proxy::master}
 db-dbstore: P{R:class = role::mariadb::backup or R:class = role::mariadb::dbstore or R:class = role::mariadb::dbstore_multiinstance}
 db-labsdb: P{R:class = role::labs::db::replica}
-db-misc-servers: P{R:class = role::mariadb::labs_deprecated}
+db-misc-servers: P{R:class = role::mariadb::labs_deprecated or R:class = role::mariadb::sanitarium_multisource}
 db-parsercache: P{R:class = role::mariadb::parsercache}
 dbmonitor: P{R:class = role::tendril}
 debugproxy: P{R:class = role::debug_proxy}
@@ -73,7 +73,7 @@ kafka-main-codfw: A:kafka-main and A:codfw
 kafka-main-eqiad: A:kafka-main and A:eqiad
 kubernetes-etcd: P{R:class = role::etcd::kubernetes}
 kubernetes-masters: P{R:class = role::kubernetes::master}
-kubernetes-staging: P{R:class = role::kubernetes::staging::etcd or R:class = role::kubernetes::staging::master}
+kubernetes-staging: P{R:class = role::kubernetes::staging::etcd or R:class = role::kubernetes::staging::master or R:class = role::kubernetes::staging::worker}
 kubernetes-workers: P{R:class = role::kubernetes::worker}
 kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers
 labcontrol: P{R:class = role::wmcs::openstack::main::control}
