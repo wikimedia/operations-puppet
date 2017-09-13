@@ -155,11 +155,12 @@ define service::uwsgi(
     }
 
     $base_config = {
-            plugins     => 'python, python3, logfile, logsocket',
-            master      => true,
-            http-socket => "0.0.0.0:${port}",
-            processes   => $no_workers,
-            die-on-term => true,
+            plugins       => 'python, python3, logfile, logsocket',
+            master        => true,
+            http-socket   => "0.0.0.0:${port}",
+            processes     => $no_workers,
+            die-on-term   => true,
+            logfile-chmod => 0644,
             log-route     => ['local .*', 'logstash .*'],
             log-encoder   => [
                 # lint:ignore:single_quote_string_with_variables
