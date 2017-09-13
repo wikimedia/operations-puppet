@@ -25,6 +25,17 @@ class toollabs::mailrelay inherits toollabs
                             '/usr/local/sbin/maintainers'],
     }
 
+    # Outbound sender blocklist
+    file { '/etc/exim4/deny_senders.list':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0440',
+        replace => false,
+        require => Package['exim4-config'],
+        notify  => Service['exim4'],
+    }
+
     file { '/usr/local/sbin/localuser':
         ensure => file,
         owner  => 'root',
