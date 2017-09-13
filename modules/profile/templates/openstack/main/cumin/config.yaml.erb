@@ -1,0 +1,23 @@
+transport: clustershell
+log_file: <%= @cumin_log_path %>/cumin.log
+default_backend: direct
+
+environment:
+    SSH_AUTH_SOCK: /run/keyholder/proxy.sock
+
+clustershell:
+    ssh_options:
+        - '-o BatchMode=yes'
+        - '-o ConnectTimeout=2'
+        - '-o StrictHostKeyChecking=no'
+        - '-o UserKnownHostsFile=/dev/null'
+        - '-o GlobalKnownHostsFile=/dev/null'
+        - '-o LogLevel=QUIET'
+        - '-o ProxyCommand="ssh -a -W %h:%p bastion-restricted.wmflabs.org"'
+
+openstack:
+    auth_url: <%= @openstack_protocol %>://<%= @openstack_host %>:<%= @openstack_port %>
+    project: <%= @openstack_project %>
+    username: <%= @openstack_username %>
+    password: <%= @openstack_password %>
+    timeout: 2
