@@ -65,6 +65,12 @@
 #   than 0.10.2, the consumers' fetch size must also be increased
 #   so that the they can fetch record batches this large.
 #
+# [*jmx_exporter_enabled*]
+#   Enable the Prometheus jmx exporter.
+#
+# [*jmx_exporter_jar_version*]
+#   Version of the Prometheus jar exporter to use.
+#
 class profile::kafka::broker(
     $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
     $statsd                            = hiera('statsd'),
@@ -83,7 +89,9 @@ class profile::kafka::broker(
     $replica_maxlag_warning            = hiera('profile::kafka::broker::replica_maxlag_warning'),
     $replica_maxlag_critical           = hiera('profile::kafka::broker::replica_maxlag_critical'),
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
-    $message_max_bytes                 = hiera('kafka_message_max_bytes')
+    $message_max_bytes                 = hiera('kafka_message_max_bytes'),
+    $jmx_exporter_enabled              = hiera('profile::kafka::broker::jmx_exporter_enabled'),
+    $jmx_exporter_jar_version          = hiera('profile::kafka::broker::jmx_exporter_jar_version'),
 ) {
     # TODO: WIP
     $tls_secrets_path = undef
@@ -180,6 +188,38 @@ class profile::kafka::broker(
         java_home     => '/usr/lib/jvm/java-8-openjdk-amd64',
     }
 
+    if $jmx_exporter_enabled {
+        # Allow automatic generation of config on the
+        # Prometheus master
+        prometheus::jmx_exporter_instance { $::hostname:
+            address => $::ipaddress,
+            port    => 7800,
+        }
+    }
+
+    if $jmx_exporter_enabled {
+        # Allow the host to be deployable
+        scap::target { 'prometheus/jmx_exporter':
+            deploy_user => 'deploy-service',
+            manage_user => true,
+        }
+
+        $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
+        $jvm_opts = "-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-${jmx_exporter_jar_version}.jar=${::ipaddress}:7800:${jmx_exporter_config_file}"
+
+        # Create the Prometheus JMX Exporter configuration
+        file { $jmx_exporter_config_file:
+            ensure  => present,
+            source  => 'puppet:///modules/confluent/kafka/broker_prometheus_jmx_exporter.yaml',
+            owner   => 'kafka',
+            group   => 'kafka',
+            mode    => '0400',
+            require => Class['::confluent::kafka::broker'],
+        }
+    } else {
+        $jvm_opts = undef
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -195,7 +235,7 @@ class profile::kafka::broker(
         # https://kafka.apache.org/documentation/#java
         # Note that MetaspaceSize is a Java 8 setting.
         jvm_performance_opts             => '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80',
-
+        jvm_opts                         => jvm_opts,
         listeners                        => $listeners,
 
         security_inter_broker_protocol   => $security_inter_broker_protocol,

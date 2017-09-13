@@ -2,6 +2,10 @@ cluster: jumbo_kafka
 
 profile::kafka::broker::kafka_cluster_name: jumbo
 
+# Enable the Prometheus JMX Exporter
+profile::kafka::broker::jmx_exporter_enabled: true
+profile::kafka::broker::jmx_exporter_jar_version: 0.8-20170117.190412-1
+
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
 # TODO: does not yet work.
