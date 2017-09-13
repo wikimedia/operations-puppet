@@ -41,7 +41,11 @@ class role::grafana::base(
             # sqlite3 is the default, and it's perfectly adequate.
             'database'   => {
                 'type' => 'sqlite3',
+<<<<<<< HEAD
                 'path' => 'grafana.db',
+=======
+                path   => 'grafana.db',
+>>>>>>> 1e6c5fe7f2... grafana: quote reserved word 'type'
             },
 
             'security'   => {
