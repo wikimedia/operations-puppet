@@ -20,19 +20,16 @@ class role::logstash::elasticsearch {
         include ::elasticsearch::ganglia
     }
 
-    # Elasticsearch 5 doesn't allow setting the plugin path, we need
-    # to symlink it into place. The directory already exists as part of the
-    # debian package, so we need to force the creation of the symlink.
-    $plugins_dir = '/srv/deployment/elasticsearch/plugins'
     file { '/usr/share/elasticsearch/plugins':
-        ensure => 'link',
-        target => $plugins_dir,
+        ensure => 'directory',
         force  => true,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     class { '::elasticsearch':
         require                    => File['/usr/share/elasticsearch/plugins'],
-        plugins_dir                => $plugins_dir,
         curator_uses_unicast_hosts => false, # elasticsearch API is only exposed to localhost
     }
 
