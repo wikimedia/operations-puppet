@@ -25,6 +25,10 @@ CLASSPATH="<%= @classpath %>"
 JMX_PORT=<%= @jmx_port %>
 #KAFKA_JMX_OPTS=${KAFKA_JMX_OPTS:="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"}
 
+<% if @jmx_exporter_enabled -%>
+JVM_OPTS="$JVM_OPTS -javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-<%= @jmx_exporter_jar_version %>.jar=<%= @ipaddress %>:7800:/etc/kafka/prometheus_jmx_exporter.yaml"
+<% end -%>
+
 <% if @jvm_performance_opts -%>
 KAFKA_JVM_PERFORMANCE_OPTS="<%= @jvm_performance_opts %>"
 <% else -%>
