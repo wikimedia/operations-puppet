@@ -9,3 +9,4 @@ profile::base::domain_search:
 cluster: puppet
 profile::puppetmaster::common::directory_environments: true
 profile::puppetmaster::common::storeconfigs: puppetdb
+monitor_screens: false
