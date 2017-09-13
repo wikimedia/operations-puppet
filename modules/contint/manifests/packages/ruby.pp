@@ -25,4 +25,16 @@ class contint::packages::ruby {
         ]: ensure => present,
     }
 
+    # JSDuck was built for Ubuntu ( T48236/ T82278 )
+    # It is a pain to rebuild for Jessie so give up (T95008), we will use
+    # bundler/rubygems instead
+    package { 'jsduck':
+        ensure   => present,
+        provider => 'gem',
+        require  => [
+            Package['ruby2.1-dev'],
+            Package['build-essential'],
+        ],
+    }
+
 }
