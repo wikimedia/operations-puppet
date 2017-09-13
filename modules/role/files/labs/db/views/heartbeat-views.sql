@@ -8,6 +8,6 @@ DEFINER=`root`@`localhost`
 SQL SECURITY DEFINER VIEW `heartbeat_p`.`heartbeat` AS
 SELECT `shard` AS `shard`,
        max(`heartbeat`.`heartbeat`.`ts`) AS `last_updated`,
-       greatest(timestampdiff(MICROSECOND, max(`heartbeat`.`heartbeat`.`ts`), utc_timestamp()), 0)/1000.0 AS `lag`
+       greatest(timestampdiff(MICROSECOND, max(`heartbeat`.`heartbeat`.`ts`), utc_timestamp()), 0)/1000000.0 AS `lag`
 FROM `heartbeat`.`heartbeat`
 GROUP BY `shard`;
