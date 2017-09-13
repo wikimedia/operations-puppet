@@ -20,8 +20,10 @@ define prometheus::web (
     # Previously installed hosts with this class used nginx;
     #  turn off and remove nginx to avoid collisions
     #  on port 80.
-    class { '::nginx':
-        ensure => absent,
+    if !defined(Class['::nginx']) {
+        class { '::nginx':
+            ensure => absent,
+        }
     }
 
     # Apache configuration snippet with proxy pass.
