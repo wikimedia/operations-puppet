@@ -31,7 +31,7 @@ db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{R:class = role::mariadb::proxy::master}
 db-dbstore: P{R:class = role::mariadb::backup or R:class = role::mariadb::dbstore or R:class = role::mariadb::dbstore_multiinstance}
 db-labsdb: P{R:class = role::labs::db::replica}
-db-misc-servers: P{R:class = role::mariadb::labs_deprecated or R:class = role::mariadb::sanitarium_multisource}
+db-misc-servers: P{R:class = role::mariadb::labs_deprecated or R:class = role::mariadb::sanitarium_multisource or R:class = role::mariadb::sanitarium_multiinstance}
 db-parsercache: P{R:class = role::mariadb::parsercache}
 dbmonitor: P{R:class = role::tendril}
 debugproxy: P{R:class = role::debug_proxy}
