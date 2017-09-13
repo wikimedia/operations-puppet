@@ -9,7 +9,7 @@ ProxyPassReverse    <%= @prefix -%> http://localhost:<%= @http_port -%><%= @pref
 ProxyRequests       Off
 
 # Local reverse proxy authorization override
-# Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
+# Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
 <Proxy http://localhost:<%= @http_port -%><%= @prefix -%>*>
 

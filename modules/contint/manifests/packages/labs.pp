@@ -66,7 +66,5 @@ class contint::packages::labs {
         ensure => present;
     }
 
-    if os_version( 'debian >= jessie') {
-        include ::contint::packages::ops
-    }
+    include ::contint::packages::ops
 }
