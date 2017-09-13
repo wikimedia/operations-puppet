@@ -1,8 +1,8 @@
-# role classes for dumps.wikimedia.org
-class role::dumps::server {
-    include ::dumps
+# web server of xml/sql dumps
+class role::dumps::web::xmldumps {
+    include ::profile::dumps::web::xmldumps
 
-    system::role { 'dumps': description => 'dumps.wikimedia.org' }
+    system::role { 'role::dumps::web::xmldumps': description => 'web server of xml/sql dumps' }
 
     monitoring::service { 'http':
         description   => 'HTTP',
@@ -22,10 +22,10 @@ class role::dumps::server {
     # a AAAA lookup mode for IPv6 addresses, but this equally fails if only
     # an IPv4 address is present.
 
-    $rsync_clients = hiera('dumps::rsync_clients')
+    $rsync_clients = hiera('role::dumps::web::rsync_clients')
     $rsync_clients_ferm = join($rsync_clients, ' ')
 
-    $rsync_clients_ipv6 = hiera('dumps::rsync_clients_ipv6')
+    $rsync_clients_ipv6 = hiera('role::dumps::web::rsync_clients_ipv6')
     $rsync_clients_ipv6_ferm = join($rsync_clients_ipv6, ' ')
 
     ferm::service {'dumps_rsyncd_ipv4':

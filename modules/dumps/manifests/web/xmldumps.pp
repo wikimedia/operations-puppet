@@ -1,5 +1,5 @@
-# https://wikitech.wikimedia.org/wiki/Dumps
-class dumps {
+# serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
+class dumps::web::xmldumps {
 
     class { '::nginx':
         variant => 'extras',
@@ -13,18 +13,18 @@ class dumps {
         system_svc => 'nginx',
     }
 
-    nginx::site { 'dumps':
-        content => template('dumps/nginx.dumps.conf.erb'),
+    nginx::site { 'xmldumps':
+        content => template('dumps/web/xmldumps/nginx.conf.erb'),
         notify  => Service['nginx'],
     }
 
-    logrotate::conf { 'nginx':
+    logrotate::conf { 'xmldumps-nginx':
         ensure => present,
-        source => 'puppet:///modules/dumps/logrotate.conf',
+        source => 'puppet:///modules/dumps/web/xmldumps/logrotate.conf',
     }
 
     file { '/data/xmldatadumps/public/favicon.ico':
-        source => 'puppet:///modules/dumps/favicon.ico',
+        source => 'puppet:///modules/dumps/web/xmldumps/favicon.ico',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
