@@ -2,7 +2,7 @@ Introduction
 ============
 
 A module used to populate a Debian/Ubuntu package building environment. Meant to
-be used in the Wikimedia Labs environment but could be adapted for other
+be used in the Wikimedia environment but could be adapted for other
 environments as well.
 
 Setting it up
@@ -25,8 +25,6 @@ would be:
  * stretch-i386
  * sid-i386
 
-See more below on how to use those
-
 Building packages
 =================
 
@@ -40,13 +38,13 @@ or if you are developing a package and are in the package directory:
 
     DIST=jessie pdebuild
 
-Feel free to change jessie for the distribution of your choice.
+Feel free to change jessie for the distribution of your choice from the ones above
 
 Architectures
 =============
 
 ARCH=amd64, or ARCH=i386 is supported if you feel like building for
-different architecture versions.
+different architecture versions. There is no support for other architectures
 
 Debugging
 =========
@@ -60,7 +58,7 @@ variable that can be defined to avoid that behavior. Example:
 Using built packages as dependencies
 ====================================
 
-By default, cowbuilder will always use upstream packages rather than packages
+By default, cowbuilder will always prefer upstream packages to packages
 you have built. If you have built a new version of a dependency, you typically
 want to use that version rather than the one provided by upstream. To force
 cowbuilder to use packages in the result directory, use:
@@ -71,11 +69,11 @@ Wikimedia repos
 ===============
 
 Aside from sid, the rest of the distributions allow for satisfying build time
-dependencies via the wikimedia repos.
+dependencies via the Wikimedia repos.
 
-To use packages from the wikimedia repos to satisfy build dependencies during
+To use packages from the Wikimedia repos to satisfy build dependencies during
 building you can use WIKIMEDIA=yes. There is also the approach of appending
--wikimedia to the DIST variable and pbuilderrc will do what you want.
+-wikimedia to the DIST variable and pbuilder will do what you want.
 
 Examples:
 
@@ -114,7 +112,7 @@ git-buildpackage
 git-pbuilder can be used by git-buildpackage to leverage all of the above. The
 trick is to use GIT\_PBUILDER\_AUTOCONF=no i.e.:
 
-    GIT_PBUILDER_AUTOCONF=no DIST=trusty WIKIMEDIA=yes git-buildpackage -sa -us -uc --git-builder=git-pbuilder
+    GIT_PBUILDER_AUTOCONF=no DIST=stretch WIKIMEDIA=yes gbp buildpackage -sa -us -uc --git-builder=git-pbuilder
 
 The GIT\_PBUILDER\_AUTOCONF tells git-pbuilder to forego all attempts to discover the base path, tarball, or
 configuration file to set up the pbuilder options but rather instead rely on the settings in .pbuilderrc
@@ -124,8 +122,11 @@ You can make it a default by editing your ~/.gbp.conf:
     [buildpackage]
     builder = GIT_PBUILDER_AUTOCONF=no git-pbuilder -sa
 
--sa being to enforce the original tarball to be included in the .changes file
+-sa is being used to enforce the original tarball to be included in the .changes file
 which is a requirement for Wikimedia reprepro.
+
+Note that before stretch git-buildpackage was provided as an equivalent command to gbp buildpackage.
+Both work on jessie but git-buildpackage does not work on stretch
 
 Results
 =======
