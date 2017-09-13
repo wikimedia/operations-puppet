@@ -51,6 +51,7 @@ hostlist relay_from_hosts = 10.0.0.0/8
 
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
+acl_smtp_mail = acl_check_mail
 
 never_users = root
 
@@ -97,6 +98,10 @@ acl_check_rcpt:
 
 
 acl_check_data:
+  accept
+
+acl_check_mail:
+  deny senders = /etc/exim4/deny_senders.list
   accept
 
 ###########
