@@ -78,6 +78,9 @@ scap::dsh::groups:
       - restbase-test2002.codfw.wmnet
       - restbase-test2003.codfw.wmnet
       - xenon.eqiad.wmnet
+  discovery-analytics:
+    hosts:
+      - stat1005.eqiad.wmnet
   librenms:
     hosts:
       - netmon1002.wikimedia.org
