@@ -19,8 +19,8 @@ handlers = {}
 
 # Mapping of continent names to ISO 3166 country codes.
 # From https://dev.maxmind.com/geoip/legacy/codes/country_continent/.
-# Antarctica excluded on account of its miniscule population.
-iso_3166_continent = {
+# Antarctica excluded on account of its low population.
+iso_3166_by_continent = {
     'Africa': [
         'AO', 'BF', 'BI', 'BJ', 'BW', 'CD', 'CF', 'CG', 'CI', 'CM', 'CV', 'DJ',
         'DZ', 'EG', 'EH', 'ER', 'ET', 'GA', 'GH', 'GM', 'GN', 'GQ', 'GW', 'KE',
@@ -59,31 +59,35 @@ iso_3166_continent = {
     ]
 }
 
-iso_3166_countries = {}
-for continent, countries in iso_3166_continent.items():
+iso_3166_to_continent = {}
+for continent, countries in iso_3166_by_continent.items():
     for country in countries:
-        iso_3166_countries[country] = continent
+        iso_3166_to_continent[country] = continent
 
-# Map of ISO 3166-1 country codes to country name, with entries for the world's
-# 40 most populous countries as of 1 January 2016, plus Australia. About 83% of
-# the world's population lives in one of these countries. Australia is included
-# because it has a large user base while being remote from anywhere else.
-# Australia
-iso_3166_top_40_plus_australia = {
-    'AR': 'Argentina',      'BD': 'Bangladesh',       'BR': 'Brazil',
-    'CA': 'Canada',         'CD': 'DR Congo',         'CN': 'China',
-    'CO': 'Colombia',       'DE': 'Germany',          'DZ': 'Algeria',
-    'EG': 'Egypt',          'ES': 'Spain',            'ET': 'Ethiopia',
-    'FR': 'France',         'GB': 'United Kingdom',   'ID': 'Indonesia',
-    'IN': 'India',          'IQ': 'Iraq',             'IR': 'Iran',
-    'IT': 'Italy',          'JP': 'Japan',            'KE': 'Kenya',
-    'KR': 'South Korea',    'MA': 'Morocco',          'MM': 'Myanmar',
-    'MX': 'Mexico',         'NG': 'Nigeria',          'PH': 'Philippines',
-    'PK': 'Pakistan',       'PL': 'Poland',           'RU': 'Russia',
-    'SA': 'Saudi Arabia',   'SD': 'Sudan',            'TH': 'Thailand',
-    'TR': 'Turkey',         'TZ': 'Tanzania',         'UA': 'Ukraine',
-    'UG': 'Uganda',         'US': 'United States',    'VN': 'Vietnam',
-    'ZA': 'South Africa',   'AU': 'Australia',
+# Shortlist of ISO 3166-1 country codes to create dedicated Graphite metrics
+# for from Navigation Timing. This list is based on the top 40 most populous
+# countries as of 1 January 2016 (83% of the world's population living in
+# these countries) reduced to only those countries from which at least 5
+# Navigation Timing events are received on average every minute.
+#
+# <https://grafana.wikimedia.org/dashboard/db/navtiming-count-by-country>
+#
+# This is for publicly aggregated time series published via Graphite.
+#
+# The original unfiltered data from EventLogging is privately available
+# via the Analytics infrastructure (EventLogging DB).
+# - <https://wikitech.wikimedia.org/wiki/EventLogging>
+# - <https://wikitech.wikimedia.org/wiki/EventLogging#Accessing_data>
+# - <https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups>
+iso_3166_whitelist = {
+    'DE': 'Germany',         # ~9/min
+    'FR': 'France',          # ~6/min
+    'GB': 'United Kingdom',  # ~8/min
+    'IN': 'India',           # ~5/min
+    'IT': 'Italy',           # ~6/min
+    'JP': 'Japan',           # ~12/min
+    'RU': 'Russia',          # ~6/min
+    'US': 'United States',   # ~22/min
 }
 
 # Only return the small subset of browsers we whitelisted, this to avoid arbitrary growth
@@ -372,8 +376,8 @@ def handle_navigation_timing(meta):
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
     country_code = event.get('originCountry')
-    continent = iso_3166_countries.get(country_code)
-    country_name = iso_3166_top_40_plus_australia.get(country_code)
+    continent = iso_3166_to_continent.get(country_code)
+    country_name = iso_3166_whitelist.get(country_code)
 
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
