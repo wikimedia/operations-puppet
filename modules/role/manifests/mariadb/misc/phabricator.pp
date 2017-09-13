@@ -4,10 +4,8 @@
 class role::mariadb::misc::phabricator(
     $shard     = 'm3',
     $master    = false,
-    $snapshot  = false,
     $ssl       = 'puppet-cert',
     $p_s       = 'on',
-    $mariadb10 = true,
     ) {
 
     system::role { 'mariadb::misc':
@@ -25,13 +23,13 @@ class role::mariadb::misc::phabricator(
 
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include ::base::firewall
     include role::mariadb::ferm
 
     class { 'role::mariadb::groups':
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
-        socket      => '/tmp/mysql.sock',
     }
 
     $read_only = $master ? {
@@ -43,6 +41,7 @@ class role::mariadb::misc::phabricator(
 
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/phabricator.my.cnf.erb',
+        basedir   => '/opt/wmf-mariadb101',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
@@ -85,7 +84,6 @@ class role::mariadb::misc::phabricator(
         shard      => $shard,
         datacenter => $::site,
         enabled    => $master,
-        socket     => '/tmp/mysql.sock',
     }
 
     unless $master {
@@ -93,7 +91,6 @@ class role::mariadb::misc::phabricator(
             is_critical   => false,
             contact_group => 'admins',
             multisource   => false,
-            socket        => '/tmp/mysql.sock',
         }
     }
 }
