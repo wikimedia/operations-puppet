@@ -1,6 +1,8 @@
 admin::groups:
   - druid-admins
 
+monitor_screens: false
+
 profile::druid::common::zookeeper_cluster_name: druid-eqiad
 
 # Make druid build an extension composed of CDH jars.

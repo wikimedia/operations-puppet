@@ -128,6 +128,8 @@ profile::cassandra::settings:
 
 service::configuration::log_dir: "/var/log"
 
+monitor_screens: false
+
 admin::groups:
   - restbase-roots
   - restbase-admins
