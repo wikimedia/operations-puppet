@@ -26,7 +26,6 @@
     shard: m3
     role: slave
   targets:
-  - db1048:9104
   - db1059:9104
 
 - labels:
