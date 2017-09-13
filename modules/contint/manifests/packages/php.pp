@@ -64,17 +64,6 @@ class contint::packages::php {
         }
     }
 
-    if os_version('ubuntu == trusty') {
-        # Enable mcrypt for PHP CLI.
-        # For most PHP extensions, the deb enables it on install, but not
-        # php-mcrypt on trusty.
-        exec { 'mcrypt':
-            command => '/usr/sbin/php5enmod mcrypt',
-            unless  => '/usr/bin/php -m | /bin/grep -q mcrypt',
-            require => [Package['php5-mcrypt'], Package['php5-cli']],
-        }
-    }
-
     # PHP Extensions dependencies (mediawiki/php/*.git)
     package { [
         'libthai-dev',      # wikidiff2

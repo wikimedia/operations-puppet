@@ -6,7 +6,6 @@
 class role::ci::slave::android {
 
     requires_realm('labs')
-    requires_os('debian >= jessie')
 
     system::role { 'ci::slave::android':
         description => 'CI Jenkins slave for Android testing',

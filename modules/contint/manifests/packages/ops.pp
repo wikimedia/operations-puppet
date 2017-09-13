@@ -4,13 +4,6 @@
 # used for building the Nodepool diskimages.
 class contint::packages::ops {
 
-    # Do NOT use requires_os() here
-    # The class is used to create diskimages and requires_os() is not
-    # available in that context.
-    if $::operatingsystem == 'Ubuntu' {
-        fail('contint::packages::ops is not meant for Ubuntu')
-    }
-
     # Python test suite for operations/software/conftool
     package { ['etcd', 'python-etcd']:
         ensure => latest,

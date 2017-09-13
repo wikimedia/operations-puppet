@@ -6,12 +6,10 @@ class role::ci::slave::labs {
         description => 'CI Jenkins slave on labs' }
 
     # Debian slaves are used to build Debian packages for all our distributions
-    if os_version('debian >= jessie') {
-        system::role { '::package_builder':
-            description => 'CI package building',
-        }
-        include ::contint::package_builder
+    system::role { '::package_builder':
+        description => 'CI package building',
     }
+    include ::contint::package_builder
 
     class { 'contint::worker_localhost':
         owner => 'jenkins-deploy',
@@ -32,9 +30,7 @@ class role::ci::slave::labs {
     # Include package unsafe for production
     include contint::packages::labs
 
-    if os_version('debian >= jessie') {
-        include contint::hhvm
-    }
+    include contint::hhvm
 
     include contint::php
 

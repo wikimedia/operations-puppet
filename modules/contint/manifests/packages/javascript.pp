@@ -18,8 +18,8 @@ class contint::packages::javascript {
         'npm'       => '3.8.3',
     }
 
-    # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
-    # already has a package called 'node'
+    # Provide 'node' alias for 'nodejs' because Debian already has a package
+    # called 'node'
     package { 'nodejs-legacy':
         ensure => present,
         # Brings up 'nodejs' from upstream which we then override
