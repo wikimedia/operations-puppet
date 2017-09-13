@@ -67,6 +67,12 @@ class role::mariadb::grants::production(
         $labspuppet_pass     = hiera('labspuppetbackend_mysql_password')
         $labsdbaccounts_pass = $passwords::labsdbaccounts::db_password
         $rddmarc_pass        = $passwords::rddmarc::db_password
+        $phab_admin_pass     = $passwords::mysql::phabricator::admin_pass
+        $phab_app_pass       = $passwords::mysql::phabricator::app_pass
+        $phab_bz_pass        = $passwords::mysql::phabricator::bz_pass
+        $phab_rt_pass        = $passwords::mysql::phabricator::rt_pass
+        $phab_manifest_pass  = $passwords::mysql::phabricator::manifest_pass
+        $phab_metrics_pass   = $passwords::mysql::phabricator::metrics_pass
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,

@@ -13,7 +13,7 @@ GRANT USAGE
 
 GRANT USAGE
     ON *.* TO 'phadmin'@'10.64.16.8'
-    IDENTIFIED BY PASSWORD '*4882BF5FB61F6C0D5935BFA407BB6B6086421A5F';
+    IDENTIFIED BY '<%= @phab_admin_pass %>';
 
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.8';
@@ -21,7 +21,7 @@ GRANT ALL PRIVILEGES
 -- phadmin@dbproxy1003
 GRANT USAGE
     ON *.* TO 'phadmin'@'10.64.0.198'
-    IDENTIFIED BY PASSWORD '*4882BF5FB61F6C0D5935BFA407BB6B6086421A5F';
+    IDENTIFIED BY '<%= @phab_admin_pass %>';
 
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.0.198';
@@ -29,7 +29,7 @@ GRANT ALL PRIVILEGES
 -- phadmin@dbproxy1008
 GRANT USAGE
     ON *.* TO 'phadmin'@'10.64.32.157'
-    IDENTIFIED BY PASSWORD '*4882BF5FB61F6C0D5935BFA407BB6B6086421A5F';
+    IDENTIFIED BY '<%= @phab_admin_pass %>';
 
 GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.32.157';
@@ -38,7 +38,7 @@ GRANT ALL PRIVILEGES
 
 GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.64.16.8'
-    IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
+    IDENTIFIED BY '<%= @phab_app_pass %>';
 
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.8';
@@ -50,7 +50,7 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 
 GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.64.0.198'
-    IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
+    IDENTIFIED BY '<%= @phab_app_pass %>';
 
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.8';
@@ -62,7 +62,7 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 
 GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.64.32.157'
-    IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
+    IDENTIFIED BY '<%= @phab_app_pass %>';
 
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.32.157';
@@ -74,7 +74,7 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 
 GRANT USAGE
     ON *.* TO 'phstats'@'10.64.16.8'
-    IDENTIFIED BY PASSWORD '*FB8AA9D0E19A01A13E7FB1037FC964F7887D22F5';
+    IDENTIFIED BY '<%= @phab_metrics_pass %>';
 GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.16.8';
 GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.16.8';
 GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.16.8';
@@ -84,7 +84,7 @@ GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.16.8';
 
 GRANT USAGE
     ON *.* TO 'phstats'@'10.64.0.198'
-    IDENTIFIED BY PASSWORD '*FB8AA9D0E19A01A13E7FB1037FC964F7887D22F5';
+    IDENTIFIED BY '<%= @phab_metrics_pass %>';
 GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.0.198';
 GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.0.198';
 GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.0.198';
@@ -94,7 +94,7 @@ GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.0.198';
 
 GRANT USAGE
     ON *.* TO 'phstats'@'10.64.32.157'
-    IDENTIFIED BY PASSWORD '*FB8AA9D0E19A01A13E7FB1037FC964F7887D22F5';
+    IDENTIFIED BY '<%= @phab_metrics_pass %>';
 GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.32.157';
 GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.32.157';
 GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.32.157';
@@ -104,7 +104,7 @@ GRANT SELECT ON `phabricator_differential`.* TO 'phstats'@'10.64.32.157';
 
 GRANT USAGE
     ON *.* TO 'phmanifest'@'10.64.16.8'
-    IDENTIFIED BY PASSWORD '*57879C423C685FDF9F3F4E3DB71207E76A8384C4';
+    IDENTIFIED BY '<%= @phab_manifest_pass %>';
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.8';
@@ -113,7 +113,7 @@ GRANT SELECT
 
 GRANT USAGE
     ON *.* TO 'phmanifest'@'10.64.0.198'
-    IDENTIFIED BY PASSWORD '*57879C423C685FDF9F3F4E3DB71207E76A8384C4';
+    IDENTIFIED BY '<%= @phab_manifest_pass %>';
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.0.198';
@@ -122,7 +122,7 @@ GRANT SELECT
 
 GRANT USAGE
     ON *.* TO 'phmanifest'@'10.64.32.157'
-    IDENTIFIED BY PASSWORD '*57879C423C685FDF9F3F4E3DB71207E76A8384C4';
+    IDENTIFIED BY '<%= @phab_manifest_pass %>';
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.32.157';
@@ -130,13 +130,13 @@ GRANT SELECT
 -- bzmigrate@%
 GRANT USAGE
     ON *.* TO 'bzmigrate'@'%'
-    IDENTIFIED BY PASSWORD '*DA35098F5C3FFAF021B5E73207FC2CFB431DE2FF';
+    IDENTIFIED BY '<%= @phab_bz_pass %>';
 GRANT ALL PRIVILEGES
     ON `bugzilla_migration`.* TO 'bzmigrate'@'%';
 
 -- rtmigrate@%
 GRANT USAGE
     ON *.* TO 'rtmigrate'@'%'
-    IDENTIFIED BY PASSWORD '*FEFB866BAD7FF0ED0A3078A178E2AA1B7D093477';
+    IDENTIFIED BY '<%= @phab_rt_pass %>';
 GRANT ALL PRIVILEGES
     ON `rt_migration`.* TO 'rtmigrate'@'%';
