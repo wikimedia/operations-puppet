@@ -11,4 +11,8 @@ class role::labs::bastion {
     package { 'mosh':
         ensure => present,
     }
+
+    class { 'profile::openstack::main::cumin::target':
+        authorized_group => 'cumin_masters',
+    }
 }

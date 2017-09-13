@@ -194,6 +194,10 @@ class network::constants {
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
                 ], hiera('network::allow_ssh_from_ips', [])), # Allow labs projects to setup their own ssh origination points
+            'bastion_restricted_hosts' => [
+                    '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
+                    '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
+                ],
             'monitoring_hosts' => [
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
                 ],
@@ -204,6 +208,12 @@ class network::constants {
             'maintenance_hosts' => [
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
                     '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
+                ],
+            'cumin_masters' => [
+                    '10.65.7.24',  # labcontrol1001.wikimedia.org
+                    '10.65.3.48',  # labcontrol1002.wikimedia.org
+                    '10.65.4.119', # labcontrol1003.wikimedia.org
+                    '10.65.4.120', # labcontrol1004.wikimedia.org
                 ],
             }
     }
