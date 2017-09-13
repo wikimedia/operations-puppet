@@ -32,6 +32,7 @@ class role::mariadb::grants::production(
     include passwords::servermon
     include passwords::striker
     include passwords::labsdbaccounts
+    include passwords::mysql::phabricator
 
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
