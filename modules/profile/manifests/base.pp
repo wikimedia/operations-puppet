@@ -175,4 +175,6 @@ class profile::base(
         ip           => '10.64.16.149', # graphite1004
         host_aliases => 'statsd',
     }
+
+    include profile::emacs
 }

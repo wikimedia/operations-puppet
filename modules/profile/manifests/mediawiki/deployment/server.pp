@@ -153,7 +153,4 @@ class profile::mediawiki::deployment::server(
     }
     # benchmarking tools for sessionstorage testing (T230178)
     ensure_packages(['siege', 'wrk', 'lua-cjson'])
-
-    # World famous Emacs editor
-    ensure_packages(['emacs-nox'])
 }

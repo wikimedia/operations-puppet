@@ -33,7 +33,6 @@ class role::releases {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::backup::host
-    include ::profile::emacs
     include ::profile::releases::common
     include ::profile::releases::mediawiki
     include ::profile::docker::ferm

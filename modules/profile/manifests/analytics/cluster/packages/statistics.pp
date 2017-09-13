@@ -11,7 +11,6 @@ class profile::analytics::cluster::packages::statistics {
 
     ensure_packages([
         'time',
-        'emacs',
         'mc',
         'zip',
         'p7zip',
