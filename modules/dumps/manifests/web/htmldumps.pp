@@ -1,23 +1,5 @@
-# ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
-class dumps::zim {
-
-    # imagemagick for ZIM dumps
-    include ::imagemagick::install
-
-    # pixz for multi-threaded lzma compression
-    package { [ 'pixz' ]:
-        ensure => present,
-    }
-
-    # nodejs-legacy is a symlink to /usr/bin/node
-    package { [ 'nodejs', 'nodejs-legacy' ]:
-        ensure => present,
-    }
-
-    # SQLite 3 shared library and cmdline interface
-    package { [ 'sqlite3', 'libsqlite3-0' ]:
-        ensure => present,
-    }
+# serve dumps of revision content from restbase in html format
+class dumps::web::htmldumps {
 
     # nginx serving these via http only, with another host
     # proxying all requests. can't use the standard dumps nginx
@@ -44,8 +26,13 @@ class dumps::zim {
         variant => 'extras',
     }
 
-    nginx::site { 'zim':
-        source => 'puppet:///modules/dumps/nginx.zim.conf',
+    logrotate::conf { 'htmldumps-nginx':
+        ensure => present,
+        source => 'puppet:///modules/dumps/web/xmldumps/logrotate.conf',
+    }
+
+    nginx::site { 'htmldumps':
+        source => 'puppet:///modules/dumps/web/htmldumps/nginx.conf',
         notify => Service['nginx'],
     }
 }
