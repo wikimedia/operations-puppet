@@ -361,3 +361,6 @@ profile::eventstreams::streams:
   recentchange:
     topics: ["%{::site}.mediawiki.recentchange"]
 profile::eventstreams::rdkafka_config: {}
+
+thumbor::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+thumbor::logstash_port: 11514
