@@ -1,15 +1,15 @@
 class role::salt::masters::production {
 
-    $salt_state_roots    = { 'base' => ['/srv/salt'] }
-    $salt_file_roots     = { 'base' => ['/srv/salt'] }
-    $salt_pillar_roots   = { 'base' => ['/srv/pillars'] }
-    $salt_module_roots   = { 'base' => ['/srv/salt/_modules'] }
-    $salt_returner_roots = { 'base' => ['/srv/salt/_returners'] }
+    $salt_state_roots    = { 'base' => '/srv/salt' }
+    $salt_file_roots     = { 'base' => '/srv/salt' }
+    $salt_pillar_roots   = { 'base' => '/srv/pillars' }
+    $salt_module_roots   = { 'base' => '/srv/salt/_modules' }
+    $salt_returner_roots = { 'base' => '/srv/salt/_returners' }
 
 
     # TODO: do not hardcode salt_peer_run
     class { 'salt::master':
-        salt_runner_dirs    => ['/srv/runners'],
+        salt_runner_dir     => '/srv/runners',
         salt_peer_run       => {
             'tin.eqiad.wmnet'              => ['deploy.*'],
             'naos.codfw.wmnet'             => ['deploy.*'],

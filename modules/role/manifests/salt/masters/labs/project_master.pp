@@ -3,14 +3,14 @@
 # filtertags: labs-project-servermon labs-project-debdeploy labs-project-integration labs-project-ttmserver
 class role::salt::masters::labs::project_master {
 
-    $salt_state_roots    = { 'base' => ['/srv/salt'] }
-    $salt_file_roots     = { 'base' => ['/srv/salt'] }
-    $salt_pillar_roots   = { 'base' => ['/srv/pillars'] }
-    $salt_module_roots   = { 'base' => ['/srv/salt/_modules'] }
-    $salt_returner_roots = { 'base' => ['/srv/salt/_returners'] }
+    $salt_state_roots    = { 'base' => '/srv/salt' }
+    $salt_file_roots     = { 'base' => '/srv/salt' }
+    $salt_pillar_roots   = { 'base' => '/srv/pillars' }
+    $salt_module_roots   = { 'base' => '/srv/salt/_modules' }
+    $salt_returner_roots = { 'base' => '/srv/salt/_returners' }
 
     class { 'salt::master':
-        salt_runner_dirs    => ['/srv/runners'],
+        salt_runner_dir     => '/srv/runners',
                 # For simplicity of test/dev we trust all of labs
                 # to run deploy module calls, but rely on security groups
                 # to secure this.
