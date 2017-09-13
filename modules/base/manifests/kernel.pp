@@ -38,6 +38,7 @@ class base::kernel
             'parport_pc',
             'ppdev',
             'acpi_power_meter',
+            'bluetooth',
         ],
     }
 
