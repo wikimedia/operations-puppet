@@ -195,6 +195,7 @@ plugins:
       - ['cp', '/etc/default/grub', '{root}/etc/default/grub']
       - ['chroot', '{root}', 'update-grub']
       - ['chroot', '{root}', 'puppet', 'agent', '--disable']
+      - ['chroot', '{root}', 'update-rc.d', '-f', 'puppet', 'remove']
 
   unattended_upgrades:
     update_interval: 1

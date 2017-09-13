@@ -181,11 +181,12 @@ echo "master_finger: ${saltfinger}" >> /etc/salt/minion
 echo "${fqdn}" > /etc/salt/minion_id
 systemctl restart salt-minion.service
 
+apt-get update
+
 puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
 #  updated sources.list
-apt-get update
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
 apt-get update
 puppet agent -t
