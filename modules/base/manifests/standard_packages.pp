@@ -64,6 +64,13 @@ class base::standard_packages {
         ensure => absent,
     }
 
+    # Trusty doesn't provide the emacs meta packages, which pull in the latest version
+    if os_version('ubuntu >= trusty') {
+        require_package('emacs24-nox')
+    } else {
+        require_package('emacs-nox')
+    }
+
     # Installed by default on Ubuntu, but not used (and it's setuid root, so
     # a potential security risk).
     #
