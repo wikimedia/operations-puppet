@@ -1684,6 +1684,26 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     include ::base::firewall
 }
 
+# T165519
+node /^mw13(19|2[0-8])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+    include ::base::firewall
+}
+
+node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+    include ::base::firewall
+}
+
+node /^mw13(0[89]|1[01])\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+    include ::base::firewall
+}
+
+node /^mw13(07|18)\.eqiad\.wmnet/ {
+    role(mediawiki::videoscaler)
+}
+
 # ROW A codfw appservers: mw2017, mw2075-mw2079, and mw2215-2250
 
 # mw2017/mw2099 are codfw test appservers
