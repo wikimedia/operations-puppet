@@ -6,13 +6,6 @@ KAFKA_CONFIG=/etc/kafka
 JAVA_HOME="<%= @java_home %>"
 <% end -%>
 
-# Extra Java options
-<% if @java_opts -%>
-JAVA_OPTS="<%= @java_opts %>"
-<% else -%>
-#JAVA_OPTS=""
-<% end -%>
-
 # Extra classpath entries
 <% if @classpath -%>
 CLASSPATH="<%= @classpath %>"
@@ -42,4 +35,4 @@ KAFKA_HEAP_OPTS="<%= @heap_opts %>"
 #KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
 <% end -%>
 #KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:${KAFKA_CONFIG}/log4j.properties"
-KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"
+KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 <%= @java_opts %>"
