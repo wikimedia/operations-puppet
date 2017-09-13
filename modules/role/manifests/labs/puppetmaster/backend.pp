@@ -22,6 +22,7 @@ class role::labs::puppetmaster::backend {
 
     include ::profile::puppetmaster::labsenc
     include ::profile::puppetmaster::labsencapi
+    include ::profile::openstack::main::cumin::master
 
     include puppetmaster::labsrootpass
 

@@ -205,6 +205,16 @@ class network::constants {
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
                     '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
                 ],
+            'cumin_masters' => [  # As seen by labs instances
+                    '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
+                    '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
+                ],
+            'cumin_real_masters' => [  # Where Cumin can be run
+                    '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
+                    '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org
+                    '208.80.155.120',               # labpuppetmaster1002.wikimedia.org
+                    '2620:0:861:4:208:80:155:120',  # labpuppetmaster1002.wikimedia.org
+                ],
             }
     }
 
