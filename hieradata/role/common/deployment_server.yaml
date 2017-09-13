@@ -27,12 +27,12 @@ hhvm::extra::fcgi:
   hhvm:
     server:
       light_process_count: 0
-      light_process_file_prefix:
+      light_process_file_prefix: ''
 hhvm::extra::cli:
   hhvm:
     server:
       light_process_count: 0
-      light_process_file_prefix:
+      light_process_file_prefix: ''
 # Default scap::server configuration.  This is used in production.
 # If you are setting up scap::server in labs, these will be used
 # unless you override them for your labs project.
