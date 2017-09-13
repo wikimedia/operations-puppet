@@ -5,11 +5,11 @@
 
 [wiki]
 dblist=<%= @config[@configtype]['dblist'] %>
-privatelist=<%= @apachedir -%>/dblists/private.dblist
-closedlist=<%= @apachedir -%>/dblists/closed.dblist
+privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
+closedlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
 skipdblist=<%= @config[@configtype]['skipdblist'] %>
-flowlist=<%= @apachedir -%>/dblists/flow.dblist
-dir=<%= @apachedir %>
+flowlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/flow.dblist
+dir=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
 adminsettings=private/PrivateSettings.php
 tablejobs=<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/table_jobs.yaml
 
