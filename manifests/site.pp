@@ -2287,7 +2287,11 @@ node /^labvirt101[0-8].eqiad.wmnet/ {
 }
 
 # Wikidata query service
-node /^wdqs100[1-5]\.eqiad\.wmnet$/ {
+node /^wdqs100[12]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
     role(wdqs)
 }
 
