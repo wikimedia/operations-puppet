@@ -2,9 +2,7 @@ class salt::master(
     $salt_version='installed',
     $salt_interface=undef,
     $salt_worker_threads=undef,
-    $salt_runner_dirs=['/srv/runners'],
-    $salt_file_roots={'base'=>['/srv/salt']},
-    $salt_pillar_roots={'base'=>['/srv/pillar']},
+    $salt_runner_dir='/srv/runners',
     $salt_ext_pillar={},
     $salt_reactor_root='/srv/reactors',
     $salt_reactor = {},
@@ -12,9 +10,11 @@ class salt::master(
     $salt_peer={},
     $salt_peer_run={},
     $salt_nodegroups={},
-    $salt_state_roots={'base'=>['/srv/salt']},
-    $salt_module_roots={'base'=>['/srv/salt/_modules']},
-    $salt_returner_roots={'base'=>['/srv/salt/_returners']},
+    $salt_file_roots={'base'=>'/srv/salt'},
+    $salt_pillar_roots={'base'=>'/srv/pillar'},
+    $salt_state_roots={'base'=>'/srv/salt'},
+    $salt_module_roots={'base'=>'/srv/salt/_modules'},
+    $salt_returner_roots={'base'=>'/srv/salt/_returners'},
 ){
     package { 'salt-master':
         ensure => $salt_version,
@@ -35,14 +35,14 @@ class salt::master(
         require => Package['salt-master'],
     }
 
-    file { $salt_runner_dirs:
+    file { $salt_runner_dir:
         ensure => directory,
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
-    file { "${salt_runner_dirs}/keys.py":
+    file { "${salt_runner_dir}/keys.py":
         ensure => present,
         source => 'puppet:///modules/salt/keys.py',
         mode   => '0755',

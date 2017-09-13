@@ -3,14 +3,14 @@ class role::salt::masters::labs {
 
     $puppet_master = hiera('labs_puppet_master')
 
-    $salt_state_roots    = { 'base' => ['/srv/salt'] }
-    $salt_file_roots     = { 'base' => ['/srv/salt'] }
-    $salt_pillar_roots   = { 'base' => ['/srv/pillars'] }
-    $salt_module_roots   = { 'base' => ['/srv/salt/_modules'] }
-    $salt_returner_roots = { 'base' => ['/srv/salt/_returners'] }
+    $salt_state_roots    = { 'base' => '/srv/salt' }
+    $salt_file_roots     = { 'base' => '/srv/salt' }
+    $salt_pillar_roots   = { 'base' => '/srv/pillars' }
+    $salt_module_roots   = { 'base' => '/srv/salt/_modules' }
+    $salt_returner_roots = { 'base' => '/srv/salt/_returners' }
 
     class { 'salt::master':
-        salt_runner_dirs    => ['/srv/runners'],
+        salt_runner_dir     => '/srv/runners',
         salt_file_roots     => $salt_file_roots,
         salt_pillar_roots   => $salt_pillar_roots,
         salt_worker_threads => '50',
