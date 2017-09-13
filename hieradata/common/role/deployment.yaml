@@ -18,8 +18,6 @@ role::deployment::repo_config:
     upstream: https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics
   sentry/sentry:
     upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
-  wikimedia/discovery/analytics:
-    upstream: https://gerrit.wikimedia.org/r/wikimedia/discovery/analytics
   analytics/aqs/deploy:
     upstream: https://gerrit.wikimedia.org/r/analytics/aqs/deploy
     service_name: aqs
