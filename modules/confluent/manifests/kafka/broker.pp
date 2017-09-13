@@ -206,6 +206,14 @@
 #   The maximum message size allowed.
 #   Default: 1048576
 #
+# [*jmx_exporter_enabled*]
+#   Enable the Prometheus Jmx exporter.
+#   Default: false
+#
+# [*jmx_exporter_jar_version*]
+#   Prometheus Jmx exporter version to use.
+#   Default: 0.8-20170117.190412-1
+#
 class confluent::kafka::broker(
     $enabled                             = true,
     $brokers                             = {
@@ -279,6 +287,9 @@ class confluent::kafka::broker(
     $log4j_properties_template           = 'confluent/kafka/log4j.properties.erb',
 
     $message_max_bytes                   = 1048576,
+
+    $jmx_exporter_enabled                = false,
+    $jmx_exporter_jar_version            = '0.8-20170117.190412-1',
 ) {
     # confluent::kafka::client installs the kafka package
     # and a handy wrapper script.
@@ -335,6 +346,23 @@ class confluent::kafka::broker(
     # Render out Kafka Broker config files.
     file { '/etc/kafka/server.properties':
         content => template($server_properties_template),
+    }
+
+    if $jmx_exporter_enabled {
+        # Allow the host to be deployable
+        scap::target { 'prometheus/jmx_exporter':
+            deploy_user => 'deploy-service',
+            manage_user => true,
+        }
+        # Create the Prometheus JMX Exporter configuration
+        file { '/etc/kafka/prometheus_jmx_exporter.yaml':
+            ensure  => present,
+            source  => 'puppet:///modules/confluent/kafka/prometheus_jmx_exporter.yaml',
+            owner   => 'kafka',
+            group   => 'kafka',
+            mode    => '0400',
+            require => Package[$confluent::kafka::client::package],
+        }
     }
 
     # log4j configuration for Kafka daemon

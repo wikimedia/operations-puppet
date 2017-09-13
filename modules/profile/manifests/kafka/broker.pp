@@ -65,6 +65,10 @@
 #   than 0.10.2, the consumers' fetch size must also be increased
 #   so that the they can fetch record batches this large.
 #
+# [*prometheus_jmx_exporter_enabled*]
+#   Enable the prometheus jmx exporter.
+#
+#
 class profile::kafka::broker(
     $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
     $statsd                            = hiera('statsd'),
@@ -83,7 +87,8 @@ class profile::kafka::broker(
     $replica_maxlag_warning            = hiera('profile::kafka::broker::replica_maxlag_warning'),
     $replica_maxlag_critical           = hiera('profile::kafka::broker::replica_maxlag_critical'),
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
-    $message_max_bytes                 = hiera('kafka_message_max_bytes')
+    $message_max_bytes                 = hiera('kafka_message_max_bytes'),
+    $jmx_exporter_enabled              = hiera('profile::kafka::broker::jmx_exporter_enabled'),
 ) {
     # TODO: WIP
     $tls_secrets_path = undef
@@ -180,6 +185,15 @@ class profile::kafka::broker(
         java_home     => '/usr/lib/jvm/java-8-openjdk-amd64',
     }
 
+    if $jmx_exporter_enabled {
+        # Allow automatic generation of config on the
+        # Prometheus master
+        prometheus::jmx_exporter_instance { $::hostname:
+            address => $::ipaddress,
+            port    => 7800,
+        }
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -195,7 +209,6 @@ class profile::kafka::broker(
         # https://kafka.apache.org/documentation/#java
         # Note that MetaspaceSize is a Java 8 setting.
         jvm_performance_opts             => '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80',
-
         listeners                        => $listeners,
 
         security_inter_broker_protocol   => $security_inter_broker_protocol,
@@ -209,6 +222,8 @@ class profile::kafka::broker(
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
+
+        jmx_exporter_enabled             => $jmx_exporter_enabled,
     }
 
     class { '::confluent::kafka::broker::jmxtrans':
