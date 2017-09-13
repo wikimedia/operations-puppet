@@ -1,0 +1,26 @@
+profile::dumps::web::rsync_server::clients:
+  ipv4:
+    - dataset1001.wikimedia.org
+    - mwlog1001.eqiad.wmnet
+    - mwlog2001.codfw.wmnet
+    - phab1001.eqiad.wmnet
+    - ms1001.wikimedia.org
+    - stat1005.eqiad.wmnet
+    - stat1006.eqiad.wmnet
+    - sagres.c3sl.ufpr.br
+    - odysseus.fi.muni.cz
+    - odysseus.linux.cz
+    - mirror.fr.wickedway.nl
+# disable Feb 10 2017, looking into dns issues
+#  - wikimedia.wansec.com
+    - ftpmirror.your.org
+    - ec2-174-129-186-231.compute-1.amazonaws.com
+    - ftpmirror-ae0-4.us.your.org
+    - crcdtn01.crc.nd.edu
+    - wmrsync.crc.nd.edu
+    - wikimedia.iconic.vi
+    - poincare.acc.umu.se
+    - wikimedia.bytemark.co.uk
+  ipv6:
+    - odysseus.ip6.fi.muni.cz
+    - poincare.acc.umu.se
