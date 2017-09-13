@@ -10,6 +10,10 @@ class role::labs::instance {
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
     }
 
+    class { 'profile::openstack::main::cumin::target':
+        authorized_group => 'bastion_restricted_hosts',
+    }
+
     class { 'ldap::role::client::labs':
         # Puppet requires ldap, so we need to update ldap before anything
         #  happens to puppet.
