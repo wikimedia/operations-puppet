@@ -4,7 +4,6 @@
 class role::mariadb::misc::phabricator(
     $shard     = 'm3',
     $master    = false,
-    $snapshot  = false,
     $ssl       = 'puppet-cert',
     $p_s       = 'on',
     ) {
@@ -25,7 +24,7 @@ class role::mariadb::misc::phabricator(
     include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::profile::base::firewall
-    include ::role::mariadb::ferm
+    ::profile::mariadb::ferm { 'phabricator': }
 
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
@@ -42,9 +41,9 @@ class role::mariadb::misc::phabricator(
 
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/phabricator.my.cnf.erb',
+        basedir   => '/opt/wmf-mariadb101', # FIXME: config should default to 10.1
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
-        basedir   => '/opt/wmf-mariadb101', # FIXME: config should default to 10.1
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
         ssl       => $ssl,
