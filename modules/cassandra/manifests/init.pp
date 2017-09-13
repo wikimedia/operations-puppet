@@ -387,7 +387,7 @@ class cassandra(
         fail('data_file_directories must not be empty')
     }
 
-    if (!($target_version in ['2.1', '2.2', '3.x'])) {
+    if (!($target_version in ['2.1', '2.2', '3.x', 'dev'])) {
         fail("${target_version} is not a valid Cassandra target version!")
     }
 
@@ -421,7 +421,8 @@ class cassandra(
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
         '2.2' => hiera('cassandra::version', '2.2.6-wmf1'),
-        '3.x' => hiera('cassandra::version', '3.11.0-wmf3')
+        '3.x' => hiera('cassandra::version', '3.11.0-wmf3'),
+        'dev' => hiera('cassandra::version', '3.11.0-wmf4')
     }
     package { 'cassandra':
         ensure  => $package_version,
