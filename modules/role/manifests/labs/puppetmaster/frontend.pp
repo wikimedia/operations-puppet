@@ -35,6 +35,7 @@ class role::labs::puppetmaster::frontend() {
     include ::profile::backup::host
     include ::profile::puppetmaster::labsenc
     include ::profile::puppetmaster::labsencapi
+    include ::profile::openstack::main::cumin::master
 
     if ! defined(Class['puppetmaster::certmanager']) {
         class { 'puppetmaster::certmanager':
