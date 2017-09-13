@@ -1,8 +1,6 @@
 frontend.navtiming.connecting.by_continent.Europe:0|ms
 frontend.navtiming.connecting.by_continent.North_America:0|ms
 frontend.navtiming.connecting.by_continent.South_America:0|ms
-frontend.navtiming.connecting.by_country.Argentina:0|ms
-frontend.navtiming.connecting.by_country.Canada:0|ms
 frontend.navtiming.connecting.by_country.Italy:0|ms
 frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
 frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
@@ -11,8 +9,6 @@ frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
 frontend.navtiming.dnsLookup.by_continent.North_America:0|ms
 frontend.navtiming.dnsLookup.by_continent.North_America:0|ms
 frontend.navtiming.dnsLookup.by_continent.South_America:0|ms
-frontend.navtiming.dnsLookup.by_country.Argentina:0|ms
-frontend.navtiming.dnsLookup.by_country.Canada:0|ms
 frontend.navtiming.dnsLookup.by_country.France:0|ms
 frontend.navtiming.dnsLookup.by_country.Italy:0|ms
 frontend.navtiming.dnsLookup.by_country.United_Kingdom:0|ms
@@ -39,8 +35,6 @@ frontend.navtiming.domComplete.by_continent.Europe:5921|ms
 frontend.navtiming.domComplete.by_continent.North_America:343|ms
 frontend.navtiming.domComplete.by_continent.North_America:455|ms
 frontend.navtiming.domComplete.by_continent.South_America:2880|ms
-frontend.navtiming.domComplete.by_country.Argentina:2880|ms
-frontend.navtiming.domComplete.by_country.Canada:455|ms
 frontend.navtiming.domComplete.by_country.France:1471|ms
 frontend.navtiming.domComplete.by_country.Italy:5921|ms
 frontend.navtiming.domComplete.by_country.United_Kingdom:2381|ms
@@ -88,8 +82,6 @@ frontend.navtiming.domInteractive.by_continent.Europe:715|ms
 frontend.navtiming.domInteractive.by_continent.North_America:204|ms
 frontend.navtiming.domInteractive.by_continent.North_America:266|ms
 frontend.navtiming.domInteractive.by_continent.South_America:2867|ms
-frontend.navtiming.domInteractive.by_country.Argentina:2867|ms
-frontend.navtiming.domInteractive.by_country.Canada:266|ms
 frontend.navtiming.domInteractive.by_country.France:476|ms
 frontend.navtiming.domInteractive.by_country.Italy:1818|ms
 frontend.navtiming.domInteractive.by_country.United_Kingdom:1072|ms
@@ -125,8 +117,6 @@ frontend.navtiming.fetchStart.by_browser.Other.all:1|ms
 frontend.navtiming.fetchStart.by_continent.Europe:170|ms
 frontend.navtiming.fetchStart.by_continent.North_America:1|ms
 frontend.navtiming.fetchStart.by_continent.South_America:2|ms
-frontend.navtiming.fetchStart.by_country.Argentina:2|ms
-frontend.navtiming.fetchStart.by_country.Canada:1|ms
 frontend.navtiming.fetchStart.by_country.Italy:170|ms
 frontend.navtiming.fetchStart.mobile.anonymous:170|ms
 frontend.navtiming.fetchStart.mobile.anonymous:1|ms
@@ -146,7 +136,6 @@ frontend.navtiming.firstPaint.by_browser.Chrome_Mobile.all:424|ms
 frontend.navtiming.firstPaint.by_continent.Europe:424|ms
 frontend.navtiming.firstPaint.by_continent.Europe:754|ms
 frontend.navtiming.firstPaint.by_continent.South_America:2858|ms
-frontend.navtiming.firstPaint.by_country.Argentina:2858|ms
 frontend.navtiming.firstPaint.by_country.France:754|ms
 frontend.navtiming.firstPaint.by_country.Italy:424|ms
 frontend.navtiming.firstPaint.desktop.anonymous:754|ms
@@ -179,8 +168,6 @@ frontend.navtiming.loadEventEnd.by_continent.Europe:5925|ms
 frontend.navtiming.loadEventEnd.by_continent.North_America:350|ms
 frontend.navtiming.loadEventEnd.by_continent.North_America:479|ms
 frontend.navtiming.loadEventEnd.by_continent.South_America:2880|ms
-frontend.navtiming.loadEventEnd.by_country.Argentina:2880|ms
-frontend.navtiming.loadEventEnd.by_country.Canada:479|ms
 frontend.navtiming.loadEventEnd.by_country.France:1499|ms
 frontend.navtiming.loadEventEnd.by_country.Italy:5925|ms
 frontend.navtiming.loadEventEnd.by_country.United_Kingdom:2427|ms
@@ -228,8 +215,6 @@ frontend.navtiming.loadEventStart.by_continent.Europe:5924|ms
 frontend.navtiming.loadEventStart.by_continent.North_America:343|ms
 frontend.navtiming.loadEventStart.by_continent.North_America:456|ms
 frontend.navtiming.loadEventStart.by_continent.South_America:2880|ms
-frontend.navtiming.loadEventStart.by_country.Argentina:2880|ms
-frontend.navtiming.loadEventStart.by_country.Canada:456|ms
 frontend.navtiming.loadEventStart.by_country.France:1472|ms
 frontend.navtiming.loadEventStart.by_country.Italy:5924|ms
 frontend.navtiming.loadEventStart.by_country.United_Kingdom:2381|ms
@@ -280,8 +265,6 @@ frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:4920|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.North_America:131|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.North_America:1625|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.South_America:3129|ms
-frontend.navtiming.mediaWikiLoadComplete.by_country.Argentina:3129|ms
-frontend.navtiming.mediaWikiLoadComplete.by_country.Canada:1625|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.France:2360|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.Italy:1697|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.United_Kingdom:1253|ms
@@ -332,8 +315,6 @@ frontend.navtiming.receiving.by_continent.Europe:709|ms
 frontend.navtiming.receiving.by_continent.North_America:37|ms
 frontend.navtiming.receiving.by_continent.North_America:51|ms
 frontend.navtiming.receiving.by_continent.South_America:10|ms
-frontend.navtiming.receiving.by_country.Argentina:10|ms
-frontend.navtiming.receiving.by_country.Canada:51|ms
 frontend.navtiming.receiving.by_country.France:54|ms
 frontend.navtiming.receiving.by_country.Italy:709|ms
 frontend.navtiming.receiving.by_country.United_Kingdom:208|ms
@@ -381,8 +362,6 @@ frontend.navtiming.responseStart.by_continent.Europe:625|ms
 frontend.navtiming.responseStart.by_continent.North_America:124|ms
 frontend.navtiming.responseStart.by_continent.North_America:92|ms
 frontend.navtiming.responseStart.by_continent.South_America:349|ms
-frontend.navtiming.responseStart.by_country.Argentina:349|ms
-frontend.navtiming.responseStart.by_country.Canada:92|ms
 frontend.navtiming.responseStart.by_country.France:212|ms
 frontend.navtiming.responseStart.by_country.Italy:280|ms
 frontend.navtiming.responseStart.by_country.United_Kingdom:232|ms
@@ -460,8 +439,6 @@ frontend.navtiming.waiting.by_continent.Europe:231|ms
 frontend.navtiming.waiting.by_continent.Europe:624|ms
 frontend.navtiming.waiting.by_continent.North_America:71|ms
 frontend.navtiming.waiting.by_continent.South_America:206|ms
-frontend.navtiming.waiting.by_country.Argentina:206|ms
-frontend.navtiming.waiting.by_country.Canada:71|ms
 frontend.navtiming.waiting.by_country.France:196|ms
 frontend.navtiming.waiting.by_country.Italy:102|ms
 frontend.navtiming.waiting.by_country.United_Kingdom:231|ms
