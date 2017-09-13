@@ -596,11 +596,9 @@ node 'db1043.eqiad.wmnet' {
 }
 
 node 'db1048.eqiad.wmnet' {
-    class { '::role::mariadb::misc::phabricator':
-        shard => 'm3',
-    }
-    include ::base::firewall
+    role(spare::system)
 }
+
 node 'db1059.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
