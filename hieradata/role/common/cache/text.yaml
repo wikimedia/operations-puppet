@@ -16,7 +16,7 @@ prometheus::node_exporter::collectors_extra:
 cache::route_table:
   eqiad: 'codfw'
   codfw: 'eqiad'
-  ulsfo: 'eqiad'
+  ulsfo: 'codfw'
   esams: 'eqiad'
 cache::app_def_be_opts:
   port: 80
