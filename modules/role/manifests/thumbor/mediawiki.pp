@@ -44,8 +44,4 @@ class role::thumbor::mediawiki {
         port   => '11211',
         srange => "(@resolve((${thumbor_memcached_servers_ferm})))",
     }
-
-    class { '3d2png::deploy':
-        manage_user => true,
-    }
 }
