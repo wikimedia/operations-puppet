@@ -8,6 +8,8 @@ class role::mediawiki::imagescaler {
     include ::base::firewall
 
     # include doesn't allow names to start with numbers
-    class { '3d2png::deploy': }
+    class { '3d2png::deploy':
+        $manage_user => false,
+    }
 }
 
