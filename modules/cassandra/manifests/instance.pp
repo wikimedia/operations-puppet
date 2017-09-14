@@ -196,6 +196,9 @@ define cassandra::instance(
     $super_username,
     $super_password,
 
+    # required instance specific parameters
+    $instance_count,
+
     # the following parameters need specific default values for single instance
     $config_directory       = "/etc/cassandra-${title}",
     $service_name           = "cassandra-${title}",
