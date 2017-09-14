@@ -1,0 +1,12 @@
+fixtures:
+    symlinks:
+        puppetmaster: "#{source_dir}"
+        base: "../../../../base"
+        geoip: "../../../../geoip"
+        git: "../../../../git"
+        logrotate: "../../../../logrotate"
+        network: "../../../../network"
+        rsync: "../../../../rsync"
+        ssh: "../../../../ssh"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
