@@ -318,10 +318,7 @@ seed_provider:
                                                       x != @hostname \
                                                       && ! (x.start_with? "#{@hostname}-") \
                                                       && x != @ipaddress \
-                                                      && x != @fqdn \
-                                                      && (/^.+-[a-z]\.(?:eqiad|codfw)\.wmnet$/ =~ x \
-                                                        || @instance_count == 1 \
-                                                        || /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/ =~ x)
+                                                      && x != @fqdn)
                                                   }.join(',') : @seeds.join(',') %>
          - seeds: <%= clean_seeds %>
 # For workloads with more data than can fit in memory, Cassandra's
