@@ -27,11 +27,16 @@ class profile::cassandra(
 
     create_resources('class', {'::cassandra' => $cassandra_real_settings})
 
+    $metrics_enabled = undef
+    if $cassandra_settings['jmx_exporter_enabled'] {
+        $metrics_enabled = false
+    }
 
     class { '::cassandra::metrics':
         graphite_host => $graphite_host,
         whitelist     => $metrics_whitelist,
         blacklist     => $metrics_blacklist,
+        enabled       => $metrics_enabled,
     }
     class { '::cassandra::logging': }
     class { '::cassandra::twcs': }

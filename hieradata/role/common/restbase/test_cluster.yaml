@@ -78,15 +78,12 @@ profile::cassandra::instances:
   "cerium.eqiad.wmnet":
     a:
       listen_address: 10.64.16.153
-      jmx_exporter_enabled: true
   "praseodymium.eqiad.wmnet":
     a:
       listen_address: 10.64.16.188
-      jmx_exporter_enabled: true
   "xenon.eqiad.wmnet":
     a:
       listen_address: 10.64.0.202
-      jmx_exporter_enabled: true
   "restbase-test2001.codfw.wmnet":
     a:
       listen_address: 10.192.16.154
@@ -126,6 +123,7 @@ profile::cassandra::settings:
     permissions_validity_in_ms: 600000
     trickle_fsync: false
     client_encryption_enabled: true
+    jmx_exporter_enabled: true
 
 service::configuration::log_dir: "/var/log"
 
