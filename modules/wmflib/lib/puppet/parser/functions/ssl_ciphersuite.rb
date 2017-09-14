@@ -67,10 +67,10 @@ module Puppet::Parser::Functions
   # 0) Enc:  3DES < ALL       (SWEET32)
   # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
-  # 3) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
-  # 4) Kx:   ECDHE > DHE      (Perf, mostly)
-  # 5) Enc:  AES256 > AES128  (sec)
-  # 6) Auth: ECDSA > RSA      (Perf, mostly)
+  # 3) Auth: ECDSA > RSA      (Perf, mostly)
+  # 4) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
+  # 5) Enc:  AES256 > AES128  (sec, batch attacks?)
+  # 6) Kx:   ECDHE > DHE      (Perf, mostly)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
@@ -93,10 +93,10 @@ module Puppet::Parser::Functions
       'TLS13-AES-256-GCM-SHA384',
       'TLS13-AES-128-GCM-SHA256',
       'ECDHE-ECDSA-CHACHA20-POLY1305',
-      'ECDHE-RSA-CHACHA20-POLY1305',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
-      'ECDHE-RSA-AES256-GCM-SHA384',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
+      'ECDHE-RSA-CHACHA20-POLY1305',
+      'ECDHE-RSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES128-GCM-SHA256',
     ],
     # Forward-Secret, but not AEAD
