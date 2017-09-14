@@ -24,6 +24,10 @@
 # [*whitelist*]
 #   Array of strings, each is a regular expression of metric names to whitelist
 #   (i.e. send to graphite, even if matched by a blacklist entry)
+#
+# [*enabled*]
+#   Whether to enable Graphite metrics collection
+#   Default: true
 
 class cassandra::metrics(
     $graphite_prefix = "cassandra.${::hostname}",
@@ -31,6 +35,7 @@ class cassandra::metrics(
     $graphite_port   = '2003',
     $blacklist       = undef,
     $whitelist       = undef,
+    $enabled         = true,
 ) {
     validate_string($graphite_prefix)
     validate_string($graphite_host)
@@ -96,8 +101,14 @@ class cassandra::metrics(
         user   => 'cassandra',
     }
 
+    if $enabled {
+        $ensure = present
+    } else {
+        $ensure = absent
+    }
+
     systemd::service { 'cassandra-metrics-collector':
-        ensure  => present,
+        ensure  => $ensure,
         content => systemd_template('cassandra-metrics-collector'),
         restart => true,
         require => [

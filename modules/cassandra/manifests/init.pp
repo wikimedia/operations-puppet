@@ -113,6 +113,9 @@
 #   Cassandra superuser password.
 #   Default: cassandra
 #
+# [*jmx_exporter_enabled*]
+#   Whether or not to enable the Prometheus JMX exporter agent.
+#   Default: false
 class cassandra (
     $cluster_name            = 'Test Cluster',
     $tls_cluster_name        = undef,
@@ -135,6 +138,7 @@ class cassandra (
     $jbod_devices            = [],
     $super_username          = 'cassandra',
     $super_password          = 'cassandra',
+    $jmx_exporter_enabled    = false,
 ) {
     validate_string($cluster_name)
 
@@ -201,6 +205,7 @@ class cassandra (
         start_rpc             => $start_rpc,
         super_username        => $super_username,
         super_password        => $super_password,
+        jmx_exporter_enabled  => $jmx_exporter_enabled
     }
 
     if empty($instances) {
