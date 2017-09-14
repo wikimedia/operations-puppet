@@ -14,7 +14,9 @@ class profile::cassandra(
     $instances = $all_instances[$::fqdn]
     # We get the cassandra seeds from $all_instances, with a template hack
     # This is preferred over a very specialized parser function.
-    $seeds = split(template('profile/cassandra/seeds.erb'), '\|')
+    $all_seeds = split(template('profile/cassandra/seeds.erb'), '\|')
+    $seeds = split($all_seeds[0], ',')
+    $ferm_seeds = split($all_seeds[1], ',')
 
     $base_settings = {
         'instances' => $instances,
@@ -70,7 +72,7 @@ class profile::cassandra(
         description => 'Cassandra server',
     }
 
-    $cassandra_hosts_ferm = join($seeds, ' ')
+    $cassandra_hosts_ferm = join($ferm_seeds, ' ')
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
     # Cassandra intra-node messaging
