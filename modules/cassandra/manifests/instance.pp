@@ -196,6 +196,9 @@ define cassandra::instance(
     $super_username,
     $super_password,
 
+    # required instance specific parameters
+    $instance_count,
+
     # the following parameters need specific default values for single instance
     $config_directory       = "/etc/cassandra-${title}",
     $service_name           = "cassandra-${title}",
@@ -319,7 +322,9 @@ define cassandra::instance(
     }
 
     $instance_name = $title
-
+    unless $instance_name =~ /^[a-z]$/ {
+        fail("instance name should match /^[a-z]$/, but have ${instance_name}")
+    }
     # Default jmx port; only works with 1-letter instnaces
     $default_jmx_port     = 7189 + inline_template("<%= @title.ord - 'a'.ord %>")
 

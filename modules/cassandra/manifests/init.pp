@@ -216,6 +216,7 @@ class cassandra (
             hints_directory        => '/var/lib/cassandra/data/hints',
             heapdump_directory     => '/var/lib/cassandra/',
             saved_caches_directory => '/var/lib/cassandra/saved_caches',
+            instance_count         => 1,
         }
         $actual_defaults = merge(
             $default_common,
@@ -229,6 +230,7 @@ class cassandra (
         $instances_to_create = $instances
         $actual_defaults = merge(
             $default_common,
+            { instance_count => size($instances) },
             $default_instance_params
         )
         # if running multi-instances, make sure the default instance is stopped
