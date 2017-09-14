@@ -103,6 +103,16 @@
 # [*start_rpc*]
 #   Whether to start the thrift rpc server.  Default: true
 #
+# [*super_username*]
+#   Cassandra superuser username.
+#   Username and password for superuser will be written to
+#   /etc/cassandra/cqlshrc for easy/unattended usage by cqlsh.
+#   Default: cassandra
+#
+# [*super_password*]
+#   Cassandra superuser password.
+#   Default: cassandra
+#
 class cassandra (
     $cluster_name            = 'Test Cluster',
     $tls_cluster_name        = undef,
@@ -123,6 +133,8 @@ class cassandra (
     $logstash_port           = 11514,
     $start_rpc               = true,
     $jbod_devices            = [],
+    $super_username          = 'cassandra',
+    $super_password          = 'cassandra',
 ) {
     validate_string($cluster_name)
 
@@ -187,6 +199,8 @@ class cassandra (
         logstash_host         => $logstash_host,
         logstash_port         => $logstash_port,
         start_rpc             => $start_rpc,
+        super_username        => 'cassandra',
+        super_password        => 'cassandra',
     }
 
     if empty($instances) {
