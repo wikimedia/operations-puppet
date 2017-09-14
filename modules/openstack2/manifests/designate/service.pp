@@ -25,7 +25,6 @@ class openstack2::designate::service(
     $rabbit_user,
     $rabbit_pass,
     $rabbit_host,
-    $nova_controller,
     $keystone_public_port,
     $keystone_auth_port,
     ) {
