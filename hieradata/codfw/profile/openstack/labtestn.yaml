@@ -7,6 +7,7 @@ profile::openstack::labtestn::designate_host_standby: 'labtestservices2003.wikim
 profile::openstack::labtestn::puppetmaster_hostname: 'labtestpuppetmaster2001.wikimedia.org'
 profile::openstack::labtestn::labs_hosts_range: '127.0.0.1/32'
 profile::openstack::labtestn::horizon_host: 'labtestweb2001.wikimedia.org'
+profile::openstack::labtestn::monitoring_host: 'labmon1001.eqiad.wmnet'
 profile::openstack::labtestn::spice_hostname: 'labtestnspice.wikimedia.org'
 profile::openstack::labtestn::nova_network_host: 'labtestnet2002.codfw.wmnet'
 profile::openstack::labtestn::rabbit_monitor_user: 'monitoring'
