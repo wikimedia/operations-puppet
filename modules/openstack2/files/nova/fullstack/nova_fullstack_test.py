@@ -485,75 +485,80 @@ def main():
         cimage = nova_conn.images.find(name=args.image)
         cflavor = nova_conn.flavors.find(name=args.flavor)
 
-        vc, server = verify_create(nova_conn,
-                                   name,
-                                   cimage,
-                                   cflavor,
-                                   args.creation_timeout,
-                                   args.virthost)
-        stat('verify.creation', vc)
+        try:
+            vc, server = verify_create(nova_conn,
+                                       name,
+                                       cimage,
+                                       cflavor,
+                                       args.creation_timeout,
+                                       args.virthost)
+            stat('verify.creation', vc)
 
-        addr = server.addresses['public'][0]['addr']
-        if not addr.startswith('10.'):
-            raise Exception("Bad address of {}".format(addr))
+            addr = server.addresses['public'][0]['addr']
+            if not addr.startswith('10.'):
+                raise Exception("Bad address of {}".format(addr))
 
-        if not args.skip_dns:
-            host = '{}.{}.eqiad.wmnet'.format(server.name, server.tenant_id)
-            dnsd = args.dns_resolvers.split(',')
-            vdns = verify_dns(host,
-                              dnsd,
-                              timeout=2.0)
-            stat('verify.dns', vdns)
+            if not args.skip_dns:
+                host = '{}.{}.eqiad.wmnet'.format(server.name, server.tenant_id)
+                dnsd = args.dns_resolvers.split(',')
+                vdns = verify_dns(host,
+                                  dnsd,
+                                  timeout=2.0)
+                stat('verify.dns', vdns)
 
-        if not args.skip_ssh:
-            vs = verify_ssh(addr,
-                            user,
-                            args.keyfile,
-                            args.ssh_timeout)
+            if not args.skip_ssh:
+                vs = verify_ssh(addr,
+                                user,
+                                args.keyfile,
+                                args.ssh_timeout)
 
-            stat('verify.ssh', vs)
-            if args.adhoc_command:
-                sshout = run_remote(addr,
-                                    user,
-                                    args.keyfile,
-                                    args.adhoc_command,
-                                    debug=args.debug)
-                logging.debug(sshout)
+                stat('verify.ssh', vs)
+                if args.adhoc_command:
+                    sshout = run_remote(addr,
+                                        user,
+                                        args.keyfile,
+                                        args.adhoc_command,
+                                        debug=args.debug)
+                    logging.debug(sshout)
 
-        if not args.skip_puppet:
-            ps, puppetrun = verify_puppet(addr,
-                                          user,
-                                          args.keyfile,
-                                          args.puppet_timeout)
-            stat('verify.puppet', ps)
+            if not args.skip_puppet:
+                ps, puppetrun = verify_puppet(addr,
+                                              user,
+                                              args.keyfile,
+                                              args.puppet_timeout)
+                stat('verify.puppet', ps)
 
-            categories = ['changes',
-                          'events',
-                          'resources',
-                          'time']
+                categories = ['changes',
+                              'events',
+                              'resources',
+                              'time']
 
-            for d in categories:
-                for k, v in puppetrun[d].iteritems():
-                    stat('puppet.{}.{}'.format(d, k), v)
+                for d in categories:
+                    for k, v in puppetrun[d].iteritems():
+                        stat('puppet.{}.{}'.format(d, k), v)
 
-        if args.pause_for_deletion:
-            logging.info("Pausing for deletion")
-            get_verify('continue with deletion',
-                       'Not a valid response',
-                       ['y'])
+            if args.pause_for_deletion:
+                logging.info("Pausing for deletion")
+                get_verify('continue with deletion',
+                           'Not a valid response',
+                           ['y'])
 
-        if not args.skip_deletion:
-            vd = verify_deletion(nova_conn,
-                                 server,
-                                 args.deletion_timeout)
+            if not args.skip_deletion:
+                vd = verify_deletion(nova_conn,
+                                     server,
+                                     args.deletion_timeout)
 
-        if not args.pause_for_deletion:
-            stat('verify.deletion', vd)
-            loop_end = time.time()
-            stat('verify.fullstack', round(loop_end - loop_start, 2))
+            if not args.pause_for_deletion:
+                stat('verify.deletion', vd)
+                loop_end = time.time()
+                stat('verify.fullstack', round(loop_end - loop_start, 2))
 
-        if not args.interval:
-            return
+            if not args.interval:
+                return
+
+            stat('verify.success', 1)
+        except:
+            stat('verify.success', 0)
 
         time.sleep(args.interval)
 
