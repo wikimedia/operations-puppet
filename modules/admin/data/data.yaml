@@ -2765,3 +2765,7 @@ ldap_only_users:
     ensure: present
     realname: Dayllan Maza
     email: dmaza@wikimedia.org
+  ebjune:
+    ensure: present
+    realname: Erika Bjune
+    email: ebjune@wikimedia.org
