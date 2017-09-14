@@ -1,9 +1,13 @@
 <%-
 seeds = []
+ferm_seeds = []
 @all_instances.each do |host, instances|
-  seeds << host
+  ferm_seeds << host
+  seeds << host if instances.empty?
   hostname = host.split(".").shift()
   instances.each do |instance, _|
-    seeds << host.gsub(hostname, "#{hostname}-#{instance}")
+    instance_host = host.gsub(hostname, "#{hostname}-#{instance}")
+    seeds << instance_host
+    ferm_seeds << instance_host
   end
-end -%><%= seeds.join "|" -%>
+end -%><%= "#{seeds.join ','}|#{ferm_seeds.join ','}" -%>
