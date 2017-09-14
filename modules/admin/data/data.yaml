@@ -587,7 +587,7 @@ groups:
   pdfrender-admin:
     description: Group of pdfrender admins
     gid: 790
-    members: [gwicke, ppchelko, eevans, mobrovac]
+    members: [gwicke, ppchelko, eevans, mobrovac, tgr]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                  'ALL = (pdfrender) NOPASSWD: ALL']
   trendingedits-admin:
