@@ -89,7 +89,6 @@ profile::cassandra::instances:
         - /srv/cassandra-a/data_1
         - /srv/cassandra-a/data_2
         - /srv/cassandra-a/data_3
-      jmx_exporter_enabled: true
     b:
       listen_address: 10.64.0.168
       data_file_directories:
@@ -97,33 +96,28 @@ profile::cassandra::instances:
         - /srv/cassandra-b/data_1
         - /srv/cassandra-b/data_2
         - /srv/cassandra-b/data_3
-      jmx_exporter_enabled: true
   "restbase-dev1005.eqiad.wmnet":
     a:
       listen_address: 10.64.16.97
       data_file_directories:
         - /srv/cassandra-a/data_0
         - /srv/cassandra-a/data_1
-      jmx_exporter_enabled: true
     b:
       listen_address: 10.64.16.98
       data_file_directories:
         - /srv/cassandra-b/data_0
         - /srv/cassandra-b/data_1
-      jmx_exporter_enabled: true
   "restbase-dev1006.eqiad.wmnet":
     a:
       listen_address: 10.64.48.168
       data_file_directories:
         - /srv/cassandra-a/data_0
         - /srv/cassandra-a/data_1
-      jmx_exporter_enabled: true
     b:
       listen_address: 10.64.48.169
       data_file_directories:
         - /srv/cassandra-b/data_0
         - /srv/cassandra-b/data_1
-      jmx_exporter_enabled: true
 
 profile::cassandra::settings:
   start_rpc: 'true'
@@ -147,6 +141,7 @@ profile::cassandra::settings:
     internode_encryption: dc
     permissions_validity_in_ms: 600000
     trickle_fsync: false
+    jmx_exporter_enabled: true
 
 service::configuration::log_dir: "/var/log"
 

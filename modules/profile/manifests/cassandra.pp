@@ -32,6 +32,7 @@ class profile::cassandra(
         graphite_host => $graphite_host,
         whitelist     => $metrics_whitelist,
         blacklist     => $metrics_blacklist,
+        enabled       => $cassandra_settings['jmx_exporter_enabled'],
     }
     class { '::cassandra::logging': }
     class { '::cassandra::twcs': }

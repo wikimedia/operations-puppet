@@ -195,6 +195,7 @@ define cassandra::instance(
     $start_rpc,
     $super_username,
     $super_password,
+    $jmx_exporter_enabled,
 
     # the following parameters need specific default values for single instance
     $config_directory       = "/etc/cassandra-${title}",
@@ -213,7 +214,6 @@ define cassandra::instance(
 
     # the following parameters have defaults that are sane both for single-
     # and multi-instances
-    $jmx_exporter_enabled = false,
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,
