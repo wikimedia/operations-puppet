@@ -3,7 +3,7 @@ class base::resolving (
     $labs_additional_domains = [],
 ){
     if ! $::nameservers {
-        error("Variable ${::nameservers} is not defined!")
+        fail("Variable \$::nameservers is not defined!")
     }
     else {
         if $::realm == 'labs' {

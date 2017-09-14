@@ -72,10 +72,10 @@ class base::puppet(
 
     $auto_puppetmaster_switching = hiera('auto_puppetmaster_switching', false)
     if ($auto_puppetmaster_switching) and ($::realm != 'labs') {
-        error('auto_puppetmaster_switching should never, ever be set on a production host.')
+        fail('auto_puppetmaster_switching should never, ever be set on a production host.')
     }
     if ($auto_puppetmaster_switching) and (defined(Class['role::puppetmaster::standalone'])) {
-        error('auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.')
+        fail('auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.')
     }
 
     file { '/usr/local/share/bash/puppet-common.sh':
