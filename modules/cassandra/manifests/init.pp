@@ -199,8 +199,8 @@ class cassandra (
         logstash_host         => $logstash_host,
         logstash_port         => $logstash_port,
         start_rpc             => $start_rpc,
-        super_username        => 'cassandra',
-        super_password        => 'cassandra',
+        super_username        => $super_username,
+        super_password        => $super_password,
     }
 
     if empty($instances) {
