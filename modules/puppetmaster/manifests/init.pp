@@ -148,7 +148,9 @@ class puppetmaster(
     }
 
     include ::puppetmaster::scripts
-    include ::puppetmaster::geoip
+    class { '::puppetmaster::geoip':
+        puppet_volatile_dir => $volatiledir,
+    }
     include ::puppetmaster::gitpuppet
     include ::puppetmaster::monitoring
     include ::puppetmaster::generators

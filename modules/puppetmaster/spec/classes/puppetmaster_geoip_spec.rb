@@ -6,5 +6,16 @@ describe 'puppetmaster::geoip' do
         class passwords::geoip {}
         '''
     }
-    it { should compile }
+    let(:params) { {
+        :puppet_volatile_dir => '/srv/volatile',
+    } }
+    it {
+        should compile
+    }
+    it {
+        should contain_file '/srv/volatile/GeoIP'
+    }
+    it {
+        should_not contain_file '/GeoIP'
+    }
 end
