@@ -13,4 +13,8 @@ class icinga::monitor::performance {
     monitoring::grafana_alert { 'db/save-timing-alerts':
         contact_group   => 'team-performance',
     }
+
+    monitoring::grafana_alert { 'db/resourceloader-alerts':
+        contact_group   => 'team-performance',
+    }
 }
