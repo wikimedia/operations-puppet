@@ -171,16 +171,6 @@
 #   Enable client-side encryption
 #   Default: false
 #
-# [*super_username*]
-#   Cassandra superuser username.
-#   Username and password for superuser will be written to
-#   /etc/cassandra/cqlshrc for easy/unattended usage by cqlsh.
-#   Default: cassandra
-#
-# [*super_password*]
-#   Cassandra superuser password.
-#   Default: cassandra
-#
 # [*auto_bootstrap*]
 #   Control whether new nodes joining the cluster will get data they own.
 #   Default: true
@@ -203,6 +193,8 @@ define cassandra::instance(
     $logstash_host,
     $logstash_port,
     $start_rpc,
+    $super_username,
+    $super_password,
 
     # the following parameters need specific default values for single instance
     $config_directory       = "/etc/cassandra-${title}",
@@ -252,8 +244,6 @@ define cassandra::instance(
     $key_cache_size_in_mb             = 400,
     $internode_encryption             = none,
     $client_encryption_enabled        = false,
-    $super_username                   = 'cassandra',
-    $super_password                   = 'cassandra',
     $auto_bootstrap                   = true,
 ) {
     validate_absolute_path($commitlog_directory)
