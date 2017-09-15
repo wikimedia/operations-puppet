@@ -1,3 +1,5 @@
+# sets up jetty for gerrit
+# https://projects.eclipse.org/projects/rt.jetty/developer
 class gerrit::jetty(
     $db_host = 'localhost',
     $replication = '',

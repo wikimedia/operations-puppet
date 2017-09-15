@@ -1,25 +1,33 @@
+# sets up a TLS proxy for Gerrit
 class gerrit::proxy(
     $host         = $::gerrit::host,
-    $slave_hosts  = [],
+    $slave_hosts  = $::gerrit::slave_hosts,
+    $slave        = false,
     $maint_mode   = false,
     ) {
 
+    if $slave {
+        $tls_host = $slave_hosts[0]
+    } else {
+        $tls_host = $host
+    }
+
     letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $host,
+        subjects   => $tls_host,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${host}",
+        check_command => "check_ssl_http_letsencrypt!${tls_host}",
         contact_group => 'admins,gerrit',
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { $host:
-        content => template('gerrit/gerrit.wikimedia.org.erb'),
+    apache::site { $tls_host:
+        content => template('gerrit/apache.erb'),
     }
 
     # Error page stuff
