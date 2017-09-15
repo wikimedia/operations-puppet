@@ -1,25 +1,33 @@
 class gerrit::proxy(
-    $host         = $::gerrit::host,
-    $slave_hosts  = [],
-    $maint_mode   = false,
+    $host = $::gerrit::host,
+    $domain = 'wikimedia.org',
+    $slave_hosts = [],
+    $slave = false,
+    $maint_mode = false,
     ) {
 
+    if $slave {
+        $tls_host = "gerrit-slave.${domain}"
+    } else {
+        $tls_host = $host
+    }
+
     letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $host,
+        subjects   => $tls_host,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${host}",
+        check_command => "check_ssl_http_letsencrypt!${tls_host}",
         contact_group => 'admins,gerrit',
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     apache::site { $host:
-        content => template('gerrit/gerrit.wikimedia.org.erb'),
+        content => template("gerrit/gerrit.${domain}.erb"),
     }
 
     # Error page stuff
