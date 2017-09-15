@@ -134,7 +134,10 @@ for stray in diskstrays:
 
 novastrays = novaset - diskset
 if novastrays:
-    printstat("These instances are in nova but can't be found on disk: %s" % novastrays, True)
+    printstat("These instances are in nova but can't be found on disk:", True)
+    for instance in instances:
+        if instance.id in novastrays:
+            printstat("%s (%s)" % (instance.id, instance.status), True)
 
 for hostname in computenodedict.keys():
     hostdict = computenodedict[hostname]
@@ -145,7 +148,10 @@ for hostname in computenodedict.keys():
     for instance in hostdict['instances'].keys():
         instance_space_on_disk += hostdict['instances'][instance]
 
-    accounted_for_space = instance_space_on_disk + hostdict['base']
+    if 'base' in hostdict:
+        accounted_for_space = instance_space_on_disk + hostdict['base']
+    else:
+        accounted_for_space = instance_space_on_disk
 
     noninstancespace = hostdict['duused'] - accounted_for_space
     printstat("Space in non-instance files: %sK" % noninstancespace, noninstancespace > ONEMEG)
