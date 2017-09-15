@@ -187,19 +187,16 @@ class Database(object):
 
 class Terminator(object):
 
-    def __init__(self, database, whitelist, newer_than, older_than,
+    def __init__(self, database, whitelist, start_ts, end_ts,
                  batch_size, sleep_between_batches, dry_run=False):
         self.reference_time = datetime.utcnow()
         self.database = database
         self.whitelist = whitelist
-        self.start = self.relative_ts(newer_than)
-        self.end = self.relative_ts(older_than)
+        self.start = start_ts
+        self.end = end_ts
         self.batch_size = batch_size
         self.sleep_between_batches = sleep_between_batches
         self.dry_run = dry_run
-
-    def relative_ts(self, days):
-        return (self.reference_time - timedelta(days=days)).strftime(DATE_FORMAT)
 
     def purge(self, table):
         """
@@ -231,7 +228,7 @@ class Terminator(object):
         between start_ts and self.end, return the timestamp of the last one.
         If there are no events between start_ts and self.end, return None.
         """
-        if start_ts > self.end:
+        if datetime.strptime(start_ts, DATE_FORMAT) > datetime.strptime(self.end, DATE_FORMAT):
             return None
 
         command = (
@@ -390,6 +387,10 @@ def parse_whitelist(rows):
     return whitelist_hash
 
 
+def relative_ts(reference_time, days):
+    return (reference_time - timedelta(days=days)).strftime(DATE_FORMAT)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='EventLogging data '
                                                  'retention script')
@@ -407,9 +408,15 @@ if __name__ == '__main__':
     parser.add_argument('--older-than', dest='older_than', default=90, type=int,
                         help='Delete logs older than this number of days'
                         ' (default: 90)')
-    parser.add_argument('--newer-than', dest='newer_than', default=91, type=int,
-                        help='Delete logs newer than this number of days'
-                        ' (default: 91)')
+    parser.add_argument('--newer-than', dest='newer_than', type=int, default=0,
+                        help='Delete logs newer than this number of days')
+    parser.add_argument('--start-ts-file', dest='start_ts_file', default=None,
+                        help="Ignore the --newer-than option and read the start timestamp "
+                             "from the file path indicated as argument. This option is "
+                             "useful when the script is used in cron, since any failure "
+                             "could lead to sanitization gaps. The file is expected to "
+                             "have a single line containing the start timestamp in the "
+                             "format {}.".format(DATE_FORMAT.replace('%', '%%')))
     parser.add_argument('--dry-run', dest='dry_run', action='store_true',
                         help='Only print sql commands without executing them')
     parser.add_argument('--batch-size', dest='batch_size', default=1000, type=int,
@@ -465,6 +472,20 @@ if __name__ == '__main__':
         )
         sys.exit(1)
 
+    if args.newer_than > 0 and args.start_ts_file:
+        log.error(
+            "Only one between --newer-than and "
+            "--start-ts-file can be specified."
+        )
+        sys.exit(1)
+
+    if not (args.newer_than > 0 or args.start_ts_file):
+        log.error(
+            "One parameter between --newer-than and "
+            "--start-ts-file is required."
+        )
+        sys.exit(1)
+
     if args.older_than < 90:
         log.error(
             "Attempt to delete data older than ({}) days "
@@ -473,12 +494,29 @@ if __name__ == '__main__':
         )
         sys.exit(1)
 
-    if args.newer_than <= args.older_than:
-        log.error("--newer-than must be stricly greater than --older-than")
-        sys.exit(1)
-
     try:
         database = None
+
+        # Establish start/end timestamps from command line args
+        now = datetime.utcnow()
+        end_ts = relative_ts(now, args.older_than)
+
+        if args.newer_than:
+            start_ts = relative_ts(now, args.newer_than)
+        elif args.start_ts_file:
+            with open(args.start_ts_file, 'r') as filehandle:
+                start_ts = filehandle.read().splitlines()[0]
+                # Verify that the timestamp follows DATE_FORMAT
+                datetime.strptime(start_ts, DATE_FORMAT)
+        else:
+            raise RuntimeError('Neither --newer-than nor --start-ts-file have been set.')
+
+        if datetime.strptime(start_ts, DATE_FORMAT) > datetime.strptime(end_ts, DATE_FORMAT):
+            log.error(
+                "The start timestamp {} is more recent than the end timestamp {}, "
+                "please review the input arguments.".format(start_ts, end_ts)
+            )
+            sys.exit(1)
 
         # Extra sanity check to make sure that no future changes to the args
         # parser will inadvertently cause data loss when deployed.
@@ -542,8 +580,8 @@ if __name__ == '__main__':
         terminator = Terminator(
             database,
             whitelist,
-            args.newer_than,
-            args.older_than,
+            start_ts,
+            end_ts,
             args.batch_size,
             args.sleep_between_batches,
             dry_run=args.dry_run
@@ -566,6 +604,20 @@ if __name__ == '__main__':
                 terminator.purge(table)
             else:
                 terminator.sanitize(table)
+
+        # The final step if args.start_ts_file is set is to replace
+        # the timestamp in the file with end_ts. This is a very
+        # basic form of commit, since if the next execution keeps using
+        # args.start_ts_file then it will re-start from the last known good
+        # sanitization checkpoint.
+        if args.start_ts_file:
+            with open(args.start_ts_file, 'w') as filehandle:
+                log.info(
+                    "Update {} with the current end_ts {}"
+                    .format(args.start_ts_file, end_ts)
+                )
+                filehandle.write(end_ts)
+
     except Exception as e:
         log.exception("Exception while running main")
         sys.exit(1)
@@ -679,21 +731,26 @@ class TestParser(unittest.TestCase):
             parse_whitelist(too_many_el_in_rows)
 
 
+class TestTimestamps(unittest.TestCase):
+
+    def test_relative_ts(self):
+        now = datetime.utcnow()
+        result = relative_ts(now, 30)
+        expected_result = (now - timedelta(days=30)).strftime(DATE_FORMAT)
+        self.assertEqual(result, expected_result)
+
+
 class TestTerminator(unittest.TestCase):
 
     def setUp(self):
         print("Test: ", self._testMethodName)
         self.database = MagicMock()
         self.batch_size = 1000
-        self.terminator = Terminator(self.database, {}, 120, 90,
-                                     self.batch_size, 0.1, dry_run=False)
-
-    def test_relative_ts(self):
         now = datetime.utcnow()
-        self.terminator.reference_time = now
-        result = self.terminator.relative_ts(30)
-        expected_result = (now - timedelta(days=30)).strftime(DATE_FORMAT)
-        self.assertEqual(result, expected_result)
+        start_ts = relative_ts(now, 120)
+        end_ts = relative_ts(now, 90)
+        self.terminator = Terminator(self.database, {}, start_ts, end_ts,
+                                     self.batch_size, 0.1, dry_run=False)
 
     def test_purge(self):
         self.terminator.database.execute.side_effect = [{'numrows': self.batch_size},
