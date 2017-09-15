@@ -44,4 +44,8 @@ class role::thumbor::mediawiki {
         port   => '11211',
         srange => "(@resolve((${thumbor_memcached_servers_ferm})))",
     }
+
+    class { 'threedtopng::deploy':
+        manage_user => true,
+    }
 }
