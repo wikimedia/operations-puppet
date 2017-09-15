@@ -315,6 +315,12 @@ def main():
     )
 
     argparser.add_argument(
+        '--preserve-leaks',
+        help='Never delete failed VMs',
+        action='store_true'
+    )
+
+    argparser.add_argument(
         '--keystone-url',
         default="http://labcontrol1001.wikimedia.org:35357/v3",
         help='Auth url for token and service discovery',
@@ -478,7 +484,19 @@ def main():
         pexist_count = len(filter(bool, pexist))
         stat('instances.count', pexist_count)
         stat('instances.max', args.max_pool)
+
+        if not args.preserve_leaks and args.max_pool > 3 and pexist_count >= args.max_pool - 2:
+            logging.warning("There are {} leaked instances with prepend {}; "
+                            "cleaning up".format(pexist_count, prepend))
+            for server in pexist:
+                if server.human_id.startswith(prepend):
+                    # If we get here twice in a row for the same VM, that should be
+                    #  fine -- deleting twice is still just deleting.
+                    server.delete()
+
         if pexist_count >= args.max_pool:
+            # If the cleanup in the last two cycles didn't get us anywhere,
+            #  best to just bail out so we stop trampling on the API.
             logging.error("max server(s) with prepend {}".format(prepend))
             sys.exit(1)
 
