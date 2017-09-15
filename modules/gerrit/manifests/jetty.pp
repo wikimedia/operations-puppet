@@ -1,7 +1,9 @@
+# sets up jetty for gerrit
+# https://projects.eclipse.org/projects/rt.jetty/developer
 class gerrit::jetty(
     $db_host = 'localhost',
     $replication = '',
-    $url = "https://${::gerrit::host}/r",
+    $url = "https://gerrit.${gerrit::domain}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $git_dir = 'git',
