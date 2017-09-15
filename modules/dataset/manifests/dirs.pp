@@ -137,4 +137,11 @@ class dataset::dirs {
         owner  => 'datasets',
         group  => 'datasets',
     }
+
+    file { "${categoriesrdf}/daily":
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
 }
