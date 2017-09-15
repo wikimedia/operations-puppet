@@ -1,3 +1,4 @@
+# sets up cron jobs for Gerrit
 class gerrit::crons() {
     cron { 'list_mediawiki_extensions':
     # Gerrit is missing a public list of projects.
