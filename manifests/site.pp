@@ -1039,6 +1039,24 @@ node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
     include ::standard
 }
 
+node 'labtestmetal2001.codfw.wmnet' {
+    # WIP
+    include ::standard
+    include ::base::firewall
+}
+
+node 'labtestnet2002.codfw.wmnet' {
+    # WIP
+    include ::standard
+    include ::base::firewall
+}
+
+node 'labtestneutron2002.codfw.wmnet' {
+    # WIP
+    include ::standard
+    include ::base::firewall
+}
+
 node 'labtestnet2001.codfw.wmnet' {
     role(wmcs::openstack::labtest::net)
     include ::standard
