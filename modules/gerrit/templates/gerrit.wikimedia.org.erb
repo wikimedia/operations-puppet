@@ -10,7 +10,7 @@ MaxClients 50
 
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
-    ServerName <%= @host %>
+    ServerName gerrit.<%= @domain %>
     <%- if @slave_hosts -%>
     ServerAlias <%= Array(@slave_hosts).join(' ') %>
     <%- end -%>
@@ -26,23 +26,23 @@ MaxClients 50
         Require all granted
     </Directory>
 
-    ErrorLog /var/log/apache2/<%= @host %>.http.error.log
+    ErrorLog /var/log/apache2/gerrit.<%= @domain %>.http.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
+    CustomLog /var/log/apache2/gerrit.<%= @domain %>.http.access.log wmf
     ServerSignature Off
     IncludeOptional /etc/acme/challenge-apache.conf
     RewriteEngine on
     RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
-    RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
+    RewriteRule ^/(.*)$ https://gerrit.<%= @domain %>/$1 [L,R=301,NE]
 </VirtualHost>
 
 <VirtualHost *:443>
-    ServerAdmin noc@wikimedia.org
-    ServerName <%= @host %>
+    ServerAdmin noc@<%= @domain %>
+    ServerName gerrit.<%= @domain %>
     <%- if @slave_hosts -%>
     ServerAlias <%= Array(@slave_hosts).join(' ') %>
     <%- end -%>
@@ -103,12 +103,12 @@ MaxClients 50
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
     # trying to reproduce this behavior. But people run into this all the time.
-    RewriteRule ^/tools/hooks/commit-msg$ https://<%= @host %>/r/tools/hooks/commit-msg
+    RewriteRule ^/tools/hooks/commit-msg$ https://gerrit.<%= @domain %>/r/tools/hooks/commit-msg
 
     # Workaround for really broken browser detection in Gerrit code. Not sure if the hex string is
     # stable, this will probably need to be updated at least after Gerrit upgrades. Just load up
     # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
-    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
+    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://gerrit.<%= @domain %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
 
     <%- if @maint_mode -%>
     RedirectMatch temp "/r" "/error.html#"
@@ -117,13 +117,13 @@ MaxClients 50
     ErrorDocument 503 "/error.html#"
     <%- end -%>
 
-    ErrorLog /var/log/apache2/<%= @host %>.https.error.log
+    ErrorLog /var/log/apache2/gerrit.<%= @domain %>.https.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= @host %>.https.access.log wmf
+    CustomLog /var/log/apache2/gerrit.<%= @domain %>.https.access.log wmf
     ServerSignature Off
 
 </VirtualHost>

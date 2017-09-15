@@ -1,7 +1,7 @@
 class gerrit::jetty(
     $db_host = 'localhost',
     $replication = '',
-    $url = "https://${::gerrit::host}/r",
+    $url = "https://gerrit.${domain}/r",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $git_dir = 'git',

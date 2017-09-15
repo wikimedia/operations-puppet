@@ -1,7 +1,7 @@
 # Manifest to setup a Gerrit instance
 class gerrit(
     $config,
-    $host,
+    $domain,
     $slave_hosts = [],
     $slave = false,
 ) {
@@ -14,6 +14,8 @@ class gerrit(
     class { '::gerrit::proxy':
         require     => Class['gerrit::jetty'],
         slave_hosts => $slave_hosts,
+        slave       => $slave,
+        domain      => $domain,
     }
 
     if !$slave {

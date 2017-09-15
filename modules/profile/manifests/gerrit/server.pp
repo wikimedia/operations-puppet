@@ -2,9 +2,9 @@
 #
 # filtertags: labs-project-git labs-project-ci-staging
 class profile::gerrit::server(
+    $domain = hiera('gerrit::server::domain', 'wikimedia.org'),
     $ipv4 = hiera('gerrit::service::ipv4'),
     $ipv6 = hiera('gerrit::service::ipv6'),
-    $host = hiera('gerrit::server::host'),
     $slave_hosts = hiera('gerrit::server::slave_hosts'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
@@ -65,9 +65,9 @@ class profile::gerrit::server(
     }
 
     class { '::gerrit':
-        host        => $host,
         slave       => $slave,
         slave_hosts => $slave_hosts,
         config      => $config,
+        domain      => $domain,
     }
 }
