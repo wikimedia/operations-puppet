@@ -126,6 +126,8 @@ scap::sources:
 #    lvs_service: mathoid
   mobileapps/deploy: {}
 #    lvs_service: mobileapps
+  ocg/ocg:
+    repository: mediawiki/services/ocg-collection
   ores/deploy: {}
 #    lvs_service: ores
   parsoid/deploy: {}

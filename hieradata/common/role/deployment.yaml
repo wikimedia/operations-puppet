@@ -2,10 +2,6 @@ role::deployment::repo_config:
   eventlogging/eventlogging:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true
-  ocg/ocg:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection
-    service_name: ocg
-    checkout_submodules: true
   fluoride/fluoride:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride
   elasticsearch/plugins:

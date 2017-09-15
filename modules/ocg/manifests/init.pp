@@ -26,8 +26,8 @@ class ocg (
     $postmortem_dir = '/srv/deployment/ocg/postmortem',
     $log_dir = '/srv/deployment/ocg/log'
 ) {
-    package { 'ocg/ocg':
-        provider => 'trebuchet',
+    scap::target { 'ocg/ocg':
+        deploy_user => 'deploy-service',
     }
 
     group { 'ocg':

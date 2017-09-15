@@ -89,6 +89,11 @@ scap::dsh::groups:
       - logstash1001.eqiad.wmnet
       - logstash1002.eqiad.wmnet
       - logstash1003.eqiad.wmnet
+  ocg:
+    hosts:
+      - ocg1001.eqiad.wmnet
+      - ocg1002.eqiad.wmnet
+      - ocg1003.eqiad.wmnet
   relforge:
     hosts:
       - relforge1001.eqiad.wmnet
