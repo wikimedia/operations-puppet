@@ -34,6 +34,19 @@ import sys
 from cachestats import CacheStatsSender
 
 
+# Our newer hierarchical stats are structured like:
+# tls.<tls-version>.<key-exchange>.<auth>.<cipher>
+# Where the legal values look like:
+# tls-version: tlsv1, tlsv1_1, tlsv1_2, tlsv1_3
+# key-exchange: x25519, prime256v1, ffdheNNNN (?), dhe, rsa
+# auth: ecdsa, rsa
+# cipher: aes128-gcm-sha256 (stripped of kx-auth|tls13- prefix)
+# Note also that our current parsing and interpretation assumes:
+# 1) TLSv1.3 clients use ECDSA exclusively (we'll need to modify some nginx
+#    stuff to do any differently...), or at least are capable...
+# 2) That if TLSv1.3+FFDHE gets used, the ffdhe will show up as the named curve
+#    via openssl? (unlikely to be a problem?)
+
 class XcpsCacheStatsSender(CacheStatsSender):
 
     cmd = ['/usr/bin/varnishncsa', '-n', 'frontend',
@@ -47,19 +60,42 @@ class XcpsCacheStatsSender(CacheStatsSender):
     def __init__(self, argument_list):
         super(XcpsCacheStatsSender, self).__init__(argument_list)
         self.key_value_pairs = re.compile('([A-Z][A-Z0-9]*)=([^;]+)')
+        self.kxa = re.compile('^(ecdhe-(ecdsa|rsa)|dhe-rsa|tls13)-')
 
     def gen_stats(self, record):
-        for k, v in self.key_value_pairs.findall(record):
-            if k == 'SSR':
+        d = {k.lower(): v.lower() for
+             (k, v) in self.key_value_pairs.findall(record)}
+        if 'ssl' not in d:
+            return
+        # This creates the legacy split stats:
+        for (k, v) in d.items():
+            if k == 'ssr':
                 k = 'ssl_sessions'
                 v = 'reused' if v == '1' else 'negotiated'
-            elif k == 'C':
+            elif k == 'c':
                 k = 'ssl_cipher'
-            elif k == 'EC':
+            elif k == 'ec':
                 k = 'ssl_ecdhe_curve'
             v = v.replace('.', '_')
-            s = '.'.join((k, v)).lower()
+            s = '.'.join((k, v))
             self.stats[s] = self.stats.get(s, 0) + 1
+        # This creates the new hierarchical stats (one stat bump per record)
+        parts = ('tls', d['ssl'].replace('.', '_'))
+        kxam = self.kxa.match(d['c'])
+        if kxam:
+            ciph = self.kxa.sub('', d['c'])
+            if kxam.group(1) == 'ecdhe-ecdsa':
+                parts += (d['ec'], 'ecdsa', ciph)
+            elif kxam.group(1) == 'ecdhe-rsa':
+                parts += (d['ec'], 'rsa', ciph)
+            elif kxam.group(1) == 'dhe-rsa':
+                parts += ('dhe', 'rsa', ciph)
+            else:  # TLS13
+                parts += (d['ec'], 'ecdsa', ciph)
+        else:
+            parts += ('rsa', 'rsa', d['c'])
+        s = '.'.join(parts)
+        self.stats[s] = self.stats.get(s, 0) + 1
 
 
 if __name__ == "__main__":
