@@ -2167,11 +2167,6 @@ node 'tureis.codfw.wmnet' {
     role(failoid)
 }
 
-# To be fully decom as part of T152712
-node 'stat1003.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'stat1004.eqiad.wmnet' {
     # stat1004 contains all the tools and libraries to access
     # the Analytics Cluster services.
