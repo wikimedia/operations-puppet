@@ -315,6 +315,12 @@ def main():
     )
 
     argparser.add_argument(
+        '--preserve-leaks',
+        help='Never delete failed VMs',
+        action='store_true'
+    )
+
+    argparser.add_argument(
         '--keystone-url',
         default="http://labcontrol1001.wikimedia.org:35357/v3",
         help='Auth url for token and service discovery',
@@ -478,9 +484,19 @@ def main():
         pexist_count = len(filter(bool, pexist))
         stat('instances.count', pexist_count)
         stat('instances.max', args.max_pool)
+
+        # If we're pushing up against max_pool, delete the oldest server
+        if not args.preserve_leaks and pexist_count >= args.max_pool - 1:
+            logging.warning("There are {} leaked instances with prepend {}; "
+                            "cleaning up".format(pexist_count, prepend))
+            servers = sorted(filter(bool, pexist), key=lambda server: server.human_id)
+            servers[0].delete()
+
         if pexist_count >= args.max_pool:
-            logging.error("max server(s) with prepend {}".format(prepend))
-            sys.exit(1)
+            # If the cleanup in the last two cycles didn't get us anywhere,
+            #  best to just bail out so we stop trampling on the API.
+            logging.error("max server(s) with prepend {} -- skipping creation".format(prepend))
+            continue
 
         cimage = nova_conn.images.find(name=args.image)
         cflavor = nova_conn.flavors.find(name=args.flavor)
