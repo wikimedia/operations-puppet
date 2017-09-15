@@ -1,10 +1,10 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/cron/dumpcategoriesrdf.sh
+# modules/snapshot/cron/dumpcategoriesrdf-daily.sh
 #############################################################
 #
-# Generate an RDF dump of categories for all wikis in
+# Generate a daily list of changes for all wikis in
 # categories-rdf list and remove old ones.
 
 source /usr/local/etc/dump_functions.sh
@@ -21,7 +21,6 @@ usage() {
 
 configFile="${confsdir}/wikidump.conf"
 dryrun="false"
-dumpFormat="ttl"
 dbList="categories-rdf"
 
 while [ $# -gt 0 ]; do
@@ -66,13 +65,13 @@ done
 
 today=$(date -u +'%Y%m%d')
 ts=$(date -u +'%Y%m%d%H%M%S')
-targetDirBase="${publicDir}/other/categoriesrdf"
-targetDir="${targetDirBase}/${today}"
-timestampsDir="${targetDirBase}/lastdump"
+fullDumpDirBase="${publicDir}/other/categoriesrdf"
+timestampsDir="${fullDumpDirBase}/lastdump"
+targetDir="${fullDumpDirBase}/daily/${today}"
 multiVersionScript="${deployDir}/multiversion/MWScript.php"
 
 # remove old datasets
-daysToKeep=70
+daysToKeep=15
 cutOff=$(( $(date +%s) - $(( $daysToKeep + 1 )) * 24 * 3600))
 if [ -d "$targetDirBase" ]; then
 	for folder in $(ls -d -r "${targetDirBase}/"*); do
@@ -80,10 +79,10 @@ if [ -d "$targetDirBase" ]; then
 		if [ -n "$creationTime" ]; then
 		    if [ "$cutOff" -gt "$creationTime" ]; then
 			if [ "$dryrun" == "true" ]; then
-				echo rm "${folder}/"*".${dumpFormat}.gz"
+				echo rm "${folder}/"*".sparql.gz"
 				echo rmdir "${folder}"
 			else
-				rm -f "${folder}/"*".${dumpFormat}.gz"
+				rm -f "${folder}/"*".sparql.gz"
 				rmdir "${folder}"
 			fi
 		    fi
@@ -112,15 +111,42 @@ fi
 cat "$dbList" | while read wiki; do
 	# exclude all private wikis
 	if ! egrep -q "^${wiki}$" "$privateList"; then
-		filename="${wiki}-${today}-categories"
-		targetFile="${targetDir}/${filename}.${dumpFormat}.gz"
-		tsFile="${timestampsDir}/${wiki}-categories.last"
+		filename="${wiki}-${today}-daily"
+		targetFile="${targetDir}/${filename}.sparql.gz"
+		tsFile="${timestampsDir}/${wiki}-daily.last"
+		fullTsFile="${timestampsDir}/${wiki}-categories.last"
+		# get latest timestamps
+		if [ -f "$fullTsFile" ]; then
+			fullTs=`cat $fullTsFile`
+		fi
+		if [ -z "$fullTs" ]; then
+			echo "Can not find full dump timestamp at $fullTsFile!"
+			continue
+		fi
+		if [ -f "$tsFile" ]; then
+			lastTs=`cat $tsFile`
+		fi
+		if [ -z "$lastTs"]; then
+			lastTs=$fullTs
+		fi
+		# if dump is more recent than last daily, we have to generate diff between dump and now
+		if [ "$fullTs" -gt "$lastTs" ]; then
+			if [ "$dryrun" == "true" ]; then
+				# get only day TS
+				dumpTs=${fullTs:0:8}
+				echo "php $multiVersionScript maintenance/categoryChangesAsRdf.php --wiki=$wiki -s $fullTs -e $ts 2> /var/log/categoriesrdf/${filename}-daily.log | $gzip > fromDump${dumpTs}-${targetFile}"
+			else
+				php "$multiVersionScript" maintenance/categoryChangesAsRdf.php --wiki="$wiki" -s $fullTs -e $ts 2> "/var/log/categoriesrdf/${filename}-daily.log" | "$gzip" > "fromDump${dumpTs}-${targetFile}"
+			fi
+		fi
+		# create daily diff
 		if [ "$dryrun" == "true" ]; then
-			echo "php $multiVersionScript maintenance/dumpCategoriesAsRdf.php --wiki=$wiki --format=$dumpFormat 2> /var/log/categoriesrdf/${filename}.log | $gzip > $targetFile"
+			echo "php $multiVersionScript maintenance/categoryChangesAsRdf.php --wiki=$wiki -s $lastTs -e $ts 2>> /var/log/categoriesrdf/${filename}-daily.log | $gzip > $targetFile"
 		else
-			php "$multiVersionScript" maintenance/dumpCategoriesAsRdf.php --wiki="$wiki" --format="$dumpFormat" 2> "/var/log/categoriesrdf/${filename}.log" | "$gzip" > "$targetFile"
+			php "$multiVersionScript" maintenance/categoryChangesAsRdf.php --wiki="$wiki" -s $lastTs -e $ts 2>> "/var/log/categoriesrdf/${filename}-daily.log" | "$gzip" > "$targetFile"
 			echo "$ts" > "$tsFile"
 		fi
+
 	fi
 done
 

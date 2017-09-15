@@ -33,5 +33,23 @@ class snapshot::cron::categoriesrdf(
         weekday     => '6',
         require     => File[$scriptpath],
     }
+
+    $scriptpathDaily = '/usr/local/bin/dumpcategoriesrdf-daily.sh'
+    file { $scriptpath:
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/cron/dumpcategoriesrdf-daily.sh',
+    }
+
+    cron { 'categoriesrdf-dump-daily':
+        ensure      => 'present',
+        command     => "${scriptpathDaily} --config ${confsdir}/wikidump.conf --list ${apachedir}/dblists/categories-rdf.dblist",
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => $user,
+        minute      => '0',
+        hour        => '5',
+        require     => File[$scriptpathDaily],
+    }
 }
 
