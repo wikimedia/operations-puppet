@@ -6,5 +6,5 @@ class role::mediawiki::imagescaler {
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
     include ::base::firewall
+    include ::threedtopng::deploy
 }
-
