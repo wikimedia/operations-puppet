@@ -1459,7 +1459,7 @@ users:
     realname: Giuseppe Lavagetto
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCf8yZc/+/LiiIXkweNACUDMYNezKpexv7W8d4xlUweCcnZeyVvdiVl/LoFySvf7G08shDXQrxhqnc9xA6ulGokfHLOjAoqEuwlVwA1Xjbyb7KSOA2PNLDG9kzQ36wQyaSIgSDZegA+3O1oi3Jp/oVfSaqN1zk+8/Jl1kUAsv5S2264lsQR1y34AHhL4txkn6lH4nxjBBl+nvspU/FPInsLrCprCvecR7OT5+kUJF4rEeiGqx1gu7Etd/4AQzb+csYXp3LKUYhW+6kxEhUbGhFRG+GYtwD5oYFwSR7CmqrYvthfaMmnG9JzvIJvGmEv9gIFAivNsodlJzR0ZZ1ya24UvEwpnHmgcPBgLI1tPGJT//p8P7Xd04KPHgbN1VG21s89gjNCvEErwR8lkTveFRBZ8I0D/ipVFP4fHcA+jx6Lit/krIcexZ3CN0Bfpr9rEiFOGMx081HvD6R3x2ZablNb3GA/lscUs3r18QdQDGazj2+4PkrgbCAl0pt52Pun9/uajQpfHEgkaO6CHMrdX9FR169D86ZDf3W7lV0SPjITDeHHFBFzzrVrju4xt01ybYsUiWaS+PZAeQEDgZ1156sH8RSm7/Oi18U++S/upN7csJfDwSwOss9ReJNn+tXMr+uEjnuIL+Z2v0oCfujAcJIauX5UpEt5oXlhK+8BClRzXQ== joe@wikimedia.org
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8qjtkdl7nDP0lD0oQQNcGCMelTFu9dlx+TEu+mo0p89wwBdtWuXEv7T0837aUYQ8FHyHUXnrgeCX43a8LnI0lM2tD8/5VT+aFqGDwETjLgUNhlK1JQp7ZDC4fS+mNczfT7ytJmTt/cmxjyPIQh7E/wdaMwF8ogvOsS9iy//wFF1fcS6rYSy5DYLF7s21YNjnqPuVtv3pqNseqrSkChtcGxEkrB2+/t8Nf01evutdsk0kUvUM24bdCtOlvGaW/+qIbr+YbR6omgAblmo9opuMVspn1B6/1NEZ/jK+zuQ008XEvJQCsm9ahlmD10MVbykktc1jBIS//N7Zs9RWQKcEN glavagetto@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIByu4Mym+ToDBSnH9iKSJVrTcUYLLENBFt/oXTgzNA joe@wikimedia.org
     uid: 4816
     email: glavagetto@wikimedia.org
 # T109521
