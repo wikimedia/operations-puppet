@@ -14,6 +14,7 @@ class gerrit(
     class { '::gerrit::proxy':
         require     => Class['gerrit::jetty'],
         slave_hosts => $slave_hosts,
+        slave       => $slave,
     }
 
     if !$slave {
