@@ -3,9 +3,9 @@
 # and the lookup logic is different than everywhere else.
 # Because we love clarity and consistency.
 
-puppetmaster: "labtestcontrol2001.wikimedia.org"
+puppetmaster: "labtest-puppetmaster.wikimedia.org"
 saltmaster: "labtestcontrol2001.wikimedia.org"
-labs_puppet_master: "labtestcontrol2001.wikimedia.org"
+labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
 
 labsdnsconfig:
   recursor: 'labtest-recursor0.wikimedia.org'
