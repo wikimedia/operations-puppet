@@ -1977,7 +1977,7 @@ users:
     gid: 500
     name: zhousquared
     realname: Zhou Zhou
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZXHi14Nxr38Pck4Gqg13rUX3S3mbPo38eEdYrwS7WAMFEKMavkPnuv6qUeicN4IkC6e2AbTt+UFaxfXU3TBqa9SQfrqw/xb431T8wmjnwCSGBw+uCO2U6BHAG4ky3irMnqh+FxZ+Y6QUNwAB++QofLql3h4FEt9vEhpH8bKqQBA4gDOV6xUR4Uwu20uN7yEDDzQCpdJB+ZZsfg7gWnFkDQksgtbuDTdOWUT4MkBss5hiRrMpGN91Y/KPLkNeuAjYDSUnjpNt6AkfV1KtpFaqKH5DmvkJHbfq3FerS3Gp+HNXaB3AAMm2+MxPANgC2efhidvwG3ae/tb5ND4hzFfYT zzhou@wikimedia.org]
+    ssh_keys: []
     uid: 12576
     email: zzhou@wikimedia.org
   dfoy:
