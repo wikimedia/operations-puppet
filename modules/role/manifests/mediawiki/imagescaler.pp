@@ -6,5 +6,10 @@ class role::mediawiki::imagescaler {
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
     include ::base::firewall
+
+    # include doesn't allow names to start with numbers
+    class { '3d2png::deploy':
+        manage_user => false,
+    }
 }
 
