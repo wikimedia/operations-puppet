@@ -16,4 +16,4 @@ puppetmaster::servers:
   labtestpuppetmaster2001.wikimedia.org:
     - { worker: labtestpuppetmaster2001.wikimedia.org, loadfactor: 10 }
 
-labs_puppet_master: labtestpuppetmaster2001.wikimedia.org
+labs_puppet_master: labtest-puppetmaster.wikimedia.org
