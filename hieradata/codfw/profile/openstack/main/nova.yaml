@@ -1,0 +1,2 @@
+profile::openstack::main::nova::dhcp_domain: 'codfw.labtest'
+profile::openstack::main::nova::dhcp_start: '10.196.16.4'
