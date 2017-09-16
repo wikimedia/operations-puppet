@@ -100,13 +100,13 @@ def purge_duplicates(delete=False):
         # we need a fresh copy of all instances so we don't accidentally
         #  delete things that have been created since we last checked.
         instances = clients.allinstances()
-        all_nova_instances = ["%s.%s.eqiad.wmflabs." % (instance.name, instance.tenant_id)
+        all_nova_instances = ["%s.%s.eqiad.wmflabs." % (instance.name.lower(), instance.tenant_id)
                               for instance in instances]
-        all_nova_shortname_instances = ["%s.eqiad.wmflabs." % (instance.name)
+        all_nova_shortname_instances = ["%s.eqiad.wmflabs." % (instance.name.lower())
                                         for instance in instances]
 
         for recordset in recordsets:
-            name = recordset['name']
+            name = recordset['name'].lower()
             if name.endswith(".svc.eqiad.wmflabs."):
                 # These are service records and shouldn't point to instances.
                 #  Leave them be.
