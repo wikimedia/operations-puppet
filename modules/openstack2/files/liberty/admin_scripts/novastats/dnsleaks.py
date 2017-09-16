@@ -107,6 +107,10 @@ def purge_duplicates(delete=False):
 
         for recordset in recordsets:
             name = recordset['name']
+            if name.endswith(".svc.eqiad.wmflabs."):
+                # These are service records and shouldn't point to instances.
+                #  Leave them be.
+                continue
             recordsetid = recordset['id']
             if recordset['type'] == 'A':
                 # For an A record, we can just delete the whole recordset
