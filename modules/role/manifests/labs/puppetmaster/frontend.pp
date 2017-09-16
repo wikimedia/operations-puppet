@@ -43,6 +43,9 @@ class role::labs::puppetmaster::frontend() {
         }
     }
 
+    # This installs the creds used by validatelabsfqdn.py
+    include ::profile::openstack::main::observerenv
+
     # validatelabsfqdn will look up an instance certname in nova
     #  and make sure it's for an actual instance before signing
     file { '/usr/local/sbin/validatelabsfqdn.py':
