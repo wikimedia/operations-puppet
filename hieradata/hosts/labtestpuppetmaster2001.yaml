@@ -10,8 +10,6 @@ profile::puppetmaster::frontend::web_hostname: labtest-puppetmaster.wikimedia.or
 
 profile::puppetmaster::common::storeconfigs: none
 
-puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
-
 puppetmaster::servers:
   labtestpuppetmaster2001.wikimedia.org:
     - { worker: labtestpuppetmaster2001.wikimedia.org, loadfactor: 10 }
