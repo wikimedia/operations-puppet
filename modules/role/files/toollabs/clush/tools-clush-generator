@@ -63,6 +63,11 @@ def get_hostgroups(classifier, observer_pass):
     )
     for instance in client.servers.list():
         name = instance.name
+        if name.startswith('tools-puppetmaster'):
+            # To avoid chicken/egg strangeness, the tools puppetmaster
+            #  is not itself managed by the tools puppetmaster.  That
+            #  means clush keys aren't set up there.
+            continue
         for prefix in classifier:
             if name.startswith('tools-' + prefix):
                 role = classifier[prefix]
