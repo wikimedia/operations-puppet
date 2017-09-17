@@ -131,7 +131,7 @@ do
     echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
     echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/nologin
     ((mount_attempts++))
-    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
+    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && puppet agent -t && break
     # Sleep for 10s before next attempt
     sleep 10
 done
