@@ -1,4 +1,4 @@
-class dumpsdirs(
+class dumps::generation::server::dirs(
     $user  = undef,
     $group = undef,
 ) {
