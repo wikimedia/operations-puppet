@@ -1,0 +1,884 @@
+From 7e7b989eb0cce9f827669e4a43ffdbdfee27cd50 Mon Sep 17 00:00:00 2001
+From: cpettet <rush@wikimedia.org>
+Date: Mon, 18 Sep 2017 21:24:49 +0000
+Subject: [PATCH] openstack: pdns auth module/role/profile
+
+* Rename labs_dns pdns_server
+
+Bug: T171494
+hange-Id: Ib021f565b5c528dce8d94209b70d424ad7735e00
+---
+ hieradata/eqiad/profile/openstack/main/pdns.yaml   |  1 +
+ hieradata/role/common/labs/dns.yaml                |  2 -
+ .../role/eqiad/wmcs/openstack/main/services.yaml   |  2 +
+ manifests/site.pp                                  |  3 -
+ modules/labs_dns/files/initial-data.db             | 90 ----------------------
+ modules/labs_dns/manifests/init.pp                 | 46 -----------
+ modules/labs_dns/templates/pdns.conf.erb           | 48 ------------
+ modules/pdns_server/files/initial-data.db          | 90 ++++++++++++++++++++++
+ modules/pdns_server/manifests/init.pp              | 46 +++++++++++
+ modules/pdns_server/templates/pdns.conf.erb        | 48 ++++++++++++
+ .../manifests/openstack/base/pdns/auth/db.pp       | 58 ++++++++++++++
+ .../openstack/base/pdns/auth/monitor/host_check.pp | 21 +++++
+ .../base/pdns/auth/monitor/pdns_control.pp         | 37 +++++++++
+ .../manifests/openstack/base/pdns/auth/service.pp  | 40 ++++++++++
+ .../manifests/openstack/labtest/pdns/auth/db.pp    | 12 +++
+ .../openstack/labtest/pdns/auth/service.pp         | 12 +++
+ .../manifests/openstack/labtestn/pdns/auth/db.pp   | 12 +++
+ .../openstack/labtestn/pdns/auth/service.pp        | 12 +++
+ .../manifests/openstack/main/pdns/auth/db.pp       | 12 +++
+ .../manifests/openstack/main/pdns/auth/service.pp  | 18 +++++
+ .../manifests/wmcs/openstack/labtest/services.pp   |  2 +
+ .../manifests/wmcs/openstack/labtestn/services.pp  |  2 +
+ .../role/manifests/wmcs/openstack/main/services.pp |  2 +
+ modules/role/templates/mariadb/grants/dns.sql.erb  | 18 ++---
+ 24 files changed, 436 insertions(+), 198 deletions(-)
+ delete mode 100644 hieradata/role/common/labs/dns.yaml
+ create mode 100644 hieradata/role/eqiad/wmcs/openstack/main/services.yaml
+ delete mode 100644 modules/labs_dns/files/initial-data.db
+ delete mode 100644 modules/labs_dns/manifests/init.pp
+ delete mode 100644 modules/labs_dns/templates/pdns.conf.erb
+ create mode 100644 modules/pdns_server/files/initial-data.db
+ create mode 100644 modules/pdns_server/manifests/init.pp
+ create mode 100644 modules/pdns_server/templates/pdns.conf.erb
+ create mode 100644 modules/profile/manifests/openstack/base/pdns/auth/db.pp
+ create mode 100644 modules/profile/manifests/openstack/base/pdns/auth/monitor/host_check.pp
+ create mode 100644 modules/profile/manifests/openstack/base/pdns/auth/monitor/pdns_control.pp
+ create mode 100644 modules/profile/manifests/openstack/base/pdns/auth/service.pp
+ create mode 100644 modules/profile/manifests/openstack/labtest/pdns/auth/db.pp
+ create mode 100644 modules/profile/manifests/openstack/labtest/pdns/auth/service.pp
+ create mode 100644 modules/profile/manifests/openstack/labtestn/pdns/auth/db.pp
+ create mode 100644 modules/profile/manifests/openstack/labtestn/pdns/auth/service.pp
+ create mode 100644 modules/profile/manifests/openstack/main/pdns/auth/db.pp
+ create mode 100644 modules/profile/manifests/openstack/main/pdns/auth/service.pp
+
+diff --git a/hieradata/eqiad/profile/openstack/main/pdns.yaml b/hieradata/eqiad/profile/openstack/main/pdns.yaml
+index ed106d7..ab73ff2 100644
+--- a/hieradata/eqiad/profile/openstack/main/pdns.yaml
++++ b/hieradata/eqiad/profile/openstack/main/pdns.yaml
+@@ -2,3 +2,4 @@ profile::openstack::main::pdns::host: 'labs-ns0.wikimedia.org'
+ profile::openstack::main::pdns::host_secondary: 'labs-ns1.wikimedia.org'
+ profile::openstack::main::pdns::recursor: 'labs-recursor0.wikimedia.org'
+ profile::openstack::main::pdns::recursor_secondary: 'labs-recursor1.wikimedia.org'
++profile::openstack::main::pdns::monitor_target_fqdn: 'tools-grid-master.tools.eqiad.wmflabs'
+diff --git a/hieradata/role/common/labs/dns.yaml b/hieradata/role/common/labs/dns.yaml
+deleted file mode 100644
+index b30a778..0000000
+--- a/hieradata/role/common/labs/dns.yaml
++++ /dev/null
+@@ -1,2 +0,0 @@
+-admin::groups:
+-  - wmcs-roots
+diff --git a/hieradata/role/eqiad/wmcs/openstack/main/services.yaml b/hieradata/role/eqiad/wmcs/openstack/main/services.yaml
+new file mode 100644
+index 0000000..b30a778
+--- /dev/null
++++ b/hieradata/role/eqiad/wmcs/openstack/main/services.yaml
+@@ -0,0 +1,2 @@
++admin::groups:
++  - wmcs-roots
+diff --git a/manifests/site.pp b/manifests/site.pp
+index cd66817..6ea9311 100644
+--- a/manifests/site.pp
++++ b/manifests/site.pp
+@@ -1022,7 +1022,6 @@ node 'labpuppetmaster1002.wikimedia.org' {
+ # labservices1001 hosts openstack-designate, the labs DNS service.
+ node 'labservices1001.wikimedia.org' {
+     role(wmcs::openstack::main::services,
+-          labs::dns,
+           labs::dnsrecursor,
+           labs::dns_floating_ip_updater)
+     include ::standard
+@@ -1032,7 +1031,6 @@ node 'labservices1001.wikimedia.org' {
+ 
+ node 'labservices1002.wikimedia.org' {
+     role(wmcs::openstack::main::services,
+-          labs::dns,
+           labs::dnsrecursor)
+     include ::standard
+     include ::base::firewall
+@@ -1118,7 +1116,6 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
+ 
+ node 'labtestservices2001.wikimedia.org' {
+     role(wmcs::openstack::labtest::services,
+-          labs::dns,
+           labs::dnsrecursor,
+           openldap::labtest,
+           labs::dns_floating_ip_updater)
+diff --git a/modules/labs_dns/files/initial-data.db b/modules/labs_dns/files/initial-data.db
+deleted file mode 100644
+index 002fe92..0000000
+--- a/modules/labs_dns/files/initial-data.db
++++ /dev/null
+@@ -1,90 +0,0 @@
+-CREATE TABLE domains (
+-  id                    INT AUTO_INCREMENT,
+-  name                  VARCHAR(255) NOT NULL,
+-  master                VARCHAR(128) DEFAULT NULL,
+-  last_check            INT DEFAULT NULL,
+-  type                  VARCHAR(6) NOT NULL,
+-  notified_serial       INT DEFAULT NULL,
+-  account               VARCHAR(40) DEFAULT NULL,
+-  PRIMARY KEY (id)
+-) Engine=InnoDB;
+-
+-CREATE UNIQUE INDEX name_index ON domains(name);
+-
+-
+-CREATE TABLE records (
+-  id                    INT AUTO_INCREMENT,
+-  domain_id             INT DEFAULT NULL,
+-  name                  VARCHAR(255) DEFAULT NULL,
+-  type                  VARCHAR(10) DEFAULT NULL,
+-  content               VARCHAR(64000) DEFAULT NULL,
+-  ttl                   INT DEFAULT NULL,
+-  prio                  INT DEFAULT NULL,
+-  change_date           INT DEFAULT NULL,
+-  disabled              TINYINT(1) DEFAULT 0,
+-  ordername             VARCHAR(255) BINARY DEFAULT NULL,
+-  auth                  TINYINT(1) DEFAULT 1,
+-  PRIMARY KEY (id)
+-) Engine=InnoDB;
+-
+-CREATE INDEX nametype_index ON records(name,type);
+-CREATE INDEX domain_id ON records(domain_id);
+-CREATE INDEX recordorder ON records (domain_id, ordername);
+-
+-
+-CREATE TABLE supermasters (
+-  ip                    VARCHAR(64) NOT NULL,
+-  nameserver            VARCHAR(255) NOT NULL,
+-  account               VARCHAR(40) NOT NULL,
+-  PRIMARY KEY (ip, nameserver)
+-) Engine=InnoDB;
+-
+-
+-CREATE TABLE comments (
+-  id                    INT AUTO_INCREMENT,
+-  domain_id             INT NOT NULL,
+-  name                  VARCHAR(255) NOT NULL,
+-  type                  VARCHAR(10) NOT NULL,
+-  modified_at           INT NOT NULL,
+-  account               VARCHAR(40) NOT NULL,
+-  comment               VARCHAR(64000) NOT NULL,
+-  PRIMARY KEY (id)
+-) Engine=InnoDB;
+-
+-CREATE INDEX comments_domain_id_idx ON comments (domain_id);
+-CREATE INDEX comments_name_type_idx ON comments (name, type);
+-CREATE INDEX comments_order_idx ON comments (domain_id, modified_at);
+-
+-
+-CREATE TABLE domainmetadata (
+-  id                    INT AUTO_INCREMENT,
+-  domain_id             INT NOT NULL,
+-  kind                  VARCHAR(32),
+-  content               TEXT,
+-  PRIMARY KEY (id)
+-) Engine=InnoDB;
+-
+-CREATE INDEX domainmetadata_idx ON domainmetadata (domain_id, kind);
+-
+-
+-CREATE TABLE cryptokeys (
+-  id                    INT AUTO_INCREMENT,
+-  domain_id             INT NOT NULL,
+-  flags                 INT NOT NULL,
+-  active                BOOL,
+-  content               TEXT,
+-  PRIMARY KEY(id)
+-) Engine=InnoDB;
+-
+-CREATE INDEX domainidindex ON cryptokeys(domain_id);
+-
+-
+-CREATE TABLE tsigkeys (
+-  id                    INT AUTO_INCREMENT,
+-  name                  VARCHAR(255),
+-  algorithm             VARCHAR(50),
+-  secret                VARCHAR(255),
+-  PRIMARY KEY (id)
+-) Engine=InnoDB;
+-
+-CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
+diff --git a/modules/labs_dns/manifests/init.pp b/modules/labs_dns/manifests/init.pp
+deleted file mode 100644
+index 9834a9c..0000000
+--- a/modules/labs_dns/manifests/init.pp
++++ /dev/null
+@@ -1,46 +0,0 @@
+-# dns.pp
+-#
+-# Parameters:
+-# - $dns_auth_ipaddress:IP address PowerDNS will bind to and send packets from
+-# - $dns_auth_soa_name:DNS SOA name of the server
+-# - $dns_auth_master:Which DNS server to use as "master" to fetch zones from
+-
+-class labs_dns(
+-    $dns_auth_ipaddress,
+-    $dns_auth_soa_name,
+-    $pdns_db_host,
+-    $pdns_db_password,
+-    $dns_auth_query_address = ''
+-) {
+-
+-    package { [ 'pdns-server',
+-                'pdns-backend-mysql' ]:
+-        ensure => 'present',
+-    }
+-
+-    file { '/etc/powerdns/pdns.conf':
+-        ensure  => 'present',
+-        require => Package['pdns-server'],
+-        owner   => 'root',
+-        group   => 'root',
+-        mode    => '0444',
+-        content => template('labs_dns/pdns.conf.erb'),
+-    }
+-
+-    # Clean up any example configs that the pdns packages might have installed;
+-    #  We don't want them accidentally used or merged into our puppetized config.
+-    file { '/etc/powerdns/pdns.d/':
+-        ensure  => directory,
+-        purge   => true,
+-        recurse => true,
+-    }
+-
+-    service { 'pdns':
+-        ensure     => 'running',
+-        require    => [ Package['pdns-server'],
+-                        File['/etc/powerdns/pdns.conf']
+-        ],
+-        subscribe  => File['/etc/powerdns/pdns.conf'],
+-        hasrestart => false,
+-    }
+-}
+diff --git a/modules/labs_dns/templates/pdns.conf.erb b/modules/labs_dns/templates/pdns.conf.erb
+deleted file mode 100644
+index 450e376..0000000
+--- a/modules/labs_dns/templates/pdns.conf.erb
++++ /dev/null
+@@ -1,48 +0,0 @@
+-
+-# This file is managed by puppet - don't edit it locally!
+-#
+-# PowerDNS configuration file
+-# Written on 2011/04/20 by Ryan Lane <rlane@wikimedia.org>
+-
+-# https://doc.powerdns.com/3/authoritative/settings/
+-# https://doc.powerdns.com/3/authoritative/performance/
+-
+-# Always bind to specific addresses - pdns complains when using INADDR_ANY.
+-# Change this to the external interface address
+-local-address=<%= @dns_auth_ipaddress %>
+-query-local-address=<% if has_variable?("dns_auth_query_address") then %><%= @dns_auth_query_address %><% else %><%= @dns_auth_ipaddress %><% end %>
+-
+-# Change this to the actual SOA name:
+-default-soa-name=<%= @dns_auth_soa_name %>
+-
+-receiver-threads=8
+-distributor-threads=4
+-
+-cache-ttl=60
+-query-cache-ttl=180
+-negquery-cache-ttl=30
+-
+-# If just geobackend is used, multithreading is unnecessary,
+-# and may even impact performance.
+-#distributor-threads=1
+-
+-# Master for allowing AXFRs
+-master=no
+-slave=yes
+-
+-# Running privileged is unnecessary
+-setgid=pdns
+-setuid=pdns
+-
+-# Logging
+-logging-facility=6
+-loglevel=6
+-query-logging=no
+-log-dns-details=no
+-
+-# Backends to load
+-launch=gmysql
+-gmysql-host=<%= @pdns_db_host %>
+-gmysql-user=pdns
+-gmysql-dbname=pdns
+-gmysql-password=<%= @pdns_db_password %>
+diff --git a/modules/pdns_server/files/initial-data.db b/modules/pdns_server/files/initial-data.db
+new file mode 100644
+index 0000000..002fe92
+--- /dev/null
++++ b/modules/pdns_server/files/initial-data.db
+@@ -0,0 +1,90 @@
++CREATE TABLE domains (
++  id                    INT AUTO_INCREMENT,
++  name                  VARCHAR(255) NOT NULL,
++  master                VARCHAR(128) DEFAULT NULL,
++  last_check            INT DEFAULT NULL,
++  type                  VARCHAR(6) NOT NULL,
++  notified_serial       INT DEFAULT NULL,
++  account               VARCHAR(40) DEFAULT NULL,
++  PRIMARY KEY (id)
++) Engine=InnoDB;
++
++CREATE UNIQUE INDEX name_index ON domains(name);
++
++
++CREATE TABLE records (
++  id                    INT AUTO_INCREMENT,
++  domain_id             INT DEFAULT NULL,
++  name                  VARCHAR(255) DEFAULT NULL,
++  type                  VARCHAR(10) DEFAULT NULL,
++  content               VARCHAR(64000) DEFAULT NULL,
++  ttl                   INT DEFAULT NULL,
++  prio                  INT DEFAULT NULL,
++  change_date           INT DEFAULT NULL,
++  disabled              TINYINT(1) DEFAULT 0,
++  ordername             VARCHAR(255) BINARY DEFAULT NULL,
++  auth                  TINYINT(1) DEFAULT 1,
++  PRIMARY KEY (id)
++) Engine=InnoDB;
++
++CREATE INDEX nametype_index ON records(name,type);
++CREATE INDEX domain_id ON records(domain_id);
++CREATE INDEX recordorder ON records (domain_id, ordername);
++
++
++CREATE TABLE supermasters (
++  ip                    VARCHAR(64) NOT NULL,
++  nameserver            VARCHAR(255) NOT NULL,
++  account               VARCHAR(40) NOT NULL,
++  PRIMARY KEY (ip, nameserver)
++) Engine=InnoDB;
++
++
++CREATE TABLE comments (
++  id                    INT AUTO_INCREMENT,
++  domain_id             INT NOT NULL,
++  name                  VARCHAR(255) NOT NULL,
++  type                  VARCHAR(10) NOT NULL,
++  modified_at           INT NOT NULL,
++  account               VARCHAR(40) NOT NULL,
++  comment               VARCHAR(64000) NOT NULL,
++  PRIMARY KEY (id)
++) Engine=InnoDB;
++
++CREATE INDEX comments_domain_id_idx ON comments (domain_id);
++CREATE INDEX comments_name_type_idx ON comments (name, type);
++CREATE INDEX comments_order_idx ON comments (domain_id, modified_at);
++
++
++CREATE TABLE domainmetadata (
++  id                    INT AUTO_INCREMENT,
++  domain_id             INT NOT NULL,
++  kind                  VARCHAR(32),
++  content               TEXT,
++  PRIMARY KEY (id)
++) Engine=InnoDB;
++
++CREATE INDEX domainmetadata_idx ON domainmetadata (domain_id, kind);
++
++
++CREATE TABLE cryptokeys (
++  id                    INT AUTO_INCREMENT,
++  domain_id             INT NOT NULL,
++  flags                 INT NOT NULL,
++  active                BOOL,
++  content               TEXT,
++  PRIMARY KEY(id)
++) Engine=InnoDB;
++
++CREATE INDEX domainidindex ON cryptokeys(domain_id);
++
++
++CREATE TABLE tsigkeys (
++  id                    INT AUTO_INCREMENT,
++  name                  VARCHAR(255),
++  algorithm             VARCHAR(50),
++  secret                VARCHAR(255),
++  PRIMARY KEY (id)
++) Engine=InnoDB;
++
++CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
+diff --git a/modules/pdns_server/manifests/init.pp b/modules/pdns_server/manifests/init.pp
+new file mode 100644
+index 0000000..115c459
+--- /dev/null
++++ b/modules/pdns_server/manifests/init.pp
+@@ -0,0 +1,46 @@
++# pdns_server/init.pp
++#
++# Parameters:
++# - $dns_auth_ipaddress:IP address PowerDNS will bind to and send packets from
++# - $dns_auth_soa_name:DNS SOA name of the server
++# - $dns_auth_master:Which DNS server to use as "master" to fetch zones from
++
++class pdns_server(
++    $dns_auth_ipaddress,
++    $dns_auth_soa_name,
++    $pdns_db_host,
++    $pdns_db_password,
++    $dns_auth_query_address = ''
++) {
++
++    package { [ 'pdns-server',
++                'pdns-backend-mysql' ]:
++        ensure => 'present',
++    }
++
++    file { '/etc/powerdns/pdns.conf':
++        ensure  => 'present',
++        owner   => 'root',
++        group   => 'root',
++        mode    => '0444',
++        content => template('pdns_server/pdns.conf.erb'),
++        require => Package['pdns-server'],
++    }
++
++    # Clean up any example configs that the pdns packages might have installed;
++    #  We don't want them accidentally used or merged into our puppetized config.
++    file { '/etc/powerdns/pdns.d/':
++        ensure  => 'directory',
++        purge   => true,
++        recurse => true,
++    }
++
++    service { 'pdns':
++        ensure     => 'running',
++        require    => [ Package['pdns-server'],
++                        File['/etc/powerdns/pdns.conf']
++        ],
++        subscribe  => File['/etc/powerdns/pdns.conf'],
++        hasrestart => false,
++    }
++}
+diff --git a/modules/pdns_server/templates/pdns.conf.erb b/modules/pdns_server/templates/pdns.conf.erb
+new file mode 100644
+index 0000000..450e376
+--- /dev/null
++++ b/modules/pdns_server/templates/pdns.conf.erb
+@@ -0,0 +1,48 @@
++
++# This file is managed by puppet - don't edit it locally!
++#
++# PowerDNS configuration file
++# Written on 2011/04/20 by Ryan Lane <rlane@wikimedia.org>
++
++# https://doc.powerdns.com/3/authoritative/settings/
++# https://doc.powerdns.com/3/authoritative/performance/
++
++# Always bind to specific addresses - pdns complains when using INADDR_ANY.
++# Change this to the external interface address
++local-address=<%= @dns_auth_ipaddress %>
++query-local-address=<% if has_variable?("dns_auth_query_address") then %><%= @dns_auth_query_address %><% else %><%= @dns_auth_ipaddress %><% end %>
++
++# Change this to the actual SOA name:
++default-soa-name=<%= @dns_auth_soa_name %>
++
++receiver-threads=8
++distributor-threads=4
++
++cache-ttl=60
++query-cache-ttl=180
++negquery-cache-ttl=30
++
++# If just geobackend is used, multithreading is unnecessary,
++# and may even impact performance.
++#distributor-threads=1
++
++# Master for allowing AXFRs
++master=no
++slave=yes
++
++# Running privileged is unnecessary
++setgid=pdns
++setuid=pdns
++
++# Logging
++logging-facility=6
++loglevel=6
++query-logging=no
++log-dns-details=no
++
++# Backends to load
++launch=gmysql
++gmysql-host=<%= @pdns_db_host %>
++gmysql-user=pdns
++gmysql-dbname=pdns
++gmysql-password=<%= @pdns_db_password %>
+diff --git a/modules/profile/manifests/openstack/base/pdns/auth/db.pp b/modules/profile/manifests/openstack/base/pdns/auth/db.pp
+new file mode 100644
+index 0000000..169f203
+--- /dev/null
++++ b/modules/profile/manifests/openstack/base/pdns/auth/db.pp
+@@ -0,0 +1,58 @@
++class profile::openstack::base::pdns::auth::db(
++    $designate_host = hiera('profile::openstack::base::designate_host'),
++    $pdns_db_pass = hiera('profile::openstack::base::pdns:db_pass'),
++    $pdns_admin_db_pass = hiera('profile::openstack::base::pdns::db_admin_pass'),
++    ) {
++
++    $designate_host_ip = ipresolve($designate_host,4)
++    package { 'mysql-client':
++        ensure => present,
++    }
++
++    # install mysql locally on all dns servers
++    include role::mariadb::monitor::dba
++    # for DBA admin root purposes
++    ferm::rule { 'mariadb_dba':
++        rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3306) ACCEPT;',
++    }
++
++    # Note:  This will install mariadb but won't set up the
++    #  pdns database.  Manual steps are:
++    #
++    #  $ /opt/wmf/mariadb/scripts/mysql_install_db
++    #  Then export the 'pdns' db from a working labservices host and import
++    #  Then, run 'designate-manage powerdns sync' for the new host
++    #
++    class { 'mariadb::packages_wmf':
++        package => 'wmf-mariadb10',
++    }
++
++    class { 'mariadb::service':
++        ensure  => 'running',
++        package => 'wmf-mariadb10',
++        manage  => true,
++        enable  => true,
++    }
++
++    class { 'mariadb::config':
++        config    => 'role/mariadb/mysqld_config/dns.my.cnf.erb',
++        datadir   => '/srv/sqldata',
++        tmpdir    => '/srv/tmp',
++        read_only => 'off',
++    }
++
++    file { '/etc/mysql/production-grants-dns.sql':
++        ensure  => present,
++        owner   => 'root',
++        group   => 'root',
++        mode    => '0400',
++        content => template('role/mariadb/grants/dns.sql.erb'),
++    }
++
++    # Allow mysql access from the designate host so it can send domain updates.
++    ferm::service { 'mysql_designate':
++        proto  => 'tcp',
++        port   => '3306',
++        srange => $designate_host_ip,
++    }
++}
+diff --git a/modules/profile/manifests/openstack/base/pdns/auth/monitor/host_check.pp b/modules/profile/manifests/openstack/base/pdns/auth/monitor/host_check.pp
+new file mode 100644
+index 0000000..eb5d761
+--- /dev/null
++++ b/modules/profile/manifests/openstack/base/pdns/auth/monitor/host_check.pp
+@@ -0,0 +1,21 @@
++class profile::openstack::base::pdns::auth::monitor::host_check(
++    $auth_soa_name = hiera('profile::openstack::base::pdns::host'),
++    $target_fqdn = hiera('profile::openstack::base::pdns::monitor::target_fqdn'),
++    ) {
++
++    monitoring::host { $auth_soa_name:
++        ip_address => $::ipaddress,
++    }
++
++    monitoring::service { "${auth_soa_name} Auth DNS UDP":
++        host          => $auth_soa_name,
++        description   => 'Check for gridmaster host resolution UDP',
++        check_command => "check_dig!${auth_soa_name}!${target_fqdn}",
++    }
++
++    monitoring::service { "${auth_soa_name} Auth DNS TCP":
++        host          => $auth_soa_name,
++        description   => 'Check for gridmaster host resolution TCP',
++        check_command => "check_dig_tcp!${auth_soa_name}!${target_fqdn}",
++    }
++}
+diff --git a/modules/profile/manifests/openstack/base/pdns/auth/monitor/pdns_control.pp b/modules/profile/manifests/openstack/base/pdns/auth/monitor/pdns_control.pp
+new file mode 100644
+index 0000000..50ff498
+--- /dev/null
++++ b/modules/profile/manifests/openstack/base/pdns/auth/monitor/pdns_control.pp
+@@ -0,0 +1,37 @@
++class profile::openstack::base::pdns::auth::monitor::pdns_control {
++
++    sudo::user { 'diamond_sudo_for_pdns':
++        user       => 'diamond',
++        privileges => ['ALL=(root) NOPASSWD: /usr/bin/pdns_control list'],
++    }
++
++    # For the authoritative servers
++    diamond::collector { 'PowerDNS':
++        ensure   => present,
++        settings => {
++            # lint:ignore:quoted_booleans
++            # This is jammed straight into a config file, needs quoting.
++            use_sudo => 'true',
++            # lint:endignore
++        },
++        require  => Sudo::User['diamond_sudo_for_pdns'],
++    }
++
++    # TODO: move to recursor profile
++    sudo::user { 'diamond_sudo_for_pdns_recursor':
++        user       => 'diamond',
++        privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
++    }
++
++    # For the recursor
++    diamond::collector { 'PowerDNSRecursor':
++        source   => 'puppet:///modules/diamond/collector/powerdns_recursor.py',
++        settings => {
++            # lint:ignore:quoted_booleans
++            # This is jammed straight into a config file, needs quoting.
++            use_sudo => 'true',
++            # lint:endignore
++        },
++        require  => Sudo::User['diamond_sudo_for_pdns_recursor'],
++    }
++}
+diff --git a/modules/profile/manifests/openstack/base/pdns/auth/service.pp b/modules/profile/manifests/openstack/base/pdns/auth/service.pp
+new file mode 100644
+index 0000000..55399b2
+--- /dev/null
++++ b/modules/profile/manifests/openstack/base/pdns/auth/service.pp
+@@ -0,0 +1,40 @@
++class profile::openstack::base::pdns::auth::service(
++    $host = hiera('profile::openstack::base::pdns::host'),
++    $db_host = hiera('profile::openstack::base::pdns::db_host'),
++    $db_pass = hiera('profile::openstack::base::pdns::db_pass'),
++    ) {
++
++    #    dns_auth_ipaddress     => $facts['ipaddress'],
++    #    dns_auth_query_address => $facts['ipaddress'],
++    class { '::pdns_server':
++        dns_auth_ipaddress     => $::ipaddress,
++        dns_auth_query_address => $::ipaddress,
++        dns_auth_soa_name      => $host,
++        pdns_db_host           => $db_host,
++        pdns_db_password       => $db_pass,
++    }
++
++    ferm::service { 'udp_dns_rec':
++        proto => 'udp',
++        port  => '53',
++    }
++
++    ferm::service { 'tcp_dns_rec':
++        proto => 'tcp',
++        port  => '53',
++    }
++
++    ferm::rule { 'skip_dns_conntrack-out':
++        desc  => 'Skip DNS outgoing connection tracking',
++        table => 'raw',
++        chain => 'OUTPUT',
++        rule  => 'proto udp sport 53 NOTRACK;',
++    }
++
++    ferm::rule { 'skip_dns_conntrack-in':
++        desc  => 'Skip DNS incoming connection tracking',
++        table => 'raw',
++        chain => 'PREROUTING',
++        rule  => 'proto udp dport 53 NOTRACK;',
++    }
++}
+diff --git a/modules/profile/manifests/openstack/labtest/pdns/auth/db.pp b/modules/profile/manifests/openstack/labtest/pdns/auth/db.pp
+new file mode 100644
+index 0000000..6b4fee7
+--- /dev/null
++++ b/modules/profile/manifests/openstack/labtest/pdns/auth/db.pp
+@@ -0,0 +1,12 @@
++class profile::openstack::labtest::pdns::auth::db(
++    $designate_host = hiera('profile::openstack::labtest::designate_host'),
++    $pdns_db_pass = hiera('profile::openstack::labtest::pdns::db_pass'),
++    $pdns_admin_db_pass = hiera('profile::openstack::labtest::pdns::db_admin_pass'),
++    ) {
++
++    class {'::profile::openstack::base::pdns::auth::db':
++        designate_host     => $designate_host,
++        pdns_db_pass       => $pdns_db_pass,
++        pdns_admin_db_pass => $pdns_admin_db_pass,
++    }
++}
+diff --git a/modules/profile/manifests/openstack/labtest/pdns/auth/service.pp b/modules/profile/manifests/openstack/labtest/pdns/auth/service.pp
+new file mode 100644
+index 0000000..d8359e5
+--- /dev/null
++++ b/modules/profile/manifests/openstack/labtest/pdns/auth/service.pp
+@@ -0,0 +1,12 @@
++class profile::openstack::labtest::pdns::auth::service(
++    $host = hiera('profile::openstack::labtest::pdns::host'),
++    $db_pass = hiera('profile::openstack::labtest::pdns::db_pass'),
++    ) {
++
++    class {'::profile::openstack::base::pdns::auth::service':
++        host    => $host,
++        db_pass => $db_pass,
++    }
++
++    class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
++}
+diff --git a/modules/profile/manifests/openstack/labtestn/pdns/auth/db.pp b/modules/profile/manifests/openstack/labtestn/pdns/auth/db.pp
+new file mode 100644
+index 0000000..867610f
+--- /dev/null
++++ b/modules/profile/manifests/openstack/labtestn/pdns/auth/db.pp
+@@ -0,0 +1,12 @@
++class profile::openstack::labtestn::pdns::auth::db(
++    $designate_host = hiera('profile::openstack::labtestn::designate_host'),
++    $pdns_db_pass = hiera('profile::openstack::labtestn::pdns::db_pass'),
++    $pdns_admin_db_pass = hiera('profile::openstack::labtestn::pdns::db_admin_pass'),
++    ) {
++
++    class {'::profile::openstack::base::pdns::auth::db':
++        designate_host     => $designate_host,
++        pdns_db_pass       => $pdns_db_pass,
++        pdns_admin_db_pass => $pdns_admin_db_pass,
++    }
++}
+diff --git a/modules/profile/manifests/openstack/labtestn/pdns/auth/service.pp b/modules/profile/manifests/openstack/labtestn/pdns/auth/service.pp
+new file mode 100644
+index 0000000..4a7fd0e
+--- /dev/null
++++ b/modules/profile/manifests/openstack/labtestn/pdns/auth/service.pp
+@@ -0,0 +1,12 @@
++class profile::openstack::labtestn::pdns::auth::service(
++    $host = hiera('profile::openstack::labtestn::pdns::host'),
++    $db_pass = hiera('profile::openstack::labtestn::pdns::db_pass'),
++    ) {
++
++    class {'::profile::openstack::base::pdns::auth::service':
++        host    => $host,
++        db_pass => $db_pass,
++    }
++
++    class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
++}
+diff --git a/modules/profile/manifests/openstack/main/pdns/auth/db.pp b/modules/profile/manifests/openstack/main/pdns/auth/db.pp
+new file mode 100644
+index 0000000..248e3ca
+--- /dev/null
++++ b/modules/profile/manifests/openstack/main/pdns/auth/db.pp
+@@ -0,0 +1,12 @@
++class profile::openstack::main::pdns::auth::db(
++    $designate_host = hiera('profile::openstack::main::designate_host'),
++    $pdns_db_pass = hiera('profile::openstack::main::pdns::db_pass'),
++    $pdns_admin_db_pass = hiera('profile::openstack::main::pdns::db_admin_pass'),
++    ) {
++
++    class {'::profile::openstack::base::pdns::auth::db':
++        designate_host     => $designate_host,
++        pdns_db_pass       => $pdns_db_pass,
++        pdns_admin_db_pass => $pdns_admin_db_pass,
++    }
++}
+diff --git a/modules/profile/manifests/openstack/main/pdns/auth/service.pp b/modules/profile/manifests/openstack/main/pdns/auth/service.pp
+new file mode 100644
+index 0000000..ea37382
+--- /dev/null
++++ b/modules/profile/manifests/openstack/main/pdns/auth/service.pp
+@@ -0,0 +1,18 @@
++class profile::openstack::main::pdns::auth::service(
++    $host = hiera('profile::openstack::main::pdns::host'),
++    $db_pass = hiera('profile::openstack::main::pdns::db_pass'),
++    $target_fqdn = hiera('profile::openstack::main::pdns::monitor_target_fqdn'),
++    ) {
++
++    class {'::profile::openstack::base::pdns::auth::service':
++        host    => $host,
++        db_pass => $db_pass,
++    }
++
++    class {'profile::openstack::base::pdns::auth::monitor::host_check':
++        auth_soa_name => $host,
++        target_fqdn   => $target_fqdn,
++    }
++
++    class {'::profile::openstack::base::pdns::auth::monitor::pdns_control':}
++}
+diff --git a/modules/role/manifests/wmcs/openstack/labtest/services.pp b/modules/role/manifests/wmcs/openstack/labtest/services.pp
+index 13efc1d..1282eab 100644
+--- a/modules/role/manifests/wmcs/openstack/labtest/services.pp
++++ b/modules/role/manifests/wmcs/openstack/labtest/services.pp
+@@ -1,4 +1,6 @@
+ class role::wmcs::openstack::labtest::services {
+     include ::profile::openstack::labtest::cloudrepo
++    include ::profile::openstack::labtest::pdns::auth::db
++    include ::profile::openstack::labtest::pdns::auth::service
+     include ::profile::openstack::labtest::designate::service
+ }
+diff --git a/modules/role/manifests/wmcs/openstack/labtestn/services.pp b/modules/role/manifests/wmcs/openstack/labtestn/services.pp
+index b4f9fd0..2d3cb85 100644
+--- a/modules/role/manifests/wmcs/openstack/labtestn/services.pp
++++ b/modules/role/manifests/wmcs/openstack/labtestn/services.pp
+@@ -1,4 +1,6 @@
+ class role::wmcs::openstack::labtestn::services {
+     include ::profile::openstack::labtestn::cloudrepo
++    include ::profile::openstack::labtestn::pdns::auth::db
++    include ::profile::openstack::labtestn::pdns::auth::service
+     include ::profile::openstack::labtestn::designate::service
+ }
+diff --git a/modules/role/manifests/wmcs/openstack/main/services.pp b/modules/role/manifests/wmcs/openstack/main/services.pp
+index 4405938..69807ff 100644
+--- a/modules/role/manifests/wmcs/openstack/main/services.pp
++++ b/modules/role/manifests/wmcs/openstack/main/services.pp
+@@ -1,4 +1,6 @@
+ class role::wmcs::openstack::main::services {
+     include ::profile::openstack::main::cloudrepo
++    include ::profile::openstack::main::pdns::auth::db
++    include ::profile::openstack::main::pdns::auth::service
+     include ::profile::openstack::main::designate::service
+ }
+diff --git a/modules/role/templates/mariadb/grants/dns.sql.erb b/modules/role/templates/mariadb/grants/dns.sql.erb
+index 37031f9..f3e4137 100644
+--- a/modules/role/templates/mariadb/grants/dns.sql.erb
++++ b/modules/role/templates/mariadb/grants/dns.sql.erb
+@@ -1,29 +1,29 @@
+ -- pdns, localhost
+ 
+ CREATE USER 'pdns_admin'@'localhost'
+-IDENTIFIED BY '<%=@pdns_admin_db_password %>';
++IDENTIFIED BY '<%=@pdns_admin_db_pass %>';
+ 
+ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER,
+       CREATE TEMPORARY TABLES
+ ON `pdns`.* TO 'pdns_admin'@'localhost';
+ 
+ CREATE USER 'pdns'@'localhost'
+-IDENTIFIED BY '<%=@pdns_db_password %>';
++IDENTIFIED BY '<%=@pdns_db_pass %>';
+ 
+ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES
+ ON `pdns`.* TO 'pdns'@'localhost';
+ 
+--- designate, designate_host
++-- designate, designate_host_ip
+ 
+-CREATE USER 'pdns_admin'@'<%=@designate_host %>'
+-IDENTIFIED BY '<%=@pdns_admin_db_password %>';
++CREATE USER 'pdns_admin'@'<%=@designate_host_ip %>'
++IDENTIFIED BY '<%=@pdns_admin_db_pass %>';
+ 
+ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER,
+       CREATE TEMPORARY TABLES
+-ON `pdns`.* TO 'pdns_admin'@'<%=@designate_host %>';
++ON `pdns`.* TO 'pdns_admin'@'<%=@designate_host_ip %>';
+ 
+-CREATE USER 'pdns'@'<%=@designate_host %>'
+-IDENTIFIED BY '<%=@pdns_db_password %>';
++CREATE USER 'pdns'@'<%=@designate_host_ip %>'
++IDENTIFIED BY '<%=@pdns_db_pass %>';
+ 
+ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES
+-ON `pdns`.* TO 'pdns'@'<%=@designate_host %>';
++ON `pdns`.* TO 'pdns'@'<%=@designate_host_ip %>';
+-- 
+1.9.1
+
