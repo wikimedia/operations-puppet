@@ -180,12 +180,6 @@ sub cluster_fe_hash {
 sub cluster_fe_hit { }
 
 sub cluster_fe_ratelimit {
-	if (req.http.User-Agent ~ "^wikiScrape") {
-		if (vsthrottle.is_denied("wikiScrape:" + req.http.X-Client-IP, 25, 5s)) {
-			return (synth(429, "Too Many Requests"));
-		}
-	}
-
 	// Ratelimit miss/pass requests per IP:
 	//   * Excluded for now:
 	//       * all WMF IPs (including labs)
@@ -207,6 +201,14 @@ sub cluster_fe_ratelimit {
 			}
 		}
 	}
+
+	<%- if @varnish_testing -%>
+	if (req.http.User-Agent ~ "^varnishTest") {
+		if (vsthrottle.is_denied("varnishTest:" + req.http.X-Client-IP, 25, 5s)) {
+			return (synth(429, "Too Many Requests"));
+		}
+	}
+	<%- end -%>
 }
 
 sub cluster_fe_miss {
