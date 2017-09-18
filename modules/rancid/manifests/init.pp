@@ -34,6 +34,30 @@ class rancid (
         source  => 'puppet:///modules/rancid/rancid.conf',
     }
 
+    file { '/var/lib/rancid/bin/oglogin':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/rancid/bin/oglogin',
+    }
+
+    file { '/var/lib/rancid/bin/ograncid':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/rancid/bin/ograncid',
+    }
+
+    file { '/var/lib/rancid/bin/ssh-serial-console-wrapper':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/rancid/bin/ssh-serial-console-wrapper',
+    }
+
     file { '/var/lib/rancid/core':
         require => [ Package['rancid'], User['rancid'] ],
         owner   => 'rancid',
@@ -49,6 +73,16 @@ class rancid (
         group   => 'rancid',
         mode    => '0440',
         content => template('rancid/cloginrc.erb'),
+    }
+
+    file_line { 'opengear_script':
+      path => '/etc/rancid/rancid.types.base',
+      line => 'opengear;script;ograncid',
+    }
+
+    file_line { 'opengear_login':
+      path => '/etc/rancid/rancid.types.base',
+      line => 'opengear;login;oglogin',
     }
 
     if $active_server == $::fqdn {
