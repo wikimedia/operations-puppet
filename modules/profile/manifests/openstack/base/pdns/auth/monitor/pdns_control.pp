@@ -1,0 +1,37 @@
+class profile::openstack::base::pdns::auth::monitor::pdns_control {
+
+    sudo::user { 'diamond_sudo_for_pdns':
+        user       => 'diamond',
+        privileges => ['ALL=(root) NOPASSWD: /usr/bin/pdns_control list'],
+    }
+
+    # For the authoritative servers
+    diamond::collector { 'PowerDNS':
+        ensure   => present,
+        settings => {
+            # lint:ignore:quoted_booleans
+            # This is jammed straight into a config file, needs quoting.
+            use_sudo => 'true',
+            # lint:endignore
+        },
+        require  => Sudo::User['diamond_sudo_for_pdns'],
+    }
+
+    # TODO: move to recursor profile
+    sudo::user { 'diamond_sudo_for_pdns_recursor':
+        user       => 'diamond',
+        privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
+    }
+
+    # For the recursor
+    diamond::collector { 'PowerDNSRecursor':
+        source   => 'puppet:///modules/diamond/collector/powerdns_recursor.py',
+        settings => {
+            # lint:ignore:quoted_booleans
+            # This is jammed straight into a config file, needs quoting.
+            use_sudo => 'true',
+            # lint:endignore
+        },
+        require  => Sudo::User['diamond_sudo_for_pdns_recursor'],
+    }
+}
