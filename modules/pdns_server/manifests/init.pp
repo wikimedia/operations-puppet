@@ -5,7 +5,7 @@
 # - $dns_auth_soa_name:DNS SOA name of the server
 # - $dns_auth_master:Which DNS server to use as "master" to fetch zones from
 
-class labs_dns(
+class pdns_server(
     $dns_auth_ipaddress,
     $dns_auth_soa_name,
     $pdns_db_host,
@@ -20,17 +20,17 @@ class labs_dns(
 
     file { '/etc/powerdns/pdns.conf':
         ensure  => 'present',
-        require => Package['pdns-server'],
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('labs_dns/pdns.conf.erb'),
+        content => template('pdns_server/pdns.conf.erb'),
+        require => Package['pdns-server'],
     }
 
     # Clean up any example configs that the pdns packages might have installed;
     #  We don't want them accidentally used or merged into our puppetized config.
     file { '/etc/powerdns/pdns.d/':
-        ensure  => directory,
+        ensure  => 'directory',
         purge   => true,
         recurse => true,
     }
