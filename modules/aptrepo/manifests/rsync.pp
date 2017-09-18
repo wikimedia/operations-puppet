@@ -1,9 +1,11 @@
 # sets up rsync of APT repos between 2 servers
 # activates rsync for push from the primary to secondary
+# allows manual rsyncs from package build hosts
 class aptrepo::rsync {
 
     $primary_server = hiera('install_server', 'install1002.wikimedia.org')
     $secondary_server = hiera('install_server_failover', 'install2002.wikimedia.org')
+    $build_server = hiera('build_server', 'copper.eqiad.wmnet')
 
     # only activate rsync/firewall hole on the server that is NOT active
     if $::fqdn == $primary_server {
@@ -48,5 +50,12 @@ class aptrepo::rsync {
         command => "rsync -avp /srv/ rsync://${secondary_server}/install-srv > /dev/null",
         hour    => '*/6',
         minute  => '42',
+    }
+
+    ferm::service { 'package-build-rsync':
+        ensure => $ensure_ferm,
+        proto  => 'tcp',
+        port   => '873',
+        srange => "(@resolve((${build_server})) @resolve((${build_server}), AAAA))",
     }
 }

@@ -501,6 +501,8 @@ deployment_server: tin.eqiad.wmnet
 install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
 
+build_server: copper.eqiad.wmnet
+
 netmon_server: netmon1002.wikimedia.org
 
 releases_server: releases1001.eqiad.wmnet
