@@ -8,3 +8,5 @@ openstack::log_group: labnet-users
 # lock down SSH to administrative IP only
 profile::base::ssh_server_settings:
   listen_address: "%{::ipaddress}"
+
+prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
