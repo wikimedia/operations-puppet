@@ -53,6 +53,6 @@ class rabbitmq(
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
-        source => 'puppet:///modules/rabbitmq/util/drain_queue',
+        source => 'puppet:///modules/rabbitmq/drain_queue',
     }
 }
