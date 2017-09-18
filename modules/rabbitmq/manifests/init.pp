@@ -47,4 +47,12 @@ class rabbitmq(
         ensure  => $running,
         require => Package['rabbitmq-server'],
     }
+
+    file { '/usr/local/sbin/drain_queue':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/rabbitmq/util/drain_queue',
+    }
 }
