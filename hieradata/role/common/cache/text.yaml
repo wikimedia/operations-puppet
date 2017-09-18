@@ -1,5 +1,6 @@
 cluster: cache_text
 cache::cluster: text
+cache::lua_support: true
 admin::groups:
   - perf-roots
 prometheus::node_exporter::collectors_extra:
