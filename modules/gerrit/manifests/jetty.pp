@@ -101,6 +101,12 @@ class gerrit::jetty(
         require => Package['gerrit'],
     }
 
+    file { '/var/lib/gerrit2/gerrit.war':
+      ensure  => 'link',
+      target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
+      require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit']],
+    }
+
     file { '/var/lib/gerrit2/.gitconfig':
         ensure  => directory,
         mode    => '0644',
