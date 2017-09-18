@@ -74,7 +74,11 @@ define scap::target(
                 shell      => '/bin/bash',
                 home       => "/var/lib/${deploy_user}",
                 system     => true,
-                managehome => true,
+            }
+            file { "/var/lib/${deploy_user}":
+                owner => $deploy_user,
+                group => $deploy_user,
+                mode  => '0755',
             }
         } else {
             notice("manage_user=true but user ${deploy_user} already defined")
