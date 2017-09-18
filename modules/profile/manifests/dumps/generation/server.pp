@@ -1,4 +1,4 @@
-class profile::dumpsdata(
+class profile::dumps::generation::server(
     $clients = hiera('dumps_clients_snapshots'),
 ) {
     $mountd_port     = '32767'
@@ -8,7 +8,7 @@ class profile::dumpsdata(
     $lockd_udp       = '32768'
     $lockd_tcp       = '32769'
 
-    class { '::dumpsnfs':
+    class { '::dumps::generation::server::nfs':
         clients     => $clients,
         statd_port  => $statd_port,
         statd_out   => $statd_out,
@@ -55,14 +55,9 @@ class profile::dumpsdata(
         srange => '$PRODUCTION_NETWORKS',
     }
 
-    monitoring::service { 'nfs':
-        description   => 'NFS',
-        check_command => 'check_tcp!2049',
-    }
-
     class { '::dumpsuser': }
 
-    class { '::dumpsdirs':
+    class { '::dumps::generation::server::dirs':
         user  => $dumpsuser::user,
         group => $dumpsuser::group,
     }
