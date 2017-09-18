@@ -448,6 +448,16 @@ class role::prometheus::ops {
         },
     }
 
+    prometheus::cluster_config{ "nginx_cache_text_${::site}":
+        dest    => "${targets_path}/nginx_cache_text_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_text',
+        port    => 9145,
+        labels  => {
+            'cluster' => 'cache_text'
+        },
+    }
+
     prometheus::cluster_config{ "nginx_thumbor_${::site}":
         dest    => "${targets_path}/nginx_thumbor_${::site}.yaml",
         site    => $::site,
