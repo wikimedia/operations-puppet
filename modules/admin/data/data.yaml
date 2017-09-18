@@ -8,7 +8,8 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier, cwdent]
+              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
+              cwdent, nschaaf]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -118,7 +119,7 @@ groups:
               daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, joewalsh, mpany, jsamra,
+              nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
               pmiazga, dsaez, shiladsen]
@@ -243,7 +244,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
-              flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
+              flemmerich, mkroetzsch, akrausetud, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
               kaldari, goransm, ema, dsaez, shiladsen, rho]
   analytics-admins:
@@ -417,7 +418,7 @@ groups:
     description: Service deploy users
     members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
-              ssastry, cscott, arlolra, jdlrobson, maxsem, nschaaf, awight]
+              ssastry, cscott, arlolra, jdlrobson, maxsem, awight]
     privileges: []
 
   deploy-aqs:
@@ -610,7 +611,7 @@ groups:
   recommendation-admin:
     description: Group of recommendation-api admins
     gid: 794
-    members: [gwicke, ppchelko, eevans, mobrovac, nschaaf]
+    members: [gwicke, ppchelko, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
   cpjobqueue-admin:
@@ -2104,14 +2105,12 @@ users:
     uid: 14150
     email: rcoccioli@wikimedia.org
   nschaaf:
-    ensure: present
+    ensure: absent
     gid: 500
     name: nschaaf
     realname: Nathaniel Schaaf
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIaXtdgL5Xj5c9XLGxkVQYLAZfbgqQWuRaX2VajopwH4mqFvNuZWiPFMF53t+H4eUdF+/1LfA0DSebuYrzP83LgZH69UVXxwl4xNeyZtjNRf577eojl9nb+TIZhPCQpwLLKRyDu50uRUXfKJ4rXlVFE3r103+6OmVgIc8+SLF3X1umJsv9wDnclBLIrdd0wieUasyaosUjp211BALftpf6CZ6KlqCOwBjcyJ5bxyDJ0SBBEzksROEYJm6QshYgJs9aywcWsfpQPskP4tavHkL2ppQ7VfNm2zxyVRyrbXqXH+55pWwusQW5vVChnkhpVKO7p/7BYJNF+YZlwip5JpyRTOgC5OmXFmL3GP6ib62RWi7YaMxg4jS1JkbvzL6js2+P8k6UcE7Cu/KfIAkwqYMymw217oNx8hXfrOVOr3PcMhhKd9BsTrQd0xonlSyZQxbOdxnUm7oYApkCBoYt+tYdwU+RX/kvdrz2QULgrGJaxjBf8ZrT8G15Efm89fkGRWZ8sQfT4m6C91lFvOrX53G2igY2BfWBd9dIvw3v1/ZG2gHsEs4G2I/9wZDFrR5itedjzW3lMU47sVTNC/dl5wcR/Xc70AjT6AA3fispIJZWIYjAAnBgKyRXawJf5wc2II+AjZvAvHBgKSsRlk/DTzLghvM9XwFX843DgaO/CZgfbQ== nschaaf@wikimedia.org
+    ssh_keys: []
     uid: 13973
-    email: nschaaf@wikimedia.org
   dereckson:
     ensure: present
     gid: 500
