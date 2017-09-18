@@ -47,11 +47,6 @@ class dataset::nfs($enable=true) {
         require => Package['nfs-kernel-server'],
     }
 
-    monitoring::service { 'nfs':
-        description   => 'NFS',
-        check_command => 'check_tcp!2049',
-    }
-
     kmod::options { 'lockd':
         options => 'nlm_udpport=32768 nlm_tcpport=32769',
     }

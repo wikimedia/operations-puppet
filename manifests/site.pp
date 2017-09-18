@@ -778,7 +778,7 @@ node /^druid100[123456].eqiad.wmnet$/ {
 }
 
 node /^dumpsdata100[12].eqiad.wmnet$/ {
-    role(dumpsdata)
+    role(dumps::generation::server)
 }
 
 node 'eeden.wikimedia.org' {
