@@ -198,10 +198,15 @@ do
     echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
     echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/nologin
     ((mount_attempts++))
-    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && puppet agent -t && break
+    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
     # Sleep for 10s before next attempt
     sleep 10
 done
+
+# Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
+# before, the puppet code that ensures the symlinks are created, etc may not
+# have run)
+puppet agent -t
 
 # Remove the non-root login restriction
 rm /etc/nologin
