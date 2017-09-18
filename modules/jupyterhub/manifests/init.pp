@@ -42,6 +42,14 @@ class jupyterhub (
                     'pwgen',
                     ])
 
+    # Packages for PDF exports
+    ensure_packages([
+                    'pandoc',
+                    'texlive-xetex',
+                    'texlive-fonts-recommended',
+                    'texlive-generic-recommended',
+                    ])
+
     require_package('nginx-extras')
 
     file { $base_path:
