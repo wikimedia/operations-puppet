@@ -59,40 +59,4 @@ class deployment::deployment_server(
           system     => true,
       }
     }
-
-    salt::grain { 'deployment_server':
-        grain   => 'deployment_server',
-        value   => true,
-        replace => true,
-    }
-
-    salt::grain { 'deployment_repo_user':
-        grain   => 'deployment_repo_user',
-        value   => 'trebuchet',
-        replace => true,
-    }
-
-    salt::grain { 'deployment_repo_group':
-        grain   => 'deployment_repo_group',
-        value   => $deployment_group,
-        replace => true,
-    }
-
-    exec { 'deployment_server_sync_all':
-        refreshonly => true,
-        path        => ['/usr/bin'],
-        command     => 'salt-call saltutil.sync_all',
-        subscribe   => Salt::Grain['deployment_server'],
-        timeout     => 1200,
-    }
-
-    exec { 'eventual_consistency_deployment_server_init':
-        path    => ['/usr/bin', '/usr/sbin', '/sbin', '/bin'],
-        command => 'salt-call deploy.deployment_server_init',
-        require => [
-            Package['salt-minion'],
-            Salt::Grain['deployment_server'],
-            Salt::Grain['deployment_repo_user'],
-        ];
-    }
 }
