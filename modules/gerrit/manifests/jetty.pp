@@ -12,6 +12,7 @@ class gerrit::jetty(
     $log_host = undef,
     $log_port = '4560',
     $config = 'gerrit.config.erb',
+    $git_open_files = 20000,
     ) {
 
     group { 'gerrit2':
@@ -249,11 +250,16 @@ class gerrit::jetty(
       require => [File['/var/lib/gerrit2/review_site'], Scap::Target['gerrit/gerrit']],
     }
 
-    service { 'gerrit':
-        ensure    => running,
-        enable    => true,
-        hasstatus => false,
-        status    => '/etc/init.d/gerrit check',
+    systemd::service { 'gerrit':
+        ensure         => present,
+        content        => systemd_template('gerrit'),
+        service_params => {
+            ensure     => 'running',
+            provider   => $::initsystem,
+            hasrestart => true,
+            hasstatus  => false,
+            status     => '/var/lib/gerrit2/review_site/bin/gerrit.sh check',
+        },
     }
 
     file { '/etc/default/gerritcodereview':
