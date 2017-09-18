@@ -70,11 +70,16 @@ define scap::target(
         }
         if !defined(User[$deploy_user]) {
             user { $deploy_user:
-                ensure     => present,
-                shell      => '/bin/bash',
-                home       => "/var/lib/${deploy_user}",
-                system     => true,
-                managehome => true,
+                ensure => present,
+                shell  => '/bin/bash',
+                home   => "/var/lib/${deploy_user}",
+                system => true,
+            }
+            file { "/var/lib/${deploy_user}":
+                ensure => 'directory',
+                owner  => $deploy_user,
+                group  => $deploy_user,
+                mode   => '0755',
             }
         } else {
             notice("manage_user=true but user ${deploy_user} already defined")
