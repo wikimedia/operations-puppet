@@ -44,6 +44,19 @@ class jupyterhub (
 
     require_package('nginx-extras')
 
+    # Packages for PDF exports
+    if ! defined(Package['pandoc']){
+        package { 'pandoc':
+            ensure => present,
+        }
+    }
+
+    ensure_packages([
+                    'texlive-xetex',
+                    'texlive-fonts-recommended',
+                    'texlive-generic-recommended',
+                    ])
+
     file { $base_path:
         ensure => directory,
         owner  => 'root',
