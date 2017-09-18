@@ -157,11 +157,9 @@ acl_check_rcpt:
 	require verify = sender
 
 	# Drop connections from IP addresses listed in DNSBL
-	# This is a warn for testing. After testing...
-	#	* Change to delay & drop
-	#	* Change log_message to message
-	warn log_message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
+	drop log_message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
 		dnslists = zen.spamhaus.org
+		delay 15s
 
 	accept
 
