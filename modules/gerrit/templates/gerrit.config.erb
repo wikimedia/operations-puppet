@@ -69,7 +69,7 @@
     daemonOpt = --enable-httpd --enable-sshd
     <%- end -%>
 [core]
-    packedGitOpenFiles = 6000
+    packedGitOpenFiles = <%= @git_open_files %>
     packedGitLimit = 2g
     packedGitWindowSize = 16k
     streamFileThreshold = 100m
