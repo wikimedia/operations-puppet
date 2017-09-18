@@ -60,24 +60,6 @@ class deployment::deployment_server(
       }
     }
 
-    salt::grain { 'deployment_server':
-        grain   => 'deployment_server',
-        value   => true,
-        replace => true,
-    }
-
-    salt::grain { 'deployment_repo_user':
-        grain   => 'deployment_repo_user',
-        value   => 'trebuchet',
-        replace => true,
-    }
-
-    salt::grain { 'deployment_repo_group':
-        grain   => 'deployment_repo_group',
-        value   => $deployment_group,
-        replace => true,
-    }
-
     exec { 'deployment_server_sync_all':
         refreshonly => true,
         path        => ['/usr/bin'],

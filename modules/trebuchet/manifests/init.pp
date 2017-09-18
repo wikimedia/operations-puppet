@@ -14,11 +14,6 @@ class trebuchet(
 
     include ::trebuchet::packages
 
-    salt::grain { 'trebuchet_master':
-        value   => $trebuchet_master,
-        replace => true,
-    }
-
     # Trebuchet needs salt-minion to query grains, and it needs the
     # `trebuchet_master` grain set so that it knows where to fetch from.
     # It also needs the dependencies from ::trebuchet::packages.
