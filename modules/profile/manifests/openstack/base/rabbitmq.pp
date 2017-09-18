@@ -39,6 +39,6 @@ class profile::openstack::base::rabbitmq(
             ensure  => 'present',
             user    => 'root',
             minute  => '35',
-            command => '/usr/local/sbin/drain_queue notifications.error >> /var/log/rabbitmq/notifications_error.log',
+            command => '/usr/local/sbin/drain_queue notifications.error >> /var/log/rabbitmq/notifications_error.log 2>&1',
     }
 }
