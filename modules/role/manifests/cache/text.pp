@@ -44,7 +44,6 @@ class role::cache::text(
         'shortener_domain' => $shortener_domain,
         'pass_random'      => true,
         'req_handling'     => hiera('cache::req_handling'),
-        'keep'             => '1d',
     }
 
     $be_vcl_config = $common_vcl_config
