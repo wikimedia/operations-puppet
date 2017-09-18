@@ -1,0 +1,47 @@
+---
+# Wiki Replica DNS configuration
+#
+# Used to generate A records for the given zones and hosts.
+#
+# zones:
+#   zone_name.:  # trailing . is important!
+#     hostname:
+#       - Address 1
+#       - Address 2
+#       - ...
+#
+# This file is managed by Puppet
+zones:
+  db.svc.eqiad.wmflabs.:
+    tools:
+      - 10.64.37.9
+  analytics.db.svc.eqiad.wmflabs.:
+    s1:
+      - 10.64.37.14
+    s2:
+      - 10.64.37.14
+    s3:
+      - 10.64.37.14
+    s4:
+      - 10.64.37.14
+    s5:
+      - 10.64.37.14
+    s6:
+      - 10.64.37.14
+    s7:
+      - 10.64.37.14
+  web.db.svc.eqiad.wmflabs.:
+    s1:
+      - 10.64.37.15
+    s2:
+      - 10.64.37.15
+    s3:
+      - 10.64.37.15
+    s4:
+      - 10.64.37.15
+    s5:
+      - 10.64.37.15
+    s6:
+      - 10.64.37.15
+    s7:
+      - 10.64.37.15

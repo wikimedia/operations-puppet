@@ -135,4 +135,23 @@ class openstack2::util::admin_scripts(
         mode   => '0755',
         source => "puppet:///modules/openstack2/${version}/admin_scripts/cold-migrate",
     }
+
+    # Script and config to maintain DNS records for *.db.svc.eqiad.wmflabs
+    # zones in Designate. These DNS zones are used by clients inside Cloud
+    # VPS/Toolforge to connect to the Wiki Replica databases.
+    file { '/etc/wikireplica_dns.yaml':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/openstack2/util/wikireplica_dns.yaml',
+    }
+
+    file { '/usr/local/sbin/wikireplica_dns':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack2/util/wikireplica_dns.py',
+    }
 }
