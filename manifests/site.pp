@@ -2056,7 +2056,7 @@ node /poolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
 }
 
 node /^prometheus200[34]\.codfw\.wmnet$/ {
-    role(prometheus::ops, prometheus::global, prometheus::services)
+    role(prometheus::ops, prometheus::global, prometheus::services, prometheus::analytics)
 
     include ::base::firewall
     include ::standard
@@ -2072,7 +2072,7 @@ node 'puppetcompiler1001.eqiad.wmnet' {
 }
 
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
-    role(prometheus::ops, prometheus::global, prometheus::services)
+    role(prometheus::ops, prometheus::global, prometheus::services, prometheus::analytics)
 
     include ::lvs::realserver
 
