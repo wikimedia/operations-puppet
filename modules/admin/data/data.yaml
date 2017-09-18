@@ -2773,3 +2773,7 @@ ldap_only_users:
     ensure: present
     realname: Erika Bjune
     email: ebjune@wikimedia.org
+  dchan:
+    ensure: present
+    realname: David Chan
+    email: dchan@wikimedia.org
