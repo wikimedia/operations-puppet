@@ -249,11 +249,15 @@ class gerrit::jetty(
       require => [File['/var/lib/gerrit2/review_site'], Scap::Target['gerrit/gerrit']],
     }
 
-    service { 'gerrit':
-        ensure    => running,
-        enable    => true,
-        hasstatus => false,
-        status    => '/etc/init.d/gerrit check',
+    systemd::service { 'gerrit':
+        content        => systemd_template('gerrit'),
+        service_params => {
+            ensure     => 'running',
+            provider   => $::initsystem,
+            hasrestart => true,
+            hasstatus  => false,
+            status     => '/var/lib/gerrit2/review_site/bin/gerrit.sh check',
+        },
     }
 
     file { '/etc/default/gerritcodereview':
