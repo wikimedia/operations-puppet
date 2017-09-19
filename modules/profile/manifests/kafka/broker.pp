@@ -215,19 +215,6 @@ class profile::kafka::broker(
         $java_opts = undef
     }
 
-    if $monitoring_enabled {
-        class { '::confluent::kafka::broker::jmxtrans':
-            # Cluster metrics prefix for graphite, etc.
-            group_prefix => "kafka.cluster.${cluster_name}.",
-            statsd       => $statsd,
-        }
-
-        class { '::confluent::kafka::broker::alerts':
-            replica_maxlag_warning  => $replica_maxlag_warning,
-            replica_maxlag_critical => $replica_maxlag_critical,
-        }
-    }
-
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -257,6 +244,19 @@ class profile::kafka::broker(
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
+    }
+
+    if $monitoring_enabled {
+        class { '::confluent::kafka::broker::jmxtrans':
+            # Cluster metrics prefix for graphite, etc.
+            group_prefix => "kafka.cluster.${cluster_name}.",
+            statsd       => $statsd,
+        }
+
+        class { '::confluent::kafka::broker::alerts':
+            replica_maxlag_warning  => $replica_maxlag_warning,
+            replica_maxlag_critical => $replica_maxlag_critical,
+        }
     }
 
     $ferm_plaintext_ensure = $plaintext ? {
