@@ -158,7 +158,7 @@ scb: P{R:class = role::scb}
 scb-canary: P{scb1001.eqiad.wmnet}
 scb-codfw: A:scb and A:codfw
 scb-eqiad: A:scb and A:eqiad
-snapshot: P{R:class = role::snapshot::dumper}
+snapshot: P{R:class = role::snapshot::dumper} or A:snapshot-canary
 snapshot-canary: P{R:class = role::snapshot::testbed}
 stat: P{R:class = role::statistics::private or R:class = role::statistics::cruncher or R:class = role::analytics_cluster::client}
 swift: A:swift-fe or A:swift-be
