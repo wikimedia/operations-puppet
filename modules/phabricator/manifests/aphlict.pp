@@ -5,6 +5,7 @@ class phabricator::aphlict(
     $ensure = 'present',
     $user   = 'aphlict',
     $group  = 'aphlict',
+    $basedir = '/srv/phab'
 ) {
     validate_ensure($ensure)
 
@@ -12,7 +13,6 @@ class phabricator::aphlict(
     require_package('nodejs')
 
     # paths
-    $basedir = $phabricator::phabdir
     $phabdir = "${basedir}/phabricator/"
     $aphlict_dir = "${phabdir}/support/aphlict/server"
     $node_modules = "${aphlict_dir}/node_modules"
@@ -73,10 +73,11 @@ class phabricator::aphlict(
     }
 
     user { $user:
-        gid    => $group,
-        shell  => '/bin/false',
-        home   => '/var/run/aphlict',
-        system => true,
+        gid     => $group,
+        shell   => '/bin/false',
+        home    => '/var/run/aphlict',
+        system  => true,
+        require => Group[$group],
     }
 
     base::service_unit { 'aphlict':
