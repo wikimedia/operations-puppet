@@ -11,6 +11,15 @@ set -e
 docker push <%= @docker_registry %>/wikimedia-jessie
 <%- end -%>
 
+<%- if @distributions.include?('stretch') -%>
+# Build debian stretch image!
+/usr/bin/bootstrap-vz /srv/images/base/stretch.yaml
+
+# Push it to the repository
+docker push <%= @docker_registry %>/wikimedia-stretch
+<%- end -%>
+
+
 <%- if @distributions.include?('trusty') -%>
 # Build ubuntu trusty base image!
 /usr/share/docker-engine/contrib/mkimage-debootstrap.sh <%= @docker_registry %>/wikimedia-trusty trusty  http://mirrors.wikimedia.org/ubuntu/
