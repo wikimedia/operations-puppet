@@ -2,3 +2,6 @@ prometheus::server::memory_chunks: '3145728'
 prometheus::server::max_chunks_to_persist: '1048576'
 lvs::realserver::realserver_ips:
   - 10.2.1.25
+
+profile::base::syslog_server_tls: ['syslog.eqiad.wmnet:6154', 'syslog.codfw.wmnet:6154']
+profile::base::syslog_server: []
