@@ -100,7 +100,7 @@ my %excluded ;
 my @unused_ports ;
 my %session_opts;
 
-
+my @ignoredIfNames = ["vlan"];
 
 
 
@@ -175,7 +175,7 @@ foreach $key (keys %ifStatus) {
 		# check only if interface is administratively up
     if ($ifStatus{$key}{$snmpIfAdminStatus} == 1 ) {
 			# check only if interface type is not listed in %excluded
-			if (!defined $excluded{$ifStatus{$key}{$snmpIfType}} && (!defined $ifXTable || $ifStatus{$key}{$snmpIfAlias} !~ /\bno-mon\b/)) {
+			if (!defined $excluded{$ifStatus{$key}{$snmpIfType}} && (!defined $ifXTable || $ifStatus{$key}{$snmpIfAlias} !~ /\bno-mon\b/) && !($ifStatus{$key}{$snmpIfName} ~~ @ignoredIfNames)) {
 				if ($ifStatus{$key}{$snmpIfOperStatus} == 1 ) { $ifup++ ;}
 				if ($ifStatus{$key}{$snmpIfOperStatus} == 2 ) {
 								$ifdown++ ;
