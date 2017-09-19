@@ -344,8 +344,4 @@ class phabricator (
             hasrestart => true,
         },
     }
-
-    if $phab_settings['notification.servers'] {
-        include ::phabricator::aphlict
-    }
 }

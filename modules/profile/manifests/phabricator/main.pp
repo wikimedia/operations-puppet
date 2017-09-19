@@ -20,6 +20,7 @@ class profile::phabricator::main (
     $active_server = hiera('phabricator_server', undef),
     $passive_server = hiera('phabricator_server_failover', undef),
     $logmail = hiera('phabricator_logmail', false),
+    $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
 ){
 
     mailalias { 'root':
@@ -35,10 +36,31 @@ class profile::phabricator::main (
         $dump_rsync_ensure = 'present'
         $dump_enabled = true
         $ferm_ensure = 'present'
+        $aphlict_ensure = 'present'
     } else {
         $dump_rsync_ensure ='absent'
         $dump_enabled = false
         $ferm_ensure = 'absent'
+        $aphlict_ensure = 'absent'
+    }
+
+    if $aphlict_enabled {
+        $notification_servers = [
+            {
+                'type'      => 'client',
+                'host'      => $domain,
+                'port'      => 22280,
+                'protocol'  => 'http',
+            },
+            {
+                'type'      => 'admin',
+                'host'      => $phabricator_active_server,
+                'port'      => 22281,
+                'protocol'  => 'http',
+            }
+        ]
+    } else {
+        $notification_servers = []
     }
 
     # logmail must be explictly enabled in Hiera with 'phabricator_logmail: true'
@@ -157,10 +179,17 @@ class profile::phabricator::main (
             'diffusion.allow-http-auth'              => true,
             'diffusion.ssh-host'                     => $phab_diffusion_ssh_host,
             'gitblit.hostname'                       => 'git.wikimedia.org',
+            'notification.servers'                   => $notification_servers,
         },
         conf_files     => $conf_files,
     }
     # lint:endignore
+
+    class { '::phabricator::aphlict':
+        ensure  => $aphlict_ensure,
+        basedir => $phab_root_dir,
+        require => Class[phabricator]
+    }
 
     # This exists to offer git services at git-ssh.wikimedia.org
     $vcs_ip_v4 = hiera('phabricator::vcs::address::v4', undef)
@@ -263,6 +292,14 @@ class profile::phabricator::main (
         port   => '22',
         proto  => 'tcp',
         srange => "@resolve((${phabricator_servers_ferm}))",
+    }
+
+    if $aphlict_enabled {
+        ferm::service { 'notification_server':
+            ensure => $ferm_ensure,
+            proto  => 'tcp',
+            port   => '22280',
+        }
     }
 
     # redirect bugzilla URL patterns to phabricator
