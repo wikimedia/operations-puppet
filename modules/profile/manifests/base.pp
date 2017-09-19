@@ -6,6 +6,7 @@ class profile::base(
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $domain_search = hiera('profile::base::domain_search', $::domain),
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
+    $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     $notifications_enabled = hiera('profile::base::notifications_enabled', '1'),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
@@ -51,8 +52,9 @@ class profile::base(
 
     if $remote_syslog {
         class { '::base::remote_syslog':
-            enable        => true,
-            central_hosts => $remote_syslog,
+            enable            => true,
+            central_hosts     => $remote_syslog,
+            central_hosts_tls => $remote_syslog_tls,
         }
     }
 
