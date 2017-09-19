@@ -63,7 +63,7 @@ class docker::baseimages(
         notify => Exec['apt-key add for wikimedia stretch'],
     }
     $stretch_keyring = '/etc/apt/trusted.gpg.d/wikimedia-stretch.gpg'
-    exec { 'apt-key add for wikimedia stretch':
+    exec { '/usr/bin/apt-key add for wikimedia stretch':
         command     => "apt-key add --keyring ${stretch_keyring} /srv/images/base/wikimedia-stretch.pub.gpg",
         user        => 'root',
         group       => 'root',
