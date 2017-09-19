@@ -1,6 +1,8 @@
 druid::broker::properties:
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 2147483647
+  # Set numMergeBuffers to use v2 groupBy engine
+  druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
   druid.broker.http.numConnections: 20
   druid.broker.http.readTimeout: PT5M
