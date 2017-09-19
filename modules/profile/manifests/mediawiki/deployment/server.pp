@@ -88,10 +88,6 @@ class profile::mediawiki::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    class { '::deployment::redis':
-        deployment_server => $deployment_server
-    }
-
     $deploy_ensure = $deployment_server ? {
         $::fqdn => 'absent',
         default => 'present'
