@@ -5,6 +5,9 @@ profile::kafka::broker::kafka_cluster_name: jumbo
 # Enable the Prometheus JMX Exporter
 profile::kafka::broker::prometheus_monitoring_enabled: true
 
+# Disable jmxtrans/graphite monitoring
+profile::kafka::broker::monitoring_enabled: false
+
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
 # TODO: does not yet work.
