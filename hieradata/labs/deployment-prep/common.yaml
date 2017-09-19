@@ -194,7 +194,6 @@ profile::mediawiki::jobrunner::runners:
 "role::url_downloader::url_downloader_ip": 10.68.16.135 # deployment-urldownloader
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-tin.deployment-prep.eqiad.wmflabs
-"trebuchet::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 
 scap::dsh::scap_masters:
