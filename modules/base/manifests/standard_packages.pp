@@ -16,6 +16,7 @@ class base::standard_packages {
         'ethtool',
         'gdb',
         'gdisk',
+        'git-fat',
         'git',
         'htop',
         'httpry',
