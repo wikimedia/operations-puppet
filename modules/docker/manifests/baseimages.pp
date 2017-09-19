@@ -34,11 +34,10 @@ class docker::baseimages(
     }
 
     file { '/srv/images/base':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => File['/srv/images'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/srv/images/base/jessie.yaml':
@@ -46,8 +45,31 @@ class docker::baseimages(
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
-        require => File['/srv/images/base'],
     }
+
+    ## Stretch
+    file { '/srv/images/base/stretch.yaml':
+        content => template('docker/images/stretch.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+    }
+    file { '/srv/images/base/wikimedia-stretch.pub.gpg':
+        ensure => present,
+        source => 'puppet:///modules/docker/wikimedia-stretch.pub.gpg',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        notify => Exec['apt-key add for wikimedia stretch'],
+    }
+    $stretch_keyring = '/etc/apt/trusted.gpg.d/wikimedia-stretch.gpg'
+    exec { 'apt-key add for wikimedia stretch':
+        cmd         => "apt-key add --keyring ${stretch_keyring} /srv/images/base/wikimedia-stretch.pub.gpg",
+        user        => 'root',
+        group       => 'root',
+        refreshonly => true,
+    }
+    ## end stretch
 
     if 'alpine' in $distributions {
         if $proxy_address {
