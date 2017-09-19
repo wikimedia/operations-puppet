@@ -48,26 +48,21 @@ class docker::baseimages(
     }
 
     ## Stretch
+    $stretch_keyring = '/srv/images/base/wikimedia-stretch.pub.gpg'
     file { '/srv/images/base/stretch.yaml':
         content => template('docker/images/stretch.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
     }
-    file { '/srv/images/base/wikimedia-stretch.pub.gpg':
+
+    file { $stretch_keyring:
         ensure => present,
         source => 'puppet:///modules/docker/wikimedia-stretch.pub.gpg',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         notify => Exec['apt-key add for wikimedia stretch'],
-    }
-    $stretch_keyring = '/etc/apt/trusted.gpg.d/wikimedia-stretch.gpg'
-    exec { 'apt-key add for wikimedia stretch':
-        command     => "/usr/bin/apt-key add --keyring ${stretch_keyring} /srv/images/base/wikimedia-stretch.pub.gpg",
-        user        => 'root',
-        group       => 'root',
-        refreshonly => true,
     }
     ## end stretch
 
