@@ -62,7 +62,6 @@ class docker::baseimages(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        notify => Exec['apt-key add for wikimedia stretch'],
     }
     ## end stretch
 
