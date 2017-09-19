@@ -1,2 +1,1 @@
-profile::base::notifications_enabled: '0'
 mariadb::shard: 's2'
