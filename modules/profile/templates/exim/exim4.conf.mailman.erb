@@ -125,12 +125,10 @@ acl_check_rcpt:
 	# Check whether the sender address domain exists
 	require verify = sender
 
-	# Reject messages from IP addresses listed in DNSBL
-	# This is a warn for testing. After testing...
-	#	* Change to delay & drop
-	#	* Change log_message to message
-	warn log_message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
+	# Drop connections from IP addresses listed in DNSBL
+	drop message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
 		dnslists = zen.spamhaus.org
+		delay = 15s
 
 	accept
 
