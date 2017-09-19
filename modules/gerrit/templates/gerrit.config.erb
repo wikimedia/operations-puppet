@@ -64,7 +64,7 @@
     javaHome = <%= @java_home %>
     javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
     heapLimit = <%= @heap_limit %>
-    slave = <%= @slave %>
+    slave = "<%= @slave %>"
 [core]
     packedGitOpenFiles = <%= @git_open_files %>
     packedGitLimit = 2g

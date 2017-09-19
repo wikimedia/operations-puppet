@@ -11,7 +11,7 @@ StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=gerrit2
 EnvironmentFile=/etc/default/gerrit
-ExecStart=/var/lib/gerrit2/review_site/bin/gerrit.sh start
+ExecStart=/var/lib/gerrit2/review_site/bin/gerrit.sh start <%- if @slave -%>--slave<%- end -%>
 ExecReload=/var/lib/gerrit2/review_site/bin/gerrit.sh reload
 ExecStop=/var/lib/gerrit2/review_site/bin/gerrit.sh stop
 # NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script
