@@ -1,4 +1,15 @@
 # NOTE: This file is managed by Puppet.
+<%- if not @central_hosts_tls.empty? %>
+# make gtls driver the default
+$DefaultNetstreamDriver gtls
+
+$DefaultNetstreamDriverCAFile /var/lib/puppet/ssl/certs/ca.pem
+$DefaultNetstreamDriverCertFile /etc/rsyslog/ssl/cert.pem
+$DefaultNetstreamDriverKeyFile /etc/rsyslog/ssl/server.key
+
+$ActionSendStreamDriverAuthMode x509/certvalid
+$ActionSendStreamDriverMode 1 # run driver in TLS-only mode
+<% end -%>
 
 # By default, rsyslog will truncate programname[pid] to 32 characters.  This
 # is a problem if logging to logstash, because programname will not be
@@ -10,3 +21,6 @@ $template LongTagForwardFormat,"<%%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %s
 <% @central_hosts.sort.each do |log_host| %>
 *.info;mail.none;authpriv.none;cron.none @<%= log_host %>;LongTagForwardFormat
 <% end %>
+<%- @central_hosts_tls.sort.each do |log_host| %>
+*.info;mail.none;authpriv.none;cron.none @@<%= log_host %>;LongTagForwardFormat
+<% end -%>
