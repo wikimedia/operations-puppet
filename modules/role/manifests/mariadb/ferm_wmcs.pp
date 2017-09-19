@@ -15,21 +15,21 @@ class role::mariadb::ferm_wmcs {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => "@resolve(${nova_controller}) @resolve(${nova_controller_standby})",
+        srange  => "(@resolve(${nova_controller}) @resolve(${nova_controller_standby}))",
     }
 
     ferm::service{ 'designate':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => "@resolve(${designate_host}) @resolve(${designate_host_standby})",
+        srange  => "(@resolve(${designate_host}) @resolve(${designate_host_standby}))",
     }
 
     ferm::service{ 'wmcs_puppetmasters':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve(labpuppetmaster1001.wikimedia.org) @resolve(labpuppetmaster1002.wikimedia.org)',
+        srange  => '(@resolve(labpuppetmaster1001.wikimedia.org) @resolve(labpuppetmaster1002.wikimedia.org))',
     }
 
     ferm::service{ 'horizon_and_striker':
