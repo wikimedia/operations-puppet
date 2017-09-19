@@ -1,12 +1,16 @@
 druid::broker::properties:
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 2147483647
+  # Set numMergeBuffers to use v2 groupBy engine
+  druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
   druid.broker.http.numConnections: 20
   druid.broker.http.readTimeout: PT5M
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
+  # Set numMergeBuffers to use v2 groupBy engine
+  druid.processing.numMergeBuffers: 10
 druid::broker::env:
   DRUID_HEAP_OPTS: "-Xmx25g -Xms25g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=64g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
