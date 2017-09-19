@@ -320,3 +320,7 @@ eqiad:
   kubernetes:
     argon.eqiad.wmnet: [kubemaster]
     chlorine.eqiad.wmnet: [kubemaster]
+  druid-analytics:
+    druid1001.eqiad.wmnet: [druid-analytics-broker]
+    druid1002.eqiad.wmnet: [druid-analytics-broker]
+    druid1003.eqiad.wmnet: [druid-analytics-broker]
