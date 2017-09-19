@@ -16,10 +16,6 @@ class deployment::deployment_server(
         'python-git',
         ])
 
-    package { 'trebuchet-trigger':
-        ensure => present;
-    }
-
     file { '/etc/gitconfig':
         content => template('deployment/gitconfig.erb'),
         mode    => '0444',
