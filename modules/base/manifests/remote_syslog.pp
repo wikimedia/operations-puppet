@@ -17,8 +17,14 @@ class base::remote_syslog (
     $central_hosts = [],
 ) {
     if $enable {
+        require_package('rsyslog-gnutls')
+
         if empty($central_hosts) {
             fail('::base::remote_syslog::central_hosts required')
+        }
+
+        ::base::expose_puppet_certs { '/etc/rsyslog':
+            provide_private => true,
         }
 
         rsyslog::conf { 'remote_syslog':
