@@ -9,15 +9,4 @@
 #
 class eventlogging {
     include ::eventlogging::dependencies
-
-    # TEMPORARY HACK!!!
-    # TODO: use scap everywhere: T118772
-    # This conditional only exists so as not to conflict with
-    # the scap Jessie deployment of eventlogging-service-eventbus.
-    # Once we use scap, we might be able to remove this.
-    if $::operatingsystem == 'Ubuntu' or $::hostname == 'hafnium' {
-        package { 'eventlogging/eventlogging':
-            provider => 'trebuchet',
-        }
-    }
 }
