@@ -33,7 +33,7 @@ define labstore::device_backup (
         weekday     => $day[$weekday],
         hour        => $hour,
         minute      => $minute,
-        environment => 'MAILTO=labs-admin@lists.wikimedia.org',
+        environment => 'MAILTO=cloud-admin@lists.wikimedia.org',
         require     => File['/usr/local/sbin/snapshot-manager'],
     }
 
