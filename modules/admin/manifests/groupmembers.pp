@@ -15,11 +15,16 @@ define admin::groupmembers(
 
     $gdata = $::admin::data['groups'][$name]
     $members = $gdata['members']
+    $system_members = $gdata['system_members']
 
-    if !empty($members) {
-        $joined_user_list = join($members,',')
+    # This contains all human members, as well as any system account
+    # members of this group.
+    $all_members = concat($members, $system_members)
+
+    if !empty($all_members) {
+        $joined_user_list = join($all_members,',')
     } else {
-        $joined_user_list = $default_member
+        $joined_user_list = join($default_member)
     }
 
     if has_key($gdata, 'posix_name') {

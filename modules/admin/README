@@ -54,6 +54,15 @@ Adding user 'foo':
           realname: Foo Bar
           ssh_keys: [ssh-rsa mykeyhash foobar@mac]
 
+- Ensuring a system user is in a group: (see note below about system user group membership)
+    groups:
+      mygroup:
+        ensure: present
+        gid: 551
+        members: [foo, bar]
+        system_members: [www-data]
+
+
 # NOTE: To choose the UID for a new user please lookup
 # the existing UID in (labs) LDAP and use that.
 # currently you do this on terbium, example:
@@ -256,3 +265,15 @@ Assignment:
 If you try to apply two groupings with the same posix names on a single node you see:
 
     Duplicate definition: Admin::Group[$POSIX_NAME] is already defined
+
+
+System user group membership:
+
+Sometimes it is useful to declare that a system user should be in a group with other
+human user accounts.  This module will not manage any system users, but it does support
+ensuring that system users are in groups that it does manage.  Add system users to a group
+by providing a list of system_members in your group declaration.
+
+Your system user *must* already exist by the time the admin module ensures group membership.
+If it doesn't, the groupmembers exec will fail.
+

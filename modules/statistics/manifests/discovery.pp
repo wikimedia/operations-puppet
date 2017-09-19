@@ -12,6 +12,8 @@ class statistics::discovery {
     # Path in which the R library will reside
     $rlib_dir = "${dir}/r-library"
 
+
+    # TODO: User the analytics-search user instead.
     $user = 'discovery-stats'
     # Setting group to 'analytics-privatedata-users' so that Discovery's Analysts
     # (as members of analytics-privatedata-users) have some privileges, and so

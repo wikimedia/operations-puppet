@@ -252,6 +252,7 @@ groups:
               flemmerich, mkroetzsch, akrausetud, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
               kaldari, goransm, ema, dsaez, shiladsen, rho]
+    system_members: [analytics-search]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
