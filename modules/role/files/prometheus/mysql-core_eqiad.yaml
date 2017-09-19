@@ -21,7 +21,6 @@
     shard: s2
     role: slave
   targets:
-  - db1018:9104
   - db1021:9104
   - db1036:9104
   - db1060:9104

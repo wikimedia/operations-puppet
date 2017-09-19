@@ -356,12 +356,17 @@ node 'db1054.eqiad.wmnet' {
 }
 
 # eqiad replicas
-node /^db1(018|021|036|060|074|076|090|101)\.eqiad\.wmnet/ {
+node /^db1(021|036|060|074|076|090|101)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
 # To be decommissioned in T162699
 node 'db1024.eqiad.wmnet' {
+    role(spare::system)
+}
+
+# To be decommissioned in T176215
+node 'db1018.eqiad.wmnet' {
     role(spare::system)
 }
 
@@ -432,7 +437,7 @@ node 'db1063.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(0(70|71|82|87|92|96|99))|(1(00))\.eqiad\.wmnet/ {
+node /^db1(070|071|082|087|092|096|099|100)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
