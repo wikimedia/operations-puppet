@@ -566,9 +566,7 @@ node 'db1001.eqiad.wmnet' {
 }
 
 node 'db2010.codfw.wmnet' {
-    class { '::role::mariadb::misc':
-        shard => 'm1',
-    }
+    role(spare::system)
 }
 
 node 'db2078.codfw.wmnet' {
