@@ -1,0 +1,13 @@
+# WMCS Bastions
+Host bastion-restricted.wmflabs.org bastion-restricted-??.bastion.eqiad.wmflabs
+    ProxyCommand none
+
+# WMCS Instances
+Host *
+    BatchMode yes
+    ConnectTimeout 2
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    GlobalKnownHostsFile /dev/null
+    LogLevel QUIET
+    ProxyCommand ssh -a -W %h:%p bastion-restricted.wmflabs.org

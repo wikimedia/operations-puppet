@@ -7,13 +7,7 @@ environment:
 
 clustershell:
     ssh_options:
-        - '-o BatchMode=yes'
-        - '-o ConnectTimeout=2'
-        - '-o StrictHostKeyChecking=no'
-        - '-o UserKnownHostsFile=/dev/null'
-        - '-o GlobalKnownHostsFile=/dev/null'
-        - '-o LogLevel=QUIET'
-        - '-o ProxyCommand="ssh -a -W %h:%p bastion-restricted.wmflabs.org"'
+        - '-F <%= @ssh_config_path %>'
 
 openstack:
     auth_url: <%= @keystone_protocol %>://<%= @keystone_host %>:<%= @keystone_port %>

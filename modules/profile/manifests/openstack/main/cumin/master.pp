@@ -12,7 +12,10 @@ class profile::openstack::main::cumin::master(
 
         require_package('cumin')
 
-        $cumin_log_path = '/var/log/cumin'  # Used also in config.yaml
+        # Variables used also in config.yaml
+        $cumin_log_path = '/var/log/cumin'
+        $ssh_config_path = '/etc/cumin/ssh_config'
+
         file { $cumin_log_path:
             ensure => directory,
             owner  => 'root',
@@ -42,6 +45,15 @@ class profile::openstack::main::cumin::master(
             group   => 'root',
             mode    => '0640',
             content => template('profile/openstack/main/cumin/aliases.yaml.erb'),
+            require => File['/etc/cumin'],
+        }
+
+        file { $ssh_config_path:
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
+            source  => 'puppet:///modules/profile/openstack/main/cumin/ssh_config',
             require => File['/etc/cumin'],
         }
 }
