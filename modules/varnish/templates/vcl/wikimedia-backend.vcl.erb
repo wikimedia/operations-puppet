@@ -150,7 +150,6 @@ sub vcl_miss {
 	call wm_common_miss;
 	call cluster_be_miss;
 	if (req.http.X-MISS2PASS) {
-		unset req.http.X-MISS2PASS;
 		return (pass);
 	}
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
@@ -161,11 +160,18 @@ sub vcl_pass {
 
 <% if @realm == "production" and @hostname != "cp1008" -%>
 <% if @vcl_config.fetch("pass_random", false) -%>
-	if (req.http.X-Next-Is-Cache) {
-		// pass-traffic should not use consistent hashing, to avoid unecessary
-		// traffic focus on one node and keep things performant, *if* we're
-		// fairly sure that all layers/tiers make equivalent pass decisions...
-		set req.backend_hint = cache_<%= @cache_route %>_random.backend();
+	if (req.http.X-MISS2PASS) {
+		unset req.http.X-MISS2PASS;
+		// avoid pass_random behavior on MISS2PASS requests, as these still
+		// need chashing for opportunistic hits
+	}
+	else {
+		if (req.http.X-Next-Is-Cache) {
+			// pass-traffic should not use consistent hashing, to avoid unecessary
+			// traffic focus on one node and keep things performant, *if* we're
+			// fairly sure that all layers/tiers make equivalent pass decisions...
+			set req.backend_hint = cache_<%= @cache_route %>_random.backend();
+		}
 	}
 <% end -%>
 <% end -%>
