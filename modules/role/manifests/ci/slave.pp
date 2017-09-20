@@ -31,4 +31,10 @@ class role::ci::slave {
         },  # end of settings
         require  => User['jenkins-slave'],
     }
+
+    apt::repository { 'thirdparty-ci':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'thirdparty/ci',
+    }
 }
