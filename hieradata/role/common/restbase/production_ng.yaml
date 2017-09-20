@@ -5,6 +5,25 @@ cluster: restbase
 #
 graphite_host: 'graphite1003.eqiad.wmnet'
 profile::cassandra::allow_analytics: false
+profile::cassandra::extra_cql_hosts:
+  - restbase1007.eqiad.wmnet
+  - restbase1011.eqiad.wmnet
+  - restbase1012.eqiad.wmnet
+  - restbase1013.eqiad.wmnet
+  - restbase1014.eqiad.wmnet
+  - restbase1015.eqiad.wmnet
+  - restbase1016.eqiad.wmnet
+  - restbase1017.eqiad.wmnet
+  - restbase1018.eqiad.wmnet
+  - restbase2002.codfw.wmnet
+  - restbase2004.codfw.wmnet
+  - restbase2006.codfw.wmnet
+  - restbase2007.codfw.wmnet
+  - restbase2008.codfw.wmnet
+  - restbase2009.codfw.wmnet
+  - restbase2010.codfw.wmnet
+  - restbase2011.codfw.wmnet
+  - restbase2012.codfw.wmnet
 
 profile::cassandra::metrics_whitelist:
   - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
