@@ -9,6 +9,12 @@ class phabricator::aphlict(
 ) {
     validate_ensure($ensure)
 
+    # accounts
+    group { $group:
+        ensure => $ensure,
+        system => true,
+    }
+
     # packages
     require_package('nodejs')
 
@@ -64,12 +70,6 @@ class phabricator::aphlict(
         ensure  => $ensure,
         source  => 'puppet:///modules/phabricator/logrotate_aphlict',
         require => File['/var/log/aphlict/'],
-    }
-
-    # accounts
-    group { $group:
-        ensure => $ensure,
-        system => true,
     }
 
     user { $user:
