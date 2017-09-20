@@ -1,0 +1,18 @@
+# This file managed by puppet. Local changes will be overwritten.
+
+# Exim hourly per-host rate limits
+
+# Format:
+# Address (CIDR):   Rate
+
+# Note: ipv6 addreses must be quoted as colon is the delimiter.
+
+# Examples:
+# 10.0.0.1:         100
+# 10.0.0.0/24:      50
+
+# Default per-ipv4 address hourly rate limit
+0.0.0.0/0:          500
+
+# Default per-ipv6 address hourly rate limit
+"::/0"              500

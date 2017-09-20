@@ -102,6 +102,31 @@ acl_check_data:
 
 acl_check_mail:
   deny senders = /etc/exim4/deny_senders.list
+
+  # Hourly host rate limit. Default limit and overrides are
+  # configured in /etc/exim4/ratelimits/host_hourly_limits/
+  #
+  # warn action intended for testing & validation.
+  # change from warn to defer to enforce rate limit
+  warn  message = Our system has detected an unusual rate of messages originating from this IP address. \
+                  To protect our users from abuse this ip address has been temporarily rate limited. \
+                  Please try again later. https://wikitech.wikimedia.org/wiki/Wikitech:Labs_Terms_of_use
+        log_message = Sender host $sender_host_address has exceeded rate limit of $sender_rate_limit messages per $sender_rate_period
+        set acl_c_host_address_ratelimit=${lookup{$sender_host_address}iplsearch{/etc/exim4/ratelimits/host_hourly_limits}}
+        ratelimit = $acl_c_host_address_ratelimit / 1h / $sender_host_address
+
+  # Hourly sender address rate limit. Default limit and overrides are
+  # configured in /etc/exim4/ratelimits/sender_hourly_limits
+  #
+  # warn action intended for testing & validation
+  # change from warn to defer to enforce rate limit
+  warn  message = Our system has detected an unusual rate of messages originating from this sender address. \
+                  To protect our users from abuse this sender address has been temporarily rate limited. \
+                  Please try again later. https://wikitech.wikimedia.org/wiki/Wikitech:Labs_Terms_of_use
+        log_message = Sender address $sender_address has exceeded rate limit of $sender_rate_limit messages per $sender_rate_period
+        set acl_c_sender_address_ratelimit=${lookup{$sender_address}nwildlsearch{/etc/exim4/ratelimits/sender_hourly_limits}}
+        ratelimit = $acl_c_sender_address_ratelimit / 1h / $sender_address
+
   accept
 
 ###########
