@@ -11,6 +11,7 @@ class role::ci::slave {
     system::role { 'ci::slave': description => 'CI slave runner' }
 
     include contint::packages::base
+    include contint::slave_scripts
     include ::zuul
 
     class { 'jenkins::slave':
