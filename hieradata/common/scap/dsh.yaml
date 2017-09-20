@@ -46,8 +46,6 @@ scap::dsh::groups:
   parsoid:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid'}
-    hosts:
-      - ruthenium.eqiad.wmnet
   mediawiki-api-canaries:
     hosts:
       - mw1276.eqiad.wmnet
