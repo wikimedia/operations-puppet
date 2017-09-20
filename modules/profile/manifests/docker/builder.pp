@@ -45,4 +45,12 @@ class profile::docker::builder(
         group   => 'root',
         mode    => '0444'
     }
+
+    file { '/usr/local/bin/build-production-images':
+        ensure => present,
+        source => 'puppet:///modules/profile/docker/build-production-images.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500'
+    }
 }
