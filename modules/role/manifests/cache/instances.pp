@@ -91,11 +91,6 @@ class role::cache::instances (
         vcl_config => $fe_vcl_config,
     }
 
-    # Set backend_warming to enable/disable miss2pass behavior
-    $be_warming_vcl_config = merge($be_vcl_config, {
-        'backend_warming' => hiera('cache::backend_warming', false),
-    })
-
     varnish::instance { "${cache_type}-backend":
         instance_name      => '',
         layer              => 'backend',
@@ -105,7 +100,7 @@ class role::cache::instances (
         admin_port         => 6083,
         runtime_parameters => concat($be_runtime_params, $nuke_lru_params, $exp_thread_params),
         storage            => "${be_storage} ${be_transient_storage}",
-        vcl_config         => $be_warming_vcl_config,
+        vcl_config         => $be_vcl_config,
         app_directors      => $app_directors,
         app_def_be_opts    => $app_def_be_opts,
         backend_caches     => $our_backend_caches,
