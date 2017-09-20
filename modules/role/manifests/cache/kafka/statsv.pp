@@ -13,27 +13,27 @@
 # [*varnish_svc_name*]
 #   The name of the init unit for the above.
 #   Default 'varnish-frontend'
-# [*kafka_protocol_version*]
-#   Kafka API version to use, needed for brokers < 0.10
-#   https://issues.apache.org/jira/browse/KAFKA-3547
 #
 class role::cache::kafka::statsv(
     $varnish_name           = 'frontend',
     $varnish_svc_name       = 'varnish-frontend',
-    $kafka_protocol_version = '0.9.0.1',
-) inherits role::cache::kafka
+)
 {
+    # Include top role::cache::kafka to get 
+    # varnish_instance -> varnishkafka instance dependency.
+    include ::role::cache::kafka
+
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
     $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
+    $kafka_config = kafka_config('jumbo')
+    $kafka_brokers = $kafka_config['brokers']['array']
+
     varnishkafka::instance { 'statsv':
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
         brokers                     => $kafka_brokers,
-        # lint:endignore
         format                      => $format,
         format_type                 => 'json',
         topic                       => 'statsv',
