@@ -1,0 +1,13 @@
+# This file managed by puppet. Local changes will be overwritten.
+
+# Exim hourly per-sender rate limits
+
+# Format:
+# Address (user@host):        Rate
+
+# Examples:
+# user@example.org:           10
+# *@example.org:              5
+
+# Default per-sender address rate limit
+*@*:                          100
