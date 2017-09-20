@@ -259,8 +259,7 @@ class network::constants {
     # Analytics subnets
     $analytics_networks = slice_network_constants('production', { 'description' => 'analytics'})
 
-    # Networks that trebuchet/git-deploy
-    # will be able to deploy to.
+    # Networks that Scap will be able to deploy to.
     # (Puppet does array concatenation
     # by declaring array of other arrays! (?!)
     # See: http://weblog.etherized.com/posts/175)
