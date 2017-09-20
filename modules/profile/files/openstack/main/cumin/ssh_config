@@ -1,5 +1,5 @@
 # WMCS Bastions
-Host bastion-restricted.wmflabs.org bastion-restricted-??.bastion.eqiad.wmflabs
+Host bastion-restricted.wmflabs.org
     ProxyCommand none
 
 # WMCS Instances
@@ -9,5 +9,5 @@ Host *
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
     GlobalKnownHostsFile /dev/null
-    LogLevel QUIET
-    ProxyCommand ssh -a -W %h:%p bastion-restricted.wmflabs.org
+    LogLevel ERROR
+    ProxyCommand ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null -o LogLevel=ERROR -a -W %h:%p bastion-restricted.wmflabs.org
