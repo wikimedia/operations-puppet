@@ -4,5 +4,3 @@ profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
   live-restore: true
 profile::docker::storage::loopback::source_dir: "/srv/docker-dm"
-profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
-profile::docker::builder::proxy_port: "8080"

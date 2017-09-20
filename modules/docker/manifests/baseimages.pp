@@ -8,7 +8,7 @@
 #  The url of the docker registry where images should be uploaded
 #
 # [*proxy_address*]
-#  The address of the proxy for downloading packages. Undefined by default
+#  The address of the apt proxy for downloading packages. Undefined by default
 #
 # [*proxy_port*]
 #  The port of said proxy, if present. Undefined by default.
