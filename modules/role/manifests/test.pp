@@ -1,9 +1,9 @@
 # role to (ironically) apply on unpuppetized systems
 #
 # filtertags: labs-project-puppet
-class role::test::system {
+class role::test {
     include ::standard
     include ::base::firewall
 
-    system::role { 'test::system': description => 'Unpuppetised system for testing' }
+    system::role { 'test': description => 'Unpuppetised system for testing' }
 }
