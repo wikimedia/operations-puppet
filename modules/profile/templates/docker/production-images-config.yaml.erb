@@ -1,3 +1,6 @@
+<%- if @proxy_host and @proxy_host != '' -%>
+http_proxy: "<%= @proxy_host %>:<%= @proxy_port %>"
+<%- end -%>
 registry: <%= @registry %>
 username: <%= @username %>
 password: <%= @password %>
