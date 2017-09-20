@@ -33,6 +33,8 @@
 #              added automatic exclusion of IfAlias =~ /\bno-mon\b/ in -I mode
 # 2017-07-05 - ayounsi@wikimedia.org - Add runbook link
 #              and remove <br> from Nagios interfaces check messages
+# 2017-09-20 - ayounsi@wikimedia.org - Ignore specific ifName
+#              Ignore experimental warnings
 #
 
 use POSIX;
@@ -51,6 +53,7 @@ sub usage ($);
 sub print_usage ();
 sub process_arguments ();
 
+no if ($] >= 5.018), 'warnings' => 'experimental';
 
 my $status;
 my %ifOperStatus =	('1','up',
