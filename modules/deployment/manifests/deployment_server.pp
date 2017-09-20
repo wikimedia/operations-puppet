@@ -1,6 +1,6 @@
 # = Class: deployment::deployment_server
 #
-# Provision a trebuchet deployment server.
+# Provision a deployment server.
 #
 # == Parameters:
 # - $deployment_group: Default value for group ownership of any trebuchet-

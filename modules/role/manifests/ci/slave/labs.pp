@@ -22,7 +22,6 @@ class role::ci::slave::labs {
         require     => File['/mnt/home/jenkins-deploy'],
     }
 
-    # Trebuchet replacement on labs
     include contint::composer
     include contint::phpunit
     include contint::slave_scripts
