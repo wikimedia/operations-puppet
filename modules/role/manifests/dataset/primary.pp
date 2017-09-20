@@ -38,11 +38,6 @@ class role::dataset::primary {
         minute      => '41',
     }
 
-    class { '::dataset::cron::rsync::nginxlogs':
-        enable => true,
-        dest   => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
-    }
-
     class { '::dataset::cron::wikitech_dumps':
         enable => true,
         url    => 'https://wikitech.wikimedia.org/dumps/',

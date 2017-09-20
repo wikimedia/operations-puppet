@@ -1,6 +1,7 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
-class dumps::web::xmldumps {
-
+class dumps::web::xmldumps(
+    $do_acme = true,
+) {
     class { '::nginx':
         variant => 'extras',
     }
@@ -28,5 +29,29 @@ class dumps::web::xmldumps {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+    }
+
+    include ::base::firewall
+
+    ferm::service { 'xmldumps_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'xmldumps_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
+    monitoring::service { 'http':
+        description   => 'HTTP',
+        check_command => 'check_http'
+    }
+
+    if ($do_acme == true) {
+        monitoring::service { 'https':
+            description   => 'HTTPS',
+            check_command => 'check_ssl_http_letsencrypt!dumps.wikimedia.org',
+        }
     }
 }
