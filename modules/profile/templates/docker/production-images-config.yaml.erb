@@ -1,3 +1,5 @@
+<%- if @proxy_host and @proxy_host != '' -%>
+apt_options: "-o Acquire::http::Proxy::security.debian.org=<%= @proxy_host %>:<%= @proxy_port %> -o Acquire::http::Proxy::security-cdn.debian.org=<%= @proxy_host %>:<%= @proxy_port %>"
 registry: <%= @registry %>
 username: <%= @username %>
 password: <%= @password %>
