@@ -1121,7 +1121,7 @@ node 'graphite1001.eqiad.wmnet' {
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
-    role(test::system)
+    role(test)
 }
 
 # graphite additional machine, for additional space
@@ -1532,7 +1532,7 @@ node 'mendelevium.eqiad.wmnet' {
 
 # misc. test server, keep (T156208)
 node 'multatuli.wikimedia.org' {
-    role(test::system)
+    role(test)
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -2109,7 +2109,7 @@ node 'rutherfordium.eqiad.wmnet' {
 # Right now, both rt-server and rt-clients run on the same node
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
-    role(test::system,
+    role(test,
         parsoid::testing, parsoid::rt_server, parsoid::rt_client,
         parsoid::vd_server, parsoid::vd_client, parsoid::diffserver)
 }
@@ -2280,7 +2280,7 @@ node 'tin.eqiad.wmnet', 'naos.codfw.wmnet' {
 
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
-    role(test::system, xhgui::app)
+    role(test, xhgui::app)
 }
 
 # replaced magnesium (RT) (T119112 T123713)
