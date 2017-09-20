@@ -1,5 +1,5 @@
-class profile::dumps::web::xmldumps {
-    class {'::dumps::web::xmldumps':}
+class profile::dumps::web::active_xmldumps {
+    class {'::dumps::web::active_xmldumps':}
 
     ferm::service { 'xmldumps_http':
         proto => 'tcp',
