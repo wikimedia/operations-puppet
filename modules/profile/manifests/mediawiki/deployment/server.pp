@@ -57,7 +57,7 @@ class profile::mediawiki::deployment::server(
 
     # T113351
     ferm::service { 'http_deployment_server':
-        desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
+        desc   => 'HTTP on deployment servers, for serving actual files to deploy',
         proto  => 'tcp',
         port   => '80',
         srange => "(${deployable_networks_ferm})",
@@ -76,7 +76,6 @@ class profile::mediawiki::deployment::server(
     # Also make sure that no files have been stolen by root ;-)
     ::monitoring::icinga::bad_directory_owner { '/srv/mediawiki-staging': }
 
-    ### Trebuchet
     file { '/srv/deployment':
         ensure => directory,
         owner  => 'trebuchet',
@@ -117,13 +116,6 @@ class profile::mediawiki::deployment::server(
     # Bacula backups (T125527)
     backup::set { 'srv-deployment': }
 
-    # Used by the trebuchet salt returner
-    ferm::service { 'deployment-redis':
-        proto  => 'tcp',
-        port   => '6379',
-        srange => "(${deployable_networks_ferm})",
-    }
-
     sudo::group { "${deployment_group}_deployment_server":
         group      => $deployment_group,
         privileges => [
@@ -133,7 +125,6 @@ class profile::mediawiki::deployment::server(
             'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
         ],
     }
-    ### End Trebuchet
 
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
