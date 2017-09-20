@@ -23,25 +23,6 @@ profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls:
   ca: /dev/null
-profile::restbase::seeds_ng:
-  - restbase2001-a.codfw.wmnet
-  - restbase2001-b.codfw.wmnet
-  - restbase2001-c.codfw.wmnet
-  - restbase2003-a.codfw.wmnet
-  - restbase2003-b.codfw.wmnet
-  - restbase2003-c.codfw.wmnet
-  - restbase2005-a.codfw.wmnet
-  - restbase2005-b.codfw.wmnet
-  - restbase2005-c.codfw.wmnet
-  - restbase1008-a.eqiad.wmnet
-  - restbase1008-b.eqiad.wmnet
-  - restbase1008-c.eqiad.wmnet
-  - restbase1009-a.eqiad.wmnet
-  - restbase1009-b.eqiad.wmnet
-  - restbase1009-c.eqiad.wmnet
-  - restbase1010-a.eqiad.wmnet
-  - restbase1010-b.eqiad.wmnet
-  - restbase1010-c.eqiad.wmnet
 
 #
 # Cassandra
