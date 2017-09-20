@@ -95,6 +95,7 @@ sub vcl_recv {
 			unset req.http.X-Next-Is-Cache;
 			<%- if not @vcl_config.fetch("backend_warming", false) -%>
 			set req.http.X-MISS2PASS = 1;
+			set req.hash_ignore_busy = true; // insurance against coalescing
 			<%- end -%>
 		}
 	}
