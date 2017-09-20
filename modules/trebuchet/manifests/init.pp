@@ -11,6 +11,4 @@ class trebuchet(
         labs       => pick($deployment_server, "${::labsproject}-deploy.${::labsproject}.eqiad.wmflabs"),
         default    => hiera('deployment_server','tin.eqiad.wmnet'),
     }
-
-    include ::trebuchet::packages
 }
