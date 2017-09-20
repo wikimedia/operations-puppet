@@ -65,6 +65,9 @@
     javaOptions = <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %>
     heapLimit = <%= @heap_limit %>
     slave = <%= @slave %>
+    <%- if @slave %>
+    daemonOpt = --enable-httpd --enable-sshd
+    <%- end -%>
 [core]
     packedGitOpenFiles = 6000
     packedGitLimit = 2g
