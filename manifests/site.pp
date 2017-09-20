@@ -1238,8 +1238,7 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control,
-          salt::masters::labs,
-          deployment::salt_masters)
+          salt::masters::labs)
 
     include ::base::firewall
     include ::standard
@@ -1253,8 +1252,7 @@ node 'labcontrol1001.wikimedia.org' {
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control,
-          salt::masters::labs,
-          deployment::salt_masters)
+          salt::masters::labs)
 
     include ::base::firewall
     include ::standard
@@ -1871,7 +1869,7 @@ node 'notebook1002.eqiad.wmnet' {
 
 # cluster management (salt master, cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
-    role(deployment::salt_masters, mgmt::drac_ilo, cluster::management)
+    role(mgmt::drac_ilo, cluster::management)
 
     interface::add_ip6_mapped { 'main': }
 }
