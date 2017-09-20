@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Ema <ema@wikimedia.org>
+Submitted-by: Ema <ema@wikimedia.org>
+Submitted-at: Wed, 20 Sep 2017 16:34:56 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/379265
+Project: operations/puppet
+Branch: refs/heads/production
