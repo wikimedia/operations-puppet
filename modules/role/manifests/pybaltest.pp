@@ -14,7 +14,7 @@ class role::pybaltest {
 
     ferm::service { 'pybaltest-bgp':
         proto  => 'tcp',
-        port   => '581',
+        port   => '179',
         srange => "@resolve((${pybaltest_hosts_ferm}))",
     }
 
