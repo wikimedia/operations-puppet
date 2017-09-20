@@ -73,11 +73,10 @@ class phabricator::aphlict(
     }
 
     user { $user:
-        gid     => $group,
-        shell   => '/bin/false',
-        home    => '/var/run/aphlict',
-        system  => true,
-        require => Group[$group],
+        groups => $group,
+        shell  => '/bin/false',
+        home   => '/var/run/aphlict',
+        system => true,
     }
 
     base::service_unit { 'aphlict':
