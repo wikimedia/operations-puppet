@@ -59,6 +59,15 @@ class role::prometheus::services {
         site       => $::site,
     }
 
+    # All brokers emit the same metrics, and use profile::kafka::broker, 
+    # no matter which role/cluster they are in.  They can all use the same
+    # prometheus config.
+    prometheus::jmx_exporter_config{ "kafka_broker_${::site}":
+        dest       => "${targets_path}/kafka_broker_${::site}.yaml",
+        class_name => 'profile::kafka::broker',
+        site       => $::site,
+    }
+
     prometheus::server { 'services':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9903',
