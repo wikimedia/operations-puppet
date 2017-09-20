@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Volans <rcoccioli@wikimedia.org>
+Submitted-by: Volans <rcoccioli@wikimedia.org>
+Submitted-at: Wed, 20 Sep 2017 11:32:15 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/379209
+Project: operations/puppet
+Branch: refs/heads/production
