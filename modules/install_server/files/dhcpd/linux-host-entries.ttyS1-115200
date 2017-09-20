@@ -6413,16 +6413,6 @@ host wezen {
     fixed-address wezen.codfw.wmnet;
 }
 
-host wdqs1001 {
-    hardware ethernet 90:b1:1c:1d:e7:e5;
-    fixed-address wdqs1001.eqiad.wmnet;
-}
-
-host wdqs1002 {
-    hardware ethernet 90:b1:1c:23:36:1d;
-    fixed-address wdqs1002.eqiad.wmnet;
-}
-
 host wdqs1003 {
     hardware ethernet 94:18:82:71:f7:c0;
     fixed-address wdqs1003.eqiad.wmnet;
