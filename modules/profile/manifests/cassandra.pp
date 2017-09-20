@@ -98,11 +98,27 @@ class profile::cassandra(
         port   => '7199:7202',
         srange => "@resolve((${cassandra_hosts_ferm}))",
     }
+    # XXX TEMP XXX
+    # RESTBase is currently migrating from Cass 2 to Cass 3 by gradually
+    # switching use-cases from one to the other, which means that there
+    # are currently two Cassandra clusters being used by RESTBase. However,
+    # we are running RESTBase only on nodes with Cassandra 2. In this hack
+    # we are allowing the RESTBase hosts to talk to Cassandra 3.x nodes.
+    $extra_cql_hosts = hiera('profile::cassandra::extra_cql_hosts', [])
+    unless empty($extra_cql_hosts) {
+        $extra_cql_ferm = join($extra_cql_hosts, ' ')
+        $srange_cql = "${cassandra_hosts_ferm} ${extra_cql_ferm}"
+    } else {
+        $srange_cql = $cassandra_hosts_ferm
+    }
+    # Note: all of the $srange_cql instances below need to be replaced back to
+    # $cassandra_hosts_ferm once this hack is no longer needed
+    # XXX END TEMP XXX
     # Cassandra CQL query interface
     ferm::service { 'cassandra-cql':
         proto  => 'tcp',
         port   => '9042',
-        srange => "@resolve((${cassandra_hosts_ferm}))",
+        srange => "@resolve((${srange_cql}))",
     }
     # Prometheus jmx_exporter for Cassandra
     ferm::service { 'cassandra-jmx_exporter':
@@ -116,7 +132,7 @@ class profile::cassandra(
         ferm::service { 'cassandra-analytics-cql':
             proto  => 'tcp',
             port   => '9042',
-            srange => "(@resolve((${cassandra_hosts_ferm})) ${analytics_networks})",
+            srange => "(@resolve((${srange_cql})) ${analytics_networks})",
         }
 
     }
