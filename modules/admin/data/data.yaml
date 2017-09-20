@@ -2067,7 +2067,7 @@ users:
     uid: 13978
     email: jclark@cyber.law.harvard.edu
     expiry_date: 2018-01-01
-    expiry_contact: zzhou@wikimedia.org
+    expiry_contact: slaporte@wikimedia.org
   gehel:
     ensure: present
     gid: 500
