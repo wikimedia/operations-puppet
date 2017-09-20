@@ -29,4 +29,8 @@ class dumps::web::xmldumps {
         group  => 'root',
         mode   => '0444',
     }
+
+    class {'::dumps::web::rsync::nginxlogs':
+        dest   => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
+    }
 }
