@@ -68,15 +68,16 @@ class phabricator::aphlict(
 
     # accounts
     group { $group:
-        ensure => $ensure,
+        ensure => 'present',
         system => true,
     }
 
     user { $user:
-        gid    => $group,
-        shell  => '/bin/false',
-        home   => '/var/run/aphlict',
-        system => true,
+        gid     => $group,
+        shell   => '/bin/false',
+        home    => '/var/run/aphlict',
+        system  => true,
+        require => Group[$group],
     }
 
     base::service_unit { 'aphlict':
