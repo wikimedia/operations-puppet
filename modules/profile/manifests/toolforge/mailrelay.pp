@@ -23,6 +23,32 @@ class profile::toolforge::mailrelay(
         notify  => Service['exim4'],
     }
 
+    file { '/etc/exim4/ratelimits':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0550',
+        require => Package['exim4-config'],
+    }
+
+    file { '/etc/exim4/ratelimits/sender_hourly_limits':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0440',
+        require => File['/etc/exim4/ratelimits'],
+        source  => 'puppet:///modules/profile/toolforge/mailrelay/ratelimits/sender_hourly_limits',
+    }
+
+    file { '/etc/exim4/ratelimits/host_hourly_limits':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0440',
+        require => File['/etc/exim4/ratelimits'],
+        source  => 'puppet:///modules/profile/toolforge/mailrelay/ratelimits/host_hourly_limits',
+    }
+
     file { '/usr/local/sbin/localuser':
         ensure => file,
         owner  => 'root',
