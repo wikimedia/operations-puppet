@@ -3,6 +3,7 @@ varnish::dynamic_backend_caches: false
 cache::lua_support: true
 cluster: cache_canary
 cache::cluster: canary
+cache::admission_param: 32768
 admin::groups:
   - perf-roots
 prometheus::node_exporter::collectors_extra:
