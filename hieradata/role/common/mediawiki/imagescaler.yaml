@@ -13,6 +13,3 @@ hhvm::extra::fcgi:
       light_process_count: "10"
 apache::mpm::mpm: worker
 role::mediawiki::webserver::tls: true
-
-# Use the future parser here
-profile::base::environment: "future"

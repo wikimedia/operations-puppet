@@ -20,6 +20,3 @@ hhvm::extra::fcgi:
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: jobrunner
-
-# Use the future parser here
-profile::base::environment: "future"

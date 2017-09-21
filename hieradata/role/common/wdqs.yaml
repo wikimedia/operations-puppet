@@ -12,6 +12,3 @@ cluster: wdqs
 contactgroups: admins,wdqs-admins
 role::lvs::realserver::pools:
   wdqs: {}
-
-# Use the future parser here
-profile::base::environment: "future"

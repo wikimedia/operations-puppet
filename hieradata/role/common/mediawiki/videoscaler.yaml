@@ -12,6 +12,3 @@ hhvm::extra::fcgi:
       connection_timeout_seconds: 86400
       thread_count: 15
   max_execution_time: 86400
-
-# Use the future parser here
-profile::base::environment: "future"
