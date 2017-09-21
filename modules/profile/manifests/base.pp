@@ -3,6 +3,7 @@ class profile::base(
     $dns_alt_names = hiera('profile::base::dns_alt_names', false),
     # TODO/puppet4: revert to using "undef"
     $environment   = hiera('profile::base::environment', ''),
+    $use_future_parser = hiera('profile::base::use_future_parser', true), #temporary, while we wait for WMCS to perform the switch
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $domain_search = hiera('profile::base::domain_search', $::domain),
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
@@ -27,11 +28,21 @@ class profile::base(
         group  => 'root',
         mode   => '0755',
     }
+    if $user_future_parser {
+        $additional_agent_config = {
+            'parser'   => 'future',
+            'manifest' => '$confdir/manifests'
+        }
+    } else {
+        $additional_agent_config = {}
+    }
+
 
     class { '::base::puppet':
-        server        => $puppetmaster,
-        dns_alt_names => $dns_alt_names,
-        environment   => $environment
+        server                  => $puppetmaster,
+        dns_alt_names           => $dns_alt_names,
+        environment             => $environment,
+        additional_agent_config => $additional_agent_config,
     }
 
     # Temporary workaround for T140100. Remove as soon as Labs instances get

@@ -3,7 +3,8 @@ class base::puppet(
     $certname=undef,
     $dns_alt_names=undef,
     $environment=undef,
-    ) {
+    $additional_agent_config = {},
+) {
     include ::passwords::puppet::database
     include ::base::puppet::params
     $interval = $base::puppet::params::interval
