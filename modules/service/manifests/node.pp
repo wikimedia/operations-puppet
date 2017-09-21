@@ -177,8 +177,14 @@ define service::node(
     $contact_groups  = hiera('contactgroups', 'admins'),
 ) {
     case $deployment {
-        'scap3': {
-            if ! defined(Service::Deploy::Trebuchet[$repo]) and ! defined(Scap::Target[$repo]) {
+        'git': {
+            service::deploy::gitclone { $title:
+                repository => $repo,
+                before     => Base::Service_unit[$title],
+            }
+        }
+        default: {
+            if ! defined(Scap::Target[$repo]) {
                 require ::service::deploy::common
                 scap::target { $repo:
                     service_name => $title,
@@ -188,19 +194,6 @@ define service::node(
                 }
             }
             include ::scap::conftool
-        }
-        'git': {
-            service::deploy::gitclone { $title:
-                repository => $repo,
-                before     => Base::Service_unit[$title],
-            }
-        }
-        default: {
-            if ! defined(Service::Deploy::Trebuchet[$repo]) {
-                service::deploy::trebuchet{ $repo:
-                    before => Base::Service_unit[$title]
-                }
-            }
         }
     }
 
