@@ -122,7 +122,7 @@ def get_base_parser(description):
         help='do not set the host in downtime on Icinga. Included if --new is set.')
     parser.add_argument(
         '--no-pxe', action='store_true',
-        help=('do not reboot into PXE and reimage. To be used when the reimage has issue and was'
+        help=('do not reboot into PXE and reimage. To be used when the reimage had issues and was '
               'manually fixed.'))
     parser.add_argument(
         '--new', action='store_true',
@@ -522,15 +522,16 @@ def puppet_wait_cert_and_sign(host):
     sign_command = "puppet cert -s '{host}'".format(host=host)
     puppetmaster_host = resolve_dns(PUPPET_DOMAIN, 'CNAME')
     start = datetime.now()
-    timeout = 3600  # 1 hour
+    timeout = 7200  # 2 hours
     retries = 0
 
+    print_line('Polling until a Puppet sign request appears', host=host)
     while True:
         retries += 1
         logger.debug('Waiting for Puppet cert to sign ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
-            logger.info('Still waiting for Puppet cert to sign after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) / 60.0))
+            print_line('Still waiting for Puppet cert to sign after {min} minutes'.format(
+                min=(retries * WATCHER_LONG_SLEEP) / 60.0), host=host)
 
         try:
             exit_code, worker = run_cumin(
@@ -574,7 +575,7 @@ def puppet_first_run(host):
                  '--ignorecache --no-usecacheonfailure')]
 
     print_line('Started first puppet run (sit back, relax, and enjoy the wait)', host=host)
-    run_cumin('puppet_first_run', host, commands, timeout=3600, installer=True)
+    run_cumin('puppet_first_run', host, commands, timeout=7200, installer=True)
     print_line('First Puppet run completed', host=host)
 
 
@@ -645,7 +646,7 @@ def wait_puppet_run(host, start=None):
     if start is None:
         start = datetime.now()
 
-    timeout = 3600  # 1 hour
+    timeout = 7200  # 2 hours
     retries = 0
     command = ("source /usr/local/share/bash/puppet-common.sh && last_run_success && "
                "grep last_run \"${PUPPET_SUMMARY}\" | awk '{ print $2 }'")
@@ -654,8 +655,8 @@ def wait_puppet_run(host, start=None):
         retries += 1
         logger.debug('Waiting for Puppet ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
-            logger.info('Still waiting for Puppet after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) / 60.0))
+            print_line('Still waiting for Puppet after {min} minutes'.format(
+                min=(retries * WATCHER_LONG_SLEEP) / 60.0), host=host)
 
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
@@ -717,8 +718,8 @@ def wait_reboot(host, start=None, installer=False):
         retries += 1
         logger.debug('Waiting for reboot ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
-            logger.info('Still waiting for reboot after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) / 60.0))
+            print_line('Still waiting for reboot after {min} minutes'.format(
+                min=(retries * WATCHER_LONG_SLEEP) / 60.0), host=host)
 
         try:
             check_uptime(host, maximum=(datetime.now() - start).total_seconds(),

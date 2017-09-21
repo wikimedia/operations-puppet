@@ -31,32 +31,41 @@ def parse_args():
         help=('amount of seconds to sleep between one reimage and the next when --sequential '
               'is set. Has no effect if --sequential is not set. [default: 0]'))
     parser.add_argument(
+        '--force', action='store_true',
+        help='override the default limit of that can be reimaged: 3 in parallel, 5 in sequence.')
+    parser.add_argument(
         'hosts', metavar='HOST', nargs='+', action='store',
         help='FQDN of the host(s) to be reimaged')
 
     args = parser.parse_args()
 
+    # Safety limits
+    if not args.force:
+        if args.sequential and len(args.hosts) > 5:
+            parser.error('More than 5 sequential hosts specified and --force not set')
+        elif len(args.hosts) > 3:
+            parser.error(("More than 3 parallel hosts specified and --force not set. Before using "
+                          "the --force parameter, ensure that there aren't too many hosts in the "
+                          "same rack."))
+
     # Perform a quick sanity check on the hosts
     for host in args.hosts:
         if '.' not in host or not lib.HOSTS_PATTERN.match(host):
-            raise ValueError("Expected FQDN of hosts, got '{host}'".format(
-                host=host))
+            parser.error("Expected FQDN of hosts, got '{host}'".format(host=host))
 
         if not lib.is_hostname_valid(host):
-            raise ValueError(
-                "Unable to resolve host '{host}'".format(host=host))
+            parser.error("Unable to resolve host '{host}'".format(host=host))
 
     # Ensure there are no duplicates in the hosts list
     duplicates = {host for host in args.hosts if args.hosts.count(host) > 1}
     if len(duplicates) > 0:
-        raise ValueError("Duplicate hosts detected: {dup}".format(
-            dup=duplicates))
+        parser.error("Duplicate hosts detected: {dup}".format(dup=duplicates))
 
     # Ensure Phab task is properly formatted
     if (args.phab_task_id is not None and
             lib.PHAB_TASK_PATTERN.search(args.phab_task_id) is None):
-        raise ValueError(("Invalid Phabricator task ID '{task}', expected in "
-                          "the form T12345").format(task=args.phab_task_id))
+        parser.error(("Invalid Phabricator task ID '{task}', expected in "
+                      "the form T12345").format(task=args.phab_task_id))
 
     return args
 
