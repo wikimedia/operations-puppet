@@ -1,14 +1,14 @@
 #####################################################################
 ### Note: This file is managed by Puppet.
-### puppet:///modules/dataset/rsync/rsyncd.conf.media
+### puppet:///modules/dumps/rsync/rsyncd.conf.pagecounts_ez
 #####################################################################
 
-# write access from stat100[4,5] to media directory.
-# Erik Z uses this.
-[media]
+# write access from stat100[4,5] to pagecounts-ez directory.
+# Erik Z uses this.  See T80444.
+[pagecounts-ez]
 uid = datasets
 gid = wikidev
 read only = false
-path = /data/xmldatadumps/public/other/media
+path = /data/xmldatadumps/public/other/pagecounts-ez
 hosts allow = stat1005.eqiad.wmnet stat1006.eqiad.wmnet
 

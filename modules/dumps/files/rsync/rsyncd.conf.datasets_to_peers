@@ -1,5 +1,5 @@
 #####################################################################
-### puppet:///modules/dataset/rsync/rsyncd.conf.datasets_to_peers
+### puppet:///modules/dumps/rsync/rsyncd.conf.datasets_to_peers
 #####################################################################
 
 # for rolling rsyncs between dataset hosts
