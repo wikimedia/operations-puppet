@@ -27,7 +27,7 @@ class NagiosGeneratorBase(object):
         'services': """define service {
 # --PUPPET_NAME-- {{ name }}
 {% for line in data -%}
-{%- if line[1] -%}
+{%- if line[1] is not none and line[1] != '' -%}
 {{ "\t%-30s %s" % line }}
 {%- endif %}
 {% endfor %}
