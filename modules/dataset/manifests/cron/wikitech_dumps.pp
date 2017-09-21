@@ -11,9 +11,8 @@ class dataset::cron::wikitech_dumps(
         $ensure = 'absent'
     }
 
-    include ::dataset::dirs
-
-    $wikitechdir = "${dataset::dirs::otherdir}/wikitech"
+    include ::dumps::web::dirs
+    $wikitechdir = "${dumps::web::dirs::otherdir}/wikitech"
 
     file { $wikitechdir:
         ensure => 'directory',
