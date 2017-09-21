@@ -10,6 +10,10 @@ class role::ci::slave {
 
     system::role { 'ci::slave': description => 'CI slave runner' }
 
+    class { '::profile::ci::docker_ce':
+        jenkins_user =>  'jenkins-slave',
+    }
+
     include contint::packages::base
     include contint::slave_scripts
     include ::zuul
@@ -31,14 +35,5 @@ class role::ci::slave {
             },  # end of [user] section
         },  # end of settings
         require  => User['jenkins-slave'],
-    }
-
-    apt::repository { 'thirdparty-ci':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
-        components => 'thirdparty/ci',
-    }
-    package { 'docker-ce':
-        ensure => present,
     }
 }
