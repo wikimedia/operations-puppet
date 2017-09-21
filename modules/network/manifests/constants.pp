@@ -29,6 +29,14 @@ class network::constants {
 
     $special_hosts = {
         'production' => {
+            'aqs_hosts' => [
+                    '10.64.0.107',                      # aqs1004.eqiad.wmnet
+                    '10.64.32.138',                     # aqs1005.eqiad.wmnet
+                    '10.64.48.146',                     # aqs1006.eqiad.wmnet
+                    '10.64.0.199',                      # aqs1007.eqiad.wmnet
+                    '10.64.16.14',                      # aqs1008.eqiad.wmnet
+                    '10.64.48.119',                     # aqs1009.eqiad.wmnet
+                ],
             'bastion_hosts' => [
                     '208.80.154.149',                   # bast1001.wikimedia.org
                     '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
