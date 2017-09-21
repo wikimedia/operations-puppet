@@ -40,6 +40,7 @@ class role::cache::upload(
         'maps_domain'      => $maps_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
         'req_handling'     => hiera('cache::req_handling'),
+        'admission_param'  => hiera('cache::admission_param', 0),
     }
 
     # Note pass_random true in BE, false in FE below.

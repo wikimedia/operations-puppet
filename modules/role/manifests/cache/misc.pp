@@ -34,6 +34,7 @@ class role::cache::misc {
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'pass_random'      => true,
         'req_handling'     => hiera('cache::req_handling'),
+        'admission_param'  => hiera('cache::admission_param', 0),
     }
 
     $common_runtime_params = ['default_ttl=3600']

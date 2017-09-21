@@ -1,5 +1,15 @@
 vcl 4.0;
 
+<% if @vcl_config.fetch("admission_param", 0).to_i > 0 -%>
+// Includes for Exp cache admission policy, admission probability exponentially
+// decreasing with size. See vcl_backend_response. T144187
+C{
+	#include <stdlib.h>
+	#include <math.h>
+
+	const int adm_param =  <%= @vcl_config.fetch("admission_param") %>;
+}C
+<% end -%>
 // common backend code for all clusters
 include "<%= @varnish_include_path %>wikimedia-common_<%= @vcl %>.inc.vcl";
 
@@ -197,6 +207,21 @@ sub vcl_backend_response {
 	unset beresp.http.Public-Key-Pins;
 	unset beresp.http.Public-Key-Pins-Report-Only;
 
+<% if @vcl_config.fetch("admission_param", 0).to_i > 0 -%>
+C{
+	const struct gethdr_s hdr = { HDR_BERESP, "\017Content-Length:" };
+	const int clen = atoi(VRT_GetHdr(ctx, &hdr));
+	const double admissionprob = exp(-clen/adm_param);
+	const double urand = drand48();
+
+	// If admission test succeeds, mark as uncacheable (set ttl=0, do not
+	// create hit-for-pass)
+	if (admissionprob < urand) {
+		VRT_l_beresp_ttl(ctx,0);
+		VRT_l_beresp_uncacheable(ctx,1);
+	}
+}C
+<% end -%>
 	call cluster_be_backend_response_early; // e.g. to fix up Vary-slotting in bereq
 	call wm_common_backend_response;
 	call cluster_be_backend_response;
