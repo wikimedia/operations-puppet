@@ -213,7 +213,7 @@ define cassandra::instance(
 
     # the following parameters have defaults that are sane both for single-
     # and multi-instances
-    $jmx_exporter_enabled = false,
+    $jmx_exporter_enabled             = false,
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,
@@ -416,7 +416,7 @@ define cassandra::instance(
 
     file { "${config_directory}/prometheus_jmx_exporter.yaml":
         ensure  => present,
-        source  => "puppet:///modules/${module_name}/prometheus_jmx_exporter.yaml",
+        source  => "puppet:///modules/${module_name}/prometheus_jmx_exporter-${target_version}.yaml",
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0400',
