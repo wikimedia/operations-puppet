@@ -12,6 +12,9 @@ factpath = $vardir/lib/facter
 <%- unless @environment.nil? || @environment == '' -%>
 environment = <%= @environment %>
 <%- end -%>
+<%- @additional_agent_config.each do |k, v| -%>
+<%= k %> = <%= v %>
+<%- end -%>
 
 [agent]
 <%- if @use_srv_record -%>
