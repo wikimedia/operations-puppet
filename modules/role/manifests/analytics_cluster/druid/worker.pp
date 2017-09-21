@@ -16,6 +16,10 @@ class role::analytics_cluster::druid::worker {
     # Require common druid package and configuration.
     require ::profile::druid::common
 
+    # TLS proxy to expose a basic authn scheme for requests coming
+    # from outside the analytics network (like AQS).
+    require ::profile::druid::tlsproxy
+
     # Zookeeper is co-located on some druid hosts, but not all.
     if $::fqdn in $::profile::druid::common::zookeeper_hosts {
         include profile::zookeeper::server
