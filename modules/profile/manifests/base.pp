@@ -81,7 +81,6 @@ class profile::base(
         # search <project>.<site>.wmflabs to have a minion id matching the fqdn
         require => Class['::base::resolving'],
     }
-    include ::trebuchet
 
     class { '::nrpe':
         allowed_hosts => $nrpe_allowed_hosts,
