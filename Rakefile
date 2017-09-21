@@ -201,6 +201,7 @@ class TaskGen < ::Rake::TaskLib
         'modules/stdlib/types/compat/*.pp',
         'modules/stdlib/spec/fixtures/test/manifests/*.pp',
       ]
+      PuppetSyntax.future_parser = true
     end
     # Set up filelists
     PuppetSyntax.manifests_paths = puppet_changed_files
