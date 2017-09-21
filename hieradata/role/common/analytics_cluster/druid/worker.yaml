@@ -3,6 +3,9 @@ admin::groups:
 
 profile::druid::common::zookeeper_cluster_name: druid-eqiad
 
+profile::druid::tlsproxy::cert_name: druid.svc.eqiad.wmnet
+profile::druid::tlsproxy::ferm_srange: '(($AQS_HOSTS $ANALYTICS_NETWORKS))''
+
 # Make druid build an extension composed of CDH jars.
 profile::druid::common::use_cdh: true
 
