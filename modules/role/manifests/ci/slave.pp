@@ -38,4 +38,7 @@ class role::ci::slave {
         dist       => "${::lsbdistcodename}-wikimedia",
         components => 'thirdparty/ci',
     }
+    package { 'docker-ce':
+        ensure => present,
+    }
 }
