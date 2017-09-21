@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe 'service::node', :type => :define do
+  let(:pre_condition) {
+    'class passwords::etcd { $accounts = {}}'
+  }
   let(:title) { 'my_service_name' }
   let(:facts) { { :initsystem => 'systemd' } }
   let(:node_params) { {'cluster' => 'test', 'site' => 'eqiad'} }
@@ -13,12 +16,11 @@ include ::profile::base
   context 'when only port is given' do
     let(:params) { { :port => 1234 } }
 
-    it 'create application config file' do
-      is_expected.to contain_file('/etc/my_service_name/config.yaml')
-    end
-    it 'contains a service named after the application' do
-      is_expected.to contain_file('/etc/my_service_name/config.yaml')
-                         .with_content(/name: my_service_name/)
+    it { is_expected.to compile }
+
+    it 'create the appropriate scap target' do
+      is_expected.to contain_scap__target('my_service_name/deploy')
+                       .with_service_name('my_service_name')
     end
   end
 end
