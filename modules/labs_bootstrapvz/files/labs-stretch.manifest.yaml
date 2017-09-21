@@ -97,7 +97,6 @@ packages:
     - python-redis
     - python-statsd
     - rsyslog
-    - salt-minion
     - screen
     - snmp
     - ssl-cert
