@@ -18,27 +18,24 @@ class role::salt::minions(
         salt::grain { 'labsproject':
             value => $::labsproject,
         }
-    } else {
-        $master = 'neodymium.eqiad.wmnet'
-        if os_version('debian >= stretch') {
-            # stretch's salt-minion uses SHA256 instead of MD5 by default.
-            # while it's possible to set 'hash_type: md5', this is preferrable
-            $master_finger = 'f6:36:06:73:ca:54:55:c4:68:17:66:13:47:4b:cf:3e:32:71:7a:70:2d:69:b4:e8:3b:f0:d0:ae:d0:4b:4c:f5'
-        } else {
-            $master_finger = 'f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c'
-        }
-    }
-    $client_id     = $::fqdn
 
-    class { '::salt::minion':
-        id            => $client_id,
-        master        => $master,
-        master_finger => $master_finger,
-        master_key    => $salt_master_key,
-        grains        => {
-            realm   => $::realm,
-            site    => $::site,
-            cluster => hiera('cluster', $::cluster),
-        },
+        $client_id     = $::fqdn
+
+        class { '::salt::minion':
+            id            => $client_id,
+            master        => $master,
+            master_finger => $master_finger,
+            master_key    => $salt_master_key,
+            grains        => {
+                realm   => $::realm,
+                site    => $::site,
+                cluster => hiera('cluster', $::cluster),
+            },
+        }
+    } else {
+        package { ['salt-minion', 'salt-minion']:
+            ensure => purged,
+        }
+
     }
 }
