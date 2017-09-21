@@ -11,9 +11,7 @@ class dataset::cron::wikitech_dumps(
         $ensure = 'absent'
     }
 
-    include ::dataset::dirs
-
-    $wikitechdir = "${dataset::dirs::otherdir}/wikitech"
+    $wikitechdir = "/data/xmldatadumps/public/other/wikitech"
 
     file { $wikitechdir:
         ensure => 'directory',
