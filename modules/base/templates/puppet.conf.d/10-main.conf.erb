@@ -12,6 +12,8 @@ factpath = $vardir/lib/facter
 <%- unless @environment.nil? || @environment == '' -%>
 environment = <%= @environment %>
 <%- end -%>
+parser = future
+manifest=$confdir/manifests
 
 [agent]
 <%- if @use_srv_record -%>
