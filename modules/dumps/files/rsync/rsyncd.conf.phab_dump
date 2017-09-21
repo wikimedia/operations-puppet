@@ -1,5 +1,5 @@
 #####################################################################
-### puppet:///modules/dataset/rsync/rsyncd.conf.phab_dump
+### puppet:///modules/dumps/rsync/rsyncd.conf.phab_dump
 #####################################################################
 
 # write access from phab1001 to other/misc directory.
