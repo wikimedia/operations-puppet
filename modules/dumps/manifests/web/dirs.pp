@@ -1,9 +1,10 @@
-class dataset::dirs {
+class dumps::web::dirs(
+    $datadir = '/data/xmldatadumps',
+    $publicdir = '/data/xmldatadumps/public',
+    $otherdir = '/data/xmldatadumps/public/other',
+) {
     # Please note that this is incomplete, but new directories
     # should be defined in puppet (here).
-    $datadir                  = '/data/xmldatadumps'
-    $publicdir                = '/data/xmldatadumps/public'
-    $otherdir                 = "${publicdir}/other"
     $analyticsdir             = "${otherdir}/analytics"
     $othermiscdir             = "${otherdir}/misc"
     $othertestfilesdir        = "${otherdir}/testfiles"

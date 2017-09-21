@@ -1,7 +1,17 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
 class dumps::web::xmldumps(
     $do_acme = true,
+    $datadir = undef,
+    $publicdir = undef,
+    $otherdir = undef,
 ) {
+
+    class {'dumps::web::html':
+        datadir   => $datadir,
+        publicdir => $publicdir,
+        otherdir  => $otherdir,
+    }
+
     class { '::nginx':
         variant => 'extras',
     }

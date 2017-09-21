@@ -55,6 +55,4 @@ class dataset(
     $uploads_media = has_key($uploads,'media')
     class { '::dataset::rsync::media':
         enable => $uploads_media }
-
-    include ::dataset::html
 }
