@@ -177,7 +177,7 @@ def main():
 
     try:
         # This is needed due to a bug in tqdm and a limitation in Cumin
-        with open(cumin_output_path, 'w') as cumin_output:
+        with open(cumin_output_path, 'w', 1) as cumin_output:
             stderr = sys.stderr
             stdout = sys.stdout
             sys.stderr = cumin_output
