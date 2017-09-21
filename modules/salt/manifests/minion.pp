@@ -63,73 +63,80 @@ class salt::minion(
     # package installation, so that the deb postinst
     # step which automatically starts the minion
     # will start it with the correct settings
-    package { 'salt-minion':
-        ensure  => present,
-        require => File['/etc/salt/minion'],
-    }
 
-    service { 'salt-minion':
-        ensure   => running,
-        provider => $::initsystem,
-        require  => Package['salt-minion'],
-    }
-
-    file { '/etc/init/salt-minion.override':
-        ensure => absent,
-        notify => Service['salt-minion'],
-    }
-
-    file { '/etc/salt':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    file { '/etc/salt/minion':
-        content => ordered_yaml($config),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['salt-minion'],
-        require => File['/etc/salt'],
-    }
-
-    file { '/usr/local/sbin/grain-ensure':
-        source  => 'puppet:///modules/salt/grain-ensure.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        require => Package['salt-minion'],
-    }
-
-    if ($master_key) {
-        file { '/etc/salt/pki/minion/minion_master.pub':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => $master_key,
+    if $::realm == 'labs' {
+        package { 'salt-minion':
+            ensure  => present,
+            require => File['/etc/salt/minion'],
         }
-    }
 
-    logrotate::conf { 'salt-common':
-        ensure => present,
-        source => 'puppet:///modules/salt/logrotate.conf',
-    }
+        service { 'salt-minion':
+            ensure   => running,
+            provider => $::initsystem,
+            require  => Package['salt-minion'],
+        }
 
-    if $::initsystem == 'systemd' {
-        file { '/etc/systemd/system/salt-minion.service.d/':
+        file { '/etc/init/salt-minion.override':
+            ensure => absent,
+            notify => Service['salt-minion'],
+        }
+
+        file { '/etc/salt':
             ensure => directory,
             owner  => 'root',
             group  => 'root',
             mode   => '0755',
         }
 
-        file { '/etc/systemd/system/salt-minion.service.d/killmode.conf':
-            content => "[Service]\nKillMode=process\n",
+        file { '/etc/salt/minion':
+            content => ordered_yaml($config),
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
+            notify  => Service['salt-minion'],
+            require => File['/etc/salt'],
+        }
+
+        file { '/usr/local/sbin/grain-ensure':
+            source  => 'puppet:///modules/salt/grain-ensure.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0544',
+            require => Package['salt-minion'],
+        }
+
+        logrotate::conf { 'salt-common':
+            ensure => present,
+            source => 'puppet:///modules/salt/logrotate.conf',
+        }
+
+        if $::initsystem == 'systemd' {
+            file { '/etc/systemd/system/salt-minion.service.d/':
+                ensure => directory,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+            }
+
+            file { '/etc/systemd/system/salt-minion.service.d/killmode.conf':
+                content => "[Service]\nKillMode=process\n",
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+            }
+        }
+
+        if ($master_key) {
+            file { '/etc/salt/pki/minion/minion_master.pub':
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => $master_key,
+            }
+        }
+    } else {
+        package { ['salt-minion', 'salt-minion']:
+            ensure => purged,
         }
     }
 }
