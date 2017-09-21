@@ -531,7 +531,7 @@ def puppet_wait_cert_and_sign(host):
         logger.debug('Waiting for Puppet cert to sign ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
             print_line('Still waiting for Puppet cert to sign after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) / 60.0), host=host)
+                min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
         try:
             exit_code, worker = run_cumin(
@@ -651,12 +651,13 @@ def wait_puppet_run(host, start=None):
     command = ("source /usr/local/share/bash/puppet-common.sh && last_run_success && "
                "grep last_run \"${PUPPET_SUMMARY}\" | awk '{ print $2 }'")
 
+    print_line('Polling the completion of a Puppet run', host=host)
     while True:
         retries += 1
         logger.debug('Waiting for Puppet ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
             print_line('Still waiting for Puppet after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) / 60.0), host=host)
+                min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
@@ -719,7 +720,7 @@ def wait_reboot(host, start=None, installer=False):
         logger.debug('Waiting for reboot ({retries})'.format(retries=retries))
         if retries % WATCHER_LOG_LOOPS == 0:
             print_line('Still waiting for reboot after {min} minutes'.format(
-                min=(retries * WATCHER_LONG_SLEEP) / 60.0), host=host)
+                min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
         try:
             check_uptime(host, maximum=(datetime.now() - start).total_seconds(),
