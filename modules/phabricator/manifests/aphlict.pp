@@ -17,7 +17,9 @@ class phabricator::aphlict(
     $aphlict_dir = "${phabdir}/support/aphlict/server"
     $node_modules = "${aphlict_dir}/node_modules"
     $aphlict_conf = "${basedir}/aphlict/config.json"
-    $aphlict_cmd = "${phabdir}/bin/aphlict start --config ${aphlict_conf}"
+    $aphlict_start_cmd = "${phabdir}bin/aphlict start --config ${aphlict_conf}"
+    $aphlict_restart_cmd = "${phabdir}bin/aphlict restart --config ${aphlict_conf}"
+    $aphlict_stop_cmd = "${phabdir}bin/aphlict stop --config ${aphlict_conf}"
 
     # Ordering
     Package['nodejs'] -> File[$aphlict_conf] ~> Service['aphlict']
