@@ -117,10 +117,6 @@ class base::monitoring::host(
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
     }
-    ::nrpe::monitor_service { 'check_salt_minion':
-        description  => 'salt-minion processes',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1: -c 1:5 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
-    }
     if $::initsystem == 'systemd' {
         file { '/usr/local/lib/nagios/plugins/check_systemd_state':
             ensure => present,
