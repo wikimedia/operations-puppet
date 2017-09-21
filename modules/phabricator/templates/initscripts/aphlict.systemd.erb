@@ -3,12 +3,16 @@ Description=Aphlict - Phabricator notification service
 After=network.target auditd.service
 
 [Service]
+Type=simple
 User=<%= scope.lookupvar('phabricator::aphlict::user') %>
 Group=<%= scope.lookupvar('phabricator::aphlict::group') %>
-ExecStart=<%= scope.lookupvar('phabricator::aphlict::aphlict_cmd') %>
-ExecReload=/bin/kill -HUP $MAINPID
-KillMode=process
-Restart=on-failure
+PIDFile=/var/run/aphlict/aphlict.pid
+Environment="PHABRICATOR_ENV=aphlict"
+ExecStartPre=-/bin/mkdir -p /var/run/aphlict/
+ExecStartPre=/bin/chown -R aphlict:aphlict /var/run/aphlict/
+ExecStart=<%= scope.lookupvar('phabricator::aphlict::aphlict_start_cmd') %>
+ExecReload=<%= scope.lookupvar('phabricator::aphlict::aphlict_restart_cmd') %>
+ExecStop=<%= scope.lookupvar('phabricator::aphlict::aphlict_stop_cmd') %>
 
 [Install]
 WantedBy=multi-user.target
