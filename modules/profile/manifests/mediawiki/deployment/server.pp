@@ -116,16 +116,6 @@ class profile::mediawiki::deployment::server(
     # Bacula backups (T125527)
     backup::set { 'srv-deployment': }
 
-    sudo::group { "${deployment_group}_deployment_server":
-        group      => $deployment_group,
-        privileges => [
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
-        ],
-    }
-
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
     require_package('percona-toolkit', 'tig')
