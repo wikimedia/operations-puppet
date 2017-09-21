@@ -62,7 +62,6 @@ if [ -z $domain ]; then
 fi
 
 fqdn=${hostname}.${project}.${domain}
-saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 master="labs-puppetmaster.wikimedia.org"
 
 # Finish LDAP configuration
@@ -102,13 +101,6 @@ nscd -i hosts
 
 # set mailname
 echo $fqdn > /etc/mailname
-
-# Initial salt config
-echo -e "master: ${master}\n" > /etc/salt/minion
-echo "id: ${fqdn}" >> /etc/salt/minion
-echo "master_finger: ${saltfinger}" >> /etc/salt/minion
-echo "${fqdn}" > /etc/salt/minion_id
-/etc/init.d/salt-minion restart
 
 puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
