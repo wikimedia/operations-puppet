@@ -75,8 +75,7 @@ class profile::cumin::master (
         group  => 'root',
     }
 
-    # TODO: remove the -new suffix once the salt version has beed decommissioned
-    file { '/usr/local/sbin/wmf-auto-reimage-new':
+    file { '/usr/local/sbin/wmf-auto-reimage':
         ensure => present,
         source => 'puppet:///modules/profile/cumin/wmf_auto_reimage.py',
         mode   => '0544',

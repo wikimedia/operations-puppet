@@ -89,6 +89,5 @@ class salt::master(
         group  => 'root',
     }
 
-    include salt::orchestration
     include salt::monitoring
 }
