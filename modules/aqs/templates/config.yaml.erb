@@ -18,6 +18,14 @@ aqs_project: &aqs_project
               - name: default.group.local
                 domains: /./
 
+          druid:
+              hosts: <%= Array(@druid_hosts).join(',') %>
+              scheme: <%= @druid_scheme %>
+              port: <%= @druid_port %>
+              query_path: <%= @druid_query_path %>
+              http_auth_user: <%= @druid_http_auth_user %>
+              http_auth_password: <%= @druid_http_auth_password %>
+
 # Swagger spec root.
 spec: &spec
   title: "The Analytics RESTBase root"

@@ -43,22 +43,30 @@
 # [*statsd_port*]
 #   statsd port. Default: 8125
 #
+include ::passwords::aqs::druid_http_auth
 class aqs(
     $cassandra_user = 'cassandra',
     $cassandra_password = 'cassandra',
     $seeds          = [$::ipaddress],
     $cassandra_default_consistency = 'localQuorum',
-    $cassandra_local_dc = 'datacenter1',
-    $cassandra_datacenters = [ 'datacenter1' ],
-    $port           = 7232,
-    $salt_key       = 'secretkey',
-    $page_size      = 250,
-    $logstash_host  = 'localhost',
-    $logstash_port  = 12201,
-    $logging_level  = 'warn',
-    $statsd_host    = 'localhost',
-    $statsd_port    = 8125,
+    $cassandra_local_dc            = 'datacenter1',
+    $cassandra_datacenters         = [ 'datacenter1' ],
+    $port                          = 7232,
+    $salt_key                      = 'secretkey',
+    $page_size                     = 250,
+    $logstash_host                 = 'localhost',
+    $logstash_port                 = 12201,
+    $logging_level                 = 'warn',
+    $statsd_host                   = 'localhost',
+    $statsd_port                   = 8125,
+    $druid_hosts                   = [ 'druid1001.eqiad.wmnet', 'druid1001.eqiad.wmnet', 'druid1001.eqiad.wmnet' ],
+    $druid_scheme                  = 'https',
+    $druid_port                    = 8082,
+    $druid_query_path              = '/druid/v2/',
+    $druid_http_auth_user          = $::passwords::aqs::druid_http_auth::user,
+    $druid_http_auth_password      = $::passwords::aqs::druid_http_auth::password,
 ) {
+    # NOTE: didn't know how to make the ::passwords::aqs values, they're in the private repo, right?
 
     service::node { 'aqs':
         port            => $port,
