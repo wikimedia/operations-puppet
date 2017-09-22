@@ -4,6 +4,8 @@
 class role::cache::perf {
     include cpufrequtils # defaults to "performance"
 
+    $iface_primary = $facts['interface_primary']
+
     # Bump min_free_kbytes to ensure network buffers are available quickly
     #   without having to evict cache on the spot
     vm::min_free_kbytes { 'cache':
@@ -28,21 +30,28 @@ class role::cache::perf {
 
     # Larger TX queue len for 10Gbps+
     interface::txqueuelen { $name:
-        interface => $facts['interface_primary'],
+        interface => $iface_primary,
         len       => 10000,
     }
 
     # Max for bnx2x/BCM57800, seems to eliminate the spurious rx drops under heavy traffic
     interface::ring { "${name} rxring":
-        interface => $facts['interface_primary'],
+        interface => $iface_primary,
         setting   => 'rx',
         value     => 4078,
+    }
+
+    # Disable LRO to avoid merging important headers for flow control and such
+    interface::offload { "${iface_primary}-lro":
+        interface => $interface,
+        setting   => 'lro',
+        value     => 'off',
     }
 
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
     interface::rps { 'primary':
-        interface => $facts['interface_primary'],
+        interface => $iface_primary,
         qdisc     => 'fq flow_limit 300 buckets 8192 maxrate 1gbit',
         before    => Sysctl::Parameters['cache proxy network tuning'],
     }
