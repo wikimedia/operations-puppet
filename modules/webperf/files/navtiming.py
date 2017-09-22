@@ -121,7 +121,7 @@ def parse_ua_obj(ua):
     """
     ua_obj = json.loads(ua)
 
-    browser_family = "Other"
+    browser_family = 'Other'
     version = ua_obj['browser_major']
 
     # Chrome for iOS
@@ -194,6 +194,11 @@ def parse_ua_obj(ua):
     # 'Other' should report no version
     else:
         browser_family == 'Other'
+        version = '_'
+
+    # Catch partial ua-parser result (T176149)
+    if version is None:
+        browser_family = 'Other'
         version = '_'
 
     return (browser_family, version)

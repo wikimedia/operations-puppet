@@ -136,3 +136,5 @@ Other._:
   - '{"browser_major":"1","browser_minor": "0", "os_family":"Other","os_major":"-","device_family":"Other","browser_family":"SeaMonkey","os_minor":"-","wmf_app_version":"-"}'
   - '{"browser_major":"99","browser_minor": "0", "os_family":"Android","os_major":"7","device_family":"XT1650","browser_family":"Facebook","os_minor":"0","wmf_app_version":"-"}'
   - '{"os_minor": null, "browser_minor": "0", "os_major": null, "device_family": "Other", "os_family": "Windows Vista", "wmf_app_version": "-", "browser_major": null, "browser_family": "Other"}'
+  - '{"os_minor": null, "is_bot": false, "os_major": null, "device_family": "Other", "os_family": "Other", "browser_minor": null, "wmf_app_version": "-", "browser_major": null, "browser_family": "Other", "is_mediawiki": false}'
+  - '{"os_minor": null, "is_bot": false, "os_major": null, "device_family": "Other", "os_family": "Windows 8", "browser_minor": null, "wmf_app_version": "-", "browser_major": null, "browser_family": "Safari", "is_mediawiki": false}'
