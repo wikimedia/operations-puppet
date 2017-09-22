@@ -13,8 +13,6 @@ import socket
 import unittest
 import yaml
 
-from kafka import KafkaConsumer
-
 handlers = {}
 
 # Mapping of continent names to ISO 3166 country codes.
@@ -402,6 +400,8 @@ def handle_navigation_timing(meta):
 
 
 if __name__ == '__main__':
+    from kafka import KafkaConsumer
+
     ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
     ap.add_argument('--brokers', required=True,
                     help='Comma-separated list of kafka brokers')
