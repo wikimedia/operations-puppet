@@ -10,4 +10,5 @@ class role::ci::slave::labs::docker {
 
     include role::ci::slave::labs::common
     include profile::ci::docker
+    include profile::phabricator::arcanist
 }

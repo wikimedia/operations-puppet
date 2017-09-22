@@ -5,7 +5,6 @@
 
 class profile::ci::docker {
     include ::docker
-    include phabricator::arcanist
     include ::zuul
 
     class { 'contint::worker_localhost':

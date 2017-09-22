@@ -9,6 +9,8 @@ class role::ci::slave::labs {
     system::role { '::package_builder':
         description => 'CI package building',
     }
+    include ::profile::phabricator::arcanist
+
     include ::contint::package_builder
 
     class { 'contint::worker_localhost':
