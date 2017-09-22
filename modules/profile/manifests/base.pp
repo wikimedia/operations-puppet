@@ -128,4 +128,6 @@ class profile::base(
             }
         }
     }
+
+    interface::noflow { $interface_primary: }
 }
