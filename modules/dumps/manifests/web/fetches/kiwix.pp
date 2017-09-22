@@ -1,21 +1,14 @@
-class dataset::cron::kiwix(
-    $enable = true,
+class dumps::web::fetches::kiwix(
+    $user = undef,
+    $group = undef,
 ) {
-
-    if ($enable) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-
-    include ::dataset::common
+    require_package('rsync')
 
     file { '/data/xmldatadumps/public/kiwix':
         ensure => 'link',
         target => '/data/xmldatadumps/public/other/kiwix',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
         mode   => '0644',
     }
 
@@ -23,11 +16,11 @@ class dataset::cron::kiwix(
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/dataset/kiwix-rsync-cron.sh',
+        source => 'puppet:///modules/dumps/fetches/kiwix-rsync-cron.sh',
     }
 
     cron { 'kiwix-mirror-update':
-        ensure      => $ensure,
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         command     => '/bin/bash /usr/local/bin/kiwix-rsync-cron.sh',
         user        => 'datasets',

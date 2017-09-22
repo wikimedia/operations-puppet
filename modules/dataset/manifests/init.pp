@@ -1,18 +1,9 @@
 class dataset(
     # args:
     #    $nfs: true to share data with snapshot hosts via nfs
-    #    $rsync: 'public' for rsync of data to the public
-    #            'peer'   for rsync of data between internal peers
+    #    $rsync: 'peer'   for rsync of data between internal peers
     #                     (wmf servers)
     #            'labs'   for rsync of some dumps to labs public fileshare
-    #    $uploads: 'pagecounts_ez' to allow the corresponding rsync
-    #              to those directories from the appropriate hosts
-    #              'media' to allow the corresponding rsync
-    #              to other/media from the appropriate hosts
-    #              'phab' for rsync of phabricator dump from hosts that have it
-    #    $grabs: 'kiwix' to copy kiwix (offline wiki) tarballs from upstream
-    #            to local filesystem
-
     $nfs     = true,
     $rsync   = {},
     $uploads = {},
@@ -35,8 +26,5 @@ class dataset(
 
     $rsync_labs_enable = has_key($rsync,'labs')
     class { '::dataset::cron::rsync::labs': enable => $rsync_labs_enable }
-
-    $grabs_kiwix_enable = has_key($grabs,'kiwix')
-    class { '::dataset::cron::kiwix': enable => $grabs_kiwix_enable }
 
 }
