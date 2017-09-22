@@ -288,6 +288,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:admin'
         end
+        webperf_files = filter_files_by("modules/webperf/files/*.*")
+        unless webperf_files.empty?
+          desc 'Run tox for webperf'
+          task :webperf do
+            res = system("tox -e webperf")
+            raise 'Tests for webperf failed!' if !res
+          end
+          tasks << 'tox:webperf'
+        end
         tox_files = filter_files_by("*.py")
         unless tox_files.empty?
           desc 'Run flake8 on python files via tox'
