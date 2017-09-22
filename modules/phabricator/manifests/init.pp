@@ -117,9 +117,8 @@ class phabricator (
                 ensure => present;
         }
         include ::apache::mod::php7
-    }
-    # jessie or trusty - PHP (5.5/5.6) packages and Apache module
-    if os_version('ubuntu == trusty || debian == jessie') {
+    } else {
+        # jessie - PHP (5.5/5.6) packages and Apache module
         package { [
             'php5-mysql',
             'php5-gd',
@@ -148,15 +147,11 @@ class phabricator (
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
-    # APC(u) package is different in all 3 releases
+    # APC(u) package is different in all 2 releases
     if os_version('debian == jessie') {
         package { 'php5-apcu': ensure => present; }
-    }
-    if os_version('debian >= stretch') {
+    } else {
         package { 'php-apcu': ensure => present; }
-    }
-    if os_version('ubuntu == trusty') {
-        package { 'php-apc': ensure => present; }
     }
 
     $docroot = "${phabdir}/phabricator/webroot"
@@ -336,7 +331,6 @@ class phabricator (
     base::service_unit { 'phd':
         ensure         => 'present',
         systemd        => systemd_template('phd'),
-        upstart        => upstart_template('phd'),
         require        => $base_requirements,
         service_params => {
             ensure     => $phd_service_ensure,
