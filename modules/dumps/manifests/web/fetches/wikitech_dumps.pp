@@ -1,15 +1,7 @@
-class dataset::cron::wikitech_dumps(
-    $enable = true,
+class dumps::fetches::wikitech_dumps(
     $user   = root,
     $url    = undef,
 ) {
-
-    if ($enable) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
 
     $wikitechdir = '/data/xmldatadumps/public/other/wikitech'
 
@@ -32,7 +24,7 @@ class dataset::cron::wikitech_dumps(
     # remove dumps older than 90 days
     $cleanupold = "find ${wikitechdir} -type f -mtime +90 -exec rm {} \\;"
 
-    cron { 'wikitech-dumps-grab':
+    cron { 'dumps-fetches-wikitech':
         ensure  => $ensure,
         command => "${wget} ${wgetreject} ${wgetargs} ${filter}; ${cleanuphtml}; ${cleanupold}",
         user    => $user,
