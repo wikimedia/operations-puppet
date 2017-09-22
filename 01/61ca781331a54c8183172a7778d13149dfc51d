@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Elukey <ltoscano@wikimedia.org>
+Submitted-by: Elukey <ltoscano@wikimedia.org>
+Submitted-at: Fri, 22 Sep 2017 10:58:17 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/379720
+Project: operations/puppet
+Branch: refs/heads/production
