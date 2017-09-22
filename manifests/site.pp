@@ -1369,9 +1369,8 @@ node /labstore100[45]\.eqiad\.wmnet/ {
     include ::standard
 }
 
-# new labstore nodes, set to spare until pushed into service T167984
 node /labstore100[67]\.wikimedia\.org/ {
-    role(spare::system)
+    role(dumps::public::server)
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
