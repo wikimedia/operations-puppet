@@ -3,3 +3,6 @@
 service::configuration::use_dev_pkgs: true
 
 apt::use_experimental: true
+
+# Username the CI Jenkins master connects with
+jenkins_agent_username: 'jenkins'

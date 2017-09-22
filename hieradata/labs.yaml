@@ -133,3 +133,6 @@ profile::diffscan::ipranges:
   - 208.80.152.0/22
 profile::diffscan::emailto: root@wikimedia.org
 profile::diffscan::groupname: Labs-to-public-v4
+
+# Username the CI Jenkins master connects with
+jenkins_agent_username: 'jenkins-deploy'

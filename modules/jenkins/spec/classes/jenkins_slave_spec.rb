@@ -10,6 +10,8 @@ describe 'jenkins::slave' do
     end
     let(:params) { {
         :ssh_key => 'abc id-rsa',
+        :user    => 'agent-username',
+        :workdir => '/srv/agent-username',
     } }
     it { should compile }
 end
