@@ -2233,6 +2233,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3yvsX9fUZX7B14Rzko/VbDfdrDZvHUBP/SmKM9oxKI5bcCaIa6u7l+faDjEfAte+SgMSj+jl1azOZYtJ/+fdRVrIRAkS0heL9DDNSdJxuOcWdY3QCOWu6CmcAPWNfo2DxR4FZit0CbFtyH0s6CTOoiG0reF8uiQR+Oyt4mZKSecfk8zX1N5B50hkvbUArrNUg1fLNED1SuJxtBVo73+tEWUOaYyDovy5D0UU8LH0hFp0pKwDeYnlRJxHTV4h+AQ2SqECQ2wg+k5WX8Kd7MYO/7hVuZMkoD9wlHnPMgTSthy4AzGcliO3mNHa0mfHlZtcf/ck0bm75mZhyrXlUewKD ovasileva@wmf1395.corp.wikimedia.org
     uid: 15207
     email: ovasileva@wikimedia.org
+  slaporte:
+    ensure: present
+    gid: 500
+    name: ovasileva
+    realname: Stephen LaPorte
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArci9cR3XiDsHZ6KlagctW6ky/bPz3ArsNx621VhfGx9L+c/oNcU0tOAorjVQGrg0fSmaF45r/kOtyE5aE4wQY8mB7C8wCqzj9bWaeSwY54pmIAXwEyV50xiR1+MhFWSi7DolJGgRlUX21dztWNwX60SZEDQXoJNrhp091v5DeFRkI/0+84Yz8/F2PvPsh7fxKtdaK/427n6lO5eWtOhdHI9y6pIJ2wnygg1H70hsthRrWadXkyBr7hiMt+pvwGNHJIqC5cauQ6TgcvYd0fH+8Lxd7gZBBNb1S09HrUq94GY28U5x1gHI+SI3hpDYckRYy80ZZgzapftavPbCqAJlmw== stephen.laporte@gmail.com
+    uid: 176518
+    email: stephen.laporte@gmail.com
 ## Users mtizzoni, panisson, paolotti, & ciro have been added as ISI Foundation members for analytics access.
 ## Access will be revoked by request from Dario Taraborelli when it is no longer needed, see T141634 for details.
   mtizzoni:
