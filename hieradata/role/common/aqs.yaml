@@ -82,10 +82,13 @@ profile::cassandra::settings:
 #
 # This configuration forces Restbase to use a specific user. Please make sure
 # to create the user first.
-aqs::cassandra_user: aqs
-aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
+profile::aqs::cassandra_user: aqs
 
-aqs::seeds:
+# Temporary, waiting for T176223 
+profile::aqs::druid_host: druid1004.eqiad.wmnet
+profile::aqs::druid_query_path: '/druid/v2/'
+
+profile::aqs::seeds:
     - aqs1004-a.eqiad.wmnet
     - aqs1004-b.eqiad.wmnet
     - aqs1005-a.eqiad.wmnet
@@ -98,19 +101,9 @@ aqs::seeds:
     - aqs1008-b.eqiad.wmnet
     - aqs1009-a.eqiad.wmnet
     - aqs1009-b.eqiad.wmnet
-aqs::logstash_host: logstash.svc.eqiad.wmnet
-aqs::cassandra_default_consistency: localOne
-aqs::cassandra_local_dc: "%{::site}"
-aqs::statsd_host: statsd.eqiad.wmnet
+profile::aqs::logstash_host: logstash.svc.eqiad.wmnet
+profile::aqs::cassandra_default_consistency: localOne
+profile::aqs::statsd_host: statsd.eqiad.wmnet
 
 role::lvs::realserver::pools:
   aqs: {}
-
-# Used for ferm firewall rules
-aqs_hosts:
-    - aqs1004.eqiad.wmnet
-    - aqs1005.eqiad.wmnet
-    - aqs1006.eqiad.wmnet
-    - aqs1007.eqiad.wmnet
-    - aqs1008.eqiad.wmnet
-    - aqs1009.eqiad.wmnet
