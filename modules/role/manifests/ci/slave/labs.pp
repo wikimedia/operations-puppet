@@ -5,6 +5,7 @@ class role::ci::slave::labs {
     system::role { 'ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
+    include ::profile::ci::worker_localhost
     include ::profile::zuul::cloner
 
     # Debian slaves are used to build Debian packages for all our distributions
@@ -14,10 +15,6 @@ class role::ci::slave::labs {
     include ::profile::phabricator::arcanist
 
     include ::contint::package_builder
-
-    class { 'contint::worker_localhost':
-        owner => 'jenkins-deploy',
-    }
 
     contint::tmpfs { 'tmpfs for jenkins CI labs slave':
         # Jobs expect the tmpfs to be in $HOME/tmpfs

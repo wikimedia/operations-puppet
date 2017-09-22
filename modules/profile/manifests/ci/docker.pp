@@ -6,10 +6,6 @@
 class profile::ci::docker {
     include ::docker
 
-    class { 'contint::worker_localhost':
-        owner => 'jenkins-deploy',
-    }
-
     # Ensure jenkins-deploy membership in the docker group
     exec { 'jenkins-deploy docker membership':
         unless  => '/usr/bin/id -Gn jenkins-deploy | /bin/grep -qw "docker"',
