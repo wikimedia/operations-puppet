@@ -1,4 +1,8 @@
 #!/bin/bash
+######################################
+# This file is managed by puppet!
+#  puppet:///modules/dumps/fetches/kiwix-rsync-cron.sh
+######################################
 
 sourcehost="download.kiwix.org"
 destroot="/data/xmldatadumps/public/other"
