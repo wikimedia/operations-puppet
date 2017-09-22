@@ -65,10 +65,6 @@
 #   than 0.10.2, the consumers' fetch size must also be increased
 #   so that the they can fetch record batches this large.
 #
-# [*monitoring_enabled*]
-#   Enable jmxtrans to export metrics to graphite and set up alerts
-#   based on its metrics.
-#
 # [*prometheus_monitoring_enabled*]
 #   Enable the Prometheus jmx exporter.
 #
@@ -91,7 +87,6 @@ class profile::kafka::broker(
     $replica_maxlag_critical           = hiera('profile::kafka::broker::replica_maxlag_critical'),
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     $message_max_bytes                 = hiera('kafka_message_max_bytes'),
-    $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled'),
     $prometheus_monitoring_enabled     = hiera('profile::kafka::broker::prometheus_monitoring_enabled'),
 ) {
     # TODO: WIP
@@ -244,19 +239,6 @@ class profile::kafka::broker(
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
-    }
-
-    if $monitoring_enabled {
-        class { '::confluent::kafka::broker::jmxtrans':
-            # Cluster metrics prefix for graphite, etc.
-            group_prefix => "kafka.cluster.${cluster_name}.",
-            statsd       => $statsd,
-        }
-
-        class { '::confluent::kafka::broker::alerts':
-            replica_maxlag_warning  => $replica_maxlag_warning,
-            replica_maxlag_critical => $replica_maxlag_critical,
-        }
     }
 
     $ferm_plaintext_ensure = $plaintext ? {

@@ -1,7 +1,6 @@
 kafka_cluster_name: simple
 
 profile::kafka::broker::prometheus_monitoring_enabled: false
-profile::kafka::broker::monitoring_enabled: false
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
 profile::kafka::broker::tls_secrets_path: false
