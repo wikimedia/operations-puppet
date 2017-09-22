@@ -71,6 +71,8 @@ def run(args, user, log_path):
     user     -- the user that launched the script, for auditing purposes
     log_path -- the path of the logfile
     """
+    previous = None
+
     # Validate hosts have a signed Puppet certificate
     if not args.new and not args.no_verify:
         lib.validate_hosts([args.host], args.no_verify)
