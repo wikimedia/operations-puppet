@@ -14,6 +14,13 @@ define lvs::interface_tweaks(
         }
     }
 
+    # Disable LRO to avoid merging important headers for flow control and such
+    interface::offload { "${interface}-lro":
+        interface => $interface,
+        setting => 'lro',
+        value => 'off',
+    }
+
     # RSS/RPS/XPS-type perf stuff ( https://www.kernel.org/doc/Documentation/networking/scaling.txt )
     if $do_rps {
         interface::rps { $name:
