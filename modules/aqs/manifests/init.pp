@@ -43,21 +43,40 @@
 # [*statsd_port*]
 #   statsd port. Default: 8125
 #
+# [*druid_host*]
+#   Target endpoint to query an already configured Druid backend.
+#   If set, it adds the related AQS configuration.
+#   Default: undef
+#
+# [*druid_scheme*]
+#   Protocol scheme to use (only http supported).
+#   Default: http
+#
+# [*druid_port*]
+#   druid endpoint port. Default: 8082 (Druid broker port)
+#
+# [*druid_query_path*]
+#   druid broker query path. Default: undef
+#
 class aqs(
-    $cassandra_user = 'cassandra',
-    $cassandra_password = 'cassandra',
-    $seeds          = [$::ipaddress],
+    $cassandra_user                = 'cassandra',
+    $cassandra_password            = 'cassandra',
+    $seeds                         = [$::ipaddress],
     $cassandra_default_consistency = 'localQuorum',
-    $cassandra_local_dc = 'datacenter1',
-    $cassandra_datacenters = [ 'datacenter1' ],
-    $port           = 7232,
-    $salt_key       = 'secretkey',
-    $page_size      = 250,
-    $logstash_host  = 'localhost',
-    $logstash_port  = 12201,
-    $logging_level  = 'warn',
-    $statsd_host    = 'localhost',
-    $statsd_port    = 8125,
+    $cassandra_local_dc            = 'datacenter1',
+    $cassandra_datacenters         = [ 'datacenter1' ],
+    $port                          = 7232,
+    $salt_key                      = 'secretkey',
+    $page_size                     = 250,
+    $logstash_host                 = 'localhost',
+    $logstash_port                 = 12201,
+    $logging_level                 = 'warn',
+    $statsd_host                   = 'localhost',
+    $statsd_port                   = 8125,
+    $druid_host                    = undef,
+    $druid_scheme                  = 'http',
+    $druid_port                    = 8082,
+    $druid_query_path              = undef,
 ) {
 
     service::node { 'aqs':
