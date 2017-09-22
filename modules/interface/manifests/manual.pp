@@ -10,4 +10,8 @@ define interface::manual($interface, $family='inet') {
         context => '/files/etc/network/interfaces',
         changes => $augeas_cmd;
     }
+
+    interface::noflow { $interface:
+        require => Augeas["${interface}_manual"];
+    }
 }
