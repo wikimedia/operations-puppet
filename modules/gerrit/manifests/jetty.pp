@@ -47,15 +47,16 @@ class gerrit::jetty(
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     $java_options = [
-        '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
-        '-XX:+PrintGCApplicationStoppedTime',
-        '-XX:+PrintGCDetails',
-        '-XX:+PrintGCDateStamps',
-        '-XX:+PrintTenuringDistribution',
-        '-XX:+PrintGCCause',
-        '-XX:+UseGCLogFileRotation',
-        '-XX:NumberOfGCLogFiles=10',
-        '-XX:GCLogFileSize=2M',
+        # These settings apart from the bottom control logging for gc
+        # '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
+        # '-XX:+PrintGCApplicationStoppedTime',
+        # '-XX:+PrintGCDetails',
+        # '-XX:+PrintGCDateStamps',
+        # '-XX:+PrintTenuringDistribution',
+        # '-XX:+PrintGCCause',
+        # '-XX:+UseGCLogFileRotation',
+        # '-XX:NumberOfGCLogFiles=10',
+        # '-XX:GCLogFileSize=2M',
         # '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
     ]
 
