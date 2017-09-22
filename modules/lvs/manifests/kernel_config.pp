@@ -23,6 +23,9 @@ class lvs::kernel_config {
             # LVS servers sit on all subnets
             'net.ipv4.ip_forward'             => 0,
 
+            # early demux is a loss on router boxes
+            'net.ipv4.ip_early_demux'         => 0,
+
             # Defenses (see http://www.linuxvirtualserver.org/docs/defense.html)
             # amemthresh is available mem threshold for triggering defenses,
             # specified in pages.  Default is 1024 (4MB).
