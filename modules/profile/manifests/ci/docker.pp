@@ -5,7 +5,6 @@
 
 class profile::ci::docker {
     include ::docker
-    include ::zuul
 
     class { 'contint::worker_localhost':
         owner => 'jenkins-deploy',
