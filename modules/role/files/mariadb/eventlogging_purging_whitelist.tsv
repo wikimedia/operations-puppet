@@ -761,6 +761,12 @@ PrefUpdate	event_version
 PrefUpdate	isTruncated
 PrefUpdate	webHost
 PrefUpdate	wiki
+Print		event_action
+Print		event_isAnon
+Print		event_namespaceId
+Print		event_pageTitle
+Print		event_sessionToken
+Print		event_skin
 RelatedArticles	webHost
 RelatedArticles	wiki
 RelatedArticles	event_clickIndex
