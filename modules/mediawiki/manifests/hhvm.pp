@@ -36,7 +36,7 @@ class mediawiki::hhvm {
                 },
                 server         => {
                     source_root           => '/srv/mediawiki/docroot',
-                    error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
+                    error_document500     => '/etc/hhvm/fatal-error.php',
                     error_document404     => '/srv/mediawiki/errorpages/404.php',
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
                     thread_count          => $max_threads,
@@ -73,6 +73,15 @@ class mediawiki::hhvm {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+    }
+
+    file { '/etc/hhvm/fatal-error.php':
+        source  => 'puppet:///modules/mediawiki/hhvm-fatal-error.php',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/etc/hhvm'],
+        before  => Service['hhvm'],
     }
 
     if os_version('ubuntu >= trusty') {
