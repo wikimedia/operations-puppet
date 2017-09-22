@@ -205,7 +205,7 @@ class profile::kafka::broker(
         # Create the Prometheus JMX Exporter configuration
         file { $jmx_exporter_config_file:
             ensure  => present,
-            source  => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
+            content => template('profile/kafka/broker_prometheus_jmx_exporter.yaml.erb'),
             owner   => 'kafka',
             group   => 'kafka',
             mode    => '0400',
