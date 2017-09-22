@@ -12,10 +12,14 @@
 # [*extra_cli*]
 #   Supplemental settings for CLI mode.
 #
+# [*statsd*]
+#   Host and port for a StatsD server.
+#
 class profile::mediawiki::hhvm(
     String $user = hiera('mediawiki::users::web', 'www-data'),
     Hash $extra_fcgi = hiera('mediawiki::hhvm::extra_fcgi', {}),
     Hash $extra_cli = hiera('mediawiki::hhvm::extra_cli', {}),
+    $statsd = hiera('statsd')
 ) {
     class { 'hhvm::debug': }
 
@@ -46,7 +50,7 @@ class profile::mediawiki::hhvm(
             },
             server             => {
                 source_root           => '/srv/mediawiki/docroot',
-                error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
+                error_document500     => '/etc/hhvm/fatal-error.php',
                 error_document404     => '/srv/mediawiki/errorpages/404.php',
                 # Currently testing on Beta Cluster: auto_prepend_file (T180183)
                 request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
@@ -94,6 +98,19 @@ class profile::mediawiki::hhvm(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+    }
+
+    $statsd_parts = split($statsd, ':')
+    $statsd_host = $statsd_parts[0]
+    $statsd_port = $statsd_parts[1]
+
+    file { '/etc/hhvm/fatal-error.php':
+        content => template('mediawiki/hhvm-fatal-error.php.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/etc/hhvm'],
+        before  => Service['hhvm'],
     }
 
 
