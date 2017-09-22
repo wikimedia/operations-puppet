@@ -14,11 +14,13 @@ class role::ci::slave::labs {
     }
     include ::contint::package_builder
 
+    $jenkins_agent_username = hiera('jenkins_agent_username')
+
     contint::tmpfs { 'tmpfs for jenkins CI labs slave':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
+        mount_point => "/mnt/home/${jenkins_agent_username}/tmpfs",
         size        => '256M',
-        require     => File['/mnt/home/jenkins-deploy'],
+        require     => File["/mnt/home/${jenkins_agent_username}"],
     }
 
     include contint::composer

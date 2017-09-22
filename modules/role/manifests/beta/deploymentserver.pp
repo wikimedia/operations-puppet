@@ -2,6 +2,8 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::beta::deploymentserver {
-    include beta::autoupdater
+    class { '::beta::autoupdater':
+        user => hiera( 'jenkins_agent_username' ),
+    }
     include role::beta::mediawiki
 }

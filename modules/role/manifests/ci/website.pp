@@ -8,8 +8,10 @@ class role::ci::website {
 
     system::role { 'ci::website': description => 'CI Websites' }
 
-    # Needed at least for the jenkins-slave user
+    # Needed at least for the Jenkins agent username
     require ::role::ci::slave
 
-    class { 'contint::website': }
+    class { 'contint::website':
+        jenkins_agent_username => hiera('jenkins_agent_username'),
+    }
 }

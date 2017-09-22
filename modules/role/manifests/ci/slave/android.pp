@@ -16,9 +16,11 @@ class role::ci::slave::android {
     include contint::packages::androidsdk
     include contint::packages::java
 
-    exec {'jenkins-deploy kvm membership':
-        unless  => "/bin/grep -q 'kvm\\S*jenkins-deploy' /etc/group",
-        command => '/usr/sbin/usermod -aG kvm jenkins-deploy',
+    $user = hiera('jenkins_agent_username')
+
+    exec { "${user} kvm membership":
+        unless  => "/bin/grep -q 'kvm\\S*${user}' /etc/group",
+        command => "/usr/sbin/usermod -aG kvm '${user}",
     }
 
 }
