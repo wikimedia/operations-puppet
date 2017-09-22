@@ -4,10 +4,7 @@
 #
 # === Parameters
 #
-# [*owner*]
-#   Unix user that runs the jobs. Should be:
-#    - Permanent slaves: jenkins-deploy
-#    - Nodepool slaves: jenkins
+# [*owner*] Unix user that runs the jobs.
 #
 class contint::worker_localhost(
     $owner,

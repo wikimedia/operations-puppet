@@ -1,7 +1,16 @@
+# == Class contint::website
+#
 # Class for website hosted on the continuous integration server
 # https://integration.mediawiki.org/
 # https://doc.wikimedia.org/
-class contint::website(){
+#
+# === Parameters
+#
+# [*user*] Unix username the documentation jobs run as.
+#
+class contint::website(
+    $user
+) {
 
   # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
   # and behind a varnish cache. See also T62822
@@ -13,36 +22,36 @@ class contint::website(){
   file { '/srv/org':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins-slave',
-    group  => 'jenkins-slave',
+    owner  => $user,
+    group  => $user,
   }
 
   file { '/srv/org/wikimedia':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins-slave',
-    group  => 'jenkins-slave',
+    owner  => $user,
+    group  => $user,
   }
   file { '/srv/org/wikimedia/integration':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins-slave',
-    group  => 'jenkins-slave',
+    owner  => $user,
+    group  => $user,
   }
   # MediaWiki code coverage
   file { '/srv/org/wikimedia/integration/coverage':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins-slave',
-    group  => 'jenkins-slave',
+    owner  => $user,
+    group  => $user,
   }
 
   # Jenkins console logs
   file { '/srv/org/wikimedia/integration/logs':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins-slave',
-    group  => 'jenkins-slave',
+    owner  => $user,
+    group  => $user,
   }
 
   # Apache configuration for integration.wikimedia.org
@@ -60,8 +69,8 @@ class contint::website(){
   file { '/srv/org/wikimedia/doc':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins-slave',
-    group  => 'jenkins-slave',
+    owner  => $user,
+    group  => $user,
   }
 
   # Apache configuration for doc.wikimedia.org

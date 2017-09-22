@@ -16,9 +16,11 @@ class role::ci::castor::server {
         }
     }
 
+    $user = hiera('jenkins_agent_username')
+
     file { '/mnt/jenkins-workspace/caches':
         ensure  => directory,
-        owner   => 'jenkins-deploy',
+        owner   => $user,
         group   => 'wikidev',
         mode    => '0775',
         require => Class['role::labs::lvm::mnt'],
@@ -27,7 +29,7 @@ class role::ci::castor::server {
     rsync::server::module { 'caches':
         path      => '/mnt/jenkins-workspace/caches',
         read_only => 'yes',
-        uid       => 'jenkins-deploy',
+        uid       => $user,
         gid       => 'wikidev',
         require   => [
             File['/mnt/jenkins-workspace/caches'],
