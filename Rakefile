@@ -297,6 +297,14 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:flake8'
         end
+        webperf_files = filter_files_by("modules/webperf/*/*.*")
+        unless webperf_files.empty?
+          desc 'Run tox for webperf'
+          task :webperf do
+            raise 'Webperf test failure' unless system("tox -e webperf")
+          end
+          tasks << 'tox:webperf'
+        end
         desc 'Check commit message'
         task :commit_message do
           raise 'Invalid commit message' unless system("tox -e commit-message")
