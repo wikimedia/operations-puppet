@@ -5,5 +5,7 @@
 # http://integration.mediawiki.org/
 # http://integration.wikimedia.org/
 class profile::ci::website {
-    class { 'contint::website': }
+    class { 'contint::website':
+        user => hiera('jenkins_agent_username'),
+    }
 }

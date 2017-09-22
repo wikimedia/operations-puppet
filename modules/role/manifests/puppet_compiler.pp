@@ -17,7 +17,11 @@ class role::puppet_compiler {
         default     : { fail("Realm ${::realm} NOT supported by this role.") }
     }
 
-    include ::puppet_compiler
+    $user = hiera('jenkins_agent_username')
+    class { '::puppet_compiler':
+        user    => $user,
+        homedir => "/mnt/home/${user}",
+    }
 
     # Conftool + etcd are needed for the conftool function to work
     # do not bother with hiera here, for now.

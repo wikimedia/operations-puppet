@@ -17,7 +17,7 @@ class profile::ci::docker(
           Exec['apt-get update']
         ],
     }
-    # Ensure jenkins-deploy membership in the docker group
+    # Ensure jenkins agent user membership in the docker group
     exec { 'jenkins user docker membership':
         unless  => "/usr/bin/id -Gn '${jenkins_agent_username}' | /bin/grep -qw 'docker'",
         command => "/usr/sbin/usermod -aG docker '${jenkins_agent_username}'",

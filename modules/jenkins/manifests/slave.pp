@@ -2,8 +2,8 @@
 #
 class jenkins::slave(
     $ssh_key,
-    $user = 'jenkins-slave',
-    $workdir = '/var/lib/jenkins-slave',
+    $user,
+    $workdir,
 ) {
 
     include ::jenkins::slave::requisites
@@ -18,7 +18,7 @@ class jenkins::slave(
         shell      => '/bin/bash',
         managehome => true,
         system     => true,
-        home       => '/var/lib/jenkins-slave',
+        home       => "/var/lib/${user}",
     }
 
     file { $workdir:

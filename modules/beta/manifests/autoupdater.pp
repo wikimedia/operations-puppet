@@ -3,7 +3,9 @@
 # For host continuously updating MediaWiki core and extensions on the beta
 # cluster. This is the lame way to automatically pull any code merged in master
 # branches.
-class beta::autoupdater {
+class beta::autoupdater(
+    $user,
+) {
     require ::scap::scripts
 
     $stage_dir = '/srv/mediawiki-staging'
@@ -43,7 +45,7 @@ class beta::autoupdater {
         directory => "${stage_dir}/php-master",
         origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
         branch    => 'master',
-        owner     => 'jenkins-deploy',
+        owner     => $user,
         group     => 'wikidev',
         require   => Git::Clone['operations/mediawiki-config'],
     }
@@ -52,7 +54,7 @@ class beta::autoupdater {
         directory => "${stage_dir}/portal-master",
         origin    => 'https://gerrit.wikimedia.org/r/p/wikimedia/portals.git',
         branch    => 'master',
-        owner     => 'jenkins-deploy',
+        owner     => $user,
         group     => 'wikidev',
         require   => Git::Clone['operations/mediawiki-config'],
     }
@@ -64,7 +66,7 @@ class beta::autoupdater {
 
     file { "${stage_dir}/php-master/LocalSettings.php":
         ensure  => present,
-        owner   => 'jenkins-deploy',
+        owner   => $user,
         group   => 'wikidev',
         mode    => '0444',
         source  => 'puppet:///modules/beta/LocalSettings.php',
@@ -91,7 +93,7 @@ class beta::autoupdater {
         directory          => "${stage_dir}/php-master/extensions",
         origin             => 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions.git',
         branch             => 'master',
-        owner              => 'jenkins-deploy',
+        owner              => $user,
         group              => 'wikidev',
         recurse_submodules => true,
         timeout            => 1800,
@@ -109,7 +111,7 @@ class beta::autoupdater {
 
     exec { 'beta_mediawiki_skins_git_init':
         command => "/usr/bin/git init ${mw_skins_dest}",
-        user    => 'jenkins-deploy',
+        user    => $user,
         group   => 'wikidev',
         creates => "${mw_skins_dest}/.git",
         require => Git::Clone['beta-mediawiki-core'],
@@ -117,7 +119,7 @@ class beta::autoupdater {
     }
     exec { 'beta_mediawiki_skins_git_remote_add':
         command     => "/usr/bin/git remote add origin ${mw_skins_git_url}",
-        user        => 'jenkins-deploy',
+        user        => $user,
         group       => 'wikidev',
         cwd         => $mw_skins_dest,
         refreshonly => true,
@@ -127,7 +129,7 @@ class beta::autoupdater {
         directory          => $mw_skins_dest,
         origin             => 'https://gerrit.wikimedia.org/r/p/mediawiki/skins.git',
         branch             => 'master',
-        owner              => 'jenkins-deploy',
+        owner              => $user,
         group              => 'wikidev',
         recurse_submodules => true,
         # Needs to be initialized manually since skins dir exists
@@ -137,7 +139,7 @@ class beta::autoupdater {
     git::clone { 'mediawiki/vendor':
         directory => "${stage_dir}/php-master/vendor",
         branch    => 'master',
-        owner     => 'jenkins-deploy',
+        owner     => $user,
         group     => 'wikidev',
         require   => Git::Clone['beta-mediawiki-core'],
     }

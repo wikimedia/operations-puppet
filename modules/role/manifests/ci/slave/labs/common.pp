@@ -10,20 +10,21 @@ class role::ci::slave::labs::common {
     # Need the labs instance extended disk space
     require role::labs::lvm::mnt
 
+    $user = hiera('jenkins_agent_username')
+
     # Home dir for Jenkins agent
     #
     # /var/lib and /home are too small to hold Jenkins workspaces
     file { '/mnt/jenkins-workspace':
         ensure  => directory,
-        owner   => 'jenkins-deploy',
+        owner   => $user,
         group   => 'wikidev',  # useless, but we need a group
         mode    => '0775',
         require => Mount['/mnt'],
     }
 
-    # Create a homedir for `jenkins-deploy` so we get plenty of disk space.
-    # The user is only LDAP and is not created by puppet
-    # T63144
+    # Create a homedir for the Jenkins client so we get plenty of disk space.
+    # The user is only LDAP and is not created by puppet # T63144
     file { '/mnt/home':
         ensure  => directory,
         owner   => 'root',
@@ -32,32 +33,31 @@ class role::ci::slave::labs::common {
         require => Mount['/mnt'],
     }
 
-    file { '/mnt/home/jenkins-deploy':
+    file { "/mnt/home/${user}":
         ensure => directory,
-        owner  => 'jenkins-deploy',
+        owner  => $user,
         group  => 'wikidev',
         mode   => '0775',
     }
 
     # drop settings file with old proxy settings
-    file { '/mnt/home/jenkins-deploy/.m2/settings.xml':
+    file { "/mnt/home/${user}/.m2/settings.xml":
         ensure => absent
     }
 
-    git::userconfig { '.gitconfig for jenkins-deploy user':
-        homedir  => '/mnt/home/jenkins-deploy',
+    git::userconfig { ".gitconfig for ${user} user":
+        homedir  => "/mnt/home/${user}",
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Deploy',
-                'email' => "jenkins-deploy@${::fqdn}",
+                'email' => "${user}@${::fqdn}",
             },  # end of [user] section
         },  # end of settings
-        require  => File['/mnt/home/jenkins-deploy'],
+        require  => File["/mnt/home/${user}"],
     }
 
-    # The slaves on labs use the `jenkins-deploy` user which is already
-    # configured in labs LDAP.  Thus, we only need to install the dependencies
-    # needed by the slave agent.
+    # The slaves on labs have a user already configured in LDAP.  Thus, we only
+    # need to install the dependencies needed by the slave agent.
     include jenkins::slave::requisites
 
 }
