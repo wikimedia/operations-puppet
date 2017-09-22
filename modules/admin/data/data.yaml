@@ -140,7 +140,7 @@ groups:
     gid: 719
     description: users with some sudo permissions on jenkins and nodepool hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm,
+              twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
               hashar, niedzielski, addshore]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
