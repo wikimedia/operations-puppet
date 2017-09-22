@@ -39,6 +39,13 @@ class role::cache::perf {
         value     => 4078,
     }
 
+    # Disable LRO to avoid merging important headers for flow control and such
+    interface::offload { "${interface}-lro":
+        interface => $interface,
+        setting   => 'lro',
+        value     => 'off',
+    }
+
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
     interface::rps { 'primary':
