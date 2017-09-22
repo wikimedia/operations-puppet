@@ -19,7 +19,6 @@ class contint::packages::labs {
 
     # Fonts needed for browser tests screenshots (T71535)
     include ::mediawiki::packages::fonts
-    include ::phabricator::arcanist
 
     include ::contint::packages::analytics
     include ::contint::packages::doxygen
