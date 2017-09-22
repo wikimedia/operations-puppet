@@ -1255,8 +1255,7 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 }
 
 node 'labcontrol1001.wikimedia.org' {
-    role(wmcs::openstack::main::control,
-          salt::masters::labs)
+    role(wmcs::openstack::main::control)
 
     include ::base::firewall
     include ::standard
@@ -1269,8 +1268,7 @@ node 'labcontrol1001.wikimedia.org' {
 #  basically repeated use of 'keystone endpoint-list,'
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
-    role(wmcs::openstack::main::control,
-          salt::masters::labs)
+    role(wmcs::openstack::main::control)
 
     include ::base::firewall
     include ::standard
