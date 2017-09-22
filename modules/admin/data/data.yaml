@@ -2232,6 +2232,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3yvsX9fUZX7B14Rzko/VbDfdrDZvHUBP/SmKM9oxKI5bcCaIa6u7l+faDjEfAte+SgMSj+jl1azOZYtJ/+fdRVrIRAkS0heL9DDNSdJxuOcWdY3QCOWu6CmcAPWNfo2DxR4FZit0CbFtyH0s6CTOoiG0reF8uiQR+Oyt4mZKSecfk8zX1N5B50hkvbUArrNUg1fLNED1SuJxtBVo73+tEWUOaYyDovy5D0UU8LH0hFp0pKwDeYnlRJxHTV4h+AQ2SqECQ2wg+k5WX8Kd7MYO/7hVuZMkoD9wlHnPMgTSthy4AzGcliO3mNHa0mfHlZtcf/ck0bm75mZhyrXlUewKD ovasileva@wmf1395.corp.wikimedia.org
     uid: 15207
     email: ovasileva@wikimedia.org
+  slaporte:
+    ensure: present
+    gid: 500
+    name: slaporte
+    realname: Stephen LaPorte
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDiyWuq/7N/dkVnEbiwfhmHjuSdMf3c1RxI0RwR3GGOW3mkLhQh4+EYPvsD81Eu2rdMujb6MLA2casflxUJc6CQmYat5cXocyAGwZzVYaysuRTEsY2oTS0ERHvuPT7swfXUsKirs6tulEYdX4bkf5qv7dUkddEw6h6QT10dKF4qgo/F4VcRJU7DMegsC9+ew3EbAs96LQMiDxRWtv1SFJuHjoFLNTV4FIJm+unfBrqnEyHRTR9shcR1Q0JIM0UH0R8K6opXOQsVYoExklxnTcuPIbvs7Fy36UEqYRyQP5Qpv5pgRUMVddAhs5YjvzaGTraApIb2/3HN7hRjHehpXYw9dlICz7NVhdQU8YWlI4yO83WvI3zVdrsogNx9Pg4EVLs9/ZBLp1wQTiDW8iitjZ7pwrng5CWao7PbUiA5SyBS9FZcjGgBCzTs1Og3Mydv6oHI7TbjhJlR1OoTEQApoF9OzL3NKDOkHxBxd5knDdPEzwh/o7VlPgnmKSnW/Yof+jIeaG4lsMmO1KFhXwQzNwSVX7Tm0nr/2dFOklXUcjTFxKAOwp0EYQ8u6BsuBPZkBVhigMxNCcUUHl7mLxKKtrGbWi8hxRxfHrrtD/m/PL7ZilQdZv/MzLUXSglvhJt9Hsb3SRBZ3YMrs99ahYpnAZu/tIHBMTbyf+bT9erq+M0Y9w== slaporte@wikimedia.org
+    uid: 2409
+    email: slaporte@wikimedia.org
 ## Users mtizzoni, panisson, paolotti, & ciro have been added as ISI Foundation members for analytics access.
 ## Access will be revoked by request from Dario Taraborelli when it is no longer needed, see T141634 for details.
   mtizzoni:
@@ -2716,10 +2725,6 @@ ldap_only_users:
     ensure: absent
     realname: Siddarth Parmar
     email: sparmar@wikimedia.org
-  slaporte:
-    ensure: present
-    realname: Stephen Laporte
-    email: slaporte@wikimedia.org
   spatton:
     ensure: present
     realname: Sam Patton
