@@ -12,7 +12,7 @@ class role::ci::slave {
 
     include contint::packages::base
     include contint::slave_scripts
-    include ::zuul
+    include ::profile::zuul::cloner
 
     class { 'jenkins::slave':
         # Master connect to itself via the fqdn / primary IP ipaddress

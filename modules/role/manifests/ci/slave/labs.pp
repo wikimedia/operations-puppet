@@ -5,6 +5,8 @@ class role::ci::slave::labs {
     system::role { 'ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
+    include ::profile::zuul::cloner
+
     # Debian slaves are used to build Debian packages for all our distributions
     system::role { '::package_builder':
         description => 'CI package building',
@@ -35,7 +37,6 @@ class role::ci::slave::labs {
 
     include role::ci::slave::labs::common
 
-    include ::zuul
 
     include contint::browsers
 
