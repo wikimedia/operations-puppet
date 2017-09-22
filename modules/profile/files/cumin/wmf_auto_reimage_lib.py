@@ -792,6 +792,10 @@ def print_repool_message(previous):
     Arguments:
     previous -- a dictionary with state: [list of tags dictionaries] for each state
     """
+    if previous is None:
+        print_line('Unable to provide conftool repool command, previous state is unknown')
+        return
+
     base_command = "sudo -i confctl select '{tags}' set/pooled={state}"
     commands = []
 
