@@ -10,10 +10,6 @@ import json
 import logging
 import re
 import socket
-import unittest
-import yaml
-
-from kafka import KafkaConsumer
 
 handlers = {}
 
@@ -402,6 +398,8 @@ def handle_navigation_timing(meta):
 
 
 if __name__ == '__main__':
+    from kafka import KafkaConsumer
+
     ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
     ap.add_argument('--brokers', required=True,
                     help='Comma-separated list of kafka brokers')
@@ -443,36 +441,3 @@ if __name__ == '__main__':
         raise RuntimeError('No messages received in %d seconds.' % kafka_consumer_timeout_seconds)
     finally:
         consumer.close()
-
-
-# ##### Tests ######
-# To run:
-#   python -m unittest -v navtiming
-#
-class TestNavTiming(unittest.TestCase):
-    def test_parse_ua(self):
-        with open('navtiming_ua_data.yaml') as file:
-            data = yaml.safe_load(file)
-            for case in data:
-                expect = tuple(case.split('.'))
-                uas = data.get(case)
-                for ua in uas:
-                    self.assertEqual(
-                        parse_ua(ua),
-                        expect
-                    )
-
-    def test_handlers(self):
-        with open('navtiming_fixture.yaml') as fixture_file:
-            fixture = yaml.safe_load(fixture_file)
-            actual = []
-            for meta in fixture:
-                f = handlers.get(meta['schema'])
-                assert f is not None
-                for stat in f(meta):
-                    actual.append(stat)
-            with open('navtiming_expected.txt') as expected_file:
-                self.assertItemsEqual(
-                    actual,
-                    expected_file.read().splitlines()
-                )
