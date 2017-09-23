@@ -6,12 +6,17 @@ import tempfile
 import multiprocessing
 from subprocess import Popen, PIPE
 from Queue import Empty
+############################################
+# This file is managed by puppet
+# puppet:///modules/dumps/copying/wmfdumpsmirror.py
+############################################
 
 
 # note that this was written back in the day when this was used
 # to rsync to glusterfs, painfully slow, so we ran multiple jobs
 # to get it to finish before the end of the universe. job handling
 # isn't needed any more but what the heck might as well leave it in
+
 
 # things that get here should look like:
 # aawikibooks/20120317/aawikibooks-20120317-all-titles-in-ns0.gz
