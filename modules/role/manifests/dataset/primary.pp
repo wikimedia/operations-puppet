@@ -10,23 +10,6 @@ class role::dataset::primary {
         description => 'dataset primary host',
     }
 
-    $rsync = {
-        'public' => true,
-        'peers'  => true,
-        'labs'   => true,
-    }
-    $grabs = {
-        'kiwix' => true,
-    }
-    $uploads = {
-        'pagecounts_ez' => true,
-        'phab'          => true,
-        'media'         => true,
-    }
-    class { 'dataset':
-        rsync   => $rsync,
-        grabs   => $grabs,
-        uploads => $uploads,
-    }
+    class {'dataset':}
 }
 
