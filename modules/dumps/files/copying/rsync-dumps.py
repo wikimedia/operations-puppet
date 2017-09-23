@@ -1,6 +1,10 @@
 import sys
 import subprocess
 import socket
+############################
+# This file is managed by puppet!
+# puppet:///modules/dumps/copying/rsync-dumps.py
+###########################
 
 
 class Rsyncer(object):

@@ -1,4 +1,9 @@
 #!/bin/bash
+#########################################
+# This file is managed by puppet!
+# puppet:///modules/dumps/copying/labs-rsync-cron.sh
+#########################################
+
 desthost="labstore1003.eqiad.wmnet"
 otherdir="/data/xmldatadumps/public/other"
 bwlimit="--bwlimit=50000"

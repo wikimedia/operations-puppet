@@ -7,19 +7,4 @@ class role::dataset::secondary {
     system::role { 'dataset::secondary':
         description => 'dataset secondary host',
     }
-
-    $rsync = {
-        'public' => true,
-        'peers'  => true,
-    }
-    $grabs = {
-    }
-    $uploads = {
-    }
-
-    class { 'dataset':
-        rsync   => $rsync,
-        grabs   => $grabs,
-        uploads => $uploads,
-    }
 }
