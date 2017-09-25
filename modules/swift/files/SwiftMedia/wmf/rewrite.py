@@ -185,7 +185,8 @@ class _WMFRewriteContext(WSGIContext):
             'Engine',
             'Server',
             'Processing-Time',
-            'Processing-Utime'
+            'Processing-Utime',
+            'Request-Date'
         ]
 
         # add in the headers if we've got them
