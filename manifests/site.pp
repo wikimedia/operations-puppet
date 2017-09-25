@@ -1884,7 +1884,7 @@ node 'notebook1002.eqiad.wmnet' {
     include ::standard
 }
 
-# cluster management (salt master, cumin master) + other management tools
+# cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
     role(mgmt::drac_ilo, cluster::management)
 
@@ -2129,7 +2129,7 @@ node 'ruthenium.eqiad.wmnet' {
         parsoid::vd_server, parsoid::vd_client, parsoid::diffserver)
 }
 
-# cluster management (salt master, cumin master)
+# cluster management (cumin master)
 node 'sarin.codfw.wmnet' {
     role(cluster::management)
 
