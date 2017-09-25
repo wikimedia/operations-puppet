@@ -420,6 +420,7 @@ define cassandra::instance(
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0400',
+        links   => follow,
         require => Package['cassandra'],
     }
 
