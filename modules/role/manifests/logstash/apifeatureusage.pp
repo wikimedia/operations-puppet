@@ -9,6 +9,8 @@ class role::logstash::apifeatureusage {
     include ::role::logstash::collector
 
     # FIXME: make this a param and use hiera to vary by realm
+    $hosts = hiera('role::logstash::apifeatureusage::elastic_hosts')
+    validate_array($hosts)
     $host            = $::realm ? {
         'production' => '10.2.2.30', # search.svc.eqiad.wmnet
         'labs'       => 'deployment-elastic05', # Pick one at random
@@ -33,12 +35,5 @@ class role::logstash::apifeatureusage {
     # lint:endignore
 
     # Output destined for separate Elasticsearch cluster from Logstash cluster
-    logstash::output::elasticsearch { 'apifeatureusage':
-        host            => $host,
-        guard_condition => '[type] == "api-feature-usage-sanitized"',
-        manage_indices  => true,
-        priority        => 95,
-        template        => '/etc/logstash/apifeatureusage-template.json',
-        require         => File['/etc/logstash/apifeatureusage-template.json'],
-    }
+    role::logstash::apifeatureusage::elasticsearch { $hosts: }
 }
