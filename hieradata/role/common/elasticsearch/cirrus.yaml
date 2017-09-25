@@ -9,9 +9,10 @@ profile::elasticsearch::heap_memory: '30G'
 # Don't run if more than 1 master missing
 profile::elasticsearch::minimum_master_nodes: 2
 
-# But it'd save time if we just waited for all of them to come back so
-# lets give them plenty of time to restart.
-profile::elasticsearch::recover_after_time: '20m'
+# wait that long for all nodes to restart. If not all nodes are present after
+# `recover_after_time`, recover anyway, as long as at least
+# `recover_after_nodes` are present.
+profile::elasticsearch::recover_after_time: '5m'
 
 # T130329
 profile::base::check_disk_options: -w 18% -c 12% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
