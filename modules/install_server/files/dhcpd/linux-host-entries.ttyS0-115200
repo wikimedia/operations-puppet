@@ -49,6 +49,13 @@ host bohrium {
     fixed-address bohrium.eqiad.wmnet;
 }
 
+host boron {
+    hardware ethernet FIXME;
+    fixed-address boron.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host bromine {
     hardware ethernet aa:00:00:f1:36:3a;
     fixed-address bromine.eqiad.wmnet;
