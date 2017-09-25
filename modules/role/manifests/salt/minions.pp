@@ -15,10 +15,6 @@ class role::salt::minions(
         $master        = pick($salt_master, $labs_master)
         $master_finger = pick($salt_finger, $labs_finger)
 
-        salt::grain { 'labsproject':
-            value => $::labsproject,
-        }
-
         $client_id     = $::fqdn
 
         class { '::salt::minion':
