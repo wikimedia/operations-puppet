@@ -72,8 +72,8 @@ PermitEmptyPasswords no
 # some PAM modules and threads)
 ChallengeResponseAuthentication <%= @challenge_response_auth ? 'yes': 'no' %>
 
-# Globally deny logon via password, only allow SSH-key login.  
-PasswordAuthentication no  
+# Globally deny logon via password, only allow SSH-key login.
+PasswordAuthentication no
 
 <% if @disable_agent_forwarding -%>
 # Don't allow people to forward their agents either.
@@ -100,7 +100,12 @@ TCPKeepAlive yes
 AllowTcpForwarding <%= @ssh_tcp_forwarding %>
 <% end %>
 
-#MaxStartups 10:30:60
+<% if @max_sessions -%>
+MaxSessions <%= @max_sessions %>
+<% end -%>
+<% if @max_startups -%>
+MaxStartups <%= @max_startups %>
+<% end -%>
 #Banner /etc/issue.net
 
 # Allow client to pass locale environment variables
