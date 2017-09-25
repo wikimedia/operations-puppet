@@ -9,6 +9,7 @@ class role::cluster::management {
         description => 'Cluster management',
     }
 
+    include ::role::salt::masters::production
     include ::role::mariadb::client
     include ::role::cumin::master
     include ::role::ipmi::mgmt
