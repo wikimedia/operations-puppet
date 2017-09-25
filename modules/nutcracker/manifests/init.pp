@@ -85,6 +85,7 @@ class nutcracker(
     }
 
     service { 'nutcracker':
-        ensure => ensure_service($ensure),
+        ensure  => ensure_service($ensure),
+        require => Package['nutcracker'],
     }
 }
