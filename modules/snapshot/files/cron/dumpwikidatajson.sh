@@ -29,7 +29,7 @@ while true; do
 		(
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
-			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $shards \* 500` --snippet 2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
@@ -75,7 +75,7 @@ while [ $i -lt $shards ]; do
 		exit 1
 	fi
 	fileSize=`stat --printf="%s" $tempFile`
-	if [ $fileSize -lt `expr 10500000000 / $shards` ]; then
+	if [ $fileSize -lt `expr 20000000000 / $shards` ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
