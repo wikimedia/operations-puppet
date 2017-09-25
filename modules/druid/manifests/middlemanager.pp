@@ -96,13 +96,4 @@ class druid::middlemanager(
         env                => $environment,
         should_subscribe   => $should_subscribe,
     }
-
-    # Allow incoming connections to druid.indexer.runner.startPort + 900
-    $peon_start_port = $runtime_properties['druid.indexer.runner.startPort']
-    $peon_end_port   = $runtime_properties['druid.indexer.runner.startPort'] + 900
-    ferm::service { 'druid-middlemanager-indexer-task':
-        proto  => 'tcp',
-        port   =>  "${peon_start_port}:${peon_end_port}",
-        srange => '$ANALYTICS_NETWORKS',
-    }
 }
