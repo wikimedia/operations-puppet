@@ -255,6 +255,8 @@ profile::elasticsearch::search_thread_pool_executors: 4
 profile::elasticsearch::storage_device: dm-0
 
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
+role::logstash::apifeatureusage::elastic_hosts:
+  - deployment-logstash2.deployment-prep.eqiad.wmflabs
 "redis::shards":
   jobqueue: &labs_shards
     eqiad:

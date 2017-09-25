@@ -1,0 +1,3 @@
+role::logstash::apifeatureusage::elastic_hosts:
+  - search.svc.codfw.wmnet
+  - search.svc.eqiad.wmnet
