@@ -166,6 +166,22 @@ swift_be_eqiad_hp:
   ]
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
+lvs_eqiad_backup:
+  __regex: !ruby/regexp /^lvs100[4-6]\.wikimedia\.org$/
+  profile::pybal::primary: false
+
+lvs_codfw_backup:
+  __regex: !ruby/regexp /^lvs200[4-6]\.codfw\.wmnet$/
+  profile::pybal::primary: false
+
+lvs_esams_backup:
+  __regex: !ruby/regexp /^lvs300[34]\.esams\.wmnet$/
+  profile::pybal::primary: false
+
+lvs_ulsfo_backup:
+  __regex: !ruby/regexp /^lvs400[34]\.ulsfo\.wmnet$/
+  profile::pybal::primary: false
+
 lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
   profile::pybal::bgp: no

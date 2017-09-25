@@ -15,6 +15,10 @@ instrumentation_ips = <%= @global_options.fetch('instrumentation_ips') %>
 <% if @global_options.fetch('bgp-local-ips', nil) -%>
 bgp-local-ips = <%= @global_options.fetch('bgp-local-ips') %>
 <% end -%>
+<% if @global_options.fetch('bgp-med', nil) -%>
+# Lower values prefered over higher ones
+bgp-med = <%= @global_options.fetch('bgp-med') %>
+<% end -%>
 
 <% if @global_options.fetch('dry-run', nil) %>dry-run = <%= @global_options.fetch('dry-run', 'no') %><% end %>
 #

@@ -3,6 +3,7 @@
 # Configures pybal on a server, lvs or otherwise.
 class profile::pybal(
     $bgp = hiera('profile::pybal::bgp'),
+    $primary = hiera('profile::pybal::primary'),
     $conftool_prefix = hiera('conftool_prefix'),
     $config_source = hiera('profile::pybal::config_source'),
     $config_host = hiera('profile::pybal::config_host'),
@@ -15,6 +16,12 @@ class profile::pybal(
     include ::lvs::configuration
 
     $ipv4_address = ipresolve($::fqdn, 4)
+
+    if $primary {
+        $bgp_med = 0
+    } else {
+        $bgp_med = 100
+    }
 
     # TODO: move bgp-peer-address to a parameter? it will require
     # regex hiera, so maybe not
@@ -38,6 +45,7 @@ class profile::pybal(
         'instrumentation'     => 'yes',
         'instrumentation_ips' => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
         'bgp-local-ips'       => "[ '${ipv4_address}' ]",
+        'bgp-med'             => $bgp_med,
     }
 
     # Base class, not parametrized
