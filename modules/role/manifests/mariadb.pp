@@ -137,7 +137,7 @@ class role::mariadb::monitor::dba {
     include mariadb::monitor_process
 }
 
-# mysql groups for monitoring and salt
+# mysql groups for monitoring
 # * mysql_group (required): general usage of the server, for example:
 #   - 'core': production mediawiki servers
 #   - 'dbstore': servers for backup and analytics
