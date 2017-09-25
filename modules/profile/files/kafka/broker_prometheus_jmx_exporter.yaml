@@ -64,6 +64,11 @@ rules:
 - pattern : kafka.server<type=(.+), name=(.+)><>(Count|Value)
   name: kafka_server_$1_$2
 
+- pattern : kafka.server<type=(.*), name=(.+), delayedOperation=(.+)><>(Count|Value)
+  name: kafka_server_$1_$2
+  labels:
+    delayedoperation: "$3"
+
 - pattern : kafka.(\w+)<type=(.+), name=(.+)PerSec\w*><>Count
   name: kafka_$1_$2_$3_total
 - pattern : kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, topic=(.+)><>Count
