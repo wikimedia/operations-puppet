@@ -37,6 +37,7 @@ class profile::pybal(
         'bgp-nexthop-ipv6'    => inline_template("<%= require 'ipaddr'; (IPAddr.new(@ipaddress6).mask(64) | IPAddr.new(\"::\" + @ipaddress.gsub('.', ':'))).to_s() %>"),
         'instrumentation'     => 'yes',
         'instrumentation_ips' => "[ '127.0.0.1', '::1', '${ipv4_address}' ]",
+        'bgp-local-ips'       => "[ '${ipv4_address}' ]",
     }
 
     # Base class, not parametrized
