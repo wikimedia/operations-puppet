@@ -187,14 +187,14 @@ def main():
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
-    logger.info('wmf_auto_reimage called with args: {args}'.format(args=args))
+    logger.info('wmf-auto-reimage called with args: {args}'.format(args=args))
     lib.print_line('START. To monitor the full log:')
     lib.print_line('sudo tail -F {log}'.format(log=log_path), skip_time=True)
 
     try:
         retcode = run(args, user, log_path)
     except BaseException as e:
-        message = 'Unable to run wmf_auto_reimage'
+        message = 'Unable to run wmf-auto-reimage'
         lib.print_line('{message}: {error}'.format(message=message, error=e))
         logger.exception(message)
         retcode = 2

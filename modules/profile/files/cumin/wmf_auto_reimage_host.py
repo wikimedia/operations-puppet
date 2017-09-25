@@ -158,7 +158,7 @@ def main():
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
-    logger.info('wmf_auto_reimage_host called with args: {args}'.format(args=args))
+    logger.info('wmf-auto-reimage-host called with args: {args}'.format(args=args))
     lib.print_line('REIMAGE START | To monitor the full log and cumin output:', host=args.host)
     lib.print_line('sudo tail -F {log}'.format(log=log_path), skip_time=True)
     lib.print_line('sudo tail -F {log}'.format(log=cumin_output_path), skip_time=True)
@@ -186,7 +186,7 @@ def main():
             sys.stderr = stderr
             sys.stdout = stdout
     except BaseException as e:
-        message = 'Unable to run wmf_auto_reimage_host'
+        message = 'Unable to run wmf-auto-reimage-host'
         lib.print_line('{message}: {error}'.format(message=message, error=e), host=args.host)
         logger.exception(message)
         retcode = 2

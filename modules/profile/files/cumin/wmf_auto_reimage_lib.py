@@ -37,7 +37,7 @@ LOG_PATTERN = '/var/log/wmf-auto-reimage/{start}_{user}_{pid}.log'
 # TODO: move it to a dedicated ops-orchestration-bot
 PHABRICATOR_CONFIG_FILE = '/etc/phabricator_ops-monitoring-bot.conf'
 
-PHAB_COMMENT_PRE = ('Script wmf_auto_reimage was launched by {user} on '
+PHAB_COMMENT_PRE = ('Script wmf-auto-reimage was launched by {user} on '
                     '{hostname} for hosts:\n```\n{hosts}\n```\n'
                     'The log can be found in `{log}`.')
 PHAB_COMMENT_POST = 'Completed auto-reimage of hosts:\n```\n{hosts}\n```\n'
@@ -373,7 +373,7 @@ def get_reimage_host_command(host, mgmt, args):
     mgmt -- the FQDN of the management console for the host
     args -- the ArgumentParser instance with the options to apply
     """
-    command_args = ['./wmf_auto_reimage_host.py']
+    command_args = ['wmf-auto-reimage-host']
     args_dict = vars(args)
     # Add boolean command line arguments
     for key in ('debug', 'no_reboot', 'no_verify', 'no_downtime', 'no_pxe', 'new', 'apache'):
