@@ -272,6 +272,23 @@ def get_mgmts(hosts):
     return mgmts
 
 
+def check_remote_ipmi(mgmt):
+    """Ensure that remote IPMI is working, raise exception otherwise.
+
+    Arguments:
+    mgmt -- the FQDN of the management console to check the remote IPMI for
+    """
+    try:
+        status = ipmitool_command(mgmt, ['chassis', 'power', 'status'])
+    except Exception as e:
+        message = "Remote IPMI failed for mgmt '{mgmt}'".format(mgmt=mgmt)
+        logger.exception(message)
+        raise RuntimeError('{msg}: {error}'.format(msg=message, error=e))
+
+    if not status.startswith('Chassis Power is'):
+        raise RuntimeError('Unexpected chassis status: {status}'.format(status=status))
+
+
 def get_phabricator_client():
     """Return a Phabricator client instance."""
     parser = ConfigParser.SafeConfigParser()

@@ -163,37 +163,34 @@ def main():
     lib.print_line('sudo tail -F {log}'.format(log=log_path), skip_time=True)
     lib.print_line('sudo tail -F {log}'.format(log=cumin_output_path), skip_time=True)
 
-    lib.ensure_ipmi_password()
-    # Check if remote IPMI is working
-    status = lib.ipmitool_command(args.mgmt, ['chassis', 'power', 'status'])
-    if not status.startswith('Chassis Power is'):
-        raise RuntimeError(
-            "Unable to verify remote IPMI for mgmt '{mgmt}': {status}".format(
-                mgmt=args.mgmt, status=status))
-
-    if args.phab_task_id is not None:
-        phab_client = lib.get_phabricator_client()
-        lib.phabricator_task_update(
-            phab_client, args.phab_task_id, lib.PHAB_COMMENT_PRE.format(
-                user=user, hostname=socket.getfqdn(), hosts=args.host, log=log_path))
-
     try:
-        # This is needed due to a bug in tqdm and a limitation in Cumin
-        with open(cumin_output_path, 'w', 1) as cumin_output:
-            stderr = sys.stderr
-            stdout = sys.stdout
-            sys.stderr = cumin_output
-            sys.stdout = cumin_output
-            run(args, user, log_path)
-            retcode = 0
+        lib.ensure_ipmi_password()
+        lib.check_remote_ipmi(args.mgmt)
+
+        if args.phab_task_id is not None:
+            phab_client = lib.get_phabricator_client()
+            lib.phabricator_task_update(
+                phab_client, args.phab_task_id, lib.PHAB_COMMENT_PRE.format(
+                    user=user, hostname=socket.getfqdn(), hosts=args.host, log=log_path))
+
+        try:
+            # This is needed due to a bug in tqdm and a limitation in Cumin
+            with open(cumin_output_path, 'w', 1) as cumin_output:
+                stderr = sys.stderr
+                stdout = sys.stdout
+                sys.stderr = cumin_output
+                sys.stdout = cumin_output
+                run(args, user, log_path)
+                retcode = 0
+        finally:
+            sys.stderr = stderr
+            sys.stdout = stdout
     except BaseException as e:
         message = 'Unable to run wmf_auto_reimage_host'
         lib.print_line('{message}: {error}'.format(message=message, error=e), host=args.host)
         logger.exception(message)
         retcode = 2
     finally:
-        sys.stderr = stderr
-        sys.stdout = stdout
         lib.print_line('REIMAGE END | retcode={ret}'.format(ret=retcode), host=args.host)
 
     # Comment on the Phabricator task

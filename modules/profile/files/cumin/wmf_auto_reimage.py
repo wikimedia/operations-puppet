@@ -128,11 +128,7 @@ def run(args, user, log_path):
 
     # Check that IPMI is working for all the hosts
     for host in args.hosts:
-        status = lib.ipmitool_command(mgmts[host], ['chassis', 'power', 'status'])
-        if not status.startswith('Chassis Power is'):
-            raise RuntimeError(
-                "Unable to verify remote IPMI for mgmt '{mgmt}': {status}".format(
-                    mgmt=mgmts[host], status=status))
+        lib.check_remote_ipmi(mgmts[host])
 
     # Initialize data structures
     procs = {}
