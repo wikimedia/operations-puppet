@@ -2441,6 +2441,8 @@ host ganeti2008 {
 host gerrit2001 {
     hardware ethernet 14:18:77:5B:0D:7E;
     fixed-address gerrit2001.wikimedia.org;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host graphite1001 {
