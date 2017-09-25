@@ -612,33 +612,6 @@ def puppet_remove_host(host):
     print_line('Removed from Puppet', host=host)
 
 
-def salt_key_ensure(host, status, absent=False):
-    """Ensure that the Salt key for a given host is present or absent for the given key status.
-
-    Arguments:
-    host   -- the FQDN of the host for which to check the Salt key
-    status -- the salt-key list selector, one of: unaccepted, accepted, rejected, all
-    absent -- whether to ensure the absence of the key instead of its presence [default: false]
-    """
-    neg = ''
-    if absent:
-        neg = '! '
-    command = "{neg}salt-key -l {status} | fgrep -q '{host}'".format(
-        neg=neg, status=status, host=host)
-    run_cumin('salt_key_ensure', 'neodymium.eqiad.wmnet', [command])
-
-
-def salt_key_action(host, action):
-    """Perform an action on the Salt key for a given host.
-
-    Arguments:
-    host   -- the FQDN of the host for which to check the Salt key
-    action -- the action to perform, one of: accept, reject, delete
-    """
-    command = "salt-key --yes --{action} '{host}'".format(action=action, host=host)
-    run_cumin('salt_key_action', 'neodymium.eqiad.wmnet', [command])
-
-
 def ipmitool_command(mgmt, ipmi_command):
     """Run an ipmitool command for a remote host.
 

@@ -90,11 +90,7 @@ def run(args, user, log_path):
     if args.no_pxe:
         lib.print_line('Skipping PXE reboot', host=args.host)
     else:
-        # Cleanup Puppet and Salt
-        lib.puppet_remove_host(args.host)
-        lib.salt_key_action(args.host, 'reject')  # In case it was unaccepted
-        lib.salt_key_action(args.host, 'delete')  # Accepted and rejected keys
-        lib.salt_key_ensure(args.host, 'all', absent=True)
+        lib.puppet_remove_host(args.host)  # Cleanup Puppet
 
         # Reboot into PXE mode to start the reimage
         lib.print_line(
@@ -118,13 +114,6 @@ def run(args, user, log_path):
         # Ensure the host is in Icinga
         lib.run_puppet([lib.resolve_dns(lib.ICINGA_DOMAIN, 'CNAME')], no_raise=True)
         lib.icinga_downtime(args.host, user, args.phab_task_id)
-
-    # Sign the new Salt key
-    if not args.no_pxe:
-        lib.salt_key_ensure(args.host, 'unaccepted')
-        lib.salt_key_action(args.host, 'accept')
-
-    lib.salt_key_ensure(args.host, 'accepted')
 
     # Issue a reboot and wait for it and also for Puppet to complete
     if not args.no_reboot:
