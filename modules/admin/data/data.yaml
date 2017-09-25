@@ -9,7 +9,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              cwdent, nschaaf]
+              nschaaf]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -2033,11 +2033,11 @@ users:
     uid: 2501
     email: bdziewonski@wikimedia.org
   cwdent:
-    ensure: absent
+    ensure: present
     gid: 500
     name: cwdent
     realname: Casey Dentinger
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnScww0ojcxQV3pjOBA+QII1EKeTRwnqW7k/hc1ZQbB4IHMSt1xvUnX71JLNHworWATzAWYS5zXwO9CTeq29yG8PYudgfGZNORigg6G21K/tClZdVxgTNzoH72mfx2k/S+fWURSZ7PNw6b9dlAy9O2VKeEboYaZVR9B5CMzGuV2Ekp4Glb3vcj6aFcrZIWjTR0jnSM0yGcjVpVjw1uGGNrPqTL5CKfyNJ9oDfy3VrGZJo3RJabIQZyfTl4JAT4OcuBVJisEhapSb770nAW71zJdvtyYhluo3ZNqi+6Wg5JWnMwK3Us+SI/JQeGq893MbIcHTZzjOWIu51LNiyzJeTf]
     uid: 12179
     email: cdentinger@wikimedia.org
   ema:
