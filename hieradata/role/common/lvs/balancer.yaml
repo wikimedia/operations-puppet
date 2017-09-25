@@ -7,3 +7,4 @@ prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 profile::pybal::config_source: etcd
 profile::pybal::bgp: "yes"
+profile::pybal::primary: true
