@@ -43,9 +43,7 @@ class nutcracker(
     validate_re($ensure, '^(present|absent)$')
     validate_numeric($verbosity, 11, 0)
 
-    package { 'nutcracker':
-        ensure => $ensure,
-    }
+    require_package('nutcracker')
 
     file { '/etc/nutcracker/nutcracker.yml':
         ensure  => $ensure,
