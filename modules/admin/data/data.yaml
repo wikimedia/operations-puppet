@@ -2655,7 +2655,7 @@ ldap_only_users:
     ensure: present
     realname: Leighanna Mixter
     email: lmixter@wikimedia.org
-    expiry_date: 2017-10-01
+    expiry_date: 2018-10-01
     expiry_contact: rstallman@wikimedia.org
   lpintscher:
     ensure: present
