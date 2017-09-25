@@ -35,6 +35,11 @@ rules:
   name: kafka_server_$1_$2_total
   type: COUNTER
 
+- pattern : kafka.server<type=(.*), name=(.+), delayedOperation=(.+)><>(Count|Value)
+  name: kafka_server_$1_$2
+  labels:
+    delayedoperation: "$3"
+
 - pattern : kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>(Count|Value)
   name: kafka_server_$1_$2
   labels:
