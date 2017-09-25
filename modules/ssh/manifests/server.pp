@@ -9,6 +9,8 @@ class ssh::server (
     $enable_hba = false,
     $disable_agent_forwarding = true,
     $challenge_response_auth = true,  # Disable all password auth in labs, we don't use 2fa there
+    $max_sessions = undef,  # Allow Cloud VPS restricted bastions to override it for Cumin
+    $max_startups = undef,  # Allow Cloud VPS restricted bastions to override it for Cumin
 ) {
     package { 'openssh-server':
         ensure => present,

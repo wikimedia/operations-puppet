@@ -8,6 +8,7 @@ environment:
 clustershell:
     ssh_options:
         - '-F <%= @ssh_config_path %>'
+    fanout: 30  # Must be lower than MaxSessions and MaxStartups in sshd_config, see hiera profile::base::ssh_server_settings
 
 openstack:
     auth_url: <%= @keystone_protocol %>://<%= @keystone_host %>:<%= @keystone_port %>
