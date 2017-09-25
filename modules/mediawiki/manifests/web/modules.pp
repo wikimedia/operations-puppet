@@ -38,6 +38,7 @@ class mediawiki::web::modules {
         group  => 'root',
         mode   => '0444',
         before => Class['::apache::mod::expires'],
+        after  => Package['apache2'],
     }
 
     file { '/etc/apache2/mods-available/autoindex.conf':
@@ -47,6 +48,7 @@ class mediawiki::web::modules {
         group  => 'root',
         mode   => '0444',
         before => Class['::apache::mod::autoindex'],
+        after  => Package['apache2'],
     }
 
 
@@ -57,6 +59,8 @@ class mediawiki::web::modules {
         group  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
+        before => Class['::apache::mod::setenvif'],
+        after  => Package['apache2'],
     }
 
     file { '/etc/apache2/mods-available/mime.conf':
@@ -66,6 +70,8 @@ class mediawiki::web::modules {
         group  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
+        before => Class['::apache::mod::mime'],
+        after  => Package['apache2'],
     }
 
     # TODO: remove this? It's not used anywhere AFAICT
