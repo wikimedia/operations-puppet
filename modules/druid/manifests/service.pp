@@ -73,31 +73,4 @@ define druid::service(
         File["/etc/druid/${service}/env.sh"]             -> Service["druid-${service}"]
         File["/etc/druid/${service}/log4j2.xml"]         -> Service["druid-${service}"]
     }
-
-
-    ferm::service { "druid-${service}":
-        proto  => 'tcp',
-        port   =>  $runtime_properties['druid.port'],
-        srange => '$ANALYTICS_NETWORKS',
-    }
-    if $::realm == 'production' {
-        $ensure_monitor_service = $enable ? {
-            false   => 'absent',
-            default => 'present',
-        }
-        # middlemanager is a special case.  The druid java process
-        # is called middleManager, with a capital M.
-        $java_service_name = $service ? {
-            'middlemanager' => 'middleManager',
-            default         => $service,
-        }
-        nrpe::monitor_service { "druid-${service}":
-            ensure       => $ensure_monitor_service,
-            description  => "Druid ${service}",
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a 'io.druid.cli.Main server ${java_service_name}'",
-            # TODO: parameterize this,
-            # or move monitoring/ferm into its own class.
-            critical     => false,
-        }
-    }
 }
