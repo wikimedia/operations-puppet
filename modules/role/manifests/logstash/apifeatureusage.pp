@@ -8,13 +8,8 @@
 class role::logstash::apifeatureusage {
     include ::role::logstash::collector
 
-    # FIXME: make this a param and use hiera to vary by realm
     $hosts = hiera('role::logstash::apifeatureusage::elastic_hosts')
     validate_array($hosts)
-    $host            = $::realm ? {
-        'production' => '10.2.2.30', # search.svc.eqiad.wmnet
-        'labs'       => 'deployment-elastic05', # Pick one at random
-    }
 
     # Template for Elasticsearch index creation
     # lint:ignore:puppet_url_without_modules

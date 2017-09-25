@@ -6,6 +6,7 @@
 define role::logstash::apifeatureusage::elasticsearch {
     logstash::output::elasticsearch { "apifeatureusage-${title}":
         host            => $title,
+        index           => 'apifeatureusage-%{+YYYY.MM.dd}',
         guard_condition => '[type] == "api-feature-usage-sanitized"',
         manage_indices  => true,
         priority        => 95,
