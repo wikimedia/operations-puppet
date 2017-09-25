@@ -43,7 +43,7 @@ shards=5
 
 declare -A dumpNameToMinSize
 # Sanity check: Minimal size we expect each shard of a certain dump to have
-dumpNameToMinSize=(["all"]=`expr 12500000000 / $shards` ["truthy"]=`expr 7500000000 / $shards`)
+dumpNameToMinSize=(["all"]=`expr 23500000000 / $shards` ["truthy"]=`expr 14000000000 / $shards`)
 
 # Try to create the dump (up to three times).
 retries=0
@@ -56,7 +56,7 @@ while true; do
 		(
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-$i.log
-			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --format $dumpFormat --flavor $dumpFlavor 2>> $errorLog | gzip -9 > $tempDir/wikidata$dumpFormat-$dumpName.$i.gz
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $shards \* 500` --format $dumpFormat --flavor $dumpFlavor 2>> $errorLog | gzip -9 > $tempDir/wikidata$dumpFormat-$dumpName.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
