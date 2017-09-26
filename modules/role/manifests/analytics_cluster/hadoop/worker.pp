@@ -156,6 +156,6 @@ class role::analytics_cluster::hadoop::worker {
     ferm::service{ 'hadoop-access':
         proto  => 'tcp',
         port   => '1024:65535',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))',
     }
 }

@@ -1,6 +1,13 @@
 # Class: role::druid::analytics::worker
+# Sets up the Druid analytics cluster for internal use.
+# This cluster may contain data not suitable for
+# use in public APIs.
 #
 class role::druid::analytics::worker {
+    system::role { 'druid::analytics::worker':
+        description => "Druid worker in the analytics-${::site} cluster",
+    }
+
     include ::profile::druid::broker
     include ::profile::druid::coordinator
     include ::profile::druid::historical
