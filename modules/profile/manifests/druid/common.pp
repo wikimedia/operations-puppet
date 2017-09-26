@@ -10,21 +10,25 @@
 # $labsproject in labs.
 #
 class profile::druid::common(
+    $druid_cluster_name     = hiera('profile::druid::common::druid_cluster_name'),
     $zookeeper_cluster_name = hiera('profile::druid::common::zookeeper_cluster_name'),
+    $ferm_srange            = hiera('profile::druid::common::ferm_srange'),
+    # TODO: do we need hiera_hash??? otto
+    $properties             = hiera_hash('profile::druid::common::properties'),
     $zookeeper_clusters     = hiera('zookeeper_clusters'),
-    $druid_properties       = hiera_hash('druid::properties'),
     $use_cdh                = hiera('profile::druid::common::use_cdh')
 ) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics
-    require ::profile::hadoop::client
+
+    # Only need a Hadoop client if we are using CDH.
+    if $use_cdh {
+        require ::profile::hadoop::client
+    }
 
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
-    $zookeeper_chroot = $::realm ? {
-        'labs'       => "/druid/analytics-${::labsproject}",
-        'production' => "/druid/analytics-${::site}",
-    }
+    $zookeeper_chroot = "/druid/${druid_cluster_name}"
 
     $zookeeper_properties   = {
         'druid.zk.paths.base'          => $zookeeper_chroot,
@@ -39,7 +43,7 @@ class profile::druid::common(
         # with the properties from hiera.
         properties => merge(
             $zookeeper_properties,
-            $druid_properties
+            $properties
         ),
     }
 }
