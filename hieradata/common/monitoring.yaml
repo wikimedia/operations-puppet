@@ -70,7 +70,7 @@ monitoring::groups:
     description: Ganeti virt cluster codfw
 
 # Kafka jumbo
-  jumbo_kafka_eqiad:
+  kafka_jumbo_eqiad:
     description: Kafka jumbo cluster in eqiad
 
 # Kubernetes
