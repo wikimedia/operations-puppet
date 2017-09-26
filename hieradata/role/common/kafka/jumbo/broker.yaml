@@ -1,4 +1,4 @@
-cluster: jumbo_kafka
+cluster: kafka-jumbo-eqiad
 
 profile::kafka::broker::kafka_cluster_name: jumbo
 
