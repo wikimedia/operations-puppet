@@ -1,11 +1,16 @@
 # Class: profile::druid::overlord
 #
+# NOTE that most Druid service profiles default ferm_srange
+# to profile::druid::ferm_srange, but overlord
+# defaults to profile::druid::overlord::ferm_srange, to
+# haver finer control over how Druid accepts indexing tasks.
+#
 class profile::druid::overlord(
     $properties         = hiera('profile::druid::overlord::properties'),
     $env                = hiera('profile::druid::overlord::env'),
+    $ferm_srange        = hiera('profile::druid::overlord::ferm_srange'),
     $monitoring_enabled = hiera('profile::druid::monitoring_enabled'),
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
-    $ferm_srange        = hiera('profile::druid::ferm_srange'),
 ) {
 
     require ::profile::druid::common
