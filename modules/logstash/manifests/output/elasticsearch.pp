@@ -9,6 +9,8 @@
 #       Default 5000.
 # - $idle_flush_time: Maxmimum seconds to wait between sends. Default 1.
 # - $index: Index to write events to. Default '${title}-%{+YYYY.MM.dd}'.
+# - $prefix: indices with this prefix will be cleaned up. Used by the
+#       `cleanup.yaml.erb` template.
 # - $port: Elasticsearch server port. Default 9200.
 # - $guard_condition: Logstash condition to require to pass events to output.
 #       Default undef.
@@ -33,6 +35,7 @@ define logstash::output::elasticsearch(
     $flush_size      = 5000,
     $idle_flush_time = 1,
     $index           = "${title}-%{+YYYY.MM.dd}",
+    $prefix          = "${title}-",
     $port            = 9200,
     $guard_condition = undef,
     $manage_indices  = false,
@@ -41,8 +44,6 @@ define logstash::output::elasticsearch(
     $template_name   = $title,
 ) {
     require ::logstash::output::elasticsearch::scripts
-
-    $prefix = "${title}-"
 
     logstash::conf{ "output-elasticsearch-${title}":
         ensure   => $ensure,
@@ -55,13 +56,19 @@ define logstash::output::elasticsearch(
         default => 'absent'
     }
 
-    elasticsearch::curator::config { "cleanup_${title}":
-        content => template('logstash/curator/cleanup.yaml.erb')
+    # curator config template require a list of hosts
+    $hosts = [ $host ]
+
+    elasticsearch::curator::config {
+        "config-${title}":
+            content => template('elasticsearch/curator/config.yaml.erb');
+        "cleanup_${title}":
+            content => template('logstash/curator/cleanup.yaml.erb')
     }
 
     cron { "logstash_cleanup_indices_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/bin/curator --config /etc/curator/config.yaml /etc/curator/cleanup_${title}.yaml > /dev/null",
+        command => "/usr/bin/curator --config /etc/curator/config-${title}.yaml /etc/curator/cleanup_${title}.yaml > /dev/null",
         user    => 'root',
         hour    => 0,
         minute  => 42,
