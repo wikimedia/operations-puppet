@@ -6,8 +6,10 @@ ARCH=${ARCH:-"$(dpkg --print-architecture)"}
 DIST=${DIST:-"$(lsb_release --short --codename)"}
 # Default to not use wikimedia repos
 WIKIMEDIA=${WIKIMEDIA:-"no"}
+export WIKIMEDIA
 # Default to not use distribution backports
 BACKPORTS=${BACKPORTS:-"no"}
+export BACKPORTS
 # Default to drop to shell on build failure
 SHELL_ON_FAILURE=${SHELL_ON_FAILURE:-"yes"}
 export SHELL_ON_FAILURE
@@ -16,12 +18,12 @@ export SHELL_ON_FAILURE
 # wanted to specify WIKIMEDIA="yes" which will satisfy build dependencies from
 # the wikimedia repos
 if [ "${DIST#*-}" = "wikimedia" ]; then
-	export WIKIMEDIA="yes"
+	WIKIMEDIA="yes"
 	DIST=${DIST%-wikimedia}
 fi
 # Same for '<dist>-backports':
 if [ "${DIST#*-}" = "backports" ]; then
-	export BACKPORTS="yes"
+	BACKPORTS="yes"
 	DIST=${DIST%-backports}
 fi
 
