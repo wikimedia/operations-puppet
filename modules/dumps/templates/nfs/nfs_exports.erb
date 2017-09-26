@@ -12,4 +12,9 @@
 # /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
 #
 
-/data -rw,async,no_root_squash,no_subtree_check <%= Array(@clients).join(' ') %>
+<% if @clients.has_key?('generation') -%>
+<%= scope.lookupvar('::dumps::nfs::path') -%> -rw,async,no_root_squash,no_subtree_check <%= Array(@clients['generation']).join(' ') %>
+<% end -%>
+<% if @clients.has_key?('public') -%>
+<%= scope.lookupvar('::dumps::nfs::path') -%> -ro,async,no_root_squash,no_subtree_check <%= Array(@clients['public']).join(' ') %>
+<% end -%>
