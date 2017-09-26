@@ -3,5 +3,5 @@ class role::dumps::generation::server {
 
     include ::standard
     include ::profile::dumps::generation::server
-    include ::profile::dumps::nfs_server
+    include ::profile::dumps::nfs::generation
 }
