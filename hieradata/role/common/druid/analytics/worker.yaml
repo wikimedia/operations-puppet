@@ -6,7 +6,7 @@ admin::groups:
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.
-profile::zookeeper::cluster_name: druid-eqiad
+profile::zookeeper::cluster_name: druid-analytics-eqiad
 # Don't page if a zookeeper server in this cluster goes down.
 profile::zookeeper::is_critical: false
 # Max number of connections per IP for Zookeeper
@@ -33,7 +33,7 @@ profile::hadoop::client::resourcemanager_hosts:
 # The logical name of this druid cluster
 profile::druid::common::druid_cluster_name: analytics-eqiad
 # The logical name of the zookeeper cluster that druid should use
-profile::druid::common::zookeeper_cluster_name: druid-eqiad
+profile::druid::common::zookeeper_cluster_name: druid-analytics-eqiad
 
 # Make druid build an extension composed of CDH jars.
 profile::druid::common::use_cdh: true

@@ -771,9 +771,21 @@ node 'deploy1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Analytics Druid servers.
+# Druid analytics-eqiad (non public) servers.
+# These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[123456].eqiad.wmnet$/ {
+node /^druid100[123].eqiad.wmnet$/ {
+    role(druid::analytics::worker)
+
+    include ::base::firewall
+    include ::standard
+}
+
+
+# Druid public-eqiad servers.
+# These power AQS and wikistats 2.0 and contain non sensitive datasets.
+# https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
+node /^druid100[456].eqiad.wmnet$/ {
     role(druid::analytics::worker)
 
     include ::base::firewall
