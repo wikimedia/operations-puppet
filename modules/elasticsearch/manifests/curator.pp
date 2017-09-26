@@ -5,10 +5,12 @@ class elasticsearch::curator (
     require_package('elasticsearch-curator')
 
     file { '/etc/curator/':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
     }
     elasticsearch::curator::config {
         'config':

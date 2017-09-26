@@ -31,4 +31,9 @@ class role::logstash::apifeatureusage {
 
     # Output destined for separate Elasticsearch cluster from Logstash cluster
     role::logstash::apifeatureusage::elasticsearch { $hosts: }
+
+    # TODO: cleanup of old cron, can be removed once applied on all nodes
+    cron { 'logstash_cleanup_indices_apifeatureusage':
+        ensure => absent,
+    }
 }
