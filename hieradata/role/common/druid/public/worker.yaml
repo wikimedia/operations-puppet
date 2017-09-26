@@ -2,11 +2,10 @@
 admin::groups:
   - druid-admins
 
-
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.
-profile::zookeeper::cluster_name: druid-analytics-eqiad
+profile::zookeeper::cluster_name: druid-public-eqiad
 # Don't page if a zookeeper server in this cluster goes down.
 profile::zookeeper::is_critical: false
 # Max number of connections per IP for Zookeeper
@@ -18,7 +17,7 @@ profile::zookeeper::sync_limit: 8
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
 profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
-profile::zookeeper::firewall::srange: '(($DRUID_ANALYTICS_HOSTS $ANALYTICS_NETWORKS))'
+profile::zookeeper::firewall::srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))'
 
 # Druid nodes also incldue CDH, so we need to specify a few defaults that
 # let them find the Hadoop Cluster.
@@ -31,17 +30,15 @@ profile::hadoop::client::resourcemanager_hosts:
 # -- Druid common configuration
 
 # The logical name of this druid cluster
-profile::druid::common::druid_cluster_name: analytics-eqiad
+profile::druid::common::druid_cluster_name: public-eqiad
 # The logical name of the zookeeper cluster that druid should use
-profile::druid::common::zookeeper_cluster_name: druid-analytics-eqiad
+profile::druid::common::zookeeper_cluster_name: druid-public-eqiad
 
 # Make druid build an extension composed of CDH jars.
 profile::druid::common::use_cdh: true
 
-# The default MySQL Druid metadata storage database name is just 'druid'.
-# Since the analytics-eqiad Druid cluster was previously the only one,
-# We set this to the default of 'druid', just to be explicit about it.
-profile::druid::common::metadata_storage_database_name: 'druid'
+# Use this as the metadata storage database name in MySQL.
+profile::druid::common::metadata_storage_database_name: 'druid-public-eqiad'
 
 profile::druid::common::autoreload: false
 profile::druid::common::ferm_srange: '$ANALYTICS_NETWORKS'
@@ -55,13 +52,13 @@ profile::druid::common::properties:
   druid.storage.type: hdfs
   druid.request.logging.type: file
   druid.request.logging.dir: /var/log/druid
-  # Historically, the analytics-eqiad Druid cluster was the only one,
-  # and as such had a deep storage directory in HDFS without
-  # the cluster name in the path.
+  # We need to use a special deep storage directory in HDFS so
+  # we don't conflict with other (e.g. analytics-eqiad) druid
+  # cluster deep storage.
   # NOTE: This directory is ensured to exist by usage of the
   # druid::cdh::hadoop::deep_storage define included in the
   # role::analytics_cluster::hadoop::master class.
-  druid.storage.storageDirectory: /user/druid/deep-storage
+  druid.storage.storageDirectory: /user/druid/deep-storage-public-eqiad
 
 
 # -- Druid worker service configurations
@@ -69,7 +66,7 @@ profile::druid::common::properties:
 # --- Druid Broker
 
 # Broker gets a special ferm_srange since it is the frontend query interface to Druid.
-profile::druid::broker::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::druid::broker::ferm_srange: '(($ANALYTICS_NETWORKS $AQS_HOSTS))'
 profile::druid::broker::properties:
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 2147483647
