@@ -96,10 +96,10 @@ host = einsteinium.wikimedia.org
 menu = frack
 title = Fundraising Infrastructure
 
-+++ pfw-eqiad
-menu = pfw-eqiad
-title = pfw-eqiad.wikimedia.org
-host = pfw-eqiad.wikimedia.org
++++ pfw3-eqiad
+menu = pfw3-eqiad
+title = pfw3-eqiad.wikimedia.org
+host = pfw3-eqiad.wikimedia.org
 
 +++ tellurium
 menu = tellurium
