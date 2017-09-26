@@ -53,5 +53,13 @@ class role::mariadb::misc(
         enabled    => $master,
         socket     => '/tmp/mysql.sock', # temporary workaround T148507
     }
+
+    # allow connections from gerrit servers
+    ferm::service{ 'mariadb_gerrit':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => '@resolve((gerrit2001.wikimedia.org cobalt.wikimedia.org gerrit.wikimedia.org))',
+    }
 }
 
