@@ -1,7 +1,7 @@
 ##################################
 #  THIS FILE IS MANAGED BY PUPPET
 #
-#  Source: dumps/templates/generation/default-nfs-kernel-server.erb
+#  Source: dumps/templates/nfs/default-nfs-kernel-server.erb
 ##################################
 
 # Number of servers to start up
@@ -16,7 +16,7 @@ RPCNFSDPRIORITY=0
 # a fixed port here using the --port option. For more information,
 # see rpc.mountd(8) or http://wiki.debian.org/SecuringNFS
 # To disable NFSv4 on the server, specify '--no-nfs-version 4' here
-RPCMOUNTDOPTS="--manage-gids -p <%= scope.lookupvar('::dumps::generation::server::nfs::mountd_port') -%>"
+RPCMOUNTDOPTS="--manage-gids -p <%= scope.lookupvar('::dumps::nfs::mountd_port') -%>"
 
 # Do you want to start the svcgssd daemon? It is only required for Kerberos
 # exports. Valid alternatives are "yes" and "no"; the default is "no".
