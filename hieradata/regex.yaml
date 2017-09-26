@@ -313,5 +313,5 @@ cache_numa_isolate:
 
 # Temporary to allow a painless host imaging process
 new_mw_appservers:
-  __regex: !ruby/regexp /^mw13(0[7-9]|1[0-9]|2[0-8])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^mw13(0[7-9]|1[0-9])\.eqiad\.wmnet$/
   profile::base::notifications_enabled: '0'
