@@ -4,54 +4,84 @@
 #
 class hhvm::debug {
 
-    ## Debugging symbols
-
-    $libboost_dbg_package = os_version('debian >= jessie') ? {
-        true    => 'libboost1.55-dbg',
-        default => 'libboost1.54-dbg',
-    }
-
-    package { [
-        'hhvm-dbg',
-        $libboost_dbg_package,
-        'libc6-dbg',
-        'libcurl3-dbg',
-        'libevent-dbg',
-        'libgcc1-dbg',
-        'libjemalloc1-dbg',
-        'libjson-c2-dbg',
-        'libldap-2.4-2-dbg',
-        'libmemcached-dbg',
-        'libpcre3-dbg',
-        'libsqlite3-0-dbg',
-        'libssl1.0.0-dbg',
-        'libstdc++6-4.8-dbg',
-        'libxml2-dbg',
-        'libxslt1-dbg',
-    ]:
-        ensure => present,
-    }
-
-
-    ## Profiling and debugging tools
+    # This class installs packages with debugging symbols and a number
+    # of tools:
 
     # - google-perftools includes `pprof` (aliased as `google-pprof`),
     #   which can generate useful reports from jemalloc heap dumps.
-    #   The gv and graphiz packages enable pprof to generate PDF and SVG
+    # - perf-tools is <https://github.com/brendangregg/perf-tools>.
+    # - The gv and graphiz packages enable pprof to generate PDF and SVG
     #   reports of things like call graphs.
     # - apache2-utils provides `ab`, an HTTP server benchmarking tool.
-    # - perf-tools is <https://github.com/brendangregg/perf-tools>.
 
-    $perftools_package = os_version('debian >= jessie') ? {
-        true    => 'perf-tools-unstable',
-        default => 'perf-tools',
+    $common_pkgs = [
+                    'apache2-utils',
+                    'google-perftools',
+                    'graphviz',
+                    'gv',
+                    'hhvm-dbg',
+                    'libc6-dbg',
+                    'libcurl3-dbg',
+                    'libevent-dbg',
+                    'libgcc1-dbg',
+                    'libjemalloc1-dbg',
+                    'libldap-2.4-2-dbg',
+                    'libmemcached-dbg',
+                    'libpcre3-dbg',
+                    'libsqlite3-0-dbg',
+                    'libxml2-dbg',
+                    'libxslt1-dbg',
+                    ]
+    require_package($common_pkgs)
+
+    if os_version('ubuntu == trusty') {
+        $trusty_pkgs = [
+                        'libboost1.54-dbg',
+                        'libjson-c2-dbg',
+                        'libssl1.0.0-dbg',
+                        'libstdc++6-4.8-dbg',
+                        'perf-tools',
+                        ]
+
+        require_package($trusty_pkgs)
     }
 
-    package { [ 'google-perftools', 'gv', 'apache2-utils', $perftools_package ]:
-        ensure => present,
+    if os_version('debian == jessie') {
+        $jessie_pkgs = [
+                        'libboost1.55-dbg',
+                        'libjson-c2-dbg',
+                        'libssl1.0.0-dbg',
+                        'libstdc++6-4.8-dbg',
+                        'perf-tools-unstable',
+                        ]
+
+        require_package($jessie_pkgs)
     }
 
-    require_package('graphviz')
+    if os_version('debian == stretch') {
+        # TODO: libjson-c3-dbgsym, libssl1.0.2-dbgsym, libboost-atomic1.62.0-dbgsym
+        # libboost-chrono1.62.0-dbgsym, libboost-context1.62.0-dbgsym
+        # libboost-coroutine1.62.0-dbgsym, libboost-date-time1.62.0-dbgsym
+        # libboost-fiber1.62.0-dbgsym, libboost-filesystem1.62.0-dbgsym
+        # libboost-graph-parallel1.62.0-dbgsym, libboost-graph1.62.0-dbgsym
+        # libboost-iostreams1.62.0-dbgsym, libboost-locale1.62.0-dbgsym
+        # libboost-log1.62.0-dbgsym, libboost-math1.62.0-dbgsym
+        # libboost-mpi-python1.62.0-dbgsym, libboost-mpi1.62.0-dbgsym
+        # libboost-program-options1.62.0-dbgsym, libboost-python1.62.0-dbgsym
+        # libboost-random1.62.0-dbgsym, libboost-regex1.62.0-dbgsym
+        # libboost-serialization1.62.0-dbgsym, libboost-signals1.62.0-dbgsym
+        # libboost-system1.62.0-dbgsym, libboost-test1.62.0-dbgsym
+        # libboost-thread1.62.0-dbgsym, libboost-timer1.62.0-dbgsym
+        # libboost-type-erasure1.62.0-dbgsym,libboost-wave1.62.0-dbgsym
+        # libboost1.62-tools-dev-dbgsym
+        # -> All blocked by T164819
+        $stretch_pkgs = [
+                        'libstdc++6-6-dbg',
+                        'perf-tools-unstable',
+                        ]
+
+        require_package($stretch_pkgs)
+    }
 
     # `hhvm-dump-debug` dumps an HHVM backtrace to /tmp.
     # When invoked with "--full", also dumps core.
