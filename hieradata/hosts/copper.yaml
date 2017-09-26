@@ -1,0 +1,1 @@
+profile::docker::storage::loopback::dm_source: "/dev/mapper/copper--vg-docker--dm"
