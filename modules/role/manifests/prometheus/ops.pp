@@ -468,6 +468,23 @@ class role::prometheus::ops {
         },
     }
 
+    $jmx_exporter_jobs = [
+      {
+        'job_name'        => 'jmx_kafka',
+        'scrape_timeout'  => '25s',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_kafka_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::jmx_exporter_config{ "kafka_broker_jumbo_${::site}":
+        dest       => "${targets_path}/jmx_kafka_broker_jumbo_${::site}.yaml",
+        class_name => 'role::kafka::jumbo::broker',
+        site       => $::site,
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -477,7 +494,7 @@ class role::prometheus::ops {
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
-            $nginx_jobs, $blackbox_jobs
+            $nginx_jobs, $blackbox_jobs, $jmx_exporter_jobs,
         ),
         global_config_extra   => $config_extra,
     }
