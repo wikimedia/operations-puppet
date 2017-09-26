@@ -19,6 +19,8 @@ class dumps::web::dirs(
     $mediatitlesdir           = "${otherdir}/mediatitles"
     $categoriesrdf            = "${otherdir}/categoriesrdf"
 
+    include dumps::deprecated::user
+
     file { $datadir:
         ensure => 'directory',
         mode   => '0755',

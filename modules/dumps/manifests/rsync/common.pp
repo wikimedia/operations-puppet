@@ -1,4 +1,5 @@
 class dumps::rsync::common {
+    include dumps::deprecated::user
     require_package('rsync')
 
     file { '/etc/rsyncd.d':

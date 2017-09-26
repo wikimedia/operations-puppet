@@ -1,14 +1,12 @@
-class dumps::web::fetches::kiwix(
-    $user = undef,
-    $group = undef,
-) {
+class dumps::web::fetches::kiwix {
+    include dumps::deprecated::user
     require_package('rsync')
 
     file { '/data/xmldatadumps/public/kiwix':
         ensure => 'link',
         target => '/data/xmldatadumps/public/other/kiwix',
-        owner  => $user,
-        group  => $group,
+        owner  => 'datasets',
+        group  => 'datasets',
         mode   => '0644',
     }
 

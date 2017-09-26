@@ -321,7 +321,7 @@ node /^(diadem|dysprosium)\.wikimedia\.org$/ {
 
 node 'dataset1001.wikimedia.org' {
 
-    role(dataset::primary, dumps::web::xmldumps_active)
+    role(dumps::web::xmldumps_active)
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -1555,7 +1555,7 @@ node 'multatuli.wikimedia.org' {
 # also see dataset1001
 node 'ms1001.wikimedia.org' {
 
-    role(dataset::secondary, dumps::web::xmldumps_fallback)
+    role(dumps::web::xmldumps_fallback)
 
     interface::add_ip6_mapped { 'main': }
 }

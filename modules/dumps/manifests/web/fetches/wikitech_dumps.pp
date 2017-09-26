@@ -1,5 +1,4 @@
 class dumps::web::fetches::wikitech_dumps(
-    $user   = root,
     $url    = undef,
 ) {
 
@@ -27,7 +26,7 @@ class dumps::web::fetches::wikitech_dumps(
     cron { 'dumps-fetches-wikitech':
         ensure  => 'present',
         command => "${wget} ${wgetreject} ${wgetargs} ${filter}; ${cleanuphtml}; ${cleanupold}",
-        user    => $user,
+        user    => 'root',
         minute  => '20',
         hour    => '3',
     }
