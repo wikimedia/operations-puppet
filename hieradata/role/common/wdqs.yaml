@@ -5,7 +5,7 @@ profile::wdqs::data_dir: '/srv/wdqs'
 profile::wdqs::endpoint: 'https://query.wikidata.org'
 profile::wdqs::updater_options: '-n wdq -- -b 500 -T 1200'
 profile::wdqs::blazegraph_config_file: '/etc/wdqs/RWStore.properties'
-profile::wdqs::blazegraph_heap_size: '16g'
+profile::wdqs::blazegraph_heap_size: '12g'
 admin::groups:
   - wdqs-admins
 cluster: wdqs
