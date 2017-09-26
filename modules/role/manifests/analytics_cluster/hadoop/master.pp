@@ -15,6 +15,9 @@ class role::analytics_cluster::hadoop::master {
         # It's deep storage directory will be /user/druid/deep-storage.
         druid_cluster_name => undef
     }
+    # The Druid public-eqiad cluster's deep storage
+    # directory will be /user/druid/deep-storage-public-eqiad
+    ::druid::cdh::druid::hadoop::deep_storage { 'public-eqiad': }
 
     class { '::cdh::hadoop::master': }
 
