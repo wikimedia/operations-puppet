@@ -4,7 +4,7 @@ class role::analytics_cluster::hadoop::ferm::namenode {
     ferm::service{ 'hadoop-hdfs-namenode':
         proto  => 'tcp',
         port   => '8020',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))',
     }
 
     ferm::service{ 'hadoop-hdfs-zkfc':

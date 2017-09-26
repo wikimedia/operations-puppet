@@ -1,7 +1,6 @@
 # == Class role::analytics_cluster::hadoop::ferm::resourcemanager
 #
 class role::analytics_cluster::hadoop::ferm::resourcemanager {
-
     ferm::service{ 'hadoop-yarn-resourcemanager-scheduler':
         proto  => 'tcp',
         port   => '8030',
@@ -17,7 +16,7 @@ class role::analytics_cluster::hadoop::ferm::resourcemanager {
     ferm::service{ 'hadoop-yarn-resourcemanager':
         proto  => 'tcp',
         port   => '8032',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))',
     }
 
     ferm::service{ 'hadoop-yarn-resourcemanager-admin':
@@ -55,7 +54,5 @@ class role::analytics_cluster::hadoop::ferm::resourcemanager {
         port   => '9983',
         srange => '$ANALYTICS_NETWORKS',
     }
-
-
 }
 
