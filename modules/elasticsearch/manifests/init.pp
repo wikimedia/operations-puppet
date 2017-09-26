@@ -170,8 +170,8 @@ class elasticsearch(
     }
 
     $curator_hosts = $curator_uses_unicast_hosts ? {
-        true    => $unicast_hosts,
-        default => [],
+        true    => concat($unicast_hosts, '127.0.0.1'),
+        default => [ '127.0.0.1' ],
     }
 
     class { '::elasticsearch::curator':
