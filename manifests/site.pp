@@ -774,7 +774,7 @@ node 'deploy1001.eqiad.wmnet' {
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[123456].eqiad.wmnet$/ {
-    role(analytics_cluster::druid::worker)
+    role(druid::analytics::worker)
 
     include ::base::firewall
     include ::standard
@@ -2198,7 +2198,7 @@ node 'thorium.eqiad.wmnet' {
     #
     # This node is not intended for data processing.
     role(statistics::web,
-        analytics_cluster::druid::pivot,
+        druid::analytics::pivot,
         analytics_cluster::hue)
 
 

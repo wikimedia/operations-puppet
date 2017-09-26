@@ -160,7 +160,7 @@ class network::constants {
                     '10.64.53.21',                        # analytics1002.eqiad.wmnet
                     '2620:0:861:108:f21f:afff:fee8:bc3f', # analytics1002.eqiad.wmnet
                 ],
-            'druid_hosts' => [
+            'druid_analytics_hosts' => [
                     '10.64.5.101',                        # druid1001.eqiad.wmnet
                     '2620:0:861:104:1e98:ecff:fe29:e298', # druid1001.eqiad.wmnet
                     '10.64.36.102',                       # druid1002.eqiad.wmnet
