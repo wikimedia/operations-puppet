@@ -13,31 +13,37 @@ class profile::discovery_dashboards::production {
         ensure    => 'latest',
         directory => '/srv/shiny-server/metrics',
         notify    => Service['shiny-server'],
-        branch    => 'master'
+        branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/twilightsparql':
         ensure    => 'latest',
         directory => '/srv/shiny-server/wdqs',
         notify    => Service['shiny-server'],
-        branch    => 'master'
+        branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/prince':
         ensure    => 'latest',
         directory => '/srv/shiny-server/portal',
         notify    => Service['shiny-server'],
-        branch    => 'master'
+        branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/wetzel':
         ensure    => 'latest',
         directory => '/srv/shiny-server/maps',
         notify    => Service['shiny-server'],
-        branch    => 'master'
+        branch    => 'master',
     }
     git::clone { 'wikimedia/discovery/wonderbolt':
         ensure    => 'latest',
         directory => '/srv/shiny-server/external',
         notify    => Service['shiny-server'],
-        branch    => 'master'
+        branch    => 'master',
+    }
+    git::clone { 'wikimedia/discovery/delphi':
+        ensure    => 'latest',
+        directory => '/srv/shiny-server/forecasts',
+        notify    => Service['shiny-server'],
+        branch    => 'master',
     }
 
 }
