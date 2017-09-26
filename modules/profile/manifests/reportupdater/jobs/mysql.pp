@@ -67,10 +67,6 @@ class profile::reportupdater::jobs::mysql {
         repository => 'limn-ee-data',
         output_dir => 'metrics/ee',
     }
-    reportupdater::job { 'interactive':
-        repository => 'discovery-stats',
-        output_dir => 'metrics/interactive',
-    }
     reportupdater::job { 'page-creation':
         repository => 'reportupdater-queries',
         output_dir => 'metrics/page-creation',
