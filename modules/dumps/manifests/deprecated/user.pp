@@ -1,4 +1,4 @@
-class dataset::user {
+class dumps::deprecated::user {
     # FIXME: wrong (non-system) uid, wrong gid, wrong (non-system) home dir
     user { 'datasets':
         uid        => 10003,

@@ -1,14 +1,15 @@
 class dumps::web::fetches::stats(
     $src = undef,
     $otherdir = undef,
-    $user = undef,
 ) {
+    include ::dumps::deprecated::user
+
     # Copies over the mediacounts files from an rsyncable location.
     dumps::web::fetches::job { 'mediacounts':
         source      => "${src}/mediacounts",
         destination => "${otherdir}/mediacounts",
         minute      => '41',
-        user        => $user,
+        user        => 'datasets',
     }
 
     # Copies over files with pageview statistics per page and project,
@@ -17,7 +18,7 @@ class dumps::web::fetches::stats(
         source      => "${src}/{pageview,projectview}/legacy/hourly",
         destination => "${otherdir}/pageviews",
         minute      => '51',
-        user        => $user,
+        user        => 'datasets',
     }
 
     # Copies over files with unique devices statistics per project,
@@ -26,6 +27,6 @@ class dumps::web::fetches::stats(
         source      => "${src}/unique_devices",
         destination => "${otherdir}/unique_devices",
         minute      => '31',
-        user        => $user,
+        user        => 'datasets',
     }
 }

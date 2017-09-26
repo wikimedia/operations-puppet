@@ -1,5 +1,5 @@
 class role::snapshot::common {
-    include ::dataset::user
+    include ::dumps::deprecated::user
     include ::standard
     include ::base::firewall
 
