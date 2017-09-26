@@ -3,7 +3,7 @@
 # druid directories exist in HDFS.  This should
 # only be included on Hadoop NameNodes.
 #
-class druid::cdh::hadoop::setup {
+class druid::cdh::hadoop::user {
     Class['cdh::hadoop'] -> Class['druid::cdh::hadoop::setup']
 
     # Make sure that a druid user exists on hadoop namenodes so that
@@ -28,11 +28,5 @@ class druid::cdh::hadoop::setup {
         group   => 'hadoop',
         mode    => '0775',
         require => User['druid'],
-    }
-    cdh::hadoop::directory { '/user/druid/deep-storage':
-        owner   => 'druid',
-        group   => 'hadoop',
-        mode    => '0775',
-        require => Cdh::Hadoop::Directory['/user/druid'],
     }
 }
