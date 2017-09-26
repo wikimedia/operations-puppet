@@ -445,13 +445,21 @@ zookeeper_clusters:
       conf2002.codfw.wmnet: '2002'
       conf2003.codfw.wmnet: '2003'
 
-  # ZK cluster for Druid (in Analytics cluster),
-  # colocated with Druid.
-  druid-eqiad:
+  # ZK cluster for Druid analytics-eqiad cluster (non public),
+  # colocated on druid hosts.
+  druid-analytics-eqiad:
     hosts:
       druid1001.eqiad.wmnet: '1001'
       druid1002.eqiad.wmnet: '1002'
       druid1003.eqiad.wmnet: '1003'
+
+  # ZK cluster for Druid public-eqiad cluster, (for AQS, wikistats, etc.)
+  # colocated on druid hosts.
+  druid-public-eqiad:
+    hosts:
+      druid1004.eqiad.wmnet: '1004'
+      druid1005.eqiad.wmnet: '1005'
+      druid1006.eqiad.wmnet: '1006'
 
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
