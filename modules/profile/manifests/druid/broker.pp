@@ -1,5 +1,10 @@
 # Class: profile::druid::broker
 #
+# NOTE that most Druid service profiles default ferm_srange
+# to profile::druid::ferm_srange, but broker
+# defaults to profile::druid::broker::ferm_srange, to
+# haver finer control over how Druid accepts queries.
+#
 class profile::druid::broker(
     $properties         = hiera('profile::druid::broker::properties'),
     $env                = hiera('profile::druid::broker::env'),
