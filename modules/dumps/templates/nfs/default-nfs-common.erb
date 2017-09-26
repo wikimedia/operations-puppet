@@ -1,7 +1,7 @@
 ##################################
 #  THIS FILE IS MANAGED BY PUPPET
 #
-#  Source: dumps/templates/generation/default-nfs-common.erb
+#  Source: dumps/templates/nfs/default-nfs-common.erb
 ##################################
 
 # If you do not set values for the NEED_ options, they will be attempted
@@ -16,7 +16,7 @@ NEED_STATD=
 #   when you have a port-based firewall. To use a fixed port, set this
 #   this variable to a statd argument like: "--port 4000 --outgoing-port 4001".
 #   For more information, see rpc.statd(8) or http://wiki.debian.org/SecuringNFS
-STATDOPTS="--port <%= scope.lookupvar('::dumps::generation::server::nfs::statd_port') -%> --outgoing-port <%= scope.lookupvar('::dumps::generation::server::nfs::statd_out') -%>"
+STATDOPTS="--port <%= scope.lookupvar('::dumps::nfs::statd_port') -%> --outgoing-port <%= scope.lookupvar('::dumps::nfs::statd_out') -%>"
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
 NEED_GSSD=
