@@ -8,7 +8,8 @@ class role::analytics_cluster::hadoop::standby {
     }
     require ::profile::hadoop::client
 
-    class { '::druid::cdh::hadoop::setup': }
+    # Ensure that druid user exists on standby namenodes nodes.
+    class { '::druid::cdh::hadoop::user':  }
 
     class { '::cdh::hadoop::namenode::standby': }
 

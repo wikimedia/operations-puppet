@@ -6,26 +6,28 @@
 #
 # Druid Zookeeper settings will default to using the hosts in
 # the hiera zookeeper_cluster_name and zookeeper_clusters hiera variables.
-# Druid Zookeeper chroot will be set according to $site in production, or
-# $labsproject in labs.
 #
 class profile::druid::common(
-    $zookeeper_cluster_name = hiera('profile::druid::common::zookeeper_cluster_name'),
-    $zookeeper_clusters     = hiera('zookeeper_clusters'),
-    $druid_properties       = hiera_hash('druid::properties'),
-    $use_cdh                = hiera('profile::druid::common::use_cdh')
+    $druid_cluster_name             = hiera('profile::druid::common::druid_cluster_name'),
+    $zookeeper_cluster_name         = hiera('profile::druid::common::zookeeper_cluster_name'),
+    $ferm_srange                    = hiera('profile::druid::common::ferm_srange'),
+    # TODO: do we need hiera_hash?
+    $properties                     = hiera_hash('profile::druid::common::properties'),
+    $zookeeper_clusters             = hiera('zookeeper_clusters'),
+    $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name'),
+    $use_cdh                        = hiera('profile::druid::common::use_cdh'),
+    $monitoring_enabled             = hiera('profile::druid::common::monitoring_enabled'),
 ) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics
-    require ::profile::hadoop::client
 
-    $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
-
-    $zookeeper_chroot = $::realm ? {
-        'labs'       => "/druid/analytics-${::labsproject}",
-        'production' => "/druid/analytics-${::site}",
+    # Only need a Hadoop client if we are using CDH.
+    if $use_cdh {
+        require ::profile::hadoop::client
     }
 
+    $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
+    $zookeeper_chroot       = "/druid/${druid_cluster_name}"
     $zookeeper_properties   = {
         'druid.zk.paths.base'          => $zookeeper_chroot,
         'druid.discovery.curator.path' => "${zookeeper_chroot}/discovery",
@@ -34,12 +36,13 @@ class profile::druid::common(
 
     # Druid Common Class
     class { '::druid':
-        use_cdh    => $use_cdh,
+        metadata_storage_database_name => $metadata_storage_database_name,
+        use_cdh                        => $use_cdh,
         # Merge our auto configured zookeeper properties
         # with the properties from hiera.
-        properties => merge(
+        properties                     => merge(
             $zookeeper_properties,
-            $druid_properties
+            $properties
         ),
     }
 }
