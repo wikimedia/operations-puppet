@@ -87,6 +87,10 @@ def main():
     )
     args = parser.parse_args()
 
+    # Skip LDAP lookup for the root user.
+    if args.username == 'root' and not args.enable_servicegroups:
+        return
+
     with open('/etc/ldap.yaml') as f:
         config = yaml.safe_load(f)
 
