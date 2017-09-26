@@ -9,7 +9,12 @@ class role::analytics_cluster::hadoop::master {
 
     require ::profile::hadoop::client
 
-    class { '::druid::cdh::hadoop::setup': }
+    # Ensure that druid deep storage directories exist for all Druid clusters.
+    ::druid::cdh::hadoop::deep_storage { 'analytics-eqiad':
+        # analytics-eqiad predates the time when there were multiple Druid clusters.
+        # It's deep storage directory will be /user/druid/deep-storage.
+        druid_cluster_name => undef
+    }
 
     class { '::cdh::hadoop::master': }
 
