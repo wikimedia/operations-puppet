@@ -147,7 +147,7 @@ class base::monitoring::host(
         }
     }
 
-    if hiera('monitor_screens', false) {
+    if hiera('monitor_screens', true) {
 
         file { '/usr/local/lib/nagios/plugins/check_long_procs':
             ensure => present,
