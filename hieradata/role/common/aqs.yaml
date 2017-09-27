@@ -98,7 +98,7 @@ aqs::seeds:
     - aqs1008-b.eqiad.wmnet
     - aqs1009-a.eqiad.wmnet
     - aqs1009-b.eqiad.wmnet
-aqs::logstash_host: logstash1001.eqiad.wmnet
+aqs::logstash_host: logstash.svc.eqiad.wmnet
 aqs::cassandra_default_consistency: localOne
 aqs::cassandra_local_dc: "%{::site}"
 aqs::statsd_host: statsd.eqiad.wmnet
