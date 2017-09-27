@@ -1,7 +1,9 @@
+<% if ! @is_project -%>
 # WMCS Bastions
 Host bastion-restricted.wmflabs.org
     ProxyCommand none
 
+<% end -%>
 # WMCS Instances
 Host *
     BatchMode yes
@@ -10,4 +12,6 @@ Host *
     UserKnownHostsFile /dev/null
     GlobalKnownHostsFile /dev/null
     LogLevel ERROR
+    <%- if ! @is_project -%>
     ProxyCommand ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null -o LogLevel=ERROR -a -W %h:%p bastion-restricted.wmflabs.org
+    <%- end -%>
