@@ -41,7 +41,7 @@ striker::uwsgi::config:
   logging:
     HANDLERS: file logstash
     FILE_FILENAME: /srv/log/striker/striker.log
-    LOGSTASH_HOST: logstash1003.eqiad.wmnet
+    LOGSTASH_HOST: logstash.svc.eqiad.wmnet
     LOGSTASH_PORT: 11514
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
