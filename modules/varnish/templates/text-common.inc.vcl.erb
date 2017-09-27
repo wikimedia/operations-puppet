@@ -99,16 +99,6 @@ sub text_common_hash {
 		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
 			hash_data("optin=beta");
 		}
-
-		// Split the cache for non-beta lazy image loading tests
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)mfLazyLoadImages=A" || req.http.Cookie ~ "(^|;\s*)mfLazyLoadImages=A") {
-			hash_data("mfLazyLoadImages=A");
-		}
-
-		// Split the cache for non-beta lazy reference loading tests
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)mfLazyLoadReferences=A" || req.http.Cookie ~ "(^|;\s*)mfLazyLoadReferences=A") {
-			hash_data("mfLazyLoadReferences=A");
-		}
 	}
 }
 
