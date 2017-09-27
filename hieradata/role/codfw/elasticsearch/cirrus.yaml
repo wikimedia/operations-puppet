@@ -54,9 +54,7 @@ profile::elasticsearch::expected_nodes: 36
 profile::elasticsearch::recover_after_nodes: 11
 
 profile::elasticsearch::graylog_hosts:
-  - logstash1001.eqiad.wmnet
-  - logstash1002.eqiad.wmnet
-  - logstash1003.eqiad.wmnet
+  - logstash.svc.eqiad.wmnet
 
 profile::elasticsearch::certificate_name: 'search.svc.codfw.wmnet'
 profile::base::dns_alt_names:             'search.svc.codfw.wmnet'
