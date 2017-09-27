@@ -30,7 +30,7 @@ $ua->timeout(10);
 my $r = $ua->get($url);
 
 if ($r->is_success) {
-    if ($r->content eq "OK") {
+    if ($r->content =~ "^OK") {
         $np->nagios_exit(OK, "All pools are healthy");
     } else {
         $np->nagios_exit(CRITICAL, $r->content);
