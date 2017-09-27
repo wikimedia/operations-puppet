@@ -257,7 +257,7 @@ THUMBOR_LOG_CONFIG = {
             'host': '<%= @logstash_host %>',
             'port': <%= @logstash_port %>,
             'version': 1,
-            'message_type': 'thumbor',
+            'message_type': 'logback',
             'fqdn': False,
             'tags': ['thumbor'],
             'filters': ['context', '404exclude']
