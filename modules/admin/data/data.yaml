@@ -122,7 +122,7 @@ groups:
               nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
-              pmiazga, dsaez, shiladsen, cicalese]
+              pmiazga, dsaez, shiladsen, cicalese, mirrys]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -251,7 +251,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, dsaez, shiladsen, rho]
+              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2585,6 +2585,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuBIYZJaY5mjq6Jep6XJHF7YiSltdMkUYHDeMpYU804XE52+PiFTmscxKPREyzPRiXw4SIfu3fOd2spYy/LxCgLJkv4iNWrA+sjGtsuC8ex61ZiUoSVV36SifWN/4x2jY1MsZBSk4Uzf7F6LBT3SFwtRtaGLN6CBeteKbz8S+1w7bcA8CwU6wsTKolFrV/ehGta+q88e+7kF+u1p8+WUYTl5mo9Nk41NpH6GMD+60iYf7flXXD7+t/hEtEcuWFtNm6pSm7cKsj8EuHmQC+j6d+Gb+slUnCq9lR5QAjzFh6Ks72ZHx33f4h8xUK7/CG+ZFk+YBEF9H9USCzN7S9wfuD ccicalese@wikimedia.org
     uid: 2886
     email: ccicalese@wikimedia.org
+  mirrys:
+    ensure: present
+    gid: 500
+    name: mirrys
+    realname: Miriam Redi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4BEpVOzbQtI8EFQBWqZJqX5hxxornmURV5tAGxKkl7pHF6Yiza6jeA6FQDqY3yLbzm+rwN7xJsRDjYN121R03s+fC4gmPsNnML/m4sgkz6QgS3pEYDU81861e1ySUhXv73OH+EJtQy6WIEsh18XOam0rYaXeX1XXtq1/qIIyiXNX0rXJbJrHmv79TxMpKuT8M+Z1R9NOnkNXecsxoYK4lY/pe3/qSo6UHplPMVnkt+eT71BPCvZsnaMZHkBgMtCJmSNWRkqNUM20/UZ44FBEr4PKwLxwwwmrLQOS3Z5U6uj7n9GC9g0gL+k0LjKUGm3aCnVfXBaUY55+lDqksdfk7U8baSoZB/MJ81bhhgR5DxsaB4EKsXl9fDE9PGrE0dOt6f/3grAdqfTG0yDhoY9hu0TkD3DpgrOS5KsbsmqATZkjGrGKC5B7ce5oB3enytizytmLNMBDSq1FJI5ly22EDzUmpLVNoGCJS9tQvxYpE0K8lMOEwMSDkeEmZF69ZLnjJVVKF0tadRTUWSdmACjQ1KNd26zzkGcysmqU43bwXjnQ7u+7q9h3h7kIzAK9bUoOU+Kkc/91C9AIWyc2Tz6+HUWQ7J26qlyOFWF9vguU7rQGpzCnGEVosa4DgJAb4BbFZjyK+VjXxy16I5+bAtMnWE4ivuSlKskzGqzResNw3bw== miriam@miriam-WMF
+    uid: 18005
+    email: mredi@wikimedia.org
 
 ldap_only_users:
   abartov:
