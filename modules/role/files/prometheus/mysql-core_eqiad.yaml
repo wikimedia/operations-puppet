@@ -44,6 +44,7 @@
   - db1044:9104
   - db1077:9104
   - db1078:9104
+  - db1103:9104
 - labels:
     shard: s3
     role: master
