@@ -122,7 +122,7 @@ groups:
               nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
-              pmiazga, dsaez, shiladsen]
+              pmiazga, dsaez, shiladsen, cicalese]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2576,6 +2576,16 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHuPUUK0SGl+S/G6jiCd1UWOZ/abghr4qEqNepM06kpV rho@Ritas-MBP
     uid: 14485
     email: rho@wikimedia.org
+  cicalese:
+    ensure: present
+    gid: 500
+    name: cicalese
+    realname: Cindy Cicalese
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuBIYZJaY5mjq6Jep6XJHF7YiSltdMkUYHDeMpYU804XE52+PiFTmscxKPREyzPRiXw4SIfu3fOd2spYy/LxCgLJkv4iNWrA+sjGtsuC8ex61ZiUoSVV36SifWN/4x2jY1MsZBSk4Uzf7F6LBT3SFwtRtaGLN6CBeteKbz8S+1w7bcA8CwU6wsTKolFrV/ehGta+q88e+7kF+u1p8+WUYTl5mo9Nk41NpH6GMD+60iYf7flXXD7+t/hEtEcuWFtNm6pSm7cKsj8EuHmQC+j6d+Gb+slUnCq9lR5QAjzFh6Ks72ZHx33f4h8xUK7/CG+ZFk+YBEF9H9USCzN7S9wfuD ccicalese@wikimedia.org
+    uid: 2886
+    email: ccicalese@wikimedia.org
+
 ldap_only_users:
   abartov:
     ensure: present
