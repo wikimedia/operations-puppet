@@ -2358,6 +2358,13 @@ host francium {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host furud {
+    hardware ethernet F4:E9:D4:CD:BA:A0;
+    fixed-address furud.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host ganeti1001 {
     hardware ethernet f0:1f:af:e8:c5:a3;
     fixed-address ganeti1001.eqiad.wmnet;

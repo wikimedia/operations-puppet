@@ -885,6 +885,11 @@ node /^es200[234]\.codfw\.wmnet/ {
     include ::mariadb::mysqld_safe
 }
 
+# Backup system, see T176506
+node 'furud.codfw.wmnet' {
+    role(spare::system)
+}
+
 # Etcd cluster for kubernetes
 # TODO: Rename the eqiad etcds to the codfw etcds naming scheme
 node /^(kub)?etcd[12]00[123]\.(eqiad|codfw)\.wmnet$/ {
