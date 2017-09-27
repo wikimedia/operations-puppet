@@ -157,7 +157,7 @@ acl_check_rcpt:
 	require verify = sender
 
 	# Drop connections from IP addresses listed in DNSBL
-	drop log_message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
+	drop message = refusing mail from $sender_host_address - address is blocklisted by $dnslist_domain ($dnslist_value: $dnslist_text)
 		dnslists = zen.spamhaus.org
 		delay = 15s
 
