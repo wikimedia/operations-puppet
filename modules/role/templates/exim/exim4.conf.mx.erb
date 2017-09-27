@@ -159,7 +159,7 @@ acl_check_rcpt:
 	# Drop connections from IP addresses listed in DNSBL
 	drop log_message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
 		dnslists = zen.spamhaus.org
-		delay 15s
+		delay = 15s
 
 	accept
 
