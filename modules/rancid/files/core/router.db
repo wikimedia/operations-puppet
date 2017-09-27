@@ -33,4 +33,9 @@ mr1-eqiad.wikimedia.org;juniper;up;
 mr1-codfw.wikimedia.org;juniper;up;
 mr1-esams.wikimedia.org;juniper;up;
 mr1-ulsfo.wikimedia.org;juniper;up;
-scs-ulsfo.mgmt.ulsfo.wmnet;opengear;up
+scs-ulsfo.mgmt.ulsfo.wmnet;opengear;up;
+scs-a8-eqiad.mgmt.eqiad.wmnet;opengear;up;
+scs-a1-codfw.mgmt.codfw.wmnet;opengear;up;
+scs-oe11-esams.mgmt.esams.wmnet;opengear;up;
+scs-c1-codfw.mgmt.codfw.wmnet;opengear;up;
+scs-c1-eqiad.mgmt.eqiad.wmnet;opengear;down;
