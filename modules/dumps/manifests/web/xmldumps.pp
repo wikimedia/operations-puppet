@@ -28,11 +28,7 @@ class dumps::web::xmldumps(
         content => template('dumps/web/xmldumps/nginx.conf.erb'),
         notify  => Service['nginx'],
     }
-
-    logrotate::conf { 'xmldumps-nginx':
-        ensure => present,
-        source => 'puppet:///modules/dumps/web/xmldumps/logrotate.conf',
-    }
+    include dumps::web::nginx_logrot
 
     file { '/data/xmldatadumps/public/favicon.ico':
         source => 'puppet:///modules/dumps/web/xmldumps/favicon.ico',
