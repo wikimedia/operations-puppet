@@ -142,5 +142,7 @@ profile::diffscan::ipranges:
 profile::diffscan::emailto: root@wikimedia.org
 profile::diffscan::groupname: Labs-to-public-v4
 
+profile::prometheus::dns_record_type: 'A'
+
 # User for jenkins master-slave connections
 jenkins_agent_username: 'jenkins-deploy'
