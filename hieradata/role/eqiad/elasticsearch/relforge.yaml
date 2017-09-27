@@ -14,9 +14,7 @@ profile::elasticsearch::heap_memory: '30G'
 profile::elasticsearch::minimum_master_nodes: 1
 
 profile::elasticsearch::graylog_hosts:
-  - logstash1001.eqiad.wmnet
-  - logstash1002.eqiad.wmnet
-  - logstash1003.eqiad.wmnet
+  - logstash.svc.eqiad.wmnet
 
 profile::elasticsearch::certificate_name: 'relforge.svc.eqiad.wmnet'
 profile::base::dns_alt_names:             'relforge.svc.eqiad.wmnet'
