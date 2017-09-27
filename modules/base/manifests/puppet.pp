@@ -131,9 +131,14 @@ class base::puppet(
         require => File['/usr/local/sbin/puppet-run'],
     }
 
-    logrotate::conf { 'puppet':
-        ensure => present,
-        source => 'puppet:///modules/base/logrotate/puppet',
+    logrotate::rule { 'puppet':
+        ensure       => present,
+        file_glob    => '/var/log/puppet /var/log/puppet.log',
+        frequency    => 'daily',
+        compress     => true,
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 7,
     }
 
     include ::base::puppet::common
