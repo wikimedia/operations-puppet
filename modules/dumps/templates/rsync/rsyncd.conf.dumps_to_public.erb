@@ -33,7 +33,7 @@
 read only = true
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
+hosts allow = <%= @hosts_allow %>
 
 # these are the modules to advertise
 
@@ -44,7 +44,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-5.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
+hosts allow = <%= @hosts_allow %>
 
 [dumpslastfour]
 read only = true
@@ -53,7 +53,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-4.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
+hosts allow = <%= @hosts_allow %>
 
 [dumpslastthree]
 read only = true
@@ -62,7 +62,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-3.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
+hosts allow = <%= @hosts_allow %>
 
 [dumpslasttwo]
 read only = true
@@ -71,7 +71,7 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-2.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
+hosts allow = <%= @hosts_allow %>
 
 [dumpslastone]
 read only = true
@@ -80,24 +80,25 @@ path = /data/xmldatadumps/public
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ /* /*/ /*/*/
 include from = /data/xmldatadumps/public/rsync-inc-last-1.txt
-hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz poincare.acc.umu.se wikimedia.bytemark.co.uk
+hosts allow = <%= @hosts_allow %>
 
 [dumpmirrorsother]
 read only = true
 path = /data/xmldatadumps/public/other
 exclude = **tmp/ **temp/ **bad/ **save/ **archive/
-hosts allow = poincare.acc.umu.se
+hosts allow = <%= @hosts_allow %>
 
 [dumpmirrorsalldumps]
 read only = true
 # this includes only dumps, no archives, no other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
-hosts allow = mirror.fr.wickedway.nl
+hosts allow = <%= @hosts_allow %>
 
 [dumpmirrorseverything]
 read only = true
 # this includes archives, other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
-hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2 crcdtn01.crc.nd.edu wmrsync.crc.nd.edu 69.28.137.74
+# ip addresses are: 69.31.98.2 your.org, 199.47.196.26 wansecurity.com, 69.28.137.74 iconicindustry.com
+hosts allow = <%= @hosts_allow %> 199.47.196.26 69.31.98.2 69.28.137.74
