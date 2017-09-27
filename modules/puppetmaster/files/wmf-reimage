@@ -26,34 +26,6 @@ function clean_puppet {
     fi
 }
 
-function __salt_key {
-    # Executes a salt key action via salt-call
-    local action=${1}
-    local nodename=${2}
-    local expected=${3}
-    local retval=$(salt-call --log-level=warning --output=json publish.runner "keys.${action}" ${nodename} | jq --monochrome-output ".local.status == \"${expected}\"")
-    if [ "${retval}" == "true" ]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-function clean_salt {
-    nodename=${1}
-    force_yes=${2}
-    log "cleaning salt key cache for ${nodename}"
-    # delete the key only if it has been accepted already, we are going to
-    # ask confirmation later about unaccepted keys
-    if  __salt_key status ${nodename} "accepted"; then
-        if ! __salt_key delete ${nodename} "done"; then
-            log "unable to clean salt key, please check manually"
-            log "Maybe you need to use the -n switch?"
-            exit 1
-        fi
-    fi
-}
-
 function sign_puppet {
     nodename=${1}
     force_yes=${2}
@@ -81,31 +53,6 @@ function sign_puppet {
         fi
         puppet cert -s ${nodename} 2> /dev/null
         break
-    done
-}
-
-function sign_salt {
-    nodename=${1}
-    force_yes=${2}
-    log "Seeking the SALT node key to add"
-    log "This is the time to start a puppet run on the host."
-    while true; do
-        if __salt_key status ${nodename} "missing"; then
-            echo -n "."
-            sleep $SLEEPTIME
-            continue
-        elif __salt_key status ${nodename} "pending"; then
-            if __salt_key accept ${nodename} "done"; then
-                echo "+"
-                break
-            else
-                echo -n '|'
-                sleep $SLEEPTIME
-            fi
-        elif __salt_key status ${nodename} "accepted"; then
-            echo "+"
-            break
-        fi
     done
 }
 
@@ -149,7 +96,7 @@ function usage {
     echo "Usage: $0 [OPTIONS] <nodename> <mgmtname> [<newnodename>]"
     echo "  -y, --yes            don't prompt for confirmation"
     echo "  -r, --no-reboot      don't reboot"
-    echo "  -n, --no-clean       don't clean machine puppet/salt keys"
+    echo "  -n, --no-clean       don't clean machine puppet keys"
     echo "  -p, --no-puppet      don't run puppet after reimage"
     echo "  -s, --sleep=SECONDS  sleep for SECONDS while waiting for keys"
     echo "                       (default: $SLEEPTIME)"
@@ -187,7 +134,6 @@ fi
 
 if [ $NOCLEAN -eq 0 ]; then
     clean_puppet $nodename
-    clean_salt $nodename $FORCE
 fi;
 test $NOREBOOT -eq 0 && set_pxe_and_reboot $mgmtname
 
@@ -199,6 +145,5 @@ sign_puppet $nodename $FORCE
 if [ $RUNPUPPET -eq 1 ]; then
     enable_and_run_puppet $nodename
 fi;
-sign_salt $nodename $FORCE
 
-log "Node ${nodename} is now signed and both puppet and salt should work."
+log "Node ${nodename} is now signed and puppet should work."
