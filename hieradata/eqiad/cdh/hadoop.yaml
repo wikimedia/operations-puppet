@@ -34,10 +34,10 @@ cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-to
 # Increase NameNode heapsize independent from other daemons.
 # Note that cdh::hadoop::hadoop_namenode_heapsize is NOT a cdh class parameter.
 # It exists so that we can configure icinga alerts properly,
-# without having to parse the -Xmx4096m value.  These
+# without having to parse the -Xmx value.  These
 # two should be set to the same megabyte value.
-cdh::hadoop::namenode_heapsize: 4096
-cdh::hadoop::hadoop_namenode_opts: "-Xms4096m -Xmx4096m"
+cdh::hadoop::namenode_heapsize: 6144
+cdh::hadoop::hadoop_namenode_opts: "-Xms6144m -Xmx6144m"
 
 cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
 cdh::hadoop::mapreduce_task_io_sort_mb: 200
