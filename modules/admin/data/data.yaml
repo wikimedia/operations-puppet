@@ -306,6 +306,7 @@ groups:
                  * Delete files (e.g. copyright violations)
     members: [aklapper]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy F*',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy W*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy @*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
