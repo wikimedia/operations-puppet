@@ -19,3 +19,5 @@ thumbor::poolcounter_server: 'poolcounter2001.codfw.wmnet'
 
 thumbor::logstash_host: 'logstash.svc.eqiad.wmnet'
 thumbor::logstash_port: 11514
+
+thumbor::stl_support: true
