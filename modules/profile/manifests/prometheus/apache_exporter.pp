@@ -3,7 +3,7 @@ class profile::prometheus::apache_exporter (
 ) {
     prometheus::apache_exporter { 'default': }
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), A))"
 
     ferm::service { 'prometheus-apache_exporter':
         proto  => 'tcp',

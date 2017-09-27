@@ -19,7 +19,7 @@ class profile::prometheus::snmp_exporter (
         $ferm_srange = '$LABS_NETWORKS'
     } else {
         $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), A))"
     }
 
     ferm::service { 'prometheus-snmp-exporter':

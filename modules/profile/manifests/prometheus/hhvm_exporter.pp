@@ -3,7 +3,7 @@ class profile::prometheus::hhvm_exporter (
 ) {
     prometheus::hhvm_exporter { 'default': }
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), A))"
 
     ferm::service { 'prometheus-hhvm-exporter':
         proto  => 'tcp',
