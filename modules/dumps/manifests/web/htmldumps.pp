@@ -26,13 +26,9 @@ class dumps::web::htmldumps {
         variant => 'extras',
     }
 
-    logrotate::conf { 'htmldumps-nginx':
-        ensure => present,
-        source => 'puppet:///modules/dumps/web/xmldumps/logrotate.conf',
-    }
-
     nginx::site { 'htmldumps':
         source => 'puppet:///modules/dumps/web/htmldumps/nginx.conf',
         notify => Service['nginx'],
     }
+    include dumps::web::nginx_logrot
 }
