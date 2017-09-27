@@ -1,2 +1,5 @@
 # Cumin Masters. TODO: use 'restrict' once available across the fleet (> jessie)
-from="<%= @ssh_authorized_sources %>",no-agent-forwarding,<% if @cumin_auth_group == 'cumin_masters' %>no-port-forwarding,<% end %>no-x11-forwarding,no-user-rc <%= @cumin_master_pub_key %>
+from="<%= @ssh_authorized_sources %>",no-agent-forwarding,<% if @auth_group == 'cumin_masters' %>no-port-forwarding,<% end %>no-x11-forwarding,no-user-rc <%= @pub_key %>
+<% if @project_pub_key and @project_pub_key != '' and @ssh_project_authorized_sources.length > 0 -%>
+from="<%= @ssh_project_authorized_sources %>",no-agent-forwarding,no-port-forwarding,no-x11-forwarding,no-user-rc <%= @cumin_project_pub_key %>
+<% end -%>
