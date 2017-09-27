@@ -1,0 +1,5 @@
+profile::openstack::main::cumin::project_masters: []
+profile::openstack::main::cumin::project_pub_key: null
+profile::openstack::main::cumin::project_ssh_priv_key_path: null
+profile::openstack::main::cumin::aliases:
+    all: O{*} and not O{project:contintcloud} and not O{project:admin-monitoring}

@@ -17,3 +17,7 @@ openstack:
     domain_suffix: <%= @nova_dhcp_domain %>
     nova_api_version: 2.12
     timeout: 2
+    <%- if @labsproject -%>
+    query_params:
+        project: <%= @labsproject %>
+    <%- end -%>
