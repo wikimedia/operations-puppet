@@ -3,7 +3,7 @@ class profile::prometheus::memcached_exporter (
 ) {
     prometheus::memcached_exporter { 'default': }
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), A))"
 
     ferm::service { 'prometheus-memcached-exporter':
         proto  => 'tcp',
