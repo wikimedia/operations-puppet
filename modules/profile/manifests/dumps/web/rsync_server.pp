@@ -6,8 +6,8 @@ class profile::dumps::web::rsync_server(
     # a AAAA lookup mode for IPv6 addresses, but this equally fails if only
     # an IPv4 address is present.
 
-    $rsync_clients_ipv4_ferm = join($rsync_clients['ipv4'], ' ')
-    $rsync_clients_ipv6_ferm = join($rsync_clients['ipv6'], ' ')
+    $rsync_clients_ipv4_ferm = join(concat($rsync_clients['ipv4']['internal'], $rsync_clients['ipv4']['external']), ' ')
+    $rsync_clients_ipv6_ferm = join(concat($rsync_clients['ipv6']['internal'], $rsync_clients['ipv6']['external']), ' ')
 
     ferm::service {'dumps_rsyncd_ipv4':
         port   => '873',
