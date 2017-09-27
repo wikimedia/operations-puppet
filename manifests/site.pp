@@ -2033,6 +2033,7 @@ node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
 node /^pybal-test200[123]\.codfw\.wmnet$/ {
     role(pybaltest)
     include ::standard
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Tor relay
