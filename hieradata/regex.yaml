@@ -316,7 +316,7 @@ new_mw_appservers:
   __regex: !ruby/regexp /^mw13(0[7-9]|1[0-9])\.eqiad\.wmnet$/
   profile::base::notifications_enabled: '0'
 
-# Temporary since es200[234] currently dont have any role
-es_without_role:
-  __regex: !ruby/regexp /^es200([234])\.codfw\.wmnet$/
+# disable screen monitoring, fallback for servers not covered by roles (T165348)
+db_without_role:
+  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
   monitor_screens: false
