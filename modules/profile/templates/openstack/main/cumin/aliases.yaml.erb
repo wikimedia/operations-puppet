@@ -1,3 +1,5 @@
 # Cumin aliases, in the form:
 # key: query_using_the_global_grammar
-all: O{*} and not O{project:contintcloud} and not O{project:admin-monitoring}
+<% @aliases.each do |key, value| -%>
+<%= key %>: <%= value %>
+<% end -%>
