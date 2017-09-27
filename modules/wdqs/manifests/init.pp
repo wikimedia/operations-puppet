@@ -24,7 +24,7 @@ class wdqs(
     $log_dir = '/var/log/wdqs',
     $endpoint = '',
     $blazegraph_options = '',
-    $blazegraph_heap_size = '12g',
+    $blazegraph_heap_size = '10g',
     $blazegraph_config_file = 'RWStore.properties',
 ) {
 
