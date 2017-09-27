@@ -5,7 +5,7 @@ ocg::temp_dir: "/mnt/tmpfs"
 ocg::redis_host: "ocg1002.eqiad.wmnet"
 ocg::redis_port: 6379
 ocg::statsd_host: "statsd.eqiad.wmnet"
-ocg::graylog_host: "logstash1002.eqiad.wmnet"
+ocg::graylog_host: "logstash.svc.eqiad.wmnet"
 role::ocg::tmpfs_size: '32G'
 profile::redis::master::instances: ['6379']
 profile::redis::master::settings:
