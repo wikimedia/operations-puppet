@@ -1,0 +1,25 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/base/logrotate/upstart
+#####################################################################
+
+#
+# This should be identical to the packaged config, with the addition
+#  of 'copytruncate'.  copytruncate isn't great,  but without it
+#  we wind up with a lot of .1 logfiles that grow without bound and
+#  are ignored by logrotate, e.g. prometheus-node-exporter.log.1
+#
+# Also somewhat related:
+#
+#    https://bugs.launchpad.net/ubuntu/+source/upstart/+bug/1350782
+#
+/var/log/upstart/*.log {
+        daily
+        missingok
+        rotate 7
+        compress
+        delaycompress
+        notifempty
+        nocreate
+        copytruncate
+}
