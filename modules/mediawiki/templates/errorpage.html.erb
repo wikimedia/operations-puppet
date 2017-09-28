@@ -28,7 +28,7 @@ code { font-family: sans-serif; }
 </style>
 <div class="content" role="main">
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
-<a href="<%= @errorpage['logo_link'] %>"><% end %><img src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width="135">
+<a href="<%= @errorpage['logo_link'] %>"><% end %><img src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
 </a>
 <% end -%>
