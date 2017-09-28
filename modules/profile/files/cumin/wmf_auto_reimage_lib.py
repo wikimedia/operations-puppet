@@ -776,11 +776,13 @@ def run_apache_fast_test(host):
     print_line('Tested with Apache fast-test', host=host)
 
 
-def print_repool_message(previous):
+def print_repool_message(previous, rename_from=None, rename_to=None):
     """Print and return a message with the commands to repool the depooled hosts.
 
     Arguments:
-    previous -- a dictionary with state: [list of tags dictionaries] for each state
+    previous    -- a dictionary with state: [list of tags dictionaries] for each state
+    rename_from -- in case of host renaming, rename tags with this FQDN to the value of rename_to
+    rename_to   -- in case of host renaming, rename tags with rename_from value to this FQDN
     """
     if previous is None:
         print_line('Unable to provide conftool repool command, previous state is unknown')
@@ -788,10 +790,17 @@ def print_repool_message(previous):
 
     base_command = "sudo -i confctl select '{tags}' set/pooled={state}"
     commands = []
+    is_rename = rename_from is not None and rename_to is not None
 
     for state, tags_list in previous.iteritems():
         for tags in tags_list:
-            selector = ','.join(['='.join((key, val)) for key, val in tags.iteritems()])
+            items = []
+            for key, value in tags.iteritems():
+                if is_rename and value == rename_from:
+                    value = rename_to
+                items.append('='.join(key, value))
+
+            selector = ','.join(items)
             commands.append(base_command.format(tags=selector, state=state))
 
     message = ('To set back the conftool status to their previous values run:\n'
