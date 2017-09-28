@@ -4,7 +4,6 @@
 # Because we love clarity and consistency.
 
 puppetmaster: "labtest-puppetmaster.wikimedia.org"
-saltmaster: "labtestcontrol2001.wikimedia.org"
 labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
 
 labsdnsconfig:
