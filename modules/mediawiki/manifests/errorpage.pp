@@ -40,12 +40,12 @@
 # [*logo_src*]
 #   URL for logo image.
 #
-#   Default: 'https://www.wikimedia.org/static/images/wmf.png'
+#   Default: 'https://www.wikimedia.org/static/images/wmf-logo.png'
 #
 # [*logo_srcset*]
 #   HTML srcset attribute value for logo image.
 #
-#   Default: 'https://www.wikimedia.org/static/images/wmf-2x.png 2x'
+#   Default: 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x'
 #
 # [*logo_alt*]
 #   Alternate text for logo image.
@@ -66,8 +66,8 @@ define mediawiki::errorpage(
     $doctitle = 'Wikimedia Error',
     $pagetitle = 'Error',
     $logo_link = 'https://www.wikimedia.org',
-    $logo_src = 'https://www.wikimedia.org/static/images/wmf.png',
-    $logo_srcset = 'https://www.wikimedia.org/static/images/wmf-2x.png 2x',
+    $logo_src = 'https://www.wikimedia.org/static/images/wmf-logo.png',
+    $logo_srcset = 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
     $logo_alt = 'Wikimedia',
     $content = '',
     $footer = undef,
