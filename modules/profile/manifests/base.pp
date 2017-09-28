@@ -74,14 +74,6 @@ class profile::base(
 
     create_resources('class', {'ssh::server' => $ssh_server_settings})
 
-    # TODO: Fix the whole top-scope variable override thing
-    # we currently have for these two
-    class { '::role::salt::minions':
-        # The minion id comes from DNS and we need /etc/resolv.conf to have
-        # search <project>.<site>.wmflabs to have a minion id matching the fqdn
-        require => Class['::base::resolving'],
-    }
-
     class { '::nrpe':
         allowed_hosts => $nrpe_allowed_hosts,
     }
