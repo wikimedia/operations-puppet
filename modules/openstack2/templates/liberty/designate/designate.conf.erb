@@ -294,7 +294,7 @@ reverse_format = '%(hostname)s.%(project_name)s.%(domain)s'
 #-----------------------
 # WMF-specific handler to clean up after instance deletion
 #
-#  this deletes puppet and salt certs for the deleted instance.
+#  this deletes puppet certs for the deleted instance.
 #-----------------------
 [handler:wmf_sink]
 # Domain ID of domain for instances.
@@ -307,7 +307,6 @@ control_exchange = nova
 certmanager_user = certmanager
 fqdn_format = '%(hostname)s.%(project_name)s.%(domain)s'
 puppet_master_host = "<%= @puppetmaster_hostname_ip %>"
-salt_master_host = "<%= @nova_controller %>"
 puppet_config_backend  = "http://<%= @puppetmaster_hostname %>:8101/v1"
 
 #------------------------

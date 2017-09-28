@@ -54,19 +54,12 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         fqdn = cfg.CONF[self.name].fqdn_format % event_data
         fqdn = fqdn.rstrip('.').encode('utf8')
 
-        # Clean salt and puppet keys for deleted instance
+        # Clean puppet keys for deleted instance
         if cfg.CONF[self.name].puppet_master_host:
             LOG.debug('Cleaning puppet key %s' % fqdn)
             self._run_remote_command(cfg.CONF[self.name].puppet_master_host,
                                      cfg.CONF[self.name].certmanager_user,
                                      'sudo puppet cert clean %s' %
-                                     pipes.quote(fqdn))
-
-        if cfg.CONF[self.name].salt_master_host:
-            LOG.debug('Cleaning salt key %s' % fqdn)
-            self._run_remote_command(cfg.CONF[self.name].salt_master_host,
-                                     cfg.CONF[self.name].certmanager_user,
-                                     'sudo salt-key -y -d  %s' %
                                      pipes.quote(fqdn))
 
         # Clean up the puppet config for this instance, if there is one
