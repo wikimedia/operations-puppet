@@ -6,12 +6,9 @@ class role::kafka::jumbo::broker {
         description => "Kafka Broker in a 'jumbo' Kafka cluster",
     }
 
-    # Don't use ganglia.
     # Something in labs is including standard.  Only include if not already defined.
     if !defined(Class['::standard']) {
-        class { '::standard':
-            has_ganglia => false
-        }
+        include ::standard
     }
     include base::firewall
     include profile::kafka::broker
