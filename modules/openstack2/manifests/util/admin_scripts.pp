@@ -14,7 +14,7 @@ class openstack2::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
-        source => "puppet:///modules/openstack2/${version}/admin_scripts/drain_queue",
+        source => "puppet:///modules/openstack2/util/drain_queue",
     }
 
     # Script to cold-migrate instances between compute nodes
