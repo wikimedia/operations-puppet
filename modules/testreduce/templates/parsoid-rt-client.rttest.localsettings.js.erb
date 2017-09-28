@@ -26,10 +26,12 @@ exports.setup = function(parsoidConfig) {
 
 	// Enabled the linting code
 	parsoidConfig.linting = true;
-	// at a low sampling rate
-	parsoidConfig.linterAPISampling = 1000;  // 0.1%
-	// and send it to logs
-	parsoidConfig.linterSendAPI = false;
+	parsoidConfig.linter = {
+		// at a low sampling rate
+		apiSampling: 1000,  // 0.1%
+		// and send it to logs
+		sendAPI: false,
+	};
 
 	// Set rtTestMode to true for round-trip testing
 	parsoidConfig.rtTestMode = true;
