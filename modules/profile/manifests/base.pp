@@ -135,4 +135,7 @@ class profile::base(
             }
         }
     }
+    else {
+        grub::bootparam { 'isolcpus': ensure => 'absent' }
+    }
 }
