@@ -396,6 +396,11 @@ node 'db1015.eqiad.wmnet' {
     role(spare::system)
 }
 
+# To be decommissioned in T176931
+node 'db1035.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2018.codfw.wmnet' {
