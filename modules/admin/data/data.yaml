@@ -1343,7 +1343,8 @@ users:
     gid: 500
     name: legoktm
     realname: Kunal Mehta
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcTXNrkmB903Zj9nhqrQ6gW4WZ1UhaM67CpeaX7TDWRfArOscoD+ByXJdboZALxG1Of8kku0PfMrQWrtEiyLbpEdt3Y6mraTPwgx6eMu4juK+NkaJYRSQYkf+jxqheKWYYKjF1HK0I9SxnM4mrAKTMmjtp6X/6FQaAtDVa1rTQzlBEgYJIdl5Ik/pv2Py5dsYrgv3KXn9NBiOkdDiVgae26iGcpIi3Z6CA5fR8LRdRdP/GUjNJAF01pzlIMoMlh0Q1u+t6nUXWUBnUnogFU+hPAk/yq4XA9HZ7vADDKgeTyCzvSEMM7TcjElVgDwou9qhaleVxV7GXWpcVac1e9DlN legoktm@wikimedia.org
     uid: 2552
     email: kmehta@wikimedia.org
   howief:
