@@ -22,6 +22,10 @@ def parse_args():
     """Parse and return command line arguments, validate the host."""
     parser = lib.get_base_parser('Automated reimaging of a single host')
     parser.add_argument(
+        '--rename', help='FQDN of the new name to rename this host to while reimaging')
+    parser.add_argument(
+        '--rename-mgmt', help='FQDN of the new name management interface, see --rename')
+    parser.add_argument(
         'host', metavar='HOST', action='store', help='FQDN of the host to be reimaged')
     parser.add_argument(
         'mgmt', metavar='MGMT', action='store', nargs='?', default=None,
@@ -29,13 +33,26 @@ def parse_args():
 
     args = parser.parse_args()
 
-    # Gather the management interface if missing
+    fqdns = [args.host]
+
+    if args.rename is not None:
+        fqdns.append(args.rename)
+        if args.no_pxe:
+            raise argparse.ArgumentTypeError(
+                'The --rename option cannot be used in conjunction with --no-pxe.')
+
+    # Gather the management interfaces, if missing
     if args.mgmt is None:
         mgmts = lib.get_mgmts([args.host])
         args.mgmt = mgmts[args.host]
 
+    fqdns.append(args.mgmt)
+    if args.rename is not None and args.rename_mgmt is None:
+        mgmts.update(lib.get_mgmts([args.rename]))
+        fqdns.append(mgmts[args.rename])
+
     # Perform a quick sanity check on the host and mgmt
-    for name in (args.host, args.mgmt):
+    for name in fqdns:
         if '.' not in name or not lib.HOSTS_PATTERN.match(name):
             raise argparse.ArgumentTypeError("Expected FQDN, got '{name}'".format(name=name))
 
@@ -43,7 +60,7 @@ def parse_args():
                 raise argparse.ArgumentTypeError(
                     "Unable to resolve host '{name}'".format(name=name))
 
-    if '.mgmt.' not in args.mgmt:
+    if '.mgmt.' not in mgmts.values():
         raise argparse.ArgumentTypeError('The MGMT parameter must be in the *.mgmt.* format')
 
     return args
@@ -71,7 +88,8 @@ def run(args, user, log_path):
     user     -- the user that launched the script, for auditing purposes
     log_path -- the path of the logfile
     """
-    previous = None
+    previous = None  # Previous state in conftool
+    rename_from = None  # In case of host rename, hold the previous hostname
 
     # Validate hosts have a signed Puppet certificate
     if not args.new and not args.no_verify:
@@ -105,6 +123,13 @@ def run(args, user, log_path):
             ipmi_command = ['chassis', 'power', 'cycle']
 
         lib.print_line(lib.ipmitool_command(args.mgmt, ipmi_command).rstrip('\n'), host=args.host)
+
+        # If the host is renamed, swap the hostnames now
+        if args.rename is not None:
+            rename_from = args.host
+            args.host = args.rename
+            args.mgmt = args.rename_mgmt
+
         # Ensure the host is booting into the installer using Cumin's direct backend
         lib.wait_reboot(args.host, start=datetime.now(), installer=True)
 
@@ -131,7 +156,7 @@ def run(args, user, log_path):
 
     # The repool is *not* done automatically, the command to repool is printed and logged
     if args.conftool is not None:
-        lib.print_repool_message(previous)
+        lib.print_repool_message(previous, rename_from=rename_from, rename_to=args.rename)
 
     lib.print_line('Reimage completed', host=args.host)
 
@@ -155,6 +180,8 @@ def main():
     try:
         lib.ensure_ipmi_password()
         lib.check_remote_ipmi(args.mgmt)
+        if args.rename_mgmt:
+            lib.check_remote_ipmi(args.rename_mgmt)
 
         if args.phab_task_id is not None:
             phab_client = lib.get_phabricator_client()
