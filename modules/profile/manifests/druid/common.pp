@@ -9,8 +9,8 @@
 class profile::druid::common(
     $druid_cluster_name             = hiera('profile::druid::common::druid_cluster_name'),
     $zookeeper_cluster_name         = hiera('profile::druid::common::zookeeper_cluster_name'),
-    # TODO: do we need hiera_hash?
-    $properties                     = hiera_hash('profile::druid::common::properties'),
+    $private_properties             = hiera('profile::druid::common::private_properties'),
+    $properties                     = hiera('profile::druid::common::properties'),
     $zookeeper_clusters             = hiera('zookeeper_clusters'),
     $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name'),
     $use_cdh                        = hiera('profile::druid::common::use_cdh'),
@@ -39,7 +39,8 @@ class profile::druid::common(
         # with the properties from hiera.
         properties                     => merge(
             $zookeeper_properties,
-            $properties
+            $properties,
+            $private_properties
         ),
     }
 }
