@@ -1,7 +1,7 @@
 ---
 # Wiki Replica DNS configuration
 #
-# Used to generate A records for the given zones and hosts.
+# Used to generate A and CNAME records for the given zones and hosts.
 #
 # zones:
 #   zone_name.:  # trailing . is important!
@@ -9,6 +9,11 @@
 #       - Address 1
 #       - Address 2
 #       - ...
+# cnames:
+#   shard_name:
+#     - hostname 1
+#     - hostname 2
+#     - ...
 #
 # This file is managed by Puppet
 zones:
@@ -45,3 +50,8 @@ zones:
       - 10.64.37.15
     s7:
       - 10.64.37.15
+cnames:
+  s7:
+    - centralauth
+    # [[wikitech:Help:Toolforge/Database#Metadata_database]]
+    - meta

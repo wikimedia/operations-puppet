@@ -182,14 +182,20 @@ def main():
     """Manage Designate DNS records for Wiki Replicas."""
     parser = argparse.ArgumentParser(description='Wiki Replica DNS Manager')
     parser.add_argument(
-        '-v', '--verbose', action='count',
-        default=0, dest='loglevel', help='Increase logging verbosity')
+        '-v', '--verbose', action='count', default=0, dest='loglevel',
+        help='Increase logging verbosity')
     parser.add_argument(
         '--config', default='/etc/wikireplica_dns.yaml',
         help='Path to YAML config file')
     parser.add_argument(
+        '--zone',
+        help='limit changes to the given zone')
+    parser.add_argument(
         '--aliases', action='store_true',
         help='Update per-wiki CNAME records')
+    parser.add_argument(
+        '--shard',
+        help='limit changes to the given shard')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -198,13 +204,35 @@ def main():
         datefmt='%Y-%m-%dT%H:%M:%SZ'
     )
     logging.captureWarnings(True)
+    # Quiet some noisy 3rd-party loggers
+    logging.getLogger('requests').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
 
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    shards = ['s1', 's2', 's3', 's4', 's5', 's6', 's7']
+    all_zones = [z for z in config['zones']]
+    if args.zone:
+        if args.zone not in all_zones:
+            parser.error(
+                'Unknown zone "{}". Expected one of:\n\t- {}'.format(
+                    args.zone, '\n\t- '.join(all_zones)))
+        zones = [args.zone]
+    else:
+        zones = all_zones
+
+    all_shards = ['s1', 's2', 's3', 's4', 's5', 's6', 's7']
+    if args.shard:
+        if args.shard not in all_shards:
+            parser.error(
+                'Unknown shard "{}}. Expected one of:\n\t- {}'.format(
+                    args.shard, '\n\t- '.join(all_shards)))
+        shards = [args.shard]
+    else:
+        shards = all_shards
+
     dns = DnsManager()
-    for zone in config['zones']:
+    for zone in zones:
         r = dns.zones(name=zone)
         if not r:
             logger.warning('Creating zone %s', zone)
@@ -228,6 +256,13 @@ def main():
                     dns.ensure_recordset(zone_id, db_fqdn, 'CNAME', [fqdn])
                     # Take a small break to be nicer to Designate
                     time.sleep(0.25)
+
+                if svc in config['cnames']:
+                    # Add additional aliases for this shard
+                    for host in config['cnames'][svc]:
+                        db_fqdn = '{}.{}'.format(host, zone)
+                        dns.ensure_recordset(
+                            zone_id, db_fqdn, 'CNAME', [fqdn])
 
 
 if __name__ == '__main__':
