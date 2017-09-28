@@ -40,7 +40,6 @@ cfg.CONF.register_opts([
     cfg.StrOpt('certmanager_user', default='certmanager'),
     cfg.StrOpt('fqdn_format', default=None),
     cfg.StrOpt('puppet_master_host', default=None),
-    cfg.StrOpt('salt_master_host', default=None),
     cfg.StrOpt('puppet_config_backend', default=None),
 ], group='handler:wmf_sink')
 
