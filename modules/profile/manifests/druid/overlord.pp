@@ -8,6 +8,8 @@ class profile::druid::overlord(
     $ferm_srange        = hiera('profile::druid::ferm_srange'),
 ) {
 
+    require ::profile::druid::common
+
     # Druid overlord Service
     class { '::druid::overlord':
         properties       => $properties,

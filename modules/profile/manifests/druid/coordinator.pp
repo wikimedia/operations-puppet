@@ -8,6 +8,8 @@ class profile::druid::coordinator(
     $ferm_srange        = hiera('profile::druid::ferm_srange'),
 ) {
 
+    require ::profile::druid::common
+
     # Druid coordinator Service
     class { '::druid::coordinator':
         properties       => $properties,

@@ -8,6 +8,8 @@ class profile::druid::middlemanager(
     $ferm_srange        = hiera('profile::druid::ferm_srange'),
 ) {
 
+    require ::profile::druid::common
+
     # Druid middlemanager Service
     class { '::druid::middlemanager':
         properties       => $properties,

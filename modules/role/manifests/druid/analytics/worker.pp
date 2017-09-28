@@ -1,7 +1,6 @@
 # Class: role::druid::analytics::worker
 #
 class role::druid::analytics::worker {
-    include ::profile::druid::common
     include ::profile::druid::broker
     include ::profile::druid::coordinator
     include ::profile::druid::historical
