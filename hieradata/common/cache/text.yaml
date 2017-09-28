@@ -27,10 +27,8 @@ cache::text::nodes:
     - 'cp3042.esams.wmnet'
     - 'cp3043.esams.wmnet'
   ulsfo:
-    - 'cp4008.ulsfo.wmnet'
     - 'cp4009.ulsfo.wmnet'
     - 'cp4010.ulsfo.wmnet'
-    - 'cp4016.ulsfo.wmnet'
     - 'cp4017.ulsfo.wmnet'
     - 'cp4018.ulsfo.wmnet'
     - 'cp4027.ulsfo.wmnet'

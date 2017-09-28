@@ -290,12 +290,12 @@ node /^cp30[34][4-9]\.esams\.wmnet$/ {
 # ulsfo varnishes
 #
 
-node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(cache::upload, ipsec)
+node /^cp40(0[5-8]|1[3-6])\.ulsfo\.wmnet$/ {
+    # decomming in T176366, 6x ex-upload, 2x ex-text
+    role(spare::system)
 }
 
-node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
+node /^cp40(09|1[078])\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::text, ipsec)
 }
