@@ -288,6 +288,9 @@ ganglia_clusters:
     sites:
       codfw: []
       eqiad: []
+  kafka-jumbo:
+    description: "Kafka Jumbo Cluster"
+    id: 62
 
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
