@@ -8,6 +8,8 @@ class profile::druid::broker(
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
 ) {
 
+    require ::profile::druid::common
+
     # Druid Broker Service
     class { '::druid::broker':
         properties       => $properties,

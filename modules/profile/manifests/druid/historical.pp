@@ -8,6 +8,8 @@ class profile::druid::historical(
     $ferm_srange        = hiera('profile::druid::ferm_srange'),
 ) {
 
+    require ::profile::druid::common
+
     # Druid historical Service
     class { '::druid::historical':
         properties       => $properties,

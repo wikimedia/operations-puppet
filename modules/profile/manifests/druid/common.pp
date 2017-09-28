@@ -3,6 +3,9 @@
 #
 # Druid module parameters are configured via hiera.
 #
+# You will likely not need to explicity include this module since it is
+# a dependency of other ones like profile::druid::broker/etc..
+#
 # Druid Zookeeper settings will default to using the hosts in
 # the hiera zookeeper_cluster_name and zookeeper_clusters hiera variables.
 #
