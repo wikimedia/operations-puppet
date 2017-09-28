@@ -5,6 +5,8 @@ class varnish::common::browsersec {
         logo_link   => 'https://www.wikimedia.org',
         logo_src    => 'https://www.wikimedia.org/static/images/wmf-logo.png',
         logo_srcset => 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
+        logo_width  => '135',
+        logo_height => '101',
         logo_alt    => 'Wikimedia',
         content     => template('varnish/browsersec.body.html.erb'),
     }

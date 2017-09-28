@@ -47,6 +47,16 @@
 #
 #   Default: 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x'
 #
+# [*logo_width*]
+#   Width attribute for logo image.
+#
+#   Default: '135'
+#
+# [*logo_height*]
+#   Height attribute for logo image.
+#
+#   Default: '101'
+#
 # [*logo_alt*]
 #   Alternate text for logo image.
 #
@@ -68,6 +78,8 @@ define mediawiki::errorpage(
     $logo_link = 'https://www.wikimedia.org',
     $logo_src = 'https://www.wikimedia.org/static/images/wmf-logo.png',
     $logo_srcset = 'https://www.wikimedia.org/static/images/wmf-logo-2x.png 2x',
+    $logo_width = '135',
+    $logo_height = '101',
     $logo_alt = 'Wikimedia',
     $content = '',
     $footer = undef,
@@ -79,6 +91,8 @@ define mediawiki::errorpage(
         logo_link   => $logo_link,
         logo_src    => $logo_src,
         logo_srcset => $logo_srcset,
+        logo_width  => $logo_width,
+        logo_height => $logo_height,
         logo_alt    => $logo_alt,
         content     => $content,
         footer      => $footer,
