@@ -39,7 +39,6 @@
     shard: s3
     role: slave
   targets:
-  - db1035:9104
   - db1038:9104
   - db1044:9104
   - db1077:9104
