@@ -6,5 +6,4 @@ class role::wmcs::openstack::labtest::control {
     include ::profile::openstack::labtest::nova::common
     include ::profile::openstack::labtest::nova::conductor::service
     include ::profile::openstack::labtest::nova::scheduler::service
-    include ::profile::openstack::labtest::salt
 }
