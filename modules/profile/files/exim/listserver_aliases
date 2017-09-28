@@ -19,3 +19,4 @@ wikimedia-search:     discovery
 wikimedia-search-private: discovery-private
 labs-admin:           cloud-admin
 labs-announce:        cloud-announce
+labs-l:               cloud
