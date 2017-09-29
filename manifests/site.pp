@@ -890,6 +890,11 @@ node /^es200[234]\.codfw\.wmnet/ {
     include ::mariadb::mysqld_safe
 }
 
+# Backup system, see T176505
+node 'flerovium.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # Backup system, see T176506
 node 'furud.codfw.wmnet' {
     role(spare::system)

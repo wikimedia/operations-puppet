@@ -2344,6 +2344,13 @@ host eventlog2001 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host flerovium {
+    hardware ethernet F4:E9:D4:CD:90:30;
+    fixed-address flerovium.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host francium {
     hardware ethernet C8:1F:66:BF:88:52;
     fixed-address francium.eqiad.wmnet;
