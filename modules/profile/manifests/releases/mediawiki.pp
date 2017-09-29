@@ -7,7 +7,7 @@ class profile::releases::mediawiki (
     class { '::jenkins':
         access_log => true,
         http_port  => '8080',
-        prefix     => '/jenkins',
+        prefix     => '/ci',
         umask      => '0002',
     }
 
