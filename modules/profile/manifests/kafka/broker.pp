@@ -51,22 +51,14 @@
 # [*nofiles_ulimit*]
 #   Hiera: profile::kafka::broker::nofiles_ulimit
 #
-# [*replica_maxlag_warning*]
-#   Max messages a replica can lag before a warning alert is generated.
-#   Hiera: profile::kafka::broker::replica_maxlag_warning
-#
-# [*replica_maxlag_critical*]
-#   Mac messages a replica can lag before a critical alert is generated.
-#   Hiera: profile::kafka::broker::replica_maxlag_critical
-#
 # [*message_max_bytes*]
 #   The largest record batch size allowed by Kafka.
 #   If this is increased and there are consumers older
 #   than 0.10.2, the consumers' fetch size must also be increased
 #   so that the they can fetch record batches this large.
 #
-# [*prometheus_monitoring_enabled*]
-#   Enable the Prometheus jmx exporter.
+# [*monitoring_enabled*]
+#   Enable monitoring and alerts for this broker.
 #
 class profile::kafka::broker(
     $kafka_cluster_name                = hiera('profile::kafka::broker::kafka_cluster_name'),
@@ -83,12 +75,9 @@ class profile::kafka::broker(
     $num_io_threads                    = hiera('profile::kafka::broker::num_io_threads'),
     $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers'),
     $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit'),
-    $replica_maxlag_warning            = hiera('profile::kafka::broker::replica_maxlag_warning'),
-    $replica_maxlag_critical           = hiera('profile::kafka::broker::replica_maxlag_critical'),
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     $message_max_bytes                 = hiera('kafka_message_max_bytes'),
-    $prometheus_monitoring_enabled     = hiera('profile::kafka::broker::prometheus_monitoring_enabled'),
-    $prometheus_nodes                  = hiera('prometheus_nodes'),
+    $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled'),
 ) {
     # TODO: WIP
     $tls_secrets_path = undef
@@ -185,36 +174,13 @@ class profile::kafka::broker(
         java_home     => '/usr/lib/jvm/java-8-openjdk-amd64',
     }
 
-    if $prometheus_monitoring_enabled {
-        # Allow automatic generation of config on the
-        # Prometheus master
-        prometheus::jmx_exporter_instance { $::hostname:
-            address => $::ipaddress,
-            port    => 7800,
-        }
-
-        $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-        ferm::service { 'kafka-broker-jmx_exporter':
-            proto  => 'tcp',
-            port   => '7800',
-            srange => "@resolve((${prometheus_nodes_ferm}))",
-        }
-
-        require_package('prometheus-jmx-exporter')
-
-        $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
-        $java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:7800:${jmx_exporter_config_file}"
-
-        # Create the Prometheus JMX Exporter configuration
-        file { $jmx_exporter_config_file:
-            ensure  => present,
-            source  => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
-            owner   => 'kafka',
-            group   => 'kafka',
-            mode    => '0400',
-            require => Class['::confluent::kafka::broker'],
-        }
-    } else {
+    # If monitoring is enabled, then include the monitoring profile and set $java_opts
+    # for exposing the Prometheus JMX Exporter in the Kafka Broker process.
+    if $monitoring_enabled {
+        include ::profile::kafka::broker::monitoring
+        $java_opts = $::profile::kafka::broker::monitoring::java_opts
+    }
+    else {
         $java_opts = undef
     }
 
@@ -248,6 +214,8 @@ class profile::kafka::broker(
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
     }
+
+
 
     $ferm_plaintext_ensure = $plaintext ? {
         false => 'absent',
