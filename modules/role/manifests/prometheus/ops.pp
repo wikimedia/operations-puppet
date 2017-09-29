@@ -468,6 +468,13 @@ class role::prometheus::ops {
         },
     }
 
+    prometheus::class_config{ "pybal_${::site}":
+        dest       => "${targets_path}/pybal_${::site}.yaml",
+        class_name => 'lvs::balancer',
+        site       => $::site,
+        port       => 9090,
+    }
+
     $jmx_exporter_jobs = [
       {
         'job_name'        => 'jmx_kafka',
