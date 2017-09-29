@@ -52,7 +52,7 @@ class role::mariadb::backup_mydumper {
         weekday => 2,
         user    => 'dumps',
         command => '/usr/local/bin/dump_shards >/dev/null 2>&1',
-        require => [File['/usr/local/bin/dump_shards.sh'],
+        require => [File['/usr/local/bin/dump_shards'],
                     File['/srv/backups'],
         ],
     }
