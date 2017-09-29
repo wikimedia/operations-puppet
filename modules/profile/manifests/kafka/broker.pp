@@ -88,6 +88,7 @@ class profile::kafka::broker(
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     $message_max_bytes                 = hiera('kafka_message_max_bytes'),
     $prometheus_monitoring_enabled     = hiera('profile::kafka::broker::prometheus_monitoring_enabled'),
+    $prometheus_nodes                  = hiera('prometheus_nodes'),
 ) {
     # TODO: WIP
     $tls_secrets_path = undef
@@ -190,6 +191,13 @@ class profile::kafka::broker(
         prometheus::jmx_exporter_instance { $::hostname:
             address => $::ipaddress,
             port    => 7800,
+        }
+
+        $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+        ferm::service { 'kafka-broker-jmx_exporter':
+            proto  => 'tcp',
+            port   => '7800',
+            srange => "@resolve((${prometheus_nodes_ferm}))",
         }
 
         require_package('prometheus-jmx-exporter')
