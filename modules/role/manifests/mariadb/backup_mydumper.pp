@@ -9,14 +9,14 @@ class role::mariadb::backup_mydumper {
     include ::profile::backup::host
     include ::passwords::mysql::dump
 
-    group { 'dumps':
+    group { 'dump':
         ensure => present,
         system => true,
     }
 
-    user { 'dumps':
+    user { 'dump':
         ensure     => present,
-        gid        => 'dumps',
+        gid        => 'dump',
         shell      => '/bin/false',
         home       => '/srv/backups',
         system     => true,
@@ -25,23 +25,23 @@ class role::mariadb::backup_mydumper {
 
     file { '/srv/backups':
         ensure => directory,
-        owner  => 'dumps',
-        group  => 'dumps',
+        owner  => 'dump',
+        group  => 'dump',
         mode   => '0600', # implicitly 0700 for dirs
     }
 
     file { '/usr/local/bin/dump_shards':
         ensure => present,
-        owner  => 'dumps',
-        group  => 'dumps',
+        owner  => 'dump',
+        group  => 'dump',
         mode   => '0555',
         source => 'puppet:///modules/role/mariadb/dump_shards.sh',
     }
 
     file { '/etc/mysql/dump_shards.cnf':
         ensure  => present,
-        owner   => 'dumps',
-        group   => 'dumps',
+        owner   => 'dump',
+        group   => 'dump',
         mode    => '0400',
         content => "[client]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
     }
@@ -50,7 +50,7 @@ class role::mariadb::backup_mydumper {
         minute  => 0,
         hour    => 22,
         weekday => 2,
-        user    => 'dumps',
+        user    => 'dump',
         command => '/usr/local/bin/dump_shards >/dev/null 2>&1',
         require => [File['/usr/local/bin/dump_shards'],
                     File['/srv/backups'],
