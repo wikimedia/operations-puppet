@@ -315,3 +315,12 @@ new_mw_appservers:
 db_without_role:
   __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
   monitor_screens: false
+
+# Disable screen/tmux monitoring for:
+# 1) stat boxes, since researchers/analysts are often doing long running
+#    data crunching sessions.
+# 2) druid boxes, since on some of them the Analytics team is running
+#    important experiments on real time ingestion like Tranquillity.
+analytics_no_monitor_screens:
+  __regex: !ruby/regexp /^(stat|druid)1\d\d\d\.eqiad\.wmnet$/
+  monitor_screens: false
