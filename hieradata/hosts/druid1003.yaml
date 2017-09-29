@@ -1,0 +1,3 @@
+# The Analytics team is currently running long running tmux/screen sessions
+# for real time data ingestion in Druid (example Tranquillity).
+monitor_screens: false

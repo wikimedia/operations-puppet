@@ -1,8 +1,3 @@
-admin::groups:
-  - analytics-users
-  - analytics-privatedata-users
-  - analytics-admins
-cluster: analytics
 # This host is used by researchers/analysts/engineers that need to process
 # data on long running screen/tmux sessions.
 monitor_screens: false
