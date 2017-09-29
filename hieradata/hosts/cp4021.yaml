@@ -1,1 +1,1 @@
-numa_networking: isolate
+numa_networking: on
