@@ -308,7 +308,7 @@ db_like_raid_policy:
 
 # Temporary to allow a painless host imaging process
 new_mw_appservers:
-  __regex: !ruby/regexp /^mw13(0[7-9]|1[01]|18)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^mw13(07|1[01]|18)\.eqiad\.wmnet$/
   profile::base::notifications_enabled: '0'
 
 # disable screen monitoring, fallback for servers not covered by roles (T165348)
