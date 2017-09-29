@@ -348,8 +348,7 @@ dumps_web_rsync_server_clients:
 #   * Analytics so we can use it for testing throughput
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
 #   * ImageMetrics see T141407, these tables are no longer used and yet some cached code is still sending events
-#   * PageCreation see T171629, data is available in several other ways
-eventlogging_valid_mixed_schema_blacklist: ^(Analytics|CentralNoticeBannerHistory|ImageMetricsLoadingTime|ImageMetricsCorsSupport|PageCreation)$
+eventlogging_valid_mixed_schema_blacklist: ^(Analytics|CentralNoticeBannerHistory|ImageMetricsLoadingTime|ImageMetricsCorsSupport)$
 # Used to specify writer handler for eventlogging processor producer.
 eventlogging_kafka_producer_scheme: "kafka-confluent://"
 
