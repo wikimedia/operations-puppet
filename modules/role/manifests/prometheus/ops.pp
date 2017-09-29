@@ -468,6 +468,23 @@ class role::prometheus::ops {
         },
     }
 
+    # Job definition for pybal
+    $pybal_jobs = [
+      {
+        'job_name'        => 'pybal',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pybal_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "pybal_${::site}":
+        dest       => "${targets_path}/pybal_${::site}.yaml",
+        class_name => 'role::lvs::balancer',
+        site       => $::site,
+        port       => 9090,
+    }
+
     $jmx_exporter_jobs = [
       {
         'job_name'        => 'jmx_kafka',
@@ -494,7 +511,7 @@ class role::prometheus::ops {
         scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
-            $nginx_jobs, $blackbox_jobs, $jmx_exporter_jobs,
+            $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
         ),
         global_config_extra   => $config_extra,
     }
