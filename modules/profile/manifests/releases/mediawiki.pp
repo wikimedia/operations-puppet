@@ -11,6 +11,11 @@ class profile::releases::mediawiki (
         umask      => '0002',
     }
 
+    class { '::releases::proxy_jenkins':
+        http_port => '8080',
+        prefix    => '/ci',
+    }
+
     class { '::releases':
         sitename => 'releases.wikimedia.org',
     }
