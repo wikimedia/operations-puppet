@@ -4,6 +4,8 @@ class dumps::web::xmldumps_active(
     $publicdir = undef,
     $otherdir = undef,
     $logs_dest = undef,
+    $htmldumps_server = undef,
+    $xmldumps_server = undef,
 ) {
     # active web server
     class {'::dumps::web::xmldumps':

@@ -4,5 +4,7 @@ class profile::dumps::web::xmldumps_fallback {
         datadir   => '/data/xmldatadumps',
         publicdir => '/data/xmldatadumps/public',
         otherdir  => '/data/xmldatadumps/public/other',
+        htmldumps_server => 'francium.eqiad.wmnet',
+        xmldumps_server => 'dumps.wikimedia.org',
     }
 }
