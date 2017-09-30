@@ -1,5 +1,7 @@
 # serve dumps of revision content from restbase in html format
-class dumps::web::htmldumps {
+class dumps::web::htmldumps(
+    $htmldumps_server = undef,
+) {
 
     # nginx serving these via http only, with another host
     # proxying all requests. can't use the standard dumps nginx
@@ -27,8 +29,8 @@ class dumps::web::htmldumps {
     }
 
     nginx::site { 'htmldumps':
-        source => 'puppet:///modules/dumps/web/htmldumps/nginx.conf',
-        notify => Service['nginx'],
+        content => template('dumps/web/htmldumps/nginx.conf.erb)',
+        notify  => Service['nginx'],
     }
     include dumps::web::nginx_logrot
 }
