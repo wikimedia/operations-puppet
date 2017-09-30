@@ -7,14 +7,14 @@ limit_conn_zone $remote_addr$http_user_agent zone=addr:10m;
 
 server {
    listen [::]:80 default ipv6only=off;
-   server_name dumps.wikimedia.org;
+   server_name <%= @xmldumps_server %>;
 
-   return 301 https://dumps.wikimedia.org$request_uri;
+   return 301 https://<%= @xmldumps_server %>$request_uri;
 }
 
 server {
    listen [::]:443 default ssl ipv6only=off;
-   server_name dumps.wikimedia.org;
+   server_name <%= @xmldumps_server %>;
 
    include /etc/acme/challenge-nginx.conf;
 
@@ -41,13 +41,13 @@ server {
    rewrite ^/fundraising(|/.*)$                       /other/fundraising$1 permanent;
    rewrite ^/analytics(|/.*)$                         /other/analytics$1 permanent;
 
-   # for now we proxy for html (openzim style) dumps
+   # for now we proxy for html (restbase) dumps
    location /htmldumps {
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $remote_addr;
       proxy_set_header Proxy ""; # https://httpoxy.org/
-      proxy_pass http://francium.eqiad.wmnet;
+      proxy_pass http://<%= @htmldumps_server %>;
       limit_rate 8192k;
       limit_rate_after 1m;
       limit_conn addr 5;
