@@ -9,7 +9,7 @@ uid = root
 gid = root
 read only = false
 path = /data
-hosts allow = dataset1001.wikimedia.org, ms1001.wikimedia.org
+hosts allow = <%= @hosts_allow %>
 
 # slow-parse logs contain long render times for Wiki articles per server.
 # They are rsynced from MW log host to this directory.
