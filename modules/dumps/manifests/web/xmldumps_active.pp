@@ -3,6 +3,7 @@ class dumps::web::xmldumps_active(
     $datadir = undef,
     $publicdir = undef,
     $otherdir = undef,
+    $logs_dest = undef,
 ) {
     # active web server
     class {'::dumps::web::xmldumps':
@@ -14,6 +15,6 @@ class dumps::web::xmldumps_active(
 
     # only the active web server should be syncing nginx logs
     class {'::dumps::web::rsync::nginxlogs':
-        dest   => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
+        dest   => $logs_dest,
     }
 }

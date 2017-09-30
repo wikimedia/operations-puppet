@@ -3,12 +3,12 @@
 ### puppet:///modules/dumps/rsync/rsyncd.conf.media
 #####################################################################
 
-# write access from stat100[4,5] to media directory.
+# write access from <%= @hosts_allow %> to media directory.
 # Erik Z uses this.
 [media]
 uid = datasets
 gid = wikidev
 read only = false
 path = /data/xmldatadumps/public/other/media
-hosts allow = stat1005.eqiad.wmnet stat1006.eqiad.wmnet
+hosts allow = <%= @hosts_allow %>
 
