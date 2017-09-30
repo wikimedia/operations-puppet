@@ -7,7 +7,7 @@ limit_conn_zone $binary_remote_addr zone=addr:10m;
 
 server {
    listen 80;
-   server_name francium.eqiad.wmnet;
+   server_name <%= @htmldumps_server %>;
 
    root /srv/www;
 

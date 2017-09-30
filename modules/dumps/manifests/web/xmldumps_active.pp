@@ -4,13 +4,17 @@ class dumps::web::xmldumps_active(
     $publicdir = undef,
     $otherdir = undef,
     $logs_dest = undef,
+    $htmldumps_server = undef,
+    $xmldumps_server = undef,
 ) {
     # active web server
     class {'::dumps::web::xmldumps':
-        do_acme   => $do_acme,
-        datadir   => $datadir,
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
+        do_acme          => $do_acme,
+        datadir          => $datadir,
+        publicdir        => $publicdir,
+        otherdir         => $otherdir,
+        htmldumps_server => $htmldumps_server,
+        xmldumps_server  => $xmldumps_server,
     }
 
     # only the active web server should be syncing nginx logs

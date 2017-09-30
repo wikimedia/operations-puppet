@@ -4,6 +4,8 @@ class dumps::web::xmldumps(
     $datadir = undef,
     $publicdir = undef,
     $otherdir = undef,
+    $htmldumps_server = undef,
+    $xmldumps_server = undef,
 ) {
 
     class {'dumps::web::html':
@@ -19,7 +21,7 @@ class dumps::web::xmldumps(
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
     letsencrypt::cert::integrated { 'dumps':
-        subjects   => 'dumps.wikimedia.org',
+        subjects   => $xmldumps_server,
         puppet_svc => 'nginx',
         system_svc => 'nginx',
     }
@@ -57,7 +59,7 @@ class dumps::web::xmldumps(
     if ($do_acme == true) {
         monitoring::service { 'https':
             description   => 'HTTPS',
-            check_command => 'check_ssl_http_letsencrypt!dumps.wikimedia.org',
+            check_command => "check_ssl_http_letsencrypt!${xmldumps_server}",
         }
     }
 }
