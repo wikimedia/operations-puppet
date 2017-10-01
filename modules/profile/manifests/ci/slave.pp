@@ -6,10 +6,8 @@
 #
 # You should look instaed at role::ci::labs::slave
 #
-class role::ci::slave {
 
-    system::role { 'ci::slave': description => 'CI slave runner' }
-
+class profile::ci::slave {
     include contint::packages::base
     include contint::slave_scripts
     include ::profile::ci::docker
