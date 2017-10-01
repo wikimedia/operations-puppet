@@ -202,9 +202,7 @@ node /^conf200[123]\.codfw\.wmnet$/ {
 # CI master / CI standby (switch in Hiera)
 node /^(contint1001|contint2001)\.wikimedia\.org$/ {
     role(ci::master)
-
     interface::add_ip6_mapped { 'main': }
-    include ::contint::firewall
 }
 
 # Debian package/docker images building host in production

@@ -20,6 +20,8 @@ class role::ci::master(
     system::role { 'ci::master': description => 'CI Jenkins master' }
 
     include ::standard
+    include ::contint::firewall
+
     include ::profile::ci::slave
     include ::profile::ci::website
     include ::profile::zuul::merger
