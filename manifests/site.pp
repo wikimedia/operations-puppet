@@ -208,7 +208,6 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
         zuul::server)
 
     interface::add_ip6_mapped { 'main': }
-    include ::contint::firewall
 }
 
 # Debian package/docker images building host in production
