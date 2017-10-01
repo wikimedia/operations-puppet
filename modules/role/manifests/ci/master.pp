@@ -22,6 +22,7 @@ class role::ci::master(
     include ::standard
     include ::profile::ci::slave
     include ::profile::ci::website
+    include ::profile::zuul::merger
 
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
