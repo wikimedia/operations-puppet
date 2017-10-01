@@ -1,10 +1,15 @@
 # filtertags: labs-project-ci-staging
-class role::zuul::server {
+class profile::zuul::server(
+    $conf_common = hiera('zuul::common'),
+    $conf_server = hiera('zuul::server'),
+    $service_enable = hiera('profile::zuul::server::service_enable', true),
+    $service_ensure = hiera('profile::zuul::server::service_ensure', 'running'),
+) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
     include contint::proxy_zuul
 
-    $monitoring_active = hiera('zuul::server::service_enable') ? {
+    $monitoring_active = $service_enable ? {
         false   => 'absent',
         default => 'present',
     }
@@ -12,8 +17,6 @@ class role::zuul::server {
         ensure => $monitoring_active,
     }
 
-    $conf_common = hiera('zuul::common')
-    $conf_server = hiera('zuul::server')
     class { '::zuul::server':
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
@@ -25,6 +28,7 @@ class role::zuul::server {
         url_pattern          => $conf_server['url_pattern'],
         status_url           => $conf_server['status_url'],
         statsd_host          => $conf_server['statsd_host'],
+        service_ensure       => $service_ensure,
     }
 
     # Deploy Wikimedia Zuul configuration files.
