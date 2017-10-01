@@ -202,7 +202,6 @@ node /^conf200[123]\.codfw\.wmnet$/ {
 # CI master / CI standby (switch in Hiera)
 node /^(contint1001|contint2001)\.wikimedia\.org$/ {
     role(ci::master,
-        zuul::merger,
         zuul::server)
 
     interface::add_ip6_mapped { 'main': }
