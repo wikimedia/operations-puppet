@@ -1,5 +1,7 @@
-class role::zuul::merger {
-    system::role { 'zuul::merger': description => 'Zuul merger' }
+class profile::zuul::merger(
+    $conf_common = hiera('zuul::common'),
+    $conf_merger = hiera('zuul::merger'),
+) {
 
     include ::zuul::monitoring::merger
 
@@ -12,8 +14,6 @@ class role::zuul::merger {
         }
     }
 
-    $conf_common = hiera('zuul::common')
-    $conf_merger = hiera('zuul::merger')
     class { '::zuul::merger':
         # Shared settings
         gerrit_server       => $conf_common['gerrit_server'],
