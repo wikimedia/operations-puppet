@@ -2,5 +2,5 @@
 jenkins::service_ensure: unmanaged
 jenkins::service_enable: false
 jenkins::service_monitor: true
-zuul::server::service_ensure: running
-zuul::server::service_enable: true
+profile::zuul::server::service_ensure: running
+profile::zuul::server::service_enable: true
