@@ -25,6 +25,8 @@ class role::ci::master(
     include ::profile::zuul::merger
     include ::profile::zuul::server
 
+    include ::contint::firewall
+
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
         access_log => true,
