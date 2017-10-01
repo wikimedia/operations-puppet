@@ -11,6 +11,8 @@ profile::base::ssh_server_settings:
   disable_nist_kex: false
   explicit_macs: false
 
+profile::ci::jenkins::prefix: '/ci'
+
 zuul::merger:
     gearman_server: '208.80.154.17'  # contint1001.wikimedia.org
     gerrit_ssh_key_file: 'ssh/ci/jenkins-bot_gerrit_id_rsa'
