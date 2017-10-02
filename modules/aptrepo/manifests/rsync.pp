@@ -45,7 +45,7 @@ class aptrepo::rsync {
     cron { 'rsync-aptrepo':
         ensure  => $ensure_cron,
         user    => 'root',
-        command => "rsync -avp /srv/ rsync://${secondary_server}/install-srv > /dev/null",
+        command => "rsync -avp --delete /srv/ rsync://${secondary_server}/install-srv > /dev/null",
         hour    => '*/6',
         minute  => '42',
     }
