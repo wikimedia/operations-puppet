@@ -9,6 +9,13 @@ class profile::dumps::web::xmldumps_active {
         xmldumps_server  => 'dumps.wikimedia.org',
     }
     # copy dumps and other datasets to fallback host(s) and to labs
-    class {'::dumps::copying::peers':}
+    $primaryserver = 'dataset1001.wikimedia.org'
+    $secondaryserver = 'ms1001.wikimedia.org'
+    $publicsourceinfo = "source=public,server=$primaryserver,type=primary;source=public,server=$secondaryserver,type=secondary"
+    $othersourceinfo = "source=other,server=$primaryserver,type=primary;source=other,server=$secondaryserver,type=secondary"
+    class {'::dumps::copying::peers':
+      serverinfo => "$publicsourceinfo $othersourceinfo"
+    }
+
     class {'::dumps::copying::labs':}
 }
