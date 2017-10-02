@@ -32,7 +32,7 @@ class dumps::web::xmldumps(
     }
     include dumps::web::nginx_logrot
 
-    file { '/data/xmldatadumps/public/favicon.ico':
+    file { "${publicdir}/favicon.ico":
         source => 'puppet:///modules/dumps/web/xmldumps/favicon.ico',
         owner  => 'root',
         group  => 'root',
