@@ -370,7 +370,7 @@ node 'db1018.eqiad.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned in T176311 
+# To be decommissioned in T176311
 node 'db1036.eqiad.wmnet' {
     role(spare::system)
 }
