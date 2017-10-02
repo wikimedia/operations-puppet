@@ -986,13 +986,6 @@ host db1034 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host db1036 {
-    hardware ethernet 78:2b:cb:04:fc:5f;
-    fixed-address db1036.eqiad.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host db1038 {
     hardware ethernet 84:2b:2b:18:59:3e;
     fixed-address db1038.eqiad.wmnet;
