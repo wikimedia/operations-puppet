@@ -82,12 +82,6 @@ class scap::scripts {
         mode   => '0555',
         source => 'puppet:///modules/scap/sqldump',
     }
-    file { '/usr/local/bin/udprec':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/scap/udprec',
-    }
     file { '/usr/local/sbin/set-group-write2':
         owner  => 'root',
         group  => 'root',
@@ -119,6 +113,9 @@ class scap::scripts {
 
     # Clean up old cruft
     file { '/usr/local/bin/clear-profile':
+        ensure => 'absent',
+    }
+    file { '/usr/local/bin/udprec':
         ensure => 'absent',
     }
 }
