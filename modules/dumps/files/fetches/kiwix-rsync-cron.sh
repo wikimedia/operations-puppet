@@ -5,8 +5,6 @@
 ######################################
 
 sourcehost="download.kiwix.org"
-destroot="/data/xmldatadumps/public/other"
-
 bwlimit="--bwlimit=40000"
 
 do_rsync (){
@@ -21,5 +19,12 @@ do_rsync (){
         /usr/bin/rsync -rlptq --delete "$bwlimit" "${sourcehost}::${srcpath}" "${destroot}/${destpath}" 2>&1 | grep -v 'vanished'
     fi
 }
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 dest_base_dir"
+    exit 1
+fi
+
+destroot="$1"
 
 do_rsync "download.kiwix.org/zim/wikipedia/" "kiwix/zim/wikipedia/"
