@@ -1,5 +1,6 @@
 class dumps::rsync::pagecounts_ez(
     $hosts_allow = undef,
+    $otherdir = undef,
 ) {
     include ::dumps::rsync::common
 

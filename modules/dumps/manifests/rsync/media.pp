@@ -1,5 +1,6 @@
 class dumps::rsync::media(
     $hosts_allow = undef,
+    $otherdir = undef,
 ) {
     include ::dumps::rsync::common
 

@@ -1,10 +1,13 @@
-class dumps::web::fetches::kiwix {
+class dumps::web::fetches::kiwix(
+    $publicdir = undef,
+    $otherdir = undef,
+) {
     include dumps::deprecated::user
     require_package('rsync')
 
-    file { '/data/xmldatadumps/public/kiwix':
+    file { "${publicdir}/kiwix":
         ensure => 'link',
-        target => '/data/xmldatadumps/public/other/kiwix',
+        target => "${otherdir}/kiwix",
         owner  => 'datasets',
         group  => 'datasets',
         mode   => '0644',
@@ -20,7 +23,7 @@ class dumps::web::fetches::kiwix {
     cron { 'kiwix-mirror-update':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => '/bin/bash /usr/local/bin/kiwix-rsync-cron.sh',
+        command     => "/bin/bash /usr/local/bin/kiwix-rsync-cron.sh ${otherdir}",
         user        => 'datasets',
         minute      => '15',
         hour        => '*/2',
