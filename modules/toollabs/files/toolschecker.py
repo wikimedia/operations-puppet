@@ -453,41 +453,6 @@ def service_start_test():
             break
         time.sleep(1)
 
-    if not success:
-        return False
-
-    # So far so good -- now, test wsgi
-    success = False
-    subprocess.check_call([
-        'sudo',
-        '-u', 'tools.toolschecker-ge-ws',
-        '-i',
-        '/usr/bin/webservice', 'uwsgi-python', 'start'
-    ])
-
-    for i in range(0, 10):
-        request = requests.get(url)
-        if request.status_code == 200:
-            success = True
-            break
-        time.sleep(1)
-
-    subprocess.check_call([
-        'sudo',
-        '-u', 'tools.toolschecker-ge-ws',
-        '-i',
-        '/usr/bin/webservice', 'uwsgi-python', 'stop'
-    ])
-
-    # Make sure it really stopped
-    success = success and False
-    for i in range(0, 10):
-        request = requests.get(url)
-        if request.status_code != 200:
-            success = True
-            break
-        time.sleep(1)
-
     return success
 
 
