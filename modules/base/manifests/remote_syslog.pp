@@ -25,10 +25,18 @@ class base::remote_syslog (
         require_package('rsyslog-gnutls')
 
         if empty($central_hosts) and empty($central_hosts_tls) {
-            fail('::base::remote_syslog::central_hosts central_hosts_tls required')
+            fail('::base::remote_syslog::central_hosts or central_hosts_tls required')
         }
 
         if ! empty($central_hosts_tls) {
+            file { '/etc/rsyslog':
+                ensure => 'directory',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0400',
+                before => Base::Expose_puppet_certs['/etc/rsyslog'],
+            }
+
             ::base::expose_puppet_certs { '/etc/rsyslog':
                 provide_private => true,
             }
