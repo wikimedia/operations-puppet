@@ -134,7 +134,14 @@ function get_prometheus_result {
 
   local _RESULT
 
-  _RESULT=$( ${CURL} -sgG --data-urlencode "query=${PROMETHEUS_QUERY}" "${PROMETHEUS_SERVER}/api/v1/query" | $JQ -r '.data.result[1]' )
+  _RESPONSE=$( ${CURL} -sgG --data-urlencode "query=${PROMETHEUS_QUERY}" "${PROMETHEUS_SERVER}/api/v1/query" )
+
+  if [ $( echo "${_RESPONSE}" | $JQ -r '.status' ) == 'error' ]; then
+      _RESULT=$( echo "${_RESPONSE}" | $JQ -r '.error' )
+  else
+      _RESULT=$( echo "${_RESPONSE}" | $JQ -r '.data.result[1]' )
+  fi
+
 
   # check result
   if [[ ${_RESULT} =~ ^-?[0-9]+\.?[0-9]*$ ]]
