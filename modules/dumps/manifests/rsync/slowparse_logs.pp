@@ -1,5 +1,6 @@
 class dumps::rsync::slowparse_logs(
     $hosts_allow = undef,
+    $otherdir = undef,
 ) {
     include ::dumps::rsync::common
     file { '/etc/rsyncd.d/10-rsync-slowparse-logs.conf':

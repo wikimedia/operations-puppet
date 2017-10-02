@@ -1,10 +1,16 @@
 class profile::dumps::fetcher {
-    class {'dumps::web::fetches::kiwix':}
+    $publicdir = '/data/xmldatadumps/public'
+    $otherdir = '/data/xmldatadumps/public/other'
+
+    class {'dumps::web::fetches::kiwix':
+        publicdir => $publicdir,
+        otherdir  => $otherdir,
+    }
     class {'dumps::web::fetches::stats':
         src      => 'stat1005.eqiad.wmnet::hdfs-archive',
-        otherdir => '/data/xmldatadumps/public/other',
+        otherdir => $otherdir,
     }
     class {'dumps::web::fetches::wikitech_dumps':
-        url => 'https://wikitech.wikimedia.org/dumps/',
+        url       => 'https://wikitech.wikimedia.org/dumps/',
     }
 }
