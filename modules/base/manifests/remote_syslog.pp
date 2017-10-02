@@ -13,7 +13,7 @@
 #
 # [*central_hosts_tls*]
 #   A list of host:port (port is *required*) to forward syslog using TLS.
-#   (e.g. ["syslog.eqiad.wmnet:6154"])
+#   (e.g. ["syslog.eqiad.wmnet:6514"])
 #
 #
 class base::remote_syslog (
