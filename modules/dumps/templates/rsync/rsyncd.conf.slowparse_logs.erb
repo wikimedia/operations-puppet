@@ -1,0 +1,12 @@
+#####################################################################
+### puppet:///modules/dumps/rsync/rsyncd.conf.slowparse_logs.erb
+#####################################################################
+
+# slow-parse logs contain long render times for Wiki articles per server.
+# They are rsynced from MW log hosts to this directory.
+[slow-parse]
+uid = datasets
+gid = datasets
+read only = false
+path = /data/xmldatadumps/public/other/slow-parse
+hosts allow = <%= @hosts_allow %>
