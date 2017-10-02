@@ -12,6 +12,10 @@ class profile::dumps::rsyncer(
     class {'::dumps::rsync::peers': hosts_allow => $peer_hosts}
     class {'::dumps::rsync::phab_dump': hosts_allow => $phab_hosts}
     $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
-    class {'::dumps::rsync::public': hosts_allow => $hosts_allow,}
+    $publicdir = '/data/xmldatadumps/public'
+    class {'::dumps::rsync::public':
+        hosts_allow => $hosts_allow,
+        publicdir => $publicdir,
+    }
     class {'::dumps::rsync::slowparse_logs': hosts_allow => $mwlog_hosts}
 }

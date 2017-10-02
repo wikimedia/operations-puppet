@@ -10,5 +10,8 @@ class profile::dumps::web::xmldumps_active {
     }
     # copy dumps and other datasets to fallback host(s) and to labs
     class {'::dumps::copying::peers':}
-    class {'::dumps::copying::labs': labhost => 'labstore1003.eqiad.wmnet'}
+    class {'::dumps::copying::labs':
+        labhost => 'labstore1003.eqiad.wmnet',
+        publicdir => $publicdir,
+    }
 }
