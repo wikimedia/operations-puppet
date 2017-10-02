@@ -13,3 +13,4 @@ gem 'rake', '~> 12.0.0'
 gem 'git', '1.3.0'
 gem 'puppet-lint', '2.0.2'
 gem 'rubocop', '~> 0.49.1', require: false
+gem 'puppet-lint-wmf_styleguide-check', git: "https://gerrit.wikimedia.org/r/operations/puppet-lint/wmf_styleguide-check"
