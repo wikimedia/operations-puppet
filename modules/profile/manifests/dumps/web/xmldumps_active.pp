@@ -1,6 +1,8 @@
 class profile::dumps::web::xmldumps_active {
     class { '::dumpsuser': }
     $publicdir = '/data/xmldatadumps/public'
+    $otherdir = '/data/xmldatadumps/public/other'
+
     class {'::dumps::web::xmldumps_active':
         do_acme          => hiera('do_acme'),
         datadir          => '/data/xmldatadumps',
@@ -22,5 +24,6 @@ class profile::dumps::web::xmldumps_active {
     class {'::dumps::copying::labs':
         labhost   => 'labstore1003.eqiad.wmnet',
         publicdir => $publicdir,
+        otherdir  => $otherdir,
     }
 }
