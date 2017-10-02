@@ -120,16 +120,16 @@ class TaskGen < ::Rake::TaskLib
       :spec,
       :tox
     ]
-    @changed_files = git_changed_in_head(path)
+    @git = Git.open(path)
+    @changed_files = git_changed_in_head
     @tasks = setup_tasks
     @failed_specs = []
   end
 
   private
 
-  def git_changed_in_head(path)
-    g = Git.open(path)
-    diff = g.diff('HEAD^')
+  def git_changed_in_head
+    diff = @git.diff('HEAD^')
     diff.name_status.select { |_, status| 'ACM'.include? status}.keys
   end
 
@@ -139,6 +139,7 @@ class TaskGen < ::Rake::TaskLib
       method_name = "setup_#{cat}"
       tasks.concat send(method_name)
     end
+    setup_wmf_styleguide_delta
     tasks
   end
 
@@ -155,16 +156,96 @@ class TaskGen < ::Rake::TaskLib
   end
 
   def setup_puppet_lint
+    # Sets up a standard puppet-lint task
     changed = puppet_changed_files
     return [] if changed.empty?
     # Reset puppet-lint tasks, define a new one
     Rake::Task[:lint].clear
+    PuppetLint.configuration.send('disable_wmf_styleguide')
     PuppetLint::RakeTask.new :puppet_lint do |config|
       config.fail_on_warnings = true  # be strict
       config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
       config.pattern = changed
     end
     [:puppet_lint]
+  end
+
+  def linter_problems
+    linter = PuppetLint.new
+    puppet_changed_files.each do |puppet_file|
+      linter.file = puppet_file
+      linter.run
+    end
+    linter.problems
+  end
+
+  def setup_wmf_lint_check
+    PuppetLint.configuration.checks.each do |check|
+      if check == :wmf_styleguide
+        PuppetLint.configuration.send('enable_wmf_styleguide')
+      else
+        PuppetLint.configuration.send("disable_#{check}")
+      end
+    end
+  end
+
+  def print_wmf_style_violations(problems, other=nil)
+    other ||= {}
+    events = problems.select do |p|
+      other.select { |x| x[:message] == p[:message] && x[:path] == p[:path] }.empty?
+    end
+    events.each do |p|
+      puts "#{p[:path]}:#{p[:line]} - #{p[:message]}"
+    end
+  end
+
+  def setup_wmf_styleguide_delta
+    if puppet_changed_files.empty?
+      task :wmf_styleguide do
+        puts "wmf-style: no files to check"
+      end
+      task :wmf_styleguide_delta => [:wmf_styleguide]
+    else
+      desc 'Check wmf styleguide violations'
+      task :wmf_styleguide do
+        setup_wmf_lint_check
+        problems = linter_problems
+        print_wmf_style_violations(problems)
+        abort("wmf-styleguide: NOT OK")
+      end
+
+      desc 'Check regressions for the wmf style guide'
+      task :wmf_styleguide_delta do
+        puts '---> wmf_style lint'
+        setup_wmf_lint_check
+        if @git.diff('HEAD').size > 0
+          puts "Will NOT run the task as you have uncommitted changes that would be lost"
+          next
+        end
+
+        # Only enable the wmf_styleguide
+        new_problems = linter_problems
+        # Check out temporary branch, and re-run the check to the previous commit
+        alphabet = [*('a'..'z')]
+        random_branch_name = 'wmf_styleguide_' + (0..6).map { alphabet[rand(26)]}.join
+        old_problems = nil
+        @git.branch(random_branch_name).in_branch do
+          @git.reset_hard('HEAD^')
+          old_problems = linter_problems
+          false
+        end
+        @git.branch(random_branch_name).delete
+        delta = new_problems.length - old_problems.length
+        if delta > 0
+          puts "NEW violations:"
+          print_wmf_style_violations(new_problems, old_problems)
+          puts "Resolved violations:"
+          print_wmf_style_violations(old_problems, new_problems)
+          abort
+        end
+        puts '---> end wmf_style lint'
+      end
+    end
   end
 
   def setup_typos
@@ -322,8 +403,10 @@ end
 
 t = TaskGen.new('.')
 
+multitask :parallel => t.tasks
 desc 'Run all actual tests in parallel for changes in HEAD'
-multitask :test => t.tasks
+task :test => [:parallel, :wmf_styleguide_delta]
+
 # Show what we would run
 task :debug do
   puts "Tasks that would be run: "
