@@ -166,8 +166,6 @@ cache::req_handling:
     director: 'darmstadtium'
   doc.wikimedia.org:
     director: 'contint1001'
-  endowment.wikimedia.org:
-    director: 'bromine'
   etherpad.wikimedia.org:
     director: 'etherpad1001'
     caching: 'websockets'
