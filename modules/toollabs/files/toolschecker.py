@@ -156,7 +156,7 @@ def labsdb_check_labsdb1005():
         read_default_file=os.path.expanduser('~/replica.my.cnf')
     )
     cur = connection.cursor()
-    cur.execute('select * from toolserverdb_p.wiki limit 1')
+    cur.execute('select * from toollabs_p.tools limit 1')
     result = cur.fetchone()
     if result:
         return True
