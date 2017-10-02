@@ -134,11 +134,17 @@ function get_prometheus_result {
 
   local _RESULT
 
-  _RESULT=$( ${CURL} -sgG --data-urlencode "query=${PROMETHEUS_QUERY}" "${PROMETHEUS_SERVER}/api/v1/query" | $JQ -r '.data.result[1]' )
+  _RESPONSE=$( ${CURL} -sgG --data-urlencode "query=${PROMETHEUS_QUERY}" "${PROMETHEUS_SERVER}/api/v1/query" )
+
+  if [ $( echo "${_RESPONSE}" | $JQ -r '.status' ) == 'error' ]; then
+      _RESULT=$( echo "${_RESPONSE}" | $JQ -r '.error' )
+  else
+      _RESULT=$( echo "${_RESPONSE}" | $JQ -r '.data.result[1]' )
+  fi
+
 
   # check result
-  if [[ ${_RESULT} =~ ^-?[0-9]+\.?[0-9]*$ ]]
-  then
+  if [[ ${_RESULT} =~ ^-?[0-9]+\.?[0-9]*$ ]]; then
     printf '%.0F' ${_RESULT} # return an int if result is a number
   else
     case "${_RESULT}" in
@@ -183,7 +189,7 @@ else
     NAGIOS_SHORT_TEXT="${METRIC_NAME} is ${PROMETHEUS_RESULT}"
   else
     NAGIOS_SHORT_TEXT="unable to parse prometheus response"
-    NAGIOS_LONG_TEXT="${METRIC_NAME} is ${PROMETHEUS_RESULT}"
+    NAGIOS_LONG_TEXT="${METRIC_NAME} is: ${PROMETHEUS_RESULT}"
   fi
 fi
 
