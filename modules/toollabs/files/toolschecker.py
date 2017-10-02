@@ -439,7 +439,7 @@ def service_start_test():
 
     subprocess.check_call([
         'sudo',
-        'u', 'tools.toolschecker-ge-ws',
+        '-u', 'tools.toolschecker-ge-ws',
         '-i',
         '/usr/bin/webservice', 'stop'
     ])
@@ -460,7 +460,7 @@ def service_start_test():
     success = False
     subprocess.check_call([
         'sudo',
-        'u', 'tools.toolschecker-ge-ws',
+        '-u', 'tools.toolschecker-ge-ws',
         '-i',
         '/usr/bin/webservice', 'uwsgi-python', 'start'
     ])
@@ -474,7 +474,7 @@ def service_start_test():
 
     subprocess.check_call([
         'sudo',
-        'u', 'tools.toolschecker-ge-ws',
+        '-u', 'tools.toolschecker-ge-ws',
         '-i',
         '/usr/bin/webservice', 'uwsgi-python', 'stop'
     ])
