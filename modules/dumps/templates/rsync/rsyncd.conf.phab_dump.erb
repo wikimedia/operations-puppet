@@ -1,11 +1,11 @@
 #####################################################################
-### puppet:///modules/dumps/rsync/rsyncd.conf.phab_dump
+### puppet:///modules/dumps/rsync/rsyncd.conf.phab_dump.erb
 #####################################################################
 
-# write access from phab1001 to other/misc directory.
+# write access from <%= @hosts_allow %> to other/misc directory.
 [other_misc]
 uid = root
 gid = root
 read only = false
 path = /data/xmldatadumps/public/other/misc
-hosts allow = phab1001.eqiad.wmnet
+hosts allow = <%= @hosts_allow %>
