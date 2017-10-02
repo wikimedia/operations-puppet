@@ -425,7 +425,7 @@ def service_start_test():
     url = "https://tools.wmflabs.org/toolschecker-ge-ws/"
     subprocess.check_call([
         'sudo',
-        'u', 'tools.toolschecker-ge-ws',
+        '-u', 'tools.toolschecker-ge-ws',
         '-i',
         '/usr/bin/webservice', 'start'
     ])
