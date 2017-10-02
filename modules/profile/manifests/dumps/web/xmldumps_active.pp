@@ -1,8 +1,9 @@
 class profile::dumps::web::xmldumps_active {
+    $publicdir = '/data/xmldatadumps/public'
     class {'::dumps::web::xmldumps_active':
         do_acme          => hiera('do_acme'),
         datadir          => '/data/xmldatadumps',
-        publicdir        => '/data/xmldatadumps/public',
+        publicdir        => $publicdir,
         otherdir         => '/data/xmldatadumps/public/other',
         logs_dest        => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
         htmldumps_server => 'francium.eqiad.wmnet',
@@ -10,5 +11,8 @@ class profile::dumps::web::xmldumps_active {
     }
     # copy dumps and other datasets to fallback host(s) and to labs
     class {'::dumps::copying::peers':}
-    class {'::dumps::copying::labs': labhost => 'labstore1003.eqiad.wmnet'}
+    class {'::dumps::copying::labs':
+        labhost   => 'labstore1003.eqiad.wmnet',
+        publicdir => $publicdir,
+    }
 }
