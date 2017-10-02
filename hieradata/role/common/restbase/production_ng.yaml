@@ -26,25 +26,25 @@ profile::cassandra::extra_cql_hosts:
   - restbase2012.codfw.wmnet
 
 profile::cassandra::metrics_whitelist:
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
+  - .*\.metrics\.Table\..*\.meta\.CoordinatorReadLatency\..*$
+  - .*\.metrics\.Table\..*\.meta\.CoordinatorScanLatency\..*$
+  - .*\.metrics\.Table\..*\.meta\.EstimatedColumnCountHistogram\..*$
+  - .*\.metrics\.Table\..*\.meta\.EstimatedRowCount\..*$
+  - .*\.metrics\.Table\..*\.meta\.EstimatedRowSizeHistogram\..*$
+  - .*\.metrics\.Table\..*\.meta\.LiveDiskSpaceUsed\..*$
+  - .*\.metrics\.Table\..*\.meta\.LiveSSTableCount\..*$
+  - .*\.metrics\.Table\..*\.meta\.LiveScannedHistogram\..*$
+  - .*\.metrics\.Table\..*\.meta\.MaxRowSize\..*$
+  - .*\.metrics\.Table\..*\.meta\.MeanRowSize\..*$
+  - .*\.metrics\.Table\..*\.meta\.MinRowSize\..*$
+  - .*\.metrics\.Table\..*\.meta\.PendingCompactions\..*$
+  - .*\.metrics\.Table\..*\.meta\.PendingFlushes\..*$
+  - .*\.metrics\.Table\..*\.meta\.RangeLatency\..*$
+  - .*\.metrics\.Table\..*\.meta\.ReadLatency\..*$
+  - .*\.metrics\.Table\..*\.meta\.SSTablesPerReadHistogram\..*$
+  - .*\.metrics\.Table\..*\.meta\.TombstoneScannedHistogram\..*$
+  - .*\.metrics\.Table\..*\.meta\.TotalDiskSpaceUsed\..*$
+  - .*\.metrics\.Table\..*\.meta\.WriteLatency\..*$
 profile::cassandra::metrics_blacklist:
   - .*\.15MinuteRate$
   - .*\.5MinuteRate$
@@ -54,10 +54,10 @@ profile::cassandra::metrics_blacklist:
   - .*\.meanRate$
   - .*\.min$
   - .*\.stddev$
-  - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\..*$
+  - .*\.metrics\.Table\..*\.meta\..*$
   - .*\.metrics\.Keyspace\..*$
   - .*\.metrics\.Client\..*$
-  - .*\.metrics\.Table\..*$
+  - .*\.metrics\.ColumnFamily\..*$
 ## Instances
 profile::cassandra::instances:
   "restbase1008.eqiad.wmnet":
