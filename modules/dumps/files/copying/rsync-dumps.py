@@ -1,3 +1,4 @@
+import getopt
 import sys
 import subprocess
 import socket
@@ -29,11 +30,11 @@ class Rsyncer(object):
                 excludes.append(host_info[job]['exclude']['dir'])
         return excludes
 
-    def rsync_all(self, host_info):
-        for job in host_info:
-            excludes = self.get_excludes_for_job(job, host_info)
+    def rsync_all(self, rsync_info):
+        for job in rsync_info:
+            excludes = self.get_excludes_for_job(job, rsync_info)
 
-            hosts = host_info[job]['hosts']
+            hosts = rsync_info[job]['hosts']
             if self.host not in hosts:
                 # no rsync job info for this host
                 continue
@@ -71,7 +72,7 @@ class Rsyncer(object):
                 # not a primary, no specific dirs to sync, do nothing
                 continue
 
-            self.do_rsync(host_info[job]['source'], host_info[job]['dest'],
+            self.do_rsync(rsync_info[job]['source'], rsync_info[job]['dest'],
                           targets, dir_args)
 
     def do_rsync(self, src, dest, targets, dir_args):
@@ -114,37 +115,7 @@ class Rsyncer(object):
                             print errs
 
 
-def usage(message):
-    if message:
-        sys.stderr.write(message + "\n")
-        help_message = """Usage: rsync-dumps.py [dryrun] [bw=number] [list]
-    dryrun -- show commands that would be run instead of runnning them
-    bw     -- cap rsync bandwidth to this number (default: 40000)
-    list   -- only list files that would be transferred instead of sending them
-"""
-        sys.stderr.write(help_message)
-        sys.exit(1)
-
-
-def do_main():
-    dryrun = False
-    list_only = False
-    max_bandwidth = 40000
-
-    for i in range(1, len(sys.argv)):
-        if sys.argv[i] == 'dryrun':
-            dryrun = True
-        elif sys.argv[i].startswith('bw='):
-            max_bandwidth = sys.argv[i][3:]
-            if not max_bandwidth.isdigit():
-                usage("maxbw must be a number")
-        elif sys.argv[i] == 'list':
-            list_only = True
-        else:
-            usage("unknown option: " + sys.argv[i])
-
-    rsync = Rsyncer(max_bandwidth, dryrun, list_only)
-
+def get_rsync_info_default():
     # The rsync commands we would expect to see on...
     #
     # Primary for '/public/':
@@ -186,18 +157,13 @@ def do_main():
     #          /data/xmldatadumps/public/other/
     #          remotehost::data/xmldatadumps/public/other/
 
-    host_info = {
+    rsync_info = {
         'public': {  # job name
             # source is an absolute path
             'source': '/data/xmldatadumps/public/',
             # dest will be prefixed by 'servername::' in rsync
             'dest': 'data/xmldatadumps/public/',
-            'hosts': {
-                # everything but a specific list of dirs will be pushed:
-                'dataset1001': {'primary': True},
-                # only the specified list of dirs is here:
-                'ms1001': {'dirs': []}
-            }
+            'hosts': {}
         },
         'other': {   # job name
             # don't sync this when doing the 'public' job:
@@ -205,13 +171,144 @@ def do_main():
 
             'source': '/data/xmldatadumps/public/other/',
             'dest': 'data/xmldatadumps/public/other/',
-            'hosts': {
-                'ms1001': {'dirs': []},
-                'dataset1001': {'primary': True}
-            }
+            'hosts': {}
         }
     }
-    rsync.rsync_all(host_info)
+    return rsync_info
+
+
+def get_source_info(servers, sources_known):
+    """
+    convert servers string argument into a nice structure
+    containing: source, server, is it primary or secondary,
+    and if it is secondary, a list of directorys which it manages
+    """
+    sources = {}
+    # source=name,server=name,type=primary,dirs=a:b:c; \
+    #     source=name,server=name,type=secondary,dirs=a:b:c;...
+    source_entries = servers.split(';')
+    for source_entry in source_entries:
+        source_info = {}
+        args = source_entry.split(',')
+        for arg in args:
+            if '=' not in arg:
+                usage("bad server info supplied: %s (bad arg %s)" % (servers, arg))
+            name, value = arg.split('=')
+            if name == 'source':
+                if value not in sources_known:
+                    usage("bad server info supplied: %s (bad source name %s)" % (servers, value))
+                source_info['source'] = value
+            elif name == 'server':
+                source_info['server'] = value
+            elif name == 'type':
+                if value not in ['primary', 'secondary']:
+                    usage("bad server info supplied: %s (bad type %s)" % (servers, value))
+                source_info['type'] = value
+            elif name == 'dirs':
+                source_info['dirs'] = value.split(':')
+            else:
+                usage("bad server info supplied: %s (bad arg name %s)" % (servers, name))
+        if 'source' not in source_info or 'server' not in source_info or 'type' not in source_info:
+            usage("bad server info supplied: %s (missing source, server or type name)" % servers)
+        if source_info['type'] == 'secondary' and 'dirs' not in source_info:
+            source_info['dirs'] = []
+        if source_info['source'] not in sources:
+            sources[source_info['source']] = []
+        sources[source_info['source']].append(source_info)
+    return sources
+
+
+def rsync_info_update(rsync_info, sources_info):
+    for source in rsync_info:
+        for entry in sources_info[source]:
+            # Note that if a source has multiple entries for a server, the
+            # last entry will override earlier ones. You probably just want
+            # to avoid dups.
+            if entry['type'] == 'primary':
+                rsync_info[source]['hosts'][entry['server']] = {'primary': True}
+            elif entry['type'] == 'secondary':
+                rsync_info[source]['hosts'][entry['server']] = {'dirs': entry['dirs']}
+    return rsync_info
+
+
+def usage(message):
+    if message:
+        sys.stderr.write(message + "\n")
+        help_message = """Usage: rsync-dumps.py servers <serverlist>
+                     [--dryrun] [--bandwidth <number>] [--list]
+
+Arguments:
+    servers    (-s) -- list of servers and their directories associated with each source
+                       Format:  source=name,server=name,type=primary; \
+                                source=name,server=name,type=secondary,dirs=a:b:c;...
+                         source: one of the sources listed in this script
+                               known values: 'public' or 'other'
+                               default: none
+                         server: short name of server, fqdn not needed.
+                               default: none
+                         type: primary (all dirs will be rsynced to peer except those
+                               hosted by the secondary)
+                               secondary (only listed dirs will be rsynced).
+                               default: none
+                         dirs: list of directories for rsync, if server is secondary.
+                               default: empty list
+    bandwidth  (-b) -- cap rsync bandwidth to this number (default: 40000)
+
+Flags:
+    list       (-l) -- only list files that would be transferred instead of sending them
+    dryrun     (-d) -- show commands that would be run instead of runnning them
+    help       (-h) -- show this message
+"""
+        sys.stderr.write(help_message)
+        sys.exit(1)
+
+
+def do_main():
+    dryrun = False
+    list_only = False
+    max_bandwidth = 40000
+    servers = None
+
+    try:
+        (options, remainder) = getopt.gnu_getopt(
+            sys.argv[1:], "b:s:ldh",
+            ["bandwidth=", "servers=", "list", "dryrun", "help"])
+
+    except getopt.GetoptError as err:
+        usage("Unknown option specified: " + str(err))
+    for (opt, val) in options:
+        if opt in ["-b", "--bandwidth"]:
+            max_bandwidth = val
+            if not max_bandwidth.isdigit():
+                usage("maxbw must be a number")
+        elif opt in ["-s", "--servers"]:
+            servers = val
+        elif opt in ["-l", "--list"]:
+            list_only = True
+        elif opt in ["-d", "--dryrun"]:
+            dryrun = True
+        elif opt in ["-h", "--help"]:
+            usage('Help for this script\n')
+        else:
+            usage("Unknown option specified: <%s>" % opt)
+
+    if servers is None:
+        usage("Mandatory 'servers' argument omitted")
+
+    rsync = Rsyncer(max_bandwidth, dryrun, list_only)
+    rsync_info = get_rsync_info_default()
+    source_info = get_source_info(servers, rsync_info.keys())
+    errors = False
+    for source in rsync_info:
+        if source not in source_info:
+            sys.stderr.write("no servers specified for source %s\n" % source)
+            errors = True
+    if errors:
+        sys.exit(1)
+
+    rsync_info_update(rsync_info, source_info)
+
+    rsync.rsync_all(rsync_info)
 
 
 if __name__ == '__main__':
