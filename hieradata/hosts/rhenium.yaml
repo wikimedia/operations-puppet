@@ -1,2 +1,3 @@
 admin::groups:
   - traceback-roots
+monitor_screens: false
