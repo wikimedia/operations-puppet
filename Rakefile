@@ -145,9 +145,34 @@ class TaskGen < ::Rake::TaskLib
 
   private
 
+  def git_changed_files
+    # Files changed in puppet, including renames
+    old = []
+    new = []
+    diffs = @git.diff('HEAD^')
+    diffs.each do |diff|
+      name_status = diffs.name_status[diff.path]
+      case name_status
+      when 'A'
+        new << diff.path
+      when 'C', 'M'
+        new << diff.path
+        old << diff.path
+      when 'D'
+        old << diff.path
+      when /R\d+/
+        old << diff.path
+        regex = Regexp.new "^diff --git a/#{Regexp.escape(diff.path)} b/(.+)"
+        if diff.patch =~ regex
+          new << Regexp.last_match[1]
+        end
+      end
+    end
+    {old: old, new: new}
+  end
+
   def git_changed_in_head
-    diff = @git.diff('HEAD^')
-    diff.name_status.select { |_, status| 'ACM'.include? status}.keys
+    git_changed_files[:new]
   end
 
   def setup_tasks
@@ -160,8 +185,8 @@ class TaskGen < ::Rake::TaskLib
     tasks
   end
 
-  def puppet_changed_files
-    @changed_files.select{ |x| File.fnmatch("*.pp", x) }
+  def puppet_changed_files(files=@changed_files)
+    files.select{ |x| File.fnmatch("*.pp", x) }
   end
 
   def filter_files_by(*globs)
@@ -172,29 +197,14 @@ class TaskGen < ::Rake::TaskLib
     end
   end
 
-  def setup_puppet_lint
-    # Sets up a standard puppet-lint task
-    changed = puppet_changed_files
-    return [] if changed.empty?
-    # Reset puppet-lint tasks, define a new one
-    Rake::Task[:lint].clear
-    PuppetLint.configuration.send('disable_wmf_styleguide')
-    PuppetLint::RakeTask.new :puppet_lint do |config|
-      config.fail_on_warnings = true  # be strict
-      config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
-      config.pattern = changed
-    end
-    [:puppet_lint]
-  end
-
-  def linter_problems
-    linter = PuppetLint.new
-    puppet_changed_files.each do |puppet_file|
-      next unless File.file?(puppet_file)
-      linter.file = puppet_file
-      linter.run
-    end
-    linter.problems
+  def linter_problems(files)
+      linter = PuppetLint.new
+      puppet_changed_files(files).each do |puppet_file|
+        next unless File.file?(puppet_file)
+        linter.file = puppet_file
+        linter.run
+      end
+      linter.problems
   end
 
   def setup_wmf_lint_check
@@ -213,22 +223,38 @@ class TaskGen < ::Rake::TaskLib
       other.select { |x| x[:message] == p[:message] && x[:path] == p[:path] }.empty?
     end
     events.each do |p|
-      puts "#{p[:path]}:#{p[:line]} - #{p[:message]}"
+      puts "#{p[:path]}:#{p[:line]} #{p[:message]}"
     end
     puts "Nothing found" if events.length.zero?
   end
 
+  def setup_puppet_lint
+    # Sets up a standard puppet-lint task
+    changed = puppet_changed_files
+    return [] if changed.empty?
+    # Reset puppet-lint tasks, define a new one
+    Rake::Task[:lint].clear
+    PuppetLint.configuration.send('disable_wmf_styleguide')
+    PuppetLint::RakeTask.new :puppet_lint do |config|
+      config.fail_on_warnings = true  # be strict
+      config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
+      config.pattern = changed
+    end
+    [:puppet_lint]
+  end
+
   def setup_wmf_styleguide_delta
-    if puppet_changed_files.empty?
+    changed = git_changed_files
+    if puppet_changed_files(changed.values.flatten.uniq).empty?
       task :wmf_styleguide do
         puts "wmf-style: no files to check"
       end
       task :wmf_styleguide_delta => [:wmf_styleguide]
     else
-      desc 'Check wmf styleguide violations'
+      desc 'Check wmf styleguide violations in the current commit'
       task :wmf_styleguide do
         setup_wmf_lint_check
-        problems = linter_problems
+        problems = linter_problems changed[:new]
         print_wmf_style_violations(problems)
         abort("wmf-styleguide: NOT OK")
       end
@@ -243,7 +269,7 @@ class TaskGen < ::Rake::TaskLib
         end
 
         # Only enable the wmf_styleguide
-        new_problems = linter_problems
+        new_problems = linter_problems changed[:new]
         # Check out temporary branch, and re-run the check to the previous commit
         alphabet = [*('a'..'z')]
         random_branch_name = 'wmf_styleguide_' + (0..6).map { alphabet[rand(26)]}.join
@@ -257,7 +283,7 @@ class TaskGen < ::Rake::TaskLib
         else
           @git.branch(random_branch_name).in_branch do
             @git.reset_hard('HEAD^')
-            old_problems = linter_problems
+            old_problems = linter_problems changed[:old]
             false
           end
           @git.branch(random_branch_name).delete
