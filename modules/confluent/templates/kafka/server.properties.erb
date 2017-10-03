@@ -40,6 +40,11 @@ replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
 <% end -%>
 <% end -%>
 
+<%if @authorizer_class_name -%>
+######################### ACL handling ##################################
+authorizer.class.name=<%= @authorizer_class_name %>
+<% end -%>
+
 ######################### Socket Server Settings ########################
 <% if @security_inter_broker_protocol -%>
 security.inter.broker.protocol=<%= @security_inter_broker_protocol %>
