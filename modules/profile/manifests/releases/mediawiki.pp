@@ -7,13 +7,13 @@ class profile::releases::mediawiki (
     class { '::jenkins':
         access_log => true,
         http_port  => '8080',
-        prefix     => '/ci',
+        prefix     => '/',
         umask      => '0002',
     }
 
     class { '::releases::proxy_jenkins':
         http_port => '8080',
-        prefix    => '/ci',
+        prefix    => '/',
     }
 
     class { '::releases':
