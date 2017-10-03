@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+    ServerName <%= @sitename_jenkins %>
+    ServerAdmin <%= @server_admin %>
+
+    DocumentRoot /srv/org/wikimedia/releases/
+
+    ProxyRequests Off
+    ProxyVia Off
+    ProxyPreserveHost On
+    ProxyPass /ci/ http://127.0.0.1:8080/ci/ retry=0 nocanon
+    ProxyPassReverse /ci http://localhost:8080/ci
+
+    ErrorLog /var/log/apache2/<%= @sitename_jenkins %>.error.log
+
+    LogLevel warn
+
+    CustomLog /var/log/apache2/<%= @sitename_jenkins %>.access.log wmf
+    ServerSignature On
+</VirtualHost>
