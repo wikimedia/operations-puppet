@@ -24,7 +24,6 @@ esams:
   cache_misc:
     cp3007.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3008.esams.wmnet: [varnish-fe, varnish-be, nginx]
-    cp3009.esams.wmnet: [varnish-fe, varnish-be, nginx]
     cp3010.esams.wmnet: [varnish-fe, varnish-be, nginx]
   dns:
     maerlant.wikimedia.org: [pdns_recursor]
