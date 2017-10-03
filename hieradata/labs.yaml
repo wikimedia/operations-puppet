@@ -26,7 +26,7 @@ profile::openstack::main::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 
 # Additional base overrides
 standard::has_admin: false
-profile::base::remote_syslog: false
+profile::base::remote_syslog: []
 
 # Labs statsd instance
 statsd: labmon1001.eqiad.wmnet:8125

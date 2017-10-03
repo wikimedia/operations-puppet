@@ -1,4 +1,4 @@
-profile::base::remote_syslog: false
+profile::base::remote_syslog: []
 
 # ES-specific
 elasticsearch::auto_create_index: true
