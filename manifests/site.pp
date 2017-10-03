@@ -1140,8 +1140,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /labweb100[12]\.wikimedia\.org/ {
-    role(wmcs::openstack::main::web)
+node /labweb100[12]\.eqiad\.wmnet/ {
     include ::base::firewall
     include ::standard
     interface::add_ip6_mapped { 'main': }
