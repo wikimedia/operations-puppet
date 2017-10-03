@@ -27,7 +27,7 @@ class raid (
     # minutes instead of default of one minute. If the check is non-OK, retry
     # every $retry_interval.
     $check_interval = 10
-    $retry_interval = 5
+    $retry_interval = 10
 
     if 'megaraid' in $facts['raid'] {
         require_package('megacli')
