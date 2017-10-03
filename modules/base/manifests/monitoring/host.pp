@@ -29,6 +29,8 @@ class base::monitoring::host(
     $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
     $raid_write_cache_policy = undef,
+    $raid_check_interval = 10,
+    $raid_retry_interval = 10,
     $notifications_enabled = '1',
 ) {
     include ::base::puppet::params # In order to be able to use some variables
@@ -36,6 +38,8 @@ class base::monitoring::host(
     # RAID checks
     class { 'raid':
         write_cache_policy => $raid_write_cache_policy,
+        check_interval     => $raid_check_interval,
+        retry_interval     => $raid_retry_interval,
     }
 
     ::monitoring::host { $::hostname:

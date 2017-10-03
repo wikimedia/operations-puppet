@@ -14,6 +14,8 @@
 
 class raid (
     $write_cache_policy = undef,
+    $check_interval = 10,
+    $retry_interval = 10,
 ){
 
     if empty($write_cache_policy) {
@@ -21,13 +23,6 @@ class raid (
     } else {
         $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
     }
-
-    # for 'forking' checks (i.e. all but mdadm, which essentially just reads
-    # kernel memory from /proc/mdstat) check every $check_interval
-    # minutes instead of default of one minute. If the check is non-OK, retry
-    # every $retry_interval.
-    $check_interval = 10
-    $retry_interval = 5
 
     if 'megaraid' in $facts['raid'] {
         require_package('megacli')
