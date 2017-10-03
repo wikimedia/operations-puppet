@@ -17,6 +17,9 @@ admin::groups:
   - analytics-admins
   - gerrit-root
 
+# screen sessions are common on deployment servers (T165348)
+monitor_screens: false
+
 # Newer git version, not needed on stretch - T140927
 apt::use_experimental: true
 
@@ -175,3 +178,4 @@ scap::sources:
     repository: search/MjoLniR
   statsv/statsv:
     repository: analytics/statsv
+
