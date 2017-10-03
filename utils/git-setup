@@ -37,3 +37,10 @@ else
 		fi
 	fi
 fi
+which bundle || echo "Please install bundler in order to add the post-commit hook" && exit 1
+which rbenv  || echo "Please install rbenv in order to add the post-commit hook" && exit 1
+(cd "$TOPLEVEL" && rbenv exec bundle install --path .bundle)
+cat <<EOF > "${TOPLEVEL}/.git/hooks/post-commit"
+#!/bin/bash
+rbenv exec bundle exec rake test
+EOF
