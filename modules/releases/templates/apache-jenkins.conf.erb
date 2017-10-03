@@ -7,8 +7,8 @@
     ProxyRequests Off
     ProxyVia Off
     ProxyPreserveHost On
-    ProxyPass /ci/ http://127.0.0.1:8080/ci/ retry=0 nocanon
-    ProxyPassReverse /ci http://localhost:8080/ci
+    ProxyPass <%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix -%>/ retry=0 nocanon
+    ProxyPassReverse /ci http://localhost:<%= @http_port -%><%= @prefix -%>
 
     ErrorLog /var/log/apache2/<%= @sitename_jenkins %>.error.log
 
@@ -16,4 +16,43 @@
 
     CustomLog /var/log/apache2/<%= @sitename_jenkins %>.access.log wmf
     ServerSignature On
+
+    # Local reverse proxy authorization override
+    # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
+
+    <Proxy http://localhost:<%= @http_port -%><%= @prefix -%>*>
+
+        # user agent blacklisting for Jenkins
+        SetEnvIf User-Agent 80legs bad_browser
+        SetEnvIf User-Agent bingbot bad_browser
+        SetEnvIf User-Agent Baiduspider bad_browser
+        SetEnvIf User-Agent JikeSpider bad_browser
+        SetEnvIf User-Agent SISTRIX bad_browser
+        SetEnvIf User-Agent Sogou bad_browser
+        SetEnvIf User-Agent Sosospider bad_browser
+        SetEnvIf User-Agent TweetmemeBot bad_browser
+        SetEnvIf User-Agent ZumBot bad_browser
+
+        Order deny,allow
+        deny from env=bad_browser
+
+        # Jenkins is behind the misc varnish, the API calls lacks cache headers
+        # and their 4xx errors ends up being cached which causes troubles when
+        #
+        # Jenkins job builder creates a job (it check whether a job exists by
+        # hitting the API, which cache a 404, then checks whether the job got
+        # successfullyy created and fails beacuse it is server the cached 404).
+        SetEnvIf Request_URI .*/api/json.* NO_CACHE
+        Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
+    
+        # Prevent access to certain URLs - T63964
+        SetEnvIf Request_URI <%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
+        SetEnvIf Request_URI <%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
+        SetEnvIf Request_URI <%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
+        # Blacklist RSS feeds entirely
+        SetEnvIf Request_URI <%= @prefix -%>/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
+        Order deny,allow
+        deny from env=DENY_BUILDS_ACCESS
+	</Proxy>
+
 </VirtualHost>
