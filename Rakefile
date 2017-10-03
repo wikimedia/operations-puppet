@@ -204,7 +204,7 @@ class TaskGen < ::Rake::TaskLib
         linter.file = puppet_file
         linter.run
       end
-      linter.problems
+      linter.problems || []
   end
 
   def setup_wmf_lint_check
@@ -278,7 +278,7 @@ class TaskGen < ::Rake::TaskLib
         if @git.detached_head?
           sha1 = @git.revparse('HEAD')
           @git.reset_hard('HEAD^')
-          old_problems = linter_problems changed [:old]
+          old_problems = linter_problems changed[:old]
           @git.checkout(sha1)
         else
           @git.branch(random_branch_name).in_branch do
