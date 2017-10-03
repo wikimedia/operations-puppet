@@ -68,7 +68,7 @@ class profile::kafka::broker::monitoring (
         query          => "scalar(avg_over_time(kafka_server_replicamanager_underreplicatedpartitions{${prometheus_labels}}[30m]))",
         warning        => 5,
         critical       => 10,
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops/",
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
     # Alert on the average max replica lag over the last 30 minutes.
@@ -78,6 +78,6 @@ class profile::kafka::broker::monitoring (
         query          => "scalar(avg_over_time(kafka_server_replicafetchermanager_maxlag{${prometheus_labels}}[30m]))",
         warning        => $replica_maxlag_warning,
         critical       => $replica_maxlag_critical,
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops/",
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 }
