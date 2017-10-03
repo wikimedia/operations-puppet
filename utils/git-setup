@@ -20,20 +20,34 @@ git config alias.push-for-review-test "push puppet HEAD:refs/for/test"
 git config alias.push-for-review-production "push puppet HEAD:refs/for/production"
 
 TOPLEVEL=`git rev-parse --show-toplevel`
-which curl
-if [ "$?" == "0" ]
+
+if which curl > /dev/null;
 then
 	curl "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" > $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
 else
-	which wget
-	if [ "$?" == "0" ]
+	if which wget > /dev/null;
 	then
 		wget "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" -O $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
 	else
-		scp -p 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg
-		if [ "$?" != "0" ]
+
+		if ! scp -p 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg;
 		then
 			echo "Please download the commit message hook from https://gerrit.wikimedia.org/r/tools/hooks/commit-msg, place it in .git/hooks/commit-msg, and chmod u+x the file."
 		fi
 	fi
 fi
+
+RBENV=$(which rbenv)
+if [ "$RBENV" == "" ]; then
+	echo "Please install rbenv in order to add the post-commit hook"
+	exit 1
+fi
+if ! $RBENV which bundle > /dev/null; then
+	echo "Please install bundler in your rbenv in order to add the post-commit hook"
+	exit 1
+fi
+
+cat <<EOF > "${TOPLEVEL}/.git/hooks/post-commit"
+#!/bin/bash
+$RBENV exec bundle exec rake test
+EOF
