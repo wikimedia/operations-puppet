@@ -1,51 +1,30 @@
-class profile::docker::registry {
-    require ::network::constants
-    # Hiera configurations
+class profile::docker::registry(
     # The following variables might be useful elsewhere too
-    $username = hiera('docker::registry::username')
-    $hash = hiera('docker::registry::hash')
-    # Which machines are allowed to build images
-    $image_builders = hiera(
-        'profile::docker::registry::image_builders',
-        $network::constants::special_hosts[$::realm]['deployment_hosts'])
-    $config = hiera('profile::docker::registry::config', {})
-
+    $username = hiera('docker::registry::username'),
+    $hash = hiera('docker::registry::hash'),
+    # Which machines are allowed to build images.
+    $image_builders = hiera('profile::docker::registry::image_builders', undef),
     # cache misc nodes are allowed to connect via HTTP, if defined
-    $hnodes = hiera('cache::misc::nodes', {})
-    $http_allowed_hosts = pick($hnodes[$::site], [])
-
+    $hnodes = hiera('cache::misc::nodes', {}),
     # Storage configuration
     $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend')
 
+) {
+    require ::network::constants
+    # Hiera configurations
+    if !$image_builders {
+        $builders = $network::constants::special_hosts[$::realm]['deployment_hosts']
+    } else {
+        $builders = $image_builders
+    }
+    $http_allowed_hosts = pick($hnodes[$::site], [])
+
     if $storage_backend == 'filebackend' {
-        $params = {
-            'config'   => $config,
-            'datapath' => hiera('profile::docker::registry::datapath', '/srv/registry'),
-        }
+        include ::profile::docker::registry::filebackend
     }
     else {
-        $swift_accounts = hiera('swift::params::accounts')
-        $swift_account = $swift_accounts['docker_registry']
-        $swift_auth_url = hiera('profile::docker::registry::swift_auth_url')
-        # By default, the password will be extracted from swift, but can be overridden
-        $swift_account_keys = hiera('swift::params::account_keys')
-        $swift_container = hiera(
-            'profile::docker::registry::swift_container',
-            'docker_registry'
-        )
-        $swift_password = hiera('profile::docker::registry::swift_password', $swift_account_keys['docker_registry'])
-        $params = {
-            'config'          => $config,
-            'storage_backend' => $storage_backend,
-            'swift_user'      => $swift_account['user'],
-            'swift_password'  => $swift_password,
-            'swift_url'       => 'http://swift.svc.codfw.wmnet/auth/v1.0',
-            'swift_container' => $swift_container,
-        }
+        include ::profile::docker::registry::swift
     }
-
-    create_resources('class', {'::docker::registry' => $params})
-
 
     # Nginx frontend
     class { '::sslcert::dhparam': }
