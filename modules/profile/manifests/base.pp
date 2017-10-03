@@ -16,6 +16,8 @@ class profile::base(
     $check_disk_critical = hiera('profile::base::check_disk_critical', false),
     # TODO/puppet4: revert to using "undef"
     $check_raid_policy = hiera('profile::base::check_raid_policy', ''),
+    $check_raid_interval = hiera('profile::base::check_raid_interval', 10),
+    $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -96,6 +98,8 @@ class profile::base(
         nrpe_check_disk_options  => $check_disk_options,
         nrpe_check_disk_critical => $check_disk_critical,
         raid_write_cache_policy  => $check_raid_policy,
+        raid_check_interval      => $check_raid_interval,
+        raid_retry_interval      => $check_raid_retry,
         notifications_enabled    => $notifications_enabled,
     }
 
