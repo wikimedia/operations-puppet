@@ -2,7 +2,9 @@
 #
 # Configures a host to be a docker-backed Jenkins agent
 #
-class profile::ci::docker {
+class profile::ci::docker(
+    $jenkins_agent_username = hiera('jenkins_agent_username'),
+) {
     apt::repository { 'thirdparty-ci':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
@@ -16,9 +18,9 @@ class profile::ci::docker {
         ],
     }
     # Ensure jenkins-deploy membership in the docker group
-    exec { 'jenkins-deploy docker membership':
-        unless  => '/usr/bin/id -Gn jenkins-deploy | /bin/grep -qw "docker"',
-        command => '/usr/sbin/usermod -aG docker jenkins-deploy',
+    exec { 'jenkins user docker membership':
+        unless  => "/usr/bin/id -Gn '${jenkins_agent_username}' | /bin/grep -qw 'docker'",
+        command => "/usr/sbin/usermod -aG docker '${jenkins_agent_username}'",
         require => [
             Package['docker-ce'],
         ],
