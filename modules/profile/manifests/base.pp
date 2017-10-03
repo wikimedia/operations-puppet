@@ -50,7 +50,7 @@ class profile::base(
 
     class { '::rsyslog': }
 
-    if $remote_syslog {
+    unless empty($remote_syslog) and empty($remote_syslog_tls) {
         class { '::base::remote_syslog':
             enable            => true,
             central_hosts     => $remote_syslog,
