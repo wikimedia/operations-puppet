@@ -58,6 +58,24 @@ class PuppetSyntax::RakeTask
   end
 end
 
+# Fix ruby-git deficiencies. TODO: move to rugged instead?
+module Git
+  class Lib
+    def symbolic_ref(ref)
+      command('symbolic-ref', ref)
+    end
+  end
+  class Base
+    def detached_head?
+        lib.symbolic_ref('HEAD')
+        false
+      rescue Git::GitExecuteError
+        true
+    end
+  end
+end
+
+
 class SpecDependencies
   # Finds all specs to run based on the changed modules.
 
@@ -229,12 +247,20 @@ class TaskGen < ::Rake::TaskLib
         alphabet = [*('a'..'z')]
         random_branch_name = 'wmf_styleguide_' + (0..6).map { alphabet[rand(26)]}.join
         old_problems = nil
-        @git.branch(random_branch_name).in_branch do
+        # If we're in a detached head situation, assume it's ok to just roll back
+        if @git.detached_head?
+          sha1 = @git.revparse('HEAD')
           @git.reset_hard('HEAD^')
           old_problems = linter_problems
-          false
+          @git.checkout(sha1)
+        else
+          @git.branch(random_branch_name).in_branch do
+            @git.reset_hard('HEAD^')
+            old_problems = linter_problems
+            false
+          end
+          @git.branch(random_branch_name).delete
         end
-        @git.branch(random_branch_name).delete
         delta = new_problems.length - old_problems.length
         if delta > 0
           puts "NEW violations:"

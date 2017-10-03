@@ -6,7 +6,7 @@
 class profile::docker::engine(
     # We want to get settings across the hierarchy, some per host, some fleet
     # wide. So use hiera_hash to merge keys across the hierarchy
-    $settings = hiera_hash('profile::docker::engine::settings'),
+    $settings = hiera('profile::docker::engine::settings'),
     # Version to install; the default is not to pick one.
     $version = hiera('profile::docker::engine::version'),
     # Set to false if we don't want to declare the docker service here
