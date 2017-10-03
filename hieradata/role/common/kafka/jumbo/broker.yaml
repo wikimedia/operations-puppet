@@ -2,6 +2,10 @@ cluster: kafka_jumbo
 
 profile::kafka::broker::kafka_cluster_name: jumbo
 
+# Enable basic ACL handling via Zookeeper stored rules
+# More info https://phabricator.wikimedia.org/T167304#3478277
+profile::kafka::broker::acl_auth_provider: 'kafka.security.auth.SimpleAclAuthorizer'
+
 # Enable Monitoring (via Prometheus) and icinga alerts
 profile::kafka::broker::monitoring_enabled: true
 

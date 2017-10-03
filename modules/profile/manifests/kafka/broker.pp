@@ -57,6 +57,12 @@
 #   than 0.10.2, the consumers' fetch size must also be increased
 #   so that the they can fetch record batches this large.
 #
+# [*acl_auth_provider*]
+#   Enables the specified ACL authorization provider class.
+#   Up to Kafka 0.11 kafka.security.auth.SimpleAclAuthorizer is the only
+#   one available, so a new one must be included in the Java classpath
+#   to work properly.
+#
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.
 #
@@ -77,6 +83,7 @@ class profile::kafka::broker(
     $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit'),
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     $message_max_bytes                 = hiera('kafka_message_max_bytes'),
+    $acl_auth_provider                 = hiera('profile::kafka::broker::acl_auth_provider'),
     $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled'),
 ) {
     # TODO: WIP
@@ -213,6 +220,7 @@ class profile::kafka::broker(
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
+        authorizer_class_name            => $acl_auth_provider,
     }
 
     $ferm_plaintext_ensure = $plaintext ? {
