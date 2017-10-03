@@ -2079,6 +2079,7 @@ node /^rdb200[246]\.codfw\.wmnet/ {
 }
 
 # https://releases.wikimedia.org - VMs for releases (mediawiki and other)
+# https://releases-jenkins.wikimedia.org - for releases admins
 node /^releases[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
     interface::add_ip6_mapped { 'main': }
