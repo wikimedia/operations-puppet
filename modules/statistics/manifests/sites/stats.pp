@@ -76,7 +76,7 @@ class statistics::sites::stats (
         ensure    => 'latest',
         directory => $wikistats_source_directory,
         branch    => 'master',
-        origin    => 'https://phabricator.wikimedia.org/source/wikistats.git',
+        origin    => 'https://gerrit.wikimedia.org/r/analytics/wikistats2',
         owner     => 'root',
         group     => 'www-data',
         mode      => '0755',
