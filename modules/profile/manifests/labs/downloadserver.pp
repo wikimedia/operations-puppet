@@ -15,7 +15,7 @@ class profile::labs::downloadserver {
     }
 
     nginx::site { 'downloadserver':
-        source  => 'puppet:///modules/role/labs/downloadserver.nginx',
+        source  => 'puppet:///modules/profile/labs/downloadserver.nginx',
         require => Labs_lvm::Volume['srv'],
     }
 }
