@@ -17,7 +17,8 @@ class profile::releases::mediawiki (
     }
 
     class { '::releases':
-        sitename => 'releases.wikimedia.org',
+        sitename         => 'releases.wikimedia.org',
+        sitename_jenkins => 'releases-jenkins.wikimedia.org',
     }
 
     monitoring::service { 'http':

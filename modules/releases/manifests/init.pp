@@ -4,7 +4,7 @@
 # that will serve static files
 #
 # production: https://releases.wikimedia.org
-#
+# jenkins:    https://releases-jenkins.wikimedia.org
 # requirements:
 #
 # - initial content must be manually copied into
@@ -23,6 +23,7 @@
 
 class releases (
         $sitename = undef,
+        $sitename_jenkins = undef,
         $server_admin = 'noc@wikimedia.org',
 ) {
 
@@ -53,6 +54,10 @@ class releases (
 
     apache::site { $sitename:
         content => template('releases/apache.conf.erb'),
+    }
+
+    apache::site { $sitename_jenkins:
+        content => template('releases/apache-jenkins.conf.erb'),
     }
 
     file { '/srv/org/wikimedia/releases/releases-header.html':
