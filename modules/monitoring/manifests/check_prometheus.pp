@@ -95,7 +95,7 @@ define monitoring::check_prometheus(
     monitoring::service { $title:
         ensure        => $ensure,
         description   => $description,
-        check_command => "${command}!${query}!${prometheus_url}!${warning}!${critical}!${title}!${method}",
+        check_command => "${command}!${prometheus_url}!${query}!${warning}!${critical}!${title}!${method}",
         retries       => $retries,
         group         => $group,
         critical      => $nagios_critical,
