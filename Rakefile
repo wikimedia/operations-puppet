@@ -190,6 +190,7 @@ class TaskGen < ::Rake::TaskLib
   def linter_problems
     linter = PuppetLint.new
     puppet_changed_files.each do |puppet_file|
+      next unless File.file?(puppet_file)
       linter.file = puppet_file
       linter.run
     end
@@ -214,6 +215,7 @@ class TaskGen < ::Rake::TaskLib
     events.each do |p|
       puts "#{p[:path]}:#{p[:line]} - #{p[:message]}"
     end
+    puts "Nothing found" if events.length == 0
   end
 
   def setup_wmf_styleguide_delta
@@ -261,14 +263,13 @@ class TaskGen < ::Rake::TaskLib
           @git.branch(random_branch_name).delete
         end
         delta = new_problems.length - old_problems.length
-        if delta > 0
-          puts "NEW violations:"
-          print_wmf_style_violations(new_problems, old_problems)
-          puts "Resolved violations:"
-          print_wmf_style_violations(old_problems, new_problems)
-          abort
-        end
+        puts "wmf-style: total violations delta #{delta}"
+        puts "NEW violations:"
+        print_wmf_style_violations(new_problems, old_problems)
+        puts "Resolved violations:"
+        print_wmf_style_violations(old_problems, new_problems)
         puts '---> end wmf_style lint'
+        abort if delta > 0
       end
     end
   end
