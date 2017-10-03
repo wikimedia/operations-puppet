@@ -21,6 +21,15 @@ class base::remote_syslog (
     $central_hosts = [],
     $central_hosts_tls = [],
 ) {
+    # Remove once trusty is gone
+    if os_version('ubuntu == trusty') {
+        $owner = 'syslog'
+        $group = 'syslog'
+    } else {
+        $owner = 'root'
+        $group = 'root'
+    }
+
     if $enable {
         require_package('rsyslog-gnutls')
 
@@ -31,14 +40,16 @@ class base::remote_syslog (
         if ! empty($central_hosts_tls) {
             file { '/etc/rsyslog':
                 ensure => 'directory',
-                owner  => 'root',
-                group  => 'root',
+                owner  => $owner,
+                group  => $group,
                 mode   => '0400',
                 before => Base::Expose_puppet_certs['/etc/rsyslog'],
             }
 
             ::base::expose_puppet_certs { '/etc/rsyslog':
                 provide_private => true,
+                owner           => $owner,
+                group           => $group,
             }
         }
 
