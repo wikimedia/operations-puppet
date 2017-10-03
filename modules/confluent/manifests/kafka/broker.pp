@@ -206,6 +206,12 @@
 #   The maximum message size allowed.
 #   Default: 1048576
 #
+# [*authorizer_class_name*]
+#   Sets up the ACL authorization provider specified
+#   as parameter. It also set up a more verbose log4j logging related
+#   to ACL authorization events.
+#   Default: undef
+#
 class confluent::kafka::broker(
     $enabled                             = true,
     $brokers                             = {
@@ -279,6 +285,8 @@ class confluent::kafka::broker(
     $log4j_properties_template           = 'confluent/kafka/log4j.properties.erb',
 
     $message_max_bytes                   = 1048576,
+
+    $authorizer_class_name               = undef,
 ) {
     # confluent::kafka::client installs the kafka package
     # and a handy wrapper script.

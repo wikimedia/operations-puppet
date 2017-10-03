@@ -57,6 +57,11 @@
 #   than 0.10.2, the consumers' fetch size must also be increased
 #   so that the they can fetch record batches this large.
 #
+# [*auth_acls_enabled*]
+#   Enables the kafka.security.auth.SimpleAclAuthorizer bundled with Kafka.
+#   This will also increase the verbosity of authorization logs for a better
+#   user accounting.
+#
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.
 #
@@ -77,6 +82,7 @@ class profile::kafka::broker(
     $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit'),
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     $message_max_bytes                 = hiera('kafka_message_max_bytes'),
+    $auth_acls_enabled                 = hiera('profile::kafka::broker::auth_acls_enabled'),
     $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled'),
 ) {
     # TODO: WIP
@@ -184,6 +190,13 @@ class profile::kafka::broker(
         $java_opts = undef
     }
 
+    if $auth_acls_enabled {
+        $authorizer_class_name = 'kafka.security.auth.SimpleAclAuthorizer'
+    }
+    else {
+        $authorizer_class_name = undef
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -213,6 +226,7 @@ class profile::kafka::broker(
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
+        authorizer_class_name            => $authorizer_class_name,
     }
 
     $ferm_plaintext_ensure = $plaintext ? {
