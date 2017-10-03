@@ -48,7 +48,7 @@ class base::remote_syslog (
 
             ::base::expose_puppet_certs { '/etc/rsyslog':
                 provide_private => true,
-                owner           => $owner,
+                user            => $owner,
                 group           => $group,
             }
         }
