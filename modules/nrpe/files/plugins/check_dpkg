@@ -46,11 +46,15 @@ case "$1" in
 			echo $packagedata
 		fi
 		if test ${status} -eq 0 ; then
+			echo $packagedata | grep -qv '^hi'
+			if test $? -eq 1; then
+				echo DPKG WARNING dpkg reports held packages
+				exit 1
+			fi
 			echo DPKG CRITICAL dpkg reports broken packages
 			exit 2
-		else
-			echo All packages OK
-			exit 0
 		fi
+		echo All packages OK
+		exit 0
 		;;
 esac
