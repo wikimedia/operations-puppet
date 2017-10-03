@@ -136,7 +136,7 @@ function get_prometheus_result {
 
   _RESPONSE=$( ${CURL} -sgG --data-urlencode "query=${PROMETHEUS_QUERY}" "${PROMETHEUS_SERVER}/api/v1/query" )
 
-  if [ $( echo "${_RESPONSE}" | $JQ -r '.status' ) == 'error' ]; then
+  if [[ $( echo "${_RESPONSE}" | $JQ -r '.status' ) == 'error' ]]; then
       _RESULT=$( echo "${_RESPONSE}" | $JQ -r '.error' )
   else
       _RESULT=$( echo "${_RESPONSE}" | $JQ -r '.data.result[1]' )
