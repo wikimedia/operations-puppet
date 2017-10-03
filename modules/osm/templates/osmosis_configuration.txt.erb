@@ -3,4 +3,7 @@ baseUrl=https://planet.openstreetmap.org/replication/<%= @period %>/
 
 # Defines the maximum time interval in seconds to download in a single invocation.
 # Setting to 0 disables this feature.
-maxInterval = 0
+# 1 week (604800 seconds) ensure that we can catch up if replication falls
+# behind, while ensuring that we pull small enough chunks to be able to debug
+# them if needed. This could be lowered if replication is done more often.
+maxInterval = 604800
