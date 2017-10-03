@@ -256,6 +256,17 @@ class role::mariadb::analytics::custom_repl_slave {
         notify  => Service['eventlogging_sync'],
     }
 
+    logrotate::rule { 'eventlogging_sync':
+        ensure        => present,
+        file_glob     => '/var/log/eventlogging_sync.*',
+        frequency     => 'daily',
+        copy_truncate => true,
+        compress      => true,
+        missing_ok    => true,
+        not_if_empty  => true,
+        rotate        => 14,
+    }
+
     service { 'eventlogging_sync':
         ensure => running,
         enable => true,
