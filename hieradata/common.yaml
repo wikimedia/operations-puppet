@@ -564,3 +564,6 @@ udp2log_aggregator: "udplog:8420"
 
 tcpircbot_host: 'icinga.wikimedia.org'
 tcpircbot_port: 9200
+
+# User for jenkins master-slave connections
+jenkins_agent_username: 'jenkins-slave'
