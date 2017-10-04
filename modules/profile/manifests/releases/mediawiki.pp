@@ -11,16 +11,16 @@ class profile::releases::mediawiki (
 ){
     class { '::jenkins':
         access_log => true,
-        http_port  => '8080',
-        prefix     => '/',
+        http_port  => $http_port,
+        prefix     => $prefix,
         umask      => '0002',
     }
 
     class { '::releases':
         sitename         => $sitename,
         sitename_jenkins => $sitename_jenkins,
-        http_port        => '8080',
-        prefix           => '/',
+        http_port        => $http_port,
+        prefix           => $prefix,
     }
 
     class { '::apache::mod::rewrite': }
