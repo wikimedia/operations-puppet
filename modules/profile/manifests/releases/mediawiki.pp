@@ -3,6 +3,8 @@
 class profile::releases::mediawiki (
     $sitename = hiera('profile::releases::mediawiki::sitename'),
     $sitename_jenkins = hiera('profile::releases::mediawiki::sitename_jenkins'),
+    $prefix = hiera('profile::releases::mediawiki::prefix'),
+    $http_port = hiera('profile::releases::mediawiki::http_port'),
     $server_admin = hiera('profile::releases::mediawiki::server_admin'),
     $active_server = hiera('releases_server'),
     $passive_server = hiera('releases_server_failover'),

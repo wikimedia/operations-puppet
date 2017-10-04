@@ -16,8 +16,8 @@
     ProxyRequests Off
     ProxyVia Off
     ProxyPreserveHost On
-    ProxyPass <%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix -%>/ retry=0 nocanon
-    ProxyPassReverse /ci http://localhost:<%= @http_port -%><%= @prefix -%>
+    ProxyPass /<%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix -%>/ retry=0 nocanon
+    ProxyPassReverse /<%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix -%>
 
     ErrorLog /var/log/apache2/<%= @sitename_jenkins %>.error.log
 
@@ -29,7 +29,7 @@
     # Local reverse proxy authorization override
     # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
-    <Proxy http://localhost:<%= @http_port -%><%= @prefix -%>*>
+    <Proxy http://localhost:<%= @http_port -%>/<%= @prefix -%>*>
 
         # user agent blacklisting for Jenkins
         SetEnvIf User-Agent 80legs bad_browser
@@ -53,15 +53,15 @@
         # successfullyy created and fails beacuse it is server the cached 404).
         SetEnvIf Request_URI .*/api/json.* NO_CACHE
         Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
-    
+
         # Prevent access to certain URLs - T63964
-        SetEnvIf Request_URI <%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
-        SetEnvIf Request_URI <%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
-        SetEnvIf Request_URI <%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
+        SetEnvIf Request_URI ^<%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
+        SetEnvIf Request_URI ^<%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
+        SetEnvIf Request_URI ^<%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
         # Blacklist RSS feeds entirely
-        SetEnvIf Request_URI <%= @prefix -%>/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
+        SetEnvIf Request_URI ^<%= @prefix -%>/.*/rss(All|Failed|Latest) DENY_BUILDS_ACCESS
         Order deny,allow
         deny from env=DENY_BUILDS_ACCESS
-	</Proxy>
+    </Proxy>
 
 </VirtualHost>
