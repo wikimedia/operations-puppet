@@ -1,0 +1,9 @@
+Code-Review+1: Anomie <bjorsch@wikimedia.org>
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+2: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-by: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-at: Wed, 04 Oct 2017 08:56:08 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/353228
+Project: operations/puppet
+Branch: refs/heads/production
