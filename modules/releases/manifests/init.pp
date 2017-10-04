@@ -16,7 +16,9 @@
 #
 # - the apache site config
 # - the /srv/org/wikimedia/ subdir docroot
-#
+# - a Jenkins instance for automated MW releases
+# - another separate apache site for jenkins UI
+# 
 # Because this service is intended to live behind a
 # caching cluster which would handle ssl/tls, it does not
 # install certs or configure apache for ssl/tls
@@ -25,6 +27,8 @@ class releases (
         $sitename = undef,
         $sitename_jenkins = undef,
         $server_admin = 'noc@wikimedia.org',
+        $prefix = '/',
+        $http_port = '8080',
 ) {
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
