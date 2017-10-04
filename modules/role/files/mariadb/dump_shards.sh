@@ -3,7 +3,7 @@
 NUMTHREADS=${NUMTHREADS:-16}
 BACKUPDIR=${BACKUPDIR:-"/srv/backups"}
 # FIXME: All shards, including misc
-SHARDS=${SHARDS:-"s5"}
+SHARDS=${SHARDS:-"s2 s3 s5 s6 s7 x1"}
 SERVER=${SERVER:-"localhost"}
 ROWSMAX=${ROWSMAX:-20000000}
 
@@ -29,6 +29,7 @@ for shard in $SHARDS; do
     /usr/bin/mydumper \
         --compress \
         --events \
+        --triggers \
         --host="${SERVER}" \
         --logfile="${BACKUPDIR}/dump.${shard}.log" \
         --outputdir="${BACKUPDIR}/${shard}.${DATE}" \
@@ -36,7 +37,6 @@ for shard in $SHARDS; do
         --rows="${ROWSMAX}" \
         --socket="/run/mysqld/mysqld.${shard}.sock" \
         --threads="${NUMTHREADS}" \
-        --triggers \
         --user="${USER}"
 done
 # Restore IFS
