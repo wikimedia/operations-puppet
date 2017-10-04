@@ -16,6 +16,8 @@
 #
 # - the apache site config
 # - the /srv/org/wikimedia/ subdir docroot
+# - a Jenkins instance for automated MW releases
+# - another separate apache site for jenkins UI
 #
 # Because this service is intended to live behind a
 # caching cluster which would handle ssl/tls, it does not
@@ -25,6 +27,8 @@ class releases (
         $sitename = undef,
         $sitename_jenkins = undef,
         $server_admin = 'noc@wikimedia.org',
+        $prefix = '/',
+        $http_port = '8080',
 ) {
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
@@ -45,19 +49,6 @@ class releases (
         owner   => 'root',
         group   => 'releasers-mediawiki',
         require => File['/srv/org/wikimedia/releases'],
-    }
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-
-    apache::site { $sitename:
-        content => template('releases/apache.conf.erb'),
-    }
-
-    apache::site { $sitename_jenkins:
-        content => template('releases/apache-jenkins.conf.erb'),
     }
 
     file { '/srv/org/wikimedia/releases/releases-header.html':
