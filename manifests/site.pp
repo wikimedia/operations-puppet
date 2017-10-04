@@ -2353,7 +2353,7 @@ node 'wezen.codfw.wmnet' {
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
-node /^wtp10[0-4][0-9]\.eqiad\.wmnet$/ {
+node /^wtp10(2[5-9]|[34][0-9])\.eqiad\.wmnet$/ {
     role(parsoid)
 }
 
