@@ -1,6 +1,8 @@
 # server hosting Mediawiki releases
 # https://releases.wikimedia.org/mediawiki/
 class profile::releases::mediawiki (
+    $sitename = 'releases.wikimedia.org',
+    $sitename_jenkins = 'releases-jenkins.wikimedia.org',
     $active_server = hiera('releases_server'),
     $passive_server = hiera('releases_server_failover'),
 ){
@@ -11,21 +13,30 @@ class profile::releases::mediawiki (
         umask      => '0002',
     }
 
-    class { '::releases::proxy_jenkins':
-        http_port => '8080',
-        prefix    => '/',
+    class { '::releases':
+        sitename         => $sitename,
+        sitename_jenkins => $sitename_jenkins,
+        http_port        => '8080',
+        prefix           => '/',
     }
 
-    class { '::releases':
-        sitename         => 'releases.wikimedia.org',
-        sitename_jenkins => 'releases-jenkins.wikimedia.org',
+    class { '::apache::mod::rewrite': }
+    class { '::apache::mod::headers': }
+    class { '::apache::mod::proxy': }
+    class { '::apache::mod::proxy_http': }
+
+    apache::site { $sitename:
+        content => template('releases/apache.conf.erb'),
+    }
+
+    apache::site { $sitename_jenkins:
+        content => template('releases/apache-jenkins.conf.erb'),
     }
 
     monitoring::service { 'http':
         description   => 'HTTP',
         check_command => 'check_http',
     }
-
 
     ferm::service { 'releases_http':
         proto => 'tcp',
