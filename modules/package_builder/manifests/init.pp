@@ -102,6 +102,14 @@ class package_builder(
         require => Package['lintian'],
     }
 
+    file { "/etc/apt/sources.list.d/package-build-deb-src.list":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/package_builder/wikimedia.profile',
+    }
+
     file { '/etc/lintianrc':
         ensure  => present,
         owner   => 'root',
