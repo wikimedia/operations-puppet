@@ -20,4 +20,13 @@ class releases::proxy_jenkins (
     '/etc/apache2/conf.d/jenkins_proxy':
       ensure => absent,
   }
+
+  file {
+    '/etc/apache2/jenkins_proxy':
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('releases/proxy_jenkins.erb'),
+  }
+
 }
