@@ -1136,7 +1136,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 }
 
 node /labweb100[12]\.eqiad\.wmnet/ {
-    role(mediawiki::appserver, mariadb::wikitech)
+    role(mediawiki::appserver)
 
     include ::base::firewall
     include ::ldap::role::client::labs
