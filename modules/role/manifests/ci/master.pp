@@ -14,15 +14,11 @@ class role::ci::master {
     system::role { 'ci::master': description => 'CI Jenkins master' }
 
     include ::standard
+    include ::profile::ci::backup
     include ::profile::ci::firewall
     include ::profile::ci::jenkins
     include ::profile::ci::slave
     include ::profile::ci::website
     include ::profile::zuul::merger
     include ::profile::zuul::server
-
-    # Backups
-    include ::profile::backup::host
-    backup::set {'var-lib-jenkins-config': }
-    backup::set { 'contint' : }
 }
