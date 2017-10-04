@@ -4,10 +4,10 @@
 
 /var/log/mediawiki/generate-fancycaptcha/*.log {
 	su <%= @log_ownership_user %> <%= @log_ownership_group %>
-	monthly
+	weekly
 	notifempty
 	maxage 90
-	rotate 3
+	rotate 8
 	dateext
 	compress
 	delaycompress
