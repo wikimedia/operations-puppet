@@ -38,12 +38,12 @@ class mediawiki::maintenance::generatecaptcha( $ensure = present ) {
     }
 
     cron { 'generatecaptcha':
-        ensure   => $ensure,
-        user     => $::mediawiki::users::web,
-        monthday => 1,
-        hour     => 1,
-        minute   => 0,
-        require  => File['/etc/fancycaptcha/words', '/etc/fancycaptcha/badwords'],
-        command  => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf --blacklist=/etc/fancycaptcha/badwords --fill=10000 --oldcaptcha --delete --threads=4 >/var/log/mediawiki/generate-fancycaptcha/cron.log 2>&1',
+        ensure  => $ensure,
+        user    => $::mediawiki::users::web,
+        weekday => 1,
+        hour    => 1,
+        minute  => 0,
+        require => File['/etc/fancycaptcha/words', '/etc/fancycaptcha/badwords'],
+        command => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf --blacklist=/etc/fancycaptcha/badwords --fill=10000 --oldcaptcha --delete --threads=4 >/var/log/mediawiki/generate-fancycaptcha/cron.log 2>&1',
     }
 }
