@@ -102,6 +102,17 @@ class package_builder(
         require => Package['lintian'],
     }
 
+    # Ship an apt configuration to integrate deb-src entries for jessie and
+    # trusty, simplifies fetching the source for older distros by using
+    # "apt-get source foo=VERSION" on the package build host
+    file { '/etc/apt/sources.list.d/package-build-deb-src.list':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/package_builder/package-build-deb-src.list',
+    }
+
     file { '/etc/lintianrc':
         ensure  => present,
         owner   => 'root',
