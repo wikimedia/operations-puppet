@@ -3,14 +3,12 @@
 # Dependency for the Jenkins agent on slaves
 #
 class jenkins::slave::requisites() {
+    ensure_packages('openjdk-8-jre-headless')
 
-    if os_version('debian >= stretch') {
-        $jdk_version = '8'
-    } else {
-        $jdk_version = '7'
+    # When a slave happen to have another jre installed, make sure 8 is the
+    # default.
+    alternatives::select { 'java':
+        path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
+        require => Package['openjdk-8-jre-headless'],
     }
-
-    $jdk_package = "openjdk-${jdk_version}-jre-headless"
-
-    ensure_packages($jdk_package)
 }
