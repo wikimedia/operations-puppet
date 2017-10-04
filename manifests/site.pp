@@ -1136,8 +1136,11 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 }
 
 node /labweb100[12]\.eqiad\.wmnet/ {
+    role(mediawiki::appserver, mariadb::wikitech)
+
     include ::base::firewall
-    include ::standard
+    include ::ldap::role::client::labs
+
     interface::add_ip6_mapped { 'main': }
 }
 
