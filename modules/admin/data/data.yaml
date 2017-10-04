@@ -9,7 +9,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              nschaaf]
+              nschaaf, zhousquared]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -240,7 +240,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak,
               halfak, dr0ptp4kt, bearloga, elukey, gwicke, ppchelko,
-              nuria, otto, deskana, zhousquared, arnad, jgonsior,
+              nuria, otto, deskana, arnad, jgonsior,
               bsitzmann, dbrant, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jkatz, madhuvishy,
@@ -1976,13 +1976,12 @@ users:
     uid: 11999
     email: sbisson@wikimedia.org
   zhousquared:
-    ensure: present
+    ensure: absent
     gid: 500
     name: zhousquared
     realname: Zhou Zhou
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnn4PZEXCUasMJdW1/Ebvhz2vFtjI7xJ3c4vopqwwmiiXTnnIXVN/78RrtZK9Ujc4OnaTW2mNAQTD19c5Hjgz+2daposSYOc7VbBZ2fl5eqlgwWw6d/v0QANtLF3oCFwTTkMVf4GqjHhwu1SFyfa+meuFKJ6KGgO4rPMPaQOeFBMJYylBsWrWiRwhguSO5RNOVOEDAuZopY/Mn8QmwxiTxiOjkYIF9jxAJslz4MXiwH529sNZwJGlIs8Dfq41P8QIjS5QJgdzFNfhcOWlnX5G84UISZbAa/KUCitWediYwteeZyRrACLZ/Nb7cmpL+xQVjFBBS/RGiOQlGBfL3zxeF zzhou@wmf1954.corp.wikimedia.org]
+    ssh_keys: []
     uid: 12576
-    email: zzhou@wikimedia.org
   dfoy:
     ensure: present
     gid: 500
