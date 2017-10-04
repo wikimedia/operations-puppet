@@ -59,14 +59,7 @@ class jenkins(
         allowdupe => false,
     }
 
-    # We want to run Jenkins under Java 7.
-    # (unless when we are on stretch and there is no Java 7 anymore)
-    if os_version('debian >= stretch') {
-        $jdk_version = '8'
-    } else {
-        $jdk_version = '7'
-    }
-    $jdk_package = "openjdk-${jdk_version}-jdk"
+    $jdk_package = 'openjdk-8-jdk'
     ensure_packages($jdk_package)
 
     # Upgrades are usually done manually by upload the Jenkins
