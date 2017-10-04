@@ -43,6 +43,8 @@ class jenkins(
     $umask = '0002'
 )
 {
+    include ::jenkins::common
+
     user { 'jenkins':
         home       => '/var/lib/jenkins',
         shell      => '/bin/bash',  # admins need to be able to login
@@ -59,22 +61,14 @@ class jenkins(
         allowdupe => false,
     }
 
-    # We want to run Jenkins under Java 7.
-    # (unless when we are on stretch and there is no Java 7 anymore)
-    if os_version('debian >= stretch') {
-        $jdk_version = '8'
-    } else {
-        $jdk_version = '7'
-    }
-    $jdk_package = "openjdk-${jdk_version}-jdk"
-    ensure_packages($jdk_package)
+    ensure_packages('openjdk-8-jdk')
 
     # Upgrades are usually done manually by upload the Jenkins
     # package at apt.wikimedia.org then restarting jenkins and
     # double checking everything went fine.
     package { 'jenkins':
         ensure  => present,
-        require => Package[$jdk_package],
+        require => Package['openjdk-8-jdk'],
     }
 
     file { '/var/lib/jenkins/.daemonrc':
