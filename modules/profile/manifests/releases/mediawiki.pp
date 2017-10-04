@@ -11,21 +11,17 @@ class profile::releases::mediawiki (
         umask      => '0002',
     }
 
-    class { '::releases::proxy_jenkins':
-        http_port => '8080',
-        prefix    => '/',
-    }
-
     class { '::releases':
         sitename         => 'releases.wikimedia.org',
         sitename_jenkins => 'releases-jenkins.wikimedia.org',
+        http_port        => '8080',
+        prefix           => '/',
     }
 
     monitoring::service { 'http':
         description   => 'HTTP',
         check_command => 'check_http',
     }
-
 
     ferm::service { 'releases_http':
         proto => 'tcp',
