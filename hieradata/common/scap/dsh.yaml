@@ -95,15 +95,8 @@ scap::dsh::groups:
     hosts:
       - hafnium.eqiad.wmnet
   maps:
-    hosts:
-      - maps1001.eqiad.wmnet
-      - maps1002.eqiad.wmnet
-      - maps1003.eqiad.wmnet
-      - maps1004.eqiad.wmnet
-      - maps2001.codfw.wmnet
-      - maps2002.codfw.wmnet
-      - maps2003.codfw.wmnet
-      - maps2004.codfw.wmnet
+    conftool:
+      - {'cluster': 'maps', 'service': 'kartotherian'}
   maps-canaries:
     hosts:
       - maps-test2001.codfw.wmnet
