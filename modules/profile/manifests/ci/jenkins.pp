@@ -10,12 +10,13 @@ class profile::ci::jenkins(
 ) {
     # Load the Jenkins module, that setup a Jenkins master
     class { '::jenkins':
-        access_log     => true,
-        http_port      => '8080',
-        prefix         => $prefix,
-        umask          => '0002',
-        service_ensure => $service_ensure,
-        service_enable => $service_enable,
+        access_log      => true,
+        http_port       => '8080',
+        prefix          => $prefix,
+        umask           => '0002',
+        service_ensure  => $service_ensure,
+        service_enable  => $service_enable,
+        service_monitor => $service_monitor,
     }
     class { '::contint::proxy_jenkins':
         http_port => '8080',
