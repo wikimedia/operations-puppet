@@ -46,6 +46,13 @@ scap::dsh::groups:
   parsoid:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid'}
+  parsoid-canaries:
+    # Also update $wgLinterSubmitterWhitelist in operations/mediawiki-config
+    hosts:
+      - wtp1025.eqiad.wmnet
+      - wtp1026.eqiad.wmnet
+      - wtp2001.codfw.wmnet
+      - wtp2002.codfw.wmnet
   mediawiki-api-canaries:
     hosts:
       - mw1276.eqiad.wmnet
