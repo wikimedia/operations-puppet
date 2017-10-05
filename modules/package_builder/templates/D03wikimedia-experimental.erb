@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Avoid running hook if wikimedia_experimental is not specified
+if [ "${WIKIMEDIA_EXPERIMENTAL}" = "yes" ]; then
+	cat > /etc/apt/sources.list.d/wikimedia-experimental.list <<-'EOF'
+	deb <%= @mirror %> <%= @distribution %>-wikimedia experimental
+	deb-src <%= @mirror %> <%= @distribution %>-wikimedia experimental
+EOF
+	apt-get install wget gnupg -y
+	wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | apt-key add -
+	apt-get update
+fi
