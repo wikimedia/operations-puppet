@@ -12,8 +12,13 @@ class varnish::packages($version='installed') {
         'varnish-modules',
         'libvmod-netmapper',
         'libvmod-tbf',
-        'libvmod-vslp',
         ]:
         ensure  => 'installed',
+    }
+
+    if (hiera('varnish::major_version', 4) == 4) {
+        package { 'libvmod-vslp':
+            ensure => 'installed',
+        }
     }
 }
