@@ -1,7 +1,8 @@
 HEAP_SIZE="<%= @blazegraph_heap_size %>"
 BLAZEGRAPH_OPTS="<%= @blazegraph_options %>"
 LOG_CONFIG=/etc/wdqs/logback-wdqs-blazegraph.xml
-GC_LOGS="-XX:+PrintGCDetails \
+GC_LOGS="-Xloggc:<%= @log_dir %>/wdqs-blazegraph_jvm_gc.%p.log
+         -XX:+PrintGCDetails \
          -XX:+PrintGCDateStamps \
          -XX:+PrintGCTimeStamps \
          -XX:+PrintAdaptiveSizePolicy \
