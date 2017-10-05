@@ -13,10 +13,6 @@
 #   include otrs::web
 #
 class otrs::web {
-    include ::apache::mod::perl
-    include ::apache::mod::remoteip
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     # We override the default mpm_prefork to set the apache setting for
     # MaxConnectionsPerChild. The chosen number is experimentally derived from
