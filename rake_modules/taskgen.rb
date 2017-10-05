@@ -30,6 +30,29 @@ class TaskGen < ::Rake::TaskLib
     @failed_specs = []
   end
 
+  def setup_wmf_lint_check
+    # Sets up puppet-lint to only check for the wmf style guide
+    PuppetLint.configuration.checks.each do |check|
+      if check == :wmf_styleguide
+        PuppetLint.configuration.send('enable_wmf_styleguide')
+      else
+        PuppetLint.configuration.send("disable_#{check}")
+      end
+    end
+  end
+
+  def print_wmf_style_violations(problems, other=nil)
+    # Prints the wmf style violations
+    other ||= {}
+    events = problems.select do |p|
+      other.select { |x| x[:message] == p[:message] && x[:path] == p[:path] }.empty?
+    end
+    events.each do |p|
+      puts "#{p[:path]}:#{p[:line]} #{p[:message]}"
+    end
+    puts "Nothing found" if events.length.zero?
+  end
+
   private
 
   def setup_tasks
@@ -64,27 +87,6 @@ class TaskGen < ::Rake::TaskLib
       problems.concat(linter.problems)
     end
     problems
-  end
-
-  def setup_wmf_lint_check
-    PuppetLint.configuration.checks.each do |check|
-      if check == :wmf_styleguide
-        PuppetLint.configuration.send('enable_wmf_styleguide')
-      else
-        PuppetLint.configuration.send("disable_#{check}")
-      end
-    end
-  end
-
-  def print_wmf_style_violations(problems, other=nil)
-    other ||= {}
-    events = problems.select do |p|
-      other.select { |x| x[:message] == p[:message] && x[:path] == p[:path] }.empty?
-    end
-    events.each do |p|
-      puts "#{p[:path]}:#{p[:line]} #{p[:message]}"
-    end
-    puts "Nothing found" if events.length.zero?
   end
 
   def setup_puppet_lint
