@@ -28,7 +28,7 @@ ExecStart=<%= @start_cmd_prefix %>/usr/sbin/varnishd \
 -S /etc/varnish/secret \
 <%= @storage -%> \
 -p thread_pool_stack=131072 \
--p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
+-p listen_depth=4096 -p vcc_err_unref=off \
 -p http_req_size=24576 \
 -p gethdr_extrachance=0 \
 -p gzip_level=8 \
