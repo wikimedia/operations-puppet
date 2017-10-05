@@ -11,6 +11,11 @@ EOF
 	Pin: release o=Wikimedia
 	Pin-Priority: 1001
 EOF
+
+	if [ "${WIKIMEDIA_EXPERIMENTAL}" = "yes" ]; then
+		echo 'deb <%= @mirror %> <%= @distribution %>-wikimedia experimental' > /etc/apt/sources.list.d/wikimedia-experimental.list
+	fi
+
 	apt-get install wget gnupg -y
 	wget -O - -o /dev/null http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg | apt-key add -
 	apt-get update
