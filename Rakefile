@@ -67,7 +67,6 @@ namespace :global do
     FileList['modules/*/spec'].each do |path|
       next unless path.match('modules/(.+)/')
       module_name = Regexp.last_match(1)
-      desc "Run spec for module #{module_name}"
       task module_name do
         spec_result = system("cd 'modules/#{module_name}' && rake spec")
         spec_failed << module_name if !spec_result
@@ -78,6 +77,23 @@ namespace :global do
   desc "Run all spec tests found in modules"
   multitask :spec => spec_tasks do
     raise "Modules that failed to pass the spec tests: #{spec_failed.join ', '}" unless spec_failed.empty?
+  end
+
+  desc 'Run the wmf style guide check on all files, or on a single module (with module=<module-name>)'
+  task :wmf_style do
+    if ENV['module']
+      pattern = "modules/#{ENV['module']}/**/*.pp"
+    else
+      pattern = '**/*.pp'
+    end
+
+    t.setup_wmf_lint_check
+    linter = PuppetLint.new
+    FileList[pattern].to_a.each do |puppet_file|
+      linter.file = puppet_file
+      linter.run
+      t.print_wmf_style_violations linter.problems unless linter.problems.empty?
+    end
   end
 end
 
