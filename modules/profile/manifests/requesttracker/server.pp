@@ -19,4 +19,5 @@ class profile::requesttracker::server {
         port   => '80',
         srange => '$PRODUCTION_NETWORKS',
     }
+
 }
