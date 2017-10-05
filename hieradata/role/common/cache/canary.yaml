@@ -25,7 +25,7 @@ cache::app_def_be_opts:
   port: 80
   connect_timeout: '5s'
   first_byte_timeout: '180s'
-  max_connections: 1000
+  max_connections: 0
 cache::app_directors:
   appservers:
     backends:
