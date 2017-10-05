@@ -15,6 +15,11 @@ class profile::otrs(
     include network::constants
     include ::profile::prometheus::apache_exporter
 
+    class { '::apache::mod::perl': }
+    class { '::apache::mod::remoteip': }
+    class { '::apache::mod::rewrite': }
+    class { '::apache::mod::headers': }
+
     class { '::otrs':
         otrs_database_host => $otrs_database_host,
         otrs_database_name => $otrs_database_name,
