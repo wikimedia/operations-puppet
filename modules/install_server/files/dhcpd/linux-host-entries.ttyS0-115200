@@ -146,6 +146,13 @@ host fermium {
     fixed-address fermium.wikimedia.org;
 }
 
+host ftp-internal {
+  hardware ethernet aa:00:00:3c:da:9f;
+  fixed-address ftp-internal.eqiad.wmnet;
+  option pxelinux.pathprefix "stretch-installer/";
+  filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host hassaleh {
     hardware ethernet aa:00:00:3f:8c:a0;
     fixed-address hassaleh.codfw.wmnet;
@@ -385,4 +392,3 @@ host tureis {
     hardware ethernet aa:00:00:45:62:2d;
     fixed-address tureis.codfw.wmnet;
 }
-
