@@ -5,7 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ /index.php [L]
 
 <Directory />
-  AllowOverride None
+  AllowOverride FileInfo Options=MultiViews
   Require all granted
 </Directory>
 
