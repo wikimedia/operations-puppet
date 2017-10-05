@@ -10,11 +10,7 @@
 class profile::ci::slave {
     include contint::packages::base
     include contint::slave_scripts
-    include ::profile::ci::docker
     include ::profile::zuul::cloner
-
-    # We will need to build containers in production
-    require_package('blubber')
 
     class { 'jenkins::slave':
         # Master connect to itself via the fqdn / primary IP ipaddress
