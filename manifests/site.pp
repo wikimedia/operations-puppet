@@ -1249,7 +1249,7 @@ node 'krypton.eqiad.wmnet' {
     # Running this here because krypton is a 'misc' Jessie
     # <s>monitoring host</s> (not really, it's just misc apps)
     role(wikimania_scholarships, iegreview::app, grafana::production,
-        kafka::analytics::burrow, racktables::server)
+        kafka::analytics::burrow, racktables)
     include ::standard
 }
 

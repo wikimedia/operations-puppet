@@ -4,13 +4,6 @@
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
-    include ::mysql
-    include ::passwords::racktables
-    include ::apache
-    include ::apache::mod::php5
-    include ::apache::mod::ssl
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     require_package('php5-mysql', 'php5-gd')
 
