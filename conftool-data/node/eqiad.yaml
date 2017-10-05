@@ -227,9 +227,6 @@ eqiad:
     mw1298.eqiad.wmnet: [apache2,nginx]
   restbase:
     restbase1007.eqiad.wmnet: [restbase, cassandra]
-    restbase1008.eqiad.wmnet: [restbase, cassandra]
-    restbase1009.eqiad.wmnet: [restbase, cassandra]
-    restbase1010.eqiad.wmnet: [restbase, cassandra]
     restbase1011.eqiad.wmnet: [restbase, cassandra]
     restbase1012.eqiad.wmnet: [restbase, cassandra]
     restbase1013.eqiad.wmnet: [restbase, cassandra]
@@ -238,6 +235,10 @@ eqiad:
     restbase1016.eqiad.wmnet: [restbase, cassandra]
     restbase1017.eqiad.wmnet: [restbase, cassandra]
     restbase1018.eqiad.wmnet: [restbase, cassandra]
+  restbase_ng:
+    restbase1008.eqiad.wmnet: [restbase, cassandra]
+    restbase1009.eqiad.wmnet: [restbase, cassandra]
+    restbase1010.eqiad.wmnet: [restbase, cassandra]
   maps:
     maps1001.eqiad.wmnet: [kartotherian]
     maps1002.eqiad.wmnet: [kartotherian]
