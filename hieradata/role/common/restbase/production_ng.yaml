@@ -1,4 +1,4 @@
-cluster: restbase
+cluster: restbase_ng
 
 #
 # Cassandra

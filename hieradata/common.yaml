@@ -288,6 +288,12 @@ ganglia_clusters:
     id: 62
     sites:
       eqiad: []
+  restbase_ng:
+    description: "Restbase (next-gen w/ Cassandra 3.x)"
+    id: 63
+    sites:
+      codfw: []
+      eqiad: []
 
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
