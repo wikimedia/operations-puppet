@@ -13,9 +13,20 @@
             </Policies>
             <DefaultRolloverStrategy max="4"/>
         </RollingFile>
+        <RollingFile name="RollingMetricsFile"
+            fileName="/var/log/druid/<%= @service %>-metrics.log"
+            filePattern="/var/log/druid/<%= @service %>-metrics.%i.log">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="15"/>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
+        <Logger name="com.metamx.emitter.core.LoggingEmitter" level="info" additivity="false">
+          <AppenderRef ref="RollingMetricsFile"/>
+        </Logger>
         <Root level="info">
             <AppenderRef ref="RollingFile"/>
         </Root>
