@@ -1,9 +1,8 @@
+# sets up the WMF annual report site
 # https://annual.wikimedia.org/
-# microsite for the WMF annual report
 # http://wikimediafoundation.org/wiki/Annual_Report
+# T599 - https://15.wikipedia.org (aka. annual report 2015)
 class profile::microsites::annualreport {
-
-    include ::annualreport
 
     include ::base::firewall
 
@@ -12,5 +11,21 @@ class profile::microsites::annualreport {
         port  => '80',
     }
 
+    class { '::apache': }
+    class { '::apache::mod::headers': }
+
+    apache::site { 'annual.wikimedia.org':
+        source => 'puppet:///modules/annualreport/annual.wikimedia.org',
+    }
+
+    apache::site { '15.wikipedia.org':
+        source => 'puppet:///modules/annualreport/15.wikipedia.org',
+    }
+
+    git::clone { 'wikimedia/annualreport':
+        ensure    => 'latest',
+        directory => '/srv/org/wikimedia/annualreport',
+        branch    => 'master',
+    }
 }
 
