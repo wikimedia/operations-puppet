@@ -19,6 +19,7 @@ class role::ci::master {
     include ::profile::ci::jenkins
     include ::profile::ci::slave
     include ::profile::ci::website
+    include ::profile::ci::pipeline
     include ::profile::zuul::merger
     include ::profile::zuul::server
 }
