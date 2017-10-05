@@ -1,11 +1,5 @@
 # sets up Apache site for a WMF RT install
 class requesttracker::apache($apache_site) {
-    include ::apache
-    include ::apache::mod::ssl
-    include ::apache::mod::perl
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-    include ::apache::mod::fastcgi
 
     if os_version('debian >= jessie') {
         $rt_apache_conf = 'requesttracker/rt4.apache.httponly.erb'
