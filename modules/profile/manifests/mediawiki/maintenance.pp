@@ -30,6 +30,7 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::update_article_count': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_abusefilter': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_checkuser': ensure => $ensure }
+    class { 'mediawiki::maintenance::purge_expired_userrights': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_securepoll': ensure => $ensure }
     class { 'mediawiki::maintenance::jobqueue_stats': ensure => $ensure }
     class { 'mediawiki::maintenance::db_lag_stats': ensure => $ensure }
