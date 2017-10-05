@@ -1,8 +1,6 @@
 class contint::packages::java {
 
-    if os_version('debian == jessie') {
-        require_package('openjdk-7-jdk')
-    }
+    include ::jenkins::common
 
     require_package('openjdk-8-jdk')
 
