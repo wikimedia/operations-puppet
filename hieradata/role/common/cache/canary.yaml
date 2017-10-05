@@ -1,5 +1,6 @@
 bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
+varnish::major_version: 5
 cache::lua_support: true
 cluster: cache_canary
 cache::cluster: canary
