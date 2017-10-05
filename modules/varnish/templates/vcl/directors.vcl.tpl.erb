@@ -1,12 +1,20 @@
 
 <% @directors.keys.sort.each do |director_name|
 director = @directors[director_name] -%>
+
+<% if @varnish_version == 5 -%>
+new <%= director_name %> = directors.shard();
+<% else -%>
 new <%= director_name %> = vslp.vslp();
+<% end -%>
+
 new <%= director_name %>_random = directors.random();
 <%- keyspace = "#{@conftool_namespace}/#{director['dc']}/#{@group}/#{director['service']}" -%>
 	{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
     <%= director_name %>.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }});
     <%= director_name %>_random.add_backend(be_{{ $parts := split $node "." }}{{ join $parts "_" }}, {{ $data.weight }});
 	{{end}}{{end}}
+<% if @varnish_version == 4 -%>
 <%= director_name %>.init_hashcircle(150);
+<% end -%>
 <% end # directors loop %>
