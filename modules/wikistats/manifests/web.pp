@@ -14,8 +14,6 @@ class wikistats::web (
 
     require_package($apache_php_package)
 
-    include ::apache::mod::rewrite
-
     apache::site { $wikistats_host:
         content => template('wikistats/apache/wikistats.erb'),
         require => Package[$apache_php_package],
