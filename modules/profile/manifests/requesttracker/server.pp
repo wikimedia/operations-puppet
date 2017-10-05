@@ -2,7 +2,9 @@
 # https://bestpractical.com/request-tracker
 class profile::requesttracker::server {
 
-    include ::passwords::misc::rt
+    class { '::base::firewall': }
+    class { '::mysql': }
+    class { '::passwords::misc::rt': }
 
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
@@ -12,11 +14,10 @@ class profile::requesttracker::server {
         dbpass      => $passwords::misc::rt::rt_mysql_pass,
     }
 
-    include ::base::firewall
-
     ferm::service { 'rt-http':
         proto  => 'tcp',
         port   => '80',
         srange => '$PRODUCTION_NETWORKS',
     }
+
 }
