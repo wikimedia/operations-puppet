@@ -72,7 +72,10 @@ class contint::packages::php {
     if os_version('debian == jessie') {
         package { $php7_packages :
             ensure  => latest,
-            require => Apt::Repository['sury-php'],
+            require => [
+                Apt::Repository['sury-php'],
+                Exec['apt-get update'],
+            ],
         }
 
         apt::repository { 'jessie-ci-php55':
@@ -103,6 +106,7 @@ class contint::packages::php {
             ensure  => present,
             require => [
                 Apt::Repository['jessie-ci-php55'],
+                Exec['apt-get update'],
             ],
         }
     }
