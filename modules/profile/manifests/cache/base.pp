@@ -13,7 +13,8 @@ class profile::cache::base(
     $purge_host_only_upload_re = hiera('profile::cache::base::purge_host_only_upload_re'),
     $purge_host_not_upload_re = hiera('profile::cache::base::purge_host_not_upload_re'),
     $storage_parts = hiera('profile::cache::base::purge_host_not_upload_re'),
-    $packages_version = hiera('profile::cache::base::packages_version', 'installed')
+    $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
+    $varnish_version = hiera('profile::cache::base::varnish_version', 4),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -52,11 +53,15 @@ class profile::cache::base(
     }
     # Basic varnish classes
     class { '::varnish::packages':
-        version => $packages_version,
+        version         => $packages_version,
+        varnish_version => $varnish_version,
+    }
+
+    class { '::varnish::common':
+        varnish_version => $varnish_version,
     }
 
     class { [
-        '::varnish::common',
         '::varnish::common::errorpage',
         '::varnish::common::browsersec',
     ]:
