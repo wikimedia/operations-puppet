@@ -166,6 +166,7 @@ codfw:
     mw2017.codfw.wmnet: [apache2]
     mw2099.codfw.wmnet: [apache2]
   parsoid:
+    # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     wtp2001.codfw.wmnet: [parsoid]
     wtp2002.codfw.wmnet: [parsoid]
     wtp2003.codfw.wmnet: [parsoid]

@@ -194,6 +194,7 @@ eqiad:
     cp1058.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1061.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   parsoid:
+    # Don't forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     wtp1025.eqiad.wmnet: [parsoid]
     wtp1026.eqiad.wmnet: [parsoid]
     wtp1027.eqiad.wmnet: [parsoid]
