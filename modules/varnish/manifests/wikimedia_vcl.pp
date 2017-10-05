@@ -25,6 +25,8 @@ define varnish::wikimedia_vcl(
     # TODO: fix this horror through proper parameter-passing or scoping
     $cache_route = $::cacheproxy::instance_pair::cache_route
 
+    $varnish_version = $::varnish::common::varnish_version
+
     if $generate_extra_vcl {
         $extra_vcl_name = regsubst($title, '^([^ ]+) .*$', '\1')
         $extra_vcl_filename = "/etc/varnish/${extra_vcl_name}.inc.vcl"
