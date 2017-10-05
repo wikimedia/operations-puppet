@@ -1,17 +1,18 @@
-# https://racktables.wikimedia.org
-
 ## Please note that Racktables is a tarball extraction based installation
 ## into its web directory root.  This means that puppet cannot fully automate
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 #
 # filtertags: labs-project-servermon
-class role::racktables::server {
+class profile::racktables (
+    $racktables_host = hiera('profile::racktables::racktables_host'),
+){
 
-    system::role { 'racktables::server': description => 'Racktables server' }
-
-    include ::standard
-    include ::base::firewall
+    class { '::apache': }
+    class { '::apache::mod::php5': }
+    class { '::apache::mod::ssl': }
+    class { '::apache::mod::rewrite': }
+    class { '::apache::mod::headers': }
 
     ferm::service { 'racktables-http':
         proto => 'tcp',
@@ -19,7 +20,7 @@ class role::racktables::server {
     }
 
     class { '::racktables':
-        racktables_host    => hiera('racktables_host', $facts['fqdn']),
+        racktables_host    => $racktables_host,
         racktables_db_host => 'm1-master.eqiad.wmnet',
         racktables_db      => 'racktables',
     }
