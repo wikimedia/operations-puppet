@@ -45,6 +45,11 @@ sub mobile_redirect {
 }
 
 sub cluster_fe_recv_pre_purge {
+	// abusive traffic patterns, ignores 429s, proxying our content into shady domains...
+	if (req.http.User-Agent ~ "MJ12bot") {
+		return (synth(403, "Noise"));
+	}
+
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
 		return (synth(403, "Noise"));
