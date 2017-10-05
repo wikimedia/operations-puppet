@@ -145,10 +145,6 @@ class phabricator (
             ensure => present;
     }
 
-    # common Apache modules
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
     $docroot = "${phabdir}/phabricator/webroot"
 
     $phab_servername = hiera('phabricator_servername', $phab_settings['phabricator.base-uri'])
