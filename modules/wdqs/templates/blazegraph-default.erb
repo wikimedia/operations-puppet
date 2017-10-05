@@ -1,16 +1,16 @@
 HEAP_SIZE="<%= @blazegraph_heap_size %>"
 BLAZEGRAPH_OPTS="<%= @blazegraph_options %>"
 LOG_CONFIG=/etc/wdqs/logback-wdqs-blazegraph.xml
-GC_LOG="-XX:+PrintGCDetails \
-        -XX:+PrintGCDateStamps \
-        -XX:+PrintGCTimeStamps \
-        -XX:+PrintAdaptiveSizePolicy \
-        -XX:+PrintReferenceGC \
-        -XX:+PrintGCCause \
-        -XX:+PrintGCApplicationStoppedTime \
-        -XX:+UseGCLogFileRotation \
-        -XX:NumberOfGCLogFiles=10 \
-        -XX:GCLogFileSize=20M \
-        -XX:+ParallelRefProcEnabled \
-        -UnlockExperimentalVMOptions \
-        -XX:G1MaxNewSizePercent=25"
+GC_LOGS="-XX:+PrintGCDetails \
+         -XX:+PrintGCDateStamps \
+         -XX:+PrintGCTimeStamps \
+         -XX:+PrintAdaptiveSizePolicy \
+         -XX:+PrintReferenceGC \
+         -XX:+PrintGCCause \
+         -XX:+PrintGCApplicationStoppedTime \
+         -XX:+UseGCLogFileRotation \
+         -XX:NumberOfGCLogFiles=10 \
+         -XX:GCLogFileSize=20M \
+         -XX:+ParallelRefProcEnabled \
+         -UnlockExperimentalVMOptions \
+         -XX:G1MaxNewSizePercent=25"
