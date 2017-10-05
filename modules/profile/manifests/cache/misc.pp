@@ -8,6 +8,7 @@ class profile::cache::misc(
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
     $cache_route_table = hiera('cache::route_table'),
+    $varnish_version = hiera('profile::cache::base::varnish_version', 4),
 ) {
     require ::profile::cache::base
 
@@ -68,5 +69,6 @@ class profile::cache::misc(
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => $nodes,
         cache_route       => $cache_route,
+        varnish_version   => $varnish_version,
     }
 }

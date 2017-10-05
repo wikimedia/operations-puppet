@@ -10,9 +10,11 @@ import header;
 
 import directors;
 
+<% if @varnish_version == 4 -%>
 # This is actually only needed if a vslp backend is defined. We could make
 # this import conditional on existing vslp backend definitions.
 import vslp;
+<% end -%>
 
 include "errorpage.inc.vcl";
 
@@ -185,7 +187,11 @@ include "directors.<%= @inst %>.vcl";
 <% @backend_caches.keys.sort.each do |director_name|
 director = @backend_caches[director_name]
 backends = director['backends'] -%>
+<% if @varnish_version == 5 -%>
+	new <%= director_name %> = directors.shard();
+<% else -%>
 	new <%= director_name %> = vslp.vslp();
+<% end -%>
 	new <%= director_name %>_random = directors.random();
 <%
 	backends.each do |backend|
@@ -200,7 +206,11 @@ backends = director['backends'] -%>
 		<%= director_name %>.add_backend(<%= name %>);
 		<%= director_name %>_random.add_backend(<%= name %>, 100);
 <% 	end #backends loop -%>
+<% if @varnish_version == 5 -%>
+	<%= director_name %>.reconfigure(150);
+<% else -%>
 	<%= director_name %>.init_hashcircle(150);
+<% end -%>
 <% end #director loop -%>
 
 <% end #dynamic_backend_caches -%>

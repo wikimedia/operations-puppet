@@ -1,5 +1,6 @@
 bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
+apt::use_experimental: true
 cache::lua_support: true
 cluster: cache_canary
 cache::cluster: canary
@@ -78,6 +79,7 @@ profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
 profile::cache::base::storage_parts: ['sda3', 'sdb3']
+profile::cache::base::varnish_version: 5
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
