@@ -12,6 +12,7 @@ class profile::cache::text(
     $fe_transient_gb = hiera('cache::fe_transient_gb'),
     $be_transient_gb = hiera('cache::be_transient_gb'),
     $backend_warming = hiera('cache::backend_warming', false),
+    $varnish_version = hiera('profile::cache::base::varnish_version', 4),
 ) {
     # profile::cache::base needs to be evaluated before this one.
     require ::profile::cache::base
@@ -87,6 +88,7 @@ class profile::cache::text(
         fe_transient_gb   => $fe_transient_gb,
         be_transient_gb   => $be_transient_gb,
         backend_warming   => $backend_warming,
+        varnish_version   => $varnish_version,
     }
 
     # varnishkafka statsv listens for special stats related requests

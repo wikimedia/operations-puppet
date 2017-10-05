@@ -13,6 +13,7 @@ define varnish::instance(
     $backend_caches={},
     $extra_vcl = [],
     $start_cmd_prefix = '',
+    $varnish_version = 4,
 ) {
 
     include ::varnish::common
@@ -34,6 +35,7 @@ define varnish::instance(
     varnish::wikimedia_vcl { $extra_vcl_variable_to_make_puppet_parser_happy:
         generate_extra_vcl => true,
         vcl_config         => $vcl_config,
+        varnish_version    => $varnish_version,
         before             => Service["varnish${instancesuffix}"],
     }
 
@@ -45,10 +47,11 @@ define varnish::instance(
     }
 
     varnish::common::directors { $vcl:
-        instance  => $inst,
-        directors => $backend_caches,
-        extraopts => $extraopts,
-        before    => [
+        instance        => $inst,
+        directors       => $backend_caches,
+        extraopts       => $extraopts,
+        varnish_version => $varnish_version,
+        before          => [
             File["/etc/varnish/wikimedia_${vcl}.vcl"],
             Service["varnish${instancesuffix}"]
         ],
@@ -61,6 +64,7 @@ define varnish::instance(
         inst            => $inst,
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
+        varnish_version => $varnish_version,
     }
 
     varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl}.vcl":
@@ -71,6 +75,7 @@ define varnish::instance(
         vcl             => $vcl,
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
+        varnish_version => $varnish_version,
     }
 
     # These versions of wikimedia-common_${vcl}.vcl and wikimedia_${vcl}.vcl
@@ -87,6 +92,7 @@ define varnish::instance(
         inst            => $inst,
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
+        varnish_version => $varnish_version,
     }
 
     varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl}.vcl":
@@ -98,13 +104,15 @@ define varnish::instance(
         vcl             => $vcl,
         app_directors   => $app_directors,
         app_def_be_opts => $app_def_be_opts,
+        varnish_version => $varnish_version,
     }
 
     varnish::wikimedia_vcl { "/etc/varnish/${vcl}.inc.vcl":
-        template_path  => "varnish/${vcl}.inc.vcl.erb",
-        notify         => Exec["load-new-vcl-file${instancesuffix}"],
-        vcl_config     => $vcl_config,
-        backend_caches => $backend_caches,
+        template_path   => "varnish/${vcl}.inc.vcl.erb",
+        notify          => Exec["load-new-vcl-file${instancesuffix}"],
+        vcl_config      => $vcl_config,
+        backend_caches  => $backend_caches,
+        varnish_version => $varnish_version,
     }
 
     varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl}.inc.vcl":
@@ -113,6 +121,7 @@ define varnish::instance(
         template_path   => "varnish/${vcl}.inc.vcl.erb",
         vcl_config      => $vcl_config,
         backend_caches  => $backend_caches,
+        varnish_version => $varnish_version,
     }
 
     # The defaults file is also parsed by /usr/share/varnish/reload-vcl,

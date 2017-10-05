@@ -8,6 +8,7 @@ define varnish::wikimedia_vcl(
     $generate_extra_vcl = false,
     $app_directors={},
     $app_def_be_opts={},
+    $varnish_version,
 ) {
     if $varnish_testing  {
         $varnish_include_path = '/usr/share/varnish/tests/'

@@ -8,6 +8,7 @@ class profile::cache::upload(
     $statsd_server = hiera('statsd'),
     $cache_route_table = hiera('cache::route_table'),
     $backend_warming = hiera('cache::backend_warming', false),
+    $varnish_version = hiera('profile::cache::base::varnish_version', 4),
 ) {
     require ::profile::cache::base
 
@@ -99,6 +100,7 @@ class profile::cache::upload(
         cluster_nodes     => $cluster_nodes,
         cache_route       => $cache_route,
         backend_warming   => $backend_warming,
+        varnish_version   => $varnish_version,
     }
 
     # Media browser cache hit rate and request volume stats.
