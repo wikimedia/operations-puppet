@@ -131,7 +131,8 @@ def parse_ua_obj(ua):
     # Mobile Safari on iOS
     elif ua_obj['browser_family'] == 'Mobile Safari' and ua_obj['os_family'] == 'iOS':
         browser_family = 'Mobile_Safari'
-        version = "{0}_{1}".format(ua_obj['browser_major'], ua_obj['browser_minor'])
+        version = "{0}_{1}".format(
+            ua_obj['browser_major'], ua_obj['browser_minor'])
 
     # iOS WebView
     elif ua_obj['os_family'] == 'iOS' and ua_obj['browser_family'] == 'Mobile Safari UIWebView':
@@ -432,8 +433,8 @@ def handle_navigation_timing(meta):
     for difference, minuend, subtrahend in (
         ('tcp', 'connectEnd', 'connectStart'),
         ('request', 'responseStart', 'requestStart'),
-        ('response', 'responsetEnd', 'responseStart'),
-        ('processing', 'domComplete', 'responsetEnd'),
+        ('response', 'responseEnd', 'responseStart'),
+        ('processing', 'domComplete', 'responseEnd'),
         ('onLoad', 'loadEventEnd', 'loadEventStart'),
         ('mediaWikiLoad', 'mediaWikiLoadEnd', 'mediaWikiLoadStart'),
         ('ssl', 'connectEnd', 'secureConnectionStart'),
@@ -521,6 +522,7 @@ if __name__ == '__main__':
                     for stat in f(meta):
                         dispatch_stat(stat)
         # If we reach this line, consumer_timeout_ms elapsed without events
-        raise RuntimeError('No messages received in %d seconds.' % kafka_consumer_timeout_seconds)
+        raise RuntimeError('No messages received in %d seconds.' %
+                           kafka_consumer_timeout_seconds)
     finally:
         consumer.close()
