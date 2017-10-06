@@ -16,15 +16,19 @@ class profile::cache::base(
 ) {
     # Needed profiles
     require ::profile::conftool::client
-    require ::profile::cache::kafka::webrequest
-    include ::standard
+    require ::standard
 
-    # Other includes - to fix
-    include ::nrpe
-    include lvs::configuration
-    include network::constants
-    include conftool::scripts
+    # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
+    include ::profile::cache::kafka::webrequest
+
+    # Globals we need to include
+    include ::lvs::configuration
+    include ::network::constants
+
+    # TODO: this is properly a profile
     include ::role::prometheus::varnish_exporter
+
+    class { 'conftool::scripts': }
 
     # Only production needs system perf tweaks
     if $::realm == 'production' {
