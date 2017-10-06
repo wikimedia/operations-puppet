@@ -1,7 +1,7 @@
 <VirtualHost *:80>
     ServerName <%= @server_name %>
     ServerAdmin <%= @server_admin %>
-    DocumentRoot /srv/se/wikiba/
+    DocumentRoot /srv/se/wikiba/output
 
     ServerSignature On
 
@@ -14,7 +14,7 @@
         AllowOverride None
     </Directory>
 
-    <Directory /srv/se/wikiba>
+    <Directory /srv/se/wikiba/output>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
