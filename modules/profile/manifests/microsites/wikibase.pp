@@ -20,7 +20,7 @@ class profile::microsites::wikibase {
 
     git::clone { 'wikibase/wikibase.se-deploy':
         ensure    => 'latest',
-        directory => '/srv/org/wikibase',
+        directory => '/srv/es/wikiba',
         branch    => 'master',
     }
 
