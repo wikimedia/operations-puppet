@@ -36,7 +36,7 @@ class lvs::kernel_config {
             'net.ipv4.vs.schedule_icmp'       => 1,
 
             # basic netdev tuning for 10GbE interfaces at full speed with RPS.
-            # See deeper details in role::cache::perf
+            # See deeper details in cacheproxy::performance
             'net.core.netdev_max_backlog'     => 300000,
             'net.core.netdev_budget'          => 1024,
             'net.core.netdev_tstamp_prequeue' => 0,
