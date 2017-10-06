@@ -14,6 +14,7 @@ class role::cache::base(
 
 
     $cache_cluster = hiera('cache::cluster')
+    $statsd_host = hiera('statsd')
 
     system::role { "cache::${cache_cluster}":
         description => "${cache_cluster} Varnish cache server",
@@ -50,33 +51,15 @@ class role::cache::base(
     ###########################################################################
     # Analytics/Logging stuff
     ###########################################################################
-
-    # Client connection stats from the 'X-Connection-Properties'
-    # header set by the SSL terminators.
-    ::varnish::logging::xcps { 'xcps':
-        statsd_server => hiera('statsd'),
-    }
-
-    ::varnish::logging::statsd { 'default':
-        statsd_server => hiera('statsd'),
-        key_prefix    => "varnish.${::site}.backends",
+    class { '::varnish::logging':
+        cache_cluster => $cache_cluster,
+        statsd_host   => $statsd_host,
     }
 
     # Install a varnishkafka producer to send
     # varnish webrequest logs to Kafka.
     class { 'role::cache::kafka::webrequest':
         topic => "webrequest_${cache_cluster}",
-    }
-
-    # Parse varnishlogs for request statistics and send to statsd.
-    varnish::logging::reqstats { 'frontend':
-        key_prefix => "varnish.${::site}.${cache_cluster}.frontend.request",
-        statsd     => hiera('statsd'),
-    }
-
-    ::varnish::logging::xcache { 'xcache':
-        key_prefix    => "varnish.${::site}.${cache_cluster}.xcache",
-        statsd_server => hiera('statsd'),
     }
 
     ###########################################################################
