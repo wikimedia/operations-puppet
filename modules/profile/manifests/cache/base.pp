@@ -17,16 +17,13 @@ class profile::cache::base(
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::cache::kafka::webrequest
+    require ::role::prometheus::varnish_exporter
     require ::standard
 
     include ::lvs::configuration
     include ::network::constants
 
-    # TODO: this is properly a class in the prometheus module
-    include ::role::prometheus::varnish_exporter
-
-    class { 'conftool::scripts':
-    }
+    class { 'conftool::scripts': }
     # Only production needs system perf tweaks
     if $::realm == 'production' {
         include role::cache::perf
