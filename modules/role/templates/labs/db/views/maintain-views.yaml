@@ -133,7 +133,6 @@ fullviews:
   - wb_changes
   - wb_changes_dispatch
   - wb_changes_subscription
-  - wb_entity_per_page
   - wb_id_counters
   - wb_items_per_site
   - wb_property_info
