@@ -49,3 +49,9 @@ cache::req_handling:
         director: 'swift_thumbs'
   maps.wikimedia.org:
     director: 'kartotherian'
+# Profile parameters
+# Profile::cache::base
+profile::cache::base::zero_site: 'https://zero.wikimedia.org'
+profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
+profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
+profile::cache::base::storage_parts: ['sda3', 'sdb3']

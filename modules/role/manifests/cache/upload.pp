@@ -3,7 +3,11 @@ class role::cache::upload(
     $upload_domain = 'upload.wikimedia.org',
     $maps_domain = 'maps.wikimedia.org',
 ) {
-    include role::cache::base
+    system::role { 'cache::upload':
+        description => 'upload Varnish cache server',
+    }
+
+    include profile::cache::base
     include role::cache::ssl::unified
     include ::standard
 
@@ -36,7 +40,7 @@ class role::cache::upload(
     }
 
     $common_vcl_config = {
-        'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
+        'purge_host_regex' => $::profile::cache::base::purge_host_only_upload_re,
         'upload_domain'    => $upload_domain,
         'maps_domain'      => $maps_domain,
         'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
@@ -59,9 +63,9 @@ class role::cache::upload(
     })
 
     # See T145661 for storage binning rationale
-    $sda = $::role::cache::base::storage_parts[0]
-    $sdb = $::role::cache::base::storage_parts[1]
-    $ssm = $::role::cache::base::storage_size * 2 * 1024
+    $sda = $::profile::cache::base::storage_parts[0]
+    $sdb = $::profile::cache::base::storage_parts[1]
+    $ssm = $::profile::cache::base::storage_size * 2 * 1024
     $bin0_size = floor($ssm * 0.04)
     $bin1_size = floor($ssm * 0.23)
     $bin2_size = floor($ssm * 0.40)
