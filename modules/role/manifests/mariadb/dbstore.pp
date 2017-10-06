@@ -3,7 +3,7 @@ class role::mariadb::dbstore(
     $lag_warn = 300,
     $lag_crit = 600,
     $warn_stopped = true,
-    $socket = '/run/mysqld.sock',
+    $socket = '/run/mysqld/mysqld.sock',
     ) {
 
     system::role { 'mariadb::dbstore':
