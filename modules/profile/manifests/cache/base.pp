@@ -24,32 +24,22 @@ class profile::cache::base(
     include ::network::constants
 
     class { 'conftool::scripts': }
-    # Only production needs system perf tweaks
+
     if $::realm == 'production' {
-        include role::cache::perf
+        # Only production needs system perf tweaks
+        class { 'cacheproxy::performance': }
+
+        # Periodic cron restarts, we need this to mitigate T145661
+        class { 'cacheproxy::cron_restart':
+            # lint:ignore:wmf_styleguide
+            nodes => hiera("cache::${cache_cluster}::nodes")
+            # lint:endignore
+        }
     }
 
     # Not ideal factorization to put this here, but works for now
     class { 'varnish::zero_update':
         site         => $zero_site,
-    }
-
-    # XXX: temporary, we need this to mitigate T145661
-    if $::realm == 'production' {
-        $hnodes = hiera("cache::${cache_cluster}::nodes")
-        $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
-        $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
-        $be_restart_h = $times['hour']
-        $be_restart_m = $times['minute']
-        $be_restart_d = $times['weekday']
-
-        file { '/etc/cron.d/varnish-backend-restart':
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => template('varnish/varnish-backend-restart.cron.erb'),
-            require => File['/usr/local/sbin/varnish-backend-restart'],
-        }
     }
 
     ###########################################################################
