@@ -1,5 +1,8 @@
 # https://wikiba.se (T99531)
-class profile::microsites::wikibase {
+class profile::microsites::wikibase(
+  $server_name = hiera('profile::wikibase::server_name'),
+  $server_admin = hiera('profile::wikibase::server_admin'),
+) {
 
     class { '::base::firewall': }
 
