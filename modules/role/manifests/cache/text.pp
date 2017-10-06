@@ -5,9 +5,14 @@ class role::cache::text(
     $top_domain = 'org',
     $shortener_domain = 'w.wiki',
 ) {
+
+    system::role { "cache::text":
+        description => "text Varnish cache server",
+    }
+
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
-    include role::cache::base
+    include profile::cache::base
     include role::cache::ssl::unified
     include ::standard
 
@@ -39,7 +44,7 @@ class role::cache::text(
     }
 
     $common_vcl_config = {
-        'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+        'purge_host_regex' => $::profile::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'top_domain'       => $top_domain,
         'shortener_domain' => $shortener_domain,
@@ -55,7 +60,7 @@ class role::cache::text(
 
     $common_runtime_params = ['default_ttl=86400']
 
-    $text_storage_args = $::role::cache::base::file_storage_args
+    $text_storage_args = $::profile::cache::base::file_storage_args
 
     class { 'role::cache::instances':
         cache_type        => 'text',
