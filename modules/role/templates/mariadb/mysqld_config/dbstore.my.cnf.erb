@@ -3,8 +3,7 @@
 # Please use separate .cnf templates for each type of server.
 
 [client]
-port   = 3306
-socket = /tmp/mysql.sock
+socket = <%= @socket %>
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
@@ -21,7 +20,7 @@ skip-slave-start
 temp-pool
 
 user      = mysql
-socket    = /tmp/mysql.sock
+socket    = <%= @socket %>
 port      = 3306
 basedir   = <%= @basedir %>
 datadir   = <%= @datadir %>

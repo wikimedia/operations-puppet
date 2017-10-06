@@ -671,14 +671,13 @@ node 'dbstore1001.eqiad.wmnet' {
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
+        socket       => '/tmp/mysql.sock',
     }
-    include ::base::firewall
 }
 
 node 'dbstore1002.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
     role(mariadb::dbstore, mariadb::analytics::custom_repl_slave)
-    include ::base::firewall
 }
 
 node 'dbstore2001.codfw.wmnet' {
