@@ -18,7 +18,7 @@ class profile::microsites::wikibase {
     ensure_resource('file', '/srv/es', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/es/wikiba', {'ensure' => 'directory' })
 
-    git::clone { 'wikibase/wikibase.se-deploy':
+    git::clone { 'wikibase/wikiba.se-deploy':
         ensure    => 'latest',
         directory => '/srv/es/wikiba',
         branch    => 'master',
