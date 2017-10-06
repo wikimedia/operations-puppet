@@ -887,12 +887,12 @@ node /^es200[234]\.codfw\.wmnet/ {
 
 # Backup system, see T176505
 node 'flerovium.eqiad.wmnet' {
-    role(spare::system)
+    role(analytics_cluster::hadoop::client)
 }
 
 # Backup system, see T176506
 node 'furud.codfw.wmnet' {
-    role(spare::system)
+    role(analytics_cluster::hadoop::client)
 }
 
 # Etcd cluster for kubernetes

@@ -25,7 +25,9 @@ mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 # $FRACK_NETWORKS is meant to be a set of all fundraising networks
 @def $FRACK_NETWORKS = (<%- frack_networks.each do |net| -%><%= net %> <% end -%>);
 
-@def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%>);
+# Temporarily include flevorium (10.64.48.112/32) and furud (10.192.16.65/32)
+# in ANALYTICS_NETWORKS for backup purposes, see: T176506
+@def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%> 10.64.48.112/32 10.192.16.65/32 );
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
 
 @def $NETWORK_INFRA = (<%- network_infra.each do |net| -%><%= net %> <% end -%>);
