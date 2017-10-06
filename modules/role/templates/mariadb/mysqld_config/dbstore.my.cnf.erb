@@ -59,7 +59,7 @@ character_set_filesystem = binary
 collation_server         = binary
 
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 24G
+innodb_buffer_pool_size        = 18G
 innodb_log_file_size           = 4G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
@@ -78,7 +78,7 @@ optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
 
 plugin-load = ha_tokudb
-tokudb_cache_size = 24G
+tokudb_cache_size = 23G
 # Tokudb will stop working when there is less than 1% of free disk space
 # (5% by default)
 tokudb_fs_reserve_percent = 1
