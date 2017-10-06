@@ -95,6 +95,21 @@ namespace :global do
       t.print_wmf_style_violations linter.problems unless linter.problems.empty?
     end
   end
+
+  task :ciwmf_style do
+    linter = PuppetLint.new
+    linter.configuration.checks.each do |check|
+        linter.configuration.send("disable_#{check}")
+    end
+    linter.configuration.send('enable_wmf_styleguide')
+    # Format expected by the Jenkins Warnings plugin
+    linter.configuration.log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
+    FileList['**/*.pp'].to_a.each do |manifest|
+      linter.file = manifest
+      linter.run
+      linter.print_problems
+    end
+  end
 end
 
 desc 'Show the help'
