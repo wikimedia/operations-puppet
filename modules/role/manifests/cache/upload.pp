@@ -7,6 +7,7 @@ class role::cache::upload(
     include role::cache::ssl::unified
     include ::standard
 
+    class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
     class { 'varnish::htcppurger':
