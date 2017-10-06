@@ -51,15 +51,13 @@ class role::cache::base(
     ###########################################################################
     # Analytics/Logging stuff
     ###########################################################################
+    # Install a varnishkafka producer to send
+    # varnish webrequest logs to Kafka.
+    include ::profile::cache::kafka::webrequest
+
     class { '::varnish::logging':
         cache_cluster => $cache_cluster,
         statsd_host   => $statsd_host,
-    }
-
-    # Install a varnishkafka producer to send
-    # varnish webrequest logs to Kafka.
-    class { 'role::cache::kafka::webrequest':
-        topic => "webrequest_${cache_cluster}",
     }
 
     ###########################################################################
