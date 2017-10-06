@@ -458,6 +458,16 @@ class role::prometheus::ops {
         },
     }
 
+    prometheus::cluster_config{ "nginx_cache_upload_${::site}":
+        dest    => "${targets_path}/nginx_cache_upload_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_upload',
+        port    => 9145,
+        labels  => {
+            'cluster' => 'cache_upload'
+        },
+    }
+
     prometheus::cluster_config{ "nginx_thumbor_${::site}":
         dest    => "${targets_path}/nginx_thumbor_${::site}.yaml",
         site    => $::site,
