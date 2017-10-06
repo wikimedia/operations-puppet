@@ -1,7 +1,7 @@
 # === Class profile::cache::base
 #
 # Sets up some common things for cache instances:
-# - LVS/conftool
+# - conftool
 # - monitoring
 # - logging/analytics
 # - storage
@@ -14,6 +14,15 @@ class profile::cache::base(
     $purge_host_not_upload_re = hiera('profile::cache::base::purge_host_not_upload_re'),
     $storage_parts = hiera('profile::cache::base::purge_host_not_upload_re'),
 ) {
+    # There is no better way to do this, so it can't be a class parameter. In fact,
+    # I consider our requirement to make hiera calls parameters
+    # harmful, as it prevents us to do hiera key interpolation in
+    # subsequent hiera calls, but we did this because of the way the
+    # WM Cloud puppet UI works. meh. So, just disable the linter here.
+    # lint:ignore:wmf_styleguide
+    $nodes = hiera("cache::${cache_cluster}::nodes")
+    # lint:endignore
+
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::prometheus::varnish_exporter
@@ -28,32 +37,20 @@ class profile::cache::base(
 
     class { 'conftool::scripts': }
 
-    # Only production needs system perf tweaks
     if $::realm == 'production' {
-        include role::cache::perf
+        # Only production needs system perf tweaks
+        class { 'cacheproxy::performance': }
+
+        # Periodic cron restarts, we need this to mitigate T145661
+        class { 'cacheproxy::cron_restart':
+            nodes         => $nodes,
+            cache_cluster => $cache_cluster,
+        }
     }
 
     # Not ideal factorization to put this here, but works for now
     class { 'varnish::zero_update':
         site         => $zero_site,
-    }
-
-    # XXX: temporary, we need this to mitigate T145661
-    if $::realm == 'production' {
-        $hnodes = hiera("cache::${cache_cluster}::nodes")
-        $all_nodes = array_concat($hnodes['eqiad'], $hnodes['esams'], $hnodes['ulsfo'], $hnodes['codfw'])
-        $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
-        $be_restart_h = $times['hour']
-        $be_restart_m = $times['minute']
-        $be_restart_d = $times['weekday']
-
-        file { '/etc/cron.d/varnish-backend-restart':
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => template('varnish/varnish-backend-restart.cron.erb'),
-            require => File['/usr/local/sbin/varnish-backend-restart'],
-        }
     }
 
     ###########################################################################
@@ -64,42 +61,8 @@ class profile::cache::base(
         statsd_host   => $statsd_host,
     }
 
-    ###########################################################################
     # auto-depool on shutdown + conditional one-shot auto-pool on start
-    # note: we can't use 'service' because we don't want to 'ensure =>
-    # stopped|running', and 'service_unit' with 'declare_service => false'
-    # wouldn't enable the service in systemd terms, either.
-    ###########################################################################
-
-    $tp_unit_path = '/lib/systemd/system/traffic-pool.service'
-    $varlib_path = '/var/lib/traffic-pool'
-
-    file { $tp_unit_path:
-        ensure => present,
-        source => 'puppet:///modules/role/cache/traffic-pool.service',
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { $varlib_path:
-        ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    exec { 'systemd reload+enable for traffic-pool':
-        refreshonly => true,
-        command     => '/bin/systemctl daemon-reload && /bin/systemctl enable traffic-pool',
-        subscribe   => File[$tp_unit_path],
-        require     => File[$varlib_path],
-    }
-
-    nrpe::monitor_systemd_unit_state { 'traffic-pool':
-        require  => File[$tp_unit_path],
-        critical => false, # promote to true once better-tested in the real world
-    }
+    class { 'cacheproxy::traffic_pool': }
 
 
     ###########################################################################

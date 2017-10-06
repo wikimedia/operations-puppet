@@ -1,7 +1,9 @@
+# == Class cacheproxy::performance
+#
 # This class contains production-specific performance hacks
 # These should have zero functional effect, they are merely system-level
 # tweaks to support heavy load/traffic.
-class role::cache::perf {
+class cacheproxy::performance {
     include cpufrequtils # defaults to "performance"
 
     # Bump min_free_kbytes to ensure network buffers are available quickly
