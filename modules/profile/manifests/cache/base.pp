@@ -1,24 +1,30 @@
-class role::cache::base(
-    $zero_site = 'https://zero.wikimedia.org',
-    $purge_host_only_upload_re = '^(upload|maps)\.wikimedia\.org$',
-    $purge_host_not_upload_re = '^(?!(upload|maps)\.wikimedia\.org)',
-    $storage_parts = ['sda3', 'sdb3'],
+# === Class profile::cache::base
+#
+# Sets up some common things for cache instances:
+# - LVS/conftool
+# - monitoring
+# - logging/analytics
+# - storage
+#
+class profile::cache::base(
+    $cache_cluster = hiera('cache::cluster'),
+    $statsd_host = hiera('statsd'),
+    $zero_site = hiera('profile::cache::base::zero_site'),
+    $purge_host_only_upload_re = hiera('profile::cache::base::purge_host_only_upload_re'),
+    $purge_host_not_upload_re = hiera('profile::cache::base::purge_host_not_upload_re'),
+    $storage_parts = hiera('profile::cache::base::purge_host_not_upload_re'),
 ) {
-    include ::standard
+    # Needed profiles
     require ::profile::conftool::client
+    require ::profile::cache::kafka::webrequest
+    include ::standard
+
+    # Other includes - to fix
     include ::nrpe
     include lvs::configuration
     include network::constants
     include conftool::scripts
     include ::role::prometheus::varnish_exporter
-
-
-    $cache_cluster = hiera('cache::cluster')
-    $statsd_host = hiera('statsd')
-
-    system::role { "cache::${cache_cluster}":
-        description => "${cache_cluster} Varnish cache server",
-    }
 
     # Only production needs system perf tweaks
     if $::realm == 'production' {
@@ -51,10 +57,6 @@ class role::cache::base(
     ###########################################################################
     # Analytics/Logging stuff
     ###########################################################################
-    # Install a varnishkafka producer to send
-    # varnish webrequest logs to Kafka.
-    include ::profile::cache::kafka::webrequest
-
     class { '::varnish::logging':
         cache_cluster => $cache_cluster,
         statsd_host   => $statsd_host,
