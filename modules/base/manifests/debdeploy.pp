@@ -13,5 +13,5 @@ class base::debdeploy
         mode   => '0555',
     }
 
-    require_package('debdeploy-client')
+    require_package('debdeploy-client', 'python-dateutil')
 }
