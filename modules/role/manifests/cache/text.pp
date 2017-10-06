@@ -34,7 +34,7 @@ class role::cache::text(
         'port'                  => 3128,
         'connect_timeout'       => '5s',
         'first_byte_timeout'    => '180s',
-        'max_connections'       => 1000,
+        'max_connections'       => 0,
         'probe'                 => 'varnish',
     }
 
