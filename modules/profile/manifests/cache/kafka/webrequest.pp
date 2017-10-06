@@ -1,29 +1,31 @@
-# === Define role::cache::kafka::webrequest
+# === class profile::cache::kafka::webrequest
 #
 # Sets up a varnishkafka instance producing varnish
 # webrequest logs to the analytics Kafka brokers in eqiad.
 #
 # === Parameters
 #
-# [*topic*]
-#   the name of kafka topic to which to send messages.
-# [*varnish_name*]
-#   The name of the varnish instance to read shared logs from.
-#   Default 'frontend'
-# [*varnish_svc_name*]
-#   The name of the init unit for the above.
-#   Default 'varnish-frontend'
-# [*kafka_protocol_version*]
-#   Kafka API version to use, needed for brokers < 0.10
-#   https://issues.apache.org/jira/browse/KAFKA-3547
+# [*cache_cluster*]
+#   the name of the cache cluster
 #
-class role::cache::kafka::webrequest(
-    $topic,
-    $varnish_name           = 'frontend',
-    $varnish_svc_name       = 'varnish-frontend',
-    $kafka_protocol_version = '0.9.0.1',
-) inherits role::cache::kafka
-{
+# [*statsd_host*]
+#   the host to send statsd data to.
+#
+class profile::cache::kafka::webrequest(
+    $cache_cluster = hiera('cache::cluster'),
+    $statsd_host = hiera('statsd'),
+) {
+    $config = kafka_config('analytics')
+    # NOTE: This is used by inheriting classes role::cache::kafka::*
+    $kafka_brokers = $config['brokers']['array']
+
+    $topic = "webrequest_${cache_cluster}"
+    # These used to be parameters, but I don't really see why given we never change
+    # them
+    $varnish_name           = 'frontend'
+    $varnish_svc_name       = 'varnish-frontend'
+    $kafka_protocol_version = '0.9.0.1'
+
     # Background task: T136314
     # Background info about the parameters used:
     # 'q':
@@ -120,8 +122,6 @@ class role::cache::kafka::webrequest(
         force_protocol_version       => $kafka_protocol_version,
     }
 
-    include ::standard
-
     # Generate icinga alert if varnishkafka is not running.
     nrpe::monitor_service { 'varnishkafka-webrequest':
         description   => 'Webrequests Varnishkafka log producer',
@@ -130,14 +130,13 @@ class role::cache::kafka::webrequest(
         require       => Class['::varnishkafka'],
     }
 
-    $cache_type = hiera('cache::cluster')
-    $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest.${cache_type}"
+    $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest.${cache_cluster}"
 
     # Sets up Logster to read from the Varnishkafka instance stats JSON file
     # and report metrics to statsd.
     varnishkafka::monitor::statsd { 'webrequest':
         graphite_metric_prefix => $graphite_metric_prefix,
-        statsd_host_port       => hiera('statsd'),
+        statsd_host_port       => $statsd_host,
     }
 
     # Generate an alert if too many delivery report errors per minute
@@ -154,4 +153,8 @@ class role::cache::kafka::webrequest(
         from        => '10min',
         require     => Logster::Job['varnishkafka-webrequest'],
     }
+    # Make sure varnishes are configured and started for the first time
+    # before the instances as well, or they fail to start initially...
+    Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance['webrequest']
+
 }
