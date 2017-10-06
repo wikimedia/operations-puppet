@@ -273,7 +273,7 @@ class druid(
     # Indexing and request logs are not pruned by Druid.  Install cron jobs to do so.
     $indexer_log_retention_days = 62
     cron { 'prune_old_druid_indexer_logs':
-        command => "/usr/bin/find ${runtime_properties['druid.indexer.logs.directory']} -mtime +${indexer_log_retention_days} -exec /bin/rm {} \\;",
+        command => "/usr/bin/find ${runtime_properties['druid.indexer.logs.directory']} -type f -mtime +${indexer_log_retention_days} -exec /bin/rm {} \\;",
         hour    => 0,
         minute  => 0,
         user    => 'druid',
@@ -287,7 +287,7 @@ class druid(
     # but it is apparently undocumented.
     $request_log_retention_days = 62
     cron { 'prune_old_druid_request_logs':
-        command => "/usr/bin/find /var/log/druid -mtime +${request_log_retention_days} | /bin/grep -E '2.*(Z|.log)$' | /usr/bin/xargs /bin/rm -f",
+        command => "/usr/bin/find /var/log/druid -type f -mtime +${request_log_retention_days} | /bin/grep -E '2.*(Z|.log)$' | /usr/bin/xargs /bin/rm -f",
         hour    => 0,
         minute  => 0,
         user    => 'druid',
