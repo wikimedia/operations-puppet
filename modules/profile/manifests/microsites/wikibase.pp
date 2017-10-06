@@ -18,12 +18,12 @@ class profile::microsites::wikibase(
         content => template('profile/wikibase/apache-wikibase.erb'),
     }
 
-    ensure_resource('file', '/srv/es', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/es/wikiba', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/se', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/se/wikiba', {'ensure' => 'directory' })
 
     git::clone { 'wikibase/wikiba.se-deploy':
         ensure    => 'latest',
-        directory => '/srv/es/wikiba',
+        directory => '/srv/se/wikiba',
         branch    => 'master',
     }
 
