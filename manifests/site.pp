@@ -1371,34 +1371,48 @@ node 'labsdb1007.eqiad.wmnet' {
 node /labstore100[12]\.eqiad\.wmnet/ {
     # soon to be recommissioned in T158196
     include ::standard
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node 'labstore1003.eqiad.wmnet' {
     role(labs::nfs::misc)
     include ::standard
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(labs::nfs::secondary)
     include ::standard
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node /labstore100[67]\.wikimedia\.org/ {
     role(dumps::public::server)
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
     include ::standard
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node 'labstore2003.codfw.wmnet' {
     role(labs::nfs::secondary_backup::tools)
     include ::standard
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(labs::nfs::secondary_backup::misc)
     include ::standard
+    # Do not enable yet
+    # include ::base::firewall
 }
 
 node 'lithium.eqiad.wmnet' {
