@@ -16,6 +16,7 @@ class profile::cache::base(
 ) {
     # Needed profiles
     require ::profile::conftool::client
+    require ::profile::prometheus::varnish_exporter
     require ::standard
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
@@ -24,9 +25,6 @@ class profile::cache::base(
     # Globals we need to include
     include ::lvs::configuration
     include ::network::constants
-
-    # TODO: this is properly a profile
-    include ::role::prometheus::varnish_exporter
 
     class { 'conftool::scripts': }
 

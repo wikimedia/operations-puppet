@@ -1,19 +1,19 @@
-# == Class: role::prometheus::varnish_exporter
+# == Class: profile::prometheus::varnish_exporter
 #
-# The role sets up one exporter per instance:
+# The profile sets up one exporter per instance:
 #   default on tcp/9131
 #   frontend on tcp/9331 (ie. default + 200)
 #
+# === Parameters
+# [*nodes*] List of prometheus nodes
+#
 # filtertags: labs-project-deployment-prep
 
-class role::prometheus::varnish_exporter {
-    if $::realm == 'labs' {
-        $ferm_srange = '$LABS_NETWORKS'
-    } else {
-        $prometheus_nodes = hiera('prometheus_nodes')
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-    }
+class profile::prometheus::varnish_exporter(
+        $nodes = hiera('prometheus_nodes')
+) {
+    $prometheus_ferm_nodes = join($nodes, ' ')
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
     prometheus::varnish_exporter{ 'default': }
 
