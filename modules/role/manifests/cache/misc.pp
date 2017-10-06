@@ -1,5 +1,9 @@
 class role::cache::misc {
-    include role::cache::base
+    system::role { 'cache::misc':
+        description => 'misc Varnish cache server',
+    }
+
+    include profile::cache::base
     include role::cache::ssl::unified
 
     class { 'tlsproxy::prometheus': }
@@ -31,7 +35,7 @@ class role::cache::misc {
 
     $common_vcl_config = {
         'allowed_methods'  => '^(GET|DELETE|HEAD|PATCH|POST|PURGE|PUT|OPTIONS)$',
-        'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+        'purge_host_regex' => $::profile::cache::base::purge_host_not_upload_re,
         'pass_random'      => true,
         'req_handling'     => hiera('cache::req_handling'),
     }
@@ -53,7 +57,7 @@ class role::cache::misc {
         be_vcl_config     => $common_vcl_config,
         fe_extra_vcl      => ['misc-common', 'zero'],
         be_extra_vcl      => ['misc-common'],
-        be_storage        => $::role::cache::base::file_storage_args,
+        be_storage        => $::profile::cache::base::file_storage_args,
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => hiera('cache::misc::nodes'),
