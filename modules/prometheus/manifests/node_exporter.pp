@@ -31,9 +31,9 @@ class prometheus::node_exporter (
     require_package('prometheus-node-exporter')
     validate_re($web_listen_address, ':\d+$')
 
-    $collectors_default = ['diskstats', 'filefd', 'filesystem', 'hwmon', 'loadavg',
-        'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat',
-        'tcpstat', 'textfile', 'time', 'uname', 'vmstat']
+    $collectors_default = ['conntrack', 'diskstats', 'entropy', 'edac', 'filefd', 'filesystem', 'hwmon',
+        'loadavg', 'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat', 'tcpstat',
+        'textfile', 'time', 'uname', 'vmstat']
     $textfile_directory = '/var/lib/prometheus/node.d'
     $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
 
