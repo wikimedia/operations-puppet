@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Generate prometheus targets to be polled, based on puppet's exported
 # resource Ganglia::Cluster.
-
+# FIXME: use new resource since Ganglia is gone?
 
 import argparse
 import collections
