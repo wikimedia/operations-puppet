@@ -1,5 +1,5 @@
 cluster: redis
-standard::has_ganglia: false
+
 profile::redis::slave::settings:
   bind: '0.0.0.0'
   appendonly: true

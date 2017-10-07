@@ -1,6 +1,6 @@
 # General configs
 cluster: logstash
-standard::has_ganglia: false
+
 admin::groups:
   - logstash-roots
   - elasticsearch-roots

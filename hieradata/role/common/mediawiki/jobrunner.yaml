@@ -21,4 +21,4 @@ hhvm::extra::fcgi:
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: jobrunner
-standard::has_ganglia: false
+

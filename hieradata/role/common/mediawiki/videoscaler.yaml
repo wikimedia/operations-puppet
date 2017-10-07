@@ -13,4 +13,4 @@ hhvm::extra::fcgi:
       thread_count: 15
   max_execution_time: 86400
 profile::mediawiki::jobrunner::load_factor: 0.7
-standard::has_ganglia: false
+

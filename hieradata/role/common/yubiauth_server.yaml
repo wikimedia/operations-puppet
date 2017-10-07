@@ -2,4 +2,4 @@ yubiauth_server_primary: auth1001.eqiad.wmnet
 yubiauth_servers:
   - auth1001.eqiad.wmnet
   - auth2001.codfw.wmnet
-standard::has_ganglia: false
+

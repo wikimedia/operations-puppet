@@ -1,4 +1,4 @@
-standard::has_ganglia: false
+
 
 profile::bird::advertise_vips:
   rec-dns-anycast-vip:

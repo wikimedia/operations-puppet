@@ -29,7 +29,7 @@ profile::redis::master::settings:
 profile::maps::postgresql_common::shared_buffers: '4GB'
 profile::maps::postgresql_common::maintenance_work_mem: '3GB'
 
-standard::has_ganglia: false
+
 
 profile::maps::apps::kartotherian_style: '''@kartotherian/osm-bright-style'''
 profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''

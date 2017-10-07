@@ -1,4 +1,4 @@
 admin::groups:
   - releasers-mediawiki
   - releasers-mobile
-standard::has_ganglia: false
+

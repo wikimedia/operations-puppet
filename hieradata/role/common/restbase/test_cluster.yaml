@@ -1,5 +1,5 @@
 cluster: restbase_test
-standard::has_ganglia: false
+
 profile::restbase::cassandra_local_dc: "%{::site}"
 profile::restbase::logging_label: restbase-test
 profile::restbase::cassandra_datacenters:

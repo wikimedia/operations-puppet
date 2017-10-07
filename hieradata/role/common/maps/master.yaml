@@ -19,7 +19,7 @@ admin::groups:
   - tilerator-admin
 
 cluster: 'maps'
-standard::has_ganglia: false
+
 
 profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 

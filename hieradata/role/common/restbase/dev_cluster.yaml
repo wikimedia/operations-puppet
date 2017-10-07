@@ -1,7 +1,7 @@
 # We don't want paging
 do_paging: false
 monitor_screens: false
-standard::has_ganglia: false
+
 
 #
 # RESTBase

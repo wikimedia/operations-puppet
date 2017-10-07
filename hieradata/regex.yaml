@@ -103,34 +103,34 @@ mysql_eqiad:
 mysql_codfw:
   __regex: !ruby/regexp /^(db2[01][0-9][0-9]|dbstore200[1-2]|es200[1-4]|pc200[4-6]|es201[1-9])\.codfw\.wmnet$/
   cluster: mysql
-  standard::has_ganglia: false
+  
 
 db_eqiad:
   __regex: !ruby/regexp /^(db1[01][0-9][0-9])\.eqiad\.wmnet$/
-  standard::has_ganglia: false
+  
 
 dbproxy_eqiad:
   __regex: !ruby/regexp /^(dbproxy10[01][0-9])\.eqiad\.wmnet$/
-  standard::has_ganglia: false
+  
 
 extstorage_eqiad:
   __regex: !ruby/regexp /^(es101[1-9])\.eqiad\.wmnet$/
-  standard::has_ganglia: false
+  
 
 labvirt:
   __regex: !ruby/regexp /^labvirt10[0-9][0-9]\.eqiad\.wmnet$/
   cluster: labvirt
-  standard::has_ganglia: false
+  
 
 labstore:
   __regex: !ruby/regexp /^labstore.*\.wmnet$/
   cluster: labsnfs
-  standard::has_ganglia: false
+  
 
 labs:
   __regex: !ruby/regexp /^lab((net|nodepool|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labs
-  standard::has_ganglia: false
+  
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
@@ -184,7 +184,7 @@ lvs_codfw_backup:
 
 lvs_esams:
   __regex: !ruby/regexp /^lvs3.*\.esams\.wmnet$/
-  standard::has_ganglia: false
+  
 
 lvs_esams_backup:
   __regex: !ruby/regexp /^lvs300[34]\.esams\.wmnet$/
@@ -196,7 +196,7 @@ lvs_temp_bgp_disable:
 
 lvs_ulsfo:
   __regex: !ruby/regexp /^lvs4.*\.ulsfo\.wmnet$/
-  standard::has_ganglia: false
+  
 
 maps_test:
   __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
@@ -218,7 +218,7 @@ labtest:
   openstack::nova::conductor::monitor::critical: false
   openstack::nova::network::monitor::critical: false
   icinga::monitor::toollabs::critical: false
-  standard::has_ganglia: false
+  
 
 # require WriteBack policy to all hosts (independent of the role) that look
 # like databases. Currently this only works for megacli systems, but it will

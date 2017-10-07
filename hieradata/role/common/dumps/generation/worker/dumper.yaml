@@ -2,4 +2,4 @@ admin::groups:
   - udp2log-users
   - deployment
   - snapshot-admins
-standard::has_ganglia: false
+

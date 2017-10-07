@@ -1,5 +1,5 @@
 cluster: misc
-standard::has_ganglia: false
+
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet

@@ -1,4 +1,4 @@
-standard::has_ganglia: false
+
 # Periodical backups of the analytics-meta mysql database.
 profile::analytics::database::meta::backup::rsync_dest: 'analytics1002.eqiad.wmnet::backup/mysql/analytics-meta'
 

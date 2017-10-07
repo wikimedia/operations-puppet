@@ -1,5 +1,5 @@
 cluster: restbase
-standard::has_ganglia: false
+
 #
 # Cassandra
 #

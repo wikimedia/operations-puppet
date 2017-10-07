@@ -1,5 +1,5 @@
 cluster: analytics
-standard::has_ganglia: false
+
 admin::groups:
   - statistics-privatedata-users
   - statistics-admins

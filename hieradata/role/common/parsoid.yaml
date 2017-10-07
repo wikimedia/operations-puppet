@@ -2,7 +2,7 @@ admin::groups:
   - parsoid-roots
   - parsoid-admin
 cluster: parsoid
-standard::has_ganglia: false
+
 role::lvs::realserver::pools:
   parsoid: {}
 parsoid::discovery: 'api-rw'

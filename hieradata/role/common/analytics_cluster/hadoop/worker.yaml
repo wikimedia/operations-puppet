@@ -1,6 +1,6 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-standard::has_ganglia: false
+
 
 admin::groups:
   - analytics-admins

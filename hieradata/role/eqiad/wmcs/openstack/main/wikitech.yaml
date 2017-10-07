@@ -1,4 +1,4 @@
 ---
 admin::groups:
   - wmcs-roots
-standard::has_ganglia: false
+

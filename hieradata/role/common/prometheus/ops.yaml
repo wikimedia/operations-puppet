@@ -5,4 +5,4 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
-standard::has_ganglia: false
+

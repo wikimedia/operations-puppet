@@ -1,5 +1,5 @@
 admin::groups:
   - analytics-admins
 cluster: analytics_kafka
-standard::has_ganglia: false
+
 nagios_group: analytics_eqiad

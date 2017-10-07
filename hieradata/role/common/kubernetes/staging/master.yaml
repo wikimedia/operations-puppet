@@ -1,5 +1,5 @@
 cluster: kubernetes
-standard::has_ganglia: false
+
 profile::kubernetes::master::accessible_to:
  - kubestage1001.eqiad.wmnet
  - kubestage1002.eqiad.wmnet

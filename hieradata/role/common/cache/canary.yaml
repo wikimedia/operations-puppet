@@ -4,7 +4,7 @@ apt::use_experimental: true
 cache::lua_support: true
 cluster: cache_canary
 cache::cluster: canary
-standard::has_ganglia: false
+
 admin::groups:
   - perf-roots
   - varnish-log-readers

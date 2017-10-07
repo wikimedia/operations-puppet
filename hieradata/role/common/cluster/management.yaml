@@ -1,4 +1,4 @@
 admin::groups:
   - datacenter-ops
 monitor_screens: false
-standard::has_ganglia: false
+

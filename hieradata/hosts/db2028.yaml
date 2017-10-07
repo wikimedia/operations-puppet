@@ -2,4 +2,4 @@ mariadb::shard: 's6'
 mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::socket: '/tmp/mysql.sock'
-standard::has_ganglia: false
+

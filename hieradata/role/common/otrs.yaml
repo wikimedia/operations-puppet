@@ -7,4 +7,4 @@ profile::otrs::exim_database_user: exim
 #profile::otrs::database_pass:
 #profile::otrs::exim_database_pass:
 standard::has_default_mail_relay: false
-standard::has_ganglia: false
+
