@@ -142,12 +142,6 @@ class profile::backup::director(
     bacula::director::fileset { 'var-lib-carbon-whisper':
         includes => [ '/var/lib/carbon/whisper' ]
     }
-    bacula::director::fileset { 'var-lib-ganglia':
-        includes => [ '/var/lib/ganglia' ]
-    }
-    bacula::director::fileset { 'srv-ganglia':
-        includes => [ '/srv/ganglia' ]
-    }
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]
     }
