@@ -125,7 +125,6 @@ node 'bast3002.wikimedia.org' {
         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': }
-    class { '::ganglia::monitor::aggregator': sites =>  'esams', }
 }
 
 # Bastion in California
@@ -136,10 +135,6 @@ node 'bast4001.wikimedia.org' {
         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': }
-
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'ulsfo',
-    }
 }
 
 node 'bohrium.eqiad.wmnet' {
@@ -1188,16 +1183,11 @@ node /^install[12]002\.wikimedia\.org$/ {
         aptrepo::wikimedia)
 
     interface::add_ip6_mapped { 'main': }
-
-    class { '::ganglia::monitor::aggregator':
-        sites => $::site,
-    }
 }
 
 # Phabricator
 node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
     role(phabricator_server)
-    include ::ganglia
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -2338,9 +2328,9 @@ node 'ununpentium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Ganglia Web UI
+# ex-Ganglia Web UI - to be decomed
 node 'uranium.wikimedia.org' {
-    role(ganglia::web)
+    role(spare)
     interface::add_ip6_mapped { 'main': }
 }
 
