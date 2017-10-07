@@ -10,7 +10,6 @@ class profile::openstack::base::nova::compute::service(
     ) {
 
     require_package('conntrack')
-    ganglia::plugin::python {'diskstat': }
 
     if $::fqdn =~ /^labvirt100[0-9].eqiad.wmnet/ {
         openstack2::nova::compute::partition{ '/dev/sdb':}
