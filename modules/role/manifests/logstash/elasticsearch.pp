@@ -16,10 +16,6 @@ class role::logstash::elasticsearch {
         threshold => '>=0.34',
     }
 
-    if $::standard::has_ganglia {
-        include ::elasticsearch::ganglia
-    }
-
     file { '/usr/share/elasticsearch/plugins':
         ensure => 'directory',
         force  => true,
