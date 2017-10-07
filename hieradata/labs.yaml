@@ -1,7 +1,6 @@
 # General variables that once would have been in realm.pp
 realm: labs
 datacenters: [eqiad]
-standard::has_ganglia: false
 has_nrpe: false
 discovery::app_routes:
   mediawiki: "%{::site}"
