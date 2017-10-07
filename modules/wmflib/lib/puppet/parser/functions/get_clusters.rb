@@ -24,7 +24,8 @@ module Puppet::Parser::Functions
   newfunction(:get_clusters, :type => :rvalue) do |args|
     all = {}
     # Ganglia config is the source of truth about clusters/site
-    cluster_config = function_hiera(['ganglia_clusters', {}])
+    # cluster_config = function_hiera(['ganglia_clusters', {}])
+    # FIXME: Add new source of truth?
 
     # Arguments are an hash of selectors
     selector ||= {}
