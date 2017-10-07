@@ -20,9 +20,4 @@ class role::osm::slave (
         includes         => 'tuning.conf',
         root_dir         => $role::osm::common::root_dir,
     }
-
-    class { 'postgresql::ganglia':
-        pgstats_user => $passwords::osm::ganglia_user,
-        pgstats_pass => $passwords::osm::ganglia_pass,
-    }
 }
