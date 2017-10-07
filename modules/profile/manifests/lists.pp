@@ -2,7 +2,6 @@ class profile::lists {
     include ::network::constants
     include ::mailman
     include ::privateexim::listserve
-    include ::exim4::ganglia
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
 

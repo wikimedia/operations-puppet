@@ -15,5 +15,4 @@ class role::phabricator_server {
     include ::profile::phabricator::main
     include ::phabricator::monitoring
     include ::phabricator::mpm
-    include ::exim4::ganglia
 }
