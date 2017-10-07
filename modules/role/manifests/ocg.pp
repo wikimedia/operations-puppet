@@ -47,10 +47,6 @@ class role::ocg {
     include ::ocg
     include ::ocg::nagios
 
-    if $::standard::has_ganglia {
-        include ::ocg::ganglia
-    }
-
     file { $::ocg::temp_dir:
         ensure => directory,
         owner  => 'root',
