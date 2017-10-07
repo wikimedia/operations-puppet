@@ -183,7 +183,7 @@ yubiauth: P{R:class = role::yubiauth_server}
 
 # Miscellaneous groups
 misc-analytics: P{R:class = role::statistics::web or R:class = role::piwik::server} or A:eventlogging
-misc-apache: P{R:class = role::microsites::peopleweb or R:class = grafana::production or R:class = role::requesttracker_server or R:class = role::releases or R:class = role::otrs or R:class = role::ganglia::web} or A:planet
+misc-apache: P{R:class = role::microsites::peopleweb or R:class = grafana::production or R:class = role::requesttracker_server or R:class = role::releases or R:class = role::otrs} or A:planet
 misc-devel: P{R:class = role::webperf or R:class = role::ve or R:class = role::archiva} or A:debugproxy or A:mwlog
 misc-nonprod: P{R:class = role::spare::system or R:class = role::test or R:class = role::security::tools or R:class = role::pybaltest}
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{R:class = role::logging::kafkatee::webrequest::ops or R:class = role::builder or R:class = role::syslog::centralserver or R:class = role::pmacct or R:class = role::backup::offsite or R:class = role::backup} or A:netmon
