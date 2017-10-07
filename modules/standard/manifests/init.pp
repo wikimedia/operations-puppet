@@ -24,11 +24,7 @@ class standard(
     include ::standard::diamond
     include ::standard::prometheus
 
-    if $has_ganglia {
-        include ::ganglia
-    } else {
-        include ::ganglia::monitor::decommission
-    }
+    include ::ganglia::monitor::decommission
 
     # Some instances have their own exim definition that
     # will conflict with this
