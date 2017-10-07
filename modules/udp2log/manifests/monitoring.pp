@@ -20,29 +20,4 @@ class udp2log::monitoring {
         group  => 'root',
         source => 'puppet:///modules/udp2log/check_udp2log_procs',
     }
-
-    if $::standard::has_ganglia {
-
-        require_package('ganglia-logtailer')
-
-        file { 'rolematcher.py':
-            path   => '/usr/share/ganglia-logtailer/rolematcher.py',
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/udp2log/rolematcher.py',
-        }
-
-        file { 'PacketLossLogtailer.py':
-            path   => '/usr/share/ganglia-logtailer/PacketLossLogtailer.py',
-            mode   => '0444',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/udp2log/PacketLossLogtailer.py',
-        }
-
-        # send udp2log socket stats to ganglia.
-        # include general UDP statistic monitoring.
-        ganglia::plugin::python{ ['udp_stats', 'udp2log_socket']: }
-    }
 }
