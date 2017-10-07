@@ -35,8 +35,6 @@ class otrs::mail(
         proxy => "webproxy.${::site}.wmnet:8080",
     }
 
-    include ::exim4::ganglia
-
     class { '::exim4':
         variant => 'heavy',
         config  => template('otrs/exim4.conf.otrs.erb'),
