@@ -17,7 +17,6 @@ profile::wdqs::nodes:
 admin::groups:
   - wdqs-admins
 cluster: wdqs
-standard::has_ganglia: false
 contactgroups: admins,wdqs-admins
 role::lvs::realserver::pools:
   wdqs: {}

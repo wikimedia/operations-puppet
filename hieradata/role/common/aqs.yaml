@@ -3,7 +3,6 @@
 # General
 #
 cluster: aqs
-standard::has_ganglia: false
 
 admin::groups:
     - aqs-admins

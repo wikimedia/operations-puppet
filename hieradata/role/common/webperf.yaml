@@ -1,4 +1,3 @@
 admin::groups:
   - perf-team
   - eventlogging-admins
-standard::has_ganglia: false

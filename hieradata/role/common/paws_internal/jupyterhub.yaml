@@ -3,5 +3,4 @@ admin::groups:
   - researchers
   - statistics-privatedata-users
   - analytics-privatedata-users
-standard::has_ganglia: false
 jupyterhub::web_proxy: http://webproxy.eqiad.wmnet:8080

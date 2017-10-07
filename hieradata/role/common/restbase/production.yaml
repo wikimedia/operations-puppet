@@ -2,7 +2,6 @@
 # RESTBase
 #
 cluster: restbase
-standard::has_ganglia: false
 profile::restbase::cassandra_local_dc: "%{::site}"
 profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:

@@ -23,4 +23,3 @@ hhvm::extra::cli:
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
-standard::has_ganglia: false

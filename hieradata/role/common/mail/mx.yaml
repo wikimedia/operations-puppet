@@ -1,5 +1,4 @@
 standard::has_default_mail_relay: false
-standard::has_ganglia: false
 admin::groups:
   - oit
 mtail::logs:

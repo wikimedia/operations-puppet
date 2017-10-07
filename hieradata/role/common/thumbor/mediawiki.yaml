@@ -2,4 +2,3 @@ admin::groups:
     - perf-roots
 
 cluster: thumbor
-standard::has_ganglia: false

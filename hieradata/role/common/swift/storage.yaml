@@ -1,3 +1,2 @@
 cluster: swift
-standard::has_ganglia: false
 nagios_group: swift

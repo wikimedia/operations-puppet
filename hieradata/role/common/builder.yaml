@@ -7,6 +7,5 @@ profile::docker::engine::settings:
 profile::docker::builder::proxy_address: "webproxy.%{::site}.wmnet"
 profile::docker::builder::proxy_port: "8080"
 monitor_screens: false
-standard::has_ganglia: false
 # The default setup has no lvm, so no source
 #profile::docker::storage::loopback::dm_source: null

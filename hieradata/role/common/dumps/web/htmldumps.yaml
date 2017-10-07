@@ -1,3 +1,2 @@
 admin::groups:
   - htmldumps-admin
-standard::has_ganglia: false

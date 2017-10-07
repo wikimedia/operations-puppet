@@ -3,4 +3,3 @@ admin::groups:
   - analytics-privatedata-users
   - analytics-admins
 cluster: analytics
-standard::has_ganglia: false

@@ -22,4 +22,3 @@ profile::mariadb::maintenance::ensure: present
 # whitelist maintenance servers from screen monitoring
 # many users have permanent sessions here (T165348)
 monitor_screens: false
-standard::has_ganglia: false

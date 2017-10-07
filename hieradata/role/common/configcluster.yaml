@@ -1,5 +1,4 @@
 cluster: etcd
-standard::has_ganglia: false
 
 profile::etcd::cluster_name: "%{::domain}"
 profile::etcd::cluster_bootstrap: true
