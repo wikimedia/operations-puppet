@@ -39,7 +39,7 @@ class profile::zookeeper::server (
     }
 
     $group_prefix = "zookeeper.cluster.${cluster_name}."
-    # Use jmxtrans for sending metrics to ganglia
+    # Use jmxtrans for sending metrics to statsd/graphite
     class { 'zookeeper::jmxtrans':
         group_prefix => $group_prefix,
         statsd       => $statsd_host,
