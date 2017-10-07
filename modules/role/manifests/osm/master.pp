@@ -29,13 +29,6 @@ class role::osm::master(
         root_dir => $role::osm::common::root_dir,
     }
 
-    class { 'postgresql::ganglia':
-        pgstats_user => $passwords::osm::ganglia_user,
-        pgstats_pass => $passwords::osm::ganglia_pass,
-    }
-    class { 'osm::ganglia':
-        state_path   => '/srv/osmosis/state.txt',
-    }
     class { 'osm::prometheus':
         state_path      => '/srv/osmosis/state.txt',
         prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',
