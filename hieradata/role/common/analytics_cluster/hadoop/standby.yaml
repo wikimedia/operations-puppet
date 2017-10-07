@@ -1,6 +1,5 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-standard::has_ganglia: false
 # FIXME:
 # indirect hiera lookup due to includes in the role:
 # role::analytics::hadoop::client

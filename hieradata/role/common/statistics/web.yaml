@@ -1,5 +1,4 @@
 cluster: analytics
-standard::has_ganglia: false
 admin::groups:
   - statistics-web-users
   - statistics-admins

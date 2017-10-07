@@ -1,4 +1,3 @@
 admin::groups:
   - eventlogging-admins
   - eventlogging-roots
-standard::has_ganglia: false

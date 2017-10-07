@@ -1,5 +1,4 @@
 cluster: kubernetes
-standard::has_ganglia: false
 profile::docker::storage::physical_volumes: "/dev/md2"
 profile::docker::storage::vg_to_remove: ''
 profile::docker::engine::version: "1.12.6-0~debian-jessie"

@@ -4,7 +4,6 @@
 class standard(
     $has_default_mail_relay = true,
     $has_admin = true,
-    $has_ganglia = true,
     ) {
     include ::profile::base
     include ::standard::ntp
@@ -23,8 +22,6 @@ class standard(
 
     include ::standard::diamond
     include ::standard::prometheus
-
-    include ::ganglia::monitor::decommission
 
     # Some instances have their own exim definition that
     # will conflict with this

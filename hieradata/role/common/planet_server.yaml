@@ -1,3 +1,2 @@
 cluster: misc
 planet_domain_name: 'wikimedia.org'
-standard::has_ganglia: false

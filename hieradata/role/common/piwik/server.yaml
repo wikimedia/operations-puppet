@@ -1,3 +1,2 @@
 admin::groups:
   - piwik-roots
-standard::has_ganglia: false

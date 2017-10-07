@@ -1,6 +1,5 @@
 # General configs
 cluster: relforge
-standard::has_ganglia: false
 admin::groups:
   - elasticsearch-roots
 

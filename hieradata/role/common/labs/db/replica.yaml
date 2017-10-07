@@ -1,3 +1,2 @@
-standard::has_ganglia: false
 admin::groups:
   - wmcs-admin

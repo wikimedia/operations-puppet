@@ -1,6 +1,5 @@
 # General configs
 cluster: elasticsearch
-standard::has_ganglia: false
 admin::groups:
   - elasticsearch-roots
 

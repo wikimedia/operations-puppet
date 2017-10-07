@@ -1,5 +1,4 @@
 cluster: kafka_jumbo
-standard::has_ganglia: false
 profile::kafka::broker::kafka_cluster_name: jumbo
 
 # Enable SSL/TLS for Kafka.  This requires
