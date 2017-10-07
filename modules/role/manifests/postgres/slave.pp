@@ -17,9 +17,4 @@ class role::postgres::slave {
         includes         => 'tuning.conf',
         root_dir         => $role::postgres::common::root_dir,
     }
-
-    class { 'postgresql::ganglia':
-        pgstats_user => $passwords::postgres::ganglia_user,
-        pgstats_pass => $passwords::postgres::ganglia_pass,
-    }
 }
