@@ -1,5 +1,4 @@
 cluster: redis
-standard::has_ganglia: false
 profile::redis::multidc::category: jobqueue
 profile::redis::multidc::discovery: "appservers-rw"
 profile::redis::multidc::settings:

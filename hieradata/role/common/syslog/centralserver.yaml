@@ -1,4 +1,3 @@
-standard::has_ganglia: false
 mtail::logs:
   - /srv/syslog/syslog.log
   - /srv/syslog/apache2.log

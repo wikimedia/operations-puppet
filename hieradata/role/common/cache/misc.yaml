@@ -2,7 +2,6 @@ cluster: cache_misc
 cache::cluster: misc
 cache::lua_support: true
 apt::use_experimental: true
-standard::has_ganglia: false
 profile::cache::base::varnish_version: 5
 prometheus::node_exporter::collectors_extra:
   - qdisc

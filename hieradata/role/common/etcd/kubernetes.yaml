@@ -1,5 +1,4 @@
 cluster: kubernetes
-standard::has_ganglia: false
 profile::etcd::cluster_name: "k8s.%{::site}"
 profile::etcd::discovery: "dns:k8s.%{::site}.wmnet"
 profile::etcd::use_client_certs: false

@@ -3,7 +3,6 @@ profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 cluster: misc
-standard::has_ganglia: false
 admin::groups:
   - deployment
   - deploy-service

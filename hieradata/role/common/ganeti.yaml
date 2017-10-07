@@ -1,6 +1,5 @@
 profile::base::ssh_server_settings:
   authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/ganeti
-standard::has_ganglia: false
 ganeti::ganeti01.svc.codfw.wmnet::nodes:
   - ganeti2001.codfw.wmnet
   - ganeti2002.codfw.wmnet

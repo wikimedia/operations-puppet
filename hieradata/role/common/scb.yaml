@@ -1,5 +1,4 @@
 cluster: scb
-standard::has_ganglia: false
 admin::groups:
   - sc-admins
   - citoid-admin

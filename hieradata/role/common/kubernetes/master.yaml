@@ -1,5 +1,4 @@
 cluster: kubernetes
-standard::has_ganglia: false
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::admission_controllers:

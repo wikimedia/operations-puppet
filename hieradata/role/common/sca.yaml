@@ -1,5 +1,4 @@
 cluster: sca
-standard::has_ganglia: false
 admin::groups:
   - sc-admins
   - zotero-admin

@@ -2,7 +2,6 @@ admin::groups:
   - druid-admins
 
 cluster: 'druid_public'
-standard::has_ganglia: false
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.

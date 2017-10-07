@@ -8,7 +8,6 @@ prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa
 mtail::ensure: 'stopped'
-standard::has_ganglia: false
 cache::tune_for_media: true
 # The contents of this hash control our DC->DC routing for varnish backend
 # daemons.  There should be a key for every cache datacenter.  The values must

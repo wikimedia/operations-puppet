@@ -2,7 +2,6 @@ admin::groups:
   - gerrit-root
   - gerrit-admin
 
-standard::has_ganglia: false
 gerrit::server::host: 'gerrit.wikimedia.org'
 gerrit::server::slave_hosts:
     - 'gerrit-slave.wikimedia.org'
