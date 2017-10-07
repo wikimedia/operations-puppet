@@ -21,7 +21,6 @@ class dnsrecursor(
 ) {
 
     include ::network::constants
-    include ::dnsrecursor::metrics
     $wmf_authdns = [
         '208.80.154.238',
         '208.80.153.231',
