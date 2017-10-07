@@ -4,7 +4,6 @@ class role::authdns::server {
 
     include ::standard
     include ::base::firewall
-    include authdns::ganglia
     include prometheus::node_gdnsd
     include role::authdns::data
 
