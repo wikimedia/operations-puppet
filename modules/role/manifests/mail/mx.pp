@@ -63,8 +63,6 @@ class role::mail::mx(
         require => Class['spamassassin'],
     }
 
-    include exim4::ganglia
-
     file { '/etc/exim4/defer_domains':
         ensure  => present,
         owner   => 'root',
