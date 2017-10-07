@@ -39,11 +39,6 @@ class profile::zookeeper::server (
     }
 
     $group_prefix = "zookeeper.cluster.${cluster_name}."
-    # Use jmxtrans for sending metrics to ganglia
-    class { 'zookeeper::jmxtrans':
-        group_prefix => $group_prefix,
-        statsd       => $statsd_host,
-    }
 
     if $is_critical {
         # Alert if Zookeeper Server is not running.
