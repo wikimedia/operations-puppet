@@ -1105,10 +1105,6 @@ node /^install[12]002\.wikimedia\.org$/ {
         aptrepo::wikimedia)
 
     interface::add_ip6_mapped { 'main': }
-
-    class { '::ganglia::monitor::aggregator':
-        sites => $::site,
-    }
 }
 
 # Phabricator
@@ -2236,9 +2232,9 @@ node 'ununpentium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Ganglia Web UI
+# ex-Ganglia Web UI - to be decomed
 node 'uranium.wikimedia.org' {
-    role(ganglia::web)
+    role(spare)
     interface::add_ip6_mapped { 'main': }
 }
 
