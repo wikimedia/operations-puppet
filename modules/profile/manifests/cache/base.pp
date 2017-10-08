@@ -27,6 +27,8 @@ class profile::cache::base(
     require ::profile::conftool::client
     require ::profile::cache::kafka::webrequest
     require ::profile::prometheus::varnish_exporter
+    require ::profile::cache::ssl::unified
+
     include ::role::lvs::realserver
     require ::standard
 
@@ -34,10 +36,14 @@ class profile::cache::base(
 
     class { 'conftool::scripts': }
 
+    # TLS termination
+
+
+
+    # TODO: Spin off a profile::cache::base::production?
     if $::realm == 'production' {
         # Only production needs system perf tweaks
         class { 'cacheproxy::performance': }
-
         # Periodic cron restarts, we need this to mitigate T145661
         class { 'cacheproxy::cron_restart':
             nodes => $nodes

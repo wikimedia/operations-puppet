@@ -88,3 +88,6 @@ profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
 profile::cache::base::storage_parts: ['sda3', 'sdb3']
+# Profile::cache::ssl::unified
+profile::cache::ssl::unified::monitoring: true
+profile::cache::ssl::unified::letsencrypt: false

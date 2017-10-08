@@ -7,8 +7,8 @@ class role::cache::upload(
         description => 'upload Varnish cache server',
     }
 
-    include profile::cache::base
-    include role::cache::ssl::unified
+    include ::profile::cache::base
+    include ::profile::cache::ssl::unified
     include ::standard
 
     class { 'prometheus::node_vhtcpd': }
@@ -76,7 +76,7 @@ class role::cache::upload(
 
     $common_runtime_params = ['default_ttl=86400']
 
-    class { 'role::cache::instances':
+    class { 'cacheproxy::instances':
         cache_type        => 'upload',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
         fe_runtime_params => $common_runtime_params,
