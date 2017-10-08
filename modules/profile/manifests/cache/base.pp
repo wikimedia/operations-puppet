@@ -27,9 +27,9 @@ class profile::cache::base(
     require ::profile::conftool::client
     require ::profile::cache::kafka::webrequest
     require ::profile::prometheus::varnish_exporter
+    include ::role::lvs::realserver
     require ::standard
 
-    include ::lvs::configuration
     include ::network::constants
 
     class { 'conftool::scripts': }

@@ -18,10 +18,6 @@ class role::cache::upload(
         mc_addrs   => [ '239.128.0.112', '239.128.0.113', '239.128.0.114' ],
     }
 
-    class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
-    }
-
     $fe_cache_be_opts = {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
