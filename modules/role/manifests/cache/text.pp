@@ -23,10 +23,6 @@ class role::cache::text(
         mc_addrs => [ '239.128.0.112' ],
     }
 
-    class { '::lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['text'][$::site]
-    }
-
     $fe_cache_be_opts = {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
