@@ -26,13 +26,16 @@ class profile::cache::base(
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::prometheus::varnish_exporter
+    # TODO: remove the lintignore when we rename role::lvs::realserver
+    # lint:ignore:wmf_styleguide
+    include ::role::lvs::realserver
+    # lint:endignore
     require ::standard
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
     include ::profile::cache::kafka::webrequest
 
     # Globals we need to include
-    include ::lvs::configuration
     include ::network::constants
 
     class { 'conftool::scripts': }
