@@ -12,8 +12,8 @@ class role::cache::text(
 
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
-    include profile::cache::base
-    include role::cache::ssl::unified
+    include ::profile::cache::base
+    include ::profile::cache::ssl::unified
     include ::standard
 
     class { 'tlsproxy::prometheus': }

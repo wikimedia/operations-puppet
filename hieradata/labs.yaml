@@ -60,6 +60,12 @@ cache::upload::nodes:
 profile::cache::base::zero_site: 'https://zero.wikimedia.beta.wmflabs.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.beta\.wmflabs\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
+# Profile::cache::ssl::unified
+profile::cache::ssl::unified::monitoring: false
+profile::cache::ssl::unified::letsencrypt: true
+profile::cache::ssl::unified::le_server_name: 'beta.wmflabs.org'
+profile::cache::ssl::unified::le_subjects: ['beta.wmflabs.org']
+
 role::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
 role::cache::upload::maps_domain: 'maps.beta.wmflabs.org'
 role::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
