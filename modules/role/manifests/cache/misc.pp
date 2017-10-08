@@ -3,8 +3,8 @@ class role::cache::misc {
         description => 'misc Varnish cache server',
     }
 
-    include profile::cache::base
-    include role::cache::ssl::unified
+    include ::profile::cache::base
+    include ::profile::cache::ssl::unified
 
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }

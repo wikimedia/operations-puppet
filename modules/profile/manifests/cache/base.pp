@@ -26,6 +26,7 @@ class profile::cache::base(
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::prometheus::varnish_exporter
+    require ::profile::cache::ssl::unified
     require ::standard
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here
@@ -37,11 +38,11 @@ class profile::cache::base(
 
     class { 'conftool::scripts': }
 
+    # TODO: Spin off a profile::cache::base::production?
     if $::realm == 'production' {
         # Only production needs system perf tweaks
         class { '::cpufrequtils': }
         class { 'cacheproxy::performance': }
-
         # Periodic cron restarts, we need this to mitigate T145661
         class { 'cacheproxy::cron_restart':
             nodes         => $nodes,

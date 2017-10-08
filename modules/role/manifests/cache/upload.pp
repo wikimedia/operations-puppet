@@ -7,8 +7,8 @@ class role::cache::upload(
         description => 'upload Varnish cache server',
     }
 
-    include profile::cache::base
-    include role::cache::ssl::unified
+    include ::profile::cache::base
+    include ::profile::cache::ssl::unified
     include ::standard
 
     class { 'tlsproxy::prometheus': }
