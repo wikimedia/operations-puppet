@@ -68,9 +68,9 @@ profile::cache::ssl::unified::le_subjects: ['beta.wmflabs.org']
 
 role::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
 role::cache::upload::maps_domain: 'maps.beta.wmflabs.org'
-role::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
-role::cache::text::shortener_domain: 'w-beta.wmflabs.org'
-role::cache::text::top_domain: 'beta.wmflabs.org'
+profile::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
+profile::cache::text::shortener_domain: 'w-beta.wmflabs.org'
+profile::cache::text::top_domain: 'beta.wmflabs.org'
 role::cache::base::storage_parts:
   - vdb
   - vdb
