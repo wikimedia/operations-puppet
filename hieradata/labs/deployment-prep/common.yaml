@@ -162,13 +162,6 @@ profile::memcached::port: '11211'
    - wikidev
 "profile::base::core_dump_pattern": '/data/project/cores/%{::hostname}-core.%h.%e.%p.%t'
 
-# T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
-#         causing slaves to be unreacheable.
-profile::base::ssh_server_settings:
-  disable_nist_kex: false
-  explicit_macs: false
-  disable_agent_forwarding: false
-  challenge_response_auth: false
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
 "profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
