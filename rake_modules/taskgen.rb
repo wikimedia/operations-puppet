@@ -86,7 +86,7 @@ class TaskGen < ::Rake::TaskLib
       linter.run
       problems.concat(linter.problems)
     end
-    problems
+    problems.reject{ |p| p[:kind] == :ignored }
   end
 
   def setup_puppet_lint
