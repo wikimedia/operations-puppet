@@ -773,8 +773,19 @@ node 'deploy1001.eqiad.wmnet' {
 
 # Analytics Druid servers.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[123456].eqiad.wmnet$/ {
+node /^druid100[123].eqiad.wmnet$/ {
     role(druid::analytics::worker)
+
+    include ::base::firewall
+    include ::standard
+}
+
+# 'Public' Druid servers.
+# https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
+# These are currently spares, until they are ready to become
+# a new Druid Cluster. WIP  T176223
+node /^druid100[456].eqiad.wmnet$/ {
+    role(spare::system)
 
     include ::base::firewall
     include ::standard
