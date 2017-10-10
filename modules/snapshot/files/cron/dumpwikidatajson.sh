@@ -16,7 +16,7 @@ targetFileBzip2=$targetDir/$filename.json.bz2
 failureFile=/tmp/dumpwikidatajson-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidatajson-$filename-main.log
 
-shards=5
+shards=6
 
 # Try to create the dump (up to three times).
 retries=0

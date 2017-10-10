@@ -39,7 +39,7 @@ targetFileBzip2=$targetDir/$filename.$dumpFormat.bz2
 failureFile=/tmp/dumpwikidata$dumpFormat-$dumpName-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-main.log
 
-shards=5
+shards=6
 
 declare -A dumpNameToMinSize
 # Sanity check: Minimal size we expect each shard of a certain dump to have
