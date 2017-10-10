@@ -76,9 +76,15 @@ class profile::elasticsearch(
         # to work properly.  This will keep elasticsearch from starting
         # if these plugins are  not available.
         plugins_mandatory                  => [
+            'analysis-hebrew',
+            'analysis-icu',
+            'analysis-smartcn',
+            'analysis-stconvert',
+            'analysis-stempel',
+            'analysis-ukrainian',
             'experimental-highlighter',
             'extra',
-            'analysis-icu',
+            'ltr'
         ],
         # Let apifeatureusage create their indices
         auto_create_index                  => '+apifeatureusage-*,-*',
