@@ -101,22 +101,23 @@ sub analytics_last_access_deliver_ {
     }
 
     /*
-     * WMF-Last-Access-Global
+     * WMF-Last-Access-Global (not for wikimedia.org)
      */
-    if(req.http.X-WMF-LastGlobalStamp) {
-        set resp.http.X-Analytics = resp.http.X-Analytics
-            + ";WMF-Last-Access-Global="
-            + req.http.X-WMF-LastGlobalStamp;
+    if(req.http.Host !~ "\.wikimedia\.org$") {
+        if(req.http.X-WMF-LastGlobalStamp) {
+            set resp.http.X-Analytics = resp.http.X-Analytics
+                + ";WMF-Last-Access-Global="
+                + req.http.X-WMF-LastGlobalStamp;
 
-        // re-set the cookie if it's not from today
-        if (req.http.X-NowDay != req.http.X-WMF-LastGlobalStamp) {
+            // re-set the cookie if it's not from today
+            if (req.http.X-NowDay != req.http.X-WMF-LastGlobalStamp) {
+                call set_last_access_global_cookie__;
+            }
+        }
+        else {
+            // sets the initial cookie if no valid one existed
             call set_last_access_global_cookie__;
         }
-
-    }
-    else {
-        // sets the initial cookie if no valid one existed
-        call set_last_access_global_cookie__;
     }
 
     // we could clean up req.http.X-WMF-LastStamp + req.http.X-NowDay
@@ -173,7 +174,12 @@ sub analytics_recv {
     }
 
     call analytics_last_access_recv_;
-    call analytics_last_access_global_recv_;
+
+    // Global last access cookies not used w/ wikimedia.org
+    if(req.http.Host !~ "\.wikimedia\.org$") {
+        call analytics_last_access_global_recv_;
+    }
+
     call analytics_provenance_recv_;
 }
 
