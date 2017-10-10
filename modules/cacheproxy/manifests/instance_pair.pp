@@ -1,5 +1,5 @@
 # This defines the pair of varnish::instance for a 2-layer (fe+be) cache node
-class role::cache::instances (
+class cacheproxy::instance_pair (
     $cache_type,
     $fe_jemalloc_conf,
     $fe_runtime_params,
@@ -13,12 +13,13 @@ class role::cache::instances (
     $fe_cache_be_opts,
     $be_cache_be_opts,
     $be_storage,
-    $cluster_nodes
+    $cluster_nodes,
+    $cache_route,
+    $fe_transient_gb=0,
+    $be_transient_gb=0,
+    $backend_warming=false,
+    $exp_thread_rt=false,
 ) {
-
-    $cache_route_table = hiera('cache::route_table')
-    $cache_route = $cache_route_table[$::site]
-
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
     # but as we'll only have other DCs backending to eqiad and/or codfw for
@@ -66,18 +67,17 @@ class role::cache::instances (
     }
 
     # Transient storage limits T164768
-    $fe_transient_gb = hiera('cache::fe_transient_gb', 0)
+
     if $fe_transient_gb > 0 {
         $fe_transient_storage = "-s Transient=malloc,${fe_transient_gb}G"
     }
 
-    $be_transient_gb = hiera('cache::be_transient_gb', 0)
     if $be_transient_gb > 0 {
         $be_transient_storage = "-s Transient=malloc,${be_transient_gb}G"
     }
 
     # Experimental backend settings to handle T145661
-    if hiera('cache::exp_thread_rt', false) {
+    if $exp_thread_rt {
         $exp_thread_params = ['exp_thread_rt=true','exp_lck_inherit=true']
     } else {
         $exp_thread_params = []
@@ -93,7 +93,7 @@ class role::cache::instances (
 
     # Set backend_warming to enable/disable miss2pass behavior
     $be_warming_vcl_config = merge($be_vcl_config, {
-        'backend_warming' => hiera('cache::backend_warming', false),
+        'backend_warming' => $backend_warming,
     })
 
     varnish::instance { "${cache_type}-backend":
