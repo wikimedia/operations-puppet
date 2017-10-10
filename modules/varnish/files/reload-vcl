@@ -46,9 +46,9 @@ msg_secret_not_there="Error: Secret file %s does not exist\n"
 if [ -f /proc/sys/kernel/random/uuid ]
 then
     uuid=$(cat /proc/sys/kernel/random/uuid)
-    vcl_label="${LOGNAME}${LOGNAME:+:}${uuid}"
+    vcl_label="${LOGNAME}${LOGNAME:+-}${uuid}"
 else
-    vcl_label="$($date +${LOGNAME}${LOGNAME:+:}%s.%N)"
+    vcl_label="$($date +${LOGNAME}${LOGNAME:+-}%s.%N)"
 fi
 
 # parse command line arguments
