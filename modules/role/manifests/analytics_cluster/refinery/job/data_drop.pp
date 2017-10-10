@@ -11,6 +11,7 @@ class role::analytics_cluster::refinery::job::data_drop {
     $mediawiki_log_file         = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-log-partitions.log"
     $druid_webrequest_log_file  = "${role::analytics_cluster::refinery::log_dir}/drop-druid-webrequest.log"
     $mediawiki_history_log_file = "${role::analytics_cluster::refinery::log_dir}/drop-mediawiki-history.log"
+    $banner_activity_log_file   = "${role::analytics_cluster::refinery::log_dir}/drop-banner-activity.log"
 
     # Shortcut var to DRY up cron commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python"
@@ -93,4 +94,14 @@ class role::analytics_cluster::refinery::job::data_drop {
         monthday    => '15'
     }
 
+    # keep this many days of banner activity success files
+    # cron runs once a day
+    $banner_activity_retention_days = 90
+    cron {'refinery-drop-banner-activity':
+        command     => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-banner-activity-partitions -d ${banner_activity_retention_days} -l /wmf/data/wmf/banner_activity >> ${banner_activity_log_file}",
+        environment => "MAILTO=${mail_to}",
+        user        => 'hdfs',
+        minute      => '0',
+        hour        => '2',
+    }
 }
