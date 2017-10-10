@@ -1546,8 +1546,12 @@ node 'maps-test2001.codfw.wmnet' {
     role(maps::test::master)
 }
 
-node /^maps-test200[2-4]\.codfw\.wmnet/ {
+node /^maps-test200[23]\.codfw\.wmnet/ {
     role(maps::test::slave)
+}
+
+node 'maps-test2004.codfw.wmnet' {
+    role(maps::test::vectortiles_master)
 }
 
 node 'maps1001.eqiad.wmnet' {
