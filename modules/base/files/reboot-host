@@ -1,0 +1,2 @@
+#!/bin/bash
+nohup reboot &> /dev/null & exit
