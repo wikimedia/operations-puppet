@@ -6,7 +6,12 @@ class profile::cache::upload(
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
     $cluster_nodes = hiera('cache::upload::nodes'),
     $statsd_server = hiera('statsd'),
-){
+    $cache_route_table = hiera('cache::route_table'),
+    $backend_warming = hiera('cache::backend_warming', false),
+) {
+    require ::profile::cache::base
+
+    $cache_route = $cache_route_table[$::site]
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
@@ -77,7 +82,7 @@ class profile::cache::upload(
 
     $common_runtime_params = ['default_ttl=86400']
 
-    class { 'role::cache::instances':
+    class { 'cacheproxy::instance_pair':
         cache_type        => 'upload',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
         fe_runtime_params => $common_runtime_params,
@@ -92,6 +97,8 @@ class profile::cache::upload(
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => $cluster_nodes,
+        cache_route       => $cache_route,
+        backend_warming   => $backend_warming,
     }
 
     # Media browser cache hit rate and request volume stats.
