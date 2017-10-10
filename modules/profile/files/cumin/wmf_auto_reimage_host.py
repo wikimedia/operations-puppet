@@ -62,8 +62,9 @@ def parse_args():
                 raise argparse.ArgumentTypeError(
                     "Unable to resolve host '{name}'".format(name=name))
 
-    if '.mgmt.' not in mgmts.values():
-        raise argparse.ArgumentTypeError('The MGMT parameter must be in the *.mgmt.* format')
+    for mgmt in mgmts.values():
+        if '.mgmt.' not in mgmt:
+            raise argparse.ArgumentTypeError('The MGMT parameter must be in the *.mgmt.* format')
 
     return args
 
