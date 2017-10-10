@@ -7,9 +7,11 @@ class profile::cache::misc(
     $req_handling = hiera('cache::req_handling'),
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
+    $cache_route_table = hiera('cache::route_table'),
 ) {
     require ::profile::cache::base
 
+    $cache_route = $cache_route_table[$::site]
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
@@ -50,7 +52,7 @@ class profile::cache::misc(
     # issues in our setup. See T159429
     $be_runtime_params = ['timeout_idle=120']
 
-    class { 'role::cache::instances':
+    class { 'cacheproxy::instance_pair':
         cache_type        => 'misc',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
@@ -65,5 +67,6 @@ class profile::cache::misc(
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => $nodes,
+        cache_route       => $cache_route,
     }
 }

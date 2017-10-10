@@ -8,9 +8,15 @@ class profile::cache::text(
     $req_handling = hiera('cache::req_handling'),
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
+    $cache_route_table = hiera('cache::route_table'),
+    $fe_transient_gb = hiera('cache::fe_transient_gb'),
+    $be_transient_gb = hiera('cache::be_transient_gb'),
+    $backend_warming = hiera('cache::backend_warming', false),
 ) {
     # profile::cache::base needs to be evaluated before this one.
     require ::profile::cache::base
+
+    $cache_route = $cache_route_table[$::site]
     # LVS configuration
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['text'][$::site]
@@ -62,7 +68,7 @@ class profile::cache::text(
 
     $text_storage_args = $::profile::cache::base::file_storage_args
 
-    class { 'role::cache::instances':
+    class { 'cacheproxy::instance_pair':
         cache_type        => 'text',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
         fe_runtime_params => $common_runtime_params,
@@ -77,6 +83,10 @@ class profile::cache::text(
         fe_cache_be_opts  => $fe_cache_be_opts,
         be_cache_be_opts  => $be_cache_be_opts,
         cluster_nodes     => $nodes,
+        cache_route       => $cache_route,
+        fe_transient_gb   => $fe_transient_gb,
+        be_transient_gb   => $be_transient_gb,
+        backend_warming   => $backend_warming,
     }
 
     # varnishkafka statsv listens for special stats related requests
