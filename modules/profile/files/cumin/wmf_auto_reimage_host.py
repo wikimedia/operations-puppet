@@ -45,6 +45,8 @@ def parse_args():
     if args.mgmt is None:
         mgmts = lib.get_mgmts([args.host])
         args.mgmt = mgmts[args.host]
+    else:
+        mgmts = [args.mgmt]
 
     fqdns.append(args.mgmt)
     if args.rename is not None and args.rename_mgmt is None:
