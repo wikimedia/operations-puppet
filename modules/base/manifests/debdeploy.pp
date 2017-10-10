@@ -13,5 +13,13 @@ class base::debdeploy
         mode   => '0555',
     }
 
+    file { '/usr/local/sbin/cumin-reboot':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/base/cumin-reboot',
+    }
+
     require_package('debdeploy-client', 'python-dateutil')
 }
