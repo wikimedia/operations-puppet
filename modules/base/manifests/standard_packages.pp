@@ -96,6 +96,8 @@ class base::standard_packages {
     # packages around, remove those
     if os_version('debian == stretch') {
         package { [
+                  'libapt-inst1.5',
+                  'libapt-pkg4.12',
                   'libdns-export100',
                   'libirs-export91',
                   'libisc-export95',
