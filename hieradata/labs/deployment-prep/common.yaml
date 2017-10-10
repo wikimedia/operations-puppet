@@ -157,7 +157,7 @@ profile::memcached::size: '3000'
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::port: '11211'
-"varnish::packages::version": latest
+"profile::cache::base::packages_version": latest
 "keyholder::trusted_groups":
    - wikidev
 "profile::base::core_dump_pattern": '/data/project/cores/%{::hostname}-core.%h.%e.%p.%t'
