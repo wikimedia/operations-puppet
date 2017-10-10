@@ -46,9 +46,19 @@ profile::elasticsearch::common_settings:
 
     auto_create_index: false
     plugins_mandatory:
+      - analysis-hebrew
+      - analysis-icu
+      - analysis-smartcn
+      - analysis-stconvert
+      - analysis-stempel
+      - analysis-ukrainian
       - experimental-highlighter
       - extra
-      - analysis-icu
+      - extra-analysis-esperanto
+      - extra-analysis-serbian
+      - extra-analysis-slovak
+      - ltr
+
     filter_cache_size: '20%'
     script_max_compilations_per_minute: 10000
 
