@@ -1012,10 +1012,9 @@ users:
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
-    ssh_keys:
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCY5EyIRrtuxDgh8SOkTQl8tYAu5ZOGMO0MA9RiqMb6za8ossDmKCwD5JKwooYmT8yFA5JnvyOC0adsCCA+enylrX6r6FK0ur+dekfCGF/dsyxSJU9aw6WwVr2BThrfPjzbMR1IuN4I0t134fYE0VUvibod1kGoxSGYdWvqEFf+v7b2MqWtU+xASBFEbrx2knqVBjyy6+O8sUikfKX+vyCSxiQa2GE66LM8SuX+0JnhlDNuXleQzdFpJ9novw/+/1KqOJOg3i8/Jb1/AEMf/eChombWdjNccGtPueRyJAXEl2tCuLvt9Vf7PBZaoxhAV0Bo0GcwRVBwvsyaNDuVabLJ
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDL1tcL4XnCAA5SQIple6w9DMpC0xdvfOrKxpuq51FSlm/yBRrq/BhCsazcxs+hj20qzRvkod23LChfx1x9IyR6Wgm8aX3ORO720n2/IyG9aC31+Ub1WQOFDFqHmh8qsVnq/o25sHiR7EVoG1FXReNxZW59ckBR9z5ZzS8HFJZd9c0RHC6kutUMAT8AhXMvQpF/6m/PcIbZqmE/v//cNVC+sbhannNZ+q9jjz25MQmQKgNagq7zioCs5AwjcHAd2JDSEL3GK3G/aTfVceF9YgICnfXRUlt8bP+8TwikJKlHxkjkJ/sBopODXP40SaqPb5BvIPvU3OojI6z+IYPwamcLKk9A3X6bHNqtGjXssPXfCNeoYa07sLDRrt5ECpIL5cMANSZmc8/j5meGRmKenySvLlhtBTLYiSsgrkkUvhfbk6VNMEH8V8Qaaw9hyTKsJyuSQr7yXgbz3dzvho7E5M97gioqpArHM/hOfVn4JWTKQ1LnWhvR+6TxJ5DkrZQp0fzODTHwF0DQmJ9kOAORIrfYvl4ps6HtKXxV6wZSs8p7hb9XD6vVGKRUv5zb/TTcJkdUVQHTKGyHvmHL8nBr4QAieLUEdCDE/q6v5St43/0aLzRYWGtTNh0inPqHiOKKDWkjfQz6BcgCsC6KBFAtzj2TjtJ8WkmuJHmvObRl5p78Q== amir.sarabadani@wikimedia.de]
     uid: 3182
-    email: amir.tafreshi_ext@wikimedia.de
+    email: amir.sarabadani@wikimedia.de
   manybubbles:
     ensure: absent
     gid: 500
