@@ -13,5 +13,13 @@ class base::debdeploy
         mode   => '0555',
     }
 
+    file { '/usr/local/sbin/reboot-host':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/base/reboot-host',
+    }
+
     require_package('debdeploy-client', 'python-dateutil')
 }
