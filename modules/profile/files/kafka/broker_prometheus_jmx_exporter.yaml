@@ -1,6 +1,11 @@
 ---
 lowercaseOutputLabelNames: true
-lowercaseOutputName: true
+# The following setting allows the creation of metrics like:
+# kafka_server_ReplicaManager_UnderReplicatedPartitions
+# that are a mix of lower-case and camel-case. This is a convention used only
+# for kafka related metrics to allow a better readability, more context about
+# the discussion to establish a convention in T177078.
+lowercaseOutputName: false
 rules:
 - pattern : kafka.cluster<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value
   name: kafka_cluster_$1_$2
