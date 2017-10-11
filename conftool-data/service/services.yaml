@@ -41,14 +41,6 @@ elasticsearch:
     datacenters:
     - eqiad
     - codfw
-pdf:
-  ocg:
-    port: 8000
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
 sca:
   zotero:
     port: 1969

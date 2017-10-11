@@ -173,10 +173,6 @@ eqiad:
     cp1073.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1074.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1099.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  pdf:
-    ocg1001.eqiad.wmnet: [ocg]
-    ocg1002.eqiad.wmnet: [ocg]
-    ocg1003.eqiad.wmnet: [ocg]
   sca:
     sca1003.eqiad.wmnet: [zotero]
     sca1004.eqiad.wmnet: [zotero]
