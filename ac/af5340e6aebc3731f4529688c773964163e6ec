@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+2: Jgreen <jgreen@wikimedia.org>
+Code-Review+1: Elukey <ltoscano@wikimedia.org>
+Submitted-by: Jgreen <jgreen@wikimedia.org>
+Submitted-at: Wed, 11 Oct 2017 16:09:57 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/383604
+Project: operations/puppet
+Branch: refs/heads/production
