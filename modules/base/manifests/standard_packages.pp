@@ -12,6 +12,7 @@ class base::standard_packages {
         'apt-transport-https',
         'atop',
         'debian-goodies',
+        'dnsutils',
         'dstat',
         'ethtool',
         'gdb',
