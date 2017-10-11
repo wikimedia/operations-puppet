@@ -38,12 +38,11 @@ define varnish::logging::statsd(
 
     if ! defined(File['/usr/local/bin/varnishstatsd']) {
         file { '/usr/local/bin/varnishstatsd':
-            source  => 'puppet:///modules/varnish/varnishstatsd',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
-            notify  => Service[$service_unit_name],
+            source => 'puppet:///modules/varnish/varnishstatsd',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            notify => Service[$service_unit_name],
         }
     }
 
@@ -51,7 +50,6 @@ define varnish::logging::statsd(
         ensure         => present,
         content        => systemd_template('varnishstatsd'),
         require        => File['/usr/local/bin/varnishstatsd'],
-        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             enable => true,
         },
