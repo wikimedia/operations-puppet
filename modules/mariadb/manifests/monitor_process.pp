@@ -6,10 +6,19 @@ class mariadb::monitor_process(
     $process_name   = 'mysqld',
     $process_count  = 1,
     ) {
+
+    # is_critical means "paging on/off" in this context, not the Icinga status
+    # certain host names are excluded from ever creating pages (T178008)
+    if $::fqdn =~ /^labtest/ {
+        $paging = false
+    } else {
+        $paging = $is_critical
+    }
+
     nrpe::monitor_service { $process_name:
         description   => "${process_name} processes",
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${process_count}:${process_count} -C ${process_name}",
-        critical      => $is_critical,
+        critical      => $paging,
         contact_group => $contact_group,
     }
 }
