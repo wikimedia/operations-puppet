@@ -27,19 +27,17 @@ define varnish::logging::xcache(
     include ::varnish::common
 
     file { '/usr/local/bin/varnishxcache':
-        source  => 'puppet:///modules/varnish/varnishxcache',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
-        notify  => Service['varnishxcache'],
+        source => 'puppet:///modules/varnish/varnishxcache',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        notify => Service['varnishxcache'],
     }
 
     systemd::service { 'varnishxcache':
         ensure         => present,
         content        => systemd_template('varnishxcache'),
         require        => File['/usr/local/bin/varnishxcache'],
-        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             require => Service['varnish-frontend'],
             enable  => true,
