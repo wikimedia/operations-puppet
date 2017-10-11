@@ -44,7 +44,7 @@ node 'analytics1001.eqiad.wmnet' {
         analytics_cluster::users)
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 
@@ -63,14 +63,14 @@ node 'analytics1002.eqiad.wmnet' {
         analytics_cluster::database::meta::backup_dest)
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node 'analytics1003.eqiad.wmnet' {
     role(analytics_cluster::coordinator)
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # analytics1028-analytics1068 are Hadoop worker nodes.
@@ -82,7 +82,7 @@ node 'analytics1003.eqiad.wmnet' {
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 }
 
@@ -168,7 +168,7 @@ node 'californium.wikimedia.org' {
     role(wmcs::openstack::main::horizon,
           striker::web)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
@@ -313,7 +313,7 @@ node 'darmstadtium.eqiad.wmnet' {
 
 node /^(diadem|dysprosium)\.wikimedia\.org$/ {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node 'dataset1001.wikimedia.org' {
@@ -617,7 +617,7 @@ node 'db1102.eqiad.wmnet' {
 # tendril db
 node 'db1011.eqiad.wmnet' {
     role(mariadb::tendril)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node 'dbstore1001.eqiad.wmnet' {
@@ -752,7 +752,7 @@ node /^dns400[12]\.wikimedia\.org$/ {
 node /^druid100[123].eqiad.wmnet$/ {
     role(druid::analytics::worker)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 }
 
@@ -762,7 +762,7 @@ node /^druid100[123].eqiad.wmnet$/ {
 node /^druid100[456].eqiad.wmnet$/ {
     role(druid::public::worker)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 }
 
@@ -867,14 +867,14 @@ node /^es201[79]\.codfw\.wmnet/ {
 node 'es2001.codfw.wmnet' {
     role(mariadb::otrsbackups)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     # temporary measure until mysql is uninstalled
     include ::mariadb::mysqld_safe
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     # temporary measure until mysql is uninstalled
     include ::mariadb::mysqld_safe
 }
@@ -939,14 +939,14 @@ node 'eventlog1001.eqiad.wmnet' {
         logging::mediawiki::errors)
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 # EventLogging Analytics does not (yet?) run in codfw.
 node 'eventlog2001.codfw.wmnet' {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # virtual machine for mailman list server
@@ -1011,14 +1011,14 @@ node 'kraz.wikimedia.org' {
 node 'labpuppetmaster1001.wikimedia.org' {
     role(wmcs::openstack::main::puppetmaster::frontend)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'labpuppetmaster1002.wikimedia.org' {
     role(wmcs::openstack::main::puppetmaster::backend)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1026,14 +1026,14 @@ node 'labpuppetmaster1002.wikimedia.org' {
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services_primary)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::ldap::role::client::labs
 }
 
 node 'labservices1002.wikimedia.org' {
     role(wmcs::openstack::main::services_secondary)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -1050,19 +1050,19 @@ node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
 node 'labtestmetal2001.codfw.wmnet' {
     # WIP
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node 'labtestnet2002.codfw.wmnet' {
     # WIP
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node 'labtestneutron2002.codfw.wmnet' {
     # WIP
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node 'labtestnet2001.codfw.wmnet' {
@@ -1072,7 +1072,7 @@ node 'labtestnet2001.codfw.wmnet' {
 
 node 'labtestcontrol2001.wikimedia.org' {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     role(wmcs::openstack::labtest::control)
 
     # Labtest is weird; the mysql server is on labtestcontrol2001.  So
@@ -1104,14 +1104,14 @@ node 'labtestcontrol2001.wikimedia.org' {
 
 node 'labtestcontrol2003.wikimedia.org' {
     role(wmcs::openstack::labtestn::control)
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
     role(wmcs::openstack::labtest::puppetmaster::frontend)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1119,13 +1119,13 @@ node 'labtestservices2001.wikimedia.org' {
     role(wmcs::openstack::labtest::services,
           openldap::labtest)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 node /labtestservices200[23]\.wikimedia\.org/ {
     role(wmcs::openstack::labtestn::services)
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
     interface::add_ip6_mapped { 'main': }
 }
@@ -1133,7 +1133,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 node /labweb100[12]\.eqiad\.wmnet/ {
     role(mediawiki::appserver)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
@@ -1216,7 +1216,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
         ipsec)
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
@@ -1267,14 +1267,14 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 }
 
 node /labcontrol100[34]\.wikimedia\.org/ {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 }
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
     include ::ldap::role::client::labs
 }
@@ -1287,7 +1287,7 @@ node 'labcontrol1001.wikimedia.org' {
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
     include ::ldap::role::client::labs
 }
@@ -1298,7 +1298,7 @@ node 'labcontrol1002.wikimedia.org' {
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web,
           mariadb::wikitech)
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
     include ::ldap::role::client::labs
 
@@ -1309,7 +1309,7 @@ node 'labtestweb2001.wikimedia.org' {
 node 'labmon1001.eqiad.wmnet' {
     role(labs::graphite, labs::prometheus, grafana::labs)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # role spare until pushed into service via T165784
@@ -1324,7 +1324,7 @@ node 'labnet1001.eqiad.wmnet' {
 
 node /labnet100[34]\.eqiad\.wmnet/ {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 
@@ -1337,7 +1337,7 @@ node 'labnodepool1001.eqiad.wmnet' {
     $nagios_contact_group = 'admins,contint'
     role(wmcs::openstack::main::nodepool)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 ## labsdb dbs
@@ -1370,47 +1370,47 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     # soon to be recommissioned in T158196
     include ::standard
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node 'labstore1003.eqiad.wmnet' {
     role(labs::nfs::misc)
     include ::standard
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(labs::nfs::secondary)
     include ::standard
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node /labstore100[67]\.wikimedia\.org/ {
     role(dumps::public::server)
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
     include ::standard
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node 'labstore2003.codfw.wmnet' {
     role(labs::nfs::secondary_backup::tools)
     include ::standard
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(labs::nfs::secondary_backup::misc)
     include ::standard
     # Do not enable yet
-    # include ::base::firewall
+    # include ::profile::base::firewall
 }
 
 #lawrencium is a proof of concept test server for performance T179968
@@ -1665,37 +1665,37 @@ node /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/ {
 # They replace mw1017 and mw1099
 node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # mw1180-1188 are apaches
 node /^mw118[0-8]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # mw1209-1216, 1218-1220 are apaches
 node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw1221-mw1235 are api apaches
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw1238-mw1258 are apaches
 node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw1259-60 are videoscalers
@@ -1708,24 +1708,24 @@ node /^mw12(59|60)\.eqiad\.wmnet/ {
 
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # ROW A eqiad api appserver
 # mw1276 - mw1290
 node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 node /^mw12(8[0-9]|90)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # ROW A eqiad imagescalers
@@ -1736,26 +1736,26 @@ node /^mw129[3-8]\.eqiad\.wmnet$/ {
 # ROW A eqiad jobrunners
 node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # T165519
 # ROW C eqiad appservers
 node /^mw13(19|2[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # ROW B eqiad api-appservers
 node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # ROW A eqiad jobrunners
 node /^mw13(0[89]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # ROW A videoscaler
@@ -1774,19 +1774,19 @@ node 'mw1318.eqiad.wmnet' {
 # mw2017/mw2099 are codfw test appservers
 node /^mw20(17|99)\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2097, mw2100-mw2117 are appservers
 node /^mw2(097|10[0-9]|11[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2120-2147 are api appservers
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # ROW B codfw appservers
@@ -1810,19 +1810,19 @@ node 'mw2152.codfw.wmnet' {
 #mw2153-62 are jobrunners
 node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2163-mw2199 are appservers
 node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2200-2214 are api appservers
 node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # New Appservers, in row A3/A4
@@ -1830,13 +1830,13 @@ node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
 #mw2215-2223 are api appservers
 node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # mw2224-42 are appservers
 node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2244-mw2245 are imagescalers
@@ -1852,26 +1852,26 @@ node 'mw2246.codfw.wmnet' {
 # mw2247-2250 are jobrunners
 node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2251-2253 are api-appservers
 node /^mw225[1-3]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 #mw2254-2258 are appservers
 node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
     role(xenon)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 
     class { 'role::logging::mediawiki::udp2log':
@@ -1883,7 +1883,7 @@ node 'mwlog2001.codfw.wmnet' {
 node 'mwlog1001.eqiad.wmnet' {
     role(xenon)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 
     class { 'role::logging::mediawiki::udp2log':
@@ -1977,7 +1977,7 @@ node 'oxygen.eqiad.wmnet'
 {
     role(logging::kafkatee::webrequest::ops)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 }
 
@@ -2035,7 +2035,7 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
     role(prometheus::ops, prometheus::global, prometheus::services, prometheus::analytics,
       prometheus::k8s)
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
     include ::lvs::realserver
 
@@ -2044,7 +2044,7 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
 
 node 'puppetcompiler1001.eqiad.wmnet' {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -2198,14 +2198,14 @@ node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
     role(wmcs::openstack::main::wikitech,
           mariadb::wikitech)
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
 
     interface::add_ip6_mapped { 'main': }
@@ -2243,7 +2243,7 @@ node 'thorium.eqiad.wmnet' {
 
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }
 
 # Failoid service (Ganeti VM)

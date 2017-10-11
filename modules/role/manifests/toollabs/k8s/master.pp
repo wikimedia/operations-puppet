@@ -2,7 +2,7 @@
 class role::toollabs::k8s::master(
     $use_puppet_certs = false,
 ) {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::toollabs::infrastructure
 
     $master_host = hiera('k8s::master_host', $::fqdn)

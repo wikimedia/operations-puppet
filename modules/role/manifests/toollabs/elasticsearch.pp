@@ -4,7 +4,7 @@
 #
 # filtertags: labs-project-tools
 class role::toollabs::elasticsearch {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::elasticsearch
 
     class { '::nginx':

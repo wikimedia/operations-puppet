@@ -15,7 +15,7 @@ class role::mariadb::sanitarium_multisource {
 
     include ::standard
     include passwords::misc::scripts
-    include ::base::firewall
+    include ::profile::base::firewall
     include role::mariadb::ferm
     include role::labs::db::common
     include role::labs::db::check_private_data

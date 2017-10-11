@@ -9,7 +9,7 @@ class role::mediawiki::videoscaler {
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
     include ::profile::mediawiki::jobrunner
-    include ::base::firewall
+    include ::profile::base::firewall
 
     # Change the apache2.conf Timeout setting
     augeas { 'apache timeout':

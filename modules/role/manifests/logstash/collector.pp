@@ -13,7 +13,7 @@ class role::logstash::collector (
 ) {
     include ::role::logstash::elasticsearch
     include ::logstash
-    include ::base::firewall
+    include ::profile::base::firewall
 
     nrpe::monitor_service { 'logstash':
         description  => 'logstash process',

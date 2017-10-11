@@ -1,7 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::etcd::k8s {
     include ::etcd
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::role::toollabs::etcd::expose_metrics
 

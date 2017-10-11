@@ -9,7 +9,7 @@ class toollabs::proxy(
 
     include ::toollabs::infrastructure
     include ::redis::client::python
-    include ::base::firewall
+    include ::profile::base::firewall
 
     if $ssl_install_certificate {
         sslcert::certificate { $ssl_certificate_name:

@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-tools
 class role::toollabs::logging::centralserver {
-    include ::base::firewall
+    include ::profile::base::firewall
 
     system::role { 'tools::logreceiver':
         description => 'Central syslog server',

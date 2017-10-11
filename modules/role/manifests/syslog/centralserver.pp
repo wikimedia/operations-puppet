@@ -5,7 +5,7 @@
 class role::syslog::centralserver {
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::backup::host
 
     system::role { 'syslog::centralserver':

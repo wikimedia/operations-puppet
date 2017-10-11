@@ -21,7 +21,7 @@ class role::grafana::base(
 
     include ::passwords::ldap::production
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     class { '::grafana':
         config => {

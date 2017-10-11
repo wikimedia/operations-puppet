@@ -6,7 +6,7 @@
 
 class role::thumbor::mediawiki {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::mediawiki::packages::fonts
     include role::statsite
 

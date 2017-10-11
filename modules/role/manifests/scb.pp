@@ -14,7 +14,7 @@ class role::scb {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include role::lvs::realserver
 
     # Ores

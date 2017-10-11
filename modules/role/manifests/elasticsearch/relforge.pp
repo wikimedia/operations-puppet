@@ -4,7 +4,7 @@
 #
 class role::elasticsearch::relforge {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::elasticsearch
     include ::elasticsearch::nagios::check
     include ::profile::mjolnir::kafka_daemon
