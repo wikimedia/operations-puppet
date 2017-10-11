@@ -169,12 +169,6 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  ocg-render-admins:
-    gid: 721
-    description: admins for pdf render (rt 6468)
-    members: [cscott, ssastry, gwicke, arlolra]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service ocg *',
-                 'ALL = (ocg) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)

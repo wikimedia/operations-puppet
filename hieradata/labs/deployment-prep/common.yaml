@@ -1,11 +1,6 @@
 ---
 profile::base::remote_syslog:
   - "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
-"ocg::temp_dir": /mnt/tmpfs
-"ocg::redis_host": deployment-redis01.deployment-prep.eqiad.wmflabs
-"ocg::statsd_host": labmon1001.eqiad.wmnet
-"ocg::graylog_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
-"ocg::redis_password": '%{::passwords::redis::main_password}'
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
@@ -81,7 +76,6 @@ lvs::configuration::lvs_service_ips:
   mathoid: {}
   misc_web: {}
   mobile: {}
-  ocg: {}
   osm: {}
   parsoid: {}
   rendering: {}

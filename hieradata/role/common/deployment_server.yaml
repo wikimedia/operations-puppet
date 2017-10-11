@@ -8,7 +8,6 @@ admin::groups:
   - deployment
   - deploy-service
   - parsoid-admin
-  - ocg-render-admins
   - wdqs-admins
   - eventlogging-admins
   - aqs-admins
@@ -178,4 +177,3 @@ scap::sources:
     repository: search/MjoLniR
   statsv/statsv:
     repository: analytics/statsv
-
