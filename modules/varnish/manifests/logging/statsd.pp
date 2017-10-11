@@ -42,7 +42,6 @@ define varnish::logging::statsd(
             owner   => 'root',
             group   => 'root',
             mode    => '0555',
-            require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
             notify  => Service[$service_unit_name],
         }
     }
@@ -51,7 +50,6 @@ define varnish::logging::statsd(
         ensure         => present,
         content        => systemd_template('varnishstatsd'),
         require        => File['/usr/local/bin/varnishstatsd'],
-        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             enable => true,
         },

@@ -85,21 +85,12 @@ class varnish::common($varnish_version=4) {
         ensure => 'stopped',
     }
 
-    # varnishlog.py depends on varnishapi. Install it.
     file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
-        source => 'puppet:///modules/varnish/varnishapi.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure => absent,
     }
 
-    # Install varnishlog.py
     file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-        source  => 'puppet:///modules/varnish/varnishlog.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File['/usr/local/lib/python2.7/dist-packages/varnishapi.py'],
+        ensure => absent,
     }
 
     # Install cachestats.py
