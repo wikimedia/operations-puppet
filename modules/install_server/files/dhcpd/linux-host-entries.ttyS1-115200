@@ -792,26 +792,6 @@ host cp3049 {
     fixed-address cp3049.esams.wmnet;
 }
 
-host cp4005 {
-    hardware ethernet 90:b1:1c:42:dc:fc;
-    fixed-address cp4005.ulsfo.wmnet;
-}
-
-host cp4006 {
-    hardware ethernet 90:b1:1c:43:14:c7;
-    fixed-address cp4006.ulsfo.wmnet;
-}
-
-host cp4007 {
-    hardware ethernet 90:b1:1c:45:6d:d5;
-    fixed-address cp4007.ulsfo.wmnet;
-}
-
-host cp4008 {
-    hardware ethernet 90:b1:1c:43:15:63;
-    fixed-address cp4008.ulsfo.wmnet;
-}
-
 host cp4009 {
     hardware ethernet 90:b1:1c:45:4a:8d;
     fixed-address cp4009.ulsfo.wmnet;
@@ -820,26 +800,6 @@ host cp4009 {
 host cp4010 {
     hardware ethernet 90:b1:1c:43:15:33;
     fixed-address cp4010.ulsfo.wmnet;
-}
-
-host cp4013 {
-    hardware ethernet 90:b1:1c:42:fa:f5;
-    fixed-address cp4013.ulsfo.wmnet;
-}
-
-host cp4014 {
-    hardware ethernet 90:b1:1c:42:e6:95;
-    fixed-address cp4014.ulsfo.wmnet;
-}
-
-host cp4015 {
-    hardware ethernet 90:b1:1c:45:4a:4a;
-    fixed-address cp4015.ulsfo.wmnet;
-}
-
-host cp4016 {
-    hardware ethernet 90:b1:1c:45:61:52;
-    fixed-address cp4016.ulsfo.wmnet;
 }
 
 host cp4017 {
