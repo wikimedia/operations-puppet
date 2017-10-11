@@ -6,10 +6,17 @@ class mariadb::monitor_process(
     $process_name   = 'mysqld',
     $process_count  = 1,
     ) {
+
+    if $::fqdn =~ /^labtest/ {
+        $paging = false
+    } else {
+        $paging = true
+    }
+
     nrpe::monitor_service { $process_name:
         description   => "${process_name} processes",
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${process_count}:${process_count} -C ${process_name}",
-        critical      => $is_critical,
+        critical      => $paging,
         contact_group => $contact_group,
     }
 }
