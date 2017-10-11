@@ -65,7 +65,7 @@ class profile::kafka::broker::monitoring (
     # https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=29&fullscreen
     monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
         description    => 'Kafka Broker Under Replicated Partitions',
-        query          => "scalar(avg_over_time(kafka_server_replicamanager_underreplicatedpartitions{${prometheus_labels}}[30m]))",
+        query          => "scalar(avg_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[30m]))",
         warning        => 5,
         critical       => 10,
         prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
@@ -75,7 +75,7 @@ class profile::kafka::broker::monitoring (
     # https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=16&fullscreen
     monitoring::check_prometheus { 'kafka_broker_replica_max_lag':
         description    => 'Kafka Broker Replica Max Lag',
-        query          => "scalar(avg_over_time(kafka_server_replicafetchermanager_maxlag{${prometheus_labels}}[30m]))",
+        query          => "scalar(avg_over_time(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[30m]))",
         warning        => $replica_maxlag_warning,
         critical       => $replica_maxlag_critical,
         prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
