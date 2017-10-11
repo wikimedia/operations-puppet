@@ -1956,9 +1956,9 @@ node /^(nihal\.codfw|nitrogen\.eqiad)\.wmnet$/ {
     role(puppetmaster::puppetdb)
 }
 
-# Offline Content Generator
+# Offline Content Generator - decommissioned, see T177931
 node /^ocg100[123]\.eqiad\.wmnet$/ {
-    role(ocg)
+    role(spare::system)
 }
 
 node /^ores100[1-9]\.eqiad\.wmnet$/ {
