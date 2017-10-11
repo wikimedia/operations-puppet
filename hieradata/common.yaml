@@ -82,11 +82,6 @@ ganglia_clusters:
     sites:
       eqiad: []
       codfw: []
-  pdf:
-    description: "PDF servers"
-    id: 15
-    sites:
-      eqiad: []
   cache_text:
     description: "Text caches"
     id: 20
