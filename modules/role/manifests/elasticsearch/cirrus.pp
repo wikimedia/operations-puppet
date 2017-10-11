@@ -4,7 +4,7 @@
 #
 class role::elasticsearch::cirrus {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::role::lvs::realserver
     include ::profile::elasticsearch
 

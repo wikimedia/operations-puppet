@@ -5,6 +5,6 @@ class role::mediawiki::imagescaler {
     include ::role::mediawiki::webserver
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::threedtopng::deploy
 }

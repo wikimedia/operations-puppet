@@ -17,5 +17,5 @@ class role::cluster::management {
     include ::profile::switchdc
     include ::profile::debdeploy
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 }

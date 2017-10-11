@@ -6,7 +6,7 @@
 class role::webperf {
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $statsd = hiera('statsd')
     $statsd_parts = split($statsd, ':')

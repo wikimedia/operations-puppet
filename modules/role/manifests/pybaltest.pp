@@ -3,7 +3,7 @@ class role::pybaltest {
         description => 'pybal testing/development'
     }
 
-    include ::base::firewall
+    include ::profile::base::firewall
     $pybaltest_hosts_ferm = join(hiera('pybaltest::hosts'), ' ')
 
     ferm::service { 'pybaltest-http':

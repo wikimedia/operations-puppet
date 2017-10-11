@@ -13,7 +13,7 @@ class role::mariadb::sanitarium_multiinstance {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     #FIXME:
     ferm::service { 'sanitarium_multiinstance':
         proto  => 'tcp',

@@ -36,7 +36,7 @@ class profile::backup::host(
         }
         File <| tag == 'backup-motd' |>
 
-        # If the machine includes ::base::firewall then let director connect to us
+        # If the machine includes ::profile::base::firewall then let director connect to us
         # TODO The IPv6 IP should be converted into a DNS AAAA resolve once we
         # enabled the DNS record on the director
         ferm::service { 'bacula-file-demon':

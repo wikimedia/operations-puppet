@@ -4,7 +4,7 @@
 class role::openldap::corp {
     include passwords::openldap::corp
     include ::profile::backup::host
-    include ::base::firewall
+    include ::profile::base::firewall
 
     system::role { 'openldap::corp':
         description => 'Corp OIT openldap Mirror server'

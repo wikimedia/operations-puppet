@@ -14,7 +14,7 @@ class role::mariadb::dbstore(
     include mariadb::service
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include passwords::misc::scripts
 
     class { 'role::mariadb::grants::production':

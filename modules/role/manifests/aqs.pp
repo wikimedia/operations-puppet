@@ -11,7 +11,7 @@ class role::aqs {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     require ::passwords::aqs
     include ::profile::cassandra

@@ -2,7 +2,7 @@
 
 class profile::dnsrecursor {
     include ::network::constants
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::lvs::configuration
 
     class { '::dnsrecursor':

@@ -21,7 +21,7 @@ class role::mariadb::misc(
     include ::standard
     include role::mariadb::monitor
     include passwords::misc::scripts
-    include ::base::firewall
+    include ::profile::base::firewall
     include role::mariadb::ferm
     class { 'role::mariadb::groups':
         mysql_group => 'misc',
