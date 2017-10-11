@@ -18,7 +18,7 @@ class role::labs::puppetmaster::backend {
     $allow_from = flatten([$labs_instance_range, $labs_metal, '.wikimedia.org'])
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::profile::puppetmaster::labsenc
     include ::profile::puppetmaster::labsencapi

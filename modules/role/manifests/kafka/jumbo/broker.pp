@@ -10,6 +10,6 @@ class role::kafka::jumbo::broker {
     if !defined(Class['::standard']) {
         include ::standard
     }
-    include base::firewall
-    include profile::kafka::broker
+    include ::profile::base::firewall
+    include ::profile::kafka::broker
 }

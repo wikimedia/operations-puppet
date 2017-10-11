@@ -4,7 +4,7 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     #FIXME:
     ferm::service { 'dbstore_multiinstance':
         proto  => 'tcp',

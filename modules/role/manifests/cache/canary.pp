@@ -1,5 +1,5 @@
 class role::cache::canary {
-    include ::base::firewall
+    include ::profile::base::firewall
     include role::cache::text
 
     ferm::service { 'nginx-https':

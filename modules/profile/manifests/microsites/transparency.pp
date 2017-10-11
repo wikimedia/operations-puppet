@@ -43,7 +43,7 @@ class profile::microsites::transparency {
         content => template('role/apache/sites/transparency.wikimedia.org.erb'),
     }
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     ferm::service { 'transparency_http':
         proto => 'tcp',

@@ -9,7 +9,7 @@ class profile::yubiauth::server (
 
     $auth_servers_ferm = join($auth_servers, ' ')
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     class {'::yubiauth::yhsm_daemon': }
 

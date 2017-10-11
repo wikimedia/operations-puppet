@@ -3,7 +3,7 @@ class role::requesttracker::upgradetest {
     system::role { 'requesttracker::upgradetest': description => 'temp test setup for RT migration to jessie' }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include rsync::server
 
     # copy db dump from slave via rsync

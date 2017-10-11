@@ -9,7 +9,7 @@ class role::mirrors {
 
     include mirrors::serve
     include mirrors::tails
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include mirrors::ubuntu
     nrpe::monitor_service {'check_ubuntu_mirror':

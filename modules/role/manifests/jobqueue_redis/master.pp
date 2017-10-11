@@ -1,6 +1,6 @@
 class role::jobqueue_redis::master {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::redis::multidc
     include ::profile::redis::jobqueue
 

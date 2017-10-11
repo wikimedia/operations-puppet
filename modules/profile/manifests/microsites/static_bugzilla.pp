@@ -1,7 +1,7 @@
 # static HTML archive of old Bugzilla tickets
 class profile::microsites::static_bugzilla {
     include ::bugzilla_static
-    include ::base::firewall
+    include ::profile::base::firewall
 
     ferm::service { 'bugzilla_static_http':
         proto => 'tcp',

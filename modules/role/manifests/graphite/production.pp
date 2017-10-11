@@ -8,7 +8,7 @@ class role::graphite::production {
     $storage_dir = '/var/lib/carbon'
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     class { 'role::graphite::base':
         storage_dir      => $storage_dir,

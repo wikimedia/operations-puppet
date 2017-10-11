@@ -2,7 +2,7 @@
 
 class role::kubernetes::staging::etcd {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::etcd
     include ::profile::etcd::auth
 }

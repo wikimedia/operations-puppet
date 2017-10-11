@@ -1,12 +1,12 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
-class base::firewall {
+class profile::base::firewall {
     include ::network::constants
     include ::ferm
 
     $defscontent = $::realm ? {
-        'labs'  => template('base/firewall/defs.erb', 'base/firewall/defs.labs.erb'),
-        default => template('base/firewall/defs.erb'),
+        'labs'  => template('profile/base/firewall/defs.erb', 'profile/base/firewall/defs.labs.erb'),
+        default => template('profile/base/firewall/defs.erb'),
     }
     ferm::conf { 'defs':
         prio    => '00',
@@ -30,7 +30,7 @@ class base::firewall {
 
     ferm::conf { 'main':
         prio   => '00',
-        source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
+        source => 'puppet:///modules/profile/base/firewall/main-input-default-drop.conf',
     }
 
     ferm::rule { 'bastion-ssh':
@@ -66,7 +66,7 @@ class base::firewall {
     }
 
     file { '/usr/lib/nagios/plugins/check_ferm':
-        source => 'puppet:///modules/base/firewall/check_ferm',
+        source => 'puppet:///modules/profile/base/firewall/check_ferm',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

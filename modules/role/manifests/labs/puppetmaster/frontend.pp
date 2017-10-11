@@ -30,7 +30,7 @@ class role::labs::puppetmaster::frontend() {
     # Only allow puppet access from the instances
     $allow_from = flatten([$labs_instance_range, $labs_metal, '.wikimedia.org'])
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::profile::backup::host
     include ::profile::puppetmaster::labsenc

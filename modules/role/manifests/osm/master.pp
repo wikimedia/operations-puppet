@@ -21,7 +21,7 @@ class role::osm::master(
     include postgresql::postgis
     include osm
     include passwords::osm
-    include ::base::firewall
+    include ::profile::base::firewall
 
 
     class { 'postgresql::master':

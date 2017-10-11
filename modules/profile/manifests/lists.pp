@@ -1,5 +1,5 @@
 class profile::lists {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::network::constants
     include ::mailman
     include ::privateexim::listserve

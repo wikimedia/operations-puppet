@@ -33,7 +33,7 @@ class profile::gerrit::server(
         contact_group => 'admins,gerrit',
     }
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     # ssh from users to gerrit
     ferm::service { 'gerrit_ssh_users':

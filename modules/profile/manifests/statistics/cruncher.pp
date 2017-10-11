@@ -4,7 +4,7 @@ class profile::statistics::cruncher(
     $statistics_servers = hiera('statistics_servers'),
 ) {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::deployment::umask_wikidev
 

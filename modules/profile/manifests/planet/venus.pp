@@ -191,7 +191,7 @@ class profile::planet::venus (
     }
 
     # firewalling
-    include ::base::firewall
+    include ::profile::base::firewall
     ferm::service { 'planet-http':
         proto => 'tcp',
         port  => '80',

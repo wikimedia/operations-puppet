@@ -1,7 +1,7 @@
 # Temporary role class for T169246
 class role::ores::stresstest {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include ::profile::ores::worker
     include ::profile::ores::web

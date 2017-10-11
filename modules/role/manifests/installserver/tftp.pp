@@ -23,7 +23,7 @@ class role::installserver::tftp {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::backup::host
     include install_server::tftp_server
 

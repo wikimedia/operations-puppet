@@ -3,7 +3,7 @@
 
 class role::openldap::labtest {
     include passwords::openldap::labtest
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $ldapconfig = hiera_hash('labsldapconfig', {})
     $ldap_labs_hostname = $ldapconfig['hostname']

@@ -5,7 +5,7 @@ class role::dumps::web::htmldumps {
 
     include ::standard
     include ::profile::dumps::web::htmldumps
-    include ::base::firewall
+    include ::profile::base::firewall
 
     ferm::service { 'html_dumps_http':
         proto => 'tcp',

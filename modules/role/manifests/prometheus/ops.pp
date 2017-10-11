@@ -4,7 +4,7 @@
 # filtertags: labs-project-monitoring
 class role::prometheus::ops {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $targets_path = '/srv/prometheus/ops/targets'
     $storage_retention = hiera('prometheus::server::storage_retention', '2190h0m0s')

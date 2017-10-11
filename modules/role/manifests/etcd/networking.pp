@@ -2,6 +2,6 @@
 # stacks as flannel and calico.
 class role::etcd::networking {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::etcd
 }

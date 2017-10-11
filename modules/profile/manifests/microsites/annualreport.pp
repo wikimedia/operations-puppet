@@ -4,7 +4,7 @@
 # T599 - https://15.wikipedia.org (aka. annual report 2015)
 class profile::microsites::annualreport {
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::apache
     include ::apache::mod::headers
 

@@ -4,7 +4,7 @@
 # See https://wikitech.wikimedia.org/wiki/PAWS/Internal for more info
 class role::paws_internal::jupyterhub {
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::statistics::packages
 
     class { '::jupyterhub':

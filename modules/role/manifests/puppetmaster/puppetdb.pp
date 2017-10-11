@@ -3,7 +3,7 @@ class role::puppetmaster::puppetdb (
     $shared_buffers = '7680MB'
 ) {
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::passwords::postgres
 
     $master = hiera('puppetmaster::puppetdb::master')

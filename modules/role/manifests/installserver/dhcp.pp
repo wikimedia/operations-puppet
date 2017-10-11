@@ -8,7 +8,7 @@ class role::installserver::dhcp {
     include install_server::dhcp_server
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     ferm::rule { 'dhcp':
         rule => 'proto udp dport bootps { saddr $PRODUCTION_NETWORKS ACCEPT; }'

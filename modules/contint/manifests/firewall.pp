@@ -1,7 +1,7 @@
 # vim: set ts=4 sw=4 et:
 class contint::firewall {
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::network::constants
 
     # Restrict some services to be only reacheable from localhost over both

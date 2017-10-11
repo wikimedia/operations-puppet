@@ -8,7 +8,7 @@ class role::labs::db::replica {
     class { 'mariadb::packages_wmf': }
     class { 'mariadb::service': }
     include role::mariadb::monitor
-    include ::base::firewall
+    include ::profile::base::firewall
 
     ferm::service{ 'mariadb_labs_db_replica':
         proto   => 'tcp',

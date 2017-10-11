@@ -1,7 +1,7 @@
 # sets up an Etherpad lite server
 class profile::etherpad {
 
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::passwords::etherpad_lite
 
     class { '::etherpad':

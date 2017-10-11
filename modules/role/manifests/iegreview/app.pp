@@ -4,7 +4,7 @@
 #
 class role::iegreview::app {
 
-    include ::base::firewall
+    include ::profile::base::firewall
 
     class { '::iegreview':
         hostname   => 'iegreview.wikimedia.org',

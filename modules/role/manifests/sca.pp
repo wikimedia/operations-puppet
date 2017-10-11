@@ -4,7 +4,7 @@ class role::sca {
     include role::zotero
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     if $::realm == 'production' {
         include ::lvs::realserver
     }

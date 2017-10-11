@@ -1,7 +1,7 @@
 class role::snapshot::common {
     include ::dumps::deprecated::user
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     # mw packages and dependencies, dataset server nfs mount,
     # config files, stages files, dblists, html templates

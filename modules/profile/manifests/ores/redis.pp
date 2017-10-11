@@ -6,7 +6,7 @@ class profile::ores::redis(
     $slaveof  = hiera('profile::ores::redis::slaveof', undef),
 ){
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     class { '::ores::redis':
         password => $password,
