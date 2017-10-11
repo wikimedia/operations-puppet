@@ -259,7 +259,7 @@ class TaskGen < ::Rake::TaskLib
         end
         tasks << 'tox:update'
       else
-        if @changed_files.include?('admin/modules/data/data.yaml')
+        if @changed_files.include?('modules/admin/data/data.yaml')
           desc 'Run tox for the admin data file'
           task :admin do
             res = system('tox -e testenv')
