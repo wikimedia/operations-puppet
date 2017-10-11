@@ -18,6 +18,7 @@ class profile::base(
     $check_raid_policy = hiera('profile::base::check_raid_policy', ''),
     $check_raid_interval = hiera('profile::base::check_raid_interval', 10),
     $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
+    $check_smart = hiera('profile::base::check_smart', false),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -147,5 +148,9 @@ class profile::base(
     }
     else {
         grub::bootparam { 'isolcpus': ensure => 'absent' }
+    }
+
+    if $check_smart and $facts['is_virtual'] == false {
+        class { '::smart': }
     }
 }
