@@ -960,11 +960,6 @@ node 'francium.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
 
-node 'ftp-internal.eqiad.wmnet' {
-    # temp FTP server for T175342
-    role(test)
-}
-
 # Virtualization hosts
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
