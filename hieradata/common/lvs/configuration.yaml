@@ -60,8 +60,6 @@ lvs::configuration::lvs_service_ips:
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
-  ocg: &ip_block015
-    eqiad: 10.2.2.31
   parsoid: &ip_block011
     eqiad: 10.2.2.28
     codfw: 10.2.1.28
@@ -631,29 +629,6 @@ lvs::configuration::lvs_services:
           hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
-  ocg:
-    description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *ip_block015
-    port: 8000
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/?command=health
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: pdf
-      service: ocg
-    icinga:
-      check_command: check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health
-      sites:
-        eqiad:
-          hostname: ocg.svc.eqiad.wmnet
   mathoid:
     description: "Mathematical rendering service, mathoid.svc.%{::site}.wmnet"
     class: low-traffic
