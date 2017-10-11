@@ -3205,6 +3205,8 @@ host lvs1008 {
 host lvs1009 {
     hardware ethernet ec:b1:d7:7b:1a:f8;
     fixed-address lvs1009.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1010 {
