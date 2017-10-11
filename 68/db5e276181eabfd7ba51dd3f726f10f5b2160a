@@ -1,0 +1,7 @@
+Code-Review+2: Herron <kherron@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Herron <kherron@wikimedia.org>
+Submitted-at: Wed, 11 Oct 2017 13:09:13 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/375427
+Project: operations/puppet
+Branch: refs/heads/production
