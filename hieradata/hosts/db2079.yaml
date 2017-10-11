@@ -1,1 +1,2 @@
 mariadb::shard: 's5'
+profile::base::check_smart: true
