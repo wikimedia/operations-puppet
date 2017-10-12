@@ -133,6 +133,8 @@ lvs::configuration::lvs_service_ips:
   jobrunner: &ip_block039
     eqiad: 10.2.2.26
     codfw: 10.2.1.26
+  druid-public-broker: &ip_block040
+    eqiad: 10.2.2.38
 
 lvs::configuration::lvs_services:
   text:
@@ -1337,3 +1339,27 @@ lvs::configuration::lvs_services:
           hostname: jobrunner.svc.eqiad.wmnet
         codfw:
           hostname: jobrunner.svc.codfw.wmnet
+  druid-public-broker:
+    description: 'Broker query service for the Druid Public Cluster'
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block040
+    port: 8082
+    depool-threshold: '.5'
+    conftool:
+      cluster: druid-public
+      service: druid-public-broker
+    icinga:
+      check_command: "check_http_lvs_on_port!druid-public-broker.svc.%{::site}.wmnet!8082!/status"
+      critical: false
+      sites:
+        eqiad:
+          hostname: druid-public-broker.svc.eqiad.wmnet
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/status
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
