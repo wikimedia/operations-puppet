@@ -144,38 +144,38 @@ fullviews:
   - watchlist_count
 
 logging_whitelist:
+  - abusefilter
+  - block
+  - campus
+  - close
+  - course
+  - delete
+  - eparticle
+  - gather
+  - gblblock
   - gblrights
   - globalauth
-  - close
-  - lock
-  - gblblock
-  - managetags
-  - gather
-  - campus
+  - import
   - institution
   - instructor
-  - online
-  - merge
+  - lock
+  - managetags
   - massmessage
-  - course
-  - stable
-  - import
-  - abusefilter
-  - student
-  - eparticle
-  - rights
-  - pagetriage-deletion
-  - protect
+  - merge
+  - move
+  - newusers
+  - online
   - pagetriage-curation
-  - thanks
+  - pagetriage-deletion
+  - patrol
+  - protect
   - renameuser
   - review
-  - block
+  - rights
+  - stable
+  - student
+  - thanks
   - upload
-  - move
-  - delete
-  - patrol
-  - newusers
 
 customviews:
   abuse_filter:
