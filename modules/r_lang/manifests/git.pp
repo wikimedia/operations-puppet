@@ -23,16 +23,24 @@ define r_lang::git (
     $ensure = 'present',
     $library = '/usr/local/lib/R/site-library'
 ) {
-    $pkg_path = "${library}/${title}"
+    $pkg_path = "${library}/${name}"
     case $ensure {
         'absent': {
-            exec { "remove-${title}":
-                command => "/usr/bin/R -e \"remove.packages('${title}', lib = '${library}')\"",
-                notify  => Service['shiny-server'],
+            # Since r_lang can be used on machines that don't have shiny_server,
+            # we only want a package removal to restart the Shiny Server service
+            # if the service actually exists:
+            $remove_notify = defined(Service['shiny-server']) ? {
+                true    => Service['shiny-server'],
+                default => Undef,
+            }
+            exec { "remove-${name}":
+                command => "/usr/bin/R -e \"remove.packages('${name}', lib = '${library}')\"",
+                notify  => $remove_notify,
+                onlyif  => "test -d ${pkg_path}",
             }
         }
         default: {
-            exec { "package-${title}":
+            exec { "package-${name}":
                 require => R_lang::Cran['devtools'],
                 command => "/usr/bin/R -e \"devtools::install_git('${url}', lib = '${library}')\"",
                 creates => $pkg_path,

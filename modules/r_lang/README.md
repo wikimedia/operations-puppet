@@ -30,6 +30,10 @@ R packages from various sources:
     - *ensure*: default 'present', but also supports 'absent'
     - **Notice**: this is only available if the `devtools` parameter is set to
       `true`. Refer to [Disclaimer](#disclaimer) section below for details.
+- **r_lang::bioc** for installing from [Bioconductor](https://bioconductor.org/)
+    - the resource ID should be name of the package to be installed
+    - *timeout*: default 300 (seconds)
+    - *ensure*: default 'present', but also supports 'absent'
 
 The `notify` metaparameter is used to trigger a restart of the Shiny Server
 service.
