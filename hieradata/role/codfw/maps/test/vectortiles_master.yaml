@@ -16,3 +16,4 @@ profile::maps::osm_master::slaves:
 profile::maps::osm_master::planet_sync_period: 'minute'
 profile::maps::osm_master::planet_sync_hour:   '*'
 profile::maps::osm_master::planet_sync_minute: '*'
+profile::maps::osm_master::cleartables: true
