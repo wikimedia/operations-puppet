@@ -3,6 +3,7 @@
 unless ($::environment == 'future') {
     import 'realm.pp' # These ones first
 }
+
 # Base nodes
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
