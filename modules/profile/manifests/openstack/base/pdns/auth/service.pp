@@ -5,9 +5,11 @@ class profile::openstack::base::pdns::auth::service(
     $db_pass = hiera('profile::openstack::base::pdns::db_pass'),
     ) {
 
+    #    dns_auth_ipaddress     => $facts['ipaddress'],
+    #    dns_auth_query_address => $facts['ipaddress'],
     class { '::pdns_server':
-        dns_auth_ipaddress     => $facts['ipaddress'],
-        dns_auth_query_address => $facts['ipaddress'],
+        dns_auth_ipaddress     => $::ipaddress,
+        dns_auth_query_address => $::ipaddress,
         dns_auth_soa_name      => $host,
         pdns_db_host           => $db_host,
         pdns_db_password       => $db_pass,
