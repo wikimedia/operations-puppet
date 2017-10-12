@@ -10,6 +10,7 @@ class role::ci::slave::labs::docker {
 
     include role::ci::slave::labs::common
     include profile::ci::docker
+    include profile::ci::gitcache
     include profile::ci::worker_localhost
     include profile::phabricator::arcanist
     include profile::zuul::cloner
