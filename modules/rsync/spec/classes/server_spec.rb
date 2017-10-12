@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'rsync::server', :type => :class do
+describe 'rsync::server' do
 
   let :fragment_file do
     "/etc/rsync.d/header"

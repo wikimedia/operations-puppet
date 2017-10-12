@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'postgresql::postgis', :type => :class do
+describe 'postgresql::postgis' do
     let(:facts) { { :lsbdistcodename => 'jessie' } }
     let(:params) { {
         :ensure => 'present',

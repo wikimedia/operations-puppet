@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'postgresql::user', :type => :define do
+describe 'postgresql::user' do
     let(:title) { 'something@host.example.com' }
     let(:params) { {
         :user     => 'something',
@@ -18,7 +18,7 @@ describe 'postgresql::user', :type => :define do
     end
 end
 
-describe 'postgresql::user', :type => :define do
+describe 'postgresql::user' do
     let(:title) { 'something@host.example.com' }
     let(:params) { {
         :user     => 'something',

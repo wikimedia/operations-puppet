@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'aptrepo', :type => :class do
+describe 'aptrepo' do
     let(:params) {{ :basedir => '/srv/wikimedia' }}
     let(:pre_condition) {
         # Stub for the ::apt module

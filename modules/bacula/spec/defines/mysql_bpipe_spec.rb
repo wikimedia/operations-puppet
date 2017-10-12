@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::client::mysql_bpipe', :type => :define do
+describe 'bacula::client::mysql_bpipe' do
     let(:title) { 'something' }
     let(:facts) { { :processorcount => 4, } }
 

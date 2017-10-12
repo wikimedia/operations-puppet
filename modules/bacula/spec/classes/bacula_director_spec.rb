@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::director', :type => :class do
+describe 'bacula::director' do
     let(:node) { 'testhost.example.com' }
     let(:params) { {
         :max_dir_concur_jobs => '10',

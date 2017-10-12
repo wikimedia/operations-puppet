@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'backup::hourlyschedule', :type => :define do
+describe 'backup::hourlyschedule' do
     let(:title) { 'something' }
     let(:params) { {
         :pool => 'unimportant',

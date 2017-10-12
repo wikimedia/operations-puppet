@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::director::catalog', :type => :define do
+describe 'bacula::director::catalog' do
     let(:title) { 'something' }
     let(:params) { {
         :dbname      => 'bacula',

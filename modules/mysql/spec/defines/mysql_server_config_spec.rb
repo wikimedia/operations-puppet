@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mysql::server::config', :type => :define do
+describe 'mysql::server::config' do
   filename = '/etc/mysql/conf.d/test_config'
 
   let :facts do

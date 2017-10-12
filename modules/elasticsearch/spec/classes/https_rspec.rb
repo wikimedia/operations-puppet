@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elasticsearch::https', :type => :class do
+describe 'elasticsearch::https' do
   let(:facts) { { :lsbdistrelease => 'ubuntu',
                   :lsbdistid      => 'trusty',
                   :fqdn => 'host.example.net'

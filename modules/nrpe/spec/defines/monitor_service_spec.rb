@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nrpe::monitor_service', :type => :define do
+describe 'nrpe::monitor_service' do
     let(:title) { 'something' }
     let(:params) do {
         :description   => 'this is a description',

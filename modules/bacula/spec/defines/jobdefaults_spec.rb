@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::director::jobdefaults', :type => :define do
+describe 'bacula::director::jobdefaults' do
     let(:title) { 'something' }
     let(:params) { {
         :when => 'never',

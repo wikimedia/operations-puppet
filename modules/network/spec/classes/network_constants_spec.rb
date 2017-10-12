@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'network::constants', :type => :class do
+describe 'network::constants' do
     context "on production" do
         let(:facts) {{ :realm => 'production' }}
         it { should compile }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'install_server::preseed_server', :type => :class do
+describe 'install_server::preseed_server' do
     it { should compile }
 
     it do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'install_server::tftp_server', :type => :class do
+describe 'install_server::tftp_server' do
     it { should compile }
     it { should contain_package('atftpd').with_ensure('present') }
 

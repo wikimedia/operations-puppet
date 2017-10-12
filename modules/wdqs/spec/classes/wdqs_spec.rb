@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'wdqs', :type => :class do
+describe 'wdqs' do
   context 'using git to deploy' do
     let(:facts) { { :initsystem => 'systemd' } }
 

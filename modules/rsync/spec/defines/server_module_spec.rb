@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'rsync::server::module', :type => :define do
+describe 'rsync::server::module' do
   let :title do
     'foobar'
   end

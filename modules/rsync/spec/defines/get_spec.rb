@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'rsync::get', :type => :define do
+describe 'rsync::get' do
   let :title do
     'foobar'
   end

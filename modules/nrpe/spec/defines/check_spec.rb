@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nrpe::check', :type => :define do
+describe 'nrpe::check' do
     let(:title) { 'something' }
     let(:params) { { :command => '/usr/local/bin/mycommand -i this -o that' } }
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'logrotate::rule', :type => :define do
+describe 'logrotate::rule' do
     let(:title) { 'some_rule' }
 
     context 'undef frequency is allowed' do
