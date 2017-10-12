@@ -10,11 +10,17 @@ class profile::maps::osm_master (
     $osmupdater_pass    = hiera('profile::maps::osm_master::osmupdater_pass'),
     $replication_pass   = hiera('profile::maps::osm_master::replication_pass'),
     $postgres_slaves    = hiera('profile::maps::osm_master::slaves', undef),
+    $cleartables        = hiera('profile::maps::osm_master::cleartables', false),
 ) {
+
+    require ::profile::maps::postgresql_common
 
     $maps_hosts_ferm = join($maps_hosts, ' ')
 
-    require ::profile::maps::postgresql_common
+    $db_name = $cleartables ? {
+        true    => 'ct',
+        default => 'gis',
+    }
 
     class { '::postgresql::master':
         pgversion           => '9.4',
@@ -30,22 +36,22 @@ class profile::maps::osm_master (
     postgresql::user { 'kartotherian':
         user     => 'kartotherian',
         password => $kartotherian_pass,
-        database => 'gis',
+        database => $db_name,
     }
     postgresql::user { 'tileratorui':
         user     => 'tileratorui',
         password => $tileratorui_pass,
-        database => 'gis',
+        database => $db_name,
     }
     postgresql::user { 'osmimporter':
         user     => 'osmimporter',
         password => $osmimporter_pass,
-        database => 'gis',
+        database => $db_name,
     }
     postgresql::user { 'osmupdater':
         user     => 'osmupdater',
         password => $osmupdater_pass,
-        database => 'gis',
+        database => $db_name,
     }
 
     profile::maps::tilerator_user { 'localhost':
@@ -62,11 +68,11 @@ class profile::maps::osm_master (
     }
 
     # Grants
-    file { '/usr/local/bin/maps-grants-gis.sql':
+    file { "/usr/local/bin/maps-grants-${db_name}.sql":
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('profile/maps/grants-gis.sql.erb'),
+        content => template('profile/maps/grants-db.sql.erb'),
     }
     file { '/usr/local/bin/maps-grants-tiles.sql':
         owner   => 'root',
@@ -76,8 +82,19 @@ class profile::maps::osm_master (
     }
 
     # DB setup
-    postgresql::spatialdb { 'gis': }
-
+    postgresql::spatialdb { $db_name: }
+    if $cleartables {
+        postgresql::db::extension { "${db_name}-fuzzystrmatch":
+          database => $db_name,
+          extname  => 'fuzzystrmatch',
+          require  => Postgresql::Db[$db_name],
+        }
+        postgresql::db::extension { "${db_name}-unaccent":
+          database => $db_name,
+          extname  => 'unaccent',
+          require  => Postgresql::Db[$db_name],
+        }
+    }
 
     # some additional logging for the postgres master to help diagnose import
     # performance issues
@@ -111,16 +128,26 @@ class profile::maps::osm_master (
         ],
     }
 
-    osm::planet_sync { 'gis':
-        ensure                => present,
-        flat_nodes            => true,
-        expire_levels         => '15',
-        num_threads           => 4,
-        pg_password           => $osmupdater_pass,
-        period                => $planet_sync_period,
-        hour                  => $planet_sync_hour,
-        minute                => $planet_sync_minute,
-        postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+    if $cleartables {
+        osm::cleartables_sync { $db_name:
+            ensure                => present,
+            pg_password           => $osmupdater_pass,
+            hour                  => $planet_sync_hour,
+            minute                => $planet_sync_minute,
+            postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+        }
+    } else {
+        osm::planet_sync { $db_name:
+          ensure                => present,
+          flat_nodes            => true,
+          expire_levels         => '15',
+          num_threads           => 4,
+          pg_password           => $osmupdater_pass,
+          period                => $planet_sync_period,
+          hour                  => $planet_sync_hour,
+          minute                => $planet_sync_minute,
+          postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+        }
     }
 
     class { 'osm::prometheus':
