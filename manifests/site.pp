@@ -2032,6 +2032,7 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
 node 'puppetcompiler1001.eqiad.wmnet' {
     include ::standard
     include ::base::firewall
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
