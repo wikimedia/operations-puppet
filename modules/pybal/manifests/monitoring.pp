@@ -4,7 +4,7 @@
 class pybal::monitoring {
 
     require_package([
-        'libnagios-plugin-perl',
+        'libmonitoring-plugin-perl',
         'python-prometheus-client',
         'python-requests',
     ])

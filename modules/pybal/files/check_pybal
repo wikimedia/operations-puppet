@@ -12,10 +12,10 @@
 
 
 use strict;
-use Nagios::Plugin;
+use Monitoring::Plugin;
 use LWP::UserAgent;
 
-my $np = Nagios::Plugin->new(usage => "Usage: %s --url <URL>");
+my $np = Monitoring::Plugin->new(usage => "Usage: %s --url <URL>");
 $np->add_arg(
              spec     => 'url|u=s',
              help     => '--url https://localhost:9090',
