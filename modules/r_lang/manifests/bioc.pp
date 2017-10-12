@@ -1,8 +1,11 @@
-# = Define: r_lang::cran
+# = Define: r_lang::bioc
 #
-# Facilitates installation of R packages from Comprehensive R Archive Network.
+# Facilitates installation of R packages from bioconductor.org
 #
-# == Parameters
+# === Parameters
+#
+# [*name*]
+#     name of R package to install; defaults to resource `title`
 #
 # [*timeout*]
 #     default 300 (seconds) but may need to be larger for R packages with a
@@ -12,20 +15,14 @@
 #     default 'present' but also accepts 'absent'
 #     hoping to support 'latest' eventually
 #
-# [*mirror*]
-#     The CRAN mirror to use, by default uses automatic redirection to servers
-#     worldwide (https://cloud.r-project.org) but can be overridden. Refer to
-#     https://cran.r-project.org/mirrors.html for the full list of mirrors.
-#
 # [*library*]
 #     default '/usr/local/lib/R/site-library', used
 #     for specifying the path of the library for
 #     installing the R package
 #
-define r_lang::cran (
+define r_lang::bioc (
     $timeout = 300,
-    $ensure  = 'present',
-    $mirror  = 'https://cloud.r-project.org',
+    $ensure = 'present',
     $library = '/usr/local/lib/R/site-library'
 ) {
     $pkg_path = "${library}/${name}"
@@ -47,11 +44,10 @@ define r_lang::cran (
         default: {
             exec { "package-${name}":
                 require => [
-                    Package['r-base'],
-                    Package['r-base-dev']
+                    File['/etc/R/biocLite.R']
                 ],
                 timeout => $timeout,
-                command => "/usr/bin/R -e \"install.packages('${name}', repos = c(CRAN = '${mirror}'), lib = '${library}')\"",
+                command => "/usr/bin/R -e \"source('/etc/R/biocLite.R'); biocLite('${name}', lib = '${library}', suppressUpdates = TRUE, ask = FALSE)\"",
                 creates => $pkg_path,
             }
         }
