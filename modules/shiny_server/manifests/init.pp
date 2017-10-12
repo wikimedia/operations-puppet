@@ -40,7 +40,7 @@ class shiny_server {
     # ggplot2, broom, purrr, rvest, forcats, lubridate, and jsonlite
     # It's a lot of packages so we *really* need to extend the timeout.
     r_lang::cran { 'tidyverse':
-        timeout => 6000,
+        timeout => 12000,
         mirror  => $cran_mirror,
     }
     $cran_packages = [
