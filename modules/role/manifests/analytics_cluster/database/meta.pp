@@ -41,11 +41,14 @@ class role::analytics_cluster::database::meta {
         require => Class['mariadb::config'],
     }
 
-    # Allow access to this analytics mysql instance from analytics networks
+    # Allow access to this analytics mysql instance from analytics networks.
+    # Allow also the Druid public cluster to use it as storage for daemons
+    # like the coordinator. The Druid analytics cluster already uses it but it
+    # is already included in the ANALYTICS_NETWORKS definition.
     ferm::service{ 'analytics-mysql-meta':
         proto  => 'tcp',
         port   => '3306',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))',
     }
 
     # Include icinga alerts if production realm.
