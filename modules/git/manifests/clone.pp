@@ -19,6 +19,8 @@
 # $+owner+:: Owner of $directory, default: _root_.  git commands will be run
 #  by this user.
 # $+group+:: Group owner of $directory, default: 'root'
+# $+bare+:: $directory is the GIT_DIR itself. Workspace is not checked out.
+#           Default: false
 # $+recurse_submodules:: If true, git
 # $+shared+:: Enable git's core.sharedRepository=group setting for sharing the
 # repository between serveral users, default: false
@@ -57,6 +59,7 @@ define git::clone(
     $shared=false,
     $timeout='300',
     $depth='full',
+    $bare=false,
     $recurse_submodules=false,
     $umask=undef,
     $mode=undef,
@@ -129,6 +132,14 @@ define git::clone(
                 default => " --depth=${depth}"
             }
 
+            if $bare == true {
+                $barearg = ' --bare'
+                $git_dir = $directory
+            } else {
+                $barearg = ''
+                $git_dir = "${directory}/.git"
+            }
+
             if $shared {
                 $shared_arg = '-c core.sharedRepository=group'
             } else {
@@ -141,12 +152,12 @@ define git::clone(
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} ${directory}",
+                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg}${barearg} ${directory}",
                 provider    => shell,
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
-                creates     => "${directory}/.git/config",
+                creates     => "${git_dir}/config",
                 user        => $owner,
                 group       => $group,
                 umask       => $git_umask,
