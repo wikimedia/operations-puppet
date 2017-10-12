@@ -4,6 +4,7 @@
 # - r_lang::cran for installing from Comprehensive R Archive Network (CRAN)
 # - r_lang::git for installing from any Git repository (e.g. Gerrit)
 # - r_lang::github for installing from a GitHub-hosted repository
+# - r_lang::bioc for installing from Bioconductor
 #
 # Also provides a utility script for updating library of installed R packages.
 #
@@ -37,6 +38,14 @@ class r_lang (
         group  => 'root',
         mode   => '0644',
         source => 'puppet:///modules/r_lang/update-library.R',
+    }
+    # R script for installing packages from Bioconductor:
+    file { '/etc/R/biocLite.R':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/r_lang/biocLite.R',
     }
 
     if $devtools {
