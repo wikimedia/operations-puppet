@@ -34,14 +34,15 @@ class dnsrecursor::labsaliaser(
         source => 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py',
     }
 
-    exec { '/usr/local/bin/labs-ip-alias-dump.py':
+    cron { 'labs-ip-alias-dump':
+        ensure  => 'present',
         user    => 'root',
-        group   => 'root',
+        command => '/usr/local/bin/labs-ip-alias-dump.py --check-changes-only || /usr/local/bin/labs-ip-alias-dump.py',
+        minute  => 30,
         notify  => Service['pdns-recursor'],
         require => File[
             '/usr/local/bin/labs-ip-alias-dump.py',
             '/etc/labs-dns-alias.yaml'
         ],
-        unless  => '/usr/local/bin/labs-ip-alias-dump.py --check-changes-only',
     }
 }
