@@ -22,18 +22,6 @@ class role::labs::instance {
         readable => true,
     }
 
-    file { '/etc/mailname':
-        ensure  => present,
-        content => "${::fqdn}\n",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
-    package { 'puppet-lint':
-        ensure => present,
-    }
-
     # Allows per-host overriding of NFS mounts
     $mount_nfs = hiera('mount_nfs', true)
     # No NFS on labs metal for now.
