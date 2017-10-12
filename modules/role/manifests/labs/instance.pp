@@ -14,24 +14,12 @@ class role::labs::instance {
     class { 'ldap::role::client::labs':
         # Puppet requires ldap, so we need to update ldap before anything
         #  happens to puppet.
-        before => File['/etc/puppet/puppet.conf'],
+        before => File['/etc/puppet/puppet.conffffff'],
     }
 
     # make common logs readable
     class { 'base::syslogs':
         readable => true,
-    }
-
-    file { '/etc/mailname':
-        ensure  => present,
-        content => "${::fqdn}\n",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
-    package { 'puppet-lint':
-        ensure => present,
     }
 
     # Allows per-host overriding of NFS mounts
