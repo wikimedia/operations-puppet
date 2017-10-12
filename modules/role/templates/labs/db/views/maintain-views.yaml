@@ -246,6 +246,14 @@ customviews:
       gu_hidden, gu_registration, NULL as gu_password_reset_key, NULL as gu_password_reset_expiration,
       NULL as gu_auth_token
     where: gu_hidden=''
+  ip_changes:
+    source:
+      - ip_changes
+      - revision
+    view: >
+      select ipc_rev_id, ipc_rev_timestamp, ipc_hex
+    # 4 == Revision::DELETED_USER
+    where: ipc_rev_id = rev_id AND (rev_deleted & 4) = 0
   ipblocks:
     source: ipblocks
     view: >
