@@ -38,7 +38,7 @@ Version: 9
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental thirdparty/cloudera thirdparty/ci thirdparty/hwraid
 UDebComponents: main backports thirdparty experimental
-Update: hwraid hp-mcp-jessie
+Update: hwraid-stretch hp-mcp-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
