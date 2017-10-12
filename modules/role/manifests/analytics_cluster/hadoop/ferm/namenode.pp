@@ -19,12 +19,6 @@ class role::analytics_cluster::hadoop::ferm::namenode {
         srange => '$ANALYTICS_NETWORKS',
     }
 
-    ferm::service{ 'hadoop-hdfs-httpfs':
-        proto  => 'tcp',
-        port   => '14000',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
     ferm::service{ 'hadoop-hdfs-namenode-jmx':
         proto  => 'tcp',
         port   => '9980',
