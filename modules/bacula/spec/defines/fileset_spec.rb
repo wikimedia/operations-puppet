@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::director::fileset', :type => :define do
+describe 'bacula::director::fileset' do
     let(:title) { 'something' }
     let(:params) { { :includes => [ "/", "/var", ], } }
 

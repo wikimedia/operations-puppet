@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'osm::planet_sync', :type => :define do
+describe 'osm::planet_sync' do
     let(:title) { 'somedb' }
 
     context 'with ensure present' do

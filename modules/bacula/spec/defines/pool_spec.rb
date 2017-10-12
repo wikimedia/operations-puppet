@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::director::pool', :type => :define do
+describe 'bacula::director::pool' do
     let(:title) { 'something' }
     let(:params) { {
         :max_vols => '10',

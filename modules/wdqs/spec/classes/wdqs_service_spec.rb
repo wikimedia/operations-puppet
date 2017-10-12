@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'wdqs::service', :type => :class do
+describe 'wdqs::service' do
   context 'with systemd' do
     let(:facts) { { :initsystem => 'systemd' } }
 

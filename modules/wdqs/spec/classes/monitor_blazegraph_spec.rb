@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'wdqs::monitor::blazegraph', :type => :class do
+describe 'wdqs::monitor::blazegraph' do
   let(:facts) { { :lsbdistrelease => 'debian',
                   :lsbdistid      => 'jessie',
                   :initsystem     => 'systemd',

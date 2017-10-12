@@ -6,7 +6,7 @@
 
 require 'spec_helper'
 
-describe 'git::userconfig', :type => :define do
+describe 'git::userconfig' do
   let(:title) { 'gitconfig' }
 
   context "Setting up user name and email" do
