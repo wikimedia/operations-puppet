@@ -436,6 +436,7 @@ node /^db1(070|071|082|087|092|096|099|100|104|105|106)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# To be decommissioned in T175264
 node 'db1049.eqiad.wmnet' {
     role(spare::system)
 }
