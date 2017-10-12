@@ -26,9 +26,17 @@ define r_lang::git (
     $pkg_path = "${library}/${title}"
     case $ensure {
         'absent': {
+            # Since r_lang can be used on machines that don't have shiny_server,
+            # we only want a package removal to restart the Shiny Server service
+            # if the service actually exists:
+            $remove_notify = defined(Service['shiny-server']) ? {
+                true    => Service['shiny-server'],
+                default => Undef,
+            }
             exec { "remove-${title}":
                 command => "/usr/bin/R -e \"remove.packages('${title}', lib = '${library}')\"",
-                notify  => Service['shiny-server'],
+                notify  => $remove_notify,
+                onlyif  => "test -d ${pkg_path}",
             }
         }
         default: {
