@@ -1,5 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 # site.pp
+
 # Base nodes
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
