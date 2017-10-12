@@ -233,7 +233,6 @@ labtest:
     api_host: *labsnovaapihost
     db_name: 'nova'
     db_user: 'nova'
-    ceilometer_db_name: 'ceilometer'
     ldap_base_dn: 'dc=wikimedia,dc=org'
     ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
     ldap_proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
