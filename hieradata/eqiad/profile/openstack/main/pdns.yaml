@@ -1,3 +1,5 @@
+profile::openstack::main::pdns::tld: 'wmflabs'
+profile::openstack::main::pdns::private_reverse: '68.10.in-addr.arpa'
 profile::openstack::main::pdns::host: 'labs-ns0.wikimedia.org'
 profile::openstack::main::pdns::host_secondary: 'labs-ns1.wikimedia.org'
 profile::openstack::main::pdns::recursor: 'labs-recursor0.wikimedia.org'
