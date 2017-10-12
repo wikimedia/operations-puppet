@@ -772,6 +772,7 @@ node /^druid100[123].eqiad.wmnet$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[456].eqiad.wmnet$/ {
     role(druid::public::worker)
+    include ::lvs::realserver
 
     include ::base::firewall
     include ::standard
