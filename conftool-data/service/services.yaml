@@ -263,3 +263,18 @@ logstash:
     default_values:
       pooled: 'no'
       weight: 10
+druid-public:
+  druid-public-broker:
+    port: 8082
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
+  druid-public-overlord:
+    port: 8090
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
