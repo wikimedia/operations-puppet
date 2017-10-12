@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'postgresql::slave', :type => :class do
+describe 'postgresql::slave' do
     let(:params) { {
         :ensure           => 'present',
         :master_server    => 'test',
@@ -26,7 +26,7 @@ describe 'postgresql::slave', :type => :class do
     end
 end
 
-describe 'postgresql::slave', :type => :class do
+describe 'postgresql::slave' do
     let(:params) { {
         :ensure           => 'present',
         :master_server    => 'test',
@@ -57,7 +57,7 @@ describe 'postgresql::slave', :type => :class do
     end
 end
 
-describe 'postgresql::slave', :type => :class do
+describe 'postgresql::slave' do
     let(:params) { {
         :ensure           => 'absent',
         :master_server    => 'test',

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'osm', :type => :class do
+describe 'osm' do
     context 'ensure present' do
         let(:params) { {
             :ensure => 'present',

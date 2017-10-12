@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::storage::device', :type => :define do
+describe 'bacula::storage::device' do
     let(:title) { 'something' }
     let(:params) { {
         :device_type => 'File',

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'osm::usergrants', :type => :define do
+describe 'osm::usergrants' do
     let(:title) { 'somedb' }
     let(:params) { {
         :postgresql_user => 'someuser',
@@ -12,7 +12,7 @@ describe 'osm::usergrants', :type => :define do
     end
 end
 
-describe 'osm::usergrants', :type => :define do
+describe 'osm::usergrants' do
     let(:title) { 'somedb' }
     let(:params) { {
         :postgresql_user => 'someuser',

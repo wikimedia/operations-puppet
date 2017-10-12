@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'osm::shapefile_import', :type => :define do
+describe 'osm::shapefile_import' do
     let(:title) { 'somedb-shapefile1' }
     let(:params) { {
         :database => 'gis',

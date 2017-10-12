@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nrpe', :type => :class do
+describe 'nrpe' do
     let(:facts) { { :initsystem => 'systemd' } }
     it { should contain_package('nagios-nrpe-server') }
     it { should contain_package('nagios-plugins') }
@@ -11,7 +11,7 @@ describe 'nrpe', :type => :class do
     it { should contain_service('nagios-nrpe-server') }
 end
 
-describe 'nrpe', :type => :class do
+describe 'nrpe' do
     let(:facts) { {
         :realm      => 'production',
         :initsystem => 'systemd',
@@ -22,7 +22,7 @@ describe 'nrpe', :type => :class do
     end
 end
 
-describe 'nrpe', :type => :class do
+describe 'nrpe' do
     let(:facts) { {
         :realm      => 'labs',
         :initsystem => 'systemd',
@@ -32,7 +32,7 @@ describe 'nrpe', :type => :class do
     end
 end
 
-describe 'nrpe', :type => :class do
+describe 'nrpe' do
     let(:facts) { {
         :realm      => 'labs',
         :initsystem => 'systemd',

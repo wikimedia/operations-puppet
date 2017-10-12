@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'postgresql::ganglia', :type => :class do
+describe 'postgresql::ganglia' do
     let(:params) { {
         :ensure => 'present',
         }
@@ -12,7 +12,7 @@ describe 'postgresql::ganglia', :type => :class do
     end
 end
 
-describe 'postgresql::slave', :type => :class do
+describe 'postgresql::slave' do
     let(:params) { {
         :ensure => 'absent',
         }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elasticsearch', :type => :class do
+describe 'elasticsearch' do
   let(:facts) { { :lsbdistrelease => 'ubuntu',
                   :lsbdistid      => 'trusty'
   } }

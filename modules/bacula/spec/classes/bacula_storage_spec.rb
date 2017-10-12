@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::storage', :type => :class do
+describe 'bacula::storage' do
     let(:node) { 'testhost.example.com' }
     let(:params) { {
         :director => 'testdirector',

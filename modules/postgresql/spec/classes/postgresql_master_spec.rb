@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'postgresql::master', :type => :class do
+describe 'postgresql::master' do
     let(:facts) { { :lsbdistcodename => 'jessie' } }
     let(:params) { {
         :ensure           => 'present',
@@ -25,7 +25,7 @@ describe 'postgresql::master', :type => :class do
     end
 end
 
-describe 'postgresql::master', :type => :class do
+describe 'postgresql::master' do
     let(:facts) { { :lsbdistcodename => 'jessie' } }
     let(:params) { {
         :ensure           => 'absent',

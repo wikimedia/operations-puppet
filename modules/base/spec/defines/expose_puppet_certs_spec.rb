@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'base::expose_puppet_certs', :type => :define do
+describe 'base::expose_puppet_certs' do
   let(:title) { '/my/ssl/dir' }
   let(:facts) { { :fqdn => 'host.example.net'} }
 

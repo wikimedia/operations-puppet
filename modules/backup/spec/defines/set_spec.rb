@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'backup::set', :type => :define do
+describe 'backup::set' do
     let(:title) { 'something' }
     let(:params) { {
         :jobdefaults => 'unimportant',

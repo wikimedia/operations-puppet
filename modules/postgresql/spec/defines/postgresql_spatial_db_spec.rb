@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'postgresql::spatialdb', :type => :define do
+describe 'postgresql::spatialdb' do
     let(:title) { 'somedb' }
     let(:params) { { :ensure => 'present' } }
     let(:facts) { { :lsbdistcodename => 'jessie' } }
@@ -12,7 +12,7 @@ describe 'postgresql::spatialdb', :type => :define do
     end
 end
 
-describe 'postgresql::spatialdb', :type => :define do
+describe 'postgresql::spatialdb' do
     let(:title) { 'somedb' }
     let(:params) { { :ensure => 'absent' } }
     let(:facts) { { :lsbdistcodename => 'jessie' } }

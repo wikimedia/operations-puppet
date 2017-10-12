@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'servermon', :type => :class do
+describe 'servermon' do
     before(:each) do
         Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
             'fake_secret'

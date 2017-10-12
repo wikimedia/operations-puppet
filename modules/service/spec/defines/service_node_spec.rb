@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'service::node', :type => :define do
+describe 'service::node' do
   let(:title) { 'my_service_name' }
   let(:facts) { { :initsystem => 'systemd' } }
 

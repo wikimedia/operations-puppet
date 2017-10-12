@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'install_server::dhcp_server', :type => :class do
+describe 'install_server::dhcp_server' do
     it { should compile }
 
     it 'should have isc-dhcp-server' do

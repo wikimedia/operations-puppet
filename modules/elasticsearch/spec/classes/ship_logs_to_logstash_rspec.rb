@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elasticsearch', :type => :class do
+describe 'elasticsearch' do
   describe 'when NOT sending logs to logstash' do
     let(:params) { { :cluster_name  => 'my_cluster_name',
                      :publish_host  => '127.0.0.1',

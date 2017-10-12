@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::director::schedule', :type => :define do
+describe 'bacula::director::schedule' do
     let(:title) { 'something' }
     let(:params) { {
         :runs => [

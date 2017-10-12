@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'squid3', :type => :class do
+describe 'squid3' do
     it 'should have squid' do
         contain_package('squid3').with_ensure('present')
         contain_service('squid3').with_ensure('running')

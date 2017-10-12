@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'tilerator::ui', :type => :class do
+describe 'tilerator::ui' do
   before(:each) do
     Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) {
       'fake_secret'
