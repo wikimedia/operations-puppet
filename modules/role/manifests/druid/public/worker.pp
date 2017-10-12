@@ -6,6 +6,8 @@ class role::druid::public::worker {
         description => "Druid worker in the public-${::site} cluster",
     }
 
+    include ::lvs::realserver
+
     include ::profile::druid::broker
     include ::profile::druid::coordinator
     include ::profile::druid::historical
