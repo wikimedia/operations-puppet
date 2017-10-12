@@ -36,6 +36,16 @@ Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
+Name: hwraid-stretch
+Method: http://hwraid.le-vert.net/debian
+Components: main>thirdparty/hwraid
+UDebComponents:
+GetInRelease: no
+Suite: stretch
+Architectures: amd64 source
+VerifyRelease: 6005210E23B3D3B4
+ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
+
 Name: hp-mcp-trusty
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty
@@ -49,6 +59,16 @@ ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$'
 Name: hp-mcp-jessie
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty
+UDebComponents:
+GetInRelease: no
+Suite: jessie/current
+Architectures: amd64
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+
+Name: hp-mcp-stretch
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty/hwraid
 UDebComponents:
 GetInRelease: no
 Suite: jessie/current
