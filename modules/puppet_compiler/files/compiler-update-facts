@@ -17,7 +17,7 @@ puts a.map{|k, v| a[k].map {|v| v['worker']}}.flatten().join(' ')
 RUBY_SCRIPT
 )
 
-MASTERS=$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)
+MASTERS=${PUPPET_MASTERS:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
 
 ssh "$COMPILER" 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
 # Gather all the facts from all the masters. This can't really be atomic and We
