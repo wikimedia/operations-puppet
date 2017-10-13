@@ -8,6 +8,7 @@ class profile::base(
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     $notifications_enabled = hiera('profile::base::notifications_enabled', '1'),
+    $paging_enabled = hiera('profile::base::paging_enabled', '1'),
     $core_dump_pattern = hiera('profile::base::core_dump_pattern', '/var/tmp/core/core.%h.%e.%p.%t'),
     $ssh_server_settings = hiera('profile::base::ssh_server_settings', {}),
     $nrpe_allowed_hosts = hiera('profile::base::nrpe_allowed_hosts', '127.0.0.1,208.80.154.14,208.80.153.74,208.80.155.119'),
@@ -105,6 +106,7 @@ class profile::base(
         raid_check_interval      => $check_raid_interval,
         raid_retry_interval      => $check_raid_retry,
         notifications_enabled    => $notifications_enabled,
+        paging_enabled           => $paging_enabled,
     }
 
     if os_version('ubuntu == trusty') {
