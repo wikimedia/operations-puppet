@@ -1322,7 +1322,7 @@ node /labnet100[34]\.eqiad\.wmnet/ {
 
 
 node 'labnet1002.eqiad.wmnet' {
-    role(wmcs::openstack::main::net_secondary)
+    role(wmcs::openstack::main::net_standby)
     include ::standard
 }
 
