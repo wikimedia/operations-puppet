@@ -156,12 +156,10 @@ node 'bromine.eqiad.wmnet' {
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
     role(wmcs::openstack::main::horizon,
-          horizon,
           striker::web,
           labs::instance_info_dumper)
     include ::standard
     include ::base::firewall
-    include ::openstack::horizon::puppetpanel
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
@@ -1288,11 +1286,9 @@ node 'labcontrol1002.wikimedia.org' {
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web,
           labs::openstack::nova::manager,
-          mariadb::wikitech,
-          horizon)
+          mariadb::wikitech)
     include ::base::firewall
     include ::standard
-    include ::openstack::horizon::puppetpanel
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
