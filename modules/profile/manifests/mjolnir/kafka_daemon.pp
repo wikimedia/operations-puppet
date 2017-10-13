@@ -18,22 +18,9 @@ class profile::mjolnir::kafka_daemon(
     # to read/write kafka topics and send requests to localhost.
     require_package('python-kafka', 'python-requests')
 
-    file { '/etc/systemd/system/mjolnir-kafka-daemon.service':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    systemd::service { 'mjolnir-kafka-daemon':
         content => template('profile/mjolnir/kafka-daemon.service.erb'),
-        before  => Service['mjolnir-kafka-daemon']
-    }
-
-    service { 'mjolnir-kafka-daemon':
-      ensure   => running,
-      provider => systemd,
-      enable   => true,
-      require  => [
-        Scap::Target['relforge/mjolnir'],
-        File['/etc/systemd/system/mjolnir-kafka-daemon.service']
-      ]
+        require  => Scap::Target['relforge/mjolnir'],
     }
 
 }
