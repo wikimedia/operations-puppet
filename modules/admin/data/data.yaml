@@ -2626,6 +2626,10 @@ ldap_only_users:
     ensure: present
     realname: Corey Floyd
     email: cfloyd@wikimedia.org
+  cparle:
+    ensure: present
+    realname: Cormac Parle
+    email: cparle@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
