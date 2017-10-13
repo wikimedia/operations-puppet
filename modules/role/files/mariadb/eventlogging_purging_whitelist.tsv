@@ -410,7 +410,6 @@ MobileWebWikiGrok	wiki
 MobileWikiAppAppearanceSettings	clientValidated
 MobileWikiAppAppearanceSettings	event_action
 MobileWikiAppAppearanceSettings	event_appearanceAppInstallID
-MobileWikiAppAppearanceSettings	event_appInstallID
 MobileWikiAppAppearanceSettings	event_currentValue
 MobileWikiAppAppearanceSettings	event_newValue
 MobileWikiAppAppearanceSettings	isTruncated
@@ -419,7 +418,6 @@ MobileWikiAppAppearanceSettings	wiki
 MobileWikiAppAppearanceSettings	userAgent
 MobileWikiAppArticleSuggestions	clientValidated
 MobileWikiAppArticleSuggestions	event_action
-MobileWikiAppArticleSuggestions	event_appInstallID
 MobileWikiAppArticleSuggestions	event_readMoreIndex
 MobileWikiAppArticleSuggestions	event_readMoreSource
 MobileWikiAppArticleSuggestions	event_version
@@ -441,7 +439,6 @@ MobileWikiAppCreateAccount	userAgent
 MobileWikiAppDailyStats	webHost
 MobileWikiAppDailyStats	wiki
 MobileWikiAppDailyStats	event_appInstallAgeDays
-MobileWikiAppDailyStats	event_appInstallID
 MobileWikiAppDailyStats	userAgent
 MobileWikiAppEdit	clientValidated
 MobileWikiAppEdit	event_abuseFilterName
@@ -466,7 +463,6 @@ MobileWikiAppInstallReferrer	event_referrer_url
 MobileWikiAppLangSelect	webHost
 MobileWikiAppLangSelect	wiki
 MobileWikiAppLangSelect	event_action
-MobileWikiAppLangSelect	event_appInstallID
 MobileWikiAppLangSelect	event_newLang
 MobileWikiAppLangSelect	event_oldLang
 MobileWikiAppLangSelect	event_sessionToken
@@ -474,7 +470,6 @@ MobileWikiAppLangSelect	event_source
 MobileWikiAppLangSelect	event_timeSpent
 MobileWikiAppLangSelect	userAgent
 MobileWikiAppLinkPreview	event_action
-MobileWikiAppLinkPreview	event_appInstallID
 MobileWikiAppLinkPreview	event_previewSessionToken
 MobileWikiAppLinkPreview	event_timeSpent
 MobileWikiAppLinkPreview	event_version
@@ -493,7 +488,6 @@ MobileWikiAppLogin	wiki
 MobileWikiAppLogin	userAgent
 MobileWikiAppMediaGallery	clientValidated
 MobileWikiAppMediaGallery	event_action
-MobileWikiAppMediaGallery	event_appInstallID
 MobileWikiAppMediaGallery	event_gallerySessionToken
 MobileWikiAppMediaGallery	event_source
 MobileWikiAppMediaGallery	event_timeSpent
@@ -505,7 +499,6 @@ MobileWikiAppNavMenu	webHost
 MobileWikiAppNavMenu	wiki
 MobileWikiAppNavMenu	userAgent
 MobileWikiAppNavMenu	event_action
-MobileWikiAppNavMenu	event_appInstallID
 MobileWikiAppNavMenu	event_menuItem
 MobileWikiAppNavMenu	event_sessionToken
 MobileWikiAppOnboarding	clientValidated
@@ -523,7 +516,6 @@ MobileWikiAppProtectedEditAttempt	wiki
 MobileWikiAppProtectedEditAttempt	userAgent
 MobileWikiAppSavedPages	clientValidated
 MobileWikiAppSavedPages	event_action
-MobileWikiAppSavedPages	event_appInstallID
 MobileWikiAppSavedPages	event_savedPagesAppInstallToken
 MobileWikiAppSavedPages	isTruncated
 MobileWikiAppSavedPages	webHost
@@ -531,7 +523,6 @@ MobileWikiAppSavedPages	wiki
 MobileWikiAppSavedPages	userAgent
 MobileWikiAppSearch	clientValidated
 MobileWikiAppSearch	event_action
-MobileWikiAppSearch	event_appInstallID
 MobileWikiAppSearch	event_numberOfResults
 MobileWikiAppSearch	event_searchSessionToken
 MobileWikiAppSearch	event_timeToDisplayResults
@@ -544,7 +535,6 @@ MobileWikiAppSearch	wiki
 MobileWikiAppSearch	userAgent
 MobileWikiAppSessions	clientValidated
 MobileWikiAppSessions	event_action
-MobileWikiAppSessions	event_appInstallID
 MobileWikiAppSessions	event_backPressed
 MobileWikiAppSessions	event_pagesViewedFromExternal
 MobileWikiAppSessions	event_pagesViewedFromHistory
@@ -596,7 +586,6 @@ MobileWikiAppStuffHappens	wiki
 MobileWikiAppStuffHappens	userAgent
 MobileWikiAppToCInteraction	clientValidated
 MobileWikiAppToCInteraction	event_action
-MobileWikiAppToCInteraction	event_appInstallID
 MobileWikiAppToCInteraction	event_numSections
 MobileWikiAppToCInteraction	event_sectionIndex
 MobileWikiAppToCInteraction	event_timeSpent
@@ -607,7 +596,6 @@ MobileWikiAppToCInteraction	wiki
 MobileWikiAppToCInteraction	userAgent
 MobileWikiAppWidgets	clientValidated
 MobileWikiAppWidgets	event_action
-MobileWikiAppWidgets	event_appInstallID
 MobileWikiAppWidgets	isTruncated
 MobileWikiAppWidgets	webHost
 MobileWikiAppWidgets	wiki
@@ -893,7 +881,6 @@ MobileWikiAppFeed	webHost
 MobileWikiAppFeed	wiki
 MobileWikiAppFeed	event_action
 MobileWikiAppFeed	event_age
-MobileWikiAppFeed	event_appInstallID
 MobileWikiAppFeed	event_cardType
 MobileWikiAppFeed	event_position
 MobileWikiAppFeed	event_sessionToken
@@ -902,27 +889,23 @@ MobileWikiAppIntents	userAgent
 MobileWikiAppIntents	webHost
 MobileWikiAppIntents	wiki
 MobileWikiAppIntents	event_action
-MobileWikiAppIntents	event_appInstallID
 MobileWikiAppReadingLists	userAgent
 MobileWikiAppReadingLists	webHost
 MobileWikiAppReadingLists	wiki
 MobileWikiAppReadingLists	event_action
 MobileWikiAppReadingLists	event_addsource
-MobileWikiAppReadingLists	event_appInstallID
 MobileWikiAppReadingLists	event_itemcount
 MobileWikiAppReadingLists	event_listcount
 MobileWikiAppTabs	userAgent
 MobileWikiAppTabs	webHost
 MobileWikiAppTabs	wiki
 MobileWikiAppTabs	event_action
-MobileWikiAppTabs	event_appInstallID
 MobileWikiAppTabs	event_tabCount
 MobileWikiAppTabs	event_tabIndex
 MobileWikiAppTabs	event_tabsSessionToken
 MobileWikiAppFindInPage	userAgent
 MobileWikiAppFindInPage	webHost
 MobileWikiAppFindInPage	wiki
-MobileWikiAppFindInPage	event_appInstallID
 MobileWikiAppFindInPage	event_numFindNext
 MobileWikiAppFindInPage	event_numFindPrev
 MobileWikiAppFindInPage	event_pageHeight
