@@ -262,10 +262,17 @@ class TaskGen < ::Rake::TaskLib
         if @changed_files.include?('modules/admin/data/data.yaml')
           desc 'Run tox for the admin data file'
           task :admin do
-            res = system('tox -e testenv')
+            res = system('tox -e admin')
             raise "Tox tests for admin/data/data.yaml failed!" if !res
           end
           tasks << 'tox:admin'
+        end
+        if @changed_files.include?('modules/mediawiki/files/apache/sites/redirects/redirects.dat')
+          desc 'Run tox for the redirects file'
+          task :redirects do
+            res = system('tox -e apache')
+            raise "Tox tests for redirects.dat failed!" if !res
+          end
         end
         webperf_files = filter_files_by("modules/webperf/files/*.*")
         unless webperf_files.empty?
