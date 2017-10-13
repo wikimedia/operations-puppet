@@ -1,0 +1,1 @@
+profile::openstack::labtest::horizon::webserver_hostname: 'labtesthorizon.wikimedia.org'
