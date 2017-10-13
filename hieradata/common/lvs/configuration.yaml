@@ -1181,6 +1181,7 @@ lvs::configuration::lvs_services:
       # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
       RunCommand:
         command: /bin/true
+        arguments: "[ '' ]"
         interval: 60
         timeout: 10
     conftool:
@@ -1278,6 +1279,7 @@ lvs::configuration::lvs_services:
       # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
       RunCommand:
         command: /bin/true
+        arguments: "[ '' ]"
         interval: 60
         timeout: 10
     conftool:
