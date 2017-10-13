@@ -23,4 +23,7 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="logstash"/>
     </root>
+    <!-- Temporarily shut up warnings about "No vocabulary entry for namespace" for T175948 -->
+    <logger name="com.bigdata.rdf.internal.InlineURIHandler" level="ERROR"/>
+
 </configuration>
