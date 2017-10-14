@@ -7,6 +7,12 @@ class role::labs::instance {
     include ::profile::openstack::main::observerenv
     include ::profile::openstack::main::cumin::target
 
+    # This should fail with future parser:
+    $a = 123
+    if $a !~ /\d+/ { 
+        fail()
+    }
+
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
     }
