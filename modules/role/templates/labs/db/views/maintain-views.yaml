@@ -143,11 +143,16 @@ fullviews:
   - wbs_propertypairs
   - watchlist_count
 
+# Deliberately excluded:
+# - spamblacklist   T178052
+# - suppress        T178052
+# - titleblacklist  T178052
 logging_whitelist:
   - abusefilter
   - block
   - campus
   - close
+  - contentmodel
   - course
   - delete
   - eparticle
@@ -155,6 +160,7 @@ logging_whitelist:
   - gblblock
   - gblrights
   - globalauth
+  - gwtoolset
   - import
   - institution
   - instructor
@@ -164,7 +170,10 @@ logging_whitelist:
   - merge
   - move
   - newusers
+  - notifytranslators
   - online
+  - pagelang
+  - pagetranslation
   - pagetriage-curation
   - pagetriage-deletion
   - patrol
@@ -174,8 +183,12 @@ logging_whitelist:
   - rights
   - stable
   - student
+  - tag
   - thanks
+  - timedmediahandler
+  - translationreview
   - upload
+  - usermerge
 
 customviews:
   abuse_filter:
