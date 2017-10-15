@@ -1,0 +1,8 @@
+Code-Review+1: Thiemo Mättig (WMDE) <thiemo.maettig@wikimedia.de>
+Verified+2: jenkins-bot
+Code-Review+2: ArielGlenn <ariel@wikimedia.org>
+Submitted-by: ArielGlenn <ariel@wikimedia.org>
+Submitted-at: Sun, 15 Oct 2017 22:19:03 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/352797
+Project: operations/puppet
+Branch: refs/heads/production
