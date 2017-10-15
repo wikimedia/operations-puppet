@@ -1,18 +1,24 @@
 [submodule "modules/zookeeper"]
 	path = modules/zookeeper
 	url = https://gerrit.wikimedia.org/r/operations/puppet/zookeeper
+        branch = master
 [submodule "modules/jmxtrans"]
 	path = modules/jmxtrans
 	url = https://gerrit.wikimedia.org/r/operations/puppet/jmxtrans
+        branch = master
 [submodule "modules/varnishkafka"]
 	path = modules/varnishkafka
 	url = https://gerrit.wikimedia.org/r/operations/puppet/varnishkafka
+        branch = master
 [submodule "modules/kafkatee"]
 	path = modules/kafkatee
 	url = https://gerrit.wikimedia.org/r/operations/puppet/kafkatee
+        branch = master
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = https://gerrit.wikimedia.org/r/operations/puppet/nginx
+        branch = master
 [submodule "modules/cdh"]
 	path = modules/cdh
 	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh
+        branch = master
