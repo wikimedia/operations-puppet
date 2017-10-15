@@ -91,6 +91,9 @@ class role::analytics_cluster::refinery::job::data_drop {
     cron {'mediawiki-history-drop-snapshot':
         command     => "${env} && ${role::analytics_cluster::refinery::path}/bin/refinery-drop-mediawiki-snapshots -s ${keep_snapshots} >> ${mediawiki_history_log_file}",
         environment => "MAILTO=${mail_to}",
+        user        => 'hdfs',
+        minute      => '0',
+        hour        => '6',
         monthday    => '15'
     }
 
