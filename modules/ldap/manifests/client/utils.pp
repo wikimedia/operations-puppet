@@ -45,6 +45,7 @@ class ldap::client::utils($ldapconfig) {
             home   => '/nonexistent', # Since things seem to check for $HOME/.whatever unconditionally...
             shell  => '/bin/false',
         }
+
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
