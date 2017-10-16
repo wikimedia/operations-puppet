@@ -75,11 +75,11 @@
     streamFileThreshold = 100m
     useRecursiveMerge = true
 [database]
-    type = mysql
+    type = mariadb
     hostname = <%= @db_host %>
     database = <%= @db_name %>
     username = <%= @db_user %>
-    url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+    url = jdbc:mariadb://<%= @db_host %>/<%= @db_name %>?sessionVariables=character_set_client=utf8,character_set_results=utf8,character_set_connection=utf8,collation_connection=utf8_unicode_ci,collation_database=utf8_unicode_ci,collation_server=utf8_unicode_ci
 [gerrit]
     basePath = <%= @git_dir %>
     canonicalWebUrl = <%= @url %>
