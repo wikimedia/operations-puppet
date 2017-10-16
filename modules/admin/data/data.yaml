@@ -2603,6 +2603,14 @@ ldap_only_users:
   adavenport:
     ensure: absent
     realname: Allison Davenport
+  albe:
+    ensure: present
+    realname: Aleksey Bekh-Ivanov
+    email: aleksey.bekh-ivanov@wikimedia.de
+  andrew-wmde:
+    ensure: present
+    realname: Andrew Kostka
+    email: andrew.kostka@wikimedia.de
   apalmer:
     ensure: present
     realname: Aeryn Palmer
@@ -2791,3 +2799,55 @@ ldap_only_users:
     ensure: present
     realname: David Chan
     email: dchan@wikimedia.org
+  ataherivand:
+    ensure: present
+    realname: Abraham Taherivand
+    email: abraham.taherivand@wikimedia.de
+  chrisneuroth:
+    ensure: present
+    realname: Christoph Neuroth
+    email: christoph.neuroth+wikimedia@gmail.com
+  gbirke:
+    ensure: present
+    realname: Gabriel Birke
+    email: gabriel.birke@wikimedia.de
+  jakob:
+    ensure: present
+    realname: Jakob Warkotsch
+    email: jakob.warkotsch@wikimedia.de
+  jeroendedauw:
+    ensure: present
+    realname: Jeroen De Dauw
+    email: jeroendedauw@gmail.com
+  jkroll:
+    ensure: present
+    realname: Johannes Kroll
+    email: johannes.kroll@wikimedia.de
+  johlig:
+    ensure: present
+    realname: Jens Ohlig
+    email: jens.ohlig@wikimedia.de
+  pgrass:
+    ensure: present
+    realname: Pablo Grass
+    email: pablo.grass@wikimedia.de
+  tgritschacher:
+    ensure: present
+    realname: Tobias Gritschacher
+    email: tobias.gritschacher@wikimedia.de
+  thiemowmde:
+    ensure: present
+    realname: Thiemo Mättig
+    email: thiemo.maettig@wikimedia.de
+  wmde-fisch:
+    ensure: present
+    realname: Christoph Fischer
+    email: christoph.fischerr@wikimedia.de
+  wmde-jand:
+    ensure: present
+    realname: Jan Dittrich
+    email: jan.dittrich@wikimedia.de
+  wmde-leszek:
+    ensure: present
+    realname: Leszek Manicki
+    email: leszek.manicki@wikimedia.de
