@@ -1,15 +1,12 @@
-# == Class role::nodepool
-#
 # See our and upstream documentations:
 # https://wikitech.wikimedia.org/wiki/Nodepool
 # http://docs.openstack.org/infra/nodepool/
 #
-class role::labs::openstack::nodepool {
-
-    system::role { 'nodepool': description => 'CI Nodepool' }
+class profile::openstack::base::nodepool::service(
+    $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    ) {
 
     include passwords::nodepool
-    $nova_controller = hiera('labs_nova_controller')
 
     # dib scripts
     git::clone { 'integration/config':
@@ -36,17 +33,5 @@ class role::labs::openstack::nodepool {
         openstack_username      => 'nodepoolmanager',
         openstack_password      => $passwords::nodepool::manager_pass,
         openstack_tenant_id     => 'contintcloud',
-    }
-
-    nrpe::monitor_service { 'nodepoold':
-        description   => 'nodepoold running',
-        contact_group => 'contint',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u nodepool --ereg-argument-array="^/usr/bin/python /usr/bin/nodepoold -d"',
-    }
-
-    nrpe::monitor_service { 'nodepoold_instance_state':
-        description   => 'Check for valid instance states',
-        contact_group => 'contint',
-        nrpe_command  => '/usr/local/bin/check_nodepool_states',
     }
 }
