@@ -45,6 +45,18 @@ class ldap::client::utils($ldapconfig) {
             home   => '/nonexistent', # Since things seem to check for $HOME/.whatever unconditionally...
             shell  => '/bin/false',
         }
+
+        # The ssh-key-ldap-lookup scripts does some additional checks before authenticating
+        # users via ssh, like ensuring that NFS is mounted. This grants the required sudo permissions
+        # for these commands
+        sudo::user { 'ssh-key-ldap-lookup_sudo':
+            user       => 'ssh-key-ldap-lookup',
+            privileges => [
+                'ALL = NOPASSWD: /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a',
+                'ALL = NOPASSWD: /usr/bin/test -e /root/firstboot_done',
+            ],
+            require    => User['ssh-key-ldap-lookup'],
+        }
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
