@@ -288,9 +288,9 @@ class confluent::kafka::broker(
 
     $authorizer_class_name               = undef,
 ) {
-    # confluent::kafka::client installs the kafka package
+    # confluent::kafka::common installs the kafka package
     # and a handy wrapper script.
-    require ::confluent::kafka::client
+    require ::confluent::kafka::common
 
     # Get this broker's id out of the $kafka::brokers
     # configuration hash.
@@ -305,30 +305,7 @@ class confluent::kafka::broker(
     $default_port = inline_template("<%= Array(@listeners)[0].split(':')[-1] %>")
 
     # Local variable for rendering in templates.
-    $java_home = $::confluent::kafka::client::java_home
-
-    group { 'kafka':
-        ensure  => 'present',
-        system  => true,
-        require => Class['confluent::kafka::client'],
-    }
-    # Kafka system user
-    user { 'kafka':
-        gid        => 'kafka',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        comment    => 'Apache Kafka',
-        system     => true,
-        managehome => false,
-        require    => Group['kafka'],
-    }
-
-    file { '/var/log/kafka':
-        ensure => 'directory',
-        owner  => 'kafka',
-        group  => 'kafka',
-        mode   => '0755',
-    }
+    $java_home = $::confluent::kafka::common::java_home
 
     # This is the message data directory,
     # not to be confused with /var/log/kafka
@@ -357,7 +334,7 @@ class confluent::kafka::broker(
     }
 
     # Environment variables used by the /usr/local/bin/kafka wrapper script
-    # installed by confluent::kafka::client.  This makes it easier
+    # installed by confluent::kafka::common.  This makes it easier
     # to use the kafka wrapper script on Kafka brokers.
     file { '/etc/profile.d/kafka.sh':
         content => template('confluent/kafka/kafka-profile.sh.erb'),
