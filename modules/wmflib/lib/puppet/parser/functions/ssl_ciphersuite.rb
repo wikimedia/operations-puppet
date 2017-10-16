@@ -64,7 +64,6 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
   # General preference ordering for fullest combined list:
-  # 0) Enc:  3DES < ALL       (SWEET32)
   # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   # 3) Auth: ECDSA > RSA      (Perf, mostly)
@@ -81,10 +80,11 @@ module Puppet::Parser::Functions
   # AES256 performance differentials.  SHA-2 HMAC variants were filtered
   # similarly, as all clients that would negotiate x-SHA256 also negotiate x-SHA
   # and there's no effective security difference between the two.
-  # *) The 'compat' list has been reduced to just the two weakest and
-  # most-popular reasonable options there.  The others were mostly statistically
-  # insignificant, and things are so bad at this level it's not worth worrying
-  # about slight cipher strength gains.
+  # *) The 'compat' list has been reduced to just AES128-SHA after the removal
+  # of 3DES in Nov 2017.  There are other possible entries here (AES256 and/or
+  # GCM), but in practice very few clients ever negotiate them anyways.  All
+  # such clients fall back to AES128-SHA, and things are so bad at this level
+  # it's not worth worrying about slight cipher strength gains.
   basic = {
     # Forward-Secret + AEAD
     'strong' => [
@@ -108,7 +108,6 @@ module Puppet::Parser::Functions
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-SHA',   # Mostly evil proxies, also ancient devices
-      'DES-CBC3-SHA', # Mostly IE7-8 on XP, also ancient devices
     ],
   }
 
