@@ -12,4 +12,7 @@ class role::kafka::jumbo::broker {
     }
     include base::firewall
     include profile::kafka::broker
+
+    # Mirror from other Kafka cluster to jumbo.
+    include profile::kafka::mirror
 }
