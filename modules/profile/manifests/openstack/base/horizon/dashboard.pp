@@ -1,7 +1,7 @@
 class profile::openstack::base::horizon::dashboard(
     $version = hiera('profile::openstack::base::version'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
-    $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
+    $wmflabsdotorg_admin = hiera('profile::openstack::base::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::base::designate::wmflabsdotorg_pass'),
     $dhcp_domain = hiera('profile::openstack::base::nova::dhcp_domain'),
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
