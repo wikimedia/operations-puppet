@@ -1280,8 +1280,7 @@ node 'labcontrol1002.wikimedia.org' {
 #  - silver (wikitech.wikimedia.org), and
 #  - californium (horizon.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
-    role(labs::openstack::nova::manager,
-          wmcs::openstack::labtest::web,
+    role(wmcs::openstack::labtest::web,
           mariadb::wikitech)
     include ::base::firewall
     include ::standard
@@ -2182,7 +2181,6 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
     role(wmcs::openstack::main::wikitech,
-          labs::openstack::nova::manager,
           mariadb::wikitech)
     include ::base::firewall
     include ::standard
