@@ -1021,8 +1021,7 @@ node 'labpuppetmaster1002.wikimedia.org' {
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
-    role(wmcs::openstack::main::services_primary,
-          labs::dns_floating_ip_updater)
+    role(wmcs::openstack::main::services_primary)
     include ::standard
     include ::base::firewall
     include ::ldap::role::client::labs
@@ -1114,8 +1113,7 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
 
 node 'labtestservices2001.wikimedia.org' {
     role(wmcs::openstack::labtest::services,
-          openldap::labtest,
-          labs::dns_floating_ip_updater)
+          openldap::labtest)
     include ::standard
     include ::base::firewall
     interface::add_ip6_mapped { 'main': }
