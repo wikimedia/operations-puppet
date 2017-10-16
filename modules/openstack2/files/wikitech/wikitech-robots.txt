@@ -6,8 +6,7 @@
 # irresponsible, your access to the site may be blocked.
 #
 # (T83428) - cleanup wikitech's robot.txt
-# ! THIS IS THE LABS robots.txt and handled by puppet now !
-# see operations/puppet/modules/openstack/wikitech-robots.txt
+# !  robots.txt and handled by puppet now !
 #
 # this way you can test changes in robots.txt in labs
 # before using the production PHP file
