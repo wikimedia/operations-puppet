@@ -126,9 +126,18 @@ define varnish::instance(
         content => template("${module_name}/varnish-default.erb"),
     }
 
-    systemd::service { "varnish${instancesuffix}":
-        content        => systemd_template('varnish'),
-        service_params => {
+    if ($inst == 'backend') {
+        # -sfile needs CAP_DAC_OVERRIDE and CAP_FOWNER too
+        $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_DAC_OVERRIDE CAP_FOWNER'
+    } else {
+        # varnish frontend needs CAP_NET_BIND_SERVICE as it binds to port 80
+        $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_NET_BIND_SERVICE'
+    }
+
+    base::service_unit { "varnish${instancesuffix}":
+        systemd          => systemd_template('varnish'),
+        systemd_override => template('varnish/initscripts/varnish.systemd-security.erb'),
+        service_params   => {
             tag     => 'varnish_instance',
             enable  => true,
             require => [
