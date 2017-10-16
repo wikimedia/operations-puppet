@@ -348,11 +348,6 @@ node /^db1(021|060|074|076|090|101)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned in T176215
-node 'db1018.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # To be decommissioned in T176311
 node 'db1036.eqiad.wmnet' {
     role(spare::system)
