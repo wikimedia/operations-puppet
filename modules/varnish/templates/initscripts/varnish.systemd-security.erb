@@ -1,0 +1,14 @@
+# Execution environment configuration for varnish <%= @inst %>.
+#
+# See systemd.exec(5).
+#
+# This file is managed by Puppet.
+[Service]
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+# No special powers for root with the exception of the following.
+# See capabilities(7).
+CapabilityBoundingSet=<%= @capabilities %>
