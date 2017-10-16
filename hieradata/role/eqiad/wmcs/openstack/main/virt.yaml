@@ -1,2 +1,4 @@
 admin::groups:
   - wmcs-roots
+
+profile::base::check_disk_critical: true
