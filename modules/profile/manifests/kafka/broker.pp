@@ -172,7 +172,7 @@ class profile::kafka::broker(
         }
     }
 
-    class { '::confluent::kafka::client':
+    class { '::confluent::kafka::common':
         # TODO: These should be removed once they are
         # the default in ::confluent::kafka module
         scala_version => '2.11',
