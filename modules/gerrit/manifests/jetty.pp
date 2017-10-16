@@ -65,7 +65,6 @@ class gerrit::jetty(
         'openjdk-8-jdk',
         'libbcprov-java',
         'libbcpkix-java',
-        'libmysql-java',
     ])
 
     scap::target { 'gerrit/gerrit':
@@ -199,12 +198,6 @@ class gerrit::jetty(
         ensure  => 'link',
         target  => '/usr/share/java/bcpkix-1.49.jar',
         require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcpkix-java']],
-    }
-
-    file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
-        ensure  => 'link',
-        target  => '/usr/share/java/mysql-connector-java.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/etc':
