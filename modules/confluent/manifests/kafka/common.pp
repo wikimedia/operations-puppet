@@ -1,10 +1,10 @@
-# == Class confluent::kafka::client
+# == Class confluent::kafka::common
 #
 # Installs the confluent-kafka package and a handy kafka wrapper script.
 #
 # Most likely you will not use this class directly, and instead
 # just use confluent::kafka::broker to install and start a Kafka broker.
-# You will only use confluent::kafka::client directly if you need to
+# You will only use confluent::kafka::common directly if you need to
 # change the version of java, kafka, or scala that is being installed, or if
 # you want to install the confluent-kafka package without puppet managing
 # a Kafka broker.
@@ -23,7 +23,7 @@
 #   confluent-kafka-$scala_version will be installed.
 #   Default: 2.11.7
 #
-class confluent::kafka::client(
+class confluent::kafka::common(
     $java_home     = undef,
     $kafka_version = undef,
     $scala_version = '2.11.7'
@@ -43,6 +43,29 @@ class confluent::kafka::client(
         }
     }
 
+    group { 'kafka':
+        ensure  => 'present',
+        system  => true,
+        require => Package[$package],
+    }
+    # Kafka system user
+    user { 'kafka':
+        gid        => 'kafka',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        comment    => 'Apache Kafka',
+        system     => true,
+        managehome => false,
+        require    => Group['kafka'],
+    }
+
+    file { '/var/log/kafka':
+        ensure => 'directory',
+        owner  => 'kafka',
+        group  => 'kafka',
+        mode   => '0755',
+    }
+
     file { '/usr/local/bin/kafka':
         source  => 'puppet:///modules/confluent/kafka/kafka.sh',
         owner   => 'root',
@@ -55,6 +78,8 @@ class confluent::kafka::client(
     # Anything it doesn't know about will be removed.
     file { '/etc/kafka/mirror':
         ensure  => 'directory',
+        owner   => 'kafka',
+        group   => 'kafka',
         recurse => true,
         purge   => true,
         force   => true,
