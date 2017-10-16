@@ -142,6 +142,38 @@ define varnish::instance(
         },
     }
 
+    $sysd_varnish_dir = "/etc/systemd/system/varnish${instancesuffix}.service.d"
+
+    file { $sysd_varnish_dir:
+        ensure => directory,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    if ($inst == 'backend') {
+        # -sfile needs CAP_DAC_OVERRIDE and CAP_FOWNER too
+        $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_DAC_OVERRIDE CAP_FOWNER'
+    } else {
+        # varnish frontend needs CAP_NET_BIND_SERVICE as it binds to port 80
+        $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_NET_BIND_SERVICE'
+    }
+
+    file { "${sysd_varnish_dir}/security.conf":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('varnish/initscripts/varnish.systemd-security.erb'),
+        require => File[$sysd_varnish_dir],
+    }
+
+    exec { "systemd reload for varnish ${inst} systemd fragments":
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload',
+        subscribe   => File["${sysd_varnish_dir}/security.conf"],
+    }
+
     # This mechanism with the touch/rm conditionals in the pair of execs
     #   below should ensure that reload-vcl failures are retried on
     #   future puppet runs until they succeed.
