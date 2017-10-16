@@ -1,7 +1,11 @@
-# This is the wikitech UI
-class role::labs::openstack::nova::manager {
-
-    system::role { $name: }
+class profile::openstack::base::wikitech::service(
+    $osm_host = hiera('profile::openstack::base::osm_host'),
+    $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $webserver_hostname_aliases = hiera('profile::openstack::base::wikitech::webserver_hostname_aliases'),
+    $wikidb = hiera('profile::openstack::base::wikitech::db_name'),
+    $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
+    $wikitech_nova_ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
+    ) {
 
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
@@ -10,65 +14,21 @@ class role::labs::openstack::nova::manager {
     include ::mediawiki::cgroup
     include ::scap::scripts
 
-    include role::labs::openstack::nova::common
-    $novaconfig = $role::labs::openstack::nova::common::novaconfig
-
-    $sitename = hiera('labs_osm_host')
-    $sitename_split = split($sitename, '\.')
-    $certificate = $sitename_split[0]
+    $osm_host_split = split($osm_host, '\.')
+    $certificate = $osm_host_split[0]
     letsencrypt::cert::integrated { $certificate:
-        subjects   => $sitename,
+        subjects   => $osm_host,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
 
-    monitoring::service { 'https':
-        description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${sitename}",
-    }
-
-    ferm::service { 'wikitech_http':
-        proto => 'tcp',
-        port  => '80',
-    }
-
-    ferm::service { 'wikitech_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
-    ferm::service { 'deployment-ssh':
-        proto  => 'tcp',
-        port   => '22',
-        srange => '$DEPLOYMENT_HOSTS',
-    }
-
-    # allow keystone to query the wikitech db
-    $keystone_host = hiera('labs_keystone_host')
-    ferm::service { 'mysql_keystone':
-        proto  => 'tcp',
-        port   => '3306',
-        srange => "@resolve(${keystone_host})",
-    }
-
-    class { '::openstack::openstack_manager':
-        novaconfig         => $novaconfig,
-        webserver_hostname => $sitename,
-        certificate        => $certificate,
-    }
-
-    # T89323
-    monitoring::service { 'wikitech-static-sync':
-        description    => 'Wikitech and wt-static content in sync',
-        check_command  => 'check_wikitech_static',
-        check_interval => 120,
-    }
-
-    # T163721
-    monitoring::service { 'wikitech-static-version':
-        description    => 'Wikitech-static MW version up to date',
-        check_command  => 'check_wikitech_static_version',
-        check_interval => 720,
+    class { '::openstack2::wikitech::openstack_manager':
+        certificate                        => $certificate,
+        webserver_hostname                 => $osm_host,
+        webserver_hostname_aliases         => $webserver_hostname_aliases,
+        wikidb                             => $wikidb,
+        wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
+        wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
     }
 
     # For Math extensions file (T126628)
@@ -112,5 +72,27 @@ class role::labs::openstack::nova::manager {
             },
         },
     }
-}
 
+    ferm::service { 'wikitech_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'wikitech_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
+    ferm::service { 'deployment-ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '$DEPLOYMENT_HOSTS',
+    }
+
+    # allow keystone to query the wikitech db
+    ferm::service { 'mysql_keystone':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => "@resolve(${nova_controller})",
+    }
+}
