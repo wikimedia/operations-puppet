@@ -23,6 +23,8 @@ is the behavior we want
 import argparse
 import ldap
 import yaml
+import shlex
+import subprocess
 import sys
 
 
@@ -76,6 +78,21 @@ def robust_connect(servers, user, password, position=0):
         return robust_connect(servers, user, password, position)
 
 
+def verify_nfs_mounted():
+    # While the initial instance boot process is in progress, all the NFS mounts
+    # may not be mounted yet. If this is the case, we throw an error
+    test_cmd = "/usr/bin/test -e /root/firstboot_done"
+    firstboot_in_progress = subprocess.call(shlex.split(test_cmd))
+    if firstboot_in_progress:
+        mount_command = "/usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a"
+        subprocess.check_call(shlex.split(mount_command))
+
+
+def run_auxillary_checks():
+    # Run any additional checks before successful user login here
+    verify_nfs_mounted()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('username', help='Username to list ssh keys for')
@@ -112,6 +129,8 @@ def main():
     for key in keys:
         # Some keys have an accidental newline at the end, see T77902
         print key.strip()
+    run_auxillary_checks()
+
 
 if __name__ == '__main__':
     main()
