@@ -468,7 +468,7 @@ node 'db1061.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(30|50|85|88|93|98)\.eqiad\.wmnet/ {
+node /^db10(30|85|88|93|98)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -476,6 +476,12 @@ node /^db10(30|50|85|88|93|98)\.eqiad\.wmnet/ {
 node 'db1037.eqiad.wmnet' {
     role(spare::system)
 }
+
+# To be decommissioned in T178162
+node 'db1050.eqiad.wmnet' {
+    role(spare::system)
+}
+
 
 #
 # s6 core production dbs on codfw
