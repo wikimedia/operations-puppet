@@ -64,7 +64,6 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
   # General preference ordering for fullest combined list:
-  # 0) Enc:  3DES < ALL       (SWEET32)
   # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
   # 3) Auth: ECDSA > RSA      (Perf, mostly)
@@ -108,7 +107,6 @@ module Puppet::Parser::Functions
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-SHA',   # Mostly evil proxies, also ancient devices
-      'DES-CBC3-SHA', # Mostly IE7-8 on XP, also ancient devices
     ],
   }
 
