@@ -1,4 +1,5 @@
 class role::wmcs::openstack::labtest::net {
+    system::role { $name: }
     include ::profile::openstack::labtest::cloudrepo
     include ::profile::openstack::labtest::nova::common
     include ::profile::openstack::labtest::nova::network::service

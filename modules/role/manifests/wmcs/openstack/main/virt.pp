@@ -1,5 +1,6 @@
 class role::wmcs::openstack::main::virt {
-    include profile::openstack::main::cloudrepo
+    system::role { $name: }
+    include ::profile::openstack::main::cloudrepo
     include ::profile::openstack::main::nova::common
     include ::profile::openstack::main::nova::compute::service
 }
