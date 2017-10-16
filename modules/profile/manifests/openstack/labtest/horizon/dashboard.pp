@@ -1,7 +1,7 @@
 class profile::openstack::labtest::horizon::dashboard(
     $version = hiera('profile::openstack::labtest::version'),
     $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
-    $wmflabsdotorg_admin = hiera('profile::openstack::labtest::designate::wmflabsdotorg_pass'),
+    $wmflabsdotorg_admin = hiera('profile::openstack::labtest::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = hiera('profile::openstack::labtest::designate::wmflabsdotorg_pass'),
     $dhcp_domain = hiera('profile::openstack::labtest::nova::dhcp_domain'),
     $ldap_user_pass = hiera('profile::openstack::labtest::ldap_user_pass'),
