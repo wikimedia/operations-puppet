@@ -192,6 +192,14 @@ class cacheproxy::performance {
             # these sysctl settings when being applied at runtime.
             'net.core.default_qdisc'             => 'fq',
             'net.ipv4.tcp_congestion_control'    => 'bbr',
+
+	    # Attempt IPv4 PMTU detection (with improved baseline assumption of
+	    # 1024) when ICMP black hole detected.  This may fix some
+	    # minority-case clients using tunnels + blackhole paths, where there
+	    # is no other good recourse.
+            'net.ipv4.tcp_mtu_probing'           => 1,
+            'net.ipv4.tcp_base_mss'              => 1024,
+
         },
     }
 }
