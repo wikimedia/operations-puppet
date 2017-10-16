@@ -3,4 +3,5 @@ class role::wmcs::openstack::labtest::web {
     include ::profile::openstack::labtest::clientlib
     include ::profile::openstack::labtest::observerenv
     include ::profile::openstack::labtest::horizon::dashboard
+    include ::profile::openstack::labtest::wikitech::service
 }
