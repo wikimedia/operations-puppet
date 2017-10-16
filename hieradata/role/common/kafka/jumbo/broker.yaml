@@ -34,3 +34,11 @@ profile::kafka::broker::num_io_threads: 12
 
 profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
 profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
+
+# Mirror all topics from main to jumbo.
+profile::kafka::mirror::source_cluster_name: main
+profile::kafka::mirror::destination_cluster_name: jumbo
+profile::kafka::mirror::monitoring_enabled: true
+profile::kafka::mirror::properties:
+  num_streams: 2
+  offset_commit_interval_ms: 5000
