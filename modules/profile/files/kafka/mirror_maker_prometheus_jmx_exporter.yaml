@@ -1,0 +1,51 @@
+---
+lowercaseOutputLabelNames: true
+# The following setting allows the creation of metrics like:
+# kafka_server_ReplicaManager_UnderReplicatedPartitions
+# that are a mix of lower-case and camel-case. This is a convention used only
+# for kafka related metrics to allow a better readability, more context about
+# the discussion to establish a convention in T177078.
+lowercaseOutputName: false
+rules:
+- pattern : kafka.consumer<type=(.+), name=(.+), clientId=(.+)><>(Count|Value)
+  name: kafka_consumer_$1_$2
+  type: COUNTER
+  labels:
+    client_id: "$3"
+- pattern : kafka.consumer<type=(.+), name=(.+), clientId=(.+), groupId=(.+)><>Value
+  name: kafka_consumer_$1_$2
+  type: COUNTER
+  labels:
+    client_id: "$3"
+    group_id: "$4"
+- pattern : kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.+)><>Value
+  name: kafka_server_$1_$2
+  type: COUNTER
+  labels:
+    client_id: "$3"
+    topic: "$4"
+    partition: "$5"
+- pattern : kafka.server<type=(.+), name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>Count
+  name: kafka_server_$1_$2
+  type: COUNTER
+  labels:
+    client_id: "$3"
+    broker_host: "$4"
+    broker_port: "$5"
+- pattern : kafka.producer<type=(.+), name=(.+), clientId=(.+)><>(metadata-age|batch-size-avg|batch-size-max|buffer-available-bytes|buffer-exhausted-rate|buffer-total-bytes|bufferpool-wait-ratio|compression-rate-avg|connection-close-rate|connection-count|connection-creation-rate|incoming-byte-rate|outgoing-byte-rate|io-ratio|io-time-ns-avg|io-wait-ratio|io-wait-time-ns-avg|network-io-rate|produce-throttle-time-avg|produce-throttle-time-max|record-error-rate|record-queue-time-avg|record-queue-time-max|record-retry-rate|record-send-rate|record-size-avg|record-size-max|records-per-request-avg|request-latency-avg|request-latency-max|request-rate|request-size-avg|request-size-max|requests-in-flight|response-rate|select-rate|waiting-threads)
+  name: kafka_producer_$1_$2
+  type: GAUGE
+  labels:
+    client_id: "$3"
+- pattern : kafka.producer<type=(.+), name=(.+), clientId=(.+) topic=(.+)><>(byte-rate|compression-rate|record-error-rate|record-retry-rate|record-send-rate)
+  name: kafka_producer_$1_$2
+  type: GAUGE
+  labels:
+    client_id: "$3"
+    topic: "$4"
+- pattern : kafka.producer<type=(.+), name=(.+), clientId=(.+) node-id=(.+)><>(incoming-byte-rate|outgoing-byte-rate|request-latency-avg|request-latency-max|request-rate|request-size-avg|request-size-max|response-rate)
+  name: kafka_producer_$1_$2
+  type: GAUGE
+  labels:
+    client_id: "$3"
+    broker_id: "$4"
