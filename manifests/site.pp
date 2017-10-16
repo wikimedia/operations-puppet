@@ -2342,7 +2342,7 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 
 # As of 2017-07, labvirt1016, 1017 and 1018
 #  are puppetized and active but de-pooled
-#  (as per novaconfig::scheduler_pool).
+# (hiera key: profile::openstack::main::nova::scheduler_pool)
 # They're kept empty as emergency fail-overs
 #  and also as potential transitional hosts
 #  during the upcoming neutron migration.
