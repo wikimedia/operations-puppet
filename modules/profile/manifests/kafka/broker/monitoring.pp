@@ -25,30 +25,15 @@ class profile::kafka::broker::monitoring (
     # Use this in your JAVA_OPTS you pass to the Kafka  broker process
     $java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
 
-    # Create the Prometheus JMX Exporter configuration
-    file { $jmx_exporter_config_file:
-        ensure  => present,
-        source  => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
-        owner   => 'kafka',
-        group   => 'kafka',
-        mode    => '0400',
-        # Require this to make sure that kafka user and group are already created.
-        require => Class['::confluent::kafka::broker'],
+    # Declare a prometheus jmx_exporter instance.
+    # This will render the config file, declare the jmx_exporter_instance,
+    # and configure ferm.
+    profile::prometheus::jmx_exporter {
+        port             => $prometheus_jmx_exporter_port,
+        prometheus_nodes => $prometheus_nodes,
+        config_file      => $jmx_exporter_config_file,
+        source           => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
     }
-
-    # Allow automatic generation of config on the Prometheus master
-    prometheus::jmx_exporter_instance { $::hostname:
-        address => $::ipaddress,
-        port    => $prometheus_jmx_exporter_port,
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'kafka-broker-jmx_exporter':
-        proto  => 'tcp',
-        port   => '7800',
-        srange => "@resolve((${prometheus_nodes_ferm}))",
-    }
-
 
     ### Icinga alerts
     # Generate icinga alert if Kafka Broker Server is not running.
