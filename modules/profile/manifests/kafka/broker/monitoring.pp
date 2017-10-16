@@ -31,9 +31,9 @@ class profile::kafka::broker::monitoring (
         source  => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
         owner   => 'kafka',
         group   => 'kafka',
-        mode    => '0400',
+        mode    => '0440',
         # Require this to make sure that kafka user and group are already created.
-        require => Class['::confluent::kafka::broker'],
+        require => Class['::confluent::kafka::common'],
     }
 
     # Allow automatic generation of config on the Prometheus master

@@ -111,7 +111,7 @@ define confluent::kafka::mirror::instance(
     $log4j_properties_template    = 'confluent/kafka/mirror/log4j.properties.erb',
 )
 {
-    require ::confluent::kafka::client
+    require ::confluent::kafka::common
 
     if (!$whitelist and !$blacklist) or ($whitelist and $blacklist) {
         fail('Must set only one of $whitelist or $blacklist.')
@@ -120,7 +120,7 @@ define confluent::kafka::mirror::instance(
     $mirror_name = $title
 
     # Local variable for rendering in templates.
-    $java_home = $::confluent::kafka::client::java_home
+    $java_home = $::confluent::kafka::common::java_home
 
     file { "/etc/kafka/mirror/${mirror_name}":
         ensure  => 'directory',
