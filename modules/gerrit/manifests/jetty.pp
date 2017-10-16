@@ -97,6 +97,13 @@ class gerrit::jetty(
         require => File['/srv/gerrit'],
     }
 
+    file { '/srv/lfs':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0775',
+    }
+
     file { '/var/lib/gerrit2/':
         ensure  => directory,
         mode    => '0755',
