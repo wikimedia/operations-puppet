@@ -1,2 +1,4 @@
 admin::groups:
   - wmcs-roots
+
+base::monitoring::host::nrpe_check_disk_critical: true
