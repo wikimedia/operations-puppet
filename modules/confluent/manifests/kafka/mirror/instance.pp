@@ -8,7 +8,13 @@
 # [*source_zookeeper_url*]
 #   The URL that the source Kafka cluster users for coordination.
 #   The MirrorMaker consumer users this to look up source cluster
-#   metadata and start consuming.
+#   metadata and start consuming. NOTE: This parameter is deprecated.
+#   0.11 does not require zookeeper for consumer.  Use $source_brokers instead.
+#   TODO: Remove this parameter once all clusters are upgraded and using newer mirror maker.
+#
+# [*source_brokers*]
+#   Array of Kafka broker hosts in your source cluster.  These brokers
+#   will be used for bootstrapping the consumer configs and metadata.
 #
 # [*destination_brokers*]
 #   Array of Kafka brokers hosts in your destination cluster.  These brokers
@@ -58,6 +64,9 @@
 # [*heap_opts*]
 #   Heap options to pass to JVM on startup.  Default: undef
 #
+# [*java_opts*]
+#   Extra Java options.  Default: undef
+#
 # [*monitoring_enabled*]
 #   If true, both ::jmxtrans and ::alerts will be defined
 #   on this node for this MirrorMaker instance.  Default: true
@@ -81,10 +90,12 @@
 #   }
 #
 define confluent::kafka::mirror::instance(
-    # Consumer Settings
-    $source_zookeeper_url,
     $destination_brokers,
     $jmx_port,
+
+    # TODO: make source_brokers required when we remove $source_zookeeper_url after upgrading mirror maker
+    $source_brokers               = undef,
+    $source_zookeeper_url         = undef,
 
     $consumer_properties          = {},
 
@@ -102,6 +113,7 @@ define confluent::kafka::mirror::instance(
     $num_streams                  = 1,
     $offset_commit_interval_ms    = 10000,
     $heap_opts                    = undef,
+    $java_opts                    = undef,
 
     $monitoring_enabled           = true,
 
@@ -109,6 +121,7 @@ define confluent::kafka::mirror::instance(
     $producer_properties_template = 'confluent/kafka/mirror/producer.properties.erb',
     $default_template             = 'confluent/kafka/mirror/kafka-mirror.default.erb',
     $log4j_properties_template    = 'confluent/kafka/mirror/log4j.properties.erb',
+
 )
 {
     require ::confluent::kafka::common
