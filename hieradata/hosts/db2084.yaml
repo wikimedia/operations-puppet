@@ -1,2 +1,4 @@
-mariadb::shard: 's5'
-profile::base::notifications_enabled: '0'
+# Buffer pool sizes/instance enabled
+role::mariadb::core_multiinstance::num_instances: 2
+role::mariadb::core_multiinstance::s4: '185G'
+role::mariadb::core_multiinstance::s5: '185G'
