@@ -1,0 +1,4 @@
+# Buffer pool sizes/instance enabled
+role::mariadb::core_multiinstance::num_instances: 2
+role::mariadb::dbstore_multiinstance::s4: '100G'
+role::mariadb::dbstore_multiinstance::s5: '100G'
