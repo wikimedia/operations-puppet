@@ -97,6 +97,13 @@ class gerrit::jetty(
         require => File['/srv/gerrit'],
     }
 
+    file { '/srv/lfs':
+        ensure => directory,
+        owner  => 'gerrit2',
+        group  => 'gerrit2',
+        mode   => '0664',
+    }
+
     file { '/var/lib/gerrit2/':
         ensure  => directory,
         mode    => '0755',
@@ -197,6 +204,14 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
         content => template("gerrit/${config}"),
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/lfs.config':
+        content => template('gerrit/lfs.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
