@@ -458,9 +458,14 @@ node 'db2023.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(38|45|52|59|66|75|79|80|81|82|83|84)\.codfw\.wmnet/ {
+node /^db20(38|45|52|59|66|75|79|80|81|82|83)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
+
+node 'db2084.codfw.wmnet' {
+    role(mariadb::core_multiinstance)
+}
+
 
 # s6 core production dbs on eqiad
 # eqiad master
