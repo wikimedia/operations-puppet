@@ -21,6 +21,26 @@ class mediawiki::web {
         require => Package['apache2'],
     }
 
+    # Starting with stretch libapache2-mod-security2 includes the following
+    # in /etc/apache2/mods-enabled/security2.conf:
+    #   # Include OWASP ModSecurity CRS rules if installed
+    #   IncludeOptional /usr/share/modsecurity-crs/owasp-crs*.load
+    # The directory /usr/share/modsecurity-crs is shipped by the
+    # modsecurity-crs package, but it's only a Recommends: of
+    # libapache2-mod-security2, so it doesn'get installed. And IncludeOptional
+    # is only optional for the full path, so if /usr/share/modsecurity-crs doesn't
+    # exist, it bails out and apache refuses to start/restart. As such, ship an
+    # empty directory to make that include truly optional
+    if os_version('debian >= stretch') {
+        file { '/usr/share/modsecurity-crs':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0775',
+            before  => Service['apache2'],
+        }
+    }
+
     file { '/var/lock/apache2':
         ensure => directory,
         owner  => $::mediawiki::users::web,
