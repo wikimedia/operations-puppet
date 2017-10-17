@@ -271,7 +271,7 @@ sub vcl_recv {
 	// which are also IE[78]/XP).  This will remain in place until the
 	// future removal of protocol-level support.
 	if (req.url == "/test-sec-warning" || req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;") {
-		return (synth(418, "Browser Connection Security Warning"));
+		return (synth(403, "Browser Connection Security Warning"));
 	}
 
 	call cluster_fe_recv;
@@ -416,11 +416,6 @@ sub vcl_synth {
 		call cluster_fe_err_synth;
 
 		// Browser sec warning
-		// Note we're using status 418, which is the teapot code.  Most other
-		// 4xx codes would be inappropriate, and generic ones like 400 would be
-		// confusing to extract from stats because they have other legitimate
-		// causes.  We could also invent a new unique from unused 4xx space,
-		// but I don't think it would be any better than 418 in practice.
 		if (resp.reason == "Browser Connection Security Warning") {
 			set resp.http.Connection = "keep-alive";
 			set resp.http.Cache-Control = "max-age=0, must-revalidate, no-cache, no-store";
