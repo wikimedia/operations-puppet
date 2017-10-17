@@ -2,6 +2,7 @@
 #
 # Experimental Jenkins slave instance for providing Docker based CI builds.
 #
+# filtertags: labs-project-integration labs-project-ci-staging
 class role::ci::slave::labs::docker {
     requires_realm('labs')
 
