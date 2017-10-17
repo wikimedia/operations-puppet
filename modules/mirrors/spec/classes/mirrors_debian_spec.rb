@@ -10,16 +10,7 @@ describe 'mirrors::debian', :type => :class do
         })
     end
     it do
-        should contain_file('/var/lib/mirror/archvsync/').with({
-            'ensure'  => 'directory',
-            'owner'   => 'mirror',
-            'group'   => 'mirror',
-            'mode'    => '0755',
-            'source'  => 'puppet:///modules/mirrors/archvsync',
-        })
-    end
-    it do
-        should contain_file('/var/lib/mirror/archvsync/etc/ftpsync.conf').with({
+        should contain_file('/etc/ftpsync').with({
             'ensure'  => 'present',
             'owner'   => 'mirror',
             'group'   => 'mirror',
@@ -27,7 +18,11 @@ describe 'mirrors::debian', :type => :class do
         })
     end
     it do
-        # 18eaf6c70 changed to push mirroring
-        should_not contain_cron('update-debian-mirror')
+        should contain_file('/var/log/ftpsync/').with({
+            'ensure'  => 'directory',
+            'owner'   => 'mirror',
+            'group'   => 'mirror',
+            'mode'    => '0755',
+        })
     end
 end
