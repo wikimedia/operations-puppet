@@ -15,4 +15,7 @@ class role::mediawiki_maintenance {
     # LDAP
     include ::role::openldap::management
     include ::ldap::role::client::labs
+
+    # ProxySQL test T175672
+    include ::profile::proxysql
 }

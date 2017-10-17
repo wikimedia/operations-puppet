@@ -14,7 +14,7 @@ class proxysql (
 
     package { [
         'proxysql',
-        'mysql-client',
+        'wmf-mariadb101-client',
     ]:
         ensure => present,
     }
