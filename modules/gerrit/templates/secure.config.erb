@@ -6,4 +6,6 @@
 [auth]
 	registerEmailPrivateKey = <%= @email_key %>
 [its-phabricator]
+	# to be removed once weupgrade to 2.14+
 	certificate = <%= @phab_cert %>
+	token = <%= @phab_token %>

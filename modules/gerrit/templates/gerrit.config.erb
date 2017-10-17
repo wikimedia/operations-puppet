@@ -106,9 +106,11 @@
     maxWait = 5 min
 [index]
     type = LUCENE
+# User gerritbot
 [its-phabricator]
     url = https://phabricator.wikimedia.org/
-    username = gerritbot
+    # To be removed once we upgrade to 2.14+.
+    user = gerritbot
     commentOnChangeAbandoned = false
     commentOnChangeMerged = false
     commentOnChangeRestored = false
