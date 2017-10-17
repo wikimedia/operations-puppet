@@ -39,7 +39,12 @@ class profile::openstack::main::cumin::master(
             }
         }
 
-        require_package('cumin')
+        require_package([
+            'cumin',
+            'python-keystoneauth1',
+            'python-keystoneclient',
+            'python-novaclient',
+        ])
 
         # Variables used also in config.yaml
         $cumin_log_path = '/var/log/cumin'
