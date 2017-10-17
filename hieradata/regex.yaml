@@ -128,6 +128,7 @@ labtest:
   openstack2::designate::monitor::critical: false
   openstack2::nova::conductor::monitor::critical: false
   openstack2::nova::network::monitor::critical: false
+  icinga::monitor::toollabs::critical: false
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
