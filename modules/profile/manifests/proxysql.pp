@@ -2,33 +2,27 @@
 # Manages proxysql for the replica and other sql services on
 # labs-support network
 
-class role::labs::db::proxy {
-    system::role { 'labs::db::proxy':
-        description => 'LabsDB proxy',
-    }
+class profile::proxysql {
+    include ::passwords::misc::scripts
 
-    include ::standard
-    include passwords::labs::db::proxy
-    include ::base::firewall
-
-    $admin_user = $passwords::labs::db::proxy::admin_user
-    $admin_password = $passwords::labs::db::proxy::admin_password
+    $admin_user = 'root'
+    $admin_password = $::passwords::misc::scripts::mysql_root_pass
 
     class { 'proxysql':
         admin_user     => $admin_user,
         admin_password => $admin_password,
-        admin_socket   => '/var/run/proxysql/proxysql_admin.sock',
-        mysql_socket   => '/var/run/proxysql/proxysql.sock',
+        admin_socket   => '/run/proxysql/proxysql_admin.sock',
+        mysql_socket   => '/run/proxysql/proxysql.sock',
         mysql_port     => 3306,
     }
 
     ferm::service { 'proxysql_mysql':
         proto   => 'tcp',
-        port    => '3306',
+        port    => '3311',
         notrack => true,
     }
 
-    file {'/var/run/proxysql':
+    file {'/run/proxysql':
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
