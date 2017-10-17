@@ -31,9 +31,29 @@ class releases (
         $http_port = '8080',
 ) {
 
+    ensure_resource('file', '/srv/mediawiki', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/releases', {'ensure' => 'directory' })
+
+    git::clone { 'mediawiki/core':
+        directory => '/srv/mediawiki/core',
+        require   => File['/srv/mediawiki'],
+    }
+    git::clone { 'mediawiki/extensions':
+        directory          => '/srv/mediawiki/extensions',
+        recurse_submodules => true,
+        require            => File['/srv/mediawiki'],
+    }
+    git::clone { 'mediawiki/skins':
+        directory          => '/srv/mediawiki/skins',
+        recurse_submodules => true,
+        require            => File['/srv/mediawiki'],
+    }
+    git::clone { 'mediawiki/vendor':
+        directory => '/srv/mediawiki/vendor',
+        require   => File['/srv/mediawiki'],
+    }
 
     file { '/srv/org/wikimedia/releases/mediawiki':
         ensure  => 'directory',
