@@ -1,5 +1,6 @@
 class openstack2::nova::network::monitor(
     $active,
+    $critical,
     ) {
 
     # monitoring::service doesn't take a bool
@@ -19,7 +20,7 @@ class openstack2::nova::network::monitor(
         ensure       => $ensure,
         description  => 'nova-network process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
-        critical     => true,
+        critical     => $critical,
     }
 
     nrpe::monitor_service { 'conntrack_table_size':

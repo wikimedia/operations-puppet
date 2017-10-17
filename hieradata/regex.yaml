@@ -124,6 +124,9 @@ labtest:
   __regex: !ruby/regexp /^labtest(net200[1-9]\.codfw\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labtest
   mariadb::monitor_process::is_critical: false
+  openstack2::designate::monitor::critical: false
+  openstack2::nova::conductor::monitor::critical: false
+  openstack2::nova::network::monitor::critical: false
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
