@@ -35,7 +35,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
 
     # Run the rebuildEntityPerPage script once a week to fix broken wb_entity_per_page entries
     cron { 'wikibase-rebuild-entityperpage':
-        ensure  => $ensure,
+        ensure  => absent,
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force >>/var/log/wikidata/rebuildEpp.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
