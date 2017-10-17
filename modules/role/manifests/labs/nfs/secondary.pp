@@ -1,4 +1,5 @@
 class role::labs::nfs::secondary(
+  $observer_pass = hiera('profile::openstack::main::observer_password'),
   $monitor_iface = 'eth0',
   $data_iface    = 'eth1',
 ) {
@@ -9,10 +10,13 @@ class role::labs::nfs::secondary(
 
     require ::profile::openstack::main::clientlib
     require ::profile::openstack::main::observerenv
-    include labstore::fileserver::exports
     include labstore::fileserver::secondary
     include labstore::backup_keys
     include role::labs::db::maintain_dbusers
+
+    class {'::labstore::fileserver::exports':
+        observer_pass => $observer_pass,
+    }
 
     # Enable RPS to balance IRQs over CPUs
     interface::rps { 'monitor':

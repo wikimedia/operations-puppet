@@ -1,4 +1,6 @@
-class labstore::fileserver::exports {
+class labstore::fileserver::exports(
+    $observer_pass,
+    ) {
 
     package { [
         'python3',
@@ -84,8 +86,6 @@ class labstore::fileserver::exports {
         source => 'puppet:///modules/labstore/archive-project-volumes',
     }
 
-    $novaconfig = hiera_hash('novaconfig', {})
-    $observer_pass = $novaconfig['observer_password']
     base::service_unit { 'nfs-exportd':
         systemd        => systemd_template('nfs-exportd'),
         service_params => {
