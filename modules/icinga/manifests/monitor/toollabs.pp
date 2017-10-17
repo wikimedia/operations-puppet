@@ -3,7 +3,9 @@
 # * relevant cert expirary is monitored in
 #   icinga::monitor::certs
 
-class icinga::monitor::toollabs {
+class icinga::monitor::toollabs (
+    $critical = true,
+) {
 
     # toolserver.org (redirect page to Tool Labs)
     @monitoring::host { 'www.toolserver.org':
@@ -59,7 +61,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker service itself needs to return OK',
         check_command => "${checker}!/self!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => $critical,
     }
 
     monitoring::service { 'tools-checker-dumps':
@@ -78,7 +80,7 @@ class icinga::monitor::toollabs {
         description   => 'Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => $critical,
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
@@ -91,7 +93,7 @@ class icinga::monitor::toollabs {
         description   => 'NFS read/writeable on labs instances',
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => $critical,
     }
 
     # new instances will block on this for spinup if failing
