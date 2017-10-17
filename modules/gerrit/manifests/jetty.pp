@@ -39,7 +39,7 @@ class gerrit::jetty(
     include ::passwords::gerrit
     $email_key = $passwords::gerrit::gerrit_email_key
     $db_pass = $passwords::gerrit::gerrit_db_pass
-    $phab_cert = $passwords::gerrit::gerrit_phab_cert
+    $phab_token = $passwords::gerrit::gerrit_phab_token
 
     # Setup LDAP
     include ::ldap::role::config::labs
