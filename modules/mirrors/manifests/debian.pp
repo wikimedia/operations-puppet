@@ -27,12 +27,20 @@ class mirrors::debian {
         ensure => present,
     }
 
-    # this is our configuration for archvsync
+    # package doesn't ship that directory yet
     file { '/etc/ftpsync':
+        ensure => directory,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0555',
+    }
+
+    # this is our configuration for archvsync
+    file { '/etc/ftpsync/ftpsync.conf':
         ensure  => present,
         owner   => 'mirror',
         group   => 'mirror',
-        mode    => '0555',
+        mode    => '0444',
         content => template('mirrors/ftpsync.conf.erb'),
     }
 

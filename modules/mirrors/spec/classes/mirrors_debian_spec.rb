@@ -10,11 +10,11 @@ describe 'mirrors::debian', :type => :class do
         })
     end
     it do
-        should contain_file('/etc/ftpsync').with({
+        should contain_file('/etc/ftpsync/ftpsync.conf').with({
             'ensure'  => 'present',
             'owner'   => 'mirror',
             'group'   => 'mirror',
-            'mode'    => '0555',
+            'mode'    => '0444',
         })
     end
     it do
