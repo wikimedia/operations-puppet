@@ -102,4 +102,10 @@ class profile::puppetmaster::frontend(
         port   => 8141,
         srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
     }
+
+    # Expose puppet yaml fact files (read-only) via rsyncd to allowed hosts
+    rsync::server::module { 'puppet_yaml_facts':
+        path => '/var/lib/puppet/yaml/facts',
+        hosts_allow => [ '10.64.32.17',\ '2620:0:861:103:10:64:32:17' ] #puppetcompiler1001.eqiad.wmnet
+    }
 }
