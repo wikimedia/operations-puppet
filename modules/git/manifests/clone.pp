@@ -68,8 +68,8 @@ define git::clone(
     $default_url_format = $source ? {
         'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
         'github'      => 'https://github.com/wikimedia/%s.git',
-        'gerrit'      => 'https://gerrit.wikimedia.org/r/p/%s.git',
-        default       => 'https://gerrit.wikimedia.org/r/p/%s.git',
+        'gerrit'      => 'https://gerrit.wikimedia.org/r/%s',
+        default       => 'https://gerrit.wikimedia.org/r/%s',
     }
 
     $remote = $origin ? {
