@@ -102,22 +102,6 @@ class role::mariadb::grants::core {
     }
 }
 
-class role::mariadb::grants::wikitech {
-
-    include passwords::misc::scripts
-    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
-    $keystoneconfig  = hiera_hash('keystoneconfig', {})
-    $oathreader_pass = $keystoneconfig['oath_dbpass']
-
-    file { '/etc/mysql/grants-wikitech.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('role/mariadb/grants/wikitech.sql.erb'),
-    }
-}
-
 # Annoy people in #wikimedia-operations
 class role::mariadb::monitor {
 
