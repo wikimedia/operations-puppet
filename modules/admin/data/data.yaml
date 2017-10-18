@@ -9,7 +9,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              nschaaf, zhousquared]
+              nschaaf, zhousquared, gwicke]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -38,7 +38,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott, arlolra, gwicke, eevans, ppchelko, mobrovac]
+    members: [ssastry, cscott, arlolra, eevans, ppchelko, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart' ]
   gerrit-root:
@@ -57,7 +57,7 @@ groups:
     description: replaces 'mortals' for software deployment
     members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
-              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
+              gjg, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
@@ -82,7 +82,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [eevans, gwicke, mobrovac, ssastry]
+    members: [eevans, mobrovac, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -217,7 +217,7 @@ groups:
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
-    members: [gwicke, catrope, mobrovac]
+    members: [catrope, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mathoid *',
                  'ALL = (mathoid) NOPASSWD: ALL']
   analytics-users:
@@ -233,7 +233,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak,
-              halfak, dr0ptp4kt, bearloga, elukey, gwicke, ppchelko,
+              halfak, dr0ptp4kt, bearloga, elukey, ppchelko,
               nuria, otto, deskana, arnad, jgonsior, jgreen,
               bsitzmann, dbrant, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
@@ -262,7 +262,7 @@ groups:
   citoid-admin:
     gid: 736
     description: group of citoid admins
-    members: [gwicke, catrope, mobrovac]
+    members: [catrope, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service citoid *',
                  'ALL = (citoid) NOPASSWD: ALL']
   eventlogging-roots:
@@ -327,7 +327,7 @@ groups:
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
-    members: [gwicke, mobrovac, eevans]
+    members: [mobrovac, eevans]
   graphoid-admin:
     gid: 750
     description: group of graphoid admins
@@ -416,7 +416,7 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
+    members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
               bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
               ssastry, cscott, arlolra, jdlrobson, maxsem, awight]
     privileges: []
@@ -432,7 +432,7 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [joal, milimetric, gwicke, eevans, mobrovac]
+    members: [joal, milimetric, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /usr/sbin/service cassandra-[a-z] *',
                  'ALL = (cassandra) NOPASSWD: ALL',
@@ -467,7 +467,7 @@ groups:
   restbase-admins:
     gid: 769
     description: group of restbase admins
-    members: [gwicke]
+    members: []
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = (cassandra) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
@@ -491,7 +491,7 @@ groups:
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
-    members: [arlolra, cscott, gwicke]
+    members: [arlolra, cscott]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
@@ -522,7 +522,7 @@ groups:
   sc-admins:
     description: General service cluster admins - sc(a|b)
     gid: 779
-    members: [eevans, gwicke, mobrovac, ppchelko]
+    members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
                'ALL = NOPASSWD: /usr/sbin/service changeprop *',
                'ALL = NOPASSWD: /usr/sbin/service citoid *',
@@ -561,7 +561,7 @@ groups:
   eventbus-admins:
     gid: 785
     description: admins for the eventbus clusters
-    members: [nuria, milimetric, joal, mforns, eevans, gwicke, ppchelko, mobrovac]
+    members: [nuria, milimetric, joal, mforns, eevans, ppchelko, mobrovac]
     privileges: ['ALL = NOPASSWD: /bin/systemctl start eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
@@ -587,13 +587,13 @@ groups:
   pdfrender-admin:
     description: Group of pdfrender admins
     gid: 790
-    members: [gwicke, ppchelko, eevans, mobrovac, tgr]
+    members: [ppchelko, eevans, mobrovac, tgr]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                  'ALL = (pdfrender) NOPASSWD: ALL']
   trendingedits-admin:
     description: Group of trendingedits admins
     gid: 791
-    members: [gwicke, ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
+    members: [ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                  'ALL = (trendingedits) NOPASSWD: ALL']
   wmcs-roots:
@@ -610,13 +610,13 @@ groups:
   recommendation-admin:
     description: Group of recommendation-api admins
     gid: 794
-    members: [gwicke, ppchelko, eevans, mobrovac]
+    members: [ppchelko, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                  'ALL = (recommendation_api) NOPASSWD: ALL']
   cpjobqueue-admin:
     description: Group of cpjobqueue admins
     gid: 795
-    members: [mobrovac, gwicke, ppchelko, eevans]
+    members: [mobrovac, ppchelko, eevans]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
                  'ALL = (cpjobqueue) NOPASSWD: ALL']
 
@@ -778,14 +778,12 @@ users:
     uid: 2093
     email: abogott@wikimedia.org
   gwicke:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gwicke
     realname: Gabriel Wicke
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSPEnznabK4A8LBxTt/z18gW9THN2QVmGuY+y6uvSsqM2cXrj0PCvN3+sDKqNrp7jvuu/3JRGl2UcYTT3uU2L+r4nYud7axhodwlCepEUZlVABu4n2BXaBAKb1vlAdOnGLZm88rviT08aJkmiQGlm4dV/u+kPVJIcN/1ewjynWVcH7suZtVD0I6GIvZUU8PthbktBFZ6lpC5b3TFv7IShY2/qmbVFXjrFrfDZ6fMecabx5OvpQK36teM3LD0DYfpE/o8JCsjEYmBNQAXvK4MBvyKnqPT9QL2lkVd7vLpfjtVPOFlaRRc6ku7nS2gRZSpGgE70pAmu4KxGrzQvhi7txECmVIcfvKG2474xwwTVLdqhqdEkhvdPPLRGCp5Ic3YY0w9DLx91rwLKh/7OdbxC5EKF+ZNaB4pnuq9vYuC6Vl89/g+Dw28OQyE6pEjltqybEA5T0sQPrNd5U9mEabRWhjX7hkXXDSmfRs0XZ6Yi6u7QZUO+0aqaoiHCaAygmyi94aiAXqxFaRu+2JceiTpRDOxeHU1KupbuIDPXK49zyi+QkfKNJ37GPqe5hRsw5cq0AA6+GchzpJr8p8XIstFv87eNB467NdQft8uVvMjL0fT6HZ9Gzkr/ThCZs34OnGDPLybkK3pwSuv8zRkggDK7yRB6bvDDYX4s7qoHOb1naLQ==
-        gabriel@tosh]
+    ssh_keys: []
     uid: 1239
-    email: gwicke@wikimedia.org
   aaron:
     ensure: present
     gid: 500
