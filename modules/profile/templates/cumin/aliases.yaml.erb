@@ -18,10 +18,18 @@ conf-eqiad: A:conf and A:eqiad
 contint: P{R:class = role::ci::master}
 cp: P{R:class = role::cache::misc or R:class = role::cache::upload or R:class = role::cache::text}
 cp-canary: P{R:class = role::cache::canary}
+cp-misc: P{R:class = role::cache::misc}
+cp-upload: P{R:class = role::cache::upload}
+cp-text: P{R:class = role::cache::text}
 cp-codfw: A:cp and A:codfw
 cp-eqiad: A:cp and A:eqiad
 cp-esams: A:cp and A:esams
 cp-ulsfo: A:cp and A:ulsfo
+<% @datacenters.each do |dc| -%>
+<% [ 'text', 'upload', 'misc' ].each do |cache| -%>
+cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
+<% end -%>
+<% end -%>
 cumin: P{R:class = role::cluster::management}
 db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc-servers) and A:codfw
 db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc-servers) and A:eqiad
