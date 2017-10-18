@@ -19,6 +19,8 @@ define profile::prometheus::jmx_exporter (
         fail('"source" and "content" are mutually exclusive')
     }
 
+    require_package('prometheus-jmx-exporter')
+
     # Create the Prometheus JMX Exporter configuration
     file { $config_file:
         ensure  => 'present',
