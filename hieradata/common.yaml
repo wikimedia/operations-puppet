@@ -297,6 +297,9 @@ statistics_servers:
   - stat1006.eqiad.wmnet
   - dataset1001.wikimedia.org
   - thorium.eqiad.wmnet
+  # Temporarily allow rsync access to FRACK hosts. T178509
+  - americium.frack.eqiad.wmnet
+  - alnitak.frack.codfw.wmnet
 dumps_nfs_clients:
   snapshots:
     - snapshot1001.eqiad.wmnet
