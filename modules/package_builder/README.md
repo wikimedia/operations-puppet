@@ -20,10 +20,6 @@ would be:
  * jessie-amd64
  * stretch-amd64
  * sid-amd64
- * trusty-i386
- * jessie-i386
- * stretch-i386
- * sid-i386
 
 Building packages
 =================
