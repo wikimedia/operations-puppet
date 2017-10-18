@@ -63,7 +63,6 @@ class gerrit::jetty(
 
     require_package([
         'openjdk-8-jdk',
-        'gerrit',
         'libbcprov-java',
         'libbcpkix-java',
         'libmysql-java',
@@ -99,10 +98,9 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/':
-        ensure  => directory,
-        mode    => '0755',
-        owner   => 'gerrit2',
-        require => Package['gerrit'],
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'gerrit2',
     }
 
     file { '/var/lib/gerrit2/gerrit.war':
@@ -162,7 +160,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0644',
-        require => [File['/var/lib/gerrit2'],Package['gerrit']],
+        require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/lib':
@@ -170,7 +168,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0555',
-        require => [File['/var/lib/gerrit2/review_site'],Package['gerrit']],
+        require => File['/var/lib/gerrit2/review_site'],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/bcprov-1.49.jar':
