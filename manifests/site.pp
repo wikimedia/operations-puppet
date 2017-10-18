@@ -298,6 +298,12 @@ node /^cp402[78]\.ulsfo\.wmnet$/ {
     role(cache::text, ipsec)
 }
 
+# new cp nodes, set to role spare until placed into service T178423
+node /^cp40(29|3[01])\.ulsfo\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
+}
+
 node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
