@@ -24,7 +24,9 @@ define profile::prometheus::jmx_exporter (
     # Create the Prometheus JMX Exporter configuration
     file { $config_file:
         ensure  => 'present',
-        mode    => '0440',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
         content => $content,
         source  => $source,
         # If the source is using a symlink, copy the link target, not the symlink.
