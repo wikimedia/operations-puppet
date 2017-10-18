@@ -16,9 +16,6 @@ class profile::kafka::broker::monitoring (
     $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning'),
     $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical'),
 ) {
-    ### Expose Kafka Broker JMX metrics to Prometheus
-    require_package('prometheus-jmx-exporter')
-
     $prometheus_jmx_exporter_port = 7800
     $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
 
