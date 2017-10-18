@@ -3273,6 +3273,21 @@ host lvs4004 {
     fixed-address lvs4004.ulsfo.wmnet;
 }
 
+host lvs4005 {
+    hardware ethernet F4:E9:D4:BA:F4:60;
+    fixed-address lvs4005.ulsfo.wmnet;
+}
+
+host lvs4006 {
+    hardware ethernet F4:E9:D4:BA:E5:50;
+    fixed-address lvs4006.ulsfo.wmnet;
+}
+
+host lvs4007 {
+    hardware ethernet F4:E9:D4:BA:EE:F0;
+    fixed-address lvs4007.ulsfo.wmnet;
+}
+
 host maerlant {
     hardware ethernet a4:ba:db:30:d1:12;
     fixed-address maerlant.wikimedia.org;
