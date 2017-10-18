@@ -31,5 +31,11 @@ class package_builder::hooks(
         basepath     => $basepath,
     }
 
+    package_builder::pbuilder_hook { 'buster':
+        distribution => 'buster',
+        components   => 'main backports thirdparty',
+        basepath     => $basepath,
+    }
+
     File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook <| |>
 }
