@@ -27,7 +27,13 @@ class package_builder::hooks(
 
     package_builder::pbuilder_hook { 'stretch':
         distribution => 'stretch',
-        components   => 'main backports thirdparty',
+        components   => 'main',
+        basepath     => $basepath,
+    }
+
+    package_builder::pbuilder_hook { 'buster':
+        distribution => 'buster',
+        components   => 'main',
         basepath     => $basepath,
     }
 

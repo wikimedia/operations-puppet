@@ -19,6 +19,7 @@ would be:
  * trusty-amd64
  * jessie-amd64
  * stretch-amd64
+ * buster-amd64
  * sid-amd64
 
 Building packages
