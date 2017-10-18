@@ -51,6 +51,8 @@ server {
         access_log   off;
     }
 
+    rewrite ^/readiness-probe$ /sparql?query=%20ASK%7B%20%3Fx%20%3Fy%20%3Fz%20%7D;
+
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
     location ~ ^/bigdata/(namespace/[a-zA-Z0-9]+/sparql|ldf|assets) {
