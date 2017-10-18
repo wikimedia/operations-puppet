@@ -270,7 +270,7 @@ sub vcl_recv {
 	// using DES-CBC3-SHA, which is not forward-secret, and the bulk of
 	// which are also IE[78]/XP).  This will remain in place until the
 	// future removal of protocol-level support.
-	if (req.url == "/test-sec-warning" || req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;") {
+	if (req.url == "/test-sec-warning" || req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;" && req.url !~ "^/static/images/") {
 		return (synth(403, "Browser Connection Security Warning"));
 	}
 
