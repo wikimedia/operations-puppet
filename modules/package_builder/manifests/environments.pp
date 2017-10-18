@@ -38,38 +38,4 @@ class package_builder::environments(
         keyring            => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath           => $basepath,
     }
-    # i386 architecture
-    package_builder::pbuilder_base { 'trusty-i386':
-        distribution => 'trusty',
-        components   => 'main universe',
-        architecture => 'i386',
-        mirror       => 'http://mirrors.wikimedia.org/ubuntu',
-        keyring      => '/usr/share/keyrings/ubuntu-archive-keyring.gpg',
-        basepath     => $basepath,
-    }
-    package_builder::pbuilder_base { 'jessie-i386':
-        distribution => 'jessie',
-        components   => 'main',
-        architecture => 'i386',
-        mirror       => 'http://mirrors.wikimedia.org/debian',
-        keyring      => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath     => $basepath,
-    }
-    package_builder::pbuilder_base { 'stretch-i386':
-        distribution => 'stretch',
-        components   => 'main',
-        architecture => 'i386',
-        mirror       => 'http://mirrors.wikimedia.org/debian',
-        keyring      => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath     => $basepath,
-    }
-    package_builder::pbuilder_base { 'sid-i386':
-        distribution       => 'sid',
-        distribution_alias => 'unstable',
-        components         => 'main',
-        architecture       => 'i386',
-        mirror             => 'http://mirrors.wikimedia.org/debian',
-        keyring            => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath           => $basepath,
-    }
 }
