@@ -1511,6 +1511,18 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     }
 }
 
+# ULSFO new lvs servers set to spare until pushed into service via T178436
+node /^lvs400[5-7]\.ulsfo\.wmnet$/ {
+    # ns override for all lvs for now, see T103921
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
+
+    role(spare::system)
+    lvs::interface_tweaks {
+        'eth0': bnx2x => true, txqlen => 10000;
+    }
+}
+
+
 node 'maerlant.wikimedia.org' {
     role(dnsrecursor, ntp)
 
