@@ -27,14 +27,14 @@ Building packages
 You just either download a ready package:
 
     dget http://http.debian.net/debian/pool/main/d/dh-virtualenv/dh-virtualenv_0.10-1.dsc
-    export DIST=jessie
+    export DIST=stretch
     sudo -E cowbuilder --build dh-virtualenv_0.10-1.dsc
 
 or if you are developing a package and are in the package directory:
 
-    DIST=jessie pdebuild
+    DIST=stretch pdebuild
 
-Feel free to change jessie for the distribution of your choice from the ones above
+Feel free to change stretch for the distribution of your choice from the ones above
 
 Architectures
 =============
@@ -73,34 +73,34 @@ building you can use WIKIMEDIA=yes. There is also the approach of appending
 
 Examples:
 
-    DIST=jessie-wikimedia pdebuild
-    WIKIMEDIA=yes DIST=jessie pdebuild
+    DIST=stretch-wikimedia pdebuild
+    WIKIMEDIA=yes DIST=stretch pdebuild
 
 The commands above are equivalent and will both build a package for the
-jessie distribution using the Wikimedia apt repository.
+stretch distribution using the Wikimedia apt repository.
 
 Backports repos
 ===============
 
 Packages from the Debian backports repositories can be used to satisfy
 dependencies as well. To use the backports repository for the distribution
-selected (e.g. jessie-backports), use either of:
+selected (e.g. stretch-backports), use either of:
 
-    DIST=jessie BACKPORTS=yes pdebuild
-    DIST=jessie-backports pdebuild
+    DIST=stretch BACKPORTS=yes pdebuild
+    DIST=stretch-backports pdebuild
 
 Combining Wikimedia and Backports repos
 =======================================
 
 Set both WIKIMEDIA and BACKPORTS:
 
-    DIST=jessie BACKPORTS=yes WIKIMEDIA=yes pdebuild
+    DIST=stretch BACKPORTS=yes WIKIMEDIA=yes pdebuild
 
 When using a distribution suffix, the other repo must be enabled via an
 environment variable. The following examples are equivalent:
 
-  DIST=jessie-backports WIKIMEDIA=yes pdebuild
-  DIST=jessie-wikimedia BACKPORTS=yes pdebuild
+  DIST=stretch-backports WIKIMEDIA=yes pdebuild
+  DIST=stretch-wikimedia BACKPORTS=yes pdebuild
 
 git-buildpackage
 ================
@@ -129,7 +129,7 @@ Results
 
 The resulting deb files should be in /var/cache/pbuilder/result/${DIST}-${ARCH} like:
 
-    /var/cache/pbuilder/result/jessie-amd64/
+    /var/cache/pbuilder/result/stretch-amd64/
 
 Notes
 =====
