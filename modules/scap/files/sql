@@ -11,7 +11,7 @@ db=$1
 shift
 
 if [ -z "$db" ] || [ "$db" = "--help" ]; then
-    echo 'Usage: sql [--write] <dbname> [mysqloptions]'
+    echo 'Usage: sql [--write | --group group] <dbname> [mysqloptions]'
     exit 0
 elif [ "$db" = "--write" ]; then
     hostcode="echo \$lb->getServerName(0);"
@@ -19,6 +19,20 @@ elif [ "$db" = "--write" ]; then
     # Database will be the next parameter
     db=$1
     shift
+elif [ "$db" = "--group" ]; then
+	# Explicitly asked for a group
+	group=$1
+	shift
+
+	if echo $group | grep -qvP '^[a-z]+\z'; then
+		echo "group must be a string containing only lowercase letters"
+		exit 1
+	fi
+	hostcode="echo \$lb->getServerName(\$lb->getReaderIndex('"$group"'));"
+
+	# Database is the next param
+	db=$1
+	shift
 else
     hostcode="echo \$lb->getServerName(\$lb->getReaderIndex());"
 fi
