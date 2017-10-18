@@ -7,8 +7,8 @@
 # Default: 'http://mirrors.wikimedia.org/debian
 #
 # [*distribution*]
-# Target Distribution (e.g: trusty, jessie..)
-# Default: 'jessie'
+# Target Distribution (e.g: trusty, jessie, stretch, etc)
+# Default: 'stretch'
 #
 # [*components*]
 # List of distribution components to install. Passed as is to pbuilder, space
@@ -35,7 +35,7 @@
 # Default: undef
 define package_builder::pbuilder_base(
     $mirror='http://mirrors.wikimedia.org/debian',
-    $distribution='jessie',
+    $distribution='stretch',
     $distribution_alias=undef,
     $components='main',
     $architecture='amd64',
