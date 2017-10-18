@@ -299,7 +299,7 @@ node /^cp402[78]\.ulsfo\.wmnet$/ {
 }
 
 # new cp nodes, set to role spare until placed into service T178423
-node /^cp40(29|3[01])\.ulsfo\.wmnet$/ {
+node /^cp40(29|3[012])\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(spare::system)
 }
