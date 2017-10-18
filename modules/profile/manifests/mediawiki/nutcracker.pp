@@ -75,6 +75,18 @@ class profile::mediawiki::nutcracker(
 
     $nutcracker_pools = merge($pools, $additional_pools)
 
+    # In jessie we used a custom nutcracker package which shipped a tmpfiles.d
+    # config to create /run/nutcracker. Starting with stretch we're using the
+    # unmodified Debian package, so create the directory
+    if os_version('debian >= stretch') {
+        file { '/run/nutcracker':
+            ensure => directory,
+            owner  => 'nutcracker',
+            group  => 'nutcracker',
+            mode   => '0755',
+        }
+    }
+
     class { '::nutcracker':
         mbuf_size => '64k',
         pools     => $nutcracker_pools,
