@@ -332,3 +332,8 @@ db_without_role:
 analytics_no_monitor_screens:
   __regex: !ruby/regexp /^stat1\d\d\d\.eqiad\.wmnet$/
   monitor_screens: false
+
+# Temporarily disable notifications for T177405
+analytics_notifications_disabled:
+  __regex: !ruby/regexp /^db110[78]\.eqiad\.wmnet$/
+  profile::base::notifications_enabled: '0'
