@@ -101,6 +101,7 @@ class gerrit::jetty(
         ensure => directory,
         mode   => '0755',
         owner  => 'gerrit2',
+        group  => 'gerrit2',
     }
 
     file { '/var/lib/gerrit2/gerrit.war':
