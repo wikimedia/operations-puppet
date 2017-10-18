@@ -13,17 +13,13 @@ ENC you have puppet working with but in Wikimedia Labs you should create a
 puppet group, then add the class in the puppet group and just configure your VM
 with that class
 
-After puppet is done you will have 8 pristine cowbuilder environments. Those
+After puppet is done you will have a number of pristine cowbuilder environments. Those
 would be:
 
  * trusty-amd64
  * jessie-amd64
  * stretch-amd64
  * sid-amd64
- * trusty-i386
- * jessie-i386
- * stretch-i386
- * sid-i386
 
 Building packages
 =================
