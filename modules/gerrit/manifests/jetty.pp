@@ -68,8 +68,6 @@ class gerrit::jetty(
 
     require_package([
         'openjdk-8-jdk',
-        'libbcprov-java',
-        'libbcpkix-java',
         'libmysql-java',
     ])
 
@@ -192,18 +190,6 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0555',
         require => File['/var/lib/gerrit2/review_site'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/lib/bcprov-1.49.jar':
-        ensure  => 'link',
-        target  => '/usr/share/java/bcprov-1.49.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcprov-java']],
-    }
-
-    file { '/var/lib/gerrit2/review_site/lib/bcpkix-1.49.jar':
-        ensure  => 'link',
-        target  => '/usr/share/java/bcpkix-1.49.jar',
-        require => [File['/var/lib/gerrit2/review_site/lib'], Package['libbcpkix-java']],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
