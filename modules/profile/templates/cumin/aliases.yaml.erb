@@ -18,10 +18,25 @@ conf-eqiad: A:conf and A:eqiad
 contint: P{R:class = role::ci::master}
 cp: P{R:class = role::cache::misc or R:class = role::cache::upload or R:class = role::cache::text}
 cp-canary: P{R:class = role::cache::canary}
+cp-misc: P{R:class = role::cache::misc}
+cp-upload: P{R:class = role::cache::upload}
+cp-text: P{R:class = role::cache::text}
 cp-codfw: A:cp and A:codfw
 cp-eqiad: A:cp and A:eqiad
 cp-esams: A:cp and A:esams
 cp-ulsfo: A:cp and A:ulsfo
+cp-misc_codfw: A:cp-misc and A:codfw
+cp-misc_eqiad: A:cp-misc and A:eqiad
+cp-misc_esams: A:cp-misc and A:esams
+cp-misc_ulsfo: A:cp-misc and A:ulsfo
+cp-upload_codfw: A:cp-upload and A:codfw
+cp-upload_eqiad: A:cp-upload and A:eqiad
+cp-upload_esams: A:cp-upload and A:esams
+cp-upload_ulsfo: A:cp-upload and A:ulsfo
+cp-text_codfw: A:cp-text and A:codfw
+cp-text_eqiad: A:cp-text and A:eqiad
+cp-text_esams: A:cp-text and A:esams
+cp-text_ulsfo: A:cp-text and A:ulsfo
 cumin: P{R:class = role::cluster::management}
 db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc-servers) and A:codfw
 db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc-servers) and A:eqiad
