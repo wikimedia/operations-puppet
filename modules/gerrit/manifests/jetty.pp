@@ -102,6 +102,7 @@ class gerrit::jetty(
         mode    => '0755',
         require => Scap::Target['gerrit/gerrit'],
         owner   => 'gerrit2',
+        group   => 'gerrit2',
     }
 
     file { '/var/lib/gerrit2/gerrit.war':
