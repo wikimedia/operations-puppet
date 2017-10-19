@@ -146,14 +146,14 @@ define varnish::instance(
                 File["/etc/varnish/${vcl}.inc.vcl"],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
-                File["/etc/systemd/system/${instancesuffix}.service.d/puppet-override.conf"],
+                File["/etc/systemd/system/varnish${instancesuffix}.service.d/puppet-override.conf"],
                 Mount['/var/lib/varnish'],
             ],
         },
     }
 
     # XXX temporary while sorting out the bug above!
-    file { "/etc/systemd/system/${instancesuffix}.service.d/puppet-override.conf":
+    file { "/etc/systemd/system/varnish${instancesuffix}.service.d/puppet-override.conf":
         ensure => absent,
     }
 
