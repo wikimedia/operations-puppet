@@ -157,7 +157,8 @@ puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{R:class = role::puppetmaster::backend}
 puppetmaster-frontend: P{R:class = role::puppetmaster::frontend}
 relforge: P{R:class = role::elasticsearch::relforge}
-restbase: P{R:class = role::restbase::production}
+restbase: P{R:class = role::restbase::production or R:class = role::restbase::production_ng}
+restbase-ng: P{R:class = role::restbase::production_ng}
 restbase-canary: P{restbase1007.eqiad.wmnet}
 restbase-codfw: A:restbase and A:codfw
 restbase-eqiad: A:restbase and A:eqiad
