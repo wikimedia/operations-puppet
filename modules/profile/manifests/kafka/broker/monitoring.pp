@@ -26,7 +26,6 @@ class profile::kafka::broker::monitoring (
     # This will render the config file, declare the jmx_exporter_instance,
     # and configure ferm.
     profile::prometheus::jmx_exporter { "kafka_broker_${::hostname}":
-        hostname         => $::hostname,
         port             => $prometheus_jmx_exporter_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $jmx_exporter_config_file,
