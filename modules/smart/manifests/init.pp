@@ -24,6 +24,7 @@ class smart {
         group  => 'root',
         mode   => '0544',
         source => "puppet:///modules/${module_name}/20logger",
+        require => Package['smartmontools'],
     }
 
     file { '/usr/local/sbin/smart-data-dump':
