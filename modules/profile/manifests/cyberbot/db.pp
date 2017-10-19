@@ -14,11 +14,15 @@ class profile::cyberbot::db{
         require => File['/srv/mysql'],
     }
 
-    class { '::mysql::server':
-        package_name => 'mariadb-server',
-        config_hash  => {
-            'datadir'      => '/srv/mysql/data',
-            'bind_address' => '0.0.0.0',
-        },
+    require_package('mariadb-server')
+
+    file { '/etc/mysql/my.cnf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/profile/cyberbot/my.cnf',
+        require => Package['mariadb-server'];
     }
+
 }
