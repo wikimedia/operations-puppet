@@ -135,10 +135,9 @@ define varnish::instance(
     }
 
     base::service_unit { "varnish${instancesuffix}":
-        systemd          => systemd_template('varnish'),
-        systemd_override => template('varnish/initscripts/varnish.systemd-security.erb'),
-        refresh          => false,
-        service_params   => {
+        systemd        => systemd_template('varnish'),
+        refresh        => false,
+        service_params => {
             tag     => 'varnish_instance',
             enable  => true,
             require => [
@@ -147,9 +146,15 @@ define varnish::instance(
                 File["/etc/varnish/${vcl}.inc.vcl"],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
+                File["/etc/systemd/system/${instancesuffix}.service.d/puppet-override.conf"],
                 Mount['/var/lib/varnish'],
             ],
         },
+    }
+
+    # XXX temporary while sorting out the bug above!
+    file { "/etc/systemd/system/${instancesuffix}.service.d/puppet-override.conf":
+        ensure => absent,
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
