@@ -1,6 +1,8 @@
 class smart {
     require_package(['python3-prometheus-client', 'python3', 'bsdutils'])
 
+    $outfile = '/var/lib/prometheus/node.d/device_smart.prom'
+
     if $facts['is_virtual'] == true {
         fail('smart module is not supported on virtual hosts')
     }
@@ -33,5 +35,13 @@ class smart {
         group  => 'root',
         mode   => '0544',
         source => "puppet:///modules/${module_name}/smart-data-dump",
+    }
+
+    cron { 'export_smart_data_dump':
+        command => "/usr/local/sbin/smart-data-dump --outfile $outfile"
+        user    => 'root',
+        hour    => '*',
+        minute  => fqdn_rand(60, 'export_smart_data_dump'),
+        require => File['/usr/local/sbin/smart-data-dump'],
     }
 }
