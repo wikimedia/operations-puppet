@@ -609,19 +609,17 @@ node 'db2012.codfw.wmnet' {
 
 # m4 shard
 node 'db1046.eqiad.wmnet' {
-    class { '::role::mariadb::misc::eventlogging':
-        shard  => 'm4',
-        master => true,
-    }
+    role(mariadb::misc::eventlogging::master,
+        mariadb::ferm,
+        mariadb::monitor::dba)
 }
 node 'db1047.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
     # this slave additionally replicates s1 and s2
-    role(mariadb::analytics, mariadb::analytics::custom_repl_slave)
-    class { '::role::mariadb::misc::eventlogging':
-        shard  => 'm4',
-        master => false,
-    }
+    role(mariadb::analytics,
+        mariadb::misc::eventlogging::replica,
+        mariadb::ferm,
+        mariadb::monitor::dba)
 }
 
 # m5 shard
@@ -670,7 +668,8 @@ node 'dbstore1001.eqiad.wmnet' {
 
 node 'dbstore1002.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
-    role(mariadb::dbstore, mariadb::analytics::custom_repl_slave)
+    role(mariadb::dbstore,
+        mariadb::misc::eventlogging::replica_config)
 }
 
 node 'dbstore2001.codfw.wmnet' {
