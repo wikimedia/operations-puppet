@@ -88,6 +88,8 @@ def megaraid_list_pd():
         line = str(line, 'utf8')
         if 'megaraid,' not in line:
             continue
+        if line.startswith('#'):
+            continue
         bus, _, device, _ = line.split(' ', 3)
         yield PD(driver='megaraid', smart_args=['-d', device, bus],
                  disk_id=device)
@@ -212,7 +214,7 @@ def _parse_smart_info(output, disk, smart_healthy, device_info):
 
         if key in ('product', 'device model'):
             model = value
-        if key in ('firmware version'):
+        if key in ('firmware version', 'revision'):
             firmware = value
         m = re.match('^smart (overall-)?health', key)
         if m and value.lower() in ('ok', 'passed'):
