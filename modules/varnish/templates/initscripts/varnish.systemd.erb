@@ -6,6 +6,16 @@ Type=forking
 LimitNOFILE=500000
 LimitMEMLOCK=90000
 LimitRTPRIO=infinity
+### start sec settings
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+# No special powers for root with the exception of the following.
+# See capabilities(7).
+CapabilityBoundingSet=<%= @capabilities %>
+### end sec settings
 PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
