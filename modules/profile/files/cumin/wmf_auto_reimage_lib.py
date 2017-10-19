@@ -742,7 +742,7 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
     """
     try:
         exit_code, worker = run_cumin(
-            'check_uptime', host, ['cat /proc/uptime'], timeout=3, installer=installer)
+            'check_uptime', host, ['cat /proc/uptime'], installer=installer)
         for _, output in worker.get_results():
             uptime = float(output.message().strip().split()[0])
     except ValueError:
