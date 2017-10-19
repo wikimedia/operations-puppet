@@ -141,6 +141,15 @@ Architectures: amd64
 VerifyRelease: 670540C841468433
 ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11\.7$' || [ $? -eq 1 ]
 
+Name: confluent-stretch
+Method: http://packages.confluent.io/deb/2.0
+Components: main>thirdparty/confluent
+UDebComponents:
+Suite: stable
+Architectures: amd64
+VerifyRelease: 670540C841468433
+ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11\.7$' || [ $? -eq 1 ]
+
 Name: docker
 Method: http://apt.dockerproject.org/repo
 Components: main>thirdparty
