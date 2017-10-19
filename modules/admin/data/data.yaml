@@ -2846,3 +2846,7 @@ ldap_only_users:
     ensure: present
     realname: Leszek Manicki
     email: leszek.manicki@wikimedia.de
+  jgleeson:
+    ensure: present
+    realname: Jack Gleeson
+    email: jgleeson@wikimedia.org
