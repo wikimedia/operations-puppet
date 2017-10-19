@@ -426,8 +426,8 @@ define cassandra::instance(
 
     if ($jmx_exporter_enabled) {
         prometheus::jmx_exporter_instance { "${::hostname}-${instance_name}":
-            address => $listen_address,
-            port    => 7800,
+            hostname => $title,
+            port     => 7800,
         }
     }
 
