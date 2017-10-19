@@ -1021,7 +1021,7 @@ lvs::configuration::lvs_services:
       cluster: wdqs
       service: wdqs
     icinga:
-      check_command: check_http_on_port!80
+      check_command: "check_http_lvs_on_port!wdqs.svc.%{::site}.wmnet!80!/readiness-probe"
       sites:
         eqiad:
           hostname: wdqs.svc.eqiad.wmnet
