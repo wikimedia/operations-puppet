@@ -301,12 +301,12 @@ sub collect {
         }
         else {
             $counts{down}++;
-            my $asn = $bgp->get( $peer, 'PeerRemoteAs' );
+            my $asn = $bgp->get( $peer, 'PeerRemoteAs' ) || "unknown";
             my $afi = $peer =~ /:/ ? 'IPv6' : 'IPv4';
             my $astext = "AS$asn/$afi: $state";
 
             # raise a CRIT if the peer's ASN is in the "critical ASN" list
-            if ( exists $critASN{$asn} ) {
+            if ( exists $critASN{$asn} || $asn eq "unknown") {
                 push @crit, $astext;
                 next;
             }
