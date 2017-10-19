@@ -12,7 +12,7 @@ all = []
     targets = []
     cluster_hosts.each{ |host|
       @resources[host].each{ |instance|
-        targets.push("#{instance['title']}:#{instance['parameters']['port']}")
+        targets.push("#{host}:#{instance['parameters']['port']}")
       }
     }
 
