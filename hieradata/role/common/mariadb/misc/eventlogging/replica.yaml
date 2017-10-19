@@ -1,0 +1,3 @@
+monitor_screens: false
+profile::mariadb::eventlogging::database::shard: 'm4'
+profile::mariadb::eventlogging::database::master: false
