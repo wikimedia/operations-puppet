@@ -343,6 +343,10 @@ node /^db20(16|34|42|55|62|69|70|71|72)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
+node 'db2092.codfw.wmnet' {
+    role(mariadb::core_multiinstance)
+}
+
 # s2 (large wikis) core production dbs on eqiad
 # eqiad master
 node 'db1054.eqiad.wmnet' {
