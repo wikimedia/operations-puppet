@@ -124,6 +124,9 @@ class jenkins(
         #   https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11
         '-Dhudson.model.ParametersAction.keepUndefinedParameters=true',
         '-Djava.util.logging.config.file=/etc/jenkins/logging.properties',
+        # Disable auto discovery T178608
+        '-Dhudson.udp=-1',
+        '-Dhudson.DNSMultiCast.disabled=true',
     ], ' ')
 
     $real_service_ensure = $service_ensure ? {
