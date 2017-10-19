@@ -6,6 +6,10 @@ ulsfo:
     cp4018.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4027.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4028.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4029.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4030.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4031.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+    cp4032.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
   cache_upload:
     cp4021.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4022.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]

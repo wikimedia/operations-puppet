@@ -293,15 +293,9 @@ node /^cp402[1-6]\.ulsfo\.wmnet$/ {
     role(cache::upload, ipsec)
 }
 
-node /^cp402[78]\.ulsfo\.wmnet$/ {
+node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::text, ipsec)
-}
-
-# new cp nodes, set to role spare until placed into service T178423
-node /^cp40(29|3[012])\.ulsfo\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role(spare::system)
 }
 
 node 'darmstadtium.eqiad.wmnet' {
