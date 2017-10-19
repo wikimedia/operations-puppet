@@ -5,9 +5,6 @@
 class profile::ci::docker(
     $jenkins_agent_username = hiera('jenkins_agent_username'),
 ) {
-    # We will need to build containers in production
-    require_package('blubber')
-
     apt::repository { 'thirdparty-ci':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
