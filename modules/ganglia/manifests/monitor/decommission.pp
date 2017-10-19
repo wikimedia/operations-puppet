@@ -18,4 +18,12 @@ class ganglia::monitor::decommission {
         force   => true,
         require => Package['ganglia-monitor'],
     }
+
+    file { '/etc/systemd/system/ganglia-monitor.service':
+        ensure => absent,
+    }
+
+    file { '/etc/systemd/system/ganglia-monitor-aggregator@.service':
+        ensure => absent,
+    }
 }
