@@ -63,12 +63,22 @@ class jenkins(
 
     ensure_packages('openjdk-8-jdk')
 
-    # Upgrades are usually done manually by upload the Jenkins
-    # package at apt.wikimedia.org then restarting jenkins and
-    # double checking everything went fine.
-    package { 'jenkins':
-        ensure  => present,
-        require => Package['openjdk-8-jdk'],
+    if os_version('debian >= stretch') {
+        apt::repository { 'jenkins-thirdparty-ci':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'thirdparty/ci',
+        }
+
+        package { 'jenkins':
+            ensure  => present,
+            require => [Package['openjdk-8-jdk'], Apt::Repository['jenkins-thirdparty-ci'], Exec['apt-get update']],
+        }
+    } else {
+        package { 'jenkins':
+            ensure  => present,
+            require => Package['openjdk-8-jdk'],
+        }
     }
 
     file { '/var/lib/jenkins/.daemonrc':
