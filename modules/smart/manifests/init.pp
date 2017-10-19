@@ -19,11 +19,12 @@ class smart {
     }
 
     file { '/etc/smartmontools/run.d/20logger':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => "puppet:///modules/${module_name}/20logger",
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        source  => "puppet:///modules/${module_name}/20logger",
+        require => Package['smartmontools'],
     }
 
     file { '/usr/local/sbin/smart-data-dump':
