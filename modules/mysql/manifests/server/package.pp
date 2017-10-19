@@ -3,7 +3,7 @@
 class mysql::server::package (
     $package_name     = $mysql::params::server_package_name,
 ) {
-    if $package_name =~ /mariadb/ {
+    if $package_name =~ /mariadb-server-5/ {
         apt::repository { 'wikimedia-mariadb':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => 'precise-wikimedia',
