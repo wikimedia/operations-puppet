@@ -1,0 +1,6 @@
+monitor_screens: false
+profile::mariadb::eventlogging::database::shard: 'm4'
+profile::mariadb::eventlogging::database::master: false
+profile::mariadb::eventlogging::replication::master_host: m4-master.eqiad.wmnet
+profile::mariadb::eventlogging::replication::cutoff_days: 90
+profile::mariadb::eventlogging::replication::batch_size: 1000
