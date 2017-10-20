@@ -35,7 +35,7 @@ class profile::maps::apps(
         pgsql_pass        => $pgsql_tilerator_pass,
         redis_server      => $redis_server,
         redis_pass        => $redis_pass,
-        conf_sources      => $conf_sources,
+        conf_sources      => '/etc/tilerator/sources.yaml',
         contact_groups    => $contact_groups,
     }
 
@@ -45,7 +45,7 @@ class profile::maps::apps(
         pgsql_pass        => $pgsql_tileratorui_pass,
         redis_server      => $redis_server,
         redis_pass        => $redis_pass,
-        conf_sources      => $conf_sources,
+        conf_sources      => '/etc/tileratorui/sources.yaml',
         contact_groups    => $contact_groups,
         storage_id        => $storage_id,
     }
@@ -54,7 +54,7 @@ class profile::maps::apps(
         cassandra_servers => $cassandra_hosts,
         cassandra_pass    => $cassandra_kartotherian_pass,
         pgsql_pass        => $pgsql_kartotherian_pass,
-        conf_sources      => $conf_sources,
+        conf_sources      => '/etc/kartotherian/sources.yaml',
         contact_groups    => $contact_groups,
     }
 
