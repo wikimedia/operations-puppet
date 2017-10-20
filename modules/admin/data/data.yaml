@@ -698,7 +698,6 @@ users:
     name: jgreen
     realname: Jeff Green
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bdjMc3xayu9twy6HlYSpbfF1i0q+yylefuR6Kqol/0YeK133qNwGDBXCs3j7y/M/h6V9fQIfS15g/fyH7H7NMz6ESTVXehBXw+2Lk8PAPNS0c+ZyVbCbBeBV+2lPmrCiQ1vTrunSB86IUIfHnPQIK/+jkCTF56GmVv8ifV8Vp20jsJ/yfoxM+rC9PkbX8RTtDrrWfzrdXBMsm6QSr9s4i320+uyj2w6hROfsYQPDnw+GlIS741DED8dhLOJUKVQdqv0mAXJC3dMGNF1G0VN5okDsTAiFdrfhObMC/PjsPyQyloFv4EGCLEqVDs+nNmWZwMjEqOy7FoPw45Qz0cv1 jgreen@neo
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtlXCYUGn23LVRlgDM9T1onBsTuD20QEbVAplIakTAE55hN1ko1kY09Qb01l4VoAqDPapx0ROYd1on9oYYwSOGgSHKIOrB0OGg+3KX66Pjlr5ohpii20WSHS/NEI1gT76nQX7RN7tHq5/3ciNmCeQZ81YsDwCbmr7DRB5XiHUCaaCp/GIb6GXTliqtSL5oC+Rrzw4cqMeG/M7yExohVetjEK/AMOjgzMZEBHjZczvZiNpijHQ4WAIzl2KzuRDcqLKnOi48Wp+ANaKZmQngJdu8pAI51vqFIEhEwNpQrrUi1JXY2gXmYudRrvg/BvXgPJUDMmm9TOHNnBwwX8xafUgD jgreen@wertyukio.trouser.org
     uid: 2074
     email: jgreen@wikimedia.org
