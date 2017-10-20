@@ -41,14 +41,14 @@ class TaskGen < ::Rake::TaskLib
     end
   end
 
-  def print_wmf_style_violations(problems, other=nil)
+  def print_wmf_style_violations(problems, other=nil, format='%{path}:%{line} %{message}')
     # Prints the wmf style violations
     other ||= {}
     events = problems.select do |p|
       other.select { |x| x[:message] == p[:message] && x[:path] == p[:path] }.empty?
     end
     events.each do |p|
-      puts "#{p[:path]}:#{p[:line]} #{p[:message]}"
+      puts format(format, p)
     end
     puts "Nothing found" if events.length.zero?
   end

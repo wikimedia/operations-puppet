@@ -92,7 +92,13 @@ namespace :global do
     FileList[pattern].to_a.each do |puppet_file|
       linter.file = puppet_file
       linter.run
-      t.print_wmf_style_violations linter.problems unless linter.problems.empty?
+      next if linter.problems.empty?
+
+      if ENV.key?('JENKINS_URL')
+          t.print_wmf_style_violations linter.problems, nil, '%{path}:%{line}:%{check}:%{kind}:%{message}'
+      else
+          t.print_wmf_style_violations linter.problems
+      end
     end
   end
 end
