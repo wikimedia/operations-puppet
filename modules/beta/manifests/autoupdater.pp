@@ -4,8 +4,6 @@
 # cluster. This is the lame way to automatically pull any code merged in master
 # branches.
 class beta::autoupdater {
-    require ::scap::scripts
-
     $stage_dir = '/srv/mediawiki-staging'
 
     # Parsoid JavaScript dependencies are updated on beta via npm
