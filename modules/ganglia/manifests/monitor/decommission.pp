@@ -2,6 +2,11 @@ class ganglia::monitor::decommission {
     package { 'ganglia-monitor':
         ensure => purged,
     }
+
+    package { 'libganglia1':
+        ensure => purged,
+    }
+
     # We normally would need only /usr/lib/ganglia/python_modules but let's be
     # ultra cautious here and purge the parent directory
     file { '/usr/lib/ganglia/':
