@@ -2,29 +2,29 @@
 
 aqs_project: &aqs_project
   x-modules:
-    /:
-      - path: projects/aqs_default.yaml
-        options: &default_options
-          table:
-            hosts: [<%= Array(@seeds).join(',') %>]
-            keyspace: system
-            localDc: <%= @cassandra_local_dc %>
-            datacenters: [<%= @cassandra_local_dc %>]
-            username: <%= @cassandra_user %>
-            password: <%= @cassandra_password %>
-            defaultConsistency: <%= @cassandra_default_consistency %>
-            storage_groups:
-              # Catch-all group
-              - name: default.group.local
-                domains: /./
+    - path: projects/aqs_default.yaml
+      options: &default_options
+        table:
+          backend: cassandra
+          hosts: [<%= Array(@seeds).join(',') %>]
+          keyspace: system
+          localDc: <%= @cassandra_local_dc %>
+          datacenters: [<%= @cassandra_local_dc %>]
+          username: <%= @cassandra_user %>
+          password: <%= @cassandra_password %>
+          defaultConsistency: <%= @cassandra_default_consistency %>
+          storage_groups:
+            # Catch-all group
+            - name: default.group.local
+              domains: /./
 
-          <%- if @druid_host -%>
-          druid:
-              scheme: <%= @druid_scheme %>
-              host: <%= @druid_host %>
-              port: <%= @druid_port %>
-              query_path: <%= @druid_query_path %>
-          <%- end -%>
+        <%- if @druid_host -%>
+        druid:
+            scheme: <%= @druid_scheme %>
+            host: <%= @druid_host %>
+            port: <%= @druid_port %>
+            query_path: <%= @druid_query_path %>
+        <%- end -%>
 
 # Swagger spec root.
 spec: &spec
