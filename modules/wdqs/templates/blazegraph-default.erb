@@ -9,9 +9,13 @@ GC_LOGS="-Xloggc:<%= @log_dir %>/wdqs-blazegraph_jvm_gc.%p.log
          -XX:+PrintReferenceGC \
          -XX:+PrintGCCause \
          -XX:+PrintGCApplicationStoppedTime \
+         -XX:+PrintPLAB \
          -XX:+UseGCLogFileRotation \
          -XX:NumberOfGCLogFiles=10 \
          -XX:GCLogFileSize=20M \
          -XX:+ParallelRefProcEnabled \
+         -XX:MarkStackSize=512M \
+         -XX:MarkStackSizeMax=512M \
+         -XX:ConcGCThreads=10 \
          -XX:+UnlockExperimentalVMOptions \
-         -XX:G1MaxNewSizePercent=25"
+         -XX:G1MaxNewSizePercent=1"
