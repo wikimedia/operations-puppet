@@ -60,29 +60,25 @@ class profile::cache::text(
         'enable_geoiplookup' => true,
     })
 
-    $common_runtime_params = ['default_ttl=86400']
-
     $text_storage_args = $::profile::cache::base::file_storage_args
 
     class { 'cacheproxy::instance_pair':
-        cache_type        => 'text',
-        fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
-        fe_runtime_params => $common_runtime_params,
-        be_runtime_params => $common_runtime_params,
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
-        fe_vcl_config     => $fe_vcl_config,
-        be_vcl_config     => $be_vcl_config,
-        fe_extra_vcl      => ['text-common', 'zero', 'normalize_path', 'geoip'],
-        be_extra_vcl      => ['text-common', 'normalize_path'],
-        be_storage        => $text_storage_args,
-        fe_cache_be_opts  => $fe_cache_be_opts,
-        be_cache_be_opts  => $be_cache_be_opts,
-        cluster_nodes     => $nodes,
-        cache_route       => $cache_route,
-        fe_transient_gb   => $fe_transient_gb,
-        be_transient_gb   => $be_transient_gb,
-        backend_warming   => $backend_warming,
+        cache_type       => 'text',
+        fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk:16',
+        app_directors    => $app_directors,
+        app_def_be_opts  => $app_def_be_opts,
+        fe_vcl_config    => $fe_vcl_config,
+        be_vcl_config    => $be_vcl_config,
+        fe_extra_vcl     => ['text-common', 'zero', 'normalize_path', 'geoip'],
+        be_extra_vcl     => ['text-common', 'normalize_path'],
+        be_storage       => $text_storage_args,
+        fe_cache_be_opts => $fe_cache_be_opts,
+        be_cache_be_opts => $be_cache_be_opts,
+        cluster_nodes    => $nodes,
+        cache_route      => $cache_route,
+        fe_transient_gb  => $fe_transient_gb,
+        be_transient_gb  => $be_transient_gb,
+        backend_warming  => $backend_warming,
     }
 
     # varnishkafka statsv listens for special stats related requests

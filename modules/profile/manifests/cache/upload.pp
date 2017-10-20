@@ -75,25 +75,21 @@ class profile::cache::upload(
         "-s bin4=file,/srv/${sda}/varnish.bin4,${bin4_size}M",
     ], ' ')
 
-    $common_runtime_params = ['default_ttl=86400']
-
     class { 'cacheproxy::instance_pair':
-        cache_type        => 'upload',
-        fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
-        fe_runtime_params => $common_runtime_params,
-        be_runtime_params => $common_runtime_params,
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
-        fe_vcl_config     => $fe_vcl_config,
-        be_vcl_config     => $be_vcl_config,
-        fe_extra_vcl      => ['upload-common'],
-        be_extra_vcl      => ['upload-common'],
-        be_storage        => $upload_storage_args,
-        fe_cache_be_opts  => $fe_cache_be_opts,
-        be_cache_be_opts  => $be_cache_be_opts,
-        cluster_nodes     => $cluster_nodes,
-        cache_route       => $cache_route,
-        backend_warming   => $backend_warming,
+        cache_type       => 'upload',
+        fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk:17',
+        app_directors    => $app_directors,
+        app_def_be_opts  => $app_def_be_opts,
+        fe_vcl_config    => $fe_vcl_config,
+        be_vcl_config    => $be_vcl_config,
+        fe_extra_vcl     => ['upload-common'],
+        be_extra_vcl     => ['upload-common'],
+        be_storage       => $upload_storage_args,
+        fe_cache_be_opts => $fe_cache_be_opts,
+        be_cache_be_opts => $be_cache_be_opts,
+        cluster_nodes    => $cluster_nodes,
+        cache_route      => $cache_route,
+        backend_warming  => $backend_warming,
     }
 
     # Media browser cache hit rate and request volume stats.

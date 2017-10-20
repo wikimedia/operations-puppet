@@ -282,6 +282,13 @@ profile::cache::base::storage_parts: ['sda3', 'sdb3']
 profile::cache::base::purge_host_regex: ''
 profile::cache::base::purge_multicasts: ['239.128.0.115']
 profile::cache::base::purge_varnishes: ['127.0.0.1:3128', '127.0.0.1:3127']
+profile::cache::base::fe_runtime_params:
+    - default_ttl=3600
+profile::cache::base::be_runtime_params:
+    - default_ttl=3600
+    - timeout_idle=120
+    - nuke_limit=1000
+    - lru_interval=31
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
