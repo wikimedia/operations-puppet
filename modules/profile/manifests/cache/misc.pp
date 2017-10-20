@@ -15,10 +15,6 @@ class profile::cache::misc(
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
-    class { 'varnish::htcppurger':
-        mc_addrs => [ '239.128.0.115' ],
-    }
-
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['misc_web'][$::site],
     }
