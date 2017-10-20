@@ -46,27 +46,19 @@ class profile::cache::misc(
         'req_handling'     => $req_handling,
     }
 
-    $common_runtime_params = ['default_ttl=3600']
-
-    # The default timeout_idle setting, 5s, seems to be causing sc_rx_timeout
-    # issues in our setup. See T159429
-    $be_runtime_params = ['timeout_idle=120']
-
     class { 'cacheproxy::instance_pair':
-        cache_type        => 'misc',
-        fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:16',
-        fe_runtime_params => $common_runtime_params,
-        be_runtime_params => concat($common_runtime_params, $be_runtime_params),
-        app_directors     => $app_directors,
-        app_def_be_opts   => $app_def_be_opts,
-        fe_vcl_config     => $common_vcl_config,
-        be_vcl_config     => $common_vcl_config,
-        fe_extra_vcl      => ['misc-common', 'zero'],
-        be_extra_vcl      => ['misc-common'],
-        be_storage        => $::profile::cache::base::file_storage_args,
-        fe_cache_be_opts  => $fe_cache_be_opts,
-        be_cache_be_opts  => $be_cache_be_opts,
-        cluster_nodes     => $nodes,
-        cache_route       => $cache_route,
+        cache_type       => 'misc',
+        fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk:16',
+        app_directors    => $app_directors,
+        app_def_be_opts  => $app_def_be_opts,
+        fe_vcl_config    => $common_vcl_config,
+        be_vcl_config    => $common_vcl_config,
+        fe_extra_vcl     => ['misc-common', 'zero'],
+        be_extra_vcl     => ['misc-common'],
+        be_storage       => $::profile::cache::base::file_storage_args,
+        fe_cache_be_opts => $fe_cache_be_opts,
+        be_cache_be_opts => $be_cache_be_opts,
+        cluster_nodes    => $nodes,
+        cache_route      => $cache_route,
     }
 }
