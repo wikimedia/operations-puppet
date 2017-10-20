@@ -40,7 +40,7 @@ class profile::cpjobqueue(
             site            => $::site,
             redis_path      => $redis_path,
             redis_pass      => $::passwords::redis::main_password,
-            jobrunner_uri   => "${jobrunner_host}/rpc/RunSingleJob.php",
+            jobrunner_uri   => "${jobrunner_host}/wiki/Special:RunSingleJob",
             kafka_max_bytes => $kafka_msg_max_bytes,
         },
         auto_refresh      => false,
