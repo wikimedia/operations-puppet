@@ -10,7 +10,7 @@ class role::prometheus::tools {
     $master_host = hiera('k8s::master_host')
     $targets_path = '/srv/prometheus/tools/targets'
 
-    require ::role::labs::lvm::srv
+    require ::profile::labs::lvm::srv
 
     prometheus::server { 'tools':
         listen_address       => '127.0.0.1:9902',
