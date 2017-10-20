@@ -3,12 +3,12 @@
 # filtertags: labs-project-deployment-prep labs-project-git labs-project-ci-staging
 class role::ci::slave::labs::common {
 
+    # Need the labs instance extended disk space
+    require ::profile::labs::lvm::srv
+
     # Jenkins slaves need to access beta cluster for the browsertests
     include contint::firewall::labs
     include contint::packages::base
-
-    # Need the labs instance extended disk space
-    require role::labs::lvm::srv
 
     # New file layout based on /srv
 
