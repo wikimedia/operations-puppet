@@ -10,6 +10,7 @@ class profile::aqs (
         $cassandra_seeds               = hiera('profile::aqs::seeds'),
         $logstash_host                 = hiera('profile::aqs::logstash_host'),
         $cassandra_default_consistency = hiera('profile::aqs::cassandra_default_consistency'),
+        $cassandra_local_dc            = hiera('profile::aqs::cassandra_local_dc'),
         $statsd_host                   = hiera('profile::aqs::statsd_host'),
 ){
 
@@ -20,7 +21,7 @@ class profile::aqs (
         druid_query_path              => $druid_query_path,
         seeds                         => $cassandra_seeds,
         cassandra_default_consistency => $cassandra_default_consistency,
-        cassandra_local_dc            => $::site,
+        cassandra_local_dc            => $cassandra_local_dc,
         statsd_host                   => $statsd_host,
         logstash_host                 => $logstash_host,
     }
