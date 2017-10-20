@@ -13,4 +13,3 @@ hhvm::extra::fcgi:
       light_process_count: "10"
 apache::mpm::mpm: worker
 role::mediawiki::webserver::tls: true
-standard::has_ganglia: false
