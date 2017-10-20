@@ -48,6 +48,7 @@ class TaskGen < ::Rake::TaskLib
       other.select { |x| x[:message] == p[:message] && x[:path] == p[:path] }.empty?
     end
     events.each do |p|
+      p[:KIND] = p[:kind].to_s.upcase
       puts format(format, p)
     end
     puts "Nothing found" if events.length.zero?
