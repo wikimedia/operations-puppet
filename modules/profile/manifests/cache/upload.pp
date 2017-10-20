@@ -15,11 +15,6 @@ class profile::cache::upload(
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
-    class { 'varnish::htcppurger':
-        host_regex => '[um][pa][lp][os]', # like 'uplo|maps', but avoiding shell metachar...
-        mc_addrs   => [ '239.128.0.112', '239.128.0.113', '239.128.0.114' ],
-    }
-
     class { '::lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
     }
