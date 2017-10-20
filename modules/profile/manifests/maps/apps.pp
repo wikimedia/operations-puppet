@@ -16,6 +16,19 @@ class profile::maps::apps(
 
     $contact_groups = 'admins,team-interactive'
 
+    profile::maps::sources_config { 'kartotherian':
+        mode       => 'kartotherian',
+        storage_id => $storage_id,
+    }
+    profile::maps::sources_config { 'tilerator':
+        mode       => 'tilerator',
+        storage_id => $storage_id,
+    }
+    profile::maps::sources_config { 'tileratorui':
+        mode       => 'tilerator',
+        storage_id => $storage_id,
+    }
+
     class { '::tilerator':
         cassandra_servers => $cassandra_hosts,
         cassandra_pass    => $cassandra_tilerator_pass,
