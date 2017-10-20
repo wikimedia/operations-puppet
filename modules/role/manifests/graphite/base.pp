@@ -28,7 +28,7 @@ class role::graphite::base(
 
     if $::realm == 'labs' {
         # Mount extra disk on /srv so carbon has somewhere to store metrics
-        require role::labs::lvm::srv
+        require ::profile::labs::lvm::srv
     }
 
     system::role { 'graphite':
