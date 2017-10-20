@@ -80,13 +80,9 @@ class profile::cache::upload(
         "-s bin4=file,/srv/${sda}/varnish.bin4,${bin4_size}M",
     ], ' ')
 
-    $common_runtime_params = ['default_ttl=86400']
-
     class { 'cacheproxy::instance_pair':
         cache_type        => 'upload',
         fe_jemalloc_conf  => 'lg_dirty_mult:8,lg_chunk:17',
-        fe_runtime_params => $common_runtime_params,
-        be_runtime_params => $common_runtime_params,
         app_directors     => $app_directors,
         app_def_be_opts   => $app_def_be_opts,
         fe_vcl_config     => $fe_vcl_config,

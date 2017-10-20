@@ -63,6 +63,11 @@ cache::misc::nodes:
 profile::cache::base::zero_site: 'https://zero.wikimedia.beta.wmflabs.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.beta\.wmflabs\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
+profile::cache::base::fe_runtime_params:
+    - default_ttl=3600
+profile::cache::base::be_runtime_params:
+    - default_ttl=3600
+    - timeout_idle=120
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: false
 profile::cache::ssl::unified::letsencrypt: true

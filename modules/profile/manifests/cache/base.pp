@@ -15,6 +15,8 @@ class profile::cache::base(
     $storage_parts = hiera('profile::cache::base::purge_host_not_upload_re'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $varnish_version = hiera('profile::cache::base::varnish_version', 4),
+    $fe_runtime_params = hiera('profile::cache::base::fe_runtime_params', []),
+    $be_runtime_params = hiera('profile::cache::base::be_runtime_params', []),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -58,7 +60,9 @@ class profile::cache::base(
     }
 
     class { '::varnish::common':
-        varnish_version => $varnish_version,
+        varnish_version   => $varnish_version,
+        fe_runtime_params => $fe_runtime_params,
+        be_runtime_params => $be_runtime_params,
     }
 
     class { [

@@ -7,7 +7,6 @@ define varnish::instance(
     $vcl = '',
     $storage='-s malloc,1G',
     $jemalloc_conf=undef,
-    $runtime_parameters=[],
     $app_directors={},
     $app_def_be_opts={},
     $backend_caches={},
@@ -17,7 +16,6 @@ define varnish::instance(
 
     include ::varnish::common
 
-    $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
     if $instance_name == '' {
         $instancesuffix = ''
         $extraopts = ''
@@ -40,9 +38,13 @@ define varnish::instance(
     # Write the dynamic backend caches configuration, if we need it
     if $instance_name == '' {
         $inst = 'backend'
+        $runtime_parameters = $::varnish::common::be_runtime_params
     } else {
         $inst = $instance_name
+        $runtime_parameters = $::varnish::common::fe_runtime_params
     }
+
+    $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
 
     varnish::common::directors { $vcl:
         instance  => $inst,

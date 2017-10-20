@@ -83,6 +83,10 @@ profile::cache::base::zero_site: 'https://zero.wikimedia.org'
 profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
 profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
 profile::cache::base::storage_parts: ['sda3', 'sdb3']
+profile::cache::base::fe_runtime_params:
+    - default_ttl=86400
+profile::cache::base::be_runtime_params:
+    - default_ttl=86400
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
