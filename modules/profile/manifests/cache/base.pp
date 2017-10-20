@@ -15,6 +15,9 @@ class profile::cache::base(
     $storage_parts = hiera('profile::cache::base::purge_host_not_upload_re'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
     $varnish_version = hiera('profile::cache::base::varnish_version', 4),
+    $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
+    $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
+    $purge_varnishes = hiera('profile::cache::base::purge_varnishes', ['127.0.0.1:3128', '127.0.0.1:3127']),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -106,4 +109,13 @@ class profile::cache::base(
         "-s main1=file,/srv/${storage_parts[0]}/varnish.main1,${storage_size}G",
         "-s main2=file,/srv/${storage_parts[1]}/varnish.main2,${storage_size}G",
     ], ' ')
+
+    ###########################################################################
+    # Purging
+    ###########################################################################
+    class { 'varnish::htcppurger':
+        host_regex => $purge_host_regex,
+        mc_addrs => $purge_multicasts,
+        varnishes => $purge_varnishes,
+    }
 }

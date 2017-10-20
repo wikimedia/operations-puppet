@@ -29,10 +29,6 @@ class profile::cache::text(
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
 
-    class { 'varnish::htcppurger':
-        mc_addrs => [ '239.128.0.112' ],
-    }
-
     $fe_cache_be_opts = {
         'port'                  => 3128,
         'connect_timeout'       => '5s',
