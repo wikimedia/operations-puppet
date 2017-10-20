@@ -95,7 +95,7 @@ namespace :global do
       next if linter.problems.empty?
 
       if ENV.key?('JENKINS_URL')
-          t.print_wmf_style_violations linter.problems, nil, '%{path}:%{line}:%{check}:%{kind}:%{message}'
+          t.print_wmf_style_violations linter.problems, nil, '%{path}:%{line}:%{check}:%{KIND}:%{message}'
       else
           t.print_wmf_style_violations linter.problems
       end
