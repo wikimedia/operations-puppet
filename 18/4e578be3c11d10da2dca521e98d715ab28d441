@@ -1,0 +1,8 @@
+Code-Review+1: Ayounsi <ayounsi@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: BBlack <bblack@wikimedia.org>
+Submitted-by: BBlack <bblack@wikimedia.org>
+Submitted-at: Fri, 20 Oct 2017 16:40:24 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/385308
+Project: operations/puppet
+Branch: refs/heads/production
