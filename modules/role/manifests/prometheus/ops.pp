@@ -358,6 +358,7 @@ class role::prometheus::ops {
         site       => $::site,
         class_name => 'profile::otrs',
         port       => '9117',
+        labels     => { 'service' => 'otrs' },
     }
 
     # Job definition for etcd_exporter
