@@ -7,8 +7,8 @@ class profile::docker::registry(
     # cache misc nodes are allowed to connect via HTTP, if defined
     $hnodes = hiera('cache::misc::nodes', {}),
     # Storage configuration
-    $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend')
-
+    $storage_backend = hiera('profile::docker::registry::storage_backend', 'filebackend'),
+    $certname = hiera('profile::docker::registry::certname', undef),
 ) {
     require ::network::constants
     # Hiera configurations
@@ -29,12 +29,24 @@ class profile::docker::registry(
     # Nginx frontend
     class { '::sslcert::dhparam': }
 
+    if $certname {
+        sslcert::certificate { $certname:
+            ensure       => present,
+            skip_private => false,
+            before       => Service['nginx'],
+        }
+        $use_puppet = false
+    } else {
+        $use_puppet = true
+    }
+
     class { '::docker::registry::web':
         docker_username      => $username,
         docker_password_hash => $hash,
         allow_push_from      => $image_builders,
         ssl_settings         => ssl_ciphersuite('nginx', 'mid'),
-        use_puppet_certs     => true,
+        use_puppet_certs     => $use_puppet,
+        ssl_certificate_name => $certname,
         http_endpoint        => true,
         http_allowed_hosts   => $http_allowed_hosts,
     }
