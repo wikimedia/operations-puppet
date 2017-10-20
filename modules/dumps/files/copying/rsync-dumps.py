@@ -18,7 +18,7 @@ class Rsyncer(object):
             self.rsync_args.append("--list-only")
         else:
             self.rsync_args.append("-q")
-        self.excludes = ['--exclude=wikidump_*', '--exclude=md5temp.*']
+        self.excludes = ['--exclude=wikidump_*', '--exclude=md5temp.*', '--exclude=*.inprog']
 
     def get_excludes_for_job(self, jobname, host_info):
         excludes = []
