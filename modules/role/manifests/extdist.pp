@@ -6,9 +6,7 @@
 # filtertags: labs-project-extdist
 class role::extdist {
 
-    include role::labs::lvm::srv
+    require ::profile::labs::lvm::srv
 
-    class { '::extdist':
-        require => Mount['/srv']
-    }
+    class { '::extdist': }
 }
