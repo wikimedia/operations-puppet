@@ -4,6 +4,13 @@ include "upload-common.inc.vcl";
 sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
+	// if the client happens to send this, we don't want to forward it
+	// onwards, as cache_upload requests are all "anonymous" in nature.
+	// We'd strip inbound cookies too, but then a few of them are useful
+	// for analytics and perf data.  Maybe we should be filtering down to
+	// the known set of those cookies, though?
+	unset req.http.Authorization;
+
 	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
 		// CORS preflight requests
 		if (req.method == "OPTIONS" && req.http.Origin) {
