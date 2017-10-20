@@ -7,15 +7,14 @@
 # filtertags: labs-project-integration
 class role::ci::publisher::labs {
 
-    include role::labs::lvm::srv
+    require ::profile::labs::lvm::srv
     include rsync::server
 
     file { '/srv/doc':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0775',
-        require => Class['role::labs::lvm::srv'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0775',
     }
 
     rsync::server::module { 'doc':
@@ -23,7 +22,6 @@ class role::ci::publisher::labs {
         read_only => 'no',
         require   => [
             File['/srv/doc'],
-            Class['role::labs::lvm::srv'],
         ],
     }
 
