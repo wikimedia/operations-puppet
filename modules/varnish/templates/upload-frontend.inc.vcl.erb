@@ -4,6 +4,15 @@ include "upload-common.inc.vcl";
 sub cluster_fe_recv_pre_purge { }
 
 sub cluster_fe_recv {
+	// The upload cluster does not serve page views or authenticated
+	// requests, so we keep it cookie-free on the sending side in
+	// vcl_deliver to avoid pointless network traffic and to improve
+	// cacheability.  Here we'll also strip Auth/Cookie info at ingress
+	// as well, as this information should be at best pointless and could
+	// cause functional issues.
+	unset req.http.Authorization;
+	unset req.http.Cookie;
+
 	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
 		// CORS preflight requests
 		if (req.method == "OPTIONS" && req.http.Origin) {
