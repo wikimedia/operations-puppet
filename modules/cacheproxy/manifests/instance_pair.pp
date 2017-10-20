@@ -2,8 +2,6 @@
 class cacheproxy::instance_pair (
     $cache_type,
     $fe_jemalloc_conf,
-    $fe_runtime_params,
-    $be_runtime_params,
     $app_directors,
     $app_def_be_opts,
     $fe_vcl_config,
@@ -18,7 +16,6 @@ class cacheproxy::instance_pair (
     $fe_transient_gb=0,
     $be_transient_gb=0,
     $backend_warming=false,
-    $exp_thread_rt=false,
 ) {
     # ideally this could be built with "map"...
     # also, in theory all caches sites should be listed here for flexibility,
@@ -76,16 +73,6 @@ class cacheproxy::instance_pair (
         $be_transient_storage = "-s Transient=malloc,${be_transient_gb}G"
     }
 
-    # Experimental backend settings to handle T145661
-    if $exp_thread_rt {
-        $exp_thread_params = ['exp_thread_rt=true','exp_lck_inherit=true']
-    } else {
-        $exp_thread_params = []
-    }
-
-    # backends: Should increase nuke success chances, and reduce LRU lock/modify rate
-    $nuke_lru_params = ['nuke_limit=1000','lru_interval=31']
-
     # VCL files common to all instances. It's actually ok to declare it here as this module depends
     # on the varnish one
     # lint:ignore:wmf_styleguide
@@ -100,18 +87,17 @@ class cacheproxy::instance_pair (
     })
 
     varnish::instance { "${cache_type}-backend":
-        instance_name      => '',
-        layer              => 'backend',
-        vcl                => "${cache_type}-backend",
-        extra_vcl          => $be_extra_vcl,
-        ports              => [ '3128' ],
-        admin_port         => 6083,
-        runtime_parameters => concat($be_runtime_params, $nuke_lru_params, $exp_thread_params),
-        storage            => "${be_storage} ${be_transient_storage}",
-        vcl_config         => $be_warming_vcl_config,
-        app_directors      => $app_directors,
-        app_def_be_opts    => $app_def_be_opts,
-        backend_caches     => $our_backend_caches,
+        instance_name   => '',
+        layer           => 'backend',
+        vcl             => "${cache_type}-backend",
+        extra_vcl       => $be_extra_vcl,
+        ports           => [ '3128' ],
+        admin_port      => 6083,
+        storage         => "${be_storage} ${be_transient_storage}",
+        vcl_config      => $be_warming_vcl_config,
+        app_directors   => $app_directors,
+        app_def_be_opts => $app_def_be_opts,
+        backend_caches  => $our_backend_caches,
     }
 
     # Set a reduced keep value for frontends
@@ -132,7 +118,6 @@ class cacheproxy::instance_pair (
         extra_vcl          => $fe_extra_vcl,
         ports              => [ '80', '3120', '3121', '3122', '3123', '3124', '3125', '3126', '3127' ],
         admin_port         => 6082,
-        runtime_parameters => $fe_runtime_params,
         storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
         backend_caches     => {

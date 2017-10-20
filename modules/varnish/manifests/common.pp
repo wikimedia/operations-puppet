@@ -1,4 +1,4 @@
-class varnish::common($varnish_version=4) {
+class varnish::common($varnish_version=4, $fe_runtime_params=[], $be_runtime_params=[]) {
     require ::varnish::packages
 
     # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
