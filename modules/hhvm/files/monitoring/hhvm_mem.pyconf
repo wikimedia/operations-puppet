@@ -1,0 +1,67 @@
+# Ganglia metric module for HHVM memory statistics.
+
+modules {
+    module {
+        name     = "hhvm_mem"
+        language = "python"
+    }
+}
+
+collection_group {
+    collect_every  = 20
+    time_threshold = 60
+
+    metric {
+        name            = "HHVM.Process_Stats_bytes.Shared"
+        title           = "Memory - Process - Shared"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Process_Stats_bytes.TextCode"
+        title           = "Memory - Process - TextCode"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Process_Stats_bytes.Data"
+        title           = "Memory - Process - Data"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Process_Stats_bytes.VmRss"
+        title           = "Memory - Process - VmRss"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Breakdown.Static_Strings.Bytes"
+        title           = "Memory - Static Strings"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Process_Stats_bytes.VmSize"
+        title           = "Memory - VmSize"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Breakdown.Unknown"
+        title           = "Memory - Unknown"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Breakdown.Code.Bytes"
+        title           = "Memory - Code"
+        value_threshold = 1.0
+    }
+
+    metric {
+        name            = "HHVM.Breakdown.Static_Strings.Count"
+        title           = "Memory - Static Strings Count"
+        value_threshold = 1.0
+    }
+}
