@@ -1965,6 +1965,7 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
 }
 
 # To be decommissioned in T175093
+# _after_ experiment by performance team has concluded (gilles)
 node 'osmium.eqiad.wmnet' {
     role(spare::system)
 }
