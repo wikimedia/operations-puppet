@@ -242,7 +242,7 @@ class role::mariadb::analytics::custom_repl_slave {
 
     logrotate::rule { 'eventlogging_sync':
         ensure        => present,
-        file_glob     => '/var/log/eventlogging_sync.*',
+        file_glob     => '/var/log/eventlogging_sync.log',
         frequency     => 'daily',
         copy_truncate => true,
         compress      => true,
