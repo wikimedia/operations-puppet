@@ -159,12 +159,8 @@ class graphite(
 
         # create required directory in /run at reboot, don't wait for a puppet
         # run to fix it
-        file { '/usr/lib/tmpfiles.d/graphite.conf':
-            ensure  => present,
-            mode    => '0444',
+        systemd::tmpfile { 'graphite':
             content => 'd /var/run/carbon 0755 _graphite _graphite',
-            owner   => 'root',
-            group   => 'root',
         }
 
         rsyslog::conf { 'graphite':
