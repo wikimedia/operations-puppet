@@ -1,1 +1,2 @@
 profile::puppetmaster::common::puppetdb_host: nihal.codfw.wmnet
+profile::puppetmaster::common::puppet_package_version: 4.8.2-5~bpo8+1
