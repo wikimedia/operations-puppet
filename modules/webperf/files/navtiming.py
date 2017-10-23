@@ -446,16 +446,10 @@ def handle_navigation_timing(meta):
     # We miss out appCache since we don't have domainLookupStart
     if 'dnsLookup' in event:
         metrics_nav2['dns'] = event['dnsLookup']
-    else:
-        metrics_nav2['dns'] = 0
     if 'unload' in event:
         metrics_nav2['unload'] = event['unload']
-    else:
-        metrics_nav2['unload'] = 0
     if 'redirecting' in event:
         metrics_nav2['redirect'] = event['redirecting']
-    else:
-        metrics_nav2['redirect'] = 0
 
     # If one of the metrics are wrong, don't send them at all
     for metric, value in metrics_nav2.items():
