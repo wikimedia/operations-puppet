@@ -28,7 +28,7 @@ groups:
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
-              ayounsi, herron]
+              ayounsi, herron, aborrero]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
@@ -2587,6 +2587,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4BEpVOzbQtI8EFQBWqZJqX5hxxornmURV5tAGxKkl7pHF6Yiza6jeA6FQDqY3yLbzm+rwN7xJsRDjYN121R03s+fC4gmPsNnML/m4sgkz6QgS3pEYDU81861e1ySUhXv73OH+EJtQy6WIEsh18XOam0rYaXeX1XXtq1/qIIyiXNX0rXJbJrHmv79TxMpKuT8M+Z1R9NOnkNXecsxoYK4lY/pe3/qSo6UHplPMVnkt+eT71BPCvZsnaMZHkBgMtCJmSNWRkqNUM20/UZ44FBEr4PKwLxwwwmrLQOS3Z5U6uj7n9GC9g0gL+k0LjKUGm3aCnVfXBaUY55+lDqksdfk7U8baSoZB/MJ81bhhgR5DxsaB4EKsXl9fDE9PGrE0dOt6f/3grAdqfTG0yDhoY9hu0TkD3DpgrOS5KsbsmqATZkjGrGKC5B7ce5oB3enytizytmLNMBDSq1FJI5ly22EDzUmpLVNoGCJS9tQvxYpE0K8lMOEwMSDkeEmZF69ZLnjJVVKF0tadRTUWSdmACjQ1KNd26zzkGcysmqU43bwXjnQ7u+7q9h3h7kIzAK9bUoOU+Kkc/91C9AIWyc2Tz6+HUWQ7J26qlyOFWF9vguU7rQGpzCnGEVosa4DgJAb4BbFZjyK+VjXxy16I5+bAtMnWE4ivuSlKskzGqzResNw3bw== miriam@miriam-WMF
     uid: 18005
     email: mredi@wikimedia.org
+  aborrero:
+    ensure: present
+    gid: 500
+    name: aborrero
+    realname: Arturo Borrero Gonzalez
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6RtPrxlPVQo8LuBeSZiOJ3yo0M+LQPlLWTsCjxe/Tuk7LbiQy/Now7mAbMmDhOLfmkEfyDkfq0ZWqiqdqVqxcuGuxWNNfnUyTVsoamIbTv+VXx/XUoVvBT2MJt42VWNanZeK/0qqHE0bnGnZ5peMrwfj2dQsklE9FEJV1r+hVtvAhkSmkxpHnPg0GdJEubyUOnp1mSaDsjdTeYC1Ct2L4fZgD2eql3kDtxzzZGqdnF4GbgDi4KIghd4XzZXQIbjMrt17WsiY4G7zlqh9DanAA1pf6f+q+Xt+Bs837uPZHX+eU27K/O6peHf+l7qHYctr33S9La6wSNl2wfhRuKCIV aborrero@wikimedia.org
+    uid: 18194
+    email: aborrero@wikimedia.org
 
 ldap_only_users:
   abartov:
