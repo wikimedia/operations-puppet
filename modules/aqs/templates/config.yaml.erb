@@ -29,6 +29,15 @@ aqs_project: &aqs_project
 # Swagger spec root.
 spec: &spec
   title: "The Analytics RESTBase root"
+  <%- if @druid_uri_pattern -%>
+  x-sub-request-filters:
+    - type: default
+      name: http
+      options:
+        allow:
+          - pattern: /<%= @druid_uri_pattern %>//
+            forward_headers: true
+  <%- end -%>
   paths:
     /{domain:analytics.wikimedia.org}: *aqs_project
 
