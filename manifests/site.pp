@@ -2061,6 +2061,21 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     )
     include ::standard
     interface::add_ip6_mapped { 'main': }
+
+    # Temporarily depool codfw puppet master allowing connections
+    # only from puppetcompiler1001 for catalog diffs T177254
+    if $facts['hostname'] == 'puppetmaster2001' {
+        ferm::rule { 'puppetcompiler1001':
+            prio => '1',
+            rule => 'proto tcp dport 8140 saddr ( 10.64.32.17 2620:0:861:103:10:64:32:17 ) ACCEPT;',
+        }
+
+        ferm::rule { 'puppet-temp-reject':
+            prio => '2',
+            rule => 'proto tcp dport 8140 REJECT;',
+        }
+    }
+
 }
 
 node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
