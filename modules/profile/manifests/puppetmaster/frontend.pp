@@ -45,15 +45,16 @@ class profile::puppetmaster::frontend(
     }
 
     class { '::puppetmaster':
-        bind_address        => '*',
-        server_type         => 'frontend',
-        is_git_master       => true,
-        workers             => $workers,
-        config              => $::profile::puppetmaster::common::config,
-        secure_private      => $secure_private,
-        prevent_cherrypicks => $prevent_cherrypicks,
-        allow_from          => $allow_from,
-        extra_auth_rules    => $extra_auth_rules,
+        bind_address           => '*',
+        server_type            => 'frontend',
+        is_git_master          => true,
+        workers                => $workers,
+        config                 => $::profile::puppetmaster::common::config,
+        secure_private         => $secure_private,
+        prevent_cherrypicks    => $prevent_cherrypicks,
+        allow_from             => $allow_from,
+        extra_auth_rules       => $extra_auth_rules,
+        puppet_package_version => hiera('::profile::puppetmaster::common::puppet_package_version', undef),
     }
 
     # Main site to respond to

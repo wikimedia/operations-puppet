@@ -33,9 +33,11 @@
 #        Bool - use git hooks to prevent cherry picking on top of the git repo
 #    - $git_user
 #        String - name of user who should own the git repositories
-#
 #    - $git_group
 #        String - name of group which should own the git repositories
+#    - $puppet_package_version
+#        String - version of puppet packages to ensure. defaults to "present"
+
 class puppetmaster(
     $server_name='puppet',
     $bind_address='*',
@@ -58,6 +60,7 @@ class puppetmaster(
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
+    $puppet_package_version=undef,
 ){
 
     $gitdir = '/var/lib/git'
@@ -76,12 +79,24 @@ class puppetmaster(
         require_package('puppetdb-terminus')
     }
 
+    # If puppet_package_version paramater was supplied set
+    # puppet_package_ensure accordingly. otherwise default to "present"
+    if $puppet_package_version {
+        $puppet_package_ensure = $puppet_package_version
+    } else {
+        $puppet_package_ensure = 'present'
+    }
 
     package { [
         'puppetmaster',
         'puppetmaster-common',
         'vim-puppet',
         'puppet-el',
+        ]:
+        ensure => $puppet_package_ensure,
+    }
+
+    package { [
         'rails',
         'ruby-json',
         'ruby-mysql',
