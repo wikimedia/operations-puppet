@@ -58,6 +58,9 @@
 # [*druid_query_path*]
 #   druid broker query path. Default: undef
 #
+# [*druid_uri_pattern*]
+#   druid broker uri pattern for hyperswitch acceptance. Default: undef
+#
 class aqs(
     $cassandra_user                = 'cassandra',
     $cassandra_password            = 'cassandra',
@@ -77,6 +80,7 @@ class aqs(
     $druid_scheme                  = 'http',
     $druid_port                    = 8082,
     $druid_query_path              = undef,
+    $druid_uri_pattern             = undef,
 ) {
 
     service::node { 'aqs':
