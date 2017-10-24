@@ -14,18 +14,20 @@ configfile="${confsdir}/wikidump.conf"
 today=`date +'%Y%m%d'`
 daysToKeep=70
 
-args="wiki:dir;output:public,temp"
+args="wiki:dir;output:temp"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 apacheDir=`getsetting "$results" "wiki" "dir"` || exit 1
-publicDir=`getsetting "$results" "output" "public"` || exit 1
-tempDir=`getsetting "$results" "output" "temp"` || exit 1
+#tempDir=`getsetting "$results" "output" "temp"` || exit 1
+# while jobs are split between dumpsdata and dataset hosts, fix this path
+# for those jobs remaining on dataset1001 for now
+tempDir="/mnt/data/xmldatadumps/temp"
 
-for settingname in "apacheDir" "publicDir" "tempDir"; do
+for settingname in "apacheDir" "tempDir"; do
     checkval "$settingname" "${!settingname}"
 done
 
-targetDirBase=$publicDir/other/wikibase/wikidatawiki
+targetDirBase=${otherdir}/wikibase/wikidatawiki
 targetDir=$targetDirBase/$today
 
 multiversionscript="${apacheDir}/multiversion/MWScript.php"

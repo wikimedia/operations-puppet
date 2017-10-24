@@ -3,7 +3,7 @@ class snapshot::cron::dump_global_blocks(
 ) {
     include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
-    $otherdir = "${snapshot::dumps::dirs::datadir}/public/other"
+    $otherdir = $snapshot::dumps::dirs::otherdir
     $globalblocksdir = "${otherdir}/globalblocks"
 
     file { '/usr/local/bin/dump-global-blocks.sh':

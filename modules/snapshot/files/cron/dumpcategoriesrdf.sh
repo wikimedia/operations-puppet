@@ -52,20 +52,19 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-args="wiki:dir,privatelist;tools:gzip;output:public"
+args="wiki:dir,privatelist;tools:gzip"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 deployDir=`getsetting "$results" "wiki" "dir"` || exit 1
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
-publicDir=`getsetting "$results" "output" "public"` || exit 1
 
-for settingname in "deployDir" "gzip" "privateList" "publicDir"; do
+for settingname in "deployDir" "gzip" "privateList"; do
     checkval "$settingname" "${!settingname}"
 done
 
 today=$(date +'%Y%m%d')
-targetDirBase="${publicDir}/other/categoriesrdf"
+targetDirBase="${otherdir}/categoriesrdf"
 targetDir="${targetDirBase}/${today}"
 timestampsDir="${targetDirBase}/lastdump"
 multiVersionScript="${deployDir}/multiversion/MWScript.php"
