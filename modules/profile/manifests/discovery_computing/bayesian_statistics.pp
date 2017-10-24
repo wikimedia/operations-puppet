@@ -1,6 +1,6 @@
 # Provision for Bayesian statistics
 #
-# Install and configure R and install Discovery-specific essential R/Python
+# Install and configure R and install Discovery-specific essential R/Python2
 # packages for Markov chain Monte Carlo (MCMC) sampling when performing
 # Bayesian inference.
 #
@@ -17,11 +17,6 @@
 # filtertags: labs-project-discovery-stats
 class profile::discovery_computing::bayesian_statistics {
     require profile::discovery_computing::base
-
-    $python_packages = [
-        'python-pymc', # Bayesian Stochastic Modelling in Python (http://pymc-devs.github.io/pymc/)
-    ]
-    require_package($python_packages)
 
     $r_packages = [
         'rstan',    # R Interface to Stan

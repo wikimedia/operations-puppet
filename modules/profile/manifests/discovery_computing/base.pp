@@ -1,6 +1,6 @@
 # Provision for statistical computing and number crunching
 #
-# Install and configure R and install Discovery-specific essential R/Python
+# Install and configure R and install Discovery-specific essential R/Python2
 # packages for doing computationally-heavy statistics and machine learning.
 #
 # Due to the outdated version of R on the currently available Ubuntu version
@@ -16,18 +16,18 @@ class profile::discovery_computing::base {
     }
 
     $essentials = [
-        'build-essential',    # for building stuff
-        'virtualenv',         # Python virtual environment creator
-        'python3-pip',        # for installing py libs
-        'python3-setuptools', # also for installing py libs
-        'python3-wheel',      # built-package format for Python
-        'liblapack-dev',      # Library of linear algebra routines
-        'libgsl0-dev',        # GNU Scientific Library
-        'python3-dev',        # header files and a static library for Python
-        'python3-numpy',      # numerical library for Python
-        'python3-scipy',      # scientific tools for Python
-        'python3-pandas',     # data structures for "relational" or "labeled" data
-        'python3-requests',   # HTTP library for Python
+        'build-essential',   # for building stuff
+        'virtualenv',        # Python virtual environment creator
+        'python-pip',        # for installing py libs
+        'python-setuptools', # also for installing py libs
+        'python-wheel',      # built-package format for Python
+        'liblapack-dev',     # Library of linear algebra routines
+        'libgsl0-dev',       # GNU Scientific Library
+        'python-dev',        # header files and a static library for Python
+        'python-numpy',      # numerical library for Python
+        'python-scipy',      # scientific tools for Python
+        'python-pandas',     # data structures for "relational" or "labeled" data
+        'python-requests',   # HTTP library for Python
     ]
     require_package($essentials)
 

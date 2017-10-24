@@ -1,6 +1,6 @@
 # Provision for machine learning
 #
-# Install and configure R and install Discovery-specific essential R/Python
+# Install and configure R and install Discovery-specific essential R/Python2
 # packages for machine learning.
 #
 # Due to the outdated version of R on the currently available Ubuntu version
@@ -12,8 +12,8 @@ class profile::discovery_computing::machine_learning {
     require profile::discovery_computing::base
 
     $python_packages = [
-        'python3-sklearn',        # Python modules for machine learning and data mining
-        'python3-sklearn-pandas', # Pandas integration with sklearn
+        'python-sklearn',        # Python modules for machine learning and data mining
+        'python-sklearn-pandas', # Pandas integration with sklearn
     ]
     require_package($python_packages)
 
