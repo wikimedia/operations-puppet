@@ -1,0 +1,1 @@
+profile::openstack::base::puppetmaster::frontend::prevent_cherrypicks: false
