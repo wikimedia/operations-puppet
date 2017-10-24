@@ -91,6 +91,7 @@ sub cluster_fe_backend_response {
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
+<% if @vcl_config.fetch("admission_policy", "nhw") == "nhw" -%>
 	// NOTE: it's very important this happens *after* the generic code that
 	// translates TTL<=0 responses into hit-for-pass!  That code is
 	// currently in wikimedia-common's backend_response, which is implicitly
@@ -118,6 +119,7 @@ sub cluster_fe_backend_response {
 		set beresp.uncacheable = true;
 		return (deliver);
 	}
+<% end -%>
 
 	call upload_common_backend_response;
 	return (deliver);

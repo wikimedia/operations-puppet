@@ -8,6 +8,7 @@ class profile::cache::misc(
     $app_directors = hiera('cache::app_directors'),
     $app_def_be_opts = hiera('cache::app_def_be_opts'),
     $cache_route_table = hiera('cache::route_table'),
+    $admission_policy = hiera('profile::cache::base::admission_policy', 'nhw'),
 ) {
     require ::profile::cache::base
 
@@ -42,12 +43,17 @@ class profile::cache::misc(
         'req_handling'     => $req_handling,
     }
 
+    $fe_vcl_config = merge($common_vcl_config, {
+        'admission_policy' => $admission_policy,
+        'fe_mem_gb'        => $::varnish::common::fe_mem_gb,
+    })
+
     class { 'cacheproxy::instance_pair':
         cache_type       => 'misc',
         fe_jemalloc_conf => 'lg_dirty_mult:8,lg_chunk:16',
         app_directors    => $app_directors,
         app_def_be_opts  => $app_def_be_opts,
-        fe_vcl_config    => $common_vcl_config,
+        fe_vcl_config    => $fe_vcl_config,
         be_vcl_config    => $common_vcl_config,
         fe_extra_vcl     => ['misc-common', 'zero'],
         be_extra_vcl     => ['misc-common'],
