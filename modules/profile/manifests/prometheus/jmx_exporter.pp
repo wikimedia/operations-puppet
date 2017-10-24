@@ -10,6 +10,12 @@
 # machine, for use cases like Cassandra (multiple JVM instances with different
 # domains on the same host) or Kafka (Kafka/MirrorMaker JVMs on the same host).
 #
+# If neither $content or $source are provided, a default prometheus_jmx_exporter.yaml
+# file will be used.  This default file will attempt to scrape and transform
+# all JMX mBeans into Prometheus metrics.  If you need more specific filtering
+# and/or translation, you may provide your own config file content via either the
+# $source or $content parameters.
+#
 define profile::prometheus::jmx_exporter (
     $hostname,
     $port,
@@ -18,12 +24,17 @@ define profile::prometheus::jmx_exporter (
     $content = undef,
     $source  = undef,
 ) {
-    if $source == undef and $content == undef {
-        fail('you must provide either "source" or "content"')
-    }
-
     if $source != undef and $content != undef  {
         fail('"source" and "content" are mutually exclusive')
+    }
+
+    # If neither content or source was provided,
+    # then use the default prometheus_jmx_exporter config file.
+    if $source == undef and $content == undef {
+        $_source = 'puppet:///modules/prometheus/default_prometheus_jmx_exporter.yaml'
+    }
+    else {
+        $_source = $source
     }
 
     require_package('prometheus-jmx-exporter')
@@ -35,7 +46,7 @@ define profile::prometheus::jmx_exporter (
         owner   => 'root',
         group   => 'root',
         content => $content,
-        source  => $source,
+        source  => $_source,
         # If the source is using a symlink, copy the link target, not the symlink.
         links   => 'follow',
     }
