@@ -1,11 +1,14 @@
-class labspuppetbackend(
+class openstack2::puppet::master::encapi(
+    $horizon_host,
     $mysql_host,
     $mysql_db,
     $mysql_username,
     $statsd_host,
     $statsd_prefix,
-    $mysql_password = hiera('labspuppetbackend_mysql_password'),
+    $mysql_password,
 ) {
+    $horizon_host_ip = ipresolve($horizon_host, 4)
+
     require_package('python3-pymysql',
                     'python3-statsd',
                     'python3-flask',
@@ -20,13 +23,12 @@ class labspuppetbackend(
 
 
     file { '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py':
-        source => 'puppet:///modules/labspuppetbackend/labspuppetbackend.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+        source => 'puppet:///modules/openstack2/puppet/master/encapi/labspuppetbackend.py',
     }
 
-    $horizon_host_ip = ipresolve(hiera('labs_horizon_host'), 4)
     uwsgi::app { 'labspuppetbackend':
         settings  => {
             uwsgi => {
@@ -62,6 +64,6 @@ class labspuppetbackend(
     #  open this up to the public even though the actual API has no
     #  auth protections.
     nginx::site { 'labspuppetbackendgetter':
-        source => 'puppet:///modules/labspuppetbackend/labspuppetbackendgetter.conf',
+        source => 'puppet:///modules/openstack2/puppet/master/encapi/labspuppetbackendgetter.conf',
     }
 }
