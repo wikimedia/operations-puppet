@@ -2,6 +2,6 @@
 path /resource_type
 auth any
 allow <%= @horizon_host %>
-<% scope.function_hiera(['puppetmaster::servers']).values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
+<% @puppetmasters.values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
 allow <%= server %>
 <% end -%>

@@ -1,26 +1,27 @@
-# == Class: role::labs::instance_info_dumper
-#
 # Sets up a small python script that dumps all info about instances
 # into a JSON file periodically
-class role::labs::instance_info_dumper {
+#
+class openstack2::puppet::master::instance_info_dumper(
+    $puppetmaster,
+    ) {
+
     require_package('python-requests')
 
     file { '/usr/local/sbin/instance-info-dumper':
-        ensure => present,
-        source => 'puppet:///modules/role/labs/instance-info-dumper.py',
+        ensure => 'present',
+        source => 'puppet:///modules/openstack2/puppet/master/instance-info-dumper.py',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
     $config = {
-        'enc_host'    => hiera('labs_puppet_master'),
+        'enc_host'    => $puppetmaster,
         'output_path' => '/srv/instance-info.yaml',
     }
 
-
     file { '/etc/instance-dumper.yaml':
-        ensure  => present,
+        ensure  => 'present',
         content => ordered_yaml($config),
         mode    => '0400',
         owner   => 'root',
@@ -28,7 +29,7 @@ class role::labs::instance_info_dumper {
     }
 
     cron { 'dump-instances':
-        ensure  => absent,
+        ensure  => 'absent',
         user    => 'root',
         minute  => '*/15',
         command => '/usr/local/sbin/instance-info-dumper',
