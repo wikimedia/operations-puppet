@@ -1,6 +1,6 @@
 # Provision for forecasting
 #
-# Install and configure R and install Discovery-specific essential R/Python
+# Install and configure R and install Discovery-specific essential R/Python2
 # packages for training time series models and generating forecasts.
 #
 # Due to the outdated version of R on the currently available Ubuntu version

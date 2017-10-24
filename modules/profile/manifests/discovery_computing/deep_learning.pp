@@ -1,6 +1,6 @@
 # Provision for deep learning
 #
-# Install and configure R and install Discovery-specific essential R/Python
+# Install and configure R and install Discovery-specific essential R/Python2
 # packages for learning with deep neural networks. The R interfaces are
 # available through RStudio's reticulate (https://rstudio.github.io/reticulate/)
 #
@@ -9,40 +9,38 @@ class profile::discovery_computing::deep_learning {
     require profile::discovery_computing::base
 
     $pkgs = [
-        'python3-h5py',      # Python interface to HDF5 (required for saving Keras models to disk)
-        'python3-html5lib',  # HTML parser (required for TensorFlow)
-        'caffe-cpu',         # Fast, open framework for Deep Learning
-        'python3-caffe-cpu', # Python3 interface of Caffe
-        'python3-skimage',   # Python 3 modules for image processing
-        'python3-six',       # Python 2 and 3 compatibility library
+        'python-h5py',      # Python interface to HDF5 (required for saving Keras models to disk)
+        'python-html5lib',  # HTML parser (required for TensorFlow)
+        'caffe-cpu',        # Fast, open framework for Deep Learning
+        'python-caffe-cpu', # Python3 interface of Caffe
+        'python-skimage',   # Python 3 modules for image processing
     ]
     require_package($pkgs)
 
     package { 'tensorflow':
         ensure   => 'installed',
         require  => [
-            Package['python3-dev'],
-            Package['python3-numpy'],
-            Package['python3-six'],
-            Package['python3-wheel']
+            Package['python-dev'],
+            Package['python-numpy'],
+            Package['python-wheel']
         ],
-        provider => 'pip3',
+        provider => 'pip',
     }
     package { 'keras':
         ensure   => 'installed',
         require  => [
-            Package['python3-h5py'],
+            Package['python-h5py'],
             Package['tensorflow']
         ],
-        provider => 'pip3',
+        provider => 'pip',
     }
     package { 'mxnet':
         ensure   => 'installed',
         require  => [
-          Package['python3-numpy'],
-          Package['python3-requests']
+          Package['python-numpy'],
+          Package['python-requests']
         ],
-        provider => 'pip3',
+        provider => 'pip',
     }
 
     $r_packages = [
@@ -52,7 +50,7 @@ class profile::discovery_computing::deep_learning {
     ]
     r_lang::cran { $r_packages:
         require => [
-            Package['python3-dev'],
+            Package['python-dev'],
             Package['keras'] # implied dependence on tensorflow
         ],
     }
