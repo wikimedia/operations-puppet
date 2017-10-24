@@ -1,9 +1,16 @@
 // Configuration file for MediaWiki Jobrunner
 // This file is managed by Puppet
+<%
+total_weight = @runners.values.reduce(:+)
+def runners_for(what):
+  return 0 unless @runners.include?(what)
+  w = @runners[what]/total_weight * @concurrency
+  w.ceil()
+-%>
 {
     "groups": {
         "basic": {
-            "runners": <%= @runners_basic %>,
+            "runners": <%= runners_for('basic')  %>,
             "include": [
                 "*"
             ],
@@ -28,13 +35,13 @@
             ]
         },
         "html": {
-            "runners": <%= @hostname.split('.').first.slice(-1).to_i % 2 == 1 ? @runners_html  : 0 %>,
+            "runners": <%= @hostname.split('.').first.slice(-1).to_i % 2 == 1 ? runners_for('html')  : 0 %>,
             "include": [
                 "htmlCacheUpdate"
             ]
         },
         "gwt": {
-            "runners": <%=  @runners_gwt  %>,
+            "runners": <%=  runners_for('gwt')  %>,
             "include": [
                 "gwtoolsetUploadMetadataJob",
                 "gwtoolsetUploadMediafileJob",
@@ -42,25 +49,25 @@
             ]
         },
         "transcode": {
-            "runners": <%= @runners_transcode %>,
+            "runners": <%= runners_for('transcode')  %>,
             "include": [
                 "webVideoTranscode"
             ]
         },
         "transcode_prioritized": {
-            "runners": <%= @runners_transcode_prioritized %>,
+            "runners": <%= runners_for('transcode_prioritized') %>,
             "include": [
                 "webVideoTranscodePrioritized"
             ]
         },
         "translate": {
-            "runners": <%= @runners_translate %>,
+            "runners": <%= runners_for('translate') %>,
             "include": [
                 "TranslationsUpdateJob"
             ]
         },
         "upload": {
-            "runners": <%= @runners_upload %>,
+            "runners": <%= runners_for('upload') %>,
             "include": [
                 "AssembleUploadChunks",
                 "PublishStashedFile",

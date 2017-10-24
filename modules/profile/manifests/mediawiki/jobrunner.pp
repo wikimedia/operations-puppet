@@ -2,6 +2,7 @@ class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
     $queue_servers = hiera('profile::mediawiki::jobrunner::queue_servers'),
     $aggr_servers  = hiera('profile::mediawiki::jobrunner::aggr_servers'),
+    $load_factor   = hiera('profile::mediawiki::load_factor', 1.0),
     $runners = hiera('profile::mediawiki::jobrunner::runners'),
 ) {
     # Parameters we don't need to override
@@ -11,18 +12,13 @@ class profile::mediawiki::jobrunner(
     # The jobrunner script that submits jobs to hhvm
     $active = ($::mw_primary == $::site)
     class { '::mediawiki::jobrunner':
-        port                          => $port,
-        running                       => $active,
-        statsd_server                 => $statsd,
-        queue_servers                 => $queue_servers,
-        aggr_servers                  => $aggr_servers,
-        runners_basic                 => pick($runners['basic'], 0),
-        runners_html                  => pick($runners['html'], 0),
-        runners_upload                => pick($runners['upload'], 0),
-        runners_gwt                   => pick($runners['gwt'], 0),
-        runners_transcode             => pick($runners['transcode'], 0),
-        runners_transcode_prioritized => pick($runners['transcode_prioritized'], 0),
-        runners_translate             => pick($runners['translate'], 0)
+        port          => $port,
+        running       => $active,
+        statsd_server => $statsd,
+        queue_servers => $queue_servers,
+        aggr_servers  => $aggr_servers,
+        concurrency   => floor($load_factor * $facts['processorcount']),
+        runners       => $runners,
     }
 
     # Special HHVM setup
