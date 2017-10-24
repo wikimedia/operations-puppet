@@ -2,6 +2,7 @@ cluster: jobrunner
 admin::groups:
   - deployment
   - perf-roots
+profile::mediawiki::jobrunner::load_factor: 1.1
 profile::mediawiki::jobrunner::runners:
   basic: 20
   gwt: 1
