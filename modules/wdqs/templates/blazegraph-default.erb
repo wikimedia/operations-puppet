@@ -10,6 +10,8 @@ GC_LOGS="-Xloggc:<%= @log_dir %>/wdqs-blazegraph_jvm_gc.%p.log
          -XX:+PrintGCCause \
          -XX:+PrintGCApplicationStoppedTime \
          -XX:+PrintPLAB \
+         -XX:+PrintTenuringDistribution \
          -XX:+UseGCLogFileRotation \
          -XX:NumberOfGCLogFiles=10 \
-         -XX:GCLogFileSize=20M"
+         -XX:GCLogFileSize=20M \
+         -XX:+ParallelRefProcEnabled"
