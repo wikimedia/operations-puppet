@@ -29,7 +29,7 @@ class profile::gerrit::server(
 
     monitoring::service { 'gerrit_ssh':
         description   => 'SSH access',
-        check_command => 'check_ssh_port!29418',
+        check_command => 'check_ssh_port_ip!29418!$ipv4',
         contact_group => 'admins,gerrit',
     }
 
