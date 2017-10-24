@@ -7,10 +7,15 @@
 # === Parameters
 #
 # [*version*] The package version to install
+#
+# [*package_name*] Docker is going through various transitions changing package
+# names multiple times already. Support that so we can choose which one we want.
+# Defaults to docker-engine currently, but is subject to change
 class docker(
     $version,
+    $package_name='docker-engine',
 ){
-    package { 'docker-engine':
+    package { $package_name:
         ensure => $version,
     }
 }
