@@ -56,6 +56,13 @@ class snapshot::dumps::dirs {
       group  => 'root',
     }
 
+    # maintained on the NFS fileserver, not here
+    # but we need to know the path, used for
+    # dumps and datasets other than the main
+    # xml/sql dumps
+    # make this explicit for now
+    $otherdir = "/mnt/data/xmldumps/public/other"
+
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 
     file { '/usr/local/etc/set_dump_dirs.sh':
