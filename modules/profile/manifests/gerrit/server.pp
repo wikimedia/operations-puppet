@@ -27,10 +27,12 @@ class profile::gerrit::server(
         default => true,
     }
 
-    monitoring::service { 'gerrit_ssh':
-        description   => 'SSH access',
-        check_command => "check_ssh_port_ip!29418!${ipv4}",
-        contact_group => 'admins,gerrit',
+    if !$slave {
+        monitoring::service { 'gerrit_ssh':
+            description   => 'SSH access',
+            check_command => "check_ssh_port_ip!29418!${ipv4}",
+            contact_group => 'admins,gerrit',
+        }
     }
 
     include ::base::firewall
