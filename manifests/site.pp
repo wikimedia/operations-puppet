@@ -2063,11 +2063,29 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     )
     include ::standard
     interface::add_ip6_mapped { 'main': }
+
+    # Temporarily pin puppet packages to jessie-backports here. To be
+    # replaced by granular puppet package version selection T178825
+    if $facts['domain'] == 'codfw.wmnet' {
+        apt::pin { 'puppet*':
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+        }
+    }
 }
 
 node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::backend)
     interface::add_ip6_mapped { 'main': }
+
+    # Temporarily pin puppet packages to jessie-backports here. To be
+    # replaced by granular puppet package version selection T178825
+    if $facts['domain'] == 'codfw.wmnet' {
+        apt::pin { 'puppet*':
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+        }
+    }
 }
 
 
