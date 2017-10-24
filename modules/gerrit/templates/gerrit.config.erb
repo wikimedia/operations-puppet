@@ -172,7 +172,7 @@
     <%- if @slave %>
     listenAddress = off
     <%- else -%>
-    listenAddress = <%= @host %>:29418
+    listenAddress = *:29418
     <%- end -%>
 
     threads = 8
