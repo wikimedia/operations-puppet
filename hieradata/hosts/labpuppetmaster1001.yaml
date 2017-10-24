@@ -1,10 +1,3 @@
+# Remaining module embedded hiera lookup
+# modules/base/manifests/puppet.pp:    $ca_server = hiera('puppetmaster::ca_server', '')
 puppetmaster::ca_server: labpuppetmaster1001.wikimedia.org
-
-puppetmaster::servers:
-  labpuppetmaster1001.wikimedia.org:
-    - { worker: labpuppetmaster1001.wikimedia.org, loadfactor: 10 }
-    - { worker: labpuppetmaster1002.wikimedia.org, loadfactor: 20 }
-
-profile::puppetmaster::frontend::web_hostname: labs-puppetmaster.wikimedia.org
-
-labs_puppet_master: labs-puppetmaster.wikimedia.org
