@@ -36,7 +36,6 @@ usage() {
 #####################
 
 configfile="${confsdir}/wikidump.conf"
-otherdir="${datadir}/public/other"
 dryrun="false"
 
 #####################

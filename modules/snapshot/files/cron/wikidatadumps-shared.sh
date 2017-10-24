@@ -25,7 +25,7 @@ for settingname in "apacheDir" "publicDir" "tempDir"; do
     checkval "$settingname" "${!settingname}"
 done
 
-targetDirBase=$publicDir/other/wikibase/wikidatawiki
+targetDirBase=${otherdir}/wikibase/wikidatawiki
 targetDir=$targetDirBase/$today
 
 multiversionscript="${apacheDir}/multiversion/MWScript.php"

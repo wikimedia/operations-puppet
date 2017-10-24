@@ -14,7 +14,7 @@ skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>/skipm
 adminsettings=private/PrivateSettings.php
 
 [output]
-dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public/other/incr
+dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::otherdir') -%>/incr
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 indextmpl=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') -%>/incrs-index.html
 temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
