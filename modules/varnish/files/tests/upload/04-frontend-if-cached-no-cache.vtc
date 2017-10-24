@@ -7,7 +7,7 @@ server s1 {
     txresp
 } -start
 
-varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
     backend vtc_backend {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
