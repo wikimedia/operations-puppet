@@ -54,7 +54,7 @@ for settingname in "deployDir" "allList" "privateList" "gzip" "publicDir"; do
 done
 
 today=$(date +'%Y%m%d')
-targetDirBase="$publicDir/other/cirrussearch"
+targetDirBase="${otherdir}/cirrussearch"
 targetDir="$targetDirBase/$today"
 multiVersionScript="$deployDir/multiversion/MWScript.php"
 

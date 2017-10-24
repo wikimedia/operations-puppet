@@ -108,7 +108,7 @@ for settingname in "apachedir" "gzip" "mysqldump"; do
     checkval "$settingname" "${!settingname}"
 done
 
-outputdir="${datadir}/public/other/globalblocks"
+outputdir="${otherdir}/globalblocks"
 
 host=`get_db_host "$apachedir"` || exit 1
 db_user=`get_db_user "$apachedir"` || exit 1
