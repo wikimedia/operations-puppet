@@ -2,11 +2,19 @@ class profile::mediawiki::jobrunner(
     $statsd = hiera('statsd'),
     $queue_servers = hiera('profile::mediawiki::jobrunner::queue_servers'),
     $aggr_servers  = hiera('profile::mediawiki::jobrunner::aggr_servers'),
-    $runners = hiera('profile::mediawiki::jobrunner::runners'),
+    $load_factor   = hiera('profile::mediawiki::load_factor', 0.7),
+    $runner_weights = hiera('profile::mediawiki::jobrunner::runner_weights'),
 ) {
     # Parameters we don't need to override
     $port = 9005
     $local_only_port = 9006
+
+    # Concurrency of every job.
+    $total_weight = $runner_weights.reduce(0) | $sum, $items | { $sum + $items[1]}
+    $max_concurrency = floor($load_factor * $facts['processorcount'])
+    $runners = $runner_weights.reduce({}) |$acc, $items| {
+        $acc + {$items[0] => ceil($max_concurrency * $items[1]/$total_weight)}
+    }
 
     # The jobrunner script that submits jobs to hhvm
     $active = ($::mw_primary == $::site)
