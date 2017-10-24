@@ -2,7 +2,7 @@
 class role::builder {
     include ::standard
     include ::base::firewall
-    include role::package::builder
+    include ::profile::package_builder
     include ::profile::docker::storage::loopback
     include ::profile::docker::engine
     include ::profile::docker::builder
