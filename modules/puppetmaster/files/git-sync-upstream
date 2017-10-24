@@ -1,64 +1,60 @@
-#!/usr/bin/env bash
-# Update the local puppet checkout
+#!/usr/bin/python3
 
-set -e
-#set -x
+import datetime
+import logging
+import os
+import sys
 
-# TODO: rewrite in python?
+# Send all git output to stdout
+# This has to be set before git is imported.
+os.environ["GIT_PYTHON_TRACE"] = 'full'
+logging.basicConfig(level=logging.INFO)
 
-# Run script as root
-[[ ${UID} -ne 0 ]] && exec sudo ${0} "${@}"
+import git
 
-echo "--- ${0} $(date +%Y-%m-%dT%H:%M:%S)"
 
-function rebase_repo() {
-    REPO_PATH="${1}"
-    TRACK_BRANCH="${2}"
-    REBASE_OPTS=(
-        '--preserve-merges'
-        '--stat'
-        '--strategy=recursive'
-        '--strategy-option=patience'
-    )
+def rebase_repo(repo_path, track_branch):
+    repo = git.Repo(repo_path)
+    assert not repo.bare
 
-    cd "${REPO_PATH}"
+    upstream_branch = "origin/%s" % track_branch
 
-    DIFF=$(git diff)
-    if [ -n "${DIFF}" ]; then
-        echo "Local diffs detected.  Commit your changes!"
-        return 2
-    fi
+    # diff index against working copy
+    if repo.index.diff(None):
+        print("Local diffs detected.  Commit your changes!")
+        return False
 
-    # Fetch new changes from origin
-    git fetch --verbose origin
+    repo.remotes.origin.fetch()
 
-    # Abort early when already on tip of upstream
-    git merge-base --is-ancestor "origin/${TRACK_BRANCH}" HEAD && {
-        echo "Up-to-date: ${REPO_PATH}"
-        return 0
-    }
+    latest_upstream_commit = repo.git.show_ref("-s", upstream_branch)
+    latest_merged_commit = repo.git.merge_base(upstream_branch, "HEAD")
 
-    # Rebase locally commited changes on top of tracked origin branch
-    if ! git rebase "${REBASE_OPTS[@]}" "origin/${TRACK_BRANCH}"; then
-        echo "Rebase failed! See error messages above." 1>&2
-        echo "Reverting rebase attempt" 1>&2
-        git rebase --abort
-        return 2
-    fi
+    if latest_upstream_commit == latest_merged_commit:
+        print("Up-to-date: %s" % repo_path)
+        return True
 
-    # Ensure that submodule changes are applied to the local checkout
-    git submodule update --init --recursive
+    try:
+        repo.git.rebase("--preserve-merges",
+                        "--stat",
+                        "--strategy=recursive",
+                        "--strategy-option=patience",
+                        upstream_branch)
+    except git.exc.GitCommandError:
+        print("Rebase failed! Reverting rebase attempt.", file=sys.stderr)
+        repo.git.rebase("--abort")
+        return False
 
-    # Tag the local repo state for rollback and troubleshooting
-    TAG="snapshot-$(date +%Y%m%dT%H%M)"
-    git tag "${TAG}"
-    echo "Tagged as: ${TAG}"
+    repo.git.submodule("update", "--init", "--recursive")
 
-    # Display local commits
-    echo "Local hacks:"
-    git log --color --pretty=oneline --abbrev-commit origin/HEAD..HEAD |
-    sed 's/^/  /'
-}
+    tagname = "snapshot-%s" % datetime.datetime.now().strftime('%Y%m%d%H%M')
+    repo.create_tag(tagname)
+    print("Tagged as %s" % tagname)
 
-rebase_repo /var/lib/git/operations/puppet production
-rebase_repo /var/lib/git/labs/private master
+    print("Local hacks:")
+    repo.git.log("--color",
+                 "--pretty=oneline",
+                 "--abbrev-commit",
+                 "origin/HEAD..HEAD")
+
+rebase_repo("/var/lib/git/operations/puppet", "production")
+rebase_repo("/var/lib/git/labs/private", "master")
