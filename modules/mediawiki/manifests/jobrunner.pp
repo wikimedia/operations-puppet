@@ -5,17 +5,12 @@
 #
 class mediawiki::jobrunner (
     $queue_servers,
-    $aggr_servers      = $queue_servers,
-    $statsd_server     = undef,
-    $port              = 9005,
-    $running           = true,
-    $runners_basic     = 0,
-    $runners_html      = 0,
-    $runners_upload    = 0,
-    $runners_gwt       = 0,
-    $runners_transcode = 0,
-    $runners_transcode_prioritized = 0,
-    $runners_translate = 0,
+    $aggr_servers  = $queue_servers,
+    $statsd_server = undef,
+    $port          = 9005,
+    $concurrency   = 1,
+    $running       = true,
+    $runners       = 0,
 ) {
 
     include ::passwords::redis
