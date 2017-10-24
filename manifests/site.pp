@@ -1658,7 +1658,7 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 }
 
 # mw1161-1167 are job runners
-node /^mw116[1-7]\.eqiad\.wmnet$/ {
+node /^mw116[1-9]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
@@ -1693,8 +1693,7 @@ node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
 }
 
 #mw1259-60 are videoscalers
-#mw1168-69 were previously jobrunners (T153488)
-node /^mw1(16[89]|259|260)\.eqiad\.wmnet/ {
+node /^mw12(59|60)\.eqiad\.wmnet/ {
     role(mediawiki::videoscaler)
 }
 

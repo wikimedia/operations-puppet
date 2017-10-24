@@ -3,8 +3,6 @@ eqiad:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
   videoscaler:
-    mw1168.eqiad.wmnet: [apache2]
-    mw1169.eqiad.wmnet: [apache2]
     mw1259.eqiad.wmnet: [apache2]
     mw1260.eqiad.wmnet: [apache2]
     mw1307.eqiad.wmnet: [apache2]
