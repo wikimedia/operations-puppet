@@ -1,0 +1,13 @@
+---
+lowercaseOutputLabelNames: true
+# The following setting allows the creation of metrics like:
+# kafka_server_ReplicaManager_UnderReplicatedPartitions
+# that are a mix of lower-case and camel-case. This is a convention used only
+# for kafka related metrics to allow a better readability, more context about
+# the discussion to establish a convention in T177078.
+lowercaseOutputName: false
+
+# The default prometheus_jmx_exporter scraper does a pretty good job at
+# grabbing JMX mbeans and converting them to prometheus metrics with labels.
+# This prometheus_jmx_exporter config file does not specify any custom rules
+# to match and transform from mbeans.
