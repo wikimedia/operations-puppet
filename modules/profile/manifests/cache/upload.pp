@@ -8,6 +8,7 @@ class profile::cache::upload(
     $statsd_server = hiera('statsd'),
     $cache_route_table = hiera('cache::route_table'),
     $backend_warming = hiera('cache::backend_warming', false),
+    $admission_policy = hiera('profile::cache::base::admission_policy', 'nhw'),
 ) {
     require ::profile::cache::base
 
@@ -55,7 +56,9 @@ class profile::cache::upload(
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'pass_random' => false,
+        'pass_random'      => false,
+        'admission_policy' => $admission_policy,
+        'fe_mem_gb'        => $::varnish::common::fe_mem_gb,
     })
 
     # See T145661 for storage binning rationale
