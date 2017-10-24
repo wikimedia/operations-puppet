@@ -5,6 +5,11 @@ class puppetmaster::gitsync(
     $run_every_minutes = '10',
 ) {
 
+    ensure_packages([
+        'python3-git',
+        ])
+
+
     file { '/usr/local/bin/git-sync-upstream':
         ensure => present,
         source => 'puppet:///modules/puppetmaster/git-sync-upstream',
