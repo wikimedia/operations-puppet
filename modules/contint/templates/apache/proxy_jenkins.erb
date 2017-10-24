@@ -37,6 +37,7 @@ ProxyRequests       Off
     Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
 
     # Prevent access to certain URLs - T63964
+    SetEnvIf Request_URI ^<%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
     SetEnvIf Request_URI ^<%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
     SetEnvIf Request_URI ^<%= @prefix -%>/view/.*/builds DENY_BUILDS_ACCESS
     # Blacklist RSS feeds entirely
