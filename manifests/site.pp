@@ -166,8 +166,7 @@ node 'bromine.eqiad.wmnet' {
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
     role(wmcs::openstack::main::horizon,
-          striker::web,
-          labs::instance_info_dumper)
+          striker::web)
     include ::standard
     include ::base::firewall
     include ::ldap::role::client::labs
@@ -1032,14 +1031,16 @@ node 'kraz.wikimedia.org' {
 
 
 node 'labpuppetmaster1001.wikimedia.org' {
-    role(labs::puppetmaster::frontend)
+    role(wmcs::openstack::main::puppetmaster::frontend)
     include ::standard
+    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'labpuppetmaster1002.wikimedia.org' {
-    role(labs::puppetmaster::backend)
+    role(wmcs::openstack::main::puppetmaster::backend)
     include ::standard
+    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1130,8 +1131,9 @@ node 'labtestcontrol2003.wikimedia.org' {
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
-    role(labs::puppetmaster::frontend)
+    role(wmcs::openstack::labtest::puppetmaster::frontend)
     include ::standard
+    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
