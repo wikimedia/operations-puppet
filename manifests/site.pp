@@ -2372,6 +2372,11 @@ node /^labvirt101[0-8].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
+#labvirt10[19-20] are to run labdb instances, set to spare for now T172538
+node /^labvirt10(19|20)\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
 
 # Wikidata query service
 node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
