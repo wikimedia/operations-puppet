@@ -1659,8 +1659,7 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # mw1161-1167 are job runners
 node /^mw116[1-7]\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-    include ::base::firewall
+    role(spare::system)
 }
 
 # mw1180-1188 are apaches
