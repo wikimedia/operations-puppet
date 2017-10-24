@@ -137,6 +137,18 @@
           "type" : "keyword",
           "index" : true,
           "doc_values": true
+        },
+        "request_time" : {
+            "type" : "float",
+            "doc_values": true
+        },
+        "upstream_time" : {
+            "type" : "float",
+            "doc_values": true
+        },
+        "response_size" : {
+            "type" : "long",
+            "doc_values": true
         }
       }
     }
