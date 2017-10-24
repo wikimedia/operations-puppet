@@ -10,13 +10,6 @@ eqiad:
     mw1307.eqiad.wmnet: [apache2]
     mw1318.eqiad.wmnet: [apache2]
   jobrunner:
-    mw1161.eqiad.wmnet: [apache2,nginx]
-    mw1162.eqiad.wmnet: [apache2,nginx]
-    mw1163.eqiad.wmnet: [apache2,nginx]
-    mw1164.eqiad.wmnet: [apache2,nginx]
-    mw1165.eqiad.wmnet: [apache2,nginx]
-    mw1166.eqiad.wmnet: [apache2,nginx]
-    mw1167.eqiad.wmnet: [apache2,nginx]
     mw1299.eqiad.wmnet: [apache2,nginx]
     mw1300.eqiad.wmnet: [apache2,nginx]
     mw1301.eqiad.wmnet: [apache2,nginx]
