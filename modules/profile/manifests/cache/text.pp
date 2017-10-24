@@ -12,6 +12,7 @@ class profile::cache::text(
     $fe_transient_gb = hiera('cache::fe_transient_gb'),
     $be_transient_gb = hiera('cache::be_transient_gb'),
     $backend_warming = hiera('cache::backend_warming', false),
+    $admission_param = hiera('profile::cache::base::admission_param', 0),
 ) {
     # profile::cache::base needs to be evaluated before this one.
     require ::profile::cache::base
@@ -58,6 +59,7 @@ class profile::cache::text(
 
     $fe_vcl_config = merge($common_vcl_config, {
         'enable_geoiplookup' => true,
+        'admission_param'    => $admission_param,
     })
 
     $text_storage_args = $::profile::cache::base::file_storage_args
