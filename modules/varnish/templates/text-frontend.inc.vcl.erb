@@ -235,6 +235,7 @@ sub cluster_fe_backend_response_early {
 sub cluster_fe_backend_response {
 	call text_common_backend_response;
 
+<% if @vcl_config.fetch("admission_param", 0).to_i <= 0 -%>
 	// NOTE: it's very important this happens *after* the generic code that
 	// translates TTL<=0 responses into hit-for-pass!  That code is
 	// currently in wikimedia-common's backend_response, which is implicitly
@@ -252,6 +253,7 @@ sub cluster_fe_backend_response {
 		set beresp.uncacheable = true;
 		return (deliver);
 	}
+<% end -%>
 
 	return (deliver);
 }
