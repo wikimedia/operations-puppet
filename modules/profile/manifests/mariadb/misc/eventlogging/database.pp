@@ -37,6 +37,12 @@ class profile::mariadb::misc::eventlogging::database (
     class {'::standard': }
     class {'::base::firewall': }
 
+    if os_version('debian >= stretch') {
+        $mariadb_basedir = '/opt/wmf-mariadb101'
+    } else {
+        $mariadb_basedir = '/opt/wmf-mariadb10'
+    }
+
     # History context: there used to be a distinction between
     # EL master and slaves, namely that only the master was not
     # in read only mode. The Analytics team removed this constraint
@@ -44,6 +50,7 @@ class profile::mariadb::misc::eventlogging::database (
     # that needed to DELETE/UPDATE rows on the job database without
     # running as root for obvious reasons.
     class { 'mariadb::config':
+        basedir       => $mariadb_basedir,
         config        => 'profile/mariadb/misc/eventlogging/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
