@@ -27,8 +27,8 @@ class r_lang (
     file { '/usr/local/lib/R/site-library':
         ensure => 'directory',
         owner  => 'root',
-        group  => 'staff',
-        mode   => '0770',
+        group  => 'root',
+        mode   => '0775',
     }
 
     # R script for updating any particular installed R package:

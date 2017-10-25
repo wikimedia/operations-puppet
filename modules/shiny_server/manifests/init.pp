@@ -64,15 +64,8 @@ class shiny_server {
 
     # Set up files, directories, and users required for RStudio's Shiny Server:
     user { 'shiny':
-        ensure     => 'present',
-        managehome => true,
-        groups     => 'staff',
-    }
-    file { '/home/shiny/downloads':
-        ensure => 'directory',
-        owner  => 'shiny',
-        group  => 'staff',
-        mode   => '0740',
+        ensure => 'present',
+        groups => 'root',
     }
 
     file { '/srv/shiny-server':

@@ -12,8 +12,8 @@ class profile::discovery_computing::machine_learning {
     require profile::discovery_computing::base
 
     $python_packages = [
-        'python-sklearn',        # Python modules for machine learning and data mining
-        'python-sklearn-pandas', # Pandas integration with sklearn
+        'python-sklearn',  # Python 2 modules for machine learning and data mining
+        'python3-sklearn',
     ]
     require_package($python_packages)
 
@@ -41,7 +41,7 @@ class profile::discovery_computing::machine_learning {
         require => R_lang::Cran['data.table'],
     }
 
-    r_land::bioc { ['RBGL', 'Rgraphviz']: }
+    r_lang::bioc { ['RBGL', 'Rgraphviz']: }
 
     r_lang::cran { 'bnclassify':
         require => [

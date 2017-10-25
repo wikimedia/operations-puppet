@@ -16,18 +16,27 @@ class profile::discovery_computing::base {
     }
 
     $essentials = [
-        'build-essential',   # for building stuff
-        'virtualenv',        # Python virtual environment creator
-        'python-pip',        # for installing py libs
-        'python-setuptools', # also for installing py libs
-        'python-wheel',      # built-package format for Python
-        'liblapack-dev',     # Library of linear algebra routines
-        'libgsl0-dev',       # GNU Scientific Library
-        'python-dev',        # header files and a static library for Python
-        'python-numpy',      # numerical library for Python
-        'python-scipy',      # scientific tools for Python
-        'python-pandas',     # data structures for "relational" or "labeled" data
-        'python-requests',   # HTTP library for Python
+        'liblapack-dev',      # Library of linear algebra routines
+        'libgsl0-dev',        # GNU Scientific Library
+        'build-essential',    # for building stuff
+        # Python libraries:
+        'virtualenv',         # virtual environment creator
+        'python-pip',
+        'python3-pip',
+        'python-setuptools',
+        'python3-setuptools',
+        'python-wheel',       # built-package format
+        'python3-wheel',
+        'python-dev',         # header files and a static library
+        'python3-dev',
+        'python-numpy',       # numerical library
+        'python3-numpy',
+        'python-scipy',       # scientific tools
+        'python3-scipy',
+        'python-pandas',      # data structures for "relational" or "labeled" data
+        'python3-pandas',
+        'python-requests',    # HTTP library
+        'python3-requests',
     ]
     require_package($essentials)
 
