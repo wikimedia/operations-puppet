@@ -87,7 +87,6 @@ profile::aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
 profile::aqs::monitoring_enabled: true
 
-# Temporary, waiting for T176223
 profile::aqs::druid_host: druid-public-broker.svc.eqiad.wmnet
 profile::aqs::druid_query_path: '/druid/v2/'
 profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
