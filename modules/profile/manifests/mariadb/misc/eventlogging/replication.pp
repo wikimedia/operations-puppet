@@ -113,7 +113,7 @@ class profile::mariadb::misc::eventlogging::replication (
         $eventlogging_sync_gid = 'root'
         base::service_unit { 'eventlogging_sync':
             ensure  => present,
-            systemd => systemd_template('eventlogging_sync'),
+            systemd => systemd_template('mariadb/misc/eventlogging/eventlogging_sync'),
         }
     }
 
