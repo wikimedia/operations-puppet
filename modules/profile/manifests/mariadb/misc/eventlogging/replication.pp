@@ -74,15 +74,6 @@ class profile::mariadb::misc::eventlogging::replication (
         source => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync.sh',
     }
 
-    file { '/etc/init.d/eventlogging_sync':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('profile/mariadb/misc/eventlogging/eventlogging_sync.init.erb'),
-        require => File['/usr/local/bin/eventlogging_sync.sh'],
-        notify  => Service['eventlogging_sync'],
-    }
-
     logrotate::rule { 'eventlogging_sync':
         ensure        => present,
         file_glob     => '/var/log/eventlogging_sync*.log',
@@ -94,9 +85,34 @@ class profile::mariadb::misc::eventlogging::replication (
         rotate        => 14,
     }
 
-    service { 'eventlogging_sync':
-        ensure => running,
-        enable => true,
+    # Custom init scripts only that should be deprecated as soon as
+    # the profile will run on Debian OS only.
+    # The init script manages stdout/stderr to two separate files,
+    # meanwhile the systemd unit used below will use a rsyslog dedicated config.
+    if os_version('ubuntu >= trusty') {
+        file { '/etc/init.d/eventlogging_sync':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => template('profile/initscripts/mariadb/misc/eventlogging/eventlogging_sync.sysvinit.erb'),
+            require => File['/usr/local/bin/eventlogging_sync.sh'],
+            notify  => Service['eventlogging_sync'],
+        }
+
+        service { 'eventlogging_sync':
+            ensure => running,
+            enable => true,
+        }
+    } else {
+        rsyslog::conf { 'eventlogging_sync':
+            source   => 'puppet:///modules/profile/mariadb/misc/eventloggign/eventlogging_sync_rsyslog.conf',
+            priority => 20,
+        }
+
+        base::service_unit { 'eventlogging_sync':
+            ensure  => present,
+            systemd => systemd_template('eventlogging_sync'),
+        }
     }
 
     nrpe::monitor_service { 'eventlogging_sync':
