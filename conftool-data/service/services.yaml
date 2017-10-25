@@ -271,4 +271,10 @@ druid-public:
     default_values:
       pooled: 'yes'
       weight: 10
-
+  druid-public-overlord:
+    port: 8090
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
