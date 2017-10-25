@@ -617,9 +617,10 @@ node 'db1046.eqiad.wmnet' {
         mariadb::ferm,
         mariadb::monitor::dba)
 }
-node 'db1047.eqiad.wmnet' {
-    # this slave has an m4 custom replication protocol
-    # this slave additionally replicates s1 and s2
+
+node /^db(1047|1108)\.eqiad\.wmnet$/ {
+    # These slaves have an m4 custom replication protocol.
+    # The db1047 slave additionally replicates s1 and s2.
     role(mariadb::analytics,
         mariadb::misc::eventlogging::replica,
         mariadb::ferm,
