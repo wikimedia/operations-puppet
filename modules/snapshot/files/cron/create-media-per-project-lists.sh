@@ -9,7 +9,7 @@ source /usr/local/etc/set_dump_dirs.sh
 
 DATE=`/bin/date '+%Y%m%d'`
 outputdir="${datadir}/public/other/imageinfo/$DATE"
-configfile="${confsdir}/wikidump.conf.media"
+configfile="${confsdir}/wikidump.conf:media"
 errors=0
 
 cd "$repodir"

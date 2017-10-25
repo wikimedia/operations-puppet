@@ -8,6 +8,6 @@ class snapshot::dumps::monitor {
     ensure    => 'present',
     systemd   => systemd_template('dumps-monitor'),
     upstart   => upstart_template('dumps-monitor'),
-    subscribe => File["${confsdir}/wikidump.conf.monitor"],
+    subscribe => File["${confsdir}/wikidump.conf"],
   }
 }

@@ -20,7 +20,7 @@ class snapshot::cron::pagetitles(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "cd ${repodir}; python onallwikis.py --configfile ${confsdir}/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${otherdir}/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
+        command     => "cd ${repodir}; python onallwikis.py --configfile ${confsdir}/wikidump.conf:monitor  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${otherdir}/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
         minute      => '10',
         hour        => '8',
     }
@@ -29,7 +29,7 @@ class snapshot::cron::pagetitles(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "cd ${repodir}; python onallwikis.py --configfile ${confsdir}/wikidump.conf.monitor  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${otherdir}/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
+        command     => "cd ${repodir}; python onallwikis.py --configfile ${confsdir}/wikidump.conf:monitor  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${otherdir}/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
         minute      => '50',
         hour        => '8',
     }
