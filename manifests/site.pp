@@ -371,6 +371,10 @@ node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
+node 'db2091.codfw.wmnet' {
+    role(mariadb::core_multiinstance)
+}
+
 # s3 (default) core production dbs on eqiad
 # Lots of tables!
 # eqiad master
