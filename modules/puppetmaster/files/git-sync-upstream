@@ -3,6 +3,7 @@
 import datetime
 import logging
 import os
+import shutil
 import sys
 
 # Send all git output to stdout
@@ -14,6 +15,11 @@ import git
 
 
 def rebase_repo(repo_path, track_branch):
+    datestring = datetime.datetime.now().strftime('%Y%m%d%H%M')
+    branchname = "oot-branch-%s" % datestring
+    tagname = "snapshot-%s" % datestring
+    tempdir = "/tmp/%s" % tagname
+
     repo = git.Repo(repo_path)
     assert not repo.bare
 
@@ -26,28 +32,66 @@ def rebase_repo(repo_path, track_branch):
 
     repo.remotes.origin.fetch()
 
+    latest_commit = repo.git.rev_parse(track_branch)
     latest_upstream_commit = repo.git.show_ref("-s", upstream_branch)
     latest_merged_commit = repo.git.merge_base(upstream_branch, "HEAD")
 
     if latest_upstream_commit == latest_merged_commit:
         print("Up-to-date: %s" % repo_path)
         return True
-
     try:
-        repo.git.rebase("--preserve-merges",
-                        "--stat",
-                        "--strategy=recursive",
-                        "--strategy-option=patience",
-                        upstream_branch)
+        # Rebase in a tempdir to avoid changing the state of the current workdir.
+        #  (Rebasing in place causes an occasional puppet race)
+        #
+        # This next bit is largely cribbed from
+        #  https://github.com/encukou/bin/blob/master/oot-rebase
+        #
+        os.makedirs(tempdir)
+
+        tmprepo = git.Repo.init(tempdir)
+
+        # This bit of magic should prevent us from needing to create a full duplicate
+        #  of all the objects in repo_path
+        with open(os.path.join(tempdir,".git/objects/info/alternates"), "w") as alternates:
+            alternates.write("%s/.git/objects" % repo_path)
+
+        # Get ready to rebase in tmprepo:  fetch from upstream, and create and
+        #  check out a branch 'oot-rebase' that matches the state of the
+        #  main repo in repo_path:
+        tmprepo.git.fetch("-n", repo_path,
+                          "%s:oot-rebase/%s" % (track_branch, track_branch),
+                          "%s:oot-rebase/%s" % (upstream_branch, upstream_branch))
+        tmprepo.git.checkout("oot-rebase/%s" % track_branch)
+
+        # And... rebase.
+        tmprepo.git.rebase("--preserve-merges",
+                           "--stat",
+                           "--strategy=recursive",
+                           "--strategy-option=patience",
+                           "oot-rebase/%s" % upstream_branch)
+
+        # Now 'oot-rebase' in tmprepo has the final state we need.  Push that
+        #  branch to a temporary branch ('branchname') in the main repo.
+        tmprepo.git.push("--force-with-lease=%s:%s" % (track_branch, latest_commit),
+                         repo_path,
+                         "oot-rebase/%s:%s" % (track_branch,branchname))
+
+        # And reset our original repo to this new branch and discard the 'branchname' branch
+        repo.git.reset("--hard", branchname)
+        repo.git.branch("-D", branchname)
+        shutil.rmtree(tempdir)
+
     except git.exc.GitCommandError:
-        print("Rebase failed! Reverting rebase attempt.", file=sys.stderr)
-        repo.git.rebase("--abort")
+        print("Rebase failed!")
+        shutil.rmtree(tempdir)
         return False
 
     repo.git.submodule("update", "--init", "--recursive")
 
-    tagname = "snapshot-%s" % datetime.datetime.now().strftime('%Y%m%d%H%M')
+    # For the sake of future rollbacks, tag the repo in the
+    #  state we've just set up
     repo.create_tag(tagname)
+
     print("Tagged as %s" % tagname)
 
     print("Local hacks:")
