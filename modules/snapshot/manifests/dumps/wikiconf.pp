@@ -1,5 +1,5 @@
 define snapshot::dumps::wikiconf(
-    $configtype = 'smallwikis',
+    $configtype = 'allwikis',
     $config     = undef,
     ) {
 
