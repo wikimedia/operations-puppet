@@ -135,6 +135,8 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.26
   druid-public-broker: &ip_block040
     eqiad: 10.2.2.38
+  druid-public-broker: &ip_block041
+    eqiad: 10.2.2.39
 
 lvs::configuration::lvs_services:
   text:
@@ -1360,6 +1362,30 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: druid-public-broker.svc.eqiad.wmnet
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/status
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+  druid-public-overlord:
+    description: 'Overlord indexing service for the Druid Public Cluster'
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block041
+    port: 8082
+    depool-threshold: '.5'
+    conftool:
+      cluster: druid-public
+      service: druid-public-overlord
+    icinga:
+      check_command: "check_http_lvs_on_port!druid-public-overlord.svc.%{::site}.wmnet!8090!/status"
+      critical: false
+      sites:
+        eqiad:
+          hostname: druid-public-overlord.svc.eqiad.wmnet
     monitors:
       ProxyFetch:
         url:
