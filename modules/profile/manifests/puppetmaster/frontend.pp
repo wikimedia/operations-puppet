@@ -5,6 +5,8 @@ class profile::puppetmaster::frontend(
     $secure_private = hiera('profile::puppetmaster::frontend::config', true),
     $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
     $prevent_cherrypicks = hiera('profile::puppetmaster::frontend::prevent_cherrypicks', true),
+    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
+    $servers = hiera('puppetmaster::servers', {}),
     $allow_from = [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
@@ -17,9 +19,6 @@ class profile::puppetmaster::frontend(
     backup::set { 'var-lib-puppet-volatile': }
 
     # Puppet frontends are git masters at least for their datacenter
-
-    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
-
     if $ca_server == $::fqdn {
         $ca = true
         $cron = 'absent'
@@ -29,7 +28,6 @@ class profile::puppetmaster::frontend(
     }
 
     ## Configuration
-    $servers = hiera('puppetmaster::servers', {})
     $workers = $servers[$::fqdn]
 
     $common_config = {

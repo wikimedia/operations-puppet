@@ -4,6 +4,8 @@ class profile::puppetmaster::backend(
     $config = hiera('profile::puppetmaster::backend::config', {}),
     $secure_private = hiera('profile::puppetmaster::backend::config', true),
     $prevent_cherrypicks = hiera('profile::puppetmaster::backend::prevent_cherrypicks', true),
+    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
+    $puppetmasters = hiera('puppetmaster::servers'),
     $allow_from = [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
@@ -12,7 +14,6 @@ class profile::puppetmaster::backend(
       '*.codfw.wmnet'],
     $extra_auth_rules = '',
 ) {
-    $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet')
 
     $common_config = {
         'ca'              => false,
@@ -34,7 +35,7 @@ class profile::puppetmaster::backend(
         extra_auth_rules    => $extra_auth_rules,
     }
 
-    $puppetmaster_frontend_ferm = join(keys(hiera('puppetmaster::servers')), ' ')
+    $puppetmaster_frontend_ferm = join(keys($puppetmasters), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
