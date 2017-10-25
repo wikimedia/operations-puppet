@@ -105,7 +105,7 @@ class profile::mariadb::misc::eventlogging::replication (
         }
     } else {
         rsyslog::conf { 'eventlogging_sync':
-            source   => 'puppet:///modules/profile/mariadb/misc/eventloggign/eventlogging_sync_rsyslog.conf',
+            source   => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync_rsyslog.conf',
             priority => 20,
         }
 
