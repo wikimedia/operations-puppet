@@ -12,162 +12,122 @@ class snapshot::dumps::configs {
     $wikidatachunkhistory2 = '2587436,951696,942913,837759,1568292,1293747,2018593,1461235,1797642,1487121,2012246,874850,1486799'
 
     $config = {
-        smallwikis => {
-            dblist        => "${apachedir}/dblists/all.dblist",
-            skipdblist    => "${dblistsdir}/skip.dblist",
-            keep          => '10',
-            chunksEnabled => '0',
-        },
-        bigwikis => {
-            dblist           => "${dblistsdir}/bigwikis.dblist",
-            skipdblist       => "${dblistsdir}/skipnone.dblist",
-            keep             => '8',
-            chunksEnabled    => '1',
-            recombineHistory => '0',
-            revsPerJob       => '1500000',
-            retryWait        => '30',
-            maxRetries       => '3',
-            revsMargin       => '100',
-            wikis            => {
-                ruwiki => {
-                    pagesPerChunkHistory  => '311181,1142420,1627923,3122803',
-                    pagesPerChunkAbstract => '1200000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                eswiki => {
-                    pagesPerChunkHistory  => '229078,854374,2324057,3860337',
-                    pagesPerChunkAbstract => '1500000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                dewiki => {
-                    pagesPerChunkHistory  => '425449,1451596,3087456,4274631',
-                    pagesPerChunkAbstract => '2000000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                ptwiki => {
-                    pagesPerChunkHistory  => '158756,789502,1361027,2669897',
-                    pagesPerChunkAbstract => '1000000',
-                    chunksForAbstract     => '4',
-                },
-                plwiki => {
-                    pagesPerChunkHistory  => '235373,514490,957079,1923498',
-                    pagesPerChunkAbstract => '800000',
-                    chunksForAbstract     => '4',
-                },
-                nlwiki => {
-                    pagesPerChunkHistory  => '224145,552515,1098243,2570924',
-                    pagesPerChunkAbstract => '1000000',
-                    chunksForAbstract     => '4',
-                },
-                frwiki => {
-                    pagesPerChunkHistory  => '412303,1235589,2771967,5313378',
-                    pagesPerChunkAbstract => '1900000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                itwiki => {
-                    pagesPerChunkHistory  => '442893,1049883,1381705,2929437',
-                    pagesPerChunkAbstract => '1200000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                jawiki => {
-                  pagesPerChunkHistory  => '168815,480631,943865,1760565',
-                    pagesPerChunkAbstract => '800000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                commonswiki => {
-                    pagesPerChunkHistory  => '6457504,9672260,12929298,17539944',
-                    pagesPerChunkAbstract => '11000000',
-                    chunksForAbstract     => '4',
-                    checkpointTime        => '720',
-                },
-                zhwiki => {
-                    pagesPerChunkHistory  => '231819,564192,1300322,3112369',
-                    pagesPerChunkAbstract => '1300000',
-                    chunksForAbstract     => '4',
-                },
-                metawiki => {
-                    pagesPerChunkHistory  => '823386,2594392,3242670,3284506',
-                    pagesPerChunkAbstract => '2500000',
-                    chunksForAbstract     => '4',
+        allwikis => {
+            global => {
+                dblist        => "${apachedir}/dblists/all.dblist",
+                skipdblist    => "${dblistsdir}/skip.dblist",
+                keep          => '10',
+                chunksEnabled => '0',
+            },
+            big => {
+                dblist            => "${dblistsdir}/bigwikis.dblist",
+                skipdblist        => "${dblistsdir}/skipnone.dblist",
+                keep              => '8',
+                chunksEnabled     => '1',
+                chunksForAbstract => '4',
+                checkpointTime    => '720',
+                recombineHistory  => '0',
+                revsPerJob        => '1500000',
+                retryWait         => '30',
+                maxRetries        => '3',
+                revsMargin        => '100',
+                wikis => {
+                    ruwiki => {
+                        pagesPerChunkHistory  => '311181,1142420,1627923,3122803',
+                        pagesPerChunkAbstract => '1200000',
+                    },
+                    eswiki => {
+                        pagesPerChunkHistory  => '229078,854374,2324057,3860337',
+                        pagesPerChunkAbstract => '1500000',
+                    },
+                    dewiki => {
+                        pagesPerChunkHistory  => '425449,1451596,3087456,4274631',
+                        pagesPerChunkAbstract => '2000000',
+                    },
+                    ptwiki => {
+                        pagesPerChunkHistory  => '158756,789502,1361027,2669897',
+                        pagesPerChunkAbstract => '1000000',
+                    },
+                    plwiki => {
+                        pagesPerChunkHistory  => '235373,514490,957079,1923498',
+                        pagesPerChunkAbstract => '800000',
+                    },
+                    nlwiki => {
+                        pagesPerChunkHistory  => '224145,552515,1098243,2570924',
+                        pagesPerChunkAbstract => '1000000',
+                    },
+                    frwiki => {
+                        pagesPerChunkHistory  => '412303,1235589,2771967,5313378',
+                        pagesPerChunkAbstract => '1900000',
+                    },
+                    itwiki => {
+                        pagesPerChunkHistory  => '442893,1049883,1381705,2929437',
+                        pagesPerChunkAbstract => '1200000',
+                    },
+                    jawiki => {
+                        pagesPerChunkHistory  => '168815,480631,943865,1760565',
+                        pagesPerChunkAbstract => '800000',
+                    },
+                    commonswiki => {
+                        pagesPerChunkHistory  => '6457504,9672260,12929298,17539944',
+                        pagesPerChunkAbstract => '11000000',
+                    },
+                    zhwiki => {
+                        pagesPerChunkHistory  => '231819,564192,1300322,3112369',
+                        pagesPerChunkAbstract => '1300000',
+                    },
+                    metawiki => {
+                        pagesPerChunkHistory  => '823386,2594392,3242670,3284506',
+                        pagesPerChunkAbstract => '2500000',
+                    },
                 },
             },
-        },
-        wikidatawiki => {
-            dblist           => "${dblistsdir}/wikidatawiki.dblist",
-            skipdblist       => "${dblistsdir}/skipnone.dblist",
-            keep             => '7',
-            chunksEnabled    => '1',
-            recombineHistory => '0',
-            checkpointTime   => '720',
-            revsPerJob       => '1500000',
-            retryWait        => '30',
-            maxRetries       => '3',
-            revsMargin       => '100',
-            wikis => {
+            huge => {
+                skipdblist        => "${dblistsdir}/skipnone.dblist",
+                jobsperbatch      => 'xmlstubsdump=9,abstractsdump=9',
+                keep              => '7',
+                chunksEnabled     => '1',
+                chunksForAbstract => 27,
+                recombineHistory  => '0',
+                checkpointTime    => '720',
+                revsPerJob        => '1500000',
+                retryWait         => '30',
+                maxRetries        => '3',
+                revsMargin        => '100',
+                maxrevs           => '20000',
+                wikis => {
                 wikidatawiki => {
-                    jobsperbatch          => 'xmlstubsdump=9,abstractsdump=9',
+                    dblist                => "${dblistsdir}/wikidatawiki.dblist",
                     pagesPerChunkHistory  => "${wikidatachunkhistory1},${$wikidatachunkhistory2}",
-                    chunksForAbstract     => 27,
                     orderrevs             => '1',
                     minpages              => '10',
-                    maxrevs               => '20000',
                 },
-            },
-        },
-        enwiki => {
-            dblist           => "${dblistsdir}/enwiki.dblist",
-            skipdblist       => "${dblistsdir}/skipnone.dblist",
-            keep             => '7',
-            chunksEnabled    => '1',
-            recombineHistory => '0',
-            checkpointTime   => '720',
-            revsPerJob       => '1500000',
-            retryWait        => '30',
-            maxRetries       => '3',
-            revsMargin       => '100',
-            wikis => {
                 enwiki => {
-                    jobsperbatch          => 'xmlstubsdump=9,abstractsdump=9',
+                    dblist                => "${dblistsdir}/enwiki.dblist",
                     pagesPerChunkHistory  => "${enchunkhistory1},${enchunkhistory2}",
-                    chunksForAbstract     => 27,
-                    maxrevs               => '20000',
                 },
             },
         },
         monitor => {
-            dblist        => "${apachedir}/dblists/all.dblist",
-            skipdblist    => "${dblistsdir}/skipmonitor.dblist",
-            keep          => '30',
-            chunksEnabled => '0',
+            global => {
+                dblist        => "${apachedir}/dblists/all.dblist",
+                skipdblist    => "${dblistsdir}/skipmonitor.dblist",
+                keep          => '30',
+                chunksEnabled => '0',
+            },
         },
         media => {
-            dblist        => "${apachedir}/dblists/all.dblist",
-            skipdblist    => "${dblistsdir}/skipmonitor.dblist,${dblistsdir}/globalusage.dblist",
-            keep          => '30',
-            chunksEnabled => '0',
+            global => {
+                dblist        => "${apachedir}/dblists/all.dblist",
+                skipdblist    => "${dblistsdir}/skipmonitor.dblist,${dblistsdir}/globalusage.dblist",
+                keep          => '30',
+                chunksEnabled => '0',
+            },
         },
     }
 
-    snapshot::dumps::wikiconf { 'wikidump.conf':
-        configtype => 'smallwikis',
-        config     => $config,
-    }
-    snapshot::dumps::wikiconf { 'wikidump.conf.bigwikis':
-        configtype => 'bigwikis',
-        config     => $config,
-    }
-    snapshot::dumps::wikiconf { 'wikidump.conf.enwiki':
-        configtype => 'enwiki',
-        config     => $config,
-    }
-    snapshot::dumps::wikiconf { 'wikidump.conf.wikidatawiki':
-        configtype => 'wikidatawiki',
+    snapshot::dumps::wikiconf { 'wikidump.conf.allwikis':
+        configtype => 'allwikis',
         config     => $config,
     }
     snapshot::dumps::wikiconf { 'wikidump.conf.monitor':
