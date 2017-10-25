@@ -28,6 +28,11 @@ class role::syslog::centralserver {
 
     class { 'rsyslog::receiver': }
 
+    monitoring::service { "syslog::centralserver ${::hostname} syslog-tls":
+        description   => 'rsyslog TLS listener on port 6514',
+        check_command => "check_ssl_on_host_port!${::fqdn}!${::fqdn}!6514",
+    }
+
     mtail::program { 'kernel':
         ensure => present,
         source => 'puppet:///modules/mtail/programs/kernel.mtail',
