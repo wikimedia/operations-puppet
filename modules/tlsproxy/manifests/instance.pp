@@ -33,7 +33,7 @@ class tlsproxy::instance {
         $numa_iface = 'lo'
     }
 
-    class { 'nginx': managed => false, }
+    class { 'nginx': managed => false, variant => 'light' }
 
     if $lua_support {
         require_package([ 'libnginx-mod-http-lua', 'libnginx-mod-http-ndk' ])
