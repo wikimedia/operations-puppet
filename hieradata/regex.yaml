@@ -341,6 +341,6 @@ analytics_notifications_disabled:
 
 # Gradual syslog-tls rollout - T136312
 syslog_tls_eqiad:
-  __regex: !ruby/regexp /^(analytics|aqs|conf|cp|db|dbproxy|druid|elastic|es|etcd|ganeti|kafka)1\d\d\d\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(analytics|aqs|conf|cp|db|dbproxy|druid|elastic|es|etcd|ganeti|kafka|kafka-jumbo|kubernetes|kubestage|logstash|lvs|maps|mc|ms-fe|ms-be|mw|ores|oresrdb|rdb|restbase|sca|scb|stat|snapshot|thumbor|wtp)1\d\d\d\.eqiad\.wmnet$/
   profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514']
   profile::base::remote_syslog: []
