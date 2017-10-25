@@ -39,6 +39,12 @@ class rsyslog::receiver (
         provide_private => true,
     }
 
+    systemd::unit { 'rsyslog':
+        ensure   => present,
+        override => true,
+        content  => template('rsyslog/initscripts/rsyslog_receiver.systemd_override.erb'),
+    }
+
     file { '/etc/rsyslog-receiver':
         ensure => directory,
         owner  => 'root',
