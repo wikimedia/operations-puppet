@@ -15,7 +15,21 @@ class docker(
     $version,
     $package_name='docker-engine',
 ){
-    package { $package_name:
-        ensure => $version,
+
+    if os_version('debian >= stretch') {
+        apt::repository { 'thirdparty-k8s':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'thirdparty/k8s',
+        }
+
+        package { $package_name:
+            ensure => $version,
+            require => [ Apt::Repository['thirdparty-k8s'], Exec['apt-get update']],
+        }
+    } else {
+        package { $package_name:
+            ensure => $version,
+        }
     }
 }
