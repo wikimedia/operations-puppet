@@ -148,6 +148,7 @@ fullviews:
 # - titleblacklist  T178052
 logging_whitelist:
   - abusefilter
+  - articlefeedbackv5
   - block
   - campus
   - close
@@ -157,17 +158,23 @@ logging_whitelist:
   - eparticle
   - gather
   - gblblock
+  - gblrename
   - gblrights
   - globalauth
   - gwtoolset
   - import
   - institution
   - instructor
+  - interwiki
+  - liquidthreads
   - lock
   - managetags
   - massmessage
   - merge
+  - moodbar
   - move
+  - mwoauthconsumer
+  - newsletter
   - newusers
   - notifytranslators
   - online
