@@ -4,10 +4,10 @@
 #############################################################
 
 [wiki]
-dblist=<%= @config[@configtype]['dblist'] %>
+dblist=<%= @config[@configtype]['global']['dblist'] %>
 privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
 closedlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
-skipdblist=<%= @config[@configtype]['skipdblist'] %>
+skipdblist=<%= @config[@configtype]['global']['skipdblist'] %>
 flowlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/flow.dblist
 dir=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
 adminsettings=private/PrivateSettings.php
@@ -46,28 +46,28 @@ writeuptopageid=/usr/local/bin/writeuptopageid
 recompressxml=/usr/local/bin/recompressxml
 
 [cleanup]
-keep=<%= @config[@configtype]['keep'] %>
+keep=<%= @config[@configtype]['global']['keep'] %>
 
 [chunks]
-<% if @config[@configtype].has_key?('chunksEnabled') -%>
-chunksEnabled=<%= @config[@configtype]['chunksEnabled'] %>
+<% if @config[@configtype]['global'].has_key?('chunksEnabled') -%>
+chunksEnabled=<%= @config[@configtype]['global']['chunksEnabled'] %>
 <% end -%>
-<% if @config[@configtype].has_key?('recombineHistory') -%>
+<% if @config[@configtype]['global'].has_key?('recombineHistory') -%>
 recombineHistory=<%= @config[@configtype]['recombineHistory'] %>
 <% end -%>
-<% if @config[@configtype].has_key?('checkpointTime') -%>
+<% if @config[@configtype]['global'].has_key?('checkpointTime') -%>
 checkpointTime=<%= @config[@configtype]['checkpointTime'] %>
 <% end -%>
-<% if @config[@configtype].has_key?('revsPerJob') -%>
+<% if @config[@configtype]['global'].has_key?('revsPerJob') -%>
 revsPerJob=<%= @config[@configtype]['revsPerJob'] %>
 <% end -%>
-<% if @config[@configtype].has_key?('retryWait') -%>
+<% if @config[@configtype]['global'].has_key?('retryWait') -%>
 retryWait=<%= @config[@configtype]['retryWait'] %>
 <% end -%>
-<% if @config[@configtype].has_key?('maxRetries') -%>
+<% if @config[@configtype]['global'].has_key?('maxRetries') -%>
 maxRetries=<%= @config[@configtype]['maxRetries'] %>
 <% end -%>
-<% if @config[@configtype].has_key?('revsMargin') -%>
+<% if @config[@configtype]['global'].has_key?('revsMargin') -%>
 revsMargin=<%= @config[@configtype]['revsMargin'] %>
 <% end -%>
 
@@ -79,27 +79,45 @@ orderrevs=0
 minpages=1
 maxrevs=100000
 
-<% if @config[@configtype].has_key?('wikis') %>
-<% @config[@configtype]['wikis'].keys.sort.each do |w| -%>
+
+########################
+# wiki-specific settings
+
+<% if @config[@configtype].has_key?('big') -%>
+<% if @config[@configtype]['big'].has_key?('wikis') -%>
+<% @config[@configtype]['big']['wikis'].keys.sort.each do |w| -%>
+
 [<%= w %>]
-<% if @config[@configtype]['wikis'][w].has_key?('jobsperbatch') -%>
-jobsperbatch=<%= @config[@configtype]['wikis'][w]['jobsperbatch'] %>
+# generic settings for big wikis
+<% @config[@configtype]['big'].keys.sort.each do |bigsetting| -%>
+<% if bigsetting != 'wikis' -%>
+<%= bigsetting %>=<%= @config[@configtype]['big'][bigsetting] %>
 <% end -%>
-pagesPerChunkHistory=<%= @config[@configtype]['wikis'][w]['pagesPerChunkHistory'] %>
-pagesPerChunkAbstract=<%= @config[@configtype]['wikis'][w]['pagesPerChunkAbstract'] %>
-chunksForAbstract=<%= @config[@configtype]['wikis'][w]['chunksForAbstract'] %>
-<% if @config[@configtype]['wikis'][w].has_key?('checkpointTime') -%>
-checkpointTime=<%= @config[@configtype]['wikis'][w]['checkpointTime'] %>
 <% end -%>
-<% if @config[@configtype]['wikis'][w].has_key?('orderrevs') -%>
-orderrevs=<%= @config[@configtype]['wikis'][w]['orderrevs'] %>
+# specific settings for wiki <%= w %>
+<% @config[@configtype]['big']['wikis'][w].keys.sort.each do |bigwikisetting| -%>
+<%= bigwikisetting %>=<%= @config[@configtype]['big']['wikis'][w][bigwikisetting] %>
 <% end -%>
-<% if @config[@configtype]['wikis'][w].has_key?('minpages') -%>
-minpages=<%= @config[@configtype]['wikis'][w]['minpages'] %>
 <% end -%>
-<% if @config[@configtype]['wikis'][w].has_key?('maxrevs') -%>
-maxrevs=<%= @config[@configtype]['wikis'][w]['maxrevs'] %>
+<% end -%>
 <% end -%>
 
+
+<% if @config[@configtype].has_key?('huge') -%>
+<% if @config[@configtype]['huge'].has_key?('wikis') -%>
+<% @config[@configtype]['huge']['wikis'].keys.sort.each do |w| -%>
+
+[<%= w %>]
+# generic settings for huge wikis
+<% @config[@configtype]['huge'].keys.sort.each do |hugesetting| -%>
+<% if hugesetting != 'wikis' -%>
+<%= hugesetting %>=<%= @config[@configtype]['huge'][hugesetting] %>
+<% end -%>
+<% end -%>
+# specific settings for wiki <%= w %>
+<% @config[@configtype]['huge']['wikis'][w].keys.sort.each do |hugewikisetting| -%>
+<%= hugewikisetting %>=<%= @config[@configtype]['huge']['wikis'][w][hugewikisetting] %>
+<% end -%>
+<% end -%>
 <% end -%>
 <% end -%>
