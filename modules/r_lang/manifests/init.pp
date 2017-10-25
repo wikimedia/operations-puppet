@@ -27,15 +27,15 @@ class r_lang (
     file { '/usr/local/lib/R/site-library':
         ensure => 'directory',
         owner  => 'root',
-        group  => 'staff',
-        mode   => '0770',
+        group  => 'wikidev',
+        mode   => '0774',
     }
 
     # R script for updating any particular installed R package:
     file { '/etc/R/update-library.R':
         ensure => 'present',
         owner  => 'root',
-        group  => 'root',
+        group  => 'wikidev',
         mode   => '0644',
         source => 'puppet:///modules/r_lang/update-library.R',
     }
@@ -43,7 +43,7 @@ class r_lang (
     file { '/etc/R/biocLite.R':
         ensure => 'present',
         owner  => 'root',
-        group  => 'root',
+        group  => 'wikidev',
         mode   => '0644',
         source => 'puppet:///modules/r_lang/biocLite.R',
     }

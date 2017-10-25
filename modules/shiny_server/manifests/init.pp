@@ -66,13 +66,7 @@ class shiny_server {
     user { 'shiny':
         ensure     => 'present',
         managehome => true,
-        groups     => 'staff',
-    }
-    file { '/home/shiny/downloads':
-        ensure => 'directory',
-        owner  => 'shiny',
-        group  => 'staff',
-        mode   => '0740',
+        groups     => 'wikidev',
     }
 
     file { '/srv/shiny-server':

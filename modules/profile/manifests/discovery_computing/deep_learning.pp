@@ -9,11 +9,12 @@ class profile::discovery_computing::deep_learning {
     require profile::discovery_computing::base
 
     $pkgs = [
-        'python-h5py',      # Python interface to HDF5 (required for saving Keras models to disk)
-        'python-html5lib',  # HTML parser (required for TensorFlow)
-        'caffe-cpu',        # Fast, open framework for Deep Learning
-        'python-caffe-cpu', # Python3 interface of Caffe
-        'python-skimage',   # Python 3 modules for image processing
+        'python-h5py',       # Python interface to HDF5 (required for saving Keras models to disk)
+        'python-html5lib',   # HTML parser (required for TensorFlow)
+        'caffe-cpu',         # Fast, open framework for Deep Learning
+        'python3-caffe-cpu', # Python3 interface to Caffe
+        'python-skimage',    # Python2 modules for image processing
+        'python3-skimage',   # Python3 modules for image processing
     ]
     require_package($pkgs)
 
