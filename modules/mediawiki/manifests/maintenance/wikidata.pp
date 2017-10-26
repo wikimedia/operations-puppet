@@ -1,6 +1,13 @@
 class mediawiki::maintenance::wikidata( $ensure = present ) {
     require ::mediawiki::users
 
+    file { '/var/log/wikidata':
+        ensure => ensure_directory($ensure),
+        owner  => $::mediawiki::users::web,
+        group  => $::mediawiki::users::web,
+        mode   => '0664',
+    }
+
     # Starts a dispatcher instance every 3 minutes
     # They will run for a maximum of 9 minutes, so we can only have 3 concurrent instances.
     # This handles inserting jobs into client job queue, which then process the changes
@@ -18,33 +25,48 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         minute  => '*/15',
     }
 
+    $prune_log_file = '/var/log/wikidata/prune2.log'
+    file { $prune_log_file:
+        ensure  => 'file',
+        owner   => $::mediawiki::users::web,
+        group   => $::mediawiki::users::web,
+        mode    => '0664',
+        require => File['/var/log/wikidata'],
+    }
+
     # Prune wb_changes entries no longer needed from (test)wikidata
     cron { 'wikibase-repo-prune2':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> /var/log/wikidata/prune2.log 2>&1',
+        command => "/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> ${prune_log_file} 2>&1",
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
+        require => File[$prune_log_file],
+    }
+
+    $test_prune_log_file = '/var/log/wikidata/prune-testwikidata.log'
+    file { $test_prune_log_file:
+        ensure  => 'file',
+        owner   => $::mediawiki::users::web,
+        group   => $::mediawiki::users::web,
+        mode    => '0664',
+        require => File['/var/log/wikidata'],
     }
 
     cron { 'wikibase-repo-prune-test':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
+        command => "/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> ${test_prune_log_file} 2>&1",
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
+        require => File[$test_prune_log_file],
     }
 
-    file { '/var/log/wikidata':
-        ensure => ensure_directory($ensure),
-        owner  => $::mediawiki::users::web,
-        group  => $::mediawiki::users::web,
-        mode   => '0664',
-    }
-
-    file { '/var/log/wikidata/rebuildTermSqlIndex.log':
-        ensure => 'file',
-        owner  => $::mediawiki::users::web,
-        group  => $::mediawiki::users::web,
-        mode   => '0664',
+    $rebuild_term_sql_index_log_file = '/var/log/wikidata/rebuildTermSqlIndex.log'
+    file { $rebuild_term_sql_index_log_file:
+        ensure  => 'file',
+        owner   => $::mediawiki::users::web,
+        group   => $::mediawiki::users::web,
+        mode    => '0664',
+        require => File['/var/log/wikidata'],
     }
 
     $log_ownership_user = $::mediawiki::users::web
@@ -54,13 +76,14 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
 
-    # rebuildTermSqlIndex is temporarilly stopped
+    # rebuildTermSqlIndex is temporarily stopped
     cron { 'wikibase-rebuildTermSqlIndex':
         ensure  => absent,
-        command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildTermSqlIndex.php --wiki wikidatawiki --entity-type=item --deduplicate-terms --batch-size 500 --sleep 10 --from-id $(/bin/ls -t /var/log/wikidata/rebuildTermSqlIndex.log /var/log/wikidata/rebuildTermSqlIndex.log*[0-9] | /usr/bin/xargs -d "\n" /usr/bin/tac 2> /dev/null | /usr/bin/awk \'/Processed up to page (\d+?)/ { print $5 }\' | head -n1) >> /var/log/wikidata/rebuildTermSqlIndex.log 2>&1',
+        command => "/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildTermSqlIndex.php --wiki wikidatawiki --entity-type=item --deduplicate-terms --batch-size 500 --sleep 10 --from-id \$(/bin/ls -t ${rebuild_term_sql_index_log_file} ${rebuild_term_sql_index_log_file}*[0-9] | /usr/bin/xargs -d \"\n\" /usr/bin/tac 2> /dev/null | /usr/bin/awk \'/Processed up to page (\d+?)/ { print \$5 }\' | head -n1) >> ${rebuild_term_sql_index_log_file} 2>&1",
         user    => $::mediawiki::users::web,
         minute  => 30,
         hour    => '*',
-        weekday => '*'
+        weekday => '*',
+        require => File[$rebuild_term_sql_index_log_file],
     }
 }
