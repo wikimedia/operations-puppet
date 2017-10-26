@@ -129,7 +129,7 @@ node 'bast3002.wikimedia.org' {
 }
 
 # Bastion in California
-node 'bast4001.wikimedia.org' {
+node /bast400[12]\.wikimedia\.org/ {
     role(bastionhost::general,
         ipmi::mgmt,
         installserver::tftp,
