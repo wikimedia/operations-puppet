@@ -147,8 +147,28 @@
             "doc_values": true
         },
         "response_size" : {
-            "type" : "long",
-            "doc_values": true
+          "type" : "long",
+          "doc_values": true
+        },
+        "limit" : {
+          "type" : "long",
+          "doc_values": true
+        },
+        "line" : {
+          "type" : "integer",
+          "doc_values": true
+        },
+        "pid" : {
+          "type" : "long",
+          "doc_values": true
+        },
+        "process" : {
+          "type" : "long",
+          "doc_values": true
+        },
+        "severity" : {
+          "type" : "integer",
+          "doc_values": true
         }
       }
     }
