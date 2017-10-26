@@ -58,6 +58,18 @@ class puppetmaster::passenger(
         require => Package['puppetmaster-passenger'],
     }
 
+    # Place an empty puppet-master.conf file to prevent creation of this file
+    # at package install time. Apache breaks if that happens. T179102
+    file { '/etc/apache2/sites-available/puppet-master.conf':
+        ensure  => present,
+        content => '# This file intentionally left blank by puppet - T179102'
+    }
+    file { '/etc/apache2/sites-enabled/puppet-master.conf':
+        ensure  => link,
+        target  => '/etc/apache2/sites-available/puppet-master.conf',
+        require => File['/etc/apache2/sites-available/puppet-master.conf'],
+    }
+
     # Since we are running puppet via passenger, we need to ensure
     # the puppetmaster service is stopped, since they use the same port
     # and will conflict when both started.
