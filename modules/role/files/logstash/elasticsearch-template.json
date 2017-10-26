@@ -166,6 +166,10 @@
           "type" : "keyword",
           "doc_values": true
         },
+        "priority" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
         "process" : {
           "type" : "keyword",
           "doc_values": true
