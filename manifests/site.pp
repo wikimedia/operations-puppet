@@ -142,6 +142,17 @@ node 'bast4001.wikimedia.org' {
     }
 }
 
+node 'bast4002.wikimedia.org' {
+    role(bastionhost::general,
+        ipmi::mgmt,
+        installserver::tftp,
+        prometheus::ops)
+
+    interface::add_ip6_mapped { 'main': }
+
+    }
+}
+
 node 'bohrium.eqiad.wmnet' {
     role(piwik::server)
 }
