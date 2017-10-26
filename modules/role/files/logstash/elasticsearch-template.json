@@ -44,9 +44,16 @@
           "boolean_to_string" : {
             "match_mapping_type" : "boolean",
             "mapping" : {
-              "type" : "keyword",
+              "type" : "text",
               "index" : true,
-              "doc_values": true
+              "omit_norms": true,
+              "fields": {
+                "raw": {
+                  "index": true,
+                  "type": "keyword",
+                  "doc_values": true
+                }
+              }
             }
           }
         },
@@ -54,9 +61,16 @@
           "double_to_string" : {
             "match_mapping_type" : "double",
             "mapping" : {
-              "type" : "keyword",
+              "type" : "text",
               "index" : true,
-              "doc_values": true
+              "omit_norms": true,
+              "fields": {
+                "raw": {
+                  "index": true,
+                  "type": "keyword",
+                  "doc_values": true
+                }
+              }
             }
           }
         },
@@ -64,9 +78,16 @@
           "long_to_string" : {
             "match_mapping_type" : "long",
             "mapping" : {
-              "type" : "keyword",
+              "type" : "text",
               "index" : true,
-              "doc_values": true
+              "omit_norms": true,
+              "fields": {
+                "raw": {
+                  "index": true,
+                  "type": "keyword",
+                  "doc_values": true
+                }
+              }
             }
           }
         }
