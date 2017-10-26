@@ -56,6 +56,12 @@ class role::graphite::production {
         keep_days => 15,
     }
 
+    # Cassandra metrics - T179057
+    graphite::whisper_cleanup { 'graphite-cassandra':
+        directory => "${storage_dir}/whisper/cassandra",
+        keep_days => 182,
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
