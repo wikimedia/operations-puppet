@@ -129,11 +129,21 @@ node 'bast3002.wikimedia.org' {
 }
 
 # Bastion in California
-node /bast400[12]\.wikimedia\.org/ {
+node 'bast4001.wikimedia.org' {
     role(bastionhost::general,
         ipmi::mgmt,
         installserver::tftp,
         prometheus::ops)
+
+    interface::add_ip6_mapped { 'main': }
+
+    class { '::ganglia::monitor::aggregator':
+        sites =>  'ulsfo',
+    }
+}
+
+node 'bast4002.wikimedia.org' {
+    role(spare::system)
 
     interface::add_ip6_mapped { 'main': }
 
