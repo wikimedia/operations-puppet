@@ -31,15 +31,27 @@ class mediawiki::web {
     # is only optional for the full path, so if /usr/share/modsecurity-crs doesn't
     # exist, it bails out and apache refuses to start/restart. As such, ship an
     # empty directory to make that include truly optional
+    # In addition IncludeOptional expects a wildcard (which the original config
+    # from modsecurity-crs doesn't ship, so we also need to ship an empty
+    # stub config
     # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=878920
     # https://bz.apache.org/bugzilla/show_bug.cgi?id=57585
+    # Once we're running a version of the patch proposed in Apache bugzilla, this
+    # workaround can be removed
     if os_version('debian >= stretch') {
         file { '/usr/share/modsecurity-crs':
             ensure => directory,
             owner  => 'root',
             group  => 'root',
             mode   => '0775',
-            before => Service['apache2'],
+            before => File['/usr/share/modsecurity-crs/owasp-crs.load'],
+        }
+        file { '/usr/share/modsecurity-crs/owasp-crs.load':
+            owner   => 'root',
+            content => '',
+            group   => 'root',
+            mode    => '0444',
+            before  => Service['apache2'],
         }
     }
 
