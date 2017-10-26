@@ -53,11 +53,7 @@ class uwsgi {
 
     # additionally, ensure that /run/uwsgi is created at boot
     if os_version('debian >= jessie') {
-        file { '/etc/tmpfiles.d/uwsgi-startup.conf':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
+        systemd::tmpfile { 'uwsgi-startup':
             content => 'd /run/uwsgi 0755 www-data www-data',
         }
     } else {
