@@ -139,16 +139,40 @@
           "doc_values": true
         },
         "request_time" : {
-            "type" : "float",
-            "doc_values": true
+          "type" : "float",
+          "doc_values": true
         },
         "upstream_time" : {
-            "type" : "float",
-            "doc_values": true
+          "type" : "float",
+          "doc_values": true
         },
         "response_size" : {
-            "type" : "long",
-            "doc_values": true
+          "type" : "long",
+          "doc_values": true
+        },
+        "limit" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
+        "line" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
+        "pid" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
+        "port" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
+        "process" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
+        "severity" : {
+          "type" : "keyword",
+          "doc_values": true
         }
       }
     }
