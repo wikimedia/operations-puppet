@@ -1,6 +1,19 @@
 class varnish::common($varnish_version=4, $fe_runtime_params=[], $be_runtime_params=[]) {
     require ::varnish::packages
 
+    # Frontend memory cache sizing
+    $mem_gb = $::memorysize_mb / 1024.0
+
+    if ($mem_gb < 90.0) {
+        # virtuals, test hosts, etc...
+        $fe_mem_gb = 1
+    } else {
+        # Removing a constant factor before scaling helps with
+        # low-memory hosts, as they need more relative space to
+        # handle all the non-cache basics.
+        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
+    }
+
     # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':

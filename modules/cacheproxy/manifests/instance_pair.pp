@@ -51,18 +51,6 @@ class cacheproxy::instance_pair (
 
     $our_backend_caches = hash_deselect_re("^cache_${::site}", $becaches_filtered)
 
-    # Frontend memory cache sizing
-    $mem_gb = $::memorysize_mb / 1024.0
-    if ($mem_gb < 90.0) {
-        # virtuals, test hosts, etc...
-        $fe_mem_gb = 1
-    } else {
-        # Removing a constant factor before scaling helps with
-        # low-memory hosts, as they need more relative space to
-        # handle all the non-cache basics.
-        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
-    }
-
     # Transient storage limits T164768
 
     if $fe_transient_gb > 0 {
@@ -118,7 +106,7 @@ class cacheproxy::instance_pair (
         extra_vcl          => $fe_extra_vcl,
         ports              => [ '80', '3120', '3121', '3122', '3123', '3124', '3125', '3126', '3127' ],
         admin_port         => 6082,
-        storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
+        storage            => "-s malloc,${::varnish::common::fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
         backend_caches     => {
             'cache_local' => {
