@@ -21,11 +21,6 @@ class role::analytics_cluster::hadoop::master {
 
     class { '::cdh::hadoop::master': }
 
-    # Master should run httpfs daemon.
-    class { '::cdh::hadoop::httpfs':
-        require => Class['cdh::hadoop::master'],
-    }
-
     # Use jmxtrans for sending metrics
     class { '::cdh::hadoop::jmxtrans::master':
         statsd  => hiera('statsd'),
