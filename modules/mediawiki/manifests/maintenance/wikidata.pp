@@ -6,7 +6,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
     # This handles inserting jobs into client job queue, which then process the changes
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 420 --dispatch-interval 25 --lock-grace-interval 200 >/dev/null 2>&1',
+        command => 'echo "$$: Starting dispatcher" >> /var/log/wikidata/dispatchChanges-wikidatawiki.log; /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 420 --dispatch-interval 25 --lock-grace-interval 200 >> /var/log/wikidata/dispatchChanges-wikidatawiki.log 2>&1; echo "$$: Dispatcher exited with $?" >> /var/log/wikidata/dispatchChanges-wikidatawiki.log',
         user    => $::mediawiki::users::web,
         minute  => '*/3',
     }
