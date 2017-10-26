@@ -54,6 +54,8 @@ class profile::mariadb::misc::eventlogging::database (
         config        => 'profile/mariadb/misc/eventlogging/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
+        socket        => '/run/mysqld/mysqld.sock',
+        port          => 3306
         read_only     => 0,
         ssl           => 'puppet-cert',
         p_s           => 'off',
