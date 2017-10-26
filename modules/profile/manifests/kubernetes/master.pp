@@ -12,6 +12,7 @@ class profile::kubernetes::master(
     $ssl_cert_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $ssl_key_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $authz_mode=hiera('profile::kubernetes::master::authz_mode'),
+    $service_account_private_key_file=hiera('profile::kubernetes::master::service_account_private_key_file', undef),
 ){
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
@@ -43,7 +44,9 @@ class profile::kubernetes::master(
     }
 
     class { '::k8s::scheduler': }
-    class { '::k8s::controller': }
+    class { '::k8s::controller':
+        service_account_private_key_file => $service_account_private_key_file,
+    }
 
 
     if $accessible_to == 'all' {
