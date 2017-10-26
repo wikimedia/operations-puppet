@@ -39,8 +39,10 @@ class profile::mariadb::misc::eventlogging::database (
 
     if os_version('debian >= stretch') {
         $mariadb_basedir = '/opt/wmf-mariadb101'
+        $mariadb_socket = '/run/mysqld/mysqld.sock'
     } else {
         $mariadb_basedir = '/opt/wmf-mariadb10'
+        $mariadb_socket = '/tmp/mysql.sock'
     }
 
     # History context: there used to be a distinction between
@@ -54,6 +56,8 @@ class profile::mariadb::misc::eventlogging::database (
         config        => 'profile/mariadb/misc/eventlogging/eventlogging.my.cnf.erb',
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
+        socket        => $mariadb_socket,
+        port          => 3306,
         read_only     => 0,
         ssl           => 'puppet-cert',
         p_s           => 'off',
