@@ -1214,6 +1214,13 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     role(kafka::analytics::broker,
         # Mirror all other Kafka cluster data into the analytics Kafka cluster.
         kafka::analytics::mirror,
+        # Mirror main Kafka cluster data to Jumbo Kafka cluster.
+        # NOTE:  this is only running on the analytics Kafka brokers because
+        # of a 0.11 client compatibility issue.  Ideally this role would
+        # be included on the jumbo brokers instead.  But, since we need to consume
+        # from a 0.9 cluster (main), we need to use a non 0.11 MirrorMaker version,
+        # which is not available on the Kafka jumbo brokers, since they are 0.11.
+        kafka::jumbo::mirror,
         ipsec)
 
     include ::standard
