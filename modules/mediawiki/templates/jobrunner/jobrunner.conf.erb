@@ -36,9 +36,12 @@ end
             ]
         },
         "html": {
-            "runners": <%= @hostname.split('.').first.slice(-1).to_i % 2 == 1 ? runners_for('html')  : 0 %>,
+            // Temp config for T173710
+            "runners": <%= runners_for('html') %>,
             "include": [
-                "htmlCacheUpdate"
+                "htmlCacheUpdate",
+                "refreshLinks",
+                "refreshLinksDynamic",
             ]
         },
         "gwt": {
