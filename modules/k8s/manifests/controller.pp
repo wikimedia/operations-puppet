@@ -1,6 +1,4 @@
-class k8s::controller(
-    $cluster_cidr = '192.168.0.0/24',
-){
+class k8s::controller {
     require_package('kubernetes-master')
 
     file { '/etc/default/kube-controller-manager':
