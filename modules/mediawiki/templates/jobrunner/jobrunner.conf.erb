@@ -38,7 +38,8 @@ end
         "html": {
             "runners": <%= @hostname.split('.').first.slice(-1).to_i % 2 == 1 ? runners_for('html')  : 0 %>,
             "include": [
-                "htmlCacheUpdate"
+                "htmlCacheUpdate",
+                "refreshLinks",
             ]
         },
         "gwt": {
