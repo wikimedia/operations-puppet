@@ -31,6 +31,8 @@ class mediawiki::web {
     # is only optional for the full path, so if /usr/share/modsecurity-crs doesn't
     # exist, it bails out and apache refuses to start/restart. As such, ship an
     # empty directory to make that include truly optional
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=878920
+    # https://bz.apache.org/bugzilla/show_bug.cgi?id=57585
     if os_version('debian >= stretch') {
         file { '/usr/share/modsecurity-crs':
             ensure => directory,
