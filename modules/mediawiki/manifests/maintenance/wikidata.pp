@@ -8,14 +8,24 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         mode   => '0664',
     }
 
+    $dispatchLogFile = "/var/log/wikidata/dispatchChanges-wikidatawiki.log";
+    file { $dispatchLogFile:
+        ensure  => 'file',
+        owner   => $::mediawiki::users::web,
+        group   => $::mediawiki::users::web,
+        mode    => '0664',
+        require => File['/var/log/wikidata'],
+    }
+
     # Starts a dispatcher instance every 3 minutes
     # They will run for a maximum of 9 minutes, so we can only have 3 concurrent instances.
     # This handles inserting jobs into client job queue, which then process the changes
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 420 --dispatch-interval 25 --lock-grace-interval 200 >/dev/null 2>&1',
+        command => "echo \$\$: Starting dispatcher >> ${dispatchLogFile}; /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 420 --dispatch-interval 25 --lock-grace-interval 200 >> ${dispatchLogFile} 2>&1; echo \$\$: Dispatcher exited with $? >> ${dispatchLogFile}",
         user    => $::mediawiki::users::web,
         minute  => '*/3',
+        require => File[$dispatchLogFile],
     }
 
     cron { 'wikibase-dispatch-changes-test':
