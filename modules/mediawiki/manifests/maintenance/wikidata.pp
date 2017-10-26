@@ -4,11 +4,13 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
     # Starts a dispatcher instance every 3 minutes
     # They will run for a maximum of 9 minutes, so we can only have 3 concurrent instances.
     # This handles inserting jobs into client job queue, which then process the changes
+    $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log';
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 420 --dispatch-interval 25 --lock-grace-interval 200 >/dev/null 2>&1',
+        command => "echo '\$\$: Starting dispatcher' >> ${dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 420 --dispatch-interval 25 --lock-grace-interval 200 >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
         user    => $::mediawiki::users::web,
         minute  => '*/3',
+        require => File['/var/log/wikidata'],
     }
 
     cron { 'wikibase-dispatch-changes-test':
@@ -24,6 +26,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 >> /var/log/wikidata/prune2.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
+        require => File['/var/log/wikidata'],
     }
 
     cron { 'wikibase-repo-prune-test':
@@ -31,6 +34,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 >> /var/log/wikidata/prune-testwikidata.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
+        require => File['/var/log/wikidata'],
     }
 
     file { '/var/log/wikidata':
@@ -61,6 +65,7 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         user    => $::mediawiki::users::web,
         minute  => 30,
         hour    => '*',
-        weekday => '*'
+        weekday => '*',
+        require => File['/var/log/wikidata'],
     }
 }
