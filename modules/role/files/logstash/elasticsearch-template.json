@@ -158,6 +158,10 @@
           "type" : "keyword",
           "doc_values": true
         },
+        "lineno" : {
+          "type" : "keyword",
+          "doc_values": true
+        },
         "pid" : {
           "type" : "keyword",
           "doc_values": true
