@@ -96,7 +96,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, demon, hashar, reedy, thcipriani]
+    members: [catrope, demon, hashar, legoktm, reedy, thcipriani]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
