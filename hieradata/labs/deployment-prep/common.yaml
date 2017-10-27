@@ -253,6 +253,12 @@ role::logstash::apifeatureusage::elastic_hosts:
       shard02:
         host: 10.68.16.231 # deployment-redis02
         port: 6379
+      shard03:
+        host: 10.68.19.242 # deployment-redis05
+        port: 6379
+      shard04:
+        host: 10.68.20.16 # deployment-redis06
+        port: 6379
   sessions: *labs_shards
 nfs_mounts:
   project: false
