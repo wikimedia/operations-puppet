@@ -5,7 +5,7 @@
 # those anymore.
 class profile::cumin::target(
     $cluster = hiera('cluster', 'misc'),
-    $site = $::site,
+    $site = $::site,  # lint:ignore:wmf_styleguide
 ) {
     if $::_roles {
         $roles = prefix(keys($::_roles), 'role::')
@@ -21,9 +21,9 @@ class profile::cumin::target(
     $cumin_master_pub_key = secret('keyholder/cumin_master.pub')
 
     ssh::userkey { 'root-cumin':
-        ensure    => present,
-        user      => 'root',
-        skey      => 'cumin',
-        content   => template('profile/cumin/userkey.erb'),
+        ensure  => present,
+        user    => 'root',
+        skey    => 'cumin',
+        content => template('profile/cumin/userkey.erb'),
     }
 }

@@ -1,9 +1,9 @@
 class profile::cumin::master (
     $puppetdb_host  = hiera('puppetmaster::puppetdb::master'),
-    $cumin_log_path = '/var/log/cumin',
     $datacenters    = hiera('datacenters'),
 ) {
     include passwords::phabricator
+    $cumin_log_path = '/var/log/cumin'
 
     ::keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],
