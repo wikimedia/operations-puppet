@@ -16,6 +16,7 @@ sub cluster_be_backend_response_early { }
 sub cluster_be_backend_response {
     // Do not cache explicit lengths >= ~1GB in backends in general
     if (beresp.http.Content-Length ~ "^[0-9]{10}") {
+	// Probably HFP
 	set beresp.http.X-CDIS = "pass";
         set beresp.uncacheable = true;
         return (deliver);

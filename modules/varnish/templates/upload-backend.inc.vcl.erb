@@ -22,6 +22,7 @@ sub pick_stevedore {
 	else { // >= 64MB
 		set beresp.storage_hint = "bin4";
 		if (std.integer(beresp.http.Content-Length, 0) >= 1024 * 16 * 16 * 16 * 16 * 16) { // 1GB
+			// Probably HFP
 			set beresp.uncacheable = true;
 		}
 	}
@@ -58,6 +59,7 @@ sub cluster_be_backend_response_early { }
 sub cluster_be_backend_response {
 	// hit-for-pass objects < 1024B size (T145661)
 	if (std.integer(beresp.http.Content-Length, 1024) < 1024 && beresp.status == 200) {
+		// Probably HFP
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);

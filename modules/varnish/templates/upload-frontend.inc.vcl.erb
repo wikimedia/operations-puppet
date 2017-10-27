@@ -106,6 +106,7 @@ sub cluster_fe_backend_response {
             && bereq.http.X-CDIS == "miss"
             && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$"
             && std.integer(beresp.http.Content-Length, 1024) >= 1024) {
+		// Probably HFM?
 		set beresp.ttl = 0s;
 		set beresp.grace = 60s;
 		set beresp.keep = 0s;
@@ -115,6 +116,7 @@ sub cluster_fe_backend_response {
 
 	// hit-for-pass objects >= 256K size
 	if (std.integer(beresp.http.Content-Length, 262144) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+		// Probably HFP
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);
