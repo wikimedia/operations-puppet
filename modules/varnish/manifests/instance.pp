@@ -44,6 +44,20 @@ define varnish::instance(
         $runtime_parameters = $::varnish::common::fe_runtime_params
     }
 
+    # Raise an icinga warning if the Varnish child process has been started
+    # more than once; that means it has died unexpectedly. Critical if it has
+    # been started more than 3 times.
+    $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${instance_name}"
+
+    monitoring::check_prometheus { "varnish-${instance_name}-check-child-start":
+        description    => 'Varnish Child Restarted',
+        query          => "varnish_mgt_child_start{${prometheus_labels}}",
+        method         => 'gt',
+        warning        => 1,
+        critical       => 3,
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
+
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
 
     varnish::common::directors { $vcl:
