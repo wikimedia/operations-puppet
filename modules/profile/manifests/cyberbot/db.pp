@@ -16,13 +16,20 @@ class profile::cyberbot::db{
 
     require_package('mariadb-server')
 
+    service { 'mysql':
+        ensure  => 'running',
+        enable  => true,
+        require => Package['mariadb-server'],
+    }
+
     file { '/etc/mysql/my.cnf':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         source  => 'puppet:///modules/profile/cyberbot/my.cnf',
-        require => Package['mariadb-server'];
+        require => Package['mariadb-server'],
+        notify  => Service['mysql'],
     }
 
 }
