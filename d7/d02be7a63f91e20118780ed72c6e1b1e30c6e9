@@ -1,0 +1,10 @@
+Code-Review+1: Aaron Schulz <aschulz@wikimedia.org>
+Code-Review+1: Jcrespo <jcrespo@wikimedia.org>
+Code-Review+1: Thiemo Mättig (WMDE) <thiemo.maettig@wikimedia.de>
+Verified+2: jenkins-bot
+Code-Review+2: Elukey <ltoscano@wikimedia.org>
+Submitted-by: Elukey <ltoscano@wikimedia.org>
+Submitted-at: Fri, 27 Oct 2017 07:38:15 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/384951
+Project: operations/puppet
+Branch: refs/heads/production
