@@ -11,7 +11,7 @@ module Puppet::Parser::Functions
   newfunction(:ganglia_aggregator_config, :type => :rvalue) do |_|
     config = {}
     site_wide_aggregators = {}
-    clusters = function_hiera(['ganglia_clusters'])
+    clusters = call_function(:hiera, ['ganglia_clusters'])
     clusters.each do |_cluster, data|
       data['sites'].each do |site, aggregators|
         name = format('%s %s', data['description'], site)
@@ -19,8 +19,7 @@ module Puppet::Parser::Functions
           aggregator = aggregators.join(' ')
         else
           unless site_wide_aggregators.include? site
-            site_wide_aggregators[site] = function_hiera(
-              ['ganglia_aggregators', nil, site])
+            site_wide_aggregators[site] = call_function(:hiera, ['ganglia_aggregators', nil, site])
           end
           # Compute the port to use
           aggregator = calc_url(site_wide_aggregators[site], data['id'])
