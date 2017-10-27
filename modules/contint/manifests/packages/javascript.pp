@@ -6,11 +6,6 @@ class contint::packages::javascript {
 
     requires_realm('labs')
 
-    package { 'npm':
-        ensure => present,
-        notify => Exec['pin npm'],
-    }
-
     # DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar
     #
     # https://wikitech.wikimedia.org/wiki/Nova_Resource:Integration/Setup
@@ -22,14 +17,18 @@ class contint::packages::javascript {
     # called 'node'
     package { 'nodejs-legacy':
         ensure => present,
-        # Brings up 'nodejs' from upstream which we then override
-        before => Package['npm'],
+    }
+
+    file { '/usr/bin/npm':
+        ensure  => 'link',
+        target  => '/usr/local/bin/npm',
+        require => Package['nodejs-legacy'],
     }
 
     exec { 'pin npm':
         command => "/usr/bin/npm install -g npm@${versions['npm']}",
         onlyif  => "/usr/bin/test \"`/usr/bin/npm --version`\" != \"${versions['npm']}\"",
-        require => Package['npm'],
+        require => File['/usr/bin/npm'],
     }
 
 }
