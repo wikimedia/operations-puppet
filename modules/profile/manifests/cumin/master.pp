@@ -1,6 +1,6 @@
 class profile::cumin::master (
     $puppetdb_host  = hiera('puppetmaster::puppetdb::master'),
-    $cumin_log_path = '/var/log/cumin',
+    $cumin_log_path = hiera('profile::cumin::master::cumin_log_path'),
     $datacenters    = hiera('datacenters'),
 ) {
     include passwords::phabricator
