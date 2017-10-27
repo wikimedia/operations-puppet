@@ -13,6 +13,8 @@ class role::ci::master {
 
     system::role { 'ci::master': description => 'CI Jenkins master' }
 
+    interface::add_ip6_mapped { 'main': }
+
     include ::standard
     include ::profile::ci::backup
     include ::profile::ci::firewall
