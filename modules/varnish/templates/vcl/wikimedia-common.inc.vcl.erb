@@ -79,16 +79,18 @@ probe varnish {
 #             'port' = 80,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
+#             'between_bytes_timeout' = '3s',
 #             'max_connections' = 100, # per-backend!
 #         },
 #     },
 # }
 #
 #
-# @app_def_be_opts = { # exactly these 4 options supported/required
+# @app_def_be_opts = { # exactly these 5 options supported/required
 #     'port' = 80,
 #     'connect_timeout' = '2s',
 #     'first_byte_timeout' = '4s',
+#     'between_bytes_timeout' = '3s',
 #     'max_connections' = 100, # per-backend!
 # }
 # @app_directors = { # not always defined (e.g. frontends, for now)
@@ -103,6 +105,7 @@ probe varnish {
 #             'port' = 80,
 #             'connect_timeout' = '2s',
 #             'first_byte_timeout' = '4s',
+#             'between_bytes_timeout' = '3s',
 #             'max_connections' = 100, # per-backend!
 #         },
 #         'probe'   => { # optional probe
@@ -140,6 +143,7 @@ backend <%= name %> {
 	.port = "<%= be_opts['port'] %>";
 	.connect_timeout = <%= be_opts['connect_timeout'] %>;
 	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
+	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
 	.max_connections = <%= be_opts['max_connections'] %>;
 	.probe = varnish;
 }
@@ -166,6 +170,7 @@ backend <%= name %> {
 	.port = "<%= be_opts['port'] %>";
 	.connect_timeout = <%= be_opts['connect_timeout'] %>;
 	.first_byte_timeout = <%= be_opts['first_byte_timeout'] %>;
+	.between_bytes_timeout = <%= be_opts['between_bytes_timeout'] %>;
 	.max_connections = <%= be_opts['max_connections'] %>;
 	<%- if director.key?('probe') -%>
 	.probe = {
