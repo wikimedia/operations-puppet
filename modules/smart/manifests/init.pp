@@ -1,4 +1,6 @@
-class smart {
+class smart (
+    $ensure = present,
+) {
     require_package(['python3-prometheus-client', 'python3', 'bsdutils'])
 
     $outfile = '/var/lib/prometheus/node.d/device_smart.prom'
@@ -10,7 +12,7 @@ class smart {
     # Prefer smartmontools version from backports (if any) because of newer
     # smart drivedb.
     package { 'smartmontools':
-        ensure          => installed,
+        ensure          => $ensure,
         install_options => ['-t', "${::lsbdistcodename}-backports"],
     }
 
@@ -21,7 +23,7 @@ class smart {
     }
 
     file { '/etc/smartmontools/run.d/20logger':
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
@@ -30,7 +32,7 @@ class smart {
     }
 
     file { '/usr/local/sbin/smart-data-dump':
-        ensure => present,
+        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
@@ -38,10 +40,18 @@ class smart {
     }
 
     cron { 'export_smart_data_dump':
+        ensure  => $ensure,
         command => "/usr/local/sbin/smart-data-dump --outfile ${outfile}",
         user    => 'root',
         hour    => '*',
         minute  => fqdn_rand(60, 'export_smart_data_dump'),
         require => File['/usr/local/sbin/smart-data-dump'],
+    }
+
+    # Cleanup outfile only on ensure=absent, since on ensure=present the file gets created by cron.
+    if $ensure == absent {
+      file { $outfile:
+          ensure => $ensure,
+      }
     }
 }
