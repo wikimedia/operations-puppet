@@ -6,7 +6,7 @@ class releases::reprepro::upload (
     $group        = 'releases',
     $sudo_user    = '%wikidev',
     $homedir      = '/var/lib/releases',
-    $upload_host  = 'bromine.eqiad.wmnet',
+    $upload_host  = undef,
 ) {
     group { 'releases':
         ensure => present,
