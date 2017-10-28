@@ -29,6 +29,9 @@ cache::app_directors:
   appservers:
     be_opts:
       max_connections: 10000
+      connect_timeout: '3s'
+      first_byte_timeout: '20s'
+      between_bytes_timeout: '10s'
       # ^ Emergency change to cope with an issue we don't yet fully
       # comprehend.  Should not become the new normal.
     backends:
@@ -37,6 +40,9 @@ cache::app_directors:
   api:
     be_opts:
       max_connections: 10000
+      connect_timeout: '3s'
+      first_byte_timeout: '20s'
+      between_bytes_timeout: '10s'
       # ^ Emergency change to cope with an issue we don't yet fully
       # comprehend.  Should not become the new normal.
     backends:
