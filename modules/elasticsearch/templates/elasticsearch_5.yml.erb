@@ -443,6 +443,6 @@ index.load_fixed_bitset_filters_eagerly: false
 reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
 <% end %>
 
-<% if @script_max_compilations_per_minute %>
+<% unless @script_max_compilations_per_minute.nil? %>
 script.max_compilations_per_minute: <%=script_max_compilations_per_minute%>
 <% end %>
