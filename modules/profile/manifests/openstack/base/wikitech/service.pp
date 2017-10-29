@@ -14,6 +14,9 @@ class profile::openstack::base::wikitech::service(
     include ::mediawiki::cgroup
     include ::scap::scripts
 
+    # Readline support for PHP maintenance scripts (T126262)
+    require_package('php5-readline')
+
     $osm_host_split = split($osm_host, '\.')
     $certificate = $osm_host_split[0]
     letsencrypt::cert::integrated { $certificate:
