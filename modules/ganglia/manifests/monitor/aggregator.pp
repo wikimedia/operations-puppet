@@ -33,7 +33,7 @@ class ganglia::monitor::aggregator($sites) {
 
     }
 
-    site_instances{ $sites: }
+    ganglia::monitor::aggregator::site_instances{ $sites: }
 
     # with systemd each instance is a separate service spawned from a template
     # this is the old service that started multiple aggregators with upstart
