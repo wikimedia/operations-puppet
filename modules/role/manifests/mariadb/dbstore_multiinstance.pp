@@ -13,7 +13,7 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     #TODO: define one group per shard
-    class {'mariadb::groups':
+    class {'role::mariadb::groups':
         mysql_group => 'dbstore',
         mysql_shard => 's1',
         mysql_role  => 'slave',
