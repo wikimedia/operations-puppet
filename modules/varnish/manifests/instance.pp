@@ -47,12 +47,12 @@ define varnish::instance(
     # Raise an icinga warning if the Varnish child process has been started
     # more than once; that means it has died unexpectedly. Critical if it has
     # been started more than 3 times.
-    $prometheus_labels = "instance=~'${::hostname}:.*',layer='${inst}'"
+    $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${inst}\""
     $grafana_dashboard = "https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"
 
     monitoring::check_prometheus { "varnish-${inst}-check-child-start":
         description    => "Varnish Child Restarted ${grafana_dashboard}",
-        query          => "varnish_mgt_child_start{${prometheus_labels}}",
+        query          => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
         method         => 'gt',
         warning        => 1,
         critical       => 3,
