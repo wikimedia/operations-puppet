@@ -27,6 +27,7 @@ MA 02110-1301 USA
 
 from __future__ import print_function
 import diamond.collector
+import re
 
 Iostats_version = '0.2'
 
@@ -349,11 +350,16 @@ def nfs_iostat(new, devices):
     return iostat
 
 
-def list_nfs_mounts(mountstats):
+def list_nfs_mounts(mountstats, include_regex, exclude_regex):
     """return a list of NFS mounts
     """
     list = []
+
     for device, descr in mountstats.items():
+        if not include_regex.match(device):
+            continue
+        if exclude_regex.match(device):
+            continue
         stats = DeviceData()
         stats.parse_stats(descr)
         if stats.is_nfs_mountpoint():
@@ -377,10 +383,8 @@ class NfsiostatCollector(diamond.collector.Collector):
         config.update({
             'enabled':  False,
             'path':     'nfsiostat',
-            'devices': ['/home',
-                        '/public/dumps',
-                        '/data/scratch',
-                        '/data/project'],
+            'devices_include': '/mnt/nfs/*',
+            'devices_exclude': '(?!)',
             'attributes': ['attr',
                            'read',
                            'write',
@@ -422,15 +426,16 @@ class NfsiostatCollector(diamond.collector.Collector):
         mountstats = parse_stats_file('/proc/self/mountstats')
 
         # make certain devices contains only NFS mount points
-        devices = list_nfs_mounts(mountstats) or []
-        adevices = [d for d in devices if d in self.config['devices']]
+        include_regex = re.compile(self.config['devices_include'])
+        exclude_regex = re.compile(self.config['devices_exclude'])
+        devices = list_nfs_mounts(mountstats, include_regex, exclude_regex)
 
         if len(devices) == 0:
             self.log.error('No NFS mount points were found')
             return
 
         metrics = {}
-        stats = nfs_iostat(mountstats, adevices)
+        stats = nfs_iostat(mountstats, devices)
 
         nfs_ops = {}
         # ops are reported by mount point but this is disingenuous as
