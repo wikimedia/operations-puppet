@@ -56,6 +56,13 @@ sub cluster_be_backend_fetch {
 sub cluster_be_backend_response_early { }
 
 sub cluster_be_backend_response {
+	// If this is the backend-most varnish and the response has no CL header,
+	// disable streaming so that all other varnishes will have access to CL for
+	// size-based decisions. See https://phabricator.wikimedia.org/P6190
+	if (!bereq.http.X-Next-Is-Cache && !beresp.http.Content-Length) {
+		set beresp.do_stream = false;
+	}
+
 	// hit-for-pass objects < 1024B size (T145661)
 	if (std.integer(beresp.http.Content-Length, 1024) < 1024 && beresp.status == 200) {
 		set beresp.http.X-CDIS = "pass";
