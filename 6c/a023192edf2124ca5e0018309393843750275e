@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Madhuvishy <mviswanathan@wikimedia.org>
+Submitted-by: Madhuvishy <mviswanathan@wikimedia.org>
+Submitted-at: Mon, 30 Oct 2017 13:33:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/386660
+Project: operations/puppet
+Branch: refs/heads/production
