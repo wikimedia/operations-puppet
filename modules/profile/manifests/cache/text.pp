@@ -32,18 +32,18 @@ class profile::cache::text(
 
     $fe_cache_be_opts = {
         'port'                  => 3128,
-        'connect_timeout'       => '5s',
-        'first_byte_timeout'    => '185s',
-        'between_bytes_timeout' => '60s',
+        'connect_timeout'       => '3s',
+        'first_byte_timeout'    => '65s',
+        'between_bytes_timeout' => '33s',
         'max_connections'       => 100000,
         'probe'                 => 'varnish',
     }
 
     $be_cache_be_opts = {
         'port'                  => 3128,
-        'connect_timeout'       => '5s',
-        'first_byte_timeout'    => '180s',
-        'between_bytes_timeout' => '60s',
+        'connect_timeout'       => '3s',
+        'first_byte_timeout'    => '65s',
+        'between_bytes_timeout' => '33s',
         'max_connections'       => 0,
         'probe'                 => 'varnish',
     }
