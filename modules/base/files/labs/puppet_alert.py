@@ -56,13 +56,13 @@ def main():
 
         fqdn = socket.getfqdn()
 
-        subject = "[WMFlabs alert] puppet failure on %s" % (fqdn,)
+        subject = "[Cloud VPS alert] puppet failure on %s" % (fqdn,)
 
         print "It has been %s seconds since last puppet run." \
             "Sending nag emails." % NAG_INTERVAL
 
         body = """
-Puppet is failing to run on the "{fqdn}" instance in Wikimedia Labs.
+Puppet is failing to run on the "{fqdn}" instance in Wikimedia Cloud VPS.
 
 Working puppet runs are needed to maintain instance security and logins.
 As long as puppet continues to fail, this system is in danger of becoming
@@ -70,10 +70,10 @@ unreachable.
 
 You are receiving this email because you are listed as an administrator
 for the project that contains this instance.  Please take steps to repair
-this instance or contact a Labs admin for assistance.
+this instance or contact a Cloud VPS admin for assistance.
 
-For further support, visit #wikimedia-cloud on freenode or visit
-https://wikitech.wikimedia.org
+For further support, visit #wikimedia-cloud on freenode or
+<https://wikitech.wikimedia.org>
 """.format(fqdn=fqdn)
 
         email_admins(subject, body)
