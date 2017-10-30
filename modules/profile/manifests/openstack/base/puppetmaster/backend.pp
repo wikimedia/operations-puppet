@@ -2,6 +2,7 @@ class profile::openstack::base::puppetmaster::backend(
     $labs_instance_range = hiera('profile::openstack::base::nova::fixed_range'),
     $horizon_host = hiera('profile::openstack::base::horizon_host'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
+    $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     $puppetmaster_ca = hiera('profile::openstack::base::puppetmaster::ca'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::servers'),
@@ -17,18 +18,19 @@ class profile::openstack::base::puppetmaster::backend(
     require ::profile::conftool::client
     include ::network::constants
     class {'profile::openstack::base::puppetmaster::common':
-        labs_instance_range   => $labs_instance_range,
-        horizon_host          => $horizon_host,
-        designate_host        => $designate_host,
-        puppetmaster_hostname => $puppetmaster_hostname,
-        puppetmasters         => $puppetmasters,
-        baremetal_servers     => $baremetal_servers,
-        encapi_db_host        => $encapi_db_host,
-        encapi_db_name        => $encapi_db_name,
-        encapi_db_user        => $encapi_db_user,
-        encapi_db_pass        => $encapi_db_pass,
-        encapi_statsd_prefix  => $encapi_statsd_prefix,
-        statsd_host           => $statsd_host,
+        labs_instance_range      => $labs_instance_range,
+        horizon_host             => $horizon_host,
+        designate_host           => $designate_host,
+        puppetmaster_webhostname => $puppetmaster_webhostname,
+        puppetmaster_hostname    => $puppetmaster_hostname,
+        puppetmasters            => $puppetmasters,
+        baremetal_servers        => $baremetal_servers,
+        encapi_db_host           => $encapi_db_host,
+        encapi_db_name           => $encapi_db_name,
+        encapi_db_user           => $encapi_db_user,
+        encapi_db_pass           => $encapi_db_pass,
+        encapi_statsd_prefix     => $encapi_statsd_prefix,
+        statsd_host              => $statsd_host,
     }
 
     # Only allow puppet access from the instances
