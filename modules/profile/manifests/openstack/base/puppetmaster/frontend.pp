@@ -34,18 +34,19 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        labs_instance_range   => $labs_instance_range,
-        horizon_host          => $horizon_host,
-        designate_host        => $designate_host,
-        puppetmaster_hostname => $puppetmaster_hostname,
-        puppetmasters         => $puppetmasters,
-        baremetal_servers     => $baremetal_servers,
-        encapi_db_host        => $encapi_db_host,
-        encapi_db_name        => $encapi_db_name,
-        encapi_db_user        => $encapi_db_user,
-        encapi_db_pass        => $encapi_db_pass,
-        encapi_statsd_prefix  => $encapi_statsd_prefix,
-        statsd_host           => $statsd_host,
+        labs_instance_range      => $labs_instance_range,
+        horizon_host             => $horizon_host,
+        designate_host           => $designate_host,
+        puppetmaster_webhostname => $puppetmaster_webhostname,
+        puppetmaster_hostname    => $puppetmaster_hostname,
+        puppetmasters            => $puppetmasters,
+        baremetal_servers        => $baremetal_servers,
+        encapi_db_host           => $encapi_db_host,
+        encapi_db_name           => $encapi_db_name,
+        encapi_db_user           => $encapi_db_user,
+        encapi_db_pass           => $encapi_db_pass,
+        encapi_statsd_prefix     => $encapi_statsd_prefix,
+        statsd_host              => $statsd_host,
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {

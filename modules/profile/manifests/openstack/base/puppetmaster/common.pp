@@ -2,6 +2,7 @@ class profile::openstack::base::puppetmaster::common(
     $labs_instance_range = hiera('profile::openstack::base::puppetmaster::common::labs_instance_range'),
     $horizon_host = hiera('profile::openstack::base::puppetmaster::common::horizon_host'),
     $designate_host = hiera('profile::openstack::base::puppetmaster::common::designate_host'),
+    $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
     $puppetmasters = hiera('profile::openstack::base::puppetmaster::common::puppetmasters'),
     $baremetal_servers = hiera('profile::openstack::base::puppetmaster::common::baremetal_servers'),
@@ -20,7 +21,7 @@ class profile::openstack::base::puppetmaster::common(
     class {'::puppetmaster::labsrootpass':}
 
     class {'::openstack2::puppet::master::enc':
-        puppetmaster => $puppetmaster_hostname,
+        puppetmaster => $puppetmaster_webhostname,
     }
 
     class { '::openstack2::puppet::master::encapi':
