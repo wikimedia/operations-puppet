@@ -4,14 +4,9 @@
 #  and can be adjusted to depool a server or redistribute load.
 
 profile::openstack::base::pdns::labsdb::c1:
-  - c1
-
-profile::openstack::base::pdns::labsdb::c2:
-  - c2
-
-profile::openstack::base::pdns::labsdb::c3:
   - bgwiki
   - bgwiktionary
+  - c1
   - commonswiki
   - cswiki
   - enwiki
@@ -32,6 +27,11 @@ profile::openstack::base::pdns::labsdb::c3:
   - thwiki
   - trwiki
   - zhwiki
+
+profile::openstack::base::pdns::labsdb::c2:
+  - c2
+
+profile::openstack::base::pdns::labsdb::c3:
   - aawiki
   - aawikibooks
   - aawiktionary
