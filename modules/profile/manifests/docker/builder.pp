@@ -17,7 +17,13 @@ class profile::docker::builder(
     $registry = hiera('docker::registry'),
     $username = hiera('docker::registry::username'),
     $password = hiera('docker::registry::password')
-    ) {
+) {
+    # Scap target for docker-pkg
+    class { '::service::deploy::common': }
+    scap::target { 'docker-pkg/deploy':
+        deploy_user => 'deploy-service',
+        manage_user => true,
+    }
 
     class { '::docker::baseimages':
         docker_registry => $registry,
