@@ -1,7 +1,5 @@
-# This is needed but not part of original code
-# So I'm going to uncomment post-first-refactor-merge
-# admin::groups:
-#  - wmcs-roots
+admin::groups:
+  - wmcs-roots
 
 puppetmaster::hiera_config: labs
 labs_puppet_master: labs-puppetmaster.wikimedia.org
