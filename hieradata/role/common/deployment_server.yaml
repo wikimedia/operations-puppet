@@ -177,3 +177,5 @@ scap::sources:
     repository: search/MjoLniR
   statsv/statsv:
     repository: analytics/statsv
+  "docker-pkg/deploy":
+    repository: operations/docker-images/docker-pkg/deploy
