@@ -1,4 +1,4 @@
-docker::registry: darmstadtium.eqiad.wmnet
+docker::registry: docker-registry.discovery.wmnet
 profile::docker::engine::version: "1.12.6-0~debian-jessie"
 profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
