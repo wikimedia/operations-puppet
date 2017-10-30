@@ -386,11 +386,6 @@ host conf2003 {
     fixed-address conf2003.codfw.wmnet;
 }
 
-host copper {
-    hardware ethernet 78:2b:cb:09:0e:9d;
-    fixed-address copper.eqiad.wmnet;
-}
-
 host cp1008 {
     hardware ethernet 84:2b:2b:fd:bd:05;
     fixed-address cp1008.wikimedia.org;

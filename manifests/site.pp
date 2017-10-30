@@ -215,7 +215,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 }
 
 # Debian package/docker images building host in production
-node /^(boron|copper)\.eqiad\.wmnet$/ {
+node /^boron\.eqiad\.wmnet$/ {
     role(builder)
 }
 

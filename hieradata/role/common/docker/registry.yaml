@@ -1,5 +1,4 @@
 profile::docker::registry::image_builders:
-  - '10.64.16.176' # copper.eqiad.wmnet
   - '10.64.0.36' #boron.eqiad.wmnet
   - '208.80.154.17' # contint1001
   - '208.80.153.15' # contint2001
