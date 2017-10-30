@@ -17,7 +17,8 @@ class profile::docker::builder(
     $registry = hiera('docker::registry'),
     $username = hiera('docker::registry::username'),
     $password = hiera('docker::registry::password')
-    ) {
+) {
+    class { '::docker::builder': }
 
     class { '::docker::baseimages':
         docker_registry => $registry,
