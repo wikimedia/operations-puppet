@@ -1672,6 +1672,8 @@ host db2086 {
 host db2087 {
     hardware ethernet 18:66:DA:F8:F4:5C;
     fixed-address db2087.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2088 {
