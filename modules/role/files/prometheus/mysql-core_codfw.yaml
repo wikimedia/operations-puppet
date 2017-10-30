@@ -104,6 +104,7 @@
   - db2060:9104
   - db2067:9104
   - db2076:9104
+  - db2087:13316
 - labels:
     shard: s6
     role: master
@@ -121,6 +122,7 @@
   - db2068:9104
   - db2077:9104
   - db2086:13317
+  - db2087:13317
 - labels:
     shard: s7
     role: master

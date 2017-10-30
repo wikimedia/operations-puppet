@@ -547,6 +547,9 @@ node /^db20(40|47|54|61|68|77)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
+node /^db20(87)\.codfw\.wmnet/ {
+    role(mariadb::core_multiinstance)
+
 ## x1 shard
 # eqiad
 node 'db1031.eqiad.wmnet' {
