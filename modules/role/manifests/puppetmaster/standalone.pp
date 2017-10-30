@@ -42,12 +42,15 @@ class role::puppetmaster::standalone(
     $extra_auth_rules = '',
     $server_name = $::fqdn,
     $use_enc = true,
+    $labs_puppet_master = hiera('labs_puppet_master'),
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
     }
 
-    include ::profile::puppetmaster::labsenc
+    class {'::openstack2::puppet::master::enc':
+        puppetmaster => $labs_puppet_master,
+    }
 
     $config = {
         'node_terminus'     => 'exec',
