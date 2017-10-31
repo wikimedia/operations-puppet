@@ -11,7 +11,7 @@ class varnish::common::vcl($vcl_config={}) {
     }
 
     # VTC tests
-    file { '/usr/share/varnish/tests/':
+    file { '/usr/share/varnish/tests':
         source  => 'puppet:///modules/varnish/tests',
         owner   => 'root',
         group   => 'root',
