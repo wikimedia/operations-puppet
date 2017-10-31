@@ -21,7 +21,7 @@ class role::prometheus::analytics {
 
     prometheus::server { 'analytics':
         storage_encoding      => '2',
-        listen_address        => '127.0.0.1:9904',
+        listen_address        => '127.0.0.1:9905',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
@@ -29,7 +29,7 @@ class role::prometheus::analytics {
     }
 
     prometheus::web { 'analytics':
-        proxy_pass => 'http://localhost:9904/analytics',
+        proxy_pass => 'http://localhost:9905/analytics',
     }
 
     prometheus::rule { 'rules_analytics.conf':
