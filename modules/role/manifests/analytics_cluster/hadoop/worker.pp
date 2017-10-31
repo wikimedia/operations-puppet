@@ -150,8 +150,6 @@ class role::analytics_cluster::hadoop::worker {
         require => Package['python3-numpy'],
     }
 
-
-
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
         proto  => 'tcp',
