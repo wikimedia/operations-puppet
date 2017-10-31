@@ -167,9 +167,9 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
         pcre_cache_type: lru
         enable_reusable_tc: true
 profile::mediawiki::jobrunner::queue_servers:
-    - deployment-redis01.deployment-prep.eqiad.wmflabs
+    - deployment-redis05.deployment-prep.eqiad.wmflabs
 profile::mediawiki::jobrunner::aggr_servers:
-    - deployment-redis01.deployment-prep.eqiad.wmflabs
+    - deployment-redis05.deployment-prep.eqiad.wmflabs
 statsd: labmon1001.eqiad.wmnet:8125
 profile::mediawiki::jobrunner::runners:
   basic: 5
