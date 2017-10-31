@@ -17,7 +17,7 @@ class yubiauth::yhsm_yubikey_ksm(
         enable  => true,
         require => [
                     Package['yhsm-yubikey-ksm'],
-                    File['/etc/default/yhsm-yubikey-ksm'],
+                    File['yhsm-yubikey-ksm-default'],
                     ],
     }
 }
