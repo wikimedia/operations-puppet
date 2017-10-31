@@ -2,14 +2,14 @@
 #  We need special rules to allow access for openstack services (which typically
 #  run on hosts with public IPs)
 
-class role::mariadb::ferm_wmcs {
-
-    $nova_controller = 'labcontrol1001.wikimedia.org'
-    $nova_controller_standby = 'labcontrol1002.wikimedia.org'
-    $designate_host = 'labservices1001.wikimedia.org'
-    $designate_host_standby = 'labservices1002.wikimedia.org'
-    $horizon_host = 'californium.wikimedia.org'
-    $osm_host = 'silver.wikimedia.org'
+class role::mariadb::ferm_wmcs(
+    $nova_controller = hiera('profile::openstack::main::nova_controller'),
+    $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
+    $designate_host = hiera('profile::openstack::main::designate_host'),
+    $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
+    $horizon_host = hiera('profile::openstack::main::horizon_host'),
+    $osm_host = hiera('profile::openstack::main::osm_host'),
+    ) {
 
     ferm::service{ 'nova_controller':
         proto   => 'tcp',
