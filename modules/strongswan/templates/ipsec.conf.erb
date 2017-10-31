@@ -53,6 +53,7 @@ conn %default
 	type=transport
 	auto=start
 	keyexchange=ikev2 # don't accept IKEv1
+	fragmentation=yes # fragment IKE to default 1280
 	mobike=no # no need for multi-home/roam, I don't think?
 	keyingtries=%forever # don't give up after serial keying failures
 	margintime=13m # default is 9m (double this value must be less than "lifetime", which is def 1h)
