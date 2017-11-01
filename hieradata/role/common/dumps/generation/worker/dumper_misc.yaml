@@ -1,0 +1,4 @@
+admin::groups:
+  - udp2log-users
+  - deployment
+  - snapshot-admins
