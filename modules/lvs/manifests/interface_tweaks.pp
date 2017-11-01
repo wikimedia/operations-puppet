@@ -46,4 +46,12 @@ define lvs::interface_tweaks(
             value     => 4078,
         }
     }
+    # lvs1001-6 have bnx2 1G cards, different maximum but still useful!
+    else {
+        interface::ring { "${name} rxring":
+            interface => $interface,
+            setting   => 'rx',
+            value     => 2040,
+        }
+    }
 }
