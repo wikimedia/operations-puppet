@@ -14,7 +14,7 @@ class role::analytics_cluster::refinery::job::json_refine {
         output_base_path => '/wmf/data/event',
         output_database  => 'event',
         table_blacklist  => '^Edit|ChangesListHighlights$',
-        minute           => 20,
+        minute           => 30,
     }
 
     # Refine EventBus data.
@@ -26,6 +26,6 @@ class role::analytics_cluster::refinery::job::json_refine {
         output_base_path => '/wmf/data/event',
         output_database  => 'event',
         table_blacklist  => '^mediawiki_page_properties_change$',
-        minute           => 10,
+        minute           => 20,
     }
 }
