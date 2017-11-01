@@ -1,0 +1,85 @@
+varnishtest "X-Cache-Status"
+
+server s1 {
+    rxreq
+    expect req.url == "/hit-front"
+    txresp -hdr "X-Cache-Int-Testing: cp1067 pass, cp2004 hit/1, cp4029 hit/4, cp4027 hit/221"
+
+    rxreq
+    expect req.url == "/hit-local"
+    txresp -hdr "X-Cache-Int-Testing: cp1053 hit/2, cp2010 pass, cp4032 hit/3, cp4027 miss"
+
+    rxreq
+    expect req.url == "/hit-remote"
+    txresp -hdr "X-Cache-Int-Testing: cp1053 hit/11, cp2016 pass, cp4028 miss, cp4027 miss"
+
+    rxreq
+    expect req.url == "/int-front"
+    txresp -hdr "X-Cache-Int-Testing: cp4027 int"
+
+    rxreq
+    expect req.url == "/int-local"
+    txresp -hdr "X-Cache-Int-Testing: cp4032 int, cp4027 miss"
+
+    rxreq
+    expect req.url == "/int-remote"
+    txresp -hdr "X-Cache-Int-Testing: cp2016 int, cp4028 miss, cp4027 miss"
+
+    rxreq
+    expect req.url == "/miss"
+    txresp -hdr "X-Cache-Int-Testing: cp1053 pass, cp2023 pass, cp4027 miss, cp4027 miss"
+
+    rxreq
+    expect req.url == "/pass"
+    txresp -hdr "X-Cache-Int-Testing: cp1053 pass, cp2004 pass, cp4027 pass, cp4027 pass"
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/hit-front" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "hit-front"
+
+    txreq -url "/hit-local" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "hit-local"
+
+    txreq -url "/hit-remote" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "hit-remote"
+
+    txreq -url "/int-front" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "int-front"
+
+    txreq -url "/int-local" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "int-local"
+
+    txreq -url "/int-remote" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "int-remote"
+
+    txreq -url "/miss" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "miss"
+
+    txreq -url "/pass" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org"
+    rxresp
+
+    expect resp.http.X-Cache-Status == "pass"
+} -run
