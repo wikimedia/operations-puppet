@@ -1,0 +1,11 @@
+CONFIG = {
+    'mode': 'wsgi',
+    'working_dir': '<%= @directory %>/netbox',
+    'python': '<%= @venv %>/bin/python',
+    'args': (
+        '--bind=127.0.0.1:<%= @port %>',
+        '--workers=4',
+        '--timeout=10',
+	'wsgi',
+    ),
+}
