@@ -58,7 +58,7 @@ define role::analytics_cluster::refinery::job::json_refine_job (
         default => "--send-email-report --to-emails ${email_to}"
     }
 
-    $command = "PYTHONPATH=${refinery_path}/python ${refinery_path}/bin/is-yarn-app-running ${job_name} || /usr/bin/spark-submit --master yarn --deploy-mode client --driver-memory ${spark_driver_memory} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} --class org.wikimedia.analytics.refinery.job.JsonRefine --name ${job_name} ${_refinery_job_jar} --parallelism ${parallelism} --since ${since} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database} >> ${log_file} 2>&1"
+    $command = "PYTHONPATH=${refinery_path}/python ${refinery_path}/bin/is-yarn-app-running ${job_name} || /usr/bin/spark-submit --master yarn --deploy-mode cluster --driver-memory ${spark_driver_memory} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} --files /etc/hive/conf/hive-site.xml --class org.wikimedia.analytics.refinery.job.JsonRefine --name ${job_name} ${_refinery_job_jar} --parallelism ${parallelism} --since ${since} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database} >> ${log_file} 2>&1"
 
     cron { $job_name:
         command  => $command,
