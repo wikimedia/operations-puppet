@@ -1,0 +1,40 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ProxyPreserveHost On
+
+    ServerName netbox.wikimedia.org
+
+    Alias /static <%= @directory%>/static
+
+    # Needed to allow token-based API authentication
+    WSGIPassAuthorization on
+
+    <Directory <%= @directory%>/static>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Location /static>
+        ProxyPass !
+    </Location>
+
+    <%- if @port -%>
+    ProxyPass / http://127.0.0.1:<%= @port%>/
+    ProxyPassReverse / http://127.0.0.1:<%= @port%>/
+    <%- else -%>
+    ProxyPass / http://127.0.0.1:8001/
+    ProxyPassReverse / http://127.0.0.1:8001/
+    <%- end -%>
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+    CustomLog /var/log/apache2/netbox.wikimedia.org-access.log wmf
+    ErrorLog /var/log/apache2/netbox.wikimedia.org-error.log
+
+</VirtualHost>
