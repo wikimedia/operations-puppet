@@ -94,7 +94,7 @@ scap::sources:
 #    lvs_service: citoid
   cpjobqueue/deploy: {
     repository: mediawiki/services/change-propagation/jobqueue-deploy
-  }
+    }
   cxserver/deploy: {}
 #    lvs_service: cxserver
   dumps/dumps:
@@ -173,6 +173,9 @@ scap::sources:
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms
+  # Netbox software
+  netbox/deploy:
+    repository: operations/software/netbox-deploy
   relforge/mjolnir:
     repository: search/MjoLniR
   statsv/statsv:
