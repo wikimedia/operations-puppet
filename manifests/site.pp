@@ -1954,7 +1954,7 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
-    role(network::monitor, librenms, rancid, smokeping)
+    role(network::monitor, librenms, rancid, smokeping, netbox)
     interface::add_ip6_mapped { 'main': }
 }
 
