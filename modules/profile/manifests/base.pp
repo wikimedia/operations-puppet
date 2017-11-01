@@ -153,6 +153,4 @@ class profile::base(
     if $check_smart and $facts['is_virtual'] == false {
         class { '::smart': }
     }
-
-    interface::noflow { $facts['interface_primary']: }
 }
