@@ -411,21 +411,38 @@ sub deliver_synth_ {
 	// At the frontends, copy X-Cache-Int to X-Cache and delete X-Cache-Int
 	// This prevents double-set of X-Cache in log parsing on varnish4.
 	// In this block we also decipher X-Cache into an overall X-Cache-Status
-	// output header with one of 5 simple values: hit, miss, pass, int, or
-	// bug.
+	// output header with one of the following simple values:
+	// hit-{front,local,remote}, int-{front,local,remote}, miss, pass, unknown.
 	if (req.method != "PURGE") {
 		set resp.http.X-Cache = resp.http.X-Cache-Int;
+		<%- if @varnish_testing -%>
+		// The test VCL version uses X-Cache-Int-Testing accepted as is
+		// from the upstream server to simplify writing VTC tests.
+		set resp.http.X-Cache = resp.http.X-Cache-Int-Testing;
+		unset resp.http.X-Cache-Int-Testing;
+		<%- end -%>
+		set resp.http.X-Cache-Status = regsuball(resp.http.X-Cache, "cp[0-9]{4} (hit|miss|pass|int)(?:/[0-9]+)?", "\1");
+
 		unset resp.http.X-Cache-Int;
-		if (resp.http.X-Cache ~ "hit") {
-			set resp.http.X-Cache-Status = "hit";
-		} elsif (resp.http.X-Cache ~ "int") {
-			set resp.http.X-Cache-Status = "int";
-		} elsif (resp.http.X-Cache ~ "miss") {
+
+		if (resp.http.X-Cache-Status ~ "hit$") {
+			set resp.http.X-Cache-Status = "hit-front";
+		} elsif (resp.http.X-Cache-Status ~ "hit,[^,]+$") {
+			set resp.http.X-Cache-Status = "hit-local";
+		} elsif (resp.http.X-Cache-Status ~ "hit") {
+			set resp.http.X-Cache-Status = "hit-remote";
+		} elsif (resp.http.X-Cache-Status ~ "int$") {
+			set resp.http.X-Cache-Status = "int-front";
+		} elsif (resp.http.X-Cache-Status ~ "int,[^,]+$") {
+			set resp.http.X-Cache-Status = "int-local";
+		} elsif (resp.http.X-Cache-Status ~ "int") {
+			set resp.http.X-Cache-Status = "int-remote";
+		} elsif (resp.http.X-Cache-Status ~ "miss") {
 			set resp.http.X-Cache-Status = "miss";
-		} elsif (resp.http.X-Cache ~ "pass") {
+		} elsif (resp.http.X-Cache-Status ~ "pass") {
 			set resp.http.X-Cache-Status = "pass";
 		} else {
-			set resp.http.X-Cache-Status = "bug";
+			set resp.http.X-Cache-Status = "unknown";
 		}
 	}
 
