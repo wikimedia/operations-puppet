@@ -22,4 +22,23 @@ class snapshot::dumps::packages {
         require  => File['/mnt/data'],
         remounts => false,
     }
+
+    file { [ '/mnt/dumpsdata' ]:
+        ensure => 'directory',
+    }
+
+    $dumpsgenserver = $::site ? {
+        'eqiad' => 'dumpsdata1001.eqiad.wmnet',
+        default => 'dumpsdata1001.eqiad.wmnet',
+    }
+
+    mount { '/mnt/dumpsdata':
+        ensure   => 'mounted',
+        device   => "${dumpsgenserver}:/data",
+        fstype   => 'nfs',
+        name     => '/mnt/dumpsdata',
+        options  => 'bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3',
+        require  => File['/mnt/dumpsdata'],
+        remounts => false,
+    }
 }
