@@ -45,13 +45,19 @@ define lvs::interface_tweaks(
             setting   => 'rx',
             value     => 4078,
         }
+
+        # Disable ethernet PAUSE behavior, dropping is better than buffering (in reasonable cases!)
+        interface::noflow { $interface: }
     }
-    # lvs1001-6 have bnx2 1G cards, different maximum but still useful!
     else {
+        # lvs1001-6 have bnx2 1G cards, different maximum but still useful!
         interface::ring { "${name} rxring":
             interface => $interface,
             setting   => 'rx',
             value     => 2040,
         }
+
+        # We don't use noflow here because PAUSE is doing useful things for this
+        # case.  lvs1003 in particular can get overwhelmed in small bursts...
     }
 }
