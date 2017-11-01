@@ -52,4 +52,5 @@ class role::analytics_cluster::coordinator {
     include ::role::analytics_cluster::refinery::job::data_drop
     include ::role::analytics_cluster::refinery::job::project_namespace_map
     include ::role::analytics_cluster::refinery::job::sqoop_mediawiki
+    include ::role::analytics_cluster::refinery::job::json_refine
 }
