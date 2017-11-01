@@ -544,6 +544,7 @@ install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
 
 netmon_server: netmon1002.wikimedia.org
+profile::netbox::netbox_server: netmon1002.wikimedia.org
 
 releases_server: releases1001.eqiad.wmnet
 releases_server_failover: releases2001.codfw.wmnet
