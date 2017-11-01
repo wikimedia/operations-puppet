@@ -49,6 +49,9 @@ class cacheproxy::performance {
         value     => 'off',
     }
 
+    # Disable ethernet PAUSE behavior, dropping is better than buffering (in reasonable cases!)
+    interface::noflow { $iface_primary: }
+
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
     interface::rps { 'primary':
