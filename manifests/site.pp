@@ -2328,16 +2328,23 @@ node 'stat1006.eqiad.wmnet' {
 
 
 node /^snapshot1001\.eqiad\.wmnet/ {
-    role(snapshot::testbed)
-    include ::standard
+    role(dumps::generation::worker::testbed)
 }
 
-node /^snapshot100[5-7]\.eqiad\.wmnet/ {
+node /^snapshot100[5-6]\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to hiera/common.yaml:dataset_clients_snapshots,
     # hieradata/hosts/ with a file named after the host,
     # and modules/scap/files/dsh/group/mediawiki-installation
-    role(snapshot::dumper, snapshot::monitor, snapshot::cronrunner)
+    role(dumps::generation::worker::dumper)
+}
+
+node /^snapshot1007\.eqiad\.wmnet/ {
+    # NOTE: New snapshot hosts must also be manually added
+    # to hiera/common.yaml:dataset_clients_snapshots,
+    # hieradata/hosts/ with a file named after the host,
+    # and modules/scap/files/dsh/group/mediawiki-installation
+    role(dumps::generation::worker::dumper_misc)
 }
 
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
