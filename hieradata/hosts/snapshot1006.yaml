@@ -1,4 +1,2 @@
 snapshot::dumps::runtype: wikidatawiki
 snapshot::dumps::maxjobs: 28
-snapshot::dumps::monitor: false
-snapshot::cron::misc: false

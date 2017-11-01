@@ -1,4 +1,2 @@
 snapshot::dumps::runtype: regular
 snapshot::dumps::maxjobs: 6
-snapshot::dumps::monitor: false
-snapshot::cron::misc: false
