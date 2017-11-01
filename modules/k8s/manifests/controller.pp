@@ -9,6 +9,7 @@ class k8s::controller(
         group   => 'root',
         mode    => '0444',
         content => template('k8s/kube-controller-manager.default.erb'),
+        notify  => Service['kube-controller-manager'],
     }
 
     service { 'kube-controller-manager':
