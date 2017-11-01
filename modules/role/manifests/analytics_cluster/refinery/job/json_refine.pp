@@ -19,7 +19,7 @@ class role::analytics_cluster::refinery::job::json_refine {
 
     # Refine EventBus data.
     role::analytics_cluster::refinery::job::json_refine_job { 'eventlogging_eventbus':
-        input_base_path  => '/wmf/data/raw/eventbus',
+        input_base_path  => '/wmf/data/raw/event',
         # 'datacenter' is extracted from the input path into a Hive table partition
         input_regex      => '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
         input_capture    => 'datacenter,table,year,month,day,hour',
