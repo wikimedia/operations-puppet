@@ -6,6 +6,7 @@ class profile::dumps::generation::worker::common {
 
     # dataset server nfs mount, config files,
     # stages files, dblists, html templates
+    class { '::dumpsuser': }
     class { '::dumps::deprecated::user': }
     class { '::snapshot::dumps': }
 
