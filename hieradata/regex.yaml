@@ -345,13 +345,14 @@ syslog_tls_eqiad:
   profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514']
   profile::base::remote_syslog: []
 
-# Gradual SMART health checking rollout - T86552
-smart_health_codfw:
-  __regex: !ruby/regexp /^(auth|conf|cp|db|dbstore|elastic|es|ganeti|graphite|mc|ores|oresrdb|pc|rdb|restbase-test|sca|scb)2\d\d\d\.codfw\.wmnet$/
-  profile::base::check_smart: true
-
 # Old hosts with mpt controllers and to be decom'd
 # smartmontools broken out of the box - T179078
 smart_health_mpt:
   __regex: !ruby/regexp /^maps-test/
   profile::base::check_smart: false
+
+# Gradual SMART health checking rollout - T86552
+# NOTE: order matters! List exclusion regexps first.
+smart_health_codfw:
+  __regex: !ruby/regexp /^.*\.codfw\.wmnet$/
+  profile::base::check_smart: true
