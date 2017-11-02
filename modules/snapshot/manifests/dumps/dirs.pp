@@ -43,7 +43,7 @@ class snapshot::dumps::dirs {
       ensure => 'directory',
       path   => $cachedir,
       mode   => '0755',
-      owner  => 'datasets',
+      owner  => 'dumpsgen',
       group  => 'root',
     }
 
