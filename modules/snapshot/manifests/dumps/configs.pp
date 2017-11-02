@@ -133,9 +133,21 @@ class snapshot::dumps::configs {
         },
     }
 
+    # for jobs running on dataset host
     snapshot::dumps::wikiconf { 'wikidump.conf':
         configtype => 'allwikis',
         config     => $config,
+        publicdir  => '/mnt/data/xmldatadumps/public',
+        privatedir => '/mnt/data/xmldatadumps/private',
+        tempdir    => '/mnt/data/xmldatadumps/temp',
+    }
+    # for xml/sql dumps running on dumpsdata host
+    snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
+        configtype => 'allwikis',
+        config     => $config,
+        publicdir  => '/mnt/dumpsdata/xmldatadumps/public',
+        privatedir => '/mnt/dumpsdata/xmldatadumps/private',
+        tempdir    => '/mnt/dumpsdata/xmldatadumps/temp',
     }
 
     file { "${confsdir}/table_jobs.yaml":

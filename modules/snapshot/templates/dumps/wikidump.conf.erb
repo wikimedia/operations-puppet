@@ -14,9 +14,14 @@ adminsettings=private/PrivateSettings.php
 tablejobs=<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/table_jobs.yaml
 
 [output]
-public=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public
-private=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/private
-temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
+#public=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/public
+#private=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/private
+#temp=<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>/temp
+# we have these take on values from the defined resource, until move to
+# dumpsdata host of all jobs is complete
+public=<%= @publicdir %>
+private=<%= @privatedir %>
+temp=<%= @tempdir %>
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 index=backup-index.html
 webroot=http://download.wikimedia.org
