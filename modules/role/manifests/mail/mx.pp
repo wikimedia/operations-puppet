@@ -165,4 +165,9 @@ class role::mail::mx(
         retry_interval => 10,
         timeout        => 20,
     }
+
+    mtail::program { 'exim':
+        ensure => present,
+        source => 'puppet:///modules/mtail/programs/exim.mtail',
+    }
 }
