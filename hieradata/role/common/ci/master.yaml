@@ -27,3 +27,7 @@ profile::zuul::server::conf:
 
 profile::ci::docker::settings:
   iptables: false
+
+# TODO: create specific credentials for CI
+docker::registry: docker-registry.discovery.wmnet
+docker::registry::username: uploader

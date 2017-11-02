@@ -7,16 +7,10 @@ class docker::builder () {
         'virtualenv', 'python3-pip',
         'python3-wheel',
     ])
-    # Scap target for docker-pkg
-    file { '/srv/deployment':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 
     scap::target { 'docker-pkg/deploy':
         deploy_user => 'deploy-service',
         manage_user => true,
+        require     => File['/srv/deployment']
     }
 }

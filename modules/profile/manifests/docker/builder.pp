@@ -20,6 +20,8 @@ class profile::docker::builder(
 ) {
     class { '::docker::builder': }
 
+    class { 'service::deploy::common': }
+
     class { '::docker::baseimages':
         docker_registry => $registry,
         proxy_address   => $proxy_address,
