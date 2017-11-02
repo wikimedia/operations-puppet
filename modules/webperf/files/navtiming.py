@@ -387,9 +387,6 @@ def handle_navigation_timing(meta):
 
     ua = parse_ua(meta['userAgent']) or ('Other', '_')
 
-    if 'sslNegotiation' in metrics:
-        metrics = {'sslNegotiation': metrics['sslNegotiation']}
-
     for metric, value in metrics.items():
         prefix = 'frontend.navtiming'
 
