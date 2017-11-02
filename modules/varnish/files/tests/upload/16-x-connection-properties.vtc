@@ -1,0 +1,77 @@
+varnishtest "X-Connection-Properties"
+
+server s1 {
+    rxreq
+    expect req.url == "/1"
+
+    expect req.http.X-CP-HTTP2 == "0"
+    expect req.http.X-CP-TLS-Version == "TLSv1.2"
+    expect req.http.X-CP-TLS-Session-Reused == 0
+    expect req.http.X-CP-Key-Exchange == "prime256v1"
+    expect req.http.X-CP-Auth == "ECDSA"
+    expect req.http.X-CP-Cipher == "AES256-GCM-SHA384"
+    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES256-GCM-SHA384"
+
+    txresp
+
+    rxreq
+    expect req.url == "/2"
+
+    expect req.http.X-CP-HTTP2 == "0"
+    expect req.http.X-CP-TLS-Version == "TLSv1"
+    expect req.http.X-CP-TLS-Session-Reused == 1
+    expect req.http.X-CP-Key-Exchange == "prime256v1"
+    expect req.http.X-CP-Auth == "ECDSA"
+    expect req.http.X-CP-Cipher == "AES128-SHA"
+    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES128-SHA"
+
+    txresp
+
+    rxreq
+    expect req.url == "/3"
+
+    expect req.http.X-CP-HTTP2 == "1"
+    expect req.http.X-CP-TLS-Version == "TLSv1.2"
+    expect req.http.X-CP-TLS-Session-Reused == 1
+    expect req.http.X-CP-Key-Exchange == "X25519"
+    expect req.http.X-CP-Auth == "ECDSA"
+    expect req.http.X-CP-Cipher == "AES256-GCM-SHA384"
+    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES256-GCM-SHA384"
+
+    txresp
+
+    rxreq
+    expect req.url == "/4"
+
+    expect req.http.X-CP-HTTP2 == "0"
+    expect req.http.X-CP-TLS-Version == "TLSv1"
+    expect req.http.X-CP-TLS-Session-Reused == 1
+    expect req.http.X-CP-Key-Exchange == "RSA"
+    expect req.http.X-CP-Auth == "RSA"
+    expect req.http.X-CP-Cipher == "AES128-SHA"
+    expect req.http.X-CP-Full-Cipher == "AES128-SHA"
+
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/1" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=prime256v1;"
+    rxresp
+
+    txreq -url "/2" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1; C=ECDHE-ECDSA-AES128-SHA; EC=prime256v1;"
+    rxresp
+
+    txreq -url "/3" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=1; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=X25519;"
+    rxresp
+
+    txreq -url "/4" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1; C=AES128-SHA; EC=UNDEF;"
+    rxresp
+} -run
