@@ -154,18 +154,18 @@ find "$logdir" -maxdepth 1 -name fulldumps_\* -a -mtime +90 -exec rm {} \;
 # (small, big, enwiki, wikidatawiki) as needed
 case $wikitype in
     'enwiki')
-        maybe_do_createdirs "wikidump.conf:en" "stages_create_enwiki" "enwiki"
-        maybe_do_createdirs "wikidump.conf:bigwikis" "stages_create_bigwikis" "bigwikis"
-        maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
+        maybe_do_createdirs "wikidump.conf.dumps:en" "stages_create_enwiki" "enwiki"
+        maybe_do_createdirs "wikidump.conf.dumps:bigwikis" "stages_create_bigwikis" "bigwikis"
+        maybe_do_createdirs "wikidump.conf.dumps" "stages_create_smallwikis" "smallwikis"
         ;;
     'wikidatawiki')
-        maybe_do_createdirs "wikidump.conf:wd" "stages_create_wikidatawiki" "wikidatawiki"
-        maybe_do_createdirs "wikidump.conf:bigwikis" "stages_create_bigwikis" "bigwikis"
-        maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
+        maybe_do_createdirs "wikidump.conf.dumps:wd" "stages_create_wikidatawiki" "wikidatawiki"
+        maybe_do_createdirs "wikidump.conf.dumps:bigwikis" "stages_create_bigwikis" "bigwikis"
+        maybe_do_createdirs "wikidump.conf.dumps" "stages_create_smallwikis" "smallwikis"
         ;;
     'regular')
-        maybe_do_createdirs "wikidump.conf:bigwikis" "stages_create_bigwikis" "bigwikis"
-        maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
+        maybe_do_createdirs "wikidump.conf.dumps:bigwikis" "stages_create_bigwikis" "bigwikis"
+        maybe_do_createdirs "wikidump.conf.dumps" "stages_create_smallwikis" "smallwikis"
         ;;
     '*')
         echo "unknown wikitype $wikitype"
@@ -195,37 +195,37 @@ esac
 
 case $wikitype in
     'enwiki')
-        maybe_do_dumps "wikidump.conf:en" "$enstages" "enwiki" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.dumps:en" "$enstages" "enwiki" "$maxjobs"
         # After enwiki is done, check and do some of the rest if needed
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf:bigwikis" "$regularstages" "bigwikis" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.dumps:bigwikis" "$regularstages" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "$regularstages" "smallwikis" "$maxjobs"
+            maybe_do_dumps "wikidump.conf.dumps" "$regularstages" "smallwikis" "$maxjobs"
         fi
         ;;
     'wikidatawiki')
-        maybe_do_dumps "wikidump.conf:wd" "$wikidatastages" "wikidatawiki" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.dumps:wd" "$wikidatastages" "wikidatawiki" "$maxjobs"
         # After wikidatawiki is done, check and do some of the rest if needed
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf:bigwikis" "$regularstages" "bigwikis" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.dumps:bigwikis" "$regularstages" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "$regularstages" "smallwikis" "$maxjobs"
+            maybe_do_dumps "wikidump.conf.dumps" "$regularstages" "smallwikis" "$maxjobs"
         fi
         ;;
     'regular')
         # If not all the big wikis are done we will start a dump run covering small and big wikis
         # Only wikis without complete dumps will be updated.
-        maybe_do_dumps "wikidump.conf:bigwikis" "$regularstages" "bigwikis" "$maxjobs"
+        maybe_do_dumps "wikidump.conf.dumps:bigwikis" "$regularstages" "bigwikis" "$maxjobs"
 	if [ $? -ne 0 ]; then
             # If we did not start a dump run above for small and big wikis, and the small wikis
             # are not done, start such a run now.  Only wikis without complete dumps will be updated.
-            maybe_do_dumps "wikidump.conf" "$regularstages" "smallwikis" "$maxjobs"
+            maybe_do_dumps "wikidump.conf.dumps" "$regularstages" "smallwikis" "$maxjobs"
         fi
         ;;
     '*')

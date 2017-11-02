@@ -7,10 +7,10 @@ class snapshot::dumps::stagesconfig {
     $rest_args = '--date {STARTDATE} --onepass --prereqs'
     $wikiargs = '/bin/bash ./worker --skipdone --exclusive --log'
 
-    $args_smallwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf"
-    $args_bigwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf:bigwikis"
-    $args_enwiki = "${wikiargs} --configfile ${confsdir}/wikidump.conf:en"
-    $args_wikidatawiki = "${wikiargs} --configfile ${confsdir}/wikidump.conf:wd"
+    $args_smallwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps"
+    $args_bigwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps:bigwikis"
+    $args_enwiki = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps:en"
+    $args_wikidatawiki = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps:wd"
 
     $jobs_to_skip = join(['metahistorybz2dump',
                           'metahistorybz2dumprecombine',
