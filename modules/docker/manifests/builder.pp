@@ -5,7 +5,7 @@ class docker::builder () {
     require_package([
         'python3', 'python3-virtualenv',
         'virtualenv', 'python3-pip',
-        'python3-wheel',
+        'python3-wheel', 'make'
     ])
 
     scap::target { 'docker-pkg/deploy':
