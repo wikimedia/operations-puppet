@@ -40,11 +40,5 @@ class profile::discovery_dashboards::development {
         notify    => Service['shiny-server'],
         branch    => 'develop',
     }
-    git::clone { 'wikimedia/discovery/delphi':
-        ensure    => 'latest',
-        directory => '/srv/shiny-server/forecasts',
-        notify    => Service['shiny-server'],
-        branch    => 'develop',
-    }
 
 }
