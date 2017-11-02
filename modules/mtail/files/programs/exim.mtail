@@ -1,0 +1,102 @@
+counter exim_messages_total by status
+counter exim_messages_bytes by status
+counter exim_dkim_success_total
+counter exim_dkim_failure_total
+
+counter exim_smtp_errors_total
+counter exim_rejected_rcpt_total
+counter exim_tls_errors_total
+counter exim_sender_verify_fail_total
+counter exim_sender_verify_defer_total
+counter exim_too_many_connections_total
+counter exim_rejected_helo_total
+
+# Generic message, just the timestamp
+def tstamp {
+  /^(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/ {
+    next
+  }
+}
+
+# Messages are queued, thus have a queue id
+def queued {
+  /^(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (?P<qid>[-a-zA-Z0-9]+)/ {
+    next
+  }
+}
+
+# XXX handle DT=([0-9]+m)?[0-9]+s
+@queued {
+  / (?P<flags>..) / {
+    # Log lines with -> (additional delivery addresses) contain essentially the same
+    # information, thus skipping to avoid double counting
+    $flags == "=>" {
+      exim_messages_total["out"]++
+
+      /S=(?P<size>[0-9]+)/ {
+        exim_messages_bytes["out"] += $size
+      }
+    }
+
+    $flags == "<=" {
+      exim_messages_total["in"]++
+
+      /S=(?P<size>[0-9]+)/ {
+        exim_messages_bytes["in"] += $size
+      }
+    }
+
+    $flags == "(=" {
+      exim_messages_total["fakereject"]++
+    }
+
+    $flags == "**" {
+      exim_messages_total["bounced"]++
+    }
+
+    $flags == "==" {
+      exim_messages_total["deferred"]++
+    }
+  }
+}
+
+@queued {
+  / DKIM: .* \[(?P<dkim_result>.*)\]/ {
+    $dkim_result == "verification succeded" {
+      exim_dkim_success_total++
+    }
+    otherwise {
+      exim_dkim_failure_total++
+    }
+  }
+}
+
+@tstamp {
+  / (SMTP protocol (synchronization )?error|unexpected disconnection|SMTP command timeout|SMTP syntax error)/ {
+    exim_smtp_errors_total++
+  }
+
+  /.* rejected RCPT/ {
+    exim_rejected_rcpt_total++
+  }
+
+  / TLS error/ {
+    exim_tls_errors_total++
+  }
+
+  / .*sender verify fail for/ {
+    exim_sender_verify_fail_total++
+  }
+
+  / .*sender verify defer for/ {
+    exim_sender_verify_defer_total++
+  }
+
+  / Connection from .* refused: too many connection from/ {
+    exim_too_many_connections_total++
+  }
+
+  / rejected (EHLO|HELO) from / {
+    exim_rejected_helo_total++
+  }
+}
