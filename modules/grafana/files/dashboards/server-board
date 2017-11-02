@@ -1,51 +1,18 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_GRAPHITE",
-      "label": "graphite",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "graphite",
-      "pluginName": "Graphite"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "3.1.1"
-    },
-    {
-      "type": "datasource",
-      "id": "graphite",
-      "name": "Graphite",
-      "version": "1.0.0"
-    }
-  ],
-  "id": null,
-  "title": "Server Board",
-  "tags": [
-    "operations",
-    "source:puppet.git",
-    "readonly",
-    "featured"
-  ],
-  "style": "light",
-  "timezone": "utc",
+  "annotations": {
+    "enable": false,
+    "list": []
+  },
   "editable": true,
+  "gnetId": null,
+  "graphTooltip": 1,
   "hideControls": true,
-  "sharedCrosshair": true,
+  "id": null,
+  "links": [],
+  "refresh": "1m",
   "rows": [
     {
       "collapse": false,
-      "editable": true,
       "height": "300px",
       "panels": [
         {
@@ -60,15 +27,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 10,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 7,
@@ -102,6 +67,7 @@
               "linewidth": 1
             }
           ],
+          "spaceLength": 10,
           "span": 4,
           "spyable": true,
           "stack": true,
@@ -132,6 +98,7 @@
               "target": "aliasByMetric(servers.$server.cpu.total.idle)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -145,7 +112,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -176,15 +147,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 0,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 12,
@@ -212,6 +181,7 @@
           "resolution": 100,
           "scale": 1,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 4,
           "spyable": true,
           "stack": false,
@@ -223,6 +193,7 @@
               "target": "aliasByMetric(aliasSub(servers.$server.loadavg.{01,05,15}, '0?(\\d+)', '\\1 minute'))"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -236,7 +207,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -267,15 +242,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 0,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 15,
@@ -309,6 +282,7 @@
               "yaxis": 2
             }
           ],
+          "spaceLength": 10,
           "span": 4,
           "spyable": true,
           "stack": false,
@@ -320,6 +294,7 @@
               "target": "aliasByMetric(servers.$server.loadavg.{processes_running,processes_total})"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -333,7 +308,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -355,12 +334,15 @@
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "CPU"
+      "title": "CPU",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "350px",
       "panels": [
         {
@@ -377,15 +359,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 9,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 14,
@@ -425,6 +405,7 @@
               "fill": 2
             }
           ],
+          "spaceLength": 10,
           "span": 6,
           "spyable": true,
           "stack": true,
@@ -462,6 +443,7 @@
               "target": "aliasByMetric(servers.$server.memory.MemTotal)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -475,7 +457,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -508,15 +494,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 10,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 16,
@@ -550,6 +534,7 @@
               "fill": 3
             }
           ],
+          "spaceLength": 10,
           "span": 6,
           "spyable": true,
           "stack": true,
@@ -561,6 +546,7 @@
               "target": "aliasByMetric(servers.$server.memory.{SwapCached,SwapFree})"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -574,7 +560,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -596,12 +586,15 @@
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "Memory"
+      "title": "Memory",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -613,15 +606,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 10,
@@ -654,6 +645,7 @@
               "transform": "negative-Y"
             }
           ],
+          "spaceLength": 10,
           "span": 6,
           "spyable": true,
           "stack": false,
@@ -668,6 +660,7 @@
               "target": "alias(servers.$server.network.$network.rx_bit, 'Reception')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -681,7 +674,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -712,15 +709,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 11,
@@ -753,6 +748,7 @@
               "transform": "negative-Y"
             }
           ],
+          "spaceLength": 10,
           "span": 6,
           "spyable": true,
           "stack": false,
@@ -767,6 +763,7 @@
               "target": "alias(servers.$server.network.$network.rx_packets, 'Reception')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -780,7 +777,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -803,12 +804,15 @@
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "Network"
+      "title": "Network",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
@@ -819,15 +823,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 17,
@@ -856,6 +858,7 @@
           "resolution": 100,
           "scale": 1,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 4,
           "spyable": true,
           "stack": false,
@@ -866,6 +869,7 @@
               "target": "aliasSub(aliasByNode(servers.$server.diskspace.*.byte_{free,used}, 3, 4), '^_', '/')"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -879,7 +883,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -910,15 +918,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 18,
@@ -946,6 +952,7 @@
           "resolution": 100,
           "scale": 1,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 4,
           "spyable": true,
           "stack": false,
@@ -956,6 +963,7 @@
               "target": "aliasByNode(servers.$server.iostat.*.iops, 3)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -969,7 +977,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1000,15 +1012,13 @@
             "enable": false
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "fill": 1,
           "grid": {
             "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+            "min": null
           },
           "height": "",
           "id": 19,
@@ -1036,6 +1046,7 @@
           "resolution": 100,
           "scale": 1,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 4,
           "spyable": true,
           "stack": false,
@@ -1046,6 +1057,7 @@
               "target": "aliasByNode(servers.$server.iostat.*.util_percentage, 3)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "timezone": "browser",
@@ -1059,7 +1071,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1082,27 +1098,27 @@
           "zerofill": true
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "Disk"
+      "title": "Disk",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 20,
           "legend": {
             "avg": false,
@@ -1122,6 +1138,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -1131,6 +1148,7 @@
               "target": "aliasByMetric(servers.$server.ntpd.max_error)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "NTP Max error",
@@ -1142,7 +1160,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1164,16 +1186,13 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 21,
           "legend": {
             "avg": false,
@@ -1193,6 +1212,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -1202,6 +1222,7 @@
               "target": "aliasByMetric(servers.$server.ntpd.frequency)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "NTP Frequency",
@@ -1213,7 +1234,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1235,16 +1260,13 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 22,
           "legend": {
             "avg": false,
@@ -1264,6 +1286,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -1273,6 +1296,7 @@
               "target": "aliasByMetric(servers.$server.ntpd.jitter)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "NTP jitter",
@@ -1284,7 +1308,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1306,16 +1334,13 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "graphite",
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 23,
           "legend": {
             "avg": false,
@@ -1335,6 +1360,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -1344,6 +1370,7 @@
               "target": "aliasByMetric(servers.$server.ntpd.offset)"
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "NTP Offset",
@@ -1355,7 +1382,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1375,10 +1406,71 @@
           ]
         }
       ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
       "showTitle": true,
-      "title": "Time"
+      "title": "Time",
+      "titleSize": "h6"
     }
   ],
+  "schemaVersion": 14,
+  "style": "light",
+  "tags": [
+    "operations",
+    "source:puppet.git",
+    "readonly",
+    "featured"
+  ],
+  "templating": {
+    "enable": true,
+    "list": [
+      {
+        "allFormat": "wildcard",
+        "allValue": null,
+        "current": {},
+        "datasource": "graphite",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "server",
+        "options": [],
+        "query": "servers.*",
+        "refresh": 1,
+        "refresh_on_load": false,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allFormat": "glob",
+        "allValue": null,
+        "current": {},
+        "datasource": "graphite",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "network",
+        "options": [],
+        "query": "servers.*.network.*",
+        "refresh": 1,
+        "refresh_on_load": false,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
   "time": {
     "from": "now-1h",
     "to": "now"
@@ -1415,48 +1507,7 @@
     ],
     "type": "timepicker"
   },
-  "templating": {
-    "enable": true,
-    "list": [
-      {
-        "allFormat": "wildcard",
-        "current": {},
-        "datasource": "graphite",
-        "hide": 0,
-        "includeAll": false,
-        "name": "server",
-        "options": [],
-        "query": "servers.*",
-        "refresh": 1,
-        "refresh_on_load": false,
-        "type": "query"
-      },
-      {
-        "allFormat": "glob",
-        "current": {
-          "text": "*",
-          "value": "*",
-          "tags": []
-        },
-        "datasource": "graphite",
-        "hide": 0,
-        "includeAll": false,
-        "name": "network",
-        "options": [],
-        "query": "servers.*.network.*",
-        "refresh": 1,
-        "refresh_on_load": false,
-        "type": "query"
-      }
-    ]
-  },
-  "annotations": {
-    "enable": false,
-    "list": []
-  },
-  "refresh": "1m",
-  "schemaVersion": 12,
-  "version": 27,
-  "links": [],
-  "gnetId": null
+  "timezone": "utc",
+  "title": "Server Board",
+  "version": 0
 }
