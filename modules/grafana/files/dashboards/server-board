@@ -7,7 +7,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "hideControls": true,
-  "id": null,
+  "id": 87,
   "links": [],
   "refresh": "1m",
   "rows": [
@@ -1458,11 +1458,11 @@
         "multi": false,
         "name": "network",
         "options": [],
-        "query": "servers.*.network.*",
-        "refresh": 1,
+        "query": "servers.$server.network.*",
+        "refresh": 2,
         "refresh_on_load": false,
-        "regex": "",
-        "sort": 0,
+        "regex": "/^(?!connections).*/",
+        "sort": 3,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -1509,5 +1509,5 @@
   },
   "timezone": "utc",
   "title": "Server Board",
-  "version": 0
+  "version": 37
 }
