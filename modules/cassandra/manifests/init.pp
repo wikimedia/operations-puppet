@@ -129,7 +129,7 @@ class cassandra (
     $native_transport_port   = 9042,
     $dc                      = 'datacenter1',
     $rack                    = 'rack1',
-    $logstash_host           = 'logstash1003.eqiad.wmnet',
+    $logstash_host           = 'logstash.svc.eqiad.wmnet',
     $logstash_port           = 11514,
     $start_rpc               = true,
     $jbod_devices            = [],
