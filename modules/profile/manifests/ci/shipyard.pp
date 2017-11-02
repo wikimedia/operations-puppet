@@ -4,7 +4,7 @@ class profile::ci::shipyard(
     $password = hiera('docker::registry::password'),
     $http_proxy = hiera('http_proxy', undef),
 ) {
-    class { '::docker::builder': }
+    class { '::docker_pkg': }
 
     file { '/etc/docker-pkg/':
         ensure => directory,

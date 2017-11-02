@@ -11,14 +11,24 @@
 #
 # [*registry*] Address of the docker registry.
 #
+# [*username*] username for the docker registry.
+#
+# [*password*] password for the docker registry.
+#
+# [*docker_pkg*] Boolean value for enabling the docker_pkg component
+#
 class profile::docker::builder(
     $proxy_address = hiera('profile::docker::builder::proxy_address', undef),
     $proxy_port = hiera('profile::docker::builder::proxy_port', undef),
     $registry = hiera('docker::registry'),
     $username = hiera('docker::registry::username'),
-    $password = hiera('docker::registry::password')
+    $password = hiera('docker::registry::password'),
+    $docker_pkg = hiera('profile::docker::docker_pkg', false),
 ) {
-    class { '::docker::builder': }
+
+    if $docker_pkg {
+        class { '::docker_pkg': }
+    }
 
     class { 'service::deploy::common': }
 
