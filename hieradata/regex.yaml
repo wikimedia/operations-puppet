@@ -336,7 +336,7 @@ analytics_no_monitor_screens:
 
 # Temporarily disable notifications for T177405
 analytics_notifications_disabled:
-  __regex: !ruby/regexp /^db110[78]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^db1107\.eqiad\.wmnet$/
   profile::base::notifications_enabled: '0'
 
 # Gradual syslog-tls rollout - T136312
