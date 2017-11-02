@@ -69,11 +69,9 @@ kafka.max.pull.minutes.per.task=55
 kafka.blacklist.topics=
 
 # These are the kafka topics camus brings to HDFS
-# These datacenter prefixed topics are going to be annoying, since they will show up as
-# different datasets in HDFS.  We'll either have to do some custom camus jobs for each
-# logical topic to write it to a special directory, or write some special refinement
-# code to load these up.  Probably the latter.
-kafka.whitelist.topics=(eqiad|codfw)\.mediawiki\.(page|revision|user).*
+# The datacenter names are extracted out into Hive partitions
+# during refinement.
+kafka.whitelist.topics=(eqiad|codfw)\.mediawiki\.(page|revision|user|recentchange).*
 
 # Name of the client as seen by kafka
 kafka.client.name=camus-eventbus-00
