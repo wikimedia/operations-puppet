@@ -25,7 +25,7 @@ class role::analytics_cluster::refinery::job::json_refine {
         input_capture    => 'datacenter,table,year,month,day,hour',
         output_base_path => '/wmf/data/event',
         output_database  => 'event',
-        table_blacklist  => '^mediawiki_page_properties_change$',
+        table_blacklist  => '^mediawiki_page_properties_change|mediawiki_recentchange$',
         minute           => 20,
     }
 }
