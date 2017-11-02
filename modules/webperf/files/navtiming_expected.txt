@@ -1,9 +1,12 @@
+frontend.navtiming.connecting.by_browser.Chrome.60:80|ms
+frontend.navtiming.connecting.by_browser.Chrome.all:80|ms
 frontend.navtiming.connecting.by_continent.Africa:0|ms
 frontend.navtiming.connecting.by_continent.Asia:0|ms
 frontend.navtiming.connecting.by_continent.Asia:0|ms
 frontend.navtiming.connecting.by_continent.Asia:0|ms
 frontend.navtiming.connecting.by_continent.Asia:0|ms
 frontend.navtiming.connecting.by_continent.Asia:0|ms
+frontend.navtiming.connecting.by_continent.Asia:80|ms
 frontend.navtiming.connecting.by_continent.Europe:0|ms
 frontend.navtiming.connecting.by_continent.Europe:0|ms
 frontend.navtiming.connecting.by_continent.Europe:0|ms
@@ -58,18 +61,25 @@ frontend.navtiming.connecting.by_country.India:0|ms
 frontend.navtiming.connecting.by_country.Italy:0|ms
 frontend.navtiming.connecting.by_country.Italy:0|ms
 frontend.navtiming.connecting.by_country.Japan:0|ms
+frontend.navtiming.connecting.by_country.Japan:80|ms
 frontend.navtiming.connecting.by_country.Russia:0|ms
 frontend.navtiming.connecting.by_country.Russia:0|ms
 frontend.navtiming.connecting.by_country.Russia:0|ms
 frontend.navtiming.connecting.by_country.Russia:0|ms
 frontend.navtiming.connecting.by_country.United_States:0|ms
 frontend.navtiming.connecting.by_country.United_States:0|ms
+frontend.navtiming.connecting.desktop.authenticated:80|ms
+frontend.navtiming.connecting.desktop.overall:80|ms
+frontend.navtiming.connecting.overall:80|ms
+frontend.navtiming.dnsLookup.by_browser.Chrome.60:3|ms
+frontend.navtiming.dnsLookup.by_browser.Chrome.all:3|ms
 frontend.navtiming.dnsLookup.by_continent.Africa:0|ms
 frontend.navtiming.dnsLookup.by_continent.Asia:0|ms
 frontend.navtiming.dnsLookup.by_continent.Asia:0|ms
 frontend.navtiming.dnsLookup.by_continent.Asia:0|ms
 frontend.navtiming.dnsLookup.by_continent.Asia:0|ms
 frontend.navtiming.dnsLookup.by_continent.Asia:0|ms
+frontend.navtiming.dnsLookup.by_continent.Asia:3|ms
 frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
 frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
 frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
@@ -124,12 +134,16 @@ frontend.navtiming.dnsLookup.by_country.India:0|ms
 frontend.navtiming.dnsLookup.by_country.Italy:0|ms
 frontend.navtiming.dnsLookup.by_country.Italy:0|ms
 frontend.navtiming.dnsLookup.by_country.Japan:0|ms
+frontend.navtiming.dnsLookup.by_country.Japan:3|ms
 frontend.navtiming.dnsLookup.by_country.Russia:0|ms
 frontend.navtiming.dnsLookup.by_country.Russia:0|ms
 frontend.navtiming.dnsLookup.by_country.Russia:0|ms
 frontend.navtiming.dnsLookup.by_country.Russia:0|ms
 frontend.navtiming.dnsLookup.by_country.United_States:0|ms
 frontend.navtiming.dnsLookup.by_country.United_States:0|ms
+frontend.navtiming.dnsLookup.desktop.authenticated:3|ms
+frontend.navtiming.dnsLookup.desktop.overall:3|ms
+frontend.navtiming.dnsLookup.overall:3|ms
 frontend.navtiming.domComplete.by_browser.Chrome.15:387|ms
 frontend.navtiming.domComplete.by_browser.Chrome.15:393|ms
 frontend.navtiming.domComplete.by_browser.Chrome.45:1908|ms
@@ -153,6 +167,7 @@ frontend.navtiming.domComplete.by_browser.Chrome.60:1372|ms
 frontend.navtiming.domComplete.by_browser.Chrome.60:1476|ms
 frontend.navtiming.domComplete.by_browser.Chrome.60:2013|ms
 frontend.navtiming.domComplete.by_browser.Chrome.60:2036|ms
+frontend.navtiming.domComplete.by_browser.Chrome.60:2831|ms
 frontend.navtiming.domComplete.by_browser.Chrome.60:2852|ms
 frontend.navtiming.domComplete.by_browser.Chrome.60:2957|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:1024|ms
@@ -175,6 +190,7 @@ frontend.navtiming.domComplete.by_browser.Chrome.all:1476|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:1908|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:2013|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:2036|ms
+frontend.navtiming.domComplete.by_browser.Chrome.all:2831|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:2852|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:2957|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:3231|ms
@@ -232,6 +248,7 @@ frontend.navtiming.domComplete.by_continent.Asia:1035|ms
 frontend.navtiming.domComplete.by_continent.Asia:1038|ms
 frontend.navtiming.domComplete.by_continent.Asia:1152|ms
 frontend.navtiming.domComplete.by_continent.Asia:1372|ms
+frontend.navtiming.domComplete.by_continent.Asia:2831|ms
 frontend.navtiming.domComplete.by_continent.Europe:1036|ms
 frontend.navtiming.domComplete.by_continent.Europe:10377|ms
 frontend.navtiming.domComplete.by_continent.Europe:1037|ms
@@ -286,6 +303,7 @@ frontend.navtiming.domComplete.by_country.India:1038|ms
 frontend.navtiming.domComplete.by_country.Italy:1443|ms
 frontend.navtiming.domComplete.by_country.Italy:1920|ms
 frontend.navtiming.domComplete.by_country.Japan:1035|ms
+frontend.navtiming.domComplete.by_country.Japan:2831|ms
 frontend.navtiming.domComplete.by_country.Russia:1158|ms
 frontend.navtiming.domComplete.by_country.Russia:1476|ms
 frontend.navtiming.domComplete.by_country.Russia:2013|ms
@@ -327,6 +345,7 @@ frontend.navtiming.domComplete.desktop.authenticated:1372|ms
 frontend.navtiming.domComplete.desktop.authenticated:1443|ms
 frontend.navtiming.domComplete.desktop.authenticated:1693|ms
 frontend.navtiming.domComplete.desktop.authenticated:1920|ms
+frontend.navtiming.domComplete.desktop.authenticated:2831|ms
 frontend.navtiming.domComplete.desktop.authenticated:3231|ms
 frontend.navtiming.domComplete.desktop.authenticated:460|ms
 frontend.navtiming.domComplete.desktop.authenticated:964|ms
@@ -361,6 +380,7 @@ frontend.navtiming.domComplete.desktop.overall:2030|ms
 frontend.navtiming.domComplete.desktop.overall:2036|ms
 frontend.navtiming.domComplete.desktop.overall:2272|ms
 frontend.navtiming.domComplete.desktop.overall:2560|ms
+frontend.navtiming.domComplete.desktop.overall:2831|ms
 frontend.navtiming.domComplete.desktop.overall:2852|ms
 frontend.navtiming.domComplete.desktop.overall:2957|ms
 frontend.navtiming.domComplete.desktop.overall:3231|ms
@@ -428,6 +448,7 @@ frontend.navtiming.domComplete.overall:2030|ms
 frontend.navtiming.domComplete.overall:2036|ms
 frontend.navtiming.domComplete.overall:2272|ms
 frontend.navtiming.domComplete.overall:2560|ms
+frontend.navtiming.domComplete.overall:2831|ms
 frontend.navtiming.domComplete.overall:2852|ms
 frontend.navtiming.domComplete.overall:2957|ms
 frontend.navtiming.domComplete.overall:3231|ms
@@ -443,6 +464,7 @@ frontend.navtiming.domInteractive.by_browser.Chrome.49:590|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.50:395|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.60:1121|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.60:1552|ms
+frontend.navtiming.domInteractive.by_browser.Chrome.60:1932|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.60:226|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.60:414|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.60:416|ms
@@ -463,6 +485,7 @@ frontend.navtiming.domInteractive.by_browser.Chrome.60:889|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.60:995|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.all:1121|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.all:1552|ms
+frontend.navtiming.domInteractive.by_browser.Chrome.all:1932|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.all:226|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.all:310|ms
 frontend.navtiming.domInteractive.by_browser.Chrome.all:319|ms
@@ -535,6 +558,7 @@ frontend.navtiming.domInteractive.by_browser.Safari.all:464|ms
 frontend.navtiming.domInteractive.by_continent.Africa:576|ms
 frontend.navtiming.domInteractive.by_continent.Asia:1009|ms
 frontend.navtiming.domInteractive.by_continent.Asia:1121|ms
+frontend.navtiming.domInteractive.by_continent.Asia:1932|ms
 frontend.navtiming.domInteractive.by_continent.Asia:817|ms
 frontend.navtiming.domInteractive.by_continent.Asia:824|ms
 frontend.navtiming.domInteractive.by_continent.Asia:889|ms
@@ -591,6 +615,7 @@ frontend.navtiming.domInteractive.by_country.Germany:590|ms
 frontend.navtiming.domInteractive.by_country.India:1009|ms
 frontend.navtiming.domInteractive.by_country.Italy:1130|ms
 frontend.navtiming.domInteractive.by_country.Italy:962|ms
+frontend.navtiming.domInteractive.by_country.Japan:1932|ms
 frontend.navtiming.domInteractive.by_country.Japan:824|ms
 frontend.navtiming.domInteractive.by_country.Russia:2936|ms
 frontend.navtiming.domInteractive.by_country.Russia:603|ms
@@ -626,6 +651,7 @@ frontend.navtiming.domInteractive.desktop.anonymous:889|ms
 frontend.navtiming.domInteractive.desktop.anonymous:995|ms
 frontend.navtiming.domInteractive.desktop.authenticated:1121|ms
 frontend.navtiming.domInteractive.desktop.authenticated:1130|ms
+frontend.navtiming.domInteractive.desktop.authenticated:1932|ms
 frontend.navtiming.domInteractive.desktop.authenticated:378|ms
 frontend.navtiming.domInteractive.desktop.authenticated:388|ms
 frontend.navtiming.domInteractive.desktop.authenticated:395|ms
@@ -639,6 +665,7 @@ frontend.navtiming.domInteractive.desktop.authenticated:962|ms
 frontend.navtiming.domInteractive.desktop.overall:1121|ms
 frontend.navtiming.domInteractive.desktop.overall:1130|ms
 frontend.navtiming.domInteractive.desktop.overall:1552|ms
+frontend.navtiming.domInteractive.desktop.overall:1932|ms
 frontend.navtiming.domInteractive.desktop.overall:226|ms
 frontend.navtiming.domInteractive.desktop.overall:260|ms
 frontend.navtiming.domInteractive.desktop.overall:310|ms
@@ -700,6 +727,7 @@ frontend.navtiming.domInteractive.overall:1130|ms
 frontend.navtiming.domInteractive.overall:1326|ms
 frontend.navtiming.domInteractive.overall:1552|ms
 frontend.navtiming.domInteractive.overall:187|ms
+frontend.navtiming.domInteractive.overall:1932|ms
 frontend.navtiming.domInteractive.overall:226|ms
 frontend.navtiming.domInteractive.overall:260|ms
 frontend.navtiming.domInteractive.overall:2936|ms
@@ -742,6 +770,8 @@ frontend.navtiming.domInteractive.overall:850|ms
 frontend.navtiming.domInteractive.overall:889|ms
 frontend.navtiming.domInteractive.overall:962|ms
 frontend.navtiming.domInteractive.overall:995|ms
+frontend.navtiming.fetchStart.by_browser.Chrome.60:6|ms
+frontend.navtiming.fetchStart.by_browser.Chrome.all:6|ms
 frontend.navtiming.fetchStart.by_browser.Firefox.55:3|ms
 frontend.navtiming.fetchStart.by_browser.Firefox.all:3|ms
 frontend.navtiming.fetchStart.by_continent.Africa:0|ms
@@ -750,6 +780,7 @@ frontend.navtiming.fetchStart.by_continent.Asia:0|ms
 frontend.navtiming.fetchStart.by_continent.Asia:0|ms
 frontend.navtiming.fetchStart.by_continent.Asia:0|ms
 frontend.navtiming.fetchStart.by_continent.Asia:0|ms
+frontend.navtiming.fetchStart.by_continent.Asia:6|ms
 frontend.navtiming.fetchStart.by_continent.Europe:0|ms
 frontend.navtiming.fetchStart.by_continent.Europe:0|ms
 frontend.navtiming.fetchStart.by_continent.Europe:0|ms
@@ -804,6 +835,7 @@ frontend.navtiming.fetchStart.by_country.India:0|ms
 frontend.navtiming.fetchStart.by_country.Italy:0|ms
 frontend.navtiming.fetchStart.by_country.Italy:3|ms
 frontend.navtiming.fetchStart.by_country.Japan:0|ms
+frontend.navtiming.fetchStart.by_country.Japan:6|ms
 frontend.navtiming.fetchStart.by_country.Russia:0|ms
 frontend.navtiming.fetchStart.by_country.Russia:0|ms
 frontend.navtiming.fetchStart.by_country.Russia:0|ms
@@ -811,8 +843,11 @@ frontend.navtiming.fetchStart.by_country.Russia:0|ms
 frontend.navtiming.fetchStart.by_country.United_States:0|ms
 frontend.navtiming.fetchStart.by_country.United_States:0|ms
 frontend.navtiming.fetchStart.desktop.authenticated:3|ms
+frontend.navtiming.fetchStart.desktop.authenticated:6|ms
 frontend.navtiming.fetchStart.desktop.overall:3|ms
+frontend.navtiming.fetchStart.desktop.overall:6|ms
 frontend.navtiming.fetchStart.overall:3|ms
+frontend.navtiming.fetchStart.overall:6|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.45:690|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.49:2720|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.50:330|ms
@@ -821,6 +856,7 @@ frontend.navtiming.firstPaint.by_browser.Chrome.60:1113|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.60:1218|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.60:121|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.60:1278|ms
+frontend.navtiming.firstPaint.by_browser.Chrome.60:1927|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.60:1928|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.60:411|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.60:450|ms
@@ -841,6 +877,7 @@ frontend.navtiming.firstPaint.by_browser.Chrome.all:1113|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.all:1218|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.all:121|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.all:1278|ms
+frontend.navtiming.firstPaint.by_browser.Chrome.all:1927|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.all:1928|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.all:2720|ms
 frontend.navtiming.firstPaint.by_browser.Chrome.all:330|ms
@@ -874,6 +911,7 @@ frontend.navtiming.firstPaint.by_browser.Other.all:870|ms
 frontend.navtiming.firstPaint.by_continent.Africa:635|ms
 frontend.navtiming.firstPaint.by_continent.Asia:1057|ms
 frontend.navtiming.firstPaint.by_continent.Asia:1278|ms
+frontend.navtiming.firstPaint.by_continent.Asia:1927|ms
 frontend.navtiming.firstPaint.by_continent.Asia:996|ms
 frontend.navtiming.firstPaint.by_continent.Europe:2720|ms
 frontend.navtiming.firstPaint.by_continent.Europe:330|ms
@@ -904,6 +942,7 @@ frontend.navtiming.firstPaint.by_country.France:853|ms
 frontend.navtiming.firstPaint.by_country.Germany:2720|ms
 frontend.navtiming.firstPaint.by_country.Germany:408|ms
 frontend.navtiming.firstPaint.by_country.Germany:450|ms
+frontend.navtiming.firstPaint.by_country.Japan:1927|ms
 frontend.navtiming.firstPaint.by_country.Russia:736|ms
 frontend.navtiming.firstPaint.by_country.Russia:945|ms
 frontend.navtiming.firstPaint.by_country.United_States:1218|ms
@@ -929,6 +968,7 @@ frontend.navtiming.firstPaint.desktop.anonymous:9356|ms
 frontend.navtiming.firstPaint.desktop.anonymous:945|ms
 frontend.navtiming.firstPaint.desktop.anonymous:998|ms
 frontend.navtiming.firstPaint.desktop.authenticated:1278|ms
+frontend.navtiming.firstPaint.desktop.authenticated:1927|ms
 frontend.navtiming.firstPaint.desktop.authenticated:2720|ms
 frontend.navtiming.firstPaint.desktop.authenticated:330|ms
 frontend.navtiming.firstPaint.desktop.authenticated:408|ms
@@ -941,6 +981,7 @@ frontend.navtiming.firstPaint.desktop.overall:1113|ms
 frontend.navtiming.firstPaint.desktop.overall:1218|ms
 frontend.navtiming.firstPaint.desktop.overall:121|ms
 frontend.navtiming.firstPaint.desktop.overall:1278|ms
+frontend.navtiming.firstPaint.desktop.overall:1927|ms
 frontend.navtiming.firstPaint.desktop.overall:1928|ms
 frontend.navtiming.firstPaint.desktop.overall:2720|ms
 frontend.navtiming.firstPaint.desktop.overall:330|ms
@@ -971,6 +1012,7 @@ frontend.navtiming.firstPaint.overall:1113|ms
 frontend.navtiming.firstPaint.overall:1218|ms
 frontend.navtiming.firstPaint.overall:121|ms
 frontend.navtiming.firstPaint.overall:1278|ms
+frontend.navtiming.firstPaint.overall:1927|ms
 frontend.navtiming.firstPaint.overall:1928|ms
 frontend.navtiming.firstPaint.overall:2720|ms
 frontend.navtiming.firstPaint.overall:330|ms
@@ -1018,6 +1060,7 @@ frontend.navtiming.loadEventEnd.by_browser.Chrome.60:1373|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.60:1613|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.60:2014|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.60:2511|ms
+frontend.navtiming.loadEventEnd.by_browser.Chrome.60:2854|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.60:2861|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.60:2959|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:1037|ms
@@ -1040,6 +1083,7 @@ frontend.navtiming.loadEventEnd.by_browser.Chrome.all:1613|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:1909|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:2014|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:2511|ms
+frontend.navtiming.loadEventEnd.by_browser.Chrome.all:2854|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:2861|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:2959|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:403|ms
@@ -1097,6 +1141,7 @@ frontend.navtiming.loadEventEnd.by_continent.Asia:1040|ms
 frontend.navtiming.loadEventEnd.by_continent.Asia:1101|ms
 frontend.navtiming.loadEventEnd.by_continent.Asia:1153|ms
 frontend.navtiming.loadEventEnd.by_continent.Asia:1373|ms
+frontend.navtiming.loadEventEnd.by_continent.Asia:2854|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1037|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:10385|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1039|ms
@@ -1151,6 +1196,7 @@ frontend.navtiming.loadEventEnd.by_country.India:1040|ms
 frontend.navtiming.loadEventEnd.by_country.Italy:1444|ms
 frontend.navtiming.loadEventEnd.by_country.Italy:2742|ms
 frontend.navtiming.loadEventEnd.by_country.Japan:1037|ms
+frontend.navtiming.loadEventEnd.by_country.Japan:2854|ms
 frontend.navtiming.loadEventEnd.by_country.Russia:1179|ms
 frontend.navtiming.loadEventEnd.by_country.Russia:1613|ms
 frontend.navtiming.loadEventEnd.by_country.Russia:2014|ms
@@ -1192,6 +1238,7 @@ frontend.navtiming.loadEventEnd.desktop.authenticated:1373|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:1444|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:1695|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:2742|ms
+frontend.navtiming.loadEventEnd.desktop.authenticated:2854|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:4073|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:466|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:965|ms
@@ -1226,6 +1273,7 @@ frontend.navtiming.loadEventEnd.desktop.overall:2511|ms
 frontend.navtiming.loadEventEnd.desktop.overall:2561|ms
 frontend.navtiming.loadEventEnd.desktop.overall:2641|ms
 frontend.navtiming.loadEventEnd.desktop.overall:2742|ms
+frontend.navtiming.loadEventEnd.desktop.overall:2854|ms
 frontend.navtiming.loadEventEnd.desktop.overall:2861|ms
 frontend.navtiming.loadEventEnd.desktop.overall:2959|ms
 frontend.navtiming.loadEventEnd.desktop.overall:403|ms
@@ -1293,6 +1341,7 @@ frontend.navtiming.loadEventEnd.overall:2511|ms
 frontend.navtiming.loadEventEnd.overall:2561|ms
 frontend.navtiming.loadEventEnd.overall:2641|ms
 frontend.navtiming.loadEventEnd.overall:2742|ms
+frontend.navtiming.loadEventEnd.overall:2854|ms
 frontend.navtiming.loadEventEnd.overall:2861|ms
 frontend.navtiming.loadEventEnd.overall:2959|ms
 frontend.navtiming.loadEventEnd.overall:3520|ms
@@ -1324,6 +1373,7 @@ frontend.navtiming.loadEventStart.by_browser.Chrome.60:1372|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.60:1476|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.60:2013|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.60:2036|ms
+frontend.navtiming.loadEventStart.by_browser.Chrome.60:2831|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.60:2852|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.60:2957|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:1024|ms
@@ -1346,6 +1396,7 @@ frontend.navtiming.loadEventStart.by_browser.Chrome.all:1476|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:1908|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:2013|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:2036|ms
+frontend.navtiming.loadEventStart.by_browser.Chrome.all:2831|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:2852|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:2957|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:3231|ms
@@ -1403,6 +1454,7 @@ frontend.navtiming.loadEventStart.by_continent.Asia:1036|ms
 frontend.navtiming.loadEventStart.by_continent.Asia:1038|ms
 frontend.navtiming.loadEventStart.by_continent.Asia:1152|ms
 frontend.navtiming.loadEventStart.by_continent.Asia:1372|ms
+frontend.navtiming.loadEventStart.by_continent.Asia:2831|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1036|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1037|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1037|ms
@@ -1457,6 +1509,7 @@ frontend.navtiming.loadEventStart.by_country.India:1038|ms
 frontend.navtiming.loadEventStart.by_country.Italy:1443|ms
 frontend.navtiming.loadEventStart.by_country.Italy:1920|ms
 frontend.navtiming.loadEventStart.by_country.Japan:1036|ms
+frontend.navtiming.loadEventStart.by_country.Japan:2831|ms
 frontend.navtiming.loadEventStart.by_country.Russia:1158|ms
 frontend.navtiming.loadEventStart.by_country.Russia:1476|ms
 frontend.navtiming.loadEventStart.by_country.Russia:2013|ms
@@ -1498,6 +1551,7 @@ frontend.navtiming.loadEventStart.desktop.authenticated:1372|ms
 frontend.navtiming.loadEventStart.desktop.authenticated:1443|ms
 frontend.navtiming.loadEventStart.desktop.authenticated:1693|ms
 frontend.navtiming.loadEventStart.desktop.authenticated:1920|ms
+frontend.navtiming.loadEventStart.desktop.authenticated:2831|ms
 frontend.navtiming.loadEventStart.desktop.authenticated:3231|ms
 frontend.navtiming.loadEventStart.desktop.authenticated:462|ms
 frontend.navtiming.loadEventStart.desktop.authenticated:964|ms
@@ -1532,6 +1586,7 @@ frontend.navtiming.loadEventStart.desktop.overall:2030|ms
 frontend.navtiming.loadEventStart.desktop.overall:2036|ms
 frontend.navtiming.loadEventStart.desktop.overall:2272|ms
 frontend.navtiming.loadEventStart.desktop.overall:2560|ms
+frontend.navtiming.loadEventStart.desktop.overall:2831|ms
 frontend.navtiming.loadEventStart.desktop.overall:2852|ms
 frontend.navtiming.loadEventStart.desktop.overall:2957|ms
 frontend.navtiming.loadEventStart.desktop.overall:3231|ms
@@ -1599,6 +1654,7 @@ frontend.navtiming.loadEventStart.overall:2030|ms
 frontend.navtiming.loadEventStart.overall:2036|ms
 frontend.navtiming.loadEventStart.overall:2272|ms
 frontend.navtiming.loadEventStart.overall:2560|ms
+frontend.navtiming.loadEventStart.overall:2831|ms
 frontend.navtiming.loadEventStart.overall:2852|ms
 frontend.navtiming.loadEventStart.overall:2957|ms
 frontend.navtiming.loadEventStart.overall:3231|ms
@@ -1622,6 +1678,7 @@ frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:1758|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:2053|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:265|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:3702|ms
+frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:426|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:492|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:551|ms
@@ -1646,6 +1703,7 @@ frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:2053|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:265|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:3513|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:3702|ms
+frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:4044|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:426|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:492|ms
@@ -1707,6 +1765,7 @@ frontend.navtiming.mediaWikiLoadComplete.by_browser.Safari.11:1006|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Safari.all:1006|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Africa:667|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Asia:2053|ms
+frontend.navtiming.mediaWikiLoadComplete.by_continent.Asia:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Asia:387|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Asia:778|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Asia:816|ms
@@ -1765,6 +1824,7 @@ frontend.navtiming.mediaWikiLoadComplete.by_country.Germany:734|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.India:778|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.Italy:1069|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.Italy:1411|ms
+frontend.navtiming.mediaWikiLoadComplete.by_country.Japan:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.Japan:387|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.Russia:1077|ms
 frontend.navtiming.mediaWikiLoadComplete.by_country.Russia:1452|ms
@@ -1804,6 +1864,7 @@ frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:1724|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:2053|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:261|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:3513|ms
+frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:373|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:4044|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:492|ms
@@ -1835,6 +1896,7 @@ frontend.navtiming.mediaWikiLoadComplete.desktop.overall:265|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3513|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3702|ms
+frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:373|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:4044|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:426|ms
@@ -1898,6 +1960,7 @@ frontend.navtiming.mediaWikiLoadComplete.overall:265|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:3513|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:3702|ms
+frontend.navtiming.mediaWikiLoadComplete.overall:3708|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:373|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:387|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:4044|ms
@@ -1931,6 +1994,7 @@ frontend.navtiming.receiving.by_browser.Chrome.60:13|ms
 frontend.navtiming.receiving.by_browser.Chrome.60:16|ms
 frontend.navtiming.receiving.by_browser.Chrome.60:27|ms
 frontend.navtiming.receiving.by_browser.Chrome.60:2|ms
+frontend.navtiming.receiving.by_browser.Chrome.60:32|ms
 frontend.navtiming.receiving.by_browser.Chrome.60:40|ms
 frontend.navtiming.receiving.by_browser.Chrome.60:40|ms
 frontend.navtiming.receiving.by_browser.Chrome.60:4|ms
@@ -1956,6 +2020,7 @@ frontend.navtiming.receiving.by_browser.Chrome.all:262|ms
 frontend.navtiming.receiving.by_browser.Chrome.all:262|ms
 frontend.navtiming.receiving.by_browser.Chrome.all:27|ms
 frontend.navtiming.receiving.by_browser.Chrome.all:2|ms
+frontend.navtiming.receiving.by_browser.Chrome.all:32|ms
 frontend.navtiming.receiving.by_browser.Chrome.all:40|ms
 frontend.navtiming.receiving.by_browser.Chrome.all:40|ms
 frontend.navtiming.receiving.by_browser.Chrome.all:4|ms
@@ -2013,6 +2078,7 @@ frontend.navtiming.receiving.by_browser.Safari.11:21|ms
 frontend.navtiming.receiving.by_browser.Safari.all:21|ms
 frontend.navtiming.receiving.by_continent.Africa:13|ms
 frontend.navtiming.receiving.by_continent.Asia:264|ms
+frontend.navtiming.receiving.by_continent.Asia:32|ms
 frontend.navtiming.receiving.by_continent.Asia:50|ms
 frontend.navtiming.receiving.by_continent.Asia:534|ms
 frontend.navtiming.receiving.by_continent.Asia:73|ms
@@ -2071,6 +2137,7 @@ frontend.navtiming.receiving.by_country.India:534|ms
 frontend.navtiming.receiving.by_country.Italy:136|ms
 frontend.navtiming.receiving.by_country.Italy:23|ms
 frontend.navtiming.receiving.by_country.Japan:264|ms
+frontend.navtiming.receiving.by_country.Japan:32|ms
 frontend.navtiming.receiving.by_country.Russia:10|ms
 frontend.navtiming.receiving.by_country.Russia:264|ms
 frontend.navtiming.receiving.by_country.Russia:2|ms
@@ -2105,6 +2172,7 @@ frontend.navtiming.receiving.desktop.authenticated:10|ms
 frontend.navtiming.receiving.desktop.authenticated:136|ms
 frontend.navtiming.receiving.desktop.authenticated:23|ms
 frontend.navtiming.receiving.desktop.authenticated:23|ms
+frontend.navtiming.receiving.desktop.authenticated:32|ms
 frontend.navtiming.receiving.desktop.authenticated:36|ms
 frontend.navtiming.receiving.desktop.authenticated:3|ms
 frontend.navtiming.receiving.desktop.authenticated:40|ms
@@ -2131,6 +2199,7 @@ frontend.navtiming.receiving.desktop.overall:262|ms
 frontend.navtiming.receiving.desktop.overall:267|ms
 frontend.navtiming.receiving.desktop.overall:27|ms
 frontend.navtiming.receiving.desktop.overall:2|ms
+frontend.navtiming.receiving.desktop.overall:32|ms
 frontend.navtiming.receiving.desktop.overall:33|ms
 frontend.navtiming.receiving.desktop.overall:36|ms
 frontend.navtiming.receiving.desktop.overall:3|ms
@@ -2193,6 +2262,7 @@ frontend.navtiming.receiving.overall:267|ms
 frontend.navtiming.receiving.overall:273|ms
 frontend.navtiming.receiving.overall:27|ms
 frontend.navtiming.receiving.overall:2|ms
+frontend.navtiming.receiving.overall:32|ms
 frontend.navtiming.receiving.overall:337|ms
 frontend.navtiming.receiving.overall:33|ms
 frontend.navtiming.receiving.overall:36|ms
@@ -2238,6 +2308,7 @@ frontend.navtiming.responseStart.by_browser.Chrome.60:468|ms
 frontend.navtiming.responseStart.by_browser.Chrome.60:585|ms
 frontend.navtiming.responseStart.by_browser.Chrome.60:58|ms
 frontend.navtiming.responseStart.by_browser.Chrome.60:643|ms
+frontend.navtiming.responseStart.by_browser.Chrome.60:816|ms
 frontend.navtiming.responseStart.by_browser.Chrome.all:18|ms
 frontend.navtiming.responseStart.by_browser.Chrome.all:231|ms
 frontend.navtiming.responseStart.by_browser.Chrome.all:246|ms
@@ -2261,6 +2332,7 @@ frontend.navtiming.responseStart.by_browser.Chrome.all:468|ms
 frontend.navtiming.responseStart.by_browser.Chrome.all:585|ms
 frontend.navtiming.responseStart.by_browser.Chrome.all:58|ms
 frontend.navtiming.responseStart.by_browser.Chrome.all:643|ms
+frontend.navtiming.responseStart.by_browser.Chrome.all:816|ms
 frontend.navtiming.responseStart.by_browser.Chrome_Mobile_iOS.61:278|ms
 frontend.navtiming.responseStart.by_browser.Chrome_Mobile_iOS.all:278|ms
 frontend.navtiming.responseStart.by_browser.Edge.15:323|ms
@@ -2303,6 +2375,7 @@ frontend.navtiming.responseStart.by_continent.Asia:394|ms
 frontend.navtiming.responseStart.by_continent.Asia:437|ms
 frontend.navtiming.responseStart.by_continent.Asia:468|ms
 frontend.navtiming.responseStart.by_continent.Asia:643|ms
+frontend.navtiming.responseStart.by_continent.Asia:816|ms
 frontend.navtiming.responseStart.by_continent.Europe:0|ms
 frontend.navtiming.responseStart.by_continent.Europe:0|ms
 frontend.navtiming.responseStart.by_continent.Europe:0|ms
@@ -2357,6 +2430,7 @@ frontend.navtiming.responseStart.by_country.India:205|ms
 frontend.navtiming.responseStart.by_country.Italy:474|ms
 frontend.navtiming.responseStart.by_country.Italy:664|ms
 frontend.navtiming.responseStart.by_country.Japan:437|ms
+frontend.navtiming.responseStart.by_country.Japan:816|ms
 frontend.navtiming.responseStart.by_country.Russia:0|ms
 frontend.navtiming.responseStart.by_country.Russia:2367|ms
 frontend.navtiming.responseStart.by_country.Russia:341|ms
@@ -2396,6 +2470,7 @@ frontend.navtiming.responseStart.desktop.authenticated:451|ms
 frontend.navtiming.responseStart.desktop.authenticated:474|ms
 frontend.navtiming.responseStart.desktop.authenticated:643|ms
 frontend.navtiming.responseStart.desktop.authenticated:664|ms
+frontend.navtiming.responseStart.desktop.authenticated:816|ms
 frontend.navtiming.responseStart.desktop.overall:18|ms
 frontend.navtiming.responseStart.desktop.overall:231|ms
 frontend.navtiming.responseStart.desktop.overall:246|ms
@@ -2429,6 +2504,7 @@ frontend.navtiming.responseStart.desktop.overall:585|ms
 frontend.navtiming.responseStart.desktop.overall:58|ms
 frontend.navtiming.responseStart.desktop.overall:643|ms
 frontend.navtiming.responseStart.desktop.overall:664|ms
+frontend.navtiming.responseStart.desktop.overall:816|ms
 frontend.navtiming.responseStart.mobile.anonymous:160|ms
 frontend.navtiming.responseStart.mobile.anonymous:205|ms
 frontend.navtiming.responseStart.mobile.anonymous:205|ms
@@ -2486,6 +2562,7 @@ frontend.navtiming.responseStart.overall:643|ms
 frontend.navtiming.responseStart.overall:664|ms
 frontend.navtiming.responseStart.overall:734|ms
 frontend.navtiming.responseStart.overall:736|ms
+frontend.navtiming.responseStart.overall:816|ms
 frontend.navtiming.sslNegotiation.by_browser.Chrome.60:43|ms
 frontend.navtiming.sslNegotiation.by_browser.Chrome.all:43|ms
 frontend.navtiming.sslNegotiation.by_continent.Asia:43|ms
@@ -2514,6 +2591,7 @@ frontend.navtiming.waiting.by_browser.Chrome.60:428|ms
 frontend.navtiming.waiting.by_browser.Chrome.60:441|ms
 frontend.navtiming.waiting.by_browser.Chrome.60:459|ms
 frontend.navtiming.waiting.by_browser.Chrome.60:465|ms
+frontend.navtiming.waiting.by_browser.Chrome.60:567|ms
 frontend.navtiming.waiting.by_browser.Chrome.60:580|ms
 frontend.navtiming.waiting.by_browser.Chrome.60:636|ms
 frontend.navtiming.waiting.by_browser.Chrome.all:14|ms
@@ -2537,6 +2615,7 @@ frontend.navtiming.waiting.by_browser.Chrome.all:428|ms
 frontend.navtiming.waiting.by_browser.Chrome.all:441|ms
 frontend.navtiming.waiting.by_browser.Chrome.all:459|ms
 frontend.navtiming.waiting.by_browser.Chrome.all:465|ms
+frontend.navtiming.waiting.by_browser.Chrome.all:567|ms
 frontend.navtiming.waiting.by_browser.Chrome.all:580|ms
 frontend.navtiming.waiting.by_browser.Chrome.all:636|ms
 frontend.navtiming.waiting.by_browser.Chrome_Mobile_iOS.61:277|ms
@@ -2580,6 +2659,7 @@ frontend.navtiming.waiting.by_continent.Asia:203|ms
 frontend.navtiming.waiting.by_continent.Asia:386|ms
 frontend.navtiming.waiting.by_continent.Asia:436|ms
 frontend.navtiming.waiting.by_continent.Asia:465|ms
+frontend.navtiming.waiting.by_continent.Asia:567|ms
 frontend.navtiming.waiting.by_continent.Asia:636|ms
 frontend.navtiming.waiting.by_continent.Europe:0|ms
 frontend.navtiming.waiting.by_continent.Europe:0|ms
@@ -2635,6 +2715,7 @@ frontend.navtiming.waiting.by_country.India:203|ms
 frontend.navtiming.waiting.by_country.Italy:469|ms
 frontend.navtiming.waiting.by_country.Italy:648|ms
 frontend.navtiming.waiting.by_country.Japan:436|ms
+frontend.navtiming.waiting.by_country.Japan:567|ms
 frontend.navtiming.waiting.by_country.Russia:0|ms
 frontend.navtiming.waiting.by_country.Russia:2366|ms
 frontend.navtiming.waiting.by_country.Russia:335|ms
@@ -2672,6 +2753,7 @@ frontend.navtiming.waiting.desktop.authenticated:385|ms
 frontend.navtiming.waiting.desktop.authenticated:386|ms
 frontend.navtiming.waiting.desktop.authenticated:441|ms
 frontend.navtiming.waiting.desktop.authenticated:469|ms
+frontend.navtiming.waiting.desktop.authenticated:567|ms
 frontend.navtiming.waiting.desktop.authenticated:636|ms
 frontend.navtiming.waiting.desktop.authenticated:648|ms
 frontend.navtiming.waiting.desktop.overall:14|ms
@@ -2704,6 +2786,7 @@ frontend.navtiming.waiting.desktop.overall:459|ms
 frontend.navtiming.waiting.desktop.overall:465|ms
 frontend.navtiming.waiting.desktop.overall:469|ms
 frontend.navtiming.waiting.desktop.overall:543|ms
+frontend.navtiming.waiting.desktop.overall:567|ms
 frontend.navtiming.waiting.desktop.overall:580|ms
 frontend.navtiming.waiting.desktop.overall:636|ms
 frontend.navtiming.waiting.desktop.overall:648|ms
@@ -2759,6 +2842,7 @@ frontend.navtiming.waiting.overall:459|ms
 frontend.navtiming.waiting.overall:465|ms
 frontend.navtiming.waiting.overall:469|ms
 frontend.navtiming.waiting.overall:543|ms
+frontend.navtiming.waiting.overall:567|ms
 frontend.navtiming.waiting.overall:580|ms
 frontend.navtiming.waiting.overall:636|ms
 frontend.navtiming.waiting.overall:648|ms
