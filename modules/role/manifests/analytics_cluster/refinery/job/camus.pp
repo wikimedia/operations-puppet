@@ -47,4 +47,10 @@ class role::analytics_cluster::refinery::job::camus {
         # are needed to import Avro binary data.
         libjars => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
     }
+
+    # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
+    # once every hour.
+    camus::job { 'mediawiki_job':
+        minute => '10',
+    }
 }
