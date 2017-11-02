@@ -1,7 +1,7 @@
-# === Class docker::builder
+# === Class docker_pkg
 #
 # Installs all tools needed to build docker images for the WMF.
-class docker::builder () {
+class docker_pkg () {
     require_package([
         'python3', 'python3-virtualenv',
         'virtualenv', 'python3-pip',
