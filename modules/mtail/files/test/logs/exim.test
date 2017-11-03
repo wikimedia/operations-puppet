@@ -1,0 +1,3 @@
+2017-11-02 10:20:48 1eACc9-0002y4-Ik => :blackhole: <wiki@wikimedia.org> R=aliases
+2017-11-02 10:41:52 1eACwY-0004ON-3Z => foobar@wikimedia.org R=otrs T=remote_smtp S=1789 H=mendelevium.eqiad.wmnet [10.64.32.174] C="250 OK id=1eACwa-0001jO-8e" DT=0s
+2017-11-02 10:44:25 1eACyz-0004Vc-Il => zomg@wikimedia.org (blah@wikimedia.org, root@wikimedia.org, root@wikisource.org, postmaster@wikisource.org) <abuse@wikisource.org> R=ldap_account T=remote_smtp S=181295 H=aspmx.l.google.com [209.85.232.27] X=TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128 DN="C=US,ST=California,L=Mountain View,O=Google Inc,CN=mx.google.com" C="250 2.0.0 OK 1509619465 v37si20676qtg.44 - gsmtp" DT=2s
