@@ -11,8 +11,9 @@ class role::microsites::peopleweb {
     }
 
     ferm::service { 'people-http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     motd::script { 'people-motd':
