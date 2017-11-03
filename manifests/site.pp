@@ -1817,26 +1817,18 @@ node /^mw225[4-8]\.codfw\.wmnet$/ {
 
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
-    role(xenon)
+    role(xenon, logging::mediawiki::udp2log)
 
     include ::base::firewall
     include ::standard
-
-    class { 'role::logging::mediawiki::udp2log':
-        monitor => false,
-    }
 }
 
 # mw logging host eqiad
 node 'mwlog1001.eqiad.wmnet' {
-    role(xenon)
+    role(xenon, logging::mediawiki::udp2log)
 
     include ::base::firewall
     include ::standard
-
-    class { 'role::logging::mediawiki::udp2log':
-        monitor => false,
-    }
 }
 
 node 'mx1001.wikimedia.org' {
