@@ -27,6 +27,7 @@
   - db1076:9104
   - db1090:9104
   - db1101:9104
+  - db1103:13314
 - labels:
     shard: s2
     role: master
@@ -59,7 +60,7 @@
   - db1084:9104
   - db1091:9104
   - db1097:9104
-  - db1103:9104
+  - db1103:13314
 - labels:
     shard: s4
     role: master
