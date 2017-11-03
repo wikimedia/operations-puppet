@@ -10,3 +10,4 @@ cache::text::nodes:
       - 'cp1008.wikimedia.org'
 
 profile::base::notifications_enabled: '0'
+public_tls_unified_cert_vendor: "globalsign-2017"
