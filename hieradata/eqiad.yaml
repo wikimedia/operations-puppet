@@ -171,4 +171,4 @@ prometheus_nodes:
     - prometheus1004.eqiad.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "globalsign"
+public_tls_unified_cert_vendor: "globalsign-2016"

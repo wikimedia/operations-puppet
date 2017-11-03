@@ -25,7 +25,7 @@ class profile::cache::ssl::unified(
     } else {
         # TODO: generalize this a bit?
         $certs_active = [
-            "${ucv}-2016-ecdsa-unified", "${ucv}-2016-rsa-unified",
+            "${ucv}-ecdsa-unified", "${ucv}-rsa-unified",
         ]
         # These certs are deployed to all caches and OCSP stapled,
         # ready for use in $certs_active as options
