@@ -2,6 +2,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::logging::mediawiki::udp2log(
+    $logstash_host,
     $monitor = true,
     $log_directory = '/srv/mw-log',
     $rotate = 1000,
@@ -55,13 +56,6 @@ class role::logging::mediawiki::udp2log(
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/udp2log/udpmirror.py',
-    }
-
-    $logstash_host = $::realm ? {
-        # TODO: Find a way to use multicast that doesn't cause duplicate
-        # messages to be stored in logstash. This is a SPOF.
-        production => 'logstash1001.eqiad.wmnet',
-        labs       => 'deployment-logstash2.deployment-prep.eqiad.wmflabs',
     }
 
     $logstash_port = 8324
