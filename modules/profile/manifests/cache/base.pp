@@ -20,6 +20,7 @@ class profile::cache::base(
     $purge_varnishes = hiera('profile::cache::base::purge_varnishes', ['127.0.0.1:3128', '127.0.0.1:3127']),
     $fe_runtime_params = hiera('profile::cache::base::fe_runtime_params', []),
     $be_runtime_params = hiera('profile::cache::base::be_runtime_params', []),
+    $logstash_host = hiera('logstash_syslog', ''),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -84,6 +85,7 @@ class profile::cache::base(
     class { '::varnish::logging':
         cache_cluster => $cache_cluster,
         statsd_host   => $statsd_host,
+        logstash_host => $logstash_host,
     }
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start
