@@ -11,6 +11,7 @@ class base::puppet(
     $freshnessinterval = $base::puppet::params::freshnessinterval
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
+    $puppet_major_version = hiera('puppet_major_version', undef)
 
     package { [ 'puppet', 'facter' ]:
         ensure => present,
