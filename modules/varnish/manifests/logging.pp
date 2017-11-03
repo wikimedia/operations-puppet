@@ -8,10 +8,18 @@
 #
 # [*statsd_host*] The statsd host to send stats to.
 #
+# [*forward_syslog*] Host and port to forward syslog events to.
+#
 class varnish::logging(
     $cache_cluster,
     $statsd_host,
+    $forward_syslog,
 ){
+    rsyslog::conf { 'varnish':
+        source   => 'puppet:///modules/varnish/rsyslog.conf.erb',
+        priority => 80,
+    }
+
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
