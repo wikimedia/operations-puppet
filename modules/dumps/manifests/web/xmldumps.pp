@@ -1,13 +1,12 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
 class dumps::web::xmldumps(
-    $do_acme = true,
-    $datadir = undef,
-    $publicdir = undef,
-    $otherdir = undef,
+    $do_acme          = true,
+    $datadir          = undef,
+    $publicdir        = undef,
+    $otherdir         = undef,
     $htmldumps_server = undef,
-    $xmldumps_server = undef,
+    $xmldumps_server  = undef,
 ) {
-
     class {'dumps::web::html':
         datadir   => $datadir,
         publicdir => $publicdir,
