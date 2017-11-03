@@ -9,6 +9,9 @@ class profile::dumps::web::xmldumps_active {
         logs_dest        => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
         htmldumps_server => 'francium.eqiad.wmnet',
         xmldumps_server  => 'dumps.wikimedia.org',
+        wikilist_url     => 'https://noc.wikimedia.org/conf/all.dblist',
+        wikilist_dir     => '/etc/dumps/dblists',
+        user             => 'dumpsgen',
     }
     # copy dumps and other datasets to fallback host(s) and to labs
     class {'::dumps::copying::peers':}
