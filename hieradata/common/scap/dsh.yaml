@@ -89,6 +89,7 @@ scap::dsh::groups:
   librenms:
     hosts:
       - netmon1002.wikimedia.org
+      - netmon2001.wikimedia.org
   logstash:
     hosts:
       - {'cluster': 'logstash', 'service': 'logstash'}
