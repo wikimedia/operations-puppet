@@ -6,14 +6,3 @@
 -- mysql -A $db -e "ALTER TABLE $db.archive ADD KEY user_timestamp (ar_user,ar_timestamp);"; done
 
 ALTER TABLE archive ADD KEY `user_timestamp` (`ar_user`,`ar_timestamp`);
-
--- Additional index T140609
--- Deployed with:
--- mysql -BN -A information_schema -e \
--- "SELECT table_schema FROM tables WHERE table_name='page_props' and table_schema like '%wik%' and table_type='BASE TABLE'" \
--- | while read db; do \
--- s="ALTER TABLE $db.page_props ADD KEY value (pp_value);"; \
--- echo "$s"; \
--- mysql -A $db -e "$s"; done
-
-ALTER TABLE page_props ADD KEY `pp_value` (`pp_value`);
