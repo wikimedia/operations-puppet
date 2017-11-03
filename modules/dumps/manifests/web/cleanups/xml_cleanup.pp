@@ -12,9 +12,9 @@ class dumps::web::cleanups::xml_cleanup(
         group  => 'root',
     }
 
-    file { '/etc/dumps/dblists':
+    file { $wikilist_dir:
         ensure => 'directory',
-        path   => '/etc/dumps/dblists',
+        path   => $wikilist_dir,
         mode   => '0755',
         owner  => $user,
         group  => 'root',
@@ -30,18 +30,18 @@ class dumps::web::cleanups::xml_cleanup(
     $hugewikis = ['enwiki', 'wikidatawiki']
     $hugewikis_dblist = join($hugewikis, "\n")
 
-    file { '/etc/dumps/dblists/hugewikis.dblist':
+    file { "${wikilist_dir}/hugewikis.dblist":
         ensure  => 'present',
-        path    => '/etc/dumps/dblists/hugewikis.dblist',
+        path    => "${wikilist_dir}/hugewikis.dblist",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
         content => "${hugewikis_dblist}\n",
     }
 
-    file { '/etc/dumps/dblists/bigwikis.dblist':
+    file { "${wikilist_dir}/bigwikis.dblist":
         ensure  => 'present',
-        path    => '/etc/dumps/dblists/bigwikis.dblist',
+        path    => "${wikilist_dir}/bigwikis.dblist",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
@@ -81,4 +81,27 @@ class dumps::web::cleanups::xml_cleanup(
         minute      => '20',
         hour        => '1',
     }
+
+    file { '/usr/local/bin/cleanup_old_xmldumps.py':
+        ensure => 'present',
+        path   => '/usr/local/bin/cleanup_old_xmldumps.py',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/cleanups/cleanup_old_xmldumps.py',
+    }
+
+    command = '/usr/bin/python /usr/local/bin/cleanup_old_xmldumps.py'
+    args = "-d ${publicdir} -w ${wikilist_dir} -k /etc/dumps/xml_keep.conf"
+
+    cron { 'cleanup_xmldumps':
+        ensure      => 'present',
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        command     => "${command} ${args}",
+        user        => $user,
+        minute      => '25',
+        hour        => '1',
+        require     => File['/usr/local/bin/cleanup_old_xmldumps.py'],
+    }
+
 }
