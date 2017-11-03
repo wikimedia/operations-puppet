@@ -91,3 +91,4 @@ profile::cache::base::varnish_version: 5
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
+public_tls_unified_cert_vendor: "globalsign-2017"
