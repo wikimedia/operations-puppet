@@ -31,6 +31,9 @@ server {
     # Rate limit error
     error_page 429 @rate_limit;
     location @rate_limit {
+<% if @logstash_host -%>
+        access_log syslog:server=<%= @logstash_host %>:<%= @logstash_syslog_port %>,facility=local7,tag=wdqs,severity=info logstash;
+<% end -%>
         add_header Cache-Control no-cache always;
         echo Rate limit exceeded;
         echo_flush;
