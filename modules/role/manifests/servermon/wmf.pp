@@ -53,7 +53,7 @@ class role::servermon::wmf {
     ferm::service { 'servermon-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$CACHE_MISC',
     }
 
 }
