@@ -19,6 +19,7 @@ class profile::base(
     $check_raid_interval = hiera('profile::base::check_raid_interval', 10),
     $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
     $check_smart = hiera('profile::base::check_smart', false),
+    $puppet_major_version = hiera('puppet_major_version', undef),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -33,9 +34,10 @@ class profile::base(
     }
 
     class { '::base::puppet':
-        server        => $puppetmaster,
-        dns_alt_names => $dns_alt_names,
-        environment   => $environment
+        server               => $puppetmaster,
+        dns_alt_names        => $dns_alt_names,
+        environment          => $environment,
+        puppet_major_version => $puppet_major_version,
     }
 
     # Temporary workaround for T140100. Remove as soon as Labs instances get

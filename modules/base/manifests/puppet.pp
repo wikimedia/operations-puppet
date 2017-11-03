@@ -3,6 +3,7 @@ class base::puppet(
     $certname=undef,
     $dns_alt_names=undef,
     $environment=undef,
+    $puppet_major_version=undef,
     ) {
     include ::passwords::puppet::database
     include ::base::puppet::params
