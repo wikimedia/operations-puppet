@@ -33,9 +33,10 @@
 #        Bool - use git hooks to prevent cherry picking on top of the git repo
 #    - $git_user
 #        String - name of user who should own the git repositories
-#
 #    - $git_group
 #        String - name of group which should own the git repositories
+#    - $puppet_major_version
+#        The major puppet version to configure
 class puppetmaster(
     $server_name='puppet',
     $bind_address='*',
@@ -58,6 +59,7 @@ class puppetmaster(
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
+    $puppet_major_version=undef,
 ){
 
     $gitdir = '/var/lib/git'
