@@ -1,0 +1,7 @@
+# rsyslog configuration for Varnish
+# This file is managed by Puppet
+
+# Forward Varnish logs to logstash
+if $programname == "varnish" or $programname == "varnish-frontend" then {
+    @<%= @logstash_syslog %>
+}
