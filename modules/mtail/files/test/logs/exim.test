@@ -1,0 +1,13 @@
+2017-11-02 10:20:48 1eACc9-0002y4-Ik => :blackhole: <wiki@wikimedia.org> R=aliases
+2017-11-02 10:41:52 1eACwY-0004ON-3Z => foobar@wikimedia.org R=otrs T=remote_smtp S=1789 H=mendelevium.eqiad.wmnet [10.64.32.174] C="250 OK id=1eACwa-0001jO-8e" DT=0s
+2017-11-02 10:44:25 1eACyz-0004Vc-Il => zomg@wikimedia.org (blah@wikimedia.org, root@wikimedia.org, root@wikisource.org, postmaster@wikisource.org) <abuse@wikisource.org> R=ldap_account T=remote_smtp S=181295 H=aspmx.l.google.com [209.85.232.27] X=TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128 DN="C=US,ST=California,L=Mountain View,O=Google Inc,CN=mx.google.com" C="250 2.0.0 OK 1509619465 v37si20676qtg.44 - gsmtp" DT=2s
+2017-11-06 10:30:30 1eBefh-0007eo-Eh DKIM: d=asdf.com s=dkim c=relaxed/relaxed a=rsa-sha256 [verification failed - signature did not verify (headers probably modified in transit)]
+2017-11-06 14:54:35 1eBinK-00048M-Tr DKIM: d=bogus.xyz s=default c=relaxed/relaxed a=rsa-sha256 [invalid - public key record (currently?) unavailable]
+2017-11-06 15:10:11 1eBj2Q-0004sd-MC DKIM: d=test-foo.com s=subject c=relaxed/relaxed a=rsa-sha256 [verification succeeded]
+2017-11-07 14:13:42 H=zomg.org [1.2.3.4]:54729 I=[4.3.2.1]:25 F=<foo@bar.com> rejected RCPT <wikida-l@wikipedia.org>: refusing mail from 1.2.3.4 - address is blocklisted by zen.spamhaus.org (127.0.0.3, 127.0.0.4: https://www.spamhaus.org/query/ip/1.2.3.4)
+2017-11-07 12:47:58 TLS error on connection from foo.com [1.2.3.4]:36384 I=[1.2.3.4]:25 (gnutls_handshake): Could not negotiate a supported cipher suite.
+2017-11-07 06:26:10 H=([1.2.3.4]) [1.2.3.4]:18173 I=[4.3.2.1]:25 sender verify fail for <foo@wikimedia.org>: Address foo@wikimedia.org does not exist
+2017-11-07 10:04:35 H=([1.2.3.4]) [1.2.3.4]:53610 I=[1.2.3.4]:25 sender verify defer for <foo@bar.com>: host lookup did not complete
+2017-11-07 14:08:47 Connection from [1.2.3.4]:57094 I=[1.2.3.4]:25 refused: too many connections from that IP address
+2017-11-07 14:15:21 rejected EHLO from [1.2.3.4]:2320 I=[1.2.3.4]:25: syntactically invalid argument(s): zomg
+2017-11-07 14:14:33 SMTP command timeout on connection from [1.2.3.4]:61601 I=[1.2.3.4]:25
