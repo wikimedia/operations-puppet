@@ -22,7 +22,7 @@ class gerrit::proxy(
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${tls_host}",
+        check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
         contact_group => 'admins,gerrit',
     }
 
