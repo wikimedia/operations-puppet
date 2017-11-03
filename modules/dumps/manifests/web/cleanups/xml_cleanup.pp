@@ -32,7 +32,7 @@ class dumps::web::cleanups::xml_cleanup(
 
     file { '/etc/dumps/dblists/hugewikis.dblist':
         ensure  => 'present',
-        path    => '/etc/dumps/hugewikis.dblist',
+        path    => '/etc/dumps/dblists/hugewikis.dblist',
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
@@ -41,7 +41,7 @@ class dumps::web::cleanups::xml_cleanup(
 
     file { '/etc/dumps/dblists/bigwikis.dblist':
         ensure  => 'present',
-        path    => '/etc/dumps/bigwikis.dblist',
+        path    => '/etc/dumps/dblists/bigwikis.dblist',
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
