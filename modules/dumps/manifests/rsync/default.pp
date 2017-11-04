@@ -1,5 +1,5 @@
 class dumps::rsync::default(
-    $rsync_opts = '--bwlimit=50000',
+    $rsync_opts = undef,
 ) {
     file { '/etc/default/rsync':
         ensure  => 'present',
