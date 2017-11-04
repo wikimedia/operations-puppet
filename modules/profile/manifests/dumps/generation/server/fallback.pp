@@ -1,4 +1,4 @@
-class profile::dumps::generation::server {
+class profile::dumps::generation::server::fallback {
     class { '::dumpsuser': }
 
     class { '::dumps::generation::server::dirs':
