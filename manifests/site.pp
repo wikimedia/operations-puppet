@@ -796,8 +796,16 @@ node /^druid100[456].eqiad.wmnet$/ {
     include ::standard
 }
 
-node /^dumpsdata100[12].eqiad.wmnet$/ {
-    role(dumps::generation::server)
+# nfs server for dumps generation, also rsyncs
+# data to fallback nfs server(s)
+node /^dumpsdata1001.eqiad.wmnet$/ {
+    role(dumps::generation::server::primary)
+}
+
+# fallback nfs server for dumps generation, also
+# will rsync data to web servers
+node /^dumpsdata1002.eqiad.wmnet$/ {
+    role(dumps::generation::server::fallback)
 }
 
 node 'eeden.wikimedia.org' {
