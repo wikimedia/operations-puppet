@@ -25,7 +25,7 @@ RSYNC_ENABLE=true
 #  Possibilities are:
 #   --address=123.45.67.89              (bind to a specific IP address)
 #   --port=8730                         (bind to specified port; default 873)
-<% if @rsync_opts then -%>
+<% if @rsync_opts != nil -%>
 RSYNC_OPTS='<%= @rsync_opts -%>'
 <% end -%>
 
