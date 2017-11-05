@@ -20,7 +20,7 @@ class role::labs::mediawiki_vagrant {
     Labs_lvm::Volume <| |> -> Class['role::labs::mediawiki_vagrant']
 
     # Ensure that role::labs_vagrant is not applied
-    if defined(Class['role::labs_vagrant']) {
-        fail('role::labs::mediawiki_vagrant and role::labs_vagrant conflict.')
+    if defined(Class['role::deprecated::labsvagrant']) {
+        fail('role::labs::mediawiki_vagrant and role::deprecated::labsvagrant  conflict.')
     }
 }
