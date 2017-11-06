@@ -2,4 +2,3 @@
 profile::mariadb::core_multiinstance::num_instances: 2
 profile::mariadb::core_multiinstance::s6: '185G'
 profile::mariadb::core_multiinstance::s7: '185G'
-profile::base::notifications_enabled: '0'
