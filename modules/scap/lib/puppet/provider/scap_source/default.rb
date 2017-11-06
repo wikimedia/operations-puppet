@@ -29,6 +29,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   has_command(:git, '/usr/bin/git')
+  has_command(:scap, '/usr/bin/scap')
 
   # Shortand for the repo name
   def repo
@@ -105,6 +106,27 @@ Puppet::Type.type(:scap_source).provide(:default) do
     }
   end
 
+  def scap_init(path)
+    umask = 0o002
+    pwd = Etc.getpwnam(resource[:owner])
+    uid = pwd.uid
+    gid = pwd.gid
+    Dir.chdir(path) do
+      Puppet::Util.withumask(umask) {
+        Puppet::Util::Execution.execute(
+          [
+            self.class.command(:scap),
+            'deploy',
+            '--init'
+          ],
+          :uid => uid,
+          :gid => gid,
+          :failonfail => true
+        )
+      }
+    end
+  end
+
   def exists?
     # check if the dirs exist; if they do, check
     # if they're a git repo.
@@ -115,13 +137,18 @@ Puppet::Type.type(:scap_source).provide(:default) do
     if resource[:ensure] == :present
       begin
         git('-C', target_path, 'rev-parse', 'HEAD')
-        return true
       rescue Puppet::ExecutionFailure
         return false
       end
+      # Also check that deploy-head is there, and return its value
+      deploy_head_exists?
     else
-      return true
+      true
     end
+  end
+
+  def deploy_head_exists?
+    File.exists?(File.join(target_path, '.git', 'DEPLOY-HEAD'))
   end
 
   def create
@@ -133,13 +160,17 @@ Puppet::Type.type(:scap_source).provide(:default) do
     end
 
     # Checkout the main repository, and the scap one too
-    Puppet.debug("Checking out #{repo} into #{target_path}")
-    checkout repo, target_path
-    Puppet.debug("Repository checked out in #{target_path}")
+    unless Dir.exists?(target_path)
+      Puppet.debug("Checking out #{repo} into #{target_path}")
+      checkout repo, target_path
+      Puppet.debug("Repository checked out in #{target_path}")
+    end
+
     if resource[:scap_repository]
       target = File.join(target_path, 'scap')
-      checkout resource[:scap_repository], target
+      checkout resource[:scap_repository], target unless Dir.exists?(target)
     end
+    scap_init unless deploy_head_exists?
   end
 
   def destroy
