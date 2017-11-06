@@ -1,9 +1,0 @@
-# rsyslog configuration for Varnish
-# This file is managed by Puppet
-
-<%- if @forward_syslog != "" -%>
-# Forward Varnish logs to logstash
-if $programname contains "varnish" then {
-    @<%= @forward_syslog %>
-}
-<%- end -%>
