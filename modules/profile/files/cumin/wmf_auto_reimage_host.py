@@ -78,7 +78,7 @@ def setup_logging(user, host):
     user -- the real user to use in the logging formatter for auditing
     """
     log_path = LOG_PATTERN.format(
-        start=datetime.now().strftime('%Y%m%d%H%M'), user=user, pid=os.getpid(),
+        start=datetime.utcnow().strftime('%Y%m%d%H%M'), user=user, pid=os.getpid(),
         host=host.replace('.', '_'))
     lib.setup_logging(logger, user, log_path)
 
@@ -136,7 +136,7 @@ def run(args, user, log_path):
             args.mgmt = args.rename_mgmt
 
         # Ensure the host is booting into the installer using Cumin's direct backend
-        lib.wait_reboot(args.host, start=datetime.now(), installer=True)
+        lib.wait_reboot(args.host, start=datetime.utcnow(), installer=True)
 
     # Sign the new Puppet certificate
     if lib.puppet_wait_cert_and_sign(args.host):
@@ -147,11 +147,11 @@ def run(args, user, log_path):
 
     # Issue a reboot and wait for it and also for Puppet to complete
     if not args.no_reboot:
-        reboot_time = datetime.now()
+        reboot_time = datetime.utcnow()
         # Ensure the host is in the known hosts
         lib.run_puppet([socket.getfqdn()], no_raise=True)
         lib.reboot_host(args.host)
-        boot_time = datetime.now()
+        boot_time = datetime.utcnow()
         lib.wait_reboot(args.host, start=reboot_time)
         lib.wait_puppet_run(args.host, start=boot_time)
 

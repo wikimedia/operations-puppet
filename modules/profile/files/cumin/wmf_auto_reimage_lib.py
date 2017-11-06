@@ -538,7 +538,7 @@ def puppet_wait_cert_and_sign(host):
     wait_command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
     sign_command = "puppet cert -s '{host}'".format(host=host)
     puppetmaster_host = resolve_dns(PUPPET_DOMAIN, 'CNAME')
-    start = datetime.now()
+    start = datetime.utcnow()
     timeout = 7200  # 2 hours
     retries = 0
 
@@ -554,7 +554,7 @@ def puppet_wait_cert_and_sign(host):
             exit_code, worker = run_cumin(
                 'puppet_wait_cert_and_sign', puppetmaster_host, [wait_command])
         except RuntimeError:
-            if (datetime.now() - start).total_seconds() > timeout:
+            if (datetime.utcnow() - start).total_seconds() > timeout:
                 logger.error('Timeout reached')
                 raise RuntimeError('Timeout reached')
 
@@ -631,10 +631,10 @@ def wait_puppet_run(host, start=None):
     Arguments:
     host  -- the host to monitor for a complete Puppet run
     start -- a datetime object to compare with Puppet last run
-             [optional, default: now()]
+             [optional, default: utcnow()]
     """
     if start is None:
-        start = datetime.now()
+        start = datetime.utcnow()
 
     timeout = 7200  # 2 hours
     retries = 0
@@ -651,17 +651,15 @@ def wait_puppet_run(host, start=None):
 
         try:
             exit_code, worker = run_cumin('wait_puppet_run', host, [command])
+            for _, output in worker.get_results():
+                last_run = datetime.utcfromtimestamp(float(output.message()))
+
+            if last_run > start:
+                break
         except RuntimeError:
-            time.sleep(WATCHER_LONG_SLEEP)
-            continue
+            pass
 
-        for _, output in worker.get_results():
-            last_run = datetime.utcfromtimestamp(float(output.message()))
-
-        if last_run > start:
-            break
-
-        if (datetime.now() - start).total_seconds() > timeout:
+        if (datetime.utcnow() - start).total_seconds() > timeout:
             logger.error('Timeout reached')
             raise RuntimeError
 
@@ -696,12 +694,12 @@ def wait_reboot(host, start=None, installer=False):
     Arguments:
     host      -- the host to monitor
     start     -- a datetime object to compare with Puppet last run
-                 [optional, default: now()]
+                 [optional, default: utcnow()]
     installer -- whether the host will reboot into the installer or not,
     """
     if start is None:
-        start = datetime.now()
-    check_start = datetime.now()
+        start = datetime.utcnow()
+    check_start = datetime.utcnow()
     timeout = 1800  # 30 minutes
     retries = 0
 
@@ -713,11 +711,11 @@ def wait_reboot(host, start=None, installer=False):
                 min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
         try:
-            check_uptime(host, maximum=(datetime.now() - start).total_seconds(),
+            check_uptime(host, maximum=(datetime.utcnow() - start).total_seconds(),
                          installer=installer)
             break
         except RuntimeError:
-            if (datetime.now() - check_start).total_seconds() > timeout:
+            if (datetime.utcnow() - check_start).total_seconds() > timeout:
                 logger.error('Timeout reached')
                 raise RuntimeError('Timeout reached')
 
