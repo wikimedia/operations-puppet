@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><%= @title %>.planet.wikimedia.org</title>
         <script type="text/javascript">
             /*localStorage.clear();*/
@@ -19,7 +20,7 @@
             }
 
             function setStorage() {
-                if(typeof(Storage)!=="undefined") {
+                if (typeof(Storage) !== "undefined") {
                     localStorage['read ' + currentlyOpen] = currentlyOpen;
                 }
             }
@@ -43,7 +44,7 @@
 
             function toggle(showHideDiv) {
                 var ele = document.getElementById(showHideDiv);
-                if(ele.style.display == "block") {
+                if (ele.style.display == "block") {
                     ele.style.display = "none";
                 } else {
                     ele.style.display = "block";
@@ -52,13 +53,6 @@
                     current.classList.remove('unread')
                     current.className += " read";
                     setStorage();
-/*                    var imgs = ele.getElementsByTagName('img');
-                    for(var i = 0; i < imgs.length; i++) {
-                        var thisImg = imgs[i];
-                        alert(thisImg);
-                        get data-src
-                        document.img.src=data-src
-                    }*/
                 }
             }
             function toggleall(changeTo){
@@ -73,7 +67,7 @@
                 var divs = document.getElementsByClassName("itemdescription");
                 var selectionDiv = document.getElementById(currentlyOpen);
                 for(var i=0; i<divs.length; i++) {
-                    if(divs[i] == selectionDiv) {
+                    if (divs[i] == selectionDiv) {
                         var previous = divs[i+1];
                         var next = divs[i-1];
                         break;
@@ -81,17 +75,17 @@
                 }
 
                 toggleall('none');
-                if(direction == "next"){
-                    if(next!=undefined){
+                if (direction == "next") {
+                    if (next!=undefined) {
                         toggle(next.id);
                         window.location = "#" + next.parentNode.id;
-                    }else{
+                    } else {
                         var begin=document.getElementById("beginning")
                         begin.style.display="block"
                         setTimeout(function(){begin.style.display="none"},1000);
                     }
-                }else{
-                    if(previous!=undefined){
+                } else {
+                    if (previous!=undefined) {
                         toggle(previous.id);
                         window.location = "#" + previous.parentNode.id;
                     }else{
@@ -128,6 +122,39 @@
                 <h1><%= @title %>.planet.wikimedia.org</h1>
                 <h3>(rawdog __version__: __num_items__ items from __num_feeds__ feeds)</h3>
                 <p><a onclick="toggleall('block')">Open all</a> <a onclick="toggleall('none')">Close all</a> <a onclick="markAllRead()">Mark All Read</a></p>
+            </div>
+            <div class="menu">
+              <p>
+                <h2>Wikimedia</h2>
+                <ul>
+                  <li><a href="https://ar.planet.wikimedia.org/">ar.planet.wm</a></li>
+                  <li><a href="https://cs.planet.wikimedia.org/">cs.planet.wm</a></li>
+                  <li><a href="https://de.planet.wikimedia.org/">de.planet.wm</a></li>
+                  <li><a href="https://el.planet.wikimedia.org/">el.planet.wm</a></li>
+                  <li><a href="https://en.planet.wikimedia.org/">en.planet.wm</a></li>
+                  <li><a href="https://es.planet.wikimedia.org/">es.planet.wm</a></li>
+                  <li><a href="https://fr.planet.wikimedia.org/">fr.planet.wm</a></li>
+                  <li><a href="https://gmq.planet.wikimedia.org/">gmq.planet.wm</a></li>
+                  <li><a href="https://id.planet.wikimedia.org/">id.planet.wm</a></li>
+                  <li><a href="https://it.planet.wikimedia.org/">it.planet.wm</a></li>
+                  <li><a href="https://pl.planet.wikimedia.org/">pl.planet.wm</a></li>
+                  <li><a href="https://pt.planet.wikimedia.org/">pt.planet.wm</a></li>
+                  <li><a href="https://ro.planet.wikimedia.org/">ro.planet.wm</a></li>
+                  <li><a href="https://ru.planet.wikimedia.org/">ru.planet.wm</a></li>
+                  <li><a href="https://uk.planet.wikimedia.org/">uk.planet.wm</a></li>
+                  <li><a href="https://zh.planet.wikimedia.org/">zh.planet.wm</a></li>
+                </ul>
+              </p>
+              <p>
+                <h2>Wikimedia</h2>
+                <ul>
+                  <li><a href="http://www.planetapache.org/">Planet Apache</a></li>
+                  <li><a href="http://planet.debian.net/">Planet Debian</a></li>
+                  <li><a href="http://planet.freedesktop.org/">Planet freedesktop.org</a></li>
+                  <li><a href="http://planet.gnome.org/">Planet GNOME</a></li>
+                  <li><a href="http://www.planetplanet.org/">more...</a></li>
+                </ul>
+              </p>
             </div>
             <div class="pages">
                 __paged_output_pages__
