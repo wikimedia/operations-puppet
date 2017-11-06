@@ -2,7 +2,8 @@ class profile::kubernetes::node(
   $master_fqdn = hiera('profile::kubernetes::master_fqdn'),
   $master_hosts = hiera('profile::kubernetes::master_hosts'),
   $infra_pod = hiera('profile::kubernetes::infra_pod'),
-  $use_cni = hiera('profile::kubernetes::use_cni')
+  $use_cni = hiera('profile::kubernetes::use_cni'),
+  $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -26,7 +27,8 @@ class profile::kubernetes::node(
         tls_key                   => '/etc/kubernetes/ssl/server.key',
     }
     class { '::k8s::proxy':
-        master_host => $master_fqdn,
+        master_host    => $master_fqdn,
+        masquerade_all => $masquerade_all,
     }
 
     $master_hosts_ferm = join($master_hosts, ' ')
