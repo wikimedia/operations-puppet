@@ -82,10 +82,6 @@ innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 
-# Enable innodb_large_prefix #T179614
-innodb_file_format = Barracuda
-innodb_large_prefix = 1
-
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
 # At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
