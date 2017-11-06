@@ -40,6 +40,10 @@ case "$1" in
 		exit 0
 		;;
 	*)
+		if fuser -s /var/lib/dpkg/lock ; then
+			echo "dpkg is running, not checking broken packages"
+			exit 0
+		fi
 		packagedata=` dpkg -l|grep '^[uirph]'|egrep -v '^(ii|rc)' `
 		status=$?
 		if test "$1" = "-v" -o "$1" = "--verbose"; then
