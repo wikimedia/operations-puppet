@@ -269,12 +269,6 @@ class profile::phabricator::main (
         port   => '80',
     }
 
-    ferm::service { 'phabmain_https':
-        ensure => $ferm_ensure,
-        proto  => 'tcp',
-        port   => '443',
-    }
-
     # receive mail from mail smarthosts
     ferm::service { 'phabmain-smtp':
         ensure => $ferm_ensure,
