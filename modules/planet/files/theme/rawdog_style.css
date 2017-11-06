@@ -176,3 +176,26 @@ h3 {
     color:#fafafa;
     background:#555;
 }
+
+.menu {
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    /* background: #666; */
+    width: 150px; /* ie5win fudge begins */
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    width: 120px;
+    font-size: 12px;
+}
+
+html>body .menu {
+    width: 195px; /* ie5win fudge ends */
+}
+
+.menuitem {
+    margin-top: 15px;
+}
