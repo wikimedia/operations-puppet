@@ -19,7 +19,7 @@ Usage: $0 --dumpsdir <path> --remotedirs <path>,<path>,<path>...
   --dumpsdir   path to root of dumps tree for rsync to peer hosts
   --remotedir  comma-separated list of remote destinations to which to rsync
 
-Example: $0 --dumpsdir /data/xmldatadumps/public \\
+Example: $0 --dumpsdir /data/xmldatadumps \\
    --remotedirs dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,dumpsdata1003.eqiad.wmnet::data/xmldatadumps/public/
 EOF
     exit 1
@@ -55,10 +55,10 @@ IFS=','
 read -a remotedirs_list <<<$remotedirs
 IFS=$IFS_SAVE
 
-while 1; do
+while [ 1 ]; do
 
     for dest in $remotedirs_list; do
-        echo /usr/bin/rsync -a  --contimeout 600 --timeout 600 exclude='**bad/' exclude='**save/' exclude='**not/' exclude='**temp/' exclude='**tmp/' exclude='*.inprog'  ${dumpsdir}/public/*wik* "$dest"
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  ${dumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
     done
 
     # when dumps aren't being generated, no reason to try over and over again to push new files.

@@ -7,7 +7,7 @@ class profile::dumps::generation::server::primary {
     }
 
     class { '::dumps::generation::server::rsyncer':
-        dumpsdir   => '/data/xmldatadumps/public',
-        remotedirs => 'dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/, dataset1001.wikimedia.org::data/xmldatadumps/public/',
+        dumpsdir   => '/data/xmldatadumps',
+        remotedirs => 'dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,dataset1001.wikimedia.org::data/xmldatadumps/public/',
     }
 }
