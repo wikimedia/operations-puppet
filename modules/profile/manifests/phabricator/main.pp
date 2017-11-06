@@ -267,6 +267,7 @@ class profile::phabricator::main (
         ensure => $ferm_ensure,
         proto  => 'tcp',
         port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     # receive mail from mail smarthosts
