@@ -92,6 +92,7 @@ class contint::packages::php {
             'php5.5-dev',
             'php5.5-gd',
             'php5.5-gmp',
+            'php5.5-iconv',
             'php5.5-intl',
             'php5.5-ldap',
             'php5.5-luasandbox',
@@ -101,7 +102,9 @@ class contint::packages::php {
             'php5.5-redis',
             'php5.5-sqlite3',
             'php5.5-tidy',
+            'php5.5-xml',
             'php5.5-xsl',
+            'php5.5-zip',
             ]:
             ensure  => present,
             require => [
