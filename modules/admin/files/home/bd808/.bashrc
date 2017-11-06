@@ -39,6 +39,11 @@ source "${BASH_CONF}/func.sh"
 
 : ${MANPATH=$(manpath 2>/dev/null)}
 
+# Work around 0644 forced permissions from ::admin::user's File['/home/$USER']
+# Taken from Ori's .bash_profile script. See
+# I6bd9be8a946fef97df4b1f759a50afb59561ae15 for a nicer fix.
+rsync --delete --recursive --chmod=u+x ${HOME}/.bin/ ${HOME}/bin &>/dev/null
+
 # add common directories with bin,man,info,lib parts
 add_root_dir "${HOME}"
 
