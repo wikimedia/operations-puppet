@@ -12,6 +12,27 @@ class base::puppet(
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
 
+
+    # pin puppet* packages to appropriate repo on puppet 4 hosts
+    if $puppet_major_version == 4 {
+        $puppet_pkg_pin_repo = $facts['lsbdistcodename'] ? {
+            'jessie'  => 'jessie-backports',
+            'stretch' => 'stretch',
+            default   => undef,
+        }
+
+        if $puppet_pkg_pin_repo {
+            apt::pin { 'puppet-pin':
+                package  => 'puppet*',
+                pin      => "release a=${puppet_pkg_pin_repo}",
+                priority => '1001',
+            }
+        } else {
+            fail('Puppet 4 package configuration not yet available for this OS release. Update $puppet_major_version accordingly')
+        }
+
+    }
+
     package { [ 'puppet', 'facter' ]:
         ensure => present,
     }
