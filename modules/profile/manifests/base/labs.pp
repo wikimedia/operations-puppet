@@ -23,6 +23,15 @@ class profile::base::labs {
         }
     }
 
+    apt::conf { 'unattended-upgrades-wikimedia':
+        priority => '51',
+        # Key with trailing '::' to append to potentially existing entry
+        key      => 'Unattended-Upgrade::Allowed-Origins::',
+        # lint:ignore:single_quote_string_with_variables
+        value    => 'Wikimedia:${distro_codename}-wikimedia',
+        # lint:endignore
+    }
+
     file { '/usr/local/sbin/notify_maintainers.py':
         ensure => present,
         owner  => 'root',
