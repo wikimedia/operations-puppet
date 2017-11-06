@@ -77,7 +77,7 @@ def setup_logging(user):
     user -- the real user to use in the logging formatter for auditing
     """
     log_path = LOG_PATTERN.format(
-        start=datetime.now().strftime('%Y%m%d%H%M'), user=user, pid=os.getpid())
+        start=datetime.utcnow().strftime('%Y%m%d%H%M'), user=user, pid=os.getpid())
     lib.setup_logging(logger, user, log_path)
 
     return log_path
