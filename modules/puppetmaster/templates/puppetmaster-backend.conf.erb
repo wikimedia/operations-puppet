@@ -20,8 +20,8 @@
         <%- end -%>
     </Location>
 
-    DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
-    <Directory /usr/share/puppet/rack/puppetmasterd/>
+    DocumentRoot <%= @puppetmaster_rack_path %>/public
+    <Directory <%= @puppetmaster_rack_path %>/>
         Options None
         AllowOverride None
         Require all granted
