@@ -86,6 +86,11 @@ scap::dsh::groups:
   discovery-analytics:
     hosts:
       - stat1005.eqiad.wmnet
+  mjolnir:
+    hosts:
+      - relforge1001.eqiad.wmnet
+      - relforge1002.eqiad.wmnet
+      - stat1005.eqiad.wmnet
   librenms:
     hosts:
       - netmon1002.wikimedia.org
@@ -93,10 +98,6 @@ scap::dsh::groups:
   logstash:
     hosts:
       - {'cluster': 'logstash', 'service': 'logstash'}
-  relforge:
-    hosts:
-      - relforge1001.eqiad.wmnet
-      - relforge1002.eqiad.wmnet
   webperf:
     hosts:
       - hafnium.eqiad.wmnet
