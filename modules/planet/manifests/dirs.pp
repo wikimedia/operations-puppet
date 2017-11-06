@@ -1,4 +1,4 @@
-# sets up needed directories for a planet-venus intall
+# sets up needed directories for a planet-venus / rawdog install
 class planet::dirs {
 
     if os_version('debian == stretch') {
@@ -11,6 +11,13 @@ class planet::dirs {
             '/etc/rawdog/theme/wikimedia',
             ]:
             ensure => 'directory',
+            owner  => 'planet',
+            group  => 'planet',
+            mode   => '0755',
+        }
+
+        file { '/etc/rawdog/plugins':
+            ensure => directory,
             owner  => 'planet',
             group  => 'planet',
             mode   => '0755',
