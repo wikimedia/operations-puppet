@@ -356,3 +356,7 @@ smart_health_mpt:
 smart_health_codfw:
   __regex: !ruby/regexp /^.*\.codfw\.wmnet$/
   profile::base::check_smart: true
+
+smart_health_esams:
+  __regex: !ruby/regexp /^.*\.esams\.wmnet$/
+  profile::base::check_smart: true
