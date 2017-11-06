@@ -9,4 +9,11 @@ class apt::unattendedupgrades($ensure=present) {
         key      => 'APT::Periodic::Unattended-Upgrade',
         value    => '1',
     }
+
+    apt::conf { 'unattended-upgrades-wikimedia':
+        priority => '51',
+        # Key with trailing '::' to append to potentially existing entry
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
+        value    => 'origin=Wikimedia,codename=${distro_codename}-wikimedia',
+   }
 }
