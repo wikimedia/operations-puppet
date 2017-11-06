@@ -4,4 +4,9 @@ class role::elasticsearch::analytics {
     scap::target { 'wikimedia/discovery/analytics':
         deploy_user => 'deploy-service',
     }
+
+    require_package('virtualenv', 'zip')
+    scap::target { 'search/MjoLniR/deploy':
+        deploy_user => 'deploy-service',
+    }
 }
