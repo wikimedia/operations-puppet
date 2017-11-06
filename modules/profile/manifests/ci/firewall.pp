@@ -64,9 +64,9 @@ class profile::ci::firewall (
     # ALLOWS:
 
     # web access
-    ferm::service { 'allow_http':
+    ferm::service { 'ci_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$CACHE_MISC',
     }
 }
