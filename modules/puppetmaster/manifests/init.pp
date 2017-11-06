@@ -106,6 +106,12 @@ class puppetmaster(
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
 
+    # path and name change with puppet 4 packages
+    $puppetmaster_rack_path = $puppet_major_version ? {
+        4       => '/usr/share/puppet/rack/puppet-master',
+        default => '/usr/share/puppet/rack/puppetmasterd',
+    }
+
     # Part dependent on the server_type
     case $server_type {
         'frontend': {
