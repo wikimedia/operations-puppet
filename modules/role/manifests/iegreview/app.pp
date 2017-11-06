@@ -19,8 +19,9 @@ class role::iegreview::app {
     }
 
     ferm::service { 'iegreview_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 }
 # vim:sw=4 ts=4 sts=4 et:
