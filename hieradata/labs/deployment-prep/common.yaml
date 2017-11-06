@@ -141,7 +141,8 @@ profile::cassandra::settings:
     rpc_address: '%{::ipaddress}'
 # end cassandra
 "udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
-"logstash_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
+"logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
+"logstash_syslog_port": 10514
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05

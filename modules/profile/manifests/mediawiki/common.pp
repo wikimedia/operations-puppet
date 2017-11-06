@@ -1,5 +1,6 @@
 class profile::mediawiki::common(
-    $forward_syslog = hiera('logstash_syslog'),
+    $logstash_host = hiera('logstash_host'),
+    $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
     ){
 
@@ -8,7 +9,7 @@ class profile::mediawiki::common(
     }
 
     class { '::mediawiki':
-        forward_syslog => $forward_syslog,
+        forward_syslog => "${logstash_host}:${logstash_syslog_port}",
         log_aggregator => $log_aggregator,
     }
 
