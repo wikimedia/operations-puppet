@@ -101,6 +101,7 @@ profile::druid::historical::properties:
   druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
   druid.historical.cache.useCache: true
   druid.historical.cache.populateCache: true
+  druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor", "com.metamx.metrics.JvmMonitor"]
 profile::druid::historical::env:
   DRUID_HEAP_OPTS: "-Xmx12g -Xms12g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=32g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
