@@ -15,6 +15,7 @@ class k8s::proxy(
         group   => 'root',
         mode    => '0644',
         content => template('k8s/kube-proxy.default.erb'),
+        notify  => Service['kube-proxy'],
     }
 
 
