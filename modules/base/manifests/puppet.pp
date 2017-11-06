@@ -4,7 +4,7 @@ class base::puppet(
     $dns_alt_names=undef,
     $environment=undef,
     $puppet_major_version=undef,
-    ) {
+) {
     include ::passwords::puppet::database
     include ::base::puppet::params
     $interval = $base::puppet::params::interval
@@ -12,6 +12,11 @@ class base::puppet(
     $freshnessinterval = $base::puppet::params::freshnessinterval
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
+
+
+    if $puppet_major_version == 4 {
+        include base::puppet::puppet4
+    }
 
     package { [ 'puppet', 'facter' ]:
         ensure => present,
