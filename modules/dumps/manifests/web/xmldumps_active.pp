@@ -9,6 +9,8 @@ class dumps::web::xmldumps_active(
     $wikilist_url     = undef,
     $wikilist_dir     = undef,
     $user             = undef,
+    $webuser          = undef,
+    $webgroup         = undef,
 ) {
     # active web server
     class {'::dumps::web::xmldumps':
@@ -18,6 +20,8 @@ class dumps::web::xmldumps_active(
         otherdir         => $otherdir,
         htmldumps_server => $htmldumps_server,
         xmldumps_server  => $xmldumps_server,
+        webuser          => $webuser,
+        webgroup         => $webgroup,
     }
 
     # only the active web server should be syncing nginx logs
