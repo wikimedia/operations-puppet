@@ -22,6 +22,7 @@ cp-codfw: A:cp and A:codfw
 cp-eqiad: A:cp and A:eqiad
 cp-esams: A:cp and A:esams
 cp-ulsfo: A:cp and A:ulsfo
+cp-eqsin: A:cp and A:eqsin
 <% [ 'text', 'upload', 'misc' ].each do |cache| -%>
 cp-<%= cache %>: P{R:class = role::cache::<%= cache %>}
 <% @datacenters.each do |dc| -%>
@@ -101,6 +102,7 @@ lvs-codfw: A:lvs and A:codfw
 lvs-eqiad: A:lvs and A:eqiad
 lvs-esams: A:lvs and A:esams
 lvs-ulsfo: A:lvs and A:ulsfo
+lvs-eqsin: A:lvs and A:eqsin
 maps: P{R:class = role::maps::master or R:class = role::maps::slave or R:class = role::maps::test::slave or R:class = role::maps::test::master}
 maps-canary: P{maps1001.eqiad.wmnet}
 maps-test: P{R:class = role::maps::test::master or R:class = role::maps::test::slave}

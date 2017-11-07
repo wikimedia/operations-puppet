@@ -11,7 +11,8 @@ class role::ntp {
         $wmf_peers['eqiad'],
         $wmf_peers['codfw'],
         $wmf_peers['esams'],
-        $wmf_peers['ulsfo']
+        $wmf_peers['ulsfo'],
+        $wmf_peers['eqsin']
     )
 
     # NOTE to the future: we *should* be using regional
@@ -71,8 +72,11 @@ class role::ntp {
       '91.198.174.0 mask 255.255.255.0',
       '198.35.26.0 mask 255.255.254.0',
       '185.15.56.0 mask 255.255.252.0',
+      '103.102.166.0 mask 255.255.255.0',
       '2620:0:860:: mask ffff:ffff:fffc::',
-      '2a02:ec80:: mask ffff:ffff::',]
+      '2a02:ec80:: mask ffff:ffff::',
+      '2001:df2:e500:: mask ffff:ffff:ffff::',
+    ]
 
 
     ntp::daemon { 'server':
