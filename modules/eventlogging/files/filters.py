@@ -1,4 +1,5 @@
 import json
+import logging
 
 
 def should_insert_event(e):
@@ -11,7 +12,16 @@ def should_insert_event(e):
     if 'userAgent' not in e:
         return True
 
-    user_agent_dict = json.loads(e['userAgent'])
+    if isinstance(e['userAgent'], dict):
+        user_agent_dict = e['userAgent']
+    else:
+        try:
+            user_agent_dict = json.loads(e['userAgent'])
+        except Exception as ex:
+            logging.warn('userAgent is a {}.  Skipping insertion. userAgent: {}. ({})'.format(
+                type(e['userAgent']), e['userAgent'], ex
+            ))
+            return False
 
     is_bot = user_agent_dict.get('is_bot', False)
     is_mediawiki = user_agent_dict.get('is_mediawiki', False)
@@ -20,4 +30,6 @@ def should_insert_event(e):
     if is_bot and not is_mediawiki:
         return False
     else:
+        if isinstance(e['userAgent'], dict):
+            e['userAgent'] = json.dumps(e['userAgent'])
         return True
