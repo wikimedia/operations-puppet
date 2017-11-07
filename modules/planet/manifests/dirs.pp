@@ -16,6 +16,14 @@ class planet::dirs {
             mode   => '0755',
         }
 
+        file { '/etc/rawdog/config':
+            ensure  => 'present',
+            mode    => '0444',
+            owner   => 'planet',
+            group   => 'planet',
+            content => template('planet/feeds_rawdog/global.erb')
+        }
+
     } else {
 
         file { [
