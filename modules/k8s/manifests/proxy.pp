@@ -30,6 +30,10 @@ class k8s::proxy(
 
     service { 'kube-proxy':
         ensure    => running,
-        subscribe => File['/etc/kubernetes/kubeconfig'],
+        subscribe => [
+            File['/etc/kubernetes/kubeconfig'],
+            File['/etc/default/kube-proxy'],
+        ],
+
     }
 }
