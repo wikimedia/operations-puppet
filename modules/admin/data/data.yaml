@@ -451,6 +451,11 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/puppet agent -t -v',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (syslog) NOPASSWD: ALL']
+  perf-team:
+    gid: 796
+    description: performance team members with access to 'webperf' and 'xhgui' servers
+    members: [krinkle, gilles]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
     description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
