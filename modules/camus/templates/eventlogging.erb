@@ -16,10 +16,10 @@ etl.execution.base.path=hdfs://analytics-hadoop/wmf/camus/eventlogging
 etl.execution.history.path=hdfs://analytics-hadoop/wmf/camus/eventlogging/history
 
 # Our timestamps look like 2013-09-20T15:40:17
-camus.message.timestamp.format=unix_seconds
+camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss
 
 # use the dt field
-camus.message.timestamp.field=timestamp
+camus.message.timestamp.field=dt
 
 # Store output into hourly buckets
 etl.output.file.time.partition.mins=60
