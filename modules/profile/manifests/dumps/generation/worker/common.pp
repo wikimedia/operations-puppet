@@ -15,7 +15,7 @@ class profile::dumps::generation::worker::common {
 
     # scap3 deployment of dump scripts
     scap::target { 'dumps/dumps':
-        deploy_user => 'datasets',
+        deploy_user => 'dumpsgen',
         manage_user => false,
         key_name    => 'dumpsdeploy',
     }
