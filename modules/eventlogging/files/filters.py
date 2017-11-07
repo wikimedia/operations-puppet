@@ -11,7 +11,14 @@ def should_insert_event(e):
     if 'userAgent' not in e:
         return True
 
-    user_agent_dict = json.loads(e['userAgent'])
+    try:
+        user_agent_dict = json.loads(e['userAgent'])
+    except ValueError:
+        if isinstance(e['userAgent'], str):
+            return True
+        # MySQL doesn't know how to insert a non string UA!
+        else:
+            return False
 
     is_bot = user_agent_dict.get('is_bot', False)
     is_mediawiki = user_agent_dict.get('is_mediawiki', False)
