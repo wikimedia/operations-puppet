@@ -1,4 +1,6 @@
-class snapshot::dumps::dirs {
+class snapshot::dumps::dirs(
+    $user = undef,
+) {
     $dumpsdir = '/etc/dumps'
     file { $dumpsdir:
       ensure => 'directory',
@@ -43,7 +45,7 @@ class snapshot::dumps::dirs {
       ensure => 'directory',
       path   => $cachedir,
       mode   => '0755',
-      owner  => 'dumpsgen',
+      owner  => $user,
       group  => 'root',
     }
 

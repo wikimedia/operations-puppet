@@ -1,8 +1,6 @@
 class snapshot::cron::wikidatadumps::json(
     $user   = undef,
 ) {
-    include ::snapshot::cron::wikidatadumps::common
-
     $scriptpath = '/usr/local/bin/dumpwikidatajson.sh'
     file { $scriptpath:
         mode    => '0755',
