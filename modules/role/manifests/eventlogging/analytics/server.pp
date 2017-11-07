@@ -35,6 +35,10 @@ class role::eventlogging::analytics::server {
     $kafka_mixed_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed"
     $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side"
 
+    eventlogging::plugin { 'plugins':
+        source => 'puppet:///modules/eventlogging/plugins.py',
+    }
+
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
 
