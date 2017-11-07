@@ -1,16 +1,19 @@
-class dumps::rsync::common {
+class dumps::rsync::common(
+    $user = undef,
+    $group = undef,
+) {
     require_package('rsync')
 
     file { '/etc/rsyncd.d':
         ensure => 'directory',
     }
     file { '/etc/rsyncd.d/00-globalopts.conf':
-        ensure => 'present',
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/dumps/rsync/rsyncd.conf.globalopts',
-        notify => Exec['update-rsyncd.conf'],
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('dumps/rsync/rsyncd.conf.globalopts.erb'),
+        notify  => Exec['update-rsyncd.conf'],
     }
     exec { 'update-rsyncd.conf':
         command     => '/bin/cat /etc/rsyncd.d/*.conf > /etc/rsyncd.conf',

@@ -2,6 +2,8 @@ class dumps::web::dirs(
     $datadir = '/data/xmldatadumps',
     $publicdir = '/data/xmldatadumps/public',
     $otherdir = '/data/xmldatadumps/public/other',
+    $user = undef,
+    $group = undef,
 ) {
     # Please note that this is incomplete, but new directories
     # should be defined in puppet (here).
@@ -31,50 +33,50 @@ class dumps::web::dirs(
     file { $publicdir:
         ensure => 'directory',
         mode   => '0775',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $otherdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $analyticsdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $othermiscdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $othertestfilesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $otherdir_wikibase:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { "${publicdir}/${relative_wikidatawiki}":
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     # T72385
@@ -88,56 +90,56 @@ class dumps::web::dirs(
     file { $otherdir_wikidata_legacy:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $xlationdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $centralauthdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $cirrussearchdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $medialistsdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $mediatitlesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $pagetitlesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $categoriesrdf:
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'datasets',
+        owner  => $user,
+        group  => $group,
     }
 }

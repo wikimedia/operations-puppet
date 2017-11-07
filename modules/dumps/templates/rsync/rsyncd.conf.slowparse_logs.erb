@@ -5,8 +5,8 @@
 # slow-parse logs contain long render times for Wiki articles per server.
 # They are rsynced from MW log hosts to this directory.
 [slow-parse]
-uid = datasets
-gid = datasets
+uid = <%= @user %>
+gid = <%= @group %>
 read only = false
 path = /data/xmldatadumps/public/other/slow-parse
 hosts allow = <%= @hosts_allow %>
