@@ -6,11 +6,15 @@ class dumps::web::xmldumps(
     $otherdir         = undef,
     $htmldumps_server = undef,
     $xmldumps_server  = undef,
+    $webuser     = undef,
+    $webgroup    = undef,
 ) {
     class {'dumps::web::html':
         datadir   => $datadir,
         publicdir => $publicdir,
         otherdir  => $otherdir,
+        webuser      => $webuser,
+        webgroup     => $webgroup,
     }
 
     class { '::nginx':

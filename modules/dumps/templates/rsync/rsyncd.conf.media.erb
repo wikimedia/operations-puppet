@@ -6,8 +6,8 @@
 # write access from <%= @hosts_allow %> to media directory.
 # Erik Z uses this.
 [media]
-uid = datasets
-gid = wikidev
+uid = <%= @user %>
+gid = <%= deploygroup %>
 read only = false
 path = /data/xmldatadumps/public/other/media
 hosts allow = <%= @hosts_allow %>
