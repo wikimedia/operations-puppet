@@ -34,7 +34,9 @@ sub cluster_fe_recv {
         set req.http.Location = "https://www.wikimedia.org";
         return (synth(301, "TLS Redirect"));
     }
+}
 
+sub cluster_fe_recv_tail {
     call misc_recv_pass;
 }
 
