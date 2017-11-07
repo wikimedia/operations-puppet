@@ -427,7 +427,7 @@ node /^db1(053|056|064|081|084|091|097)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-node /^db1(103)\.eqiad\.wmnet/ {
+node /^db1(103|105)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 # row-based replication to sanitarium (T150960)
@@ -451,7 +451,7 @@ node 'db1063.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(070|071|082|087|092|096|099|100|104|105|106)\.eqiad\.wmnet/ {
+node /^db1(070|071|082|087|092|096|099|100|104|106)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
