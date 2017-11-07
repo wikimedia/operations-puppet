@@ -5,6 +5,8 @@ network::external:
 - 198.35.26.0/23
 - 185.15.56.0/22
 - 2a02:ec80::/32
+- 2001:df2:e500::/48
+- 103.102.166.0/24
 
 network::infrastructure:
   - 91.198.174.224/27 # esams
@@ -15,12 +17,15 @@ network::infrastructure:
   - 2620:0:860:fe00::/55 # codfw
   - 208.80.154.192/27 # eqiad
   - 2620:0:861:fe00::/55 # eqiad
+  - 103.102.166.128/27 # eqsin
+  - 2001:df2:e500:fe00::/56 # eqsin
 
 network::management:
   - 10.65.0.0/16 # eqiad
   - 10.128.128.0/17 # ulsfo
   - 10.193.0.0/16 # codfw
   - 10.21.0.0/24 # esams
+  - 10.132.128.0/17 # eqsin
 
 network::subnets:
   production:
@@ -157,6 +162,20 @@ network::subnets:
           ipv6: 2620:0:863:101::/64
         private1-lvs-ulsfo:
           ipv4: 10.2.4.0/24
+    eqsin:
+      public:
+        public1-eqsin:
+          ipv4: 103.102.166.0/28
+          ipv6: 2001:df2:e500:1::/64
+        public1-lvs-eqsin:
+          ipv4: 103.102.166.224/27
+          ipv6: 2001:df2:e500:ed1a::/64
+      private:
+        private1-eqsin:
+          ipv4: 10.132.0.0/24
+          ipv6: 2001:df2:e500:101::/64
+        private1-lvs-eqsin:
+          ipv4: 10.2.5.0/24
   frack:
     eqiad:
       public:
@@ -208,6 +227,11 @@ network::subnets:
         sandbox1-ulsfo:
           ipv4: 198.35.26.240/28
           ipv6: 2620:0:863:201::/64
+    eqsin:
+      public:
+        sandbox1-eqsin:
+          ipv4: 103.102.166.16/28
+          ipv6: 2001:df2:e500:201::/64
   labs:
     eqiad:
       private:

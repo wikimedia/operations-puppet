@@ -13,7 +13,8 @@ class profile::puppetmaster::frontend(
       '*.eqiad.wmnet',
       '*.ulsfo.wmnet',
       '*.esams.wmnet',
-      '*.codfw.wmnet'],
+      '*.codfw.wmnet',
+      '*.eqsin.wmnet'],
     $extra_auth_rules = '',
 ) {
     backup::set { 'var-lib-puppet-ssl': }

@@ -80,6 +80,7 @@ class role::librenms {
             '65002' => 'confed-eqdfw-codfw',
             '65003' => 'confed-esams',
             '65004' => 'confed-ulsfo',
+            '65005' => 'confed-eqsin',
             '65517' => 'Equinix',
         },
         'email_from' => 'librenms',
