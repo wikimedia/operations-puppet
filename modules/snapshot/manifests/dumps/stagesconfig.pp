@@ -1,6 +1,4 @@
 class snapshot::dumps::stagesconfig {
-
-    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     $firststage_args = '--cutoff {STARTDATE} --date {STARTDATE}'

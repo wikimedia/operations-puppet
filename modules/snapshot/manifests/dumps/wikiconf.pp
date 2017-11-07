@@ -5,8 +5,6 @@ define snapshot::dumps::wikiconf(
     $privatedir = '/mnt/data/xmldatadumps/private',
     $tempdir    = '/mnt/data/xmldatadumps/temp',
     ) {
-
-    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { "${confsdir}/${title}":

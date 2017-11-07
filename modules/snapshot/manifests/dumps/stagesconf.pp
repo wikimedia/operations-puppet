@@ -2,8 +2,6 @@ define snapshot::dumps::stagesconf(
     $stagestype = 'full',
     $stages     = undef,
     ) {
-
-    include ::snapshot::dumps::dirs
     $stagesdir = $snapshot::dumps::dirs::stagesdir
 
     file { "${stagesdir}/${title}":
