@@ -631,7 +631,7 @@
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "null as zero",
+          "nullPointMode": "null",
           "options": false,
           "percentage": false,
           "pointradius": 5,
@@ -695,7 +695,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ],
           "zerofill": true
@@ -1509,5 +1509,5 @@
   },
   "timezone": "utc",
   "title": "Server Board",
-  "version": 37
+  "version": 39
 }
