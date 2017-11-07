@@ -1,47 +1,9 @@
-# rawdog config file for fr.planet
-
-plugindirs plugins
-splitstate true
-maxarticles 200
-maxage 0
-expireage 7d
-keepmin 20
-currentonly false
-daysections true
-
-dayformat %A, %d %B
-timesections true
-timeformat %I:%M %p
-datetimeformat %H:%M, %A, %d %B
-
+# planet rawdog feeds in French language (fr.planet.wikimedia.org)
+include ../config
 template /etc/rawdog/theme/wikimedia/fr/rd_page.tmpl
 itemtemplate /etc/rawdog/theme/wikimedia/fr/rd_item.tmpl
-
-feeditemtemplate default
-
 outputfile /var/www/planet/fr/index.html
-
-userefresh true
-showfeeds true
-
-numthreads 3
-timeout 30s
-
-ignoretimeouts false
-showtracebacks false
-verbose false
-
-blocklevelhtml true
-tidyhtml true
-sortbyfeeddate true
-useids true
-
-hideduplicates id
-newfeedperiod 3h
-
-changeconfig false
-
-# the actual feed list
+#
 
 feed 1h https://referencenecessaire.wordpress.com/feed/atom/
 feed 1h http://www.anthere.org/dotclear/?feed/rss2
