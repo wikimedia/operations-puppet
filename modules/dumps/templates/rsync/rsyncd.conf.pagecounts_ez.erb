@@ -6,8 +6,8 @@
 # write access from <%= @hosts_allow %> to pagecounts-ez directory.
 # Erik Z uses this.  See T80444.
 [pagecounts-ez]
-uid = datasets
-gid = wikidev
+uid = <%= @user %>
+gid = <%= @deploygroup %>
 read only = false
 path = /data/xmldatadumps/public/other/pagecounts-ez
 hosts allow = <%= @hosts_allow %>
