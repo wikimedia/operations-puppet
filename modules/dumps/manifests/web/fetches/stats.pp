@@ -1,6 +1,7 @@
 class dumps::web::fetches::stats(
     $src = undef,
     $otherdir = undef,
+    $user = undef,
 ) {
     include ::dumps::deprecated::user
 
@@ -9,7 +10,7 @@ class dumps::web::fetches::stats(
         source      => "${src}/mediacounts",
         destination => "${otherdir}/mediacounts",
         minute      => '41',
-        user        => 'datasets',
+        user        => $user,
     }
 
     # Copies over files with pageview statistics per page and project,
@@ -18,7 +19,7 @@ class dumps::web::fetches::stats(
         source      => "${src}/{pageview,projectview}/legacy/hourly",
         destination => "${otherdir}/pageviews",
         minute      => '51',
-        user        => 'datasets',
+        user        => $user,
     }
 
     # Copies over files with unique devices statistics per project,
@@ -27,6 +28,6 @@ class dumps::web::fetches::stats(
         source      => "${src}/unique_devices",
         destination => "${otherdir}/unique_devices",
         minute      => '31',
-        user        => 'datasets',
+        user        => $user,
     }
 }

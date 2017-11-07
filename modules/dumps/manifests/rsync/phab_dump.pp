@@ -1,7 +1,6 @@
 class dumps::rsync::phab_dump(
     $hosts_allow = undef,
 ) {
-    include ::dumps::rsync::common
     file { '/etc/rsyncd.d/40-rsync-phab_dump.conf':
         ensure  => 'present',
         mode    => '0444',

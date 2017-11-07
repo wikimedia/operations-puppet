@@ -12,6 +12,8 @@ class profile::dumps::web::xmldumps_active {
         wikilist_url     => 'https://noc.wikimedia.org/conf/all.dblist',
         wikilist_dir     => '/etc/dumps/dblists',
         user             => 'dumpsgen',
+        webuser          => 'datasets',
+        webgroup         => 'datasets',
     }
     # copy dumps and other datasets to fallback host(s) and to labs
     class {'::dumps::copying::peers':}

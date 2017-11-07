@@ -1,8 +1,8 @@
 class dumps::rsync::pagecounts_ez(
     $hosts_allow = undef,
+    $user = undef,
+    $deploygroup = undef,
 ) {
-    include ::dumps::rsync::common
-
     file { '/etc/rsyncd.d/30-rsync-pagecounts_ez.conf':
         ensure  => 'present',
         mode    => '0444',
