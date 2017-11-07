@@ -1,5 +1,6 @@
 class snapshot::cron(
     $user = undef,
+    $group = undef,
 ) {
     file { '/usr/local/etc/dump_functions.sh':
         ensure => 'present',
@@ -16,8 +17,10 @@ class snapshot::cron(
     class { '::snapshot::cron::categoriesrdf': user   => $user }
     class { '::snapshot::cron::dumplists': user   => $user }
     class { '::snapshot::cron::dump_global_blocks': user   => $user }
-    class { '::snapshot::cron::wikidatadumps::json': user   => $user }
-    class { '::snapshot::cron::wikidatadumps::rdf': user   => $user }
+    class { '::snapshot::cron::wikidatadumps':
+        user  => $user,
+        group => $group,
+    }
     class { '::snapshot::cron::contentxlation': user   => $user }
     class { '::snapshot::addschanges': user   => $user }
 }

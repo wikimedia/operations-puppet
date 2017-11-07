@@ -1,8 +1,6 @@
 class snapshot::cron::pagetitles(
     $user=undef,
 ) {
-    include ::snapshot::dumps::dirs
-
     $otherdir = $snapshot::dumps::dirs::otherdir
     $repodir = $snapshot::dumps::dirs::repodir
     $confsdir = $snapshot::dumps::dirs::confsdir
