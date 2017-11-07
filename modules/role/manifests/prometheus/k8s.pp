@@ -83,6 +83,7 @@ class role::prometheus::k8s (
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
+        scrape_configs_extra  => $scrape_configs_extra,
     }
 
     prometheus::web { 'k8s':
