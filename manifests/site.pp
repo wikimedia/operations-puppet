@@ -387,7 +387,7 @@ node 'db1075.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(038|044|072|077|078)\.eqiad\.wmnet/ {
+node /^db1(044|072|077|078)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -400,6 +400,12 @@ node 'db1015.eqiad.wmnet' {
 node 'db1035.eqiad.wmnet' {
     role(spare::system)
 }
+
+# To be decommissioned in T177911
+node 'db1038.eqiad.wmnet' {
+    role(spare::system)
+}
+
 
 # s3 (default) core production dbs on codfw
 # codfw master
