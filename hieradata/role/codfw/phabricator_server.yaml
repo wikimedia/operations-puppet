@@ -12,9 +12,6 @@ phabricator::mysql::master: "m3-master.eqiad.wmnet"
 # todo: replace with a codfw slave (do we have a phab db server in codfw?)
 phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
 
-phabricator_domain: "phabricator-new.wikimedia.org"
-phabricator_altdomain: "phabricator-new.wikimedia.org"
-
 phabricator_cluster_search:
   - type: 'elasticsearch'
     path: '/phabricator'
