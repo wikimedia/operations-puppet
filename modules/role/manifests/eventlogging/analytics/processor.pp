@@ -68,8 +68,17 @@ class role::eventlogging::analytics::processor{
         'kafka://'           => "retries=6&retry_backoff_ms=200${kafka_api_version_param}"
     }
 
+    # Incoming format from /beacon/event via varnishkafka eventlogging-client-side
+    # is of the format:
+    #   %q          - GET query with encoded event
+    #   %{recvFrom} - recvFrom hostname
+    #   %{seqId}    - sequence #
+    #   %D          - ISO-8601 dt
+    #   %o          - omit
+    #   %u          - userAgent
+    $format = '%q %{recvFrom}s %{seqId}d %D %o %u',
     eventlogging::service::processor { $client_side_processors:
-        format         => '%q %{recvFrom}s %{seqId}d %t %o %{userAgent}i',
+        format         => $format,
         input          => "${kafka_client_side_raw_uri}${kafka_api_version_param}",
         sid            => $kafka_consumer_group,
         outputs        => [
