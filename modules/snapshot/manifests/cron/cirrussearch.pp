@@ -1,8 +1,6 @@
 class snapshot::cron::cirrussearch(
     $user   = undef,
 ) {
-    $confsdir = $snapshot::dumps::dirs::confsdir
-
     file { '/var/log/cirrusdump':
         ensure => 'directory',
         mode   => '0644',

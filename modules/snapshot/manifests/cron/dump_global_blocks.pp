@@ -1,7 +1,6 @@
 class snapshot::cron::dump_global_blocks(
     $user   = undef,
 ) {
-    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
     $otherdir = $snapshot::dumps::dirs::otherdir
     $globalblocksdir = "${otherdir}/globalblocks"
