@@ -105,6 +105,7 @@ cache::app_directors:
   phab_aphlict:
     be_opts:
       port: 22280
+      max_connections: 1000
     backends:
       eqiad: 'phab1001-aphlict.eqiad.wmnet'
   planet:
