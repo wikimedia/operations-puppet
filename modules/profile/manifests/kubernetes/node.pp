@@ -4,6 +4,7 @@ class profile::kubernetes::node(
   $infra_pod = hiera('profile::kubernetes::infra_pod'),
   $use_cni = hiera('profile::kubernetes::use_cni'),
   $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
+  $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -14,6 +15,7 @@ class profile::kubernetes::node(
 
     class { '::k8s::infrastructure_config':
         master_host => $master_fqdn,
+        username    => $username,
     }
 
     class { '::k8s::kubelet':
