@@ -105,21 +105,24 @@ def parse_ua(ua):
     - Ensure version number match doesn't contain dots (or transform them).
 
     """
-    # trick, if app version is there this is a digested user agent
-    m = re.search('wmf_app_version', ua)
-
-    if m is not None:
+    # If already a dict, then this is a digested user agent.
+    if isinstance(ua, dict):
         return parse_ua_obj(ua)
+
+    # Trick: Else if a string and wmf_app_version is there,
+    # this is a digested user agent.
+    if re.search('wmf_app_version', ua) is not None:
+        return parse_ua_obj(json.loads(ua))
+    # Else this should be a raw User-Agent string.
     else:
         return parse_ua_legacy(ua)
 
 
-def parse_ua_obj(ua):
+def parse_ua_obj(ua_obj):
     """
     Parses user agent digested by ua-parser
     Note that only browser major is reported
     """
-    ua_obj = json.loads(ua)
 
     browser_family = 'Other'
     version = ua_obj['browser_major']
