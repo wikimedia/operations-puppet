@@ -79,7 +79,6 @@ cache_misc:
       - codfw
       - eqiad
       - esams
-      - ulsfo
   nginx:
     port: 443
     default_values:
@@ -89,4 +88,3 @@ cache_misc:
       - codfw
       - eqiad
       - esams
-      - ulsfo
