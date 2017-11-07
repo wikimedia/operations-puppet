@@ -51,6 +51,7 @@ class puppetmaster(
         '*.ulsfo.wmnet',
         '*.esams.wmnet',
         '*.codfw.wmnet',
+        '*.eqsin.wmnet',
     ],
     $is_git_master=false,
     $hiera_config=$::realm,
