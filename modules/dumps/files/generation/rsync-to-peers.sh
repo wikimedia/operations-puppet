@@ -58,6 +58,7 @@ IFS=$IFS_SAVE
 while [ 1 ]; do
 
     for dest in $remotedirs_list; do
+	/usr/bin/rsync -a  --contimeout=600 --timeout=600 ${dumpsdir}/public/*html "$dest" > /dev/null 2>&1
         /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  ${dumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
     done
 
