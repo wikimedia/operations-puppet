@@ -1,8 +1,6 @@
 class snapshot::cron::wikidatadumps::rdf(
     $user   = undef,
 ) {
-    include ::snapshot::cron::wikidatadumps::common
-
     $scriptpath = '/usr/local/bin/dumpwikidatardf.sh'
     file { $scriptpath:
         mode    => '0755',

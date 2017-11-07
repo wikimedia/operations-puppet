@@ -1,4 +1,7 @@
-class snapshot::cron::wikidatadumps::common {
+class snapshot::cron::wikidatadumps::common(
+    $user = undef,
+    $group = undef,
+)  {
     file { '/usr/local/bin/wikidatadumps-shared.sh':
         mode   => '0755',
         owner  => 'root',
@@ -9,8 +12,8 @@ class snapshot::cron::wikidatadumps::common {
     file { '/var/log/wikidatadump':
         ensure => 'directory',
         mode   => '0755',
-        owner  => 'datasets',
-        group  => 'www-data',
+        owner  => $user,
+        group  => $group,
     }
 
     git::clone { 'DCAT-AP':
@@ -18,8 +21,8 @@ class snapshot::cron::wikidatadumps::common {
         directory => '/usr/local/share/dcat',
         origin    => 'https://gerrit.wikimedia.org/r/operations/dumps/dcat',
         branch    => 'master',
-        owner     => 'datasets',
-        group     => 'www-data',
+        owner     => $user,
+        group     => $group,
     }
 
     file { '/usr/local/etc/dcatconfig.json':

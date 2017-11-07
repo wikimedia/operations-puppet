@@ -8,6 +8,9 @@ class profile::dumps::generation::worker::common {
     # stages files, dblists, html templates
     class { '::dumpsuser': }
     class { '::dumps::deprecated::user': }
+    class { '::snapshot::dumps::dirs':
+        user => 'dumpsgen',
+    }
     class { '::snapshot::dumps': }
 
     # scap3 deployment of dump scripts
