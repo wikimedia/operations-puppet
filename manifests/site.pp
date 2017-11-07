@@ -361,11 +361,6 @@ node /^db1(021|060|074|076|090|101)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned in T176311
-node 'db1036.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # s2 (large wikis) core production dbs on codfw
 # codfw master
 node 'db2017.codfw.wmnet' {
@@ -395,17 +390,6 @@ node /^db1(044|072|077|078)\.eqiad\.wmnet/ {
 node 'db1015.eqiad.wmnet' {
     role(spare::system)
 }
-
-# To be decommissioned in T176931
-node 'db1035.eqiad.wmnet' {
-    role(spare::system)
-}
-
-# To be decommissioned in T177911
-node 'db1038.eqiad.wmnet' {
-    role(spare::system)
-}
-
 
 # s3 (default) core production dbs on codfw
 # codfw master
@@ -496,11 +480,6 @@ node /^db10(30|85|88|93|98)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned in T174902
-node 'db1037.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # To be decommissioned in T178162
 node 'db1050.eqiad.wmnet' {
     role(spare::system)
@@ -530,14 +509,6 @@ node /^db10(34|39|69|79|86|94)\.eqiad\.wmnet/ {
 
 # To be decommissioned in T173915
 node 'db1041.eqiad.wmnet' {
-    role(spare::system)
-}
-
-# To be decommissioned in T174076
-node 'db1028.eqiad.wmnet' {
-    role(spare::system)
-}
-node 'db1033.eqiad.wmnet' {
     role(spare::system)
 }
 
