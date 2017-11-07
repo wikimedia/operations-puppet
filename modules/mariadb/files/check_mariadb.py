@@ -119,6 +119,8 @@ class WMFMariaDB:
                 domain = '.esams.wmnet'
             elif re.match('^[a-z]+4[0-9][0-9][0-9]$', host) is not None:
                 domain = '.ulsfo.wmnet'
+            elif re.match('^[a-z]+5[0-9][0-9][0-9]$', host) is not None:
+                domain = '.eqsin.wmnet'
             else:
                 localhost_fqdn = socket.getfqdn()
                 if '.' in localhost_fqdn and len(localhost_fqdn) > 1:

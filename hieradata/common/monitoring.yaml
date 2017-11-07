@@ -20,6 +20,8 @@ monitoring::groups:
     description: esams text Varnish
   cache_text_ulsfo:
     description: ulsfo text Varnish
+  cache_text_eqsin:
+    description: eqsin text Varnish
   cache_upload_codfw:
     description: codfw upload Varnish
   cache_upload_eqiad:
@@ -28,6 +30,8 @@ monitoring::groups:
     description: esams upload Varnish
   cache_upload_ulsfo:
     description: ulsfo upload Varnish
+  cache_upload_eqsin:
+    description: eqsin upload Varnish
   cache_misc_codfw:
     description: Misc caches codfw
   cache_misc_eqiad:
@@ -114,6 +118,8 @@ monitoring::groups:
     description: ulsfo LVS servers
   lvs_esams:
     description: esams LVS servers
+  lvs_eqsin:
+    description: eqsin LVS servers
 
 # Logstash
   logstash_eqiad:
@@ -239,6 +245,8 @@ monitoring::groups:
     description: esams misc servers
   misc_ulsfo:
     description: ulsfo misc servers
+  misc_eqsin:
+    description: eqsin misc servers
 
 # Facilities
   pdus:

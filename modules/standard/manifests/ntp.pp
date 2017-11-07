@@ -20,6 +20,7 @@ class standard::ntp {
             'maerlant.wikimedia.org',     # esams recdns
         ],
         ulsfo => [],
+        eqsin => [],
     }
 
     # ntp monitoring queries
