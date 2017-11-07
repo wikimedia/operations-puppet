@@ -160,11 +160,17 @@ class puppetmaster(
     include ::puppetmaster::monitoring
     include ::puppetmaster::generators
 
+    # deploy updated auth template to puppet 4 masters
+    $puppetmaster_auth_template = $puppet_major_version ? {
+        4       => 'auth-master-v4.conf.erb',
+        default => 'auth-master.conf.erb',
+    }
+
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('puppetmaster/auth-master.conf.erb'),
+        content => template("puppetmaster/${puppetmaster_auth_template}"),
     }
 
     # This is required for the mwyaml hiera backend
