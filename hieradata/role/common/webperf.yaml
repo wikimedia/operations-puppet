@@ -1,3 +1,4 @@
 admin::groups:
   - perf-roots
+  - perf-team
   - eventlogging-admins
