@@ -25,10 +25,6 @@ class role::eventlogging::analytics::mysql {
         labs       => '127.0.0.1/log',
     }
 
-    eventlogging::plugin { 'filters':
-        source => 'puppet:///modules/eventlogging/filters.py',
-    }
-
     # Run N parallel mysql consumers processors.
     # These will auto balance amongst themselves.
     $mysql_consumers = hiera(
@@ -63,16 +59,16 @@ class role::eventlogging::analytics::mysql {
     # For beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
     $statsd_host          = hiera('eventlogging_statsd_host', 'statsd.eqiad.wmnet')
 
-    # Filtering function to use on events consumed by mysql
-    $filter_function      = '&function=should_insert_event'
+    # Map function to use on events consumed by mysql. T179625
+    $map_function      = '&function=mysql_mapper'
 
-    # Custom URI scheme to pass events through filter
-    $filter_scheme        = 'filter://'
+    # Custom URI scheme to pass events through map function
+    $map_scheme        = 'map://'
 
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
         # auto commit offsets to kafka more often for mysql consumer
-        input  => "${filter_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${kafka_api_version_param}${filter_function}",
+        input  => "${map_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${kafka_api_version_param}${map_function}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => 'eventlogging_consumer_mysql_00',
         # Restrict permissions on this config file since it contains a password.
