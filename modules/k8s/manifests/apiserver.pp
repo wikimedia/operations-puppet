@@ -35,6 +35,7 @@ class k8s::apiserver(
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
+        notify  => Service['kube-apiserver'],
     }
 
     file { '/etc/default/kube-apiserver':
