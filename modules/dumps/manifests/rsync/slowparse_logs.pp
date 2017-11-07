@@ -1,7 +1,8 @@
 class dumps::rsync::slowparse_logs(
     $hosts_allow = undef,
+    $user = undef,
+    $group = undef,
 ) {
-    include ::dumps::rsync::common
     file { '/etc/rsyncd.d/10-rsync-slowparse-logs.conf':
         ensure  => 'present',
         mode    => '0444',
