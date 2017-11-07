@@ -7,9 +7,9 @@ Description=Dumps monitoring service
 After=network.target
 
 [Service]
-User=datasets
+User=dumpsgen
 WorkingDirectory=<%= @repodir %>
-ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf:monitor --basedir <%= @repodir %>
+ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.dumps:monitor --basedir <%= @repodir %>
 
 [Install]
 WantedBy=multi-user.target
