@@ -106,9 +106,8 @@ class role::prometheus::tools {
         proxy_pass => 'http://localhost:9902/tools',
     }
 
-    # Ugly hack, ugh! (from modules/toollabs/manifests/kube2proxy.pp)
     $users = hiera('k8s_infrastructure_users')
-    $client_token = inline_template("<%= @users.select { |u| u['name'] == 'prometheus' }[0]['token'] %>")
+    $client_token = $users['prometheus']['token']
 
     file { $bearer_token_file:
         ensure  => present,
