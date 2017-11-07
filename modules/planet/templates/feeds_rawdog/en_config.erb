@@ -1,45 +1,5 @@
-# rawdog config file for en.planet
-
-plugindirs plugins
-splitstate true
-maxarticles 200
-maxage 0
-expireage 7d
-keepmin 20
-currentonly false
-daysections true
-
-dayformat %A, %d %B
-timesections true
-timeformat %I:%M %p
-datetimeformat %H:%M, %A, %d %B
-
-template /etc/rawdog/theme/wikimedia/en/rd_page.tmpl
-itemtemplate /etc/rawdog/theme/wikimedia/en/rd_item.tmpl
-
-outputfile /var/www/planet/en/index.html
-
-userefresh true
-showfeeds true
-
-numthreads 3
-timeout 30s
-
-ignoretimeouts false
-showtracebacks false
-verbose false
-
-blocklevelhtml true
-tidyhtml true
-sortbyfeeddate true
-useids true
-
-hideduplicates id
-newfeedperiod 3h
-
-changeconfig false
-
-# the actual feed list
+# planet rawdog feeds in English language
+include ../config
 
 feed 1h http://medicalfuturist.com/tag/wikipedia/feed/
 feed 1h https://brionv.com/log/feed/
