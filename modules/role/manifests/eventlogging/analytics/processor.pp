@@ -54,6 +54,12 @@ class role::eventlogging::analytics::processor{
         default => "&api_version=${kafka_api_version}"
     }
 
+    # Inject mediawiki_timestamp into this data for backwards compatibility. T179625
+    $map_function      = '&function=inject_mediawiki_timestamp'
+
+    # Custom URI scheme to pass events through map function
+    $map_scheme        = 'map://'
+
     # Increase number and backoff time of retries for async
     # analytics uses.  If metadata changes, we should give
     # more time to retry. NOTE: testing this in production
