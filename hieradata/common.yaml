@@ -4,6 +4,7 @@ datacenters:
   - codfw
   - esams
   - ulsfo
+  - eqsin
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125

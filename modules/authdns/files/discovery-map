@@ -4,25 +4,29 @@ discovery-map => {
     map => { default => [eqiad codfw] }
     nets => {
         # Wikimedia address space
-        208.80.152.0/23   => [codfw, eqiad], # codfw
-        208.80.154.0/23   => [eqiad, codfw], # eqiad
-        91.198.174.0/24   => [eqiad, codfw], # esams
-        185.15.56.0/22    => [eqiad, codfw], # esams
-        198.35.26.0/23    => [codfw, eqiad], # ulsfo
-        2620:0:860::/48   => [codfw, eqiad], # codfw
-        2620:0:861::/48   => [eqiad, codfw], # eqiad
-        2620:0:862::/48   => [eqiad, codfw], # esams
-        2620:0:863::/48   => [codfw, eqiad], # ulsfo
-        198.73.209.0/24   => [codfw, eqiad], # WMF OIT
-        2620:62:c000::/48 => [codfw, eqiad], # WMF OIT
+        208.80.152.0/23    => [codfw, eqiad], # codfw
+        208.80.154.0/23    => [eqiad, codfw], # eqiad
+        91.198.174.0/24    => [eqiad, codfw], # esams
+        185.15.56.0/22     => [eqiad, codfw], # esams
+        198.35.26.0/23     => [codfw, eqiad], # ulsfo
+        103.102.166.0/24   => [codfw, eqiad], # eqsin
+        2620:0:860::/48    => [codfw, eqiad], # codfw
+        2620:0:861::/48    => [eqiad, codfw], # eqiad
+        2620:0:862::/48    => [eqiad, codfw], # esams
+        2620:0:863::/48    => [codfw, eqiad], # ulsfo
+        2001:df2:e500::/48 => [codfw, eqiad], # eqsin
+        198.73.209.0/24    => [codfw, eqiad], # WMF OIT
+        2620:62:c000::/48  => [codfw, eqiad], # WMF OIT
         # Wikimedia 10/8 private space
-        10.2.1.0/24       => [codfw, eqiad], # codfw LVS
-        10.2.2.0/24       => [eqiad, codfw], # eqiad LVS
-        10.2.3.0/24       => [eqiad, codfw], # esams LVS
-        10.2.4.0/24       => [codfw, eqiad], # ulsfo LVS
-        10.20.0.0/23      => [eqiad, codfw], # esams private/mgmt
-        10.64.0.0/12      => [eqiad, codfw], # eqiad private/mgmt
-        10.128.0.0/16     => [codfw, eqiad], # ulsfo private/mgmt
-        10.192.0.0/12     => [codfw, eqiad], # codfw private/mgmt
+        10.2.1.0/24        => [codfw, eqiad], # codfw LVS
+        10.2.2.0/24        => [eqiad, codfw], # eqiad LVS
+        10.2.3.0/24        => [eqiad, codfw], # esams LVS
+        10.2.4.0/24        => [codfw, eqiad], # ulsfo LVS
+        10.2.5.0/24        => [codfw, eqiad], # eqsin LVS
+        10.20.0.0/23       => [eqiad, codfw], # esams private/mgmt
+        10.64.0.0/12       => [eqiad, codfw], # eqiad private/mgmt
+        10.128.0.0/16      => [codfw, eqiad], # ulsfo private/mgmt
+        10.132.0.0/16      => [codfw, eqiad], # eqsin private/mgmt
+        10.192.0.0/12      => [codfw, eqiad], # codfw private/mgmt
     }
 }
