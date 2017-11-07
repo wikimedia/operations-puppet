@@ -17,6 +17,7 @@ phabricator:
       "weight": 10
     datacenters:
       - eqiad
+      - codfw
 prometheus:
   prometheus:
     port: 80

@@ -212,6 +212,8 @@ codfw:
     cp2012.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2018.codfw.wmnet: [varnish-fe, varnish-be, nginx]
     cp2025.codfw.wmnet: [varnish-fe, varnish-be, nginx]
+  phabricator:
+    phab2001-vcs.codfw.wmnet: [git-ssh]
   swift:
     ms-fe2005.codfw.wmnet: [swift-fe, nginx]
     ms-fe2006.codfw.wmnet: [swift-fe, nginx]
