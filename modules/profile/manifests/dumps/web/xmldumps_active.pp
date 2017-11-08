@@ -16,7 +16,9 @@ class profile::dumps::web::xmldumps_active {
         webgroup         => 'datasets',
     }
     # copy dumps and other datasets to fallback host(s) and to labs
-    class {'::dumps::copying::peers':}
+    class {'::dumps::copying::peers':
+        desthost => 'ms1001.wikimedia.org',
+    }
     class {'::dumps::copying::labs':
         labhost   => 'labstore1003.eqiad.wmnet',
         publicdir => $publicdir,
