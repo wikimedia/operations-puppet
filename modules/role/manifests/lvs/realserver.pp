@@ -9,6 +9,10 @@ class role::lvs::realserver {
     $lvs_pools = hiera('role::lvs::realserver::pools', {})
 
     # TODO: fix this when we have the future parser
+    warning("lvs::configuration::service_ips: ${::lvs::configuration::service_ips}")
+    warning("site: ${::site}")
+    warning("lvs_pools: ${lvs_pools}")
+
     $realserver_ips_str = template('role/lvs/realserver_ips.erb')
     $realserver_ips = split($realserver_ips_str, ',')
 
