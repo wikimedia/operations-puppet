@@ -4,7 +4,7 @@ class profile::microsites::wikibase(
   $server_admin = hiera('profile::microsites::wikibase::server_admin'),
 ) {
 
-    class { '::base::firewall': }
+    include ::base::firewall
 
     ferm::service { 'wikibase_http':
         proto  => 'tcp',
