@@ -1,5 +1,7 @@
-# Random hacked sample from late September 2017
-# Anonimised:
+# Test cases for TestNavTiming#test_handlers
+
+# When using data from a production sample, be sure to anonimise the
+# following properties:
 # - event
 #    - namespaceId: 1
 #    - revId: 1
@@ -12,56 +14,444 @@
 # - webHost: example
 # - wiki: example
 
-- {"event": {"action": "delete", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1060, "domInteractive": 395, "fetchStart": 0, "firstPaint": 330, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1129, "loadEventStart": 1060, "mediaWikiLoadComplete": 679, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "ES", "originRegion": "", "pageId": 1, "requestStart": 2, "responseEnd": 316, "responseStart": 293, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Linux\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"50\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "delete", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1089, "domInteractive": 642, "fetchStart": 0, "firstPaint": 696, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1090, "loadEventStart": 1089, "mediaWikiLoadComplete": 373, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "HR", "originRegion": "17", "pageId": 1, "requestStart": 2, "responseEnd": 390, "responseStart": 387, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"47\", \"browser_family\": \"Opera\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "delete", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 964, "domInteractive": 422, "fetchStart": 0, "isAnon": false, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 965, "loadEventStart": 964, "mediaWikiLoadComplete": 498, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "NL", "originRegion": "FR", "pageId": 1, "requestStart": 1, "responseEnd": 332, "responseStart": 278, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPad\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"61\", \"browser_family\": \"Chrome Mobile iOS\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "delete", "isAnon": false, "isHiDPI": true, "isHttp2": true, "mediaWikiLoadComplete": 3513, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "PL", "originRegion": "LD", "pageId": 1, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"4\", \"is_bot\": false, \"os_major\": \"4\", \"device_family\": \"Samsung SM-T230\", \"os_family\": \"Android\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"59\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1024, "domInteractive": 817, "fetchStart": 0, "firstPaint": 996, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1101, "loadEventStart": 1024, "mediaWikiLoadComplete": 2053, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "IL", "originRegion": "M", "pageId": 1, "requestStart": 8, "responseEnd": 402, "responseStart": 394, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1064, "domInteractive": 600, "fetchStart": 0, "firstPaint": 880, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1064, "loadEventStart": 1064, "mediaWikiLoadComplete": 1422, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FI", "originRegion": "19", "pageId": 1, "requestStart": 6, "responseEnd": 372, "responseStart": 332, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1093, "domInteractive": 654, "fetchStart": 0, "firstPaint": 653, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1096, "loadEventStart": 1094, "mediaWikiLoadComplete": 761, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "AL", "originRegion": "11", "pageId": 1, "requestStart": 4, "responseEnd": 387, "responseStart": 377, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1152, "domInteractive": 889, "fetchStart": 0, "firstPaint": 1057, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1153, "loadEventStart": 1152, "mediaWikiLoadComplete": 816, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "HK", "originRegion": "", "pageId": 1, "requestStart": 3, "responseEnd": 541, "responseStart": 468, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1153, "domInteractive": 587, "fetchStart": 0, "firstPaint": 858, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1155, "loadEventStart": 1153, "mediaWikiLoadComplete": 1522, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "NL", "originRegion": "NH", "pageId": 1, "requestStart": 24, "responseEnd": 352, "responseStart": 344, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1158, "domInteractive": 845, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": false, "loadEventEnd": 1179, "loadEventStart": 1158, "mediaWikiLoadComplete": 1452, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "RU", "originRegion": "SPE", "pageId": 1, "requestStart": 0, "responseEnd": 534, "responseStart": 0, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"0\", \"is_bot\": false, \"os_major\": \"8\", \"device_family\": \"iPhone\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"8\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1181, "domInteractive": 597, "fetchStart": 0, "firstPaint": 690, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1185, "loadEventStart": 1181, "mediaWikiLoadComplete": 551, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "NL", "originRegion": "NH", "pageId": 1, "requestStart": 3, "responseEnd": 395, "responseStart": 391, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1201, "domInteractive": 576, "fetchStart": 0, "firstPaint": 635, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1203, "loadEventStart": 1201, "mediaWikiLoadComplete": 667, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "MA", "originRegion": "01", "pageId": 1, "requestStart": 16, "responseEnd": 373, "responseStart": 360, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1218, "domInteractive": 672, "fetchStart": 0, "firstPaint": 853, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1219, "loadEventStart": 1218, "mediaWikiLoadComplete": 869, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FR", "originRegion": "NOR", "pageId": 1, "requestStart": 13, "responseEnd": 369, "responseStart": 362, "revId": 1, "unload": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1267, "domInteractive": 995, "fetchStart": 0, "firstPaint": 1218, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1268, "loadEventStart": 1267, "mediaWikiLoadComplete": 620, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "US", "originRegion": "CA", "pageId": 1, "requestStart": 5, "responseEnd": 592, "responseStart": 585, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1291, "domInteractive": 260, "fetchStart": 0, "firstPaint": 410, "isAnon": true, "isHiDPI": false, "isHttp2": false, "loadEventEnd": 1447, "loadEventStart": 1292, "mediaWikiLoadComplete": 1654, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "CZ", "originRegion": "", "pageId": 1, "requestStart": 0, "responseEnd": 33, "responseStart": 0, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"11\", \"browser_family\": \"IE\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1304, "domInteractive": 850, "fetchStart": 0, "firstPaint": 955, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1310, "loadEventStart": 1304, "mediaWikiLoadComplete": 492, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RS", "originRegion": "", "pageId": 1, "requestStart": 10, "responseEnd": 491, "responseStart": 451, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1335, "domInteractive": 1326, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1335, "loadEventStart": 1335, "mediaWikiLoadComplete": 1690, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "SR", "originRegion": "PM", "pageId": 1, "requestStart": 10, "responseEnd": 1073, "responseStart": 736, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"1\", \"is_bot\": false, \"os_major\": \"5\", \"device_family\": \"STUDIO SELFIE\", \"os_family\": \"Android\", \"browser_minor\": \"7\", \"wmf_app_version\": \"-\", \"browser_major\": \"42\", \"browser_family\": \"Opera Mobile\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1344, "domInteractive": 464, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1345, "loadEventStart": 1345, "mediaWikiLoadComplete": 1006, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "NO", "originRegion": "", "pageId": 1, "requestStart": 2, "responseEnd": 296, "responseStart": 275, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"12\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"Other\", \"os_family\": \"Mac OS X\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"11\", \"browser_family\": \"Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1372, "domInteractive": 1121, "fetchStart": 0, "firstPaint": 1278, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1373, "loadEventStart": 1372, "mediaWikiLoadComplete": 893, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "KZ", "originRegion": "ZAP", "pageId": 1, "requestStart": 7, "responseEnd": 693, "responseStart": 643, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1443, "domInteractive": 1130, "fetchStart": 0, "isAnon": false, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1444, "loadEventStart": 1443, "mediaWikiLoadComplete": 1411, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "IT", "originRegion": "45", "pageId": 1, "requestStart": 5, "responseEnd": 610, "responseStart": 474, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPad\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"10\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1476, "domInteractive": 630, "fetchStart": 0, "firstPaint": 736, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1613, "loadEventStart": 1476, "mediaWikiLoadComplete": 1077, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RU", "originRegion": "SAR", "pageId": 1, "requestStart": 4, "responseEnd": 434, "responseStart": 432, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1693, "domInteractive": 378, "fetchStart": 0, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1695, "loadEventStart": 1693, "mediaWikiLoadComplete": 1724, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "NL", "originRegion": "NH", "pageId": 1, "requestStart": 7, "responseEnd": 285, "responseStart": 249, "revId": 1, "unload": 2}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1908, "domInteractive": 532, "fetchStart": 0, "firstPaint": 690, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1909, "loadEventStart": 1908, "mediaWikiLoadComplete": 1212, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "CO", "originRegion": "ANT", "pageId": 1, "requestStart": 2, "responseEnd": 288, "responseStart": 274, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"45\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2013, "domInteractive": 603, "fetchStart": 0, "firstPaint": 945, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2014, "loadEventStart": 2013, "mediaWikiLoadComplete": 1523, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RU", "originRegion": "SPE", "pageId": 1, "requestStart": 6, "responseEnd": 351, "responseStart": 341, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2016, "domInteractive": 719, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2641, "loadEventStart": 2016, "mediaWikiLoadComplete": 1375, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "AT", "originRegion": "5", "pageId": 1, "requestStart": 0, "responseEnd": 344, "responseStart": 328, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows XP\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"52\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2030, "domInteractive": 779, "fetchStart": 0, "firstPaint": 870, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2207, "loadEventStart": 2030, "mediaWikiLoadComplete": 1140, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "UA", "originRegion": "", "pageId": 1, "requestStart": 5, "responseEnd": 585, "responseStart": 318, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows XP\", \"browser_minor\": \"4\", \"wmf_app_version\": \"-\", \"browser_major\": \"17\", \"browser_family\": \"Yandex Browser\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2036, "domInteractive": 714, "fetchStart": 0, "firstPaint": 998, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2511, "loadEventStart": 2036, "mediaWikiLoadComplete": 1758, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "MX", "originRegion": "CMX", "pageId": 1, "requestStart": 36, "responseEnd": 427, "responseStart": 419, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2272, "domInteractive": 649, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2273, "loadEventStart": 2272, "mediaWikiLoadComplete": 1382, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "LV", "originRegion": "RIX", "pageId": 1, "requestStart": 0, "responseEnd": 0, "responseStart": 0, "revId": 1, "unload": 5}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2560, "domInteractive": 651, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2561, "loadEventStart": 2560, "mediaWikiLoadComplete": 2026, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "SI", "originRegion": "096", "pageId": 1, "requestStart": 0, "responseEnd": 0, "responseStart": 0, "revId": 1, "unload": 4}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2852, "domInteractive": 1552, "fetchStart": 0, "firstPaint": 1928, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2861, "loadEventStart": 2852, "mediaWikiLoadComplete": 1181, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "BR", "originRegion": "BA", "pageId": 1, "requestStart": 9, "responseEnd": 481, "responseStart": 468, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"12\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"Other\", \"os_family\": \"Mac OS X\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 2957, "domInteractive": 762, "fetchStart": 0, "firstPaint": 1113, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2959, "loadEventStart": 2957, "mediaWikiLoadComplete": 3702, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "GT", "originRegion": "", "pageId": 1, "requestStart": 10, "responseEnd": 310, "responseStart": 231, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 3231, "domInteractive": 590, "fetchStart": 0, "firstPaint": 2720, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 4073, "loadEventStart": 3231, "mediaWikiLoadComplete": 4044, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "DE", "originRegion": "BW", "pageId": 1, "requestStart": 7, "responseEnd": 325, "responseStart": 315, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows XP\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"49\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 3515, "domInteractive": 2936, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 3520, "loadEventStart": 3515, "mediaWikiLoadComplete": 907, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "RU", "originRegion": "PER", "pageId": 1, "requestStart": 1, "responseEnd": 2631, "responseStart": 2367, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"9\", \"device_family\": \"iPad\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"9\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 387, "domInteractive": 310, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": false, "loadEventEnd": 403, "loadEventStart": 387, "mediaWikiLoadComplete": 1313, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FR", "originRegion": "IDF", "pageId": 1, "requestStart": 0, "responseEnd": 262, "responseStart": 0, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Linux\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 393, "domInteractive": 319, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": false, "loadEventEnd": 414, "loadEventStart": 393, "mediaWikiLoadComplete": 1372, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FR", "originRegion": "IDF", "pageId": 1, "requestStart": 0, "responseEnd": 262, "responseStart": 0, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Linux\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 460, "domInteractive": 388, "fetchStart": 0, "firstPaint": 408, "isAnon": false, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 466, "loadEventStart": 462, "mediaWikiLoadComplete": 261, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "DE", "originRegion": "ST", "pageId": 1, "requestStart": 47, "responseEnd": 384, "responseStart": 323, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"15063\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Edge\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1035, "domInteractive": 320, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1054, "loadEventStart": 1035, "mediaWikiLoadComplete": 682, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "CA", "originRegion": "ON", "pageId": 1, "requestStart": 1, "responseEnd": 227, "responseStart": 205, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"2\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPad\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"10\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1035, "domInteractive": 824, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1037, "loadEventStart": 1036, "mediaWikiLoadComplete": 387, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "JP", "originRegion": "", "pageId": 1, "requestStart": 1, "responseEnd": 701, "responseStart": 437, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPhone\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"10\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1036, "domInteractive": 416, "fetchStart": 0, "firstPaint": 710, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1053, "loadEventStart": 1036, "mediaWikiLoadComplete": 902, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "CA", "originRegion": "BC", "pageId": 1, "requestStart": 20, "responseEnd": 74, "responseStart": 58, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"96\", \"is_bot\": false, \"os_major\": \"9592\", \"device_family\": \"Other\", \"os_family\": \"Chrome OS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1036, "domInteractive": 811, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1054, "loadEventStart": 1036, "mediaWikiLoadComplete": 237, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "DK", "originRegion": "", "pageId": 1, "requestStart": 0, "responseEnd": 811, "responseStart": 734, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPhone\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"10\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1037, "domInteractive": 187, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1099, "loadEventStart": 1037, "mediaWikiLoadComplete": 823, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "FR", "originRegion": "IDF", "pageId": 1, "requestStart": 0, "responseEnd": 163, "responseStart": 0, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPhone\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"10\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1037, "domInteractive": 226, "fetchStart": 0, "firstPaint": 450, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1105, "loadEventStart": 1038, "mediaWikiLoadComplete": 734, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "DE", "originRegion": "HH", "pageId": 1, "requestStart": 19, "responseEnd": 46, "responseStart": 40, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"11\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"Other\", \"os_family\": \"Mac OS X\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1037, "domInteractive": 414, "fetchStart": 0, "firstPaint": 411, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1037, "loadEventStart": 1037, "mediaWikiLoadComplete": 426, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RO", "originRegion": "CJ", "pageId": 1, "requestStart": 5, "responseEnd": 273, "responseStart": 246, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1037, "domInteractive": 461, "fetchStart": 0, "firstPaint": 551, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1082, "loadEventStart": 1057, "mediaWikiLoadComplete": 2103, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "BR", "originRegion": "MA", "pageId": 1, "requestStart": 15, "responseEnd": 385, "responseStart": 160, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"0\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"Generic Smartphone\", \"os_family\": \"Windows Phone\", \"browser_minor\": \"14393\", \"wmf_app_version\": \"-\", \"browser_major\": \"14\", \"browser_family\": \"Edge Mobile\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 10377, "domInteractive": 7403, "fetchStart": 0, "firstPaint": 9356, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 10385, "loadEventStart": 10383, "mediaWikiLoadComplete": 2922, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RO", "originRegion": "B", "pageId": 1, "requestStart": 4484, "responseEnd": 6286, "responseStart": 5027, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"15063\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Edge\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1038, "domInteractive": 1009, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1040, "loadEventStart": 1038, "mediaWikiLoadComplete": 778, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "IN", "originRegion": "MH", "pageId": 1, "requestStart": 2, "responseEnd": 739, "responseStart": 205, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"2\", \"is_bot\": false, \"os_major\": \"9\", \"device_family\": \"iPhone\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"9\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1038, "domInteractive": 646, "fetchStart": 0, "isAnon": true, "isHiDPI": true, "isHttp2": true, "loadEventEnd": 1039, "loadEventStart": 1038, "mediaWikiLoadComplete": 516, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "FR", "originRegion": "", "pageId": 1, "requestStart": 1, "responseEnd": 525, "responseStart": 252, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"10\", \"device_family\": \"iPhone\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"10\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 104, "domInteractive": 82, "fetchStart": 0, "firstPaint": 121, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 104, "loadEventStart": 104, "mediaWikiLoadComplete": 265, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "US", "originRegion": "PA", "pageId": 1, "requestStart": 4, "responseEnd": 24, "responseStart": 18, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "submit", "connectEnd": 248, "connectStart": 168, "dnsLookup": 3, "domComplete": 2831, "domInteractive": 1932, "fetchStart": 6, "firstPaint": 1927, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2854, "loadEventStart": 2831, "mediaWikiLoadComplete": 3708, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "JP", "originRegion": "14", "pageId": 1, "requestStart": 249, "responseEnd": 848, "responseStart": 816, "revId": 1, "secureConnectionStart": 205, "unload": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"action": "submit", "connectEnd": 3, "connectStart": 3, "dnsLookup": 0, "domComplete": 1920, "domInteractive": 962, "fetchStart": 3, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 2742, "loadEventStart": 1920, "mediaWikiLoadComplete": 1069, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "IT", "originRegion": "23", "pageId": 1, "requestStart": 16, "responseEnd": 687, "responseStart": 664, "revId": 1, "unload": 6}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 2526}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"54\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 1042}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"11\", \"browser_family\": \"IE\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
-- {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 2729}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+Uncached page view from desktop:
+ input: {"event": {"action": "history", "connectEnd": 6, "connectStart": 6, "dnsLookup": 1, "domComplete": 1965, "domInteractive": 956, "fetchStart": 1, "isAnon": false, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1968, "loadEventStart": 1965, "mediaWikiLoadComplete": 1270, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RS", "originRegion": "VO", "pageId": 1, "requestStart": 6, "responseEnd": 415, "responseStart": 380, "revId": 1, "unload": 4}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ expect:
+  - frontend.navtiming.loadEventStart.desktop.authenticated:1965|ms
+  - frontend.navtiming.loadEventStart.desktop.overall:1965|ms
+  - frontend.navtiming.loadEventStart.overall:1965|ms
+  - frontend.navtiming.loadEventStart.by_browser.Firefox.55:1965|ms
+  - frontend.navtiming.loadEventStart.by_browser.Firefox.all:1965|ms
+  - frontend.navtiming.loadEventStart.by_continent.Europe:1965|ms
+  - frontend.navtiming.dnsLookup.desktop.authenticated:1|ms
+  - frontend.navtiming.dnsLookup.desktop.overall:1|ms
+  - frontend.navtiming.dnsLookup.overall:1|ms
+  - frontend.navtiming.dnsLookup.by_browser.Firefox.55:1|ms
+  - frontend.navtiming.dnsLookup.by_browser.Firefox.all:1|ms
+  - frontend.navtiming.dnsLookup.by_continent.Europe:1|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:1270|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.overall:1270|ms
+  - frontend.navtiming.mediaWikiLoadComplete.overall:1270|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Firefox.55:1270|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Firefox.all:1270|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:1270|ms
+  - frontend.navtiming.loadEventEnd.desktop.authenticated:1968|ms
+  - frontend.navtiming.loadEventEnd.desktop.overall:1968|ms
+  - frontend.navtiming.loadEventEnd.overall:1968|ms
+  - frontend.navtiming.loadEventEnd.by_browser.Firefox.55:1968|ms
+  - frontend.navtiming.loadEventEnd.by_browser.Firefox.all:1968|ms
+  - frontend.navtiming.loadEventEnd.by_continent.Europe:1968|ms
+  - frontend.navtiming.waiting.desktop.authenticated:374|ms
+  - frontend.navtiming.waiting.desktop.overall:374|ms
+  - frontend.navtiming.waiting.overall:374|ms
+  - frontend.navtiming.waiting.by_browser.Firefox.55:374|ms
+  - frontend.navtiming.waiting.by_browser.Firefox.all:374|ms
+  - frontend.navtiming.waiting.by_continent.Europe:374|ms
+  - frontend.navtiming.connecting.by_continent.Europe:0|ms
+  - frontend.navtiming.fetchStart.desktop.authenticated:1|ms
+  - frontend.navtiming.fetchStart.desktop.overall:1|ms
+  - frontend.navtiming.fetchStart.overall:1|ms
+  - frontend.navtiming.fetchStart.by_browser.Firefox.55:1|ms
+  - frontend.navtiming.fetchStart.by_browser.Firefox.all:1|ms
+  - frontend.navtiming.fetchStart.by_continent.Europe:1|ms
+  - frontend.navtiming.domComplete.desktop.authenticated:1965|ms
+  - frontend.navtiming.domComplete.desktop.overall:1965|ms
+  - frontend.navtiming.domComplete.overall:1965|ms
+  - frontend.navtiming.domComplete.by_browser.Firefox.55:1965|ms
+  - frontend.navtiming.domComplete.by_browser.Firefox.all:1965|ms
+  - frontend.navtiming.domComplete.by_continent.Europe:1965|ms
+  - frontend.navtiming.receiving.desktop.authenticated:35|ms
+  - frontend.navtiming.receiving.desktop.overall:35|ms
+  - frontend.navtiming.receiving.overall:35|ms
+  - frontend.navtiming.receiving.by_browser.Firefox.55:35|ms
+  - frontend.navtiming.receiving.by_browser.Firefox.all:35|ms
+  - frontend.navtiming.receiving.by_continent.Europe:35|ms
+  - frontend.navtiming.responseStart.desktop.authenticated:380|ms
+  - frontend.navtiming.responseStart.desktop.overall:380|ms
+  - frontend.navtiming.responseStart.overall:380|ms
+  - frontend.navtiming.responseStart.by_browser.Firefox.55:380|ms
+  - frontend.navtiming.responseStart.by_browser.Firefox.all:380|ms
+  - frontend.navtiming.responseStart.by_continent.Europe:380|ms
+  - frontend.navtiming.domInteractive.desktop.authenticated:956|ms
+  - frontend.navtiming.domInteractive.desktop.overall:956|ms
+  - frontend.navtiming.domInteractive.overall:956|ms
+  - frontend.navtiming.domInteractive.by_browser.Firefox.55:956|ms
+  - frontend.navtiming.domInteractive.by_browser.Firefox.all:956|ms
+  - frontend.navtiming.domInteractive.by_continent.Europe:956|ms
+  - frontend.navtiming2.onLoad.desktop.authenticated:3|ms
+  - frontend.navtiming2.onLoad.desktop.overall:3|ms
+  - frontend.navtiming2.onLoad.overall:3|ms
+  - frontend.navtiming2.onLoad.by_browser.Firefox.55:3|ms
+  - frontend.navtiming2.onLoad.by_browser.Firefox.all:3|ms
+  - frontend.navtiming2.onLoad.by_continent.Europe:3|ms
+  - frontend.navtiming2.dns.desktop.authenticated:1|ms
+  - frontend.navtiming2.dns.desktop.overall:1|ms
+  - frontend.navtiming2.dns.overall:1|ms
+  - frontend.navtiming2.dns.by_browser.Firefox.55:1|ms
+  - frontend.navtiming2.dns.by_browser.Firefox.all:1|ms
+  - frontend.navtiming2.dns.by_continent.Europe:1|ms
+  - frontend.navtiming2.unload.desktop.authenticated:4|ms
+  - frontend.navtiming2.unload.desktop.overall:4|ms
+  - frontend.navtiming2.unload.overall:4|ms
+  - frontend.navtiming2.unload.by_browser.Firefox.55:4|ms
+  - frontend.navtiming2.unload.by_browser.Firefox.all:4|ms
+  - frontend.navtiming2.unload.by_continent.Europe:4|ms
+  - frontend.navtiming2.processing.desktop.authenticated:1550|ms
+  - frontend.navtiming2.processing.desktop.overall:1550|ms
+  - frontend.navtiming2.processing.overall:1550|ms
+  - frontend.navtiming2.processing.by_browser.Firefox.55:1550|ms
+  - frontend.navtiming2.processing.by_browser.Firefox.all:1550|ms
+  - frontend.navtiming2.processing.by_continent.Europe:1550|ms
+  - frontend.navtiming2.request.desktop.authenticated:374|ms
+  - frontend.navtiming2.request.desktop.overall:374|ms
+  - frontend.navtiming2.request.overall:374|ms
+  - frontend.navtiming2.request.by_browser.Firefox.55:374|ms
+  - frontend.navtiming2.request.by_browser.Firefox.all:374|ms
+  - frontend.navtiming2.request.by_continent.Europe:374|ms
+  - frontend.navtiming2.tcp.desktop.authenticated:0|ms
+  - frontend.navtiming2.tcp.desktop.overall:0|ms
+  - frontend.navtiming2.tcp.overall:0|ms
+  - frontend.navtiming2.tcp.by_browser.Firefox.55:0|ms
+  - frontend.navtiming2.tcp.by_browser.Firefox.all:0|ms
+  - frontend.navtiming2.tcp.by_continent.Europe:0|ms
+  - frontend.navtiming2.loadEventEnd.desktop.authenticated:1967|ms
+  - frontend.navtiming2.loadEventEnd.desktop.overall:1967|ms
+  - frontend.navtiming2.loadEventEnd.overall:1967|ms
+  - frontend.navtiming2.loadEventEnd.by_browser.Firefox.55:1967|ms
+  - frontend.navtiming2.loadEventEnd.by_browser.Firefox.all:1967|ms
+  - frontend.navtiming2.loadEventEnd.by_continent.Europe:1967|ms
+  - frontend.navtiming2.loadEventStart.desktop.authenticated:1964|ms
+  - frontend.navtiming2.loadEventStart.desktop.overall:1964|ms
+  - frontend.navtiming2.loadEventStart.overall:1964|ms
+  - frontend.navtiming2.loadEventStart.by_browser.Firefox.55:1964|ms
+  - frontend.navtiming2.loadEventStart.by_browser.Firefox.all:1964|ms
+  - frontend.navtiming2.loadEventStart.by_continent.Europe:1964|ms
+  - frontend.navtiming2.response.desktop.authenticated:35|ms
+  - frontend.navtiming2.response.desktop.overall:35|ms
+  - frontend.navtiming2.response.overall:35|ms
+  - frontend.navtiming2.response.by_browser.Firefox.55:35|ms
+  - frontend.navtiming2.response.by_browser.Firefox.all:35|ms
+  - frontend.navtiming2.response.by_continent.Europe:35|ms
+  - frontend.navtiming2.domComplete.desktop.authenticated:1964|ms
+  - frontend.navtiming2.domComplete.desktop.overall:1964|ms
+  - frontend.navtiming2.domComplete.overall:1964|ms
+  - frontend.navtiming2.domComplete.by_browser.Firefox.55:1964|ms
+  - frontend.navtiming2.domComplete.by_browser.Firefox.all:1964|ms
+  - frontend.navtiming2.domComplete.by_continent.Europe:1964|ms
+  - frontend.navtiming2.responseStart.desktop.authenticated:379|ms
+  - frontend.navtiming2.responseStart.desktop.overall:379|ms
+  - frontend.navtiming2.responseStart.overall:379|ms
+  - frontend.navtiming2.responseStart.by_browser.Firefox.55:379|ms
+  - frontend.navtiming2.responseStart.by_browser.Firefox.all:379|ms
+  - frontend.navtiming2.responseStart.by_continent.Europe:379|ms
+  - frontend.navtiming2.domInteractive.desktop.authenticated:955|ms
+  - frontend.navtiming2.domInteractive.desktop.overall:955|ms
+  - frontend.navtiming2.domInteractive.overall:955|ms
+  - frontend.navtiming2.domInteractive.by_browser.Firefox.55:955|ms
+  - frontend.navtiming2.domInteractive.by_browser.Firefox.all:955|ms
+  - frontend.navtiming2.domInteractive.by_continent.Europe:955|ms
+
+Cached page view from desktop:
+ input: {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 1201, "domInteractive": 576, "fetchStart": 0, "firstPaint": 635, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 1203, "loadEventStart": 1201, "mediaWikiLoadComplete": 667, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "MA", "originRegion": "01", "pageId": 1, "requestStart": 16, "responseEnd": 373, "responseStart": 360, "revId": 1, "unload": 0}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ expect:
+  - frontend.navtiming.loadEventStart.desktop.anonymous:1201|ms
+  - frontend.navtiming.loadEventStart.desktop.overall:1201|ms
+  - frontend.navtiming.loadEventStart.overall:1201|ms
+  - frontend.navtiming.loadEventStart.by_browser.Chrome.60:1201|ms
+  - frontend.navtiming.loadEventStart.by_browser.Chrome.all:1201|ms
+  - frontend.navtiming.loadEventStart.by_continent.Africa:1201|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:667|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.overall:667|ms
+  - frontend.navtiming.mediaWikiLoadComplete.overall:667|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.60:667|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:667|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_continent.Africa:667|ms
+  - frontend.navtiming.dnsLookup.by_continent.Africa:0|ms
+  - frontend.navtiming.firstPaint.desktop.anonymous:635|ms
+  - frontend.navtiming.firstPaint.desktop.overall:635|ms
+  - frontend.navtiming.firstPaint.overall:635|ms
+  - frontend.navtiming.firstPaint.by_browser.Chrome.60:635|ms
+  - frontend.navtiming.firstPaint.by_browser.Chrome.all:635|ms
+  - frontend.navtiming.firstPaint.by_continent.Africa:635|ms
+  - frontend.navtiming.loadEventEnd.desktop.anonymous:1203|ms
+  - frontend.navtiming.loadEventEnd.desktop.overall:1203|ms
+  - frontend.navtiming.loadEventEnd.overall:1203|ms
+  - frontend.navtiming.loadEventEnd.by_browser.Chrome.60:1203|ms
+  - frontend.navtiming.loadEventEnd.by_browser.Chrome.all:1203|ms
+  - frontend.navtiming.loadEventEnd.by_continent.Africa:1203|ms
+  - frontend.navtiming.waiting.desktop.anonymous:344|ms
+  - frontend.navtiming.waiting.desktop.overall:344|ms
+  - frontend.navtiming.waiting.overall:344|ms
+  - frontend.navtiming.waiting.by_browser.Chrome.60:344|ms
+  - frontend.navtiming.waiting.by_browser.Chrome.all:344|ms
+  - frontend.navtiming.waiting.by_continent.Africa:344|ms
+  - frontend.navtiming.connecting.by_continent.Africa:0|ms
+  - frontend.navtiming.fetchStart.by_continent.Africa:0|ms
+  - frontend.navtiming.domComplete.desktop.anonymous:1201|ms
+  - frontend.navtiming.domComplete.desktop.overall:1201|ms
+  - frontend.navtiming.domComplete.overall:1201|ms
+  - frontend.navtiming.domComplete.by_browser.Chrome.60:1201|ms
+  - frontend.navtiming.domComplete.by_browser.Chrome.all:1201|ms
+  - frontend.navtiming.domComplete.by_continent.Africa:1201|ms
+  - frontend.navtiming.receiving.desktop.anonymous:13|ms
+  - frontend.navtiming.receiving.desktop.overall:13|ms
+  - frontend.navtiming.receiving.overall:13|ms
+  - frontend.navtiming.receiving.by_browser.Chrome.60:13|ms
+  - frontend.navtiming.receiving.by_browser.Chrome.all:13|ms
+  - frontend.navtiming.receiving.by_continent.Africa:13|ms
+  - frontend.navtiming.responseStart.desktop.anonymous:360|ms
+  - frontend.navtiming.responseStart.desktop.overall:360|ms
+  - frontend.navtiming.responseStart.overall:360|ms
+  - frontend.navtiming.responseStart.by_browser.Chrome.60:360|ms
+  - frontend.navtiming.responseStart.by_browser.Chrome.all:360|ms
+  - frontend.navtiming.responseStart.by_continent.Africa:360|ms
+  - frontend.navtiming.domInteractive.desktop.anonymous:576|ms
+  - frontend.navtiming.domInteractive.desktop.overall:576|ms
+  - frontend.navtiming.domInteractive.overall:576|ms
+  - frontend.navtiming.domInteractive.by_browser.Chrome.60:576|ms
+  - frontend.navtiming.domInteractive.by_browser.Chrome.all:576|ms
+  - frontend.navtiming.domInteractive.by_continent.Africa:576|ms
+  - frontend.navtiming2.onLoad.desktop.anonymous:2|ms
+  - frontend.navtiming2.onLoad.desktop.overall:2|ms
+  - frontend.navtiming2.onLoad.overall:2|ms
+  - frontend.navtiming2.onLoad.by_browser.Chrome.60:2|ms
+  - frontend.navtiming2.onLoad.by_browser.Chrome.all:2|ms
+  - frontend.navtiming2.onLoad.by_continent.Africa:2|ms
+  - frontend.navtiming2.dns.desktop.anonymous:0|ms
+  - frontend.navtiming2.dns.desktop.overall:0|ms
+  - frontend.navtiming2.dns.overall:0|ms
+  - frontend.navtiming2.dns.by_browser.Chrome.60:0|ms
+  - frontend.navtiming2.dns.by_browser.Chrome.all:0|ms
+  - frontend.navtiming2.dns.by_continent.Africa:0|ms
+  - frontend.navtiming2.unload.desktop.anonymous:0|ms
+  - frontend.navtiming2.unload.desktop.overall:0|ms
+  - frontend.navtiming2.unload.overall:0|ms
+  - frontend.navtiming2.unload.by_browser.Chrome.60:0|ms
+  - frontend.navtiming2.unload.by_browser.Chrome.all:0|ms
+  - frontend.navtiming2.unload.by_continent.Africa:0|ms
+  - frontend.navtiming2.request.desktop.anonymous:344|ms
+  - frontend.navtiming2.request.desktop.overall:344|ms
+  - frontend.navtiming2.request.overall:344|ms
+  - frontend.navtiming2.request.by_browser.Chrome.60:344|ms
+  - frontend.navtiming2.request.by_browser.Chrome.all:344|ms
+  - frontend.navtiming2.request.by_continent.Africa:344|ms
+  - frontend.navtiming2.processing.desktop.anonymous:828|ms
+  - frontend.navtiming2.processing.desktop.overall:828|ms
+  - frontend.navtiming2.processing.overall:828|ms
+  - frontend.navtiming2.processing.by_browser.Chrome.60:828|ms
+  - frontend.navtiming2.processing.by_browser.Chrome.all:828|ms
+  - frontend.navtiming2.processing.by_continent.Africa:828|ms
+  - frontend.navtiming2.firstPaint.desktop.anonymous:635|ms
+  - frontend.navtiming2.firstPaint.desktop.overall:635|ms
+  - frontend.navtiming2.firstPaint.overall:635|ms
+  - frontend.navtiming2.firstPaint.by_browser.Chrome.60:635|ms
+  - frontend.navtiming2.firstPaint.by_browser.Chrome.all:635|ms
+  - frontend.navtiming2.firstPaint.by_continent.Africa:635|ms
+  - frontend.navtiming2.tcp.desktop.anonymous:0|ms
+  - frontend.navtiming2.tcp.desktop.overall:0|ms
+  - frontend.navtiming2.tcp.overall:0|ms
+  - frontend.navtiming2.tcp.by_browser.Chrome.60:0|ms
+  - frontend.navtiming2.tcp.by_browser.Chrome.all:0|ms
+  - frontend.navtiming2.tcp.by_continent.Africa:0|ms
+  - frontend.navtiming2.loadEventEnd.desktop.anonymous:1203|ms
+  - frontend.navtiming2.loadEventEnd.desktop.overall:1203|ms
+  - frontend.navtiming2.loadEventEnd.overall:1203|ms
+  - frontend.navtiming2.loadEventEnd.by_browser.Chrome.60:1203|ms
+  - frontend.navtiming2.loadEventEnd.by_browser.Chrome.all:1203|ms
+  - frontend.navtiming2.loadEventEnd.by_continent.Africa:1203|ms
+  - frontend.navtiming2.loadEventStart.desktop.anonymous:1201|ms
+  - frontend.navtiming2.loadEventStart.desktop.overall:1201|ms
+  - frontend.navtiming2.loadEventStart.overall:1201|ms
+  - frontend.navtiming2.loadEventStart.by_browser.Chrome.60:1201|ms
+  - frontend.navtiming2.loadEventStart.by_browser.Chrome.all:1201|ms
+  - frontend.navtiming2.loadEventStart.by_continent.Africa:1201|ms
+  - frontend.navtiming2.response.desktop.anonymous:13|ms
+  - frontend.navtiming2.response.desktop.overall:13|ms
+  - frontend.navtiming2.response.overall:13|ms
+  - frontend.navtiming2.response.by_browser.Chrome.60:13|ms
+  - frontend.navtiming2.response.by_browser.Chrome.all:13|ms
+  - frontend.navtiming2.response.by_continent.Africa:13|ms
+  - frontend.navtiming2.domComplete.desktop.anonymous:1201|ms
+  - frontend.navtiming2.domComplete.desktop.overall:1201|ms
+  - frontend.navtiming2.domComplete.overall:1201|ms
+  - frontend.navtiming2.domComplete.by_browser.Chrome.60:1201|ms
+  - frontend.navtiming2.domComplete.by_browser.Chrome.all:1201|ms
+  - frontend.navtiming2.domComplete.by_continent.Africa:1201|ms
+  - frontend.navtiming2.responseStart.desktop.anonymous:360|ms
+  - frontend.navtiming2.responseStart.desktop.overall:360|ms
+  - frontend.navtiming2.responseStart.overall:360|ms
+  - frontend.navtiming2.responseStart.by_browser.Chrome.60:360|ms
+  - frontend.navtiming2.responseStart.by_browser.Chrome.all:360|ms
+  - frontend.navtiming2.responseStart.by_continent.Africa:360|ms
+  - frontend.navtiming2.domInteractive.desktop.anonymous:576|ms
+  - frontend.navtiming2.domInteractive.desktop.overall:576|ms
+  - frontend.navtiming2.domInteractive.overall:576|ms
+  - frontend.navtiming2.domInteractive.by_browser.Chrome.60:576|ms
+  - frontend.navtiming2.domInteractive.by_browser.Chrome.all:576|ms
+  - frontend.navtiming2.domInteractive.by_continent.Africa:576|ms
+
+Page view without NavTiming support:
+ input: {"event": {"action": "delete", "isAnon": false, "isHiDPI": true, "isHttp2": true, "mediaWikiLoadComplete": 3513, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "PL", "originRegion": "LD", "pageId": 1, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"4\", \"is_bot\": false, \"os_major\": \"4\", \"device_family\": \"Samsung SM-T230\", \"os_family\": \"Android\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"59\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ expect:
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.authenticated:3513|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3513|ms
+  - frontend.navtiming.mediaWikiLoadComplete.overall:3513|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.59:3513|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:3513|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:3513|ms
+
+Mobile page view:
+ input: {"event": {"action": "edit", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 3515, "domInteractive": 2936, "fetchStart": 0, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 3520, "loadEventStart": 3515, "mediaWikiLoadComplete": 907, "mediaWikiVersion": "1.30.0-wmf.19", "mobileMode": "stable", "namespaceId": 1, "originCountry": "RU", "originRegion": "PER", "pageId": 1, "requestStart": 1, "responseEnd": 2631, "responseStart": 2367, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": \"3\", \"is_bot\": false, \"os_major\": \"9\", \"device_family\": \"iPad\", \"os_family\": \"iOS\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"9\", \"browser_family\": \"Mobile Safari\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ expect:
+  - frontend.navtiming.loadEventStart.mobile.anonymous:3515|ms
+  - frontend.navtiming.loadEventStart.mobile.overall:3515|ms
+  - frontend.navtiming.loadEventStart.overall:3515|ms
+  - frontend.navtiming.loadEventStart.by_browser.Mobile_Safari.9_0:3515|ms
+  - frontend.navtiming.loadEventStart.by_browser.Mobile_Safari.all:3515|ms
+  - frontend.navtiming.loadEventStart.by_continent.Europe:3515|ms
+  - frontend.navtiming.loadEventStart.by_country.Russia:3515|ms
+  - frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
+  - frontend.navtiming.dnsLookup.by_country.Russia:0|ms
+  - frontend.navtiming.mediaWikiLoadComplete.mobile.anonymous:907|ms
+  - frontend.navtiming.mediaWikiLoadComplete.mobile.overall:907|ms
+  - frontend.navtiming.mediaWikiLoadComplete.overall:907|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Mobile_Safari.9_0:907|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Mobile_Safari.all:907|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:907|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_country.Russia:907|ms
+  - frontend.navtiming.loadEventEnd.mobile.anonymous:3520|ms
+  - frontend.navtiming.loadEventEnd.mobile.overall:3520|ms
+  - frontend.navtiming.loadEventEnd.overall:3520|ms
+  - frontend.navtiming.loadEventEnd.by_browser.Mobile_Safari.9_0:3520|ms
+  - frontend.navtiming.loadEventEnd.by_browser.Mobile_Safari.all:3520|ms
+  - frontend.navtiming.loadEventEnd.by_continent.Europe:3520|ms
+  - frontend.navtiming.loadEventEnd.by_country.Russia:3520|ms
+  - frontend.navtiming.waiting.mobile.anonymous:2366|ms
+  - frontend.navtiming.waiting.mobile.overall:2366|ms
+  - frontend.navtiming.waiting.overall:2366|ms
+  - frontend.navtiming.waiting.by_browser.Mobile_Safari.9_0:2366|ms
+  - frontend.navtiming.waiting.by_browser.Mobile_Safari.all:2366|ms
+  - frontend.navtiming.waiting.by_continent.Europe:2366|ms
+  - frontend.navtiming.waiting.by_country.Russia:2366|ms
+  - frontend.navtiming.connecting.by_continent.Europe:0|ms
+  - frontend.navtiming.connecting.by_country.Russia:0|ms
+  - frontend.navtiming.fetchStart.by_continent.Europe:0|ms
+  - frontend.navtiming.fetchStart.by_country.Russia:0|ms
+  - frontend.navtiming.domComplete.mobile.anonymous:3515|ms
+  - frontend.navtiming.domComplete.mobile.overall:3515|ms
+  - frontend.navtiming.domComplete.overall:3515|ms
+  - frontend.navtiming.domComplete.by_browser.Mobile_Safari.9_0:3515|ms
+  - frontend.navtiming.domComplete.by_browser.Mobile_Safari.all:3515|ms
+  - frontend.navtiming.domComplete.by_continent.Europe:3515|ms
+  - frontend.navtiming.domComplete.by_country.Russia:3515|ms
+  - frontend.navtiming.receiving.mobile.anonymous:264|ms
+  - frontend.navtiming.receiving.mobile.overall:264|ms
+  - frontend.navtiming.receiving.overall:264|ms
+  - frontend.navtiming.receiving.by_browser.Mobile_Safari.9_0:264|ms
+  - frontend.navtiming.receiving.by_browser.Mobile_Safari.all:264|ms
+  - frontend.navtiming.receiving.by_continent.Europe:264|ms
+  - frontend.navtiming.receiving.by_country.Russia:264|ms
+  - frontend.navtiming.responseStart.mobile.anonymous:2367|ms
+  - frontend.navtiming.responseStart.mobile.overall:2367|ms
+  - frontend.navtiming.responseStart.overall:2367|ms
+  - frontend.navtiming.responseStart.by_browser.Mobile_Safari.9_0:2367|ms
+  - frontend.navtiming.responseStart.by_browser.Mobile_Safari.all:2367|ms
+  - frontend.navtiming.responseStart.by_continent.Europe:2367|ms
+  - frontend.navtiming.responseStart.by_country.Russia:2367|ms
+  - frontend.navtiming.domInteractive.mobile.anonymous:2936|ms
+  - frontend.navtiming.domInteractive.mobile.overall:2936|ms
+  - frontend.navtiming.domInteractive.overall:2936|ms
+  - frontend.navtiming.domInteractive.by_browser.Mobile_Safari.9_0:2936|ms
+  - frontend.navtiming.domInteractive.by_browser.Mobile_Safari.all:2936|ms
+  - frontend.navtiming.domInteractive.by_continent.Europe:2936|ms
+  - frontend.navtiming.domInteractive.by_country.Russia:2936|ms
+  - frontend.navtiming2.onLoad.mobile.anonymous:5|ms
+  - frontend.navtiming2.onLoad.mobile.overall:5|ms
+  - frontend.navtiming2.onLoad.overall:5|ms
+  - frontend.navtiming2.onLoad.by_browser.Mobile_Safari.9_0:5|ms
+  - frontend.navtiming2.onLoad.by_browser.Mobile_Safari.all:5|ms
+  - frontend.navtiming2.onLoad.by_continent.Europe:5|ms
+  - frontend.navtiming2.onLoad.by_country.Russia:5|ms
+  - frontend.navtiming2.dns.mobile.anonymous:0|ms
+  - frontend.navtiming2.dns.mobile.overall:0|ms
+  - frontend.navtiming2.dns.overall:0|ms
+  - frontend.navtiming2.dns.by_browser.Mobile_Safari.9_0:0|ms
+  - frontend.navtiming2.dns.by_browser.Mobile_Safari.all:0|ms
+  - frontend.navtiming2.dns.by_continent.Europe:0|ms
+  - frontend.navtiming2.dns.by_country.Russia:0|ms
+  - frontend.navtiming2.processing.mobile.anonymous:884|ms
+  - frontend.navtiming2.processing.mobile.overall:884|ms
+  - frontend.navtiming2.processing.overall:884|ms
+  - frontend.navtiming2.processing.by_browser.Mobile_Safari.9_0:884|ms
+  - frontend.navtiming2.processing.by_browser.Mobile_Safari.all:884|ms
+  - frontend.navtiming2.processing.by_continent.Europe:884|ms
+  - frontend.navtiming2.processing.by_country.Russia:884|ms
+  - frontend.navtiming2.request.mobile.anonymous:2366|ms
+  - frontend.navtiming2.request.mobile.overall:2366|ms
+  - frontend.navtiming2.request.overall:2366|ms
+  - frontend.navtiming2.request.by_browser.Mobile_Safari.9_0:2366|ms
+  - frontend.navtiming2.request.by_browser.Mobile_Safari.all:2366|ms
+  - frontend.navtiming2.request.by_continent.Europe:2366|ms
+  - frontend.navtiming2.request.by_country.Russia:2366|ms
+  - frontend.navtiming2.tcp.mobile.anonymous:0|ms
+  - frontend.navtiming2.tcp.mobile.overall:0|ms
+  - frontend.navtiming2.tcp.overall:0|ms
+  - frontend.navtiming2.tcp.by_browser.Mobile_Safari.9_0:0|ms
+  - frontend.navtiming2.tcp.by_browser.Mobile_Safari.all:0|ms
+  - frontend.navtiming2.tcp.by_continent.Europe:0|ms
+  - frontend.navtiming2.tcp.by_country.Russia:0|ms
+  - frontend.navtiming2.loadEventEnd.mobile.anonymous:3520|ms
+  - frontend.navtiming2.loadEventEnd.mobile.overall:3520|ms
+  - frontend.navtiming2.loadEventEnd.overall:3520|ms
+  - frontend.navtiming2.loadEventEnd.by_browser.Mobile_Safari.9_0:3520|ms
+  - frontend.navtiming2.loadEventEnd.by_browser.Mobile_Safari.all:3520|ms
+  - frontend.navtiming2.loadEventEnd.by_continent.Europe:3520|ms
+  - frontend.navtiming2.loadEventEnd.by_country.Russia:3520|ms
+  - frontend.navtiming2.loadEventStart.mobile.anonymous:3515|ms
+  - frontend.navtiming2.loadEventStart.mobile.overall:3515|ms
+  - frontend.navtiming2.loadEventStart.overall:3515|ms
+  - frontend.navtiming2.loadEventStart.by_browser.Mobile_Safari.9_0:3515|ms
+  - frontend.navtiming2.loadEventStart.by_browser.Mobile_Safari.all:3515|ms
+  - frontend.navtiming2.loadEventStart.by_continent.Europe:3515|ms
+  - frontend.navtiming2.loadEventStart.by_country.Russia:3515|ms
+  - frontend.navtiming2.response.mobile.anonymous:264|ms
+  - frontend.navtiming2.response.mobile.overall:264|ms
+  - frontend.navtiming2.response.overall:264|ms
+  - frontend.navtiming2.response.by_browser.Mobile_Safari.9_0:264|ms
+  - frontend.navtiming2.response.by_browser.Mobile_Safari.all:264|ms
+  - frontend.navtiming2.response.by_continent.Europe:264|ms
+  - frontend.navtiming2.response.by_country.Russia:264|ms
+  - frontend.navtiming2.domComplete.mobile.anonymous:3515|ms
+  - frontend.navtiming2.domComplete.mobile.overall:3515|ms
+  - frontend.navtiming2.domComplete.overall:3515|ms
+  - frontend.navtiming2.domComplete.by_browser.Mobile_Safari.9_0:3515|ms
+  - frontend.navtiming2.domComplete.by_browser.Mobile_Safari.all:3515|ms
+  - frontend.navtiming2.domComplete.by_continent.Europe:3515|ms
+  - frontend.navtiming2.domComplete.by_country.Russia:3515|ms
+  - frontend.navtiming2.responseStart.mobile.anonymous:2367|ms
+  - frontend.navtiming2.responseStart.mobile.overall:2367|ms
+  - frontend.navtiming2.responseStart.overall:2367|ms
+  - frontend.navtiming2.responseStart.by_browser.Mobile_Safari.9_0:2367|ms
+  - frontend.navtiming2.responseStart.by_browser.Mobile_Safari.all:2367|ms
+  - frontend.navtiming2.responseStart.by_continent.Europe:2367|ms
+  - frontend.navtiming2.responseStart.by_country.Russia:2367|ms
+  - frontend.navtiming2.domInteractive.mobile.anonymous:2936|ms
+  - frontend.navtiming2.domInteractive.mobile.overall:2936|ms
+  - frontend.navtiming2.domInteractive.overall:2936|ms
+  - frontend.navtiming2.domInteractive.by_browser.Mobile_Safari.9_0:2936|ms
+  - frontend.navtiming2.domInteractive.by_browser.Mobile_Safari.all:2936|ms
+  - frontend.navtiming2.domInteractive.by_continent.Europe:2936|ms
+  - frontend.navtiming2.domInteractive.by_country.Russia:2936|ms
+
+SaveTiming:
+ input:
+  - {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 2526}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"54\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+  - {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 1042}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"11\", \"browser_family\": \"IE\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+  - {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 2729}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"60\", \"browser_family\": \"Chrome\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ expect:
+  - mw.performance.save:1042|ms
+  - mw.performance.save:2526|ms
+  - mw.performance.save:2729|ms
+  - mw.performance.save_by_version.1_30_0-wmf_14:1042|ms
+  - mw.performance.save_by_version.1_30_0-wmf_14:2526|ms
+  - mw.performance.save_by_version.1_30_0-wmf_14:2729|ms
