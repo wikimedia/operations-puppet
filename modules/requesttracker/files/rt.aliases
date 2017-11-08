@@ -4,6 +4,7 @@ ops-requests: ops-requests@phabricator.wikimedia.org
 phabricator: rt@phabricator.wikimedia.org
 task: task@phabricator.wikimedia.org
 ulsfo: ulsfo@phabricator.wikimedia.org
+eqsin: eqsin@phabricator.wikimedia.org
 pmtpa: pmtpa@phabricator.wikimedia.org
 eqiad: eqiad@phabricator.wikimedia.org
 esams: esams@phabricator.wikimedia.org

@@ -120,6 +120,19 @@ node 'bast4002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+node 'bast5001.wikimedia.org' {
+    role(bastionhost::general,
+        ipmi::mgmt,
+        installserver::tftp,
+        prometheus::ops)
+
+    interface::add_ip6_mapped { 'main': }
+
+    class { '::ganglia::monitor::aggregator':
+        sites =>  'eqsin',
+    }
+}
+
 node 'bohrium.eqiad.wmnet' {
     role(piwik::server)
 }
@@ -276,6 +289,20 @@ node /^cp402[1-6]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role(cache::text, ipsec)
+}
+
+#
+# eqsin varnishes
+#
+
+node /^cp500[1-6]\.eqsin\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role(cache::upload, ipsec)
+}
+
+node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role(cache::text, ipsec)
 }
@@ -645,6 +672,11 @@ node 'deploy1001.eqiad.wmnet' {
 
 # new dns systems T179204
 node /^dns400[12]\.wikimedia\.org$/ {
+    role(spare::system)
+}
+
+# new dns systems for eqsin (further config to do here...)
+node /^dns500[12]\.wikimedia\.org$/ {
     role(spare::system)
 }
 
@@ -1375,6 +1407,17 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[567]\.ulsfo\.wmnet$/ {
+    # ns override for all lvs for now, see T103921
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
+
+    role(lvs::balancer)
+    lvs::interface_tweaks {
+        'eth0': bnx2x => true, txqlen => 10000;
+    }
+}
+
+# EQSIN lvs servers
+node /^lvs500[123]\.eqsin\.wmnet$/ {
     # ns override for all lvs for now, see T103921
     $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
 

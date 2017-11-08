@@ -425,9 +425,14 @@
             "selected": false,
             "text": "ulsfo",
             "value": "ulsfo"
+          },
+          {
+            "selected": false,
+            "text": "eqsin",
+            "value": "eqsin"
           }
         ],
-        "query": "eqiad,codfw,esams,ulsfo",
+        "query": "eqiad,codfw,esams,ulsfo,eqsin",
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "/^(?!clients)/",

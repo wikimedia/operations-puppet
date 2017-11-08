@@ -46,6 +46,7 @@ class role::prometheus::global {
               'prometheus.svc.codfw.wmnet',
               'prometheus.svc.ulsfo.wmnet',
               'prometheus.svc.esams.wmnet',
+              'prometheus.svc.eqsin.wmnet',
             ],
           },
         ],

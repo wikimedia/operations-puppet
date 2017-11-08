@@ -9,6 +9,7 @@ cache_text:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
   varnish-be:
     port: 3128
     default_values:
@@ -19,6 +20,7 @@ cache_text:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
   nginx:
     port: 443
     default_values:
@@ -29,6 +31,7 @@ cache_text:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
 cache_upload:
   varnish-fe:
     port: 80
@@ -40,6 +43,7 @@ cache_upload:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
   varnish-be:
     port: 3128
     default_values:
@@ -50,6 +54,7 @@ cache_upload:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
   nginx:
     port: 443
     default_values:
@@ -60,6 +65,7 @@ cache_upload:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
 cache_misc:
   varnish-fe:
     port: 80

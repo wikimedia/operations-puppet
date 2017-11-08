@@ -24,6 +24,7 @@ cache::route_table:
   codfw: 'eqiad'
   ulsfo: 'codfw'
   esams: 'eqiad'
+  eqsin: 'codfw'
 cache::app_def_be_opts:
   port: 80
   connect_timeout: '5s'

@@ -12,6 +12,9 @@ lvs::configuration::lvs_service_ips:
     ulsfo:
       textlb: 198.35.26.96
       textlb6: 2620:0:863:ed1a::1
+    eqsin:
+      textlb: 103.102.166.224
+      textlb6: 2001:df2:e500:ed1a::1
   upload: &ip_block002
     codfw:
       uploadlb: 208.80.153.240
@@ -25,6 +28,9 @@ lvs::configuration::lvs_service_ips:
     ulsfo:
       uploadlb: 198.35.26.112
       uploadlb6: 2620:0:863:ed1a::2:b
+    eqsin:
+      uploadlb: 103.102.166.240
+      uploadlb6: 2001:df2:e500:ed1a::2:b
   apaches: &ip_block007
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
@@ -145,6 +151,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - esams
     - ulsfo
+    - eqsin
     ip: *ip_block001
     scheduler: sh
     depool-threshold: '.5'
@@ -166,6 +173,8 @@ lvs::configuration::lvs_services:
           hostname: text-lb.esams.wikimedia.org
         ulsfo:
           hostname: text-lb.ulsfo.wikimedia.org
+        eqsin:
+          hostname: text-lb.eqsin.wikimedia.org
   text-https:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)"
     class: high-traffic1
@@ -174,6 +183,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - esams
     - ulsfo
+    - eqsin
     ip: *ip_block001
     port: 443
     scheduler: sh
@@ -196,6 +206,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - esams
     - ulsfo
+    - eqsin
     ip: *ip_block002
     scheduler: sh
     depool-threshold: '.5'
@@ -217,6 +228,8 @@ lvs::configuration::lvs_services:
           hostname: upload-lb.esams.wikimedia.org
         ulsfo:
           hostname: upload-lb.ulsfo.wikimedia.org
+        eqsin:
+          hostname: upload-lb.eqsin.wikimedia.org
   upload-https:
     description: "Images and other media, upload.%{::site}.wikimedia.org"
     class: high-traffic2
@@ -225,6 +238,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - esams
     - ulsfo
+    - eqsin
     ip: *ip_block002
     port: 443
     scheduler: sh

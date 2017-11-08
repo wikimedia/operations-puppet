@@ -9,6 +9,7 @@ dns:
       - eqiad
       - esams
       - ulsfo
+      - eqsin
 phabricator:
   git-ssh:
     port: 22

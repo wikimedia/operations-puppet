@@ -253,6 +253,10 @@ smart_health_ulsfo:
   __regex: !ruby/regexp /^.*\.ulsfo\.wmnet$/
   profile::base::check_smart: true
 
+smart_health_eqsin:
+  __regex: !ruby/regexp /^.*\.eqsin\.wmnet$/
+  profile::base::check_smart: true
+
 labtestpuppetmaster:
   __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"

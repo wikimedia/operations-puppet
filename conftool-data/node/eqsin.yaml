@@ -1,0 +1,15 @@
+eqsin:
+  cache_text:
+    cp5007.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5008.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5009.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5010.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5011.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5012.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+  cache_upload:
+    cp5001.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5002.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5003.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5004.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5005.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
+    cp5006.eqsin.wmnet: [varnish-fe, varnish-be, nginx]
