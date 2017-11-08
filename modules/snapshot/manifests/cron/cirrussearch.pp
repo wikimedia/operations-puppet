@@ -9,11 +9,6 @@ class snapshot::cron::cirrussearch(
         owner  => $user,
     }
 
-    logrotate::conf { 'cirrusdump':
-        ensure => present,
-        source => 'puppet:///modules/snapshot/cron/logrotate.cirrusdump',
-    }
-
     $scriptpath = '/usr/local/bin/dumpcirrussearch.sh'
     file { $scriptpath:
         mode   => '0755',
