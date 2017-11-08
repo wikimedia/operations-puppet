@@ -3,7 +3,7 @@
 # This is used to do a pseudo iterator. It might be replaced by a nicer syntax
 # once we are fully Puppet 4 compatible.
 #
-define role::logstash::apifeatureusage::elasticsearch {
+define profile::logstash::apifeatureusage::elasticsearch {
     logstash::output::elasticsearch { "apifeatureusage-${title}":
         host            => $title,
         index           => 'apifeatureusage-%{+YYYY.MM.dd}',
