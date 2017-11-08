@@ -170,7 +170,7 @@ scb-canary: P{scb1001.eqiad.wmnet}
 scb-codfw: A:scb and A:codfw
 scb-eqiad: A:scb and A:eqiad
 snapshot: P{R:class = role::dumps::generation::worker::dumper or R:class = role::dumps::generation::worker::dumper_misc} or A:snapshot-canary
-snapshot-canary: P{R:class = role::dumps::generation::worker::testbed
+snapshot-canary: P{R:class = role::dumps::generation::worker::testbed}
 stat: P{R:class = role::statistics::private or R:class = role::statistics::cruncher or R:class = role::analytics_cluster::client}
 swift: A:swift-fe or A:swift-be
 swift-be: P{R:class = role::swift::storage}
