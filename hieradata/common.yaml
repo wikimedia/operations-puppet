@@ -335,8 +335,7 @@ dumps_web_rsync_server_clients:
       - poincare.acc.umu.se
       - wikimedia.bytemark.co.uk
   ipv6:
-    internal:
-      - labstore1006.wikimedia.org
+    internal: []
     external:
       - odysseus.ip6.fi.muni.cz
       - poincare.acc.umu.se
