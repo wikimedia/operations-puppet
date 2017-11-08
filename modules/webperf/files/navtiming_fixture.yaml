@@ -443,6 +443,66 @@ Mobile page view:
   - frontend.navtiming2.domInteractive.by_continent.Europe:2936|ms
   - frontend.navtiming2.domInteractive.by_country.Russia:2936|ms
 
+View with timings above threshold:
+ input: {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 203077, "domInteractive": 7403, "fetchStart": 0, "firstPaint": 9356, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 204085, "loadEventStart": 204083, "mediaWikiLoadComplete": 20922, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FR", "originRegion": "X", "pageId": 1, "requestStart": 4484, "responseEnd": 6286, "responseStart": 5027, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"15063\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Edge\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ expect:
+  # domComplete, loadEventStart and loadEventEnd are above threshold
+  - frontend.navtiming.loadEventStart.by_continent.Europe:204083|ms
+  - frontend.navtiming.loadEventStart.by_country.France:204083|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:20922|ms
+  - frontend.navtiming.mediaWikiLoadComplete.desktop.overall:20922|ms
+  - frontend.navtiming.mediaWikiLoadComplete.overall:20922|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.15:20922|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.all:20922|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:20922|ms
+  - frontend.navtiming.mediaWikiLoadComplete.by_country.France:20922|ms
+  - frontend.navtiming.dnsLookup.by_continent.Europe:0|ms
+  - frontend.navtiming.dnsLookup.by_country.France:0|ms
+  - frontend.navtiming.firstPaint.desktop.anonymous:9356|ms
+  - frontend.navtiming.firstPaint.desktop.overall:9356|ms
+  - frontend.navtiming.firstPaint.overall:9356|ms
+  - frontend.navtiming.firstPaint.by_browser.Edge.15:9356|ms
+  - frontend.navtiming.firstPaint.by_browser.Edge.all:9356|ms
+  - frontend.navtiming.firstPaint.by_continent.Europe:9356|ms
+  - frontend.navtiming.firstPaint.by_country.France:9356|ms
+  - frontend.navtiming.loadEventEnd.by_continent.Europe:204085|ms
+  - frontend.navtiming.loadEventEnd.by_country.France:204085|ms
+  - frontend.navtiming.waiting.desktop.anonymous:543|ms
+  - frontend.navtiming.waiting.desktop.overall:543|ms
+  - frontend.navtiming.waiting.overall:543|ms
+  - frontend.navtiming.waiting.by_browser.Edge.15:543|ms
+  - frontend.navtiming.waiting.by_browser.Edge.all:543|ms
+  - frontend.navtiming.waiting.by_continent.Europe:543|ms
+  - frontend.navtiming.waiting.by_country.France:543|ms
+  - frontend.navtiming.connecting.by_continent.Europe:0|ms
+  - frontend.navtiming.connecting.by_country.France:0|ms
+  - frontend.navtiming.fetchStart.by_continent.Europe:0|ms
+  - frontend.navtiming.fetchStart.by_country.France:0|ms
+  - frontend.navtiming.domComplete.by_continent.Europe:203077|ms
+  - frontend.navtiming.domComplete.by_country.France:203077|ms
+  - frontend.navtiming.receiving.desktop.anonymous:1259|ms
+  - frontend.navtiming.receiving.desktop.overall:1259|ms
+  - frontend.navtiming.receiving.overall:1259|ms
+  - frontend.navtiming.receiving.by_browser.Edge.15:1259|ms
+  - frontend.navtiming.receiving.by_browser.Edge.all:1259|ms
+  - frontend.navtiming.receiving.by_continent.Europe:1259|ms
+  - frontend.navtiming.receiving.by_country.France:1259|ms
+  - frontend.navtiming.responseStart.desktop.anonymous:5027|ms
+  - frontend.navtiming.responseStart.desktop.overall:5027|ms
+  - frontend.navtiming.responseStart.overall:5027|ms
+  - frontend.navtiming.responseStart.by_browser.Edge.15:5027|ms
+  - frontend.navtiming.responseStart.by_browser.Edge.all:5027|ms
+  - frontend.navtiming.responseStart.by_continent.Europe:5027|ms
+  - frontend.navtiming.responseStart.by_country.France:5027|ms
+  - frontend.navtiming.domInteractive.desktop.anonymous:7403|ms
+  - frontend.navtiming.domInteractive.desktop.overall:7403|ms
+  - frontend.navtiming.domInteractive.overall:7403|ms
+  - frontend.navtiming.domInteractive.by_browser.Edge.15:7403|ms
+  - frontend.navtiming.domInteractive.by_browser.Edge.all:7403|ms
+  - frontend.navtiming.domInteractive.by_continent.Europe:7403|ms
+  - frontend.navtiming.domInteractive.by_country.France:7403|ms
+  - frontend.navtiming_discard.isSane:1|c
+
 SaveTiming:
  input:
   - {"event": {"mediaWikiVersion": "1.30.0-wmf.14", "saveTiming": 2526}, "recvFrom": "example", "revision": 1, "schema": "SaveTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 7\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"54\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}

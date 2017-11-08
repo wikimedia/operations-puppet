@@ -306,10 +306,24 @@ def dispatch_stat(stat):
 
 
 def make_stat(*args):
+    """
+    Create a statsd packet for adding a measure to a Timing metric
+    """
     args = list(args)
     value = args.pop()
     name = '.'.join(arg.replace(' ', '_') for arg in args)
     stat = '%s:%s|ms' % (name, value)
+    return stat.encode('utf-8')
+
+
+def make_count(*args):
+    """
+    Create a statsd packet for incrementing a Counter metric
+    """
+    args = list(args)
+    value = 1
+    name = '.'.join(arg.replace(' ', '_') for arg in args)
+    stat = '%s:%s|c' % (name, value)
     return stat.encode('utf-8')
 
 
@@ -458,7 +472,9 @@ def handle_navigation_timing(meta):
             break
 
     # If one of the metrics are over the max then skip it entirely
-    if (isSane):
+    if not isSane:
+        yield make_count('frontend.navtiming_discard', 'isSane')
+    else:
         for metric, value in metrics_nav2.items():
             prefix = 'frontend.navtiming2'
             yield make_stat(prefix, metric, site, auth, value)
