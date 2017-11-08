@@ -1,1 +1,2 @@
 profile::base::environment: "future"
+profile::base::purge_apt_sources: true
