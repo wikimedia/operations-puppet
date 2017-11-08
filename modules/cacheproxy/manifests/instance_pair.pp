@@ -22,8 +22,7 @@ class cacheproxy::instance_pair (
     # but as we'll only have other DCs backending to eqiad and/or codfw for
     # now, there's no sense generating the extra churn in terms of reload-vcl
     # on confd changes, etc, for now.  Add more here if we need to use them as
-    # cache backend targets for other DCs.  The next-most-likely future
-    # scenario for that is backending an asia pop to ulsfo.
+    # cache backend targets for other DCs.
 
     $backend_caches = {
         'cache_eqiad' => {

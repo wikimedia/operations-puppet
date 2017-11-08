@@ -9,7 +9,7 @@
 #
 class cacheproxy::cron_restart ($nodes, $cache_cluster) {
     #TODO: maybe use the list of datacenters to do this?
-    $all_nodes = array_concat($nodes['eqiad'], $nodes['esams'], $nodes['ulsfo'], $nodes['codfw'])
+    $all_nodes = array_concat($nodes['eqiad'], $nodes['esams'], $nodes['ulsfo'], $nodes['codfw'], $nodes['eqsin'])
     $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
     $be_restart_h = $times['hour']
     $be_restart_m = $times['minute']

@@ -7,6 +7,7 @@ class profile::configmaster(
         'config-master.codfw.wmnet',
         'config-master.esams.wmnet',
         'config-master.ulsfo.wmnet',
+        'config-master.eqsin.wmnet',
         'config-master.wikimedia.org',
     ]
 
