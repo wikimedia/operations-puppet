@@ -360,3 +360,5 @@ thumbor::logstash_port: 11514
 
 cache::be_transient_gb: 0
 cache::fe_transient_gb: 0
+
+profile::base::purge_apt_sources: true
