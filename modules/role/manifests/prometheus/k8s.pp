@@ -35,6 +35,9 @@ class role::prometheus::k8s (
             'job_name'              => 'k8s-api',
             'bearer_token_file'     => $bearer_token_file,
             'scheme'                => 'https',
+            'tls_config' => {
+                'server_name' => $master_host,
+            },
             'kubernetes_sd_configs' => [
                 {
                     'api_server'        => "https://${master_host}:6443",
@@ -58,7 +61,12 @@ class role::prometheus::k8s (
             'job_name'              => 'k8s-node',
             'bearer_token_file'     => $bearer_token_file,
             # Force (insecure) https only for node servers
+            # We are connecting to node servers via IP address, though the certs don't contain SAN
+            # entries for the address.
             'scheme'                => 'https',
+            'tls_config' => {
+                'insecure_skip_verify' => true,
+            },
             'kubernetes_sd_configs' => [
                 {
                     'api_server'        => "https://${master_host}:6443",
