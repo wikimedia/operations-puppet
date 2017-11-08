@@ -1,0 +1,14 @@
+# Bash completion for the 'my' function to connect to mysql
+function _my() {
+    local instances current
+    COMPREPLY=()
+    current="${COMP_WORDS[COMP_CWORD]}"
+    instances="$(find /run/mysqld/ -maxdepth 1 -iname "mysqld.*.sock" -printf '%P\n'| sed -E 's/^mysqld\.([^.]+)\.sock$/\1/')"
+
+    # Autocomplete only one parameter
+    if [[ "${COMP_WORDS[COMP_CWORD-1]}" == "my" ]]; then
+        COMPREPLY=( $(compgen -W "${instances}" -- "${current}") )
+    fi
+}
+
+complete -F _my my
