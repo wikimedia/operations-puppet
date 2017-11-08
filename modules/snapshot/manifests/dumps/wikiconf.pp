@@ -1,9 +1,9 @@
 define snapshot::dumps::wikiconf(
     $configtype = 'allwikis',
     $config     = undef,
-    $publicdir  = '/mnt/data/xmldatadumps/public',
-    $privatedir = '/mnt/data/xmldatadumps/private',
-    $tempdir    = '/mnt/data/xmldatadumps/temp',
+    $publicdir  = undef,
+    $privatedir = undef,
+    $tempdir    = undef,
     ) {
     $confsdir = $snapshot::dumps::dirs::confsdir
 
