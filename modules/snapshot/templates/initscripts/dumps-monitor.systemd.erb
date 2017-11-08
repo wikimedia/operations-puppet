@@ -7,7 +7,7 @@ Description=Dumps monitoring service
 After=network.target
 
 [Service]
-User=dumpsgen
+User=<%= @xmldumpsuser %>
 WorkingDirectory=<%= @repodir %>
 ExecStart=/bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.dumps:monitor --basedir <%= @repodir %>
 

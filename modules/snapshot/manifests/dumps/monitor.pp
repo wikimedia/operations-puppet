@@ -1,4 +1,7 @@
-class snapshot::dumps::monitor {
+class snapshot::dumps::monitor(
+    $xmldumpsuser = undef,
+    $xmldumpsgroup = undef,
+) {
   $repodir = $snapshot::dumps::dirs::repodir
   $confsdir = $snapshot::dumps::dirs::confsdir
 
