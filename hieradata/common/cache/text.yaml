@@ -33,3 +33,11 @@ cache::text::nodes:
     - 'cp4030.ulsfo.wmnet'
     - 'cp4031.ulsfo.wmnet'
     - 'cp4032.ulsfo.wmnet'
+  eqsin: []
+# commented-out for now to avoid ipsec alerts until these are live, fix [] above too
+#    - 'cp5007.eqsin.wmnet'
+#    - 'cp5008.eqsin.wmnet'
+#    - 'cp5009.eqsin.wmnet'
+#    - 'cp5010.eqsin.wmnet'
+#    - 'cp5011.eqsin.wmnet'
+#    - 'cp5012.eqsin.wmnet'
