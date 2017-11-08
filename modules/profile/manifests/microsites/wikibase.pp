@@ -5,15 +5,14 @@ class profile::microsites::wikibase(
 ) {
 
     include ::base::firewall
+    include ::apache
+    include ::apache::mod::headers
 
     ferm::service { 'wikibase_http':
         proto  => 'tcp',
         port   => '80',
         srange => '$CACHE_MISC',
     }
-
-    class { '::apache': }
-    class { '::apache::mod::headers': }
 
     apache::site { 'wikiba.se':
         content => template('profile/wikibase/apache-wikibase.erb'),
