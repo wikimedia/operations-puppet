@@ -16,6 +16,11 @@ define conftool::scripts::service(
     $lvs_name=$title,
 ){
     require ::conftool::scripts
+
+    notice("lvs_services_config: ${lvs_services_config}")
+    notice("lvs_services_config: ${lvs_services_config}")
+    notice("lvs_name: ${lvs_name}")
+
     $lvs_config = $lvs_services_config[$lvs_name]
 
     $service = $lvs_config['conftool']['service']

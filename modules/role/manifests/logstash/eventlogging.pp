@@ -5,20 +5,16 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::logstash::eventlogging {
-    include ::role::logstash::collector
+    include ::standard
+    include ::base::firewall
+    include ::role::lvs::realserver
+    include ::profile::logstash::elasticsearch
+    include ::profile::logstash::collector
+    include ::profile::logstash::apifeatureusage
+    include ::profile::logstash::eventlogging
 
-    $topic = 'eventlogging_EventError'
-    $kafka_config = kafka_config('analytics')
-
-    logstash::input::kafka { $topic:
-        tags              => [$topic, 'kafka'],
-        type              => 'eventlogging',
-        bootstrap_servers => $kafka_config['brokers']['string'],
+    system::role { 'logstash::eventlogging':
+        ensure      => 'present',
+        description => 'logstash frontend and eventlogging collector',
     }
-    # lint:ignore:puppet_url_without_modules
-    logstash::conf { 'filter_eventlogging':
-        source   => 'puppet:///modules/role/logstash/filter-eventlogging.conf',
-        priority => 50,
-    }
-    # lint:endignore
 }
