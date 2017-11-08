@@ -316,6 +316,7 @@ dumps_web_rsync_server_clients:
       - ms1001.wikimedia.org
       - dumpsdata1001.eqiad.wmnet
       - dumpsdata1002.eqiad.wmnet
+      - labstore1006.wikimedia.org
       - stat1005.eqiad.wmnet
       - stat1006.eqiad.wmnet
     external:
@@ -334,7 +335,8 @@ dumps_web_rsync_server_clients:
       - poincare.acc.umu.se
       - wikimedia.bytemark.co.uk
   ipv6:
-    internal: []
+    internal:
+      - labstore1006.wikimedia.org
     external:
       - odysseus.ip6.fi.muni.cz
       - poincare.acc.umu.se
