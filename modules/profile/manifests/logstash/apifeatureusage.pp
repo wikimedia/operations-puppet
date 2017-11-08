@@ -5,14 +5,13 @@
 # Extension:ApiFeatureUsage into Elasticsearch.
 #
 # filtertags: labs-project-deployment-prep
-class role::logstash::apifeatureusage {
-    include ::role::logstash::collector
+class profile::logstash::apifeatureusage(
+    $hosts = hiera('role::logstash::apifeatureusage::elastic_hosts'),
+) {
 
-    $hosts = hiera('role::logstash::apifeatureusage::elastic_hosts')
     validate_array($hosts)
 
     # Template for Elasticsearch index creation
-    # lint:ignore:puppet_url_without_modules
     file { '/etc/logstash/apifeatureusage-template.json':
         ensure => present,
         source => 'puppet:///modules/profile/logstash/apifeatureusage-template.json',
@@ -27,7 +26,6 @@ class role::logstash::apifeatureusage {
         source   => 'puppet:///modules/profile/logstash/filter-apifeatureusage.conf',
         priority => 55,
     }
-    # lint:endignore
 
     # Output destined for separate Elasticsearch cluster from Logstash cluster
     profile::logstash::apifeatureusage::elasticsearch { $hosts: }

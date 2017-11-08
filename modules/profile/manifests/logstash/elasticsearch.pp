@@ -3,10 +3,10 @@
 #
 # Provisions Elasticsearch backend node for a Logstash cluster.
 #
-class role::logstash::elasticsearch {
-    include ::standard
+class profile::logstash::elasticsearch(
+    $logstash_nodes = hiera('logstash::cluster_hosts'),
+) {
     include ::elasticsearch::monitor::diamond
-    include ::base::firewall
 
     # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
     #shard is present on each node). If one node is lost, 1/3 of the shards
@@ -29,7 +29,6 @@ class role::logstash::elasticsearch {
         curator_uses_unicast_hosts => false, # elasticsearch API is only exposed to localhost
     }
 
-    $logstash_nodes = hiera('logstash::cluster_hosts')
     $logstash_nodes_ferm = join($logstash_nodes, ' ')
 
     ferm::service { 'logstash_elastic_internode':
