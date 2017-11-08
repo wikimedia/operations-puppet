@@ -5,6 +5,7 @@ class profile::kubernetes::node(
   $use_cni = hiera('profile::kubernetes::use_cni'),
   $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
   $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
+  $prometheus_nodes = hiera('prometheus_nodes', []),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -38,5 +39,14 @@ class profile::kubernetes::node(
         proto  => 'tcp',
         port   => '10250',
         srange => "(@resolve((${master_hosts_ferm})))",
+    }
+
+    if !empty($prometheus_nodes) {
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        ferm::service { 'kubelet-http-readonly-prometheus':
+            proto  => 'tcp',
+            port   => '10255',
+            srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+        }
     }
 }
