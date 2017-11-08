@@ -4,6 +4,7 @@ class profile::base(
     # TODO/puppet4: revert to using "undef"
     $environment   = hiera('profile::base::environment', ''),
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
+    $purge_apt_sources = hiera('profile::base::purge_apt_sources'),
     $domain_search = hiera('profile::base::domain_search', $::domain),
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
@@ -23,7 +24,8 @@ class profile::base(
 ) {
     require ::profile::base::certificates
     class { '::apt':
-        use_proxy => $use_apt_proxy,
+        use_proxy     => $use_apt_proxy,
+        purge_sources => $purge_apt_sources,
     }
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
