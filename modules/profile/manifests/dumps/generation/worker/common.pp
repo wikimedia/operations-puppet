@@ -4,14 +4,32 @@ class profile::dumps::generation::worker::common {
     require ::profile::mediawiki::common
     require ::profile::mediawiki::nutcracker
 
-    # dataset server nfs mount, config files,
-    # stages files, dblists, html templates
+    $xmldumpsmount = '/mnt/dumpsdata'
+    $miscdumpsmount = '/mnt/data'
+
     class { '::dumpsuser': }
     class { '::dumps::deprecated::user': }
-    class { '::snapshot::dumps::dirs':
-        user => 'dumpsgen',
+
+    snapshot::dumps::nfsmount { 'dumpsdatamount':
+        mountpoint => $xmldumpsmount,
+        server     => 'dumpsdata1001.eqiad.wmnet',
     }
-    class { '::snapshot::dumps': }
+    snapshot::dumps::nfsmount { 'datasetmount':
+        mountpoint => $miscdumpsmount,
+        server     => 'dataset1001.wikimedia.org',
+    }
+
+    # dataset server config files,
+    # stages files, dblists, html templates
+    class { '::snapshot::dumps::dirs':
+        user           => 'dumpsgen',
+        xmldumpsmount  => $xmldumpsmount,
+        miscdumpsmount => $miscdumpsmount,
+    }
+    class { '::snapshot::dumps':
+        xmldumpsmount  => $xmldumpsmount,
+        miscdumpsmount => $miscdumpsmount,
+    }
 
     # scap3 deployment of dump scripts
     scap::target { 'dumps/dumps':
