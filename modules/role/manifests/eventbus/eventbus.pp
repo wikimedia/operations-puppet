@@ -105,7 +105,7 @@ class role::eventbus::eventbus {
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
         reload_on        =>  Class['::eventschemas'],
-        num_processes    => 8,
+        num_processes    => 16,
         access_log_level => $access_log_level,
         require          => [
             File['/srv/log/eventlogging'],
