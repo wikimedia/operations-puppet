@@ -39,6 +39,15 @@ class apt(
         priority => 1001,
     }
 
+    file { '/etc/apt/sources.list.d':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
+    }
+
     # This will munge /etc/apt/apt.conf that get's created during installation
     # process (either labs vmbuilder or d-i). Given the ones below exist, it is
     # no longer needed after the installation is over
