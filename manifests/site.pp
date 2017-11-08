@@ -2004,12 +2004,6 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
     include ::standard
 }
 
-# To be decommissioned in T175093
-# _after_ experiment by performance team has concluded (gilles)
-node 'osmium.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # oxygen runs a kafkatee instance that consumes webrequest from Kafka
 # and writes to a couple of files for quick and easy ops debugging.,
 node 'oxygen.eqiad.wmnet'
