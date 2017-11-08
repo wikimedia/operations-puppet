@@ -73,6 +73,8 @@ lvs::configuration::lvs_service_ips:
   cxserver: {}
   dns_rec: {}
   graphoid: {}
+  kibana: {}
+  logstash: {}
   mathoid: {}
   misc_web: {}
   mobile: {}
