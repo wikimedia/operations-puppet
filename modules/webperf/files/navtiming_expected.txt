@@ -198,9 +198,7 @@ frontend.navtiming.domComplete.by_browser.Chrome.all:387|ms
 frontend.navtiming.domComplete.by_browser.Chrome.all:393|ms
 frontend.navtiming.domComplete.by_browser.Chrome_Mobile_iOS.61:964|ms
 frontend.navtiming.domComplete.by_browser.Chrome_Mobile_iOS.all:964|ms
-frontend.navtiming.domComplete.by_browser.Edge.15:10377|ms
 frontend.navtiming.domComplete.by_browser.Edge.15:460|ms
-frontend.navtiming.domComplete.by_browser.Edge.all:10377|ms
 frontend.navtiming.domComplete.by_browser.Edge.all:460|ms
 frontend.navtiming.domComplete.by_browser.Firefox.52:2016|ms
 frontend.navtiming.domComplete.by_browser.Firefox.55:1693|ms
@@ -250,7 +248,6 @@ frontend.navtiming.domComplete.by_continent.Asia:1152|ms
 frontend.navtiming.domComplete.by_continent.Asia:1372|ms
 frontend.navtiming.domComplete.by_continent.Asia:2831|ms
 frontend.navtiming.domComplete.by_continent.Europe:1036|ms
-frontend.navtiming.domComplete.by_continent.Europe:10377|ms
 frontend.navtiming.domComplete.by_continent.Europe:1037|ms
 frontend.navtiming.domComplete.by_continent.Europe:1037|ms
 frontend.navtiming.domComplete.by_continent.Europe:1037|ms
@@ -272,6 +269,7 @@ frontend.navtiming.domComplete.by_continent.Europe:1693|ms
 frontend.navtiming.domComplete.by_continent.Europe:1920|ms
 frontend.navtiming.domComplete.by_continent.Europe:2013|ms
 frontend.navtiming.domComplete.by_continent.Europe:2016|ms
+frontend.navtiming.domComplete.by_continent.Europe:203077|ms
 frontend.navtiming.domComplete.by_continent.Europe:2030|ms
 frontend.navtiming.domComplete.by_continent.Europe:2272|ms
 frontend.navtiming.domComplete.by_continent.Europe:2560|ms
@@ -311,7 +309,6 @@ frontend.navtiming.domComplete.by_country.Russia:3515|ms
 frontend.navtiming.domComplete.by_country.United_States:104|ms
 frontend.navtiming.domComplete.by_country.United_States:1267|ms
 frontend.navtiming.domComplete.desktop.anonymous:1036|ms
-frontend.navtiming.domComplete.desktop.anonymous:10377|ms
 frontend.navtiming.domComplete.desktop.anonymous:1037|ms
 frontend.navtiming.domComplete.desktop.anonymous:1037|ms
 frontend.navtiming.domComplete.desktop.anonymous:104|ms
@@ -351,7 +348,6 @@ frontend.navtiming.domComplete.desktop.authenticated:460|ms
 frontend.navtiming.domComplete.desktop.authenticated:964|ms
 frontend.navtiming.domComplete.desktop.overall:1024|ms
 frontend.navtiming.domComplete.desktop.overall:1036|ms
-frontend.navtiming.domComplete.desktop.overall:10377|ms
 frontend.navtiming.domComplete.desktop.overall:1037|ms
 frontend.navtiming.domComplete.desktop.overall:1037|ms
 frontend.navtiming.domComplete.desktop.overall:104|ms
@@ -413,7 +409,6 @@ frontend.navtiming.domComplete.overall:1035|ms
 frontend.navtiming.domComplete.overall:1035|ms
 frontend.navtiming.domComplete.overall:1036|ms
 frontend.navtiming.domComplete.overall:1036|ms
-frontend.navtiming.domComplete.overall:10377|ms
 frontend.navtiming.domComplete.overall:1037|ms
 frontend.navtiming.domComplete.overall:1037|ms
 frontend.navtiming.domComplete.overall:1037|ms
@@ -1091,9 +1086,7 @@ frontend.navtiming.loadEventEnd.by_browser.Chrome.all:4073|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome.all:414|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome_Mobile_iOS.61:965|ms
 frontend.navtiming.loadEventEnd.by_browser.Chrome_Mobile_iOS.all:965|ms
-frontend.navtiming.loadEventEnd.by_browser.Edge.15:10385|ms
 frontend.navtiming.loadEventEnd.by_browser.Edge.15:466|ms
-frontend.navtiming.loadEventEnd.by_browser.Edge.all:10385|ms
 frontend.navtiming.loadEventEnd.by_browser.Edge.all:466|ms
 frontend.navtiming.loadEventEnd.by_browser.Firefox.52:2641|ms
 frontend.navtiming.loadEventEnd.by_browser.Firefox.55:1695|ms
@@ -1143,7 +1136,6 @@ frontend.navtiming.loadEventEnd.by_continent.Asia:1153|ms
 frontend.navtiming.loadEventEnd.by_continent.Asia:1373|ms
 frontend.navtiming.loadEventEnd.by_continent.Asia:2854|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1037|ms
-frontend.navtiming.loadEventEnd.by_continent.Europe:10385|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1039|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1054|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1064|ms
@@ -1163,6 +1155,7 @@ frontend.navtiming.loadEventEnd.by_continent.Europe:1447|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1613|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:1695|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:2014|ms
+frontend.navtiming.loadEventEnd.by_continent.Europe:204085|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:2207|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:2273|ms
 frontend.navtiming.loadEventEnd.by_continent.Europe:2561|ms
@@ -1204,7 +1197,6 @@ frontend.navtiming.loadEventEnd.by_country.Russia:3520|ms
 frontend.navtiming.loadEventEnd.by_country.United_States:104|ms
 frontend.navtiming.loadEventEnd.by_country.United_States:1268|ms
 frontend.navtiming.loadEventEnd.desktop.anonymous:1037|ms
-frontend.navtiming.loadEventEnd.desktop.anonymous:10385|ms
 frontend.navtiming.loadEventEnd.desktop.anonymous:104|ms
 frontend.navtiming.loadEventEnd.desktop.anonymous:1053|ms
 frontend.navtiming.loadEventEnd.desktop.anonymous:1064|ms
@@ -1243,7 +1235,6 @@ frontend.navtiming.loadEventEnd.desktop.authenticated:4073|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:466|ms
 frontend.navtiming.loadEventEnd.desktop.authenticated:965|ms
 frontend.navtiming.loadEventEnd.desktop.overall:1037|ms
-frontend.navtiming.loadEventEnd.desktop.overall:10385|ms
 frontend.navtiming.loadEventEnd.desktop.overall:104|ms
 frontend.navtiming.loadEventEnd.desktop.overall:1053|ms
 frontend.navtiming.loadEventEnd.desktop.overall:1064|ms
@@ -1303,7 +1294,6 @@ frontend.navtiming.loadEventEnd.mobile.overall:1335|ms
 frontend.navtiming.loadEventEnd.mobile.overall:3520|ms
 frontend.navtiming.loadEventEnd.overall:1037|ms
 frontend.navtiming.loadEventEnd.overall:1037|ms
-frontend.navtiming.loadEventEnd.overall:10385|ms
 frontend.navtiming.loadEventEnd.overall:1039|ms
 frontend.navtiming.loadEventEnd.overall:1040|ms
 frontend.navtiming.loadEventEnd.overall:104|ms
@@ -1404,9 +1394,7 @@ frontend.navtiming.loadEventStart.by_browser.Chrome.all:387|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome.all:393|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome_Mobile_iOS.61:964|ms
 frontend.navtiming.loadEventStart.by_browser.Chrome_Mobile_iOS.all:964|ms
-frontend.navtiming.loadEventStart.by_browser.Edge.15:10383|ms
 frontend.navtiming.loadEventStart.by_browser.Edge.15:462|ms
-frontend.navtiming.loadEventStart.by_browser.Edge.all:10383|ms
 frontend.navtiming.loadEventStart.by_browser.Edge.all:462|ms
 frontend.navtiming.loadEventStart.by_browser.Firefox.52:2016|ms
 frontend.navtiming.loadEventStart.by_browser.Firefox.55:1693|ms
@@ -1458,7 +1446,6 @@ frontend.navtiming.loadEventStart.by_continent.Asia:2831|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1036|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1037|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1037|ms
-frontend.navtiming.loadEventStart.by_continent.Europe:10383|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1038|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1038|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:1060|ms
@@ -1479,6 +1466,7 @@ frontend.navtiming.loadEventStart.by_continent.Europe:1920|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:2013|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:2016|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:2030|ms
+frontend.navtiming.loadEventStart.by_continent.Europe:204083|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:2272|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:2560|ms
 frontend.navtiming.loadEventStart.by_continent.Europe:3231|ms
@@ -1518,7 +1506,6 @@ frontend.navtiming.loadEventStart.by_country.United_States:104|ms
 frontend.navtiming.loadEventStart.by_country.United_States:1267|ms
 frontend.navtiming.loadEventStart.desktop.anonymous:1036|ms
 frontend.navtiming.loadEventStart.desktop.anonymous:1037|ms
-frontend.navtiming.loadEventStart.desktop.anonymous:10383|ms
 frontend.navtiming.loadEventStart.desktop.anonymous:1038|ms
 frontend.navtiming.loadEventStart.desktop.anonymous:104|ms
 frontend.navtiming.loadEventStart.desktop.anonymous:1064|ms
@@ -1558,7 +1545,6 @@ frontend.navtiming.loadEventStart.desktop.authenticated:964|ms
 frontend.navtiming.loadEventStart.desktop.overall:1024|ms
 frontend.navtiming.loadEventStart.desktop.overall:1036|ms
 frontend.navtiming.loadEventStart.desktop.overall:1037|ms
-frontend.navtiming.loadEventStart.desktop.overall:10383|ms
 frontend.navtiming.loadEventStart.desktop.overall:1038|ms
 frontend.navtiming.loadEventStart.desktop.overall:104|ms
 frontend.navtiming.loadEventStart.desktop.overall:1060|ms
@@ -1621,7 +1607,6 @@ frontend.navtiming.loadEventStart.overall:1036|ms
 frontend.navtiming.loadEventStart.overall:1036|ms
 frontend.navtiming.loadEventStart.overall:1037|ms
 frontend.navtiming.loadEventStart.overall:1037|ms
-frontend.navtiming.loadEventStart.overall:10383|ms
 frontend.navtiming.loadEventStart.overall:1038|ms
 frontend.navtiming.loadEventStart.overall:1038|ms
 frontend.navtiming.loadEventStart.overall:1038|ms
@@ -1719,10 +1704,10 @@ frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:893|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome.all:902|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome_Mobile_iOS.61:498|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Chrome_Mobile_iOS.all:498|ms
+frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.15:20922|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.15:261|ms
-frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.15:2922|ms
+frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.all:20922|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.all:261|ms
-frontend.navtiming.mediaWikiLoadComplete.by_browser.Edge.all:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Firefox.52:1375|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Firefox.55:1069|ms
 frontend.navtiming.mediaWikiLoadComplete.by_browser.Firefox.55:1382|ms
@@ -1786,9 +1771,9 @@ frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:1523|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:1654|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:1724|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:2026|ms
+frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:20922|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:237|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:261|ms
-frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:3513|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:373|ms
 frontend.navtiming.mediaWikiLoadComplete.by_continent.Europe:4044|ms
@@ -1847,8 +1832,8 @@ frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:1523|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:1654|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:1758|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:2026|ms
+frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:20922|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:265|ms
-frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:3702|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:426|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.anonymous:551|ms
@@ -1891,9 +1876,9 @@ frontend.navtiming.mediaWikiLoadComplete.desktop.overall:1724|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:1758|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:2026|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:2053|ms
+frontend.navtiming.mediaWikiLoadComplete.desktop.overall:20922|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:261|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:265|ms
-frontend.navtiming.mediaWikiLoadComplete.desktop.overall:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3513|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3702|ms
 frontend.navtiming.mediaWikiLoadComplete.desktop.overall:3708|ms
@@ -1953,11 +1938,11 @@ frontend.navtiming.mediaWikiLoadComplete.overall:1724|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:1758|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:2026|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:2053|ms
+frontend.navtiming.mediaWikiLoadComplete.overall:20922|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:2103|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:237|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:261|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:265|ms
-frontend.navtiming.mediaWikiLoadComplete.overall:2922|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:3513|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:3702|ms
 frontend.navtiming.mediaWikiLoadComplete.overall:3708|ms
@@ -2903,8 +2888,6 @@ frontend.navtiming2.dns.by_browser.Chrome.all:3|ms
 frontend.navtiming2.dns.by_browser.Chrome_Mobile_iOS.61:0|ms
 frontend.navtiming2.dns.by_browser.Chrome_Mobile_iOS.all:0|ms
 frontend.navtiming2.dns.by_browser.Edge.15:0|ms
-frontend.navtiming2.dns.by_browser.Edge.15:0|ms
-frontend.navtiming2.dns.by_browser.Edge.all:0|ms
 frontend.navtiming2.dns.by_browser.Edge.all:0|ms
 frontend.navtiming2.dns.by_browser.Firefox.52:0|ms
 frontend.navtiming2.dns.by_browser.Firefox.55:0|ms
@@ -2953,7 +2936,6 @@ frontend.navtiming2.dns.by_continent.Asia:0|ms
 frontend.navtiming2.dns.by_continent.Asia:0|ms
 frontend.navtiming2.dns.by_continent.Asia:0|ms
 frontend.navtiming2.dns.by_continent.Asia:3|ms
-frontend.navtiming2.dns.by_continent.Europe:0|ms
 frontend.navtiming2.dns.by_continent.Europe:0|ms
 frontend.navtiming2.dns.by_continent.Europe:0|ms
 frontend.navtiming2.dns.by_continent.Europe:0|ms
@@ -3039,7 +3021,6 @@ frontend.navtiming2.dns.desktop.anonymous:0|ms
 frontend.navtiming2.dns.desktop.anonymous:0|ms
 frontend.navtiming2.dns.desktop.anonymous:0|ms
 frontend.navtiming2.dns.desktop.anonymous:0|ms
-frontend.navtiming2.dns.desktop.anonymous:0|ms
 frontend.navtiming2.dns.desktop.authenticated:0|ms
 frontend.navtiming2.dns.desktop.authenticated:0|ms
 frontend.navtiming2.dns.desktop.authenticated:0|ms
@@ -3053,7 +3034,6 @@ frontend.navtiming2.dns.desktop.authenticated:0|ms
 frontend.navtiming2.dns.desktop.authenticated:0|ms
 frontend.navtiming2.dns.desktop.authenticated:0|ms
 frontend.navtiming2.dns.desktop.authenticated:3|ms
-frontend.navtiming2.dns.desktop.overall:0|ms
 frontend.navtiming2.dns.desktop.overall:0|ms
 frontend.navtiming2.dns.desktop.overall:0|ms
 frontend.navtiming2.dns.desktop.overall:0|ms
@@ -3159,7 +3139,6 @@ frontend.navtiming2.dns.overall:0|ms
 frontend.navtiming2.dns.overall:0|ms
 frontend.navtiming2.dns.overall:0|ms
 frontend.navtiming2.dns.overall:0|ms
-frontend.navtiming2.dns.overall:0|ms
 frontend.navtiming2.dns.overall:3|ms
 frontend.navtiming2.domComplete.by_browser.Chrome.15:387|ms
 frontend.navtiming2.domComplete.by_browser.Chrome.15:393|ms
@@ -3215,9 +3194,7 @@ frontend.navtiming2.domComplete.by_browser.Chrome.all:387|ms
 frontend.navtiming2.domComplete.by_browser.Chrome.all:393|ms
 frontend.navtiming2.domComplete.by_browser.Chrome_Mobile_iOS.61:964|ms
 frontend.navtiming2.domComplete.by_browser.Chrome_Mobile_iOS.all:964|ms
-frontend.navtiming2.domComplete.by_browser.Edge.15:10377|ms
 frontend.navtiming2.domComplete.by_browser.Edge.15:460|ms
-frontend.navtiming2.domComplete.by_browser.Edge.all:10377|ms
 frontend.navtiming2.domComplete.by_browser.Edge.all:460|ms
 frontend.navtiming2.domComplete.by_browser.Firefox.52:2016|ms
 frontend.navtiming2.domComplete.by_browser.Firefox.55:1693|ms
@@ -3267,7 +3244,6 @@ frontend.navtiming2.domComplete.by_continent.Asia:1152|ms
 frontend.navtiming2.domComplete.by_continent.Asia:1372|ms
 frontend.navtiming2.domComplete.by_continent.Asia:2825|ms
 frontend.navtiming2.domComplete.by_continent.Europe:1036|ms
-frontend.navtiming2.domComplete.by_continent.Europe:10377|ms
 frontend.navtiming2.domComplete.by_continent.Europe:1037|ms
 frontend.navtiming2.domComplete.by_continent.Europe:1037|ms
 frontend.navtiming2.domComplete.by_continent.Europe:1037|ms
@@ -3328,7 +3304,6 @@ frontend.navtiming2.domComplete.by_country.Russia:3515|ms
 frontend.navtiming2.domComplete.by_country.United_States:104|ms
 frontend.navtiming2.domComplete.by_country.United_States:1267|ms
 frontend.navtiming2.domComplete.desktop.anonymous:1036|ms
-frontend.navtiming2.domComplete.desktop.anonymous:10377|ms
 frontend.navtiming2.domComplete.desktop.anonymous:1037|ms
 frontend.navtiming2.domComplete.desktop.anonymous:1037|ms
 frontend.navtiming2.domComplete.desktop.anonymous:104|ms
@@ -3368,7 +3343,6 @@ frontend.navtiming2.domComplete.desktop.authenticated:460|ms
 frontend.navtiming2.domComplete.desktop.authenticated:964|ms
 frontend.navtiming2.domComplete.desktop.overall:1024|ms
 frontend.navtiming2.domComplete.desktop.overall:1036|ms
-frontend.navtiming2.domComplete.desktop.overall:10377|ms
 frontend.navtiming2.domComplete.desktop.overall:1037|ms
 frontend.navtiming2.domComplete.desktop.overall:1037|ms
 frontend.navtiming2.domComplete.desktop.overall:104|ms
@@ -3430,7 +3404,6 @@ frontend.navtiming2.domComplete.overall:1035|ms
 frontend.navtiming2.domComplete.overall:1035|ms
 frontend.navtiming2.domComplete.overall:1036|ms
 frontend.navtiming2.domComplete.overall:1036|ms
-frontend.navtiming2.domComplete.overall:10377|ms
 frontend.navtiming2.domComplete.overall:1037|ms
 frontend.navtiming2.domComplete.overall:1037|ms
 frontend.navtiming2.domComplete.overall:1037|ms
@@ -3529,9 +3502,7 @@ frontend.navtiming2.domInteractive.by_browser.Chrome.all:995|ms
 frontend.navtiming2.domInteractive.by_browser.Chrome_Mobile_iOS.61:422|ms
 frontend.navtiming2.domInteractive.by_browser.Chrome_Mobile_iOS.all:422|ms
 frontend.navtiming2.domInteractive.by_browser.Edge.15:388|ms
-frontend.navtiming2.domInteractive.by_browser.Edge.15:7403|ms
 frontend.navtiming2.domInteractive.by_browser.Edge.all:388|ms
-frontend.navtiming2.domInteractive.by_browser.Edge.all:7403|ms
 frontend.navtiming2.domInteractive.by_browser.Firefox.52:719|ms
 frontend.navtiming2.domInteractive.by_browser.Firefox.55:378|ms
 frontend.navtiming2.domInteractive.by_browser.Firefox.55:649|ms
@@ -3605,7 +3576,6 @@ frontend.navtiming2.domInteractive.by_continent.Europe:651|ms
 frontend.navtiming2.domInteractive.by_continent.Europe:654|ms
 frontend.navtiming2.domInteractive.by_continent.Europe:672|ms
 frontend.navtiming2.domInteractive.by_continent.Europe:719|ms
-frontend.navtiming2.domInteractive.by_continent.Europe:7403|ms
 frontend.navtiming2.domInteractive.by_continent.Europe:779|ms
 frontend.navtiming2.domInteractive.by_continent.Europe:811|ms
 frontend.navtiming2.domInteractive.by_continent.Europe:845|ms
@@ -3660,7 +3630,6 @@ frontend.navtiming2.domInteractive.desktop.anonymous:651|ms
 frontend.navtiming2.domInteractive.desktop.anonymous:654|ms
 frontend.navtiming2.domInteractive.desktop.anonymous:714|ms
 frontend.navtiming2.domInteractive.desktop.anonymous:719|ms
-frontend.navtiming2.domInteractive.desktop.anonymous:7403|ms
 frontend.navtiming2.domInteractive.desktop.anonymous:762|ms
 frontend.navtiming2.domInteractive.desktop.anonymous:779|ms
 frontend.navtiming2.domInteractive.desktop.anonymous:82|ms
@@ -3709,7 +3678,6 @@ frontend.navtiming2.domInteractive.desktop.overall:654|ms
 frontend.navtiming2.domInteractive.desktop.overall:672|ms
 frontend.navtiming2.domInteractive.desktop.overall:714|ms
 frontend.navtiming2.domInteractive.desktop.overall:719|ms
-frontend.navtiming2.domInteractive.desktop.overall:7403|ms
 frontend.navtiming2.domInteractive.desktop.overall:762|ms
 frontend.navtiming2.domInteractive.desktop.overall:779|ms
 frontend.navtiming2.domInteractive.desktop.overall:817|ms
@@ -3775,7 +3743,6 @@ frontend.navtiming2.domInteractive.overall:654|ms
 frontend.navtiming2.domInteractive.overall:672|ms
 frontend.navtiming2.domInteractive.overall:714|ms
 frontend.navtiming2.domInteractive.overall:719|ms
-frontend.navtiming2.domInteractive.overall:7403|ms
 frontend.navtiming2.domInteractive.overall:762|ms
 frontend.navtiming2.domInteractive.overall:779|ms
 frontend.navtiming2.domInteractive.overall:811|ms
@@ -3836,9 +3803,7 @@ frontend.navtiming2.firstPaint.by_browser.Chrome.all:955|ms
 frontend.navtiming2.firstPaint.by_browser.Chrome.all:996|ms
 frontend.navtiming2.firstPaint.by_browser.Chrome.all:998|ms
 frontend.navtiming2.firstPaint.by_browser.Edge.15:408|ms
-frontend.navtiming2.firstPaint.by_browser.Edge.15:9356|ms
 frontend.navtiming2.firstPaint.by_browser.Edge.all:408|ms
-frontend.navtiming2.firstPaint.by_browser.Edge.all:9356|ms
 frontend.navtiming2.firstPaint.by_browser.MSIE.11:410|ms
 frontend.navtiming2.firstPaint.by_browser.MSIE.all:410|ms
 frontend.navtiming2.firstPaint.by_browser.Opera.47:696|ms
@@ -3866,7 +3831,6 @@ frontend.navtiming2.firstPaint.by_continent.Europe:853|ms
 frontend.navtiming2.firstPaint.by_continent.Europe:858|ms
 frontend.navtiming2.firstPaint.by_continent.Europe:870|ms
 frontend.navtiming2.firstPaint.by_continent.Europe:880|ms
-frontend.navtiming2.firstPaint.by_continent.Europe:9356|ms
 frontend.navtiming2.firstPaint.by_continent.Europe:945|ms
 frontend.navtiming2.firstPaint.by_continent.Europe:955|ms
 frontend.navtiming2.firstPaint.by_continent.North_America:1113|ms
@@ -3903,7 +3867,6 @@ frontend.navtiming2.firstPaint.desktop.anonymous:736|ms
 frontend.navtiming2.firstPaint.desktop.anonymous:858|ms
 frontend.navtiming2.firstPaint.desktop.anonymous:870|ms
 frontend.navtiming2.firstPaint.desktop.anonymous:880|ms
-frontend.navtiming2.firstPaint.desktop.anonymous:9356|ms
 frontend.navtiming2.firstPaint.desktop.anonymous:945|ms
 frontend.navtiming2.firstPaint.desktop.anonymous:998|ms
 frontend.navtiming2.firstPaint.desktop.authenticated:1278|ms
@@ -3939,7 +3902,6 @@ frontend.navtiming2.firstPaint.desktop.overall:853|ms
 frontend.navtiming2.firstPaint.desktop.overall:858|ms
 frontend.navtiming2.firstPaint.desktop.overall:870|ms
 frontend.navtiming2.firstPaint.desktop.overall:880|ms
-frontend.navtiming2.firstPaint.desktop.overall:9356|ms
 frontend.navtiming2.firstPaint.desktop.overall:945|ms
 frontend.navtiming2.firstPaint.desktop.overall:955|ms
 frontend.navtiming2.firstPaint.desktop.overall:996|ms
@@ -3971,7 +3933,6 @@ frontend.navtiming2.firstPaint.overall:853|ms
 frontend.navtiming2.firstPaint.overall:858|ms
 frontend.navtiming2.firstPaint.overall:870|ms
 frontend.navtiming2.firstPaint.overall:880|ms
-frontend.navtiming2.firstPaint.overall:9356|ms
 frontend.navtiming2.firstPaint.overall:945|ms
 frontend.navtiming2.firstPaint.overall:955|ms
 frontend.navtiming2.firstPaint.overall:996|ms
@@ -4030,9 +3991,7 @@ frontend.navtiming2.loadEventEnd.by_browser.Chrome.all:4073|ms
 frontend.navtiming2.loadEventEnd.by_browser.Chrome.all:414|ms
 frontend.navtiming2.loadEventEnd.by_browser.Chrome_Mobile_iOS.61:965|ms
 frontend.navtiming2.loadEventEnd.by_browser.Chrome_Mobile_iOS.all:965|ms
-frontend.navtiming2.loadEventEnd.by_browser.Edge.15:10385|ms
 frontend.navtiming2.loadEventEnd.by_browser.Edge.15:466|ms
-frontend.navtiming2.loadEventEnd.by_browser.Edge.all:10385|ms
 frontend.navtiming2.loadEventEnd.by_browser.Edge.all:466|ms
 frontend.navtiming2.loadEventEnd.by_browser.Firefox.52:2641|ms
 frontend.navtiming2.loadEventEnd.by_browser.Firefox.55:1695|ms
@@ -4082,7 +4041,6 @@ frontend.navtiming2.loadEventEnd.by_continent.Asia:1153|ms
 frontend.navtiming2.loadEventEnd.by_continent.Asia:1373|ms
 frontend.navtiming2.loadEventEnd.by_continent.Asia:2848|ms
 frontend.navtiming2.loadEventEnd.by_continent.Europe:1037|ms
-frontend.navtiming2.loadEventEnd.by_continent.Europe:10385|ms
 frontend.navtiming2.loadEventEnd.by_continent.Europe:1039|ms
 frontend.navtiming2.loadEventEnd.by_continent.Europe:1054|ms
 frontend.navtiming2.loadEventEnd.by_continent.Europe:1064|ms
@@ -4143,7 +4101,6 @@ frontend.navtiming2.loadEventEnd.by_country.Russia:3520|ms
 frontend.navtiming2.loadEventEnd.by_country.United_States:104|ms
 frontend.navtiming2.loadEventEnd.by_country.United_States:1268|ms
 frontend.navtiming2.loadEventEnd.desktop.anonymous:1037|ms
-frontend.navtiming2.loadEventEnd.desktop.anonymous:10385|ms
 frontend.navtiming2.loadEventEnd.desktop.anonymous:104|ms
 frontend.navtiming2.loadEventEnd.desktop.anonymous:1053|ms
 frontend.navtiming2.loadEventEnd.desktop.anonymous:1064|ms
@@ -4182,7 +4139,6 @@ frontend.navtiming2.loadEventEnd.desktop.authenticated:4073|ms
 frontend.navtiming2.loadEventEnd.desktop.authenticated:466|ms
 frontend.navtiming2.loadEventEnd.desktop.authenticated:965|ms
 frontend.navtiming2.loadEventEnd.desktop.overall:1037|ms
-frontend.navtiming2.loadEventEnd.desktop.overall:10385|ms
 frontend.navtiming2.loadEventEnd.desktop.overall:104|ms
 frontend.navtiming2.loadEventEnd.desktop.overall:1053|ms
 frontend.navtiming2.loadEventEnd.desktop.overall:1064|ms
@@ -4242,7 +4198,6 @@ frontend.navtiming2.loadEventEnd.mobile.overall:1335|ms
 frontend.navtiming2.loadEventEnd.mobile.overall:3520|ms
 frontend.navtiming2.loadEventEnd.overall:1037|ms
 frontend.navtiming2.loadEventEnd.overall:1037|ms
-frontend.navtiming2.loadEventEnd.overall:10385|ms
 frontend.navtiming2.loadEventEnd.overall:1039|ms
 frontend.navtiming2.loadEventEnd.overall:1040|ms
 frontend.navtiming2.loadEventEnd.overall:104|ms
@@ -4343,9 +4298,7 @@ frontend.navtiming2.loadEventStart.by_browser.Chrome.all:387|ms
 frontend.navtiming2.loadEventStart.by_browser.Chrome.all:393|ms
 frontend.navtiming2.loadEventStart.by_browser.Chrome_Mobile_iOS.61:964|ms
 frontend.navtiming2.loadEventStart.by_browser.Chrome_Mobile_iOS.all:964|ms
-frontend.navtiming2.loadEventStart.by_browser.Edge.15:10383|ms
 frontend.navtiming2.loadEventStart.by_browser.Edge.15:462|ms
-frontend.navtiming2.loadEventStart.by_browser.Edge.all:10383|ms
 frontend.navtiming2.loadEventStart.by_browser.Edge.all:462|ms
 frontend.navtiming2.loadEventStart.by_browser.Firefox.52:2016|ms
 frontend.navtiming2.loadEventStart.by_browser.Firefox.55:1693|ms
@@ -4397,7 +4350,6 @@ frontend.navtiming2.loadEventStart.by_continent.Asia:2825|ms
 frontend.navtiming2.loadEventStart.by_continent.Europe:1036|ms
 frontend.navtiming2.loadEventStart.by_continent.Europe:1037|ms
 frontend.navtiming2.loadEventStart.by_continent.Europe:1037|ms
-frontend.navtiming2.loadEventStart.by_continent.Europe:10383|ms
 frontend.navtiming2.loadEventStart.by_continent.Europe:1038|ms
 frontend.navtiming2.loadEventStart.by_continent.Europe:1038|ms
 frontend.navtiming2.loadEventStart.by_continent.Europe:1060|ms
@@ -4457,7 +4409,6 @@ frontend.navtiming2.loadEventStart.by_country.United_States:104|ms
 frontend.navtiming2.loadEventStart.by_country.United_States:1267|ms
 frontend.navtiming2.loadEventStart.desktop.anonymous:1036|ms
 frontend.navtiming2.loadEventStart.desktop.anonymous:1037|ms
-frontend.navtiming2.loadEventStart.desktop.anonymous:10383|ms
 frontend.navtiming2.loadEventStart.desktop.anonymous:1038|ms
 frontend.navtiming2.loadEventStart.desktop.anonymous:104|ms
 frontend.navtiming2.loadEventStart.desktop.anonymous:1064|ms
@@ -4497,7 +4448,6 @@ frontend.navtiming2.loadEventStart.desktop.authenticated:964|ms
 frontend.navtiming2.loadEventStart.desktop.overall:1024|ms
 frontend.navtiming2.loadEventStart.desktop.overall:1036|ms
 frontend.navtiming2.loadEventStart.desktop.overall:1037|ms
-frontend.navtiming2.loadEventStart.desktop.overall:10383|ms
 frontend.navtiming2.loadEventStart.desktop.overall:1038|ms
 frontend.navtiming2.loadEventStart.desktop.overall:104|ms
 frontend.navtiming2.loadEventStart.desktop.overall:1060|ms
@@ -4560,7 +4510,6 @@ frontend.navtiming2.loadEventStart.overall:1036|ms
 frontend.navtiming2.loadEventStart.overall:1036|ms
 frontend.navtiming2.loadEventStart.overall:1037|ms
 frontend.navtiming2.loadEventStart.overall:1037|ms
-frontend.navtiming2.loadEventStart.overall:10383|ms
 frontend.navtiming2.loadEventStart.overall:1038|ms
 frontend.navtiming2.loadEventStart.overall:1038|ms
 frontend.navtiming2.loadEventStart.overall:1038|ms
@@ -4656,9 +4605,7 @@ frontend.navtiming2.onLoad.by_browser.Chrome.all:842|ms
 frontend.navtiming2.onLoad.by_browser.Chrome.all:9|ms
 frontend.navtiming2.onLoad.by_browser.Chrome_Mobile_iOS.61:1|ms
 frontend.navtiming2.onLoad.by_browser.Chrome_Mobile_iOS.all:1|ms
-frontend.navtiming2.onLoad.by_browser.Edge.15:2|ms
 frontend.navtiming2.onLoad.by_browser.Edge.15:4|ms
-frontend.navtiming2.onLoad.by_browser.Edge.all:2|ms
 frontend.navtiming2.onLoad.by_browser.Edge.all:4|ms
 frontend.navtiming2.onLoad.by_browser.Firefox.52:625|ms
 frontend.navtiming2.onLoad.by_browser.Firefox.55:1|ms
@@ -4728,7 +4675,6 @@ frontend.navtiming2.onLoad.by_continent.Europe:21|ms
 frontend.navtiming2.onLoad.by_continent.Europe:2|ms
 frontend.navtiming2.onLoad.by_continent.Europe:2|ms
 frontend.navtiming2.onLoad.by_continent.Europe:2|ms
-frontend.navtiming2.onLoad.by_continent.Europe:2|ms
 frontend.navtiming2.onLoad.by_continent.Europe:4|ms
 frontend.navtiming2.onLoad.by_continent.Europe:4|ms
 frontend.navtiming2.onLoad.by_continent.Europe:5|ms
@@ -4788,7 +4734,6 @@ frontend.navtiming2.onLoad.desktop.anonymous:2|ms
 frontend.navtiming2.onLoad.desktop.anonymous:2|ms
 frontend.navtiming2.onLoad.desktop.anonymous:2|ms
 frontend.navtiming2.onLoad.desktop.anonymous:2|ms
-frontend.navtiming2.onLoad.desktop.anonymous:2|ms
 frontend.navtiming2.onLoad.desktop.anonymous:475|ms
 frontend.navtiming2.onLoad.desktop.anonymous:4|ms
 frontend.navtiming2.onLoad.desktop.anonymous:625|ms
@@ -4829,7 +4774,6 @@ frontend.navtiming2.onLoad.desktop.overall:1|ms
 frontend.navtiming2.onLoad.desktop.overall:1|ms
 frontend.navtiming2.onLoad.desktop.overall:21|ms
 frontend.navtiming2.onLoad.desktop.overall:23|ms
-frontend.navtiming2.onLoad.desktop.overall:2|ms
 frontend.navtiming2.onLoad.desktop.overall:2|ms
 frontend.navtiming2.onLoad.desktop.overall:2|ms
 frontend.navtiming2.onLoad.desktop.overall:2|ms
@@ -4895,7 +4839,6 @@ frontend.navtiming2.onLoad.overall:21|ms
 frontend.navtiming2.onLoad.overall:21|ms
 frontend.navtiming2.onLoad.overall:23|ms
 frontend.navtiming2.onLoad.overall:25|ms
-frontend.navtiming2.onLoad.overall:2|ms
 frontend.navtiming2.onLoad.overall:2|ms
 frontend.navtiming2.onLoad.overall:2|ms
 frontend.navtiming2.onLoad.overall:2|ms
@@ -4969,9 +4912,7 @@ frontend.navtiming2.processing.by_browser.Chrome.all:962|ms
 frontend.navtiming2.processing.by_browser.Chrome.all:991|ms
 frontend.navtiming2.processing.by_browser.Chrome_Mobile_iOS.61:632|ms
 frontend.navtiming2.processing.by_browser.Chrome_Mobile_iOS.all:632|ms
-frontend.navtiming2.processing.by_browser.Edge.15:4091|ms
 frontend.navtiming2.processing.by_browser.Edge.15:76|ms
-frontend.navtiming2.processing.by_browser.Edge.all:4091|ms
 frontend.navtiming2.processing.by_browser.Edge.all:76|ms
 frontend.navtiming2.processing.by_browser.Firefox.52:1672|ms
 frontend.navtiming2.processing.by_browser.Firefox.55:1233|ms
@@ -5034,7 +4975,6 @@ frontend.navtiming2.processing.by_continent.Europe:225|ms
 frontend.navtiming2.processing.by_continent.Europe:2272|ms
 frontend.navtiming2.processing.by_continent.Europe:2560|ms
 frontend.navtiming2.processing.by_continent.Europe:2906|ms
-frontend.navtiming2.processing.by_continent.Europe:4091|ms
 frontend.navtiming2.processing.by_continent.Europe:513|ms
 frontend.navtiming2.processing.by_continent.Europe:624|ms
 frontend.navtiming2.processing.by_continent.Europe:632|ms
@@ -5095,7 +5035,6 @@ frontend.navtiming2.processing.desktop.anonymous:2272|ms
 frontend.navtiming2.processing.desktop.anonymous:2371|ms
 frontend.navtiming2.processing.desktop.anonymous:2560|ms
 frontend.navtiming2.processing.desktop.anonymous:2647|ms
-frontend.navtiming2.processing.desktop.anonymous:4091|ms
 frontend.navtiming2.processing.desktop.anonymous:611|ms
 frontend.navtiming2.processing.desktop.anonymous:675|ms
 frontend.navtiming2.processing.desktop.anonymous:692|ms
@@ -5138,7 +5077,6 @@ frontend.navtiming2.processing.desktop.overall:2371|ms
 frontend.navtiming2.processing.desktop.overall:2560|ms
 frontend.navtiming2.processing.desktop.overall:2647|ms
 frontend.navtiming2.processing.desktop.overall:2906|ms
-frontend.navtiming2.processing.desktop.overall:4091|ms
 frontend.navtiming2.processing.desktop.overall:611|ms
 frontend.navtiming2.processing.desktop.overall:622|ms
 frontend.navtiming2.processing.desktop.overall:632|ms
@@ -5201,7 +5139,6 @@ frontend.navtiming2.processing.overall:2647|ms
 frontend.navtiming2.processing.overall:2906|ms
 frontend.navtiming2.processing.overall:299|ms
 frontend.navtiming2.processing.overall:334|ms
-frontend.navtiming2.processing.overall:4091|ms
 frontend.navtiming2.processing.overall:513|ms
 frontend.navtiming2.processing.overall:611|ms
 frontend.navtiming2.processing.overall:622|ms
@@ -5283,9 +5220,7 @@ frontend.navtiming2.request.by_browser.Chrome.all:636|ms
 frontend.navtiming2.request.by_browser.Chrome_Mobile_iOS.61:277|ms
 frontend.navtiming2.request.by_browser.Chrome_Mobile_iOS.all:277|ms
 frontend.navtiming2.request.by_browser.Edge.15:276|ms
-frontend.navtiming2.request.by_browser.Edge.15:543|ms
 frontend.navtiming2.request.by_browser.Edge.all:276|ms
-frontend.navtiming2.request.by_browser.Edge.all:543|ms
 frontend.navtiming2.request.by_browser.Firefox.52:328|ms
 frontend.navtiming2.request.by_browser.Firefox.55:0|ms
 frontend.navtiming2.request.by_browser.Firefox.55:0|ms
@@ -5362,7 +5297,6 @@ frontend.navtiming2.request.by_continent.Europe:388|ms
 frontend.navtiming2.request.by_continent.Europe:428|ms
 frontend.navtiming2.request.by_continent.Europe:441|ms
 frontend.navtiming2.request.by_continent.Europe:469|ms
-frontend.navtiming2.request.by_continent.Europe:543|ms
 frontend.navtiming2.request.by_continent.Europe:648|ms
 frontend.navtiming2.request.by_continent.Europe:734|ms
 frontend.navtiming2.request.by_continent.North_America:14|ms
@@ -5418,7 +5352,6 @@ frontend.navtiming2.request.desktop.anonymous:38|ms
 frontend.navtiming2.request.desktop.anonymous:428|ms
 frontend.navtiming2.request.desktop.anonymous:459|ms
 frontend.navtiming2.request.desktop.anonymous:465|ms
-frontend.navtiming2.request.desktop.anonymous:543|ms
 frontend.navtiming2.request.desktop.anonymous:580|ms
 frontend.navtiming2.request.desktop.authenticated:242|ms
 frontend.navtiming2.request.desktop.authenticated:276|ms
@@ -5467,7 +5400,6 @@ frontend.navtiming2.request.desktop.overall:441|ms
 frontend.navtiming2.request.desktop.overall:459|ms
 frontend.navtiming2.request.desktop.overall:465|ms
 frontend.navtiming2.request.desktop.overall:469|ms
-frontend.navtiming2.request.desktop.overall:543|ms
 frontend.navtiming2.request.desktop.overall:567|ms
 frontend.navtiming2.request.desktop.overall:580|ms
 frontend.navtiming2.request.desktop.overall:636|ms
@@ -5534,7 +5466,6 @@ frontend.navtiming2.request.overall:441|ms
 frontend.navtiming2.request.overall:459|ms
 frontend.navtiming2.request.overall:465|ms
 frontend.navtiming2.request.overall:469|ms
-frontend.navtiming2.request.overall:543|ms
 frontend.navtiming2.request.overall:567|ms
 frontend.navtiming2.request.overall:580|ms
 frontend.navtiming2.request.overall:636|ms
@@ -5595,9 +5526,7 @@ frontend.navtiming2.response.by_browser.Chrome.all:8|ms
 frontend.navtiming2.response.by_browser.Chrome.all:8|ms
 frontend.navtiming2.response.by_browser.Chrome_Mobile_iOS.61:54|ms
 frontend.navtiming2.response.by_browser.Chrome_Mobile_iOS.all:54|ms
-frontend.navtiming2.response.by_browser.Edge.15:1259|ms
 frontend.navtiming2.response.by_browser.Edge.15:61|ms
-frontend.navtiming2.response.by_browser.Edge.all:1259|ms
 frontend.navtiming2.response.by_browser.Edge.all:61|ms
 frontend.navtiming2.response.by_browser.Firefox.52:16|ms
 frontend.navtiming2.response.by_browser.Firefox.55:0|ms
@@ -5651,7 +5580,6 @@ frontend.navtiming2.response.by_continent.Europe:0|ms
 frontend.navtiming2.response.by_continent.Europe:10|ms
 frontend.navtiming2.response.by_continent.Europe:10|ms
 frontend.navtiming2.response.by_continent.Europe:10|ms
-frontend.navtiming2.response.by_continent.Europe:1259|ms
 frontend.navtiming2.response.by_continent.Europe:136|ms
 frontend.navtiming2.response.by_continent.Europe:163|ms
 frontend.navtiming2.response.by_continent.Europe:16|ms
@@ -5711,7 +5639,6 @@ frontend.navtiming2.response.desktop.anonymous:0|ms
 frontend.navtiming2.response.desktop.anonymous:0|ms
 frontend.navtiming2.response.desktop.anonymous:10|ms
 frontend.navtiming2.response.desktop.anonymous:10|ms
-frontend.navtiming2.response.desktop.anonymous:1259|ms
 frontend.navtiming2.response.desktop.anonymous:13|ms
 frontend.navtiming2.response.desktop.anonymous:13|ms
 frontend.navtiming2.response.desktop.anonymous:14|ms
@@ -5751,7 +5678,6 @@ frontend.navtiming2.response.desktop.overall:0|ms
 frontend.navtiming2.response.desktop.overall:10|ms
 frontend.navtiming2.response.desktop.overall:10|ms
 frontend.navtiming2.response.desktop.overall:10|ms
-frontend.navtiming2.response.desktop.overall:1259|ms
 frontend.navtiming2.response.desktop.overall:136|ms
 frontend.navtiming2.response.desktop.overall:13|ms
 frontend.navtiming2.response.desktop.overall:13|ms
@@ -5810,7 +5736,6 @@ frontend.navtiming2.response.overall:0|ms
 frontend.navtiming2.response.overall:10|ms
 frontend.navtiming2.response.overall:10|ms
 frontend.navtiming2.response.overall:10|ms
-frontend.navtiming2.response.overall:1259|ms
 frontend.navtiming2.response.overall:136|ms
 frontend.navtiming2.response.overall:13|ms
 frontend.navtiming2.response.overall:13|ms
@@ -5909,9 +5834,7 @@ frontend.navtiming2.responseStart.by_browser.Chrome.all:810|ms
 frontend.navtiming2.responseStart.by_browser.Chrome_Mobile_iOS.61:278|ms
 frontend.navtiming2.responseStart.by_browser.Chrome_Mobile_iOS.all:278|ms
 frontend.navtiming2.responseStart.by_browser.Edge.15:323|ms
-frontend.navtiming2.responseStart.by_browser.Edge.15:5027|ms
 frontend.navtiming2.responseStart.by_browser.Edge.all:323|ms
-frontend.navtiming2.responseStart.by_browser.Edge.all:5027|ms
 frontend.navtiming2.responseStart.by_browser.Firefox.52:328|ms
 frontend.navtiming2.responseStart.by_browser.Firefox.55:0|ms
 frontend.navtiming2.responseStart.by_browser.Firefox.55:0|ms
@@ -5988,7 +5911,6 @@ frontend.navtiming2.responseStart.by_continent.Europe:40|ms
 frontend.navtiming2.responseStart.by_continent.Europe:432|ms
 frontend.navtiming2.responseStart.by_continent.Europe:451|ms
 frontend.navtiming2.responseStart.by_continent.Europe:474|ms
-frontend.navtiming2.responseStart.by_continent.Europe:5027|ms
 frontend.navtiming2.responseStart.by_continent.Europe:661|ms
 frontend.navtiming2.responseStart.by_continent.Europe:734|ms
 frontend.navtiming2.responseStart.by_continent.North_America:18|ms
@@ -6043,7 +5965,6 @@ frontend.navtiming2.responseStart.desktop.anonymous:419|ms
 frontend.navtiming2.responseStart.desktop.anonymous:432|ms
 frontend.navtiming2.responseStart.desktop.anonymous:468|ms
 frontend.navtiming2.responseStart.desktop.anonymous:468|ms
-frontend.navtiming2.responseStart.desktop.anonymous:5027|ms
 frontend.navtiming2.responseStart.desktop.anonymous:585|ms
 frontend.navtiming2.responseStart.desktop.anonymous:58|ms
 frontend.navtiming2.responseStart.desktop.authenticated:249|ms
@@ -6092,7 +6013,6 @@ frontend.navtiming2.responseStart.desktop.overall:451|ms
 frontend.navtiming2.responseStart.desktop.overall:468|ms
 frontend.navtiming2.responseStart.desktop.overall:468|ms
 frontend.navtiming2.responseStart.desktop.overall:474|ms
-frontend.navtiming2.responseStart.desktop.overall:5027|ms
 frontend.navtiming2.responseStart.desktop.overall:585|ms
 frontend.navtiming2.responseStart.desktop.overall:58|ms
 frontend.navtiming2.responseStart.desktop.overall:643|ms
@@ -6159,7 +6079,6 @@ frontend.navtiming2.responseStart.overall:451|ms
 frontend.navtiming2.responseStart.overall:468|ms
 frontend.navtiming2.responseStart.overall:468|ms
 frontend.navtiming2.responseStart.overall:474|ms
-frontend.navtiming2.responseStart.overall:5027|ms
 frontend.navtiming2.responseStart.overall:585|ms
 frontend.navtiming2.responseStart.overall:58|ms
 frontend.navtiming2.responseStart.overall:643|ms
@@ -6229,8 +6148,6 @@ frontend.navtiming2.tcp.by_browser.Chrome.all:80|ms
 frontend.navtiming2.tcp.by_browser.Chrome_Mobile_iOS.61:0|ms
 frontend.navtiming2.tcp.by_browser.Chrome_Mobile_iOS.all:0|ms
 frontend.navtiming2.tcp.by_browser.Edge.15:0|ms
-frontend.navtiming2.tcp.by_browser.Edge.15:0|ms
-frontend.navtiming2.tcp.by_browser.Edge.all:0|ms
 frontend.navtiming2.tcp.by_browser.Edge.all:0|ms
 frontend.navtiming2.tcp.by_browser.Firefox.52:0|ms
 frontend.navtiming2.tcp.by_browser.Firefox.55:0|ms
@@ -6279,7 +6196,6 @@ frontend.navtiming2.tcp.by_continent.Asia:0|ms
 frontend.navtiming2.tcp.by_continent.Asia:0|ms
 frontend.navtiming2.tcp.by_continent.Asia:0|ms
 frontend.navtiming2.tcp.by_continent.Asia:80|ms
-frontend.navtiming2.tcp.by_continent.Europe:0|ms
 frontend.navtiming2.tcp.by_continent.Europe:0|ms
 frontend.navtiming2.tcp.by_continent.Europe:0|ms
 frontend.navtiming2.tcp.by_continent.Europe:0|ms
@@ -6365,7 +6281,6 @@ frontend.navtiming2.tcp.desktop.anonymous:0|ms
 frontend.navtiming2.tcp.desktop.anonymous:0|ms
 frontend.navtiming2.tcp.desktop.anonymous:0|ms
 frontend.navtiming2.tcp.desktop.anonymous:0|ms
-frontend.navtiming2.tcp.desktop.anonymous:0|ms
 frontend.navtiming2.tcp.desktop.authenticated:0|ms
 frontend.navtiming2.tcp.desktop.authenticated:0|ms
 frontend.navtiming2.tcp.desktop.authenticated:0|ms
@@ -6379,7 +6294,6 @@ frontend.navtiming2.tcp.desktop.authenticated:0|ms
 frontend.navtiming2.tcp.desktop.authenticated:0|ms
 frontend.navtiming2.tcp.desktop.authenticated:0|ms
 frontend.navtiming2.tcp.desktop.authenticated:80|ms
-frontend.navtiming2.tcp.desktop.overall:0|ms
 frontend.navtiming2.tcp.desktop.overall:0|ms
 frontend.navtiming2.tcp.desktop.overall:0|ms
 frontend.navtiming2.tcp.desktop.overall:0|ms
@@ -6438,7 +6352,6 @@ frontend.navtiming2.tcp.mobile.overall:0|ms
 frontend.navtiming2.tcp.mobile.overall:0|ms
 frontend.navtiming2.tcp.mobile.overall:0|ms
 frontend.navtiming2.tcp.mobile.overall:0|ms
-frontend.navtiming2.tcp.overall:0|ms
 frontend.navtiming2.tcp.overall:0|ms
 frontend.navtiming2.tcp.overall:0|ms
 frontend.navtiming2.tcp.overall:0|ms
@@ -6702,6 +6615,7 @@ frontend.navtiming2.unload.overall:2|ms
 frontend.navtiming2.unload.overall:4|ms
 frontend.navtiming2.unload.overall:5|ms
 frontend.navtiming2.unload.overall:6|ms
+frontend.navtiming_discard.isSane:1|c
 mw.performance.save:1042|ms
 mw.performance.save:2526|ms
 mw.performance.save:2729|ms
