@@ -1,6 +1,11 @@
-class snapshot::dumps {
+class snapshot::dumps(
+    $xmldumpsmount = undef,
+    $miscdumpsmount = undef,
+) {
     include ::snapshot::dumps::packages
-    include ::snapshot::dumps::configs
+    class { '::snapshot::dumps::configs':
+        xmldumpsmount  => $xmldumpsmount,
+        miscdumpsmount => $miscdumpsmount,
     include ::snapshot::dumps::dblists
     include ::snapshot::dumps::templates
     include ::snapshot::dumps::stagesconfig
