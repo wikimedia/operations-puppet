@@ -573,3 +573,4 @@ jenkins_agent_username: 'jenkins-slave'
 
 # HTTP proxy (can be used as an env variable)
 http_proxy: "http://webproxy.%{::site}.wmnet:8080"
+profile::base::purge_apt_sources: true
