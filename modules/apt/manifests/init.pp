@@ -1,4 +1,5 @@
 class apt(
+    $purge_sources = false,
     $use_proxy = true,
     $use_experimental = hiera('apt::use_experimental', false),
 ) {
@@ -37,6 +38,15 @@ class apt(
         package  => '*',
         pin      => 'release o=Wikimedia',
         priority => 1001,
+    }
+
+    file { '/etc/apt/sources.list.d':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => $purge_sources,
+        purge   => $purge_sources,
     }
 
     # This will munge /etc/apt/apt.conf that get's created during installation
