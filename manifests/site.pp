@@ -1451,23 +1451,23 @@ node 'lithium.eqiad.wmnet' {
 }
 
 node /^logstash100[1-2]\.eqiad\.wmnet$/ {
-    role(logstash::collector, kibana, logstash::apifeatureusage)
+    role(logstash::frontend, kibana)
     include ::lvs::realserver
 }
 
 node /^logstash1003\.eqiad\.wmnet$/ {
     # Before decommissionning logstash1003, role::logstash::eventlogging needs
     # to be moved to another node
-    role(logstash::collector, kibana, logstash::apifeatureusage, logstash::eventlogging)
+    role(logstash::eventlogging, kibana)
     include ::lvs::realserver
 }
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
-    role(logstash::elasticsearch)
+    role(logstash::storage)
 }
 
 # logstash collectors (Ganeti VM)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
-    role(logstash::collector, kibana, logstash::apifeatureusage)
+    role(logstash::frontend, kibana)
     include ::lvs::realserver
 }
 

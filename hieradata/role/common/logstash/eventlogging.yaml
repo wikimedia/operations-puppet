@@ -1,12 +1,16 @@
+# General configs
+lvs::realserver::realserver_ips:
+    - '10.2.2.33' # kibana.svc.eqiad.wmnet
+    - '10.2.2.36' # logstash.svc.eqiad.wmnet
 cluster: logstash
 admin::groups:
   - logstash-roots
   - elasticsearch-roots
 
 # ES-specific
-# NOTE: cluster_name must be kept in sync with the backend
-# node config in hieradata/role/common/logstash/elasticsearch.yaml
 elasticsearch::auto_create_index: true
+# NOTE: cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/storage.yaml
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3
 elasticsearch::heap_memory: '4G'
@@ -21,17 +25,7 @@ elasticsearch::unicast_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
-elasticsearch::data_dir: '/var/lib/elasticsearch'
-
-# Logstash specific
-# TODO: the multiline filter that is used in several places in the
-# current configuration isn't thread safe and can cause crashes or
-# garbled output when used with more than one thread worker.
-logstash::pipeline_workers: 1
-logstash::heap_memory: 256m
-
-
-logstash::cluster_hosts:
+profile::logstash::elasticsearch::cluster_hosts:
   - logstash1001.eqiad.wmnet
   - logstash1002.eqiad.wmnet
   - logstash1003.eqiad.wmnet
@@ -41,8 +35,20 @@ logstash::cluster_hosts:
   - logstash1007.eqiad.wmnet
   - logstash1008.eqiad.wmnet
   - logstash1009.eqiad.wmnet
+elasticsearch::data_dir: '/var/lib/elasticsearch'
 
-role::logstash::collector::statsd_host: statsd.eqiad.wmnet
+# Logstash specific
+# TODO: the multiline filter that is used in several places in the
+# current configuration isn't thread safe and can cause crashes or
+# garbled output when used with more than one thread worker.
+logstash::pipeline_workers: 1
+logstash::heap_memory: 256m
+
+profile::logstash::apifeatureusage::elastic_hosts:
+  - search.svc.codfw.wmnet
+  - search.svc.eqiad.wmnet
+
+profile::logstash::collector::statsd_host: statsd.eqiad.wmnet
 
 # Kibana
 role::kibana::vhost: logstash.wikimedia.org
@@ -55,4 +61,3 @@ role::kibana::ldap_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
-
