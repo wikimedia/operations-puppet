@@ -1,5 +1,5 @@
 # vim:sw=4 ts=4 sts=4 et:
-# == Class: role::logstash::collector
+# == Class: profile::logstash::collector
 #
 # Provisions Logstash and an Elasticsearch node to proxy requests to ELK stack
 # Elasticsearch cluster.
@@ -8,12 +8,10 @@
 # - $statsd_host: Host to send statsd data to.
 #
 # filtertags: labs-project-deployment-prep
-class role::logstash::collector (
-    $statsd_host,
+class profile::logstash::collector (
+    $statsd_host = hiera('profile::logstash::collector::statsd_host'),
 ) {
-    include ::role::logstash::elasticsearch
     include ::logstash
-    include ::base::firewall
 
     nrpe::monitor_service { 'logstash':
         description  => 'logstash process',
@@ -112,72 +110,72 @@ class role::logstash::collector (
     # move files into module?
     # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_strip_ansi_color':
-        source   => 'puppet:///modules/role/logstash/filter-strip-ansi-color.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-strip-ansi-color.conf',
         priority => 15,
     }
 
     ## Input specific processing (20)
 
     logstash::conf { 'filter_syslog':
-        source   => 'puppet:///modules/role/logstash/filter-syslog.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-syslog.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_udp2log':
-        source   => 'puppet:///modules/role/logstash/filter-udp2log.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-udp2log.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_gelf':
-        source   => 'puppet:///modules/role/logstash/filter-gelf.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-gelf.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_logback':
-        source   => 'puppet:///modules/role/logstash/filter-logback.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-logback.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_json_lines':
-        source   => 'puppet:///modules/role/logstash/filter-json-lines.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-json-lines.conf',
         priority => 20,
     }
     ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
-        source   => 'puppet:///modules/role/logstash/filter-mediawiki.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-mediawiki.conf',
         priority => 50,
     }
 
     logstash::conf { 'filter_striker':
-        source   => 'puppet:///modules/role/logstash/filter-striker.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-striker.conf',
         priority => 50,
     }
 
     logstash::conf { 'filter_ores':
-        source   => 'puppet:///modules/role/logstash/filter-ores.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-ores.conf',
         priority => 50,
     }
 
     logstash::conf { 'filter_webrequest':
-        source   => 'puppet:///modules/role/logstash/filter-webrequest.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-webrequest.conf',
         priority => 50,
     }
 
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
-        source   => 'puppet:///modules/role/logstash/filter-add-normalized-message.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-add-normalized-message.conf',
         priority => 70,
     }
 
     logstash::conf { 'filter_normalize_log_levels':
-        source   => 'puppet:///modules/role/logstash/filter-normalize-log-levels.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-normalize-log-levels.conf',
         priority => 70,
     }
 
     logstash::conf { 'filter_de_dot':
-        source   => 'puppet:///modules/role/logstash/filter-de_dot.conf',
+        source   => 'puppet:///modules/profile/logstash/filter-de_dot.conf',
         priority => 70,
     }
 
@@ -185,7 +183,7 @@ class role::logstash::collector (
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
         ensure => present,
-        source => 'puppet:///modules/role/logstash/elasticsearch-template.json',
+        source => 'puppet:///modules/profile/logstash/elasticsearch-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

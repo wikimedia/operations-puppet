@@ -23,5 +23,7 @@ class role::lvs::realserver {
         lvs_services_config => $lvs::configuration::lvs_services,
     }
 
+    warning("lvs_pools: ${lvs_pools}")
+
     create_resources('conftool::scripts::service', $lvs_pools)
 }
