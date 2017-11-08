@@ -12,8 +12,9 @@ usage () {
     script_name=$(basename ${0})
     echo "
 ${script_name} <artifact-repository-path> <git-fat-path> [--real-paths]
-  Creates symlinks from all .jars, .wars and .zips found in <artifact-repository-path>
-  to sha1 filenames in <git-fat-path>.
+  Creates symlinks from all .jars, .wars and .zips and some other types of
+  archives found in <artifact-repository-path> to sha1 filenames in
+  <git-fat-path>.
 
   If --real-paths is passed as the last argument, the full absolute
   real paths to targets in artifact-repository-path will be used
@@ -63,7 +64,7 @@ exitval=0
 # alphanumerically latest jar linked last.
 # The .indexer directory is used by archiva to store its indexes, there is no
 # need to hash the files there.
-find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" \) ! -path "*/.indexer/*"  | sort | xargs shasum | while read line; do
+find $artifact_repository_path -type f \( -name "*.jar" -o -name "*.war" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*.whl" \) ! -path "*/.indexer/*"  | sort | xargs shasum | while read line; do
     # get the filenames and their sha1 sums out of the shasum output
     sha1=$(echo ${line} | awk '{print $1}');
     file=$(echo ${line} | awk '{print $2}');
