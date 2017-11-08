@@ -145,3 +145,6 @@ if [ "$dryrun" == "false" ]; then
         rm -f "current"
 	ln -s "$today" "current"
 fi
+
+# clean up old log files
+find /var/log/cirrusdump/ -name 'cirrusdump-*-cirrussearch-*.log*' -mtime +30 -delete
