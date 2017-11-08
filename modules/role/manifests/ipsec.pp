@@ -11,7 +11,7 @@ class role::ipsec ($hosts = undef) {
         # make changes here to secure the traffic.
         # The current ipsec association scheme below is basically:
         #    eqiad <=> codfw
-        #    eqiad+codfw <=> esams+ulsfo
+        #    eqiad+codfw <=> esams+ulsfo+eqsin
         #    non-eqiad <=> eqiad-kafka-brokers
 
         if $::hostname =~ /^cp/ {
@@ -19,7 +19,7 @@ class role::ipsec ($hosts = undef) {
             $cluster_nodes = hiera("${ipsec_cluster}::nodes")
             $kafka_nodes = hiera('cache::ipsec::kafka::nodes')
 
-            if $::site == 'esams' or $::site == 'ulsfo' {
+            if $::site == 'esams' or $::site == 'ulsfo' or $::site == 'eqsin' {
                 $targets = array_concat(
                     $cluster_nodes['eqiad'],
                     $cluster_nodes['codfw'],
@@ -29,6 +29,7 @@ class role::ipsec ($hosts = undef) {
                 $targets = array_concat(
                     $cluster_nodes['esams'],
                     $cluster_nodes['ulsfo'],
+                    $cluster_nodes['eqsin'],
                     $cluster_nodes['eqiad'],
                     $kafka_nodes['eqiad']
                 )
@@ -36,6 +37,7 @@ class role::ipsec ($hosts = undef) {
                 $targets = array_concat(
                     $cluster_nodes['esams'],
                     $cluster_nodes['ulsfo'],
+                    $cluster_nodes['eqsin'],
                     $cluster_nodes['codfw']
                 )
             }
@@ -45,9 +47,9 @@ class role::ipsec ($hosts = undef) {
             $misc    = hiera('cache::misc::nodes')
             $upload  = hiera('cache::upload::nodes')
             $targets = array_concat(
-                $text['esams'], $text['ulsfo'], $text['codfw'],
-                $misc['esams'], $misc['ulsfo'], $misc['codfw'],
-                $upload['esams'], $upload['ulsfo'], $upload['codfw']
+                $text['esams'], $text['ulsfo'], $text['codfw'], $text['eqsin'],
+                $misc['esams'], $misc['ulsfo'], $misc['codfw'], $misc['eqsin'],
+                $upload['esams'], $upload['ulsfo'], $upload['codfw'], $upload['eqsin']
             )
         }
     }
