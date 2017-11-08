@@ -1,5 +1,7 @@
 class snapshot::dumps::dirs(
     $user = undef,
+    $xmldumpsmount = undef,
+    $miscdumpsmount = undef,
 ) {
     $dumpsdir = '/etc/dumps'
     file { $dumpsdir:
@@ -10,7 +12,9 @@ class snapshot::dumps::dirs(
       group  => 'root',
     }
 
-    $datadir = '/mnt/data/xmldatadumps'
+    $miscdumpsdir = "${miscdumpsmount}/xmldatadumps"
+    $xmldumpsdir = "${xmldumpsmount}/xmldatadumps"
+
     $apachedir = '/srv/mediawiki'
     $confsdir = "${dumpsdir}/confs"
 
@@ -58,12 +62,7 @@ class snapshot::dumps::dirs(
       group  => 'root',
     }
 
-    # maintained on the NFS fileserver, not here
-    # but we need to know the path, used for
-    # dumps and datasets other than the main
-    # xml/sql dumps
-    # make this explicit for now
-    $otherdir = '/mnt/data/xmldatadumps/public/other'
+    $otherdir = "${miscdumpsdir}/public/other"
 
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 
@@ -75,5 +74,4 @@ class snapshot::dumps::dirs(
         group   => 'root',
         content => template('snapshot/set_dump_dirs.sh.erb'),
     }
-
 }
