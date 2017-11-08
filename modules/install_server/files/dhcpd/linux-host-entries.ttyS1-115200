@@ -313,10 +313,9 @@ host bast4001 {
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
-
     next-server 198.35.26.5; # bast4001 (tftp server)
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host californium {
@@ -1807,6 +1806,20 @@ host druid1005 {
 host druid1006 {
     hardware ethernet 18:66:da:ac:75:cd;
     fixed-address druid1006.eqiad.wmnet;
+}
+
+host dns4001 {
+    hardware ethernet F4:E9:D4:BA:F3:90;
+    fixed-address dns4001.wikimedia.org;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host dns4002 {
+    hardware ethernet F4:E9:D4:BA:BF:70;
+    fixed-address dns4002.wikimedia.org;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dumpsdata1001 {
