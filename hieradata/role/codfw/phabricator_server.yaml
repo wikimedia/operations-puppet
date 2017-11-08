@@ -6,7 +6,9 @@ phabricator::vcs::address::v6: "2620:0:860:103:10:192:32:149"
 
 phabricator::vcs::listen_addresses:
   - "10.192.32.149"
+  - "208.80.153.250"
   - "[2620:0:860:103:10:192:32:149]"
+  - "[2620:0:860:ed1a::3:fa]"
 
 lvs::realserver::realserver_ips:
   - "208.80.153.250"
