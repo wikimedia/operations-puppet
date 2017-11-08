@@ -16,7 +16,14 @@ define conftool::scripts::service(
     $lvs_name=$title,
 ){
     require ::conftool::scripts
+
+    warning("lvs_services_config: ${lvs_services_config}")
+    warning("lvs_class_hosts: ${lvs_class_hosts}")
+    warning("lvs_name: ${lvs_name}")
+
     $lvs_config = $lvs_services_config[$lvs_name]
+
+    warning("lvs_config: ${lvs_config}")
 
     $service = $lvs_config['conftool']['service']
     $port = pick($lvs_config['port'], 80)
