@@ -1,2 +1,2 @@
-profile:wikibase::server_name: 'wikiba.se'
-profile:wikibase::server_admin: 'noc@wikimedia.org'
+profile::microsites::wikibase::server_name: 'wikiba.se'
+profile::microsites::wikibase::server_admin: 'noc@wikimedia.org'
