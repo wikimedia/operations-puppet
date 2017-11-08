@@ -3130,6 +3130,13 @@ host labweb1002 {
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host lawrencium {
+    hardware ethernet 90:B1:1C:23:23:BF;
+    fixed-address lawrencium.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host lithium {
     hardware ethernet C8:1F:66:BF:7F:EA;
     fixed-address lithium.eqiad.wmnet;

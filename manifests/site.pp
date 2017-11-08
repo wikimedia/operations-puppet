@@ -1412,6 +1412,11 @@ node 'labstore2004.codfw.wmnet' {
     # include ::base::firewall
 }
 
+#lawrencium is a proof of concept test server for performance T179968
+node 'lawrencium.eqiad.wmnet' {
+    role(spare::system)
+}
+
 node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
 }
