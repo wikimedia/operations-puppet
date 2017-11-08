@@ -1522,7 +1522,7 @@ node /^lvs400[5-7]\.ulsfo\.wmnet$/ {
     # ns override for all lvs for now, see T103921
     $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
 
-    role(spare::system)
+    role(lvs::balancer)
     lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000;
     }
