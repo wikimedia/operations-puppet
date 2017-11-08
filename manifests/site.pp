@@ -748,6 +748,11 @@ node 'deploy1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# new dns systems T179204
+node /^dns400[12]\.ulsfo\.wmnet$/ {
+    role(spare::system)
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
