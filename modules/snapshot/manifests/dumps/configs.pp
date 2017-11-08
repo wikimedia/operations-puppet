@@ -1,4 +1,7 @@
-class snapshot::dumps::configs {
+class snapshot::dumps::configs(
+    $xmldumpsmount = undef,
+    $miscdumpsmount = undef,
+) {
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $apachedir = $snapshot::dumps::dirs::apachedir
     $confsdir = $snapshot::dumps::dirs::confsdir
@@ -135,17 +138,17 @@ class snapshot::dumps::configs {
     snapshot::dumps::wikiconf { 'wikidump.conf':
         configtype => 'allwikis',
         config     => $config,
-        publicdir  => '/mnt/data/xmldatadumps/public',
-        privatedir => '/mnt/data/xmldatadumps/private',
-        tempdir    => '/mnt/data/xmldatadumps/temp',
+        publicdir  => "${miscdumpsmount}/xmldatadumps/public",
+        privatedir => "${miscdumpsmount}/xmldatadumps/private",
+        tempdir    => "${miscdumpsmount}/xmldatadumps/temp",
     }
     # for xml/sql dumps running on dumpsdata host
     snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
         configtype => 'allwikis',
         config     => $config,
-        publicdir  => '/mnt/dumpsdata/xmldatadumps/public',
-        privatedir => '/mnt/dumpsdata/xmldatadumps/private',
-        tempdir    => '/mnt/dumpsdata/xmldatadumps/temp',
+        publicdir  => "${xmldumpsmount}/xmldatadumps/public",
+        privatedir => "${xmldumpsmount}/xmldatadumps/private",
+        tempdir    => "${xmldumpsmount}/xmldatadumps/temp",
     }
 
     file { "${confsdir}/table_jobs.yaml":
