@@ -1,0 +1,32 @@
+DEBUG = False
+LOG_FILE="<%= @install_dir %>/lg.log"
+LOG_LEVEL="WARNING"
+
+DOMAIN = "lg.wikimedia.org"
+
+BIND_IP = "127.0.0.1"
+BIND_PORT = 5001
+
+## TODO: Need to either add a line to /etc/hosts or a A record for PROXY.DOMAIN
+PROXY = {
+		"codfw": 5000,
+		"eqiad": 5000,
+	}
+
+# Used for bgpmap
+ROUTER_IP = {
+        "codfw" : ["208.80.153.192", "2620:0:860:ffff::1", "208.80.153.193", "2620:0:860:ffff::2", "208.80.153.198", "2620:0:860:ffff::5"],
+        "eqiad" : ["208.80.154.196", "2620:0:861:ffff::1", "208.80.154.197", "2620:0:861:ffff::2"],
+}
+
+AS_NUMBER = {
+    "codfw" : "14907",
+    "eqiad" : "14907"
+}
+
+#WHOIS_SERVER = "whois.foo.bar"
+
+# DNS zone to query for ASN -> name mapping
+ASN_ZONE = "asn.cymru.com"
+
+SESSION_KEY = '<%= @session_key %>'
