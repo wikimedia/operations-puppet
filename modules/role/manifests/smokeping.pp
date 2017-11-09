@@ -9,7 +9,7 @@ class role::smokeping {
     ferm::service { 'smokeping-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$CACHE_MISC',
     }
 
     backup::set {'smokeping': }
