@@ -41,7 +41,7 @@ define prometheus::redis_exporter (
         mode      => '0400',
         owner     => 'root',
         group     => 'root',
-        content   => "ARGS=\"-redis.addr localhost:${port} ${arguments}\"\nREDIS_PASSWORD=\"${password}\"",
+        content   => "ARGS=\"-redis.addr localhost:${instance} ${arguments}\"\nREDIS_PASSWORD=\"${password}\"",
         show_diff => false,
         notify    => Systemd::Service[$service_name],
     }
