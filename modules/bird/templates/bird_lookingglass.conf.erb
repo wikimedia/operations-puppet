@@ -1,0 +1,31 @@
+
+router id <%= @routerid %>;
+
+protocol device {
+}
+
+protocol kernel {
+    import none;
+}
+
+protocol direct {
+    interface "*";
+}
+
+filter reject_private{
+    if ( net ~ 10.0.0.0/8 || net ~ 172.16.0.0/12 || net ~ 192.168.0.0/16 ) then {
+        reject;
+    }
+    else {
+        accept;
+    }
+}
+
+<%- @neighbors.each do |neighbor| -%>
+protocol bgp {
+    export none;
+    import filter reject_private;
+    local <%= @routerid %> as 14907;
+    neighbor <%= neighbor %> as 14907;
+}
+<%- end -%>

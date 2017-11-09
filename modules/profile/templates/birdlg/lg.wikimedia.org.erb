@@ -1,0 +1,57 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+
+<VirtualHost *:80>
+    ServerName birdlg.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+    Include /etc/acme/challenge-apache.conf
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    RewriteRule ^/(.*)$ https://lg.wikimedia.org/$1 [L,R=301]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName lg.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+
+    SSLEngine on
+    SSLCertificateFile /etc/acme/cert/birdlg.crt
+    SSLCertificateChainFile /etc/acme/cert/birdlg.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/birdlg.key
+    <%= @ssl_settings.join("\n    ") %>
+
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+
+    ProxyPreserveHost On
+
+    Alias /static /srv/deployment/birdlg/static
+
+    <Directory /srv/deployment/birdlg/static>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Location /static>
+        ProxyPass !
+    </Location>
+
+    <%- if @port -%>
+    ProxyPass / http://127.0.0.1:<%= @port%>/
+    ProxyPassReverse / http://127.0.0.1:<%= @port%>/
+    <%- else -%>
+    ProxyPass / http://127.0.0.1:5001/
+    ProxyPassReverse / http://127.0.0.1:5001/
+    <%- end -%>
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+    CustomLog /var/log/apache2/lg.wikimedia.org-access.log wmf
+    ErrorLog /var/log/apache2/lg.wikimedia.org-error.log
+
+</VirtualHost>
