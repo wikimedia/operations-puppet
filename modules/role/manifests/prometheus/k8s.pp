@@ -85,6 +85,35 @@ class role::prometheus::k8s (
                 },
             ]
         },
+        {
+            'job_name'              => 'k8s-node-cadvisor',
+            'bearer_token_file'     => $bearer_token_file,
+            'metrics_path'          => '/metrics/cadvisor',
+            'kubernetes_sd_configs' => [
+                {
+                    'api_server'        => "https://${master_host}:6443",
+                    'bearer_token_file' => $bearer_token_file,
+                    'role'              => 'node',
+                },
+            ],
+            'relabel_configs'       => [
+                # Map kubernetes node labels to prometheus metric labels
+                {
+                    'action' => 'labelmap',
+                    'regex'  => '__meta_kubernetes_node_label_(.+)',
+                },
+                {
+                    # Force read-only API for nodes. This listens on port 10255
+                    # so rewrite the __address__ label to use that port. It's
+                    # also HTTP, not HTTPS
+                    'action'        => 'replace',  # Redundant but clearer
+                    'source_labels' => ['__address__'],
+                    'target_label'  => '__address__',
+                    'regex'         => '([\d\.]+):(\d+)',
+                    'replacement'   => "\${1}:10255",
+                },
+            ]
+        },
     ]
 
     prometheus::server { 'k8s':
