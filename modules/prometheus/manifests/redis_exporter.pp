@@ -30,9 +30,9 @@ define prometheus::redis_exporter (
     $service_name = "prometheus-redis-exporter@${instance}"
     $listen_address = "${host}:${port}"
 
-    # We're going with multiple prometheus-redis-exporter, mask the default single-instance one.
+    # We're going with multiple prometheus-redis-exporter, mask and stop the default single-instance one.
     exec { "mask_default_redis_exporter_${instance}":
-        command => '/bin/systemctl mask prometheus-redis-exporter.service',
+        command => '/bin/systemctl mask prometheus-redis-exporter.service ; /bin/systemctl stop prometheus-redis-exporter.service',
         creates => '/etc/systemd/system/prometheus-redis-exporter.service',
     }
 
@@ -47,7 +47,7 @@ define prometheus::redis_exporter (
     }
 
     systemd::unit { $service_name:
-        ensure  => present,
+        ensure  => running,
         content => systemd_template('prometheus-redis-exporter@'),
         restart => true,
         require => Package['prometheus-redis-exporter'],
