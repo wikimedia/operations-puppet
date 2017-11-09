@@ -168,6 +168,17 @@ define varnish::instance(
         },
     }
 
+    # Log slow requests to syslog
+    systemd::service { "varnish${instancesuffix}-slowreqs":
+        ensure         => present,
+        content        => systemd_template('varnish-slowreqs'),
+        restart        => true,
+        service_params => {
+            require => Service["varnish${instancesuffix}"],
+            enable  => true,
+        },
+    }
+
     # This mechanism with the touch/rm conditionals in the pair of execs
     #   below should ensure that reload-vcl failures are retried on
     #   future puppet runs until they succeed.

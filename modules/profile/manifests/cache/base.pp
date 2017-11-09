@@ -22,6 +22,7 @@ class profile::cache::base(
     $be_runtime_params = hiera('profile::cache::base::be_runtime_params', []),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
+    $slow_req_threshold = hiera('profile::cache::base::slow_req_threshold', '60.0'),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -65,9 +66,10 @@ class profile::cache::base(
     }
 
     class { '::varnish::common':
-        varnish_version   => $varnish_version,
-        fe_runtime_params => $fe_runtime_params,
-        be_runtime_params => $be_runtime_params,
+        varnish_version    => $varnish_version,
+        fe_runtime_params  => $fe_runtime_params,
+        be_runtime_params  => $be_runtime_params,
+        slow_req_threshold => $slow_req_threshold,
     }
 
     class { [
