@@ -1,0 +1,3 @@
+# performance team temp testing T179968
+admin::groups:
+  - perf-team
