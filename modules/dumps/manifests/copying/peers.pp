@@ -13,7 +13,7 @@ class dumps::copying::peers(
     cron { 'rsync-dumps':
         ensure  => 'present',
         # filter out error messages about vanishing files, we don't want email for that
-        command => '/bin/bash /usr/local/bin/rsync_from_webserver.sh --desthost $desthost 2>&1 | grep -v "vanished" ',
+        command => "/bin/bash /usr/local/bin/rsync_from_webserver.sh --desthost ${desthost} 2>&1 | grep -v vanished",
         user    => 'root',
         minute  => '0',
         hour    => '*/2',
