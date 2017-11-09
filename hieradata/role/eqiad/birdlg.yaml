@@ -1,0 +1,4 @@
+
+profile::birdlg::neighbors_list:
+  - 208.80.154.196 # cr1-eqiad loopback
+  - 208.80.154.197 # cr2-eqiad loopback

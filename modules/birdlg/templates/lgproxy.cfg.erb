@@ -1,0 +1,8 @@
+DEBUG=False
+LOG_FILE="<%= @install_dir %>/lg-proxy.log"
+LOG_LEVEL="WARNING"
+ACCESS_LIST = ["<%= @access_list.join('", "') %>"]
+IPV4_SOURCE=""
+IPV6_SOURCE=""
+BIRD_SOCKET="/var/run/bird/bird.ctl"
+BIRD6_SOCKET="/var/run/bird/bird6.ctl"
