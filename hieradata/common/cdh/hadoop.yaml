@@ -65,17 +65,17 @@ cdh::hadoop::mapreduce_map_java_opts:                    -Xmx1638m  # 0.8 * 2G
 cdh::hadoop::mapreduce_reduce_memory_mb:                 4096       # 2 * 2G
 cdh::hadoop::mapreduce_reduce_java_opts:                 -Xmx3276m  # 0.8 * 2 * 2G
 
-# This is the heap zize of YARN daemons ResourceManager and NodeManagers.
+# This is the heap size of YARN daemons ResourceManager and NodeManagers.
 # This setting is used to configure the max heap size for both.
-# The default is 1000m, we increase it to 2048m in production.
-cdh::hadoop::yarn_heapsize:                              2048
-cdh::hadoop::yarn_nodemanager_opts:                      "-Xms2048m"
-cdh::hadoop::yarn_resourcemanager_opts:                  "-Xms2048m"
+# The default is 1000m, we increase it to 4096m in production.
+cdh::hadoop::yarn_heapsize:                              4096
+cdh::hadoop::yarn_nodemanager_opts:                      "-Xms4096m"
+cdh::hadoop::yarn_resourcemanager_opts:                  "-Xms4096m"
 
 # Heap size for HDFS datanode.
-# The default is 1000m, we increase it to 2048m in production.
-cdh::hadoop::hadoop_heapsize:                            2048
-cdh::hadoop::hadoop_datanode_opts:                       "-Xms2048m"
+# The default is 1000m, we increase it to 4096m in production.
+cdh::hadoop::hadoop_heapsize:                            4096
+cdh::hadoop::hadoop_datanode_opts:                       "-Xms4096m"
 
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
 cdh::hadoop::yarn_app_mapreduce_am_resource_mb:          4096      # 2 * 2G
@@ -91,12 +91,12 @@ cdh::hadoop::mapreduce_history_java_opts:                "-Xms4096m -Xmx4096m"
 
 # This is the total amount of memory that NodeManagers
 # will use for allocation to containers.
-cdh::hadoop::yarn_nodemanager_resource_memory_mb:        57344      # 64G - 8G
+cdh::hadoop::yarn_nodemanager_resource_memory_mb:        53248      # 64G - 12G
 
 # Setting _minimum_allocation_mb to 0 to allow Impala to submit small
 # reservation requests.
 cdh::hadoop::yarn_scheduler_minimum_allocation_mb:       0
-cdh::hadoop::yarn_scheduler_maximum_allocation_mb:       57344
+cdh::hadoop::yarn_scheduler_maximum_allocation_mb:       53248
 # Setting minimum_allocation_vcores to 0 to allow Impala to submit small
 # reservation requests.
 cdh::hadoop::yarn_scheduler_minimum_allocation_vcores:   0
