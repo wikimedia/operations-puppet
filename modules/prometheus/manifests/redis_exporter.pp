@@ -43,11 +43,11 @@ define prometheus::redis_exporter (
         group     => 'root',
         content   => "ARGS=\"${arguments}\"\nREDIS_PASSWORD=\"${password}\"",
         show_diff => false,
-        notify    => Systemd::Unit[$service_name],
+        notify    => Systemd::Service[$service_name],
     }
 
-    systemd::unit { $service_name:
-        ensure  => running,
+    systemd::service { $service_name:
+        ensure  => present,
         content => systemd_template('prometheus-redis-exporter@'),
         restart => true,
         require => Package['prometheus-redis-exporter'],
