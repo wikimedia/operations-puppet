@@ -1,6 +1,7 @@
 class profile::dumps::generation::worker::cronrunner {
     class { '::snapshot::cron':
-        user  => 'datasets',
-        group => 'www-data',
+        depr_user     => 'datasets',
+        miscdumpsuser => 'dumpsgen',
+        group         => 'www-data',
     }
 }
