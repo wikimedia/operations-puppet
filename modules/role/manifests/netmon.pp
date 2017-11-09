@@ -10,6 +10,8 @@ class role::netmon {
     include ::profile::smokeping
     include ::profile::netbox
     include ::profile::prometheus::postgres_exporter
+    include ::profile::birdlg::lg_backend
+    include ::profile::birdlg::lg_frontend
 
     interface::add_ip6_mapped { 'main': }
 }
