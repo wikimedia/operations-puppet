@@ -6,6 +6,11 @@ class role::puppetmaster::puppetdb (
     include ::base::firewall
     include ::passwords::postgres
 
+    $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
+        'jessie'  => '9.4',
+    }
+
     $master = hiera('puppetmaster::puppetdb::master')
     $slaves = hiera('puppetmaster::puppetdb::slaves')
     $slave_range = join($slaves, ' ')
@@ -60,7 +65,7 @@ class role::puppetmaster::puppetdb (
     }
 
     # Tuning
-    file { '/etc/postgresql/9.4/main/tuning.conf':
+    file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
