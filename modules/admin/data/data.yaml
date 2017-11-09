@@ -454,7 +454,7 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, gilles]
+    members: [krinkle, gilles, phedenskog]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
