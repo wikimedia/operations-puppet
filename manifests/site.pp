@@ -1419,7 +1419,7 @@ node 'labstore2004.codfw.wmnet' {
 
 #lawrencium is a proof of concept test server for performance T179968
 node 'lawrencium.eqiad.wmnet' {
-    role(spare::system)
+    role(test)
 }
 
 node 'lithium.eqiad.wmnet' {
