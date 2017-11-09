@@ -2603,6 +2603,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6RtPrxlPVQo8LuBeSZiOJ3yo0M+LQPlLWTsCjxe/Tuk7LbiQy/Now7mAbMmDhOLfmkEfyDkfq0ZWqiqdqVqxcuGuxWNNfnUyTVsoamIbTv+VXx/XUoVvBT2MJt42VWNanZeK/0qqHE0bnGnZ5peMrwfj2dQsklE9FEJV1r+hVtvAhkSmkxpHnPg0GdJEubyUOnp1mSaDsjdTeYC1Ct2L4fZgD2eql3kDtxzzZGqdnF4GbgDi4KIghd4XzZXQIbjMrt17WsiY4G7zlqh9DanAA1pf6f+q+Xt+Bs837uPZHX+eU27K/O6peHf+l7qHYctr33S9La6wSNl2wfhRuKCIV aborrero@wikimedia.org
     uid: 18194
     email: aborrero@wikimedia.org
+  phedenskog:
+    ensure: present
+    gid: 500
+    name: phedenskog
+    realname: Peter Hedenskog
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxyWdrsYsbZuCFvBYGJAc/dhzp1Jfg0il+FFux+LB8F2iJ6jSA46LGT2JPPGumx72+ArGkr+xddgnzBfyutrkrRRTRI30yszFXJsm07GG9I8mAdj/6UXhWsNDBJy7xTvUYMD8TTbtXCT7dTdAg8BxpwKEvW04wZX2HIVDcwDBIMfxRvsvSS352FmfQ7OSytW9/82egMZlcbF6GDJytV6Sk8Zbh5EldtA5EH7pLexlSR8FFSi88h2NF+c6I8rHPpiorbB1jqA2b3krbMhe8vp13VS319L+b6VfsS4OgR5XUnFVHr3SiQ/eqtGwivOnXVFZBngpqzeat7AxPlDMl93l1 phedenskog@WMF1412
+    uid: 12719
+    email: phedenskog@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -2712,10 +2721,6 @@ ldap_only_users:
     ensure: present
     realname: Tyler Romeo
     email: tylerromeo@gmail.com
-  phedenskog:
-    ensure: present
-    realname: Peter Hedenskog
-    email: phedenskog@wikimedia.org
   prtksxna:
     ensure: present
     realname: Prateek Saxena
