@@ -43,7 +43,7 @@ if [ -z "$desthost" ]; then
     usage && exit 1
 fi
 
-excludes="--exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/'--exclude='*.inprog'"
+excludes="--exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'"
 args="--contimeout=600 --timeout=600 --bwlimit=40000 --delete"
 
 # /usr/bin/pgrep -f -x /usr/bin/rsync -rlptq $bwlimit ${sourcehost}::${srcpath} ${destroot}/${destpath}
