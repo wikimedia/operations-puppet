@@ -43,7 +43,7 @@ define prometheus::redis_exporter (
         group     => 'root',
         content   => "ARGS=\"${arguments}\"\nREDIS_PASSWORD=\"${password}\"",
         show_diff => false,
-        notify    => Service[$service_name],
+        notify    => Systemd::Unit[$service_name],
     }
 
     systemd::unit { $service_name:
