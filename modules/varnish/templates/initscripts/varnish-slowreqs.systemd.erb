@@ -1,0 +1,17 @@
+[Unit]
+Description=Varnish <%= @inst %> Slow Requests
+After=varnish<%= @instancesuffix %>.service
+Requires=varnish<%= @instancesuffix %>.service
+
+[Service]
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=varnish<%= @instancesuffix %>-slowreqs
+Restart=always
+# Note the usage of the %% specifier here.
+# See systemd.unit(5), section SPECIFIERS.
+ExecStart=/usr/bin/varnishncsa <%= @extraopts %> -q 'ReqMethod ne "PURGE" and Timestamp:Resp[2] > <%= scope['::varnish::common::log_slow_request_threshold'] %>' -F '%{VSL:Timestamp:Resp}x %%r %%s'
+
+[Install]
+WantedBy=multi-user.target
+

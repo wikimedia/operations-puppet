@@ -1,4 +1,9 @@
-class varnish::common($varnish_version=4, $fe_runtime_params=[], $be_runtime_params=[]) {
+class varnish::common(
+    $varnish_version=4,
+    $fe_runtime_params=[],
+    $be_runtime_params=[],
+    $log_slow_request_threshold='60.0',
+) {
     require ::varnish::packages
 
     # Frontend memory cache sizing
