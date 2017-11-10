@@ -1,1 +1,5 @@
 profile::wdqs::blazegraph_options: '-Dhttp.proxyHost=webproxy.codfw.wmnet -Dhttp.proxyPort=8080 -XX:+ExitOnOutOfMemoryError'
+profile::wdqs::nodes:
+  - 'wdqs2001.codfw.wmnet'
+  - 'wdqs2002.codfw.wmnet'
+  - 'wdqs2003.codfw.wmnet'
