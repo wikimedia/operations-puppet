@@ -3,6 +3,10 @@
 #
 # filtertags: labs-project-monitoring
 class role::prometheus::k8s (
+    system::role { 'prometheus::k8s':
+        description => 'Prometheus server (k8s)',
+    }
+
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
 ){
     include ::standard
