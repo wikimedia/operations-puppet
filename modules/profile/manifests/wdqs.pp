@@ -8,6 +8,7 @@ class profile::wdqs (
     $blazegraph_heap_size = hiera('profile::wdqs::blazegraph_heap_size'),
     $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
     $updater_options = hiera('profile::wdqs::updater_options'),
+    $nodes = hiera('profile::wdqs::nodes'),
 ) {
     $nagios_contact_group = 'admins,wdqs-admins'
 
@@ -46,6 +47,11 @@ class profile::wdqs (
             proto  => 'tcp',
             port   => '8888',
             srange => '$DOMAIN_NETWORKS';
+        # temporary port to transfer data file between wdqs nodes via netcat
+        'wdqs_file_transfer':
+            proto  => 'tcp',
+            port   => '9876',
+            srange => inline_template("@resolve((<%= @nodes.join(' ') %>))");
     }
 
     # Monitoring
