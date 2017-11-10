@@ -8,7 +8,7 @@
 # $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
 
 class profile::puppetmaster::common (
-    $base_config,
+    $base_config = hiera('profile::puppetmaster::common::base_config', {}),
     $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
     $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
 ) {
@@ -30,11 +30,14 @@ class profile::puppetmaster::common (
     # Note: We are going to need this anyway regardless of
     # puppetdb/active_record use for the configuration of servermon report
     # handler
+    $puppet_db_user = hiera('puppetmaster_db_user', 'puppet')
+    $puppet_db_server = hiera('puppetmaster_db_server', 'm1-master.eqiad.wmnet')
+    $puppet_db_password = hiera('puppetmaster_db_password', $passwords::puppet::database::puppet_production_db_pass)
     $active_record_db = {
         'dbadapter'         => 'mysql',
-        'dbuser'            => 'puppet',
-        'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-        'dbserver'          => 'm1-master.eqiad.wmnet',
+        'dbuser'            => puppet_db_user,
+        'dbpassword'        => puppet_db_password,
+        'dbserver'          => $puppet_db_server,
         'dbconnections'     => '256',
     }
 
