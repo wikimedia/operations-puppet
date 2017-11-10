@@ -3,6 +3,10 @@
 #
 # filtertags: labs-project-monitoring
 class role::prometheus::ops {
+    system::role { 'prometheus::ops':
+        description => 'Prometheus server (ops)',
+    }
+
     include ::standard
     include ::base::firewall
 
