@@ -24,6 +24,13 @@ class role::logstash::elasticsearch {
         mode   => '0755',
     }
 
+    apt::repository { 'wikimedia-elastic':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'component/elastic55 thirdparty/elastic55',
+        before     => Class['::elasticsearch'],
+    }
+
     class { '::elasticsearch':
         require                    => File['/usr/share/elasticsearch/plugins'],
         curator_uses_unicast_hosts => false, # elasticsearch API is only exposed to localhost
