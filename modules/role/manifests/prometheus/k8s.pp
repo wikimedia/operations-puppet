@@ -5,6 +5,10 @@
 class role::prometheus::k8s (
     $users = hiera('k8s_infrastructure_users'), # lint:ignore:wmf_styleguide
 ){
+    system::role { 'prometheus::k8s':
+        description => 'Prometheus server (k8s)',
+    }
+
     include ::standard
     include ::base::firewall
 
