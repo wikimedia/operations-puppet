@@ -18,4 +18,13 @@ class apt::unattendedupgrades($ensure=present) {
         value    => 'origin=Wikimedia,codename=${distro_codename}-wikimedia',
         # lint:endignore
     }
+
+    apt::conf { 'unattended-upgrades-updates':
+        priority => '52',
+        # Key with trailing '::' to append to potentially existing entry
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
+        # lint:ignore:single_quote_string_with_variables
+        value    => 'origin=${distro_id},codename=${distro_codename}-updates',
+        # lint:endignore
+    }
 }
