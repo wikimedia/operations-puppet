@@ -36,6 +36,8 @@ class profile::etcd(
     $use_proxy = hiera('profile::etcd::use_proxy'),
     $allow_from = hiera('profile::etcd::allow_from'),
     $do_backup = hiera('profile::etcd::do_backup'),
+    $client_port = hiera('etcd::client_port', '2379'),
+    $peer_port = hiera('etcd::client_port', '2380'),
 ){
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -78,13 +80,13 @@ class profile::etcd(
 
     ferm::service{'etcd_clients':
         proto  => 'tcp',
-        port   => hiera('etcd::client_port', '2379'),
+        port   => $client_port,
         srange => $allow_from,
     }
 
     ferm::service{'etcd_peers':
         proto  => 'tcp',
-        port   => hiera('etcd::peer_port', '2380'),
+        port   => $peer_port,
         srange => '$DOMAIN_NETWORKS',
     }
 
