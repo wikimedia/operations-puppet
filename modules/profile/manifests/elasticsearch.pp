@@ -70,6 +70,13 @@ class profile::elasticsearch(
         refreshonly => true,
     }
 
+    apt::repository { 'wikimedia-elastic':
+        uri         => 'http://apt.wikimedia.org/wikimedia',
+        dist        => "${::lsbdistcodename}-wikimedia",
+        components  => 'component/elastic55 thirdparty/elastic55',
+        comment_old => true,
+    }
+
     # Install
     class { '::elasticsearch':
         # Production elasticsearch needs these plugins to be loaded in order
