@@ -749,7 +749,7 @@ node 'deploy1001.eqiad.wmnet' {
 }
 
 # new dns systems T179204
-node /^dns400[12]\.ulsfo\.wmnet$/ {
+node /^dns400[12]\.wikimedia\.org$/ {
     role(spare::system)
 }
 
