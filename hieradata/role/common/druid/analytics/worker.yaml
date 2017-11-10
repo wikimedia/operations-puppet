@@ -70,6 +70,7 @@ profile::druid::common::properties:
 # --- Druid Broker
 
 # Broker gets a special ferm_srange since it is the frontend query interface to Druid.
+profile::druid::broker::monitoring_enabled: false
 profile::druid::broker::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::druid::broker::properties:
   druid.processing.numThreads: 10
