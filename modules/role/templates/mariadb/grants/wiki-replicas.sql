@@ -26,3 +26,6 @@ GRANT SELECT (user, host) ON `mysql`.`user` TO 'maintainviews'@'localhost'
 
 -- viewmater user
 GRANT SELECT ON *.* TO 'viewmaster'@'%'
+
+-- quarry user granted 48 connections #T180141
+GRANT USAGE ON *.* TO 's52788'@'%' WITH MAX_USER_CONNECTIONS 48;
