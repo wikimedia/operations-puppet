@@ -8,7 +8,7 @@
 # $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
 
 class profile::puppetmaster::common (
-    $base_config,
+    $base_config = hiera('profile::puppetmaster::common::base_config'),
     $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
     $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
 ) {
@@ -32,9 +32,9 @@ class profile::puppetmaster::common (
     # handler
     $active_record_db = {
         'dbadapter'         => 'mysql',
-        'dbuser'            => 'puppet',
+        'dbuser'            => hiera('puppetmaster_db_user', 'puppet'),
         'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-        'dbserver'          => 'm1-master.eqiad.wmnet',
+        'dbserver'          => hiera('puppetmaster_db_server', 'm1-master.eqiad.wmnet'),
         'dbconnections'     => '256',
     }
 
