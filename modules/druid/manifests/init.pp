@@ -134,9 +134,6 @@
 #   it is present in common.runtime.properties.
 #   Default: /var/lib/druid/indexing-logs
 #
-# [*druid.monitoring.monitors*]
-#   Default: ["com.metamx.metrics.JvmMonitor"]
-#
 # [*druid.emitter*]
 #   Default: logging
 #
@@ -249,7 +246,6 @@ class druid(
         'druid.startup.logging.logProperties'         => true,
         'druid.zk.service.host'                       => 'localhost:2181',
         'druid.zk.paths.base'                         => '/druid',
-        'druid.monitoring.monitors'                   => ['com.metamx.metrics.JvmMonitor'],
         'druid.emitter'                               => 'logging',
         'druid.emitter.logging.logLevel'              => 'info',
     }
