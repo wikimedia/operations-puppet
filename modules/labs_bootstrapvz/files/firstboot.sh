@@ -3,7 +3,9 @@
 set -x
 
 # Prevent non-root logins while the VM is being setup
-echo "VM is work in progress" > /etc/nologin
+# The ssh-key-ldap-lookup script rejects non-root user logins if this file
+# is present.
+echo "VM is work in progress" > /etc/block-ldap-key-lookup
 
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
@@ -188,7 +190,7 @@ mount_attempts=1
 until [ $mount_attempts -gt 10 ]
 do
     echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
-    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/nologin
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/block-ldap-key-lookup
     ((mount_attempts++))
     /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
     # Sleep for 10s before next attempt
@@ -201,4 +203,4 @@ done
 puppet agent -t
 
 # Remove the non-root login restriction
-rm /etc/nologin
+rm /etc/block-ldap-key-lookup
