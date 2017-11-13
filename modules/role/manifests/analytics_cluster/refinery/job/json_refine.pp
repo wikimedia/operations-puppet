@@ -15,6 +15,8 @@ class role::analytics_cluster::refinery::job::json_refine {
         output_database  => 'event',
         table_blacklist  => '^Edit|ChangesListHighlights$',
         minute           => 30,
+        # Temporarily disabled for T179625.
+        ensure           => 'absent',
     }
 
     # Refine EventBus data.
