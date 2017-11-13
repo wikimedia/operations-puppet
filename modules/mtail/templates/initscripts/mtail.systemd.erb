@@ -3,7 +3,7 @@ Description=Extract monitoring data from logs for collection in a timeseries dat
 
 [Service]
 User=mtail
-Group=root
+Group=<%= @group %>
 EnvironmentFile=-/etc/default/mtail
 ExecStart=/usr/bin/mtail -progs /etc/mtail -logtostderr $EXTRA_ARGS
 Restart=on-failure
