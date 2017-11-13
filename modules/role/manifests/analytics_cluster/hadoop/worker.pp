@@ -106,6 +106,9 @@ class role::analytics_cluster::hadoop::worker {
     # in order load Spark Python dependencies.
     include ::cdh::spark
 
+    # Spark 2 is manually packaged by us, it is not part of CDH.
+    require_package('spark2')
+
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
     include ::cdh::sqoop
