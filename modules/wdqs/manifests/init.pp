@@ -29,6 +29,7 @@ class wdqs(
 ) {
 
     $deploy_user = 'deploy-service'
+    $data_file = "${data_dir}/wikidata.jnl"
 
     group { $username:
         ensure => present,
@@ -79,6 +80,23 @@ class wdqs(
             group  => 'wikidev',
             mode   => '0775',
         }
+    }
+
+    # This is a rather ugly hack to ensure that permissions of $data_file are
+    # managed, but that the file is not created by puppet. If that file does
+    # not exist, puppet will raise an error and skip the File[$data_file]
+    # resource (and only that resource). It means that puppet will be in error
+    # until data import is started, but that's a reasonable behaviour.
+    exec { "${data_file} exists":
+        command => "/bin/true",
+        onlyif  => "/usr/bin/test -e ${data_file}",
+    }
+    file { $data_file:
+        ensure => file,
+        owner  => $username,
+        group  => $username,
+        mode   => '0664',
+        require => Exec["${data_file} exists"],
     }
 
     $config_dir_group = $use_git_deploy ? {
