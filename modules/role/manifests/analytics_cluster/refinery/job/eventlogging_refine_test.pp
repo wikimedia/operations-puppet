@@ -26,6 +26,8 @@ class role::analytics_cluster::refinery::job::eventlogging_refine_test {
     # Starts 168 hours ago (one week), and ends 3 hours ago to avoid refining incomplete data.
     # Runs once every hour.
     cron { 'eventlogging-refine-test':
+        # Disabled for T179625.  This class will be removed in favor of `event.popups` table.
+        ensure      => 'absent',
         command     => "spark-submit --class org.wikimedia.analytics.refinery.job.JsonRefine ${refinery_jar} --input-base-path /wmf/data/raw/eventlogging --database ${output_database} --output-base-path ${output_base_path} --input-regex 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+).*' --input-capture 'table,year,month,day,hour' --table-whitelist 'Popups' --since 168 --until 3 >> ${eventlogging_refine_log_file} 2>&1",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
