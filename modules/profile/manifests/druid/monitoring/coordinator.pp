@@ -13,6 +13,6 @@ class profile::druid::monitoring::coordinator(
         port             => $prometheus_jmx_exporter_coordinator_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $jmx_exporter_config_file,
-        source           => 'puppet:///modules/profile/druid/jvm_prometheus_coordinator_jmx_exporter.yaml',
+        source           => 'puppet:///modules/profile/druid/jvm_prometheus_jmx_exporter.yaml',
     }
 }
