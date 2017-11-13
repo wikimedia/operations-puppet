@@ -5,6 +5,7 @@ class role::mail::mx(
     ],
     $verp_post_connect_server = 'meta.wikimedia.org',
     $verp_bounce_post_url = 'api-rw.discovery.wmnet/w/api.php',
+    $prometheus_nodes = hiera('prometheus_nodes', []),
 ) {
     include network::constants
     include privateexim::aliases::private
@@ -169,5 +170,13 @@ class role::mail::mx(
     mtail::program { 'exim':
         ensure => present,
         source => 'puppet:///modules/mtail/programs/exim.mtail',
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+
+    ferm::service { 'mtail':
+        proto  => 'tcp',
+        port   => '3903',
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }
