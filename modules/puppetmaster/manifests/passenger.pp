@@ -18,6 +18,7 @@ class puppetmaster::passenger(
     $verify_client,
     $allow_from,
     $deny_from,
+    $puppet_major_version=undef,
 ) {
     include ::apache::mod::passenger
 
@@ -63,6 +64,18 @@ class puppetmaster::passenger(
         require => File['/etc/apache2/sites-available/puppet-master.conf'],
     }
 
+    # puppetmaster-passenger package name changed to puppet-master-passenger with version 4
+    $puppetmaster_passenger_package_name = $puppet_major_version ? {
+        4       => 'puppet-master-passenger',
+        default => 'puppetmaster-passenger',
+    }
+
+    # puppetmaster-common package name changed to puppet-master-common with version 4
+    $puppetmaster_common_package_name = $puppet_major_version ? {
+        4       => 'puppet-master-common',
+        default => 'puppetmaster-common',
+    }
+
     # Since we are running puppet via passenger, we need to ensure
     # the puppetmaster service is stopped, since they use the same port
     # and will conflict when both started.
@@ -80,8 +93,8 @@ class puppetmaster::passenger(
             mode    => '0444',
             source  => 'puppet:///modules/puppetmaster/default',
             require => [
-                Package['puppetmaster-passenger'],
-                Package['puppetmaster-common']
+                Package[ $puppetmaster_passenger_package_name ],
+                Package[ $puppetmaster_common_package_name ]
             ],
         }
     }
