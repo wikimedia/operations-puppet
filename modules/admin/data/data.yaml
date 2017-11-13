@@ -2869,3 +2869,7 @@ ldap_only_users:
     ensure: present
     realname: Jack Gleeson
     email: jgleeson@wikimedia.org
+  imarlier:
+    ensure: present
+    realname: Ian Marlier
+    email: imarlier@wikimedia.org
