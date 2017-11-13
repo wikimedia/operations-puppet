@@ -30,5 +30,7 @@ class role::analytics_cluster::refinery::job::eventlogging_refine_test {
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
         minute      => '0',
+        # Disabled for T179625.  This class will be removed in favor of `event.popups` table.
+        ensure      => 'absent',
     }
 }
