@@ -173,8 +173,8 @@ scap::sources:
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms
-  search/mjolnir/deploy:
-    repository: search/MjoLniR/deploy
+  relforge/mjolnir:
+    repository: search/MjoLniR
   statsv/statsv:
     repository: analytics/statsv
   "docker-pkg/deploy":
