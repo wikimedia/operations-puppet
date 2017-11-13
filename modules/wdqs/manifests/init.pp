@@ -29,6 +29,7 @@ class wdqs(
 ) {
 
     $deploy_user = 'deploy-service'
+    $data_file = "${data_dir}/wikidata.jnl"
 
     group { $username:
         ensure => present,
@@ -79,6 +80,13 @@ class wdqs(
             group  => 'wikidev',
             mode   => '0775',
         }
+    }
+
+    file { $data_file:
+        ensure => file,
+        owner  => $username,
+        group  => $username,
+        mode   => '0664',
     }
 
     $config_dir_group = $use_git_deploy ? {
