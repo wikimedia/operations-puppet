@@ -23,6 +23,29 @@ class role::prometheus::analytics {
         },
     }
 
+    $jmx_exporter_jobs = [
+      {
+        'job_name'        => 'jmx_druid',
+        'scrape_timeout'  => '25s',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_druid_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::jmx_exporter_config{ "druid_analytics_${::site}":
+        dest       => "${targets_path}/jmx_druid_broker_analytics_${::site}.yaml",
+        class_name => 'druid::analytics::worker',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "druid_public_${::site}":
+        dest       => "${targets_path}/jmx_druid_broker_public_${::site}.yaml",
+        class_name => 'druid::public::worker',
+        site       => $::site,
+    }
+
     prometheus::server { 'analytics':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9905',
@@ -30,6 +53,7 @@ class role::prometheus::analytics {
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
+        scrape_configs_extra  => array_concat(jmx_exporter_jobs)
     }
 
     prometheus::web { 'analytics':
