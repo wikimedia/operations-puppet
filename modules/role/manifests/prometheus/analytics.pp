@@ -23,6 +23,47 @@ class role::prometheus::analytics {
         },
     }
 
+    $jmx_exporter_jobs = [
+      {
+        'job_name'        => 'jmx_druid',
+        'scrape_timeout'  => '25s',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_druid_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::jmx_exporter_config{ "druid_broker_${::site}":
+        dest       => "${targets_path}/jmx_druid_broker_${::site}.yaml",
+        class_name => 'profile::druid::broker',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "druid_overlord_${::site}":
+        dest       => "${targets_path}/jmx_druid_overlord_${::site}.yaml",
+        class_name => 'profile::druid::overlord',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "druid_middlemanager_${::site}":
+        dest       => "${targets_path}/jmx_druid_middlemanager_${::site}.yaml",
+        class_name => 'profile::druid::middlemanager',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "druid_coordinator_${::site}":
+        dest       => "${targets_path}/jmx_druid_coordinator_${::site}.yaml",
+        class_name => 'profile::druid::coordinator',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "druid_historical_${::site}":
+        dest       => "${targets_path}/jmx_druid_historical_${::site}.yaml",
+        class_name => 'profile::druid::historical',
+        site       => $::site,
+    }
+
     prometheus::server { 'analytics':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9905',
@@ -30,6 +71,7 @@ class role::prometheus::analytics {
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
+        scrape_configs_extra  => array_concat(jmx_exporter_jobs)
     }
 
     prometheus::web { 'analytics':

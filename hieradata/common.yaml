@@ -288,6 +288,16 @@ ganglia_clusters:
     id: 62
     sites:
       eqiad: []
+  druid_analytics:
+    description: "Druid Analytics Cluster"
+    id: 63
+    sites:
+      eqiad: []
+  druid_public:
+    description: "Druid Public Cluster"
+    id: 64
+    sites:
+      eqiad: []
 
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1001'
