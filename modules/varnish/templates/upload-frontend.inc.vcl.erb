@@ -1,7 +1,10 @@
 // Varnish VCL include file for upload frontends
 include "upload-common.inc.vcl";
 
-sub cluster_fe_recv_pre_purge { }
+sub cluster_fe_recv_pre_purge {
+	// Normalize paths before purging
+	call upload_normalize_path;
+}
 
 sub cluster_fe_recv {
 	// The upload cluster does not serve page views or authenticated
