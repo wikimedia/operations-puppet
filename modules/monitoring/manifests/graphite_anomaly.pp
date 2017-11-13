@@ -23,17 +23,18 @@
 #   }
 #
 # == Parameters
-# $description          - Description of icinga alert
-# $metric               - graphite metric name
-# $warning              - alert warning datapoints
-# $critical             - alert critical datapoints
-# $check_window         - the number of datapoints on which the check
-#                         is performed. Defaults to 100.
-# $graphite_url         - URL of the graphite server.
-# $timeout              - Timeout for the http query to
-#                         graphite. Defaults to 10 seconds
-# over                  - check only for values above the limit
-# under                 - check only for values below the limit
+# $description    - Description of icinga alert
+# $metric         - graphite metric name
+# $warning        - alert warning datapoints
+# $critical       - alert critical datapoints
+# $check_window   - the number of datapoints on which the check
+#                   is performed. Defaults to 100.
+# $graphite_url   - URL of the graphite server.
+# $timeout        - Timeout for the http query to
+#                   graphite. Defaults to 10 seconds
+# $over           - check only for values above the limit
+# $under          - check only for values below the limit
+# $dashboard_link - Link to the Grafana dashboard for this alarm
 # $host
 # $retries
 # $group
@@ -49,21 +50,22 @@ define monitoring::graphite_anomaly(
     $metric,
     $warning,
     $critical,
-    $check_window          = 100,
-    $graphite_url          = 'https://graphite.wikimedia.org',
-    $timeout               = 10,
-    $over                  = false,
-    $under                 = false,
-    $host                  = $::hostname,
-    $retries               = 3,
-    $group                 = undef,
-    $ensure                = present,
-    $nagios_critical       = false,
-    $passive               = false,
-    $freshness             = 36000,
-    $check_interval        = 1,
-    $retry_interval        = 1,
-    $contact_group         = 'admins'
+    $check_window    = 100,
+    $graphite_url    = 'https://graphite.wikimedia.org',
+    $timeout         = 10,
+    $over            = false,
+    $under           = false,
+    $host            = $::hostname,
+    $retries         = 3,
+    $group           = undef,
+    $ensure          = present,
+    $nagios_critical = false,
+    $passive         = false,
+    $freshness       = 36000,
+    $check_interval  = 1,
+    $retry_interval  = 1,
+    $contact_group   = 'admins',
+    $dashboard_link  = undef,
 )
 {
 
@@ -79,6 +81,12 @@ define monitoring::graphite_anomaly(
 
     if $metric =~ /'/ {
         fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
+    }
+
+    if $dashboard_link {
+        $display_name = "${description} - ${dashboard_link}"
+    } else {
+        $display_name = undef
     }
 
     # checkcommands.cfg's check_graphite_anomaly command has
@@ -103,5 +111,6 @@ define monitoring::graphite_anomaly(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
+        display_name   => $display_name,
     }
 }
