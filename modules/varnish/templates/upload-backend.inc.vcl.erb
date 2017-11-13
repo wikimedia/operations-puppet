@@ -27,7 +27,11 @@ sub pick_stevedore {
 	}
 }
 
-sub cluster_be_recv_pre_purge { }
+sub cluster_be_recv_pre_purge {
+	if (req.method == "PURGE") {
+		call upload_normalize_path;
+	}
+}
 
 sub cluster_be_recv {
 	call upload_common_recv;
