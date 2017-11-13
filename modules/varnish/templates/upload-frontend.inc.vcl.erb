@@ -115,7 +115,7 @@ sub cluster_fe_backend_response {
 	}
 
 	// hit-for-pass objects >= 256K size
-	if (std.integer(beresp.http.Content-Length, 262144) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);
