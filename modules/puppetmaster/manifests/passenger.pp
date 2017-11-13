@@ -22,10 +22,6 @@ class puppetmaster::passenger(
 ) {
     include ::apache::mod::passenger
 
-    package { 'puppetmaster-passenger':
-        ensure => present,
-    }
-
     # jessie-specific instructions
     if os_version('debian >= jessie') {
         # Debian jessie needs the DH params file
@@ -74,6 +70,10 @@ class puppetmaster::passenger(
     $puppetmaster_common_package_name = $puppet_major_version ? {
         4       => 'puppet-master-common',
         default => 'puppetmaster-common',
+    }
+
+    package { $puppetmaster_passenger_package_name:
+        ensure => present,
     }
 
     # Since we are running puppet via passenger, we need to ensure
