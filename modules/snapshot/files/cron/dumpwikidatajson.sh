@@ -30,7 +30,8 @@ while true; do
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
 			# NOTE: We temporary set the shard size differently for each shard. T177486#3674942.
-			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $(expr $i + 1) \* 500` --snippet 2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
+			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $(expr $i + 1) \* 500` --snippet 2 --no-cache >> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
