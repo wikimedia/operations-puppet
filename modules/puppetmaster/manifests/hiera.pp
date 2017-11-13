@@ -19,8 +19,5 @@ class puppetmaster::hiera (
         group   => 'root',
         mode    => '0444',
         source  => $source,
-        require => Package['puppetmaster-common'],
     }
-    # We don't need to declare ruby-hiera as a package explicitly as
-    # puppetmaster-common depends on ruby-hiera.
 }

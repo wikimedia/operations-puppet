@@ -66,12 +66,6 @@ class puppetmaster::passenger(
         default => 'puppetmaster-passenger',
     }
 
-    # puppetmaster-common package name changed to puppet-master-common with version 4
-    $puppetmaster_common_package_name = $puppet_major_version ? {
-        4       => 'puppet-master-common',
-        default => 'puppetmaster-common',
-    }
-
     package { $puppetmaster_passenger_package_name:
         ensure => present,
     }
@@ -93,8 +87,7 @@ class puppetmaster::passenger(
             mode    => '0444',
             source  => 'puppet:///modules/puppetmaster/default',
             require => [
-                Package[ $puppetmaster_passenger_package_name ],
-                Package[ $puppetmaster_common_package_name ]
+                Package[ $puppetmaster_passenger_package_name ]
             ],
         }
     }
