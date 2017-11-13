@@ -400,7 +400,7 @@ groups:
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
-    members: [bsitzmann, mholloway-shell, mobrovac]
+    members: [bsitzmann, mholloway-shell, mobrovac, tgr]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
@@ -599,7 +599,7 @@ groups:
   trendingedits-admin:
     description: Group of trendingedits admins
     gid: 791
-    members: [ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
+    members: [ppchelko, eevans, mobrovac, jdlrobson, bsitzmann, mholloway-shell, tgr]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                  'ALL = (trendingedits) NOPASSWD: ALL']
   wmcs-roots:
