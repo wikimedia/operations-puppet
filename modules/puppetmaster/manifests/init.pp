@@ -78,10 +78,21 @@ class puppetmaster(
         require_package('puppetdb-terminus')
     }
 
+    # puppetmaster package name changed to puppet-master with version 4
+    $puppetmaster_package_name = $puppet_major_version ? {
+        4       => 'puppet-master',
+        default => 'puppetmaster',
+    }
+
+    # puppetmaster-common package name changed to puppet-master-common with version 4
+    $puppetmaster-common_package_name = $puppet_major_version ? {
+        4       => 'puppet-master-common',
+        default => 'puppetmaster-common',
+    }
 
     package { [
-        'puppetmaster',
-        'puppetmaster-common',
+        "${puppetmaster_package_name}",
+        "${puppetmaster-common_package_name}",
         'vim-puppet',
         'puppet-el',
         'rails',
