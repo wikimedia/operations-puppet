@@ -3,3 +3,4 @@ admin::groups:
   - oit
 mtail::logs:
   - /var/log/exim4/mainlog
+mtail::group: 'adm'

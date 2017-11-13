@@ -22,6 +22,7 @@ class mtail (
   $graphite_hostport = 'graphite-in.eqiad.wmnet:2003',
   $graphite_prefix = "mtail.${::hostname}.",
   $enabled = '1',
+  $group = 'root',
 ) {
     validate_array($logs)
     validate_re($port, '^[0-9]+$')
