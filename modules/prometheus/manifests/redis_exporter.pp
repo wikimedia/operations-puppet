@@ -11,7 +11,7 @@
 # [*$password*]
 #  The Redis instance password.
 #
-# [*$host*]
+# [*$hostname*]
 #  The host to listen on. The host/port combination will also be used to generate Prometheus
 #  targets.
 #
@@ -22,13 +22,13 @@ define prometheus::redis_exporter (
     $instance = $title,
     $arguments = '',
     $password = '',
-    $host = $::fqdn,
+    $hostname = $::fqdn,
     $port = '9121'
 ) {
     require_package('prometheus-redis-exporter')
 
     $service_name = "prometheus-redis-exporter@${instance}"
-    $listen_address = "${host}:${port}"
+    $listen_address = "${hostname}:${port}"
 
     # We're going with multiple prometheus-redis-exporter, mask and stop the default single-instance one.
     exec { "mask_default_redis_exporter_${instance}":
