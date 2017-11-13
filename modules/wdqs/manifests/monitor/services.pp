@@ -37,12 +37,13 @@ class wdqs::monitor::services(
     }
 
     monitoring::graphite_threshold { 'WDQS_Lag':
-        description   => 'High lag',
-        metric        => "servers.${::hostname}.BlazegraphCollector.lag",
-        from          => '30min',
-        warning       => '600', # 10 minutes
-        critical      => '1800', # 30 minutes
-        percentage    => '30', # Don't freak out on spikes
-        contact_group => hiera('contactgroups', 'admins'),
+        description        => 'High lag',
+        description_suffix => 'https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?refresh=1m&orgId=1&panelId=8&fullscreen',
+        metric             => "servers.${::hostname}.BlazegraphCollector.lag",
+        from               => '30min',
+        warning            => '600', # 10 minutes
+        critical           => '1800', # 30 minutes
+        percentage         => '30', # Don't freak out on spikes
+        contact_group      => hiera('contactgroups', 'admins'),
     }
 }
