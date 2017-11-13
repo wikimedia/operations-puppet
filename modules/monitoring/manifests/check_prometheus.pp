@@ -68,20 +68,25 @@
 #
 # [*contact_group*]
 #   What contact groups to use for notifications
-
+#
+# [*description_suffix*]
+#   A text to add to the description for the display_name parameter that will
+#   be populated by both.
+#
 define monitoring::check_prometheus(
     $description,
     $query,
     $prometheus_url,
     $warning,
     $critical,
-    $method          = 'ge',
-    $nan_ok          = false,
-    $retries         = 5,
-    $group           = undef,
-    $ensure          = present,
-    $nagios_critical = false,
-    $contact_group   = 'admins'
+    $method             = 'ge',
+    $nan_ok             = false,
+    $retries            = 5,
+    $group              = undef,
+    $ensure             = present,
+    $nagios_critical    = false,
+    $contact_group      = 'admins',
+    $description_suffix = undef,
 )
 {
     validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
@@ -92,6 +97,12 @@ define monitoring::check_prometheus(
         default => 'check_prometheus',
     }
 
+    if $description_suffix {
+        $display_name = "${description} - ${description_suffix}"
+    } else {
+        $display_name = undef
+    }
+
     monitoring::service { $title:
         ensure        => $ensure,
         description   => $description,
@@ -100,5 +111,6 @@ define monitoring::check_prometheus(
         group         => $group,
         critical      => $nagios_critical,
         contact_group => $contact_group,
+        display_name  => $display_name,
     }
 }
