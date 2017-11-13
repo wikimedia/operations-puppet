@@ -48,15 +48,15 @@ define varnish::instance(
     # more than once; that means it has died unexpectedly. Critical if it has
     # been started more than 3 times.
     $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${inst}\""
-    $grafana_dashboard = 'https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats'
 
     monitoring::check_prometheus { "varnish-${inst}-check-child-start":
-        description    => "Varnish child restarted ${grafana_dashboard}",
-        query          => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
-        method         => 'gt',
-        warning        => 1,
-        critical       => 3,
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
+        description        => 'Varnish child restarted',
+        description_suffix => "https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?orgId=1&var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops",
+        query              => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
+        method             => 'gt',
+        warning            => 1,
+        critical           => 3,
+        prometheus_url     => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
