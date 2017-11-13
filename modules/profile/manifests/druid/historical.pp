@@ -6,14 +6,34 @@ class profile::druid::historical(
     $monitoring_enabled = hiera('profile::druid::monitoring_enabled'),
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
     $ferm_srange        = hiera('profile::druid::ferm_srange'),
+    $monitoring_enabled = hiera('profile::druid::historical::monitoring_enabled'),
 ) {
 
     require ::profile::druid::common
 
+    # If monitoring is enabled, then include the monitoring profile and set $java_opts
+    # for exposing the Prometheus JMX Exporter in the Druid Broker process.
+    if $monitoring_enabled {
+        include ::profile::druid::monitoring::historical
+        $java_opts = $::profile::druid::monitoring::historical::java_opts
+
+        if $env['DRUID_EXTRA_JVM_OPTS'] {
+            $monitoring_env_vars = {
+                'DRUID_EXTRA_JVM_OPTS' => "${env['DRUID_EXTRA_JVM_OPTS']} ${java_opts}"
+            }
+        } else {
+            $monitoring_env_vars = {
+                'DRUID_EXTRA_JVM_OPTS' => $java_opts
+            }
+        }
+    } else {
+        $monitoring_env_vars = {}
+    }
+
     # Druid historical Service
     class { '::druid::historical':
         properties       => $properties,
-        env              => $env,
+        env              => merge($env, $monitoring_env_vars),
         should_subscribe => $daemon_autoreload,
     }
 

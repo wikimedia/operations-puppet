@@ -89,6 +89,7 @@ profile::druid::broker::env:
 
 
 # --- Druid Coordinator
+profile::druid::coordinator::monitoring_enabled: true
 profile::druid::coordinator::properties: {}
 profile::druid::coordinator::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms10g"
@@ -96,6 +97,7 @@ profile::druid::coordinator::env:
 
 
 # --- Druid Historical
+profile::druid::historical::monitoring_enabled: true
 profile::druid::historical::properties:
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 1073741824
@@ -113,6 +115,7 @@ profile::druid::historical::env:
 
 
 # --- Druid MiddleManager
+profile::druid::middlemanager::monitoring_enabled: true
 profile::druid::middlemanager::properties:
   druid.worker.ip: "%{::fqdn}"
   druid.worker.capacity: 12
@@ -128,6 +131,7 @@ profile::druid::middlemanager::env:
 
 # --- Druid Overlord
 # Overlord will accept indexing jobs from Hadoop nodes in the ANALYTICS_NETWORKS
+profile::druid::overlord::monitoring_enabled: true
 profile::druid::overlord::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
