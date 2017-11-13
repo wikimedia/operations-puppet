@@ -1,92 +1,182 @@
 C{
+
+/*******************************************************************************
+ * URL-Path (not query!) normalization:
+ *
+ * For MediaWiki's purposes, the 256 characters can be divided into two sets
+ * named Always-Decode and Always-Encode, which means every path has exactly
+ * one canonical encoding:
+ *
+ * Always-Decode:
+ *   Unreserved Set (RFC 3986): 0-9 A-Z a-z - . _ ~
+ *   MW-specific from wfUrlencode: ! $ ( ) * , : ; / @
+ * Always-Encode:
+ *   Unprintables and space: 0x00-0x20 0x7F-0xFF
+ *   MediaWiki disallowed title chars: # < > [ ] | { }
+ *   Observed canonical encodes: " % & ' + = \ ^ ` ?
+ *
+ * Additional notes:-------------------
+ * Canonical form for percent-encoding hex digits is uppercase.
+ * "Observed canonical encodes" - tested live WP titles containing these
+ *   characters, observed MW rel=canonical uses the percent-encoded form.
+ * Won't ever actually get encoded:
+ *   space ( ) - Can't be transmitted in HTTP request anyways
+ *   question (?) - Starts query part, used to delimit path below
+ * Literal Percent (%) - Obviously, only encode if not followed by hex digits
+ *
+ * Restbase:-------------------
+ * Believed to use MW encoding rules above, but has a special exception for
+ *   forward-slash: We can neither encode nor decode either form of the
+ *   forward-slash for RB; it must be preserved.  This is because RB needs
+ *   forward-slashes from MediaWiki titles to be in %2F form, but still needs
+ *   its own functional path-delimiting slashes unencoded.
+ *
+ * upload.wikimedia.org:---------
+ *   MW seems to use PHP's urlencode() directly when translating from MediaWiki
+ *   File titles to storage URLs.  The rules we should obey to be consistent
+ *   with it would be:
+ *
+ * Always-Decode: 0-9 A-Z a-z - . _
+ * Always-Encode: Everything Else
+ * TODO: refactor everything below so shared code can handle this case!
+ ******************************************************************************/
+
+#include <inttypes.h>
 #include <string.h>
 
-/* DIY hexadecimal conversion, since it is simple enough for a fixed
- * width, and all the relevant standard C library functions promise to
- * malfunction if the locale is set to anything other than "C"
- */
-#define NP_HEX_DIGIT(c) ( \
-	(c) >= '0' && (c) <= '9' ? (c) - '0' : ( \
-		(c) >= 'A' && (c) <= 'F' ? (c) - 'A' + 0x0a : ( \
-			(c) >= 'a' && (c) <= 'f' ? (c) - 'a' + 0x0a : -1 ) ) )
-#define NP_IS_HEX(c) (NP_HEX_DIGIT(c) != -1)
-#define NP_HEXCHAR(c1, c2) (char)( (NP_HEX_DIGIT(c1) << 4) | NP_HEX_DIGIT(c2) )
+static const uintptr_t decoder_ring[256] = {
+  // 0x00-0x1F (all unprintable)
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+    0,1,0,0,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,
+  //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
+  //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
+    0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
+  // 0x80-0xFF (all unprintable)
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
+static const uintptr_t hex_finder[256] = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ...
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
+  //@ A B C D E F G ...
+    0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  //` a b c d e f g ...
+    0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
+static const uintptr_t hex_dec[256] = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,0,0,0,0,0,0,
+    0,10,11,12,13,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,10,11,12,13,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
+static const char hex_enc[16] = {
+    '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'
+};
+
+#define DO_DECODE(_c) (decoder_ring[(uint8_t)(_c)])
+#define IS_HEX(_c) (hex_finder[(uint8_t)(_c)])
+#define HEX_DECODE(_c1,_c2) \
+    (hex_dec[(uint8_t)(_c1)] << 4 | hex_dec[(uint8_t)(_c2)])
+#define HEX_ENC_TOP(_c) (hex_enc[((uint8_t)(_c)) >> 4])
+#define HEX_ENC_BOTTOM(_c) (hex_enc[((uint8_t)(_c)) & 0xF])
+#define HEX_IS_LOWER(_c) (((_c) & 0x40) >> 6 & ((_c) & 0x20) >> 5)
 
 void raw_normalize_path(const struct vrt_ctx *ctx, const int doslash) {
-	/* Rewrite the path part of the URL, replacing unnecessarily escaped
-	 * punctuation with the actual characters. The character list is from
-	 * MediaWiki's wfUrlencode(), so the URLs produced here will be the same as
-	 * the ones produced by MediaWiki in href attributes. Doing this reduces
-	 * cache fragmentation and fixes T29935, i.e. stale cache entries due to
-	 * MediaWiki purging only the wfUrlencode'd version of the URL.
-	 */
-	const char * url = VRT_r_req_url(ctx);
-	size_t i, outPos;
-	const size_t urlLength = strlen(url);
-	// index for the last position %XX can start at:
-	const size_t lastConvertIdx = urlLength > 2 ? urlLength - 3 : 0;
-	char c;
-	int dirty = 0;
+    const char* vrt_url = VRT_r_req_url(ctx);
+    const size_t in_url_len = strlen(vrt_url);
 
-	/* Allocate destination memory from the stack using the C99
-	 * variable-length automatic feature. We know the length in advance
-	 * because this function can only shorten the input string.
-	 */
-	char destBuffer[urlLength + 1];
-	if (url) {
-		for (i = 0, outPos = 0; i < urlLength; i++) {
-			if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
-				c = NP_HEXCHAR(url[i+1], url[i+2]);
-				if (c == ';'
-					|| c == '@'
-					|| c == '$'
-					|| c == '!'
-					|| c == '*'
-					|| c == '('
-					|| c == ')'
-					|| c == ','
-					|| c == ':'
-					|| (doslash && c == '/'))
-				{
-					destBuffer[outPos++] = c;
-					dirty = 1;
-					i += 2;
-				} else {
-					destBuffer[outPos++] = url[i];
-				}
-			} else if (url[i] == '?') {
-				/* Reached the query part. Just copy the rest of the URL
-				 * to the destination.
-				 */
-				memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
-				outPos += urlLength - i;
-				i = urlLength;
-			} else {
-				destBuffer[outPos++] = url[i];
-			}
-		}
-		destBuffer[outPos] = '\0';
+    // Copy input URL to new array with double-NUL termination (this allows
+    // us to not worry about running off the end when checking for %XX hex
+    // encodings):
+    char in_url[in_url_len + 2];
+    memcpy(in_url, vrt_url, in_url_len + 1);
+    in_url[in_url_len + 1] = '\0';
 
-		/* Set req.url. This will copy our stack buffer into the workspace.
-		 * VRT_l_req_url() is varadic, and concatenates its arguments. The
-		 * vrt_magic_string_end marks the end of the list.
-		 */
-		if (dirty) {
-			VRT_l_req_url(ctx, destBuffer, vrt_magic_string_end);
-		}
-	}
+    // worst-case is every input character requires encoding:
+    char out_url[(in_url_len * 3) + 1];
+
+    char* in_p = in_url;
+    char* in_end = in_url + in_url_len - 1;
+    char* out_p = out_url;
+    unsigned dirty = 0;
+
+    while(1) {
+        const char c = *in_p++;
+        if (c == '\0') {
+            *out_p = '\0';
+            break;
+        }
+        else if (c == '?') {
+            if (dirty) {
+                *out_p++ = '?';
+                memcpy(out_p, in_p, in_end - in_p);
+            }
+            break;
+        }
+        else if (c == '%' && IS_HEX(*in_p) && IS_HEX(*(in_p + 1))) {
+            const char x1 = *in_p++;
+            const char x2 = *in_p++;
+            const char x = HEX_DECODE(x1, x2);
+            if (DO_DECODE(x) && (doslash || x != '/')) {
+                dirty = 1;
+                *out_p++ = x;
+            }
+            else {
+                // mark dirty if input hex had lowercase letters
+                dirty |= HEX_IS_LOWER(x1) | HEX_IS_LOWER(x2);
+                *out_p++ = '%';
+                *out_p++ = HEX_ENC_TOP(x);
+                *out_p++ = HEX_ENC_BOTTOM(x);
+            }
+        }
+        else if (DO_DECODE(c)) {
+            *out_p++ = c;
+        }
+        else {
+            dirty = 1;
+            *out_p++ = '%';
+            *out_p++ = HEX_ENC_TOP(c);
+            *out_p++ = HEX_ENC_BOTTOM(c);
+        }
+    }
+
+    /* Set req.url. This will copy our stack buffer into the workspace.
+     * VRT_l_req_url() is varadic, and concatenates its arguments. The
+     * vrt_magic_string_end marks the end of the list.
+     */
+    if (dirty)
+        VRT_l_req_url(ctx, out_url, vrt_magic_string_end);
 }
 
-#undef NP_IS_HEX
-#undef NP_HEX_DIGIT
-#undef NP_HEXCHAR
+#undef DO_DECODE
+#undef IS_HEX
+#undef HEX_DECODE
+#undef HEX_ENC_TOP
+#undef HEX_ENC_BOTTOM
+#undef HEX_IS_LOWER
 
 }C
 
 sub normalize_mediawiki_path {
-	C{ raw_normalize_path(ctx, 1); }C
+    C{ raw_normalize_path(ctx, 1); }C
 }
 
 sub normalize_rest_path {
-	C{ raw_normalize_path(ctx, 0); }C
+    C{ raw_normalize_path(ctx, 0); }C
 }
