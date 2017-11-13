@@ -516,6 +516,29 @@ class role::prometheus::ops {
         site       => $::site,
     }
 
+
+    $redis_jobs = [
+      {
+        'job_name'        => 'redis',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::redis_exporter_config{ "redis_master_${::site}":
+        dest       => "${targets_path}/redis_master_${::site}.yaml",
+        class_name => 'profile::redis::master',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_slave_${::site}":
+        dest       => "${targets_path}/redis_slave_${::site}.yaml",
+        class_name => 'profile::redis::slave',
+        site       => $::site,
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -526,6 +549,7 @@ class role::prometheus::ops {
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
+            $redis_jobs,
         ),
         global_config_extra   => $config_extra,
     }
