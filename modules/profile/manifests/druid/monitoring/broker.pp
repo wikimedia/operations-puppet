@@ -13,6 +13,6 @@ class profile::druid::monitoring::broker(
         port             => $prometheus_jmx_exporter_broker_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $jmx_exporter_config_file,
-        source           => 'puppet:///modules/profile/druid/jvm_prometheus_jmx_exporter.yaml',
+        source           => 'puppet:///modules/profile/druid/jvm_prometheus_broker_jmx_exporter.yaml',
     }
 }
