@@ -84,15 +84,8 @@ class puppetmaster(
         default => 'puppetmaster',
     }
 
-    # puppetmaster-common package name changed to puppet-master-common with version 4
-    $puppetmaster_common_package_name = $puppet_major_version ? {
-        4       => 'puppet-master-common',
-        default => 'puppetmaster-common',
-    }
-
     package { [
         $puppetmaster_package_name,
-        $puppetmaster_common_package_name,
         'vim-puppet',
         'puppet-el',
         'rails',
