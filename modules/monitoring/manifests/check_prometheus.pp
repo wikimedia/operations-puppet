@@ -68,7 +68,10 @@
 #
 # [*contact_group*]
 #   What contact groups to use for notifications
-
+#
+# [*dashboard_link*]
+#   Link to the Grafana dashboard for this alarm
+#
 define monitoring::check_prometheus(
     $description,
     $query,
@@ -81,7 +84,8 @@ define monitoring::check_prometheus(
     $group           = undef,
     $ensure          = present,
     $nagios_critical = false,
-    $contact_group   = 'admins'
+    $contact_group   = 'admins',
+    $dashboard_link  = undef,
 )
 {
     validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
@@ -92,6 +96,12 @@ define monitoring::check_prometheus(
         default => 'check_prometheus',
     }
 
+    if $dashboard_link {
+        $display_name = "${description} - ${dashboard_link}"
+    } else {
+        $display_name = undef
+    }
+
     monitoring::service { $title:
         ensure        => $ensure,
         description   => $description,
@@ -100,5 +110,6 @@ define monitoring::check_prometheus(
         group         => $group,
         critical      => $nagios_critical,
         contact_group => $contact_group,
+        display_name  => $display_name,
     }
 }

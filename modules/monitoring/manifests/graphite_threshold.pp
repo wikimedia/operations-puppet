@@ -22,23 +22,24 @@
 #       percentage           => 5,
 #   }
 # == Parameters
-# $description          - Description of icinga alert
-# $metric               - graphite metric name
-# $warning              - alert warning threshold
-# $critical             - alert critical threshold
-# $series               - true if the metric refers to a series of graphite
-#                         datapoints that should be checked individually
-# $from                 - Date from which to fetch data.
-#                         Examples: '1hours','10min' (default), '2w'
-# $until                - end sampling date (negative relative time from
-#                         now.  Default: '0min'
-# $percentage           - Number of datapoints exceeding the
-#                         threshold. Defaults to 1%.
-# $under                - If true, the threshold is a lower limit.
-#                         Defaults to false.
-# $graphite_url         - URL of the graphite server.
-# $timeout              - Timeout for the http query to
-#                         graphite. Defaults to 10 seconds
+# $description    - Description of icinga alert
+# $metric         - graphite metric name
+# $warning        - alert warning threshold
+# $critical       - alert critical threshold
+# $series         - true if the metric refers to a series of graphite
+#                   datapoints that should be checked individually
+# $from           - Date from which to fetch data.
+#                   Examples: '1hours','10min' (default), '2w'
+# $until          - end sampling date (negative relative time from
+#                   now.  Default: '0min'
+# $percentage     - Number of datapoints exceeding the
+#                   threshold. Defaults to 1%.
+# $under          - If true, the threshold is a lower limit.
+#                   Defaults to false.
+# $graphite_url   - URL of the graphite server.
+# $timeout        - Timeout for the http query to
+#                   graphite. Defaults to 10 seconds
+# $dashboard_link - Link to the Grafana dashboard for this alarm
 # $host
 # $retries
 # $group
@@ -54,23 +55,24 @@ define monitoring::graphite_threshold(
     $metric,
     $warning,
     $critical,
-    $series                = false,
-    $from                  = '10min',
-    $until                 = '0min',
-    $percentage            = 1,
-    $under                 = false,
-    $graphite_url          = 'https://graphite.wikimedia.org',
-    $timeout               = 10,
-    $host                  = $::hostname,
-    $retries               = 3,
-    $group                 = undef,
-    $ensure                = present,
-    $nagios_critical       = false,
-    $passive               = false,
-    $freshness             = 36000,
-    $check_interval        = 1,
-    $retry_interval        = 1,
-    $contact_group         = 'admins'
+    $series          = false,
+    $from            = '10min',
+    $until           = '0min',
+    $percentage      = 1,
+    $under           = false,
+    $graphite_url    = 'https://graphite.wikimedia.org',
+    $timeout         = 10,
+    $host            = $::hostname,
+    $retries         = 3,
+    $group           = undef,
+    $ensure          = present,
+    $nagios_critical = false,
+    $passive         = false,
+    $freshness       = 36000,
+    $check_interval  = 1,
+    $retry_interval  = 1,
+    $contact_group   = 'admins',
+    $dashboard_link  = undef,
 )
 {
 
@@ -101,6 +103,12 @@ define monitoring::graphite_threshold(
         default => 'check_graphite_threshold'
     }
 
+    if $dashboard_link {
+        $display_name = "${description} - ${dashboard_link}"
+    } else {
+        $display_name = undef
+    }
+
     monitoring::service { $title:
         ensure         => $ensure,
         description    => $description,
@@ -113,5 +121,6 @@ define monitoring::graphite_threshold(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
+        display_name   => $display_name,
     }
 }

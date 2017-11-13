@@ -14,6 +14,7 @@ define monitoring::service(
     $config_dir            = '/etc/nagios',
     $event_handler         = undef,
     $notifications_enabled = $::profile::base::notifications_enabled,
+    $display_name          = undef,
 )
 {
     # the list of characters is the default for illegal_object_name_chars
@@ -103,6 +104,7 @@ define monitoring::service(
             check_freshness        => $check_fresh,
             freshness_threshold    => $is_fresh,
             event_handler          => $event_handler,
+            display_name           => $display_name,
         },
     }
     # This is a hack. We detect if we are running on the scope of an icinga
