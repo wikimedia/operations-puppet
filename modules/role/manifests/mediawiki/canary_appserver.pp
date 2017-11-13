@@ -5,5 +5,5 @@ class role::mediawiki::canary_appserver {
     # include the deployment scripts because mwscript can occasionally be useful
     # here: T112174
     include scap::scripts
+    include ::profile::mediawiki::canary_appserver
 }
-
