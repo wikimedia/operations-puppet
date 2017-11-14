@@ -1,0 +1,5 @@
+profile::dumps::rsyncer_peer:
+  dumps_user: 'dumpsgen'
+  dumps_group: 'dumpsgen'
+  dumps_deploygroup: 'wikidev'
+  dumps_mntpoint: '/data'
