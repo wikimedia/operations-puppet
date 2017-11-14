@@ -11,6 +11,12 @@ class standard(
 
     if $::realm == 'production' {
         include ::profile::cumin::target
+
+        # Associate this fqdn with its production cluster and site
+        @@standard::cluster { $::fqdn:
+            cluster => hiera('cluster', $::cluster), # lint:ignore:wmf_styleguide
+            site    => $::site,
+        }
     }
 
     unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {
