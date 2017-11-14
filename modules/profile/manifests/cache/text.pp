@@ -35,7 +35,7 @@ class profile::cache::text(
         'connect_timeout'       => '3s',
         'first_byte_timeout'    => '65s',
         'between_bytes_timeout' => '33s',
-        'max_connections'       => 100000,
+        'max_connections'       => 50000,
         'probe'                 => 'varnish',
     }
 
@@ -44,7 +44,7 @@ class profile::cache::text(
         'connect_timeout'       => '3s',
         'first_byte_timeout'    => '65s',
         'between_bytes_timeout' => '33s',
-        'max_connections'       => 0,
+        'max_connections'       => 50000,
         'probe'                 => 'varnish',
     }
 
