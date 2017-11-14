@@ -15,24 +15,34 @@ class profile::dumps::rsyncer(
         hosts_allow => $stats_hosts,
         user        => 'datasets',
         deploygroup => 'wikidev',
+        otherdir    => '/data/xmldatadumps/public/other',
     }
     class {'::dumps::rsync::memfix':}
     class {'::dumps::rsync::pagecounts_ez':
         hosts_allow => $stats_hosts,
         user        => 'datasets',
         deploygroup => 'wikidev',
+        otherdir    => '/data/xmldatadumps/public/other',
     }
-    class {'::dumps::rsync::peers': hosts_allow => $peer_hosts}
-    class {'::dumps::rsync::phab_dump': hosts_allow => $phab_hosts}
+    class {'::dumps::rsync::peers':
+        hosts_allow => $peer_hosts,
+        datapath    => '/data',
+    }
+    class {'::dumps::rsync::phab_dump':
+        hosts_allow => $phab_hosts,
+        otherdir    => '/data/xmldatadumps/public/other',
+    }
     $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
     $publicdir = '/data/xmldatadumps/public'
     class {'::dumps::rsync::public':
         hosts_allow => $hosts_allow,
         publicdir   => $publicdir,
+        otherdir    => '/data/xmldatadumps/public/other',
     }
     class {'::dumps::rsync::slowparse_logs':
         hosts_allow => $mwlog_hosts,
         user        => 'datasets',
         group       => 'datasets',
+        otherdir    => '/data/xmldatadumps/public/other',
     }
 }

@@ -2,6 +2,7 @@ class dumps::rsync::media(
     $hosts_allow = undef,
     $user = undef,
     $deploygroup = undef,
+    $otherdir = undef,
 ) {
     file { '/etc/rsyncd.d/30-rsync-media.conf':
         ensure  => 'present',
