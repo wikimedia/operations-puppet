@@ -39,6 +39,6 @@ cache::upload::nodes:
     - 'cp4021.ulsfo.wmnet'
     - 'cp4022.ulsfo.wmnet'
     - 'cp4023.ulsfo.wmnet'
-    # - 'cp4024.ulsfo.wmnet' # borked, remove for now T174891
+    - 'cp4024.ulsfo.wmnet'
     - 'cp4025.ulsfo.wmnet'
     - 'cp4026.ulsfo.wmnet'
