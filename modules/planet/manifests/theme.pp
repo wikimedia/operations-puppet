@@ -22,6 +22,10 @@ define planet::theme {
             ensure => 'present',
             source => 'puppet:///modules/planet/theme/rawdog_style.css';
         }
+        file { "/var/www/planet/${title}/Wikimedia_Community_Logo.svg":
+            ensure => 'present',
+            source => 'puppet:///modules/planet/theme/Wikimedia_Community_Logo.svg';
+        }
         file { "/etc/rawdog/theme/wikimedia/${title}/rd_page.tmpl":
             ensure  => 'present',
             content => template('planet/html/rd_page.html.tmpl.erb');
