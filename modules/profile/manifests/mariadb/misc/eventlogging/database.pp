@@ -34,9 +34,6 @@ class profile::mariadb::misc::eventlogging::database (
     class { 'mariadb::packages_wmf': }
     class { 'mariadb::service': }
 
-    class {'::standard': }
-    class {'::base::firewall': }
-
     if os_version('debian >= stretch') {
         $mariadb_basedir = '/opt/wmf-mariadb101'
         $mariadb_socket = '/run/mysqld/mysqld.sock'
