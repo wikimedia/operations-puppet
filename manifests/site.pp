@@ -593,18 +593,21 @@ node 'db2012.codfw.wmnet' {
 
 # m4 shard
 node 'db1046.eqiad.wmnet' {
-    role(mariadb::misc::eventlogging::master,
-        mariadb::ferm,
-        mariadb::monitor::dba)
+    role(mariadb::misc::eventlogging::master)
 }
 
-node /^db(1047|1108)\.eqiad\.wmnet$/ {
-    # These slaves have an m4 custom replication protocol.
-    # The db1047 slave additionally replicates s1 and s2.
+# These replicas have an m4 custom replication protocol.
+
+# The db1047 replica additionally replicates s1 and s2.
+# db1047 is a host about to be decommissioned
+# lint:ignore:wmf_styleguide
+node 'db1047.eqiad.wmnet' {
     role(mariadb::analytics,
-        mariadb::misc::eventlogging::replica,
-        mariadb::ferm,
-        mariadb::monitor::dba)
+        mariadb::misc::eventlogging::replica)
+}
+
+node 'db1108.eqiad.wmnet' {
+    role(mariadb::misc::eventlogging::replica)
 }
 
 # m5 shard
