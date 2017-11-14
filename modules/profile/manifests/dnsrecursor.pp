@@ -1,6 +1,8 @@
 # A profile class for a dns recursor
 
-class profile::dnsrecursor {
+class profile::dnsrecursor (
+  $advertise_vips = hiera('profile::bird::advertise_vips', undef)
+  ) {
     include ::network::constants
     include ::base::firewall
     include ::lvs::configuration
@@ -11,6 +13,7 @@ class profile::dnsrecursor {
             $facts['ipaddress'],
             $facts['ipaddress6'],
             $lvs::configuration::service_ips['dns_rec'][$::site],
+            $advertise_vips,
         ],
     }
 
