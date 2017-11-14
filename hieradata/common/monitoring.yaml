@@ -37,6 +37,12 @@ monitoring::groups:
   cache_canary_eqiad:
     description: Canary caches eqiad
 
+# Druid
+druid_public_eqiad:
+    description: Druid public cluster eqiad
+druid_analytics_eqiad:
+    description: Druid analytics cluster eqiad
+
 # Elasticsearch
   elasticsearch_eqiad:
     description: eqiad elasticsearch servers
