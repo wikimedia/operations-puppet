@@ -15,9 +15,17 @@ class contint::packages::ruby {
         ensure => present,
     }
 
+    if os_version('debian == stretch') {
+      $ruby_version = 'ruby2.3'
+      $ruby_dev_version = 'ruby2.3-dev'
+    } else {
+      $ruby_version = 'ruby2.1'
+      $ruby_dev_version = 'ruby2.1-dev'
+    }
+
     package { [
-        'ruby2.1',
-        'ruby2.1-dev',
+        $ruby_version,
+        $ruby_dev_version,
         'bundler',
         # Used by PoolCounter tests (T152338)
         'ruby-rspec',
@@ -32,9 +40,8 @@ class contint::packages::ruby {
         ensure   => present,
         provider => 'gem',
         require  => [
-            Package['ruby2.1-dev'],
+            Package[$ruby_dev_version],
             Package['build-essential'],
         ],
     }
-
 }
