@@ -156,13 +156,13 @@ profile::cassandra::instances:
   #     listen_address: 10.192.16.163
   #   c:
   #     listen_address: 10.192.16.164
-  "restbase2002.codfw.wmnet":
-    a:
-      listen_address: 10.192.16.165
-    b:
-      listen_address: 10.192.16.166
-    c:
-      listen_address: 10.192.16.167
+  #"restbase2002.codfw.wmnet":
+  #  a:
+  #    listen_address: 10.192.16.165
+  #  b:
+  #    listen_address: 10.192.16.166
+  #  c:
+  #    listen_address: 10.192.16.167
   #"restbase2003.codfw.wmnet":
   #  a:
   #    listen_address: 10.192.32.134
