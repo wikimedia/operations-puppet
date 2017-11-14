@@ -50,6 +50,7 @@ define monitoring::graphite_anomaly(
     $metric,
     $warning,
     $critical,
+    $dashboard_link,
     $check_window    = 100,
     $graphite_url    = 'https://graphite.wikimedia.org',
     $timeout         = 10,
@@ -65,9 +66,9 @@ define monitoring::graphite_anomaly(
     $check_interval  = 1,
     $retry_interval  = 1,
     $contact_group   = 'admins',
-    $dashboard_link  = undef,
 )
 {
+    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
 
     if $over == true {
         $modifier = '--over'
