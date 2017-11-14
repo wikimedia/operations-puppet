@@ -6,7 +6,7 @@ Requires=varnish<%= @instancesuffix %>.service
 [Service]
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=varnish<%= @instancesuffix %>-slowreqs
+SyslogIdentifier=<%= @slow_requests_programname %>
 Restart=always
 # Note the usage of the %% specifier here.
 # See systemd.unit(5), section SPECIFIERS.
