@@ -1,6 +1,6 @@
 class role::dumps::generation::worker::dumper {
     include standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include profile::dumps::generation::worker::common
     include profile::dumps::generation::worker::dumper

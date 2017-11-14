@@ -3,6 +3,7 @@
 # lastly, serves thse files via nfs to certain internal hosts
 class role::dumps::web::xmldumps_fallback {
     include ::standard
+    include ::profile::base::firewall
     include ::profile::dumps::web::xmldumps_fallback
     include ::profile::dumps::web::rsync_server
     include ::profile::dumps::rsyncer_peer
