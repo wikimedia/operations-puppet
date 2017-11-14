@@ -16,7 +16,6 @@ class contint::packages::ruby {
     }
 
     package { [
-        'ruby2.1',
         'ruby2.1-dev',
         'bundler',
         # Used by PoolCounter tests (T152338)
