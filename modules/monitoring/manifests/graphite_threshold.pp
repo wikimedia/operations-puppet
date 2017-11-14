@@ -55,6 +55,7 @@ define monitoring::graphite_threshold(
     $metric,
     $warning,
     $critical,
+    $dashboard_link,
     $series          = false,
     $from            = '10min',
     $until           = '0min',
@@ -72,10 +73,9 @@ define monitoring::graphite_threshold(
     $check_interval  = 1,
     $retry_interval  = 1,
     $contact_group   = 'admins',
-    $dashboard_link  = undef,
 )
 {
-
+    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
 
     # checkcommands.cfg's check_graphite_threshold command has
     # many positional arguments that
