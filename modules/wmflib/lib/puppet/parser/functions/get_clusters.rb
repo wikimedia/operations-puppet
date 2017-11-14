@@ -41,10 +41,10 @@ module Puppet::Parser::Functions
       sites = false
     end
 
-    function_query_resources([false, '@@Ganglia::Cluster', false]).each do |node|
+    function_query_resources([false, 'Class["Profile::Cumin::Target"]', false]).each do |node|
       cluster = node['parameters']['cluster']
       site = node['parameters']['site']
-      fqdn = node['title']
+      fqdn = node['certname']
       next unless clusters.include?cluster
       next if sites && !sites.include?(site)
       all[cluster] ||= {}
