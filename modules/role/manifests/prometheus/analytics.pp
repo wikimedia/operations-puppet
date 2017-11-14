@@ -34,33 +34,15 @@ class role::prometheus::analytics {
       },
     ]
 
-    prometheus::jmx_exporter_config{ "druid_broker_${::site}":
-        dest       => "${targets_path}/jmx_druid_broker_${::site}.yaml",
-        class_name => 'profile::druid::broker',
+    prometheus::jmx_exporter_config{ "druid_public_${::site}":
+        dest       => "${targets_path}/jmx_druid_public_${::site}.yaml",
+        class_name => 'role::druid::public::worker',
         site       => $::site,
     }
 
-    prometheus::jmx_exporter_config{ "druid_overlord_${::site}":
-        dest       => "${targets_path}/jmx_druid_overlord_${::site}.yaml",
-        class_name => 'profile::druid::overlord',
-        site       => $::site,
-    }
-
-    prometheus::jmx_exporter_config{ "druid_middlemanager_${::site}":
-        dest       => "${targets_path}/jmx_druid_middlemanager_${::site}.yaml",
-        class_name => 'profile::druid::middlemanager',
-        site       => $::site,
-    }
-
-    prometheus::jmx_exporter_config{ "druid_coordinator_${::site}":
-        dest       => "${targets_path}/jmx_druid_coordinator_${::site}.yaml",
-        class_name => 'profile::druid::coordinator',
-        site       => $::site,
-    }
-
-    prometheus::jmx_exporter_config{ "druid_historical_${::site}":
-        dest       => "${targets_path}/jmx_druid_historical_${::site}.yaml",
-        class_name => 'profile::druid::historical',
+    prometheus::jmx_exporter_config{ "druid_analytics_${::site}":
+        dest       => "${targets_path}/jmx_druid_analytics_${::site}.yaml",
+        class_name => 'role::druid::analytics::worker',
         site       => $::site,
     }
 
