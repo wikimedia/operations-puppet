@@ -389,10 +389,14 @@ C{
        Vmod_std_Func.log(ctx, "Admission Probability: ", VRT_REAL_string(ctx, admissionprob), vrt_magic_string_end);
        Vmod_std_Func.log(ctx, "Admission Urand: ", VRT_REAL_string(ctx, urand), vrt_magic_string_end);
 
-       // If admission test succeeds, mark as uncacheable (set ttl=0, do not
-       // create hit-for-pass)
+       // If admission test succeeds, mark as uncacheable
        if (admissionprob < urand) {
+           <%- if @varnish_version == 5 -%>
+           // HFM with ttl=67 to avoid stalling
+           VRT_l_beresp_ttl(ctx,67);
+           <%- else -%>
            VRT_l_beresp_ttl(ctx,0);
+           <%- end -%>
            VRT_l_beresp_uncacheable(ctx,1);
        }
     }
