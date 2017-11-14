@@ -169,6 +169,12 @@ define varnish::instance(
     }
 
     # Log slow requests to syslog
+    if $instance_name == '' {
+        $slow_requests_programname = 'varnish-be-slowreqs'
+    } else {
+        $slow_requests_programname = 'varnish-fe-slowreqs'
+    }
+
     systemd::service { "varnish${instancesuffix}-slowreqs":
         ensure         => present,
         content        => systemd_template('varnish-slowreqs'),
