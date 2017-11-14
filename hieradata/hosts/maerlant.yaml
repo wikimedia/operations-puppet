@@ -1,0 +1,3 @@
+profile::bird::neighbors_list:
+  - 91.198.174.2 # cr1-esams ae1:100
+  - 91.198.174.3 # cr2-esams ae1:100
