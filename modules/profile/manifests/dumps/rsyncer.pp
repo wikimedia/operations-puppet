@@ -1,10 +1,10 @@
 class profile::dumps::rsyncer(
     $rsync_clients = hiera('dumps_web_rsync_server_clients'),
+    $user = hiera('profile::dumps::rsyncer::dumps_user'),
+    $group = hiera('profile::dumps::rsyncer::dumps_group'),
+    $deploygroup = hiera('profile::dumps::rsyncer::dumps_deploygroup'),
+    $mntpoint = hiera('profile::dumps::rsyncer::dumps_mntpoint'),
 ) {
-    $user = 'datasets'
-    $group = 'datasets'
-    $deploygroup = 'wikidev'
-
     $stats_hosts = 'stat1005.eqiad.wmnet stat1006.eqiad.wmnet'
     $peer_hosts = 'dataset1001.wikimedia.org ms1001.wikimedia.org dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet labstore1006.wikimedia.org'
     $phab_hosts = 'phab1001.eqiad.wmnet'
