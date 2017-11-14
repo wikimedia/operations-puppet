@@ -90,7 +90,7 @@ class puppetmaster(
         'puppet-el',
         'rails',
         'ruby-json',
-        'ruby-mysql',
+        'ruby-mysql2',
         ]:
         ensure  => present,
     }
