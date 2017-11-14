@@ -56,27 +56,27 @@ define monitoring::graphite_threshold(
     $metric,
     $warning,
     $critical,
-    $series             = false,
-    $from               = '10min',
-    $until              = '0min',
-    $percentage         = 1,
-    $under              = false,
-    $graphite_url       = 'https://graphite.wikimedia.org',
-    $timeout            = 10,
-    $host               = $::hostname,
-    $retries            = 3,
-    $group              = undef,
-    $ensure             = present,
-    $nagios_critical    = false,
-    $passive            = false,
-    $freshness          = 36000,
-    $check_interval     = 1,
-    $retry_interval     = 1,
-    $contact_group      = 'admins',
-    $description_suffix = undef,
+    $description_suffix,
+    $series          = false,
+    $from            = '10min',
+    $until           = '0min',
+    $percentage      = 1,
+    $under           = false,
+    $graphite_url    = 'https://graphite.wikimedia.org',
+    $timeout         = 10,
+    $host            = $::hostname,
+    $retries         = 3,
+    $group           = undef,
+    $ensure          = present,
+    $nagios_critical = false,
+    $passive         = false,
+    $freshness       = 36000,
+    $check_interval  = 1,
+    $retry_interval  = 1,
+    $contact_group   = 'admins',
 )
 {
-
+    validate_legacy('Optional[String]', 'validate_re', $description_suffix, ['^https:\/\/grafana\.wikimedia\.org'])
 
     # checkcommands.cfg's check_graphite_threshold command has
     # many positional arguments that
@@ -104,12 +104,6 @@ define monitoring::graphite_threshold(
         default => 'check_graphite_threshold'
     }
 
-    if $description_suffix {
-        $display_name = "${description} - ${description_suffix}"
-    } else {
-        $display_name => undef
-    }
-
     monitoring::service { $title:
         ensure         => $ensure,
         description    => $description,
@@ -122,6 +116,6 @@ define monitoring::graphite_threshold(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
-        display_name   => $display_name,
+        display_name   => "${description} - ${description_suffix}",
     }
 }

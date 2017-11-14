@@ -51,24 +51,25 @@ define monitoring::graphite_anomaly(
     $metric,
     $warning,
     $critical,
-    $check_window       = 100,
-    $graphite_url       = 'https://graphite.wikimedia.org',
-    $timeout            = 10,
-    $over               = false,
-    $under              = false,
-    $host               = $::hostname,
-    $retries            = 3,
-    $group              = undef,
-    $ensure             = present,
-    $nagios_critical    = false,
-    $passive            = false,
-    $freshness          = 36000,
-    $check_interval     = 1,
-    $retry_interval     = 1,
-    $contact_group      = 'admins',
-    $description_suffix = undef,
+    $description_suffix,
+    $check_window    = 100,
+    $graphite_url    = 'https://graphite.wikimedia.org',
+    $timeout         = 10,
+    $over            = false,
+    $under           = false,
+    $host            = $::hostname,
+    $retries         = 3,
+    $group           = undef,
+    $ensure          = present,
+    $nagios_critical = false,
+    $passive         = false,
+    $freshness       = 36000,
+    $check_interval  = 1,
+    $retry_interval  = 1,
+    $contact_group   = 'admins',
 )
 {
+    validate_legacy('Optional[String]', 'validate_re', $description_suffix, ['^https:\/\/grafana\.wikimedia\.org'])
 
     if $over == true {
         $modifier = '--over'
@@ -82,12 +83,6 @@ define monitoring::graphite_anomaly(
 
     if $metric =~ /'/ {
         fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
-    }
-
-    if $description_suffix {
-        $display_name = "${description} - ${description_suffix}"
-    } else {
-        $display_name => undef
     }
 
     # checkcommands.cfg's check_graphite_anomaly command has
@@ -112,6 +107,6 @@ define monitoring::graphite_anomaly(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
-        display_name   => $display_name,
+        display_name   => "${description} - ${description_suffix}",
     }
 }
