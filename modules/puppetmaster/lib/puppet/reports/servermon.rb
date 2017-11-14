@@ -22,7 +22,7 @@
 # License http://www.apache.org/licenses/LICENSE-2.0
 
 require 'puppet'
-require 'mysql'
+require 'mysql2'
 require 'English'
 
 Puppet::Reports.register_report(:servermon) do
@@ -58,7 +58,7 @@ Puppet::Reports.register_report(:servermon) do
           return true
         end
         begin
-            con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
+            con = Mysql2::Client.new(:host => dbserver, :username => dbuser, :password => dbpassword, :database => 'puppet')
             # First we try to update the host, if it fails, insert it
             update_host = "UPDATE hosts SET \
             environment = '#{environment}', \
@@ -137,7 +137,7 @@ Puppet::Reports.register_report(:servermon) do
                     # rubocop:enable Style/Next
                 end
             end
-        rescue Mysql::Error => e
+        rescue Mysql2::Error => e
             puts "Mysql error: #{e.errno}, #{e.error}"
             puts e.errno
             puts e.error
