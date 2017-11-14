@@ -26,7 +26,7 @@ cache::app_def_be_opts:
   connect_timeout: '5s'
   first_byte_timeout: '185s'
   between_bytes_timeout: '60s'
-  max_connections: 0
+  max_connections: 100
 cache::app_directors:
   bromine:
     backends:
