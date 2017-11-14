@@ -386,11 +386,6 @@ node /^db1(044|072|077|078)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned in T173570
-node 'db1015.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2018.codfw.wmnet' {
@@ -439,22 +434,6 @@ node /^db1(070|071|082|087|092|096|099|100|104|106)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned in T175264
-node 'db1049.eqiad.wmnet' {
-    role(spare::system)
-}
-
-# To be decommissioned in T174763
-node 'db1026.eqiad.wmnet' {
-    role(spare::system)
-}
-
-# To be decommissioned in T174806
-node 'db1045.eqiad.wmnet' {
-    role(spare::system)
-}
-
-
 # s5 (wikidata/dewiki) core production dbs on codfw
 # codfw master
 node 'db2023.codfw.wmnet' {
@@ -479,12 +458,6 @@ node 'db1061.eqiad.wmnet' {
 node /^db10(30|85|88|93|98)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
-
-# To be decommissioned in T178162
-node 'db1050.eqiad.wmnet' {
-    role(spare::system)
-}
-
 
 #
 # s6 core production dbs on codfw
@@ -1673,11 +1646,6 @@ node /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/ {
 node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
     include ::base::firewall
-}
-
-# mw1161-1167 are job runners
-node /^mw116[1-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
 }
 
 # mw1180-1188 are apaches
