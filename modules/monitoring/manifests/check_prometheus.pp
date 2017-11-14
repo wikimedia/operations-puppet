@@ -78,6 +78,7 @@ define monitoring::check_prometheus(
     $prometheus_url,
     $warning,
     $critical,
+    $dashboard_link,
     $method          = 'ge',
     $nan_ok          = false,
     $retries         = 5,
@@ -85,21 +86,15 @@ define monitoring::check_prometheus(
     $ensure          = present,
     $nagios_critical = false,
     $contact_group   = 'admins',
-    $dashboard_link  = undef,
 )
 {
     validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
     validate_bool($nan_ok)
+    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
 
     $command = $nan_ok ? {
         true    => 'check_prometheus_nan_ok',
         default => 'check_prometheus',
-    }
-
-    if $dashboard_link {
-        $display_name = "${description} - ${dashboard_link}"
-    } else {
-        $display_name = undef
     }
 
     monitoring::service { $title:
@@ -110,6 +105,6 @@ define monitoring::check_prometheus(
         group         => $group,
         critical      => $nagios_critical,
         contact_group => $contact_group,
-        display_name  => $display_name,
+        display_name  => "${description} - ${dashboard_link}",
     }
 }

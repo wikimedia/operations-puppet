@@ -50,6 +50,7 @@ define monitoring::graphite_anomaly(
     $metric,
     $warning,
     $critical,
+    $dashboard_link,
     $check_window    = 100,
     $graphite_url    = 'https://graphite.wikimedia.org',
     $timeout         = 10,
@@ -65,9 +66,9 @@ define monitoring::graphite_anomaly(
     $check_interval  = 1,
     $retry_interval  = 1,
     $contact_group   = 'admins',
-    $dashboard_link  = undef,
 )
 {
+    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
 
     if $over == true {
         $modifier = '--over'
@@ -81,12 +82,6 @@ define monitoring::graphite_anomaly(
 
     if $metric =~ /'/ {
         fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
-    }
-
-    if $dashboard_link {
-        $display_name = "${description} - ${dashboard_link}"
-    } else {
-        $display_name = undef
     }
 
     # checkcommands.cfg's check_graphite_anomaly command has
@@ -111,6 +106,6 @@ define monitoring::graphite_anomaly(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
-        display_name   => $display_name,
+        display_name   => "${description} - ${dashboard_link}",
     }
 }
