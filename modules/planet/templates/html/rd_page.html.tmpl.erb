@@ -123,8 +123,9 @@
     </head>
     <body id="rawdog" onload="readReadColor()">
         <div id="page">
-	<div id="header">
-	        <h1><%= @title %>.planet.wikimedia.org</h1>
+            <div id="header">
+                <img src="Wikimedia_Community_Logo.svg" alt="Wikimedia Community Logo" style="width: 7%; vertical-align: top; padding: 10px 10px 10px 10px;" align="left" />
+                <h1><%= @title %>.planet.wikimedia.org</h1>
                 <h3>(rawdog __version__: __num_items__ items from __num_feeds__ feeds)</h3>
                 <p><a onclick="toggleall('block')">Open all</a> <a onclick="toggleall('none')">Close all</a> <a onclick="markAllRead()">Mark All Read</a></p>
             </div>
