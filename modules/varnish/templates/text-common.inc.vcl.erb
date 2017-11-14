@@ -135,11 +135,16 @@ sub text_common_backend_response {
 		bereq.http.Cookie == "Token=1"
 		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
 	) {
-		set beresp.ttl = 607s;
 		set beresp.grace = 31s;
 		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
+		// HFP
+		<%- if @varnish_version == 5 -%>
+		return(pass(607s));
+		<%- else -%>
+		set beresp.ttl = 607s;
 		set beresp.uncacheable = true;
 		return (deliver);
+		<%- end -%>
 	}
 }
