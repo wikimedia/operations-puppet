@@ -86,7 +86,7 @@
                         toggle(next.id);
                         window.location = "#" + next.parentNode.id;
                     }else{
-                        var begin=document.getElementById("beggining")
+                        var begin=document.getElementById("beginning")
                         begin.style.display="block"
                         setTimeout(function(){begin.style.display="none"},1000);
                     }
@@ -123,12 +123,13 @@
     </head>
     <body id="rawdog" onload="readReadColor()">
         <div id="page">
-            <div id="header">
-                <h1>rawdog __version__: __num_items__ items from __num_feeds__ feeds</h1>
+	<div id="header">
+	        <h1><%= @title %>.planet.wikimedia.org</h1>
+                <h3>(rawdog __version__: __num_items__ items from __num_feeds__ feeds)</h3>
                 <p><a onclick="toggleall('block')">Open all</a> <a onclick="toggleall('none')">Close all</a> <a onclick="markAllRead()">Mark All Read</a></p>
             </div>
-            <div id=beggining>
-                <p>You've reached the beggining</p>
+            <div id=beginning>
+                <p>You've reached the beginning</p>
             </div>
             <div class="pages">
                 __paged_output_pages__
