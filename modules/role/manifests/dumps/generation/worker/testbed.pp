@@ -1,6 +1,6 @@
 class role::dumps::generation::worker::testbed {
     include standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include profile::dumps::generation::worker::common
 

@@ -42,8 +42,6 @@ class dumps::web::xmldumps(
         mode   => '0444',
     }
 
-    include ::base::firewall
-
     ferm::service { 'xmldumps_http':
         proto => 'tcp',
         port  => '80',

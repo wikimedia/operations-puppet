@@ -47,7 +47,6 @@ class dumps::nfs(
         options => "nlm_udpport=${lockd_udp} nlm_tcpport=${lockd_tcp}",
     }
 
-    include ::base::firewall
     include ::network::constants
 
     ferm::service { 'dumps_nfs':
