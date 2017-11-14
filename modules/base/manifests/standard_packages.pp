@@ -109,7 +109,11 @@ class base::standard_packages {
                   'libjasper1',
                   'libnettle4',
                   'libruby2.1',
-                  'ruby2.1'
+                  'ruby2.1',
+                  'libpsl0',
+                  'libwiretap4',
+                  'libwsutil4',
+                  'libpng12-0'
             ]:
             ensure => absent,
         }
