@@ -11,4 +11,5 @@ class role::dnsrecursor {
     }
 
     include ::profile::dnsrecursor
+    include ::profile::bird::anycast
 }
