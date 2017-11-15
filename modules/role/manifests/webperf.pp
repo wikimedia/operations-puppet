@@ -17,10 +17,15 @@ class role::webperf {
     $kafka_config  = kafka_config('analytics')
     $kafka_brokers = $kafka_config['brokers']['string']
 
+    # statsv is on main kafka, not analytics or jumbo kafka
+    $kafka_main_config = kafka_config('main')
+    $kafka_main_brokers = $kafka_main_config['brokers']['string']
     # Consume statsd metrics from Kafka and emit them to statsd.
     class { '::webperf::statsv':
-        kafka_brokers => $kafka_brokers,
+        kafka_brokers => $kafka_main_brokers,
         statsd        => $statsd,
+        # Consume from all main DC statsv topics.
+        topics        => 'eqiad.statsv,codfw.statsv'
     }
 
     # Aggregate client-side latency measurements collected via the

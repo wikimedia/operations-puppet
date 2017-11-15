@@ -5,11 +5,15 @@
 # [*kafka_brokers*]
 #   string of comma separated Kafka bootstrap brokers
 #
+# [*topics*]
+#   Comma separated list of topics from which statsv should consume. Default statsv
+#
 # [*statsd*]
 #   host:port of statsd instance.  Default: localhost:8125
 #
 class webperf::statsv(
     $kafka_brokers,
+    $topics = 'statsv',
     $statsd = 'localhost:8125',
 ) {
     include ::webperf

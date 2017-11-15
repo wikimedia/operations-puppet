@@ -13,16 +13,19 @@
 # [*varnish_svc_name*]
 #   The name of the init unit for the above.
 #   Default 'varnish-frontend'
-# [*kafka_protocol_version*]
-#   Kafka API version to use, needed for brokers < 0.10
-#   https://issues.apache.org/jira/browse/KAFKA-3547
+# [*kafka_cluster_name*]
+#   The name of the kafka cluster to use from the kafka_clusers hiera variable.
+#   Default: 'main'
 #
 class role::cache::kafka::statsv(
     $varnish_name           = 'frontend',
     $varnish_svc_name       = 'varnish-frontend',
-    $kafka_protocol_version = '0.9.0.1',
+    $kafka_cluster_name     = 'main',
 ) inherits role::cache::kafka
 {
+    $kafka_config = kafka_config($kafka_cluster_name)
+    $kafka_brokers = $kafka_config['brokers']['array']
+
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
@@ -30,20 +33,19 @@ class role::cache::kafka::statsv(
     $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
     varnishkafka::instance { 'statsv':
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
         brokers                     => $kafka_brokers,
         # lint:endignore
         format                      => $format,
         format_type                 => 'json',
-        topic                       => 'statsv',
+        # Prefix statsv topic with datacenter name.
+        topic                       => "${::site}.statsv",
         varnish_name                => $varnish_name,
         varnish_svc_name            => $varnish_svc_name,
         varnish_opts                => $varnish_opts,
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
         conf_template               => $conf_template,
-        force_protocol_version      => $kafka_protocol_version,
+        force_protocol_version      => $kafka_config['api_version'],
     }
 
     include ::standard
