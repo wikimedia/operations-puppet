@@ -681,10 +681,10 @@ node /^dbproxy100(3|8)\.eqiad\.wmnet$/ {
 node 'dbproxy1004.eqiad.wmnet' {
     class { '::role::mariadb::proxy::master':
         shard          => 'm4',
-        primary_name   => 'db1046',
-        primary_addr   => '10.64.16.35',
-        secondary_name => 'db1047',
-        secondary_addr => '10.64.16.36',
+        primary_name   => 'db1107',
+        primary_addr   => '10.64.0.214',
+        secondary_name => 'db1108',
+        secondary_addr => '10.64.32.71',
     }
 }
 
@@ -692,10 +692,10 @@ node 'dbproxy1004.eqiad.wmnet' {
 node 'dbproxy1009.eqiad.wmnet' {
     class { '::role::mariadb::proxy::master':
         shard          => 'm4',
-        primary_name   => 'db1046',
-        primary_addr   => '10.64.16.35:3306',
-        secondary_name => 'db1047',
-        secondary_addr => '10.64.16.36:3306',
+        primary_name   => 'db1107',
+        primary_addr   => '10.64.0.214:3306',
+        secondary_name => 'db1108',
+        secondary_addr => '10.64.32.71:3306',
     }
 }
 
