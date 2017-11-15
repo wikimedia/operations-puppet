@@ -1,0 +1,7 @@
+profile::kafka::analytics::burrow::lagcheck_intervals: 100
+profile::kafka::analytics::burrow::httpserver_port: 8000
+profile::kafka::analytics::burrow::consumer_groups:
+  - eventlogging_processor_client_side_00
+  - eventlogging_consumer_mysql_00
+  - eventlogging_consumer_mysql_eventbus_00
+  - eventlogging_consumer_files_00

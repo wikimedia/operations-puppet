@@ -1,9 +1,9 @@
-# == Class: role::grafana::production
+# == Class: profile::grafana::production
 #
 # Grafana is a dashboarding webapp for Graphite.
 # It powers <https://grafana.wikimedia.org>.
 #
-class role::grafana::production {
+class profile::grafana::production {
     include ::passwords::grafana::production
 
     class { '::role::grafana::base':
