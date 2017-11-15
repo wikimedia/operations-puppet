@@ -17,12 +17,17 @@
 # === Usage
 #
 #   $cluster_name = kafka_cluster_name($prefix)
+# or
+#   $cluster_name = kafka_cluster_name($prefix, 'esams')
 #
-# This will get you the full Kafka cluster name for the given prefix. If the
-# '::kafka_cluster_name' variable is set in Hiera, the prefix is ignored and
-# the value is returned.
+# This will get you the full Kafka cluster name for the given prefix in the current $::site.
+# The full kafka cluster name is either looked up in the kafka_datacenter_map in Hiera,
+# OR returned as $prefix-$site.
 #
-
+# If the '::kafka_cluster_name' variable is set in Hiera, the prefix is ignored and
+# the value is returned.  TODO: remove ::kafka_cluster_name support; this is no longer used
+# and can cause confusion.
+#
 module Puppet::Parser::Functions
   newfunction(:kafka_cluster_name, :type => :rvalue, :arity => -2) do |args|
     # If kafka_cluster_name is set in scope in hiera, then just return it.
@@ -41,6 +46,7 @@ module Puppet::Parser::Functions
     # For historical reasons, the name of this cluster is 'eqiad'.
     elsif prefix == 'analytics'
       'eqiad'
+    # Else expect that the caller wants the kafka cluster for prefix in the current datacenter.
     else
       "#{prefix}-#{site}"
     end
