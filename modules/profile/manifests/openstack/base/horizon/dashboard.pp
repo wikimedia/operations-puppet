@@ -27,6 +27,6 @@ class profile::openstack::base::horizon::dashboard(
     ferm::service { 'horizon_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$PRODUCTION_NETWORKS',
+        srange => '$CACHE_MISC'
     }
 }
