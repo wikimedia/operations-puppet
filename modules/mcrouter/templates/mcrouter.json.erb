@@ -1,0 +1,49 @@
+{
+  "pools": {
+    "eqiad-mediawiki": {
+      "servers": [
+        "10.68.23.25:11211",
+        "10.68.23.49:11211"
+      ]
+    },
+    "codfw-mediawiki": {
+      "servers": [
+        "10.68.22.239:11211",
+        "10.68.17.171:11211"
+      ]
+    }
+  },
+  "routes":
+  [
+    {
+      "aliases": [ "/eqiad/mw/" ],
+      "route": "PoolRoute|eqiad-mediawiki"
+    },
+    {
+      "aliases": [ "/eqiad/mw-wan/" ],
+      "route": {
+        "type": "OperationSelectorRoute",
+        "default_policy": "PoolRoute|eqiad-mediawiki",
+        "operation_policies": {
+          "set": "AllFastestRoute|Pool|eqiad-mediawiki",
+          "delete": "AllFastestRoute|Pool|eqiad-mediawiki"
+        }
+      }
+    },
+    {
+      "aliases": [ "/codfw/mw/" ],
+      "route": "PoolRoute|codfw-mediawiki"
+    },
+    {
+      "aliases": [ "/codfw/mw-wan/" ],
+      "route": {
+        "type": "OperationSelectorRoute",
+        "default_policy": "PoolRoute|codfw-mediawiki",
+        "operation_policies": {
+          "set": "AllFastestRoute|Pool|codfw-mediawiki",
+          "delete": "AllFastestRoute|Pool|codfw-mediawiki"
+        }
+      }
+    }
+  ]
+}
