@@ -10,5 +10,6 @@ class role::racktables {
     system::role { 'racktables': description => 'Racktables server' }
 
     include ::standard
+    include ::profile::base::firewall
     include ::profile::racktables
 }
