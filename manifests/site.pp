@@ -1621,7 +1621,6 @@ node /^mw118[0-8]\.eqiad\.wmnet$/ {
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 # mw1209-1216, 1218-1220 are apaches
@@ -1633,7 +1632,6 @@ node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
 #mw1221-mw1235 are api apaches
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 #mw1238-mw1258 are apaches
@@ -1663,12 +1661,10 @@ node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
 # mw1276 - mw1290
 node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
-    include ::base::firewall
 }
 
 node /^mw12(8[0-9]|90)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 # ROW A eqiad imagescalers
@@ -1692,7 +1688,6 @@ node /^mw13(19|2[0-8])\.eqiad\.wmnet$/ {
 # ROW B eqiad api-appservers
 node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 # ROW A eqiad jobrunners
@@ -1728,7 +1723,6 @@ node /^mw2(097|10[0-9]|11[0-7])\.codfw\.wmnet$/ {
 #mw2120-2147 are api appservers
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 # ROW B codfw appservers
@@ -1764,7 +1758,6 @@ node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
 #mw2200-2214 are api appservers
 node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 # New Appservers, in row A3/A4
@@ -1772,7 +1765,6 @@ node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
 #mw2215-2223 are api appservers
 node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 # mw2224-42 are appservers
@@ -1800,7 +1792,6 @@ node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
 #mw2251-2253 are api-appservers
 node /^mw225[1-3]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
-    include ::base::firewall
 }
 
 #mw2254-2258 are appservers
