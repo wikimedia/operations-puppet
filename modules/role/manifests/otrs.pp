@@ -8,5 +8,6 @@ class role::otrs {
         description => 'OTRS Web Application Server',
     }
     include ::standard
+    include ::profile::base::firewall
     include ::profile::otrs
 }
