@@ -1,6 +1,6 @@
 # A role that includes all the needed stuff to run a ganglia web frontend
 class role::ganglia::web {
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::standard
     include role::ganglia::config
     include role::ganglia::views
