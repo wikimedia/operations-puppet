@@ -87,17 +87,12 @@ class profile::cache::text(
         backend_warming  => $backend_warming,
     }
 
-    # varnishkafka statsv listens for special stats related requests
-    # and sends them to the 'statsv' topic in Kafka.
-    # A kafka consumer then consumes these and emits
-    # metrics.
-    class { '::role::cache::kafka::statsv': }
-
     # varnishkafka eventlogging listens for eventlogging
     # requests and logs them to the eventlogging-client-side
     # topic.  EventLogging servers consume and process this
     # topic into many JSON based kafka topics for further
     # consumption.
+    # TODO: Move this to profile, include from role::cache::text.
     class { '::role::cache::kafka::eventlogging': }
 
     # ResourceLoader browser cache hit rate and request volume stats.
