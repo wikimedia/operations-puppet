@@ -2,6 +2,7 @@
 class role::webserver_misc_static {
 
     include ::standard
+    include ::profile::base::firewall
 
     include ::apache
     include ::apache::mod::authnz_ldap
