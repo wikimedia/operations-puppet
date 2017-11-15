@@ -190,7 +190,6 @@ class profile::planet::venus (
         planet_http_proxy  => $planet_http_proxy,
     }
 
-    include ::base::firewall
     ferm::service { 'planet-http':
         proto  => 'tcp',
         port   => '80',
