@@ -2,9 +2,7 @@
 #
 # This class sets up the Wikimania Scholarships application
 #
-class role::wikimania_scholarships {
-
-    include ::profile::base::firewall
+class profile::wikimania_scholarships {
 
     class { '::wikimania_scholarships':
         hostname     => 'scholarships.wikimedia.org',
