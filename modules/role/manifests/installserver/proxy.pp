@@ -13,7 +13,7 @@ class role::installserver::proxy {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     ferm::service { 'proxy':
         proto  => 'tcp',
