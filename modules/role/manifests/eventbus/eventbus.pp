@@ -56,22 +56,25 @@ class role::eventbus::eventbus {
     # The 48564 value isn't arbitrary - it's the difference between default message.max.size and default max.request.size
     $producer_request_max_size = $kafka_message_max_bytes + 48564
 
-    $outputs = [
-        # When events are produced to kafka, the
-        # topic produced to will be interpolated from the event
-        # and this format.  We use datacenter prefixed topic names.
-        # E.g.
-        #   meta[topic] == mediawiki.revision_create
-        # in eqiad will be produced to
-        #   eqiad.mediawiki.revsion_create
-        #
+    # When events are produced to kafka, the
+    # topic produced to will be interpolated from the event
+    # and this format.  We use datacenter prefixed topic names.
+    # E.g.
+    #   meta[topic] == mediawiki.revision_create
+    # in eqiad will be produced to
+    #   eqiad.mediawiki.revsion_create
+    $kafka_output_uri = $::hostname ? {
+        # Temporarily test async production on kafka1001: T180017
+        'kafka1001' => "${kafka_base_uri}?async=True&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}"
         # We produce async=False so that we can be sure each request is ACKed by Kafka
         # before we return an HTTP status, and wait up to 10 seconds for this to happen.
         # In normal cases, this will be much much faster than 10 seconds, but during
         # broker restarts, it can take a few seconds for meta data and leadership
         # info to propagate to the kafka client.
-        "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}"
-    ]
+        default     => "${kafka_base_uri}?async=False&sync_timeout=10.0&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}"
+    }
+
+    $outputs = [$kafka_output_uri]
 
     $access_log_level = $::realm ? {
         'production' => 'WARNING',
