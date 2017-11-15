@@ -22,7 +22,7 @@ class role::mariadb::proxy::master(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template("role/haproxy/${master_template}"),
+        content => template("role/haproxy/${master_template}.erb"),
     }
 
     nrpe::monitor_service { 'haproxy_failover':
