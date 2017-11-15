@@ -8,7 +8,9 @@
 class profile::racktables (
     $racktables_host = hiera('profile::racktables::racktables_host'),
 ){
+    system::role { 'racktables': description => 'Racktables server' }
 
+    include ::standard
     include ::apache
     include ::apache::mod::php5
     include ::apache::mod::ssl
