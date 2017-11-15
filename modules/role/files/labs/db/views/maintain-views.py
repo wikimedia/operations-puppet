@@ -435,6 +435,9 @@ if __name__ == "__main__":
 
     with dbh.cursor() as cursor:
         cursor.execute("SET NAMES 'utf8';")
+        cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
+        cursor.execute("SET SESSION lock_wait_timeout=60;")
+
         for db, db_info in dbs_with_metadata.items():
             ops = SchemaOperations(args.dry_run,
                                    args.replace_all,
