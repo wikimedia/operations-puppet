@@ -34,7 +34,10 @@ class profile::apertium {
         'apertium-bel-rus',
         'apertium-br-fr',
         'apertium-ca-it',
-        'apertium-cat',
+        'apertium-cat'
+        'apertium-cat-srd'
+        'apertium-crh',
+        'apertium-crh-tur',
         'apertium-cy-en',
         'apertium-dan',
         'apertium-dan-nor',
@@ -89,6 +92,7 @@ class profile::apertium {
         'apertium-swe-dan',
         'apertium-swe-nor',
         'apertium-tat',
+        'apertium-tur',
         'apertium-urd',
         'apertium-urd-hin',
         'cg3',
