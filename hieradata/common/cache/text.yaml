@@ -33,3 +33,11 @@ cache::text::nodes:
     - 'cp4030.ulsfo.wmnet'
     - 'cp4031.ulsfo.wmnet'
     - 'cp4032.ulsfo.wmnet'
+
+# This should match an entry in the kafka_clusters hash (defined in common.yaml).
+# We use the fully qualified kafka cluster name (with datacenter), because we want
+# to route all statsv -> statsd traffic to the datacenter that hosts the master
+# statsd instance.  If the active statsd instance changes to codfw (for an extended period of time)
+# should probably change this to main-codfw.  If you don't things will probably be fine,
+# but statsv will have to send messages over UDP cross-DC to the active statsd instance.
+profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
