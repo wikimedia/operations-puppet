@@ -9,7 +9,7 @@ class role::phabricator_server {
 
     include ::standard
     include ::lvs::realserver
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::apache::mod::remoteip
     include ::profile::backup::host
     include ::profile::phabricator::main

@@ -35,8 +35,6 @@ class profile::gerrit::server(
         }
     }
 
-    include ::base::firewall
-
     # ssh from users to gerrit
     ferm::service { 'gerrit_ssh_users':
         proto => 'tcp',
