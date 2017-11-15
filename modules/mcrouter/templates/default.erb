@@ -1,0 +1,10 @@
+# Default settings for mcrouter.
+# This file is managed by Puppet.
+
+PORT="<%= @port %>"
+ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
+--cross-region-timeout-ms=<%= @cross_region_timeout_ms %> \
+--cross-cluster-timeout-ms=<%= @cross_cluster_timeout_ms %> \
+--send-invalid-route-to-default \
+--file-observer-poll-period-ms=1000 \
+--file-observer-sleep-before-update-ms=100"
