@@ -14,6 +14,11 @@ class role::deployment::mediawiki(
     include ::profile::scap::dsh
     include ::scap::ferm
 
+    # mcrouter testing (T151466)
+    if $::realm == 'labs' {
+        include ::profile::mediawiki::mcrouter_wancache
+    }
+
     # Keyholder
     require ::keyholder
     require ::keyholder::monitoring
