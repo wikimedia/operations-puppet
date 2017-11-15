@@ -12,12 +12,17 @@ class role::mariadb::proxy::master(
     class { 'role::mariadb::proxy':
         shard => $shard,
     }
+    if os_version('debian >= stretch') {
+        $master_template = 'db-master-stretch.cfg'
+    } else {
+        $master_template = 'db-master.cfg'
+    }
 
-    file { '/etc/haproxy/conf.d/db-master.cfg':
+    file { "/etc/haproxy/conf.d/db-master.cfg":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('role/haproxy/db-master.cfg.erb'),
+        content => template("role/haproxy/${master_template}"),
     }
 
     nrpe::monitor_service { 'haproxy_failover':
