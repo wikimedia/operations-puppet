@@ -152,6 +152,15 @@ logstash_logback_port: 11514
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
+"mcrouter::shards":
+  wancache:
+    eqiad:
+      shard01:
+        host: 10.68.23.25  # deployment-memc04
+        port: 11211
+      shard02:
+        host: 10.68.23.49  # deployment-memc05
+        port: 11211
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: '1.05'
 profile::memcached::size: '3000'
