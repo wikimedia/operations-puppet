@@ -46,7 +46,7 @@ dns-auth: P{O:authdns::server}
 dns-auth-canary: P{eeden.wikimedia.org}
 dns-rec: P{O:dnsrecursor}
 dns-rec-canary: P{hydrogen.wikimedia.org}
-druid: P{O:druid::analytics::worker}
+druid: P{O:druid::analytics::worker or O:druid::public::worker}
 dumps: P{O:dumps::server or O:dumpsdata or O:dumps::zim}
 elastic: P{O:elasticsearch::cirrus}
 elastic-canary: P{elastic1017.eqiad.wmnet}
