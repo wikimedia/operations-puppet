@@ -339,7 +339,7 @@ def is_sane(value):
 
 
 def is_sanev2(value):
-    return isinstance(value, int) and value >= 0 and value < 180000
+    return isinstance(value, int) and value >= 0
 
 
 @handles('SaveTiming')
@@ -471,7 +471,7 @@ def handle_navigation_timing(meta):
         if not isSane:
             break
 
-    # If one of the metrics are over the max then skip it entirely
+    # If one of the metrics are under the min then skip it entirely
     if not isSane:
         yield make_count('frontend.navtiming_discard', 'isSane')
     else:
