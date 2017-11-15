@@ -489,6 +489,36 @@ kafka_clusters:
         id: 1006
         rack: D
 
+
+# Maps an unqualified Kafka cluster name and datacenter (AKA ::site) to a fully qualified
+# Kafka cluster name in the kafka_clusters hash.  This is useful when selecting a Kafka
+# cluster to use in a datacenter that doesn't have a local Kafka cluster of that type.
+# E.g. varnishkafka statsv producers in esams should produce to the main-eqiad Kafka cluster.
+# This is how they know to do so.  Generally this should be a mapping to the geographically
+# closest Kafka cluster of the type (main, jumbo, etc.).
+#
+# Ideally this type of mappin  would be in a discovery service (confd), mapping cluster
+# prefix discovery names to Kafka cluster details.  But, this is not expected to change
+# often and should be fine here.
+kafka_datacenter_map:
+  main:
+    # eqiad and esams should use main-eqiad.
+    eqiad: main-eqiad
+    esams: main-eqiad
+    # codfw, ulsfo and eqsin should use main-codfw.
+    codfw: main-codfw
+    ulsfo: main-codfw
+    eqsin: main-codfw
+  jumbo:
+    # jumbo only exists in eqiad, so all sites map to it.
+    eqiad: jumbo-eqiad
+    codfw: jumbo-eqiad
+    esams: jumbo-eqiad
+    ulsfo: jumbo-eqiad
+    eqsin: jumbo-eqiad
+
+
+
 deployment_server: tin.eqiad.wmnet
 
 install_server: install1002.wikimedia.org
