@@ -2,7 +2,7 @@
 class role::microsites::peopleweb {
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::backup::host
 
     class { '::publichtml':
