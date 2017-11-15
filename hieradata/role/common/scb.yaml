@@ -100,8 +100,11 @@ profile::changeprop::ores_uris:
   - http://ores.svc.eqiad.wmnet:8081
   - http://ores.svc.codfw.wmnet:8081
 ### END CHANGEPROP ###
+
+# memcached
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
+profile::mcrouter_wancache::monitor_port: 0
 
 # Recommendation API
 profile::recommendation_api::wdqs_uri: "http://wdqs.discovery.wmnet"
