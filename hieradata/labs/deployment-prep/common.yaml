@@ -147,6 +147,10 @@ profile::cassandra::settings:
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
+mediawiki_wancache_memcached_servers:
+    eqiad:
+      - 10.68.23.25:11211:1  # deployment-memc04
+      - 10.68.23.49:11211:1  # deployment-memc05
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: '1.05'
 profile::memcached::size: '3000'
