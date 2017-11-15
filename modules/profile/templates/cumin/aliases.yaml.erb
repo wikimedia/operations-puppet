@@ -71,7 +71,7 @@ jobqueue-redis-codfw: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:
 jobqueue-redis-eqiad: (A:jobqueue-redis-master or A:jobqueue-redis-slave) and A:eqiad
 jobqueue-redis-master: P{O:jobqueue_redis::master}
 jobqueue-redis-slave: P{O:jobqueue_redis::slave}
-kafka-all: A:kafka-analytics or A:kafka-main or A:kafka-jumbo-canary
+kafka-all: A:kafka-analytics or A:kafka-main or A:kafka-jumbo
 kafka-analytics: P{O:kafka::analytics::broker}
 kafka-analytics-canary: P{kafka1012.eqiad.wmnet}
 kafka-main: P{O:kafka::main::broker}
