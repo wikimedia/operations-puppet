@@ -9,7 +9,7 @@ class role::releases {
     }
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::releases::mediawiki
     include ::profile::releases::reprepro

@@ -19,8 +19,6 @@ class profile::requesttracker::server {
         dbpass      => $passwords::misc::rt::rt_mysql_pass,
     }
 
-    include ::base::firewall
-
     ferm::service { 'rt-http':
         proto  => 'tcp',
         port   => '80',
