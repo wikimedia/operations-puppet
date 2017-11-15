@@ -565,7 +565,13 @@ node 'db2012.codfw.wmnet' {
 }
 
 # m4 shard
+
+# old eventlogging master database, will be decommed in T156844
 node 'db1046.eqiad.wmnet' {
+    role(mariadb::misc::eventlogging::master)
+}
+
+node 'db1107.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::master)
 }
 
