@@ -1,0 +1,5 @@
+# Default settings for mcrouter.
+# This file is managed by Puppet.
+
+DAEMON_OPTS="--route-prefix=<%= @region %>/<%= @cluster %> \
+--cross-region-timeout-ms=<%= @cross_region_timeout_ms %> --cross_cluster_timeout_ms=<%= @cross_cluster_timeout_ms %>"
