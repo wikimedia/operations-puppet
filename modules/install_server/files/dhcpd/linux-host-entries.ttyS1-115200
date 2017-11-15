@@ -1244,6 +1244,8 @@ host db1100 {
 host db1101 {
     hardware ethernet 18:66:DA:F8:D5:DC;
     fixed-address db1101.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1102 {
