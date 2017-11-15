@@ -1,0 +1,28 @@
+{
+  "pools": {
+    "eqiad-cluster-main": {
+      "servers": [ "10.68.23.25:11211", "10.68.23.49:11211" ],
+      "pool_locality":
+          <%= if $::site == 'eqiad' %> "cluster" <%= else %> "region" <%= end %>
+    },
+    "codfw-cluster-main": {
+      "servers": [ "10.68.22.239:11211", "10.68.22.239:11211" ],
+      <%= if $::site == 'codfw' %> "cluster" <%= else %> "region" <%= end %>
+
+    }
+  },
+  "route": {
+    "type": "OperationSelectorRoute",
+    "default_policy": "PoolRoute|eqiad-cluster-main",
+    "operation_policies": {
+      "set": {
+        "type": "AllFastestRoute",
+        "children": [ "PoolRoute|eqiad-cluster-main", "PoolRoute|eqiad-cluster-main" ]
+      },
+      "delete": {
+        "type": "AllFastestRoute",
+        "children": [ "PoolRoute|codfw-cluster-main", "PoolRoute|codfw-cluster-main" ]
+      }
+    }
+  }
+}
