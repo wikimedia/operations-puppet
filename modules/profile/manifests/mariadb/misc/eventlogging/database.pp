@@ -74,6 +74,6 @@ class profile::mariadb::misc::eventlogging::database (
         shard      => $shard,
         datacenter => $::site,
         enabled    => $master,
-        socket     => '/tmp/mysql.sock',
+        socket     => $mariadb_socket,
     }
 }
