@@ -5,11 +5,10 @@
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 #
-class role::racktables {
+class profile::racktables {
 
     system::role { 'racktables': description => 'Racktables server' }
 
     include ::standard
-    include ::profile::base::firewall
     include ::profile::racktables
 }

@@ -1,10 +1,8 @@
-# = Class: role::iegreview::app
+# = Class: role::iegreview
 #
 # This class provisions the IEG grant review application.
 #
-class role::iegreview::app {
-
-    include ::profile::base::firewall
+class profile::iegreview {
 
     class { '::iegreview':
         hostname   => 'iegreview.wikimedia.org',
