@@ -4,7 +4,6 @@ class profile::microsites::wikibase(
   $server_admin = hiera('profile::microsites::wikibase::server_admin'),
 ) {
 
-    include ::base::firewall
     include ::apache
     include ::apache::mod::headers
 
