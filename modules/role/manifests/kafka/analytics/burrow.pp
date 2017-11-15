@@ -1,8 +1,8 @@
-# == Class role::kafka::analytics::burrow
-# Role classes for burrow, a consumer offset lag monitoring tool
+# == Class profile::kafka::analytics::burrow
+# Profile class for burrow, a consumer offset lag monitoring tool
 # for Kafka.
 #
-class role::kafka::analytics::burrow {
+class profile::kafka::analytics::burrow {
 
     $config = kafka_config('analytics')
 
