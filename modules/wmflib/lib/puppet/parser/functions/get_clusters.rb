@@ -41,7 +41,7 @@ module Puppet::Parser::Functions
       sites = false
     end
 
-    function_query_resources([false, 'Class["Profile::Cumin::Target"]', false]).each do |node|
+    function_query_resources([false, 'Class["Profile::Cumin::Target"]', false, 'certname']).each do |node|
       cluster = node['parameters']['cluster']
       site = node['parameters']['site']
       fqdn = node['certname']
