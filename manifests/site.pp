@@ -1239,14 +1239,16 @@ node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
 }
 
 
-# virtual machine for misc. PHP apps
+# virtual machine for misc. applications
+# (as opposed to static sites using 'webserver_misc_static')
+# 
+# profile::wikimania_scholarships - https://scholarships.wikimedia.org/
+# profile::iegreview              - https://iegreview.wikimedia.org
+# profile::grafana::production    - https://grafana.wikimedia.org
+# profile::racktables             - https://racktables.wikimedia.org
+# kafka::analytics::burrow is a Kafka consumer lag monitor
 node 'krypton.eqiad.wmnet' {
-    # kafka::analytics::burrow is a Kafka consumer lag monitor.
-    # Running this here because krypton is a 'misc' Jessie
-    # <s>monitoring host</s> (not really, it's just misc apps)
-    role(wikimania_scholarships, iegreview::app, grafana::production,
-        kafka::analytics::burrow, racktables)
-    include ::standard
+    role(webserver_misc_apps,kafka::analytics::burrow)
 }
 
 node /kubernetes[12]00[1-4]\.(codfw|eqiad)\.wmnet/ {
