@@ -11,7 +11,6 @@ class profile::otrs(
     $exim_database_pass = hiera('profile::otrs::exim_database_pass'),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ){
-    include ::base::firewall
     include network::constants
     include ::profile::prometheus::apache_exporter
 
