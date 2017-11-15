@@ -4,6 +4,7 @@
 # It powers <https://grafana.wikimedia.org>.
 #
 class role::grafana::production {
+
     include ::passwords::grafana::production
 
     class { '::role::grafana::base':
