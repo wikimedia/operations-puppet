@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Random sleep to stagger execution of this script
+sleep $(($RANDOM % 600))
+
 # Check if currently a slave
 for instance in "$@";
 do
