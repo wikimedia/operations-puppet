@@ -2,9 +2,10 @@
 # verification during email accept
 # vim: set ts=4 et sw=4:
 class role::openldap::corp {
+    include ::standard
     include passwords::openldap::corp
     include ::profile::backup::host
-    include ::base::firewall
+    include ::profile::base::firewall
 
     system::role { 'openldap::corp':
         description => 'Corp OIT openldap Mirror server'

@@ -1083,8 +1083,6 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
 node 'labtestservices2001.wikimedia.org' {
     role(wmcs::openstack::labtest::services,
           openldap::labtest)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1990,7 +1988,6 @@ node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
 # LDAP servers relied on by OIT for mail
 node /(dubnium|pollux)\.wikimedia\.org/ {
     role(openldap::corp)
-    include ::standard
 }
 
 node /poolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
@@ -2163,8 +2160,6 @@ node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
-    include ::standard
-    include ::base::firewall
 }
 
 # Silver is the new home of the wikitech web server.
