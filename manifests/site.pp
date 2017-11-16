@@ -910,6 +910,7 @@ node /^kubestagetcd100[123]\.eqiad\.wmnet$/ {
 # kubernetes masters
 node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # kubernetes staging master
