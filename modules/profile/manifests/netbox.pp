@@ -120,15 +120,15 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       $monitoring_ensure = 'absent'
   }
 
-  monitoring::service { 'https':
+  monitoring::service { 'netbox-ssl':
       ensure        => $monitoring_ensure,
-      description   => 'HTTPS',
+      description   => 'Netbox HTTPS',
       check_command => 'check_ssl_http_letsencrypt!netbox.wikimedia.org',
   }
 
-  monitoring::service { 'librenms':
+  monitoring::service { 'netbox-https':
       ensure        => $monitoring_ensure,
-      description   => 'LibreNMS HTTPS',
+      description   => 'Netbox HTTPS',
       check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
   }
 
