@@ -9,8 +9,9 @@ class role::openldap::labtest(
         description => 'LDAP servers for labs test cluster (based on OpenLDAP)'
     }
 
+    include ::standard
     include passwords::openldap::labtest
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $ldap_labs_hostname = $ldap_labs_hosts[0]
 
