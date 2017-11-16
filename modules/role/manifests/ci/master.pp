@@ -15,6 +15,7 @@ class role::ci::master {
 
     include ::standard
     include ::profile::ci::backup
+    include ::profile::base::firewall
     include ::profile::ci::firewall
     include ::profile::ci::jenkins
     include ::profile::ci::slave
