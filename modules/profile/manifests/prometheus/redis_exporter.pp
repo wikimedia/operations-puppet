@@ -20,7 +20,7 @@
 define profile::prometheus::redis_exporter (
     $password,
     $prometheus_nodes,
-    $hostname = $::fqdn,
+    $hostname = $::hostname,
     $port = $title + 10000,
 ) {
     ::prometheus::redis_exporter { $title:

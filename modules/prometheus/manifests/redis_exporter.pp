@@ -22,7 +22,7 @@ define prometheus::redis_exporter (
     $instance = $title,
     $arguments = '',
     $password = '',
-    $hostname = $::fqdn,
+    $hostname = $::hostname,
     $port = '9121'
 ) {
     require_package('prometheus-redis-exporter')
