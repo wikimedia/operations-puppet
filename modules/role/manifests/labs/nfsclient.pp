@@ -10,7 +10,6 @@ class role::labs::nfsclient(
         mount_path  => '/mnt/nfs/labstore-secondary-project',
         share_path  => "/project/${::labsproject}/project",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
-        block       => true,
         lookupcache => $lookupcache,
     }
 
@@ -21,7 +20,6 @@ class role::labs::nfsclient(
         mount_path  => '/mnt/nfs/labstore-secondary-home',
         share_path  => "/project/${::labsproject}/home",
         server      => 'nfs-tools-project.svc.eqiad.wmnet',
-        block       => true,
         lookupcache => $lookupcache,
     }
 

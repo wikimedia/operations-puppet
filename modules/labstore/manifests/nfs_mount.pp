@@ -27,9 +27,6 @@
 # [*options]
 #  Array of options to combine with the standard options
 #
-# [*block]
-#  boolean to determine if we should block to wait for share
-#
 # [*block_timeout]
 #  timeout to block for share availability
 
@@ -41,7 +38,6 @@ define labstore::nfs_mount(
     $share_path = undef,
     $server = undef,
     $options = [],
-    $block=false,
     $block_timeout = 180,
     $lookupcache='none',
 )
@@ -129,24 +125,6 @@ define labstore::nfs_mount(
     }
 
     if ($ensure == 'present') and mount_nfs_volume($project, $mount_name) {
-
-        if $block {
-            if !defined(File['/usr/local/sbin/block-for-export']) {
-                # This script will block until the NFS volume is available
-                file { '/usr/local/sbin/block-for-export':
-                    ensure => present,
-                    owner  => 'root',
-                    group  => 'root',
-                    mode   => '0555',
-                    source => 'puppet:///modules/labstore/block-for-export',
-                }
-            }
-            exec { "block-for-nfs-${name}":
-                command => "/usr/local/sbin/block-for-export ${server} project/${project} ${block_timeout}",
-                require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], File['/usr/local/sbin/block-for-export']],
-                unless  => "/bin/mountpoint -q ${mount_path}",
-            }
-        }
 
         # 'present' is meant to manage only the status of entries in /etc/fstab
         # a notable exception to this is in the case of an entry managed as 'present'
