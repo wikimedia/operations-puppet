@@ -343,7 +343,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block007
-    depool-threshold: '.8'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -374,7 +374,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block007
     port: 443
-    depool-threshold: '.6'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -399,7 +399,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block008
-    depool-threshold: '.74'
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -430,7 +430,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block008
     port: 443
-    depool-threshold: '.74'
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -455,7 +455,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block009
-    depool-threshold: '.5'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -486,7 +486,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block009
     port: 443
-    depool-threshold: '.6'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
