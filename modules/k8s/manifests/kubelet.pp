@@ -10,6 +10,7 @@ class k8s::kubelet(
     $cni=false,
     $cni_bin_dir='/opt/cni/bin',
     $cni_conf_dir='/etc/cni/net.d',
+    $kubeconfig='/etc/kubernetes/kubeconfig',
 ) {
     require ::k8s::infrastructure_config
 
@@ -40,7 +41,7 @@ class k8s::kubelet(
     service { 'kubelet':
         ensure    => running,
         subscribe => [
-            File['/etc/kubernetes/kubeconfig'],
+            File[$kubeconfig],
             File['/etc/default/kubelet'],
         ],
     }
