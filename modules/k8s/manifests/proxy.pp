@@ -2,6 +2,7 @@ class k8s::proxy(
     $master_host,
     $proxy_mode = 'iptables',
     $masquerade_all = true,
+    $kubeconfig = '/etc/kubernetes/kubeconfig',
 ) {
     require ::k8s::infrastructure_config
 
@@ -31,7 +32,7 @@ class k8s::proxy(
     service { 'kube-proxy':
         ensure    => running,
         subscribe => [
-            File['/etc/kubernetes/kubeconfig'],
+            File[$kubeconfig],
             File['/etc/default/kube-proxy'],
         ],
 

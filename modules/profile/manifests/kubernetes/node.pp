@@ -7,6 +7,7 @@ class profile::kubernetes::node(
   $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
   $prometheus_nodes = hiera('prometheus_nodes', []),
   $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
+  $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -34,6 +35,7 @@ class profile::kubernetes::node(
     class { '::k8s::proxy':
         master_host    => $master_fqdn,
         masquerade_all => $masquerade_all,
+        kubeconfig     => $kubeproxy_config,
     }
 
     $master_hosts_ferm = join($master_hosts, ' ')
