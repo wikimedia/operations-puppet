@@ -25,7 +25,7 @@ KUBELET_API_SERVER="--api-servers=https://<%= @master_host %>:6443"
 
 <%-
 daemon_args = [
-	'--kubeconfig=/etc/kubernetes/kubeconfig',
+  "--kubeconfig=#{@kubeconfig}",
 ]
 
 if @pod_infra_container_image
