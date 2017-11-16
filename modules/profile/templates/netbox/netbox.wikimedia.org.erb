@@ -28,12 +28,12 @@
 
     ProxyPreserveHost On
 
-    Alias /static <%= @directory%>/static
+    Alias /static /srv/deployment/netbox/deploy/netbox/netbox/static
 
     # Needed to allow token-based API authentication
     WSGIPassAuthorization on
 
-    <Directory <%= @directory%>/static>
+    <Directory /srv/deployment/netbox/deploy/netbox/netbox/static>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
