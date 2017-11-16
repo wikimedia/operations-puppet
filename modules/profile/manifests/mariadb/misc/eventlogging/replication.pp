@@ -74,9 +74,9 @@ class profile::mariadb::misc::eventlogging::replication (
         source => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync.sh',
     }
 
-    logrotate::rule { 'eventlogging_sync':
+    logrotate::rule { 'eventlogging':
         ensure        => present,
-        file_glob     => '/var/log/eventlogging_sync*.log',
+        file_glob     => '/var/log/eventlogging_*.log',
         frequency     => 'daily',
         copy_truncate => true,
         compress      => true,
@@ -114,6 +114,26 @@ class profile::mariadb::misc::eventlogging::replication (
         base::service_unit { 'eventlogging_sync':
             ensure  => present,
             systemd => systemd_template('mariadb/misc/eventlogging/eventlogging_sync'),
+        }
+
+        # Sanitization of data in the log database via a custom script
+        # The eventlogging_cleaner script uses the --start-ts-file file option,
+        # that forces it to look for a file containing a timestamp in the format
+        # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
+        # without doing any action to the db. This is useful to avoid gaps in
+        # records sanitized if the script fails and does not commit a new timestamp.
+        $eventlogging_cleaner_command = '/usr/local/bin/eventlogging_cleaner --whitelist /etc/eventlogging/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2'
+        $command = "/usr/bin/flock -n /var/lock/eventlogging_cleaner -c '${eventlogging_cleaner_command}' >> /var/log/eventlogging_cleaner.log"
+        cron { 'eventlogging_cleaner daily sanitization':
+            ensure  => present,
+            command => $command,
+            user    => 'eventlogcleaner',
+            hour    => 1,
+            require => [
+                File['/usr/local/bin/eventlogging_cleaner'],
+                File['/etc/eventlogging/whitelist.tsv'],
+                User['eventlogcleaner'],
+            ]
         }
     }
 
