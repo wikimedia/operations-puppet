@@ -1,6 +1,0 @@
-fixtures:
-    symlinks:
-        mysql: "#{source_dir}"
-        apparmor: "../../../../apparmor"
-        stdlib: "../../../../stdlib"
-        wmflib: "../../../../wmflib"
