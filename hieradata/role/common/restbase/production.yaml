@@ -184,13 +184,13 @@ profile::cassandra::instances:
   #    listen_address: 10.192.48.47
   #  c:
   #    listen_address: 10.192.48.48
-  "restbase2006.codfw.wmnet":
-    a:
-      listen_address: 10.192.48.49
-    b:
-      listen_address: 10.192.48.50
-    c:
-      listen_address: 10.192.48.51
+  #"restbase2006.codfw.wmnet":
+  #  a:
+  #    listen_address: 10.192.48.49
+  #  b:
+  #    listen_address: 10.192.48.50
+  #  c:
+  #    listen_address: 10.192.48.51
   "restbase2007.codfw.wmnet":
     a:
       listen_address: 10.192.16.176
