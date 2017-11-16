@@ -30,7 +30,7 @@ class role::icinga {
     include ::profile::scap::dsh
     include mysql
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
