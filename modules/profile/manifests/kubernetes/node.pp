@@ -24,10 +24,8 @@ class profile::kubernetes::node(
     class { '::k8s::kubelet':
         master_host               => $master_fqdn,
         listen_address            => '0.0.0.0',
-        cluster_dns_ip            => '192.168.0.100',
         cni                       => $use_cni,
         pod_infra_container_image => $infra_pod,
-        cluster_domain            => undef,
         tls_cert                  => '/etc/kubernetes/ssl/cert.pem',
         tls_key                   => '/etc/kubernetes/ssl/server.key',
         kubeconfig                => $kubelet_config,
