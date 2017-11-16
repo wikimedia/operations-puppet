@@ -10,12 +10,9 @@ class k8s::infrastructure_config(
     }
 
     $users = hiera('k8s_infrastructure_users')
-    file { '/etc/kubernetes/kubeconfig':
-        ensure  => present,
-        content => template('k8s/kubeconfig-client.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        require => File['/etc/kubernetes'],
+    k8s::kubeconfig { '/etc/kubernetes/kubeconfig':
+        master_host => $master_host,
+        username    => $username,
+        token       => $users[$username]['token'],
     }
 }
