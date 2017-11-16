@@ -29,7 +29,6 @@ class profile::pmacct (
     }
 
     include ::standard
-    include ::base::firewall
 
     $loopbacks = [
         # eqiad
