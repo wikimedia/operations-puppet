@@ -204,20 +204,17 @@ class toollabs::bastion(
     include ::ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
-    $cron_host = hiera('active_cronrunner')
-    file { '/usr/local/bin/crontab':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        content => template('toollabs/crontab.erb'),
-    }
     file { '/etc/toollabs-cronhost':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => $cron_host,
+        content => hiera('active_cronrunner'),
+    }
+    file { '/usr/local/bin/crontab':
+        ensure  => 'link',
+        target  => '/usr/bin/oge-crontab',
+        require => Package['misctools'],
     }
 
     file { '/usr/local/bin/killgridjobs.sh':
