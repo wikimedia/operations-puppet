@@ -8,6 +8,6 @@ class profile::dumps::generation::server::primary {
 
     class { '::dumps::generation::server::rsyncer':
         dumpsdir   => '/data/xmldatadumps',
-        remotedirs => 'dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,dataset1001.wikimedia.org::data/xmldatadumps/public/',
+        remotedirs => 'dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,dataset1001.wikimedia.org::data/xmldatadumps/public/,labstore1006.wikimedia.org::data/xmldatadumps/public/',
     }
 }
