@@ -2,8 +2,9 @@
 #  this is a fork of role::openldap::labs, minus the mirroring and monitoring
 
 class role::openldap::labtest {
+    include ::standard
     include passwords::openldap::labtest
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $ldapconfig = hiera_hash('labsldapconfig', {})
     $ldap_labs_hostname = $ldapconfig['hostname']
