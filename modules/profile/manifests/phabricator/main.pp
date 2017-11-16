@@ -243,23 +243,7 @@ class profile::phabricator::main (
 
     class { '::phabricator::mailrelay':
         default                 => {
-            security     => 'users',
             maint        => false,
-            taskcreation => "task@${domain}",
-        },
-        direct_comments_allowed => {
-            ops-codfw   => '*',
-            ops-eqiad   => '*',
-            ops-esams   => '*',
-            ops-ulsfo   => '*',
-            domains     => 'markmonitor.com,wikimedia.org',
-            procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
-        },
-        phab_bot                => {
-            root_dir    => '/srv/phab/phabricator/',
-            username    => 'emailbot',
-            host        => "https://${domain}/api/",
-            certificate => $passwords::phabricator::emailbot_cert,
         },
     }
 
