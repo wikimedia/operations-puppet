@@ -3,7 +3,11 @@
 # ($maps_project_internal_ips) must be set at the node level or via hiera.
 #
 
-class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
+class role::labs::nfs::misc(
+    $dump_servers_ips,
+    $maps_project_internal_ips,
+    $statistics_servers = hiera('statistics_servers'),
+    ) {
 
     system::role { 'labs::nfs::misc':
         description => 'Labs NFS service (misc)',
@@ -32,7 +36,6 @@ class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
 
     # This also exports /srv/statistics to allow statistics servers
     # a way to rsync public data in from production.
-    $statistics_servers = hiera('statistics_servers')
     rsync::server::module { 'statistics':
         path        => '/srv/statistics',
         read_only   => 'no',
@@ -101,5 +104,12 @@ class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
         atboot  => true,
         device  => '/dev/srv/maps/',
         require => File['/srv/maps'],
+    }
+
+    # this is how prod hosts drop off datasets for serving
+    ferm::rule{'puppetbackendgetter':
+        ensure => 'present',
+        rule   => "saddr (@resolve((${dump_servers_ips})) @resolve((${statistics_servers})))
+                   proto tcp dport 873 ACCEPT;",
     }
 }
