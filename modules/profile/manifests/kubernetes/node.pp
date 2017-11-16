@@ -40,7 +40,7 @@ class profile::kubernetes::node(
     ferm::service { 'kubelet-http':
         proto  => 'tcp',
         port   => '10250',
-        srange => "(@resolve((${master_hosts_ferm})))",
+        srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
     }
 
     if !empty($prometheus_nodes) {
