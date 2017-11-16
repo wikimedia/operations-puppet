@@ -8,7 +8,7 @@ all = []
   cluster_hosts = val[@site].select { |host| @resources.include?(host) }
   if cluster_hosts.length > 0
     # For each host found, accumulate the resources we found for it into
-    # targets in the title:port form.
+    # targets in the host:port form.
     targets = []
     cluster_hosts.each{ |host|
       @resources[host].each{ |instance|
