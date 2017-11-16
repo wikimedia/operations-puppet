@@ -6,8 +6,18 @@
 # = Parameters
 #
 class role::icinga {
+
+    include ::standard
+    include ::profile::base::firewall
+    include ::profile::scap::dsh
+
+    include role::authdns::monitoring
+    include netops::monitoring
     include facilities
     include lvs::monitor
+    include mysql
+    include rsync::server
+
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
     include icinga::nsca::daemon
@@ -24,13 +34,6 @@ class role::icinga {
     include icinga::monitor::services
     include icinga::monitor::reading_web
     include icinga::event_handlers::raid
-
-    include role::authdns::monitoring
-    include netops::monitoring
-    include ::profile::scap::dsh
-    include mysql
-    include ::standard
-    include ::base::firewall
 
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
@@ -65,7 +68,6 @@ class role::icinga {
         ensure => $ircbot_present,
     }
 
-    include rsync::server
     ferm::service { 'icinga-rsync':
         proto  => 'tcp',
         port   => 873,
