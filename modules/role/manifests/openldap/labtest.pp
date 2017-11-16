@@ -10,7 +10,7 @@ class role::openldap::labtest(
     }
 
     include passwords::openldap::labtest
-    include ::base::firewall
+    include ::profile::base::firewall
 
     $ldap_labs_hostname = $ldap_labs_hosts[0]
 
