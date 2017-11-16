@@ -3,7 +3,11 @@
 # ($maps_project_internal_ips) must be set at the node level or via hiera.
 #
 
-class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
+class role::labs::nfs::misc(
+    $dump_servers_ips,
+    $maps_project_internal_ips,
+    $statistics_servers = hiera('statistics_servers'),
+    ) {
 
     system::role { 'labs::nfs::misc':
         description => 'Labs NFS service (misc)',
@@ -102,4 +106,12 @@ class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
         device  => '/dev/srv/maps/',
         require => File['/srv/maps'],
     }
+
+    # this is how prod hosts drop off datasets for serving
+    ferm::rule{'puppetbackendgetter':
+        ensure => 'present',
+        rule   => "saddr (@resolve((${dumps_servers_ips})) @resolve((${statistics_servers})))
+                   proto tcp dport 873 ACCEPT;",
+    }
+
 }
