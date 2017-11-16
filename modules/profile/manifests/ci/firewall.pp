@@ -11,8 +11,8 @@ class profile::ci::firewall (
     $nodepool_host = hiera('profile::ci::firewall::nodepool_host'),
     $zuul_merger_hosts = hiera('profile::ci::firewall::zuul_merger_hosts'),
 ) {
-    class { '::base::firewall': }
     include ::network::constants
+    require ::profile::base::firewall
 
     # Restrict some services to be only reacheable from localhost over both
     # IPv4 and IPv6 (to be safe)
