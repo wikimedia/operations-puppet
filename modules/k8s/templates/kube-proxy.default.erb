@@ -4,7 +4,7 @@
 # default config should be adequate
 
 <%-
-daemon_args = ['--kubeconfig=/etc/kubernetes/kubeconfig']
+daemon_args = ["--kubeconfig=#{@kubeconfig}"]
 if @proxy_mode
 	daemon_args.push("--proxy-mode='#{@proxy_mode}'")
 end
