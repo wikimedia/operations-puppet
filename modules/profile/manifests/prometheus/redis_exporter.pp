@@ -8,7 +8,7 @@
 # [*password*]
 #   The password to be used to access redis.
 #
-# [*host*]
+# [*hostname*]
 #   The hostname for redis-exporter to listen on.
 #
 # [*port*]
@@ -20,11 +20,11 @@
 define profile::prometheus::redis_exporter (
     $password,
     $prometheus_nodes,
-    $host = $::fqdn,
+    $hostname = $::fqdn,
     $port = $title + 10000,
 ) {
     ::prometheus::redis_exporter { $title:
-        host     => $host,
+        hostname => $hostname,
         port     => $port,
         password => $password,
     }
