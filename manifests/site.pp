@@ -426,11 +426,11 @@ node /^db20(19|37|44|58|65|73)\.codfw\.wmnet/ {
 
 # s5 (wikidata/dewiki) core production dbs on eqiad
 # eqiad master
-node 'db1063.eqiad.wmnet' {
+node 'db1070.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(070|071|082|087|092|096|099|100|104|106)\.eqiad\.wmnet/ {
+node /^db1(063|071|082|087|092|096|099|100|104|106)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
