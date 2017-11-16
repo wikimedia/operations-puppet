@@ -2,7 +2,6 @@ class k8s::kubelet(
     $master_host,
     $listen_address = '0.0.0.0',
     $listen_port = undef,
-    $cluster_dns_ip = '192.168.0.100',
     $pod_infra_container_image = 'gcr.io/google_containers/pause:2.0',
     $cluster_domain = 'kube',
     $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
