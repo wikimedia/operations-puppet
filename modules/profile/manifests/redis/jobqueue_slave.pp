@@ -14,9 +14,14 @@ class profile::redis::jobqueue_slave {
         group  => 'root',
     }
     $instance_str = join($::profile::redis::slave::instances, ' ')
+    if $::site == 'codfw' {
+        $restart_hour = 3
+    } else {
+        $restart_hour = 1
+    }
     cron { 'jobqueue-redis-conditional-restart':
         command => "/usr/local/bin/restart-redis-if-slave ${instance_str}",
-        hour    => 1,
+        hour    => $restart_hour,
         minute  => 0,
     }
 }
