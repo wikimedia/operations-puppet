@@ -1,8 +1,9 @@
 # LDAP servers for labs (based on OpenLDAP)
 
 class role::openldap::labs {
+    include ::standard
     include passwords::openldap::labs
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::backup::host
 
     $ldapconfig = hiera_hash('labsldapconfig', {})

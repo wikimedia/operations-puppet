@@ -4,6 +4,13 @@
 class role::openldap::labtest(
     $ldap_labs_hosts = hiera('profile::openstack::labtest::ldap_hosts'),
     ) {
+    include ::standard
+    include passwords::openldap::labtest
+    include ::profile::base::firewall
+
+    $ldapconfig = hiera_hash('labsldapconfig', {})
+    $ldap_labs_hostname = $ldapconfig['hostname']
+>>>>>>> 33664c6fcd... openldap: move firewall/standard to roles, use profile
 
     system::role { 'openldap::labtest':
         description => 'LDAP servers for labs test cluster (based on OpenLDAP)'
