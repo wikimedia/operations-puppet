@@ -2,6 +2,7 @@
 #
 class role::piwik::server {
     include ::standard
+    include ::profile::base::firewall
     include ::profile::piwik::webserver
     include ::profile::piwik::instance
     # override profile::backup::enable to disable regular backups

@@ -15,7 +15,6 @@ class profile::piwik::webserver(
     class { '::apache::mod::rewrite': }
 
     class { '::passwords::ldap::production': }
-    class { '::base::firewall': }
 
     # LDAP configuration. Interpolated into the Apache site template
     # to provide mod_authnz_ldap-based user authentication.
