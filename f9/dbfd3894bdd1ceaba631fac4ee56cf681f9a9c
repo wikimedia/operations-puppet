@@ -1,0 +1,7 @@
+Code-Review+2: Ayounsi <ayounsi@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Ayounsi <ayounsi@wikimedia.org>
+Submitted-at: Thu, 16 Nov 2017 19:25:23 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/391871
+Project: operations/puppet
+Branch: refs/heads/production
