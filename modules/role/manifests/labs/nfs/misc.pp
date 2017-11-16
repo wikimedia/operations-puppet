@@ -102,4 +102,11 @@ class role::labs::nfs::misc($dump_servers_ips, $maps_project_internal_ips) {
         device  => '/dev/srv/maps/',
         require => File['/srv/maps'],
     }
+
+    # this is how prod hosts drop off datasets for serving
+    ferm::service { 'rsync-from-prod':
+        proto  => 'udp',
+        port   => '873',
+        srange => $dump_servers_ips,
+    }
 }
