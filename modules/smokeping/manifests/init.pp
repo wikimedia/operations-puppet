@@ -1,4 +1,14 @@
-class smokeping {
+# SmokePing - monitor network latency
+# https://oss.oetiker.ch/smokeping
+# https://github.com/oetiker/SmokePing
+#
+# parameters: $active_server
+# In a multi-server setup, set $active_server to the FQDN
+# of the server that should run the smokeping service
+# and be the rsync source of RRD files.
+class smokeping(
+    $active_server,
+) {
 
     require_package('smokeping', 'curl', 'dnsutils')
 
@@ -12,8 +22,14 @@ class smokeping {
         require => Package['smokeping'],
     }
 
+    if $active_server == $::fqdn {
+        $service_ensure = 'running'
+    } else {
+        $service_ensure = 'stopped'
+    }
+
     service { 'smokeping':
-        ensure    => running,
+        ensure    => $service_ensure,
         require   => [
             Package['smokeping'],
             File['/etc/smokeping/config.d'],
