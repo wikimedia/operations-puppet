@@ -162,7 +162,7 @@ node 'bromine.eqiad.wmnet' {
 }
 
 # Californium hosts openstack-dashboard AKA horizon
-# and Tool Labs admin console AKA Striker
+# and Toolforge admin console AKA Striker
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
     role(wmcs::openstack::main::horizon,
@@ -1012,7 +1012,8 @@ node 'labpuppetmaster1002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# labservices1001 hosts openstack-designate, the labs DNS service.
+# labservices1001 hosts openstack-designate
+# and the powerdns auth and recursive services for instances.
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services_primary)
     include ::standard
@@ -1243,9 +1244,10 @@ node 'labcontrol1001.wikimedia.org' {
     include ::ldap::role::client::labs
 }
 
-# labcontrol1002 is a hot spare for 1001.  Switching it on
-#  involves uncommenting the dns role, below, and also
-#  changing the keystone catalog to point to labcontrol1002:
+# labcontrol1002 is a hot spare for 1001.
+#  Switching it on involves changing the values in hiera
+#  that trigger 1002 to start designate.
+#  Changing the keystone catalog to point to labcontrol1002:
 #  basically repeated use of 'keystone endpoint-list,'
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
@@ -1256,7 +1258,7 @@ node 'labcontrol1002.wikimedia.org' {
     include ::ldap::role::client::labs
 }
 
-# This is the testlab server that implements both:
+# This is the labtest server that implements both:
 #  - silver (wikitech.wikimedia.org), and
 #  - californium (horizon.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
@@ -1271,7 +1273,9 @@ node 'labtestweb2001.wikimedia.org' {
 
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
-    role(labs::graphite, labs::prometheus, grafana::labs)
+    role(labs::graphite,
+          labs::prometheus,
+          grafana::labs)
     include ::standard
     include ::base::firewall
 }
@@ -2334,21 +2338,19 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     include ::standard
 }
 
-# As of 2017-07, labvirt1016, 1017 and 1018
-#  are puppetized and active but de-pooled
-# (hiera key: profile::openstack::main::nova::scheduler_pool)
-# They're kept empty as emergency fail-overs
-#  and also as potential transitional hosts
-#  during the upcoming neutron migration.
+# To see labvirt nodes active in the scheduler look at hiera:
+#  key: profile::openstack::main::nova::scheduler_pool
+# We try to keep a few empty as emergency fail-overs
+#  or transition hosts for maintenance to come
 node /^labvirt101[0-8].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
+
 #labvirt10[19-20] are to run labdb instances, set to spare for now T172538
 node /^labvirt10(19|20)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
-
 
 # Wikidata query service
 node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
