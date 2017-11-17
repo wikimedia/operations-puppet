@@ -96,6 +96,7 @@ profile::base::nrpe_allowed_hosts: '10.68.16.210'
 profile::base::ssh_server_settings:
   disable_agent_forwarding: false
   challenge_response_auth: false
+
 labs_puppet_master: "labs-puppetmaster.wikimedia.org"
 labs_keystone_host: "labcontrol1001.wikimedia.org"
 puppetmaster: "labs-puppetmaster.wikimedia.org"
@@ -121,23 +122,6 @@ cdh::hadoop::users::groups: project-%{::labsproject}
 labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
   secondary_hostname: ldap-labs.codfw.wikimedia.org
-
-# These are needed on labs for, among other things, observerenv.sh
-labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
-novaconfig:
-  db_host: 'm5-master.eqiad.wmnet'
-  glance_host: *labsnovacontroller
-  rabbit_host: *labsnovacontroller
-  cc_host: *labsnovacontroller
-  controller_hostname: *labsnovacontroller
-  puppet_host: *labsnovacontroller
-  puppet_db_host: *labsnovacontroller
-  dhcp_domain: 'eqiad.wmflabs'
-  live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
-  zone: eqiad
-  spice_hostname: 'labspice.wikimedia.org'
-  scheduler_pool:
-    - labvirt1001
 
 profile::diffscan::ipranges:
   - 185.15.56.0/22
