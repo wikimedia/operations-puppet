@@ -450,7 +450,6 @@ def handle_navigation_timing(meta):
         ('response', 'responseEnd', 'responseStart'),
         ('processing', 'domComplete', 'responseEnd'),
         ('onLoad', 'loadEventEnd', 'loadEventStart'),
-        ('mediaWikiLoad', 'mediaWikiLoadEnd', 'mediaWikiLoadStart'),
         ('ssl', 'connectEnd', 'secureConnectionStart'),
     ):
         if minuend in event and subtrahend in event:
@@ -464,6 +463,8 @@ def handle_navigation_timing(meta):
         metrics_nav2['unload'] = event['unload']
     if 'redirecting' in event:
         metrics_nav2['redirect'] = event['redirecting']
+    if 'mediaWikiLoadComplete' in event:
+        metrics_nav2['mediaWikiLoad'] = event['mediaWikiLoadComplete']
 
     # If one of the metrics are wrong, don't send them at all
     for metric, value in metrics_nav2.items():
