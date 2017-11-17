@@ -1,8 +1,0 @@
-admin::groups:
-  - deployment
-
-apache::logrotate::rotate: 12
-
-profile::openstack::labtest::version: 'mitaka'
-openstack::version: mitaka
-profile::backup::host::enable: false
