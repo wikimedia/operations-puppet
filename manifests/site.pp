@@ -1064,32 +1064,6 @@ node 'labtestcontrol2001.wikimedia.org' {
     include ::standard
     include ::base::firewall
     role(wmcs::openstack::labtest::control)
-
-    # Labtest is weird; the mysql server is on labtestcontrol2001.  So
-    #  we need some special fw rules to allow that
-    $designate = ipresolve(hiera('labs_designate_hostname'),4)
-    $horizon = ipresolve(hiera('labs_horizon_host'),4)
-    $wikitech = ipresolve(hiera('labs_osm_host'),4)
-    $puppetmaster = ipresolve('labtestpuppetmaster2001.wikimedia.org',4)
-    $fwrules = {
-        mysql_designate => {
-            rule  => "saddr ${designate} proto tcp dport (3306) ACCEPT;",
-        },
-        mysql_puppetmaster => {
-            rule  => "saddr ${puppetmaster} proto tcp dport (3306) ACCEPT;",
-        },
-        mysql_horizon => {
-            rule  => "saddr ${horizon} proto tcp dport (3306) ACCEPT;",
-        },
-        mysql_wikitech => {
-            rule  => "saddr ${wikitech} proto tcp dport (3306) ACCEPT;",
-        },
-        labspuppetbackend_horizon => {
-            rule  => "saddr ${horizon} proto tcp dport (8100) ACCEPT;",
-        },
-    }
-    create_resources (ferm::rule, $fwrules)
-
 }
 
 node 'labtestcontrol2003.wikimedia.org' {
