@@ -2,7 +2,7 @@
 # Sets up a pmacct passive monitoring deployment (http://www.pmacct.net/).
 # It can also produce statistics/data to kafka if configured.
 #
-# [*kafka_config*]
+# [*kafka_cluster*]
 #   Kafka cluster configuration to use.
 #   FIXME: The default version uses an indirect hiera call via kafka_config(),
 #   so eventually this parameter would need to be replaced with an explicit
@@ -15,13 +15,18 @@
 #   topic, settingX, valueX
 #   global, settingY, valueY
 #
+#   The special value 'undef' can be used to avoid the creation of a librdkafka
+#   configuration file and use its defaults instead.
+#
 class profile::pmacct (
-    $kafka_config      = kafka_config('analytics'),
+    $kafka_cluster     = hiera('profile::pmacct::kafka_cluster'),
     $librdkafka_config = hiera('profile::pmacct::librdkafka_config'),
 ) {
     system::role { 'pmacct':
         description => 'pmacct netflow accounting',
     }
+
+    $kafka_config = kafka_config($kafka_cluster)
 
     class { '::pmacct':
         kafka_brokers     => $kafka_config['brokers']['string'],
