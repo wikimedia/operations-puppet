@@ -3,8 +3,21 @@ class role::smokeping {
 
     system::role { 'smokeping': description => 'smokeping server' }
 
-    include ::smokeping
-    include ::smokeping::web
+    $active_server = hiera('netmon_server')
+
+    if $active_server == $::fqdn {
+        $rsync_ensure = 'absent'
+    } else {
+        $rsync_ensure = 'present'
+    }
+
+    rsync::quickdatacopy { 'var-lib-smokeping':
+        ensure      => $rsync_ensure,
+        auto_sync   => true,
+        source_host => $active_server,
+        dest_host   => $::fqdn,
+        module_path => '/var/lib/smokeping',
+    }
 
     ferm::service { 'smokeping-http':
         proto  => 'tcp',
@@ -12,13 +25,11 @@ class role::smokeping {
         srange => '$CACHE_MISC',
     }
 
-    backup::set {'smokeping': }
+    backup::set { 'smokeping': }
 
-    rsync::quickdatacopy { 'var-lib-smokeping':
-        ensure      => present,
-        auto_sync   => true,
-        source_host => 'netmon2001.wikimedia.org',
-        dest_host   => 'netmon1002.wikimedia.org',
-        module_path => '/var/lib/smokeping',
+    class{ '::smokeping':
+        active_server => $active_server,
     }
+
+    class{ '::smokeping::web' }
 }
