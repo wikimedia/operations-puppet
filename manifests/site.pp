@@ -714,10 +714,10 @@ node 'dbproxy1005.eqiad.wmnet' {
 node 'dbproxy1010.eqiad.wmnet' {
     class { '::role::mariadb::proxy::master':
         shard          => 'labsdb',
-        primary_name   => 'labsdb1011',
-        primary_addr   => '10.64.37.24',
-        secondary_name => 'labsdb1011',
-        secondary_addr => '10.64.37.24',
+        primary_name   => 'labsdb1009',
+        primary_addr   => '10.64.4.14',
+        secondary_name => 'labsdb1010',
+        secondary_addr => '10.64.37.23',
     }
 }
 
@@ -726,8 +726,8 @@ node 'dbproxy1011.eqiad.wmnet' {
         shard          => 'labsdb',
         primary_name   => 'labsdb1011',
         primary_addr   => '10.64.37.24',
-        secondary_name => 'labsdb1011',
-        secondary_addr => '10.64.37.24',
+        secondary_name => 'labsdb1010',
+        secondary_addr => '10.64.37.23',
     }
 }
 
