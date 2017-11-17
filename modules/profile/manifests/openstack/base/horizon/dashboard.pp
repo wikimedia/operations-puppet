@@ -8,8 +8,8 @@ class profile::openstack::base::horizon::dashboard(
     $webserver_hostname = hiera('profile::openstack::base::horizon::webserver_hostname'),
     ) {
 
-    # TODO: Add openstack2::util::envscripts during profile conversion
-    class { 'openstack2::horizon::service':
+    # TODO: Add openstack::util::envscripts during profile conversion
+    class { 'openstack::horizon::service':
         version             => $version,
         nova_controller     => $nova_controller,
         wmflabsdotorg_admin => $wmflabsdotorg_admin,
@@ -19,8 +19,8 @@ class profile::openstack::base::horizon::dashboard(
         webserver_hostname  => $webserver_hostname,
     }
 
-    #   require => Class['openstack2::horizon::service'],
-    class {'::openstack2::horizon::puppetpanel':
+    #   require => Class['openstack::horizon::service'],
+    class {'::openstack::horizon::puppetpanel':
         version => $version,
     }
 

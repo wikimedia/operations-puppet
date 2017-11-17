@@ -25,7 +25,7 @@ class profile::openstack::base::wikitech::service(
         system_svc => 'apache2',
     }
 
-    class { '::openstack2::wikitech::openstack_manager':
+    class { '::openstack::wikitech::openstack_manager':
         certificate                        => $certificate,
         webserver_hostname                 => $osm_host,
         webserver_hostname_aliases         => $webserver_hostname_aliases,

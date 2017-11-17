@@ -65,7 +65,7 @@ class profile::openstack::main::keystone::service(
         version => $version,
     }
 
-    class {'::openstack2::keystone::cleanup':
+    class {'::openstack::keystone::cleanup':
         active  => $::fqdn == $nova_controller,
         db_user => $db_user,
         db_pass => $db_pass,
@@ -73,7 +73,7 @@ class profile::openstack::main::keystone::service(
         db_name => $db_name,
     }
 
-    class {'::openstack2::monitor::spreadcheck':
+    class {'::openstack::monitor::spreadcheck':
         active          => $::fqdn == $nova_controller,
         nova_controller => $nova_controller,
         nova_user       => $spread_check_user,

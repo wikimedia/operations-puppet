@@ -31,7 +31,7 @@ class profile::openstack::base::nova::common(
     $keystone_auth_uri = "http://${nova_controller}:${public_port}"
     $nova_api_host_ip = ipresolve($nova_api_host,4)
 
-    class {'::openstack2::nova::common':
+    class {'::openstack::nova::common':
         version                  => $version,
         nova_controller          => $nova_controller,
         nova_api_host            => $nova_api_host,

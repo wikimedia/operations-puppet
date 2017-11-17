@@ -25,7 +25,7 @@ class profile::openstack::main::nova::network::service(
         network_public_ip                  => $network_public_ip,
     }
 
-    class {'::openstack2::nova::network::monitor':
+    class {'::openstack::nova::network::monitor':
         active => ($::fqdn == $nova_network_host),
     }
 }

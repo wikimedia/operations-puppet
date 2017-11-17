@@ -38,7 +38,7 @@ class profile::openstack::main::designate::service(
     }
 
 
-    class {'::openstack2::designate::monitor':
+    class {'::openstack::designate::monitor':
         active => ($::fqdn == $designate_host),
     }
 }

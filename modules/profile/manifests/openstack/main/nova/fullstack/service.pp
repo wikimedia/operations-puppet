@@ -9,5 +9,5 @@ class profile::openstack::main::nova::fullstack::service(
         osstackcanary_pass => $osstackcanary_pass,
     }
 
-    class {'::openstack2::nova::fullstack::monitor':}
+    class {'::openstack::nova::fullstack::monitor':}
 }
