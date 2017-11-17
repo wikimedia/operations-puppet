@@ -21,7 +21,7 @@ class snapshot::cron(
     class { '::snapshot::cron::cirrussearch': user   => $depr_user }
     class { '::snapshot::cron::categoriesrdf': user   => $depr_user }
     class { '::snapshot::cron::dumplists': user   => $depr_user }
-    class { '::snapshot::cron::dump_global_blocks': user   => $depr_user }
+    class { '::snapshot::cron::dump_global_blocks': user   => $miscdumpsuser }
     class { '::snapshot::cron::wikidatadumps':
         user  => $depr_user,
         group => $group,
