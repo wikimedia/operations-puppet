@@ -2395,6 +2395,10 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
 }
 
+node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
+    role(webperf)
+}
+
 node 'wezen.codfw.wmnet' {
     role(syslog::centralserver)
 }
