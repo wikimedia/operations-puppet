@@ -45,7 +45,7 @@ C{
 #include <inttypes.h>
 #include <string.h>
 
-<%- if @cluster == "cache_upload" -%>
+<%- if scope.function_hiera(['cluster']) == "cache_upload" -%>
 
 static const uintptr_t decoder_ring[256] = {
   // 0x00-0x1F (all unprintable)
@@ -283,7 +283,7 @@ void raw_normalize_path(const struct vrt_ctx *ctx, const int doslash) {
 
 }C
 
-<%- if @cluster == "cache_upload" -%>
+<%- if scope.function_hiera(['cluster']) == "cache_upload" -%>
 // Upload uses the new full-normalization code
 
 sub normalize_upload_path {
