@@ -52,6 +52,8 @@ class gerrit::jetty(
     $ldap_proxyagent_pass = $ldapconfig['proxypass']
 
     $java_options = [
+        "-Xmx${heap_limit} -Xms${heap_limit}",
+        '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
         # These settings apart from the bottom control logging for gc
         # '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
         # '-XX:+PrintGCApplicationStoppedTime',
@@ -62,7 +64,6 @@ class gerrit::jetty(
         # '-XX:+UseGCLogFileRotation',
         # '-XX:NumberOfGCLogFiles=10',
         # '-XX:GCLogFileSize=2M',
-        # '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.properties',
     ]
 
     require_package([
@@ -277,6 +278,47 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
+    file { '/var/lib/gerrit2/review_site/logs':
+        ensure  => directory,
+        recurse => remote,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        require => File['/var/lib/gerrit2/review_site'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/logs/error_log':
+        ensure  => 'present',
+        replace => 'no',
+        content => "# Puppet auto generated\n",
+        mode    => '0644',
+        require => File['/var/lib/gerrit2/review_site/logs'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/logs/gc_log':
+        ensure  => 'present',
+        replace => 'no',
+        content => "# Puppet auto generated\n",
+        mode    => '0644',
+        require => File['/var/lib/gerrit2/review_site/logs'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/logs/httpd_log':
+        ensure  => 'present',
+        replace => 'no',
+        content => "# Puppet auto generated\n",
+        mode    => '0644',
+        require => File['/var/lib/gerrit2/review_site/logs'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/logs/sshd_log':
+        ensure  => 'present',
+        replace => 'no',
+        content => "# Puppet auto generated\n",
+        mode    => '0644',
+        require => File['/var/lib/gerrit2/review_site/logs'],
+    }
+
     file { '/var/lib/gerrit2/review_site/static':
         ensure  => directory,
         recurse => remote,
@@ -284,6 +326,7 @@ class gerrit::jetty(
         group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/static',
+        require => File['/var/lib/gerrit2/review_site'],
     }
 
     file { '/var/lib/gerrit2/review_site/plugins':
