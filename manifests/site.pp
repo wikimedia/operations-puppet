@@ -678,18 +678,8 @@ node /^dbproxy100(3|8)\.eqiad\.wmnet$/ {
     }
 }
 
-node 'dbproxy1004.eqiad.wmnet' {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'm4',
-        primary_name   => 'db1107',
-        primary_addr   => '10.64.0.214',
-        secondary_name => 'db1108',
-        secondary_addr => '10.64.32.71',
-    }
-}
-
 # stretch haproxies (1.7) require the port number
-node 'dbproxy1009.eqiad.wmnet' {
+node /^dbproxy100(4|9)\.eqiad\.wmnet$/ {
     class { '::role::mariadb::proxy::master':
         shard          => 'm4',
         primary_name   => 'db1107',
