@@ -25,10 +25,15 @@ class profile::openstack::labtest::keystone::service(
     $designate_host = hiera('profile::openstack::labtest::designate_host'),
     $designate_host_standby = hiera('profile::openstack::labtest::designate_host_standby'),
     $horizon_host = hiera('profile::openstack::labtest::horizon_host'),
+    $puppetmaster_hostname = hiera('profile::openstack::labtest::puppetmaster_hostname'),
     ) {
 
     class{'::profile::openstack::base::keystone::db':
-        labs_hosts_range => $labs_hosts_range,
+        labs_hosts_range      => $labs_hosts_range,
+        puppetmaster_hostname => $puppetmaster_hostname,
+        designate_host        => $designate_host,
+        horizon_host          => $horizon_host,
+        osm_host              => $osm_host,
     }
 
     require ::profile::openstack::labtest::clientlib
