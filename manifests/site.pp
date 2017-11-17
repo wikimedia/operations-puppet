@@ -2385,6 +2385,9 @@ node /^labvirt10(19|20)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
+node /^webperf[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+    include ::standard
+}
 
 # Wikidata query service
 node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
