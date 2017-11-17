@@ -7,7 +7,6 @@ class role::mariadb::misc::phabricator(
     $snapshot  = false,
     $ssl       = 'puppet-cert',
     $p_s       = 'on',
-    $mariadb10 = true,
     ) {
 
     system::role { 'mariadb::misc':
