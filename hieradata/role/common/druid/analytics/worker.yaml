@@ -74,6 +74,9 @@ profile::druid::common::properties:
 profile::druid::broker::monitoring_enabled: true
 profile::druid::broker::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::druid::broker::properties:
+  druid.emitter: composing
+  druid.emitter.composing.emitters: ["logging","http"]
+  druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 2147483647
   # Set numMergeBuffers to use v2 groupBy engine
@@ -91,7 +94,10 @@ profile::druid::broker::env:
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
-profile::druid::coordinator::properties: {}
+profile::druid::coordinator::properties:
+  druid.emitter: composing
+  druid.emitter.composing.emitters: ["logging","http"]
+  druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
 profile::druid::coordinator::env:
   DRUID_HEAP_OPTS: "-Xmx10g -Xms10g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
@@ -100,6 +106,9 @@ profile::druid::coordinator::env:
 # --- Druid Historical
 profile::druid::historical::monitoring_enabled: true
 profile::druid::historical::properties:
+  druid.emitter: composing
+  druid.emitter.composing.emitters: ["logging","http"]
+  druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
   druid.processing.numThreads: 10
   druid.processing.buffer.sizeBytes: 1073741824
   # Set numMergeBuffers to use v2 groupBy engine
