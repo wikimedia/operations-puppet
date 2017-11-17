@@ -42,7 +42,7 @@ class profile::openstack::base::keystone::service(
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
-    class {'::openstack2::keystone::service':
+    class {'::openstack::keystone::service':
         active                      => ($::fqdn == $nova_controller),
         version                     => $version,
         nova_controller             => $nova_controller,
@@ -71,13 +71,13 @@ class profile::openstack::base::keystone::service(
         wiki_access_secret          => $wiki_access_secret,
     }
 
-    class {'::openstack2::keystone::monitor':
+    class {'::openstack::keystone::monitor':
         active      => $::fqdn == $nova_controller,
         auth_port   => $auth_port,
         public_port => $public_port,
     }
 
-    class {'::openstack2::util::envscripts':
+    class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,
         nova_controller       => $nova_controller,
         region                => $region,
@@ -87,7 +87,7 @@ class profile::openstack::base::keystone::service(
         wmflabsdotorg_project => $wmflabsdotorg_project,
     }
 
-    class {'::openstack2::util::admin_scripts':
+    class {'::openstack::util::admin_scripts':
         version => $version,
     }
 

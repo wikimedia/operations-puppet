@@ -9,7 +9,7 @@ class profile::openstack::labtest::nova::scheduler::service(
         nova_controller => $nova_controller,
     }
 
-    class {'::openstack2::nova::scheduler::monitor':
+    class {'::openstack::nova::scheduler::monitor':
         active => ($::fqdn == $nova_controller),
     }
 }

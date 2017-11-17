@@ -19,7 +19,7 @@ class profile::openstack::labtest::glance(
         labs_hosts_range        => $labs_hosts_range,
     }
 
-    class {'openstack2::glance::monitor':
+    class {'openstack::glance::monitor':
         active => ($::fqdn == $nova_controller),
     }
 }

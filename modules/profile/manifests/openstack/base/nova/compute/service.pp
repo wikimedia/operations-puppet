@@ -12,7 +12,7 @@ class profile::openstack::base::nova::compute::service(
     require_package('conntrack')
 
     if $::fqdn =~ /^labvirt100[0-9].eqiad.wmnet/ {
-        openstack2::nova::compute::partition{ '/dev/sdb':}
+        openstack::nova::compute::partition{ '/dev/sdb':}
     }
 
     interface::tagged { $network_flat_interface:
@@ -50,7 +50,7 @@ class profile::openstack::base::nova::compute::service(
         options => 'hashsize=32768',
     }
 
-    class {'::openstack2::nova::compute::service':
+    class {'::openstack::nova::compute::service':
         version      => $version,
         libvirt_type => $libvirt_type,
         certname     => $certname,

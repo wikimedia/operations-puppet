@@ -26,7 +26,7 @@ class profile::openstack::base::nova::network::service(
         }
     }
 
-    class {'::openstack2::nova::network::service':
+    class {'::openstack::nova::network::service':
         active                 => ($::fqdn == $nova_network_host),
         version                => $version,
         labs_metal             => $labs_metal,

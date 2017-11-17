@@ -7,7 +7,7 @@ class profile::openstack::main::nova::conductor::service(
         nova_controller => $nova_controller,
     }
 
-    class {'::openstack2::nova::conductor::monitor':
+    class {'::openstack::nova::conductor::monitor':
         active => ($::fqdn == $nova_controller),
     }
 }

@@ -48,7 +48,7 @@ class role::puppetmaster::standalone(
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
     }
 
-    class {'::openstack2::puppet::master::enc':
+    class {'::openstack::puppet::master::enc':
         puppetmaster => $labs_puppet_master,
     }
 

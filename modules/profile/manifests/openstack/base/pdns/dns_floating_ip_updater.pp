@@ -8,7 +8,7 @@ class profile::openstack::base::pdns::dns_floating_ip_updater(
     $floating_ip_ptr_fqdn_replacement_pattern = hiera('profile::openstack::base::designate::floating_ip_ptr_fqdn_replacement_pattern'),
     ) {
 
-    class {'::openstack2::designate::dns_floating_ip_updater':
+    class {'::openstack::designate::dns_floating_ip_updater':
         nova_controller                          => $nova_controller,
         observer_user                            => $observer_user,
         observer_pass                            => $observer_pass,
