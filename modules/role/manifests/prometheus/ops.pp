@@ -549,6 +549,23 @@ class role::prometheus::ops {
         site       => $::site,
     }
 
+    $mtail_jobs = [
+      {
+        'job_name'        => 'mtail',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/mtail_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "mtail_mx_${::site}":
+        dest       => "${targets_path}/mtail_mx_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::mail::mx',
+        port       => '3903',
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -559,7 +576,7 @@ class role::prometheus::ops {
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
-            $redis_jobs,
+            $redis_jobs, $mtail_jobs,
         ),
         global_config_extra   => $config_extra,
     }
