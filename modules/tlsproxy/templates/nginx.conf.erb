@@ -75,7 +75,7 @@ http {
 <% else -%>
     ssl_session_cache shared:SSL:1024m;
 <% end -%>
-    ssl_session_timeout 4h;
+    ssl_session_timeout 25h;
 
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
