@@ -4,10 +4,19 @@
 #
 # === Parameters
 #
-# === Examples
+#  [*kafka_brokers*]
+#    List of Kafka Brokers hostname:port combination to contact.
+#    Default: undef
 #
-#  include pmacct
-
+#  [*librdkafka_config*]
+#    List of librdkafka configs settings specified in the format indicated by upstream:
+#
+#    topic, settingX, valueX
+#    global, settingY, valueY
+#
+#    Only available for pmacct >= 1.6.2, otherwise the configuration is a no-op.
+#    Default: undef
+#
 class pmacct(
   $kafka_brokers     = undef,
   $librdkafka_config = undef,
