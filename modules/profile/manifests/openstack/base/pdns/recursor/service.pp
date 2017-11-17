@@ -29,6 +29,7 @@ class profile::openstack::base::pdns::recursor::service(
     $c1_dbs = hiera('profile::openstack::base::pdns::labsdb::c1'),
     $c2_dbs = hiera('profile::openstack::base::pdns::labsdb::c2'),
     $c3_dbs = hiera('profile::openstack::base::pdns::labsdb::c3'),
+    $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor::aliaser_extra_records'),
     ) {
 
     include ::network::constants
@@ -79,6 +80,7 @@ class profile::openstack::base::pdns::recursor::service(
         username              => $observer_user,
         password              => $observer_password,
         nova_api_url          => "http://${nova_controller}:35357/v3",
+        extra_records         => $aliaser_extra_records,
         alias_file            => $alias_file,
         observer_project_name => $observer_project,
     }
