@@ -1,5 +1,8 @@
----
 memcached::ip: 127.0.0.1
 
 admin::groups:
   - wmcs-roots
+  - deployment
+
+apache::logrotate::rotate: 12
+profile::backup::host::enable: false
