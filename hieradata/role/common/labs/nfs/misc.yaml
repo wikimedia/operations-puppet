@@ -12,7 +12,6 @@ profile::base::ssh_server_settings:
   authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/labstore
 role::labs::nfs::misc::dump_servers_ips:
   - '208.80.154.11'
-  - '208.80.152.185'
 # List of internal ips for instances on maps project, to make maps share available on
 # New instances must be manually added here for the nfs share to be available.
 # This is a temporary change for T147657 until the misc server exports are managed by nfs-exportd
