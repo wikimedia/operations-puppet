@@ -14,6 +14,7 @@ class snapshot::dumps::dirs(
 
     $miscdumpsdir = "${miscdumpsmount}/xmldatadumps"
     $xmldumpsdir = "${xmldumpsmount}/xmldatadumps"
+    $cronsdir = "${xmldumpsmount}/otherdumps"
 
     $apachedir = '/srv/mediawiki'
     $confsdir = "${dumpsdir}/confs"

@@ -7,7 +7,7 @@ class dumps::generation::server::dirs(
     # directories with incoming rsyncs of datasets
     $datadir                      = '/data/xmldatadumps'
     $publicdir                    = '/data/xmldatadumps/public'
-    $otherdir                     = '/data/other'
+    $otherdir                     = '/data/otherdumps'
     $cirrussearchdir              = "${otherdir}/cirrussearch"
     $xlationdir                   = "${otherdir}/contenttranslation"
     $globalblocksdir              = "${otherdir}/globalblocks"
