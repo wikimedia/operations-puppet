@@ -20,11 +20,11 @@ class profile::openstack::base::puppetmaster::common(
 
     class {'::puppetmaster::labsrootpass':}
 
-    class {'::openstack2::puppet::master::enc':
+    class {'::openstack::puppet::master::enc':
         puppetmaster => $puppetmaster_webhostname,
     }
 
-    class { '::openstack2::puppet::master::encapi':
+    class { '::openstack::puppet::master::encapi':
         horizon_host   => $horizon_host,
         mysql_host     => $encapi_db_host,
         mysql_db       => $encapi_db_name,

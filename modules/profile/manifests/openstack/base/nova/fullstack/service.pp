@@ -3,7 +3,7 @@ class profile::openstack::base::nova::fullstack::service(
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     ) {
 
-    class { '::openstack2::nova::fullstack::service':
+    class { '::openstack::nova::fullstack::service':
         active   => ($::fqdn == $nova_api_host),
         password => $osstackcanary_pass,
     }

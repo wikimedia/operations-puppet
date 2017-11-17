@@ -20,14 +20,14 @@ class profile::openstack::main::glance(
         labs_hosts_range        => $labs_hosts_range,
     }
 
-    class {'openstack2::glance::image_sync':
+    class {'openstack::glance::image_sync':
         active                  => ($::fqdn == $nova_controller),
         version                 => $version,
         glance_image_dir        => $glance_image_dir,
         nova_controller_standby => $nova_controller_standby,
     }
 
-    class {'openstack2::glance::monitor':
+    class {'openstack::glance::monitor':
         active => ($::fqdn == $nova_controller),
     }
 }

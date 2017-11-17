@@ -3,7 +3,7 @@ class profile::openstack::base::nova::scheduler::service(
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     ) {
 
-    class {'::openstack2::nova::scheduler::service':
+    class {'::openstack::nova::scheduler::service':
         active  => ($::fqdn == $nova_controller),
         version => $version,
     }

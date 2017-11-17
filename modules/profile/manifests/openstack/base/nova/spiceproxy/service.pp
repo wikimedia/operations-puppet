@@ -3,7 +3,7 @@ class profile::openstack::base::nova::spiceproxy::service(
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     ) {
 
-    class {'::openstack2::nova::spiceproxy::service':
+    class {'::openstack::nova::spiceproxy::service':
         active  => ($::fqdn == $nova_controller),
         version => $version,
     }
