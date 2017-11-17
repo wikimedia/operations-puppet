@@ -1062,15 +1062,15 @@ node 'labtestnet2001.codfw.wmnet' {
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
+    role(wmcs::openstack::labtest::control)
     include ::standard
     include ::base::firewall
-    role(wmcs::openstack::labtest::control)
 }
 
 node 'labtestcontrol2003.wikimedia.org' {
     role(wmcs::openstack::labtestn::control)
-    include ::base::firewall
     include ::standard
+    include ::base::firewall
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {

@@ -85,7 +85,7 @@ monitoring::groups:
   kubernetes_codfw:
     description: Kubernetes cluster codfw
 
-# Labs OpenStack Nova (labvirt***)
+# Cloud Services OpenStack Nova (labvirt***)
   labvirt_eqiad:
     description: eqiad labs virt servers
   labvirt_codfw:
