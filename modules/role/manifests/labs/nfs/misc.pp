@@ -106,10 +106,11 @@ class role::labs::nfs::misc(
         require => File['/srv/maps'],
     }
 
+    $dump_allow_srange = join($dump_servers_ips, ' ')
     # this is how prod hosts drop off datasets for serving
-    ferm::rule{'puppetbackendgetter':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${dump_servers_ips})) @resolve((${statistics_servers})))
-                   proto tcp dport 873 ACCEPT;",
+    ferm::service{'rsync_dropoff':
+        port   => '873',
+        proto  => 'tcp',
+        srange => "((${dump_allow_srange} @resolve(${statistics_servers}))"
     }
 }
