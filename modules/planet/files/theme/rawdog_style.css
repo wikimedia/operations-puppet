@@ -50,17 +50,17 @@ h3 {
 
 .itemheader {
     font-size: 120%;
-/*    text-align: center;*/
-    color: #a03;
+    /*text-align: center;*/
+    color: #2a4b8d;
 }
 
 .itemheader a, .itemheader a:visited {
     text-decoration: none;
-    color: #a03;
+    color: #b32424;
 }
 
 .itemheader a:hover {
-    color: #08b;
+    color: #b32424;
 }
 
 .itemtitle{
@@ -103,10 +103,10 @@ h3 {
 }
 
 .read {
-    color: #08b;
+    color: #14866d;
 }
 .unread {
-    color: #a03;
+    color: #36c;
 }
 
 .xmlbutton {
