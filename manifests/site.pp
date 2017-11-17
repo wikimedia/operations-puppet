@@ -430,7 +430,7 @@ node 'db1070.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(063|071|082|087|092|096|099|100|104|106)\.eqiad\.wmnet/ {
+node /^db1(063|071|082|087|092|096|099|100|104|106|109|110)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
