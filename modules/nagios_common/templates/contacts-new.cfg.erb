@@ -24,7 +24,6 @@ define contact{
         service_notification_commands   notify-service-by-irc-wikidata
 }
 
-<%- contact = 'dzahn' -%>
 define contact{
         contact_name                    dzahn
         alias                           daniel_zahn
@@ -32,9 +31,9 @@ define contact{
         service_notification_period     PST_awake_hours
         host_notification_options       d,r,f
         service_notification_options    c,r,f
-        email                           <%= scope.function_hiera(['icinga::contacts::dzahn::email']) %>
-        pager                           <%= scope.function_hiera(['icinga::contacts::dzahn::pager']) %>
-        address1                        <%= scope.function_hiera(['icinga::contacts::dzahn::address1']) %>
+        email                           <%= contacts['dzahn']['email'] %>
+        pager                           <%= contacts['dzahn']['pager'] %>
+        address1                        <%= contacts['dzahn']['address1'] %>
         host_notification_commands      host-notify-by-email,host-notify-by-sms-gateway
         service_notification_commands   notify-by-email,notify-by-sms-gateway
 }
@@ -46,10 +45,10 @@ define contact{
         service_notification_period     24x7
         host_notification_options       d,r,f
         service_notification_options    c,r,f
-        email                           <%= scope.function_hiera(['icinga::contacts::bblack::email']) %>
-        pager                           <%= scope.function_hiera(['icinga::contacts::bblack::pager']) %>
-        address1                        <%= scope.function_hiera(['icinga::contacts::bblack::address1']) %>
-        host_notification_commands      host-notify-by-email,host-notify-by-sms-gateway
+        email                           <%= contacts['bblack']['email'] %>
+        pager                           <%= contacts['bblack']['pager'] %>
+        address1                        <%= contacts['bblack']['address1'] %>
+	host_notification_commands      host-notify-by-email,host-notify-by-sms-gateway
         service_notification_commands   notify-by-email,notify-by-sms-gateway
 }
 
