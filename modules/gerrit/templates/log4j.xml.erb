@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="error_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/error_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d] [%t] %-5p %c %x: %m%n"/>
+        </layout>
+    </appender>
+    <appender name="gc_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/gc_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
+        </layout>
+    </appender>
+    <appender name="httpd_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/httpd_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="com.google.gerrit.pgm.http.jetty.HttpLogLayout"/>
+    </appender>
+    <appender name="replication_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/replication_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
+        </layout>
+    </appender>
+    <appender name="sshd_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/sshd_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="com.google.gerrit.sshd.SshLogLayout"/>
+    </appender>
+    <appender name="plugin_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/plugin_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
+        </layout>
+    </appender>
+    <appender name="delete_log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="encoding" value="UTF-8"/>
+        <param name="File" value="/var/lib/gerrit2/review_site/logs/delete_log"/>
+        <!--<param name="fileAppend" value="true"/>-->
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
+        </layout>
+    </appender>
+    <% if @log_host %>
+    <!-- Logstash -->
+    <appender name="socket" class="org.apache.log4j.net.SocketAppender">
+        <param name="port" value="<%= @log_port %>"/>
+        <param name="remoteHost" value="<%= @log_host %>"/>
+    </appender>
+    <appender name="async" class="org.apache.log4j.AsyncAppender">
+        <param name="Blocking" value="false"/>
+        <param name="BufferSize" value="64"/>
+        <appender-ref ref="socket"/>
+    </appender>
+    <% end %>
+    <logger name="com.google.gerrit.pgm.http.jetty.HttpLog" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="httpd_log"/>
+    </logger>
+    <logger name="com.google.gerrit.sshd.GerritServerSession">
+        <level value="WARN"/>
+    </logger>
+    <logger name="com.google.gerrit.sshd.SshLog">
+        <level value="DEBUG"/>
+        <appender-ref ref="sshd_log"/>
+    </logger>
+    <logger name="com.mchange.v2.c3p0">
+        <level value="WARN"/>
+    </logger>
+    <logger name="com.mchange.v2.resourcepool">
+        <level value="WARN"/>
+    </logger>
+    <logger name="com.mchange.v2.sql">
+        <level value="WARN"/>
+    </logger>
+    <logger name="eu.medsea.mimeutil">
+        <level value="WARN"/>
+    </logger>
+    <logger name="gc_log" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="gc_log"/>
+    </logger>
+    <logger name="delete_log" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="delete_log"/>
+    </logger>
+    <logger name="replication_log" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="replication_log"/>
+    </logger>
+    <logger name="sshd_log" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="sshd_log"/>
+    </logger>
+    <logger name="org.apache.http">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.apache.http.client.protocol.ResponseProcessCookies">
+        <level value="FATAL"/>
+    </logger>
+    <logger name="org.apache.mina">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.apache.sshd.common">
+        <level value="WARN"/>
+    </logger>
+    <!-- To be removed when we upgrade to gerrit 2.14. -->
+    <logger name="org.apache.sshd.common.keyprovider.AbstractFileKeyPairProvider">
+        <level value="INFO"/>
+    </logger>
+    <!-- Replaces the above in 2.14+ -->
+    <logger name="org.apache.sshd.common.keyprovider.FileKeyPairProvider">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.apache.sshd.server">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.apache.xml">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.openid4java">
+        <level value="WARN"/>
+    </logger>
+    <logger name="org.openid4java.consumer.ConsumerManager">
+        <level value="FATAL"/>
+    </logger>
+    <logger name="org.openid4java.discovery.Discovery">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.openid4java.message.AuthSuccess">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.openid4java.server.RealmVerifier">
+        <level value="ERROR"/>
+    </logger>
+    <logger name ="com.google.gerrit.server.plugins.PluginLoader">
+      <level value="INFO"/>
+      <appender-ref ref="plugin_log"/>
+    </logger>
+    <!-- Silence non-critical messages from Velocity -->
+    <!-- to be removed in gerrit 2.16 / 3.0 -->
+    <logger name="velocity">
+        <level value="WARN"/>
+    </logger>
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="error_log"/>
+        <% if @log_host %><appender-ref ref="async"/><% end %>
+    </root>
+</log4j:configuration>
