@@ -65,8 +65,8 @@ table.changeTable a.gwt-Anchor {
 }
 
 .wm-gerrit-heading {
-	margin: 0;
-	padding: 14px 0 0 17px;
+	margin: 0.5em 0 0 0.5em;
+	padding: 0;
 	font-family: 'PT Sans', sans-serif;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -75,7 +75,7 @@ table.changeTable a.gwt-Anchor {
 	 */
 	color: #990000;
 
-	min-height: 59px;
+	min-height: 60px;
 	background: transparent no-repeat 0 0;
 	background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
 	background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
@@ -89,7 +89,7 @@ table.changeTable a.gwt-Anchor {
 #gerrit_topmenu {
 	position: relative;
 	top: 0;
-	left: 200px;
+	left: 85px;
 	margin-right: 200px;
 	background: none;
 	/* Make sure it is above the logo or we can not clck the sub menu items */
