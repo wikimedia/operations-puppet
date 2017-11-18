@@ -32,13 +32,13 @@ C{
  *   its own functional path-delimiting slashes unencoded.
  *
  * upload.wikimedia.org:---------
- *   MW seems to use PHP's urlencode() directly when translating from MediaWiki
- *   File titles to storage URLs.  Note the filenames never contain spaces
- *   (would be underscores), and cannot have forward slashes (which will still
- *   exist in the rest of the path un-encoded).  .  The rules we should obey to
- *   be consistent with it would be:
+ *   MW seems to use PHP's rawurlencode() directly when translating from
+ *   MediaWiki File titles to storage URLs.  Note the filenames never contain
+ *   spaces (would be underscores), and cannot have forward slashes (which will
+ *   still exist in the rest of the path un-encoded).  The rules we should obey
+ *   to be consistent with it would be:
  *
- * Always-Decode: 0-9 A-Z a-z - . _ /
+ * Always-Decode: 0-9 A-Z a-z - . _ ~ /
  * Always-Encode: Everything Else
  ******************************************************************************/
 
@@ -55,7 +55,7 @@ static const uintptr_t decoder_ring[256] = {
   //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
     0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
   //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
-    0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,
+    0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
   // 0x80-0xFF (all unprintable)
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
