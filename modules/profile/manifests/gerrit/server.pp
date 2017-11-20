@@ -64,6 +64,18 @@ class profile::gerrit::server(
         }
     }
 
+    class { '::apache::mod::rewrite': }
+
+    class { '::apache::mod::proxy': }
+
+    class { '::apache::mod::proxy_http': }
+
+    class { '::apache::mod::ssl': }
+
+    class { '::apache::mod::headers': }
+
+    class { '::apache::mod::http2': }
+
     class { '::gerrit':
         host        => $host,
         ipv4        => $ipv4,
