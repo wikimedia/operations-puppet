@@ -17,29 +17,29 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # in a 15 min period.
     # These thresholds are somewhat arbtirary.
     monitoring::graphite_threshold { 'eventlogging_throughput':
-        description    => 'Throughput of EventLogging events',
-        dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1',
-        metric         => $raw_events_rate_metric,
-        warning        => 1000,
-        critical       => 5000,
-        percentage     => 15, # At least 3 of the 15 readings
-        from           => '15min',
-        contact_group  => 'analytics',
+        description     => 'Throughput of EventLogging events',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+        metric          => $raw_events_rate_metric,
+        warning         => 1000,
+        critical        => 5000,
+        percentage      => 15, # At least 3 of the 15 readings
+        from            => '15min',
+        contact_group   => 'analytics',
     }
 
     # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
-        description    => 'Throughput of EventLogging NavigationTiming events',
-        dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1',
-        metric         => $navigation_timing_events_rate_metric,
-        warning        => 1,
-        critical       => 0,
-        percentage     => 15, # At least 3 of the 15 readings
-        from           => '15min',
-        contact_group  => 'analytics',
-        under          => true,
+        description     => 'Throughput of EventLogging NavigationTiming events',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+        metric          => $navigation_timing_events_rate_metric,
+        warning         => 1,
+        critical        => 0,
+        percentage      => 15, # At least 3 of the 15 readings
+        from            => '15min',
+        contact_group   => 'analytics',
+        under           => true,
     }
 
     # Warn if 15% of overall error event throughput goes above 20 events/s
@@ -47,14 +47,14 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # The EventError topic counted here includes both events that do not
     # validate and events that can not be processed for other reasons
     monitoring::graphite_threshold { 'eventlogging_EventError_throughput':
-        description    => 'Throughput of EventLogging EventError events',
-        dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=13&fullscreen&orgId=1',
-        metric         => $error_events_rate_metric,
-        warning        => 20,
-        critical       => 30,
-        percentage     => 15, # At least 3 of the 15 readings
-        from           => '15min',
-        contact_group  => 'analytics',
+        description     => 'Throughput of EventLogging EventError events',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=13&fullscreen&orgId=1'],
+        metric          => $error_events_rate_metric,
+        warning         => 20,
+        critical        => 30,
+        percentage      => 15, # At least 3 of the 15 readings
+        from            => '15min',
+        contact_group   => 'analytics',
     }
 
 
@@ -63,15 +63,15 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # this metric is a good proxy to make sure events are flowing through the
     # kafka pipeline
     monitoring::graphite_threshold { 'eventlogging_overall_inserted_rate':
-        description    => 'EventLogging overall insertion rate from MySQL consumer',
-        dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=12&fullscreen&orgId=1',
-        metric         => 'movingAverage(eventlogging.overall.inserted.rate, "10min")',
-        warning        => 50,
-        critical       => 10,
-        percentage     => 20, # At least 3 of the (25 - 10) = 15 readings
-        from           => '25min',
-        until          => '10min',
-        contact_group  => 'analytics',
-        under          => true,
+        description     => 'EventLogging overall insertion rate from MySQL consumer',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=12&fullscreen&orgId=1'],
+        metric          => 'movingAverage(eventlogging.overall.inserted.rate, "10min")',
+        warning         => 50,
+        critical        => 10,
+        percentage      => 20, # At least 3 of the (25 - 10) = 15 readings
+        from            => '25min',
+        until           => '10min',
+        contact_group   => 'analytics',
+        under           => true,
     }
 }

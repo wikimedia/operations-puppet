@@ -64,27 +64,27 @@ class profile::zookeeper::server (
         # Alert if NumAliveConnections approaches max client connections
         # Alert if any Kafka Broker replica lag is too high
         monitoring::graphite_threshold { 'zookeeper-client-connections':
-            description    => 'Zookeeper Alive Client Connections too high',
-            dashboard_link => "https://grafana.wikimedia.org/dashboard/db/zookeeper?orgId=1&panelId=6&fullscreen&var-cluster=${cluster_name}&var-zookeeper_hosts=All",
-            metric         => "${group_prefix}zookeeper.${graphite_broker_key}.zookeeper.NumAliveConnections",
+            description     => 'Zookeeper Alive Client Connections too high',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/zookeeper?orgId=1&panelId=6&fullscreen&var-cluster=${cluster_name}&var-zookeeper_hosts=All"],
+            metric          => "${group_prefix}zookeeper.${graphite_broker_key}.zookeeper.NumAliveConnections",
             # Warn if we go over 50% of max
-            warning        => $max_client_connections * 0.5,
+            warning         => $max_client_connections * 0.5,
             # Critical if we go over 90% of max
-            critical       => $max_client_connections * 0.9,
+            critical        => $max_client_connections * 0.9,
         }
 
         # Experimental Analytics alarms on JVM usage
         # These alarms are not really generic and the thresholds are based
         # on a fixed Max Heap size of 1G.
         monitoring::graphite_threshold { 'zookeeper-server-heap-usage':
-            description    => 'Zookeeper node JVM Heap usage',
-            dashboard_link => "https://grafana.wikimedia.org/dashboard/db/zookeeper?panelId=40&fullscreen&orgId=1&var-cluster=${cluster_name}&var-zookeeper_hosts=All",
-            metric         => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${jmxtrans_port}.memory.HeapMemoryUsage_used.upper",
-            from           => '60min',
-            warning        => '921000000',  # 90% of the Heap used
-            critical       => '972000000',  # 95% of the Heap used
-            percentage     => '60',
-            contact_group  => 'analytics',
+            description     => 'Zookeeper node JVM Heap usage',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/zookeeper?panelId=40&fullscreen&orgId=1&var-cluster=${cluster_name}&var-zookeeper_hosts=All"],
+            metric          => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${jmxtrans_port}.memory.HeapMemoryUsage_used.upper",
+            from            => '60min',
+            warning         => '921000000',  # 90% of the Heap used
+            critical        => '972000000',  # 95% of the Heap used
+            percentage      => '60',
+            contact_group   => 'analytics',
         }
     }
 }

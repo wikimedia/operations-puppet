@@ -6,7 +6,7 @@ class mediawiki::monitoring::graphite {
     # Also check that the metric is being collected
     monitoring::graphite_threshold { 'mediawiki_job_insert_rate':
         description     => 'MediaWiki jobs not being inserted',
-        dashboard_link  => 'https://grafana.wikimedia.org/dashboard/db/mediawiki-job-queue?panelId=2&fullscreen&orgId=1',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/mediawiki-job-queue?panelId=2&fullscreen&orgId=1'],
         metric          => 'MediaWiki.jobqueue.inserts.all.rate',
         from            => '1hours',
         warning         => 1,
@@ -19,7 +19,7 @@ class mediawiki::monitoring::graphite {
     # Also check that the metric is being collected
     monitoring::graphite_threshold { 'mediawiki_job_pop_rate':
         description     => 'MediaWiki jobs not dequeued',
-        dashboard_link  => 'https://grafana.wikimedia.org/dashboard/db/mediawiki-job-queue?panelId=2&fullscreen&orgId=1',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/mediawiki-job-queue?panelId=2&fullscreen&orgId=1'],
         metric          => 'MediaWiki.jobqueue.pops.all.rate',
         from            => '1hours',
         warning         => 1,
