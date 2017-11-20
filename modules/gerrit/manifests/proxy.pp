@@ -73,4 +73,6 @@ class gerrit::proxy(
     include ::apache::mod::ssl
 
     include ::apache::mod::headers
+
+    include ::apache::mod::http2
 }
