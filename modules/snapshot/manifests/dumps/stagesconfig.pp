@@ -13,7 +13,8 @@ class snapshot::dumps::stagesconfig {
     $jobs_to_skip = join(['metahistorybz2dump',
                           'metahistorybz2dumprecombine',
                           'metahistory7zdump',
-                          'metahistory7zdumprecombine'], ',')
+                          'metahistory7zdumprecombine',
+                          'xmlflowhistorydump'], ',')
 
     $stages = {
         smallwikis   => {
