@@ -64,6 +64,9 @@ class apache::mod::filter          { apache::mod_conf { 'filter':         } }
 # https://httpd.apache.org/docs/current/mod/mod_headers.html
 class apache::mod::headers         { apache::mod_conf { 'headers':        } }
 
+# https://httpd.apache.org/docs/current/mod/mod_http2.html
+class apache::mod::http2           { apache::mod_conf { 'http2':          } }
+
 # https://httpd.apache.org/docs/current/mod/mod_lbmethod_byrequests.html
 class apache::mod::lbmethod_byrequests  { apache::mod_conf { 'lbmethod_byrequests': } }
 
