@@ -25,4 +25,8 @@ class role::osm::slave (
         pgstats_user => $passwords::osm::ganglia_user,
         pgstats_pass => $passwords::osm::ganglia_pass,
     }
+
+    class { 'postgresql::prometheus':
+        require => Class['postgresql::master'],
+    }
 }

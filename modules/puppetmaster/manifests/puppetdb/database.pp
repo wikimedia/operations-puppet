@@ -25,6 +25,9 @@ class puppetmaster::puppetdb::database($master) {
         }
         $on_master = false
     }
+    class { 'postgresql::prometheus':
+        require => Class[$require_class],
+    }
     # Postgres replication and users
     $postgres_users = hiera('puppetmaster::puppetdb::postgres_users', undef)
     if $postgres_users {

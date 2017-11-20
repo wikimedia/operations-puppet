@@ -29,6 +29,10 @@ class profile::maps::osm_master (
         checkpoint_segments => 768,
         wal_keep_segments   => 768,
     }
+    class { 'postgresql::prometheus':
+        require => Class['::postgresql::master'],
+    }
+
     class { '::osm': }
     class { '::osm::import_waterlines': }
 
