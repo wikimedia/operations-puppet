@@ -9,6 +9,10 @@ class role::postgres::master {
         root_dir => $role::postgres::common::root_dir,
     }
 
+    class { 'prometheus::postgres_exporter':
+        require => Class['postgresql::master'],
+    }
+
     system::role { 'postgres::master':
         ensure      => 'present',
         description => 'Postgres db master',

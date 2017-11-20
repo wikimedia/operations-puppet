@@ -29,6 +29,17 @@ class role::osm::master(
         root_dir => $role::osm::common::root_dir,
     }
 
+    class { 'prometheus::postgres_exporter':
+        require => Class['postgresql::master'],
+    }
+
+    postgresql::user { 'prometheus@localhost':
+        user     => 'prometheus',
+        database => 'postgres',
+        type     => 'local',
+        method   => 'peer',
+    }
+
     class { 'osm::prometheus':
         state_path      => '/srv/osmosis/state.txt',
         prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',

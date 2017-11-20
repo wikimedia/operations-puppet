@@ -58,6 +58,9 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       $on_master = false
   }
 
+    class { 'prometheus::postgres_exporter':
+        require => Class['$require_class'],
+    }
     postgresql::user { 'replication@netmon2001':
         ensure   => present,
         user     => 'replication',
@@ -91,8 +94,12 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       owner   => 'netbox',
       require => Class[$require_class],
   }
-
-
+  postgresql::user { 'prometheus@localhost':
+      user     => 'prometheus',
+      database => 'postgres',
+      type     => 'local',
+      method   => 'peer',
+  }
 
   class { '::netbox':
       directory     => '/srv/deployment/netbox/deploy/netbox',
@@ -102,7 +109,6 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       admins        => '("Ops Team", "ops@lists.wikimedia.org")',
   }
   $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
-
 
   apache::site { 'netbox.wikimedia.org':
       content => template('profile/netbox/netbox.wikimedia.org.erb'),
@@ -131,6 +137,4 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       description   => 'Netbox HTTPS',
       check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
   }
-
-
 }
