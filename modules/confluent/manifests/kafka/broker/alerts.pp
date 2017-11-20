@@ -40,29 +40,29 @@ class confluent::kafka::broker::alerts(
     # If it does, this means a broker replica is falling behind
     # and will be removed from the ISR.
     monitoring::graphite_threshold { 'kafka-broker-UnderReplicatedPartitions':
-        description    => 'Kafka Broker Under Replicated Partitions',
-        dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/kafka?panelId=29&fullscreen&orgId=1',
-        metric         => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaManager.UnderReplicatedPartitions.Value",
-        warning        => '1',
-        critical       => '10',
+        description     => 'Kafka Broker Under Replicated Partitions',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kafka?panelId=29&fullscreen&orgId=1'],
+        metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaManager.UnderReplicatedPartitions.Value",
+        warning         => '1',
+        critical        => '10',
         # Alert if any undereplicated for more than 50%
         # of the time in the last 30 minutes.
-        from           => '30min',
-        percentage     => 50,
-        group          => $nagios_servicegroup,
+        from            => '30min',
+        percentage      => 50,
+        group           => $nagios_servicegroup,
     }
 
     # Alert if any Kafka Broker replica lag is too high
     monitoring::graphite_threshold { 'kafka-broker-Replica-MaxLag':
-        description    => 'Kafka Broker Replica Max Lag',
-        dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1',
-        metric         => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaFetcherManager.MaxLag.Value",
-        warning        => $replica_maxlag_warning,
-        critical       => $replica_maxlag_critical,
+        description     => 'Kafka Broker Replica Max Lag',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1'],
+        metric          => "${group_prefix}kafka.${graphite_broker_key}.kafka.server.ReplicaFetcherManager.MaxLag.Value",
+        warning         => $replica_maxlag_warning,
+        critical        => $replica_maxlag_critical,
         # Alert if large replica lag for more than 50%
         # of the time in the last 30 minutes.
-        from           => '30min',
-        percentage     => 50,
-        group          => $nagios_servicegroup,
+        from            => '30min',
+        percentage      => 50,
+        group           => $nagios_servicegroup,
     }
 }
