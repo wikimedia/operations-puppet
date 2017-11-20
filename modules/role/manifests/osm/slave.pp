@@ -20,4 +20,8 @@ class role::osm::slave (
         includes         => 'tuning.conf',
         root_dir         => $role::osm::common::root_dir,
     }
+
+    class { 'prometheus::postgres_exporter':
+        require => Class['postgresql::master'],
+    }
 }

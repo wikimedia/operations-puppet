@@ -29,6 +29,10 @@ class profile::maps::osm_master (
         checkpoint_segments => 768,
         wal_keep_segments   => 768,
     }
+    class { 'prometheus::postgres_exporter':
+        require => Class['::postgresql::master'],
+    }
+
     class { '::osm': }
     class { '::osm::import_waterlines': }
 
@@ -52,6 +56,12 @@ class profile::maps::osm_master (
         user     => 'osmupdater',
         password => $osmupdater_pass,
         database => $db_name,
+    }
+    postgresql::user { 'prometheus@localhost':
+        user     => 'prometheus',
+        database => 'postgres',
+        type     => 'local',
+        method   => 'peer',
     }
 
     profile::maps::tilerator_user { 'localhost':
