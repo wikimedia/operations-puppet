@@ -50,13 +50,13 @@ define varnish::instance(
     $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${inst}\""
 
     monitoring::check_prometheus { "varnish-${inst}-check-child-start":
-        description    => "Varnish ${inst} child restarted",
-        dashboard_link => "https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?panelId=66&fullscreen&orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops",
-        query          => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
-        method         => 'gt',
-        warning        => 1,
-        critical       => 3,
-        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
+        description     => 'Varnish child restarted',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        query           => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
+        method          => 'gt',
+        warning         => 1,
+        critical        => 3,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')

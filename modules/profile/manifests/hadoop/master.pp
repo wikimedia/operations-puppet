@@ -128,38 +128,38 @@ class profile::hadoop::master(
 
         # Alert if the HDFS space consumption raises above a safe threshold.
         monitoring::graphite_threshold { 'hadoop-hdfs-percent-used':
-            description    => 'HDFS capacity used percentage',
-            dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=47&fullscreen',
-            metric         => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.NameNodeInfo.PercentUsed.mean",
-            from           => '30min',
-            warning        => 85,
-            critical       => 90,
-            percentage     => '60',
-            contact_group  => 'analytics',
+            description     => 'HDFS capacity used percentage',
+            dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=47&fullscreen',
+            metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.NameNodeInfo.PercentUsed.mean",
+            from            => '30min',
+            warning         => 85,
+            critical        => 90,
+            percentage      => '60',
+            contact_group   => 'analytics',
         }
 
         # Alert in case of HDFS currupted or missing blocks. In the ideal state
         # these values should always be 0.
         monitoring::graphite_threshold { 'hadoop-hdfs-corrupt-blocks':
-            description    => 'HDFS corrupt blocks',
-            dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=39&fullscreen',
-            metric         => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.CorruptBlocks.mean",
-            from           => '30min',
-            warning        => 2,
-            critical       => 5,
-            percentage     => '60',
-            contact_group  => 'analytics',
+            description     => 'HDFS corrupt blocks',
+            dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=39&fullscreen',
+            metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.CorruptBlocks.mean",
+            from            => '30min',
+            warning         => 2,
+            critical        => 5,
+            percentage      => '60',
+            contact_group   => 'analytics',
         }
 
         monitoring::graphite_threshold { 'hadoop-hdfs-missing-blocks':
-            description    => 'HDFS missing blocks',
-            dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=40&fullscreen',
-            metric         => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.MissingBlocks.mean",
-            from           => '180min',
-            warning        => 2,
-            critical       => 5,
-            percentage     => '60',
-            contact_group  => 'analytics',
+            description     => 'HDFS missing blocks',
+            dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=40&fullscreen',
+            metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.MissingBlocks.mean",
+            from            => '180min',
+            warning         => 2,
+            critical        => 5,
+            percentage      => '60',
+            contact_group   => 'analytics',
         }
 
         # Java heap space used alerts.
@@ -169,14 +169,14 @@ class profile::hadoop::master(
             $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9
             $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95
             monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usaage':
-                description    => 'HDFS active Namenode JVM Heap usage',
-                dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1',
-                metric         => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
-                from           => '60min',
-                warning        => $nn_jvm_warning_threshold,
-                critical       => $nn_jvm_critical_threshold,
-                percentage     => '60',
-                contact_group  => 'analytics',
+                description     => 'HDFS active Namenode JVM Heap usage',
+                dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1',
+                metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
+                from            => '60min',
+                warning         => $nn_jvm_warning_threshold,
+                critical        => $nn_jvm_critical_threshold,
+                percentage      => '60',
+                contact_group   => 'analytics',
             }
         }
 
@@ -185,14 +185,14 @@ class profile::hadoop::master(
             $rm_jvm_warning_threshold  = $hadoop_resourcemanager_heapsize * 0.9
             $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize * 0.95
             monitoring::graphite_threshold { 'hadoop-yarn-resourcemananager-heap-usage':
-                description    => 'YARN active ResourceManager JVM Heap usage',
-                dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1',
-                metric         => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
-                from           => '60min',
-                warning        => $rm_jvm_warning_threshold,
-                critical       => $rm_jvm_critical_threshold,
-                percentage     => '60',
-                contact_group  => 'analytics',
+                description     => 'YARN active ResourceManager JVM Heap usage',
+                dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1',
+                metric          => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
+                from            => '60min',
+                warning         => $rm_jvm_warning_threshold,
+                critical        => $rm_jvm_critical_threshold,
+                percentage      => '60',
+                contact_group   => 'analytics',
             }
         }
     }

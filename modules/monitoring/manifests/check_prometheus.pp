@@ -69,8 +69,8 @@
 # [*contact_group*]
 #   What contact groups to use for notifications
 #
-# [*dashboard_link*]
-#   Link to the Grafana dashboard for this alarm
+# [*dashboard_links*]
+#   Links to the Grafana dashboard for this alarm
 #
 define monitoring::check_prometheus(
     $description,
@@ -78,7 +78,7 @@ define monitoring::check_prometheus(
     $prometheus_url,
     $warning,
     $critical,
-    $dashboard_link,
+    $dashboard_links,
     $method          = 'ge',
     $nan_ok          = false,
     $retries         = 5,
@@ -90,7 +90,23 @@ define monitoring::check_prometheus(
 {
     validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
     validate_bool($nan_ok)
-    validate_re($dashboard_link, 'https:\/\/grafana\.wikimedia\.org')
+    validate_array($dashboard_links)
+
+    # Validate the dashboard_links and generate the notes_urls
+    if size($dashboard_links) < 1 {
+        fail('The $dashboard_links array cannot be empty')
+    } elsif size($dashboard_links) == 1 {
+        # Puppet reduce doesn't call the lambda if there is only one element
+        validate_re($dashboard_links[0], '^https:\/\/grafana\.wikimedia\.org')
+        $notes_urls = "'${dashboard_links[0]}'"
+    } else {
+        $dashboard_links.each |$dashboard_link| {
+            validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
+        }
+        $notes_urls = $dashboard_links.reduce('') |$urls, $dashboard_link| {
+            "${urls}'${dashboard_link}' "
+        }
+    }
 
     $command = $nan_ok ? {
         true    => 'check_prometheus_nan_ok',
@@ -105,6 +121,6 @@ define monitoring::check_prometheus(
         group         => $group,
         critical      => $nagios_critical,
         contact_group => $contact_group,
-        notes_url     => $dashboard_link,
+        notes_url     => $notes_urls,
     }
 }
