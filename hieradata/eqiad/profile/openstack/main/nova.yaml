@@ -27,4 +27,5 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1012
   - labvirt1013
   - labvirt1014
+  - labvirt1015
   - labvirt1017
