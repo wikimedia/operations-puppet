@@ -4,6 +4,24 @@ class apt::unattendedupgrades($ensure=present) {
         ensure => $ensure,
     }
 
+    # dpkg tries to determine the most conservative default action in case of
+    # conffile conflict. This tells dpkg to use that action without asking
+    apt::conf { 'dpkg-force-confdef':
+        ensure   => present,
+        priority => '00',
+        key      => 'Dpkg::Options::',
+        value    => '--force-confdef',
+    }
+
+    # In case of conffile conflicts, tell dpkg to keep the old conffile without
+    # asking
+    apt::conf { 'dpkg-force-confold':
+        ensure   => present,
+        priority => '00',
+        key      => 'Dpkg::Options::',
+        value    => '--force-confold',
+    }
+
     apt::conf { 'auto-upgrades':
         ensure   => $ensure,
         priority => '20',
