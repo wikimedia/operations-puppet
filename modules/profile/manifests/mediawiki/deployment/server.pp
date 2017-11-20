@@ -35,15 +35,11 @@ class profile::mediawiki::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
-    $git_packages = [
-        'git',
-        'git-man'
-    ]
-
     if os_version('debian == jessie') {
-        apt::pin { $git_packages:
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
+        apt::repository { 'wikimedia-git':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/git',
         }
     }
 
