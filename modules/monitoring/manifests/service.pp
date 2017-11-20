@@ -15,6 +15,7 @@ define monitoring::service(
     $event_handler         = undef,
     $notifications_enabled = $::profile::base::notifications_enabled,
     $display_name          = undef,
+    $notes_url             = undef,
 )
 {
     # the list of characters is the default for illegal_object_name_chars
@@ -105,6 +106,7 @@ define monitoring::service(
             freshness_threshold    => $is_fresh,
             event_handler          => $event_handler,
             display_name           => $display_name,
+            notes_url              => $notes_url,
         },
     }
     # This is a hack. We detect if we are running on the scope of an icinga
