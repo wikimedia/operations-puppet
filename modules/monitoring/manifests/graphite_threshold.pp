@@ -103,12 +103,6 @@ define monitoring::graphite_threshold(
         default => 'check_graphite_threshold'
     }
 
-    if $dashboard_link {
-        $display_name = "${description} - ${dashboard_link}"
-    } else {
-        $display_name = undef
-    }
-
     monitoring::service { $title:
         ensure         => $ensure,
         description    => $description,
@@ -121,6 +115,6 @@ define monitoring::graphite_threshold(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
-        display_name   => $display_name,
+        notes_url      => $dashboard_link,
     }
 }

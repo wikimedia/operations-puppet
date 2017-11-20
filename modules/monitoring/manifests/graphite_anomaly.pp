@@ -83,12 +83,6 @@ define monitoring::graphite_anomaly(
         fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
     }
 
-    if $dashboard_link {
-        $display_name = "${description} - ${dashboard_link}"
-    } else {
-        $display_name = undef
-    }
-
     # checkcommands.cfg's check_graphite_anomaly command has
     # many positional arguments that
     # are passed to the check_graphite script:
@@ -111,6 +105,6 @@ define monitoring::graphite_anomaly(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
-        display_name   => $display_name,
+        notes_url      => $dashboard_link,
     }
 }
