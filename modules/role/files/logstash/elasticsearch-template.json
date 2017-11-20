@@ -113,6 +113,9 @@
             }
           }
         },
+        "debug_blob" : {
+          "enabled": false
+        },
         "host" : {
           "type" : "keyword",
           "index" : true,
