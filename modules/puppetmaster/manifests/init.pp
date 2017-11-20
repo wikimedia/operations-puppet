@@ -158,11 +158,15 @@ class puppetmaster(
         group               => $git_group,
     }
 
+    class { '::puppetmaster::monitoring' :
+        puppet_major_version => $puppet_major_version,
+    }
+
     include ::puppetmaster::scripts
     include ::puppetmaster::geoip
     include ::puppetmaster::gitpuppet
-    include ::puppetmaster::monitoring
     include ::puppetmaster::generators
+
 
     # deploy updated auth template to puppet 4 masters
     $puppetmaster_auth_template = $puppet_major_version ? {
