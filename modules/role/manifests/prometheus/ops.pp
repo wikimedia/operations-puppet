@@ -527,11 +527,8 @@ class role::prometheus::ops {
         # redis_exporter runs alongside each redis instance, thus drop the (uninteresting in this
         # case) 'addr' and 'alias' labels
         'metric_relabel_configs' => [
-          { 'source_labels' => ['addr'],
-            'action'        => 'labeldrop',
-          },
-          { 'source_labels' => ['alias'],
-            'action'        => 'labeldrop',
+          { 'regex'  => '(addr|alias)',
+            'action' => 'labeldrop',
           },
         ],
       },
