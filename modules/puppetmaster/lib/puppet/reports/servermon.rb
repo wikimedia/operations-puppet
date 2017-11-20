@@ -28,11 +28,24 @@ Puppet::Reports.register_report(:servermon) do
     desc 'Update facts of a servermon database'
 
     def process
-        # Get our users from the configuration
-        dbserver = Puppet[:dbserver]
-        dbuser = Puppet[:dbuser]
-        dbpassword = Puppet[:dbpassword]
-        log_level = Puppet[:log_level]
+        # Starting with puppet 4 active record settings no longer exist. So, parse
+        # them from the configuration file. Previously we could just query the
+        # Puppet object
+        config = File.open('/etc/puppet/puppet.conf')
+        lines = config.readlines()
+        config.close()
+        lines.each do |line|
+          case
+          when line =~ /^dbserver=(.*)$/
+            dbserver = $~[1]
+          when line =~ /^dbuser=(.*)$/
+            dbuser = $~[1]
+          when line =~ /^dbpassword=(.*)$/
+            dbpassword = $~[1]
+          when line =~ /^log_level=(.*)$/
+            log_level = $~[1]
+          end
+        end
         begin
             con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
             # First we try to update the host, if it fails, insert it
