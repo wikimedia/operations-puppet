@@ -74,6 +74,8 @@ class profile::gerrit::server(
 
     class { '::apache::mod::headers': }
 
+    class { '::apache::mod::http2': }
+
     class { '::gerrit':
         host        => $host,
         ipv4        => $ipv4,
