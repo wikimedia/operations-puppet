@@ -33,6 +33,7 @@ import os
 import os.path
 import select
 import signal
+import dateutil.parser
 
 import whisper
 import zmq
@@ -166,7 +167,17 @@ class WhisperLogger(object):
     def handle_event(self, meta):
         if meta['schema'] not in ('NavigationTiming', 'SaveTiming'):
             return
-        timestamp = meta['timestamp']
+
+        # dt is main EventCapsule timestamp field in ISO-8601
+        if 'dt' in meta:
+            timestamp = int(dateutil.parser.parse(meta['dt']).strftime("%s"))
+        # timestamp is backwards compatible int, this shouldn't be used anymore.
+        else if 'timestamp' in meta:
+            timestamp = meta['timestamp']
+        # else we can't find one, just use the current time.
+        else:
+            timestamp = int(time.time())
+
         event = meta['event']
         for metric in METRICS:
             value = event.get(metric)
