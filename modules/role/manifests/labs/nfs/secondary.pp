@@ -31,6 +31,10 @@ class role::labs::nfs::secondary(
         # Define DRBD role for this host, should come from hiera
         $drbd_role = 'secondary'
 
+        ferm::rule { 'drbd_labstore1005':
+            rule => 'saddr 192.168.0.1 proto tcp dport (7790:7792) ACCEPT;',
+        }
+
         interface::ip { 'drbd-replication':
             interface => $data_iface,
             address   => '192.168.0.2',
@@ -42,6 +46,10 @@ class role::labs::nfs::secondary(
     if $::hostname == 'labstore1004' {
         # Define DRBD role for this host, should come from hiera
         $drbd_role = 'primary'
+
+        ferm::rule { 'drbd_labstore1004':
+            rule => 'saddr 192.168.0.2 proto tcp dport (7790:7792) ACCEPT;',
+        }
 
         interface::ip { 'drbd-replication':
             interface => $data_iface,
