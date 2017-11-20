@@ -23,18 +23,18 @@
 #   }
 #
 # == Parameters
-# $description    - Description of icinga alert
-# $metric         - graphite metric name
-# $warning        - alert warning datapoints
-# $critical       - alert critical datapoints
-# $check_window   - the number of datapoints on which the check
-#                   is performed. Defaults to 100.
-# $graphite_url   - URL of the graphite server.
-# $timeout        - Timeout for the http query to
-#                   graphite. Defaults to 10 seconds
-# $over           - check only for values above the limit
-# $under          - check only for values below the limit
-# $dashboard_link - Link to the Grafana dashboard for this alarm
+# $description     - Description of icinga alert
+# $metric          - graphite metric name
+# $warning         - alert warning datapoints
+# $critical        - alert critical datapoints
+# $check_window    - the number of datapoints on which the check
+#                    is performed. Defaults to 100.
+# $graphite_url    - URL of the graphite server.
+# $timeout         - Timeout for the http query to
+#                    graphite. Defaults to 10 seconds
+# $over            - check only for values above the limit
+# $under           - check only for values below the limit
+# $dashboard_links - Links to the Grafana dashboard for this alarm
 # $host
 # $retries
 # $group
@@ -50,7 +50,7 @@ define monitoring::graphite_anomaly(
     $metric,
     $warning,
     $critical,
-    $dashboard_link,
+    $dashboard_links,
     $check_window    = 100,
     $graphite_url    = 'https://graphite.wikimedia.org',
     $timeout         = 10,
@@ -68,7 +68,23 @@ define monitoring::graphite_anomaly(
     $contact_group   = 'admins',
 )
 {
-    validate_re($dashboard_link, 'https:\/\/grafana\.wikimedia\.org')
+    validate_array($dashboard_links)
+
+    # Validate the dashboard_links and generate the notes_urls
+    if size($dashboard_links) < 1 {
+        fail('The $dashboard_links array cannot be empty')
+    } elsif size($dashboard_links) == 1 {
+        # Puppet reduce doesn't call the lambda if there is only one element
+        validate_re($dashboard_links[0], '^https:\/\/grafana\.wikimedia\.org')
+        $notes_urls = "'${dashboard_links[0]}'"
+    } else {
+        $dashboard_links.each |$dashboard_link| {
+            validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
+        }
+        $dashboard_links.reduce |$notes_urls, $dashboard_link| {
+            $notes_urls + "'${dashboard_link}' "
+        }
+    }
 
     if $over == true {
         $modifier = '--over'
@@ -106,6 +122,6 @@ define monitoring::graphite_anomaly(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         contact_group  => $contact_group,
-        notes_url      => $dashboard_link,
+        notes_url      => $notes_urls,
     }
 }
