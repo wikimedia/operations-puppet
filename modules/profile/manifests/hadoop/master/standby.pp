@@ -46,15 +46,15 @@ class profile::hadoop::master::standby(
         if $hadoop_namenode_heapsize {
             $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9
             $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95
-            monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usaage':
-                description    => 'HDFS standby Namenode JVM Heap usage',
-                dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=4&fullscreen',
-                metric         => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
-                from           => '60min',
-                warning        => $nn_jvm_warning_threshold,
-                critical       => $nn_jvm_critical_threshold,
-                percentage     => '60',
-                contact_group  => 'analytics',
+            monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usage':
+                description     => 'HDFS standby Namenode JVM Heap usage',
+                dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=4&fullscreen'],
+                metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
+                from            => '60min',
+                warning         => $nn_jvm_warning_threshold,
+                critical        => $nn_jvm_critical_threshold,
+                percentage      => '60',
+                contact_group   => 'analytics',
             }
         }
     }
@@ -80,14 +80,14 @@ class profile::hadoop::master::standby(
             $rm_jvm_warning_threshold = $hadoop_resourcemanager_heapsize * 0.9
             $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize  * 0.95
             monitoring::graphite_threshold { 'hadoop-yarn-resourcemananager-heap-usage':
-                description    => 'YARN standby Resource Manager JVM Heap usage',
-                dashboard_link => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=12&fullscreen',
-                metric         => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
-                from           => '60min',
-                warning        => $rm_jvm_warning_threshold,
-                critical       => $rm_jvm_critical_threshold,
-                percentage     => '60',
-                contact_group  => 'analytics',
+                description     => 'YARN standby Resource Manager JVM Heap usage',
+                dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=12&fullscreen'],
+                metric          => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
+                from            => '60min',
+                warning         => $rm_jvm_warning_threshold,
+                critical        => $rm_jvm_critical_threshold,
+                percentage      => '60',
+                contact_group   => 'analytics',
             }
         }
     }
