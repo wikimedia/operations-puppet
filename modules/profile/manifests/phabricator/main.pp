@@ -242,8 +242,11 @@ class profile::phabricator::main (
     }
 
     class { '::phabricator::mailrelay':
-        default                 => {
-            maint        => false,
+        default  => {
+            maint    => false,
+        },
+        phab_bot => {
+            root_dir => '${phab_root_dir}/phabricator/",
         },
     }
 
