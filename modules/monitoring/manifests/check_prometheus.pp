@@ -96,12 +96,6 @@ define monitoring::check_prometheus(
         default => 'check_prometheus',
     }
 
-    if $dashboard_link {
-        $display_name = "${description} - ${dashboard_link}"
-    } else {
-        $display_name = undef
-    }
-
     monitoring::service { $title:
         ensure        => $ensure,
         description   => $description,
@@ -110,6 +104,6 @@ define monitoring::check_prometheus(
         group         => $group,
         critical      => $nagios_critical,
         contact_group => $contact_group,
-        display_name  => $display_name,
+        notes_url     => $dashboard_link,
     }
 }
