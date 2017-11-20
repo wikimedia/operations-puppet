@@ -7,6 +7,17 @@ class gerrit::proxy(
     $slave        = false,
     $maint_mode   = false,
     ) {
+    class { '::apache::mod::rewrite': }
+
+    class { '::apache::mod::proxy': }
+
+    class { '::apache::mod::proxy_http': }
+
+    class { '::apache::mod::ssl': }
+
+    class { '::apache::mod::headers': }
+
+    class { '::apache::mod::http2': }
 
     if $slave {
         $tls_host = $slave_hosts[0]
@@ -63,14 +74,4 @@ class gerrit::proxy(
         mode   => '0444',
         source => '/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.cache.png',
     }
-
-    include ::apache::mod::rewrite
-
-    include ::apache::mod::proxy
-
-    include ::apache::mod::proxy_http
-
-    include ::apache::mod::ssl
-
-    include ::apache::mod::headers
 }
