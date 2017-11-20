@@ -25,6 +25,9 @@ class puppetmaster::puppetdb::database($master) {
         }
         $on_master = false
     }
+    class { 'prometheus::postgres_exporter': # lint:ignore:wmf_styleguide
+        require => Class[$require_class],
+    }
     # Postgres replication and users
     $postgres_users = hiera('puppetmaster::puppetdb::postgres_users', undef)
     if $postgres_users {
@@ -45,6 +48,13 @@ class puppetmaster::puppetdb::database($master) {
         cidr      => "${::ipaddress}/32",
         pgversion => '9.4',
         master    => $on_master,
+    }
+
+    postgresql::user { 'prometheus@localhost':
+        user     => 'prometheus',
+        database => 'postgres',
+        type     => 'local',
+        method   => 'peer',
     }
 
     # Create the database
