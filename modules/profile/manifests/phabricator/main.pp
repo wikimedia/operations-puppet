@@ -245,6 +245,9 @@ class profile::phabricator::main (
         default                 => {
             maint        => false,
         },
+        phab_bot                => {
+            root_dir    => '/srv/phab/phabricator/',
+        },
     }
 
     ferm::service { 'phabmain_http':
