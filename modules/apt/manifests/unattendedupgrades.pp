@@ -1,4 +1,6 @@
 class apt::unattendedupgrades($ensure=present) {
+    include ::apt::dpkg-confold
+
     package { 'unattended-upgrades':
         ensure => $ensure,
     }
