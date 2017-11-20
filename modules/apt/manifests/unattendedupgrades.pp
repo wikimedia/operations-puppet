@@ -3,6 +3,13 @@ class apt::unattendedupgrades($ensure=present) {
         ensure => $ensure,
     }
 
+    apt::conf { 'dpkg-force-confold':
+        ensure   => present,
+        priority => '00',
+        key      => 'Dpkg::Options::',
+        value    => '--force-confold',
+    }
+
     apt::conf { 'auto-upgrades':
         ensure   => $ensure,
         priority => '20',
