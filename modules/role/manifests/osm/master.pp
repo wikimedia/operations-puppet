@@ -33,6 +33,10 @@ class role::osm::master(
         pgstats_user => $passwords::osm::ganglia_user,
         pgstats_pass => $passwords::osm::ganglia_pass,
     }
+
+    class { 'postgresql::prometheus':
+        require => Class['postgresql::master'],
+    }
     class { 'osm::ganglia':
         state_path   => '/srv/osmosis/state.txt',
     }
