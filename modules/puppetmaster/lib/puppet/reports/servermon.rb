@@ -23,16 +23,40 @@
 
 require 'puppet'
 require 'mysql'
+require 'English'
 
 Puppet::Reports.register_report(:servermon) do
     desc 'Update facts of a servermon database'
 
     def process
-        # Get our users from the configuration
-        dbserver = Puppet[:dbserver]
-        dbuser = Puppet[:dbuser]
-        dbpassword = Puppet[:dbpassword]
-        log_level = Puppet[:log_level]
+        # Starting with puppet 4 active record settings no longer exist. So, parse
+        # them from the configuration file. Previously we could just query the
+        # Puppet object
+        config = File.open('/etc/puppet/puppet.conf')
+        lines = config.readlines
+        config.close
+        # Setting first our variables to avoid scoping problems
+        dbserver = nil
+        dbuser = nil
+        dbpassword = nil
+        log_level = 'info'
+        lines.each do |line|
+          case
+          when line =~ /^dbserver[[:space:]]*=[[:space:]]*(.*)$/
+            dbserver = $LAST_MATCH_INFO[1]
+          when line =~ /^dbuser[[:space:]]*=[[:space:]]*(.*)$/
+            dbuser = $LAST_MATCH_INFO[1]
+          when line =~ /^dbpassword[[:space:]]*=[[:space:]]*(.*)$/
+            dbpassword = $LAST_MATCH_INFO[1]
+          when line =~ /^log_level[[:space:]]*=[[:space:]]*(.*)$/
+            log_level = $LAST_MATCH_INFO[1]
+          end
+        end
+        # We failed to get all of our configs, let's bail early to avoid causing
+        # puppet issues
+        if not (dbserver and dbuser and dbpassword and log_level)
+          return true
+        end
         begin
             con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
             # First we try to update the host, if it fails, insert it
