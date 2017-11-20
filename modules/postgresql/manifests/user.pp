@@ -26,7 +26,7 @@
 #
 define postgresql::user(
     $user,
-    $password,
+    $password = undef,
     $database = 'template1',
     $type = 'host',
     $method = 'md5',
@@ -60,7 +60,7 @@ define postgresql::user(
         }
 
         # This will not be run on a slave as it is read-only
-        if $master {
+        if $master and $password {
             $password_md5 = md5("${password}${user}")
 
             exec { "pass_set-${name}":
