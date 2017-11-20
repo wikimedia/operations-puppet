@@ -122,7 +122,7 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
 
   monitoring::service { 'netbox-ssl':
       ensure        => $monitoring_ensure,
-      description   => 'Netbox HTTPS',
+      description   => 'Netbox SSL',
       check_command => 'check_ssl_http_letsencrypt!netbox.wikimedia.org',
   }
 
