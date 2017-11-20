@@ -36,6 +36,14 @@ class icinga::web {
         mode   => '0644',
     }
 
+    # Allow up to 5 notes_url URLs
+    ['1', '2', '3', '4', '5'].each |$note_id| {
+        file { "/usr/share/icinga/htdocs/images/${note_id}-notes.gif":
+            ensure => link,
+            target => 'stats.gif',
+        }
+    }
+
     # install the Icinga Apache site
     include ::apache::mod::rewrite
     include ::apache::mod::authnz_ldap
