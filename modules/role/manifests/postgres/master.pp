@@ -14,6 +14,10 @@ class role::postgres::master {
         pgstats_pass => $passwords::postgres::ganglia_pass,
     }
 
+    class { 'postgresql::prometheus':
+        require => Class['postgresql::master'],
+    }
+
     system::role { 'postgres::master':
         ensure      => 'present',
         description => 'Postgres db master',

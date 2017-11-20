@@ -58,6 +58,9 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       $on_master = false
   }
 
+    class { 'postgresql::prometheus':
+        require => Class['$require_class'],
+    }
     postgresql::user { 'replication@netmon2001':
         ensure   => present,
         user     => 'replication',
@@ -131,6 +134,4 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       description   => 'Netbox HTTPS',
       check_command => 'check_https_url!netbox.wikimedia.org!https://netbox.wikimedia.org',
   }
-
-
 }
