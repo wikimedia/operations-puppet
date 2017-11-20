@@ -72,4 +72,14 @@ class profile::gerrit::server(
         slave_hosts => $slave_hosts,
         config      => $config,
     }
+
+    class { '::apache::mod::rewrite': }
+
+    class { '::apache::mod::proxy': }
+
+    class { '::apache::mod::proxy_http': }
+
+    class { '::apache::mod::ssl': }
+
+    class { '::apache::mod::headers': }
 }
