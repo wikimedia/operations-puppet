@@ -14,7 +14,6 @@ define monitoring::service(
     $config_dir            = '/etc/nagios',
     $event_handler         = undef,
     $notifications_enabled = $::profile::base::notifications_enabled,
-    $display_name          = undef,
     $notes_url             = undef,
 )
 {
@@ -105,7 +104,6 @@ define monitoring::service(
             check_freshness        => $check_fresh,
             freshness_threshold    => $is_fresh,
             event_handler          => $event_handler,
-            display_name           => $display_name,
             notes_url              => $notes_url,
         },
     }
