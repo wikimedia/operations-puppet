@@ -29,8 +29,8 @@ class proxysql (
 
     file { '/etc/proxysql.cnf':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root', # this is wrong, this should be its own group/user
+        owner   => 'proxysql',
+        group   => 'proxysql',
         mode    => '0440',
         content => template('proxysql/proxysql.cnf.erb'),
     }
