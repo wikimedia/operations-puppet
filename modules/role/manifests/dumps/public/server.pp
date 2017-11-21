@@ -6,4 +6,5 @@ class role::dumps::public::server {
     include ::profile::dumps::public_server
     include ::profile::dumps::web::rsync_server
     include ::profile::dumps::rsyncer
+    include ::profile::dumps::web::dumpstatusfiles_sync
 }
