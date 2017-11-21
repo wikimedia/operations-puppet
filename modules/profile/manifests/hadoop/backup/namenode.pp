@@ -1,9 +1,10 @@
-# == Class role::analytics_cluster::hadoop::backup::namenode
+# == Class profile::hadoop::backup::namenode
+#
 # Periodically runs hdfs dfsadmin -fetchImage
 # and ensures that bacula backs up Hadoop NameNode fsimages,
 # in the case we need to recover if both Hadoop NameNodes.
 #
-class role::analytics_cluster::hadoop::backup::namenode {
+class profile::hadoop::backup::namenode {
     require ::profile::hadoop::client
 
     file { '/srv/backup':

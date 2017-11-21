@@ -40,18 +40,13 @@ node /^(actinium|alcyone|alsafi|aluminium)\.wikimedia\.org$/ {
 # - primary active NameNode
 # - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
-    role(analytics_cluster::hadoop::master,
-        analytics_cluster::users)
-
-    include ::standard
-    include ::base::firewall
+    role(analytics_cluster::hadoop::master)
 }
 
 
 # analytics1002 is the Hadoop standby NameNode and ResourceManager.
 node 'analytics1002.eqiad.wmnet' {
     role(analytics_cluster::hadoop::standby,
-        analytics_cluster::users,
         # analytics1002 is usually inactive, and it has a
         # decent amount of disk space.  We use it to
         # store some backups, including fsimage snapshots
@@ -59,18 +54,11 @@ node 'analytics1002.eqiad.wmnet' {
         # analytics_cluster::database::meta (MySQL analytics-meta) instance.
         # If you move these, make sure /srv/backup has
         # enough space to store backups.
-        analytics_cluster::hadoop::backup::namenode,
         analytics_cluster::database::meta::backup_dest)
-
-    include ::standard
-    include ::base::firewall
 }
 
 node 'analytics1003.eqiad.wmnet' {
     role(analytics_cluster::coordinator)
-
-    include ::standard
-    include ::base::firewall
 }
 
 # analytics1028-analytics1068 are Hadoop worker nodes.
@@ -81,9 +69,6 @@ node 'analytics1003.eqiad.wmnet' {
 # This is used for Hadoop network topology awareness.
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
-
-    include ::base::firewall
-    include ::standard
 }
 
 # Analytics Query Service

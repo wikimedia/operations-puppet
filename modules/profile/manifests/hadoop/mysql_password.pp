@@ -1,10 +1,11 @@
-# == Class role::analytics_cluster::mysql_password
+# == Class profile::hadoop::mysql_password
+#
 # Creates protected files in HDFS that contains
 # a passwords used to access MySQL slaves.
 # This is so we can automate sqooping of data
 # out of MySQL into Hadoop.
 #
-class role::analytics_cluster::mysql_password {
+class profile::hadoop::mysql_password {
     require ::profile::hadoop::client
 
     include ::passwords::mysql::research
