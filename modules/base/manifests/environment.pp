@@ -30,6 +30,14 @@ class base::environment(
                     source => 'puppet:///modules/base/environment/mysql-ps1.sh',
             }
 
+            file { '/etc/profile.d/autologout.sh':
+                    ensure => present,
+                    owner  => 'root',
+                    group  => 'root',
+                    mode   => '0755',
+                    source => 'puppet:///modules/base/environment/autologout.sh',
+            }
+
             file { '/etc/alternatives/editor':
                 ensure => link,
                 target => '/usr/bin/vim',
