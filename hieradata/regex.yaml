@@ -270,3 +270,11 @@ puppet4_elasticsearch_codfw:
 puppet4_prometheus_codfw:
   __regex: !ruby/regexp /^prometheus2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_cp_misc_codfw:
+  __regex: !ruby/regexp /^cp20(06|1[28]|25)\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_cp_canary_eqiad:
+  __regex: !ruby/regexp /^cp1008\.wikimedia\.org$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
