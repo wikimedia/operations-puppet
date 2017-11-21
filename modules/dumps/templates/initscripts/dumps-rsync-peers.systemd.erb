@@ -8,7 +8,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --dumpsdir <%= @dumpsdir %>  --remotedirs <%= @remotedirs -%>
+ExecStart=/bin/bash /usr/local/bin/rsync-to-peers.sh --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs -%>
 
 [Install]
 WantedBy=multi-user.target

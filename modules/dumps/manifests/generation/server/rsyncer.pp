@@ -1,6 +1,8 @@
 class dumps::generation::server::rsyncer(
-    $dumpsdir = undef,
-    $remotedirs = undef,
+    $xmldumpsdir = undef,
+    $xmlremotedirs = undef,
+    $miscdumpsdir = undef,
+    $miscremotedirs = undef,
 )  {
     file { '/usr/local/bin/rsync-to-peers.sh':
         ensure => 'present',
