@@ -44,7 +44,7 @@ class snapshot::dumps::cron(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "/usr/local/bin/fulldumps.sh 22 27 ${runtype} partial > /dev/null",
+        command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial > /dev/null",
         minute      => '05',
         hour        => [8, 20],
         monthday    => '20-25',
