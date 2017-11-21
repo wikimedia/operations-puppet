@@ -37,4 +37,7 @@ class profile::dumps::generation::worker::common {
         manage_user => false,
         key_name    => 'dumpsdeploy',
     }
+    ssh::userkey { 'dumpsgen':
+        content => secret('keyholder/dumpsdeploy.pub'),
+    }
 }
