@@ -33,6 +33,7 @@ protocol bfd {
 <%- @neighbors.each do |neighbor| -%>
 protocol bgp {
     import none;
+    multihop 2;
     export filter vips_filter;
     local as 64605;
     neighbor <%= neighbor %> as 14907;
