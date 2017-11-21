@@ -369,6 +369,7 @@ groups:
     members: [smalyshev, hoo]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
+                 'ALL = NOPASSWD: /usr/sbin/service nginx *',
                  'ALL = NOPASSWD: /bin/systemctl enable wdqs-updater',
                  'ALL = NOPASSWD: /bin/systemctl disable wdqs-updater',
                  'ALL = NOPASSWD: /bin/systemctl mask wdqs-updater',
