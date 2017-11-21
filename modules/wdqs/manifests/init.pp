@@ -6,6 +6,7 @@
 # == Parameters:
 # - $logstash_host: hostname where to send logs
 # - $logstash_json_port: port on which to send logs in json format
+# - $use_git_deploy: whether scap deployment is being used
 # - $username: Username owning the service
 # - $package_dir:  Directory where the service should be installed.
 # - $data_dir: Directory where the database should be stored
