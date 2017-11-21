@@ -47,7 +47,7 @@ class profile::kafka::broker::monitoring (
     # Alert on the average number of under replicated partitions over the last 30 minutes.
     monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
         description    => 'Kafka Broker Under Replicated Partitions',
-        dashboard_link => "https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site}%20prometheus%2Fops&var-cluster=${cluster}&var-kafka_brokers=${::hostname}",
+        dashboard_link => "https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-cluster=${cluster}&var-kafka_brokers=${::hostname}",
         query          => "scalar(avg_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[30m]))",
         warning        => 5,
         critical       => 10,
@@ -57,7 +57,7 @@ class profile::kafka::broker::monitoring (
     # Alert on the average max replica lag over the last 30 minutes.
     monitoring::check_prometheus { 'kafka_broker_replica_max_lag':
         description    => 'Kafka Broker Replica Max Lag',
-        dashboard_link => "https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site}%20prometheus%2Fops&var-cluster=${cluster}&var-kafka_brokers=${::hostname}",
+        dashboard_link => "https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-cluster=${cluster}&var-kafka_brokers=${::hostname}",
         query          => "scalar(avg_over_time(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[30m]))",
         warning        => $replica_maxlag_warning,
         critical       => $replica_maxlag_critical,
