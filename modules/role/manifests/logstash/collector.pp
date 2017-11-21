@@ -181,6 +181,11 @@ class role::logstash::collector (
         priority => 70,
     }
 
+    logstash::conf { 'filter_debug_blob':
+        source   => 'puppet:///modules/role/logstash/filter-debug_blob.conf',
+        priority => 70,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
