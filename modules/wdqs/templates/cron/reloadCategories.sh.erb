@@ -1,0 +1,29 @@
+#!/bin/bash
+# This script is reloading categories into a new namespace
+# NOTE: This should be run under user that has rights to
+# sudo service nginx restart
+if [ -r /etc/wdqs/vars.sh ]; then
+  . /etc/wdqs/vars.sh
+fi
+
+DEPLOY_DIR=${DEPLOY_DIR:-"<%= @package_dir %>"}
+DATA_DIR=${DATA_DIR:-"<%= @data_dir %>"}
+ALIAS_FILE="<%= @alias_map %>"
+
+today=$(date -u +'%Y%m%d')
+newNamespace="categories{$today}"
+# Drop old dumps
+rm -f "${DATA_DIR}/*-categories.ttl.gz"
+# Drop old logs
+rm -f "${DATA_DIR}/categories*.log"
+cd $DEPLOY_DIR
+bash createNamespace.sh $newNamespace || exit 1
+# Load the data
+bash forAllCategoryWikis.sh loadCategoryDump.sh $newNamespace >> "${DATA_DIR}/${newNamespace}.log"
+# Get old namespace
+oldNamespace=$(cat $ALIAS_FILE | grep categories | cut -d' ' -f2)
+# Switch the map
+echo "categories ${newNamespace}" > $ALIAS_FILE
+sudo service nginx restart
+# Drop old namespace
+curl -s -X DELETE http://localhost:9999/bigdata/namespace/${oldNamespace}
