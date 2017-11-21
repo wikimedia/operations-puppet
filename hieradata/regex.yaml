@@ -272,3 +272,7 @@ smart_health_ulsfo:
 puppet4_mw_codfw:
   __regex: !ruby/regexp /^mw2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_elasticsearch_codfw:
+  __regex: !ruby/regexp /^elastic2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
