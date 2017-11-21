@@ -39,6 +39,15 @@ class profile::proxysql {
         require => Class['proxysql'],
     }
 
+    # lets simplify connections from root
+    file { '/root/.my.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('proxysql/root.my.cnf.erb'),
+    }
+
     # I think with systemd there should be only 1 process running ?
     nrpe::monitor_service { 'proxysql':
         description   => 'proxysql processes',
