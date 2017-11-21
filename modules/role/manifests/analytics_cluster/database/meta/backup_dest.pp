@@ -1,17 +1,23 @@
 # == Class role::analytics_cluster::database::meta::backup_dest
 #
 class role::analytics_cluster::database::meta::backup_dest {
-    # Ensure /srv/backup exists
-    include ::role::analytics_cluster::backup
+
+    file { '/srv/backup':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'analytics-admins',
+        mode   => '0755',
+    }
 
     file { [
             '/srv/backup/mysql',
             '/srv/backup/mysql/analytics-meta',
         ]:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'analytics-admins',
-        mode   => '0750',
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'analytics-admins',
+        mode    => '0750',
+        require => File['/srv/backup'],
     }
 
     include ::rsync::server
