@@ -34,8 +34,8 @@ class bird(
   require_package('bird')
 
   if $bind_service != '' {
-    exec { 'bird-systemd-reload':
-        command     => 'systemctl daemon-reload',
+    exec { 'bird-systemd-reload-enable':
+        command     => 'systemctl daemon-reload; systemctl enable bird.service',
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
         refreshonly => true,
     }
@@ -46,7 +46,7 @@ class bird(
         mode    => '0644',
         content => template('bird/bird.service.erb'),
         require => Package['bird'],
-        notify  => Exec['bird-systemd-reload'],
+        notify  => Exec['bird-systemd-reload-enable'],
     }
   }
 
