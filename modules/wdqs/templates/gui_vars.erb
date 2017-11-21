@@ -1,0 +1,5 @@
+ALIAS_FILE="<%= @alias_map %>"
+<% if !@use_git_deploy -%>
+DEPLOY_DIR=<%= @package_dir %>
+DATA_DIR=<%= @data_dir %>
+<% end -%>
