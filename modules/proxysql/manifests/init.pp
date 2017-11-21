@@ -43,6 +43,5 @@ class proxysql (
         owner   => 'proxysql',
         group   => 'proxysql',
         mode    => '0750',
-        require => Class['proxysql'],
     }
 }
