@@ -27,13 +27,13 @@ class planet (
     include ::standard
     include ::locales::extended
 
-    # things done once for all planets
+    # things done once for all planet per languages
     include ::planet::packages
     include ::planet::dirs
     include ::planet::user
     include ::planet::index_site
 
-    if os_version('debian == stretch') {
+    if os_version('debian >= stretch') {
         $logo_file = '/var/www/planet/planet-wm2.png'
     } else {
         $logo_file = '/usr/share/planet-venus/theme/common/images/planet-wm2.png'
@@ -50,7 +50,6 @@ class planet (
     # we iterate over the keys of the hash
     # which includes language names and translations
     $planet_languages_keys = keys($planet_languages)
-
     # creates one document root per language
     planet::docroot { $planet_languages_keys: }
 
@@ -66,5 +65,7 @@ class planet (
     # creates one planet theme (css/logo) per language
     planet::theme { $planet_languages_keys: }
 
+    # creates RSS dir and plugin per language
+    planet::rawdogplugin { $planet_languages_keys: }
 }
 
