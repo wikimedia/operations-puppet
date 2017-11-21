@@ -43,7 +43,7 @@ class EditHieraForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         config = puppet_config(data['prefix'], data['tenant_id'])
-        config.set_hiera(yaml.safe_load(data['hieradata']))
+        config.set_roleless_hiera(yaml.safe_load(data['hieradata']))
         return True
 
 
