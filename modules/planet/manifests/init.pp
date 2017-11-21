@@ -22,6 +22,11 @@ class planet (
     $planet_http_proxy,
 ) {
 
+    # things done per each language version
+    # we iterate over the keys of the hash
+    # which includes language names and translations
+    $planet_languages_keys = keys($planet_languages)
+
     # locales are essential for planet
     # if a new language is added check these too
     include ::standard
@@ -29,11 +34,13 @@ class planet (
 
     # things done once for all planets
     include ::planet::packages
-    include ::planet::dirs
+    class { '::planet::dirs':
+        planet_languages_keys => $planet_languages_keys,
+    }
     include ::planet::user
     include ::planet::index_site
 
-    if os_version('debian == stretch') {
+    if os_version('debian >= stretch') {
         $logo_file = '/var/www/planet/planet-wm2.png'
     } else {
         $logo_file = '/usr/share/planet-venus/theme/common/images/planet-wm2.png'
@@ -45,11 +52,6 @@ class planet (
         owner  => 'planet',
         group  => 'www-data',
     }
-
-    # things done per each language version
-    # we iterate over the keys of the hash
-    # which includes language names and translations
-    $planet_languages_keys = keys($planet_languages)
 
     # creates one document root per language
     planet::docroot { $planet_languages_keys: }

@@ -1,7 +1,7 @@
 # defined type: a config dir and file for a planet-venus or rawdog language version
 define planet::config {
 
-    if os_version('debian == stretch') {
+    if os_version('debian >= stretch') {
         $config_path = '/etc/rawdog'
         $config_file = 'config'
         $feed_src = 'feeds_rawdog'
