@@ -75,7 +75,7 @@ define monitoring::graphite_threshold(
     $contact_group   = 'admins',
 )
 {
-    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
+    validate_re($dashboard_link, 'https:\/\/grafana\.wikimedia\.org')
 
     # checkcommands.cfg's check_graphite_threshold command has
     # many positional arguments that

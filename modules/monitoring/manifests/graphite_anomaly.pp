@@ -68,7 +68,7 @@ define monitoring::graphite_anomaly(
     $contact_group   = 'admins',
 )
 {
-    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
+    validate_re($dashboard_link, 'https:\/\/grafana\.wikimedia\.org')
 
     if $over == true {
         $modifier = '--over'

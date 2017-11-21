@@ -90,7 +90,7 @@ define monitoring::check_prometheus(
 {
     validate_re($method, '^(gt|ge|lt|le|eq|ne)$')
     validate_bool($nan_ok)
-    validate_re($dashboard_link, '^https:\/\/grafana\.wikimedia\.org')
+    validate_re($dashboard_link, 'https:\/\/grafana\.wikimedia\.org')
 
     $command = $nan_ok ? {
         true    => 'check_prometheus_nan_ok',
