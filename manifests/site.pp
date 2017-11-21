@@ -2356,6 +2356,11 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
 }
 
+# VMs for performance team replacing hafnium (T179036)
+node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
+    role(test)
+}
+
 node 'wezen.codfw.wmnet' {
     role(syslog::centralserver)
 }
