@@ -7,6 +7,14 @@ log_format logstash
 
 limit_conn_zone $http_x_client_ip zone=byaddr:10m;
 
+# Namespace alias map: alias -> real namespace
+# http://nginx.org/en/docs/http/ngx_http_map_module.html states that
+# variables are evaluated on-demand, so we don't have to worry about
+# resolution until later
+map $namespace $aliased {
+    include <%= @alias_map %>;
+}
+
 server {
     listen <%= @port %> default_server;
     listen [::]:<%= @port %> default_server;
@@ -58,7 +66,16 @@ server {
 
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
-    location ~ ^/bigdata/(namespace/[a-zA-Z0-9]+/sparql|ldf|assets) {
+    # Check whether we're dealing with a namespace
+    if ( $uri ~ ^/bigdata/namespace/([a-zA-Z0-9_]+)/sparql$) {
+        set $namespace $1;
+    }
+    # See if we have an alias. If we do, rewrite to use the alias.
+    if ( $aliased ) {
+        rewrite ^ /bigdata/namespace/$aliased/sparql last;
+    }
+
+    location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|ldf|assets) {
         if ( $uri ~ ^/bigdata/assets ) {
             add_header Cache-Control "public, max-age=604800, s-maxage=604800";
         }
