@@ -11,22 +11,25 @@ class profile::bird::anycast(
   $advertise_vips = hiera('profile::bird::advertise_vips', undef),
 ){
 
+  $neighbors_for_ferm = join($neighbors_list, ' ')
+
   ferm::service { 'bird-bgp':
       proto  => 'tcp',
       port   => '179',
       srange => $neighbors_list,
+      srange => "(${neighbors_for_ferm})",
   }
 
   if $bfd {
     ferm::service { 'bird-bfd-control':
         proto  => 'udp',
         port   => '3784',
-        srange => $neighbors_list,
+        srange => "(${neighbors_for_ferm})",
     }
     ferm::service { 'bird-bfd-echo':
         proto  => 'udp',
         port   => '3785',
-        srange => $neighbors_list,
+        srange => "(${neighbors_for_ferm})",
     }
   }
 
