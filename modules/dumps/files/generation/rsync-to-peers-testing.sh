@@ -54,7 +54,7 @@ make_statusfiles_tarball() {
         # ( cd /data/xmldatadumps; /usr/bin/find public/ -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
         ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs /bin/tar cfp "$tarballpath" )
 
-        # if no files found, there will be no tarball created either
+        # make sure tarball exists, if no files found, there will be no tarball created either
 	if [ -f "$tarballpath" ]; then
             /bin/gzip "$tarballpath"
         fi

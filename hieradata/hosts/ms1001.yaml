@@ -1,4 +1,4 @@
-profile::dumps::rsyncer_peer:
+profile::dumps::rsyncer:
   dumps_user: 'datasets'
   dumps_group: 'datasets'
   dumps_deploygroup: 'wikidev'
