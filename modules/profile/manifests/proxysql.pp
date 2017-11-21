@@ -6,19 +6,22 @@ class profile::proxysql {
 
     $admin_user = 'root'
     $admin_password = $::passwords::misc::scripts::mysql_root_pass
+    $admin_socket = '/run/proxysql/proxysql_admin.sock'
+    $mysql_socket = '/run/proxysql/proxysql.sock'
+    $mysql_port   = 3311
 
     class { '::proxysql':
         admin_user     => $admin_user,
         admin_password => $admin_password,
-        admin_socket   => '/run/proxysql/proxysql_admin.sock',
-        mysql_socket   => '/run/proxysql/proxysql.sock',
-        mysql_port     => 3311,
+        admin_socket   => $admin_socket,
+        mysql_socket   => $mysql_socket,
+        mysql_port     => $mysql_port,
     }
 
     # Let's not open the proxy port for now, only allow localhost connections
     #ferm::service { 'proxysql_mysql':
     #    proto   => 'tcp',
-    #    port    => '3311',
+    #    port    => $mysql_port,
     #    notrack => true,
     #}
 
@@ -37,6 +40,15 @@ class profile::proxysql {
         group   => 'proxysql',
         mode    => '0755',
         require => Class['proxysql'],
+    }
+
+    # lets simplify connections from root
+    file { '/root/.my.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('proxysql/root.my.cnf.erb'),
     }
 
     # I think with systemd there should be only 1 process running ?
