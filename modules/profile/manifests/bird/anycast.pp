@@ -17,6 +17,7 @@ class profile::bird::anycast(
       proto  => 'tcp',
       port   => '179',
       srange => "(${neighbors_for_ferm})",
+      before => Class['::bird'],
   }
 
   if $bfd {
@@ -24,11 +25,13 @@ class profile::bird::anycast(
         proto  => 'udp',
         port   => '3784',
         srange => "(${neighbors_for_ferm})",
+        before => Class['::bird'],
     }
     ferm::service { 'bird-bfd-echo':
         proto  => 'udp',
         port   => '3785',
         srange => "(${neighbors_for_ferm})",
+        before => Class['::bird'],
     }
   }
 
