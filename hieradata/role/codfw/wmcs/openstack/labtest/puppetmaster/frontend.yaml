@@ -2,7 +2,7 @@ admin::groups:
   - labtest-roots
 
 puppetmaster::hiera_config: labtest
-labs_puppet_master: labtest-puppetmaster.wikimedia.org
+labs_puppet_master: labtestpuppetmaster2001.wikimedia.org
 profile::puppetmaster::common::storeconfigs: none
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
