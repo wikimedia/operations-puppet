@@ -39,4 +39,13 @@ class wdqs::gui(
         group  => 'wikidev',
         mode   => '0775',
     }
+
+    file { '/usr/local/bin/reloadCategories.sh':
+        ensure  => present,
+        content => template('cron/reloadCategories.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+    }
+
 }
