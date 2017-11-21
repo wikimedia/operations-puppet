@@ -1,6 +1,7 @@
 standard::has_ganglia: false
 
 profile::bird::advertise_vips:
-  rec-dns-anycast-vip: 10.3.0.1/32
+  rec-dns-anycast-vip:
+    address: 10.3.0.1/32
 
 profile::bird::bind_service: 'pdns-recursor.service'
