@@ -12,11 +12,19 @@ class proxysql (
     $mysql_socket    = '/tmp/proxysql.sock',
     ) {
 
-    package { [
-        'proxysql',
-        'wmf-mariadb101-client',
-    ]:
+    # We need to manualy setup users, as the package doesn't do it for us
+    group { 'proxysql':
         ensure => present,
+        system => true,
+    }
+
+    user { 'proxysql':
+        ensure     => present,
+        gid        => 'proxysql',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        system     => true,
+        managehome => false,
     }
 
     file { '/etc/proxysql.cnf':
