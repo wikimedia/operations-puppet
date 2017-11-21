@@ -49,5 +49,6 @@ class profile::bird::anycast(
       neighbors       => $neighbors_list,
       bind_service    => $bind_service,
       bfd             => $bfd,
+      require         => Service['ferm'],
   }
 }
