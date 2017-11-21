@@ -8,6 +8,7 @@ class profile::dnsrecursor (
     include ::lvs::configuration
 
     class { '::dnsrecursor':
+        version_hostname => true,
         allow_from       => $network::constants::all_networks,
         listen_addresses => [
             $facts['ipaddress'],

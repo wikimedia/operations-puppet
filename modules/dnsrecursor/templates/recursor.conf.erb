@@ -108,6 +108,11 @@ socket-dir=/var/run/
 # useful for debugging
 export-etc-hosts=<%= @export_etc_hosts %>
 
+<% if @version_hostname -%>
+# Use version-string to query the server hostname under LVS and/or anycast
+version-string=<%= @hostname %>
+<% end -%>
+
 <% if @pdns_rec_ver == '4' -%>
 # This prevents pdns from polling a public server to check for sec fixes
 security-poll-suffix=
@@ -153,7 +158,4 @@ hint-file=/usr/share/dns/root.hints
 
 # spoof-nearmiss-max	If non-zero, assume spoofing after this many near misses
 # spoof-nearmiss-max=20
-
-# version-string	string reported on version.pdns or version.bind
-# version-string=PowerDNS Recursor 3.1 $Id: pdns_recursor.cc 838 2006-05-19 14:35:27Z
 <% end -%>
