@@ -176,6 +176,8 @@ class puppet_config():
     def set_roleless_hiera(self, hiera_yaml):
         # Add role-associated hiera params to this freeform block before
         #  sending it on to the backend
+        if not hiera_yaml:
+            hiera_yaml = {}
 
         raw_hiera_yaml = yaml.safe_load(self.hiera_raw)
         if not raw_hiera_yaml:
