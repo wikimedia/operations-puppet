@@ -23,6 +23,14 @@ class planet::dirs {
             mode   => '0755',
         }
 
+        file { '/etc/rawdog/plugins/rss.py':
+            ensure => 'present',
+            owner  => 'planet',
+            group  => 'planet',
+            mode   => '0755',
+            content => template('planet/feeds_rawdog/plugins/rss.py.erb')
+        }
+
         file { '/etc/rawdog/config':
             ensure  => 'present',
             mode    => '0444',
