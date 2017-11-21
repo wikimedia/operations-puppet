@@ -1,7 +1,7 @@
 # sets up needed directories for a planet-venus / rawdog install
-class planet::dirs {
+class planet::dirs($planet_languages_keys) {
 
-    if os_version('debian == stretch') {
+    if os_version('debian >= stretch') {
 
         file { [
             '/var/www/planet',
@@ -16,11 +16,19 @@ class planet::dirs {
             mode   => '0755',
         }
 
-        file { '/etc/rawdog/plugins':
+        file { "/etc/rawdog/${planet_languages_keys}/plugins":
             ensure => directory,
             owner  => 'planet',
             group  => 'planet',
             mode   => '0755',
+        }
+
+        file { "/etc/rawdog/${planet_languages_keys}/plugins/rss.py":
+            ensure  => 'present',
+            owner   => 'planet',
+            group   => 'planet',
+            mode    => '0755',
+            content => template('planet/feeds_rawdog/plugins/rss.py.erb'),
         }
 
         file { '/etc/rawdog/config':
@@ -28,7 +36,7 @@ class planet::dirs {
             mode    => '0444',
             owner   => 'planet',
             group   => 'planet',
-            content => template('planet/feeds_rawdog/global.erb')
+            content => template('planet/feeds_rawdog/global.erb'),
         }
 
     } else {
