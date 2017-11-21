@@ -1,16 +1,18 @@
-# LDAP servers for labs test cluster
+# LDAP servers for labtest cluster
 #  this is a fork of role::openldap::labs, minus the mirroring and monitoring
 
-class role::openldap::labtest {
-    include passwords::openldap::labtest
-    include ::base::firewall
-
-    $ldapconfig = hiera_hash('labsldapconfig', {})
-    $ldap_labs_hostname = $ldapconfig['hostname']
+class role::openldap::labtest(
+    $ldap_labs_hosts = hiera('profile::openstack::labtest::ldap_hosts'),
+    ) {
 
     system::role { 'openldap::labtest':
         description => 'LDAP servers for labs test cluster (based on OpenLDAP)'
     }
+
+    include passwords::openldap::labtest
+    include ::base::firewall
+
+    $ldap_labs_hostname = $ldap_labs_hosts[0]
 
     # Certificate needs to be readable by slapd
     sslcert::certificate { $ldap_labs_hostname:
