@@ -16,9 +16,9 @@ class profile::redis::jobqueue {
 
     $instance_str = join($::profile::redis::multidc::instances, ' ')
 
-    $restart_hour  = $::site ? {
-        'codfw'   => 2,
-        'default' => 1,
+    $restart_hour = $::site ? {
+        'codfw' => 2,
+        default => 1,
     }
 
     cron { 'jobqueue-redis-conditional-restart':
