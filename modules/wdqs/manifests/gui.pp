@@ -44,4 +44,13 @@ class wdqs::gui(
         # Because nginx site creates /var/lib/nginx
         require => Nginx::Site['wdqs'],
     }
+
+    file { '/usr/local/bin/reloadCategories.sh':
+        ensure  => present,
+        content => template('cron/reloadCategories.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+    }
+
 }
