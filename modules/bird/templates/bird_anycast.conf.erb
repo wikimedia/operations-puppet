@@ -35,7 +35,7 @@ protocol bgp {
     import none;
     multihop 2;
     export filter vips_filter;
-    local as 64605;
+    local <%= @routerid %> as 64605;
     neighbor <%= neighbor %> as 14907;
     <%- if @bfd -%>
     bfd yes;
