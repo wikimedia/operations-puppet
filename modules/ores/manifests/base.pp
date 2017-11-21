@@ -1,6 +1,6 @@
 class ores::base(
     $config_path = '/srv/deployment/ores/deploy',
-    $venv_path = '/srv/deployment/ores/venv',
+    $venv_path = '/srv/deployment/ores/deploy/venv',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
