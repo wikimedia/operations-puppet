@@ -27,6 +27,7 @@ class proxysql (
         managehome => false,
     }
 
+    # Minimal basic config, with the right owner
     file { '/etc/proxysql.cnf':
         ensure  => present,
         owner   => 'proxysql',
@@ -35,11 +36,13 @@ class proxysql (
         content => template('proxysql/proxysql.cnf.erb'),
     }
 
-    file { '/root/.my.cnf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('proxysql/root.my.cnf.erb'),
+    # mostly sqllite intenal config cache, let's make sure it has
+    # the right owner 
+    file {'/var/run/proxysql':
+        ensure  => directory,
+        owner   => 'proxysql',
+        group   => 'proxysql',
+        mode    => '0750',
+        require => Class['proxysql'],
     }
 }
