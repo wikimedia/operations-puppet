@@ -5,12 +5,11 @@ protocol device {
 }
 
 protocol kernel {
-  metric 64;
-  import none;
+    import none;
 }
 
 protocol direct {
-  interface "*";
+    interface "*";
 }
 
 filter vips_filter{
@@ -26,22 +25,19 @@ filter vips_filter{
 protocol bfd {
     interface "*" {
         interval 300 ms;
-            multiplier 3;
-        };
+        multiplier 3;
+    };
 }
 <%- end -%>
 
-
+<%- @neighbors.each do |neighbor| -%>
 protocol bgp {
-  import none;
-  export filter vips_filter;
-  local as 64605;
-  check link yes;
-  <% @neighbors.each do |neighbor| %>
-  neighbor <%= @neighbor %> as 14907;
-  <% end %>
-  <%- if @bfd -%>
-  bfd yes;
-  <%- end -%>
-
+    import none;
+    export filter vips_filter;
+    local as 64605;
+    neighbor <%= neighbor %> as 14907;
+    <%- if @bfd -%>
+    bfd yes;
+    <%- end -%>
 }
+<%- end -%>
