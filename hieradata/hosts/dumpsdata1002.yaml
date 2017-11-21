@@ -1,4 +1,4 @@
-profile::dumps::rsyncer_peer:
+profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'
   dumps_group: 'dumpsgen'
   dumps_deploygroup: 'wikidev'

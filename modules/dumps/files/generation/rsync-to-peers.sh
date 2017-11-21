@@ -32,6 +32,35 @@ EOF
     exit 1
 }
 
+make_statusfiles_tarball() {
+    # make tarball of all xml/sql dumps status and html files
+    tarballpath="${xmldumpsdir}/public/dumpstatusfiles.tar"
+    tarballpathgz="${tarballpath}.gz"
+
+    # Only pick up the html/json/txt files from the latest run; even if it's
+    # only partially done or for some wikis it's not started, that's fine.
+    # Files from the previous run will have already been sent over before
+    # the new run started, unless there are 0 minutes between end of
+    # one dump run across all wikis and start of the next (in which case
+    #  we are cutting things WAY too close with the runs)
+    latestwiki=$( cd "${xmldumpsdir}/public"; ls -td *wik* | head -1 )
+
+     rm -f "$tarballpathgz"
+
+    # dirname is YYYYMMDD, i.e. 8 digits. ignore all other directories.
+    latestrun=$( cd "${xmldumpsdir}/public/${latestwiki}" ; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | sort | tail -1 )
+    if [ -n "$latestrun" ]; then
+
+        # ( cd /data/xmldatadumps; /usr/bin/find public/ -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
+        ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs /bin/tar cfp "$tarballpath" )
+
+        # if no files found, there will be no tarball created either
+	if [ -f "$tarballpath" ]; then
+            /bin/gzip "$tarballpath"
+        fi
+    fi
+}
+
 xmldumpsdir=""
 xmlremotedirs=""
 miscdumpsdir=""
@@ -78,10 +107,19 @@ IFS=$IFS_SAVE
 
 while [ 1 ]; do
 
+    make_statusfiles_tarball
+
     # rsync of xml/sql dumps for public wikis
     for dest in $xmlremotedirs_list; do
-	/usr/bin/rsync -a  --contimeout=600 --timeout=600 ${xmldumpsdir}/public/*html "$dest" > /dev/null 2>&1
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  ${xmldumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
+
+	# send statusfiles tarball over last, remote can unpack it when it notices the arrival
+	# this way, content of status and html files always reflects dump output already
+	# made available via rsync
+        if [ -f "$tarballpathgz" ]; then
+            /usr/bin/rsync -a  --contimeout=600 --timeout=600 "$tarballpathgz" "$dest" > /dev/null 2>&1
+        fi
+
     done
 
     # rsync of misc dumps, not necessarily to/from the same tree as the public wikis
