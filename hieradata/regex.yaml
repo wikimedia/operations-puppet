@@ -119,16 +119,8 @@ labs:
 labtestvirt:
   __regex: !ruby/regexp /^labtestvirt20[0-9][0-9]\.codfw\.wmnet$/
   cluster: labtestvirt
-
-labtest:
-  __regex: !ruby/regexp /^labtest(net200[1-9]\.codfw\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
-  cluster: labtest
-  mariadb::monitor_process::is_critical: false
-  mariadb::monitor_disk::is_critical: false
-  openstack::designate::monitor::critical: false
-  openstack::nova::conductor::monitor::critical: false
-  openstack::nova::network::monitor::critical: false
-  icinga::monitor::toollabs::critical: false
+  # no Icinga SMS for test machines
+  do_paging: false
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
@@ -196,26 +188,22 @@ maps_test:
   __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
   cassandra::target_version: '2.2'
 
-# These values are site/realm specific for LABTEST infrastructure
-
+# These values are specific for LABTEST infrastructure
 # This address range is not really used for labtest external, it is
 # used for labs in eqiad.  We are using it as a placeholder for now
 # with no actual advertisement or needed external services for now
 # 208.80.155.0/22
-
-# no Icinga SMS for test machines
 labtest:
   __regex: !ruby/regexp /^labtest/
+  cluster: labtest
+  # no Icinga SMS for test machines
   do_paging: false
+  # class ldap::role::config::labs {
+  #    $hieraldapconfig = hiera_hash('labsldapconfig', {})
   labsldapconfig:
     hostname: labtestservices2001.wikimedia.org
     secondary_hostname: labtestservices2001.wikimedia.org
-  labsdnsconfig:
-    host: 'labtest-ns0.wikimedia.org'
-    host_secondary: 'labtest-ns0.wikimedia.org'
-    dbserver: 'localhost'
-    recursor: 'labtest-recursor0.wikimedia.org'
-    recursor_secondary: 'labtest-recursor0.wikimedia.org'
+
 
 # require WriteBack policy to all hosts (independent of the role) that look
 # like databases. Currently this only works for megacli systems, but it will
