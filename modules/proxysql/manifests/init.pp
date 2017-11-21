@@ -39,10 +39,9 @@ class proxysql (
     # mostly sqllite intenal config cache, let's make sure it has
     # the right owner
     file {'/var/run/proxysql':
-        ensure  => directory,
-        owner   => 'proxysql',
-        group   => 'proxysql',
-        mode    => '0750',
-        require => Class['proxysql'],
+        ensure => directory,
+        owner  => 'proxysql',
+        group  => 'proxysql',
+        mode   => '0750',
     }
 }
