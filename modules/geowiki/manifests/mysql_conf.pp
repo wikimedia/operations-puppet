@@ -18,7 +18,7 @@ class geowiki::mysql_conf {
 [client]
 user=${research_mysql_user}
 password=${research_mysql_pass}
-host=s1-analytics-slave.eqiad.wmnet
+host=analytics-slave.eqiad.wmnet
 # make_limn_files.py relies on a set default-character-set.
 # This setting was in erosen's original MySQL configuration files, and without
 # it, make_files_limpy.py fails with UnicodeDecodeError when writing out the csv files
