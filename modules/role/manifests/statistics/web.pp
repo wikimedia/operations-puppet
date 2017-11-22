@@ -5,4 +5,7 @@ class role::statistics::web {
     }
 
     include ::profile::statistics::web
+
+    # Superset. T166689
+    include ::profile::superset
 }
