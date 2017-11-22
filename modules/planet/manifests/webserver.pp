@@ -4,4 +4,5 @@ class planet::webserver {
     include ::apache::mod::rewrite
     # so we can vary on X-Forwarded-Proto when behind misc-web
     include ::apache::mod::headers
+    include ::apache::mod::http2
 }
