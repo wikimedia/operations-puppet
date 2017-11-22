@@ -1,0 +1,6 @@
+admin::groups:
+  - analytics-users
+  - analytics-privatedata-users
+  - analytics-admins
+cluster: analytics
+profile::hadoop::client::zookeeper_cluster_name: 'main-eqiad'
