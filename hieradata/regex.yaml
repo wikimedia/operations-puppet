@@ -185,7 +185,7 @@ lvs_esams_backup:
   profile::pybal::primary: false
 
 lvs_ulsfo_backup:
-  __regex: !ruby/regexp /^lvs400[34567]\.ulsfo\.wmnet$/
+  __regex: !ruby/regexp /^lvs400[12347]\.ulsfo\.wmnet$/
   profile::pybal::primary: false
 
 lvs_temp_bgp_disable:
