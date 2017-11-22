@@ -7,7 +7,8 @@
 class role::archiva {
     system::role { 'archiva': description => 'Apache Archiva Host' }
 
-    include ::base::firewall
+    include ::standard
+    include ::profile::base::firewall
 
     require_package('openjdk-7-jdk')
 
