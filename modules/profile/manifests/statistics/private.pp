@@ -48,10 +48,6 @@ class profile::statistics::private(
     # rsync mediawiki logs from logging hosts
     include ::statistics::rsync::mediawiki
 
-    # Discovery statistics generating scripts
-    # This needs work to move to stat1005: T170471
-    # include ::statistics::discovery
-
     # WMDE releated statistics & analytics scripts.
     class { '::statistics::wmde':
         statsd_host   => $statsd_host,
