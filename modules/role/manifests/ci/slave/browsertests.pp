@@ -10,7 +10,7 @@ class role::ci::slave::browsertests {
     }
 
     include role::ci::slave::labs::common
-    include contint::browsertests
+    include profile::ci::browsertests
 
     # For CirrusSearch testing:
     $redis_port = '6379'
