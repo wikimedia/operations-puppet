@@ -6,8 +6,7 @@ class profile::ci::browsertests {
     }
 
     # Provides phantomjs, firefox and xvfb
-    class { '::contint::browsers':
-    }
+    require profile::ci::browsers
 
     # For Selenium jobs recording (T113520)
     package { 'libav-tools':

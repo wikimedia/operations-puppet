@@ -37,8 +37,7 @@ class role::ci::slave::labs {
 
     include role::ci::slave::labs::common
 
-
-    include contint::browsers
+    include profile::ci::browsers
 
     class { 'role::ci::slave::browsertests':
         require => [
