@@ -8,7 +8,6 @@ class profile::openstack::base::horizon::dashboard(
     $webserver_hostname = hiera('profile::openstack::base::horizon::webserver_hostname'),
     ) {
 
-    # TODO: Add openstack::util::envscripts during profile conversion
     class { 'openstack::horizon::service':
         version             => $version,
         nova_controller     => $nova_controller,
