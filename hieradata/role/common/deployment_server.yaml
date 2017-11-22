@@ -107,6 +107,9 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+  # Superset
+  analytics/superset/deploy:
+    repository: analytics/superset/deploy
   gerrit/gerrit:
     repository: operations/software/gerrit
   graphoid/deploy: {}
@@ -123,6 +126,8 @@ scap::sources:
     repository: operations/software/logstash/plugins
   analytics/pivot/deploy:
     repository: analytics/pivot/deploy
+  analytics/superset/deploy:
+    repository: analytics/superset/deploy
   mathoid/deploy: {}
 #    lvs_service: mathoid
   mobileapps/deploy: {}
