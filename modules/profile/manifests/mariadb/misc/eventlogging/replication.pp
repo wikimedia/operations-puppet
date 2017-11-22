@@ -57,6 +57,13 @@ class profile::mariadb::misc::eventlogging::replication (
         mode   => '0755',
     }
 
+    file { '/var/log/eventlogging':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'eventlog',
+        mode   => '0775',
+    }
+
     file { '/etc/eventlogging/whitelist.tsv':
         ensure  => 'present',
         owner   => 'root',
@@ -76,7 +83,7 @@ class profile::mariadb::misc::eventlogging::replication (
 
     logrotate::rule { 'eventlogging':
         ensure        => present,
-        file_glob     => '/var/log/eventlogging_*.log',
+        file_glob     => '/var/log/eventlogging/eventlogging_*.log',
         frequency     => 'daily',
         copy_truncate => true,
         compress      => true,
@@ -123,15 +130,18 @@ class profile::mariadb::misc::eventlogging::replication (
         # without doing any action to the db. This is useful to avoid gaps in
         # records sanitized if the script fails and does not commit a new timestamp.
         $eventlogging_cleaner_command = '/usr/local/bin/eventlogging_cleaner --whitelist /etc/eventlogging/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2'
-        $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> /var/log/eventlogging_cleaner.log"
+        $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> /var/log/eventlogging/eventlogging_cleaner.log"
         cron { 'eventlogging_cleaner daily sanitization':
-            ensure  => present,
-            command => $command,
-            user    => 'eventlogcleaner',
-            hour    => 1,
-            require => [
+            ensure      => present,
+            command     => $command,
+            user        => 'eventlogcleaner',
+            minute      => 0,
+            hour        => 11,
+            environment => 'MAILTO=analytics-alerts@wikimedia.org',
+            require     => [
                 File['/usr/local/bin/eventlogging_cleaner'],
                 File['/etc/eventlogging/whitelist.tsv'],
+                File['/var/log/eventlogging'],
                 User['eventlogcleaner'],
             ]
         }
