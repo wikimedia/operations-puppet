@@ -1609,7 +1609,6 @@ node /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/ {
 # They replace mw1017 and mw1099
 node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include ::base::firewall
 }
 
 # mw1180-1188 are apaches
@@ -1652,7 +1651,6 @@ node /^mw12(59|60)\.eqiad\.wmnet/ {
 
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include ::base::firewall
 }
 
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
@@ -1718,7 +1716,6 @@ node 'mw1318.eqiad.wmnet' {
 # mw2017/mw2099 are codfw test appservers
 node /^mw20(17|99)\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
-    include ::base::firewall
 }
 
 #mw2097, mw2100-mw2117 are appservers
