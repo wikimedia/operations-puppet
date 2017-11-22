@@ -72,6 +72,7 @@
     <appender name="socket" class="org.apache.log4j.net.SocketAppender">
         <param name="port" value="<%= @log_port %>"/>
         <param name="remoteHost" value="<%= @log_host %>"/>
+        <param name="ReconnectionDelay" value="100"/>
     </appender>
     <appender name="async" class="org.apache.log4j.AsyncAppender">
         <param name="Blocking" value="false"/>
