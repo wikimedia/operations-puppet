@@ -1298,8 +1298,6 @@ node 'labnet1002.eqiad.wmnet' {
 node 'labnodepool1001.eqiad.wmnet' {
     $nagios_contact_group = 'admins,contint'
     role(wmcs::openstack::main::nodepool)
-    include ::standard
-    include ::base::firewall
 }
 
 ## labsdb dbs
