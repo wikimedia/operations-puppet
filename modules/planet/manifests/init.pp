@@ -29,6 +29,11 @@ class planet (
 
     # things done once for all planets
     include ::planet::webserver
+    class { '::apache': }
+    class { '::apache::mod::rewrite': }
+    # so we can vary on X-Forwarded-Proto when behind misc-web
+    class { '::apache::mod::headers': }
+    class { '::apache::mod::http2': }
     include ::planet::packages
     include ::planet::dirs
     include ::planet::user
