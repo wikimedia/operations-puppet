@@ -1357,8 +1357,6 @@ node /labstore100[45]\.eqiad\.wmnet/ {
 
 node /labstore100[67]\.wikimedia\.org/ {
     role(dumps::public::server)
-    # Do not enable yet
-    # include ::base::firewall
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
