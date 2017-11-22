@@ -107,6 +107,9 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+  # Superset
+  analytics/superset/deploy:
+    repository: analytics/superset/deploy
   gerrit/gerrit:
     repository: operations/software/gerrit
   graphoid/deploy: {}
