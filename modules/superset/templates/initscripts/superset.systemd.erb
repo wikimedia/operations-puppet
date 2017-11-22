@@ -1,0 +1,24 @@
+# NOTE: This file is managed by Puppet.
+# Systemd unit for the AirBnB Superset UI
+[Unit]
+Description="superset service"
+After=network.target
+
+[Service]
+User=superset
+Group=superset
+# /etc/superset contains superset_config.py, which will be used if it is in PYTHONPATH.
+Environment="PYTHONPATH=/etc/superset"
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing the master
+TimeoutStopSec=60
+WorkingDirectory=<%= @deployment_dir %>
+ExecStart=/usr/bin/firejail --profile=/etc/firejail/superset.profile -- <%= @virtualenv_dir %>/bin/gunicorn \
+    --config /etc/superset/gunicorn_config.py \
+    superset:app
+
+SyslogIdentifier=superset
+
+[Install]
+WantedBy=multi-user.target
