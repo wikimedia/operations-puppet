@@ -1,4 +1,4 @@
-class contint::browsers {
+class profile::ci::browsers {
 
     package { [
         # Without xfonts-cyrillic Xvdb emits warning:
