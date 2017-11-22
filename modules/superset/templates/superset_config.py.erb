@@ -1,0 +1,37 @@
+# NOTE: This file is managed by Puppet.
+
+#---------------------------------------------------------
+# Flask App Builder configuration
+#---------------------------------------------------------
+# Your App secret key
+SECRET_KEY = <%= @secret_key %>
+
+# The SQLAlchemy connection string to your database backend
+# This connection defines the path to the database that stores your
+# superset metadata (slices, connections, tables, dashboards, ...).
+# Note that the connection information to connect to the datasources
+# you want to explore are managed directly in the web UI
+SQLALCHEMY_DATABASE_URI = <%= @database_uri %>
+
+
+<%
+# If @password_mapping is given, output a python dict
+# mapping sqlalchemy URIs to passwords.  Then create
+# a function that returns password given the uri, and
+# assign that to SQLALCHEMY_CUSTOM_PASSWORD_STORE.
+#
+# This allows for configuration of databases in the
+# superset GUI, without having to enter passwords through it.
+#
+if @password_mapping
+-%>
+password_mapping = {
+<% @password_mapping.keys.sort do |uri| -%>
+    '<%= uri %>': '<%= @password_mapping[uri] %>',
+<% end -%>
+}
+def lookup_password(uri):
+    return password_mapping.get(uri, None)
+SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
+
+<% end -%>
