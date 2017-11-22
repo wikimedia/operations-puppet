@@ -1,6 +1,11 @@
 class profile::ci::hhvm {
 
-    class { '::contint::packages::hhvm':
+    # Dev dependencies To build PHP extensions
+    exec { '/usr/bin/apt-get -y build-dep hhvm':
+        onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
+    }
+    package { ['hhvm-dev']:
+        ensure => present,
     }
 
     class { '::hhvm':
