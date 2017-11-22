@@ -1,8 +1,8 @@
-# == Class contint::package_builder
+# == Class profile::ci::package_builder
 #
 # Setup cow images and jenkins-debian-glue
 #
-class contint::package_builder {
+class profile::ci::package_builder {
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git

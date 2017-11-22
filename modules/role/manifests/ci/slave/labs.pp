@@ -14,7 +14,7 @@ class role::ci::slave::labs {
     }
     include ::profile::phabricator::arcanist
 
-    include ::contint::package_builder
+    include ::profile::ci::package_builder
 
     # And a second mounted on /srv
     contint::tmpfs { 'tmpfs for jenkins CI labs slave on /srv':
