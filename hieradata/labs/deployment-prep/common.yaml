@@ -311,6 +311,10 @@ scap::sources:
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
 
+  # Public EventStreams service
+  analytics/superset/deploy:
+    repository: analytics/superset/deploy
+
   # IEG grant review
   iegreview/iegreview:
     repository: iegreview
