@@ -13,7 +13,8 @@
 
 usage() {
     cat<<EOF
-Usage: $0 --dumpsdir <path> --xmlremotedirs <path>,<path>,<path>...
+Usage: $0 --xmldumpsdir <path> --xmlremotedirs <path>,<path>,<path>...  \\
+          --miscdumpsdir <path> --miscremotedirs <path>,<path>,<path>...
 
   --xmldumpsdir   path to root of xml/sql dumps tree for rsync to peer hosts
   --xmlremotedirs  comma-separated list of remote destinations to which to rsync
@@ -80,7 +81,7 @@ while [ 1 ]; do
     # rsync of xml/sql dumps for public wikis
     for dest in $xmlremotedirs_list; do
 	/usr/bin/rsync -a  --contimeout=600 --timeout=600 ${xmldumpsdir}/public/*html "$dest" > /dev/null 2>&1
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  ${dumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  ${xmldumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
     done
 
     # rsync of misc dumps, not necessarily to/from the same tree as the public wikis
