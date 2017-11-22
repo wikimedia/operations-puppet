@@ -4,5 +4,6 @@ class role::dumps::public::server {
     include ::standard
     include ::profile::base::firewall
     include ::profile::dumps::public_server
+    include ::profile::dumps::web::rsync_server
     include ::profile::dumps::rsyncer
 }
