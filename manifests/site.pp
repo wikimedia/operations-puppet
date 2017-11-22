@@ -1552,7 +1552,6 @@ node /^mc20(19|2[0-9]|3[0-6])\.codfw\.wmnet/ {
 # archiva.wikimedia.org
 node 'meitnerium.wikimedia.org' {
     role(archiva)
-    include ::standard
 }
 
 # OTRS - ticket.wikimedia.org
