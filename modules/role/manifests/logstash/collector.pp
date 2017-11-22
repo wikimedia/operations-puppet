@@ -133,6 +133,11 @@ class role::logstash::collector (
         priority => 20,
     }
 
+    logstash::conf { 'filter_log4j':
+        source   => 'puppet:///modules/role/logstash/filter-log4j.conf',
+        priority => 20,
+    }
+
     logstash::conf { 'filter_logback':
         source   => 'puppet:///modules/role/logstash/filter-logback.conf',
         priority => 20,
