@@ -2,9 +2,6 @@
 #
 class profile::statistics::private(
     $statistics_servers = hiera('statistics_servers'),
-    $statsd_host        = hiera('statsd'),
-    $graphite_host      = hiera('profile::statistics::private::graphite_host'),
-    $wmde_secrets       = hiera('wmde_secrets')
 ) {
     include ::standard
     include ::deployment::umask_wikidev
@@ -47,10 +44,6 @@ class profile::statistics::private(
 
     # rsync mediawiki logs from logging hosts
     include ::statistics::rsync::mediawiki
-
-    # Discovery statistics generating scripts
-    # This needs work to move to stat1005: T170471
-    # include ::statistics::discovery
 
     # WMDE releated statistics & analytics scripts.
     class { '::statistics::wmde':
