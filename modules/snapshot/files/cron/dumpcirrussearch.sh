@@ -147,4 +147,4 @@ if [ "$dryrun" == "false" ]; then
 fi
 
 # clean up old log files
-find /var/log/cirrusdump/ -name 'cirrusdump-*-cirrussearch-*.log*' -mtime +30 -delete
+find /var/log/cirrusdump/ -name 'cirrusdump-*.log*' -mtime +22 -delete
