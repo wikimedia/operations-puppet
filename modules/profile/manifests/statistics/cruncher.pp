@@ -17,6 +17,7 @@ class profile::statistics::cruncher(
 
     # include stuff common to statistics compute nodes
     include ::statistics::compute
+    include ::statistics::dataset_mount
 
     # This file will render at
     # /etc/mysql/conf.d/researchers-client.cnf.

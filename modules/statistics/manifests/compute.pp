@@ -5,7 +5,6 @@ class statistics::compute {
     Class['::statistics']       -> Class['::statistics::compute']
     Class['::statistics::user'] -> Class['::statistics::compute']
 
-    include ::statistics::dataset_mount
     include ::statistics::packages
 
     $working_path = $::statistics::working_path
