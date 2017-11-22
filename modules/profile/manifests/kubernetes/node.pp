@@ -4,12 +4,17 @@ class profile::kubernetes::node(
   $infra_pod = hiera('profile::kubernetes::infra_pod'),
   $use_cni = hiera('profile::kubernetes::use_cni'),
   $masquerade_all = hiera('profile::kubernetes::node::masquerade_all', true),
+  # $username is deprecated, was a flawed approach
   $username = hiera('profile::kubernetes::node::username', 'client-infrastructure'),
   $prometheus_nodes = hiera('prometheus_nodes', []),
   $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
   $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
   $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
   $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
+  $kubelet_username = hiera('profile::kubernetes::node::kubelet_username', undef),
+  $kubelet_token = hiera('profile::kubernetes::node::kubelet_token', undef),
+  $kubeproxy_username = hiera('profile::kubernetes::node::kubeproxy_username', undef),
+  $kubeproxy_token = hiera('profile::kubernetes::node::kubeproxy_token', undef),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -23,6 +28,16 @@ class profile::kubernetes::node(
         username    => $username,
     }
 
+    # Funnily enough, this is not $kubelet_config cause we still need to support
+    # labs which doesn't use/support this. TODO Fix this
+    if ($kubelet_username and $kubelet_token) {
+        k8s::kubeconfig { '/etc/kubernetes/kubelet_config':
+            master_host => $master_fqdn,
+            username    => $kubelet_username,
+            token       => $kubelet_token,
+        }
+    }
+
     class { '::k8s::kubelet':
         master_host               => $master_fqdn,
         listen_address            => '0.0.0.0',
@@ -32,6 +47,17 @@ class profile::kubernetes::node(
         tls_key                   => '/etc/kubernetes/ssl/server.key',
         kubeconfig                => $kubelet_config,
     }
+
+    # Funnily enough, this is not $kubeproxy_config cause we still need to support
+    # labs which doesn't use/support this. TODO Fix this
+    if ($kubeproxy_username and $kubeproxy_token) {
+        k8s::kubeconfig { '/etc/kubernetes/kubeproxy_config':
+            master_host => $master_fqdn,
+            username    => $kubeproxy_username,
+            token       => $kubeproxy_token,
+        }
+    }
+
     class { '::k8s::proxy':
         master_host    => $master_fqdn,
         masquerade_all => $masquerade_all,
