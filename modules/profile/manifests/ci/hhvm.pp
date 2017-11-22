@@ -1,6 +1,7 @@
-class contint::hhvm {
+class profile::ci::hhvm {
 
-    include ::contint::packages::hhvm
+    class { '::contint::packages::hhvm':
+    }
 
     class { '::hhvm':
         # No need for a hhvm service on CI slaves T126594
