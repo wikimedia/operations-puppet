@@ -6,7 +6,7 @@
 class role::logstash::elasticsearch {
     include ::standard
     include ::elasticsearch::monitor::diamond
-    include ::base::firewall
+    include ::profile::base::firewall
 
     # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
     #shard is present on each node). If one node is lost, 1/3 of the shards
