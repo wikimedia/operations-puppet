@@ -8,9 +8,6 @@ class role::planet_server {
     class { '::apache::mod::rewrite': }
     # so we can vary on X-Forwarded-Proto when behind misc-web
     class { '::apache::mod::headers': }
-    if os_version('debian >= stretch') {
-      class { '::apache::mod::http2': }
-    }
 
     include ::profile::planet::venus
 
