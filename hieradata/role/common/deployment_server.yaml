@@ -19,9 +19,6 @@ admin::groups:
 # screen sessions are common on deployment servers (T165348)
 monitor_screens: false
 
-# Newer git version, not needed on stretch - T140927
-apt::use_experimental: true
-
 # LightProcesses print an alarming error message when HHVM shuts down,
 # which is often on the deployment servers, which run a bunch of scripts
 # with a short runtime as part of the deployment process.
