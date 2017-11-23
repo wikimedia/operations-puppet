@@ -2,7 +2,5 @@
 # install dev packages for services
 service::configuration::use_dev_pkgs: true
 
-apt::use_experimental: true
-
 # User for jenkins master-slave connections
 jenkins_agent_username: 'jenkins'
