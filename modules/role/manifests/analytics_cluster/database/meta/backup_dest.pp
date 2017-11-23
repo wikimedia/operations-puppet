@@ -2,11 +2,13 @@
 #
 class role::analytics_cluster::database::meta::backup_dest {
 
-    file { '/srv/backup':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'analytics-admins',
-        mode   => '0755',
+    if !defined(File['/srv/backup']) {
+        file { '/srv/backup':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'analytics-admins',
+            mode   => '0755',
+        }
     }
 
     file { [
