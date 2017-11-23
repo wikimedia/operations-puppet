@@ -1,6 +1,6 @@
 # TODO: use a data structure for the shards
 class profile::mariadb::core::multiinstance(
-    $num_instances = hiera('profile::mariadb::core_multiinstance::num_instances', 8),
+    $num_instances = hiera('profile::mariadb::core_multiinstance::num_instances', 2),
     $s1 = hiera('profile::mariadb::core_multiinstance::s1', false),
     $s2 = hiera('profile::mariadb::core_multiinstance::s2', false),
     $s3 = hiera('profile::mariadb::core_multiinstance::s3', false),
@@ -8,6 +8,7 @@ class profile::mariadb::core::multiinstance(
     $s5 = hiera('profile::mariadb::core_multiinstance::s5', false),
     $s6 = hiera('profile::mariadb::core_multiinstance::s6', false),
     $s7 = hiera('profile::mariadb::core_multiinstance::s7', false),
+    $s8 = hiera('profile::mariadb::core_multiinstance::s8', false),
     $x1 = hiera('profile::mariadb::core_multiinstance::x1', false),
 ) {
     #FIXME:
@@ -109,6 +110,13 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         role::prometheus::mysqld_exporter_instance { 's7': port => 13317, }
     }
 
+    if $s8 {
+        mariadb::instance { 's8':
+            port                    => 3318,
+            innodb_buffer_pool_size => $s8,
+        }
+        role::prometheus::mysqld_exporter_instance { 's8': port => 13318, }
+    }
 
     if $x1 {
         mariadb::instance { 'x1':
