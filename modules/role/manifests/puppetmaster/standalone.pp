@@ -61,6 +61,8 @@ class role::puppetmaster::standalone(
         'external_nodes'    => '/usr/local/bin/puppet-enc',
         'thin_storeconfigs' => false,
         'autosign'          => $autosign,
+        'environmentpath'   => '$confdir/environments',
+        'default_manifest'  => '$confdir/manifests/site.pp'
     }
 
     class { '::puppetmaster':
