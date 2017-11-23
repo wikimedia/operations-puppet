@@ -391,9 +391,6 @@ node /^db1(056|064|081|084|091)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-node /^db1(097|101|103|105)\.eqiad\.wmnet/ {
-    role(mariadb::core_multiinstance)
-}
 # row-based replication to sanitarium (T150960)
 node 'db1064.eqiad.wmnet' {
     role(mariadb::core)
@@ -409,30 +406,27 @@ node /^db20(19|37|44|58|65|73)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# s5 (wikidata/dewiki) core production dbs on eqiad
+# s5 (dewiki) core production dbs on eqiad
 # eqiad master
 node 'db1070.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(051|063|071|082|087|092|096|099|100|104|106|109|110)\.eqiad\.wmnet/ {
+# See also db1097 below
+node /^db1(051|082|096|100|106|110)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# s5 (wikidata/dewiki) core production dbs on codfw
+# s5 (dewiki) core production dbs on codfw
 # codfw master
-node 'db2023.codfw.wmnet' {
+node 'db2052.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(38|45|52|59|66|75|79|80|81|82|83)\.codfw\.wmnet/ {
+# See also db2084 and db2089 below
+node /^db20(23|38|59|66|75)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
-
-node /^db20(84|85|86|87|88|89)\.codfw\.wmnet/ {
-    role(mariadb::core_multiinstance)
-}
-
 
 # s6 core production dbs on eqiad
 # eqiad master
@@ -444,7 +438,6 @@ node /^db10(30|85|88|93|98)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-#
 # s6 core production dbs on codfw
 # codfw master
 node 'db2028.codfw.wmnet' {
@@ -474,6 +467,37 @@ node 'db2029.codfw.wmnet' {
 node /^db20(40|47|54|61|68|77)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
+
+# s8 (wikidata) core production dbs on eqiad
+# eqiad master
+node 'db1071.eqiad.wmnet' {
+    role(mariadb::core)
+}
+
+# See also db1101 below
+node /^db1(063|099|104|092|087|109)\.eqiad\.wmnet/ {
+    role(mariadb::core)
+}
+
+# s8 (wikidata) core production dbs on codfw
+# codfw master
+node 'db2045.codfw.wmnet' {
+    role(mariadb::core)
+}
+
+# See also db2085 and db2086 below
+node /^db20(79|80|81|82|83)\.codfw\.wmnet/ {
+    role(mariadb::core)
+}
+
+# hosts with multiple shards
+node /^db1(097|101|103|105)\.eqiad\.wmnet/ {
+    role(mariadb::core_multiinstance)
+}
+node /^db20(84|85|86|87|88|89)\.codfw\.wmnet/ {
+    role(mariadb::core_multiinstance)
+}
+
 
 ## x1 shard
 # eqiad
