@@ -3,24 +3,17 @@
 # $config:  Dict merged with front- or back- specifics and then passed
 #           to ::puppetmaster as $config
 #
-# $directory_environments: boolean, when True adds boilerplate environment config
-#
 # $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
 
 class profile::puppetmaster::common (
     $base_config,
-    $directory_environments = hiera('profile::puppetmaster::common::directory_environments', false),
     $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
 ) {
     include passwords::puppet::database
 
-    if $directory_environments {
-        $env_config = {
-            'environmentpath' => '$confdir/environments',
-            'default_manifest' => '$confdir/manifests/site.pp'
-        }
-    } else {
-        $env_config = {}
+    $env_config = {
+        'environmentpath' => '$confdir/environments',
+        'default_manifest' => '$confdir/manifests/site.pp'
     }
 
     $activerecord_config =   {
