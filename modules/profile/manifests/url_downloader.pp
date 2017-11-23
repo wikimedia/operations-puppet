@@ -23,7 +23,6 @@ class profile::url_downloader (
 ) {
 
     include network::constants
-    include ::base::firewall
 
     if $::realm == 'production' {
         $wikimedia = [
