@@ -76,26 +76,18 @@
     shard: s5
     role: slave
   targets:
+  - db2023:9104
   - db2038:9104
-  - db2045:9104
-  - db2052:9104
   - db2059:9104
   - db2066:9104
   - db2075:9104
-  - db2079:9104
-  - db2080:9104
-  - db2081:9104
-  - db2082:9104
-  - db2083:9104
   - db2084:13315
-  - db2085:13315
-  - db2086:13315
   - db2089:13315
 - labels:
     shard: s5
     role: master
   targets:
-  - db2023:9104
+  - db2052:9104
 
 - labels:
     shard: s6
@@ -132,6 +124,23 @@
     role: master
   targets:
   - db2029:9104
+
+- labels:
+    shard: s8
+    role: slave
+  targets:
+  - db2079:9104
+  - db2080:9104
+  - db2081:9104
+  - db2082:9104
+  - db2083:9104
+  - db2085:13315
+  - db2086:13315
+- labels:
+    shard: s8
+    role: master
+  targets:
+  - db2045:9104
 
 - labels:
     shard: es1
