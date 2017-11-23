@@ -11,6 +11,7 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::hadoop::master::standby
     include ::profile::hadoop::firewall::master
     include ::profile::hadoop::users
+    include ::profile::hadoop::backup::namenode
     include ::profile::base::firewall
     class { 'standard': }
 

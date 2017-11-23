@@ -7,11 +7,13 @@
 class profile::hadoop::backup::namenode {
     require ::profile::hadoop::client
 
-    file { '/srv/backup':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'analytics-admins',
-        mode   => '0755',
+    if !defined(File['/srv/backup']) {
+        file { '/srv/backup':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'analytics-admins',
+            mode   => '0755',
+        }
     }
 
     $destination = '/srv/backup/hadoop/namenode'
