@@ -28,6 +28,7 @@ class planet (
     include ::locales::extended
 
     # things done once for all planets
+    include ::planet::webserver
     include ::planet::packages
     include ::planet::dirs
     include ::planet::user
