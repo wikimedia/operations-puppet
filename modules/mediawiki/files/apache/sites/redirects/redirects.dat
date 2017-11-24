@@ -467,3 +467,12 @@ funnel	2030.wikimedia.org	//meta.wikimedia.org/wiki/Strategy/Wikimedia_movement/
 
 # redirect wikimedia.org/resources to meta (T172417)
 override	wikimedia.org/resources	//meta.wikimedia.org/wiki/Wikimedia_Resource_Center
+
+# redirect "als" sister projects - T169450
+rewrite	als.wiktionary.org	 //als.wikipedia.org/wiki/Wort:Houptsyte
+rewrite	als.wikiquote.org	//als.wikipedia.org/wiki/Spruch:Houptsyte
+rewrite	als.wikibooks.org	//als.wikipedia.org/wiki/Buech:Houptsyte
+
+# redirect Moldovan Wikipedia and Wiktionary to Romanian Wikipedia and Wiktionary - T169450
+rewrite	mo.wikipedia.org	//ro.wikipedia.org
+rewrite	mo.wiktionary.org	//ro.wiktionary.org
