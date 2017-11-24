@@ -33,7 +33,6 @@ class dumps::web::xmldumps_active(
     # rsync between peers will take care of the other hosts
     class {'::dumps::web::cleanups::xml_cleanup':
         wikilist_url => $wikilist_url,
-        wikilist_dir => $wikilist_dir,
         publicdir    => $publicdir,
         user         => $user,
     }
