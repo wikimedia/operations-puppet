@@ -12,7 +12,6 @@ class profile::dumps::web::xmldumps_active {
         htmldumps_server => 'francium.eqiad.wmnet',
         xmldumps_server  => 'dumps.wikimedia.org',
         wikilist_url     => 'https://noc.wikimedia.org/conf/all.dblist',
-        wikilist_dir     => '/etc/dumps/dblists',
         user             => 'dumpsgen',
         webuser          => 'datasets',
         webgroup         => 'datasets',

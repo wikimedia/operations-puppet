@@ -1,3 +1,10 @@
+profile::dumps::miscdumpsdir: '/data/otherdumps'
+
+# this is currently a dumps generation fallback host,
+# we configure cleanups of old files there the
+# same way we do the active generating host
+profile::dumps::cleanup::isreplica: false
+
 profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'
   dumps_group: 'dumpsgen'
