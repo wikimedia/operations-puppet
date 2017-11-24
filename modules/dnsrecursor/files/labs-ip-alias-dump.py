@@ -110,24 +110,31 @@ end
 
 """
 
-if 'extra_records' in config:
-    output += 'extra_records = {}\n'
-    extra_records = config['extra_records']
+if 'extra_records' not in config:
+    extra_records = {}
 
-    for q in sorted(extra_records.keys()):
-        output += LUA_LINE_TEMPLATE.format(
-            table='extra_records',
-            key=q,
-            value=extra_records[q],
-            comment=q
-        )
+output += 'extra_records = {}\n'
+extra_records = config['extra_records']
 
-    output += """
+for q in sorted(extra_records.keys()):
+    output += LUA_LINE_TEMPLATE.format(
+        table='extra_records',
+        key=q,
+        value=extra_records[q],
+        comment=q
+    )
+
+output += """
 function preresolve(remoteip, domain, qtype)
     if extra_records[domain]
     then
         return 0, {
             {qtype=pdns.A, content=extra_records[domain], ttl=300, place="1"},
+        }
+    elseif domain == 'puppet'
+    then
+        return 0, {
+            {qtype=pdns.CNAME, content=puppetmaster_hostname},
         }
     end
     return -1, {}
