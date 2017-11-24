@@ -56,14 +56,27 @@ class role::puppetmaster::standalone(
         puppetmaster => $labs_puppet_master,
     }
 
-    $config = {
+    $base_env_config = {
+        'environmentpath'  => '$confdir/environments',
+        'default_manifest' => '$confdir/manifests',
+    }
+
+    # Default to the future parser if on puppet 3
+    if $puppet_major_version < 4 {
+        $env_config = merge($base_env_config, {'parser' => 'future'})
+    } else {
+        $env_config = $base_env_config
+    }
+
+
+    $base_config = {
         'node_terminus'     => 'exec',
         'external_nodes'    => '/usr/local/bin/puppet-enc',
         'thin_storeconfigs' => false,
         'autosign'          => $autosign,
-        'environmentpath'   => '$confdir/environments',
-        'default_manifest'  => '$confdir/manifests/site.pp'
     }
+
+    $config = merge($base_config, $env_config)
 
     class { '::puppetmaster':
         server_name          => $server_name,
