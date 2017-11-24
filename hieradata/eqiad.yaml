@@ -83,13 +83,6 @@ labsldapconfig:
 # /> Cloud Services
 #
 
-# Configure regular backups of the analytics-meta MySQL instance
-# in the Analytics Cluster to back up via rsync to
-# analytics1002.  This works because the analytics1002 has the
-# role::analyitcs_cluster::database::meta::backup_dest class
-# applied to it.
-analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
-
 prometheus_nodes:
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet

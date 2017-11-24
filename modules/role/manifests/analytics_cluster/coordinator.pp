@@ -21,9 +21,8 @@ class role::analytics_cluster::coordinator {
     include ::role::analytics_cluster::database::meta
 
     # Back up analytics-meta MySQL instance
-    # to analytics1002. $dest is configured in
-    # hieradata/role/eqiad/analytics_cluster/database/meta/backup.yaml
-    include ::role::analytics_cluster::database::meta::backup
+    # to analytics1002.
+    include ::profile::analytics::database::meta::backup
 
     # SQL-like queries to data stored in HDFS
     include ::role::analytics_cluster::hive::metastore
