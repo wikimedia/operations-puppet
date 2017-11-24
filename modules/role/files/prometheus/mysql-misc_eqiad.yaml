@@ -32,7 +32,7 @@
     shard: m4
     role: master
   targets:
-  - db1046:9104
+  - db1107:9104
 
 - labels:
     shard: multi
