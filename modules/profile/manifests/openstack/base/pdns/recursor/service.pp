@@ -4,7 +4,7 @@
 #  via floating IP, but they often want to do DNS lookups for the
 #  public IP of other instances (e.g. beta.wmflabs.org).
 #
-# This recursor does two useful things:
+# This recursor does three useful things:
 #
 #  - It maintains a mapping between floating and private IPs
 #  for select instances.  Anytime the upstream DNS server returns
@@ -13,6 +13,9 @@
 #
 #  - It relays requests for *.wmflabs to the auth server that knows
 #  about such things (defined as $labs_forward)
+#
+#  - It defines a cname for 'puppet' that resolves to the deployment-appropriate
+#  puppetmaster
 #
 #  Other than that it should act like any other WMF recursor.
 #
@@ -30,6 +33,7 @@ class profile::openstack::base::pdns::recursor::service(
     $c2_dbs = hiera('profile::openstack::base::pdns::labsdb::c2'),
     $c3_dbs = hiera('profile::openstack::base::pdns::labsdb::c3'),
     $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor::aliaser_extra_records'),
+    $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     ) {
 
     include ::network::constants
@@ -81,6 +85,7 @@ class profile::openstack::base::pdns::recursor::service(
         password              => $observer_password,
         nova_api_url          => "http://${nova_controller}:35357/v3",
         extra_records         => $aliaser_extra_records,
+        puppetmaster_hostname => $puppetmaster_hostname,
         alias_file            => $alias_file,
         observer_project_name => $observer_project,
     }
