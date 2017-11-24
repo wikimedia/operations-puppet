@@ -127,7 +127,12 @@ class diamond(
     diamond::collector { 'Network': }
     diamond::collector { 'DiskSpace':
         settings => {
-            filesystems => 'ext2,ext3,ext4,xfs,fuse.fuse_dfs,fat32,fat16,btrfs',
+            filesystems     => 'ext2,ext3,ext4,xfs,fuse.fuse_dfs,fat32,fat16,btrfs',
+            # Dockerd has ephemeral mounts - T181295
+            exclude_filters => [
+                '^/var/lib/docker/',
+                '^/run/docker/',
+            ],
         },
     }
 
