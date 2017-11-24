@@ -17,8 +17,10 @@ class statistics::sites::hue {
     }
 
     ferm::service { 'hue-http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
-
 }
+
+
