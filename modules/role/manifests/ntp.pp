@@ -83,8 +83,9 @@ class role::ntp {
     }
 
     ferm::service { 'ntp':
-        proto => 'udp',
-        port  => 'ntp',
+        proto  => 'udp',
+        port   => 'ntp',
+        srange => '($PRODUCTION_NETWORKS $FRACK_NETWORKS $LABS_NETWORKS)',
     }
 
     monitoring::service { 'ntp peers':
