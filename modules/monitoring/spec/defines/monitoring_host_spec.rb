@@ -6,9 +6,18 @@ describe 'monitoring::host' do
       'fake_secret'
     }
   end
-  # We abuse RSpec a bit throughout the spec setting site to a fact
-  # Unfortunately RSpec node level parameters do not seem to work
+
   context 'with a standard physical host' do
+    let(:pre_condition){
+      """
+    class passwords::nagios::mysql {
+      $mysql_check_pass='foo'
+    }
+    class {'passwords::nagios::mysql': }
+    """
+    }
+    let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
+
     let(:facts) {
       {
         :hostname        => 'ahost',
@@ -18,7 +27,6 @@ describe 'monitoring::host' do
         :lldp_parent     => 'ahosts_parent',
         :has_ipmi        => true,
         :ipmi_lan        => { :ipaddress => '2.2.2.2', },
-        :site            => 'blabla',
       }
     }
     let(:title) { 'ahost' }
@@ -64,6 +72,16 @@ describe 'monitoring::host' do
   end
 
   context 'with a standard virtual host' do
+    let(:pre_condition){
+      """
+    class passwords::nagios::mysql {
+      $mysql_check_pass='foo'
+    }
+    class {'passwords::nagios::mysql': }
+    """
+    }
+    let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
+
     let(:facts) {
       {
         :hostname        => 'ahost',
@@ -109,6 +127,18 @@ describe 'monitoring::host' do
   end
 
   context 'with an icinga host' do
+    let(:pre_condition){
+      """
+    class profile::base { $notifications_enabled = '1' }
+    class passwords::nagios::mysql {
+      $mysql_check_pass='foo'
+    }
+    include ::profile::base
+    include icinga
+    """
+    }
+    let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
+
     let(:facts) {
       {
         :hostname        => 'icingahost',
@@ -118,15 +148,8 @@ describe 'monitoring::host' do
         :lldp_parent     => 'ahosts_parent',
         :has_ipmi        => true,
         :ipmi_lan        => { :ipaddress => '2.2.2.2', },
-        :site            => 'blabla',
       }
     }
-    let(:pre_condition) do
-      '''
-      include icinga
-      class passwords::nagios::mysql {}
-      '''
-    end
 
     describe 'monitoring itself' do
       let(:title) { 'icingahost' }

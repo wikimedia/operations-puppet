@@ -4,18 +4,17 @@ require 'yaml'
 
 describe "slice_network_constants" do
   all_network_subnets = YAML.load_file(File.dirname(__FILE__) + "/../../data/data.yaml")['network::subnets']
-  let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
 
   it "should exist" do
     expect(Puppet::Parser::Functions.function("slice_network_constants")).to eq "function_slice_network_constants"
   end
 
   it "should raise a ParseError if there are less than 1 arguments" do
-    expect { scope.function_slice_network_constants([])}.to raise_error(ArgumentError)
+    is_expected.to run.with_params.and_raise_error(ArgumentError)
   end
 
   it "should raise a ParseError if there are more than 2 arguments" do
-    expect { scope.function_slice_network_constants(['a', 'b', 'c']) }.to raise_error(ArgumentError)
+    is_expected.to run.with_params('a', 'b', 'c').and_raise_error(ArgumentError)
   end
 
   # Test realm
