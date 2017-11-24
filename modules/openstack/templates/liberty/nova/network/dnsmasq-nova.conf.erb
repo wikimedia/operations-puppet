@@ -13,6 +13,9 @@ alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
 dhcp-host=<%= v['MAC'] %>,<%= k %>,<%= v['IPv4'] %>,10m
 <% end -%>
 
+# define 'puppet' so that our intial puppet run knows where to look
+cname=puppet,<%= @puppetmaster_hostname %>
+
 #Clients should use the designate-backed dns server rather than dnsmasq
 dhcp-option=option:dns-server,<%= @recursor_ip %>,<%= @recursor_secondary_ip %>
 
