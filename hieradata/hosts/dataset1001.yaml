@@ -3,6 +3,7 @@ profile::dumps::rsyncer:
   dumps_group: 'datasets'
   dumps_deploygroup: 'wikidev'
   dumps_mntpoint: '/data'
+profile::dumps::cleanup::isreplica: true
 
 admin::groups:
   - dataset-admins

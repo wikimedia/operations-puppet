@@ -1,3 +1,5 @@
+profile::dumps::cleanup::isreplica: true
+
 profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'
   dumps_group: 'dumpsgen'
