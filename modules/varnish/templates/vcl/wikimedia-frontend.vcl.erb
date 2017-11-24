@@ -2,7 +2,7 @@
 
 vcl 4.0;
 
-<% if @vcl_config.fetch("admission_policy", "nhw") == "exp" -%>
+<% if @varnish_version == 5 && @vcl_config.fetch("admission_policy", "nhw") == "exp" -%>
 // Includes for Exp cache admission policy, admission probability exponentially
 // decreasing with size. See vcl_backend_response. T144187
 C{
@@ -358,7 +358,7 @@ sub vcl_backend_response {
 	if (beresp.status == 503 && bereq.retries == 0 && bereq.method ~ "^(GET|HEAD|OPTIONS|PUT|DELETE)$") {
 		return(retry);
 	}
-<% if @vcl_config.fetch("admission_policy", "nhw") == "exp" -%>
+<% if @varnish_version == 5 && @vcl_config.fetch("admission_policy", "nhw") == "exp" -%>
 if (beresp.status == 200 && bereq.http.X-CDIS == "miss") {
 C{
    const struct gethdr_s hdr = { HDR_BERESP, "\017Content-Length:" };
@@ -391,12 +391,8 @@ C{
 
        // If admission test succeeds, mark as uncacheable
        if (admissionprob < urand) {
-           <%- if @varnish_version == 5 -%>
            // HFM with ttl=67 to avoid stalling
            VRT_l_beresp_ttl(ctx,67);
-           <%- else -%>
-           VRT_l_beresp_ttl(ctx,0);
-           <%- end -%>
            VRT_l_beresp_uncacheable(ctx,1);
        }
     }
