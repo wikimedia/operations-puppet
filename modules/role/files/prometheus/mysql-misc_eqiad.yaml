@@ -32,13 +32,13 @@
     shard: m4
     role: master
   targets:
-  - db1046:9104
+  - db1107:9104
 
 - labels:
     shard: multi
     role: slave
   targets:
-  - db1047:9104
+  - db1108:9104
 
 - labels:
     shard: m5
