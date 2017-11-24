@@ -100,8 +100,9 @@ class role::grafana::base(
     }
 
     ferm::service { 'grafana_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     # LDAP configuration. Interpolated into the Apache site template
