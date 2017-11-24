@@ -1,0 +1,18 @@
+varnishtest "Varnish healthchecks"
+
+server s1 {} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_misc-backend.vcl";
+} -start
+
+client c1 {
+    txreq -hdr "Host: varnishcheck.wikimedia.org"
+    rxresp
+    expect resp.status == 200
+    expect resp.body ~ "Varnish backend running on"
+} -run

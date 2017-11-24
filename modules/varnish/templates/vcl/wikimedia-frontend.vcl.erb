@@ -571,6 +571,8 @@ sub vcl_synth {
 			call synth_errorpage;
 		}
 	}
+
+	call wm_common_synth;
 	return (deliver);
 }
 
