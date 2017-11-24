@@ -220,6 +220,7 @@ sub vcl_synth {
 	if (resp.status >= 400) {
 		call synth_errorpage;
 	}
+	call wm_common_synth;
 	return (deliver);
 }
 
