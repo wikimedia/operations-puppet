@@ -9,6 +9,7 @@ class openstack::nova::network::service(
     $tftp_host='install1002.wikimedia.org',
     $labs_metal={},
     $nova_dnsmasq_aliases={},
+    $puppetmaster_hostname="",
     ) {
 
     $recursor_ip = ipresolve($dns_recursor,4)
