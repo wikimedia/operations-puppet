@@ -844,11 +844,11 @@ node /^es101[79]\.eqiad\.wmnet/ {
 }
 
 ## codfw servers
-node 'es2018.codfw.wmnet' {
+node 'es2017.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^es201[79]\.codfw\.wmnet/ {
+node /^es201[89]\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
