@@ -5,8 +5,9 @@ describe 'install_server::web_server', :type => :class do
     let(:facts) { {
         :lsbdistrelease => '8.5',
         :lsbdistid => 'Debian',
+        :operatingsystem => 'Debian'
     } }
-
+    let(:node_params) { {'realm' => 'production'} }
     it do
         should contain_file('/srv/index.html').with({
             'mode'    => '0444',

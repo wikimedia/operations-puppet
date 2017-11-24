@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe 'jenkins' do
+    precondition = <<-EOF
+class profile::base {
+      $notifications_enabled = '1'
+}
+include ::profile::base
+EOF
+    let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
+    let(:pre_condition) { precondition }
     let(:params) { {
         :prefix => '/ci',
     } }
