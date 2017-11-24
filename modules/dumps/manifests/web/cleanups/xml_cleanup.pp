@@ -1,17 +1,9 @@
 class dumps::web::cleanups::xml_cleanup(
     $wikilist_url = undef,
-    $wikilist_dir = undef,
     $publicdir = undef,
     $user = undef,
 ) {
-    file { '/etc/dumps':
-        ensure => 'directory',
-        path   => '/etc/dumps',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
+    $wikilist_dir = '/etc/dumps/dblists'
     file { $wikilist_dir:
         ensure => 'directory',
         path   => $wikilist_dir,
