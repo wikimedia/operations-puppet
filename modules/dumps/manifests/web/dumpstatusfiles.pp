@@ -6,7 +6,7 @@ class dumps::web::dumpstatusfiles(
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/dumps/generation/unpack-dumpstatusfiles.sh',
+        source => 'puppet:///modules/dumps/web/unpack-dumpstatusfiles.sh',
     }
 
     # interval passed to script should match interval cron job runs;
