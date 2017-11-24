@@ -3,7 +3,13 @@ require 'spec_helper'
 describe 'service::node', :type => :define do
   let(:title) { 'my_service_name' }
   let(:facts) { { :initsystem => 'systemd' } }
-
+  let(:node_params) { {'cluster' => 'test', 'site' => 'eqiad'} }
+  let(:pre_condition) { """
+class profile::base {
+      $notifications_enabled = '1'
+}
+include ::profile::base
+""" }
   context 'when only port is given' do
     let(:params) { { :port => 1234 } }
 

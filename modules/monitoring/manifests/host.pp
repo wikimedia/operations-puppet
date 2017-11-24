@@ -85,12 +85,15 @@ define monitoring::host (
                     statusmap_image       => undef,
                 }
             }
+        } else {
+            $mgmt_host = undef
         }
     } else {
         $icon_image      = undef
         $vrml_image      = undef
         $statusmap_image = undef
         $real_parents    = $parents
+        $mgmt_host = undef
     }
     $host = {
         "${title}" => {
@@ -120,7 +123,7 @@ define monitoring::host (
         $rtype = '@@nagios_host'
     }
     create_resources($rtype, $host)
-    if $mgmt_host {
+    if !empty($mgmt_host) {
         create_resources($rtype, $mgmt_host)
         # We always monitor the BMC so never skip notifications
         monitoring::service { "dns_${title}.mgmt":

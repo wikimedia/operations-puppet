@@ -223,7 +223,8 @@ class TaskGen < ::Rake::TaskLib
 
   def setup_spec
     # Modules known not to pass tests
-    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs', 'tilerator', 'wmflib']
+    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs', 'tilerator']
+
     deps = SpecDependencies.new
     spec_modules = deps.specs_to_run(@changed_files).select do |m|
       !ignored_modules.include?(m)

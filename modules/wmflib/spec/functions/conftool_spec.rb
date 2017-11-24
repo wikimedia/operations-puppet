@@ -4,15 +4,15 @@ require 'json'
 
 describe 'conftool' do
   def gen_conftool_call(selector)
-    ['/usr/bin/conftool', '--object-type', 'node', 'select', selector, 'get']
+    ['/usr/bin/confctl', '--object-type', 'node', 'select', selector, 'get']
   end
 
   generate = {}
 
   before(:each) {
-    Puppet::Parser::Functions.newfunction(:generate) {
-      |args| generate.call(args)
-    }
+    Puppet::Parser::Functions.newfunction(:generate) do |args|
+      generate.call(args)
+    end
     generate.stubs(:call).returns('')
   }
 
@@ -42,7 +42,8 @@ describe 'conftool' do
   end
 
   it "should fail if conftool read fails" do
-    generate.stubs(:call).raises(Puppet::ParseError, 'something')
+
+    generate.stubs(:call).with(gen_conftool_call('name=foo')).raises(Puppet::ParseError, 'something')
     req = {'name' => 'foo'}
     should run.with_params(req).and_raise_error(Puppet::ParseError)
   end
