@@ -18,8 +18,6 @@ end
             "exclude": [
                 "AssembleUploadChunks",
                 "TranslationsUpdateJob",
-                "RestbaseUpdateJobOnEdit",
-                "RestbaseUpdateJobOnDependencyChange",
                 "PublishStashedFile",
                 "gwtoolsetGWTFileBackendCleanupJob",
                 "gwtoolsetUploadMediafileJob",
@@ -89,7 +87,6 @@ end
         // How many times to let jobs be executed before abandoning
         "attempts": {
             "*": 3,
-            "RestbaseUpdateJobOnDependencyChange": 1,
             // make rename jobs try harder for T141731
             "LocalPageMoveJob": 6,
             "renameUser": 6
