@@ -1,0 +1,2 @@
+profile::dumps::miscdumpsdir: '/data/otherdumps'
+profile::dumps::cleanup::isreplica: false

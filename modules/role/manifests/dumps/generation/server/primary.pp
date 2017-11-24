@@ -5,4 +5,5 @@ class role::dumps::generation::server::primary {
     include ::profile::base::firewall
     include ::profile::dumps::generation::server::primary
     include ::profile::dumps::nfs::generation
+    include ::profile::dumps::cleanup
 }
