@@ -632,9 +632,7 @@ node 'dbstore1001.eqiad.wmnet' {
 }
 
 node 'dbstore1002.eqiad.wmnet' {
-    # this slave has an m4 custom replication protocol
-    role(mariadb::dbstore,
-        mariadb::misc::eventlogging::replica_config)
+    role(mariadb::dbstore)
 }
 
 node 'dbstore2001.codfw.wmnet' {
