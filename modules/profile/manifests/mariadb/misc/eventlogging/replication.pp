@@ -90,6 +90,7 @@ class profile::mariadb::misc::eventlogging::replication (
         missing_ok    => true,
         not_if_empty  => true,
         rotate        => 14,
+        su            => 'root eventlog',
     }
 
     # Custom init scripts only that should be deprecated as soon as
