@@ -117,7 +117,7 @@ while [ 1 ]; do
 	# this way, content of status and html files always reflects dump output already
 	# made available via rsync
         if [ -f "$tarballpathgz" ]; then
-            /usr/bin/rsync -a  --contimeout=600 --timeout=600 "$tarballpathgz" "$dest" > /dev/null 2>&1
+            /usr/bin/rsync -pgo  --contimeout=600 --timeout=600 "$tarballpathgz" "$dest" > /dev/null 2>&1
         fi
 
     done
