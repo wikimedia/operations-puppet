@@ -51,8 +51,10 @@ make_statusfiles_tarball() {
     latestrun=$( cd "${xmldumpsdir}/public/${latestwiki}" ; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | sort | tail -1 )
     if [ -n "$latestrun" ]; then
 
-        # ( cd /data/xmldatadumps; /usr/bin/find public/ -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
-        ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs -s 1048576 /bin/tar cfp "$tarballpath" )
+	# top-level index files first
+        ( cd "$xmldumpsdir"; /bin/tar cfp "$tarballpath" public/*html public/*json )
+        # add per-wiki files next: ( cd /data/xmldatadumps; /usr/bin/find public/ -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
+        ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
 
         # if no files found, there will be no tarball created either
 	if [ -f "$tarballpath" ]; then
