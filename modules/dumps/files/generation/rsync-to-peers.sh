@@ -52,7 +52,7 @@ make_statusfiles_tarball() {
     if [ -n "$latestrun" ]; then
 
         # ( cd /data/xmldatadumps; /usr/bin/find public/ -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
-        ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs /bin/tar cfp "$tarballpath" )
+        ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs -s 1048576 /bin/tar cfp "$tarballpath" )
 
         # if no files found, there will be no tarball created either
 	if [ -f "$tarballpath" ]; then
