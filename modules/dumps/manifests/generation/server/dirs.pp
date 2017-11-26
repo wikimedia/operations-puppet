@@ -1,6 +1,8 @@
 class dumps::generation::server::dirs(
     $user  = undef,
     $group = undef,
+    $deprecated_user = undef,
+    $deprecated_group = undef,
 ) {
     # Directories where dumps of any type are generated
     # This list is not for one-off directories, nor for
@@ -44,15 +46,15 @@ class dumps::generation::server::dirs(
     file { $cirrussearchdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $xlationdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $globalblocksdir:
@@ -65,8 +67,8 @@ class dumps::generation::server::dirs(
     file { $medialistsdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $incrsdir:
@@ -79,8 +81,8 @@ class dumps::generation::server::dirs(
     file { $mediatitlesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $othermiscdir:
@@ -93,8 +95,8 @@ class dumps::generation::server::dirs(
     file { $pagetitlesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $othertestfilesdir:
