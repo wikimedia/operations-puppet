@@ -2,6 +2,7 @@ class snapshot::dumps::cron(
     $enable = true,
     $user   = undef,
     $maxjobs = undef,
+    $runtype = undef,
 ) {
     if ($enable) {
         $ensure = 'present'
@@ -28,7 +29,6 @@ class snapshot::dumps::cron(
 
     # fixme there is an implicit dependency on
     # wikidump.conf.* plus some stage files, make explicit
-    $runtype = hiera('snapshot::dumps::runtype', 'regular')
 
     cron { 'fulldumps_rest':
         ensure      => 'present',
