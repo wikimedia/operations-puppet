@@ -17,7 +17,7 @@
 # the Analytics Refinery.
 #
 class role::analytics_cluster::coordinator {
-    include ::role::analytics_cluster::client
+    include ::profile::analytics::cluster::client
     include ::role::analytics_cluster::database::meta
 
     # Back up analytics-meta MySQL instance

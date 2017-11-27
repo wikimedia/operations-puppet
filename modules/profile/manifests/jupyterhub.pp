@@ -1,11 +1,13 @@
-# == Class role::paws_internal::jupyterhub
-# Role for setting up PAWS Internal - Jupyterhub service running on analytics cluster
+# == Class profile::jupyterhub
+#
+# Setting up PAWS Internal - Jupyterhub service running on analytics cluster
 #
 # See https://wikitech.wikimedia.org/wiki/PAWS/Internal for more info
-class role::paws_internal::jupyterhub {
-
-    include ::base::firewall
-    include ::statistics::packages
+#
+class profile::jupyterhub(
+    $include_statistics_credentials = hiera('profile::jupyterhub::include_statistics_credentials'),
+) {
+    class { '::statistics::packages': }
 
     class { '::jupyterhub':
         base_path   => '/srv/paws-internal',
@@ -19,6 +21,12 @@ class role::paws_internal::jupyterhub {
         ldap_groups => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
         ],
+    }
+
+    if $include_statistics_credentials {
+        statistics::mysql_credentials { 'research':
+            group => 'researchers',
+        }
     }
 
 }

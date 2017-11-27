@@ -1,0 +1,1 @@
+profile::jupyterhub::include_statistics_credentials: true
