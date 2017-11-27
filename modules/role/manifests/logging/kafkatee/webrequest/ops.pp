@@ -5,6 +5,7 @@ class role::logging::kafkatee::webrequest::ops {
     require_package('socat')
 
     include role::logging::kafkatee::webrequest::base
+    include ::geoip  # lint:ignore:wmf_styleguide
 
     $webrequest_log_directory = $::role::logging::kafkatee::webrequest::base::webrequest_log_directory
     $logstash_host = hiera('role::logging::kafkatee::webrequest::ops::logstash_host')
