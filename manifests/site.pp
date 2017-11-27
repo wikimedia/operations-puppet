@@ -1877,13 +1877,8 @@ node 'mx2001.wikimedia.org' {
 }
 
 # Experimental Jupyter notebook servers
-node 'notebook1001.eqiad.wmnet' {
-    role(paws_internal::jupyterhub, analytics_cluster::client, paws_internal::mysql_access)
-    include ::standard
-}
-node 'notebook1002.eqiad.wmnet' {
-    role(paws_internal::jupyterhub, analytics_cluster::client)
-    include ::standard
+node /^notebook(1001|1002)\.eqiad\.wmnet$/ {
+    role(notebook)
 }
 
 # cluster management (cumin master) + other management tools
