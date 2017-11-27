@@ -2,7 +2,6 @@
 #
 # Ntp server profile
 class profile::ntp {
-
     $wmf_peers = $::standard::ntp::wmf_peers
 
     # A list of all global peers, used in the core sites' case below
@@ -117,13 +116,24 @@ class profile::ntp {
         default => 'tos minsane 2 orphan 13',
     }
 
-    ntp::daemon { 'server':
-        servers      => $wmf_server_upstreams,
-        pools        => $wmf_server_upstream_pools,
-        peers        => $wmf_server_peers,
-        time_acl     => $our_networks_acl,
-        extra_config => $extra_config,
-        query_acl    => $::standard::ntp::monitoring_acl,
+    if hiera('ntp::use_chrony', false) { # lint:ignore:wmf_styleguide
+        require ::network::constants
+        $chrony_networks_acl = array_concat(['10.0.0.0/8'], $::network::constants::external_networks)
+
+        class { 'ntp::chrony':
+            pool               => $wmf_server_upstream_pools,
+            permitted_networks => $chrony_networks_acl,
+        }
+    }
+    else {
+        ntp::daemon { 'server':
+            servers      => $wmf_server_upstreams,
+            pools        => $wmf_server_upstream_pools,
+            peers        => $wmf_server_peers,
+            time_acl     => $our_networks_acl,
+            extra_config => $extra_config,
+            query_acl    => $::standard::ntp::monitoring_acl,
+        }
     }
 
     ferm::service { 'ntp':
