@@ -1,0 +1,34 @@
+pool <%= @pool %> iburst
+
+<% @permitted_networks.each do |val| -%>
+allow <%= val %>
+<% end -%>
+
+# This directive specify the location of the file containing ID/key pairs for
+# NTP authentication.
+keyfile /etc/chrony/chrony.keys
+
+# This directive specify the file into which chronyd will store the rate
+# information.
+driftfile /var/lib/chrony/chrony.drift
+
+# Uncomment the following line to turn logging on.
+#log tracking measurements statistics
+
+# Log files location.
+logdir /var/log/chrony
+
+# Stop bad estimates upsetting machine clock.
+maxupdateskew 100.0
+
+# This directive tells 'chronyd' to parse the 'adjtime' file to find out if the
+# real-time clock keeps local time or UTC. It overrides the 'rtconutc' directive.
+hwclockfile /etc/adjtime
+
+# This directive enables kernel synchronisation (every 11 minutes) of the
+# real-time clock. Note that it can't be used along with the 'rtcfile' directive.
+rtcsync
+
+# Step the system clock instead of slewing it if the adjustment is larger than
+# one second, but only in the first three clock updates.
+makestep 1 3
