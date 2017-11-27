@@ -338,9 +338,14 @@ node 'db1054.eqiad.wmnet' {
 }
 
 # eqiad replicas
-node /^db1(021|053|060|074|076|090)\.eqiad\.wmnet/ {
+node /^db1(053|060|074|076|090)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
+
+node 'db1021.eqiad.wmnet' {
+    role(spare::system)
+}
+
 
 # s2 (large wikis) core production dbs on codfw
 # codfw master
