@@ -1,6 +1,7 @@
 class snapshot::dumps::cron(
     $enable = true,
     $user   = undef,
+    $maxjobs = undef,
 ) {
     if ($enable) {
         $ensure = 'present'
@@ -9,14 +10,13 @@ class snapshot::dumps::cron(
         $ensure = 'absent'
     }
 
-    $maxjobs = hiera('snapshot::dumps::maxjobs', 28)
     file { '/usr/local/bin/fulldumps.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/fulldumps.sh',
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('snapshot/dumps/fulldumps.sh.erb'),
+        content => template('snapshot/dumps/fulldumps.sh'),
     }
 
     file { '/var/log/dumps':
@@ -34,7 +34,7 @@ class snapshot::dumps::cron(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full > /dev/null",
+        command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full ${maxjobs} > /dev/null",
         minute      => '05',
         hour        => [8, 20],
         monthday    => '01-14',
@@ -44,7 +44,7 @@ class snapshot::dumps::cron(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial > /dev/null",
+        command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial ${maxjobs} > /dev/null",
         minute      => '05',
         hour        => [8, 20],
         monthday    => '20-25',
