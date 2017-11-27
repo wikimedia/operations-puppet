@@ -267,3 +267,7 @@ puppet4_elasticsearch_codfw:
 puppet4_prometheus_codfw:
   __regex: !ruby/regexp /^prometheus2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_lvs_codfw:
+  __regex: !ruby/regexp /^lvs2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
