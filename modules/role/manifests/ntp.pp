@@ -3,6 +3,8 @@
 # Ntp server role
 class role::ntp {
     include ::standard::ntp
+    require ::network::constants
+
     system::role { 'ntp': description => 'NTP server' }
 
     $wmf_peers = $::standard::ntp::wmf_peers
@@ -74,12 +76,21 @@ class role::ntp {
       '2620:0:860:: mask ffff:ffff:fffc::',
       '2a02:ec80:: mask ffff:ffff::',]
 
+    $chrony_networks_acl = array_concat(['10.0.0.0/8'], $::network::constants::external_networks)
 
-    ntp::daemon { 'server':
-        servers   => $peer_upstreams[$::fqdn],
-        peers     => delete($wmf_all_peers, $::fqdn),
-        time_acl  => $our_networks_acl,
-        query_acl => $::standard::ntp::monitoring_acl,
+    if hiera('ntp::use_chrony', true) {
+        ntp::chrony { 'server':
+            servers            => $peer_upstreams[$::fqdn],
+            permitted_networks => $chrony_networks_acl,
+        }
+    }
+    else {
+        ntp::daemon { 'server':
+            servers   => $peer_upstreams[$::fqdn],
+            peers     => delete($wmf_all_peers, $::fqdn),
+            time_acl  => $our_networks_acl,
+            query_acl => $::standard::ntp::monitoring_acl,
+        }
     }
 
     ferm::service { 'ntp':
