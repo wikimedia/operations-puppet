@@ -20,6 +20,5 @@ define kmod::blacklist($modules) {
         group   => 'root',
         mode    => '0444',
         content => template('kmod/blacklist.conf.erb'),
-        notify  => Exec['update-initramfs'],
     }
 }
