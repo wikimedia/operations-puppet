@@ -13,20 +13,20 @@ phabricator_cluster_search:
   - type: 'elasticsearch'
     path: '/phabricator'
     port: 9243
+    version: 5
     hosts:
       - protocol: 'https'
         host: 'search.svc.eqiad.wmnet'
-        version: 5
         roles:
           read: true
           write: true
   - type: 'elasticsearch'
     path: '/phabricator'
     port: 9243
+    version: 5
     hosts:
       - protocol: 'https'
         host: 'search.svc.codfw.wmnet'
-        version: 5
         roles:
           read: true
           write: true
