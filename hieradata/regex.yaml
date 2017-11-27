@@ -194,7 +194,7 @@ labtest:
   openstack::nova::conductor::monitor::critical: false
   openstack::nova::network::monitor::critical: false
   icinga::monitor::toollabs::critical: false
-
+  standard::has_ganglia: false
 
 # require WriteBack policy to all hosts (independent of the role) that look
 # like databases. Currently this only works for megacli systems, but it will
