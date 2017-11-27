@@ -263,3 +263,7 @@ puppet4_db_codfw:
 puppet4_scb_codfw:
   __regex: !ruby/regexp /^scb2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_prometheus_codfw:
+  __regex: !ruby/regexp /^prometheus2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
