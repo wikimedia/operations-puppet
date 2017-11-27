@@ -5,5 +5,5 @@
 class profile::dumps::public_server {
 
     class {'::public_dumps::server':}
-
+    class {'::labstore':}
 }
