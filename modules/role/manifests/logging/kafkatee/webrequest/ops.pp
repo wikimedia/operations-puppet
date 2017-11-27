@@ -6,6 +6,9 @@ class role::logging::kafkatee::webrequest::ops {
 
     include role::logging::kafkatee::webrequest::base
 
+    # lint:ignore:wmf_styleguide
+    include ::geoip
+
     $webrequest_log_directory = $::role::logging::kafkatee::webrequest::base::webrequest_log_directory
     $logstash_host = hiera('role::logging::kafkatee::webrequest::ops::logstash_host')
     $logstash_port = hiera('role::logging::kafkatee::webrequest::ops::logstash_port')
