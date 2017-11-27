@@ -24,6 +24,7 @@ class openstack::nova::network::service(
         group   => 'root',
         mode    => '0444',
         content => template("openstack/${version}/nova/network/dnsmasq-nova.conf.erb"),
+        notify  => Service['nova-network'],
     }
 
     # Firewall is managed by nova-network outside of ferm
@@ -35,6 +36,7 @@ class openstack::nova::network::service(
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
+        notify => Service['nova-network'],
     }
 
     # dnsmasq is run manually by nova-network, we don't want the service running

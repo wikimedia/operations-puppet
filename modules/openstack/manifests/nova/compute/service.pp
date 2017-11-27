@@ -139,6 +139,7 @@ class openstack::nova::compute::service(
         group   => 'root',
         mode    => '0444',
         content => template("openstack/${version}/nova/compute/libvirtd.conf.erb"),
+        notify  => Service['libvirt-bin'],
         require => Package['nova-compute'],
     }
 
@@ -147,6 +148,7 @@ class openstack::nova::compute::service(
         group   => 'root',
         mode    => '0444',
         content => template("openstack/${version}/nova/compute/libvirt-bin.default.erb"),
+        notify  => Service['libvirt-bin'],
         require => Package['nova-compute'],
     }
 
@@ -155,6 +157,7 @@ class openstack::nova::compute::service(
         group   => 'root',
         mode    => '0444',
         content => template("openstack/${version}/nova/compute/nova-compute.conf.erb"),
+        notify  => Service['nova-compute'],
         require => Package['nova-compute'],
     }
 
