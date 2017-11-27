@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # This file is maintained by puppet!
-# modules/snapshot/templates/dumps/fulldumps.sh.erb
+# modules/snapshot/dumps/fulldumps.sh
 #############################################################
 
 # This script is intended to be run out of cron, set to start
@@ -86,7 +86,7 @@ maybe_do_dumps (){
     fi
 }
 
-if [ -z "$1" -o -z "$2" -o -z "$3" -o -z "$4" ]; then
+if [ -z "$1" -o -z "$2" -o -z "$3" -o -z "$4" -o -z "$5" ]; then
     usage
     exit 1
 fi
@@ -97,11 +97,13 @@ startdate_yyyymmdd="${yearmonth}${startdate}"
 enddate="$2"
 wikitype="$3"
 dumptype="$4"
+maxjobs="$5"
+
 if [ "$wikitype" == 'none' ]; then
     # do nothing
     exit 0
 fi
-if [ "$5" == "dryrun" ]; then
+if [ "$6" == "dryrun" ]; then
     dryrun=1
 else
     dryrun=0
@@ -172,9 +174,6 @@ case $wikitype in
         exit 1
         ;;
 esac
-
-# FIXME lookup of hiera value inside of shell script
-maxjobs=<%= scope.lookupvar('snapshot::dumps::cron::maxjobs') %>
 
 case $dumptype in
     'full')
