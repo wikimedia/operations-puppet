@@ -23,7 +23,6 @@ class profile::cache::base(
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
-    $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -46,13 +45,6 @@ class profile::cache::base(
     # Globals we need to include
     include ::lvs::configuration
     include ::network::constants
-
-    if ! $allow_iptables {
-        # Prevent accidental iptables module loads
-        kmod::blacklist { 'cp-bl':
-            modules => ['x_tables'],
-        }
-    }
 
     class { 'conftool::scripts': }
 

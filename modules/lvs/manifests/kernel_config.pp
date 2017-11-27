@@ -13,11 +13,6 @@ class lvs::kernel_config {
         notify  => Exec['update-initramfs'],
     }
 
-    # Prevent accidental iptables module loads
-    kmod::blacklist { 'lvs-bl':
-        modules => ['x_tables'],
-    }
-
     sysctl::parameters { 'lvs':
         values => {
             # Turn OFF RP filter
