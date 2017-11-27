@@ -107,14 +107,17 @@ mysql_codfw:
 labvirt:
   __regex: !ruby/regexp /^labvirt10[0-9][0-9]\.eqiad\.wmnet$/
   cluster: labvirt
+  standard::has_ganglia: false
 
 labstore:
   __regex: !ruby/regexp /^labstore.*\.wmnet$/
   cluster: labsnfs
+  standard::has_ganglia: false
 
 labs:
   __regex: !ruby/regexp /^lab((net|nodepool|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labs
+  standard::has_ganglia: false
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
