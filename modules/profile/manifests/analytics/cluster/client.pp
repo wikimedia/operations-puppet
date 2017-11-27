@@ -1,11 +1,9 @@
-# == Class role::analytic_cluster::client
-# Includes common client classes for working
-# with hadoop and other Analytics Cluster services.
+# == Class profile::analytics::cluster::client
 #
-class role::analytics_cluster::client {
-    system::role { 'analytics_cluster::client':
-        description => 'Client node for interacting with the Analytics Cluster',
-    }
+# Includes common client classes for working
+# with Hadoop and other Analytics Cluster services.
+#
+class profile::analytics::cluster::client {
 
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::client
@@ -14,10 +12,10 @@ class role::analytics_cluster::client {
 
     # These don't require any extra configuration,
     # so no role class is needed.
-    require ::cdh::pig
-    require ::cdh::sqoop
-    require ::cdh::mahout
-    require ::cdh::spark
+    class { '::cdh::pig': }
+    class { '::cdh::sqoop': }
+    class { '::cdh::mahout': }
+    class { '::cdh::spark': }
 
     # Spark 2 is manually packaged by us, it is not part of CDH.
     require_package('spark2')
@@ -44,5 +42,5 @@ class role::analytics_cluster::client {
     }
 
     # include maven to build jars for Hadoop.
-    include ::maven
+    class { '::maven': }
 }

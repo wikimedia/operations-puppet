@@ -9,6 +9,6 @@ class role::statistics::explorer {
     }
 
     include ::profile::statistics::explorer
-    include ::role::analytics_cluster::client
+    include ::profile::analytics::cluster::client
     include ::role::analytics_cluster::refinery
 }
