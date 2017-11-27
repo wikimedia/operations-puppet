@@ -65,13 +65,13 @@ profile::cassandra::metrics_blacklist:
   - .*\.metrics\.Table\..*$
 ## Instances
 profile::cassandra::instances:
-  "restbase1007.eqiad.wmnet":
-    a:
-      listen_address: 10.64.0.230
-    b:
-      listen_address: 10.64.0.231
-    c:
-      listen_address: 10.64.0.232
+  #"restbase1007.eqiad.wmnet":
+  #  a:
+  #    listen_address: 10.64.0.230
+  #  b:
+  #    listen_address: 10.64.0.231
+  #  c:
+  #    listen_address: 10.64.0.232
   #"restbase1008.eqiad.wmnet":
   #  a:
   #    listen_address: 10.64.32.187
