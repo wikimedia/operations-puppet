@@ -66,42 +66,36 @@ class openstack::keystone::service(
             owner   => 'keystone',
             group   => 'keystone',
             mode    => '0444',
-            notify  => Service['keystone'],
             require => Package['keystone'];
         '/etc/keystone/keystone-paste.ini':
             source  => "puppet:///modules/openstack/${version}/keystone/keystone-paste.ini",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
             require => Package['keystone'];
         '/etc/keystone/policy.json':
             source  => "puppet:///modules/openstack/${version}/keystone/policy.json",
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            notify  => Service['keystone'],
             require => Package['keystone'];
         '/etc/keystone/logging.conf':
             source  => "puppet:///modules/openstack/${version}/keystone/logging.conf",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
             require => Package['keystone'];
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth':
             source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystoneauth",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
             recurse => true;
         '/usr/lib/python2.7/dist-packages/wmfkeystoneauth.egg-info':
             source  => "puppet:///modules/openstack/${version}/keystone/wmfkeystoneauth.egg-info",
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
-            notify  => Service['keystone'],
             recurse => true;
     }
 
