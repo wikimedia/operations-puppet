@@ -15,6 +15,7 @@ class openstack::nova::scheduler::service(
         group   => 'root',
         mode    => '0444',
         source  => "puppet:///modules/openstack/${version}/nova/scheduler/scheduler_pool_filter.py",
+        notify  => Service['nova-scheduler'],
         require => Package['nova-scheduler'],
     }
 

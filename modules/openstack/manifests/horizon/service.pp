@@ -49,6 +49,7 @@ class openstack::horizon::service(
         group   => 'horizon',
         mode    => '0440',
         require => Package['openstack-dashboard'],
+        notify  => [Service['apache2'], Exec['djangorefresh']],
     }
 
     # In the perfect future, Horizon policies will be the same
@@ -60,6 +61,7 @@ class openstack::horizon::service(
         group   => 'horizon',
         mode    => '0440',
         require => Package['openstack-dashboard'],
+        notify  => Service['apache2'],
     }
     file { '/etc/openstack-dashboard/glance_policy.json':
         source  => "puppet:///modules/openstack/${version}/horizon/glance_policy.json",
@@ -67,6 +69,7 @@ class openstack::horizon::service(
         group   => 'horizon',
         mode    => '0440',
         require => Package['openstack-dashboard'],
+        notify  => Service['apache2'],
     }
 
     # We need a horizon-specific keystone policy because horizon does weird/special
@@ -79,6 +82,7 @@ class openstack::horizon::service(
         group   => 'horizon',
         mode    => '0440',
         require => Package['openstack-dashboard'],
+        notify  => Service['apache2'],
     }
 
     file { '/etc/openstack-dashboard/designate_policy.json':
@@ -87,6 +91,7 @@ class openstack::horizon::service(
         group   => 'horizon',
         mode    => '0440',
         require => Package['openstack-dashboard'],
+        notify  => Service['apache2'],
     }
 
     # This is a trivial policy file that forbids everything.  We'll use it
@@ -98,6 +103,7 @@ class openstack::horizon::service(
         group   => 'horizon',
         mode    => '0440',
         require => Package['openstack-dashboard'],
+        notify  => Service['apache2'],
     }
 
     file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png':
@@ -209,6 +215,7 @@ class openstack::horizon::service(
         mode    => '0644',
         recurse => true,
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
     }
 
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1922_project_proxy_panel.py':
@@ -217,6 +224,7 @@ class openstack::horizon::service(
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
     }
 
     # sudo dashboard
@@ -227,6 +235,7 @@ class openstack::horizon::service(
         mode    => '0644',
         recurse => true,
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
     }
 
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_1926_project_sudo_panel.py':
@@ -235,6 +244,7 @@ class openstack::horizon::service(
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
     }
 
     file { '/usr/share/openstack-dashboard/openstack_dashboard/local/enabled/_72_sudoers_add_group.py':
@@ -243,6 +253,7 @@ class openstack::horizon::service(
         group   => 'root',
         mode    => '0644',
         require => Package['python-designate-dashboard', 'openstack-dashboard'],
+        notify  => Exec['djangorefresh'],
     }
 
     if $version != 'liberty' {
@@ -255,6 +266,7 @@ class openstack::horizon::service(
             group   => 'root',
             mode    => '0644',
             require => Package['openstack-dashboard'],
+            notify  => Exec['djangorefresh'],
         }
     }
 
@@ -286,6 +298,7 @@ class openstack::horizon::service(
         path        => '/usr/bin',
         cwd         => '/usr/share/openstack-dashboard',
         require     => File['/etc/openstack-dashboard/local_settings.py'],
+        notify      => Service['apache2'],
         refreshonly => true,
     }
 }

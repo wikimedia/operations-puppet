@@ -59,6 +59,7 @@ class profile::openstack::base::pdns::recursor::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        notify  => Service['pdns-recursor'],
         content => template('role/labs/dns/db_aliases.erb'),
         require => File['/var/zones']
     }
