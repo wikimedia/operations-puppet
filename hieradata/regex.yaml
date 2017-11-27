@@ -170,10 +170,6 @@ lvs_esams_backup:
   __regex: !ruby/regexp /^lvs300[34]\.esams\.wmnet$/
   profile::pybal::primary: false
 
-lvs_ulsfo_backup:
-  __regex: !ruby/regexp /^lvs400[12347]\.ulsfo\.wmnet$/
-  profile::pybal::primary: false
-
 lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
   profile::pybal::bgp: no
