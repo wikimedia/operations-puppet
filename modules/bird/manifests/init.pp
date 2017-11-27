@@ -72,4 +72,9 @@ class bird(
       notify  => Service['bird'],
   }
 
+  nrpe::monitor_service { 'bird':
+      ensure       => present,
+      description  => 'Bird Internet Routing Daemon',
+      nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:2 -C bird',
+  }
 }
