@@ -23,6 +23,12 @@ class profile::hadoop::worker(
 
     class { '::cdh::hadoop::worker': }
 
+    # The HDFS journalnodes are co-located for convenience,
+    # but it is not a strict requirement.
+    if $::fqdn in $::cdh::hadoop::journalnode_hosts {
+        class { 'cdh::hadoop::journalnode': }
+    }
+
     # Use jmxtrans for sending metrics
     class { '::cdh::hadoop::jmxtrans::worker':
         statsd  => $statsd,
