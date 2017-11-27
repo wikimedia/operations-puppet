@@ -4,7 +4,8 @@ class profile::redis::multidc(
     $conftool_prefix = hiera('conftool_prefix'),
     $settings = hiera('profile::redis::multidc::settings'),
     $discovery = hiera('profile::redis::multidc::discovery'),
-    $aof = hiera('profile::redis::multidc::aof', false)
+    $aof = hiera('profile::redis::multidc::aof', false),
+    $prometheus_nodes = hiera('prometheus_nodes')
 ) {
     require ::passwords::redis
     $shards = $all_shards[$category]
@@ -53,6 +54,11 @@ class profile::redis::multidc(
 
     diamond::collector { 'Redis':
         settings => { instances => join($uris, ', ') }
+    }
+
+    ::profile::prometheus::redis_exporter{ $instances:
+        password         => $password,
+        prometheus_nodes => $prometheus_nodes,
     }
 
     ferm::service { "redis_${category}_role":
