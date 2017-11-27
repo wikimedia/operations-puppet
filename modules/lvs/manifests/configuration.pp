@@ -8,7 +8,7 @@ class lvs::configuration {
                 'eqiad' => [ 'lvs1001', 'lvs1004', 'lvs1007', 'lvs1010' ],
                 'codfw' => [ 'lvs2001', 'lvs2004' ],
                 'esams' => [ 'lvs3001', 'lvs3003' ],
-                'ulsfo' => [ 'lvs4005', 'lvs4007' ],
+                'ulsfo' => [ 'lvs4001', 'lvs4003', 'lvs4005', 'lvs4007' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -21,7 +21,7 @@ class lvs::configuration {
                 'eqiad' => [ 'lvs1002', 'lvs1005', 'lvs1008', 'lvs1010' ],
                 'codfw' => [ 'lvs2002', 'lvs2005' ],
                 'esams' => [ 'lvs3002', 'lvs3004' ],
-                'ulsfo' => [ 'lvs4006', 'lvs4007' ],
+                'ulsfo' => [ 'lvs4002', 'lvs4004', 'lvs4006', 'lvs4007' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -54,11 +54,9 @@ class lvs::configuration {
         /^lvs[12]00[14]$/  => 'high-traffic1',
         /^lvs[12]00[25]$/  => 'high-traffic2',
         /^lvs[12]00[36]$/  => 'low-traffic',
-        /^lvs300[13]$/     => 'high-traffic1',
-        /^lvs300[24]$/     => 'high-traffic2',
-        'lvs4005'          => 'high-traffic1',
-        'lvs4006'          => 'high-traffic2',
-        'lvs4007'          => 'secondary',
+        /^lvs[34]00[135]$/ => 'high-traffic1',
+        /^lvs[34]00[246]$/ => 'high-traffic2',
+        /^lvs[34]007$/     => 'secondary',
         default            => 'unknown',
     }
 
