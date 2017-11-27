@@ -85,27 +85,23 @@ class openstack::designate::service(
             group   => 'designate',
             mode    => '0440',
             content => template("openstack/${version}/designate/designate.conf.erb"),
-            notify  => Service['designate-api','designate-sink','designate-central','designate-mdns','designate-pool-manager'],
             require => Package['designate-common'];
         '/etc/designate/api-paste.ini':
             content => template("openstack/${version}/designate/api-paste.ini.erb"),
             owner   => 'designate',
             group   => 'designate',
-            notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-api'],
             mode    => '0440';
         '/etc/designate/policy.json':
             source  => "puppet:///modules/openstack/${version}/designate/policy.json",
             owner   => 'designate',
             group   => 'designate',
-            notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-common'],
             mode    => '0440';
         '/etc/designate/rootwrap.conf':
             source  => "puppet:///modules/openstack/${version}/designate/rootwrap.conf",
             owner   => 'root',
             group   => 'root',
-            notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-common'],
             mode    => '0440';
     }
@@ -142,7 +138,6 @@ class openstack::designate::service(
         group   => 'root',
         mode    => '0544',
         content => template('openstack/initscripts/designate-pool-manager.upstart.erb'),
-        notify  => Service['designate-pool-manager'],
     }
 
     file {'/etc/init/designate-mdns.conf':
@@ -151,7 +146,6 @@ class openstack::designate::service(
         group   => 'root',
         mode    => '0544',
         content => template('openstack/initscripts/designate-mdns.upstart.erb'),
-        notify  => Service['designate-mdns'],
     }
 
     # include rootwrap.d entries
