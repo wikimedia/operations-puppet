@@ -575,12 +575,10 @@ node 'db1107.eqiad.wmnet' {
 
 # These replicas have an m4 custom replication protocol.
 
-# The db1047 replica additionally replicates s1 and s2.
 # db1047 is a host about to be decommissioned
 # lint:ignore:wmf_styleguide
 node 'db1047.eqiad.wmnet' {
-    role(mariadb::analytics,
-        mariadb::misc::eventlogging::replica)
+    role(mariadb::misc::eventlogging::replica)
 }
 
 node 'db1108.eqiad.wmnet' {
