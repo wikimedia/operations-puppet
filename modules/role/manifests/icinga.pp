@@ -34,6 +34,7 @@ class role::icinga {
     include icinga::monitor::services
     include icinga::monitor::reading_web
     include icinga::event_handlers::raid
+    include ::profile::bird::anycast_monitoring
 
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
