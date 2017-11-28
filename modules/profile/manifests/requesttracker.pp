@@ -1,6 +1,6 @@
 # server running "Request Tracker"
 # https://bestpractical.com/request-tracker
-class profile::requesttracker::server {
+class profile::requesttracker {
 
     include ::passwords::misc::rt
 
