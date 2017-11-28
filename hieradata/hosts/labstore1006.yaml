@@ -1,3 +1,4 @@
+ldap::client::nss::nsswitch_conf_source: file:///usr/share/base-files/nsswitch.conf
 profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'
   dumps_group: 'dumpsgen'
