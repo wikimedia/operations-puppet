@@ -8,7 +8,7 @@ class role::analytics_cluster::client {
     }
 
     # Include Hadoop ecosystem client classes.
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
     require ::profile::hive::client
     require ::profile::oozie::client
 

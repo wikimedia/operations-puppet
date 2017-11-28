@@ -1,7 +1,7 @@
 # == Class role::analytics_cluster::hadoop::balancer
 # Runs hdfs balancer periodically to keep data balanced across all DataNodes
 class role::analytics_cluster::hadoop::balancer {
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     file { '/usr/local/bin/hdfs-balancer':
         source => 'puppet:///modules/role/analytics_cluster/hadoop/hdfs-balancer',
