@@ -517,32 +517,62 @@ class role::prometheus::ops {
     }
 
 
+    # redis_exporter runs alongside each redis instance, thus drop the (uninteresting in this
+    # case) 'addr' and 'alias' labels
+    $redis_exporter_relabel = {
+      'regex'  => '(addr|alias)',
+      'action' => 'labeldrop',
+    }
+
+    # Configure one job per redis multidc 'category', plus redis for maps.
     $redis_jobs = [
       {
-        'job_name'        => 'redis',
+        'job_name'        => 'redis_sessions',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/redis_*.yaml" ]}
+          { 'files' => [ "${targets_path}/redis_sessions_*.yaml" ]}
         ],
-        # redis_exporter runs alongside each redis instance, thus drop the (uninteresting in this
-        # case) 'addr' and 'alias' labels
-        'metric_relabel_configs' => [
-          { 'regex'  => '(addr|alias)',
-            'action' => 'labeldrop',
-          },
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
+      },
+      {
+        'job_name'        => 'redis_jobqueue',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_jobqueue_*.yaml" ]}
         ],
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
+      },
+      {
+        'job_name'        => 'redis_maps',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_maps_*.yaml" ]}
+        ],
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
     ]
 
-    prometheus::redis_exporter_config{ "redis_master_${::site}":
-        dest       => "${targets_path}/redis_master_${::site}.yaml",
-        class_name => 'profile::redis::master',
+    prometheus::redis_exporter_config{ "redis_sessions_${::site}":
+        dest       => "${targets_path}/redis_sessions_${::site}.yaml",
+        class_name => 'role::mediawiki::memcached',
         site       => $::site,
     }
 
-    prometheus::redis_exporter_config{ "redis_slave_${::site}":
-        dest       => "${targets_path}/redis_slave_${::site}.yaml",
-        class_name => 'profile::redis::slave',
+    prometheus::redis_exporter_config{ "redis_jobqueue_master_${::site}":
+        dest       => "${targets_path}/redis_jobqueue_master_${::site}.yaml",
+        class_name => 'role::jobqueue_redis::master',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_jobqueue_slave_${::site}":
+        dest       => "${targets_path}/redis_jobqueue_slave_${::site}.yaml",
+        class_name => 'role::jobqueue_redis::slave',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_maps_${::site}":
+        dest       => "${targets_path}/redis_maps_${::site}.yaml",
+        class_name => 'role::maps::master',
         site       => $::site,
     }
 
