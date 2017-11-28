@@ -313,7 +313,7 @@ host bast4001 {
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
-    next-server 198.35.26.5; # bast4001 (tftp server)
+    next-server 208.80.153.53; # install2002 (tftp server)
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
