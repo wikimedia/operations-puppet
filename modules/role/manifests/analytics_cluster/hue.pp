@@ -11,7 +11,7 @@ class role::analytics_cluster::hue {
     # have their corresponding clients
     # and configs installed.
     # Include Hadoop ecosystem client classes.
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
     require ::profile::hive::client
     require ::profile::oozie::client
 

@@ -11,6 +11,7 @@ class role::analytics_cluster::hadoop::master {
     include ::profile::hadoop::master
     include ::profile::hadoop::users
     include ::profile::hadoop::firewall::master
+    include ::profile::hadoop::logstash
     include ::profile::base::firewall
     class { 'standard': }
 }

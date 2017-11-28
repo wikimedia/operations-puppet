@@ -23,7 +23,7 @@ class profile::druid::common(
 
     # Only need a Hadoop client if we are using CDH.
     if $use_cdh {
-        require ::profile::hadoop::client
+        require ::profile::hadoop::common
     }
 
     $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
