@@ -10,9 +10,33 @@
 #
 # filtertags: labs-project-analytics
 class profile::hadoop::common (
-    $zookeeper_clusters      = hiera('zookeeper_clusters'),
-    $zookeeper_cluster_name  = hiera('profile::hadoop::common::zookeeper_cluster_name'),
-    $hadoop_resourcemanagers = hiera('profile::hadoop::common::resourcemanager_hosts'),
+    $zookeeper_clusters                       = hiera('zookeeper_clusters'),
+    $zookeeper_cluster_name                   = hiera('profile::hadoop::common::zookeeper_cluster_name'),
+    $hadoop_resourcemanagers                  = hiera('profile::hadoop::common::resourcemanager_hosts'),
+    $cluster_name                             = hiera('profile::hadoop::common::cluster_name'),
+    $namenode_hosts                           = hiera('profile::hadoop::common::namenode_hosts'),
+    $journalnode_hosts                        = hiera('profile::hadoop::common::journalnode_hosts'),
+    $datanode_mounts                          = hiera('profile::hadoop::common::datanode_mounts'),
+    $namenode_heapsize                        = hiera('profile::hadoop::common::namenode_heapsize'),
+    $hadoop_namenode_opts                     = hiera('profile::hadoop::common::hadoop_namenode_opts'),
+    $mapreduce_reduce_shuffle_parallelcopies  = hiera('profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies'),
+    $mapreduce_task_io_sort_mb                = hiera('profile::hadoop::common::mapreduce_task_io_sort_mb'),
+    $mapreduce_task_io_sort_factor            = hiera('profile::hadoop::common::mapreduce_task_io_sort_factor'),
+    $mapreduce_map_memory_mb                  = hiera('profile::hadoop::common::mapreduce_map_memory_mb'),
+    $mapreduce_map_java_opts                  = hiera('profile::hadoop::common::mapreduce_map_java_opts'),
+    $yarn_heapsize                            = hiera('profile::hadoop::common::yarn_heapsize'),
+    $yarn_nodemanager_opts                    = hiera('profile::hadoop::common::yarn_nodemanager_opts'),
+    $yarn_resourcemanager_opts                = hiera('profile::hadoop::common::yarn_resourcemanager_opts'),
+    $hadoop_heapsize                          = hiera('profile::hadoop::common::hadoop_heapsize'),
+    $hadoop_datanode_opts                     = hiera('profile::hadoop::common::hadoop_datanode_opts'),
+    $yarn_app_mapreduce_am_resource_mb        = hiera('profile::hadoop::common::yarn_app_mapreduce_am_resource_mb'),
+    $yarn_app_mapreduce_am_command_opts       = hiera('profile::hadoop::common::yarn_app_mapreduce_am_command_opts'),
+    $mapreduce_history_java_opts              = hiera('profile::hadoop::common::mapreduce_history_java_opts'),
+    $yarn_nodemanager_resource_memory_mb      = hiera('profile::hadoop::common::yarn_nodemanager_resource_memory_mb'),
+    $yarn_scheduler_minimum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_mb'),
+    $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb'),
+    $yarn_scheduler_minimum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores'),
+    $yarn_scheduler_maximum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores'),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
@@ -42,6 +66,30 @@ class profile::hadoop::common (
         dfs_name_dir                                => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
 
+        cluster_name                                => $cluster_name,
+        namenode_hosts                              => $namenode_hosts,
+        journalnode_hosts                           => $journalnode_hosts,
+
+        datanode_mounts                             => $datanode_mounts,
+
+        namenode_heapsize                           => $namenode_heapsize,
+        yarn_heapsize                               => $yarn_heapsize,
+        hadoop_heapsize                             => $hadoop_heapsize,
+
+        yarn_nodemanager_opts                       => $yarn_nodemanager_opts,
+        yarn_resourcemanager_opts                   => $yarn_resourcemanager_opts,
+        hadoop_namenode_opts                        => $hadoop_namenode_opts,
+        hadoop_datanode_opts                        => $hadoop_datanode_opts,
+        mapreduce_history_java_opts                 => $mapreduce_history_java_opts,
+
+        yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
+        yarn_app_mapreduce_am_command_opts          => $yarn_app_mapreduce_am_command_opts,
+        yarn_nodemanager_resource_memory_mb         => $yarn_nodemanager_resource_memory_mb,
+        yarn_scheduler_minimum_allocation_mb        => $yarn_scheduler_minimum_allocation_mb,
+        yarn_scheduler_maximum_allocation_mb        => $yarn_scheduler_maximum_allocation_mb,
+        yarn_scheduler_minimum_allocation_vcores    => $yarn_scheduler_minimum_allocation_vcores,
+        yarn_scheduler_maximum_allocation_vcores    => $yarn_scheduler_maximum_allocation_vcores,
+
         # 256 MB
         dfs_block_size                              => 268435456,
         io_file_buffer_size                         => 131072,
@@ -53,6 +101,14 @@ class profile::hadoop::common (
         mapreduce_output_compression_type           => 'BLOCK',
 
         mapreduce_job_reuse_jvm_num_tasks           => 1,
+
+        mapreduce_reduce_shuffle_parallelcopies     => $mapreduce_reduce_shuffle_parallelcopies,
+        mapreduce_task_io_sort_mb                   => $mapreduce_task_io_sort_mb,
+        mapreduce_task_io_sort_factor               => $mapreduce_task_io_sort_factor,
+        mapreduce_map_memory_mb                     => $mapreduce_map_memory_mb,
+        mapreduce_map_java_opts                     => $mapreduce_map_java_opts,
+
+        net_topology_script_template                => 'profile/hadoop/net-topology.py.erb'
 
         # This needs to be set in order to use Impala
         dfs_datanode_hdfs_blocks_metadata_enabled   => true,
