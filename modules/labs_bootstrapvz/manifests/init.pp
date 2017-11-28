@@ -1,5 +1,9 @@
 class labs_bootstrapvz() {
 
+    package { 'nbd-client':
+        ensure => 'present',
+    }
+
     package { 'bootstrap-vz':
         ensure => present,
     }
