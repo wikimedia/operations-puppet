@@ -23,7 +23,22 @@ class ganglia::monitor::decommission {
         force   => true,
         require => Package['ganglia-monitor'],
     }
-
+    # in some cases /var/lib/ganglia becomes a remnant
+    # with files like pdns_gmetric.state in it
+    file { '/var/lib/ganglia/':
+        ensure  => absent,
+        recurse => true,
+        force   => true,
+        require => Package['ganglia-monitor'],
+    }
+    # just to make sure
+    service { 'ganglia-monitor':
+        ensure => 'stopped',
+    }
+    # in some cases the pid file was left even when service was stopped
+    file { '/run/ganglia-monitor.pid':
+        ensure => absent,
+    }
     file { '/etc/systemd/system/ganglia-monitor.service':
         ensure => absent,
     }
