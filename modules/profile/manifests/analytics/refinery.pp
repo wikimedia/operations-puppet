@@ -4,11 +4,11 @@
 # and using the analytics/refinery repository.
 #
 class profile::analytics::refinery {
-    # Make this class depend on hadoop::client.  Refinery
+    # Make this class depend on hadoop::common configs.  Refinery
     # is intended to work with Hadoop, and many of the
     # role classes here use the hdfs user, which is created
     # by the CDH packages.
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     # Clone mediawiki/event-schemas so refinery can use them.
     class { '::eventschemas': }

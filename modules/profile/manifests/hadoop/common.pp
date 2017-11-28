@@ -1,11 +1,18 @@
-# == Class profile::hadoop::client
-# Installs Hadoop client pacakges and configuration.
+# == Class profile::hadoop::common
+#
+# Configures Hadoop common configuration, the baseline for all the other
+# services/daemons/clients. This includes the Hadoop client packages as well.
+# The main goal of this profile is to keep all the Hadoop cluster daemons/clients
+# in sync with one single configuration.
+#
+# This profile currently leverages the cdh::hadoop hiera auto-lookup to configure
+# the cdh::hadoop class with default parameters.
 #
 # filtertags: labs-project-analytics
-class profile::hadoop::client (
+class profile::hadoop::common (
     $zookeeper_clusters      = hiera('zookeeper_clusters'),
-    $zookeeper_cluster_name  = hiera('profile::hadoop::client::zookeeper_cluster_name'),
-    $hadoop_resourcemanagers = hiera('profile::hadoop::client::resourcemanager_hosts'),
+    $zookeeper_cluster_name  = hiera('profile::hadoop::common::zookeeper_cluster_name'),
+    $hadoop_resourcemanagers = hiera('profile::hadoop::common::resourcemanager_hosts'),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
@@ -25,13 +32,6 @@ class profile::hadoop::client (
     $hadoop_data_directory                    = "${hadoop_var_directory}/data"
     $hadoop_journal_directory                 = "${hadoop_var_directory}/journal"
 
-    # Use hiera to configure Hadoop in labs.
-    # You MUST set at least the following:
-    #  cdh::hadoop::cluster_name
-    #  cdh::hadoop::namenode_hosts
-    #  zookeeper_clusters
-    #  zookeeper_cluster_name
-    #
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     class { '::cdh::hadoop':
@@ -82,9 +82,7 @@ class profile::hadoop::client (
         },
     }
 
-    include ::profile::hadoop::logstash
-
-    include ::ores::base
+    class { '::ores::base': }
 
     if $::realm == 'labs' {
         # Hadoop directories in labs should be created by puppet.

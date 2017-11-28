@@ -8,7 +8,7 @@ class profile::hive::client(
     $hiveserver_host        = hiera('profile::hive::client::server_host'),
     $hiveserver_port        = hiera('profile::hive::client::server_port'),
 ) {
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.

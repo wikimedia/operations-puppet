@@ -12,7 +12,7 @@ class profile::hadoop::master(
     $hadoop_namenode_heapsize = hiera('cdh::hadoop::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ){
-    include ::profile::hadoop::client
+    include ::profile::hadoop::common
 
     class { '::cdh::hadoop::master': }
 

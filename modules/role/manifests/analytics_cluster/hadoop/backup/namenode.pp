@@ -4,7 +4,7 @@
 # in the case we need to recover if both Hadoop NameNodes.
 #
 class role::analytics_cluster::hadoop::backup::namenode {
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     file { '/srv/backup':
         ensure => 'directory',
