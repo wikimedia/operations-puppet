@@ -1,0 +1,7 @@
+# Hadoop base configuration is common to multiple profiles, and must be kept
+# in sync. Instead of having it repated multiple times it is convenient to
+# have a single place in hiera to check/modify.
+profile::hadoop::common::zookeeper_cluster_name: main-eqiad
+profile::hadoop::common::resourcemanager_hosts:
+  - analytics1001.eqiad.wmnet
+  - analytics1002.eqiad.wmnet
