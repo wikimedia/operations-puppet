@@ -1,5 +1,5 @@
 # server running a planet RSS feed aggregator
-class role::planet_server {
+class role::planet {
 
     include ::standard
     include ::profile::base::firewall
@@ -11,7 +11,7 @@ class role::planet_server {
 
     include ::profile::planet::venus
 
-    system::role { 'planet_server':
+    system::role { 'planet':
         description => 'Planet-venus or rawdog RSS feed aggregator'
     }
 }
