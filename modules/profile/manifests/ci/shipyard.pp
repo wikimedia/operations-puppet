@@ -18,7 +18,7 @@ class profile::ci::shipyard(
         ensure  => present,
         content => template('profile/ci/shipyard/docker-pkg-integration-config.yaml.erb'),
         owner   => 'root',
-        group   => 'root',
-        mode    => '0444'
+        group   => 'contint-admins',
+        mode    => '0440'
     }
 }
