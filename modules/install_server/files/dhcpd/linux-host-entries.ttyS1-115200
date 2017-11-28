@@ -4926,48 +4926,48 @@ host mw1328 {
 }
 
 host mw1329 {
-	hardware ethernet 18:66:DA:99:24:91;
-	fixed-address mw1329.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:24:91;
+        fixed-address mw1329.eqiad.wmnet;
 }
 
 host mw1330 {
-	hardware ethernet 18:66:DA:99:47:83;
-	fixed-address mw1330.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:47:83;
+        fixed-address mw1330.eqiad.wmnet;
 }
 
 host mw1331 {
-	hardware ethernet 18:66:DA:99:4B:5B;
-	fixed-address mw1331.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:4B:5B;
+        fixed-address mw1331.eqiad.wmnet;
 }
 
 host mw1332 {
-	hardware ethernet 18:66:DA:99:1C:A7;
-	fixed-address mw1332.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:1C:A7;
+        fixed-address mw1332.eqiad.wmnet;
 }
 
 host mw1333 {
-	hardware ethernet 18:66:DA:99:47:4D;
-	fixed-address mw1333.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:47:4D;
+        fixed-address mw1333.eqiad.wmnet;
 }
 
 host mw1334 {
-	hardware ethernet 18:66:DA:99:4C:CF;
-	fixed-address mw1334.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:4C:CF;
+        fixed-address mw1334.eqiad.wmnet;
 }
 
 host mw1335 {
-	hardware ethernet 18:66:DA:99:3D:2E;
-	fixed-address mw1335.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:3D:2E;
+        fixed-address mw1335.eqiad.wmnet;
 }
 
 host mw1336 {
-	hardware ethernet 18:66:DA:97:FE:87;
-	fixed-address mw1336.eqiad.wmnet;
+        hardware ethernet 18:66:DA:97:FE:87;
+        fixed-address mw1336.eqiad.wmnet;
 }
 
 host mw1337 {
-	hardware ethernet 18:66:DA:99:52:F8;
-	fixed-address mw1337.eqiad.wmnet;
+        hardware ethernet 18:66:DA:99:52:F8;
+        fixed-address mw1337.eqiad.wmnet;
 }
 
 host mw2017 {
