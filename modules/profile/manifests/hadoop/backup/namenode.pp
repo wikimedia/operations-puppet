@@ -5,7 +5,7 @@
 # in the case we need to recover if both Hadoop NameNodes.
 #
 class profile::hadoop::backup::namenode {
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     if !defined(File['/srv/backup']) {
         file { '/srv/backup':
