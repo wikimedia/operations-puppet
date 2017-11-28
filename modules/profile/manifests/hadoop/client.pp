@@ -86,18 +86,6 @@ class profile::hadoop::client (
 
     include ::ores::base
 
-    # If in production AND the current node is a journalnode, then
-    # go ahead and include an icinga alert for the JournalNode process.
-    if $::realm == 'production' and member($cdh::hadoop::journalnode_hosts, $::fqdn) {
-        nrpe::monitor_service { 'hadoop-hdfs-journalnode':
-            description   => 'Hadoop JournalNode',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-            contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop'],
-            critical      => true,
-        }
-    }
-
     if $::realm == 'labs' {
         # Hadoop directories in labs should be created by puppet.
         # This conditional could be added to each worker,master,standby

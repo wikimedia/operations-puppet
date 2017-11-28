@@ -110,6 +110,15 @@ class profile::hadoop::worker(
             require       => Class['cdh::hadoop::worker'],
         }
 
+        if $::fqdn in $::cdh::hadoop::journalnode_hosts {
+            nrpe::monitor_service { 'hadoop-hdfs-journalnode':
+                description   => 'Hadoop JournalNode',
+                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
+                contact_group => 'admins,analytics',
+                require       => Class['cdh::hadoop'],
+            }
+        }
+
         # Alert on datanode mount disk space.  These mounts are ignored by the
         # base module's check_disk via the base::monitoring::host::nrpe_check_disk_options
         # override in worker.yaml hieradata.
