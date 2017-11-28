@@ -63,8 +63,8 @@ while true; do
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
 
-				#  Kill all remaining dumpers and start over.
-				kill -- -$$
+				#  Kill all sub*-processes of the (parent) bash process and start over
+				killAllSubProcesses
 			fi
 		) &
 		let i++
