@@ -12,3 +12,7 @@ admin::groups:
 
 profile::hadoop::master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
+
+# Used to set up jvm heap size usage thresholds
+# Please check profile::hadoop::common::hadoop_namenode_opts before changing it.
+profile::hadoop::master::namenode_heapsize: 6144
