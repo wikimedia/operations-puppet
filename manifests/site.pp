@@ -126,10 +126,6 @@ node 'bast4002.wikimedia.org' {
         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': }
-
-    class { '::ganglia::monitor::aggregator':
-        sites =>  'ulsfo',
-    }
 }
 
 node 'bohrium.eqiad.wmnet' {
