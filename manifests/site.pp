@@ -1792,7 +1792,7 @@ node 'pc2006.codfw.wmnet' {
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
-    role(planet_server)
+    role(planet)
     interface::add_ip6_mapped { 'main': }
 }
 
