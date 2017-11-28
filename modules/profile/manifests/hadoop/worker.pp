@@ -11,7 +11,7 @@ class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled'),
     $statsd             = hiera('statsd'),
 ) {
-    include ::profile::hadoop::client
+    include ::profile::hadoop::common
 
     # hive::client is nice to have for jobs launched
     # from random worker nodes as app masters so they

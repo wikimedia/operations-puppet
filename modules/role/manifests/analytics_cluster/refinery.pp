@@ -7,7 +7,7 @@ class role::analytics_cluster::refinery {
     # is intended to work with Hadoop, and many of the
     # role classes here use the hdfs user, which is created
     # by the CDH packages.
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     # Clone mediawiki/event-schemas so refinery can use them.
     include ::eventschemas

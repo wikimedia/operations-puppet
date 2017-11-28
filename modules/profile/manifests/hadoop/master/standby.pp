@@ -10,7 +10,7 @@ class profile::hadoop::master::standby(
     $hadoop_namenode_heapsize = hiera('cdh::hadoop::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ) {
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     # Ensure that druid user exists on standby namenodes nodes.
     class { '::druid::cdh::hadoop::user':  }
