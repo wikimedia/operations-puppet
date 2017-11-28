@@ -5,8 +5,6 @@ class toollabs::kube2proxy(
     $kube_token='test',
 ) {
 
-    include ::k8s::users
-
     $packages = [
       'python3-pip',
       'python3-redis',
@@ -36,8 +34,7 @@ class toollabs::kube2proxy(
     $service_params = {'ensure' => $should_run}
 
     $users = hiera('k8s_infrastructure_users')
-    # Ugly hack, ugh!
-    $client_token = inline_template("<%= @users.select { |u| u['name'] == 'proxy-infrastructure' }[0]['token'] %>")
+    $client_token = $users['proxy-infrastructure']['token']
 
     $config = {
         'redis'       => 'localhost:6379',
@@ -49,15 +46,15 @@ class toollabs::kube2proxy(
 
     file { '/etc/kube2proxy.yaml':
         content => ordered_yaml($config),
-        owner   => 'kubernetes',
-        group   => 'kubernetes',
+        owner   => 'kube',
+        group   => 'kube',
         mode    => '0440',
     }
 
     base::service_unit{ 'kube2proxy':
         ensure         => present,
         refresh        => true,
-        systemd        => true,
+        systemd        => systemd_template('kube2proxy'),
         service_params => $service_params,
         subscribe      => File[
             '/usr/local/sbin/kube2proxy',

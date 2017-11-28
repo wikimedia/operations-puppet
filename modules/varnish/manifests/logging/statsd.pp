@@ -30,7 +30,7 @@ define varnish::logging::statsd(
     $statsd_server = 'statsd',
     $key_prefix    = 'varnish.backends',
 ) {
-    if $instance_name {
+    if $instance_name != '' {
         $service_unit_name = "varnishstatsd-${instance_name}"
     } else {
         $service_unit_name = 'varnishstatsd-default'
@@ -38,22 +38,18 @@ define varnish::logging::statsd(
 
     if ! defined(File['/usr/local/bin/varnishstatsd']) {
         file { '/usr/local/bin/varnishstatsd':
-            source  => 'puppet:///modules/varnish/varnishstatsd',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
-            notify  => Service[$service_unit_name],
+            source => 'puppet:///modules/varnish/varnishstatsd',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            notify => Service[$service_unit_name],
         }
     }
 
-    base::service_unit { $service_unit_name:
+    systemd::service { $service_unit_name:
         ensure         => present,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishstatsd',
+        content        => systemd_template('varnishstatsd'),
         require        => File['/usr/local/bin/varnishstatsd'],
-        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             enable => true,
         },

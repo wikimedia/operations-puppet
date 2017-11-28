@@ -52,11 +52,12 @@ def fetch_yaml_data():
 def validate_absented_users(yamldata):
     log = ""
     absented_users = yamldata['groups']['absent']['members']
+    absented_users += yamldata['groups']['absent_ldap']['members']
     for table in ['users', 'ldap_only_users']:
         for username, userdata in yamldata[table].items():
             if userdata['ensure'] == 'absent':
                 if username not in absented_users:
-                    log += username + " is absent, but missing in absent group\n"
+                    log += username + " is absent, but missing in absent groups\n"
     return log
 
 
@@ -75,6 +76,7 @@ def parse_users(yamldata):
 
             if table == 'users':
                 users[username] = {
+                    'realname': userdata['realname'],
                     'ldap_only': False,
                     'uid': userdata['uid'],
                     'prod_groups': groups,
@@ -82,11 +84,9 @@ def parse_users(yamldata):
                 }
             elif table == 'ldap_only_users':
                 users[username] = {
+                    'realname': userdata['realname'],
                     'ldap_only': True,
                 }
-
-            if userdata.get('realname', None):
-                users[username]['realname'] = userdata.get('realname', None)
 
             if userdata.get('email', None) is None:
                 users[username]['email'] = 'undefined'
@@ -144,11 +144,30 @@ def validate_common_ops_group(yamldata):
         return ""
 
 
+# Every account in the wmf group should be registered in data.yaml with a wikimedia.org address
+# Google account and every member in the nda group with a non-wikimedia.org address
+def validate_privileged_ldap_groups_memberships(users):
+    log = ""
+
+    for member in get_ldap_group_members('wmf'):
+        if member in users.keys():  # flagged via different account check
+            if 'email' in users[member].keys():
+                if not users[member]['email'].endswith('wikimedia.org'):
+                    log += member + " is in wmf group, but not registered with a WMF account\n"
+
+    for member in get_ldap_group_members('nda'):
+        if member in users.keys():  # flagged via different account check
+            if 'email' in users[member].keys():
+                if users[member]['email'].endswith('wikimedia.org'):
+                    log += member + " is in nda group, but registered with a WMF account\n"
+    return log
+
+
 # Make sure that all group members are defined in the YAML file
 def validate_all_yaml_group_members_are_defined(known_users, yamldata):
     log = ""
     for group, groupdata in yamldata['groups'].items():
-        if group == "absent":
+        if group == "absent" or group == "absent_ldap":
             continue
         for member in groupdata['members']:
             if member not in known_users:
@@ -170,18 +189,18 @@ def validate_all_ldap_group_members_are_defined(known_users):
     return log
 
 
-# Warn if an account expires in 14 days or less
+# Warn if an account expires in 7 days or less
 def print_pending_account_expirys(users):
     log = ""
-    current_date = datetime.datetime.now()
+    current_date = datetime.datetime.now().date()
     for i in users.keys():
         attrs = users[i]
         if 'expiry_date' in attrs.keys():
-            expiry = datetime.datetime.strptime(str(attrs['expiry_date']), "%Y-%m-%d")
+            expiry = datetime.datetime.strptime(str(attrs['expiry_date']), "%Y-%m-%d").date()
             delta = expiry - current_date
-            if delta.days <= 14:
+            if delta.days <= 7:
                 log += "The NDA/MOU for " + i + " will lapse in " + str(delta.days) + " days.\n"
-                log += "  Please get in touch with" + str(attrs['expiry_contact']) + "\n"
+                log += "  Please get in touch with " + str(attrs['expiry_contact']) + "\n"
     return log
 
 
@@ -236,6 +255,7 @@ def main():
     run_test(validate_all_ldap_group_members_are_defined(known_users))
     run_test(validate_duplicated_ops_permissions(users))
     run_test(print_pending_account_expirys(users))
+    run_test(validate_privileged_ldap_groups_memberships(users))
 
 
 if __name__ == '__main__':

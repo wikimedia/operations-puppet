@@ -1,27 +1,27 @@
 sub backend_error_errorpage {
 	set beresp.http.Content-Type = "text/html; charset=utf-8";
 
-	synthetic(std.fileread("/etc/varnish/errorpage.html") +
+	synthetic(regsub({"<%= @errorpage_html %>"}, "%error%",
 		"Request from " + bereq.http.X-Client-IP +
 		" via " + server.hostname + " " + server.identity +
 		", Varnish XID " + bereq.xid + "<br>" +
 		regsub(beresp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
 		"Error: " + beresp.status + ", " +
 		beresp.reason +
-		" at " + now + "</code></p></div></html>"
-	);
+		" at " + now
+	));
 }
 
 sub synth_errorpage {
 	set resp.http.Content-Type = "text/html; charset=utf-8";
 
-	synthetic(std.fileread("/etc/varnish/errorpage.html") +
+	synthetic(regsub({"<%= @errorpage_html %>"}, "%error%",
 		"Request from " + req.http.X-Client-IP +
 		" via " + server.hostname + " " + server.identity +
 		", Varnish XID " + req.xid + "<br>" +
 		regsub(resp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
 		"Error: " + resp.status + ", " +
 		resp.reason +
-		" at " + now + "</code></p></div></html>"
-	);
+		" at " + now
+	));
 }

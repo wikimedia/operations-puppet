@@ -1,64 +1,130 @@
-#!/usr/bin/env bash
-# Update the local puppet checkout
+#!/usr/bin/python3
+# Fetch new git changes from upstream repos and rebase local changes on top.
+# Rebase step is done in a temporary git clone that shares objects with the
+# repo being rebased. This helps avoid consumers of the clone seeing partial
+# application of local changes do to non-atomic operations.
+import datetime
+import logging
+import os
+import shutil
+import sys
 
-set -e
-#set -x
+# Send all git output to stdout
+# This has to be set before git is imported.
+os.environ["GIT_PYTHON_TRACE"] = 'full'
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)-8s %(name)s: %(message)s',
+    datefmt='%Y-%m-%dT%H:%M:%SZ'
+)
+logging.captureWarnings(True)
+logger = logging.getLogger('sync-upstream')
 
-# TODO: rewrite in python?
+import git
 
-# Run script as root
-[[ ${UID} -ne 0 ]] && exec sudo ${0} "${@}"
 
-echo "--- ${0} $(date +%Y-%m-%dT%H:%M:%S)"
+def rebase_repo(repo_path, track_branch):
+    """Rebase the current HEAD of the given clone on top of the given tracking
+    branch of it's origin repo.
 
-function rebase_repo() {
-    REPO_PATH="${1}"
-    TRACK_BRANCH="${2}"
-    REBASE_OPTS=(
-        '--preserve-merges'
-        '--stat'
-        '--strategy=recursive'
-        '--strategy-option=patience'
-    )
+    :param repo_path: git clone to rebase
+    :param track_branch: origin branch to track
+    """
+    datestring = datetime.datetime.now().strftime('%Y%m%d%H%M')
+    branchname = "oot-branch-%s" % datestring
+    tagname = "snapshot-%s" % datestring
+    tempdir = "/tmp/%s" % tagname
 
-    cd "${REPO_PATH}"
+    repo = git.Repo(repo_path)
+    assert not repo.bare
 
-    DIFF=$(git diff)
-    if [ -n "${DIFF}" ]; then
-        echo "Local diffs detected.  Commit your changes!"
-        return 2
-    fi
+    upstream_branch = "origin/%s" % track_branch
 
-    # Fetch new changes from origin
-    git fetch --verbose origin
+    # diff index against working copy
+    if repo.index.diff(None):
+        logger.error("Local diffs detected.  Commit your changes!")
+        return False
 
-    # Abort early when already on tip of upstream
-    git merge-base --is-ancestor "origin/${TRACK_BRANCH}" HEAD && {
-        echo "Up-to-date: ${REPO_PATH}"
-        return 0
-    }
+    repo.remotes.origin.fetch()
 
-    # Rebase locally commited changes on top of tracked origin branch
-    if ! git rebase "${REBASE_OPTS[@]}" "origin/${TRACK_BRANCH}"; then
-        echo "Rebase failed! See error messages above." 1>&2
-        echo "Reverting rebase attempt" 1>&2
-        git rebase --abort
-        return 2
-    fi
+    current_branch = repo.git.rev_parse('--abbrev-ref', 'HEAD')
+    latest_commit = repo.git.rev_parse(current_branch)
+    latest_upstream_commit = repo.git.show_ref("-s", upstream_branch)
+    latest_merged_commit = repo.git.merge_base(upstream_branch, "HEAD")
 
-    # Ensure that submodule changes are applied to the local checkout
-    git submodule update --init --recursive
+    if latest_upstream_commit == latest_merged_commit:
+        logger.info("Up-to-date: %s" % repo_path)
+        return True
+    try:
+        # Perform rebase in a temporary workdir to avoid altering the state of
+        # the current workdir. Rebasing in place can lead to Puppet using
+        # files after the update but before local patches are re-applied.
+        #
+        # This next bit is largely cribbed from
+        # https://github.com/encukou/bin/blob/master/oot-rebase
+        os.makedirs(tempdir)
 
-    # Tag the local repo state for rollback and troubleshooting
-    TAG="snapshot-$(date +%Y%m%dT%H%M)"
-    git tag "${TAG}"
-    echo "Tagged as: ${TAG}"
+        tmprepo = git.Repo.init(tempdir)
 
-    # Display local commits
-    echo "Local hacks:"
-    git log --color --pretty=oneline --abbrev-commit origin/HEAD..HEAD |
-    sed 's/^/  /'
-}
+        # This bit of magic should prevent us from needing to create a full
+        # duplicate of all the objects in repo_path.
+        # See: https://git-scm.com/docs/gitrepository-layout
+        alt_file = os.path.join(tempdir,".git/objects/info/alternates")
+        with open(alt_file, "w") as alternates:
+            alternates.write("%s/.git/objects" % repo_path)
 
-rebase_repo /var/lib/git/operations/puppet production
-rebase_repo /var/lib/git/labs/private master
+        # Get ready to rebase in tmprepo:  fetch from upstream, and create and
+        # check out a branch 'oot-rebase' that matches the state of the main
+        # repo in repo_path:
+        tmprepo.git.fetch(
+            "-n", repo_path,
+            "%s:oot-rebase/%s" % (current_branch, current_branch),
+            "%s:oot-rebase/%s" % (upstream_branch, upstream_branch))
+        tmprepo.git.checkout("oot-rebase/%s" % current_branch)
+
+        # And... rebase.
+        tmprepo.git.rebase(
+            "--preserve-merges",
+            "--stat",
+            "--strategy=recursive",
+            "--strategy-option=patience",
+            "oot-rebase/%s" % upstream_branch)
+
+        # Now 'oot-rebase' in tmprepo has the final state we need.  Push that
+        # branch to a temporary branch ('branchname') in the main repo.
+        tmprepo.git.push(
+            "--force-with-lease=%s:%s" % (current_branch, latest_commit),
+            repo_path,
+            "oot-rebase/%s:%s" % (current_branch,branchname))
+
+        # Finally reset our original repo to this new branch and discard the
+        # 'branchname' branch
+        repo.git.reset("--hard", branchname)
+        repo.git.branch("-D", branchname)
+        shutil.rmtree(tempdir)
+
+    except git.exc.GitCommandError:
+        logger.error("Rebase failed!")
+        shutil.rmtree(tempdir)
+        return False
+
+    # Ensure that submodules are up to date in the local clone
+    repo.git.submodule("update", "--init", "--recursive")
+
+    # For the sake of future rollbacks, tag the repo in the state we've just
+    # set up
+    repo.create_tag(tagname)
+    logger.info("Tagged as %s" % tagname)
+
+    logger.info("Local hacks:")
+    repo.git.log(
+        "--color",
+        "--pretty=oneline",
+        "--abbrev-commit",
+        "origin/HEAD..HEAD")
+
+    return True
+
+
+if rebase_repo("/var/lib/git/operations/puppet", "production"):
+    rebase_repo("/var/lib/git/labs/private", "master")

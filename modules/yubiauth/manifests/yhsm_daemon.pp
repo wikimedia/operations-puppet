@@ -17,7 +17,7 @@ class yubiauth::yhsm_daemon(
         enable  => true,
         require => [
                     Package['yhsm-daemon'],
-                    File['/etc/default/yhsm-daemon'],
+                    File['yhsm-daemon-default'],
                     ],
     }
 }

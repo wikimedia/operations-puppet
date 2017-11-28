@@ -1,0 +1,14 @@
+- apiVersion: v1
+  kind: bgpPeer
+  metadata:
+    scope: global
+    peerIP: 2620:0:860:ffff::1
+  spec:
+    asNumber: 14907
+- apiVersion: v1
+  kind: bgpPeer
+  metadata:
+    scope: global
+    peerIP: 2620:0:860:ffff::2
+  spec:
+    asNumber: 14907

@@ -34,9 +34,8 @@ define sysfs::conffile(
 ) {
     include ::sysfs
 
-    if $priority !~ /^\d?\d$/ {
-        fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
-    }
+    # TODO/puppet4 convert parameter to use the appropriate type
+    validate_numeric($priority, 99, 0)
 
     $basename = regsubst($title, '\W', '-', 'G')
     $filename = sprintf('/etc/sysfs.d/%02d-%s.conf', $priority, $basename)

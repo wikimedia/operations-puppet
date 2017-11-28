@@ -1,5 +1,7 @@
 # Really Awful Notorious CIsco config Differ
-class rancid {
+class rancid (
+    $active_server
+    ){
 
     package { 'rancid':
         ensure => present,
@@ -16,9 +18,13 @@ class rancid {
         gid        => 'rancid',
         managehome => true,
         system     => true,
+        home       => '/var/lib/rancid',
     }
 
-    include ::passwords::rancid
+    ::keyholder::agent { 'rancid':
+        require        => Group['rancid'],
+        trusted_groups => ['rancid'],
+    }
 
     file { '/etc/rancid/rancid.conf':
         require => Package['rancid'],
@@ -28,11 +34,35 @@ class rancid {
         source  => 'puppet:///modules/rancid/rancid.conf',
     }
 
+    file { '/var/lib/rancid/bin/oglogin':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/rancid/bin/oglogin',
+    }
+
+    file { '/var/lib/rancid/bin/ograncid':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/rancid/bin/ograncid',
+    }
+
+    file { '/var/lib/rancid/bin/ssh-serial-console-wrapper':
+        require => Package['rancid'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/rancid/bin/ssh-serial-console-wrapper',
+    }
+
     file { '/var/lib/rancid/core':
         require => [ Package['rancid'], User['rancid'] ],
         owner   => 'rancid',
         group   => 'rancid',
-        mode    => '0770',
+        mode    => '0774',
         recurse => remote,
         source  => 'puppet:///modules/rancid/core',
     }
@@ -45,12 +75,35 @@ class rancid {
         content => template('rancid/cloginrc.erb'),
     }
 
-    file { '/etc/cron.d/rancid':
-        require => File['/var/lib/rancid/core'],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/rancid/rancid.cron',
+    file_line { 'opengear_script':
+      path => '/etc/rancid/rancid.types.base',
+      line => 'opengear;script;ograncid',
+    }
+
+    file_line { 'opengear_login':
+      path => '/etc/rancid/rancid.types.base',
+      line => 'opengear;login;oglogin',
+    }
+
+    if $active_server == $::fqdn {
+        $cron_ensure = 'present'
+    } else {
+        $cron_ensure = 'absent'
+    }
+
+    cron { 'rancid_differ':
+        ensure  => $cron_ensure,
+        command => 'SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/lib/rancid/bin/rancid-run',
+        user    => 'rancid',
+        minute  => '1',
+    }
+
+    cron { 'rancid_clean_logs':
+        ensure  => $cron_ensure,
+        command => '/usr/bin/find /var/log/rancid -type f -mtime +2 -exec rm {} \;',
+        user    => 'rancid',
+        minute  => '50',
+        hour    => '23',
     }
 
     file { '/var/log/rancid':

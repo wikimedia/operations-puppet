@@ -12,9 +12,13 @@
 #
 # [*rrd_dir*]
 #   Location where RRD files are going to be placed. Defaults to "rrd" under
-#   *install_dir*.
+#
+# [*active_server*]
+#   FQDN of the server that should have active cronjobs pulling data.
+#   To avoid pulling multiple times when role is applied on muliple nodes for a standby-scenario.
 #
 class librenms(
+    $active_server,
     $config={},
     $install_dir='/srv/librenms',
     $rrd_dir="${install_dir}/rrd",
@@ -32,12 +36,11 @@ class librenms(
         managehome => false,
     }
 
-    file { $install_dir:
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'librenms',
-        mode    => '0555',
-        require => Group['librenms'],
+    file { '/srv/librenms':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { "${install_dir}/config.php":
@@ -49,22 +52,52 @@ class librenms(
         require => Group['librenms'],
     }
 
-    file { '/etc/logrotate.d/librenms':
+    file { $rrd_dir:
+        ensure  => directory,
+        mode    => '0775',
+        owner   => 'www-data',
+        group   => 'librenms',
+        require => Group['librenms'],
+    }
+
+    logrotate::conf { 'librenms':
         ensure => present,
-        owner  => 'root',
-        group  => 'root',
         source => 'puppet:///modules/librenms/logrotate',
     }
 
+    if os_version('debian >= stretch') {
+
+        package { [
+                'php-cli',
+                'php-curl',
+                'php-gd',
+                'php-mcrypt',
+                'php-mysql',
+                'php-snmp',
+                'php-ldap',
+            ]:
+            ensure => present,
+        }
+
+    } else {
+
+        package { [
+                'php5-cli',
+                'php5-curl',
+                'php5-gd',
+                'php5-mcrypt',
+                'php5-mysql',
+                'php5-snmp',
+                'php5-ldap',
+            ]:
+            ensure => present,
+        }
+    }
+
     package { [
-            'php5-cli',
-            'php5-gd',
-            'php5-mcrypt',
-            'php5-mysql',
-            'php5-snmp',
-            'php-net-ipv4',
             'php-net-ipv6',
             'php-pear',
+            'php-net-ipv4',
             'fping',
             'graphviz',
             'ipmitool',
@@ -81,8 +114,14 @@ class librenms(
 
     include ::imagemagick::install
 
+    if $active_server == $::fqdn {
+        $cron_ensure = 'present'
+    } else {
+        $cron_ensure = 'absent'
+    }
+
     cron { 'librenms-discovery-all':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h all >/dev/null 2>&1",
         hour    => '*/6',
@@ -90,31 +129,52 @@ class librenms(
         require => User['librenms'],
     }
     cron { 'librenms-discovery-new':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h new >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-poller-all':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "python ${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-check-services':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/check-services.php >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-alerts':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "${install_dir}/alerts.php >/dev/null 2>&1",
         minute  => '*',
+        require => User['librenms'],
+    }
+    cron { 'librenms-poll-billing':
+        ensure  => $cron_ensure,
+        user    => 'librenms',
+        command => "${install_dir}/poll-billing.php >/dev/null 2>&1",
+        minute  => '*/5',
+        require => User['librenms'],
+    }
+    cron { 'librenms-billing-calculate':
+        ensure  => $cron_ensure,
+        user    => 'librenms',
+        command => "${install_dir}/billing-calculate.php >/dev/null 2>&1",
+        minute  => '01',
+        require => User['librenms'],
+    }
+    cron { 'librenms-daily':
+        ensure  => $cron_ensure,
+        user    => 'librenms',
+        command => "${install_dir}/daily.sh >/dev/null 2>&1",
+        hour    => '0',
         require => User['librenms'],
     }
 
@@ -133,7 +193,7 @@ class librenms(
         source => 'puppet:///modules/librenms/purge.py',
     }
     cron { 'purge-syslog-eventlog':
-        ensure  => present,
+        ensure  => $cron_ensure,
         user    => 'librenms',
         command => "python ${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
         hour    => '0',

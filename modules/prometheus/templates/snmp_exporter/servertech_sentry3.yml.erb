@@ -1,0 +1,395 @@
+<%= @exporter_module %>:
+<% if @community -%>
+  auth:
+    community: <%= @community %>
+<% end -%>
+  walk:
+  - 1.3.6.1.2.1.1.3
+  - 1.3.6.1.4.1.1718.3.2.2
+  - 1.3.6.1.4.1.1718.3.2.3
+  metrics:
+  - name: sysUpTime
+    oid: 1.3.6.1.2.1.1.3
+    type: gauge
+  - name: infeedIndex
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.1
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedID
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.2
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedName
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.3
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedStatus
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.5
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedLoadStatus
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.6
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedLoadValue
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.7
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedLoadHighThresh
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.8
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedOutletCount
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.9
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedCapacity
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.10
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedVoltage
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.11
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedPower
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.12
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedApparentPower
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.13
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedPowerFactor
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.14
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedCrestFactor
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.15
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedEnergy
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.16
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedReactance
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.17
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedPhaseVoltage
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.18
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedPhaseCurrent
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.19
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedCapacityUsed
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.20
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedLineID
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.21
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedLineToLineID
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.22
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedPhaseID
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.23
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedVACapacity
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.24
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: infeedVACapacityUsed
+    oid: 1.3.6.1.4.1.1718.3.2.2.1.25
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+  - name: outletIndex
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.1
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletID
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.2
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletName
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.3
+    type: string
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletStatus
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.5
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletLoadStatus
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.6
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletLoadValue
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.7
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletLoadLowThresh
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.8
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletLoadHighThresh
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.9
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletControlState
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.10
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletControlAction
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.11
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletCapacity
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.12
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletVoltage
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.13
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletPower
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.14
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletApparentPower
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.15
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletPowerFactor
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.16
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletCrestFactor
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.17
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletEnergy
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.18
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletWakeupState
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.19
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer
+  - name: outletPostOnDelay
+    oid: 1.3.6.1.4.1.1718.3.2.3.1.20
+    type: gauge
+    indexes:
+    - labelname: towerIndex
+      type: Integer
+    - labelname: infeedIndex
+      type: Integer
+    - labelname: outletIndex
+      type: Integer

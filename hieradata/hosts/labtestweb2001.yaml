@@ -1,6 +1,1 @@
-admin::groups:
-  - deployment
-
-apache::logrotate::rotate: 12
-
-openstack::version: mitaka
+profile::openstack::labtest::version: 'mitaka'

@@ -23,42 +23,24 @@
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
     <Location />
-        <IfVersion >= 2.4>
-            <RequireAll>
-                Require all granted
-                Require not env bad_browser
-            </RequireAll>
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from env=!bad_browser
-        </IfVersion>
+        <RequireAll>
+            Require all granted
+            Require not env bad_browser
+        </RequireAll>
     </Location>
 
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
         AllowOverride None
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order Allow,Deny
-            Allow from All
-        </IfVersion>
+        Require all granted
     </Directory>
 
     ScriptAlias /mailman/ "/usr/lib/cgi-bin/mailman/"
     <Directory "/usr/lib/cgi-bin/mailman/">
         AllowOverride None
         Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from all
-        </IfVersion>
+        Require all granted
     </Directory>
 
     Alias /pipermail/ "/var/lib/mailman/archives/public/"

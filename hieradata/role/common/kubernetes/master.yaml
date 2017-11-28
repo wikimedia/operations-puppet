@@ -1,22 +1,19 @@
-debdeploy::grains:
-  debdeploy-kubernetes-eqiad:
-    value: standard
 cluster: kubernetes
-profile::kubernetes::master::etcd_urls:
- - https://etcd1001.eqiad.wmnet:2379
- - https://etcd1002.eqiad.wmnet:2379
- - https://etcd1003.eqiad.wmnet:2379
-profile::kubernetes::master::docker_registry: darmstadtium.eqiad.wmnet
-profile::kubernetes::master::kubenodes:
- - kubernetes1001.eqiad.wmnet
- - kubernetes1002.eqiad.wmnet
- - kubernetes1003.eqiad.wmnet
- - kubernetes1004.eqiad.wmnet
-profile::kubernetes::master::service_cluster_ip_range: 192.168.30.0/24
+profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::admission_controllers:
- - NamespaceLifecycle
- - ResourceQuota
- - LimitRanger
- - RegistryEnforcer
- - DefaultStorageClass
+  NamespaceLifecycle: ''
+  LimitRanger: ''
+  PersistentVolumeLabel: ''
+  DefaultStorageClass: ''
+  ResourceQuota: ''
+  DefaultTolerationSeconds: ''
+profile::kubernetes::master::expose_puppet_certs: true
+profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::authz_mode: 'RBAC'
+profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
+# TODO: This needs to become a profile
+role::lvs::realserver::pools:
+  kubemaster: {}

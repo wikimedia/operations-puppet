@@ -1,7 +1,29 @@
 # == Class confd
 #
 # Installs confd and (optionally) starts it via a base::service_unit define.
-
+#
+# === Parameters
+#
+# [*running*] If true, the service will be ran. Default: true
+#
+# [*backend*] The backend to use. Default: etcd
+#
+# [*node*] If defined, the specific backend node to connect to in the host:port
+#          form. Default: undef
+#
+# [*srv_dns*] The domain under which to perform a SRV query to discover the
+#             backend cluster. Default: $::domain
+#
+# [*scheme*] Protocol ("http" or "https"). Default: https
+#
+# [*interval*] Polling interval to etcd. If undefined, a direct watch will be
+#              executed (the default)
+#
+# [*monitor_files*] Wether to monitor confd failures or not. Default: true
+#
+# [*prefix*] A global prefix with respect to which confd will do all of its
+#            operations. Default: undef
+#
 class confd(
     $ensure=present,
     $running=true,
@@ -11,6 +33,7 @@ class confd(
     $scheme='https',
     $interval=undef,
     $monitor_files=true,
+    $prefix=undef,
 ) {
 
     package { 'confd':
@@ -27,8 +50,8 @@ class confd(
     base::service_unit { 'confd':
         ensure         => $ensure,
         refresh        => true,
-        systemd        => true,
-        upstart        => true,
+        systemd        => systemd_template('confd'),
+        upstart        => upstart_template('confd'),
         service_params => $params,
         require        => Package['confd'],
     }
@@ -93,7 +116,7 @@ class confd(
 
     # Upstart will log confd output to a dedicated file in /var/log/upstart already
     if $::initsystem == 'upstart' {
-        file { '/etc/logrotate.d/confd':
+        logrotate::conf { 'confd':
             ensure => absent,
         }
 
@@ -102,11 +125,9 @@ class confd(
         }
     } else {
         # Log to a dedicated file
-        file { '/etc/logrotate.d/confd':
+        logrotate::conf { 'confd':
+            ensure => present,
             source => 'puppet:///modules/confd/logrotate.conf',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
         }
 
         rsyslog::conf { 'confd':

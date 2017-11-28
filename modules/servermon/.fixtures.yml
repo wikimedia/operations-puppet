@@ -1,4 +1,9 @@
 fixtures:
     symlinks:
         servermon: "#{source_dir}"
+        ferm: "../../../../ferm"
+        scap: "../../../../scap"
+        ssh: "../../../../ssh"
+        sudo: "../../../../sudo"
+        stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"

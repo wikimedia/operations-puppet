@@ -1,26 +1,63 @@
 # == Class: base::kernel
 #
 # Settings related to the Linux kernel (currently only blacklisting
-# risky kernel modules)
+# risky kernel modules and adding /etc/modules-load.d/ on Trusty)
 #
 class base::kernel
 {
-    file { '/etc/modprobe.d/blacklist-wmf.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/kernel/blacklist-wmf.conf',
+    if os_version('ubuntu == trusty') {
+        # This directory is shipped by systemd, but trusty's upstart job for
+        # kmod also parses /etc/modules-load.d/ (but doesn't create the
+        # directory).
+        file { '/etc/modules-load.d/':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
+
+    kmod::blacklist { 'wmf':
+        modules => [
+            'overlayfs',
+            'overlay',
+            'aufs',
+            'usbip-core',
+            'usbip-host',
+            'vhci-hcd',
+            'dccp',
+            'dccp_ipv6',
+            'dccp_ipv4',
+            'dccp_probe',
+            'dccp_diag',
+            'n_hdlc',
+            'intel_cstate',
+            'intel_rapl_perf',
+            'intel_uncore',
+            'parport',
+            'parport_pc',
+            'ppdev',
+            'acpi_power_meter',
+            'bluetooth',
+        ],
     }
 
     if (versioncmp($::kernelversion, '4.4') >= 0) {
-        file { '/etc/modprobe.d/blacklist-linux44.conf':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/kernel/blacklist-linux44.conf',
+        kmod::blacklist { 'linux44':
+            modules => [ 'asn1_decoder', 'macsec' ],
         }
+    }
+
+    # This section is for blacklisting modules per server model.
+    # It was originally started for acpi_pad issues on R320 (T162850)
+    # but is meant to be extended as needed.
+    case $::productname {
+      'PowerEdge R320': {
+        kmod::blacklist { 'r320':
+            modules => [ 'acpi_pad' ],
+        }
+      }
+      default: {}
     }
 
     # By default trusty allows the creation of user namespaces by unprivileged users

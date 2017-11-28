@@ -1,9 +1,11 @@
 class role::labs::instance {
 
     include ::standard
-    include profile::base::labs
+    include ::profile::base::labs
     include sudo
-    include base::instance_upstarts
+    include ::base::instance_upstarts
+    include ::profile::openstack::main::observerenv
+    include ::profile::openstack::main::cumin::target
 
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
@@ -59,6 +61,12 @@ class role::labs::instance {
 
     diamond::collector { 'SSHSessions':
         source => 'puppet:///modules/diamond/collector/sshsessions.py',
+    }
+
+    if os_version('ubuntu >= trusty') {
+        package { 'bikeshed':
+            ensure => present,
+        }
     }
 
     hiera_include('classes', [])

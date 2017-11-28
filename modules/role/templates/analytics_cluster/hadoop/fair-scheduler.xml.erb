@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
 <allocations>
 
-  <queue name="default">
+  <queue name="nice">
+    <!--
+    The nice queue is for big long running jobs that don't need to finish
+    fast. Having this queue helps smaller requests to finish faster.
+     -->
     <weight>1.0</weight>
     <maxRunningApps>50</maxRunningApps>
     <schedulingMode>fair</schedulingMode>
   </queue>
 
-  <queue name="oozie">
-    <!--
-    The oozie queue is for oozie:launcher jobs.  These jobs
-    run only one task, and don't need many resources.
-    Trying out DRF queue for this.
-     -->
-    <weight>1.0</weight>
+
+
+  <queue name="default">
+    <weight>2.0</weight>
     <maxRunningApps>50</maxRunningApps>
-    <schedulingMode>drf</schedulingMode>
+    <schedulingMode>fair</schedulingMode>
   </queue>
 
   <queue name="priority">
@@ -23,7 +24,7 @@
     The priority queue is for non-adhoc jobs that should get some priority.
     This queue has a higher weight than default, but will never preempt.
      -->
-    <weight>5.0</weight>
+    <weight>10.0</weight>
     <maxRunningApps>50</maxRunningApps>
     <schedulingMode>fair</schedulingMode>
   </queue>
@@ -37,7 +38,7 @@
     and it will start killing (preempting) jobs in other queues
     if it can't get its minimum share within 10 minutes.
      -->
-    <weight>5.0</weight>
+    <weight>10.0</weight>
     <minSharePreemptionTimeout>600</minSharePreemptionTimeout>
     <maxRunningApps>50</maxRunningApps>
   </queue>
@@ -57,7 +58,7 @@
     first after 60 seconds if it can't get its minimum share,
     and then more after 10 minutes if it can't get its fair share.
      -->
-    <weight>10.0</weight>
+    <weight>20.0</weight>
     <minSharePreemptionTimeout>60</minSharePreemptionTimeout>
     <fairSharePreemptionThreshold>600</fairSharePreemptionThreshold>
     <maxRunningApps>50</maxRunningApps>

@@ -4,7 +4,7 @@ class dnsrecursor::labsaliaser(
     $nova_api_url,
     $extra_records,
     $alias_file,
-    $admin_project_name,
+    $observer_project_name,
 ) {
 
     require_package(['python-novaclient', 'python-keystoneclient'])
@@ -15,7 +15,7 @@ class dnsrecursor::labsaliaser(
         'output_path'        => $alias_file,
         'nova_api_url'       => $nova_api_url,
         'extra_records'      => $extra_records,
-        'admin_project_name' => $admin_project_name,
+        'observer_project_name' => $observer_project_name,
     }
 
     file { '/etc/labs-dns-alias.yaml':
@@ -34,14 +34,15 @@ class dnsrecursor::labsaliaser(
         source => 'puppet:///modules/dnsrecursor/labs-ip-alias-dump.py',
     }
 
-    exec { '/usr/local/bin/labs-ip-alias-dump.py':
+    cron { 'labs-ip-alias-dump':
+        ensure  => 'present',
         user    => 'root',
-        group   => 'root',
+        command => '/usr/local/bin/labs-ip-alias-dump.py --check-changes-only || /usr/local/bin/labs-ip-alias-dump.py',
+        minute  => 30,
         notify  => Service['pdns-recursor'],
         require => File[
             '/usr/local/bin/labs-ip-alias-dump.py',
             '/etc/labs-dns-alias.yaml'
         ],
-        unless  => '/usr/local/bin/labs-ip-alias-dump.py --check-changes-only',
     }
 }

@@ -22,6 +22,13 @@
 # [*bgp*]
 #   Whether to perform BGP checks. Defaults to false.
 #
+# [*parents*]
+#   The parent devices of this device. Accepts either an array or a comma
+#   separate string. Defaults to undef
+#
+# [*os*]
+#   The operating system of the device. Defaults to undef.
+#
 # === Examples
 #
 #  netops::check { 'cr1-esams':
@@ -33,15 +40,27 @@ define netops::check(
     $ipv4,
     $ipv6=undef,
     $snmp_community=undef,
-    $group='routers',
+    $group='network',
     $alarms=false,
     $bgp=false,
     $interfaces=false,
+    $parents=undef,
+    $os=undef,
 ) {
+
+    # If we get an array convert it to a comma separated string
+    if $parents and is_array($parents) {
+        $real_parents = join($parents, ',')
+    # Otherwise, pass it as is (undef or string)
+    } else {
+        $real_parents = $parents
+    }
 
     @monitoring::host { $title:
         ip_address => $ipv4,
         group      => $group,
+        parents    => $real_parents,
+        os         => $os,
     }
 
     if $ipv6 {
@@ -52,12 +71,16 @@ define netops::check(
     }
 
     if $alarms {
-        @monitoring::service { "${title} Juniper alarms":
-            host          => $title,
-            group         => $group,
-            description   => 'Juniper alarms',
-            check_command => "check_jnx_alarms!${snmp_community}",
-        }
+      $monitor_enable='present'
+    } else {
+      $monitor_enable='absent'
+    }
+    @monitoring::service { "${title} Juniper alarms":
+        ensure        => $monitor_enable,
+        host          => $title,
+        group         => $group,
+        description   => 'Juniper alarms',
+        check_command => "check_jnx_alarms!${snmp_community}",
     }
 
     if $interfaces {

@@ -19,3 +19,10 @@ wikimeda
 (?<!WMF)[^2][[:digit:]]{3}\.codfw\.wmnet
 (?<!WMF)[^3][[:digit:]]{3}\.(esams|knams)\.wmnet
 (?<!WMF)[^4][[:digit:]]{3}\.ulsfo\.wmnet
+criticial
+puppte
+pupet
+(requires_os|os_version)\([^)]*[[:upper:]]
+include profile::backup
+include nrpe
+cassanrda

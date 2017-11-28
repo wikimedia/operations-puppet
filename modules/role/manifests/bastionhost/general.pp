@@ -6,11 +6,12 @@ class role::bastionhost::general {
 
     include ::bastionhost
     include ::standard
-    include ::base::firewall
-    include ::role::backup::host
+    include ::profile::base::firewall
+    include ::profile::backup::host
 
     # Used by parsoid deployers
-    include ::scap::dsh
+
+    include ::profile::scap::dsh
 
     backup::set {'home': }
 

@@ -48,16 +48,19 @@ class cassandra::metrics(
     $collector_jar = '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar'
 
     # Backward incompatible changes to cassandra-metrics-collector were needed
-    # to support Cassandra 2.2; Use the apropos version of the collector.
+    # to support Cassandra 2.2 and 3.x; Use the apropos version of the collector.
     if $target_cassandra_version == '2.1' {
         $collector_version = '2.1.1-20160520.211019-1'
+    } elsif $target_cassandra_version == '2.2' {
+        $collector_version = '3.1.4-20170427.001104-1'
     } else {
-        $collector_version = '3.1.3-20160602.140523-1'
+        $collector_version = '4.1.0'
     }
 
-    package { 'cassandra/metrics-collector':
-        ensure   => present,
-        provider => 'trebuchet',
+    scap::target { 'cassandra/metrics-collector':
+        deploy_user  => 'deploy-service',
+        manage_user  => true,
+        service_name => 'cassandra-metrics-collector',
     }
 
     file { '/etc/cassandra-metrics-collector':
@@ -85,7 +88,7 @@ class cassandra::metrics(
     file { $collector_jar:
         ensure  => 'link',
         target  => "/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-${collector_version}-jar-with-dependencies.jar",
-        require => Package['cassandra/metrics-collector'],
+        require => Scap::Target['cassandra/metrics-collector'],
     }
 
     cron { 'cassandra-metrics-collector':
@@ -93,11 +96,11 @@ class cassandra::metrics(
         user   => 'cassandra',
     }
 
-    base::service_unit { 'cassandra-metrics-collector':
-        ensure        => present,
-        template_name => 'cassandra-metrics-collector',
-        systemd       => true,
-        require       => [
+    systemd::service { 'cassandra-metrics-collector':
+        ensure  => present,
+        content => systemd_template('cassandra-metrics-collector'),
+        restart => true,
+        require => [
             File[$collector_jar],
             File[$filter_file],
         ],

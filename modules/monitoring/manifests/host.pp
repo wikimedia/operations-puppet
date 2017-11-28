@@ -2,12 +2,15 @@
 # Exports the resource that monitors hosts in icinga/shinken
 #
 define monitoring::host (
-    $ip_address    = $::main_ipaddress,
-    $host_fqdn     = undef,
-    $group         = undef,
-    $ensure        = present,
-    $critical      = false,
-    $contact_group = hiera('contactgroups', 'admins')
+    $ip_address            = $facts['ipaddress'],
+    $os                    = $facts['operatingsystem'],
+    $host_fqdn             = undef,
+    $group                 = undef,
+    $ensure                = present,
+    $critical              = false,
+    $parents               = undef,
+    $contact_group         = hiera('contactgroups', 'admins'),
+    $notifications_enabled = '1',
     ) {
 
     $nagios_address = $host_fqdn ? {
@@ -32,30 +35,74 @@ define monitoring::host (
         default => $contact_group,
     }
 
-    # Export the nagios host instance
+    # Define the nagios host instance
+    # The following if guard is there to ensure we only try to set per host
+    # attributes in the case the host exports it's configuration. Since this
+    # definition is also used for non-exported resources as well, this if guard
+    # is required
     if $title == $::hostname {
-        $image = $::operatingsystem ? {
+        $image = $os ? {
             'Ubuntu'  => 'ubuntu',
             'Debian'  => 'debian',
+            'Junos'   => 'juniper',
             default   => 'linux40'
         }
         $icon_image      = "vendors/${image}.png"
         $vrml_image      = "vendors/${image}.png"
         $statusmap_image = "vendors/${image}.gd2"
+        # Allow overriding the parents of a device. This makes the exposed API
+        # more consistent, even though it's doubtful we will ever use this
+        # functionality in the case of an exported host
+        if $parents {
+            $real_parents = $parents
+        } elsif ($facts['is_virtual'] == false) and $facts['lldp_parent'] {
+            # Only set the (automatic) parent for physical hosts. We want to
+            # still alert for each individual VM when the hosts die, as:
+            # a) just a host DOWN alert for the VM node is too inconspicuous,
+            # b) it's usually the case that VMs can be relocated to other nodes
+            $real_parents = $facts['lldp_parent']
+        } else {
+            $real_parents = undef
+        }
+        # We have a BMC, and the BMC is configured and it has an IP address
+        # We always monitor the BMC so never skip notifications
+        if $facts['has_ipmi'] and $facts['ipmi_lan'] and 'ipaddress' in $facts['ipmi_lan'] {
+            $mgmt_host = {
+                "${title}.mgmt" => {
+                    ensure                => $ensure,
+                    host_name             => "${title}.mgmt",
+                    address               => $facts['ipmi_lan']['ipaddress'],
+                    hostgroups            => 'mgmt',
+                    check_command         => 'check_ping!500,20%!2000,100%',
+                    check_period          => '24x7',
+                    max_check_attempts    => 2,
+                    contact_groups        => $real_contact_groups,
+                    notification_interval => 0,
+                    notification_period   => '24x7',
+                    notification_options  => 'd,u,r,f',
+                    icon_image            => undef,
+                    vrml_image            => undef,
+                    statusmap_image       => undef,
+                }
+            }
+        }
     } else {
         $icon_image      = undef
         $vrml_image      = undef
         $statusmap_image = undef
+        $real_parents    = $parents
     }
     $host = {
         "${title}" => {
             ensure                => $ensure,
             host_name             => $title,
+            parents               => $real_parents,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
             check_command         => 'check_ping!500,20%!2000,100%',
             check_period          => '24x7',
             max_check_attempts    => 2,
+            notifications_enabled => $notifications_enabled,
             contact_groups        => $real_contact_groups,
             notification_interval => 0,
             notification_period   => '24x7',
@@ -68,8 +115,31 @@ define monitoring::host (
     # This is a hack. We detect if we are running on the scope of an icinga
     # host and avoid exporting the resource if yes
     if defined(Class['icinga']) {
-        create_resources(nagios_host, $host)
+        $rtype = 'nagios_host'
     } else {
-        create_resources('@@nagios_host', $host)
+        $rtype = '@@nagios_host'
+    }
+    create_resources($rtype, $host)
+    if $mgmt_host {
+        create_resources($rtype, $mgmt_host)
+        # We always monitor the BMC so never skip notifications
+        monitoring::service { "dns_${title}.mgmt":
+            description           => "DNS ${title}.mgmt",
+            host                  => "${title}.mgmt",
+            check_command         => "check_fqdn!${title}.mgmt.${::site}.wmnet",
+            notifications_enabled => '1',
+            group                 => 'mgmt',
+            check_interval        => 60,
+            retry_interval        => 60,
+        }
+        monitoring::service { "ssh_${title}.mgmt":
+            description           => "SSH ${title}.mgmt",
+            host                  => "${title}.mgmt",
+            check_command         => 'check_ssh',
+            notifications_enabled => '1',
+            group                 => 'mgmt',
+            check_interval        => 60,
+            retry_interval        => 60,
+        }
     }
 }

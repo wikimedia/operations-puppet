@@ -13,6 +13,8 @@ define monitoring::service(
     $contact_group         = hiera('contactgroups', 'admins'),
     $config_dir            = '/etc/nagios',
     $event_handler         = undef,
+    $notifications_enabled = $::profile::base::notifications_enabled,
+    $notes_url             = undef,
 )
 {
     # the list of characters is the default for illegal_object_name_chars
@@ -71,6 +73,14 @@ define monitoring::service(
         default => undef,
     }
 
+    # Safeguard against notifications enabled not being defined due to class
+    # declarations
+    if $notifications_enabled {
+        $real_notifications_enabled = $notifications_enabled
+    } else {
+        $real_notifications_enabled = '1'
+    }
+
     # the nagios service instance
     $service = {
         "${::hostname} ${title}" => {
@@ -86,6 +96,7 @@ define monitoring::service(
             notification_interval  => $notification_interval,
             notification_period    => '24x7',
             notification_options   => 'c,r,f',
+            notifications_enabled  => $real_notifications_enabled,
             contact_groups         => $real_contact_groups,
             passive_checks_enabled => 1,
             active_checks_enabled  => $is_active,
@@ -93,6 +104,7 @@ define monitoring::service(
             check_freshness        => $check_fresh,
             freshness_threshold    => $is_fresh,
             event_handler          => $event_handler,
+            notes_url              => $notes_url,
         },
     }
     # This is a hack. We detect if we are running on the scope of an icinga

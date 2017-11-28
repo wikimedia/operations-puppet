@@ -1,39 +1,20 @@
 class openstack::glance::service(
-    $active_server,
-    $standby_server,
-    $keystone_host,
-    $glanceconfig,
-    $keystoneconfig,
-    $openstack_version=$::openstack::version,
-    $glance_data = '/srv/glance/',
+    $active,
+    $version,
+    $nova_controller_standby,
+    $db_user,
+    $db_pass,
+    $db_name,
+    $db_host,
+    $glance_data,
+    $glance_image_dir,
+    $ldap_user_pass,
+    $keystone_admin_uri,
+    $keystone_public_uri,
 ) {
-    include openstack::repo
-
-    $glance_images_dir = "${glance_data}/images"
-    $keystone_host_ip  = ipresolve($keystone_host,4)
-    $keystone_auth_uri = "http://${active_server}:5000/v2.0"
-
-    # Set up a keypair and rsync image files between active and standby
-    user { 'glancesync':
-        ensure     => present,
-        name       => 'glancesync',
-        shell      => '/bin/sh',
-        comment    => 'glance rsync user',
-        gid        => 'glance',
-        managehome => true,
-        require    => Package['glance'],
-        system     => true,
-    }
-
-    ssh::userkey { 'glancesync':
-        ensure  => present,
-        require => User['glancesync'],
-        content => secret('ssh/glancesync/glancesync.pub'),
-    }
 
     package { 'glance':
         ensure  => present,
-        require => Class['openstack::repo'],
     }
 
     file { $glance_data:
@@ -45,7 +26,7 @@ class openstack::glance::service(
     }
 
     #  This is 775 so that the glancesync user can rsync to it.
-    file { $glance_images_dir:
+    file { $glance_image_dir:
         ensure  => directory,
         owner   => 'glance',
         group   => 'glance',
@@ -55,91 +36,35 @@ class openstack::glance::service(
 
     file {
         '/etc/glance/glance-api.conf':
-            content => template("openstack/${openstack_version}/glance/glance-api.conf.erb"),
+            content => template("openstack/${version}/glance/glance-api.conf.erb"),
             owner   => 'glance',
             group   => 'nogroup',
+            mode    => '0440',
             notify  => Service['glance-api'],
-            require => Package['glance'],
-            mode    => '0440';
+            require => Package['glance'];
         '/etc/glance/glance-registry.conf':
-            content => template("openstack/${openstack_version}/glance/glance-registry.conf.erb"),
+            content => template("openstack/${version}/glance/glance-registry.conf.erb"),
             owner   => 'glance',
             group   => 'nogroup',
+            mode    => '0440',
             notify  => Service['glance-registry'],
-            require => Package['glance'],
-            mode    => '0440';
+            require => Package['glance'];
         '/etc/glance/policy.json':
-            source  => "puppet:///modules/openstack/${openstack_version}/glance/policy.json",
-            mode    => '0644',
+            source  => "puppet:///modules/openstack/${version}/glance/policy.json",
             owner   => 'root',
             group   => 'root',
+            mode    => '0644',
             notify  => Service['glance-api'],
             require => Package['glance'];
     }
 
-    file { '/home/glancesync/.ssh':
-        ensure  => directory,
-        owner   => 'glancesync',
-        group   => 'glance',
-        mode    => '0700',
-        require => User['glancesync'],
+    service { 'glance-api':
+        ensure  => $active,
+        require => Package['glance'],
     }
 
-    file { '/home/glancesync/.ssh/id_rsa':
-        content => secret('ssh/glancesync/glancesync.key'),
-        owner   => 'glancesync',
-        group   => 'glance',
-        mode    => '0600',
-        require => File['/home/glancesync/.ssh'],
-    }
-
-    if $::fqdn == $active_server {
-        service { 'glance-api':
-            ensure  => running,
-            require => Package['glance'],
-        }
-
-        service { 'glance-registry':
-            ensure  => running,
-            require => Package['glance'],
-        }
-
-        if $standby_server != $active_server {
-            cron { 'rsync_glance_images':
-                command => "/usr/bin/rsync --delete --delete-after -aSO ${glance_images_dir}/ ${standby_server}:${glance_images_dir}/",
-                minute  => 15,
-                user    => 'glancesync',
-                require => User['glancesync'],
-            }
-        } else {
-            # If the active and the standby are the same, it's not useful to sync
-            cron { 'rsync_glance_images':
-                ensure  => absent,
-                command => "/usr/bin/rsync -aS ${glance_images_dir}/* ${standby_server}:${glance_images_dir}/",
-                minute  => 15,
-                user    => 'glancesync',
-                require => User['glancesync'],
-            }
-        }
-
-        monitoring::service { 'glance-api-http':
-            description   => 'glance-api http',
-            check_command => 'check_http_on_port!9292',
-        }
-    } else {
-        service { 'glance-api':
-            ensure  => stopped,
-            require => Package['glance'],
-        }
-
-        service { 'glance-registry':
-            ensure  => stopped,
-            require => Package['glance'],
-        }
-        cron { 'rsync_chown_images':
-            command => "chown -R glance ${glance_images_dir}/*",
-            minute  => 30,
-            user    => 'root',
-        }
+    service { 'glance-registry':
+        ensure  => $active,
+        require => Package['glance'],
     }
 }

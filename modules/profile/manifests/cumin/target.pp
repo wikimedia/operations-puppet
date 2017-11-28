@@ -1,11 +1,23 @@
+# Parameters here are just a hotfix to the issue of not being able to select
+# by cluster/role/site easily, and also allows to add arbitrary tags to single
+# servers or classes of servers.
+# Note that once the role/profile transition is complete, we should not need
+# those anymore.
 class profile::cumin::target(
-    $cumin_masters = hiera('cumin_masters'),
+    $cluster = hiera('cluster', 'misc'),
+    $site = $::site,  # lint:ignore:wmf_styleguide
 ) {
-    validate_array($cumin_masters)
+    if $::_roles {
+        $roles = prefix(keys($::_roles), 'role::')
+    } else {
+        $roles = []
+    }
 
-    # FIXME: require new Puppet parser
-    $ssh_authorized_sources = inline_template(
-        "<%= @cumin_masters.map{|m| scope.function_ipresolve([m])}.join(',') %>")
+    tag $roles
+
+    require ::network::constants
+
+    $ssh_authorized_sources = join($::network::constants::special_hosts[$::realm]['cumin_masters'], ',')
     $cumin_master_pub_key = secret('keyholder/cumin_master.pub')
 
     ssh::userkey { 'root-cumin':

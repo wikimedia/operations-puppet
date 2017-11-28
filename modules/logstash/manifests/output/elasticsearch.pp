@@ -9,6 +9,8 @@
 #       Default 5000.
 # - $idle_flush_time: Maxmimum seconds to wait between sends. Default 1.
 # - $index: Index to write events to. Default '${title}-%{+YYYY.MM.dd}'.
+# - $prefix: indices with this prefix will be cleaned up. Used by the
+#       `cleanup.yaml.erb` template.
 # - $port: Elasticsearch server port. Default 9200.
 # - $guard_condition: Logstash condition to require to pass events to output.
 #       Default undef.
@@ -33,6 +35,7 @@ define logstash::output::elasticsearch(
     $flush_size      = 5000,
     $idle_flush_time = 1,
     $index           = "${title}-%{+YYYY.MM.dd}",
+    $prefix          = "${title}-",
     $port            = 9200,
     $guard_condition = undef,
     $manage_indices  = false,
@@ -53,21 +56,23 @@ define logstash::output::elasticsearch(
         default => 'absent'
     }
 
-    cron { "logstash_delete_index_${title}":
+    # curator config template require a list of hosts
+    $hosts = [ $host ]
+
+    elasticsearch::curator::config {
+        "config-${title}":
+            content => template('elasticsearch/curator/config.yaml.erb');
+        "cleanup_${title}":
+            content => template('logstash/curator/cleanup.yaml.erb')
+    }
+
+    cron { "logstash_cleanup_indices_${title}":
         ensure  => $ensure_cron,
-        command => "/usr/local/bin/logstash_delete_index.sh ${host}:${port} \"${title}-$(date -d '-31days' +\\%Y.\\%m.\\%d)\"",
+        command => "/usr/bin/curator --config /etc/curator/config-${title}.yaml /etc/curator/cleanup_${title}.yaml > /dev/null",
         user    => 'root',
         hour    => 0,
         minute  => 42,
-        require => File['/usr/local/bin/logstash_delete_index.sh'],
-    }
-
-    cron { "logstash_clear_cache_${title}":
-        ensure  => absent, # T144396 - removing the clear cache mechanism to validate it is not needed anymore
-        command => "/usr/local/bin/logstash_clear_cache.sh ${host}:${port} '${title}-*'",
-        user    => 'root',
-        minute  => 5 * fqdn_rand(12, "logstash_clear_cache_${title}"),
-        require => File['/usr/local/bin/logstash_clear_cache.sh'],
+        require => Elasticsearch::Curator::Config["cleanup_${title}"],
     }
 }
 # vim:sw=4 ts=4 sts=4 et:

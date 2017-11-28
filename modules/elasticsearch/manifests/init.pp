@@ -56,7 +56,8 @@
 # - $bulk_thread_pool_capacity: queue depth for bulk actions of each node.
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
-# - $statsd_host: host to send statsd data to
+# - $search_thread_pool_executors: number of executors for search actions on
+#       each node.
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
@@ -66,6 +67,19 @@
 # - $gelf_port: port on which the logs will be sent
 # - $gc_log: set to true to activate garbage collection logs
 #        Default: true
+# - $curator_uses_unicast_hosts: should curator try to connect to hosts
+#        configured for unicast discovery or only to localhost. Curator
+#        configuration allows to configure multiple hosts instead of just
+#        localhost, which make sense for robustness. In some cases, we do not
+#        want the API exposed outside of localhost, so using just localhost
+#        is useful in those cases.
+#        Default: true (use all hosts defined in unicast_hosts)
+# - $reindex_remote_whitelist: set to a comma delimited list of allowed remote
+#        host and port combinations (e.g. otherhost:9243, another:9243,
+#        127.0.10.*:9243, localhost:*). Scheme is ignored by the whitelist - only host
+#        and port are used. Defaults to undef, which means no remote reindex can occur.
+# - $script_max_compilations_per_minute: integer, max number of script
+#        compilations per minute, defaults to undef (see T171579).
 #
 # == Sample usage:
 #
@@ -77,7 +91,7 @@ class elasticsearch(
     $cluster_name,
     $heap_memory = '2G',
     $data_dir = '/srv/elasticsearch',
-    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
+    $plugins_dir = '/usr/share/elasticsearch/plugins',
     $plugins_mandatory = undef,
     $minimum_master_nodes = 1,
     $master_eligible = true,
@@ -91,17 +105,21 @@ class elasticsearch(
     $rack = undef,
     $unicast_hosts = [],
     $bind_networks = ['_local_', '_site_'],
-    $publish_host = '_eth0_',
+    $publish_host = $facts['ipaddress'],
     $filter_cache_size = '10%',
     $bulk_thread_pool_executors = undef,
     $bulk_thread_pool_capacity = undef,
-    $statsd_host = undef,
+    $search_thread_pool_executors = undef,
     $load_fixed_bitset_filters_eagerly = true,
     $graylog_hosts = undef,
     $graylog_port = 12201,
     $gc_log = true,
     $java_package = 'openjdk-8-jdk',
     $version = 5,
+    $search_shard_count_limit = 1000,
+    $curator_uses_unicast_hosts = true,
+    $reindex_remote_whitelist = undef,
+    $script_max_compilations_per_minute = undef,
 ) {
 
     # Check arguments
@@ -115,6 +133,10 @@ class elasticsearch(
     }
 
     validate_bool($gc_log)
+
+    if $script_max_compilations_per_minute != undef and $script_max_compilations_per_minute < 0 {
+        fail('script_max_compilations_per_minute should be > 0')
+    }
 
     # if no graylog_host is given, do not send logs
     $send_logs_to_logstash = is_array($graylog_hosts)
@@ -147,13 +169,23 @@ class elasticsearch(
         java_package => $java_package,
     }
 
-    # Elasticsearch 5 doesn't allow setting the plugin path, we need
-    # to symlink it into place. The directory already exists as part of the
-    # debian package, so we need to force the creation of the symlink.
-    file { '/usr/share/elasticsearch/plugins':
-        ensure => 'link',
-        target => $plugins_dir,
-        force  => true,
+    $curator_hosts = $curator_uses_unicast_hosts ? {
+        true    => concat($unicast_hosts, '127.0.0.1'),
+        default => [ '127.0.0.1' ],
+    }
+
+    class { '::elasticsearch::curator':
+        hosts => $curator_hosts,
+    }
+
+    # Package defaults this to 0750, which is annoying
+    # for debugging. There are no secrets here so make
+    # visible.
+    file { '/etc/elasticsearch':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
@@ -222,18 +254,24 @@ class elasticsearch(
         mode    => '0444',
         require => Package['elasticsearch'],
     }
-    file { '/etc/logrotate.d/elasticsearch':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/elasticsearch/logrotate',
+
+    logrotate::rule { 'elasticsearch':
+        ensure        => present,
+        file_glob     => '/var/log/elasticsearch/*.log',
+        frequency     => 'daily',
+        copy_truncate => true,
+        missing_ok    => true,
+        not_if_empty  => true,
+        rotate        => 7,
+        compress      => true,
     }
+
     file { $data_dir:
-      ensure => directory,
-      owner  => 'elasticsearch',
-      group  => 'elasticsearch',
-      mode   => '0755',
+      ensure  => directory,
+      owner   => 'elasticsearch',
+      group   => 'elasticsearch',
+      mode    => '0755',
+      require => Package['elasticsearch'],
     }
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This cron takes care of cleaning up
@@ -259,7 +297,6 @@ class elasticsearch(
             File['/etc/elasticsearch/log4j2.properties'],
             File['/etc/elasticsearch/jvm.options'],
             File['/etc/default/elasticsearch'],
-            File['/usr/share/elasticsearch/plugins'],
             File[$data_dir],
         ],
     }
@@ -279,15 +316,13 @@ class elasticsearch(
         ensure => absent,
     }
 
-    # Cluster management tool, trusty only
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        file { '/usr/local/bin/es-tool':
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            source  => 'puppet:///modules/elasticsearch/es-tool',
-            require => [Package['python-elasticsearch'], Package['python-ipaddr']],
-        }
+    # Cluster management tool
+    file { '/usr/local/bin/es-tool':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/elasticsearch/es-tool',
+        require => [Package['python-elasticsearch'], Package['python-ipaddr']],
     }
 }

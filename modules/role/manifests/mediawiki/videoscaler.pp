@@ -1,19 +1,15 @@
 # filtertags: labs-project-deployment-prep
 class role::mediawiki::videoscaler {
-    system::role { 'role::mediawiki::videoscaler': }
+    system::role { 'mediawiki::videoscaler': }
 
+    # Parent role
     include ::role::mediawiki::scaler
-    include ::role::prometheus::apache_exporter
-    include ::role::prometheus::hhvm_exporter
-    include ::mediawiki::jobrunner
-    include ::base::firewall
 
-    ferm::service { 'mediawiki-jobrunner-videoscalers':
-        proto   => 'tcp',
-        port    => $::mediawiki::jobrunner::port,
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
+    # Profiles
+    include ::profile::prometheus::apache_exporter
+    include ::profile::prometheus::hhvm_exporter
+    include ::profile::mediawiki::jobrunner
+    include ::base::firewall
 
     # Change the apache2.conf Timeout setting
     augeas { 'apache timeout':

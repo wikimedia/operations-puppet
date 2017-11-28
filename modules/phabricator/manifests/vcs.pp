@@ -15,7 +15,7 @@
 #  Port SSH should listen on
 
 class phabricator::vcs (
-    $basedir               = '/',
+    $basedir               = '/srv/phab',
     $settings              = {},
     $listen_addresses      = [],
     $ssh_port              = '22',
@@ -24,7 +24,7 @@ class phabricator::vcs (
 
     $phd_user = $settings['phd.user']
     $vcs_user = $settings['diffusion.ssh-user']
-    $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
+    $ssh_hook_path = '/usr/libexec/phabricator-ssh-hook.sh'
     $sshd_config = '/etc/ssh/sshd_config.phabricator'
 
     user { $vcs_user:
@@ -49,31 +49,51 @@ class phabricator::vcs (
 
     # Configure all git repositories we host
     file { '/etc/gitconfig':
-        content => template('phabricator/system.gitconfig.erb'),
+        content => template('phabricator/vcs/system.gitconfig.erb'),
         require => Package['git'],
         owner   => 'root',
         group   => 'root',
     }
 
+    file { '/usr/libexec':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { $ssh_hook_path:
-        content => template('phabricator/phabricator-ssh-hook.sh.erb'),
+        content => template('phabricator/vcs/phabricator-ssh-hook.sh.erb'),
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
+        require => File['/usr/libexec'],
     }
 
-    # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
-    ferm::rule { 'ssh_public':
-        rule => template('phabricator/ferm_rule-ssh_public.erb'),
-    }
+    if empty($listen_addresses) {
+        # Emit a warning but allow listen_address to be empty, this is needed
+        # for easier migrations from one server to another
+        notify { 'Warning: phabricator::vcs::listen_address is empty': }
+    } else {
+        # allow ssh connection to IPs in hiera phabricator::vcs::listen_addresses:
+        ferm::rule { 'ssh_public':
+            rule => template('phabricator/vcs/ferm_rule-ssh_public.erb'),
+        }
 
-    file { $sshd_config:
-        content => template('phabricator/sshd_config.phabricator.erb'),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['openssh-server'],
-        notify  => Service['ssh-phab'],
+        file { $sshd_config:
+            content => template('phabricator/vcs/sshd_config.phabricator.erb'),
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['openssh-server'],
+            notify  => Service['ssh-phab'],
+        }
+
+        base::service_unit { 'ssh-phab':
+            ensure  => 'present',
+            systemd => systemd_template('ssh-phab'),
+            require => Package['openssh-server'],
+        }
     }
 
     # phd.user owns repo resources and both vcs and web user
@@ -92,26 +112,5 @@ class phabricator::vcs (
         require    => File['/usr/local/bin/git-http-backend'],
     }
 
-    if $::initsystem == 'upstart' {
-        $init_file = '/etc/init/ssh-phab.conf'
-        $init_template = 'phabricator/sshd-phab.conf.erb'
-    } else {
-        $init_file = '/etc/systemd/system/ssh-phab.service'
-        $init_template = 'phabricator/sshd-phab.service.erb'
-    }
 
-    file { $init_file:
-        content => template($init_template),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['openssh-server'],
-    }
-
-    service { 'ssh-phab':
-        ensure     => running,
-        provider   => $::initsystem,
-        hasrestart => true,
-        require    => File[$init_file],
-    }
 }

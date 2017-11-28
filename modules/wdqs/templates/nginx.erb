@@ -8,10 +8,10 @@ log_format logstash
 limit_conn_zone $http_x_client_ip zone=byaddr:10m;
 
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    listen 8888 default_server;
-    listen [::]:8888 default_server;
+    listen <%= @port %> default_server;
+    listen [::]:<%= @port %> default_server;
+    listen <%= @additional_port %> default_server;
+    listen [::]:<%= @additional_port %> default_server;
 
     add_header X-Served-By <%= @hostname %> always;
 
@@ -31,6 +31,9 @@ server {
     # Rate limit error
     error_page 429 @rate_limit;
     location @rate_limit {
+<% if @logstash_host -%>
+        access_log syslog:server=<%= @logstash_host %>:<%= @logstash_syslog_port %>,facility=local7,tag=wdqs,severity=info logstash;
+<% end -%>
         add_header Cache-Control no-cache always;
         echo Rate limit exceeded;
         echo_flush;
@@ -51,9 +54,11 @@ server {
         access_log   off;
     }
 
+    rewrite ^/readiness-probe$ /sparql?query=%20ASK%7B%20%3Fx%20%3Fy%20%3Fz%20%7D;
+
     rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
 
-    location ~ ^/bigdata/(namespace/wdq/sparql|ldf|assets) {
+    location ~ ^/bigdata/(namespace/[a-zA-Z0-9]+/sparql|ldf|assets) {
         if ( $uri ~ ^/bigdata/assets ) {
             add_header Cache-Control "public, max-age=604800, s-maxage=604800";
         }
@@ -76,8 +81,8 @@ server {
         # Default 60 second max query time
         set $xmaxqueryheader "60000";
 
-        # 5 minute max query time for internal requests on port 8888
-        if ( $server_port = 8888 ) {
+        # 5 minute max query time for internal requests on port <%= @additional_port %>
+        if ( $server_port = <%= @additional_port %> ) {
             set $xmaxqueryheader "300000";
         }
 
@@ -104,8 +109,8 @@ server {
             deny all;
         }
 
-<% if @log_aggregator -%>
-        access_log syslog:server=<%= @log_aggregator %>,facility=local7,tag=wdqs,severity=info logstash;
+<% if @logstash_host -%>
+        access_log syslog:server=<%= @logstash_host %>:<%= @logstash_syslog_port %>,facility=local7,tag=wdqs,severity=info logstash;
 <% end -%>
     }
 }

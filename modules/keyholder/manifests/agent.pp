@@ -21,6 +21,12 @@
 #   agent should be shared. It is the caller's responsibility to ensure
 #   the groups exist.
 #
+# [*priv_key_path*]
+#   An optional path to a local SSH private key to use instead of calling
+#   secret() to handle WMCS installations, where there isn't secret support on
+#   a per-project basis. The name parameter must still be specified.
+#   [optional, default: undef]
+#
 # === Examples
 #
 #  keyholder::agent { 'mwdeploy':
@@ -31,6 +37,7 @@ define keyholder::agent(
     $trusted_groups = ['ops'],
     $ensure = 'present',
     $key_name = $name,
+    $priv_key_path = undef,
 ) {
     validate_ensure($ensure)
 
@@ -46,20 +53,39 @@ define keyholder::agent(
 
     $key_name_safe = regsubst($key_name, '\W', '_', 'G')
 
+    # Get the keys from secret() unless $priv_key_path is set
+    $content_priv_key = $priv_key_path ? {
+        undef => secret("keyholder/${key_name_safe}"),
+        default => undef,
+    }
+    $content_pub_key = $priv_key_path ? {
+        undef => secret("keyholder/${key_name_safe}.pub"),
+        default => undef,
+    }
+    # Set the public key path if $priv_key_path is set
+    $pub_key_path = $priv_key_path ? {
+        undef => undef,
+        default => "${priv_key_path}.pub",
+    }
+
     file { "/etc/keyholder.d/${key_name_safe}":
-        ensure  => $ensure,
-        content => secret("keyholder/${key_name_safe}"),
-        owner   => 'root',
-        group   => 'keyholder',
-        mode    => '0440',
+        ensure    => $ensure,
+        content   => $content_priv_key,  # undef if $priv_key_path is set
+        source    => $priv_key_path,  # undef if $content_priv_key is set
+        show_diff => false,
+        owner     => 'root',
+        group     => 'keyholder',
+        mode      => '0440',
     }
 
     file { "/etc/keyholder.d/${key_name_safe}.pub":
-        ensure  => $ensure,
-        content => secret("keyholder/${key_name_safe}.pub"),
-        owner   => 'root',
-        group   => 'keyholder',
-        mode    => '0440',
+        ensure    => $ensure,
+        content   => $content_pub_key,  # undef if $source_pub_key is set
+        source    => $pub_key_path,  # undef if $content_pub_key is set
+        show_diff => false,
+        owner     => 'root',
+        group     => 'keyholder',
+        mode      => '0444',
     }
 
     # generate the mapping between groups and keys. Used by ssh-agent-proxy

@@ -27,9 +27,6 @@
 # [*options]
 #  Array of options to combine with the standard options
 #
-# [*block]
-#  boolean to determine if we should block to wait for share
-#
 # [*block_timeout]
 #  timeout to block for share availability
 
@@ -41,7 +38,6 @@ define labstore::nfs_mount(
     $share_path = undef,
     $server = undef,
     $options = [],
-    $block=false,
     $block_timeout = 180,
     $lookupcache='none',
 )
@@ -100,6 +96,7 @@ define labstore::nfs_mount(
         file { '/usr/local/sbin/nfs-mount-manager':
             ensure => present,
             owner  => 'root',
+            group  => 'root',
             mode   => '0655',
             source => 'puppet:///modules/labstore/nfs-mount-manager',
         }
@@ -129,23 +126,6 @@ define labstore::nfs_mount(
 
     if ($ensure == 'present') and mount_nfs_volume($project, $mount_name) {
 
-        if $block {
-            if !defined(File['/usr/local/sbin/block-for-export']) {
-                # This script will block until the NFS volume is available
-                file { '/usr/local/sbin/block-for-export':
-                    ensure => present,
-                    owner  => 'root',
-                    mode   => '0555',
-                    source => 'puppet:///modules/labstore/block-for-export',
-                }
-            }
-            exec { "block-for-nfs-${name}":
-                command => "/usr/local/sbin/block-for-export ${server} project/${project} ${block_timeout}",
-                require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], File['/usr/local/sbin/block-for-export']],
-                unless  => "/bin/mountpoint -q ${mount_path}",
-            }
-        }
-
         # 'present' is meant to manage only the status of entries in /etc/fstab
         # a notable exception to this is in the case of an entry managed as 'present'
         # puppet will attempt to remount that entry when options change /but/ only
@@ -171,16 +151,17 @@ define labstore::nfs_mount(
         # Puppet will normally get stuck and freeze raising load and effectively
         # failing to run
         exec { "create-${mount_path}":
-            command => "/usr/bin/timeout -k 5s 10s /bin/mkdir ${mount_path}",
-            unless  => "/usr/bin/timeout -k 5s 10s /usr/bin/test -d ${mount_path}",
-            require => Mount[$mount_path],
+            command   => "/usr/bin/timeout -k 5s 20s /bin/mkdir ${mount_path}",
+            unless    => "/usr/bin/timeout -k 5s 60s /usr/bin/test -d ${mount_path}",
+            logoutput => true,
+            require   => Mount[$mount_path],
         }
 
         exec { "ensure-nfs-${name}":
             command   => "/usr/local/sbin/nfs-mount-manager mount ${mount_path}",
             unless    => "/usr/local/sbin/nfs-mount-manager check ${mount_path}",
-            require   => Exec["create-${mount_path}"],
             logoutput => true,
+            require   => Exec["create-${mount_path}"],
         }
 
         if !defined(Diamond::Collector['Nfsiostat']) {

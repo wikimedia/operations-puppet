@@ -6,6 +6,9 @@ class network::constants {
     $network_data = loadyaml("${module_path}/data/data.yaml")
     $all_network_subnets = $network_data['network::subnets']
     $external_networks = $network_data['network::external']
+    $network_infra = $network_data['network::infrastructure']
+    $mgmt_networks = $network_data['network::management']
+
 
     # are you really sure you want to use this? maybe what you really
     # the trusted/production networks. See $production_networks for this.
@@ -31,8 +34,8 @@ class network::constants {
                     '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
                     '208.80.153.5',                     # bast2001.wikimedia.org
                     '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
-                    '91.198.174.112',                   # bast3001.wikimedia.org
-                    '2620:0:862:1:91:198:174:112',      # bast3001.wikimedia.org
+                    '91.198.174.113',                   # bast3002.wikimedia.org
+                    '2620:0:862:1:91:198:174:113',      # bast3002.wikimedia.org
                     '198.35.26.5',                      # bast4001.wikimedia.org
                     '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
                     '208.80.154.151',                   # iron.wikimedia.org
@@ -42,7 +45,7 @@ class network::constants {
                     '208.80.153.74',                    # tegmen.wikimedia.org
                     '2620:0:860:3:208:80:153:74',       # tegmen.wikimedia.org
                     '208.80.155.119',                   # einsteinium.wikimedia.org
-                    '2620:0:860:3:208:80:155:119',      # einsteinium.wikimedia.org
+                    '2620:0:861:4:208:80:155:119',      # einsteinium.wikimedia.org
                     '208.80.154.82',                    # dbmonitor1001.wikimedia.org
                     '2620:0:861:3:208:80:154:82',       # dbmonitor1001.wikimedia.org
                     '208.80.153.52',                    # dbmonitor2001.wikimedia.org
@@ -53,8 +56,8 @@ class network::constants {
             'deployment_hosts' => [
                     '10.64.0.196',                      # tin.eqiad.wmnet
                     '2620:0:861:101:10:64:0:196',       # tin.eqiad.wmnet
-                    '10.192.16.132',                    # mira.codfw.wmnet
-                    '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
+                    '10.192.32.22',                     # naos.codfw.wmnet
+                    '2620:0:860:103:10:192:32:22',      # naos.codfw.wmnet
                 ],
             'maintenance_hosts' => [
                     '10.64.32.13',                      # terbium.eqiad.wmnet
@@ -69,10 +72,121 @@ class network::constants {
                     '2620:0:860:101:10:192:0:27', # puppetmaster2001.codfw.wmnet
                 ],
             'cumin_masters' => [
-                    '10.64.32.20',                        # neodymium.eqiad.wmnet
-                    '2620:0:861:103:92b1:1cff:fe2d:798c', # neodymium.eqiad.wmnet
-                    '10.192.0.140',                       # sarin.eqiad.wmnet
-                    '2620:0:860:101:92b1:1cff:fe2d:8540', # sarin.eqiad.wmnet
+                    '10.64.32.20',                 # neodymium.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:20',  # neodymium.eqiad.wmnet
+                    '10.192.0.140',                # sarin.codfw.wmnet
+                    '2620:0:860:101:10:192:0:140', # sarin.codfw.wmnet
+                ],
+            'mysql_root_clients' => [
+                    # ipv6 interfaces are not yet allowed due to mysql grants
+                    # do not put dns names or hostnames here, only ipv4
+                    '10.64.0.15',                  # db1011.eqiad.wmnet
+                    '10.64.32.20',                 # neodymium.eqiad.wmnet
+                    '10.192.0.140',                # sarin.codfw.wmnet
+                ],
+            'kafka_brokers_main' => [
+                    '10.64.0.11',                         # kafka1001.eqiad.wmnet
+                    '2620:0:861:101:1618:77ff:fe33:5242', # kafka1001.eqiad.wmnet
+                    '10.64.16.41',                        # kafka1002.eqiad.wmnet
+                    '2620:0:861:102:1618:77ff:fe33:4a4e', # kafka1002.eqiad.wmnet
+                    '10.64.32.127',                       # kafka1003.eqiad.wmnet
+                    '2620:0:861:103:1618:77ff:fe33:4ad2', # kafka1003.eqiad.wmnet
+                    '10.192.0.139',                       # kafka2001.codfw.wmnet
+                    '2620:0:860:101:1618:77ff:fe39:6f37', # kafka2001.codfw.wmnet
+                    '10.192.16.169',                      # kafka2002.codfw.wmnet
+                    '2620:0:860:102:1618:77ff:fe33:500d', # kafka2002.codfw.wmnet
+                    '10.192.32.150',                      # kafka2003.codfw.wmnet
+                    '2620:0:860:103:1a66:daff:fe7f:23f0', # kafka2003.codfw.wmnet
+                ],
+            'kafka_brokers_analytics' => [
+                    '10.64.5.12',                  # kafka1012.eqiad.wmnet
+                    '2620:0:861:104:10:64:5:12',   # kafka1012.eqiad.wmnet
+                    '10.64.5.13',                  # kafka1013.eqiad.wmnet
+                    '2620:0:861:104:10:64:5:13',   # kafka1013.eqiad.wmnet
+                    '10.64.36.114',                # kafka1014.eqiad.wmnet
+                    '2620:0:861:106:10:64:36:114', # kafka1014.eqiad.wmnet
+                    '10.64.53.10',                 # kafka1018.eqiad.wmnet
+                    '2620:0:861:108:10:64:53:10',  # kafka1018.eqiad.wmnet
+                    '10.64.53.12',                 # kafka1020.eqiad.wmnet
+                    '2620:0:861:108:10:64:53:12',  # kafka1020.eqiad.wmnet
+                    '10.64.36.122',                # kafka1022.eqiad.wmnet
+                    '2620:0:861:106:10:64:36:122', # kafka1022.eqiad.wmnet
+                ],
+            'kafka_brokers_jumbo' => [
+                    '10.64.0.175',                        # kafka-jumbo1001.eqiad.wmnet
+                    '2620:0:861:101:1a66:daff:fefc:d530', # kafka-jumbo1001.eqiad.wmnet
+                    '10.64.0.176',                        # kafka-jumbo1002.eqiad.wmnet
+                    '2620:0:861:101:1a66:daff:fefc:c8f8', # kafka-jumbo1002.eqiad.wmnet
+                    '10.64.16.99',                        # kafka-jumbo1003.eqiad.wmnet
+                    '2620:0:861:102:1a66:daff:fefc:ccbc', # kafka-jumbo1003.eqiad.wmnet
+                    '10.64.32.159',                       # kafka-jumbo1004.eqiad.wmnet
+                    '2620:0:861:103:1a66:daff:fefb:5e68', # kafka-jumbo1004.eqiad.wmnet
+                    '10.64.32.160',                       # kafka-jumbo1005.eqiad.wmnet
+                    '2620:0:861:103:1a66:daff:fefc:d59c', # kafka-jumbo1005.eqiad.wmnet
+                    '10.64.48.117',                       # kafka-jumbo1006.eqiad.wmnet
+                    '2620:0:861:107:1a66:daff:fefc:d27c', # kafka-jumbo1006.eqiad.wmnet
+                ],
+            'zookeeper_hosts_main' => [
+                    '10.64.0.18',                         # conf1001.eqiad.wmnet
+                    '2620:0:861:101:d6ae:52ff:fe73:60e6', # conf1001.eqiad.wmnet
+                    '10.64.32.180',                       # conf1002.eqiad.wmnet
+                    '2620:0:861:103:d6ae:52ff:fe7c:c9ec', # conf1002.eqiad.wmnet
+                    '10.64.48.111',                       # conf1003.eqiad.wmnet
+                    '2620:0:861:107:d6ae:52ff:fe7c:b5ed', # conf1003.eqiad.wmnet
+                    '10.192.0.143',                       # conf2001.codfw.wmnet
+                    '2620:0:860:101:1618:77ff:fe5e:a72c', # conf2001.codfw.wmnet
+                    '10.192.32.141',                      # conf2002.codfw.wmnet
+                    '2620:0:860:103:1618:77ff:fe5e:a175', # conf2002.codfw.wmnet
+                    '10.192.48.52',                       # conf2003.codfw.wmnet
+                    '2620:0:860:104:1618:77ff:fe5e:a4c2', # conf2003.codfw.wmnet
+                ],
+            'hadoop_masters' => [
+                    '10.64.36.118',                       # analytics1001.eqiad.wmnet
+                    '2620:0:861:106:f21f:afff:fee8:af06', # analytics1001.eqiad.wmnet
+                    '10.64.53.21',                        # analytics1002.eqiad.wmnet
+                    '2620:0:861:108:f21f:afff:fee8:bc3f', # analytics1002.eqiad.wmnet
+                ],
+            'druid_analytics_hosts' => [
+                    '10.64.5.101',                        # druid1001.eqiad.wmnet
+                    '2620:0:861:104:1e98:ecff:fe29:e298', # druid1001.eqiad.wmnet
+                    '10.64.36.102',                       # druid1002.eqiad.wmnet
+                    '2620:0:861:106:1602:ecff:fe06:8bec', # druid1002.eqiad.wmnet
+                    '10.64.53.103',                       # druid1003.eqiad.wmnet
+                    '2620:0:861:108:1e98:ecff:fe29:e278', # druid1003.eqiad.wmnet
+                ],
+            'druid_public_hosts' => [
+                    '10.64.0.35',                         # druid1004.eqiad.wmnet
+                    '2620:0:861:101:1a66:daff:feac:87a1', # druid1004.eqiad.wmnet
+                    '10.64.16.172',                       # druid1005.eqiad.wmnet
+                    '2620:0:861:102:1a66:daff:feae:36fb', # druid1005.eqiad.wmnet
+                    '10.64.48.171',                       # druid1006.eqiad.wmnet
+                    '2620:0:861:107:1a66:daff:feac:75cd', # druid1006.eqiad.wmnet
+                ],
+            'cache_misc' => [
+                    '10.64.32.97',                        # cp1045.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:97',         # cp1045.eqiad.wmnet
+                    '10.64.32.103',                       # cp1051.eqiad.wmnet
+                    '2620:0:861:103:10:64:32:103',        # cp1051.eqiad.wmnet
+                    '10.64.0.95',                         # cp1058.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:95',          # cp1058.eqiad.wmnet
+                    '10.64.0.98',                         # cp1061.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:98',          # cp1061.eqiad.wmnet
+                    '10.192.0.127',                       # cp2006.codfw.wmnet
+                    '2620:0:860:101:10:192:0:127',        # cp2006.codfw.wmnet
+                    '10.192.16.138',                      # cp2012.codfw.wmnet
+                    '2620:0:860:102:10:192:16:138',       # cp2012.codfw.wmnet
+                    '10.192.32.117',                      # cp2018.codfw.wmnet
+                    '2620:0:860:103:10:192:32:117',       # cp2018.codfw.wmnet
+                    '10.192.48.29',                       # cp2025.codfw.wmnet
+                    '2620:0:860:104:10:192:48:29',        # cp2025.codfw.wmnet
+                    '10.20.0.107',                        # cp3007.esams.wmnet
+                    '2620:0:862:102:10:20:0:107',         # cp3007.esams.wmnet
+                    '10.20.0.108',                        # cp3008.esams.wmnet
+                    '2620:0:862:102:10:20:0:108',         # cp3008.esams.wmnet
+                    '10.20.0.109',                        # cp3009.esams.wmnet
+                    '2620:0:862:102:10:20:0:109',         # cp3009.esams.wmnet
+                    '10.20.0.110',                        # cp3010.esams.wmnet
+                    '2620:0:862:102:10:20:0:110',         # cp3010.esams.wmnet
                 ],
             },
         'labs' => {
@@ -92,6 +206,16 @@ class network::constants {
             'maintenance_hosts' => [
                     '',  # deployment-terbium.deployment-prep.eqiad.wmflabs ?
                     '',  # deployment-wasat.deployment-prep.eqiad.wmflabs ?
+                ],
+            'cumin_masters' => [  # As seen by labs instances
+                    '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
+                    '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
+                ],
+            'cumin_real_masters' => [  # Where Cumin can be run
+                    '208.80.154.158',               # labpuppetmaster1001.wikimedia.org
+                    '2620:0:861:2:208:80:154:158',  # labpuppetmaster1001.wikimedia.org
+                    '208.80.155.120',               # labpuppetmaster1002.wikimedia.org
+                    '2620:0:861:4:208:80:155:120',  # labpuppetmaster1002.wikimedia.org
                 ],
             }
     }
@@ -137,8 +261,7 @@ class network::constants {
     # Analytics subnets
     $analytics_networks = slice_network_constants('production', { 'description' => 'analytics'})
 
-    # Networks that trebuchet/git-deploy
-    # will be able to deploy to.
+    # Networks that Scap will be able to deploy to.
     # (Puppet does array concatenation
     # by declaring array of other arrays! (?!)
     # See: http://weblog.etherized.com/posts/175)

@@ -1,1 +1,0 @@
-puppetmaster::config::use_puppetdb: true

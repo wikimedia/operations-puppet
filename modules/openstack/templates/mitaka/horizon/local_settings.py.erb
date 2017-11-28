@@ -1,6 +1,5 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///openstack/mitaka/horizon/local_settings.py.erb
 #####################################################################
 import os
 
@@ -159,7 +158,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #     ('http://cluster2.example.com:5000/v2.0', 'cluster2'),
 # ]
 
-OPENSTACK_HOST = "<%= @novaconfig['controller_hostname'] %>"
+OPENSTACK_HOST = "<%= @nova_controller %>"
 OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
 
@@ -535,12 +534,16 @@ HORIZON_IMAGES_ALLOW_UPLOAD = False
 
 DESIGNATE = { 'records_use_fips': True }
 
-WMFLABSDOTORG_ADMIN_USERNAME = '<%= @designateconfig['wmflabsdotorg_admin'] %>'
-WMFLABSDOTORG_ADMIN_PASSWORD = '<%= @designateconfig['wmflabsdotorg_pass'] %>'
-INSTANCE_TLD = '<%= scope.lookupvar('::site') %>.<%= @designateconfig['private_tld'] %>'
+WMFLABSDOTORG_ADMIN_USERNAME = '<%= @wmflabsdotorg_admin %>'
+WMFLABSDOTORG_ADMIN_PASSWORD = '<%= @wmflabsdotorg_pass %>'
+INSTANCE_TLD = '<%= @dhcp_domain %>'
 
 # Disable instance consoles for Horizon users
 CONSOLE_TYPE = False
 
-PUPPETMASTER_API  = "https://<%= @novaconfig['controller_hostname'] %>:8140/puppet"
-PUPPET_CONFIG_BACKEND  = "http://<%= @novaconfig['controller_hostname'] %>:8100/v1"
+PUPPETMASTER_API  = "https://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8140/puppet"
+PUPPET_CONFIG_BACKEND  = "http://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8101/v1"
+
+LDAP_USER = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+LDAP_PROJECTS_BASE = "ou=projects,dc=wikimedia,dc=org"
+LDAP_USER_PASSWORD = "<%= @ldap_user_pass %>"

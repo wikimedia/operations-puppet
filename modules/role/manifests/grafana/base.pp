@@ -17,7 +17,7 @@ class role::grafana::base(
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
 
-    include ::role::backup::host
+    include ::profile::backup::host
 
     include ::passwords::ldap::production
 
@@ -40,8 +40,8 @@ class role::grafana::base(
             # Grafana needs a database to store users and dashboards.
             # sqlite3 is the default, and it's perfectly adequate.
             'database'   => {
-                type => 'sqlite3',
-                path => 'grafana.db',
+                'type' => 'sqlite3',
+                'path' => 'grafana.db',
             },
 
             'security'   => {
@@ -100,8 +100,9 @@ class role::grafana::base(
     }
 
     ferm::service { 'grafana_http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
     # LDAP configuration. Interpolated into the Apache site template

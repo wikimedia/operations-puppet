@@ -16,7 +16,7 @@ define visualdiff::server(
     $webapp_port = 8012,
 ) {
     file { "/etc/visualdiff/${instance_name}.config.js":
-        content => template("visualdiff/${instance_name}.settings.js.erb"),
+        content => template("visualdiff/${instance_name}.config.js.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

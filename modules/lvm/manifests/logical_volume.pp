@@ -95,7 +95,7 @@ define lvm::logical_volume (
     mirrorlog        => $mirrorlog,
     no_sync          => $no_sync,
     region_size      => $region_size,
-    alloc            => $alloc
+    alloc            => $alloc,
   }
 
   if $createfs {

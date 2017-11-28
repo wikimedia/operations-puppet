@@ -9,9 +9,13 @@ class role::cluster::management {
         description => 'Cluster management',
     }
 
-    include ::role::salt::masters::production
     include ::role::mariadb::client
     include ::role::cumin::master
+    include ::role::ipmi::mgmt
+    include ::role::access_new_install
+    include ::profile::conftool::client
+    include ::profile::switchdc
+    include ::profile::debdeploy
     include ::standard
     include ::base::firewall
 }

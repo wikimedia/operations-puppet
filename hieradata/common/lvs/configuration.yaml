@@ -25,19 +25,6 @@ lvs::configuration::lvs_service_ips:
     ulsfo:
       uploadlb: 198.35.26.112
       uploadlb6: 2620:0:863:ed1a::2:b
-  maps: &ip_block003
-    codfw:
-      mapslb: 208.80.153.244
-      mapslb6: 2620:0:860:ed1a::2:d
-    eqiad:
-      mapslb: 208.80.154.244
-      mapslb6: 2620:0:861:ed1a::2:d
-    esams:
-      mapslb: 91.198.174.209
-      mapslb6: 2620:0:862:ed1a::2:d
-    ulsfo:
-      mapslb: 198.35.26.113
-      mapslb6: 2620:0:863:ed1a::2:d
   apaches: &ip_block007
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
@@ -70,14 +57,9 @@ lvs::configuration::lvs_service_ips:
     esams:
       misc_weblb: 91.198.174.217
       misc_weblb6: 2620:0:862:ed1a::3:d
-    ulsfo:
-      misc_weblb: 198.35.26.120
-      misc_weblb6: 2620:0:863:ed1a::3:d
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
-  ocg: &ip_block015
-    eqiad: 10.2.2.31
   parsoid: &ip_block011
     eqiad: 10.2.2.28
     codfw: 10.2.1.28
@@ -109,6 +91,9 @@ lvs::configuration::lvs_service_ips:
     eqiad:
       git-ssh4: 208.80.154.250
       git-ssh6: 2620:0:861:ed1a::3:16
+    codfw:
+      git-ssh4: 208.80.153.250
+      git-ssh6: 2620:0:860:ed1a::3:fa
   aqs: &ip_block025
     eqiad: 10.2.2.12
   eventbus: &ip_block026
@@ -140,6 +125,20 @@ lvs::configuration::lvs_service_ips:
   trendingedits: &ip_block035
     eqiad: 10.2.2.9
     codfw: 10.2.1.9
+  kubemaster: &ip_block036
+    eqiad: 10.2.2.8
+    codfw: 10.2.1.8
+  logstash: &ip_block037
+    eqiad: 10.2.2.36
+  recommendation-api: &ip_block038
+    eqiad: 10.2.2.37
+    codfw: 10.2.1.37
+  jobrunner: &ip_block039
+    eqiad: 10.2.2.26
+    codfw: 10.2.1.26
+  druid-public-broker: &ip_block040
+    eqiad: 10.2.2.38
+
 lvs::configuration::lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -151,7 +150,6 @@ lvs::configuration::lvs_services:
     - ulsfo
     ip: *ip_block001
     scheduler: sh
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: cache_text
@@ -182,7 +180,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block001
     port: 443
     scheduler: sh
-    bgp: 'no'
     depool-threshold: '.5'
     conftool:
       cluster: cache_text
@@ -204,7 +201,6 @@ lvs::configuration::lvs_services:
     - ulsfo
     ip: *ip_block002
     scheduler: sh
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -235,7 +231,6 @@ lvs::configuration::lvs_services:
     ip: *ip_block002
     port: 443
     scheduler: sh
-    bgp: 'no'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -247,59 +242,6 @@ lvs::configuration::lvs_services:
     conftool:
       cluster: cache_upload
       service: nginx
-  maps:
-    description: "Maps service maps-lb.%{::site}.wikimedia.org"
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *ip_block003
-    scheduler: sh
-    bgp: 'yes'
-    depool-threshold: '.5'
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_maps
-      service: varnish-fe
-    icinga:
-      uri: maps.wikimedia.org!/osm-intl/6/23/24.png
-      sites:
-        eqiad:
-          hostname: maps-lb.eqiad.wikimedia.org
-        codfw:
-          hostname: maps-lb.codfw.wikimedia.org
-        esams:
-          hostname: maps-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: maps-lb.ulsfo.wikimedia.org
-  maps-https:
-    description: "Maps service maps-lb.%{::site}.wikimedia.org"
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *ip_block003
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - https://varnishcheck.wikimedia.org/from/pybal
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_maps
-      service: nginx
   dns_rec_udp:
     description: Recursive DNS - UDP
     class: high-traffic2
@@ -310,8 +252,8 @@ lvs::configuration::lvs_services:
     protocol: udp
     ip: *ip_block005
     port: 53
-    bgp: 'yes'
     depool-threshold: '.5'
+    ops: true
     monitors:
       DNSQuery:
         hostnames:
@@ -334,7 +276,6 @@ lvs::configuration::lvs_services:
     protocol: tcp
     ip: *ip_block005
     port: 53
-    bgp: 'no'
     depool-threshold: '.5'
     monitors:
       DNSQuery:
@@ -355,10 +296,8 @@ lvs::configuration::lvs_services:
     - codfw
     - eqiad
     - esams
-    - ulsfo
     ip: *ip_block006
     scheduler: sh
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -376,8 +315,6 @@ lvs::configuration::lvs_services:
           hostname: misc-web-lb.codfw.wikimedia.org
         esams:
           hostname: misc-web-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: misc-web-lb.ulsfo.wikimedia.org
   misc_web-https:
     description: Miscellaneous web sites Varnish cluster (HTTPS)
     class: high-traffic2
@@ -385,11 +322,9 @@ lvs::configuration::lvs_services:
     - codfw
     - eqiad
     - esams
-    - ulsfo
     ip: *ip_block006
     port: 443
     scheduler: sh
-    bgp: 'no'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -408,8 +343,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block007
-    bgp: 'yes'
-    depool-threshold: '.9'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -440,8 +374,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block007
     port: 443
-    bgp: 'yes'
-    depool-threshold: '.6'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -466,8 +399,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block008
-    bgp: 'yes'
-    depool-threshold: '.74'
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -498,8 +430,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block008
     port: 443
-    bgp: 'yes'
-    depool-threshold: '.74'
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -524,8 +455,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     ip: *ip_block009
-    bgp: 'yes'
-    depool-threshold: '.5'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -556,8 +486,7 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block009
     port: 443
-    bgp: 'yes'
-    depool-threshold: '.6'
+    depool-threshold: '.7'
     monitors:
       ProxyFetch:
         url:
@@ -582,7 +511,6 @@ lvs::configuration::lvs_services:
     - codfw
     - eqiad
     ip: *ip_block010
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -609,7 +537,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block010
     port: 443
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -627,7 +554,7 @@ lvs::configuration::lvs_services:
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
         eqiad:
-          hostname: ms-fe.svc.codfw.wmnet
+          hostname: ms-fe.svc.eqiad.wmnet
   parsoid:
     description: "Parsoid wikitext parser for VisualEditor (%{::site})"
     class: low-traffic
@@ -636,7 +563,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block011
     port: 8000
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -664,7 +590,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block013
     port: 9200
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -691,7 +616,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block013
     port: 9243
-    bgp: 'no' # BGP already defined for plain HTTP, no need to re-define it here
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -710,30 +634,6 @@ lvs::configuration::lvs_services:
           hostname: search.svc.eqiad.wmnet
         codfw:
           hostname: search.svc.codfw.wmnet
-  ocg:
-    description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *ip_block015
-    port: 8000
-    bgp: 'yes'
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/?command=health
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: pdf
-      service: ocg
-    icinga:
-      check_command: check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health
-      sites:
-        eqiad:
-          hostname: ocg.svc.eqiad.wmnet
   mathoid:
     description: "Mathematical rendering service, mathoid.svc.%{::site}.wmnet"
     class: low-traffic
@@ -742,7 +642,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block016
     port: 10042
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -769,7 +668,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block017
     port: 1970
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -797,7 +695,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block018
     port: 8080
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -824,7 +721,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block019
     port: 19000
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -852,7 +748,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block020
     port: 7231
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -879,7 +774,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block021
     port: 1969
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -903,7 +797,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block022
     port: 6533
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -927,7 +820,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block023
     port: 8888
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       IdleConnection:
@@ -948,9 +840,9 @@ lvs::configuration::lvs_services:
     class: high-traffic2
     sites:
     - eqiad
+    - codfw
     ip: *ip_block024
     port: 22
-    bgp: 'yes'
     depool-threshold: '.6'
     monitors:
       IdleConnection:
@@ -966,7 +858,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block025
     port: 7232
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -991,7 +882,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block026
     port: 8085
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: eventbus
@@ -1018,7 +908,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block027
     port: 2737
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: scb
@@ -1045,7 +934,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block028
     port: 8081
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: scb
@@ -1055,6 +943,8 @@ lvs::configuration::lvs_services:
       sites:
         eqiad:
           hostname: ores.svc.eqiad.wmnet
+        codfw:
+          hostname: ores.svc.codfw.wmnet
     monitors:
       ProxyFetch:
         url:
@@ -1067,14 +957,15 @@ lvs::configuration::lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block029
     port: 8800
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
         - http://localhost/healthcheck
+        timeout: 10
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -1082,11 +973,12 @@ lvs::configuration::lvs_services:
       cluster: thumbor
       service: thumbor
     icinga:
-      check_command: "check_http_lvs_on_port!thumbor.svc.%{::site}.wmnet!8800!/healthcheck"
-      critical: false
+      check_command: "check_http_lvs_on_port_timeout!thumbor.svc.%{::site}.wmnet!8800!/healthcheck!20"
       sites:
         eqiad:
           hostname: thumbor.svc.eqiad.wmnet
+        codfw:
+          hostname: thumbor.svc.codfw.wmnet
   prometheus:
     description: Prometheus monitoring
     class: low-traffic
@@ -1095,7 +987,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block030
     port: 80
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1122,7 +1013,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block031
     port: 80
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1135,7 +1025,7 @@ lvs::configuration::lvs_services:
       cluster: wdqs
       service: wdqs
     icinga:
-      check_command: check_http_on_port!80
+      check_command: "check_http_lvs_on_port!wdqs.svc.%{::site}.wmnet!80!/readiness-probe"
       sites:
         eqiad:
           hostname: wdqs.svc.eqiad.wmnet
@@ -1148,7 +1038,6 @@ lvs::configuration::lvs_services:
     - eqiad
     ip: *ip_block032
     port: 80
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1173,7 +1062,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block033
     port: 8092
-    bgp: 'yes'
     depool-threshold: '.5'
     conftool:
       cluster: scb
@@ -1201,7 +1089,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block034
     port: 5252
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1228,7 +1115,6 @@ lvs::configuration::lvs_services:
     - codfw
     ip: *ip_block035
     port: 6699
-    bgp: 'yes'
     depool-threshold: '.5'
     monitors:
       ProxyFetch:
@@ -1247,3 +1133,241 @@ lvs::configuration::lvs_services:
           hostname: trendingedits.svc.eqiad.wmnet
         codfw:
           hostname: trendingedits.svc.codfw.wmnet
+  kubemaster:
+    description: "Kubernetes master service. kubemaster.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block036
+    port: 6443
+    depool-threshold: '.5'
+    monitors:
+      # Despite kubernetes being an HTTP REST API, it seems it does not yet support unauthenticated requests,
+      # so no ProxyFetch for now
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: kubernetes
+      service: kubemaster
+    # For now, no icinga monitoring for the same reasons as ProxyFetch
+  logstash-log4j:
+    description: Logstash ingestion log4j
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    port: 4560
+    depool-threshold: '.5'
+    scheduler: sh
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-log4j
+    icinga:
+      check_command: "check_tcp!4560"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-gelf:
+    description: Logstash ingestion gelf
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 12201
+    depool-threshold: '.5'
+    scheduler: sh
+    monitors:
+      # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
+      RunCommand:
+        command: /bin/true
+        # https://phabricator.wikimedia.org/T178149
+        arguments: "[ '' ]"
+        interval: 60
+        timeout: 10
+    conftool:
+      cluster: logstash
+      service: logstash-gelf
+  logstash-json-udp:
+    description: Logstash ingestion json udp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 11514
+    depool-threshold: '.5'
+    monitors:
+      IdleConnection:  # Monitors the TCP session as it's the same process listening on TCP and UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-json
+  logstash-json-tcp:
+    description: Logstash ingestion json tcp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    port: 11514
+    depool-threshold: '.5'
+    scheduler: sh
+    monitors:
+      IdleConnection:  # Monitors the TCP session, same process listening on UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-json
+    icinga:
+      check_command: "check_tcp!11514"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-syslog-udp:
+    description: Logstash ingestion syslog udp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 10514
+    depool-threshold: '.5'
+    monitors:
+      IdleConnection:  # Monitors the TCP session, same process listening on UDP
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-syslog
+    icinga:
+      check_command: "check_tcp!10514"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-syslog-tcp:
+    description: Logstash ingestion syslog tcp
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: tcp
+    port: 10514
+    depool-threshold: '.5'
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: logstash
+      service: logstash-syslog
+    icinga:
+      check_command: "check_tcp!10514"
+      sites:
+        eqiad:
+          hostname: logstash.svc.eqiad.wmnet
+  logstash-udp2log:
+    description: Logstash ingestion udp2log
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block037
+    protocol: udp
+    port: 8324
+    depool-threshold: '.5'
+    monitors:
+      # Don't monitor, as inbound UDP port only, used by the same process as the tcp listeners
+      RunCommand:
+        command: /bin/true
+        # https://phabricator.wikimedia.org/T178149
+        arguments: "[ '' ]"
+        interval: 60
+        timeout: 10
+    conftool:
+      cluster: logstash
+      service: logstash-udp2log
+  recommendation-api:
+    description: "Service for recommendation API. recommandation-api.svc%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block038
+    port: 9632
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/robots.txt
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: scb
+      service: recommendation-api
+    icinga:
+      check_command: "check_http_lvs_on_port!recommendation-api.svc.%{::site}.wmnet!9632!/robots.txt"
+      sites:
+        eqiad:
+          hostname: recommendation-api.svc.eqiad.wmnet
+        codfw:
+          hostname: recommendation-api.svc.codfw.wmnet
+  jobrunner:
+    description: "JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block039
+    port: 443
+    # It's ok to lose most of the service capacity in this case
+    depool-threshold: '.2'
+    monitors:
+      ProxyFetch:
+        url:
+        - https://localhost/w/health-check.php
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: jobrunner
+      service: nginx
+    icinga:
+      check_command: "check_https_url!jobrunner.svc.%{::site}.wmnet!/w/health-check.php"
+      sites:
+        eqiad:
+          hostname: jobrunner.svc.eqiad.wmnet
+        codfw:
+          hostname: jobrunner.svc.codfw.wmnet
+  druid-public-broker:
+    description: 'Broker query service for the Druid Public Cluster'
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block040
+    port: 8082
+    depool-threshold: '.5'
+    conftool:
+      cluster: druid-public
+      service: druid-public-broker
+    icinga:
+      check_command: "check_http_lvs_on_port!druid-public-broker.svc.%{::site}.wmnet!8082!/status"
+      critical: false
+      sites:
+        eqiad:
+          hostname: druid-public-broker.svc.eqiad.wmnet
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/status
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3

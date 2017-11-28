@@ -1,0 +1,129 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///gerrit/gerrit.wikimedia.org.erb
+#####################################################################
+# vim: filetype=apache
+
+# Due to Jetty's connection limiting flooding logs with "Dispatched
+# Failed" Error messages, we limit connections already here.
+MaxClients 50
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @host %>
+    <%- if @slave_hosts -%>
+    ServerAlias <%= Array(@slave_hosts).join(' ') %>
+    <%- end -%>
+
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/apache2/<%= @host %>.http.error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/<%= @host %>.http.access.log wmf
+    ServerSignature Off
+    IncludeOptional /etc/acme/challenge-apache.conf
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+    RewriteRule ^/(.*)$ https://<%= @host %>/$1 [L,R=301,NE]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @host %>
+    <%- if @slave_hosts -%>
+    ServerAlias <%= Array(@slave_hosts).join(' ') %>
+    <%- end -%>
+
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+
+    SSLEngine on
+    SSLCertificateFile /etc/acme/cert/gerrit.crt
+    SSLCertificateChainFile /etc/acme/cert/gerrit.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/gerrit.key
+    <%= @ssl_settings.join("\n    ") %>
+
+    RedirectMatch ^/$ /r/
+    RedirectMatch ^/r$ /r/
+
+    # Misbehaving bots
+    SetEnvIf User-Agent 80legs bad_browser
+    SetEnvIf User-Agent bingbot bad_browser
+    SetEnvIf User-Agent Baiduspider bad_browser
+    SetEnvIf User-Agent Sogou bad_browser
+    SetEnvIf User-Agent TweetmemeBot bad_browser
+    SetEnvIf User-Agent Yeti bad_browser
+    SetEnvIf Remote_Addr 208.110.84.34 bad_browser
+    SetEnvIf Remote_Addr 89.83.122.45 bad_browser
+    SetEnvIf Remote_Addr 129.242.4.62 bad_browser
+
+    TimeOut 720
+
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        <RequireAll>
+          Require all granted
+          Require not env bad_browser
+        </RequireAll>
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+    </Directory>
+
+    ProxyRequests Off
+    ProxyVia Off
+    ProxyPreserveHost On
+
+    <Proxy *>
+        <RequireAll>
+          Require all granted
+          Require not env bad_browser
+        </RequireAll>
+    </Proxy>
+
+    AllowEncodedSlashes On
+    RewriteEngine On
+
+    # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
+    # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
+    # trying to reproduce this behavior. But people run into this all the time.
+    RewriteRule ^/tools/hooks/commit-msg$ https://<%= @host %>/r/tools/hooks/commit-msg
+
+    # Workaround for really broken browser detection in Gerrit code. Not sure if the hex string is
+    # stable, this will probably need to be updated at least after Gerrit upgrades. Just load up
+    # Gerrit in Firefox and look in the Network Monitor for a similarly named .cache.js file.
+    RewriteRule ^/r/gerrit_ui/undefined.cache.js$ https://<%= @host %>/r/gerrit_ui/AFCF57AB10C0BF746D7926C5246142C1.cache.js
+
+    <%- if @maint_mode -%>
+    RedirectMatch temp "/r" "/error.html#"
+    <%- else -%>
+    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
+    ErrorDocument 503 "/error.html#"
+    <%- end -%>
+
+    ErrorLog /var/log/apache2/<%= @host %>.https.error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/<%= @host %>.https.access.log wmf
+    ServerSignature Off
+
+</VirtualHost>

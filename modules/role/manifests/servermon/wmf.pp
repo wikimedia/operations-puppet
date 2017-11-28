@@ -46,17 +46,14 @@ class role::servermon::wmf {
         admins      => '("Ops Team", "ops@lists.wikimedia.org")',
     }
 
-    package { 'servermon/servermon':
-        provider => 'trebuchet',
-    }
-
     apache::site { 'servermon.wikimedia.org':
         content => template('role/servermon/servermon.wikimedia.org.erb'),
     }
 
     ferm::service { 'servermon-http':
-        proto => 'tcp',
-        port  => '80',
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
     }
 
 }

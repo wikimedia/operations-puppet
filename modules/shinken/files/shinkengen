@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 #   Copyright 2014 Yuvi Panda <yuvipanda@gmail.com>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,15 +58,16 @@ class ConfigObject():
     def __str__(self):
         max_key_len = max(len(key) for key in self.properties.keys())
         config_str = ''.join('    %-*s   %s\n' % (max_key_len, key, value)
-                             for key, value in self.properties.items())
+                             for key, value in self.properties.iteritems())
         return 'define %s {\n%s}\n' % (self.type, config_str)
 
 
-def get_instances(project, observer_pass):
+def get_instances(project, observer_pass, keystone_host, keystone_port):
     client = novaclient.Client(
         "2.0",
         session=KeystoneSession(auth=KeystonePassword(
-            auth_url="http://labcontrol1001.wikimedia.org:5000/v3",
+            auth_url="http://{host}:{port}/v3".format(host=keystone_host,
+                                                      port=keystone_port),
             username="novaobserver",
             password=observer_pass,
             project_name=project,
@@ -89,8 +90,10 @@ def get_instances(project, observer_pass):
 
     return hosts
 
-def get_instance_roles(project, fqdn):
-    url = 'http://labcontrol1001.wikimedia.org:8100/v1/{project}/node/{fqdn}'.format(
+
+def get_instance_roles(project, fqdn, enc_host):
+    url = 'http://{enc_host}:8100/v1/{project}/node/{fqdn}'.format(
+        enc_host=enc_host,
         project=project,
         fqdn=fqdn
     )
@@ -103,10 +106,16 @@ if __name__ == '__main__':
     args = argparser.parse_args()
 
     with open('/etc/shinkengen.yaml') as f:
-        config = yaml.load(f)
+        config = yaml.safe_load(f)
+
+    with open('/etc/novaobserver.yaml') as n:
+        nova_observer = yaml.safe_load(n)
+        observer_pass = nova_observer['OS_PASSWORD']
 
     for project in config['projects']:
-        instances = get_instances(project, config['observer_pass'])
+        instances = get_instances(project, observer_pass,
+                                  config['keystone_host'],
+                                  config['keystone_port'])
         host_configs = []
         for instance in instances:
             co = ConfigObject('host')
@@ -119,7 +128,9 @@ if __name__ == '__main__':
             # implicitly applied to all instances via
             # manifests/site.pp, so we need to add it here explicitly.
             hostgroups = [project, 'role::labs::instance']
-            hostgroups += get_instance_roles(instance['project'], instance['fqdn'])
+            hostgroups += get_instance_roles(instance['project'],
+                                             instance['fqdn'],
+                                             config['puppet_enc_host'])
             co.properties['hostgroups'] = ','.join(sorted(set(hostgroups)))
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.

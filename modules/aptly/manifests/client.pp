@@ -1,20 +1,13 @@
 class aptly::client(
     $servername,
-    $source=false
+    $source=false,
+    $components='main',
+    $protocol='http',
 ) {
-    if os_version('ubuntu <= precise') {
-        # Remove multiarch support in precise aptly clients.
-        # Can be removed when T111760 is fixed
-        file { '/etc/dpkg/dpkg.cfg.d/multiarch':
-            ensure => absent,
-            notify => Exec['apt-get update'],
-        }
-    }
-
     apt::repository { 'project-aptly':
-        uri        => "http://${servername}/repo",
+        uri        => "${protocol}://${servername}/repo",
         dist       => "${::lsbdistcodename}-${::labsproject}",
-        components => 'main',
+        components => $components,
         source     => $source,
         trust_repo => true,
     }

@@ -19,31 +19,24 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
 
-# Install patched intel ixgbe kernel module (precise only)
-if grep -qs '3\.6' /sys/module/ixgbe/version; then
-	apt-install ixgbe-dkms
-fi
-
 # optimized mkfs for all cache nodes
-# (the crazy PHYS_CORES thing is to get the bnx2x option set before the first boot,
-#  otherwise we'd need a reboot after puppet sets up the same file on the first run)
 case `hostname` in \
 	cp[1234]*)
-		mount -t sysfs none /target/sys
-		PHYS_CORES=$(chroot /target /usr/bin/ruby -e "require 'pathname'; print Pathname::glob('/sys/devices/system/cpu/cpu[0-9]*/topology/thread_siblings_list').map{|x| File.open(x,'r').read().split(',')[0] }.sort.uniq.count")
-		umount /target/sys
-		chroot /target /bin/sh -c "echo options bnx2x num_queues=$PHYS_CORES >/etc/modprobe.d/rps.conf"
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
 		;; \
 esac
 
-# Use a more recent kernel on jessie
+# Use a more recent kernel on jessie and deinstall nfs-common/rpcbind
+# (we don't want these to be installed in general, only pull them in
+# where actually needed. stretch doesn't install nfs-common/rpcbind
+# any longer (T106477)
 # (the upgrade is to grab our updated firmware packages first for initramfs)
 apt-install lsb-release
 if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; then
 	in-target apt-get -y upgrade
-	apt-install linux-meta
+	apt-install linux-meta-4.9
+	in-target dpkg --purge rpcbind nfs-common libnfsidmap2 libtirpc1
 fi
 
 # Temporarily pre-provision swift user at a fixed UID on new installs.
@@ -52,6 +45,10 @@ fi
 case `hostname` in \
 	ms-be[123]*|ms-fe[123]*)
 		in-target /usr/sbin/groupadd --gid 130 --system swift
-		in-target /usr/sbin/useradd --gid 130 --uid 130 --system --shell /bin/false swift
+		in-target /usr/sbin/useradd --gid 130 --uid 130 --system --shell /bin/false \
+			--create-home --home /var/lib/swift swift
 	;; \
 esac
+
+# Enable structured puppet facts on first puppet run, same as production - T169612
+in-target /usr/bin/puppet config set --section agent stringify_facts false

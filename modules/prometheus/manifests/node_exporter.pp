@@ -14,6 +14,9 @@
 # [*$collectors_extra*]
 #  List of extra collectors to be enabled.
 #
+# [*$web_listen_address*]
+#  IP:Port combination to listen on
+#
 #  Available collectors: (from "prometheus-node-exporter -collectors.print")
 #  bonding diskstats filefd filesystem gmond interrupts ipvs lastlogin loadavg
 #  mdadm megacli meminfo netdev netstat ntp runit sockstat stat supervisord
@@ -21,14 +24,16 @@
 
 
 class prometheus::node_exporter (
-    $ignored_devices  = '^(ram|loop|fd)\\d+$',
+    $ignored_devices  = "^(ram|loop|fd)\\\\d+\$",
     $collectors_extra = [],
+    $web_listen_address = ':9100',
 ) {
     require_package('prometheus-node-exporter')
+    validate_re($web_listen_address, ':\d+$')
 
-    $collectors_default = ['diskstats', 'filefd', 'filesystem', 'loadavg',
-        'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat',
-        'textfile', 'time', 'uname']
+    $collectors_default = ['conntrack', 'diskstats', 'entropy', 'edac', 'filefd', 'filesystem', 'hwmon',
+        'loadavg', 'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat', 'tcpstat',
+        'textfile', 'time', 'uname', 'vmstat']
     $textfile_directory = '/var/lib/prometheus/node.d'
     $collectors_enabled = join(sort(concat($collectors_default, $collectors_extra)), ',')
 
@@ -41,8 +46,8 @@ class prometheus::node_exporter (
 
     file { $textfile_directory:
         ensure  => directory,
-        mode    => '0470',
-        owner   => 'root',
+        mode    => '0770',
+        owner   => 'prometheus',
         group   => 'prometheus-node-exporter',
         require => [Package['prometheus-node-exporter'],
                     Group['prometheus-node-exporter']],
@@ -60,9 +65,8 @@ class prometheus::node_exporter (
     base::service_unit { 'prometheus-node-exporter':
         ensure           => present,
         refresh          => true,
-        systemd          => false,
-        systemd_override => true,
-        upstart          => true,
+        systemd_override => init_template('prometheus-node-exporter', 'systemd_override'),
+        upstart          => upstart_template('prometheus-node-exporter'),
         require          => Package['prometheus-node-exporter'],
     }
 }

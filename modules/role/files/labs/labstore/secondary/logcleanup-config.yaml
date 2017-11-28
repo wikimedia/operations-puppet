@@ -1,0 +1,18 @@
+dir:
+  - /srv/tools/shared/tools/project/admin
+end_with:
+  - log
+  - err
+  - out
+# Force rotation on non-rotation days
+# if file exceeds 10Mb
+max_copytruncate: 10000000
+# Do not bother if <=1Mb
+min_rotate_size: 1000
+# If size>=max_copytruncate tail this many
+# lines on truncate
+tail_lines: 10000
+# Do rotation on this day even if not in
+# violation of max_copytruncate but ignore
+# if <=min_rotate_size
+rotation_day: 'wednesday'

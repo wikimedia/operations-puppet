@@ -33,7 +33,7 @@
 #   $input_reader_format
 #      Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
 #      needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
-#      osm2pgsql == 0.90 is used on Jessie only at this point.
+#      osm2pgsql == 0.90 is used on jessie only at this point.
 #   $postreplicate_command
 #      command to run after replication of OSM data
 #
@@ -59,7 +59,7 @@ define osm::planet_sync(
                 $expire_levels='15',
                 $memory_limit=floor($::memorysize_mb)/12,
                 $num_threads=$::processorcount,
-                $input_reader_format = os_version('Debian >= Jessie')? {
+                $input_reader_format = os_version('debian >= jessie')? {
                     true    => 'xml',
                     default => 'libxml2',
                 },

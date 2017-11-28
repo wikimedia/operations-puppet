@@ -1,5 +1,3 @@
 admin::groups:
   - datacenter-ops
-debdeploy::grains:
-  debdeploy-saltmaster:
-    value: standard
+monitor_screens: false

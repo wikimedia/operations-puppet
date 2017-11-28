@@ -1,7 +1,7 @@
 # lvs/monitor.pp
 
 class lvs::monitor {
-    include lvs::configuration
+    include ::lvs::configuration
 
     $ip = $lvs::configuration::service_ips
     $lvs_services = $lvs::configuration::lvs_services
@@ -13,5 +13,5 @@ class lvs::monitor {
     create_resources(lvs::monitor_service_http_https, $monitors)
 
     # Experimental load-balancer monitoring for services using service-checker
-    include lvs::monitor_services
+    include ::lvs::monitor_services
 }

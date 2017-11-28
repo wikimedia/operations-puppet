@@ -11,7 +11,7 @@ function usage {
         echo "exec-manage [status|depool|repool|test] exec_host_name"
         echo "exec-manage [list]"
         echo ""
-        echo "Example: exec-manage status tools-exec1001.eqiad.wmflabs "
+        echo "Example: exec-manage status tools-exec1001.tools.eqiad.wmflabs"
 }
 
 if [[ ! "$1" || "$1" == '-h' ]]; then
@@ -99,13 +99,10 @@ case $cmd in
     test)
 
         # Determine release version of Exec node. Logic for now:
-        # Hosts with 14xx - Trusty, 12xx - Precise
+        # Hosts with 14xx - Trusty
         case "$exec_host" in
             *"-14"*)
                 release="trusty"
-                ;;
-            *"-12"*)
-                release="precise"
                 ;;
             *)
                 echo "Could not determine release version for execution node $exec_host."

@@ -1,0 +1,4 @@
+admin::groups:
+  - labtest-roots
+
+prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"

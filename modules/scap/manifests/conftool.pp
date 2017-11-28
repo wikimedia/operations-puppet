@@ -7,6 +7,6 @@ class scap::conftool {
     include ::conftool::scripts
 
     ::conftool::credentials { 'deploy-service':
-        home => '/var/lib/scap',
+        home => '/var/lib/deploy-service',
     }
 }

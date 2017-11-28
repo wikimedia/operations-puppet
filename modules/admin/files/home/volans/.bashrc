@@ -12,7 +12,6 @@ alias ln='ln -i'
 # Useful aliases
 alias top='top -cd 1'
 alias free='free -m'
-alias my='sudo mysql --defaults-file=/root/.my.cnf'
 alias ppless='sudo less -R /var/log/puppet.log'
 
 # ls aliases
@@ -27,3 +26,24 @@ export HISTCONTROL=ignoreboth
 export HISTSIZE=30000
 export HISTFILESIZE=50000
 shopt -s histappend
+
+# MySQL universal connector
+function my() {
+    local instances socket socket_count
+    local instance="${1}"
+
+    socket_count="$(find /run/mysqld/ -maxdepth 1 -iname "*.sock" | wc -l)"
+    if [[ "${socket_count}" -eq "0" ]]; then
+        socket="/tmp/mysql.sock"
+    elif [[ "${socket_count}" -eq "1" ]]; then
+        socket="/run/mysqld/mysqld.sock"
+    else
+        if [[ -z "${instance}" ]]; then
+            instances="$(find /run/mysqld/ -maxdepth 1 -iname "mysqld.*.sock" -printf '%P '| sed -E 's/mysqld\.([^.]+)\.sock/\1/g')"
+            echo "Multi-instance host and no instance was specified, see the autocompletion: ${instances}"
+            return 1
+        fi
+        socket="/run/mysqld/mysqld.${instance}.sock"
+    fi
+    sudo mysql --skip-ssl -S "${socket}"
+}

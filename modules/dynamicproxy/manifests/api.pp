@@ -71,4 +71,11 @@ class dynamicproxy::api(
         owner   => 'www-data',
         group   => 'www-data',
     }
+
+    # This is a GET-only front end that sits on port 5669.  We can
+    #  open this up to the public even though the actual API has no
+    #  auth protections.
+    nginx::site { 'proxygetter':
+        source => 'puppet:///modules/dynamicproxy/proxygetter.conf',
+    }
 }

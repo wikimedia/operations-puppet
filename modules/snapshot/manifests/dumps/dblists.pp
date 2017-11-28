@@ -1,6 +1,9 @@
 class snapshot::dumps::dblists {
-    $hugewikis = ['enwiki']
-    $hugewikis_dblist = join($hugewikis, "\n")
+    $enwiki = ['enwiki']
+    $enwiki_dblist = join($enwiki, "\n")
+
+    $wikidatawiki = ['wikidatawiki']
+    $wikidatawiki_dblist = join($wikidatawiki, "\n")
 
     $bigwikis = ['dewiki', 'eswiki', 'frwiki', 'itwiki', 'jawiki',
                 'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'commonswiki',
@@ -11,23 +14,29 @@ class snapshot::dumps::dblists {
     $excludewikis = ['labswiki', 'labtestwiki']
     $excludewikis_dblist = join($excludewikis, "\n")
 
-    $skip_dblist = "${hugewikis_dblist}\n${bigwikis_dblist}\n${excludewikis_dblist}"
+    $skip_dblist = "${enwiki_dblist}\n${wikidatawiki_dblist}\n${bigwikis_dblist}\n${excludewikis_dblist}"
 
     $skipnone_dblist = ''
 
     $globalusage_dblist = 'commonswiki'
 
-    include ::snapshot::dumps::dirs
-
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
 
-    file { "${dblistsdir}/hugewikis.dblist":
+    file { "${dblistsdir}/enwiki.dblist":
         ensure  => 'present',
-        path    => "${dblistsdir}/hugewikis.dblist",
+        path    => "${dblistsdir}/enwiki.dblist",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => "${hugewikis_dblist}\n",
+        content => "${enwiki_dblist}\n",
+    }
+    file { "${dblistsdir}/wikidatawiki.dblist":
+        ensure  => 'present',
+        path    => "${dblistsdir}/wikidatawiki.dblist",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => "${wikidatawiki_dblist}\n",
     }
     file { "${dblistsdir}/bigwikis.dblist":
         ensure  => 'present',

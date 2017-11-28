@@ -3,6 +3,9 @@
 # set some directory paths many cron jobs need
 confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
 repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
-datadir="<%= scope.lookupvar('snapshot::dumps::dirs::datadir') -%>"
+xmldumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::xmldumpsdir') -%>"
+miscdumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::miscdumpsdir') -%>"
+otherdir="<%= scope.lookupvar('snapshot::dumps::dirs::otherdir') -%>"
+cronsdir="<%= scope.lookupvar('snapshot::dumps::dirs::cronsdir') -%>"
 dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>"
 dblistsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>"

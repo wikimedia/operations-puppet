@@ -1,11 +1,11 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
-    $version = '0.0.4',
-    $workdir = '/mnt/jenkins-workspace/puppet-compiler',
+    $version = '0.3.3',
+    $workdir = '/srv/jenkins-workspace/puppet-compiler',
     $libdir  = '/var/lib/catalog-differ',
     $ensure  = 'present',
     $user    = 'jenkins-deploy',
-    $homedir = '/mnt/home/jenkins-deploy',
+    $homedir = '/srv/home/jenkins-deploy',
     ) {
 
     require ::puppet_compiler::packages
@@ -84,22 +84,54 @@ class puppet_compiler(
 
 
     # The conftool parser function needs
-    #   - the conftool module to be included
-    #   - An etcd instance running populated with (fake? synced?) data
+    # An etcd instance running populated with (fake? synced?) data
 
     include ::etcd
-
-    class { '::conftool':
-        use_ssl => false,
-        auth    => false,
-        hosts   => [
-            'http://127.0.0.1:2379',
-        ],
-    }
 
     tidy { "${::puppet_compiler::workdir}/output":
         recurse => true,
         age     => '6w',
         rmdirs  => true,
+    }
+
+
+    require_package('openjdk-8-jdk')
+
+    # Add a puppetdb instance with a local database.
+    class { 'puppetdb::app':
+        db_driver  => 'hsqldb',
+        ca_path    => '/etc/puppetdb/ssl/ca.pem',
+        heap_size  => '2G',
+        db_rw_host => undef,
+        perform_gc => true,
+        bind_ip    => '0.0.0.0',
+        ssldir     => "${vardir}/ssl",
+        require    => Exec['Generate CA for the compiler']
+    }
+
+    file { '/etc/puppetdb/ssl/ca.pem':
+        source => "${vardir}/ssl/certs/ca.pem",
+        owner  => $user,
+        before => Service['puppetdb']
+    }
+
+    class { 'puppetmaster::puppetdb::client':
+        host => $::fqdn,
+        port => 8081,
+    }
+    # puppetdb configuration
+    file { "${vardir}/puppetdb.conf":
+        source  => '/etc/puppet/puppetdb.conf',
+        owner   => $user,
+        require => File['/etc/puppet/puppetdb.conf']
+    }
+
+    # periodic script to populate puppetdb. Run at 4 AM every sunday.
+    cron { 'Populate puppetdb':
+        command => "/usr/local/bin/puppetdb-populate --basedir ${libdir} > ${homedir}/puppetdb-populate.log 2>&1",
+        user    => $user,
+        hour    => 4,
+        minute  => 0,
+        weekday => 0,
     }
 }

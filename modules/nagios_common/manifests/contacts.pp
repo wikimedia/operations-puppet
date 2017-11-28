@@ -39,25 +39,37 @@ class nagios_common::contacts(
 ) {
     if ($source != undef) {
         file { "${config_dir}/contacts.cfg":
-            ensure => $ensure,
-            source => $source,
-            owner  => $owner,
-            group  => $group,
-            mode   => '0600', # Only $owner:$group can read/write
+            ensure    => $ensure,
+            source    => $source,
+            owner     => $owner,
+            group     => $group,
+            mode      => '0600', # Only $owner:$group can read/write
+            show_diff => false,
         }
     } else {
-        if ($content == undef) {
+        if ($content == undef or empty($content)) {
             $real_content = template('nagios_common/contacts.cfg.erb')
         } else {
             $real_content = $content
         }
 
         file { "${config_dir}/contacts.cfg":
-            ensure  => $ensure,
-            content => $real_content,
-            owner   => $owner,
-            group   => $group,
-            mode    => '0600', # Only $owner:$group can read/write
+            ensure    => $ensure,
+            content   => $real_content,
+            owner     => $owner,
+            group     => $group,
+            mode      => '0600', # Only $owner:$group can read/write
+            show_diff => false,
         }
+
+        # This 'new' file exists only temp during careful transition of contacts
+        # from private repo and is not actually included by Icinga. --dz 20170505
+        #file { "${config_dir}/contacts-new.cfg":
+        #    ensure  => $ensure,
+        #    content => template('nagios_common/contacts-new.cfg.erb'),
+        #    owner   => $owner,
+        #    group   => $group,
+        #    mode    => '0400',
+        #}
     }
 }

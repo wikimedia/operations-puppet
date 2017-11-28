@@ -24,8 +24,7 @@ class docker::baseimages(
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
-    require_package('python-bootstrap-vz')
-    require_package('debootstrap')
+    require_package('bootstrap-vz')
 
     file { '/srv/images':
         ensure => directory,
@@ -35,11 +34,10 @@ class docker::baseimages(
     }
 
     file { '/srv/images/base':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => File['/srv/images'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/srv/images/base/jessie.yaml':
@@ -47,8 +45,25 @@ class docker::baseimages(
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
-        require => File['/srv/images/base'],
     }
+
+    ## Stretch
+    $stretch_keyring = '/srv/images/base/wikimedia-stretch.pub.gpg'
+    file { '/srv/images/base/stretch.yaml':
+        content => template('docker/images/stretch.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+    }
+
+    file { $stretch_keyring:
+        ensure => present,
+        source => 'puppet:///modules/docker/wikimedia-stretch.pub.gpg',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+    ## end stretch
 
     if 'alpine' in $distributions {
         if $proxy_address {
@@ -64,6 +79,13 @@ class docker::baseimages(
             cwd         => '/srv/images',
             environment => $env,
             require     => File['/srv/images'],
+        }
+
+        file { '/usr/local/bin/build-alpine':
+            content => template('docker/images/build-alpine.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0544',
         }
     }
 

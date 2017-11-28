@@ -1,0 +1,42 @@
+actions:
+  1:
+    action: delete_indices
+    description: >-
+      Delete indices older than 31 days (based on index name), for <%= @prefix %>
+      prefixed indices. Ignore the error if the filter does not result in an
+      actionable list of indices (ignore_empty_list) and exit cleanly.
+    options:
+      ignore_empty_list: True
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: <%= @prefix %>
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: '%Y.%m.%d'
+      unit: days
+      unit_count: 31
+  2:
+    action: forcemerge
+    description: >-
+      forceMerge <%= @prefix %> prefixed indices older than 2 days (based on index
+      creation_date) to 1 segments per shard.  Delay 120 seconds between each
+      forceMerge operation to allow the cluster to quiesce.
+      This action will ignore indices already forceMerged to the same or fewer
+      number of segments per shard, so the 'forcemerged' filter is unneeded.
+    options:
+      max_num_segments: 1
+      delay: 120
+      timeout_override:
+      continue_if_exception: False
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: <%= @prefix %>
+      exclude:
+    - filtertype: age
+      source: creation_date
+      direction: older
+      unit: days
+      unit_count: 2

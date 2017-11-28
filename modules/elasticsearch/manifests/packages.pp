@@ -16,11 +16,9 @@ class elasticsearch::packages (
 
     require_package('curl')
 
-    # library for elasticsearch. only in trusty+
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        require_package('python-elasticsearch')
-        require_package('python-ipaddr')
-    }
+    # library for elasticsearch
+    require_package('python-elasticsearch')
+    require_package('python-ipaddr')
 
     ### install and link additional log4j appender to send logs over GELF
 

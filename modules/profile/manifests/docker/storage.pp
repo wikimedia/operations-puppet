@@ -19,7 +19,7 @@ class profile::docker::storage(
 
     Class['::profile::docker::storage'] -> Service['docker']
 
-    if $vg_to_remove {
+    if ($vg_to_remove  and ! empty($vg_to_remove)) {
         volume_group { $vg_to_remove:
             ensure           => absent,
             physical_volumes => [],
@@ -48,10 +48,10 @@ class profile::docker::storage(
             ensure           => present,
             physical_volumes => $physical_volumes,
             logical_volumes  => $logical_volumes,
-        }
+        },
     }
 
-    class { 'lvm':
+    class { '::lvm':
         manage_pkg    => true,
         volume_groups => $volume_group,
     }
@@ -61,7 +61,7 @@ class profile::docker::storage(
         'storage-driver' => 'devicemapper',
         'storage-opts'   =>  [
             'dm.datadev=/dev/mapper/docker-data',
-            'dm.metadatadev=/dev/mapper/docker-metadata'
-        ]
+            'dm.metadatadev=/dev/mapper/docker-metadata',
+        ],
     }
 }

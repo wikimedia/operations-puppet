@@ -74,10 +74,7 @@ class otrs(
         'mysql-client',
         'perl-doc',
     ]
-
-    package { $packages:
-        ensure => 'present',
-    }
+    require_package($packages)
 
     user { 'otrs':
         home       => '/var/lib/otrs',
@@ -135,10 +132,10 @@ class otrs(
     }
 
     # lint:ignore:arrow_alignment
+    # TODO: convert to systemd::service
     base::service_unit { 'otrs-daemon':
         ensure  => present,
-        upstart => false,
-        systemd => true,
+        systemd => systemd_template('otrs-daemon'),
         refresh => true,
         service_params => {
             enable     => true,

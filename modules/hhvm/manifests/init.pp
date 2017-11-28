@@ -70,7 +70,6 @@ class hhvm(
     $cache_dir      = '/var/cache/hhvm',
     $malloc_arenas  = undef,
     ) {
-    requires_os('ubuntu >= trusty || Debian >= jessie')
 
 
     ## Packages
@@ -84,6 +83,8 @@ class hhvm(
         ensure => present,
     }
 
+    # Helpful for debugging luasandbox crashes
+    require_package('liblua5.1-0-dbg')
 
     ## Settings
 
@@ -166,7 +167,7 @@ class hhvm(
             admin_server      => { port => 9001 },
             server            => {
                 port                   => 9000,
-                type                   => 'fastcgi',
+                'type'                 => 'fastcgi',
                 gzip_compression_level => 0,
                 stat_cache             => true,
                 dns_cache              => {
@@ -238,9 +239,8 @@ class hhvm(
 
     base::service_unit { 'hhvm':
         ensure           => present,
-        systemd          => false,
-        systemd_override => true,
-        upstart          => true,
+        systemd_override => init_template('hhvm', 'systemd_override'),
+        upstart          => upstart_template('hhvm'),
         refresh          => false,
         service_params   => $service_params,
         subscribe        => Package[$ext_pkgs],
@@ -276,7 +276,7 @@ class hhvm(
     ## Run-time data and logging
 
     rsyslog::conf { 'hhvm':
-        source   => 'puppet:///modules/hhvm/hhvm.rsyslog.conf',
+        content  => template('hhvm/hhvm.rsyslog.conf.erb'),
         priority => 20,
         require  => File['/etc/logrotate.d/hhvm'],
         before   => Service['hhvm'],
@@ -316,7 +316,7 @@ class hhvm(
     }
     cron { 'tidy_perf_maps':
         command => "/usr/bin/find /tmp -name \"perf-*\" -not -cnewer ${procfile} -delete > /dev/null 2>&1",
-        hour    => fqdn_rand(23, 'tidy_perf_maps'),
+        hour    => fqdn_rand(24, 'tidy_perf_maps'),
         minute  => 0,
     }
 }

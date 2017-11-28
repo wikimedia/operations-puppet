@@ -1,24 +1,44 @@
+# sets up a TLS proxy for Gerrit
 class gerrit::proxy(
+    $ipv4,
+    $ipv6,
     $host         = $::gerrit::host,
+    $slave_hosts  = $::gerrit::slave_hosts,
+    $slave        = false,
     $maint_mode   = false,
     ) {
 
+    if $slave {
+        $tls_host = $slave_hosts[0]
+    } else {
+        $tls_host = $host
+    }
+
     letsencrypt::cert::integrated { 'gerrit':
-        subjects   => $host,
+        subjects   => $tls_host,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
     }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${host}",
+        check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
         contact_group => 'admins,gerrit',
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { $host:
-        content => template('gerrit/gerrit.wikimedia.org.erb'),
+    apache::site { $tls_host:
+        content => template('gerrit/apache.erb'),
+    }
+
+    # Let Apache only listen on the service IP.
+    file { '/etc/apache2/ports.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('gerrit/apache.ports.conf.erb'),
     }
 
     # Error page stuff
@@ -43,14 +63,4 @@ class gerrit::proxy(
         mode   => '0444',
         source => '/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.cache.png',
     }
-
-    include ::apache::mod::rewrite
-
-    include ::apache::mod::proxy
-
-    include ::apache::mod::proxy_http
-
-    include ::apache::mod::ssl
-
-    include ::apache::mod::headers
 }

@@ -1,4 +1,7 @@
-profile::docker::registry::image_builders: ['10.64.16.176'] # copper.eqiad.wmnet
+profile::docker::registry::image_builders:
+  - '10.64.0.36' #boron.eqiad.wmnet
+  - '208.80.154.17' # contint1001
+  - '208.80.153.15' # contint2001
 docker::registry::username: uploader
 #docker::registry::hash: defined in the private repo
 profile::docker::registry::storage_backend: swift
@@ -6,3 +9,4 @@ profile::docker::registry::swift_username: "docker"
 #profile::docker::registry::swift_password defined in the private repo
 profile::docker::registry::swift_auth_url: "http://ms-fe.svc.codfw.wmnet/v1/"
 profile::docker::swift_container: "docker_registry"
+profile::docker::registry::certname: "docker-registry.discovery.wmnet"

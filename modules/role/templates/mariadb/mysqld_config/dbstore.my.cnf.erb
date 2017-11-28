@@ -3,17 +3,8 @@
 # Please use separate .cnf templates for each type of server.
 
 [client]
-port   = 3306
-socket = /tmp/mysql.sock
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-# skip server cert validation until we generate one cert per server
-# it would check the cert's common name against the host
-# ssl-verify-server-cert
-<% elsif @ssl == 'puppet-cert' %>
+socket = <%= @socket %>
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
@@ -29,11 +20,20 @@ skip-slave-start
 temp-pool
 
 user      = mysql
-socket    = /tmp/mysql.sock
+socket    = <%= @socket %>
 port      = 3306
+basedir   = <%= @basedir %>
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# # Strictly it is only needed on masters or servers that can potentially be
+# # masters but for consistency it should be set in all of them.
+# # https://mariadb.com/kb/en/mariadb/gtid/
+#
+gtid_domain_id  = <%= @gtid_domain_id %>
+
 read_only = 0
 
 # enable socket authentication
@@ -49,7 +49,7 @@ event_scheduler    = 1
 
 table_open_cache       = 50000
 table_definition_cache = 50000
-default-storage-engine = Aria
+default-storage-engine = TokuDB
 
 # InnoDB file-per-table + TokuDB love those file descriptors
 open-files-limit = 400000
@@ -59,7 +59,7 @@ character_set_filesystem = binary
 collation_server         = binary
 
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 24G
+innodb_buffer_pool_size        = 18G
 innodb_log_file_size           = 4G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
@@ -78,7 +78,7 @@ optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
 
 plugin-load = ha_tokudb
-tokudb_cache_size = 24G
+tokudb_cache_size = 23G
 # Tokudb will stop working when there is less than 1% of free disk space
 # (5% by default)
 tokudb_fs_reserve_percent = 1
@@ -108,6 +108,8 @@ m4.replicate-wild-do-table = log.%
 m4.replicate-wild-do-table = heartbeat.%
 x1.replicate-wild-do-table = flowdb.%
 x1.replicate-wild-do-table = wikishared.%
+x1.replicate-wild-do-table = cognate\_wiktionary.%
+x1.replicate-wild-do-table = %wik%.%
 x1.replicate-wild-do-table = heartbeat.%
 
 <% if @kernelversion < "3.19" %>
@@ -117,13 +119,7 @@ innodb_use_native_aio          = 0
 innodb_read_io_threads         = 16
 innodb_write_io_threads        = 8
 <% end %>
-<% if @ssl == 'on' %>
-# ssl
-ssl-ca=/etc/mysql/ssl/cacert.pem
-ssl-cert=/etc/mysql/ssl/server-cert.pem
-ssl-key=/etc/mysql/ssl/server-key.pem
-ssl-cipher=TLSv1.2
-<% elsif @ssl == 'puppet-cert' %>
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem

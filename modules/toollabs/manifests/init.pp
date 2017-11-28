@@ -4,7 +4,7 @@ class toollabs (
     $external_hostname = undef,
     $external_ip = undef,
     $is_mail_relay = false,
-    $active_mail_relay = 'tools-mail.eqiad.wmflabs',
+    $active_mail_relay = 'tools-mail.tools.eqiad.wmflabs',
     $mail_domain = 'tools.wmflabs.org',
 ) {
 
@@ -34,7 +34,7 @@ class toollabs (
 
     exec {'ensure-grid-is-on-NFS':
         command => '/bin/false',
-        unless  => "/usr/bin/timeout -k 3s 5s /usr/bin/test -e ${project_path}/herald",
+        unless  => "/usr/bin/timeout -k 5s 60s /usr/bin/test -e ${project_path}/herald",
     }
 
     file { $sysdir:
@@ -110,21 +110,6 @@ class toollabs (
         mode   => '0750',
     }
 
-    # Trustworthy enough
-    # Only necessary on precise hosts, trusty has its own mariadb package
-    if $::lsbdistcodename == 'precise' {
-        apt::repository { 'mariadb':
-            uri        => 'http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu',
-            dist       => $::lsbdistcodename,
-            components => 'main',
-            source     => false,
-            keyfile    => 'puppet:///modules/toollabs/mariadb.gpg',
-        }
-        file { '/etc/apt/trusted.gpg.d/mariadb.gpg':
-            ensure => absent,
-        }
-    }
-
     # Users can choose their shell accounts names freely, and some
     # choose ones that can be misleading to third parties inter alia
     # when they are used to send and receive mail at
@@ -146,11 +131,18 @@ class toollabs (
         }
     }
 
+    # TODO: Remove after Puppet cycle.
     file { '/var/mail':
-        ensure  => link,
-        force   => true,
-        target  => "${store}/mail",
-        require => File[$store],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'mail',
+        mode   => '2775',
+    }
+
+    # TODO: Remove after Puppet cycle.
+    file { "${store}/mail":
+        ensure => absent,
+        force  => true,
     }
 
     # Link to currently active proxy
@@ -178,7 +170,7 @@ class toollabs (
         mode   => '0440',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning.sh',
+        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
     }
 
     file { '/usr/local/bin/log-command-invocation':

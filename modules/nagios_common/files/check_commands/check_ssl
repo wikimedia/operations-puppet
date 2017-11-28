@@ -109,7 +109,7 @@ sub init {
     $ng->arg(
         spec    => 'ocspwarn=i',
         help    => 'Warning threshold for OCSP staple validity in seconds (default: %s)',
-        default => 86400*3,
+        default => 86400*2,
     );
     $ng->arg(
         spec    => 'ocspcrit=i',

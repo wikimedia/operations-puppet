@@ -13,7 +13,7 @@
 # lookup each
 class Hiera::Config
   class << self
-    def []=(key,value)
+    def []=(key, value)
       @config[key] = value
     end
   end
@@ -21,16 +21,17 @@ end
 
 class Hiera
   module Backend
+    # This naming is required by puppet.
     class Proxy_backend
       def initialize
         Hiera.debug "Starting the proxy backend"
         @config = Config[:proxy]
-        self.load_plugins
+        load_plugins
       end
 
       def load_plugins
-        @plugins ||={}
-        #Load plugins only once
+        @plugins ||= {}
+        # Load plugins only once
         @config[:plugins].each do |plugin|
           Hiera.debug "Loading plugin #{plugin}"
           begin
@@ -53,7 +54,7 @@ class Hiera
           else
             plugin = @config[:default_plugin]
           end
-          if not @plugins.include? plugin
+          unless @plugins.include? plugin
             Hiera.
               warn "Hierarchy specifies to use plugin '#{plugin}' but can't find it"
             next
@@ -77,7 +78,7 @@ class Hiera
           when :hash
             raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
             answer ||= {}
-            answer = Backend.merge_answer(new_answer,answer)
+            answer = Backend.merge_answer(new_answer, answer)
           else
             answer = new_answer
             break

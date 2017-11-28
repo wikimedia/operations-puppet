@@ -1,4 +1,8 @@
 class role::prometheus::global {
+    system::role { 'prometheus::global':
+        description => 'Prometheus server (global)',
+    }
+
     include ::base::firewall
 
     # Pull selected metrics from all DC-local Prometheus servers.
@@ -31,6 +35,8 @@ class role::prometheus::global {
             '{__name__=~"^.*:mysql_.*"}',
             '{__name__=~"^.*:memcached_.*"}',
             '{__name__=~"^.*:varnish_.*"}',
+            # blackbox_exporter probes results
+            '{__name__=~"^probe_.*"}',
           ],
         },
         'static_configs' => [
@@ -60,5 +66,16 @@ class role::prometheus::global {
         proto  => 'tcp',
         port   => '80',
         srange => '$DOMAIN_NETWORKS',
+    }
+
+    # Move Prometheus metrics to new HW - T148408
+    include rsync::server
+
+    $prometheus_nodes = hiera('prometheus_nodes')
+    rsync::server::module { 'prometheus-global':
+        path        => '/srv/prometheus/global/metrics',
+        uid         => 'prometheus',
+        gid         => 'prometheus',
+        hosts_allow => $prometheus_nodes,
     }
 }

@@ -17,12 +17,15 @@ class ores::base(
     require_package('enchant')
 
     # Spellcheck packages for supported languages
-    require_package('aspell-ar', 'aspell-id', 'aspell-pl', 'aspell-sv',
+    # NOTE: aspell-id is imported in our apt:
+    # https://apt.wikimedia.org/wikimedia/pool/thirdparty/a/aspell-id/
+    require_package('aspell-ar', 'aspell-el', 'aspell-id', 'aspell-pl',
+                    'aspell-sv',
                     'aspell-ro',
                     'hunspell-vi',
                     'myspell-cs',
                     'myspell-de-at', 'myspell-de-ch', 'myspell-de-de',
-                    'myspell-en-au', 'myspell-en-gb', 'myspell-en-us',
+                    'myspell-en-au', 'myspell-en-gb',
                     'myspell-es',
                     'myspell-et',
                     'myspell-fa',
@@ -30,9 +33,18 @@ class ores::base(
                     'myspell-he',
                     'myspell-hu',
                     'myspell-it',
+                    'myspell-lv',
                     'myspell-nb',
                     'myspell-nl',
                     'myspell-pt',
                     'myspell-ru',
-                    'myspell-uk')
+                    'aspell-uk',
+                    'myspell-hr')
+
+    if os_version('debian >= stretch') {
+        require_package('hunspell-en-us')
+    }
+    else {
+        require_package('myspell-en-us')
+    }
 }

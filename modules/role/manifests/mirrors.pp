@@ -3,13 +3,13 @@
 # A role class used to setup our mirrors server.
 
 class role::mirrors {
-    system::role { 'role::mirrors':
+    system::role { 'mirrors':
         description => 'Mirrors server',
     }
 
     include mirrors::serve
     include mirrors::tails
-    include ::base::firewall
+    include ::profile::base::firewall
 
     include mirrors::ubuntu
     nrpe::monitor_service {'check_ubuntu_mirror':

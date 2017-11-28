@@ -44,7 +44,7 @@ describe 'ipresolve' do
 
   it 'uses cached result in case of failure' do
     r = Resolv::DNS::Resource::IN::A.new(Resolv::IPv4.create('74.125.29.113'))
-    dns = DNSCached.new(nil,0)
+    dns = DNSCached.new(nil, 0)
     dns.dns.stub(:getresource => r)
     dns.get_resource('google.com', Resolv::DNS::Resource::IN::A)
     dns.dns.stub(:getresource => 'ciao')

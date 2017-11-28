@@ -159,31 +159,35 @@ class graphite(
 
         # create required directory in /run at reboot, don't wait for a puppet
         # run to fix it
-        file { '/usr/lib/tmpfiles.d/graphite.conf':
-            ensure  => present,
-            mode    => '0444',
+        systemd::tmpfile { 'graphite':
             content => 'd /var/run/carbon 0755 _graphite _graphite',
-            owner   => 'root',
-            group   => 'root',
         }
 
         rsyslog::conf { 'graphite':
             source => 'puppet:///modules/graphite/rsyslog.conf',
         }
 
-        logrotate::conf { 'graphite':
-            source => 'puppet:///modules/graphite/logrotate.conf',
+        logrotate::rule { 'graphite':
+            file_glob      => '/var/log/uwsgi-graphite-web.log',
+            frequency      => 'daily',
+            date_ext       => true,
+            date_yesterday => true,
+            rotate         => 14,
+            missing_ok     => true,
+            no_create      => true,
+            compress       => true,
+            post_rotate    => 'service rsyslog rotate >/dev/null 2>&1 || true',
         }
 
-        base::service_unit { 'carbon-cache@':
-            ensure          => present,
-            systemd         => true,
-            declare_service => false,
-        }
-
-        base::service_unit { 'carbon':
+        systemd::unit { 'carbon-cache@.service':
             ensure  => present,
-            systemd => true,
+            content => systemd_template('carbon-cache@')
+        }
+
+        systemd::service { 'carbon':
+            ensure  => present,
+            content => systemd_template('carbon'),
+            restart => true,
         }
 
         graphite::carbon_cache_instance { 'a': }

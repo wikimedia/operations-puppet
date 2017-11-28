@@ -1,8 +1,18 @@
 // common to upload front+backend VCL
 
+include "normalize_path.inc.vcl";
+
+sub upload_normalize_path {
+	if (req.http.host ~ "^upload\.wikimedia\.org$") {
+		call normalize_upload_path;
+	}
+}
+
 sub upload_common_recv {
 	unset req.http.X-Range;
-	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
+
+	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>"
+	    && req.http.host != "<%= @vcl_config.fetch('maps_domain') %>") {
 		return (synth(404, "Requested domainname does not exist on this server"));
 	}
 
@@ -36,6 +46,8 @@ sub upload_common_backend_response {
 	// Debugging T144257. Don't cache 200 responses with CL:0.
 	if (beresp.http.Content-Length == "0" && beresp.status == 200) {
 		set beresp.ttl = 0s;
+		set beresp.grace = 0s;
+		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
 	}
 }

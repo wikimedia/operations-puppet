@@ -1,4 +1,7 @@
 # NOTE: This file is managed by Puppet.
+<% if @java_home -%>
+JAVA_HOME="<%= @java_home %>"
+<% end -%>
 
 # User and group to run as
 KAFKA_USER=kafka
@@ -17,4 +20,4 @@ KAFKA_HEAP_OPTS=<%= @heap_opts %>
 <% end -%>
 #KAFKA_JVM_PERFORMANCE_OPTS="-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC"
 KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:/etc/kafka/mirror/<%= @mirror_name %>/log4j.properties"
-KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5"
+KAFKA_OPTS="-XX:GCLogFileSize=50M -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 <%= @java_opts %>"

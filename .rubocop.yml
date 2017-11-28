@@ -6,6 +6,8 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   StyleGuideCopsOnly: true
   Exclude:
+    # not a Ruby script
+    - 'modules/smokeping/files/smokeping.fcgi'
     # third party modules
     - 'modules/mysql/**/*'
     - 'modules/rsync/**/*'
@@ -40,3 +42,9 @@ Style/TrivialAccessors:
 
 Style/WordArray:
   Enabled: false
+
+# This cannot be enabled because of the naming conventions
+# on hiera backend classes imposed by puppet itself
+Style/ClassAndModuleCamelCase:
+   Exclude:
+     - 'modules/wmflib/lib/hiera/backend/*_backend.rb'

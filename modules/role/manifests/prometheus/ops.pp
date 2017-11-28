@@ -3,10 +3,17 @@
 #
 # filtertags: labs-project-monitoring
 class role::prometheus::ops {
+    system::role { 'prometheus::ops':
+        description => 'Prometheus server (ops)',
+    }
+
+    include ::standard
     include ::base::firewall
 
     $targets_path = '/srv/prometheus/ops/targets'
-    $storage_retention = hiera('prometheus::server::storage_retention', '4320h0m0s')
+    $storage_retention = hiera('prometheus::server::storage_retention', '2190h0m0s')
+    $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
+    $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -16,6 +23,125 @@ class role::prometheus::ops {
         },
     }
 
+    include ::prometheus::blackbox_exporter
+    $blackbox_jobs = [
+      {
+        'job_name'        => 'blackbox_icmp',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'icmp' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_icmp_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_ssh',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'ssh_banner' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_ssh_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_tcp',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'tcp_connect' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_tcp_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_http',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'http_connect' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_http_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox_https',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'https_connect' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_https_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+    ]
+
+    # Ping and SSH probes for all bastions from all machines running
+    # prometheus::ops
+    file { "${targets_path}/blackbox_icmp_bastions.yaml":
+      content => ordered_yaml([{'targets' => $::network::constants::special_hosts[$::realm]['bastion_hosts']}]),
+    }
+    file { "${targets_path}/blackbox_ssh_bastions.yaml":
+      content => ordered_yaml([{
+        'targets' => regsubst($::network::constants::special_hosts[$::realm]['bastion_hosts'], '(.*)', '[\0]:22')
+        }]),
+    }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
     # Each job will look for new files matching the glob and load the job
@@ -74,13 +200,6 @@ class role::prometheus::ops {
         'job_name'        => 'varnish-upload',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/varnish-upload_*.yaml"] },
-        ],
-        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
-      },
-      {
-        'job_name'        => 'varnish-maps',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/varnish-maps_*.yaml"] },
         ],
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
@@ -228,6 +347,23 @@ class role::prometheus::ops {
             'cluster' => 'videoscaler'
         }
     }
+
+    # Special config for Apache on Piwik deployments
+    prometheus::class_config{ "apache_piwik_${::site}":
+        dest       => "${targets_path}/apache_piwik_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::piwik::webserver',
+        port       => '9117',
+    }
+
+    # Special config for Apache on OTRS deployment
+    prometheus::class_config{ "apache_otrs_${::site}":
+        dest       => "${targets_path}/apache_otrs_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::otrs',
+        port       => '9117',
+    }
+
     # Job definition for etcd_exporter
     $etcd_jobs = [
       {
@@ -267,15 +403,179 @@ class role::prometheus::ops {
         port             => 8000,
     }
 
+    $pdu_jobs = [
+      {
+        'job_name'        => 'pdu',
+        'metrics_path'    => '/snmp',
+        'params'          => {
+          'module' => [ "pdu_${::site}" ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pdu_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => 'netmon1002.wikimedia.org:9116',
+          },
+        ],
+      },
+    ]
+
+    prometheus::pdu_config { "pdu_${::site}":
+        dest => "${targets_path}/pdu_${::site}.yaml",
+        site => $::site,
+    }
+
+    # Job definition for nginx exporter
+    $nginx_jobs = [
+      {
+        'job_name'        => 'nginx',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/nginx_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::cluster_config{ "nginx_cache_misc_${::site}":
+        dest    => "${targets_path}/nginx_cache_misc_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_misc',
+        port    => 9145,
+        labels  => {
+            'cluster' => 'cache_misc'
+        },
+    }
+
+    prometheus::cluster_config{ "nginx_cache_text_${::site}":
+        dest    => "${targets_path}/nginx_cache_text_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_text',
+        port    => 9145,
+        labels  => {
+            'cluster' => 'cache_text'
+        },
+    }
+
+    prometheus::cluster_config{ "nginx_cache_upload_${::site}":
+        dest    => "${targets_path}/nginx_cache_upload_${::site}.yaml",
+        site    => $::site,
+        cluster => 'cache_upload',
+        port    => 9145,
+        labels  => {
+            'cluster' => 'cache_upload'
+        },
+    }
+
+    prometheus::cluster_config{ "nginx_thumbor_${::site}":
+        dest    => "${targets_path}/nginx_thumbor_${::site}.yaml",
+        site    => $::site,
+        cluster => 'thumbor',
+        port    => 8800,
+        labels  => {
+            'cluster' => 'thumbor'
+        },
+    }
+
+    # Job definition for pybal
+    $pybal_jobs = [
+      {
+        'job_name'        => 'pybal',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pybal_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "pybal_${::site}":
+        dest       => "${targets_path}/pybal_${::site}.yaml",
+        class_name => 'role::lvs::balancer',
+        site       => $::site,
+        port       => 9090,
+    }
+
+    $jmx_exporter_jobs = [
+      {
+        'job_name'        => 'jmx_kafka',
+        'scrape_timeout'  => '25s',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_kafka_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::jmx_exporter_config{ "kafka_broker_jumbo_${::site}":
+        dest       => "${targets_path}/jmx_kafka_broker_jumbo_${::site}.yaml",
+        class_name => 'role::kafka::jumbo::broker',
+        site       => $::site,
+    }
+
+
+    $redis_jobs = [
+      {
+        'job_name'        => 'redis',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_*.yaml" ]}
+        ],
+        # redis_exporter runs alongside each redis instance, thus drop the (uninteresting in this
+        # case) 'addr' and 'alias' labels
+        'metric_relabel_configs' => [
+          { 'regex'  => '(addr|alias)',
+            'action' => 'labeldrop',
+          },
+        ],
+      },
+    ]
+
+    prometheus::redis_exporter_config{ "redis_master_${::site}":
+        dest       => "${targets_path}/redis_master_${::site}.yaml",
+        class_name => 'profile::redis::master',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_slave_${::site}":
+        dest       => "${targets_path}/redis_slave_${::site}.yaml",
+        class_name => 'profile::redis::slave',
+        site       => $::site,
+    }
+
+    $mtail_jobs = [
+      {
+        'job_name'        => 'mtail',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/mtail_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "mtail_mx_${::site}":
+        dest       => "${targets_path}/mtail_mx_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::mail::mx',
+        port       => '3903',
+    }
+
     prometheus::server { 'ops':
-        storage_encoding     => '2',
-        listen_address       => '127.0.0.1:9900',
-        storage_retention    => $storage_retention,
-        scrape_configs_extra => array_concat(
+        storage_encoding      => '2',
+        listen_address        => '127.0.0.1:9900',
+        storage_retention     => $storage_retention,
+        max_chunks_to_persist => $max_chunks_to_persist,
+        memory_chunks         => $memory_chunks,
+        scrape_configs_extra  => array_concat(
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
+            $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
+            $redis_jobs, $mtail_jobs,
         ),
-        global_config_extra  => $config_extra,
+        global_config_extra   => $config_extra,
     }
 
     prometheus::web { 'ops':
@@ -331,11 +631,6 @@ class role::prometheus::ops {
         source   => 'puppet:///modules/role/prometheus/rules_ops.conf',
     }
 
-    prometheus::varnish_2layer{ 'maps':
-        targets_path => $targets_path,
-        cache_name   => 'maps',
-    }
-
     prometheus::varnish_2layer{ 'misc':
         targets_path => $targets_path,
         cache_name   => 'misc',
@@ -349,5 +644,23 @@ class role::prometheus::ops {
     prometheus::varnish_2layer{ 'upload':
         targets_path => $targets_path,
         cache_name   => 'upload',
+    }
+
+    # Move Prometheus metrics to new HW - T148408
+    include rsync::server
+
+    $prometheus_nodes_ferm = join(hiera('prometheus_nodes'), ' ')
+
+    rsync::server::module { 'prometheus-ops':
+        path        => '/srv/prometheus/ops/metrics',
+        uid         => 'prometheus',
+        gid         => 'prometheus',
+        hosts_allow => $prometheus_nodes_ferm,
+    }
+
+    ferm::service { 'rsync-prometheus':
+        proto  => 'tcp',
+        port   => '873',
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

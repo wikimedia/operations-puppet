@@ -1,5 +1,7 @@
 # A role that includes all the needed stuff to run a ganglia web frontend
 class role::ganglia::web {
+    include ::profile::base::firewall
+    include ::standard
     include role::ganglia::config
     include role::ganglia::views
 
@@ -91,10 +93,7 @@ class role::ganglia::web {
         description   => 'HTTP',
         check_command => 'check_http',
     }
-    include ::role::backup::host
-    backup::set { 'var-lib-ganglia': }
-    backup::set { 'srv-ganglia': }
 
-    Class['ganglia::gmetad::rrdcached'] -> Class['ganglia::gmetad']
-    Class['ganglia::gmetad'] -> Class['ganglia::web']
+    Class['ganglia::gmetad::rrdcached'] -> Class['::ganglia::gmetad']
+    Class['ganglia::gmetad'] -> Class['::ganglia::web']
 }

@@ -2,6 +2,7 @@
 class swift (
     $hash_path_suffix,
     $swift_cluster = $swift::params::swift_cluster,
+    $storage_policies = $swift::params::storage_policies,
 ) {
     # Recommendations from Swift -- see <http://tinyurl.com/swift-sysctl>.
     sysctl::parameters { 'swift_performance':
@@ -68,6 +69,14 @@ class swift (
     }
 
     file { '/var/cache/swift':
+        ensure  => directory,
+        require => Package['swift'],
+        mode    => '0755',
+    }
+
+    # Create swift user home. Once T123918 is resolved this should be moved as
+    # part of a user resource declaration.
+    file { '/var/lib/swift':
         ensure  => directory,
         require => Package['swift'],
         mode    => '0755',

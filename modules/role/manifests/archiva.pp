@@ -5,9 +5,10 @@
 # a git-fat store.
 #
 class role::archiva {
-    system::role { 'role::archiva': description => 'Apache Archiva Host' }
+    system::role { 'archiva': description => 'Apache Archiva Host' }
 
-    include ::base::firewall
+    include ::standard
+    include ::profile::base::firewall
 
     require_package('openjdk-7-jdk')
 
@@ -22,7 +23,7 @@ class role::archiva {
 
     # Bacula backups for /var/lib/archiva.
     if $::realm == 'production' {
-        include ::role::backup::host
+        include ::profile::backup::host
         backup::set { 'var-lib-archiva':
             require => Class['::archiva']
         }
@@ -45,7 +46,7 @@ class role::archiva {
 
     monitoring::service { 'https_archiva':
         description   => 'HTTPS',
-        check_command => 'check_ssl_http!archiva.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!archiva.wikimedia.org',
     }
 }
 

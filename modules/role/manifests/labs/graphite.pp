@@ -3,14 +3,16 @@
 # Instance is open to all, no password required to see metrics
 class role::labs::graphite {
 
+    require ::profile::openstack::main::observerenv
+    include graphite::labs::archiver
+    include role::statsite
+
     class { 'role::graphite::base':
         storage_dir  => '/srv/carbon',
         auth         => false,
         hostname     => 'graphite-labs.wikimedia.org',
         cors_origins => [ 'https?://(grafana-labs|grafana-labs-admin).wikimedia.org' ],
     }
-
-    include graphite::labs::archiver
 
     file { '/var/lib/carbon':
         ensure  => link,
@@ -19,8 +21,6 @@ class role::labs::graphite {
         group   => '_graphite',
         require => Class['role::graphite::base']
     }
-
-    include role::statsite
 
     ferm::service { 'carbon_c_relay-local_relay_udp':
         proto  => 'udp',

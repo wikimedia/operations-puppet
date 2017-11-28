@@ -6,7 +6,7 @@
 
 cat <<EOF
 
-     [31m#######[0m     [1mThis is an execution host of the Tool Labs grid engine.[0m
+     [31m#######[0m     [1mThis is an execution host of the Toolforge grid engine.[0m
    [31m###     ###[0m
   [31m##     ### ##[0m  As a rule, and unless you are actively debugging a tool
   [31m##   ###   ##[0m  that is currently running here, you probably should not

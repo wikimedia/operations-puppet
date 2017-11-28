@@ -1,7 +1,7 @@
 #!/bin/bash
 # send the number of active users on <s>Bugzilla</s> Phabricator
 # in the last month to "community metrics" team
-# per RT-3962 - dzahn 20121219
+# per T81784 - dzahn 20121219
 # per T1003 - dzahn,aklapper 20141205
 # ! this file is managed by puppet !
 # ./modules/phabricator/templates/<%= @script_name %>.erb
@@ -9,13 +9,22 @@
 declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
 declare sndr_address='<%= @sndr_address %>'
 
-declare sql_host='<%= @mysql_slave %>'
+declare sql_host='<%= scope['::profile::phabricator::main::mysql_slave'] %>'
 declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
 declare sql_name='phabricator_maniphest'
 declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
 
-#echo "result_activesusers"
-result_activeusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
+#echo "result_activedifferentialusers"
+result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user phabricator_differential << END
+
+SELECT COUNT(DISTINCT authorPHID) FROM differential_transaction WHERE
+    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+
+END
+)
+
+#echo "result_activemaniphestusers"
+result_activemaniphestusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
 
 SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE
     FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
@@ -63,10 +72,14 @@ END
 #echo "result_tasksclosed"
 result_tasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
-SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction WHERE (transactionType="mergedinto" OR
-    (transactionType="status" AND (oldValue="\"open\"" OR oldValue="\"stalled\"") AND
-    (newValue="\"resolved\"" OR newValue="\"invalid\"" OR newValue="\"declined\""))) AND
-    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
+SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction JOIN maniphest_task WHERE
+    (maniphest_transaction.transactionType="mergedinto" OR
+    (maniphest_transaction.transactionType="status" AND (maniphest_transaction.oldValue="\"open\"" OR
+    maniphest_transaction.oldValue="\"stalled\"") AND (maniphest_transaction.newValue="\"resolved\"" OR
+    maniphest_transaction.newValue="\"invalid\"" OR maniphest_transaction.newValue="\"declined\""))) AND
+    maniphest_transaction.objectPHID = maniphest_task.phid AND (maniphest_task.status = "resolved" OR
+    maniphest_task.status = "invalid" OR maniphest_task.status = "declined") AND
+    FROM_UNIXTIME(maniphest_transaction.dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
 
 END
 )
@@ -137,7 +150,7 @@ END
 
 accountscreated=$(echo $result_accounts_created | tr -d '\n')
 
-activeusers=$(echo $result_activeusers | cut -d " " -f3)
+activemaniphestusers=$(echo $result_activemaniphestusers | cut -d " " -f3)
 authors=$(echo $result_authors | cut -d " " -f3)
 resolvers=$(echo $result_resolvers | cut -d " " -f3)
 
@@ -149,10 +162,16 @@ tasksclosed=$(echo $result_tasksclosed | cut -d " " -f3)
 tasksopen=$(echo $result_tasksopen | cut -d " " -f3)
 
 epochnow=$(date +%s)
+# regex if we have zero open tasks (can happen for unbreaknow; see T159314):
+regex='^[0-9]+$'
 
 mediantasksopen_unbreaknow_epoch=$(echo $result_mediantasksopen_unbreaknow | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
-diff_unbreaknow=$((epochnow-mediantasksopen_unbreaknow_epoch))
-mediantasksopen_unbreaknow=$(echo $((diff_unbreaknow/86400)))
+if [[ $mediantasksopen_unbreaknow_epoch =~ $regex ]] ; then
+  diff_unbreaknow=$((epochnow-mediantasksopen_unbreaknow_epoch))
+  mediantasksopen_unbreaknow=$(echo $((diff_unbreaknow/86400)))
+else
+  mediantasksopen_unbreaknow=0
+fi
 
 mediantasksopen_needstriage_epoch=$(echo $result_mediantasksopen_needstriage | cut -d " " -f3 | sed 's/.0000//' | sed 's/.5000//')
 diff_needstriage=$((epochnow-mediantasksopen_needstriage_epoch))
@@ -174,6 +193,7 @@ mediantasksopen_lowest_epoch=$(echo $result_mediantasksopen_lowest | cut -d " " 
 diff_lowest=$((epochnow-mediantasksopen_lowest_epoch))
 mediantasksopen_lowest=$(echo $((diff_lowest/86400)))
 
+activedifferentialusers=$(echo $result_activedifferentialusers | cut -d " " -f3)
 
 lastmonth=$(date --date="last month" +%Y-%m)
 
@@ -185,7 +205,7 @@ Hi Community Metrics team,
 This is your automatic monthly Phabricator statistics mail.
 
 Accounts created in (${lastmonth}): ${accountscreated}
-Active users (any activity) in (${lastmonth}): ${activeusers}
+Active Maniphest users (any activity) in (${lastmonth}): ${activemaniphestusers}
 Task authors in (${lastmonth}): ${authors}
 Users who have closed tasks in (${lastmonth}): ${resolvers}
 
@@ -206,6 +226,8 @@ Low: ${mediantasksopen_low}
 Lowest: ${mediantasksopen_lowest}
 
 (How long tasks have been open, not how long they have had that priority)
+
+Active Differential users (any activity) in (${lastmonth}): ${activedifferentialusers}
 
 TODO: Numbers which refer to closed tasks might not be correct, as
 described in https://phabricator.wikimedia.org/T1003 .

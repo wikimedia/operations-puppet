@@ -66,14 +66,12 @@ define tcpircbot::instance(
     $ssl         = true,
     $max_clients = 5,
     $listen_port = 9200,
+    $ensure      = 'present',
 ) {
-    include tcpircbot
-    file { "${tcpircbot::dir}/${title}.json":
-        ensure => absent,
-    }
+    require tcpircbot
 
     file { "${tcpircbot::dir}/tcpircbot-${title}.json":
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -81,19 +79,12 @@ define tcpircbot::instance(
         require => User['tcpircbot'],
     }
 
-    file { "/etc/init.d/tcpircbot-${title}":
-        ensure => absent,
-    }
+    $service_name = "tcpircbot-${title}"
 
-    base::service_unit { "tcpircbot-${title}":
-        ensure        => present,
-        upstart       => true,
-        systemd       => true,
-        template_name => 'tcpircbot',
-        subscribe     => File["${tcpircbot::dir}/${title}.json"],
-        require       => [
-            Package['python-irclib'],
-            File["${tcpircbot::dir}/${title}.json"],
-        ],
+    base::service_unit { $service_name:
+        ensure    => $ensure,
+        upstart   => upstart_template('tcpircbot'),
+        systemd   => systemd_template('tcpircbot'),
+        subscribe => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
     }
 }

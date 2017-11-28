@@ -7,9 +7,9 @@ tmp = {}
         sites.keys.each do |site|
             begin
                 hostname = service['icinga']['sites'][site]['hostname']
-	    rescue
+            rescue
                 next
-	    end
+            end
             tmp[hostname] = {}
             # Lots of silly code to accomodate for the current situation. Needs fixing
             if service['ip'][site].is_a?(Hash)
@@ -30,7 +30,7 @@ tmp = {}
             if service['icinga'].key?('critical')
                 tmp[hostname]['critical'] = service['icinga']['critical']
             end
-	    # End of lots of silly code
+            # End of lots of silly code
         end
     end
 end

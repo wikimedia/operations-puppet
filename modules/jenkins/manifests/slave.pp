@@ -6,7 +6,7 @@ class jenkins::slave(
     $workdir = '/var/lib/jenkins-slave',
 ) {
 
-    include ::jenkins::slave::requisites
+    include ::jenkins::common
 
     group { $user:
         ensure => present,

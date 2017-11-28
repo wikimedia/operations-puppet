@@ -1,0 +1,16 @@
+#################################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/mediawiki/maintenance/logrotate.d_translationnotifications
+#################################################################################
+
+/var/log/translationnotifications/*.log {
+	su <%= @log_ownership_user %> www-data
+	daily
+	notifempty
+	maxage 180
+	rotate 1000
+	dateext
+	compress
+	delaycompress
+}
+

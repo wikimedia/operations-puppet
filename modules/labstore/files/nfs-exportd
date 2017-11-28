@@ -1,7 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 #
-#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
-#  Copyright © 2015 Yuvi Panda <yuvipanda@gmail.com>
+# Copyright (c) 2016 Wikimedia Foundation, Inc.
 #
 #  Permission to use, copy, modify, and/or distribute this software for any
 #  purpose with or without fee is hereby granted, provided that the above
@@ -19,15 +18,16 @@
 #  THIS FILE IS MANAGED BY PUPPET
 #
 
-import ipaddress
 import argparse
 import yaml
 import os
 import time
 import logging
+import socket
 import sys
 import subprocess
 
+import keystoneauth1
 from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 
@@ -40,11 +40,23 @@ VOLUMES_NEEDING_EXPORTS = ['project', 'home', 'tools-home', 'tools-project']
 def is_valid_ipv4(ip):
     """
     Returns true if ip is a valid ipv4 address
+
+    This test is a temp proxy for the py3 ipaddress module based check,
+    it tries to convert a dot separated ipv4 address to a 32-bit packed binary
+    format, and fails if the conversion doesn't succeed.
+
+    This check is a more permissive than the ipaddress library check,
+    and follows http://man7.org/linux/man-pages/man3/inet_aton.3.html to check
+    if the address is valid, and won't validate if the string has 4 octets, etc.
+
+    We can use this however, because we get instance ips from Keystone, and
+    mainly need to check if the value is not empty, or cannot be a valid IP
+    string
     """
     try:
-        ipaddress.IPv4Address(ip)
+        socket.inet_aton(ip)
         return True
-    except ipaddress.AddressValueError:
+    except socket.error:
         return False
 
 
@@ -78,7 +90,7 @@ def get_instance_ips(project, observer_pass):
     """
     Return a list of Instance internal IPs for a given project
 
-    This uses the Wikitech API to fetch this data
+    This uses the Keystone API to fetch this data
     """
     client = novaclient.Client(
         "2.0",
@@ -92,13 +104,22 @@ def get_instance_ips(project, observer_pass):
         ))
     )
     ips = []
-    for instance in client.servers.list():
-        # Only provide internal IPs!
-        ips += [
-            str(ip['addr']) for ip in instance.addresses['public']
-            if ip['OS-EXT-IPS:type'] == 'fixed' and is_valid_ipv4(ip)
-        ]
+    try:
+        for instance in client.servers.list():
+            # Only provide internal IPs!
+            if 'public' in instance.addresses:
+                for ip in instance.addresses['public']:
+                    if ip['OS-EXT-IPS:type'] == 'fixed' and is_valid_ipv4(ip['addr']):
+                        ips.append(str(ip['addr']))
+            else:
+                logging.warn('Failed to get instance address for instance %s.%s',
+                             repr(instance), project)
+    except keystoneauth1.exceptions.http.Unauthorized:
+        logging.warn("Failed to get server list for project %s."
+                     "  Maybe the project was deleted." % project)
+        ips = []
     return ips
+
 
 def get_projects_with_nfs(mounts_config, observer_pass):
     """
@@ -107,9 +128,9 @@ def get_projects_with_nfs(mounts_config, observer_pass):
     :returns: list
     """
     projects = []
-    for name, config in mounts_config['private'].items():
+    for name, config in mounts_config['private'].iteritems():
         if 'mounts' in config:
-            mounts = [k for k, v in config['mounts'].items()
+            mounts = [k for k, v in config['mounts'].iteritems()
                       if k in VOLUMES_NEEDING_EXPORTS and v]
             if len(mounts) == 0:
                 # Skip project if it has no private mounts
@@ -117,10 +138,14 @@ def get_projects_with_nfs(mounts_config, observer_pass):
                 continue
         else:
             continue
-        project = Project(name, config['gid'], get_instance_ips(name, observer_pass), mounts)
-        projects.append(project)
-        logging.debug('project %s has %s instances',
-                     name, len(project.instance_ips))
+        ips = get_instance_ips(name, observer_pass)
+        if ips:
+            project = Project(name, config['gid'], ips, mounts)
+            projects.append(project)
+            logging.debug('project %s has %s instances',
+                          name, len(project.instance_ips))
+        else:
+            logging.warning('project %s has no instances; skipping.', name)
 
     # Validate that there are no duplicate gids
     gids = [p.gid for p in projects]
@@ -145,6 +170,7 @@ def exportfs():
     logging.info(' '.join(exportfs))
     subprocess.check_call(exportfs)
 
+
 def write_public_exports(public_exports, exports_d_path):
     """ output public export definitions
     :param public_exports: dict of defined exports
@@ -158,6 +184,7 @@ def write_public_exports(public_exports, exports_d_path):
         public_paths.append(path)
     logging.info("found %s public NFS exports" % (len(public_paths)))
     return public_paths
+
 
 def write_project_exports(mounts_config, exports_d_path, observer_pass):
     """ output project export definitions

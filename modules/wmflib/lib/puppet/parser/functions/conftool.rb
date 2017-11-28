@@ -53,8 +53,8 @@ module Puppet::Parser::Functions
         result.push({'name' => obj_name, 'tags' => tags, 'value' => entry[obj_name]})
       end
       result
-    rescue
-      raise Puppet::ParseError, "Unable to read data from conftool"
+    rescue StandardError => e
+      raise Puppet::ParseError, "Unable to read data from conftool. Wrapped error is #{e}: #{e.message}"
     end
   end
 end

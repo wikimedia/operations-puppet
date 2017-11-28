@@ -19,10 +19,11 @@ class contint::npmtravis {
     }
 
     file { '/home/npmtravis/.ssh/npmtravis_id_rsa':
-        ensure  => present,
-        owner   => 'npmtravis',
-        mode    => '0400',
-        content => secret('ssh/ci/npmtravis_id_rsa'),
-        require => File['/home/npmtravis/.ssh'],
+        ensure    => present,
+        owner     => 'npmtravis',
+        mode      => '0400',
+        content   => secret('ssh/ci/npmtravis_id_rsa'),
+        require   => File['/home/npmtravis/.ssh'],
+        show_diff => false,
     }
 }

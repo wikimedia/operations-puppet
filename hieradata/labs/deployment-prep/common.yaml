@@ -1,11 +1,7 @@
 ---
 profile::base::remote_syslog:
   - "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
-"ocg::temp_dir": /mnt/tmpfs
-"ocg::redis_host": deployment-redis01.deployment-prep.eqiad.wmflabs
-"ocg::statsd_host": labmon1001.eqiad.wmnet
-"ocg::graylog_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
-"ocg::redis_password": '%{::passwords::redis::main_password}'
+profile::base::purge_apt_sources: true
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
@@ -14,11 +10,15 @@ service::configuration::restbase_uri: http://deployment-restbase02.deployment-pr
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
-citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
-citoid::zotero_port: 1969
-changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
-changeprop::ores_uri: http://deployment-sca03.deployment-prep.eqiad.wmflabs:8081
-graphoid::allowed_domains:
+profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
+profile::citoid::zotero_port: 1969
+profile::changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
+profile::changeprop::ores_uris: ['http://deployment-sca03.deployment-prep.eqiad.wmflabs:8081']
+profile::changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
+profile::changeprop::purge_port: 4827
+# Used to sync the setting between all Kafka clusters and clients.
+kafka_message_max_bytes: 4194304
+profile::graphoid::allowed_domains:
   http:
     - wmflabs.org
   https:
@@ -43,9 +43,9 @@ graphoid::allowed_domains:
     - wdqs-test.wmflabs.org
   geoshape:
     - maps.wikimedia.org
-graphoid::headers:
+profile::graphoid::headers:
   'Cache-Control': 'public, s-maxage=360, max-age=360'
-graphoid::error_headers:
+profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=30, max-age=30'
 lvs::configuration::lvs_services:
   apaches:
@@ -77,7 +77,6 @@ lvs::configuration::lvs_service_ips:
   mathoid: {}
   misc_web: {}
   mobile: {}
-  ocg: {}
   osm: {}
   parsoid: {}
   rendering: {}
@@ -88,78 +87,101 @@ lvs::configuration::lvs_service_ips:
   text: {}
   upload: {}
   zotero: {}
-cassandra::listen_address: '%{::ipaddress_eth0}'
-cassandra::rpc_address: '%{::ipaddress_eth0}'
-cassandra::seeds:
+# AQS
+aqs_hosts:
+  - deployment-aqs01.deployment-prep.eqiad.wmflabs
+  - deployment-aqs02.deployment-prep.eqiad.wmflabs
+  - deployment-aqs03.deployment-prep.eqiad.wmflabs
+aqs::cassandra_default_consistency: localOne
+# END AQS
+# Restbase (profile::restbase)
+profile::restbase::salt_key: secretkey
+profile::restbase::logging_label: restbase
+profile::restbase::cassandra_datacenters:
+    - "datacenter1"
+profile::restbase::cassandra_local_dc: "datacenter1"
+profile::restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
+profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
+profile::restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
+profile::restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
+profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
+profile::restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
+profile::restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
+profile::restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
+profile::restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
+profile::restbase::cxserver_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:8080
+profile::restbase::recommendation_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:9632
+
+profile::restbase::cassandra_user: cassandra
+profile::restbase::cassandra_password: cassandra
+profile::restbase::monitor_domain: en.wikipedia.org
+profile::restbase::cassandra_tls: {}
+profile::restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
-cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
-cassandra::target_version: '2.2'
-cassandra::metrics::graphite_host: labmon1001.eqiad.wmnet
-cassandra::additional_jvm_opts:
-  - '-javaagent:/srv/deployment/cassandra/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-SNAPSHOT.jar=7800:/etc/cassandra/jmx_exporter.yaml'
-restbase::seeds:
-  - 10.68.16.128 # deployment-restbase01
-  - 10.68.17.189 # deployment-restbase02
-# used for rate limiting
-restbase::hosts:
+profile::restbase::seeds:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
-restbase::config_template: restbase/config.labs.yaml.erb
-restbase::parsoid_uri: http://deployment-parsoid09.deployment-prep.eqiad.wmflabs:8000
-restbase::statsd_host: labmon1001.eqiad.wmnet
-restbase::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
-restbase::cassandra_default_consistency: localQuorum
-restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
-restbase::mobileapps_uri: http://deployment-mcs01.deployment-prep.eqiad.wmflabs:8888
-restbase::mathoid_uri: http://deployment-mathoid.deployment-prep.eqiad.wmflabs:10042
-restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
-restbase::eventlogging_service_uri: http://deployment-eventlogging04.deployment-prep.eqiad.wmflabs:8085/v1/events
-restbase::pdfrender_uri: http://deployment-pdfrender02.deployment-prep.eqiad.wmflabs:5252
-restbase::citoid_uri: http://deployment-sca02.deployment-prep.eqiad.wmflabs:1970
-restbase::trendingedits_uri: http://deployment-trending01.deployment-prep.eqiad.wmflabs:6699
-"mediawiki::log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
-"mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
+# Cassandra (profile::cassandra)
+graphite_host: labmon1001.eqiad.wmnet
+profile::cassandra::allow_analytics: false
+profile::cassandra::metrics_whitelist: false
+profile::cassandra::metrics_blacklist:
+    - .*\.metrics\.Table\..*$
+profile::cassandra::rack: rack1
+profile::cassandra::instances:
+  "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
+  "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
+profile::cassandra::settings:
+  listen_address: '%{::ipaddress}'
+  logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+  target_version: '2.2'
+  additional_jvm_opts:
+    - '-javaagent:/srv/deployment/prometheus/jmx_exporter/lib/jmx_prometheus_javaagent-0.8-20170117.190412-1.jar=7800:/etc/cassandra/prometheus_jmx_exporter.yaml'
+  default_instance_params:
+    rpc_address: '%{::ipaddress}'
+# end cassandra
+"udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
+"logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
+"logstash_syslog_port": 10514
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
-"varnish::packages::version": latest
+profile::memcached::version: 'present'
+profile::memcached::growth_factor: '1.05'
+profile::memcached::size: '3000'
+profile::memcached::extended_options:
+  - 'slab_reassign'
+profile::memcached::port: '11211'
+"profile::cache::base::packages_version": latest
 "keyholder::trusted_groups":
    - wikidev
 "profile::base::core_dump_pattern": '/data/project/cores/%{::hostname}-core.%h.%e.%p.%t'
 
-# T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
-#         causing slaves to be unreacheable.
-profile::base::ssh_server_settings:
-  disable_nist_kex: false
-  explicit_macs: false
-  disable_agent_forwarding: false
-  challenge_response_auth: false
-"role::apertium::apertium_port": 2737
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
-"cxserver::apertium": http://apertium-beta.wmflabs.org
+"profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
-"role::deployment::salt_masters::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
         pcre_cache_type: lru
-"mediawiki::jobrunner::queue_servers":
+        enable_reusable_tc: true
+profile::mediawiki::jobrunner::queue_servers:
     - deployment-redis01.deployment-prep.eqiad.wmflabs
-"mediawiki::jobrunner::aggr_servers":
+profile::mediawiki::jobrunner::aggr_servers:
     - deployment-redis01.deployment-prep.eqiad.wmflabs
-"mediawiki::jobrunner::statsd_server": labmon1001.eqiad.wmnet
-"mediawiki::jobrunner::runners_basic": 5
-"mediawiki::jobrunner::runners_gwt": 1
-"mediawiki::jobrunner::runners_translate": 1
-"mediawiki::jobrunner::runners_upload": 2
+statsd: labmon1001.eqiad.wmnet:8125
+profile::mediawiki::jobrunner::runners:
+  basic: 5
+  gwt: 1
+  translate: 1
+  upload: 2
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "beta::syncsiteresources::user": www-data
 "role::url_downloader::url_downloader_ip": 10.68.16.135 # deployment-urldownloader
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-tin.deployment-prep.eqiad.wmflabs
-"trebuchet::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 "scap::deployment_server": deployment-tin.deployment-prep.eqiad.wmflabs
 
 scap::dsh::scap_masters:
@@ -175,6 +197,7 @@ scap::dsh::groups:
             - deployment-tmh01.deployment-prep.eqiad.wmflabs
             - deployment-tin.deployment-prep.eqiad.wmflabs
             - deployment-mira.deployment-prep.eqiad.wmflabs
+            - deployment-videoscaler01.deployment-prep.eqiad.wmflabs
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki04.deployment-prep.eqiad.wmflabs
@@ -184,30 +207,55 @@ scap::dsh::groups:
         hosts:
           - deployment-restbase01.deployment-prep.eqiad.wmflabs
           - deployment-restbase02.deployment-prep.eqiad.wmflabs
-"mediawiki::users::mwdeploy_pub_key": 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFwlmBBBJAr1GI+vuYjFh5vq0YIVa5fqE5DZdpzUZISlQ0Kt+9bIr2qNHIj+Jl5Bc6ZY1mkh8l693tAHVx+8tayoiFWYNs9IVsxR+iHgOOhAdDIBXaHaUattdiye5bQmdvJVXaVegckNX2gbmUCOc09jvZvlk3blKFTSEpZRU8dmpXQzKdZgaAq2VTajAegoFnuN9FbC7hzBPA+1NxFNKn94eIeFPSlo5rWr44OEb5Uy3O0B5c6WPM+IgfiygetP+yGL4cKv7qEjZ0Sxok/Rh1lBh1vP1YQ/Mc6tMV0s+kOv7Wz+P88bfU1/uWvy479OZdfh3NQqDTrLzqHwVW1vef root@deployment-salt'
+
+"profile::etcd::tlsproxy::read_only": false
+
 # NOTE: these elasticsearch settings will need to be overloaded on a per-host
 # basis for the Logstash Elasticsearch cluster.
-"elasticsearch::version": 2
-"elasticsearch::expected_nodes": 3
-"elasticsearch::minimum_master_nodes": 2
-"elasticsearch::heap_memory": 4G
-"elasticsearch::recover_after_nodes": 3
-"elasticsearch::statsd_host": labmon1001.eqiad.wmnet
-"elasticsearch::unicast_hosts":
+"profile::elasticsearch::expected_nodes": 3
+"profile::elasticsearch::minimum_master_nodes": 2
+"profile::elasticsearch::heap_memory": 4G
+"profile::elasticsearch::recover_after_nodes": 3
+"profile::elasticsearch::bulk_thread_pool_executors": 5
+"profile::elasticsearch::ferm_srange": ''
+"profile::elasticsearch::awareness_attributes": ''
+"profile::elasticsearch::rack": ''
+"profile::elasticsearch::row": ''
+"profile::elasticsearch::unicast_hosts":
+    - deployment-elastic05.deployment-prep.eqiad.wmflabs
+    - deployment-elastic06.deployment-prep.eqiad.wmflabs
+    - deployment-elastic07.deployment-prep.eqiad.wmflabs
+"profile::elasticsearch::cluster_hosts":
     - deployment-elastic05
     - deployment-elastic06
     - deployment-elastic07
-"elasticsearch::cluster_name": beta-search
-"elasticsearch::graylog_hosts":
+"profile::elasticsearch::cluster_name": beta-search
+"profile::elasticsearch::graylog_hosts":
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
+"profile::elasticsearch::reindex_remote_whitelist": ''
+profile::elasticsearch::search_shard_count_limit: 1000
+# By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
+# which works out to 49 for our servers. When search is stalled on IO it makes sense
+# to have more threads than cores, but we never see our servers stalled out on IO.
+# We have seen (T169498) servers completely exhaust their CPU though, so setting
+# this to match cpu counts to prevent overcommit of CPU resources.
+profile::elasticsearch::search_thread_pool_executors: 4
+
+profile::elasticsearch::storage_device: dm-0
+
 role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
-"mediawiki::redis_servers::eqiad":
-  shard01:
-    host: 10.68.16.177 # deployment-redis01
-    port: 6379
-  shard02:
-    host: 10.68.16.231 # deployment-redis02
-    port: 6379
+role::logstash::apifeatureusage::elastic_hosts:
+  - deployment-logstash2.deployment-prep.eqiad.wmflabs
+"redis::shards":
+  jobqueue: &labs_shards
+    eqiad:
+      shard01:
+        host: 10.68.16.177 # deployment-redis01
+        port: 6379
+      shard02:
+        host: 10.68.16.231 # deployment-redis02
+        port: 6379
+  sessions: *labs_shards
 nfs_mounts:
   project: false
   home: false
@@ -242,6 +290,8 @@ scap::keyholder_agents:
 # by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
+  3d2png/deploy:
+    repository: 3d2png/deploy
 
   phabricator/deployment:
     repository: phabricator/deployment
@@ -260,5 +310,54 @@ scap::sources:
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy
+
+  # IEG grant review
+  iegreview/iegreview:
+    repository: iegreview
+    origin: phabricator
+
+  jobrunner/jobrunner:
+    repository: mediawiki/services/jobrunner
+
+  # RESTBase
+  restbase/deploy: {}
+
+  # Recommendation API
+  recommendation-api/deploy: {}
+
+  # Cassandra metrics collection
+  cassandra/metrics-collector:
+    repository: operations/software/cassandra-metrics-collector
+
+  # Cassandra logback encoder for Logstash
+  cassandra/logstash-logback-encoder:
+    repository: operations/software/logstash-logback-encoder
+
+  # Prometheus JMX exporter
+  prometheus/jmx_exporter:
+    repository: operations/software/prometheus_jmx_exporter
+
+  # Wikimania scholarships app
+  scholarships/scholarships:
+    repository: wikimedia/wikimania-scholarships
+
 prometheus_nodes:
   - deployment-prometheus01.deployment-prep.eqiad.wmflabs
+profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
+
+# Eventstreams config
+profile::eventstreams::kafka_cluster_name: main
+profile::eventstreams::streams:
+  test:
+    topics: ["%{::site}.test.event"]
+  revision-create:
+    topics: ["%{::site}.mediawiki.revision-create"]
+  recentchange:
+    topics: ["%{::site}.mediawiki.recentchange"]
+profile::eventstreams::rdkafka_config: {}
+
+thumbor::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+thumbor::logstash_port: 11514
+
+cache::be_transient_gb: 0
+cache::fe_transient_gb: 0

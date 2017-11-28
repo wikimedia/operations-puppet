@@ -1,0 +1,29 @@
+<%-
+# All labels / targets list
+all = []
+
+
+# Find all hosts in the current site, grouped by cluster
+@site_clusters.each do |cluster, val|
+  cluster_hosts = val[@site].select { |host| @resources.include?(host) }
+  if cluster_hosts.length > 0
+    # For each host found, accumulate the resources we found for it into
+    # targets in the title:port form.
+    targets = []
+    cluster_hosts.each{ |host|
+      @resources[host].each{ |instance|
+        targets.push("#{instance['parameters']['hostname']}:#{instance['parameters']['port']}")
+      }
+    }
+
+    all.push(
+      {
+        'labels' => @labels.merge({'cluster' => cluster}),
+        'targets' => targets,
+      }
+    )
+  end
+end
+-%>
+# This file is managed by puppet
+<%= scope.function_ordered_yaml([all]) %>

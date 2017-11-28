@@ -1,3 +1,5 @@
+# This file is managed by puppet
+
 # -*- python -*-
 
 # Copyright (C) 1998,1999,2000 by the Free Software Foundation, Inc.
@@ -80,6 +82,13 @@ DEFAULT_SEND_REMINDERS = 0
 # MTA=None   # Misnomer, suppresses alias output on newlist
 MTA = None
 
+# If SpamAssassin has run before the message is received by mailman, reject
+# at least the most egregious spam identified. Further tailoring per list:
+# https://wikitech.wikimedia.org/wiki/Mailman#Spam_scores
+DEFAULT_BOUNCE_MATCHING_HEADERS = """
+X-Spam-Score:[^+]*[+]{6,}
+"""
+
 # Uncomment if you use Postfix virtual domains, but be sure to
 # read /usr/share/doc/mailman/README.POSTFIX first.
 # MTA='Postfix'
@@ -125,3 +134,13 @@ RESPONSE_INCLUDE_LEVEL = 0
 # set a secret to be included in HTML subscription forms to help
 # with bots subscription
 SUBSCRIBE_FORM_SECRET = open('/etc/machine-id', 'r').readline().rstrip()
+
+# Default action for posts whose From: address domain has a DMARC policy of
+# reject or quarantine.  See DEFAULT_FROM_IS_LIST below.  Whatever is set as
+# the default here precludes the list owner from setting a lower value.
+# 0 = Accept
+# 1 = Munge From
+# 2 = Wrap Message
+# 3 = Reject
+# 4 = Discard
+DEFAULT_DMARC_MODERATION_ACTION = 1

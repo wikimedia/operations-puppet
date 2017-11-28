@@ -1,4 +1,0 @@
-debdeploy::grains:
-  debdeploy-planet:
-    value: standard
-cluster: misc

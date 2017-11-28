@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "eslint .",
+    "fix": "eslint --fix ."
+  },
+  "engines": {
+    "node": ">=6.4.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "3.16.1",
+    "eslint-config-wikimedia": "0.3.0"
+  }
+}

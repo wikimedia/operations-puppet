@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Disable puppet and ensure it's not running before returning
+#
+MESSAGE=${1:-"Disabled by disable-puppet"}
+ATTEMPTS=${2:-30}
+
+# shellcheck disable=SC1091
+. /usr/local/share/bash/puppet-common.sh
+
+# This will NOT overwrite an existing message, if already disabled
+puppet agent --disable "$MESSAGE"
+
+# Do not return until puppet has finished running
+wait_for_puppet "$ATTEMPTS"
+exit $?

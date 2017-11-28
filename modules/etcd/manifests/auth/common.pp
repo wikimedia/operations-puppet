@@ -6,11 +6,7 @@ class etcd::auth::common($root_password, $active = true) {
     require ::etcd::client::globalconfig
 
     file { '/usr/local/bin/etcd-manage':
-        ensure => present,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-        source => 'puppet:///modules/etcd/etcd-manage',
+        ensure => absent,
     }
 
     if $active {

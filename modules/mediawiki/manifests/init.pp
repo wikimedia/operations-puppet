@@ -20,9 +20,6 @@ class mediawiki (
     $forward_syslog = undef,
     ) {
 
-    # Simplicity over support: precise is going out of support in April 2017 anyways
-    requires_os('ubuntu >= trusty || Debian >= jessie')
-
     include ::mediawiki::cgroup
     include ::mediawiki::packages
     include ::mediawiki::scap
@@ -35,8 +32,7 @@ class mediawiki (
 
     # This profile is used to contain the convert command of imagemagick using
     # firejail Profiles specific to the image/video scalers are handled via
-    # mediawiki::firejail, but imagemagick is also used on the general purpose
-    # appscalers for scaling musical typesheets in the Score extension
+    # mediawiki::firejail
     file { '/etc/firejail/mediawiki-imagemagick.profile':
         source  => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
         owner   => 'root',
@@ -66,10 +62,25 @@ class mediawiki (
         mode   => '0555',
     }
 
-    # We've set the 'php' grain in the past, but we don't really need it anymore
-    salt::grain { 'php':
-        ensure => absent,
-        value  => 'hhvm',
+    file { '/usr/local/bin/mediawiki-firejail-lilypond':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-lilypond',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-abc2ly':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-abc2ly',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/mediawiki-firejail-timidity':
+        source => 'puppet:///modules/mediawiki/mediawiki-firejail-timidity',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     # /var/log/mediawiki contains log files for the MediaWiki jobrunner

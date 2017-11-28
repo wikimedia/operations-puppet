@@ -1,4 +1,3 @@
-druid::use_cdh: true
 druid::properties:
   druid.metadata.storage.type: mysql
   druid.metadata.storage.connector.host: analytics1003.eqiad.wmnet

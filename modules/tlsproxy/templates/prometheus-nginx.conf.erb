@@ -1,0 +1,41 @@
+# See https://github.com/openresty/lua-nginx-module
+
+lua_shared_dict prometheus_status_codes 10M;
+
+log_by_lua_block {
+    local global_count = ngx.shared.prometheus_status_codes
+
+    local newval, err = global_count:incr(ngx.var.status, 1)
+
+    if not newval and err == "not found" then
+        global_count:set(ngx.var.status, 1)
+    end
+}
+
+server {
+    listen 9145;
+    allow 127.0.0.1;
+<% @prometheus_nodes.each do |node| -%>
+    allow <%= scope.function_ipresolve([node]) %>;
+<% end -%>
+    deny all;
+    location /metrics {
+        content_by_lua_block {
+            local server_status_codes = ngx.shared.prometheus_status_codes
+            local keys = server_status_codes:get_keys(0)
+
+            table.sort(keys)
+
+            ngx.say("# HELP nginx_http_requests_total Number of HTTP requests")
+            ngx.say("# TYPE nginx_http_requests_total counter")
+
+            for _, key in ipairs(keys) do
+                local label = "nginx_http_requests_total{status=\"" ..  key .. "\"}"
+                local value = server_status_codes:get(key)
+
+                ngx.say(label .. " " .. value)
+            end
+
+        }
+    }
+}

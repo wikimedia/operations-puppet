@@ -1,0 +1,14 @@
+<% @discovery_services.keys.sort.each do |svc| -%>
+discovery-state-<%= svc %> => {
+    plugin => extfile,
+    file   => /var/lib/gdnsd/discovery-<%= svc %>.state,
+    direct => true,
+}
+
+<% end -%>
+
+discovery-state-failoid => {
+    plugin => static,
+    state => UP,
+    ttl => 10,
+}

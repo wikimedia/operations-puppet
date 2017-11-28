@@ -31,5 +31,4 @@ describe 'osm::planet_sync', :type => :define do
             it { should contain_file('/usr/local/bin/replicate-osm').with_content(/--input-reader xml/) }
         end
     end
-
 end

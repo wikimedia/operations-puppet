@@ -33,7 +33,7 @@ parser.add_argument('config', nargs='?', default='/etc/xenon-log.yaml')
 args = parser.parse_args()
 
 with open(args.config) as f:
-    config = yaml.load(f)
+    config = yaml.safe_load(f)
 
 
 class TimeLog(object):

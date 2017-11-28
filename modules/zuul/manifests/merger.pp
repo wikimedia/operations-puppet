@@ -48,23 +48,25 @@ class zuul::merger (
     }
 
     file { '/var/lib/zuul/.ssh/id_rsa':
-        ensure  => present,
-        owner   => 'zuul',
-        group   => 'zuul',
-        mode    => '0400',
-        content => secret($gerrit_ssh_key_file),
-        require => [
+        ensure    => present,
+        owner     => 'zuul',
+        group     => 'zuul',
+        mode      => '0400',
+        content   => secret($gerrit_ssh_key_file),
+        show_diff => false,
+        require   => [
             User['zuul'],
             File['/var/lib/zuul/.ssh'],
         ],
     }
 
     # Configuration file for the zuul merger
-    zuul::configfile { '/etc/zuul/zuul-merger.conf':
-        zuul_role => 'merger',
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0444',
+    $zuul_role = 'merger'
+    file { '/etc/zuul/zuul-merger.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('zuul/zuul.conf.erb'),
     }
 
     file { '/etc/default/zuul-merger':
@@ -83,8 +85,7 @@ class zuul::merger (
 
     base::service_unit { 'zuul-merger':
         ensure    => present,
-        sysvinit  => false,
-        systemd   => true,
+        systemd   => systemd_template('zuul-merger'),
         subscribe => File['/etc/zuul/zuul-merger.conf'],
         require   => [
             File['/etc/default/zuul-merger'],

@@ -24,11 +24,6 @@ class phabricator::phd (
         recurse => true,
     }
 
-    file { '/etc/init.d/phd':
-        ensure => 'link',
-        target => "${basedir}/phabricator/bin/phd",
-    }
-
     file { '/var/run/phd':
         ensure => directory,
         owner  => 'phd',

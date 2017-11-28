@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe 'install_server::tftp_server', :type => :class do
-
     it { should compile }
-
     it { should contain_package('atftpd').with_ensure('present') }
 
     it do
@@ -16,10 +14,10 @@ describe 'install_server::tftp_server', :type => :class do
 
     it do
         should contain_file('/srv/tftpboot').with({
-            'mode'   => '0444',
-            'owner'  => 'root',
-            'group'  => 'root',
-            'recurse'  => 'remote',
+            'mode'    => '0444',
+            'owner'   => 'root',
+            'group'   => 'root',
+            'recurse' => 'remote',
         })
     end
 end

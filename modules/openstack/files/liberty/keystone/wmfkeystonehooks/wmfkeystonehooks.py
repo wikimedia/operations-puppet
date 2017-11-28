@@ -12,7 +12,6 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-
 from keystoneclient.auth.identity import generic
 from keystoneclient import session as keystone_session
 from keystone.common import dependency
@@ -33,6 +32,8 @@ from keystone.resource import schema
 from keystone import notifications
 from keystone.i18n import _
 
+import ldapgroups
+import pageeditor
 
 LOG = logging.getLogger('nova.%s' % __name__)
 
@@ -58,14 +59,21 @@ wmfkeystone_opts = [
     cfg.StrOpt('admin_role_name',
                default='projectadmin',
                help='Name of project-local admin role'),
-    cfg.MultiStrOpt('eventtype_whitelist',
-                    default=['identity.project.deleted', 'identity.project.created'],
-                    help='Event types to always handle.'),
-    cfg.MultiStrOpt('eventtype_blacklist',
-                    default=[],
-                    help='Event types to always ignore.'
-                    'In the event of a conflict, '
-                    'this overrides the whitelist.')
+    cfg.StrOpt('ldap_base_dn',
+               default='dc=wikimedia,dc=org',
+               help='ldap dn for posix groups'),
+    cfg.StrOpt('ldap_group_base_dn',
+               default='ou=groups,dc=wikimedia,dc=org',
+               help='ldap dn for posix groups'),
+    cfg.StrOpt('ldap_user_base_dn',
+               default='ou=people,dc=wikimedia,dc=org',
+               help='ldap dn for user accounts'),
+    cfg.StrOpt('ldap_project_base_dn',
+               default='ou=projects,dc=wikimedia,dc=org',
+               help='ldap dn for project records'),
+    cfg.IntOpt('minimum_gid_number',
+               default=40000,
+               help='Starting gid number for posix groups'),
     ]
 
 
@@ -78,20 +86,62 @@ class KeystoneHooks(notifier._Driver):
     """Notifier class which handles extra project creation/deletion bits
     """
     def __init__(self, conf, topics, transport, version=1.0):
-        pass
+        self.page_editor = pageeditor.PageEditor()
 
-    def _on_project_delete(self, project_id):
-        LOG.warning("Beginning wmf hooks for project deletion: %s" % project_id)
-
-    def _on_project_create(self, project_id):
-
-        LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
-
+    def _get_role_dict(self):
         rolelist = self.role_api.list_roles()
         roledict = {}
         # Make a dict to relate role names to ids
         for role in rolelist:
             roledict[role['name']] = role['id']
+
+        return roledict
+
+    def _get_current_assignments(self, project_id):
+        reverseroledict = dict((v, k) for k, v in self._get_role_dict().iteritems())
+
+        rawassignments = self.assignment_api.list_role_assignments(project_id=project_id)
+        assignments = {}
+        for assignment in rawassignments:
+            rolename = reverseroledict[assignment["role_id"]]
+            if rolename not in assignments:
+                assignments[rolename] = set()
+            assignments[rolename].add(assignment["user_id"])
+        return assignments
+
+    # There are a bunch of different events which might update project membership,
+    #  and the generic 'identity.projectupdated' comes in the wrong order.  So
+    #  we're probably going to wind up getting called several times in quick succession,
+    #  possible in overlapping invocations.  Watch out for race conditions!
+    def _on_member_update(self, project_id, assignments=None):
+        if not assignments:
+            assignments = self._get_current_assignments(project_id)
+        ldapgroups.sync_ldap_project_group(project_id, assignments)
+
+    def _on_project_delete(self, project_id):
+        ldapgroups.delete_ldap_project_group(project_id)
+        self.page_editor.edit_page("", project_id, True)
+
+    def _create_project_page(self, project_id):
+        # Create wikitech project page
+        resource_name = project_id
+        template_param_dict = {}
+        template_param_dict['Resource Type'] = 'project'
+        template_param_dict['Project Name'] = project_id
+
+        fields_string = ""
+        for key in template_param_dict:
+            fields_string += "\n|%s=%s" % (key, template_param_dict[key])
+
+        self.page_editor.edit_page(fields_string, resource_name, False,
+                                   template='Nova Resource')
+
+    def _on_project_create(self, project_id):
+
+        LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
+
+        roledict = self._get_role_dict()
+
         if CONF.wmfhooks.observer_role_name not in roledict.keys():
             LOG.error("Failed to find id for role %s" % CONF.wmfhooks.observer_role_name)
             raise exception.NotImplemented()
@@ -121,7 +171,7 @@ class KeystoneHooks(notifier._Driver):
             project_domain_name='Default',
             project_name=project_id)
         session = keystone_session.Session(auth=auth)
-        client = nova_client.Client('2', session=session)
+        client = nova_client.Client('2', session=session, connect_retries=5)
         allgroups = client.security_groups.list()
         defaultgroup = filter(lambda group: group.name == 'default', allgroups)
         if defaultgroup:
@@ -182,6 +232,13 @@ class KeystoneHooks(notifier._Driver):
         else:
             LOG.warning("Failed to find default security group in new project.")
 
+        assignments = self._get_current_assignments(project_id)
+        ldapgroups.sync_ldap_project_group(project_id, assignments)
+
+        # Set up default sudoers in ldap
+        ldapgroups.create_sudo_defaults(project_id)
+        self._create_project_page(project_id)
+
     def notify(self, context, message, priority, retry=False):
         event_type = message.get('event_type')
 
@@ -191,13 +248,30 @@ class KeystoneHooks(notifier._Driver):
         if event_type == 'identity.project.created':
             self._on_project_create(message['payload']['resource_info'])
 
-        # Eventually this will be used to update project resource pages:
-        if event_type in CONF.wmfhooks.eventtype_blacklist:
-            return
-        if event_type not in CONF.wmfhooks.eventtype_whitelist:
-            return
+        if event_type == 'identity.role_assignment.created':
+            project_id = message['payload']['project']
+            self._on_member_update(project_id)
 
-        return
+        if event_type == 'identity.role_assignment.deleted':
+            project_id = message['payload']['project']
+            # This is a weird special case... Keystone is dumb and
+            #  emits the notification /before/ updating the DB, so we have
+            #  to explicitly update our role list.  This is fixed
+            #  in release 'ocata' with https://review.openstack.org/#/c/401332/
+            assignments = self._get_current_assignments(project_id)
+            role = message['payload']['role']
+            user = message['payload']['user']
+            roledict = self._get_role_dict()
+            for name in roledict.keys():
+                if role == roledict[name]:
+                    if user in assignments[name]:
+                        assignments[name].remove(user)
+                        LOG.warning("Keystone bug workaround:  Explicitly "
+                                    "removing %s from role %s, project %s"
+                                    % (user, role, project_id))
+                    break
+
+            self._on_member_update(project_id, assignments)
 
 
 # HACK ALERT

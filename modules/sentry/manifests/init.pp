@@ -37,7 +37,7 @@ class sentry (
 
     require sentry::packages
 
-    redis::instance { 6379: }
+    redis::instance { '6379': }
 
     git::clone { 'operations/software/sentry':
         ensure    => latest,
@@ -108,14 +108,16 @@ class sentry (
         require => Exec['initialize_sentry_database'],
     }
 
-    base::service_unit { 'sentry-worker':
-        systemd   => true,
+    systemd::service { 'sentry-worker':
+        content   => systemd_template('sentry-worker'),
+        restart   => true,
         subscribe => File['/etc/sentry.conf.py'],
         require   => Exec['initialize_sentry_database'],
     }
 
+    # TODO: convert to systemd::service
     base::service_unit { 'sentry':
-        systemd   => true,
+        systemd   => systemd_template('sentry'),
         subscribe => File['/etc/sentry.conf.py'],
         require   => Base::Service_unit['sentry-worker'],
     }

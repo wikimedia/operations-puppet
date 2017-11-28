@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-etcd-codfw:
-    value: standard
 profile::etcd::replication::origin:
   cluster_name: eqiad.wmnet
   path: /conftool
@@ -8,6 +5,8 @@ profile::etcd::replication::origin:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
     - conf1003.eqiad.wmnet
-profile::etcd::replication::destination_path: /eqiad.wmnet/conftool
+profile::etcd::replication::destination_path: /conftool
 # only conf2002 is active
 profile::etcd::replication::active: false
+profile::etcd::tlsproxy::read_only: true
+profile::zookeeper::cluster_name: main-codfw

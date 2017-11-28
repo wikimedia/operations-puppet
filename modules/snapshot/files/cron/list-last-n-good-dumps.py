@@ -34,28 +34,46 @@ class WikiConfig(object):
     path to list of all wikis, one per line"""
     def __init__(self, configfile):
         home = os.path.dirname(sys.argv[0])
+        overrides = None
+        if ':' in configfile:
+            configfile, overrides = configfile.split(':', 1)
         files = [
             os.path.join(home, configfile),
             "/etc/wikidump.conf",
             os.path.join(os.getenv("HOME"), ".wikidump.conf")]
-        defaults = {
+        self.defaults = {
             # "wiki": {
             "dblist": "/dumps/all.dblist",
             # "output": {
             "public": "/dumps/public",
             "temp": "/dumps/temp",
         }
-        self.conf = ConfigParser.SafeConfigParser(defaults)
+        self.conf = ConfigParser.SafeConfigParser()
         self.conf.read(files)
         if not self.conf.has_section('output'):
             self.conf.add_section('output')
         if not self.conf.has_section('wiki'):
             self.conf.add_section('wiki')
-        self.public_dir = self.conf.get("output", "public")
-        self.temp_dir = self.conf.get("output", "temp")
-        db_list = sorted([db.strip() for db in open(
-            self.conf.get("wiki", "dblist")).readlines()])
+
+        self.public_dir = self.get_with_overrides("output", "public", overrides)
+        self.temp_dir = self.get_with_overrides("output", "temp", overrides)
+        dblist_path = self.get_with_overrides("wiki", "dblist", overrides)
+
+        db_list = sorted([db.strip() for db in open(dblist_path).readlines()])
         self.db_list = [dbname for dbname in db_list if dbname]
+
+    def get_with_overrides(self, section, setting, overrides):
+        """
+        get setting from config file, checking overrides first for
+        setting, falling back to section otherwise
+        """
+        if (overrides and self.conf.has_section(overrides) and
+                self.conf.has_option(overrides, setting)):
+            return self.conf.get(overrides, setting)
+        elif self.conf.has_option(section, setting):
+            return self.conf.get(section, setting)
+        else:
+            return self.defaults[setting]
 
 
 def get_projectlist_copy_fname():

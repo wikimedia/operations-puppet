@@ -3,7 +3,9 @@
 # * relevant cert expirary is monitored in
 #   icinga::monitor::certs
 
-class icinga::monitor::toollabs {
+class icinga::monitor::toollabs (
+    $critical = true,
+) {
 
     # toolserver.org (redirect page to Tool Labs)
     @monitoring::host { 'www.toolserver.org':
@@ -59,7 +61,7 @@ class icinga::monitor::toollabs {
         description   => 'toolschecker service itself needs to return OK',
         check_command => "${checker}!/self!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => $critical,
     }
 
     monitoring::service { 'tools-checker-dumps':
@@ -78,7 +80,7 @@ class icinga::monitor::toollabs {
         description   => 'Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => $critical,
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
@@ -91,13 +93,13 @@ class icinga::monitor::toollabs {
         description   => 'NFS read/writeable on labs instances',
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
-        critical      => true,
+        critical      => $critical,
     }
 
     # new instances will block on this for spinup if failing
     monitoring::service { 'tools-checker-nfs-showmount':
         description   => 'showmount succeeds on a labs instance',
-        check_command => "${checker}!/nfs/showmount!OK",
+        check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
         host          => $test_entry_host,
     }
 
@@ -112,14 +114,6 @@ class icinga::monitor::toollabs {
     monitoring::service { 'tools-checker-grid-start-trusty':
         description    => 'Start a job and verify on Trusty',
         check_command  => "${checker}!/grid/start/trusty!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-    }
-
-    monitoring::service { 'tools-checker-grid-start-precise':
-        description    => 'Start a job and verify on Precise',
-        check_command  => "${checker}!/grid/start/precise!OK",
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,

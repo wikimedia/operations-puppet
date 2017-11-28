@@ -1,0 +1,24 @@
+##############################
+# This file is maintained by puppet!
+# modules/dumps/files/web/htmldumps/nginx.conf
+##############################
+
+limit_conn_zone $binary_remote_addr zone=addr:10m;
+
+server {
+   listen 80;
+   server_name <%= @htmldumps_server %>;
+
+   root /srv/www;
+
+   location / {
+      index index.html index.htm;
+      autoindex on;
+      charset utf-8;
+# disable these for now since we have limits on the proxy
+#      limit_rate 2048k;
+#      limit_rate_after 1m;
+#      limit_conn addr 3;
+   }
+
+}

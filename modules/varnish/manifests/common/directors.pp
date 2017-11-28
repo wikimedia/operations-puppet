@@ -20,6 +20,8 @@ define varnish::common::directors(
     # usual old trick
     $group = hiera('cluster', $::cluster)
 
+    $varnish_version = $::varnish::common::varnish_version
+
     # https://bibwild.wordpress.com/2012/04/12/ruby-hash-select-1-8-7-and-1-9-3-simultaneously-compatible/
     $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc']}/#{@group}/#{v['service']}\" }.join('|') %>")
     $keyspaces = sort(unique(split($keyspaces_str, '\|')))

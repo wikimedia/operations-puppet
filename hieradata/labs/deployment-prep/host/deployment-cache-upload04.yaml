@@ -1,0 +1,7 @@
+profile::cache::base::varnish_version: 5
+nginx::variant: extras
+cache::lua_support: true
+cluster: cache_text
+"cache::cluster": upload
+"profile::cache::ssl::unified::le_subjects":
+    - upload.beta.wmflabs.org

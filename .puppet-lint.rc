@@ -1,6 +1,8 @@
 # WONTFIX - We want at least 100.
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
+# even longer lines are also around
+--no-140chars-check
 
 # T127797 - needs at least one comment line for each class
 --no-documentation-check

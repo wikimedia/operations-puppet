@@ -1,10 +1,10 @@
 # == Class role::logging::mediawiki::errors
-# fluorine's udp2log instance forwards MediaWiki exceptions and fatals
+# udp2log on mwlog hosts forward MediaWiki exceptions and fatals
 # to eventlog*, as configured in templates/udp2log/filters.mw.erb. This
 # role provisions a metric module that reports error counts to StatsD.
 #
 class role::logging::mediawiki::errors {
-    system::role { 'role::logging::mediawiki::errors':
+    system::role { 'logging::mediawiki::errors':
         description => 'Report MediaWiki exceptions and fatals to StatsD',
     }
 
@@ -13,6 +13,6 @@ class role::logging::mediawiki::errors {
     ferm::service { 'mediawiki-exceptions-logging':
         proto  => 'udp',
         port   => '8423',
-        srange => '@resolve((fluorine.eqiad.wmnet mwlog1001.eqiad.wmnet mwlog2001.codfw.wmnet))',
+        srange => '@resolve((mwlog1001.eqiad.wmnet mwlog2001.codfw.wmnet))',
     }
 }

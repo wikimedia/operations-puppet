@@ -3,7 +3,7 @@ class role::postgres::slave {
     include ::postgresql::postgis
     include ::passwords::postgres
 
-    system::role { 'role::postgres::slave':
+    system::role { 'postgres::slave':
         ensure      => 'present',
         description => 'Postgres db slave',
     }

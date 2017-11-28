@@ -1,4 +1,8 @@
-class snapshot::dumps::dirs {
+class snapshot::dumps::dirs(
+    $user = undef,
+    $xmldumpsmount = undef,
+    $miscdumpsmount = undef,
+) {
     $dumpsdir = '/etc/dumps'
     file { $dumpsdir:
       ensure => 'directory',
@@ -8,7 +12,10 @@ class snapshot::dumps::dirs {
       group  => 'root',
     }
 
-    $datadir = '/mnt/data/xmldatadumps'
+    $miscdumpsdir = "${miscdumpsmount}/xmldatadumps"
+    $xmldumpsdir = "${xmldumpsmount}/xmldatadumps"
+    $cronsdir = "${xmldumpsmount}/otherdumps"
+
     $apachedir = '/srv/mediawiki'
     $confsdir = "${dumpsdir}/confs"
 
@@ -43,7 +50,7 @@ class snapshot::dumps::dirs {
       ensure => 'directory',
       path   => $cachedir,
       mode   => '0755',
-      owner  => 'datasets',
+      owner  => $user,
       group  => 'root',
     }
 
@@ -56,6 +63,8 @@ class snapshot::dumps::dirs {
       group  => 'root',
     }
 
+    $otherdir = "${miscdumpsdir}/public/other"
+
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 
     file { '/usr/local/etc/set_dump_dirs.sh':
@@ -66,5 +75,4 @@ class snapshot::dumps::dirs {
         group   => 'root',
         content => template('snapshot/set_dump_dirs.sh.erb'),
     }
-
 }

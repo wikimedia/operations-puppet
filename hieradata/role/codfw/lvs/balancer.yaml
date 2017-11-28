@@ -1,5 +1,10 @@
-debdeploy::grains:
-  debdeploy-lvs-codfw:
-    value: standard
-pybal::configuration::config: etcd
-pybal::configuration::config_host: conf1001.eqiad.wmnet
+profile::pybal::config_host: conf2001.codfw.wmnet
+profile::lvs::tagged_subnets:
+  - private1-a-codfw
+  - private1-b-codfw
+  - private1-c-codfw
+  - private1-d-codfw
+  - public1-a-codfw
+  - public1-b-codfw
+  - public1-c-codfw
+  - public1-d-codfw

@@ -1,5 +1,10 @@
-debdeploy::grains:
-  debdeploy-lvs-eqiad:
-    value: standard
-pybal::configuration::config: etcd
-pybal::configuration::config_host: conf1002.eqiad.wmnet
+profile::pybal::config_host: conf1001.eqiad.wmnet
+profile::lvs::tagged_subnets:
+  - private1-a-eqiad
+  - private1-b-eqiad
+  - private1-c-eqiad
+  - private1-d-eqiad
+  - public1-a-eqiad
+  - public1-b-eqiad
+  - public1-c-eqiad
+  - public1-d-eqiad

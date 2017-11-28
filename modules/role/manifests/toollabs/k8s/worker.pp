@@ -1,11 +1,8 @@
 # filtertags: labs-project-tools
 class role::toollabs::k8s::worker {
-    # NOTE: No ::base::firewall!
-    # ferm and kube-proxy will conflict
     include ::toollabs::infrastructure
 
-    $master_host = hiera('k8s::master_host')
-    $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
+    $flannel_etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts'), ':2379'), 'https://'), ',')
 
     ferm::service { 'flannel-vxlan':
         proto => udp,
@@ -13,7 +10,7 @@ class role::toollabs::k8s::worker {
     }
 
     class { '::k8s::flannel':
-        etcd_endpoints => $etcd_url,
+        etcd_endpoints => $flannel_etcd_url,
     }
 
     $docker_version = '1.12.6-0~debian-jessie'
@@ -40,19 +37,9 @@ class role::toollabs::k8s::worker {
     }
 
 
-    class { '::k8s::ssl':
-        provide_private => true,
-        notify          => Class['k8s::kubelet'],
-    }
-
-    class { '::k8s::kubelet':
-        master_host => $master_host,
-        require     => Class[::profile::docker::flannel],
-        use_package => true,
-    }
-
-    class { '::k8s::proxy':
-        master_host => $master_host,
-        use_package => true,
+    class { '::profile::kubernetes::node':
+        use_cni   => false,
+        infra_pod => 'docker-registry.tools.wmflabs.org/pause:2.0',
+        require   => Class[::profile::docker::flannel],
     }
 }

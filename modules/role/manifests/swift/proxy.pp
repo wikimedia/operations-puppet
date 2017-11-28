@@ -2,7 +2,7 @@
 class role::swift::proxy (
     $use_tls = hiera('role::swift::proxy::use_tls', false),
 ) {
-    system::role { 'role::swift::proxy':
+    system::role { 'swift::proxy':
         description => 'swift frontend proxy',
     }
 
@@ -52,32 +52,34 @@ class role::swift::proxy (
         port    => '80',
     }
 
-    ferm::service { 'swift-object-server':
+    ferm::client { 'swift-object-server-client':
         proto   => 'tcp',
         notrack => true,
         port    => '6000',
     }
 
-    ferm::service { 'swift-container-server':
+    ferm::client { 'swift-container-server-client':
         proto   => 'tcp',
         notrack => true,
         port    => '6001',
     }
 
-    ferm::service { 'swift-account-server':
+    ferm::client { 'swift-account-server-client':
         proto   => 'tcp',
         notrack => true,
         port    => '6002',
     }
 
+    $swift_backends = hiera('swift::storagehosts')
     $swift_frontends = hiera('swift::proxyhosts')
-    $swift_frontends_ferm = join($swift_frontends, ' ')
+    $swift_access = concat($swift_backends, $swift_frontends)
+    $swift_access_ferm = join($swift_access, ' ')
 
     ferm::service { 'swift-memcached':
         proto   => 'tcp',
         port    => '11211',
         notrack => true,
-        srange  => "@resolve((${swift_frontends_ferm}))",
+        srange  => "@resolve((${swift_access_ferm}))",
     }
 
     monitoring::service { 'swift-http-frontend':

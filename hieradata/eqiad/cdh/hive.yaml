@@ -1,8 +1,0 @@
-#
-# Analytics Cluster Hive Configuration
-#
-cdh::hive::metastore_host: analytics1003.eqiad.wmnet
-
-# The WMF webrequest table uses HCatalog's JSON Serde.
-# Automatically include this in Hive client classpaths.
-cdh::hive::auxpath: file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar

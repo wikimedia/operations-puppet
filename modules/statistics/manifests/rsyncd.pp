@@ -19,6 +19,15 @@ class statistics::rsyncd($path, $hosts_allow)
     }
 
     # Set up an rsync module
+    # (in /etc/rsyncd.conf) for /home.
+    rsync::server::module { 'home':
+        path        => '/home',
+        read_only   => 'no',
+        list        => 'yes',
+        hosts_allow => $hosts_allow,
+    }
+
+    # Set up an rsync module
     # (in /etc/rsyncd.conf) for /srv.
     rsync::server::module { 'srv':
         path        => $path,
@@ -48,5 +57,13 @@ class statistics::rsyncd($path, $hosts_allow)
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $hosts_allow,
+    }
+
+    # Allow rsyncd traffic from internal networks.
+    # and stat* public IPs.
+    ferm::service { 'rsync':
+        proto  => 'tcp',
+        port   => '873',
+        srange => '$PRODUCTION_NETWORKS',
     }
 }

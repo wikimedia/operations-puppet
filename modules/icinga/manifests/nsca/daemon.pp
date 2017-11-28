@@ -10,8 +10,11 @@ class icinga::nsca::daemon {
         ensure => 'present',
     }
 
+    include ::passwords::icinga
+    $nsca_decrypt_password = $::passwords::icinga::nsca_decrypt_password
+
     file { '/etc/nsca.cfg':
-        content => secret('icinga/nsca.cfg'),
+        content => template('icinga/nsca.cfg.erb'),
         owner   => 'root',
         mode    => '0400',
         require => Package['nsca'],

@@ -6,7 +6,7 @@ class gridengine::shadow_master(
 ) {
 
     include ::gridengine
-    package { 'gridengine-master':
+    package { ['gridengine-master', 'gridengine-client']:
         ensure  => latest,
         require => Package['gridengine-common'],
     }

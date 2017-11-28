@@ -19,6 +19,8 @@ class reportupdater(
     $base_path = '/srv/reportupdater',
     $rsync_to  = undef,
 ) {
+    $group = 'wikidev'
+
     # Path at which reportupdater source will be cloned.
     $path = "${base_path}/reportupdater"
 
@@ -36,7 +38,7 @@ class reportupdater(
     file { [$base_path, $output_path, $log_path, $job_repositories_path]:
         ensure => 'directory',
         owner  => $user,
-        group  => 'wikidev',
+        group  => $group,
         mode   => '0775',
     }
 

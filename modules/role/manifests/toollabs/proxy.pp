@@ -22,5 +22,5 @@ class role::toollabs::proxy {
         desc  => 'HTTPS webserver for the entire world',
     }
 
-    system::role { 'role::toollabs::proxy': description => 'Tool labs generic web proxy' }
+    system::role { 'toollabs::proxy': description => 'Tool labs generic web proxy' }
 }

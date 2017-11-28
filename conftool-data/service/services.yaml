@@ -1,0 +1,274 @@
+swift:
+  swift-fe:
+    port: 80
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  nginx:
+    port: 443
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+      - eqiad
+      - codfw
+parsoid:
+  parsoid:
+    port: 8000
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+elasticsearch:
+  elasticsearch:
+    port: 9200
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  elasticsearch-ssl:
+    port: 9243
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+sca:
+  zotero:
+    port: 1969
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+scb:
+  mobileapps:
+    port: 8888
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  eventstreams:
+    port: 8092
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'yes'
+      weight: 10
+  mathoid:
+    port: 10042
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  graphoid:
+    port: 19000
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  citoid:
+    port: 1970
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  apertium:
+    port: 2737
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  cxserver:
+    port: 8080
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  ores:
+    port: 8081
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  pdfrender:
+    port: 5252
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  trendingedits:
+    port: 6699
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  "recommendation-api":
+    port: 9632
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+      - eqiad
+      - codfw
+restbase:
+  restbase:
+    port: 7231
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+  cassandra:
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+    - codfw
+maps:
+  kartotherian:
+    port: 6533
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - codfw
+    - eqiad
+  cassandra:
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - codfw
+aqs:
+  aqs:
+    port: 7232
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+  cassandra:
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+eventbus:
+  eventbus:
+    port: 8085
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'yes'
+      weight: 10
+thumbor:
+  thumbor:
+    port: 8800
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'inactive'
+      weight: 10
+wdqs:
+  wdqs:
+    port: 80
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'no'
+      weight: 10
+kubernetes:
+  kubemaster:
+    port: 6443
+    datacenters:
+    - eqiad
+    - codfw
+    default_values:
+      pooled: 'yes'
+      weight: 10
+logstash:
+  kibana:
+    port: 80
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-log4j:
+    port: 4560
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-gelf:
+    port: 12201 # UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-json:
+    port: 11514 # TCP & UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-syslog:
+    port: 10514  # TCP & UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+  logstash-udp2log:
+    port: 8324 # UDP
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'no'
+      weight: 10
+druid-public:
+  druid-public-broker:
+    port: 8082
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
+

@@ -5,15 +5,6 @@
 class contint::packages::apt {
     include ::apt::unattendedupgrades
 
-    apt::conf { 'unattended-upgrades-wikimedia':
-        priority => '51',
-        # Key with trailing '::' to append to potentially existing entry
-        key      => 'Unattended-Upgrade::Allowed-Origins::',
-        # lint:ignore:single_quote_string_with_variables
-        value    => 'Wikimedia:${distro_codename}-wikimedia',
-        # lint:endignore
-    }
-
     if os_version('debian == jessie') {
         # Sanity check: only enable in labs
         requires_realm('labs')
@@ -26,6 +17,4 @@ class contint::packages::apt {
             keyfile    => 'puppet:///modules/contint/sury-php.gpg',
         }
     }
-
-
 }

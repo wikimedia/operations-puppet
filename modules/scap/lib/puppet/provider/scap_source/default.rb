@@ -41,7 +41,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     when :gerrit
       "https://gerrit.wikimedia.org/r/p/#{repo_name}.git"
     when :phabricator
-      "https://phabricator.wikimedia.org/diffusion/#{repo_name}.git"
+      "https://phabricator.wikimedia.org/source/#{repo_name}.git"
     end
   end
 
@@ -50,7 +50,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     when :gerrit
       origin.slice! "https://gerrit.wikimedia.org/r/p/"
     when :phabricator
-      origin.slice! "https://phabricator.wikimedia.org/diffusion/"
+      origin.slice! "https://phabricator.wikimedia.org/source/"
     end
     origin.gsub(/\.git$/, '')
   end
@@ -78,8 +78,8 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   def checkout(name, path)
-    umask = 002
-    file_mode = 02775
+    umask = 0o002
+    file_mode = 0o2775
     unless Dir.exists?(path)
       FileUtils.makedirs path, :mode => file_mode
       FileUtils.chown_R resource[:owner], resource[:group], path
@@ -100,7 +100,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
         ],
         :uid => uid,
         :gid => gid,
-        :failonfail => true,
+        :failonfail => true
       )
     }
   end
@@ -128,7 +128,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     # Create the parent directory
     unless Dir.exists?(deploy_root)
       Puppet.debug("Creating #{deploy_root}")
-      FileUtils.makedirs deploy_root, :mode => 0755
+      FileUtils.makedirs deploy_root, :mode => 0o755
       FileUtils.chown_R resource[:owner], resource[:group], deploy_root
     end
 
@@ -136,7 +136,6 @@ Puppet::Type.type(:scap_source).provide(:default) do
     Puppet.debug("Checking out #{repo} into #{target_path}")
     checkout repo, target_path
     Puppet.debug("Repository checked out in #{target_path}")
-    # rubocop:disable GuardClause
     if resource[:scap_repository]
       target = File.join(target_path, 'scap')
       checkout resource[:scap_repository], target

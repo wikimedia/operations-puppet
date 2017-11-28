@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-spark-worker:
-    value: standard

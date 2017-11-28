@@ -1,8 +1,17 @@
-# currently unused, as it only contains the latest LTS
+# "reprepro update" doesn't work for Jenkins due to https://issues.jenkins-ci.org/browse/INFRA-165
 Name: jenkins
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
 Flat: thirdparty
+GetInRelease: no
+Architectures: all>amd64
+VerifyRelease: 9B7D32F2D50582E6
+ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
+
+Name: jenkins-stretch
+Method: http://pkg.jenkins-ci.org/debian-stable/
+Suite: binary
+Flat: thirdparty/ci
 GetInRelease: no
 Architectures: all>amd64
 VerifyRelease: 9B7D32F2D50582E6
@@ -15,7 +24,7 @@ UDebComponents:
 Suite: trusty-cdh5.10.0
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
 
 Name: cloudera-jessie
 Method: http://archive.cloudera.com/cdh5/debian/jessie/amd64/cdh/
@@ -24,27 +33,27 @@ UDebComponents:
 Suite: jessie-cdh5.10.0
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|pig|pig-udf-datafu|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
 
 Name: hwraid
-Method: http://hwraid.le-vert.net/ubuntu
+Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty
 UDebComponents:
 GetInRelease: no
-Suite: precise
+Suite: jessie
 Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
-ListShellHook: grep-dctrl -e -S '^megacli|arcconf|lsiutil$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
-Name: hp-mcp-precise
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
-Components: non-free>thirdparty
+Name: hwraid-stretch
+Method: http://hwraid.le-vert.net/debian
+Components: main>thirdparty/hwraid
 UDebComponents:
 GetInRelease: no
-Suite: precise/current
-Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3
-ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+Suite: stretch
+Architectures: amd64 source
+VerifyRelease: 6005210E23B3D3B4
+ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-trusty
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
@@ -53,7 +62,7 @@ UDebComponents:
 GetInRelease: no
 Suite: trusty/current
 Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-jessie
@@ -63,7 +72,17 @@ UDebComponents:
 GetInRelease: no
 Suite: jessie/current
 Architectures: amd64
-VerifyRelease: FADD8D64B1275EA3
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+
+Name: hp-mcp-stretch
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty/hwraid
+UDebComponents:
+GetInRelease: no
+Suite: jessie/current
+Architectures: amd64
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
 
 Name: cassandra
@@ -75,35 +94,35 @@ Architectures: amd64 source
 VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
 
-Name: elasticsearch
-Method: http://packages.elastic.co/elasticsearch/2.x/debian
+Name: elastic
+Method: https://artifacts.elastic.co/packages/5.x/apt
 Components: main>thirdparty
 UDebComponents:
 Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S elasticsearch -a -F Version --eq 2.3.5 || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -S 'elasticsearch' -a -F Version --eq 5.3.2 \) -o \( -S 'kibana' -a -F Version --eq 5.3.3 \) -o \( -S logstash -a -F Version --eq 1:5.3.2-1 \) || [ $? -eq 1 ]
 
-Name: logstash
-Method: http://packages.elasticsearch.org/logstash/1.4/debian
-Components: main>thirdparty
+Name: elastic55
+Method: https://artifacts.elastic.co/packages/5.x/apt
+Components: main>thirdparty/elastic55
 UDebComponents:
 Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S logstash || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -S 'elasticsearch' -a -F Version --eq 5.5.2 \) -o \( -S 'kibana' -a -F Version --eq 5.5.2 \) -o \( -S logstash -a -F Version --eq 1:5.5.2-1 \) || [ $? -eq 1 ]
 
-Name: kibana
-Method: http://packages.elastic.co/kibana/4.5/debian
+Name: elasticsearch-curator
+Method: http://packages.elastic.co/curator/5/debian
 Components: main>thirdparty
 UDebComponents:
 Suite: stable
 GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl -X -S kibana || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -X -S elasticsearch-curator || [ $? -eq 1 ]
 
 Name: tor
 Method: http://deb.torproject.org/torproject.org/
@@ -126,6 +145,15 @@ ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
 Name: confluent
 Method: http://packages.confluent.io/deb/2.0
 Components: main>thirdparty
+UDebComponents:
+Suite: stable
+Architectures: amd64
+VerifyRelease: 670540C841468433
+ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11\.7$' || [ $? -eq 1 ]
+
+Name: confluent-stretch
+Method: http://packages.confluent.io/deb/2.0
+Components: main>thirdparty/confluent
 UDebComponents:
 Suite: stable
 Architectures: amd64

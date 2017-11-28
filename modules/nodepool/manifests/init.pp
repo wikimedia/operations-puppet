@@ -95,6 +95,14 @@ class nodepool(
         before   => Package['nodepool'],
     }
 
+    # We need python-jenkins 0.4.12+ to support anti-CSRF tokens when creating
+    # agents. jessie-wikimedia/backports has 0.4.14
+    apt::pin { 'python-jenkins':
+        pin      => 'release a=jessie-wikimedia,c=backports',
+        priority => '1001',
+        before   => Package['nodepool'],
+    }
+
     # OpenStack CLI
     package { 'python-openstackclient':
         ensure  => present,
@@ -107,12 +115,6 @@ class nodepool(
         ensure => present,
     }
 
-    # guest disk image management system - tools
-    # eg: virt-inspector, virt-ls ...
-    package { 'libguestfs-tools':
-        ensure => present,
-    }
-
     # Script to nicely stop Nodepool scheduler from systemd
     file { '/usr/bin/nodepool-graceful-stop':
         ensure => present,
@@ -122,12 +124,12 @@ class nodepool(
         mode   => '0555',
     }
 
-    base::service_unit { 'nodepool':
-        ensure         => present,
-        refresh        => true,
-        systemd        => true,
-        service_params => {},
-        require        => [
+
+    systemd::service { 'nodepool':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('nodepool'),
+        require => [
             Package['nodepool'],
             File['/usr/bin/nodepool-graceful-stop'],
         ],
@@ -215,11 +217,12 @@ class nodepool(
         ensure => absent,
     }
     file { '/var/lib/nodepool/.ssh/id_rsa':
-        ensure  => present,
-        content => $jenkins_ssh_private_key,
-        owner   => 'nodepool',
-        group   => 'nodepool',
-        mode    => '0600',
+        ensure    => present,
+        content   => $jenkins_ssh_private_key,
+        owner     => 'nodepool',
+        group     => 'nodepool',
+        mode      => '0600',
+        show_diff => false,
     }
     # Matching public SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa.pub':
@@ -243,8 +246,9 @@ class nodepool(
     }
 
     file { '/etc/nodepool/nodepool.yaml':
-        content => template('nodepool/nodepool.yaml.erb'),
-        require => [
+        content   => template('nodepool/nodepool.yaml.erb'),
+        show_diff => false,
+        require   => [
             Package['nodepool'],
         ]
     }

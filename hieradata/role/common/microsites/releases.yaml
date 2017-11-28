@@ -1,6 +1,0 @@
-admin::groups:
-  - releasers-mediawiki
-  - releasers-mobile
-debdeploy::grains:
-  debdeploy-releases:
-    value: standard

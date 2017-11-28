@@ -18,7 +18,7 @@
 # == Parameters
 #
 # [*repository*]
-#   Repository name in gerrit.  Default: $title
+#   Repository name in gerrit/phabricator.  Default: $title
 #
 # [*scap_repository*]
 #   String or boolean.
@@ -44,6 +44,19 @@
 # [*base_path*]
 #   Base path for deployments.
 #   Default: /srv/deployment
+#
+# [*origin*]
+#   Origin of cloned repository, either gerrit or phabricator
+#   Default: gerrit
+#
+# [*lvs_service*]
+#   Name of the lvs service associated with this deployment, if any
+#
+# [*canaries*]
+#   If this source has canary deployments, list those here
+#
+# [*hosts*]
+#   If the software must be deployed to hosts not in a pool, add them here
 #
 # == Usage
 #
@@ -81,13 +94,53 @@ define scap::source(
     # how to bootstrap itself properly without trebuchet.
     $owner                = 'trebuchet',
     $group                = 'wikidev',
-    $base_path            = '/srv/deployment'
-) {
+    $base_path            = '/srv/deployment',
+    $origin               = 'gerrit',
+    $canaries             = undef,
+    $lvs_service          = undef,
+    $hosts                = undef,
+    ) {
+
+    # Checkout and prepare the scap repositories
     scap_source { $title:
         repository      => $repository,
         scap_repository => $scap_repository,
         owner           => $owner,
         group           => $group,
         base_path       => $base_path,
+        origin          => $origin,
+    }
+
+    # Scap dsh lists.
+    #
+    # Each scap installation in production should be tied to a dsh group
+    # defined via puppet.
+    #
+    # If you have a manual list of hosts, they should go in hiera under
+    # "scap::dsh::${dsh_groupname}".
+    #
+    $dsh_groupname = regsubst($title, '/', '-', 'G')
+
+    # If this deployment is linked to an lvs service, let's find out which conftool
+    # cluster / service it's referring to.
+    if $lvs_service {
+        include ::lvs::configuration
+        $service = $::lvs::configuration::lvs_services[$lvs_service]
+        $conftool = merge($service['conftool'], {'datacenters' => $service['sites']})
+    } else {
+        $conftool = undef
+    }
+
+    if ($conftool or $hosts){
+        ::scap::dsh::group { $dsh_groupname:
+            conftool => [$conftool],
+            hosts    => $hosts,
+        }
+    }
+
+    if ($canaries) {
+        ::scap::dsh::group { "${dsh_groupname}_canaries":
+            hosts => $canaries,
+        }
     }
 }

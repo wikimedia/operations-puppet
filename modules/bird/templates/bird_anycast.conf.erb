@@ -1,0 +1,44 @@
+
+router id <%= @routerid %>;
+
+protocol device {
+}
+
+protocol kernel {
+    import none;
+}
+
+protocol direct {
+    interface "*";
+}
+
+filter vips_filter{
+    if ( net.len = 32 && net ~ 10.3.0.0/24 ) then {
+        accept;
+    }
+    else {
+        reject;
+    }
+}
+
+<%- if @bfd -%>
+protocol bfd {
+    interface "*" {
+        interval 300 ms;
+        multiplier 3;
+    };
+}
+<%- end -%>
+
+<%- @neighbors.each do |neighbor| -%>
+protocol bgp {
+    import none;
+    multihop 2;
+    export filter vips_filter;
+    local <%= @routerid %> as 64605;
+    neighbor <%= neighbor %> as 14907;
+    <%- if @bfd -%>
+    bfd yes;
+    <%- end -%>
+}
+<%- end -%>

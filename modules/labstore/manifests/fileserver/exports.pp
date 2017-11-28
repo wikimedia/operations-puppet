@@ -1,4 +1,6 @@
-class labstore::fileserver::exports {
+class labstore::fileserver::exports(
+    $observer_pass,
+    ) {
 
     package { [
         'python3',
@@ -29,7 +31,6 @@ class labstore::fileserver::exports {
         privileges => [
             'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
-            'ALL = NOPASSWD: /usr/local/sbin/sync-exports',
             'ALL = NOPASSWD: /usr/sbin/exportfs',
         ],
         require    => User['nfsmanager'],
@@ -41,10 +42,9 @@ class labstore::fileserver::exports {
         mode    => '0444',
         source  => 'puppet:///modules/labstore/nfs-mounts.yaml',
         require => [Package['python3'], Package['python3-yaml']],
+        notify  => Service['nfs-exportd'],
     }
 
-    # Effectively replaces /usr/local/sbin/sync-exports but
-    # makes assumptions only true on newer systems at the moment
     file { '/usr/local/sbin/nfs-manage-binds':
         owner   => 'root',
         group   => 'root',
@@ -53,21 +53,30 @@ class labstore::fileserver::exports {
         require => File['/etc/nfs-mounts.yaml'],
     }
 
-    file { '/usr/local/sbin/sync-exports':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/labstore/sync-exports',
-        require => File['/etc/nfs-mounts.yaml'],
-    }
 
-    include ::openstack::clientlib
     file { '/usr/local/bin/nfs-exportd':
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/labstore/nfs-exportd',
-        require => File['/usr/local/sbin/sync-exports'],
+        require => File['/usr/local/sbin/nfs-manage-binds'],
+        notify  => Service['nfs-exportd'],
+    }
+
+    file { '/etc/exports.bak':
+        ensure  => directory,
+        owner   => 'nfsmanager',
+        group   => 'nfsmanager',
+        require => File['/usr/local/bin/nfs-exportd'],
+    }
+
+    cron { 'archive_export_d':
+        command => '/bin/cp -Rp /etc/exports.d /etc/exports.bak',
+        user    => 'root',
+        weekday => 1,
+        hour    => 0,
+        minute  => 0,
+        require => File['/etc/exports.bak'],
     }
 
     file { '/usr/local/sbin/archive-project-volumes':
@@ -77,10 +86,8 @@ class labstore::fileserver::exports {
         source => 'puppet:///modules/labstore/archive-project-volumes',
     }
 
-    $novaconfig = hiera_hash('novaconfig', {})
-    $observer_pass = $novaconfig['observer_password']
     base::service_unit { 'nfs-exportd':
-        systemd        => true,
+        systemd        => systemd_template('nfs-exportd'),
         service_params => {
             enable => true,
         },

@@ -12,15 +12,7 @@ class contint::packages::analytics {
         ensure => 'installed',
     }
 
-    if os_version('ubuntu < trusty') {
-        # Packages that are not available on Trusty.
-        # The related Jenkins jobs need to be rewritten anyway.
-
-        # Used to build analytics udp-filters
-        package { ['libcidr0-dev', 'libanon0-dev']:
-            ensure => 'latest',
-        }
-    }
+    require_package('libtemplate-perl')
 
     # these packages are used by the tests for wikistats to parse the
     # generated reports to see if they are correct
@@ -28,7 +20,6 @@ class contint::packages::analytics {
         'libhtml-treebuilder-xpath-perl',
         'libjson-xs-perl',
         'libnet-patricia-perl',
-        'libtemplate-perl',
         'libweb-scraper-perl',
         ]:
         ensure => 'installed',

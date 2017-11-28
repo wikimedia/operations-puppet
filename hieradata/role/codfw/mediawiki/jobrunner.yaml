@@ -1,4 +1,0 @@
-debdeploy::grains:
-  debdeploy-jobrunner-codfw:
-    value: standard
-

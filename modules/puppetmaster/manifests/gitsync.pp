@@ -5,6 +5,11 @@ class puppetmaster::gitsync(
     $run_every_minutes = '10',
 ) {
 
+    ensure_packages([
+        'python3-git',
+        ])
+
+
     file { '/usr/local/bin/git-sync-upstream':
         ensure => present,
         source => 'puppet:///modules/puppetmaster/git-sync-upstream',
@@ -21,12 +26,9 @@ class puppetmaster::gitsync(
         require => File['/usr/local/bin/git-sync-upstream'],
     }
 
-    file { '/etc/logrotate.d/git-sync-upstream':
+    logrotate::conf { 'git-sync-upstream':
         ensure => present,
         source => 'puppet:///modules/puppetmaster/git-sync-upstream.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
 
     sudo::user { 'cherry_pick_count':

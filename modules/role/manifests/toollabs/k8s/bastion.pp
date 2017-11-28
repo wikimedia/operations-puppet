@@ -13,9 +13,13 @@ class role::toollabs::k8s::bastion {
         etcd_endpoints => $etcd_url,
     }
 
+
+    class { '::k8s::infrastructure_config':
+        master_host => $master_host,
+    }
+
     class { '::k8s::proxy':
         master_host => $master_host,
-        use_package => true,
     }
 
     require_package('kubernetes-client')

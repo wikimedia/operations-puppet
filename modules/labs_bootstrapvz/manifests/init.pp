@@ -1,9 +1,14 @@
 class labs_bootstrapvz() {
-    package { 'python-bootstrap-vz':
+
+    package { 'bootstrap-vz':
         ensure => present,
     }
 
     package { 'zerofree':
+        ensure => present,
+    }
+
+    package { 'kpartx':
         ensure => present,
     }
 
@@ -34,10 +39,10 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/manifests"],
     }
 
-    file { "${bootstrap_filepath}/cloud.cfg":
+    file { "${bootstrap_filepath}/manifests/labs-stretch.manifest.yaml":
         mode    => '0444',
-        source  => 'puppet:///modules/labs_bootstrapvz/cloud.cfg',
-        require => File[$bootstrap_filepath],
+        source  => 'puppet:///modules/labs_bootstrapvz/labs-stretch.manifest.yaml',
+        require => File["${bootstrap_filepath}/manifests"],
     }
 
     file { "${bootstrap_filepath}/firstscripts/firstboot.sh":
@@ -56,7 +61,7 @@ class labs_bootstrapvz() {
     $fqdnregex = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master
-    #  returns labcontrol1001 vs. the service name, labs-puppetmaster-eqiad
+    #  returns labpuppetmaster1001 vs. the service name, labs-puppetmaster
     $puppetmaster = hiera('puppetmaster')
     $masterregex = "s/${puppetmaster}/_MASTER_/g"
 

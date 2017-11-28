@@ -49,11 +49,6 @@ Facter.add('raid') do
       end
     end
 
-    raids.sort!.uniq!
-
-    # stringify the fact to support Facter < 2.0.0 and/or puppet < 4.0
-    # (in the default config, 3.7.5 can also support structured facts)
-    raids.join(',')
-
+    raids.sort.uniq
   end
 end

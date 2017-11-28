@@ -61,6 +61,7 @@ def test_repo(repo):
                      '--project', repo,
                      '--change', '%s,%s' % (change_number, patchset)])
 
+
 if __name__ == '__main__':
     for repo in repos:
         test_repo(repo)

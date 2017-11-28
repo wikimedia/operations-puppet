@@ -2,7 +2,6 @@
 
 # Supporting the PyBal RunCommand monitor
 class lvs::balancer::runcommand {
-    Class[lvs::balancer] -> Class[lvs::balancer::runcommand]
 
     file {
         '/etc/pybal/runcommand':
@@ -16,9 +15,10 @@ class lvs::balancer::runcommand {
             mode   => '0555',
             source => "puppet:///modules/${module_name}/pybal/check-apache";
         '/root/.ssh/pybal-check':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0600',
-            content => secret('pybal/pybal-check');
+            owner     => 'root',
+            group     => 'root',
+            mode      => '0600',
+            content   => secret('pybal/pybal-check'),
+            show_diff => false;
     }
 }

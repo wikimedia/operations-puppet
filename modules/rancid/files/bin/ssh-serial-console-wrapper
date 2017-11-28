@@ -1,0 +1,77 @@
+#! /usr/bin/expect --
+#
+# ssh-serial-console-wrapper  
+# SSH wrapper for running RANCID login scripts to access devices via an
+# Opengear serial console server
+#
+# Handles the different behaviour of a network-exposed serial console when
+# compared to the network ssh or telnet console RANCID expects.
+#
+# Written by Toby Smith <toby.smith@opengear.com>
+
+# Usage line
+set send_human {.4 .4 .7 .3 5}
+set router {}
+set otherargs {}
+set exitval 0
+
+# Process the command line
+for {set i 0} {$i < $argc} {incr i} {
+    set arg [lindex $argv $i]
+
+    switch  -glob -- $arg {
+	-[bcDeFIiLlmOopRSWw]* {
+	#standard ssh args with arvuments
+	    lappend otherargs $arg	
+	    if {! [regexp .\[bcDeFIiLlmOopRSWw\](.+) $arg ignore cmd_file]} {
+		#skip next argument
+		incr i
+		lappend otherargs [lindex $argv $i]
+	    }
+	#standard ssh args without arguments
+	} -[a-zA-Z0-9]* {
+		lappend otherargs $arg
+	} default {
+	    set router [lindex [split $arg %] 0]
+	    break
+	}
+    }
+}
+
+# Process routers...no routers listed is an error.
+if { [string length $router] == 0 } {
+    send_user "\nError: unknown host"
+}
+
+# ssh to the router & try to login with or without an identfile.
+# need to pass through all the other arguments
+set retval [catch {eval spawn [concat "ssh" $otherargs $router]} reason]
+if { $retval } {
+	send_user "\nError: $cmd failed: $retval\n"
+	return 1
+}
+
+sleep 1
+
+set sent_enter 0
+set login_timeout 30
+set logout_timeout 60
+
+interact {
+    timeout $login_timeout {
+        if {$sent_enter} {
+           # do nothing
+        } else {
+            send "\r"
+            set sent_enter 1
+        }
+    }
+    -o
+    timeout $logout_timeout {
+        return
+    }
+}
+
+catch {close}
+catch {wait}
+exit $exitval

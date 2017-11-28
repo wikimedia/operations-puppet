@@ -17,7 +17,6 @@ class role::torrus {
         'cr2-eqiad.wikimedia.org',
         'cr2-knams.wikimedia.org',
         'cr2-ulsfo.wikimedia.org',
-        'pfw1-codfw.wikimedia.org',
         'pfw1-eqiad.wikimedia.org',
     ]
 
@@ -26,7 +25,6 @@ class role::torrus {
         'asw-a-eqiad.mgmt.eqiad.wmnet',
         'asw-b-eqiad.mgmt.eqiad.wmnet',
         'asw-c-eqiad.mgmt.eqiad.wmnet',
-        'asw-d-eqiad.mgmt.eqiad.wmnet',
         'asw2-d-eqiad.mgmt.eqiad.wmnet',
         'asw-a-codfw.mgmt.codfw.wmnet',
         'asw-b-codfw.mgmt.codfw.wmnet',
@@ -59,4 +57,7 @@ class role::torrus {
         proto => 'tcp',
         port  => '80',
     }
+
+    backup::set {'torrus': }
+
 }

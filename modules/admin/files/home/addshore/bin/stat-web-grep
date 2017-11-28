@@ -1,0 +1,2 @@
+#!/bin/sh
+kafkacat -b kafka1012.eqiad.wmnet -t webrequest_text | grep --color $1

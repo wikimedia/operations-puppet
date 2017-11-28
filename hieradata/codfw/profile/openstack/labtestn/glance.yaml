@@ -1,0 +1,1 @@
+profile::openstack::labtestn::glance::db_host: 'labtestcontrol2003.wikimedia.org'

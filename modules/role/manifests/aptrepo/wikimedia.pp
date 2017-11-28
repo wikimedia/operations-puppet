@@ -19,7 +19,7 @@ class role::aptrepo::wikimedia {
         source => 'puppet:///modules/aptrepo/distributions-wikimedia',
     }
 
-    include ::role::backup::host
+    include ::profile::backup::host
     backup::set { 'srv-wikimedia': }
 
     include aptrepo::rsync

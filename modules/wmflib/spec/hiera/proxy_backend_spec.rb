@@ -7,7 +7,7 @@ describe 'proxy_backend' do
     # Build a node with two roles applied
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.proxy.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.proxy.yaml')
-    @backend = Hiera::Backend::Proxy_backend.new()
+    @backend = Hiera::Backend::Proxy_backend.new
     @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
     @scope = Puppet::Parser::Scope.new(@compiler)
     @scope.source = Puppet::Resource::Type.new(:node, :foo)
@@ -26,27 +26,26 @@ describe 'proxy_backend' do
 
   it "lookup returns the default when no role is defined" do
     expect(
-      @backend.lookup('mysql::innodb_threads',@topscope, nil, nil)
+      @backend.lookup('mysql::innodb_threads', @topscope, nil, nil)
     ).to eq(15)
   end
 
   it "lookup returns the role-specific value if a role is defined" do
     @scope.function_role(['test'])
     expect(
-      @backend.lookup('mysql::innodb_threads',@topscope, nil, nil)
+      @backend.lookup('mysql::innodb_threads', @topscope, nil, nil)
     ).to eq(50)
   end
 
   it "return the host-overridden value for a role-defined variable" do
     @scope.function_role(['test'])
     expect(
-      @backend.lookup('admin::groups',@topscope, nil, nil)
+      @backend.lookup('admin::groups', @topscope, nil, nil)
     ).to eq(['go-spurs'])
   end
 
   it "merges values when using an array lookup" do
     @scope.function_role(['test'])
-    expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['go-spurs'],['FooBar']])
+    expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['go-spurs'], ['FooBar']])
   end
-
 end

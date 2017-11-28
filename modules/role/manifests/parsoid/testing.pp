@@ -1,12 +1,14 @@
 # This role is used by testing services
 # Ex: Parsoid roundtrip testing, Parsoid & PHP parser visual diff testing
 class role::parsoid::testing {
-    system::role { 'role::parsoid::testing':
+    system::role { 'parsoid::testing':
         description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
     }
 
+    $parsoid_port = hiera('parsoid::testing::parsoid_port')
+
     class { '::parsoid':
-        port          => 8142,
+        port          => $parsoid_port,
         settings_file => '/srv/deployment/parsoid/deploy/src/localsettings.js',
         deployment    => 'git',
     }
@@ -46,7 +48,20 @@ class role::parsoid::testing {
     }
 
     nginx::site { 'nginx-parsoid-testing':
-        source => 'puppet:///modules/parsoid/parsoid-testing.nginx.conf',
-        notify => Service['nginx'],
+        content => template('parsoid/parsoid-testing.nginx.conf.erb'),
+        notify  => Service['nginx'],
+    }
+
+    ferm::service { 'nginx-parsoid-testing':
+        proto  => 'tcp',
+        port   => 8001,
+        srange => '$PRODUCTION_NETWORKS',
+    }
+
+    # Presented by the @remote links shown on parsoid-rt-tests.wikimedia.org
+    ferm::service { 'parsoid-testing':
+        proto  => 'tcp',
+        port   => 8142,
+        srange => '$PRODUCTION_NETWORKS',
     }
 }

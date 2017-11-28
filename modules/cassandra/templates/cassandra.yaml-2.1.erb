@@ -100,7 +100,7 @@ partitioner: org.apache.cassandra.dht.Murmur3Partitioner
 # the configured compaction strategy.
 <%
 # accept string or array values for data_file_directroy
-@data_file_directories = (@data_file_directories.class == String ? @data_file_directories.split(',') : @data_file_directories)
+@data_file_directories = (@instance_data_file_directories.class == String ? @instance_data_file_directories.split(',') : @instance_data_file_directories)
 -%>
 data_file_directories:
 <% @data_file_directories.each do |data_file_directory| -%>
@@ -266,6 +266,9 @@ seed_provider:
           # Ex: "<ip1>,<ip2>,<ip3>"
           # Omit own host name / IP in multi-node clusters (see
           # https://phabricator.wikimedia.org/T91617).
+          # Also disregard the main DNS interfaces of each node when
+          # multiple instances are colocated on the same node (see
+          # https://phabricator.wikimedia.org/T172610)
           <% clean_seeds = @seeds.length > 1 ? @seeds.select { |x|
                                                       x != @hostname \
                                                       && ! (x.start_with? "#{@hostname}-") \
@@ -418,7 +421,7 @@ start_rpc: <%= @start_rpc %>
 # Note that unlike ListenAddress above, it is allowed to specify 0.0.0.0
 # here if you want to listen on all interfaces, but that will break clients
 # that rely on node auto-discovery.
-rpc_address: <%= @rpc_address %>
+rpc_address: <%= @instance_rpc_address %>
 # port for Thrift to listen for clients on
 rpc_port: <%= @rpc_port %>
 

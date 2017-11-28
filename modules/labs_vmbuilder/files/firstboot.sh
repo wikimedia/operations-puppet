@@ -1,6 +1,10 @@
 #!/bin/bash
 set -x
 
+# Prevent non-root logins while the VM is being setup
+# The ssh-key-ldap-lookup script rejects user logins when this file is present
+echo "VM is work in progress" > /etc/block-ldap-key-lookup
+
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
@@ -50,7 +54,7 @@ domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
 
 if [ -z $domain ]; then
    echo "hostname -d failed, trying to parse dhcp lease"
-   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.eth0.leases | head -n1 | cut -d \" -f2`
+   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.*.leases | head -n1 | cut -d \" -f2`
 fi
 
 if [ -z $domain ]; then
@@ -59,15 +63,7 @@ if [ -z $domain ]; then
 fi
 
 fqdn=${hostname}.${project}.${domain}
-saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
-if [ "${domain}" == "eqiad.wmflabs" ]
-then
-	master="labs-puppetmaster-eqiad.wikimedia.org"
-fi
-if [ "${domain}" == "codfw.wmflabs" ]
-then
-	master="labs-puppetmaster-codfw.wikimedia.org"
-fi
+master="labs-puppetmaster.wikimedia.org"
 
 # Finish LDAP configuration
 sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
@@ -81,7 +77,7 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 echo "" > /sbin/resolvconf
 mkdir /etc/dhcp/dhclient-enter-hooks.d
 cat > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate <<EOF
-:#!/bin/sh
+#!/bin/sh
 make_resolv_conf() {
         :
 }
@@ -107,13 +103,6 @@ nscd -i hosts
 # set mailname
 echo $fqdn > /etc/mailname
 
-# Initial salt config
-echo -e "master: ${master}\n" > /etc/salt/minion
-echo "id: ${fqdn}" >> /etc/salt/minion
-echo "master_finger: ${saltfinger}" >> /etc/salt/minion
-echo "${fqdn}" > /etc/salt/minion_id
-/etc/init.d/salt-minion restart
-
 puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
@@ -127,3 +116,23 @@ apt-get update
 apt-get -y install openssh-server
 
 puppet agent -t
+
+# Ensure all NFS mounts are mounted
+mount_attempts=1
+until [ $mount_attempts -gt 10 ]
+do
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/block-ldap-key-lookup
+    ((mount_attempts++))
+    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
+    # Sleep for 10s before next attempt
+    sleep 10
+done
+
+# Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
+# before, the puppet code that ensures the symlinks are created, etc may not
+# have run)
+puppet agent -t
+
+# Remove the non-root login restriction
+rm /etc/block-ldap-key-lookup

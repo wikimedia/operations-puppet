@@ -1,0 +1,1 @@
+profile::openstack::main::horizon::webserver_hostname: 'horizon.wikimedia.org'

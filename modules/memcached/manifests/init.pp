@@ -67,7 +67,7 @@ class memcached(
 
     base::service_unit { 'memcached':
         ensure         => present,
-        systemd        => true,
+        systemd        => systemd_template('memcached'),
         strict         => false,
         service_params => {
             enable => true
@@ -89,9 +89,6 @@ class memcached(
     }
 
     include ::standard
-    if $::standard::has_ganglia {
-        include ::memcached::ganglia
-    }
 
     diamond::collector { 'Memcached':
         settings => {

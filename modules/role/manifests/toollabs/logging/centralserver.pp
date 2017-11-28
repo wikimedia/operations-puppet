@@ -4,7 +4,7 @@
 class role::toollabs::logging::centralserver {
     include ::base::firewall
 
-    system::role { 'role::tools::logreceiver':
+    system::role { 'tools::logreceiver':
         description => 'Central syslog server',
     }
 

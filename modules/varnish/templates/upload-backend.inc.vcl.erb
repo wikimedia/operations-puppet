@@ -3,7 +3,7 @@ include "upload-common.inc.vcl";
 
 sub pick_stevedore {
 	// Select a storage size class/bin
-        // See T145661 for storage binning rationale
+	// See T145661 for storage binning rationale
 	if (beresp.http.Content-Length !~ "^[0-9]+$") { // even possible on upload?
 		set beresp.storage_hint = "bin1";
 	}
@@ -27,13 +27,9 @@ sub pick_stevedore {
 	}
 }
 
-sub cluster_be_recv_pre_purge { }
-
-sub cluster_be_recv_applayer_backend {
-	if (req.url ~ "^/+[^/]+/[^/]+/thumb/") {
-		set req.backend_hint = swift_thumbs.backend();
-	} else {
-		set req.backend_hint = swift.backend();
+sub cluster_be_recv_pre_purge {
+	if (req.method == "PURGE") {
+		call upload_normalize_path;
 	}
 }
 
@@ -41,6 +37,7 @@ sub cluster_be_recv {
 	call upload_common_recv;
 }
 
+sub cluster_be_recv_tail { }
 sub cluster_be_hash { }
 
 sub cluster_be_hit {
@@ -64,17 +61,33 @@ sub cluster_be_backend_fetch {
 sub cluster_be_backend_response_early { }
 
 sub cluster_be_backend_response {
+	// If this is the backend-most varnish and the response has no CL header,
+	// disable streaming so that all other varnishes will have access to CL for
+	// size-based decisions. See https://phabricator.wikimedia.org/P6190
+	if (!bereq.http.X-Next-Is-Cache && !beresp.http.Content-Length) {
+		set beresp.do_stream = false;
+	}
+
+	// hit-for-pass objects < 1024B size (T145661)
+	if (std.integer(beresp.http.Content-Length, 1024) < 1024 && beresp.status == 200) {
+		set beresp.http.X-CDIS = "pass";
+		set beresp.uncacheable = true;
+		return (deliver);
+	}
+
 	call pick_stevedore;
-	
+
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
 		// a passed range request
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
-	// Derive the corresponding original URL and store it with the object
-	if (!beresp.http.X-MediaWiki-Original && bereq.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
-		set beresp.http.X-MediaWiki-Original = regsub(bereq.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+	if (bereq.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Derive the corresponding original URL and store it with the object
+		if (!beresp.http.X-MediaWiki-Original && bereq.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
+			set beresp.http.X-MediaWiki-Original = regsub(bereq.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
+		}
 	}
 
 	call upload_common_backend_response;

@@ -38,14 +38,14 @@
 #
 # === Deep Storage Configuration ===
 #
-# By default deep storage is disabled.  Set druid.metadata.storage.type to
+# By default deep storage is disabled.  Set druid.storage.type to
 # 'local' to configure local deep storage in /var/lib/druid/deep-storage.
 #
-# Set druid.metadata.storage.type to 'hdfs' to configure HDFS based deep
+# Set druid.storage.type to 'hdfs' to configure HDFS based deep
 # storage in /user/druid/deep-storage.  Make sure that a Hadoop client
 # is configured on this node, and that the /user/druid/deep-storage
 # directory exists.  The druid-hdfs-storage extension will be included by
-# default when druid.metadata.storage.type is 'hdfs'.
+# default when druid.storage.type is 'hdfs'.
 #
 #
 # == Parameters
@@ -54,11 +54,15 @@
 #   Hash of runtime.properties
 #   See: Default $properties
 #
+# [*metadata_storage_database_name*]
+#   This will be used as the database name / derby file name
+#   of the configured metadata storage.  Default: 'druid'
+#
 # [*use_cdh*]
 #   If this is true, the druid::cdh::hadoop::dependencies class
 #   will be included, and deep storage will be configured to use
 #   a special druid-hdfs-storage-cdh extension.  If you set this,
-#   make sure to include the druid::cdh::hadoop::setup class on your
+#   make sure to include the druid::cdh::hadoop::user class on your
 #   Hadoop NameNodes.  Default: false.
 #
 #
@@ -77,9 +81,9 @@
 #   List extensions to load.  Directories matching these names must exist
 #   in druid.extensions.directory.
 #   Default: [
-#       'druid-histogram',
 #       'druid-datasketches',
-#       'druid-namespace-lookup'
+#       'druid-histogram',
+#       'druid-lookups-cached-global'
 #       'mysql-metadata-storage', # only if druid.metadata.storage.type == mysql
 #       'druid-hdfs-storage',     # only if druid.storage.type == hdfs
 #   ],
@@ -130,9 +134,6 @@
 #   it is present in common.runtime.properties.
 #   Default: /var/lib/druid/indexing-logs
 #
-# [*druid.monitoring.monitors*]
-#   Default: ["com.metamx.metrics.JvmMonitor"]
-#
 # [*druid.emitter*]
 #   Default: logging
 #
@@ -141,6 +142,7 @@
 #
 class druid(
     $properties = {},
+    $metadata_storage_database_name = 'druid',
     $use_cdh = false,
 )
 {
@@ -160,10 +162,9 @@ class druid(
             'druid.metadata.storage.connector.port'       => 3306,
             # Let's be nice and set connectURI based on passed in properties, or
             # the defaults here, so things like host and port don't have to be
-            # passed in more than once.  Note that you'll have to override
-            # this if you want to change the database name.
+            # passed in more than once.
             'druid.metadata.storage.connector.connectURI' => inline_template(
-                'jdbc:mysql://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "3306") %>/druid'
+                'jdbc:mysql://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "3306") %>/<%= @metadata_storage_database_name %>'
             ),
         }
         # Set this variable so it is included in the union
@@ -181,7 +182,7 @@ class druid(
             # passed in more than once.  Note that you'll have to override
             # this if you want to change the path to the derby database file.
             'druid.metadata.storage.connector.connectURI' => inline_template(
-                'jdbc:derby://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "1527") %>/var/lib/druid/metadata.db;create=true'
+                'jdbc:derby://<%= @properties.fetch("druid.metadata.storage.connector.host", "localhost") %>:<%= @properties.fetch("druid.metadata.storage.connector.port", "1527") %>/var/lib/druid/<%= @metadata_storage_database_name %>_metadata.db;create=true'
             ),
         }
         # No extra metadata extensions needed
@@ -196,8 +197,8 @@ class druid(
         # If using CDH, then use special CDH settings and dependencies.
         if $use_cdh {
             $default_deep_storage_properties = {
-                # Make sure these directories exists in HDFS by including
-                # druid::cdh::hadoop::setup on your Hadoop NameNodes.
+                # Make sure these directories exists in HDFS by declaring
+                # druid::cdh::hadoop::deep_storage on your Hadoop NameNodes.
                 'druid.storage.storageDirectory'       => '/user/druid/deep-storage',
             }
             # Load the special druid-hdfs-storage-cdh extension created by
@@ -222,9 +223,9 @@ class druid(
 
 
     $default_extensions = [
-        'druid-histogram',
         'druid-datasketches',
-        'druid-namespace-lookup',
+        'druid-histogram',
+        'druid-lookups-cached-global',
     ]
     # Get a unique list of extensions to load built up from
     # the defaults configured here.  Note that if
@@ -245,7 +246,6 @@ class druid(
         'druid.startup.logging.logProperties'         => true,
         'druid.zk.service.host'                       => 'localhost:2181',
         'druid.zk.paths.base'                         => '/druid',
-        'druid.monitoring.monitors'                   => ['com.metamx.metrics.JvmMonitor'],
         'druid.emitter'                               => 'logging',
         'druid.emitter.logging.logLevel'              => 'info',
     }
@@ -264,5 +264,28 @@ class druid(
 
     file { '/etc/druid/common.runtime.properties':
         content => template('druid/runtime.properties.erb'),
+    }
+
+    # Indexing and request logs are not pruned by Druid.  Install cron jobs to do so.
+    $indexer_log_retention_days = 62
+    cron { 'prune_old_druid_indexer_logs':
+        command => "/usr/bin/find ${runtime_properties['druid.indexer.logs.directory']} -type f -mtime +${indexer_log_retention_days} -exec /bin/rm {} \\;",
+        hour    => 0,
+        minute  => 0,
+        user    => 'druid',
+    }
+    # Request logs are in /var/log/druid, along with daemon logs.  Since daemon logs are managed
+    # by log4j, we don't want to accidentally prune them with this cron job.  There are two
+    # formats of request log fine names, e.g. 2016-07-22T00:00:00.000Z and 2016-09-13.log.
+    # This cron job will prune both by grepping on a matching pattern and piping to xargs rm,
+    # instead of using -exec rm.
+    # NOTE: There should be a way to manage Druid request logs via log4j, just like daemons,
+    # but it is apparently undocumented.
+    $request_log_retention_days = 62
+    cron { 'prune_old_druid_request_logs':
+        command => "/usr/bin/find /var/log/druid -type f -mtime +${request_log_retention_days} | /bin/grep -E '2.*(Z|.log)$' | /usr/bin/xargs /bin/rm -f",
+        hour    => 0,
+        minute  => 0,
+        user    => 'druid',
     }
 }

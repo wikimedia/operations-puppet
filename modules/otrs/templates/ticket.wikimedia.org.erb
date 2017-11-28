@@ -28,13 +28,7 @@
         Options +ExecCGI
         PerlOptions +ParseHeaders
         PerlOptions +SetupEnv
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from all
-        </IfVersion>
+        Require all granted
     </Location>
 
     # mod_perl2 options for GenericInterface
@@ -45,13 +39,7 @@
     <Directory "/opt/otrs/bin/cgi-bin/">
         AllowOverride None
         Options +ExecCGI -Includes
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from all
-        </IfVersion>
+        Require all granted
 
         <IfModule mod_deflate.c>
             AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
@@ -60,13 +48,7 @@
 
     <Directory "/opt/otrs/var/httpd/htdocs/">
         AllowOverride None
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from all
-        </IfVersion>
+        Require all granted
 
         <IfModule mod_deflate.c>
             AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json

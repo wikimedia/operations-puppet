@@ -5,33 +5,35 @@
 #
 # Do NOT use for serving production traffic.
 #
-class profile::docker::storage::loopback {
-    $dm_target_dir = '/var/lib/docker/devicemapper'
-    $dm_source_dir = hiera('profile::docker::storage::loopback::source_dir', $dm_target_dir)
+# === Parameters
+#
+# [*dm_source*] Source device for the /var/lib/docker directory
+#
+class profile::docker::storage::loopback(
+    $dm_source=hiera('profile::docker::storage::loopback::dm_source', undef)
+) {
+    $dm_target = '/var/lib/docker'
 
     Class['profile::docker::storage::loopback'] -> Service['docker']
 
     # This will be used in profile::docker::engine
     $options = {'storage-driver' => 'devicemapper'}
-    if $dm_source_dir != $dm_target_dir {
-        file { $dm_source_dir:
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
 
-        file { $dm_target_dir:
-            ensure => link,
-            target => $dm_source_dir,
-            before => Service['docker']
-        }
-    } else {
-        file { $dm_target_dir:
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
+    file { $dm_target:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+
+    unless empty($dm_source) {
+        mount { $dm_target:
+            ensure  => mounted,
+            device  => $dm_source,
+            fstype  => 'ext4',
+            options => 'defaults',
         }
     }
+
 }

@@ -9,6 +9,8 @@ class ssh::server (
     $enable_hba = false,
     $disable_agent_forwarding = true,
     $challenge_response_auth = true,  # Disable all password auth in labs, we don't use 2fa there
+    $max_sessions = undef,  # Allow Cloud VPS restricted bastions to override it for Cumin
+    $max_startups = undef,  # Allow Cloud VPS restricted bastions to override it for Cumin
 ) {
     package { 'openssh-server':
         ensure => present,
@@ -34,6 +36,9 @@ class ssh::server (
         purge   => true,
     }
 
+    # TODO: Revisit this once scap can declare which SSH identity wants to use
+    include network::constants
+    $deployment_hosts = $network::constants::special_hosts[$::realm]['deployment_hosts']
     file { '/etc/ssh/sshd_config':
         ensure  => present,
         owner   => 'root',
@@ -45,20 +50,10 @@ class ssh::server (
 
     # publish this hosts's host key; prefer ECDSA -> RSA (no DSA)
     #
-    # There's two issues that stop us from using ed25519 keys:
-    #
-    # 1) We need to still be able to collect on precise hosts and precise's
-    # OpenSSH version does not support ed25519. While you'd think we could
-    # export both and use a puppet collector filter to exclude type !=
-    # 'ed25519', puppet's sshkey type is stupid and uses namevar for the
-    # hostname and namevar is unique, so you can't define two different keys of
-    # a different type for the same host. This is waiting until <= precise is
-    # gone.
-    #
-    # 2) Puppet sshkey is also stupid in that it hardcodes acceptable types in
-    # its code, and ed25519 is not a valid type in trusty's version (3.4.3). It
-    # is in jessie's version (3.7.3), though. So this is waiting until <=
-    # trusty is gone, or until we backport a newer version of puppet to trusty.
+    # Puppet sshkey hardcodes acceptable types in its code, and ed25519 is not
+    # a valid type in trusty's version (3.4.3). It is in jessie's version
+    # (3.7.3), though. So this is waiting until trusty is gone, or until we
+    # backport a newer version of puppet to trusty.
 
     if $::sshecdsakey {
         # facter bug: one key regardless of ECDSA keytype;

@@ -8,9 +8,10 @@
 #   Required - Array of multicast addresses to subscribe.
 #
 # [*varnishes*]
-#   Array of 'IP:Port' for local varnish instances to forward to, defaults to
-#   ports 3127 and 3128 on localhost (our standard 2-layer frontend + backend
-#   instances).
+#   Required - Array of 'IP:Port[,delay]' for local varnish instances to forward to.
+#
+# [*host_regex*]
+#   Required - Regex filter for hosts to PURGE, empty string '' for no filtering
 #
 # === Multicast assignments:
 #   239.128.0.112 - text (legacy: all HTCP used this address)
@@ -31,8 +32,8 @@
 
 class varnish::htcppurger(
     $mc_addrs,
-    $host_regex = '',
-    $varnishes = [ '127.0.0.1:3127', '127.0.0.1:3128' ],
+    $host_regex,
+    $varnishes,
 ) {
     Class[varnish::packages] -> Class[varnish::htcppurger]
 

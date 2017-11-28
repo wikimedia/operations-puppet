@@ -1,0 +1,94 @@
+bbr_congestion_control: true
+varnish::dynamic_backend_caches: false
+apt::use_experimental: true
+cache::lua_support: true
+cluster: cache_canary
+cache::cluster: canary
+admin::groups:
+  - perf-roots
+prometheus::node_exporter::collectors_extra:
+  - qdisc
+  - meminfo_numa
+# The contents of this hash control our DC->DC routing for varnish backend
+# daemons.  There should be a key for every cache datacenter.  The values must
+# be a core datacenter (eqiad or codfw), or at least must lead indirectly to
+# a core datacenter when traversing the table recursively.  A loop between
+# the two core datacenters is expected and normal here.  The only reason to
+# edit this is to remove a datacenter from active service (due to fault or
+# maintenance) by routing around it from the edge sites.
+#
+cache::route_table:
+  eqiad: 'codfw'
+  codfw: 'eqiad'
+  ulsfo: 'codfw'
+  esams: 'eqiad'
+cache::app_def_be_opts:
+  port: 80
+  connect_timeout: '5s'
+  first_byte_timeout: '180s'
+  between_bytes_timeout: '60s'
+  max_connections: 0
+cache::app_directors:
+  appservers:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+  api:
+    backends:
+      eqiad: 'api.svc.eqiad.wmnet'
+  rendering:
+    backends:
+      eqiad: 'rendering.svc.eqiad.wmnet'
+  security_audit:
+    backends:
+      eqiad: 'appservers.svc.eqiad.wmnet'
+  appservers_debug:
+    be_opts:
+      max_connections: 20
+    backends:
+      eqiad: 'hassium.eqiad.wmnet'
+  restbase_backend:
+    be_opts:
+      port: 7231
+      max_connections: 5000
+    backends:
+      eqiad: 'restbase.svc.eqiad.wmnet'
+  cxserver_backend:
+    be_opts:
+      port: 8080
+    backends:
+      eqiad: 'cxserver.svc.eqiad.wmnet'
+cache::req_handling:
+  cxserver.wikimedia.org:
+    director: 'cxserver_backend'
+    caching: 'pass'
+  default:
+    director: 'appservers'
+    debug_director: 'appservers_debug'
+    subpaths:
+      '^/api/rest_v1/':
+        director: 'restbase_backend'
+      '^/w/api\.php':
+        director: 'api'
+        debug_director: 'appservers_debug'
+      '^/w/thumb(_handler)?\.php':
+        director: 'rendering'
+        debug_director: 'appservers_debug'
+cache::fe_transient_gb: 5
+cache::be_transient_gb: 2
+# Profile::cache::base
+profile::cache::base::zero_site: 'https://zero.wikimedia.org'
+profile::cache::base::purge_host_only_upload_re: '^(upload|maps)\.wikimedia\.org$'
+profile::cache::base::purge_host_not_upload_re: '^(?!(upload|maps)\.wikimedia\.org)'
+profile::cache::base::storage_parts: ['sda3', 'sdb3']
+profile::cache::base::fe_runtime_params:
+    - default_ttl=86400
+profile::cache::base::be_runtime_params:
+    - default_ttl=86400
+    - nuke_limit=1000
+    - lru_interval=31
+profile::cache::base::admission_policy: 'exp'
+profile::cache::base::varnish_version: 5
+profile::cache::base::allow_iptables: true
+# Profile::cache::ssl::unified
+profile::cache::ssl::unified::monitoring: true
+profile::cache::ssl::unified::letsencrypt: false

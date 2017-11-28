@@ -17,8 +17,18 @@ class role::toollabs::k8s::webproxy {
         master_host => $master_host,
     }
 
+    class { '::k8s::infrastructure_config':
+        master_host => $master_host,
+    }
+
     class { '::k8s::proxy':
         master_host => $master_host,
-        use_package => true,
+    }
+
+    # The kubelet service is installed automatically as part of the kubernetes-node
+    # deb, we don't want it to be running on tools-proxy - so we are explicitly ensuring
+    # it's stopped
+    service { 'kubelet':
+        ensure => stopped,
     }
 }

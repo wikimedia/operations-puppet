@@ -65,7 +65,7 @@ class icinga(
     }
 
     file { '/etc/icinga/nsca_frack.cfg':
-        content => secret('nagios/nsca_frack.cfg'),
+        content => template('icinga/nsca_frack.cfg.erb'),
         owner   => 'icinga',
         group   => 'icinga',
         mode    => '0644',
@@ -119,7 +119,7 @@ class icinga(
         atboot  => true,
         fstype  => 'tmpfs',
         device  => 'none',
-        options => 'size=128m,uid=icinga,gid=icinga,mode=755',
+        options => 'size=1024m,uid=icinga,gid=icinga,mode=755',
         require => File['/var/icinga-tmpfs'],
     }
     # Fix the ownerships of some files. This is ugly but will do for now
@@ -151,18 +151,11 @@ class icinga(
     }
 
     # Command folders / files to let icinga web to execute commands
+    # See Debian Bug 571801
     file { '/var/lib/nagios/rw':
-        ensure => directory,
-        owner  => 'icinga',
-        group  => 'nagios',
-        mode   => '0775',
-    }
-
-    file { '/var/lib/nagios/rw/nagios.cmd':
-        ensure => present,
-        owner  => 'icinga',
-        group  => 'www-data',
-        mode   => '0664',
+        owner => 'icinga',
+        group => 'www-data',
+        mode  => '2710', # The sgid bit means new files inherit guid
     }
 
     # ensure icinga can write logs for ircecho, raid_handler etc.

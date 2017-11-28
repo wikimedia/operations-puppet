@@ -15,9 +15,9 @@ define pybal::conf_file (
     $cluster,
     $service,
     $dc=$::site,
-    $ensure=present
+    $ensure=present,
 ){
-    $watch_keys = ["/conftool/v1/pools/${dc}/${cluster}/${service}/"]
+    $watch_keys = ["/pools/${dc}/${cluster}/${service}/"]
 
     confd::file { $name:
         ensure     => $ensure,

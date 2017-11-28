@@ -14,13 +14,7 @@
         IndexIgnore "releases-header.html"
         HeaderName ./releases-header.html
         AllowOverride All
-    <IfVersion >= 2.4>
         Require all granted
-    </IfVersion>
-    <IfVersion < 2.4>
-        Order allow,deny
-        allow from all
-    </IfVersion>
     </Directory>
 
     <Directory /srv/org/wikimedia/releases/mediawiki/>

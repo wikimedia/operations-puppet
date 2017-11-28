@@ -1,0 +1,38 @@
+---
+lowercaseOutputLabelNames: true
+# The following setting allows the creation of metrics like:
+# kafka_server_ReplicaManager_UnderReplicatedPartitions
+# that are a mix of lower-case and camel-case. This is a convention used only
+# for kafka related metrics to allow a better readability, more context about
+# the discussion to establish a convention in T177078.
+lowercaseOutputName: false
+
+# The default prometheus_jmx_exporter scraper does a pretty good job at
+# grabbing JMX mbeans.  We only need to transform a few of them.
+
+rules:
+
+# The 'global' (all-topic) consumer level metrics at the client_id have some mBean metric
+# value names  with the "<topic>-<partition>.<metric>" in them.  E.g. test1-0.records-lag-avg
+# This pattern extracts out the topic, partition and metric to provide e.g.
+# kafka_consumer_consumer_fetch_manager_metrics_records_lag_avg{client_id="kafka-mirror-k1_to_k2-0",topic="test1", partition="0"} 0.0
+- pattern: kafka.consumer<type=(consumer-fetch-manager-metrics), client-id=([\w\-_\.]+)><>([\w\-_]+)\-(\d+)\.(records\-lag[\w\-_]*)
+  name: kafka_consumer_$1_$5
+  labels:
+    client_id: $2
+    topic: $3
+    partition: $4
+
+# Capture all-topic level fetch metrics into their own metric name, so they don't
+# get mixed up with per topic level metrics.
+- pattern: kafka.consumer<type=(consumer-fetch-manager-metrics), client-id=([\w\-_\.]+)><>([\w\-_]+)
+  name: kafka_consumer_$1_all_topics_$3
+  labels:
+    client_id: $2
+
+# kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages
+- pattern: kafka.tools<type=(MirrorMaker), name=(.+)><>Value
+  name: kafka_tools_$1_$2
+
+# For everything else, the scraper does a good job.
+- pattern: .*

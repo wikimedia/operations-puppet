@@ -35,7 +35,13 @@ class calico(
             $calicoctl_version = '1.0.0-betarc5-1~wmf1'
             $calico_node_version = '1.0.0-5' # NOTE: Fetched from upstream, should be rebuilt
             $calico_cni_version = '1.5.1-1~wmf1'
-            $cni_version = '0.3.0-1~wmf1'
+            $cni_version = '0.3.0-1~wmf2'
+        }
+        '2.2.0': {
+            $calicoctl_version = '1.2.0-1~wmf1'
+            $calico_node_version = '1.2.0'
+            $calico_cni_version = '1.8.3-1~wmf1'
+            $cni_version = '0.3.0-1~wmf2'
         }
         default: { fail('Unsupported calico version') }
     }
@@ -44,14 +50,23 @@ class calico(
         ensure => $calicoctl_version,
     }
 
+    file { '/etc/calico/calicoctl.cfg':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('calico/calicoctl.cfg.erb'),
+    }
+
     package { "${registry}/calico/node":
         ensure   => $calico_node_version,
         provider => 'docker',
     }
 
-    base::service_unit { 'calico-node':
+    systemd::service { 'calico-node':
         ensure  => present,
-        systemd => true,
-        require => Package["${registry}/calico/node"]
+        content => systemd_template('calico-node'),
+        restart => true,
+        require => Package["${registry}/calico/node"],
     }
 }

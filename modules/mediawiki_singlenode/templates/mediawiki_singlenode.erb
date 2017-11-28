@@ -6,30 +6,17 @@
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
-                <IfVersion >= 2.4>
-                        Require all granted
-                </IfVersion>
+                Require all granted
         </Directory>
 
         <Directory <%= @install_path %>>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
-                <IfVersion >= 2.4>
-                        Require all granted
-                </IfVersion>
-                <IfVersion < 2.4>
-                        Order allow,deny
-                        allow from all
-                </IfVersion>
+                Require all granted
         </Directory>
 
         <Directory <%= @install_path %>/orig>
-                <IfVersion >= 2.4>
-                        Require all denied
-                </IfVersion>
-                <IfVersion < 2.4>
-                        Deny from all
-                </IfVersion>
+                Require all denied
         </Directory>
 
         RewriteEngine On

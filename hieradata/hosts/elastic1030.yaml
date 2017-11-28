@@ -1,3 +1,0 @@
-elasticsearch::master_eligible: true
-# make sure the elasticsearch::unicast_hosts property is updated if master
-# eligibility is modified

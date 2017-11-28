@@ -31,7 +31,7 @@ define apt::repository(
 
     if $comment_old {
         $escuri = regsubst(regsubst($uri, '/', '\/', 'G'), '\.', '\.', 'G')
-        $binre = "deb(-src)?\s+${escuri}\s+${dist}\s+${components}"
+        $binre = "deb(-src)?\s+${escuri}\s+${dist}\s"
 
         # comment out the old entries in /etc/apt/sources.list
         exec { "apt-${name}-sources":
@@ -41,7 +41,7 @@ define apt::repository(
         }
     }
 
-    if $keyfile {
+    if $keyfile and $keyfile != '' {
         file { "/var/lib/apt/keys/${name}.gpg":
             ensure  => present,
             owner   => 'root',

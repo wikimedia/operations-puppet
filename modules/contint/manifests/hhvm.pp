@@ -1,5 +1,7 @@
 class contint::hhvm {
 
+    include ::contint::packages::hhvm
+
     class { '::hhvm':
         # No need for a hhvm service on CI slaves T126594
         # lint:ignore:ensure_first_param

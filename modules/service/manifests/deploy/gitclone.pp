@@ -1,7 +1,7 @@
 # === Class service::deploy::gitclone
 #
 # Allows configuring a git repository to check out
-# at the same location as trebuchet/scap would check it out
+# at the same location as scap would check it out
 #
 # === Parameters
 #

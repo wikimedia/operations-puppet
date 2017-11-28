@@ -5,6 +5,30 @@ admin::groups:
 cluster: misc
 contactgroups: 'admins,contint'
 
-debdeploy::grains:
-  debdeploy-ci:
-    value: standard
+profile::ci::jenkins::prefix: '/ci'
+
+profile::zuul::merger::conf:
+    gearman_server: '208.80.154.17'  # contint1001.wikimedia.org
+    gerrit_ssh_key_file: 'ssh/ci/jenkins-bot_gerrit_id_rsa'
+    git_dir: '/srv/zuul/git'
+    git_email: "zuul-merger@%{::hostname}"
+    git_name: 'Wikimedia Zuul Merger'
+    zuul_url: "git://%{::fqdn}"
+
+profile::zuul::server::conf:
+    # ferm defaults to ACCEPT on loopback:
+    gearman_server: 127.0.0.1
+    config_git_branch: master
+    gearman_server_start: true
+    # FIXME use a lookup?
+    statsd_host: statsd.eqiad.wmnet
+    url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
+    status_url: 'https://integration.wikimedia.org/zuul/'
+
+profile::ci::docker::settings:
+  iptables: false
+
+# TODO: create specific credentials for CI
+docker::registry: docker-registry.discovery.wmnet
+docker::registry::username: uploader
+profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i /var/lib/docker/* -i /run/docker/netns/* --exclude-type=tracefs

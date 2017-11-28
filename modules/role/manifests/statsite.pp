@@ -5,7 +5,7 @@
 # Graphite or Ganglia. See <https://github.com/armon/statsite>.
 #
 class role::statsite {
-    system::role { 'role::statsite':
+    system::role { 'statsite':
         description => 'statsite server'
     }
 
@@ -13,4 +13,16 @@ class role::statsite {
     statsite::instance { '8125': }
 
     diamond::collector { 'UDPCollector': }
+
+    ferm::service { 'statsite':
+        proto   => 'udp',
+        notrack => true,
+        port    => '8125',
+    }
+
+    ferm::client { 'statsite':
+        proto   => 'udp',
+        notrack => true,
+        port    => '8125',
+    }
 }

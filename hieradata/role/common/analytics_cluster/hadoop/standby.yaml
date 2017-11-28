@@ -1,5 +1,9 @@
 nagios_group: analytics_eqiad
 cluster: analytics
+# FIXME:
+# indirect hiera lookup due to includes in the role:
+# role::analytics::hadoop::client
+hadoop_zookeeper_cluster_name: main-eqiad
 admin::groups:
   - analytics-users
   - analytics-privatedata-users
@@ -8,6 +12,10 @@ admin::groups:
   # that analytics-search-users are allowed to sudo to.  This is used
   # for deploying files to HDFS.
   - analytics-search-users
-debdeploy::grains:
-  debdeploy-hadoop-standby:
-    value: standard
+
+profile::hadoop::client::zookeeper_cluster_name: 'main-eqiad'
+profile::hadoop::client::resourcemanager_hosts:
+  - analytics1001.eqiad.wmnet
+  - analytics1002.eqiad.wmnet
+
+profile::hadoop::standby_master::monitoring_enabled: true

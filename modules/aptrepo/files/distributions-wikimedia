@@ -1,27 +1,12 @@
 Origin: Wikimedia
 Label: Wikimedia
-Suite: precise-wikimedia
-Codename: precise-wikimedia
-Version: 12.04
-Architectures: source amd64 i386
-Components: main universe non-free thirdparty mariadb
-UDebComponents: main
-Update: hwraid hp-mcp-precise
-Description: Wikimedia specific packages for Ubuntu Precise
-SignWith: 09DBD9F93F6CD44A
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty thirdparty/cloudera
 UDebComponents: main
-Update: hwraid cloudera-trusty elasticsearch logstash hp-mcp-trusty confluent
+Update: hwraid cloudera-trusty elastic hp-mcp-trusty confluent
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -35,9 +20,9 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental thirdparty/cloudera
+Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent kibana elasticsearch docker
+Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -49,11 +34,17 @@ Label: Wikimedia
 Suite: stretch-wikimedia
 Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
-Version: 8
+Version: 9
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental
-UDebComponents: main backports thirdparty experimental
-Update: hwraid
+Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s
+UDebComponents: main
+Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch
+# NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
+# along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
+# which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
+# use updates to mirror from Cloudera, rather than pulling them into stretch from
+# jessie-wikimedia distribution.
+Pull: cloudera-jessie-pull
 Description: Wikimedia packages for Debian stretch
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override

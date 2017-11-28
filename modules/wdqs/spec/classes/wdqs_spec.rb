@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'wdqs', :type => :class do
-
   context 'using git to deploy' do
     let(:facts) { { :initsystem => 'systemd' } }
 
@@ -20,5 +19,4 @@ describe 'wdqs', :type => :class do
                             .with_group('root')
     }
   end
-
 end

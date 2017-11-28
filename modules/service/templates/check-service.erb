@@ -1,0 +1,9 @@
+#!/bin/sh
+<%-
+statsd_host = scope.lookupvar('::service::configuration::statsd_host')
+statsd_port = scope.lookupvar('::service::configuration::statsd_port')
+hostname = scope.lookupvar('::hostname')
+statsd_prefix = "service_checker.#{@title}.#{hostname}"
+ip = scope.lookupvar('::ipaddress')
+-%>
+STATSD_HOST="<%= statsd_host %>" STATSD_PORT="<%= statsd_port %>" STATSD_PREFIX="<%= statsd_prefix %>" /usr/bin/service-checker-swagger -t 5 <%= ip %> <%= @monitor_url %>

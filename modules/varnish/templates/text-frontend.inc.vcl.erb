@@ -22,9 +22,10 @@ sub mobile_redirect {
 			|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
 		&& req.http.User-Agent !~ "(SMART-TV.*SamsungBrowser)"
+		&& req.url !~ "[?&]mobileaction=toggle_view_desktop(&|$)"
 		&& (
 			req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
-			|| req.url ~ "^/(w/index\.php)?\?title=[^&]*$"
+			|| ( req.url ~ "^/(w/index\.php)?\?" && req.url ~ "[?&]title=" )
 		)) {
 
 		// Separate regexps for clarity, but multiple regsubs instead of
@@ -33,21 +34,22 @@ sub mobile_redirect {
 		set req.http.MobileHost = req.http.Host;
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|incubator|legalteam|meta|office|outreach|pl|species|strategy|wikimania20[0-9][0-9])\.wikimedia\.", "\1.m.wikimedia.");
-		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!commons|meta|nostalgia|quote|quality|sep11|sources|species|textbook|m\b)\w+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!commons|meta|nostalgia|quote|quality|sep11|sources|species|textbook|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
 
 		if (req.http.Host != req.http.MobileHost) {
-			if (req.http.X-Forwarded-Proto) {
-				set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
-			} else {
-				set req.http.Location = "http://" + req.http.MobileHost + req.url;
-			}
-			return (synth(666, "Found"));
+			set req.http.Location = "https://" + req.http.MobileHost + req.url;
+			return (synth(302, "Mobile Redirect"));
 		}
 		unset req.http.MobileHost;
 	}
 }
 
 sub cluster_fe_recv_pre_purge {
+	// abusive traffic patterns, ignores 429s, proxying our content into shady domains...
+	if (req.http.User-Agent ~ "MJ12bot") {
+		return (synth(403, "Noise"));
+	}
+
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
 		return (synth(403, "Noise"));
@@ -146,7 +148,7 @@ sub cluster_fe_recv_pre_purge {
 sub cluster_fe_recv {
 	// Experiment on dealing with a buggy UA that's spamming requests in T141786
 	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && req.http.X-Connection-Properties ~ "SSL=TLSv1.1; C=ECDHE-ECDSA-AES128-SHA;") {
-		return (synth(741, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
+		return (synth(401, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
 	}
 
 	call mobile_redirect;
@@ -173,30 +175,10 @@ sub cluster_fe_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	// The idea here is to occasionally redirect some of our worst clients
-	// (in TLS terms: those using 3DES, the bulk of which are not
-	// forward-secret, and the bulk of which are also IE[78]-XP) to our
-	// wikitech page about browser security, hoping it will prod them
-	// to upgrade.
-	// The X-Conn-Props cipher filter matches roughly 0.2% of traffic.  By
-	// restricting to a UA string matching 'Windows NT' (for now), the
-	// percentage drops a bit more.  We then further restrict to GETs of
-	// wiki pages, avoid the mobile domains JIC, and ignore clients that
-	// already have a cookie meaning we've done this to them once before
-	// during this browser session.  After all the basic conditions are
-	// met, we then only apply the redirect to 2% of matching traffic
-	// randomly.  We may increase that a bit in the future and/or widen the
-	// UA filter, but this is a good starting point.
-	if (req.http.X-Connection-Properties ~ "DES-CBC3"
-	   && req.http.User-Agent ~ "Windows NT" && req.method == "GET"
-	   && req.url ~ "^/wiki/" && req.http.host !~ "\.m\."
-	   && req.http.Cookie !~ "Browser-Security=Awful"
-	   && std.random(0,100) < 2.0) {
-		return (synth(787, "Browser Security Warning Redirect"));
-	}
-
 	call text_common_recv;
 }
+
+sub cluster_fe_recv_tail { }
 
 sub cluster_fe_hash {
 	call text_common_hash;
@@ -204,10 +186,44 @@ sub cluster_fe_hash {
 
 sub cluster_fe_hit { }
 
+sub cluster_fe_ratelimit {
+	// Ratelimit miss/pass requests per IP:
+	//   * Excluded for now:
+	//       * all WMF IPs (including labs)
+	//       * seemingly-authenticated requests (simple cookie check)
+	//   * RB and MW API, Wikidata: 1000/10s (100/s long term, with 1000 burst)
+	//   * All others: 1000/50s (20/s long term, with 1000 burst)
+	//       (current data leads us to believe sustaining 20/s should be
+	//       nearly impossible against standard MW outputs without
+	//       concurrency>1)
+	if (req.http.Cookie !~ "([sS]ession|Token)=" &&
+	    std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+		if (req.url ~ "^/(api/rest_v1/|w/api.php|wiki/Special:EntityData)") {
+			if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		} else {
+			if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		}
+	}
+
+	<%- if @varnish_testing -%>
+	if (req.http.User-Agent ~ "^varnishTest") {
+		if (vsthrottle.is_denied("varnishTest:" + req.http.X-Client-IP, 25, 5s)) {
+			return (synth(429, "Too Many Requests"));
+		}
+	}
+	<%- end -%>
+}
+
 sub cluster_fe_miss {
+	call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_pass {
+	call cluster_fe_ratelimit;
 }
 
 sub cluster_fe_backend_fetch {
@@ -221,6 +237,7 @@ sub cluster_fe_backend_response_early {
 sub cluster_fe_backend_response {
 	call text_common_backend_response;
 
+<% if @vcl_config.fetch("admission_policy", "nhw") == "nhw" -%>
 	// NOTE: it's very important this happens *after* the generic code that
 	// translates TTL<=0 responses into hit-for-pass!  That code is
 	// currently in wikimedia-common's backend_response, which is implicitly
@@ -233,9 +250,12 @@ sub cluster_fe_backend_response {
             && bereq.http.X-CDIS == "miss"
             && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
 		set beresp.ttl = 0s;
+		set beresp.grace = 60s;
+		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
 		return (deliver);
 	}
+<% end -%>
 
 	return (deliver);
 }
@@ -289,29 +309,20 @@ sub cluster_fe_deliver {
 
 sub cluster_fe_err_synth {
 	// Support mobile redirects
-	if (resp.status == 666) {
+	if (resp.reason == "Mobile Redirect") {
+		set resp.reason = "Found";
 		set resp.http.Location = req.http.Location;
-		set resp.status = 302;
 		set resp.http.Connection = "keep-alive";
 		set resp.http.Content-Length = "0"; // BZ #62245
-		return (deliver);
+	}
+
+	if (resp.reason == "Too Many Requests") {
+		set resp.http.Retry-After = 1;
 	}
 
 	// Chrome/41-on-Windows: T141786
-	if (resp.status == 741) {
-		set resp.status = 401;
+	if (resp.reason == "Buggy request, please report at https://phabricator.wikimedia.org/T141786") {
 		set resp.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
-		return (deliver);
-	}
-
-	// Browser sec redirect, with a cookie to prevent repeats in the same session
-	// Note the cookie is is per-site for simplicity
-	if (resp.status == 787) {
-		set resp.status = 302;
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0"; // BZ #62245
-		set resp.http.Set-Cookie = "Browser-Security=Awful; Path=/; secure";
-		set resp.http.Location = "https://wikitech.wikimedia.org/wiki/HTTPS:_Browser_Recommendations";
 		return (deliver);
 	}
 }

@@ -1,3 +1,1 @@
-# TODO: setup something to loadbalance the logstash hosts rather than relying
-# on a single node in the cluster.
-mediawiki::forward_syslog: "logstash1001.eqiad.wmnet:10514"
+mediawiki::forward_syslog: "logstash.svc.eqiad.wmnet:10514"

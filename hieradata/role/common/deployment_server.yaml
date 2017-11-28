@@ -1,0 +1,181 @@
+profile::base::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - codfw.wmnet
+cluster: misc
+
+admin::groups:
+  - deployment
+  - deploy-service
+  - parsoid-admin
+  - wdqs-admins
+  - eventlogging-admins
+  - aqs-admins
+  - deploy-aqs
+  - deploy-phabricator
+  - analytics-admins
+  - gerrit-root
+
+# screen sessions are common on deployment servers (T165348)
+monitor_screens: false
+
+# LightProcesses print an alarming error message when HHVM shuts down,
+# which is often on the deployment servers, which run a bunch of scripts
+# with a short runtime as part of the deployment process.
+hhvm::extra::fcgi:
+  hhvm:
+    server:
+      light_process_count: 0
+      light_process_file_prefix: ''
+hhvm::extra::cli:
+  hhvm:
+    server:
+      light_process_count: 0
+      light_process_file_prefix: ''
+# Default scap::server configuration.  This is used in production.
+# If you are setting up scap::server in labs, these will be used
+# unless you override them for your labs project.
+# See the overrides in hieradata/labs/deployment-prep/common.yaml
+# for an example.
+
+# keyholder::agent declarations.  These are created
+# by the scap::server class.  Each agent listed here
+# will be present and useable by scap on the scap deploy server.
+# NOTE: since labs
+scap::keyholder_agents:
+
+  phabricator:
+    trusted_groups:
+      - deploy-phabricator
+
+  gerrit:
+    trusted_groups:
+      - gerrit-root
+
+  eventlogging:
+    trusted_groups:
+      - eventlogging-admins
+
+  deploy-service:
+    trusted_groups:
+      - deploy-service
+      - aqs-admins
+      - deploy-aqs
+      - deployment
+
+  dumpsdeploy:
+    trusted_groups:
+      - ops
+
+  analytics_deploy:
+    trusted_groups:
+      - analytics-admins
+
+  deploy-librenms:
+    trusted_groups:
+      - ops
+
+# scap::source declarations.  These are created
+# by the scap::server class.  Each source listed here
+# will be cloned on the scap deploy server.
+scap::sources:
+  3d2png/deploy:
+    repository: 3d2png/deploy
+  analytics/refinery:
+    repository: analytics/refinery
+    scap_repository: analytics/refinery/scap
+  changeprop/deploy:
+    repository: mediawiki/services/change-propagation/deploy
+#    lvs_service: changeprop
+  citoid/deploy: {}
+#    lvs_service: citoid
+  cpjobqueue/deploy: {
+    repository: mediawiki/services/change-propagation/jobqueue-deploy
+    }
+  cxserver/deploy: {}
+#    lvs_service: cxserver
+  dumps/dumps:
+    repository: operations/dumps
+    scap_repository: operations/dumps/scap
+  electron-render/deploy: {}
+  eventlogging/eventbus:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/eventbus
+  eventlogging/analytics:
+    repository: eventlogging
+    scap_repository: eventlogging/scap/analytics
+  # Public EventStreams service
+  eventstreams/deploy:
+    repository: mediawiki/services/eventstreams/deploy
+  gerrit/gerrit:
+    repository: operations/software/gerrit
+  graphoid/deploy: {}
+#    lvs_service: graphoid
+  iegreview/iegreview:
+    repository: iegreview
+    origin: phabricator
+  jobrunner/jobrunner:
+    repository: mediawiki/services/jobrunner
+  kartotherian/deploy:
+    repository: maps/kartotherian/deploy
+#    lvs_service: kartotherian
+  logstash/plugins:
+    repository: operations/software/logstash/plugins
+  analytics/pivot/deploy:
+    repository: analytics/pivot/deploy
+  mathoid/deploy: {}
+#    lvs_service: mathoid
+  mobileapps/deploy: {}
+#    lvs_service: mobileapps
+  ores/deploy: {}
+#    lvs_service: ores
+  parsoid/deploy: {}
+#    lvs_service: parsoid
+  phabricator/deployment:
+    repository: phabricator/deployment
+  recommendation-api/deploy: {}
+  restbase/deploy: {}
+  servermon/servermon:
+    repository: operations/software/servermon
+  striker/deploy:
+    repository: labs/striker/deploy
+  tilerator/deploy:
+    repository: maps/tilerator/deploy
+#    lvs_service: tilerator
+  trending-edits/deploy: {}
+  # Wikimania scholarships app
+  scholarships/scholarships:
+    repository: wikimedia/wikimania-scholarships
+  wikimedia/discovery/analytics:
+    repository: discovery/analytics
+  wdqs/wdqs:
+    repository: wikidata/query/deploy
+#    lvs_service: wdqs
+  zotero/translation-server:
+    lvs_service: zotero
+  zotero/translators:
+    lvs_service: zotero
+  # Cassandra logback encoder for Logstash
+  cassandra/logstash-logback-encoder:
+    repository: operations/software/logstash-logback-encoder
+  # Time-window compaction strategy for Cassandra
+  cassandra/twcs:
+    repository: operations/software/cassandra-twcs
+  # Cassandra metrics collection
+  cassandra/metrics-collector:
+    repository: operations/software/cassandra-metrics-collector
+  # Prometheus JMX exporter
+  prometheus/jmx_exporter:
+    repository: operations/software/prometheus_jmx_exporter
+  # Librenms software
+  librenms/librenms:
+    repository: operations/software/librenms
+  # Netbox software
+  netbox/deploy:
+    repository: operations/software/netbox-deploy
+  relforge/mjolnir:
+    repository: search/MjoLniR
+  statsv/statsv:
+    repository: analytics/statsv
+  "docker-pkg/deploy":
+    repository: operations/docker-images/docker-pkg/deploy

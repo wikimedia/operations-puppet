@@ -1,0 +1,13 @@
+    # disable golang debugging from outside localhost
+    <Location /<%= @title %>/debug >
+        Order allow,deny
+        Allow from none
+    </Location>
+
+    # disable quit/reload from outside localhost
+    <LocationMatch ^/<%= @title %>/-/(quit|reload) >
+        Order allow,deny
+        Allow from none
+    </LocationMatch>
+
+    ProxyPass /<%= @title %> <%= @proxy_pass %>

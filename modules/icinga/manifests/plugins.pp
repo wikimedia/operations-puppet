@@ -73,14 +73,8 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_keystone_roles':
-        source => 'puppet:///modules/icinga/check_keystone_roles.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-    file { '/usr/lib/nagios/plugins/check_keystone_projects':
-        source => 'puppet:///modules/icinga/check_keystone_projects.py',
+    file { '/usr/lib/nagios/plugins/check_wikitech_static_version':
+        source => 'puppet:///modules/icinga/check_wikitech_static_version.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -103,12 +97,6 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
-    file { '/usr/lib/nagios/plugins/check_ram.sh':
-        source => 'puppet:///modules/icinga/check_ram.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
     # Google safebrowsing lookup API client
     file { '/usr/lib/nagios/plugins/check_gsb.py':
         source => 'puppet:///modules/icinga/check_gsb.py',
@@ -117,10 +105,7 @@ class icinga::plugins {
         mode   => '0755',
     }
 
-    class { [
-        '::nagios_common::commands',
-        '::nagios_common::check::redis',
-    ] :
+    class { '::nagios_common::commands':
     }
 
     include ::passwords::nagios::mysql
@@ -167,17 +152,9 @@ class icinga::plugins {
         group      => 'icinga',
     }
 
-    nagios_common::check_command::config { 'check_keystone_roles.cfg':
+    nagios_common::check_command::config { 'check_wikitech_static_version.cfg':
         ensure     => present,
-        content    => template('icinga/check_commands/check_keystone_roles.cfg.erb'),
-        config_dir => '/etc/icinga',
-        owner      => 'icinga',
-        group      => 'icinga',
-    }
-
-    nagios_common::check_command::config { 'check_keystone_projects.cfg':
-        ensure     => present,
-        content    => template('icinga/check_commands/check_keystone_projects.cfg.erb'),
+        content    => template('icinga/check_commands/check_wikitech_static_version.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => 'icinga',
         group      => 'icinga',

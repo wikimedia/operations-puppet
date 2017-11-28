@@ -29,5 +29,4 @@ describe 'elasticsearch::https', :type => :class do
       should contain_package('nginx-full').with({ 'ensure' => 'absent' })
     end
   end
-
 end

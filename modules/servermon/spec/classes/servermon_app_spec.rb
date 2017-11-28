@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe 'servermon', :type => :class do
+    before(:each) do
+        Puppet::Parser::Functions.newfunction(:secret, :type => :rvalue) { |_|
+            'fake_secret'
+        }
+    end
+
     let(:params) { {
         :ensure     => 'present',
         :directory  => '/tmp/test',

@@ -17,11 +17,8 @@ class contint::packages::labs {
         include ::mediawiki::packages::php5
     }
 
-    if os_version('ubuntu >= trusty || Debian >= jessie') {
-        # Fonts needed for browser tests screenshots (T71535)
-        include ::mediawiki::packages::fonts
-        include ::phabricator::arcanist
-    }
+    # Fonts needed for browser tests screenshots (T71535)
+    include ::mediawiki::packages::fonts
 
     include ::contint::packages::analytics
     include ::contint::packages::doxygen
@@ -48,11 +45,8 @@ class contint::packages::labs {
         'pep8',
         'python-simplejson',  # For mw/ext/Translate among others
 
-        'luajit',
         'libevent-dev',  # PoolCounter daemon
-        'liblua5.1-0-dev',
         'g++',
-        'libthai-dev',
 
         'python-sphinx',  # python documentation
         ]:
@@ -71,19 +65,5 @@ class contint::packages::labs {
         ensure => present;
     }
 
-    if os_version('ubuntu >= trusty') {
-        # Work around PIL 1.1.7 expecting libs in /usr/lib T101550
-        file { '/usr/lib/libjpeg.so':
-            ensure => link,
-            target => '/usr/lib/x86_64-linux-gnu/libjpeg.so',
-        }
-        file { '/usr/lib/libz.so':
-            ensure => link,
-            target => '/usr/lib/x86_64-linux-gnu/libz.so',
-        }
-    }
-
-    if os_version( 'debian >= jessie') {
-        include ::contint::packages::ops
-    }
+    include ::contint::packages::ops
 }

@@ -13,13 +13,13 @@
 #limitations under the License.
 
 server {
-    resolver <%= @resolver %>;
+    resolver <%= @resolver %> ipv6=off;
 
     listen 80;
 
     <%- if @ssl_certificate_name != false -%>
     # Serve both HTTP and HTTPS
-    listen 443 default_server ssl spdy;
+    listen 443 default_server ssl http2;
 
     ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
     ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;
@@ -55,6 +55,7 @@ server {
         return 302 "https://<%= @web_domain %>";
     }
 
+    # Special handling for /cdnjs, our local cdnjs mirror
     location = /cdnjs {
         return 302 "https://<%= @web_domain %>/cdnjs/";
     }
@@ -68,6 +69,43 @@ server {
         add_header Access-Control-Allow-Origin '*';
         expires 30d; # These are all immutable URLs
         root /srv/; # Is ok, nginx ensures that this is /cdnjs/* only
+    }
+
+    # Special handling for /fontcdn, reverse proxy to google's fonts service
+    location = /fontcdn {
+        return 302 "https://<%= @web_domain %>/fontcdn/";
+    }
+
+    location = /fontcdn/ {
+        return 302 "https://<%= @web_domain %>/fontcdn/";
+    }
+
+    location ^~ /fontcdn/ {
+        # Don't mess with the cookie in any case
+        proxy_hide_header       Set-Cookie;
+        proxy_set_header        Cookie "";
+
+        # And hide the referrer for privacy reasons
+        proxy_set_header        Referer "https://<%= @web_domain %>/fontcdn/";
+
+        # Proxy /fontcdn/css to fonts.googleapis.com
+        location ^~ /fontcdn/css {
+            rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_pass https://fonts.googleapis.com;
+
+            # subs_filter works only on uncompressed data
+            proxy_set_header Accept-Encoding "";
+
+            # Rewrite references to the upstream to point to our proxy
+            subs_filter_types text/css;
+            subs_filter '//fonts.gstatic.com/' '//$host/fontcdn/';
+        }
+
+        # Proxy anything else to fonts.gstatic.com
+        location ^~ /fontcdn/ {
+            rewrite ^/fontcdn(/.*)$ $1 break;
+            proxy_pass https://fonts.gstatic.com;
+        }
     }
 
     location ~ ^/([^/]+)(/.*)?$ {

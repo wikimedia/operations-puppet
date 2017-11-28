@@ -2,8 +2,8 @@
 class role::authdns::server {
     system::role { 'authdns': description => 'Authoritative DNS server' }
 
+    include ::standard
     include ::base::firewall
-    include authdns::ganglia
     include prometheus::node_gdnsd
     include role::authdns::data
 
@@ -14,8 +14,10 @@ class role::authdns::server {
     )
 
     class { 'authdns':
-        nameservers => $role::authdns::data::nameservers,
-        gitrepo     => $role::authdns::data::gitrepo,
+        nameservers        => $role::authdns::data::nameservers,
+        gitrepo            => $role::authdns::data::gitrepo,
+        lvs_services       => hiera('lvs::configuration::lvs_services'),
+        discovery_services => hiera('discovery::services'),
     }
 
     ferm::service { 'udp_dns_auth':

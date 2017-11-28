@@ -3,7 +3,6 @@
 <VirtualHost *:80>
         DocumentRoot /var/www/planet/<%= @name %>
         ServerName <%= @name %>.planet.<%= scope.lookupvar('planet::planet_domain_name') %>
-        php_admin_flag engine off
 
 	Header always set Content-Security-Policy "upgrade-insecure-requests"
 

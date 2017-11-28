@@ -1,6 +1,4 @@
-debdeploy::grains:
-  debdeploy-thumbor:
-    value: standard
-
 admin::groups:
-    - thumbor-admins
+    - perf-roots
+
+cluster: thumbor

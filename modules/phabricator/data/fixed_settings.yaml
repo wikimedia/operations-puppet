@@ -10,9 +10,10 @@ ui.logo:
   'wordmarkText': 'Phabricator'
 
 ui.footer-items:
-  - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
+  - {name: 'Content licensed under Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA) unless otherwise noted; code licensed under GNU General Public License (GPL) or other open source licenses. By using this site, you agree to the Terms of Use, Privacy Policy, and Code of Conduct.'}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
   - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
+  - {href: 'https://www.mediawiki.org/wiki/Code_of_Conduct', name: Code of Conduct}
   - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
   - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
   - {href: 'https://creativecommons.org/licenses/by-sa/3.0/', name: CC-BY-SA}
@@ -47,7 +48,7 @@ maniphest.priorities:
   '100':
     name: 'Unbreak Now!'
     short: 'Unbreak!'
-    color: indigo
+    color: pink
     keywords: ['unbreak']
   '90':
     name: 'Needs Triage'
@@ -95,6 +96,39 @@ maniphest.custom-field-definitions:
       default: 'None'
       security-bug: 'Software security bug'
       sensitive: 'Other confidential issue'
+  deadline.due:
+    name: "Due Date"
+    description: Date that this task is due
+    type: date
+    copy: true
+    edit: true
+    view: true
+    search: true
+    fulltext: false
+  bug.version:
+    name: Version
+    description: Affected software version
+    type: text
+    search: true
+    fulltext: true
+  release.version:
+    name: Version
+    description: Version number to be released / deployed
+    type: text
+    search: true
+    fulltext: true
+  release.date:
+    name: "Date"
+    description: Date of the release / deployment
+    type: date
+    search: true
+
+maniphest.subtypes:
+  - { key: "default", name: "Task" }
+  - { key: "bug", name: "Bug" }
+  - { key: "log", name: "LogSpam" }
+  - { key: "deadline", name: "Deadline" }
+  - { key: "release", name: "Release" }
 
 # Security/Operations Macro's for enabling
 # as we rollout to RT and bugzilla.
@@ -194,6 +228,8 @@ translation.override:
   'Do you want to export the query results to Excel?': 'Do you want to export the query results?'
   # T865
   'You can also create tasks by sending an email to: %s': 'You can also create tasks by sending an email to: %s (<a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Phabricator/Help#Using_e-mail" tabindex="-1" target="_blank">learn more</a>)'
+  # T173208
+  'Dat Boi': 'Insectivore'
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:

@@ -1,9 +1,10 @@
 define snapshot::dumps::wikiconf(
-    $configtype = 'smallwikis',
+    $configtype = 'allwikis',
     $config     = undef,
+    $publicdir  = undef,
+    $privatedir = undef,
+    $tempdir    = undef,
     ) {
-
-    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { "${confsdir}/${title}":

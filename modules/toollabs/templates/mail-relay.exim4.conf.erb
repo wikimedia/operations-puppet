@@ -32,22 +32,11 @@ domainlist local_domains = MAILDOMAIN : \
                            tools-bastion-01.eqiad.wmflabs : \
                            tools-checker-02.eqiad.wmflabs : \
                            tools-mail.eqiad.wmflabs : \
-                           tools-precise-dev.eqiad.wmflabs : \
                            tools-services-01.eqiad.wmflabs : \
                            tools-submit.eqiad.wmflabs : \
                            tools-webgrid-generic-1401.eqiad.wmflabs : \
                            tools-webgrid-generic-1402.eqiad.wmflabs : \
                            tools-webgrid-generic-1403.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1201.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1202.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1203.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1204.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1205.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1206.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1207.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1208.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1209.eqiad.wmflabs : \
-                           tools-webgrid-lighttpd-1210.eqiad.wmflabs : \
                            tools-webgrid-lighttpd-1401.eqiad.wmflabs : \
                            tools-webgrid-lighttpd-1402.eqiad.wmflabs : \
                            tools-webgrid-lighttpd-1403.eqiad.wmflabs : \
@@ -62,6 +51,7 @@ hostlist relay_from_hosts = 10.0.0.0/8
 
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
+acl_smtp_mail = acl_check_mail
 
 never_users = root
 
@@ -108,6 +98,10 @@ acl_check_rcpt:
 
 
 acl_check_data:
+  accept
+
+acl_check_mail:
+  deny senders = /etc/exim4/deny_senders.list
   accept
 
 ###########

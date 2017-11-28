@@ -1,0 +1,42 @@
+# This is a default my.cnf template, used so that the module is auto-contained.
+
+# Do not use it, instead, use separate .cnf templates for each type of server
+# on the adequate role.
+
+[client]
+port   = <%= @port %>
+socket = <%= @socket %>
+
+
+[mysqld]
+
+log_bin
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+user      = mysql
+socket    = <%= @socket %>
+port      = <%= @port %>
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
+server_id = <%= @server_id %>
+read_only = <%= @read_only %>
+
+secure_file_priv   = /dev/null
+max_allowed_packet = <% @max_allowed_packet %>
+sync_binlog        = 1
+expire_logs_days   = 7
+
+innodb_file_per_table   = 1
+innodb_buffer_pool_size = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_log_file_size    = 50M
+innodb_flush_method     = O_DIRECT
+
+[mysqldump]
+
+quick
+max_allowed_packet = <% @max_allowed_packet %>
+
+

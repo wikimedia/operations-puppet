@@ -15,14 +15,11 @@
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
 # $planet_http_proxy - set proxy to be used for downloading feeds
 #   example: http://url-downloader.${::site}.wikimedia.org:8080
-# $planet_active_dc - currently active datacenter, updates will only run here
-#   example: eqiad
 class planet (
     $planet_domain_name,
     $planet_languages,
     $planet_meta_link,
     $planet_http_proxy,
-    $planet_active_dc,
 ) {
 
     # locales are essential for planet
@@ -31,15 +28,22 @@ class planet (
     include ::locales::extended
 
     # things done once for all planets
-    include ::planet::webserver
     include ::planet::packages
     include ::planet::dirs
     include ::planet::user
     include ::planet::index_site
 
+    if os_version('debian == stretch') {
+        $logo_file = '/var/www/planet/planet-wm2.png'
+    } else {
+        $logo_file = '/usr/share/planet-venus/theme/common/images/planet-wm2.png'
+    }
+
     # TODO change this to be one per language
-    file { '/usr/share/planet-venus/theme/common/images/planet-wm2.png':
-        source  => 'puppet:///modules/planet/theme/images/planet-wm2.png';
+    file { $logo_file:
+        source => 'puppet:///modules/planet/theme/images/planet-wm2.png',
+        owner  => 'planet',
+        group  => 'www-data',
     }
 
     # things done per each language version

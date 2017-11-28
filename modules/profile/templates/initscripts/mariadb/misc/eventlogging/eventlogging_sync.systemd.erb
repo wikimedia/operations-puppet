@@ -1,0 +1,15 @@
+# NOTE: This file is managed by Puppet
+# Systemd unit for eventlogging_sync
+
+[Unit]
+Description="The Eventlogging log db custom replication script"
+
+[Service]
+User=<%= @eventlogging_sync_uid %>
+Group=<%= @eventlogging_sync_gid %>
+
+Restart=no
+ExecStart=/usr/local/bin/eventlogging_sync.sh -D <%= @cutoff_days %> -b <%= @batch_size %> -d <%= @database %> <%= @master_host %> <%= @slave_host %>
+
+[Install]
+WantedBy=multi-user.target

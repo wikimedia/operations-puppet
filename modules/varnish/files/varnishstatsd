@@ -81,6 +81,7 @@ class StatsdStatsSender(CacheStatsSender):
             data = self.buf.read()
 
             if self.args.statsd_server:
+                self.resolve_statsd_ip()
                 self.sock.sendto(data, self.args.statsd_server)
             else:
                 print(data.decode('utf-8', errors='replace').rstrip())

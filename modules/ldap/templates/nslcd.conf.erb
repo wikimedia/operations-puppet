@@ -46,8 +46,6 @@ validnames /^[a-z][.a-z0-9_-]*$/i
 
 <%- if @shell_override %>
 map passwd loginshell "<%= @shell_override %>"
-<%- elsif @realm == "labs" %>
-map passwd loginshell "/bin/bash"
 <%- end %>
 
 pagesize <%= @ldapconfig["pagesize"] %>

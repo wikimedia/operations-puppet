@@ -1,42 +1,53 @@
-class role::labs::nfs::secondary($monitor = 'eth0') {
+class role::labs::nfs::secondary(
+  $observer_pass = hiera('profile::openstack::main::observer_password'),
+  $monitor_iface = 'eth0',
+  $data_iface    = 'eth1',
+) {
 
-    system::role { 'role::labs::nfs::secondary':
+    system::role { 'labs::nfs::secondary':
         description => 'NFS secondary share cluster',
     }
 
-    include labstore::fileserver::exports
+    require ::profile::openstack::main::clientlib
+    require ::profile::openstack::main::observerenv
     include labstore::fileserver::secondary
     include labstore::backup_keys
     include role::labs::db::maintain_dbusers
 
-    # Enable RPS to balance IRQs over CPUs
-    interface::rps { $monitor: }
+    class {'::labstore::fileserver::exports':
+        observer_pass => $observer_pass,
+    }
 
-    interface::manual{ 'eth1':
-        interface => 'eth1',
+    # Enable RPS to balance IRQs over CPUs
+    interface::rps { 'monitor':
+        interface => $monitor_iface,
+    }
+
+    interface::manual{ 'data':
+        interface => $data_iface,
     }
 
     if $::hostname == 'labstore1005' {
         # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'primary'
+        $drbd_role = 'secondary'
 
         interface::ip { 'drbd-replication':
-            interface => 'eth1',
+            interface => $data_iface,
             address   => '192.168.0.2',
             prefixlen => '30',
-            require   => Interface::Manual['eth1'],
+            require   => Interface::Manual['data'],
         }
     }
 
     if $::hostname == 'labstore1004' {
         # Define DRBD role for this host, should come from hiera
-        $drbd_role = 'secondary'
+        $drbd_role = 'primary'
 
         interface::ip { 'drbd-replication':
-            interface => 'eth1',
+            interface => $data_iface,
             address   => '192.168.0.1',
             prefixlen => '30',
-            require   => Interface::Manual['eth1'],
+            require   => Interface::Manual['data'],
         }
     }
 
@@ -97,33 +108,64 @@ class role::labs::nfs::secondary($monitor = 'eth0') {
         group   => 'root',
     }
 
-    include labstore::monitoring::interfaces
+    include labstore::monitoring::exports
     include labstore::monitoring::ldap
     include labstore::monitoring::nfsd
+    class { 'labstore::monitoring::interfaces':
+        monitor_iface => $monitor_iface,
+    }
+
     class { 'labstore::monitoring::secondary':
-        drbd_role  => $drbd_role,
-        cluster_ip => $cluster_ip,
+        drbd_role     => $drbd_role,
+        cluster_iface => $monitor_iface,
+        cluster_ip    => $cluster_ip,
+    }
+
+    file {'/usr/local/sbin/logcleanup':
+        source => 'puppet:///modules/labstore/logcleanup.py',
+        mode   => '0744',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file {'/etc/logcleanup-config.yaml':
+        source => 'puppet:///modules/role/labs/labstore/secondary/logcleanup-config.yaml',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/usr/local/sbin/safe-du':
+        source => 'puppet:///modules/labstore/monitor/safe-du.sh',
+        mode   => '0744',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    sudo::user { 'diamond_dir_size_tracker':
+        user       => 'diamond',
+        privileges => ['ALL = NOPASSWD: /usr/local/sbin/safe-du'],
+        require    => File['/usr/local/sbin/safe-du'],
     }
 
     if($drbd_role == 'primary') {
-
-        file { '/usr/local/sbin/safe-du':
-            source => 'puppet:///modules/labstore/monitor/safe-du.sh',
-            mode   => '0744',
-            owner  => 'root',
-            group  => 'root',
-        }
-
-        sudo::user { 'diamond_dir_size_tracker':
-            user       => 'diamond',
-            privileges => ['ALL = NOPASSWD: /usr/local/sbin/safe-du'],
-            require    => File['/usr/local/sbin/safe-du'],
-        }
 
         diamond::collector { 'DirectorySize':
             source      => 'puppet:///modules/labstore/monitor/dir_size_tracker.py',
             config_file => 'puppet:///modules/labstore/monitor/DirectorySizeCollector.conf',
             require     => Sudo::User['diamond_dir_size_tracker'],
+        }
+    }
+
+    if($drbd_role != 'primary') {
+        cron { 'logcleanup':
+            ensure      => absent,
+            environment => 'MAILTO=labs-admin@lists.wikimedia.org',
+            command     => '/usr/local/sbin/logcleanup --config /etc/logcleanup-config.yaml',
+            user        => 'root',
+            minute      => '0',
+            hour        => '14',
+            require     => [File['/usr/local/sbin/logcleanup'], File['/etc/logcleanup-config.yaml']],
         }
     }
 }

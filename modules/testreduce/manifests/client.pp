@@ -6,7 +6,8 @@
 #   Name of the testreduce client service
 #
 define testreduce::client(
-    $instance_name
+    $instance_name,
+    $parsoid_port,
 ) {
     file { "/etc/testreduce/${instance_name}.config.js":
         content => template("testreduce/${instance_name}.config.js.erb"),

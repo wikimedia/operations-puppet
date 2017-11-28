@@ -1,29 +1,29 @@
 -- pdns, localhost
 
 CREATE USER 'pdns_admin'@'localhost'
-IDENTIFIED BY '<%=@pdns_admin_db_password %>';
+IDENTIFIED BY '<%=@pdns_admin_db_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER,
       CREATE TEMPORARY TABLES
 ON `pdns`.* TO 'pdns_admin'@'localhost';
 
 CREATE USER 'pdns'@'localhost'
-IDENTIFIED BY '<%=@pdns_db_password %>';
+IDENTIFIED BY '<%=@pdns_db_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES
 ON `pdns`.* TO 'pdns'@'localhost';
 
--- designate, designate_host
+-- designate, designate_host_ip
 
-CREATE USER 'pdns_admin'@'<%=@designate_host %>'
-IDENTIFIED BY '<%=@pdns_admin_db_password %>';
+CREATE USER 'pdns_admin'@'<%=@designate_host_ip %>'
+IDENTIFIED BY '<%=@pdns_admin_db_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER,
       CREATE TEMPORARY TABLES
-ON `pdns`.* TO 'pdns_admin'@'<%=@designate_host %>';
+ON `pdns`.* TO 'pdns_admin'@'<%=@designate_host_ip %>';
 
-CREATE USER 'pdns'@'<%=@designate_host %>'
-IDENTIFIED BY '<%=@pdns_db_password %>';
+CREATE USER 'pdns'@'<%=@designate_host_ip %>'
+IDENTIFIED BY '<%=@pdns_db_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES
-ON `pdns`.* TO 'pdns'@'<%=@designate_host %>';
+ON `pdns`.* TO 'pdns'@'<%=@designate_host_ip %>';

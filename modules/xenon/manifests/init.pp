@@ -22,7 +22,7 @@
 #
 #  class { 'xenon':
 #      ensure     => present,
-#      redis_host => 'fluorine.eqiad.wmnet',
+#      redis_host => 'mwlog.example.net',
 #      redis_port => 6379,
 #  }
 #
@@ -41,7 +41,8 @@ class xenon(
             port => $redis_port,
         },
         logs      => [
-            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 24 },
+            # 336 hours is 14 days * 24 hours (T166624)
+            { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 336 },
             { period => 'daily',   format => '%Y-%m-%d',    retain => 90 },
         ],
     }
@@ -88,8 +89,8 @@ class xenon(
 
     base::service_unit { 'xenon-log':
         ensure  => $ensure,
-        systemd => true,
-        upstart => true,
+        systemd => systemd_template('xenon-log'),
+        upstart => upstart_template('xenon-log'),
     }
 
     # This is the Perl script that generates flame graphs.

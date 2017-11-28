@@ -1,0 +1,4 @@
+# Purpose: APC for ResourceLoader
+https://%server/w/load.php?debug=false&modules=startup&only=scripts
+https://%server/w/load.php?debug=false&modules=jquery%2Cmediawiki&only=scripts
+https://%server/w/load.php?debug=false&modules=site%7Csite.styles

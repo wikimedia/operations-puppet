@@ -12,26 +12,36 @@ class proxysql (
     $mysql_socket    = '/tmp/proxysql.sock',
     ) {
 
-    package { [
-        'proxysql',
-        'mysql-client',
-    ]:
+    # We need to manualy setup users, as the package doesn't do it for us
+    group { 'proxysql':
         ensure => present,
+        system => true,
     }
 
+    user { 'proxysql':
+        ensure     => present,
+        gid        => 'proxysql',
+        shell      => '/bin/false',
+        home       => '/nonexistent',
+        system     => true,
+        managehome => false,
+    }
+
+    # Minimal basic config, with the right owner
     file { '/etc/proxysql.cnf':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        owner   => 'proxysql',
+        group   => 'proxysql',
+        mode    => '0440',
         content => template('proxysql/proxysql.cnf.erb'),
     }
 
-    file { '/root/.my.cnf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('proxysql/root.my.cnf.erb'),
+    # mostly sqllite intenal config cache, let's make sure it has
+    # the right owner
+    file {'/var/run/proxysql':
+        ensure => directory,
+        owner  => 'proxysql',
+        group  => 'proxysql',
+        mode   => '0750',
     }
 }

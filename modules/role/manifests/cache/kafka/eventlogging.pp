@@ -13,10 +13,14 @@
 # [*varnish_svc_name*]
 #   The name of the init unit for the above.
 #   Default 'varnish-frontend'
+# [*kafka_protocol_version*]
+#   Kafka API version to use, needed for brokers < 0.10
+#   https://issues.apache.org/jira/browse/KAFKA-3547
 #
 class role::cache::kafka::eventlogging(
-    $varnish_name = 'frontend',
-    $varnish_svc_name = 'varnish-frontend'
+    $varnish_name           = 'frontend',
+    $varnish_svc_name       = 'varnish-frontend',
+    $kafka_protocol_version = '0.9.0.1',
 ) inherits role::cache::kafka
 {
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
@@ -39,13 +43,14 @@ class role::cache::kafka::eventlogging(
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
         conf_template               => $conf_template,
+        force_protocol_version      => $kafka_protocol_version,
     }
 
     include ::standard
 
     # Generate icinga alert if varnishkafka is not running.
     nrpe::monitor_service { 'varnishkafka-eventlogging':
-        description   => 'Varnishkafka log producer',
+        description   => 'eventlogging Varnishkafka log producer',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
         contact_group => 'admins,analytics',
         require       => Class['::varnishkafka'],

@@ -1,0 +1,7 @@
+# NOTE: This file is managed by Puppet.
+
+# This command will be run instead of using one of mylvmbackup's
+# default backup types.  This allows us to do incremental backups
+# directly from mariadb data directories.
+
+/usr/bin/rsync --delete -rt <%= @mountdir %>/ <%= @dest %>/

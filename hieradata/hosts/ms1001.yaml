@@ -1,3 +1,9 @@
+profile::dumps::rsyncer:
+  dumps_user: 'datasets'
+  dumps_group: 'datasets'
+  dumps_deploygroup: 'wikidev'
+  dumps_mntpoint: '/data'
+
 admin::groups:
   - dataset-admins
 do_acme: false

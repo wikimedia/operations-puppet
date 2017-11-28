@@ -1,0 +1,10 @@
+# Purpose: Root redirect
+https://%server/
+# Purpose: Main Page, Skin cache, Sidebar cache, Localisation cache
+https://%server/wiki/Main_Page
+# Purpose: MobileFrontend, Main Page
+https://%mobileServer/wiki/Main_Page
+# Purpose: Login page
+https://%server/wiki/Special:UserLogin
+# Purpose: API, Recent changes
+https://%server/w/api.php?format=json&action=query&list=recentchanges

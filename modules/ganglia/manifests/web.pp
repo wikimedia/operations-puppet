@@ -9,6 +9,8 @@ class ganglia::web(
     include ::apache::mod::ssl
     include ::apache::mod::rewrite
     include ::apache::mod::headers
+    include ::apache::mod::authnz_ldap
+    include ::passwords::ldap::production
 
     $ganglia_servername = 'ganglia.wikimedia.org'
     $ganglia_serveralias = 'uranium.wikimedia.org'
@@ -28,6 +30,8 @@ class ganglia::web(
             ]:
         ensure => $ensure,
     }
+
+    $proxypass = $passwords::ldap::production::proxypass
 
     apache::site { $ganglia_servername:
         content => template("ganglia/${ganglia_servername}.erb"),

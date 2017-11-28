@@ -23,6 +23,7 @@ is the behavior we want
 import argparse
 import ldap
 import yaml
+import os.path
 import sys
 
 
@@ -87,6 +88,15 @@ def main():
     )
     args = parser.parse_args()
 
+    # Skip LDAP lookup for the root user.
+    if args.username == 'root' and not args.enable_servicegroups:
+        return
+
+    # Deny authorization for non-root users if the /etc/block-ldap-key-lookup
+    # file is present
+    if os.path.isfile('/etc/block-ldap-key-lookup'):
+        sys.exit(1)
+
     with open('/etc/ldap.yaml') as f:
         config = yaml.safe_load(f)
 
@@ -108,6 +118,7 @@ def main():
     for key in keys:
         # Some keys have an accidental newline at the end, see T77902
         print key.strip()
+
 
 if __name__ == '__main__':
     main()

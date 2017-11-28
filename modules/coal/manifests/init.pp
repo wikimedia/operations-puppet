@@ -69,7 +69,7 @@ class coal( $endpoint ) {
 
     base::service_unit { 'coal':
         ensure  => present,
-        systemd => true,
-        upstart => true,
+        systemd => systemd_template('coal'),
+        upstart => upstart_template('coal'),
     }
 }

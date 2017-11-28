@@ -47,11 +47,6 @@ menu = asw-c-eqiad
 title = asw-c-eqiad.mgmt.eqiad.wmnet
 host = asw-c-eqiad.mgmt.eqiad.wmnet
 
-+++ asw-d-eqiad
-menu = asw-d-eqiad
-title = asw-d-eqiad.mgmt.eqiad.wmnet
-host = asw-d-eqiad.mgmt.eqiad.wmnet
-
 +++ asw2-d-eqiad
 menu = asw2-d-eqiad
 title = asw2-d-eqiad.mgmt.eqiad.wmnet
@@ -95,6 +90,26 @@ host = radon.wikimedia.org
 menu = einsteinium
 title = einsteinium.wikimedia.org [D3]
 host = einsteinium.wikimedia.org
+
+
+++ frack
+menu = frack
+title = Fundraising Infrastructure
+
++++ pfw3-eqiad
+menu = pfw3-eqiad
+title = pfw3-eqiad.wikimedia.org
+host = pfw3-eqiad.wikimedia.org
+
++++ tellurium
+menu = tellurium
+title = tellurium.wikimedia.org
+host = tellurium.wikimedia.org
+
++++ thulium
+menu = thulium
+title = thulium.frack.eqiad.wmnet
+host = thulium.frack.eqiad.wmnet
 
 + eqord
 
@@ -195,6 +210,31 @@ menu = wasat
 title = wasat.codfw.wmnet [D5]
 host = wasat.codfw.wmnet
 
+++ frack
+menu = frack
+title = Fundraising Infrastructure
+
++++ pfw3-codfw
+menu = pfw3-codfw
+title = pfw3-codfw.wikimedia.org
+host = pfw3-codfw.wikimedia.org
+
++++ fasw-c-codfw
+menu = fasw-c-codfw
+title = fasw-c-codfw.mgmt.codfw.wmnet
+host = fasw-c-codfw.mgmt.codfw.wmnet
+
++++ rigel
+menu = rigel
+title = rigel.wikimedia.org
+host = rigel.wikimedia.org
+
++++ saiph
+menu = saiph
+title = saiph.frack.codfw.wmnet
+host = saiph.frack.codfw.wmnet
+
+
 + esams
 
 menu = esams
@@ -234,10 +274,10 @@ host = asw-esams.mgmt.esams.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ bast3001
-menu = bast3001
-title = bast3001.wikimedia.org
-host = bast3001.wikimedia.org
++++ bast3002
+menu = bast3002
+title = bast3002.wikimedia.org
+host = bast3002.wikimedia.org
 
 + ulsfo
 
@@ -277,7 +317,7 @@ host = bast4001.wikimedia.org
 probe = DNS
 menu = DNS latency
 title = Service latency (DNS)
- 
+
 ++ ns0
 host = ns0.wikimedia.org
 

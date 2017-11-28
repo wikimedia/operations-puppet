@@ -37,15 +37,6 @@ define statsite::instance(
     }
 
     if $::initsystem == 'systemd' {
-        $instance_service_path = "/lib/systemd/system/statsite@${port}.service"
-        $template_service_path = '/lib/systemd/system/statsite@.service'
-
-        file { $instance_service_path:
-            ensure  => 'link',
-            target  => $template_service_path,
-            require => File[$template_service_path],
-        }
-
         file { "/etc/statsite/${port}.ini":
             content => template('statsite/statsite.ini.erb'),
             require => Package['statsite'],
@@ -56,7 +47,7 @@ define statsite::instance(
             ensure   => 'running',
             provider => 'systemd',
             enable   => true,
-            require  => File[$instance_service_path],
+            require  => File['/lib/systemd/system/statsite@.service'],
         }
     }
 }

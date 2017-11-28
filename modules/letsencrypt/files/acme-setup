@@ -291,7 +291,7 @@ def chk_ossl(file, which, subjects, check_ss, exp_days, exp_rand):
     except:
         return True
 
-    subj_re = '^\s*Subject:\s*(.*/)?CN=' + re.escape(subjects[0]) + '(/|\s*$)'
+    subj_re = '^\s*Subject:\s*(.*/)?\s*CN\s*=\s*' + re.escape(subjects[0]) + '(/|\s*$)'
     if not re.search(subj_re, txt, re.M):
         return True
 

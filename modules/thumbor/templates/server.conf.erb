@@ -98,16 +98,19 @@ EXIF_TINYRGB_ICC_REPLACE = 'sRGB IEC61966-2.1'
 
 PROXY_ENGINE_ENGINES = [
     ('wikimedia_thumbor.engine.svg', ['svg']),
+<%- if @stl_support != nil -%>
+    ('wikimedia_thumbor.engine.stl', ['stl']),
+<%- end -%>
     ('wikimedia_thumbor.engine.xcf', ['xcf']),
     ('wikimedia_thumbor.engine.djvu', ['djvu']),
     ('wikimedia_thumbor.engine.vips', ['tiff', 'png']),
     ('wikimedia_thumbor.engine.tiff', ['tiff']),
     ('wikimedia_thumbor.engine.ghostscript', ['pdf']),
     ('wikimedia_thumbor.engine.gif', ['gif']),
-    ('wikimedia_thumbor.engine.imagemagick', ['jpg', 'png']),
+    ('wikimedia_thumbor.engine.imagemagick', ['jpg', 'png', 'webp']),
 ]
 
-HTTP_LOADER_MAX_BODY_SIZE = 1024*1024*1024  # 1GB
+HTTP_LOADER_MAX_BODY_SIZE = 4*1024*1024*1024  # 4GB
 
 PROXY_LOADER_LOADERS = [
     'wikimedia_thumbor.loader.video',
@@ -132,8 +135,6 @@ CHROMA_SUBSAMPLING = '4:2:0'
 QUALITY_LOW = 40
 DEFAULT_FILTERS_JPEG = 'conditional_sharpen(0.0,0.8,1.0,0.0,0.85)'
 
-HTTP_LOADER_MAX_BODY_SIZE = 1024 * 1024 * 1024  # 1GB
-
 LOADER_EXCERPT_LENGTH = 4096
 
 # 2 minutes, for situations where an engine failed to clean up after itself
@@ -146,14 +147,16 @@ APP_CLASS = 'wikimedia_thumbor.app.App'
 
 # PoolCounter configuration
 
-POOLCOUNTER_SERVER = 'poolcounter1001.eqiad.wmnet'
+<% if @poolcounter_server != nil %>
+POOLCOUNTER_SERVER = '<%= @poolcounter_server %>'
 POOLCOUNTER_PORT = 7531
 POOLCOUNTER_RELEASE_TIMEOUT = 120
+<% end %>
 
 # Up to "workers" thumbnails can be generated at once for a given IP
 # address, with up to "maxqueue" thumbnails queued per IP
 POOLCOUNTER_CONFIG_PER_IP = {
-    'workers': 32,
+    'workers': 4,
     'maxqueue': 500,
     'timeout': 8
 }
@@ -172,8 +175,22 @@ POOLCOUNTER_CONFIG_EXPENSIVE = {
     'workers': 16,
     'maxqueue': 100,
     'timeout': 8,
-    'extensions': ['xcf', 'djvu', 'pdf', 'tiff']
+    'extensions': ['xcf', 'djvu', 'pdf', 'tiff', 'stl']
 }
+
+# Thumbnails that fail for a given xkey more than 4 times per hour aren't
+# worth re-attempting that often
+FAILURE_THROTTLING_MEMCACHE = ['127.0.0.1:11212']
+FAILURE_THROTTLING_MAX = 4
+FAILURE_THROTTLING_DURATION = 3600
+FAILURE_THROTTLING_PREFIX = 'thumbor-failure-'
+
+<%- if @stl_support != nil -%>
+THREED2PNG_PATH = '/srv/deployment/3d2png/deploy/src/3d2png.js'
+<%- end -%>
+
+# Animated GIFs greater than 100MP render as the first frame only
+MAX_ANIMATED_GIF_AREA = 100000000
 
 
 ################################### Logging ##################################
@@ -232,12 +249,29 @@ THUMBOR_LOG_CONFIG = {
             'encoding': 'utf8',
             'delay': False,
             'filters': ['context', '404only']
+<% if @logstash_host != nil %>
+        },
+        'logstash': {
+            'level': 'ERROR',
+            'class': 'logstash.LogstashHandler',
+            'host': '<%= @logstash_host %>',
+            'port': <%= @logstash_port %>,
+            'version': 1,
+            'message_type': 'logback',
+            'fqdn': False,
+            'tags': ['thumbor'],
+            'filters': ['context', '404exclude']
+<% end %>
         }
     },
     'loggers': {
         '': {
             'level': 'DEBUG',
+<%- if @logstash_host != nil -%>
+            'handlers': ['debugstream', 'errorstream', 'http404', 'logstash']
+<% else %>
             'handlers': ['debugstream', 'errorstream', 'http404']
+<%- end -%>
         }
     }
 }

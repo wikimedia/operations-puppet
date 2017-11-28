@@ -8,7 +8,7 @@
 #   includes
 #       An array of files to be included by the main configuration
 #   pgversion
-#       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu Precise
+#       Defaults to 9.3 in Ubuntu Trusty and 9.4 in Debian jessie.
 #   ensure
 #       Defaults to present
 #   max_wal_senders
@@ -38,8 +38,8 @@ class postgresql::master(
     $master_server=$::fqdn,
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
         'jessie'  => '9.4',
-        'precise' => '9.1',
         'trusty'  => '9.3',
     },
     $ensure='present',

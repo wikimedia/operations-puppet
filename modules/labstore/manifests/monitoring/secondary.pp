@@ -7,7 +7,7 @@
 # - check that cluster ip is assigned to DRBD primary
 # - NFS is being served over cluster IP
 
-class labstore::monitoring::secondary($drbd_role, $cluster_ip, $resource = 'all') {
+class labstore::monitoring::secondary($drbd_role, $cluster_iface, $cluster_ip, $resource = 'all') {
 
     sudo::user { 'nagios_check_drbd':
         user       => 'nagios',
@@ -54,7 +54,7 @@ class labstore::monitoring::secondary($drbd_role, $cluster_ip, $resource = 'all'
 
     nrpe::monitor_service { 'check_drbd_cluster_ip':
         description  => 'DRBD Cluster IP assignment',
-        nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_cluster_ip ${::hostname} ${drbd_role} ${cluster_ip}",
+        nrpe_command => "/usr/bin/sudo /usr/local/sbin/check_drbd_cluster_ip ${::hostname} ${drbd_role} ${cluster_iface} ${cluster_ip}",
         require      => File['/usr/local/sbin/check_drbd_cluster_ip'],
     }
 

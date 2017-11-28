@@ -4,6 +4,7 @@
 import argparse
 import ConfigParser
 import logging
+import re
 import subprocess
 import sys
 import time
@@ -19,7 +20,9 @@ SERVICE_STATE_TYPES = ('SOFT', 'HARD')
 RAID_TYPES = ('megacli', 'hpssacli', 'mpt', 'md', 'n/a')
 COMPRESSED_RAID_TYPES = ('megacli', 'hpssacli')
 
-SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds')
+SKIP_STRINGS = ('timeout', 'timed out', 'connection refused', 'out of bounds',
+                'must have write cache policy', 'Could not complete SSL handshake',
+                r'Command check_raid_[^ ]+ not defined')
 
 LOG_PATH = '/var/log/icinga/raid_handler.log'
 COMMAND_FILE = '/var/lib/nagios/rw/nagios.cmd'
@@ -110,7 +113,11 @@ def get_raid_status(host, raid_type):
     if raid_type in COMPRESSED_RAID_TYPES:
         # NRPE doesn't handle NULL bytes, decoding them.
         # Given the specific domain there was no need of a full yEnc encoding.
-        status = zlib.decompress(stdout.replace('###NULL###', '\x00'))
+        try:
+            status = zlib.decompress(stdout.replace('###NULL###', '\x00'))
+        except zlib.error as e:
+            status = 'Failed to decompress Raid status: {err}'.format(err=e)
+            logger.error(status)
     else:
         status = stdout
 
@@ -229,21 +236,24 @@ def main():
         logger.debug('Nothing to do, exiting')
         return
 
-    message_lower = args.message.lower()
     for skip_string in SKIP_STRINGS:
-        if skip_string in message_lower:
+        if re.search(skip_string, args.message, flags=re.IGNORECASE) is not None:
             logger.info(
-                ("Skipping RAID Handler execution for host '{}' and "
-                 "RAID type '{}', skip string '{}' detected in '{}'").format(
-                    args.host_address, args.raid_type, skip_string,
-                    args.message))
+                ("Skipping RAID Handler execution for host '{host}' and RAID type "
+                 "'{raid}', skip string '{pattern}' detected in '{str}'").format(
+                    host=args.host_address, raid=args.raid_type, pattern=skip_string,
+                    str=args.message))
             return
+
+    raid_status = '{msg}\n{msg_remain}\n'.format(
+        msg=args.message, msg_remain=args.message_remain)
 
     if args.skip_nrpe or args.raid_type == 'n/a':
         logger.debug('Skipping NRPE RAID status gathering')
-        raid_status = '{}\n{}'.format(args.message, args.message_remain)
     else:
-        raid_status = get_raid_status(args.host_address, args.raid_type)
+        raid_status += '$ sudo /usr/local/lib/nagios/plugins/{command}\n{status}'.format(
+            command=NRPE_REMOTE_COMMAND.format(args.raid_type),
+            status=get_raid_status(args.host_address, args.raid_type))
 
     phab_client = get_phabricator_client()
     project_ids = get_phabricator_project_ids(phab_client, args.datacenter)

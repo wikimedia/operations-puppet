@@ -4,7 +4,7 @@
 # that will serve static files
 #
 # production: https://releases.wikimedia.org
-#
+# jenkins:    https://releases-jenkins.wikimedia.org
 # requirements:
 #
 # - initial content must be manually copied into
@@ -16,6 +16,8 @@
 #
 # - the apache site config
 # - the /srv/org/wikimedia/ subdir docroot
+# - a Jenkins instance for automated MW releases
+# - another separate apache site for jenkins UI
 #
 # Because this service is intended to live behind a
 # caching cluster which would handle ssl/tls, it does not
@@ -23,12 +25,35 @@
 
 class releases (
         $sitename = undef,
+        $sitename_jenkins = undef,
         $server_admin = 'noc@wikimedia.org',
+        $prefix = '/',
+        $http_port = '8080',
 ) {
 
+    ensure_resource('file', '/srv/mediawiki', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/releases', {'ensure' => 'directory' })
+
+    git::clone { 'mediawiki/core':
+        directory => '/srv/mediawiki/core',
+        require   => File['/srv/mediawiki'],
+    }
+    git::clone { 'mediawiki/extensions':
+        directory          => '/srv/mediawiki/extensions',
+        recurse_submodules => true,
+        require            => File['/srv/mediawiki'],
+    }
+    git::clone { 'mediawiki/skins':
+        directory          => '/srv/mediawiki/skins',
+        recurse_submodules => true,
+        require            => File['/srv/mediawiki'],
+    }
+    git::clone { 'mediawiki/vendor':
+        directory => '/srv/mediawiki/vendor',
+        require   => File['/srv/mediawiki'],
+    }
 
     file { '/srv/org/wikimedia/releases/mediawiki':
         ensure  => 'directory',
@@ -44,13 +69,6 @@ class releases (
         owner   => 'root',
         group   => 'releasers-mediawiki',
         require => File['/srv/org/wikimedia/releases'],
-    }
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
-    apache::site { $sitename:
-        content => template('releases/apache.conf.erb'),
     }
 
     file { '/srv/org/wikimedia/releases/releases-header.html':

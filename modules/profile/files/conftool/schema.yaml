@@ -1,0 +1,25 @@
+# Discovery objects. they will represent a sequence of cluster/service/dc combinations
+discovery:
+  path: "discovery"
+  depends:
+    - service
+  tags:
+    - dnsdisc
+  schema:
+    pooled:
+      type: "bool"
+      default: false
+    references:
+      type: "list"
+      default: []
+    ttl:
+      type: "int"
+      default: 300
+mwconfig:
+  path: "mediawiki-config"
+  tags:
+    - scope
+  schema:
+    val:
+      type: "any"
+      default: null

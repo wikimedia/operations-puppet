@@ -7,6 +7,3 @@ profile::base::domain_search:
   - ulsfo.wmnet
 admin::groups:
   - all-users
-debdeploy::grains:
-  debdeploy-bastion:
-    value: standard

@@ -1,0 +1,48 @@
+server {
+    server_name parsoid-rt-tests.wikimedia.org;
+
+    listen   8001; ## listen for ipv4; this line is default and implied
+
+    # parsoid (used for a specific test case below)
+    location  /parsoid {
+        rewrite /parsoid/(.*) /$1  break;
+        proxy_pass         http://localhost:<%= @parsoid_port %>;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+    }
+
+    # testreduce web UI for parsoid-rt-testing
+    location  / {
+        proxy_pass         http://localhost:8003;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+    }
+}
+
+server {
+    server_name parsoid-vd-tests.wikimedia.org;
+
+    listen   8001; ## listen for ipv4; this line is default and implied
+
+    # visual-diffing web UI (used for a specific test case above)
+    location /diff {
+        proxy_pass         http://localhost:8012;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+    }
+
+    # Enable serving individual diff images via the diffserver UI
+    # but turn off auto-listing of the directories
+    location /visualdiff {
+        root /srv;
+        autoindex off;
+        charset utf-8;
+    }
+
+    # testreduce web UI for visualdiffing
+    location / {
+        proxy_pass         http://localhost:8010;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+    }
+}

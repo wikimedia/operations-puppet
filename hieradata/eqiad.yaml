@@ -2,24 +2,24 @@
 # mediawiki
 #
 mediawiki_memcached_servers:
-  - '10.64.0.180:11211:1 "shard01"'
-  - '10.64.0.181:11211:1 "shard02"'
-  - '10.64.0.182:11211:1 "shard03"'
-  - '10.64.0.183:11211:1 "shard04"'
-  - '10.64.0.184:11211:1 "shard05"'
-  - '10.64.0.185:11211:1 "shard06"'
-  - '10.64.32.161:11211:1 "shard07"'
-  - '10.64.32.162:11211:1 "shard08"'
-  - '10.64.32.163:11211:1 "shard09"'
-  - '10.64.32.164:11211:1 "shard10"'
-  - '10.64.32.165:11211:1 "shard11"'
-  - '10.64.32.166:11211:1 "shard12"'
-  - '10.64.48.101:11211:1 "shard13"'
-  - '10.64.48.102:11211:1 "shard14"'
-  - '10.64.48.103:11211:1 "shard15"'
-  - '10.64.48.104:11211:1 "shard16"'
-  - '10.64.48.95:11211:1 "shard17"'
-  - '10.64.48.96:11211:1 "shard18"'
+  - '10.64.0.80:11211:1 "shard01"'
+  - '10.64.0.81:11211:1 "shard02"'
+  - '10.64.0.82:11211:1 "shard03"'
+  - '10.64.0.83:11211:1 "shard04"'
+  - '10.64.0.84:11211:1 "shard05"'
+  - '10.64.16.107:11211:1 "shard06"'
+  - '10.64.16.108:11211:1 "shard07"'
+  - '10.64.16.109:11211:1 "shard08"'
+  - '10.64.16.110:11211:1 "shard09"'
+  - '10.64.32.208:11211:1 "shard10"'
+  - '10.64.32.209:11211:1 "shard11"'
+  - '10.64.32.210:11211:1 "shard12"'
+  - '10.64.32.211:11211:1 "shard13"'
+  - '10.64.32.212:11211:1 "shard14"'
+  - '10.64.48.155:11211:1 "shard15"'
+  - '10.64.48.156:11211:1 "shard16"'
+  - '10.64.48.157:11211:1 "shard17"'
+  - '10.64.48.158:11211:1 "shard18"'
 
 #
 # Ganglia
@@ -62,43 +62,13 @@ eventlogging_mysql_consumers:
     # - mysql-m4-master-03
 
 
-labs_certmanager_hostname: "labservices1001.wikimedia.org"
-
-# This can be used by clients that need to connect to etcd.
-# Unfortunetly it is hardcoded here.
-etcd_hosts:
-    - conf1001.eqiad.wmnet
-    - conf1002.eqiad.wmnet
-    - conf1003.eqiad.wmnet
-
-# Default zookeeper cluster to use in eqiad.
-# The cluster config is in common.yaml in zookeeper_clusters.
-zookeeper_cluster_name: 'main-eqiad'
-# Page if a zookeeper server in this cluster goes down.
-zookeeper_cluster_is_critical: true
-
+# Cloud Services <
 #
-# Labs
-#
-
-labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
-# _spare is a duplicate/backup controller.  In theory it has the
-#  same state as the main controller.
-# WARNING:  Base images are rsynced from the primary host to the spare with
-#  --delete.  Make sure to back-up or otherwise keep track
-#  of your base images before creating a new empty, primary host here or
-#  you'll lose your image backups.
-labs_nova_controller_spare: &labsnovacontrollerspare "labcontrol1002.wikimedia.org"
-
-labs_glance_controller: &labsglancecontroller "labcontrol1001.wikimedia.org"
-labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
+labs_puppet_master: &labspuppetmaster "labs-puppetmaster.wikimedia.org"
 labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"
 
-labs_osm_host: "wikitech.wikimedia.org"
-labs_horizon_host: "californium.wikimedia.org"
-labs_host_ips: '10.64.20.0/24'
-
 # These are the up-and-coming, better dns servers:
+# used in manifests/realm.pp
 labsdnsconfig:
   host: 'labs-ns0.wikimedia.org'
   host_secondary: 'labs-ns1.wikimedia.org'
@@ -106,88 +76,16 @@ labsdnsconfig:
   recursor: 'labs-recursor0.wikimedia.org'
   recursor_secondary: 'labs-recursor1.wikimedia.org'
 
-novaconfig:
-  db_host: 'm5-master.eqiad.wmnet'
-  glance_host: *labsnovacontroller
-  rabbit_host: *labsnovacontroller
-  cc_host: *labsnovacontroller
-  controller_hostname: *labsnovacontroller
-  ldap_host: *labsnovacontroller
-  puppet_host: *labsnovacontroller
-  puppet_db_host: *labsnovacontroller
-  dhcp_domain: 'eqiad.wmflabs'
-  live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
-  zone: eqiad
-  spice_hostname: 'labspice.wikimedia.org'
-  scheduler_pool:
-    - labvirt1001
-    - labvirt1002
-    - labvirt1003
-    - labvirt1004
-    - labvirt1005
-    - labvirt1006
-    - labvirt1007
-    - labvirt1008
-    - labvirt1009
-    - labvirt1010
-    - labvirt1011
-    - labvirt1012
-    - labvirt1013
-
-wikitech_db_name: 'labswiki'
-
-wikitechstatusconfig:
-  host: 'wikitech.wikimedia.org'
-  domain: 'labs'
-  page_prefix: 'Nova_Resource:'
-  region: 'eqiad'
-  dns_domain: 'eqiad.wmflabs'
-
-keystoneconfig:
-  auth_port: '35357'
-  public_port: '5000'
-  auth_protocol: 'http'
-  auth_host: 208.80.154.92
-  admin_project_id: 'admin'
-  admin_project_name: 'admin'
-  oath_dbname: 'labswiki'
-  oath_dbhost: 'silver.wikimedia.org'
-
-designateconfig:
-  db_host:  'm5-master.eqiad.wmnet'
-  db_name: 'designate'
-  pool_manager_db_name: 'designate_pool_manager'
-  dhcp_domain: 'eqiad'
-  pdns_db_name: 'pdns'
-  rabbit_host:  *labsnovacontroller
-  controller_hostname: *labsnovacontroller
-  domain_id_internal_forward: '114f1333-c2c1-44d3-beb4-ebed1a91742b'
-  domain_id_internal_reverse: '8d114f3c-815b-466c-bdd4-9b91f704ea60'
-  wmflabsdotorg_project: 'wmflabsdotorg'
-  private_tld: 'wmflabs'
-  floating_ip_ptr_zone: '128-25.155.80.208.in-addr.arpa.'
-  floating_ip_ptr_fqdn_matching_regex: '^(\d{1,3})\.155\.80\.208\.in-addr\.arpa\.'
-  floating_ip_ptr_fqdn_replacement_pattern: '\1.128-25.155.80.208.in-addr.arpa.'
-
-labs_baremetal_servers:
-  - '10.64.20.12'
-
 labsldapconfig:
   hostname: ldap-labs.eqiad.wikimedia.org
   secondary_hostname: ldap-labs.codfw.wikimedia.org
 
-# Configure regular backups of the analytics-meta MySQL instance
-# in the Analytics Cluster to back up via rsync to
-# analytics1002.  This works because the analytics1002 has the
-# role::analyitcs_cluster::database::meta::backup_dest class
-# applied to it.
-analytics_cluster_meta_database_backup_rsync_dest: analytics1002.eqiad.wmnet::backup/mysql/analytics-meta
+# /> Cloud Services
+#
 
 prometheus_nodes:
-    - prometheus1001.eqiad.wmnet
-    - prometheus1002.eqiad.wmnet
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "globalsign"
+public_tls_unified_cert_vendor: "globalsign-2017"

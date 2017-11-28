@@ -1,0 +1,29 @@
+# IPs assigned here MUST be reserved beforehand so they don't collide with labs VMs.
+#  To reserve, on the labs controller run $ sudo nova-manage fixed reserve <ip>
+# (If using Neutron, all bets are off and this comment is wrong.)
+# Note also that nova-network is not great about refreshing dnsmasq,
+#  so changes to this table may require a manual kill of dnsmasq and restart
+#  of nova-network.
+profile::openstack::main::nova::network::labs_metal:
+  promethium:
+    'MAC': '90:b1:1c:2d:6f:0c'
+    'IPv4': 10.68.16.2
+    'project': wikitextexp
+
+# A wide variety of hosts are reachable via a public web proxy
+profile::openstack::main::nova::network::nova_dnsmasq_aliases:
+  deployment-cache-text04:
+    'public_ip': '208.80.155.135'
+    'private_ip': '10.68.18.103'
+  deployment-cache-upload04:
+    'public_ip': '208.80.155.136'
+    'private_ip': '10.68.18.109'
+  relic:
+    'public_ip': '208.80.155.197'
+    'private_ip': '10.68.16.162'
+  tools-webproxy:
+    'public_ip': '208.80.155.131'
+    'private_ip': '10.68.21.49'
+  labs_shared_proxy:
+    'public_ip': '208.80.155.156'
+    'private_ip': '10.68.21.68'

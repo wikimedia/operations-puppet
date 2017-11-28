@@ -16,7 +16,7 @@ class role::kafka::analytics::broker {
     $zookeeper_url  = $config['zookeeper']['url']
     $brokers_string = $config['brokers']['string']
 
-    system::role { 'role::kafka::analytics::broker':
+    system::role { 'kafka::analytics::broker':
         description => "Kafka Broker Server in the ${cluster_name} cluster",
     }
 
@@ -68,6 +68,9 @@ class role::kafka::analytics::broker {
 
         default_replication_factor      => min(3, $config['brokers']['size']),
 
+        # Should be changed if brokers are upgraded.
+        inter_broker_protocol_version   => '0.9.0.X',
+
         # The default for log segment bytes has changed in the puppet
         # module / packaging.  536870912 is what we have always used on
         # analytics brokers, no need to change it now.
@@ -96,9 +99,22 @@ class role::kafka::analytics::broker {
         # This should guarantee 4 big partitions like text/upload to co-exist
         # on the same disk partition leaving enough space for other ones.
         # More info in: T136690
-        log_retention_bytes             => 375809638400,
+        log_retention_bytes             => hiera('confluent::kafka::broker::log_retention_bytes', 375809638400),
+        log_retention_hours             => hiera('confluent::kafka::broker::log_retention_hours', 168),
         # Use LinkedIn recommended settings with G1 garbage collector,
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+
+        # These defaults are set to keep no-ops from changes
+        # made in confluent module for T166162.
+        # They should be removed (since they are the kafka or module defaults)
+        # when this role gets converted to a profile.
+        replica_fetch_max_bytes         => 1048576,
+        log_flush_interval_messages     => 10000,
+        log_cleanup_policy              => 'delete',
+
+        # FIXME: this needs to be refactored when the role
+        # is moved to profiles.
+        message_max_bytes               => hiera('kafka_message_max_bytes', 1048576),
     }
 
     class { '::confluent::kafka::broker::jmxtrans':

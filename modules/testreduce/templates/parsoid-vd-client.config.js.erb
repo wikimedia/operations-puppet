@@ -35,7 +35,8 @@ if (typeof module === 'object') {
 			// HTML2 generator options
 			html2: {
 				name: 'parsoid',
-				server: 'http://parsoid.svc.<%= scope.lookupvar("::parsoid_site") %>.wmnet:8000',
+				// Test with local dev version of Parsoid
+				server: 'http://localhost:<%= @parsoid_port %>',
 				dumpHTML: false,
 				postprocessorScript: '/srv/visualdiff/lib/parsoid.postprocess.js',
 				stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',
@@ -51,13 +52,17 @@ if (typeof module === 'object') {
 
 			// UprightDiff options
 			uprightDiffSettings: {
-				binary: '/usr/local/bin/uprightdiff'
+				binary: '/usr/bin/uprightdiff'
 			},
 		},
 
 		postJSON: true,
 
-		gitCommitFetch: clientScripts.gitCommitFetch,
+		// The return value of this function is the key for parsoid-vd test runs
+		// You can start new test runs by updating the string this function returns.
+		// Set "gitRepoPath: <directory-here>" if you want to control this automatically
+		// based on when code in a git repo is updated.
+		gitCommitFetch: clientScripts.getTestRunId,
 
 		runTest: clientScripts.generateVisualDiff,
 	};

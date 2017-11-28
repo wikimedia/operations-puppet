@@ -15,6 +15,7 @@ def metric_of(name):
     global metric_results
     return metric_results.get(name, 0)
 
+
 # These are the defaults set for the metric attributes
 Desc_Skel = {
     "name": "N/A",
@@ -217,13 +218,6 @@ metric_defs = {
         "query": "SELECT sum(tidx_blks_hit) as tidx_blks_hit FROM " +
                  "pg_statio_all_tables;",
     },
-    "pg_tidx_blks_hit": {
-        "description": "Toast index blocks hit",
-        "slope": "positive",
-        "units": "blocks",
-        "query": "SELECT sum(tidx_blks_hit) as tidx_blks_hit FROM " +
-                 "pg_statio_all_tables;",
-    },
     "pg_bgwriter_buffers_checkpoint": {
         "description": "Buffers written at checkpoint",
         "slope": "positive",
@@ -349,6 +343,7 @@ def create_desc(metric_name, skel, prop):
 
 def metric_cleanup():
     _Worker_Thread.shutdown()
+
 
 if __name__ == '__main__':
     import argparse

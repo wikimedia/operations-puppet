@@ -2,7 +2,4 @@ cluster: sca
 admin::groups:
   - sc-admins
   - zotero-admin
-debdeploy::grains:
-  debdeploy-sca:
-    value: standard
 zotero::http_proxy: "url-downloader.%{::site}.wikimedia.org:8080"

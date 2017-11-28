@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-irc:
-    value: standard

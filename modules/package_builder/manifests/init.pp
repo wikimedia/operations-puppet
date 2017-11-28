@@ -17,6 +17,14 @@ class package_builder(
         basepath => $basepath,
     }
 
+    if os_version('ubuntu == trusty || debian == jessie') {
+        $php_dev='php5-dev'
+        $dh_php='dh-php5'
+    } else {
+        $php_dev='php-dev'
+        $dh_php='dh-php'
+    }
+
     require_package([
         'cowbuilder',
         'build-essential',
@@ -24,11 +32,12 @@ class package_builder(
         'debhelper',
         'cdbs',
         'devscripts',
+        'patchutils',
         'debian-keyring',
         'dh-make',
         'dh-autoreconf',
-        'dh-php5',
         'dh-golang',
+        'dh-systemd',
         'openstack-pkg-tools',
         'git-buildpackage',
         'quilt',
@@ -43,22 +52,21 @@ class package_builder(
         'maven-repo-helper',
         'gradle',
         'pkg-php-tools',
-        'php5-dev',
         'kernel-wedge',
         'javahelper',
         'pkg-kde-tools',
         'subversion',
+        'sphinx-common',
+        'scons',
+        'apache2-dev',
+        $php_dev,
+        $dh_php,
     ])
 
     if $::operatingsystem == 'Ubuntu' {
         require_package('ubuntu-keyring')
     } else {
         require_package('ubuntu-archive-keyring')
-    }
-
-    if os_version('ubuntu < trusty') {
-        # we cannot build debian debootstrap environments on old ubuntu hosts (T111730)
-        fail('package_builder requires ubuntu >= trusty')
     }
 
     file { '/etc/pbuilderrc':
@@ -92,6 +100,17 @@ class package_builder(
         recurse => remote,
         source  => 'puppet:///modules/package_builder/lintian-wikimedia',
         require => Package['lintian'],
+    }
+
+    # Ship an apt configuration to integrate deb-src entries for jessie and
+    # trusty, simplifies fetching the source for older distros by using
+    # "apt-get source foo=VERSION" on the package build host
+    file { '/etc/apt/sources.list.d/package-build-deb-src.list':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/package_builder/package-build-deb-src.list',
     }
 
     file { '/etc/lintianrc':

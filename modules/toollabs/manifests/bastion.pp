@@ -193,7 +193,7 @@ class toollabs::bastion(
         group   => 'root',
         mode    => '0444',
         require => File[$toollabs::store],
-        content => "${::ipaddress_eth0}\n",
+        content => "${::ipaddress}\n",
     }
 
     # Display tips.
@@ -204,13 +204,17 @@ class toollabs::bastion(
     include ::ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
-    $cron_host = hiera('active_cronrunner')
-    file { '/usr/local/bin/crontab':
+    file { '/etc/toollabs-cronhost':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        mode    => '0755',
-        content => template('toollabs/crontab.erb'),
+        mode    => '0644',
+        content => hiera('active_cronrunner'),
+    }
+    file { '/usr/local/bin/crontab':
+        ensure  => 'link',
+        target  => '/usr/bin/oge-crontab',
+        require => Package['misctools'],
     }
 
     file { '/usr/local/bin/killgridjobs.sh':
@@ -227,5 +231,13 @@ class toollabs::bastion(
         group  => 'root',
         mode   => '0655',
         source => 'puppet:///modules/toollabs/exec-manage',
+    }
+
+    file { '/usr/local/sbin/qstat-full':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0655',
+        source => 'puppet:///modules/toollabs/qstat-full',
     }
 }

@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 describe 'aptrepo', :type => :class do
-
     let(:params) {{ :basedir => '/srv/wikimedia' }}
+    let(:pre_condition) {
+        # Stub for the ::apt module
+        "exec { 'apt-get update': path => '/bin/true' }"
+    }
 
     it { should compile }
 

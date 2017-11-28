@@ -1,3 +1,1 @@
-debdeploy::grains:
-  debdeploy-parsercache:
-    value: standard
+monitor_screens: false

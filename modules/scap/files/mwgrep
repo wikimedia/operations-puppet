@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
   usage: mwgrep [-h] [--max-results N] [--timeout N] [--user | --module]
-                [--title TITLE] regex
+                [--title TITLE | --etitle REGEX] [--no-private] regex
 
   Grep for Lua or CSS and JS code fragments on (per default) MediaWiki wiki pages
 
@@ -15,7 +15,9 @@
     --timeout N      abort search after this many seconds (default: 30)
     --user           search NS_USER rather than NS_MEDIAWIKI
     --module         search NS_MODULE rather than NS_MEDIAWIKI
-    --title TITLE    restrict search to pages with this title
+    --title TITLE    restrict search to pages with this exact title
+    --etitle REGEX   restrict search to pages with this title pattern
+    --no-private     show only results from public wikis (may result in less than max-results results)
 
   mwgrep will grep the MediaWiki namespace across Wikimedia wikis. specify
   --user to search the user namespace instead. See the lucene documentation
@@ -70,8 +72,9 @@ ap.add_argument(
 )
 
 ap.add_argument(
-    '--title',
-    help='Restrict search to pages with this title (sans namespace)'
+    '--no-private',
+    action='store_true',
+    help='Restricts search to public wikis'
 )
 
 ns_group = ap.add_mutually_exclusive_group()
@@ -93,6 +96,16 @@ ns_group.add_argument(
     help='search NS_MODULE rather than NS_MEDIAWIKI'
 )
 
+title_group = ap.add_mutually_exclusive_group()
+title_group.add_argument(
+    '--title',
+    help='restrict search to pages with this exact title (sans namespace)'
+)
+title_group.add_argument(
+    '--etitle',
+    help='restrict search to pages with this title pattern (sans namespace)'
+)
+
 args = ap.parse_args()
 
 filters = [
@@ -105,19 +118,23 @@ filters = [
         'max_expand': 10,
         'case_sensitive': True,
         'locale': 'en',
+        'timeout': args.timeout,
     }},
 ]
 
-if args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
-    filters.append( {'regexp': {'title.keyword': '.*\\.(js|css)'}} )
 
 if args.title is not None:
     filters.append( {'term': {'title.keyword': args.title}} )
+elif args.etitle is not None:
+    filters.append( {'regexp': {'title.keyword': args.etitle}} )
+elif args.ns == NS_USER or args.ns == NS_MEDIAWIKI:
+    filters.append( {'regexp': {'title.keyword': '.*\\.(js|css)'}} )
 
 search = {
     'size': args.max_results,
     '_source': ['namespace', 'title'],
-    'query': {'filtered': {'filter': {'bool': {'must': filters}}}},
+    'sort': ['_doc'],
+    'query': {'bool': {'filter':  filters}},
     'stats': ['mwgrep'],
 }
 
@@ -144,11 +161,19 @@ try:
             bisect.insort(matches['public'], (db_name, page_name))
 
     if matches['public']:
-        print('## Public wiki results')
+        if matches['private'] and args.no_private is False:
+             print('## Public wiki results')
         for db_name, page_name in matches['public']:
             print('{:<20}{}'.format(db_name, page_name))
 
-    if matches['private']:
+    total = result['total']
+    hits = len(result['hits'])
+
+    if args.no_private:
+        private_len = len(matches['private'])
+        total -= private_len
+        hits -= private_len
+    elif matches['private']:
         if matches['public']:
             print('')
         print('## Private wiki results')
@@ -156,7 +181,7 @@ try:
             print('{:<20}{}'.format(db_name, page_name))
 
     print('')
-    print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
+    print('(total: %s, shown: %s)' % (total, hits))
     if full_result['timed_out']:
         print("""
 The query was unable to complete within the alloted time. Only partial results

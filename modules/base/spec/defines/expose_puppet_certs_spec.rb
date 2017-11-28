@@ -41,14 +41,4 @@ describe 'base::expose_puppet_certs', :type => :define do
     it { should contain_file('/my/ssl/dir/ssl/cert.pem').with({ 'ensure' => 'absent' }) }
     it { should contain_file('/my/ssl/dir/ssl/server.key').with({ 'ensure' => 'absent' }) }
   end
-
-end
-
-# adding a test on the exposition of Puppet CA cert here to make it explicit
-# that clients of base::expose_puppet_certs most probably need this cert to be
-# exposed as well
-describe 'base::certificates', :type => :class do
-  describe 'exposes Puppet CA certificate' do
-    it { should contain_file('/usr/local/share/ca-certificates/Puppet_Internal_CA.crt').with({ 'ensure' => 'present' }) }
-  end
 end

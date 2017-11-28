@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'bacula::director::fileset', :type => :define do
     let(:title) { 'something' }
-    let(:params) { { :includes    => [ "/", "/var", ], } }
+    let(:params) { { :includes => [ "/", "/var", ], } }
 
     it 'should create /etc/bacula/conf.d/fileset-something.conf' do
         should contain_file('/etc/bacula/conf.d/fileset-something.conf').with({
@@ -34,5 +34,4 @@ describe 'bacula::director::fileset', :type => :define do
             .with_content(/File = \/tmp/)
         end
     end
-
 end

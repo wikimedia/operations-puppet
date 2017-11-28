@@ -44,6 +44,10 @@
 #   correct configuration directives in the site's nginx config file as well
 #   as creates the OCSP data file itself and ensures a cron is running to
 #   keep it up to date.  Does not work for ACME (letsencrypt) yet!
+#
+# [*access_log*]
+#   Boolean. If true, sets up the access log for the localssl virtualhost.
+#   Do NOT enable on the cache nodes. Defaults to false
 
 define tlsproxy::localssl(
     $certs          = [],
@@ -56,6 +60,7 @@ define tlsproxy::localssl(
     $redir_port     = undef,
     $do_ocsp        = false,
     $skip_private   = false,
+    $access_log     = false,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects)) {
         fail('Specify either certs or acme_subjects, not both and not neither.')
@@ -64,6 +69,7 @@ define tlsproxy::localssl(
     require tlsproxy::instance
 
     $websocket_support = hiera('cache::websocket_support', false)
+    $nginx_proxy_request_buffering = hiera('tlsproxy::localssl::proxy_request_buffering', 'on')
     # Maximum number of pending TCP Fast Open requests before falling back to
     # regular 3WHS. https://tools.ietf.org/html/rfc7413#section-5.1
     $fastopen_pending_max = hiera('tlsproxy::localssl::fastopen_pending_max', 150)

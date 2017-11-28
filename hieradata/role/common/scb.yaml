@@ -1,18 +1,20 @@
 cluster: scb
 admin::groups:
-- sc-admins
-- citoid-admin
-- citoid-users
-- cxserver-admin
-- apertium-admins
-- graphoid-admin
-- mathoid-admin
-- zotero-admin
-- mobileapps-admin
-- changeprop-admin
-- ores-admin
-- pdfrender-admin
-- trendingedits-admin
+  - sc-admins
+  - citoid-admin
+  - citoid-users
+  - cpjobqueue-admin
+  - cxserver-admin
+  - apertium-admins
+  - graphoid-admin
+  - mathoid-admin
+  - zotero-admin
+  - mobileapps-admin
+  - changeprop-admin
+  - ores-admin
+  - pdfrender-admin
+  - trendingedits-admin
+  - recommendation-admin
 role::lvs::realserver::pools:
   ores: {}
   apertium: {}
@@ -24,7 +26,10 @@ role::lvs::realserver::pools:
   eventstreams: {}
   pdfrender: {}
   trendingedits: {}
-graphoid::allowed_domains:
+  "recommendation-api": {}
+
+### BEGIN GRAPHOID
+profile::graphoid::allowed_domains:
   https:
     - mediawiki.org
     - wikibooks.org
@@ -44,25 +49,34 @@ graphoid::allowed_domains:
     - query.wikidata.org
   geoshape:
     - maps.wikimedia.org
-graphoid::headers:
+profile::graphoid::headers:
   'Cache-Control': 'public, s-maxage=3600, max-age=3600'
-graphoid::error_headers:
+profile::graphoid::error_headers:
   'Cache-Control': 'public, s-maxage=300, max-age=300'
-debdeploy::grains:
-  debdeploy-scb:
-    value: standard
-citoid::zotero_port: 1969
-citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
-ores::web::redis_host: oresrdb.svc.eqiad.wmnet
+### END GRAPHOID ###
 
+profile::citoid::zotero_port: 1969
+profile::citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
+profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
+# The password is in the private store, this is here for completeness
+# profile::ores::web::redis_password: nothing
+
+
+### BEGIN EVENTSTREAMS ###
+profile::eventstreams::kafka_cluster_name: analytics
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
-role::eventstreams::streams:
+profile::eventstreams::streams:
   recentchange:
     description: "Mediawiki RecentChanges feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange"
     topics:
       - eqiad.mediawiki.recentchange
       - codfw.mediawiki.recentchange
+  revision-create:
+    description: "Mediawiki Revision Create feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/revision/create"
+    topics:
+      - eqiad.mediawiki.revision-create
+      - codfw.mediawiki.revision-create
   test:
     description: "Test event stream. A new event is posted about once a minute. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/test/event"
     topics:
@@ -70,8 +84,33 @@ role::eventstreams::streams:
       - codfw.test.event
 
 # rdkafka config for Public EventStreams service.
-role::eventstreams::rdkafka_config:
+profile::eventstreams::rdkafka_config:
   # Send rdkafka stats to statsd once per minute.
   statistics.interval.ms: 60000
+  # Specify Kafka API version as workaround for Brokers < 0.10
+  # https://github.com/edenhill/librdkafka/wiki/Broker-version-compatibility
+  # This will not be necessary when the target Kafka cluster will be running 0.10
+  # librdkafka 0.9.4.x default for api.version.request is false, no need to set it
+  broker.version.fallback: '0.9.0.1'
+### END EVENTSTREAMS ###
 
-changeprop::restbase_uri: http://restbase.svc.codfw.wmnet:7231
+### BEGIN CHANGEPROP ###
+profile::changeprop::restbase_uri: http://restbase-async.discovery.wmnet:7231
+profile::changeprop::purge_host: 239.128.0.112
+profile::changeprop::purge_port: 4827
+profile::changeprop::ores_uris:
+  - http://ores.svc.eqiad.wmnet:8081
+  - http://ores.svc.codfw.wmnet:8081
+### END CHANGEPROP ###
+profile::nutcracker::memcached_pools: {}
+profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
+
+# Recommendation API
+profile::recommendation_api::wdqs_uri: "http://wdqs.discovery.wmnet"
+
+# ChangePropagation for JobQueue
+profile::cpjobqueue::redis_path: "/var/run/nutcracker/redis_%{::site}.sock"
+profile::cpjobqueue::jobrunner_host: https://jobrunner.discovery.wmnet
+
+#CXserver
+profile::cxserver::apertium_uri: "http://apertium.svc.%{::site}.wmnet:2737"

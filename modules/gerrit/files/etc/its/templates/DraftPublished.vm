@@ -1,4 +1,4 @@
 Change $change-number had a related patch set (by $author-name) published:
-$subject
+[$project@$branch] $subject
 
 ${its.formatLink($change-url)}

@@ -2,6 +2,15 @@
 
 set -e
 
+log () {
+    /usr/bin/logger -i -t 'nfs-mount-manager' $@
+}
+
+msg () {
+    /bin/echo $1
+    log $1
+}
+
 to_umount () {
 
             # -f = force an unmount (in case of an unreachable NFS system).  \
@@ -10,8 +19,8 @@ to_umount () {
             # -l = Lazy  unmount.  Detach the filesystem from the file hierarchy now, \
             # and clean up all references to this \
             #  filesystem as soon as it is not busy anymore.
-            /usr/bin/timeout -k 10s 20s /bin/umount -fl $1
-
+            msg "$1 is being unmounted"
+            /usr/bin/timeout --preserve-status -k 10s 20s /bin/umount -fl $1
             # While a mount path is not associated we don't
             # want files being dumped their on local disk
             /bin/chmod 600 $1
@@ -27,28 +36,29 @@ case "$1" in
                # TODO: it should be safe to exit if link is
                # true but there are some legacy cases we
                # need to verify are removed.
+               msg "$2 is a symlink"
             fi
 
-            if cat /proc/mounts | /usr/bin/awk '{print $2}' \
+            if /bin/cat /proc/mounts | /usr/bin/awk '{print $2}' \
                 | /bin/grep -qs "^$2$"; then
-                echo "It's mounted."
+                msg "$2 is mounted."
             else
-                echo "It's not mounted."
+                msg "$2 is not mounted."
                 exit 1
             fi
 
-            if /usr/bin/timeout -k 10s 20s ls $2 &> /dev/null; then
-                echo "It seems healthy."
+            if /usr/bin/timeout --preserve-status -k 10s 30s /bin/ls $2 &> /dev/null; then
+                msg "$2 seems healthy."
             else
-                echo "It does not seem healthy."
+                msg "$2 does not seem healthy."
                 exit 1
             fi
             ;;
         mount)
 
+            msg "mounting $2"
             # mount understands to look in /etc/fstab
-            /usr/bin/timeout -k 10s 20s /bin/mount -v $2
-
+            /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -v $2
             ;;
         umount)
 
@@ -62,7 +72,7 @@ case "$1" in
             done
             ;;
         *)
-            echo 'check | mount | umount <mount_path>'
-            echo 'clean' -- remove all mounts defined in /etc/fstab
+            /bin/echo 'check | mount | umount <mount_path>'
+            /bin/echo 'clean' -- remove all mounts defined in /etc/fstab
             ;;
 esac

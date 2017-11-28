@@ -253,7 +253,7 @@ def main():
 
         ss.remove()
         if ss.status():
-            logging.criticial('{} still exists'.format(args.name))
+            logging.critical('{} still exists'.format(args.name))
             status()
 
     actions = {

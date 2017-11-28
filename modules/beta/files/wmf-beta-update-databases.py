@@ -45,7 +45,8 @@ def run_updates(staging, cores):
         for db in dblist:
             db = db.strip()
             f = os.tmpfile()
-            cmd = "/usr/local/bin/mwscript update.php --wiki=%s --quick" % db
+            cmd = ("echo '%(db)s'; /usr/local/bin/mwscript update.php --wiki=%(db)s --quick"
+                   % {'db': db})
             p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True)
             procs.append((p, f, cmd))
             if (len(procs) >= cores):
@@ -94,6 +95,7 @@ def main():
     args = parse_args()
     dblist = check_dblist(args.dblist)
     run_updates(dblist, args.batch)
+
 
 if __name__ == '__main__':
     sys.exit(main())

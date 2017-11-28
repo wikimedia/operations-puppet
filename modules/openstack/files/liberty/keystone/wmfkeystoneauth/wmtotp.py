@@ -24,9 +24,7 @@ from keystone.common import dependency
 from keystone import exception
 from keystone.i18n import _
 
-import oath
-import base64
-import mysql.connector
+import wikitechclient
 
 METHOD_NAME = 'wmtotp'
 
@@ -46,6 +44,13 @@ oathoptions = [
     cfg.StrOpt('dbname',
                default='labswiki',
                help='Database name for retrieving OATH secret.'),
+    cfg.StrOpt('wikitech_host',
+               default='wikitech.wikimedia.org',
+               help='fqdn for the mediawiki host that supports the oath api'),
+    cfg.StrOpt('wikitech_consumer_token'),
+    cfg.StrOpt('wikitech_consumer_secret'),
+    cfg.StrOpt('wikitech_access_token'),
+    cfg.StrOpt('wikitech_access_secret'),
 ]
 
 for option in oathoptions:
@@ -83,33 +88,26 @@ class Wmtotp(auth.AuthMethodHandler):
         #     ( "%s(%r)" % (user_info.__class__, user_info.__dict__) ) )
         # LOG.debug("OATH: Doing 2FA for auth_payload " +
         #     ( "%s(%r)" % (auth_payload.__class__, auth_payload) ) )
-        cnx = mysql.connector.connect(
-            user=CONF.oath.dbuser,
-            password=CONF.oath.dbpass,
-            database=CONF.oath.dbname,
-            host=CONF.oath.dbhost)
-        cur = cnx.cursor(buffered=True)
-        sql = ('SELECT oath.secret as secret from user '
-               'left join oathauth_users as oath on oath.id = user.user_id '
-               'where user.user_name = %s LIMIT 1')
-        cur.execute(sql, (user_info.user_ref['name'], ))
-        secret = cur.fetchone()[0]
+        if 'totp' not in auth_payload['user']:
+            LOG.debug("OATH: 2FA failed, missing totp param")
+            msg = _('Missing two-factor token')
+            raise exception.Unauthorized(msg)
 
-        if secret:
-            if 'totp' in auth_payload['user']:
-                (p, d) = oath.accept_totp(
-                    base64.b16encode(base64.b32decode(secret)),
-                    auth_payload['user']['totp'],
-                    forward_drift=2, backward_drift=2)
-                if p:
-                    LOG.debug("OATH: 2FA passed")
-                else:
-                    LOG.debug("OATH: 2FA failed")
-                    msg = _('Invalid two-factor token')
-                    raise exception.Unauthorized(msg)
+        wtclient = wikitechclient.WikitechClient(
+            CONF.oath.wikitech_host,
+            CONF.oath.wikitech_consumer_token,
+            CONF.oath.wikitech_consumer_secret,
+            CONF.oath.wikitech_access_token,
+            CONF.oath.wikitech_access_secret)
+        valid = wtclient.oathvalidate(user_info.user_ref['name'],
+                                      auth_payload['user']['totp'])
+
+        if valid['enabled']:
+            if valid['valid']:
+                LOG.debug("OATH: 2FA passed")
             else:
-                LOG.debug("OATH: 2FA failed, missing totp param")
-                msg = _('Missing two-factor token')
+                LOG.debug("OATH: 2FA failed")
+                msg = _('Invalid two-factor token')
                 raise exception.Unauthorized(msg)
         else:
             LOG.debug("OATH: user '%s' does not have 2FA enabled.",

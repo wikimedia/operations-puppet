@@ -5,7 +5,7 @@ if [ "${APT_USE_BUILT}" = "yes" -a -d ${BUILDRESULT} ]; then
 
     # make-like behaviour
     newest_file=$(ls --almost-all --reverse --sort=time ${BUILDRESULT}/*.deb ${BUILDRESULT}/*.dsc | tail -n 1)
-    if [ "${newest_file}" -nt "${BUILDRESULT}/Packages" ]; then
+    if [ ! -e "${BUILDRESULT}/Packages" ] || [ "${newest_file}" -nt "${BUILDRESULT}/Packages" ]; then
         ( cd $BUILDRESULT && apt-ftparchive packages . > Packages )
     fi
 

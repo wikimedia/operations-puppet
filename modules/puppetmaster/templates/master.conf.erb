@@ -1,7 +1,6 @@
 
 [master]
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
-templatedir = /etc/puppet/templates
 <% if @is_37_plus >= 0 %>base<% end %>modulepath = /etc/puppet/private/modules:/etc/puppet/modules
 
 # puppetmaster($config) settings

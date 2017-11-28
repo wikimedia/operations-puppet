@@ -3,6 +3,7 @@
 /var/log/hadoop-hdfs/balancer.log {
   weekly
   rotate 4
+  su root hadoop
   missingok
   notifempty
   nocreate

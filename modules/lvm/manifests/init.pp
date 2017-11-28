@@ -8,7 +8,7 @@ class lvm (
 
   if $manage_pkg {
     package { 'lvm2':
-      ensure   => $package_ensure
+      ensure   => $package_ensure,
     }
   }
 

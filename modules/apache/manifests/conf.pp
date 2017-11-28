@@ -53,10 +53,8 @@ define apache::conf(
     include ::apache
 
     validate_ensure($ensure)
-
-    if $priority  !~ /^\d?\d$/ {
-        fail('"priority" must be between 0 - 99')
-    }
+    # TODO/puppet4 make this a parameter type check
+    validate_numeric($priority, 99, 0)
 
     if !($conf_type in $::apache::conf_types)  {
         fail("invalid conf_type '${conf_type}'")

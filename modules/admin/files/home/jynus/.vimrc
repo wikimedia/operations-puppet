@@ -4,4 +4,5 @@ set softtabstop=4
 set smarttab
 set expandtab
 set textwidth=80
-
+set mouse-=a
+syntax on

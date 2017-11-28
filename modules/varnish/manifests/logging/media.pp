@@ -27,11 +27,9 @@ define varnish::logging::media( $statsd_server = 'statsd' ) {
         notify  => Service['varnishmedia'],
     }
 
-    base::service_unit { 'varnishmedia':
+    systemd::service { 'varnishmedia':
         ensure         => present,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishmedia',
+        content        => systemd_template('varnishmedia'),
         require        => File['/usr/local/bin/varnishmedia'],
         subscribe      => File['/usr/local/lib/python2.7/dist-packages/cachestats.py'],
         service_params => {
