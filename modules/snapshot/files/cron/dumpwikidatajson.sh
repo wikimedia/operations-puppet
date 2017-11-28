@@ -16,7 +16,7 @@ targetFileBzip2=$targetDir/$filename.json.bz2
 failureFile=/tmp/dumpwikidatajson-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidatajson-$filename-main.log
 
-shards=5
+shards=6
 
 # Try to create the dump (up to three times).
 retries=0
@@ -29,14 +29,15 @@ while true; do
 		(
 			set -o pipefail
 			errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
-			php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> $errorLog | gzip > $tempDir/wikidataJson.$i.gz
+			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
+			php5 $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $shards \* 250` --snippet 2 --no-cache 2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
 				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
 				echo 1 > $failureFile
 
 				#  Kill all remaining dumpers and start over.
-				pkill -P $$
+				kill -- -$$
 			fi
 		) &
 		let i++
@@ -75,7 +76,7 @@ while [ $i -lt $shards ]; do
 		exit 1
 	fi
 	fileSize=`stat --printf="%s" $tempFile`
-	if [ $fileSize -lt 1800000000 ]; then
+	if [ $fileSize -lt `expr 20000000000 / $shards` ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
@@ -94,7 +95,7 @@ echo -e '\n]' | gzip -f >> $tempDir/wikidataJson.gz
 mv $tempDir/wikidataJson.gz $targetFileGzip
 
 # Legacy directory (with legacy naming scheme)
-legacyDirectory=$publicDir/other/wikidata
+legacyDirectory=${otherdir}/wikidata
 ln -s "../wikibase/wikidatawiki/$today/$filename.json.gz" "$legacyDirectory/$today.json.gz"
 find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 

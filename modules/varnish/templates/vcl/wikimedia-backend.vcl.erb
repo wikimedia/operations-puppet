@@ -10,10 +10,94 @@ sub vcl_init {
 	call wm_common_directors_init;
 }
 
+sub set_backend__ {
+<%
+    def set_director(dirname, debug_dir)
+        indirect_act = "set req.backend_hint = cache_#{@cache_route}.backend(); set req.http.X-Next-Is-Cache = 1;"
+        dirs = @app_directors[dirname]['backends']
+        if dirs.empty?
+            raise Error, "No backends defined for director #{dirname}"
+        elsif dirs.key?(@site)
+            dir_act = "set req.backend_hint = #{dirname}.backend();"
+        else
+            dir_act = indirect_act
+        end
+        if debug_dir.nil?
+            return dir_act
+        else
+            debug_dirs = @app_directors[debug_dir]['backends']
+            if debug_dirs.empty?
+                raise Error, "No backends defined for debug director #{debug_dir}"
+            elsif debug_dirs.key?(@site)
+                debug_act = "set req.backend_hint = #{debug_dir}.backend();"
+            else
+                debug_act = indirect_act
+            end
+            return "if (req.http.X-Wikimedia-Debug) { #{debug_act} } else { #{dir_act} }"
+        end
+    end
+
+    def_action = 'return (synth(404, "Domain not served here"));'
+    if_stmts = []
+    @vcl_config['req_handling'].keys.sort.each do |reqhost|
+        options = @vcl_config['req_handling'][reqhost]
+        host_action = set_director(options['director'], options['debug_director'])
+        if options.has_key?('subpaths')
+            path_ifs = []
+            options['subpaths'].keys.sort.each do |subpath|
+                path_action = set_director(options['subpaths'][subpath]['director'], options['subpaths'][subpath]['debug_director'])
+                path_ifs.push(%Q[if (req.url ~ "#{subpath}") {\n            #{path_action}\n        }])
+            end
+            path_ifs.push(%Q[e {\n            #{host_action}\n        }])
+            host_action = path_ifs.join(' els')
+        end
+
+        if reqhost == 'default'
+            def_action = host_action
+        else
+            if reqhost =~ /^[-.A-Za-z0-9]+$/
+                hostop = '=='
+            else
+                hostop = '~'
+            end
+            hostcmp = %Q[req.http.Host #{hostop} "#{reqhost}"]
+            if_stmts.push("if (#{hostcmp}) {\n        #{host_action}\n    }")
+        end
+    end
+    if if_stmts.empty?
+        set_backend = def_action
+    else
+        if_stmts.push("e {\n        #{def_action}\n    }")
+        set_backend = if_stmts.join(' els')
+    end
+%>
+    <%= set_backend %>
+}
+
 sub vcl_recv {
 	if (client.ip !~ wikimedia_trust) {
 		// Do not allow direct access to non-frontend layers
 		return (synth(403, "Access denied"));
+	}
+
+	// X-Next-Is-Cache is used to signal to other logic whether this
+	// request jumps next to another cache or the applayer.  We also
+	// convert such a signal sent by a previous backend cache to
+	// X-MISS2PASS, which converts misses to passes (we're only looking for
+	// opporunistic hits on these, but don't want to disturb the local
+	// backend cache's object hotness/distribution). The backend_warming
+	// setting is meant to be set temporarily from hieradata to disable
+	// this behavior (when we want to use the misses from an outer-layer
+	// backend to pre-warm some data in the next layer deep of backend).
+	if (req.restarts == 0) {
+		unset req.http.X-MISS2PASS;
+		if (req.http.X-Next-Is-Cache) {
+			unset req.http.X-Next-Is-Cache;
+			<%- if not @vcl_config.fetch("backend_warming", false) -%>
+			set req.http.X-MISS2PASS = 1;
+			set req.hash_ignore_busy = true; // insurance against coalescing
+			<%- end -%>
+		}
 	}
 
 	call wm_common_recv_early;
@@ -34,17 +118,13 @@ sub vcl_recv {
 		}
 	}
 
-<% if @cache_route == 'direct' -%>
-	// tier-one caches must select an applayer backend
-	call cluster_be_recv_applayer_backend;
-<% else -%>
-	set req.backend_hint = cache_<%= @cache_route %>.backend();
-<% end -%>
+	call set_backend__;
 
-	call wm_common_recv_grace;
 	call cluster_be_recv_pre_purge;
 	call wm_common_recv_purge;
 	call cluster_be_recv;
+	call wm_common_recv_pass;
+	call cluster_be_recv_tail;
 
 	return (hash); // no default VCL
 }
@@ -61,27 +141,39 @@ sub vcl_purge {
 
 sub vcl_hit {
 	call wm_common_hit;
+	call wm_common_hit_grace;
 	call cluster_be_hit;
-	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
+	// no default VCL. Expired ttl/grace behavior implemented in
+	// wm_common_hit_grace.
+	return (deliver);
 }
 
 sub vcl_miss {
 	call wm_common_miss;
 	call cluster_be_miss;
+	if (req.http.X-MISS2PASS) {
+		return (pass);
+	}
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 sub vcl_pass {
 	call wm_common_pass;
 
+<% if @realm == "production" and @hostname != "cp1008" -%>
 <% if @vcl_config.fetch("pass_random", false) -%>
-<% if @cache_route != 'direct' -%>
-	// pass-traffic should not use consistent hashing, to avoid unecessary
-	// traffic focus on one node and keep things performant, *if* we're
-	// fairly sure that all layers/tiers make equivalent pass decisions...
-	set req.backend_hint = cache_<%= @cache_route %>_random.backend();
+	if (req.http.X-Next-Is-Cache && !req.http.X-MISS2PASS) {
+		// pass-traffic should not use consistent hashing, to avoid
+		// unecessary traffic focus on one node and keep things
+		// performant, *if* we're fairly sure that all layers/tiers
+		// make equivalent pass decisions...  MISS2PASS is an
+		// exception, we need to chash these passes to take advantage
+		// of opportunistic hits
+		set req.backend_hint = cache_<%= @cache_route %>_random.backend();
+	}
 <% end -%>
 <% end -%>
+	unset req.http.X-MISS2PASS;
 
 	call cluster_be_pass;
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
@@ -99,6 +191,13 @@ sub vcl_backend_fetch {
 }
 
 sub vcl_backend_response {
+	// Various fairly severe privacy/security/uptime risks
+	// exist if we allow possibly compromised or misconfigured
+	// internal apps to emit these headers through our
+	// terminators blindly:
+	unset beresp.http.Public-Key-Pins;
+	unset beresp.http.Public-Key-Pins-Report-Only;
+
 	call cluster_be_backend_response_early; // e.g. to fix up Vary-slotting in bereq
 	call wm_common_backend_response;
 	call cluster_be_backend_response;
@@ -108,6 +207,7 @@ sub vcl_backend_response {
 sub vcl_deliver {
 	call wm_common_deliver_hitcount;
 	call wm_common_xcache_deliver;
+	call wm_common_deliver_error_with_empty_body;
 	call cluster_be_deliver;
 	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }

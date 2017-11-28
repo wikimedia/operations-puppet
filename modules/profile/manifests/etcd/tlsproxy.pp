@@ -1,10 +1,13 @@
 class profile::etcd::tlsproxy(
     $cert_name = hiera('profile::etcd::tlsproxy::cert_name'),
-    $accounts = hiera('profile::etcd::tlsproxy::accounts'),
     $acls = hiera('profile::etcd::tlsproxy::acls'),
-    $salt = hiera('profile::etcd::tlsproxy::salt')
+    $salt = hiera('profile::etcd::tlsproxy::salt'),
+    $read_only = hiera('profile::etcd::tlsproxy::read_only'),
 ){
     require ::tlsproxy::instance
+    require ::passwords::etcd
+
+    $accounts = $::passwords::etcd::accounts
 
     sslcert::certificate { $cert_name:
         skip_private => false,
@@ -32,6 +35,12 @@ class profile::etcd::tlsproxy(
         ensure  => present,
         mode    => '0444',
         content => '{"errorCode":110,"message":"The request requires user authentication","cause":"Insufficient credentials","index":0}',
+    }
+
+    file { '/etc/nginx/etcd-errors/readonly.json':
+        ensure  => present,
+        mode    => '0444',
+        content => '{"errorCode":107,"message":"This cluster is in read-only mode","cause":"Cluster configured to be read-only","index":0}',
     }
 
     # I know, this is pretty horrible. Puppet is too, with its

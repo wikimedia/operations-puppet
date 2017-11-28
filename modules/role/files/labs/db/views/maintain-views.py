@@ -329,6 +329,13 @@ if __name__ == "__main__":
               " values can be given space-separated."),
         default="/usr/local/lib/mediawiki-config"
     )
+
+    argparser.add_argument(
+        "--mysql-socket",
+        help=("Path to MySQL socket file"),
+        default="/run/mysqld/mysqld.sock"
+    )
+
     argparser.add_argument(
         '--debug',
         help='Turn on debug logging',
@@ -344,7 +351,7 @@ if __name__ == "__main__":
 
     with open(args.config_location, 'r') as stream:
         try:
-            config = yaml.load(stream)
+            config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             logging.critical(exc)
             sys.exit(1)
@@ -376,7 +383,7 @@ if __name__ == "__main__":
     dbh = pymysql.connect(
         user=config["mysql_user"],
         passwd=config["mysql_password"],
-        unix_socket="/tmp/mysql.sock",
+        unix_socket=args.mysql_socket,
         charset="utf8"
     )
 
@@ -428,6 +435,9 @@ if __name__ == "__main__":
 
     with dbh.cursor() as cursor:
         cursor.execute("SET NAMES 'utf8';")
+        cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
+        cursor.execute("SET SESSION lock_wait_timeout=60;")
+
         for db, db_info in dbs_with_metadata.items():
             ops = SchemaOperations(args.dry_run,
                                    args.replace_all,

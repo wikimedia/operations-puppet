@@ -23,43 +23,32 @@ class mirrors::debian {
         mode   => '0755',
     }
 
-    # this is <https://ftp-master.debian.org/git/archvsync.git>
-    # right now we just ship bin/ftpsync & bin/common
-    # there is soon going to be a Debian package, use that then instead
-    file { "${mirrors::homedir}/archvsync":
-        ensure  => directory,
-        recurse => true,
-        purge   => true,
-        owner   => 'mirror',
-        group   => 'mirror',
-        mode    => '0755',
-        source  => 'puppet:///modules/mirrors/archvsync',
+    package { 'ftpsync':
+        ensure => present,
     }
 
-    # don't purge logs (you'd expect more from people that love the FHS...)
-    file { "${mirrors::homedir}/archvsync/log":
-        ensure => directory,
-        purge  => false,
-        owner  => 'mirror',
-        group  => 'mirror',
-        mode   => '0755',
-    }
-
-    # move to .config/archvsync or /etc/archvsync?
-    file { "${mirrors::homedir}/archvsync/etc":
+    # package doesn't ship that directory yet
+    file { '/etc/ftpsync':
         ensure => directory,
         owner  => 'mirror',
         group  => 'mirror',
-        mode   => '0755',
+        mode   => '0555',
     }
 
     # this is our configuration for archvsync
-    file { "${mirrors::homedir}/archvsync/etc/ftpsync.conf":
+    file { '/etc/ftpsync/ftpsync.conf':
         ensure  => present,
         owner   => 'mirror',
         group   => 'mirror',
-        mode    => '0555',
+        mode    => '0444',
         content => template('mirrors/ftpsync.conf.erb'),
+    }
+
+    file { '/var/log/ftpsync':
+        ensure => directory,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0755',
     }
 
     # allow the Debian syncproxy to trigger ftpsync runs over ssh

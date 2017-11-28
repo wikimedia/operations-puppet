@@ -1,0 +1,208 @@
+/* Alternate stylesheet for rawdog. But you can still customise it as you like.
+ * The .xmlbutton was stolen from the default stylesheet.
+ * Samuel Hym <Samuel.Hym@gmail.com> */
+
+body {
+    font-family: Georgia,Serif;
+    margin: 1em;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: #08b;
+}
+
+a:visited, a:hover {
+    color: #a03;
+}
+
+#header {
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid #ddd;
+    color: #888;
+}
+
+h2, h3 {
+    font-size: 90%;
+    color: #888;
+}
+
+h2 {
+    margin-top: 1em;
+    font-size: 1.5em;
+}
+
+h3 {
+    margin-top: 1em;
+}
+
+#items {
+    padding: 5px 15px 5px 230px;
+}
+
+.item {
+    padding: 0.6em;
+}
+
+.itemheader {
+    font-size: 120%;
+    /*text-align: center;*/
+    color: #2a4b8d;
+}
+
+.itemheader a, .itemheader a:visited {
+    text-decoration: none;
+    color: #b32424;
+}
+
+.itemheader a:hover {
+    color: #b32424;
+}
+
+.itemtitle{
+    margin: -6px 5px 5px 5px;
+    float: left;
+}
+
+.itembyline {
+    font-size: 70%;
+    text-align: right;
+    margin: 0;
+}
+
+.itemdescription {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#feedstats {
+    float: center;
+}
+
+#feeds {
+    margin: 10px 0;
+    border: 1px solid gray;
+    border-spacing: 0;
+}
+
+#feedsheader TH {
+    background-color: #eee;
+    border-bottom: 1px solid gray;
+    padding: 5px;
+    margin: 0;
+}
+
+.feedsrow TD {
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.read a.titleName,
+.read {
+    color: #14866d;
+}
+
+.unread a.titleName,
+.unread {
+    color: #00af89;
+}
+
+.rightArrow {
+  color: #b32424;
+}
+
+.xmlbutton {
+    border: 1px solid;
+    border-color: #FC9 #630 #330 #F96;
+    padding: 0 3px;
+    font: bold 10px sans-serif;
+    color: #FFF;
+    background: #F60;
+    text-decoration: none;
+    margin: 0;
+}
+
+#toTopButton {
+    color:#ccc;
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+}
+#toTopButton:hover {
+    color: #a03;
+}
+
+#floatingNav {
+    position: fixed;
+    float: right;
+    bottom: 50%;
+    right: 10px;
+}
+
+#floatingNav:hover {
+    background-color: #fafafa;
+    cursor: pointer;
+}
+
+#floatingNav, #navNext, #navPrev, #markStatus {
+    color:#eee;
+    font-size:200%;
+    margin: 0px;
+    -webkit-transition: background-color 100ms linear;
+    -moz-transition: background-color 100ms linear;
+    -o-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+}
+
+#floatingNav:hover, #navNext:hover, #navPrev:hover, #markStatus:hover{
+    color:#555;
+    -webkit-transition: background-color 100ms linear;
+    -moz-transition: background-color 100ms linear;
+    -o-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+}
+
+#beggining {
+    display:none;
+    position:absolute;
+    text-align:center;
+    top:70%;
+    width:300px;
+    height:55px;
+    z-index:15;
+    top:100%;
+    left:50%;
+    margin:-150px 0 0 -150px;
+    color:#fafafa;
+    background:#555;
+}
+
+.menu {
+    position: absolute;
+    top: 180px;
+    left: 0px;
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    /* background: #666; */
+    width: 150px; /* ie5win fudge begins */
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    width: 120px;
+    font-size: 12px;
+}
+
+html>body .menu {
+    width: 195px; /* ie5win fudge ends */
+}
+
+.menuitem {
+    margin-top: 15px;
+}

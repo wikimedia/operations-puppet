@@ -10,6 +10,9 @@ class apache::mod {}
 # lint:ignore:autoloader_layout
 # ^ FIXABLE ?
 
+# https://httpd.apache.org/docs/current/mod/mod_access_compat.html
+class apache::mod::access_compat   { apache::mod_conf { 'access_compat':  } }
+
 # https://httpd.apache.org/docs/current/mod/mod_actions.html
 class apache::mod::actions         { apache::mod_conf { 'actions':        } }
 
@@ -61,6 +64,16 @@ class apache::mod::filter          { apache::mod_conf { 'filter':         } }
 # https://httpd.apache.org/docs/current/mod/mod_headers.html
 class apache::mod::headers         { apache::mod_conf { 'headers':        } }
 
+# https://httpd.apache.org/docs/current/mod/mod_http2.html
+class apache::mod::http2 {
+  if os_version('debian >= stretch') {
+    apache::mod_conf { 'http2': }
+  }
+}
+
+# https://httpd.apache.org/docs/current/mod/mod_lbmethod_byrequests.html
+class apache::mod::lbmethod_byrequests  { apache::mod_conf { 'lbmethod_byrequests': } }
+
 # https://httpd.apache.org/docs/current/mod/mod_mime.html
 class apache::mod::mime            { apache::mod_conf { 'mime':           } }
 
@@ -73,8 +86,17 @@ class apache::mod::proxy           { apache::mod_conf { 'proxy':          } }
 # https://httpd.apache.org/docs/current/mod/mod_proxy_balancer.html
 class apache::mod::proxy_balancer  { apache::mod_conf { 'proxy_balancer': } }
 
+# https://httpd.apache.org/docs/current/mod/mod_proxy_fcgi.html
+class apache::mod::proxy_fcgi      { apache::mod_conf { 'proxy_fcgi':     } }
+
+# https://httpd.apache.org/docs/current/mod/mod_proxy_html.html
+class apache::mod::proxy_html      { apache::mod_conf { 'proxy_html':     } }
+
 # https://httpd.apache.org/docs/current/mod/mod_proxy_http.html
 class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }
+
+# https://httpd.apache.org/docs/current/mod/mod_remoteip.html
+class apache::mod::remoteip        { apache::mod_conf { 'remoteip':       } }
 
 # https://httpd.apache.org/docs/current/mod/mod_authz_user.html
 class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
@@ -90,6 +112,9 @@ class apache::mod::substitute      { apache::mod_conf { 'substitute':     } }
 
 # https://httpd.apache.org/docs/current/mod/mod_userdir.html
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
+
+# https://httpd.apache.org/docs/current/mod/mod_xml2enc.html
+class apache::mod::xml2enc         { apache::mod_conf { 'xml2enc':        } }
 
 # lint:endignore
 
@@ -112,8 +137,11 @@ class apache::mod::passenger       { apache::mod_conf { 'passenger':      } <- p
 # https://httpd.apache.org/docs/current/mod/mod_perl.html
 class apache::mod::perl            { apache::mod_conf { 'perl':           } <- package { 'libapache2-mod-perl2':     } }
 
-# https://httpd.apache.org/docs/current/mod/mod_php5.html
+# mod_php (PHP 5)
 class apache::mod::php5            { apache::mod_conf { 'php5':           } <- package { 'libapache2-mod-php5':      } }
+
+# mod_php (PHP 7)
+class apache::mod::php7            { apache::mod_conf { 'php7.0':         } <- package { 'libapache2-mod-php7.0':    } }
 
 # https://httpd.apache.org/docs/current/mod/mod_python.html
 class apache::mod::python          { apache::mod_conf { 'python':         } <- package { 'libapache2-mod-python':    } }
@@ -130,28 +158,6 @@ class apache::mod::uwsgi           { apache::mod_conf { 'uwsgi':          } <- p
 # https://httpd.apache.org/docs/current/mod/mod_wsgi.html
 class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- package { 'libapache2-mod-wsgi':      } }
 
-# Modules that target a specific distribution
-
-# https://httpd.apache.org/docs/current/mod/mod_access_compat.html
-class apache::mod::access_compat { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'access_compat': } } }
-
-# https://httpd.apache.org/docs/current/mod/mod_proxy_fcgi.html
-class apache::mod::proxy_fcgi    { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'proxy_fcgi':    } } }
-
-# https://httpd.apache.org/docs/current/mod/mod_proxy_html.html
-class apache::mod::proxy_html    { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'proxy_html':    } } }
-
-# https://httpd.apache.org/docs/current/mod/mod_remoteip.html
-class apache::mod::remoteip      { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'remoteip':      } } }
-
-# https://httpd.apache.org/docs/current/mod/mod_version.html
-class apache::mod::version       { if os_version('ubuntu < 13.10')  { apache::mod_conf { 'version':       } } }
-
-# https://httpd.apache.org/docs/current/mod/mod_lbmethod_byrequests.html
-class apache::mod::lbmethod_byrequests  { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'lbmethod_byrequests': } } }
-
-# https://httpd.apache.org/docs/current/mod/mod_xml2enc.html
-class apache::mod::xml2enc       { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'xml2enc': } } }
 # lint:endignore
 
 # == Class: apache::mod::status

@@ -12,7 +12,7 @@ ProxyPassMatch    ^(/zuul/status/change/\d{1,9},\d{1,3})$    http://localhost:80
 ProxyRequests		Off
 
 # Local reverse proxy authorization override
-# Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
+# Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
 <Proxy http://localhost:8001/*>
     Require all granted

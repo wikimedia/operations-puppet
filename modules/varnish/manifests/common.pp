@@ -1,7 +1,25 @@
-class varnish::common {
+class varnish::common(
+    $varnish_version=4,
+    $fe_runtime_params=[],
+    $be_runtime_params=[],
+    $log_slow_request_threshold='60.0',
+) {
     require ::varnish::packages
 
-    # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
+    # Frontend memory cache sizing
+    $mem_gb = $::memorysize_mb / 1024.0
+
+    if ($mem_gb < 90.0) {
+        # virtuals, test hosts, etc...
+        $fe_mem_gb = 1
+    } else {
+        # Removing a constant factor before scaling helps with
+        # low-memory hosts, as they need more relative space to
+        # handle all the non-cache basics.
+        $fe_mem_gb = ceiling(0.7 * ($mem_gb - 80.0))
+    }
+
+    # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':
         ensure  => mounted,
@@ -85,21 +103,12 @@ class varnish::common {
         ensure => 'stopped',
     }
 
-    # varnishlog.py depends on varnishapi. Install it.
     file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
-        source => 'puppet:///modules/varnish/varnishapi.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure => absent,
     }
 
-    # Install varnishlog.py
     file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-        source  => 'puppet:///modules/varnish/varnishlog.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File['/usr/local/lib/python2.7/dist-packages/varnishapi.py'],
+        ensure => absent,
     }
 
     # Install cachestats.py

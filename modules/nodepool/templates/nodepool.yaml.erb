@@ -54,9 +54,10 @@ targets:
 # Make sure all labels run the 'ready.sh' script
 #
 # To balance number of min-ready per labels, see the repartition of builds
-# between nodes on the Grafana dashboard:
+# between nodes on the Grafana dashboards:
 #
 # https://grafana.wikimedia.org/dashboard/db/continuous-integration?panelId=8&fullscreen
+# https://grafana.wikimedia.org/dashboard/db/zuul?panelId=18&fullscreen
 #
 labels:
   - name: ci-jessie-wikimedia
@@ -65,39 +66,28 @@ labels:
     min-ready: 12
     providers:
       - name: wmflabs-eqiad
-  - name: ci-trusty-wikimedia
-    image: snapshot-ci-trusty
-    ready-script: ready.sh
-    min-ready: 5
-    providers:
-      - name: wmflabs-eqiad
 
 providers:
   - name: wmflabs-eqiad
     service-type: 'compute'
     service-name: 'nova'
     project-id: '<%= @openstack_tenant_id -%>'
+    availability-zones:
+      - 'nova'
     region-name: 'eqiad'
     username: '<%= @openstack_username -%>'
     password: '<%= @openstack_password -%>'
     auth-url: '<%= @openstack_auth_url -%>'
     api-timeout: 60  # seconds
     boot-timeout: 300  # seconds
-    max-servers: 25
-    rate: 6  # seconds
+    max-servers: 18
+    rate: 10  # seconds
     # 'eqiad.wmflabs' is magically added by wmflabs
     template-hostname: '{image.name}-{timestamp}'
     images:
       # RelEng manually build and upload the images to Glance
       - name: snapshot-ci-jessie
         base-image: image-ci-jessie
-        min-ram: 0
-        name-filter: 'm1.medium'
-        setup: setup_node.sh
-        username: jenkins
-        private-key: /var/lib/nodepool/.ssh/id_rsa
-      - name: snapshot-ci-trusty
-        base-image: image-ci-trusty
         min-ram: 0
         name-filter: 'm1.medium'
         setup: setup_node.sh

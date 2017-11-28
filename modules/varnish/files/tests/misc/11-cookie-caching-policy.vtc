@@ -1,0 +1,36 @@
+varnishtest "cache_misc cookies caching policy"
+
+server s1 {
+    rxreq
+    txresp
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+} -start
+
+client c1 {
+    # In general, do not cache requests with cookies
+    txreq -url "/" -hdr "Cookie: Banana=Potato"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache ~ "pass"
+
+    # Cache requests with our own WMF-Last-Access/WMF-Last-Access-Global, GeoIP
+    # and CP cookies
+    txreq -url "/" -hdr "Cookie: WMF-Last-Access=21-Mar-2017; WMF-Last-Access-Global=21-Mar-2017"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache ~ "miss"
+
+    txreq -url "/" -hdr "Cookie: CP=2"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.X-Cache ~ "hit"
+} -run

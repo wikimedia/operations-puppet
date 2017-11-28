@@ -3,7 +3,7 @@
 # Upstart job configuration for tcpircbot
 # This file is managed by Puppet
 
-description "TCP socket to IRC bot: <%= @title %>"
+description "TCP socket to IRC bot: <%= @service_name %>"
 
 start on (local-filesystems and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
@@ -12,6 +12,6 @@ setuid tcpircbot
 setgid tcpircbot
 
 chdir /srv/tcpircbot
-exec python tcpircbot.py "<%= @title %>.json"
+exec python tcpircbot.py "<%= @service_name %>.json"
 
 respawn

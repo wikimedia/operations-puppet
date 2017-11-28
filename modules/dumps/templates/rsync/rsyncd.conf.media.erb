@@ -1,0 +1,14 @@
+#####################################################################
+### Note: This file is managed by Puppet.
+### puppet:///modules/dumps/rsync/rsyncd.conf.media
+#####################################################################
+
+# write access from <%= @hosts_allow %> to media directory.
+# Erik Z uses this.
+[media]
+uid = <%= @user %>
+gid = <%= deploygroup %>
+read only = false
+path = <%= @otherdir %>/media
+hosts allow = <%= @hosts_allow %>
+

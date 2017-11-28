@@ -11,11 +11,11 @@ for log in /srv/xenon/**/*.log; do
     mkdir -m0755 -p "$(dirname $svg)"
     [ ! -f "$svg" -o "$svg" -ot "$log" ] && {
         echo "Generating ${svg}..."
-        nice /usr/local/bin/flamegraph.pl --title="$title" "$log" | gzip -9 > "$svg"
+        nice /usr/local/bin/flamegraph.pl --minwidth=2 --title="$title" "$log" | gzip -9 > "$svg"
     }
     [ ! -f "$rsvg" -o "$rsvg" -ot "$log" ] && {
         echo "Generating ${rsvg}..."
-        nice /usr/local/bin/flamegraph.pl --reverse --colors=blue --title="$title - reversed" "$log" | gzip -9 > "$rsvg"
+        nice /usr/local/bin/flamegraph.pl --minwidth=2 --reverse --colors=blue --title="$title - reversed" "$log" | gzip -9 > "$rsvg"
     }
 done
 

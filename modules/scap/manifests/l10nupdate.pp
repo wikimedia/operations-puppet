@@ -29,10 +29,12 @@ class scap::l10nupdate(
     }
 
     user { 'l10nupdate':
-        ensure => present,
-        gid    => 10002,
-        shell  => '/bin/bash',
-        home   => '/home/l10nupdate',
+        ensure  => present,
+        uid     => 10002,
+        gid     => 10002,
+        shell   => '/bin/bash',
+        home    => '/home/l10nupdate',
+        require => Group['l10nupdate'],
     }
 
     # Explicitly provision the l10nupdate user's home directory. In Labs the
@@ -53,6 +55,7 @@ class scap::l10nupdate(
         ensure  => $ensure_l10nupdate_cron,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
         user    => 'l10nupdate',
+        weekday => ['1', '2', '3', '4'],
         hour    => '2',
         minute  => '0',
     }

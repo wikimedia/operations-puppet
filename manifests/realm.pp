@@ -4,33 +4,13 @@
 
 # Determine the site the server is in
 
-# If our puppetmaster is 3.5+ then use the trusted $facts hash
-if versioncmp($::serverversion, '3.5') >= 0 and $facts {
-    if $facts['ipaddress_eth0'] {
-        $main_ipaddress = $facts['ipaddress_eth0']
-    } elsif $facts['ipaddress_bond0'] {
-        $main_ipaddress = $facts['ipaddress_bond0']
-    } else {
-        $main_ipaddress = $facts['ipaddress']
-    }
-# Otherwise fallback to pre 3.5 behaviour
-} else {
-    if $::ipaddress_eth0 != undef {
-        $main_ipaddress = $::ipaddress_eth0
-    } elsif $::ipaddress_bond0 != undef {
-        $main_ipaddress = $::ipaddress_bond0
-    } else {
-        $main_ipaddress = $::ipaddress
-    }
-}
-
-$site = $main_ipaddress ? {
+$site = $facts['ipaddress'] ? {
     /^208\.80\.15[23]\./                      => 'codfw',
     /^208\.80\.15[45]\./                      => 'eqiad',
     /^10\.6[48]\./                            => 'eqiad',
     /^10\.19[26]\./                           => 'codfw',
     /^91\.198\.174\./                         => 'esams',
-    /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
+    /^198\.35\.26\./                          => 'ulsfo',
     /^10\.128\./                              => 'ulsfo',
     /^10\.20\.0\./                            => 'esams',
     default                                   => '(undefined)'
@@ -41,13 +21,21 @@ if $realm == undef {
 }
 
 if $realm == 'labs' {
+    # Pull the project name from the certname.
+    # Labs certs are <hostname>.<projname>.<site>.wmflabs
+    $pieces = split($trusted['certname'], '[.]')
 
-    $labs_metal = hiera('labs_metal', {})
-    if has_key($labs_metal, $::hostname) {
-        $labsproject = $labs_metal[$::hostname]['project']
-    } else {
-        $labsproject = $::labsprojectfrommetadata
+    if $pieces[3] != 'wmflabs' {
+        fail("Badly-formed puppet certname: ${trusted['certname']}")
     }
+    if $pieces[2] != $site {
+        fail("Incorrect site in certname.  Should be ${site} but is ${pieces[2]}")
+    }
+    if $pieces[0] != $::hostname {
+        fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
+    }
+
+    $labsproject = $pieces[1]
 
     if $::labsproject == undef {
         fail('Failed to determine $::labsproject')
@@ -72,16 +60,27 @@ $app_routes = hiera('discovery::app_routes')
 
 # Shortcut variables to use e.g. in hiera
 $mw_primary = $app_routes['mediawiki']
-$parsoid_site = $app_routes['parsoid']
-$rb_site = $app_routes['restbase']
-$mbapps_site = $app_routes['mobileapps']
-$graphoid_site = $app_routes['graphoid']
-$mathoid_site = $app_routes['mathoid']
 $aqs_site = $app_routes['aqs']
 
-$network_zone = $main_ipaddress ? {
+$network_zone = $facts['ipaddress'] ? {
     /^10./  => 'internal',
     default => 'public'
+}
+
+# Hiera->Global to configure various classes for NUMA-aware networking
+# 3 possible values:
+# --
+# off: default, no NUMA awareness
+# on: try confine network stuff to the NUMA node of the adapter
+# isolate: also exclude all other tasks from the NUMA node of the adapter
+# --
+# If facter detects no true NUMA (single-node), the hiera-configured setting
+# will be forced to "off" here in the global
+if size($facts['numa']['nodes']) > 1 {
+    $numa_networking = hiera('numa_networking', 'off')
+}
+else {
+    $numa_networking = 'off'
 }
 
 # TODO: create hash of all LVS service IPs
@@ -96,7 +95,7 @@ if $realm == 'labs' {
     $nameservers = $site ? {
         'eqiad' => [ '208.80.154.254', '208.80.153.254' ], # eqiad -> eqiad, codfw
         'codfw' => [ '208.80.153.254', '208.80.154.254' ], # codfw -> codfw, eqiad
-        'ulsfo' => [ '208.80.154.254', '208.80.153.254' ], # ulsfo -> eqiad, codfw
+        'ulsfo' => [ '208.80.153.254', '208.80.154.254' ], # ulsfo -> codfw, eqiad
         'esams' => [ '91.198.174.216', '208.80.154.254' ], # esams -> esams, eqiad
         default => [ '208.80.154.254', '208.80.153.254' ], #       -> eqiad, codfw
     }
@@ -132,6 +131,7 @@ $private_wikis = [
     'checkuserwiki',
     'collabwiki',
     'ecwikimedia',
+    'electcomwiki',
     'execwiki',
     'fdcwiki',
     'grantswiki',
@@ -148,6 +148,7 @@ $private_wikis = [
     'searchcomwiki',
     'spcomwiki',
     'stewardwiki',
+    'techconductwiki',
     'transitionteamwiki',
     'wg_enwiki',
     'wikimaniateamwiki',
@@ -191,6 +192,8 @@ $private_tables = [
     'moodbar_feedback_response',
     'msg_resource',
     'oathauth_users',
+    'oauth_accepted_consumer',
+    'oauth_registered_consumer',
     'objectcache',
     'old_growth',
     'oldimage_old',

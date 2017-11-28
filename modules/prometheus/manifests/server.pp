@@ -44,16 +44,23 @@
 #   rules. See also https://prometheus.io/docs/querying/rules/ and
 #   https://prometheus.io/docs/alerting/rules/. Note that defining alerting
 #   rules won't trigger any notifications of any kind.
+#
+# [*alertmanager_url*]
+#   An url where alertmanager is listening for alerts.
 
 define prometheus::server (
     $listen_address,
     $scrape_interval = '60s',
     $base_path = "/srv/prometheus/${title}",
-    $storage_retention = '4320h0m0s',
+    $storage_retention = '730h0m0s',
     $storage_encoding = '1',
+    $max_chunks_to_persist = '524288',
+    $memory_chunks = '1048576',
     $global_config_extra = {},
     $scrape_configs_extra = [],
     $rule_files_extra = [],
+    $alertmanager_url = undef,
+    $external_url = "http://prometheus/${title}",
 ) {
     include ::prometheus
 
@@ -65,7 +72,6 @@ define prometheus::server (
       'scrape_interval' => $scrape_interval,
     }
     $global_config = merge($global_config_default, $global_config_extra)
-    $external_url = "http://prometheus/${title}"
     $metrics_path = "${base_path}/metrics"
     $targets_path = "${base_path}/targets"
     $service_name = "prometheus@${title}"
@@ -139,10 +145,10 @@ define prometheus::server (
         }
     }
 
-    base::service_unit { $service_name:
+    systemd::service { $service_name:
         ensure         => present,
-        systemd        => true,
-        template_name  => 'prometheus@',
+        restart        => true,
+        content        => systemd_template('prometheus@'),
         service_params => {
             enable     => true,
             hasrestart => true,

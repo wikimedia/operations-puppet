@@ -6,6 +6,11 @@ class role::puppetmaster::puppetdb (
     include ::base::firewall
     include ::passwords::postgres
 
+    $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
+        'jessie'  => '9.4',
+    }
+
     $master = hiera('puppetmaster::puppetdb::master')
     $slaves = hiera('puppetmaster::puppetdb::slaves')
     $slave_range = join($slaves, ' ')
@@ -18,17 +23,14 @@ class role::puppetmaster::puppetdb (
     # Monitor the Postgresql replication lag
     if $role == 'slave' {
         $pg_password = hiera('puppetdb::password::replication')
-        $critical = 1800
-        $warning = 300
-        $command = "/usr/lib/nagios/plugins/check_postgres_replication_lag.py \
-    -U replication -P ${pg_password} -m ${master} -D template1 -C ${critical} -W ${warning}"
-        nrpe::monitor_service { 'postgres-rep-lag':
-            description  => 'Postgres Replication Lag',
-            nrpe_command => $command,
+        class { 'postgresql::slave::monitoring':
+            pg_master   => $master,
+            pg_user     => 'replication',
+            pg_password => $pg_password,
         }
     }
 
-    system::role { "role::puppetmaster::puppetdb (postgres ${role})":
+    system::role { "puppetmaster::puppetdb (postgres ${role})":
         ensure      => 'present',
         description => 'PuppetDB server',
     }
@@ -40,7 +42,7 @@ class role::puppetmaster::puppetdb (
     }
 
     # Only the TLS-terminating nginx proxy will be exposed
-    $puppetmasters_ferm = inline_template('<%= scope.function_hiera([\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
+    $puppetmasters_ferm = inline_template('<%= scope.call_function(:hiera, [\'puppetmaster::servers\']).values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
     ferm::service { 'puppetdb':
         proto   => 'tcp',
         port    => 443,
@@ -54,17 +56,16 @@ class role::puppetmaster::puppetdb (
         srange => '$CUMIN_MASTERS',
     }
 
-    if $::standard::has_ganglia {
-        class { 'postgresql::ganglia':
-            pgstats_user => $passwords::postgres::ganglia_user,
-            pgstats_pass => $passwords::postgres::ganglia_pass,
-        }
-
-        ganglia::plugin::python { 'diskstat': }
+    # Temporarily allow puppetcompiler1001 to puppetdb nginx T177254
+    # Remove after upgrading to puppet 4
+    ferm::service { 'puppetdb-puppetcompiler1001':
+        proto  => 'tcp',
+        port   => 443,
+        srange => '(10.64.32.17 2620:0:861:103:10:64:32:17)',
     }
 
     # Tuning
-    file { '/etc/postgresql/9.4/main/tuning.conf':
+    file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
@@ -84,7 +85,9 @@ class role::puppetmaster::puppetdb (
         master => $master,
     }
 
+    # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
-        master => $master,
+        master    => $master,
+        heap_size => '6G',
     }
 }

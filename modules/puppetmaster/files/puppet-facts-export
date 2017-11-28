@@ -1,31 +1,39 @@
 #!/bin/bash
 
-# import into puppet compiler with:
-# sudo tar Jxvf puppet-facts-export.tar.xz --directory /var/lib/catalog-differ/puppet
-# sudo chown -R jenkins-deploy:wikidev /var/lib/catalog-differ/puppet/yaml
-
 set -e
 set -u
 
+if [ `whoami` != "root" ]; then
+    echo "Needs to be run as root"
+    exit
+fi
+
 tmpdir=$(mktemp -d)
+mkdir -p $tmpdir/yaml/facts
 outfile=/tmp/puppet-facts-export.tar.xz
+factsdir=/var/lib/puppet/yaml/facts
 
 function cleanup() {
-  rm -rf $tmpdir
+    rm -rf "$tmpdir"
 }
 
 trap cleanup EXIT
 
-sudo rsync -a /var/lib/puppet/yaml $tmpdir
-sudo chown -R ${USER} $tmpdir/yaml
-find $tmpdir/yaml -type f -name "*.yaml" | \
-  xargs sed -i \
-    -e 's@uniqueid:.*@uniqueid: "43434343"@' \
-    -e 's@boardserialnumber:.*@boardserialnumber: "4242"@' \
-    -e 's@boardproductname:.*@boardproductname: "424242"@' \
-    -e 's@serialnumber:.*@serialnumber: "42424242"@' \
-    -e '/^ *trusted\:/ d'
+rsync -a0 \
+    --files-from=<(find $factsdir -type f -mtime -7 -printf "%f\0") $factsdir \
+    "$tmpdir/yaml/facts"
+chown -R "${USER}" "$tmpdir/yaml"
 
-tar cJvf $outfile --directory $tmpdir yaml
+for FILE in "${factsdir}"/*.yaml; do
+    TIME=$(stat -c "%y" "${FILE}")
+    sed -i -e 's@uniqueid:.*@uniqueid: "43434343"@' \
+        -e 's@boardserialnumber:.*@boardserialnumber: "4242"@' \
+        -e 's@boardproductname:.*@boardproductname: "424242"@' \
+        -e 's@serialnumber:.*@serialnumber: "42424242"@' \
+        -e '/^ *trusted\:/ d' "${FILE}"
+    touch -d "${TIME}" "${FILE}"
+done
+
+tar cJvf $outfile --directory "$tmpdir" yaml
 
 echo "puppet facts sanitized and exported at $outfile"

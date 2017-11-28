@@ -37,6 +37,9 @@
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
 #
+# [*icinga_check*]
+#   Whether to include an Icinga check for monitoring the service. Default: true
+#
 # [*deployment*]
 #   What deployment system to use for deploying this service.
 #   Options: scap3, fabric
@@ -81,6 +84,7 @@ define service::uwsgi(
     $has_spec               = false,
     $repo                   = "${title}/deploy",
     $firejail               = true,
+    $icinga_check           = true,
     $local_logging          = true,
     $deployment_user        = 'deploy-service',
     $deployment_manage_user = true,
@@ -107,9 +111,10 @@ define service::uwsgi(
     }
 
     # sanity check since a default port cannot be assigned
-    unless $port and $port =~ /^\d+$/ {
-        fail('Service port must be specified and must be a number!')
+    unless $port {
+        fail('Service port must be specified!')
     }
+    validate_numeric($port)
 
     # the local log file name
     $local_logdir = "${service::configuration::log_dir}/${title}"
@@ -124,17 +129,22 @@ define service::uwsgi(
             mode   => '0755',
             before => Uwsgi::App[$title],
         }
-        file { "/etc/logrotate.d/${title}":
-            content => template('service/logrotate.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
+        logrotate::conf { $title:
+            ensure  => present,
+            content => template('service/logrotate.uwsgi.erb'),
         }
         $local_log_config = {
-            logger => "file:${local_logfile}",
+            logger => [
+                "local file:${local_logfile}",
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
+            ]
         }
     } else {
-        $local_log_config = {}
+        $local_log_config = {
+            logger => [
+                "logstash socket:${service::configuration::logstash_host}:${service::configuration::logstash_port_logback}",
+            ]
+        }
     }
 
     file { "/etc/${title}":
@@ -145,11 +155,26 @@ define service::uwsgi(
     }
 
     $base_config = {
-            plugins     => 'python, python3, logfile',
+            plugins     => 'python, python3, logfile, logsocket',
             master      => true,
             http-socket => "0.0.0.0:${port}",
             processes   => $no_workers,
             die-on-term => true,
+            log-route     => ['local .*', 'logstash .*'],
+            log-encoder   => [
+                # lint:ignore:single_quote_string_with_variables
+                # Add a timestamps to local log messages
+                'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
+
+                # Encode messages to the logstash logger as json datagrams.
+                # msgpack would be nicer, but the jessie uwsgi package doesn't
+                # include the msgpack formatter.
+                join([
+                    'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"',
+                    $title,
+                    '","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}'], '')
+                #lint:endignore
+            ],
     }
     $complete_config = deep_merge($base_config, $local_log_config, $config)
 
@@ -162,34 +187,29 @@ define service::uwsgi(
         }
     }
 
+    if $icinga_check {
+        if $has_spec {
+            # Advanced monitoring
+            include service::monitoring
 
-    # Basic firewall
-    ferm::service { $title:
-        proto => 'tcp',
-        port  => $port,
-    }
-
-    if $has_spec {
-        # Advanced monitoring
-        include service::monitoring
-
-        $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
-        nrpe::monitor_service{ "endpoints_${title}":
-            description   => "${title} endpoints health",
-            nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
-            contact_group => $contact_groups,
-        }
-        # we also support smart-releases
-        # TODO: Enable has_autorestart
-        service::deployment_script { $name:
-            monitor_url     => $monitor_url,
-        }
-    } else {
-        # Basic monitoring
-        monitoring::service { $title:
-            description   => $title,
-            check_command => "check_http_port_url!${port}!${healthcheck_url}",
-            contact_group => $contact_groups,
+            $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
+            nrpe::monitor_service{ "endpoints_${title}":
+                description   => "${title} endpoints health",
+                nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}",
+                contact_group => $contact_groups,
+            }
+            # we also support smart-releases
+            # TODO: Enable has_autorestart
+            service::deployment_script { $name:
+                monitor_url     => $monitor_url,
+            }
+        } else {
+            # Basic monitoring
+            monitoring::service { $title:
+                description   => $title,
+                check_command => "check_http_port_url!${port}!${healthcheck_url}",
+                contact_group => $contact_groups,
+            }
         }
     }
 }

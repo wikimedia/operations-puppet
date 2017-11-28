@@ -5,6 +5,7 @@ class pybal::configuration(
     $config='http',
     $global_options={},
     $config_host="config-master.${site}.wmnet",
+    $conftool_prefix = '/conftool/v1',
 ) {
 
     # Generate PyBal config file

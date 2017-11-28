@@ -2,6 +2,7 @@ class swift::storage (
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
+    $memcached_servers         = ['127.0.0.1:11211'],
 ) {
     package {
         [ 'swift-account',
@@ -34,7 +35,7 @@ class swift::storage (
     rsync::server::module { 'object':
         uid             => 'swift',
         gid             => 'swift',
-        max_connections => '13',
+        max_connections => '20',
         path            => '/srv/swift-storage/',
         read_only       => 'no',
         lock_file       => '/var/lock/object.lock',
@@ -57,6 +58,10 @@ class swift::storage (
 
     file { '/etc/swift/object-server.conf':
         content => template('swift/object-server.conf.erb'),
+    }
+
+    file { '/etc/swift/container-reconciler.conf':
+        content => template('swift/container-reconciler.conf.erb'),
     }
 
     file { '/srv/swift-storage':
@@ -85,6 +90,22 @@ class swift::storage (
         ensure => running,
     }
 
+    if os_version('debian >= jessie') {
+        # Swift object reconstructor is needed for storage using erasures codes
+        # which we don't use.
+
+        # Remove its unit so 'systemctl <action> swift*' exits zero.
+        # If one of the units matching the wildcard is masked then systemctl
+        # exits non-zero on e.g. restart.
+        file { '/lib/systemd/system/swift-object-reconstructor.service':
+            ensure => absent,
+            notify => Exec['reload systemd daemon'],
+        }
+        exec { 'reload systemd daemon':
+            command     => '/bin/systemctl daemon-reload',
+            refreshonly => true,
+        }
+    }
 
     # install swift-drive-audit as a cronjob;
     # it checks the disks every 60 minutes
@@ -112,5 +133,9 @@ class swift::storage (
         minute  => '1',
         require => [File['/usr/bin/swift-drive-audit'],
                     File['/etc/swift/swift-drive-audit.conf']],
+    }
+
+    udev::rule{ 'swift_disks':
+        source => 'puppet:///modules/swift/swift_disks.rules',
     }
 }

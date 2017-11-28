@@ -3,27 +3,28 @@
 # This class sets up packages needed for general python testing
 #
 class contint::packages::python {
+    if os_version('debian >= stretch') {
+        require_package('libmariadbclient-dev') # For python SQLAlchemy
+    } else {
+        require_package('libmysqlclient-dev') # For python SQLAlchemy
+    }
+
     require_package( # Let us compile python modules:
         'build-essential',
         'python-dev',
         'python-pip',  # Needed to install pip from pypi
-        'libmysqlclient-dev',  # For python SQLAlchemy
         'libxml2-dev',   # For python lxml
         'libxslt1-dev',  # For python lxml
         'libffi-dev', # For python requests[security]
         'libssl-dev', # python cryptography
     )
 
-    if os_version('debian jessie') {
-        # Debian only has: Suggests: libgnutls28-dev
-        # Whereas on Ubuntu libgnutls-dev is a dependency
-        require_package('libgnutls28-dev')
+    # T117955 Debian only has: Suggests: libgnutls28-dev
+    require_package('libgnutls28-dev')
 
-        # librdkafka not available in Precise.
-        require_package('librdkafka-dev') # For confluent-kafka
-    }
+    require_package('librdkafka-dev') # For confluent-kafka
 
-    # Bring in fresh pip. The Trusty package does not provide wheels cache
+    # Bring in fresh pip. The Jessie package does not provide wheels cache
     # https://pip.pypa.io/en/latest/news.html
     package { 'pip':
         ensure   => '8.1.2',
@@ -33,7 +34,7 @@ class contint::packages::python {
 
     # Bring tox/virtualenv... from pip  T46443
     package { 'tox':
-        ensure   => '1.9.2',
+        ensure   => '2.5.0',
         provider => 'pip',
         require  => Package['pip'],  # Fresh pip version
     }
@@ -56,7 +57,7 @@ class contint::packages::python {
     require_package(
         'python3',
         'python3-dev',
-        'python3-tk',  # For pywikibot/core running tox-doc-trusty
+        'python3-tk',  # For pywikibot/core running tox-doc
     )
     package { 'pypy':  # pywikibot/core T134235
         ensure => present,

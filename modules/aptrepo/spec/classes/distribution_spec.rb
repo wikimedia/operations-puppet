@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'aptrepo::distribution', :type => :class do
-
     let(:params) {{
         :basedir => '/srv/wikimedia',
         :settings => {
@@ -21,5 +20,4 @@ describe 'aptrepo::distribution', :type => :class do
             'group'  => 'root',
         })
     end
-
 end

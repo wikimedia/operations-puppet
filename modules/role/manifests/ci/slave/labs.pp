@@ -2,29 +2,28 @@
 class role::ci::slave::labs {
     requires_realm('labs')
 
-    system::role { 'role::ci::slave::labs':
+    system::role { 'ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
+    include ::profile::ci::worker_localhost
+    include ::profile::zuul::cloner
+
     # Debian slaves are used to build Debian packages for all our distributions
-    if os_version('debian >= jessie') {
-        system::role { '::package_builder':
-            description => 'CI package building',
-        }
-        include ::contint::package_builder
+    system::role { '::package_builder':
+        description => 'CI package building',
     }
+    include ::profile::phabricator::arcanist
 
-    class { 'contint::worker_localhost':
-        owner => 'jenkins-deploy',
-    }
+    include ::contint::package_builder
 
-    contint::tmpfs { 'tmpfs for jenkins CI labs slave':
+    # And a second mounted on /srv
+    contint::tmpfs { 'tmpfs for jenkins CI labs slave on /srv':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
+        mount_point => '/srv/home/jenkins-deploy/tmpfs',
         size        => '256M',
-        require     => File['/mnt/home/jenkins-deploy'],
+        require     => File['/srv/home/jenkins-deploy'],
     }
 
-    # Trebuchet replacement on labs
     include contint::composer
     include contint::phpunit
     include contint::slave_scripts
@@ -32,25 +31,20 @@ class role::ci::slave::labs {
     # Include package unsafe for production
     include contint::packages::labs
 
-    if os_version('ubuntu >= trusty') {
-        include contint::hhvm
-    }
+    include contint::hhvm
 
     include contint::php
 
     include role::ci::slave::labs::common
 
-    include ::zuul
 
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        include contint::browsers
+    include contint::browsers
 
-        class { 'role::ci::slave::browsertests':
-            require => [
-                Class['role::ci::slave::labs::common'], # /mnt
-                Class['contint::packages::labs'], # realize common packages first
-            ]
-        }
+    class { 'role::ci::slave::browsertests':
+        require => [
+            Class['role::ci::slave::labs::common'], # /srv
+            Class['contint::packages::labs'], # realize common packages first
+        ]
     }
 
     # The sshkey resource seems to modify file permissions and make it
@@ -64,12 +58,11 @@ class role::ci::slave::labs {
 
     # Add gerrit as a known host
     sshkey { 'gerrit':
-        ensure       => 'present',
-        name         => 'gerrit.wikimedia.org',
-        host_aliases => ['208.80.154.81'],
-        key          => 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ==',
-        type         => 'ssh-rsa',
-        notify       => File['/etc/ssh/ssh_known_hosts'],
+        ensure => 'present',
+        name   => 'gerrit.wikimedia.org',
+        key    => 'AAAAB3NzaC1yc2EAAAADAQABAAAAgQCF8pwFLehzCXhbF1jfHWtd9d1LFq2NirplEBQYs7AOrGwQ/6ZZI0gvZFYiEiaw1o+F1CMfoHdny1VfWOJF3mJ1y9QMKAacc8/Z3tG39jBKRQCuxmYLO1SWymv7/Uvx9WQlkNRoTdTTa9OJFy6UqvLQEXKYaokfMIUHZ+oVFf1CgQ==',
+        type   => 'ssh-rsa',
+        notify => File['/etc/ssh/ssh_known_hosts'],
     }
 
     # Put the mysql-server db on tmpfs

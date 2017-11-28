@@ -5,30 +5,26 @@ realm =  @realm
 -%>
 
 user www-data www-data;
-# Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
-# Hyperthread siblings assumed to be enumerated as 0+16, 1+17, 2+18, etc, and
-#  if HT is detected, we map 2 process per physical core onto both siblings
-worker_processes  <%= @processorcount %>;
 <%
-    ht_mode = false
-    if @processorcount.to_i == (2 * @physicalcorecount.to_i)
-        ht_mode = true
-    end
-    affinity_mask = Array.new
-    cpupos = 0
-    ncpus = @physicalcorecount.to_i
-    (0...ncpus).each do |worker|
-        bitmask = (1 << cpupos).to_s(2)
-        bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
-        if ht_mode
-            affinity_mask << (bitstring + bitstring)
-            affinity_mask << (bitstring + bitstring)
-        else
-            affinity_mask << bitstring
-        end
-        cpupos += 1
+    # Adapted from:
+    # https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
+    # For each hyperthread sibling set (usually a pair), create a number of
+    # worker processes equal to the number of logical cores in the set, bound to
+    # the entire set.  It also restricts itself to the cpus sharing the NUMA
+    # domain of @numa_iface
+    ncpus = @facts['processorcount']
+    htsets = @facts['numa']['device_to_htset'][@numa_iface]
+    worker_procs = htsets.flatten.size
+    affinity_mask = []
+    htsets.each do |htset|
+      bitmask = htset.map { |c| (1 << c) }.reduce(:|).to_s(2)
+      bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
+      htset.each do
+        affinity_mask << bitstring
+      end
     end
 -%>
+worker_processes <%= worker_procs %>;
 worker_cpu_affinity <%= affinity_mask.join(" ") %>;
 worker_rlimit_nofile <%= @nginx_worker_connections.to_i * 2 %>;
 
@@ -58,7 +54,7 @@ http {
 
     access_log	/var/log/nginx/access.log;
 
-    client_max_body_size 100m;
+    client_max_body_size <%= @nginx_client_max_body_size %>;
     large_client_header_buffers 4 16k; 
     client_body_buffer_size 64k;
 
@@ -79,7 +75,7 @@ http {
 <% else -%>
     ssl_session_cache shared:SSL:1024m;
 <% end -%>
-    ssl_session_timeout 4h;
+    ssl_session_timeout 25h;
 
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;

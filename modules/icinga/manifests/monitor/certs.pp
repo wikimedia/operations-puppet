@@ -24,16 +24,6 @@ class icinga::monitor::certs {
         host          => 'policy.wikimedia.org',
     }
 
-    # eventdonations.wikimedia.org (Fundraising)
-    @monitoring::host { 'eventdonations.wikimedia.org':
-        host_fqdn     => 'eventdonations.wikimedia.org',
-    }
-    monitoring::service { 'https_eventdonations':
-        description   => 'HTTPS-eventdonations',
-        check_command => 'check_ssl_http!eventdonations.wikimedia.org',
-        host          => 'eventdonations.wikimedia.org',
-    }
-
     monitoring::service { 'https_toolserver':
         description   => 'HTTPS-toolserver',
         check_command => 'check_ssl_http_letsencrypt!www.toolserver.org',
@@ -79,15 +69,10 @@ class icinga::monitor::certs {
         contact_group => 'wikitech-static',
     }
 
-    # benefactorevents.wikimedia.org (Fundraising, T156850)
-    @monitoring::host { 'benefactorevents.wikimedia.org':
-        host_fqdn     => 'benefactorevents.wikimedia.org',
-        contact_group => 'fr-tech-ops',
-    }
-    monitoring::service { 'https_benefactorevents':
-        description   => 'HTTPS-benefactorevents',
-        check_command => 'check_ssl_http!benefactorevents.wikimedia.org',
-        host          => 'benefactorevents.wikimedia.org',
-        contact_group => 'fr-tech-ops',
+    monitoring::service { 'https_status-wikimedia':
+        description   => 'HTTPS-status-wikimedia-org',
+        check_command => 'check_ssl_http_letsencrypt!status.wikimedia.org',
+        host          => 'wikitech-static.wikimedia.org',
+        contact_group => 'wikitech-static',
     }
 }

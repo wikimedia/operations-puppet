@@ -11,12 +11,26 @@ db=$1
 shift
 
 if [ -z "$db" ] || [ "$db" = "--help" ]; then
-    echo 'Usage: sql [--write] <dbname> [mysqloptions]'
+    echo 'Usage: sql [--write | --group group] <dbname> [mysqloptions]'
     exit 0
 elif [ "$db" = "--write" ]; then
     hostcode="echo \$lb->getServerName(0);"
 
     # Database will be the next parameter
+    db=$1
+    shift
+elif [ "$db" = "--group" ]; then
+    # Explicitly asked for a group
+    group=$1
+    shift
+
+    if echo $group | grep -qvP '^[a-z]+\z'; then
+        echo "group must be a string containing only lowercase letters"
+        exit 1
+    fi
+    hostcode="\$index = \$lb->getReaderIndex('"$group"'); if(\$index === false) exit(101); echo \$lb->getServerName(\$index);"
+
+    # Database is the next param
     db=$1
     shift
 else
@@ -42,13 +56,19 @@ else
     lbcode="\$lb = wfGetLB();"
 fi
 host=`echo $lbcode $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
-pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
-if [ $? -ne 0 ]; then
-    # PHP error, probably an invalid DB code
-    echo "Error looking up DB \"$db\"" 1>&2
+exitCode=$?
+if [ $exitCode -ne 0 ]; then
+    # PHP error, probably an invalid DB or group
+    if [ $exitCode -eq 101 ]; then
+        echo "Error looking up group \"$group\"" 1>&2
+    else
+        echo "Error looking up DB \"$db\"" 1>&2
+    fi
     exit 1
 fi
+
+pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
 # Execute mysql.
 exec mysql -u wikiadmin -p$pass -h $host -D $db "$@"

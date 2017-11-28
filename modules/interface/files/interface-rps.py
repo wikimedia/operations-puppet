@@ -1,52 +1,82 @@
 #!/usr/bin/env python
 
-# Sets up scalable network stuff (RPS/RSS/XPS) for a given interface.
+# Set up scalable network stuff (RPS/RSS/XPS) for a given interface.
 #
 # For basic technical background:
 # https://www.kernel.org/doc/Documentation/networking/scaling.txt
 #
 # Tries to allocate separate queues to separate CPUs, rather than follow
 # what's common advice out there (all CPUs to all queues), as experience has
-# shown a tremendous difference.
+# shown a tremendous difference.  This attempts to configure all of RPS, RSS,
+# and XPS if possible using matching queue/IRQ arrangements.  It's aware of
+# hyperthreading and only maps one IRQ/queue per physical cpu core, using only
+# the first virtual core of each hyperthread sibling pair.
 #
-# The first param is the ethernet interfaces (e.g. 'eth0') and is required.
+# The only param is the ethernet device name (e.g. 'eth0') and is required.
 #
-# The second param is an optional RSS (Receive Side Scaling) IRQ name
-# pattern for finding device IRQs in /proc/interrupts.  It must contain a
-# single '%d' to match the queue number in the IRQ name.  For example, for
-# bnx2x this is 'eth0-fp-%d', and for bnx2 and tg3 it is 'eth0-%d'.
+# If the file /etc/interface-rps.d/$device exists, it will be parsed with
+# ConfigParser for an Options section to specify additional parameters for
+# this interface.  Current options:
 #
-# If the RSS IRQ name parameter is not specified, the code will try to
-# auto-detect the pattern by searching /proc/interrupts for the 0th RSS
-# IRQ based on the supplied device name, e.g. /eth0[^\s0-9]+0$/.  If
-# detection fails, RSS will not be set up.
+# rss_pattern - This specifies an optional RSS (Receive Side Scaling) IRQ name
+#     regex for finding device IRQs in /proc/interrupts.  It must contain a
+#     single '%%d' to match the queue number in the IRQ name.  For example,
+#     for bnx2x this is 'eth0-fp-%%d', and for bnx2 and tg3 it is 'eth0-%%d'.
+#     The double-percent form is due to ConfigParser limitations.
 #
-# Sets up matching Transmit Packet Steering (XPS) queues if possible as
-# well.  There are only two XPS cases currently covered: generic support
-# for assuming 1:1 tx:rx mapping if the queue counts look even (which
-# works for at least bnx2), and special support for bnx2x:
+# qdisc - This specifies an optional transmit qdisc (and its parameters) as a
+#     single string.  If this script (oddly) found less than two hardware
+#     queues for XPS, the specified qdisc will be configured on the device
+#     root.  In the normal (2+ queues) case, it will set up "mq" as the root
+#     qdisc and use the specified qdisc for each sub-queue within mq.
 #
-# For cards driven by bnx2x which appear to have a set of tx queues that
-# match up with 3x CoS bands multiplied by the rx queue count, we enable
-# XPS and group the bands as appropriate.
-# This is the behavior exhibited by current bnx2x drivers that have
-# working XPS implementations (e.g. in the Ubuntu 3.13.0-30 kernel), on
-# our hardware and config.  The CoS band count could vary on different
-# bnx2x cards, and depending on whether you're using stuff like iSCSI/FCoE.
-# I don't yet know of a way to simply query the CoS band count or tx queue
-# mapping directly at runtime from the driver.
+# numa_filter - Normally this script ignores NUMA considerations.  If this
+#     option is set to any true-like value (1, yes, true, on), the script will
+#     attempt to find the NUMA node the ethernet device is attached to, and
+#     only utilize CPU cores which share the same NUMA node as the device.  If
+#     sysfs doesn't have information about the device being attached to a
+#     specific node, NUMA-level information will be ignored.
+#
+# If the rss_pattern option is not specified, the code will try to auto-detect
+# the pattern by searching /proc/interrupts for the 0th RSS IRQ based on the
+# supplied device name, e.g. /eth0[^\s0-9]+0$/.  If detection fails, RSS will
+# not be set up.
+#
+# The Transmit Packet Steering (XPS) queue support is limited.  There are only
+# two XPS cases currently covered: generic support for assuming 1:1 tx:rx
+# mapping if the queue counts look even (which works for at least bnx2), and
+# special support for bnx2x:
+#
+# For cards driven by bnx2x which appear to have a set of tx queues that match
+# up with 3x CoS bands multiplied by the rx queue count, we enable XPS and
+# group the bands as appropriate.  This is the behavior exhibited by current
+# bnx2x drivers that have working XPS implementations (e.g. in the Ubuntu
+# 3.13.0-30 kernel), on our hardware and config.  The CoS band count could
+# vary on different bnx2x cards, and depending on whether you're using stuff
+# like iSCSI/FCoE.  I don't yet know of a way to simply query the CoS band
+# count or tx queue mapping directly at runtime from the driver.
 #
 # Different cards/drivers will likely have different XPS mappings that will
 # need to be addressed individually when we encounter them.
 #
+# Config example:
+# -----cut------
+# [Options]
+# rss_pattern = eth0-%%d
+# qdisc = fq flow_limit 300 buckets 8192 maxrate 1gbit
+# numa_filter = true
+# -----cut------
+#
 # Authors: Faidon Liambotis and Brandon Black
-# Copyright (c) 2013-2015 Wikimedia Foundation, Inc.
+# Copyright (c) 2013-2017 Wikimedia Foundation, Inc.
 
 import os
 import glob
 import sys
 import re
 import warnings
+import ConfigParser
+import subprocess
 
 
 def get_value(path):
@@ -60,16 +90,39 @@ def write_value(path, value):
     open(path, 'w').write(value)
 
 
-def get_cpu_list():
+def cmd_nofail(cmd):
+    """echo + exec cmd with normal output, raises on rv!=0"""
+    print 'Executing: %s' % cmd
+    subprocess.check_call(cmd, shell=True)
+
+
+def cmd_failable(cmd):
+    """echo + exec cmd with normal output, ignores errors"""
+    print 'Executing: %s' % cmd
+    subprocess.call(cmd, shell=True)
+
+
+def get_cpu_list(device, numa_filter):
     """Get a list of all CPUs by their number (e.g. [0, 1, 2, 3])"""
     path_cpu = '/sys/devices/system/cpu/'
     cpu_nodes = glob.glob(os.path.join(path_cpu, 'cpu[0-9]*'))
     cpus = [int(os.path.basename(c)[3:]) for c in cpu_nodes]
 
+    cpus_numa = cpus
+    if numa_filter:
+        path_dev_numa = '/sys/class/net/%s/device/numa_node' % device
+        if os.path.exists(path_dev_numa):
+            dev_numa = int(get_value(path_dev_numa))
+            if dev_numa >= 0:
+                path_numa = '/sys/devices/system/node/node%d' % dev_numa
+                cpus_numa = [cpu for cpu in cpus if os.path.exists(
+                    os.path.join(path_numa, 'cpu%d' % cpu)
+                )]
+
     # filter-out HyperThreading siblings
     cores = []
-    for cpu in cpus:
-        path_threads = os.path.join(path_cpu, 'cpu%s' % cpu,
+    for cpu in cpus_numa:
+        path_threads = os.path.join(path_cpu, 'cpu%d' % cpu,
                                     'topology', 'thread_siblings_list')
         thread_siblings = get_value(path_threads).split(',')
         cores.append(int(thread_siblings[0]))
@@ -130,7 +183,7 @@ def get_rx_irqs(rss_pattern, rx_queues):
     for line in irq_file:
         match = rss_re.match(line)
         if match:
-            irqs[int(match.group(2))] = match.group(1)
+            irqs[int(match.group(2))] = int(match.group(1))
 
     # If we don't get an *exact* match for the rx_queues list, give up
     if len(irqs) != len(rx_queues):
@@ -151,15 +204,15 @@ def set_cpus(device, cpus, rxq, rx_irq, txqs):
     txt_bitmask = format(bitmask, 'x')
 
     if rx_irq:
-        irq_node = '/proc/irq/%s/smp_affinity' % rx_irq
+        irq_node = '/proc/irq/%d/smp_affinity' % rx_irq
         write_value(irq_node, txt_bitmask)
 
-    rx_node = '/sys/class/net/%s/queues/rx-%s/rps_cpus' % (device, rxq)
+    rx_node = '/sys/class/net/%s/queues/rx-%d/rps_cpus' % (device, rxq)
     write_value(rx_node, txt_bitmask)
 
     if txqs:
         for i in txqs:
-            tx_node = '/sys/class/net/%s/queues/tx-%s/xps_cpus' % (device, i)
+            tx_node = '/sys/class/net/%s/queues/tx-%d/xps_cpus' % (device, i)
             write_value(tx_node, txt_bitmask)
 
 
@@ -194,6 +247,41 @@ def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
             set_cpus(device, cpus, rxq, rx_irqs[rxq], tx_qmap[rxq])
 
 
+def setup_qdisc(device, num_queues, qdisc):
+    """Sets up transmit qdiscs"""
+    cmd_failable('/sbin/tc qdisc del dev %s root' % device)
+    if num_queues < 2:
+        cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: %s'
+                   % (device, qdisc))
+    else:
+        cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: mq' % (device))
+        for slot in range(1, num_queues + 1):
+            cmd_nofail('/sbin/tc qdisc add dev %s handle %x: parent 100:%x %s'
+                       % (device, slot, slot, qdisc))
+
+
+def get_options(device):
+    """Get configured options from /etc/interface-rps.d/$device"""
+
+    opts = {
+        'rss_pattern': None,
+        'qdisc':       None,
+        'numa_filter': False,
+    }
+    config_file = os.path.join('/etc/interface-rps.d/', device)
+    if os.path.isfile(config_file):
+        config = ConfigParser.SafeConfigParser()
+        config.read(config_file)
+        if config.has_option('Options', 'rss_pattern'):
+            opts['rss_pattern'] = config.get('Options', 'rss_pattern')
+        if config.has_option('Options', 'qdisc'):
+            opts['qdisc'] = config.get('Options', 'qdisc')
+        if config.has_option('Options', 'numa_filter'):
+            opts['numa_filter'] = config.getboolean('Options', 'numa_filter')
+
+    return opts
+
+
 def main():
     """Simple main() function with sensible defaults"""
     try:
@@ -201,12 +289,14 @@ def main():
     except IndexError:
         device = 'eth0'
 
-    try:
-        rss_pattern = sys.argv[2]
-    except IndexError:
+    opts = get_options(device)
+
+    if opts['rss_pattern']:
+        rss_pattern = opts['rss_pattern']
+    else:
         rss_pattern = detect_rss_pattern(device)
 
-    cpu_list = get_cpu_list()
+    cpu_list = get_cpu_list(device, opts['numa_filter'])
     rx_queues = get_queues(device, 'rx')
     tx_queues = get_queues(device, 'tx')
     driver = os.path.basename(
@@ -234,6 +324,9 @@ def main():
         tx_queue_map = {rxq: None for rxq in rx_queues}
 
     dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_queue_map)
+    if opts['qdisc']:
+        setup_qdisc(device, len(tx_queues), opts['qdisc'])
+
 
 if __name__ == '__main__':
     main()

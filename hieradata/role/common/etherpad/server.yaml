@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-etherpad:
-    value: standard

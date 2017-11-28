@@ -18,12 +18,13 @@ class role::toollabs::elasticsearch {
     }
 
     file { '/etc/nginx/elasticsearch.htpasswd':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'www-data',
-        mode    => '0440',
-        content => secret('labs/toollabs/elasticsearch/htpasswd'),
-        require => Class['nginx'],
+        ensure    => present,
+        owner     => 'root',
+        group     => 'www-data',
+        mode      => '0440',
+        content   => secret('labs/toollabs/elasticsearch/htpasswd'),
+        show_diff => false,
+        require   => Class['nginx'],
     }
 
     ferm::service{ 'nginx-http':

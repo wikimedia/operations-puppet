@@ -37,11 +37,18 @@ class role::logstash::collector (
         port => 10514,
     }
 
-    ferm::service { 'logstash_syslog':
+    ferm::service { 'logstash_syslog_udp':
         proto   => 'udp',
         port    => '10514',
         notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
+        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
+    }
+
+    ferm::service { 'logstash_syslog_tcp':
+        proto   => 'tcp',
+        port    => '10514',
+        notrack => true,
+        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
     }
 
     ferm::service { 'grafana_dashboard_definition_storage':
@@ -126,6 +133,11 @@ class role::logstash::collector (
         priority => 20,
     }
 
+    logstash::conf { 'filter_log4j':
+        source   => 'puppet:///modules/role/logstash/filter-log4j.conf',
+        priority => 20,
+    }
+
     logstash::conf { 'filter_logback':
         source   => 'puppet:///modules/role/logstash/filter-logback.conf',
         priority => 20,
@@ -144,6 +156,16 @@ class role::logstash::collector (
 
     logstash::conf { 'filter_striker':
         source   => 'puppet:///modules/role/logstash/filter-striker.conf',
+        priority => 50,
+    }
+
+    logstash::conf { 'filter_ores':
+        source   => 'puppet:///modules/role/logstash/filter-ores.conf',
+        priority => 50,
+    }
+
+    logstash::conf { 'filter_webrequest':
+        source   => 'puppet:///modules/role/logstash/filter-webrequest.conf',
         priority => 50,
     }
 
@@ -216,4 +238,3 @@ class role::logstash::collector (
         increment       => [ '%{level}' ],
     }
 }
-

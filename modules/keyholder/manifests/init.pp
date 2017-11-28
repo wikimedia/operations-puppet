@@ -49,11 +49,18 @@ class keyholder($require_encrypted_keys='yes') {
         mode   => '0755',
     }
 
+    if os_version('debian >= jessie') {
+        systemd::tmpfile { 'keyholder':
+            content => 'd /run/keyholder 0755 keyholder keyholder',
+            require => User['keyholder'],
+        }
+    }
+
     file { '/etc/keyholder.d':
         ensure  => directory,
         owner   => 'keyholder',
         group   => 'keyholder',
-        mode    => '0750',
+        mode    => '0751',
         recurse => true,
         purge   => true,
         force   => true,
@@ -81,8 +88,8 @@ class keyholder($require_encrypted_keys='yes') {
     # the ssh-agent instance that will hold shared key(s).
     base::service_unit { 'keyholder-agent':
         ensure  => present,
-        systemd => true,
-        upstart => true,
+        systemd => systemd_template('keyholder-agent'),
+        upstart => upstart_template('keyholder-agent'),
         require => File['/run/keyholder'],
     }
 
@@ -91,8 +98,8 @@ class keyholder($require_encrypted_keys='yes') {
     # and the backend ssh-agent that holds the shared key(s).
     base::service_unit { 'keyholder-proxy':
         ensure  => present,
-        systemd => true,
-        upstart => true,
+        systemd => systemd_template('keyholder-proxy'),
+        upstart => upstart_template('keyholder-proxy'),
         require => Service['keyholder-agent'],
     }
 

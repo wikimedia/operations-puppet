@@ -13,7 +13,6 @@ Prerequisites
 =============
 
 * xulrunner 24. Exists on jessie and trusty-wikimedia
-* trebuchet. WMF deployment system that is used to deploy the code
 
 Usage
 =====

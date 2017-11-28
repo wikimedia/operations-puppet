@@ -1,0 +1,7 @@
+<%- if @proxy_address and @proxy_address != '' -%>
+http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
+<%- end -%>
+seed_image: docker-registry.wikimedia.org/wikimedia-stretch:latest
+registry: <%= @registry %>
+username: <%= @username %>
+password: <%= @password %>

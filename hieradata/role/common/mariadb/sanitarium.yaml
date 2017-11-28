@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-db-sanitarium:
-    value: standard

@@ -7,7 +7,7 @@
 # Generate a json dump of cirrussearch indices for all enabled
 # wikis and remove old ones.
 
-source /usr/local/etc/set_dump_dirs.sh
+source /usr/local/etc/dump_functions.sh
 
 usage() {
 	echo "Usage: $0 [--config <pathtofile>] [--dryrun]"
@@ -40,25 +40,20 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-deployDir=$(egrep "^dir=" "$configFile" | mawk -Fdir= '{ print $2 }')
-gzip=$(egrep "^gzip=" "$configFile" | mawk -Fgzip= '{ print $2 }')
-allList=$(egrep "^dblist=" "$configFile" | mawk -Fdblist= '{ print $2 }')
-privateList=$(egrep "^privatelist=" "$configFile" | mawk -Fprivatelist= '{ print $2 }')
-publicDir=$(egrep "^public=" "$configFile" | mawk -Fpublic= '{ print $2 }')
+args="wiki:dir,dblist,privatelist;tools:gzip"
+results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
-if [ -z "$deployDir" -o -z "$gzip" -o -z "$allList" -o -z "$privateList" -o -z "$publicDir" ]; then
-	echo "failed to find value of one of the following from config file $configFile:"
-	echo "gzip: $gzip"
-	echo "dir: $deployDir"
-	echo "dblist: $allList"
-	echo "privatelist: $privateList"
-	echo "public: $publicDir"
-	echo "exiting..."
-	exit 1
-fi
+deployDir=`getsetting "$results" "wiki" "dir"` || exit 1
+allList=`getsetting "$results" "wiki" "dblist"` || exit 1
+privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
+gzip=`getsetting "$results" "tools" "gzip"` || exit 1
+
+for settingname in "deployDir" "allList" "privateList" "gzip"; do
+    checkval "$settingname" "${!settingname}"
+done
 
 today=$(date +'%Y%m%d')
-targetDirBase="$publicDir/other/cirrussearch"
+targetDirBase="${otherdir}/cirrussearch"
 targetDir="$targetDirBase/$today"
 multiVersionScript="$deployDir/multiversion/MWScript.php"
 
@@ -150,3 +145,6 @@ if [ "$dryrun" == "false" ]; then
         rm -f "current"
 	ln -s "$today" "current"
 fi
+
+# clean up old log files
+find /var/log/cirrusdump/ -name 'cirrusdump-*.log*' -mtime +22 -delete

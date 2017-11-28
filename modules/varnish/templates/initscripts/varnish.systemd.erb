@@ -5,6 +5,17 @@ Description=%p (Varnish HTTP Accelerator)
 Type=forking
 LimitNOFILE=500000
 LimitMEMLOCK=90000
+LimitRTPRIO=infinity
+### start sec settings
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+# No special powers for root with the exception of the following.
+# See capabilities(7).
+CapabilityBoundingSet=<%= @capabilities %>
+### end sec settings
 PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
@@ -14,20 +25,22 @@ Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%
 <% if @jemalloc_conf -%>
 Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 <% end -%>
+# rsyslog will see this in $programname
+SyslogIdentifier=varnish<%= @instancesuffix %>
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
-ExecStart=/usr/sbin/varnishd \
+ExecStart=<%= @start_cmd_prefix %>/usr/sbin/varnishd \
 -P %t/%p.pid \
-<%= @ports.map { |p| "-a :"+p }.join(" ") -%> \
+<%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
 -f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
--p thread_pool_min=250 -p thread_pool_max=<%= @processorcount.to_i * 250 -%> -p thread_pool_timeout=120 \
+-p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \
 -p vsl_reclen=2048 \
 -p workspace_backend=128k \
 -p vcc_allow_inline_c=true \
 -S /etc/varnish/secret \
 <%= @storage -%> \
 -p thread_pool_stack=131072 \
--p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
+-p listen_depth=4096 -p vcc_err_unref=off \
 -p http_req_size=24576 \
 -p gethdr_extrachance=0 \
 -p gzip_level=8 \

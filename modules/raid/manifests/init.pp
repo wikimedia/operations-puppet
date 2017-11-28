@@ -3,27 +3,28 @@
 # Class to set up monitoring for software and hardware RAID
 #
 # === Parameters
-#
+# * write_cache_policy: if set, it will check that the write cache
+#                       policy of all logical drives matches the one
+#                       given, normally 'WriteBack' or 'WriteThrough'.
+#                       Currently only works for Megacli systems, it is
+#                       ignored in all other cases.
 # === Examples
 #
 #  include raid
 
-class raid {
-    # unfortunately, we don't support stringify_facts=false yet; when we
-    # eventually do, the fact should be adjusted to not join with ",", and the
-    # following line should be then removed.
-    $raid = split($::raid, ',')
+class raid (
+    $write_cache_policy = undef,
+    $check_interval = 10,
+    $retry_interval = 10,
+){
 
-    $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+    if empty($write_cache_policy) {
+        $check_raid = '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid'
+    } else {
+        $check_raid = "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_raid --policy ${write_cache_policy}"
+    }
 
-    # for 'forking' checks (i.e. all but mdadm, which essentially just reads
-    # kernel memory from /proc/mdstat) check every $check_interval
-    # minutes instead of default of one minute. If the check is non-OK, retry
-    # every $retry_interval.
-    $check_interval = 10
-    $retry_interval = 5
-
-    if 'megaraid' in $raid {
+    if 'megaraid' in $facts['raid'] {
         require_package('megacli')
         $get_raid_status_megacli = '/usr/local/lib/nagios/plugins/get-raid-status-megacli'
 
@@ -53,7 +54,7 @@ class raid {
         }
     }
 
-    if 'hpsa' in $raid {
+    if 'hpsa' in $facts['raid'] {
         require_package('hpssacli')
 
         file { '/usr/local/lib/nagios/plugins/check_hpssacli':
@@ -76,6 +77,7 @@ class raid {
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] show status',
+                'ALL = NOPASSWD: /usr/sbin/hpssacli controller slot=[0-9] show detail',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller all show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] ld all show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] ld * show',
@@ -84,13 +86,14 @@ class raid {
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] pd [0-9][EIC]\:[0-9]\:[0-9][0-9] show',
                 'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] show status',
+                'ALL = NOPASSWD: /usr/sbin/hpacucli controller slot=[0-9] show detail',
             ],
         }
 
         nrpe::monitor_service { 'raid_hpssacli':
             description    => 'HP RAID',
             nrpe_command   => '/usr/local/lib/nagios/plugins/check_hpssacli',
-            timeout        => 50, # can take > 10s on servers with lots of disks
+            timeout        => 90, # can take > 10s on servers with lots of disks
             check_interval => $check_interval,
             retry_interval => $retry_interval,
             event_handler  => "raid_handler!hpssacli!${::site}",
@@ -111,7 +114,7 @@ class raid {
         }
     }
 
-    if 'mpt' in $raid {
+    if 'mpt' in $facts['raid'] {
         package { 'mpt-status':
             ensure => present,
         }
@@ -138,7 +141,7 @@ class raid {
         }
     }
 
-    if 'md' in $raid {
+    if 'md' in $facts['raid'] {
         # if there is an "md" RAID configured, mdadm is already installed
 
         nrpe::monitor_service { 'raid_md':
@@ -149,28 +152,6 @@ class raid {
 
         nrpe::check { 'get_raid_status_md':
             command => 'cat /proc/mdstat',
-        }
-    }
-
-    if 'aac' in $raid {
-        require_package('arcconf')
-
-        nrpe::monitor_service { 'raid_aac':
-            description    => 'Adaptec RAID',
-            nrpe_command   => "${check_raid} aac",
-            check_interval => $check_interval,
-            retry_interval => $retry_interval,
-        }
-    }
-
-    if 'twe' in $raid {
-        require_package('tw-cli')
-
-        nrpe::monitor_service { 'raid_twe':
-            description    => '3ware TW',
-            nrpe_command   => "${check_raid} twe",
-            check_interval => $check_interval,
-            retry_interval => $retry_interval,
         }
     }
 

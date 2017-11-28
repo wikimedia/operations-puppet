@@ -64,11 +64,7 @@ class ores::redis(
         settings => $common_settings,
         map      => $instance_settings_real,
     }
-    redis::monitoring::instance { $instances:
-        settings  => $common_settings,
-        map       => $instance_settings_real,
-        cred_file => '/etc/icinga/.ores_redis_secret',
-    }
+    redis::monitoring::nrpe_instance{ $instances: }
 
     $uris = apply_format("localhost:%s/${password}", $instances)
     diamond::collector { 'Redis':

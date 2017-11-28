@@ -9,6 +9,9 @@ vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
+<%- unless @environment.nil? || @environment == '' -%>
+environment = <%= @environment %>
+<%- end -%>
 
 [agent]
 <%- if @use_srv_record -%>
@@ -20,6 +23,7 @@ server = <%= @server %>
 <%- end -%>
 <% if @certname %>certname = <%= @certname %><% end %>
 <% if @dns_alt_names %>dns_alt_names = <%= @dns_alt_names %><% end %>
+daemonize = false
 configtimeout = 960
 usecacheonfailure = false
 splay = true
@@ -27,3 +31,4 @@ prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = true
 report = true
+stringify_facts = false

@@ -1,23 +1,40 @@
 # Designate provides DNSaaS services for OpenStack
 # https://wiki.openstack.org/wiki/Designate
 
-class openstack::designate::service (
-    $active_server,
+class openstack::designate::service(
+    $active,
+    $version,
+    $designate_host,
+    $db_user,
+    $db_pass,
+    $db_host,
+    $db_name,
+    $domain_id_internal_forward,
+    $domain_id_internal_reverse,
+    $pool_manager_db_name,
+    $puppetmaster_hostname,
     $nova_controller,
-    $keystone_host,
-    $keystoneconfig,
-    $designateconfig,
+    $ldap_user_pass,
+    $pdns_db_user,
+    $pdns_db_pass,
+    $pdns_db_name,
+    $db_admin_user,
+    $db_admin_pass,
     $primary_pdns_ip,
     $secondary_pdns_ip,
-    $openstack_version=$::openstack::version,
-)
-    {
+    $rabbit_user,
+    $rabbit_pass,
+    $rabbit_host,
+    $keystone_public_port,
+    $keystone_auth_port,
+    ) {
 
-    require openstack::repo
-
-    $keystone_host_ip   = ipresolve($keystone_host,4)
+    $keystone_host_ip   = ipresolve($nova_controller,4)
     $nova_controller_ip = ipresolve($nova_controller)
-    $designate_host = $active_server
+    $keystone_public_uri = "http://${nova_controller}:${keystone_public_port}"
+    $keystone_admin_uri = "http://${nova_controller}:${keystone_auth_port}"
+    $designate_host_ip = ipresolve($designate_host,4)
+    $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
     require_package(
         'python-designateclient',
@@ -31,59 +48,61 @@ class openstack::designate::service (
     )
 
     file { '/usr/lib/python2.7/dist-packages/wmf_sink':
-        source  => "puppet:///modules/openstack/${::openstack::version}/designate/wmf_sink",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/wmf_sink",
         recurse => true,
     }
+
     file { '/usr/lib/python2.7/dist-packages/wmf_sink.egg-info':
-        source  => "puppet:///modules/openstack/${::openstack::version}/designate/wmf_sink.egg-info",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/wmf_sink.egg-info",
         recurse => true,
     }
 
     file { '/usr/lib/python2.7/dist-packages/nova_fixed_multi':
-        source  => "puppet:///modules/openstack/${::openstack::version}/designate/nova_fixed_multi",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi",
         recurse => true,
     }
+
     file { '/usr/lib/python2.7/dist-packages/nova_fixed_multi.egg-info':
-        source  => "puppet:///modules/openstack/${::openstack::version}/designate/nova_fixed_multi.egg-info",
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi.egg-info",
         recurse => true,
     }
 
     file {
         '/etc/designate/designate.conf':
-            content => template("openstack/${openstack_version}/designate/designate.conf.erb"),
             owner   => 'designate',
             group   => 'designate',
+            mode    => '0440',
+            content => template("openstack/${version}/designate/designate.conf.erb"),
             notify  => Service['designate-api','designate-sink','designate-central','designate-mdns','designate-pool-manager'],
-            require => Package['designate-common'],
-            mode    => '0440';
+            require => Package['designate-common'];
         '/etc/designate/api-paste.ini':
-            content => template("openstack/${openstack_version}/designate/api-paste.ini.erb"),
+            content => template("openstack/${version}/designate/api-paste.ini.erb"),
             owner   => 'designate',
             group   => 'designate',
             notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-api'],
             mode    => '0440';
         '/etc/designate/policy.json':
-            source  => "puppet:///modules/openstack/${openstack_version}/designate/policy.json",
+            source  => "puppet:///modules/openstack/${version}/designate/policy.json",
             owner   => 'designate',
             group   => 'designate',
             notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-common'],
             mode    => '0440';
         '/etc/designate/rootwrap.conf':
-            source  => "puppet:///modules/openstack/${openstack_version}/designate/rootwrap.conf",
+            source  => "puppet:///modules/openstack/${version}/designate/rootwrap.conf",
             owner   => 'root',
             group   => 'root',
             notify  => Service['designate-api','designate-sink','designate-central'],
@@ -93,115 +112,78 @@ class openstack::designate::service (
 
     # These would be automatically included in a correct designate package...
     # probably this can be ripped out in Liberty.
-    file { '/etc/logrotate.d/designate-mdns':
-        ensure => present,
-        source => 'puppet:///modules/openstack/designate-mdns.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+    logrotate::conf { 'designate-mdns':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/designate/designate-mdns.logrotate',
     }
-    file { '/etc/logrotate.d/designate-pool-manager':
-        ensure => present,
-        source => 'puppet:///modules/openstack/designate-pool-manager.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+
+    logrotate::conf { 'designate-pool-manager':
+        ensure => 'present',
+        source => 'puppet:///modules/openstack/designate/designate-pool-manager.logrotate',
     }
 
     file { '/var/lib/designate/.ssh/':
-        ensure => directory,
+        ensure => 'directory',
         owner  => 'designate',
         group  => 'designate',
     }
 
     file { '/var/lib/designate/.ssh/id_rsa':
-        owner   => 'designate',
-        group   => 'designate',
-        mode    => '0400',
-        content => secret('ssh/puppet_cert_manager/cert_manager')
+        owner     => 'designate',
+        group     => 'designate',
+        mode      => '0400',
+        content   => secret('ssh/puppet_cert_manager/cert_manager'),
+        show_diff => false,
+    }
+
+    file {'/etc/init/designate-pool-manager.conf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        content => template('openstack/initscripts/designate-pool-manager.upstart.erb'),
+        notify  => Service['designate-pool-manager'],
+    }
+
+    file {'/etc/init/designate-mdns.conf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        content => template('openstack/initscripts/designate-mdns.upstart.erb'),
+        notify  => Service['designate-mdns'],
     }
 
     # include rootwrap.d entries
 
-    if $::fqdn == $active_server {
-        service {'designate-api':
-            ensure  => running,
-            require => Package['designate-api'];
-        }
+    service {'designate-api':
+        ensure  => $active,
+        require => Package['designate-api'];
+    }
 
-        service {'designate-sink':
-            ensure  => running,
-            require => Package['designate-sink'];
-        }
+    service {'designate-sink':
+        ensure  => $active,
+        require => Package['designate-sink'];
+    }
 
-        service {'designate-central':
-            ensure  => running,
-            require => Package['designate-central'];
-        }
+    service {'designate-central':
+        ensure  => $active,
+        require => Package['designate-central'];
+    }
 
-        # In the perfect future when the designate packages set up
-        #  an init script for this, some of this can be removed.
-        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
-            ensure  =>  present,
-            upstart =>  true,
-            require =>  Package['designate'],
-        }
+    service {'designate-mdns':
+        ensure  => $active,
+        require =>  [
+            Package['designate'],
+            File['/etc/init/designate-mdns.conf'],
+        ],
+    }
 
-        # Page if designate processes die.  We only have one of each of these,
-        #  and new instance creation will be very broken if services die.
-        nrpe::monitor_service { 'check_designate_sink_process':
-            description  => 'designate-sink process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-sink'",
-            critical     => true,
-        }
-        nrpe::monitor_service { 'check_designate_api_process':
-            description  => 'designate-api process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-api'",
-            critical     => true,
-        }
-        nrpe::monitor_service { 'check_designate_central_process':
-            description  => 'designate-central process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-central'",
-            critical     => true,
-        }
-        nrpe::monitor_service { 'check_designate_mdns':
-            description  => 'designate-mdns process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-mdns'",
-            critical     => true,
-        }
-        nrpe::monitor_service { 'check_designate_pool-manager':
-            description  => 'designate-pool-manager process',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/designate-pool-manager'",
-            critical     => true,
-        }
-        monitoring::service { 'designate-api-http':
-            description   => 'designate-api http',
-            check_command => 'check_http_on_port!9001',
-        }
-    } else {
-        service {'designate-api':
-            ensure  => stopped,
-            require => Package['designate-api'];
-        }
-
-        service {'designate-sink':
-            ensure  => stopped,
-            require => Package['designate-sink'];
-        }
-
-        service {'designate-central':
-            ensure  => stopped,
-            require => Package['designate-central'];
-        }
-
-        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
-            upstart        =>  true,
-            require        =>  Package['designate'],
-            service_params => {
-            # lint:ignore:ensure_first_param
-                ensure => stopped
-            # lint:endignore
-            },
-        }
+    service {'designate-pool-manager':
+        ensure  => $active,
+        require =>  [
+            Package['designate'],
+            File['/etc/init/designate-pool-manager.conf'],
+        ],
     }
 }

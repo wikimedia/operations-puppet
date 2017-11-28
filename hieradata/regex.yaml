@@ -1,571 +1,272 @@
+es_eqiad_17_to_31:
+  __regex: !ruby/regexp /^elastic10(1[789]|2[0-9]|30|31)\.eqiad\.wmnet$/
+  profile::elasticsearch::storage_device: md2
+
+es_eqiad_32_to_52:
+  __regex: !ruby/regexp /^elastic10(3[2-9]|4[0-9]|5[012])\.eqiad\.wmnet$/
+  profile::elasticsearch::storage_device: dm-0
+
 es_codfw_rack_a5:
   __regex: !ruby/regexp /^elastic20(01|02|03|25)\.codfw\.wmnet$/
-  elasticsearch::rack: A5
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A5
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_a8:
   __regex: !ruby/regexp /^elastic20(04|05|06|26|27)\.codfw\.wmnet$/
-  elasticsearch::rack: A8
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A8
+  profile::elasticsearch::row:  A
 
 es_codfw_rack_b5:
   __regex: !ruby/regexp /^elastic20(07|08|09|28)\.codfw\.wmnet$/
-  elasticsearch::rack: B5
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B5
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_b8:
   __regex: !ruby/regexp /^elastic20(10|11|12|29|30)\.codfw\.wmnet$/
-  elasticsearch::rack: B8
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B8
+  profile::elasticsearch::row:  B
 
 es_codfw_rack_c1:
   __regex: !ruby/regexp /^elastic20(13|14|15|31)\.codfw\.wmnet$/
-  elasticsearch::rack: C1
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C1
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_c5:
   __regex: !ruby/regexp /^elastic20(16|17|18|32|33)\.codfw\.wmnet$/
-  elasticsearch::rack: C5
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C5
+  profile::elasticsearch::row:  C
 
 es_codfw_rack_d1:
   __regex: !ruby/regexp /^elastic20(19|20|21|34)\.codfw\.wmnet$/
-  elasticsearch::rack: D1
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D1
+  profile::elasticsearch::row:  D
 
 es_codfw_rack_d5:
   __regex: !ruby/regexp /^elastic20(22|23|24|35|36)\.codfw\.wmnet$/
-  elasticsearch::rack: D5
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D5
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^(elastic10(30|31|32|33|34|35)|relforge1001)\.eqiad\.wmnet$/
-  elasticsearch::rack: A3
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A3
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_a6:
   __regex: !ruby/regexp /^elastic10(44|45|48)\.eqiad\.wmnet$/
-  elasticsearch::rack: A6
-  elasticsearch::row:  A
+  profile::elasticsearch::rack: A6
+  profile::elasticsearch::row:  A
 
 es_eqiad_rack_b3:
   __regex: !ruby/regexp /^elastic10(36|37|38|39)\.eqiad\.wmnet$/
-  elasticsearch::rack: B3
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B3
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b4:
   __regex: !ruby/regexp /^elastic10(49|50)\.eqiad\.wmnet$/
-  elasticsearch::rack: B4
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B4
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_b6:
   __regex: !ruby/regexp /^elastic10(28|46|47)\.eqiad\.wmnet$/
-  elasticsearch::rack: B6
-  elasticsearch::row:  B
+  profile::elasticsearch::rack: B6
+  profile::elasticsearch::row:  B
 
 es_eqiad_rack_c4:
   __regex: !ruby/regexp /^elastic10(21|22|29)\.eqiad\.wmnet$/
-  elasticsearch::rack: C4
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C4
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c5:
   __regex: !ruby/regexp /^(elastic10(40|41|42|43)|relforge1002)\.eqiad\.wmnet$/
-  elasticsearch::rack: C5
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C5
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_c7:
   __regex: !ruby/regexp /^elastic10(51|52)\.eqiad\.wmnet$/
-  elasticsearch::rack: C7
-  elasticsearch::row:  C
+  profile::elasticsearch::rack: C7
+  profile::elasticsearch::row:  C
 
 es_eqiad_rack_d3:
   __regex: !ruby/regexp /^elastic10(17|18|19|20)\.eqiad\.wmnet$/
-  elasticsearch::rack: D3
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D3
+  profile::elasticsearch::row:  D
 
 es_eqiad_rack_d4:
   __regex: !ruby/regexp /^elastic10(23|24|25|26|27)\.eqiad\.wmnet$/
-  elasticsearch::rack: D4
-  elasticsearch::row:  D
+  profile::elasticsearch::rack: D4
+  profile::elasticsearch::row:  D
 
 mysql_eqiad:
-  __regex: !ruby/regexp /^(db10[0-9][0-9]|dbstore100[1-2]|dbproxy10[01][0-9]|es101[1-9]|pc100[4-6]|labsdb10[01][0-9])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(db1[01][0-9][0-9]|dbstore100[1-2]|dbproxy10[01][0-9]|es101[1-9]|pc100[4-6]|labsdb10[01][0-9])\.eqiad\.wmnet$/
   cluster: mysql
 
 mysql_codfw:
-  __regex: !ruby/regexp /^(db20[0-9][0-9]|dbstore200[1-2]|es200[1-4]|pc200[4-6]|es201[1-9])\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(db2[01][0-9][0-9]|dbstore200[1-2]|es200[1-4]|pc200[4-6]|es201[1-9])\.codfw\.wmnet$/
   cluster: mysql
 
 labvirt:
   __regex: !ruby/regexp /^labvirt10[0-9][0-9]\.eqiad\.wmnet$/
   cluster: labvirt
+  standard::has_ganglia: false
 
 labstore:
   __regex: !ruby/regexp /^labstore.*\.wmnet$/
   cluster: labsnfs
+  standard::has_ganglia: false
 
 labs:
   __regex: !ruby/regexp /^lab((net|nodepool|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
   cluster: labs
-
-labtestvirt:
-  __regex: !ruby/regexp /^labtestvirt20[0-9][0-9]\.codfw\.wmnet$/
-  cluster: labtestvirt
-
-labtest:
-  __regex: !ruby/regexp /^labtest(net200[1-9]\.codfw\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
-  cluster: labtest
-
-cassandra_test_eqiad:
-  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
-  cluster: restbase_test
-  cassandra::seeds:
-      - cerium.eqiad.wmnet
-      - cerium-a.eqiad.wmnet
-      - cerium-b.eqiad.wmnet
-      - praseodymium.eqiad.wmnet
-      - praseodymium-a.eqiad.wmnet
-      - praseodymium-b.eqiad.wmnet
-      - xenon.eqiad.wmnet
-      - xenon-a.eqiad.wmnet
-      - xenon-b.eqiad.wmnet
-      - restbase-test2001.codfw.wmnet
-      - restbase-test2001-a.codfw.wmnet
-      - restbase-test2001-b.codfw.wmnet
-      - restbase-test2002.codfw.wmnet
-      - restbase-test2002-a.codfw.wmnet
-      - restbase-test2002-b.codfw.wmnet
-      - restbase-test2003.codfw.wmnet
-      - restbase-test2003-a.codfw.wmnet
-      - restbase-test2003-b.codfw.wmnet
-  restbase::seeds:
-      - cerium-a.eqiad.wmnet
-      - praseodymium-a.eqiad.wmnet
-      - xenon-a.eqiad.wmnet
-      - restbase-test2001-a.codfw.wmnet
-      - restbase-test2001-b.codfw.wmnet
-      - restbase-test2002-a.codfw.wmnet
-      - restbase-test2002-b.codfw.wmnet
-      - restbase-test2003-a.codfw.wmnet
-      - restbase-test2003-b.codfw.wmnet
-  restbase::hosts:
-    - cerium.eqiad.wmnet
-    - praseodymium.eqiad.wmnet
-    - xenon.eqiad.wmnet
-  restbase::cassandra_datacenters:
-      - eqiad
-      - codfw
-  restbase::statsd_prefix: restbase-test
-  cassandra::max_heap_size: 4g
-  cassandra::heap_newsize: 1g
-  cassandra::cluster_name: services-test
-  cassandra::tls_cluster_name: services-test
-  cassandra::internode_encryption: dc
-  cassandra::application_username: restb
-  cassandra::application_password: "%{passwords::cassandra::restbase}"
-  restbase::cassandra_user: restb
-  restbase::cassandra_password: "%{passwords::cassandra::restbase}"
-  cassandra::metrics::whitelist:
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
-  cassandra::metrics::blacklist:
-      - .*\.15MinuteRate$
-      - .*\.5MinuteRate$
-      - .*\.98percentile$
-      - .*\.999percentile$
-      - .*\.max$
-      - .*\.mean$
-      - .*\.meanRate$
-      - .*\.min$
-      - .*\.stddev$
-      - .*\.metrics\.Keyspace\..*$
-      - .*\.metrics\.Client\..*$
-  restbase::logging_name: restbase-test
-  restbase::skip_updates: true
-  cassandra::start_rpc: 'true'
-  cassandra::target_version: '2.2'
-
-cassandra_test_codfw:
-  __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
-  cluster: restbase_test
-  cassandra::seeds:
-      - cerium.eqiad.wmnet
-      - cerium-a.eqiad.wmnet
-      - cerium-b.eqiad.wmnet
-      - praseodymium.eqiad.wmnet
-      - praseodymium-a.eqiad.wmnet
-      - praseodymium-b.eqiad.wmnet
-      - xenon.eqiad.wmnet
-      - xenon-a.eqiad.wmnet
-      - xenon-b.eqiad.wmnet
-      - restbase-test2001.codfw.wmnet
-      - restbase-test2001-a.codfw.wmnet
-      - restbase-test2001-b.codfw.wmnet
-      - restbase-test2002.codfw.wmnet
-      - restbase-test2002-a.codfw.wmnet
-      - restbase-test2002-b.codfw.wmnet
-      - restbase-test2003.codfw.wmnet
-      - restbase-test2003-a.codfw.wmnet
-      - restbase-test2003-b.codfw.wmnet
-  restbase::seeds:
-      - cerium-a.eqiad.wmnet
-      - praseodymium-a.eqiad.wmnet
-      - xenon-a.eqiad.wmnet
-      - restbase-test2001-a.codfw.wmnet
-      - restbase-test2001-b.codfw.wmnet
-      - restbase-test2002-a.codfw.wmnet
-      - restbase-test2002-b.codfw.wmnet
-      - restbase-test2003-a.codfw.wmnet
-      - restbase-test2003-b.codfw.wmnet
-  restbase::hosts:
-    - restbase-test2001.codfw.wmnet
-    - restbase-test2002.codfw.wmnet
-    - restbase-test2003.codfw.wmnet
-  restbase::cassandra_datacenters:
-      - eqiad
-      - codfw
-  restbase::statsd_prefix: restbase-test
-  cassandra::max_heap_size: 4g
-  cassandra::heap_newsize: 1g
-  cassandra::cluster_name: services-test
-  cassandra::tls_cluster_name: services-test
-  cassandra::internode_encryption: dc
-  cassandra::application_username: restb
-  cassandra::application_password: "%{passwords::cassandra::restbase}"
-  restbase::cassandra_user: restb
-  restbase::cassandra_password: "%{passwords::cassandra::restbase}"
-  cassandra::metrics::whitelist:
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
-  cassandra::metrics::blacklist:
-      - .*\.15MinuteRate$
-      - .*\.5MinuteRate$
-      - .*\.98percentile$
-      - .*\.999percentile$
-      - .*\.max$
-      - .*\.mean$
-      - .*\.meanRate$
-      - .*\.min$
-      - .*\.stddev$
-      - .*\.metrics\.Keyspace\..*$
-      - .*\.metrics\.Client\..*$
-  restbase::logging_name: restbase-test
-  restbase::skip_updates: true
-  cassandra::start_rpc: 'true'
-  cassandra::target_version: '2.2'
-
-restbase_dev_eqiad:
-  __regex: !ruby/regexp /^restbase-dev100[1-3]\.eqiad\.wmnet$/
-  cluster: restbase_dev
-  cassandra::seeds:
-      - restbase-dev1001.eqiad.wmnet
-      - restbase-dev1001-a.eqiad.wmnet
-      - restbase-dev1001-b.eqiad.wmnet
-      - restbase-dev1002.eqiad.wmnet
-      - restbase-dev1002-a.eqiad.wmnet
-      - restbase-dev1002-b.eqiad.wmnet
-      - restbase-dev1003.eqiad.wmnet
-      - restbase-dev1003-a.eqiad.wmnet
-      - restbase-dev1003-b.eqiad.wmnet
-  restbase::seeds:
-      - restbase-dev1001-a.eqiad.wmnet
-      - restbase-dev1001-b.eqiad.wmnet
-      - restbase-dev1002-a.eqiad.wmnet
-      - restbase-dev1002-b.eqiad.wmnet
-      - restbase-dev1003-a.eqiad.wmnet
-      - restbase-dev1003-b.eqiad.wmnet
-  restbase::hosts:
-    - restbase-dev1001.eqiad.wmnet
-    - restbase-dev1002.eqiad.wmnet
-    - restbase-dev1003.eqiad.wmnet
-  restbase::cassandra_datacenters:
-      - eqiad
-  restbase::statsd_prefix: restbase-dev
-  cassandra::max_heap_size: 12g
-  cassandra::cluster_name: services-dev
-  cassandra::tls_cluster_name: services-dev
-  cassandra::internode_encryption: dc
-  cassandra::application_username: restb
-  cassandra::application_password: "%{passwords::cassandra::restbase}"
-  restbase::cassandra_user: restb
-  restbase::cassandra_password: "%{passwords::cassandra::restbase}"
-  cassandra::metrics::whitelist:
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorReadLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.CoordinatorScanLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedColumnCountHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowCount\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.EstimatedRowSizeHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveDiskSpaceUsed\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveSSTableCount\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.LiveScannedHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MaxRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MeanRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.MinRowSize\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingCompactions\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.PendingFlushes\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.RangeLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.ReadLatency\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.SSTablesPerReadHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TombstoneScannedHistogram\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.TotalDiskSpaceUsed\..*$
-    - .*\.metrics\.ColumnFamily\.local_group_.*\.meta\.WriteLatency\..*$
-  cassandra::metrics::blacklist:
-      - .*\.15MinuteRate$
-      - .*\.5MinuteRate$
-      - .*\.98percentile$
-      - .*\.999percentile$
-      - .*\.max$
-      - .*\.mean$
-      - .*\.meanRate$
-      - .*\.min$
-      - .*\.stddev$
-      - .*\.metrics\.Keyspace\..*$
-      - .*\.metrics\.Client\..*$
-  restbase::logging_name: restbase-dev
-  restbase::skip_updates: true
-  cassandra::start_rpc: 'true'
-  cassandra::target_version: '2.2'
+  standard::has_ganglia: false
 
 swift_be_codfw_dell:
-  __regex: !ruby/regexp /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^ms-be201[3-5]\.codfw\.wmnet$/
   swift_storage_drives: [
           '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
           '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
           '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
 
 # HP machines have different disk ordering T90922
 swift_be_codfw_hp:
-  __regex: !ruby/regexp /^ms-be20(1[6-9]|2[0-7])\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/
   swift_storage_drives: [
         '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
 swift_be_eqiad_dell:
-  __regex: !ruby/regexp /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^ms-be101[3-5]\.eqiad\.wmnet$/
   swift_storage_drives: [
           '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
           '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
           '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3', '/dev/sdm4', '/dev/sdn4']
 
 # HP machines have different disk ordering T90922
 swift_be_eqiad_hp:
-  __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-7])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/
   swift_storage_drives: [
         '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
   # no trailing comma!
   ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3', '/dev/sda4', '/dev/sdb4']
 
-# 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
-swift_be_esams:
-  __regex: !ruby/regexp /^ms-be300[1-4]\.esams\.wmnet$/
-  swift_storage_drives: [
-        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
-        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-        '/dev/sdk', '/dev/sdl'
-  # no trailing comma!
-  ]
-  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
-debdeploy_dbstore:
-  __regex: !ruby/regexp /^dbstore[12]00[12]\.(eqiad|codfw)\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-dbstore:
-      value: standard
-debdeploy_es-eqiad:
-  __regex: !ruby/regexp /^es1\d\d\d\.eqiad\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-es-eqiad:
-      value: standard
-debdeploy_es-codfw:
-  __regex: !ruby/regexp /^es2\d\d\d\.codfw\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-es-codfw:
-      value: standard
-debdeploy_dbproxy:
-  __regex: !ruby/regexp /^dbproxy100\d\.eqiad\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-dbproxy:
-      value: standard
-debdeploy_dbcore-eqiad:
-  __regex: !ruby/regexp /^db10\d\d.eqiad\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-core-eqiad:
-      value: standard
-debdeploy_dbcore-codfw:
-  __regex: !ruby/regexp /^db20\d\d.codfw\.wmnet$/
-  debdeploy::grains:
-    debdeploy-db-core-codfw:
-      value: standard
+lvs_eqiad_backup:
+  __regex: !ruby/regexp /^lvs100[4-6]\.wikimedia\.org$/
+  profile::pybal::primary: false
+
+lvs_codfw_backup:
+  __regex: !ruby/regexp /^lvs200[4-6]\.codfw\.wmnet$/
+  profile::pybal::primary: false
+
+lvs_esams_backup:
+  __regex: !ruby/regexp /^lvs300[34]\.esams\.wmnet$/
+  profile::pybal::primary: false
+
 lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
-  lvs::configuration::bgp: no
+  profile::pybal::bgp: no
+
 maps_test:
   __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
   cassandra::target_version: '2.2'
 
-# These values are site/realm specific for LABTEST infrastructure
-
-# This address range is not really used for labtest external, it is
-# used for labs in eqiad.  We are using it as a placeholder for now
-# with no actual advertisement or needed external services for now
-# 208.80.155.0/22
-
-# no Icinga SMS for test machines
 labtest:
   __regex: !ruby/regexp /^labtest/
+  cluster: labtest
+  # no Icinga SMS for test machines
   do_paging: false
-  labs_tld: "labtest"
-  labs_private_ips_reverse_dns: "196.10.in-addr.arpa"
-  # Should handle all being the same
-  labs_nova_controller: &labsnovacontroller "labtestcontrol2001.wikimedia.org"
-  labs_nova_controller_spare: &labsnovacontrollerspare "labtestcontrol2001.wikimedia.org"
-  labs_osm_host: "labtestwikitech.wikimedia.org"
-  labs_horizon_host: "labtestweb2001.wikimedia.org"
-  labs_host_ips: '10.192.20.0/24'
-  labs_designate_hostname: &labsdesignatehostname "labtestservices2001.wikimedia.org"
-  labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labtestservices2001.wikimedia.org"
-  labs_nova_api_host: &labsnovaapihost "labtestnet2001.codfw.wmnet"
-  labs_nova_network_host: &labsnovanetworkhost "labtestnet2001"
-  labs_nova_network_ip: &labsnovanetworkip "10.192.20.5"
-  status_wiki_host_master: 'labtestwikitech.wikimedia.org'
-  labs_glance_controller: &labsglancecontroller "labtestcontrol2001.wikimedia.org"
-  labs_puppet_master: &labspuppetmaster "labtestcontrol2001.wikimedia.org"
-  labs_keystone_host: &labskeystonehost "labtestcontrol2001.wikimedia.org"
-  wikitech_db_name: 'labtestwiki'
+  # class ldap::role::config::labs {
+  #    $hieraldapconfig = hiera_hash('labsldapconfig', {})
   labsldapconfig:
     hostname: labtestservices2001.wikimedia.org
     secondary_hostname: labtestservices2001.wikimedia.org
-  labsdnsconfig:
-    host: 'labtest-ns0.wikimedia.org'
-    host_secondary: 'labtest-ns0.wikimedia.org'
-    dbserver: 'localhost'
-    recursor: 'labtest-recursor0.wikimedia.org'
-    recursor_secondary: 'labtest-recursor0.wikimedia.org'
-  novaconfig:
-    network_host: *labsnovanetworkip
-    api_host: *labsnovaapihost
-    db_name: 'nova'
-    db_user: 'nova'
-    ceilometer_db_name: 'ceilometer'
-    ldap_base_dn: 'dc=wikimedia,dc=org'
-    ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
-    ldap_proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-    puppet_db_name: 'puppet'
-    puppet_db_user: 'puppet'
-    quota_floating_ips: '0'
-    spice_hostname: 'labtestspice.wikimedia.org'
-    libvirt_type: 'kvm'
-    my_ip: "%{::ipaddress_eth0}"
-    network_public_interface: 'eth0'
-    network_flat_interface: 'eth1.2102'
-    network_flat_tagged_base_interface: 'eth1'
-    network_flat_interface_vlan: '2102'
-    flat_network_bridge: 'br2102'
-    fixed_range: '10.196.16.0/21'
-    dhcp_start: '10.196.16.4'
-    network_public_ip: '208.80.155.255'
-    dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
-    db_host: 'labtestcontrol2001.wikimedia.org'
-    glance_host: *labsnovacontroller
-    rabbit_host: *labsnovacontroller
-    cc_host: *labsnovacontroller
-    controller_hostname: *labsnovacontroller
-    ldap_host: 'labtestservices2001.wikimedia.org'
-    puppet_host: *labsnovacontroller
-    puppet_db_host: *labsnovacontroller
-    dhcp_domain: 'codfw.labtest'
-    live_migration_uri: 'qemu://%s.codfw.wmnet/system?pkipath=/var/lib/nova'
-    zone: codfw
-    scheduler_pool:
-      - labtestvirt2001
-  keystoneconfig:
-    db_name: 'keystone'
-    db_user: 'keystone'
-    ldap_base_dn: 'dc=wikimedia,dc=org'
-    ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
-    ldap_user_id_attribute: 'uid'
-    ldap_tenant_id_attribute: 'cn'
-    ldap_user_name_attribute: 'cn'
-    ldap_tenant_name_attribute: 'cn'
-    ldap_proxyagent : 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-    auth_protocol: 'http'
-    auth_port: '35357'
-    public_port: '5000'
-    db_host: 'labtestcontrol2001.wikimedia.org'
-    ldap_host: 'labtestservices2001.wikimedia.org'
-    token_driver: 'normal'
-    auth_port: '35357'
-    auth_protocol: 'http'
-    auth_host: 208.80.153.47
-    admin_project_name: 'admin'
-    admin_project_id: '93f988e6a8a34da087f5fbec50aca26b'
-    oath_dbname: 'labtestwiki'
-    oath_dbhost: 'labtestweb2001.wikimedia.org'
-  designateconfig:
-    db_host:  'labtestcontrol2001.wikimedia.org'
-    db_name: 'designate'
-    pool_manager_db_name: 'designate_pool_manager'
-    dhcp_domain: 'labtestcodfw'
-    pdns_db_name: 'pdns'
-    rabbit_host:  *labsnovacontroller
-    controller_hostname: *labsnovacontroller
-    domain_id_internal_forward: 'e1ac328c-b932-43f2-b12f-407fb9477925'
-    domain_id_internal_reverse: '9b60f3ab-d64b-4e30-9d6f-7535811b0fa8'
-    wmflabsdotorg_project: 'wmflabsdotorg'
-    private_tld: 'labtest'
-    floating_ip_ptr_zone: '17.196.10.in-addr.arpa.'
-    floating_ip_ptr_fqdn_matching_regex: '^(.*)$'
-    floating_ip_ptr_fqdn_replacement_pattern: '\1'
-  glanceconfig:
-    db_host: 'labtestcontrol2001.wikimedia.org'
-    bind_ip: "%{::ipaddress_eth0}"
-  openstack::horizon::service::webserver_hostname: 'labtesthorizon.wikimedia.org'
-  admin::groups:
-    - labtest-roots
-  openstack::version: 'liberty'
+  mariadb::monitor_process::is_critical: false
+  mariadb::monitor_disk::is_critical: false
+  openstack::designate::monitor::critical: false
+  openstack::nova::conductor::monitor::critical: false
+  openstack::nova::network::monitor::critical: false
+  icinga::monitor::toollabs::critical: false
+  standard::has_ganglia: false
+
+# require WriteBack policy to all hosts (independent of the role) that look
+# like databases. Currently this only works for megacli systems, but it will
+# be applied to HP RAIDs when available. Systems where this is not currently
+# compatible are ignored and do not send any alert.
+db_like_raid_policy:
+  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
+  profile::base::check_raid_policy: 'WriteBack'
+
+# disable screen monitoring, fallback for servers not covered by roles (T165348)
+db_without_role:
+  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
+  monitor_screens: false
+
+# Disable screen/tmux monitoring for:
+#  * stat boxes, since researchers/analysts are often doing long running
+#    data crunching sessions.
+analytics_no_monitor_screens:
+  __regex: !ruby/regexp /^stat1\d\d\d\.eqiad\.wmnet$/
+  monitor_screens: false
+
+# Temporarily disable notifications to allow decom: T156844
+analytics_notifications_disabled:
+  __regex: !ruby/regexp /^db1046\.eqiad\.wmnet$/
+  profile::base::notifications_enabled: '0'
+
+# Gradual syslog-tls rollout - T136312
+syslog_tls_eqiad:
+  __regex: !ruby/regexp /^(analytics|aqs|conf|cp|db|dbproxy|druid|elastic|es|etcd|ganeti|kafka)1\d\d\d\.eqiad\.wmnet$/
+  profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514']
+  profile::base::remote_syslog: []
+
+# Old hosts with mpt controllers and to be decom'd
+# smartmontools broken out of the box - T179078
+smart_health_mpt:
+  __regex: !ruby/regexp /^maps-test/
+  profile::base::check_smart: false
+
+# Gradual SMART health checking rollout - T86552
+# NOTE: order matters! List exclusion regexps first.
+smart_health_codfw:
+  __regex: !ruby/regexp /^.*\.codfw\.wmnet$/
+  profile::base::check_smart: true
+
+smart_health_esams:
+  __regex: !ruby/regexp /^.*\.esams\.wmnet$/
+  profile::base::check_smart: true
+
+smart_health_ulsfo:
+  __regex: !ruby/regexp /^.*\.ulsfo\.wmnet$/
+  profile::base::check_smart: true
+
+# Gradual Puppet 4 cutover - T177254
+puppet4_mw_codfw:
+  __regex: !ruby/regexp /^mw2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_db_codfw:
+  __regex: !ruby/regexp /^db2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_scb_codfw:
+  __regex: !ruby/regexp /^scb2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_elasticsearch_codfw:
+  __regex: !ruby/regexp /^elastic2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppet4_prometheus_codfw:
+  __regex: !ruby/regexp /^prometheus2.*\.codfw\.wmnet$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"

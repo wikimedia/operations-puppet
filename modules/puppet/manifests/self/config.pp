@@ -20,10 +20,6 @@ class puppet::self::config(
     $autosign             = hiera('puppetmaster::autosigner', false),
     $use_enc              = true,
 ) {
-    if os_version('ubuntu == precise') {
-        fail('Self hosted puppetmasters on Ubuntu precise no longer supported')
-    }
-
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
     }

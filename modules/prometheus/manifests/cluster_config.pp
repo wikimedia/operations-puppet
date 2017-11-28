@@ -12,13 +12,13 @@
 
 # == Example
 #
-#  Configuration for varnish_exporter for maps, running on the frontend varnish
+#  Configuration for varnish_exporter for upload, running on the frontend varnish
 #  instance.
 #
 #  prometheus::cluster_config{ 'maps_fe':
 #      dest    => "${targets_path}/varnish-maps_${::site}_frontend.yaml",
 #      site    => $::site,
-#      cluster => 'cache_maps',
+#      cluster => 'cache_upload',
 #      port    => '9331',
 #      labels  => {'layer' => 'frontend' },
 #  }
@@ -30,10 +30,11 @@ define prometheus::cluster_config(
   $port,
   $labels,
 ) {
+        # TODO/puppet4: convert this class to use typed parameters
     validate_string($dest)
     validate_string($site)
     validate_string($cluster)
-    validate_re($port, '^[0-9]+$')
+    validate_numeric($port)
     validate_hash($labels)
 
     file { $dest:

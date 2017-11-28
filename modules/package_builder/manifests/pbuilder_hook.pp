@@ -1,6 +1,6 @@
 # Definition pbuilder_hook
 define package_builder::pbuilder_hook(
-    $distribution='jessie',
+    $distribution='stretch',
     $components='main',
     $mirror='http://apt.wikimedia.org/wikimedia',
     $upstream_mirror='http://mirrors.wikimedia.org/debian',

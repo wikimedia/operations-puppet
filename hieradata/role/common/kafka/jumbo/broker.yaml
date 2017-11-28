@@ -1,0 +1,44 @@
+cluster: kafka_jumbo
+
+profile::kafka::broker::kafka_cluster_name: jumbo
+
+# Enable basic ACL handling via Zookeeper stored rules
+# More info https://phabricator.wikimedia.org/T167304#3478277
+profile::kafka::broker::auth_acls_enabled: true
+
+# Enable Monitoring (via Prometheus) and icinga alerts
+profile::kafka::broker::monitoring_enabled: true
+
+profile::kafka::broker::log_dirs: [/srv/kafka/data]
+profile::kafka::broker::plaintext: true
+# TODO: does not yet work.
+# # ca-manager will use a self signed CA cert to authenticate clients.
+# # Some clients (e.g. MirrorMaker) will need to talk to multiple Kafka
+# # clusters.  So, we need all production Kafka clusters to use the same root CA, which
+# # means that ca-manager must have all clusters that might need to authenticate
+# # a client to be configured in the same ca-manager manifest config file.
+# # All certs will be in a single ca-manager base directory.  This should
+# # match what is in the operations puppet private repository in the secrets module.
+# profile::kafka::broker::tls_secrets_path: kafka/common
+# profile::kafka::broker::tls_key_password: qwerty # TODO: put this in puppet private
+profile::kafka::broker::auto_leader_rebalance_enable: true
+profile::kafka::broker::nofiles_ulimit: 65536
+
+profile::kafka::broker::log_retention_hours: 168  # 1 week
+
+# Bump this up to get a little more parallelism between replicas.
+profile::kafka::broker::num_replica_fetchers: 12
+# 12 disks in the broker HW RAID array
+profile::kafka::broker::num_recovery_threads_per_data_dir: 12
+profile::kafka::broker::num_io_threads: 12
+
+profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
+profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
+
+# Mirror all topics from main to jumbo.
+profile::kafka::mirror::source_cluster_name: main
+profile::kafka::mirror::destination_cluster_name: jumbo
+profile::kafka::mirror::monitoring_enabled: true
+profile::kafka::mirror::properties:
+  num_streams: 2
+  offset_commit_interval_ms: 5000

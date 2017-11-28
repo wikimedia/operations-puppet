@@ -4,6 +4,7 @@ set -u
 . /usr/lib/nagios/plugins/utils.sh
 
 TEMPLATE=${1}
+CONFD_RUN_DIR="/var/run/confd-template"
 
 # If the file is not present, it's a problem probably.
 if ! [ -f "${TEMPLATE}" ]; then
@@ -12,7 +13,7 @@ if ! [ -f "${TEMPLATE}" ]; then
 fi;
 
 FILE_TS=$(stat -c "%Y" "${TEMPLATE}")
-GLOB="$( dirname ${TEMPLATE})/.$(basename ${TEMPLATE})"
+GLOB="${CONFD_RUN_DIR}/.$(basename ${TEMPLATE})"
 
 # If the glob doesn't expand, it will report just one item
 if ! stat -t ${GLOB}* > /dev/null 2>&1; then

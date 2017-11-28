@@ -38,16 +38,22 @@ cfg.CONF.register_opts([
     cfg.ListOpt('puppetdefaultvars', default=[]),
 
     cfg.StrOpt('certmanager_user', default='certmanager'),
-    cfg.StrOpt('puppet_key_format', default=None),
-    cfg.StrOpt('salt_key_format', default=None),
+    cfg.StrOpt('fqdn_format', default=None),
     cfg.StrOpt('puppet_master_host', default=None),
-    cfg.StrOpt('salt_master_host', default=None),
-
-    cfg.StrOpt('keystone_auth_name', default=None),
-    cfg.StrOpt('keystone_auth_pass', default=None),
-    cfg.StrOpt('keystone_auth_project', default=None),
-    cfg.StrOpt('keystone_auth_url', default=None),
+    cfg.StrOpt('puppet_config_backend', default=None),
 ], group='handler:wmf_sink')
+
+cfg.CONF.register_group(cfg.OptGroup(
+    name='keystone_authtoken',
+    title="Settings for designate to talk to keystone"
+))
+
+cfg.CONF.register_opts([
+    cfg.StrOpt('auth_uri', default=''),
+    cfg.StrOpt('identity_uri', default=''),
+    cfg.StrOpt('admin_user', default=''),
+    cfg.StrOpt('admin_password', default=''),
+], group='keystone_authtoken')
 
 
 class NovaFixedWMFHandler(BaseAddressWMFHandler):

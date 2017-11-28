@@ -3,10 +3,11 @@
 # filtertags: labs-project-deployment-prep
 class role::parsoid {
 
-    system::role { 'role::parsoid':
+    system::role { 'parsoid':
         description => "Parsoid ${::realm}"
     }
 
+    include ::standard
     include ::base::firewall
 
     if hiera('has_lvs', true) {

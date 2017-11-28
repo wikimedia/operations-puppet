@@ -23,11 +23,11 @@ module Puppet::Parser::Functions
     # Check arguments
     override = overrides[0]
 
-    fail("Only 'master', 'client' and undef " \
-         "are valid arguments of puppet_ssldir") unless
-        ['master', 'client', nil].include?override
+    unless ['master', 'client', nil].include?override
+      fail("puppet_ssldir(): only 'master', 'client' and undef are valid")
+    end
 
-    default =  '/var/lib/puppet/ssl'
+    default = '/var/lib/puppet/ssl'
     self_master = '/var/lib/puppet/server/ssl'
     self_client = '/var/lib/puppet/client/ssl'
 

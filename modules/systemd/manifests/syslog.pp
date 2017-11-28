@@ -74,13 +74,14 @@ define systemd::syslog(
         content  => template('systemd/rsyslog.conf.erb'),
         priority => 20,
         require  => File[$local_logdir],
-        before   => Base::Service_unit[$title],
     }
 
-    file { "/etc/logrotate.d/${title}":
+    if defined(Service[$title]) {
+        Rsyslog::Conf[$title] -> Service[$title]
+    }
+
+    logrotate::conf { $title:
+        ensure  => present,
         content => template('systemd/logrotate.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
     }
 }

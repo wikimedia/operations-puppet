@@ -24,6 +24,7 @@
 # local ruby configuration
 /.rbenv-version
 /Gemfile.lock
+/.bundle/
 
 # python venv wrapper
 /.tox

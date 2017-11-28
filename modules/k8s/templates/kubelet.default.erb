@@ -22,12 +22,10 @@ KUBELET_API_SERVER="--api-servers=https://<%= @master_host %>:6443"
 
 # Other options:
 # --container_runtime=rkt
-# --configure-cbr0={true|false}
 
 <%-
 daemon_args = [
-	'--configure-cbr0=false',
-	'--kubeconfig=/etc/kubernetes/kubeconfig',
+  "--kubeconfig=#{@kubeconfig}",
 ]
 
 if @pod_infra_container_image

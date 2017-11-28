@@ -53,6 +53,7 @@
 
 class phabricator (
     $phabdir          = '/srv/phab',
+    $confdir         = '/srv/phab/phabricator/conf',
     $timezone         = 'UTC',
     $trusted_proxies  = [],
     $libraries        = [],
@@ -77,8 +78,16 @@ class phabricator (
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")
 
+    if ($libraries) {
+        phabricator::libext { $libraries:
+            rootdir => $phabdir,
+            require => $base_requirements,
+        }
+        $library_settings = { 'load-libraries' => $libraries }
+    }
+
     #per stdlib merge the dynamic settings will take precendence for conflicts
-    $phab_settings = merge($fixed_settings, $settings)
+    $phab_settings = merge($fixed_settings, $library_settings, $settings)
 
     if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']
@@ -92,27 +101,49 @@ class phabricator (
         $storage_pass = $mysql_admin_pass
     }
 
+    # stretch - PHP (7.0) packages and Apache module
+    # warning: currently Phabricator supports PHP 7.1 but not PHP 7.0
+    # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
+    if os_version('debian >= stretch') {
+        package { [
+            'php-apcu',
+            'php-mysql',
+            'php-gd',
+            'php-mailparse',
+            'php-dev',
+            'php-curl',
+            'php-cli',
+            'php-json',
+            'php-ldap']:
+                ensure => present;
+        }
+        include ::apache::mod::php7
+    } else {
+        # jessie - PHP (5.5/5.6) packages and Apache module
+        package { [
+            'php5-apcu',
+            'php5-mysql',
+            'php5-gd',
+            'php5-mailparse',
+            'php5-dev',
+            'php5-curl',
+            'php5-cli',
+            'php5-json',
+            'php5-ldap']:
+                ensure => present;
+        }
+        include ::apache::mod::php5
+    }
+
+    # common packages that exist in trusty/jessie/stretch
     package { [
         'python-pygments',
         'python-phabricator',
-        'php5-mysql',
-        'php5-gd',
-        'php-apc',
-        'php5-mailparse',
-        'php5-dev',
-        'php5-curl',
-        'php5-cli',
-        'php5-json',
-        'php5-ldap',
         'apachetop',
-        'subversion']:
-
+        'subversion',
+        'heirloom-mailx']:
             ensure => present;
     }
-
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     $docroot = "${phabdir}/phabricator/webroot"
 
@@ -153,9 +184,11 @@ class phabricator (
     scap::target { $deploy_target:
         deploy_user => $deploy_user,
         key_name    => 'phabricator',
+        require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service phd *',
-            'ALL=(root) NOPASSWD: /usr/sbin/service apache2 *',
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
+            'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
         ],
     }
 
@@ -178,14 +211,6 @@ class phabricator (
         require => $base_requirements,
     }
 
-    if ($libraries) {
-        phabricator::libext { $libraries:
-            rootdir => $phabdir,
-            require => $base_requirements,
-        }
-        $phab_settings['load-libraries'] = $libraries
-    }
-
     $opcache_validate = hiera('phabricator_opcache_validate', 0)
 
     file { '/etc/php5/apache2/php.ini':
@@ -200,13 +225,49 @@ class phabricator (
         notify  => Service['apache2'],
     }
 
-    file { "${phabdir}/phabricator/conf/local/local.json":
+    file { $confdir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { "${confdir}/local":
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { "${confdir}/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => $base_requirements,
         owner   => 'root',
         group   => 'www-data',
         mode    => '0644',
     }
+
+    file { '/usr/local/sbin/phab_deploy_promote':
+        content => template('phabricator/deployment/phab_deploy_promote.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_finalize':
+        content => template('phabricator/deployment/phab_deploy_finalize.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_rollback':
+        content => template('phabricator/deployment/phab_deploy_rollback.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
 
     if !empty($conf_files) {
         create_resources(phabricator::conf_env, $conf_files)
@@ -246,18 +307,7 @@ class phabricator (
     class { '::phabricator::phd':
         basedir  => $phabdir,
         settings => $phab_settings,
-        before   => Service['phd'],
         require  => $base_requirements,
-    }
-
-    if $::initsystem == 'systemd' {
-        file { '/etc/systemd/system/phd.service':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('phabricator/initscripts/phd.systemd.erb'),
-        }
     }
 
     # phd service is only running on active server set in Hiera
@@ -268,21 +318,15 @@ class phabricator (
     } else {
         $phd_service_ensure = 'stopped'
     }
-    # This needs to become <s>Upstart</s> systemd managed
-    # https://secure.phabricator.com/book/phabricator/article/managing_daemons/
-    # Meanwhile upstream has a bug to make an LSB friendly wrapper
-    # https://secure.phabricator.com/T8129
-    # see examples of real-word unit files in comments of:
-    # https://secure.phabricator.com/T4181
-    service { 'phd':
-        ensure     => $phd_service_ensure,
-        start      => '/usr/sbin/service phd start --force',
-        status     => '/usr/bin/pgrep -f phd-daemon',
-        hasrestart => true,
-        require    => $base_requirements,
-    }
 
-    if $phab_settings['notification.servers'] {
-        include ::phabricator::aphlict
+    base::service_unit { 'phd':
+        ensure         => 'present',
+        systemd        => systemd_template('phd'),
+        require        => $base_requirements,
+        service_params => {
+            ensure     => $phd_service_ensure,
+            provider   => $::initsystem,
+            hasrestart => true,
+        },
     }
 }

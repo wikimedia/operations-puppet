@@ -1,20 +1,20 @@
 class snapshot::dumps::stagesconfig {
-
-    include ::snapshot::dumps::dirs
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     $firststage_args = '--cutoff {STARTDATE} --date {STARTDATE}'
     $rest_args = '--date {STARTDATE} --onepass --prereqs'
     $wikiargs = '/bin/bash ./worker --skipdone --exclusive --log'
 
-    $args_smallwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf"
-    $args_bigwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.bigwikis"
-    $args_hugewikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.hugewikis"
+    $args_smallwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps"
+    $args_bigwikis = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps:bigwikis"
+    $args_enwiki = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps:en"
+    $args_wikidatawiki = "${wikiargs} --configfile ${confsdir}/wikidump.conf.dumps:wd"
 
     $jobs_to_skip = join(['metahistorybz2dump',
                           'metahistorybz2dumprecombine',
                           'metahistory7zdump',
-                          'metahistory7zdumprecombine'], ',')
+                          'metahistory7zdumprecombine',
+                          'xmlflowhistorydump'], ',')
 
     $stages = {
         smallwikis   => {
@@ -25,47 +25,39 @@ class snapshot::dumps::stagesconfig {
             firststage => "${args_bigwikis} ${firststage_args}",
             rest       => "${args_bigwikis} ${rest_args}",
         },
-        hugewikis    => {
-            firststage => "${args_hugewikis} ${firststage_args}",
-            rest       => "${args_hugewikis} ${rest_args}",
+        enwiki       => {
+            firststage => "${args_enwiki} ${firststage_args}",
+            rest       => "${args_enwiki} ${rest_args}",
+        },
+        wikidatawiki => {
+            firststage => "${args_wikidatawiki} ${firststage_args}",
+            rest       => "${args_wikidatawiki} ${rest_args}",
         },
         skipjob_args => "--skipjobs ${jobs_to_skip}",
     }
 
-    snapshot::dumps::stagesconf { 'stages_normal':
-        stagestype => 'normal',
+    snapshot::dumps::stagesconf { 'stages_full':
+        stagestype => 'full',
         stages     => $stages,
     }
     snapshot::dumps::stagesconf { 'stages_partial':
         stagestype => 'partial',
         stages     => $stages,
     }
-    snapshot::dumps::stagesconf { 'stages_normal_nocreate':
-        stagestype => 'normal_nocreate',
+    snapshot::dumps::stagesconf { 'stages_full_enwiki':
+        stagestype => 'full_enwiki',
         stages     => $stages,
     }
-    snapshot::dumps::stagesconf { 'stages_partial_nocreate':
-        stagestype => 'partial_nocreate',
+    snapshot::dumps::stagesconf { 'stages_partial_enwiki':
+        stagestype => 'partial_enwiki',
         stages     => $stages,
     }
-    snapshot::dumps::stagesconf { 'stages_normal_hugewikis':
-        stagestype => 'normal_huge',
+    snapshot::dumps::stagesconf { 'stages_full_wikidatawiki':
+        stagestype => 'full_wikidatawiki',
         stages     => $stages,
     }
-    snapshot::dumps::stagesconf { 'stages_partial_hugewikis':
-        stagestype => 'partial_huge',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_normal_nocreate_hugewikis':
-        stagestype => 'normal_nocreate_huge',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_partial_nocreate_hugewikis':
-        stagestype => 'partial_nocreate_huge',
-        stages     => $stages,
-    }
-    snapshot::dumps::stagesconf { 'stages_create':
-        stagestype => 'create',
+    snapshot::dumps::stagesconf { 'stages_partial_wikidatawiki':
+        stagestype => 'partial_wikidatawiki',
         stages     => $stages,
     }
     snapshot::dumps::stagesconf { 'stages_create_smallwikis':
@@ -76,8 +68,12 @@ class snapshot::dumps::stagesconfig {
         stagestype => 'create_big',
         stages     => $stages,
     }
-    snapshot::dumps::stagesconf { 'stages_create_hugewikis':
-        stagestype => 'create_huge',
+    snapshot::dumps::stagesconf { 'stages_create_enwiki':
+        stagestype => 'create_enwiki',
+        stages     => $stages,
+    }
+    snapshot::dumps::stagesconf { 'stages_create_wikidatawiki':
+        stagestype => 'create_wikidatawiki',
         stages     => $stages,
     }
 }

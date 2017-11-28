@@ -14,6 +14,11 @@ module Puppet::Parser::Functions
         instances << data['port'].to_s
       end
     end
+
+    if instances.empty?
+      fail(Puppet::ParseError, "No Redis instances found for #{ip}:#{port}")
+    end
+
     instances.sort
   end
 end

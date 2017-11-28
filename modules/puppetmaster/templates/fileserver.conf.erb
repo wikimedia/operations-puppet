@@ -14,10 +14,6 @@
 [plugins]
     allow *
 
-[private]
-    path <%= @config.fetch('privatefilesdir', "/etc/puppet/private/files") %>
-    allow *
-
 [facts]
     path /var/lib/puppet/facts
     allow *

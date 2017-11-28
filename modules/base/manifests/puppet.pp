@@ -2,7 +2,9 @@ class base::puppet(
     $server='puppet',
     $certname=undef,
     $dns_alt_names=undef,
-    ) {
+    $environment=undef,
+    $puppet_major_version=undef,
+) {
     include ::passwords::puppet::database
     include ::base::puppet::params
     $interval = $base::puppet::params::interval
@@ -10,6 +12,11 @@ class base::puppet(
     $freshnessinterval = $base::puppet::params::freshnessinterval
     $use_srv_record = $base::puppet::params::use_srv_record
     $ca_server = hiera('puppetmaster::ca_server', '')
+
+
+    if $puppet_major_version == 4 {
+        include base::puppet::puppet4
+    }
 
     package { [ 'puppet', 'facter' ]:
         ensure => present,
@@ -71,10 +78,17 @@ class base::puppet(
 
     $auto_puppetmaster_switching = hiera('auto_puppetmaster_switching', false)
     if ($auto_puppetmaster_switching) and ($::realm != 'labs') {
-        error('auto_puppetmaster_switching should never, ever be set on a production host.')
+        fail('auto_puppetmaster_switching should never, ever be set on a production host.')
     }
     if ($auto_puppetmaster_switching) and (defined(Class['role::puppetmaster::standalone'])) {
-        error('auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.')
+        fail('auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.')
+    }
+
+    file { '/usr/local/share/bash/puppet-common.sh':
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/puppet-common.sh',
     }
 
     file { '/usr/local/sbin/puppet-run':
@@ -82,6 +96,30 @@ class base::puppet(
         owner   => 'root',
         group   => 'root',
         content => template('base/puppet-run.erb'),
+    }
+
+    file { '/usr/local/sbin/disable-puppet':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/disable-puppet',
+    }
+
+    file { '/usr/local/sbin/enable-puppet':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/enable-puppet',
+    }
+
+    file { '/usr/local/sbin/run-puppet-agent':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/run-puppet-agent',
     }
 
     file { '/usr/local/sbin/run-no-puppet':
@@ -99,11 +137,14 @@ class base::puppet(
         require => File['/usr/local/sbin/puppet-run'],
     }
 
-    file { '/etc/logrotate.d/puppet':
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/base/logrotate/puppet',
+    logrotate::rule { 'puppet':
+        ensure       => present,
+        file_glob    => '/var/log/puppet /var/log/puppet.log',
+        frequency    => 'daily',
+        compress     => true,
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 7,
     }
 
     include ::base::puppet::common
@@ -120,4 +161,6 @@ class base::puppet(
         priority => 97,
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
     }
+
+    include ::prometheus::node_puppet_agent
 }

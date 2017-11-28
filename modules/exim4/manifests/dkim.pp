@@ -29,12 +29,13 @@ define exim4::dkim(
     $keyfile = "/etc/exim4/dkim/${domain}-${selector}.key"
 
     file { $keyfile:
-        ensure  => present,
-        owner   => 'root',
-        group   => 'Debian-exim',
-        mode    => '0440',
-        require => File['/etc/exim4/dkim'],
-        notify  => Service['exim4'],
+        ensure    => present,
+        owner     => 'root',
+        group     => 'Debian-exim',
+        mode      => '0440',
+        require   => File['/etc/exim4/dkim'],
+        notify    => Service['exim4'],
+        show_diff => false,
     }
 
     if $source != undef {

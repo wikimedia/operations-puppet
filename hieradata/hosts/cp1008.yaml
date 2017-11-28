@@ -1,10 +1,12 @@
-debdeploy::grains:
-  debdeploy-cp:
-    value: canary
-varnish::dynamic_backend_caches: false
+cache::canary::nodes:
+    eqiad:
+      - 'cp1008.wikimedia.org'
+    codfw:
+      - 'cp1008.wikimedia.org'
 cache::text::nodes:
     eqiad:
       - 'cp1008.wikimedia.org'
     codfw:
       - 'cp1008.wikimedia.org'
-cache::lua_support: true
+
+profile::base::notifications_enabled: '0'

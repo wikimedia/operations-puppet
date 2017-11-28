@@ -104,6 +104,14 @@ class diamond(
         ],
     }
 
+    if os_version('debian >= jessie') {
+        systemd::unit { 'diamond':
+            ensure   => present,
+            restart  => true,
+            override => true,
+            content  => template('diamond/initscripts/diamond.systemd_override.erb'),
+        }
+    }
 
     diamond::collector { 'CPU':
         settings => {
@@ -117,6 +125,16 @@ class diamond(
     }
 
     diamond::collector { 'Network': }
+    diamond::collector { 'DiskSpace':
+        settings => {
+            filesystems => 'ext2,ext3,ext4,xfs,fuse.fuse_dfs,fat32,fat16,btrfs',
+        },
+    }
+
+    diamond::collector { 'LoadAverage': }
+    diamond::collector { 'Memory': }
+    diamond::collector { 'VMStat': }
+
 
     diamond::collector { 'TCP':
         settings => {

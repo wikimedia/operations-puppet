@@ -19,6 +19,8 @@
 # $+owner+:: Owner of $directory, default: _root_.  git commands will be run
 #  by this user.
 # $+group+:: Group owner of $directory, default: 'root'
+# $+bare+:: $directory is the GIT_DIR itself. Workspace is not checked out.
+#           Default: false
 # $+recurse_submodules:: If true, git
 # $+shared+:: Enable git's core.sharedRepository=group setting for sharing the
 # repository between serveral users, default: false
@@ -57,6 +59,7 @@ define git::clone(
     $shared=false,
     $timeout='300',
     $depth='full',
+    $bare=false,
     $recurse_submodules=false,
     $umask=undef,
     $mode=undef,
@@ -65,8 +68,8 @@ define git::clone(
     $default_url_format = $source ? {
         'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
         'github'      => 'https://github.com/wikimedia/%s.git',
-        'gerrit'      => 'https://gerrit.wikimedia.org/r/p/%s.git',
-        default       => 'https://gerrit.wikimedia.org/r/p/%s.git',
+        'gerrit'      => 'https://gerrit.wikimedia.org/r/%s',
+        default       => 'https://gerrit.wikimedia.org/r/%s',
     }
 
     $remote = $origin ? {
@@ -113,20 +116,28 @@ define git::clone(
                 default => '',
             }
             # if branch was specified
-            if $branch {
+            if !empty($branch) {
                 $brancharg = "-b ${branch} "
             }
             # else don't checkout a non-default branch
             else {
                 $brancharg = ''
             }
-            if $ssh {
+            if !empty($ssh) {
                 $env = "GIT_SSH=${ssh}"
             }
 
             $deptharg = $depth ?  {
                 'full'  => '',
                 default => " --depth=${depth}"
+            }
+
+            if $bare == true {
+                $barearg = ' --bare'
+                $git_dir = $directory
+            } else {
+                $barearg = ''
+                $git_dir = "${directory}/.git"
             }
 
             if $shared {
@@ -141,12 +152,12 @@ define git::clone(
             Exec { path => '/usr/bin:/bin' }
             # clone the repository
             exec { "git_clone_${title}":
-                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg} ${directory}",
+                command     => "${git} ${shared_arg} clone ${recurse_submodules_arg}${brancharg}${remote}${deptharg}${barearg} ${directory}",
                 provider    => shell,
                 logoutput   => on_failure,
                 cwd         => '/tmp',
                 environment => $env,
-                creates     => "${directory}/.git/config",
+                creates     => "${git_dir}/config",
                 user        => $owner,
                 group       => $group,
                 umask       => $git_umask,
@@ -166,6 +177,10 @@ define git::clone(
 
             # pull if $ensure == latest and if there are changes to merge in.
             if $ensure == 'latest' {
+                $remote_to_check = $branch ? {
+                    ''      => 'remotes/origin/HEAD',
+                    default => "remotes/origin/${branch}",
+                }
                 exec { "git_pull_${title}":
                     cwd       => $directory,
                     command   => "${git} ${shared_arg} pull ${recurse_submodules_arg}--quiet${deptharg}",
@@ -173,7 +188,7 @@ define git::clone(
                     logoutput => on_failure,
                     # git diff --quiet will exit 1 (return false)
                     #  if there are differences
-                    unless    => "${git} fetch && /usr/bin/git diff --quiet remotes/origin/HEAD",
+                    unless    => "${git} fetch && ${git} diff --quiet ${remote_to_check}",
                     user      => $owner,
                     group     => $group,
                     umask     => $git_umask,

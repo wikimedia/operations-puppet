@@ -1,0 +1,14 @@
+cluster: videoscaler
+admin::groups:
+  - deployment
+  - perf-roots
+profile::mediawiki::jobrunner::runners:
+  transcode: 10
+  transcode_prioritized: 8
+nutcracker::verbosity: "4"
+hhvm::extra::fcgi:
+  hhvm:
+    server:
+      connection_timeout_seconds: 86400
+      thread_count: 25
+  max_execution_time: 86400

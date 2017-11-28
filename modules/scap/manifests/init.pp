@@ -12,7 +12,7 @@
 class scap (
     $deployment_server = 'deployment',
     $wmflabs_master = 'deployment-tin.deployment-prep.eqiad.wmflabs',
-    $version = '3.5.2-1',
+    $version = '3.7.3-1',
 ) {
     package { 'scap':
         ensure => $version,
@@ -32,12 +32,4 @@ class scap (
         'python-requests',
         'python-jinja2',
     ])
-
-    # Using straight up package resource here instead
-    # of require_package so that I can specify version.
-    if !defined(Package['git-fat']) {
-        package { 'git-fat':
-            ensure => "0.1.2-1~${::lsbdistcodename}1",
-        }
-    }
 }

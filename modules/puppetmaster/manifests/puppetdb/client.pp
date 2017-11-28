@@ -2,7 +2,7 @@
 # Configures a puppetmaster to work as a puppetdb client
 class puppetmaster::puppetdb::client($host, $port=443) {
     # Only 3.5+ puppetmasters can work with our version of puppetdb
-    requires_os('Debian >= jessie')
+    requires_os('debian >= jessie')
 
     require_package('puppetdb-terminus')
 
@@ -20,7 +20,10 @@ class puppetmaster::puppetdb::client($host, $port=443) {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/puppetmaster/routes.yaml',
-        notify => Service['apache2'],
+    }
+
+    if defined(Service['apache2']) {
+        File['/etc/puppet/routes.yaml'] -> Service['apache2']
     }
 
     # Absence of this directory causes the puppetmaster to spit out

@@ -7,11 +7,22 @@
 #   Setup an ircbot using ircecho to support echoing notifications
 #
 # filtertags: labs-project-shinken
+
 class role::labs::shinken(
     $ircbot = true,
 ){
+
+    require ::profile::openstack::main::clientlib
+
     class { '::shinken':
         auth_secret => 'This is insecure, should switch to using private repo',
+    }
+
+    #  Allow shinken to run the check_dhcp test as root.  It doesn't
+    #   work as user.
+    sudo::user { 'shinken_sudo_for_dhcp':
+        user       => 'shinken',
+        privileges => ['ALL=(root) NOPASSWD: /usr/lib/nagios/plugins/check_dhcp'],
     }
 
     # Basic labs instance & infrastructure monitoring

@@ -52,6 +52,7 @@ def filterServices(sourcePath, newFile, hosts):
         else:
             newFile.write(line)
 
+
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print("\n\tUsage:\n\t\t%s <hosts.cfg> <resources1.cfg> "

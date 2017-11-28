@@ -108,7 +108,8 @@ class VenvCreatingAuthenticator(Authenticator):
     @gen.coroutine
     def authenticate(self, handler, data):
         username = data['username']
-        allowed_groups = ['researchers', 'statistics-privatedata-users', 'ops']
+        allowed_groups = ['researchers', 'statistics-privatedata-users',
+                          'analytics-privatedata-users', 'ops']
         if not any([
                 username in grp.getgrnam(group).gr_mem
                 for group in allowed_groups]):

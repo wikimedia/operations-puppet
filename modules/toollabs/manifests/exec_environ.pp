@@ -10,13 +10,7 @@ class toollabs::exec_environ {
     include ::locales::extended
     include ::identd
     include ::redis::client::python
-
-    # Mediawiki fontlist no longer supports precise systems
-    if os_version('ubuntu precise') {
-        include ::toollabs::legacy::fonts
-    } else {
-        include ::mediawiki::packages::fonts
-    }
+    include ::mediawiki::packages::fonts
 
     # T65000
     include ::imagemagick::install
@@ -263,6 +257,7 @@ class toollabs::exec_environ {
         'inkscape',                    # T126933
         'iotop',                       # useful for labs admins to monitor tools
         'ksh',
+        'lame',                        # T168128
         'libaio1',                     # T70615
         'libav-tools',                 # T55870.
         'libdmtx0a',                   # T55867.
@@ -333,30 +328,7 @@ class toollabs::exec_environ {
         source => 'puppet:///modules/toollabs/override.my.cnf',
     }
 
-    # Packages that are different between precise and trusty go here.
-    # Note: Every package *must* have equivalent package in both the
-    # branches. If one is unavailable, please mark it as such with a comment.
-    if $::lsbdistcodename == 'precise' {
-        include ::toollabs::genpp::python_exec_precise
-        package { [
-            'libboost-python1.48.0',
-            'libgdal1-1.7.0',              # T58995
-            'libmpc2',
-            'libprotobuf7',                # T58995
-            'libtime-local-perl',          # now part of perl-modules
-            'libthreads-shared-perl',      # now part of perl
-            'libthreads-perl',             # now part of perl
-            'libvips15',
-            'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
-            # No php5-readline (T136519).
-            # opencv-data is not available on precise (T142321)
-            'pyflakes',                    # T59863
-            'tclthread',                   # now called tcl-thread
-            # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
-            ]:
-            ensure => latest,
-        }
-    } elsif $::lsbdistcodename == 'trusty' {
+    if $::lsbdistcodename == 'trusty' {
         include ::toollabs::genpp::python_exec_trusty
         # No obvious package available for libgdal
         package { [
@@ -367,7 +339,7 @@ class toollabs::exec_environ {
             'libbytes-random-secure-perl', # T123824
             'libvips37',
             'nodejs-legacy',               # T1102
-            'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
+            'mariadb-client',              # For /usr/bin/mysql
             'php5-readline',               # T136519.
             'opencv-data',                 # T142321
             'python-flake8',
@@ -400,7 +372,7 @@ class toollabs::exec_environ {
         # Enable PHP mcrypt module (T97857).
         exec { 'tools_enable_php_mcrypt_module':
             command => '/usr/sbin/php5enmod mcrypt',
-            unless  => '/usr/sbin/php5query -s apache2 -m mcrypt && /usr/sbin/php5query -s cli -m mcrypt',
+            unless  => '/usr/sbin/php5query -S | /usr/bin/xargs -rI {} /usr/sbin/php5query -s {} -m mcrypt',
             require => Package['php5-cli', 'php5-mcrypt'],
         }
     } elsif $::lsbdistcodename == 'jessie' {
@@ -414,7 +386,7 @@ class toollabs::exec_environ {
             'libbytes-random-secure-perl', # T123824
             'libvips38',
             'nodejs-legacy',               # T1102
-            'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
+            'mariadb-client',              # For /usr/bin/mysql
             'php5-readline',               # T136519.
             'opencv-data',                 # T142321
             'python-flake8',
@@ -429,18 +401,17 @@ class toollabs::exec_environ {
         ensure => latest,
     }
 
-    file { '/usr/bin/sql':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/toollabs/sql',
-    }
-
     sysctl::parameters { 'tool labs':
         values => {
             'vm.overcommit_memory' => 2,
             'vm.overcommit_ratio'  => 95,
         },
+    }
+
+    # The hhvm deb starts a demon process automatically that we don't need
+    # running.
+    service { 'hhvm':
+        ensure  => 'stopped',
+        require => Package['hhvm'],
     }
 }

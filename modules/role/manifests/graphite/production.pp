@@ -7,6 +7,9 @@
 class role::graphite::production {
     $storage_dir = '/var/lib/carbon'
 
+    include ::standard
+    include ::base::firewall
+
     class { 'role::graphite::base':
         storage_dir      => $storage_dir,
         auth             => true,
@@ -23,16 +26,42 @@ class role::graphite::production {
             },
             cluster_routes   => [
                 ['^cassandra\.', 'big_users'],
+                # wanobjectcache spams metrics with hex hashes - T178531
+                ['^MediaWiki\.wanobjectcache\.[a-zA-Z0-9]{32}', 'blackhole'],
             ]
         }
     }
 
     # Cleanup stale labs instances data - T143405
-    cron { 'graphite-labs-instances':
-        command => "[ -d ${storage_dir}/whisper/instances ] && find ${storage_dir}/whisper/instances -type f -mtime +30 -delete && find ${storage_dir}/whisper/instances -type d -empty -delete",
-        user    => '_graphite',
-        hour    => '8',
-        minute  => fqdn_rand(60),
+    graphite::whisper_cleanup { 'graphite-labs-instances':
+        directory => "${storage_dir}/whisper/instances",
+    }
+
+    # Cleanup eventstreams rdkafka stale data - T160644
+    graphite::whisper_cleanup { 'graphite-eventstreams':
+        directory => "${storage_dir}/whisper/eventstreams/rdkafka",
+        keep_days => 5,
+    }
+
+    # Cleanup zuul data
+    graphite::whisper_cleanup { 'graphite-zuul':
+        directory => "${storage_dir}/whisper/zuul",
+    }
+    # Zuul also generates metrics related to Gerrit
+    graphite::whisper_cleanup { 'graphite-zuul-gerrit':
+        directory => "${storage_dir}/whisper/gerrit",
+    }
+
+    # Nodepool, which has several metrics for each of the Jenkins jobs
+    graphite::whisper_cleanup { 'graphite-nodepool':
+        directory => "${storage_dir}/whisper/nodepool",
+        keep_days => 15,
+    }
+
+    # Cassandra metrics - T179057
+    graphite::whisper_cleanup { 'graphite-cassandra':
+        directory => "${storage_dir}/whisper/cassandra",
+        keep_days => 182,
     }
 
     $graphite_hosts = [

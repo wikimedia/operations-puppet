@@ -1,8 +1,0 @@
-/var/log/designate/keystone-admin-uwsgi.log {
-    daily
-    missingok
-    compress
-    delaycompress
-    notifempty
-    copytruncate
-}

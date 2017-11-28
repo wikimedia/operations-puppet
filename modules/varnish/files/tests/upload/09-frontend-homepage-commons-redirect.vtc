@@ -5,7 +5,7 @@ server s1 {
     txresp
 } -start
 
-varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
     backend vtc_backend {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
@@ -18,6 +18,7 @@ client c1 {
     rxresp
 
     expect resp.status == 301
+    expect resp.msg == "Moved Permanently"
     expect resp.http.Location == "https://commons.wikimedia.org/"
     expect resp.http.Connection == "keep-alive"
     expect resp.http.Content-Length == 0

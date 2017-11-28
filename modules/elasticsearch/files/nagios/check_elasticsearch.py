@@ -34,8 +34,7 @@ EX_UNKNOWN = 3
 
 
 class Threshold(object):
-    '''Implement a simple threshold parser/checker with common predicates and
-    percentages.'''
+    '''Implement a simple threshold parser/checker with common predicates.'''
 
     PREDICATES = {
         '<=': operator.le,
@@ -49,31 +48,27 @@ class Threshold(object):
         self.threshold_string = threshold
         self.predicate = None
         self.threshold = None
-        self.percent = None
         self.FORMAT_RE = re.compile(
-            r'^(%s)?\s*([\d.]+)\s*(%%)?' % '|'.join(self.PREDICATES))
+            r'^(%s)?\s*([\d.]+)$' % '|'.join(self.PREDICATES))
         self._parse(threshold)
 
-    def breach(self, value, total=None):
-        if total is None and self.percent is not None:
-            raise ValueError('threshold %r has percent but no total provided' %
-                             self.threshold_string)
-        if total not in [None, 0]:
-            value = float(value) / total
-        return self.predicate(value, self.threshold)
+    def breach(self, value, total):
+        ratio = float(value) / total
+        return self.predicate(ratio, self.threshold)
 
     def _parse(self, threshold):
         m = self.FORMAT_RE.match(threshold)
         if not m:
             raise ValueError('unable to parse threshold: %r' % threshold)
-        predicate, value, percent = m.groups()
+        predicate, value = m.groups()
         try:
             value = float(value)
         except ValueError:
             raise ValueError('unable to parse as float: %r' % value)
+        if 0.0 > value or value > 1.0:
+            raise ValueError('threshold should be a ratio between 0.0 and 1.0: %r' % value)
         self.predicate = self.PREDICATES.get(predicate, operator.eq)
         self.threshold = value
-        self.percent = percent
 
 
 def _format_health(health):
@@ -168,9 +163,9 @@ def main():
                         help='Timeout for the request to complete')
     parser.add_argument('--retries', default=2, type=int, metavar='INTEGER',
                         help='How many times to retry a request on timeout')
-    parser.add_argument('--shards-inactive', default='>=0.1%',
+    parser.add_argument('--shards-inactive', default='>=0.1',
                         dest='shards_inactive', metavar='THRESHOLD',
-                        help='Threshold to check for inactive shards '
+                        help='Threshold to check the ratio of inactive shards '
                              '(i.e. initializing/relocating/unassigned)')
     parser.add_argument('--ignore-status', default=False, action='store_true',
                         dest='ignore_status',

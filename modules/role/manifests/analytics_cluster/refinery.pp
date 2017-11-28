@@ -7,7 +7,7 @@ class role::analytics_cluster::refinery {
     # is intended to work with Hadoop, and many of the
     # role classes here use the hdfs user, which is created
     # by the CDH packages.
-    Class['role::analytics_cluster::hadoop::client'] -> Class['role::analytics_cluster::refinery']
+    require ::profile::hadoop::client
 
     # Clone mediawiki/event-schemas so refinery can use them.
     include ::eventschemas
@@ -63,5 +63,10 @@ class role::analytics_cluster::refinery {
         # setgid bit here to make refinery log files writeable
         # by users in the $$log_dir_group group.
         mode   => '2775',
+    }
+
+    logrotate::conf { 'refinery':
+        source  => 'puppet:///modules/role/analytics_cluster/refinery-logrotate.conf',
+        require => File[$log_dir],
     }
 }

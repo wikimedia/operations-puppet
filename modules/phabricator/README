@@ -75,7 +75,7 @@ Example output:
 
 3.  Run the upgrade script on the Phabricator host
 
-    phab_update_tag
+    /usr/local/sbin/phab_deploy_finalize
 
 This script will manage setting up the migration state, upgrading the DB schema,
 rolling the git repositories to the appropriate tag defined in puppet, and

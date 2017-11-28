@@ -9,7 +9,7 @@
 #   replication_pass
 #       The password the replication user should use
 #   pgversion
-#       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu
+#       Defaults to 9.3 in Ubuntu Trusty and 9.4 in Debian jessie.
 #   ensure
 #       Defaults to present
 #   root_dir
@@ -33,15 +33,14 @@ class postgresql::slave(
     $replication_pass,
     $includes=[],
     $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
         'jessie'  => '9.4',
-        'precise' => '9.1',
         'trusty'  => '9.3',
     },
     $ensure='present',
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
 ) {
-    require ::postgresql::packages
 
     $data_dir = "${root_dir}/${pgversion}/main"
 
@@ -83,14 +82,10 @@ class postgresql::slave(
         }
     }
 
-    require_package('python-psycopg2')
-    # Provisioning a script to conduct replication lag checks
-    file { '/usr/lib/nagios/plugins/check_postgres_replication_lag.py':
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/postgresql/check_postgres_replication_lag.py',
-        require => Package['python-psycopg2'],
+    file { '/usr/bin/prometheus_postgresql_replication_lag':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/postgresql/prometheus/postgresql_replication_lag.sh',
     }
 }

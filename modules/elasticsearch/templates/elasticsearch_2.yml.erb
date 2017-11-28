@@ -417,7 +417,7 @@ gateway:
 ##
 # Row/rack awareness attributes
 ##
-<% if @awareness_attributes %>cluster.routing.allocation.awareness.attributes: <%= @awareness_attributes %><% end %>
+<% if @awareness_attributes and @awareness_attributes != '' %>cluster.routing.allocation.awareness.attributes: <%= @awareness_attributes %><% end %>
 <% if @row  %>node.row: <%=  @row  %><% end %>
 <% if @rack %>node.rack: <%= @rack %><% end %>
 
@@ -452,13 +452,6 @@ threadpool:
         queue_size: <%= @bulk_thread_pool_capacity %>
 <% end -%>
 <% end -%>
-<% end -%>
-
-<% if @statsd_host -%>
-##
-# Statsd plugin configuration
-##
-metrics.statsd.host: <%= @statsd_host %>
 <% end -%>
 
 

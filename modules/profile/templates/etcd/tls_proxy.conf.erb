@@ -25,9 +25,21 @@ server {
 	root /etc/nginx/etcd-errors;
 	internal;
     }
+    <%- if @read_only %>
+
+    error_page 403 /readonly.json;
+
+    location /readonly.json {
+	root /etc/nginx/etcd-errors;
+	internal;
+    }
+    <%- end -%>
 
     # One year should be enough for anyone(TM)
     proxy_read_timeout 365d;
+    # Proxy buffering must be turned off in order not to interfere with
+    # watch requests.
+    proxy_buffering off;
 
     location / {
         proxy_pass http://etcd/;
@@ -35,6 +47,11 @@ server {
         proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header    X-Real-IP $remote_addr;
         client_max_body_size 20971520;
+        <%- if @read_only -%>
+        limit_except GET HEAD OPTIONS {
+           deny all;
+        }
+        <%- end -%>
     }
 
     # Prometheus metrics
@@ -46,6 +63,7 @@ server {
     }
 
 
+    <%- unless @read_only -%>
     <%- @acls.each do |url, users| -%>
     location /v2/keys<%= url %> {
         proxy_pass http://etcd/v2/keys<%= url %>;
@@ -58,5 +76,6 @@ server {
         }
         <%- end -%>
     }
+    <%- end -%>
     <%- end -%>
 }

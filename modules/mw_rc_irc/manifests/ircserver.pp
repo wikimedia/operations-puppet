@@ -15,18 +15,20 @@ class mw_rc_irc::ircserver {
 
     # private config block for auth/allowed users
     file { '/usr/etc/auth.conf':
-        mode    => '0444',
-        owner   => 'irc',
-        group   => 'irc',
-        content => secret('mw_rc_irc/auth.conf');
+        mode      => '0444',
+        owner     => 'irc',
+        group     => 'irc',
+        content   => secret('mw_rc_irc/auth.conf'),
+        show_diff => false,
     }
 
     # private config block for operators and their passwords
     file { '/usr/etc/operator.conf':
-        mode    => '0444',
-        owner   => 'irc',
-        group   => 'irc',
-        content => secret('mw_rc_irc/operator.conf');
+        mode      => '0444',
+        owner     => 'irc',
+        group     => 'irc',
+        content   => secret('mw_rc_irc/operator.conf'),
+        show_diff => false,
     }
 
     # message of the day / connect banner

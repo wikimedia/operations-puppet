@@ -7,9 +7,7 @@ class noc {
 
     include ::apache
 
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        apache::def { 'HHVM': }
-    }
+    apache::def { 'HHVM': }
 
     include ::mediawiki::web::php_engine
 

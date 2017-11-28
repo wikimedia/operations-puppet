@@ -1,0 +1,21 @@
+class dumps::generation::server::rsyncer(
+    $xmldumpsdir = undef,
+    $xmlremotedirs = undef,
+    $miscdumpsdir = undef,
+    $miscremotedirs = undef,
+)  {
+    file { '/usr/local/bin/rsync-to-peers.sh':
+        ensure => 'present',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/generation/rsync-to-peers.sh',
+    }
+
+    base::service_unit { 'dumps-rsyncer':
+        ensure    => 'present',
+        systemd   => systemd_template('dumps-rsync-peers'),
+        upstart   => upstart_template('dumps-rsync-peers'),
+        subscribe => File['/usr/local/bin/rsync-to-peers.sh'],
+    }
+}

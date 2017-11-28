@@ -1,2 +1,1 @@
 role::mediawiki::webserver::tls: true
-use_timesyncd: true

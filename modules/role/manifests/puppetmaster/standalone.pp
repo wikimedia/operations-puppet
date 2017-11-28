@@ -33,6 +33,9 @@
 #  Hostname for the puppetmaster. Defaults to fqdn. Is used for SSL
 #  certificates, virtualhost routing, etc
 #
+# [*puppet_major_version*]
+#  Distinguishes version of puppet software e.g. 3 or 4
+#
 # filtertags: labs-common
 class role::puppetmaster::standalone(
     $autosign = false,
@@ -42,30 +45,15 @@ class role::puppetmaster::standalone(
     $extra_auth_rules = '',
     $server_name = $::fqdn,
     $use_enc = true,
+    $labs_puppet_master = hiera('labs_puppet_master'),
+    $puppet_major_version = hiera('puppet_major_version', undef),
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
     }
 
-    # Setup ENC
-    require_package('python3-yaml', 'python3-ldap3')
-
-    include ldap::yamlcreds
-
-    file { '/etc/puppet-enc.yaml':
-        content => ordered_yaml({
-            host => hiera('labs_puppet_master'),
-        }),
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    file { '/usr/local/bin/puppet-enc':
-        source => 'puppet:///modules/role/labs/puppet-enc.py',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+    class {'::openstack::puppet::master::enc':
+        puppetmaster => $labs_puppet_master,
     }
 
     $config = {
@@ -76,12 +64,13 @@ class role::puppetmaster::standalone(
     }
 
     class { '::puppetmaster':
-        server_name         => $server_name,
-        allow_from          => $allow_from,
-        secure_private      => false,
-        prevent_cherrypicks => $prevent_cherrypicks,
-        extra_auth_rules    => $extra_auth_rules,
-        config              => $config,
+        server_name          => $server_name,
+        allow_from           => $allow_from,
+        secure_private       => false,
+        prevent_cherrypicks  => $prevent_cherrypicks,
+        extra_auth_rules     => $extra_auth_rules,
+        config               => $config,
+        puppet_major_version => $puppet_major_version,
     }
 
     # Update git checkout

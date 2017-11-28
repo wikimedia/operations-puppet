@@ -16,12 +16,6 @@ sleep 15
 
 sleep 5
 
-# Fix VSM files permissions and restart ganglia
-chmod 644 /var/lib/varnish/*/*.vsm
-/usr/sbin/service ganglia-monitor restart
-
-sleep 5
-
 # Repool varnish-fe
 confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=yes
 

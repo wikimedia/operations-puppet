@@ -109,6 +109,7 @@ def check_udp2log():
             aggr['drops'] += status['drops']
     return aggr
 
+
 #
 # Gmond Interface
 #

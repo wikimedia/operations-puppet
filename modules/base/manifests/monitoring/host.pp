@@ -26,15 +26,25 @@ class base::monitoring::host(
     $contact_group = 'admins',
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
-    $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
+    $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
     $nrpe_check_disk_critical = false,
+    $raid_write_cache_policy = undef,
+    $raid_check_interval = 10,
+    $raid_retry_interval = 10,
+    $notifications_enabled = '1',
 ) {
     include ::base::puppet::params # In order to be able to use some variables
 
     # RAID checks
-    include ::raid
+    class { 'raid':
+        write_cache_policy => $raid_write_cache_policy,
+        check_interval     => $raid_check_interval,
+        retry_interval     => $raid_retry_interval,
+    }
 
-    ::monitoring::host { $::hostname: }
+    ::monitoring::host { $::hostname:
+        notifications_enabled => $notifications_enabled,
+    }
 
     ::monitoring::service { 'ssh':
         description   => 'SSH',
@@ -71,14 +81,6 @@ class base::monitoring::host(
         source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
     }
 
-    file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
-    }
-
     ::sudo::user { 'nagios_puppetrun':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
@@ -108,8 +110,10 @@ class base::monitoring::host(
     $warninginterval = $base::puppet::params::freshnessinterval
     $criticalinterval = $base::puppet::params::freshnessinterval * 2
     ::nrpe::monitor_service { 'puppet_checkpuppetrun':
-        description  => 'puppet last run',
-        nrpe_command => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
+        description    => 'puppet last run',
+        nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
+        check_interval => 5,
+        retry_interval => 1,
     }
     ::nrpe::monitor_service {'check_eth':
         description  => 'configured eth',
@@ -118,10 +122,6 @@ class base::monitoring::host(
     ::nrpe::monitor_service { 'check_dhclient':
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
-    }
-    ::nrpe::monitor_service { 'check_salt_minion':
-        description  => 'salt-minion processes',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1: -c 1:4 --ereg-argument-array '^/usr/bin/python /usr/bin/salt-minion'",
     }
     if $::initsystem == 'systemd' {
         file { '/usr/local/lib/nagios/plugins/check_systemd_state':
@@ -134,6 +134,45 @@ class base::monitoring::host(
         ::nrpe::monitor_service { 'check_systemd_state':
             description  => 'Check systemd state',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
+        }
+    }
+
+    if $::productname == 'PowerEdge R320' {
+
+        file { '/usr/local/lib/nagios/plugins/check_cpufreq':
+            ensure => present,
+            source => 'puppet:///modules/base/monitoring/check_cpufreq',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+        }
+
+        ::nrpe::monitor_service { 'check_cpufreq':
+            description  => 'CPU frequency',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
+        }
+    }
+
+    if hiera('monitor_screens', true) {
+
+        file { '/usr/local/lib/nagios/plugins/check_long_procs':
+            ensure => present,
+            source => 'puppet:///modules/base/monitoring/check_long_procs',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+        }
+
+        ::sudo::user { 'nagios_long_procs':
+            user       => 'nagios',
+            privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_long_procs'],
+        }
+
+        ::nrpe::monitor_service { 'check_long_procs':
+            check_interval => 240,
+            retry_interval => 120,
+            description    => 'Long running screen/tmux',
+            nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 96 -c 480',
         }
     }
 }

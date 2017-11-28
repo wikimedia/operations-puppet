@@ -9,7 +9,7 @@ class role::logging::mediawiki::udp2log(
     $forward_messages = false,
     $mirror_destinations = undef,
 ) {
-    system::role { 'role::logging:mediawiki::udp2log':
+    system::role { 'logging:mediawiki::udp2log':
         description => 'MediaWiki log collector',
     }
 
@@ -17,10 +17,10 @@ class role::logging::mediawiki::udp2log(
 
     # Rsync archived slow-parse logs to dumps.wikimedia.org.
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
-    include ::dataset::user
+    include ::dumps::deprecated::user
     if ($rsync_slow_parse) {
         cron { 'rsync_slow_parse':
-            command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
+            command     => "/usr/bin/rsync -rt --delete ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
             hour        => 23,
             minute      => 15,
             environment => 'MAILTO=ops-dumps@wikimedia.org',
@@ -86,7 +86,8 @@ class role::logging::mediawiki::udp2log(
     # Allow rsyncing of udp2log generated files to
     # analysis hosts.
     class { 'udp2log::rsyncd':
-        path => $log_directory,
+        path        => $log_directory,
+        hosts_allow => hiera('statistics_servers', 'stat1005.eqiad.wmnet')
     }
 
     cron { 'mw-log-cleanup':
@@ -96,20 +97,11 @@ class role::logging::mediawiki::udp2log(
         minute  => 0
     }
 
-    # move files to module?
-    # lint:ignore:puppet_url_without_modules
     file { '/usr/local/bin/mw-log-cleanup':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/role/logging/mw-log-cleanup',
-    }
-
-    file { '/usr/local/bin/exceptionmonitor':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('role/logging/exceptionmonitor.erb'),
     }
 
     file { '/etc/profile.d/mw-log.sh':

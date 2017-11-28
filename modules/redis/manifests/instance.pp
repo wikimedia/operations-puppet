@@ -84,10 +84,9 @@ define redis::instance(
     }
 
     base::service_unit { "redis-instance-${instance_name}":
-        ensure        => $ensure,
-        template_name => 'redis-instance',
-        systemd       => true,
-        upstart       => true,
-        subscribe     => File["/etc/redis/${instance_name}.conf"],
+        ensure    => $ensure,
+        systemd   => systemd_template('redis-instance'),
+        upstart   => upstart_template('redis-instance'),
+        subscribe => File["/etc/redis/${instance_name}.conf"],
     }
 }

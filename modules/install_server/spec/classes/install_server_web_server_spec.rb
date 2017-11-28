@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'install_server::web_server', :type => :class do
-
     # Please wmflib.os_version()
     let(:facts) { {
         :lsbdistrelease => '8.5',

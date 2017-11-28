@@ -11,14 +11,46 @@
 #   A list of host (and optional port) to forward syslog events to.
 #   (e.g. ["syslog.eqiad.wmnet"] or ["deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"])
 #
+# [*central_hosts_tls*]
+#   A list of host:port (port is *required*) to forward syslog using TLS.
+#   (e.g. ["syslog.eqiad.wmnet:6514"])
+#
 #
 class base::remote_syslog (
     $enable,
     $central_hosts = [],
+    $central_hosts_tls = [],
 ) {
+    # Remove once trusty is gone
+    if os_version('ubuntu == trusty') {
+        $owner = 'syslog'
+        $group = 'syslog'
+    } else {
+        $owner = 'root'
+        $group = 'root'
+    }
+
     if $enable {
-        if empty($central_hosts) {
-            fail('::base::remote_syslog::central_hosts required')
+        require_package('rsyslog-gnutls')
+
+        if empty($central_hosts) and empty($central_hosts_tls) {
+            fail('::base::remote_syslog::central_hosts or central_hosts_tls required')
+        }
+
+        if ! empty($central_hosts_tls) {
+            file { '/etc/rsyslog':
+                ensure => 'directory',
+                owner  => $owner,
+                group  => $group,
+                mode   => '0400',
+                before => Base::Expose_puppet_certs['/etc/rsyslog'],
+            }
+
+            ::base::expose_puppet_certs { '/etc/rsyslog':
+                provide_private => true,
+                user            => $owner,
+                group           => $group,
+            }
         }
 
         rsyslog::conf { 'remote_syslog':

@@ -9,9 +9,18 @@ socket = /tmp/mysql.sock
 user      = mysql
 socket    = /tmp/mysql.sock
 port      = 3306
+basedir   = <%= @basedir %>
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
+
+# gtid_domain_id flag is needed for multisource replication and GTID.
+# # Strictly it is only needed on masters or servers that can potentially be
+# # masters but for consistency it should be set in all of them.
+# # https://mariadb.com/kb/en/mariadb/gtid/
+#
+gtid_domain_id  = <%= @gtid_domain_id %>
+
 read_only = 0
 
 # enable socket authentication
@@ -45,6 +54,11 @@ sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
 tmp_table_size                 = 64M
 max_heap_table_size            = 64M
 
+# Needed when using ROW based replication and altering the width of a column, if not set, the ALTER will fail
+# https://dev.mysql.com/doc/mysql-replication-excerpt/5.7/en/replication-features-different-data-types.html
+# T73563#3117924
+slave_type_conversions         = ALL_NON_LOSSY
+
 table_open_cache               = 10000
 table_definition_cache         = 50000
 open-files-limit               = 400000
@@ -52,7 +66,7 @@ character_set_server           = binary
 character_set_filesystem       = binary
 collation_server               = binary
 
-default-storage-engine         = Aria
+default-storage-engine         = InnoDB
 aria_pagecache_buffer_size     = <%= (Float(@memorysize.split[0]) * 0.05).round %>G
 innodb_data_home_dir           = /srv/innodb
 innodb_file_per_table          = 0

@@ -24,7 +24,7 @@ class Hiera
       end
     end
 
-    def read(path, expected_type=Hash, default=nil)
+    def read(path, _expected_type = Hash, _default = nil)
       read_file(path)
     rescue => detail
       # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
@@ -37,7 +37,7 @@ class Hiera
         data = get_from_http(path)
         @cache[path][:data] = data
 
-        if !@cache[path][:data].is_a?(Object)
+        unless @cache[path][:data].is_a?(Object)
           raise TypeError, "Data retrieved from #{path} is #{data.class} not Object"
         end
       end

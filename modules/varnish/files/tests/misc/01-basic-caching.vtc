@@ -26,7 +26,7 @@ client c2 {
 }
 
 client c3 {
-    txreq -hdr "Host: git.wikimedia.org"
+    txreq -hdr "Host: grafana.wikimedia.org"
     rxresp
     expect resp.status == 200
 }
@@ -49,13 +49,13 @@ varnish v1 -expect cache_miss == 0
 varnish v1 -expect cache_hit == 0
 varnish v1 -expect n_object == 0
 
-# Cache miss with Host: git.wikimedia.org
+# Cache miss with Host: grafana.wikimedia.org
 client c3 -run
 varnish v1 -expect cache_miss == 1
 varnish v1 -expect cache_hit == 0
 varnish v1 -expect n_object == 1
 
-# Cache hit with Host: git.wikimedia.org
+# Cache hit with Host: grafana.wikimedia.org
 client c3 -run
 varnish v1 -expect cache_miss == 1
 varnish v1 -expect cache_hit == 1

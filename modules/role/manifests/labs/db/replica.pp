@@ -1,20 +1,16 @@
 class role::labs::db::replica {
 
-    system::role { 'role::labs::db::replica':
+    system::role { 'labs::db::replica':
         description => 'Labs replica database',
     }
 
     include ::standard
-    class { 'mariadb::packages_wmf':
-        package => 'wmf-mariadb101',
-    }
-    class { 'mariadb::service':
-        package => 'wmf-mariadb101',
-    }
+    class { 'mariadb::packages_wmf': }
+    class { 'mariadb::service': }
     include role::mariadb::monitor
     include ::base::firewall
 
-    ferm::service{ 'mariadb_internal':
+    ferm::service{ 'mariadb_labs_db_replica':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
@@ -37,11 +33,14 @@ class role::labs::db::replica {
         mysql_group => 'labs',
         mysql_role  => 'slave',
         mysql_shard => 'multi',
+        socket      => '/run/mysqld/mysqld.sock',
     }
 
     class { 'mariadb::config':
         config        => 'role/mariadb/mysqld_config/labsdb-replica.my.cnf.erb',
+        basedir       => '/opt/wmf-mariadb101',
         datadir       => '/srv/sqldata',
+        socket        => '/run/mysqld/mysqld.sock',
         tmpdir        => '/srv/tmp',
         read_only     => 'ON',
         p_s           => 'on',

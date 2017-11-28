@@ -64,13 +64,12 @@ require 'puppet/util/package'
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
   # General preference ordering for fullest combined list:
-  # 0) Enc:  3DES < ALL       (SWEET32)
   # 1) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 2) Mac:  AEAD > ALL       (AES-GCM/CHAPOLY > Others)
-  # 3) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
-  # 4) Kx:   ECDHE > DHE      (Perf, mostly)
-  # 5) Enc:  AES256 > AES128  (sec)
-  # 6) Auth: ECDSA > RSA      (Perf, mostly)
+  # 3) Auth: ECDSA > RSA      (Perf, mostly)
+  # 4) Enc:  CHAPOLY > AESGCM (Old client perf, sec)
+  # 5) Enc:  AES256 > AES128  (sec, batch attacks?)
+  # 6) Kx:   ECDHE > DHE      (Perf, mostly)
   #
   # After all of that, the fullest list of reasonably-acceptable mid/compat
   # ciphers has been filtered further to reduce pointless clutter:
@@ -81,21 +80,24 @@ module Puppet::Parser::Functions
   # AES256 performance differentials.  SHA-2 HMAC variants were filtered
   # similarly, as all clients that would negotiate x-SHA256 also negotiate x-SHA
   # and there's no effective security difference between the two.
-  # *) The 'compat' list has been reduced to just the two weakest and
-  # most-popular reasonable options there.  The others were mostly statistically
-  # insignificant, and things are so bad at this level it's not worth worrying
-  # about slight cipher strength gains.
+  # *) The 'compat' list has been reduced to just AES128-SHA after the removal
+  # of 3DES in Nov 2017.  There are other possible entries here (AES256 and/or
+  # GCM), but in practice very few clients ever negotiate them anyways.  All
+  # such clients fall back to AES128-SHA, and things are so bad at this level
+  # it's not worth worrying about slight cipher strength gains.
   basic = {
     # Forward-Secret + AEAD
     'strong' => [
       '-ALL',
-      'ECDHE-ECDSA-CHACHA20-POLY1305',   # openssl-1.1.0, 1.0.2+cloudflare
-      'ECDHE-RSA-CHACHA20-POLY1305',     # openssl-1.1.0, 1.0.2+cloudflare
+      'TLS13-CHACHA20-POLY1305-SHA256',
+      'TLS13-AES-256-GCM-SHA384',
+      'TLS13-AES-128-GCM-SHA256',
+      'ECDHE-ECDSA-CHACHA20-POLY1305',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
-      'ECDHE-RSA-AES256-GCM-SHA384',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
+      'ECDHE-RSA-CHACHA20-POLY1305',
+      'ECDHE-RSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES128-GCM-SHA256',
-      'DHE-RSA-AES128-GCM-SHA256',
     ],
     # Forward-Secret, but not AEAD
     'mid' => [
@@ -106,7 +108,6 @@ module Puppet::Parser::Functions
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-SHA',   # Mostly evil proxies, also ancient devices
-      'DES-CBC3-SHA', # Mostly IE7-8 on XP, also ancient devices
     ],
   }
 
@@ -118,7 +119,7 @@ module Puppet::Parser::Functions
   }
 
   # Our standard HSTS for all public canonical domains
-  hsts_val = "max-age=31536000; includeSubDomains; preload"
+  hsts_val = "max-age=106384710; includeSubDomains; preload"
 
   newfunction(
               :ssl_ciphersuite,
@@ -163,8 +164,10 @@ END
     # OS / Server -dependant feature flags:
     nginx_always_ok = true
     dhe_ok = true
+    libssl_has_x25519 = true
     if !function_os_version(['debian >= jessie'])
       nginx_always_ok = false
+      libssl_has_x25519 = false
       if server == 'apache'
         dhe_ok = false
       end
@@ -192,6 +195,7 @@ END
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
       output.push("SSLCipherSuite #{cipherlist}")
+      # Note: missing config to restrict ECDH curves
       output.push('SSLHonorCipherOrder On')
       if dhe_ok
         output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
@@ -206,6 +210,11 @@ END
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
       output.push("ssl_ciphers #{cipherlist};")
+      if libssl_has_x25519
+        output.push("ssl_ecdh_curve X25519:prime256v1;")
+      else
+        output.push("ssl_ecdh_curve prime256v1;")
+      end
       output.push('ssl_prefer_server_ciphers on;')
       if dhe_ok
         output.push('ssl_dhparam /etc/ssl/dhparam.pem;')

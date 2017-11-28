@@ -10,6 +10,10 @@ HISTFILESIZE=5000
 HISTTIMEFORMAT="%FT%TZ "
 shopt -s histappend
 
+# devscripts
+export DEBEMAIL=filippo@wikimedia.org
+export DEBFULLNAME="Filippo Giunchedi"
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 

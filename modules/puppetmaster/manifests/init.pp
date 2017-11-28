@@ -33,9 +33,10 @@
 #        Bool - use git hooks to prevent cherry picking on top of the git repo
 #    - $git_user
 #        String - name of user who should own the git repositories
-#
 #    - $git_group
 #        String - name of group which should own the git repositories
+#    - $puppet_major_version
+#        The major puppet version to configure
 class puppetmaster(
     $server_name='puppet',
     $bind_address='*',
@@ -58,6 +59,7 @@ class puppetmaster(
     $prevent_cherrypicks=true,
     $git_user='gitpuppet',
     $git_group='gitpuppet',
+    $puppet_major_version=undef,
 ){
 
     $gitdir = '/var/lib/git'
@@ -71,36 +73,29 @@ class puppetmaster(
     }
 
     # Let's use puppet 3.8 on the masters at least
-    if os_version('Debian >= jessie') {
-        $pinned_pkgs = ['puppet', 'puppetmaster', 'puppetmaster-common',
-                        'vim-puppet', 'puppet-el', 'puppetmaster-passenger',
-                        'puppet-common']
-        apt::pin { 'puppet':
-            package  => join(sort($pinned_pkgs), ' '),
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-            before   => Package['puppetmaster-common'],
-        }
-
+    if os_version('debian >= jessie') {
         # Install the puppetdb-terminus package, needed for puppetdbquery
         require_package('puppetdb-terminus')
     }
 
+    # puppetmaster package name changed to puppet-master with version 4
+    $puppetmaster_package_name = $puppet_major_version ? {
+        4       => 'puppet-master',
+        default => 'puppetmaster',
+    }
 
     package { [
-        'puppetmaster',
-        'puppetmaster-common',
+        $puppetmaster_package_name,
         'vim-puppet',
         'puppet-el',
         'rails',
         'ruby-json',
         'ruby-mysql',
-        'ruby-ldap',
         ]:
         ensure  => present,
     }
 
-    if os_version('Debian >= jessie') {
+    if os_version('debian >= jessie') {
         # Until we use activerecord
         package { 'ruby-activerecord-deprecated-finders':
             ensure => present,
@@ -108,14 +103,20 @@ class puppetmaster(
     }
 
     class { '::puppetmaster::passenger':
-        bind_address  => $bind_address,
-        verify_client => $verify_client,
-        allow_from    => $allow_from,
-        deny_from     => $deny_from,
+        bind_address         => $bind_address,
+        verify_client        => $verify_client,
+        allow_from           => $allow_from,
+        deny_from            => $deny_from,
+        puppet_major_version => $puppet_major_version,
     }
 
-
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
+
+    # path and name change with puppet 4 packages
+    $puppetmaster_rack_path = $puppet_major_version ? {
+        4       => '/usr/share/puppet/rack/puppet-master',
+        default => '/usr/share/puppet/rack/puppetmasterd',
+    }
 
     # Part dependent on the server_type
     case $server_type {
@@ -157,17 +158,27 @@ class puppetmaster(
         group               => $git_group,
     }
 
+    class { '::puppetmaster::monitoring' :
+        puppet_major_version => $puppet_major_version,
+    }
+
     include ::puppetmaster::scripts
     include ::puppetmaster::geoip
     include ::puppetmaster::gitpuppet
-    include ::puppetmaster::monitoring
     include ::puppetmaster::generators
+
+
+    # deploy updated auth template to puppet 4 masters
+    $puppetmaster_auth_template = $puppet_major_version ? {
+        4       => 'auth-master-v4.conf.erb',
+        default => 'auth-master.conf.erb',
+    }
 
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('puppetmaster/auth-master.conf.erb'),
+        content => template("puppetmaster/${puppetmaster_auth_template}"),
     }
 
     # This is required for the mwyaml hiera backend

@@ -27,6 +27,7 @@ server {
     server_name  _;
     access_log   /var/log/nginx/debug_proxy_access.log;
     error_log    /var/log/nginx/debug_proxy_error.log;
+    client_max_body_size 100m;
     resolver     <%= @resolver %>;
 
     location / {

@@ -16,7 +16,7 @@ print_help() {
         echo ""
         print_usage
         echo ""
-        echo "This plugin checks hardware status using the lm_sensors package."
+        echo "This plugin checks DPKG for packages that are in a wrong state."
         echo ""
         support
         exit 0
@@ -40,17 +40,25 @@ case "$1" in
 		exit 0
 		;;
 	*)
+		if fuser -s /var/lib/dpkg/lock ; then
+			echo "dpkg is running, not checking broken packages"
+			exit 0
+		fi
 		packagedata=` dpkg -l|grep '^[uirph]'|egrep -v '^(ii|rc)' `
 		status=$?
 		if test "$1" = "-v" -o "$1" = "--verbose"; then
 			echo $packagedata
 		fi
 		if test ${status} -eq 0 ; then
+			echo $packagedata | grep -qv '^hi'
+			if test $? -eq 1; then
+				echo DPKG WARNING dpkg reports held packages
+				exit 1
+			fi
 			echo DPKG CRITICAL dpkg reports broken packages
 			exit 2
-		else 
-			echo All packages OK
-			exit 0
 		fi
+		echo All packages OK
+		exit 0
 		;;
 esac

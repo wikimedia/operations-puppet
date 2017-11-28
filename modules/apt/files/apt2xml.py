@@ -74,5 +74,6 @@ def getUpdates():
 
     return doc.toxml().replace('\n', '')
 
+
 if __name__ == '__main__':
     print getUpdates()

@@ -11,20 +11,20 @@
 # Requires:
 #
 #   Class['install_server::tftp_server']
-#   Class['::base::firewall']
+#   Class['::profile::base::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:
 #       role(installserver::tftp)
 
 class role::installserver::tftp {
-    system::role { 'role::installserver::tftp':
+    system::role { 'installserver::tftp':
         description => 'WMF TFTP server',
     }
 
     include ::standard
-    include ::base::firewall
-    include ::role::backup::host
+    include ::profile::base::firewall
+    include ::profile::backup::host
     include install_server::tftp_server
 
     ferm::rule { 'tftp':

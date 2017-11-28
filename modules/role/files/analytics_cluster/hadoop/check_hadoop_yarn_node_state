@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage:
-#    hadoop_yarn_node_status [node_id]
+#    check_hadoop_yarn_node_state [node_id]
 #
 # If node_id is not given, then the $(hostname -f):8041 will be used.
 #
@@ -29,6 +29,7 @@ elif [ "x${node_state}" = "xUNHEALTHY" ]; then
     check_status="WARNING"
 # Anything else is critical.
 else
+    logger "The script check_hadoop_yarn_node_state returned CRITICAL for status: ${node_state}"
     check_status="CRITICAL"
 fi
 

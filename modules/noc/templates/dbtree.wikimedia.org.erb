@@ -21,22 +21,11 @@
 
     <Directory />
         AllowOverride None
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order Deny,Allow
-        </IfVersion>
+        Require all granted
     </Directory>
 
     <Directory /srv/dbtree/inc>
-        <IfVersion >= 2.4>
-            Require all denied
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order Deny,Allow
-            Deny from all
-        </IfVersion>
+        Require all denied
     </Directory>
 
 </VirtualHost>

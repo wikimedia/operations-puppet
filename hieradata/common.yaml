@@ -63,6 +63,7 @@ ganglia_clusters:
     id: 9
     sites:
       eqiad: []
+      codfw: []
   appserver:
     description: "Application servers"
     id: 11
@@ -81,14 +82,17 @@ ganglia_clusters:
     sites:
       eqiad: []
       codfw: []
-  pdf:
-    description: "PDF servers"
-    id: 15
-    sites:
-      eqiad: []
   cache_text:
     description: "Text caches"
     id: 20
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+  cache_canary:
+    description: "Canary caches"
+    id: 21
     sites:
       eqiad: []
       codfw: []
@@ -186,7 +190,6 @@ ganglia_clusters:
       eqiad: []
       codfw: []
       esams: []
-      ulsfo: []
   elasticsearch:
     description: "Elasticsearch cluster"
     id: 42
@@ -196,11 +199,6 @@ ganglia_clusters:
   logstash:
     description: "Logstash cluster"
     id: 43
-    sites:
-      eqiad: []
-  rcstream:
-    description: "RCStream cluster"
-    id: 44
     sites:
       eqiad: []
   analytics_kafka:
@@ -229,15 +227,8 @@ ganglia_clusters:
     description: "Maps Cluster"
     id: 50
     sites:
-      codfw: []
-  cache_maps:
-    description: "Maps caches"
-    id: 51
-    sites:
       eqiad: []
       codfw: []
-      esams: []
-      ulsfo: []
   ganeti:
     description: "Ganeti Virt cluster"
     id: 52
@@ -281,22 +272,82 @@ ganglia_clusters:
     id: 59
     sites:
       eqiad: []
+  maps-test:
+    description: "Maps Test Cluster"
+    id: 60
+    sites:
+      codfw: []
+  thumbor:
+    description: "Thumbor"
+    id: 61
+    sites:
+      codfw: []
+      eqiad: []
+  kafka_jumbo:
+    description: "Kafka Jumbo Cluster"
+    id: 62
+    sites:
+      eqiad: []
+  druid_analytics:
+    description: "Druid Analytics Cluster"
+    id: 63
+    sites:
+      eqiad: []
+  druid_public:
+    description: "Druid Public Cluster"
+    id: 64
+    sites:
+      eqiad: []
+
 puppetmaster: "puppet"
-active_labstore_host: 'labstore1001'
 statistics_servers:
-  - stat1002.eqiad.wmnet
-  - stat1003.eqiad.wmnet
-  - analytics1027.eqiad.wmnet
+  - stat1004.eqiad.wmnet
+  - stat1005.eqiad.wmnet
+  - stat1006.eqiad.wmnet
   - dataset1001.wikimedia.org
   - thorium.eqiad.wmnet
-dataset_clients_snapshots:
-  - snapshot1001.eqiad.wmnet
-  - snapshot1005.eqiad.wmnet
-  - snapshot1006.eqiad.wmnet
-  - snapshot1007.eqiad.wmnet
-dataset_clients_other:
-  - stat1002.eqiad.wmnet
-  - stat1003.eqiad.wmnet
+dumps_nfs_clients:
+  snapshots:
+    - snapshot1001.eqiad.wmnet
+    - snapshot1005.eqiad.wmnet
+    - snapshot1006.eqiad.wmnet
+    - snapshot1007.eqiad.wmnet
+  other:
+    - stat1005.eqiad.wmnet
+    - stat1006.eqiad.wmnet
+dumps_web_rsync_server_clients:
+  ipv4:
+    internal:
+      - dataset1001.wikimedia.org
+      - mwlog1001.eqiad.wmnet
+      - mwlog2001.codfw.wmnet
+      - phab1001.eqiad.wmnet
+      - ms1001.wikimedia.org
+      - dumpsdata1001.eqiad.wmnet
+      - dumpsdata1002.eqiad.wmnet
+      - labstore1006.wikimedia.org
+      - stat1005.eqiad.wmnet
+      - stat1006.eqiad.wmnet
+    external:
+      - sagres.c3sl.ufpr.br
+      - odysseus.fi.muni.cz
+      - odysseus.linux.cz
+      - mirror.fr.wickedway.nl
+# disabled as of Feb 10 2017, may come back on line later
+#    - wikimedia.wansec.com
+      - ftpmirror.your.org
+      - ec2-174-129-186-231.compute-1.amazonaws.com
+      - ftpmirror-ae0-4.us.your.org
+      - crcdtn01.crc.nd.edu
+      - wmrsync.crc.nd.edu
+      - wikimedia.iconic.vi
+      - poincare.acc.umu.se
+      - wikimedia.bytemark.co.uk
+  ipv6:
+    internal: []
+    external:
+      - odysseus.ip6.fi.muni.cz
+      - poincare.acc.umu.se
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
@@ -307,79 +358,28 @@ dataset_clients_other:
 # Currently this blacklists the following schemas:
 #   * Analytics so we can use it for testing throughput
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
-eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
+#   * ImageMetrics see T141407, these tables are no longer used and yet some cached code is still sending events
+eventlogging_valid_mixed_schema_blacklist: ^(Analytics|CentralNoticeBannerHistory|ImageMetricsLoadingTime|ImageMetricsCorsSupport|Popups|SearchSatisfaction)$
 # Used to specify writer handler for eventlogging processor producer.
 eventlogging_kafka_producer_scheme: "kafka-confluent://"
 
-# LABS
-
+# Cloud Services <
+#
+# Cumin
 labs_tld: "wmflabs"
-labs_private_ips_reverse_dns: "68.10.in-addr.arpa"
-labs_designate_hostname: &labsdesignatehostname "labservices1001.wikimedia.org"
-labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labservices1002.wikimedia.org"
-labs_nova_api_host: &labsnovaapihost "labnet1001.eqiad.wmnet"
-labs_nova_network_host: &labsnovanetworkhost "labnet1001"
-labs_nova_network_ip: &labsnovanetworkip "10.64.20.25"
-status_wiki_host_master: 'wikitech.wikimedia.org'
+profile::openstack::main::cumin::auth_group: cumin_masters
+profile::openstack::main::cumin::project_masters: []
+profile::openstack::main::cumin::project_pub_key: undef
+profile::openstack::base::keystone::auth_protocol: http
+profile::openstack::base::keystone::public_port: 5000
+profile::openstack::main::nova::dhcp_domain: 'eqiad.wmflabs'
 
-# By default, don't allow projects to allocate public IPs; this way we can
-# let users have network admin rights, for firewall rules and such, and can
-# give them public ips by increasing their quota
-novaconfig:
-  network_host: *labsnovanetworkip
-  api_host: *labsnovaapihost
-  db_name: 'nova'
-  api_db_name: 'novaapi'
-  db_user: 'nova'
-  ceilometer_db_name: 'ceilometer'
-  ldap_base_dn: 'dc=wikimedia,dc=org'
-  ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
-  ldap_proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-  puppet_db_name: 'puppet'
-  puppet_db_user: 'puppet'
-  quota_floating_ips: '0'
-  libvirt_type: 'kvm'
-  my_ip: "%{::ipaddress_eth0}"
-  network_public_interface: 'eth0'
-  network_flat_interface: 'eth1.1102'
-  network_flat_tagged_base_interface: 'eth1'
-  network_flat_interface_vlan: '1102'
-  flat_network_bridge: 'br1102'
-  fixed_range: '10.68.16.0/21'
-  dhcp_start: '10.68.16.4'
-  network_public_ip: '208.80.155.255'
-  dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
-
-keystoneconfig:
-  db_name: 'keystone'
-  db_user: 'keystone'
-  ldap_base_dn: 'dc=wikimedia,dc=org'
-  ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
-  ldap_user_id_attribute: 'uid'
-  ldap_tenant_id_attribute: 'cn'
-  ldap_user_name_attribute: 'cn'
-  ldap_tenant_name_attribute: 'cn'
-  ldap_proxyagent : 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
-  auth_protocol: 'http'
-  auth_port: '35357'
-  public_port: '5000'
-  db_host: 'm5-master.eqiad.wmnet'
-  ldap_host: 'ldap-labs.eqiad.wikimedia.org'
-  token_driver: 'normal'
-
-glanceconfig:
-  db_host: 'm5-master.eqiad.wmnet'
-  bind_ip: "%{::ipaddress_eth0}"
-
-# IPs assigned here MUST be reserved beforehand so they don't collide with labs VMs.
-#  To reserve, on the labs controller run $ sudo nova-manage fixed reserve <ip>
-# (If using Neutron, all bets are off and this comment is wrong.)
-# Note also that nova-network is not great about refreshing dnsmasq,
-#  so changes to this table may require a manual kill of dnsmasq and restart
-#  of nova-network.
+# this should be deprecated
 labs_metal:
   promethium: {MAC: '90:b1:1c:2d:6f:0c', IPv4: 10.68.16.2, project: wikitextexp }
 
+# /> Cloud Services
+#
 
 # List of all zookeeper clusters in production.
 zookeeper_clusters:
@@ -395,14 +395,24 @@ zookeeper_clusters:
       conf2002.codfw.wmnet: '2002'
       conf2003.codfw.wmnet: '2003'
 
-  # ZK cluster for Druid (in Analytics cluster),
-  # colocated with Druid.
-  druid-eqiad:
+  # ZK cluster for Druid analytics-eqiad cluster (non public),
+  # colocated on druid hosts.
+  druid-analytics-eqiad:
     hosts:
       druid1001.eqiad.wmnet: '1001'
       druid1002.eqiad.wmnet: '1002'
       druid1003.eqiad.wmnet: '1003'
 
+  # ZK cluster for Druid public-eqiad cluster, (for AQS, wikistats, etc.)
+  # colocated on druid hosts.
+  druid-public-eqiad:
+    hosts:
+      druid1004.eqiad.wmnet: '1004'
+      druid1005.eqiad.wmnet: '1005'
+      druid1006.eqiad.wmnet: '1006'
+
+# Used to sync the setting between all Kafka clusters and clients.
+kafka_message_max_bytes: 4194304
 
 kafka_clusters:
   # This is the analytics Kafka cluster, named just 'eqiad' for
@@ -451,16 +461,67 @@ kafka_clusters:
       kafka2003.codfw.wmnet:
         id: 2003
 
+  # NOTE:  The 'rack' here is used by the confluent kafka module
+  # to assign broker.rack for Kafka rack awareness.  We are actually setting
+  # the row letter, not the full row-rack number, since each of these brokers
+  # are in different racks anyway.  We do awareness at the row level.
+  jumbo-eqiad:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      kafka-jumbo1001.eqiad.wmnet:
+        id: 1001
+        rack: A
+      kafka-jumbo1002.eqiad.wmnet:
+        id: 1002
+        rack: A
+      kafka-jumbo1003.eqiad.wmnet:
+        id: 1003
+        rack: B
+      kafka-jumbo1004.eqiad.wmnet:
+        id: 1004
+        rack: C
+      kafka-jumbo1005.eqiad.wmnet:
+        id: 1005
+        rack: C
+      kafka-jumbo1006.eqiad.wmnet:
+        id: 1006
+        rack: D
+
 deployment_server: tin.eqiad.wmnet
 
 install_server: install1002.wikimedia.org
 install_server_failover: install2002.wikimedia.org
 
-cumin_masters:
-  - neodymium.eqiad.wmnet
-  - sarin.codfw.wmnet
+netmon_server: netmon1002.wikimedia.org
+netmon_server_failover: netmon2001.wikimedia.org
+
+profile::netbox::netbox_server: netmon1002.wikimedia.org
+
+releases_server: releases1001.eqiad.wmnet
+releases_server_failover: releases2001.codfw.wmnet
+
+phabricator_server: 'phab1001.eqiad.wmnet'
+phabricator_server_failover: 'phab2001.codfw.wmnet'
 
 # Etcd client global configuration
-etcd_client_srv_domain: "%{::site}.wmnet"
+etcd_client_srv_domain: "conftool.%{::site}.wmnet"
 etcd_host: ''
 etcd_port: ''
+
+# Conftool global prefix (will be per-dc)
+conftool_prefix: "/conftool/v1"
+
+
+# Logging: logstash, udp2log
+logstash_host: "logstash.svc.eqiad.wmnet"
+logstash_syslog_port: 10514
+udp2log_aggregator: "udplog:8420"
+
+tcpircbot_host: 'icinga.wikimedia.org'
+tcpircbot_port: 9200
+
+# User for jenkins master-slave connections
+jenkins_agent_username: 'jenkins-slave'
+
+# HTTP proxy (can be used as an env variable)
+http_proxy: "http://webproxy.%{::site}.wmnet:8080"

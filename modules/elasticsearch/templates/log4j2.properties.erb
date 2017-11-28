@@ -2,12 +2,8 @@
 rootLogger.level = info
 rootLogger.appenderRef.file.ref = file
 <% if @send_logs_to_logstash %>
-#rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
+rootLogger.appenderRef.ship_to_logstash.ref = ship_to_logstash
 <% end %>
-
-# log action execution errors for easier debugging
-logger.action.name = org.elasticsearch.action
-logger.action.level = debug
 
 # This is noisy and already filed upstream:
 # https://github.com/elasticsearch/elasticsearch/issues/4203
@@ -37,6 +33,16 @@ logger.indexing_slowlog.level = info
 logger.indexing_slowlog.additivity = false
 logger.indexing_slowlog.appenderRef.slowlog.ref = index_search_slow_log_file
 
+# parse field deprecation are spammy see https://gerrit.wikimedia.org/r/#/c/353100/
+logger.parsefield.name = org.elasticsearch.deprecation.common.ParseField
+logger.parsefield.level = error
+
+# Elastica does not support setting a content-type and generates spam on the
+# RestController logger. This can be removed once Elastica is fixed. See
+# https://github.com/ruflin/Elastica/issues/1301.
+logger.restcontroller.name = org.elasticsearch.deprecation.rest.RestController
+logger.restcontroller.level = error
+
 appender.file.name = file
 appender.file.type = File
 appender.file.fileName = ${sys:es.logs}.log
@@ -58,14 +64,13 @@ appender.index_indexing_slow_log_file.append = true
 appender.index_indexing_slow_log_file.layout.type = PatternLayout
 appender.index_indexing_slow_log_file.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %m%n
 
+<% if @send_logs_to_logstash %>
 # ship_to_logstash needs to also be added to rootLogger to actually ship logs
-# @TODO This class is for log4j v1, for v2 should we test
-# org.graylog2.log4j2.GelfAppender ?
-#appender.ship_to_logstash.name = ship_to_logstash
-#appender.ship_to_logstash.type = biz.paluch.logging.gelf.log4j.GelfLogAppender
-#appender.ship_to_logstash.host = udp:<%= @graylog_host %>
-#appender.ship_to_logstash.port <%= @graylog_port %>
-#appender.ship_to_logstash.originHost = <%= @hostname %>
-#appender.ship_to_logstash.facility = elasticsearch
-#appender.ship_to_logstash.extractStackTrace = true
-#appender.ship_to_logstash.threshold = DEBUG
+appender.ship_to_logstash.name = ship_to_logstash
+appender.ship_to_logstash.type = Gelf
+appender.ship_to_logstash.host = udp:<%= @graylog_host %>
+appender.ship_to_logstash.port = <%= @graylog_port %>
+appender.ship_to_logstash.originHost = <%= @hostname %>
+appender.ship_to_logstash.facility = elasticsearch
+appender.ship_to_logstash.extractStackTrace = true
+<% end %>

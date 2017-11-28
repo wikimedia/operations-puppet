@@ -7,8 +7,8 @@ define celery::flower(
     $port = 5555,
     $ip = '127.0.0.1',
 ) {
-    base::service_unit { "flower-${title}":
-        template_name => 'flower',
-        systemd       => true,
+    systemd::service { "flower-${title}":
+        content => systemd_template('flower'),
+        restart => true,
     }
 }

@@ -38,7 +38,7 @@ def check(endpoint):
 @check('/labs-puppetmaster/eqiad')
 def puppet_catalog_check():
     # Verify that we can get this host's catalog from the puppet server
-    puppetmaster = "labs-puppetmaster-eqiad.wikimedia.org"
+    puppetmaster = "labs-puppetmaster.wikimedia.org"
     fqdn = socket.getfqdn()
     keyfile = "/var/lib/toolschecker/puppetcerts/key.pem"
     certfile = "/var/lib/toolschecker/puppetcerts/cert.pem"
@@ -64,12 +64,12 @@ def dns_private_check():
     return False
 
 
-@check('/nfs/showmount')
+@check('/nfs/secondary_cluster_showmount')
 def showmount_check():
     try:
         with open(os.devnull, 'w') as devnull:
             subprocess.check_call(
-                ['/sbin/showmount', '-e', 'labstore.svc.eqiad.wmnet'],
+                ['/sbin/showmount', '-e', 'nfs-tools-project.svc.eqiad.wmnet'],
                 stderr=devnull)
         return True
     except subprocess.CalledProcessError:
@@ -90,8 +90,8 @@ def ldap_query_check():
         conn.start_tls_s()
         conn.simple_bind_s(config['user'], config['password'])
 
-        query = '(cn=testlabs)'
-        base = 'ou=projects,dc=wikimedia,dc=org'
+        query = '(cn=project-testlabs)'
+        base = 'ou=groups,dc=wikimedia,dc=org'
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, query)
         if len(result) == 0:
             return False
@@ -156,7 +156,7 @@ def labsdb_check_labsdb1005():
         read_default_file=os.path.expanduser('~/replica.my.cnf')
     )
     cur = connection.cursor()
-    cur.execute('select * from toolserverdb_p.wiki limit 1')
+    cur.execute('select * from toollabs_p.tools limit 1')
     result = cur.fetchone()
     if result:
         return True
@@ -184,11 +184,6 @@ def job_running(name):
         return True
     except subprocess.CalledProcessError:
         return False
-
-
-@check('/continuous/precise')
-def continuous_job_precise():
-    return job_running('test-long-running-precise')
 
 
 @check('/continuous/trusty')
@@ -227,11 +222,6 @@ def grid_check_start(release):
 @check('/grid/start/trusty')
 def grid_check_start_trusty():
     return grid_check_start('trusty')
-
-
-@check('/grid/start/precise')
-def grid_check_start_precise():
-    return grid_check_start('precise')
 
 
 def db_read_write_check(host, db):
@@ -435,7 +425,7 @@ def service_start_test():
     url = "https://tools.wmflabs.org/toolschecker-ge-ws/"
     subprocess.check_call([
         'sudo',
-        'u', 'tools.toolschecker-ge-ws',
+        '-u', 'tools.toolschecker-ge-ws',
         '-i',
         '/usr/bin/webservice', 'start'
     ])
@@ -449,44 +439,9 @@ def service_start_test():
 
     subprocess.check_call([
         'sudo',
-        'u', 'tools.toolschecker-ge-ws',
+        '-u', 'tools.toolschecker-ge-ws',
         '-i',
         '/usr/bin/webservice', 'stop'
-    ])
-
-    # Make sure it really stopped
-    success = success and False
-    for i in range(0, 10):
-        request = requests.get(url)
-        if request.status_code != 200:
-            success = True
-            break
-        time.sleep(1)
-
-    if not success:
-        return False
-
-    # So far so good -- now, test wsgi
-    success = False
-    subprocess.check_call([
-        'sudo',
-        'u', 'tools.toolschecker-ge-ws',
-        '-i',
-        '/usr/bin/webservice', 'uwsgi-python', 'start'
-    ])
-
-    for i in range(0, 10):
-        request = requests.get(url)
-        if request.status_code == 200:
-            success = True
-            break
-        time.sleep(1)
-
-    subprocess.check_call([
-        'sudo',
-        'u', 'tools.toolschecker-ge-ws',
-        '-i',
-        '/usr/bin/webservice', 'uwsgi-python', 'stop'
     ])
 
     # Make sure it really stopped

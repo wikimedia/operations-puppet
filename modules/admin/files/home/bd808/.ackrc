@@ -1,0 +1,5 @@
+--type-set=puppet=.pp,.erb
+--type-set=erb=.erb
+--ignore-dir=build
+--ignore-dir=vendor
+--ignore-dir=tmp

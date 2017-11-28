@@ -37,10 +37,8 @@ define sysctl::conffile(
     $priority = 70
 ) {
     include ::sysctl
-
-    if $priority !~ /^\d?\d$/ {
-        fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
-    }
+    # TODO/puppet4 Make this a type check
+    validate_numeric($priority, 99, 0)
 
     $basename = regsubst($title, '\W', '-', 'G')
     $filename = sprintf('/etc/sysctl.d/%02d-%s.conf', $priority, $basename)

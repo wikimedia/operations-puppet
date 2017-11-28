@@ -9,7 +9,7 @@ define backup::mysqlset(
     $password_file    = undef,
     $mysql_binary     = undef,
     $mysqldump_binary = undef,
-    $jobdefaults      = $role::backup::host::jobdefaults,
+    $jobdefaults      = $profile::backup::host::jobdefaults,
 ) {
 
     $allowed_methods = [ 'bpipe', 'predump' ]

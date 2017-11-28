@@ -53,10 +53,10 @@ class profile::docker::storage::thinpool {
             ensure           => present,
             physical_volumes => $physical_volumes,
             logical_volumes  => $logical_volumes,
-        }
+        },
     }
 
-    class { 'lvm':
+    class { '::lvm':
         manage_pkg    => true,
         volume_groups => $volume_group,
     }
@@ -92,7 +92,7 @@ class profile::docker::storage::thinpool {
         'storage-opts'   =>  [
             'dm.thinpooldev=/dev/mapper/docker-thinpool-tpool',
             'dm.use_deferred_removal=true',
-            'dm.use_deferred_deletion=true'
-        ]
+            'dm.use_deferred_deletion=true',
+        ],
     }
 }

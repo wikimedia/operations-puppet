@@ -5,7 +5,7 @@ class mediawiki::maintenance::pageassessments( $ensure = present ) {
         minute   => 42,
         hour     => 20,
         monthday => '*',
-        command  => '/usr/local/bin/foreachwiki extensions/PageAssessments/maintenance/purgeUnusedProjects.php > /dev/null',
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/pageassessments.dblist extensions/PageAssessments/maintenance/purgeUnusedProjects.php > /dev/null',
     }
 }
 

@@ -7,5 +7,11 @@ define command {
 define command {
         command_name    check_smtp_tls
         # set critical days for expiry to 30
-        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$ --starttls -D 30
+        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$ --starttls -D 60,30
+}
+
+define command {
+        command_name    check_smtp_tls_le
+        # set critical days for expiry to 3 for LetsEncrypt Certificates (they live 30 days)
+        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$ --starttls -D 7,3
 }

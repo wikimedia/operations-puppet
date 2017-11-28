@@ -6,3 +6,4 @@ export LC_ALL=en_US.UTF-8
 
 # Aliases
 alias ..='cd ..'
+alias ll='ls -l --color=auto'

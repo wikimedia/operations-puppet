@@ -3,19 +3,23 @@
 # Provisions WDQS service package
 #
 class wdqs::service(
-    $package_dir=$::wdqs::package_dir,
-    $username=$::wdqs::username,
-    $config_file='RWStore.properties',
+    $deploy_user,
+    $package_dir,
+    $username,
+    $config_file,
+    $logstash_host,
+    $logstash_json_port,
 ) {
 
     include ::wdqs::packages
 
     if $::wdqs::use_git_deploy {
 
-        package { 'wdqs':
-            ensure   => present,
-            provider => 'trebuchet',
-            require  => User[$username],
+        # Deployment
+        scap::target { 'wdqs/wdqs':
+            service_name => 'wdqs-blazegraph',
+            deploy_user  => $deploy_user,
+            manage_user  => true,
         }
 
         $git_deploy_dir = '/srv/deployment/wdqs/wdqs'
@@ -27,13 +31,13 @@ class wdqs::service(
                 owner   => $::wdqs::username,
                 group   => 'wikidev',
                 mode    => '0775',
-                require => Package['wdqs'],
+                require => Scap::Target['wdqs/wdqs'],
             }
         } else {
             # This is to have file resource on $package_dir in any case
             file { $package_dir:
                 ensure  => present,
-                require => Package['wdqs'],
+                require => Scap::Target['wdqs/wdqs'],
             }
         }
 
@@ -51,12 +55,11 @@ class wdqs::service(
     }
 
     # Blazegraph service
-    base::service_unit { 'wdqs-blazegraph':
-        template_name  => 'wdqs-blazegraph',
-        systemd        => true,
-        upstart        => true,
-        service_params => {
-            enable => true,
-        }
+    systemd::unit { 'wdqs-blazegraph':
+        content => template('wdqs/initscripts/wdqs-blazegraph.systemd.erb'),
+    }
+
+    service { 'wdqs-blazegraph':
+        ensure => 'running',
     }
 }

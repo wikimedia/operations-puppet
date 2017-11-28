@@ -1,7 +1,0 @@
-# Max number of connections per IP for Zookeeper
-zookeeper::max_client_connections: 1024
-
-# Default tick_time is 2000ms, this should allow a max
-# of 16 seconds of latency for Zookeeper client sessions.
-# See comments in role::kafka::analytics::broker for more info.
-zookeeper::sync_limit: 8

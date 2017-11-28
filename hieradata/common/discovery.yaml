@@ -3,9 +3,94 @@
 # while other services should be polled locally
 discovery::app_routes:
   mediawiki: 'eqiad'
-  parsoid: "%{::site}"
-  restbase: "%{::site}"
-  mobileapps: "%{::site}"
-  graphoid: "%{::site}"
-  mathoid: "%{::site}"
   aqs: 'eqiad'
+
+# confctl-based dynamic global discovery pooling
+discovery::services:
+  # MediaWiki related
+  appservers-ro:
+    lvs: apaches
+    active_active: true
+  appservers-rw:
+    lvs: apaches
+    active_active: false
+  api-ro:
+    lvs: api
+    active_active: true
+  api-rw:
+    lvs: api
+    active_active: false
+  jobrunner:
+    lvs: jobrunner
+    active_active: false
+  imagescaler-rw:
+    lvs: rendering
+    active_active: false
+  imagescaler-ro:
+    lvs: rendering
+    active_active: true
+  swift-rw:
+    lvs: swift
+    active_active: false
+  swift-ro:
+    lvs: swift
+    active_active: true
+  # Main microservices
+  parsoid:
+    lvs: parsoid
+    active_active: true
+  restbase:
+    lvs: restbase
+    active_active: true
+  restbase-async:
+    lvs: restbase
+    active_active: true
+  search:
+    lvs: search
+    active_active: true
+  # Everything else
+  apertium:
+    lvs: apertium
+    active_active: true
+  citoid:
+    lvs: citoid
+    active_active: true
+  cxserver:
+    lvs: cxserver
+    active_active: true
+  eventbus:
+    lvs: eventbus
+    active_active: true
+  eventstreams:
+    lvs: eventstreams
+    active_active: true
+  graphoid:
+    lvs: graphoid
+    active_active: true
+  kartotherian:
+    lvs: kartotherian
+    active_active: true
+  mathoid:
+    lvs: mathoid
+    active_active: true
+  mobileapps:
+    lvs: mobileapps
+    active_active: true
+  ores:
+    lvs: ores
+    active_active: true
+  pdfrender:
+    lvs: pdfrender
+    active_active: true
+  trendingedits:
+    lvs: trendingedits
+    active_active: true
+  "recommendation-api":
+    lvs: "recommendation-api"
+    active_active: true
+  wdqs:
+    lvs: wdqs
+    active_active: true
+  zotero:
+    lvs: zotero
+    active_active: true

@@ -7,11 +7,11 @@ description "Dumps monitoring service"
 start on (local-filesystems and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
 
-setuid "datasets"
-setgid "datasets"
+setuid "<%= @xmldumpsuser %>"
+setgid "<%= @xmldumpsgroup %>"
 
 respawn
 
 chdir <%= @repodir %>
 
-exec /bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.monitor
+exec /bin/bash <%= @repodir -%>/monitor --configfile <%= @confsdir -%>/wikidump.conf.dumps:monitor --basedir <%= @repodir %>

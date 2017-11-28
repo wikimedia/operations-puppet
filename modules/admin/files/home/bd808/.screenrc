@@ -1,0 +1,92 @@
+# screen configuration
+#
+# Mysterious voodoo collected from all over the net.
+
+################
+# settings
+
+startup_message off # don't display the copyright page
+autodetach on       # detach on hangup
+defscrollback 10000 # lots of scrollback
+defutf8 on          # utf-8 please
+altscreen off       # disable smcup/rmcup terminfo behavior
+
+# emulate .logout message
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+
+# hardstatus as window title
+backtick 1 5 5 true
+# show current window number and title in hardstatus
+hardstatus string "screen [%n: %t]"
+
+# window list that keeps the active window displayed
+caption string "%-Lw%{= Yk}%50>%n%f*%t%{-}%+Lw%<"
+caption always
+
+################
+# keybindings
+
+#remove some stupid / dangerous key bindings
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+#make them better
+bind 'K' kill
+#bind 'I' login on
+#bind 'O' login off
+bind '}' history
+
+# Yet another hack:
+# Prepend/append register [/] to the paste if ^a^] is pressed.
+# This lets me have autoindent mode in vi.
+register [ "\033:se noai\015a"
+register ] "\033:se ai\015a"
+bind ^] paste [.]
+
+# easy split navigation
+bind j focus down
+bind k focus up
+bind t focus top
+bind b focus bottom
+
+
+################
+# xterm tweaks
+
+#xterm understands both im/ic and doesn't have a status line.
+#Note: Do not specify im and ic in the real termcap/info file as
+#some programs (e.g. vi) will not work anymore.
+termcap  xterm* hs@:cs=\E[%i%d;%dr:im=\E[4h:ei=\E[4l
+terminfo xterm* hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
+
+#80/132 column switching must be enabled for ^AW to work
+#change init sequence to not switch width
+termcapinfo xterm* Z0=\E[?3h:Z1=\E[?3l:is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l
+
+# Make the output buffer large for (fast) xterms.
+termcapinfo xterm* OL=10000
+
+# tell screen that xterm can switch to dark background and has function
+# keys.
+termcapinfo xterm* 'VR=\E[?5h:VN=\E[?5l'
+termcapinfo xterm* 'k1=\E[11~:k2=\E[12~:k3=\E[13~:k4=\E[14~'
+termcapinfo xterm* 'kh=\E[1~:kI=\E[2~:kD=\E[3~:kH=\E[4~:kP=\E[H:kN=\E[6~'
+
+# special xterm hardstatus: use the window title.
+termcapinfo xterm* 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+
+# I have no idea what this does.
+termcapinfo xterm* 'vi=\E[?25l:ve=\E[34h\E[?25h:vs=\E[34l'
+
+# emulate part of the 'K' charset
+termcapinfo xterm* 'XC=K%,%\E(B,[\304,\\\\\326,]\334,{\344,|\366,}\374,~\337'
+
+# use background color for delete operations
+termcapinfo xterm* ut
+
+# do not use alt buffer mode
+termcapinfo xterm* ti@:te@

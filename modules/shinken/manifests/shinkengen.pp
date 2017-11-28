@@ -4,21 +4,9 @@
 # config for Shinken by hittig the wikitech API
 class shinken::shinkengen {
     include shinken
-    include ::openstack::clientlib
 
-    package { [
-        'python3-yaml',
-        'python3-requests',
-    ]:
-        ensure => present,
-    }
-
-    $novaconfig = hiera_hash('novaconfig', {})
-    $observer_pass = $novaconfig['observer_password']
-
-    if $::openstack::version == 'liberty' or ! $::openstack::version {
-        fail('openstack::version must be set to Mitaka or later for python3 dependencies.')
-    }
+    require_package('python-requests',
+                    'python-yaml')
 
     file { '/etc/shinkengen.yaml':
         content => template('shinken/shinkengen.yaml.erb'),
@@ -31,7 +19,7 @@ class shinken::shinkengen {
         owner   => 'shinken',
         group   => 'shinken',
         mode    => '0555',
-        require => Package['python3-yaml'],
+        require => Package['python-yaml'],
     }
 
     exec { '/usr/local/bin/shinkengen':

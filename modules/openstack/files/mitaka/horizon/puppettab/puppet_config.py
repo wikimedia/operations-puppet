@@ -33,7 +33,7 @@ class puppet_config():
         self.tenant_id = tenant_id
         self.apiurl = getattr(settings,
                               "PUPPET_CONFIG_BACKEND",
-                              "http://labcontrol1001.wikimedia.org:8100/v1"
+                              "http://labcontrol1001.wikimedia.org:8101/v1"
                               )
         self.refresh()
 
@@ -82,7 +82,7 @@ class puppet_config():
                     if key.startswith(role):
                         # (len(role)+2) is the length of the rolename plus the ::,
                         # getting us the raw param name
-                        argname = key[(len(role)+2):]
+                        argname = key[(len(role) + 2):]
                         if hiera_yaml[key]:
                             self.role_dict[role][argname] = hiera_yaml[key]
                             del hiera_yaml[key]
@@ -169,6 +169,39 @@ class puppet_config():
     def set_role_list(self, role_list):
         self.set_roles(role_list + self.other_classes)
 
+    # This function is for setting the hiera that's not attached
+    #  to parsed roles.  This needs to be separate from set_hiera below
+    #  so that we don't clear role params when the user edits the
+    #  free-form hiera field.
+    def set_roleless_hiera(self, hiera_yaml):
+        # Add role-associated hiera params to this freeform block before
+        #  sending it on to the backend
+        if not hiera_yaml:
+            hiera_yaml = {}
+
+        raw_hiera_yaml = yaml.safe_load(self.hiera_raw)
+        if not raw_hiera_yaml:
+            raw_hiera_yaml = {}
+        allrole_dict = {role.name: role for role in self.allroles}
+
+        # This next bit is the reverse of what we do to self.hiera in refresh()
+        for role in list(self.roles):
+            if role in allrole_dict:
+                self.role_dict[role] = {}
+                for key in raw_hiera_yaml.keys():
+                    if key.startswith(role):
+                        # (len(role)+2) is the length of the rolename plus the ::,
+                        # getting us the raw param name
+                        if raw_hiera_yaml[key]:
+                            hiera_yaml[key] = raw_hiera_yaml[key]
+            elif role:
+                # This is an unknown role, so its hiera was already part of the freeform block.
+                pass
+
+        self.set_hiera(hiera_yaml)
+
+    # This function sets all hiera settings, including those that belong
+    #  to a set role in the UI
     def set_hiera(self, hiera_yaml):
         if not hiera_yaml:
             # The user probably cleared the field.  That's fine, we'll just
@@ -189,7 +222,7 @@ class puppet_config():
     def delete_prefix(tenant_id, prefix):
         apiurl = getattr(settings,
                          "PUPPET_CONFIG_BACKEND",
-                         "http://labcontrol1001.wikimedia.org:8100/v1")
+                         "http://labcontrol1001.wikimedia.org:8101/v1")
         prefixurl = "%s/%s/prefix/%s" % (apiurl, tenant_id, prefix)
         req = requests.delete(prefixurl, verify=False)
         req.raise_for_status()
@@ -198,7 +231,7 @@ class puppet_config():
     def get_prefixes(tenant_id):
         apiurl = getattr(settings,
                          "PUPPET_CONFIG_BACKEND",
-                         "http://labcontrol1001.wikimedia.org:8100/v1")
+                         "http://labcontrol1001.wikimedia.org:8101/v1")
         prefixurl = "%s/%s/prefix" % (apiurl, tenant_id)
         req = requests.get(prefixurl, verify=False)
         if req.status_code == 404:

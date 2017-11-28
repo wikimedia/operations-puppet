@@ -2,17 +2,18 @@
 # verification during email accept
 # vim: set ts=4 et sw=4:
 class role::openldap::corp {
+    include ::standard
     include passwords::openldap::corp
-    include ::base::firewall
+    include ::profile::backup::host
+    include ::profile::base::firewall
 
-    system::role { 'role::openldap::corp':
+    system::role { 'openldap::corp':
         description => 'Corp OIT openldap Mirror server'
     }
 
     $master = 'ldap1.corp.wikimedia.org'
     $sync_pass = $passwords::openldap::corp::sync_pass
 
-    sslcert::certificate { 'ldap-mirror.wikimedia.org': ensure => absent }
     # Certificate needs to be readable by slapd
     sslcert::certificate { "ldap-corp.${::site}.wikimedia.org":
         group => 'openldap',
@@ -43,6 +44,7 @@ class role::openldap::corp {
         critical      => true,
     }
 
+    backup::openldapset {'openldap_oit':}
     # NOTE: username is in double quotes cause otherwise it get's auto split
     # into array hence the nested quoting
     diamond::collector { 'OpenLDAP':

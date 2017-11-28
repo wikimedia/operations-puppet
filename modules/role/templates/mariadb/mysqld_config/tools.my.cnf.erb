@@ -23,6 +23,7 @@ default-character-set = utf8mb4
 user       = mysql
 socket     = /var/run/mysqld/mysqld.sock
 port       = 3306
+basedir    = <%= @basedir %>
 datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
 server_id  = <%= @server_id %>
@@ -80,6 +81,10 @@ innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
+
+# Enable innodb_large_prefix #T179614
+innodb_file_format = Barracuda
+innodb_large_prefix = 1
 
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html

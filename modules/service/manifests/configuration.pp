@@ -6,11 +6,11 @@
 #
 # [*mwapi_uri*]
 #   The host/IP where to reach the MW API. Default:
-#   http://api.svc.${::mw_primary}.wmnet/w/api.php
+#   http://api-rw.discovery.wmnet/w/api.php
 #
 # [*restbase_uri*]
 #   The host/IP where to reach RESTBase. Default:
-#   http://restbase.svc.${::rb_site}.wmnet:7231
+#   http://restbase.discovery.wmnet:7231
 #
 # [*pdfrender_key*]
 #   The access key to use when issuing requests to the PDF rendering service.
@@ -31,6 +31,9 @@
 # [*logstash_port*]
 #   GELF logging port. Default: 12201
 #
+# [*logstash_port_logback*]
+#   Logback logging port. Default: 11514
+
 # [*log_dir*]
 #   Local root log directory. The service's logs will be placed in its
 #   subdirectory. Default: /srv/log
@@ -40,14 +43,15 @@
 #   Default: false
 #
 class service::configuration(
-    $mwapi_uri     = "http://api.svc.${::mw_primary}.wmnet/w/api.php",
-    $restbase_uri  = "http://restbase.svc.${::rb_site}.wmnet:7231",
+    $mwapi_uri     = 'http://api-rw.discovery.wmnet/w/api.php',
+    $restbase_uri  = 'http://restbase.discovery.wmnet:7231',
     $pdfrender_key = 'secret',
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,
     $logstash_host = 'localhost',
     $logstash_port = 12201,
+    $logstash_port_logback = 11514,
     $log_dir       = '/srv/log',
     $use_dev_pkgs  = false,
 ){

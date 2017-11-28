@@ -9,7 +9,7 @@ Here's an example workflow for rebooting a nova-compute node:
 t - 24h
 -------
 - Gather up list of tools nodes to be rebooted into <hostlist>. An example list
-would look like: tools-exec-1205 tools-exec-1404 tools-webgrid-lighttpd-1205
+would look like: tools-exec-1404 tools-webgrid-lighttpd-1405
 - Log in to tools-master and:
   $ dequeugridnodes.sh <hostlist>
 

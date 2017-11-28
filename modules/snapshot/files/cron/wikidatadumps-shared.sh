@@ -8,17 +8,24 @@
 #
 # Marius Hoch < hoo@online.de >
 
-source /usr/local/etc/set_dump_dirs.sh
+source /usr/local/etc/dump_functions.sh
 configfile="${confsdir}/wikidump.conf"
 
 today=`date +'%Y%m%d'`
 daysToKeep=70
 
-apacheDir=`awk -Fdir= '/^dir=/ { print $2 }' "$configfile"`
-publicDir=`awk -Fpublic= '/^public=/ { print $2 }' "$configfile"`
-targetDirBase=$publicDir/other/wikibase/wikidatawiki
+args="wiki:dir;output:temp"
+results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
+
+apacheDir=`getsetting "$results" "wiki" "dir"` || exit 1
+tempDir=`getsetting "$results" "output" "temp"` || exit 1
+
+for settingname in "apacheDir" "tempDir"; do
+    checkval "$settingname" "${!settingname}"
+done
+
+targetDirBase=${otherdir}/wikibase/wikidatawiki
 targetDir=$targetDirBase/$today
-tempDir=`awk -Ftemp= '/^temp=/ { print $2 }' "$configfile"`
 
 multiversionscript="${apacheDir}/multiversion/MWScript.php"
 
@@ -51,5 +58,5 @@ function pruneOldLogs {
 }
 
 function runDcat {
-	php5 /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
+	php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
 }

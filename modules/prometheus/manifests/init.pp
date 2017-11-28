@@ -1,5 +1,5 @@
 class prometheus {
-    file { '/etc/prometheus-nginx':
+    file { '/etc/apache2/prometheus.d':
         ensure => directory,
         owner  => 'root',
         group  => 'root',

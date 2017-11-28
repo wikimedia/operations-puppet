@@ -26,7 +26,8 @@
 # [*full_config*]
 #   Whether the full config has been provided by the caller. If set to true,
 #   no config merging will take place and the caller is required to supply the
-#   'config' parameter. Default: false
+#   'config' parameter. If set to 'external', it will prevent service::node from
+#   performing any configuration. Default: false
 #
 # [*no_workers*]
 #   Number of workers to start. Default: 'ncpu' (i.e. start as many workers as
@@ -68,6 +69,10 @@
 #
 # [*starter_script*]
 #   The script used for starting the service. Default: src/server.js
+#
+# [*use_proxy*]
+#   Whether the service needs to use the proxy to access external resources.
+#   Default: false
 #
 # [*local_logging*]
 #   Whether to store log entries on the target node as well. Default: true
@@ -158,6 +163,7 @@ define service::node(
     $starter_module  = './src/app.js',
     $entrypoint      = '',
     $starter_script  = 'src/server.js',
+    $use_proxy       = false,
     $local_logging   = true,
     $logging_name    = $title,
     $statsd_prefix   = $title,
@@ -207,32 +213,12 @@ define service::node(
     }
 
     # sanity check since a default port cannot be assigned
-    unless $port and $port =~ /^\d+$/ {
-        fail('Service port must be specified and must be a number!')
-    }
+    # TODO/puppet4 convert parameter to integer
+    validate_numeric($port)
 
-    # the local log file name
+    # the local log directory
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
-
-    # configuration management
-    if $full_config {
-        unless $config and size($config) > 0 {
-            fail('A config needs to be specified when full_config == true!')
-        }
-        $complete_config = $config
-    } else {
-        # load configuration
-        $local_config = $config ? {
-            undef   => '{}',
-            default => $config
-        }
-        $complete_config = merge_config(
-            template('service/node/config.yaml.erb'),
-            $local_config
-        )
-    }
-
     # Software and the deployed code, firejail for containment
     require_package('nodejs', 'nodejs-legacy', 'firejail')
 
@@ -264,7 +250,9 @@ define service::node(
         mode   => '0775',
     }
 
-    if $deployment == 'scap3' and $deployment_config {
+    if $full_config == 'external' {
+        notice("Not configuring ${title} as configuration is handled independently")
+    } elsif $deployment == 'scap3' and $deployment_config {
         # NOTE: this is a work-around need to switch config file deployments
         # to Scap3. The previous praxis was to make the config owned by root,
         # but that is not possible with Scap3, as it installs a symlink under
@@ -278,52 +266,36 @@ define service::node(
             onlyif  => "/usr/bin/test -O ${chown_target}",
             require => [User[$deployment_user], Group[$deployment_user]]
         }
-        file { "/etc/${title}/config-vars.yaml":
-            ensure  => present,
-            content => template('service/node/config-vars.yaml.erb'),
-            owner   => $deployment_user,
-            group   => $deployment_user,
-            mode    => '0444',
-            tag     => "${title}::config",
+        service::node::config::scap3 { $title:
+            port            => $port,
+            no_workers      => $no_workers,
+            heap_limit      => $heap_limit,
+            heartbeat_to    => $heartbeat_to,
+            repo            => $repo,
+            starter_module  => $starter_module,
+            entrypoint      => $entrypoint,
+            logging_name    => $logging_name,
+            statsd_prefix   => $statsd_prefix,
+            auto_refresh    => $auto_refresh,
+            deployment_vars => $deployment_vars,
+            deployment_user => $deployment_user,
+            before          => Scap::Target[$repo],
         }
-
-        # We need to ensure that the full config gets deployed when we change the
-        # puppet controlled part. If auto_refresh is true, this will also restart
-        # the service.
-        file { "/usr/local/bin/apply-config-${title}":
-            ensure  => present,
-            content => template('service/node/apply-config.sh.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0755',
-            before  => Exec["${title} config deploy"],
-        }
-
-        exec { "${title} config deploy":
-                command     => "/usr/local/bin/apply-config-${title}",
-                user        => $deployment_user,
-                group       => $deployment_user,
-                refreshonly => true,
-                subscribe   => File["/etc/${title}/config-vars.yaml"],
-        }
-
     } else {
-        file { "/etc/${title}/config.yaml":
-            ensure  => present,
-            content => $complete_config,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            tag     => "${title}::config",
-        }
-        if $auto_refresh {
-            # if the service should be restarted after a
-            # config change, specify the notify/before requirement
-            File["/etc/${title}/config.yaml"] ~> Service[$title]
-        } else {
-            # no restart should happen, just ensure the file is
-            # created before the service
-            File["/etc/${title}/config.yaml"] -> Service[$title]
+        service::node::config { $title:
+            port           => $port,
+            config         => $config,
+            full_config    => $full_config,
+            no_workers     => $no_workers,
+            heap_limit     => $heap_limit,
+            heartbeat_to   => $heartbeat_to,
+            local_logging  => $local_logging,
+            starter_module => $starter_module,
+            entrypoint     => $entrypoint,
+            logging_name   => $logging_name,
+            statsd_prefix  => $statsd_prefix,
+            auto_refresh   => $auto_refresh,
+            use_proxy      => $use_proxy
         }
     }
 
@@ -346,11 +318,9 @@ define service::node(
             mode   => '0755',
         }
 
-        file { "/etc/logrotate.d/${title}":
+        logrotate::conf { $title:
+            ensure  => present,
             content => template('service/logrotate.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
         }
     }
 
@@ -378,9 +348,8 @@ define service::node(
     # service init script and activation
     base::service_unit { $title:
         ensure         => present,
-        systemd        => true,
-        upstart        => true,
-        template_name  => 'node',
+        systemd        => systemd_template('node'),
+        upstart        => upstart_template('node'),
         refresh        => $auto_refresh,
         service_params => {
             enable     => $enable,
@@ -407,11 +376,8 @@ define service::node(
         include service::monitoring
 
         $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
-        $check_command = "/usr/bin/service-checker-swagger -t 5 ${::ipaddress} ${monitor_url}"
         file { "/usr/local/bin/check-${title}":
-            content => inline_template(
-                '<%= ["#!/bin/sh", @check_command].join("\n") %>'
-            ),
+            content => template('service/check-service.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',

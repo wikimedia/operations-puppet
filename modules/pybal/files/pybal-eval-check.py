@@ -67,5 +67,6 @@ def main():
     if not eligible_servers:
         die("server pool cannot be empty!")
 
+
 if __name__ == '__main__':
     print main() or 'no issues'

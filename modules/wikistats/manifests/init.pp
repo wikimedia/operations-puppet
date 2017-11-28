@@ -31,10 +31,29 @@ class wikistats (
 
     file { '/srv/wikistats':
         ensure => 'directory',
+        owner  => 'wikistatsuser',
+        group  => 'wikistatsuser',
     }
 
-    file { '/root/wsbackup':
+    # directory used by deploy-script to store backups
+    file { '/usr/lib/wikistats/backup':
+        ensure  => 'directory',
+        owner   => 'wikistatsuser',
+        group   => 'wikistatsuser',
+        require => User['wikistatsuser'],
+    }
+
+    file { '/usr/local/bin/wikistats':
         ensure => 'directory',
+    }
+
+    # deployment script that copies files in place after puppet git clones to /srv/
+    file { '/usr/local/bin/wikistats/deploy-wikistats':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+        source => 'puppet:///modules/wikistats/deploy-wikistats.sh',
     }
 
     # FIXME rename repo, it was a deb in the past
@@ -43,6 +62,8 @@ class wikistats (
         ensure    => 'latest',
         directory => '/srv/wikistats',
         branch    => 'master',
+        owner     => 'wikistatsuser',
+        group     => 'wikistatsuser',
     }
 
     # webserver setup for wikistats
@@ -50,10 +71,23 @@ class wikistats (
         wikistats_host => $wikistats_host,
     }
 
-    # data update scripts/crons for wikistats
-    class { 'wikistats::updates': }
+    $db_pass = fqdn_rand_string(23, 'Random9Fn0rd8Seed')
 
     # install a db on localhost
-    class { 'wikistats::db': }
+    class { 'wikistats::db':
+        db_pass => $db_pass,
+    }
+
+    # scripts and crons to update data and dump XML files
+    file { '/var/www/wikistats/xml':
+        ensure => directory,
+        owner  => 'wikistatsuser',
+        group  => 'wikistatsuser',
+        mode   => '0644',
+    }
+
+    class { 'wikistats::updates':
+        db_pass => $db_pass,
+    }
 }
 

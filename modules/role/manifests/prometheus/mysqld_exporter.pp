@@ -1,8 +1,12 @@
-class role::prometheus::mysqld_exporter {
+class role::prometheus::mysqld_exporter (
+    $socket ='/tmp/mysql.sock',
+    ) {
+
     include passwords::prometheus
 
     prometheus::mysqld_exporter { 'default':
         client_password => $passwords::prometheus::db_pass,
+        client_socket   => $socket,
         # TODO: collect also TokuDB metrics, but only from
         # selected nodes
         # TODO: collect table stats, but less frequently,

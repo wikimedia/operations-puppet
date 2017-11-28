@@ -1,13 +1,18 @@
 groups:
   absent:
-    description: meta group for absented users
+    description: meta group for absented users with previous cluster shell access
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
-              manybubbles, haithams, jzerebecki, ashwinpp, ironholds, robla, asherman,
+              manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
-              yurik, bsimmers, bcohn]
+              yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
+              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
+              nschaaf, zhousquared, gwicke]
+  absent_ldap:
+    description: meta group for absented users which had privileged LDAP access in the past
+    members: [siddharth11, adavenport]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -22,7 +27,8 @@ groups:
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, midom, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui]
+              ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
+              ayounsi, herron, aborrero]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
@@ -32,32 +38,33 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott, arlolra, gwicke, eevans, ppchelko, mobrovac]
+    members: [ssastry, cscott, arlolra, eevans, ppchelko, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart' ]
   gerrit-root:
     gid: 703
     description: manage gerrit server
-    members: [demon, catrope, twentyafterfour]
+    members: [demon, twentyafterfour]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
     description: assist in managing gerrit server
     # qchris is RT 6720
     # Rest is the Release Engineering team
-    members: [qchris, demon, dduvall, hashar, thcipriani, twentyafterfour, zfilipin]
+    members: [qchris, dduvall, hashar, thcipriani, zfilipin]
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
-              brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
-              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
+    members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
+              brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
+              gjg, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-              nikerabbit, reedy, ssastry, tomasz,
+              nikerabbit, reedy, ssastry,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
-              ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga]
+              ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
+              musikanimal, jdrewniak]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -66,21 +73,21 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/renice']
   restricted:
     gid: 706
-    description: access to terbium, fluorine (private data) and bastion hosts
+    description: access to terbium, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [daniel, dartar, ellery, bearloga,
-              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, ssastry, smalyshev,
-              nuria, leila, santhosh, amire80, legoktm, addshore, foks, chelsyx]
+    members: [dartar, bearloga,
+              ezachte, jamesur, jdlrobson, smalyshev,
+              leila, santhosh, amire80, foks, chelsyx, dbarratt]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [eevans, gwicke, mobrovac, ssastry]
+    members: [eevans, mobrovac, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, tomasz]
+    members: [ebernhardson, dcausse]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -89,11 +96,11 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, csteipp, demon, hashar, reedy, thcipriani]
+    members: [catrope, demon, hashar, legoktm, reedy, thcipriani]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski]
+    members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski, cooltey, sharvaniharan]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
@@ -102,19 +109,20 @@ groups:
     gid: 714
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
-                 credentials on stat1003 (currently the only such host)
+                 credentials on stat1006 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, deskana,
-              dduvall, ellery, ezachte, gilles, halfak,
+              dduvall, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem,
+              daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
+              neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, nschaaf, dstrine, joewalsh, mpany, hjiang, jsamra,
+              nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9, zareen, fdans, samtar, mlitn]
+              samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
+              pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -127,13 +135,13 @@ groups:
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
-    members: [csteipp]
+    members: []
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins and nodepool hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm,
-              hashar, niedzielski]
+              twentyafterfour, zfilipin, thcipriani, legoktm, gjg,
+              hashar, niedzielski, addshore]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
@@ -144,6 +152,11 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool restart',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool status',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul reload',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul restart',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul start',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul stop',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul status',
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger reload',
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger restart',
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger start',
@@ -156,34 +169,30 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  ocg-render-admins:
-    gid: 721
-    description: admins for pdf render (rt 6468)
-    members: [cscott, ssastry, gwicke, arlolra]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service ocg *',
-                 'ALL = (ocg) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
-    members: [bd808, demon, reedy]
+    members: [demon, reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, joal, milimetric, tomasz, fdans]
+    members: [ezachte, joal, milimetric, fdans]
   statistics-privatedata-users:
     gid: 725
     description: Access to stat boxes that host private data, including
-                 sampled webrequest logs.  This does not (necessarily)
-                 grant access to Hadoop.  If someone wants access to
-                 stat1002 to access webrequest logs in the Hadoop cluster
+                 sampled webrequest logs.  This group should not be used just to
+                 grant someone Hadoop access.  If someone wants access to
+                 access webrequest logs in the Hadoop cluster
                  you should put them in the analytics-privatedata-users
-                 group.
+                 group.  If they want Hadoop access without rights to private data,
+                 add them instead to the analytics-users group.  statistics-* groups
+                 DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
-              leila, ellery, nettrom, mforns, bmansurov, tbayer, joal,
+              leila, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer, zareen,
-              fdans]
+              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
+              fdans, shiladsen]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -192,9 +201,9 @@ groups:
               marktraceur, nuria, leila, gilles,
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe,
+              mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva]
+              ladsgroup, ovasileva, shiladsen]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -208,40 +217,41 @@ groups:
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
-    members: [gwicke, catrope, mobrovac]
+    members: [catrope, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mathoid *',
                  'ALL = (mathoid) NOPASSWD: ALL']
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
-        This will grant shell access on Hadoop client nodes (stat1002) and on
+        This will grant shell access on Hadoop client nodes and on
         Hadoop NameNodes.
-    members: [debt]
+    members: [debt, goransm, jdittrich]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
-                 This will grant shell access on Hadoop client nodes (stat1002) and on
+                 This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester, nithum,
-              halfak, dr0ptp4kt, bearloga, cwdent, elukey,
-              nuria, otto, deskana, zhousquared, arnad, jgonsior,
-              bsitzmann, dbrant, ellery, nettrom, leila,
+    members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak,
+              halfak, dr0ptp4kt, bearloga, elukey, ppchelko,
+              nuria, otto, deskana, arnad, jgonsior, jgreen,
+              bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, jamesur, akosiaris, lpintscher, jkatz, madhuvishy, gpaumier,
+              joal, jamesur, akosiaris, jkatz, madhuvishy,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
-              csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
-              dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, hjiang, jsamra,
+              smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
+              dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
+              bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
-              psinger, flemmerich, mkroetzsch, akrausetud, filippo, nschaaf, pmiazga, faidon,
-              zareen, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal]
+              flemmerich, mkroetzsch, akrausetud, filippo, pmiazga, faidon,
+              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
+              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, nuria, mforns, milimetric, fdans]
+    members: [joal, nuria, mforns, milimetric, fdans, tbayer]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
@@ -252,7 +262,7 @@ groups:
   citoid-admin:
     gid: 736
     description: group of citoid admins
-    members: [gwicke, catrope, mobrovac]
+    members: [catrope, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service citoid *',
                  'ALL = (citoid) NOPASSWD: ALL']
   eventlogging-roots:
@@ -276,7 +286,8 @@ groups:
     gid: 743
     description: People who can sudo into the datasets user on snapshot hosts.
     members: [hoo]
-    privileges: ['ALL = (datasets) NOPASSWD: ALL']
+    privileges: ['ALL = (datasets) NOPASSWD: ALL',
+                 'ALL = (dumpsgen) NOPASSWD: ALL']
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
@@ -296,6 +307,7 @@ groups:
                  * Delete files (e.g. copyright violations)
     members: [aklapper]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy F*',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy W*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy @*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
@@ -316,7 +328,7 @@ groups:
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
-    members: [gwicke, mobrovac, eevans]
+    members: [mobrovac, eevans]
   graphoid-admin:
     gid: 750
     description: group of graphoid admins
@@ -331,7 +343,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps-test cluster
-    members: [maxsem, eevans]
+    members: [maxsem, eevans, pnorman]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -345,7 +357,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [maxsem]
+    members: [maxsem, pnorman]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -362,7 +374,9 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl mask wdqs-updater',
                  'ALL = NOPASSWD: /bin/systemctl unmask wdqs-updater',
                  'ALL = (blazegraph) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+                 'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = NOPASSWD: /usr/local/bin/depool',
+                 'ALL = NOPASSWD: /usr/local/bin/pool']
   mailman-admins:
     gid: 757
     description: Admins for mailman
@@ -373,7 +387,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [maxsem]
+    members: [maxsem, pnorman]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
@@ -391,7 +405,7 @@ groups:
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
     gid: 760
-    description: users who can login on fluorine and read mediawiki logs
+    description: users who can login on mwlog hosts and read mediawiki logs
     members: [tjones, addshore, matanya]
 
   apertium-admins:
@@ -403,9 +417,9 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [bd808, eevans, gwicke, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
-              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo,
-              ssastry, cscott, arlolra, jdlrobson]
+    members: [bd808, eevans, mobrovac, ppchelko, demon, twentyafterfour, thcipriani, dduvall,
+              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
+              ssastry, cscott, arlolra, jdlrobson, maxsem, awight]
     privileges: []
 
   deploy-aqs:
@@ -419,7 +433,7 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [joal, milimetric, gwicke, eevans, mobrovac]
+    members: [joal, milimetric, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /usr/sbin/service cassandra-[a-z] *',
                  'ALL = (cassandra) NOPASSWD: ALL',
@@ -433,15 +447,19 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *',
                  'ALL = NOPASSWD: /usr/sbin/megacli *',
                  'ALL = NOPASSWD: /usr/sbin/hpssacli *',
-                 'ALL = NOPASSWD: /usr/bin/salt-key *',
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
                  'ALL = NOPASSWD: /usr/bin/puppet agent -t -v',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (syslog) NOPASSWD: ALL']
+  perf-team:
+    gid: 796
+    description: performance team members with access to 'webperf' and 'xhgui' servers
+    members: [krinkle, gilles, phedenskog]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
-    description: users who have root on memcached, varnish and application servers
-    members: [krinkle]
+    description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
+    members: [krinkle, gilles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
     description: Group of users for the Analytics Query Service
@@ -455,7 +473,7 @@ groups:
   restbase-admins:
     gid: 769
     description: group of restbase admins
-    members: [gwicke]
+    members: []
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = (cassandra) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
@@ -479,7 +497,7 @@ groups:
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
-    members: [arlolra, cscott, gwicke]
+    members: [arlolra, cscott]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
@@ -510,15 +528,18 @@ groups:
   sc-admins:
     description: General service cluster admins - sc(a|b)
     gid: 779
-    members: [eevans, gwicke, mobrovac, ppchelko]
+    members: [eevans, mobrovac, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
                'ALL = NOPASSWD: /usr/sbin/service changeprop *',
                'ALL = NOPASSWD: /usr/sbin/service citoid *',
+               'ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
                'ALL = NOPASSWD: /usr/sbin/service cxserver *',
                'ALL = NOPASSWD: /usr/sbin/service graphoid *',
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
+               'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
+               'ALL = (recommendation_api) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
@@ -534,40 +555,23 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [halfak, ladsgroup]
+    members: [awight, halfak, ladsgroup]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
-                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *']
-  sectools-roots:
-    description: root access on servers for security tools
-    gid: 783
-    members: []
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
+                 'ALL = NOPASSWD: /usr/bin/lsof *']
   analytics-wmde-users:
     description: Group of WMDE analytics users
     gid: 784
-    members: [addshore]
+    members: [addshore, goransm]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
     description: admins for the eventbus clusters
-    members: [nuria, milimetric, joal, mforns, eevans, gwicke, ppchelko, mobrovac]
+    members: [nuria, milimetric, joal, mforns, eevans, ppchelko, mobrovac]
     privileges: ['ALL = NOPASSWD: /bin/systemctl start eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl stop eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/systemctl restart eventlogging-service-eventbus.service',
                  'ALL = NOPASSWD: /bin/journalctl *']
-  thumbor-admins:
-    gid: 787
-    description: Admins for Thumbor image scaling
-    members: [gilles]
-    privileges: ['ALL = NOPASSWD: /bin/systemctl mask thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl start thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl stop thumbor@*.service',
-                 'ALL = NOPASSWD: /bin/systemctl restart thumbor@*.service',
-                 'ALL = NOPASSWD: /usr/sbin/service thumbor@* start',
-                 'ALL = NOPASSWD: /usr/sbin/service thumbor@* stop',
-                 'ALL = NOPASSWD: /usr/sbin/service thumbor@* restart',
-                 'ALL = (thumbor) NOPASSWD: ALL']
   gitpuppet:
     gid: 998
     description: Private repo users
@@ -586,22 +590,41 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl restart zookeeper.service',
                  'ALL = NOPASSWD: /bin/systemctl mask zookeeper.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask zookeeper.service']
-  striker-users:
-    description: group of Striker users (T151424)
-    gid: 789
-    members: [bd808]
   pdfrender-admin:
     description: Group of pdfrender admins
     gid: 790
-    members: [gwicke, ppchelko, eevans, mobrovac]
+    members: [ppchelko, eevans, mobrovac, tgr]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                  'ALL = (pdfrender) NOPASSWD: ALL']
   trendingedits-admin:
     description: Group of trendingedits admins
     gid: 791
-    members: [gwicke, ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
+    members: [ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                  'ALL = (trendingedits) NOPASSWD: ALL']
+  wmcs-roots:
+    description: root for cloud services infrastructure
+    gid: 792
+    members: [bd808]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  wmcs-admin:
+    description: admin for cloud services infrastructure (labsdb only atm)
+    gid: 793
+    members: [bd808]
+    privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
+                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p']
+  recommendation-admin:
+    description: Group of recommendation-api admins
+    gid: 794
+    members: [ppchelko, eevans, mobrovac]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
+                 'ALL = (recommendation_api) NOPASSWD: ALL']
+  cpjobqueue-admin:
+    description: Group of cpjobqueue admins
+    gid: 795
+    members: [mobrovac, ppchelko, eevans]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
+                 'ALL = (cpjobqueue) NOPASSWD: ALL']
 
 users:
   rush:
@@ -619,8 +642,8 @@ users:
     name: dzahn
     realname: Daniel Zahn
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDY3GzbCE2eOM7IxQClHag9FRVg0eryA6PVa7p80Yp4suPzW73KVv9BgbSDvkdGNv9NOsVqkZkp01oZe7+XVxh1jaxM60nkF02DGKI0jn2lbzzWR5YS6gabjjn9SaOnh0MAwC8Jpvdz/YKOyE9/PAIFXajNwTuE6alHU/nWnLHaR1FJQRlfZLDlP9deNRAPaXOyn/jbO+ODNQIFeKSV0TmvZAh994wUlLoDYa1UcuqTRc9tJBmpLALVPZs1U2FZvLr7fkuOnUhcOC/uqE/pDdalSy0k6bAh/pkILOMFzhCHtrsbUV0AT7cVBogE7qYRuTo3eBrpzj9Bbsi41Q4y29lridBoyBgEMH/fnEIMDivNLzec5nYLPJ/XIDSc0G2iFoWY/u7SaVT7A6rjlSuzS7owunNXEj1mhmNW7v/FIOqG2Zl3K7INBj8Y0rFL9GuwP5LIkZxlNZT7NEdUOA3i8L4sT3YJJgiaup4Ss66TpWCDQ/znZoz5Vi5ODhXjqMVVFbrHI/7eIYMChoR5HkcRdjaIShvFgSfWcKXlwHouIVUiXprnoZZGmAa9CTAx9GFrjgC7DixK654yx4Gb47q4dttSE2nZKY1njfDRHcbLRuZ1ESEpAcoxkos1agvShw5B4ysSYRcMHkF2yqi2srq7Us19JWCmLm2RW5z+4xPBAfEMcw== dz@ubuntu
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCF9INYx9SZy7Gunoh6/Qg7s7l7WjH2Tx3+JzWT8r6k5y+WFufi2sSPTtyOIwnsnQU/6pGB9nb9vnVDoN4Mvhjv454dislPn3JoadxvQRR35n9U/br7DUa3nbNB8ivzCadmlt3jLLj4z2/8rYxcriFgF88AYK9bQiz4BZN5o5nox8LbX7Iq4JiTeyPX41K+xzWtxKzovXu+IcANLyGe+B4Ic1MeDm3gQhaqHR0BJ/CyAPI3SVbGx79U4pivU/i8rLAcXAi4RymQR19jDXogPg0HqWQpg24ZP/3CqVujWYuVGZNUDQ5QmuEUlkRO2cB2OcssEiN6gMgT8Fa3Fra+BU+p dzahn@yubikey
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJicQDgLeltqbsYvdBnOop53ArkX1pjwKU1lPMpiW111 dzahn@wmf
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/QVaUYG9PZb5OMirnHmqNGmKF7FgoPnCUzD/Zfgaf74nIQ3R30OuGU5Al9om9Cpdq9SFjfaSC0Ul/pX1bPqWsZt711EUrLPDs4GgZ8FFuurujsPMKw27WcLJHWFlvxAWzDBRc8DoO9EXRpHu9xm5oZHtbQEvoZEm4u9DZvxAljTOEHV/LQNgG/f1llHg8SSfJbirFKxBAzBuxCXVj1rfgsqIudWCMMVEQKqU0j3Nj3vyOCPLV06tozgMtQbk2iLjdUhClfxg7FJmkpvI4NkaJUKn0ooOIZlFdlMH234MyhVU0mgqDaEU+GnERrnqtVsJHugATXbkt7Jg83TOLclpO1N+Mc9xW38GXYsIUAQNJMjvj5Ekz5KaTILBWKBEIDOzDNBzPjzVwcoAX3FYqxnJS82PEHo/W8/39n02fBHrSpCcEhhZzzr68QNu2r2XhQoe1120Srf+FzXWvJGp6a/e4lKIaY/D4QgsS0/xtkZJynylbUZsFn798wrvq74y39fW0v8BsnBoyE15H+Qwd3tcWBagb8dCPW/CXKxympbrimwAdoihnWAXfSxkpW1MeHf5Ja6/fBmi3mqdfVSzPwI8b6BmMu/Hnh8MJfOQhmoHTACBhO6u53qRKdlPVGPUzuikqhDsk4TYRZN9bHvx1xLIyb0kZNpQWfAe1IS73Qd6DGw== dzahn@wmf
     uid: 2075
     email: dzahn@wikimedia.org
   jzerebecki:
@@ -681,7 +704,6 @@ users:
     name: jgreen
     realname: Jeff Green
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bdjMc3xayu9twy6HlYSpbfF1i0q+yylefuR6Kqol/0YeK133qNwGDBXCs3j7y/M/h6V9fQIfS15g/fyH7H7NMz6ESTVXehBXw+2Lk8PAPNS0c+ZyVbCbBeBV+2lPmrCiQ1vTrunSB86IUIfHnPQIK/+jkCTF56GmVv8ifV8Vp20jsJ/yfoxM+rC9PkbX8RTtDrrWfzrdXBMsm6QSr9s4i320+uyj2w6hROfsYQPDnw+GlIS741DED8dhLOJUKVQdqv0mAXJC3dMGNF1G0VN5okDsTAiFdrfhObMC/PjsPyQyloFv4EGCLEqVDs+nNmWZwMjEqOy7FoPw45Qz0cv1 jgreen@neo
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtlXCYUGn23LVRlgDM9T1onBsTuD20QEbVAplIakTAE55hN1ko1kY09Qb01l4VoAqDPapx0ROYd1on9oYYwSOGgSHKIOrB0OGg+3KX66Pjlr5ohpii20WSHS/NEI1gT76nQX7RN7tHq5/3ciNmCeQZ81YsDwCbmr7DRB5XiHUCaaCp/GIb6GXTliqtSL5oC+Rrzw4cqMeG/M7yExohVetjEK/AMOjgzMZEBHjZczvZiNpijHQ4WAIzl2KzuRDcqLKnOi48Wp+ANaKZmQngJdu8pAI51vqFIEhEwNpQrrUi1JXY2gXmYudRrvg/BvXgPJUDMmm9TOHNnBwwX8xafUgD jgreen@wertyukio.trouser.org
     uid: 2074
     email: jgreen@wikimedia.org
@@ -720,7 +742,7 @@ users:
     realname: Alexandros Kosiaris
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5IbCL8F2mKMLVL2yp3RP+1rs5v6R4iveIctHQA6kccymfoUa5y9FLT9+hx9ljXZDjrUN3rPeagbZDrGQj6UlI32YZVKRwAeaLkp85HpbzaL/2GKM9UlSq6Qztnuxp/cQGQtDrSK9rwPHk1kqxhXQDeu0+mzqgKMsTqZshG2pH+T27rpZMcUyyF0nX14yoqPHdxvetYfjhAo0WIuwmMcyDcv/Au4AaDgOoKqbYVNY/I5gRYxEotRuJeNg9NLFlUDmntA5mXthotK4uWimfDV8rI1695n2Idvf/iNtZiO6tnIFfs7nrv3C0vFZO+MMbrU0cz/Abbhq4zaQH7zqrP0GfaR4AJu+0SgOjDbmAhOgwgYOxpdhChIABjVJTP3chKgJ1y1JeUxyUaIayddp/Kyye7z0kFJw0+D8YROAPWkkJvpV6c0/U88LMjupG2kcVlxqPrUCJiL4e8viyZQxxJOJhS/Zdf56AO8Xh8WAxX0RZGLbA2GYln1euu+8zZuvfYuZa+IRPihlY9b1fkyYP4Y7WtVNkvtFuwqKzwI2qyRGPH9W6PI0yva1BYNf/jg2qdFiboH44cBzc0MoFoqjzD7RHJpPQJQFeEiZsrQjDvm18MMCONJTPHYJaA5YwxClRXH8scWx+H0MjDwC9KmhMPm+Rb0iXPh7KePhP1jAxN+Ldew== akosiaris
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCaSbNznwlmH1cCxEut7U9ae/CrEfi1Lq3djyoxV/MZur9dK9L65XHV6ZU1baWCP9RpJxtApYv7RTS5+o1gruQMyXd277knrvm80MEcZR2r/UE1BAIUUbVdvoBziadMdXdtA7DKOkt0KICeYk7E2vMt1ZfvXvqv6bid6CMSZ0UUBIhLhkEyO/d/Xp5hJiBTkmzc96AWDMkYJY+TCyYg1iP0x5Wg104jYX5kEsmGspFoxcwgBMPqOtOnyAoVOuOGI9AH49vpgt8d8u6z15FrSuzewumcDOwHWPEp802N/STge09kqJ7Aawac50TmWNJ8ewvPathlHsjt4GRu04xY9zkj akosiaris@yubikey4
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcPEzGxYs0G/5v71Xr1pLI3uadQwF6c3/l/ekfnLPhNq+A1IPCOdnxmhfcWD5mVgDXaqsbLKSzV2DFDCnJ3VW8S7mC8s9bh3zoRRwG0ccLz4WrGsold9w5Ox+cK9iRZ0czSX4JbdFr0ECDFcJjbkcQdvdXhr3wISE+YDGEgP2QII+pn/Ike0gA455SM4Q+HuniWJzhDGUmMJ42cP6UTin1w8nKTynr4mm/ScgJxL+uQzJYYydmTYkjYCt6keuJf/02k/IvL00z1sd+jt2cEzxX9TcUJtvTtd6UXi5gOvYVBuMWWPaDP6QHqB6YyBVSPPq4z8TEQebDfSxXPMjGjk8X yubikey4_n2
     uid: 3194
     email: akosiaris@wikimedia.org
   ariel:
@@ -740,7 +762,6 @@ users:
     ssh_keys:
         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYwXitC3hSK+Gwfq3y0PlGlQMRHaqsTtJcDbgoxuE0kzEEKwSVpyXIxoUdUK0Luh2eVkR+CZ8+5lLVDJOhrGpBT6r/Z9p+o+9rVopNEkHM8QxqbhDoS5gbSEngISM+Zcyo1wTK+bB4tbzCcX7eJEVlxmPv4Tb85zDcMWSR2ZWV+jPMai9/3uO61Q3n9GOX94+3qIWmZE55AIjLT/lw3iGffwSMffO9/8UC9U2sVW3v3daXuvDgmjKkAiGaJp+Evq82ahQEOgOWPDuLXYo1DyFuqsL67CDA1hYZfA9FJRfUhOW9I32mGmFpjdJsFeWSU4VIOHO//Blpy0j6h4IPacJ otto@klein.local
         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3UFojv43WYMDf9WoD18t5tKosJE5liMQp2w3ibTiuXUuj6c67E9g2UqNNK9O2hej2vo7KYsLG5VmguzhHYLxFRWKHflicrgDWEdMIiR2lxUtcUDJggwcS0PGnocstiYNFNQRCcvC/XbqW7k2741V5UsVoE4MIe+e0a3KiHGN3HLbkStz/07I1r8e0H16fbJUwfKE95gtzI/rOGT9J9LBjuS5QBuWyPk2dv5HSaRlQp83L3KeVBUUZgN82TnNj/QSLH7bmK0/5L6bLof+UnYPiA6teJAKpB9RlwO9z3DQIVnjO3TDo9MHZct3kob1YWm1uLoz+rKoBtD6E5rLJH8Tj otto@kleiner.local
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCU1a55790MaoU752JQW3QkeHb8mvUzmVrRgKP5nQJlYHxL2UGQtktt1n0sOqcut9NEvCunvxexSQ+E5yhqo3i19XuaREY1b6DuMyOatHQfz2fi3iHshIf8AkY7kYIxpjzGwLoOBuhOrhk/8Nf2wNtxym1gytW7ChBIsPTBZPskmIkIVbXRwe3KYl4rQeMngXm9GhsYPQ6xKN9QkAVY1kD8o4NQX0R8YJVs9OsjDqsdTipOtUMWyFM5KCw0vdsHzO/PgLOmB6pNOmY/O7dOAFYBQ9y46atsf3poSzvi7XlKznYmQ/1RX+LKjFIcmCeTckGyrpxmihK66UpUbhDOGMMN otto@yubikey
     uid: 2129
     email: aotto@wikimedia.org
   cmjohnson:
@@ -763,14 +784,12 @@ users:
     uid: 2093
     email: abogott@wikimedia.org
   gwicke:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gwicke
     realname: Gabriel Wicke
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSPEnznabK4A8LBxTt/z18gW9THN2QVmGuY+y6uvSsqM2cXrj0PCvN3+sDKqNrp7jvuu/3JRGl2UcYTT3uU2L+r4nYud7axhodwlCepEUZlVABu4n2BXaBAKb1vlAdOnGLZm88rviT08aJkmiQGlm4dV/u+kPVJIcN/1ewjynWVcH7suZtVD0I6GIvZUU8PthbktBFZ6lpC5b3TFv7IShY2/qmbVFXjrFrfDZ6fMecabx5OvpQK36teM3LD0DYfpE/o8JCsjEYmBNQAXvK4MBvyKnqPT9QL2lkVd7vLpfjtVPOFlaRRc6ku7nS2gRZSpGgE70pAmu4KxGrzQvhi7txECmVIcfvKG2474xwwTVLdqhqdEkhvdPPLRGCp5Ic3YY0w9DLx91rwLKh/7OdbxC5EKF+ZNaB4pnuq9vYuC6Vl89/g+Dw28OQyE6pEjltqybEA5T0sQPrNd5U9mEabRWhjX7hkXXDSmfRs0XZ6Yi6u7QZUO+0aqaoiHCaAygmyi94aiAXqxFaRu+2JceiTpRDOxeHU1KupbuIDPXK49zyi+QkfKNJ37GPqe5hRsw5cq0AA6+GchzpJr8p8XIstFv87eNB467NdQft8uVvMjL0fT6HZ9Gzkr/ThCZs34OnGDPLybkK3pwSuv8zRkggDK7yRB6bvDDYX4s7qoHOb1naLQ==
-        gabriel@tosh]
+    ssh_keys: []
     uid: 1239
-    email: gwicke@wikimedia.org
   aaron:
     ensure: present
     gid: 500
@@ -802,8 +821,9 @@ users:
     gid: 500
     name: anomie
     realname: Brad Jorsch
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGhaxbWveDEQ8giBB9YMMDJrNIYGS8Mlz03EYp74ZlQIzxyIaRpJiGjWPthDMioWINFrKbZSQVkYeDuiVNpvC1r14iry/LukVaCBSG/M8VCX1lEAGKTU6CwGiBWuoKrTeMkuPMnciasuSVsllHwluAUxiMw5Y3VcyFUcqI8FIKWZ8p2ovsTa/H1ADaGEGDD6FHp34Mu3k/xMbBZ+xZwOm8igLmEPbpOxJp6CcdBDK2Wqwp4mpMutgC5FxLBHCbmnXoMopnNc02xhDEi6IUqaV36nwxp7HaqqTYdSNJvLK1v4aIZCjlYGDQnVNiLK4lhkVWEzt35XwtBx13JBVgRAPv6EM+E2kiZviV6mPoRhPh6NJNPITLhC9lE4HBVrR25Cxe6l74w53enARfRythtDobD5EZE0CtvSZO/lRwYxwGqJd2EEE+JV+oAPhG8OxD8/IBTRAa7RsZcazluzs+M6h0iSSn5yz1D1H9J6IvXn+cRKg/6KWRCBehCKBGDtVhZMKpnvHMjDnK/GmXuD/V5mSqpZBoJjEYyuQi6pDj+9RRV2UeDcjSvU8bqYSZA3iiMUe7i9xMlN9st6NnKhqgZE5nAAF2MxFVdVzk5qk5e/VPBGM8Gw9PUT73m8RLBcRrmz32keLodrNtReo5768SIxS6GwVFWKtZRj9OTGCAJtN0yQ==
-        bjorsch@wikimedia.org-2]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGhaxbWveDEQ8giBB9YMMDJrNIYGS8Mlz03EYp74ZlQIzxyIaRpJiGjWPthDMioWINFrKbZSQVkYeDuiVNpvC1r14iry/LukVaCBSG/M8VCX1lEAGKTU6CwGiBWuoKrTeMkuPMnciasuSVsllHwluAUxiMw5Y3VcyFUcqI8FIKWZ8p2ovsTa/H1ADaGEGDD6FHp34Mu3k/xMbBZ+xZwOm8igLmEPbpOxJp6CcdBDK2Wqwp4mpMutgC5FxLBHCbmnXoMopnNc02xhDEi6IUqaV36nwxp7HaqqTYdSNJvLK1v4aIZCjlYGDQnVNiLK4lhkVWEzt35XwtBx13JBVgRAPv6EM+E2kiZviV6mPoRhPh6NJNPITLhC9lE4HBVrR25Cxe6l74w53enARfRythtDobD5EZE0CtvSZO/lRwYxwGqJd2EEE+JV+oAPhG8OxD8/IBTRAa7RsZcazluzs+M6h0iSSn5yz1D1H9J6IvXn+cRKg/6KWRCBehCKBGDtVhZMKpnvHMjDnK/GmXuD/V5mSqpZBoJjEYyuQi6pDj+9RRV2UeDcjSvU8bqYSZA3iiMUe7i9xMlN9st6NnKhqgZE5nAAF2MxFVdVzk5qk5e/VPBGM8Gw9PUT73m8RLBcRrmz32keLodrNtReo5768SIxS6GwVFWKtZRj9OTGCAJtN0yQ== bjorsch@thinkpad-laptop
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXPJxqf813pFtWacyC7aqeHqMT64rd6PNl4LHT/xyISgw5eY9++MMC0cR0snenbwkMVGWnoU00ULxwHYvVSle4AzeJj4cSeGFQepp6c1opCFsI6zzZZgk0+laubyymzBTP0SJmqsEljYh+D+tP9v3IffzXss5Ss30OgA7TSsOxf4PkasKIKG9O+bxhxqhJ+sRy4u5wEKWkfes0MYMppEZNy3CCIMoIGund5HiWnbjdkjfCeCC0zvLNH4mAYN0PysyLsxPFXASACMQQariaDjgvU52lcHi3zimbmyAlLKOh7xclXo7yq6Q/O9far9MWeOECZrMWpsos2n0PXE8omRKx bjorsch@asus-laptop
     uid: 2248
     email: bjorsch@wikimedia.org
   aude:
@@ -811,8 +831,7 @@ users:
     gid: 500
     name: aude
     realname: Katie Filbert
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4isIiXTX8cAcOD30Pb5Auy/NqidYSEqzrybfEti/qbJf0cTuqPzrNnp3cPK76yTwW+6aTjH8LC71GjaM7gHs2hn4xQJDJVPvH8FHd+RWjndigIOAEPlKtlyXPRor32lNhDFjNDMwS0gJgwJWGyzdDSPap4A9oAYvOlXHMbwF86gPoTKTCIhKSwryUyn9XXYKpa3nwYHchJ0ugVrxo31KHu107YbGpquocEg3I+fPftJHRxDlhVho09OnzZedTKacNJvAkH+8F9AWEl8mQRYxA/5Bpm4ty1spCHcPU0LEpMFFRnSjb13p1e3Xh+rhwLg3NREW+nRI9DKHassaUvkfQnVipCjNpFy3gX70LS0u+M+vg8wUM88AYVMn1VohN9RbXFPnMHHZACeWJCClCj08qI/Z5WDEUCKBAv4B3nrlYHxMGsa+HAKHREvH+YQI3l4WauIq1Ri5qCVkhEZQKEKVH5uMny1bE3XMolsi1jwxQTiRWbctmGOPjUtXeSBe9N8yWzWmcduzbd60ipItclRqD8gh6FvE1Nb5AtWTkR1wdu691VZpN1BNf14joYz8eq8I6W2JupB4EYUnru3PQS0wQI+/RqWApCvWG4ajtp8hOTicwPSrXRhsYBWbg+HNzhI/KlQelwhm4MnZAESRtm+VgOl1g2kRpicHoiS+oGh1iXQ==
-        katie@katie-UX303LNB]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+OiQ1ptiP6VqmiP8IOp0sKET9pQHOJxscK6bAvAmAP72DL9MgLIBaWpaL9iWsb/DMXI2CQpEnu88VMVXCSgiqw+Gy6Q93pAquAQWAzkMnDD+QvxTm23oFCxP795IEP3JMHuONNg2x3NU3jYaOADOGZX41nRhbkO4yl32jQCTF9i670KS+CFDHxRzmOMzNhlytWJYyVPS6iqUGykaFcebFNThMtRtQF+pWJNreCFxZoXp1TyzkiJE1rX98tj2yhVQmET6mENuGXuAES/Atzpxp8zvsckHn06Mm1RZZmIExEqn/JdK6nHs1UoSNpsI195ltzkKSEWdFdYKRLZNFuRBL aude.wiki@gmail.com]
     uid: 1185
     email: aude.wiki@gmail.com
   awight:
@@ -876,14 +895,12 @@ users:
     ssh_keys: []
     uid: 2152
   csteipp:
-    ensure: present
+    ensure: absent
     gid: 500
     name: csteipp
     realname: Chris Steipp
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDsUn5XTWrJ8ojk6O7kF7kdQS1RrKtjkaMk2QtsdYOOCPo3YbK+70Q3Dy6gVBNOhsRWHeCimzfH2Uv/pVb0wNkrwenmBeD7nQyNICudewEANcnt5YF2znlke3lsW6TGzKUzrXIncdhDh4LWjmpJR/+hnKyGz7uQKXm8xWw9LGk1PEpeHpt+0TH/bUWzWjpYXfbt5W4GbYPwnHo1Pn27pcGwqgsgb8whX9ufDjw5qyLPTVW3AqP4XPRXYDB5Ui7udQeuCk4Omou9CirtC36o4ih2NrZ4CsacHyIMJf09HZo6yLE9EeGM06SO7qYqjYwapKGv6csZGney84udKaCHcdm/
-        Chris Steipp]
+    ssh_keys: []
     uid: 2246
-    email: csteipp@gmail.com
   ebernhardson:
     ensure: present
     gid: 500
@@ -919,7 +936,7 @@ users:
     realname: Greg Grossmeier
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcwwxwZqCRMBQsMIutloeVS5Nx+nljUr914Yradb8YLeo2PbqLEjVKgC6+yKHe7binFNk3rlgiXhXOm2issytl7sWUZz8YpFqxp7fDqnfVVOTGTwMtAjBoZHugz9RaR1SVlz2dRk0N5qrovffz/Av3QQIS12jX3C/GCdqCMixgwi+ecYo2xA7WJyEGFnp+0Ah8hBIn2xabZAfHhZ8dF6VifEHsgp08Ot52sOZwb99+H0SjEWRwc9decwuPGNWX94BPvWcP6dQ2bzjqR3iRkwEIvKcgMvanYUXAvPb32382QCsW0r22HtvsUvA340ISlvcauRS1GGpyYmZYGSSfgHVH greg@x200s
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC16FrhA5M9oVeFTpJMZrjMSnmNXv4sW+Ku1PUpv14qOEw9zpW8JhWLzhD4+C66sE3vvDm/xwrfYeyn9lLFlxCM8ZbUOh9YCuZv3ABam5UHODg+YS3tdMHbZ/U4ZPSg1B6t79f2/CLCrpj0Tk+G2DQe9/d75fdmZBBC6ICKrY8glNWZOL2kxi22P2dUamTDzBu1j9UHmpSNYpMh169AeNFV5njNYlEpOueg4iDkLvXqvMyDyvXvYbSNSRAfGTZYdzlNmasBEWuS7zuSIQ1Fy0VJs5JEG5TtsRKOzEkfRsBwTumaaqJy5XCC1vK3qVDtNecmkrxezf4Yw0EmCIwSF6l7 greg@x230
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINwe64Pom7KuAcxlt8DJphg4aHX0jOg6V45IXEeYWcvx greg@x1
     uid: 2890
     email: ggrossmeier@wikimedia.org
   halfak:
@@ -927,10 +944,8 @@ users:
     gid: 500
     name: halfak
     realname: Aaron Halfaker
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI6xBPpUqjfZl0AkSgS4sMLqaLdaVIUzZdCmNvzw+TbITw6PWOtMAOnP5A8HOn7aqnSH0ZYYWN/AzMz+9zT6+5JvxOfY43pCmT6qJv3e6mtCkkdy79kCH+b8S9NtrhttxMt9iem2RP1sbJiXLfcinOHuezd2Q05BoY97Aoo8z2/tRRvkPnHA2QU3fxAMS/PBle1ZytN2XJtz565AS7vzrts0su/jTej1ikLNZtMITZIrgB4o9KVcF5FHsmTIBehVwOEQRNYc6AwK+GWDQ1ZDS9m07/VmSIAO8krFPJ8y1M/EvMSP/VR78ABXOYTNlgzTCSuLFjocFMARBOnpA5Nfg5
-        halfak@graphite2, ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUTJ/rlBnGfXU0Ybp1gjJNizb66gaRFPzq33ptdnCLSP8hWymFgpzmuNyUaBClWJwl9qxXIw0xZjHXyTcK7Dv8ajqatgeiY0ow1LoVfzFDtN3Y0dxFNKC5/bC6lk+VmBl7fmNk8+fx5Y2FF8LMPy+QceZU2CJOvJzEkjd1lJJTFnSSonRrMBzK2xhT1qG2PhlThWWhVklrEvO+wIdi9M2B+m4cjgzaLaK/UgeqhFWsTQd655tLb2trhNHj3I6Nn38l/b+TFKsYT1+x1QWt9IxrSgKcDc2oAj+HSrcHIaKIXLbMMDaFIzRpHGMxnSXpJvCDvSq9aKyfw9dsoqxuFLF9
-        halfak@halfak@tako-umh, ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjS8cth/18dmTr37h0A+K1g82iVqfrQ5c98iLrtl/ejvkMNDvVSo1Kyho6sXhwCx7HsF5hF6Y+fVB5FaxugI6o3CeAt8PQBeOjOWOdCZCUudywwnNWQgLH1XejaAxV95VRZTeuzhTLMymZRojOm2Kbb2f89C3CDCPohlOqVKMRsa7vMA6mgHgJtOXjqdrn+Toj/oe3+ZLvTpFsD8ROTsppKo+ie8AvRRzaCobgHF31OrihlAxQlovAPH/3eH67NRlmwwJhkuGAIra7+ZCfJzNR/9RVoc6mZgRANDXASTsBuI7ZdUQjgRIHbdd+VkXlzR+jLQy940ukLT1IK5hH9IZd
-        halfak@carbon]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI6xBPpUqjfZl0AkSgS4sMLqaLdaVIUzZdCmNvzw+TbITw6PWOtMAOnP5A8HOn7aqnSH0ZYYWN/AzMz+9zT6+5JvxOfY43pCmT6qJv3e6mtCkkdy79kCH+b8S9NtrhttxMt9iem2RP1sbJiXLfcinOHuezd2Q05BoY97Aoo8z2/tRRvkPnHA2QU3fxAMS/PBle1ZytN2XJtz565AS7vzrts0su/jTej1ikLNZtMITZIrgB4o9KVcF5FHsmTIBehVwOEQRNYc6AwK+GWDQ1ZDS9m07/VmSIAO8krFPJ8y1M/EvMSP/VR78ABXOYTNlgzTCSuLFjocFMARBOnpA5Nfg5 halfak@graphite2
     uid: 2041
     email: ahalfaker@wikimedia.org
   hashar:
@@ -992,11 +1007,9 @@ users:
     gid: 500
     name: ladsgroup
     realname: Amir Sarabadani
-    ssh_keys:
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4VTfdeTSboPh/af2zT6ov13A7kSygXEspRgq3/d2BWcNFvwIIpgtpCnHzA6YPvuhrjksw34jk3OvuuQoTyWYfuwql8Wu8O9f32WD4dhrKhB8Rchxj6rrncBrGS5k0HeLr+HMrknVSSXGH60GAFNRGYLCGA+zBXLAja+xROTipIRHOF0SLlsfpY04HTrEtKcKdj8n9BnGpbT7vFp+AmXeSHg9DwRn6yvem3x1ghBFdfg+XwmIqsV4wR2b7GLX2Y6+ei53657v2VxVsORdfn4yV7FcjeVYnwNxMOVMfYcFCz+1LU9ROPDw5sCqyDPMtyQPxExiprKNT9UHkUj7aqE61o4AF1vSb9AEdUpjGgiMl+Dr8Sd+T2sNOq5uFxtWSfuNqgGHY+nOYPmSHsxthwXc7CH7x/eBDefUZwTdwX8Vf/FYOAyiviknCzwLoAbkQwRjOwFZVqJMwRwRyMToKODTTgOM0s3g/5P8n5AYwTLt1I6dLeC3nju3lywyeWb6DkFOB48mg561AU1soTnSKffse7AtJ5Ye3GFEBKxBCRJUpc7EVesOhjTdcmBWYeSSmwxHCjiCact4tyk8ZiLuRqd3EZ0KFT/6W5d4csrJUwBDNWo+7M69gVIMn/zDCy3ZViGMsqPFfXSrpKw8k0WtPBTKdHFPJ0KoLERctzkrNkfBTVw== Ladsgroup @ prod
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCY5EyIRrtuxDgh8SOkTQl8tYAu5ZOGMO0MA9RiqMb6za8ossDmKCwD5JKwooYmT8yFA5JnvyOC0adsCCA+enylrX6r6FK0ur+dekfCGF/dsyxSJU9aw6WwVr2BThrfPjzbMR1IuN4I0t134fYE0VUvibod1kGoxSGYdWvqEFf+v7b2MqWtU+xASBFEbrx2knqVBjyy6+O8sUikfKX+vyCSxiQa2GE66LM8SuX+0JnhlDNuXleQzdFpJ9novw/+/1KqOJOg3i8/Jb1/AEMf/eChombWdjNccGtPueRyJAXEl2tCuLvt9Vf7PBZaoxhAV0Bo0GcwRVBwvsyaNDuVabLJ
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDL1tcL4XnCAA5SQIple6w9DMpC0xdvfOrKxpuq51FSlm/yBRrq/BhCsazcxs+hj20qzRvkod23LChfx1x9IyR6Wgm8aX3ORO720n2/IyG9aC31+Ub1WQOFDFqHmh8qsVnq/o25sHiR7EVoG1FXReNxZW59ckBR9z5ZzS8HFJZd9c0RHC6kutUMAT8AhXMvQpF/6m/PcIbZqmE/v//cNVC+sbhannNZ+q9jjz25MQmQKgNagq7zioCs5AwjcHAd2JDSEL3GK3G/aTfVceF9YgICnfXRUlt8bP+8TwikJKlHxkjkJ/sBopODXP40SaqPb5BvIPvU3OojI6z+IYPwamcLKk9A3X6bHNqtGjXssPXfCNeoYa07sLDRrt5ECpIL5cMANSZmc8/j5meGRmKenySvLlhtBTLYiSsgrkkUvhfbk6VNMEH8V8Qaaw9hyTKsJyuSQr7yXgbz3dzvho7E5M97gioqpArHM/hOfVn4JWTKQ1LnWhvR+6TxJ5DkrZQp0fzODTHwF0DQmJ9kOAORIrfYvl4ps6HtKXxV6wZSs8p7hb9XD6vVGKRUv5zb/TTcJkdUVQHTKGyHvmHL8nBr4QAieLUEdCDE/q6v5St43/0aLzRYWGtTNh0inPqHiOKKDWkjfQz6BcgCsC6KBFAtzj2TjtJ8WkmuJHmvObRl5p78Q== amir.sarabadani@wikimedia.de]
     uid: 3182
-    email: amir.tafreshi_ext@wikimedia.de
+    email: amir.sarabadani@wikimedia.de
   manybubbles:
     ensure: absent
     gid: 500
@@ -1126,7 +1139,6 @@ users:
     name: demon
     realname: Chad Horohoe
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyrZy5Pvx1/gmFXtvO3SCB4lpvsKaxoeJd8h+FHdPLkvjExQpgY0ERcWdUzMwuoeCz1xLiyx7rYL4jYQZyLiOeZBSVZwwwvHKRs2h2NL70twx9GN4ZDcq+yQjhhrPk6Fbw1MDgogIemAJRf+v7r06tEdl6Ejve/BZWOp8CRs/WIyhY0mvCTFFUpAkv4hf/Uf93Gd3ltM552CIFKF2modyCRQfkp6JEawia4Q7werOtBHbHYOE6VnBRQwWX+dotsU0YJ+mwm5lPmOXDjR6ynzEo9C9z6fMK18LjEblHKLe9hn28Z75YXM2frdxPcGQ86tL1WiWgI0DQ7Wdro0GWN0GD chad@wmf2
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID3cCf8KZ1UqZvUjg3HbaDvV/X1isC2L30cKBpw/3cFH demon@wmf
     uid: 1145
     email: chorohoe@wikimedia.org
@@ -1140,13 +1152,12 @@ users:
     uid: 2153
     email: christian@quelltextlich.at
   tomasz:
-    ensure: present
+    ensure: absent
     gid: 500
     name: tomasz
     realname: Tomasz Finc
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYg99M+6cGbfoDwzd7KRFL2zGg8CPZHLqejuCwCijpHjqnMtOBOAjMDpfA8glqpqUL4xW22kgwcUI9H8bkd4X/DazJ0QvTxjJkGPocobfyCkd/yeZ/n5HjaEL/WWeNQZ/OfFW6yiTbWrQttl6+/7QELG2pHXgDqAxaCLEnghRXG+zGbVNkPgJGAZnUoSSPjZj1eZhG10U9I0foUp09qyMTXhWB9c2dbeZyaWJ7LA5I6slKPiVyYQWq+0Kc0zoCpaPGrwkR/sDrzqHBfiwKWR3IJEFn0WhDCE1fHiM31+tQ2YmbVrDCWxoUzdiUWkzbgydlIH88603LoegBLo9xTwrZ tfinc@kumo.local]
+    ssh_keys: []
     uid: 1155
-    email: tomasz@gmail.com
   yurik:
     ensure: absent
     gid: 500
@@ -1199,8 +1210,7 @@ users:
     gid: 500
     name: daniel
     realname: Daniel Kinzler
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=
-        daniel.kinzler@wikimedia.de]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZiSU9lcD1L2jmvcRqyLCBmHwSyfatrIvjqvgubJygm2WNWfeIXBbl5ljdV+6gdP4dhuvNecUqet8v9+tUtZrnr2qnHTD8Uf/5jnOdf1HWmdZlbCsrAWAwJKdwCk91TStG90tgBclBqMcPG7v9QTg2T6GG6Vm4e2HkUTYz8bTbLxO21Hr0atreJUl0uDYmXPWPyJcmsMVHeCiWzdBD2eKlNDcX9Yxn2SkqIGVitNF2Bahfq4uiCj5EcdeYWFngjRupomKuydVJVgAR3y5suZk/N+xbfoIqjw0axI9VIs97jfOyfn1Vs3GMIRnOQQtFKklciEoo/S4b6fuVSBmKTtnZ daki@C159]
     uid: 545
     email: daniel.kinzler@wikimedia.de
   dartar:
@@ -1231,8 +1241,7 @@ users:
     gid: 500
     name: ezachte
     realname: Erik Zachte
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAt8JdYKSFpPtThotN8msZXSkpbMxV3TRdMIt3DD8Qh3/PvkgX9sPeLe/AuwUpotj+N04d7mcWJXH+luOIcSzsr7nUlpsBDfKS90SETM2cLja3Be1h9Vv8inbM+Xbh4+NOd0K/RaLsSXAWOhFVZwTXipFcr/gCvzhsvDsP/sGgKQdsAlpRNhU2XJF5AJDQ/DBrDPfRxNTJ1ybvx6wWX9R+l45jdgibK+2BUKyWaSosFAyGqLpiGWZOqTYpLRhsljTEGictxb/HEMwWD2E45avycy6HUW8LhDp2hL7UFLnq96JKlwERmmOU7t9IKHxpGY3x3F4v50x8eBbmAXZJ46UiyQ==
-        rsa-key-20140721]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAk/AEZRNX8meVm3hOdid1mU4uIYXREvdEmzumZUzovZ2cD441GWkL/jnpAkzAzb225HeXnad0p+bfAjFuANX4RRB3kF8HutG2xxJOPdjVanJeDqigfzFIU8782HoNu0XJomJVREglP8/+X5EQZlQnISXp5kMqNpqswB23uSKx0hYM3+vrKOzPLET87F1kQ+ZhvELY1AZXdbP0MPwLAp0m73QLiGhV+Df8x2wLB5L6TdFVQfksvzzs9F/tf/TKUxN4arZ4KxNrCW7BkLr8+biqpTgTCPy/zRUaSSDivpCnjGVfn+MF3hp4BIVXQwHDIOT143frGXmqHzxnVE9D4lSlQQ== ezachte wmf rsa-key-20170529]
     uid: 523
     email: ezachte@wikimedia.org
   jamesur:
@@ -1261,13 +1270,12 @@ users:
     ssh_keys: []
     uid: 538
   tparscal:
-    ensure: present
+    ensure: absent
     gid: 500
     name: tparscal
     realname: Trevor Parscal
     ssh_keys: []
     uid: 541
-    email: tparscal@wikimedia.org
   tnegrin:
     ensure: absent
     gid: 500
@@ -1330,9 +1338,8 @@ users:
     name: legoktm
     realname: Kunal Mehta
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC17bogEBqaICwvnLi3RHl89/qqmliaQLkKMsMEubghU7Y0ntnRA5C1edkzzXT6fdGCRsubhflfSogSZLErSp0x9gR6YmPGYKn1OGbLK/FIpEdcbNd/zGBBF1U/9KSkJLgNKACXDRfMcqyMpnAaGDcUDdUZaRJ7nOJ703VH5pp1ommdv3acRWTPQ9hF1WUwlXPAD2VjIqJKrVPVMqVafcbPNO9FVyV94dOKURUPRmIPVxGWruLB2Dp+a2sZqh5KBR1PkV5wpBRev0IBOAFGE3aG9fAB+Xbj7bppTd5ov8EILU8xw0Xj9eFxiSuBWZ4b+rWGzKBj6OPm9TNg+pSGZr55
-        legoktm@wikimedia.org
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCV0JQ8i5ChreCkDyad+ozgBlPd7dBx97R3xzTSrYVWxJCXgCHfq+yR+umIvJlU5mRw9nFhTCD2NuIdSRKOdy+KWo7GRQQT9ZOTphkvC+TP5vhL7KUF/zg3wD/1lXlJceY4P8xgZ/O8t3XMfwjW7DP3A4WymTCqQ1IfxT6H427qVdckyU7O54tnvJlM14XTHYIL7Xu5AH/JfnzcgmftYv75MlLivyGfhJE/e4DG0AqcB7DZlj1zfL+3D070iPu1ZbyUjnRUzGsxSlpzMTc2s+BsZelBkOJFJ++L8k581GS3RGPsrqU6aSjobukSJqngswTPOJewuYT4liDKVR1+YF3B
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcTXNrkmB903Zj9nhqrQ6gW4WZ1UhaM67CpeaX7TDWRfArOscoD+ByXJdboZALxG1Of8kku0PfMrQWrtEiyLbpEdt3Y6mraTPwgx6eMu4juK+NkaJYRSQYkf+jxqheKWYYKjF1HK0I9SxnM4mrAKTMmjtp6X/6FQaAtDVa1rTQzlBEgYJIdl5Ik/pv2Py5dsYrgv3KXn9NBiOkdDiVgae26iGcpIi3Z6CA5fR8LRdRdP/GUjNJAF01pzlIMoMlh0Q1u+t6nUXWUBnUnogFU+hPAk/yq4XA9HZ7vADDKgeTyCzvSEMM7TcjElVgDwou9qhaleVxV7GXWpcVac1e9DlN legoktm@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLgZDBO7XQCmYSuuwxMGnLO1w1Ceyo6o9QAwg4IhnnH legoktm@wikimedia.org
     uid: 2552
     email: kmehta@wikimedia.org
   howief:
@@ -1356,7 +1363,7 @@ users:
     gid: 500
     name: jmorgan
     realname: Jonathan Morgan
-    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBANmrKxA/ZR4cjUHMn5FAHjN7cwq6fofqiDt4rgkJjORxYlTt2oBUKojbIMtJJsqzekzZMjU3tkvSOOZ/RUUH5zyZDf/pEprnqiHrrfA5qOl/+1xGSTDkHuGNgvVNdqe1NxyEimxc6eZHBuzmUiF7GX2pOUkgUlTeEhsWnhlv/6qLAAAAFQD7pdZrxClfQt0pV/qgmuHPepZf6wAAAIEAhQDoc0cOqXqwNuvkvOO4FnwlLdiAntMqfP7+GuBaTmXphLmMnynBHGu2+iTAMVs9QyejlBVZX7YshD6HY6c+HErOol36oa4e6y/RZpYDaBeHWq+8y0Wob6czYoY22ycDPEgLFZrYpKJlqiG69t4LuuB3SrKr9n7L+m/ktcJ8+pgAAACABI/xfnabsoHbsIwuynu7VwU4PGcMR6SqCYrQma9F9oJtA89P487HDPM42cAzff0xPzjN5NhBNAF4mibDz1KI+elW5ruYU2nEvtEmrL9xl5vGOjjeXM6ecOo4BbIxa1rUU64LCYUS+UvoNNxGu6Xs4oWIltti9+IXLTNHj4hSztI=
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgjynrQCEXg2nQMZSAEGiXo8sAtLJMbWFB52ylg+ZqeJuesQ5z0zySj9/pX7xvc5a5HBzOwpT72thhdnoQCV9s52hC98tSQY2YzPlybu3tltM7WNzfoKboMfQ2aZHbi+bcTZEjvzwc+6h5dMZvCwmSUva8fAPfyPvnuV0AegNksbG1PInSyOD4pbfXf9y6QfZcJWyzV+Q+7hFlKmSNT53If06qFRAWW8ZgcMi9k//jC2fpn7P2CHKe4w0oz1yVZUgDLUyBwYECPtsbfw+xcrbFlfyoEmP1yLbolgFo/pZfNd7mGS4MrRhBPMEaMXMm34901/d1kJpztVqO/MTwAjO5
         jmorgan@wikimedia.org]
     uid: 2402
     email: jmorgan@wikimedia.org
@@ -1386,10 +1393,10 @@ users:
     gid: 500
     name: yuvipanda
     realname: Yuvi Panda
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSbKkh+XRHzTRE0fzQnSv8ZsfWgIa9uEhZV5d8Eq9AhIQC3AUkamt9QVnVxXVx/cnUEXqxD8grUcbN9HVf4T9T19zw19JPi4s68eG9Zm6ZSKZNYugLaAjb9QrZa5WBWgBYxTa5ZBtIAn4kWsMqG+d86NJxqLu35FyiiOsD10sVsB2mWvK6flMf7Kuux2dTlI6lqWThHoF/4JPw2Odjn5DrASOhjLXzaLzEhkkwcT+zgWQW1PN/ndSlmL6eT/CRgiOxxL97DE2osmYUXXBqgaXyzBnQGgK/DL03e55Epn6yCEYJ2YcBdjbF8J6Ev82zzvMmNlebKJz44SRRsPuOX3r9 yuvipanda@picard
-    ]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb5W/ZKwHHevB0ZGr+yVimNySadaNuJVfZW453U5FSF4nCLj2gvm/gKpEj4bv8MHzOsF5casl6u1T4Mz4gCeU4Q9gbhiMfghiYm7DPxWdR6uDn0vcbb+rtGpcu8XMGfGYsmFLWwL0qs8kgpixviAQ+AYGqCJug4b+6TVOoCKV/Ba5cOXhfx1MAIExwlhTpxtkec+g2/2BzQeZon0/4INzIutXgLGF47n1oosHEWpaehg4NMGjjT8b9w2UdnCWaTNpUsMca+LU2aK0lHVIQ2i5c56Exd8zcPEt/78O3HpQFH256QHkBxcBo9+z+sf87fHyOcgiAd5T3eKI0zLKQM6WT yuvipanda@courage
     uid: 2029
-    email: ypandian@wikimedia.org
+    email: yuvipanda@gmail.com
   haithams:
     ensure: absent
     gid: 500
@@ -1450,7 +1457,7 @@ users:
     realname: Giuseppe Lavagetto
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCf8yZc/+/LiiIXkweNACUDMYNezKpexv7W8d4xlUweCcnZeyVvdiVl/LoFySvf7G08shDXQrxhqnc9xA6ulGokfHLOjAoqEuwlVwA1Xjbyb7KSOA2PNLDG9kzQ36wQyaSIgSDZegA+3O1oi3Jp/oVfSaqN1zk+8/Jl1kUAsv5S2264lsQR1y34AHhL4txkn6lH4nxjBBl+nvspU/FPInsLrCprCvecR7OT5+kUJF4rEeiGqx1gu7Etd/4AQzb+csYXp3LKUYhW+6kxEhUbGhFRG+GYtwD5oYFwSR7CmqrYvthfaMmnG9JzvIJvGmEv9gIFAivNsodlJzR0ZZ1ya24UvEwpnHmgcPBgLI1tPGJT//p8P7Xd04KPHgbN1VG21s89gjNCvEErwR8lkTveFRBZ8I0D/ipVFP4fHcA+jx6Lit/krIcexZ3CN0Bfpr9rEiFOGMx081HvD6R3x2ZablNb3GA/lscUs3r18QdQDGazj2+4PkrgbCAl0pt52Pun9/uajQpfHEgkaO6CHMrdX9FR169D86ZDf3W7lV0SPjITDeHHFBFzzrVrju4xt01ybYsUiWaS+PZAeQEDgZ1156sH8RSm7/Oi18U++S/upN7csJfDwSwOss9ReJNn+tXMr+uEjnuIL+Z2v0oCfujAcJIauX5UpEt5oXlhK+8BClRzXQ== joe@wikimedia.org
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8qjtkdl7nDP0lD0oQQNcGCMelTFu9dlx+TEu+mo0p89wwBdtWuXEv7T0837aUYQ8FHyHUXnrgeCX43a8LnI0lM2tD8/5VT+aFqGDwETjLgUNhlK1JQp7ZDC4fS+mNczfT7ytJmTt/cmxjyPIQh7E/wdaMwF8ogvOsS9iy//wFF1fcS6rYSy5DYLF7s21YNjnqPuVtv3pqNseqrSkChtcGxEkrB2+/t8Nf01evutdsk0kUvUM24bdCtOlvGaW/+qIbr+YbR6omgAblmo9opuMVspn1B6/1NEZ/jK+zuQ008XEvJQCsm9ahlmD10MVbykktc1jBIS//N7Zs9RWQKcEN glavagetto@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIByu4Mym+ToDBSnH9iKSJVrTcUYLLENBFt/oXTgzNA joe@wikimedia.org
     uid: 4816
     email: glavagetto@wikimedia.org
 # T109521
@@ -1462,15 +1469,12 @@ users:
     ssh_keys: []
     uid: 553
   midom:
-    ensure: present
+    ensure: absent
     gid: 500
     name: midom
     realname: Domas Mituzas
-    ssh_keys:
-      - ssh-dss AAAAB3NzaC1kc3MAAACBAMOWDta08PH5U6hxvnHq7xT7lqIxWxMzP8wr20np4thUtlOqLsxmpJzHzdWJMlaEu0cLrJXxYq2Bm5jBpDb8Tmfo2TeIPgmFWmLgLpF9A4biXmMA6V9Dp5W/eyZgmlHjWlTLu6Y5WaK+Dr42rKzCMHeSxY8T/gvVIXvjZliNb7cvAAAAFQCLTv4hEekK6nLpqX2j/ac7Wj4eHQAAAIA3D0eTxabhSGD8a1IL/2i+Fb8YBLm6uJOXHmeIZNrpl78ml7lOcXxlQSlrQ8Gixc9eKz1a4vzuqKhxqdSFMFcA3wK0cGtXQuCtbiKGgFdKDsK1uBk/5d5mowqYNwZ62taA41NO4VGB7rYHga8Wg2ph5NZ5yuQgmOI8JqlbALH9oQAAAIAwDc1SQBOYJacBv/NeXhQIuDUO2x7gnqyr9Ud8hlnzy34GQldo+03AvL9vq2RSemCQBjnEqxXYUGhHqDshUvnHq5JxpeWjKRP+p5e0Xy7aepss3g9/IzUUrZ5m9HskczSfrlNBwDG5ybgaCJfyRX0MXnV1GCjaGlI2k0iymqGT+w== domas-wikimedia-200904
-      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAomwyIAuPEDxmRFl3O11IH1yH+n7th+meS4dmB9OzKxh5Sg/aURrfFPUV/rSh+2QqfR7M7kB59ganKpc/7tCXW9mxoIr/c1kQ9jBzpyc7VUox/VTlSTZOFJA9sH9PUVIDINVNPyPFLNy9RtvWkSfHwffo6LHNju+us9PaUlmAaE0= root@zwinger.wikimedia.org
+    ssh_keys: []
     uid: 527
-    email: domas.mituzas@gmail.com
   tstarling:
     ensure: present
     gid: 500
@@ -1486,8 +1490,7 @@ users:
     name: ori
     realname: Ori Livneh
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwniGVe6HpYxdbN9IQl+Lb0n0tJE1/KfywrHP0x+7FwK6piUP+sj3IsoZXrxS2TGOQ1pJ6FFaHUDskt5coGX5QmAQXJjsGVU3cQkuARvQGZ3Y3SvUSqJ5Sn3s5fVTPWWbQfNkhE4ARuA2GhiJMyGRGvy5SFKwcim+cUSt95vy+rKWi+Qptb25gGC2SMbaaZX97N6LWj7JOVoodgeyG2S8t3lxIi2U7fUKRShVmZWFSfD3KnspFN9TsTYskQjzizDVYUyw5qpDDL/u/ycGGXwgcI7c8ZD5LvtE8rzkG+a+79xdT1xkhWXavO4OWN6iIB/GpoFkFW+G2ldh3sNnhvgM9 wmf
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCaDwtmxgjrgNp4cp9ArJmQagmkAr5GXEwwpDgtH2wVqDCCB7DiMcdd8cxjQnf548ZuVpR2OL1R4n7duH+J1HK9rNoqlKE/Zjx+FT+yKVqVdPH6ZmXOcuVPEmSyuHhpI0Faw9JWlTzx67wIXM3DLWbacA1PEcRxNaFtJ9qc/47poVvNqL73jHoQI+MQvAyu+0wqwiE2RdqWb4Sr+iAd3ioGQQtwQqrHuCUInaxPHu1i9t1R2ENb2Ek/TD2BgGke8ljyKkeLy9bf/xHI1CgLmt5RwJ6vRFj6G0gof4GXEC0wqJAxMtQMqU4Xl2jQhP0Evs82Qoxz/hPzPCMSEmb5GDd9 nano
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHkD0ImOND0E9x7bUV7AntCGmaHBUGGJVal/IEGFEPcM ori@mbp
     uid: 2220
     email: ori.livneh@gmail.com
   jkrauska:
@@ -1561,13 +1564,12 @@ users:
     ssh_keys: []
     uid: 2042
   ellery:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ellery
     realname: Ellery Wulczyn
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCKFGOn5NPv0el5EtWWwffENDgrt8GKzXTUdhOOWOBemPc98MGEMkKoeAY3RAZW1xbJo+b+ZDTDORVWw3A5Lw6b8Es/fBnJR2rfChKOwj7VzeMLyIFzjgkzI+UekgfWcCsEk24ic6aJAAFLvhVV6Ib9vg1l8p+ZJFL+5+54XMt0MphZtN2w3pgv/SccJzF/kodPyu7N7jRmzweOosH7dY20cSXbnkoz8jCDs6HeLTvLErLsjYWUtwnzjhDp4lBvvZVpzkMXpp/Ju44ksypgyfzEBa/+iP1QQpls6KqRMb6wD56Z8E5BFm2s/nbff3BP3Hk7dsTLJPXYGZw48pWMwWD ellerywulczyn@administorsair4.corp.wikimedia.org]
+    ssh_keys: []
     uid: 10517
-    email: ewulczyn@wikimedia.org
   dduvall:
     ensure: present
     gid: 500
@@ -1584,7 +1586,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAmjVSpmltf5d+0BTwdxRL6HmtvBKT8G2tsyET/Q0QJSu7jAEKoXHtsQlpWLJJecOe/9kCUDc5X3/1EOBTvlSOKRz4iPCgscGjIr4C8wT6tbboE5VkLlBPZqyC0pi0dTsILu599CPCBkwpr2K1yUwXwAJ0W3Y0XmsmJQmsDRyWP0Ck69EQ1NOfYp44NpZXdm63DzvIozNHRXNfyGQDHp8aNokegeuyd/cjDEVsUotH7ll0NoayStezJsL364i/yc9MWGEhHxsBRNaK9W9OPb6guaNwdXbwCiIgu+5WkTcJ9WauBl3DrY529aGQoqEps61VGeYkHKk/p+12TDPOZdKcYw== morten@fjord]
     uid: 3290
     comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: 2017-08-24
+    expiry_date: 2018-02-24
     expiry_contact: halfak@wikimedia.org
     email: mwang@wikimedia.org
   mforns:
@@ -1622,7 +1624,7 @@ users:
     gid: 500
     name: bmansurov
     realname: Bahodir Mansurov
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC50DOWu62crD61EV/CKVpA4velNf0sExkBqn4+j6mkSfjBQ3u1NbIiTuRevJ1QejKLrwt+r6RTFH6Zo8HdhumnfHLemNb6b6lPI3X+t9zMP9bfstnE7KpSvAIEPuN83nR9nfs0hMndcqsR1jmSs+zAfZ9rPorIcaGKGnsscao1Xv22yvGk6zAtbQmkEW0uH8d339EgVo9WSVWcJL3EgDuunJyy28XWqjB+YTYxiwlHnla4YZXsXm9YxoC3PNYbe83jDfxkG0TTqW5BSYeVaOwtwRpYiW6pWU3tNyCX6RUx57IhuC2TTshox05EhsREC0eYQcUAny9PAYf5moehRY8V bmansurov@wikimedia.org]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJ4r26C5ZDdtkaaJUh/AZZF1c/SafieceAI22wHU4xohW6M7rssbAI0zd280QyMltBA/NwsS4GQaz837dpqsUYvWfscie0DbBr0Kq0cRoy699BoSWxZu2zKq90LaVcMO/z8ZL39el7utgPPRSpPCgsj3VMuC3S0RQA1X9xnAvNJl6ZbAVE0DBzhVZL3eSLj3/3p+5Dn6JUV+O3hpL3hvpxyBKo5Cqe3c0l7U9rnHzKHGLcT3j789zoF1K5Xlb5tN/jsr3K4tbHrFEJosaT7U4sYz57SA8ZwIR1WEM3seBHL7dGykcJtSUEcZp8iwSqrQ9awsmdj+cd8JQGxrPaZqlPub+yuQmuFIyEZgbRuiYEdhOF5AXbswmobSrNZ1aJSrTcKdGtkbMb2BSXXutrwV5kqCW7i1ycDf30W3sfsy+jxx+59xe1Aiqdbg6T65pbprMLFHBEGtZgQU14J3hmDmDlXk0O4bHhwskxUM5UENFlub3inUvT7Ugq+8xvWtBQb69DGmkXJuOemGnmXC/RKc5K2+bT7ASs+Gf9UCQXqnD/rID3Jvc0n1Y7KPHh/MsU8W5x8USCwocdxG3TmcB5XwYhVvaFfJyA4jDjppPRLfVsNW3WtK3VKyYVDRB96aJ8GED1XTpMlnJLQPv1Wvf4sWOSSSugxPyPtsMN6BlnZv/v+w== bmansurov@wikimedia.org]
     uid: 10570
     email: bmansurov@wikimedia.org
   west1:
@@ -1630,10 +1632,10 @@ users:
     gid: 500
     name: west1
     realname: Bob West
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweYNj2Fsw5NjS+tM3JwvzpAymkw2GNE2NhgI79VuJukffj1XGPGYSJQVxRgIKuLCrmizCc/wYyF2gB+aO3iOmu1pSa84i3Xv141cO8ib5XHGdgPkfb8cvCOg0eD0OEe5esCbNLQrCe/6kzlhWLDkE9UZ++2lKt3j5IN9FEj2qLRv9zVEIBU001ciP/qA0YwIffweVzmX4FpcNF6h8pSKJpx3y+lHwIoD1Hm6d2IH39jPV3k/LmwNLHLjSxlIqXuU1EIeK4Rs+cKOpZatfT4Q8wpiZknvhGxXexhJAwSQ2DM8lONqmFF+AyWZSKahbjN4biBfsjJXLxQFw9yrn3XU2w== west1@madmax4.stanford.edu]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGd7k8tpFmG0m7qe1tD9M7QGQCioHi/kDuSlA8FpSRAsmDWcARisV1/29lpdHUCy4tJ0s3zaEcoGUjy3630El1Ch+dn+NiQSKBcW9fFZ0yhr4uEoOTcamou3L/tpr6ky0hzvX/BNmZTL9ZF2v3PUyb7jAmDs0/1rVSRJ0Egy3+tRR7TttKXdUArGda9/CznW7tQ1BWBIWQ3CeA9Um+uUckF0JFa/IKRdZ5LADrQ/w3wVqcN9WyXza30ITXYKQWkiJPnW+oU/j5r2huY8rTVjaKxTVFf8qVBJXPULUgdgGJqbAkJ34wAW200xij830pTPkh+P/b33/CtUeM+9k9sY0f west@malum]
     uid: 1097
     comment: Research fellow, Wikimedia Google account, but MOU needs to be extended every six months
-    expiry_date: 2017-05-13
+    expiry_date: 2018-11-16
     expiry_contact: halfak@wikimedia.org
     email: rwest@wikimedia.org
   jhernandez:
@@ -1759,11 +1761,11 @@ users:
     ssh_keys: []
     uid: 10542
   lpintscher:
-    ensure: present
+    ensure: absent
     gid: 500
     name: lpintscher
     realname: Lydia Pintscher
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA38VRVZ7vOG5Ltv8PdPWShwHb934pIWNav2cRc4qRiaU71YT5Rc9QGQV3t0Cs3fYJ+eh8O2Xr1K6t+2KKJLuDJE84MXq9G9ptGCis9vDb/JimZuaL3Jol16rB5wbzekoCNZyysIHQ4t+gNKnjUA3OXjeAoJy9m76tUvh+cp31LN5DPNJ29QuVO4aTP4IgAl/BYf+j6GBOpkTd4RicUnS9lGGckAcfETk4AYyYqMf4sw5RSyBQESV8Bb0MtTcNNHTSErSFhxT67ijfC1FA5eKTY5MgvHjItNI16lM+Z3SoASlyIIPz4cyQVnM7TswsuF6oYyE1JV4Rlywv6WvWWMm4/w== lydia@hel]
+    ssh_keys: []
     uid: 2222
     email: lydia.pintscher@wikimedia.de
   jmm:
@@ -1789,7 +1791,8 @@ users:
     gid: 500
     name: mholloway-shell
     realname: Michael Holloway
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDASOBvfuYdsxYbKOH9NTGHkk6QiuGcQR2tMpGZ5kBcPK5mqb5zj0Qr9c/6o3EiTH+BYYnlvgp8zzAjzb2t1oCIn40kdvwp7Q3PIvuoaJj1rRFc0j2RMViUzxCOWeEf7v/28leQ3ZQKHB9p4l9wR3xcl5ZmGvD1JNFFL5hxBlScmMaOEadh5jSKMAJZQM2QjexoGkNp3M59G7CYryC8niQFhWwxGKaHy76ApSXadD6LrmwQmtA3zhRlnAdfBMh5heeutO7wRUE9xStAIMZpf2Pnq3L6ytRMvsr4kvknZ4QdHsNHVqjC/KoK73LIxDlu0HJYzlChaqQ1Xo+x68DU/Ct3 mholloway@wikimedia.org 2015-11-11]
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIneKTP+6PaLMgGkOqtGe89r1i6e8lAPSZuBgGSbJaFS mholloway@wmf1256.local
     uid: 11963
     email: mholloway@wikimedia.org
   madhuvishy:
@@ -1801,11 +1804,11 @@ users:
     uid: 11511
     email: mviswanathan@wikimedia.org
   gpaumier:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gpaumier
     realname: Guillaume Paumier
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxE/ZWep1KH3AEenFtT+8+RJIzbbQfMoTxFPpGhvXZcBijxj+SajDzzgF5lyv+j+pjFsty524R3rEK+Dxu8zpORsVLODuAHMcFDoPeC6IgQKCxnJlWMcNfhUX0VXcm+sjPPTlSKkPsvXypiErB/LWlMT5splo7debfRXRgr4Kh1fZAcrkaoZCW66Ipn7g6Mw2efS1WbJLtpwQDrhzHlL7XuoDJZWwpch1ZcKbBW8TSh3haPFpMhNow2Qtb7V0ZCk+f3dzT6D1vEL1aKQQwskR/GM9nrBgLIGB0ucgue3GcDnpI6W+nLRmamKMc1JX4HfP0J3RrkZgaK661XxHmHOq/ gpaumier@wikimedia.org]
+    ssh_keys: []
     uid: 2047
     email: gpaumier@wikimedia.org
   niedzielski:
@@ -1843,13 +1846,13 @@ users:
     uid: 12161
     email: jcrespo@wikimedia.org
   moushira:
-    ensure: present
+    ensure: absent
     gid: 500
     name: moushira
     realname: Moushira Elamrawy
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlLVCGLVRhQeS0w/xDYFsc53o0t0FV2Vi5MsTv9NlNIVAPvmQOPvLtp55qqb1ix7q2tOktTgFA1yVCW+CfQKoCRqAflAca1CJhNe4xve3FBX2E9zpwjm7ivfKDvfPTRh4ls4n2NdBXke8WKmAbggLE+uaP9G4eIVKy2RKrKZp7EM/25CqxWZe/cRQ9JegmkhVqb2s8s8kEB4aa9to4u4FulCuYyU5WrvCEa4T8oI/mtVQabRO4kjvL5TOdn2tzjnD+4YC9SL4JtcyllVbdpsYa7PpsV9/Ix1MLEqjucFDUVoGd9v5JCsSQclSCxbqn3R7O4bGlYC04WLGBPDpvjaOx melamrawy@wikimedia.org]
+    ssh_keys: []
     uid: 12239
-    email: melamrawy@wikimedia.org
+    email: moushirah@gmail.com
   aklapper:
     ensure: present
     gid: 500
@@ -1968,13 +1971,12 @@ users:
     uid: 11999
     email: sbisson@wikimedia.org
   zhousquared:
-    ensure: present
+    ensure: absent
     gid: 500
     name: zhousquared
     realname: Zhou Zhou
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZXHi14Nxr38Pck4Gqg13rUX3S3mbPo38eEdYrwS7WAMFEKMavkPnuv6qUeicN4IkC6e2AbTt+UFaxfXU3TBqa9SQfrqw/xb431T8wmjnwCSGBw+uCO2U6BHAG4ky3irMnqh+FxZ+Y6QUNwAB++QofLql3h4FEt9vEhpH8bKqQBA4gDOV6xUR4Uwu20uN7yEDDzQCpdJB+ZZsfg7gWnFkDQksgtbuDTdOWUT4MkBss5hiRrMpGN91Y/KPLkNeuAjYDSUnjpNt6AkfV1KtpFaqKH5DmvkJHbfq3FerS3Gp+HNXaB3AAMm2+MxPANgC2efhidvwG3ae/tb5ND4hzFfYT zzhou@wikimedia.org]
+    ssh_keys: []
     uid: 12576
-    email: zzhou@wikimedia.org
   dfoy:
     ensure: present
     gid: 500
@@ -1999,13 +2001,12 @@ users:
     uid: 4891
     email: agomez@wikimedia.org
   jgirault:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jgirault
     realname: Julien Girault
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMR2TEdzI8TP4Khbvm7AOqX/dTKWoxtrcb4fb0gDzocfdiiONAPPhTQc4zsN5RtGUnNhZYm/iUTH2wUQi40uvupjdcKr0RcfAlfrShiqouNQemdOjcy9YQ7CPHmFjs+o3qmpS+STT+FBiRKHC9upy25/UXwW1FXizq1/BINB83WRdeLO5SgRsp1gEKXNeClhPYW8YTUMLC2TqP9P5fdel+mcFKCKhO4HH0SIAXHDoMht2spdLAW+PMxdX0t1iSrXM4x4cV1bQ9AFm+4Pji4zSr+lliv7/G5dR5hw6JCjJJ3DaDM1j5T+oRpc+VfwIIrzl/DgcpAl9pohZJ5Gt8GXT8EyJsDo0crN0aI7+n1sqW/mncNqYHzcZ+EaVsZEXMLrH/hF794dss+rSyBMHZ4/+rN2x1RGLZMyseaAceAh5Zp26hDuHVHg0GZLl5hZ9toadNJHIag/WfNkJiJ4Z5lEwc7kMJV/LHalCi+tdwNN7Ai6m4hLohiCIDn2p+G1umtta8eUJRTnS0qWyn6W72PHXqJlXit4WUzDtOWo5oWdvMcvN26WC10oA1QtbYoLdNulNdpJCk8Aszl9NkoraVt3GWTWpWEvisCFdmNS859vhKjw+cyDJ4jO9rAwFSO8rNK3NxPD9OLEBL8ysjMyB8R4swhwxS+Fof5hgp/Ldr7PSWlw== jgirault@wikimedia.org]
+    ssh_keys: []
     uid: 13211
-    email: jgirault@wikimedia.org
   jdrewniak:
     ensure: present
     gid: 500
@@ -2027,7 +2028,7 @@ users:
     gid: 500
     name: cwdent
     realname: Casey Dentinger
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhB5NxsYxf82q8N2/xUZXRUJNlgUB8moiLxFnrS8989pXs4wiilEFpYgMIZ0V30lu7xIeHzCWdJYEq0ySeQ8Wm5BVdM8APpiLZ4YNheG+gTtRaESSjyj6x/VcCxLjiXwzuXSEikmwXKhXeVFIO8s2FaOrb3JYizaWJxbA6DAQiD3ILR8pjuJtaUkZcmVO86qjdOFGqeRMMB1kVye9JYDRYow8QM13v0TDeP+5EY+6yTG5jlGNscTwYO6Xn/BPi+LS/X1AJYQ6qmWjUky3g6TJEREDmpZBmSfl5bGWBVohOZLuQWTxXAuQ/a5tuCbF+fVsJLZv4dRlEINgxyuEbTSwN]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnScww0ojcxQV3pjOBA+QII1EKeTRwnqW7k/hc1ZQbB4IHMSt1xvUnX71JLNHworWATzAWYS5zXwO9CTeq29yG8PYudgfGZNORigg6G21K/tClZdVxgTNzoH72mfx2k/S+fWURSZ7PNw6b9dlAy9O2VKeEboYaZVR9B5CMzGuV2Ekp4Glb3vcj6aFcrZIWjTR0jnSM0yGcjVpVjw1uGGNrPqTL5CKfyNJ9oDfy3VrGZJo3RJabIQZyfTl4JAT4OcuBVJisEhapSb770nAW71zJdvtyYhluo3ZNqi+6Wg5JWnMwK3Us+SI/JQeGq893MbIcHTZzjOWIu51LNiyzJeTf]
     uid: 12179
     email: cdentinger@wikimedia.org
   ema:
@@ -2055,8 +2056,8 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
     uid: 13978
     email: jclark@cyber.law.harvard.edu
-    expiry_date: 2017-07-01
-    expiry_contact: zzhou@wikimedia.org
+    expiry_date: 2018-01-01
+    expiry_contact: slaporte@wikimedia.org
   gehel:
     ensure: present
     gid: 500
@@ -2095,18 +2096,16 @@ users:
     name: volans
     realname: Riccardo Coccioli
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1iu4OcsLv8Nb+sWHDs9RZ4X9mtBpyf+fhJGrbKjFjaXDRVB5h/CXrqsMz8GJH44HJPBj5Gf/4bwvqRy7MLJGwpHjDJv1xeEOc0Oq5Aa/6/k6h8h0tCDWIGw/ghTOX+u9TZBAr4UHnBHjippEi+9G/jougFjQ2Hu9P62yYU69/mqdmXfLV0JnAXZl13vrzrjLyNWvH64tpwly9HLQXFCpxCI5DKUsmeGeJ7N5+o7XKRTDF4+vtCC3Ro3+FnoIzZP8iV+MzDwt4Z51wtmDY3IDl0PBNjI1OjWBrsCaGB6t3nm/5/mq3ggffgcQIXgjYTB6lxjkbYS0tO2oroFopnaVgx65mENIsWaX/YVpI7VOWN5ylVGljkDVZ+iYX7soDOwiBafZyDdQZ9VSNZDvOnt/sbbWCyYWhcreUfXehiNPLKjxugf7LUaXOqePeyg4swKuwQXzyHssdROjNcNScQn8ze0rety9UQwmkEu8TuSSwXBRxUR8uQhtuk9cxUlRw3qs5yljMVcL33JKF7aQ9b84pV2ARqSouD/zAOQSSrjIAdctlAHR5lYmXn1f3Gz5BMgK0vwcgknGsMHAndW/yejYQi8lQGGgq3MCTMcpvf5qJLgCA/myn/C2XQ20snyJg0Ci7lZpQR0r8EZd4kPD3IiYcWlLcLy3aROcnGGZtPl/jkw== rcoccioli@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLPtrz3vy1SKNu4Rez8Jr+my9QhlNO0/iWLb4/cZB8V Riccardo Coccioli (volans) <rcoccioli@wikimedia.org>
     uid: 14150
     email: rcoccioli@wikimedia.org
   nschaaf:
-    ensure: present
+    ensure: absent
     gid: 500
     name: nschaaf
     realname: Nathaniel Schaaf
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIaXtdgL5Xj5c9XLGxkVQYLAZfbgqQWuRaX2VajopwH4mqFvNuZWiPFMF53t+H4eUdF+/1LfA0DSebuYrzP83LgZH69UVXxwl4xNeyZtjNRf577eojl9nb+TIZhPCQpwLLKRyDu50uRUXfKJ4rXlVFE3r103+6OmVgIc8+SLF3X1umJsv9wDnclBLIrdd0wieUasyaosUjp211BALftpf6CZ6KlqCOwBjcyJ5bxyDJ0SBBEzksROEYJm6QshYgJs9aywcWsfpQPskP4tavHkL2ppQ7VfNm2zxyVRyrbXqXH+55pWwusQW5vVChnkhpVKO7p/7BYJNF+YZlwip5JpyRTOgC5OmXFmL3GP6ib62RWi7YaMxg4jS1JkbvzL6js2+P8k6UcE7Cu/KfIAkwqYMymw217oNx8hXfrOVOr3PcMhhKd9BsTrQd0xonlSyZQxbOdxnUm7oYApkCBoYt+tYdwU+RX/kvdrz2QULgrGJaxjBf8ZrT8G15Efm89fkGRWZ8sQfT4m6C91lFvOrX53G2igY2BfWBd9dIvw3v1/ZG2gHsEs4G2I/9wZDFrR5itedjzW3lMU47sVTNC/dl5wcR/Xc70AjT6AA3fispIJZWIYjAAnBgKyRXawJf5wc2II+AjZvAvHBgKSsRlk/DTzLghvM9XwFX843DgaO/CZgfbQ== nschaaf@wikimedia.org
+    ssh_keys: []
     uid: 13973
-    email: nschaaf@wikimedia.org
   dereckson:
     ensure: present
     gid: 500
@@ -2161,7 +2160,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbRaAUzTfgxalgYGZ7ztelMGXC7vDJ4VwFtFlMt9IvApeYViRh+eIwcr2+94cwextv5fuFD/UWAhk38KKsEnr2SDu1BhTeqlXM1Tfibb8vfq5SrUXzANh61HgqAt9XIyWPXhOFGBJWGZKIHE9DJaDZn5xCmkwz+KPe0smxa0QLHgJTs/Z0sHYu5wcJYPQ/D+b1lBQAPHMUzCIDz8t6ctFysb/pPubX7kbnILao+Q60D7L85+6jgPx2mGFHfsv4LiZP80BhsbrLjwOpuILy3A8jS9aJ9WI0q6Yap9vuRXa8D0DNiymeoGo5X6ye0vdtfe4NZuV9eru3BWBjbSFmRwXP MJP@MJPwork.local
     uid: 15095
     email: maximilian.pany@gmail.com
-    expiry_date: 2017-06-07
+    expiry_date: 2018-01-31
     expiry_contact: mhernandez@wikimedia.org
   jsamra:
     ensure: present
@@ -2172,17 +2171,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2q9U+VYKkFz/WjwG0B+dF01CE4l8NZgBDXGU4AYXqxFk7Vuz2lWTEOeij4r8UgmSsdqq65yOfZYUtjYRm8iHdoIUufWar2XORcBCWqNMeRnId/XX9kMNefzhfl2z7j7UtiAVPsIJZQ0nSFwYY6AxrJdmpBOvinwz8X47FL955/ig4gZvvvV1qzBJ4pvx54U3/e7fwcMGpYrxCUoWuAgIYsc2OS9rW5meBln2bVlJjWRRcid5u9ZM9Za6Jqy/2OIrwhG2AzjpO+5RerflbiVAb6pP7cjU4t+4Cg8fzPTfXuwZ6sjEq6sWJkaz9BaQKC8LDC+nTugokNRlhNj/XxAe3 jasmeetsamra@Jasmeets-MacBook.local
     uid: 15103
     email: jksamra2014@gmail.com
-    expiry_date: 2017-06-07
+    expiry_date: 2018-01-31
     expiry_contact: mhernandez@wikimedia.org
   hjiang:
-    ensure: present
+    ensure: absent
     gid: 500
     name: hjiang
     realname: Helen Jiang
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaary3YNmqf/fNSfBuhAkOQjOJhAKmwUjlKM5eQXlBMTyYdkFxdhEzBVKQeba2O8WSoazfx9fgmtdrJY4LVBH5Xk6DVe7tZcsS6ovpkPFqdey5bOVUOV4IYviuINBIuHjo8Z1LEXGibbB2EsrqsXsm+9NX9bcPifUhFK1ymd6LPjaD/XMeYWld29WwXqK8VW56SWdWpCcSmnVASaHrTXlqgDw6FY3sOjGZbUxoRz2qknSaapMIT2W6rkFoPrDiG5eqi2dS45/vMpEN7FBN6sx3FbjStM3kGu0PrfVDyDcK3+YyvwNgshV4RiW7VMWcsYkpxSWJlKBJMmQwEQDWNabH helen@localhost.localdomain
+    ssh_keys: []
     uid: 15082
-    email: hjiang@wikimedia.org
   bcohn:
     ensure: absent
     gid: 500
@@ -2226,6 +2223,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3yvsX9fUZX7B14Rzko/VbDfdrDZvHUBP/SmKM9oxKI5bcCaIa6u7l+faDjEfAte+SgMSj+jl1azOZYtJ/+fdRVrIRAkS0heL9DDNSdJxuOcWdY3QCOWu6CmcAPWNfo2DxR4FZit0CbFtyH0s6CTOoiG0reF8uiQR+Oyt4mZKSecfk8zX1N5B50hkvbUArrNUg1fLNED1SuJxtBVo73+tEWUOaYyDovy5D0UU8LH0hFp0pKwDeYnlRJxHTV4h+AQ2SqECQ2wg+k5WX8Kd7MYO/7hVuZMkoD9wlHnPMgTSthy4AzGcliO3mNHa0mfHlZtcf/ck0bm75mZhyrXlUewKD ovasileva@wmf1395.corp.wikimedia.org
     uid: 15207
     email: ovasileva@wikimedia.org
+  slaporte:
+    ensure: present
+    gid: 500
+    name: slaporte
+    realname: Stephen LaPorte
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDiyWuq/7N/dkVnEbiwfhmHjuSdMf3c1RxI0RwR3GGOW3mkLhQh4+EYPvsD81Eu2rdMujb6MLA2casflxUJc6CQmYat5cXocyAGwZzVYaysuRTEsY2oTS0ERHvuPT7swfXUsKirs6tulEYdX4bkf5qv7dUkddEw6h6QT10dKF4qgo/F4VcRJU7DMegsC9+ew3EbAs96LQMiDxRWtv1SFJuHjoFLNTV4FIJm+unfBrqnEyHRTR9shcR1Q0JIM0UH0R8K6opXOQsVYoExklxnTcuPIbvs7Fy36UEqYRyQP5Qpv5pgRUMVddAhs5YjvzaGTraApIb2/3HN7hRjHehpXYw9dlICz7NVhdQU8YWlI4yO83WvI3zVdrsogNx9Pg4EVLs9/ZBLp1wQTiDW8iitjZ7pwrng5CWao7PbUiA5SyBS9FZcjGgBCzTs1Og3Mydv6oHI7TbjhJlR1OoTEQApoF9OzL3NKDOkHxBxd5knDdPEzwh/o7VlPgnmKSnW/Yof+jIeaG4lsMmO1KFhXwQzNwSVX7Tm0nr/2dFOklXUcjTFxKAOwp0EYQ8u6BsuBPZkBVhigMxNCcUUHl7mLxKKtrGbWi8hxRxfHrrtD/m/PL7ZilQdZv/MzLUXSglvhJt9Hsb3SRBZ3YMrs99ahYpnAZu/tIHBMTbyf+bT9erq+M0Y9w== slaporte@wikimedia.org
+    uid: 2409
+    email: slaporte@wikimedia.org
 ## Users mtizzoni, panisson, paolotti, & ciro have been added as ISI Foundation members for analytics access.
 ## Access will be revoked by request from Dario Taraborelli when it is no longer needed, see T141634 for details.
   mtizzoni:
@@ -2237,7 +2243,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5+qOyQlchRnrwpMI0ojTd5WbXlAY2YrYqt0tap9/4u/9X+FqHcnRsHtsrwcAdUVJE3NJRWyqsz/yhmXQyFBNQ9qGvfGZRanIZAIVACgWttjhNvZxB/u/Em1AxsetH61fv/IrlquBR1heO8zzpNPBC0DA5Xirnxz27RAok046JL1zf56/of+iHAsqoN6rJsF1SaOjXQg+w6yCyurP/mfbLYc83kTYEQChtj7ys82Bn2m3v9EWDk2g302k3L2zIgUJb4a32I1HwZBgRig4+GfD/HJVQyUa6Era53QNfORp5Zrf45x0KMnce2mo2Nwytxhd/y7pYzS7n9jRiaxOYF2LD Michele@macbook-pro-di-michele-tizzoni-2.local
     uid: 15221
     email: michele.tizzoni@isi.it
-    expiry_date: 2017-07-26
+    expiry_date: 2018-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   panisson:
     ensure: present
@@ -2248,7 +2254,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAsBQKrAubJDt58PL86InNxz0/BEYRJoWbrJw6FCI8B6/GUkGRWiL17Kt7XhiB/6ShNtD6/Md4puA/fB08LJ+GUYxV58eVLpWfdCSTu25AIC2lAiFXwWcFKX7YY4xMYWPCiMkXInODLut8s2o7IuJsikB88m29scZxEVdkxEEupvuf78V7obBjcXGTwed4qMgAzcKjuj3TJZ3DNfGzlylos3NAYGPZ2O0dVIIaGnjsft/quuFKpZHGJe9Td/JUcZ3ddgG8/gO9QXsmNJ4xDUCLdnfen8eI01gfUG5Oe1dJpNw+H2k3HlTefSDUKPrT2SQo9x/tKcstxlKXRxGXaCYt8w== panisson@nbdotti33
     uid: 15217
     email: andre.panisson@isi.it
-    expiry_date: 2017-07-26
+    expiry_date: 2018-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   paolotti:
     ensure: present
@@ -2259,7 +2265,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6lmYG3kuDwouTAy19p33dHldzI1Y4JrMv46Ga23FFSKVR3R2yv7Eu6YFt2Gm7W+TUHkE3EjMlNvLFxtxQMqeoWRK8ahuqQruUAocO55jOmhJvIRW6OP3wGABznwaIM7PWvZPmyuUpZj1zKuhnK5EnVPv9v/9258eCltJtvD8sSpA9CNm6h+RpQFSvvgtnUw0qr8t5RiOr3KK0mXuO1YHQI9LO12Fl+LoszlyV7dF1tChNyN6hYX7QBgNDDhRXahkTmUSEmXMqIhO1wW+GiRyYFIjMBfXA/+HHcCgZzg74qnlU2Pb9QXWQrFwx3vK/KMLchl7iV5H9gfLSX4jzC5eZ daniela.paolotti@gmail.com
     uid: 15237
     email: daniela.paolotti@isi.it
-    expiry_date: 2017-07-26
+    expiry_date: 2018-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   ciro:
     ensure: present
@@ -2270,19 +2276,15 @@ users:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
     uid: 15247
     email: ciro.cattuto@isi.it
-    expiry_date: 2017-07-26
+    expiry_date: 2018-01-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   psinger:
-    ensure: present
+    ensure: absent
     gid: 500
     name: psinger
     realname: Philipp Singer
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoA+dwV71A3HjSLT1LjxjtXv0fb4/ycQGhqIdqPtulshi5/PZlG3tncFSQpwcOtgbwbRIMUnxhezHdQSUQONTOD02lKOk93dVma4TN6FAkb/ZIK6c9eRU/TQwy3OCXqj6O1CQohVj60kRKBvTKMUpw/oRM9lgTT3USc6UE3Uy8/0eHPiR37nhrA3E5uZ9KgEyIY6z+WCT6inghxEFE+uDFowY/8wwd2Rq4Nsa2F88I7488G1lmZpkye/BtbNbjt3QtLt9Qk8yfJqj8Rpniroxaj1Z+MNvVAXJFK+c4ziwjjAvNHcN9ngsJCURIOlOKgpLahNYofv8OmQ2PpQwGHDj/ psinger@gobbo
+    ssh_keys: []
     uid: 15296
-    email: philipp.singer@gesis.org
-    expiry_date: 2017-02-24
-    expiry_contact: leila@wikimedia.org
   flemmerich:
     ensure: present
     gid: 500
@@ -2292,7 +2294,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAhAOVYD/NaXnew0HlVw4i/3LYT6wn6b8D+5Yun2tWRGd8DaODevafjW0Bzf+XwjSNoRIP52ZRM4Vmhg4H6sL4g31FuMfEVgLwjI0WCTxUxIrR2aGuumXRVYRwLOhFkC2RT7TcjTkDzeMa7DijyDxjI9+/rqCgGHcQwIk/c20VYZ4AzHPpGWqeb2JQblDRu/Jz1enmzUt1rwX/4Kxo/lmkLAtJxzVKgNfn13Acj3BSu1w0DIbPBT7EjKCuzKx7ZthanoYIh+BV5KyErp13AB6dxoxSQNfcIbftBoG6idlUSkEqnzednYoVBQSWa4xNaA2NDbjqpxfbMhERRs8FSn9/iw==
     uid: 15297
     email: Florian.Lemmerich@gesis.org
-    expiry_date: 2017-02-24
+    expiry_date: 2018-02-24
     expiry_contact: leila@wikimedia.org
   marostegui:
     ensure: present
@@ -2312,7 +2314,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTzLfXEWbB8g/rN0l9Jiva80PTQ0LOIGzANPQ2DFkPdwvutxWesEfkcI6wbUWQJdmRzhaUyCFetHdzcBMf71h3JczYX6AvtNetsTcXG8Fc4J0qajglF16Uso7/CFIA5XEkmGa15YWXQ63Y6Tlx18ARhY5f+sMPlJUn/Zxi9jd9gc+7AjwlxrTyhkKgzr2HmlVAxphbZmF7yfB3m4d0STyH4RlphVx+7zTCC4zGyDT9vwBqhQxZ0VKRllpu+lMXdR5gJiURAqgBEp5G5cDg1mN70PjRo8ZG+DgrFmLQKLRgzl6a4U9IFg6YhaE7TiGtz25e9Weo4mjoTPZAsjpEkE73 markus.kroetzsch@tu-dresden.de
     uid: 1023
     email: markus.kroetzsch@tu-dresden.de
-    expiry_date: 2017-07-29
+    expiry_date: 2018-01-29
     expiry_contact: leila@wikimedia.org
   akrausetud:
     ensure: present
@@ -2323,7 +2325,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoD/Zl3L6h+F3gWsN+D/URX1vo8xNGN+FU/NvlU61NEBfmlDYsP+Qses8BOA1xVzj21G6CDZDwWyBaY8TXJJ0FEVeZaisW7y2tf8UKPh7t55ttVIQQUrt5oWm4ZCObWYI+As52VZJbKulpA0Ihzp6tQryqJsdh5OlVQIzwIjEMQ/9WTvn45ZESIiYbpTJjFKqKv/uNU5HbZJzDDOGcvXmhirO3t3kOF3zgrrTROFqjn/rD/nK1uGRD/pSrNWOLnePBT2z/mn1vRWwOlHPUBe915Rwl+bGpGkr0aaljwp39gdeyEpPMJBLCAEv2mLOVT7Dw2dK25sZKSxIaecKDwhJsQ==
     uid: 15329
     email: alexander.krause@tu-dresden.de
-    expiry_date: 2017-07-29
+    expiry_date: 2018-01-29
     expiry_contact: leila@wikimedia.org
   debt:
     ensure: present
@@ -2352,6 +2354,8 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBSqKkOktF20xShNmJgeOpkhDYXFgcCvNPKbexn67on5M0hPNTKZjptFPCeoQh/i3suAvPDFakDt0pEcCZzzzcwArM21LJ2EFWeqwl6il20L45aD52y8zYYPrTtAi2YaqP77kbSl7/jVW0AFzM6m/G9e5550oeZKDbHGkANpi9uAqn7EjTI88i0txnTEGG6Bwu4G4H/08BsKbkW2C3sB2/h4V1GEHMhxlDEfhlEsVqfaYgrxmXJsTyAjsgawx+fIuqDJsrIFCWlu7IIfur+g0o+DVIDE5kCzZLUeD7FfwP0ym03f7fXF/yjg0sQzXKPF1eXLKXod+7Mn+KOnxLnj+d Swalton@wikimedia.org
     uid: 15557
     email: swalton@wikimedia.org
+    expiry_date: 2018-01-01
+    expiry_contact: legoktm@wikimedia.org
   volker-e:
     ensure: present
     gid: 500
@@ -2371,16 +2375,12 @@ users:
     uid: 15700
     email: pmiazga@wikimedia.org
   zareen:
-    ensure: present
+    ensure: absent
     gid: 500
     name: zareen
     realname: Zareen Farooqui
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKJFKzMQRJcDPrtRBIi7/b8hWbngR59UA3VCHZXbWVaNCKe+mOz9gXUvmAmeSr29p5vnmAP7tafnWYktvYbqGV02e1x5P09fvAWOvOaQob/A7/5shTGwtVxsip3/Ky2viP5Kycb8THbRHOtOt0DmeUVrWlhwie5M9AeKSWmTVJOivoME8g//nIlq7cXTCYyv+NHFSDIPKDmvlLbVFFdBbhYdDWlT6DQvTPFjTAyD23pltRBDo2WwufnSZB1sQ7spg+6+SN7e2fIcRiGXv8ar8fjwiolLtNz2I5nsLoBsb6q0ZHSwOdta4EhnkmswMrjNAgo6ayImKzXMeG35dvHvZh ZareenFarooqui@ZAREENs-MacBook.local
+    ssh_keys: []
     uid: 15813
-    email: zareenf@gmail.com
-    expiry_date: 2017-05-01
-    expiry_contact: tbayer@wikimedia.org, jkatz@wikimedia.org
   matanya:
     ensure: present
     gid: 500
@@ -2399,7 +2399,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDR23MLJl52/9i2syrOF+mSSHBCpyIEvymOarSFgc0FufWukmb04xTKLRNBjDdWtGzmROqhG9aiD8pptcanzBHXTryoPHDZxnpjik+BmY9IRNXqfhI8hoYE914epFIyM5I14tXra76LFbnVfc3dU2H0V3YCxiMqZkzglxU53Vr25N7e5nSPGdYlwIn3vt3WcF1h9AZdw67659kVX3dKJ0NLWvPJz+odPkJbPwxl3v3XWRW+a+TG42TOVFnoTMkgJ3Vh0Q/0hv00fSb7HzqtlyVfWqNR0KgvilLWkOfH+IX2dAZcPInPk6x9JhFRyfehi7X9t2FXgFlT2T8kmCf215H Adrian.Bielefeldt@mailbox.tu-dresden.de
     uid: 15336
     email: Adrian.Bielefeldt@mailbox.tu-dresden.de
-    expiry_date: 2017-05-30
+    expiry_date: 2017-11-30
     expiry_contact: leila@wikimedia.org
   jgonsior:
     ensure: present
@@ -2410,7 +2410,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1r7OXp7M2oYoTVw/e7ccbF6tHdmM0ZeLpwwMzPAS07zfY31TQ9F3Ww0KPDyKcDt0Cndbg5izpkGlQ6rwTVaeeBlp3IbAwn+YtuZjVjoNny3OyTM1WRjmGbimxglrfUWWjn5yhu4VzrVkA9XYGn7mlJtCmV/kQzXzcAXgF19L9YCOnfBILy7HB5CPpj7H/N+ACmZVAaTiOCLpXb60P3ffVp93Lfzzlau7sPmel/MJOSSWAH8MUhIdGlUXTyk6+b06pSIGk3kAJjtAvtvT1ACjNeyPE1QYJSYm/Lk3MbrjxHvdJipquq3tgxp7StfqY9ppXq5GwvoEecFLd9D59WTHD ragada@thinkpad
     uid: 15338
     email: julius@gaenseri.ch
-    expiry_date: 2017-05-30
+    expiry_date: 2017-11-30
     expiry_contact: leila@wikimedia.org
   piccardi:
     ensure: present
@@ -2421,7 +2421,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAozlVbJ2Cmn3TrZvHChyiHShcWIERWVtl0A+V/w2P5jrpq4WGe2qx/DMPkUDsS5AvhOwY2b9qtAGbx/M+26+b0+xkJihrnT9Fy/IwEDxBFRtcIZ0N1ZvRlK2epb12gfX3oTfQWiSJcmlZOhJCS/GUfeZAAvJiDifnyWeaJAYlkPxPaWVhbF0Xv/W+3zQTQYfPuQEp1S6IKecN3bvW0/8t8fANzbfIjRtwBTSfZiKtHNZwnphaVAPF+xF7wV36spPeRbrxaB6Xy/3pEU00uT7qvyoDpB511w6IVIQfhiAVROVfCbTwyrPtuP+BZHRGFGE7hyo8pFQDQUnEU0yM11NYdQ==
     uid: 15999
     email: tiziano.piccardi@epfl.ch
-    expiry_date: 2017-05-29
+    expiry_date: 2017-11-29
     expiry_contact: leila@wikimedia.org
   fdans:
     ensure: present
@@ -2450,6 +2450,8 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAthC8yN9ImF+F6DQsI4GqYdAKhEtwfZ/+S7xBg2V5Kz5LLrN/KWUN9uiKsUZJfyl2xD12mpu5Mf3nU7c9QoSyZz40Z2GCN/J3IsYLI+6bPFKM7iA65lWHkWcX93JBH0QBlvua9wOAEMMndzeZrloVzJW3PwDa42UikznWYSyoaF60L6eEh+cUs91zZk14GS1gpD+5h+99nzNlBBmgv5aTv53q5JqzdaWXA83X7sZAjQNfLjpT1EDna0z97Agt7DKcKhHbhJqQ67EEZyVH66DtaoNod2cgn0Os74MDX6aNXu69u4pBxGHD7Oh/TY63kY9sB6pHuZ44X5iC2RbhvKSBjw==
     uid: 12744
     email: samtar.on.en.wp@gmail.com
+    expiry_date: 2018-01-01
+    expiry_contact: legoktm@wikimedia.org
   nithum:
     ensure: present
     gid: 500
@@ -2459,23 +2461,190 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHQ6oDkb1WXmbizF6PX4hIELg7azLCcAaNiIl2ytjKTv7DcunsiwM/IkzoU94SUc1uIfijevzDTDU2moSTv8OJ5b/2RxG2RpL8pPVA+aLIm/2Yfo/ulCnjs0WgHbRpY7GKagliU6/PG8JV8byoLglVbPUcepie4P33yAqsA3BxdVsGxw4WnyOIIG2mRsYyAQsMNB5xwofkHW3fPLetY6MYpu9EtKCjaJzX2FzETT7E8WpjwYpqBnAC108hqueyCoZ7Q3eD6qs+pUdcKDPjFHPOQCxPulVjkdsUczct3r5s9ryze0ziSb5GvMowgc1i1Kn9fUPcPPmqRwR4to8348DN nithum@MBP.local
     uid: 15708
     email: nithum@gmail.com
-    expiry_date: 2017-06-15
+    expiry_date: 2017-12-15
     expiry_contact: dario@wikimedia.org
+  shrlak:
+    ensure: present
+    gid: 500
+    name: shrlak
+    realname: Shreyas Lakhtakia
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD2rhvzjTJt5Ac349bzg1JI3QIKsulc3Fl9PqeuIsLeudgNOY9yUa4aByj03ajLdF25ctlxQQRQaqHSCcMOD02gNls4NNjnzC8DVVu8Cu9NqoD6mAPTQ2BHWqCZV5sAKyctrJbYvb7X1aRPvc5/VgQl/Y9gdYpoX7tX+N0L9NMN42PUnICmSejvNkFA6U9VOQcahEbXAvwiDShgu50nUn5uG8xpXkDBoltUPSi+MQlKiZn5lpuY0gswh9U8JVmC+QRqwbXqCB20hpF25PZXrYB31aHYmjCZogM/8k3eAi83/Uytah7n/QcWLne2sWkrlLCAWrtopfY3p2uZm330Xz1D shreyas@Shreyas-MacBook-Pro.local
+    uid: 16523
+    email: shreyaslakhtakia@gmail.com
+    expiry_date: 2018-01-31
+    expiry_contact: rstallman@wikimedia.org
+  goransm:
+    ensure: present
+    gid: 500
+    name: goransm
+    realname: Goran S. Milovanovic
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6jc1W0mqEnurNhtYXF9YQpCX3H4h1pQA9jgZXKGTPUczQJ2rRVZKWXxuPfbg0OwZFzVKhTtSi0HO2v0Dy4gOtrDMpxfX51HnsB/Sm+ifngkj5AgSiAylT7P4PNm7F804m7iJF277DDx/+R9JAL59NT0C9nTZ6oKghL37TQr/PdHBRhjZjRzMOjuplwoFh+I9ZtLGQJpqTENKWqqYwxwMdjog/fRf3+tkvB7kxwmZHRiVPBl8BS64JkNmKXX+xQCtR0YMYH8HkfE4GarSnDXSqmhwS6Zx8TY7oVPy0d5H8cZaA2RyoYWzEH4K2rbvllLoZCnto5Elb6ic0BVP7P8Fn goran@goranNET
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDqwfn3ofrvHW/tLwTlVnQW0J5bD6LXJWRiVnmwILhDZK7JzWxKHDWXylO865AuHPHii6i5A6vFIu9/R72iKtAmd+X+MhIOH3+K7ErqX2S8tIIHghAac96VSNZnlDW/XTuOvFOB8TUhh+SEctlvNes3a9C5Ysxp+VYW7YLRQG+PYs3/A6ifWsPS1dwtGQtysWhkjfGvFNy31VmVVJMng54SH14uxpS+Fc87xRLbpXUVL6Pd7ixKsEfF0z6Rf0V8zS8VmchiJf7Q/EllH7c/6UFZu/fHvVnY653/Miei/6wgdtKrOX5ajai5ZbM6tWbHX4GUz3BncjrrD8Qe6nSJIMz goransm@Ubuntu-1604-xenial-64-minimal
+    uid: 16664
+    email: goran.milovanovic_ext@wikimedia.de
+  pnorman:
+    ensure: present
+    gid: 500
+    name: pnorman
+    realname: Paul Norman
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCy7wnX7ck41mKRzXvt5n/2UVEDkK1T9L5iyDFAWgDAbjgWqjBgnfHVq88lX1d/WOUNjNzF1WnRWn1vk6gKk3eoNlIbEcIvfLGYB+e6yGsE9KZWyvcpWcIBhhe9YH4d7nY34ScUIH42bZkXh2iGu5VpQVm8G5Wf9iqSwKFHSAy+Bl3jclaHSPfUmGxTbjC2e20Xns8BvybEW4dBjb79/eHNR1K/9f5JHeLM9ZE3wKVYC07kSnsYCGVWWr2zqyjpmBl2hQe/0C0pvx2AoTzEYK58BZZUkui3aIihSDiDMxDujNypUtePyoCq14t8dLSkIfOh0kRKAVmC/6oVwzSFbvZ7yjyU5ApsUK1DqCmFw/yz9M/nRuAs3qkXwFC1XUyjNBiVBEbWKDGxBx08TjZPKSvbtQD3DaU7RvXJUh3hsDcrgfky6ZlfV9y1bRp7heHVAShVWrsTwoQt/PF6uZ2ud71Ri51bV9qlHdT/BmF+UJ86LSPzTHSKt57GEXguVVPCGgfjFm+WugW4SOC+Bx/IEQC7+hfgXZjr6CQt+zCOExBS6IpknDBIzuvdbrNKG1auBn6nJKCAURRR3q71tCGlihjV39u5ZEmGqacsIYDA1SSTGqUGq5MuaVoVuS0rBPwFjO1enhqDT6wl9qBVuHUDlis9XQ2wOyLT3yqG0sGYxpNF0w== pnorman@pippin
+    uid: 16082
+    email: penorman@mac.com
+    expiry_date: 2017-11-30
+    expiry_contact: abaso@wikimedia.org
+  ayounsi:
+    ensure: present
+    gid: 500
+    name: ayounsi
+    realname: Arzhel Younsi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAweEnau/EYh0Hdyon4KoT/WRnEUBwdh8Cw+1Mvs1wOxSzBqPg2M9U5JADm20WG+SfyeCyrMXlIDjG5SyBTfALKwez4ExonQ5FyGvt8v4ipQRx+U+tdewIu9n2aAdmZia+0pS1ZgbyhkJtwNO8D95axlmeOab46HyQqZs0BVxPPdXM4ysPUgPZpSIyQ3rfFVerrVClLBNxqHvi7ZuyKH1zBAxSURhT60oRRNGI74G0+78nAA1c/cTeY/DbEKsJNpo7VK5slh9XQNUS2/6X4mgYg5IUK3AtaXIDnA6H5HCgghba0pZN4AmVR4dwVmILWeb8HpMInlLowQUQ5jNXM+hnYQ== xionox@laptop
+    uid: 16756
+    email: ayounsi@wikimedia.org
+  herron:
+    ensure: present
+    gid: 500
+    name: herron
+    realname: Keith Herron
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjuVAhEH0j3RgCiVI8iWK0TIx7wR1ITXQbb92WizSNS7bufl6LksGS87u2fJc0QmfMQMvNYgTfj6ie9wnekARRJ/shIVLx2C44PXV8/veg5yZtOt07vRfqGmE0rdU/7GKB2h3688yB3uecNYkTatqVUH9hG2Z4C/zC3XRWJ6SWXy2FUhBqAsUXKvpfoQgx1jNLm1TWKBbbKYT2VjAYuXbtRhAhTXfz4oCHDZeNnOKg57rIEnen+FKXr4cMpL8pJMQNAk+jSDOJyyBdmDN3fnNY0Rdp7eFn3l6PhoTEqDUicVj6OH+zye+q5oK6S0EoGocCV1nHsP8t1ZFLkXY7oWMzKlbj9G7eG/Tf/p+xgRYL3F9wegLGwyBb6g5btS1CRb4FPE8OF1AZOU+9B9c+qL+Q33rAC3XfUb0Dqzv1OInZYFkkKoWpblpAiG6S9y1KaKOIeFYGJioCvs0dI89hjjxGZWR5EMIfclyvpdrWVitoLcZ6iVvVF73CsR0OpiHNwBGXX3fOw6IlP5T0lXOoPQImPEqlAZoaChvrH+GMCAmW6bEgMvW4iwsE8ajKKT/2riql2ZtTdUwiQCcSYCjAzhQCgsn43K0o/P5RME8dQTiprKC1rqQYYZSJryqZ7cUoBeE5nB+p3wpF4jPqcrKXuCrAuRvXEmWPX1y0e0qBZJNjlQ== kherron@wikimedia.org
+    uid: 17187
+    email: kherron@wikimedia.org
+  dworley:
+    ensure: absent
+    gid: 500
+    name: dworley
+    realname: Daniel Worley
+    ssh_keys: []
+    uid: 17235
+  dsaez:
+    ensure: present
+    gid: 500
+    name: dsaez
+    realname: Diego Saez
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/oA9hk3snx7Y66ZR3sEMukK6tOk4esFT02irhqB0jr9osstyZN9KhPVeWMzhip+93ToDzX+aDHeXqsu5grXsqGQZBZSU850GSNt0pgi8+4E1yGQngLNhFv+z7EemWUQH0XT4atoDXbmfXdRv6NpVlcr1vAPBQpjBZuFe5vaxLKRrhZpm+YNvl4RHdGbZorz6WI0NvzuOTerKUOyUZS/KQpT4FxlvVRoTIO3H05EtJEv3745rUH5wHCcyr7m9Hdsjh8RMrWF3okKLk9WOxQTesfvvstmu8GpBbauzmQYMKwRcKQqoc0/qo3ZGvwXPwrYjv4wpPZhDexjOfUPLGvtGf dsaeztrumper@dsaeztrumper
+    uid: 17677
+    email: diego@wikimedia.org
+  shiladsen:
+    ensure: present
+    gid: 500
+    name: shiladsen
+    realname: Shilad Sen
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrSCbT7GL3eYqdIISBaajhusTPvXhd/sK3ANdU46qzIbvRADGJjB1/OAIbq8NlWChv8RV2ahA409tphVJl2cKmu6a8++V4s1K73yLuASJR3t5q6M3vfZqHEncR6nPLc6aO5S8Vc76cV4DFFfeW83M5F4d43AvunRnzXakFODdWwwFtyqRHyc5eHUf++X2E8ghZ66MKOQ+9Q0RoBL+9d2vQvk5IFDR7FahIFX8eR5jNIQOQ9nf517IDQ8c2dt5+3MrZC+rux384txKsFV3ytJmctxlqaDJeLFRHweumNrE8pSYif+MfZNM6QLPW8kSjifZBekrWL2smdk5RncORbd5j a558989@600308a4c4c6
+    uid: 10339
+    email: shilad@gmail.com
+    expiry_date: 2018-02-17
+    expiry_contact: ahalfaker@wikimedia.org
+  cooltey:
+    ensure: present
+    gid: 500
+    name: cooltey
+    realname: Cooltey Feng
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRx1jtryuO3u8yAV975FGwZz3aalELPHfnT2ANaWX+zGIrf6HbLFCF3gXuSxbRI934xDzJmTwij9c5zKTbk6iKL+aNgKic6713e8O1758+vJHc/vmYCDX2guNmFTvAyDyafc4vBy5iYXKi3fAT7VglNFH/WcjzLKCLa2qfpsLVwauPsq+zBrCntPJFx67KKqOwOmZhFaasu5fQuq8QIM0SmqORT51zQwKm6RMk+A8jKs45kAaiXHNC69E4axGaf+FF68C4wawmB42L+IkHJ8LKR4nHd+Py2TfgLjWYf66gunb7zeeIeQxYtYVNbFdv4pwy92c4gxNT2PAvSzrowe8nwd4zLmGLn+IKBf6cqOQh/eNU4Z9Ugwa7znCmElis09AIVs42tb1T018jwIqSjJgpiZpkm94/4V1eGIbcICKKnBOwBYlYdEK98IbaxDAiQqlM/vyYkmCQoz4Ai1ZTxamjga/KZJ1DR30S1A/QbRz0bN23s0H98RCrhJHaX45ICtfppJODPodIGa0mzh8UA3/9Yz8sygF1+4nzlt7wmd428Af82mnMwmF59gEJcD4/eJcBFy8lNK6ZaanFogRyuLbzKsd5r3UvY/y6vcwP+VNArGeRUX66ntV7PbLoxPLj++1YRsHM27WAI5fQRR3mNkn74V8+SOBb4gMJGIwDL4fbow== cfeng@wikimedia.org
+    uid: 17764
+    email: cfeng@wikimedia.org
+  sharvaniharan:
+    ensure: present
+    gid: 500
+    name: sharvaniharan
+    realname: Sharvani Haran
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpJeP2DCd3LgKRDfMze3kthHjiXnFQldQyvJ1LVbkqzgzzcYR8E7fSF0PFygX5OkUMU9Lii2w+7L4uHR9nsBIHDtSHlPWlEmQ35VRGGtJ/eaRjuOjQO/qI20Hwq4eYsMFpGFc20D6OWOYii/dFQjFYqqAfeWG9LMn1zScedSiZ9SRIZkTLcWx/otoHCQGG6UQ3zEbvp4NPGPqjNPyDsCI1+RXgPjaack0E+hrsagncAg03SC9rPAdeQ80X/d49+8WJt/n5R0skKjFSZkqbAUDNOJENXbwWoRK8YlNgTGLpdkEModlcBTuDqwz+FAzKAA45MIOgXV2xoviV/DaFH8DV sharan@wikimedia.org
+    uid: 17744
+    email: sharan@wikimedia.org
+  dbarratt:
+    ensure: present
+    gid: 500
+    name: dbarratt
+    realname: David Barratt
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrRP96tPtNAw4XAiTdDaxbwfDIwN5c4rCg3vArfDQSqOutIICgY30CGC1nadOmEqJxqAn6xQYnMgA94qb3pyPln/DLYtcseE185UHvqNqbOpXT+a9EnV/o1uHPP0/riQHF5k27SBUZS6RyAj14JkgbTutz5Z35aYfULTmhP3yMTdhd+/Fl3rA7d+bZdZCLwiikwJ0DY1dKXmSCKalFAub/FVjEGLpSLGu2gkKufx6sm4W+U0nBku9tLxBJ3B/rJdXVoudeAM3NWBJErPEqvyv3SYTnxthGIuqI9ZayjtzVNuuK5eETxdFVMwoxV1V/AvtqgSHxa9Tr1aTMkZZ8IdmP dbarratt@wikimedia.org
+    uid: 17204
+    email: dbarratt@wikimedia.org
+  rho:
+    ensure: present
+    gid: 500
+    name: rho
+    realname: Rita Ho
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHuPUUK0SGl+S/G6jiCd1UWOZ/abghr4qEqNepM06kpV rho@Ritas-MBP
+    uid: 14485
+    email: rho@wikimedia.org
+  cicalese:
+    ensure: present
+    gid: 500
+    name: cicalese
+    realname: Cindy Cicalese
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuBIYZJaY5mjq6Jep6XJHF7YiSltdMkUYHDeMpYU804XE52+PiFTmscxKPREyzPRiXw4SIfu3fOd2spYy/LxCgLJkv4iNWrA+sjGtsuC8ex61ZiUoSVV36SifWN/4x2jY1MsZBSk4Uzf7F6LBT3SFwtRtaGLN6CBeteKbz8S+1w7bcA8CwU6wsTKolFrV/ehGta+q88e+7kF+u1p8+WUYTl5mo9Nk41NpH6GMD+60iYf7flXXD7+t/hEtEcuWFtNm6pSm7cKsj8EuHmQC+j6d+Gb+slUnCq9lR5QAjzFh6Ks72ZHx33f4h8xUK7/CG+ZFk+YBEF9H9USCzN7S9wfuD ccicalese@wikimedia.org
+    uid: 2886
+    email: ccicalese@wikimedia.org
+  mirrys:
+    ensure: present
+    gid: 500
+    name: mirrys
+    realname: Miriam Redi
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4BEpVOzbQtI8EFQBWqZJqX5hxxornmURV5tAGxKkl7pHF6Yiza6jeA6FQDqY3yLbzm+rwN7xJsRDjYN121R03s+fC4gmPsNnML/m4sgkz6QgS3pEYDU81861e1ySUhXv73OH+EJtQy6WIEsh18XOam0rYaXeX1XXtq1/qIIyiXNX0rXJbJrHmv79TxMpKuT8M+Z1R9NOnkNXecsxoYK4lY/pe3/qSo6UHplPMVnkt+eT71BPCvZsnaMZHkBgMtCJmSNWRkqNUM20/UZ44FBEr4PKwLxwwwmrLQOS3Z5U6uj7n9GC9g0gL+k0LjKUGm3aCnVfXBaUY55+lDqksdfk7U8baSoZB/MJ81bhhgR5DxsaB4EKsXl9fDE9PGrE0dOt6f/3grAdqfTG0yDhoY9hu0TkD3DpgrOS5KsbsmqATZkjGrGKC5B7ce5oB3enytizytmLNMBDSq1FJI5ly22EDzUmpLVNoGCJS9tQvxYpE0K8lMOEwMSDkeEmZF69ZLnjJVVKF0tadRTUWSdmACjQ1KNd26zzkGcysmqU43bwXjnQ7u+7q9h3h7kIzAK9bUoOU+Kkc/91C9AIWyc2Tz6+HUWQ7J26qlyOFWF9vguU7rQGpzCnGEVosa4DgJAb4BbFZjyK+VjXxy16I5+bAtMnWE4ivuSlKskzGqzResNw3bw== miriam@miriam-WMF
+    uid: 18005
+    email: mredi@wikimedia.org
+  aborrero:
+    ensure: present
+    gid: 500
+    name: aborrero
+    realname: Arturo Borrero Gonzalez
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6RtPrxlPVQo8LuBeSZiOJ3yo0M+LQPlLWTsCjxe/Tuk7LbiQy/Now7mAbMmDhOLfmkEfyDkfq0ZWqiqdqVqxcuGuxWNNfnUyTVsoamIbTv+VXx/XUoVvBT2MJt42VWNanZeK/0qqHE0bnGnZ5peMrwfj2dQsklE9FEJV1r+hVtvAhkSmkxpHnPg0GdJEubyUOnp1mSaDsjdTeYC1Ct2L4fZgD2eql3kDtxzzZGqdnF4GbgDi4KIghd4XzZXQIbjMrt17WsiY4G7zlqh9DanAA1pf6f+q+Xt+Bs837uPZHX+eU27K/O6peHf+l7qHYctr33S9La6wSNl2wfhRuKCIV aborrero@wikimedia.org
+    uid: 18194
+    email: aborrero@wikimedia.org
+  phedenskog:
+    ensure: present
+    gid: 500
+    name: phedenskog
+    realname: Peter Hedenskog
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxyWdrsYsbZuCFvBYGJAc/dhzp1Jfg0il+FFux+LB8F2iJ6jSA46LGT2JPPGumx72+ArGkr+xddgnzBfyutrkrRRTRI30yszFXJsm07GG9I8mAdj/6UXhWsNDBJy7xTvUYMD8TTbtXCT7dTdAg8BxpwKEvW04wZX2HIVDcwDBIMfxRvsvSS352FmfQ7OSytW9/82egMZlcbF6GDJytV6Sk8Zbh5EldtA5EH7pLexlSR8FFSi88h2NF+c6I8rHPpiorbB1jqA2b3krbMhe8vp13VS319L+b6VfsS4OgR5XUnFVHr3SiQ/eqtGwivOnXVFZBngpqzeat7AxPlDMl93l1 phedenskog@WMF1412
+    uid: 12719
+    email: phedenskog@wikimedia.org
+
 ldap_only_users:
   abartov:
     ensure: present
     realname: Asaf Bartov
     email: abartov@wikimedia.org
   adavenport:
-    ensure: present
+    ensure: absent
     realname: Allison Davenport
-    email: adavenport@wikimedia.org
-    expiry_date: 2017-04-04
-    expiry_contact: rstallman@wikimedia.org
+  albe:
+    ensure: present
+    realname: Aleksey Bekh-Ivanov
+    email: aleksey.bekh-ivanov@wikimedia.de
+  andrew-wmde:
+    ensure: present
+    realname: Andrew Kostka
+    email: andrew.kostka@wikimedia.de
   apalmer:
     ensure: present
     realname: Aeryn Palmer
     email: apalmer@wikimedia.org
+  ashahrestani:
+    ensure: present
+    realname: A Shahrestani
+    email: ashahrestani@wikimedia.org
+  audiohazel:
+    ensure: present
+    realname: Victoria Coleman
+    email: vcoleman@wikimedia.org
+  chrisneuroth:
+    ensure: present
+    realname: Christoph Neuroth
+    email: christoph.neuroth_ext@wikimedia.de
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
@@ -2484,10 +2653,18 @@ ldap_only_users:
     ensure: present
     realname: Corey Floyd
     email: cfloyd@wikimedia.org
+  cparle:
+    ensure: present
+    realname: Cormac Parle
+    email: cparle@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
     email: fbolduc@wikimedia.org
+  gpaumier:
+    ensure: present
+    realname: Guillaume Paumier
+    email: gpaumier@wikimedia.org
   heather:
     ensure: present
     realname: Heather Walls
@@ -2496,16 +2673,24 @@ ldap_only_users:
     ensure: present
     realname: Jean-Rene Branaa
     email: jbranaa@wikimedia.org
-    expiry_date: 2017-06-30
+    expiry_date: 2018-06-30
     expiry_contact: greg@wikimedia.org
   jbuatti:
     ensure: present
     realname: James Buatti
     email: jbuatti@wikimedia.org
+  jk:
+    ensure: present
+    realname: Jonas Kress
+    email: jonas.kress@wikimedia.de
   jrobell:
     ensure: present
     realname: Jessica Robell
     email: jrobell@wikimedia.org
+  knissen:
+    ensure: present
+    realname: Kai Nissen
+    email: kai.nissen@wikimedia.de
   kemayo:
     ensure: present
     realname: David Lynch
@@ -2514,20 +2699,28 @@ ldap_only_users:
     ensure: present
     realname: Leighanna Mixter
     email: lmixter@wikimedia.org
-    expiry_date: 2017-10-01
+    expiry_date: 2018-10-01
     expiry_contact: rstallman@wikimedia.org
+  lpintscher:
+    ensure: present
+    realname: Lydia Pintscher
+    email: lydia.pintscher@wikimedia.de
   mhernandez:
     ensure: present
     realname: Megan Hernandez
     email: mhernandez@wikimedia.org
+  multichill:
+    ensure: present
+    realname: Maarten Dammers
+    email: maarten@mdammers.nl
   nirzar:
     ensure: present
     realname: Nirzar Pangarkar
     email: npangarkar@wikimedia.org
-  phedenskog:
+  parent5446:
     ensure: present
-    realname: Peter Hedenskog
-    email: phedenskog@wikimedia.org
+    realname: Tyler Romeo
+    email: tylerromeo@gmail.com
   prtksxna:
     ensure: present
     realname: Prateek Saxena
@@ -2536,18 +2729,26 @@ ldap_only_users:
     ensure: present
     realname: Quim Gil
     email: qgil@wikimedia.org
+  quiddity:
+    ensure: present
+    realname: Nick Wilson
+    email: nwilson@wikimedia.org
   raqstallman:
     ensure: present
     realname: Rachel Stallman
     email: rstallman@wikimedia.org
-  rho:
-    ensure: present
-    realname: Rita Ho
-    email: rho@wikimedia.org
   ryasmeen:
     ensure: present
     realname: Rummana Yasmeen
     email: ryasmeen@wikimedia.org
+  scfc:
+    ensure: present
+    realname: Tim Landscheidt
+    email: tim@tim-landscheidt.de
+  schoenbaechler:
+    ensure: present
+    realname: Robin Schoenbaechler
+    email: rschoenbaechler@wikimedia.org
   seddon:
     ensure: present
     realname: Joseph Seddon
@@ -2555,10 +2756,7 @@ ldap_only_users:
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
-  slaporte:
-    ensure: present
-    realname: Stephen Laporte
-    email: slaporte@wikimedia.org
+    email: sparmar@wikimedia.org
   spatton:
     ensure: present
     realname: Sam Patton
@@ -2574,7 +2772,7 @@ ldap_only_users:
   thecore:
     ensure: present
     realname: Wes Moran
-    email: wmoran@wikimedia.org
+    email: westonnh@gmail.com
   tnegrin:
     ensure: present
     realname: Toby Negrin
@@ -2595,3 +2793,83 @@ ldap_only_users:
     ensure: present
     realname: Zachary McCune
     email: zmccune@wikimedia.org
+  mnoor:
+    ensure: present
+    realname: Moska Noor
+    email: mnoor@wikimedia.org
+  samwilson:
+    ensure: present
+    realname: Sam Wilson
+    email: swilson@wikimedia.org
+  dmaza:
+    ensure: present
+    realname: Dayllan Maza
+    email: dmaza@wikimedia.org
+  ebjune:
+    ensure: present
+    realname: Erika Bjune
+    email: ebjune@wikimedia.org
+  divec:
+    ensure: present
+    realname: David Chan
+    email: dchan@wikimedia.org
+  ataherivand:
+    ensure: present
+    realname: Abraham Taherivand
+    email: abraham.taherivand@wikimedia.de
+  chrisneuroth:
+    ensure: present
+    realname: Christoph Neuroth
+    email: christoph.neuroth+wikimedia@gmail.com
+  gbirke:
+    ensure: present
+    realname: Gabriel Birke
+    email: gabriel.birke@wikimedia.de
+  jakob:
+    ensure: present
+    realname: Jakob Warkotsch
+    email: jakob.warkotsch@wikimedia.de
+  jeroendedauw:
+    ensure: present
+    realname: Jeroen De Dauw
+    email: jeroendedauw@gmail.com
+  jkroll:
+    ensure: present
+    realname: Johannes Kroll
+    email: johannes.kroll@wikimedia.de
+  johlig:
+    ensure: present
+    realname: Jens Ohlig
+    email: jens.ohlig@wikimedia.de
+  pgrass:
+    ensure: present
+    realname: Pablo Grass
+    email: pablo.grass@wikimedia.de
+  tgritschacher:
+    ensure: present
+    realname: Tobias Gritschacher
+    email: tobias.gritschacher@wikimedia.de
+  thiemowmde:
+    ensure: present
+    realname: Thiemo Mättig
+    email: thiemo.maettig@wikimedia.de
+  wmde-fisch:
+    ensure: present
+    realname: Christoph Fischer
+    email: christoph.fischer@wikimedia.de
+  wmde-jand:
+    ensure: present
+    realname: Jan Dittrich
+    email: jan.dittrich@wikimedia.de
+  wmde-leszek:
+    ensure: present
+    realname: Leszek Manicki
+    email: leszek.manicki@wikimedia.de
+  jgleeson:
+    ensure: present
+    realname: Jack Gleeson
+    email: jgleeson@wikimedia.org
+  imarlier:
+    ensure: present
+    realname: Ian Marlier
+    email: imarlier@wikimedia.org

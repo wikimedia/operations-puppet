@@ -4,10 +4,9 @@ require 'hiera'
 
 describe 'role_backend' do
   before :each do
-
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.yaml')
-    @backend = Hiera::Backend::Role_backend.new()
+    @backend = Hiera::Backend::Role_backend.new
     @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
     @scope = Puppet::Parser::Scope.new(@compiler)
     @scope.source = Puppet::Resource::Type.new(:node, :foo)
@@ -43,11 +42,11 @@ describe 'role_backend' do
 
   it "merges values when using an array lookup" do
     @scope.function_role(['test', 'test2'])
-    expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['FooBar'],['FooBar1']])
+    expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['FooBar'], ['FooBar1']])
   end
 
   it "merges values when using hash lookup" do
     @scope.function_role(['test', 'test2'])
-    expect(@backend.lookup('an_hash', @topscope, nil, :hash)).to eq({"test2"=>true, "test3"=>{"another"=>"level"}, "test"=>true})
+    expect(@backend.lookup('an_hash', @topscope, nil, :hash)).to eq({"test2" => true, "test3" => {"another" => "level"}, "test" => true})
   end
 end

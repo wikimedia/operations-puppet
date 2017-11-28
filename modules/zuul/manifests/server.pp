@@ -34,9 +34,6 @@ class zuul::server (
     $gerrit_user,
     $gearman_server,
     $gearman_server_start,
-    $jenkins_server,
-    $jenkins_user,
-    $jenkins_apikey,
     $url_pattern,
     $service_ensure  = 'running',
     $service_enable = true,
@@ -74,12 +71,14 @@ class zuul::server (
         source => 'puppet:///modules/zuul/gearman-logging.conf',
     }
 
-    zuul::configfile { '/etc/zuul/zuul-server.conf':
-        zuul_role => 'server',
-        owner     => 'zuul',
-        group     => 'root',
-        mode      => '0400',
-        notify    => Exec['craft public zuul conf'],
+    $zuul_role = 'server'
+    file { '/etc/zuul/zuul-server.conf':
+        owner   => 'zuul',
+        group   => 'root',
+        mode    => '0400',
+        content => template('zuul/zuul.conf.erb'),
+        notify  => Exec['craft public zuul conf'],
+
     }
 
     package { 'python-gear':
@@ -123,12 +122,15 @@ class zuul::server (
         'unmanaged' => undef,
         default     => $service_ensure,
     }
-    service { 'zuul':
-        ensure     => $real_ensure,
-        name       => 'zuul',
-        enable     => $service_enable,
-        hasrestart => true,
-        require    => [
+
+    base::service_unit { 'zuul':
+        ensure         => 'present',
+        systemd        => systemd_template('zuul'),
+        service_params => {
+            ensure     => $real_ensure,
+            hasrestart => true,
+        },
+        require        => [
             File['/etc/default/zuul'],
             File['/etc/zuul/zuul-server.conf'],
             File['/etc/zuul/gearman-logging.conf'],
@@ -136,7 +138,7 @@ class zuul::server (
     }
 
     exec { 'zuul-reload':
-        command     => '/etc/init.d/zuul reload',
+        command     => '/bin/systemctl reload zuul',
         refreshonly => true,
     }
 }

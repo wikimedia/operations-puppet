@@ -921,6 +921,7 @@ class Printer(object):
         # Cannot find a pretty printer.  Return None.
         return None
 
+
 libstdcxx_printer = None
 
 
@@ -1156,5 +1157,6 @@ def build_libstdcxx_dictionary():
                               StdDequeIteratorPrinter)
         libstdcxx_printer.add('std::__norm::_Deque_iterator',
                               StdDequeIteratorPrinter)
+
 
 build_libstdcxx_dictionary()

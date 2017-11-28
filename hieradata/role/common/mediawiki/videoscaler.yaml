@@ -2,8 +2,9 @@ cluster: videoscaler
 admin::groups:
   - deployment
   - perf-roots
-mediawiki::jobrunner::runners_transcode: 6
-mediawiki::jobrunner::runners_transcode_prioritized: 4
+profile::mediawiki::jobrunner::runners:
+  transcode: 6
+  transcode_prioritized: 4
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   hhvm:
@@ -11,3 +12,5 @@ hhvm::extra::fcgi:
       connection_timeout_seconds: 86400
       thread_count: 15
   max_execution_time: 86400
+profile::mediawiki::jobrunner::load_factor: 0.7
+standard::has_ganglia: false

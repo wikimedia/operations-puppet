@@ -154,7 +154,8 @@ class Proxy():
 
 def get_proxy_list(request):
     try:
-        resp = requests.get(base.url_for(request, 'proxy') + '/mapping')
+        url = base.url_for(request, 'proxy') + '/mapping'
+        resp = requests.get(url)
         if resp.status_code == 400 and resp.text == 'No such project':
             proxies = []
         elif not resp:
@@ -165,7 +166,7 @@ def get_proxy_list(request):
                 for route in resp.json()['routes']]
     except Exception:
         proxies = []
-        exceptions.handle(request, _("Unable to retrieve proxies: " + resp.text))
+        exceptions.handle(request, _("Unable to retrieve proxies from %s") % url)
     return proxies
 
 

@@ -9,7 +9,8 @@ class wikimetrics::queue {
     $config_path      = $::wikimetrics::base::config_path
     $venv_path        = $::wikimetrics::base::venv_path
 
-    base::service_unit { 'wikimetrics-queue':
-        systemd => true,
+    systemd::service { 'wikimetrics-queue':
+        content => systemd_template('wikimetrics-queue'),
+        restart => true,
     }
 }

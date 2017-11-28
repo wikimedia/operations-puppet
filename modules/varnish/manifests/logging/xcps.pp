@@ -27,11 +27,10 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
         notify  => Service['varnishxcps'],
     }
 
-    base::service_unit { 'varnishxcps':
+    systemd::service { 'varnishxcps':
         ensure         => present,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishxcps',
+        content        => systemd_template('varnishxcps'),
+        restart        => true,
         require        => File['/usr/local/bin/varnishxcps'],
         subscribe      => File['/usr/local/lib/python2.7/dist-packages/cachestats.py'],
         service_params => {

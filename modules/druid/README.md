@@ -26,9 +26,13 @@ module.  You cannot use these classes unless you have that already set up
 and included.
 
 First, you must ensure that the druid user exists on your Hadoop NameNodes,
-and that druid HDFS directories are created.  The `druid::cdh::hadoop::setup`
+and that druid HDFS directories are created.  The `druid::cdh::hadoop::user`
 class does this.  Include this class on your Hadoop NameNodes.  It will not
 install the druid package, but it will ensure that a druid systemuser exists.
+
+If you are using HDFS for deep storage, you must also declare a HDFS deep storage
+directory.  You should do this on one of your NameNodes with the
+`druid::cdh::hadoop::deep_storage` define.
 
 Druid must then be configured to use the CDH provided Hadoop Client
 dependencies. This is done by setting $use_cdh = true on the main druid class.

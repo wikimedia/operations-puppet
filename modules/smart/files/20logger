@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+# Send smartd warnings/errors via syslog instead of mail
+
+if ! [ -x /usr/bin/logger ]; then
+    echo "Your system does not have /usr/bin/logger.  Install the bsdutils package."
+    exit 1
+fi
+
+input=$1
+shift
+
+/usr/bin/logger -p local0.warning -t smart_failure < $input

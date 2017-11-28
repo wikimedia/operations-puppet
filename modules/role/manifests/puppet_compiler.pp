@@ -1,7 +1,7 @@
 # filtertags: labs-project-toolsbeta labs-project-puppet3-diffs
 class role::puppet_compiler {
 
-    system::role { 'role::puppet_compiler': description => 'Puppet compiler jenkins slave'}
+    system::role { 'puppet_compiler': description => 'Puppet compiler jenkins slave'}
 
     case $::realm {
         'labs'      : {
@@ -19,4 +19,13 @@ class role::puppet_compiler {
 
     include ::puppet_compiler
 
+    # Conftool + etcd are needed for the conftool function to work
+    # do not bother with hiera here, for now.
+    class { '::profile::conftool::client':
+        srv_domain => '',
+        host       => '127.0.0.1',
+        port       => 2379,
+        namespace  => dirname('/conftool/v1'),
+        protocol   => 'http',
+    }
 }

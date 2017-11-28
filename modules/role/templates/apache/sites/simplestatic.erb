@@ -19,13 +19,7 @@
         Header always set Strict-Transport-Security "max-age=31536000"
 
         <Directory <%= base_path %>/<%= host_name %>>
-            <IfVersion >= 2.4>
-                Require all granted
-            </IfVersion>
-            <IfVersion < 2.4>
-                Order Deny,Allow
-                Allow from all
-            </IfVersion>
+            Require all granted
         </Directory>
     </VirtualHost>
 <% end -%>

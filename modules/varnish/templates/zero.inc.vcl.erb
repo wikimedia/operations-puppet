@@ -1,13 +1,15 @@
 // Varnish VCL include file for Wikipedia Zero
 
-// Note: This requires "import header" in the including VCL
-
-sub tag_carrier {
-    // clear the 4 headers we may set below, nobody else should be setting them...
+sub tag_carrier_cleanup {
     unset req.http.X-Forwarded-By;
-    unset req.http.X-Forwarded-By2;
     unset req.http.X-CS;
     unset req.http.X-CS2;
+}
+
+sub tag_carrier {
+    // clear the 3 headers we may set in tag_carrier, nobody else should be
+    // setting them...
+    call tag_carrier_cleanup;
 
     // X-C, X-C-M, and X-T-P are set up in the common wikimedia.vcl now from
     // netmapper data, and are the source for these Zero headers

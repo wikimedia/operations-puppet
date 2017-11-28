@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'configparser_format' do
-
   it 'should format hash into ini format' do
     run.with_params({:section => {:param1 => 'value1', :param2 => 'value2'}})
                           .and_return(
@@ -37,5 +36,4 @@ describe 'configparser_format' do
             "param1 = item1,item2\n"\
         )
   end
-
 end

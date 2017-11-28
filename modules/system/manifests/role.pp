@@ -13,7 +13,7 @@
 #
 # === Example
 #
-#  system::role { 'role::analytics::hadoop::master':
+#  system::role { 'analytics::hadoop::master':
 #    description => 'Hadoop Master (NameNode & ResourceManager)'
 #  }
 #
@@ -26,9 +26,11 @@ define system::role(
         default => "${::hostname} is a ${description} (${title})",
     }
 
-    motd::script { "role-${title}":
+    $role_title = regsubst($title, '^role::', '')
+
+    motd::script { "role-${role_title}":
         ensure   => $ensure,
-        priority => 05,
+        priority => 5,
         content  => "#!/bin/sh\necho '${message}'\n",
     }
 }

@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-poolcounter-codfw:
-    value: standard

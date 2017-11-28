@@ -96,6 +96,10 @@ private:
       home: true
       project: true
       scratch: true
+  osmit:
+    gid: 51933
+    mounts:
+      dumps: true
   project-proxy:
     gid: 50254
     mounts:
@@ -111,10 +115,6 @@ private:
       home: true
       project: true
       scratch: true
-  sugarcrm:
-    gid: 50292
-    mounts:
-      project: true
   testlabs:
     gid: 50302
     mounts:
@@ -136,6 +136,10 @@ private:
       home: true
       project: true
       scratch: true
+  twl:
+    gid: 52777
+    mounts:
+      project: true
   utrs:
     gid: 50318
     mounts:

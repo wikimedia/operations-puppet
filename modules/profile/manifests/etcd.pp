@@ -27,6 +27,12 @@
 #
 # [*do_backup*]
 #   Boolean. Whether to back up the data on etcd or not
+#
+# [*client_port*]
+#   Integer. The port clients will use. Defaults to 2379
+#
+# [*peer_port*]
+#   Integer. The port peers will use. Defaults to 2380
 class profile::etcd(
     # Configuration
     $cluster_name = hiera('profile::etcd::cluster_name'),
@@ -36,6 +42,8 @@ class profile::etcd(
     $use_proxy = hiera('profile::etcd::use_proxy'),
     $allow_from = hiera('profile::etcd::allow_from'),
     $do_backup = hiera('profile::etcd::do_backup'),
+    $client_port = hiera('etcd::client_port', 2379),
+    $peer_port = hiera('etcd::peer_port', 2380),
 ){
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -53,12 +61,12 @@ class profile::etcd(
     }
 
     if $use_proxy {
-        $client_port = 2378
-        $adv_client_port = 2379
+        $real_client_port = $client_port - 1
+        $adv_client_port = $client_port
     }
     else {
-        $client_port = 2379
-        $adv_client_port = 2379
+        $real_client_port = $client_port
+        $adv_client_port = $client_port
     }
 
     # Service & firewalls
@@ -66,7 +74,7 @@ class profile::etcd(
         host             => $::fqdn,
         cluster_name     => $cluster_name,
         cluster_state    => $cluster_state,
-        client_port      => $client_port,
+        client_port      => $real_client_port,
         adv_client_port  => $adv_client_port,
         srv_dns          => $srv_dns,
         peers_list       => $peers_list,
@@ -78,13 +86,13 @@ class profile::etcd(
 
     ferm::service{'etcd_clients':
         proto  => 'tcp',
-        port   => hiera('etcd::client_port', '2379'),
+        port   => $adv_client_port,
         srange => $allow_from,
     }
 
     ferm::service{'etcd_peers':
         proto  => 'tcp',
-        port   => hiera('etcd::peer_port', '2380'),
+        port   => $peer_port,
         srange => '$DOMAIN_NETWORKS',
     }
 
@@ -96,7 +104,7 @@ class profile::etcd(
         }
 
         #FIXME: this is like this while we migrate to profiles
-        include role::backup::host
+        include ::profile::backup::host
         backup::set { 'etcd': }
     }
 
@@ -107,4 +115,12 @@ class profile::etcd(
         srv_domain => $srv_dns,
     }
 
+    # T162013 - reduce raid resync speeds on clustered etcd noes with software RAID
+    # in order to mitigate the risk of losing consensus due to I/O latencies
+    if 'md' in $facts['raid'] {
+        sysctl::parameters { 'raid_resync_speed':
+            ensure => present,
+            values => { 'dev.raid.speed_limit_max' => '20000' },
+        }
+    }
 }

@@ -42,14 +42,20 @@ class jupyterhub (
                     'pwgen',
                     ])
 
-    package { 'nginx-common':
-        ensure => '1.9.10-1~bpo8+3',
+    require_package('nginx-extras')
+
+    # Packages for PDF exports
+    if ! defined(Package['pandoc']){
+        package { 'pandoc':
+            ensure => present,
+        }
     }
 
-    package { 'nginx-extras':
-        ensure  => '1.9.10-1~bpo8+3',
-        require => Package['nginx-common'],
-    }
+    ensure_packages([
+                    'texlive-xetex',
+                    'texlive-fonts-recommended',
+                    'texlive-generic-recommended',
+                    ])
 
     file { $base_path:
         ensure => directory,
@@ -93,12 +99,16 @@ class jupyterhub (
         mode   => '0700',
     }
 
-    base::service_unit { 'jupyterhub':
-        systemd => true,
+    systemd::service { 'jupyterhub':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('jupyterhub')
     }
 
-    base::service_unit { 'nchp':
-        systemd => true,
+    systemd::service { 'nchp':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('nchp')
     }
 
     file { "${venv_path}/nchp_config.py":
@@ -107,7 +117,7 @@ class jupyterhub (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Base::Service_unit['nchp'],
+        notify  => Systemd::Service['nchp'],
         require => Exec['setup-virtualenv'],
     }
 
@@ -117,7 +127,7 @@ class jupyterhub (
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
-        notify  => Base::Service_unit['jupyterhub'],
+        notify  => Systemd::Service['jupyterhub'],
         require => Exec['setup-virtualenv'],
     }
 
@@ -128,8 +138,8 @@ class jupyterhub (
         user    => 'root',
         group   => 'root',
         notify  => [
-            Base::Service_unit['nchp'],
-            Base::Service_unit['jupyterhub'],
+            Systemd::Service['nchp'],
+            Systemd::Service['jupyterhub'],
         ],
     }
 
@@ -140,7 +150,7 @@ class jupyterhub (
         umask   => '0377',
         user    => 'root',
         group   => 'root',
-        notify  => Base::Service_unit['jupyterhub'],
+        notify  => Systemd::Service['jupyterhub'],
     }
 
 }

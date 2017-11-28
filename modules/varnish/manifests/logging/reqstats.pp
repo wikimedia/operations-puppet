@@ -36,22 +36,19 @@ define varnish::logging::reqstats(
 
     if ! defined(File['/usr/local/bin/varnishreqstats']) {
         file { '/usr/local/bin/varnishreqstats':
-            source  => 'puppet:///modules/varnish/varnishreqstats',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
-            notify  => Service[$service_unit_name],
+            source => 'puppet:///modules/varnish/varnishreqstats',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            notify => Service[$service_unit_name],
         }
     }
 
-    base::service_unit { $service_unit_name:
+    systemd::service { $service_unit_name:
         ensure         => $ensure,
-        systemd        => true,
-        strict         => false,
-        template_name  => 'varnishreqstats',
+        content        => systemd_template('varnishreqstats'),
+        restart        => true,
         require        => File['/usr/local/bin/varnishreqstats'],
-        subscribe      => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
         service_params => {
             require => Service[$varnish_service_name],
             enable  => true,

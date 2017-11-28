@@ -4,7 +4,7 @@ class swift::proxy (
     $shard_container_list,
     $accounts = $swift::params::accounts,
     $credentials = $swift::params::account_keys,
-    $memcached_servers         = ['localhost:11211'],
+    $memcached_servers         = ['127.0.0.1:11211'],
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
@@ -15,7 +15,6 @@ class swift::proxy (
     $dispersion_account        = undef,
     $tld                       = 'org',
     $thumborhost               = '',
-    $thumbor_wiki_list         = [],
 ) {
     package {[
         'swift-proxy',
@@ -54,9 +53,8 @@ class swift::proxy (
     # start swift-proxy, our proxy binds to port 80 so it isn't going to work.
     # Use a modified version of 'swift-proxy' systemd unit from jessie-backports.
     if os_version('debian >= jessie') {
-        base::service_unit { 'swift-proxy':
-            systemd => true,
-            refresh => false,
+        systemd::service { 'swift-proxy':
+            content => systemd_template('swift-proxy'),
         }
     }
 

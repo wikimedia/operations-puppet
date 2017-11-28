@@ -1,31 +1,47 @@
 // Varnish VCL include file for upload frontends
 include "upload-common.inc.vcl";
 
-sub cluster_fe_recv_pre_purge { }
+sub cluster_fe_recv_pre_purge {
+	// Normalize paths before purging
+	call upload_normalize_path;
+}
 
 sub cluster_fe_recv {
-	// CORS preflight requests
-	if (req.method == "OPTIONS" && req.http.Origin) {
-		return (synth(667, "OK"));
-	}
+	// The upload cluster does not serve page views or authenticated
+	// requests, so we keep it cookie-free on the sending side in
+	// vcl_deliver to avoid pointless network traffic and to improve
+	// cacheability.  Here we'll also strip Auth/Cookie info at ingress
+	// as well, as this information should be at best pointless and could
+	// cause functional issues.
+	unset req.http.Authorization;
+	unset req.http.Cookie;
 
-	// Homepage redirect to commons
-	if (req.url == "/") {
-		return (synth(666, "Moved Permanently"));
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// CORS preflight requests
+		if (req.method == "OPTIONS" && req.http.Origin) {
+			return (synth(200, "CORS Preflight"));
+		}
+
+		// Homepage redirect to commons
+		if (req.url == "/") {
+			return (synth(301, "Commons Redirect"));
+		}
 	}
 
 	call upload_common_recv;
 
-	// Look for a "download" request parameter
-	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
-		set req.http.X-Content-Disposition = "attachment";
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Look for a "download" request parameter
+		if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
+			set req.http.X-Content-Disposition = "attachment";
+		}
+
+		// Strip away all query parameters
+		set req.url = regsub(req.url, "\?.*$", "");
+
+		// Replace double slashes
+		set req.url = regsuball(req.url, "/{2,}", "/");
 	}
-
-	// Strip away all query parameters
-	set req.url = regsub(req.url, "\?.*$", "");
-
-	// Replace double slashes
-	set req.url = regsuball(req.url, "/{2,}", "/");
 
 	// Fixup borked client Range: headers
 	if (req.http.Range ~ "(?i)bytes:") {
@@ -33,13 +49,27 @@ sub cluster_fe_recv {
 	}
 }
 
+sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_hit {
 	call upload_common_hit;
 }
 
+sub cluster_fe_ratelimit {
+	// Maps rate limiting: 1000/10s (100/s long term, with 1000 burst)
+	if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>") {
+		// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
+		if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+			if (vsthrottle.is_denied("maps:" + req.http.X-Client-IP, 1000, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		}
+	}
+}
+
 sub cluster_fe_miss {
+	call cluster_fe_ratelimit;
 	call upload_common_miss;
 
 	// Make sure If-Cached requests won't pollute the cache
@@ -48,7 +78,9 @@ sub cluster_fe_miss {
 	}
 }
 
-sub cluster_fe_pass { }
+sub cluster_fe_pass {
+	call cluster_fe_ratelimit;
+}
 
 sub cluster_fe_backend_fetch {
 	call upload_common_set_range;
@@ -63,6 +95,7 @@ sub cluster_fe_backend_response {
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
+<% if @vcl_config.fetch("admission_policy", "nhw") == "nhw" -%>
 	// NOTE: it's very important this happens *after* the generic code that
 	// translates TTL<=0 responses into hit-for-pass!  That code is
 	// currently in wikimedia-common's backend_response, which is implicitly
@@ -71,20 +104,26 @@ sub cluster_fe_backend_response {
 	// hit/4 or higher, deliver the object as normal but do not create a new
 	// cache entry of any kind.  We start caching in the frontend when an
 	// object is accessed for the 5th time across all frontends in this DC.
+	// "Small" objects are excluded here as they result in hit-for-pass at the
+	// backend layer and thus would always be considered one-hit-wonders.
 	if (beresp.status == 200
             && bereq.http.X-CDIS == "miss"
-            && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
+            && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$"
+            && std.integer(beresp.http.Content-Length, 1024) >= 1024) {
 		set beresp.ttl = 0s;
+		set beresp.grace = 60s;
+		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
 		return (deliver);
 	}
 
 	// hit-for-pass objects >= 256K size
-	if (std.integer(beresp.http.Content-Length, 262144) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);
 	}
+<% end -%>
 
 	call upload_common_backend_response;
 	return (deliver);
@@ -102,59 +141,60 @@ sub cluster_fe_deliver {
 		set resp.http.Content-Disposition = "attachment";
 	}
 
-	set resp.http.Access-Control-Allow-Origin = "*";
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		set resp.http.Access-Control-Allow-Origin = "*";
 
-	// Headers exposed for CORS:
-	// - Age, Content-Length, Date, X-Cache, X-Varnish: used by MultimediaViewer
-	//   for client-side performance metrics (1cb80099d97ad).
-	//
-	// - X-Content-Duration: used for OGG audio and video files (7077999966).
-	//   Firefox 41 dropped support for this header, but OGV.js still supports it.
-	//   See <https://bugzilla.mozilla.org/show_bug.cgi?id=1160695#c27> and
-	//   <https://github.com/brion/ogv.js/issues/88>.
-	//
-	// - Content-Range: indicates total file and actual range returned for RANGE
-	//   requests (939b436512). Used by ogv.js to eliminate an extra HEAD request
-	//   to get the the total file size.
-	set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish";
+		// Headers exposed for CORS:
+		// - Age, Content-Length, Date, X-Cache, X-Varnish: used by MultimediaViewer
+		//   for client-side performance metrics (1cb80099d97ad).
+		//
+		// - X-Content-Duration: used for OGG audio and video files (7077999966).
+		//   Firefox 41 dropped support for this header, but OGV.js still supports it.
+		//   See <https://bugzilla.mozilla.org/show_bug.cgi?id=1160695#c27> and
+		//   <https://github.com/brion/ogv.js/issues/88>.
+		//
+		// - Content-Range: indicates total file and actual range returned for RANGE
+		//   requests (939b436512). Used by ogv.js to eliminate an extra HEAD request
+		//   to get the the total file size.
+		set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish";
 
-	// "Timing-Allow-Origin" is part of the Resource Timing specification
-	// (https://www.w3.org/TR/resource-timing/). Setting this header allows
-	// JavaScript with a different origin to access resource timing info
-	// (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
-	set resp.http.Timing-Allow-Origin = "*";
+		// "Timing-Allow-Origin" is part of the Resource Timing specification
+		// (https://www.w3.org/TR/resource-timing/). Setting this header allows
+		// JavaScript with a different origin to access resource timing info
+		// (e9cbfd539edd3). See <https://phabricator.wikimedia.org/T76020>.
+		set resp.http.Timing-Allow-Origin = "*";
 
-	// Restrict uploads from loading external resources. (T117618)
-	// Currently experimental and testing on test/test2/el/fr.wikipedia.org only.
-	if (req.url ~ "^/wikipedia/(el|fr|test)") {
-		set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://test.wikipedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
-		set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
-		set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+		// Restrict uploads from loading external resources. (T117618)
+		// Currently experimental and testing on large but not huge wikis.
+		if (req.url ~ "^/wikipedia/(el|fr|ru|it|de|uk|ja|id|he|fi|zh|test)") {
+			set resp.http.Content-Security-Policy-Report-Only = "default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; media-src data:; sandbox; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&";
+			set resp.http.X-Content-Security-Policy-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+			set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
+		}
 	}
 }
 
 sub cluster_fe_err_synth {
-	// Handle CORS preflight requests
-	if (resp.status == 667) {
-		set resp.status = 200;
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0";
+	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
+		// Handle CORS preflight requests
+		if (resp.reason == "CORS Preflight") {
+			set resp.reason = "OK";
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Content-Length = "0";
 
-		// allow Range requests, used by ogv.js
-		set resp.http.Access-Control-Allow-Origin = "*";
-		set resp.http.Access-Control-Allow-Headers = "Range";
-		set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
-		set resp.http.Access-Control-Max-Age = "86400";
+			// allow Range requests, used by ogv.js
+			set resp.http.Access-Control-Allow-Origin = "*";
+			set resp.http.Access-Control-Allow-Headers = "Range";
+			set resp.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
+			set resp.http.Access-Control-Max-Age = "86400";
+		}
 
-		return (deliver);
-	}
-
-	// Homepage redirect to commons
-	if (resp.status == 666) {
-		set resp.status = 301;
-		set resp.http.Location = "https://commons.wikimedia.org/";
-		set resp.http.Connection = "keep-alive";
-		set resp.http.Content-Length = "0";
-		return (deliver);
+		// Homepage redirect to commons
+		if (resp.reason == "Commons Redirect") {
+			set resp.reason = "Moved Permanently";
+			set resp.http.Location = "https://commons.wikimedia.org/";
+			set resp.http.Connection = "keep-alive";
+			set resp.http.Content-Length = "0";
+		}
 	}
 }

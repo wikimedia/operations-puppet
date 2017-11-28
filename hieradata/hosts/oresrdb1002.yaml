@@ -1,1 +1,1 @@
-ores::redis::slaveof: oresrdb1001
+profile::ores::redis::slaveof: oresrdb1001

@@ -18,15 +18,12 @@ class puppetmaster::passenger(
     $verify_client,
     $allow_from,
     $deny_from,
+    $puppet_major_version=undef,
 ) {
     include ::apache::mod::passenger
 
-    package { 'puppetmaster-passenger':
-        ensure => present,
-    }
-
-    # Jessie-specific instructions
-    if os_version('Debian >= jessie') {
+    # jessie-specific instructions
+    if os_version('debian >= jessie') {
         # Debian jessie needs the DH params file
         include ::sslcert::dhparam
     }
@@ -51,11 +48,26 @@ class puppetmaster::passenger(
         content => template('puppetmaster/ports.conf.erb'),
     }
 
-    # Unfortunately priority does not allows to use apache::site for this
-    # Purging the package installed puppetmaster site
-    file { '/etc/apache2/site-enabled/puppetmaster':
-        ensure  => absent,
-        require => Package['puppetmaster-passenger'],
+    # Place an empty puppet-master.conf file to prevent creation of this file
+    # at package install time. Apache breaks if that happens. T179102
+    file { '/etc/apache2/sites-available/puppet-master.conf':
+        ensure  => present,
+        content => '# This file intentionally left blank by puppet - T179102'
+    }
+    file { '/etc/apache2/sites-enabled/puppet-master.conf':
+        ensure  => link,
+        target  => '/etc/apache2/sites-available/puppet-master.conf',
+        require => File['/etc/apache2/sites-available/puppet-master.conf'],
+    }
+
+    # puppetmaster-passenger package name changed to puppet-master-passenger with version 4
+    $puppetmaster_passenger_package_name = $puppet_major_version ? {
+        4       => 'puppet-master-passenger',
+        default => 'puppetmaster-passenger',
+    }
+
+    package { $puppetmaster_passenger_package_name:
+        ensure => present,
     }
 
     # Since we are running puppet via passenger, we need to ensure
@@ -75,14 +87,13 @@ class puppetmaster::passenger(
             mode    => '0444',
             source  => 'puppet:///modules/puppetmaster/default',
             require => [
-                Package['puppetmaster-passenger'],
-                Package['puppetmaster-common']
+                Package[ $puppetmaster_passenger_package_name ]
             ],
         }
     }
 
     # Rotate apache logs is now managed via the apache::logrotate class
-    file { '/etc/logrotate.d/passenger':
+    logrotate::conf { 'passenger':
         ensure => absent,
     }
 }

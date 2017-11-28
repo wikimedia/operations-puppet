@@ -58,12 +58,11 @@ define udp2log::instance(
     }
 
     base::service_unit { "udp2log-${name}":
-        ensure        => $ensure,
-        sysvinit      => true,
-        systemd       => true,
-        template_name => 'udp2log',
-        subscribe     => File["/etc/udp2log/${name}"],
-        require       => File["/etc/udp2log/${name}"],
+        ensure    => $ensure,
+        sysvinit  => sysvinit_template('udp2log'),
+        systemd   => systemd_template('udp2log'),
+        subscribe => File["/etc/udp2log/${name}"],
+        require   => File["/etc/udp2log/${name}"],
     }
 
     # the udp2log instance's filter config file
@@ -90,11 +89,8 @@ define udp2log::instance(
 
     # if the logs in $log_directory should be rotated
     # then configure a logrotate.d script to do so.
-    file { "/etc/logrotate.d/udp2log-${name}":
+    logrotate::conf { "udp2log-${name}":
         ensure  => $logrotation,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
         content => template($logrotate_template),
     }
 

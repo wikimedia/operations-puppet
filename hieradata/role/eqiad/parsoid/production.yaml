@@ -1,5 +1,2 @@
-debdeploy::grains:
-  debdeploy-parsoid-eqiad:
-    value: standard
 lvs::realserver::realserver_ips:
   - 10.2.2.28

@@ -2,8 +2,6 @@ class k8s::kubelet(
     $master_host,
     $listen_address = '0.0.0.0',
     $listen_port = undef,
-    $cluster_dns_ip = '192.168.0.100',
-    $use_package = false,
     $pod_infra_container_image = 'gcr.io/google_containers/pause:2.0',
     $cluster_domain = 'kube',
     $tls_cert = '/var/lib/kubernetes/ssl/certs/cert.pem',
@@ -11,18 +9,11 @@ class k8s::kubelet(
     $cni=false,
     $cni_bin_dir='/opt/cni/bin',
     $cni_conf_dir='/etc/cni/net.d',
+    $kubeconfig='/etc/kubernetes/kubeconfig',
 ) {
-    include ::k8s::infrastructure_config
+    require ::k8s::infrastructure_config
 
-    # Use this to maintain compatibility with labs for now
-    if $use_package {
-        require_package('kubernetes-node')
-    } else {
-        file { '/usr/bin/kubelet':
-            ensure => link,
-            target => '/usr/local/bin/kubelet',
-        }
-    }
+    require_package('kubernetes-node')
 
     # Needed on k8s nodes for kubectl proxying to work
     ensure_packages(['socat'])
@@ -33,6 +24,7 @@ class k8s::kubelet(
         group   => 'root',
         mode    => '0644',
         content => template('k8s/kubelet.default.erb'),
+        notify  => Service['kubelet'],
     }
 
     file { [
@@ -45,8 +37,12 @@ class k8s::kubelet(
         mode   => '0700',
     }
 
-    base::service_unit { 'kubelet':
-        systemd   => true,
-        subscribe => File['/etc/kubernetes/kubeconfig'],
+    service { 'kubelet':
+        ensure    => running,
+        subscribe => [
+            File[$kubeconfig],
+            File['/etc/default/kubelet'],
+        ],
     }
+
 }

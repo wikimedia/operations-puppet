@@ -3,10 +3,10 @@ input {
     # Some options have not been added, if you want to add more options, see:
     # https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html
 <%- if @tags -%>
-    tags       => ["<%= @tags.join('", "') %>"]
+    tags              => ["<%= @tags.join('", "') %>"]
 <%- end -%>
-    topic_id   => "<%= @topic %>"
-    type       => "<%= @type %>"
-    zk_connect => "<%= @zk_connect %>"
+    topics            => ["<%= @topic %>"]
+    type              => "<%= @type %>"
+    bootstrap_servers => "<%= @bootstrap_servers %>"
   }
 }

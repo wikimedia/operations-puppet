@@ -5,7 +5,7 @@
 class role::systemtap::devserver {
     include ::systemtap::devserver
 
-    system::role { 'role::systemtap::devserver':
+    system::role { 'systemtap::devserver':
         description => 'SystemTap development environment'
     }
 }

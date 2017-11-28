@@ -7,15 +7,15 @@ define conftool::credentials(
     $home="/home/${title}",
     $group=$title,
     ) {
-    require ::conftool
 
+    require ::passwords::etcd
     etcd::client::config { "${home}/.etcdrc":
         ensure   => present,
         owner    => $title,
         group    => $group,
         settings => {
             username => 'conftool',
-            password => $::conftool::password,
+            password => $::passwords::etcd::accounts['conftool'],
         },
     }
 

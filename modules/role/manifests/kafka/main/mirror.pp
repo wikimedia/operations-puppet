@@ -39,6 +39,22 @@ class role::kafka::main::mirror {
     # The local site's Kafka cluster will be the destination cluster.
     $destination_config = kafka_config('main')
 
+    # TODO: fix this hiera lookup when this is moved into profiles
+    $kafka_message_max_bytes = hiera('kafka_message_max_bytes', 1048576)
+    # The requests not only contain the message but also a small metadata overhead.
+    # So if we want to produce a kafka_message_max_bytes payload the max request size should be a bit higher.
+    # The 48564 value isn't arbitrary - it's the difference between default message.max.size and default max.request.size
+    $producer_request_max_size = $kafka_message_max_bytes + 48564
+    $producer_properties = {
+        'max.request.size' => $producer_request_max_size,
+    }
+    $consumer_properties = {
+        'fetch.message.max.bytes'   => $producer_request_max_size,
+        # TODO: This property will only be used by new consumers, which we don't use yet.
+        # 'max.partition.fetch.bytes' => $producer_request_max_size
+    }
+
+
     ::confluent::kafka::mirror::instance { "main-${source_site}_to_main-${::site}":
         source_zookeeper_url      => $source_config['zookeeper']['url'],
         destination_brokers       => split($destination_config['brokers']['string'], ','),
@@ -48,5 +64,7 @@ class role::kafka::main::mirror {
         jmx_port                  => 9997,
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
+        producer_properties       => $producer_properties,
+        consumer_properties       => $consumer_properties,
     }
 }

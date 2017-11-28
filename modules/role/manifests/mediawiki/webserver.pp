@@ -26,8 +26,8 @@ class role::mediawiki::webserver {
         $lvs_service = pick($::lvs::configuration::lvs_services[$pool], {})
         $conftool_config = pick($lvs_service['conftool'], {'cluster' => 'appserver'})
         $module_path = get_module_path($module_name)
-        $site_nodes = loadyaml("${module_path}/../../conftool-data/nodes/${::site}.yaml")
-        $pool_nodes = keys($site_nodes[$conftool_config['cluster']])
+        $site_nodes = loadyaml("${module_path}/../../conftool-data/node/${::site}.yaml")
+        $pool_nodes = keys($site_nodes[$::site][$conftool_config['cluster']])
         if member($pool_nodes, $::fqdn) {
             $times = cron_splay($pool_nodes, 'daily', 'hhvm-conditional-restarts')
             cron { 'hhvm-conditional-restart':
@@ -86,7 +86,9 @@ class role::mediawiki::webserver {
             default_server => true,
             do_ocsp        => false,
             upstream_ports => [80],
+            access_log     => true,
         }
+
         monitoring::service { 'appserver https':
             description    => 'Nginx local proxy to apache',
             check_command  => 'check_https_url!en.wikipedia.org!/',

@@ -7,7 +7,7 @@
 #
 # Example:
 #
-# ./dequeue.sh tools-exec-1211 tools-exec-1212 tools-exec-1215
+# ./dequeue.sh tools-exec-1411 tools-exec-1412 tools-exec-1415
 #
 if [ `hostname` != 'tools-master' ]; then
     echo "This can only be run on tools-master."

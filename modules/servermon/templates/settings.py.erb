@@ -11,6 +11,10 @@ DEBUG = False
 <%- end -%>
 TEMPLATE_DEBUG = DEBUG
 
+# We are behind an apache httpd server, so use X-Forwarded_Host header
+USE_X_FORWARDED_HOST = True
+ALLOWED_HOSTS = ['servermon.wikimedia.org']
+
 ADMINS = (
 <%- if @admins -%>
 	<%= @admins%>

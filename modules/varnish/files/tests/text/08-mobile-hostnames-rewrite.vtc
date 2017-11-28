@@ -26,8 +26,14 @@ server s1 {
     txresp
 
     rxreq
-    expect req.http.x-dt-host == <undef>
+    expect req.http.x-dt-host == "zh-classical.wikipedia.org"
     txresp
+
+    loop 7 {
+        rxreq
+        expect req.http.x-dt-host == <undef>
+        txresp
+    }
 } -start
 
 varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
@@ -57,6 +63,39 @@ client c1 {
     txreq -url "/" -hdr "Host: en.zero.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
 
+    txreq -url "/" -hdr "Host: zh-classical.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
+
+    txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://en.m.wikipedia.org/wiki/Main_Page"
+    expect resp.status == 302
+
+    txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: zh-classical.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://zh-classical.m.wikipedia.org/wiki/Main_Page"
+    expect resp.status == 302
+
+    txreq -url "/?title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://en.m.wikipedia.org/?title=foo"
+    expect resp.status == 302
+
+    txreq -url "/?title=foo&bar=baz" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://en.m.wikipedia.org/?title=foo&bar=baz"
+    expect resp.status == 302
+
+    txreq -url "/?bar=baz&title=foo" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://en.m.wikipedia.org/?bar=baz&title=foo"
+    expect resp.status == 302
+
+    txreq -url "/w/index.php?title=MyPage&action=info" -hdr "User-Agent: nintendo" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://en.m.wikipedia.org/w/index.php?title=MyPage&action=info"
+    expect resp.status == 302
 } -run

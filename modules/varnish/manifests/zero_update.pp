@@ -1,6 +1,6 @@
 # Zero-specific update stuff
 class varnish::zero_update($site) {
-    require '::varnish::netmapper_update_common'
+    class { '::varnish::netmapper_update_common': }
 
     package { 'python-requests':
         ensure => installed;
@@ -31,11 +31,12 @@ class varnish::zero_update($site) {
     }
 
     file { '/etc/zerofetcher/zerofetcher.auth':
-        owner   => 'netmap',
-        group   => 'netmap',
-        mode    => '0400',
-        content => secret('misc/zerofetcher.auth'),
-        require => File['/etc/zerofetcher'],
+        owner     => 'netmap',
+        group     => 'netmap',
+        mode      => '0400',
+        content   => secret('misc/zerofetcher.auth'),
+        require   => File['/etc/zerofetcher'],
+        show_diff => false,
     }
 
     $cmd = "/usr/share/varnish/zerofetch.py -s \"${site}\" -a /etc/zerofetcher/zerofetcher.auth -d /var/netmapper 2>&1 | logger -t zerofetch"

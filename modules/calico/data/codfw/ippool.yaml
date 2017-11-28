@@ -1,0 +1,10 @@
+- apiVersion: v1
+  kind: ipPool
+  metadata:
+    cidr: 10.192.64.0/24
+  spec: {}
+- apiVersion: v1
+  kind: ipPool
+  metadata:
+    cidr: 2620:0:860:cabe::/64
+  spec: {}

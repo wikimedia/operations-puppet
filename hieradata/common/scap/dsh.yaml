@@ -4,18 +4,26 @@ scap::dsh::scap_proxies:
   - "mw1280.eqiad.wmnet" # A7 eqiad
   - "mw1211.eqiad.wmnet" # B7 eqiad
   - "mw1216.eqiad.wmnet" # B8 eqiad
-  - "mw1161.eqiad.wmnet" # C6 eqiad
+  - "mw1319.eqiad.wmnet" # C6 eqiad
   - "mw1201.eqiad.wmnet" # D5 eqiad
   - "mw2117.codfw.wmnet" # B3 codfw
-#  - "mw2148.codfw.wmnet" # C3 codfw
   - "mw2187.codfw.wmnet" # C4 codfw
   - "mw2215.codfw.wmnet" # A3 codfw
 
 scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
-  - "mira.codfw.wmnet"
+  - "naos.codfw.wmnet"
+
 
 scap::dsh::groups:
+  jobrunner-canaries:
+    hosts:
+      - mw1299.eqiad.wmnet
+      - mw2247.codfw.wmnet
+  jobrunner:
+    conftool:
+      - {'cluster': 'videoscaler', 'service': 'apache2'}
+      - {'cluster': 'jobrunner', 'service': 'apache2'}
   mediawiki-installation:
     conftool:
       - {'cluster': 'appserver', 'service': 'apache2'}
@@ -26,7 +34,7 @@ scap::dsh::groups:
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - tin.eqiad.wmnet
-      - mira.codfw.wmnet
+      - naos.codfw.wmnet
       - terbium.eqiad.wmnet
       - wasat.codfw.wmnet
       - silver.wikimedia.org
@@ -38,8 +46,13 @@ scap::dsh::groups:
   parsoid:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid'}
+  parsoid-canaries:
+    # Also update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     hosts:
-      - ruthenium.eqiad.wmnet
+      - wtp1025.eqiad.wmnet
+      - wtp1026.eqiad.wmnet
+      - wtp2001.codfw.wmnet
+      - wtp2002.codfw.wmnet
   mediawiki-api-canaries:
     hosts:
       - mw1276.eqiad.wmnet
@@ -57,8 +70,8 @@ scap::dsh::groups:
       - mw1265.eqiad.wmnet
   cassandra:
     conftool:
-      - {'cluster': 'aqs', 'service': 'cassandra'}
-      - {'cluster': 'maps', 'service': 'cassandra'}
+      - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
+      - {'cluster': 'maps', 'service': 'cassandra', 'datacenters': ['codfw']}
       - {'cluster': 'restbase', 'service': 'cassandra'}
     hosts:
       - cerium.eqiad.wmnet
@@ -70,3 +83,29 @@ scap::dsh::groups:
       - restbase-test2002.codfw.wmnet
       - restbase-test2003.codfw.wmnet
       - xenon.eqiad.wmnet
+  discovery-analytics:
+    hosts:
+      - stat1005.eqiad.wmnet
+  librenms:
+    hosts:
+      - netmon1002.wikimedia.org
+      - netmon2001.wikimedia.org
+  logstash:
+    hosts:
+      - {'cluster': 'logstash', 'service': 'logstash'}
+  relforge:
+    hosts:
+      - relforge1001.eqiad.wmnet
+      - relforge1002.eqiad.wmnet
+  webperf:
+    hosts:
+      - hafnium.eqiad.wmnet
+  maps:
+    conftool:
+      - {'cluster': 'maps', 'service': 'kartotherian'}
+  maps-canaries:
+    hosts:
+      - maps-test2001.codfw.wmnet
+      - maps-test2002.codfw.wmnet
+      - maps-test2003.codfw.wmnet
+      - maps-test2004.codfw.wmnet

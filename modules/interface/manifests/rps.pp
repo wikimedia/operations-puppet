@@ -1,30 +1,27 @@
 # Definition: interface::rps
 #
-# Automagically sets RPS (and optionally, RSS) for an interface
+# Automagically sets RPS/RSS/XPS for an interface
 #
 # Parameters:
 # - $interface:
 #   The network interface to operate on
 # - $rss_pattern:
-#   Optional RSS IRQ name pattern
-#   If set (to hw-specific value), RSS will be enabled as well
-#   Must contain a single "%d" format character for the queue number
-#   (on bnx2x, this would be "eth0-fp-%d")
-define interface::rps( $rss_pattern='' ) {
+#   Optional RSS IRQ name pattern (normally auto-detected)
+# - $qdisc
+#   Options qdisc string to populate mq subqueues, e.g.:
+#   "fq flow_limit 422"
+define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
     require interface::rpstools
     require interface::rps::modparams
 
-    $interface = $title
-    if $rss_pattern != '' {
-        $cmd = "/usr/local/sbin/interface-rps ${interface} ${rss_pattern}"
-    }
-    else {
-        $cmd = "/usr/local/sbin/interface-rps ${interface}"
-    }
+    $cmd = "/usr/local/sbin/interface-rps ${interface}"
+    $cfg = "/etc/interface-rps.d/${interface}"
 
-    # Disable irqbalance if RSS in use
-    if $rss_pattern != '' {
-        require irqbalance::disable
+    file { $cfg:
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template("${module_name}/interface-rps-config.erb"),
     }
 
     # Add to ifup commands in /etc/network/interfaces
@@ -33,11 +30,14 @@ define interface::rps( $rss_pattern='' ) {
         command   => $cmd,
     }
 
-    # Exec immediately if newly-added
+    # Exec immediately on script or config change
     exec { "rps-${interface}":
         command     => $cmd,
-        subscribe   => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,
+        subscribe   => [
+            File['/usr/local/sbin/interface-rps'],
+            File[$cfg],
+        ],
     }
 }
 

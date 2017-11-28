@@ -1,7 +1,7 @@
 server {
    listen 80;
    listen [::]:80;
-   server_name mirrors.wikimedia.org ubuntu.wikimedia.org;
+   server_name mirrors.wikimedia.org;
 
    root /srv/mirrors;
 
@@ -23,7 +23,7 @@ server {
 server {
    listen 443 ssl;
    listen [::]:443 ssl;
-   server_name mirrors.wikimedia.org ubuntu.wikimedia.org;
+   server_name mirrors.wikimedia.org;
 
    ssl_certificate /etc/acme/cert/mirrors.chained.crt;
    ssl_certificate_key /etc/acme/key/mirrors.key;

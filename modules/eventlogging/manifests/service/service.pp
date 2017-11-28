@@ -117,7 +117,7 @@ define eventlogging::service::service(
     rsyslog::conf { $service_name:
         content  => template('eventlogging/rsyslog.conf.erb'),
         priority => 80,
-        before   => Base::Service_unit[$service_name],
+        before   => Systemd::Service[$service_name],
     }
     # Python logging conf file that properly formats
     # output with $programname prefix so that rsyslog
@@ -142,11 +142,9 @@ define eventlogging::service::service(
     }
 
     # Use systemd for this eventlogging-service instance.
-    base::service_unit { $service_name:
-        template_name => 'service',
-        systemd       => true,
-        refresh       => false,
-        require       => [
+    systemd::service { $service_name:
+        content => systemd_template('service'),
+        require => [
             File[$config_file],
             File["/etc/rsyslog.d/80-${service_name}.conf"],
             Package['python-tornado'],
@@ -169,7 +167,7 @@ define eventlogging::service::service(
     nrpe::monitor_service { $service_name:
         description  => "Check that ${service_name} is running",
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
-        require      => Base::Service_unit[$service_name],
+        require      => Systemd::Service[$service_name],
     }
 
     # Spec-based monitoring

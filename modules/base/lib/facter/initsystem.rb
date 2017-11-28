@@ -13,7 +13,6 @@ Facter.add("initsystem") do
   confine :kernel => %w{Linux FreeBSD OpenBSD SunOS Darwin GNU/kFreeBSD}
 
   setcode do
-
     if FileTest.exists?("/run/systemd/system")
       # also see sd_booted(3)
       result = "systemd"

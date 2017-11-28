@@ -1,4 +1,0 @@
-ocg::temp_dir: "/mnt/tmpfs"
-ocg::redis_host: "rdb1007.eqiad.wmnet"
-ocg::statsd_host: "statsd.eqiad.wmnet"
-ocg::graylog_host: "logstash1002.eqiad.wmnet"

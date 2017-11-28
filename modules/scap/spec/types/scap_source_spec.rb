@@ -16,7 +16,6 @@ describe resource_class do
     end
   end
 
-
   context "Default values" do
     subject do
       resource_class.new(:name => 'test/deploy')

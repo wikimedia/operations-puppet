@@ -2,7 +2,4 @@ admin::groups:
   - analytics-users
   - analytics-privatedata-users
   - analytics-admins
-debdeploy::grains:
-  debdeploy-stat:
-    value: standard
 cluster: analytics

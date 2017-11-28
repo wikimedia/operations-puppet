@@ -75,7 +75,7 @@ class role::labs::db::maintain_dbusers {
     }
 
     file { '/etc/dbusers.yaml':
-        content => ordered_json($creds),
+        content => ordered_yaml($creds),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -91,10 +91,9 @@ class role::labs::db::maintain_dbusers {
     }
 
     base::service_unit { 'maintain-dbusers':
-        ensure        => present,
-        systemd       => true,
-        require       => File['/usr/local/sbin/maintain-dbusers'],
-        template_name => 'labs/db/maintain-dbusers',
+        ensure  => present,
+        systemd => systemd_template( 'labs/db/maintain-dbusers'),
+        require => File['/usr/local/sbin/maintain-dbusers'],
     }
 
     nrpe::monitor_systemd_unit_state { 'maintain-dbusers':

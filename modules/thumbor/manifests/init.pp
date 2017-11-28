@@ -19,6 +19,18 @@
 # [*statsd_prefix*]
 #   Prefix to use when sending statistics.
 #
+# [*poolcounter_server*]
+#   Address of poolcounter server, if any.
+#
+# [*logstash_host*]
+#   Logstash server.
+#
+# [*logstash_port*]
+#   Logstash port.
+#
+# [*stl_support*]
+#   Whether STL support should be enabled.
+#
 
 class thumbor (
     $listen_port = 8800,
@@ -26,11 +38,20 @@ class thumbor (
     $statsd_host = 'localhost',
     $statsd_port = '8125',
     $statsd_prefix = "thumbor.${::hostname}",
+    $poolcounter_server = undef,
+    $logstash_host = undef,
+    $logstash_port = 11514,
+    $stl_support = undef,
 ) {
     requires_os('debian >= jessie')
 
-    require_package('python-thumbor-wikimedia')
     require_package('firejail')
+    require_package('python-logstash')
+
+    package { 'python-thumbor-wikimedia':
+        ensure          => installed,
+        install_options => ['-t', "${::lsbdistcodename}-backports"],
+    }
 
     file { '/usr/local/lib/thumbor/':
         ensure => directory,
@@ -70,6 +91,7 @@ class thumbor (
         group   => 'thumbor',
         mode    => '0440',
         content => template('thumbor/server.conf.erb'),
+        require => Package['python-thumbor-wikimedia'],
     }
 
     file { '/etc/firejail/thumbor.profile':
@@ -78,13 +100,12 @@ class thumbor (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/thumbor/thumbor.profile.firejail',
-        before => Base::Service_Unit['thumbor@'],
+        before => Systemd::Unit['thumbor@'],
     }
 
-    # XXX using a literal integer as the first argument results in
-    # Error 400 on SERVER: undefined method `match' for 8801:Fixnum at
-    # /etc/puppet/modules/thumbor/manifests/init.pp:62
-    $ports = range("${listen_port + 1}", $listen_port + $instance_count)
+    # use range(), which returns an array of integers, then interpolate it into
+    # an array of strings, to use it as a parameter to thumbor::instance below
+    $ports = prefix(range($listen_port + 1, $listen_port + $instance_count), '')
 
     nginx::site { 'thumbor':
         content => template('thumbor/nginx.conf.erb'),
@@ -101,15 +122,15 @@ class thumbor (
         creates => '/etc/systemd/system/thumbor.service',
     }
 
-    base::service_unit { 'thumbor@':
-        ensure          => present,
-        systemd         => true,
-        declare_service => false,
+    systemd::unit { 'thumbor@':
+        ensure  => present,
+        content => systemd_template('thumbor@'),
+        require => Package['python-thumbor-wikimedia'],
     }
 
-    base::service_unit { 'thumbor-instances':
+    systemd::service { 'thumbor-instances':
         ensure  => present,
-        systemd => true,
+        content => systemd_template('thumbor-instances'),
     }
 
     logrotate::conf { 'thumbor':
@@ -137,6 +158,22 @@ class thumbor (
         month    => '*',
         weekday  => '*',
         command  => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
+        user     => 'thumbor',
+    }
+
+    file { '/usr/local/bin/generate-thumbor-age-metrics.sh':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/thumbor/generate-thumbor-age-metrics.sh',
+    }
+
+    cron { 'process-age-statsd':
+        minute   => '*',
+        hour     => '*',
+        monthday => '*',
+        month    => '*',
+        weekday  => '*',
+        command  => "/usr/local/bin/generate-thumbor-age-metrics.sh | /bin/nc -w 1 -u ${statsd_host} ${statsd_port}",
         user     => 'thumbor',
     }
 }

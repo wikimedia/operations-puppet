@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-swift-fe-eqiad:
-    value: canary

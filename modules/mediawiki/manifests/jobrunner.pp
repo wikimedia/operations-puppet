@@ -5,25 +5,28 @@
 #
 class mediawiki::jobrunner (
     $queue_servers,
-    $aggr_servers      = $queue_servers,
-    $runners_basic     = 0,
-    $runners_html      = 0,
-    $runners_upload    = 0,
-    $runners_gwt       = 0,
-    $runners_transcode = 0,
-    $runners_transcode_prioritized = 0,
-    $runners_translate = 0,
-    $statsd_server     = undef,
-    $port              = 9005,
+    $aggr_servers  = $queue_servers,
+    $statsd_server = undef,
+    $port          = 9005,
+    $concurrency   = 1,
+    $running       = true,
+    $runners       = 0,
 ) {
 
-    requires_os('ubuntu >= trusty || Debian >= jessie')
     include ::passwords::redis
 
-    package { 'jobrunner':
-        ensure   => latest,
-        provider => 'trebuchet',
-        notify   => Service['jobrunner'],
+    # a rule for the `jobrunner` service:
+    #
+    #     ALL=(root) NOPASSWD: /usr/sbin/service jobrunner *
+    #
+    # will be added by scap::target as a result of defining `service_name`
+    scap::target { 'jobrunner/jobrunner':
+        deploy_user  => 'mwdeploy',
+        manage_user  => false,
+        service_name => 'jobrunner',
+        sudo_rules   => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service jobchron *'
+        ],
     }
 
     $dispatcher = template('mediawiki/jobrunner/dispatcher.erb')
@@ -53,21 +56,28 @@ class mediawiki::jobrunner (
         notify  => Service['jobrunner', 'jobchron'],
     }
 
-    $state = hiera('jobrunner_state', 'running')
     $params = {
-        ensure => $state,
-        enable => $state ? {
-            'stopped' => false,
-            default   => true,
+        ensure => $running ? {
+            true    => 'running',
+            default => 'stopped'
         },
+        enable => $running,
     }
 
     # We declare the service, but override its status with
     # $service_ensure
-    base::service_unit { ['jobrunner', 'jobchron']:
-        systemd        => true,
-        upstart        => true,
+    base::service_unit { 'jobrunner':
+        systemd        => systemd_template('jobrunner'),
+        upstart        => upstart_template('jobrunner'),
         service_params => $params,
+        mask           => !$running,
+    }
+
+    base::service_unit { 'jobchron':
+        systemd        => systemd_template('jobchron'),
+        upstart        => upstart_template('jobchron'),
+        service_params => $params,
+        mask           => !$running,
     }
 
     if $::initsystem == 'systemd' {
@@ -81,46 +91,13 @@ class mediawiki::jobrunner (
         }
     }
 
-    file { '/etc/logrotate.d/mediawiki_jobchron':
+    logrotate::conf { 'mediawiki_jobchron':
+        ensure  => present,
         content => template('mediawiki/jobrunner/logrotate-jobchron.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
     }
 
-    file { '/etc/logrotate.d/mediawiki_jobrunner':
+    logrotate::conf { 'mediawiki_jobrunner':
+        ensure  => present,
         content => template('mediawiki/jobrunner/logrotate.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
-
-    include ::apache::mod::proxy_fcgi
-
-    class { '::apache::mpm':
-        mpm => 'worker',
-    }
-
-    apache::conf { 'hhvm_jobrunner_port':
-        priority => 1,
-        content  => inline_template("# This file is managed by Puppet\nListen <%= @port %>\n"),
-    }
-
-    apache::site{ 'hhvm_jobrunner':
-        priority => 1,
-        content  => template('mediawiki/jobrunner/site.conf.erb'),
-    }
-
-    # Hack for T122069: on servers running GWT jobs, restart HHVM
-    # once it occupies more than 60% of the available memory
-    if ($runners_gwt > 0) {
-        cron { 'periodic_hhvm_restart':
-            command => '/bin/ps -C hhvm -o pmem= | awk \'{sum+=$1} END { if (sum <= 50.0) exit 1  }\'  && /usr/sbin/service hhvm restart >/dev/null 2>/dev/null',
-            minute  => fqdn_rand(59, 'periodic_hhvm_restart'),
-        }
-    } else {
-        cron { 'periodic_hhvm_restart':
-            ensure => absent,
-        }
     }
 }

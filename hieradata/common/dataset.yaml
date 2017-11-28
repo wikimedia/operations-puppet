@@ -1,1 +1,1 @@
-dataset::base::monitoring::host::nrpe_check_disk_options: -w 6% -c 3% -l -e -p /
+dataset::base::monitoring::host::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -p /

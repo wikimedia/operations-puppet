@@ -1,6 +1,6 @@
 standard::has_default_mail_relay: false
 admin::groups:
   - oit
-debdeploy::grains:
-  debdeploy-mx:
-    value: standard
+mtail::logs:
+  - /var/log/exim4/mainlog
+mtail::group: 'adm'

@@ -83,13 +83,9 @@ class zotero( $http_proxy = undef ) {
         before => Service['zotero'],
     }
 
-    file { '/etc/logrotate.d/zotero':
+    logrotate::conf { 'zotero':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
         content => template('zotero/logrotate.erb'),
-        before  => Service['zotero'],
     }
 
     file { '/etc/init/zotero.conf':

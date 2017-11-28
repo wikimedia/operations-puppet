@@ -87,13 +87,15 @@ spamd_address = 127.0.0.1 783
 # Other
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
+bounce_message_file = /etc/exim4/bounce_message_file
+warn_message_file = /etc/exim4/warn_message_file
 
 add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
 
 # TLS
-tls_certificate = /etc/ssl/localcerts/mail.wikimedia.org.chained.crt
-tls_privatekey = /etc/ssl/private/mail.wikimedia.org.key
+tls_certificate = /etc/acme/cert/<%= @hostname %>.chained.crt
+tls_privatekey = /etc/acme/key/<%= @hostname %>.key
 tls_advertise_hosts = *
 
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
@@ -154,6 +156,11 @@ acl_check_rcpt:
 	# Check whether the sender address domain exists
 	require verify = sender
 
+	# Drop connections from IP addresses listed in DNSBL
+	drop message = refusing mail from $sender_host_address - address is blocklisted by $dnslist_domain ($dnslist_value: $dnslist_text)
+		dnslists = zen.spamhaus.org
+		delay = 15s
+
 	accept
 
 acl_check_connect:
@@ -207,7 +214,7 @@ wiki_mail:
 donate:
 	driver = manualroute
 	domains = +donate_domains
-	route_list = * barium.frack.eqiad.wmnet byname
+	route_list = * civi1001.frack.eqiad.wmnet byname
 	transport = remote_smtp
 
 # Route non-local domains (including +relay_domains) via DNS MX and A records
@@ -305,7 +312,7 @@ ldap_alias:
 phabricator:
        driver = manualroute
        domains = +phab_domains
-       route_list = * iridium.eqiad.wmnet byname
+       route_list = * phab1001.eqiad.wmnet byname
        transport = remote_smtp
 
 # Send RT mails to the RT server

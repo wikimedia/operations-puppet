@@ -1,6 +1,6 @@
 # filtertags: labs-project-deployment-prep labs-project-swift
 class role::swift::storage {
-    system::role { 'role::swift::storage':
+    system::role { 'swift::storage':
         description => 'swift storage brick',
     }
 
@@ -11,6 +11,7 @@ class role::swift::storage {
     include ::swift::ring
     class { '::swift::storage':
         statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
+        memcached_servers    => hiera('swift::proxy::memcached_servers'),
     }
     include ::swift::container_sync
     include ::swift::storage::monitoring

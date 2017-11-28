@@ -14,6 +14,7 @@ class quarry::base(
         'python-sqlalchemy',
         'python-unicodecsv',
         'python-translitcodec',
+        'python-xlsxwriter',
     ]:
         ensure => latest,
     }

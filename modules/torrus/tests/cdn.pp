@@ -14,7 +14,7 @@ class role::cache::configuration {
                     'esams' => [
                     ],
                     'ulsfo' => [
-                        'cp4008.ulsfo.wmnet',
+                        'cp4009.ulsfo.wmnet',
                         'cp4018.ulsfo.wmnet',
                     ],
                 },
@@ -28,8 +28,8 @@ class role::cache::configuration {
                         'cp3018.esams.wmnet',
                     ],
                     'ulsfo' => [
-                        'cp4005.ulsfo.wmnet',
-                        'cp4015.ulsfo.wmnet',
+                        'cp4021.ulsfo.wmnet',
+                        'cp4023.ulsfo.wmnet',
                     ],
                 },
                 'mobile' => {

@@ -1,4 +1,5 @@
 class apt(
+    $purge_sources = false,
     $use_proxy = true,
     $use_experimental = hiera('apt::use_experimental', false),
 ) {
@@ -39,6 +40,15 @@ class apt(
         priority => 1001,
     }
 
+    file { '/etc/apt/sources.list.d':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => $purge_sources,
+        purge   => $purge_sources,
+    }
+
     # This will munge /etc/apt/apt.conf that get's created during installation
     # process (either labs vmbuilder or d-i). Given the ones below exist, it is
     # no longer needed after the installation is over
@@ -61,13 +71,6 @@ class apt(
                 ensure   => present,
                 priority => '80',
                 key      => 'Acquire::http::Proxy::security-cdn.debian.org',
-                value    => $http_proxy,
-            }
-            # FIXME: remove this
-            apt::conf { 'mirantis-mitaka-proxy':
-                ensure   => absent,
-                priority => '80',
-                key      => 'Acquire::http::Proxy::mitaka-jessie.pkgs.mirantis.com',
                 value    => $http_proxy,
             }
         } elsif $::operatingsystem == 'Ubuntu' {
@@ -96,10 +99,17 @@ class apt(
         }
     }
 
-    if $::operatingsystem == 'ubuntu' {
+    if os_version('ubuntu trusty') {
         $components = 'main universe thirdparty'
-    } else {
+    } elsif os_version('debian jessie') {
         $components = 'main backports thirdparty'
+    } else {
+        if $facts['is_virtual'] == false {
+            # RAID tools only needed on bare metal servers
+            $components = 'main thirdparty/hwraid'
+        } else {
+            $components = 'main'
+        }
     }
 
     apt::repository { 'wikimedia':

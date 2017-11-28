@@ -11,17 +11,35 @@
 # [*brokers*]
 #   Hash of Kafka Broker configs keyed by fqdn of each kafka broker node.
 #   This Hash should be of the form:
-#   { 'hostA' => { 'id' => 1, 'port' => 12345 }, 'hostB' => { 'id' => 2 }, ... }
-#   'port' is optional, and will default to 9092.
-#   Default: { $::fqdn => { 'id'   => 1, 'port' => 9092  } }
+#   { 'hostA' => { 'id' => 1, 'rack' => 'A' }, 'hostB' => { 'id' => 2, 'rack' => 'B' }, ... }
+#   Default: { $::fqdn => { 'id' => 1 } }
+#  'rack' is optional, but will be used for broker.rack awareness.
 #
 # [*listeners*]
-#   Comma-separated array of URIs Kafka will listen on.
-#   Default: undef
+#   Array of URIs Kafka will listen on.
+#   Default: ['PLAINTEXT://:9092']
 #
-#   NOTE:  This has not yet been tested, and by default will not be used.
-#   If you are configuring listeners and want to disable the default
-#   port on 9092, you should set port to false in the $brokers hash.
+# [*security_inter_broker_protocol*]
+#   Security protocol used to communicate between brokers.  Default: undef
+#
+# [*ssl_keystore_location*]
+#   The location of the key store file. Default: undef
+#
+# [*ssl_keystore_password*]
+#   The store password for the key store file.  Default: undef
+#
+# [*ssl_key_password*]
+#   The password of the private key in the key store file.  Default: undef
+#
+# [*ssl_truststore_location*]
+#   The location of the trust store file.  Default: undef
+#
+# [*ssl_truststore_password*]
+#   The password for the trust store file.  Default: undef
+#
+# [*ssl_client_auth*]
+#   Configures kafka broker to request client authentication.  Must be one of
+#   'none', 'requested', or 'required'.  Default: undef
 #
 # [*log_dirs*]
 #   Array of directories in which the broker will store its received message
@@ -54,6 +72,9 @@
 # [*default_replication_factor*]
 #   The default replication factor for automatically created topics.
 #   Default: 1
+#
+# [*delete_topic_enable*]
+#   Enables topic deletion.  Default: true
 #
 # [*min_insync_replicas*]
 #   When producing with acks=all, this specifiies the number of replicas that should be in
@@ -142,14 +163,19 @@
 #
 # [*inter_broker_protocol_version*]
 #   Specify which version of the inter-broker protocol will be used. This is
-#   typically bumped after all brokers were upgraded to a new version.
+#   typically bumped after all brokers were upgraded to a new version. Default: undef
+#
+# [*log_message_format_version*]
+#   Specify the message format version the broker will use to append messages to the logs.
+#   By setting a particular message format version, the user is certifying that all the
+#   existing messages on disk are smaller or equal than the specified version.
+#   Setting this value incorrectly will cause consumers with older versions to break as
+#   they will receive messages with a format that they don't understand.
+#   Default: undef
 #
 # [*nofiles_ulimit*]
 #   The broker process' number of open files ulimit.
 #   Default: 8192
-#
-# [*java_home*]
-#   Value for the JAVA_HOME environment variable.  Default: undef
 #
 # [*java_opts*]
 #   Extra Java options.  Default: undef
@@ -176,6 +202,16 @@
 # [*log4j_properties_template*]
 #   Default: 'confluent/kafka/log4j.properties.erb'
 #
+# [*message_max_bytes*]
+#   The maximum message size allowed.
+#   Default: 1048576
+#
+# [*authorizer_class_name*]
+#   Sets up the ACL authorization provider specified
+#   as parameter. It also set up a more verbose log4j logging related
+#   to ACL authorization events.
+#   Default: undef
+#
 class confluent::kafka::broker(
     $enabled                             = true,
     $brokers                             = {
@@ -184,24 +220,37 @@ class confluent::kafka::broker(
             'port' => 9092,
         },
     },
+    $listeners                           = ['PLAINTEXT://:9092'],
+
+    $security_inter_broker_protocol      = undef,
+
+    $ssl_keystore_location               = undef,
+    $ssl_keystore_password               = undef,
+    $ssl_key_password                    = undef,
+    $ssl_truststore_location             = undef,
+    $ssl_truststore_password             = undef,
+    $ssl_client_auth                     = undef,
+
     $log_dirs                            = ['/var/spool/kafka'],
 
     $zookeeper_connect                   = 'localhost:2181',
-    $zookeeper_connection_timeout_ms     = 6000,
-    $zookeeper_session_timeout_ms        = 6000,
+    $zookeeper_connection_timeout_ms     = undef,
+    $zookeeper_session_timeout_ms        = undef,
 
     $auto_create_topics_enable           = true,
     $auto_leader_rebalance_enable        = true,
 
     $num_partitions                      = 1,
     $default_replication_factor          = 1,
+    $delete_topic_enable                 = true,
+    $offsets_topic_replication_factor    = undef,
     $min_insync_replicas                 = 1,
     $replica_lag_time_max_ms             = undef,
     $num_recovery_threads_per_data_dir   = undef,
     $replica_socket_timeout_ms           = undef,
     $replica_socket_receive_buffer_bytes = undef,
     $num_replica_fetchers                = 1,
-    $replica_fetch_max_bytes             = 1048576,
+    $replica_fetch_max_bytes             = undef,
 
     $num_network_threads                 = undef,
     $num_io_threads                      = size($log_dirs),
@@ -209,22 +258,21 @@ class confluent::kafka::broker(
     $socket_receive_buffer_bytes         = 1048576,
     $socket_request_max_bytes            = undef,
 
-    # TODO: Tune these defaults?
-    $log_flush_interval_messages         = 10000,
-    $log_flush_interval_ms               = 1000,
+    $log_flush_interval_messages         = undef,
+    $log_flush_interval_ms               = undef,
 
     $log_retention_hours                 = 168,     # 1 week
     $log_retention_bytes                 = undef,
     $log_segment_bytes                   = undef,
 
     $log_retention_check_interval_ms     = undef,
-    $log_cleanup_policy                  = 'delete',
+    $log_cleanup_policy                  = undef,
 
     $offsets_retention_minutes           = 10080,   # 1 week
 
-    $inter_broker_protocol_version       = '0.9.0.X',
+    $inter_broker_protocol_version       = undef,
+    $log_message_format_version          = undef,
     $nofiles_ulimit                      = 8192,
-    $java_home                           = undef,
     $java_opts                           = undef,
     $classpath                           = undef,
     $jmx_port                            = 9999,
@@ -235,48 +283,29 @@ class confluent::kafka::broker(
     $server_properties_template          = 'confluent/kafka/server.properties.erb',
     $default_template                    = 'confluent/kafka/kafka.default.erb',
     $log4j_properties_template           = 'confluent/kafka/log4j.properties.erb',
+
+    $message_max_bytes                   = 1048576,
+
+    $authorizer_class_name               = undef,
 ) {
-    # confluent::kafka::client installs the kafka package
+    # confluent::kafka::common installs the kafka package
     # and a handy wrapper script.
-    require ::confluent::kafka::client
+    require ::confluent::kafka::common
 
     # Get this broker's id out of the $kafka::brokers
     # configuration hash.
     $id = $brokers[$::fqdn]['id']
 
-    $default_port = 9092
-    # Using a conditional assignment selector with a
-    # Hash value results in a puppet syntax error.
-    # Using an if/else instead.
-    if ($brokers[$::fqdn]['port'] != false) {
-        $port = $brokers[$::fqdn]['port']
-    }
-    else {
-        $port = $default_port
-    }
+    # If this broker's rack is set, use it for broker.rack
+    $rack = $brokers[$::fqdn]['rack']
 
-    group { 'kafka':
-        ensure  => 'present',
-        system  => true,
-        require => Class['confluent::kafka::client']
-    }
-    # Kafka system user
-    user { 'kafka':
-        gid        => 'kafka',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        comment    => 'Apache Kafka',
-        system     => true,
-        managehome => false,
-        require    => Group['kafka'],
-    }
+    # The default Kafka port for KAFKA_BOOTSTRAP_SERVERS will be the port
+    # first port specified in the $listeners array.  This is used
+    # in the kafka shell wrapper to automatically provide broker list.
+    $default_port = inline_template("<%= Array(@listeners)[0].split(':')[-1] %>")
 
-    file { '/var/log/kafka':
-        ensure => 'directory',
-        owner  => 'kafka',
-        group  => 'kafka',
-        mode   => '0755',
-    }
+    # Local variable for rendering in templates.
+    $java_home = $::confluent::kafka::common::java_home
 
     # This is the message data directory,
     # not to be confused with /var/log/kafka
@@ -305,7 +334,7 @@ class confluent::kafka::broker(
     }
 
     # Environment variables used by the /usr/local/bin/kafka wrapper script
-    # installed by confluent::kafka::client.  This makes it easier
+    # installed by confluent::kafka::common.  This makes it easier
     # to use the kafka wrapper script on Kafka brokers.
     file { '/etc/profile.d/kafka.sh':
         content => template('confluent/kafka/kafka-profile.sh.erb'),
@@ -320,10 +349,9 @@ class confluent::kafka::broker(
     # We don't want to subscribe to the config files here.
     # It will be better to manually restart Kafka when
     # the config files changes.
-    base::service_unit{ 'kafka':
+    systemd::service { 'kafka':
         ensure  => $service_ensure,
-        systemd => true,
-        refresh => false,
+        content => systemd_template('kafka'),
         require => [
             File[$log_dirs],
             File['/etc/kafka/server.properties'],

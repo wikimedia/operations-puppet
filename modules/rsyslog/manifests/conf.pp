@@ -34,9 +34,8 @@ define rsyslog::conf(
 ) {
     include ::rsyslog
 
-    if $priority !~ /^\d?\d$/ {
-        fail("'priority' must be an integer between 0 - 99 (got: ${priority}).")
-    }
+    # TODO/puppet4 make this a parameter type check
+    validate_numeric($priority, 99, 0)
 
     $basename = regsubst($title, '[\W_]', '-', 'G')
     $filename = sprintf('/etc/rsyslog.d/%02d-%s.conf', $priority, $basename)

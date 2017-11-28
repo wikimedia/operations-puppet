@@ -2,11 +2,10 @@
 
 set -x
 
-# Don't do anything until cloud-init has finished.
-while [ ! -f /var/lib/cloud/instance/boot-finished ]
-do
-      sleep 1
-done
+# Prevent non-root logins while the VM is being setup
+# The ssh-key-ldap-lookup script rejects non-root user logins if this file
+# is present.
+echo "VM is work in progress" > /etc/block-ldap-key-lookup
 
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
@@ -65,15 +64,33 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
+# If we're getting ahead of the dnsmasq config, loop until our hostname is
+#  actually ready for us.  Five minutes, total.
+for run in {1..30}
+do
+    hostname=`hostname`
+    if [ "$hostname" != 'localhost' ]
+    then
+        break
+    fi
+
+    echo `date`
+    echo "Waiting for hostname to return the actual hostname."
+    sleep 10
+    ifdown eth0
+    ifup eth0
+    /sbin/dhclient -1 eth0
+done
+
 project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
-hostname=`hostname`
+
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
 
 if [ -z $domain ]; then
    echo "hostname -d failed, trying to parse dhcp lease"
-   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.eth0.leases | head -n1 | cut -d \" -f2`
+   domain=`grep "option domain-name " /var/lib/dhcp/dhclient.*.leases | head -n1 | cut -d \" -f2`
 fi
 
 if [ -z $domain ]; then
@@ -83,20 +100,19 @@ fi
 
 
 fqdn=${hostname}.${project}.${domain}
-saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
 then
-	master="labs-puppetmaster-eqiad.wikimedia.org"
+	master="labs-puppetmaster.wikimedia.org"
 	ldaphosts="ldap://ldap-labs.eqiad.wikimedia.org:389 ldap://ldap-labs.codfw.wikimedia.org:389"
 fi
 if [ "${domain}" == "codfw.wmflabs" ]
 then
-	master="labs-puppetmaster-codfw.wikimedia.org"
+	master="labs-puppetmaster.wikimedia.org"
 	ldaphosts="ldap://ldap-labs.codfw.wikimedia.org:389 ldap://ldap-labs.eqiad.wikimedia.org:389"
 fi
 if [ "${domain}" == "codfw.labtest" ]
 then
-	master="labtestcontrol2001.wikimedia.org"
+	master="labtestpuppetmaster2001.wikimedia.org"
 	ldaphosts="ldap://labtestservices2001.wikimedia.org:389"
 
 	# The labtest ldap password is the prod password prepended with lt-
@@ -120,7 +136,7 @@ sed -i "s%^URI.*%URI             ${ldaphosts}%g" /etc/ldap/ldap.conf
 echo "" > /sbin/resolvconf
 mkdir /etc/dhcp/dhclient-enter-hooks.d
 cat > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate <<EOF
-:#!/bin/sh
+#!/bin/sh
 make_resolv_conf() {
         :
 }
@@ -143,6 +159,7 @@ options timeout:5 ndots:2
 EOF
 
 echo "$ip	$fqdn" >> /etc/hosts
+echo $hostname > /etc/hostname
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
@@ -158,18 +175,32 @@ nscd -i hosts
 # set mailname
 echo $fqdn > /etc/mailname
 
-# Initial salt config
-echo -e "master: ${master}" > /etc/salt/minion
-echo "id: ${fqdn}" >> /etc/salt/minion
-echo "master_finger: ${saltfinger}" >> /etc/salt/minion
-echo "${fqdn}" > /etc/salt/minion_id
-systemctl restart salt-minion.service
+apt-get update
 
 puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
 #  updated sources.list
-apt-get update
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
 apt-get update
 puppet agent -t
+
+# Ensure all NFS mounts are mounted
+mount_attempts=1
+until [ $mount_attempts -gt 10 ]
+do
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/block-ldap-key-lookup
+    ((mount_attempts++))
+    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
+    # Sleep for 10s before next attempt
+    sleep 10
+done
+
+# Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
+# before, the puppet code that ensures the symlinks are created, etc may not
+# have run)
+puppet agent -t
+
+# Remove the non-root login restriction
+rm /etc/block-ldap-key-lookup

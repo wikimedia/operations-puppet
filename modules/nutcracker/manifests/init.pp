@@ -41,11 +41,9 @@ class nutcracker(
 ) {
     validate_hash($pools)
     validate_re($ensure, '^(present|absent)$')
-    validate_re($verbosity, '^(\d|10|11)$')
+    validate_numeric($verbosity, 11, 0)
 
-    package { 'nutcracker':
-        ensure => $ensure,
-    }
+    require_package('nutcracker')
 
     file { '/etc/nutcracker/nutcracker.yml':
         ensure  => $ensure,
@@ -62,7 +60,7 @@ class nutcracker(
         versioncmp($::serverversion, '3.5') >= 0
         ) {
         File['/etc/nutcracker/nutcracker.yml'] {
-          validate_cmd => '/usr/bin/test \! -f /etc/nutcracker/nutcracker.yml || /usr/sbin/nutcracker --test-conf %',
+          validate_cmd => '/usr/sbin/nutcracker --test-conf --conf-file %',
         }
     }
 

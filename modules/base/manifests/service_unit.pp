@@ -15,23 +15,14 @@
 #  (unless $declare_service is false), in other words 'present' will
 #  ensure => running and conversely 'absent' will ensure => stopped.
 #
-# [*template_name*]
-#  String, default $name.  Init file template pathnames are formed
-#  using the pattern "$module/initscripts/$template_name.$initsystem.erb"
-#
 # [*systemd*]
-#  Boolean - set it to true to make the resource include personalized
-#  init file. As this is used to You are expected to put them in a
-#  specific subdirectory of the current module, which is
-#  $module/initscripts/$template_name.systemd.erb for systemd  (and
-#  similarly for other init systems)
+#  String. If it is a non-empty string, the content will be used as the content
+#  of the custom systemd service file.
 #
 # [*systemd_override*]
-#  Boolean - if enabled, make the resource use a systemd unit provided
+#  String. If it is a non-empty string, make the resource use a systemd unit provided
 #  by a Debian package, while applying an override file with site-
 #  specific changes.
-#  You are expected to place the override file in specific subdirectory of
-#  the current module: $module/initscripts/$template_name.systemd_override.erb
 #
 # [*upstart*]
 #  As the preceding param, but for upstart scripts
@@ -40,7 +31,7 @@
 #  As the preceding param, but for traditional sysvinit scripts
 #
 # [*strict*]
-#  Boolean - if true (default), only allows to have customized scripts
+#  Boolean - if true (default), forces you to declare customized scripts
 #  for all init systems; if false allows to use standard scripts from
 #  the distro (e.g. memcached will need a custom systemd unit, but use
 #  the standard init file on upstart).
@@ -51,6 +42,9 @@
 #
 # [*declare_service*]
 #  Boolean - tells puppet if a service {} stanza is required or not
+#
+# [*mask*]
+#  Boolean - tells puppet if a systemd service should be masked
 #
 # [*service_params*]
 #  An hash of parameters that we want to apply to the service resource
@@ -63,7 +57,7 @@
 # class foo {
 #     base::service_unit { 'apache2':
 #         ensure          => present,
-#         sysvinit        => true,
+#         sysvinit        => sysvinit_template('apache2'),
 #         service_params  => {
 #             hasrestart => true,
 #             restart => '/usr/sbin/service apache2 restart'
@@ -73,30 +67,40 @@
 
 define base::service_unit (
     $ensure           = present,
-    $systemd          = false,
-    $systemd_override = false,
-    $upstart          = false,
-    $sysvinit         = false,
+    $systemd          = undef,
+    $systemd_override = undef,
+    $upstart          = undef,
+    $sysvinit         = undef,
     $strict           = true,
     $refresh          = true,
-    $template_name    = $name,
     $declare_service  = true,
+    $mask             = false,
     $service_params   = {},
 ) {
 
     validate_ensure($ensure)
 
+    # Let's ensure any leftover from the preceding defs fail
+    validate_string($systemd)
+    validate_string($systemd_override)
+    validate_string($upstart)
+    validate_string($sysvinit)
+
+    $custom_inits = {
+        'systemd'          => $systemd,
+        'systemd_override' => $systemd_override,
+        'upstart'          => $upstart,
+        'sysvinit'         => $sysvinit
+    }
+
     # Validates the service name, and picks the valid init script
     $initscript = pick_initscript(
-        $name, $::initsystem, $systemd, $systemd_override, $upstart, $sysvinit, $strict)
+        $name, $::initsystem, !empty($systemd), !empty($systemd_override), !empty($upstart),
+        !empty($sysvinit), $strict)
 
     # we assume init scripts are templated
     if $initscript {
-        if $caller_module_name {
-            $template = "${caller_module_name}/initscripts/${template_name}.${initscript}.erb"
-        } else {
-            $template = "initscripts/${template_name}.${initscript}.erb"
-        }
+        $content = $custom_inits[$initscript]
 
         $path = $initscript ? {
             'systemd'          => "/lib/systemd/system/${name}.service",
@@ -104,6 +108,7 @@ define base::service_unit (
             'upstart'          => "/etc/init/${name}.conf",
             default            => "/etc/init.d/${name}"
         }
+        $systemd_mask_path = "/etc/systemd/system/${name}.service"
 
         # systemd complains if unit files are executable
         if $initscript == 'systemd' or $initscript == 'systemd_override' {
@@ -124,10 +129,19 @@ define base::service_unit (
 
         file { $path:
             ensure  => $ensure,
-            content => template($template),
+            content => $content,
             mode    => $i_mode,
             owner   => 'root',
             group   => 'root',
+        }
+
+        if $initscript == 'systemd' and $mask {
+            file { $systemd_mask_path:
+                ensure => 'link',
+                target => '/dev/null',
+                owner  => 'root',
+                group  => 'root',
+            }
         }
 
         if $declare_service {

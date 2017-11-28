@@ -1,5 +1,2 @@
 admin::groups:
   - piwik-roots
-debdeploy::grains:
-  debdeploy-piwik:
-    value: standard

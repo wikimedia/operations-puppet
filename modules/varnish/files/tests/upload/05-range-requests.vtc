@@ -66,9 +66,8 @@ client c3 {
     rxresp
     # Varnish 4 returns a 416 - Range Not Satisfiable
     # Varnish 3 responds with a 200 and the entire selected representation
-    # Use macros for these values to cover both versions
-    expect resp.status == ${unsatisfiable_status}
-    expect resp.http.Content-Length == ${unsatisfiable_length}
+    expect resp.status == 416
+    expect resp.http.Content-Length == 0
 }
 
 # Range request for bytes > CL, varnish returns the whole cached object.

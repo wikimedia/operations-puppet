@@ -2,6 +2,10 @@
 
 set -e
 
+# Exit immediately if varnish-be is not pooled
+confctl --quiet select name=`hostname -f`,service='varnish-be' get |
+    jq ".[\"`hostname -f`\"].pooled" | grep -q '"yes"'
+
 # Depool varnish-be
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=no
 
@@ -18,12 +22,6 @@ sleep 10
 /usr/sbin/service varnish start
 
 sleep 10
-
-# Fix VSM files permissions and restart ganglia
-chmod 644 /var/lib/varnish/*/*.vsm
-/usr/sbin/service ganglia-monitor restart
-
-sleep 5
 
 # Repool varnish-be
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=yes

@@ -56,7 +56,7 @@ class pdfrender(
     scap::target { 'electron-render/deploy':
         deploy_user  => 'deploy-service',
         service_name => 'pdfrender',
-        before       => Base::Service_unit['pdfrender'],
+        before       => Systemd::Service['pdfrender'],
     }
 
     group { 'pdfrender':
@@ -71,7 +71,7 @@ class pdfrender(
         managehome => true,
         shell      => '/bin/bash',
         system     => true,
-        before     => Base::Service_unit['pdfrender'],
+        before     => Systemd::Service['pdfrender'],
     }
 
     file { $log_dir:
@@ -79,7 +79,7 @@ class pdfrender(
         owner  => 'pdfrender',
         group  => 'pdfrender',
         mode   => '0755',
-        before => Base::Service_unit['pdfrender'],
+        before => Systemd::Service['pdfrender'],
     }
 
     file { '/etc/firejail/pdfrender.profile':
@@ -88,7 +88,7 @@ class pdfrender(
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/pdfrender/firejail.profile',
-        before => Base::Service_unit['pdfrender'],
+        before => Systemd::Service['pdfrender'],
     }
 
     file { '/etc/xpra/xpra.conf':
@@ -97,7 +97,7 @@ class pdfrender(
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/pdfrender/xpra.conf',
-        before => Base::Service_unit['pdfrender'],
+        before => Systemd::Service['pdfrender'],
     }
 
     # Enable font hinting
@@ -123,7 +123,7 @@ class pdfrender(
         group  => 'pdfrender',
         mode   => '0444',
         source => 'puppet:///modules/pdfrender/fonts.conf',
-        before => Base::Service_unit['pdfrender'],
+        before => Systemd::Service['pdfrender'],
     }
     # end font hinting
 
@@ -131,7 +131,7 @@ class pdfrender(
         readable_by => 'all',
         base_dir    => $::service::configuration::log_dir,
         group       => 'root',
-        before      => Base::Service_unit['pdfrender'],
+        before      => Systemd::Service['pdfrender'],
     }
 
     $params = {
@@ -142,9 +142,10 @@ class pdfrender(
         enable => $running,
     }
 
-    base::service_unit { 'pdfrender':
+    systemd::service { 'pdfrender':
         ensure         => present,
-        systemd        => true,
+        restart        => true,
+        content        => systemd_template('pdfrender'),
         service_params => $params,
     }
 }

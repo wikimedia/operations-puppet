@@ -14,13 +14,10 @@ class puppetmaster::hiera (
     ) {
 
     file { '/etc/puppet/hiera.yaml':
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => $source,
-        require => Package['puppetmaster-common'],
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => $source,
     }
-    # We don't need to declare ruby-hiera as a package explicitly as
-    # puppetmaster-common depends on ruby-hiera.
 }

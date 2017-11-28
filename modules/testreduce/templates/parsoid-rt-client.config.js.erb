@@ -20,7 +20,7 @@
 			opts: {
 				// Talk to the existing Parsoid service.
 				// No need to spin up our own private Parsoid service.
-				parsoidURL: 'http://localhost:8142',
+				parsoidURL: 'http://localhost:<%= @parsoid_port %>',
 			},
 
 			runTest: require('/srv/deployment/parsoid/deploy/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,

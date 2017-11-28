@@ -91,7 +91,7 @@ QUESTIONS = [
 
 # Yaml formatting primitives.
 # From: http://stackoverflow.com/questions/5121931
-def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
+def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
     class OrderedLoader(Loader):
         pass
 
@@ -195,7 +195,7 @@ class %(name)s() {
 # Role class for %(name)s
 class role::%(name)s {
 
-    system::role { 'role::%(name)s':
+    system::role { '%(name)s':
         description => '%(description)s',
     }
 
@@ -344,7 +344,7 @@ class role::%(name)s {
         return False
 
     def setup_conftool_data(self):
-        filename = "conftool-data/services/services.yaml"
+        filename = "conftool-data/service/services.yaml"
         with open(filename, 'r') as f:
             data = ordered_load(f)
         if self.cluster not in data:
@@ -458,7 +458,7 @@ def main():
     if not s.setup_conftool_data():
         print 'Failed to setup conftool'
         return False
-    Git.add_file('conftool-data/services/services.yaml')
+    Git.add_file('conftool-data/service/services.yaml')
     # Let's commit the third batch
     Git.commit('Setup LVS for %s service on %s cluster' % (s.service_name, s.cluster))
 
@@ -479,6 +479,7 @@ def handle_args():
     parser.add_argument('-v', '--version', action='version', version='0.1beta1')
     args = parser.parse_args()
     return vars(args)
+
 
 if __name__ == "__main__":
     main()

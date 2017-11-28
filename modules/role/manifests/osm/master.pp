@@ -38,21 +38,16 @@ class role::osm::master(
     }
     class { 'osm::prometheus':
         state_path      => '/srv/osmosis/state.txt',
-        prometheus_path => '/var/lib/prometheus/node-exporter/osm_sync_lag.prom',
+        prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',
     }
 
-    system::role { 'role::osm::master':
+    system::role { 'osm::master':
         ensure      => 'present',
         description => 'openstreetmaps db master',
     }
 
     # Create the spatialdb
     postgresql::spatialdb { 'gis': }
-    # Import planet.osm
-    osm::planet_import { 'gis':
-        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
-        require        => Postgresql::Spatialdb['gis']
-    }
     osm::planet_sync { 'gis':
         pg_password => hiera('osm::postgresql_osmupdater_pass'),
         period      => 'day',
@@ -167,7 +162,7 @@ class role::osm::master(
         description  => 'Check if rsync server is running',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs \
                          -w 1:1 -c 1:1 -C rsync --ereg-argument-array \
-                         '/usr/bin/rsync --no-detach --daemon'",
+                         '/usr/bin/rsync --daemon --no-detach'",
     }
 }
 

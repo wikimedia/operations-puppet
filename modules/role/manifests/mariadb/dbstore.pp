@@ -3,9 +3,10 @@ class role::mariadb::dbstore(
     $lag_warn = 300,
     $lag_crit = 600,
     $warn_stopped = true,
+    $socket = '/run/mysqld/mysqld.sock',
     ) {
 
-    system::role { 'role::mariadb::dbstore':
+    system::role { 'mariadb::dbstore':
         description => 'Delayed Slave',
     }
 
@@ -13,6 +14,7 @@ class role::mariadb::dbstore(
     include mariadb::service
 
     include ::standard
+    include ::base::firewall
     include passwords::misc::scripts
 
     class { 'role::mariadb::grants::production':
@@ -27,12 +29,14 @@ class role::mariadb::dbstore(
     class {'role::mariadb::groups':
         mysql_group => 'dbstore',
         mysql_role  => 'slave',
+        socket      => $socket,
     }
 
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/dbstore.my.cnf.erb',
         datadir => '/srv/sqldata',
         tmpdir  => '/srv/tmp',
+        socket  => $socket,
         ssl     => 'puppet-cert',
         p_s     => 'off',
     }
@@ -44,5 +48,7 @@ class role::mariadb::dbstore(
         lag_warn      => $lag_warn,
         lag_crit      => $lag_crit,
         warn_stopped  => $warn_stopped,
+        socket        => $socket,
+        multisource   => true,
     }
 }

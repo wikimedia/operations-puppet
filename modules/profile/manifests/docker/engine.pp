@@ -14,8 +14,17 @@ class profile::docker::engine(
     $declare_service = hiera('profile::docker::engine::declare_service')
 ) {
 
+    if os_version('debian >= stretch') {
+        apt::repository { 'thirdparty-k8s':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'thirdparty/k8s',
+            before     => Class['docker'],
+        }
+    }
+
     # Install docker
-    class { 'docker':
+    class { '::docker':
         version => $version,
     }
 
@@ -32,7 +41,7 @@ class profile::docker::engine(
     }
 
     # We need to import one storage config
-    class { 'docker::configuration':
+    class { '::docker::configuration':
         settings => merge($settings, $docker_storage_options),
     }
 

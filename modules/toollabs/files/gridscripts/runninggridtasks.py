@@ -9,7 +9,7 @@ generally piped into jobmail.py to notify users of approaching calamity.
 
 Example:
 
-./runningtasks.py tools-exec-1211 tools-exec-1212 tools-exec-1215
+./runningtasks.py tools-exec-1411 tools-exec-1412 tools-exec-1415
 
 '''
 from __future__ import print_function
@@ -40,6 +40,7 @@ def get_jobs(stream):
 
 def groupkey(x):
     return x['job_owner']
+
 
 proc = subprocess.Popen(
     ['qhost', '-j', '-xml', '-h'] + sys.argv[1:],

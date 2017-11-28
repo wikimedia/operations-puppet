@@ -1,0 +1,19 @@
+[client]
+user     = root
+<% if @password -%>
+password = <%= @password %>
+<% end -%>
+
+<% if @labsdb_password -%>
+[labsdb]
+user     = root
+password = <%= @labsdb_password %>
+<% end -%>
+
+[mysql]
+<% if @prompt -%>
+prompt = '\u@<%= @prompt %>[\d]> '
+<% else -%>
+prompt = '\u@\h[\d]> '
+<% end -%>
+pager  = "grcat /etc/mysql/grcat.config | less -RSFXin"

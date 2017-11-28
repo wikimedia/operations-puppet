@@ -1,32 +1,19 @@
 # filtertags: labs-project-deployment-prep
 class role::mediawiki::jobrunner {
-    system::role { 'role::mediawiki::jobrunner': }
+    system::role { 'mediawiki::jobrunner': }
 
+    # Parent role (we don't use inheritance by choice)
     include ::role::mediawiki::common
-    include ::role::prometheus::apache_exporter
-    include ::role::prometheus::hhvm_exporter
-    include ::mediawiki::jobrunner
 
-    monitoring::service { 'jobrunner_http_hhvm':
-        description   => 'HHVM jobrunner',
-        check_command => 'check_http_jobrunner',
-        retries       => 2,
+    include ::profile::prometheus::apache_exporter
+    include ::profile::prometheus::hhvm_exporter
+
+    include ::profile::mediawiki::jobrunner
+
+    # TODO: change role used in beta
+    if hiera('has_lvs', true) {
+        include ::role::lvs::realserver
+        include ::profile::mediawiki::jobrunner_tls
     }
 
-    # Monitor TCP Connection States
-    diamond::collector { 'TcpConnStates':
-        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
-    }
-
-    # Monitor Ferm/Netfilter Connection Flows
-    diamond::collector { 'NfConntrackCount':
-        source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
-    }
-
-    ferm::service { 'mediawiki-jobrunner':
-        proto   => 'tcp',
-        port    => $::mediawiki::jobrunner::port,
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
-    }
 }

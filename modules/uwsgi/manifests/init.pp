@@ -8,8 +8,10 @@ class uwsgi {
     # There are 30+ uWSGI plug-ins, installable via the dependency package
     # 'uwsgi-plugins-all'. But I'm going to go out on a limb here and predict
     # that we won't use any except these two.  -- OL
-    if os_version('debian >= jessie') {
+    if os_version('debian == jessie') {
         $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.1' ]
+    } elsif os_version('debian >= stretch') {
+        $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby2.3' ]
     } else {
         $plugins = [ 'uwsgi-plugin-python', 'uwsgi-plugin-python3', 'uwsgi-plugin-rack-ruby1.9.1' ]
     }
@@ -61,8 +63,7 @@ class uwsgi {
     } else {
         base::service_unit { 'uwsgi-startup':
             ensure          => present,
-            template_name   => 'uwsgi-startup',
-            upstart         => true,
+            upstart         => upstart_template('uwsgi-startup'),
             declare_service => false,
         }
     }

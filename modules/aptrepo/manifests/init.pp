@@ -16,8 +16,8 @@
 #   - *incominguser*: The user name that owns the incoming directory.
 #   - *incominggroup*: The group name that owns the incoming directory.
 #   - *default_distro*: The default distribution if none specified.
-#   - *gpg_secring*: The GPG secret keyring for reprepro to use.
-#   - *gpg_pubring*: The GPG public keyring for reprepro to use.
+#   - *gpg_secring*: The GPG secret keyring for reprepro to use. Will be passed to secret()
+#   - *gpg_pubring*: The GPG public keyring for reprepro to use. Will be passed to secret()
 #   - *authorized_keys*: A list of ssh public keys allowed to upload and process the incoming queue
 #
 # === Example
@@ -45,6 +45,16 @@ class aptrepo (
     $gpg_pubring     = undef,
     $authorized_keys = [],
 ) {
+
+    # While runnning the repository on jessie, use 5.1.1 from
+    # backports which supports dbgsym packages and buildinfo files
+    if os_version('debian == jessie') {
+        apt::pin {'reprepro':
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['reprepro'],
+        }
+    }
 
     package { 'reprepro':
         ensure => present,
@@ -88,6 +98,14 @@ class aptrepo (
         source => 'puppet:///modules/aptrepo/updates',
     }
 
+    file { "${basedir}/conf/pulls":
+        ensure => present,
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/aptrepo/pulls',
+    }
+
     file { "${basedir}/conf/options":
         ensure  => file,
         owner   => $user,
@@ -113,11 +131,11 @@ class aptrepo (
     }
 
     file { "${basedir}/conf/log":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/aptrepo/log',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('aptrepo/log.erb'),
     }
 
     file { "${basedir}/db":
@@ -174,12 +192,13 @@ class aptrepo (
 
     if $gpg_secring != undef {
         file { "${homedir}/.gnupg/secring.gpg":
-            ensure  => file,
-            owner   => $user,
-            group   => $group,
-            mode    => '0400',
-            source  => $gpg_secring,
-            require => User['reprepro'],
+            ensure    => file,
+            owner     => $user,
+            group     => $group,
+            mode      => '0400',
+            content   => secret($gpg_secring),
+            show_diff => false,
+            require   => User['reprepro'],
         }
     }
 
@@ -189,7 +208,7 @@ class aptrepo (
             owner   => $user,
             group   => $group,
             mode    => '0400',
-            source  => $gpg_pubring,
+            content => secret($gpg_pubring),
             require => User['reprepro'],
         }
     }

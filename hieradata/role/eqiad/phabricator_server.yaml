@@ -1,0 +1,32 @@
+
+
+lvs::realserver::realserver_ips:
+  - "208.80.154.250"
+  - "2620:0:861:ed1a::3:16"
+
+phabricator::mysql::master: "m3-master.eqiad.wmnet"
+phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
+
+phabricator_aphlict_enabled: true
+
+phabricator_cluster_search:
+  - type: 'elasticsearch'
+    path: '/phabricator'
+    port: 9243
+    version: 5
+    hosts:
+      - protocol: 'https'
+        host: 'search.svc.eqiad.wmnet'
+        roles:
+          read: true
+          write: true
+  - type: 'elasticsearch'
+    path: '/phabricator'
+    port: 9243
+    version: 5
+    hosts:
+      - protocol: 'https'
+        host: 'search.svc.codfw.wmnet'
+        roles:
+          read: true
+          write: true

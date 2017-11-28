@@ -1,0 +1,4 @@
+#!/bin/sh
+tmux new-session -d 'fatalmonitor'
+tmux split-window -v 'tail -f /srv/mw-log/exception.log'
+tmux new-window 'mon'

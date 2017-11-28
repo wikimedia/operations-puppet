@@ -3,9 +3,13 @@ Environment=
 Environment=CONFIG_FILE=/etc/hhvm/server.ini
 Environment=ADDITIONAL_ARGS=
 Environment=RUN_AS_USER=www-data
-<%- if !@malloc_arenas.nil? && @malloc_arenas != ''  -%>
-Environment="MALLOC_CONF=narenas:<%= @malloc_arenas %>"
+<%- if !scope['hhvm::malloc_arenas'].nil? && scope['hhvm::malloc_arenas'] != ''  -%>
+Environment="MALLOC_CONF=narenas:<%= scope['hhvm::malloc_arenas'] %>"
 <%- end -%>
+
+# For T107128
+Environment=LANG=C.UTF-8
+
 EnvironmentFile=
 EnvironmentFile=/etc/default/hhvm
 ExecStart=

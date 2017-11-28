@@ -13,7 +13,6 @@
 #    include conftool::scripts
 #}
 class conftool::scripts {
-    require ::conftool
 
     file { '/usr/local/bin/pooler-loop':
         ensure => present,

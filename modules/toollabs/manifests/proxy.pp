@@ -65,8 +65,8 @@ class toollabs::proxy(
 
     base::service_unit { 'proxylistener':
         ensure  => present,
-        upstart => true,
-        systemd => true,
+        upstart => upstart_template('proxylistener'),
+        systemd => systemd_template('proxylistener'),
         require => File['/usr/local/sbin/proxylistener'],
     }
 

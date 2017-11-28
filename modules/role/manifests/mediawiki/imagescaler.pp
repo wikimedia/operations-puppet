@@ -1,10 +1,10 @@
 class role::mediawiki::imagescaler {
-    system::role { 'role::mediawiki::imagescaler': }
+    system::role { 'mediawiki::imagescaler': }
 
     include ::role::mediawiki::scaler
     include ::role::mediawiki::webserver
-    include ::role::prometheus::apache_exporter
-    include ::role::prometheus::hhvm_exporter
+    include ::profile::prometheus::apache_exporter
+    include ::profile::prometheus::hhvm_exporter
     include ::base::firewall
+    include ::threedtopng::deploy
 }
-

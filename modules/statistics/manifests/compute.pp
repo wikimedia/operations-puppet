@@ -5,10 +5,7 @@ class statistics::compute {
     Class['::statistics']       -> Class['::statistics::compute']
     Class['::statistics::user'] -> Class['::statistics::compute']
 
-    include ::statistics::dataset_mount
     include ::statistics::packages
-
-    require_package('udp-filter')
 
     $working_path = $::statistics::working_path
     $published_datasets_path = "${working_path}/published-datasets"
@@ -29,34 +26,56 @@ class statistics::compute {
         mode   => '0644',
     }
 
+    # Install a simple rsync script for published-datasets, so that
+    # stat users can push their work out manually if they want.
+    # TODO: hiera-ize thorium.eqiad.wmnet
+    $published_datasets_destination = "thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/"
+    file { '/usr/local/bin/published-datasets-sync':
+        content => template('statistics/published-datasets-sync.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    =>  '0755',
+    }
+
     # Rync push published-datasets from this host to thorium,
     # the analytics.wikimedia.org web host.  These will end up at
     # /srv/published-datasets-rsynced/$hostname, and then the hardsync script
     # will sync them into /srv/analytics.wikimedia.org/datasets.
     # See: statistics::sites::analytics.
     cron { 'rsync-published-datasets':
-        command => "/usr/bin/rsync -rtL --delete ${published_datasets_path}/ thorium.eqiad.wmnet::srv/published-datasets-rsynced/${::hostname}/",
-        require => File[$published_datasets_path],
+        # -gp preserve group (wikidev, usually) and permissions, but not
+        # ownership, as the owner users might not exist on the destination.
+        command => '/usr/local/bin/published-datasets-sync -q',
+        require => [File['/usr/local/bin/published-datasets-sync'], File[$published_datasets_path]],
         user    => 'root',
-        minute  => '*/30',
+        minute  => '*/15',
     }
 
+    file { "${::statistics::working_path}/mediawiki":
+        ensure => 'directory',
+        owner  => $::statistics::user,
+        group  => 'wikidev',
+    }
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.
     # T80444
     $statistics_mediawiki_directory = "${::statistics::working_path}/mediawiki/core"
-
     git::clone { 'statistics_mediawiki':
         ensure    => 'latest',
         directory => $statistics_mediawiki_directory,
         origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
-        owner     => 'mwdeploy',
+        owner     => $::statistics::user,
         group     => 'wikidev',
     }
 
     include ::passwords::mysql::research
     # This file will render at
     # /etc/mysql/conf.d/stats-research-client.cnf.
+    # NOTE: This file is referenced and used by various
+    # reportupdate repository configs, e.g.
+    # https://github.com/wikimedia/analytics-limn-ee-data/blob/master/ee/config.yaml
+    # If you think about changing or removing this file, make sure you also
+    # consider reportupdater's usage.
     mysql::config::client { 'stats-research':
         user  => $::passwords::mysql::research::user,
         pass  => $::passwords::mysql::research::pass,

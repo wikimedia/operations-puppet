@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'mirrors', :type => :class do
-
     it { should contain_user('mirror') }
     it { should contain_group('mirror') }
     it { should contain_file('/srv/mirrors') }

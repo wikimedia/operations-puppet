@@ -1,25 +1,31 @@
 # Manifest to setup a Gerrit instance
-
-class gerrit($host = undef, $master_host = $::fqdn) {
-
-    if $host == undef {
-        fail('$gerrit::host must be set!')
-    }
-
-    $slave = $master_host ? {
-        $::fqdn => false,
-        default => true
-    }
+class gerrit(
+    $config,
+    $host,
+    $ipv4,
+    $ipv6,
+    $slave_hosts = [],
+    $slave = false,
+) {
 
     class { '::gerrit::jetty':
-        slave => $slave,
+        host   => $host,
+        ipv4   => $ipv4,
+        ipv6   => $ipv6,
+        slave  => $slave,
+        config => $config,
+    }
+
+    class { '::gerrit::proxy':
+        require     => Class['gerrit::jetty'],
+        host        => $host,
+        ipv4        => $ipv4,
+        ipv6        => $ipv6,
+        slave_hosts => $slave_hosts,
+        slave       => $slave,
     }
 
     if !$slave {
-        class { '::gerrit::proxy':
-            require => Class['gerrit::jetty'],
-        }
-
         class { '::gerrit::crons':
             require => Class['gerrit::jetty'],
         }

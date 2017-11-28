@@ -12,6 +12,7 @@
 #   List of FQDNs for servers to be used as scap masters. Default []
 #
 class scap::dsh (
+    $groups = {},
     $scap_proxies = [],
     $scap_masters = [],
 ){
@@ -22,15 +23,13 @@ class scap::dsh (
         mode   => '0444',
     }
     file { '/etc/dsh/group':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        recurse => true,
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     # Base dsh groups currently used
-    $groups = hiera('scap::dsh::groups', {})
     create_resources('scap::dsh::group', $groups)
 
     file { '/etc/dsh/group/scap-proxies':

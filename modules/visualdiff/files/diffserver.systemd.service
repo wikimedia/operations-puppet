@@ -1,0 +1,14 @@
+[Unit]
+Description=Visualdiff service
+After=network.target
+
+[Service]
+User=testreduce
+Group=testreduce
+
+Environment=PATH=/srv/visualdiff/node_modules/phantomjs/bin:/sbin:/usr/sbin:/bin:/usr/bin
+WorkingDirectory=/srv/visualdiff/diffserver
+ExecStart=/usr/bin/nodejs diffserver.js --config /etc/visualdiff/diffserver.config.js --port 8012
+StandardOutput=journal
+StandardError=journal
+RestartSec=2

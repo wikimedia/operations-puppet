@@ -7,27 +7,21 @@
 
 # slots_used numcommands on_failure error_notify command
 
-<% if @stagestype == 'normal_huge' or @stagestype == 'partial_huge' or @stagestype == 'create_huge' %>
-# mark the start of the run for all huge wikis
-1 1 continue none <%= @stages['hugewikis']['firststage'] -%> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'create' %>
-# mark the start of the run for all small, big wikis
-1 8 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5; <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'create_small' %>
+<% if @stagestype == 'create_enwiki' %>
+# mark the start of the run for enwiki
+1 1 continue none <%= @stages['enwiki']['firststage'] -%> --job createdirs --sleep 5
+<% elsif @stagestype == 'create_wikidatawiki' %>
+# mark the start of the run for wikidatawiki
+1 1 continue none <%= @stages['wikidatawiki']['firststage'] -%> --job createdirs --sleep 5
+<% elsif @stagestype == 'create_small' %>
 # mark the start of the run for all small wikis
 1 8 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5
-<% end -%>
-
-<% if @stagestype == 'create_big' %>
+<% elsif @stagestype == 'create_big' %>
 # mark the start of the run for all big wikis
 1 8 continue none <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 <% end -%>
 
-<% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'normal_nocreate' or @stagestype == 'partial_nocreate' %>
+<% if @stagestype == 'full' or @stagestype == 'partial' %>
 # stubs and then tables so inconsistencies between stubs and tables aren't too huge
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
 # stubs, recombines, tables for big wikis
@@ -47,41 +41,57 @@
 1 max continue none <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
 # articles, recombine plus meta pages for big wikis
 4 max continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+<% end -%>
 
-<% if @stagestype == 'normal' or @stagestype == 'normal_nocreate' %>
+<% if @stagestype == 'full' %>
 # all remaining jobs
 1 max continue none <%= @stages['smallwikis']['rest'] %>
 4 max continue none <%= @stages['bigwikis']['rest'] %>
-<% end -%>
-
-<% if @stagestype == 'partial' or @stagestype == 'partial_nocreate' %>
+<% elsif @stagestype == 'partial' %>
 # all remaining jobs except for the history revs
 1 max continue none <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 4 max continue none <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
-<% end -%>
-
-<% if @stagestype == 'normal_huge' or @stagestype == 'partial_huge' or @stagestype == 'normal_nocreate_huge' or @stagestype == 'partial_nocreate_huge' %>
+<% if @stagestype == 'full_enwiki' or @stagestype == 'partial_enwiki' %>
 # stubs, stubs recombine
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
 # tables next so inconsistencies between stubs and tables aren't too huge
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job tables
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job tables
 
 # regular articles, recombine, multistream
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
 
 # articles plus meta pages
-27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
+<% end -%>
 
-<% if @stagestype == 'normal_huge' or @stagestype == 'normal_nocreate_huge' %>
+<% if @stagestype == 'full_enwiki' %>
 # all remaining jobs
-27 1 continue none <%= @stages['hugewikis']['rest'] %>
-<% end -%>
-
-<% if @stagestype == 'partial_huge' or @stagestype == 'partial_nocreate_huge' %>
+27 1 continue none <%= @stages['enwiki']['rest'] %>
+<% elsif @stagestype == 'partial_enwiki' %>
 # all remaining jobs except for the history revs
-27 1 continue none <%= @stages['hugewikis']['rest'] %> <%= @stages['skipjob_args'] %>
+27 1 continue none <%= @stages['enwiki']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
+<% if @stagestype == 'full_wikidatawiki' or @stagestype == 'partial_wikidatawiki' %>
+# stubs, stubs recombine
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
+# tables next so inconsistencies between stubs and tables aren't too huge
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job tables
+
+# regular articles, recombine, multistream
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
+
+# articles plus meta pages
+27 1 continue none <%= @stages['wikidatawiki']['rest'] -%> --job metacurrentdump,metacurrentdumprecombine
 <% end -%>
+
+<% if @stagestype == 'full_wikidatawiki' %>
+# all remaining jobs
+27 1 continue none <%= @stages['wikidatawiki']['rest'] %>
+<% elsif @stagestype == 'partial_wikidatawiki' %>
+# all remaining jobs except for the history revs
+27 1 continue none <%= @stages['wikidatawiki']['rest'] %> <%= @stages['skipjob_args'] %>
+<% end -%>
+

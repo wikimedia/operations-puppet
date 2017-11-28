@@ -1,0 +1,16 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+/var/log/mediawiki/generate-fancycaptcha/*.log {
+	su <%= @log_ownership_user %> <%= @log_ownership_group %>
+	weekly
+	notifempty
+	maxage 90
+	rotate 8
+	dateext
+	compress
+	delaycompress
+	missingok
+	nocreate
+}

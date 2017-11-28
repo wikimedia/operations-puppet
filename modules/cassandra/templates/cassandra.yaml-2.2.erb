@@ -137,7 +137,7 @@ partitioner: org.apache.cassandra.dht.Murmur3Partitioner
 # If not set, the default directory is $CASSANDRA_HOME/data/data.
 <%
 # accept string or array values for data_file_directroy
-@data_file_directories = (@data_file_directories.class == String ? @data_file_directories.split(',') : @data_file_directories)
+@data_file_directories = (@instance_data_file_directories.class == String ? @instance_data_file_directories.split(',') : @instance_data_file_directories)
 -%>
 data_file_directories:
 <% @data_file_directories.each do |data_file_directory| -%>
@@ -311,6 +311,9 @@ seed_provider:
           # Ex: "<ip1>,<ip2>,<ip3>"
           # Omit own host name / IP in multi-node clusters (see
           # https://phabricator.wikimedia.org/T91617).
+          # Also disregard the main DNS interfaces of each node when
+          # multiple instances are colocated on the same node (see
+          # https://phabricator.wikimedia.org/T172610)
           <% clean_seeds = @seeds.length > 1 ? @seeds.select { |x|
                                                       x != @hostname \
                                                       && ! (x.start_with? "#{@hostname}-") \
@@ -497,7 +500,7 @@ start_rpc: <%= @start_rpc %>
 # you can specify which should be chosen using rpc_interface_prefer_ipv6. If false the first ipv4
 # address will be used. If true the first ipv6 address will be used. Defaults to false preferring
 # ipv4. If there is only one address it will be selected regardless of ipv4/ipv6.
-rpc_address: <%= @rpc_address %>
+rpc_address: <%= @instance_rpc_address %>
 # rpc_interface: eth1
 # rpc_interface_prefer_ipv6: false
 
@@ -843,7 +846,7 @@ client_encryption_options:
     enabled: <%= @client_encryption_enabled %>
     # If enabled and optional is set to true encrypted and unencrypted connections are handled.
     optional: false
-    keystore: <%= @config_directory %>/tls/client.key
+    keystore: <%= @config_directory %>/tls/server.key
     keystore_password: placeholder
     # require_client_auth: false
     # Set trustore and truststore_password if require_client_auth is true

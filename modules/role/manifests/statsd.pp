@@ -67,4 +67,14 @@ class role::statsd {
     }
 
     diamond::collector { 'UDPCollector': }
+
+    $prometheus_labels = "{instance=~\"${::hostname}.*\"}"
+    monitoring::check_prometheus { 'statsd_udp_inbound_errors':
+        description    => 'statsd UDP receive errors are elevated',
+        dashboard_link => "https://grafana.wikimedia.org/dashboard/db/graphite-${::site}?orgId=1&refresh=1m&panelId=16&fullscreen",
+        query          => "100 * rate(node_netstat_Udp_InErrors${prometheus_labels}[5m]) / rate(node_netstat_Udp_InDatagrams${prometheus_labels}[5m])",
+        warning        => 1,
+        critical       => 2,
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
 }

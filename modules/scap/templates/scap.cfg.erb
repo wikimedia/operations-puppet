@@ -54,7 +54,7 @@ dsh_api_canaries: mediawiki-api-canaries
 # DSH group naming hosts to use as mediawiki app canaries
 dsh_app_canaries: mediawiki-appserver-canaries
 
-logstash_host: logstash1001.eqiad.wmnet:9200
+logstash_host: logstash1009.eqiad.wmnet:9200
 canary_service: mwdeploy
 
 [eqiad.wmnet]
@@ -68,10 +68,12 @@ master_rsync: deployment.codfw.wmnet
 
 [wmnet]
 # Wikimedia Foundation production cluster configuration
-master_rsync: deployment.eqiad.wmnet
+master_rsync: <%= @deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 udp2log_host: mwlog1001.eqiad.wmnet
+
+canary_dashboard_url: https://logstash.wikimedia.org/goto/2cc7028226a539553178454fc2f14459
 
 
 [eqiad.wmflabs]
@@ -83,7 +85,7 @@ logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs:9200
 [wikimedia.org]
 # Wikimedia Foundation production cluster configuration for "public" hosts
 # This should match the [wmnet] configuration
-master_rsync: deployment.eqiad.wmnet
+master_rsync: <%= @deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 udp2log_host: mwlog1001.eqiad.wmnet
@@ -91,9 +93,11 @@ udp2log_host: mwlog1001.eqiad.wmnet
 
 [wmflabs]
 # Wikimedia Foundation beta cluster configuration
+git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 statsd_host: labmon1001.eqiad.wmnet
 udp2log_host: deployment-fluorine02.deployment-prep.eqiad.wmflabs
 wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway
 pybal_interface: lo
+canary_dashboard_url: https://logstash-beta.wmflabs.org/goto/ff3530979bc5a54b9779ac9cbd4fc819

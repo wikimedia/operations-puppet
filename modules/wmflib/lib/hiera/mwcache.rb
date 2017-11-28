@@ -28,7 +28,7 @@ class Hiera
       end
     end
 
-    def read(path, expected_type, default=nil, &block)
+    def read(path, expected_type, default = nil, &block)
       read_file(path, expected_type, &block)
     rescue Hiera::MediawikiPageNotFoundError => detail
       # Any errors other than this will cause hiera to raise an error and puppet to fail.
@@ -40,6 +40,7 @@ class Hiera
       raise error
     end
 
+    # rubocop: disable Lint/UnusedMethodArgument
     def read_file(path, expected_type = Object, &block)
       if stale?(path)
         resp = get_from_mediawiki(path, true)
@@ -53,6 +54,7 @@ class Hiera
 
       @cache[path][:data]
     end
+    # rubocop: enable Lint/Unusedmethodargument
 
     private
 
@@ -93,11 +95,10 @@ class Hiera
       # TODO: add some locking mechanism for requests? Maybe overkill, maybe not.
       revision = get_from_mediawiki(path, false)["revid"]
 
-      return {:ts => now, :revision => revision}
+      {:ts => now, :revision => revision}
     end
 
-
-    def get_from_mediawiki(path,want_content)
+    def get_from_mediawiki(path, want_content)
       what = want_content ? 'content' : 'ids'
       query_string = "action=query&prop=revisions&format=json&rvprop=#{what}&titles=Hiera:#{path}"
       url = "#{@httphost}#{@endpoint}?#{query_string}"
@@ -114,9 +115,9 @@ class Hiera
       if pages.keys.include? "-1"
         raise Hiera::MediawikiPageNotFoundError, "Hiera:#{path}"
       end
-      #yes, it's that convoluted.
+      # yes, it's that convoluted.
       key = pages.keys[0]
-      return pages[key]["revisions"][0]
+      pages[key]["revisions"][0]
     end
   end
 end

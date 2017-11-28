@@ -336,7 +336,7 @@ class Authority(object):
 
 def read_manifest(manifest):
     with open(manifest, 'r') as f:
-        return yaml.load(f.read())
+        return yaml.safe_load(f.read())
 
 
 def run_command(command):

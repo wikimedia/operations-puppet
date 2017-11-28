@@ -1,0 +1,11 @@
+<% @discovery_services.keys.sort.each do |svc| -%>
+<% if ! @discovery_services[svc]['active_active'] -%>
+disc-<%= svc %> => {
+    datacenters => [ geo, fail ],
+    dcmap => {
+        geo => %geoip!disc-geo-<%= svc %>,
+        fail => %geoip!disc-failoid,
+    },
+}
+<% end -%>
+<% end -%>

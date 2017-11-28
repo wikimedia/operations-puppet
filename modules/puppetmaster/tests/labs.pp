@@ -1,2 +1,0 @@
-#
-include ::puppetmaster::labs

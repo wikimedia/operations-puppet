@@ -4,7 +4,7 @@ class osm {
 
     # osm2pgsql 0.90 is only available on jessie at the moment
     # there is no need for 0.90 on labs machines (precise)
-    if os_version('Debian == Jessie') {
+    if os_version('debian == jessie') {
         apt::pin { 'osm2pgsql':
             pin      => 'release a=jessie-backports',
             priority => '1001',

@@ -10,7 +10,7 @@ export TERM=dumb
 find $MW_LOG_DIRECTORY/archive -mtime +90 -delete
 
 # Remove API logs after 30 days since they are particularly bulky and will fill
-# fluorine's disk if left for 180 days
+# the disk of mwlog hosts if left for 180 days
 find $MW_LOG_DIRECTORY/archive -name api.log-\* -mtime +30 -delete
 
 # Remove XFF logs before the CheckUser expiry time

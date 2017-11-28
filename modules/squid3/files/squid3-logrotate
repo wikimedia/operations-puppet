@@ -9,7 +9,7 @@
 	compress
 	delaycompress
 	size 300M
-	rotate 0
+	rotate 2
 	missingok
 	nocreate
 	sharedscripts

@@ -17,7 +17,7 @@ MYSQLDUMP=/usr/bin/mysqldump
 DATE=$(date "+%Y%m%d%H%M")
 
 # Let's be polite and not use all available processors
-PIGZ="/usr/bin/pigz -p <%= Integer(@processorcount)/8 > 1 ? Integer(@processorcount)/8 : 1 %> "
+PIGZ="/usr/bin/pigz -p <%= @processorcount/8 > 1 ? @processorcount/8 : 1 %> "
 PIGZD="/usr/bin/pigz -d"
 <% if @pigz_level -%>
 PIGZ="$PIGZ --<%= @pigz_level -%>"

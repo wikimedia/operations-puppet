@@ -1,9 +1,7 @@
 class snapshot::cron::contentxlation(
     $user=undef,
 ) {
-    include ::snapshot::dumps::dirs
-
-    $otherdir = "${snapshot::dumps::dirs::datadir}/public/other"
+    $otherdir = $snapshot::dumps::dirs::otherdir
     $repodir = $snapshot::dumps::dirs::repodir
     $confsdir = $snapshot::dumps::dirs::confsdir
     $xlationdir = "${otherdir}/contenttranslation"

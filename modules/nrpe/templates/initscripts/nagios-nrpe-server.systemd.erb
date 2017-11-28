@@ -1,0 +1,22 @@
+[Unit]
+Description=Nagios Remote Plugin Executor
+Documentation=http://www.nagios.org/documentation
+After=var-run.mount nss-lookup.target network.target local-fs.target remote-fs.target time-sync.target
+Before=getty@tty1.service plymouth-quit.service xdm.service
+Conflicts=nrpe.socket
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=forking
+Restart=on-abort
+PIDFile=/var/run/nagios/nrpe.pid
+ExecStartPre=-/bin/mkdir -p /var/run/nagios/
+ExecStart=/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStopPost=/bin/rm -f /var/run/nagios/nrpe.pid
+TimeoutStopSec=60
+# TODO: Re-enable this after mysql/maria unix sockets get moved out of /tmp. See T148507
+#PrivateTmp=true
+OOMScoreAdjust=-500

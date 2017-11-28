@@ -1,0 +1,4 @@
+# temp access for performance team experiment
+# decom and remove this afterwards (T175093#3696419)
+admin::groups:
+  - perf-roots

@@ -90,8 +90,8 @@ class vagrant::mediawiki(
 
     base::service_unit { 'mediawiki-vagrant':
         ensure          => present,
-        systemd         => true,
-        upstart         => true,
+        systemd         => systemd_template('mediawiki-vagrant'),
+        upstart         => upstart_template('mediawiki-vagrant'),
         refresh         => false,
         declare_service => false,
         require         => File['/usr/local/bin/start-mwvagrant.sh'],

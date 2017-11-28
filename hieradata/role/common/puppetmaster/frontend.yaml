@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-puppetmaster-frontend:
-    value: standard
 admin::groups:
   - gitpuppet
   - datacenter-ops
@@ -16,3 +13,7 @@ apache::logrotate::rotate: 7
 cluster: puppet
 # Conftool
 profile::conftool::master::sync_dir: "/etc/conftool/data"
+profile::discovery::path: "/srv/config-master/discovery"
+profile::discovery::watch_interval: 60
+profile::puppetmaster::common::directory_environments: true
+profile::puppetmaster::common::storeconfigs: puppetdb

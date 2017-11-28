@@ -1,3 +1,0 @@
-debdeploy::grains:
-  debdeploy-imagescaler-eqiad:
-    value: canary

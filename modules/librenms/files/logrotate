@@ -4,4 +4,5 @@
     compress
     delaycompress
     missingok
+    create 0660 librenms root
 }

@@ -14,22 +14,12 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
     }
 
     # Create the ssl directory, and the puppet ca
-    exec { 'create puppet ssl dir':
-        command     => "/usr/bin/puppet cert --ssldir ${vardir}/ssl --vardir ${vardir} list -a",
-        creates     => "${vardir}/ssl/ca/inventory.txt",
+    exec { 'Generate CA for the compiler':
+        command     => "/usr/bin/puppet cert --ssldir ${vardir}/ssl --vardir ${vardir} generate ${::fqdn}",
+        creates     => "${vardir}/ssl/certs/${::fqdn}.pem",
         user        => $user,
         cwd         => $homedir,
         environment => "HOME=${homedir}",
         require     => Exec['create puppet directories'],
     }
-
-    # Install the puppet catalog diff face
-    exec { 'install puppet catalog diff':
-        command     => '/usr/bin/puppet module install zack-catalog_diff',
-        creates     => "${homedir}/.puppet/modules/catalog_diff",
-        user        => $user,
-        cwd         => $homedir,
-        environment => "HOME=${homedir}",
-    }
-
 }

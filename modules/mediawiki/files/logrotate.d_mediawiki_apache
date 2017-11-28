@@ -10,6 +10,6 @@
 	delaycompress
 	sharedscripts
 	postrotate
-		reload rsyslog >/dev/null 2>&1 || true
+		service rsyslog rotate >/dev/null 2>&1 || true
 	endscript
 }

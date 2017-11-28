@@ -15,7 +15,10 @@ class prometheus::node_gdnsd (
     validate_re($outfile, '\.prom$')
     validate_ensure($ensure)
 
-    require_package('python-prometheus-client')
+    require_package( [
+        'python-prometheus-client',
+        'python-requests',
+    ] )
 
     file { '/usr/local/bin/prometheus-gdnsd-stats':
         ensure => file,

@@ -29,7 +29,7 @@ class striker::uwsgi(
     $venv_dir      = '/srv/deployment/striker/venv',
     $secret_config = {},
 ){
-    requires_os('Ubuntu trusty')
+    requires_os('ubuntu trusty')
     include service::configuration
 
     # Packages needed by python wheels
@@ -55,6 +55,12 @@ class striker::uwsgi(
             venv         => $venv_dir,
             wsgi         => 'striker.wsgi',
             vacuum       => true,
+            http-socket  => "127.0.0.1:${port}",
+            # T170189: make sure Python has a sane default encoding
+            env          => [
+                'LANG=C.UTF-8',
+                'PYTHONENCODING=utf-8',
+            ],
 
             logger       => [
                 "local file:${log_dir}/main.log",
@@ -79,6 +85,7 @@ class striker::uwsgi(
             log-format   => '%(addr) - %(user) [%(ltime)] "%(method) %(uri) (proto)" %(status) %(size) "%(referer)" "%(uagent)" %(micros)',
         },
         healthcheck_url => '/',
+        icinga_check    => false,
         repo            => 'striker/deploy',
         sudo_rules      => [
             'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-striker restart',

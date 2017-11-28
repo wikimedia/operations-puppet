@@ -1,3 +1,7 @@
-debdeploy::grains:
-  debdeploy-dnsrecursor:
-    value: standard
+standard::has_ganglia: false
+
+profile::bird::advertise_vips:
+  rec-dns-anycast-vip:
+    address: 10.3.0.1
+
+profile::bird::bind_service: 'pdns-recursor.service'

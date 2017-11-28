@@ -22,10 +22,14 @@ class camus {
     }
 
     # logrotate camus log files
-    file { '/etc/logrotate.d/camus':
-        source => 'puppet:///modules/camus/camus.logrotate',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+    logrotate::rule { 'camus':
+        ensure       => present,
+        file_glob    => '/var/log/camus/*.log',
+        frequency    => 'weekly',
+        rotate       => 4,
+        missing_ok   => true,
+        not_if_empty => true,
+        no_create    => true,
+        su           => 'root hdfs',
     }
 }

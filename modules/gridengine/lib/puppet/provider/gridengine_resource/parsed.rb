@@ -28,7 +28,7 @@ Puppet::Type.type(:gridengine_resource).provide(:parsed, :parent => Puppet::Prov
     #       default.
 
     def read
-      %x{qconf -sc}
+      `qconf -sc`
     end
 
     def write(text)
@@ -44,8 +44,8 @@ Puppet::Type.type(:gridengine_resource).provide(:parsed, :parent => Puppet::Prov
     Puppet::Util::FileType.filetype(:gridengine_complex)
   end
 
-  text_line :comment, :match => /^#/;
-  text_line :blank, :match => /^\s*$/;
+  text_line :comment, :match => /^#/
+  text_line :blank, :match => /^\s*$/
 
   record_line :parsed, :fields => %w{name shortcut type relop requestable consumable default urgency}
 end

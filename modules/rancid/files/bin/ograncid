@@ -1,0 +1,279 @@
+#! /usr/bin/perl
+##
+## $Id$
+##
+## rancid 2.3.8
+## Copyright (C) 1997-2011 by Terrapin Communications, Inc.
+## All rights reserved.
+##
+## This software may be freely copied, modified and redistributed
+## without fee for non-commerical purposes provided that this license
+## remains intact and unmodified with any RANCID distribution.
+##
+## There is no warranty or other guarantee of fitness of this software.
+## It is provided solely "as is".  The author(s) disclaim(s) all
+## responsibility and liability with respect to this software's usage
+## or its effect upon hardware, computer systems, other software, or
+## anything else.
+##
+## Except where noted otherwise, rancid was written by and is maintained by
+## Henry Kilmer, John Heasley, Andrew Partan, Pete Whiting, and Austin Schutz.
+##
+#
+#  RANCID - Really Awesome New Cisco confIg Differ
+#
+# usage: ograncid [-dV] [-l] [-f filename | $host]
+#
+# Modified by Toby Smith <toby.smith@opengear.com> for Opengear
+
+use Getopt::Std;
+getopts('dflV');
+if ($opt_V) {
+    print "rancid 2.3.8\n";
+    exit(0);
+}
+$log = $opt_l;
+$debug = $opt_d;
+$file = $opt_f;
+$host = $ARGV[0];
+$clean_run = 0;
+$found_end = 0;
+$timeo = 90;			# clogin timeout in seconds
+$clogin_pgm= $ENV{'RANCID_CLOGIN'} || "oglogin";
+
+my(@commandtable, %commands, @commands);# command lists
+my(%filter_pwds);		# password filtering mode
+
+# This routine is used to print out the router configuration
+sub ProcessHistory {
+    my($new_hist_tag,$new_command,$command_string,@string) = (@_);
+    if ((($new_hist_tag ne $hist_tag) || ($new_command ne $command))
+	&& scalar(%history)) {
+	print eval "$command \%history";
+	undef %history;
+    }
+    if (($new_hist_tag) && ($new_command) && ($command_string)) {
+	if ($history{$command_string}) {
+	    $history{$command_string} = "$history{$command_string}@string";
+	} else {
+	    $history{$command_string} = "@string";
+	}
+    } elsif (($new_hist_tag) && ($new_command)) {
+	$history{++$#history} = "@string";
+    } else {
+	print "@string";
+    }
+    $hist_tag = $new_hist_tag;
+    $command = $new_command;
+    1;
+}
+
+sub numerically { $a <=> $b; }
+
+# This is a sort routine that will sort numerically on the
+# keys of a hash as if it were a normal array.
+sub keynsort {
+    local(%lines) = @_;
+    local($i) = 0;
+    local(@sorted_lines);
+    foreach $key (sort numerically keys(%lines)) {
+	$sorted_lines[$i] = $lines{$key};
+	$i++;
+    }
+    @sorted_lines;
+}
+
+# This is a sort routine that will sort on the
+# keys of a hash as if it were a normal array.
+sub keysort {
+    local(%lines) = @_;
+    local($i) = 0;
+    local(@sorted_lines);
+    foreach $key (sort keys(%lines)) {
+	$sorted_lines[$i] = $lines{$key};
+	$i++;
+    }
+    @sorted_lines;
+}
+
+# This is a sort routine that will sort on the
+# values of a hash as if it were a normal array.
+sub valsort{
+    local(%lines) = @_;
+    local($i) = 0;
+    local(@sorted_lines);
+    foreach $key (sort values %lines) {
+	$sorted_lines[$i] = $key;
+	$i++;
+    }
+    @sorted_lines;
+}
+
+# This is a numerical sort routine (ascending).
+sub numsort {
+    local(%lines) = @_;
+    local($i) = 0;
+    local(@sorted_lines);
+    foreach $num (sort {$a <=> $b} keys %lines) {
+	$sorted_lines[$i] = $lines{$num};
+	$i++;
+    }
+    @sorted_lines;
+}
+
+# This is a sort routine that will sort on the
+# ip address when the ip address is anywhere in
+# the strings.
+sub ipsort {
+    local(%lines) = @_;
+    local($i) = 0;
+    local(@sorted_lines);
+    foreach $addr (sort sortbyipaddr keys %lines) {
+	$sorted_lines[$i] = $lines{$addr};
+	$i++;
+    }
+    @sorted_lines;
+}
+
+# These two routines will sort based upon IP addresses
+sub ipaddrval {
+    my(@a) = ($_[0] =~ m#^(\d+)\.(\d+)\.(\d+)\.(\d+)$#);
+    $a[3] + 256 * ($a[2] + 256 * ($a[1] +256 * $a[0]));
+}
+sub sortbyipaddr {
+    &ipaddrval($a) <=> &ipaddrval($b);
+}
+
+sub File {
+	print STDERR "    In File: $_" if ($debug);
+	my $buffer = "";
+	#my $reprompt = "\\" . join("\\", split('', $prompt));
+	my $reprompt = quotemeta($prompt);
+
+	while (<INPUT>) {
+		tr/\015//d;
+		if (/^$reprompt/) { $found_end=1; $clean_run=1; return 0};
+		next if(/^(\s*|\s*$cmd\s*)$/);
+		return(1) if /\(command not found\)/;
+		s/^\s+//g;
+
+		# Splits long lines with backslashes - this joins them
+		$buffer .= $_;
+
+		# Fix quoted strings
+		$buffer =~ s/(\S+)="(\S+)"/$1=$2/g;
+
+		ProcessHistory("","","","$buffer");
+		$buffer = "";
+	}
+}
+
+# Main
+@commandtable=(
+	{'config -g config' => "File"},
+	{'cat /proc/bus/usb/devices' => "File"},
+	{'cat /etc/config/shadow' => "File"},
+	{'cat /etc/version' => "File"},
+);
+
+# Use array to preserve order of commands, and hash for mapping to subroutine
+my (%commands, @commands);
+foreach (@commandtable) {
+	push @commands, (keys(%{$_}))[0];
+	$commands{$commands[$#commands]}= (values(%{$_}))[0];
+};
+
+$og_cmds=join(";",@commands);
+$cmds_regexp=join("|",@commands);
+
+open(OUTPUT,">$host.new") || die "Can't open $host.new for writing: $!\n";
+select(OUTPUT);
+# make OUTPUT unbuffered if debugging
+if ($debug) { $| = 1; }
+
+if ($file) {
+    print STDERR "opening file $host\n" if ($debug);
+    print STDOUT "opening file $host\n" if ($log);
+    open(INPUT,"<$host") || die "open failed for $host: $!\n";
+} else {
+    print STDERR "executing $clogin_pgm -t $timeo -c\"$og_cmds\" $host\n" if ($debug);
+    print STDOUT "executing $clogin_pgm -t $timeo -c\"$og_cmds\" $host\n" if ($log);
+    if (defined($ENV{NOPIPE})) {
+	system "$clogin_pgm -t $timeo -c \"$og_cmds\" $host </dev/null > $host.raw 2>&1" || die "$clogin_pgm failed for $host: $!\n";
+	open(INPUT, "< $host.raw") || die "$clogin_pgm failed for $host: $!\n";
+    } else {
+	open(INPUT,"$clogin_pgm -t $timeo -c \"$og_cmds\" $host </dev/null |") || die "$clogin_pgm failed for $host: $!\n";
+    }
+}
+
+# determine password filtering mode
+if ($ENV{"FILTER_PWDS"} =~ /no/i) {
+    $filter_pwds = 0;
+} elsif ($ENV{"FILTER_PWDS"} =~ /all/i) {
+    $filter_pwds = 2;
+} else {
+    $filter_pwds = 1;
+}
+
+ProcessHistory("","","","#RANCID-CONTENT-TYPE: opengear\n#\n");
+ProcessHistory("COMMENTS","keysort","B0","#\n");
+ProcessHistory("COMMENTS","keysort","D0","#\n");
+ProcessHistory("COMMENTS","keysort","F0","#\n");
+ProcessHistory("COMMENTS","keysort","G0","#\n");
+TOP: while(<INPUT>) {
+    tr/\015//d;
+    if (/[\$#]\s*(quit|exit)$/) {
+	$clean_run=1;
+	last;
+    }
+    if (/^Error:/) {
+	print STDOUT ("$host $clogin_pgm error: $_");
+	print STDERR ("$host $clogin_pgm error: $_") if ($debug);
+	$clean_run=0;
+	last;
+    }
+    while (/\s*($cmds_regexp)\s*$/) {
+	$cmd = $1;
+	if (!defined($prompt)) {
+            $prompt = ($_ =~ /^([^#\$]*[#\$])/)[0];
+            $prompt =~ s/([][}{)(\\])/\\$1/g;
+	    print STDERR ("PROMPT MATCH: $prompt\n") if ($debug);
+	}
+	print STDERR ("HIT COMMAND:$_") if ($debug);
+	if (! defined($commands{$cmd})) {
+	    print STDERR "$host: found unexpected command - \"$cmd\"\n";
+	    $clean_run = 0;
+	    last TOP;
+	}
+	$rval = &{$commands{$cmd}};
+	delete($commands{$cmd});
+	if ($rval == -1) {
+	    $clean_run = 0;
+	    last TOP;
+	}
+    }
+}
+print STDOUT "Done $logincmd: $_\n" if ($log);
+# Flush History
+ProcessHistory("","","","");
+# Cleanup
+close(INPUT);
+close(OUTPUT);
+
+if (defined($ENV{NOPIPE})) {
+    unlink("$host.raw") if (! $debug);
+}
+
+# check for completeness
+if (scalar(%commands) || !$clean_run || !$found_end) {
+    if (scalar(%commands)) {
+	printf(STDOUT "$host: missed cmd(s): %s\n", join(',', keys(%commands)));
+	printf(STDERR "$host: missed cmd(s): %s\n", join(',', keys(%commands))) if ($debug);
+    }
+    if (!$clean_run || !$found_end) {
+	print STDOUT "$host: End of run not found\n";
+	print STDERR "$host: End of run not found\n" if ($debug);
+	system("/usr/bin/tail -1 $host.new");
+    }
+    unlink "$host.new" if (! $debug);
+}

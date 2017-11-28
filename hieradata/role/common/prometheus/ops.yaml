@@ -1,6 +1,3 @@
-debdeploy::grains:
-  debdeploy-prometheus:
-    value: standard
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet

@@ -1,0 +1,2 @@
+lvs::realserver::realserver_ips:
+    - '10.2.2.38' # druid-public-broker.svc.eqiad.wmnet

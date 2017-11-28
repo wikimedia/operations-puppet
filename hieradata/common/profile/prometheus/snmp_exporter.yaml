@@ -1,0 +1,7 @@
+# Temporarily allow also codfw to talk to netmon's snmp_exporter in eqiad,
+# until netmon is also in codfw. See also T148541 and T161807
+profile::prometheus::snmp_exporter::prometheus_nodes:
+  - prometheus1003.eqiad.wmnet
+  - prometheus1004.eqiad.wmnet
+  - prometheus2003.codfw.wmnet
+  - prometheus2004.codfw.wmnet

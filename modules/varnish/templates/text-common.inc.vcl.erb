@@ -63,7 +63,7 @@ sub pass_authorization {
 
 sub text_normalize_path {
 	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "^(cxserver|citoid)\.wikimedia\.org$") {
+	if (req.url ~ "^/api/rest_v1/" || req.http.host ~ "^cxserver\.wikimedia\.org$") {
 		call normalize_rest_path;
 	} else {
 		call normalize_mediawiki_path;
@@ -88,11 +88,6 @@ sub text_common_recv {
 		return (pass);
 	}
 
-	# LEGACY: to be removed eventually
-	if (req.http.Host ~ "^(cxserver|citoid)\.wikimedia\.org$" ) {
-		return (pass);
-	}
-
 	call evaluate_cookie;
 	call pass_authorization;
 }
@@ -100,24 +95,9 @@ sub text_common_recv {
 sub text_common_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
-		// Split the cache for the images-disabled variant of the mobile site.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
-			hash_data("disableImages=1");
-		}
-
 		// Split the cache for the beta variant of the mobile site.
 		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
 			hash_data("optin=beta");
-		}
-
-		// Split the cache for non-beta lazy image loading tests
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)mfLazyLoadImages=A" || req.http.Cookie ~ "(^|;\s*)mfLazyLoadImages=A") {
-			hash_data("mfLazyLoadImages=A");
-		}
-
-		// Split the cache for non-beta lazy reference loading tests
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)mfLazyLoadReferences=A" || req.http.Cookie ~ "(^|;\s*)mfLazyLoadReferences=A") {
-			hash_data("mfLazyLoadReferences=A");
 		}
 	}
 }
@@ -156,6 +136,8 @@ sub text_common_backend_response {
 		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
 	) {
 		set beresp.ttl = 607s;
+		set beresp.grace = 31s;
+		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
 		set beresp.uncacheable = true;
 		return (deliver);

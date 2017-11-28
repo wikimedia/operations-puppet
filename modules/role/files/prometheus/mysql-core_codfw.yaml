@@ -2,18 +2,22 @@
     shard: s1
     role: slave
   targets:
+  - db2016:9104
   - db2034:9104
   - db2042:9104
-  - db2048:9104
   - db2055:9104
   - db2062:9104
   - db2069:9104
   - db2070:9104
+  - db2071:9104
+  - db2072:9104
+  - db2088:13311
+  - db2092:13311
 - labels:
     shard: s1
     role: master
   targets:
-  - db2016:9104
+  - db2048:9104
 
 - labels:
     shard: s2
@@ -25,6 +29,8 @@
   - db2056:9104
   - db2063:9104
   - db2064:9104
+  - db2088:13312
+  - db2091:13312
 - labels:
     shard: s2
     role: master
@@ -39,6 +45,9 @@
   - db2043:9104
   - db2050:9104
   - db2057:9104
+  - db2074:9104
+  - db2085:13313
+  - db2092:13313
 - labels:
     shard: s3
     role: master
@@ -54,6 +63,9 @@
   - db2051:9104
   - db2058:9104
   - db2065:9104
+  - db2073:9104
+  - db2084:13314
+  - db2091:13314
 - labels:
     shard: s4
     role: master
@@ -64,16 +76,18 @@
     shard: s5
     role: slave
   targets:
+  - db2023:9104
   - db2038:9104
-  - db2045:9104
-  - db2052:9104
   - db2059:9104
   - db2066:9104
+  - db2075:9104
+  - db2084:13315
+  - db2089:13315
 - labels:
     shard: s5
     role: master
   targets:
-  - db2023:9104
+  - db2052:9104
 
 - labels:
     shard: s6
@@ -84,6 +98,9 @@
   - db2053:9104
   - db2060:9104
   - db2067:9104
+  - db2076:9104
+  - db2087:13316
+  - db2089:13316
 - labels:
     shard: s6
     role: master
@@ -99,11 +116,31 @@
   - db2054:9104
   - db2061:9104
   - db2068:9104
+  - db2077:9104
+  - db2086:13317
+  - db2087:13317
 - labels:
     shard: s7
     role: master
   targets:
   - db2029:9104
+
+- labels:
+    shard: s8
+    role: slave
+  targets:
+  - db2079:9104
+  - db2080:9104
+  - db2081:9104
+  - db2082:9104
+  - db2083:9104
+  - db2085:13318
+  - db2086:13318
+- labels:
+    shard: s8
+    role: master
+  targets:
+  - db2045:9104
 
 - labels:
     shard: es1
@@ -142,9 +179,3 @@
     role: master
   targets:
   - db2033:9104
-- labels:
-    shard: x1
-    role: master
-  targets:
-  - db2033:9104
-

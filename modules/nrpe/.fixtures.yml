@@ -1,5 +1,8 @@
 fixtures:
     symlinks:
         nrpe: "#{source_dir}"
+        base: "../../../../base"
         ferm: "../../../../ferm"
         monitoring: "../../../../monitoring"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"

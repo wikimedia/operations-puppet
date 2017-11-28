@@ -1,6 +1,3 @@
 admin::groups:
   - eventlogging-admins
   - eventlogging-roots
-debdeploy::grains:
-  debdeploy-eventlogging:
-    value: standard

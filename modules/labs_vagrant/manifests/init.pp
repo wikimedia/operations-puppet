@@ -39,20 +39,13 @@ class labs_vagrant(
         group      => 'wikidev',
     }
 
-    # precise-compat branch should be checked out if this is a precise installation
-    if $::lsbdistcodename == 'precise' {
-        $branch_name = 'precise-compat'
-    } else {
-        $branch_name = 'master'
-    }
-
     git::clone { 'vagrant':
         directory => $install_directory,
         origin    => 'https://gerrit.wikimedia.org/r/mediawiki/vagrant',
         owner     => 'vagrant',
         group     => 'wikidev',
         shared    => true,
-        branch    => $branch_name,
+        branch    => 'master',
     }
 
     file { "${install_directory}/logs":
