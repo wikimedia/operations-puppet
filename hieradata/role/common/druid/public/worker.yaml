@@ -22,8 +22,8 @@ profile::zookeeper::firewall::srange: '$DRUID_PUBLIC_HOSTS'
 
 # Druid nodes also incldue CDH, so we need to specify a few defaults that
 # let them find the Hadoop Cluster.
-profile::hadoop::client::zookeeper_cluster_name: main-eqiad
-profile::hadoop::client::resourcemanager_hosts:
+profile::hadoop::common::zookeeper_cluster_name: main-eqiad
+profile::hadoop::common::resourcemanager_hosts:
   - analytics1001.eqiad.wmnet
   - analytics1002.eqiad.wmnet
 
