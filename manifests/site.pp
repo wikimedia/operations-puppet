@@ -1046,7 +1046,7 @@ node /^install[12]002\.wikimedia\.org$/ {
 
 # Phabricator
 node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
-    role(phabricator_server)
+    role(phabricator)
     interface::add_ip6_mapped { 'main': }
 }
 
