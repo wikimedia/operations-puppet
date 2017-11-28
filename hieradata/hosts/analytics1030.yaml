@@ -2,13 +2,13 @@
 # Hadoop daemons from 2G to 4G
 # https://phabricator.wikimedia.org/T178876
 
-cdh::hadoop::yarn_heapsize:                              4096
-cdh::hadoop::yarn_nodemanager_opts:                      "-Xms4096m"
+profile::hadoop::common::yarn_heapsize: 4096
+profile::hadoop::common::yarn_nodemanager_opts: '-Xms4096m'
 
 # Heap size for HDFS datanode.
 # The default is 1000m, we increase it to 2048m in production.
-cdh::hadoop::hadoop_heapsize:                            4096
-cdh::hadoop::hadoop_datanode_opts:                       "-Xms4096m"
+profile::hadoop::common::hadoop_heapsize: 4096
+profile::hadoop::common::hadoop_datanode_opts: '-Xms4096m'
 
 # Save 12G for OS and other processes.
 # Memory available for use by Hadoop jobs:  64G - 12G == 52G.
@@ -17,7 +17,7 @@ cdh::hadoop::hadoop_datanode_opts:                       "-Xms4096m"
 
 # This is the total amount of memory that NodeManagers
 # will use for allocation to containers.
-cdh::hadoop::yarn_nodemanager_resource_memory_mb:        53248      # 64G - 12G
+profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 53248 # 64G - 12G
 
-cdh::hadoop::yarn_scheduler_maximum_allocation_mb:       53248
+profile::hadoop::common::yarn_scheduler_maximum_allocation_mb: 53248
 
