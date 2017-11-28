@@ -4,11 +4,11 @@ admin::groups:
   - perf-roots
 profile::mediawiki::jobrunner::load_factor: 1.1
 profile::mediawiki::jobrunner::runners:
-  basic: 10
+  basic: 20
   gwt: 1
   translate: 1
   upload: 7
-  html: 8
+  html: 6
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
