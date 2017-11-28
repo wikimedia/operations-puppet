@@ -9,7 +9,7 @@
 #
 class profile::hadoop::master(
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled'),
-    $hadoop_namenode_heapsize = hiera('cdh::hadoop::namenode_heapsize'),
+    $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ){
     include ::profile::hadoop::common
