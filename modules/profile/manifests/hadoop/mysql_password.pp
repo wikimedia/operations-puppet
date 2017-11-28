@@ -6,7 +6,7 @@
 # out of MySQL into Hadoop.
 #
 class profile::hadoop::mysql_password {
-    require ::profile::hadoop::client
+    require ::profile::hadoop::common
 
     include ::passwords::mysql::research
     $research_user = $::passwords::mysql::research::user
