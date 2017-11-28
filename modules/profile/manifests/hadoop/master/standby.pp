@@ -7,7 +7,7 @@
 #
 class profile::hadoop::master::standby(
     $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled'),
-    $hadoop_namenode_heapsize = hiera('cdh::hadoop::namenode_heapsize'),
+    $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ) {
     require ::profile::hadoop::common
