@@ -24,14 +24,6 @@ profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
 # for Druid >= 0.11
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 
-# Druid nodes also incldue CDH, so we need to specify a few defaults that
-# let them find the Hadoop Cluster.
-profile::hadoop::common::zookeeper_cluster_name: main-eqiad
-profile::hadoop::common::resourcemanager_hosts:
-  - analytics1001.eqiad.wmnet
-  - analytics1002.eqiad.wmnet
-
-
 # -- Druid common configuration
 
 # The logical name of this druid cluster
