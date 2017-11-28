@@ -38,6 +38,8 @@ class network::constants {
                     '2620:0:862:1:91:198:174:113',      # bast3002.wikimedia.org
                     '198.35.26.5',                      # bast4001.wikimedia.org
                     '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
+                    '198.35.26.6',                      # bast4002.wikimedia.org
+                    '2620:0:863:1:198:35:26:6',         # bast4002.wikimedia.org
                     '208.80.154.151',                   # iron.wikimedia.org
                     '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
                 ],
