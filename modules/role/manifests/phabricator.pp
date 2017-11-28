@@ -1,9 +1,9 @@
 # phabricator instance
 #
 # filtertags: labs-project-deployment-prep labs-project-phabricator
-class role::phabricator_server {
+class role::phabricator {
 
-    system::role { 'phabricator_server':
+    system::role { 'phabricator':
         description => 'Phabricator (Main) Server'
     }
 
