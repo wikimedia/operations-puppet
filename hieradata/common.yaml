@@ -525,3 +525,17 @@ jenkins_agent_username: 'jenkins-slave'
 
 # HTTP proxy (can be used as an env variable)
 http_proxy: "http://webproxy.%{::site}.wmnet:8080"
+
+# Hadoop base configuration common to multiple profiles, that must be kept
+# in sync. Instead of having it repated multiple times it is convenient to
+# have a single place in hiera to check/modify.
+profile::hadoop::common::zookeeper_cluster_name: main-eqiad
+profile::hadoop::common::resourcemanager_hosts:
+  - analytics1001.eqiad.wmnet
+  - analytics1002.eqiad.wmnet
+profile::hive::client::zookeeper_cluster_name: main-eqiad
+profile::hive::client::server_host: analytics1003.eqiad.wmnet
+profile::hive::client::server_port: 1000
+
+
+
