@@ -60,3 +60,19 @@ function pruneOldLogs {
 function runDcat {
 	php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
 }
+
+function killAllSubProcesses {
+	# Get direct subprocess
+        PIDS=`pgrep -P $$`
+	# Get indirect subprocesses (duplicates are ok here)
+        PIDS="$PIDS $(pgrep -P `echo $PIDS | sed 's/ /,/g'`)"
+        PIDS="$PIDS $(pgrep -P `echo $PIDS | sed 's/ /,/g'`)"
+        PIDS="$PIDS $(pgrep -P `echo $PIDS | sed 's/ /,/g'`)"
+
+	# Make sure we're not killing ourselves
+        PIDS=`echo $PIDS | sed "s/\b$$\b//g"`
+
+	# Use nohup here to make sure the kill is not getting stopped itself
+	# when invoked in a subshell
+        nohup kill $PIDS > /dev/null
+}
