@@ -6,18 +6,9 @@ admin::groups:
   - analytics-admins
 
 profile::hadoop::worker::monitoring_enabled: true
+profile::hadoop::logstash::enabled: false
 
 # Analytics worker disks are large.  We will install a custom
 # NRPE check for them, so the base module's should ignore them.
 profile::base::check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data"'
 profile::base::check_raid_policy: 'WriteBack'
-
-profile::hadoop::common::zookeeper_cluster_name: 'main-eqiad'
-profile::hadoop::common::resourcemanager_hosts:
-  - analytics1001.eqiad.wmnet
-  - analytics1002.eqiad.wmnet
-
-profile::hive::client::zookeeper_cluster_name: main-eqiad
-profile::hive::client::server_host: analytics1003.eqiad.wmnet
-profile::hive::client::server_port: 10000
-profile::hadoop::logstash::enabled: false
