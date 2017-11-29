@@ -24,10 +24,10 @@ bash createNamespace.sh $newNamespace || exit 1
 # Load the data
 bash forAllCategoryWikis.sh loadCategoryDump.sh $newNamespace >> "${LOG_DIR}/${newNamespace}.log"
 # Get old namespace
-oldNamespace=$(cat $ALIAS_FILE | grep categories | cut -d' ' -f2)
+oldNamespace=$(cat $ALIAS_FILE | grep categories | cut -d' ' -f2 | cut -d ';' -f1)
 # Switch the map
 # NOTE: right now it overrides the map. If we reuse it for other purposes, this needs to be made smarter.
-echo "categories ${newNamespace}" > $ALIAS_FILE
+echo "categories ${newNamespace};" > $ALIAS_FILE
 # Bump nginx to reload config
 sudo systemctl reload nginx
 if [ -n "${oldNamespace}" ]; then
