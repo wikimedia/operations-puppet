@@ -2,8 +2,9 @@
 #
 # Setup rsyslog as a receiver of cluster wide syslog messages.
 #
-class role::syslog::centralserver {
-
+class role::syslog::centralserver (
+    $prometheus_nodes = hiera('prometheus_nodes', []), # lint:ignore:wmf_styleguide
+) {
     include ::standard
     include ::base::firewall
     include ::profile::backup::host
@@ -36,5 +37,12 @@ class role::syslog::centralserver {
     mtail::program { 'kernel':
         ensure => present,
         source => 'puppet:///modules/mtail/programs/kernel.mtail',
+    }
+
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    ferm::service { 'mtail':
+        proto  => 'tcp',
+        port   => '3903',
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }
