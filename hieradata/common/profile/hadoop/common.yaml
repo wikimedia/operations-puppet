@@ -33,3 +33,5 @@ profile::hadoop::common::datanode_mounts:
     - /var/lib/hadoop/data/k
     - /var/lib/hadoop/data/l
     - /var/lib/hadoop/data/m
+
+profile::hadoop::common::monitoring_enabled: true
