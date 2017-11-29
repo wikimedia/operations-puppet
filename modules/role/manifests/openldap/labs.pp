@@ -5,6 +5,7 @@ class role::openldap::labs {
     include passwords::openldap::labs
     include ::profile::base::firewall
     include ::profile::backup::host
+    include ::profile::prometheus::openldap_exporter
 
     $ldapconfig = hiera_hash('labsldapconfig', {})
     $ldap_labs_hostname = $ldapconfig['hostname']
