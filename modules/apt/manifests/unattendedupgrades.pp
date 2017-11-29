@@ -1,4 +1,5 @@
 class apt::unattendedupgrades($ensure=present) {
+    # package installation should enable security upgrades by default
     package { 'unattended-upgrades':
         ensure => $ensure,
     }
