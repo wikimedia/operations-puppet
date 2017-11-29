@@ -108,6 +108,9 @@
 #  [*yarn_scheduler_maximum_allocation_vcores*]
 #    Yarn scheduler specific setting. Default: 32
 #
+#  [*monitoring_enabled*]
+#    Configure the Prometheus jmx exporter for all the JVM daemons.
+#
 class profile::hadoop::common (
     $zookeeper_clusters                       = hiera('zookeeper_clusters'),
     $zookeeper_cluster_name                   = hiera('profile::hadoop::common::zookeeper_cluster_name'),
@@ -137,6 +140,7 @@ class profile::hadoop::common (
     $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb', 57344),
     $yarn_scheduler_minimum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores', 0),
     $yarn_scheduler_maximum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores', 32),
+    $monitoring_enabled                       = hiera('profile::hadoop::common::monitoring_enabled'),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
@@ -158,6 +162,14 @@ class profile::hadoop::common (
 
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
+
+    if $monitoring_enabled {
+        include ::profile::hadoop::monitoring::datanode
+        $hadoop_datanode_opts_prometheus = $::profile::hadoop::monitoring::datanode::java_opts
+    } else {
+        $hadoop_datanode_opts_prometheus = ''
+    }
+
     class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
@@ -178,7 +190,7 @@ class profile::hadoop::common (
         yarn_nodemanager_opts                       => $yarn_nodemanager_opts,
         yarn_resourcemanager_opts                   => $yarn_resourcemanager_opts,
         hadoop_namenode_opts                        => $hadoop_namenode_opts,
-        hadoop_datanode_opts                        => $hadoop_datanode_opts,
+        hadoop_datanode_opts                        => "${hadoop_datanode_opts} ${hadoop_datanode_opts_prometheus}",
         mapreduce_history_java_opts                 => $mapreduce_history_java_opts,
 
         yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
