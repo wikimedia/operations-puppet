@@ -173,8 +173,8 @@ scap::sources:
   # Netbox software
   netbox/deploy:
     repository: operations/software/netbox-deploy
-  relforge/mjolnir:
-    repository: search/MjoLniR
+  search/mjolnir/deploy:
+    repository: search/MjoLniR/deploy
   statsv/statsv:
     repository: analytics/statsv
   "docker-pkg/deploy":
