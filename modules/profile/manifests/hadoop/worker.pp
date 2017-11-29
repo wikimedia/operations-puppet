@@ -11,6 +11,10 @@ class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled'),
     $statsd             = hiera('statsd'),
 ) {
+
+    $jmx_exporter_config_file = '/etc/hadoop/prometheus_hdfs_datanode_jmx_exporter.yaml'
+    $prometheus_jmx_exporter_datanode_port = 51010
+
     include ::profile::hadoop::common
 
     # hive::client is nice to have for jobs launched

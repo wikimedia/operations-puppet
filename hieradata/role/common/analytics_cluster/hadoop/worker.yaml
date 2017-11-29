@@ -12,3 +12,6 @@ profile::hadoop::logstash::enabled: false
 # NRPE check for them, so the base module's should ignore them.
 profile::base::check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data"'
 profile::base::check_raid_policy: 'WriteBack'
+
+# Prometheus JMX Exporter config
+profile::hadoop::common::hadoop_datanode_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/hadoop/prometheus_hdfs_datanode_jmx_exporter.yaml"
