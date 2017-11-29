@@ -53,7 +53,7 @@ class wdqs::gui(
 
     file { '/etc/wdqs/gui_vars.sh':
         ensure  => present,
-        content => template('wdqs/cron/gui_vars.erb'),
+        content => template('wdqs/gui_vars.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
