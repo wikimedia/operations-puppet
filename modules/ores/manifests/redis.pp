@@ -18,6 +18,7 @@ class ores::redis(
     }
     $instance_settings = {
         '6379' => {
+            appendonly     => false,
             maxmemory      => $queue_maxmemory,
             appendfilename => "${::hostname}-6379.aof",
             dbfilename     => "${::hostname}-6379.rdb",
