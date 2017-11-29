@@ -625,7 +625,17 @@ groups:
     members: [mobrovac, ppchelko, eevans]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
                  'ALL = (cpjobqueue) NOPASSWD: ALL']
-
+  wikidata-admins:
+    description: Admins working on Wikidata Infrastructure issues
+    gid: 797
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/bin/varnishncsa *',
+                 'ALL = NOPASSWD: /usr/bin/varnishlog *',
+                 'ALL = NOPASSWD: /usr/sbin/tcpdump *',
+                 'ALL = NOPASSWD: /bin/dmesg *',
+                 'ALL = NOPASSWD: /usr/bin/strace *',
+                 'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = (syslog) NOPASSWD: ALL']
 users:
   rush:
     ensure: present

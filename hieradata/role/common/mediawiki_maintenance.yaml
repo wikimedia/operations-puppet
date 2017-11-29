@@ -2,6 +2,7 @@ admin::groups:
   - restricted
   - deployment
   - ldap-admins
+  - wikidata-admins
 profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
