@@ -28,6 +28,12 @@ class profile::puppetmaster::frontend(
         $cron = 'present'
     }
 
+    if $ca {
+        # Ensure cergen is present for managing TLS keys and
+        # x509 certificates signed by the Puppet CA.
+        require_package('cergen')
+    }
+
     ## Configuration
     $workers = $servers[$::fqdn]
 
