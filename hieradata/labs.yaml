@@ -17,6 +17,8 @@ labsdnsconfig:
   recursor: 'labs-recursor0.wikimedia.org'
   recursor_secondary: 'labs-recursor1.wikimedia.org'
 
+profile::base::labs::unattended_wmf: true
+profile::base::labs::unattended_updates: true
 profile::openstack::main::version: 'liberty'
 profile::openstack::base::region: "%{::site}"
 profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
