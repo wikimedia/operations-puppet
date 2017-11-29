@@ -3,6 +3,7 @@ cache::cluster: text
 cache::lua_support: true
 admin::groups:
   - perf-roots
+  - varnish-log-readers
 prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa

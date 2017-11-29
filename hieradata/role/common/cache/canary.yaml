@@ -7,6 +7,7 @@ cache::cluster: canary
 standard::has_ganglia: false
 admin::groups:
   - perf-roots
+  - varnish-log-readers
 prometheus::node_exporter::collectors_extra:
   - qdisc
   - meminfo_numa

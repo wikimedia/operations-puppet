@@ -625,6 +625,25 @@ groups:
     members: [mobrovac, ppchelko, eevans]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cpjobqueue *',
                  'ALL = (cpjobqueue) NOPASSWD: ALL']
+  mediawiki-testers:
+    description: People who can strace and tcpdump on canary appservers for testing mediawiki
+    gid: 797
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/bin/strace *',
+                 'ALL = NOPASSWD: /usr/sbin/tcpdump *']
+  varnish-log-readers:
+    description: People who can read Varnish logs for debugging
+    gid: 798
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/bin/varnishncsa *',
+                 'ALL = NOPASSWD: /usr/bin/varnishlog *']
+  maintenance-log-readers:
+    description: People who can read syslog and dmesg on mediawiki maintenance servers
+    gid: 799
+    members: []
+    privileges: ['ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = NOPASSWD: /bin/dmesg *',
+                 '(syslog) NOPASSWD: ALL']
 
 users:
   rush:
