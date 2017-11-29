@@ -1,1 +1,5 @@
+admin::groups:
+  - deployment
+  - restricted
+  - mw-log-readers
 standard::has_ganglia: false
