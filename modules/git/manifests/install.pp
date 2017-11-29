@@ -87,7 +87,7 @@ define git::install(
             notify  => Exec["git_checkout_${title}"],
         }
 
-        if $lock_file {
+        if $lock_file != '' {
             Exec["git_update_${title}"] {
                 creates => $lock_file,
             }
