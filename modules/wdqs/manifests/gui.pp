@@ -68,4 +68,28 @@ class wdqs::gui(
         require => File['/etc/wdqs/gui_vars.sh'],
     }
 
+    $cron_log = '/var/log/wdqs/reloadCategories.log'
+    # the reload-categories cron needs to reload nginx once the categories are up to date
+    sudo::user { "${username}-reload-nginx":
+      ensure     => present,
+      user       => $username,
+      privileges => [ "ALL = NOPASSWD: /usr/sbin/service nginx reload" ],
+    }
+    cron { 'reload-categories':
+        ensure  => present,
+        command => "/usr/local/bin/reloadCategories.sh >> ${cron_log}",
+        user    => $username,
+        minute  => fqdn_rand(60),
+        hour    => fqdn_rand(24),
+    }
+    logrotate::rule { 'wdqs-reload-categories':
+        ensure        => present,
+        file_glob     => $cron_log,
+        frequency     => 'daily',
+        copy_truncate => true,
+        missing_ok    => true,
+        not_if_empty  => true,
+        rotate        => 30,
+        compress      => true,
+    }
 }
