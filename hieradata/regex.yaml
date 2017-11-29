@@ -271,8 +271,8 @@ puppet4_prometheus_codfw:
   __regex: !ruby/regexp /^prometheus2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
 
-puppet4_cp_misc_codfw:
-  __regex: !ruby/regexp /^cp20(06|1[28]|25)\.codfw\.wmnet$/
+puppet4_cp_codfw:
+  __regex: !ruby/regexp /^cp2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
 
 puppet4_cp_text_codfw:
