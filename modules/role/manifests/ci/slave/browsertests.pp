@@ -13,7 +13,7 @@ class role::ci::slave::browsertests {
     include contint::browsertests
 
     # For CirrusSearch testing:
-    $redis_port = 6379
+    $redis_port = '6379'
 
     redis::instance { $redis_port:
         settings => {
