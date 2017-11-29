@@ -1,13 +1,17 @@
-class apt::unattendedupgrades($ensure=present) {
+class apt::unattendedupgrades(
+    $unattended_distro=true,
+    $unattended_wmf=true,
+    ) {
+
     # package installation should enable security upgrades by default
     package { 'unattended-upgrades':
-        ensure => $ensure,
+        ensure => 'present',
     }
 
     # dpkg tries to determine the most conservative default action in case of
     # conffile conflict. This tells dpkg to use that action without asking
     apt::conf { 'dpkg-force-confdef':
-        ensure   => present,
+        ensure   => 'present',
         priority => '00',
         key      => 'Dpkg::Options::',
         value    => '--force-confdef',
@@ -16,20 +20,21 @@ class apt::unattendedupgrades($ensure=present) {
     # In case of conffile conflicts, tell dpkg to keep the old conffile without
     # asking
     apt::conf { 'dpkg-force-confold':
-        ensure   => present,
+        ensure   => 'present',
         priority => '00',
         key      => 'Dpkg::Options::',
         value    => '--force-confold',
     }
 
     apt::conf { 'auto-upgrades':
-        ensure   => $ensure,
+        ensure   => $unattended_distro,
         priority => '20',
         key      => 'APT::Periodic::Unattended-Upgrade',
         value    => '1',
     }
 
     apt::conf { 'unattended-upgrades-wikimedia':
+        ensure   => $unattended_wmf,
         priority => '51',
         # Key with trailing '::' to append to potentially existing entry
         key      => 'Unattended-Upgrade::Origins-Pattern::',
