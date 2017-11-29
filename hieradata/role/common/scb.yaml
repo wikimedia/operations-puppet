@@ -114,3 +114,4 @@ profile::cpjobqueue::jobrunner_host: https://jobrunner.discovery.wmnet
 
 #CXserver
 profile::cxserver::apertium_uri: "http://apertium.svc.%{::site}.wmnet:2737"
+profile::ores::celery::queue_maxsize: 120
