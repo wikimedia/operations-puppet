@@ -210,6 +210,13 @@ class role::prometheus::ops {
         ],
         'metric_relabel_configs' => [$varnish_be_uuid_relabel],
       },
+      {
+        'job_name'        => 'varnish-canary',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/varnish-canary_*.yaml"] },
+        ],
+        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
+      },
     ]
 
     # Job definition for memcache_exporter
@@ -651,6 +658,11 @@ class role::prometheus::ops {
     prometheus::varnish_2layer{ 'upload':
         targets_path => $targets_path,
         cache_name   => 'upload',
+    }
+
+    prometheus::varnish_2layer{ 'canary':
+        targets_path => $targets_path,
+        cache_name   => 'canary',
     }
 
     # Move Prometheus metrics to new HW - T148408
