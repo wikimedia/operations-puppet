@@ -563,6 +563,13 @@ class role::prometheus::ops {
         port       => '3903',
     }
 
+    prometheus::class_config{ "mtail_syslog_${::site}":
+        dest       => "${targets_path}/mtail_syslog_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::syslog::centralserver',
+        port       => '3903',
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
