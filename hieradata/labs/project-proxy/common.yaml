@@ -1,0 +1,3 @@
+profile::base::labs::unattended_wmf: false
+profile::base::labs::unattended_distro: false
+profile::base::labs::unattended_updates: false
