@@ -7,6 +7,7 @@ mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment
   - perf-roots
+  - mediawiki-testers
 hhvm::extra::fcgi:
   hhvm:
     mysql:
