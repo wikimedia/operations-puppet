@@ -1,4 +1,13 @@
-class profile::base::labs {
+class profile::base::labs(
+    $unattended_distro = hiera('profile::base::labs::unattended_distro'),
+    $unattended_wmf = hiera('profile::base::labs::unattended_wmf),
+    ) {
+
+    class {'::apt::unattendedupgrades':
+        unattended_distro => $unattended_distro,
+        unattended_wmf    => $unattended_wmf,
+    }
+
     include ::apt::unattendedupgrades
     include ::apt::noupgrade
 
