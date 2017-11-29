@@ -31,10 +31,7 @@ class ganglia::monitor::decommission {
         force   => true,
         require => Package['ganglia-monitor'],
     }
-    # just to make sure
-    service { 'ganglia-monitor':
-        ensure => 'stopped',
-    }
+
     # in some cases the pid file was left even when service was stopped
     file { '/run/ganglia-monitor.pid':
         ensure => absent,
