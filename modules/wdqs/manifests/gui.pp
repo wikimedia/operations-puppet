@@ -65,7 +65,7 @@ class wdqs::gui(
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => File['/etc/default/gui_vars.sh'],
+        require => File['/etc/wdqs/gui_vars.sh'],
     }
 
 }
