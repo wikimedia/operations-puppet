@@ -19,6 +19,7 @@ class role::openldap::labs {
     }
 
     $sync_pass = $passwords::openldap::labs::sync_pass
+    $monitor_pass = $passwords::openldap::labs::monitor_pass
     class { '::openldap':
         sync_pass     => $sync_pass,
         mirrormode    => true,
@@ -55,8 +56,32 @@ class role::openldap::labs {
         && /bin/systemctl restart slapd >/dev/null 2>/dev/null",
     }
 
+    require_package('prometheus-openldap-exporter')
+
+    $prometheus_ferm_nodes = join(hiera('prometheus_nodes'), ' ') # lint:ignore:wmf_styleguide
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+
+    ferm::service { 'prometheus-varnish-exporter':
+        proto  => 'tcp',
+        port   => '9142',
+        srange => $ferm_srange,
+    }
+
+    file { '/etc/prometheus/openldap-exporter.yaml':
+        ensure  => present,
+        mode    => '0440',
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        content => template('role/openldap/prometheus.conf.erb'),
+        notify  => Service['prometheus-openldap-exporter'],
+    }
+
+    service { 'prometheus-openldap-exporter':
+        ensure  => running,
+        require => File['prometheus-openldap-exporter'],
+    }
+
     backup::openldapset {'openldap_labs':}
-    $monitor_pass = $passwords::openldap::labs::monitor_pass
     diamond::collector { 'OpenLDAP':
         settings => {
             host     => $ldap_labs_hostname,
