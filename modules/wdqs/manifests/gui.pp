@@ -68,4 +68,43 @@ class wdqs::gui(
         require => File['/etc/wdqs/gui_vars.sh'],
     }
 
+    $cron_log = "${log_dir}/reloadCategories.log"
+    # the reload-categories cron needs to reload nginx once the categories are up to date
+    sudo::user { "${username}-reload-nginx":
+      ensure     => present,
+      user       => $username,
+      privileges => [ 'ALL = NOPASSWD: /bin/systemctl reload nginx' ],
+    }
+
+    # Category dumps start on Sat 20:00. By Mon, they should be done.
+    # We want random time so that hosts don't reboot at the same time, but we
+    # do not want them to be too far from one another.
+    cron { 'reload-categories':
+        ensure  => present,
+        command => "/usr/local/bin/reloadCategories.sh >> ${cron_log}",
+        user    => $username,
+        weekday => 1,
+        minute  => fqdn_rand(60),
+        hour    => fqdn_rand(2),
+    }
+
+    logrotate::rule { 'wdqs-reload-categories':
+        ensure       => present,
+        file_glob    => $cron_log,
+        frequency    => 'monthly',
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 3,
+        compress     => true,
+    }
+
+    # Remove categories*.log files after 30 days.
+    logrotate::rule { 'wdqs-categories-logs':
+        ensure       => present,
+        file_glob    => "${log_dir}/categories*.log",
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 0,
+        max_age      => 30,
+    }
 }
