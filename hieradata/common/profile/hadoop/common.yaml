@@ -68,13 +68,11 @@ profile::hadoop::common::mapreduce_reduce_java_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
 # This setting is used to configure the max heap size for both.
 # The default is 1000m, we increase it to 2048m in production.
 profile::hadoop::common::yarn_heapsize: 2048
-profile::hadoop::common::yarn_nodemanager_opts: '-Xms2048m'
 profile::hadoop::common::yarn_resourcemanager_opts: '-Xms2048m'
 
 # Heap size for HDFS datanode.
 # The default is 1000m, we increase it to 2048m in production.
 profile::hadoop::common::hadoop_heapsize: 2048
-profile::hadoop::common::hadoop_datanode_opts: '-Xms2048m'
 
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
 profile::hadoop::common::yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 2G
