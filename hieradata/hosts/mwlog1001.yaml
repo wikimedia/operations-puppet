@@ -1,7 +1,3 @@
-admin::groups:
-  - deployment
-  - restricted
-  - mw-log-readers
 role::logging::mediawiki::udp2log::rsync_slow_parse: true
 role::logging::mediawiki::udp2log::forward_messages: true
 role::logging::mediawiki::udp2log::monitor: false
