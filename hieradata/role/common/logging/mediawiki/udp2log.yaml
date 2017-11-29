@@ -1,1 +1,5 @@
 role::logging::mediawiki::udp2log::logstash_host: 'logstash.svc.eqiad.wmnet'
+admin::groups:
+  - deployment
+  - restricted
+  - mw-log-readers
