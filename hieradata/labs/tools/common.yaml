@@ -1,3 +1,6 @@
+profile::base::labs::unattended_wmf: false
+profile::base::labs::unattended_updates: false
+
 "profile::base::core_dump_pattern": core
 classes:
     - role::aptly::client
