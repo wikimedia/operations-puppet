@@ -6,21 +6,18 @@ profile::kafka::broker::kafka_cluster_name: jumbo
 # More info https://phabricator.wikimedia.org/T167304#3478277
 profile::kafka::broker::auth_acls_enabled: true
 
+# Enable SSL/TLS for Kafka brokers.  This requires
+# that keystore and truststore files, and
+# profile::kafka::broker::ssl_password, are committed in
+# the expected location in ops/puppet/private.
+profile::kafka::broker::ssl_enabled: true
+
 # Enable Monitoring (via Prometheus) and icinga alerts
 profile::kafka::broker::monitoring_enabled: true
 
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
-# TODO: does not yet work.
-# # ca-manager will use a self signed CA cert to authenticate clients.
-# # Some clients (e.g. MirrorMaker) will need to talk to multiple Kafka
-# # clusters.  So, we need all production Kafka clusters to use the same root CA, which
-# # means that ca-manager must have all clusters that might need to authenticate
-# # a client to be configured in the same ca-manager manifest config file.
-# # All certs will be in a single ca-manager base directory.  This should
-# # match what is in the operations puppet private repository in the secrets module.
-# profile::kafka::broker::tls_secrets_path: kafka/common
-# profile::kafka::broker::tls_key_password: qwerty # TODO: put this in puppet private
+
 profile::kafka::broker::auto_leader_rebalance_enable: true
 profile::kafka::broker::nofiles_ulimit: 65536
 

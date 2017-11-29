@@ -317,9 +317,17 @@ class confluent::kafka::broker(
         mode   => '0755',
     }
 
+    # If any passwords, set proper readability.
+    if $ssl_key_password or $ssl_keystore_password or $ssl_truststore_password {
+        $server_properties_mode = '0440'
+    }
+    else {
+        $server_properties_mode = '0444'
+    }
     # Render out Kafka Broker config files.
     file { '/etc/kafka/server.properties':
         content => template($server_properties_template),
+        mode    => $server_properties_mode,
     }
 
     # log4j configuration for Kafka daemon
