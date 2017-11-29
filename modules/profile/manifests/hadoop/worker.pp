@@ -11,6 +11,17 @@ class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled'),
     $statsd             = hiera('statsd'),
 ) {
+
+    if $monitoring_enabled {
+        include ::profile::hadoop::monitoring::datanode
+        $datanode_jmx_exporter_config_file = $::profile::hadoop::monitoring::datanode::jmx_exporter_config_file
+        $prometheus_jmx_exporter_datanode_port = $::profile::hadoop::monitoring::datanode::prometheus_jmx_exporter_datanode_port
+
+        include ::profile::hadoop::monitoring::nodemanager
+        $nodemanager_jmx_exporter_config_file = $::profile::hadoop::monitoring::nodemanager::jmx_exporter_config_file
+        $prometheus_jmx_exporter_nodemanager_port = $::profile::hadoop::monitoring::nodemanager::prometheus_jmx_exporter_nodemanager_port
+    }
+
     include ::profile::hadoop::common
 
     # hive::client is nice to have for jobs launched
