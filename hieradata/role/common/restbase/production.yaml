@@ -114,13 +114,13 @@ profile::cassandra::instances:
       listen_address: 10.64.32.206
     c:
       listen_address: 10.64.32.207
-  "restbase1014.eqiad.wmnet":
-    a:
-      listen_address: 10.64.48.135
-    b:
-      listen_address: 10.64.48.136
-    c:
-      listen_address: 10.64.48.137
+  #"restbase1014.eqiad.wmnet":
+  #  a:
+  #    listen_address: 10.64.48.135
+  #  b:
+  #    listen_address: 10.64.48.136
+  #  c:
+  #    listen_address: 10.64.48.137
   "restbase1015.eqiad.wmnet":
     a:
       listen_address: 10.64.48.138
