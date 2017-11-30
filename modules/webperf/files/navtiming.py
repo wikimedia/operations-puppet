@@ -405,7 +405,10 @@ def handle_navigation_timing(meta):
     ua = parse_ua(meta['userAgent']) or ('Other', '_')
 
     for metric, value in metrics.items():
-        prefix = 'frontend.navtiming'
+        if 'isOversample' in event and event['isOversample']:
+            prefix = 'frontend.navtiming_oversample'
+        else:
+            prefix = 'frontend.navtiming'
 
         if is_sane(value):
             yield make_stat(prefix, metric, site, auth, value)
@@ -477,7 +480,10 @@ def handle_navigation_timing(meta):
         yield make_count('frontend.navtiming_discard', 'isSane')
     else:
         for metric, value in metrics_nav2.items():
-            prefix = 'frontend.navtiming2'
+            if 'isOversample' in event and event['isOversample']:
+                prefix = 'frontend.navtiming2_oversample'
+            else:
+                prefix = 'frontend.navtiming2'
             yield make_stat(prefix, metric, site, auth, value)
             yield make_stat(prefix, metric, site, 'overall', value)
             yield make_stat(prefix, metric, 'overall', value)
