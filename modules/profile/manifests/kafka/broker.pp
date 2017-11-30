@@ -8,15 +8,25 @@
 # To configure SSL for Kafka brokers, you need the following files distributable by our Puppet
 # secret() function.
 #
-# - A keystore.jks file   - Contains the key and certificate for this broker
-# - A truststore.jks file - Contains the CA certificate that signed the broker's certificate
+# - A keystore.jks file   - Contains the key and certificate for this kafka cluster's brokers.
+# - A truststore.jks file - Contains the CA certificate that signed the cluster certificate
 #
 # It is expected that the CA certificate in the truststore will also be used to sign
 # all Kafka client certificates.  These should be checked into the Puppet private repository's
 # secret module at
 #
-#   - secrets/certificates/kafka_broker_${::hostname}/kafka_broker_$hostname.keystore.jks
-#   - secrets/certificates/kafka_broker_${::hostname}/truststore.jks
+#   - secrets/certificates/kafka_${kafka_cluster_name_full}_broker/kafka_${kafka_cluster_name_full}_broker.keystore.jks
+#   - secrets/certificates/kafka_${kafka_cluster_name_full}_broker/truststore.jks
+#
+# Where ${kafka_cluster_name_full} is the fully qualified Kafka cluster name that matches
+# entries in the $kafka_clusters hash.  E.g. jumbo-eqiad, main-codfw, etc.
+#
+# If both $ssl_enabled and $auth_acls_enabled, this class will grant cluster level
+# permissions to the broker's SSL certificate.
+# It is expected that the certificate is subjectless, i.e. it's DN can be specified
+# simply as CN=kafka_${kafka_cluster_name_full}_broker. This will be used as the
+# Kafka cluster broker principal.  --cluster ACLs will automatically be granted for
+# User:CN=kafka_${kafka_cluster_name_full}_broker.
 #
 # This layout is built to work with certificates generated using cergen like
 #    cergen --base-path /srv/private/modules/secret/secrets/certificates ...
@@ -31,7 +41,7 @@
 #
 # [*kafka_cluster_name*]
 #   Kafka cluster name.  This should be the non DC/project suffixed cluster name,
-#   e.g. main, aggregate, simple, etc.  The kafka_cluster_name puppet parser
+#   e.g. main, aggregate, simple, etc.  The kafka_cluster_name() puppet parser
 #   function will determine the proper full cluster name based on $::site
 #   and/or $::labsproject.  Hiera: kafka_cluster_name
 #
@@ -88,8 +98,7 @@
 #
 # [*auth_acls_enabled*]
 #   Enables the kafka.security.auth.SimpleAclAuthorizer bundled with Kafka.
-#   This will also increase the verbosity of authorization logs for a better
-#   user accounting.  Default: false
+#   Default: false
 #
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.  Default: false
@@ -115,10 +124,6 @@ class profile::kafka::broker(
     $auth_acls_enabled                 = hiera('profile::kafka::broker::auth_acls_enabled', false),
     $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled', false),
 ) {
-    # TODO: WIP
-    $tls_secrets_path = undef
-    $tls_key_password = undef
-
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
     $zookeeper_url  = $config['zookeeper']['url']
@@ -146,7 +151,7 @@ class profile::kafka::broker(
     $ssl_listener       = "SSL://:${ssl_port}"
 
     # Conditionally set $listeners and $ssl_client_auth
-    # based on values of $tls and $plaintext.
+    # based on values of $ssl_enabled and $plaintext.
     if $ssl_enabled and $plaintext {
         $listeners = [$plaintext_listener, $ssl_listener]
         $ssl_client_auth       = 'requested'
@@ -160,7 +165,7 @@ class profile::kafka::broker(
         $ssl_client_auth       = 'required'
     }
     else {
-        fatal('Must set at least one of $plaintext or $ssl_enabled to true.')
+        fail('Must set at least one of $plaintext or $ssl_enabled to true.')
     }
 
     if $ssl_enabled {
@@ -170,10 +175,10 @@ class profile::kafka::broker(
         # Distribute Java keystore and truststore for this broker.
         $ssl_location                   = '/etc/kafka/ssl'
 
-        $ssl_keystore_secrets_path      = "certificates/kafka_broker_${::hostname}/kafka_broker_${::hostname}.keystore.jks"
-        $ssl_keystore_location          = "${ssl_location}/kafka_broker_${::hostname}.keystore.jks"
+        $ssl_keystore_secrets_path      = "certificates/kafka_${cluster_name}_broker/kafka_$cluster_name}_broker.keystore.jks"
+        $ssl_keystore_location          = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
 
-        $ssl_truststore_secrets_path    = "certificates/kafka_broker_${::hostname}/truststore.jks"
+        $ssl_truststore_secrets_path    = "certificates/kafka_${cluster_name}_broker/truststore.jks"
         $ssl_truststore_location        = "${ssl_location}/truststore.jks"
 
         file { $ssl_location:
@@ -274,6 +279,23 @@ class profile::kafka::broker(
         authorizer_class_name            => $authorizer_class_name,
     }
 
+    # If both auth ACLs AND SSL are enabled, then we will need cluster level
+    # ACLs for the brokers to be able to talk to each other.
+    if $auth_acls_enabled and $ssl_enabled {
+        $cluster_principal = "User:CN=kafka_${cluster_name}_broker"
+        $kafka_acls_command = "/usr/bin/kafka-acls --authorizer-properties zookeeper.connect=${config['zookeeper']['url']}"
+        exec { "kafka_grant_cluster_acl_to_${cluster_principal}":
+            command => "${kafka_acls_command} --add --cluster --allow-principal ${cluster_principal}",
+            unless  => "${kafka_acls_command} --list | grep -A 1 'Current ACLs for resource `Cluster:kafka-cluster`:' | grep -q '${cluster_principal} has Allow permission for operations: All'",
+            require => Class['::confluent::kafka::broker'],
+        }
+    }
+
+    $ferm_srange = $::realm ? {
+        'production' => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        'labs'       => '($LABS_NETWORKS)',
+    }
+
     $ferm_plaintext_ensure = $plaintext ? {
         false => 'absent',
         undef => 'absent',
@@ -285,7 +307,7 @@ class profile::kafka::broker(
         proto   => 'tcp',
         port    => $plaintext_port,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        srange  => $ferm_srange,
     }
 
     $ferm_ssl_ensure = $ssl_enabled ? {
@@ -299,7 +321,7 @@ class profile::kafka::broker(
         proto   => 'tcp',
         port    => $ssl_port,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        srange  => $ferm_srange,
     }
 
     # In case of mediawiki spikes we've been seeing up to 300k connections,
