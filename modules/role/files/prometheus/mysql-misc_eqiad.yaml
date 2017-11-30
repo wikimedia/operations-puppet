@@ -35,7 +35,7 @@
   - db1107:9104
 
 - labels:
-    shard: multi
+    shard: m4
     role: slave
   targets:
   - db1108:9104
