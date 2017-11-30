@@ -3,10 +3,9 @@ source 'https://rubygems.org'
 gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 3.8.5'
 gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
 gem 'puppet-strings', '~> 1.0.0'
-gem 'rspec-puppet', '~> 2.5.0'
+gem 'rspec-puppet', '~> 2.6.9'
+gem 'rspec-puppet-facts', '~> 1.7', :require => false
 gem 'puppetlabs_spec_helper', '< 2.0.0'
-# Puppet 3.7 fails on ruby 2.2+
-# https://tickets.puppetlabs.com/browse/PUP-3796
 gem 'safe_yaml', '~> 1.0.4'
 
 gem 'rake', '~> 12.0.0'
