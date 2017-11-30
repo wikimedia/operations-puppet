@@ -282,3 +282,7 @@ puppet4_cp_canary_eqiad:
 puppet4_lvs_codfw:
   __regex: !ruby/regexp /^lvs2.*\.codfw\.wmnet$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+labtestpuppetmaster:
+  __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
+  puppetmaster: "puppetmaster2001.codfw.wmnet"
