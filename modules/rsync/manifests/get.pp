@@ -43,13 +43,20 @@ define rsync::get (
   if $user {
     $myuser = "-e 'ssh -i ${mykeyfile} -l ${user}' ${user}@"
   }
+  else {
+    $myuser = ''
+  }
 
   if $purge {
     $mypurge = '--delete'
+  } else {
+      $mypurge = ''
   }
 
   if $exclude {
     $myexclude = "--exclude=${exclude}"
+  } else {
+      $myexclude = ''
   }
 
   if $path {
