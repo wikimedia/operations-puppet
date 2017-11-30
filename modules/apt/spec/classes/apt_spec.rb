@@ -1,37 +1,37 @@
 require 'spec_helper'
 
 describe 'apt' do
-    os = [
-        {
-            :lsbdistid => 'Debian',
-            :lsbdistrelease => '8.0',
-            :operatingsystem => 'Debian',
-        },
-        {
-            :lsbdistid => 'Ubuntu',
-            :lsbdistrelease => '14.04',
-            :operatingsystem => 'Ubuntu',
-        },
+  test_on = {
+    supported_os: [
+      {
+        'operatingsystem'        => 'Debian',
+        'operatingsystemrelease' => ['8', '9'],
+      },
+      {
+        'operatingsystem' => 'Ubuntu',
+        'operatingsystemrelease' => ['14.04']
+      }
     ]
-    os.each do |os_facts|
-        context "with OS #{os_facts[:lsbdistid]} #{os_facts[:lsbdistrelease]}" do
-            let(:facts) { os_facts }
+  }
+  on_supported_os(test_on).each do |os, os_facts|
+    context "with OS #{os}" do
+      let(:facts) { os_facts }
+      let(:node_params) { {'site' => 'eqiad'} }
+      it { should compile }
 
-            it { should compile }
+      context "when not using a proxy" do
+        let(:params) { {
+                         :use_proxy => false,
+                       } }
+        it { should compile }
+      end
 
-            context "when not using a proxy" do
-                let(:params) { {
-                    :use_proxy => false,
-                } }
-                it { should compile }
-            end
-
-            context "when using experimental repo" do
-                let(:params) { {
-                    :use_experimental => true,
-                } }
-                it { should compile }
-            end
-        end
+      context "when using experimental repo" do
+        let(:params) { {
+                         :use_experimental => true,
+                       } }
+        it { should compile }
+      end
     end
+  end
 end
