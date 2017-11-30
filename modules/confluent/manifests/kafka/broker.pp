@@ -327,6 +327,7 @@ class confluent::kafka::broker(
     # Render out Kafka Broker config files.
     file { '/etc/kafka/server.properties':
         content => template($server_properties_template),
+        group   => 'kafka',
         mode    => $server_properties_mode,
     }
 
