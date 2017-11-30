@@ -13,7 +13,12 @@ profile::hadoop::logstash::enabled: false
 profile::base::check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data"'
 profile::base::check_raid_policy: 'WriteBack'
 
+# Increased Heap sizes for Datanode/Nodemanager Hadoop daemons from 2G to 4G
+# in https://phabricator.wikimedia.org/T178876
+profile::hadoop::common::yarn_heapsize: 4096
+profile::hadoop::common::hadoop_heapsize: 4096
+
 # Prometheus JMX Exporter config templates. The missing variables will be filled
 # in the worker profile before commons.
-profile::hadoop::common::hadoop_datanode_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:%{::profile::hadoop::worker::prometheus_jmx_exporter_datanode_port}:%{::profile::hadoop::worker::datanode_jmx_exporter_config_file}"
-profile::hadoop::common::yarn_nodemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:%{::profile::hadoop::worker::prometheus_jmx_exporter_nodemanager_port}:%{::profile::hadoop::worker::nodemanager_jmx_exporter_config_file}"
+profile::hadoop::common::hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:%{::profile::hadoop::worker::prometheus_jmx_exporter_datanode_port}:%{::profile::hadoop::worker::datanode_jmx_exporter_config_file}"
+profile::hadoop::common::yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:%{::profile::hadoop::worker::prometheus_jmx_exporter_nodemanager_port}:%{::profile::hadoop::worker::nodemanager_jmx_exporter_config_file}"
