@@ -72,6 +72,8 @@ class toollabs::bastion(
                 },
             },
             rules  => [
+                '*:/usr/bin/php             cpu      /scripts',
+                '%                          memory   /scripts',
                 '*:/usr/bin/ruby            cpu      /scripts',
                 '%                          memory   /scripts',
                 '*:/usr/bin/ruby1.9.1       cpu      /scripts',
@@ -92,8 +94,12 @@ class toollabs::bastion(
                 '%                          memory   /scripts',
                 '*:/usr/bin/tclsh8.6        cpu      /scripts',
                 '%                          memory   /scripts',
+                '*:/usr/bin/tclsh8.7        cpu      /scripts',
+                '%                          memory   /scripts',
                 '*:/shared/bin/node         cpu      /scripts',
                 '%                          memory   /scripts',
+                '*:/data/project/shared/tcl/bin/tclsh8.7        cpu      /scripts',
+                '%                                              memory   /scripts',
             ],
         }
 
@@ -112,6 +118,8 @@ class toollabs::bastion(
                 '*:/usr/bin/vim.diff          memory  /utilities',
                 '*:/usr/bin/vim.tiny          memory  /utilities',
                 '*:/usr/bin/nano              memory  /utilities',
+                '*:/usr/bin/unzip             cpu     /utilities',
+                '%                            memory  /utilities',
                 '*:/bin/tar                   cpu     /utilities',
                 '%                            memory  /utilities',
                 '*:/bin/bzip2                  cpu     /utilities',
