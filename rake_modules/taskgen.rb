@@ -171,7 +171,11 @@ class TaskGen < ::Rake::TaskLib
   def setup_syntax
     # Reset puppet-syntax tasks, define a new one
     Rake::Task[:syntax].clear
-
+    namespace :syntax do
+      Rake::Task[:manifests].clear
+      Rake::Task[:hiera].clear
+      Rake::Task[:templates].clear
+    end
     # site.pp still uses an import statement for realm.pp (T154915)
     # We can think of activating this once we've moved to the future parser
     PuppetSyntax.fail_on_deprecation_notices = false
@@ -223,7 +227,8 @@ class TaskGen < ::Rake::TaskLib
 
   def setup_spec
     # Modules known not to pass tests
-    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs', 'tilerator', 'wmflib']
+    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'wdqs', 'tilerator']
+
     deps = SpecDependencies.new
     spec_modules = deps.specs_to_run(@changed_files).select do |m|
       !ignored_modules.include?(m)

@@ -35,7 +35,7 @@
 # }
 
 module Puppet::Parser::Functions
-  newfunction(:role, :arity => -1) do |args|
+  newfunction(:role, :arity => -2) do |args|
     # This will add to the catalog, and to the node specifically:
     # - A global 'role' hash with the 'role::#{arg}' key set to true;
     # if the variable is present, append to it

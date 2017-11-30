@@ -98,14 +98,6 @@ module Puppet::Parser::Functions
             (operator == '<=' || operator == '<'))
         message = "os_version(): obsolete distribution check in #{clause}"
       # rubocop:enable Style/NumericPredicate
-
-        if defined? Puppet::Pops::PuppetStack.stacktrace
-          stacktrace = Puppet::Pops::PuppetStack.stacktrace()[0]
-          file = stacktrace[0]
-          line = stacktrace[1]
-          message = "#{message} at #{file}:#{line}"
-        end
-
         warning(message)
       end
 
