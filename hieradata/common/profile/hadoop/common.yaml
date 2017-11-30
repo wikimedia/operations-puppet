@@ -34,11 +34,6 @@ profile::hadoop::common::datanode_mounts:
     - /var/lib/hadoop/data/l
     - /var/lib/hadoop/data/m
 
-# Increase NameNode heapsize independent from other daemons.
-# If you change these values please check profile::hadoop::*::namenode_heapsize
-# since some alarms need to be tuned in the master/standby config too.
-profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m"
-
 profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies: 10
 profile::hadoop::common::mapreduce_task_io_sort_mb: 200
 profile::hadoop::common::mapreduce_task_io_sort_factor: 10
@@ -64,36 +59,23 @@ profile::hadoop::common::mapreduce_map_java_opts: '-Xmx1638m'  # 0.8 * 2G
 profile::hadoop::common::mapreduce_reduce_memory_mb: 4096         # 2 * 2G
 profile::hadoop::common::mapreduce_reduce_java_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
 
-# This is the heap zize of YARN daemons ResourceManager and NodeManagers.
-# This setting is used to configure the max heap size for both.
-# The default is 1000m, we increase it to 2048m in production.
-profile::hadoop::common::yarn_heapsize: 2048
-profile::hadoop::common::yarn_resourcemanager_opts: '-Xms2048m'
-
-# Heap size for HDFS datanode.
-# The default is 1000m, we increase it to 2048m in production.
-profile::hadoop::common::hadoop_heapsize: 2048
-
 # Yarn ApplicationMaster container size and  max heap size (-Xmx)
 profile::hadoop::common::yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 2G
 profile::hadoop::common::yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
 
-# MapReduce History server (running on Hadoop master nodes)
-profile::hadoop::common::mapreduce_history_java_opts: '-Xms4096m -Xmx4096m'
-
-# Save 8G for OS and other processes.
-# Memory available for use by Hadoop jobs:  64G - 8G == 56G.
-# 56G at 2G per container gives nodes with 64G RAM space for
-# 28 containers.
+# Save 12G for OS and other processes.
+# Memory available for use by Hadoop jobs:  64G - 12G == 52G.
+# 52G at 2G per container gives nodes with 64G RAM space for
+# 26 containers.
 
 # This is the total amount of memory that NodeManagers
 # will use for allocation to containers.
-profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 57344  # 64G - 8G
+profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 53248 # 64G - 12G
 
 # Setting _minimum_allocation_mb to 0 to allow Impala to submit small
 # reservation requests.
 profile::hadoop::common::yarn_scheduler_minimum_allocation_mb: 0
-profile::hadoop::common::yarn_scheduler_maximum_allocation_mb: 57344
+profile::hadoop::common::yarn_scheduler_maximum_allocation_mb: 53248
 
 # Setting minimum_allocation_vcores to 0 to allow Impala to submit small
 # reservation requests.

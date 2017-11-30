@@ -17,6 +17,15 @@ admin::groups:
 profile::hadoop::standby_master::monitoring_enabled: true
 profile::hadoop::logstash::enabled: false
 
+# This is the heap zize of YARN daemons ResourceManager and NodeManagers.
+# This setting is used to configure the max heap size for both.
+# The default is 1000m, we increase it to 2048m in production.
+profile::hadoop::common::yarn_heapsize: 2048
+profile::hadoop::common::yarn_resourcemanager_opts: '-Xms2048m'
+
+profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m"
 # Used to set up jvm heap size usage thresholds
-# Please check profile::hadoop::common::hadoop_namenode_opts before changing it.
 profile::hadoop::standby::namenode_heapsize: 6144
+
+# MapReduce History server (running on Hadoop master nodes)
+profile::hadoop::common::mapreduce_history_java_opts: '-Xms4096m -Xmx4096m'
