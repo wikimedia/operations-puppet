@@ -6,7 +6,26 @@ class profile::prometheus::openldap_exporter (
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-    require_package('prometheus-openldap-exporter')
+    package { 'prometheus-openldap-exporter':
+        ensure => present,
+    }
+
+    # Prometheus exporter needs Twisted 16.x
+    if os_version('debian == jessie') {
+        $twisted_packages = [
+            'python-twisted-bin',
+            'python-twisted-core',
+            'python-twisted-mail',
+            'python-twisted-names',
+            'python-twisted-web'
+        ]
+
+        apt::pin { $twisted_packages:
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+            before   => Package['prometheus-openldap-exporter'],
+        }
+    }
 
     $monitor_pass = $passwords::openldap::labs::monitor_pass
     file { '/etc/prometheus/openldap-exporter.yaml':
