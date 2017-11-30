@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'mirrors::debian', :type => :class do
+    let(:code) { "class passwords::mirrors {}"}
     it do
         should contain_file('/srv/mirrors/debian').with({
             'ensure' => 'directory',
@@ -18,7 +19,7 @@ describe 'mirrors::debian', :type => :class do
         })
     end
     it do
-        should contain_file('/var/log/ftpsync/').with({
+        should contain_file('/var/log/ftpsync').with({
             'ensure'  => 'directory',
             'owner'   => 'mirror',
             'group'   => 'mirror',

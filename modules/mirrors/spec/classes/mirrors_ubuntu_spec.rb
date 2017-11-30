@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'mirrors::ubuntu', :type => :class do
     it do
-        should contain_file('/srv/mirrors/ubuntu/').with({
+        should contain_file('/srv/mirrors/ubuntu').with({
             'ensure' => 'directory',
             'owner'  => 'mirror',
             'group'  => 'mirror',
