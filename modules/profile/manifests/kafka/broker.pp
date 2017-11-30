@@ -8,15 +8,18 @@
 # To configure SSL for Kafka brokers, you need the following files distributable by our Puppet
 # secret() function.
 #
-# - A keystore.jks file   - Contains the key and certificate for this broker
-# - A truststore.jks file - Contains the CA certificate that signed the broker's certificate
+# - A keystore.jks file   - Contains the key and certificate for this kafka cluster's brokers.
+# - A truststore.jks file - Contains the CA certificate that signed the cluster certificate
 #
 # It is expected that the CA certificate in the truststore will also be used to sign
 # all Kafka client certificates.  These should be checked into the Puppet private repository's
 # secret module at
 #
-#   - secrets/certificates/kafka_broker_${::hostname}/kafka_broker_$hostname.keystore.jks
-#   - secrets/certificates/kafka_broker_${::hostname}/truststore.jks
+#   - secrets/certificates/kafka_${kafka_cluster_name}_broker/kafka_${kafka_cluster_name}_broker.keystore.jks
+#   - secrets/certificates/kafka_${kafka_cluster_name}_broker/truststore.jks
+#
+# It is expected that the certificate is subjectless, i.e. it's DN can be specified
+# simply as CN=kafka_${kafka_cluster_name}_broker.
 #
 # This layout is built to work with certificates generated using cergen like
 #    cergen --base-path /srv/private/modules/secret/secrets/certificates ...
@@ -88,8 +91,7 @@
 #
 # [*auth_acls_enabled*]
 #   Enables the kafka.security.auth.SimpleAclAuthorizer bundled with Kafka.
-#   This will also increase the verbosity of authorization logs for a better
-#   user accounting.  Default: false
+#   Default: false
 #
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.  Default: false
@@ -160,7 +162,7 @@ class profile::kafka::broker(
         $ssl_client_auth       = 'required'
     }
     else {
-        fatal('Must set at least one of $plaintext or $ssl_enabled to true.')
+        fail('Must set at least one of $plaintext or $ssl_enabled to true.')
     }
 
     if $ssl_enabled {
@@ -170,10 +172,10 @@ class profile::kafka::broker(
         # Distribute Java keystore and truststore for this broker.
         $ssl_location                   = '/etc/kafka/ssl'
 
-        $ssl_keystore_secrets_path      = "certificates/kafka_broker_${::hostname}/kafka_broker_${::hostname}.keystore.jks"
-        $ssl_keystore_location          = "${ssl_location}/kafka_broker_${::hostname}.keystore.jks"
+        $ssl_keystore_secrets_path      = "certificates/kafka_${kafka_cluster_name}_broker/kafka_${kafka_cluster_name}_broker.keystore.jks"
+        $ssl_keystore_location          = "${ssl_location}/kafka_${kafka_cluster_name}_broker.keystore.jks"
 
-        $ssl_truststore_secrets_path    = "certificates/kafka_broker_${::hostname}/truststore.jks"
+        $ssl_truststore_secrets_path    = "certificates/kafka_${kafka_cluster_name}_broker/truststore.jks"
         $ssl_truststore_location        = "${ssl_location}/truststore.jks"
 
         file { $ssl_location:
@@ -243,6 +245,16 @@ class profile::kafka::broker(
         $authorizer_class_name = undef
     }
 
+    # If both auth ACLs AND SSL are enabled, use the expected DN the
+    # of the broker's certificate.  This should be a subjectless
+    # DN, with CN only.
+    if $auth_acls_enabled and $ssl_enabled {
+        $super_users = ["User:CN=kafka_${kafka_cluster_name}_broker"]
+    }
+    else {
+        $super_users = undef
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -272,6 +284,13 @@ class profile::kafka::broker(
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
+        super_users                      => $super_users,
+    }
+
+
+    $ferm_srange = $::realm ? {
+        'production' => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        'labs'       => '($LABS_NETWORKS)',
     }
 
     $ferm_plaintext_ensure = $plaintext ? {
@@ -285,7 +304,7 @@ class profile::kafka::broker(
         proto   => 'tcp',
         port    => $plaintext_port,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        srange  => $ferm_srange,
     }
 
     $ferm_ssl_ensure = $ssl_enabled ? {
@@ -299,7 +318,7 @@ class profile::kafka::broker(
         proto   => 'tcp',
         port    => $ssl_port,
         notrack => true,
-        srange  => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
+        srange  => $ferm_srange,
     }
 
     # In case of mediawiki spikes we've been seeing up to 300k connections,

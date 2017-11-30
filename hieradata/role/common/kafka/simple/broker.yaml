@@ -4,8 +4,6 @@ profile::kafka::broker::auth_acls_enabled: false
 profile::kafka::broker::monitoring_enabled: false
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
-profile::kafka::broker::tls_secrets_path: false
-profile::kafka::broker::tls_key_password: false
 profile::kafka::broker::auto_leader_rebalance_enable: true
 profile::kafka::broker::nofiles_ulimit: 8192
 

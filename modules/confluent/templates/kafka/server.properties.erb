@@ -42,6 +42,14 @@ replica.fetch.max.bytes=<%= @replica_fetch_max_bytes %>
 <%if @authorizer_class_name -%>
 ######################### ACL handling ##################################
 authorizer.class.name=<%= @authorizer_class_name %>
+<%if @allow_everyone_if_no_acl_found -%>
+allow.everyone.if.no.acl.found=<%= @allow_everyone_if_no_acl_found %>
+<% end -%>
+
+<% if @super_users -%>
+super.users=<%= Array(@super_users).join(';') %>
+<% end -%>
+
 <% end -%>
 
 ######################### Socket Server Settings ########################
