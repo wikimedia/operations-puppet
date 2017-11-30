@@ -24,11 +24,11 @@ class profile::mariadb::misc::eventlogging::database (
     # FIXME: instantiating a role in a profile is not
     # allowed by our coding standard, but it needs to be
     # refactored on a separate change since it is broadly used.
+    # This will be moved to profile::mariadb::monitoring.
     class {'role::mariadb::groups':
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
-        socket      => '/tmp/mysql.sock',
     }
 
     class { 'mariadb::packages_wmf': }
