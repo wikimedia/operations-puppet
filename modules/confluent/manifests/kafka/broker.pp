@@ -206,11 +206,22 @@
 #   The maximum message size allowed.
 #   Default: 1048576
 #
+# [*allow_everyone_if_no_acl_found*]
+#   If this value is on true, only the topics on which are ACLs are set are secured.
+#   Default: true
+#
+# [*super_users*]
+#   List of super user CNs.  If configuring SSL, this should at least include the cluster's SSL
+#   principal so the cluster can operate.
+#
 # [*authorizer_class_name*]
 #   Sets up the ACL authorization provider specified
 #   as parameter. It also set up a more verbose log4j logging related
 #   to ACL authorization events.
 #   Default: undef
+#
+# [*authorizer_log_level*]
+#   Default: INFO
 #
 class confluent::kafka::broker(
     $enabled                             = true,
@@ -286,7 +297,10 @@ class confluent::kafka::broker(
 
     $message_max_bytes                   = 1048576,
 
+    $allow_everyone_if_no_acl_found      = true,
+    $super_users                         = undef,
     $authorizer_class_name               = undef,
+    $authorizer_log_level                = 'INFO',
 ) {
     # confluent::kafka::common installs the kafka package
     # and a handy wrapper script.
