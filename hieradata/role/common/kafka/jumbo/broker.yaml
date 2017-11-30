@@ -6,11 +6,11 @@ profile::kafka::broker::kafka_cluster_name: jumbo
 # More info https://phabricator.wikimedia.org/T167304#3478277
 profile::kafka::broker::auth_acls_enabled: true
 
-# Enable SSL/TLS for Kafka brokers.  This requires
+# Enable SSL/TLS for Kafka.  This requires
 # that keystore and truststore files, and
 # profile::kafka::broker::ssl_password, are committed in
 # the expected location in ops/puppet/private.
-profile::kafka::broker::ssl_enabled: true
+profile::kafka::broker::ssl_enabled: false
 
 # Enable Monitoring (via Prometheus) and icinga alerts
 profile::kafka::broker::monitoring_enabled: true
