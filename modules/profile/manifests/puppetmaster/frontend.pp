@@ -34,18 +34,24 @@ class profile::puppetmaster::frontend(
             if !defined(Package['python3-openssl']) {
                 package { 'python3-openssl':
                     ensure => '16.0.0-1~bpo8+1',
+                    before => Package['cergen'],
                 }
             }
             if !defined(Package['python3-cryptography']) {
                 package { 'python3-cryptography':
                     ensure => '1.7.1-3~bpo8+1',
+                    before => Package['cergen'],
                 }
             }
         }
 
         # Ensure cergen is present for managing TLS keys and
         # x509 certificates signed by the Puppet CA.
-        require_package('cergen')
+        # Not using require_package since it fails the whole
+        # class if the above dependencies are not first installed.
+        package { 'cergen':
+            ensure => 'present',
+        }
     }
 
     ## Configuration
