@@ -47,7 +47,7 @@ module Puppet::Parser::Functions
     return default if lookupvar('::settings::certname') =~ /\.wikimedia\.org$/
     # Non-self-hosted puppetmasters all use the default ssldir
     puppetmaster = lookupvar('puppetmaster')
-    puppetmaster ||= function_hiera(['role::puppet::self::master', ''])
+    puppetmaster ||= call_function(:hiera, ['role::puppet::self::master', ''])
     if puppetmaster == ''
       # Means we aren't using any of role::puppet::self!1!
       default
