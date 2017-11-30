@@ -326,6 +326,7 @@ dumps_web_rsync_server_clients:
       - dumpsdata1001.eqiad.wmnet
       - dumpsdata1002.eqiad.wmnet
       - labstore1006.wikimedia.org
+      - labstore1007.wikimedia.org
       - stat1005.eqiad.wmnet
       - stat1006.eqiad.wmnet
     external:
