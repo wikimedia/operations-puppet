@@ -5,6 +5,6 @@ class base::syslogs (
     ) {
 
     if $readable == true {
-        syslogs::readable { $logfiles: }
+        base::syslogs::readable { $logfiles: }
     }
 }
