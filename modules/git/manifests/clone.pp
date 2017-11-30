@@ -125,6 +125,8 @@ define git::clone(
             }
             if !empty($ssh) {
                 $env = "GIT_SSH=${ssh}"
+            } else {
+                $env = undef
             }
 
             $deptharg = $depth ?  {

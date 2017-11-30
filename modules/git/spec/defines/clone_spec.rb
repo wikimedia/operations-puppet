@@ -9,7 +9,7 @@ describe 'git::clone' do
         } }
         it 'checkouts a workspace' do
             should contain_exec('git_clone_operations/puppet')
-                .without_command(/ --bare /)
+                     .with_command('/usr/bin/git  clone https://gerrit.wikimedia.org/r/operations/puppet /srv/git/operations/puppet')
         end
         it 'tracks the proper created file' do
             should contain_exec('git_clone_operations/puppet')
