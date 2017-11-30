@@ -1,3 +1,7 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
 abuse_filter,af_id,K
 abuse_filter,af_pattern,K
 abuse_filter,af_user,K
@@ -133,6 +137,7 @@ archive,ar_namespace,K
 archive,ar_title,K
 archive,ar_text,F
 archive,ar_comment,F
+archive,ar_comment_id,F
 archive,ar_user,K
 archive,ar_user_text,K
 archive,ar_timestamp,K
@@ -293,6 +298,8 @@ ep_users_per_course,upc_time,K
 externallinks,el_from,K
 externallinks,el_to,K
 externallinks,el_index,K
+filearchive,fa_description_id,K
+filearchive,fa_deleted_reason_id,K
 flaggedimages,fi_rev_id,K
 flaggedimages,fi_name,K
 flaggedimages,fi_img_timestamp,K
@@ -415,6 +422,7 @@ ipblocks,ipb_address,K
 ipblocks,ipb_user,K
 ipblocks,ipb_by,K
 ipblocks,ipb_reason,K
+ipblocks,ipb_reason_id,K
 ipblocks,ipb_timestamp,K
 ipblocks,ipb_auto,K
 ipblocks,ipb_anon_only,K
@@ -453,6 +461,7 @@ logging,log_user,K
 logging,log_namespace,K
 logging,log_title,K
 logging,log_comment,K
+logging,log_comment_id,K
 logging,log_params,K
 logging,log_deleted,K
 logging,log_user_text,K
@@ -491,6 +500,7 @@ oldimage,oi_width,K
 oldimage,oi_height,K
 oldimage,oi_bits,K
 oldimage,oi_description,K
+oldimage,oi_description_id,K
 oldimage,oi_user,K
 oldimage,oi_user_text,K
 oldimage,oi_timestamp,K
@@ -567,6 +577,7 @@ protected_titles,pt_namespace,K
 protected_titles,pt_title,K
 protected_titles,pt_user,K
 protected_titles,pt_reason,K
+protected_titles,pt_reason_id,K
 protected_titles,pt_timestamp,K
 protected_titles,pt_expiry,K
 protected_titles,pt_create_perm,K
@@ -580,6 +591,7 @@ recentchanges,rc_user_text,K
 recentchanges,rc_namespace,K
 recentchanges,rc_title,K
 recentchanges,rc_comment,K
+recentchanges,rc_comment_id,K
 recentchanges,rc_minor,K
 recentchanges,rc_bot,K
 recentchanges,rc_new,K
