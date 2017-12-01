@@ -483,6 +483,10 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
+# pending to be provisioned T170662
+node 'db2092.codfw.wmnet' {
+    role(spare::system)
+}
 
 ## x1 shard
 # eqiad
