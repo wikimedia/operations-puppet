@@ -562,7 +562,7 @@ node 'db2012.codfw.wmnet' {
 
 # old eventlogging master database, will be decommed in T156844
 node 'db1046.eqiad.wmnet' {
-    role(mariadb::misc::eventlogging::master)
+    role(spare::system)
 }
 
 node 'db1107.eqiad.wmnet' {
@@ -571,10 +571,9 @@ node 'db1107.eqiad.wmnet' {
 
 # These replicas have an m4 custom replication protocol.
 
-# db1047 is a host about to be decommissioned
-# lint:ignore:wmf_styleguide
+# db1047 is a host about to be decommissioned (T156844)
 node 'db1047.eqiad.wmnet' {
-    role(mariadb::misc::eventlogging::replica)
+    role(spare::system)
 }
 
 node 'db1108.eqiad.wmnet' {
