@@ -24,6 +24,21 @@ class varnish::logging(
         priority => 80,
     }
 
+    file { '/usr/local/bin/varnishmtail':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/varnish/varnishmtail',
+    }
+
+    systemd::service { 'varnishmtail':
+        ensure  => present,
+        content => systemd_template('varnishmtail'),
+        restart => true,
+        require => File['/usr/local/bin/varnishmtail'],
+    }
+
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':

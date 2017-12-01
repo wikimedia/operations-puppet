@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# varnishmtail - pipe varnishncsa output to mtail
+
+FMT='url %U\tcache_status %{X-Cache-Status}o\thttp_status %s\tcache_control %{Cache-Control}o\tinm %{If-None-Match}i'
+
+/usr/bin/varnishncsa -n frontend -q 'ReqMethod ne "PURGE"' -F "${FMT}" |
+    mtail -progs /etc/mtail/ -logfds 0
