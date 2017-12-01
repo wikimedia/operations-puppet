@@ -1059,7 +1059,6 @@ node 'labtestservices2001.wikimedia.org' {
 node /labtestservices200[23]\.wikimedia\.org/ {
     role(wmcs::openstack::labtestn::services)
     include ::base::firewall
-    include ::standard
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1207,7 +1206,6 @@ node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
 
     include ::base::firewall
-    include ::standard
     include ::ldap::role::client::labs
 }
 
@@ -1221,7 +1219,6 @@ node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
 
     include ::base::firewall
-    include ::standard
     include ::ldap::role::client::labs
 }
 
@@ -1232,7 +1229,6 @@ node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web,
           mariadb::wikitech)
     include ::base::firewall
-    include ::standard
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
@@ -1254,7 +1250,6 @@ node 'labmon1002.eqiad.wmnet' {
 
 node 'labnet1001.eqiad.wmnet' {
     role(wmcs::openstack::main::net)
-    include ::standard
 }
 
 # role spare until pushed into service via T165779
@@ -1265,7 +1260,6 @@ node /labnet100[34]\.eqiad\.wmnet/ {
 
 node 'labnet1002.eqiad.wmnet' {
     role(wmcs::openstack::main::net_standby)
-    include ::standard
 }
 
 node 'labnodepool1001.eqiad.wmnet' {
