@@ -9,11 +9,12 @@ class profile::openstack::labtest::pdns::recursor::service(
     ) {
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        nova_controller   => $nova_controller,
-        observer_password => $observer_password,
-        pdns_host         => $pdns_host,
-        pdns_recursor     => $pdns_recursor,
-        tld               => $tld,
-        private_reverse   => $private_reverse,
+        nova_controller       => $nova_controller,
+        observer_password     => $observer_password,
+        pdns_host             => $pdns_host,
+        pdns_recursor         => $pdns_recursor,
+        tld                   => $tld,
+        private_reverse       => $private_reverse,
+        puppetmaster_hostname => $puppetmaster_hostname
     }
 }
