@@ -1,0 +1,5 @@
+counter varnish_thumbnails by status
+
+/^url .*\/thumb\/.*\thttp_status (?P<http_status>.*)\tcache_control/ {
+    varnish_thumbnails[$http_status]++
+}
