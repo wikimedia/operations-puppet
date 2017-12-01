@@ -479,7 +479,7 @@ node /^db20(79|80|81|82|83)\.codfw\.wmnet/ {
 node /^db1(096|097|099|101|103|105)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
-node /^db20(84|85|86|87|88|89|91|92)\.codfw\.wmnet/ {
+node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 

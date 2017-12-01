@@ -12,7 +12,7 @@
   - db2071:9104
   - db2072:9104
   - db2088:13311
-  - db2092:13311
+  - db2085:13311
 - labels:
     shard: s1
     role: master
@@ -46,8 +46,6 @@
   - db2050:9104
   - db2057:9104
   - db2074:9104
-  - db2085:13313
-  - db2092:13313
 - labels:
     shard: s3
     role: master
