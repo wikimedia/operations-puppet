@@ -4,6 +4,10 @@ class apt::unattendedupgrades($ensure=present) {
         ensure => $ensure,
     }
 
+    package { 'apt-show-versions':
+        ensure => $ensure,
+    }
+
     # dpkg tries to determine the most conservative default action in case of
     # conffile conflict. This tells dpkg to use that action without asking
     apt::conf { 'dpkg-force-confdef':
@@ -36,5 +40,14 @@ class apt::unattendedupgrades($ensure=present) {
         # lint:ignore:single_quote_string_with_variables
         value    => 'origin=Wikimedia,codename=${distro_codename}-wikimedia',
         # lint:endignore
+    }
+
+    file { '/usr/local/sbin/report-pending-upgrades':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/report-pending-upgrades.sh',
+        require => Package['apt-show-versions'],
     }
 }
