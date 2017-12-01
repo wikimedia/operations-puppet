@@ -4,6 +4,10 @@ class apt::unattendedupgrades($ensure=present) {
         ensure => $ensure,
     }
 
+    package { 'apt-show-versions':
+        ensure => $ensure,
+    }
+
     # dpkg tries to determine the most conservative default action in case of
     # conffile conflict. This tells dpkg to use that action without asking
     apt::conf { 'dpkg-force-confdef':
@@ -37,4 +41,25 @@ class apt::unattendedupgrades($ensure=present) {
         value    => 'origin=Wikimedia,codename=${distro_codename}-wikimedia',
         # lint:endignore
     }
+
+    # https://wiki.debian.org/StableUpdates
+    # https://www.debian.org/News/2011/20110215
+    apt::conf { 'unattended-upgrades-updates':
+        ensure   => $unattended_updates,
+        priority => '52',
+        # Key with trailing '::' to append to potentially existing entry
+        key      => 'Unattended-Upgrade::Origins-Pattern::',
+        # lint:ignore:single_quote_string_with_variables
+        value    => 'origin=${distro_id},codename=${distro_codename}-updates',
+        # lint:endignore
+    }
+
+    file { '/usr/local/sbin/report-pending-upgrades':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/report-pending-upgrades.sh',
+        require => Package['apt-show-versions'],
+   }
 }
