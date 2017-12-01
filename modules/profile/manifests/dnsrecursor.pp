@@ -35,6 +35,11 @@ class profile::dnsrecursor (
         privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
     }
 
+    sudo::user { 'prometheus_sudo_for_pdns_recursor':
+        user       => 'prometheus',
+        privileges => ['ALL=(root) NOPASSWD: /usr/bin/rec_control get-all'],
+    }
+
     ferm::service { 'udp_dns_rec':
         proto => 'udp',
         port  => '53',
