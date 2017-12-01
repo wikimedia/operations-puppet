@@ -624,6 +624,23 @@ class role::prometheus::ops {
         port       => '9142',
     }
 
+    $pdns_rec_jobs = [
+      {
+        'job_name'        => 'pdnsrec',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pdnsrec_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "pdnsrec_${::site}":
+        dest       => "${targets_path}/pdnsrec_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::dnsrecursor',
+        port       => '9199',
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -634,7 +651,7 @@ class role::prometheus::ops {
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
-            $redis_jobs, $mtail_jobs, $ldap_jobs,
+            $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
         ),
         global_config_extra   => $config_extra,
     }
