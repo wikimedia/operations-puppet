@@ -8,15 +8,15 @@ class role::mariadb::labs_deprecated {
     }
 
     include ::standard
-    include role::mariadb::monitor
+    include ::profile::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
-    include ::base::firewall
+    include ::profile::base::firewall
     include role::labs::db::common
     include role::labs::db::views
     include role::labs::db::check_private_data
 
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'labs',
         mysql_role  => 'slave',
         socket      => '/tmp/mysql.sock',

@@ -6,10 +6,10 @@ class role::mariadb::wikitech {
     }
 
     include ::standard
-    include role::mariadb::grants::core
-    include role::mariadb::monitor
+    include ::profile::mariadb::grants::core
+    include ::profile::mariadb::monitor
     include passwords::misc::scripts
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'wikitech',
         mysql_role  => 'standalone',
         socket      => '/tmp/mysql.sock',

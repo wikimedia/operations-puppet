@@ -9,11 +9,12 @@ class role::mariadb::tendril {
     include mariadb::service
 
     include ::standard
-    include role::mariadb::monitor::dba
+    include ::profile::mariadb::monitor::dba
     include passwords::misc::scripts
+    include ::profile::base::firewall
     include role::mariadb::ferm
 
-    class {'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'tendril',
         mysql_role  => 'standalone',
         socket      => '/tmp/mysql.sock',
