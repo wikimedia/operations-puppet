@@ -6,11 +6,11 @@ class role::mariadb::parsercache(
     ) {
 
     include ::standard
-    include ::base::firewall
-    include role::mariadb::monitor
-    include role::mariadb::ferm
+    class { 'profile::base::firewall': }
+    class { 'profile::mariadb::monitor': }
+    class { 'profile::mariadb::ferm': }
     include passwords::misc::scripts
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'parsercache',
         mysql_shard => $shard,
         mysql_role  => 'master',
@@ -24,8 +24,8 @@ class role::mariadb::parsercache(
     include mariadb::packages_wmf
     include mariadb::service
 
-    include role::mariadb::grants::core
-    class { 'role::mariadb::grants::production':
+    class { 'profile::mariadb::grants::core': }
+    class { 'profile::mariadb::grants::production':
         shard    => 'parsercache',
         prompt   => 'PARSERCACHE',
         password => $passwords::misc::scripts::mysql_root_pass,

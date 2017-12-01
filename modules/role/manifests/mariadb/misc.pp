@@ -21,9 +21,9 @@ class role::mariadb::misc(
     include ::standard
     include role::mariadb::monitor
     include passwords::misc::scripts
-    include ::base::firewall
+    class { 'profile::base::firewall': }
     include role::mariadb::ferm
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
@@ -41,7 +41,7 @@ class role::mariadb::misc(
         read_only => $read_only,
     }
 
-    class { 'role::mariadb::grants::production':
+    class { 'profile::mariadb::grants::production':
         shard    => $shard,
         prompt   => "MISC ${shard}",
         password => $passwords::misc::scripts::mysql_root_pass,
