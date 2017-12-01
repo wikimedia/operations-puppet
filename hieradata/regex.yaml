@@ -99,6 +99,7 @@ es_eqiad_rack_d4:
 mysql_eqiad:
   __regex: !ruby/regexp /^(db1[01][0-9][0-9]|dbstore100[1-2]|dbproxy10[01][0-9]|es101[1-9]|pc100[4-6]|labsdb10[01][0-9])\.eqiad\.wmnet$/
   cluster: mysql
+  standard::has_ganglia: false
 
 mysql_codfw:
   __regex: !ruby/regexp /^(db2[01][0-9][0-9]|dbstore200[1-2]|es200[1-4]|pc200[4-6]|es201[1-9])\.codfw\.wmnet$/
