@@ -14,7 +14,7 @@ class role::mariadb::dbstore(
     include mariadb::service
 
     include ::standard
-    include ::base::firewall
+    class { 'profile::base::firewall': }
     include passwords::misc::scripts
 
     class { 'role::mariadb::grants::production':
@@ -22,11 +22,11 @@ class role::mariadb::dbstore(
         prompt   => 'DBSTORE',
     }
 
-    include role::mariadb::monitor::dba
+    class { 'profile::mariadb::monitor::dba': }
     include passwords::misc::scripts
     include role::mariadb::ferm
 
-    class {'role::mariadb::groups':
+    class {'profile::mariadb::monitor::prometheus':
         mysql_group => 'dbstore',
         mysql_role  => 'slave',
         socket      => $socket,
