@@ -12,4 +12,5 @@ class role::dnsrecursor {
 
     include ::profile::dnsrecursor
     include ::profile::bird::anycast
+    include ::profile::prometheus::pdns_rec_exporter
 }
