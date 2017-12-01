@@ -36,6 +36,18 @@ class MtailMetricStore(object):
                            self._store[name][0]['LabelValues'][0].get('Labels', []),
                            self._store[name][0]['LabelValues'][0]['Value']['Value'])
 
+    def get_labels_dict(self, name):
+        if name not in self._store:
+            raise ValueError('metric %s not found in store', name)
+
+        ret = {}
+        for label in self._store[name][0]['LabelValues']:
+            key = label['Labels'][0]
+            value = label['Value']['Value']
+            ret[key] = value
+
+        return ret
+
 
 class MtailMetric(object):
     def __init__(self, keys, labels, value):
