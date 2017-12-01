@@ -7,8 +7,8 @@ class role::labs::db::replica {
     include ::standard
     class { 'mariadb::packages_wmf': }
     class { 'mariadb::service': }
-    include role::mariadb::monitor
-    include ::base::firewall
+    class { 'profile::mariadb::monitor': }
+    class { 'profile::base::firewall': }
 
     ferm::service{ 'mariadb_labs_db_replica':
         proto   => 'tcp',
@@ -29,7 +29,7 @@ class role::labs::db::replica {
     include role::labs::db::views
     include role::labs::db::check_private_data
 
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'labs',
         mysql_role  => 'slave',
         mysql_shard => 'multi',
