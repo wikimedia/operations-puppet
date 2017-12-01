@@ -98,7 +98,6 @@ define monitoring::host (
     $host = {
         "${title}" => {
             ensure                => $ensure,
-            host_name             => $title,
             parents               => $real_parents,
             address               => $nagios_address,
             hostgroups            => $hostgroup,
@@ -120,7 +119,7 @@ define monitoring::host (
     if defined(Class['icinga']) {
         $rtype = 'nagios_host'
     } else {
-        $rtype = '@@nagios_host'
+        $rtype = 'monitoring::exported_nagios_host'
     }
     create_resources($rtype, $host)
     if !empty($mgmt_host) {

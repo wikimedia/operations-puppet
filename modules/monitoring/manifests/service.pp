@@ -112,6 +112,6 @@ define monitoring::service(
     if defined(Class['icinga']) {
         create_resources(nagios_service, $service)
     } else {
-        create_resources('@@nagios_service', $service)
+        create_resources('monitoring::exported_nagios_service', $service)
     }
 }
