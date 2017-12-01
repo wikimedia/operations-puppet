@@ -71,18 +71,21 @@ define admin::user (
     # Puppet chokes if we try to absent subfiles to /home/${user}
     if $ensure == 'present' {
         file { "/home/${name}":
-            ensure       => ensure_directory($ensure),
-            source       => [
+            ensure             => ensure_directory($ensure),
+            source             => [
                 "puppet:///modules/admin/home/${name}/",
                 'puppet:///modules/admin/home/skel/',
             ],
-            sourceselect => 'first',
-            recurse      => 'remote',
-            mode         => '0644',
-            owner        => $name,
-            group        => $gid,
-            force        => true,
-            require      => User[$name],
+            sourceselect       => 'first',
+            recurse            => 'remote',
+            # Use source_permissions so that +x bit from git will be applied
+            # on the files when they are provisioned on hosts.
+            source_permissions => 'use',
+            mode               => undef,
+            owner              => $name,
+            group              => $gid,
+            force              => true,
+            require            => User[$name],
         }
     }
 
