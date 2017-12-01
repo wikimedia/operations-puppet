@@ -229,19 +229,19 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
       jmx_exporter_enabled: true
-    # b:
-    #   listen_address: 10.64.32.203
-    #   data_file_directories:
-    #     - /srv/sda4/cassandra-b/data
-    #     - /srv/sdb4/cassandra-b/data
-    #     - /srv/sdc4/cassandra-b/data
-    #     - /srv/sdd4/cassandra-b/data
-    #     - /srv/sde4/cassandra-b/data
-    #   heapdump_directory: /srv/sdb4/cassandra-b
-    #   commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
-    #   hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
-    #   saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
-    #   jmx_exporter_enabled: true
+    b:
+      listen_address: 10.64.32.203
+      data_file_directories:
+        - /srv/sda4/cassandra-b/data
+        - /srv/sdb4/cassandra-b/data
+        - /srv/sdc4/cassandra-b/data
+        - /srv/sdd4/cassandra-b/data
+        - /srv/sde4/cassandra-b/data
+      heapdump_directory: /srv/sdb4/cassandra-b
+      commitlog_directory: /srv/cassandra/instance-data/cassandra-b/commitlog
+      hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
+      saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
+      jmx_exporter_enabled: true
     # c:
     #   listen_address: 10.64.32.204
     #   data_file_directories:
