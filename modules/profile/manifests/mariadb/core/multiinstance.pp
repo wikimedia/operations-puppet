@@ -18,16 +18,8 @@ class profile::mariadb::core::multiinstance(
         srange => '$PRODUCTION_NETWORKS',
     }
 
-    #TODO: define one group per shard
-    class {'role::mariadb::groups':
-        mysql_group => 'core',
-        mysql_shard => 's1',
-        mysql_role  => 'slave',
-        socket      => '/run/mysqld/mysqld.s1.sock',
-    }
-
-    class {'mariadb::packages_wmf': }
-    class {'mariadb::service':
+    class { 'mariadb::packages_wmf': }
+    class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
@@ -46,7 +38,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         binlog_format => 'ROW',
     }
 
-    file {'/etc/mysql/mysqld.conf.d':
+    file { '/etc/mysql/mysqld.conf.d':
         ensure => directory,
         owner  => root,
         group  => root,
