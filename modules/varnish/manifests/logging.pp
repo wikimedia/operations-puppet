@@ -14,14 +14,34 @@
 #   Host and port to forward syslog events to. Disable forwarding by passing an
 #   empty string (default).
 #
+# [*mtail_progs*]
+#   Directory with mtail programs. Defaults to /etc/mtail.
+#
 class varnish::logging(
     $cache_cluster,
     $statsd_host,
     $forward_syslog='',
+    $mtail_progs='/etc/mtail',
 ){
     rsyslog::conf { 'varnish':
         content  => template('varnish/rsyslog.conf.erb'),
         priority => 80,
+    }
+
+    file { '/usr/local/bin/varnishmtail':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/varnish/varnishmtail',
+        notify => Systemd::Service['varnishmtail'],
+    }
+
+    systemd::service { 'varnishmtail':
+        ensure  => present,
+        content => systemd_template('varnishmtail'),
+        restart => true,
+        require => File['/usr/local/bin/varnishmtail'],
     }
 
     # Client connection stats from the 'X-Connection-Properties'
