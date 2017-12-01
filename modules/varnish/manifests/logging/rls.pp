@@ -1,7 +1,8 @@
 # == Define: varnish::logging::rls
 #
-#  Accumulate browser cache hit ratio and total request volume statistics
-#  for ResourceLoader requests (/w/load.php) and report to StatsD.
+#  Accumulate browser cache hit ratio and total request volume statistics for
+#  ResourceLoader requests (/w/load.php) and report to StatsD. Expose metrics
+#  to prometheus.
 #
 # === Parameters
 #
@@ -42,5 +43,9 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
         ensure       => present,
         description  => 'Varnish traffic logger - varnishrls',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishrls" -u root',
+    }
+
+    mtail::program { 'varnishrls':
+        source => 'puppet:///modules/mtail/programs/varnishrls.mtail',
     }
 }
