@@ -1,5 +1,5 @@
 # == Define varnish::logging::xcache:
-# Logs X-Cache hit-related stats to statsd
+# Logs X-Cache hit-related stats to statsd. Expose counters to prometheus.
 #
 # === Parameters
 #
@@ -48,5 +48,9 @@ define varnish::logging::xcache(
         ensure       => present,
         description  => 'Varnish traffic logger - varnishxcache',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishxcache" -u root',
+    }
+
+    mtail::script { 'xcache':
+        source => 'puppet:///modules/varnish/mtail/xcache.mtail',
     }
 }

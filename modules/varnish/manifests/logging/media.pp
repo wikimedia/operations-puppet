@@ -1,7 +1,7 @@
 # == Define: varnish::logging::media
 #
 #  Accumulate browser cache hit ratio and total request volume statistics
-#  for Media requests and report to StatsD.
+#  for Media requests and report to StatsD. Expose metrics to prometheus.
 #
 # === Parameters
 #
@@ -41,5 +41,9 @@ define varnish::logging::media( $statsd_server = 'statsd' ) {
         ensure       => present,
         description  => 'Varnish traffic logger - varnishmedia',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishmedia" -u root',
+    }
+
+    mtail::script { 'media':
+        source => 'puppet:///modules/varnish/mtail/media.mtail',
     }
 }
