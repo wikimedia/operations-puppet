@@ -1,0 +1,12 @@
+[Unit]
+Description=Varnish mtail
+After=varnish-frontend.service
+Requires=varnish-frontend.service
+
+[Service]
+SyslogIdentifier=varnishmtail
+Restart=always
+ExecStart=/usr/local/bin/varnishmtail <%= @mtail_progs %>
+
+[Install]
+WantedBy=multi-user.target
