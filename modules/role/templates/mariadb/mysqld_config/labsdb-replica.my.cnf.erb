@@ -83,6 +83,7 @@ innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
+innodb_file_format             = barracuda
 
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
