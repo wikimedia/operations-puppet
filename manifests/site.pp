@@ -284,9 +284,9 @@ node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
 
+# DMARC processing (T169566)
 node /^(diadem|dysprosium)\.wikimedia\.org$/ {
-    include ::standard
-    include ::base::firewall
+    role(dmarc)
 }
 
 node 'dataset1001.wikimedia.org' {
