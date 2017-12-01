@@ -4,6 +4,7 @@ etcd::client::globalconfig::host: 127.0.0.1
 etcd::client::globalconfig::port: 2379
 etcd::client::globalconfig::protocol: http
 etcd::client::globalconfig::srv_domain: ""
+pupppet_major_version: 4
 base::resolving::labs_additional_domains:
   - wikimedia.org
   - eqiad.wmnet
