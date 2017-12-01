@@ -5,14 +5,14 @@ class role::labs::db::master {
     }
 
     include ::standard
-    include mariadb::packages_wmf
-    include mariadb::service
-    include role::mariadb::monitor
-    include passwords::misc::scripts
+    include ::mariadb::packages_wmf
+    include ::mariadb::service
+    include ::profile::mariadb::monitor
+    include ::passwords::misc::scripts
 
     $socket = '/var/run/mysqld/mysqld.sock'
 
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'labs',
         mysql_role  => 'master',
         mysql_shard => 'tools',

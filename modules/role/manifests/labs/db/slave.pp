@@ -5,16 +5,16 @@ class role::labs::db::slave {
     }
 
     include ::standard
-    include mariadb::packages_wmf
-    include mariadb::service
-    include role::mariadb::monitor
-    include role::mariadb::ferm
-    include passwords::misc::scripts
+    class { '::mariadb::packages_wmf': }
+    class { '::mariadb::service': }
+    include ::profile::mariadb::monitor
+    include ::role::mariadb::ferm
+    include ::passwords::misc::scripts
 
     # FIXME: Add the socket location to make the transition easier.
     $socket = '/var/run/mysqld/mysqld.sock'
 
-    class { 'role::mariadb::groups':
+    class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'labs',
         mysql_role  => 'slave',
         mysql_shard => 'tools',
