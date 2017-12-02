@@ -6,6 +6,7 @@ class snapshot::cron::wikidatadumps(
         user  => $user,
         group => $group,
     }
-    class { '::snapshot::cron::wikidatadumps::json': user   => $user }
-    class { '::snapshot::cron::wikidatadumps::rdf': user   => $user }
+    # disable pending bug fix, see T181385
+    # class { '::snapshot::cron::wikidatadumps::json': user   => $user }
+    # class { '::snapshot::cron::wikidatadumps::rdf': user   => $user }
 }
