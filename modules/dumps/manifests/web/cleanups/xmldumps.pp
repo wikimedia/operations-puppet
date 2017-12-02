@@ -1,4 +1,4 @@
-class dumps::web::cleanups::xml_cleanup(
+class dumps::web::cleanups::xmldumps(
     $wikilist_url = undef,
     $publicdir = undef,
     $user = undef,
@@ -44,9 +44,7 @@ class dumps::web::cleanups::xml_cleanup(
     # less, so that when a new dump run starts and partial dumps are
     # copied over to the web server, space is available for that new
     # run BEFORE it is copied.
-    # Some wikis in the allwikis list may be also in one of the
-    # other lists. That's fine, the smaller number to keep always wins.
-    $keeps = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'allwikis.dblist:10']
+    $keeps = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
     $keeps_content = join($keeps, "\n")
 
     file { '/etc/dumps/xml_keeps.conf':
@@ -56,22 +54,6 @@ class dumps::web::cleanups::xml_cleanup(
         owner   => 'root',
         group   => 'root',
         content => "${keeps_content}\n",
-    }
-
-    # get and save the list of all wikis.
-    # private or nonexistent wikis can be skipped by the cleanup script so
-    # we don't filter the list here.
-    $curl_command = '/usr/bin/curl --connect-timeout 5 -s --retry 5 --retry-delay 10'
-    $curl_output = "${wikilist_dir}/allwikis.dblist"
-    $curl_args = "-z ${curl_output} -o ${curl_output} '${wikilist_url}'"
-
-    cron { 'get_wiki_list':
-        ensure      => 'present',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "${curl_command} ${curl_args}",
-        user        => $user,
-        minute      => '20',
-        hour        => '1',
     }
 
     file { '/usr/local/bin/cleanup_old_xmldumps.py':
