@@ -31,7 +31,7 @@ class dumps::web::xmldumps_active(
 
     # only the active web server needs to cleanup old files
     # rsync between peers will take care of the other hosts
-    class {'::dumps::web::cleanups::xml_cleanup':
+    class {'::dumps::web::cleanups::xmldumps':
         wikilist_url => $wikilist_url,
         publicdir    => $publicdir,
         user         => $user,
