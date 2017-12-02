@@ -435,6 +435,7 @@ override	wikimedia.org/research	https://wikimedia.qualtrics.com/SE/?SID=SV_6R04a
 
 # Redirect old techblog.wikimedia.org urls to blog.wikimedia.org T90638
 rewrite	techblog.wikimedia.org	//blog.wikimedia.org
+override	    techblog.wikimedia.org/ //blog.wikimedia.org/c/technology # T181878
 
 # dev.wikimedia.org - T372
 funnel	dev.wikimedia.org	//www.mediawiki.org/wiki/API:Data_and_developer_hub
