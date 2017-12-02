@@ -28,7 +28,7 @@
  *
  */
 {template .PatchSetMerged autoescape="strict" kind="text"}
-  Change {$changeNumber} merged by {$submitterName}:{\n}
+  Change {$changeNumber} **merged** by {$submitterName}:{\n}
   [{$project}@{$branch}] {$subject|escapeUri}{\n}{\n}
 
   {$formatChangeUrl}
