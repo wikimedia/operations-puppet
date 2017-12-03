@@ -18,6 +18,7 @@
 class mediawiki (
     $log_aggregator = 'udplog:8420',
     $forward_syslog = undef,
+    $php7 = false,
     ) {
 
     include ::mediawiki::cgroup
@@ -27,7 +28,6 @@ class mediawiki (
     include ::mediawiki::syslog
     include ::mediawiki::php
     include ::mediawiki::mwrepl
-
     include ::mediawiki::hhvm
 
     # This profile is used to contain the convert command of imagemagick using
