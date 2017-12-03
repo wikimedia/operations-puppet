@@ -1,4 +1,5 @@
 profile::dumps::miscdumpsdir: '/srv/dumps/xmldatadumps/public/other'
+profile::dumps::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public'
 profile::dumps::cleanup::isreplica: true
 
 profile::dumps::rsyncer:

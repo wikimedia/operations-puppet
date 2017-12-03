@@ -1,7 +1,7 @@
 class dumps::web::cleanups::xmldumps(
-    $wikilist_url = undef,
     $publicdir = undef,
     $user = undef,
+    $isreplica = undef,
 ) {
     $wikilist_dir = '/etc/dumps/dblists'
     file { $wikilist_dir:
@@ -16,7 +16,7 @@ class dumps::web::cleanups::xmldumps(
     # each type of wiki we keep.
     $bigwikis = ['dewiki', 'eswiki', 'frwiki', 'itwiki', 'jawiki',
                   'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki',
-                  'commonswiki', 'wikidatawiki', 'zhwiki']
+                  'commonswiki', 'zhwiki']
     $bigwikis_dblist = join($bigwikis, "\n")
 
     $hugewikis = ['enwiki', 'wikidatawiki']
@@ -44,8 +44,20 @@ class dumps::web::cleanups::xmldumps(
     # less, so that when a new dump run starts and partial dumps are
     # copied over to the web server, space is available for that new
     # run BEFORE it is copied.
-    $keeps = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
-    $keeps_content = join($keeps, "\n")
+
+    # on generator hosts we must keep a minimum of 3 so that at any time
+    # we have at least one old full dump around, with all revision content
+    # which can be stolen from for the next dump run.  This is due to
+    # the way we run dumps: one full run, then one run without full
+    # revision content, etc.
+    $keep_generator = ['hugewikis.dblist:3', 'bigwikis.dblist:3', 'default:3']
+    $keep_replicas = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
+
+    if ($isreplica == true) {
+        $content= join($keep_replicas, "\n")
+    } else {
+        $content= join($keep_generator, "\n")
+    }
 
     file { '/etc/dumps/xml_keeps.conf':
         ensure  => 'present',
@@ -53,7 +65,7 @@ class dumps::web::cleanups::xmldumps(
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => "${keeps_content}\n",
+        content => "${content}\n",
     }
 
     file { '/usr/local/bin/cleanup_old_xmldumps.py':
@@ -77,5 +89,4 @@ class dumps::web::cleanups::xmldumps(
         hour        => '1',
         require     => File['/usr/local/bin/cleanup_old_xmldumps.py'],
     }
-
 }

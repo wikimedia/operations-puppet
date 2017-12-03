@@ -11,8 +11,6 @@ class profile::dumps::web::xmldumps_active {
         logs_dest        => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
         htmldumps_server => 'francium.eqiad.wmnet',
         xmldumps_server  => 'dumps.wikimedia.org',
-        wikilist_url     => 'https://noc.wikimedia.org/conf/all.dblist',
-        user             => 'dumpsgen',
         webuser          => 'datasets',
         webgroup         => 'datasets',
     }
