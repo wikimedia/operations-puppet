@@ -536,3 +536,6 @@ jenkins_agent_username: 'jenkins-slave'
 
 # HTTP proxy (can be used as an env variable)
 http_proxy: "http://webproxy.%{::site}.wmnet:8080"
+
+# php7 use
+mediawiki_php7: false
