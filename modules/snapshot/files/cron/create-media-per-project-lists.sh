@@ -8,7 +8,7 @@
 source /usr/local/etc/set_dump_dirs.sh
 
 DATE=`/bin/date '+%Y%m%d'`
-outputdir="${otherdir}/imageinfo/$DATE"
+outputdir="${cronsdir}/imageinfo/$DATE"
 configfile="${confsdir}/wikidump.conf:media"
 errors=0
 

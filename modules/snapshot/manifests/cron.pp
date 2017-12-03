@@ -16,10 +16,10 @@ class snapshot::cron(
         source => 'puppet:///modules/snapshot/cron/dump_functions.sh',
     }
 
-    class { '::snapshot::cron::mediaperprojectlists': user => $depr_user }
-    class { '::snapshot::cron::pagetitles': user   => $depr_user }
-    class { '::snapshot::cron::cirrussearch': user   => $depr_user }
-    class { '::snapshot::cron::categoriesrdf': user   => $depr_user }
+    class { '::snapshot::cron::mediaperprojectlists': user => $miscdumpsuser }
+    class { '::snapshot::cron::pagetitles': user   => $miscdumpsuser }
+    class { '::snapshot::cron::cirrussearch': user   => $miscdumpsuser }
+    class { '::snapshot::cron::categoriesrdf': user   => $miscdumpsuser }
     class { '::snapshot::cron::dumplists': user   => $depr_user }
     class { '::snapshot::cron::dump_global_blocks': user   => $miscdumpsuser }
     class { '::snapshot::cron::wikidatadumps':

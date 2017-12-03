@@ -12,6 +12,7 @@ class dumps::generation::server::dirs(
     $otherdir                     = '/data/otherdumps'
     $cirrussearchdir              = "${otherdir}/cirrussearch"
     $xlationdir                   = "${otherdir}/contenttranslation"
+    $categoriesrdfdir             = "${otherdir}/categoriesrdf"
     $globalblocksdir              = "${otherdir}/globalblocks"
     $medialistsdir                = "${otherdir}/imageinfo"
     $incrsdir                     = "${otherdir}/incrs"
@@ -46,8 +47,8 @@ class dumps::generation::server::dirs(
     file { $cirrussearchdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $xlationdir:
@@ -55,6 +56,13 @@ class dumps::generation::server::dirs(
         mode   => '0755',
         owner  => $deprecated_user,
         group  => $deprecated_group,
+    }
+
+    file { $categoriesrdfdir:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => $user,
+        group  => $group,
     }
 
     file { $globalblocksdir:
@@ -67,8 +75,8 @@ class dumps::generation::server::dirs(
     file { $medialistsdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $incrsdir:
@@ -81,8 +89,8 @@ class dumps::generation::server::dirs(
     file { $mediatitlesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $othermiscdir:
@@ -95,8 +103,8 @@ class dumps::generation::server::dirs(
     file { $pagetitlesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $othertestfilesdir:

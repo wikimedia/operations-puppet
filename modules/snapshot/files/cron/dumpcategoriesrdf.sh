@@ -64,7 +64,7 @@ for settingname in "deployDir" "gzip" "privateList"; do
 done
 
 today=$(date +'%Y%m%d')
-targetDirBase="${otherdir}/categoriesrdf"
+targetDirBase="${cronsdir}/categoriesrdf"
 targetDir="${targetDirBase}/${today}"
 timestampsDir="${targetDirBase}/lastdump"
 multiVersionScript="${deployDir}/multiversion/MWScript.php"
