@@ -18,6 +18,7 @@
 class mediawiki (
     $log_aggregator = 'udplog:8420',
     $forward_syslog = undef,
+    $php7 = false,
     ) {
 
     include ::mediawiki::cgroup
@@ -25,7 +26,7 @@ class mediawiki (
     include ::mediawiki::scap
     include ::mediawiki::users
     include ::mediawiki::syslog
-    include ::mediawiki::php
+    class {'::mediawiki::php': php7 => $php7}
     include ::mediawiki::mwrepl
 
     include ::mediawiki::hhvm
