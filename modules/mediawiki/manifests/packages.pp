@@ -2,13 +2,8 @@
 #
 # Packages needed for mediawiki
 class mediawiki::packages {
-    if os_version('ubuntu == trusty') {
-        include ::mediawiki::packages::php5
-    }
-
     include ::mediawiki::packages::math
     include ::mediawiki::packages::tex
-    require ::apt
 
     include ::imagemagick::install
 

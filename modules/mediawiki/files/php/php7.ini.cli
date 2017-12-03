@@ -1,0 +1,12 @@
+date.timezone = UTC
+default_socket_timeout = 1
+display_errors = On
+error_log = syslog
+include_path = ".:/usr/share/php:/srv/mediawiki/php"
+log_errors = On
+max_execution_time = 180
+memory_limit = 100M
+mysql.connect_timeout = 1
+post_max_size = 100M
+session.save_path = /tmp
+upload_max_filesize = 100M
