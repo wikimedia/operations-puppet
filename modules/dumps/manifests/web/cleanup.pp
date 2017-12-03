@@ -1,6 +1,8 @@
 class dumps::web::cleanup(
     $miscdumpsdir = undef,
     $isreplica = undef,
+    $publicdir = undef,
+    $user = undef,
 ) {
     file { '/etc/dumps':
         ensure => 'directory',
@@ -21,5 +23,10 @@ class dumps::web::cleanup(
     class {'dumps::web::cleanups::miscdumps':
         miscdumpsdir => $miscdumpsdir,
         isreplica    => $isreplica,
+    }
+
+    class {'::dumps::web::cleanups::xmldumps':
+        publicdir => $publicdir,
+        user      => $user,
     }
 }
