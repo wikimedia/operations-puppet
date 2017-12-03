@@ -3,11 +3,19 @@
 # Enables a php config file in newer ubuntu/debian hosts.
 
 define mediawiki::php_enmod {
+    if (os_verson('debian >= stretch') {
+        $modspath = '/etc/php/7.0/mods-available'
+        $enmod = 'phpenmod'
+    } else {
+        $modspath = '/etc/php5/mods-available'
+        $enmod = 'php5enmod'
+    }
+
     exec { "PHP module ${title} enable":
-        command     => "/usr/sbin/php5enmod -s ALL ${title}",
+        command     => "/usr/sbin/${enmod} -s ALL ${title}",
         refreshonly => true,
         user        => 'root',
         group       => 'root',
-        subscribe   => File["/etc/php5/mods-available/${title}.ini"],
+        subscribe   => File["${modspath}/${title}.ini"],
     }
 }
