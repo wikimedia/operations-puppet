@@ -34,7 +34,7 @@ sub mobile_redirect {
 		set req.http.MobileHost = req.http.Host;
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikisource|wikidata)\.", "m.\2.");
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|incubator|legalteam|meta|office|outreach|pl|species|strategy|wikimania20[0-9][0-9])\.wikimedia\.", "\1.m.wikimedia.");
-		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!commons|meta|nostalgia|quote|quality|sep11|sources|species|textbook|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
+		set req.http.MobileHost = regsub(req.http.MobileHost, "^((?!www|commons|meta|nostalgia|quote|quality|sep11|sources|species|textbook|m\b)[-\w]+)\.(wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage)\.", "\1.m.\2.");
 
 		if (req.http.Host != req.http.MobileHost) {
 			set req.http.Location = "https://" + req.http.MobileHost + req.url;
