@@ -46,8 +46,8 @@ class dumps::generation::server::dirs(
     file { $cirrussearchdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $xlationdir:
@@ -67,8 +67,8 @@ class dumps::generation::server::dirs(
     file { $medialistsdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $incrsdir:
