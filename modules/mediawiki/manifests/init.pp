@@ -27,7 +27,6 @@ class mediawiki (
     include ::mediawiki::syslog
     include ::mediawiki::php
     include ::mediawiki::mwrepl
-
     include ::mediawiki::hhvm
 
     # This profile is used to contain the convert command of imagemagick using
