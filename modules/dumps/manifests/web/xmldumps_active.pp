@@ -6,9 +6,6 @@ class dumps::web::xmldumps_active(
     $logs_dest        = undef,
     $htmldumps_server = undef,
     $xmldumps_server  = undef,
-    $wikilist_url     = undef,
-    $wikilist_dir     = undef,
-    $user             = undef,
     $webuser          = undef,
     $webgroup         = undef,
 ) {
@@ -28,13 +25,4 @@ class dumps::web::xmldumps_active(
     class {'::dumps::web::rsync::nginxlogs':
         dest   => $logs_dest,
     }
-
-    # only the active web server needs to cleanup old files
-    # rsync between peers will take care of the other hosts
-    class {'::dumps::web::cleanups::xmldumps':
-        wikilist_url => $wikilist_url,
-        publicdir    => $publicdir,
-        user         => $user,
-    }
-
 }
