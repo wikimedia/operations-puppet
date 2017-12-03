@@ -3,8 +3,6 @@
 # Packages and .ini files for PHP5 extensions.
 #
 class mediawiki::php {
-    include ::mediawiki::packages
-
     $php_module_conf_dir = '/etc/php5/mods-available'
     mediawiki::php_enmod { ['mail']: }
 

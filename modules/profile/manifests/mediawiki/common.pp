@@ -2,6 +2,7 @@ class profile::mediawiki::common(
     $logstash_host = hiera('logstash_host'),
     $logstash_syslog_port = hiera('logstash_syslog_port'),
     $log_aggregator = hiera('udp2log_aggregator'),
+    $php7 = hiera('mediawiki_php7'),
     ){
 
     # GeoIP is needed for MW
@@ -11,6 +12,7 @@ class profile::mediawiki::common(
     class { '::mediawiki':
         forward_syslog => "${logstash_host}:${logstash_syslog_port}",
         log_aggregator => $log_aggregator,
+        php7           => $php7,
     }
 
     class { '::tmpreaper':
