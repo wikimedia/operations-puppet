@@ -1,9 +1,16 @@
 # === Class mediawiki::packages
 #
 # Packages needed for mediawiki
-class mediawiki::packages {
+class mediawiki::packages(
+  $php7 = false,
+) {
     if os_version('ubuntu == trusty') {
         include ::mediawiki::packages::php5
+    }
+    if os_version('debian == stretch') {
+        if ($php7 == true) {
+            include ::mediawiki::packages::php7
+        }
     }
 
     include ::mediawiki::packages::math
