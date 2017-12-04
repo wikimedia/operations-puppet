@@ -5,7 +5,7 @@ class snapshot::cron::dumplists(
         ensure => 'present',
         path   => '/usr/local/bin/list-last-good-dumps.sh',
         mode   => '0755',
-        owner  => $user,
+        owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/snapshot/cron/list-last-good-dumps.sh',
     }
@@ -13,7 +13,7 @@ class snapshot::cron::dumplists(
         ensure => 'present',
         path   => '/usr/local/bin/list-last-n-good-dumps.py',
         mode   => '0755',
-        owner  => $user,
+        owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/snapshot/cron/list-last-n-good-dumps.py',
     }

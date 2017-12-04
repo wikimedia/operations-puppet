@@ -5,7 +5,7 @@ class snapshot::cron::mediaperprojectlists(
         ensure => 'present',
         path   => '/usr/local/bin/create-media-per-project-lists.sh',
         mode   => '0755',
-        owner  => $user,
+        owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/snapshot/cron/create-media-per-project-lists.sh',
     }
