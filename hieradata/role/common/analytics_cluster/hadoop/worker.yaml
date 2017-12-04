@@ -18,7 +18,6 @@ profile::base::check_raid_policy: 'WriteBack'
 profile::hadoop::common::yarn_heapsize: 4096
 profile::hadoop::common::hadoop_heapsize: 4096
 
-# Prometheus JMX Exporter config templates. The missing variables will be filled
-# in the worker profile before commons.
-profile::hadoop::common::hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:%{::profile::hadoop::worker::prometheus_jmx_exporter_datanode_port}:%{::profile::hadoop::worker::datanode_jmx_exporter_config_file}"
-profile::hadoop::common::yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:%{::profile::hadoop::worker::prometheus_jmx_exporter_nodemanager_port}:%{::profile::hadoop::worker::nodemanager_jmx_exporter_config_file}"
+# Prometheus JMX Exporter config templates.
+profile::hadoop::common::hadoop_datanode_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/hadoop/prometheus_hdfs_datanode_jmx_exporter.yaml"
+profile::hadoop::common::yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/hadoop/prometheus_yarn_nodemanager_jmx_exporter.yaml"
