@@ -6,9 +6,9 @@
 # out of MySQL into Hadoop.
 #
 class profile::hadoop::mysql_password {
-    require ::profile::hadoop::common
+    include ::profile::hadoop::common
 
-    include ::passwords::mysql::research
+    require ::passwords::mysql::research
     $research_user = $::passwords::mysql::research::user
     $research_pass = $::passwords::mysql::research::pass
     $research_path = '/user/hdfs/mysql-analytics-research-client-pw.txt'

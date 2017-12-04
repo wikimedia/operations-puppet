@@ -10,7 +10,8 @@ class profile::hadoop::master::standby(
     $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ) {
-    require ::profile::hadoop::common
+
+    include ::profile::hadoop::common
 
     # Ensure that druid user exists on standby namenodes nodes.
     class { '::druid::cdh::hadoop::user':  }
@@ -67,6 +68,10 @@ class profile::hadoop::master::standby(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        # Prometheus exporters
+        include ::profile::hadoop::monitoring::namenode
+        include ::profile::hadoop::monitoring::resourcemanager
+
         # Java heap space used alerts.
         # The goal is to get alarms for long running memory leaks like T153951.
         # Only include heap size alerts if heap size is configured.
