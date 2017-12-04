@@ -170,7 +170,7 @@ lvs_codfw_backup:
   profile::pybal::primary: false
 
 lvs_esams:
-  __regex: !ruby/regexp /^lvs3*\.esams\.wmnet$/
+  __regex: !ruby/regexp /^lvs3.*\.esams\.wmnet$/
   standard::has_ganglia: false
 
 lvs_esams_backup:
