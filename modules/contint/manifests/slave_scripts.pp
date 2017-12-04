@@ -12,4 +12,8 @@ class contint::slave_scripts {
         origin             => 'https://gerrit.wikimedia.org/r/p/integration/jenkins.git',
         recurse_submodules => true,
     }
+    # bin/mw-fetch-composer-dev.sh requires jq
+    package { 'jq':
+        ensure => present,
+    }
 }
