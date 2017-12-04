@@ -11,7 +11,7 @@ class puppetdb::app(
     $db_user='puppetdb',
     $db_password=undef,
     $perform_gc=false,
-    $heap_size='4G',
+    $jvm_opts='-Xmx=4G',
     $bind_ip=undef,
     $ssldir=puppet_ssldir(),
 ) {
