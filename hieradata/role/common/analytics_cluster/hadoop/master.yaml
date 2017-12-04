@@ -17,11 +17,12 @@ profile::hadoop::logstash::enabled: false
 # This setting is used to configure the max heap size for both.
 # The default is 1000m, we increase it to 2048m in production.
 profile::hadoop::common::yarn_heapsize: 2048
-profile::hadoop::common::yarn_resourcemanager_opts: '-Xms2048m'
 
-profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m"
 # Used to set up jvm heap size usage thresholds
 profile::hadoop::master::namenode_heapsize: 6144
 
-# MapReduce History server (running on Hadoop master nodes)
-profile::hadoop::common::mapreduce_history_java_opts: '-Xms4096m -Xmx4096m'
+# Prometheus JMX Exporter config templates. The missing variables will be filled
+# in the master profile before commons.
+profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml"
+profile::hadoop::common::yarn_resourcemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/hadoop/prometheus_yarn_resourcemanager_jmx_exporter.yaml"
+profile::hadoop::common::mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/hadoop/prometheus_mapreduce_history_jmx_exporter.yaml"
