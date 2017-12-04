@@ -5,7 +5,7 @@ class puppetmaster::puppetdb(
     $master,
     $port       = 443,
     $jetty_port = 8080,
-    $heap_size  = '4G',
+    $jvm_opts   ='-Xmx4G',
 ) {
     requires_os('debian >= jessie')
 
@@ -38,6 +38,6 @@ class puppetmaster::puppetdb(
         db_ro_host  => $::fqdn,
         db_password => $puppetdb_pass,
         perform_gc  => ($master == $::fqdn), # only the master must perform GC
-        heap_size   => $heap_size,
+        jvm_opts    => $jvm_opts,
     }
 }
