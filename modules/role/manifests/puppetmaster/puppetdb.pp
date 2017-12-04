@@ -5,8 +5,6 @@ class role::puppetmaster::puppetdb {
     include ::profile::puppetdb::database
     include ::profile::puppetdb
 
-    # Monitor the Postgresql replication lag
-
     system::role { "puppetmaster::puppetdb (postgres ${::profile::puppetdb::database::role})":
         ensure      => 'present',
         description => 'PuppetDB server',

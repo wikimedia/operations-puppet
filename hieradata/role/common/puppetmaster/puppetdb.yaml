@@ -10,3 +10,4 @@ profile::puppetdb::database::users:
     cidr: 10.192.16.184/32
 profile::puppetdb::master: nitrogen.eqiad.wmnet
 profile::puppetdb::slaves: [nihal.codfw.wmnet]
+puppetmaster::puppetdb::jvm_opts: '-Xmx6g'
