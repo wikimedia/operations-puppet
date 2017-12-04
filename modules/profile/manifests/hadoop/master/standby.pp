@@ -10,6 +10,18 @@ class profile::hadoop::master::standby(
     $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ) {
+
+    if $monitoring_enabled {
+        # Prometheus exporters
+        include ::profile::hadoop::monitoring::namenode
+        $namenode_jmx_exporter_config_file = $::profile::hadoop::monitoring::namenode::jmx_exporter_config_file
+        $prometheus_jmx_exporter_namenode_port = $::profile::hadoop::monitoring::datanode::prometheus_jmx_exporter_namenode_port
+
+        include ::profile::hadoop::monitoring::resourcemanager
+        $resourcemanager_jmx_exporter_config_file = $::profile::hadoop::monitoring::resourcemanager::jmx_exporter_config_file
+        $prometheus_jmx_exporter_resourcemanager_port = $::profile::hadoop::monitoring::resourcemanager::prometheus_jmx_exporter_resourcemanager_port
+    }
+
     require ::profile::hadoop::common
 
     # Ensure that druid user exists on standby namenodes nodes.
