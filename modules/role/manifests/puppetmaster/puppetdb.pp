@@ -77,9 +77,13 @@ class role::puppetmaster::puppetdb (
         master => $master,
     }
 
+    include ::profile::puppetmaster::puppetdb::monitoring
+    $prometheus_java_opts = $::profile::puppetmaster::puppetdb::monitoring::prometheus_java_opts
+
     # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
-        master    => $master,
-        heap_size => '6G',
+        master   => $master,
+        jvm_opts => "-Xmx6G ${prometheus_java_opts}",
+        require  => Class['profile::puppetmaster::puppetdb::monitoring'],
     }
 }
