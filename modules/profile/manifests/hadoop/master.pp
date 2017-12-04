@@ -12,6 +12,23 @@ class profile::hadoop::master(
     $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ){
+
+    if $monitoring_enabled {
+        # Prometheus exporters
+        include ::profile::hadoop::monitoring::namenode
+        $namenode_jmx_exporter_config_file = $::profile::hadoop::monitoring::namenode::jmx_exporter_config_file
+        $prometheus_jmx_exporter_namenode_port = $::profile::hadoop::monitoring::namenode::prometheus_jmx_exporter_namenode_port
+
+        include ::profile::hadoop::monitoring::resourcemanager
+        $resourcemanager_jmx_exporter_config_file = $::profile::hadoop::monitoring::resourcemanager::jmx_exporter_config_file
+        $prometheus_jmx_exporter_resourcemanager_port = $::profile::hadoop::monitoring::resourcemanager::prometheus_jmx_exporter_resourcemanager_port
+
+        include ::profile::hadoop::monitoring::history
+        $history_jmx_exporter_config_file = $::profile::hadoop::monitoring::history::jmx_exporter_config_file
+        $prometheus_jmx_exporter_history_port = $::profile::hadoop::monitoring::history::prometheus_jmx_exporter_history_port
+    }
+
+    $prometheus_jmx_exporter_namenode_port = 10080
     include ::profile::hadoop::common
 
     class { '::cdh::hadoop::master': }
