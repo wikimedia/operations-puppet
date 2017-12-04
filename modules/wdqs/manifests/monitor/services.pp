@@ -8,7 +8,7 @@ class wdqs::monitor::services(
 
     nrpe::monitor_service { 'WDQS_Internal_HTTP_endpoint':
         description  => 'WDQS HTTP Port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 80',
+        nrpe_command => '/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 80 -w 10 -u /readiness-probe',
     }
 
     nrpe::monitor_service { 'WDQS_Local_Blazegraph_endpoint':
