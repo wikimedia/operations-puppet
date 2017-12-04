@@ -3,7 +3,7 @@
 # or via web or rsync to mirrors
 
 class profile::dumps::public_server {
-
+    class { '::dumpsuser': }
     class {'::public_dumps::server':}
 
 }
