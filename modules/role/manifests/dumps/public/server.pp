@@ -9,4 +9,6 @@ class role::dumps::public::server {
     include ::profile::dumps::rsyncer
     include ::profile::dumps::web::dumpstatusfiles_sync
     include ::profile::dumps::web::cleanup
+    include ::profile::dumps::web::cleanup_miscdatasets
+
 }

@@ -10,6 +10,7 @@ class role::dumps::web::xmldumps_fallback {
     include ::profile::dumps::rsyncer_peer
     include ::profile::dumps::nfs::all
     include ::profile::dumps::web::cleanup
+    include ::profile::dumps::web::cleanup_miscdatasets
 
     system::role { 'role::dumps::web::xmldumps': description => 'fallback web, nfs and rsync server of xml/sql dumps' }
 }
