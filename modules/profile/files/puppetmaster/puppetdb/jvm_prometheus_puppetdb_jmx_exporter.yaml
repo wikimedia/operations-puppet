@@ -1,0 +1,13 @@
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: false
+whitelistObjectNames:
+  - 'com.puppetlabs.puppetdb.command:type=global,name=*'
+  - 'com.puppetlabs.puppetdb.command:type=replace facts.3,name=*'
+  - 'com.puppetlabs.puppetdb.http.server:type=/v3/commands,name=*'
+  - 'com.puppetlabs.puppetdb.http.server:type=/v3/nodes,name=*'
+  - 'java.lang:type=ClassLoading'
+  - 'java.lang:type=Compilation'
+  - 'java.lang:type=GarbageCollector*'
+  - 'java.lang:type=Memory'
+  - 'java.lang:type=MemoryPool*'
