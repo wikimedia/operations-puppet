@@ -8,7 +8,7 @@ class dumps::web::cleanups::xmldumps(
         ensure => 'directory',
         path   => $wikilist_dir,
         mode   => '0755',
-        owner  => $user,
+        owner  => 'root',
         group  => 'root',
     }
 
