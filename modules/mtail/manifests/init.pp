@@ -13,21 +13,21 @@
 # [*graphite_hostport*]
 #   Also send metrics via graphite line-oriented protocol to this host:port.
 #
-# [*enabled*]
-#   Whether to start mtail at boot
+# [*ensure*]
+#   Whether mtail should be running or stopped.
 
 class mtail (
   $logs = ['/var/log/syslog'],
   $port = '3903',
   $graphite_hostport = 'graphite-in.eqiad.wmnet:2003',
   $graphite_prefix = "mtail.${::hostname}.",
-  $enabled = '1',
+  $ensure = 'running',
   $group = 'root',
 ) {
     validate_array($logs)
     validate_re($port, '^[0-9]+$')
     validate_string($graphite_hostport)
-    validate_string($enabled)
+    validate_re($ensure, '^(running|stopped)$')
 
     require_package('mtail')
 
@@ -41,8 +41,11 @@ class mtail (
     }
 
     systemd::service { 'mtail':
-        ensure  => present,
-        content => systemd_template('mtail'),
-        restart => true,
+        ensure         => present,
+        content        => systemd_template('mtail'),
+        restart        => true,
+        service_params => {
+            ensure => $ensure,
+        },
     }
 }
