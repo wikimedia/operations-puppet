@@ -1,5 +1,0 @@
-#! /usr/bin/python
-# -*- coding: utf-8 -*-
-
-import sys, subprocess
-subprocess.call(['/usr/bin/firejail', '--profile=/etc/firejail/mediawiki-converters.profile', '/usr/bin/timidity'] + sys.argv[1:])
