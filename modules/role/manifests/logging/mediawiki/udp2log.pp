@@ -20,7 +20,7 @@ class role::logging::mediawiki::udp2log(
     include ::dumps::deprecated::user
     if ($rsync_slow_parse) {
         cron { 'rsync_slow_parse':
-            command     => "/usr/bin/rsync -rt --delete ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
+            command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
             hour        => 23,
             minute      => 15,
             environment => 'MAILTO=ops-dumps@wikimedia.org',

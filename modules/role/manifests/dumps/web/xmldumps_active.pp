@@ -11,6 +11,7 @@ class role::dumps::web::xmldumps_active {
     include ::profile::dumps::fetcher
     include ::profile::dumps::nfs::all
     include ::profile::dumps::web::cleanup
+    include ::profile::dumps::web::cleanup_miscdatasets
 
     system::role { 'role::dumps::web::xmldumps': description => 'active web, nfs and rsync server of xml/sql dumps' }
 }
