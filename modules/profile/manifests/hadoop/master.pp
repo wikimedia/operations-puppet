@@ -12,6 +12,7 @@ class profile::hadoop::master(
     $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize'),
     $statsd                   = hiera('statsd'),
 ){
+
     include ::profile::hadoop::common
 
     class { '::cdh::hadoop::master': }
@@ -65,6 +66,11 @@ class profile::hadoop::master(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        # Prometheus exporters
+        include ::profile::hadoop::monitoring::namenode
+        include ::profile::hadoop::monitoring::resourcemanager
+        include ::profile::hadoop::monitoring::history
+
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Primary',
