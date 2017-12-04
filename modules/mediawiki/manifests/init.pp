@@ -62,27 +62,6 @@ class mediawiki (
         mode   => '0555',
     }
 
-    file { '/usr/local/bin/mediawiki-firejail-lilypond':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-lilypond',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
-    file { '/usr/local/bin/mediawiki-firejail-abc2ly':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-abc2ly',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
-    file { '/usr/local/bin/mediawiki-firejail-timidity':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-timidity',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
     # /var/log/mediawiki contains log files for the MediaWiki jobrunner
     # and for various periodic jobs that are managed by cron.
     file { '/var/log/mediawiki':
