@@ -65,6 +65,19 @@ class profile::hadoop::master(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        # Prometheus exporters
+        include ::profile::hadoop::monitoring::namenode
+        $namenode_jmx_exporter_config_file = $::profile::hadoop::monitoring::namenode::jmx_exporter_config_file
+        $prometheus_jmx_exporter_namenode_port = $::profile::hadoop::monitoring::datanode::prometheus_jmx_exporter_namenode_port
+
+        include ::profile::hadoop::monitoring::resourcemanager
+        $resourcemanager_jmx_exporter_config_file = $::profile::hadoop::monitoring::resourcemanager::jmx_exporter_config_file
+        $prometheus_jmx_exporter_resourcemanager_port = $::profile::hadoop::monitoring::resourcemanager::prometheus_jmx_exporter_resourcemanager_port
+
+        include ::profile::hadoop::monitoring::history
+        $history_jmx_exporter_config_file = $::profile::hadoop::monitoring::history::jmx_exporter_config_file
+        $prometheus_jmx_exporter_history_port = $::profile::hadoop::monitoring::history::prometheus_jmx_exporter_history_port
+
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Primary',

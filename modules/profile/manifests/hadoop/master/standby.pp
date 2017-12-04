@@ -24,6 +24,15 @@ class profile::hadoop::master::standby(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        # Prometheus exporters
+        include ::profile::hadoop::monitoring::namenode
+        $namenode_jmx_exporter_config_file = $::profile::hadoop::monitoring::namenode::jmx_exporter_config_file
+        $prometheus_jmx_exporter_namenode_port = $::profile::hadoop::monitoring::datanode::prometheus_jmx_exporter_namenode_port
+
+        include ::profile::hadoop::monitoring::resourcemanager
+        $resourcemanager_jmx_exporter_config_file = $::profile::hadoop::monitoring::resourcemanager::jmx_exporter_config_file
+        $prometheus_jmx_exporter_resourcemanager_port = $::profile::hadoop::monitoring::resourcemanager::prometheus_jmx_exporter_resourcemanager_port
+
         # Icinga process alert for Stand By NameNode
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Stand By',
