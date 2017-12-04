@@ -18,7 +18,7 @@ fi
 today=$(date -u +'%Y%m%d')
 newNamespace="categories${today}"
 # Drop old dumps
-rm -f "${DATA_DIR}/*-categories.ttl.gz"
+rm -f ${DATA_DIR}/*-categories.ttl.gz
 cd $DEPLOY_DIR
 bash createNamespace.sh $newNamespace || exit 1
 # Load the data
