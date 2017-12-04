@@ -99,7 +99,6 @@ node 'bast3002.wikimedia.org' {
         prometheus::ops)
 
     interface::add_ip6_mapped { 'main': }
-    class { '::ganglia::monitor::aggregator': sites =>  'esams', }
 }
 
 # Bastion in California
