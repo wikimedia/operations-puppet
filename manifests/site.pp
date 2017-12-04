@@ -352,10 +352,13 @@ node 'db1075.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(044|072|077|078)\.eqiad\.wmnet/ {
+node /^db1(072|077|078)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+node 'db1044.eqiad.wmnet' {
+    role(spare::system)
+}
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2018.codfw.wmnet' {
