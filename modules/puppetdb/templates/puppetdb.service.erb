@@ -6,8 +6,8 @@ User=puppetdb
 Group=puppetdb
 Environment=CONFIG=/etc/puppetdb/conf.d
 ExecStartPre=/bin/bash -c "test -e /var/log/puppetdb/puppetdb-oom.hprof && mv /var/log/puppetdb/puppetdb-oom.hprof /var/log/puppetdb/puppetdb-oom.hprof.prev || exit 0"
-ExecStart=/usr/bin/java -Xmx<%= @heap_size %> -XX:+ExitOnOutOfMemoryError \
--XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/puppetdb/puppetdb-oom.hprof -Djava.security.egd=file:/dev/urandom \
+ExecStart=/usr/bin/java <%= @jvm_opts %> \
+-XX:+ExitOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/puppetdb/puppetdb-oom.hprof -Djava.security.egd=file:/dev/urandom \
 -cp /usr/share/puppetdb/puppetdb.jar clojure.main -m com.puppetlabs.puppetdb.core services -c ${CONFIG}
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
