@@ -1,6 +1,6 @@
 # filtertags: labs-project-deployment-prep labs-project-automation-framework labs-project-toolsbeta
 class role::puppetmaster::puppetdb (
-    $shared_buffers = '7680MB'
+    $shared_buffers   = '7680MB'
 ) {
     include ::standard
     include ::base::firewall
@@ -85,9 +85,13 @@ class role::puppetmaster::puppetdb (
         master => $master,
     }
 
+    include ::profile::puppetmaster::puppetdb::monitoring
+    $prometheus_java_opts = $::profile::puppetmaster::puppetdb::monitoring::prometheus_java_opts
+
     # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
         master    => $master,
-        heap_size => '6G',
+        java_opts => "-Xmx=6G ${prometheus_java_opts}",
+        require   => Class['profile::puppetmaster::puppetdb::monitoring'],
     }
 }
