@@ -422,7 +422,8 @@ node 'db1061.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(30|85|88|93|98)\.eqiad\.wmnet/ {
+# See also db1096 and db1098 below
+node /^db10(30|85|88|93)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -479,7 +480,7 @@ node /^db20(79|80|81|82|83)\.codfw\.wmnet/ {
 }
 
 # hosts with multiple shards
-node /^db1(096|097|099|101|103|105)\.eqiad\.wmnet/ {
+node /^db1(096|097|098|099|101|103|105)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
