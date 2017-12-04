@@ -90,9 +90,9 @@ for entry in $config_entries; do
   unwanted=${runs[@]:0:${num_unwanted}}
   for dirname in ${unwanted[@]}; do
       if [ -n "$dryrun" ]; then
-	  echo "would rm -f ${subdir}/${dirname}"
+	  echo "would rm -rf ${subdir}/${dirname}"
       else
-	  rm -f "${subdir}/${dirname}"
+	  rm -rf "${subdir}/${dirname}"
       fi
   done
 
