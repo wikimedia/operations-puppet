@@ -8,7 +8,9 @@ class profile::dumps::web::xmldumps_fallback {
         otherdir         => '/data/xmldatadumps/public/other',
         htmldumps_server => 'francium.eqiad.wmnet',
         xmldumps_server  => 'dumps.wikimedia.org',
-        webuser          => 'datasets',
-        webgroup         => 'datasets',
+        webuser          => 'dumpsgen',
+        webgroup         => 'dumpsgen',
+        deprecated_user  => 'datasets',
+        deprecated_group => 'datasets',
     }
 }

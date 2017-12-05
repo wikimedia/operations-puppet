@@ -14,10 +14,10 @@ skipwikislist=<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>/skipm
 adminsettings=private/PrivateSettings.php
 
 [output]
-dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::otherdir') -%>/incr
+dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::cronsdir') -%>/incr
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 indextmpl=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') -%>/incrs-index.html
-temp=<%= scope.lookupvar('snapshot::dumps::dirs::miscdumpsdir') -%>/temp
+temp=<%= scope.lookupvar('snapshot::dumps::dirs::xmldumpsdir') -%>/temp
 webroot=http://download.wikimedia.org
 fileperms=0644
 # revisions must be at least this much older than time of current run

@@ -4,6 +4,8 @@ class dumps::web::dirs(
     $otherdir = '/data/xmldatadumps/public/other',
     $user = undef,
     $group = undef,
+    $deprecated_user = undef,
+    $deprecated_group = undef,
 ) {
     # Please note that this is incomplete, but new directories
     # should be defined in puppet (here).
@@ -14,7 +16,6 @@ class dumps::web::dirs(
     $otherdir_wikibase        = "${otherdir}/wikibase/"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
     $xlationdir               = "${otherdir}/contenttranslation"
-    $centralauthdir           = '/data/xmldatadumps/private/centralauth'
     $cirrussearchdir          = "${otherdir}/cirrussearch"
     $medialistsdir            = "${otherdir}/imageinfo"
     $pagetitlesdir            = "${otherdir}/pagetitles"
@@ -33,50 +34,50 @@ class dumps::web::dirs(
     file { $publicdir:
         ensure => 'directory',
         mode   => '0775',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $otherdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $analyticsdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $othermiscdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $othertestfilesdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $otherdir_wikibase:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { "${publicdir}/${relative_wikidatawiki}":
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     # T72385
@@ -90,22 +91,15 @@ class dumps::web::dirs(
     file { $otherdir_wikidata_legacy:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $xlationdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $centralauthdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
+        owner  => $deprecated_user,
+        group  => $deprecated_group,
     }
 
     file { $cirrussearchdir:
