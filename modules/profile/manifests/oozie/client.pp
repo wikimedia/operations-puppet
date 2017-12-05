@@ -1,6 +1,9 @@
 # == Class profile::oozie::client
 #
-# filtertags: labs-project-math labs-project-analytics
-class profile::oozie::client {
-    class { '::cdh::oozie': }
+class profile::oozie::client(
+    $oozie_host = hiera('profile::oozie::client::oozie_host'),
+) {
+    class { '::cdh::oozie':
+        oozie_host => $oozie_host,
+    }
 }

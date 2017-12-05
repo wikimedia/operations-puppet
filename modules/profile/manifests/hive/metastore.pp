@@ -1,11 +1,12 @@
-# == Class role::analytics_cluster::hive::metastore
+# == Class profile::hive::metastore
+#
 # Sets up Hive Metastore service
 #
-# filtertags: labs-project-analytics labs-project-math
-class role::analytics_cluster::hive::metastore {
-    system::role { 'analytics_cluster::hive::metastore':
-        description => 'hive-metastore service',
-    }
+class profile::hive::metastore(
+    $monitoring_enabled = hiera('profile::hive::metastore::monitoring_enabled', false),
+    $statsd             = hiera('statsd'),
+) {
+
     require ::profile::hive::client
 
     # Setup hive-metastore
@@ -13,7 +14,7 @@ class role::analytics_cluster::hive::metastore {
 
     # Use jmxtrans for sending metrics
     class { '::cdh::hive::jmxtrans::metastore':
-        statsd  => hiera('statsd'),
+        statsd  => $statsd,
     }
 
     ferm::service{ 'hive_metastore':
@@ -23,7 +24,7 @@ class role::analytics_cluster::hive::metastore {
     }
 
     # Include icinga alerts if production realm.
-    if $::realm == 'production' {
+    if $monitoring_enabled {
         nrpe::monitor_service { 'hive-metasore':
             description   => 'Hive Metastore',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hive.metastore.HiveMetaStore"',

@@ -1,4 +1,5 @@
-# == Class role::analytics_cluster::oozie::server::database
+# == Class profile::oozie::server::database
+#
 # Includes the role::analytics_cluster::database::meta class
 # to install a database for analytics cluster meta data,
 # includes the cdh::oozie::database::mysql
@@ -6,14 +7,13 @@
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
-# filtertags: labs-project-analytics labs-project-math
-class role::analytics_cluster::oozie::server::database {
+class profile::oozie::server::database {
     # Install a database server (MariaDB)
-    require ::role::analytics_cluster::database::meta
+    require ::profile::analytics::database::meta
 
     # Ensure that the oozie db is created.
     class { '::cdh::oozie::database::mysql':
-        require => Class['role::analytics_cluster::database::meta'],
+        require => Class['profile::analytics::database::meta'],
     }
 
     # NOTE: on 2016-02-23, Otto and Joal
