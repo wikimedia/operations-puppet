@@ -38,6 +38,7 @@ class puppetmaster::geoip(
                 'GeoIP2-City',
                 'GeoIP2-Connection-Type',
                 'GeoIP2-Country',
+                'GeoIP2-ISP',
                 ],
         }
     } else {
