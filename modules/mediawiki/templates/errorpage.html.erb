@@ -20,6 +20,7 @@ body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
 img { float: left; margin: 0 2em 2em 0; }
 a img { border: 0; }
 h1 { margin-top: 1em; font-size: 1.2em; }
+.content-text { overflow: hidden; }
 p { margin: 0.7em 0 1em 0; }
 a { color: #0645AD; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -33,7 +34,7 @@ code { font-family: sans-serif; }
 </a>
 <% end -%>
 <h1><%= @errorpage['pagetitle'] %></h1>
-<%= @errorpage['content'] %>
+<div class="content-text"><%= @errorpage['content'] %></div>
 </div>
 <% if @errorpage['footer'] && @errorpage['footer'] != :undef -%>
 <div class="footer"><%= @errorpage['footer'] %></div>
