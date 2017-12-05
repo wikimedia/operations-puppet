@@ -2,6 +2,7 @@
 class profile::etherpad {
 
     include ::passwords::etherpad_lite
+    include ::profile::prometheus::etherpad_exporter
 
     class { '::etherpad':
         etherpad_db_user => $passwords::etherpad_lite::etherpad_db_user,
