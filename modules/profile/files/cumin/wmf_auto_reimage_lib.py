@@ -149,8 +149,9 @@ def get_base_parser(description):
 
 
 def ensure_shell_mode():
-    """Ensure running in non-interactive mode or screen/tmux session or raise."""
-    if os.isatty(0) and not (os.getenv('STY') or os.getenv('TMUX')):
+    """Ensure it is running in non-interactive mode or screen/tmux session, raise otherwise."""
+    if (os.isatty(0) and not os.getenv('STY', '') and not os.getenv('TMUX', '')
+            and 'screen' not in os.getenv('TERM', '')):
         raise RuntimeError(
             'Must be run in non-interactive mode or inside a screen or tmux.')
 
