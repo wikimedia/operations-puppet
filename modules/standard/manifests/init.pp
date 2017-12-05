@@ -1,10 +1,14 @@
 # == Class standard
 # Class for *most* servers, standard includes
-
+# Standard is properly a profile. Given its special nature, it has been
+# historically separated and we're keeping it that way for now.
 class standard(
-    $has_default_mail_relay = true,
-    $has_admin = true,
-    $has_ganglia = true,
+    # lint:ignore:wmf_styleguide
+    $has_default_mail_relay = hiera('standard::has_default_mail_relay', true),
+    $has_admin = hiera('standard::has_admin', true),
+    $has_ganglia = hiera('standard::has_ganglia', true),
+    $admin_groups = hiera('admin::groups', [])
+    # lint:endignore
     ) {
     include ::profile::base
     include ::standard::ntp
@@ -39,7 +43,9 @@ class standard(
     # Some instances in production (ideally none) and labs do not use
     # the admin class
     if $has_admin {
-        include ::admin
+        class { '::admin':
+            groups => $admin_groups
+        }
     }
 
     # For historical reasons, users in modules/admin/data/data.yaml
