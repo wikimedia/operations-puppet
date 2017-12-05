@@ -15,6 +15,7 @@ admin::groups:
   - deploy-phabricator
   - analytics-admins
   - gerrit-root
+  - maps-admins
 
 # screen sessions are common on deployment servers (T165348)
 monitor_screens: false
