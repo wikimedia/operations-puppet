@@ -7,7 +7,7 @@ admin::groups:
 
 # ES-specific
 # NOTE: cluster_name must be kept in sync with the backend
-# node config in hieradata/role/common/logstash.yaml
+# node config in hieradata/role/common/collector.yaml
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3
@@ -20,9 +20,6 @@ elasticsearch::unicast_hosts:
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
 logstash::cluster_hosts:
-  - logstash1001.eqiad.wmnet
-  - logstash1002.eqiad.wmnet
-  - logstash1003.eqiad.wmnet
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet

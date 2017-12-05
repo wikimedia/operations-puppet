@@ -299,9 +299,6 @@ eqiad:
     wdqs1004.eqiad.wmnet: [wdqs]
     wdqs1005.eqiad.wmnet: [wdqs]
   logstash:
-    logstash1001.eqiad.wmnet: [kibana, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
-    logstash1002.eqiad.wmnet: [kibana, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
-    logstash1003.eqiad.wmnet: [kibana, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
     logstash1007.eqiad.wmnet: [kibana, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
     logstash1008.eqiad.wmnet: [kibana, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
     logstash1009.eqiad.wmnet: [kibana, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-syslog, logstash-udp2log]
