@@ -47,18 +47,6 @@ class mediawiki::packages {
     ]:
         ensure => present,
     }
-
-    # Lilypond missed stretch as it wasn't ported to Guile 2, later versions bundled
-    # a local copy of Guile 1.8, install it from backports
-    if os_version('debian == stretch') {
-        apt::pin { 'lilypond':
-            package  => 'lilypond',
-            pin      => 'release a=stretch-backports',
-            priority => '1001',
-            before   => Package['lilypond'],
-        }
-    }
-
     # timidity recommends timidity-daemon, but we don't need it.
     package { 'timidity-daemon':
       ensure => absent,
