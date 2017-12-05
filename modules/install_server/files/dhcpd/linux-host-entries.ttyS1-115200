@@ -5076,11 +5076,15 @@ host mw2117 {
 host mw2118 {
     hardware ethernet 90:B1:1C:27:8F:BE;
     fixed-address mw2118.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw2119 {
     hardware ethernet 90:B1:1C:25:8A:24;
     fixed-address mw2119.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw2120 {
@@ -5236,6 +5240,8 @@ host mw2151 {
 host mw2152 {
     hardware ethernet B0:83:FE:DB:BF:AD;
     fixed-address mw2152.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw2153 {
@@ -5706,6 +5712,8 @@ host mw2245 {
 host mw2246 {
     hardware ethernet 14:18:77:66:78:1E;
     fixed-address mw2246.codfw.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw2247 {
