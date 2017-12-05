@@ -7,16 +7,16 @@ class profile::hive::client(
     $zookeeper_cluster_name = hiera('profile::hive::client::zookeeper_cluster_name'),
     $hiveserver_host        = hiera('profile::hive::client::server_host'),
     $hiveserver_port        = hiera('profile::hive::client::server_port'),
+    $hive_server_opts       = hiera('profile::hive::client::hive_server_opts', undef),
+    $hive_metastore_opts    = hiera('profile::hive::client::hive_metastore_opts', undef),
+    $metastore_host         = hiera('profile::hive::client::hive_metastore_host'),
 ) {
     require ::profile::hadoop::common
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
     $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar'
-
     $auxpath = $hcatalog_jar
-
-
     $zookeeper_hosts        = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
 
     # You must set at least:
@@ -35,6 +35,9 @@ class profile::hive::client(
         auxpath                   => $auxpath,
         # default to using Snappy for parquet formatted tables
         parquet_compression       => 'SNAPPY',
+        hive_server_opts          => $hive_server_opts,
+        hive_metastore_opts       => $hive_metastore_opts,
+        metastore_host            => $metastore_host,
     }
 
     # Set up a wrapper script for beeline, the command line

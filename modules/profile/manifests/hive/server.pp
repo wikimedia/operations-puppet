@@ -1,19 +1,19 @@
-# == Class role::analytics_cluster::hive::server
-# Sets up Hive Server2
+# == Class profile::hive::server
 #
-# filtertags: labs-project-analytics labs-project-math
-class role::analytics_cluster::hive::server {
-    system::role { 'analytics_cluster::hive::server':
-        description => 'hive-server2 service',
-    }
-    require ::profile::hive::client
+# Sets up Hive Server2 (no metastore, needs another profile).
+#
+class profile::hive::server(
+    $monitoring_enabled  = hiera('profile::hive::server::monitoring_enabled', false),
+    $statsd              = hiera('statsd')
+) {
+    include ::profile::hive::client
 
     # Setup hive-server
     class { '::cdh::hive::server': }
 
     # Use jmxtrans for sending metrics
     class { '::cdh::hive::jmxtrans::server':
-        statsd  => hiera('statsd'),
+        statsd  => $statsd,
     }
 
     ferm::service{ 'hive_server':
@@ -23,7 +23,7 @@ class role::analytics_cluster::hive::server {
     }
 
     # Include icinga alerts if production realm.
-    if $::realm == 'production' {
+    if $monitoring_enabled {
         nrpe::monitor_service { 'hive-server2':
             description   => 'Hive Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hive.service.server.HiveServer2"',

@@ -1,13 +1,11 @@
 # == Class role::analytics_cluster::oozie::server
-# Installs Oozie server
-# Make sure you set hiera variables for cdh::oozie::server appropriately,
-# especially if you are hosting
 #
-# filtertags: labs-project-analytics labs-project-math
-class role::analytics_cluster::oozie::server {
-    system::role { 'analytics_cluster::oozie::server':
-        description => 'Oozie Server',
-    }
+# Installs the Oozie server.
+#
+class profile::oozie::server(
+    $monitoring_enabled = hiera('profile::oozie::server::monitoring_enabled', false),
+    $jvm_heap_size      = hiera('profile::oozie::server::jvm_heap_size', 1000),
+) {
     require ::profile::oozie::client
 
     # cdh::oozie::server will ensure that its MySQL DB is
@@ -29,6 +27,7 @@ class role::analytics_cluster::oozie::server {
         # oozie.service.ProxyUserService.proxyuser.*
         # settings look like they are properly configured.
         authorization_service_authorization_enabled => false,
+        heapsize                                    => $jvm_heap_size,
     }
 
     # Oozie is creating event logs in /var/log/oozie.
@@ -48,7 +47,7 @@ class role::analytics_cluster::oozie::server {
     }
 
     # Include icinga alerts if production realm.
-    if $::realm == 'production' {
+    if $monitoring_enabled {
         nrpe::monitor_service { 'oozie':
             description   => 'Oozie Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.catalina.startup.Bootstrap"',

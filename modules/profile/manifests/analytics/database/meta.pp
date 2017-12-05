@@ -1,12 +1,15 @@
 # == Class role::analytics_cluster::database::meta
+#
 # Installs a MySQL/MariaDB server for use with Hive and Oozie
 # and other Analytics Cluster services.
 #
-class role::analytics_cluster::database::meta {
+class profile::analytics::database::meta(
+    $monitoring_enabled = hiera('profile::analytics::database::meta'),
+) {
     # Some CDH database init scripts need Java to run.
     require ::profile::java::analytics
 
-    include ::mariadb::packages_wmf
+    class { '::mariadb::packages_wmf': }
 
     $config_template = $::realm ? {
         # Production instance has large innodb_buffer_pool_size.
@@ -52,7 +55,7 @@ class role::analytics_cluster::database::meta {
     }
 
     # Include icinga alerts if production realm.
-    if $::realm == 'production' {
+    if $monitoring_enabled {
         nrpe::monitor_service { 'mysql_analytics-meta':
             description  => 'analytics-meta MySQL instance',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',

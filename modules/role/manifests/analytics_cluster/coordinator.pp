@@ -17,21 +17,26 @@
 # the Analytics Refinery.
 #
 class role::analytics_cluster::coordinator {
+
+    system::role { 'analytics_cluster::coordinator':
+        description => 'Analytics Cluster running various Hadoop services (Hive, Camus, Oozie, ..)'
+    }
+
     include ::role::analytics_cluster::client
-    include ::role::analytics_cluster::database::meta
+    include ::profile::analytics::database::meta
 
     # Back up analytics-meta MySQL instance
     # to analytics1002.
     include ::profile::analytics::database::meta::backup
 
     # SQL-like queries to data stored in HDFS
-    include ::role::analytics_cluster::hive::metastore
-    include ::role::analytics_cluster::hive::server
-    include ::role::analytics_cluster::hive::metastore::database
+    include ::profile::hive::metastore
+    include ::profile::hive::server
+    include ::profile::hive::metastore::database
 
     # The Hadoop job scheduler
-    include ::role::analytics_cluster::oozie::server
-    include ::role::analytics_cluster::oozie::server::database
+    include ::profile::oozie::server
+    include ::profile::oozie::server::database
 
     # Camus crons import data into
     # from Kafka into HDFS.

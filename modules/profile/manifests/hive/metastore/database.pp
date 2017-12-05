@@ -1,4 +1,5 @@
-# == Class role::analytics_cluster::hive::metastore::database
+# == Class profile::hive::metastore::database
+#
 # Includes the role::analytics_cluster::database::meta class
 # to install a database for analytics cluster meta data,
 # includes the cdh::hive::metastore::mysql
@@ -6,10 +7,10 @@
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
-# filtertags: labs-project-analytics labs-project-math
-class role::analytics_cluster::hive::metastore::database {
+class profile::hive::metastore::database {
     # Install a database server (MariaDB)
-    require ::role::analytics_cluster::database::meta
+    require ::profile::analytics::database::meta
+
     # Need to have hive package installed to
     # get /usr/lib/hive/bin/schematool.
     # require ::profile::hive::client
@@ -22,9 +23,8 @@ class role::analytics_cluster::hive::metastore::database {
     #   cd /usr/lib/hive/scripts/metastore/upgrade/mysql && sudo mysql hive_metastore < hive-schema-1.1.0.mysql.sql
     # after cdh::hive::metastore::mysql makes puppet fail.
 
-
     class { '::cdh::hive::metastore::mysql':
-        require => Class['role::analytics_cluster::database::meta'],
+        require => Class['profile::analytics::database::meta'],
     }
 
     # cdh::hive::metastore::mysql only ensures that
