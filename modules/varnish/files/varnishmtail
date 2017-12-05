@@ -4,7 +4,7 @@
 
 PROGS="${1:-/etc/mtail}"
 
-FMT='url %U\tcache_status %{X-Cache-Status}o\thttp_status %s\tcache_control %{Cache-Control}o\tinm %{If-None-Match}i'
+FMT='url %U\tcache_status %{X-Cache-Status}o\thttp_status %s\tcache_control %{Cache-Control}o\tinm %{If-None-Match}i\th2 %{VCL_Log:CP-HTTP2}x\ttls_version %{VCL_Log:CP-TLS-Version}x\tsession_reused %{VCL_Log:CP-TLS-Session-Reused}x\tkey_exchange %{VCL_Log:CP-Key-Exchange}x\tauth %{VCL_Log:CP-Auth}x\tcipher %{VCL_Log:CP-Cipher}x\tfull_cipher %{VCL_Log:CP-Full-Cipher}x\t'
 
 /usr/bin/varnishncsa -n frontend -q 'ReqMethod ne "PURGE"' -F "${FMT}" |
     mtail -progs "${PROGS}" -logfds 0
