@@ -557,6 +557,14 @@ class role::prometheus::ops {
         ],
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
+      {
+        'job_name'        => 'redis_ores',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_ores_*.yaml" ]}
+        ],
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
+      },
     ]
 
     prometheus::redis_exporter_config{ "redis_sessions_${::site}":
@@ -580,6 +588,12 @@ class role::prometheus::ops {
     prometheus::redis_exporter_config{ "redis_maps_${::site}":
         dest       => "${targets_path}/redis_maps_${::site}.yaml",
         class_name => 'role::maps::master',
+        site       => $::site,
+    }
+
+    prometheus::redis_exporter_config{ "redis_ores_${::site}":
+        dest       => "${targets_path}/redis_ores_${::site}.yaml",
+        class_name => 'role::ores::redis',
         site       => $::site,
     }
 
