@@ -4,3 +4,4 @@ profile::base::domain_search:
   - codfw.wmnet
   - esams.wmnet
   - ulsfo.wmnet
+standard::has_ganglia: false
