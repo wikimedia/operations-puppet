@@ -28,7 +28,6 @@ from phabricator import Phabricator
 
 
 ICINGA_DOMAIN = 'icinga.wikimedia.org'
-PUPPET_DOMAIN = 'puppet.wikimedia.org'
 DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
@@ -337,6 +336,29 @@ def resolve_dns(name, record):
     return target
 
 
+def get_puppet_ca_master():
+    """Return the FQDN of the current CA master for the Puppet CA."""
+    with open('/etc/puppet/puppet.conf', 'r') as puppet_conf:
+        for line in puppet_conf.readlines():
+            if not line.startswith('ca_server ='):
+                continue
+
+            try:
+                ca_master = line.split()[2].strip()
+                break
+            except IndexError:
+                raise RuntimeError(('Unable to extract Puppet CA master from '
+                                    'puppet.conf: {line}').format(line=line))
+        else:
+            raise RuntimeError('Unable to find ca_server setting in puppet.conf')
+
+    if not is_hostname_valid(ca_master):
+        raise RuntimeError(
+            'Puppet CA master host does not have a valid hostname: {host}'.format(host=ca_master))
+
+    return ca_master
+
+
 def ensure_ipmi_password():
     """Get the IPMI password from the environment or ask for it and set/return it."""
     ipmi_password = os.getenv('IPMI_PASSWORD')
@@ -440,8 +462,7 @@ def validate_hosts(hosts, no_raise=False):
         command = "puppet cert list --all 2> /dev/null | egrep '({hosts})'".format(
             hosts='|'.join(hosts))
 
-    puppetmaster_host = resolve_dns(PUPPET_DOMAIN, 'CNAME')
-    exit_code, worker = run_cumin('validate_hosts', puppetmaster_host, [command])
+    exit_code, worker = run_cumin('validate_hosts', get_puppet_ca_master(), [command])
 
     missing = []
     for _, output in worker.get_results():
@@ -537,7 +558,7 @@ def puppet_wait_cert_and_sign(host):
     """
     wait_command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
     sign_command = "puppet cert -s '{host}'".format(host=host)
-    puppetmaster_host = resolve_dns(PUPPET_DOMAIN, 'CNAME')
+    puppetmaster_host = get_puppet_ca_master()
     start = datetime.utcnow()
     timeout = 7200  # 2 hours
     retries = 0
@@ -608,7 +629,7 @@ def puppet_remove_host(host):
         "! puppet cert list '{host}'",  # Ensure removed
     )
     commands = [command.format(host=host) for command in base_commands]
-    run_cumin('remove_from_puppet', resolve_dns(PUPPET_DOMAIN, 'CNAME'), commands)
+    run_cumin('remove_from_puppet', get_puppet_ca_master(), commands)
     print_line('Removed from Puppet', host=host)
 
 
