@@ -75,7 +75,7 @@ for entry in $config_entries; do
       continue
   fi
 
-  runs=$( cd "$subdir"; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | sort )
+  runs=$( cd "$subdir"; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] 2>/dev/null | sort )
   if [ -z "$runs" ]; then
       continue
   fi
