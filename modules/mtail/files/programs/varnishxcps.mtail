@@ -1,0 +1,36 @@
+counter tls_h2
+counter tls_version by version
+counter tls_sess_reused
+counter tls_key_exchange by type
+counter tls_auth by type
+counter tls_cipher by name
+counter tls_full_cipher by name
+
+/^h2 1$/ {
+    tls_h2++
+}
+
+/^tls_version (?P<version>TLSv1.*)$/ {
+    tls_version[$version]++
+}
+
+/^session_reused 1$/ {
+    tls_sess_reused++
+}
+
+/^key_exchange (?P<type>[a-zA-Z0-9]+)$/ {
+    tls_key_exchange[$type]++
+}
+
+/^auth (?P<type>[a-zA-Z0-9]+)$/ {
+    tls_auth[$type]++
+}
+
+
+/^cipher (?P<name>[-a-zA-Z0-9]+)$/ {
+    tls_cipher[$name]++
+}
+
+/^full_cipher (?P<name>[-a-zA-Z0-9]+)$/ {
+    tls_full_cipher[$name]++
+}
