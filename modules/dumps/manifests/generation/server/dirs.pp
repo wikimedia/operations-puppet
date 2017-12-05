@@ -15,7 +15,7 @@ class dumps::generation::server::dirs(
     $categoriesrdfdir             = "${otherdir}/categoriesrdf"
     $globalblocksdir              = "${otherdir}/globalblocks"
     $medialistsdir                = "${otherdir}/imageinfo"
-    $incrsdir                     = "${otherdir}/incrs"
+    $incrsdir                     = "${otherdir}/incr"
     $mediatitlesdir               = "${otherdir}/mediatitles"
     $othermiscdir                 = "${otherdir}/misc"
     $pagetitlesdir                = "${otherdir}/pagetitles"

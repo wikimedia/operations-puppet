@@ -6,6 +6,7 @@ class snapshot::addschanges(
     $apachedir = $snapshot::dumps::dirs::apachedir
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $templsdir = $snapshot::dumps::dirs::templsdir
+    $cronsdir = $snapshot::dumps::dirs::cronsdir
 
     file { "${confsdir}/addschanges.conf":
         ensure  => 'present',
