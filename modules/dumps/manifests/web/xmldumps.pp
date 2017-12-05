@@ -6,15 +6,19 @@ class dumps::web::xmldumps(
     $otherdir         = undef,
     $htmldumps_server = undef,
     $xmldumps_server  = undef,
-    $webuser     = undef,
-    $webgroup    = undef,
+    $webuser          = undef,
+    $webgroup         = undef,
+    $deprecated_user  = undef,
+    $deprecated_group = undef,
 ) {
     class {'dumps::web::html':
-        datadir   => $datadir,
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
-        webuser   => $webuser,
-        webgroup  => $webgroup,
+        datadir          => $datadir,
+        publicdir        => $publicdir,
+        otherdir         => $otherdir,
+        webuser          => $webuser,
+        webgroup         => $webgroup,
+        deprecated_user  => $deprecated_user,
+        deprecated_group => $deprecated_group,
     }
 
     class { '::nginx':
