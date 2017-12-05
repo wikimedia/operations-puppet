@@ -3,6 +3,9 @@
 # cluster.  $kafka_cluster_name must have an entry in the hiera 'kafka_clusters'
 # variable, and $::fqdn must be listed as a broker there.
 #
+# If both $plaintext and $auth_acls_enabled, User:ANONYMOUS will be auto-granted
+# cluster describe and topic creation permissions in Kafka ACLs.
+#
 # == SSL Configuration
 #
 # To configure SSL for Kafka brokers, you need the following files distributable by our Puppet
@@ -286,6 +289,22 @@ class profile::kafka::broker(
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
         super_users                      => $super_users,
+    }
+
+    # If both auth ACLs AND plaintext is enabled, we need to allow some basic ANONYMOUS
+    # user operations to un authenticated clients will work.
+    if $auth_acls_enabled and $plaintext {
+        $kafka_acls_command = "/usr/bin/kafka-acls --authorizer-properties zookeeper.connect=${config['zookeeper']['url']}"
+        exec { 'kafka_acls_for_User:ANONYMOUS':
+            # Add Describe and Create permissions on kafka-cluster for ANONYMOUS user...
+            command => "${kafka_acls_command} --add --allow-principal User:ANONYMOUS --cluster --operation Create --operation Describe",
+            # unless ANONYMOUS user already has these permissions.
+            # --list cluster ACLs, grep for the desired ANONYMOUS user permissions
+            # and ensure that both matches are present (there should be 2 matches, one for
+            # Create and one for Describe).
+            unless  => "/usr/bin/test $(${kafka_acls_command} --list --cluster | /bin/grep -c -e 'User:ANONYMOUS has Allow permission for operations: Create from hosts: *' -e 'User:ANONYMOUS has Allow permission for operations: Describe from hosts: *') -eq 2",
+            require => Class['::confluent::kafka::broker'],
+        }
     }
 
     $ferm_srange = $::realm ? {
