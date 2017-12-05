@@ -57,26 +57,6 @@ targetDirBase="${cronsdir}/cirrussearch"
 targetDir="$targetDirBase/$today"
 multiVersionScript="$deployDir/multiversion/MWScript.php"
 
-# remove old datasets
-daysToKeep=70
-cutOff=$(( $(date +%s) - $(( $daysToKeep + 1 )) * 24 * 3600))
-if [ -d "$targetDirBase" ]; then
-	for folder in $(ls -d -r $targetDirBase/*); do
-		creationTime=$(date --utc --date="$(basename $folder)" +%s 2>/dev/null)
-		if [ -n "$creationTime" ]; then
-		    if [ "$cutOff" -gt "$creationTime" ]; then
-			if [ "$dryrun" == "true" ]; then
-				echo rm $folder/*.json.gz
-				echo rmdir $folder
-			else
-				rm -f $folder/*.json.gz
-				rmdir $folder
-			fi
-		    fi
-		fi
-	done
-fi
-
 # create todays folder
 if [ "$dryrun" == "true" ]; then
 	echo mkdir -p "$targetDir"
