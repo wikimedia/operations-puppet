@@ -21,12 +21,11 @@
 # Where ${kafka_cluster_name_full} is the fully qualified Kafka cluster name that matches
 # entries in the $kafka_clusters hash.  E.g. jumbo-eqiad, main-codfw, etc.
 #
-# If both $ssl_enabled and $auth_acls_enabled, this class will grant cluster level
-# permissions to the broker's SSL certificate.
-# It is expected that the certificate is subjectless, i.e. it's DN can be specified
-# simply as CN=kafka_${kafka_cluster_name_full}_broker. This will be used as the
-# Kafka cluster broker principal.  --cluster ACLs will automatically be granted for
-# User:CN=kafka_${kafka_cluster_name_full}_broker.
+# If both $ssl_enabled and $auth_acls_enabled, this class will configure super.users
+# with the cluster certificate principal. It is expected that the certificate is
+# subjectless, i.e. it's DN can be specified simply as CN=kafka_${kafka_cluster_name_full}_broker.
+# This will be used as the Kafka cluster broker principal. super.users will be set to
+# User:CN=kafka_${kafka_cluster_name_full}_broker to allow for cluster operations over SSL.
 #
 # This layout is built to work with certificates generated using cergen like
 #    cergen --base-path /srv/private/modules/secret/secrets/certificates ...
@@ -248,6 +247,15 @@ class profile::kafka::broker(
         $authorizer_class_name = undef
     }
 
+    # If both auth ACLs AND SSL are enabled, then we need to set super.users
+    # so that the brokers can authenticate with each other.
+    if $auth_acls_enabled and $ssl_enabled {
+        $super_users = ["User:CN=kafka_${cluster_name}_broker"]
+    }
+    else {
+        $super_users = undef
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
         brokers                          => $config['brokers']['hash'],
@@ -277,18 +285,7 @@ class profile::kafka::broker(
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
-    }
-
-    # If both auth ACLs AND SSL are enabled, then we will need cluster level
-    # ACLs for the brokers to be able to talk to each other.
-    if $auth_acls_enabled and $ssl_enabled {
-        $cluster_principal = "User:CN=kafka_${cluster_name}_broker"
-        $kafka_acls_command = "/usr/bin/kafka-acls --authorizer-properties zookeeper.connect=${config['zookeeper']['url']}"
-        exec { "kafka_grant_cluster_acl_to_${cluster_principal}":
-            command => "${kafka_acls_command} --add --cluster --allow-principal ${cluster_principal}",
-            unless  => "${kafka_acls_command} --list | grep -A 1 'Current ACLs for resource `Cluster:kafka-cluster`:' | grep -q '${cluster_principal} has Allow permission for operations: All'",
-            require => Class['::confluent::kafka::broker'],
-        }
+        super_users                      => $super_users,
     }
 
     $ferm_srange = $::realm ? {
