@@ -128,11 +128,16 @@ def get_base_parser(description):
         help=('for first imaging of new hosts that are not in puppet yet and this is their first'
               'imaging. Skips some steps on old hosts, includes --no-verify'))
     parser.add_argument(
-        '-c', '--conftool', nargs='?', const='inactive',
-        help=("depool the host(s) via conftool with the 'inactive' value, if set. Optionally "
-              "a custom value can be specified to be used for conftool 'set/pooled' update. "
-              "The host(s) will NOT be repooled automatically, but the repool commands will be "
-              "printed at the end. If --new is also set just print the pool message."))
+        '-c', '--conftool', action='store_true',
+        help=("Depool the host(s) via conftool with the value of the --conftool-value option. "
+              "If the --conftool-value option is not set, its default value of 'inactive' will be "
+              "used. The host(s) will NOT be repooled automatically, but the repool commands will "
+              "be printed at the end. If --new is also set, it will just print the pool message "
+              "at the end."))
+    parser.add_argument(
+        '--conftool-value', default='inactive',
+        help=("Value to pass to the 'set/pooled' command in conftool to depool the host(s), if "
+              "the -c/--conftool option is set. [default: inactive]"))
     parser.add_argument(
         '-a', '--apache', action='store_true',
         help='run apache-fast-test on the hosts after the reimage')
@@ -398,14 +403,15 @@ def get_reimage_host_command(host, mgmt, args):
     command_args = ['wmf-auto-reimage-host']
     args_dict = vars(args)
     # Add boolean command line arguments
-    for key in ('debug', 'no_reboot', 'no_verify', 'no_downtime', 'no_pxe', 'new', 'apache'):
+    for key in ('debug', 'no_reboot', 'no_verify', 'no_downtime', 'no_pxe', 'new', 'apache',
+                'conftool'):
         if args_dict[key]:
             command_args.append(get_option_from_name(key))
 
     # Add command line arguments with values
     # The --phab-task-id options is skipped because the main script already takes care
     # of upgrading Phabricator
-    for key in ('conftool',):
+    for key in ('conftool-value',):
         if args_dict[key] is not None:
             command_args.append(get_option_from_name(key))
             command_args.append(args_dict[key])

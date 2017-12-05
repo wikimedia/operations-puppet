@@ -105,8 +105,8 @@ def run(args, user, log_path):
         lib.icinga_downtime(args.host, user, args.phab_task_id)
 
     # Depool via conftool
-    if args.conftool is not None and not args.new:
-        previous = lib.conftool_depool(args.host, pooled=args.conftool)
+    if args.conftool and not args.new:
+        previous = lib.conftool_depool(args.host, pooled=args.conftool_value)
         lib.print_line('Waiting 3 minutes to let the host drain', host=args.host)
         time.sleep(180)
 
@@ -160,7 +160,7 @@ def run(args, user, log_path):
         lib.run_apache_fast_test(args.host)
 
     # The repool is *not* done automatically, the command to repool is printed and logged
-    if args.conftool is not None:
+    if args.conftool:
         lib.print_repool_message(previous, rename_from=rename_from, rename_to=args.rename)
 
     lib.print_line('Reimage completed', host=args.host)
