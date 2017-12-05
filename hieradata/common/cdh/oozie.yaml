@@ -1,5 +1,0 @@
-#
-# Analytics Cluster Oozie Configuration
-#
-
-cdh::oozie::oozie_host: analytics1003.eqiad.wmnet
