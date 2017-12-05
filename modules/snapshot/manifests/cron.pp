@@ -27,5 +27,5 @@ class snapshot::cron(
         group => $group,
     }
     class { '::snapshot::cron::contentxlation': user   => $depr_user }
-    class { '::snapshot::addschanges': user   => $depr_user }
+    class { '::snapshot::addschanges': user   => $miscdumpsuser }
 }

@@ -12,7 +12,6 @@ class dumps::web::cleanups::miscdumps(
     }
 
     $keep_generator=['categoriesrdf:3', 'cirrussearch:3', 'contenttranslation:3', 'globalblocks:3', 'imageinfo:3', 'mediatitles:3', 'pagetitles:3', 'wikibase/wikidatawiki:3']
-    # FIXME check for imageinfo, mediatitles, pagetitles that we really want/need all those
     $keep_replicas=['categoriesrdf:11', 'cirrussearch:11', 'contenttranslation:14', 'globalblocks:13', 'imageinfo:32', 'mediatitles:90', 'pagetitles:90', 'wikibase/wikidatawiki:20']
     if ($isreplica == true) {
         $content= join($keep_replicas, "\n")
@@ -29,10 +28,21 @@ class dumps::web::cleanups::miscdumps(
         content => "${content}\n"
     }
 
+    $cleanup_miscdumps = "/bin/bash /usr/local/bin/cleanup_old_miscdumps.sh --miscdumpsdir ${miscdumpsdir} --configfile /etc/dumps/confs/cleanup_misc.conf"
+
+    if ($isreplica == true) {
+        $addschanges_keeps = '40'
+    } else {
+        $addschanges_keeps = '7'
+    }
+
+    # adds-changes dumps cleanup; these are in incr/wikiname/YYYYMMDD for each day, so they can't go into the above config/cron setup
+    $cleanup_addschanges = "find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +${addschanges_keeps} -exec rm -rf {} \\;"
+
     cron { 'cleanup-misc-dumps':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "/bin/bash /usr/local/bin/cleanup_old_miscdumps.sh --miscdumpsdir ${miscdumpsdir} --configfile /etc/dumps/confs/cleanup_misc.conf",
+        command     => "${cleanup_miscdumps} ; ${cleanup_addschanges}",
         user        => root,
         minute      => '15',
         hour        => '7',
