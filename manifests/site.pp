@@ -169,6 +169,11 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
     role(configcluster)
 }
 
+# coming soon, see T166081
+node /^conf100[456]\.eqiad\.wmnet$/ {
+    role(spare)
+}
+
 # conf200x are etcd/zookeeper service nodes in codfw
 node /^conf200[123]\.codfw\.wmnet$/ {
     role(configcluster)
