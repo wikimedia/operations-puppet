@@ -7,5 +7,5 @@ class role::mw_rc_irc {
     include ::profile::base::firewall
     include ::passwords::udpmxircecho
     include ::profile::mw_rc_irc
-
+    include ::profile::prometheus::ircd_exporter
 }
