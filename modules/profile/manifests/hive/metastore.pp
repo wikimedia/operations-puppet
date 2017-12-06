@@ -25,6 +25,8 @@ class profile::hive::metastore(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        include ::profile::hive::monitoring::metastore
+
         nrpe::monitor_service { 'hive-metasore':
             description   => 'Hive Metastore',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hive.metastore.HiveMetaStore"',
