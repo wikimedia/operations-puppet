@@ -45,7 +45,7 @@ module Puppet::Parser::Functions
       begin
         host_scope = compiler.topscope.class_scope(host)
         host_scope.call_function(:create_resources,
-                                 ['package', { package_name => { :ensure => :present } }])
+                                 ['package', { package_name => { :ensure => 'present' } }])
       rescue Puppet::Resource::Catalog::DuplicateResourceError
       end
 
