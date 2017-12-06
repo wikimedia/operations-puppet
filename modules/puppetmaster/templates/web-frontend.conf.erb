@@ -28,11 +28,15 @@
     SetEnv proxy-initial-not-pooled 1
     # Certificates requests should only be in the master.
     ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @master %>:8141
+    ProxyPassMatch ^/(puppet-ca/.*)$ https://<%= @master %>:8141
     # File buckets should only be in one place. Choosing the frontend by default for simplicity
     ProxyPassMatch ^/([^/]+/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
+    ProxyPassMatch ^/(puppet/v3/file_bucket_file/md5/.*)$ https://<%= @fqdn %>:8141
     # Volatile should only be in one place. Choosing the master by default for simplicity
     ProxyPassMatch ^/([^/]+/file_metadata(s)?/volatile/.*)$ https://<%= @master %>:8141
+    ProxyPassMatch ^/(puppet/v3/file_metadata(s)?/volatile.*)$ https://<%= @master %>:8141
     ProxyPassMatch ^/([^/]+/file_content/volatile/.*)$ https://<%= @master %>:8141
+    ProxyPassMatch ^/(puppet/v3/file_content/volatile/.*)$ https://<%= @master %>:8141
     # The rest gets balanced
     ProxyPass / balancer://mycluster/
     <Proxy balancer://mycluster>
