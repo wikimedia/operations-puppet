@@ -4,7 +4,7 @@
 #
 class profile::oozie::server(
     $monitoring_enabled = hiera('profile::oozie::server::monitoring_enabled', false),
-    $jvm_heap_size      = hiera('profile::oozie::server::jvm_heap_size', 1000),
+    $jvm_opts           = hiera('profile::oozie::server::jvm_opts', '-Xmx2048m'),
 ) {
     require ::profile::oozie::client
 
@@ -27,7 +27,7 @@ class profile::oozie::server(
         # oozie.service.ProxyUserService.proxyuser.*
         # settings look like they are properly configured.
         authorization_service_authorization_enabled => false,
-        heapsize                                    => $jvm_heap_size,
+        jvm_opts                                    => $jvm_opts,
     }
 
     # Oozie is creating event logs in /var/log/oozie.
@@ -48,6 +48,8 @@ class profile::oozie::server(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        include ::profile::oozie::monitoring::server
+
         nrpe::monitor_service { 'oozie':
             description   => 'Oozie Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.catalina.startup.Bootstrap"',
