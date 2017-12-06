@@ -5,6 +5,7 @@ class profile::mediawiki::nutcracker(
     $memcached_servers = hiera('mediawiki_memcached_servers'),
     $redis_shards      = hiera('redis::shards'),
     $datacenters       = hiera('datacenters'),
+    $log_verbosity     = hiera('profile::mediawiki::nutcracker::log_verbosity'),
 ) {
     $redis_servers = $redis_shards['sessions']
     include ::passwords::redis
@@ -87,6 +88,7 @@ class profile::mediawiki::nutcracker(
     class { '::nutcracker':
         mbuf_size => '64k',
         pools     => $nutcracker_pools,
+        verbosity => $log_verbosity,
     }
 
     class { '::nutcracker::monitoring': }
