@@ -4,8 +4,8 @@
 # the role running profile::analytics::database::meta::backup.
 #
 class profile::analytics::database::meta::backup_dest(
-    $hive_metastore_host = hiera('cdh::hive::metastore_host'),
-    $oozie_host          = hiera('cdh::oozie::oozie_host'),
+    $hive_metastore_host = hiera('profile::analytics::database::meta::backup_dest::hive::metastore_host'),
+    $oozie_host          = hiera('profile::analytics::database::meta::backup_dest::oozie_host'),
 ) {
 
     if !defined(File['/srv/backup']) {

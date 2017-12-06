@@ -28,3 +28,6 @@ profile::hadoop::standby::namenode_heapsize: 6144
 # Prometheus JMX Exporter config templates.
 profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml"
 profile::hadoop::common::yarn_resourcemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/hadoop/prometheus_yarn_resourcemanager_jmx_exporter.yaml"
+
+profile::analytics::database::meta::backup_dest::hive::metastore_host: 'analytics1003.eqiad.wmnet'
+profile::analytics::database::meta::backup_dest::oozie_host: 'analytics1003.eqiad.wmnet'
