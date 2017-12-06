@@ -824,13 +824,16 @@ def print_repool_message(previous, rename_from=None, rename_to=None):
             for key, value in tags.iteritems():
                 if is_rename and value == rename_from:
                     value = rename_to
-                items.append('='.join(key, value))
+                items.append('='.join((key, value)))
 
             selector = ','.join(items)
             commands.append(base_command.format(tags=selector, state=state))
 
-    message = ('To set back the conftool status to their previous values run:\n'
-               '```\n{repool}\n```').format(repool='\n'.join(commands))
+    rename = ''
+    if is_rename:
+        rename = ' (with the new hostname)'
+    message = ('To set back the conftool status to their previous values{rename} run:\n'
+               '{repool}').format(rename=rename, repool='\n'.join(commands))
 
     print_line(message)
 
