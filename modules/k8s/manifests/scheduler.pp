@@ -12,5 +12,6 @@ class k8s::scheduler {
 
     service { 'kube-scheduler':
         ensure => running,
+        enable => true,
     }
 }

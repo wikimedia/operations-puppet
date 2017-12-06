@@ -49,5 +49,6 @@ class k8s::apiserver(
 
     service { 'kube-apiserver':
         ensure => running,
+        enable => true,
     }
 }
