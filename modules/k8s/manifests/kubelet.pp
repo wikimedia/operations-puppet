@@ -39,6 +39,7 @@ class k8s::kubelet(
 
     service { 'kubelet':
         ensure    => running,
+        enable    => true,
         subscribe => [
             File[$kubeconfig],
             File['/etc/default/kubelet'],

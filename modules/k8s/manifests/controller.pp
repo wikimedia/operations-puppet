@@ -15,5 +15,6 @@ class k8s::controller(
 
     service { 'kube-controller-manager':
         ensure => running,
+        enable => true,
     }
 }
