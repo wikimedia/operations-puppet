@@ -412,7 +412,7 @@ def get_reimage_host_command(host, mgmt, args):
     # Add command line arguments with values
     # The --phab-task-id options is skipped because the main script already takes care
     # of upgrading Phabricator
-    for key in ('conftool-value',):
+    for key in ('conftool_value',):
         if args_dict[key] is not None:
             command_args.append(get_option_from_name(key))
             command_args.append(args_dict[key])
