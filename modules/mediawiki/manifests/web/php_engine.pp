@@ -18,4 +18,13 @@ class mediawiki::web::php_engine {
         source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
         priority => 0,
     }
+
+    # furl is a cURL-like command-line tool for making FastCGI requests.
+    # See `furl --help` for documentation and usage.
+    file { '/usr/local/bin/furl':
+        source => 'puppet:///modules/mediawiki/furl',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }

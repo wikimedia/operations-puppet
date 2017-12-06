@@ -1,12 +1,14 @@
+# Parameters coming from explicit lookups
 cluster: appserver
+standard::has_ganglia: false
 role::lvs::realserver::pools:
   hhvm:
     lvs_name: apaches
 admin::groups:
   - deployment
   - perf-roots
-apache::mpm::mpm: worker
-mediawiki::web::mpm_config::mpm: worker
+profile::mediawiki::web::apache_mpm: worker
+role::mediawiki::webserver::tls: true
 hhvm::extra::fcgi:
   hhvm:
     mysql:
@@ -15,7 +17,9 @@ hhvm::extra::cli:
   hhvm:
     mysql:
       connect_timeout: 3000
+
+
+
+# Parameters we get from hiera autolookup
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
-role::mediawiki::webserver::tls: true
-standard::has_ganglia: false
