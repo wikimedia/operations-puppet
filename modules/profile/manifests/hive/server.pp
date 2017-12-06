@@ -24,6 +24,8 @@ class profile::hive::server(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
+        include ::profile::hive::monitoring::server
+
         nrpe::monitor_service { 'hive-server2':
             description   => 'Hive Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hive.service.server.HiveServer2"',
