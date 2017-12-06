@@ -19,5 +19,4 @@ hhvm::extra::cli:
     mysql:
       connect_timeout: 3000
 
-# Parameters we get from hiera autolookup
-nutcracker::verbosity: "4"
+profile::mediawiki::nutcracker::log_verbosity: "4"
