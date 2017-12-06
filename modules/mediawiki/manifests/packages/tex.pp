@@ -11,11 +11,16 @@ class mediawiki::packages::tex {
         'texlive-generic-extra',
         'texlive-lang-all',
         'texlive-latex-extra',
-        'texlive-math-extra',
         'texlive-pictures',
         'texlive-pstricks',
         'texlive-publishers',
     ]:
         ensure => present,
+    }
+
+    if os_version('debian >= stretch') {
+        require_package('texlive-science')
+    } else {
+        require_package('texlive-math-extra')
     }
 }
