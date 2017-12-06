@@ -7,7 +7,8 @@ class apache::logrotate(
     $period = 'daily',
     $rotate = 30,
     ) {
-
+    # The augeas rule in apache::logrotate needs /etc/logrotate.d/apache2 which
+    # is provided by apache2 package
     augeas { 'Apache2 logs':
         lens    => 'Logrotate.lns',
         incl    => '/etc/logrotate.d/apache2',
@@ -15,5 +16,6 @@ class apache::logrotate(
                     "set rule/schedule ${period}",
                     "set rule/rotate ${rotate}",
         ],
+        require => Package['apache2']
     }
 }

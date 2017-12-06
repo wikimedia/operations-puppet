@@ -3,4 +3,4 @@ admin::groups:
   - deployment
 
 apache::logrotate::period: 'daily'
-apache::logrotate::rotate: 30
+apache::log_retention_days: 30

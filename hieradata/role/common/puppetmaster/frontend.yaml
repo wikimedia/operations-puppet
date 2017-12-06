@@ -9,7 +9,7 @@ profile::base::domain_search:
   - ulsfo.wmnet
 confd::monitor_files: false
 apache::logrotate::period: "daily"
-apache::logrotate::rotate: 7
+apache::log_retention_days: 7
 cluster: puppet
 # Conftool
 profile::conftool::master::sync_dir: "/etc/conftool/data"

@@ -3,5 +3,5 @@ admin::groups:
   - labtest-roots
 
 memcached::ip: 127.0.0.1
-apache::logrotate::rotate: 12
+apache::log_retention_days: 12
 profile::backup::host::enable: false

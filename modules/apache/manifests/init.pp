@@ -9,7 +9,7 @@
 # The module provides backwards-compatibility with Apache 2.2 by enabling
 # mod_filter and mod_access_compat by default.
 #
-class apache {
+class apache($log_rotation_period='daily', $log_retention_days=30) {
     include ::apache::mod::access_compat  # enables allow/deny syntax in 2.4
     include ::apache::mod::filter         # enables AddOutputFilterByType in 2.4
     include ::apache::monitoring          # send metrics to Diamond and Ganglia
@@ -83,9 +83,8 @@ class apache {
 
     # manage logrotate periodicity and keeping period
     #
-    # The augeas rule in apache::logrotate needs /etc/logrotate.d/apache2 which
-    # is provided by apache2 package
-    class {'::apache::logrotate':
-        require => Package['apache2'],
+    class { '::apache::logrotate':
+        rotate => $log_retention_days,
+        period => $log_rotation_period,
     }
 }

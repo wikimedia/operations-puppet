@@ -4,7 +4,7 @@ admin::groups:
   - phabricator-roots
 standard::has_ganglia: false
 apache::logrotate::period: "daily"
-apache::logrotate::rotate: 3
+apache::log_retention_days: 3
 
 phabricator_active_server: 'phab1001'
 phabricator_active_server_fqdn: 'phab1001.eqiad.wmnet'

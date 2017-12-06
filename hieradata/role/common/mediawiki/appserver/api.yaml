@@ -15,7 +15,7 @@ hhvm::extra::cli:
   hhvm:
     mysql:
       connect_timeout: 3000
-apache::logrotate::rotate: 12
+apache::log_retention_days: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
 standard::has_ganglia: false

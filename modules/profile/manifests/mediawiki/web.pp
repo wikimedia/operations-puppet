@@ -4,6 +4,7 @@
 class profile::mediawiki::web(
     $apache_mpm = hiera('profile::mediawiki::web::apache_mpm'),
     $workers_limit = hiera('profile::mediawiki::web::workers_limit', undef),
+    $log_retention_days = hiera('profile::mediawiki::web::log_retention_days'),
 ) {
     tag 'mediawiki', 'mw-apache-config'
 
@@ -15,7 +16,9 @@ class profile::mediawiki::web(
         mpm => $apache_mpm
     }
 
-    class { '::apache': }
+    class { '::apache':
+        log_retention_days => $log_retention_days,
+    }
 
     class { '::mediawiki::users':
         web => $user,
