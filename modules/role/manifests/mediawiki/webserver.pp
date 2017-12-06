@@ -1,7 +1,7 @@
 class role::mediawiki::webserver {
     include ::role::mediawiki::common
     include ::apache::monitoring
-    include ::mediawiki::web
+    include ::profile::mediawiki::web
     include ::mediawiki::web::sites
     include ::mediawiki::packages::fonts
     # FIXME: These should all be merged into the generic sites class!
