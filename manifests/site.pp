@@ -2183,6 +2183,10 @@ node 'tureis.codfw.wmnet' {
     role(failoid)
 }
 
+# to be decom'ed (T175150#3818319)
+node 'stat1003.eqiad.wmnet' {
+    role(spare)
+}
 # stat1004 contains all the tools and libraries to access
 # the Analytics Cluster services, but should not be used
 # for local data processing.
