@@ -1,0 +1,8 @@
+Code-Review+1: Legoktm <legoktm@member.fsf.org>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 06 Dec 2017 00:00:16 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/395672
+Project: operations/puppet
+Branch: refs/heads/production
