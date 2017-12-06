@@ -3,6 +3,7 @@ admin::groups:
   - contint-admins
   - contint-roots
 cluster: misc
+standard::has_ganglia: false
 contactgroups: 'admins,contint'
 
 profile::ci::jenkins::prefix: '/ci'

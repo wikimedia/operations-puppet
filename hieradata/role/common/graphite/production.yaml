@@ -1,4 +1,4 @@
 admin::groups:
   - perf-roots
-
+standard::has_ganglia: false
 graphite::web::uwsgi_processes: 16
