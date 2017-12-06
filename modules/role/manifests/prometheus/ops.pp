@@ -453,6 +453,23 @@ class role::prometheus::ops {
         site => $::site,
     }
 
+    $ircd_jobs = [
+      {
+        'job_name'        => 'ircd',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/ircd_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "ircd_${::site}":
+        dest       => "${targets_path}/ircd_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::mw_rc_irc',
+        port       => '9197',
+    }
+
     # Job definition for nginx exporter
     $nginx_jobs = [
       {
@@ -662,7 +679,7 @@ class role::prometheus::ops {
             $mysql_jobs, $varnish_jobs, $memcached_jobs, $hhvm_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
-            $redis_jobs, $mtail_jobs, $ldap_jobs,
+            $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs,
         ),
         global_config_extra   => $config_extra,
     }
