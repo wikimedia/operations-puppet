@@ -13,6 +13,32 @@ SECRET_KEY = '<%= @secret_key %>'
 # you want to explore are managed directly in the web UI
 SQLALCHEMY_DATABASE_URI = '<%= @database_uri %>'
 
+<% if @auth_type -%>
+from flask_appbuilder.security.manager import <%= @auth_type %>
+AUTH_TYPE = <%= @auth_type %>
+<% if @auth_type == 'AUTH_REMOTE_USER' -%>
+ENABLE_PROXY_FIX = True
+
+# Set environ['REMOTE_USER'] = HTTP_X_REMOTE_USER header.
+# Make sure your HTTP proxy that handles athentication
+# sets the X-Remote-User header properly.
+class RemoteUserMiddleware(object):
+    def __init__(self, app):
+        self.app = app
+    def __call__(self, environ, start_response):
+        user = environ.pop('HTTP_X_REMOTE_USER', None)
+        environ['REMOTE_USER'] = user
+        return self.app(environ, start_response)
+
+ADDITIONAL_MIDDLEWARE = [RemoteUserMiddleware, ]
+<% end -%>
+
+<% end -%>
+<% if @auth_settings -%>
+<% @auth_settings.keys.sort.each do |key| -%>
+<%= key %> = '<%= @auth_settings[key] %>'
+<% end -%>
+<% end -%>
 
 <%
 # If @password_mapping is given, output a python dict
@@ -26,7 +52,7 @@ SQLALCHEMY_DATABASE_URI = '<%= @database_uri %>'
 if @password_mapping
 -%>
 password_mapping = {
-<% @password_mapping.keys.sort do |uri| -%>
+<% @password_mapping.keys.sort.each do |uri| -%>
     '<%= uri %>': '<%= @password_mapping[uri] %>',
 <% end -%>
 }
@@ -35,3 +61,4 @@ def lookup_password(uri):
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 
 <% end -%>
+
