@@ -56,14 +56,6 @@ class role::puppetmaster::puppetdb (
         srange => '$CUMIN_MASTERS',
     }
 
-    # Temporarily allow puppetcompiler1001 to puppetdb nginx T177254
-    # Remove after upgrading to puppet 4
-    ferm::service { 'puppetdb-puppetcompiler1001':
-        proto  => 'tcp',
-        port   => 443,
-        srange => '(10.64.32.17 2620:0:861:103:10:64:32:17)',
-    }
-
     # Tuning
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure  => 'present',
