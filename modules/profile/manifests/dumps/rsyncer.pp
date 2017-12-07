@@ -14,7 +14,8 @@ class profile::dumps::rsyncer(
 
     $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
 
-    $publicdir = "${mntpoint}/xmldatadumps/public"
+    $xmldumpsdir = "${mntpoint}/xmldatadumps"
+    $publicdir = "${xmldumpsdir}/public"
     $otherdir = "${publicdir}/other"
 
     class {'::dumps::rsync::common':
@@ -61,5 +62,10 @@ class profile::dumps::rsyncer(
         user        => $user,
         group       => $group,
         otherdir    => $otherdir,
+    }
+
+    class {'::dumps::web::dumplists':
+        xmldumpsdir => $xmldumpsdir,
+        user        => $user,
     }
 }
