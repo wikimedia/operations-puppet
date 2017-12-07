@@ -2,6 +2,7 @@ cluster: misc
 admin::groups:
 - ores-admin
 standard::has_ganglia: false
+profile::ores::web::workers: 230
 profile::ores::web::redis_host: "ores1001.eqiad.wmnet"
 profile::ores::celery::workers: 150
 profile::ores::celery::queue_maxsize: 600

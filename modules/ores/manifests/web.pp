@@ -1,7 +1,7 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
 class ores::web(
-    $workers_per_core = 2,
+    $web_workers = 48,
     $redis_host = '127.0.0.1',
     $redis_password = undef,
     $port = 8081,
@@ -23,7 +23,6 @@ class ores::web(
         'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
     ]
 
-    $processes = $::processorcount * $workers_per_core
     service::uwsgi { 'ores':
         port            => $port,
         sudo_rules      => $sudo_rules,
@@ -35,7 +34,7 @@ class ores::web(
             need-plugins  => 'python3,stats_pusher_statsd',
             venv          => $ores::base::venv_path,
             logformat     => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
-            processes     => $processes,
+            processes     => $web_workers,
             add-header    => 'Access-Control-Allow-Origin: *',
             max-requests  => 200,
             stats-push    => "statsd:${graphite_server}:8125,ores.${::hostname}.uwsgi",
