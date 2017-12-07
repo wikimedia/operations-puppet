@@ -1896,6 +1896,11 @@ node /^ores100[1-9]\.eqiad\.wmnet$/ {
     role(ores::stresstest)
 }
 
+# not used yet - stalled until stress test is over T165170
+node /^ores200[1-9]\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
     role(ores::redis)
     include ::standard
