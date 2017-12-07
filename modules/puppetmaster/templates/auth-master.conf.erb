@@ -65,9 +65,6 @@
 path ~ ^/catalog/([^/]+)$
 method find
 allow $1
-# temporarily allow puppetcompiler1001 to fetch all catalogs T177254
-# remove after upgrading masters to puppet 4
-allow puppetcompiler1001.eqiad.wmnet
 
 # allow nodes to retrieve their own node definition
 path ~ ^/node/([^/]+)$

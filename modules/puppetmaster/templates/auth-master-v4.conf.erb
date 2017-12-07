@@ -67,7 +67,6 @@ method find
 allow *
 
 # allow nodes to retrieve their own catalog
-# allow puppetcompiler1001 to retrieve all catalogs for diffing
 path ~ ^/puppet/v3/catalog/([^/]+)$
 method find
 allow $1
