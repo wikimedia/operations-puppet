@@ -932,8 +932,7 @@ node 'eventlog1001.eqiad.wmnet' {
 
 # EventLogging Analytics does not (yet?) run in codfw.
 node 'eventlog2001.codfw.wmnet' {
-    include ::standard
-    include ::base::firewall
+    role(spare::system)
 }
 
 # virtual machine for mailman list server
