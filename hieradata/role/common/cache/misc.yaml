@@ -275,6 +275,8 @@ cache::req_handling:
       '^/v2/stream/.+':
         director: 'eventstreams'
         caching: 'pipe'
+  superset.wikimedia.org:
+    director: 'thorium'
   ticket.wikimedia.org:
     director: 'mendelevium'
     caching: 'pass'
