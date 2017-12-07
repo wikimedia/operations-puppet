@@ -1,4 +1,4 @@
-rootLogger: INFO, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
+rootLogger: INFO, file<% if @logstash_host %>, ship_to_logstash<% end %>
 logger:
   # log action execution errors for easier debugging
   action: DEBUG
@@ -63,8 +63,8 @@ appender:
   # ship_to_logstash needs to also be added to rootLogger to actually ship logs
   ship_to_logstash:
     type: biz.paluch.logging.gelf.log4j.GelfLogAppender
-    host: "udp:<%= @graylog_host %>"
-    port: <%= @graylog_port %>
+    host: "udp:<%= @logstash_host %>"
+    port: <%= @logstash_gelf_port %>
     originHost: <%= @hostname %>
     facility: elasticsearch
     extractStackTrace: true
