@@ -1977,8 +1977,7 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
 }
 
 node 'puppetcompiler1001.eqiad.wmnet' {
-    include ::standard
-    include ::base::firewall
+    role(test)
     interface::add_ip6_mapped { 'main': }
 }
 
