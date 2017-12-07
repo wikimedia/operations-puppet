@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!-- This file is maintained by puppet!! -->
+<!-- modules/dumps/files/web/html/pageviews_readme.html -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analytics: Pageviews</title>
+    <link rel="stylesheet" type="text/css" href="/dumps.css" />
+</head>
+<body>
+    <div id="globalWrapper">
+        <div id="content">
+            <h1>Analytics Datasets: Pageviews</h1>
+
+            <p>
+                Statistics compiled using the current <a href="https://meta.wikimedia.org/wiki/Research:Page_view" target="_blank">Pageview Definition</a>
+                are available to download here, since May 2015.
+                They are also available in a highly compressed format that preserves all data:
+                <a href="/other/pagecounts-ez">pagecounts-ez</a>. 
+                The <strong>pagecounts-ez</strong> format is ideal for anyone looking to
+                download lots of pageview data, whereas the <strong>pageviews</strong> data
+                is easier to use if you only want to look at a few hours.
+            </p>
+
+            <p>
+                The definition of a Page View linked above is stable, but may change slightly
+                if we encounter problems with over or under counting.  In summary, a Page View
+                is a response from our servers with a status of 200 or 304 (OK or Not Modified),
+                and rendering content under the /wiki/ path or a language variant such as /zh-hant/.
+                Many other details factor into this count, and the logic is slightly different for
+                our mobile apps and the mobile and desktop sites.  All that is explained in the definition.
+            </p>
+
+            <h2><a href="/other/pageviews">Download Pageviews Data</a></h2>
+
+            <p>
+                Other ways to access the data are detailed in the definition.
+                For example, we have a
+                <a href="https://wikimedia.org/api/rest_v1/#!/Pageviews_data/get_metrics_pageviews" target="_blank">Pageview API</a>
+                that allows programatic access to smaller amounts of data.
+                And <a href="http://tools.wmflabs.org/pageviews" target="_blank">tools to explore the data</a>.
+            </p>
+
+            <h4>back to all <a href="/other/analytics">Analytics Datasets</a></h4>
+            <div class="visualClear"></div>
+            <hr/>
+        </div>
+    </div>
+</body>
+
+</html>
