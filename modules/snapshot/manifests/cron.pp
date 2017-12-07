@@ -20,7 +20,6 @@ class snapshot::cron(
     class { '::snapshot::cron::pagetitles': user   => $miscdumpsuser }
     class { '::snapshot::cron::cirrussearch': user   => $miscdumpsuser }
     class { '::snapshot::cron::categoriesrdf': user   => $miscdumpsuser }
-    class { '::snapshot::cron::dumplists': user   => $depr_user }
     class { '::snapshot::cron::dump_global_blocks': user   => $miscdumpsuser }
     class { '::snapshot::cron::wikidatadumps':
         user  => $depr_user,

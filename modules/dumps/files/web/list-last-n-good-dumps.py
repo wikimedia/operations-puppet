@@ -3,18 +3,15 @@ generate a list of directories and/or files of the last
 so many good dump runs
 """
 import re
-import urllib
 import sys
 import getopt
-import ConfigParser
-from subprocess import Popen, PIPE
 import os
-from os.path import exists, isdir
+from subprocess import Popen, PIPE
 
 
 #############################################################
 # This file is maintained by puppet!
-# puppet:///modules/snapshot/cron/list-last-n-good-dumps.py
+# puppet:///modules/dumps/web/list-last-n-good-dumps.py
 #############################################################
 
 
@@ -27,63 +24,9 @@ class DumpListError(Exception):
     pass
 
 
-class WikiConfig(object):
-    """configuration settings from file:
-    path to temp directory, where local cache is stored
-    path to public directory, where output files are written
-    path to list of all wikis, one per line"""
-    def __init__(self, configfile):
-        home = os.path.dirname(sys.argv[0])
-        overrides = None
-        if ':' in configfile:
-            configfile, overrides = configfile.split(':', 1)
-        files = [
-            os.path.join(home, configfile),
-            "/etc/wikidump.conf",
-            os.path.join(os.getenv("HOME"), ".wikidump.conf")]
-        self.defaults = {
-            # "wiki": {
-            "dblist": "/dumps/all.dblist",
-            # "output": {
-            "public": "/dumps/public",
-            "temp": "/dumps/temp",
-        }
-        self.conf = ConfigParser.SafeConfigParser()
-        self.conf.read(files)
-        if not self.conf.has_section('output'):
-            self.conf.add_section('output')
-        if not self.conf.has_section('wiki'):
-            self.conf.add_section('wiki')
-
-        self.public_dir = self.get_with_overrides("output", "public", overrides)
-        self.temp_dir = self.get_with_overrides("output", "temp", overrides)
-        dblist_path = self.get_with_overrides("wiki", "dblist", overrides)
-
-        db_list = sorted([db.strip() for db in open(dblist_path).readlines()])
-        self.db_list = [dbname for dbname in db_list if dbname]
-
-    def get_with_overrides(self, section, setting, overrides):
-        """
-        get setting from config file, checking overrides first for
-        setting, falling back to section otherwise
-        """
-        if (overrides and self.conf.has_section(overrides) and
-                self.conf.has_option(overrides, setting)):
-            return self.conf.get(overrides, setting)
-        elif self.conf.has_option(section, setting):
-            return self.conf.get(section, setting)
-        else:
-            return self.defaults[setting]
-
-
-def get_projectlist_copy_fname():
-    """returns name of local cache of the project list"""
-    return "all.dblist"
-
-
 def get_dir_status(dir_to_check):
     """read and return text from the status html file for a given dump"""
-    if isdir(dir_to_check):
+    if os.path.isdir(dir_to_check):
         try:
             statusfile = os.path.join(dir_to_check, "status.html")
             fdesc = open(statusfile, "r")
@@ -153,129 +96,6 @@ def is_in_progress(dir_to_check):
     return bool("in-progress" in text)
 
 
-class ProjectList(object):
-    """
-    manage list of projects (wikis), retrieve from
-    flat file or via a url
-    """
-    def __init__(self, config, paths):
-        self.config = config
-        self.paths = paths
-
-    def get_projlist_from_urlorconf(self, projects_url):
-        """try to retrieve the list of known projects from a specified
-        url; if there was no url given, try contents read from the filename
-        given for 'dblist' in the config file"""
-        contents = ""
-        if projects_url:
-            try:
-                # e.g. http://noc.wikimedia.org/conf/all.dblist
-                infd = urllib.urlopen(projects_url)
-                contents = infd.read()
-                infd.close()
-            except Exception:
-                sys.stderr.write("Warning: Failed to retrieve project"
-                                 " list via http, using old list\n")
-
-        elif self.config.db_list:
-            try:
-                contents = '\n'.join(self.config.db_list) + '\n'
-            except Exception:
-                sys.stderr.write("Warning: Failed to retrieve good"
-                                 " project list from %s as specified"
-                                 " in config file, using old list\n"
-                                 % self.config.db_list)
-
-        return contents
-
-    def get_proj_list_from_old_file(self):
-        """We try to save a temp copy of the list of known projects
-        on every run; retrieve that copy"""
-
-        contents = ""
-
-        tempdir = self.get_tempdir()
-        dblist = os.path.join(tempdir, get_projectlist_copy_fname())
-
-        # read previous contents, if any...
-        try:
-            infd = open(dblist, "r")
-            contents = infd.read()
-            infd.close()
-        except Exception:
-            sys.stderr.write("Warning: Old project list %s from"
-                             " previous run is unavailable\n" % dblist)
-        return contents
-
-    def save_projectlist(self, contents):
-        """save local copy of the project list we presumably
-        retrieved from elsewhere"""
-        tempdir = self.get_tempdir()
-        dblist = os.path.join(tempdir, get_projectlist_copy_fname())
-
-        try:
-            # ok it passes the smell test (or we filled it with
-            # the old contents), save this as the new list
-            if not exists(tempdir):
-                os.makedirs(tempdir)
-            outfd = open(dblist, "wt")
-            outfd.write(contents)
-            outfd.close()
-        except Exception:
-            # we can still do our work so don't die, but do complain
-            sys.stderr.write("Warning: Failed to save project list"
-                             " to file %s\n" % dblist)
-
-    def load_projectlist(self, projects_url):
-        """Get and store the list of all projects known to us; this
-        includes closed projects but may not include all projects
-        that ever existed, for example tlhwik."""
-
-        projects = []
-        old_contents = self.get_proj_list_from_old_file()
-        if len(old_contents):
-            old_projects = old_contents.splitlines()
-        else:
-            old_projects = []
-
-        contents = self.get_projlist_from_urlorconf(projects_url)
-        if len(contents):
-            projects = contents.splitlines()
-        else:
-            projects = []
-
-        # check that this list is not comlete crap compared to the
-        # previous list, if any, before we get started. arbitrarily:
-        # a change of more than 5% in size
-        if (len(old_projects) and
-                float(len(projects)) / float(len(old_projects)) < .95):
-            sys.stderr.write("Warning: New list of projects is much"
-                             " smaller than previous run, %s"
-                             " compared to %s\n" % (len(projects),
-                                                    len(old_projects)))
-            sys.stderr.write("Warning: Using old list; remove old list"
-                             " %s to override\n"
-                             % os.path.join(self.get_tempdir(),
-                                            get_projectlist_copy_fname()))
-
-            projects = old_projects
-            contents = old_contents
-
-        if not len(projects):
-            raise DumpListError("List of projects is empty, giving up")
-
-        self.save_projectlist(contents)
-        return projects
-
-    def get_tempdir(self):
-        """returns the full path to a directory for temporary files"""
-        tempdir = self.config.temp_dir
-        if not tempdir:
-            # FIXME
-            tempdir = self.paths.get_abs_outdirpath('tmp')
-        return tempdir
-
-
 class OutputPaths(object):
     """
     keep track of all output file templates and names
@@ -283,10 +103,11 @@ class OutputPaths(object):
     this includes dir listings, file listings, rsync inclusion listings,
     temp files
     """
-    def __init__(self, config, templs, output_dir):
-        self.config = config
+    def __init__(self, templs, dumpsdir, output_dir, match):
         self.templs = templs
+        self.dumpsdir = dumpsdir
         self.output_dir = output_dir
+        self.match = match
         if self.output_dir and self.output_dir.endswith(os.sep):
             self.output_dir = self.output_dir[:-1 * len(os.sep)]
         self.types = {'dirlist': 'dir_list_templ',
@@ -296,7 +117,7 @@ class OutputPaths(object):
     def get_abs_pubdirpath(self, name):
         """return full path to the location of public dumps,
         as specified in the config file for the entry 'publicdir'"""
-        return os.path.join(self.config.public_dir, name)
+        return os.path.join(self.dumpsdir, name)
 
     def get_abs_outdirpath(self, name):
         """return full path to the location where output files will
@@ -304,7 +125,7 @@ class OutputPaths(object):
         if self.output_dir:
             return os.path.join(self.output_dir, name)
         else:
-            return os.path.join(self.config.public_dir, name)
+            return os.path.join(self.dumpsdir, name)
 
     def get_list_output_path(self, num, name):
         """return full path to output file for the specific
@@ -329,6 +150,13 @@ class OutputPaths(object):
         except Exception:
             return None
 
+    def get_project_list(self):
+        """list all dump subdirs matching the given regexp"""
+        subdirs = os.listdir(self.dumpsdir)
+        return [subdir for subdir in subdirs
+                if re.match(self.match, subdir) and
+                os.path.isdir(os.path.join(self.dumpsdir, subdir))]
+
 
 class DumpList(object):
     """This class generates a list of the last n sets of XML
@@ -338,12 +166,11 @@ class DumpList(object):
     list of numbers of dumps desired, and the corresponding
     lists are produced for all dumps in one pass."""
 
-    def __init__(self, config, dumps_num_list, paths, flags):
+    def __init__(self, dumps_num_list, paths, flags):
         """constructor"""
 
-        self.config = config
         self.paths = paths
-        self.projectlist = ProjectList(config, paths)
+        self.projects = self.paths.get_project_list()
         self.dumps_num_list = dumps_num_list
         self.max_dump_num = max(self.dumps_num_list)
         self.flags = flags
@@ -357,7 +184,7 @@ class DumpList(object):
         rsync include file.
         """
         dir_to_check = self.paths.get_abs_pubdirpath(project)
-        if not exists(dir_to_check):
+        if not os.path.exists(dir_to_check):
             return [], None
 
         dirs = os.listdir(dir_to_check)
@@ -542,11 +369,11 @@ class DumpList(object):
         # for the directories of runs not in progress, we want to match all files
         self.write_dirnames(dirs, project, output_type, wildcard=True)
 
-    def write_all_lists(self, projects):
+    def write_all_lists(self):
         """for a given project, write all dirs and all files from
         the last n dumps to various files with n varying as
         specified by the user"""
-        for project in projects:
+        for project in self.projects:
             dirs, dir_in_progress = self.list_dump_for_proj(project)
             self.write_dirnames(dirs, project)
             self.write_filenames(dirs, project)
@@ -555,8 +382,8 @@ class DumpList(object):
     def strip_pubdir(self, line):
         """remove the path to the public dumps directory from
         the beginning of the suppplied line, if it exists"""
-        if line.startswith(self.config.public_dir + os.sep):
-            line = line[len(self.config.public_dir):]
+        if line.startswith(self.paths.dumpsdir + os.sep):
+            line = line[len(self.paths.dumpsdir):]
         return line
 
     def convert_fnames_for_rsyncinput(self, fpath):
@@ -581,7 +408,7 @@ class DumpList(object):
         by passing the file list to rsync --list-only"""
         command = ["/usr/bin/rsync", "--list-only", "--no-h",
                    "--files-from", fpath + ".relpath",
-                   self.config.public_dir,
+                   self.paths.dumpsdir,
                    "dummy", ">", fpath + ".rsync"]
         command_string = " ".join(command)
         proc = Popen(command_string, shell=True, stderr=PIPE)
@@ -635,21 +462,21 @@ class DumpList(object):
             # in the meantime, they  aren't interrupted
             for path in output_paths:
                 if path is not None:
-                    if exists(path + ".tmp"):
-                        if exists(path):
+                    if os.path.exists(path + ".tmp"):
+                        if os.path.exists(path):
                             os.rename(path, path + ".old")
                         os.rename(path + ".tmp", path)
                     else:
                         raise DumpListError("No output file %s created. "
                                             "Something is wrong." % path + ".tmp")
 
-    def gen_dumpfile_dirlists(self, projects):
+    def gen_dumpfile_dirlists(self):
         """produce all files of dir lists and file lists from
         all desired dump runs for all projects"""
         self.truncate_outfiles()
         if self.flags['top_level']:
             self.write_toplevelfiles()
-        self.write_all_lists(projects)
+        self.write_all_lists()
         self.rename_files()
         if self.flags['rsynclists']:
             self.write_rsyncinput_lists()
@@ -659,29 +486,28 @@ def usage(message=None):
     """display usage message, call when we encounter an options error"""
     if message:
         sys.stderr.write(message + "\n\n")
-    usage_message = """Usage: list-last-n-good-dumps.py [--dumpsnumber n]
-                [--configfile filename] [--relpath] [--rsynclists]
+    usage_message = """Usage: list-last-n-good-dumps.py --dumpsdir <path> --outputdir <path>
+                [--dumpsnumber n] [--relpath] [--rsynclists]
                 [--dirlisting filename-format] [--filelisting filename-format]
                 [--rsynclisting filename-format]
 
 Options:
 
-configfile  -- path to config file used to generate dumps
-               default value: wikidump.conf
+dumpsdir    -- directory under which dumps of all wikis reside. tree should
+               look like: dumpsdir/wikiname/YYYYMMDD
+               directories under dumpsdir which have no subdir with name in
+               the format YYYYMMDD will be silently ignored.
+               default value: none
+               default value: none
 dumpsnumber -- number of dumps to list; this may be one number, in which case
                one set of files will be produced, or it can be a
                comma-separated list of numbers, in which case a set of files
                will be produced for each number of dumps
                default value: 5
-outputdir   -- directory in which to write all file listings; otherwise they
-               will be written to the value specified in the config file for
-               publicdir
-projectsurl -- use this url to retrieve the list of projects rather than the
-               value specified for 'dblist' in the config file.  Example:
-               http://localhost/dumpsconfig/all.dblist
+outputdir   -- directory in which to write all file listings
+               default value: none
 relpath     -- generate all lists with paths relative to the public directory
-               specified in the configuration file, instead of writing out
-               the full path
+               specified, instead of writing out the full path
                default value: False
 rsynclists  -- for each file that is produced, write a second file with the
                same name but ending in \".rsync\", which is produced by
@@ -708,9 +534,10 @@ rsynclisting -- produce a file named with the specified format listing the
 
 Example use:
 python list-last-n-good-dumps.py --dumpsnumber 3,5
+               --dumpsdir /data/xmldatadumps/public
+               --outputdir /data/xmldatadumps/public
                --dirlisting rsync-dirs-last-%%s.txt
-               --configfile /backups/wikidump.conf.testing --rsynclists
-               --relpath
+               --rsynclists --relpath
 """
     sys.stderr.write(usage_message)
     sys.exit(1)
@@ -775,17 +602,16 @@ def do_main():
     load list of known wikis,
     generate list of files and/or dirs of good dump runs"""
 
-    configfile = "wikidump.conf"
     dumps_num = "5"
+    dumpsdir = None
     flags = get_flag_defaults()
+    subdirs = '[a-z0-9]*wik[a-z0-9]*'
     templs = {}
-    projects_url = None
     output_dir = None
 
     try:
         (options, remainder) = getopt.gnu_getopt(
-            sys.argv[1:], "", ['configfile=', 'dumpsnumber=',
-                               'outputdir=', 'projectlisturl=',
+            sys.argv[1:], "", ['dumpsnumber=', 'dumpsdir=', 'outputdir=',
                                'relpath', 'rsynclists',
                                'toplevel', 'dirlisting=',
                                'filelisting=', 'rsynclisting='])
@@ -796,10 +622,8 @@ def do_main():
         usage("Unknown option specified: %s" % remainder[0])
 
     for (opt, val) in options:
-        if opt == "--configfile":
-            configfile = val
-        elif opt == "projectlisturl":
-            projects_url = val
+        if opt == '--dumpsdir':
+            dumpsdir = val
         elif opt == '--dumpsnumber':
             dumps_num = val
         elif opt == '--outputdir':
@@ -814,10 +638,10 @@ def do_main():
 
     check_options(dumps_num_list, templs)
 
-    config = WikiConfig(configfile)
-    dlist = DumpList(config, dumps_num_list, OutputPaths(config, templs, output_dir), flags)
-    projects = dlist.projectlist.load_projectlist(projects_url)
-    dlist.gen_dumpfile_dirlists(projects)
+    dlist = DumpList(dumps_num_list,
+                     OutputPaths(templs, dumpsdir, output_dir, subdirs),
+                     flags)
+    dlist.gen_dumpfile_dirlists()
 
 
 if __name__ == "__main__":
