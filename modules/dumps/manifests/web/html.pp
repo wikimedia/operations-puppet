@@ -44,14 +44,43 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/pagecounts-ez_index.html',
     }
 
-    file { "${publicdir}/other/analytics/index.html":
+
+    file { "${otherdir}/analytics/index.html":
         ensure => 'present',
-        path   => "${publicdir}/other/analytics/index.html",
+        path   => "${otherdir}/analytics/index.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/dumps/web/html/analytics_index.html',
     }
+
+    file { "${otherdir}/pageviews/readme.html":
+        ensure => 'present',
+        path   => "${otherdir}/pageviews/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/pageviews_readme.html',
+    }
+
+    file { "${otherdir}/unique_devices/readme.html":
+        ensure => 'present',
+        path   => "${otherdir}/unique_devices/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/unique_devices_readme.html',
+    }
+
+    file { "${otherdir}/mediacounts/readme.html":
+        ensure => 'present',
+        path   => "${otherdir}/mediacounts/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/mediacounts_readme.html',
+    }
+
 
     file { "${otherdir}/poty/index.html":
         ensure => 'present',
