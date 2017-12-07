@@ -54,9 +54,6 @@ profile::elasticsearch::expected_nodes: 36
 # We should be able to run "OK" with 24 servers.
 profile::elasticsearch::recover_after_nodes: 24
 
-profile::elasticsearch::graylog_hosts:
-  - logstash.svc.eqiad.wmnet
-
 profile::elasticsearch::certificate_name: 'search.svc.eqiad.wmnet'
 profile::base::dns_alt_names:             'search.svc.eqiad.wmnet'
 

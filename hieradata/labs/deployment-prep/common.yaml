@@ -144,6 +144,7 @@ profile::cassandra::settings:
 "udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
 "logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
 "logstash_syslog_port": 10514
+"logstash_gelf_port": 12201
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
@@ -230,8 +231,6 @@ scap::dsh::groups:
     - deployment-elastic06
     - deployment-elastic07
 "profile::elasticsearch::cluster_name": beta-search
-"profile::elasticsearch::graylog_hosts":
-  - deployment-logstash2.deployment-prep.eqiad.wmflabs
 "profile::elasticsearch::reindex_remote_whitelist": ''
 profile::elasticsearch::search_shard_count_limit: 1000
 # By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
