@@ -1,1 +1,2 @@
 profile::ores::celery::workers: 20
+profile::ores::web::workers: 48
