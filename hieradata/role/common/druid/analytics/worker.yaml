@@ -119,6 +119,9 @@ profile::druid::historical::env:
 # --- Druid MiddleManager
 profile::druid::middlemanager::monitoring_enabled: true
 profile::druid::middlemanager::properties:
+  druid.emitter: composing
+  druid.emitter.composing.emitters: ["logging","http"]
+  druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
   druid.worker.ip: "%{::fqdn}"
   druid.worker.capacity: 12
   druid.processing.numThreads: 3
