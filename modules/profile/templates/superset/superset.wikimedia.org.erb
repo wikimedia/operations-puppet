@@ -1,0 +1,43 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerName superset.wikimedia.org
+    ServerSignature Off
+
+    # Not used since this VHost will only act as proxy,
+    # but it is needed to avoid error messages in the httpd
+    # logs and logrotate crons.
+    DocumentRoot /var/www
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    <Location />
+        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+        AuthLDAPBindPassword <%= @proxypass %>
+        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
+        Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+        # Set a header so that superset/flask can authenticate the user.
+        # This requires that middlewhere pull the HTTP_X_REMOTE_USER
+        # from the app environ and set environ['REMOTE_USER'] to it.
+        RequestHeader set X-Remote-User expr=%{REMOTE_USER}
+    </Location>
+
+    CustomLog /var/log/apache2/superset.wikimedia.org-access.log wmf
+    ErrorLog /var/log/apache2/superset.wikimedia.org-error.log
+
+    LogLevel warn
+
+    ProxyPass / http://localhost:9080/
+    ProxyPassReverse / http://localhost:9080/
+</VirtualHost>
