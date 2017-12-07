@@ -19,5 +19,6 @@ class profile::analytics::database::meta::backup(
     mariadb::mylvmbackup { 'analytics-meta':
         dest   => $dest,
         minute => 0,
+        lvname => 'mysql',
     }
 }

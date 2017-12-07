@@ -39,6 +39,7 @@ define mariadb::mylvmbackup(
     $lvname   = 'mariadb',
     $mountdir = "/var/cache/mylvmbackup/mnt/${title}",
     $socket   = '/tmp/mysql.sock',
+    $mycnf    = '/etc/my.cnf',
     $hour     = undef,
     $minute   = undef,
     $month    = undef,
@@ -47,7 +48,7 @@ define mariadb::mylvmbackup(
     $ensure   = 'present'
 )
 {
-    require_package('mylvmbackup')
+    require_package('mylvmbackup', 'libfile-copy-recursive-perl')
 
     if !defined(File['/var/log/mylvmbackup']) {
         file { '/var/log/mylvmbackup':
@@ -97,7 +98,7 @@ define mariadb::mylvmbackup(
     # PATH seems to be funky in flock subshell(?), and mylvmbackup runs
     # commands like lvm and mount unqualfied.  Reconstruct PATH inside
     # of the flock command appropriately.
-    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c 'PATH=/usr/bin:/sbin:/bin /usr/bin/mylvmbackup --socket ${socket} --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none'  >>/var/log/mylvmbackup/${title}.log 2>&1"
+    $command = "/usr/bin/flock -n /var/lock/mylvmbackup-${title} -c 'PATH=/usr/bin:/sbin:/bin /usr/bin/mylvmbackup --mycnf ${mycnf} --socket ${socket} --hooksdir ${hooksdir} --vgname ${vgname} --lvname ${lvname} --mountdir ${mountdir} --backuptype none'  >>/var/log/mylvmbackup/${title}.log 2>&1"
     cron { "mylvmbackup-${title}":
         ensure   => $ensure,
         command  => $command,
