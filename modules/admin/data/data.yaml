@@ -648,7 +648,7 @@ groups:
     members: [hoo]
     privileges: ['ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/dmesg *',
-                 '(syslog) NOPASSWD: ALL']
+                 'ALL = (syslog) NOPASSWD: ALL']
 
 users:
   rush:
