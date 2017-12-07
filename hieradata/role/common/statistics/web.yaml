@@ -8,3 +8,5 @@ profile::statistics::web::geowiki_host: 'stat1006.eqiad.wmnet'
 # Database password will be filled added in profile::superset from the
 # profile::superset::database_password hiera variable stored in the private repo.
 profile::superset::database_uri: mysql://superset@analytics1003.eqiad.wmnet/superset
+profile::superset::workers: 4
+profile::superset::ldap_proxy_enabled: true
