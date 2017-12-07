@@ -25,6 +25,7 @@ class kibana (
         content => ordered_yaml({
             'kibana.defaultAppId' => $default_app_id,
             'logging.quiet'       => true,
+            'server.maxPayloadBytes' => 2097152,
         }),
         mode    => '0444',
         require => Package['kibana'],
