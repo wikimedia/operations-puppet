@@ -9,6 +9,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
     # --randomness should always be roughly #processes + 2 (it needs to be > #processes,
     # but making it too large will hinder the most lagged wikis from getting priority).
     $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
+    $test_dispatch_log_file = '/var/log/wikidata/dispatchChanges-testwikidatawiki.log'
 
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
@@ -20,7 +21,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure_testwiki,
-        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >/dev/null 2>&1',
+        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
     }
