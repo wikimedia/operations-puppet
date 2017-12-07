@@ -49,6 +49,43 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/analytics_index.html',
     }
 
+    file { "${miscdatasetsdir}/pageviews/readme.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/pageviews/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/pageviews_readme.html',
+    }
+
+    file { "${miscdatasetsdir}/unique_devices/readme.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/unique_devices/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/unique_devices_readme.html',
+    }
+
+    file { "${miscdatasetsdir}/mediacounts/readme.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/mediacounts/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/mediacounts_readme.html',
+    }
+
+    file { "${miscdatasetsdir}/clickstream/readme.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/clickstream/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/clickstream_readme.html',
+    }
+
+
     file { "${miscdatasetsdir}/poty/index.html":
         ensure => 'present',
         path   => "${miscdatasetsdir}/poty/index.html",
