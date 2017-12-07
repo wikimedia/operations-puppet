@@ -33,7 +33,7 @@ class profile::superset(
     $database_uri      = hiera('profile::superset::database_uri', 'sqlite:////var/lib/superset/superset.db'),
     $database_password = hiera('profile::superset::database_password', undef),
     $admin_user        = hiera('profile::superset::admin_user', 'admin'),
-    $admin_password    = hiera('profile::superset::admin_pass', 'admin'),
+    $admin_password    = hiera('profile::superset::admin_password', 'admin'),
     $secret_key        = hiera('profile::superset::secret_key', 'not_really_a_secret_key'),
     $password_mapping  = hiera('profile::superset::password_mapping', undef),
     $statsd            = hiera('statsd', undef),
