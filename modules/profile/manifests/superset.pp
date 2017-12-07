@@ -67,6 +67,7 @@ class profile::superset(
     }
     else {
         $auth_type = undef
+        $auth_settings = undef
     }
 
     if $::realm == 'production' {
