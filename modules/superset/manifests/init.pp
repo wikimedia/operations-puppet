@@ -4,6 +4,16 @@
 # If you are providing a custom $database_uri, you must ensure that the database exists
 # and the configured db user/pass in the URI can write to that database.
 # Tables will be auto created.
+
+# An admin user with $admin_user and $admin_password will be created for you in the
+# database.  However, if you are using a custom $auth_type, this admin user will not
+# be useable.  To set up an admin user for your auth type,, run the
+# fabmanager create-user command and add a user with details that match the user's account
+# in whatever alternative auth you are using, minus the password. E.g.:
+# /srv/deployment/analytics/superset/venv/bin/fabmanager create-admin --app superset --username Ottomata --email otto@wikimedia.org --firstname Andrew --lastname Otto --password BLANK
+# This should match exactly the user in your alternative auth (e.g. LDAP),
+# except for the password.  The password here does not matter, as the value stored in the
+# database will not be used for authentication with your alternative auth type.
 #
 # == Parameters
 #
@@ -31,6 +41,12 @@
 #   passwords to external databases to be provided via configuration,
 #   rather than the web UI.
 #
+# [*auth_type*]
+#   An auth type from flask_appbuilder.security.manager.
+#
+# [*auth_settings*]
+#   Hash of additional auth settings to render in superset_config.py
+#
 # [*statsd*]
 #   statsd host:port
 #
@@ -40,22 +56,29 @@
 class superset(
     $port              = 9080,
     $database_uri      = 'sqlite:////var/lib/superset/superset.db',
-    $workers           = 4,
+    $workers           = 1,
     $admin_user        = 'admin',
     $admin_password    = 'admin',
     $secret_key        = 'not_really_a_secret_key',
     $password_mapping  = undef,
+    $auth_type         = undef,
+    $auth_settings     = undef,
     $statsd            = undef,
     $deployment_user   = 'analytics_deploy',
 ) {
     requires_os('debian >= jessie')
-    require_package('python', 'virtualenv', 'firejail')
+    require_package(
+        'python',
+        'virtualenv',
+        'firejail',
+        # superset runs gunicorn with gevent,
+        # use debian provided python-gevent.
+        'python-gevent'
+    )
 
     $deployment_dir = '/srv/deployment/analytics/superset/deploy'
     $virtualenv_dir = '/srv/deployment/analytics/superset/venv'
 
-    # superset runs gunicorn with gevent, use debian provided python-gevent.
-    require_package('python-gevent')
 
     scap::target { 'analytics/superset/deploy':
         deploy_user  => $deployment_user,
