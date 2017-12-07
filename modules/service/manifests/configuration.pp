@@ -49,9 +49,9 @@ class service::configuration(
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,
-    $logstash_host = 'localhost',
-    $logstash_port = 12201,
-    $logstash_port_logback = 11514,
+    $logstash_host = hiera('logstash_host', 'localhost'),
+    $logstash_port = hiera('logstash_gelf_port', 12201),
+    $logstash_port_logback = hiera('logstash_logback_port', 11514),
     $log_dir       = '/srv/log',
     $use_dev_pkgs  = false,
 ){

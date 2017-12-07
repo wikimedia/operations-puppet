@@ -1,3 +1,2 @@
 service::configuration::http_proxy: "http://url-downloader.%{::site}.wikimedia.org:8080"
 service::configuration::statsd_host: statsd.eqiad.wmnet # statsd is (still) eqiad-only
-service::configuration::logstash_host: logstash.svc.eqiad.wmnet # logstash is (still) eqiad-only

@@ -9,7 +9,6 @@ service::configuration::mwapi_uri: http://deployment-mediawiki04.deployment-prep
 service::configuration::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet
-service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
 profile::changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
@@ -144,6 +143,7 @@ profile::cassandra::settings:
 "udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
 "logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
 "logstash_syslog_port": 10514
+"logstash_logback_port": 11514
 "logstash_gelf_port": 12201
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
