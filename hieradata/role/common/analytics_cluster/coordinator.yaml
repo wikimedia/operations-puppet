@@ -8,6 +8,6 @@ profile::analytics::database::meta::monitoring_enabled: true
 profile::oozie::server::monitoring_enabled: true
 
 # Following Cloudera recommandations for ~20 users
-profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/hive/prometheus_hive_metastore_jmx_exporter.yaml'
-profile::hive::client::hive_server_opts: '-Xms4g -Xmx6g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:51010:/etc/hive/prometheus_hive_server_jmx_exporter.yaml'
+profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g'
+profile::hive::client::hive_server_opts: '-Xms4g -Xmx6g'
 profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
