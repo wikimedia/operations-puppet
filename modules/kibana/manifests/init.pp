@@ -23,8 +23,9 @@ class kibana (
         owner   => 'root',
         group   => 'root',
         content => ordered_yaml({
-            'kibana.defaultAppId' => $default_app_id,
-            'logging.quiet'       => true,
+            'kibana.defaultAppId'    => $default_app_id,
+            'logging.quiet'          => true,
+            'server.maxPayloadBytes' => 2097152,
         }),
         mode    => '0444',
         require => Package['kibana'],
