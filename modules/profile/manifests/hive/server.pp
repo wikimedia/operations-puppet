@@ -9,7 +9,9 @@ class profile::hive::server(
     include ::profile::hive::client
 
     # Setup hive-server
-    class { '::cdh::hive::server': }
+    class { '::cdh::hive::server':
+        port => 10000,
+    }
 
     # Use jmxtrans for sending metrics
     class { '::cdh::hive::jmxtrans::server':
