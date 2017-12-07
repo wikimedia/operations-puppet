@@ -517,6 +517,7 @@ conftool_prefix: "/conftool/v1"
 # Logging: logstash, udp2log
 logstash_host: "logstash.svc.eqiad.wmnet"
 logstash_syslog_port: 10514
+logstash_gelf_port: 12201
 udp2log_aggregator: "udplog:8420"
 
 tcpircbot_host: 'icinga.wikimedia.org'

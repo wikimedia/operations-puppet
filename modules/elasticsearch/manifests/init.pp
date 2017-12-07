@@ -111,8 +111,8 @@ class elasticsearch(
     $bulk_thread_pool_capacity = undef,
     $search_thread_pool_executors = undef,
     $load_fixed_bitset_filters_eagerly = true,
-    $graylog_hosts = undef,
-    $graylog_port = 12201,
+    $logstash_host = undef,
+    $logstash_gelf_port = 12201,
     $gc_log = true,
     $java_package = 'openjdk-8-jdk',
     $version = 5,
@@ -138,15 +138,10 @@ class elasticsearch(
         fail('script_max_compilations_per_minute should be > 0')
     }
 
-    # if no graylog_host is given, do not send logs
-    $send_logs_to_logstash = is_array($graylog_hosts)
+    $send_logs_to_logstash = $logstash_host != undef
 
-    if $send_logs_to_logstash {
-        validate_array($graylog_hosts)
-        $rotated_graylog_host = fqdn_rotate($graylog_hosts, $::hostname)
-        $graylog_host = $rotated_graylog_host[0]
-        validate_string($graylog_host)
-        # validate_integer($graylog_port)  // should be uncommented when we upgrade to stdlib 4.x
+    if $logstash_host {
+        validate_string($logstash_host)
     }
 
     $gc_log_flags = $gc_log ? {
