@@ -25,7 +25,7 @@ class kibana (
         content => ordered_yaml({
             'kibana.defaultAppId'    => $default_app_id,
             'logging.quiet'          => true,
-            'server.maxPayloadBytes' => 2097152,
+            'server.maxPayloadBytes' => 4194304, # 4MB (yes, this is a crazy limit, we need to reduce the number of fields)
         }),
         mode    => '0444',
         require => Package['kibana'],
