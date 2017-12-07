@@ -1,4 +1,5 @@
 cluster: lvs
+standard::has_ganglia: false
 # don't bind sshd on INADDR_ANY, cf. T100519, T114979
 profile::base::ssh_server_settings:
   listen_address: "%{::ipaddress}"
