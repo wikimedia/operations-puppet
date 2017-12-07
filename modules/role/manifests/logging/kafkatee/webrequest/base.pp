@@ -18,7 +18,6 @@ class role::logging::kafkatee::webrequest::base {
         output_encoding => 'json',
         output_format   => undef,
     }
-    include kafkatee::monitoring
 
     # Include all webrequest topics as inputs.
     # Note:  we used offset => 'end' rather than 'stored'
