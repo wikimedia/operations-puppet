@@ -59,6 +59,12 @@ class profile::superset(
         # Use AUTH_REMOTE_USER if we are using
         # LDAP authenticated HTTP proxy.
         $auth_type = 'AUTH_REMOTE_USER'
+        # Allow authenticated users (via ldap) to auto register
+        # for superset in the 'Alpha' role.
+        $auth_settings = {
+            'AUTH_USER_REGISTRATION'        => 'True',
+            'AUTH_USER_REGISTRATION_ROLE'   => 'Alpha',
+        }
     }
     else {
         $auth_type = undef
@@ -71,6 +77,7 @@ class profile::superset(
         admin_user       => $admin_user,
         admin_password   => $admin_password,
         auth_type        => $auth_type,
+        auth_settings    => $auth_settings,
         password_mapping => $password_mapping,
         statsd           => $statsd,
     }
