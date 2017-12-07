@@ -253,39 +253,6 @@ smart_health_ulsfo:
   __regex: !ruby/regexp /^.*\.ulsfo\.wmnet$/
   profile::base::check_smart: true
 
-# Gradual Puppet 4 cutover - T177254
-puppet4_mw_codfw:
-  __regex: !ruby/regexp /^mw2.*\.codfw\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_db_codfw:
-  __regex: !ruby/regexp /^db2.*\.codfw\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_scb:
-  __regex: !ruby/regexp /^scb.*\.(eqiad|codfw)\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_elasticsearch_codfw:
-  __regex: !ruby/regexp /^elastic2.*\.codfw\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_prometheus_codfw:
-  __regex: !ruby/regexp /^prometheus2.*\.codfw\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_cp_codfw:
-  __regex: !ruby/regexp /^cp2.*\.codfw\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_cp_canary_eqiad:
-  __regex: !ruby/regexp /^cp1008\.wikimedia\.org$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
-puppet4_lvs_codfw:
-  __regex: !ruby/regexp /^lvs2.*\.codfw\.wmnet$/
-  puppetmaster: "puppetmaster2001.codfw.wmnet"
-
 labtestpuppetmaster:
   __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
