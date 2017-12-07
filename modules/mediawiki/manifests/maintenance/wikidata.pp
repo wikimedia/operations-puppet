@@ -7,6 +7,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
     # This will process up to --batch-size * (60 / --dispatch-interval) changes per minute,
     # to a single wiki (only counting changes that affect the wiki).
     $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
+    $test_dispatch_log_file = '/var/log/wikidata/dispatchChanges-testwikidatawiki.log'
 
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
@@ -18,9 +19,10 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure_testwiki,
-        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >/dev/null 2>&1',
+        command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
         user    => $::mediawiki::users::web,
         minute  => '*/15',
+        require => File['/var/log/wikidata'],
     }
 
     # Prune wb_changes entries no longer needed from (test)wikidata
