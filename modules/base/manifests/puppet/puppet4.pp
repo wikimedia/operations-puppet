@@ -18,7 +18,7 @@ class base::puppet::puppet4 {
     }
 
     if $pin_to {
-        $pin_release = "release a=${pin_to}"
+        $pin_release = "release n=${pin_to}"
         apt::pin { 'puppet-all':
             pin      => $pin_release,
             package  => 'puppet*',
