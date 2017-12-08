@@ -30,4 +30,12 @@ class dumps::web::fetches::stats(
         minute      => '31',
         user        => $user,
     }
+
+    # Copies over clickstream files from an rsyncable location.
+    dumps::web::fetches::job { 'clickstream':
+        source      => "${src}/clickstream",
+        destination => "${otherdir}/clickstream",
+        hour        => '4',
+        user        => $user,
+    }
 }
