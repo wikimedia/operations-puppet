@@ -96,6 +96,7 @@ class wdqs::gui(
         not_if_empty => true,
         rotate       => 3,
         compress     => true,
+        su           => "${username} wikidev",
     }
 
     # Remove categories*.log files after 30 days.
@@ -106,5 +107,6 @@ class wdqs::gui(
         not_if_empty => true,
         rotate       => 0,
         max_age      => 30,
+        su           => "${username} wikidev",
     }
 }
