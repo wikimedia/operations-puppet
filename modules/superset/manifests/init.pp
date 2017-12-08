@@ -26,6 +26,9 @@
 # [*workers*]
 #   Number of gevent workers
 #
+# [*worker_class*]
+#   Gunicorn worker-class. sync or gevent.  Default: sync
+#
 # [*admin_user*]
 #   Web UI admin user
 #
@@ -57,6 +60,7 @@ class superset(
     $port              = 9080,
     $database_uri      = 'sqlite:////var/lib/superset/superset.db',
     $workers           = 1,
+    $worker_class      = 'sync',
     $admin_user        = 'admin',
     $admin_password    = 'admin',
     $secret_key        = 'not_really_a_secret_key',
@@ -71,10 +75,10 @@ class superset(
         'python',
         'virtualenv',
         'firejail',
-        # superset runs gunicorn with gevent,
-        # use debian provided python-gevent.
-        'python-gevent'
     )
+    if $worker_class == 'gevent' {
+        require_package('python-gevent')
+    }
 
     $deployment_dir = '/srv/deployment/analytics/superset/deploy'
     $virtualenv_dir = '/srv/deployment/analytics/superset/venv'
