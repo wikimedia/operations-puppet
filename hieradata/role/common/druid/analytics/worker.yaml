@@ -86,6 +86,7 @@ profile::druid::broker::env:
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
+profile::druid::coordinator::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::druid::coordinator::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]

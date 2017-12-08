@@ -1,10 +1,15 @@
 # Class: profile::druid::coordinator
 #
+# NOTE that most Druid service profiles default ferm_srange
+# to profile::druid::ferm_srange, but coordinator
+# defaults to profile::druid::coordinato::ferm_srange, to
+# haver finer control over how Druid accepts queries.
+#
 class profile::druid::coordinator(
     $properties         = hiera('profile::druid::coordinator::properties'),
     $env                = hiera('profile::druid::coordinator::env'),
     $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
-    $ferm_srange        = hiera('profile::druid::ferm_srange'),
+    $ferm_srange        = hiera('profile::druid::coordinator::ferm_srange'),
     $monitoring_enabled = hiera('profile::druid::coordinator::monitoring_enabled'),
 ) {
 
