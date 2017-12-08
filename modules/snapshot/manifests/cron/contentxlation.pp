@@ -14,15 +14,6 @@ class snapshot::cron::contentxlation(
         source => 'puppet:///modules/snapshot/cron/dumpcontentxlation.sh',
     }
 
-    cron { 'xlation-cleanup':
-        ensure      => 'present',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        command     => "find ${xlationdir}/ -maxdepth 1 -type d -mtime +90 -exec rm -rf {} \\;",
-        minute      => '0',
-        hour        => '9',
-    }
-
     cron { 'xlation-dumps':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
