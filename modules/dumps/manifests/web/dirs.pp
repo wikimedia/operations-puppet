@@ -98,8 +98,8 @@ class dumps::web::dirs(
     file { $xlationdir:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     file { $cirrussearchdir:

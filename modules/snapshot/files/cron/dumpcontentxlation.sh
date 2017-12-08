@@ -74,7 +74,7 @@ done
 ####################
 
 today=`date +%Y%m%d`
-xlationdir="${otherdir}/contenttranslation"
+xlationdir="${cronsdir}/contenttranslation"
 outdir="${xlationdir}/${today}"
 mkdir -p "$outdir" || exit 1
 multiversionscript="${apachedir}/multiversion/MWScript.php"
