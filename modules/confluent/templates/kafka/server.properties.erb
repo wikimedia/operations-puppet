@@ -31,6 +31,12 @@ inter.broker.protocol.version=<%= @inter_broker_protocol_version %>
 log.message.format.version=<%= @log_message_format_version %>
 
 <% end -%>
+<% if @log_message_timestamp_type -%>
+# Define whether the timestamp in the message is message create time or log append time.
+# The value should be either `CreateTime` or `LogAppendTime`
+log.message.timestamp.type=<%= @log_message_timestamp_type %>
+
+<% end -%>
 <% if @message_max_bytes -%>
 message.max.bytes=<%= @message_max_bytes %>
 replica.fetch.max.bytes=<%= @message_max_bytes %>

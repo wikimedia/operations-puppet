@@ -125,6 +125,12 @@
 #   The maximum size of a request that the socket server will accept.
 #   Default: undef (104857600)
 #
+# [*log_message_timestamp_type*]
+#   Default message timestamp type for a topic if it is not set on that topic.
+#   CreateTime means the timestamp will only be set if the producer provides it.
+#   LogAppendTime means that the broker will set it to the time is receives the message.
+#   You can override this setting per topic.  Default: LogAppendTime
+#
 # [*log_flush_interval_messages*]
 #   The number of messages accumulated on a log partition before messages are
 #   flushed to disk.  Default: 10000
@@ -269,6 +275,7 @@ class confluent::kafka::broker(
     $socket_receive_buffer_bytes         = 1048576,
     $socket_request_max_bytes            = undef,
 
+    $log_message_timestamp_type          = 'LogAppendTime',
     $log_flush_interval_messages         = undef,
     $log_flush_interval_ms               = undef,
 
