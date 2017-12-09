@@ -1,11 +1,6 @@
 class snapshot::cron::contentxlation(
     $user=undef,
 ) {
-    $otherdir = $snapshot::dumps::dirs::otherdir
-    $repodir = $snapshot::dumps::dirs::repodir
-    $confsdir = $snapshot::dumps::dirs::confsdir
-    $xlationdir = "${otherdir}/contenttranslation"
-
     $scriptpath = '/usr/local/bin/dumpcontentxlation.sh'
     file { $scriptpath:
         mode   => '0755',
