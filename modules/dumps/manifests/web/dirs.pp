@@ -24,6 +24,7 @@ class dumps::web::dirs(
 
     include dumps::deprecated::user
 
+    # top level dir
     file { $datadir:
         ensure => 'directory',
         mode   => '0755',
@@ -31,109 +32,44 @@ class dumps::web::dirs(
         group  => 'root',
     }
 
-    file { $publicdir:
+    # top-level dirs for various dump trees
+    file { [ $publicdir, $otherdir ]:
         ensure => 'directory',
         mode   => '0775',
         owner  => $deprecated_user,
         group  => $deprecated_group,
     }
 
-    file { $otherdir:
+    # subdirs for various misc dumps
+    file { [ $xlationdir, $cirrussearchdir, $medialistsdir,
+        $pagetitlesdir, $categoriesrdf ]:
+
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => $user,
+        group  => $group,
+    }
+
+    # subdirs for misc datasets that aren't dumps
+    file { [ $analyticsdir, $othermiscdir, $othertestfilesdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $deprecated_user,
         group  => $deprecated_group,
     }
 
-    file { $analyticsdir:
+    # subdirs for wikidata/wikibase weekly dumps
+    file { [ $otherdir_wikibase, "${publicdir}/${relative_wikidatawiki}",
+        $otherdir_wikidata_legacy ]:
+
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
-
-    file { $othermiscdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
-    }
-
-    file { $othertestfilesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
-    }
-
-    file { $otherdir_wikibase:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
-    }
-
-    file { "${publicdir}/${relative_wikidatawiki}":
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
-    }
-
-    # T72385
-    # needs to be relative because it is mounted via NFS at differing names
+    # T72385: needs to be relative because it is mounted via NFS at differing names
     file { "${publicdir}/wikidatawiki/entities":
         ensure => 'link',
         target => "../${relative_wikidatawiki}",
-    }
-
-    # Legacy
-    file { $otherdir_wikidata_legacy:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
-    }
-
-    file { $xlationdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $cirrussearchdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $medialistsdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $mediatitlesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $pagetitlesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $categoriesrdf:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
     }
 }
