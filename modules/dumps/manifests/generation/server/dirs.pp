@@ -23,91 +23,19 @@ class dumps::generation::server::dirs(
     $wikidatawikidir              = "${publicdir}/wikidatawiki"
     $otherwikibasedir             = "${otherdir}/wikibase"
 
-    file { $datadir:
+    # top level directories for various dumps/datasets
+    file { [ $datadir, $publicdir, $otherdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
-    file { $publicdir:
-        ensure => 'directory',
-        mode   => '0775',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $otherdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $cirrussearchdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $xlationdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $categoriesrdfdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $globalblocksdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $medialistsdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $incrsdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $mediatitlesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $othermiscdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $pagetitlesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $othertestfilesdir:
+    # subdirs for various dumps
+    file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
+             $globalblocksdir, $medialistsdir, $incrsdir,
+             $mediatitlesdir, $othermiscdir, $pagetitlesdir,
+             $othertestfilesdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
@@ -120,5 +48,4 @@ class dumps::generation::server::dirs(
         owner  => $user,
         group  => $group,
     }
-
 }
