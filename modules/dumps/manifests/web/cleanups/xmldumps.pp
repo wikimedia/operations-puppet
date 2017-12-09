@@ -1,5 +1,6 @@
 class dumps::web::cleanups::xmldumps(
     $publicdir = undef,
+    $dumpstempdir = undef,
     $user = undef,
     $isreplica = undef,
 ) {
@@ -77,13 +78,23 @@ class dumps::web::cleanups::xmldumps(
         source => 'puppet:///modules/dumps/web/cleanups/cleanup_old_xmldumps.py',
     }
 
-    $command = '/usr/bin/python /usr/local/bin/cleanup_old_xmldumps.py'
+    $xmlclean = '/usr/bin/python /usr/local/bin/cleanup_old_xmldumps.py'
     $args = "-d ${publicdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
 
+    if ($isreplica == true) {
+        $cron_commands = "${xmlclean} ${args}"
+    }
+    else {
+        # the temp dir only exists on the generating hosts (nfs servers),
+        # so only clean up temp files there
+        $tempclean = "/usr/bin/find ${dumpstempdir} -mtime +40 -exec rm {} \\;"
+
+        $cron_commands = "${xmlclean} ${args} ; ${tempclean}"
+    }
     cron { 'cleanup_xmldumps':
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "${command} ${args}",
+        command     => $cron_commands,
         user        => $user,
         minute      => '25',
         hour        => '1',
