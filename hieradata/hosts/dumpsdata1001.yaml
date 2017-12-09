@@ -1,4 +1,5 @@
 profile::dumps::miscdumpsdir: '/data/otherdumps'
 profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
+profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 
 profile::dumps::cleanup::isreplica: false

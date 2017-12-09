@@ -1,5 +1,6 @@
 profile::dumps::miscdumpsdir: '/data/otherdumps'
 profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
+profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 
 # this is currently a dumps generation fallback host,
 # we configure cleanups of old files there the
