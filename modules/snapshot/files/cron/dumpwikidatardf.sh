@@ -117,6 +117,5 @@ mv $tempDir/wikidata$dumpFormat-$dumpName.bz2 $targetFileBzip2
 ln -fs "$today/$filename.$dumpFormat.bz2" "$targetDirBase/latest-$dumpName.$dumpFormat.bz2"
 
 
-pruneOldDirectories
 pruneOldLogs
 runDcat

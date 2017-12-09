@@ -11,13 +11,14 @@ class snapshot::cron::wikidatadumps::rdf(
     }
 
     cron { 'wikidatardf-dumps':
-        ensure  => 'present',
-        command => "${scriptpath} all ttl; ${scriptpath} truthy nt",
-        user    => $user,
-        minute  => '0',
-        hour    => '23',
-        weekday => '1',
-        require => File[$scriptpath],
+        ensure      => 'present',
+        command     => "${scriptpath} all ttl; ${scriptpath} truthy nt",
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => $user,
+        minute      => '0',
+        hour        => '23',
+        weekday     => '1',
+        require     => File[$scriptpath],
     }
 
 }
