@@ -2,9 +2,6 @@ class snapshot::cron::dump_global_blocks(
     $user   = undef,
 ) {
     $confsdir = $snapshot::dumps::dirs::confsdir
-    # $otherdir = $snapshot::dumps::dirs::otherdir
-    $otherdir = $snapshot::dumps::dirs::cronsdir
-    $globalblocksdir = "${otherdir}/globalblocks"
 
     file { '/usr/local/bin/dump-global-blocks.sh':
         mode   => '0755',
