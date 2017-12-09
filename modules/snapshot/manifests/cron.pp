@@ -1,12 +1,7 @@
 class snapshot::cron(
-    $depr_user = undef,
     $miscdumpsuser = undef,
     $group = undef,
 ) {
-    # these jobs all run as a deprecated user on the web server.
-    # we will move them all to the new user on the internal nfs
-    # server one at a time.
-
     file { '/usr/local/etc/dump_functions.sh':
         ensure => 'present',
         path   => '/usr/local/etc/dump_functions.sh',
@@ -17,14 +12,14 @@ class snapshot::cron(
     }
 
     class { '::snapshot::cron::mediaperprojectlists': user => $miscdumpsuser }
-    class { '::snapshot::cron::pagetitles': user   => $miscdumpsuser }
-    class { '::snapshot::cron::cirrussearch': user   => $miscdumpsuser }
-    class { '::snapshot::cron::categoriesrdf': user   => $miscdumpsuser }
-    class { '::snapshot::cron::dump_global_blocks': user   => $miscdumpsuser }
+    class { '::snapshot::cron::pagetitles': user => $miscdumpsuser }
+    class { '::snapshot::cron::cirrussearch': user => $miscdumpsuser }
+    class { '::snapshot::cron::categoriesrdf': user => $miscdumpsuser }
+    class { '::snapshot::cron::dump_global_blocks': user => $miscdumpsuser }
     class { '::snapshot::cron::wikidatadumps':
-        user  => $depr_user,
+        user  => $miscdumpsuser,
         group => $group,
     }
-    class { '::snapshot::cron::contentxlation': user   => $miscdumpsuser }
-    class { '::snapshot::addschanges': user   => $miscdumpsuser }
+    class { '::snapshot::cron::contentxlation': user => $miscdumpsuser }
+    class { '::snapshot::addschanges': user => $miscdumpsuser }
 }

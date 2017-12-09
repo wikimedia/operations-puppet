@@ -95,7 +95,7 @@ echo -e '\n]' | gzip -f >> $tempDir/wikidataJson.gz
 mv $tempDir/wikidataJson.gz $targetFileGzip
 
 # Legacy directory (with legacy naming scheme)
-legacyDirectory=${otherdir}/wikidata
+legacyDirectory=${cronsdir}/wikidata
 ln -s "../wikibase/wikidatawiki/$today/$filename.json.gz" "$legacyDirectory/$today.json.gz"
 find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 
@@ -107,6 +107,5 @@ gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataJson.bz2
 mv $tempDir/wikidataJson.bz2 $targetFileBzip2
 ln -fs "$today/$filename.json.bz2" "$targetDirBase/latest-all.json.bz2"
 
-pruneOldDirectories
 pruneOldLogs
 runDcat
