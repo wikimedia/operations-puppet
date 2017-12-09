@@ -11,13 +11,14 @@ class snapshot::cron::wikidatadumps::json(
     }
 
     cron { 'wikidatajson-dump':
-        ensure  => 'present',
-        command => $scriptpath,
-        user    => $user,
-        minute  => '15',
-        hour    => '3',
-        weekday => '1',
-        require => File[$scriptpath],
+        ensure      => 'present',
+        command     => $scriptpath,
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => $user,
+        minute      => '15',
+        hour        => '3',
+        weekday     => '1',
+        require     => File[$scriptpath],
     }
 }
 

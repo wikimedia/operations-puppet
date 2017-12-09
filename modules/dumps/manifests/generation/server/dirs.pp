@@ -1,14 +1,13 @@
 class dumps::generation::server::dirs(
     $user  = undef,
     $group = undef,
-    $deprecated_user = undef,
-    $deprecated_group = undef,
 ) {
     # Directories where dumps of any type are generated
     # This list is not for one-off directories, nor for
     # directories with incoming rsyncs of datasets
     $datadir                      = '/data/xmldatadumps'
     $publicdir                    = '/data/xmldatadumps/public'
+    $tempdir                      = '/data/xmldatadumps/temp'
     $otherdir                     = '/data/otherdumps'
     $cirrussearchdir              = "${otherdir}/cirrussearch"
     $xlationdir                   = "${otherdir}/contenttranslation"
@@ -20,105 +19,35 @@ class dumps::generation::server::dirs(
     $othermiscdir                 = "${otherdir}/misc"
     $pagetitlesdir                = "${otherdir}/pagetitles"
     $othertestfilesdir            = "${otherdir}/testfiles"
-    $wikidatawikidir              = "${publicdir}/wikidatawiki"
     $otherwikibasedir             = "${otherdir}/wikibase"
+    $otherwikibasewikidatadir     = "${otherdir}/wikibase/wikidatawiki"
+    $otherwikidatadir             = "${otherdir}/wikidata"
 
-    file { $datadir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { $publicdir:
-        ensure => 'directory',
-        mode   => '0775',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $otherdir:
+    # top level directories for various dumps/datasets
+    file { [ $datadir, $publicdir, $otherdir, $tempdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
         group  => $group,
     }
 
-    file { $cirrussearchdir:
+    # subdirs for various dumps
+    file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
+        $globalblocksdir, $medialistsdir, $incrsdir,
+        $mediatitlesdir, $othermiscdir, $pagetitlesdir,
+        $othertestfilesdir ]:
+
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
         group  => $group,
     }
 
-    file { $xlationdir:
+    # needed for wikidata weekly crons
+    file { [ $otherwikibasedir, $otherwikibasewikidatadir, $otherwikidatadir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
         group  => $group,
     }
-
-    file { $categoriesrdfdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $globalblocksdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $medialistsdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $incrsdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $mediatitlesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $othermiscdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $pagetitlesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $othertestfilesdir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    file { $otherwikibasedir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
 }
