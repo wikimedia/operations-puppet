@@ -286,8 +286,7 @@ groups:
     gid: 743
     description: People who can sudo into the datasets user on snapshot hosts.
     members: [hoo]
-    privileges: ['ALL = (datasets) NOPASSWD: ALL',
-                 'ALL = (dumpsgen) NOPASSWD: ALL']
+    privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
