@@ -17,8 +17,7 @@ EXCLUDE=("nobody" \
          "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
          "reprepro" \   # bromine.eqiad.wmnet
          "mysql" \      # db1015.eqiad.wmnet T134476
-         "parsoid-rt" \ # ruthenium.eqiad.wmnet T90966
-         "datasets" );  # snapshot*, dataset*, ms1001
+         "parsoid-rt"); # ruthenium.eqiad.wmnet T90966
 
 log() {
     logger $1
