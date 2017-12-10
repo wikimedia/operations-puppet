@@ -25,7 +25,7 @@ class dumps::web::dumplists(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
-        command     => "/usr/local/bin/list-last-good-dumps.sh ${xmldumpsdir}",
+        command     => "/usr/local/bin/list-last-good-dumps.sh --xmldumpsdir ${xmldumpsdir}",
         minute      => '55',
         hour        => '3',
     }
