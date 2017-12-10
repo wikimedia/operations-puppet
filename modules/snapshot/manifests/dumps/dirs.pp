@@ -1,72 +1,49 @@
 class snapshot::dumps::dirs(
     $user = undef,
     $xmldumpsmount = undef,
-    $miscdumpsmount = undef,
 ) {
+    # need to create and manage these, and have them
+    # available for a shell script that sets vars with
+    # their values for inclusion by other scripts
     $dumpsdir = '/etc/dumps'
     file { $dumpsdir:
       ensure => 'directory',
-      path   => $dumpsdir,
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
     }
 
-    $miscdumpsdir = "${miscdumpsmount}/xmldatadumps"
-    $xmldumpsdir = "${xmldumpsmount}/xmldatadumps"
-    $cronsdir = "${xmldumpsmount}/otherdumps"
-
-    $apachedir = '/srv/mediawiki'
     $confsdir = "${dumpsdir}/confs"
-
-    file { $confsdir:
-      ensure => 'directory',
-      path   => $confsdir,
-      mode   => '0755',
-      owner  => 'root',
-      group  => 'root',
-    }
-
     $dblistsdir = "${dumpsdir}/dblists"
-    file { $dblistsdir:
-      ensure => 'directory',
-      path   => $dblistsdir,
-      mode   => '0755',
-      owner  => 'root',
-      group  => 'root',
-    }
-
     $stagesdir = "${dumpsdir}/stages"
-    file { $stagesdir:
+    $templsdir = "${dumpsdir}/templs"
+    file { [ $confsdir, $dblistsdir, $stagesdir,
+             $templsdir ]:
       ensure => 'directory',
-      path   => $stagesdir,
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
     }
 
+    # dir will be written in by the user
     $cachedir = "${dumpsdir}/cache"
     file { $cachedir:
       ensure => 'directory',
-      path   => $cachedir,
       mode   => '0755',
       owner  => $user,
       group  => 'root',
     }
 
-    $templsdir = "${dumpsdir}/templs"
-    file { $templsdir:
-      ensure => 'directory',
-      path   => $templsdir,
-      mode   => '0755',
-      owner  => 'root',
-      group  => 'root',
-    }
-
-    $otherdir = "${miscdumpsdir}/public/other"
-
+    # need these only for the shell script that sets
+    # vars with their values for other scripts
+    $xmldumpsdir = "${xmldumpsmount}/xmldatadumps"
+    $cronsdir = "${xmldumpsmount}/otherdumps"
+    $apachedir = '/srv/mediawiki'
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 
+    # here's that script; it gets sourced by
+    # various cron jobs so they know where to
+    # write output, where to find dump scripts, etc.
     file { '/usr/local/etc/set_dump_dirs.sh':
         ensure  => 'present',
         path    => '/usr/local/etc/set_dump_dirs.sh',

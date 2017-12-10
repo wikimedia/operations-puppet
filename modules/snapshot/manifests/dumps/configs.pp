@@ -1,6 +1,5 @@
 class snapshot::dumps::configs(
     $xmldumpsmount = undef,
-    $miscdumpsmount = undef,
 ) {
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $apachedir = $snapshot::dumps::dirs::apachedir
@@ -134,14 +133,6 @@ class snapshot::dumps::configs(
         },
     }
 
-    # for jobs running on dataset host
-    snapshot::dumps::wikiconf { 'wikidump.conf':
-        configtype => 'allwikis',
-        config     => $config,
-        publicdir  => "${miscdumpsmount}/xmldatadumps/public",
-        privatedir => "${miscdumpsmount}/xmldatadumps/private",
-        tempdir    => "${miscdumpsmount}/xmldatadumps/temp",
-    }
     # for xml/sql dumps running on dumpsdata host
     snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
         configtype => 'allwikis',
