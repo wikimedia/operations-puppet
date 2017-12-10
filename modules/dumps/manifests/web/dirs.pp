@@ -4,8 +4,6 @@ class dumps::web::dirs(
     $otherdir = '/data/xmldatadumps/public/other',
     $user = undef,
     $group = undef,
-    $deprecated_user = undef,
-    $deprecated_group = undef,
 ) {
     # Please note that this is incomplete, but new directories
     # should be defined in puppet (here).
@@ -22,8 +20,6 @@ class dumps::web::dirs(
     $mediatitlesdir           = "${otherdir}/mediatitles"
     $categoriesrdf            = "${otherdir}/categoriesrdf"
 
-    include dumps::deprecated::user
-
     # top level dir
     file { $datadir:
         ensure => 'directory',
@@ -36,8 +32,8 @@ class dumps::web::dirs(
     file { [ $publicdir, $otherdir ]:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     # subdirs for various misc dumps
@@ -54,8 +50,8 @@ class dumps::web::dirs(
     file { [ $analyticsdir, $othermiscdir, $othertestfilesdir ]:
         ensure => 'directory',
         mode   => '0755',
-        owner  => $deprecated_user,
-        group  => $deprecated_group,
+        owner  => $user,
+        group  => $group,
     }
 
     # subdirs for wikidata/wikibase weekly dumps

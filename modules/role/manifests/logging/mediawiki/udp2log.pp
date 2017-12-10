@@ -18,14 +18,14 @@ class role::logging::mediawiki::udp2log(
 
     # Rsync archived slow-parse logs to dumps.wikimedia.org.
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
-    include ::dumps::deprecated::user
+    include ::dumpsuser
     if ($rsync_slow_parse) {
         cron { 'rsync_slow_parse':
             command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
             hour        => 23,
             minute      => 15,
             environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => 'datasets',
+            user        => 'dumpsgen',
         }
     }
 

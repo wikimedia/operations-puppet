@@ -10,7 +10,5 @@ class profile::dumps::web::xmldumps_fallback {
         xmldumps_server  => 'dumps.wikimedia.org',
         webuser          => 'dumpsgen',
         webgroup         => 'dumpsgen',
-        deprecated_user  => 'datasets',
-        deprecated_group => 'datasets',
     }
 }
