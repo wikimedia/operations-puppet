@@ -3,8 +3,6 @@ class dumps::web::fetches::stats(
     $otherdir = undef,
     $user = undef,
 ) {
-    include ::dumps::deprecated::user
-
     # Copies over the mediacounts files from an rsyncable location.
     dumps::web::fetches::job { 'mediacounts':
         source      => "${src}/mediacounts",

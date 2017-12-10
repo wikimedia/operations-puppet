@@ -4,7 +4,6 @@ class dumps::web::fetches::kiwix(
     $publicdir = undef,
     $otherdir = undef,
 ) {
-    include dumps::deprecated::user
     require_package('rsync')
 
     file { "${publicdir}/kiwix":
@@ -26,7 +25,7 @@ class dumps::web::fetches::kiwix(
         ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         command     => "/bin/bash /usr/local/bin/kiwix-rsync-cron.sh ${otherdir}",
-        user        => $group,
+        user        => $user,
         minute      => '15',
         hour        => '*/2',
         require     => File['/usr/local/bin/kiwix-rsync-cron.sh'],
