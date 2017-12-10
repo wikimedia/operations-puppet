@@ -12,7 +12,7 @@ class snapshot::cron::dump_global_blocks(
 
     cron { 'global_blocks_dump':
         ensure      => 'present',
-        command     => "/usr/local/bin/dump-global-blocks.sh --config ${confsdir}/wikidump.conf",
+        command     => "/usr/local/bin/dump-global-blocks.sh --config ${confsdir}/wikidump.conf.dumps",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',
