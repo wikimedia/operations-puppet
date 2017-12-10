@@ -4,6 +4,7 @@
 
 class profile::dumps::public_server {
     class { '::dumpsuser': }
+    class { '::dumps::deprecated::user': }
     class {'::public_dumps::server':}
 
 }
