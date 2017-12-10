@@ -13,13 +13,13 @@ usage() {
 	echo "Usage: $0 --list wikis.dblist [--config <pathtofile>] [--dryrun]"
 	echo
 	echo "  --config  path to configuration file for dump generation"
-	echo "            (default value: ${confsdir}/wikidump.conf"
+	echo "            (default value: ${confsdir}/wikidump.conf.dumps"
 	echo "  --list    file containing list of the wikis to dump"
 	echo "  --dryrun  don't run dump, show what would have been done"
 	exit 1
 }
 
-configFile="${confsdir}/wikidump.conf"
+configFile="${confsdir}/wikidump.conf.dumps"
 dryrun="false"
 dumpFormat="ttl"
 dbList="categories-rdf"

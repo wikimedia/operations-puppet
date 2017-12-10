@@ -25,7 +25,7 @@ class snapshot::cron::categoriesrdf(
 
     cron { 'categoriesrdf-dump':
         ensure      => 'present',
-        command     => "${scriptpath} --config ${confsdir}/wikidump.conf --list ${apachedir}/dblists/categories-rdf.dblist",
+        command     => "${scriptpath} --config ${confsdir}/wikidump.conf.dumps --list ${apachedir}/dblists/categories-rdf.dblist",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '0',
