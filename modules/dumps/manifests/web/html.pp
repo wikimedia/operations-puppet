@@ -4,8 +4,6 @@ class dumps::web::html(
     $otherdir = undef,
     $webuser = undef,
     $webgroup = undef,
-    $deprecated_user = undef,
-    $deprecated_group = undef,
 ) {
     class {'dumps::web::dirs':
         datadir          => $datadir,
@@ -13,8 +11,6 @@ class dumps::web::html(
         otherdir         => $otherdir,
         user             => $webuser,
         group            => $webgroup,
-        deprecated_user  => $deprecated_user,
-        deprecated_group => $deprecated_group,
     }
 
     file { "${publicdir}/dumps.css":

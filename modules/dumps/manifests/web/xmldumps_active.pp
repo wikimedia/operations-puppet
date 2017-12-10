@@ -8,8 +8,6 @@ class dumps::web::xmldumps_active(
     $xmldumps_server  = undef,
     $webuser          = undef,
     $webgroup         = undef,
-    $deprecated_user  = undef,
-    $deprecated_group = undef,
 ) {
     # active web server
     class {'::dumps::web::xmldumps':
@@ -21,8 +19,6 @@ class dumps::web::xmldumps_active(
         xmldumps_server  => $xmldumps_server,
         webuser          => $webuser,
         webgroup         => $webgroup,
-        deprecated_user  => $deprecated_user,
-        deprecated_group => $deprecated_group,
     }
 
     # only the active web server should be syncing nginx logs
