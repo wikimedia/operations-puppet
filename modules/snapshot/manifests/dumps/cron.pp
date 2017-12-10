@@ -28,7 +28,7 @@ class snapshot::dumps::cron(
     }
 
     # fixme there is an implicit dependency on
-    # wikidump.conf.* plus some stage files, make explicit
+    # wikidump.conf.dumps plus some stage files, make explicit
 
     cron { 'fulldumps_rest':
         ensure      => 'present',

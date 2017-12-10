@@ -19,7 +19,7 @@ class snapshot::cron::cirrussearch(
 
     cron { 'cirrussearch-dump':
         ensure      => 'present',
-        command     => "${scriptpath} --config ${confsdir}/wikidump.conf",
+        command     => "${scriptpath} --config ${confsdir}/wikidump.conf.dumps",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',
