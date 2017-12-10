@@ -4,8 +4,8 @@ profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
 profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 
 profile::dumps::rsyncer:
-  dumps_user: 'datasets'
-  dumps_group: 'datasets'
+  dumps_user: 'dumpsgen'
+  dumps_group: 'dumpsgen'
   dumps_deploygroup: 'wikidev'
   dumps_mntpoint: '/data'
 

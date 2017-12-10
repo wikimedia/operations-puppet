@@ -8,7 +8,6 @@ class profile::dumps::generation::worker::common {
     $miscdumpsmount = '/mnt/data'
 
     class { '::dumpsuser': }
-    class { '::dumps::deprecated::user': }
 
     snapshot::dumps::nfsmount { 'dumpsdatamount':
         mountpoint => $xmldumpsmount,

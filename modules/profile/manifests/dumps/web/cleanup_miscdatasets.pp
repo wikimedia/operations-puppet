@@ -3,6 +3,6 @@ class profile::dumps::web::cleanup_miscdatasets(
 ) {
     class {'::dumps::web::cleanups::miscdatasets':
         miscdumpsdir => $miscdumpsdir,
-        user         => 'datasets',
+        user         => 'dumpsgen',
     }
 }
