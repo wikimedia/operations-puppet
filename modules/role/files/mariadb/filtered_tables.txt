@@ -570,6 +570,8 @@ protected_titles,pt_reason,K
 protected_titles,pt_timestamp,K
 protected_titles,pt_expiry,K
 protected_titles,pt_create_perm,K
+reading_list_project,rlp_id,K
+reading_list_project,rlp_project,K
 recentchanges,rc_id,K
 recentchanges,rc_timestamp,K
 recentchanges,rc_cur_time,K

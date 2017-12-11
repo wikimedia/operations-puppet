@@ -208,6 +208,8 @@ $private_tables = [
     'querycache_info',
     'querycache_old',
     'querycachetwo',
+    'reading_list',
+    'reading_list_entry',
     'securepoll_cookie_match',
     'securepoll_elections',
     'securepoll_entity',
