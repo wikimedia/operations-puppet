@@ -1,2 +1,3 @@
 mariadb::shard: 's7'
 mariadb::socket: '/tmp/mysql.sock'
+profile::base::notifications_enabled: '0'
