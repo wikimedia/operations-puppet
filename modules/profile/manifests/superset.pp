@@ -42,7 +42,6 @@ class profile::superset(
     $admin_user        = hiera('profile::superset::admin_user', 'admin'),
     $admin_password    = hiera('profile::superset::admin_password', 'admin'),
     $secret_key        = hiera('profile::superset::secret_key', 'not_really_a_secret_key'),
-    $password_mapping  = hiera('profile::superset::password_mapping', undef),
     $ldap_proxy_enabled = hiera('profile::superset::ldap_proxy_enabled', false),
     $statsd            = hiera('statsd', undef),
 ) {
@@ -68,6 +67,22 @@ class profile::superset(
     }
     else {
         $auth_type = undef
+    }
+
+    if $::realm == 'production' {
+        # Use MySQL research user to access mysql DBs.
+        include ::passwords::mysql::research
+        $password_mapping = {
+            # Mediawiki analytics slave database.
+            "mysql://${::passwords::mysql::research::user}@analytics-store.eqiad.wmnet" =>
+                $::passwords::mysql::research::pass,
+            # EventLogging mysql slave database.
+            "mysql://${::passwords::mysql::research::user}@analytics-slave.eqiad.wmnet/log" =>
+                $::passwords::mysql::research::pass,
+        }
+    }
+    else {
+        $password_mapping = undef
     }
 
     class { '::superset':
