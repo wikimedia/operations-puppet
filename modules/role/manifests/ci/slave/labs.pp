@@ -37,6 +37,7 @@ class role::ci::slave::labs {
 
     include role::ci::slave::labs::common
 
+    # Provides phantomjs, firefox and xvfb
     include profile::ci::browsers
 
     class { 'role::ci::slave::browsertests':
