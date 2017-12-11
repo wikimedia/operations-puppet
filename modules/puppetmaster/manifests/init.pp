@@ -74,7 +74,7 @@ class puppetmaster(
     }
 
     # Let's use puppet 3.8 on the masters at least
-    if os_version('debian >= jessie') {
+    if os_version('debian == jessie') {
         # Install the puppetdb-terminus package, needed for puppetdbquery
         require_package('puppetdb-terminus')
     }
