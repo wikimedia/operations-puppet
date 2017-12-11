@@ -56,8 +56,9 @@ password_mapping = {
     '<%= uri %>': '<%= @password_mapping[uri] %>',
 <% end -%>
 }
-def lookup_password(uri):
-    return password_mapping.get(uri, None)
+# self is needed because: https://github.com/apache/incubator-superset/issues/4043
+def lookup_password(self, uri):
+    return password_mapping.get(str(uri), None)
 SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 
 <% end -%>
