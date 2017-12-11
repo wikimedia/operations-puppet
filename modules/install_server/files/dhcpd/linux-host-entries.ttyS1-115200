@@ -2565,6 +2565,11 @@ host kafka1022 {
     fixed-address kafka1022.eqiad.wmnet;
 }
 
+host kafka1023 {
+    hardware ethernet 90:b1:1c:06:c9:a2;
+    fixed-address kafka1023.eqiad.wmnet;
+}
+
 host kafka2001 {
     hardware ethernet 14:18:77:39:6F:37;
     fixed-address kafka2001.codfw.wmnet;
@@ -5824,11 +5829,6 @@ host netmon2001 {
 host notebook1001 {
     hardware ethernet 90:b1:1c:12:8f:9a;
     fixed-address notebook1001.eqiad.wmnet;
-}
-
-host notebook1002 {
-    hardware ethernet 90:b1:1c:06:c9:a2;
-    fixed-address notebook1002.eqiad.wmnet;
 }
 
 host ocg1001{
