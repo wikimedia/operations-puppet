@@ -9,9 +9,6 @@ vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
-<%- unless @environment.nil? || @environment == '' -%>
-environment = <%= @environment %>
-<%- end -%>
 
 [agent]
 <%- if @use_srv_record -%>
@@ -32,3 +29,6 @@ postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = true
 report = true
 stringify_facts = false
+<%- unless @environment.nil? || @environment == '' -%>
+environment = <%= @environment %>
+<%- end -%>
