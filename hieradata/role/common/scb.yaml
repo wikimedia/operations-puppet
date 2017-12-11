@@ -14,7 +14,6 @@ admin::groups:
   - changeprop-admin
   - ores-admin
   - pdfrender-admin
-  - trendingedits-admin
   - recommendation-admin
 role::lvs::realserver::pools:
   ores: {}
@@ -26,7 +25,6 @@ role::lvs::realserver::pools:
   mathoid: {}
   eventstreams: {}
   pdfrender: {}
-  trendingedits: {}
   "recommendation-api": {}
 
 ### BEGIN GRAPHOID

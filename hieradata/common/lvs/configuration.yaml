@@ -122,9 +122,6 @@ lvs::configuration::lvs_service_ips:
   pdfrender: &ip_block034
     eqiad: 10.2.2.35
     codfw: 10.2.1.35
-  trendingedits: &ip_block035
-    eqiad: 10.2.2.9
-    codfw: 10.2.1.9
   kubemaster: &ip_block036
     eqiad: 10.2.2.8
     codfw: 10.2.1.8
@@ -1107,32 +1104,6 @@ lvs::configuration::lvs_services:
           hostname: pdfrender.svc.eqiad.wmnet
         codfw:
           hostname: pdfrender.svc.codfw.wmnet
-  trendingedits:
-    description: "Trending edits service. trendingedits.svc.%{::site}.wmnet"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *ip_block035
-    port: 6699
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/_info
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: scb
-      service: trendingedits
-    icinga:
-      check_command: "check_http_lvs_on_port!trendingedits.svc.%{::site}.wmnet!6699!/_info"
-      sites:
-        eqiad:
-          hostname: trendingedits.svc.eqiad.wmnet
-        codfw:
-          hostname: trendingedits.svc.codfw.wmnet
   kubemaster:
     description: "Kubernetes master service. kubemaster.svc.%{::site}.wmnet"
     class: low-traffic
