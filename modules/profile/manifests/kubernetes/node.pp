@@ -51,4 +51,18 @@ class profile::kubernetes::node(
             srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
         }
     }
+    # Alert us if kubelet operational latencies exceed a certain threshold. TODO: reevaluate
+    # thresholds
+    monitoring::check_prometheus { 'kubelet_operational_latencies':
+        description    => 'kubelet operational latencies',
+        query          => "scalar(\
+sum(rate(kubelet_runtime_operations_latency_microseconds_sum{\
+job=\"k8s-node\", instance=\"${::fqdn}\"}[5m]))/ \
+sum(rate(kubelet_runtime_operations_latency_microseconds_count{\
+job=\"k8s-node\", instance=\"${::fqdn}\"}[5m]))\
+        )",
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/k8s",
+        warning        => 10,
+        critical       => 15,
+    }
 }
