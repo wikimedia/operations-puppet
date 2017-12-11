@@ -46,3 +46,5 @@ prometheus_nodes:
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "globalsign-2017"
+
+puppet_major_version: 4
