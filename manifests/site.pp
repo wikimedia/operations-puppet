@@ -1092,7 +1092,6 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 node /labweb100[12]\.eqiad\.wmnet/ {
     role(mediawiki::appserver)
 
-    include ::base::firewall
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
@@ -1615,7 +1614,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 # mw1180-1188 are apaches
 node /^mw118[0-8]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 # mw1189-1208 are api apaches
@@ -1626,7 +1624,6 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 # mw1209-1216, 1218-1220 are apaches
 node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 #mw1221-mw1235 are api apaches
@@ -1637,7 +1634,6 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 #mw1238-mw1258 are apaches
 node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 #mw1259-60 are videoscalers
@@ -1654,7 +1650,6 @@ node /^mw126[1-5]\.eqiad\.wmnet$/ {
 
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 # ROW A eqiad api appserver
@@ -1682,7 +1677,6 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
 # ROW C eqiad appservers
 node /^mw13(19|2[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 # ROW B eqiad api-appservers
@@ -1752,7 +1746,6 @@ node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
 #mw2163-mw2199 are appservers
 node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 #mw2200-2214 are api appservers
@@ -1770,7 +1763,6 @@ node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
 # mw2224-42 are appservers
 node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 #mw2244-mw2245 are imagescalers
@@ -1797,7 +1789,6 @@ node /^mw225[1-3]\.codfw\.wmnet$/ {
 #mw2254-2258 are appservers
 node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 # mw logging host codfw
