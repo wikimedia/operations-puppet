@@ -39,13 +39,6 @@ class role::ci::slave::labs {
 
     include profile::ci::browsers
 
-    class { 'role::ci::slave::browsertests':
-        require => [
-            Class['role::ci::slave::labs::common'], # /srv
-            Class['contint::packages::labs'], # realize common packages first
-        ]
-    }
-
     # The sshkey resource seems to modify file permissions and make it
     # unreadable - this is a known bug (https://tickets.puppetlabs.com/browse/PUP-2900)
     # Trying to define this file resource, and notify the resource to be ensured
