@@ -29,9 +29,6 @@ class profile::openstack::base::pdns::recursor::service(
     $pdns_recursor = hiera('profile::openstack::base::pdns::recursor'),
     $tld = hiera('profile::openstack::base::pdns::tld'),
     $private_reverse = hiera('profile::openstack::base::pdns::private_reverse'),
-    $c1_dbs = hiera('profile::openstack::base::pdns::labsdb::c1'),
-    $c2_dbs = hiera('profile::openstack::base::pdns::labsdb::c2'),
-    $c3_dbs = hiera('profile::openstack::base::pdns::labsdb::c3'),
     $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor::aliaser_extra_records'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster_hostname'),
     ) {
@@ -63,8 +60,8 @@ class profile::openstack::base::pdns::recursor::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        source  => 'puppet:///modules/openstack/base/pdns/recursor/labsdb.zone',
         notify  => Service['pdns-recursor'],
-        content => template('role/labs/dns/db_aliases.erb'),
         require => File['/var/zones']
     }
 
