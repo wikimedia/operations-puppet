@@ -65,4 +65,40 @@ class profile::kubernetes::master(
     diamond::collector { 'Kubernetes':
         source => 'puppet:///modules/diamond/collector/kubernetes.py',
     }
+
+    # Alert us if API requests exceed a certain threshold. TODO: reevaluate
+    # after we 've ran a few services
+    monitoring::check_prometheus { 'apiserver_request_count':
+        description    => 'Request count to the API',
+        query          => "scalar(sum(rate(apiserver_request_count{instance=\"${::ipaddress}:6443\"}[5m])))",
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/k8s",
+        warning        => 50,
+        critical       => 100,
+    }
+    # Alert us if API requests latencies exceed a certain threshold. TODO: reevaluate
+    # thresholds
+    monitoring::check_prometheus { 'apiserver_request_latencies':
+        description    => 'Request latencies',
+        query          => "scalar(\
+            sum(rate(apiserver_request_latencies_summary_sum{\
+            job=\"k8s-api\",verb!=\"WATCH\",instance="${::ipaddress}:6443\"}[5m]))/\
+            sum(rate(apiserver_request_latencies_summary_count{\
+            job=\"k8s-api\",verb!=\"WATCH\",instance="${::ipaddress}:6443\"}[5m])))",
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/k8s",
+        warning        => 50,
+        critical       => 100,
+    }
+    # Alert us if etcd requests latencies exceed a certain threshold. TODO: reevaluate
+    # thresholds
+    monitoring::check_prometheus { 'etcd_request_latencies':
+        description    => 'etc request latencies',
+        query          => "scalar(\
+            sum(rate(etcd_request_latencies_summary_sum{\
+            job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m]))/\
+            sum(rate(etcd_request_latencies_summary_count{\
+            job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m])))",
+        prometheus_url => "http://prometheus.svc.${::site}.wmnet/k8s",
+        warning        => 30,
+        critical       => 50,
+    }
 }
