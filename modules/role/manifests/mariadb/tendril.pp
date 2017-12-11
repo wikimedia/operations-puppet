@@ -5,6 +5,8 @@ class role::mariadb::tendril {
         description => 'tendril database server',
     }
 
+    include ::profile::base::firewall
+
     include mariadb::packages_wmf
     include mariadb::service
 
