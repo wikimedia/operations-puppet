@@ -1846,7 +1846,7 @@ node 'notebook1001.eqiad.wmnet' {
 
 # The host is going to be reimaged/repurposed to kafka1023 and become
 # a Analytics Kafka broker. More info: T181518
-node 'notebook1002.eqiad.wmnet' {
+node 'kafka1023.eqiad.wmnet' {
     role(spare::system)
 }
 
