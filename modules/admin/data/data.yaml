@@ -203,11 +203,11 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva, shiladsen, tbayer]
+              ladsgroup, ovasileva, shiladsen]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans]
+    members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans, tbayer]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
