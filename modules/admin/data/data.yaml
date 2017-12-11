@@ -203,7 +203,7 @@ groups:
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
               neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
-              ladsgroup, ovasileva, shiladsen]
+              ladsgroup, ovasileva, shiladsen, tbayer]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
