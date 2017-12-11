@@ -1283,9 +1283,9 @@ node 'labnet1001.eqiad.wmnet' {
     include ::standard
 }
 
+# role spare until pushed into service via T165779
 node /labnet100[34]\.eqiad\.wmnet/ {
-    include ::standard
-    include ::base::firewall
+    role(spare::system)
 }
 
 
