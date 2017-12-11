@@ -62,13 +62,20 @@ class profile::openstack::base::puppetmaster::frontend(
         'autosign'          => '/usr/local/sbin/validatelabsfqdn.py',
     }
 
+    # urls are different in v4 so we need to modify our auth rules accordingly
+    $puppet_major_version = hiera('puppet_major_version', 3)
+    $extra_auth_rules_template = $puppet_major_version ? {
+        4       => 'extra_auth_rules_v4.conf.erb',
+        default => 'extra_auth_rules.conf.erb',
+    }
+
     class { '::profile::puppetmaster::frontend':
         ca_server        => $puppetmaster_ca,
         web_hostname     => $puppetmaster_webhostname,
         config           => $config,
         secure_private   => false,
         servers          => $puppetmasters,
-        extra_auth_rules => template('profile/openstack/base/puppetmaster/extra_auth_rules.conf.erb'),
+        extra_auth_rules => template("profile/openstack/base/puppetmaster/${extra_auth_rules_template}"),
     }
 
     ferm::rule{'puppetmaster_balancer':
