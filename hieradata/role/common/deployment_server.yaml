@@ -145,7 +145,6 @@ scap::sources:
   tilerator/deploy:
     repository: maps/tilerator/deploy
 #    lvs_service: tilerator
-  trending-edits/deploy: {}
   # Wikimania scholarships app
   scholarships/scholarships:
     repository: wikimedia/wikimania-scholarships

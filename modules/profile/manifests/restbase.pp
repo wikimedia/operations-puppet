@@ -60,10 +60,6 @@
 # [*citoid_uri*]
 #   Citoid service URI. Format: http://citoid.svc.eqiad.wmnet:1970
 #
-# [*trendingedits_uri*]
-#   Trending edits service URI. Format:
-#   http://trendingedits.svc.eqiad.wmnet:6699
-#
 # [*cxserver_uri*]
 #   CXServer service uri. Format: http://cxserver.discovery.wmnet:8080
 #
@@ -91,7 +87,6 @@ class profile::restbase(
     $eventlogging_service_uri = hiera('profile::restbase::eventlogging_service_uri'),
     $pdfrender_uri  = hiera('profile::restbase::pdfrender_uri'),
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
-    $trendingedits_uri = hiera('profile::restbase::trendingedits_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
@@ -131,7 +126,6 @@ class profile::restbase(
             eventlogging_service_uri => $eventlogging_service_uri,
             pdfrender_uri            => $pdfrender_uri,
             pdfrender_key            => $pdfrender_key,
-            trendingedits_uri        => $trendingedits_uri,
             cxserver_uri             => $cxserver_uri,
             recommendation_uri       => $recommendation_uri,
             aqs_uri                  => $aqs_uri,
