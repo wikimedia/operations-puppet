@@ -82,9 +82,6 @@ discovery::services:
   pdfrender:
     lvs: pdfrender
     active_active: true
-  trendingedits:
-    lvs: trendingedits
-    active_active: true
   "recommendation-api":
     lvs: "recommendation-api"
     active_active: true

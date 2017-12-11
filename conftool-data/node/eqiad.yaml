@@ -168,10 +168,10 @@ eqiad:
     sca1003.eqiad.wmnet: [zotero]
     sca1004.eqiad.wmnet: [zotero]
   scb:
-    scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, "recommendation-api"]
-    scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, "recommendation-api"]
-    scb1003.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, "recommendation-api"]
-    scb1004.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, trendingedits, "recommendation-api"]
+    scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
+    scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
+    scb1003.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
+    scb1004.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
   dns:
     chromium.wikimedia.org: [pdns_recursor]
     hydrogen.wikimedia.org: [pdns_recursor]

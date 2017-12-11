@@ -544,7 +544,6 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                'ALL = (recommendation_api) NOPASSWD: ALL',
-               'ALL = NOPASSWD: /usr/sbin/service trendingedits *',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
                'ALL = NOPASSWD: /usr/bin/firejail --join=*']
   notebook-roots:
@@ -600,12 +599,6 @@ groups:
     members: [ppchelko, eevans, mobrovac, tgr]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service pdfrender *',
                  'ALL = (pdfrender) NOPASSWD: ALL']
-  trendingedits-admin:
-    description: Group of trendingedits admins
-    gid: 791
-    members: [ppchelko, eevans, mobrovac, jdlrobson, bsitzmann]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service trendingedits *',
-                 'ALL = (trendingedits) NOPASSWD: ALL']
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
