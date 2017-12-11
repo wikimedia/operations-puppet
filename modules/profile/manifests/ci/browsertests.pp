@@ -2,9 +2,6 @@
 #
 class profile::ci::browsertests {
 
-    class { '::contint::packages::ruby':
-    }
-
     # Provides phantomjs, firefox and xvfb
     require profile::ci::browsers
 
