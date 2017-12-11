@@ -2,7 +2,7 @@
 
 <%
 def node_lists(role, site)
-        role_nodes = scope.function_hiera(["cache::#{role}::nodes"])
+        role_nodes = scope.call_function(:hiera, ["cache::#{role}::nodes"])
         return role_nodes[site]
 end
 
