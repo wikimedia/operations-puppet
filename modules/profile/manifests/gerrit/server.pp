@@ -8,7 +8,7 @@ class profile::gerrit::server(
     $slave_hosts = hiera('gerrit::server::slave_hosts'),
     $master_host = hiera('gerrit::server::master_host'),
     $bacula = hiera('gerrit::server::bacula'),
-    $gerrit_servers = join(hiera('gerrit::servers'), ' '),
+    $gerrit_servers = join(hiera('gerrit::server::servers'), ' '),
     $config = hiera('gerrit::server::config'),
 ) {
 

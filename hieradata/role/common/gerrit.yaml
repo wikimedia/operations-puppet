@@ -11,7 +11,7 @@ gerrit::server::bacula: 'srv-gerrit-git'
 gerrit::server::config: 'gerrit.config.erb'
 
 # list of gerrit servers used in firewall rules
-gerrit::servers:
+gerrit::server::servers:
  - cobalt.wikimedia.org
  - gerrit2001.wikimedia.org
 
