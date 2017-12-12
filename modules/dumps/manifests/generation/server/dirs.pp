@@ -1,14 +1,14 @@
 class dumps::generation::server::dirs(
-    $user  = undef,
-    $group = undef,
+    $datadir     = undef,
+    $xmldumpsdir = undef,
+    $tempdir     = undef,
+    $otherdir    = undef,
+    $user        = undef,
+    $group       = undef,
 ) {
     # Directories where dumps of any type are generated
     # This list is not for one-off directories, nor for
     # directories with incoming rsyncs of datasets
-    $datadir                      = '/data/xmldatadumps'
-    $publicdir                    = '/data/xmldatadumps/public'
-    $tempdir                      = '/data/xmldatadumps/temp'
-    $otherdir                     = '/data/otherdumps'
     $cirrussearchdir              = "${otherdir}/cirrussearch"
     $xlationdir                   = "${otherdir}/contenttranslation"
     $categoriesrdfdir             = "${otherdir}/categoriesrdf"
@@ -24,7 +24,7 @@ class dumps::generation::server::dirs(
     $otherwikidatadir             = "${otherdir}/wikidata"
 
     # top level directories for various dumps/datasets
-    file { [ $datadir, $publicdir, $otherdir, $tempdir ]:
+    file { [ $datadir, $xmldumpsdir, $otherdir, $tempdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
