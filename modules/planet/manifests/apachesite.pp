@@ -7,7 +7,7 @@ define planet::apachesite {
         $priority = '50'
     }
 
-    apache::site { "${title}.planet.${planet::planet_domain_name}":
+    apache::site { "${title}.planet.${planet::domain_name}":
         content  => template('planet/apache/planet-language.erb'),
         priority => $priority,
     }
