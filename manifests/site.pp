@@ -330,10 +330,6 @@ node /^db1(053|060|074|076|090)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-node 'db1021.eqiad.wmnet' {
-    role(spare::system)
-}
-
 
 # s2 (large wikis) core production dbs on codfw
 # codfw master
@@ -356,9 +352,6 @@ node /^db1(072|077|078)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-node 'db1044.eqiad.wmnet' {
-    role(spare::system)
-}
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2018.codfw.wmnet' {
@@ -550,10 +543,6 @@ node 'db1043.eqiad.wmnet' {
     }
 }
 
-node 'db1048.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'db1059.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
@@ -568,21 +557,11 @@ node 'db2012.codfw.wmnet' {
 
 # m4 shard
 
-# old eventlogging master database, will be decommed in T156844
-node 'db1046.eqiad.wmnet' {
-    role(spare::system)
-}
-
 node 'db1107.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::master)
 }
 
 # These replicas have an m4 custom replication protocol.
-
-# db1047 is a host about to be decommissioned (T156844)
-node 'db1047.eqiad.wmnet' {
-    role(spare::system)
-}
 
 node 'db1108.eqiad.wmnet' {
     role(mariadb::misc::eventlogging::replica)
