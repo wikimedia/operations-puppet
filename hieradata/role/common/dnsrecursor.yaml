@@ -4,4 +4,4 @@ profile::bird::advertise_vips:
   rec-dns-anycast-vip:
     address: 10.3.0.1
 
-profile::bird::bind_service: 'pdns-recursor.service'
+profile::bird::bind_service: 'anycast-healthchecker.service'
