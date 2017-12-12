@@ -2141,8 +2141,6 @@ node 'silver.wikimedia.org' {
 
 node 'sodium.wikimedia.org' {
     role(mirrors)
-    include ::standard
-
     interface::add_ip6_mapped { 'main': }
 }
 
