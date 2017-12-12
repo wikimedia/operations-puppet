@@ -20,6 +20,10 @@ eqiad:
     mw1309.eqiad.wmnet: [apache2,nginx]
     mw1310.eqiad.wmnet: [apache2,nginx]
     mw1311.eqiad.wmnet: [apache2,nginx]
+    mw1334.eqiad.wmnet: [apache2,nginx]
+    mw1335.eqiad.wmnet: [apache2,nginx]
+    mw1336.eqiad.wmnet: [apache2,nginx]
+    mw1337.eqiad.wmnet: [apache2,nginx]
   api_appserver:
     mw1189.eqiad.wmnet: [apache2,nginx]
     mw1190.eqiad.wmnet: [apache2,nginx]
@@ -143,6 +147,11 @@ eqiad:
     mw1326.eqiad.wmnet: [apache2,nginx]
     mw1327.eqiad.wmnet: [apache2,nginx]
     mw1328.eqiad.wmnet: [apache2,nginx]
+    mw1329.eqiad.wmnet: [apache2,nginx]
+    mw1330.eqiad.wmnet: [apache2,nginx]
+    mw1331.eqiad.wmnet: [apache2,nginx]
+    mw1332.eqiad.wmnet: [apache2,nginx]
+    mw1333.eqiad.wmnet: [apache2,nginx]
   cache_text:
     cp1052.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
     cp1053.eqiad.wmnet: [varnish-fe, varnish-be, nginx]

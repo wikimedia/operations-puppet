@@ -1641,9 +1641,16 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     include ::base::firewall
 }
 
+# ROW C eqiad jobrunners
+node /^mw133[4-7]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+    include ::base::firewall
+}
+
+
 # T165519
 # ROW C eqiad appservers
-node /^mw13(19|2[0-8])\.eqiad\.wmnet$/ {
+node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
