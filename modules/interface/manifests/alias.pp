@@ -5,7 +5,7 @@ define interface::alias(
   $ipv4=undef,
   $ipv6=undef,
 ) {
-    if $ipv4 != undef {
+    if $ipv4 != undef or $ipv4 != false {
         interface::ip { "${title} ipv4":
             interface => $interface,
             address   => $ipv4,
@@ -13,7 +13,7 @@ define interface::alias(
         }
     }
 
-    if $ipv6 != undef {
+    if $ipv6 != undef or $ipv6 != false {
         interface::ip { "${title} ipv6":
             interface => $interface,
             address   => $ipv6,
