@@ -1483,10 +1483,6 @@ node /^maps200[2-4]\.codfw\.wmnet/ {
     role(maps::slave)
 }
 
-node /^mc10(0[1-9]|1[0-8])\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 node /^mc10(19|2[0-9]|3[0-6])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
 }
