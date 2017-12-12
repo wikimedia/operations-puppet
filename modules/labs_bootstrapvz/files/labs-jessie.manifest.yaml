@@ -178,6 +178,9 @@ plugins:
         src: /etc/apt/preferences.d/wikimedia.pref
         dst: /etc/apt/preferences.d/wikimedia.pref
       -
+        src: /etc/apt/preferences.d/puppet_all.pref
+        dst: /etc/apt/preferences.d/puppet_all.pref
+      -
         src: /etc/ssl/certs/ca-certificates.crt
         dst: /etc/ssl/certs/ca-certificates.crt
   commands:
