@@ -1,4 +1,6 @@
 
+include "/etc/bird/anycast-prefixes.conf";
+
 router id <%= @routerid %>;
 
 protocol device {
@@ -12,8 +14,13 @@ protocol direct {
     interface "*";
 }
 
+function match_route()
+{
+    return net ~ ACAST_PS_ADVERTISE;
+}
+
 filter vips_filter{
-    if ( net.len = 32 && net ~ 10.3.0.0/24 ) then {
+    if ( net.len = 32 && net ~ 10.3.0.0/24 && match_route() ) then {
         accept;
     }
     else {
