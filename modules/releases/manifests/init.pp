@@ -41,6 +41,11 @@ class releases (
         require   => File['/srv/mediawiki'],
         bare      => true,
     }
+    git::clone { 'mediawiki/tools/release':
+        ensure    => 'latest',
+        directory => '/srv/mediawiki/release-tools',
+        require   => File['/srv/mediawiki'],
+    }
 
     file { '/srv/org/wikimedia/releases/mediawiki':
         ensure  => 'directory',
