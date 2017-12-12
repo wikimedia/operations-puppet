@@ -12,8 +12,8 @@
 #
 class profile::planet::venus (
     $planet_domain_name = hiera('planet_domain_name'),
-    $planet_meta_link = 'meta.wikimedia.org/wiki/Planet_Wikimedia',
-    $planet_http_proxy = "http://url-downloader.${::site}.wikimedia.org:8080",
+    $planet_meta_link = hiera('planet_meta_link'),
+    $planet_http_proxy = hiera('planet_http_proxy'),
     $planet_languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
