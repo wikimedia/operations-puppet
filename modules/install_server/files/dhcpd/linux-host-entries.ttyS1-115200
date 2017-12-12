@@ -2348,13 +2348,6 @@ host eventlog1001 {
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host eventlog2001 {
-    hardware ethernet 78:2b:cb:48:f9:58;
-    fixed-address eventlog2001.codfw.wmnet;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host flerovium {
     hardware ethernet F4:E9:D4:CD:90:30;
     fixed-address flerovium.eqiad.wmnet;
