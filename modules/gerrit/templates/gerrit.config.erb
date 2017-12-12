@@ -179,7 +179,9 @@
     listenAddress = off
     <%- else -%>
     listenAddress = <%= @host %>:29418
+    <%- @ipv6 -%>
     listenAddress = [<%= @ipv6 %>]:29418
+    <%- end -%>
     <%- end -%>
     threads = 8
     batchThreads = 2
