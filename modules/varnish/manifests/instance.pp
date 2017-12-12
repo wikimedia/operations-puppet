@@ -50,8 +50,8 @@ define varnish::instance(
     $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"${inst}\""
 
     monitoring::check_prometheus { "varnish-${inst}-check-child-start":
-        description     => 'Varnish child restarted',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        description     => "Varnish ${inst} child restarted",
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/varnish-machine-stats?panelId=66&fullscreen&orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         query           => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
         method          => 'gt',
         warning         => 1,
