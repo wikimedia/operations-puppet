@@ -57,6 +57,7 @@ class profile::openstack::base::designate::service(
         keystone_public_port       => $keystone_public_port,
         keystone_auth_port         => $keystone_auth_port,
     }
+    contain '::openstack::designate::service'
 
     # Open designate API to Labs web UIs and the commandline on labcontrol
     ferm::rule { 'designate-api':

@@ -62,4 +62,5 @@ class profile::openstack::base::nova::common(
         keystone_auth_uri        => $keystone_auth_uri,
         keystone_admin_uri       => $keystone_admin_uri,
     }
+    contain '::openstack::nova::common'
 }
