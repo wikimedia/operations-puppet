@@ -738,9 +738,6 @@ node /^dns400[12]\.wikimedia\.org$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[123].eqiad.wmnet$/ {
     role(druid::analytics::worker)
-
-    include ::base::firewall
-    include ::standard
 }
 
 # Druid public-eqiad servers.
@@ -748,9 +745,6 @@ node /^druid100[123].eqiad.wmnet$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[456].eqiad.wmnet$/ {
     role(druid::public::worker)
-
-    include ::base::firewall
-    include ::standard
 }
 
 # nfs server for dumps generation, also rsyncs
