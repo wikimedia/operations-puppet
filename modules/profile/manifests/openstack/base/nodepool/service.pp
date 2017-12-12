@@ -34,4 +34,5 @@ class profile::openstack::base::nodepool::service(
         openstack_password      => $passwords::nodepool::manager_pass,
         openstack_tenant_id     => 'contintcloud',
     }
+    contain '::nodepool'
 }

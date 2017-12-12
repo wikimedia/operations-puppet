@@ -17,7 +17,7 @@ class profile::openstack::base::glance(
     $keystone_admin_uri = "http://${nova_controller}:${auth_port}"
     $keystone_public_uri = "http://${nova_controller}:${public_port}"
 
-    class { 'openstack::glance::service':
+    class { '::openstack::glance::service':
         version                 => $version,
         active                  => $::fqdn == $nova_controller,
         keystone_admin_uri      => $keystone_admin_uri,
@@ -31,6 +31,7 @@ class profile::openstack::base::glance(
         glance_data             => $glance_data,
         glance_image_dir        => $glance_image_dir,
     }
+    contain '::openstack::glance::service'
 
     include ::network::constants
     $prod_networks = join($network::constants::production_networks, ' ')
