@@ -1,10 +1,12 @@
-class profile::dumps::web::xmldumps_active {
+class profile::dumps::web::xmldumps_active(
+    $do_acme = hiera('do_acme'),
+) {
     class { '::dumpsuser': }
     $publicdir = '/data/xmldatadumps/public'
     $otherdir = '/data/xmldatadumps/public/other'
 
     class {'::dumps::web::xmldumps_active':
-        do_acme          => hiera('do_acme'),
+        do_acme          => $do_acme,
         datadir          => '/data/xmldatadumps',
         publicdir        => $publicdir,
         otherdir         => '/data/xmldatadumps/public/other',
