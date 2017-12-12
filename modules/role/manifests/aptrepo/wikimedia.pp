@@ -1,6 +1,8 @@
 # http://apt.wikimedia.org/wikimedia/
-class role::aptrepo::wikimedia {
-
+class role::aptrepo::wikimedia (
+    $primary_server = hiera('install_server'),
+    $secondary_server = hiera('install_server_failover'),
+){
     $basedir = '/srv/wikimedia'
 
     class { '::aptrepo':
@@ -22,5 +24,8 @@ class role::aptrepo::wikimedia {
     include ::profile::backup::host
     backup::set { 'srv-wikimedia': }
 
-    include aptrepo::rsync
+    class { 'aptrepo::rsync':
+        primary_server   => $primary_server,
+        secondary_server => $secondary_server,
+    }
 }
