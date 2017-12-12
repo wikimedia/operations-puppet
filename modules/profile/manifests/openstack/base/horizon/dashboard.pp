@@ -9,7 +9,7 @@ class profile::openstack::base::horizon::dashboard(
     ) {
 
     # TODO: Add openstack::util::envscripts during profile conversion
-    class { 'openstack::horizon::service':
+    class { '::openstack::horizon::service':
         version             => $version,
         nova_controller     => $nova_controller,
         wmflabsdotorg_admin => $wmflabsdotorg_admin,
@@ -18,11 +18,13 @@ class profile::openstack::base::horizon::dashboard(
         ldap_user_pass      => $ldap_user_pass,
         webserver_hostname  => $webserver_hostname,
     }
+    contain '::openstack::horizon::service'
 
     #   require => Class['openstack::horizon::service'],
     class {'::openstack::horizon::puppetpanel':
         version => $version,
     }
+    contain '::openstack::horizon::puppetpanel'
 
     ferm::service { 'horizon_http':
         proto  => 'tcp',
