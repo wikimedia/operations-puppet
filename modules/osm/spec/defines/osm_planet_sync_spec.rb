@@ -14,7 +14,7 @@ describe 'osm::planet_sync', :type => :define do
             let(:facts) { {
                 :lsbdistrelease => 'Precise',
                 :lsbdistid      => 'Ubuntu',
-                :memorysize_mb => 64420.94,
+                :memorysize_mb  => 64 * 1024,
             }}
 
             it { should contain_cron('planet_sync-somedb') }
@@ -26,7 +26,7 @@ describe 'osm::planet_sync', :type => :define do
             let(:facts) { {
                 :lsbdistrelease => 'Jessie',
                 :lsbdistid      => 'Debian',
-                :memorysize_mb => 64420.94,
+                :memorysize_mb  => 64 * 1024,
             }}
             it { should contain_file('/usr/local/bin/replicate-osm').with_content(/--input-reader xml/) }
         end

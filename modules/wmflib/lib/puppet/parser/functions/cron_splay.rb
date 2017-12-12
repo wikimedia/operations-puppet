@@ -64,9 +64,9 @@ within each DC uniquely.
     when 'hourly'
        mins = 60
     when 'daily'
-       mins = 1440
+       mins = 24 * 60
     when 'weekly'
-       mins = 10080
+       mins = 7 * 24 * 60
     else
       raise(Puppet::ParseError, 'cron_splay(): invalid period')
     end

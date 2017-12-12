@@ -80,9 +80,6 @@ Style/NestedTernaryOperator:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
 
-Style/NumericLiterals:
-  MinDigits: 6
-
 Style/ParallelAssignment:
   Exclude:
     - 'modules/wmflib/lib/puppet/parser/functions/to_milliseconds.rb'
