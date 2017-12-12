@@ -7,19 +7,19 @@
 #
 # required parameters:
 #
-# $planet_domain_name - domain name used in Apache/SSL configs
+# $domain_name - domain name used in Apache/SSL configs
 #   example "planet.wikimedia.org
-# $planet_languages - a hash with languages and UI translations
+# $languages - a hash with languages and UI translations
 #   see the role class for this
-# $planet_meta_link - a protocol relative link
+# $meta_link - a protocol relative link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
-# $planet_http_proxy - set proxy to be used for downloading feeds
+# $http_proxy - set proxy to be used for downloading feeds
 #   example: http://url-downloader.${::site}.wikimedia.org:8080
 class planet (
-    $planet_domain_name,
-    $planet_languages,
-    $planet_meta_link,
-    $planet_http_proxy,
+    $domain_name,
+    $languages,
+    $meta_link,
+    $http_proxy,
 ) {
 
     # locales are essential for planet
