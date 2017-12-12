@@ -24,3 +24,6 @@ profile::cassandra::single_instance::graphite_host: 'graphite-in.eqiad.wmnet'
 
 cassandra::metrics::blacklist:
   - .*\.metrics\.Table\..*$
+
+profile::maps::apps::kartotherian_style: 'osm-bright-style'
+profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
