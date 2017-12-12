@@ -29,23 +29,16 @@ class MtailMetricStore(object):
 
         self._store = json.loads(''.join(metrics_store))
 
-    def get_metric(self, name):
+    def get_samples(self, name):
+        """Return all samples for metric name as a list of samples.
+           Each sample is in this form: ("k1=v1,k2=v2", value)"""
+        samples = []
         if name not in self._store:
             raise ValueError('metric %s not found in store', name)
-        return MtailMetric(self._store[name][0].get('Keys', []),
-                           self._store[name][0]['LabelValues'][0].get('Labels', []),
-                           self._store[name][0]['LabelValues'][0]['Value']['Value'])
-
-
-class MtailMetric(object):
-    def __init__(self, keys, labels, value):
-        self._keys = keys
-        self._labels = labels
-        self._value = value
-        self._labelpairs = self.get_labelpairs(keys, labels)
-
-    def get_labelpairs(self, keys, labels):
-        res = []
-        for k, v in zip(keys, labels):
-            res.append('%s=%s' % (k, v))
-        return res
+        for metric in self._store[name][0]['LabelValues']:
+            label_names = self._store[name][0].get('Keys', [])
+            label_values = metric.get('Labels', [])
+            value = metric['Value']['Value']
+            labelpairs = ["%s=%s" % (k, v) for k, v in zip(label_names, label_values)]
+            samples.append((','.join(labelpairs), value))
+        return samples
