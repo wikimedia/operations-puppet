@@ -1,0 +1,7 @@
+Code-Review+2: Rush <rush@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Rush <rush@wikimedia.org>
+Submitted-at: Tue, 12 Dec 2017 17:54:52 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/397874
+Project: operations/puppet
+Branch: refs/heads/production
