@@ -35,13 +35,30 @@ class openstack::keystone::service(
     $labs_networks = $network::constants::labs_networks
 
     package { 'keystone':
-        ensure  => present,
+        ensure  => 'present',
     }
+
     package { 'python-oath':
-        ensure  => present,
+        ensure  => 'present',
     }
+
     package { 'python-mysql.connector':
-        ensure  => present,
+        ensure  => 'present',
+    }
+
+    group {'keystone':
+        ensure  => 'present',
+        require => Package['keystone'],
+    }
+
+    user {'keystone':
+        ensure  => 'present',
+        require => Package['keystone'],
+    }
+
+    user {'keystone':
+        ensure  => 'present',
+        require => Group['keystone'],
     }
 
     if $token_driver == 'redis' {
@@ -52,15 +69,17 @@ class openstack::keystone::service(
 
     file {
         '/var/log/keystone':
-            ensure => directory,
-            owner  => 'keystone',
-            group  => 'www-data',
-            mode   => '0775';
+            ensure  => directory,
+            owner   => 'keystone',
+            group   => 'www-data',
+            mode    => '0775';
+            require => Package['keystone'];
         '/etc/keystone':
             ensure => directory,
             owner  => 'keystone',
             group  => 'keystone',
             mode   => '0755';
+            require => Package['keystone'];
         '/etc/keystone/keystone.conf':
             content => template("openstack/${version}/keystone/keystone.conf.erb"),
             owner   => 'keystone',
