@@ -12,6 +12,10 @@ class profile::cache::misc(
 ) {
     require ::profile::cache::base
 
+    # Temp. experiment to duplicate/mirror the webrequest data
+    # to the new Kafka Jumbo brokers.
+    include ::profile::cache::kafka::webrequest::duplicate
+
     $cache_route = $cache_route_table[$::site]
     class { 'tlsproxy::prometheus': }
     class { 'prometheus::node_vhtcpd': }
