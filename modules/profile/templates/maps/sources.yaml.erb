@@ -26,7 +26,7 @@ genview:
   maxwidth: 2048
   uri: vector://
   xml:
-    loader: <%= @loader %>
+    loader: <%= @style %>
   xmlSetParams:
     source: {ref: genall}
 
@@ -70,7 +70,7 @@ gen:
   maxwidth: 2048
   uri: vector://
   xml:
-    loader: <%= @loader %>
+    loader: <%= @style %>
   xmlSetParams:
     source: {ref: <%= @storage_id %>}
 <%- end -%>
@@ -98,7 +98,7 @@ osm-intl:
   maxwidth: 2048
   uri: vector://
   xml:
-    loader: <%= @loader %>
+    loader: <%= @style %>
   xmlSetParams:
     source: {ref: osm-pbf}
   overrideInfo:
@@ -116,7 +116,7 @@ osm:
   maxwidth: 2048
   uri: vector://
   xml:
-    loader: <%= @loader %>
+    loader: <%= @style %>
   xmlSetParams:
     source: {ref: osm-pbf}
   xmlExceptLayers: ['country_label', 'place_label', 'poi_label']

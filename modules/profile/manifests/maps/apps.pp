@@ -8,6 +8,10 @@ class profile::maps::apps(
     $pgsql_tileratorui_pass = hiera('profile::maps::osm_master::tileratorui_pass'),
     $redis_server = hiera('profile::maps::apps::redis_server'),
     $redis_pass = hiera('profile::maps::apps::redis_pass'),
+    # for "historical reasons", tilerator and kartotherian load styles differently.
+    # once this is fixed in application code, the 2 parameters below should be merged.
+    $kartotherian_style = hiera('profile::maps::apps::kartotherian_style'),
+    $tilerator_style = hiera('profile::maps::apps::tilerator_style'),
 ) {
 
     $conf_sources = 'sources.prod2.yaml'
@@ -19,14 +23,17 @@ class profile::maps::apps(
     profile::maps::sources_config { 'kartotherian':
         mode       => 'kartotherian',
         storage_id => $storage_id,
+        style      => 'osm-bright-style',
     }
     profile::maps::sources_config { 'tilerator':
         mode       => 'tilerator',
         storage_id => $storage_id,
+        style      => '\'@kartotherian/osm-bright-style\'',
     }
     profile::maps::sources_config { 'tileratorui':
         mode       => 'tilerator',
         storage_id => $storage_id,
+        style      => '\'@kartotherian/osm-bright-style\'',
     }
 
     class { '::tilerator':

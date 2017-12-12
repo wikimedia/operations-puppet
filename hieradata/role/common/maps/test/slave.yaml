@@ -24,3 +24,6 @@ cassandra::metrics::blacklist:
 
 profile::maps::postgresql_common::shared_buffers: '4GB'
 profile::maps::postgresql_common::maintenance_work_mem: '3GB'
+
+profile::maps::apps::kartotherian_style: 'osm-bright-style'
+profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
