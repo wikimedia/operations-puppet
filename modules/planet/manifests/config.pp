@@ -1,5 +1,7 @@
 # defined type: a config dir and file for a planet-venus or rawdog language version
-define planet::config {
+define planet::config (
+    $domain_name = $domain_name,
+){
 
     if os_version('debian >= stretch') {
         $config_path = '/etc/rawdog'
