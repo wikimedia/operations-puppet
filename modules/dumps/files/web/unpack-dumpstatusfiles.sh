@@ -21,7 +21,7 @@ Usage: $0 --xmldumpsdir <path> --newer <minutes>
   --xmldumpsdir   path to root of xml/sql dumps tree for unpacking tarball
   --newer         file must be newer than this many minutes ago to unpack it
 
-Example:  $0 --xmldumpsdir /data/xmldatadumps --newer 10
+Example:  $0 --xmldumpsdir /data/xmldatadumps/public --newer 10
 EOF
     exit 1
 }
@@ -50,7 +50,7 @@ elif [ -z "$newer" ]; then
     usage && exit 1
 fi
 
-tarballpath="${xmldumpsdir}/public/dumpstatusfiles.tar.gz"
+tarballpath="${xmldumpsdir}/dumpstatusfiles.tar.gz"
 if [ ! -e "$tarballpath" ]; then
     # no file so do no check
     exit 0

@@ -15,7 +15,7 @@ Usage: $0 --xmldumpsdir <path>
 
   --xmldumpsdir   path to root of xml/sql dumps tree
 
-Example:  $0 --xmldumpsdir /data/xmldatadumps
+Example:  $0 --xmldumpsdir /data/xmldatadumps/public
 EOF
     exit 1
 }
@@ -37,10 +37,8 @@ if [ -z "$xmldumpsdir" ]; then
     usage && exit 1
 fi
 
-dumpsdir="${xmldumpsdir}/public/"
-
 # generate lists of most recent completed successful dumps for rsync (dirs, files)
-/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --rsynclists --relpath --outputdir "$dumpsdir" --dumpsdir "$dumpsdir"
-/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --rsynclists --relpath --outputdir "$dumpsdir" --toplevel --dumpsdir "$dumpsdir"
+/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --dirlisting 'rsync-dirlist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --dumpsdir "${xmldumpsdir}/"
+/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --filelisting 'rsync-filelist-last-%s-good.txt' --rsynclists --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"
 # these lists can be used for rsync excl/incl on our side, providing shares that "just work" for the mirrors
-/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --rsynclisting 'rsync-inc-last-%s.txt' --relpath --outputdir "$dumpsdir" --toplevel --dumpsdir "$dumpsdir"
+/usr/bin/python /usr/local/bin/list-last-n-good-dumps.py --dumpsnumber 1,2,3,4,5 --rsynclisting 'rsync-inc-last-%s.txt' --relpath --outputdir "${xmldumpsdir}/" --toplevel --dumpsdir "${xmldumpsdir}/"

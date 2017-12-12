@@ -1,7 +1,7 @@
 class dumps::web::xmldumps_active(
     $do_acme          = true,
     $datadir          = undef,
-    $publicdir        = undef,
+    $xmldumpsdir      = undef,
     $otherdir         = undef,
     $logs_dest        = undef,
     $htmldumps_server = undef,
@@ -13,7 +13,7 @@ class dumps::web::xmldumps_active(
     class {'::dumps::web::xmldumps':
         do_acme          => $do_acme,
         datadir          => $datadir,
-        publicdir        => $publicdir,
+        xmldumpsdir      => $xmldumpsdir,
         otherdir         => $otherdir,
         htmldumps_server => $htmldumps_server,
         xmldumps_server  => $xmldumps_server,

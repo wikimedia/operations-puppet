@@ -31,7 +31,7 @@
 [dumpmirrorslastfivedumps]
 # not really, we should transition people to using the module below
 read only = true
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/ *.inprog
 hosts allow = <%= @hosts_allow %>
 
@@ -40,46 +40,46 @@ hosts allow = <%= @hosts_allow %>
 [dumpslastfive]
 read only = true
 # this includes only the last five good dumps.
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @publicdir %>/rsync-inc-last-5.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-last-5.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslastfour]
 read only = true
 # this includes only the last four good dumps.
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @publicdir %>/rsync-inc-last-4.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-last-4.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslastthree]
 read only = true
 # this includes only the last three good dumps.
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @publicdir %>/rsync-inc-last-3.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-last-3.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslasttwo]
 read only = true
 # this includes only the last two good dumps.
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @publicdir %>/rsync-inc-last-2.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-last-2.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpslastone]
 read only = true
 # this includes only the last good dump.
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 include = /*wik*/
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog /* /*/ /*/*/
-include from = <%= @publicdir %>/rsync-inc-last-1.txt
+include from = <%= @xmldumpsdir %>/rsync-inc-last-1.txt
 hosts allow = <%= @hosts_allow %>
 
 [dumpmirrorsother]
@@ -91,14 +91,14 @@ hosts allow = <%= @hosts_allow %>
 [dumpmirrorsalldumps]
 read only = true
 # this includes only dumps, no archives, no other datasets
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/ **not/  *.inprog
 hosts allow = <%= @hosts_allow %>
 
 [dumpmirrorseverything]
 read only = true
 # this includes archives, other datasets
-path = <%= @publicdir %>
+path = <%= @xmldumpsdir %>
 exclude = **tmp/ **temp/ **bad/ **save/ **not/ *.inprog
 # ip addresses are: 69.31.98.2 your.org, 199.47.196.26 wansecurity.com, 69.28.137.74 iconicindustry.com
 hosts allow = <%= @hosts_allow %> 199.47.196.26 69.31.98.2 69.28.137.74
