@@ -8,7 +8,6 @@ Lint/HandleExceptions:
 
 Lint/UselessAssignment:
   Exclude:
-    - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/service/Rakefile'
     - 'modules/wmflib/lib/puppet/parser/functions/validate_array_re.rb'
 
@@ -92,10 +91,6 @@ Style/RedundantReturn:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
 
-Style/RedundantSelf:
-  Exclude:
-    - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
-
 Style/RegexpLiteral:
   Exclude:
     - 'modules/bacula/spec/classes/bacula_client_spec.rb'
@@ -121,7 +116,6 @@ Style/Semicolon:
 Layout/SpaceAfterComma:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-    - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
 
 Layout/SpaceAroundEqualsInParameterDefault:
