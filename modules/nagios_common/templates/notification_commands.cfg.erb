@@ -33,7 +33,7 @@ define command{
 # 'notify-by-email' command definition
 define command{
 	command_name	notify-by-email
-	command_line	/usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+	command_line	/usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $${SERVICENOTESURL}\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
 	}
 
 # 'notify-by-sms-gateway' command definitions
@@ -54,7 +54,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc.log
 	}
 
 # IRC output for wikidata
@@ -65,7 +65,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-wikidata
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-wikidata.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-wikidata.log
 	}
 
 # IRC output for interactive
@@ -76,7 +76,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-interactive
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-interactive.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-interactive.log
 	}
 
 	# IRC output for RelEng team
@@ -87,7 +87,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-releng
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-releng.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-releng.log
 	}
 
 # IRC output for (tool)labs
@@ -98,7 +98,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-labs
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-labs.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-labs.log
 	}
 
 # IRC output for Analytics
@@ -109,7 +109,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-analytics
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-analytics.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-analytics.log
 	}
 
 # IRC output for Countervandalism Network
@@ -120,7 +120,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-cvn
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-cvn.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-cvn.log
     }
 
 # IRC output for WMT
@@ -131,7 +131,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-wmt
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-wmt.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-wmt.log
 	}
 
 # IRC output for ORES
@@ -142,7 +142,7 @@ define command{
 
 define command{
         command_name    notify-service-by-irc-ores
-        command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-ores.log
+        command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-ores.log
         }
 
 # IRC output for performance
@@ -153,7 +153,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-performance
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-performance.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-performance.log
 	}
 
 # IRC output for fundraising
@@ -164,7 +164,7 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-fundraising
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-fundraising.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-fundraising.log
 	}
 
 # IRC output for Reading Web
@@ -175,5 +175,5 @@ define command{
 
 define command{
 	command_name	notify-service-by-irc-reading-web
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" >> <%= @irc_dir_path %>/irc-reading-web.log
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $${SERVICENOTESURL}" >> <%= @irc_dir_path %>/irc-reading-web.log
 	}
