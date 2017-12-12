@@ -12,7 +12,7 @@ class profile::dumps::rsyncer_peer(
         group => $group,
     }
     class {'::dumps::rsync::default':}
-    class {'::dumps::rsync::memfix':}
+    class {'::vm::higher_min_free_kbytes':}
     class {'::dumps::rsync::peers':
         hosts_allow => $peer_hosts,
         datapath    => $mntpoint,

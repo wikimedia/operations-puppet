@@ -32,7 +32,7 @@ class profile::dumps::rsyncer(
         otherdir    => $otherdir,
     }
 
-    class {'::dumps::rsync::memfix':}
+    class {'::vm::higher_min_free_kbytes':}
 
     class {'::dumps::rsync::pagecounts_ez':
         hosts_allow => $stats_hosts,
