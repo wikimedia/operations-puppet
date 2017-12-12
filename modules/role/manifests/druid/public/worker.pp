@@ -8,6 +8,8 @@ class role::druid::public::worker {
 
     class { '::lvs::realserver': }
 
+    include ::standard
+    include ::profile::base::firewall
     include ::profile::druid::broker
     include ::profile::druid::coordinator
     include ::profile::druid::historical
