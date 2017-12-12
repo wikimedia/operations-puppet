@@ -8,5 +8,8 @@ class role::gerrit {
     include ::standard
     include ::profile::backup::host
     include ::profile::base::firewall
-    include ::profile::gerrit::server
+    class { '::profile::gerrit::server':
+        ipv4 => hiera('gerrit::service::ipv4'),
+        ipv6 => hiera('gerrit::service::ipv6', undef),
+    }
 }
