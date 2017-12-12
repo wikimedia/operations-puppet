@@ -4,7 +4,6 @@ Lint/AssignmentInCondition:
 
 Lint/HandleExceptions:
   Exclude:
-    - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/require_package.rb'
 
 Lint/UselessAssignment:
@@ -108,7 +107,6 @@ Style/RegexpLiteral:
     - 'modules/bacula/spec/defines/fileset_spec.rb'
     - 'modules/bacula/spec/defines/storage_device_spec.rb'
     - 'modules/servermon/spec/classes/servermon_app_spec.rb'
-    - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
 
 Style/RescueModifier:
   Exclude:
@@ -125,7 +123,6 @@ Style/Semicolon:
 
 Layout/SpaceAfterComma:
   Exclude:
-    - 'modules/base/lib/facter/labsproject.rb'
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
     - 'modules/puppet_statsd/lib/puppet/reports/statsd.rb'
     - 'modules/wmflib/lib/puppet/parser/functions/ini.rb'
