@@ -11,7 +11,7 @@ db=$1
 shift
 
 if [ -z "$db" ] || [ "$db" = "--help" ]; then
-    echo 'Usage: sql [--write | --group group] <dbname> [mysqloptions]'
+    echo 'Usage: sql [--write | --group group | --replica name | --list-replicas] <dbname> [mysqloptions]'
     exit 0
 elif [ "$db" = "--write" ]; then
     hostcode="echo \$lb->getServerName(0);"
@@ -28,7 +28,27 @@ elif [ "$db" = "--group" ]; then
         echo "group must be a string containing only lowercase letters"
         exit 1
     fi
-    hostcode="\$index = \$lb->getReaderIndex('"$group"'); if(\$index === false) exit(101); echo \$lb->getServerName(\$index);"
+    hostcode="\$index = \$lb->getReaderIndex('$group'); if(\$index === false) exit(101); echo \$lb->getServerName(\$index);"
+
+    # Database is the next param
+    db=$1
+    shift
+elif [ "$db" = "--replica" ]; then
+    # Explicitly asked for a replica by name
+    name=$1
+    shift
+
+    if echo $name | grep -qvP '^[a-z0-9:]+\z'; then
+        echo "replica name must be a string containing only lowercase letters, numbers, and colons"
+        exit 1
+    fi
+    hostcode="\$serverCount = \$lb->getServerCount(); for ( \$i = 0; \$i < \$serverCount; ++\$i ) { if ( \$lb->getServerName(\$i) === '$name' ) break; } if ( \$i >= \$serverCount ) exit(102); echo \$lb->getServerName(\$i);"
+
+    # Database is the next param
+    db=$1
+    shift
+elif [ "$db" = "--list-replicas" ]; then
+    hostcode="\$serverCount = \$lb->getServerCount(); for ( \$i = 0; \$i < \$serverCount; ++\$i ) { echo ( \$i ? ' ' : '' ) . \$lb->getServerName(\$i); } exit(103);"
 
     # Database is the next param
     db=$1
@@ -55,13 +75,18 @@ if [ "$db" = "wikishared" ]; then
 else
     lbcode="\$lb = wfGetLB();"
 fi
-host=`echo $lbcode $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
+host=`echo "$lbcode $hostcode" | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
 exitCode=$?
 if [ $exitCode -ne 0 ]; then
     # PHP error, probably an invalid DB or group
     if [ $exitCode -eq 101 ]; then
         echo "Error looking up group \"$group\"" 1>&2
+    elif [ $exitCode -eq 102 ]; then
+        echo "Error looking up replica \"$name\"" 1>&2
+    elif [ $exitCode -eq 103 ]; then
+        echo "$host"
+        exit 1
     else
         echo "Error looking up DB \"$db\"" 1>&2
     fi
