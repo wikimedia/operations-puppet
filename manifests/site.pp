@@ -1966,8 +1966,6 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
     role(prometheus::ops, prometheus::global, prometheus::services, prometheus::analytics,
       prometheus::k8s)
 
-    include ::base::firewall
-    include ::standard
     include ::lvs::realserver
 
     interface::add_ip6_mapped { 'main': }
