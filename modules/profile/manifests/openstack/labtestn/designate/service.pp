@@ -36,4 +36,5 @@ class profile::openstack::labtestn::designate::service(
         osm_host                   => $osm_host,
         horizon_host               => $horizon_host,
     }
+    contain '::profile::openstack::base::designate::service'
 }

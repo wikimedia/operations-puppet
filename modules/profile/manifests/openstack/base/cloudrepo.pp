@@ -4,4 +4,5 @@ class profile::openstack::base::cloudrepo(
     class { '::openstack::cloudrepo':
         version => $version,
     }
+    contain '::openstack::cloudrepo'
 }

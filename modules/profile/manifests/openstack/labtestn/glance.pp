@@ -18,4 +18,5 @@ class profile::openstack::labtestn::glance(
         ldap_user_pass          => $ldap_user_pass,
         labs_hosts_range        => $labs_hosts_range,
     }
+    contain '::profile::openstack::base::glance'
 }

@@ -12,11 +12,13 @@ class profile::openstack::base::rabbitmq(
         running      => $::fqdn == $nova_controller,
         file_handles => $file_handles,
     }
+    contain '::rabbitmq'
 
     class { '::rabbitmq::monitor':
         rabbit_monitor_username => $monitor_user,
         rabbit_monitor_password => $monitor_password,
     }
+    contain '::rabbitmq::monitor'
 
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',

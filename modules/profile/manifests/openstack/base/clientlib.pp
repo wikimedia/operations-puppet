@@ -2,9 +2,11 @@ class profile::openstack::base::clientlib(
     $version = hiera('profile::openstack::base::version'),
     ) {
 
-    class {'openstack::clientlib':
+    class {'::openstack::clientlib':
         version => $version
     }
+    contain '::openstack::clientlib'
 
-    class {'openstack::common':}
+    class {'::openstack::common':}
+    contain '::openstack::common'
 }
