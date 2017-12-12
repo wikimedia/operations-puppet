@@ -474,5 +474,5 @@ funnel	als.wikiquote.org	//als.wikipedia.org/wiki/Spruch:Houptsyte
 funnel	als.wikibooks.org	//als.wikipedia.org/wiki/Buech:Houptsyte
 
 # redirect Moldovan Wikipedia and Wiktionary to Romanian Wikipedia and Wiktionary - T169450
-funnel	mo.wikipedia.org	//ro.wikipedia.org/wiki/Pagina_principal%C4%83
-funnel	mo.wiktionary.org	//ro.wiktionary.org/wiki/Pagina_principal%C4%83
+funnel	mo.wikipedia.org	//ro.wikipedia.org/wiki/Pagina_principală
+funnel	mo.wiktionary.org	//ro.wiktionary.org/wiki/Pagina_principală
