@@ -206,7 +206,7 @@ class DumpList(object):
         dir_first = get_first_dir(dirs, dir_to_check)
         if not dir_first:
             # never dumped
-            return dirs_reported
+            return dirs_reported, None
 
         text = get_dir_status(os.path.join(dir_to_check, dir_first))
         if "in-progress" in text:
