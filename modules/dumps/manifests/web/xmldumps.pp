@@ -2,7 +2,7 @@
 class dumps::web::xmldumps(
     $do_acme          = true,
     $datadir          = undef,
-    $publicdir        = undef,
+    $xmldumpsdir      = undef,
     $otherdir         = undef,
     $htmldumps_server = undef,
     $xmldumps_server  = undef,
@@ -10,11 +10,11 @@ class dumps::web::xmldumps(
     $webgroup         = undef,
 ) {
     class {'dumps::web::html':
-        datadir   => $datadir,
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
-        webuser   => $webuser,
-        webgroup  => $webgroup,
+        datadir     => $datadir,
+        xmldumpsdir => $xmldumpsdir,
+        otherdir    => $otherdir,
+        webuser     => $webuser,
+        webgroup    => $webgroup,
     }
 
     class { '::nginx':
@@ -35,7 +35,7 @@ class dumps::web::xmldumps(
     }
     include dumps::web::nginx_logrot
 
-    file { "${publicdir}/favicon.ico":
+    file { "${xmldumpsdir}/favicon.ico":
         source => 'puppet:///modules/dumps/web/xmldumps/favicon.ico',
         owner  => 'root',
         group  => 'root',

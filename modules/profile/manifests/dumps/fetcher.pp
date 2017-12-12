@@ -1,12 +1,12 @@
 class profile::dumps::fetcher(
-    $publicdir = hiera('profile::dumps::xmldumpspublicdir'),
+    $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
     $otherdir = hiera('profile::dumps::miscdumpsdir'),
 ) {
     class {'dumps::web::fetches::kiwix':
-        user      => 'dumpsgen',
-        group     => 'dumpsgen',
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
+        user        => 'dumpsgen',
+        group       => 'dumpsgen',
+        xmldumpsdir => $xmldumpsdir,
+        otherdir    => $otherdir,
     }
     class {'dumps::web::fetches::stats':
         src      => 'stat1005.eqiad.wmnet::hdfs-archive',

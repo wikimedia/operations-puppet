@@ -24,7 +24,7 @@ Usage: $0 --xmldumpsdir <path> --xmlremotedirs <path>,<path>,<path>...  \\
 
 Example:
 
- $0 --xmldumpsdir /data/xmldatadumps \\
+ $0 --xmldumpsdir /data/xmldatadumps/public \\
    --xmlremotedirs dumpsdata1002.eqiad.wmnet::data/xmldatadumps/public/,dumpsdata1003.eqiad.wmnet::data/xmldatadumps/public/ \\
    --miscdumpsdir /data/otherdumps \\
    --miscremotedirs dumpsdata1002.eqiad.wmnet::data/otherdumps/,dumpsdata1003.eqiad.wmnet::data/otherdumps/
@@ -34,7 +34,7 @@ EOF
 
 make_statusfiles_tarball() {
     # make tarball of all xml/sql dumps status and html files
-    tarballpath="${xmldumpsdir}/public/dumpstatusfiles.tar"
+    tarballpath="${xmldumpsdir}/dumpstatusfiles.tar"
     tarballpathgz="${tarballpath}.gz"
 
     # Only pick up the html/json/txt files from the latest run; even if it's
@@ -43,18 +43,18 @@ make_statusfiles_tarball() {
     # the new run started, unless there are 0 minutes between end of
     # one dump run across all wikis and start of the next (in which case
     #  we are cutting things WAY too close with the runs)
-    latestwiki=$( cd "${xmldumpsdir}/public"; ls -td *wik* | head -1 )
+    latestwiki=$( cd "$xmldumpsdir"; ls -td *wik* | head -1 )
 
      rm -f "$tarballpathgz"
 
     # dirname is YYYYMMDD, i.e. 8 digits. ignore all other directories.
-    latestrun=$( cd "${xmldumpsdir}/public/${latestwiki}" ; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | sort | tail -1 )
+    latestrun=$( cd "${xmldumpsdir}/${latestwiki}" ; ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | sort | tail -1 )
     if [ -n "$latestrun" ]; then
 
 	# top-level index files first
-        ( cd "$xmldumpsdir"; /bin/tar cfp "$tarballpath" public/*html public/*json )
-        # add per-wiki files next: ( cd /data/xmldatadumps; /usr/bin/find public/ -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
-        ( cd "$xmldumpsdir"; /usr/bin/find "public/" -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
+        ( cd "$xmldumpsdir"; /bin/tar cfp "$tarballpath" *html *json )
+        # add per-wiki files next: ( cd /data/xmldatadumps/public; /usr/bin/find . -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
+        ( cd "$xmldumpsdir"; /usr/bin/find "." -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
 
         # if no files found, there will be no tarball created either
 	if [ -f "$tarballpath" ]; then

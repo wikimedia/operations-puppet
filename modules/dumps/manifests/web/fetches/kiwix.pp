@@ -1,12 +1,12 @@
 class dumps::web::fetches::kiwix(
     $user = undef,
     $group = undef,
-    $publicdir = undef,
+    $xmldumpsdir = undef,
     $otherdir = undef,
 ) {
     require_package('rsync')
 
-    file { "${publicdir}/kiwix":
+    file { "${xmldumpsdir}/kiwix":
         ensure => 'link',
         target => "${otherdir}/kiwix",
         owner  => $user,
