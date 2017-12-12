@@ -16,12 +16,15 @@ class profile::dumps::generation::worker::common(
     # dataset server config files,
     # stages files, dblists, html templates
     class { '::snapshot::dumps::dirs':
-        user          => 'dumpsgen',
-        xmldumpsmount => $xmldumpsmount,
+        user               => 'dumpsgen',
+        xmldumpsmount      => $xmldumpsmount,
+        xmldumpspublicdir  =>  "${xmldumpsmount}/public",
+        xmldumpsprivatedir =>  "${xmldumpsmount}/private",
+        dumpstempdir       =>  "${xmldumpsmount}/temp",
+        cronsdir           =>  "${xmldumpsmount}/otherdumps",
+        apachedir          => '/srv/mediawiki',
     }
-    class { '::snapshot::dumps':
-        xmldumpsmount => $xmldumpsmount,
-    }
+    class { '::snapshot::dumps': }
 
     # scap3 deployment of dump scripts
     scap::target { 'dumps/dumps':

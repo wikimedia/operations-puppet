@@ -1,6 +1,11 @@
 class snapshot::dumps::dirs(
     $user = undef,
     $xmldumpsmount = undef,
+    $xmldumpspublicdir = undef,
+    $xmldumpsprivatedir = undef,
+    $dumpstempdir = undef,
+    $cronsdir = undef,
+    $apachedir = undef,
 ) {
     # need to create and manage these, and have them
     # available for a shell script that sets vars with
@@ -37,9 +42,6 @@ class snapshot::dumps::dirs(
 
     # need these only for the shell script that sets
     # vars with their values for other scripts
-    $xmldumpsdir = "${xmldumpsmount}/xmldatadumps"
-    $cronsdir = "${xmldumpsmount}/otherdumps"
-    $apachedir = '/srv/mediawiki'
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 
     # here's that script; it gets sourced by

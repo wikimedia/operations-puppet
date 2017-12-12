@@ -17,7 +17,7 @@ adminsettings=private/PrivateSettings.php
 dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::cronsdir') -%>/incr
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 indextmpl=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') -%>/incrs-index.html
-temp=<%= scope.lookupvar('snapshot::dumps::dirs::xmldumpsdir') -%>/temp
+temp=<%= scope.lookupvar('snapshot::dumps::dirs::dumpstempdir') %>
 webroot=http://download.wikimedia.org
 fileperms=0644
 # revisions must be at least this much older than time of current run
