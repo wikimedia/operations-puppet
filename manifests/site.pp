@@ -930,11 +930,6 @@ node 'eventlog1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# EventLogging Analytics does not (yet?) run in codfw.
-node 'eventlog2001.codfw.wmnet' {
-    role(spare::system)
-}
-
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
     role(lists)
