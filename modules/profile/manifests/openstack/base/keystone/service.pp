@@ -70,12 +70,14 @@ class profile::openstack::base::keystone::service(
         wiki_access_token           => $wiki_access_token,
         wiki_access_secret          => $wiki_access_secret,
     }
+    contain '::openstack::keystone::service'
 
     class {'::openstack::keystone::monitor':
         active      => $::fqdn == $nova_controller,
         auth_port   => $auth_port,
         public_port => $public_port,
     }
+    contain '::openstack::keystone::monitor'
 
     class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,
@@ -86,10 +88,12 @@ class profile::openstack::base::keystone::service(
         wmflabsdotorg_pass    => $wmflabsdotorg_pass,
         wmflabsdotorg_project => $wmflabsdotorg_project,
     }
+    contain '::openstack::util::envscripts'
 
     class {'::openstack::util::admin_scripts':
         version => $version,
     }
+    contain '::openstack::util::admin_scripts'
 
     # keystone admin API only for openstack services that might need it
     ferm::rule{'keystone_admin':
