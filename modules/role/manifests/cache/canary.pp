@@ -2,6 +2,10 @@ class role::cache::canary {
     include ::base::firewall
     include role::cache::text
 
+    # Temp. experiment to duplicate/mirror the webrequest data
+    # to the new Kafka Jumbo brokers.
+    include ::profile::cache::kafka::webrequest::duplicate
+
     ferm::service { 'nginx-https':
         proto => 'tcp',
         port  => '443',
