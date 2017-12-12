@@ -1,20 +1,20 @@
 # sets up a planet RSS feed aggregator (planet-venus aka planet 2.0)
 #
-# $planet_domain_name: domain name used, e.g. wikimedia.org or wmflabs.org
+# $domain_name: domain name used, e.g. wikimedia.org or wmflabs.org
 #
-# $planet_meta_link: protocol-relative link to a meta or index page for all planets
+# $meta_link: protocol-relative link to a meta or index page for all planets
 #
-# $planet_http_proxy: since we are on a private IP now we need to proxy to fetch external URLs
+# $http_proxy: since we are on a private IP now we need to proxy to fetch external URLs
 #
-# $planet_languages: translated strings for the UI in various languages
+# $languages: translated strings for the UI in various languages
 #                    list all planet languages and translations for index.html.tmpl here.
 #                    configurations, directories and cronjobs are auto-created from this hash.
 #
 class profile::planet::venus (
-    $planet_domain_name = hiera('planet_domain_name'),
-    $planet_meta_link = 'meta.wikimedia.org/wiki/Planet_Wikimedia',
-    $planet_http_proxy = "http://url-downloader.${::site}.wikimedia.org:8080",
-    $planet_languages = {
+    $domain_name = hiera('profile::planet::venus::domain_name'),
+    $meta_link = hiera('profile::planet::venus::meta_link'),
+    $http_proxy = hiera('profile::planet::venus::http_proxy'),
+    $languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
             'subscriptions' => '&#1575;&#1604;&#1575;&#1588;&#1578;&#1585;&#1575;&#1603;&#1575;&#1578;',
@@ -184,10 +184,10 @@ class profile::planet::venus (
 ) {
 
     class {'::planet':
-        planet_domain_name => $planet_domain_name,
-        planet_languages   => $planet_languages,
-        planet_meta_link   => $planet_meta_link,
-        planet_http_proxy  => $planet_http_proxy,
+        domain_name => $domain_name,
+        languages   => $languages,
+        meta_link   => $meta_link,
+        http_proxy  => $http_proxy,
     }
 
     class {'::httpd':
