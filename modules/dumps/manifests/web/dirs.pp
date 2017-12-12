@@ -1,7 +1,7 @@
 class dumps::web::dirs(
-    $datadir = '/data/xmldatadumps',
-    $publicdir = '/data/xmldatadumps/public',
-    $otherdir = '/data/xmldatadumps/public/other',
+    $datadir = undef,
+    $xmldumpsdir = undef,
+    $otherdir = undef,
     $user = undef,
     $group = undef,
 ) {
@@ -29,7 +29,7 @@ class dumps::web::dirs(
     }
 
     # top-level dirs for various dump trees
-    file { [ $publicdir, $otherdir ]:
+    file { [ $xmldumpsdir, $otherdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
@@ -55,7 +55,7 @@ class dumps::web::dirs(
     }
 
     # subdirs for wikidata/wikibase weekly dumps
-    file { [ $otherdir_wikibase, "${publicdir}/${relative_wikidatawiki}",
+    file { [ $otherdir_wikibase, "${xmldumpsdir}/${relative_wikidatawiki}",
         $otherdir_wikidata_legacy ]:
 
         ensure => 'directory',
@@ -64,7 +64,7 @@ class dumps::web::dirs(
         group  => $group,
     }
     # T72385: needs to be relative because it is mounted via NFS at differing names
-    file { "${publicdir}/wikidatawiki/entities":
+    file { "${xmldumpsdir}/wikidatawiki/entities":
         ensure => 'link',
         target => "../${relative_wikidatawiki}",
     }

@@ -25,7 +25,7 @@ server {
 
    <%= @ssl_settings.join("\n   ") %>
 
-   root <%= @publicdir %>;
+   root <%= @xmldumpsdir %>;
 
    location / {
       index index.html index.htm;

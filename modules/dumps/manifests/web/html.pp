@@ -1,16 +1,16 @@
 class dumps::web::html(
     $datadir = undef,
-    $publicdir = undef,
+    $xmldumpsdir = undef,
     $otherdir = undef,
     $webuser = undef,
     $webgroup = undef,
 ) {
     class {'dumps::web::dirs':
-        datadir   => $datadir,
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
-        user      => $webuser,
-        group     => $webgroup,
+        datadir     => $datadir,
+        xmldumpsdir => $xmldumpsdir,
+        otherdir    => $otherdir,
+        user        => $webuser,
+        group       => $webgroup,
     }
 
     file { "${publicdir}/dumps.css":

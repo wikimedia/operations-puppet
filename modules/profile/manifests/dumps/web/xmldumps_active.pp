@@ -2,13 +2,13 @@ class profile::dumps::web::xmldumps_active(
     $do_acme = hiera('do_acme'),
 ) {
     class { '::dumpsuser': }
-    $publicdir = '/data/xmldatadumps/public'
+    $xmldumpsdir = '/data/xmldatadumps/public'
     $otherdir = '/data/xmldatadumps/public/other'
 
     class {'::dumps::web::xmldumps_active':
         do_acme          => $do_acme,
         datadir          => '/data/xmldatadumps',
-        publicdir        => $publicdir,
+        xmldumpsdir      => $xmldumpsdir,
         otherdir         => '/data/xmldatadumps/public/other',
         logs_dest        => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
         htmldumps_server => 'francium.eqiad.wmnet',
@@ -21,8 +21,8 @@ class profile::dumps::web::xmldumps_active(
         desthost => 'ms1001.wikimedia.org',
     }
     class {'::dumps::copying::labs':
-        labhost   => 'labstore1003.eqiad.wmnet',
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
+        labhost     => 'labstore1003.eqiad.wmnet',
+        xmldumpsdir => $xmldumpsdir,
+        otherdir    => $otherdir,
     }
 }

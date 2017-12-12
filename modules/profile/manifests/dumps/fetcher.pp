@@ -1,11 +1,11 @@
 class profile::dumps::fetcher(
-    $publicdir = hiera('profile::dumps::xmldumpspublicdir'),
+    $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
     $otherdir = hiera('profile::dumps::miscdumpsdir'),
 ) {
     class {'dumps::web::fetches::kiwix':
         user      => 'dumpsgen',
         group     => 'dumpsgen',
-        publicdir => $publicdir,
+        xmldumpsr => $xmldumpsdir,
         otherdir  => $otherdir,
     }
     class {'dumps::web::fetches::stats':

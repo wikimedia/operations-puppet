@@ -116,9 +116,8 @@ class OutputPaths(object):
                       'filelist': 'file_list_templ',
                       'rsynclist': 'rsync_incl_templ'}
 
-    def get_abs_pubdirpath(self, name):
-        """return full path to the location of public dumps,
-        as specified in the config file for the entry 'publicdir'"""
+    def get_abs_xmldumpsdirpath(self, name):
+        """return full path to the location of xml dumps"""
         return os.path.join(self.dumpsdir, name)
 
     def get_abs_outdirpath(self, name):
@@ -185,7 +184,7 @@ class DumpList(object):
         files from in-progress dumps will only be written to the
         rsync include file.
         """
-        dir_to_check = self.paths.get_abs_pubdirpath(project)
+        dir_to_check = self.paths.get_abs_xmldumpsdirpath(project)
         if not os.path.exists(dir_to_check):
             return [], None
 
@@ -240,7 +239,7 @@ class DumpList(object):
             files_wanted = ([os.path.join(dir_name, f) for f in dir_contents
                              if re.search(extensions, f)])
             if self.flags['relative']:
-                files_wanted = [self.strip_pubdir(f) for f in files_wanted]
+                files_wanted = [self.strip_xmldumpsdir(f) for f in files_wanted]
         except Exception:
             pass
         return files_wanted
@@ -261,7 +260,7 @@ class DumpList(object):
             files_wanted_shortnames = [entry.rstrip().split()[-1] for entry in entries]
             files_wanted = [os.path.join(dir_name, f) for f in files_wanted_shortnames]
             if self.flags['relative']:
-                files_wanted = [self.strip_pubdir(f) for f in files_wanted]
+                files_wanted = [self.strip_xmldumpsdir(f) for f in files_wanted]
         except Exception:
             pass
         return files_wanted
@@ -314,9 +313,9 @@ class DumpList(object):
         if not self.paths.list_wanted(output_type):
             return
 
-        dirs = [os.path.join(self.paths.get_abs_pubdirpath(project), dirname) for dirname in dirs]
+        dirs = [os.path.join(self.paths.get_abs_xmldumpsdirpath(project), dirname) for dirname in dirs]
         if self.flags['relative']:
-            dirs = [self.strip_pubdir(dirname) for dirname in dirs]
+            dirs = [self.strip_xmldumpsdir(dirname) for dirname in dirs]
         if wildcard:
             dirs = [os.path.join(dirname, '*') for dirname in dirs]
 
@@ -334,7 +333,7 @@ class DumpList(object):
         if not self.paths.list_wanted(output_type):
             return
 
-        dirs = [os.path.join(self.paths.get_abs_pubdirpath(project), dirname) for dirname in dirs]
+        dirs = [os.path.join(self.paths.get_abs_xmldumpsdirpath(project), dirname) for dirname in dirs]
         if dirs:
             fnames_to_write = []
             for dirname in dirs:
@@ -360,7 +359,7 @@ class DumpList(object):
             # write list of dump-related files from the latest in-progress directory, if any,
             # to all rsync inclusion lists
             fnames_done = self.get_fnames_from_dir(os.path.join(
-                self.paths.get_abs_pubdirpath(project), dir_in_progress))
+                self.paths.get_abs_xmldumpsdirpath(project), dir_in_progress))
             if fnames_done:
                 for num in self.dumps_num_list:
                     output_path = self.paths.get_list_output_path(num, 'rsynclist')
@@ -381,7 +380,7 @@ class DumpList(object):
             self.write_filenames(dirs, project)
             self.write_rsynclists(dirs, dir_in_progress, project)
 
-    def strip_pubdir(self, line):
+    def strip_xmldumpsdir(self, line):
         """remove the path to the public dumps directory from
         the beginning of the suppplied line, if it exists"""
         if line.startswith(self.paths.dumpsdir + os.sep):
@@ -393,14 +392,14 @@ class DumpList(object):
         to rsync --list-only"""
 
         # to make this work we have to feed it a file with the filenames
-        # with the publicdir stripped off the front, if it's there
+        # with the xml dumps dir stripped off the front, if it's there
         infd = open(fpath, "r")
         outfd = open(fpath + ".relpath", "w")
         lines = infd.readlines()
         infd.close()
         for line in lines:
             if not self.flags['relative']:
-                outfd.write(self.strip_pubdir(line))
+                outfd.write(self.strip_xmldumpsdir(line))
             else:
                 outfd.write(line)
         outfd.close()
@@ -427,7 +426,7 @@ class DumpList(object):
         list .html, .json, .css, .txt files in top level dir
         test, with "" does this work?
         """
-        files_in_dir = [f for f in os.listdir(self.paths.get_abs_pubdirpath(""))
+        files_in_dir = [f for f in os.listdir(self.paths.get_abs_xmldumpsdirpath(""))
                         if f.endswith(".html") or f.endswith(".txt") or f.endswith(".old")
                         or f.endswith(".css") or f.endswith(".json")]
         return files_in_dir
@@ -508,7 +507,7 @@ dumpsnumber -- number of dumps to list; this may be one number, in which case
                default value: 5
 outputdir   -- directory in which to write all file listings
                default value: none
-relpath     -- generate all lists with paths relative to the public directory
+relpath     -- generate all lists with paths relative to the xml dumps directory
                specified, instead of writing out the full path
                default value: False
 rsynclists  -- for each file that is produced, write a second file with the

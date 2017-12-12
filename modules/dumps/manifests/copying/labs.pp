@@ -1,6 +1,6 @@
 class dumps::copying::labs(
     $labhost = undef,
-    $publicdir = undef,
+    $xmldumpsdir = undef,
     $otherdir = undef,
 ) {
     file { '/usr/local/bin/wmfdumpsmirror.py':
@@ -20,7 +20,7 @@ class dumps::copying::labs(
         user        => 'root',
         minute      => '50',
         hour        => '3',
-        command     => "/usr/local/sbin/labs-rsync-cron.sh ${labhost} ${publicdir} ${otherdir}",
+        command     => "/usr/local/sbin/labs-rsync-cron.sh ${labhost} ${xmldumpsdir} ${otherdir}",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         require     => File['/usr/local/bin/wmfdumpsmirror.py',
                             '/usr/local/sbin/labs-rsync-cron.sh'],
