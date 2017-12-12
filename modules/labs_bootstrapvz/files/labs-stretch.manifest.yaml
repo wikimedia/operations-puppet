@@ -25,7 +25,7 @@ packages:
     wikimedia:
       - deb  http://apt.wikimedia.org/wikimedia stretch-wikimedia main
       - deb-src http://apt.wikimedia.org/wikimedia stretch-wikimedia main
-    backports:
+    debian-backports:
       - deb http://mirrors.wikimedia.org/debian/ stretch-backports main contrib non-free
       - deb-src http://mirrors.wikimedia.org/debian/ stretch-backports main contrib non-free
   trusted-keys:
