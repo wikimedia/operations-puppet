@@ -3,7 +3,6 @@
 # filtertags: labs-project-git labs-project-ci-staging
 class profile::gerrit::server(
     $ipv4 = hiera('gerrit::service::ipv4'),
-    $ipv6 = hiera('gerrit::service::ipv6'),
     $host = hiera('gerrit::server::host'),
     $slave_hosts = hiera('gerrit::server::slave_hosts'),
     $master_host = hiera('gerrit::server::master_host'),
@@ -11,6 +10,8 @@ class profile::gerrit::server(
     $gerrit_servers = join(hiera('gerrit::servers'), ' '),
     $config = hiera('gerrit::server::config'),
 ) {
+
+    $ipv6 = hiera('gerrit::service::ipv6', undef)
 
     interface::alias { 'gerrit server':
         ipv4 => $ipv4,
