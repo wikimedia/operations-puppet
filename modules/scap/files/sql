@@ -68,7 +68,13 @@ if [ $exitCode -ne 0 ]; then
     exit 1
 fi
 
+port=0
+if echo "$host" | grep -qP ':\d+\z'; then
+    port=`echo "$host" | sed 's/.*://'`
+    host=`echo "$host" | sed 's/:[0-9]\+$//'`
+fi
+
 pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
 # Execute mysql.
-exec mysql -u wikiadmin -p$pass -h $host -D $db "$@"
+exec mysql -u wikiadmin -p$pass -h "$host" --port $port -D $db "$@"
