@@ -39,20 +39,7 @@ class releases (
     git::clone { 'mediawiki/core':
         directory => '/srv/mediawiki/core',
         require   => File['/srv/mediawiki'],
-    }
-    git::clone { 'mediawiki/extensions':
-        directory          => '/srv/mediawiki/extensions',
-        recurse_submodules => true,
-        require            => File['/srv/mediawiki'],
-    }
-    git::clone { 'mediawiki/skins':
-        directory          => '/srv/mediawiki/skins',
-        recurse_submodules => true,
-        require            => File['/srv/mediawiki'],
-    }
-    git::clone { 'mediawiki/vendor':
-        directory => '/srv/mediawiki/vendor',
-        require   => File['/srv/mediawiki'],
+        bare      => true,
     }
 
     file { '/srv/org/wikimedia/releases/mediawiki':
