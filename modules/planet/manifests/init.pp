@@ -7,19 +7,19 @@
 #
 # required parameters:
 #
-# $planet_domain_name - domain name used in Apache/SSL configs
+# $domain_name - domain name used in Apache/SSL configs
 #   example "planet.wikimedia.org
-# $planet_languages - a hash with languages and UI translations
+# $languages - a hash with languages and UI translations
 #   see the role class for this
-# $planet_meta_link - a protocol relative link
+# $meta_link - a protocol relative link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
-# $planet_http_proxy - set proxy to be used for downloading feeds
+# $http_proxy - set proxy to be used for downloading feeds
 #   example: http://url-downloader.${::site}.wikimedia.org:8080
 class planet (
-    $planet_domain_name,
-    $planet_languages,
-    $planet_meta_link,
-    $planet_http_proxy,
+    $domain_name,
+    $languages,
+    $meta_link,
+    $http_proxy,
 ) {
 
     # locales are essential for planet
@@ -30,7 +30,10 @@ class planet (
     include ::planet::packages
     include ::planet::dirs
     include ::planet::user
-    include ::planet::index_site
+
+    class { '::planet::index_site':
+        domain_name => $domain_name,
+    }
 
     if os_version('debian >= stretch') {
         $logo_file = '/var/www/planet/planet-wm2.png'
@@ -48,25 +51,29 @@ class planet (
     # things done per each language version
     # we iterate over the keys of the hash
     # which includes language names and translations
-    $planet_languages_keys = keys($planet_languages)
+    $languages_keys = keys($languages)
     # creates one document root per language
-    planet::docroot { $planet_languages_keys: }
+    planet::docroot { $languages_keys: }
 
     # creates one Apache VirtualHost per language
-    planet::apachesite { $planet_languages_keys: }
+    planet::apachesite { $languages_keys:
+        domain_name => $domain_name,
+    }
 
     # creates one RSS/Atom feed config per language
-    planet::config { $planet_languages_keys: }
+    planet::config { $languages_keys:
+        domain_name => $domain_name,
+    }
 
     # creates one cron for updates per language
-    planet::cronjob { $planet_languages_keys: }
+    planet::cronjob { $languages_keys: }
 
     # creates one planet theme (css/logo) per language
-    planet::theme { $planet_languages_keys: }
+    planet::theme { $languages_keys: }
 
     if os_version('debian >= stretch') {
       # creates RSS dir and plugin per language
-      planet::rawdogplugin { $planet_languages_keys: }
+      planet::rawdogplugin { $languages_keys: }
     }
 }
 
