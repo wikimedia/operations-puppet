@@ -1,8 +1,8 @@
 # == Class: bird::base
 #
-# Installs and configure Bird
+# Install and configure Bird
 # Configure Ferm
-#
+# Configure anycast_healthchecker
 #
 class profile::bird::anycast(
   $bfd = hiera('profile::bird::bfd', true),
@@ -51,4 +51,13 @@ class profile::bird::anycast(
       bfd             => $bfd,
       require         => Service['ferm'],
   }
+
+  class { '::bird::anycast_healthchecker': }
+
+  bird::anycast_healthchecker_check { 'recdns.anycast.wmnet':
+      ensure      => present,
+      check_cmd   => '/usr/lib/nagios/plugins/check_dns -H www.wikipedia.org -s 10.3.0.1 -t 1 -c 1',
+      anycast_vip => '10.3.0.1',
+  }
+
 }
