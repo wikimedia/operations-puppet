@@ -44,4 +44,8 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
         description  => 'Varnish traffic logger - varnishxcps',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishxcps" -u root',
     }
+
+    mtail::program { 'varnishxcps':
+        source => 'puppet:///modules/mtail/programs/varnishxcps.mtail',
+    }
 }
