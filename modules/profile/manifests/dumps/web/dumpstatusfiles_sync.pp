@@ -3,6 +3,6 @@ class profile::dumps::web::dumpstatusfiles_sync(
 ) {
     $mntpoint = $rsyncer_settings['dumps_mntpoint']
     class {'::dumps::web::dumpstatusfiles':
-        xmldumpsdir => "${mntpoint}/xmldatadumps",
+        xmldumpsdir => "${mntpoint}/xmldatadumps/public",
     }
 }

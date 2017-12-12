@@ -1,21 +1,21 @@
 class dumps::web::html(
     $datadir = undef,
-    $publicdir = undef,
+    $xmldumpsdir = undef,
     $otherdir = undef,
     $webuser = undef,
     $webgroup = undef,
 ) {
     class {'dumps::web::dirs':
-        datadir   => $datadir,
-        publicdir => $publicdir,
-        otherdir  => $otherdir,
-        user      => $webuser,
-        group     => $webgroup,
+        datadir     => $datadir,
+        xmldumpsdir => $xmldumpsdir,
+        otherdir    => $otherdir,
+        user        => $webuser,
+        group       => $webgroup,
     }
 
-    file { "${publicdir}/dumps.css":
+    file { "${xmldumpsdir}/dumps.css":
         ensure => 'present',
-        path   => "${publicdir}/dumps.css",
+        path   => "${xmldumpsdir}/dumps.css",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
@@ -40,9 +40,9 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/pagecounts-ez_index.html',
     }
 
-    file { "${publicdir}/other/analytics/index.html":
+    file { "${xmldumpsdir}/other/analytics/index.html":
         ensure => 'present',
-        path   => "${publicdir}/other/analytics/index.html",
+        path   => "${xmldumpsdir}/other/analytics/index.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
@@ -58,36 +58,36 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/poty_index.html',
     }
 
-    file { "${publicdir}/archive/index.html":
+    file { "${xmldumpsdir}/archive/index.html":
         ensure => 'present',
-        path   => "${publicdir}/archive/index.html",
+        path   => "${xmldumpsdir}/archive/index.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/dumps/web/html/archive_index.html',
     }
 
-    file { "${publicdir}/index.html":
+    file { "${xmldumpsdir}/index.html":
         ensure => 'present',
-        path   => "${publicdir}/index.html",
+        path   => "${xmldumpsdir}/index.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/dumps/web/html/public_index.html',
     }
 
-    file { "${publicdir}/mirrors.html":
+    file { "${xmldumpsdir}/mirrors.html":
         ensure => 'present',
-        path   => "${publicdir}/mirrors.html",
+        path   => "${xmldumpsdir}/mirrors.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/dumps/web/html/public_mirrors.html',
     }
 
-    file { "${publicdir}/legal.html":
+    file { "${xmldumpsdir}/legal.html":
         ensure => 'present',
-        path   => "${publicdir}/legal.html",
+        path   => "${xmldumpsdir}/legal.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',

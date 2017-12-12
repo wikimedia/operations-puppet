@@ -1,5 +1,5 @@
 class dumps::web::cleanups::xmldumps(
-    $publicdir = undef,
+    $xmldumpsdir = undef,
     $dumpstempdir = undef,
     $user = undef,
     $isreplica = undef,
@@ -79,7 +79,7 @@ class dumps::web::cleanups::xmldumps(
     }
 
     $xmlclean = '/usr/bin/python /usr/local/bin/cleanup_old_xmldumps.py'
-    $args = "-d ${publicdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
+    $args = "-d ${xmldumpsdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
 
     if ($isreplica == true) {
         $cron_commands = "${xmlclean} ${args}"
