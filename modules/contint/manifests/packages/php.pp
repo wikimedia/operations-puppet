@@ -19,6 +19,13 @@ class contint::packages::php {
           # phpdocumentor/template-zend
           'php5-xsl',
       ] )
+
+      exec { 'disable php5-xdebug on cli':
+          command => '/usr/sbin/php5dismod -s cli xdebug',
+          onlyif  => '/usr/sbin/php5query -s cli -m xdebug',
+          require => Package['php5-xdebug'],
+      }
+
       package { [
           'php5-parsekit',
           ]:
