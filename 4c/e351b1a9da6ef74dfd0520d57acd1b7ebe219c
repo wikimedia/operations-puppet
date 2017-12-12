@@ -1,0 +1,8 @@
+Code-Review+1: Halfak <ahalfaker@wikimedia.org>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Verified+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Tue, 12 Dec 2017 11:38:25 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/396064
+Project: operations/puppet
+Branch: refs/heads/production
