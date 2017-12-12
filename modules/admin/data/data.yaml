@@ -2485,7 +2485,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHQ6oDkb1WXmbizF6PX4hIELg7azLCcAaNiIl2ytjKTv7DcunsiwM/IkzoU94SUc1uIfijevzDTDU2moSTv8OJ5b/2RxG2RpL8pPVA+aLIm/2Yfo/ulCnjs0WgHbRpY7GKagliU6/PG8JV8byoLglVbPUcepie4P33yAqsA3BxdVsGxw4WnyOIIG2mRsYyAQsMNB5xwofkHW3fPLetY6MYpu9EtKCjaJzX2FzETT7E8WpjwYpqBnAC108hqueyCoZ7Q3eD6qs+pUdcKDPjFHPOQCxPulVjkdsUczct3r5s9ryze0ziSb5GvMowgc1i1Kn9fUPcPPmqRwR4to8348DN nithum@MBP.local
     uid: 15708
     email: nithum@gmail.com
-    expiry_date: 2017-12-15
+    expiry_date: 2018-06-15
     expiry_contact: dario@wikimedia.org
   shrlak:
     ensure: present
