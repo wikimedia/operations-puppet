@@ -1,9 +1,10 @@
-class snapshot::dumps::configs(
-    $xmldumpsmount = undef,
-) {
+class snapshot::dumps::configs {
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $apachedir = $snapshot::dumps::dirs::apachedir
     $confsdir = $snapshot::dumps::dirs::confsdir
+    $publicdir = $snapshot::dumps::dirs::xmldumpspublicdir
+    $privatedir = $snapshot::dumps::dirs::xmldumpsprivatedir
+    $tempdir = $snapshot::dumps::dirs::dumpstempdir
 
     $enchunkhistory1 = '30303,58141,112065,152180,212624,327599,375779,522388,545343,710090,880349,1113575,1157158,1547206'
     $enchunkhistory2 = '1773248,2021218,2153807,2427469,2634193,2467421,2705827,2895677,3679790,3449365,4114387,4596259,6533612'
@@ -137,9 +138,9 @@ class snapshot::dumps::configs(
     snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
         configtype => 'allwikis',
         config     => $config,
-        publicdir  => "${xmldumpsmount}/xmldatadumps/public",
-        privatedir => "${xmldumpsmount}/xmldatadumps/private",
-        tempdir    => "${xmldumpsmount}/xmldatadumps/temp",
+        publicdir  => $publicdir,
+        privatedir => $privatedir,
+        tempdir    => $tempdir,
     }
 
     file { "${confsdir}/table_jobs.yaml":
