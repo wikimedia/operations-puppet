@@ -23,17 +23,17 @@ class profile::maps::apps(
     profile::maps::sources_config { 'kartotherian':
         mode       => 'kartotherian',
         storage_id => $storage_id,
-        style      => 'osm-bright-style',
+        style      => $kartotherian_style,
     }
     profile::maps::sources_config { 'tilerator':
         mode       => 'tilerator',
         storage_id => $storage_id,
-        style      => '\'@kartotherian/osm-bright-style\'',
+        style      => $tilerator_style,
     }
     profile::maps::sources_config { 'tileratorui':
         mode       => 'tilerator',
         storage_id => $storage_id,
-        style      => '\'@kartotherian/osm-bright-style\'',
+        style      => $tilerator_style,
     }
 
     class { '::tilerator':
