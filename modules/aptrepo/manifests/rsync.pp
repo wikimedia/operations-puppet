@@ -1,10 +1,9 @@
 # sets up rsync of APT repos between 2 servers
 # activates rsync for push from the primary to secondary
-class aptrepo::rsync {
-
-    $primary_server = hiera('install_server', 'install1002.wikimedia.org')
-    $secondary_server = hiera('install_server_failover', 'install2002.wikimedia.org')
-
+class aptrepo::rsync (
+    $primary_server,
+    $secondary_server,
+){
     # only activate rsync/firewall hole on the server that is NOT active
     if $::fqdn == $primary_server {
 
