@@ -89,13 +89,13 @@
 <div class="sidebar">
 <img src="images/planet-wm2.png" width="135" height="135" alt="Planet Wikimedia">
 
-<h2><%= scope.lookupvar('planet::planet_languages')[@title]['subscribe'] %></h2>
+<h2><%= scope.lookupvar('planet::languages')[@title]['subscribe'] %></h2>
 <ul>
 <li>
 <a href="<TMPL_VAR feed ESCAPE="HTML">" title="<TMPL_VAR channel_title_plain ESCAPE="HTML">"><TMPL_VAR feedtype></a>
 </li>
 </ul>
-<h2><%= scope.lookupvar('planet::planet_languages')[@title]['subscriptions'] %></h2>
+<h2><%= scope.lookupvar('planet::languages')[@title]['subscriptions'] %></h2>
 <ul>
 <TMPL_LOOP Channels>
 <li>
@@ -105,15 +105,15 @@
 </ul>
 
 <p>
-<strong><%= scope.lookupvar('planet::planet_languages')[@title]['lastupdated'] %></strong><br>
+<strong><%= scope.lookupvar('planet::languages')[@title]['lastupdated'] %></strong><br>
 <TMPL_VAR date><br>
-<em><%= scope.lookupvar('planet::planet_languages')[@title]['alltimesutc'] %></em><br>
+<em><%= scope.lookupvar('planet::languages')[@title]['alltimesutc'] %></em><br>
 <br>
-<%= scope.lookupvar('planet::planet_languages')[@title]['poweredby'] %><br>
+<%= scope.lookupvar('planet::languages')[@title]['poweredby'] %><br>
 <a href="http://www.planetplanet.org/"><img src="images/planet.png" width="80" height="15" alt="Planet" border="0"></a>
 </p>
 <p>
-<h2><%= scope.lookupvar('planet::planet_languages')[@title]['wikimedia'] %></h2>
+<h2><%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %></h2>
 <ul>
 <li><a href="http://ar.planet.wikimedia.org/">ar.planet.wm</a></li>
 <li><a href="http://cs.planet.wikimedia.org/">cs.planet.wm</a></li>
@@ -134,7 +134,7 @@
 </ul>
 </p>
 <p>
-<h2><%= scope.lookupvar('planet::planet_languages')[@title]['planetarium'] %></h2>
+<h2><%= scope.lookupvar('planet::languages')[@title]['planetarium'] %></h2>
 <ul>
 <li><a href="http://www.planetapache.org/">Planet Apache</a></li>
 <li><a href="http://planet.debian.net/">Planet Debian</a></li>

@@ -2,14 +2,14 @@
 # actual *.planet language versions are in planet-language.erb
 
 <VirtualHost *:80>
-    ServerName planet.<%= scope.lookupvar('planet::planet_domain_name') %>
+    ServerName planet.<%= @domain_name %>
 
     DocumentRoot /var/www/planet
     Header always set Content-Security-Policy "upgrade-insecure-requests"
 
-    Redirect /atom.xml https://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/atom.xml
-    Redirect /rss10.xml https://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/rss10.xml
-    Redirect /rss20.xml https://en.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/rss20.xml
+    Redirect /atom.xml https://en.planet.<%= @domain_name %>/atom.xml
+    Redirect /rss10.xml https://en.planet.<%= @domain_name %>/rss10.xml
+    Redirect /rss20.xml https://en.planet.<%= @domain_name %>/rss20.xml
 
-    RedirectTemp / https://<%= scope.lookupvar('planet::planet_meta_link') %>
+    RedirectTemp / https://<%= @meta_link %>
 </VirtualHost>
