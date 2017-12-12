@@ -7,6 +7,7 @@ class role::mirrors {
         description => 'Mirrors server',
     }
 
+    include ::standard
     include mirrors::serve
     include mirrors::tails
     include ::profile::base::firewall
