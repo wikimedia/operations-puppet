@@ -219,6 +219,14 @@ class role::prometheus::ops {
       },
     ]
 
+    # Pull varnish-related metrics generated via mtail
+    prometheus::class_config{ "varnish-canary_mtail_${::site}":
+        dest       => "${targets_path}/varnish-canary_mtail_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::cache::canary',
+        port       => '3903',
+    }
+
     # Job definition for memcache_exporter
     $memcached_jobs = [
       {
