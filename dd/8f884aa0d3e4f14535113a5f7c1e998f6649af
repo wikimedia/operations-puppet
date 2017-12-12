@@ -1,0 +1,8 @@
+Code-Review+1: Ema <ema@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Tue, 12 Dec 2017 15:20:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/397774
+Project: operations/puppet
+Branch: refs/heads/production
