@@ -82,9 +82,9 @@ class profile::kubernetes::master(
         description     => 'Request latencies',
         query           => "scalar(\
             sum(rate(apiserver_request_latencies_summary_sum{\
-            job=\"k8s-api\",verb!=\"WATCH\",instance=\"${::ipaddress}:6443\"}[5m]))/\
+            job=\"k8s-api\",verb\!=\"WATCH\",instance=\"${::ipaddress}:6443\"}[5m]))/\
             sum(rate(apiserver_request_latencies_summary_count{\
-            job=\"k8s-api\",verb!=\"WATCH\",instance=\"${::ipaddress}:6443\"}[5m])))",
+            job=\"k8s-api\",verb\!=\"WATCH\",instance=\"${::ipaddress}:6443\"}[5m])))",
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/k8s",
         warning         => 50000,
         critical        => 100000,
