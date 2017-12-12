@@ -96,7 +96,17 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wiktionary.<%= @domain_suffix %>
+    ServerName www.wikibooks.<%= @domain_suffix %>
+    ServerAlias m.wikibooks.<%= @domain_suffix %>
+    Serveralias www.wikinews.<%= @domain_suffix %>
+    ServerAlias m.wikinews.<%= @domain_suffix %>
+    ServerAlias www.wikiquote.<%= @domain_suffix %>
+    ServerAlias m.wikiquote.<%= @domain_suffix %>
+    ServerAlias www.wikiversity.<%= @domain_suffix %>
+    ServerAlias m.wikiversity.<%= @domain_suffix %>
+    ServerAlias www.wikivoyage.<%= @domain_suffix %>
+    ServerAlias m.wikivoyage.<%= @domain_suffix %>
+    ServerAlias www.wiktionary.<%= @domain_suffix %>
     ServerAlias m.wiktionary.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
@@ -104,14 +114,16 @@
         php_admin_flag engine on
     </IfModule>
 
-
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
     RewriteRule . - [E=RW_PROTO:http]
 
+    SetEnvIf Host "^(www|m)\.wik(i(books|news|quote|voyage)|tionary)\.<%= @domain_suffix %>$" project=$2
+
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wiktionary.org/index.html [L]
+    RewriteRule ^/$ /<%= @portal_dir %>/%{ENV:project}.org/index.html [L]
+
     <%- if @rewrite_portal -%>
         RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
     <%- end -%>
@@ -128,210 +140,18 @@
     # search-redirect.php, let it through
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
-    # Everything else
-    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
-    RewriteCond %{REQUEST_URI} !=/w/404.php
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wiktionary.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName www.wikinews.<%= @domain_suffix %>
-    ServerAlias m.wikinews.<%= @domain_suffix %>
-
-    DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
-
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikinews.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
-
-    # We need to be able to update HTML on short notice
-    <Location ~ "^/$">
-        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
-    </Location>
-    # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=86400, max-age=86400"
-    </Location>
-
-    # search-redirect.php, let it through
-    RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
-
-    # Everything else
-    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
-    RewriteCond %{REQUEST_URI} !=/w/404.php
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikinews.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName www.wikiquote.<%= @domain_suffix %>
-    ServerAlias m.wikiquote.<%= @domain_suffix %>
-
-    DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
-
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikiquote.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
-
-    # We need to be able to update HTML on short notice
-    <Location ~ "^/$">
-        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
-    </Location>
-    # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=86400, max-age=86400"
-    </Location>
-
-    # search-redirect.php, let it through
-    RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
-
-    # Everything else
-    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
-    RewriteCond %{REQUEST_URI} !=/w/404.php
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiquote.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName www.wikiversity.<%= @domain_suffix %>
-    ServerAlias m.wikiversity.<%= @domain_suffix %>
-
-    DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
-
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikiversity.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
-
-    # We need to be able to update HTML on short notice
-    <Location ~ "^/$">
-        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
-    </Location>
-    # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=86400, max-age=86400"
-    </Location>
-
-    # search-redirect.php, let it through
-    RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
-
-    # Everything else
-    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
-    RewriteCond %{REQUEST_URI} !=/w/404.php
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiversity.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName www.wikibooks.<%= @domain_suffix %>
-    ServerAlias m.wikibooks.<%= @domain_suffix %>
-
-    DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
-
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikibooks.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
-
-    # We need to be able to update HTML on short notice
-    <Location ~ "^/$">
-        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
-    </Location>
-    # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=86400, max-age=86400"
-    </Location>
-
-    # search-redirect.php, let it through
-    RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
-
-    # Everything else
-    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
-    RewriteCond %{REQUEST_URI} !=/w/404.php
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikibooks.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName www.wikivoyage.<%= @domain_suffix %>
-    ServerAlias m.wikivoyage.<%= @domain_suffix %>
-
-    DocumentRoot /srv/mediawiki/docroot/wwwportal
-    <IfModule mod_php5.c>
-        php_admin_flag engine on
-    </IfModule>
-
-
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikivoyage.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
-
-    # We need to be able to update HTML on short notice
-    <Location ~ "^/$">
-        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
-    </Location>
-    # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
-        Header set Cache-Control "s-maxage=86400, max-age=86400"
-    </Location>
-
-    # search-redirect.php, let it through
-    RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
-
-    # Old /de
+    # wikivoyage, old /de
+    RewriteCond %{HTTP_HOST} ^(www|m)\.wikivoyage\.<%= @domain_suffix %>$
     RewriteRule ^/de/(.*)$ %{ENV:RW_PROTO}://de.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
-    # Old /it
+
+    # wikivoyage, old /it
+    RewriteCond %{HTTP_HOST} ^(www|m)\.wikivoyage\.<%= @domain_suffix %>$
     RewriteRule ^/it/(.*)$ %{ENV:RW_PROTO}://it.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
 
     # Everything else
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
     RewriteCond %{REQUEST_URI} !=/w/404.php
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikivoyage.<%= @domain_suffix %>$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.%{ENV:project}.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 # vim: sts=4 sw=4 syn=apache autoindent
