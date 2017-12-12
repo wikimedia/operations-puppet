@@ -6,9 +6,16 @@ class contint::packages::javascript {
 
     requires_realm('labs')
 
-    package { 'npm':
-        ensure => present,
-        notify => Exec['pin npm'],
+    if os_version('debian == jessie') {
+      package { 'npm':
+          ensure => present,
+          notify => Exec['pin npm'],
+      }
+    } else {
+      package { 'npm':
+          ensure => 'purged',
+          notify => Exec['pin npm'],
+      }
     }
 
     # DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar
