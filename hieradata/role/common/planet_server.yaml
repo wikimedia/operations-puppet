@@ -1,2 +1,4 @@
 cluster: misc
-planet_domain_name: 'wikimedia.org'
+profile::planet::venus::domain_name: 'wikimedia.org'
+profile::planet::venus::meta_link: 'meta.wikimedia.org/wiki/Planet_Wikimedia'
+profile::planet::venus::http_proxy: "http://url-downloader.${::site}.wikimedia.org:8080"

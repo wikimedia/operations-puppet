@@ -130,13 +130,13 @@
             </div>
             <div class="menu">
               <p>
-                <h2><%= scope.lookupvar('planet::planet_languages')[@title]['subscribe'] %></h2>
+                <h2><%= scope.lookupvar('planet::languages')[@title]['subscribe'] %></h2>
                 <ul>
                   <li><a href="https://<%= @title %>.planet.wikimedia.org/rss20.xml">Atom</a></li>
                 </ul>
               </p>
               <p>
-                <h2><%= scope.lookupvar('planet::planet_languages')[@title]['wikimedia'] %></h2>
+                <h2><%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %></h2>
                 <ul>
                   <li><a href="https://ar.planet.wikimedia.org/">ar.planet.wm</a></li>
                   <li><a href="https://cs.planet.wikimedia.org/">cs.planet.wm</a></li>
@@ -157,7 +157,7 @@
                 </ul>
               </p>
               <p>
-                <h2><%= scope.lookupvar('planet::planet_languages')[@title]['planetarium'] %></h2>
+                <h2><%= scope.lookupvar('planet::languages')[@title]['planetarium'] %></h2>
                 <ul>
                   <li><a href="http://planet.apache.org/">Planet Apache</a></li>
                   <li><a href="http://planet.debian.net/">Planet Debian</a></li>
