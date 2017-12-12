@@ -8,6 +8,7 @@ class profile::kubernetes::node(
   $prometheus_nodes = hiera('prometheus_nodes', []),
   $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
   $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
+  $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -36,19 +37,22 @@ class profile::kubernetes::node(
         kubeconfig     => $kubeproxy_config,
     }
 
-    $master_hosts_ferm = join($master_hosts, ' ')
-    ferm::service { 'kubelet-http':
-        proto  => 'tcp',
-        port   => '10250',
-        srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
-    }
-
-    if !empty($prometheus_nodes) {
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        ferm::service { 'kubelet-http-readonly-prometheus':
+    # We can't use this for VMs because of the AAAA lookups
+    if $prod_firewalls {
+        $master_hosts_ferm = join($master_hosts, ' ')
+        ferm::service { 'kubelet-http':
             proto  => 'tcp',
-            port   => '10255',
-            srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+            port   => '10250',
+            srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
+        }
+
+        if !empty($prometheus_nodes) {
+            $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+            ferm::service { 'kubelet-http-readonly-prometheus':
+                proto  => 'tcp',
+                port   => '10255',
+                srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+            }
         }
     }
     # Alert us if kubelet operational latencies exceed a certain threshold. TODO: reevaluate

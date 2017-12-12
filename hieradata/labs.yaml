@@ -135,3 +135,6 @@ profile::diffscan::groupname: Labs-to-public-v4
 jenkins_agent_username: 'jenkins-deploy'
 
 role::logging::mediawiki::udp2log::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+
+# Don't use prod-style firewalls for k8s nodes
+profile::kubernetes::node::prod_firewalls: false
