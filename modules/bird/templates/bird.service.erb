@@ -1,8 +1,10 @@
 [Unit]
 Description=BIRD Internet Routing Daemon (IPv4)
 
+<%- if @bind_service -%>
 After=<%= @bind_service %>
 BindsTo=<%= @bind_service %>
+<%- end -%>
 
 [Service]
 EnvironmentFile=/etc/bird/envvars
@@ -13,5 +15,7 @@ ExecStart=/usr/sbin/bird -f -u $BIRD_RUN_USER -g $BIRD_RUN_GROUP $BIRD_ARGS
 Restart=on-abort
 
 [Install]
+<%- if @bind_service -%>
 ## https://github.com/systemd/systemd/issues/720
 WantedBy=<%= @bind_service %>
+<%- end -%>

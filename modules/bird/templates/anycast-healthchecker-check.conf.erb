@@ -1,0 +1,9 @@
+[<%= @title %>]
+check_cmd         = <%= @check_cmd %>
+check_interval    = 1
+check_timeout     = 1
+check_fail        = 1
+check_rise        = 10
+check_disabled    = false
+on_disabled       = withdraw
+ip_prefix         = <%= @address %>/32

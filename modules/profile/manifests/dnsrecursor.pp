@@ -1,11 +1,13 @@
 # A profile class for a dns recursor
 
 class profile::dnsrecursor (
-  $advertise_vips = hiera('profile::bird::advertise_vips', undef)
+  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}})
   ) {
     include ::network::constants
     include ::profile::base::firewall
     include ::lvs::configuration
+
+    $all_anycast_vips = $advertise_vips.map |$vip_fqdn,$vip_params| { $vip_params['address'] }
 
     class { '::dnsrecursor':
         version_hostname => true,
@@ -14,7 +16,7 @@ class profile::dnsrecursor (
             $facts['ipaddress'],
             $facts['ipaddress6'],
             $lvs::configuration::service_ips['dns_rec'][$::site],
-            $advertise_vips,
+            $all_anycast_vips,
         ],
     }
 

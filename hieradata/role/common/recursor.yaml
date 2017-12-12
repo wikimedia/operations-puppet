@@ -1,11 +1,12 @@
 cluster: recursor
 
-profile::bird::advertise_vips:
-  rec-dns-anycast-vip:
-    address: 10.3.0.1
-
-profile::bird::bind_service: 'pdns-recursor.service'
-
 prometheus::node_exporter::collectors_extra:
   - 'ntp'
 diamond::remove: true
+
+profile::bird::advertise_vips:
+  recdns.anycast.wmnet:
+    address: 10.3.0.1 # VIP to advertise (limited to a /32)
+    check_cmd: '/usr/lib/nagios/plugins/check_dns -H www.wikipedia.org -s 10.3.0.1 -t 1 -c 1'
+    ensure: present
+profile::bird::bind_service: 'anycast-healthchecker.service' # Optional

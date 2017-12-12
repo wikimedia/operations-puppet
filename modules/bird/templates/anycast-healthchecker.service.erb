@@ -1,0 +1,16 @@
+[Unit]
+Description=Anycast healthchecker
+After=network.target
+Requires=network.target
+Documentation=https://github.com/unixsurfer/anycast_healthchecker/blob/master/README.rst
+
+[Service]
+Type=simple
+TimeoutStartSec=0
+User=bird
+Group=bird
+ExecStart=/usr/bin/anycast-healthchecker
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
