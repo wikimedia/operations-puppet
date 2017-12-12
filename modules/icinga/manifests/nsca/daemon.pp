@@ -4,8 +4,6 @@
 # results from hosts
 class icinga::nsca::daemon {
 
-    system::role { 'icinga::nsca::daemon': description => 'Nagios Service Checks Acceptor Daemon' }
-
     package { 'nsca':
         ensure => 'present',
     }
