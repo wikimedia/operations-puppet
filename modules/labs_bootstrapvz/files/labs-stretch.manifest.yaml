@@ -170,6 +170,9 @@ plugins:
         src: /etc/apt/sources.list.d/wikimedia.list
         dst: /etc/apt/sources.list.d/wikimedia.list
       -
+        src: /etc/apt/sources.list.d/debian-backports.list
+        dst: /etc/apt/sources.list.d/debian-backports.list
+      -
         src: /etc/apt/preferences.d/wikimedia.pref
         dst: /etc/apt/preferences.d/wikimedia.pref
       -
