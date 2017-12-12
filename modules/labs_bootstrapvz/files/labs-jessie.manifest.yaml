@@ -25,7 +25,7 @@ packages:
     wikimedia:
       - deb  http://apt.wikimedia.org/wikimedia jessie-wikimedia main backports thirdparty
       - deb-src http://apt.wikimedia.org/wikimedia jessie-wikimedia main backports thirdparty
-    backports:
+    debian-backports:
       - deb http://mirrors.wikimedia.org/debian/ jessie-backports main contrib non-free
       - deb-src http://mirrors.wikimedia.org/debian/ jessie-backports main contrib non-free
   trusted-keys:
