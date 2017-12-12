@@ -2,7 +2,7 @@
 
 <VirtualHost *:80>
         DocumentRoot /var/www/planet/<%= @name %>
-        ServerName <%= @name %>.planet.<%= scope.lookupvar('planet::planet_domain_name') %>
+        ServerName <%= @name %>.planet.<%= scope.lookupvar('planet::domain_name') %>
 
 	Header always set Content-Security-Policy "upgrade-insecure-requests"
 
