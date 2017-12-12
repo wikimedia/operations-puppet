@@ -1820,7 +1820,6 @@ node /poolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
 
 node /^prometheus200[34]\.codfw\.wmnet$/ {
     role(prometheus)
-    include ::base::firewall
 }
 
 node 'puppetcompiler1001.eqiad.wmnet' {
