@@ -22,11 +22,11 @@ class rabbitmq(
     ) {
 
     package { [ 'rabbitmq-server' ]:
-        ensure  => present,
+        ensure  => 'present',
     }
 
     file { '/etc/default/rabbitmq-server':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -36,19 +36,21 @@ class rabbitmq(
     }
 
     file { '/usr/local/sbin/rabbitmqadmin':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
-        source => 'puppet:///modules/rabbitmq/rabbitmqadmin',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0655',
+        source  => 'puppet:///modules/rabbitmq/rabbitmqadmin',
+        require => Package['rabbitmq-server'],
     }
 
     file { '/etc/rabbitmq/rabbitmq.config':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/rabbitmq/rabbitmq.config',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/rabbitmq/rabbitmq.config',
+        require => Package['rabbitmq-server'],
     }
 
     service { 'rabbitmq-server':
@@ -57,7 +59,7 @@ class rabbitmq(
     }
 
     file { '/usr/local/sbin/drain_queue':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
