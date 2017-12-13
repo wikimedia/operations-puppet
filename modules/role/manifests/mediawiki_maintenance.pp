@@ -18,4 +18,5 @@ class role::mediawiki_maintenance {
 
     # ProxySQL test T175672
     include ::profile::proxysql
+    include ::profile::mariadb::client
 }
