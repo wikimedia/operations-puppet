@@ -1,2 +1,2 @@
 mariadb::shard: 's1'
-mariadb::socket: '/tmp/mysql.sock'
+mariadb::binlog_format: 'STATEMENT'
