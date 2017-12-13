@@ -2,6 +2,7 @@ class profile::openstack::base::rabbitmq(
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $monitor_user = hiera('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
+    $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
     $file_handles = hiera('profile::openstack::base::rabbit_file_handles'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
@@ -19,6 +20,13 @@ class profile::openstack::base::rabbitmq(
         rabbit_monitor_password => $monitor_password,
     }
     contain '::rabbitmq::monitor'
+
+    class { '::profile::prometheus::rabbitmq_exporter':
+        prometheusnodes  => $monitoring_host,
+        monitor_user     => $monitor_user,
+        monitor_password => $monitor_password,
+    }
+    contain '::profile::prometheus::rabbitmq_exporter'
 
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',
