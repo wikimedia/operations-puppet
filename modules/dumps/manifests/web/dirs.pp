@@ -5,46 +5,20 @@ class dumps::web::dirs(
     $user = undef,
     $group = undef,
 ) {
-    # Please note that this is incomplete, but new directories
-    # should be defined in puppet (here).
+    class {'dumps::server_dirs':
+        datadir         = $datadir,
+        xmldumpsdir     = $xmldumpsdir,
+        miscdatasetsdir = $miscdatasetsdir,
+        user            => $user,
+        group           => $group,
+    }
+
     $analyticsdir             = "${miscdatasetsdir}/analytics"
     $othermiscdir             = "${miscdatasetsdir}/misc"
     $othertestfilesdir        = "${miscdatasetsdir}/testfiles"
     $miscdatasetsdir_wikidata_legacy = "${miscdatasetsdir}/wikidata"
     $miscdatasetsdir_wikibase        = "${miscdatasetsdir}/wikibase/"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
-    $xlationdir               = "${miscdatasetsdir}/contenttranslation"
-    $cirrussearchdir          = "${miscdatasetsdir}/cirrussearch"
-    $medialistsdir            = "${miscdatasetsdir}/imageinfo"
-    $pagetitlesdir            = "${miscdatasetsdir}/pagetitles"
-    $mediatitlesdir           = "${miscdatasetsdir}/mediatitles"
-    $categoriesrdf            = "${miscdatasetsdir}/categoriesrdf"
-
-    # top level dir
-    file { $datadir:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    # top-level dirs for various dump trees
-    file { [ $xmldumpsdir, $miscdatasetsdir ]:
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
-
-    # subdirs for various misc dumps
-    file { [ $xlationdir, $cirrussearchdir, $medialistsdir,
-        $pagetitlesdir, $categoriesrdf ]:
-
-        ensure => 'directory',
-        mode   => '0755',
-        owner  => $user,
-        group  => $group,
-    }
 
     # subdirs for misc datasets that aren't dumps
     file { [ $analyticsdir, $othermiscdir, $othertestfilesdir ]:

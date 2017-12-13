@@ -6,6 +6,14 @@ class dumps::generation::server::dirs(
     $user            = undef,
     $group           = undef,
 ) {
+    class {'dumps::server_dirs':
+        datadir         => $datadir,
+        xmldumpsdir     => $xmldumpsdir,
+        miscdatasetsdir => $miscdatasetsdir,
+        user            => $user,
+        group           => $group,
+    }
+
     # Directories where dumps of any type are generated
     # This list is not for one-off directories, nor for
     # directories with incoming rsyncs of datasets
@@ -16,26 +24,23 @@ class dumps::generation::server::dirs(
     $medialistsdir                = "${miscdatasetsdir}/imageinfo"
     $incrsdir                     = "${miscdatasetsdir}/incr"
     $mediatitlesdir               = "${miscdatasetsdir}/mediatitles"
-    $othermiscdir                 = "${miscdatasetsdir}/misc"
     $pagetitlesdir                = "${miscdatasetsdir}/pagetitles"
-    $othertestfilesdir            = "${miscdatasetsdir}/testfiles"
     $otherwikibasedir             = "${miscdatasetsdir}/wikibase"
     $otherwikibasewikidatadir     = "${miscdatasetsdir}/wikibase/wikidatawiki"
     $otherwikidatadir             = "${miscdatasetsdir}/wikidata"
 
-    # top level directories for various dumps/datasets
-    file { [ $datadir, $xmldumpsdir, $miscdatasetsdir, $tempdir ]:
+    # top level directories for various dumps/datasets, on generation hosts only
+    file { $tempdir:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
         group  => $group,
     }
 
-    # subdirs for various dumps
+    # subdirs for various generated dumps
     file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
         $globalblocksdir, $medialistsdir, $incrsdir,
-        $mediatitlesdir, $othermiscdir, $pagetitlesdir,
-        $othertestfilesdir ]:
+        $mediatitlesdir, $pagetitlesdir]:
 
         ensure => 'directory',
         mode   => '0755',
