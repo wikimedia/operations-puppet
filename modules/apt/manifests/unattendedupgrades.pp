@@ -62,4 +62,40 @@ class apt::unattendedupgrades($ensure=present) {
         source  => 'puppet:///modules/apt/report-pending-upgrades.sh',
         require => Package['apt-show-versions'],
    }
+
+   file { '/usr/local/sbin/apt-stretch':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-stretch.sh',
+   }
+   file { '/usr/local/sbin/apt-stretch-backports':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-stretch-backports.sh',
+   }
+   file { '/usr/local/sbin/apt-stretch-security':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-stretch-security.sh',
+   }
+   file { '/usr/local/sbin/apt-stretch-updates':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-stretch-udpates.sh',
+   }
+   file { '/usr/local/sbin/apt-stretch-wikimedia':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-stretch-wikimedia.sh',
+   }
 }
