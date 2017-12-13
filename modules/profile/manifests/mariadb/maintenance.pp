@@ -2,11 +2,7 @@
 class profile::mariadb::maintenance(
     $ensure = hiera('profile::mariadb::maintenance::ensure'),
     ) {
-    # TODO: check if both of these are still needed
-    include ::mysql
-    package { 'percona-toolkit':
-        ensure => latest,
-    }
+    # The role should install profile::mariadb::client
 
     # place from which tendril-related cron jobs are run
     include passwords::tendril

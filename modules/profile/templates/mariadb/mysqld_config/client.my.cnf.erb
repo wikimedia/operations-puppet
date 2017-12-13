@@ -1,0 +1,12 @@
+# Client-only configuration, for servers that have to be clients but
+# do not have mysqld installed
+
+[client]
+
+[mysql]
+prompt = <%= @prompt %>
+no-auto-rehash
+
+[mysqldump]
+quick
+max_allowed_packet = <%= @max_allowed_packet %>
