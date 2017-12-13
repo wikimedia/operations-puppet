@@ -1,7 +1,8 @@
-# Extra records that the Labs DNS resolver should respond to.
+# Extra records that the Labs DNS recursor should respond to.
 # Used for things that would ideally be in a .svc. DNS zone but
 # we do not have one. REMEMBER THE TRAILING DOT.
 profile::openstack::base::pdns::recursor::aliaser_extra_records:
   tools-db.tools.eqiad.wmflabs.: 10.64.37.9 # labsdb1005.eqiad.wmnet / tools-db
   tools-redis.tools.eqiad.wmflabs.: 10.68.22.56 # tools-redis-1001.tools.eqiad.wmflabs
   tools-redis.eqiad.wmflabs.: 10.68.22.56 # tools-redis-1001.tools.eqiad.wmflabs
+  puppet.: 208.80.154.158 # labpuppetmaster1001.wikimedia.org
