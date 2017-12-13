@@ -97,14 +97,13 @@ while [ $# -gt 0 ]; do
     fi
 done
 
-args="wiki:dir;tools:gzip,mysqldump"
+args="tools:gzip,mysqldump"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
-apachedir=`getsetting "$results" "wiki" "dir"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
 mysqldump=`getsetting "$results" "tools" "mysqldump"` || exit 1
 
-for settingname in "apachedir" "gzip" "mysqldump"; do
+for settingname in "gzip" "mysqldump"; do
     checkval "$settingname" "${!settingname}"
 done
 

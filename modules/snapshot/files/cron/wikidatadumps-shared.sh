@@ -14,20 +14,19 @@ configfile="${confsdir}/wikidump.conf.dumps"
 today=`date +'%Y%m%d'`
 daysToKeep=70
 
-args="wiki:dir;output:temp"
+args="output:temp"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
-apacheDir=`getsetting "$results" "wiki" "dir"` || exit 1
 tempDir=`getsetting "$results" "output" "temp"` || exit 1
 
-for settingname in "apacheDir" "tempDir"; do
+for settingname in "tempDir"; do
     checkval "$settingname" "${!settingname}"
 done
 
 targetDirBase=${cronsdir}/wikibase/wikidatawiki
 targetDir=$targetDirBase/$today
 
-multiversionscript="${apacheDir}/multiversion/MWScript.php"
+multiversionscript="${apachedir}/multiversion/MWScript.php"
 
 # Create the dir for the day: This may or may not already exist, we don't care
 mkdir -p $targetDir
