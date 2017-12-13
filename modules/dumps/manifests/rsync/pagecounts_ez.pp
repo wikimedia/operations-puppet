@@ -2,7 +2,7 @@ class dumps::rsync::pagecounts_ez(
     $hosts_allow = undef,
     $user = undef,
     $deploygroup = undef,
-    $otherdir = undef,
+    $miscdatasetsdir = undef,
 ) {
     file { '/etc/rsyncd.d/30-rsync-pagecounts_ez.conf':
         ensure  => 'present',

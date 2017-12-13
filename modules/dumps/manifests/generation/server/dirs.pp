@@ -1,30 +1,30 @@
 class dumps::generation::server::dirs(
-    $datadir     = undef,
-    $xmldumpsdir = undef,
-    $tempdir     = undef,
-    $otherdir    = undef,
-    $user        = undef,
-    $group       = undef,
+    $datadir         = undef,
+    $xmldumpsdir     = undef,
+    $tempdir         = undef,
+    $miscdatasetsdir = undef,
+    $user            = undef,
+    $group           = undef,
 ) {
     # Directories where dumps of any type are generated
     # This list is not for one-off directories, nor for
     # directories with incoming rsyncs of datasets
-    $cirrussearchdir              = "${otherdir}/cirrussearch"
-    $xlationdir                   = "${otherdir}/contenttranslation"
-    $categoriesrdfdir             = "${otherdir}/categoriesrdf"
-    $globalblocksdir              = "${otherdir}/globalblocks"
-    $medialistsdir                = "${otherdir}/imageinfo"
-    $incrsdir                     = "${otherdir}/incr"
-    $mediatitlesdir               = "${otherdir}/mediatitles"
-    $othermiscdir                 = "${otherdir}/misc"
-    $pagetitlesdir                = "${otherdir}/pagetitles"
-    $othertestfilesdir            = "${otherdir}/testfiles"
-    $otherwikibasedir             = "${otherdir}/wikibase"
-    $otherwikibasewikidatadir     = "${otherdir}/wikibase/wikidatawiki"
-    $otherwikidatadir             = "${otherdir}/wikidata"
+    $cirrussearchdir              = "${miscdatasetsdir}/cirrussearch"
+    $xlationdir                   = "${miscdatasetsdir}/contenttranslation"
+    $categoriesrdfdir             = "${miscdatasetsdir}/categoriesrdf"
+    $globalblocksdir              = "${miscdatasetsdir}/globalblocks"
+    $medialistsdir                = "${miscdatasetsdir}/imageinfo"
+    $incrsdir                     = "${miscdatasetsdir}/incr"
+    $mediatitlesdir               = "${miscdatasetsdir}/mediatitles"
+    $othermiscdir                 = "${miscdatasetsdir}/misc"
+    $pagetitlesdir                = "${miscdatasetsdir}/pagetitles"
+    $othertestfilesdir            = "${miscdatasetsdir}/testfiles"
+    $otherwikibasedir             = "${miscdatasetsdir}/wikibase"
+    $otherwikibasewikidatadir     = "${miscdatasetsdir}/wikibase/wikidatawiki"
+    $otherwikidatadir             = "${miscdatasetsdir}/wikidata"
 
     # top level directories for various dumps/datasets
-    file { [ $datadir, $xmldumpsdir, $otherdir, $tempdir ]:
+    file { [ $datadir, $xmldumpsdir, $miscdatasetsdir, $tempdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
