@@ -12,7 +12,7 @@ class profile::prometheus::etherpad_exporter (
 
     ferm::service { 'prometheus-etherpad-exporter':
         proto  => 'tcp',
-        port   => '9142',
+        port   => '9198',
         srange => $ferm_srange,
     }
 }
