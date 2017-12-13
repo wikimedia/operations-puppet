@@ -83,4 +83,8 @@ class releases (
     package { 'phpunit':
         ensure => present,
     }
+
+    package { 'php-curl':
+        ensure => present,
+    }
 }
