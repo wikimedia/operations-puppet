@@ -709,6 +709,22 @@ class role::prometheus::ops {
         port       => '9199',
     }
 
+    $elasticsearch_jobs = [
+        {
+            'job_name'        => 'elasticsearch',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/elasticsearch_*.yaml" ]}
+            ],
+        },
+    ]
+    prometheus::class_config { "elasticsearch_${::site}":
+        dest       => "${targets_path}/elasticsearch_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::elasticsearch::monitoring',
+        port       => '9108',
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -720,7 +736,7 @@ class role::prometheus::ops {
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
-            $etherpad_jobs,
+            $etherpad_jobs, $elasticsearch_jobs,
         ),
         global_config_extra   => $config_extra,
     }
