@@ -5,4 +5,5 @@ class profile::openstack::base::nova::conductor::service(
     class {'::openstack::nova::conductor::service':
         active => $::fqdn == $nova_controller,
     }
+    contain '::openstack::nova::conductor::service'
 }

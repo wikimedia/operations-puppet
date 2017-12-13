@@ -18,4 +18,5 @@ class profile::openstack::labtest::horizon::dashboard(
         ldap_user_pass      => $ldap_user_pass,
         webserver_hostname  => $webserver_hostname,
     }
+    contain '::profile::openstack::base::horizon::dashboard'
 }

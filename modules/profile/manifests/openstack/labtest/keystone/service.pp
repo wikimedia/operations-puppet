@@ -35,6 +35,7 @@ class profile::openstack::labtest::keystone::service(
         horizon_host          => $horizon_host,
         osm_host              => $osm_host,
     }
+    contain '::profile::openstack::base::keystone::db'
 
     require ::profile::openstack::labtest::clientlib
     class {'::profile::openstack::base::keystone::service':
@@ -66,8 +67,11 @@ class profile::openstack::labtest::keystone::service(
         horizon_host                => $horizon_host,
         require                     => Class['profile::openstack::base::keystone::db'],
     }
+    contain '::profile::openstack::base::keystone::service'
 
     class {'::profile::openstack::base::keystone::hooks':
         version => $version,
     }
+    contain '::profile::openstack::base::keystone::hooks'
 }
+

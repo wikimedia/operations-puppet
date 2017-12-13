@@ -13,4 +13,5 @@ class profile::openstack::labtest::pdns::dns_floating_ip_updater(
         floating_ip_ptr_fqdn_matching_regex      => $floating_ip_ptr_fqdn_matching_regex,
         floating_ip_ptr_fqdn_replacement_pattern => $floating_ip_ptr_fqdn_replacement_pattern,
     }
+    contain '::profile::openstack::base::pdns::dns_floating_ip_updater'
 }

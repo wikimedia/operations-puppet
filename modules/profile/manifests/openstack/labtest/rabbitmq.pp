@@ -18,4 +18,5 @@ class profile::openstack::labtest::rabbitmq(
         nova_api_host    => $nova_api_host,
         designate_host   => $designate_host,
     }
+    contain '::profile::openstack::base::rabbitmq'
 }

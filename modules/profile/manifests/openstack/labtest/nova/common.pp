@@ -44,4 +44,5 @@ class profile::openstack::labtest::nova::common(
         rabbit_pass              => $rabbit_pass,
         spice_hostname           => $spice_hostname,
     }
+    contain '::profile::openstack::base::nova::common'
 }

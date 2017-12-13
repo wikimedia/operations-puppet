@@ -6,4 +6,5 @@ class profile::openstack::labtest::nova::api::service(
     class {'::profile::openstack::base::nova::api::service':
         nova_api_host => $nova_api_host,
     }
+    contain '::profile::openstack::base::nova::api::service'
 }

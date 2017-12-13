@@ -7,6 +7,7 @@ class profile::openstack::base::nova::spiceproxy::service(
         active  => ($::fqdn == $nova_controller),
         version => $version,
     }
+    contain '::openstack::nova::spiceproxy::service'
 
     ferm::rule{'spice_consoles':
         ensure => 'present',

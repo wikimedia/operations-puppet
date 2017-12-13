@@ -18,8 +18,10 @@ class profile::openstack::labtest::glance(
         ldap_user_pass          => $ldap_user_pass,
         labs_hosts_range        => $labs_hosts_range,
     }
+    contain '::profile::openstack::base::glance'
 
-    class {'openstack::glance::monitor':
+    class {'::openstack::glance::monitor':
         active => ($::fqdn == $nova_controller),
     }
+    contain '::openstack::glance::monitor'
 }

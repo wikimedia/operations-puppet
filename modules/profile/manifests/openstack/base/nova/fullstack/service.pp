@@ -7,4 +7,5 @@ class profile::openstack::base::nova::fullstack::service(
         active   => ($::fqdn == $nova_api_host),
         password => $osstackcanary_pass,
     }
+    contain '::openstack::nova::fullstack::service'
 }

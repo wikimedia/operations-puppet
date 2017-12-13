@@ -34,4 +34,5 @@ class profile::openstack::base::nova::network::service(
         dns_recursor           => $dns_recursor,
         dns_recursor_secondary => $dns_recursor_secondary,
     }
+    contain '::openstack::nova::network::service'
 }

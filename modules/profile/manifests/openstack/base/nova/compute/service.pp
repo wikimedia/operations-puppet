@@ -56,4 +56,5 @@ class profile::openstack::base::nova::compute::service(
         certname     => $certname,
         ca_target    => $ca_target,
     }
+    contain '::openstack::nova::compute::service'
 }

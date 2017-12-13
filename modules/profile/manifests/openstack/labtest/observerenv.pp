@@ -7,4 +7,5 @@ class profile::openstack::labtest::observerenv(
         nova_controller   => $nova_controller ,
         observer_password => $observer_password,
     }
+    contain '::profile::openstack::base::observerenv'
 }

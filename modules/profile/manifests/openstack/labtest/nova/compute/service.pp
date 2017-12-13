@@ -17,9 +17,11 @@ class profile::openstack::labtest::nova::compute::service(
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
     }
+    contain '::profile::openstack::base::nova::compute::service'
 
     class {'::openstack::nova::compute::monitor':
         active   => true,
         certname => $certname,
     }
+    contain '::openstack::nova::compute::monitor'
 }

@@ -7,4 +7,5 @@ class profile::openstack::base::nova::scheduler::service(
         active  => ($::fqdn == $nova_controller),
         version => $version,
     }
+    contain '::openstack::nova::scheduler::service'
 }

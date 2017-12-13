@@ -20,8 +20,10 @@ class profile::openstack::labtest::nova::network::service(
         network_flat_interface_vlan        => $network_flat_interface_vlan,
         network_public_ip                  => $network_public_ip,
     }
+    contain '::profile::openstack::base::nova::network::service'
 
     class {'::openstack::nova::network::monitor':
         active => ($::fqdn == $nova_network_host),
     }
+    contain '::openstack::nova::network::monitor'
 }
