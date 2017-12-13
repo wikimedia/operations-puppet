@@ -42,6 +42,14 @@ class profile::proxysql {
         require => Class['proxysql'],
     }
 
+    # Let's add proxysql user to the mysql group so it can access mysql's
+    # tls client certs
+    exec { 'proxysql membership to mysql':
+        unless  => '/usr/bin/getent group mysql | /usr/bin/cut -d: -f4 | /bin/grep -q proxysql',
+        command => '/usr/sbin/usermod -a -G mysql proxysql',
+        require => Class['proxysql'],
+    }
+
     # lets simplify connections from root
     file { '/root/.my.cnf':
         ensure  => present,
