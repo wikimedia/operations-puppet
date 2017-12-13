@@ -1,24 +1,24 @@
 class dumps::web::dirs(
     $datadir = undef,
     $xmldumpsdir = undef,
-    $otherdir = undef,
+    $miscdatasetsdir = undef,
     $user = undef,
     $group = undef,
 ) {
     # Please note that this is incomplete, but new directories
     # should be defined in puppet (here).
-    $analyticsdir             = "${otherdir}/analytics"
-    $othermiscdir             = "${otherdir}/misc"
-    $othertestfilesdir        = "${otherdir}/testfiles"
-    $otherdir_wikidata_legacy = "${otherdir}/wikidata"
-    $otherdir_wikibase        = "${otherdir}/wikibase/"
+    $analyticsdir             = "${miscdatasetsdir}/analytics"
+    $othermiscdir             = "${miscdatasetsdir}/misc"
+    $othertestfilesdir        = "${miscdatasetsdir}/testfiles"
+    $miscdatasetsdir_wikidata_legacy = "${miscdatasetsdir}/wikidata"
+    $miscdatasetsdir_wikibase        = "${miscdatasetsdir}/wikibase/"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
-    $xlationdir               = "${otherdir}/contenttranslation"
-    $cirrussearchdir          = "${otherdir}/cirrussearch"
-    $medialistsdir            = "${otherdir}/imageinfo"
-    $pagetitlesdir            = "${otherdir}/pagetitles"
-    $mediatitlesdir           = "${otherdir}/mediatitles"
-    $categoriesrdf            = "${otherdir}/categoriesrdf"
+    $xlationdir               = "${miscdatasetsdir}/contenttranslation"
+    $cirrussearchdir          = "${miscdatasetsdir}/cirrussearch"
+    $medialistsdir            = "${miscdatasetsdir}/imageinfo"
+    $pagetitlesdir            = "${miscdatasetsdir}/pagetitles"
+    $mediatitlesdir           = "${miscdatasetsdir}/mediatitles"
+    $categoriesrdf            = "${miscdatasetsdir}/categoriesrdf"
 
     # top level dir
     file { $datadir:
@@ -29,7 +29,7 @@ class dumps::web::dirs(
     }
 
     # top-level dirs for various dump trees
-    file { [ $xmldumpsdir, $otherdir ]:
+    file { [ $xmldumpsdir, $miscdatasetsdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
@@ -55,8 +55,8 @@ class dumps::web::dirs(
     }
 
     # subdirs for wikidata/wikibase weekly dumps
-    file { [ $otherdir_wikibase, "${xmldumpsdir}/${relative_wikidatawiki}",
-        $otherdir_wikidata_legacy ]:
+    file { [ $miscdatasetsdir_wikibase, "${xmldumpsdir}/${relative_wikidatawiki}",
+        $miscdatasetsdir_wikidata_legacy ]:
 
         ensure => 'directory',
         mode   => '0755',
