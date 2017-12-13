@@ -79,4 +79,12 @@ class apt::unattendedupgrades(
         source  => 'puppet:///modules/apt/report-pending-upgrades.sh',
         require => Package['apt-show-versions'],
     }
+
+    file { '/usr/local/sbin/apt-upgrade':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/apt/apt-upgrade.py',
+    }
 }
