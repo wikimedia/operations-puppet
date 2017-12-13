@@ -37,14 +37,12 @@ class openstack::designate::service(
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
     require_package(
-        'python-designateclient',
         'designate-sink',
         'designate-common',
         'designate',
         'designate-api',
         'designate-doc',
         'designate-central',
-        'python-novaclient'
     )
 
     file { '/usr/lib/python2.7/dist-packages/wmf_sink':
