@@ -6,6 +6,7 @@ class role::wdqs  {
     include ::base::firewall
     include ::role::lvs::realserver
     include ::profile::wdqs
+    include ::profile::prometheus::wdqs_updater_exporter
 
     system::role { 'wdqs':
         ensure      => 'present',
