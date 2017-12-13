@@ -58,4 +58,7 @@ class profile::wdqs (
     class { '::wdqs::monitor::blazegraph': }
     class { '::wdqs::monitor::updater': }
     class { '::wdqs::monitor::services': }
+
+    # Metrics
+    include ::profile::prometheus::wdqs_updater_exporter
 }
