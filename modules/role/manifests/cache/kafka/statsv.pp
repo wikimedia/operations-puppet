@@ -27,7 +27,6 @@ class role::cache::kafka::statsv(
 
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
-    $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
     varnishkafka::instance { 'statsv':
         # FIXME - top-scope var without namespace, will break in puppet 2.8

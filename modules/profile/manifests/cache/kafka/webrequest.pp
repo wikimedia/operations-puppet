@@ -69,7 +69,6 @@ class profile::cache::kafka::webrequest(
         'T' => '1500',
         'L' => '10000'
     }
-    $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
     # Note: the newer version of Varnishkafka (compatible with Varnish 4)
     # needs to specify if the timestamp formatter should output the time
