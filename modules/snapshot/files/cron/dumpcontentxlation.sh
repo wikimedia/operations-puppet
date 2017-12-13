@@ -59,13 +59,12 @@ done
 # Get config settings
 #####################
 
-args="wiki:dir;tools:php"
+args="tools:php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
-apachedir=`getsetting "$results" "wiki" "dir"`
 php=`getsetting "$results" "tools" "php"`
 
-for settingname in "apachedir" "php"; do
+for settingname in "php"; do
     checkval "$settingname" "${!settingname}"
 done
 
