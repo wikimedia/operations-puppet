@@ -2517,7 +2517,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCy7wnX7ck41mKRzXvt5n/2UVEDkK1T9L5iyDFAWgDAbjgWqjBgnfHVq88lX1d/WOUNjNzF1WnRWn1vk6gKk3eoNlIbEcIvfLGYB+e6yGsE9KZWyvcpWcIBhhe9YH4d7nY34ScUIH42bZkXh2iGu5VpQVm8G5Wf9iqSwKFHSAy+Bl3jclaHSPfUmGxTbjC2e20Xns8BvybEW4dBjb79/eHNR1K/9f5JHeLM9ZE3wKVYC07kSnsYCGVWWr2zqyjpmBl2hQe/0C0pvx2AoTzEYK58BZZUkui3aIihSDiDMxDujNypUtePyoCq14t8dLSkIfOh0kRKAVmC/6oVwzSFbvZ7yjyU5ApsUK1DqCmFw/yz9M/nRuAs3qkXwFC1XUyjNBiVBEbWKDGxBx08TjZPKSvbtQD3DaU7RvXJUh3hsDcrgfky6ZlfV9y1bRp7heHVAShVWrsTwoQt/PF6uZ2ud71Ri51bV9qlHdT/BmF+UJ86LSPzTHSKt57GEXguVVPCGgfjFm+WugW4SOC+Bx/IEQC7+hfgXZjr6CQt+zCOExBS6IpknDBIzuvdbrNKG1auBn6nJKCAURRR3q71tCGlihjV39u5ZEmGqacsIYDA1SSTGqUGq5MuaVoVuS0rBPwFjO1enhqDT6wl9qBVuHUDlis9XQ2wOyLT3yqG0sGYxpNF0w== pnorman@pippin
     uid: 16082
     email: penorman@mac.com
-    expiry_date: 2017-11-30
+    expiry_date: 2017-02-28
     expiry_contact: abaso@wikimedia.org
   ayounsi:
     ensure: present
