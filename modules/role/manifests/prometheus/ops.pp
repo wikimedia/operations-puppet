@@ -721,7 +721,7 @@ class role::prometheus::ops {
     prometheus::class_config { "elasticsearch_${::site}":
         dest       => "${targets_path}/elasticsearch_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::logstash::elasticsearch',
+        class_name => 'profile::elasticsearch::monitoring',
         port       => '9108',
     }
 
