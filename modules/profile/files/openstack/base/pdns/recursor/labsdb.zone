@@ -5,7 +5,7 @@
 c1	1H	IN	A	10.64.4.11
 c3	1H	IN	A	10.64.37.5
 
-tools	1H	IN	CNAME	tools.db.svc.eqiad.wmflabs
+tools	1H	IN	CNAME	tools.db.svc.eqiad.wmflabs.
 
 s1	1H	IN	CNAME	s1.web.db.svc.eqiad.wmflabs.
 enwiki	1H	IN	CNAME	s1.web.db.svc.eqiad.wmflabs.
