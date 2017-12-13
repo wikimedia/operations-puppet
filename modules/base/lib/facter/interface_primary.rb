@@ -22,7 +22,7 @@ Facter.add('interface_primary') do
     # this is "interface4_primary", but that's a corner-case that we currently
     # do not need to handle.
     gw_route = Facter::Util::Resolution.exec('ip -4 route list 0/0')
-    /.* dev (?<intf>[^\s]+) .*/ =~ gw_route
+    /.* dev (?<intf>[^\s]+)( .*)?$/ =~ gw_route
     intf
   end
 end
