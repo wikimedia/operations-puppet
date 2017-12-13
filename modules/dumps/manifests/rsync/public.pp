@@ -1,7 +1,7 @@
 class dumps::rsync::public(
     $hosts_allow = undef,
     $xmldumpsdir = undef,
-    $otherdir = undef,
+    $miscdatasetsdir = undef,
 )  {
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure  => 'present',
