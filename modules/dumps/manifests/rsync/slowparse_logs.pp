@@ -2,7 +2,7 @@ class dumps::rsync::slowparse_logs(
     $hosts_allow = undef,
     $user = undef,
     $group = undef,
-    $otherdir = undef,
+    $miscdatasetsdir = undef,
 ) {
     file { '/etc/rsyncd.d/10-rsync-slowparse-logs.conf':
         ensure  => 'present',
