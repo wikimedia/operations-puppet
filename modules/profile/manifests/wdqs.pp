@@ -9,6 +9,7 @@ class profile::wdqs (
     $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
     $updater_options = hiera('profile::wdqs::updater_options'),
     $nodes = hiera('profile::wdqs::nodes'),
+    $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     $nagios_contact_group = 'admins,wdqs-admins'
 
@@ -35,6 +36,12 @@ class profile::wdqs (
         logstash_host => $logstash_host,
     }
 
+    # Metrics
+    require_package('prometheus-wdqs-updater-exporter')
+    service { 'prometheus-wdqs-updater-exporter':
+        ensure  => running,
+    }
+
     # Firewall
     ferm::service {
         'wdqs_http':
@@ -52,6 +59,14 @@ class profile::wdqs (
             proto  => 'tcp',
             port   => '9876',
             srange => inline_template("@resolve((<%= @nodes.join(' ') %>))");
+    }
+
+    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+    ferm::service { 'prometheus-wdqs-updater-exporter':
+        proto  => 'tcp',
+        port   => '9194',
+        srange => $ferm_srange,
     }
 
     # Monitoring
