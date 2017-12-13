@@ -8,8 +8,6 @@ class dnsrecursor::labsaliaser(
     $puppetmaster_hostname,
 ) {
 
-    require_package(['python-novaclient', 'python-keystoneclient'])
-
     $config = {
         'username'              => $username,
         'password'              => $password,
