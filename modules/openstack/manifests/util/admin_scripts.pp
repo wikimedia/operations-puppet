@@ -3,7 +3,6 @@ class openstack::util::admin_scripts(
     $version,
     ) {
 
-    require openstack::nova::common
     # Installing this package ensures that we have all the UIDs that
     #  are used to store an instance volume.  That's important for
     #  when we rsync files via this host.
@@ -112,10 +111,7 @@ class openstack::util::admin_scripts(
     # XXX: per deployment?
     file { '/root/.ssh/compute-hosts-key':
         content   => secret('ssh/nova/nova.key'),
-        owner     => 'nova',
-        group     => 'nova',
         mode      => '0600',
-        require   => Package['nova-common'],
         show_diff => false,
     }
 
