@@ -15,7 +15,7 @@ class openstack::nova::network::service(
     $recursor_secondary_ip = ipresolve($dns_recursor_secondary,4)
 
     package {  [ 'nova-network', 'dnsmasq' ]:
-        ensure  => present,
+        ensure  => 'present',
     }
 
     file { '/etc/dnsmasq-nova.conf':
@@ -31,7 +31,7 @@ class openstack::nova::network::service(
     # Do Not Include Base::Firewall
 
     file { '/etc/modprobe.d/nf_conntrack.conf':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

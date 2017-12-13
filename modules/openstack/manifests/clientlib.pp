@@ -18,7 +18,7 @@ class openstack::clientlib(
 
     # Wrapper python class to easily query openstack clients
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
-        ensure => present,
+        ensure => 'present',
         source => 'puppet:///modules/openstack/clientlib/mwopenstackclients.py',
         mode   => '0755',
         owner  => 'root',

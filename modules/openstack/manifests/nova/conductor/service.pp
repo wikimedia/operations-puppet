@@ -10,7 +10,7 @@ class openstack::nova::conductor::service(
     require openstack::nova::common
 
     package { 'nova-conductor':
-        ensure  => present,
+        ensure  => 'present',
     }
 
     service { 'nova-conductor':

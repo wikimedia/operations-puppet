@@ -30,7 +30,7 @@ class openstack::wikitech::openstack_manager(
     package { [
         'php5-ldap',
         'librsvg2-bin']:
-            ensure => present;
+            ensure => 'present';
     }
 
     require_package([

@@ -58,7 +58,7 @@ class openstack::keystone::service(
 
     if $token_driver == 'redis' {
         package { 'python-keystone-redis':
-            ensure => present;
+            ensure => 'present';
         }
     }
 
