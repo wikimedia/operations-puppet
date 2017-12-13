@@ -1,5 +1,6 @@
 class role::wmcs::openstack::labtestn::net {
     system::role { $name: }
-    include ::profile::openstack::labtestn::cloudrepo
-    include ::profile::openstack::labtestn::nova::common
+    # Do not add base firewall
+    include ::standard
+    include ::profile::openstack::labtestn::clientlib
 }
