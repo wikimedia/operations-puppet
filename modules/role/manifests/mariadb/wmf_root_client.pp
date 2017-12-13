@@ -1,11 +1,11 @@
 # hosts with client utilities to conect to remote servers
 # This role provides remote access to mysql server
 # **DO NOT ADD** to non-dedicated hosts**
-class role::mariadb::client {
+class role::mariadb::wmf_root_client {
 
     # prevent accidental addition on a db server or a non-dedicated client
     if !($::fqdn in ['neodymium.eqiad.wmnet', 'sarin.codfw.wmnet']) {
-        fail('role::mariadb::client should only be used on root-owned, \
+        fail('role::mariadb::wmf_root_client should only be used on root-owned, \
              dedicated servers.')
     }
 

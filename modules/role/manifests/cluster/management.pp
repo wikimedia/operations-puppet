@@ -9,7 +9,7 @@ class role::cluster::management {
         description => 'Cluster management',
     }
 
-    include ::role::mariadb::client
+    include ::role::mariadb::wmf_root_client
     include ::role::cumin::master
     include ::role::ipmi::mgmt
     include ::role::access_new_install
