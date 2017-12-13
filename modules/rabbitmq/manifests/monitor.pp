@@ -12,12 +12,4 @@ class rabbitmq::monitor(
         },
         source   => 'puppet:///modules/rabbitmq/rabbitmq.py',
     }
-
-    file { '/etc/prometheus/rabbitmq-exporter.yaml':
-        ensure  => present,
-        mode    => '0440',
-        owner   => 'prometheus',
-        group   => 'prometheus',
-        content => template('profile/prometheus/rabbitmq-exporter.conf.erb'),
-    }
 }
