@@ -614,10 +614,10 @@ def puppet_first_run(host):
     Arguments:
     host -- the FQDN of the host for which the Puppet certificate has to be revoked
     """
-    _, worker = run_cumin('detect_distribution', host, ["lsb_release -i | awk '{ print $3 }'"],
+    _, worker = run_cumin('detect_init', host, ['ps --no-headers -o comm 1'],
                           installer=True)
     for _, output in worker.get_results():
-        distro = output.message()
+        init_system = output.message()
         break
 
     base_commands = [
@@ -625,11 +625,11 @@ def puppet_first_run(host):
         ('puppet agent --onetime --no-daemonize --verbose --no-splay --show_diff '
          '--ignorecache --no-usecacheonfailure')]
 
-    if distro.lower() == 'ubuntu':
-        commands = base_commands
-    else:
+    if init_system == 'systemd':
         commands = ['systemctl stop puppet.service',
-                    'systemctl reset-failed puppet.service'] + base_commands
+                    'systemctl reset-failed puppet.service || true'] + base_commands
+    else:
+        commands = base_commands
 
     print_line('Started first puppet run (sit back, relax, and enjoy the wait)', host=host)
     run_cumin('puppet_first_run', host, commands, timeout=7200, installer=True)
