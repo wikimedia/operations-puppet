@@ -4,7 +4,6 @@
 # puppet:///modules/dumps/copying/labs-rsync-cron.sh.erb
 #########################################
 
-otherdir="/data/xmldatadumps/public/other"
 bwlimit="--bwlimit=50000"
 
 do_rsync (){
@@ -12,20 +11,20 @@ do_rsync (){
     destdir=$2
     base_srcdir=$3
 
-    running=`pgrep -u root -f -x "/usr/bin/rsync -rlptqgo $bwlimit ${otherdir}/${srcdir} ${desthost}::dumps/${destdir}"`
+    running=`pgrep -u root -f -x "/usr/bin/rsync -rlptqgo $bwlimit ${base_srcdir}/${srcdir} ${desthost}::dumps/${destdir}"`
     if [ -z "$running" ]; then
         /usr/bin/rsync -rlptqgo "$bwlimit" "${base_srcdir}/${srcdir}" "${desthost}::dumps/${destdir}"
     fi
 }
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
-    echo "Usage: $0 hostname sourcedir otherdumpsdir"
+    echo "Usage: $0 hostname sourcedir destdir"
     exit 1
 fi
 
 desthost="$1"
 sourcedir="$2"
-otherdumpsdir="$3"
+destdir="$3"
 
 running=`pgrep -u root -f   "python /usr/local/bin/wmfdumpsmirror.py --dest_hostname ${desthost}"`
 if [ -z "$running" ]; then
@@ -35,6 +34,6 @@ fi
 # fixme need to ensure ${desthost}::dumps/public/wikidatawiki/entities/ exists
 
 #copy from our dumps "other" directory to the labs host copy of dumps
-do_rsync "incr" "" $otherdumpsdir
-do_rsync "wikibase/wikidatawiki/" "public/wikidatawiki/entities/" $otherdumpsdir
-do_rsync "pageviews" "" $otherdumpsdir
+do_rsync "incr" "" "$destdir"
+do_rsync "wikibase/wikidatawiki/" "public/wikidatawiki/entities/" "$destdir"
+do_rsync "pageviews" "" "$destdir"
