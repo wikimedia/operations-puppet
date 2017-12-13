@@ -1000,7 +1000,6 @@ node 'labservices1002.wikimedia.org' {
 
 node 'labtestneutron2001.codfw.wmnet' {
     role(wmcs::openstack::labtestn::net)
-    include ::standard
 }
 
 node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
@@ -1015,9 +1014,7 @@ node 'labtestmetal2001.codfw.wmnet' {
 }
 
 node 'labtestnet2002.codfw.wmnet' {
-    # WIP
-    include ::standard
-    include ::base::firewall
+    role(wmcs::openstack::labtest::net_standby)
 }
 
 node 'labtestneutron2002.codfw.wmnet' {
