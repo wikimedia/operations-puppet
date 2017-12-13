@@ -39,33 +39,32 @@ class profile::openstack::main::cumin::master(
             }
         }
 
-        require_package([
-            'cumin',
-            'python-keystoneauth1',
-            'python-keystoneclient',
-            'python-novaclient',
-        ])
+        package{'cumin':
+            ensure => 'present',
+        }
 
         # Variables used also in config.yaml
         $cumin_log_path = '/var/log/cumin'
         $ssh_config_path = '/etc/cumin/ssh_config'
 
         file { $cumin_log_path:
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0750',
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0750',
+            require => Package['cumin'],
         }
 
         file { '/etc/cumin':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0750',
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0750',
+            require => Package['cumin'],
         }
 
         file { '/etc/cumin/config.yaml':
-            ensure  => present,
+            ensure  => 'present',
             owner   => 'root',
             group   => 'root',
             mode    => '0640',
