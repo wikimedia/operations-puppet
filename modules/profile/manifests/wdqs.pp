@@ -10,6 +10,8 @@ class profile::wdqs (
     $updater_options = hiera('profile::wdqs::updater_options'),
     $nodes = hiera('profile::wdqs::nodes'),
 ) {
+    require ::profile::prometheus::wdqs_updater_exporter
+
     $nagios_contact_group = 'admins,wdqs-admins'
 
     # Install services - both blazegraph and the updater
