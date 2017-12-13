@@ -37,7 +37,10 @@ class openstack::nova::common(
         'bridge-utils',
         'nova-common',
     ]
-    require_package($packages)
+
+    package { $packages:
+        ensure => 'present',
+    }
 
     # For some reason the Mitaka nova-common package installs
     #  a logrotate rule for nova/*.log and also a nova/nova-manage.log.
