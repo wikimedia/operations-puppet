@@ -17,7 +17,7 @@ class openstack::glance::image_sync(
 
     # Set up a keypair and rsync image files between active and standby
     user { 'glancesync':
-        ensure     => present,
+        ensure     => 'present',
         name       => 'glancesync',
         shell      => '/bin/sh',
         comment    => 'glance rsync user',
@@ -28,7 +28,7 @@ class openstack::glance::image_sync(
     }
 
     ssh::userkey { 'glancesync':
-        ensure  => present,
+        ensure  => 'present',
         require => User['glancesync'],
         content => secret('ssh/glancesync/glancesync.pub'),
     }

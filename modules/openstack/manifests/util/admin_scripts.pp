@@ -12,7 +12,7 @@ class openstack::util::admin_scripts(
 
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-nova-migrate':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -21,7 +21,7 @@ class openstack::util::admin_scripts(
 
     # Script to migrate (with suspension) instances between compute nodes
     file { '/root/live-migrate':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -30,7 +30,7 @@ class openstack::util::admin_scripts(
 
     # Set up keystone services (example script)
     file { '/root/prod-example.sh':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -38,12 +38,12 @@ class openstack::util::admin_scripts(
     }
 
     file { '/root/novastats':
-        ensure => directory,
+        ensure => 'directory',
         owner  => 'root',
     }
 
     file { '/root/novastats/imagestats.py':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -52,7 +52,7 @@ class openstack::util::admin_scripts(
     }
 
     file { '/root/novastats/diskspace.py':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -85,7 +85,7 @@ class openstack::util::admin_scripts(
     }
 
     file { '/root/novastats/flavorreport.py':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -93,7 +93,7 @@ class openstack::util::admin_scripts(
     }
 
     file { '/root/novastats/alltrusty.py':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -101,7 +101,7 @@ class openstack::util::admin_scripts(
     }
 
     file { '/usr/local/sbin/wikitech-grep':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -119,7 +119,7 @@ class openstack::util::admin_scripts(
     #  This ignores most nova facilities so is a good last resort
     #  when nova is misbehaving.
     file { '/root/cold-migrate':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -130,7 +130,7 @@ class openstack::util::admin_scripts(
     # zones in Designate. These DNS zones are used by clients inside Cloud
     # VPS/Toolforge to connect to the Wiki Replica databases.
     file { '/etc/wikireplica_dns.yaml':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
@@ -138,7 +138,7 @@ class openstack::util::admin_scripts(
     }
 
     file { '/usr/local/sbin/wikireplica_dns':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

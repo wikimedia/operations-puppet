@@ -24,14 +24,14 @@ class openstack::nova::compute::service(
     # was split from the bridge kernel module into a separate module (br_netfilter)
     if (versioncmp($::kernelversion, '3.18') >= 0) {
         kmod::module { 'br_netfilter':
-            ensure => present,
+            ensure => 'present',
         }
     }
 
     # Without qemu-system, apt will install qemu-kvm by default,
     # which is somewhat broken.
     package { 'qemu-system':
-        ensure  => present,
+        ensure  => 'present',
     }
 
     package { [

@@ -9,7 +9,7 @@ class openstack::nova::spiceproxy::service(
 
     require openstack::nova::common
     package { ['nova-spiceproxy', 'nova-consoleauth', 'spice-html5', 'websockify']:
-        ensure  => present,
+        ensure  => 'present',
     }
 
     # The default spice_auto.html file doesn't support wss so won't

@@ -14,7 +14,7 @@ class openstack::glance::service(
 ) {
 
     package { 'glance':
-        ensure  => present,
+        ensure  => 'present',
     }
 
     file { $glance_data:

@@ -7,7 +7,7 @@ class openstack::nova::api::service(
     require openstack::nova::common
 
     package { 'nova-api':
-        ensure  => present,
+        ensure  => 'present',
     }
 
     service { 'nova-api':

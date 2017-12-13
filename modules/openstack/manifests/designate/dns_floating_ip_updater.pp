@@ -21,7 +21,7 @@ class openstack::designate::dns_floating_ip_updater(
     }
 
     file { '/etc/labs-floating-ips-dns-config.yaml':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
@@ -29,7 +29,7 @@ class openstack::designate::dns_floating_ip_updater(
     }
 
     file { '/etc/dns-floating-ip-updater.py':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0750',
