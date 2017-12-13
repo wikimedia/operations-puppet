@@ -6,6 +6,7 @@
 class openstack::cloudrepo(
     $version='liberty',
 ) {
+
     # As of 26/10/2015 we support kilo on trusty (lsb_release -c)
     if ($::lsbdistcodename == 'trusty') {
         apt::repository { 'ubuntucloud':

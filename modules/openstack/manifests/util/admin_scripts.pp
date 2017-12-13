@@ -3,11 +3,13 @@ class openstack::util::admin_scripts(
     $version,
     ) {
 
-    require_package('nova-common')
+    require openstack::nova::common
     # Installing this package ensures that we have all the UIDs that
     #  are used to store an instance volume.  That's important for
     #  when we rsync files via this host.
-    require_package('libvirt-bin')
+    package{'libvirt-bin':
+        ensure => 'present',
+    }
 
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-nova-migrate':
