@@ -14,4 +14,9 @@ profile::openstack::labtest::rabbit_file_handles: 8192
 profile::openstack::labtest::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::labtest::ldap_hosts: ['labtestservices2001.wikimedia.org']
 profile::openstack::labtest::statsd_host: 'labmon1001.eqiad.wmnet'
-profile::openstack::labtest::puppetmaster_hostname: 'labtest-puppetmaster.wikimedia.org'
+
+# Extra records that the Labs DNS resolver should respond to.
+# Used for things that would ideally be in a .svc. DNS zone but
+# we do not have one. REMEMBER THE TRAILING DOT.
+profile::openstack::labtest::pdns::recursor::aliaser_extra_records:
+  puppet.: 208.80.153.108 # labtestpuppetmaster2001.wikimedia.org

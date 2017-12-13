@@ -110,10 +110,8 @@ end
 
 """
 
-output += 'puppetmaster_hostname = \"%s\"\n' % config['puppetmaster_hostname']
-output += 'extra_records = {}\n'
-
 if 'extra_records' in config:
+    output += 'extra_records = {}\n'
     extra_records = config['extra_records']
 
     for q in sorted(extra_records.keys()):
@@ -124,17 +122,12 @@ if 'extra_records' in config:
             comment=q
         )
 
-output += """
+    output += """
 function preresolve(remoteip, domain, qtype)
     if extra_records[domain]
     then
         return 0, {
             {qtype=pdns.A, content=extra_records[domain], ttl=300, place="1"},
-        }
-    elseif domain == 'puppet.'
-    then
-        return 0, {
-            {qtype=pdns.CNAME, content=puppetmaster_hostname},
         }
     end
     return -1, {}
