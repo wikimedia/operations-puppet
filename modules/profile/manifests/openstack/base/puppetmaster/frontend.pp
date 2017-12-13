@@ -78,6 +78,18 @@ class profile::openstack::base::puppetmaster::frontend(
         extra_auth_rules => template("profile/openstack/base/puppetmaster/${extra_auth_rules_template}"),
     }
 
+    # The above profile will make a standard vhost for $web_hostname.
+    #  We also want to support clients using simple 'puppet'
+    #   as the master name.  There's some DNS magic elsewhere
+    #   so that VMs can refer to 'puppet' and get a deployment-appropriate
+    #   puppetmaster.
+    ::puppetmaster::web_frontend { 'puppet':
+        master       => $puppetmaster_ca,
+        workers      => $puppetmasters[$::fqdn],
+        bind_address => $::puppetmaster::bind_address,
+        priority     => 40,
+    }
+
     ferm::rule{'puppetmaster_balancer':
         ensure => 'present',
         rule   => "saddr (${labs_instance_range} ${baremetal_servers}
