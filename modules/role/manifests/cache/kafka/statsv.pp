@@ -27,7 +27,6 @@ class role::cache::kafka::statsv(
 
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     $varnish_opts = { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' }
-    $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
     varnishkafka::instance { 'statsv':
         # FIXME - top-scope var without namespace, will break in puppet 2.8
@@ -42,7 +41,6 @@ class role::cache::kafka::statsv(
         varnish_opts                => $varnish_opts,
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
-        conf_template               => $conf_template,
         force_protocol_version      => $kafka_protocol_version,
     }
 

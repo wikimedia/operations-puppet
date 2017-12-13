@@ -69,7 +69,6 @@ class profile::cache::kafka::webrequest(
         'T' => '1500',
         'L' => '10000'
     }
-    $conf_template = 'varnishkafka/varnishkafka_v4.conf.erb'
 
     # Note: the newer version of Varnishkafka (compatible with Varnish 4)
     # needs to specify if the timestamp formatter should output the time
@@ -118,7 +117,6 @@ class profile::cache::kafka::webrequest(
         # this often.  This is set at 15 so that
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
-        conf_template                => $conf_template,
         force_protocol_version       => $kafka_protocol_version,
     }
 
