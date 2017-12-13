@@ -5,7 +5,6 @@ class dnsrecursor::labsaliaser(
     $extra_records,
     $alias_file,
     $observer_project_name,
-    $puppetmaster_hostname,
 ) {
 
     $config = {
@@ -14,7 +13,6 @@ class dnsrecursor::labsaliaser(
         'output_path'           => $alias_file,
         'nova_api_url'          => $nova_api_url,
         'extra_records'         => $extra_records,
-        'puppetmaster_hostname' => $puppetmaster_hostname,
         'observer_project_name' => $observer_project_name,
     }
 
