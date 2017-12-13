@@ -15,7 +15,7 @@ class profile::dumps::rsyncer(
     $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
 
     $xmldumpsdir = "${mntpoint}/xmldatadumps/public"
-    $otherdir = "${mntpoint}/xmldatadumps/public/other"
+    $miscdatasetsdir = "${mntpoint}/xmldatadumps/public/other"
 
     class {'::dumps::rsync::common':
         user  => $user,
@@ -25,19 +25,19 @@ class profile::dumps::rsyncer(
     class {'::dumps::rsync::default':}
 
     class {'::dumps::rsync::media':
-        hosts_allow => $stats_hosts,
-        user        => $user,
-        deploygroup => $deploygroup,
-        otherdir    => $otherdir,
+        hosts_allow     => $stats_hosts,
+        user            => $user,
+        deploygroup     => $deploygroup,
+        miscdatasetsdir => $miscdatasetsdir,
     }
 
     class {'::vm::higher_min_free_kbytes':}
 
     class {'::dumps::rsync::pagecounts_ez':
-        hosts_allow => $stats_hosts,
-        user        => $user,
-        deploygroup => $deploygroup,
-        otherdir    => $otherdir,
+        hosts_allow     => $stats_hosts,
+        user            => $user,
+        deploygroup     => $deploygroup,
+        miscdatasetsdir => $miscdatasetsdir,
     }
 
     class {'::dumps::rsync::peers':
@@ -46,21 +46,21 @@ class profile::dumps::rsyncer(
     }
 
     class {'::dumps::rsync::phab_dump':
-        hosts_allow => $phab_hosts,
-        otherdir    => $otherdir,
+        hosts_allow     => $phab_hosts,
+        miscdatasetsdir => $miscdatasetsdir,
     }
 
     class {'::dumps::rsync::public':
-        hosts_allow => $hosts_allow,
-        xmldumpsdir => $xmldumpsdir,
-        otherdir    => $otherdir,
+        hosts_allow     => $hosts_allow,
+        xmldumpsdir     => $xmldumpsdir,
+        miscdatasetsdir => $miscdatasetsdir,
     }
 
     class {'::dumps::rsync::slowparse_logs':
-        hosts_allow => $mwlog_hosts,
-        user        => $user,
-        group       => $group,
-        otherdir    => $otherdir,
+        hosts_allow     => $mwlog_hosts,
+        user            => $user,
+        group           => $group,
+        miscdatasetsdir => $miscdatasetsdir,
     }
 
     class {'::dumps::web::dumplists':

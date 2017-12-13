@@ -3,18 +3,18 @@ class dumps::web::xmldumps(
     $do_acme          = true,
     $datadir          = undef,
     $xmldumpsdir      = undef,
-    $otherdir         = undef,
+    $miscdatasetsdir  = undef,
     $htmldumps_server = undef,
     $xmldumps_server  = undef,
     $webuser          = undef,
     $webgroup         = undef,
 ) {
     class {'dumps::web::html':
-        datadir     => $datadir,
-        xmldumpsdir => $xmldumpsdir,
-        otherdir    => $otherdir,
-        webuser     => $webuser,
-        webgroup    => $webgroup,
+        datadir         => $datadir,
+        xmldumpsdir     => $xmldumpsdir,
+        miscdatasetsdir => $miscdatasetsdir,
+        webuser         => $webuser,
+        webgroup        => $webgroup,
     }
 
     class { '::nginx':

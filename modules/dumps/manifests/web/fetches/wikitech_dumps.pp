@@ -1,8 +1,9 @@
 class dumps::web::fetches::wikitech_dumps(
-    $url    = undef,
+    $url            = undef,
+    $miscdatasetsdir = undef,
 ) {
 
-    $wikitechdir = '/data/xmldatadumps/public/other/wikitech'
+    $wikitechdir = "${miscdatasetsdir}/wikitech"
 
     file { $wikitechdir:
         ensure => 'directory',
