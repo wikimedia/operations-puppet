@@ -1795,6 +1795,8 @@ node 'kafka1023.eqiad.wmnet' {
     role(spare::system, ipsec)
 
     interface::add_ip6_mapped { 'main': }
+
+    include ::ferm::ipsec_allow
 }
 
 # cluster management (cumin master) + other management tools
