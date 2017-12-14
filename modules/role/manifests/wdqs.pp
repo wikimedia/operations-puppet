@@ -7,6 +7,7 @@ class role::wdqs  {
     include ::role::lvs::realserver
     include ::profile::wdqs
     include ::profile::prometheus::wdqs_updater_exporter
+    include ::profile::prometheus::blazegraph_exporter
 
     system::role { 'wdqs':
         ensure      => 'present',
