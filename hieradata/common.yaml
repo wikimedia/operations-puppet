@@ -434,7 +434,7 @@ kafka_clusters:
         id: 13  # Row A
       kafka1014.eqiad.wmnet:
         id: 14  # Row C
-      kafka1018.eqiad.wmnet:
+      kafka1023.eqiad.wmnet:
         id: 18  # Row D
       kafka1020.eqiad.wmnet:
         id: 20  # Row D
