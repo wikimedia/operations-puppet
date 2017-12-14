@@ -1,3 +1,4 @@
+standard::has_ganglia: false
 # Buffer pool sizes/instance enabled
 role::mariadb::dbstore_multiinstance::num_instances: 5
 role::mariadb::dbstore_multiinstance::x1: '15G'
