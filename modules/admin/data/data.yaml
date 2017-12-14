@@ -648,6 +648,9 @@ groups:
     privileges: ['ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/dmesg *',
                  'ALL = (syslog) NOPASSWD: ALL']
+  docker:
+    description: People who can use the docker group as provisioned by docker. No gid on purpose
+    members: [akosiaris]
 
 users:
   rush:
