@@ -1122,8 +1122,13 @@ node 'iron.wikimedia.org' {
     role(bastionhost::twofa, access_new_install)
 }
 
+# The host is going to be decom as part of T181518
+node 'kafka1018.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # Analytics Kafka Brokers
-node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
+node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
     # addresses.
@@ -1787,16 +1792,6 @@ node 'mx2001.wikimedia.org' {
 node 'notebook1001.eqiad.wmnet' {
     role(paws_internal::jupyterhub, analytics_cluster::client, paws_internal::mysql_access)
     include ::standard
-}
-
-# The host is going to be reimaged/repurposed to kafka1023 and become
-# a Analytics Kafka broker. More info: T181518
-node 'kafka1023.eqiad.wmnet' {
-    role(spare::system, ipsec)
-
-    interface::add_ip6_mapped { 'main': }
-
-    include ::ferm::ipsec_allow
 }
 
 # cluster management (cumin master) + other management tools
