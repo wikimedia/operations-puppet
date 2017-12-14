@@ -678,8 +678,9 @@ def wait_puppet_run(host, start=None):
 
     timeout = 7200  # 2 hours
     retries = 0
-    command = ("source /usr/local/share/bash/puppet-common.sh && last_run_success && "
-               "grep last_run \"${PUPPET_SUMMARY}\" | awk '{ print $2 }'")
+    # TODO: remove temporary redirect to /dev/null to avoid the deprecation warning
+    command = ("source /usr/local/share/bash/puppet-common.sh 2> /dev/null && last_run_success && "
+               "awk /last_run/'{ print $2 }' \"${PUPPET_SUMMARY}\"")
 
     print_line('Polling the completion of a Puppet run', host=host)
     while True:
