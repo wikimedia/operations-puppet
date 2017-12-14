@@ -4,7 +4,7 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     include ::standard
-    class { 'profile::base::firewall': }
+    include ::base::firewall
     #FIXME:
     ferm::service { 'dbstore_multiinstance':
         proto  => 'tcp',
@@ -13,15 +13,15 @@ class role::mariadb::dbstore_multiinstance {
     }
 
     #TODO: define one group per shard
-    class { 'profile::mariadb::monitor::prometheus':
+    class {'role::mariadb::groups':
         mysql_group => 'dbstore',
         mysql_shard => 's1',
         mysql_role  => 'slave',
         socket      => '/run/mysqld/mysqld.s1.sock',
     }
 
-    class { 'mariadb::packages_wmf': }
-    class { 'mariadb::service':
+    class {'mariadb::packages_wmf': }
+    class {'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
 disabled, use mariadb@<instance_name> instead'; exit 1\"",
     }
@@ -40,7 +40,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         binlog_format => 'ROW',
     }
 
-    file { '/etc/mysql/mysqld.conf.d':
+    file {'/etc/mysql/mysqld.conf.d':
         ensure => directory,
         owner  => root,
         group  => root,
@@ -102,14 +102,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $s7,
         }
         role::prometheus::mysqld_exporter_instance { 's7': port => 13317, }
-    }
-    $s8 = hiera('role::mariadb::dbstore_multiinstance::s8', false)
-    if $s8 {
-        mariadb::instance { 's8':
-            port                    => 3318,
-            innodb_buffer_pool_size => $s8,
-        }
-        role::prometheus::mysqld_exporter_instance { 's8': port => 13318, }
     }
 
     $x1 = hiera('role::mariadb::dbstore_multiinstance::x1', false)
