@@ -340,7 +340,7 @@ sub wm_common_recv_early {
 
 	// To pass this check, the method must be in allowed_methods (even OPTIONS must be there to be supported),
 	// Additionally, if OPTIONS is allowed, it must be accompanied by Origin:
-	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|OPTIONS|PURGE)$") %>"
+	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PUT|OPTIONS|PURGE)$") %>"
 		|| (req.method == "OPTIONS" && !req.http.Origin)) {
 		return (synth(405, "Method not allowed"));
 	}
