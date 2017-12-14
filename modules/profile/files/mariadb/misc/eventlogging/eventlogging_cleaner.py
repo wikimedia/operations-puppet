@@ -280,7 +280,7 @@ class Terminator(object):
             "SELECT COUNT(*) FROM `{}` "
             "WHERE timestamp >= %(start_ts)s AND timestamp <= %(end_ts)s"
         ).format(table)
-        values_string = ','.join([field + ' = NULL' for field in fields_to_purge])
+        values_string = ','.join(['`' + field + '` = NULL' for field in fields_to_purge])
         update_template = (
             "UPDATE `{}` "
             "SET {} "
