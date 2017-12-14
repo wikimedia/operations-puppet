@@ -314,6 +314,11 @@ sub vcl_recv {
 		set req.http.X-CP-Key-Exchange = "RSA";
 	}
 
+	// Starting with TLSv1.3, CHACHA20-POLY1305 will be renamed into
+	// CHACHA20-POLY1305-SHA256. Do the renaming now in VCL to avoid stats skew
+	// later on.
+	set req.http.X-CP-Cipher = regsub(req.http.X-CP-Cipher, "^CHACHA20-POLY1305$", "CHACHA20-POLY1305-SHA256");
+
 	// Log values to shared memory logs. They can be extracted with:
 	// varnishncsa -F "%{VCL_Log:CP-TLS-Version}x"
 	std.log("CP-HTTP2: " + req.http.X-CP-HTTP2);
