@@ -1,3 +1,5 @@
 ---
 lowercaseOutputLabelNames: true
 lowercaseOutputName: false
+blacklistObjectNames:
+  - 'Hadoop:service=NodeManager,name=ContainerResource_container_*'
