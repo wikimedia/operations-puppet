@@ -1793,6 +1793,8 @@ node 'notebook1001.eqiad.wmnet' {
 # a Analytics Kafka broker. More info: T181518
 node 'kafka1023.eqiad.wmnet' {
     role(spare::system, ipsec)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # cluster management (cumin master) + other management tools
