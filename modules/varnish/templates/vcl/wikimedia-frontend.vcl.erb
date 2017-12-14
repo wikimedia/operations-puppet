@@ -290,9 +290,7 @@ sub vcl_recv {
 
 	set req.http.X-CP-Key-Exchange = regsub(req.http.X-Connection-Properties, ".* EC=([A-Za-z0-9]+);.*", "\1");
 
-	set req.http.X-CP-Full-Cipher = regsub(req.http.X-Connection-Properties, ".* C=([A-Z0-9-]+);.*", "\1");
-
-	set req.http.X-CP-Auth = req.http.X-CP-Full-Cipher;
+	set req.http.X-CP-Auth = regsub(req.http.X-Connection-Properties, ".* C=([A-Z0-9-]+);.*", "\1");
 
 	if (req.http.X-CP-Auth ~ "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-") {
 		set req.http.X-CP-Cipher = regsub(req.http.X-CP-Auth, "^(ECDHE-(ECDSA|RSA)|DHE-RSA|TLS13)-", "");
@@ -327,7 +325,6 @@ sub vcl_recv {
 	std.log("CP-Key-Exchange: " + req.http.X-CP-Key-Exchange);
 	std.log("CP-Auth: " + req.http.X-CP-Auth);
 	std.log("CP-Cipher: " + req.http.X-CP-Cipher);
-	std.log("CP-Full-Cipher: " + req.http.X-CP-Full-Cipher);
 
 	<%- if !@varnish_testing -%>
 	// Keep these in the test VCL version to ease testing
@@ -337,7 +334,6 @@ sub vcl_recv {
 	unset req.http.X-CP-Key-Exchange;
 	unset req.http.X-CP-Auth;
 	unset req.http.X-CP-Cipher;
-	unset req.http.X-CP-Full-Cipher;
 	<%- end -%>
 
 	// The idea here is to block our worst clients (in TLS terms: those
