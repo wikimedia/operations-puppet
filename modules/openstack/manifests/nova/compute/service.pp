@@ -44,6 +44,23 @@ class openstack::nova::compute::service(
         require => Package['qemu-system'],
     }
 
+    # use exec to set the shell to not shadow the manage
+    # the user for the package which causes Puppet
+    # to see the user as a dependency anywhere the
+    # nova user is used to ensure good permission
+    exec {'set_shell_for_nova':
+        command   => '/usr/sbin/usermod -c "shell set for online operations" -s /bin/bash nova',
+        unless    => '/bin/grep "nova:" /etc/passwd | /bin/grep ":\/bin\/bash"',
+        logoutput => true,
+        require   => Package['nova-compute'],
+    }
+
+    ssh::userkey { 'nova':
+        content => secret('ssh/nova/nova.pub'),
+        require => Exec['set_shell_for_nova'],
+    }
+
+
     # nova-compute adds the user with /bin/false
     # but resize, live migration, etc
     # need the nova use to have a real shell, as it uses ssh.
@@ -112,7 +129,7 @@ class openstack::nova::compute::service(
         owner   => 'nova',
         group   => 'nova',
         mode    => '0700',
-        require => User['nova'],
+        require   => Package['nova-compute'],
     }
 
     file { '/var/lib/nova/.ssh/id_rsa':
