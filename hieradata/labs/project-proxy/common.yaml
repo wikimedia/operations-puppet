@@ -1,2 +1,0 @@
-profile::base::labs::unattended_wmf: 'absent'
-profile::base::labs::unattended_updates: 'absent'

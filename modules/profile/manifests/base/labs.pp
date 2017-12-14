@@ -1,13 +1,6 @@
-class profile::base::labs(
-    $unattended_wmf = hiera('profile::base::labs::unattended_wmf'),
-    $unattended_updates = hiera('profile::base::labs::unattended_updates'),
-    ) {
-
+class profile::base::labs {
+    include ::apt::unattendedupgrades
     include ::apt::noupgrade
-    class {'::apt::unattendedupgrades':
-        unattended_wmf     => $unattended_wmf,
-        unattended_updates => $unattended_updates,
-    }
 
     # Labs instances /var is quite small, provide our own default
     # to keep less records (T71604).
