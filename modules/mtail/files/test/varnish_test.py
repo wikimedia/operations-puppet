@@ -60,7 +60,7 @@ class VarnishXcpsTest(unittest.TestCase):
             'version=TLSv1.2',
             'key_exchange=X25519',
             'auth=ECDSA',
-            'cipher=CHACHA20-POLY1305',
+            'cipher=CHACHA20-POLY1305-SHA256',
         ]
         for value in expected:
             self.assertIn(value, labels)
