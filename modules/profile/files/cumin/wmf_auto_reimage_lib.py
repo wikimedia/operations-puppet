@@ -608,28 +608,47 @@ def puppet_wait_cert_and_sign(host):
     return True
 
 
+def puppet_generate_cert(host):
+    """Run the Puppet agent once to generate the cert and the signing request.
+
+    Arguments:
+    host -- the FQDN of the host to run puppet on
+    """
+    run_cumin('puppet_generate_certs', host, ['puppet agent --test'], installer=True)
+    print_line('Run Puppet to generate the certificate', host=host)
+
+
+def detect_init_system(host):
+    """Detect which init system the host is running and return it.
+
+    It use the installer key for Cumin.
+
+    Arguments:
+    host      -- the FQDN of the host to check
+    """
+    _, worker = run_cumin('detect_init', host, ['ps --no-headers -o comm 1'], installer=True)
+    for _, output in worker.get_results():
+        init_system = output.message()
+        break
+
+    return init_system
+
+
 def puppet_first_run(host):
     """Disable Puppet service, enable Puppet agent and run it for the first time.
 
     Arguments:
     host -- the FQDN of the host for which the Puppet certificate has to be revoked
     """
-    _, worker = run_cumin('detect_init', host, ['ps --no-headers -o comm 1'],
-                          installer=True)
-    for _, output in worker.get_results():
-        init_system = output.message()
-        break
+    commands = []
+    if detect_init_system(host) == 'systemd':
+        commands += ['systemctl stop puppet.service',
+                     'systemctl reset-failed puppet.service || true']
 
-    base_commands = [
+    commands += [
         'puppet agent --enable',
         ('puppet agent --onetime --no-daemonize --verbose --no-splay --show_diff '
          '--ignorecache --no-usecacheonfailure')]
-
-    if init_system == 'systemd':
-        commands = ['systemctl stop puppet.service',
-                    'systemctl reset-failed puppet.service || true'] + base_commands
-    else:
-        commands = base_commands
 
     print_line('Started first puppet run (sit back, relax, and enjoy the wait)', host=host)
     run_cumin('puppet_first_run', host, commands, timeout=7200, installer=True)
@@ -719,14 +738,15 @@ def reboot_host(host):
     print_line('Rebooted host', host=host)
 
 
-def wait_reboot(host, start=None, installer=False):
+def wait_reboot(host, start=None, installer_key=False, debian_installer=False):
     """Wait that the hosts are back online after a reboot.
 
     Arguments:
-    host      -- the host to monitor
-    start     -- a datetime object to compare with Puppet last run
-                 [optional, default: utcnow()]
-    installer -- whether the host will reboot into the installer or not,
+    host             -- the host to monitor
+    start            -- a datetime object to compare with Puppet last run
+                        [optional, default: utcnow()]
+    installer_key    -- whether to use the installer SSH key to connect
+    debian_installer -- whether the reboot will be into the debian-installer
     """
     if start is None:
         start = datetime.utcnow()
@@ -743,7 +763,7 @@ def wait_reboot(host, start=None, installer=False):
 
         try:
             check_uptime(host, maximum=(datetime.utcnow() - start).total_seconds(),
-                         installer=installer)
+                         installer=installer_key)
             break
         except RuntimeError:
             if (datetime.utcnow() - check_start).total_seconds() > timeout:
@@ -753,7 +773,7 @@ def wait_reboot(host, start=None, installer=False):
         time.sleep(WATCHER_LONG_SLEEP)
 
     msg = ''
-    if installer:
+    if debian_installer:
         msg = ' (Debian installer)'
     print_line('Host up{msg}'.format(msg=msg), host=host)
 
