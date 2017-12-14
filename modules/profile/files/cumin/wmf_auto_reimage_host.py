@@ -135,8 +135,16 @@ def run(args, user, log_path):
             args.host = args.rename
             args.mgmt = args.rename_mgmt
 
-        # Ensure the host is booting into the installer using Cumin's direct backend
-        lib.wait_reboot(args.host, start=datetime.utcnow(), installer=True)
+        # Wait that the host is booting into the installer using Cumin's direct backend
+        lib.wait_reboot(
+            args.host, start=datetime.utcnow(), installer_key=True, debian_installer=True)
+        # Wait for the reboot into the new system
+        time.sleep(30)  # Avoid race conditions, the host is in the d-i, need to wait anyway
+        lib.wait_reboot(args.host, start=datetime.utcnow(), installer_key=True)
+
+        # Generate the Puppet certificate and signing request
+        if lib.detect_init_system(args.host) == 'systemd':
+            lib.puppet_generate_cert(args.host)
 
     # Sign the new Puppet certificate
     if lib.puppet_wait_cert_and_sign(args.host):
