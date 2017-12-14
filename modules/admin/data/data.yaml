@@ -995,8 +995,7 @@ users:
     gid: 500
     name: kaldari
     realname: Ryan Kaldari
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnmxqe0czLnD+blnxcDNRsOF2MDhydEMtUqWwHytxJeU84YmUDRuqxsEhKCNRSxiZvSf8RrPfiO+OiF/nF7ECdFTvtihDEfV89J7oemACClmrjOD+r41CNYCFhpI+fZIUzNuenf2h5cMx2Oqg57i+uV5PPSNX0U2VOU4HUgKl4ymjRW2QGpvtNmtQflwhXPD/9ih7VqlcO1DEbEPj5+jN1LvY86roaW8JDz9dvV+zmoe6yNcHn68W5bG13qOkfW5BCnVxuofIwN0REvINFAOliHF7gErXjgBqJiDr8O1xopc67+9bHLaqBKa7ji3aJSmrOcVvRlr2o73M1hC+NoJ2MQ==
-        kaldari@Kaldaris-MacBook-Pro.local]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCu0YwYNMQyRQ9uPaTZUfKaGGbvlnMkPsw9yGZl9TAXAweL6Sr9RQG8uQ0HrTtd5SygvXoJ11c5IfpwOLrleS9jO0DoHJk1pry6+3Xyn2tHATohXoA1w4kFN4uENs30rCZJ7NnNEnRY+hax33RghrkaV081dMEzbr2Vqe4641r2jnTXhzczIzu8j+j0tR0JrdC2Ga/A8cgxtZWH0LbzOcWWT3MbWAOdMlufLIrTBUgrBVNgCd46B15vZ4YjqVE8e02Os46/1yVuTN8IfTevpCU49m/oUQUoFu32va/S1WwQMqzrGMaWsKIF4e/TvbNM3KP5Y2TD2qimMdvOssI/9oDyQgdGfhjUfIEmUuP9DBKb2xuTVrKBShyw2jSqHdOqE3cxWB14p3Y0t9n9a/CDKzxJzePvvLMtNSRE1NUdFNNeswaSQIQ9X7sWdDRcQFV144j2jGP4QkCQ/Bvck2ukhFYMue5Pi+Gw1K4IKlZ13G4dig6uQS7Yg3qpOv4QFLYOqgme85JG2TdpPEM/Ouz/4cvrVru6NcWojtZMVjXNnBcIf54RyNV5oj8nmQ3/9VKexASsvC2z/1hOOHBYGZ3cspRaD4zfZvzST89SNgGmarWvpJ1CRGJlrmFoEXjWo64kkRiHrZ5fybbaB9oDSFcfo8ehZzlTp3NGTAFCCFbud6+MPQ== kaldari@WMF1838.corp.wikimedia.org]
     uid: 1271
     email: rkaldari@wikimedia.org
   kartik:
