@@ -90,7 +90,7 @@ class base::standard_packages {
 
     # Pulled in via tshark above, defaults to "no"
     debconf::seen { 'wireshark-common/install-setuid':
-        require => Package['tshark'],
+        before => Package['tshark'],
     }
 
     # An upgrade from jessie to stretch leaves some old binary
