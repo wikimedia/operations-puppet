@@ -4,8 +4,6 @@ class openstack::nova::api::service(
     $active,
     ) {
 
-    require openstack::nova::common
-
     package { 'nova-api':
         ensure  => 'present',
     }

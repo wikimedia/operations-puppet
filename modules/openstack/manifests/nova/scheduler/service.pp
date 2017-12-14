@@ -5,7 +5,6 @@ class openstack::nova::scheduler::service(
     $version,
 ){
 
-    require openstack::nova::common
     package { 'nova-scheduler':
         ensure  => 'present',
     }

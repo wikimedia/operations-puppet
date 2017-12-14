@@ -7,7 +7,6 @@ class openstack::nova::spiceproxy::service(
     $version,
 ){
 
-    require openstack::nova::common
     package { ['nova-spiceproxy', 'nova-consoleauth', 'spice-html5', 'websockify']:
         ensure  => 'present',
     }

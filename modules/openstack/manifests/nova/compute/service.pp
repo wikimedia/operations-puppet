@@ -8,8 +8,6 @@ class openstack::nova::compute::service(
     $ca_target,
     ){
 
-    include openstack::nova::common
-
     # Check for buggy kernels.  There are a lot of them!
     if os_version('ubuntu >= trusty') and (versioncmp($::kernelrelease, '3.13.0-46') < 0) {
         # see: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1346917
