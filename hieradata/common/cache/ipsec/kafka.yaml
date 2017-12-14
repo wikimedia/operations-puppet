@@ -6,6 +6,6 @@ cache::ipsec::kafka::nodes:
     - 'kafka1012.eqiad.wmnet'
     - 'kafka1013.eqiad.wmnet'
     - 'kafka1014.eqiad.wmnet'
-    - 'kafka1018.eqiad.wmnet'
     - 'kafka1020.eqiad.wmnet'
     - 'kafka1022.eqiad.wmnet'
+    - 'kafka1023.eqiad.wmnet'
