@@ -65,7 +65,7 @@ last_run_success() {
 RUBY_SCRIPT
     )
 
-    if [[ "$(ruby -e "${ruby_script}" < "${PUPPET_SUMMARY}")" -eq "0" ]]; then
+    if [[ -e "${PUPPET_SUMMARY}" && "$(ruby -e "${ruby_script}" < "${PUPPET_SUMMARY}")" -eq "0" ]]; then
         return 0
     fi
 
