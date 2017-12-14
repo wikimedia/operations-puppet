@@ -129,7 +129,7 @@ class profile::hadoop::master(
         # Alert if the HDFS space consumption raises above a safe threshold.
         monitoring::graphite_threshold { 'hadoop-hdfs-percent-used':
             description     => 'HDFS capacity used percentage',
-            dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=47&fullscreen',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=47&fullscreen'],
             metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.NameNodeInfo.PercentUsed.mean",
             from            => '30min',
             warning         => 85,
@@ -142,7 +142,7 @@ class profile::hadoop::master(
         # these values should always be 0.
         monitoring::graphite_threshold { 'hadoop-hdfs-corrupt-blocks':
             description     => 'HDFS corrupt blocks',
-            dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=39&fullscreen',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=39&fullscreen'],
             metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.CorruptBlocks.mean",
             from            => '30min',
             warning         => 2,
@@ -153,7 +153,7 @@ class profile::hadoop::master(
 
         monitoring::graphite_threshold { 'hadoop-hdfs-missing-blocks':
             description     => 'HDFS missing blocks',
-            dashboard_links => 'https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=40&fullscreen',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=40&fullscreen'],
             metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.MissingBlocks.mean",
             from            => '180min',
             warning         => 2,
