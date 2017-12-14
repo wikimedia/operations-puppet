@@ -10,7 +10,6 @@ server s1 {
     expect req.http.X-CP-Key-Exchange == "prime256v1"
     expect req.http.X-CP-Auth == "ECDSA"
     expect req.http.X-CP-Cipher == "AES256-GCM-SHA384"
-    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES256-GCM-SHA384"
 
     txresp
 
@@ -23,7 +22,6 @@ server s1 {
     expect req.http.X-CP-Key-Exchange == "prime256v1"
     expect req.http.X-CP-Auth == "ECDSA"
     expect req.http.X-CP-Cipher == "AES128-SHA"
-    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES128-SHA"
 
     txresp
 
@@ -36,7 +34,6 @@ server s1 {
     expect req.http.X-CP-Key-Exchange == "X25519"
     expect req.http.X-CP-Auth == "ECDSA"
     expect req.http.X-CP-Cipher == "AES256-GCM-SHA384"
-    expect req.http.X-CP-Full-Cipher == "ECDHE-ECDSA-AES256-GCM-SHA384"
 
     txresp
 
@@ -49,7 +46,6 @@ server s1 {
     expect req.http.X-CP-Key-Exchange == "RSA"
     expect req.http.X-CP-Auth == "RSA"
     expect req.http.X-CP-Cipher == "AES128-SHA"
-    expect req.http.X-CP-Full-Cipher == "AES128-SHA"
 
     txresp
 } -start
