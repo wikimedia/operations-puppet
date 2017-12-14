@@ -5,10 +5,10 @@ class role::labs::db::replica {
     }
 
     include ::standard
-    class { '::mariadb::packages_wmf': }
-    class { '::mariadb::service': }
-    include ::profile::mariadb::monitor
-    include ::profile::base::firewall
+    class { 'mariadb::packages_wmf': }
+    class { 'mariadb::service': }
+    include role::mariadb::monitor
+    include ::base::firewall
 
     ferm::service{ 'mariadb_labs_db_replica':
         proto   => 'tcp',
@@ -23,13 +23,13 @@ class role::labs::db::replica {
         rule => 'saddr @resolve((db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
     }
 
-    include ::passwords::misc::scripts
+    include passwords::misc::scripts
 
-    include ::role::labs::db::common
-    include ::role::labs::db::views
-    include ::role::labs::db::check_private_data
+    include role::labs::db::common
+    include role::labs::db::views
+    include role::labs::db::check_private_data
 
-    class { 'profile::mariadb::monitor::prometheus':
+    class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
         mysql_shard => 'multi',

@@ -13,12 +13,19 @@ class role::mariadb::sanitarium_multiinstance {
     }
 
     include ::standard
-    include ::profile::base::firewall
+    include ::base::firewall
     #FIXME:
     ferm::service { 'sanitarium_multiinstance':
         proto  => 'tcp',
         port   => '3311:3320',
         srange => '$PRODUCTION_NETWORKS',
+    }
+
+    #TODO: define one group per shard
+    class { 'role::mariadb::groups':
+        mysql_group => 'labs',
+        mysql_role  => 'slave',
+        socket      => '/run/mysqld/mysqld.s2.sock',
     }
 
     include role::labs::db::common

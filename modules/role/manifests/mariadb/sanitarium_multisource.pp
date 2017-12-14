@@ -15,12 +15,12 @@ class role::mariadb::sanitarium_multisource {
 
     include ::standard
     include passwords::misc::scripts
-    include ::profile::base::firewall
+    include ::base::firewall
     include role::mariadb::ferm
     include role::labs::db::common
     include role::labs::db::check_private_data
 
-    class { 'profile::mariadb::monitor::prometheus':
+    class { 'role::mariadb::groups':
         mysql_group => 'labs',
         mysql_role  => 'slave',
         socket      => '/run/mysqld/mysqld.sock',
