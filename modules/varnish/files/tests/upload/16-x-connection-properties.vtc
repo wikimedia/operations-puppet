@@ -52,6 +52,18 @@ server s1 {
     expect req.http.X-CP-Full-Cipher == "AES128-SHA"
 
     txresp
+
+    rxreq
+    expect req.url == "/5"
+
+    expect req.http.X-CP-HTTP2 == "1"
+    expect req.http.X-CP-TLS-Version == "TLSv1.2"
+    expect req.http.X-CP-TLS-Session-Reused == 0
+    expect req.http.X-CP-Key-Exchange == "X25519"
+    expect req.http.X-CP-Auth == "ECDSA"
+    expect req.http.X-CP-Cipher == "CHACHA20-POLY1305-SHA256"
+
+    txresp
 } -start
 
 varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
@@ -73,5 +85,8 @@ client c1 {
     rxresp
 
     txreq -url "/4" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1; C=AES128-SHA; EC=UNDEF;"
+    rxresp
+
+    txreq -url "/5" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-CHACHA20-POLY1305; EC=X25519;"
     rxresp
 } -run
