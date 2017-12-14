@@ -7,8 +7,6 @@ class openstack::nova::conductor::service(
     $active,
     ) {
 
-    require openstack::nova::common
-
     package { 'nova-conductor':
         ensure  => 'present',
     }
