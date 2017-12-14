@@ -107,12 +107,12 @@ class network::constants {
                     '2620:0:861:104:10:64:5:13',   # kafka1013.eqiad.wmnet
                     '10.64.36.114',                # kafka1014.eqiad.wmnet
                     '2620:0:861:106:10:64:36:114', # kafka1014.eqiad.wmnet
-                    '10.64.53.10',                 # kafka1018.eqiad.wmnet
-                    '2620:0:861:108:10:64:53:10',  # kafka1018.eqiad.wmnet
                     '10.64.53.12',                 # kafka1020.eqiad.wmnet
                     '2620:0:861:108:10:64:53:12',  # kafka1020.eqiad.wmnet
                     '10.64.36.122',                # kafka1022.eqiad.wmnet
                     '2620:0:861:106:10:64:36:122', # kafka1022.eqiad.wmnet
+                    '10.64.5.14',                  # kafka1023.eqiad.wmnet
+                    '2620:0:861:104:10:64:5:14',   # kafka1023.eqiad.wmnet
                 ],
             'kafka_brokers_jumbo' => [
                     '10.64.0.175',                        # kafka-jumbo1001.eqiad.wmnet

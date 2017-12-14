@@ -1123,7 +1123,7 @@ node 'iron.wikimedia.org' {
 }
 
 # Analytics Kafka Brokers
-node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
+node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
     # addresses.
@@ -1143,6 +1143,11 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 
     include ::standard
     include ::base::firewall
+}
+
+# The host is going to be decom. More info: T181518
+node 'kafka1018.eqiad.wmnet' {
+    role(spare::system)
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
@@ -1787,12 +1792,6 @@ node 'mx2001.wikimedia.org' {
 node 'notebook1001.eqiad.wmnet' {
     role(paws_internal::jupyterhub, analytics_cluster::client, paws_internal::mysql_access)
     include ::standard
-}
-
-# The host is going to be reimaged/repurposed to kafka1023 and become
-# a Analytics Kafka broker. More info: T181518
-node 'kafka1023.eqiad.wmnet' {
-    role(spare::system)
 }
 
 # cluster management (cumin master) + other management tools
