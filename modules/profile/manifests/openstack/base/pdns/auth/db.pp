@@ -10,7 +10,7 @@ class profile::openstack::base::pdns::auth::db(
     }
 
     # install mysql locally on all dns servers
-    include role::mariadb::monitor::dba
+    include ::profile::mariadb::monitor::dba
     # for DBA admin root purposes
     ferm::rule { 'mariadb_dba':
         rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3306) ACCEPT;',
