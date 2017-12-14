@@ -169,6 +169,14 @@ groups:
     description: users who have full root on jenkins servers
     members: [hashar]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  contint-docker:
+    gid: 721
+    description: users with full access to Docker
+    members: [dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin]
+    privileges: [
+      'ALL = (:docker) NOPASSWD: /usr/bin/docker*',  # sudo -g docker docker ...
+      'ALL = (:docker) NOPASSWD: /srv/deployment/docker-pkg/venv/bin/docker-pkg',  # scap deployed
+    ]
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
