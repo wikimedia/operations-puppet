@@ -49,6 +49,7 @@ class profile::cache::text(
     }
 
     $common_vcl_config = {
+        'allowed_methods'  => '^(GET|HEAD|OPTIONS|POST|PURGE|PUT)$',
         'purge_host_regex' => $::profile::cache::base::purge_host_not_upload_re,
         'static_host'      => $static_host,
         'top_domain'       => $top_domain,
