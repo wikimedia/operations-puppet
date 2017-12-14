@@ -40,7 +40,6 @@ class base::standard_packages {
         'tcpdump',
         'tmux',
         'tree',
-        'tshark',
         'vim',
         'vim-addon-manager',
         'vim-scripts',
@@ -88,10 +87,11 @@ class base::standard_packages {
         require_package('mcelog')
     }
 
-    # Pulled in via tshark above, defaults to "no"
+    # Pulled in via tshark below, defaults to "no"
     debconf::seen { 'wireshark-common/install-setuid':
-        require => Package['tshark'],
+        before => Package['tshark'],
     }
+    package { 'tshark': ensure => present }
 
     # An upgrade from jessie to stretch leaves some old binary
     # packages around, remove those
