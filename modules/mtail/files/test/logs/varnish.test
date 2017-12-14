@@ -1,5 +1,5 @@
 url /	cache_status int-front	http_status 301	cache_control -	inm -	h2 0	tls_version	session_reused 0	key_exchange	auth	cipher	full_cipher	
-url /w/index.php	cache_status hit-front	http_status 304	cache_control private, s-maxage=0, max-age=0, must-revalidate	inm -	h2 1	tls_version TLSv1.2	session_reused 1	key_exchange X25519	auth ECDSA	cipher CHACHA20-POLY1305	full_cipher ECDHE-ECDSA-CHACHA20-POLY1305	
+url /w/index.php	cache_status hit-front	http_status 304	cache_control private, s-maxage=0, max-age=0, must-revalidate	inm -	h2 1	tls_version TLSv1.2	session_reused 1	key_exchange X25519	auth ECDSA	cipher CHACHA20-POLY1305-SHA256	full_cipher ECDHE-ECDSA-CHACHA20-POLY1305-SHA256	
 url /api/rest_v1/metrics/pageviews/per-article/fr.wikipedia.org/all-access/user/S%C3%A9lection_sexuelle/daily/20171126/20171201	cache_status hit-front	http_status 200	cache_control s-maxage=86400, max-age=86400	inm -
 url /w/load.php	cache_status hit-front	http_status 200	cache_control public, max-age=2592000, s-maxage=2592000	inm -
 url /w/load.php	cache_status hit-front	http_status 200	cache_control public, max-age=2592000, s-maxage=2592000	inm -
