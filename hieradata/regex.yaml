@@ -105,6 +105,10 @@ mysql_codfw:
   cluster: mysql
   standard::has_ganglia: false
 
+dbproxy_eqiad:
+  __regex: !ruby/regexp /^(dbproxy10[01][0-9])\.eqiad\.wmnet$/
+  standard::has_ganglia: false
+
 extstorage_eqiad:
   __regex: !ruby/regexp /^(es101[1-9])\.eqiad\.wmnet$/
   standard::has_ganglia: false
