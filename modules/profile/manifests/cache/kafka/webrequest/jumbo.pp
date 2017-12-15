@@ -151,6 +151,15 @@ class profile::cache::kafka::webrequest::jumbo(
         ],
     }
 
+    $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest_jumbo_duplicate.${cache_cluster}"
+
+    # Sets up Logster to read from the Varnishkafka instance stats JSON file
+    # and report metrics to statsd.
+    varnishkafka::monitor::statsd { 'webrequest-jumbo-duplicate':
+        graphite_metric_prefix => $graphite_metric_prefix,
+        statsd_host_port       => $statsd_host,
+    }
+
     # Make sure varnishes are configured and started for the first time
     # before the instances as well, or they fail to start initially...
     Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance['webrequest-jumbo-duplicate']
