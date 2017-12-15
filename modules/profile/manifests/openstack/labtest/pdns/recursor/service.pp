@@ -5,14 +5,16 @@ class profile::openstack::labtest::pdns::recursor::service(
     $pdns_recursor = hiera('profile::openstack::labtest::pdns::recursor'),
     $tld = hiera('profile::openstack::labtest::pdns::tld'),
     $private_reverse = hiera('profile::openstack::labtest::pdns::private_reverse'),
+    $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor::aliaser_extra_records'),
     ) {
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        nova_controller   => $nova_controller,
-        observer_password => $observer_password,
-        pdns_host         => $pdns_host,
-        pdns_recursor     => $pdns_recursor,
-        tld               => $tld,
-        private_reverse   => $private_reverse,
+        nova_controller      => $nova_controller,
+        observer_password    => $observer_password,
+        pdns_host            => $pdns_host,
+        pdns_recursor        => $pdns_recursor,
+        tld                  => $tld,
+        private_reverse      => $private_reverse,
+        aliaser_extra_recods => $aliaser_extra_records,
     }
 }
