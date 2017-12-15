@@ -1,23 +1,11 @@
 # generic config for a database proxy using haproxy
-class role::mariadb::proxy(
-    $shard
-    ) {
-
-    system::role { 'mariadb::proxy':
-        description => "DB Proxy ${shard}",
-    }
-
+class role::mariadb::proxy {
     include ::standard
 
-    package { [
-        'mysql-client',
-        'percona-toolkit',
-    ]:
-        ensure => present,
+    system::role { 'mariadb::proxy':
+        description => 'DB Proxy',
     }
 
-    class { 'haproxy':
-        template => 'role/haproxy/db.cfg.erb',
-    }
+    include ::profile::mariadb::proxy
+    include ::profile::mariadb::client
 }
-
