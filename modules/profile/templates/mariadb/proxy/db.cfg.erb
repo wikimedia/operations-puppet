@@ -1,11 +1,11 @@
 # Note: This file is managed by puppet.
 
 global
-    pidfile /var/run/haproxy.pid
+    pidfile <%= @pid %>
     daemon
     user haproxy
     group haproxy
-    stats socket /tmp/haproxy.socket mode 666 level user
+    stats socket <%= @socket %> mode 666 level user
 
 defaults
     #log global
