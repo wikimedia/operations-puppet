@@ -15,6 +15,6 @@ class profile::openstack::labtest::pdns::recursor::service(
         pdns_recursor        => $pdns_recursor,
         tld                  => $tld,
         private_reverse      => $private_reverse,
-        aliaser_extra_recods => $aliaser_extra_records,
+        aliaser_extra_records => $aliaser_extra_records,
     }
 }
