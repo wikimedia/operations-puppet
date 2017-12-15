@@ -7,6 +7,7 @@ class role::elasticsearch::cirrus {
     include ::base::firewall
     include ::role::lvs::realserver
     include ::profile::elasticsearch
+    include ::profile::prometheus::elasticsearch_exporter
 
     system::role { 'elasticsearch::cirrus':
         ensure      => 'present',
