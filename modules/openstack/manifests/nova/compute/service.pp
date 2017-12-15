@@ -60,20 +60,6 @@ class openstack::nova::compute::service(
         require => Exec['set_shell_for_nova'],
     }
 
-
-    # nova-compute adds the user with /bin/false
-    # but resize, live migration, etc
-    # need the nova use to have a real shell, as it uses ssh.
-    user { 'nova':
-        ensure  => 'present',
-        shell   => '/bin/bash',
-        require => Package['nova-compute'],
-    }
-
-    ssh::userkey { 'nova':
-        content => secret('ssh/nova/nova.pub'),
-    }
-
     # qemu-kvm and qemu-system are alternative packages to meet the needs of
     # libvirt.
     #  Lately, Precise has been installing qemu-kvm by default.  That's
