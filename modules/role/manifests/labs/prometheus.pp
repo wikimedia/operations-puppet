@@ -30,6 +30,16 @@ class role::labs::prometheus {
         },
     ]
 
+    $rabbitmq_jobs = [
+        {
+            'job_name'        => 'rabbitmq',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/rabbitmq_*.yaml" ] }
+            ],
+        },
+    ]
+
     file { "${targets_path}/blackbox_http_keystone.yaml":
       content => ordered_yaml([{
         'targets' => ['labcontrol1001.wikimedia.org:5000/v3', # keystone
@@ -39,6 +49,13 @@ class role::labs::prometheus {
                       'proxy-eqiad.wmflabs.org:5668', # proxy
             ]
         }]),
+    }
+
+    prometheus::class_config{ "rabbitmq_${::site}":
+        dest       => "${targets_path}/rabbitmq_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::main::control',
+        port       => '9195',
     }
 
     prometheus::server { 'labs':
@@ -63,4 +80,3 @@ class role::labs::prometheus {
         srange => '$DOMAIN_NETWORKS',
     }
 }
-
