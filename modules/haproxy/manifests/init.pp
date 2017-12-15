@@ -2,6 +2,8 @@
 
 class haproxy(
     $template = 'haproxy/haproxy.cfg.erb',
+    $socket   = '/run/haproxy/haproxy.sock',
+    $pid      = '/run/haproxy/haproxy.pid',
 ) {
 
     package { [
@@ -27,10 +29,10 @@ class haproxy(
     }
 
     file { '/usr/lib/nagios/plugins/check_haproxy':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/haproxy/check_haproxy',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('modules/haproxy/check_haproxy'),
     }
 
     if os_version('debian >= jessie') {

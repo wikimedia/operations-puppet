@@ -9,7 +9,7 @@ ECRIT=2
 UNKN="UNKNOWN"
 EUNKN=3
 
-socket="/tmp/haproxy.socket"
+socket="<%= @socket %>"
 check="check_alive"
 
 for var in "$@"; do
