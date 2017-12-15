@@ -22,8 +22,18 @@ class profile::cache::kafka::webrequest::jumbo(
     $ssl_key_password  = hiera('profile::cache::kafka::webrequest::jumbo::ssl_key_password', undef),
 ) {
     $config = kafka_config('jumbo-eqiad')
-    # NOTE: This is used by inheriting classes role::cache::kafka::*
-    $kafka_brokers = $config['brokers']['array']
+
+    # FIXME: Temporary workaround to force varnishkafka to use the TLS port of
+    # Kafka Jumbo. This will probably be handled in the future via kafka_config.rb
+    #$kafka_brokers = $config['brokers']['array']
+    $kafka_brokers = [
+        'kafka-jumbo1001.eqiad.wmnet:9093',
+        'kafka-jumbo1002.eqiad.wmnet:9093',
+        'kafka-jumbo1003.eqiad.wmnet:9093',
+        'kafka-jumbo1004.eqiad.wmnet:9093',
+        'kafka-jumbo1005.eqiad.wmnet:9093',
+        'kafka-jumbo1006.eqiad.wmnet:9093',
+    ]
 
     $topic = "webrequest_${cache_cluster}_test"
     # These used to be parameters, but I don't really see why given we never change
