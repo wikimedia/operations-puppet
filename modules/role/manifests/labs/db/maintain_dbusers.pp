@@ -42,12 +42,6 @@ class role::labs::db::maintain_dbusers {
         },
         'labsdbs' => {
             'hosts' => {
-                'labsdb1001.eqiad.wmnet' => {
-                    'grant-type' => 'legacy',
-                },
-                'labsdb1003.eqiad.wmnet' => {
-                    'grant-type' => 'legacy',
-                },
                 'labsdb1005.eqiad.wmnet' => {
                     'grant-type' => 'legacy',
                 },
