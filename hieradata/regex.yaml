@@ -104,6 +104,10 @@ mysql_codfw:
   __regex: !ruby/regexp /^(db2[01][0-9][0-9]|dbstore200[1-2]|es200[1-4]|pc200[4-6]|es201[1-9])\.codfw\.wmnet$/
   cluster: mysql
 
+extstorage_codfw:
+  __regex: !ruby/regexp /^(es200[1-4]|es201[1-9])\.codfw\.wmnet$/
+  standard::has_ganglia: false
+
 labvirt:
   __regex: !ruby/regexp /^labvirt10[0-9][0-9]\.eqiad\.wmnet$/
   cluster: labvirt
