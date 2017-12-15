@@ -1,0 +1,6 @@
+::profile::mariadb::proxy::pid: '/var/run/haproxy.pid'
+::profile::mariadb::proxy::socket: '/tmp/haproxy.socket'
+::profile::mariadb::proxy::master::primary_name: 'db1009'
+::profile::mariadb::proxy::master::primary_addr: '10.64.0.13'
+::profile::mariadb::proxy::master::secondary_name: 'db2030'
+::profile::mariadb::proxy::master::secondary_addr: '10.192.16.18'
