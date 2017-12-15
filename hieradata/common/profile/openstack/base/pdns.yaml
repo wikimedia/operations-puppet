@@ -1,2 +1,3 @@
 profile::openstack::base::pdns::db_host: 'localhost'
 profile::openstack::base::pdns::host_secondary: ''
+
