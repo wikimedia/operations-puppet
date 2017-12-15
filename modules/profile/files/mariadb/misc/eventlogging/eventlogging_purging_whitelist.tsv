@@ -40,6 +40,7 @@ Edit	event_action.abort.type
 Edit	event_action.init.mechanism
 Edit	event_action.init.timing
 Edit	event_action.init.type
+Edit	event_action.loaded.timing
 Edit	event_action.ready.timing
 Edit	event_action.saveAttempt.timing
 Edit	event_action.saveFailure.message
