@@ -1,29 +1,19 @@
 <VirtualHost *:80>
-    ServerName wikipedia.<%= @domain_suffix %>
+    DocumentRoot /srv/mediawiki/docroot/wwwportal
+    ServerName www.wikipedia.<%= @domain_suffix %>
+    ServerAlias wikipedia.<%= @domain_suffix %>
 
-    # Redirecting from subdirectories of wikipedia.org to subdomains
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
     RewriteRule . - [E=RW_PROTO:http]
-
-    RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R=301,L,NE]
 
     # Prevent the catch-all redirect below from breaking the apple-app-site-association alias
     RewriteRule /apple-app-site-association - [L]
     Alias /apple-app-site-association /srv/mediawiki/docroot/wikipedia.org/apple-app-site-association
 
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://www.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
-    DocumentRoot /srv/mediawiki/docroot/wwwportal
-    ServerName www.wikipedia.<%= @domain_suffix %>
-
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
+    RewriteCond %{HTTP_HOST} ^wikipedia\.<%= @domain_suffix %>$
+    RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R=301,L,NE]
 
     # Front page...
     RewriteRule ^/$ /<%= @portal_dir %>/wikipedia.org/index.html [L]
