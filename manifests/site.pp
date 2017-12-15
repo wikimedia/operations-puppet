@@ -436,9 +436,12 @@ node 'db1062.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(34|39|69|79|86|94)\.eqiad\.wmnet/ {
+node /^db10(39|69|79|86|94)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
+
+node 'db1034.eqiad.wmnet' {
+    role(spare::system)
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
