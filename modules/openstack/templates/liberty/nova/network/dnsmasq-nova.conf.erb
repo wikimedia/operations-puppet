@@ -8,6 +8,10 @@ local-ttl=300
 alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
 <% end -%>
 
+# Use official (designate-managed) dns servers
+server=<%= @recursor_ip %>
+server=<%= @recursor_secondary_ip %>
+
 # Special entries for labs baremetal
 <% @labs_metal.sort.map do |k,v| -%>
 dhcp-host=<%= v['MAC'] %>,<%= k %>,<%= v['IPv4'] %>,10m
