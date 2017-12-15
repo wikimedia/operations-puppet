@@ -22,9 +22,9 @@ class profile::openstack::base::rabbitmq(
     contain '::rabbitmq::monitor'
 
     class { '::profile::prometheus::rabbitmq_exporter':
-        prometheus_nodes => $monitoring_host,
-        monitor_user     => $monitor_user,
-        monitor_password => $monitor_password,
+        prometheus_nodes        => $monitoring_host,
+        rabbit_monitor_username => $monitor_user,
+        rabbit_monitor_password => monitor_password,
     }
     contain '::profile::prometheus::rabbitmq_exporter'
 
