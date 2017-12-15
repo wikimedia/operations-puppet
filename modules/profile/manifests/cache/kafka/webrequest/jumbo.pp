@@ -137,7 +137,7 @@ class profile::cache::kafka::webrequest::jumbo(
         ssl_certificate_location     => $ssl_certificate_location,
         require                      => [
             File[$ssl_key_location],
-            File[ssl_certificate_location]
+            File[$ssl_certificate_location]
         ],
     }
 
