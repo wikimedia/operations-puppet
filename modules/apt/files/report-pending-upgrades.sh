@@ -21,6 +21,10 @@ APT_SHOW_VERSIONS=$(get_binary apt-show-versions)
 UNATTENDED_UPGRADES=$(get_binary unattended-upgrades)
 set +e
 
+if [ "$1" == "-v" ] ; then
+	VERBOSE=y
+fi
+
 $APT_GET update >/dev/null
 
 # get upgradeable packages
@@ -33,16 +37,18 @@ if [ "$n1" != "0" ] ; then
     src_output=$(echo "$APT_SHOW_VERSIONS_OUTPUT" | grep "/$src ")
     n3=$(echo "$src_output" | wc -l)
     echo "I: upgradeable packages from ${src}: $n3"
-    echo
-    echo "$src_output" | sed -e 's/^/  /' # add spaces to output
-    echo
+    if [ "$VERBOSE" == "y" ] ; then
+        echo
+        echo "$src_output" | sed -e 's/^/  /' # add spaces to output
+        echo
+    fi
   done
 fi
 
 # get upgradeable packages by current unattended-upgrades config
 UNATTENDED_UPGRADES_OUTPUT=$($UNATTENDED_UPGRADES --dry-run -v -d | grep "Packages that will be upgraded" | awk -F':' '{print $2}' | grep -v ^[[:space:]]*$)
 n2=$(echo "$UNATTENDED_UPGARDES_OUTPUT" | grep -v ^$ | wc -l)
-if [ "$n2" != "0" ] ; then
+if [ "$n2" != "0" ] && [ "$VERBOSE" == "y" ] ; then
   echo "I: upgradeable packages by unattended-upgrades: $n2"
   echo
   echo "$UNATTENDED_UPGARDES_OUTPUT" | sed -e 's/^/  /' # add spaces to output
