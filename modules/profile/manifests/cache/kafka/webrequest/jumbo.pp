@@ -61,8 +61,8 @@ class profile::cache::kafka::webrequest::jumbo(
     $ssl_key_location_secrets_path = 'certificates/varnishkafka/varnishkafka.key.private.pem'
     $ssl_key_location = "${ssl_location_private}/varnishkafka.key.pem"
 
-    $ssl_certificate_secrets_path = 'certificates/varnishkafka/varnishkafka.key.crt.pem'
-    $ssl_certificate_location = "${ssl_location}/varnishkafka.key.crt.pem"
+    $ssl_certificate_secrets_path = 'certificates/varnishkafka/varnishkafka.crt.pem'
+    $ssl_certificate_location = "${ssl_location}/varnishkafka.crt.pem"
 
     file { $ssl_location:
         ensure => 'directory',
