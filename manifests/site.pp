@@ -626,77 +626,13 @@ node 'dbstore2002.codfw.wmnet' {
 }
 
 # Proxies for misc databases
-node /^dbproxy100(1|6)\.eqiad\.wmnet$/ {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'm1',
-        primary_name   => 'db1016',
-        primary_addr   => '10.64.0.20',
-        secondary_name => 'db1001',
-        secondary_addr => '10.64.0.5',
-    }
-}
-
-node /^dbproxy100(2|7)\.eqiad\.wmnet$/ {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'm2',
-        primary_name   => 'db1020',
-        primary_addr   => '10.64.16.9',
-        secondary_name => 'db2011',
-        secondary_addr => '10.192.0.14',
-    }
-}
-
-node /^dbproxy100(3|8)\.eqiad\.wmnet$/ {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'm3',
-        primary_name   => 'db1043',
-        primary_addr   => '10.64.16.32',
-        secondary_name => 'db1059',
-        secondary_addr => '10.64.32.29',
-    }
-}
-
-# stretch haproxies (1.7) require the port number
-node /^dbproxy100(4|9)\.eqiad\.wmnet$/ {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'm4',
-        primary_name   => 'db1107',
-        primary_addr   => '10.64.0.214:3306',
-        secondary_name => 'db1108',
-        secondary_addr => '10.64.32.71:3306',
-    }
-}
-
-node 'dbproxy1005.eqiad.wmnet' {
-    role(mariadb::ferm_wmcs)
-    class { '::role::mariadb::proxy::master':
-        shard          => 'm5',
-        primary_name   => 'db1009',
-        primary_addr   => '10.64.0.13',
-        secondary_name => 'db2030',
-        secondary_addr => '10.192.16.18',
-    }
+node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
+    role(mariadb::proxy)
 }
 
 # labsdb proxies (controling replica service dbs)
-node 'dbproxy1010.eqiad.wmnet' {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'labsdb',
-        primary_name   => 'labsdb1010',
-        primary_addr   => '10.64.37.23',
-        secondary_name => 'labsdb1009',
-        secondary_addr => '10.64.4.14',
-    }
-}
-
-node 'dbproxy1011.eqiad.wmnet' {
-    class { '::role::mariadb::proxy::master':
-        shard          => 'labsdb',
-        primary_name   => 'labsdb1011',
-        primary_addr   => '10.64.37.24',
-        secondary_name => 'labsdb1010',
-        secondary_addr => '10.64.37.23',
-    }
+node /^dbproxy101[01]\.eqiad\.wmnet$/ {
+    role(mariadb::proxy)
 }
 
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
