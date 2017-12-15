@@ -59,6 +59,7 @@
   - db1091:9104
   - db1097:13314
   - db1103:13314
+  - db1111:9104
 - labels:
     shard: s4
     role: master
