@@ -22,6 +22,10 @@
 # deployment git server hostname
 git_server: <%= @deployment_server %>
 
+# Make sure we're always running the deb-installed scap, rather than looking
+# in a possibly erronerous location.
+bin_dir: /usr/bin
+
 statsd_port: 8125
 
 # Deployment realm
