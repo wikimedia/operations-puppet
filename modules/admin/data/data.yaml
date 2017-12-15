@@ -245,7 +245,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, akrausetud, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
-              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte]
+              kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2644,6 +2644,16 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTroA/q8voMNw9A4skHh1DQLIP2Hb3L4bb9dwinwFER cormacparle@Cormacs-MacBook-Pro.local
     uid: 17761
     email: cparle@wikimedia.org
+  jk:
+    ensure: present
+    gid: 500
+    name: jk
+    realname: Jonas Kress
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7lA+/vYOVDy1Vbd4/gxs1jCDxvK3M0usqq9FdbbE/Y Jonas.Kress@wikimedia.de
+    uid: 12454
+    email: jonas.kress@wikimedia.de
+
 ldap_only_users:
   abartov:
     ensure: present
@@ -2706,10 +2716,6 @@ ldap_only_users:
     ensure: present
     realname: James Buatti
     email: jbuatti@wikimedia.org
-  jk:
-    ensure: present
-    realname: Jonas Kress
-    email: jonas.kress@wikimedia.de
   jrobell:
     ensure: present
     realname: Jessica Robell
