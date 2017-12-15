@@ -5,7 +5,7 @@ class profile::openstack::labtest::pdns::recursor::service(
     $pdns_recursor = hiera('profile::openstack::labtest::pdns::recursor'),
     $tld = hiera('profile::openstack::labtest::pdns::tld'),
     $private_reverse = hiera('profile::openstack::labtest::pdns::private_reverse'),
-    $aliaser_extra_records = hiera('profile::openstack::labtest::pdns::recursor::aliaser_extra_records'),
+    $aliaser_extra_records = hiera('profile::openstack::labtest::pdns::recursor_aliaser_extra_records'),
     ) {
 
     class {'::profile::openstack::base::pdns::recursor::service':

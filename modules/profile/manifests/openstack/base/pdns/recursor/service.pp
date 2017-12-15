@@ -27,7 +27,7 @@ class profile::openstack::base::pdns::recursor::service(
     $pdns_recursor = hiera('profile::openstack::base::pdns::recursor'),
     $tld = hiera('profile::openstack::base::pdns::tld'),
     $private_reverse = hiera('profile::openstack::base::pdns::private_reverse'),
-    $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor::aliaser_extra_records'),
+    $aliaser_extra_records = hiera('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     ) {
 
     include ::network::constants
