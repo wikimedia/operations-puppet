@@ -34,9 +34,6 @@ class profile::elasticsearch(
     $reindex_remote_whitelist = hiera('profile::elasticsearch::reindex_remote_whitelist'),
     $storage_device = hiera('profile::elasticsearch::storage_device'),
 ) {
-
-    include ::profile::elasticsearch::monitoring
-
     $master_eligible = $::fqdn in $unicast_hosts
 
     ferm::service { 'elastic-http':
