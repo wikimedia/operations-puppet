@@ -29,6 +29,7 @@ import re
 import smtplib
 import subprocess
 import time
+import traceback
 import xml.etree.ElementTree as ET
 
 
@@ -250,30 +251,38 @@ class BigBrother(object):
         with open(tmp_name, 'w') as sb:
             print(datetime.datetime.utcnow(), file=sb)
             for tool in self.watchdb:
-                if 'jobs' not in self.watchdb[tool]:
-                    print('%s:-:-:-:-' % tool, file=sb)
-                    continue
-                for job in self.watchdb[tool]['jobs'].values():
-                    if 'state' not in job:
-                        print('%s:%s:-:-:-' % (tool, job['jname']), file=sb)
+                try:
+                    if 'jobs' not in self.watchdb[tool]:
+                        print('%s:-:-:-:-' % tool, file=sb)
                         continue
-                    if job['state'] == 'DEAD':
-                        self.start_job(tool, job)
-                    elif job['state'] in ['STARTING', 'THROTTLED']:
-                        if time.time() >= job.get('timeout', 0):
-                            self.log_event(
-                                tool, 'warn',
-                                "job '%s' failed to start" % job['jname'])
+                    for job in self.watchdb[tool]['jobs'].values():
+                        if 'state' not in job:
+                            print('%s:%s:-:-:-' % (tool, job['jname']), file=sb)
+                            continue
+                        if job['state'] == 'DEAD':
                             self.start_job(tool, job)
-                    print(
-                        '%s:%s:%s:%s:%s' % (
-                            tool,
-                            job['jname'],
-                            job.get('state', 'UNKNOWN'),
-                            job.get('since', 0),
-                            job.get('timeout', 0)
-                        ),
-                        file=sb)
+                        elif job['state'] in ['STARTING', 'THROTTLED']:
+                            if time.time() >= job.get('timeout', 0):
+                                self.log_event(
+                                    tool, 'warn',
+                                    "job '%s' failed to start" % job['jname'])
+                                self.start_job(tool, job)
+                        print(
+                            '%s:%s:%s:%s:%s' % (
+                                tool,
+                                job['jname'],
+                                job.get('state', 'UNKNOWN'),
+                                job.get('since', 0),
+                                job.get('timeout', 0)
+                            ),
+                            file=sb)
+                except:
+                    logger.exception('Exception during restart of tool %s',
+                                     tool)
+                    traceback.print_exc()
+                    print('--------------')
+                    traceback.print_stack()
+
         os.rename(tmp_name, self.scoreboard)
 
     def run(self):
