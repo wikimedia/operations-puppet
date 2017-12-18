@@ -422,7 +422,7 @@ def get_reimage_host_command(host, mgmt, args):
     return command_args
 
 
-def run_cumin(label, hosts_query, commands, timeout=30, installer=False):
+def run_cumin(label, hosts_query, commands, timeout=30, installer=False, ignore_exit=False):
     """Run a remote command via Cumin.
 
     Arguments:
@@ -443,7 +443,10 @@ def run_cumin(label, hosts_query, commands, timeout=30, installer=False):
     target = transports.Target(hosts, logger=logger)
     worker = transport.Transport.new(config, target, logger=logger)
 
-    worker.commands = [transports.Command(command, timeout=timeout)
+    ok_codes = None
+    if ignore_exit:
+        ok_codes = []
+    worker.commands = [transports.Command(command, timeout=timeout, ok_codes=ok_codes)
                        for command in commands]
     worker.handler = 'async'
     exit_code = worker.execute()
@@ -614,7 +617,8 @@ def puppet_generate_cert(host):
     Arguments:
     host -- the FQDN of the host to run puppet on
     """
-    run_cumin('puppet_generate_certs', host, ['puppet agent --test'], installer=True)
+    run_cumin('puppet_generate_certs', host, ['puppet agent --test'], installer=True,
+              ignore_exit=True)
     print_line('Run Puppet to generate the certificate', host=host)
 
 
