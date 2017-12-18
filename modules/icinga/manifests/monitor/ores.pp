@@ -5,6 +5,11 @@ class icinga::monitor::ores {
         contact_group   => 'team-scoring',
     }
 
+    # T154175
+    monitoring::grafana_alert { 'db/ores-extension':
+        contact_group   => 'team-scoring',
+    }
+
     @monitoring::host { 'ores.wmflabs.org':
         host_fqdn => 'ores.wmflabs.org',
     }
