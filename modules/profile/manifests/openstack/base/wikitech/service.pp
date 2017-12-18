@@ -8,6 +8,7 @@ class profile::openstack::base::wikitech::service(
     ) {
 
     include ::nutcracker::monitoring
+    include ::profile::prometheus::nutcracker_exporter
     include ::mediawiki::packages::php5
     include ::mediawiki::packages::math
     include ::mediawiki::packages::tex

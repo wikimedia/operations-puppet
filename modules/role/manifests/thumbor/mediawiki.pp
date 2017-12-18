@@ -9,6 +9,7 @@ class role::thumbor::mediawiki {
     include ::base::firewall
     include ::mediawiki::packages::fonts
     include role::statsite
+    include ::profile::prometheus::nutcracker_exporter
 
     class { '::thumbor::nutcracker':
         thumbor_memcached_servers => hiera('thumbor_memcached_servers_nutcracker')
