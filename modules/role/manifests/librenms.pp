@@ -23,6 +23,20 @@ class role::librenms {
         before      => Class['::librenms'],
     }
 
+    # The following is required as librenms needs to write files (lock, socket)
+    # In $install_dir.
+    exec { 'Ensure user librenms is is group deploy-librenms':
+        unless  => '/bin/grep -q "deploy-librenms\\S*librenms" /etc/group',
+        command => '/usr/sbin/usermod -aG deploy-librenms librenms',
+        require => [ User['librenms'],
+                    Scap::Target['librenms/librenms']],
+    }
+    file { $install_dir:
+        mode    => 'g+w',
+        require => Scap::Target['librenms/librenms'],
+    }
+
+
     $config = {
         'title_image'      => '//upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg/140px-Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg.png',
 
