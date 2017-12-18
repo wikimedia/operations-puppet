@@ -11,6 +11,7 @@ class profile::wdqs (
     $nodes = hiera('profile::wdqs::nodes'),
 ) {
     require ::profile::prometheus::wdqs_updater_exporter
+    require ::profile::prometheus::blazegraph_exporter
 
     $nagios_contact_group = 'admins,wdqs-admins'
 
