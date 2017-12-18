@@ -66,3 +66,16 @@ class VarnishXcpsTest(unittest.TestCase):
             self.assertIn(value, labels)
 
         self.assertEquals(1, count)
+
+
+class VarnishReqStatsTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnishreqstats.mtail'),
+                os.path.join(test_dir, 'logs/varnish.test'))
+
+    def testRespStatus(self):
+        s = self.store.get_samples('varnish_requests')
+        self.assertIn(('status=200,method=GET', 3), s)
+        self.assertIn(('status=301,method=GET', 2), s)
+        self.assertIn(('status=200,method=HEAD', 2), s)

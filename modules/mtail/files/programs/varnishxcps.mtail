@@ -2,14 +2,18 @@ counter xcps_h2
 counter xcps_tls_sess_reused
 counter xcps_tls by version, key_exchange, auth, cipher
 
-/\th2 1\t/ {
-    xcps_h2++
-}
+/\thttp_method PURGE\t/ {
+    # noop
+} else {
+    /\th2 1\t/ {
+        xcps_h2++
+    }
 
-/\tsession_reused 1\t/ {
-    xcps_tls_sess_reused++
-}
+    /\tsession_reused 1\t/ {
+        xcps_tls_sess_reused++
+    }
 
-/\ttls_version (?P<version>TLSv[0-9\.]+)\t.*\tkey_exchange (?P<key_exchange>[a-zA-Z0-9-_]+)\tauth (?P<auth>[a-zA-Z0-9-_]+)\tcipher (?P<cipher>[a-zA-Z0-9-_]+)\t/ {
-    xcps_tls[$version][$key_exchange][$auth][$cipher]++
+    /\ttls_version (?P<version>TLSv[0-9\.]+)\t.*\tkey_exchange (?P<key_exchange>[a-zA-Z0-9-_]+)\tauth (?P<auth>[a-zA-Z0-9-_]+)\tcipher (?P<cipher>[a-zA-Z0-9-_]+)\t/ {
+        xcps_tls[$version][$key_exchange][$auth][$cipher]++
+    }
 }
