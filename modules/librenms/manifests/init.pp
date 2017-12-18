@@ -50,7 +50,7 @@ class librenms(
         mode    => '0440',
         content => template('librenms/config.php.erb'),
         require => Group['librenms'],
-        notify  => Systemd::Service['librenms-ircbot'],
+        notify  => Service['librenms-ircbot'],
     }
 
     file { $rrd_dir:
@@ -124,10 +124,17 @@ class librenms(
     }
 
     systemd::service { 'librenms-ircbot':
-        ensure  => $ircbot_ensure,
+        ensure  => 'present',
         content => template('librenms/initscripts/librenms-ircbot.systemd.erb'),
         require => [File["${install_dir}/config.php"] ],
     }
+
+    service { 'librenms-ircbot':
+        ensure  => $ircbot_ensure,
+        enable  => true,
+        require => Systemd::Service['librenms-ircbot'],
+    }
+
 
     cron { 'librenms-discovery-all':
         ensure  => $cron_ensure,
