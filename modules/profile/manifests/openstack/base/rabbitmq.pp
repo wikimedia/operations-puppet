@@ -15,6 +15,11 @@ class profile::openstack::base::rabbitmq(
     }
     contain '::rabbitmq'
 
+    class {'::rabbitmq::cleanup':
+       enabled => $::fqdn == $nova_controller,
+    }
+    contain '::rabbitmq::cleanup'
+
     class { '::rabbitmq::monitor':
         rabbit_monitor_username => $monitor_user,
         rabbit_monitor_password => $monitor_password,
@@ -41,14 +46,5 @@ class profile::openstack::base::rabbitmq(
     ferm::rule{'beam_nova':
         ensure => 'present',
         rule   =>  "saddr ${labs_hosts_range} proto tcp dport (5672 56918) ACCEPT;",
-    }
-
-    # These logfiles will be rotated by an already-existing wildcard logrotate rule for rabbit
-    cron {
-        'drain and log rabbit notifications.error queue':
-            ensure  => 'present',
-            user    => 'root',
-            minute  => '35',
-            command => '/usr/local/sbin/drain_queue notifications.error >> /var/log/rabbitmq/notifications_error.log 2>&1',
     }
 }
