@@ -50,6 +50,7 @@ class librenms(
         mode    => '0440',
         content => template('librenms/config.php.erb'),
         require => Group['librenms'],
+        notify  => Systemd::Service['librenms-ircbot'],
     }
 
     file { $rrd_dir:
@@ -116,8 +117,16 @@ class librenms(
 
     if $active_server == $::fqdn {
         $cron_ensure = 'present'
+        $ircbot_ensure = 'running'
     } else {
         $cron_ensure = 'absent'
+        $ircbot_ensure = 'stopped'
+    }
+
+    systemd::service { 'librenms-ircbot':
+        ensure  => $ircbot_ensure,
+        content => template('librenms/initscripts/librenms-ircbot.systemd.erb'),
+        require => [File["${install_dir}/config.php"] ],
     }
 
     cron { 'librenms-discovery-all':
