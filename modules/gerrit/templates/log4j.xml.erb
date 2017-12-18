@@ -47,16 +47,6 @@
         <param name="threshold" value="INFO"/>
         <layout class="com.google.gerrit.sshd.SshLogLayout"/>
     </appender>
-    <appender name="plugin_log" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="encoding" value="UTF-8"/>
-        <param name="File" value="/var/lib/gerrit2/review_site/logs/plugin_log"/>
-        <!--<param name="fileAppend" value="true"/>-->
-        <param name="immediateFlush" value="true"/>
-        <param name="threshold" value="INFO"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%d] [%t] %-5p %x: %m%n"/>
-        </layout>
-    </appender>
     <appender name="delete_log" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="encoding" value="UTF-8"/>
         <param name="File" value="/var/lib/gerrit2/review_site/logs/delete_log"/>
@@ -161,8 +151,8 @@
         <level value="ERROR"/>
     </logger>
     <logger name ="com.google.gerrit.server.plugins.PluginLoader">
-      <level value="INFO"/>
-      <appender-ref ref="plugin_log"/>
+      <!-- TODO: Put back to INFO once we are on gerrit 2.15 -->
+      <level value="ERROR"/>
     </logger>
     <!-- Silence non-critical messages from Velocity -->
     <!-- to be removed in gerrit 2.16 / 3.0 -->
