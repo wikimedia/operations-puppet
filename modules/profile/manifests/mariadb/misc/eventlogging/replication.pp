@@ -50,27 +50,22 @@ class profile::mariadb::misc::eventlogging::replication (
         require => Package['python3-pymysql'],
     }
 
-    file { '/etc/eventlogging':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    if ! defined(File['/etc/eventlogging']) {
+        file { '/etc/eventlogging':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
     }
 
-    file { '/var/log/eventlogging':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'eventlog',
-        mode   => '0775',
-    }
-
-    file { '/etc/eventlogging/whitelist.tsv':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_purging_whitelist.tsv',
-        require => File['/etc/eventlogging'],
+    if ! defined(File['/var/log/eventlogging']) {
+        file { '/var/log/eventlogging':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'eventlog',
+            mode   => '0775',
+        }
     }
 
     file { '/usr/local/bin/eventlogging_sync.sh':
@@ -81,9 +76,9 @@ class profile::mariadb::misc::eventlogging::replication (
         source => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync.sh',
     }
 
-    logrotate::rule { 'eventlogging':
+    logrotate::rule { 'eventlogging-sync':
         ensure        => present,
-        file_glob     => '/var/log/eventlogging/eventlogging_*.log',
+        file_glob     => '/var/log/eventlogging/eventlogging_sync.log',
         frequency     => 'daily',
         copy_truncate => true,
         compress      => true,
@@ -93,59 +88,16 @@ class profile::mariadb::misc::eventlogging::replication (
         su            => 'root eventlog',
     }
 
-    # Custom init scripts only that should be deprecated as soon as
-    # the profile will run on Debian OS only.
-    # The init script manages stdout/stderr to two separate files,
-    # meanwhile the systemd unit used below will use a rsyslog dedicated config.
-    if os_version('ubuntu >= trusty') {
-        file { '/etc/init.d/eventlogging_sync':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0555',
-            content => template('profile/initscripts/mariadb/misc/eventlogging/eventlogging_sync.sysvinit.erb'),
-            require => File['/usr/local/bin/eventlogging_sync.sh'],
-            notify  => Service['eventlogging_sync'],
-        }
+    rsyslog::conf { 'eventlogging_sync':
+        source   => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync_rsyslog.conf',
+        priority => 20,
+    }
 
-        service { 'eventlogging_sync':
-            ensure => running,
-            enable => true,
-        }
-    } else {
-        rsyslog::conf { 'eventlogging_sync':
-            source   => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync_rsyslog.conf',
-            priority => 20,
-        }
-
-        $eventlogging_sync_uid = 'root'
-        $eventlogging_sync_gid = 'root'
-        base::service_unit { 'eventlogging_sync':
-            ensure  => present,
-            systemd => systemd_template('mariadb/misc/eventlogging/eventlogging_sync'),
-        }
-
-        # Sanitization of data in the log database via a custom script
-        # The eventlogging_cleaner script uses the --start-ts-file file option,
-        # that forces it to look for a file containing a timestamp in the format
-        # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
-        # without doing any action to the db. This is useful to avoid gaps in
-        # records sanitized if the script fails and does not commit a new timestamp.
-        $eventlogging_cleaner_command = '/usr/local/bin/eventlogging_cleaner --whitelist /etc/eventlogging/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2'
-        $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> /var/log/eventlogging/eventlogging_cleaner.log"
-        cron { 'eventlogging_cleaner daily sanitization':
-            ensure      => present,
-            command     => $command,
-            user        => 'eventlogcleaner',
-            minute      => 0,
-            hour        => 11,
-            environment => 'MAILTO=analytics-alerts@wikimedia.org',
-            require     => [
-                File['/usr/local/bin/eventlogging_cleaner'],
-                File['/etc/eventlogging/whitelist.tsv'],
-                File['/var/log/eventlogging'],
-                User['eventlogcleaner'],
-            ]
-        }
+    $eventlogging_sync_uid = 'root'
+    $eventlogging_sync_gid = 'root'
+    base::service_unit { 'eventlogging_sync':
+        ensure  => present,
+        systemd => systemd_template('mariadb/misc/eventlogging/eventlogging_sync'),
     }
 
     nrpe::monitor_service { 'eventlogging_sync':
