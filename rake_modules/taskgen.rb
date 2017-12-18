@@ -212,9 +212,6 @@ class TaskGen < ::Rake::TaskLib
       Rake::Task[:hiera].clear
       Rake::Task[:templates].clear
     end
-    # site.pp still uses an import statement for realm.pp (T154915)
-    # We can think of activating this once we've moved to the future parser
-    PuppetSyntax.fail_on_deprecation_notices = false
     if Puppet.version.to_f < 4.0
       PuppetSyntax.exclude_paths = [
         'modules/stdlib/types/*.pp',
