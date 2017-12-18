@@ -28,6 +28,8 @@ class profile::mariadb::misc::eventlogging::database (
     }
 
     class { 'mariadb::packages_wmf': }
+    require_package ('mydumper')
+
     class { 'mariadb::service': }
 
     if os_version('debian >= stretch') {
