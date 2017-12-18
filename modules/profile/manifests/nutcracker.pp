@@ -41,6 +41,7 @@ class profile::nutcracker(
         pools     => $pools,
     }
 
+    include ::profile::prometheus::nutcracker_exporter
     class { '::nutcracker::monitoring':
         port => $monitor_port,
     }

@@ -8,6 +8,7 @@ class profile::mediawiki::nutcracker(
 ) {
     $redis_servers = $redis_shards['sessions']
     include ::passwords::redis
+    include ::profile::prometheus::nutcracker_exporter
 
     $pools = {
         'memcached'     => {
