@@ -28,7 +28,7 @@ class puppetmaster::scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppet-facts-export',
+        source => 'puppet:///modules/puppetmaster/puppet-facts-export.py',
     }
 
     # Clear out older reports
