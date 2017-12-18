@@ -53,16 +53,16 @@ class rabbitmq(
         require => Package['rabbitmq-server'],
     }
 
-    service { 'rabbitmq-server':
-        ensure  => $running,
-        require => Package['rabbitmq-server'],
-    }
-
     file { '/usr/local/sbin/drain_queue':
         ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0655',
         source => 'puppet:///modules/rabbitmq/drain_queue',
+    }
+
+    service { 'rabbitmq-server':
+        ensure  => $running,
+        require => Package['rabbitmq-server'],
     }
 }
