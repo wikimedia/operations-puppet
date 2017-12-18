@@ -19,8 +19,6 @@ class role::postgres::common {
         },
     }
 
-    ganglia::plugin::python { 'diskstat': }
-
     ferm::service { 'postgresql':
         proto  => 'tcp',
         port   => 5432,

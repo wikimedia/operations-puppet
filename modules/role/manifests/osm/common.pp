@@ -29,5 +29,4 @@ class role::osm::common {
         srange => '$LABS_NETWORKS',
     }
 
-    ganglia::plugin::python { 'diskstat': }
 }
