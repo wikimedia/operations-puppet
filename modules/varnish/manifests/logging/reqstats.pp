@@ -60,4 +60,8 @@ define varnish::logging::reqstats(
         description  => 'Varnish traffic logger - varnishreqstats',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishreqstats" -u root',
     }
+
+    mtail::program { 'varnishreqstats':
+        source => 'puppet:///modules/mtail/programs/varnishreqstats.mtail',
+    }
 }
