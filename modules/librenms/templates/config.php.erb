@@ -16,6 +16,10 @@ $config['alert']['macros']['rule']['junos_state_down'] = '%sensors.sensor_class 
 # All types of Junos Alarms that is not "off"/(no alarm)
 $config['alert']['macros']['rule']['junos_alarm'] = '%sensors.sensor_class = "state" && %sensors.sensor_type ~ "Jnx.*AlarmState" && %sensors.sensor_current != "2"';
 
+# Workaround a bug where the puppet array value '+6697' is converted to "6697"
+# The plus is necessary to use TLS
+$config['irc_port'] = "+6697"
+
 $puppet_config = <%= scope.function_phpdump([@config]) %>;
 
 $config = array_merge($config, $puppet_config);

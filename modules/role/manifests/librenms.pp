@@ -41,11 +41,10 @@ class role::librenms {
             'community' => [ $passwords::network::snmp_ro_community ],
         },
         'irc_host'         => 'irc.freenode.org',
-        'irc_port'         => '+6697',
-        'irc_chan'         => '#wikimedia-netops',
+        'irc_chan'         => '#wikimedia-netops-test,#wikimedia-netops',
         'irc_alert'        => true,
         'irc_debug'        => false,
-        'irc_alert_chan'   => '#wikimedia-netops',
+        'irc_alert_chan'   => '#wikimedia-netops-test',
         'irc_alert_utf8'   => true,
         'irc_nick'         => 'librenms-wmf',
 
