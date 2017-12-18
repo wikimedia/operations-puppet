@@ -2234,7 +2234,7 @@ node 'ununpentium.wikimedia.org' {
 
 # ex-Ganglia Web UI - to be decomed
 node 'uranium.wikimedia.org' {
-    role(spare)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
