@@ -18,7 +18,7 @@ $config['alert']['macros']['rule']['junos_alarm'] = '%sensors.sensor_class = "st
 
 # Workaround a bug where the puppet array value '+6697' is converted to "6697"
 # The plus is necessary to use TLS
-$config['irc_port'] = "+6697"
+$config['irc_port'] = "+6697";
 
 $puppet_config = <%= scope.function_phpdump([@config]) %>;
 
