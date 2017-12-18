@@ -65,7 +65,7 @@ class role::labs::prometheus {
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
-            $blackbox_jobs
+            $blackbox_jobs, $rabbitmq_jobs
         ),
     }
 
