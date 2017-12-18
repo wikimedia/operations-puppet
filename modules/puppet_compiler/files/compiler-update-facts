@@ -19,23 +19,14 @@ RUBY_SCRIPT
 
 MASTERS=${PUPPET_MASTERS:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
 
-ssh "$COMPILER" 'sudo rm -rf /tmp/catalogs; sudo mkdir -p /tmp/catalogs'
-# Gather all the facts from all the masters. This can't really be atomic and We
-# want to minimize race conditions in the generation without using background
-# processes and multiconcurrency to avoid complexity so do this in 2 for loops
-for master in $MASTERS; do
-    echo -e "\n### Syncing facts from $master"
-    ssh "$master" 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
-done
-for master in $MASTERS; do
-    # tunnel via your localhost without ever the file touching the disk
-    ssh "$master" cat /tmp/puppet-facts-export.tar.xz | ssh "$COMPILER" 'cat > puppet-facts-export.tar.xz'
-    ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
-    # Note: The $$ trick works because this is all a single command, it should not be split into multiple ones
-    ssh "$COMPILER" 'mkdir -p /tmp/catalogs.$$ && tar Jxf puppet-facts-export.tar.xz --directory /tmp/catalogs.$$ \
-&& sudo rsync -au /tmp/catalogs.$$/ /tmp/catalogs/ && rm -rf /tmp/catalogs.$$ && rm puppet-facts-export.tar.xz'
-    # Do not modify the files in /tmp/catalogs, the modified date counts for the rsync
-    ssh "$COMPILER" 'sudo chown -R jenkins-deploy:wikidev /tmp/catalogs/yaml'
-done
+ssh "$COMPILER" 'sudo rm -rf /tmp/facts; sudo mkdir -p /tmp/facts'
+# Gather all the facts from one of the masters.
+master=$MASTERS[0]
+echo -e "\n### Syncing facts from $master"
+ssh "$master" 'sudo /usr/local/bin/puppet-facts-export 1>/dev/null'
+# tunnel via your localhost without ever the file touching the disk
+ssh "$master" cat /tmp/puppet-facts-export.tar.xz | ssh "$COMPILER" 'cat > puppet-facts-export.tar.xz'
+ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
+ssh "$COMPILER" 'tar Jxf puppet-facts-export.tar.xz --directory /tmp/facts && sudo chown -R jenkins-deploy:wikidev /tmp/facts/yaml'
 # Finally, copy all the facts to destination and cleanup
-ssh "$COMPILER" 'sudo rsync --delete -au /tmp/catalogs/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/catalogs'
+ssh "$COMPILER" 'sudo rsync --delete -au /tmp/facts/yaml/ /var/lib/catalog-differ/puppet/yaml/ && sudo rm -rf /tmp/facts'

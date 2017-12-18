@@ -23,12 +23,13 @@ class puppetmaster::scripts(
     }
 
     # export and sanitize facts for puppet compiler
+    require_package('python3-requests', 'python3-yaml')
     file {'/usr/local/bin/puppet-facts-export':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppet-facts-export',
+        source => 'puppet:///modules/puppetmaster/puppet-facts-export.py',
     }
 
     # Clear out older reports
