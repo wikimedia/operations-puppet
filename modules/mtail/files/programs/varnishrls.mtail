@@ -1,7 +1,11 @@
 counter varnish_resourceloader_inm
 
-/^url \/w\/load.php.*\tinm (?P<inm>.*)$/ {
-    $inm != "-" {
-        varnish_resourceloader_inm++
+/\thttp_method PURGE\t/ {
+    # noop
+} else {
+    /^url \/w\/load.php.*\tinm (?P<inm>.*)$/ {
+        $inm != "-" {
+            varnish_resourceloader_inm++
+        }
     }
 }
