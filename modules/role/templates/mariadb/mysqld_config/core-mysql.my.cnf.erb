@@ -1,11 +1,11 @@
 # Warning: This file is managed by Puppet!
-# Production hosts
+# Production MySQL 8.0+ hosts
 
 [client]
 port   = 3306
 socket = <%= @socket %>
-<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
+<% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
 ssl-key=/etc/mysql/ssl/server.key
@@ -14,74 +14,50 @@ ssl-verify-server-cert
 
 [mysqld]
 
-# administrative options
 user       = mysql
 socket     = <%= @socket %>
 port       = 3306
-extra-port = 3307
+# no extra_port on MySQL
 basedir    = <%= @basedir %>
 datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
-server_id  = <%= @server_id %>
-# gtid_domain_id flag is needed for multisource replication and GTID.
-# Strictly it is only needed on masters or servers that can potentially be
-# masters but for consistency it should be set in all of them.
-# https://mariadb.com/kb/en/mariadb/gtid/
+server-id  = <%= @server_id %>
 
-gtid_domain_id  = <%= @gtid_domain_id %>
+# Always start in read_only mode.
+# Master selection will be handled by cluster control.
+#read-only = on
 
 skip-external-locking
 skip-name-resolve
-temp-pool
-
-# Always start in read_only mode.
-# Master selection will be handled by orchestration.
-read_only = 1
-
-# prevent imports/exports to arbitrary dirs
-secure_file_priv               = /dev/null
-# thread and connection handling
-thread_handling                = pool-of-threads
-<% if @replication_role == 'master' -%>
-thread_pool_stall_limit        = 10
-<% else -%>
-thread_pool_stall_limit        = 100
-<% end -%>
-<% if Float(@memorysize.split[0]) > 200.0 -%>
-thread_pool_size               = 64
-<% elsif @processorcount <= 32 -%>
-thread_pool_size               = 32
-<% else -%>
-thread_pool_size               = <%= @processorcount %>
-<% end -%>
-thread_pool_max_threads        = 2000
-max_connections                = 10000
-back_log                       = 500
-extra_max_connections          = 10
-max_connect_errors             = 1000000000
-max_allowed_packet             = 32M
+# No pool of threads on MySQL
+max-connections                = 10000
+back-log                       = 500
+max-connect-errors             = 1000000000
+max-allowed-packet             = 32M
 connect_timeout                = 3
-query_cache_size               = 0
-query_cache_type               = 0
-event_scheduler                = 1
-log-warnings                   = 0
-thread_stack                   = 192K
-thread_cache_size              = 300
-interactive_timeout            = 28800
-wait_timeout                   = 3600
+# query_cache deprecated on 8.0
+event-scheduler                = 1
+#log-warnings not on MySQL
+thread-stack                   = 192K
+thread-cache_size              = 300
+interactive-timeout            = 28800
+wait-timeout                   = 3600
 transaction-isolation          = REPEATABLE-READ
+#use-stat-tables not on MySQL
 
 # binary log an replication options
 log-bin
-log-slave-updates
+log-slave_updates
 sync-binlog                    = 1
-binlog_cache_size              = 10M
-max-binlog_size                = 1000M
+binlog-cache-size              = 1M
+max-binlog-size                = 1000M
 binlog-format                  = <%= @binlog_format %>
+
+# expire_logs_days deprecated on 8.0
 <% if @replication_role == 'master' -%>
-expire-logs-days               = 30
+binlog-expire-logs-seconds     = 604800
 <% else -%>
-expire-logs-days               = 7
+binlog-expire-logs-seconds     = 2592000
 <% end -%>
 slave-transaction-retries      = 4294967295
 
@@ -115,14 +91,13 @@ rpl_semi_sync_slave_enabled        = 1
 <% end -%>
 
 # optimizer options
-sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
-optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
-use-stat-tables                = preferably
+sql-mode                       = ''
+optimizer-switch               = 'mrr=on,mrr_cost_based=on'
 
 # charsets and collations
-character_set_server           = binary
-character_set_filesystem       = binary
-collation_server               = binary
+character-set-server           = binary
+character-set-filesystem       = binary
+collation-server               = binary
 
 # InnoDB options
 default-storage-engine         = InnoDB
@@ -133,11 +108,8 @@ innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
 innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
-innodb_stats_sample_pages      = 16
+# innodb_stats_sample_pages not on MySQL
 innodb_stats_method            = nulls_unequal
-innodb_file_format             = barracuda
-aria_pagecache_buffer_size     = 1G
-join_cache_level               = 8
 
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
@@ -189,4 +161,3 @@ userstat                                               = 1
 quick
 max_allowed_packet = 32M
 
-#!includedir /etc/mysql/conf.d/
