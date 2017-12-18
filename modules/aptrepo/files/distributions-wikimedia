@@ -36,9 +36,9 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s
+Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55
 UDebComponents: main
-Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch
+Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
