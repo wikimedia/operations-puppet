@@ -32,6 +32,7 @@ class snapshot::dumps::configs {
                 retryWait         => '30',
                 maxRetries        => '3',
                 revsMargin        => '100',
+                fixeddumporder    => '1',
                 wikis => {
                     ruwiki => {
                         pagesPerChunkHistory  => '311181,1142420,1627923,3122803',
