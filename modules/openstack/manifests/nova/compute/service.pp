@@ -8,23 +8,7 @@ class openstack::nova::compute::service(
     $ca_target,
     ){
 
-    # Check for buggy kernels.  There are a lot of them!
-    if os_version('ubuntu >= trusty') and (versioncmp($::kernelrelease, '3.13.0-46') < 0) {
-        # see: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1346917
-        fail('nova-compute not installed on buggy kernels.  Old versions of 3.13 have a KSM bug.  Try installing linux-image-generic-lts-xenial')
-    } elsif $::kernelrelease =~ /^3\.13\..*/ {
-        fail('nova-compute not installed on buggy kernels.  On 3.13 series kernels, instance suspension causes complete system lockup.  Try installing linux-image-generic-lts-xenial')
-    } elsif $::kernelrelease =~ /^3\.19\..*/ {
-        fail('nova-compute not installed on buggy kernels.  On 3.19 series kernels, instance clocks die after resuming from suspension.  Try installing linux-image-generic-lts-xenial')
-    }
-
-    # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
-    # was split from the bridge kernel module into a separate module (br_netfilter)
-    if (versioncmp($::kernelversion, '3.18') >= 0) {
-        kmod::module { 'br_netfilter':
-            ensure => 'present',
-        }
-    }
+    require openstack::nova::compute::audit
 
     # Without qemu-system, apt will install qemu-kvm by default,
     # which is somewhat broken.
@@ -180,6 +164,14 @@ class openstack::nova::compute::service(
                       File['/etc/nova/nova-compute.conf'],
             ],
         require   => Package['nova-compute'],
+    }
+
+    # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
+    # was split from the bridge kernel module into a separate module (br_netfilter)
+    if (versioncmp($::kernelversion, '3.18') >= 0) {
+        kmod::module { 'br_netfilter':
+            ensure => 'present',
+        }
     }
 
     # By default trusty allows the creation of user namespaces by unprivileged users
