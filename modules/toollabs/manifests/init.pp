@@ -125,7 +125,7 @@ class toollabs (
 
     if !$is_mail_relay {
         class { '::exim4':
-            queuerunner => 'queueonly',
+            queuerunner => 'combined',
             config      => template('toollabs/route-to-mail-relay.exim4.conf.erb'),
             variant     => 'light',
         }
