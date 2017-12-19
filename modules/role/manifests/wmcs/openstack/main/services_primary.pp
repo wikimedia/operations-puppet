@@ -6,4 +6,5 @@ class role::wmcs::openstack::main::services_primary {
     include ::profile::openstack::main::pdns::recursor::primary
     include ::profile::openstack::main::designate::service
     include ::profile::openstack::main::pdns::dns_floating_ip_updater
+    include ::profile::prometheus::pdns_exporter
 }
