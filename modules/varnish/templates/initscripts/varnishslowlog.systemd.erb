@@ -1,0 +1,12 @@
+[Unit]
+Description=Varnish <%= @inst %> Slow Requests
+After=varnish<%= @instancesuffix %>.service
+Requires=varnish<%= @instancesuffix %>.service
+
+[Service]
+ExecStart=/usr/local/bin/varnishslowlog --varnishd-instance-name <%= @instance_name %>  --slow-threshold <%= scope['::varnish::common::log_slow_request_threshold'] %> --logstash-server=<%= scope['::varnish::common::logstash_host'] %>:<%= scope['::varnish::common::logstash_json_port'] %>
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

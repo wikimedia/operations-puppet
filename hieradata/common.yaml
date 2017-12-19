@@ -520,6 +520,7 @@ conftool_prefix: "/conftool/v1"
 logstash_host: "logstash.svc.eqiad.wmnet"
 logstash_syslog_port: 10514
 logstash_gelf_port: 12201
+logstash_json_port: 11514
 udp2log_aggregator: "udplog:8420"
 
 tcpircbot_host: 'icinga.wikimedia.org'
