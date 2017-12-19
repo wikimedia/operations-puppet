@@ -21,11 +21,6 @@ mediawiki_memcached_servers:
   - '10.64.48.157:11211:1 "shard17"'
   - '10.64.48.158:11211:1 "shard18"'
 
-#
-# Ganglia
-#
-ganglia_aggregators: install1002.wikimedia.org:9649
-
 # Eventlogging
 eventlogging_host: 10.64.32.167 # eventlog1001
 
