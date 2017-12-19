@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Automated reimaging of a list of hosts."""
+"""Automated reimaging of a single host."""
 
 import argparse
 import logging
@@ -97,8 +97,8 @@ def run(args, user, log_path):
     rename_from = None  # In case of host rename, hold the previous hostname
 
     # Validate hosts have a signed Puppet certificate
-    if not args.new and not args.no_verify:
-        lib.validate_hosts([args.host], args.no_verify)
+    if not args.new:
+        lib.validate_hosts([args.host], no_raise=args.no_verify)
 
     # Set Icinga downtime
     if not args.new and not args.no_downtime:
@@ -112,6 +112,10 @@ def run(args, user, log_path):
 
     if args.no_pxe:
         lib.print_line('Skipping PXE reboot', host=args.host)
+        if (not lib.validate_hosts([args.host], no_raise=True) and
+                lib.puppet_check_cert_to_sign(args.host) == 1):
+            # There is no signed or pending signing certificate for the host
+            lib.puppet_generate_cert(args.host)
     else:
         lib.puppet_remove_host(args.host)  # Cleanup Puppet
 
