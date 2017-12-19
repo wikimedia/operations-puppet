@@ -725,6 +725,22 @@ class role::prometheus::ops {
         port       => '9108',
     }
 
+    $nutcracker_jobs = [
+        {
+            'job_name'        => 'nutcracker',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/nutcracker*.yaml" ]}
+            ],
+        },
+    ]
+    prometheus::class_config { "nutcracker_${::site}":
+        dest       => "${targets_path}/nutcracker_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::nutcracker_exporter',
+        port       => '9191',
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
@@ -736,7 +752,7 @@ class role::prometheus::ops {
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
-            $etherpad_jobs, $elasticsearch_jobs,
+            $etherpad_jobs, $elasticsearch_jobs, $nutcracker_jobs,
         ),
         global_config_extra   => $config_extra,
     }
