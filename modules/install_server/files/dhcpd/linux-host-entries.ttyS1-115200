@@ -1679,16 +1679,22 @@ host db2092 {
 host dbproxy1001 {
     hardware ethernet 84:2b:2b:fd:bd:56;
     fixed-address dbproxy1001.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1002 {
     hardware ethernet 84:2b:2b:fd:be:a3;
     fixed-address dbproxy1002.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1003 {
     hardware ethernet 84:2b:2b:fc:af:c2;
     fixed-address dbproxy1003.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1004 {
@@ -1701,21 +1707,29 @@ host dbproxy1004 {
 host dbproxy1005 {
     hardware ethernet 84:2b:2b:fd:be:d9;
     fixed-address dbproxy1005.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1006 {
     hardware ethernet 84:2b:2b:fc:ad:79;
     fixed-address dbproxy1006.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1007 {
     hardware ethernet 84:2b:2b:fd:c0:a4;
     fixed-address dbproxy1007.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1008 {
     hardware ethernet 84:2b:2b:fd:be:eb;
     fixed-address dbproxy1008.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1009 {
@@ -1728,11 +1742,15 @@ host dbproxy1009 {
 host dbproxy1010 {
     hardware ethernet 84:2b:2b:fd:bf:72;
     fixed-address dbproxy1010.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbproxy1011 {
     hardware ethernet 84:2b:2b:fd:bf:69;
     fixed-address dbproxy1011.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dbstore1001 {

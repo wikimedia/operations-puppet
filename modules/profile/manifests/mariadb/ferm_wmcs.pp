@@ -2,7 +2,7 @@
 #  We need special rules to allow access for openstack services (which typically
 #  run on hosts with public IPs)
 
-class role::mariadb::ferm_wmcs(
+class profile::mariadb::ferm_wmcs(
     $nova_controller = hiera('profile::openstack::main::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
