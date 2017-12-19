@@ -7,6 +7,8 @@ cluster: misc
 contactgroups: 'admins,contint'
 
 profile::ci::jenkins::prefix: '/ci'
+profile::ci::proxy_jenkins::http_port: 80
+profile::ci::proxy_jenkins::prefix: '/ci'
 
 profile::zuul::merger::conf:
     gearman_server: '208.80.154.17'  # contint1001.wikimedia.org
