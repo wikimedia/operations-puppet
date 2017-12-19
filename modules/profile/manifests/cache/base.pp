@@ -22,6 +22,7 @@ class profile::cache::base(
     $be_runtime_params = hiera('profile::cache::base::be_runtime_params', []),
     $logstash_host = hiera('logstash_host', undef),
     $logstash_syslog_port = hiera('logstash_syslog_port', undef),
+    $logstash_json_port = hiera('logstash_json_port', undef),
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
 ) {
@@ -78,6 +79,8 @@ class profile::cache::base(
         fe_runtime_params          => $fe_runtime_params,
         be_runtime_params          => $be_runtime_params,
         log_slow_request_threshold => $log_slow_request_threshold,
+        logstash_host              => $logstash_host,
+        logstash_json_port         => $logstash_json_port,
     }
 
     class { [
