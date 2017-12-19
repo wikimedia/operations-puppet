@@ -50,7 +50,12 @@ define postgresql::user(
     $pass_set = "/usr/bin/psql -c \"ALTER ROLE ${user} WITH ${attrs} PASSWORD '${password}';\""
 
     # xpath expression to identify the user entry in pg_hba.conf
-    $xpath = "/files${pg_hba_file}/*[type='${type}'][database='${database}'][user='${user}'][address='${cidr}'][method='${method}']"
+    if $type == 'local' {
+        $xpath = "/files${pg_hba_file}/*[type='${type}'][database='${database}'][user='${user}'][method='${method}']"
+    }
+    else {
+        $xpath = "/files${pg_hba_file}/*[type='${type}'][database='${database}'][user='${user}'][address='${cidr}'][method='${method}']"
+    }
 
     if $ensure == 'present' {
         exec { "create_user-${name}":
@@ -71,13 +76,22 @@ define postgresql::user(
             }
         }
 
-        $changes = [
-            "set 01/type \'${type}\'",
-            "set 01/database \'${database}\'",
-            "set 01/user \'${user}\'",
-            "set 01/address \'${cidr}\'",
-            "set 01/method \'${method}\'",
-        ]
+        if $type == 'local' {
+            $changes = [
+                "set 01/type \'${type}\'",
+                "set 01/database \'${database}\'",
+                "set 01/user \'${user}\'",
+                "set 01/method \'${method}\'",
+            ]
+        } else {
+            $changes = [
+                "set 01/type \'${type}\'",
+                "set 01/database \'${database}\'",
+                "set 01/user \'${user}\'",
+                "set 01/address \'${cidr}\'",
+                "set 01/method \'${method}\'",
+            ]
+        }
 
         augeas { "hba_create-${name}":
             context => "/files${pg_hba_file}/",
