@@ -50,4 +50,13 @@ class profile::analytics::database::meta::backup_dest(
         port   => '873',
         srange => "@resolve((${rsync_clients_ferm}))",
     }
+
+    # Alert if backup gets stale.
+    $warning_threshold_hours = 26
+    $critical_threshold_hours = 48
+    nrpe::monitor_service { 'analytics-database-meta-backup-age':
+        description   => 'Age of most recent Analytics meta MySQL database backup files',
+        nrpe_command  => "/usr/local/lib/nagios/plugins/check_newest_file_age -C -d /srv/backup/mysql/analytics-meta -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
+        contact_group => 'analytics',
+    }
 }

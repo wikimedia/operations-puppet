@@ -44,6 +44,15 @@ class profile::hadoop::backup::namenode {
         minute  => 0,
     }
 
+    # Alert if backup gets stale.
+    $warning_threshold_hours = 26
+    $critical_threshold_hours = 48
+    nrpe::monitor_service { 'hadoop-namenode-backup-age':
+        description   => 'Age of most recent Hadoop NameNode backup files',
+        nrpe_command  => "/usr/local/lib/nagios/plugins/check_newest_file_age -C -d ${destination} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
+        contact_group => 'analytics',
+    }
+
     # Bacula will also back up this directory.
     # See: bacula::director::fileset { 'hadoop-namenode-backup'
     # in profile::backup::director
