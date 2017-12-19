@@ -16,12 +16,19 @@ class role::ci::master {
     include ::standard
     include ::profile::ci::backup
     include ::profile::ci::firewall
+
     include ::profile::ci::jenkins
+    include ::profile::ci::proxy_jenkins
+
     include ::profile::ci::slave
     include ::profile::ci::website
     include ::profile::ci::docker
     include ::profile::ci::pipeline
     include ::profile::ci::shipyard
+
     include ::profile::zuul::merger
+
     include ::profile::zuul::server
+    include ::profile::ci::proxy_zuul
+
 }

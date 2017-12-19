@@ -1,7 +1,7 @@
 # A http proxy in front of Zuul status page
-class contint::proxy_zuul {
+class profile::ci::proxy_zuul {
 
-  include ::contint::proxy_common
+  require ::profile::ci::proxy_common
 
   file {
     '/etc/apache2/conf.d/zuul_proxy':
