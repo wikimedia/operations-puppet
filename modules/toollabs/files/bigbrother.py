@@ -26,6 +26,7 @@ import os
 import pwd
 import random
 import re
+import shlex
 import smtplib
 import subprocess
 import time
@@ -116,7 +117,9 @@ class BigBrother(object):
                 m = re.match(r'^jstart\s+-N\s+(\S+)\s+(.*)$', line)
                 if m:
                     job_name = m.group(1)
-                    cmd = "/usr/bin/jstart -N '%s' %s" % (job_name, m.group(2))
+                    cmd = ["/usr/bin/jstart", "-N"]
+                    cmd.extend(shlex.split(job_name))
+                    cmd.extend(shlex.split(m.group(2)))
                 else:
                     # FIXME: throttle email sends! This will spam the heck out
                     # of anyone who has bad commands in their .bigbrotherrc
@@ -187,15 +190,17 @@ class BigBrother(object):
 
         if not self.dry_run:
             with open(self.watchdb[tool]['logfile'], 'a') as log:
-                subprocess.call(
-                    [
+                args = [
                         '/usr/bin/sudo',
                         '--login',
                         '--user', tool,
-                        '--',
-                        job['cmd']
-                    ],
-                    stdout=log, stderr=log)
+                        '--'
+                    ]
+                args.extend(job['cmd'])
+                subprocess.call(
+                    args,
+                    stdout=log,
+                    stderr=log)
 
     def update_db(self):
         """Update our internal database state"""
