@@ -35,6 +35,10 @@ private:
     gid: 50116
     mounts:
       project: true
+  wikidata-primary-sources-tool
+    gid: 53586
+    mounts:
+      dumps: true
   wikidata-query:
     gid: 52354
     mounts:
