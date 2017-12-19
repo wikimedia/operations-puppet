@@ -487,6 +487,7 @@ def validate_hosts(hosts, no_raise=False):
 
         if no_raise:
             logger.warning(message)
+            return False
         else:
             raise RuntimeError(message)
     else:
@@ -494,6 +495,8 @@ def validate_hosts(hosts, no_raise=False):
             print_line('Validated host', host=host)
         else:
             print_line('Validated hosts: {hosts}'.format(hosts=hosts))
+
+    return True
 
 
 def icinga_downtime(host, user, phab_task):
@@ -560,13 +563,43 @@ def run_puppet(hosts, no_raise=False):
         print_line('{message} on hosts: {hosts}'.format(message=message, hosts=hosts))
 
 
+def puppet_check_cert_to_sign(host):
+    """Check if on the puppetmaster there is a new certificate to sign for the given host.
+
+    Return 0 if there is a pending certificate to be signed, 1 if there isn't and 2 if the
+    certificate is already signed.
+
+    Arguments:
+    host  -- the host to check for a certificate pending signing.
+    """
+    command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
+    puppetmaster_host = get_puppet_ca_master()
+
+    try:
+        exit_code, worker = run_cumin(
+            'puppet_check_cert_to_sign', puppetmaster_host, [command])
+    except RuntimeError:
+        return 1
+
+    for _, output in worker.get_results():
+        if host in output.message():
+            break
+
+    if output.message().startswith('  "{host}"'.format(host=host)):
+        return 0
+    elif output.message().startswith('+ "{host}"'.format(host=host)):
+        print_line('Puppet cert already signed', host=host)
+        return 2
+    else:
+        raise RuntimeError('Unable to find cert to sign')
+
+
 def puppet_wait_cert_and_sign(host):
     """Poll the puppetmaster looking for a new key to sign for the given host.
 
     Arguments:
     host  -- the host to monitor for a complete Puppet run
     """
-    wait_command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
     sign_command = "puppet cert -s '{host}'".format(host=host)
     puppetmaster_host = get_puppet_ca_master()
     start = datetime.utcnow()
@@ -581,28 +614,20 @@ def puppet_wait_cert_and_sign(host):
             print_line('Still waiting for Puppet cert to sign after {min} minutes'.format(
                 min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
-        try:
-            exit_code, worker = run_cumin(
-                'puppet_wait_cert_and_sign', puppetmaster_host, [wait_command])
-        except RuntimeError:
+        check_cert = puppet_check_cert_to_sign(host)
+        if check_cert == 0:  # Found Puppet cert to sign
+            break
+        elif check_cert == 1:  # Puppet cert to sign still missing
             if (datetime.utcnow() - start).total_seconds() > timeout:
                 logger.error('Timeout reached')
                 raise RuntimeError('Timeout reached')
 
             time.sleep(WATCHER_LONG_SLEEP)
             continue
-
-        for _, output in worker.get_results():
-            if host in output.message():
-                break
-
-        if output.message().startswith('  "{host}"'.format(host=host)):
-            break
-        elif output.message().startswith('+ "{host}"'.format(host=host)):
-            print_line('Puppet cert already signed', host=host)
+        elif check_cert == 2:  # Puppet cert already signed
             return False
-        else:
-            raise RuntimeError('Unable to find cert to sign')
+        else:  # Should never happen
+            raise RuntimeError('Unable to check Puppet certificate status on puppetmaster')
 
     run_cumin('puppet_wait_cert_and_sign', puppetmaster_host, [sign_command])
     print_line('Signed Puppet cert', host=host)
@@ -755,7 +780,7 @@ def wait_reboot(host, start=None, installer_key=False, debian_installer=False):
     if start is None:
         start = datetime.utcnow()
     check_start = datetime.utcnow()
-    timeout = 1800  # 30 minutes
+    timeout = 3600  # 1 hour
     retries = 0
 
     while True:

@@ -136,7 +136,7 @@ def run(args, user, log_path):
 
     # Validate hosts
     if not args.new:
-        lib.validate_hosts(args.hosts, args.no_verify)
+        lib.validate_hosts(args.hosts, no_raise=args.no_verify)
 
     # Update the Phabricator task
     if args.phab_task_id is not None:
