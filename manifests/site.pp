@@ -572,7 +572,6 @@ node 'db1108.eqiad.wmnet' {
 
 # m5 shard
 node 'db1009.eqiad.wmnet' {
-    role(mariadb::ferm_wmcs)
     class { '::role::mariadb::misc':
         shard  => 'm5',
         master => true,
@@ -580,7 +579,6 @@ node 'db1009.eqiad.wmnet' {
 }
 
 node 'db2030.codfw.wmnet' {
-    role(mariadb::ferm_wmcs)
     class { '::role::mariadb::misc':
         shard => 'm5',
     }

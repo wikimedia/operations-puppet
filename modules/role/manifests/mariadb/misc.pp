@@ -22,7 +22,10 @@ class role::mariadb::misc(
     include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::profile::base::firewall
-    include ::role::mariadb::ferm
+    include ::profile::mariadb::ferm
+    if $shard == 'm5' {
+        include ::profile::mariadb::ferm_wmcs
+    }
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => $shard,
