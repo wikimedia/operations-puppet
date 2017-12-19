@@ -22,6 +22,6 @@ class role::osm::slave (
     }
 
     class { 'prometheus::postgres_exporter':
-        require => Class['postgresql::master'],
+        require => Class['postgresql::slave'],
     }
 }
