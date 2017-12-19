@@ -20,8 +20,10 @@ class profile::mariadb::proxy (
     }
 
     if $firewall == 'internal' {
+        include ::profile::base::firewall
         include ::profile::mariadb::ferm
     } elsif $firewall == 'cloud' {
+        include ::profile::base::firewall
         include ::profile::mariadb::ferm
         include ::profile::mariadb::ferm_wmcs
     } elsif $firewall != 'disabled' {
