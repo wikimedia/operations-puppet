@@ -175,14 +175,22 @@ define varnish::instance(
         $slow_requests_programname = 'varnish-fe-slowreqs'
     }
 
-    systemd::service { "varnish${instancesuffix}-slowreqs":
+    file { '/usr/local/bin/varnishslowlog':
+        source => 'puppet:///modules/varnish/varnishslowlog.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    systemd::service { "varnish${instancesuffix}-slowlog":
         ensure         => present,
-        content        => systemd_template('varnish-slowreqs'),
+        content        => systemd_template('varnishslowlog'),
         restart        => true,
         service_params => {
             require => Service["varnish${instancesuffix}"],
             enable  => true,
         },
+        require        => File["/usr/local/bin/varnishslowlog"],
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
