@@ -3,6 +3,8 @@ class varnish::common(
     $fe_runtime_params=[],
     $be_runtime_params=[],
     $log_slow_request_threshold='60.0',
+    $logstash_host=undef,
+    $logstash_json_port=undef,
 ) {
     require ::varnish::packages
 
