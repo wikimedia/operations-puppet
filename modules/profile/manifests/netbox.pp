@@ -59,7 +59,7 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
   }
 
     class { 'prometheus::postgres_exporter':
-        require => Class['$require_class'],
+        require => Class[$require_class],
     }
     postgresql::user { 'replication@netmon2001':
         ensure   => present,
