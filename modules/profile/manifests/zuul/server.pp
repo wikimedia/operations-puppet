@@ -7,8 +7,6 @@ class profile::zuul::server(
 ) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
-    include contint::proxy_zuul
-
     $monitoring_active = $service_enable ? {
         false   => 'absent',
         default => 'present',

@@ -18,11 +18,6 @@ class profile::ci::jenkins(
         service_enable  => $service_enable,
         service_monitor => $service_monitor,
     }
-    class { '::contint::proxy_jenkins':
-        http_port => '8080',
-        prefix    => $prefix,
-    }
-
     # Nodepool spawns non ephemeral slaves which causes config-history plugin
     # to fill up entries until it reaches the limit of 32k inodes. T126552
     cron { 'tidy_jenkins_ephemeral_nodes_configs':
