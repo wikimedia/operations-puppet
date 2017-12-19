@@ -168,21 +168,18 @@ define varnish::instance(
         },
     }
 
-    # Log slow requests to syslog
-    if $instance_name == '' {
-        $slow_requests_programname = 'varnish-be-slowreqs'
-    } else {
-        $slow_requests_programname = 'varnish-fe-slowreqs'
-    }
+    require_package('python-logstash')
 
-    systemd::service { "varnish${instancesuffix}-slowreqs":
+    systemd::service { "varnish${instancesuffix}-slowlog":
         ensure         => present,
-        content        => systemd_template('varnish-slowreqs'),
+        content        => systemd_template('varnishslowlog'),
         restart        => true,
         service_params => {
             require => Service["varnish${instancesuffix}"],
             enable  => true,
         },
+        require        => File['/usr/local/bin/varnishslowlog'],
+        subscribe      => File['/usr/local/bin/varnishslowlog'],
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
