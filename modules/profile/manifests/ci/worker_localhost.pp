@@ -13,7 +13,7 @@ class profile::ci::worker_localhost(
     file { '/srv/localhost-worker':
         ensure => directory,
         mode   => '0775',
-        owner  => 'jenkins-deploy',
+        owner  => $owner,
         group  => 'root',
     }
 
