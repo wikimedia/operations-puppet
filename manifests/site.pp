@@ -625,12 +625,12 @@ node 'dbstore2002.codfw.wmnet' {
 
 # Proxies for misc databases
 node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
-    role(mariadb::proxy)
+    role(mariadb::proxy::master)
 }
 
 # labsdb proxies (controling replica service dbs)
 node /^dbproxy101[01]\.eqiad\.wmnet$/ {
-    role(mariadb::proxy)
+    role(mariadb::proxy::master)
 }
 
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
