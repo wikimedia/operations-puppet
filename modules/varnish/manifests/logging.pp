@@ -65,4 +65,11 @@ class varnish::logging(
         key_prefix    => "varnish.${::site}.${cache_cluster}.xcache",
         statsd_server => $statsd_host,
     }
+
+    file { '/usr/local/bin/varnishslowlog':
+        source => 'puppet:///modules/varnish/varnishslowlog.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
