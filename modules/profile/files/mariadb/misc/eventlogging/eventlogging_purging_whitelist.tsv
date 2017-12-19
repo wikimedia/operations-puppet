@@ -665,13 +665,6 @@ NavigationTiming	event_unloadEventStart
 NavigationTiming	isTruncated
 NavigationTiming	webHost
 NavigationTiming	wiki
-PageContentSaveComplete	clientValidated
-PageContentSaveComplete	event_isAPI
-PageContentSaveComplete	event_isMobile
-PageContentSaveComplete	event_revisionId
-PageContentSaveComplete	isTruncated
-PageContentSaveComplete	webHost
-PageContentSaveComplete	wiki
 Popups	event_sessionToken
 Popups	event_version
 Popups	event_pageIdSource
