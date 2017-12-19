@@ -5,9 +5,9 @@ class snapshot::dumps::dblists {
     $wikidatawiki = ['wikidatawiki']
     $wikidatawiki_dblist = join($wikidatawiki, "\n")
 
-    $bigwikis = ['dewiki', 'eswiki', 'frwiki', 'itwiki', 'jawiki',
-                'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'commonswiki',
-                'wikidatawiki', 'zhwiki']
+    $bigwikis = ['dewiki', 'commonswiki', 'frwiki', 'eswiki', 'itwiki', 'jawiki',
+                'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki',
+                'zhwiki']
     $bigwikis_dblist = join($bigwikis, "\n")
 
     # labswiki(s) can't be dumped from snapshot hosts
