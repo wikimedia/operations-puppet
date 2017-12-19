@@ -52,8 +52,6 @@ class network::constants {
                     '2620:0:861:3:208:80:154:82',       # dbmonitor1001.wikimedia.org
                     '208.80.153.52',                    # dbmonitor2001.wikimedia.org
                     '2620:0:860:2:208:80:153:52',       # dbmonitor2001.wikimedia.org
-                    '208.80.154.53',                    # uranium.wikimedia.org (ganglia, gmetad needs it)
-                    '2620:0:861:1:208:80:154:53',       # uranium.wikimedia.org
                 ],
             'deployment_hosts' => [
                     '10.64.0.196',                      # tin.eqiad.wmnet
