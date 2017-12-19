@@ -5,6 +5,13 @@
 #
 class profile::mariadb::misc::eventlogging::sanitization {
 
+    if !defined(Group['eventlog']) {
+        group { 'eventlog':
+            ensure => 'present',
+            system => true,
+        }
+    }
+
     user { 'eventlogcleaner':
         gid        => 'eventlog',
         shell      => '/bin/false',

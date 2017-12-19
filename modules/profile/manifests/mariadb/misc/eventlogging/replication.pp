@@ -24,14 +24,16 @@ class profile::mariadb::misc::eventlogging::replication (
     $slave_host  = 'localhost'
     $database    = 'log'
 
-    group { 'eventlog':
-        ensure => 'present',
-        system => true,
+    if !defined(Group['eventlog']) {
+        group { 'eventlog':
+            ensure => 'present',
+            system => true,
+        }
     }
 
     require_package('python3-pymysql')
 
-    if ! defined(File['/etc/eventlogging']) {
+    if !defined(File['/etc/eventlogging']) {
         file { '/etc/eventlogging':
             ensure => 'directory',
             owner  => 'root',
@@ -40,7 +42,7 @@ class profile::mariadb::misc::eventlogging::replication (
         }
     }
 
-    if ! defined(File['/var/log/eventlogging']) {
+    if !defined(File['/var/log/eventlogging']) {
         file { '/var/log/eventlogging':
             ensure => 'directory',
             owner  => 'root',
