@@ -938,9 +938,12 @@ node 'labtestneutron2001.codfw.wmnet' {
     role(wmcs::openstack::labtestn::net)
 }
 
-node /^labtestvirt200[1-3]\.codfw\.wmnet$/ {
+node /^labtestvirt200[1-2]\.codfw\.wmnet$/ {
     role(wmcs::openstack::labtest::virt)
-    include ::standard
+}
+
+node /^labtestvirt2003\.codfw\.wmnet$/ {
+    role(wmcs::openstack::labtestn::virt)
 }
 
 node 'labtestmetal2001.codfw.wmnet' {
