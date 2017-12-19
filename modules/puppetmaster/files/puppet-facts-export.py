@@ -30,7 +30,7 @@ def main():
     date_format = '%Y-%m-%d %H:%M:%S.%s +00:00'
     datetime_facts = datetime.utcnow()
     ts = datetime_facts.strftime(date_format)
-    exp = (datetime_facts + timedelta(days=1)).strftime(date_format)
+    exp = (datetime_facts + timedelta(days=365)).strftime(date_format)
 
     outfile = '/tmp/puppet-facts-export.tar.xz'
     tmpdir = tempfile.mkdtemp(dir='/tmp', prefix='puppetdb-export')
