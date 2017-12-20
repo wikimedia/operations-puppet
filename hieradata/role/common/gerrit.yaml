@@ -20,16 +20,15 @@ gerrit::jetty::ssh_host_key: 'ssh_host_key'
 gerrit::jetty::replication:
     github:
         url: 'git@github.com:wikimedia/${name}'
-        threads: '4'
         authGroup: 'mediawiki-replication'
         remoteNameStyle: 'dash'
         mirror: true
         push:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
+        createMissingRepositories: false
     slaves:
         url: 'gerrit2@gerrit2001.wikimedia.org:/srv/gerrit/git/${name}.git'
-        threads: '4'
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
