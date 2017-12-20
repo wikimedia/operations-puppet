@@ -3,14 +3,11 @@ class role::postgres::master {
     include ::postgresql::postgis
     include ::passwords::postgres
     include ::base::firewall
+    include ::profile::prometheus::postgres_exporter
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
         root_dir => $role::postgres::common::root_dir,
-    }
-
-    class { 'prometheus::postgres_exporter':
-        require => Class['postgresql::master'],
     }
 
     system::role { 'postgres::master':

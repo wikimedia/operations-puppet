@@ -22,22 +22,17 @@ class role::osm::master(
     include osm
     include passwords::osm
     include ::base::firewall
-
-
-    class { 'postgresql::master':
-        includes => 'tuning.conf',
-        root_dir => $role::osm::common::root_dir,
-    }
-
-    class { 'prometheus::postgres_exporter':
-        require => Class['postgresql::master'],
-    }
-
+    include ::profile::prometheus::postgres_exporter
     postgresql::user { 'prometheus@localhost':
         user     => 'prometheus',
         database => 'postgres',
         type     => 'local',
         method   => 'peer',
+    }
+
+    class { 'postgresql::master':
+        includes => 'tuning.conf',
+        root_dir => $role::osm::common::root_dir,
     }
 
     class { 'osm::prometheus':
