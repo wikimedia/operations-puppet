@@ -59,13 +59,33 @@ class BigBrother(object):
         with open(self.watchdb[tool]['logfile'], 'a') as log:
             print(event, file=log)
 
-        email = MIMEText(event)
-        email['Subject'] = '[bigbrother] %s: %s' % (etype, msg)
-        email['To'] = '%s maintainers <%s>' % (tool, tool)
-        email['From'] = 'Bigbrother <%s>' % tool
-        mta = smtplib.SMTP('localhost')
-        mta.sendmail(tool, [tool], email.as_string())
-        mta.quit()
+        if self._email_allowed(tool):
+            email = MIMEText(event)
+            email['Subject'] = '[bigbrother] %s: %s' % (etype, msg)
+            email['To'] = '%s maintainers <%s>' % (tool, tool)
+            email['From'] = 'Bigbrother <%s>' % tool
+            mta = smtplib.SMTP('localhost')
+            mta.sendmail(tool, [tool], email.as_string())
+            mta.quit()
+
+    def _email_allowed(self, tool):
+        """Limit emails sent to 1 per 5 minutes & 5 per hour"""
+        if 'emails' not in self.watchdb[tool]:
+            self.watchdb[tool]['emails'] = []
+
+        sent = self.watchdb[tool]['emails']
+        now = time.time()
+        limit_minute = now - 300
+        if sum(e < limit_minute for e in sent) >= 1:
+            return False
+
+        limit_max = now - 3600
+        if sum(e < limit_max for e in sent) >= 5:
+            return False
+
+        self.watchdb[tool]['emails'] = [e for e in sent if e < limit_max]
+        self.watchdb[tool]['emails'].append(now)
+        return True
 
     def read_config(self, tool):
         now = time.time()
@@ -82,6 +102,7 @@ class BigBrother(object):
                 'logfile': '%s/bigbrother.log' % pwnam.pw_dir,
                 'mtime': 0,
                 'refresh': now,
+                'emails': [],
             }
 
         if now < self.watchdb[tool]['refresh']:
@@ -122,16 +143,18 @@ class BigBrother(object):
                         cmd.extend(shlex.split(job_name))
                         cmd.extend(shlex.split(m.group(2)))
                     except ValueError as e:
-                        self.log_event(tool, 'error',
-                                       '%s:%d: invalid command: %s' % (rcfile, i + 1, str(e)))
+                        self.log_event(
+                            tool, 'error',
+                            '%s:%d: invalid command: %s' % (
+                                rcfile, i + 1, str(e)))
+                        continue
 
                 else:
-                    # FIXME: throttle email sends! This will spam the heck out
-                    # of anyone who has bad commands in their .bigbrotherrc
                     self.log_event(
                         tool, 'error',
                         '%s:%d: command not supported' % (rcfile, i + 1))
                     continue
+
                 if job_name in jobs:
                     self.log_event(
                         tool, 'warn',
