@@ -6,12 +6,12 @@ After=network.target syslog.service
 Wants=syslog.service
 
 [Service]
-Environment=CONFIG=/etc/haproxy/haproxy.cfg
+Environment="CONFIG=/etc/haproxy/haproxy.cfg" "PIDFILE=<%=@pid%>"
 EnvironmentFile=-/etc/default/haproxy
 ExecStartPre=/usr/local/bin/generate_haproxy_default.sh
-ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q
-ExecStart=/usr/sbin/haproxy-systemd-wrapper -f ${CONFIG} -p /run/haproxy.pid $EXTRAOPTS
-ExecReload=/usr/sbin/haproxy -c -f ${CONFIG}
+ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
+ExecStart=/usr/sbin/haproxy-systemd-wrapper -f ${CONFIG} -p $PIDFILE $EXTRAOPTS
+ExecReload=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
 ExecReload=/bin/kill -USR2 $MAINPID
 KillMode=mixed
 Restart=always
