@@ -56,12 +56,13 @@ class haproxy(
             source => 'puppet:///modules/haproxy/generate_haproxy_default.sh',
         }
 
+	# TODO: this should use the general systemd puppet abstraction instead
         file { '/lib/systemd/system/haproxy.service':
             ensure  => present,
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            source  => 'puppet:///modules/haproxy/haproxy.service',
+            content => template('haproxy/haproxy.service.erb'),
             require => File['/usr/local/bin/generate_haproxy_default.sh'],
             notify  => Exec['/bin/systemctl daemon-reload'],
         }
