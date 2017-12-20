@@ -50,6 +50,16 @@ class role::labs::prometheus {
         },
     ]
 
+    $pdns_rec_jobs = [
+        {
+            'job_name'        => 'pdns_rec',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/pdns_*.yaml" ] }
+            ],
+        },
+    ]
+
     file { "${targets_path}/blackbox_http_keystone.yaml":
       content => ordered_yaml([{
         'targets' => ['labcontrol1001.wikimedia.org:5000/v3', # keystone
@@ -75,6 +85,13 @@ class role::labs::prometheus {
         port       => '9192',
     }
 
+    prometheus::class_config{ "pdns_rec_${::site}":
+        dest       => "${targets_path}/pdns_rec_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::wmcs::openstack::main::services_primary',
+        port       => '9199',
+    }
+
     prometheus::server { 'labs':
         storage_encoding      => '2',
         listen_address        => ':9900',
@@ -83,6 +100,7 @@ class role::labs::prometheus {
         memory_chunks         => $memory_chunks,
         scrape_configs_extra  => array_concat(
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
+            $pdns_rec_jobs,
         ),
     }
 
