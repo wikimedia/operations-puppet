@@ -9,7 +9,7 @@ Wants=syslog.service
 Environment="CONFIG=/etc/haproxy/haproxy.cfg" "PIDFILE=<%=@pid%>"
 EnvironmentFile=-/etc/default/haproxy
 # Workaround for T166653, T148986#3850797
-ExecStartPre=/bin/sleep 5
+ExecStartPre=/bin/sleep 10
 ExecStartPre=/usr/local/bin/generate_haproxy_default.sh
 ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
 ExecStart=/usr/sbin/haproxy-systemd-wrapper -f ${CONFIG} -p $PIDFILE $EXTRAOPTS
