@@ -1,11 +1,15 @@
-class profile::dumps::generation::server::fallback {
+class profile::dumps::generation::server::fallback(
+    $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
+    $miscdatasetsdir = hiera('profile::dumps::miscdumpsdir'),
+    $dumpstempdir = hiera('profile::dumps::dumpstempdir'),
+) {
     class { '::dumpsuser': }
 
     class { '::dumps::generation::server::dirs':
         datadir         => '/data/xmldatadumps',
-        xmldumpsdir     => '/data/xmldatadumps/public',
-        tempdir         => '/data/xmldatadumps/temp',
-        miscdatasetsdir => '/data/otherdumps',
+        xmldumpsdir     => $xmldumpsdir,
+        tempdir         => $dumpstempdir,
+        miscdatasetsdir => $miscdatasetsdir,
         user            => $dumpsuser::user,
         group           => $dumpsuser::group,
     }
