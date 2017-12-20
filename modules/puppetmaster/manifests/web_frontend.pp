@@ -27,6 +27,7 @@ define puppetmaster::web_frontend(
     $bind_address='*',
     $priority=90,
     $alt_names=undef,
+    $cert_secret_path = 'puppetmaster',
 ){
     $server_name = $title
     $ssldir = '/var/lib/puppet/ssl'
@@ -39,7 +40,7 @@ define puppetmaster::web_frontend(
         # We use the private repo for the public key as well as it gets
         # generated on the puppet ca server.
         file { "${ssldir}/certs/${server_name}.pem":
-            content   => secret("puppetmaster/${server_name}_pubkey.pem"),
+            content   => secret("${cert_secret_path}/${server_name}_pubkey.pem"),
             owner     => 'puppet',
             group     => 'puppet',
             mode      => '0640',
@@ -48,7 +49,7 @@ define puppetmaster::web_frontend(
         }
 
         file { "${ssldir}/private_keys/${server_name}.pem":
-            content   => secret("puppetmaster/${server_name}_privkey.pem"),
+            content   => secret("${cert_secret_path}/${server_name}_privkey.pem"),
             owner     => 'puppet',
             group     => 'puppet',
             mode      => '0640',
