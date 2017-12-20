@@ -775,6 +775,15 @@ class role::prometheus::ops {
         port       => '9191',
     }
 
+    # Gather postgresql metrics from hosts having the
+    # prometheus::postgres_exporter class defined
+    prometheus::class_config{ "postgresql_${::site}":
+        dest       => "${targets_path}/postgresql${::site}.yaml",
+        site       => $::site,
+        class_name => 'prometheus::postgres_exporter',
+        port       => '9187',
+    }
+
     prometheus::server { 'ops':
         storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
