@@ -1,5 +1,6 @@
 class profile::dumps::web::xmldumps_active(
     $do_acme = hiera('do_acme'),
+    $datadir = hiera('profile::dumps::basedatadir'),
     $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::miscdumpsdir'),
 ) {
@@ -7,7 +8,7 @@ class profile::dumps::web::xmldumps_active(
 
     class {'::dumps::web::xmldumps_active':
         do_acme          => $do_acme,
-        datadir          => '/data/xmldatadumps',
+        datadir          => $datadir,
         xmldumpsdir      => $xmldumpsdir,
         miscdatasetsdir  => $miscdatasetsdir,
         logs_dest        => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',

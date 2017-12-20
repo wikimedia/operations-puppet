@@ -1,3 +1,4 @@
+profile::dumps::basedatadir: '/data/xmldatadumps'
 profile::dumps::miscdumpsdir: '/data/otherdumps'
 profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
 profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
