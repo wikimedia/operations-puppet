@@ -777,8 +777,17 @@ class role::prometheus::ops {
 
     # Gather postgresql metrics from hosts having the
     # prometheus::postgres_exporter class defined
+    $postgresql_jobs = [
+      {
+        'job_name'        => 'postgresql',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/postgresql_*.yaml" ]}
+        ],
+      },
+    ]
     prometheus::class_config{ "postgresql_${::site}":
-        dest       => "${targets_path}/postgresql${::site}.yaml",
+        dest       => "${targets_path}/postgresql_${::site}.yaml",
         site       => $::site,
         class_name => 'prometheus::postgres_exporter',
         port       => '9187',
@@ -796,7 +805,7 @@ class role::prometheus::ops {
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wdqs_updater_jobs,
-            $blazegraph_jobs, $nutcracker_jobs,
+            $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs
         ),
         global_config_extra   => $config_extra,
     }
