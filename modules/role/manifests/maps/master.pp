@@ -8,6 +8,7 @@ class role::maps::master {
     include ::profile::maps::cassandra
     include ::profile::maps::osm_master
     include ::profile::redis::master
+    include ::profile::prometheus::postgres_exporter
 
     system::role { 'maps::master':
       ensure      => 'present',

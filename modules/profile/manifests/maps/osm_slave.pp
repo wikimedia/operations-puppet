@@ -20,10 +20,6 @@ class profile::maps::osm_slave(
         pg_password => $replication_pass,
     }
 
-    class { 'prometheus::postgres_exporter':
-        require => Class['::postgresql::slave'],
-    }
-
     $prometheus_command = "/usr/bin/prometheus_postgresql_replication_lag -m ${master} -P ${replication_pass}"
     cron { 'prometheus-pg-replication-lag':
         ensure  => present,

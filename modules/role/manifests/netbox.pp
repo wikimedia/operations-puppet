@@ -16,5 +16,6 @@ class role::netbox {
   system::role { 'netbox': description => 'Netbox server' }
 
   include ::profile::netbox
+  include ::profile::prometheus::postgres_exporter
 
 }

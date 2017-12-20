@@ -5,6 +5,7 @@ class role::osm::slave (
     include postgresql::postgis
     include passwords::osm
     include ::base::firewall
+    include ::profile::prometheus::postgres_exporter
     # Note: This is here to illustrate the fact that the slave is expected to
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
@@ -19,9 +20,5 @@ class role::osm::slave (
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
         root_dir         => $role::osm::common::root_dir,
-    }
-
-    class { 'prometheus::postgres_exporter':
-        require => Class['postgresql::slave'],
     }
 }
