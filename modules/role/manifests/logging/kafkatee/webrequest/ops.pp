@@ -8,8 +8,8 @@ class role::logging::kafkatee::webrequest::ops {
     include ::geoip  # lint:ignore:wmf_styleguide
 
     $webrequest_log_directory = $::role::logging::kafkatee::webrequest::base::webrequest_log_directory
-    $logstash_host = hiera('role::logging::kafkatee::webrequest::ops::logstash_host')
-    $logstash_port = hiera('role::logging::kafkatee::webrequest::ops::logstash_port')
+    $logstash_host = hiera('logstash_host')
+    $logstash_port = hiera('logstash_json_lines_port')
 
     kafkatee::output { 'sampled-1000':
         destination => "${webrequest_log_directory}/sampled-1000.json",
