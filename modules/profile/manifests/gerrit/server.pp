@@ -10,6 +10,7 @@ class profile::gerrit::server(
     $bacula = hiera('gerrit::server::bacula'),
     $gerrit_servers = join(hiera('gerrit::servers'), ' '),
     $config = hiera('gerrit::server::config'),
+    $log_host = hiera('logstash_host'),
 ) {
 
     interface::alias { 'gerrit server':
@@ -71,6 +72,7 @@ class profile::gerrit::server(
         slave       => $slave,
         slave_hosts => $slave_hosts,
         config      => $config,
+        log_host    => $log_host,
     }
 
     class { '::apache::mod::rewrite': }

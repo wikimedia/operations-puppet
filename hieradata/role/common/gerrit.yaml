@@ -33,8 +33,6 @@ gerrit::jetty::replication:
         replicateProjectDeletions: true
         replicateHiddenProjects: true
 
-gerrit::jetty::log_host: 'logstash.svc.eqiad.wmnet'
-
 # Allow use of supplemental key for scap deployment
 profile::base::ssh_server_settings:
     authorized_keys_file: '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap'
