@@ -20,7 +20,7 @@ profile::docker::engine::settings:
    iptables: false
    ip-masq: false
    live-restore: true
-profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i /var/lib/docker/containers/* -i /run/docker/netns/* --exclude-type=tracefs
+profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
 profile::calico::kubernetes::calico_version: 2.2.0
 profile::calico::kubernetes::docker::registry: docker-registry.discovery.wmnet
 profile::kubernetes::node::masquerade_all: false
