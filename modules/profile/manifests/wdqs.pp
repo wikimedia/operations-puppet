@@ -1,5 +1,5 @@
 class profile::wdqs (
-    $logstash_host = hiera('profile::wdqs::logstash_host'),
+    $logstash_host = hiera('logstash_host'),
     $use_git_deploy = hiera('profile::wdqs::use_git_deploy'),
     $package_dir = hiera('profile::wdqs::package_dir'),
     $data_dir = hiera('profile::wdqs::data_dir'),

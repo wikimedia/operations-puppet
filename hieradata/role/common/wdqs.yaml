@@ -1,4 +1,3 @@
-profile::wdqs::logstash_host: 'logstash.svc.eqiad.wmnet'
 profile::wdqs::use_git_deploy: true
 profile::wdqs::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::wdqs::data_dir: '/srv/wdqs'
