@@ -2,10 +2,14 @@
 # Includes output filters useful for operational debugging.
 #
 class role::logging::kafkatee::webrequest::ops {
-    require_package('socat')
+
+    include ::standard
+    include ::profile::base::firewall
+    include ::geoip  # lint:ignore:wmf_styleguide
 
     include role::logging::kafkatee::webrequest::base
-    include ::geoip  # lint:ignore:wmf_styleguide
+
+    require_package('socat')
 
     $webrequest_log_directory = $::role::logging::kafkatee::webrequest::base::webrequest_log_directory
     $logstash_host = hiera('logstash_host')

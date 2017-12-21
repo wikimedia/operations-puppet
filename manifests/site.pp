@@ -1794,9 +1794,6 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
 node 'oxygen.eqiad.wmnet'
 {
     role(logging::kafkatee::webrequest::ops)
-
-    include ::base::firewall
-    include ::standard
 }
 
 # parser cache databases
