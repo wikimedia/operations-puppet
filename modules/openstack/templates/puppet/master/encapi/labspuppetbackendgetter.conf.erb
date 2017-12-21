@@ -8,5 +8,12 @@ server {
         limit_except GET {
             deny all;
         }
+
+        allow 127.0.0.7;
+<% @all_puppetmasters.each do |node| -%>
+        allow <%= scope.function_ipresolve([node]) %>;
+<% end -%>
+        allow <%= @labs_instance_range %>;
+        deny all;
     }
 }
