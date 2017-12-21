@@ -140,10 +140,15 @@ profile::cassandra::settings:
   default_instance_params:
     rpc_address: '%{::ipaddress}'
 # end cassandra
-"udp2log_aggregator": deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
-"logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
-"logstash_syslog_port": 10514
-"logstash_gelf_port": 12201
+udp2log_aggregator: deployment-fluorine02.deployment-prep.eqiad.wmflabs:8420
+logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
+logstash_syslog_port: 10514
+logstash_gelf_port: 12201
+# TCP json_lines input
+logstash_json_lines_port: 11514
+# UDP logback/json input
+logstash_logback_port: 11514
+
 mediawiki_memcached_servers:
     - 10.68.23.25:11211:1  # deployment-memc04
     - 10.68.23.49:11211:1  # deployment-memc05
@@ -357,9 +362,6 @@ profile::eventstreams::streams:
   recentchange:
     topics: ["%{::site}.mediawiki.recentchange"]
 profile::eventstreams::rdkafka_config: {}
-
-thumbor::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
-thumbor::logstash_port: 11514
 
 cache::be_transient_gb: 0
 cache::fe_transient_gb: 0
