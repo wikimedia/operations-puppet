@@ -1792,6 +1792,8 @@ host dbstore2002 {
 host deploy1001 {
     hardware ethernet 18:66:DA:5F:CF:1F;
     fixed-address deploy1001.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host druid1001 {
