@@ -78,6 +78,12 @@ ssl.truststore.location=<%= @ssl_truststore_location %>
 <% if @ssl_truststore_password -%>
 ssl.truststore.password=<%= @ssl_truststore_password %>
 <% end -%>
+<% if @ssl_enabled_protocols -%>
+ssl.enabled.protocols=<%= @ssl_enabled_protocols %>
+<% end -%>
+<% if @ssl_cipher_suites -%>
+ssl.cipher.suites=<%= @ssl_cipher_suites %>
+<% end -%>
 
 <% if @ssl_client_auth -%>
 ssl.client.auth=<%= @ssl_client_auth %>

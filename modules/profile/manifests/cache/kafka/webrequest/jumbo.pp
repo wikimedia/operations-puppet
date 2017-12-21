@@ -73,6 +73,7 @@ class profile::cache::kafka::webrequest::jumbo(
 
     $ssl_certificate_secrets_path = 'certificates/varnishkafka/varnishkafka.crt.pem'
     $ssl_certificate_location = "${ssl_location}/varnishkafka.crt.pem"
+    $ssl_cipher_suites = 'ECDHE-ECDSA-AES256-GCM-SHA384'
 
     file { $ssl_location:
         ensure => 'directory',
@@ -145,6 +146,7 @@ class profile::cache::kafka::webrequest::jumbo(
         ssl_key_password             => $ssl_key_password,
         ssl_key_location             => $ssl_key_location,
         ssl_certificate_location     => $ssl_certificate_location,
+        ssl_cipher_suites            => $ssl_cipher_suites,
         require                      => [
             File[$ssl_key_location],
             File[$ssl_certificate_location]
