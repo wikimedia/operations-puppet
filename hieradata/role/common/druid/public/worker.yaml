@@ -63,7 +63,7 @@ profile::druid::broker::properties:
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
   druid.processing.numThreads: 10
-  druid.processing.buffer.sizeBytes: 2147483647
+  druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
@@ -73,8 +73,8 @@ profile::druid::broker::properties:
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
 profile::druid::broker::env:
-  DRUID_HEAP_OPTS: "-Xmx25g -Xms25g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=64g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_HEAP_OPTS: "-Xmx10g -Xms5g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=4g -XX:MaxNewSize=4g -XX:MaxDirectMemorySize=12g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid Coordinator
@@ -85,7 +85,7 @@ profile::druid::coordinator::properties:
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
 profile::druid::coordinator::env:
-  DRUID_HEAP_OPTS: "-Xmx10g -Xms10g"
+  DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=512m -XX:MaxNewSize=512m -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
@@ -96,18 +96,20 @@ profile::druid::historical::properties:
   druid.emitter.composing.emitters: ["logging","http"]
   druid.emitter.http.recipientBaseUrl: "http://localhost:8000/"
   druid.processing.numThreads: 10
-  druid.processing.buffer.sizeBytes: 1073741824
+  druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
   druid.server.http.numThreads: 20
   druid.server.maxSize: 2748779069440 # 2.5 TB
   druid.segmentCache.locations: '[{"path":"/var/lib/druid/segment-cache","maxSize"\:2748779069440}]'
-  druid.historical.cache.useCache: true
-  druid.historical.cache.populateCache: true
+  # For small clusters it is reccomended to only enable caching on brokers
+  # See: http://druid.io/docs/latest/querying/caching.html
+  druid.historical.cache.useCache: false
+  druid.historical.cache.populateCache: false
   druid.monitoring.monitors: ["io.druid.server.metrics.HistoricalMetricsMonitor"]
 profile::druid::historical::env:
-  DRUID_HEAP_OPTS: "-Xmx12g -Xms12g"
-  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=6g -XX:MaxNewSize=6g -XX:MaxDirectMemorySize=32g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+  DRUID_HEAP_OPTS: "-Xmx8g -Xms4g"
+  DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=2g -XX:MaxNewSize=2g -XX:MaxDirectMemorySize=10g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
 
 
 # --- Druid MiddleManager
@@ -134,5 +136,5 @@ profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata
 profile::druid::overlord::env:
-  DRUID_HEAP_OPTS: "-Xmx4g -Xms4g"
+  DRUID_HEAP_OPTS: "-Xmx4g -Xms2g"
   DRUID_EXTRA_JVM_OPTS: "-XX:NewSize=256m -XX:MaxNewSize=256m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
