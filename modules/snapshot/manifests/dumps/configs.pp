@@ -28,6 +28,7 @@ class snapshot::dumps::configs(
                 keep              => '8',
                 chunksEnabled     => '1',
                 chunksForAbstract => '4',
+                chunksForPagelogs => '4',
                 checkpointTime    => '720',
                 recombineHistory  => '0',
                 revsPerJob        => '1500000',
@@ -89,10 +90,11 @@ class snapshot::dumps::configs(
             en => {
                 dblist            => "${dblistsdir}/enwiki.dblist",
                 skipdblist        => "${dblistsdir}/skipnone.dblist",
-                jobsperbatch      => 'xmlstubsdump=9,abstractsdump=9',
+                jobsperbatch      => 'xmlstubsdump=9,abstractsdump=9,xmlpagelogsdump=9',
                 keep              => '7',
                 chunksEnabled     => '1',
                 chunksForAbstract => '27',
+                chunksForPagelogs => '27',
                 recombineHistory  => '0',
                 checkpointTime    => '720',
                 revsPerJob        => '1500000',
@@ -109,10 +111,11 @@ class snapshot::dumps::configs(
             wd => {
                 dblist            => "${dblistsdir}/wikidatawiki.dblist",
                 skipdblist        => "${dblistsdir}/skipnone.dblist",
-                jobsperbatch      => 'xmlstubsdump=9,abstractsdump=9',
+                jobsperbatch      => 'xmlstubsdump=9,abstractsdump=9,xmlpagelogsdump=9',
                 keep              => '7',
                 chunksEnabled     => '1',
                 chunksForAbstract => '27',
+                chunksForPagelogs => '27',
                 recombineHistory  => '0',
                 checkpointTime    => '720',
                 revsPerJob        => '1500000',
@@ -138,6 +141,7 @@ class snapshot::dumps::configs(
     }
 
     # for xml/sql dumps running on dumpsdata host
+    # as well as misc dumps via various cron jobs
     snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
         configtype => 'allwikis',
         config     => $config,
