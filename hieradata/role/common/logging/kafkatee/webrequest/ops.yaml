@@ -1,2 +1,0 @@
-role::logging::kafkatee::webrequest::ops::logstash_host: logstash.svc.eqiad.wmnet
-role::logging::kafkatee::webrequest::ops::logstash_port: 11514
