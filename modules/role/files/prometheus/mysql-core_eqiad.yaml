@@ -2,7 +2,6 @@
     shard: s1
     role: slave
   targets:
-  - db1055:9104
   - db1065:9104
   - db1066:9104
   - db1073:9104
@@ -52,7 +51,6 @@
     shard: s4
     role: slave
   targets:
-  - db1056:9104
   - db1064:9104
   - db1081:9104
   - db1084:9104
@@ -137,6 +135,8 @@
     role: slave
   targets:
   - db1029:9104
+  - db1055:9104
+  - db1056:9104
 - labels:
     shard: x1
     role: master
