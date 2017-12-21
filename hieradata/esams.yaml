@@ -2,4 +2,4 @@ prometheus_nodes:
   - bast3002.wikimedia.org
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "digicert-2016"
+public_tls_unified_cert_vendor: "digicert-2017"
