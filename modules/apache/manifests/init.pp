@@ -12,7 +12,7 @@
 class apache {
     include ::apache::mod::access_compat  # enables allow/deny syntax in 2.4
     include ::apache::mod::filter         # enables AddOutputFilterByType in 2.4
-    include ::apache::monitoring          # send metrics to Diamond and Ganglia
+    include ::apache::monitoring          # send metrics to Diamond
     include ::apache::mpm                 # prefork by default
 
     $conf_types     = ['conf', 'env', 'sites']

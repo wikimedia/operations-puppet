@@ -2,8 +2,7 @@
 #
 # Configures Apache to serve a server status page via mod_status
 # at /server-status (exposed only to requests originating on the
-# server), and provisions metric-gathering modules for Diamond
-# and Ganglia.
+# server), and provisions metric-gathering modules for Diamond.
 #
 class apache::monitoring {
     include ::apache::mod::status
