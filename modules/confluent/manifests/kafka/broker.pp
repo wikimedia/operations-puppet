@@ -37,9 +37,17 @@
 # [*ssl_truststore_password*]
 #   The password for the trust store file.  Default: undef
 #
-# [*ssl_client_auth*]
+# [*ssl_client_auth]
 #   Configures kafka broker to request client authentication.  Must be one of
 #   'none', 'requested', or 'required'.  Default: undef
+#
+# [*ssl_enabled_protocols**]
+#   Comma separated string of enabled ssl protocols that will be accepted from clients
+#  e.g. TLSv1.2,TLSv1.1,TLSv1.  Default: undef
+#
+# [*ssl_cipher_suites*]
+#   Comma separated string of cipher suites that will be accepted from clients.
+#   Default: undef
 #
 # [*log_dirs*]
 #   Array of directories in which the broker will store its received message
@@ -247,6 +255,8 @@ class confluent::kafka::broker(
     $ssl_truststore_location             = undef,
     $ssl_truststore_password             = undef,
     $ssl_client_auth                     = undef,
+    $ssl_enabled_protocols               = undef,
+    $ssl_cipher_suites                   = undef,
 
     $log_dirs                            = ['/var/spool/kafka'],
 

@@ -23,17 +23,8 @@ class profile::cache::kafka::webrequest::jumbo(
 ) {
     $config = kafka_config('jumbo-eqiad')
 
-    # FIXME: Temporary workaround to force varnishkafka to use the TLS port of
-    # Kafka Jumbo. This will probably be handled in the future via kafka_config.rb
-    #$kafka_brokers = $config['brokers']['array']
-    $kafka_brokers = [
-        'kafka-jumbo1001.eqiad.wmnet:9093',
-        'kafka-jumbo1002.eqiad.wmnet:9093',
-        'kafka-jumbo1003.eqiad.wmnet:9093',
-        'kafka-jumbo1004.eqiad.wmnet:9093',
-        'kafka-jumbo1005.eqiad.wmnet:9093',
-        'kafka-jumbo1006.eqiad.wmnet:9093',
-    ]
+    # Array of kafka brokers in jumbo-eqiad with SSL port 9093
+    $kafka_brokers = $config['brokers']['ssl_array']
 
     $topic = "webrequest_${cache_cluster}_test"
     # These used to be parameters, but I don't really see why given we never change
@@ -73,6 +64,7 @@ class profile::cache::kafka::webrequest::jumbo(
 
     $ssl_certificate_secrets_path = 'certificates/varnishkafka/varnishkafka.crt.pem'
     $ssl_certificate_location = "${ssl_location}/varnishkafka.crt.pem"
+    $ssl_cipher_suites = 'ECDHE-ECDSA-AES256-GCM-SHA384'
 
     file { $ssl_location:
         ensure => 'directory',
@@ -145,6 +137,7 @@ class profile::cache::kafka::webrequest::jumbo(
         ssl_key_password             => $ssl_key_password,
         ssl_key_location             => $ssl_key_location,
         ssl_certificate_location     => $ssl_certificate_location,
+        ssl_cipher_suites            => $ssl_cipher_suites,
         require                      => [
             File[$ssl_key_location],
             File[$ssl_certificate_location]

@@ -183,6 +183,9 @@ class profile::kafka::broker(
         $ssl_truststore_secrets_path    = "certificates/kafka_${cluster_name}_broker/truststore.jks"
         $ssl_truststore_location        = "${ssl_location}/truststore.jks"
 
+        $ssl_enabled_protocols          = 'TLSv1.2'
+        $ssl_cipher_suites              = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
+
         file { $ssl_location:
             ensure => 'directory',
             owner  => 'kafka',
@@ -214,6 +217,8 @@ class profile::kafka::broker(
         $security_inter_broker_protocol = undef
         $ssl_keystore_location          = undef
         $ssl_truststore_location        = undef
+        $ssl_enabled_protocols          = undef
+        $ssl_cipher_suites              = undef
     }
 
     # Be nice, and manage /srv/kafka if it is the prefix for kafka data directories.
@@ -283,6 +288,8 @@ class profile::kafka::broker(
         ssl_truststore_location          => $ssl_truststore_location,
         ssl_truststore_password          => $ssl_password,
         ssl_client_auth                  => $ssl_client_auth,
+        ssl_enabled_protocols            => $ssl_enabled_protocols,
+        ssl_cipher_suites                => $ssl_cipher_suites,
 
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
