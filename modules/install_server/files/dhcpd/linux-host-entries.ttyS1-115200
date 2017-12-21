@@ -5754,46 +5754,64 @@ host ocg1003{
 host ores1001 {
     hardware ethernet 18:66:DA:A7:41:91;
     fixed-address ores1001.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1002 {
     hardware ethernet 18:66:DA:A7:2A:8D;
     fixed-address ores1002.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1003 {
     hardware ethernet 18:66:DA:A4:A5:5E;
     fixed-address ores1003.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1004 {
     hardware ethernet 18:66:DA:A7:2A:27;
     fixed-address ores1004.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1005 {
     hardware ethernet 18:66:DA:A7:5D:75;
     fixed-address ores1005.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1006 {
     hardware ethernet 18:66:DA:A2:AF:D6;
     fixed-address ores1006.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1007 {
     hardware ethernet 18:66:DA:A7:77:EA;
     fixed-address ores1007.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1008 {
     hardware ethernet 18:66:DA:A7:61:E5;
     fixed-address ores1008.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores1009 {
     hardware ethernet 18:66:DA:A2:C6:48;
     fixed-address ores1009.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ores2001 {
