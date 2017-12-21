@@ -5,9 +5,6 @@
 # https://github.com/wikimedia/puppet-jmxtrans.
 #
 # == Parameters
-# [*ganglia*]
-#   Ganglia host:port. Default: under
-#
 # [*graphite*]
 #   Graphite host:port. Default: under
 #
@@ -32,12 +29,12 @@
 #   Level at which jmxtrans should log.   Default: info
 #
 # == Usage
-# class { 'confluent::kafka::broker::jmxtrans':
-#     ganglia => 'ganglia.example.org:8649'
+# class { '::confluent::kafka::broker::jmxtrans':
+#     group_prefix => 'kafka.cluster.example',
+#     statsd       => hiera('statsd', undef),
 # }
 #
 class confluent::kafka::broker::jmxtrans(
-    $ganglia        = undef,
     $graphite       = undef,
     $statsd         = undef,
     $outfile        = undef,
@@ -70,7 +67,6 @@ class confluent::kafka::broker::jmxtrans(
 
     # query for metrics from Kafka's JVM
     jmxtrans::metrics::jvm { $jmx:
-        ganglia      => $ganglia,
         graphite     => $graphite,
         statsd       => $statsd,
         outfile      => $outfile,
@@ -335,8 +331,6 @@ class confluent::kafka::broker::jmxtrans(
     jmxtrans::metrics { "kafka-${::hostname}-${jmx_port}":
         jmx                  => $jmx,
         outfile              => $outfile,
-        ganglia              => $ganglia,
-        ganglia_group_name   => "${group_prefix}kafka",
         graphite             => $graphite,
         graphite_root_prefix => "${group_prefix}kafka",
         statsd               => $statsd,
