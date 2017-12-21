@@ -105,7 +105,6 @@ profile::aqs::seeds:
     - aqs1008-b.eqiad.wmnet
     - aqs1009-a.eqiad.wmnet
     - aqs1009-b.eqiad.wmnet
-profile::aqs::logstash_host: logstash.svc.eqiad.wmnet
 profile::aqs::cassandra_default_consistency: localQuorum
 profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet

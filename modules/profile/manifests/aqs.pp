@@ -9,7 +9,7 @@ class profile::aqs (
         $cassandra_user                = hiera('profile::aqs::cassandra_user'),
         $cassandra_password            = hiera('profile::aqs::cassandra_password'),
         $cassandra_seeds               = hiera('profile::aqs::seeds'),
-        $logstash_host                 = hiera('profile::aqs::logstash_host'),
+        $logstash_host                 = hiera('logstash_host'),
         $cassandra_default_consistency = hiera('profile::aqs::cassandra_default_consistency'),
         $cassandra_local_dc            = hiera('profile::aqs::cassandra_local_dc'),
         $statsd_host                   = hiera('profile::aqs::statsd_host'),
