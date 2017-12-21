@@ -1,5 +1,11 @@
 ---
 lowercaseOutputLabelNames: true
 lowercaseOutputName: false
-blacklistObjectNames:
-  - 'Hadoop:service=NodeManager,name=ContainerResource_container_*'
+whitelistObjectNames:
+  - 'Hadoop:service=NodeManager,name=NodeManagerMetrics'
+  - 'Hadoop:service=NodeManager,name=ShuffleMetrics'
+  - 'java.lang:type=ClassLoading'
+  - 'java.lang:type=Compilation'
+  - 'java.lang:type=GarbageCollector*'
+  - 'java.lang:type=Memory'
+  - 'java.lang:type=MemoryPool*'
