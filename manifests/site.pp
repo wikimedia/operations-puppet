@@ -2171,11 +2171,6 @@ node 'ununpentium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# ex-Ganglia Web UI - ready for decom (T183209)
-node 'uranium.wikimedia.org' {
-    role(spare::system)
-}
-
 node /^labvirt100[0-9].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
