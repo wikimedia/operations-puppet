@@ -135,10 +135,7 @@ node 'bromine.eqiad.wmnet' {
 node 'californium.wikimedia.org' {
     role(wmcs::openstack::main::horizon,
           striker::web)
-    include ::standard
-    include ::base::firewall
     include ::ldap::role::client::labs
-
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -906,15 +903,11 @@ node 'kraz.wikimedia.org' {
 
 node 'labpuppetmaster1001.wikimedia.org' {
     role(wmcs::openstack::main::puppetmaster::frontend)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'labpuppetmaster1002.wikimedia.org' {
     role(wmcs::openstack::main::puppetmaster::backend)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -922,15 +915,11 @@ node 'labpuppetmaster1002.wikimedia.org' {
 # and the powerdns auth and recursive services for instances.
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services_primary)
-    include ::standard
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
 node 'labservices1002.wikimedia.org' {
     role(wmcs::openstack::main::services_secondary)
-    include ::standard
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -947,9 +936,7 @@ node /^labtestvirt2003\.codfw\.wmnet$/ {
 }
 
 node 'labtestmetal2001.codfw.wmnet' {
-    # WIP
-    include ::standard
-    include ::base::firewall
+    role(test)
 }
 
 node 'labtestnet2002.codfw.wmnet' {
@@ -957,32 +944,23 @@ node 'labtestnet2002.codfw.wmnet' {
 }
 
 node 'labtestneutron2002.codfw.wmnet' {
-    # WIP
-    include ::standard
-    include ::base::firewall
+    role(test)
 }
 
 node 'labtestnet2001.codfw.wmnet' {
     role(wmcs::openstack::labtest::net)
-    include ::standard
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
     role(wmcs::openstack::labtest::control)
-    include ::standard
-    include ::base::firewall
 }
 
 node 'labtestcontrol2003.wikimedia.org' {
     role(wmcs::openstack::labtestn::control)
-    include ::standard
-    include ::base::firewall
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
     role(wmcs::openstack::labtest::puppetmaster::frontend)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -994,7 +972,6 @@ node 'labtestservices2001.wikimedia.org' {
 
 node /labtestservices200[23]\.wikimedia\.org/ {
     role(wmcs::openstack::labtestn::services)
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1134,14 +1111,11 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 }
 
 node /labcontrol100[34]\.wikimedia\.org/ {
-    include ::base::firewall
-    include ::standard
+    role(test)
 }
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
-
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -1153,8 +1127,6 @@ node 'labcontrol1001.wikimedia.org' {
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
-
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -1164,7 +1136,6 @@ node 'labcontrol1002.wikimedia.org' {
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web,
           mariadb::wikitech)
-    include ::base::firewall
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
@@ -1262,14 +1233,12 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 
 node 'labstore2003.codfw.wmnet' {
     role(labs::nfs::secondary_backup::tools)
-    include ::standard
     # Do not enable yet
     # include ::base::firewall
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(labs::nfs::secondary_backup::misc)
-    include ::standard
     # Do not enable yet
     # include ::base::firewall
 }
@@ -2019,9 +1988,6 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 node 'silver.wikimedia.org' {
     role(wmcs::openstack::main::wikitech,
           mariadb::wikitech)
-    include ::base::firewall
-    include ::standard
-
     interface::add_ip6_mapped { 'main': }
 }
 

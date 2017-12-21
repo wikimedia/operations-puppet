@@ -1,5 +1,6 @@
 class role::labs::nfs::secondary_backup::tools {
 
+    include ::standard
     include role::labs::nfs::secondary_backup::base
 
     file { '/srv/backup/tools':
