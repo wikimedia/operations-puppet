@@ -8,6 +8,7 @@ class role::labs::nfs::secondary(
         description => 'NFS secondary share cluster',
     }
 
+    include ::standard
     require ::profile::openstack::main::clientlib
     require ::profile::openstack::main::observerenv
     include labstore::fileserver::secondary
