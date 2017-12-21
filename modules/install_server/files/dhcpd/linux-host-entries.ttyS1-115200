@@ -6335,13 +6335,6 @@ host tungsten {
     fixed-address tungsten.eqiad.wmnet;
 }
 
-host uranium {
-    hardware ethernet 84:2b:2b:fb:a6:67;
-    fixed-address uranium.wikimedia.org;
-    option pxelinux.pathprefix "trusty-installer/";
-    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host wasat {
     hardware ethernet 14:02:ec:3f:47:8c;
     fixed-address wasat.codfw.wmnet;
