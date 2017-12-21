@@ -96,6 +96,7 @@ class profile::base(
 
     if os_version('debian >= jessie') {
         class { '::base::initramfs': }
+        class { '::base::auto_restart': }
     }
 
     class { '::base::monitoring::host':
