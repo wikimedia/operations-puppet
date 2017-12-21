@@ -1187,14 +1187,12 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
 node 'labstore1003.eqiad.wmnet' {
     role(labs::nfs::misc)
-    include ::standard
     # Do not enable yet
     # include ::base::firewall
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(labs::nfs::secondary)
-    include ::standard
     # Do not enable yet
     # include ::base::firewall
 }
@@ -1211,14 +1209,12 @@ node /labstore200[1-2]\.codfw\.wmnet/ {
 
 node 'labstore2003.codfw.wmnet' {
     role(labs::nfs::secondary_backup::tools)
-    include ::standard
     # Do not enable yet
     # include ::base::firewall
 }
 
 node 'labstore2004.codfw.wmnet' {
     role(labs::nfs::secondary_backup::misc)
-    include ::standard
     # Do not enable yet
     # include ::base::firewall
 }
