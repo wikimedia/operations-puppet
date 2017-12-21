@@ -10,28 +10,8 @@ class role::thumbor::mediawiki {
     include ::mediawiki::packages::fonts
     include role::statsite
     include ::profile::prometheus::nutcracker_exporter
-
-    class { '::thumbor::nutcracker':
-        thumbor_memcached_servers => hiera('thumbor_memcached_servers_nutcracker')
-    }
-
-    class { '::thumbor': }
-
-    include ::swift::params
-    $swift_account_keys = $::swift::params::account_keys
-
-    class { '::thumbor::swift':
-        swift_key                => $swift_account_keys['mw_thumbor'],
-        swift_sharded_containers => hiera_array('swift::proxy::shard_container_list'),
-    }
-
+    include ::profile::thumbor
     include ::lvs::realserver
-
-    ferm::service { 'thumbor':
-        proto  => 'tcp',
-        port   => '8800',
-        srange => '$DOMAIN_NETWORKS',
-    }
 
     class { '::memcached':
         size => 100,
