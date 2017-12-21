@@ -114,7 +114,7 @@ class profile::kafka::broker(
     $ssl_enabled                       = hiera('profile::kafka::broker::ssl_enabled', false),
     $ssl_password                      = hiera('profile::kafka::broker::ssl_password', undef),
 
-    $log_dirs                          = hiera('profile::kafka::broker::log_dirs', ['/srv/kafka']),
+    $log_dirs                          = hiera('profile::kafka::broker::log_dirs', ['/srv/kafka/data']),
     $auto_leader_rebalance_enable      = hiera('profile::kafka::broker::auto_leader_rebalance_enable', true),
     $log_retention_hours               = hiera('profile::kafka::broker::log_retention_hours', 168),
     $num_recovery_threads_per_data_dir = hiera('profile::kafka::broker::num_recovery_threads_per_data_dir', undef),
