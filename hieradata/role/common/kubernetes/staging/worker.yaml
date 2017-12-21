@@ -25,3 +25,4 @@ profile::calico::kubernetes::calico_version: 2.2.0
 profile::calico::kubernetes::docker::registry: docker-registry.discovery.wmnet
 profile::kubernetes::node::masquerade_all: false
 profile::kubernetes::node::username: 'kubelet'
+profile::kubernetes::node::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging

@@ -13,6 +13,7 @@ class profile::kubernetes::master(
     $ssl_key_path=hiera('profile::kubernetes::master::ssl_cert_path'),
     $authz_mode=hiera('profile::kubernetes::master::authz_mode'),
     $service_account_private_key_file=hiera('profile::kubernetes::master::service_account_private_key_file', undef),
+    $prometheus_url=hiera('profile::kubernetes::master::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
 ){
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
@@ -71,7 +72,7 @@ class profile::kubernetes::master(
     monitoring::check_prometheus { 'apiserver_request_count':
         description     => 'Request count to the API',
         query           => "scalar(sum(rate(apiserver_request_count{instance=\"${::ipaddress}:6443\"}[5m])))",
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/k8s",
+        prometheus_url  => $prometheus_url,
         warning         => 50,
         critical        => 100,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api'],
@@ -85,7 +86,7 @@ class profile::kubernetes::master(
             job=\"k8s-api\",verb\\!=\"WATCH\",instance=\"${::ipaddress}:6443\"}[5m]))/\
             sum(rate(apiserver_request_latencies_summary_count{\
             job=\"k8s-api\",verb\\!=\"WATCH\",instance=\"${::ipaddress}:6443\"}[5m])))",
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/k8s",
+        prometheus_url  => $prometheus_url,
         warning         => 50000,
         critical        => 100000,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api'],
@@ -99,7 +100,7 @@ class profile::kubernetes::master(
             job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m]))/\
             sum(rate(etcd_request_latencies_summary_count{\
             job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m])))",
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/k8s",
+        prometheus_url  => $prometheus_url,
         warning         => 30000,
         critical        => 50000,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api'],

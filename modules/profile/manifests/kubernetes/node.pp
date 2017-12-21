@@ -9,6 +9,7 @@ class profile::kubernetes::node(
   $kubelet_config = hiera('profile::kubernetes::node::kubelet_config', '/etc/kubernetes/kubeconfig'),
   $kubeproxy_config = hiera('profile::kubernetes::node::kubeproxy_config', '/etc/kubernetes/kubeconfig'),
   $prod_firewalls   = hiera('profile::kubernetes::node::prod_firewalls', true),
+  $prometheus_url   = hiera('profile::kubernetes::node::prometheus_url', "http://prometheus.svc.${::site}.wmnet/k8s"),
   ) {
 
     base::expose_puppet_certs { '/etc/kubernetes':
@@ -64,7 +65,7 @@ class profile::kubernetes::node(
             job=\"k8s-node\", instance=\"${::fqdn}\"}[5m]))/ \
             sum(rate(kubelet_runtime_operations_latency_microseconds_count{\
             job=\"k8s-node\", instance=\"${::fqdn}\"}[5m])))",
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/k8s",
+        prometheus_url  => $prometheus_url,
         warning         => 10000,
         critical        => 15000,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-kubelets?orgId=1']
