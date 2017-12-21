@@ -15,7 +15,10 @@ class role::thumbor::mediawiki {
         thumbor_memcached_servers => hiera('thumbor_memcached_servers_nutcracker')
     }
 
-    class { '::thumbor': }
+    class { '::thumbor':
+        logstash_host => hiera('logstash_host'),
+        logstash_port => hiera('logstash_logback_port'),
+    }
 
     include ::swift::params
     $swift_account_keys = $::swift::params::account_keys
