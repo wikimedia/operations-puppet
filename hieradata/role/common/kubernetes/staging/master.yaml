@@ -2,6 +2,8 @@ cluster: kubernetes
 profile::kubernetes::master::accessible_to:
  - kubestage1001.eqiad.wmnet
  - kubestage1002.eqiad.wmnet
+ - prometheus1003.eqiad.wmnet
+ - prometheus1004.eqiad.wmnet
 profile::kubernetes::master::apiserver_count: 1
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
