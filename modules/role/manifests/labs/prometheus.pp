@@ -55,7 +55,7 @@ class role::labs::prometheus {
             'job_name'        => 'pdns_rec',
             'scheme'          => 'http',
             'file_sd_configs' => [
-                { 'files' => [ "${targets_path}/pdns_*.yaml" ] }
+                { 'files' => [ "${targets_path}/pdns-rec_*.yaml" ] }
             ],
         },
     ]
@@ -85,8 +85,8 @@ class role::labs::prometheus {
         port       => '9192',
     }
 
-    prometheus::class_config{ "pdns_rec_${::site}":
-        dest       => "${targets_path}/pdns_rec_${::site}.yaml",
+    prometheus::class_config{ "pdns-rec_${::site}":
+        dest       => "${targets_path}/pdns-rec_${::site}.yaml",
         site       => $::site,
         class_name => 'role::wmcs::openstack::main::services_primary',
         port       => '9199',
