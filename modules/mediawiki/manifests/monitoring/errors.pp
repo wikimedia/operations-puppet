@@ -1,7 +1,7 @@
 # == Class: mediawiki::monitoring::errors
 #
 # Configures a metric module that listens on a UDP port for MediaWiki
-# fatal and exception log messages and reports them to Ganglia.
+# fatal and exception log messages and reports them to Statsd.
 #
 # === Parameters
 #
