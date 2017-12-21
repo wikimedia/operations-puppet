@@ -13,9 +13,6 @@
 # [*jmx_port*]
 #   Kafka MirrorMaker JMX port
 #
-# [*ganglia*]
-#   Ganglia host:port
-#
 # [*graphite*]
 #   Graphite host:port
 #
@@ -45,7 +42,6 @@
 #
 define confluent::kafka::mirror::jmxtrans(
     $jmx_port       = 9997,
-    $ganglia        = undef,
     $graphite       = undef,
     $statsd         = undef,
     $outfile        = undef,
@@ -59,7 +55,6 @@ define confluent::kafka::mirror::jmxtrans(
 
     # query for metrics from Kafka's JVM
     jmxtrans::metrics::jvm { $jmx:
-        ganglia      => $ganglia,
         graphite     => $graphite,
         statsd       => $statsd,
         outfile      => $outfile,
@@ -317,8 +312,6 @@ define confluent::kafka::mirror::jmxtrans(
     jmxtrans::metrics { "kafka-mirror-${title}-${jmx_port}":
         jmx                  => $jmx,
         outfile              => $outfile,
-        ganglia              => $ganglia,
-        ganglia_group_name   => "${group_prefix}kafka-mirror",
         graphite             => $graphite,
         graphite_root_prefix => "${group_prefix}kafka-mirror",
         statsd               => $statsd,
