@@ -975,11 +975,15 @@ host db1054 {
 host db1055 {
     hardware ethernet 90:B1:1C:2A:9B:F4;
     fixed-address db1055.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1056 {
     hardware ethernet 90:B1:1C:2A:B0:06;
     fixed-address db1056.eqiad.wmnet;
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db1059 {
