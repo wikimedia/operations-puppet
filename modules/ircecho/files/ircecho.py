@@ -15,6 +15,8 @@ import threading
 import random
 import string
 import re
+import sys
+
 import irc.client  # for exceptions.
 from optparse import OptionParser
 from irc.bot import SingleServerIRCBot
@@ -187,4 +189,7 @@ bot = EchoBot(chans, nickname, server)
 global reader
 reader = EchoReader(options.infile)
 reader.start()
-bot.start()
+try:
+    bot.start()
+except Exception:
+    sys.exit(1)
