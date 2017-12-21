@@ -25,13 +25,15 @@ class profile::openstack::base::puppetmaster::common(
     }
 
     class { '::openstack::puppet::master::encapi':
-        horizon_host   => $horizon_host,
-        mysql_host     => $encapi_db_host,
-        mysql_db       => $encapi_db_name,
-        mysql_username => $encapi_db_user,
-        mysql_password => $encapi_db_pass,
-        statsd_host    => $statsd_host,
-        statsd_prefix  => $encapi_statsd_prefix,
+        horizon_host        => $horizon_host,
+        mysql_host          => $encapi_db_host,
+        mysql_db            => $encapi_db_name,
+        mysql_username      => $encapi_db_user,
+        mysql_password      => $encapi_db_pass,
+        statsd_host         => $statsd_host,
+        statsd_prefix       => $encapi_statsd_prefix,
+        labs_instance_range => $labs_instance_range,
+        all_puppetmasters   => $all_puppetmasters,
     }
 
     # Update git checkout.  This is done via a cron
