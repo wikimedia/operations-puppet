@@ -1570,13 +1570,11 @@ node /^mw129[3-8]\.eqiad\.wmnet$/ {
 # ROW A eqiad jobrunners
 node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
 }
 
 # ROW C eqiad jobrunners
 node /^mw133[4-7]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
 }
 
 
@@ -1594,7 +1592,6 @@ node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
 # ROW A eqiad jobrunners
 node /^mw13(0[89]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
 }
 
 # ROW A videoscaler
@@ -1647,7 +1644,6 @@ node 'mw2152.codfw.wmnet' {
 #mw2153-62 are jobrunners
 node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
 }
 
 #mw2163-mw2199 are appservers
@@ -1685,7 +1681,6 @@ node 'mw2246.codfw.wmnet' {
 # mw2247-2250 are jobrunners
 node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
-    include ::base::firewall
 }
 
 #mw2251-2253 are api-appservers
