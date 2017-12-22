@@ -113,7 +113,7 @@ while [ 1 ]; do
 
     # rsync of xml/sql dumps for public wikis
     for dest in $xmlremotedirs_list; do
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/public/*wik* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/*wik* "$dest" > /dev/null 2>&1
 
 	# send statusfiles tarball over last, remote can unpack it when it notices the arrival
 	# this way, content of status and html files always reflects dump output already
