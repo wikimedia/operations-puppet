@@ -16,7 +16,7 @@
     ProxyRequests Off
     ProxyVia Off
     ProxyPreserveHost On
-    ProxyPass <%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix -%>/ retry=0 nocanon
+    ProxyPass <%= @prefix -%> http://127.0.0.1:<%= @http_port -%><%= @prefix -%> retry=0 nocanon
     ProxyPassReverse <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix -%>
 
     ErrorLog /var/log/apache2/<%= @sitename_jenkins %>.error.log
