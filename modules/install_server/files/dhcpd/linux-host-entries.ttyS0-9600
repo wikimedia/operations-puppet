@@ -6,29 +6,41 @@
 host cam1-a-eqiad {
     hardware ethernet 00:40:8c:a2:61:40;
     fixed-address cam1-a-eqiad.eqiad.wmnet;
+    option pxelinux.pathprefix jessie-installer
+    filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cam2-a-eqiad {
     hardware ethernet 00:40:8c:a2:68:ef;
     fixed-address cam2-a-eqiad.eqiad.wmnet;
+    option pxelinux.pathprefix jessie-installer
+    filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cam1-a-b-eqiad {
     hardware ethernet 00:40:8c:a2:3b:6e;
     fixed-address cam1-a-b-eqiad.eqiad.wmnet;
+    option pxelinux.pathprefix jessie-installer
+    filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cam2-a-b-eqiad {
     hardware ethernet 00:40:8c:a2:68:fa;
     fixed-address cam2-a-b-eqiad.eqiad.wmnet;
+    option pxelinux.pathprefix jessie-installer
+    filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cam1-b-c-eqiad {
     hardware ethernet 00:40:8c:a2:69:01;
     fixed-address cam1-b-c-eqiad.eqiad.wmnet;
+    option pxelinux.pathprefix jessie-installer
+    filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cam2-b-c-eqiad {
     hardware ethernet 00:40:8c:a2:61:25;
     fixed-address cam2-b-c-eqiad.eqiad.wmnet;
+    option pxelinux.pathprefix jessie-installer
+    filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
 }
