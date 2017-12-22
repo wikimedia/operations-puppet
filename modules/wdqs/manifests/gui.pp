@@ -32,7 +32,7 @@ class wdqs::gui(
     }
 
     # List of namespace aliases in format:
-    # ALIAS REAL_NAME
+    # ALIAS REAL_NAME;
     # This map is generated manually or by category update script
     file { $alias_map:
         ensure => present,
@@ -59,13 +59,31 @@ class wdqs::gui(
         mode    => '0644',
     }
 
+    file { '/usr/local/bin/cronUtils.sh':
+        ensure  => present,
+        source  => 'puppet:///modules/wdqs/cron/cronUtils.sh',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => File['/etc/wdqs/gui_vars.sh'],
+    }
+
     file { '/usr/local/bin/reloadCategories.sh':
         ensure  => present,
         source  => 'puppet:///modules/wdqs/cron/reloadCategories.sh',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => File['/etc/wdqs/gui_vars.sh'],
+        require => File['/usr/local/bin/cronUtils.sh'],
+    }
+
+    file { '/usr/local/bin/reloadDCAT-AP.sh':
+        ensure  => present,
+        source  => 'puppet:///modules/wdqs/cron/reloadDCAT-AP.sh',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => File['/usr/local/bin/cronUtils.sh'],
     }
 
     $cron_log = "${log_dir}/reloadCategories.log"
@@ -88,9 +106,29 @@ class wdqs::gui(
         hour    => fqdn_rand(2),
     }
 
+    cron { 'reload-dcatap':
+        ensure  => present,
+        command => "/usr/local/bin/reloadDCAT-AP.sh >> ${log_dir}/dcat.log",
+        user    => $username,
+        weekday => 4,
+        minute  => 0,
+        hour    => 10,
+    }
+
     logrotate::rule { 'wdqs-reload-categories':
         ensure       => present,
         file_glob    => $cron_log,
+        frequency    => 'monthly',
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 3,
+        compress     => true,
+        su           => "${username} wikidev",
+    }
+
+    logrotate::rule { 'wdqs-reload-dcat':
+        ensure       => present,
+        file_glob    => "${log_dir}/dcatap.log",
         frequency    => 'monthly',
         missing_ok   => true,
         not_if_empty => true,
