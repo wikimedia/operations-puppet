@@ -10,7 +10,7 @@ class role::deployment::mediawiki(
     include ::mediawiki::packages::php5
     include ::profile::mediawiki::nutcracker
     include ::profile::conftool::client
-    include ::scap::master
+    include ::profile::scap::master
     include ::profile::scap::dsh
     include ::scap::ferm
 

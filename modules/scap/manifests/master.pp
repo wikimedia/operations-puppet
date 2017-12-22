@@ -6,6 +6,7 @@ class scap::master(
     $common_source_path = '/srv/mediawiki-staging',
     $patches_path       = '/srv/patches',
     $rsync_host         = "deployment.${::site}.wmnet",
+    $run_l10nupdate     = false,
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
@@ -52,11 +53,9 @@ class scap::master(
         hosts_allow => $::network::constants::special_hosts[$::realm]['deployment_hosts'];
     }
 
-    # TODO: pass this down from a profile (or convert this to a profile!)
-    $main_deployment_server = hiera('scap::deployment_server')
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
-        run_l10nupdate   => false,
+        run_l10nupdate   => $run_l10nupdate,
     }
 
     file { '/usr/local/bin/scap-master-sync':
