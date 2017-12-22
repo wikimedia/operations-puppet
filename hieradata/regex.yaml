@@ -186,9 +186,6 @@ lvs_temp_bgp_disable:
   __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
   profile::pybal::bgp: no
 
-lvs_ulsfo:
-  __regex: !ruby/regexp /^lvs4.*\.ulsfo\.wmnet$/
-
 maps_test:
   __regex: !ruby/regexp /^maps-test200[1-4]\.codfw\.wmnet$/
   cassandra::target_version: '2.2'
