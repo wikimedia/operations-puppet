@@ -56,7 +56,7 @@ class scap::master(
     $main_deployment_server = hiera('scap::deployment_server')
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
-        run_l10nupdate   => ($main_deployment_server == $::fqdn)
+        run_l10nupdate   => false,
     }
 
     file { '/usr/local/bin/scap-master-sync':
