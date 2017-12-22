@@ -21,7 +21,7 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 
 # optimized mkfs for all cache nodes
 case `hostname` in \
-	cp[1234]*)
+	cp[1-9]*)
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
 		;; \
