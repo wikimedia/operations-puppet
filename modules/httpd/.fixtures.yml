@@ -1,0 +1,5 @@
+fixtures:
+    symlinks:
+        httpd: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"
