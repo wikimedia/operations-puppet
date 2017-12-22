@@ -1,0 +1,2 @@
+profile::librenms::sitename: 'librenms.wikimedia.org'
+profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
