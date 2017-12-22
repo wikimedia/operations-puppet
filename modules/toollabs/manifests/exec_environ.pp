@@ -25,6 +25,7 @@ class toollabs::exec_environ {
         'language-pack-de',
         'language-pack-en',
         'language-pack-es',
+        'language-pack-eu',            # T183591
         'language-pack-fr',
         'language-pack-he',
         'language-pack-hi',
