@@ -935,3 +935,6 @@ metawiki	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
 rowiki	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
 ukwiki	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
 viwiki	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
+centralauth	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
+meta	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
+
