@@ -23,6 +23,7 @@ class ores::base(
                     'aspell-sv',
                     'aspell-ro',
                     'hunspell-vi',
+                    'myspell-ca',
                     'myspell-cs',
                     'myspell-de-at', 'myspell-de-ch', 'myspell-de-de',
                     'myspell-en-au', 'myspell-en-gb',
