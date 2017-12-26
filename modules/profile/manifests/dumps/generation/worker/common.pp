@@ -1,4 +1,5 @@
 class profile::dumps::generation::worker::common(
+    $nfs_server = hiera('dumps_nfs_server')
 ) {
     # mw packages and dependencies
     require ::profile::mediawiki::scap_proxy
@@ -11,7 +12,7 @@ class profile::dumps::generation::worker::common(
 
     snapshot::dumps::nfsmount { 'dumpsdatamount':
         mountpoint => $xmldumpsmount,
-        server     => 'dumpsdata1001.eqiad.wmnet',
+        server     => $nfs_server,
     }
     # dataset server config files,
     # stages files, dblists, html templates
