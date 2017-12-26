@@ -1,12 +1,11 @@
 # filtertags: labs-project-wikilabels
 class role::wikilabels::server {
-    class { 'wikilabels::web':
-        branch => 'deploy',
-    }
+
+    system::role { $name: }
 
     include ::wikilabels::session
 
-    class { '::wikilabels::db_proxy':
-        server => 'pgsql.eqiad.wmnet',
+    class { '::profile::wikilabels::server':
+        branch => 'deploy',
     }
 }
