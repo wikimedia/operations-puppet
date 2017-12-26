@@ -1,12 +1,6 @@
 class dumps::nfs(
     $clients = undef,
-    $statd_port = undef,
-    $statd_out = undef,
-    $lockd_udp = undef,
-    $lockd_tcp = undef,
-    $mountd_port = undef,
     $path = undef,
-    $portmapper_port = undef,
 ) {
     file { '/etc/exports':
         mode    => '0444',
@@ -44,51 +38,7 @@ class dumps::nfs(
     }
 
     kmod::options { 'lockd':
-        options => "nlm_udpport=${lockd_udp} nlm_tcpport=${lockd_tcp}",
-    }
-
-    include ::network::constants
-
-    ferm::service { 'dumps_nfs':
-        proto  => 'tcp',
-        port   => '2049',
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
-    ferm::service { 'nfs_rpc_mountd':
-        proto  => 'tcp',
-        port   => $mountd_port,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
-    ferm::service { 'nfs_rpc_statd':
-        proto  => 'tcp',
-        port   => $statd_port,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
-    ferm::service { 'nfs_portmapper_udp':
-        proto  => 'udp',
-        port   => $portmapper_port,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
-    ferm::service { 'nfs_portmapper_tcp':
-        proto  => 'tcp',
-        port   => $portmapper_port,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
-    ferm::service { 'nfs_lockd_udp':
-        proto  => 'udp',
-        port   => $lockd_udp,
-        srange => '$PRODUCTION_NETWORKS',
-    }
-
-    ferm::service { 'nfs_lockd_tcp':
-        proto  => 'tcp',
-        port   => $lockd_tcp,
-        srange => '$PRODUCTION_NETWORKS',
+        options => "nlm_udpport=32768 nlm_tcpport=32769",
     }
 
     monitoring::service { 'nfs':
