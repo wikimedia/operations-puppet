@@ -1,5 +1,6 @@
 class profile::dumps::generation::worker::common(
-    $nfs_server = hiera('dumps_nfs_server')
+    $nfs_server = hiera('dumps_nfs_server'),
+    $managed_subdirs = hiera('dumps_managed_subdirs'),
 ) {
     # mw packages and dependencies
     require ::profile::mediawiki::scap_proxy
@@ -11,8 +12,11 @@ class profile::dumps::generation::worker::common(
     class { '::dumpsuser': }
 
     snapshot::dumps::nfsmount { 'dumpsdatamount':
-        mountpoint => $xmldumpsmount,
-        server     => $nfs_server,
+        mountpoint      => $xmldumpsmount,
+        server          => $nfs_server,
+        managed_subdirs => $managed_subdirs,
+        user            => 'dumpsgen'
+        group           => 'dumpsgen',
     }
     # dataset server config files,
     # stages files, dblists, html templates
