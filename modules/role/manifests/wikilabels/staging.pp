@@ -1,12 +1,11 @@
 # filtertags: labs-project-wikilabels
 class role::wikilabels::staging {
-    class { 'wikilabels::web':
-        branch => 'master',
-    }
+
+    system::role { $name: }
 
     include ::wikilabels::session
 
-    class { '::wikilabels::db_proxy':
-        server => 'pgsql.eqiad.wmnet',
+    class { '::profile::wikilabels::server':
+        branch = 'master',
     }
 }
