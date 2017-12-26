@@ -351,6 +351,7 @@ dumps_web_rsync_server_clients:
       - odysseus.ip6.fi.muni.cz
       - poincare.acc.umu.se
 dumps_nfs_server: dumpsdata1001.eqiad.wmnet
+dumps_managed_subdirs: []
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
