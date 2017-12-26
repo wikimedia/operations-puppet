@@ -8,13 +8,15 @@ define snapshot::dumps::nfsmount(
         ensure => 'directory',
     }
 
-    mount { $mountpoint:
-        ensure   => 'mounted',
-        device   => "${server}:/data",
-        fstype   => 'nfs',
-        name     => $mountpoint,
-        options  => 'bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3',
-        require  => File[$mountpoint],
-        remounts => false,
+    if ($server != undef) {
+        mount { $mountpoint:
+            ensure   => 'mounted',
+            device   => "${server}:/data",
+            fstype   => 'nfs',
+            name     => $mountpoint,
+            options  => 'bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3',
+            require  => File[$mountpoint],
+            remounts => false,
+        }
     }
 }

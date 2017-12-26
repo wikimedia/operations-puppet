@@ -350,6 +350,7 @@ dumps_web_rsync_server_clients:
     external:
       - odysseus.ip6.fi.muni.cz
       - poincare.acc.umu.se
+dumps::nfs_server: dumpsdata1001.eqiad.wmnet
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
