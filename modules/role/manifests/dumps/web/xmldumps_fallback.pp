@@ -8,7 +8,7 @@ class role::dumps::web::xmldumps_fallback {
     include ::profile::dumps::web::rsync_server
     include ::profile::dumps::web::dumpstatusfiles_sync
     include ::profile::dumps::rsyncer_peer
-    include ::profile::dumps::nfs::all
+    include ::profile::dumps::nfs
     include ::profile::dumps::web::cleanup
     include ::profile::dumps::web::cleanup_miscdatasets
 
