@@ -6,7 +6,7 @@ class role::dumps::generation::server::fallback {
     include ::profile::dumps::generation::server::fallback
     include ::profile::dumps::generation::server::rsync
     include ::profile::dumps::rsyncer_peer
-    include ::profile::dumps::nfs::generation
+    include ::profile::dumps::nfs
     include ::profile::dumps::web::dumpstatusfiles_sync
     include ::profile::dumps::web::cleanup
 }

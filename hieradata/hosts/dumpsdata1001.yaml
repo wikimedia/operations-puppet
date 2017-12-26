@@ -5,3 +5,5 @@ profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 
 profile::dumps::cleanup::isreplica: false
 profile::dumps::cleanup::labscopy: false
+
+profile::dumps::nfs::clients_wanted: 'generation'
