@@ -9,7 +9,7 @@ class role::dumps::web::xmldumps_active {
     include ::profile::dumps::web::dumpstatusfiles_sync
     include ::profile::dumps::rsyncer
     include ::profile::dumps::fetcher
-    include ::profile::dumps::nfs::all
+    include ::profile::dumps::nfs
     include ::profile::dumps::web::cleanup
     include ::profile::dumps::web::cleanup_miscdatasets
 

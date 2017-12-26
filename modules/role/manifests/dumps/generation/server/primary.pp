@@ -4,6 +4,6 @@ class role::dumps::generation::server::primary {
     include ::standard
     include ::profile::base::firewall
     include ::profile::dumps::generation::server::primary
-    include ::profile::dumps::nfs::generation
+    include ::profile::dumps::nfs
     include ::profile::dumps::web::cleanup
 }
