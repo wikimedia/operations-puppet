@@ -290,10 +290,7 @@ node /^(diadem|dysprosium)\.wikimedia\.org$/ {
 }
 
 node 'dataset1001.wikimedia.org' {
-
     role(dumps::web::xmldumps_active)
-
-    interface::add_ip6_mapped { 'main': }
 }
 
 # MariaDB 10
@@ -1445,10 +1442,7 @@ node 'multatuli.wikimedia.org' {
 
 # also see dataset1001
 node 'ms1001.wikimedia.org' {
-
     role(dumps::web::xmldumps_fallback)
-
-    interface::add_ip6_mapped { 'main': }
 }
 
 node 'ms1002.eqiad.wmnet' {

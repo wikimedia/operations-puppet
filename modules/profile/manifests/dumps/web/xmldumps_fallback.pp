@@ -4,6 +4,8 @@ class profile::dumps::web::xmldumps_fallback(
     $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::miscdumpsdir'),
 ) {
+    interface::add_ip6_mapped { 'main': }
+
     require profile::dumps::web::nginx
     class { '::dumpsuser': }
 
