@@ -1,4 +1,4 @@
-class profile::dumps::generation::server::fallback(
+class profile::dumps::generation::server::common(
     $datadir = hiera('profile::dumps::basedatadir'),
     $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::miscdumpsdir'),
