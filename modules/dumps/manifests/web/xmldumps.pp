@@ -17,10 +17,6 @@ class dumps::web::xmldumps(
         webgroup        => $webgroup,
     }
 
-    class { '::nginx':
-        variant => 'extras',
-    }
-
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
     letsencrypt::cert::integrated { 'dumps':

@@ -4,6 +4,7 @@ class profile::dumps::web::xmldumps_fallback(
     $xmldumpsdir = hiera('profile::dumps::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::miscdumpsdir'),
 ) {
+    require profile::dumps::web::nginx
     class { '::dumpsuser': }
 
     class {'::dumps::web::xmldumps':

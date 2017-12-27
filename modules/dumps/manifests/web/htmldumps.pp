@@ -22,12 +22,6 @@ class dumps::web::htmldumps(
         group  => 'htmldumps-admin',
     }
 
-    # don't know if we want bw limits etc so let's slap 'extras'
-    # on there
-    class { '::nginx':
-        variant => 'extras',
-    }
-
     nginx::site { 'htmldumps':
         content => template('dumps/web/htmldumps/nginx.conf.erb'),
         notify  => Service['nginx'],
