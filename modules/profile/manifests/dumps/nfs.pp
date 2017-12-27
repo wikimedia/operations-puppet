@@ -11,6 +11,8 @@ class profile::dumps::nfs(
         $clients = {'generation' => pick($clients_all['snapshots'], [])}
     } elsif ($clients_wanted == 'public') {
         $clients = {'public' => pick($clients_all['other'], [])}
+    } else {
+        $clients = {}
     }
 
     $lockd_udp       = '32768'
