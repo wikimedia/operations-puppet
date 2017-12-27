@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: ArielGlenn <ariel@wikimedia.org>
+Submitted-by: ArielGlenn <ariel@wikimedia.org>
+Submitted-at: Wed, 27 Dec 2017 11:40:10 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/400391
+Project: operations/puppet
+Branch: refs/heads/production
