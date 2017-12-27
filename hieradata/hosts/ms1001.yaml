@@ -6,7 +6,7 @@ profile::dumps::miscdumpsdir: '/data/xmldatadumps/public/other'
 profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
 profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
 
-profile::dumps::nfs::clients_wanted: 'all'
+profile::dumps::nfs::clients_wanted: 'public'
 
 profile::dumps::rsyncer:
   dumps_user: 'dumpsgen'
