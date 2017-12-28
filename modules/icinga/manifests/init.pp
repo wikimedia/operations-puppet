@@ -181,6 +181,16 @@ class icinga(
         group  => 'root',
         mode   => '0550',
     }
+
+    # script to manually send SMS to Icinga contacts (T82937)
+    file { '/usr/local/bin/icinga-sms':
+        ensure => present,
+        source => 'puppet:///modules/icinga/icinga-sms.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
     # Purge unmanaged nagios_host and nagios_services resources
     # This will only happen for non exported resources, that is resources that
     # are declared by the icinga host itself
