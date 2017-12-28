@@ -14,7 +14,6 @@ class mediawiki::packages {
 
     package { [
         'python-imaging',
-        'python-pygments',
         'tidy',
     ]:
         ensure => present,
