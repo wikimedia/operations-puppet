@@ -14,10 +14,15 @@ class mediawiki::packages {
 
     package { [
         'python-imaging',
-        'python-pygments',
         'tidy',
     ]:
         ensure => present,
+    }
+
+    # Pygments uses Python 3, and bundles
+    # its own copy of the library.
+    package { 'python3':
+      ensure => present,
     }
 
     # Pear
