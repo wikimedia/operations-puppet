@@ -14,10 +14,11 @@ configfile="${confsdir}/wikidump.conf.dumps"
 today=`date +'%Y%m%d'`
 daysToKeep=70
 
-args="output:temp"
+args="output:temp;tools:php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 tempDir=`getsetting "$results" "output" "temp"` || exit 1
+php=`getsetting "$results" "tools" "php"` || exit 1
 
 for settingname in "tempDir"; do
     checkval "$settingname" "${!settingname}"
@@ -37,5 +38,5 @@ function pruneOldLogs {
 }
 
 function runDcat {
-	php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
+	$php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
 }
