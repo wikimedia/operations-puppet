@@ -1,6 +1,7 @@
 class profile::dumps::generation::worker::common(
     $nfs_server = hiera('dumps_nfs_server'),
     $managed_subdirs = hiera('dumps_managed_subdirs'),
+    $php = hiera('snapshot::dumps::php'),
 ) {
     # mw packages and dependencies
     require ::profile::mediawiki::scap_proxy
@@ -29,7 +30,7 @@ class profile::dumps::generation::worker::common(
         cronsdir           =>  "${xmldumpsmount}/otherdumps",
         apachedir          => '/srv/mediawiki',
     }
-    class { '::snapshot::dumps': }
+    class { '::snapshot::dumps': php => $php}
 
     # scap3 deployment of dump scripts
     scap::target { 'dumps/dumps':

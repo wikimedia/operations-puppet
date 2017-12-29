@@ -11,7 +11,7 @@ get_db_host() {
 
     multiversionscript="${apachedir}/multiversion/MWScript.php"
     if [ -e "$multiversionscript" ]; then
-        host=`php -q "$multiversionscript" extensions/CentralAuth/maintenance/getCentralAuthDBInfo.php --wiki="aawiki"` || (echo $host >& 2; host="")
+        host=`$php -q "$multiversionscript" extensions/CentralAuth/maintenance/getCentralAuthDBInfo.php --wiki="aawiki"` || (echo $host >& 2; host="")
     fi
     if [ -z "$host" ]; then
         echo "can't locate db server for centralauth, exiting." >& 2
@@ -25,7 +25,7 @@ get_db_user() {
 
     multiversionscript="${apachedir}/multiversion/MWScript.php"
     if [ -e "$multiversionscript" ]; then
-        db_user=`echo 'echo $wgDBadminuser;' | php "$multiversionscript" eval.php aawiki`
+        db_user=`echo 'echo $wgDBadminuser;' | $php "$multiversionscript" eval.php aawiki`
     fi
     if [ -z "$db_user" ]; then
         echo "can't get db user name, exiting." >& 2
@@ -39,7 +39,7 @@ get_db_pass() {
 
     multiversionscript="${apachedir}/multiversion/MWScript.php"
     if [ -e "$multiversionscript" ]; then
-        db_pass=`echo 'echo $wgDBadminpassword;' | php "$multiversionscript" eval.php aawiki`
+        db_pass=`echo 'echo $wgDBadminpassword;' | $php "$multiversionscript" eval.php aawiki`
     fi
     if [ -z "$db_pass" ]; then
         echo "can't get db password, exiting." >& 2
@@ -97,11 +97,12 @@ while [ $# -gt 0 ]; do
     fi
 done
 
-args="tools:gzip,mysqldump"
+args="tools:gzip,mysqldump,php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
 mysqldump=`getsetting "$results" "tools" "mysqldump"` || exit 1
+php=`getsetting "$results" "tools" "php"` || exit 1
 
 for settingname in "gzip" "mysqldump"; do
     checkval "$settingname" "${!settingname}"

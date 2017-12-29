@@ -1,4 +1,6 @@
-class snapshot::dumps::configs {
+class snapshot::dumps::configs(
+    $php = undef,
+) {
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $apachedir = $snapshot::dumps::dirs::apachedir
     $confsdir = $snapshot::dumps::dirs::confsdir
