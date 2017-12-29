@@ -34,8 +34,7 @@ skipprivatetables=1
 max_allowed_packet=32M
 
 [tools]
-php=/usr/bin/php5
-#php=/usr/bin/php
+php=<%= scope.lookupvar('snapshot::dumps::configs::php') %>
 mysql=/usr/bin/mysql
 mysqldump=/usr/bin/mysqldump
 gzip=/bin/gzip

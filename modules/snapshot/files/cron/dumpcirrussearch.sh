@@ -40,12 +40,13 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-args="wiki:dblist,privatelist;tools:gzip"
+args="wiki:dblist,privatelist;tools:gzip,php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 allList=`getsetting "$results" "wiki" "dblist"` || exit 1
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
+php=`getsetting "$results" "tools" "php"` || exit 1
 
 for settingname in "allList" "privateList" "gzip"; do
     checkval "$settingname" "${!settingname}"
@@ -82,9 +83,9 @@ cat $allList | while read wiki; do
 			filename="$wiki-$today-cirrussearch-$type"
 			targetFile="$targetDir/$filename.json.gz"
 			if [ "$dryrun" == "true" ]; then
-				echo "php $multiVersionScript extensions/CirrusSearch/maintenance/dumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
+				echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/dumpIndex.php --wiki=$wiki --indexType=$type 2> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
 			else
-				php $multiVersionScript \
+				$php $multiVersionScript \
 					extensions/CirrusSearch/maintenance/dumpIndex.php \
 					--wiki=$wiki \
 					--indexType=$type \
@@ -104,9 +105,9 @@ for cluster in $clusters; do
 	filename="cirrus-metastore-$cluster-$today"
 	targetFile="$targetDir/$filename.json.gz"
 	if [ "$dryrun" == "true" ]; then
-		echo "php $multiVersionScript extensions/CirrusSearch/maintenance/metastore.php --wiki=metawiki --dump --cluster=$cluster 2>> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
+		echo "$php $multiVersionScript extensions/CirrusSearch/maintenance/metastore.php --wiki=metawiki --dump --cluster=$cluster 2>> /var/log/cirrusdump/cirrusdump-$filename.log | $gzip > $targetFile"
 	else
-		php $multiVersionScript \
+		$php $multiVersionScript \
 			extensions/CirrusSearch/maintenance/metastore.php \
 			--wiki=metawiki \
 			--dump \

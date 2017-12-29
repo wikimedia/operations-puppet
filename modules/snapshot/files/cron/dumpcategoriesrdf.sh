@@ -52,11 +52,12 @@ if [ ! -f "$configFile" ]; then
 	exit 1
 fi
 
-args="wiki:privatelist;tools:gzip"
+args="wiki:privatelist;tools:gzip,php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configFile" --args "$args"`
 
 privateList=`getsetting "$results" "wiki" "privatelist"` || exit 1
 gzip=`getsetting "$results" "tools" "gzip"` || exit 1
+php=`getsetting "$results" "tools" "php"` || exit 1
 
 for settingname in "gzip" "privateList"; do
     checkval "$settingname" "${!settingname}"
@@ -93,9 +94,9 @@ cat "$dbList" | while read wiki; do
 		targetFile="${targetDir}/${filename}.${dumpFormat}.gz"
 		tsFile="${timestampsDir}/${wiki}-categories.last"
 		if [ "$dryrun" == "true" ]; then
-			echo "php $multiVersionScript maintenance/dumpCategoriesAsRdf.php --wiki=$wiki --format=$dumpFormat 2> /var/log/categoriesrdf/${filename}.log | $gzip > $targetFile"
+			echo "$php $multiVersionScript maintenance/dumpCategoriesAsRdf.php --wiki=$wiki --format=$dumpFormat 2> /var/log/categoriesrdf/${filename}.log | $gzip > $targetFile"
 		else
-			php "$multiVersionScript" maintenance/dumpCategoriesAsRdf.php --wiki="$wiki" --format="$dumpFormat" 2> "/var/log/categoriesrdf/${filename}.log" | "$gzip" > "$targetFile"
+			$php "$multiVersionScript" maintenance/dumpCategoriesAsRdf.php --wiki="$wiki" --format="$dumpFormat" 2> "/var/log/categoriesrdf/${filename}.log" | "$gzip" > "$targetFile"
 			echo "$today" > "$tsFile"
 		fi
 	fi
