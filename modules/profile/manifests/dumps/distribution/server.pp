@@ -3,6 +3,7 @@
 # or via web or rsync to mirrors
 
 class profile::dumps::distribution::server {
+
     class { '::dumpsuser': }
 
     file { '/srv/dumps':

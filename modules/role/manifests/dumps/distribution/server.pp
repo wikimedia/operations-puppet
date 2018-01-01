@@ -5,10 +5,10 @@ class role::dumps::distribution::server {
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
     include ::profile::dumps::distribution::server
+    include ::profile::dumps::distribution::nfs
     include ::profile::dumps::web::rsync_server
     include ::profile::dumps::rsyncer
     include ::profile::dumps::web::dumpstatusfiles_sync
     include ::profile::dumps::web::cleanup
     include ::profile::dumps::web::cleanup_miscdatasets
-
 }
