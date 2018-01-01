@@ -1248,7 +1248,7 @@ node /labstore100[45]\.eqiad\.wmnet/ {
 }
 
 node /labstore100[67]\.wikimedia\.org/ {
-    role(dumps::public::server)
+    role(dumps::distribution::server)
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {

@@ -1,5 +1,9 @@
-# Base class to set up a Public Dumps server
-class public_dumps::server {
+# Profile for Dumps distribution server in the Public VLAN,
+# that serves dumps to Cloud VPS/Stat boxes via NFS,
+# or via web or rsync to mirrors
+
+class profile::dumps::distribution::server {
+    class { '::dumpsuser': }
 
     file { '/srv/dumps':
         ensure => 'directory',
