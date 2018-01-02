@@ -10,7 +10,7 @@ if $cluster == undef {
 # Node definitions (alphabetic order)
 
 node 'acamar.wikimedia.org' {
-    role(dnsrecursor, ntp)
+    role(recursor)
 
     # use achernar (directly) + eqiad LVS (avoid self-dep)
     $nameservers_override = [ '208.80.153.42', '208.80.154.254' ]
@@ -19,7 +19,7 @@ node 'acamar.wikimedia.org' {
 }
 
 node 'achernar.wikimedia.org' {
-    role(dnsrecursor, ntp)
+    role(recursor)
 
     # use acamar (directly) + eqiad LVS (avoid self-dep)
     $nameservers_override = [ '208.80.153.12', '208.80.154.254' ]
@@ -149,7 +149,7 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 
 # DNS recursor
 node 'chromium.wikimedia.org' {
-    role(dnsrecursor, ntp)
+    role(recursor)
 
     # use hydrogen (directly) + codfw LVS (avoid self-dep)
     $nameservers_override = [ '208.80.154.50', '208.80.153.254' ]
@@ -890,7 +890,7 @@ node 'heze.codfw.wmnet' {
 
 # DNS recursor
 node 'hydrogen.wikimedia.org' {
-    role(dnsrecursor, ntp)
+    role(recursor)
 
     # use chromium (directly) + codfw LVS (avoid self-dep)
     $nameservers_override = [ '208.80.154.157', '208.80.153.254' ]
@@ -1391,7 +1391,7 @@ node /^lvs400[567]\.ulsfo\.wmnet$/ {
 }
 
 node 'maerlant.wikimedia.org' {
-    role(dnsrecursor, ntp)
+    role(recursor)
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -1747,7 +1747,7 @@ node 'neodymium.eqiad.wmnet' {
 }
 
 node 'nescio.wikimedia.org' {
-    role(dnsrecursor, ntp)
+    role(recursor)
 
     interface::add_ip6_mapped { 'main': }
 }
