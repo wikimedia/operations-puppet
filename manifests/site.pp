@@ -185,7 +185,8 @@ node /^boron\.eqiad\.wmnet$/ {
 
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
-    role(cache::canary, authdns::testns)
+    role(cache::canary)
+    include ::role::authdns::testns
     interface::add_ip6_mapped { 'main': }
 }
 
