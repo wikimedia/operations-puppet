@@ -105,35 +105,6 @@ sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 
-# Set resolv.conf and stop anyone else from messing with it.
-echo "" > /sbin/resolvconf
-mkdir /etc/dhcp/dhclient-enter-hooks.d
-cat > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate <<EOF
-#!/bin/sh
-make_resolv_conf() {
-        :
-}
-EOF
-
-if [ "${domain}" == "codfw.labtest" ]
-then
-	# Just hardcode the IP for labtest-recursor0, in case we
-        #  can't dig yet
-	nameserver='208.80.153.51'
-else
-	nameserver=`/usr/bin/dig +short labs-recursor0.wikimedia.org`
-fi
-
-cat > /etc/resolv.conf <<EOF
-domain ${project}.${domain}
-search ${project}.${domain} ${domain}
-nameserver ${nameserver}
-options timeout:5 ndots:2
-EOF
-
-echo "$ip	$fqdn" >> /etc/hosts
-echo $hostname > /etc/hostname
-
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
 # it isn't perfect
