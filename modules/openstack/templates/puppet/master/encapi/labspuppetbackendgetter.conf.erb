@@ -10,8 +10,8 @@ server {
         }
 
         allow 127.0.0.7;
-<% @all_puppetmasters.each do |node| -%>
-        allow <%= scope.function_ipresolve([node]) %>;
+<% @puppetmasters.values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
+        allow <%= scope.function_ipresolve([server]) %>;
 <% end -%>
         allow <%= @labs_instance_range %>;
         deny all;
