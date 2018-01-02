@@ -112,5 +112,7 @@ echo "${zookeeper_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_
 echo "${zookeeper_connect_commands}" | /bin/grep -q "${command}" && EXTRA_OPTS="${EXTRA_OPTS}${ZOOKEEPER_CONNECT_OPT} "
 
 # Print out the command we are about to exec, and then run it
-echo "${command} ${EXTRA_OPTS}$@"
-${command} ${EXTRA_OPTS}$@
+# set -f to not expand wildcards in command, e.g. --topic '*'
+set -f
+echo ${command} ${EXTRA_OPTS}"$@"
+${command} ${EXTRA_OPTS}"$@"
