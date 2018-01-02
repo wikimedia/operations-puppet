@@ -843,15 +843,7 @@ node 'etherpad1001.eqiad.wmnet' {
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
 node 'eventlog1001.eqiad.wmnet' {
-    role(eventlogging::analytics::zeromq,
-        eventlogging::analytics::processor,
-        eventlogging::analytics::mysql,
-        eventlogging::analytics::files,
-        logging::mediawiki::errors)
-
-    include ::standard
-    include ::base::firewall
-    interface::add_ip6_mapped { 'main': }
+    role(eventlogging::analytics)
 }
 
 # virtual machine for mailman list server
