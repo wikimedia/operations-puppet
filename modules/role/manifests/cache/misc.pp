@@ -6,4 +6,5 @@ class role::cache::misc {
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
     include ::profile::cache::misc
+    include ::role::ipsec
 }
