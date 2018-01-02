@@ -13,6 +13,7 @@ class role::webserver_misc_static {
     include ::profile::microsites::static_bugzilla # https://static-bugzilla.wikimedia.org
     include ::profile::microsites::transparency    # https://transparency.wikimedia.org
     include ::profile::microsites::wikibase        # https://wikiba.se
+    include ::profile::microsites::research        # https://research.wikimedia.org (T183916)
 
     system::role { 'webserver_misc_static':
         description => 'WMF misc sites web server'
