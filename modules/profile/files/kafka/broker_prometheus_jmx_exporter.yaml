@@ -6,6 +6,11 @@ lowercaseOutputLabelNames: true
 # for kafka related metrics to allow a better readability, more context about
 # the discussion to establish a convention in T177078.
 lowercaseOutputName: false
+blacklistObjectNames:
+  - "com.sun.management:type=*"
+  - "JMImplementation:type=MBeanServerDelegate"
+  - "java.util.logging:type=Logging"
+  - "kafka:type=kafka.Log4jController"
 rules:
 - pattern : kafka.cluster<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value
   name: kafka_cluster_$1_$2
