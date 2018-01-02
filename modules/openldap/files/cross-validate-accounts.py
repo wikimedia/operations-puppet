@@ -225,7 +225,7 @@ def validate_duplicated_ops_permissions(users):
                 # deploy-phabricator concerns handling of keyholder for deployment
                 # analytics-search-users concerns user creation in HDFS
                 groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
-                                          'researchers', 'statistics-privatedata-users',
+                                          'researchers', 'statistics-privatedata-users', 'docker',
                                           'deploy-phabricator', 'analytics-search-users'])
                 if len(set(groups)) > 0:
                     log += "Malformed membership for ops user " + i + ", has additional group(s): "
