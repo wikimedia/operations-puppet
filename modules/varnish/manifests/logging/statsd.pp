@@ -60,4 +60,9 @@ define varnish::logging::statsd(
         description  => 'Varnish traffic logger - varnishstatsd',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -a "/usr/local/bin/varnishstatsd" -u root',
     }
+
+    mtail::program { 'varnishbackend':
+        source      => 'puppet:///modules/mtail/programs/varnishbackend.mtail',
+        destination => '/etc/varnishmtail-backend',
+    }
 }
