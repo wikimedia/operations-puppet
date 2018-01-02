@@ -7,7 +7,7 @@ class openstack::puppet::master::encapi(
     $statsd_prefix,
     $mysql_password,
     $labs_instance_range,
-    $all_puppetmasters,
+    $puppetmasters,
 ) {
     $horizon_host_ip = ipresolve($horizon_host, 4)
 
