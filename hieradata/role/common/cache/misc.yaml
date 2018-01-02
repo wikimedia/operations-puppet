@@ -122,6 +122,7 @@ cache::app_directors:
   releases_jenkins:
     backends:
       eqiad: 'releases1001.eqiad.wmnet'
+
   ruthenium:
     be_opts:
       port: 8001
@@ -256,6 +257,8 @@ cache::req_handling:
     director: 'releases'
   releases-jenkins.wikimedia.org:
     director: 'releases_jenkins'
+  research.wikimedia.org:
+    director: 'bromine'
   rt.wikimedia.org:
     director: 'ununpentium'
   scholarships.wikimedia.org:
