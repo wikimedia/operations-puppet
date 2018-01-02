@@ -1,0 +1,10 @@
+# Three counters to implement Prometheus histograms
+counter varnish_backend_requests_seconds_bucket by le, status, method, backend
+counter varnish_backend_requests_seconds_sum by status, method, backend
+counter varnish_backend_requests_seconds_count by status, method, backend
+
+/http_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\tbackend vcl-[a-z0-9-]+\.(?P<backend>\S+)\t/ {
+  varnish_backend_requests_seconds_count[$status][$method][$backend]++
+
+  varnish_backend_requests_seconds_bucket["+Inf"][$status][$method][$backend]++
+}
