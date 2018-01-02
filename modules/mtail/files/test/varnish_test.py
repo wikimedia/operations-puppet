@@ -79,3 +79,16 @@ class VarnishReqStatsTest(unittest.TestCase):
         self.assertIn(('status=200,method=GET', 3), s)
         self.assertIn(('status=301,method=GET', 2), s)
         self.assertIn(('status=200,method=HEAD', 2), s)
+
+
+class VarnishBackendTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnishbackend.mtail'),
+                os.path.join(test_dir, 'logs/varnishbackend.test'))
+
+    def testRespStatus(self):
+        s = self.store.get_samples('varnish_backend_requests_seconds_count')
+        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 12), s)
+        self.assertIn(('status=204,method=GET,backend=be_bohrium_eqiad_wmnet', 2), s)
+        self.assertIn(('status=200,method=POST,backend=be_bohrium_eqiad_wmnet', 1), s)
