@@ -238,6 +238,12 @@ class role::prometheus::ops {
         class_name => 'role::cache::upload',
         port       => '3903',
     }
+    prometheus::class_config{ "varnish-text_mtail_${::site}":
+        dest       => "${targets_path}/varnish-text_mtail_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::cache::text',
+        port       => '3903',
+    }
 
     # Job definition for memcache_exporter
     $memcached_jobs = [
