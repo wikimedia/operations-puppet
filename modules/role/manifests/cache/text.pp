@@ -8,4 +8,5 @@ class role::cache::text {
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
     include ::profile::cache::text
+    include ::role::ipsec
 }

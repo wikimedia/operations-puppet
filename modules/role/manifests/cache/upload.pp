@@ -9,4 +9,5 @@ class role::cache::upload {
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
     include ::profile::cache::upload
+    include ::role::ipsec
 }
