@@ -1,0 +1,10 @@
+cluster: misc
+profile::base::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - codfw.wmnet
+  - esams.wmnet
+  - ulsfo.wmnet
+  - eqsin.wmnet
+admin::groups:
+  - all-users
