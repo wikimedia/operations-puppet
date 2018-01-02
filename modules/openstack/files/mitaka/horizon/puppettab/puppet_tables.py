@@ -128,7 +128,12 @@ class PuppetTable(tables.DataTable):
     class Meta(object):
         name = 'puppet'
         row_actions = (ApplyRole, RemoveRole)
-        table_actions = (RoleFilter,)
+
+        # Disable this pending a better source for per-class docs.
+        #  The api currently doesn't provide them due to a current bug
+        #  and future deprecation.  T181551
+        # table_actions = (RoleFilter,)
+
         status_columns = ["applied"]
         row_class = UpdateRow
         multi_select = False
