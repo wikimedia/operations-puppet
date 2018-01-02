@@ -988,8 +988,8 @@ node 'labtestpuppetmaster2001.wikimedia.org' {
 }
 
 node 'labtestservices2001.wikimedia.org' {
-    role(wmcs::openstack::labtest::services,
-          openldap::labtest)
+    role(wmcs::openstack::labtest::services)
+    include ::role::openldap::labtest
     interface::add_ip6_mapped { 'main': }
 }
 
