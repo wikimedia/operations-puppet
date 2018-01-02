@@ -13,4 +13,9 @@ class role::cache::text {
     # and sends them to the 'statsv' topic in Kafka. A kafka consumer
     # (called 'statsv') then consumes these and emits metrics.
     include ::profile::cache::kafka::statsv
+
+    # TODO: refactor all this so that we have separate roles for production and labs
+    if $::realm == 'production' {
+        include ::role::ipsec
+    }
 }

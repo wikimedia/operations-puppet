@@ -9,4 +9,9 @@ class role::cache::upload {
     include ::profile::cache::base
     include ::profile::cache::ssl::unified
     include ::profile::cache::upload
+
+    # TODO: refactor all this so that we have separate roles for production and labs
+    if $::realm == 'production' {
+        include ::role::ipsec
+    }
 }
