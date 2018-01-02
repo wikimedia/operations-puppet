@@ -1517,7 +1517,7 @@ node /^mw118[0-8]\.eqiad\.wmnet$/ {
 
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
+    role(spare::system)
 }
 
 # mw1209-1216, 1218-1220 are apaches
