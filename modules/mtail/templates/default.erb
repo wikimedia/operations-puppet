@@ -1,6 +1,5 @@
 # Arguments used by SysV init script, systemd service file uses only EXTRA_ARGS
-#GRAPHITE_HOSTPORT=<%= @graphite_hostport %>
 #PORT=<%= @port %>
 #LOGS=<%= @logs.join(',') %>
 
-EXTRA_ARGS="-graphite_prefix <%= @graphite_prefix %> -graphite_host_port <%= @graphite_hostport %> -logs <%= @logs.join(',') %> -port <%= @port %> "
+EXTRA_ARGS="-logs <%= @logs.join(',') %> -port <%= @port %>"
