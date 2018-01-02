@@ -6,8 +6,6 @@ class openstack::puppet::master::encapi(
     $statsd_host,
     $statsd_prefix,
     $mysql_password,
-    $labs_instance_range,
-    $all_puppetmasters,
 ) {
     $horizon_host_ip = ipresolve($horizon_host, 4)
 
@@ -66,6 +64,6 @@ class openstack::puppet::master::encapi(
     #  open this up to the public even though the actual API has no
     #  auth protections.
     nginx::site { 'labspuppetbackendgetter':
-        content => template('openstack/puppet/master/encapi/labspuppetbackendgetter.conf.erb'),
+        source => 'puppet:///modules/openstack/puppet/master/encapi/labspuppetbackendgetter.conf',
     }
 }
