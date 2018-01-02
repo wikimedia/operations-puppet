@@ -1,4 +1,3 @@
 mariadb::shard: 's5'
 mariadb::mysql_role: 'master'
-mariadb::socket: '/tmp/mysql.sock'
 mariadb::binlog_format: 'STATEMENT'
