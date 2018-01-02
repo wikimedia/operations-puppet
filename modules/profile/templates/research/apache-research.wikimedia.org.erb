@@ -1,0 +1,23 @@
+<VirtualHost *:80>
+    ServerName <%= @server_name %>
+    ServerAdmin <%= @server_admin %>
+    DocumentRoot /srv/org/wikimedia/research
+
+    ServerSignature On
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/<%= @server_name %>.error.log
+    CustomLog /var/log/apache2/<%= @server_name %>.access.log wmf
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikimedia/research>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+</VirtualHost>

@@ -256,6 +256,8 @@ cache::req_handling:
     director: 'releases'
   releases-jenkins.wikimedia.org:
     director: 'releases_jenkins'
+  research.wikimedia.org:
+    director: 'bromine'
   rt.wikimedia.org:
     director: 'ununpentium'
   scholarships.wikimedia.org:
