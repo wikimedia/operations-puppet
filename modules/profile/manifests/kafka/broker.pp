@@ -268,7 +268,7 @@ class profile::kafka::broker(
         offsets_topic_replication_factor => min(3,  $config['brokers']['size']),
         # TODO: This can be removed once it is a default
         # in ::confluent::kafka module
-        inter_broker_protocol_version    => '0.11.0',
+        inter_broker_protocol_version    => '1.0',
         # Use Kafka/LinkedIn recommended settings with G1 garbage collector.
         # https://kafka.apache.org/documentation/#java
         # Note that MetaspaceSize is a Java 8 setting.
