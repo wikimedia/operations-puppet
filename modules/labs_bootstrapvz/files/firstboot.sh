@@ -101,28 +101,9 @@ fi
 
 fqdn=${hostname}.${project}.${domain}
 master="puppet"
-ldaphosts="ldap://ldap-labs.eqiad.wikimedia.org:389 ldap://ldap-labs.codfw.wikimedia.org:389"
-
-if [ "${domain}" == "codfw.labtest" ]
-then
-	ldaphosts="ldap://labtestservices2001.wikimedia.org:389"
-
-	# The labtest ldap password is the prod password prepended with lt-
-	sed -i "s%^bindpw\s*%bindpw          lt-%g" /etc/ldap.conf
-	sed -i "s%^bindpw\s*%BINDPW          lt-%g" /etc/ldap/ldap.conf
-	sed -i "s%^bindpw\s*%bindpw lt-%g" /etc/nslcd.conf
-fi
-
-# Finish LDAP configuration
 sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
-sed -i "s/_PROJECT_/${project}/g" /etc/ldap/ldap.conf
-sed -i "s/_PROJECT_/${project}/g" /etc/sudo-ldap.conf
-sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
-sed -i "s%^uri.*%uri ${ldaphosts}%g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
-sed -i "s%^uri.*%uri             ${ldaphosts}%g" /etc/ldap.conf
-sed -i "s%^URI.*%URI             ${ldaphosts}%g" /etc/ldap/ldap.conf
 
 # Set resolv.conf and stop anyone else from messing with it.
 echo "" > /sbin/resolvconf
