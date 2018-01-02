@@ -15,17 +15,23 @@
 #   The content of the file provided as a puppet:/// file reference.
 #   Either this or 'content' must be specified.
 #
+# [*destination*]
+#   The directory where the mtail script will be installed provided as a
+#   string. Defaults to '/etc/mtail'.
+#
 define mtail::program(
-    $ensure   = present,
-    $content  = undef,
-    $source   = undef,
+    $ensure      = present,
+    $content     = undef,
+    $source      = undef,
+    $destination = '/etc/mtail',
 ) {
     validate_ensure($ensure)
+    validate_absolute_path($destination)
 
     include ::mtail
 
     $basename = regsubst($title, '\W', '-', 'G')
-    $filename = "/etc/mtail/${basename}.mtail"
+    $filename = "${destination}/${basename}.mtail"
 
     file { $filename:
         ensure  => $ensure,
