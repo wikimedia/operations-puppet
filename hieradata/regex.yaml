@@ -253,6 +253,10 @@ smart_health_ulsfo:
   __regex: !ruby/regexp /^.*\.ulsfo\.wmnet$/
   profile::base::check_smart: true
 
+smart_health_eqiad:
+  __regex: !ruby/regexp /^(analytics1028|aqs1004|conf1001|cp1045|db1039|db1001|db1087|db1011|druid1001|elastic1017|es1015|etcd1001|ganeti1001|graphite1001|kafka1001|kafka-jumbo1001|labmon1001|logstash1008|mw1180|maps1001|mc1019|ms-be1013|ms-be1039|ores1001|oresrdb1002|pc1004|sca1003|scb1001|thumbor1001).eqiad\.wmnet$/
+  profile::base::check_smart: true
+
 labtestpuppetmaster:
   __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
