@@ -15,6 +15,7 @@ class profile::openstack::base::puppetmaster::common(
     ) {
 
     # array of puppetmasters
+    $puppetmasters_list = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort%>')
     $all_puppetmasters = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
     $baremetal_servers_str = inline_template('<%= @baremetal_servers.join " " %>')
 
@@ -33,7 +34,7 @@ class profile::openstack::base::puppetmaster::common(
         statsd_host         => $statsd_host,
         statsd_prefix       => $encapi_statsd_prefix,
         labs_instance_range => $labs_instance_range,
-        all_puppetmasters   => $all_puppetmasters,
+        all_puppetmasters   => $puppetmasters_list,
     }
 
     # Update git checkout.  This is done via a cron
