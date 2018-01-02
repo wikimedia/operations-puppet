@@ -122,7 +122,7 @@ groups:
               nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
-              pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan]
+              pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan, groovier]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2653,6 +2653,17 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7lA+/vYOVDy1Vbd4/gxs1jCDxvK3M0usqq9FdbbE/Y Jonas.Kress@wikimedia.de
     uid: 12454
     email: jonas.kress@wikimedia.de
+  groovier:
+    ensure: present
+    gid: 500
+    name: groovier
+    realname: Vinitha Savithri
+    ssh_keys:
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV/vIMvgqEGnLjLdjKf0oX1tnwHWYtWgludaHE1O3bzKhfPZtQ8J1EcCQd76k08276IVc1qgkO7TQeU86Z7c5a1XnNU/eqfatBOVD9511Mz4v8PwifqSqgyJCkp07p/z464zaS1FNOZPth7FvmWqU0EsherNvauqnADkKhZJGzRszjNDhTMXKGu5LyxXNk463oSHiIS3dIUiPSsiaFPW9Mge2sjGTDCTKJaOnjHMWig+XgRopU7L/OY8ZRbgbD/tojClaUeq5ITexaDTwgv1e1G7RW4th0Ed4Bh/i5zc1FY+J1or5GdGUpAUDEC9mSpdxiwsW5bmtagxlbypm0fb1K3GUD1Sg9ShO5FEDXlmx+acOTmPUmZXwU0iNufiY29EqDRNwkL1XMmrQge+pkbKInV1ReanmD03PJr/RLo2pntczcPrw+SBCAoUjNkSUyTUBx5DO4G3e0AZ520Pyxt0tWFEI42eLDKLUTLEjVLM2ZZHrgeIMN9wKPNIHFWTrdShh+qVVMpXAIXbqi0WfTqu61srGPQMDibM9vMsbBHSGBvyTBwRoMEQX2LpCwGXH4Cr6UGmsPF7OBnsW0RTernuTCZi50Z8JygBuQHQ09A4otukbjvor+P/nOlUcZtYMDtWqErn7rzErkS1InPrDBUAAV1w6MjZCG2CX0cSuCqDFeWQ== vinithacse@gmail.com
+    uid: 18102
+    email: vinithacse@gmail.com
+    expiry_date: 2018-03-31
+    expiry_contact: nuria@wikimedia.org
 
 ldap_only_users:
   abartov:
