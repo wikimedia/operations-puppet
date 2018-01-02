@@ -1,0 +1,56 @@
+# Three counters to implement Prometheus histograms
+counter varnish_backend_requests_seconds_bucket by le, status, method, backend
+counter varnish_backend_requests_seconds_sum by status, method, backend
+counter varnish_backend_requests_seconds_count by status, method, backend
+
+/http_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\tbackend (?P<backend>\S+)\tttfb (?P<ttfb>[0-9]+)/ {
+  varnish_backend_requests_seconds_count[$status][$method][$backend]++
+  varnish_backend_requests_seconds_sum[$status][$method][$backend] += $ttfb
+
+  # Latency histogram buckets
+  $ttfb <= 0.005 {
+    http_request_duration_seconds_bucket["0.005"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.010 {
+    http_request_duration_seconds_bucket["0.010"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.050 {
+    http_request_duration_seconds_bucket["0.050"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.100 {
+    http_request_duration_seconds_bucket["0.100"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.120 {
+    http_request_duration_seconds_bucket["0.100"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.150 {
+    http_request_duration_seconds_bucket["0.150"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.200 {
+    http_request_duration_seconds_bucket["0.200"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 0.500 {
+    http_request_duration_seconds_bucket["0.500"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 1.000 {
+    http_request_duration_seconds_bucket["1.000"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 5.000 {
+    http_request_duration_seconds_bucket["5.000"][$status][$method][$backend]++
+  }
+
+  $ttfb <= 10.000 {
+    http_request_duration_seconds_bucket["10.000"][$status][$method][$backend]++
+  }
+
+  http_request_duration_seconds_bucket["+Inf"][$status][$method][$backend]++
+}
