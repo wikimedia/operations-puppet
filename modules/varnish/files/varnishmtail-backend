@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# varnishmtail-backend - pipe varnishncsa output to mtail
+
+PROGS="${1:-/etc/mtail}"
+PORT="${2:-3903}"
+
+fmt_http_status='http_status %s'
+fmt_http_method='http_method %m'
+fmt_backend='backend %{VSL:BackendOpen[2]}x'
+fmt_ttfb='ttfb %{Varnish:time_firstbyte}x'
+
+FMT="${fmt_http_status}\t${fmt_http_method}\t${fmt_backend}\t${fmt_ttfb}\t"
+
+# Exclude client requests resulting in a pipe as they do not generate a backend
+# request. Varnish blindly passes on bytes in both directions in that case, so
+# there is no status and no ttfb.
+VSL_QUERY='BereqMethod ne "PURGE" and VCL_call ne "PIPE"'
+
+/usr/bin/varnishncsa -b -q "${VSL_QUERY}" -F "${FMT}" | mtail -progs "${PROGS}" -logfds 0 -port "${PORT}"
