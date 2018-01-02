@@ -2653,7 +2653,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7lA+/vYOVDy1Vbd4/gxs1jCDxvK3M0usqq9FdbbE/Y Jonas.Kress@wikimedia.de
     uid: 12454
     email: jonas.kress@wikimedia.de
-groovier:
+  groovier:
     ensure: present
     gid: 500
     name: groovier
