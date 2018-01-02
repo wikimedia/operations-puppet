@@ -647,7 +647,7 @@ groups:
     # This has the potential of conflicting with other users asking permissions to run docker. IFF
     # such a need arises we might want to revisit this
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [akosiaris, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin]
+    members: [*ops_members, dduvall, demon, gjg, hashar, thcipriani, twentyafterfour, zfilipin]
 
 users:
   rush:
