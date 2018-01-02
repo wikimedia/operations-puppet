@@ -100,19 +100,11 @@ fi
 
 
 fqdn=${hostname}.${project}.${domain}
-if [ "${domain}" == "eqiad.wmflabs" ]
-then
-	master="labs-puppetmaster.wikimedia.org"
-	ldaphosts="ldap://ldap-labs.eqiad.wikimedia.org:389 ldap://ldap-labs.codfw.wikimedia.org:389"
-fi
-if [ "${domain}" == "codfw.wmflabs" ]
-then
-	master="labs-puppetmaster.wikimedia.org"
-	ldaphosts="ldap://ldap-labs.codfw.wikimedia.org:389 ldap://ldap-labs.eqiad.wikimedia.org:389"
-fi
+master="puppet"
+ldaphosts="ldap://ldap-labs.eqiad.wikimedia.org:389 ldap://ldap-labs.codfw.wikimedia.org:389"
+
 if [ "${domain}" == "codfw.labtest" ]
 then
-	master="labtestpuppetmaster2001.wikimedia.org"
 	ldaphosts="ldap://labtestservices2001.wikimedia.org:389"
 
 	# The labtest ldap password is the prod password prepended with lt-
