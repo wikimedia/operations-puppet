@@ -157,7 +157,7 @@ Components: main>thirdparty/confluent
 UDebComponents:
 Suite: stable
 Architectures: amd64
-VerifyRelease: 28A1C275F9F8725B
+VerifyRelease: 670540C841468433
 ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11' || [ $? -eq 1 ]
 
 Name: docker
