@@ -15,6 +15,25 @@ import ldap
 import csv
 
 
+def flatten(l, a=None):
+    '''
+    Flatten a list recursively. Make sure to only flatten list elements, which
+    is a problem with itertools.chain which also flattens strings. a defaults
+    to None instead of the empty list to avoid issues with Copy by reference
+    which is the default in python
+    '''
+
+    if a is None:
+        a = []
+
+    for i in l:
+        if isinstance(i, list):
+            flatten(i, a)
+        else:
+            a.append(i)
+    return a
+
+
 def extract_from_yaml():
     data = open('data.yaml', 'r')
     admins = yaml.safe_load(data)
@@ -27,7 +46,7 @@ def extract_from_yaml():
 
         groups = []
         for group, groupdata in admins['groups'].items():
-            if username in groupdata['members']:
+            if username in flatten(groupdata['members']):
                 groups.append(group)
 
         users[username] = {
