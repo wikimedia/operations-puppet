@@ -2,7 +2,7 @@ admin::groups:
   - contint-users
   - contint-admins
   - contint-roots
-  - docker
+  - contint-docker
 cluster: misc
 contactgroups: 'admins,contint'
 
