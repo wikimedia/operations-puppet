@@ -13,6 +13,25 @@ import shutil
 import sys
 
 
+def flatten(l, a=None):
+    '''
+    Flatten a list recursively. Make sure to only flatten list elements, which
+    is a problem with itertools.chain which also flattens strings. a defaults
+    to None instead of the empty list to avoid issues with Copy by reference
+    which is the default in python
+    '''
+
+    if a is None:
+        a = []
+
+    for i in l:
+        if isinstance(i, list):
+            flatten(i, a)
+        else:
+            a.append(i)
+    return a
+
+
 def get_ldap_group_members(group_name):
     ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
     ldap_conn.protocol_version = ldap.VERSION3
@@ -71,7 +90,7 @@ def parse_users(yamldata):
 
             groups = []
             for group, groupdata in yamldata['groups'].items():
-                if username in groupdata['members']:
+                if username in flatten(groupdata['members']):
                     groups.append(group)
 
             if table == 'users':
@@ -169,7 +188,7 @@ def validate_all_yaml_group_members_are_defined(known_users, yamldata):
     for group, groupdata in yamldata['groups'].items():
         if group == "absent" or group == "absent_ldap":
             continue
-        for member in groupdata['members']:
+        for member in flatten(groupdata['members']):
             if member not in known_users:
                 log += "Group " + group + " has a member not specified in the users section: "
                 log += member + "\n"
