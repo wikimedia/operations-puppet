@@ -91,7 +91,6 @@
     shard: s6
     role: slave
   targets:
-  - db2028:9104
   - db2046:9104
   - db2053:9104
   - db2060:9104
