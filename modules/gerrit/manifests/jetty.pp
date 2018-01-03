@@ -215,6 +215,14 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
+    file { '/var/lib/gerrit2/review_site/etc/gitiles.config':
+        content => template('gerrit/gitiles.config.erb'),
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
     file { '/var/lib/gerrit2/review_site/etc/lfs.config':
         content => template('gerrit/lfs.config.erb'),
         owner   => 'gerrit2',
