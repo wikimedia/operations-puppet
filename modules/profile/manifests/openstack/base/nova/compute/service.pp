@@ -11,10 +11,6 @@ class profile::openstack::base::nova::compute::service(
 
     require_package('conntrack')
 
-    if $::fqdn =~ /^labvirt100[0-9].eqiad.wmnet/ {
-        openstack::nova::compute::partition{ '/dev/sdb':}
-    }
-
     interface::tagged { $network_flat_interface:
         base_interface => $network_flat_tagged_base_interface,
         vlan_id        => $network_flat_interface_vlan,
@@ -23,18 +19,24 @@ class profile::openstack::base::nova::compute::service(
         down           => 'ip link set $IFACE down',
     }
 
+    if $::fqdn =~ /^labvirt100[0-9].eqiad.wmnet/ {
+        openstack::nova::compute::partition{ '/dev/sdb':
+            before => File['/var/lib/nova/instances'],
+        }
+    }
+
+    file { '/var/lib/nova/instances':
+        ensure => 'directory',
+        owner  => 'nova',
+        group  => 'nova',
+    }
+
     mount { '/var/lib/nova/instances':
         ensure  => mounted,
         device  => $instance_dev,
         fstype  => 'xfs',
         options => 'defaults',
-    }
-
-    file { '/var/lib/nova/instances':
-        ensure  => 'directory',
-        owner   => 'nova',
-        group   => 'nova',
-        require => Mount['/var/lib/nova/instances'],
+        require => File['/var/lib/nova/instances'],
     }
 
     # Increase the size of conntrack table size (default is 65536)
@@ -55,6 +57,7 @@ class profile::openstack::base::nova::compute::service(
         libvirt_type => $libvirt_type,
         certname     => $certname,
         ca_target    => $ca_target,
+        require      => Mount['/var/lib/nova/instances'],
     }
     contain '::openstack::nova::compute::service'
 }
