@@ -38,7 +38,9 @@ class profile::cache::kafka::statsv(
         varnish_opts                => { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' },
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
-        force_protocol_version      => $kafka_config['api_version'],
+        # Force more exact protocol version.
+        # TODO: can we change this in common.yaml kafka_clusters hash?
+        force_protocol_version      => '0.9.0.1',
     }
 
     # Make sure varnishes are configured and started for the first time
