@@ -25,6 +25,25 @@ import sys
 
 import yaml
 
+def flatten(l, a=None):
+    '''
+    Flatten a list recursively. Make sure to only flatten list elements, which
+    is a problem with itertools.chain which also flattens strings. a defaults
+    to None instead of the empty list to avoid issues with Copy by reference
+    which is the default in python
+    '''
+
+    if a is None:
+        a = []
+
+    for i in l:
+        if isinstance(i, list):
+            flatten(i, a)
+        else:
+            a.append(i)
+    return a
+
+
 parser = argparse.ArgumentParser(
     description="Utility to generate a matrix of production users and their groups",
 )
@@ -66,7 +85,7 @@ groups = admins.get('groups', {})
 for group_name in sorted(groups.keys()):
     group = groups[group_name]
 
-    group_members = set(group['members'])
+    group_members = set(flatten(group['members']))
     if set(users).isdisjoint(group_members):
         continue
 

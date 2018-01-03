@@ -2,6 +2,7 @@
 # https://meta.wikimedia.org/wiki/System_administrators#List
 # Alex Monk, April 2015
 
+
 from __future__ import print_function
 from bs4 import BeautifulSoup
 import json
@@ -11,6 +12,24 @@ try:
     from urllib import request as urllib
 except:
     import urllib2 as urllib
+
+def flatten(l, a=None):
+    '''
+    Flatten a list recursively. Make sure to only flatten list elements, which
+    is a problem with itertools.chain which also flattens strings. a defaults
+    to None instead of the empty list to avoid issues with Copy by reference
+    which is the default in python
+    '''
+
+    if a is None:
+        a = []
+
+    for i in l:
+        if isinstance(i, list):
+            flatten(i, a)
+        else:
+            a.append(i)
+    return a
 
 parsoidUrl = "https://meta.wikimedia.org/api/rest_v1" + \
              "/page/html/System_administrators"
@@ -33,7 +52,7 @@ d = yaml.safe_load(open("../data/data.yaml").read())
 groups = {}
 
 for groupName, groupData in d['groups'].items():
-    groups[groupName] = groupData['members']
+    groups[groupName] = flatten(groupData['members'])
 
 sysadmins = groups['ops'] + groups['deployment'] + groups['restricted']
 
