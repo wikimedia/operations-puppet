@@ -17,7 +17,9 @@ define admin::groupmembers(
     $members = $gdata['members']
 
     if !empty($members) {
-        $joined_user_list = join($members,',')
+        # Note: The flatten here isn't strictly necessary since ruby's join does
+        # this anyway internally, but let's be pedantic
+        $joined_user_list = join(flatten($members),',')
     } else {
         $joined_user_list = $default_member
     }
