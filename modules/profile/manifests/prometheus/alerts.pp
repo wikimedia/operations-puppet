@@ -10,7 +10,7 @@ class profile::prometheus::alerts {
     # Experimental, only alerting the Analytics alias.
     monitoring::check_prometheus { 'druid_realtime_banner_activity':
         description     => 'Number of banner_activity realtime events received by Druid over a 30 minutes period',
-        query           => 'sum_over_time(druid_realtime_ingest_events_processed_count{cluster="druid_analytics", instance=~"druid.*:8000", datasource=~"banner_activity_minutely"}[30m])',
+        query           => 'scalar(sum(sum_over_time(druid_realtime_ingest_events_processed_count{cluster="druid_analytics", instance=~"druid.*:8000", datasource=~"banner_activity_minutely"}[30m])))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
         method          => 'le',
         warning         => 10,
