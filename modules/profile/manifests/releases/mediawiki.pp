@@ -23,6 +23,8 @@ class profile::releases::mediawiki (
         prefix           => $prefix,
     }
 
+    class { '::contint::composer': }
+
     class { '::apache::mod::rewrite': }
     class { '::apache::mod::headers': }
     class { '::apache::mod::proxy': }
