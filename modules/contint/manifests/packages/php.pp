@@ -55,8 +55,7 @@ class contint::packages::php {
             'php7.0-pgsql',
             'php7.0-sqlite3',
             'php7.0-tidy',
-            # xdebug s provided by sury as php-xdebug but we are using phpdbg
-            # which is faster for code coverage
+            'php-xdebug',
             'php7.0-phpdbg',  # php70-phpdbg -qrr ...
             # ..and these are part of php5-common,
             # but now are separate packages
@@ -68,6 +67,13 @@ class contint::packages::php {
             # for phan (T132636)
             'php-ast',
         ]
+
+      exec { 'disable php-xdebug on cli':
+          command => '/usr/sbin/phpdismod -s cli xdebug',
+          onlyif  => '/usr/sbin/phpquery -s cli -m xdebug',
+          require => Package['php-xdebug'],
+      }
+
     }
 
     if os_version('debian >= stretch') {
