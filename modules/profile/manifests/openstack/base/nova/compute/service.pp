@@ -23,18 +23,18 @@ class profile::openstack::base::nova::compute::service(
         down           => 'ip link set $IFACE down',
     }
 
+    file { '/var/lib/nova/instances':
+        ensure => 'directory',
+        owner  => 'nova',
+        group  => 'nova',
+    }
+
     mount { '/var/lib/nova/instances':
         ensure  => mounted,
         device  => $instance_dev,
         fstype  => 'xfs',
         options => 'defaults',
-    }
-
-    file { '/var/lib/nova/instances':
-        ensure  => 'directory',
-        owner   => 'nova',
-        group   => 'nova',
-        require => Mount['/var/lib/nova/instances'],
+        require => File['/var/lib/nova/instances'],
     }
 
     # Increase the size of conntrack table size (default is 65536)
