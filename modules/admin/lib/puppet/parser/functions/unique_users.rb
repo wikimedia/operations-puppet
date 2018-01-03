@@ -8,6 +8,6 @@ module Puppet::Parser::Functions
                 users.push(myhash['groups'][group]['members'])
             end
         end
-        return users.flatten(1).uniq
+        return users.flatten(2).uniq
     end
 end
