@@ -9,11 +9,18 @@ class smart (
         fail('smart module is not supported on virtual hosts')
     }
 
-    # Prefer smartmontools version from backports (if any) because of newer
-    # smart drivedb.
+    # Prefer smartmontools version from backports (on Debian, if any) because of newer smart
+    # drivedb.
+    if os_version('debian >= jessie') {
+        apt::pin { 'smartmontools_backports':
+            pin      => "release a=${::lsbdistcodename}-backports",
+            priority => '1001',
+            before   => Package['smartmontools'],
+        }
+    }
+
     package { 'smartmontools':
-        ensure          => $ensure,
-        install_options => ['-t', "${::lsbdistcodename}-backports"],
+        ensure => $ensure,
     }
 
     # Make sure we send smart alerts from smartd via syslog and not email.
