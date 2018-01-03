@@ -226,7 +226,7 @@ def main():
         '--interval',
         type=int,
         default=0,
-        help='Set interval to rerun at',
+        help='Set interval to rerun at.  Default is 0 which means run once.',
     )
 
     argparser.add_argument(
