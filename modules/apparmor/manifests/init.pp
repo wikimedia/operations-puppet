@@ -12,7 +12,6 @@ class apparmor {
 
     service { 'apparmor':
         ensure     => running,
-        provider   => init,
         hasstatus  => true,
         hasrestart => true,
         require    => Package['apparmor'],
