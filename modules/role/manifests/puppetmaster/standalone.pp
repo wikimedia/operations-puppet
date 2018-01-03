@@ -93,7 +93,7 @@ class role::puppetmaster::standalone(
         run_every_minutes => $git_sync_minutes,
     }
 
-    ferm::service { 'puppetmaster-frontend':
+    ferm::service { 'puppetmaster-standalone':
         proto  => 'tcp',
         port   => 8140,
         srange => '$LABS_NETWORKS',
