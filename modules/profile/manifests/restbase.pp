@@ -71,7 +71,6 @@
 class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
     $cassandra_password = hiera('profile::restbase::cassandra_password'),
-    $seeds = hiera('profile::restbase::seeds'),
     $seeds_ng = hiera('profile::restbase::seeds_ng', []),
     $hosts = hiera('profile::restbase::hosts'),
     $cassandra_local_dc = hiera('profile::restbase::cassandra_local_dc'),
@@ -111,7 +110,6 @@ class profile::restbase(
         deployment_vars   => {
             ipaddress                => $::ipaddress,
             rl_seeds                 => reject(reject($hosts, $::hostname), $::ipaddress),
-            seeds                    => $seeds,
             seeds_ng                 => $seeds_ng,
             cassandra_local_dc       => $cassandra_local_dc,
             cassandra_datacenters    => $cassandra_datacenters,
