@@ -3,7 +3,7 @@
 # Base nodes
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
-if $cluster == undef {
+if !defined('$cluster') {
     $cluster = 'misc'
 }
 
