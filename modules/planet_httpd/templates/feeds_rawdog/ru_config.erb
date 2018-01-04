@@ -1,0 +1,23 @@
+# planet rawdog feeds in Russian language (ru.planet.wikimedia.org)
+include ../config
+template /etc/rawdog/theme/wikimedia/ru/rd_page.tmpl
+itemtemplate /etc/rawdog/theme/wikimedia/ru/rd_item.tmpl
+outputfile /var/www/planet/ru/index.html
+outputxml /var/www/planet/ru/rss20.xml
+#
+
+feed 1h http://vikivestnik.livejournal.com/data/rss
+feed 1h http://wikipedia-blog.livejournal.com/data/rss/
+feed 1h http://al-silonov.livejournal.com/data/rss?tag=wiktionary
+feed 1h http://aleksandrit.livejournal.com/data/rss?tag=wikirss
+feed 1h http://altes.livejournal.com/data/rss?tag=wp
+feed 1h http://kv75.livejournal.com/data/rss?tag=wikipedia
+feed 1h http://lvova.livejournal.com/data/rss?tag=ruwikirss
+feed 1h https://progmaker.blogspot.com/feeds/posts/default/-/%D0%B2%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F?alt=rss
+feed 1h http://mitrius.livejournal.com/data/rss?tag=%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F
+feed 1h http://mstislavl.livejournal.com/data/rss?tag=rwiki
+feed 1h http://wind77.livejournal.com/data/rss?tag=Wikipedia
+feed 1h http://ajvol2.livejournal.com/data/rss?tag=vikipedio
+feed 1h http://wikimedia.ru/blog/feeds/latest/
+#feed 1h http://kaliy-linux.livejournal.com/data/rss/?tag=Википедия
+#feed 1h http://rombeck.livejournal.com/data/rss?tag=wikipedia

@@ -1,0 +1,76 @@
+# ! This file is managed by puppet !
+# it.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = it.planet.wikimedia
+link            = https://it.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/it
+cache_directory = /var/cache/planet/it/
+output_dir      = /var/www/planet/it/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+
+#[http://appuntisui.polsini.net/?cat=11]
+[http://appuntisui.polsini.net/?feed=rss2&cat=11]
+name=appunti sui pølsini
+
+[https://doppiequadre.wordpress.com/category/wikilife/feed/atom/]
+name=[[doppiequadre]]
+
+#[https://drachinobello.wordpress.com/category/wikimedia/]
+[https://drachinobello.wordpress.com/category/wikimedia/feed/atom/]
+name=…e comunque io l’avevo detto
+
+[http://www.fcvg.it/category/wikipedia/feed/]
+name=Faccio Cose Vedo Gente
+
+[http://xmau.com/wp/notiziole/category/wikipedia/feed/]
+name=Notiziole di .mau.
+
+#[https://wikilibri.wordpress.com/]
+[https://wikilibri.wordpress.com/feed/atom/]
+name=Il blog di Wikilibri
+
+[http://www.wikimedia.it/feed/]
+name=Wikimedia Italia
+
+[https://aubreymcfato.com/tag/wiki/feed/atom/]
+name=Aubrey
+
+[https://wikirumors.wordpress.com/feed/atom/]
+name=Wiki(media) Rumors
+
+[http://dieciannidisapere.it/feed/atom/]
+name=10 anni di sapere
+
+[https://nonnawiki.wordpress.com/feed/atom/]
+name=Wiki spiegata a mia nonna
+
+[http://doppiequadre.tumblr.com/tagged/wikimedia/rss]
+name=[[doppiequadre]] (Wikimedia tumblr)
+
+[http://voices.telecomitaliahub.it/tag/wikipedia/feed]
+name=Voices Telecom Italia
+
+[https://nonbibliofili.wordpress.com/tag/wikimedia/feed/]
+name=Virginia Gentilini
+
+[https://medium.com/feed/@.mau./]
+name=maurizio codogno
+
+[https://librarianscape.com/tag/wikipedia/feed/]
+name=Librarianscape (Eusebia Parrotto)

@@ -1,0 +1,588 @@
+# ! This file is managed by puppet !
+# en.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = en.planet.wikimedia
+link            = https://en.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/en
+cache_directory = /var/cache/planet/en/
+output_dir      = /var/www/planet/en/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[http://medicalfuturist.com/tag/wikipedia/feed/]
+name=Bertalan Meskó
+
+[https://brionv.com/log/feed/]
+name=Brion Vibber
+
+[https://arnomane.wordpress.com/category/wiki-en/feed/atom/]
+name=Daniel Arnold
+
+[http://davidgerard.co.uk/notes/category/wiki/feed/]
+name=David Gerard
+
+[https://dom.as/category/wikitech/feed/]
+name=Domas Mituzas
+
+[https://original-research.blogspot.com/feeds/posts/default/-/wikipedia]
+name=Geoff Burling
+
+[http://ragesoss.com/blog/category/wikipedia/feed/]
+name=Sage Ross
+
+[https://titoxd.blogspot.com/feeds/posts/default/-/wiki]
+name=User:Titoxd
+
+[https://wikinewsreports.blogspot.com/feeds/posts/default]
+name=Wikinews Reports
+
+[https://thoughtsfordeletion.blogspot.com/feeds/posts/default]
+name=Stephen Bain
+
+[http://www.scrubnugget.com/categories/wikipedia/feed/]
+name=Jim Redmond
+
+[https://bookcraft.blogspot.com/feeds/posts/default]
+name=Robert Horning
+
+[https://gpollard.wordpress.com/category/wiki/feed/atom/]
+name=Gabriel Pollard
+
+[http://sleepyhead.org/tagged/wikipedia/rss]
+name=Judson Dunn
+
+[https://feeds.feedburner.com/enwikizine]
+name=Wikizine
+
+[http://reagle.org/joseph/pelican/feeds/all.atom.xml]
+name=Joseph Reagle
+
+[http://jimbojw.com/wiki/index.php?title=Blog&action=feed&tags=mediawiki]
+name=Jim R. Wilson
+
+[https://feeds.feedburner.com/WikipediaNotesFromWwwwolf]
+name=Urpo Lankinen
+
+[http://blog.anubite.co.uk/index.php/category/mediawiki/feed/]
+name=Rob Church
+
+[http://moononastick.com/blog/feed/?cat=4]
+name=User:The wub
+
+[https://mako.cc/copyrighteous/tags/planetwikimedia/feed/atom]
+name=Benjamin Mako Hill
+
+[https://dialogicality.blogspot.com/feeds/posts/default/-/wiki]
+name=Said Kassem Hamideh
+
+[https://rauterkus.blogspot.com/feeds/posts/default/-/wiki]
+name=Mark Rauterkus
+
+[https://ultimategerardm.blogspot.com/feeds/posts/default/]
+name=Gerard Meijssen
+
+[https://millosh.wordpress.com/tag/wikimedia/feed/atom/]
+name=Milos Rancic
+
+[https://feeds.feedburner.com/remotewiki]
+name=User:O
+
+[https://wikibooks.blogspot.com/feeds/posts/default]
+name=Andrew Whitworth (Whiteknight)
+
+[https://wikinortheast.blogspot.com/feeds/posts/default]
+name=Wiki Northeast
+
+[http://mariobehling.de/taxonomy/term/1089/feed]
+name=Mario Behling
+
+[https://guillaumepaumier.com/category/wikimedia/feed/]
+name=Guillaume Paumier
+
+[https://mikeswikidev.wordpress.com/category/technical-on-topic/feed/atom/]
+name=Manike Baynton
+
+[http://blog.nickj.org/category/wiki/feed/]
+name=Nick Jenkins
+
+[https://lunasantin.blogspot.com/feeds/posts/default/-/wikimedia]
+name=User:Luna Santin
+
+[https://blog.sebmol.me/category/wikimedia-en/feed/]
+name=Sebastian Moleski
+
+[http://www.nointrigue.com/blog/category/wikipedia/feed/]
+name=Enoch Lau
+
+[https://sabinecretella.blogspot.com/feeds/posts/default/-/wiki-en]
+name=Sabine Cretella
+
+[http://brianna.modernthings.org/atom/?section=article]
+name=Brianna Laugher
+
+[https://majorlyhot.blogspot.com/feeds/posts/default/-/wikipedia]
+name=User:Majorly
+
+[https://writingwithintherules.blogspot.com/feeds/posts/default/-/Wikipedia]
+name=John Broughton
+
+[http://chriswaterguy.livejournal.com/data/rss?tag=wikis,wikitech,freecontent]
+name=User:Chriswaterguy
+
+[https://nonnotablenatterings.blogspot.com/feeds/posts/default/-/Wikimedia%20Foundation]
+name=Larry Pieniazek
+
+[http://laxstrom.name/blag/category/mediawiki/feed/]
+name=Niklas Laxström
+
+[https://blog.wikimedia.org/feed/]
+name=Wikimedia Foundation
+
+[https://blog.wikimedia.org/c/technology/feed/]
+name=Wikimedia Tech Blog
+
+[https://ournewmind.wordpress.com/tag/wiki/feed/atom/]
+name=Pete Forsyth
+
+[https://durova.blogspot.com/feeds/posts/default]
+name=User:Durova
+
+[https://wikiprojectoregon.wordpress.com/feed/atom/]
+name=WikiProject Oregon
+
+[https://anondiss.blogspot.com/feeds/posts/default/-/Wikimedia%20Foundation]
+name=Anonymous Dissident
+
+[https://jamesonwiki.blogspot.com/feeds/posts/default/-/Wikimedia]
+name=James R. (User:E)
+
+[https://jhsoby-en.blogspot.com/feeds/posts/default/-/Wikimedia]
+name=Jon Harald Søby
+
+[http://infodisiac.com/blog/feed/]
+name=Erik Zachte
+
+[http://dirkriehle.com/tag/wikimedia-2/feed/]
+name=Dirk Riehle
+
+[https://politicalbiasonwikipedia.blogspot.com/feeds/posts/default]
+name=User:Noroton
+
+[https://extensiontesting.blogspot.com/feeds/posts/default]
+name=Extension Testing
+
+[http://tstarling.com/blog/category/wikimedia/feed/]
+name=Tim Starling
+
+[http://www.wikisym.org/category/wikimedia/feed/]
+name=WikiSym
+
+[https://cometstyles.blogspot.com/feeds/posts/default/-/wikipedia]
+name=User:Cometstyles
+
+[https://wingphilopp.blogspot.com/feeds/posts/default?alt=rss]
+name=Ting Chen
+
+[https://feeds.feedburner.com/RyanLanesBlog_mediawiki]
+name=Ryan Lane
+
+[https://wittylama.com/category/wikimedia/feed/]
+name=Liam Wyatt (Witty Lama)
+
+[http://yaronkoren.com/blog/?feed=rss2]
+name=Yaron Koren
+
+[http://www.greenman.co.za/blog/?tag=wikimedia&feed=rss2]
+name=Ian Gilfillan (greenman)
+
+[https://zikoblog.wordpress.com/category/wiki/feed/atom/]
+name=User:Ziko
+
+[http://ad.huikeshoven.org/feeds/posts/default/-/wiki]
+name=User:Dedalus
+
+[http://blog.wikiwix.com/en/feed/]
+name=User:Pmartin
+
+[https://blogs.harvard.edu/sj/category/wikipedia/feed/]
+name=User:Sj
+
+[http://www.phoebeayers.info/phlog/?cat=10&feed=rss2]
+Name=User:phoebe
+
+[http://blog.pediapress.com/feeds/posts/default/-/wiki]
+name=PediaPress
+
+[https://bawolff.blogspot.com/feeds/posts/default/-/wiki]
+name=User:Bawolff
+
+[https://blog.wikimedia.org.uk/feed/]
+name=Wikimedia UK
+
+[http://thomas-dalton.com/blog/tag/wikimedia/feed]
+name=Thomas Dalton (Tango)
+
+[http://www.generalist.org.uk/blog/tags/wikipedia/feed/]
+name=Andrew Gray
+
+[https://nihiltres.blogspot.com/feeds/posts/default]
+name=Nihiltres
+
+[https://stuwest.org/category/wiki/feed/]
+name=User:Stu
+
+[https://thedjwrites.blogspot.com/feeds/posts/default/-/wikipedia?alt=rss]
+name=User:TheDJ
+
+[https://www.entropywins.wtf/blog/tag/planet-wikimedia/feed/atom/]
+name=Jeroen De Dauw
+
+[https://aharoni.wordpress.com/category/wikipedia/feed/atom/]
+name=Amir E. Aharoni
+
+[http://saml.rilspace.org/taxonomy/term/69/0/feed]
+name=Samuel Lampa
+
+[https://suegardner.org/feed/atom/]
+name=Sue Gardner
+
+[https://feeds.feedburner.com/paolognuband]
+name=Paolo Massa (phauly@WP) Gnuband.org
+
+[https://semantic-mediawiki.org/wiki/Special:Ask/-5B-5BNews-20date::%2B-5D-5D-20-5B-5Blanguage-20code::en-5D-5D/format%3Dfeed/sort%3Dnews-20date/order%3Ddesc/searchlabel%3DAtom/type%3Datom/title%3DSemantic-20MediaWiki-20%E2%80%93-20news/description%3DLatest-20news-20from-20semantic-2Dmediawiki.org/page%3Dfull/offset%3D0]
+name=Semantic MediaWiki
+
+[http://shijualex.in/category/wikimedia/feed/]
+name=Shiju Alex (Shijualex@mlwiki)
+
+[https://blog.openmeetings.org/category/planet-wikimedia/feed/atom/]
+name=OpenMeetings.org | Announcements
+
+[https://wizardist.wordpress.com/tag/wikipedia/feed/atom/]
+name=Paul Selitskas (Wizardist@be-x-oldwiki)
+
+[http://thottingal.in/blog/tag/wikipedia/feed/atom/]
+name=Santhosh Thottingal
+
+[https://glamwiki.wordpress.com/feed/atom/]
+name=This month in GLAM
+
+[http://hexmode.com/category/wmf/feed/atom/]
+name=Mark A. Hershberger
+
+[https://theglamwikiexperience.blogspot.com/feeds/posts/default]
+name=Kippelboy
+
+[https://rockdrum.wordpress.com/feed/atom/]
+name=Rock drum
+
+[https://endami.blogspot.com/feeds/posts/default/-/Wikimedia]
+name=Bence Damokos
+
+[https://www.harihareswara.net/nb/nb.cgi/syndicate/sumana/Work/Wikimedia]
+name=Sumana Harihareswara
+
+[http://magnusmanske.de/wordpress/?feed=rss2]
+name=Magnus Manske
+
+[https://faenwp.blogspot.com/feeds/posts/default/-/Wikimedia]
+name=Fae
+
+[http://midea.nmc.org/author/loribyrdphillips/feed/]
+name=New Media Consortium
+
+[https://feeds.feedburner.com/EinsteinUniversity]
+name=Einstein University
+
+[http://www.wikilove.in/feeds/posts/default]
+name=WikiLove
+
+[https://www.wikilovesmonuments.org/feed/]
+name=Wiki Loves Monuments
+
+[http://blog.robinpepermans.be/feeds/posts/default/-/PlanetWM]
+name=SPQRobin
+
+[https://whatisgoingonineurope.blogspot.com/feeds/posts/default]
+name=User:Romaine (What is going on in Europe?)
+
+[https://internationalwikitrekk.blogspot.com/feeds/posts/default]
+name=Alexander Doria
+
+[http://blog.wikimediadc.org/feed/]
+name=Wikimedia DC
+
+[http://pigsonthewing.org.uk/category/wikipedia-2/feed/atom/]
+name=Andy Mabbett (User:Pigsonthewing)
+
+[https://wikistrategies.net/category/wiki/feed/atom/]
+name=Pete Forsyth, Wiki Strategies
+
+[http://www.harryburt.co.uk/blog/category/interests/mediawiki-and-wikimedia/feed/atom/]
+name=Harry Burt
+
+[https://apergos.wordpress.com/category/wikimedia/feed/]
+name=User:ArielGlenn
+
+[https://greensmw.wordpress.com/feed/]
+name=Nischayn22
+
+[https://bitterscotch.wordpress.com/tag/wikimedia/feed/]
+name=PlaneMad
+
+[http://logic10.tumblr.com/tagged/planet/rss]
+name=Logicwiki
+
+[http://pauginer.com/tagged/wikimedia/rss]
+name=Pau Giner
+
+[https://wikisorcery.wordpress.com/feed/]
+name=Wikisorcery
+
+[http://blog.us.glamwiki.org/feed/]
+name=GLAM-WIKI US
+
+[http://englishwikisource.tumblr.com/rss]
+name=English Wikisource
+
+[https://blog.wikimedia.de/tag/Wikidata+English/feed/]
+name=Wikidata (WMDE - English)
+
+[https://blogs.gnome.org/aklapper/category/computer/wikimedia/feed/]
+name=Andre Klapper
+
+[http://wikimedia.fi/category/in-english/feed/]
+name=Wikimedia Suomi (WMFI - English)
+
+[https://okinokynko.blogspot.com/feeds/posts/default/-/en-wiki]
+name=User:Okino
+
+[https://priyankaivy.blogspot.com/feeds/posts/default]
+name=Priyanka Nag
+
+[https://valmj.wordpress.com/category/technology/foss/feed/]
+name=Valerie Juarez
+
+[http://lu.is/feed/]
+name=Luis Villa
+
+[https://nethahussain.wordpress.com/category/wikipedia/feed/]
+name=Netha Hussain
+
+[http://pblog.ebaker.me.uk/feeds/posts/default/-/wikipedia]
+name=Edward Baker
+
+[http://yuvi.in/blog/category/wiki/feed/]
+name=Yuvi Panda
+
+[http://addshore.com/feed/atom/?tag=mediawiki%2Cwikimedia%2Cwikibase%2Cwikidata%2Cwikipedia]
+name=Addshore
+
+[http://notconfusing.com/category/wiki/feed/]
+name=Not Confusing (Max Klein)
+
+[http://moriel.smarterthanthat.com/tag/mediawiki/feed/]
+name=Moriel Schottlender (User:Mooeypoo)
+
+[https://bleededge.blogspot.com/feeds/posts/default]
+name=Rachel (User:Rachel99)
+
+[https://alexstinson.wordpress.com/feed/]
+name=Alex Stinson (Sadads)
+
+[http://blog.wikimedia.in/feed/]
+name=Wikimedia India
+
+[https://kothariharsh.wordpress.com/tag/wikimedia/feed/]
+name=Kothari Harsh
+
+[https://wikistaycation.wordpress.com/feed/]
+name=Wikistaycation
+
+[http://mariapacana.tumblr.com/tagged/parsoid/rss]
+name=Maria Pacana
+
+[http://www.wikiphotographer.net/category/wikimedia-commons/feed/]
+name=Frank Schulenburg
+
+[http://designatwikipedia.tumblr.com/rss]
+name=Vibha Bamba
+
+[https://wikinewsreporter.wordpress.com/feed/]
+name=Laura Hale
+
+[https://meta.wikimedia.org/w/api.php?action=featuredfeed&feed=technews&feedformat=atom]
+name=Tech News
+
+[http://gondwanaland.com/mlog/category/wikipedia/feed/]
+name=Mike Linksvayer
+
+[http://terrychay.com/category/work/wikimedia/feed]
+name=Terry Chay
+
+[https://timotijhof.net/category/tools/feed/]
+name=User:Krinkle
+
+[http://thingelstad.com/tag/mediawiki/feed/]
+name=Jamie Thingelstad
+
+[https://wllm.com/tag/wikipedia/feed/]
+name=User:Wllm
+
+[https://wikiedu.org/feed/]
+name=Wiki Education Foundation
+
+[http://www.wikipediatrends.com/blog/feed/]
+name=Alex Druk
+
+[https://www.haykranen.nl/category/wiki/feed/]
+name=Hay Kranen (User:Husky)
+
+[http://finneboonen.org/?feed=rss2]
+name=Finne Boonen (henna)
+
+[https://geniice.wordpress.com/feed/]
+name=User:Geni
+
+[http://pigsonthewing.org.uk/feed/]
+name=Andy Mabbett (pigsonthewing)
+
+[https://codepen.io/Krinkle/blog/feed]
+name=Timo Tijhof
+
+[http://bluerasberry.com/feed/]
+name=User:Bluerasberry
+
+[http://www.weeklyosm.eu/feed]
+name=Weekly OSM
+
+[http://lyzzy.de/blog/category/wikimedia-en/feed/]
+name=Alice Wiegand
+
+[https://jonatanglad.wordpress.com/category/wiki/feed/]
+name=User:Josve05a
+
+[https://cxupdate.wordpress.com/feed/]
+name=Content Translation Update
+
+[https://blog.legoktm.com/feeds/mediawiki.atom.xml]
+name=User:Legoktm
+
+[http://thewikipedian.net/feed/]
+name=William Beutler
+
+[http://www.generalist.org.uk/blog/tags/wikipedia/feed/]
+name=Andrew Gray
+
+[https://blog.kevinpayravi.com/tag/wikimedia/feed/]
+name=Kevin Payravi
+
+[https://opensourceexile.blogspot.com/feeds/posts/default/-/wikipedia/]
+name=User:Stuartyeates
+
+[https://medbachounda.blogspot.be/feeds/posts/default/-/Wiki-en/]
+name=Mohammed Bachounda
+
+[https://www.dereckson.be/blog/category/wikimedia/feed/]
+name=Sébastien Santoro (Dereckson)
+
+[http://www.residentmar.io/feed]
+name=Resident Mario
+
+[http://blog.hatnote.com/rss]
+name=Mahmoud Hashemi
+
+[https://muscicapa.blogspot.com/feeds/posts/default/-/wikimedia?alt=rss]
+name=Shyamal
+
+[http://wikipediaweekly.org/feed/podcast]
+name=Wikipedia Weekly
+
+[https://wirforgenderequity.wordpress.com/feed/]
+name=Kelly Doyle
+
+[http://allthingslinguistic.com/tagged/wikipedia/rss]
+name=All Things Linguistic
+
+[https://gapfindingproject.wordpress.com/feed/]
+name=Monika Sengul-Jones
+
+[https://phabricator.wikimedia.org/phame/blog/feed/1/]
+name=WMF Release Engineering
+
+[https://lornamcampbell.org/tag/wikimedia/feed/]
+name=Lorna M Campbell
+
+[http://stryn.hol.es/blog/tag/wikimedia/feed/]
+name=Stryn
+
+[https://samwilson.id.au/tag/Wikimedia/feed/]
+name=Sam Wilson
+
+[https://blog.ash.bzh/en/feed/]
+name=Ash Crow
+
+[https://phabricator.wikimedia.org/phame/blog/feed/5/]
+name=Wikimedia Cloud Services
+
+[https://goinggnu.wordpress.com/category/wikipedia/feed/]
+name=T Shrinivasan
+
+[https://blog.bluespice.com/tag/mediawiki/feed/]
+name=BlueSpice
+
+[https://tttwrites.wordpress.com/category/wikimedia/feed/]
+name=Tony Thomas
+
+[https://phabricator.wikimedia.org/phame/blog/feed/7/]
+name=Wikimedia Performance Team
+
+[https://phabricator.wikimedia.org/phame/blog/feed/8/]
+name=Wikimedia Scoring Platform Team
+
+[https://medium.com/feed/wiki-playtime]
+name=Wiki Playtime
+
+[https://goinggnu.wordpress.com/category/wikipedia/feed/]
+name=Going GNU
+
+[https://clkoerner.com/feed/?cat=197%2C205]
+name=Chris Koerner
+
+[https://cookiesandcodeblog.wordpress.com/feed/]
+name=Josephine Lim
+
+[https://phabricator.wikimedia.org/phame/blog/feed/9/]
+name=Wikimedia Readers Department
+
+[https://anna.flourishing.stream/rss/]
+name=Localizando-me
+
+[http://blog.maudite.cc/comments/feed]
+name=maudite codes
+
+[https://outreachy-17.blogspot.com/feeds/posts/default?alt=rss]
+name=Noella - My Outreachy 17
+
+[https://vinithavs.wordpress.com/feed/]
+name=Vinitha VS
+
+[https://medium.com/feed/@nehajha]
+name=Neha Jha
+
+[https://medium.com/feed/@meghasharma4910]
+name=Megha Sharma
