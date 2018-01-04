@@ -4,8 +4,6 @@ class profile::statistics::web(
     $statistics_servers = hiera('statistics_servers'),
     $geowiki_host       = hiera('profile::statistics::web::geowiki_host'),
 ) {
-    include ::standard
-    include ::base::firewall
 
     include ::deployment::umask_wikidev
 
