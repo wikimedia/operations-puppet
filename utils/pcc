@@ -30,9 +30,14 @@
   Licensed under the Apache license.
 
 """
+from __future__ import print_function
+
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+try:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+except NameError:
+    pass  # python3 FTW
 
 import argparse
 import json
@@ -41,7 +46,11 @@ import re
 import subprocess
 import textwrap
 import time
-import urllib2
+
+try:
+    import urllib2
+except ImportError:
+    import urllib.request as urllib2
 
 try:
     import jenkinsapi
@@ -125,7 +134,7 @@ jenkins = jenkinsapi.jenkins.Jenkins(
     password=args.api_token
 )
 
-print yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args))
+print(yellow('Compiling %(change)s on node(s) %(nodes)s...' % vars(args)))
 
 job = jenkins.get_job('operations-puppet-catalog-compiler')
 build_params = {
@@ -145,7 +154,7 @@ except AttributeError:
 
 build = invocation.get_build()
 
-print 'Your build URL is %s' % white(build.baseurl)
+print('Your build URL is %s' % white(build.baseurl))
 
 running = True
 output = ''
@@ -153,7 +162,7 @@ while running:
     time.sleep(1)
     running = invocation.is_running()
     new_output = build.get_console().rstrip('\n')
-    print format_console_output(new_output[len(output):]),
+    print(format_console_output(new_output[len(output):]),)
     output = new_output
 
 # Puppet's exit code is not always meaningful, so we grep the output
@@ -161,8 +170,8 @@ while running:
 ok = ('Run finished' in output and not
       re.search(r'[1-9]\d* (ERROR|FAIL)', output))
 if ok:
-    print green('SUCCESS')
+    print(green('SUCCESS'))
     sys.exit(0)
 else:
-    print red('FAIL')
+    print(red('FAIL'))
     sys.exit(1)
