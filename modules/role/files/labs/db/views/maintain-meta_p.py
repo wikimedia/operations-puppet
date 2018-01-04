@@ -205,11 +205,14 @@ def main():
         dbs = {k: v for k, v in dbs.iteritems() if k in args.databases}
 
     def read_list(fname, prop, val):
-        fpath = os.path.join('{}/dblists/'.format(args.mediawiki_config),
-                             fname + '.dblist')
-        for db in open(fpath).read().splitlines():
-            if db in dbs:
-                dbs[db][prop] = val
+        fpath = os.path.join(
+            args.mediawiki_config, 'dblists', '{}.dblist'.format(fname))
+        if os.path.isfile(fpath):
+            for db in open(fpath).read().splitlines():
+                if db in dbs:
+                    dbs[db][prop] = val
+        else:
+            logging.warning('DBList "%s" not found', fpath)
 
     read_list("closed", "closed", True)
     read_list("deleted", "deleted", True)
@@ -223,7 +226,7 @@ def main():
     read_list("wikidataclient", "has_wikidata", True)
 
     # TODO: silver/labtestweb2001
-    for slice in ['s1', 's2', 's3', 's4', 's5', 's6', 's7']:
+    for slice in ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']:
         read_list(slice, "slice", slice)
 
     for family in [
