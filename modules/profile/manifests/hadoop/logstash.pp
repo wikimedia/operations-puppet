@@ -2,7 +2,7 @@
 # Enables gelf logging to logstash from Hadoop.
 # As of 2016-02, this  is not used.
 class profile::hadoop::logstash (
-    $gelf_logging_enabled = hiera('profile::hadoop::logstash::enabled'),
+    $gelf_logging_enabled = hiera('profile::hadoop::logstash::enabled', false),
 ) {
     file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
         content => template('profile/hadoop/hadoop-yarn-logging-helper.erb'),
