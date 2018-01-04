@@ -94,3 +94,4 @@ profile::cache::base::allow_iptables: true
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
+profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
