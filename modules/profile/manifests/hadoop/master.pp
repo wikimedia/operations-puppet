@@ -4,12 +4,15 @@
 #
 # == Parameters
 #
+#  [*hadoop_namenode_heapsize*]
+#    Current JVM heap size to use as threshold for monitoring.
+#
 #  [*monitoring_enabled*]
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::master(
-    $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled'),
-    $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize'),
+    $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
+    $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize', 2048),
     $statsd                   = hiera('statsd'),
 ){
 
