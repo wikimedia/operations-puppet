@@ -32,7 +32,33 @@ class role::prometheus::analytics {
           { 'files' => [ "${targets_path}/jmx_druid_*.yaml" ]}
         ],
       },
+      {
+        'job_name'        => 'jmx_hadoop',
+        'scrape_timeout'  => '25s',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_hadoop_*.yaml" ]}
+        ],
+      },
     ]
+
+    prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_worker_${::site}.yaml",
+        class_name => 'role::analytics_cluster::hadoop::worker',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hadoop_master_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_master_${::site}.yaml",
+        class_name => 'role::analytics_cluster::hadoop::master',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hadoop_standby_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_standby_${::site}.yaml",
+        class_name => 'role::analytics_cluster::hadoop::standby',
+        site       => $::site,
+    }
 
     prometheus::jmx_exporter_config{ "druid_public_${::site}":
         dest       => "${targets_path}/jmx_druid_public_${::site}.yaml",
