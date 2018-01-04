@@ -2,12 +2,15 @@
 #
 # Sets up a standby/backup Hadoop Master node.
 #
+#  [*hadoop_namenode_heapsize*]
+#    Current JVM heap size to use as threshold for monitoring.
+#
 #  [*monitoring_enabled*]
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::master::standby(
-    $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled'),
-    $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize'),
+    $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled', false),
+    $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize', 2048),
     $statsd                   = hiera('statsd'),
 ) {
 
