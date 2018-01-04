@@ -13,5 +13,5 @@ class role::analytics_cluster::webserver {
     include ::profile::druid::pivot
 
     include ::profile::base::firewall
-    class { 'standard': }
+    include standard
 }
