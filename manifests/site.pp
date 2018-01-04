@@ -935,7 +935,7 @@ node 'labservices1002.wikimedia.org' {
     include ::ldap::role::client::labs
 }
 
-node 'labtestneutron2001.codfw.wmnet' {
+node /^labtestneutron200[1-2]\.codfw.wmnet$/ {
     role(wmcs::openstack::labtestn::net)
 }
 
@@ -955,12 +955,6 @@ node 'labtestmetal2001.codfw.wmnet' {
 
 node 'labtestnet2002.codfw.wmnet' {
     role(wmcs::openstack::labtest::net_standby)
-}
-
-node 'labtestneutron2002.codfw.wmnet' {
-    # WIP
-    include ::standard
-    include ::base::firewall
 }
 
 node 'labtestnet2001.codfw.wmnet' {
