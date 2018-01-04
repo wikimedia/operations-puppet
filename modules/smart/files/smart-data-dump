@@ -82,7 +82,7 @@ def get_fact(fact_name):
 def megaraid_list_pd():
     """List physical disks attached to megaraid controller. Generator to yield PD objects."""
 
-    raw_output = subprocess.check_output(['/usr/bin/timeout', '30', '/usr/sbin/smartctl',
+    raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/smartctl',
                                           '--scan-open'])
     for line in raw_output.splitlines():
         line = str(line, 'utf8')
@@ -98,7 +98,7 @@ def megaraid_list_pd():
 def hpsa_list_pd():
     """List physical disks attached to hpsa controller. Generator to yield PD objects."""
 
-    raw_output = subprocess.check_output(['/usr/bin/timeout', '30', '/usr/sbin/hpssacli',
+    raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/hpssacli',
                                           'controller', 'all', 'show', 'config'])
     in_controller = False
     for line in raw_output.splitlines():
@@ -121,7 +121,7 @@ def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
 
     # starting with stretch, lsblk has --json but not on trusty/jessie
-    raw_output = subprocess.check_output(['/usr/bin/timeout', '30', '/bin/lsblk', '--noheadings',
+    raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/bin/lsblk', '--noheadings',
                                           '--output', 'NAME,TYPE', '--raw'])
     for line in raw_output.splitlines():
         line = str(line, 'utf8')
@@ -132,7 +132,7 @@ def noraid_list_pd():
                  disk_id=name)
 
 
-def _run_smartctl(args, timeout=30):
+def _run_smartctl(args, timeout=60):
     try:
         cmd_args = ['/usr/bin/timeout', str(timeout), '/usr/sbin/smartctl']
         cmd_args.extend(args)
