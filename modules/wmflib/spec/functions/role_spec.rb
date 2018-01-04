@@ -6,35 +6,38 @@ describe 'role' do
 
   let(:pre_condition) {"
 class role::test {}
-class role::test2 {}
+class role::test2 {
+      if ($::_roles['test2']) { file { '/tmp/test': ensure => present} }
+      file{ \"/tmp/${::_role}\": ensure => present}
+}
 "}
   it "should be called with one parameter" do
     should run.with_params.and_raise_error(ArgumentError)
   end
-  it "throws error if called outside of the node scope" do
-    should run.with_params('cache::text').and_raise_error(Puppet::ParseError)
-  end
 
   it "throws error if called on a non-existing role" do
-    is_expected.to run.with_params('foo::bar').and_raise_error(Puppet::ParseError)
+    is_expected.to run.with_params('foo::bar').and_raise_error(Puppet::Error)
   end
 
   it "includes the role class" do
     is_expected.to run.with_params('test')
+    expect(catalogue).to contain_class('role::test')
   end
 
-  it "raises an error when called more than once in a scope" do
-    scope.function_role(['test2'])
-    expect { scope.function_role(['test']) }.to raise_error(Puppet::ParseError)
+  it "adds the keys to the top-scope variables" do
+    is_expected.to run.with_params('test2')
+    expect(catalogue).to contain_file('/tmp/test')
+    expect(catalogue).to contain_file('/tmp/test2')
   end
 
-  it "adds the keys to the top-scope variable" do
-    scope.function_role(['test', 'test2'])
-    expect(scope.lookupvar('_roles')).to eq({'test' => true, 'test2' => true})
-  end
-
-  it "includes the role classes" do
-    scope.function_role(['test'])
-    expect(scope.find_hostclass('role::test')).to be_an_instance_of(Puppet::Resource::Type)
+  context 'function has already been called' do
+    let(:pre_condition) {"
+class role::test {}
+class role::test2 {}
+role('test')
+" }
+    it "raises an error when called more than once in a scope" do
+      is_expected.to run.with_params('test2').and_raise_error(Puppet::Error)
+    end
   end
 end
