@@ -489,6 +489,16 @@ node 'db2092.codfw.wmnet' {
     role(spare::system)
 }
 
+
+# pending to be provisioned T184161
+node 'db1113.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'db1114.eqiad.wmnet' {
+    role(spare::system)
+}
+
 ## x1 shard
 # eqiad
 node 'db1031.eqiad.wmnet' {
