@@ -8,8 +8,6 @@ class role::analytics_cluster::refinery::job::json_refine {
 
     # Refine EventLogging Analytics (capsule based) data.
     role::analytics_cluster::refinery::job::json_refine_job { 'eventlogging_analytics':
-        # Temporarily disabled for T179625.
-        ensure           => 'absent',
         input_base_path  => '/wmf/data/raw/eventlogging',
         input_regex      => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
         input_capture    => 'table,year,month,day,hour',
