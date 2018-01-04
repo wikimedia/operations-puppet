@@ -1,0 +1,12 @@
+# planet rawdog feeds in Ukrainian language (uk.planet.wikimedia.org)
+include ../config
+template /etc/rawdog/theme/wikimedia/uk/rd_page.tmpl
+itemtemplate /etc/rawdog/theme/wikimedia/uk/rd_item.tmpl
+outputfile /var/www/planet/uk/index.html
+outputxml /var/www/planet/uk/rss20.xml
+#
+
+feed 1h https://wikimediaukraine.wordpress.com/feed/
+feed 1h http://wikilovesearth.org.ua/feed/
+feed 1h https://vira-motorko.blogspot.com/feeds/posts/default/-/%D0%92%D1%96%D0%BA%D1%96%D0%BF%D0%B5%D0%B4%D1%96%D1%8F?alt=rss
+feed 1h http://wikilovesmonuments.org.ua/feed/

@@ -1,0 +1,48 @@
+# ! This file is managed by puppet !
+# pt.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = pt.planet.wikimedia
+link            = https://pt.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/pt
+cache_directory = /var/cache/planet/pt/
+output_dir      = /var/www/planet/pt/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://feeds.feedburner.com/Rei-artur_planetwikimedia]
+name=Rei-artur
+
+[https://wikificacoes.blogspot.com/atom.xml]
+name=Wikificações
+
+[http://wiking.blogs.sapo.pt/data/rss?tag=wiki]
+name=Wiking
+
+[https://cultivandoojardim.blogspot.com/atom.xml]
+name=Cultivando o Jardim
+
+[http://gpshumano.blogs.dri.pt/category/wikipedia/feed/]
+name=Usuário(a):Nuno Tavares
+
+[http://bitsebots.blogs.sapo.pt/data/rss?tag=planet]
+name=Bits & Bots
+
+[http://blog.wikimedia.pt/feed/]
+name=Wikimedia Portugal
+
+[https://andersbateva.wordpress.com/tag/wikipedia/feed/]
+name=Usuário:MisterSanderson
