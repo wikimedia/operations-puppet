@@ -19,7 +19,7 @@
 class role::analytics_cluster::coordinator {
 
     system::role { 'analytics_cluster::coordinator':
-        description => 'Analytics Cluster running various Hadoop services (Hive, Camus, Oozie, ..)'
+        description => 'Analytics Cluster host running various Hadoop services (Hive, Camus, Oozie, ..) and maintenance scripts'
     }
 
     include ::role::analytics_cluster::client
