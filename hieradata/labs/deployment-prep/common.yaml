@@ -345,10 +345,6 @@ scap::sources:
   cassandra/logstash-logback-encoder:
     repository: operations/software/logstash-logback-encoder
 
-  # Prometheus JMX exporter
-  prometheus/jmx_exporter:
-    repository: operations/software/prometheus_jmx_exporter
-
   # Wikimania scholarships app
   scholarships/scholarships:
     repository: wikimedia/wikimania-scholarships

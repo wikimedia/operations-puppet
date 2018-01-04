@@ -165,9 +165,6 @@ scap::sources:
   # Cassandra metrics collection
   cassandra/metrics-collector:
     repository: operations/software/cassandra-metrics-collector
-  # Prometheus JMX exporter
-  prometheus/jmx_exporter:
-    repository: operations/software/prometheus_jmx_exporter
   # Librenms software
   librenms/librenms:
     repository: operations/software/librenms
