@@ -15,7 +15,7 @@ class role::cache::text {
     include ::profile::cache::kafka::statsv
 
     # TODO: refactor all this so that we have separate roles for production and labs
-    if $::realm == 'production' {
+    if $::realm == 'production' and $::hostname != 'cp1008' {
         include ::role::ipsec
     }
 }
