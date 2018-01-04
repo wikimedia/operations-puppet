@@ -1,5 +1,6 @@
 profile::base::labs::unattended_wmf: 'absent'
 profile::base::labs::unattended_distro: 'absent'
+profile::base::overlayfs: true
 
 "profile::base::core_dump_pattern": core
 classes:
