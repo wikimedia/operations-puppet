@@ -217,6 +217,9 @@ class network::constants {
                     '208.80.155.120',               # labpuppetmaster1002.wikimedia.org
                     '2620:0:861:4:208:80:155:120',  # labpuppetmaster1002.wikimedia.org
                 ],
+            'cache_misc' => [ # So that roles with CACHE_MISC in ferm rules can be used in labs
+                    '10.68.21.68', # novaproxy-01.project-proxy.eqiad.wmflabs
+                ],
             }
     }
 
