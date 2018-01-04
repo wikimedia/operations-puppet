@@ -2665,6 +2665,15 @@ users:
     email: vinithacse@gmail.com
     expiry_date: 2018-03-31
     expiry_contact: nuria@wikimedia.org
+  imarlier:
+    ensure: present
+    gid: 500
+    name: imarlier
+    realname: Ian Marlier
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBqDEqQ//bMfmytP77928v+HLf6+jscYeY8WvPrReLI imarlier@WMF2024.lan
+    uid: 18334
+    email: imarlier@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -2914,7 +2923,3 @@ ldap_only_users:
     ensure: present
     realname: Jack Gleeson
     email: jgleeson@wikimedia.org
-  imarlier:
-    ensure: present
-    realname: Ian Marlier
-    email: imarlier@wikimedia.org
