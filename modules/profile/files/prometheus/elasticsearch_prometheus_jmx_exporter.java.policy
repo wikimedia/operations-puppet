@@ -1,0 +1,9 @@
+grant codeBase "file:/usr/share/java/prometheus/-" {
+
+  permission javax.management.MBeanServerPermission "createMBeanServer";
+  permission javax.management.MBeanPermission "*", "*";
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.management";
+  permission java.io.FilePermission "/etc/elasticsearch/prometheus_jmx_exporter.yaml", "read";
+  permission java.io.FilePermission "/proc/self/status", "read";
+
+};

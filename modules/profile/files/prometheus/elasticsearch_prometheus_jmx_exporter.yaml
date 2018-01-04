@@ -1,0 +1,7 @@
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: true
+# to ensure we only load a minimum number of MBeans, let's define a dummy whitelist
+whitelistObjectNames: [ 'java.lang:type=ClassLoading' ]
+# and since we are only interested in the DefaultExports, let's blacklist everything
+blacklistObjectNames: [ '*:*' ]
