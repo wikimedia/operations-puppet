@@ -64,6 +64,12 @@ class role::graphite::production {
         keep_days => 182,
     }
 
+    # ORES metrics - T169969
+    graphite::whisper_cleanup { 'graphite-ores':
+        directory => "${storage_dir}/whisper/ores",
+        keep_days => 30,
+    }
+
     $graphite_hosts = [
         'graphite1001.eqiad.wmnet',
         'graphite1003.eqiad.wmnet',
