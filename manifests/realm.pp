@@ -18,7 +18,7 @@ $site = $facts['ipaddress'] ? {
     default                                   => '(undefined)'
 }
 
-if $realm == undef {
+if !defined('$realm') {
     $realm = hiera('realm', 'production')
 }
 
