@@ -41,34 +41,14 @@ class EchoNotifier(threading.Thread):
         self.notifier.loop()
 
 
-class EchoReader(threading.Thread):
+class EchoReader():
     def __init__(self, infile='', associatedchannel=''):
-        threading.Thread.__init__(self)
         self.infile = infile
         self.associatedchannel = associatedchannel
         self.uniques = {';': 'UNIQ_' + self.get_unique_string() + '_QINU',
                         ':': 'UNIQ_' + self.get_unique_string() + '_QINU',
                         ',': 'UNIQ_' + self.get_unique_string() + '_QINU'}
 
-    def get_unique_string(self):
-        unique = ''
-        for i in range(15):
-            unique = unique + random.choice(string.letters)
-        return unique
-
-    def escape(self, string):
-        escaped_string = re.sub('\\\;', self.uniques[';'], string)
-        escaped_string = re.sub('\\\:', self.uniques[':'], escaped_string)
-        escaped_string = re.sub('\\\,', self.uniques[','], escaped_string)
-        return escaped_string
-
-    def unescape(self, string):
-        unescaped_string = re.sub(self.uniques[';'], ';', string)
-        unescaped_string = re.sub(self.uniques[':'], ':', unescaped_string)
-        unescaped_string = re.sub(self.uniques[','], ',', unescaped_string)
-        return unescaped_string
-
-    def run(self):
         if self.infile:
             print('Using infile')
             self.notifiers = []
@@ -111,6 +91,24 @@ class EchoReader(threading.Thread):
                     break
                 except Exception:
                     pass
+
+    def get_unique_string(self):
+        unique = ''
+        for i in range(15):
+            unique = unique + random.choice(string.letters)
+        return unique
+
+    def escape(self, string):
+        escaped_string = re.sub('\\\;', self.uniques[';'], string)
+        escaped_string = re.sub('\\\:', self.uniques[':'], escaped_string)
+        escaped_string = re.sub('\\\,', self.uniques[','], escaped_string)
+        return escaped_string
+
+    def unescape(self, string):
+        unescaped_string = re.sub(self.uniques[';'], ';', string)
+        unescaped_string = re.sub(self.uniques[':'], ':', unescaped_string)
+        unescaped_string = re.sub(self.uniques[','], ',', unescaped_string)
+        return unescaped_string
 
     def readfile(self, filename):
         if self.files[filename]:
@@ -188,7 +186,6 @@ global bot
 bot = EchoBot(chans, nickname, server)
 global reader
 reader = EchoReader(options.infile)
-reader.start()
 try:
     bot.start()
 except Exception:
