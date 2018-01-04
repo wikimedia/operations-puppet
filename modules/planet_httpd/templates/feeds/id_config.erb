@@ -1,0 +1,28 @@
+# ! This file is managed by puppet !
+# id.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = id.planet.wikimedia
+link            = https://id.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/id
+cache_directory = /var/cache/planet/id/
+output_dir      = /var/www/planet/id/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://ivanlanin.wordpress.com/category/wikipedia/feed/]
+name=ivanlanin
+
