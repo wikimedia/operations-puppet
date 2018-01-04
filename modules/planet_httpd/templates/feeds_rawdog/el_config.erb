@@ -1,0 +1,10 @@
+# planet rawdog feeds in Greek language (el.planet.wikimedia.org)
+include ../config
+template /etc/rawdog/theme/wikimedia/el/rd_page.tmpl
+itemtemplate /etc/rawdog/theme/wikimedia/el/rd_item.tmpl
+outputfile /var/www/planet/el/index.html
+outputxml /var/www/planet/el/rss20.xml
+#
+
+feed 1h https://magioladitis.blogspot.com/feeds/posts/default
+feed 1h https://blog.wikimedia.gr/feed/

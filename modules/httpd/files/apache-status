@@ -1,0 +1,6 @@
+#!/bin/sh
+WHITE="$(/usr/bin/tput setaf 7; /usr/bin/tput bold)"
+RESET="$(/usr/bin/tput sgr0)"
+file="/tmp/apache_status.$(/bin/hostname).$(/bin/date +%s).txt"
+/usr/bin/links -dump http://127.0.0.1/server-status -width 80 | tee "$file"
+printf "\nOutput saved to ${WHITE}${file}${RESET}.\n"

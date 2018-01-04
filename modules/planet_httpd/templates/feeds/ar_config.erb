@@ -1,0 +1,45 @@
+# ! This file is managed by puppet !
+# ar.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = ar.planet.wikimedia
+link            = https://ar.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/ar
+cache_directory = /var/cache/planet/ar/
+output_dir      = /var/www/planet/ar/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://khalidyousif.wordpress.com/tag/wiki/feed/atom/]
+name=Khalid Yousif
+
+[https://osamak.wordpress.com/category/wikipedia/feed/atom/]
+name=أسامة خالد
+
+[https://teqnia01.blogspot.com/feeds/posts/default/-/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7]
+name=محمد أحمد
+
+[http://itwadi.com/taxonomy/term/68/0/feed]
+name=وادي التقنية
+
+[https://akhbaraltknia.blogspot.com/feeds/posts/default/-/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7]
+name=Mohamed Ouda
+
+[https://medbachounda.blogspot.be/feeds/posts/default/-/Wiki-ar/]
+name=Mohammed Bachounda
+
+[https://walaaabdelmanaem.wordpress.com/feed/]
+name=Walaa Abdel Manaem
