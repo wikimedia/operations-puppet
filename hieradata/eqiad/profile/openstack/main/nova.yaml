@@ -12,6 +12,11 @@ profile::openstack::main::nova::network_public_ip: '208.80.155.255'
 profile::openstack::main::nova::zone: 'eqiad'
 profile::openstack::main::nova::db_host: 'm5-master.eqiad.wmnet'
 profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
+
+# Nova is permitted to schedule new VMs on the following
+#  hosts.  Note that 1019 and 1020 are reserved for
+#  internal infrastructure use so should never be part of
+#  the default pool.
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
   - labvirt1002
