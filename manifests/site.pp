@@ -2054,13 +2054,7 @@ node 'thorium.eqiad.wmnet' {
     # related role/module.
     #
     # This node is not intended for data processing.
-    role(statistics::web,
-        druid::analytics::pivot,
-        analytics_cluster::hue)
-
-
-    include ::standard
-    include ::base::firewall
+    role(analytics_cluster::webserver)
 }
 
 # Failoid service (Ganeti VM)
