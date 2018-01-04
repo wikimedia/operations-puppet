@@ -113,9 +113,10 @@ class SchemaOperations():
         if self.table_exists(view, self.db):
             # If it does, create or replace the view for it.
             logging.info("[{}] ".format(view))
-            if (self.replace_all or not self.table_exists(view, self.db_p) or
-                    input('View already exists. Replace? [y/N] ').lower()
-                    in ['y', 'yes']):
+            if (
+                not self.table_exists(view, self.db_p) or
+                self._confirm('View already exists. Replace?')
+            ):
                 # Can't use pymysql to build this
                 self.write_execute("""
                     CREATE OR REPLACE
@@ -194,10 +195,10 @@ class SchemaOperations():
 
         if len(sources) == len(sources_checked):
 
-            if (self.replace_all or
-                    not self.table_exists(view_name, self.db_p) or
-                    input('View already exists. Replace? [y/N] ').lower()
-                    in ['y', 'yes']):
+            if (
+                not self.table_exists(view_name, self.db_p) or
+                self._confirm('View already exists. Replace?')
+            ):
                 logging.info("[{}] ".format(view_name))
                 self.create_customview(
                     view_name,
@@ -275,6 +276,21 @@ class SchemaOperations():
         for view_name, view_details in customviews.items():
             self.do_customview(view_name, view_details)
 
+    def drop_public_database(self):
+        """Drop a public database entirely."""
+        if self.database_exists(self.db_p):
+            if self._confirm('Drop {}?'.format(self.db_p)):
+                self.write_execute("DROP DATABASE `{}`;".format(self.db_p))
+        else:
+            logging.warning('DB {} does not exist'.format(self.db_p))
+
+    def _confirm(self, msg):
+        """Prompt for confirmation unless self.replace_all is true."""
+        return (
+            self.replace_all or
+            input("{} [y/N] ".format(msg)).lower() in ['y', 'yes']
+        )
+
 
 if __name__ == "__main__":
 
@@ -313,8 +329,12 @@ if __name__ == "__main__":
     )
     argparser.add_argument(
         "--clean",
-        help=("Clean out views from _p varient that are no longer specified"
-              " make changes."),
+        help="Clean out views from _p db that are no longer specified.",
+        action="store_true"
+    )
+    argparser.add_argument(
+        "--drop",
+        help="Remove _p db entirely.",
         action="store_true"
     )
     argparser.add_argument(
@@ -347,6 +367,10 @@ if __name__ == "__main__":
     # argparse mutually exclusive is weird http://bugs.python.org/issue10984
     if args.table and args.clean:
         logging.critical("cannot specify a single table and cleanup")
+        sys.exit(1)
+
+    if args.drop and not args.databases:
+        logging.critical("--drop must specify database names")
         sys.exit(1)
 
     with open(args.config_location, 'r') as stream:
@@ -448,6 +472,10 @@ if __name__ == "__main__":
             if not ops.user_exists(ops.definer):
                 logging.critical("Definer has not been created")
                 sys.exit(1)
+
+            if args.drop:
+                ops.drop_public_database()
+                continue
 
             ops.execute(fullviews, customviews)
 
