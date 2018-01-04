@@ -42,7 +42,7 @@ domainlist defer_domains = lsearch;CONFDIR/defer_domains
 domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org
 domainlist rt_domains = rt.wikimedia.org
 domainlist phab_domains = phabricator.wikimedia.org
-domainlist donate_domains = donate.wikimedia.org
+domainlist donate_domains = donate.wikimedia.org : civicrm.wikimedia.org
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
 
@@ -210,7 +210,7 @@ wiki_mail:
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	no_verify
 
-# Send donate.wikimedia.org mail to Fundraising CiviCRM server
+# Send donate.wikimedia.org and civicrm.wikimedia.org mail to Fundraising CiviCRM server
 donate:
 	driver = manualroute
 	domains = +donate_domains
