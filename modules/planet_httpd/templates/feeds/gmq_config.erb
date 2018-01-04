@@ -1,0 +1,76 @@
+# ! This file is managed by puppet !
+# gmq.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = gmq.planet.wikimedia
+link            = https://gmq.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/gmq
+cache_directory = /var/cache/planet/gmq/
+output_dir      = /var/www/planet/gmq/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[http://blog.desainali.com/category/wikipedia/feed/]
+name=Ainali
+language=sv
+
+[https://calandrella.wordpress.com/tag/wikipedia/feed/atom/]
+name=Calandrella
+language=sv
+
+[https://newth.net/eirik/category/wikipedia/feed/]
+name=Eirik Newth
+language=nb
+
+[https://grillblogg.blogspot.com/feeds/posts/default/-/Wikipedia]
+name=Grillo
+language=sv
+
+[https://jhsoby-nb.blogspot.com/feeds/posts/default/-/Wikimedia]
+name=Jon Harald Søby
+language=nb
+
+[https://kjetilr.blogspot.com/feeds/posts/default]
+name=Kjetil_r
+language=nb
+
+[https://kamfjord.org/feed/?cat=32]
+name=Laaknor
+language=nb
+
+[https://mika.elnord.in/index.php/category/wikimedia/feed/]
+name=Micke
+language=sv
+
+[https://palnatoke.org/wordpress/tag/wikipedia/feed/]
+name=Palnatoke
+language=da
+
+[https://blog.wegge.dk/tag/wikipedia/feed/]
+name=Wegge
+language=da
+
+[https://wikimediasverige.wordpress.com/feed/atom/]
+name=Wikimedia Sverige
+language=sv
+
+[http://blogg.wikimedia.no/feed/]
+name=Wikimedia Norge
+language=no
+
+[http://www.bepsays.com/tag/wikipedia/feed/atom/]
+name=Bep
+language=nn

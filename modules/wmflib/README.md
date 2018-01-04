@@ -1,7 +1,19 @@
 # wmflib
 
-Custom Puppet functions that help you get things done.
+Custom Puppet functions and types that help you get things done.
 
+# Types
+
+## Wmflib::Ensure
+Accepts either 'present' or 'absent' as values.
+Should be used to validate standard ensure parameters, instead of the
+corresponding `validate_ensure` function.
+
+## Wmflib::Sourceurl
+Ensures the provided string begins with puppet:///modules/. This is useful to
+validate the format of `source` arguments to file resources.
+
+# Functions
 
 ## apply_format
 

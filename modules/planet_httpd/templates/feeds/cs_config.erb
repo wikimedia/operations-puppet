@@ -1,0 +1,37 @@
+# ! This file is managed by puppet !
+# cs.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = cs.planet.wikimedia
+link            = http://cs.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/cs
+cache_directory = /var/cache/planet/cs/
+output_dir      = /var/www/planet/cs/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://blog.wikimedia.cz/feed/atom/]
+name = * Wikimedia Česká republika *
+face = http://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Wikimedia_Czech_Republic-logo.svg/64px-Wikimedia_Czech_Republic-logo.svg.png
+
+[https://wikipediste.blogspot.com/feeds/posts/default]
+name = Aktron, Juan de Vojníkov, Okino, Petr Kopač
+
+[https://okinokynko.blogspot.com/feeds/posts/default/-/wiki]
+name = Okino
+
+[https://okinokynko.blogspot.com/feeds/posts/default/-/Wikipedie]
+name=Okinovo Okýnko

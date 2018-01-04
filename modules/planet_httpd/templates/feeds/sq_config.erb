@@ -1,0 +1,30 @@
+# ! This file is managed by puppet !
+# sq.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = sq.planet.wikimedia
+link            = https://sq.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/sq
+cache_directory = /var/cache/planet/sq/
+output_dir      = /var/www/planet/sq/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://gretadoci.wordpress.com/category/home/feed/]
+name=Përdoruesja:Margott
+
+[https://elioqoshi.me/sq/tag/wiki-sq/feed/]
+name=Përdoruesi:ElioQoshi

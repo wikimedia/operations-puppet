@@ -1,0 +1,90 @@
+# ! This file is managed by puppet !
+# pl.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = pl.planet.wikimedia
+link            = https://pl.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/pl
+cache_directory = /var/cache/planet/pl/
+output_dir      = /var/www/planet/pl/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://wojnax.blogspot.com/feeds/posts/default]
+name=WojnaX
+
+[https://feeds.feedburner.com/adas_wiki?format=xml]
+name=Adam Dziura
+
+[https://jarzynasblog.blogspot.com/feeds/posts/default]
+# name=WikiBash
+
+[https://pl-wikiblog.blogspot.com/feeds/posts/default]
+name=Wikiblog
+
+[https://okowiki.blogspot.com/feeds/posts/default]
+name=Kpjas
+
+[https://wikislownik.blogspot.com/feeds/posts/default]
+name=Blog Wikisłownika
+
+[http://www.wykop.pl/rss/tag/wikimedia.xml]
+name=Wykop (Wikipedia)
+
+[https://wikikrytyk.wordpress.com/feed/atom/]
+name=WikiKrytyk
+
+[http://wanted.eu.org/pl/komputery/wikipedia/index.rss20]
+name=Wanted
+
+[https://radomil.blogspot.com/feeds/posts/default]
+name=Radomil
+
+[https://polimerek.blogspot.com/feeds/posts/default]
+name=Polimerek
+
+[http://www.webaudit.pl/blog/kategorie/wikipedia/feed/]
+name=Rdrozd
+
+[http://wikiviator.jogger.pl/rss/content/html/20/]
+name=Viator
+
+[http://holek.jogger.pl/rss/content/html/20/cat/wikimedia/]
+name=Holek
+
+[http://wikiekspedycja.jogger.pl/rss/]
+name=Wikiekspedycja
+
+[http://wikiviator.jogger.pl/rss/content/html/20/]
+name=Viatoro
+
+[http://www.facebook.com/feeds/page.php?format=atom10&id=147056473188]
+name=Polska Wikipedia
+
+[https://teukros.wordpress.com/category/wikimedia/feed/atom/]
+name=Teukros
+
+[https://wikiproteusz.wordpress.com/feed/atom/]
+name=PMG
+
+[https://plwiki.wordpress.com/feed/]
+name=Magalia & Awersowy
+
+[https://wikismoki.wordpress.com/feed/]
+name=Herr Kriss
+
+[https://tarplwiki.wordpress.com/feed/]
+name=Tar Lócesilion
