@@ -92,3 +92,4 @@ class VarnishBackendTest(unittest.TestCase):
         self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 12), s)
         self.assertIn(('status=204,method=GET,backend=be_bohrium_eqiad_wmnet', 2), s)
         self.assertIn(('status=200,method=POST,backend=be_bohrium_eqiad_wmnet', 1), s)
+        self.assertIn(('status=301,method=GET,backend=be_cp1065_eqiad_wmnet', 1), s)
