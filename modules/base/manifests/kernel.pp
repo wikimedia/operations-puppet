@@ -3,7 +3,11 @@
 # Settings related to the Linux kernel (currently only blacklisting
 # risky kernel modules and adding /etc/modules-load.d/ on Trusty)
 #
-class base::kernel
+# [*overlayfs*]
+#  bool for whether overlay module is needed
+
+class base::kernel(
+    $overlayfs,
 {
     if os_version('ubuntu == trusty') {
         # This directory is shipped by systemd, but trusty's upstart job for
@@ -17,10 +21,17 @@ class base::kernel
         }
     }
 
+    if ! $overlayfs {
+        kmod::blacklist { 'wmf_overlay':
+            modules => [
+                'overlayfs',
+                'overlay',
+            ],
+        }
+    }
+
     kmod::blacklist { 'wmf':
         modules => [
-            'overlayfs',
-            'overlay',
             'aufs',
             'usbip-core',
             'usbip-host',

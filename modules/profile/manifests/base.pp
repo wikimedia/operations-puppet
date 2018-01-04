@@ -21,6 +21,7 @@ class profile::base(
     $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
     $check_smart = hiera('profile::base::check_smart', false),
     $puppet_major_version = hiera('puppet_major_version', undef),
+    $overlayfs = heira('profile::base::overlayfs', false),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -87,7 +88,10 @@ class profile::base(
         allowed_hosts => $nrpe_allowed_hosts,
     }
 
-    class { '::base::kernel': }
+    class { '::base::kernel':
+        overlayfs => $overlayfs,
+    }
+
     class { '::base::debdeploy': }
 
     if $facts['has_ipmi'] {
