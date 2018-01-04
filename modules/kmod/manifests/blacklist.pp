@@ -13,9 +13,9 @@
 #     modules => [ 'asn1_decoder', 'macsec' ],
 # }
 #
-define kmod::blacklist($modules) {
+define kmod::blacklist($modules = [], $ensure = present) {
     file { "/etc/modprobe.d/blacklist-${name}.conf":
-        ensure  => present,
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
