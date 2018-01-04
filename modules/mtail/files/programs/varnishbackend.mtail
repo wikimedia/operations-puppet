@@ -5,6 +5,6 @@ counter varnish_backend_requests_seconds_count by status, method, backend
 
 # TODO(filippo): add proper ttfb histograms once a mtail version with
 # https://github.com/google/mtail/issues/106 is deployed.
-/http_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\tbackend vcl-[a-z0-9-]+\.(?P<backend>\S+)\t/ {
+/http_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\tbackend (vcl-[a-z0-9-]+|boot)\.(?P<backend>\S+)\t/ {
   varnish_backend_requests_seconds_count[$status][$method][$backend]++
 }

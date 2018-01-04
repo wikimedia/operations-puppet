@@ -1,3 +1,4 @@
+http_status 301	http_method GET	backend boot.be_cp1065_eqiad_wmnet	ttfb 0.001797	
 http_status 200	http_method GET	backend vcl-root-4d6ee02a-4455-43f6-aebd-f6a5f538b139.be_wdqs_svc_eqiad_wmnet	ttfb 0.071747	
 http_status 200	http_method GET	backend vcl-root-4d6ee02a-4455-43f6-aebd-f6a5f538b139.be_wdqs_svc_eqiad_wmnet	ttfb 0.015312	
 http_status 200	http_method GET	backend vcl-root-4d6ee02a-4455-43f6-aebd-f6a5f538b139.be_wdqs_svc_eqiad_wmnet	ttfb 0.018608	
