@@ -8,7 +8,7 @@
 #    If production monitoring needs to be enabled or not.
 #
 class profile::hadoop::worker(
-    $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled'),
+    $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $statsd             = hiera('statsd'),
 ) {
 
