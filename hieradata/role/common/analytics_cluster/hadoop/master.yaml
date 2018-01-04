@@ -20,6 +20,9 @@ profile::hadoop::common::yarn_heapsize: 2048
 # Used to set up jvm heap size usage thresholds
 profile::hadoop::master::namenode_heapsize: 6144
 
+# Ensure that users in these posix groups have home directories in HDFS.
+profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
+
 # Prometheus JMX Exporter config templates.
 profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml"
 profile::hadoop::common::yarn_resourcemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/hadoop/prometheus_yarn_resourcemanager_jmx_exporter.yaml"

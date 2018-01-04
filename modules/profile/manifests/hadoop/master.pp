@@ -10,6 +10,7 @@
 class profile::hadoop::master(
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled'),
     $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize'),
+    $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
     $statsd                   = hiera('statsd'),
 ){
 
@@ -28,6 +29,7 @@ class profile::hadoop::master(
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
     class { '::cdh::hadoop::users':
+        groups  => $hadoop_user_groups,
         require => Class['cdh::hadoop::master'],
     }
 
