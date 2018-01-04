@@ -221,7 +221,7 @@ def main():
     else:
         zones = all_zones
 
-    all_shards = ['s1', 's2', 's3', 's4', 's5', 's6', 's7']
+    all_shards = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']
     if args.shard:
         if args.shard not in all_shards:
             parser.error(
@@ -250,12 +250,16 @@ def main():
                 # Ensure that there are wikidb aliases for shards
                 dblist = requests.get(
                     'https://noc.wikimedia.org/conf/{}.dblist'.format(svc))
-                dblist.raise_for_status()
-                for wikidb in dblist.text.splitlines():
-                    db_fqdn = '{}.{}'.format(wikidb, zone)
-                    dns.ensure_recordset(zone_id, db_fqdn, 'CNAME', [fqdn])
-                    # Take a small break to be nicer to Designate
-                    time.sleep(0.25)
+                try:
+                    dblist.raise_for_status()
+                except requests.exceptions.HTTPError:
+                    logger.warning('DBList "%s" not found', svc)
+                else:
+                    for wikidb in dblist.text.splitlines():
+                        db_fqdn = '{}.{}'.format(wikidb, zone)
+                        dns.ensure_recordset(zone_id, db_fqdn, 'CNAME', [fqdn])
+                        # Take a small break to be nicer to Designate
+                        time.sleep(0.25)
 
                 if svc in config['cnames']:
                     # Add additional aliases for this shard
