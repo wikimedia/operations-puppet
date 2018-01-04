@@ -1,7 +1,11 @@
 # deploy scripts and its dependencies to create replica views
 class role::labs::db::views {
 
-    package { ['python-simplejson', 'python-pymysql']:
+    package { [
+        'python-pymysql',
+        'python-requests',
+        'python-simplejson',
+    ]:
         ensure => present,
     }
 
