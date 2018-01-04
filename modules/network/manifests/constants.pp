@@ -217,6 +217,9 @@ class network::constants {
                     '208.80.155.120',               # labpuppetmaster1002.wikimedia.org
                     '2620:0:861:4:208:80:155:120',  # labpuppetmaster1002.wikimedia.org
                 ],
+            'cache_misc' => [ # So that roles using CACHE_MISC in prod still work in labs. Using floating IP
+                    '208.80.155.16',
+                ],
             }
     }
 

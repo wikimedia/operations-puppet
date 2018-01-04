@@ -1,0 +1,198 @@
+# ! This file is managed by puppet !
+# fr.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = fr.planet.wikimedia
+link            = https://fr.planet.<%= scope.lookupvar('planet_httpd::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/fr
+cache_directory = /var/cache/planet/fr/
+output_dir      = /var/www/planet/fr/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://referencenecessaire.wordpress.com/feed/atom/]
+name={{référence nécessaire}}
+
+[http://www.anthere.org/dotclear/?feed/rss2]
+name=Anthere
+
+[https://darkoneko.wordpress.com/category/wikipedia/feed/atom/]
+name=Darkoneko
+
+[http://wikirigoler.over-blog.com/rss]
+name=Pierrot le chroniqueur
+
+[https://doubleredirection.wordpress.com/feed/atom/]
+name=Fred0
+
+[https://choixduchaos.blogspot.com/feeds/posts/default]
+name=Le choix du chaos
+
+[http://david.monniaux.free.fr/dotclear/index.php/feed/category/Wikipedia/atom]
+name=David Monniaux
+
+[http://compteurdedit.over-blog.com/rss]
+name=Serein
+
+[https://poulpy.blogspot.com/feeds/posts/default]
+name=Poulpy
+
+[https://hyperboree-apollon.blogspot.com/feeds/posts/default/-/wikip%C3%A9dia]
+name=Apollon
+
+[https://wikilivres.wordpress.com/category/planete-wikimedia/feed/atom/]
+name=Des nouvelles de Wikilivres
+
+[https://gdgourou.blogspot.com/feeds/posts/default/-/wikipedia]
+name=G'and Gourou
+
+[http://blog.wikiwix.com/feed/]
+name=Linterweb
+
+[http://chaps.blog.lemonde.fr/category/wikipedia/feed/atom/]
+name=Chaps the idol
+
+[https://oxoweblog.blogspot.com/feeds/posts/default/-/wikip%C3%A9dia]
+name=Oxo
+
+[https://scinfolex.com/tag/wikimedia/feed/atom/]
+name=Calimaq
+
+[http://guillaumepaumier.com/fr/category/wikimedia/feed/]
+name=Guillaume Paumier
+
+[https://pymouss.blogspot.com/feeds/posts/default/-/Wikip%C3%A9dia]
+name=Pymouss
+
+[https://ludopourquoipas.wordpress.com/category/wikipedia/feed/atom/]
+name=Ludo
+
+[https://feeds.feedburner.com/WikimediaFrance]
+name=Wikimédia France
+
+[https://styeb.blogspot.com/feeds/posts/default/-/wikimedia]
+name=Esby
+
+[https://coyau.blogspot.com/feeds/posts/default/-/Wikimedia]
+name=Coyau
+
+[https://wikimoyg.blogspot.com/feeds/posts/default]
+name=Moyg
+
+[https://otourly.wordpress.com/category/wikimedia/feed/atom/]
+name=Otourly
+
+[http://blog.kiwix.org/feed/tag/Wikim%C3%A9dia%20France/atom]
+name=Kiwix
+
+[http://litlok.over-blog.com/rss]
+name=Litlok
+
+[https://framablog.org/tag/Wikipedia/feed/atom/]
+name=Framablog
+
+[http://luminar.blog.free.fr/index.php?feed/category/Wikip%C3%A9dia/rss2]
+name=DocteurCosmos
+
+[https://jastrow.wordpress.com/category/wiki/feed/atom/]
+name=Jastrow
+
+[https://daindwarf.wordpress.com/category/wikipedia/feed/atom/]
+name=DainDwarf
+
+[https://wordpress.alphos.fr/cat/wikimedia/feed/]
+name=Alphos
+
+[https://alphakilobit.wordpress.com/category/wikimedia/feed/atom/]
+name=Alpha Kilo Bit
+
+[https://wikirider.blogspot.com/feeds/posts/default]
+name=Pyb
+
+[http://www.leconomiste-notes.fr/feed/tag/Wikip%C3%A9dia/atom]
+name=Bokken
+
+[https://wikitrekk.blogspot.com/feeds/posts/default]
+name=Wikitrekk
+
+[http://littletony87.unblog.fr/feed/]
+name=littletony87
+
+[https://canardwp.wordpress.com/category/wikipedia/feed/atom/]
+name=CanardWP
+
+[https://lama-fache.blogspot.com/feeds/posts/default/-/Wikip%C3%A9dia]
+name=Hégésippe Cormier
+
+[https://chroniquesduwiki.wordpress.com/category/wikipedia/feed/atom/]
+name=Chroniques du wiki
+
+[https://actuonwiki.wordpress.com/category/wikipedia/feed/atom/]
+name=Les échos d'en bas
+
+[https://ducoteduquebec.wordpress.com/category/wikipedia/feed/]
+name=User:Letartean
+
+[https://ingelunette.wordpress.com/tag/wikipedia/feed/]
+name=Une vie de lamantin
+
+[https://wikipediens.blogspot.com/feeds/posts/default]
+name=Je suis un wikipédien
+
+[https://wikironie.wordpress.com/feed/]
+name=« Wikironie »
+
+[http://wikilovesmonuments.fr/feed/]
+name= Wiki Loves Monuments (fr)
+
+[https://fr.wikipedia.org/w/api.php?action=featuredfeed&feed=raw&feedformat=atom]
+name=Regards sur l'actualité de la Wikimedia
+
+[https://m0tty.wordpress.com/feed/]
+name=User:M0tty
+
+[https://juraastro.wordpress.com/category/wikimedia/feed/]
+name= User:Juraastro
+
+[http://www.dereckson.be/blog/category/wikimedia-fr/feed/]
+name=Dereckson
+
+[https://orikrin.wordpress.com/category/wikipedia/feed/]
+name=Orikrin1998
+
+[https://etiennekd.blogspot.com/feeds/posts/default]
+name=Etiennekd
+
+[https://chwiki.wordpress.com/feed/]
+name=CHWiki
+
+[https://gratusfr.wordpress.com/category/wikimedia/feed/atom/]
+name=Gratus
+
+[https://blogdukiwi.wordpress.com/feed/]
+name=blogdukiwi
+
+[https://medbachounda.blogspot.be/feeds/posts/default/-/Wiki-fr/]
+name=Mohammed Bachounda
+
+[https://blog.ash.bzh/fr/feed/]
+name=Ash Crow
+
+[http://wikitraits.tumblr.com/rss]
+name=Wikitraits
+
+[https://fr.wikipedia.org/w/api.php?action=featuredfeed&feed=wikimag&feedformat=atom]
+name=Wikimag
