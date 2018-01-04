@@ -126,3 +126,7 @@
 <% @gc_log_flags.each do |gc_log_flag| -%>
 <%= gc_log_flag %>
 <% end -%>
+
+<% @additional_jvm_options.each do |flag| -%>
+  <%= flag %>
+<% end -%>

@@ -6,6 +6,7 @@
 class role::elasticsearch::beta {
     include ::profile::elasticsearch
     include ::profile::prometheus::elasticsearch_exporter
+    include ::profile::prometheus::elasticsearch_jmx_exporter
 
     system::role { 'elasticsearch::beta':
         ensure      => 'present',

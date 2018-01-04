@@ -36,6 +36,10 @@ class profile::elasticsearch(
 ) {
     $master_eligible = $::fqdn in $unicast_hosts
 
+    $jmx_exporter_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
+    $jmx_exporter_port = '9109'
+    $jmx_exporter_config = '/etc/elasticsearch/prometheus_jmx_exporter.yaml'
+
     ferm::service { 'elastic-http':
         proto   => 'tcp',
         port    => '9200',
@@ -78,6 +82,8 @@ class profile::elasticsearch(
         before     => Class['::elasticsearch'],
     }
 
+
+
     # Install
     class { '::elasticsearch':
         # Production elasticsearch needs these plugins to be loaded in order
@@ -112,6 +118,7 @@ class profile::elasticsearch(
         search_shard_count_limit           => $search_shard_count_limit,
         reindex_remote_whitelist           => $reindex_remote_whitelist,
         script_max_compilations_per_minute => 10000,
+        additional_jvm_options             => [ "-javaagent:$jmx_exporter_path=${jmx_exporter_port}:${jmx_exporter_config}" ],
     }
 
     class { '::elasticsearch::https':
