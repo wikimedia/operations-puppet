@@ -1,0 +1,63 @@
+# ! This file is managed by puppet !
+# zh.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = zh.planet.wikimedia
+link            = https://zh.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/zh
+cache_directory = /var/cache/planet/zh/
+output_dir      = /var/www/planet/zh/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://kevinhksouth.blogspot.com/feeds/posts/default]
+name = Kevinhksouth
+
+[http://blog.roodo.com/kwangyin/archives/cat_380215.xml]
+name = Kwangyin
+
+[https://zh-wikipedia.blogspot.com/atom.xml]
+name = 维基百科网络杂志
+
+[http://www.onecorner.org/blog/category/%E7%B6%AD%E5%9F%BA%E8%A8%88%E5%88%92/feed/]
+name = Mountain
+
+[https://wikiwalker.blogspot.com/feeds/posts/default]
+name = Hardys
+
+[https://jeromyu.wordpress.com/category/wiki/feed/atom/]
+name = 雨樂文康匯
+
+[http://blog.sina.com.cn/rss/yongxinge.xml]
+name = 用心阁
+
+[http://tw.myblog.yahoo.com/winertai/rss]
+name = winertai
+
+[https://waihorace.wordpress.com/category/%E7%B6%AD%E5%9F%BA%E7%99%BE%E7%A7%91/feed/]
+name = Waihorace
+
+[https://caiguanhao.wordpress.com/tag/%E7%BB%B4%E5%9F%BA%E7%99%BE%E7%A7%91/feed/]
+name = Caiguanhao
+
+[http://hawkman.geoidea.org/tag/%E7%BB%B4%E5%9F%BA%E7%99%BE%E7%A7%91/feed/]
+name = 石木说
+
+[https://springrollconan.wordpress.com/category/%E7%B6%AD%E5%9F%BA%E9%83%A8/feed/]
+name = 春卷柯南
+
+[https://taipei-wikipedian.blogspot.com/feeds/posts/default]
+name = 台北維基人聯合部落格

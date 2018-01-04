@@ -1,0 +1,114 @@
+# ! This file is managed by puppet !
+# de.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = de.planet.wikimedia
+link            = https://de.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/de
+cache_directory = /var/cache/planet/de/
+output_dir      = /var/www/planet/de/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://arnomane.wordpress.com/category/wiki-de/feed/atom/]
+name=Daniel Arnold
+
+#[https://www.wikimedia.ch/archives/category/de/feed]
+#name=Wikimedia CH
+
+[http://intelligentdesigns.net/blog/?cat=16&feed=rss2]
+name=Erik Moeller
+
+[https://wiklin.blogspot.com/feeds/posts/default/-/wikipedia]
+name=Nando Stoecklin
+
+[http://wikipedistik.de/category/wikipedia-news/feed/]
+name=Tim Bartel (Avatar)
+
+[http://jakoblog.de/feed/atom/?tag=Wikipedia,Wikimedia]
+name=Jakob Voss
+
+[https://wp-blog.de/feeds/all.rss.xml]
+name=DaB.
+
+[http://recentchanges.de/feed/]
+name=Arne Klempert (Akl)
+
+[https://feeds.feedburner.com/dewikizine?format=xml]
+name=Wikizine
+
+[https://blog.dapete.net/kategorie/wiki/feed/]
+name=Peter Schloemer (Dapete)
+
+[http://www.finanzer.org/blog/category/wikimedia/feed/]
+name=Finanzer
+
+#[http://www.schulenburg.biz/correspondent/?feed=rss2]
+#name=Frank Schulenburg
+
+#[http://blog.zeno.org/?cat=7&feed=rss2]
+#name=Zeno.org Blog
+
+[http://www.google.com/notebook/feeds/15241387604284059985/notebooks/BDRkjSwoQj5rvytgh]
+name=Thoken
+
+[https://piratenblog.wordpress.com/category/wiki/feed/atom/]
+name=Elvis untot
+
+[https://blog.wikimedia.de/feed/]
+name=Wikimedia Deutschland Blog
+
+[http://erinnerungshort.de/blog/feed/]
+name=Elya & Raymond
+
+[http://flominator.ramselehof.de/rss.php?serendipity%5Btag%5D=wikipedia]
+name=Flominator
+
+[https://feeds.feedburner.com/blogspot/PxHpw?format=xml]
+name=Iberty
+
+[https://lieselsartikel.wordpress.com/category/wikipedia/feed/atom/]
+name=Liesel
+
+[https://achimraschka.blogspot.com/feeds/posts/default/-/Freies%20Wissen]
+name=Achim Raschka
+
+[https://schmalenstroer.net/blog/tag/wikipedia/feed/]
+name=Michael Schmalenstroer
+
+[https://steproe.wordpress.com/category/wikimedia/feed/atom/]
+name=Stepro
+
+[http://lyzzy.de/blog/category/wikimedia/feed/]
+name=lyzzy
+
+[https://unglaublich-was-auch-immer.blogspot.com/feeds/posts/default]
+name=Frank Schubert
+
+[https://festivalsommer.blogspot.com/feeds/posts/default/-/Planet]
+name=Festivalsommer
+
+[http://archiv.twoday.net/topics/Wikis/index.rdf]
+name=Archivalia (Benutzer:Historiograf)
+
+[https://wikiversitynews.wordpress.com/feed/]
+name=Wikiversity News
+
+[https://blog.sebmol.me/category/wikimedia-de/feed/]
+name=Ruminations of a ruthless 'riter (Benutzer:Sebmol)
+
+[http://www.wikiahoi.at/feed/atom/?tag=mediawiki-stakeholders-group%2CWikimedia]
+name=WikiAhoi

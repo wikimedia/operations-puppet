@@ -1,0 +1,72 @@
+# ! This file is managed by puppet !
+# ru.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = ru.planet.wikimedia
+link            = https://ru.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/ru
+cache_directory = /var/cache/planet/ru/
+output_dir      = /var/www/planet/ru/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[http://vikivestnik.livejournal.com/data/rss]
+name = Викивестник
+
+[http://wikipedia-blog.livejournal.com/data/rss/]
+name = ЖЖ-сообщество "Википедия на русском языке"
+
+[http://al-silonov.livejournal.com/data/rss?tag=wiktionary]
+name = Al Silonov
+
+[http://aleksandrit.livejournal.com/data/rss?tag=wikirss]
+name = Aleksandrit
+
+[http://altes.livejournal.com/data/rss?tag=wp]
+name = Altes
+
+[http://kv75.livejournal.com/data/rss?tag=wikipedia]
+name = Kv75
+
+[http://lvova.livejournal.com/data/rss?tag=ruwikirss]
+name = Lvova
+
+[https://progmaker.blogspot.com/feeds/posts/default/-/%D0%B2%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F?alt=rss]
+name = MaxSem
+
+[http://mitrius.livejournal.com/data/rss?tag=%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F]
+name = Mitrius
+
+[http://mstislavl.livejournal.com/data/rss?tag=rwiki]
+name = Mstislavl
+
+[http://wind77.livejournal.com/data/rss?tag=Wikipedia]
+name = Wind
+
+[http://ajvol2.livejournal.com/data/rss?tag=vikipedio]
+name = Александр Сигачёв
+
+[http://wikimedia.ru/blog/feeds/latest/]
+name = Викимедиа РУ
+
+#removed - "Deleted Journal" - 23AUG2012 - DZ
+#[http://kaliy-linux.livejournal.com/data/rss/?tag=Википедия]
+#name = Калий
+
+#removed - "The page was not found!" - 23AUG2012 - DZ
+#[http://rombeck.livejournal.com/data/rss?tag=wikipedia]
+#name = Роман Беккер
+

@@ -1,0 +1,12 @@
+# Apache config template for a *.planet language site
+
+<VirtualHost *:80>
+        DocumentRoot /var/www/planet/<%= @name %>
+        ServerName <%= @name %>.planet.<%= scope.lookupvar('planet::planet_domain_name') %>
+
+	Header always set Content-Security-Policy "upgrade-insecure-requests"
+
+        <Directory /var/www/planet/<%= @name %>>
+                Require all granted
+        </Directory>
+</VirtualHost>

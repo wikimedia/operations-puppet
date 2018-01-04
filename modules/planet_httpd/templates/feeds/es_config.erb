@@ -1,0 +1,73 @@
+# ! This file is managed by puppet !
+# es.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = es.planet.wikimedia
+link            = https://es.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/es
+cache_directory = /var/cache/planet/es/
+output_dir      = /var/www/planet/es/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://rataube.blogspot.com/feeds/posts/default/-/wikipedia]
+name=Asteroide Humor
+
+[https://diariowiki.blogspot.com/feeds/posts/default]
+name=Diario Wiki
+
+[https://eswiki.wordpress.com/feed/atom/]
+name=Un caprichoso mandarín
+
+[https://alhen.wordpress.com/feed/atom/]
+name=La bitácora de Alhen
+
+[https://gustavo86wikies.blogspot.com/feeds/posts/default]
+name=La cueva de Gustavo86
+
+[http://www.patriciolorente.com.ar/feed/]
+name=Señales de Humo
+
+[https://wikireto.wordpress.com/feed/atom/]
+name=Wiki-reto: 250k
+
+[https://wikiblog.wordpress.com/feed/atom/]
+name=WikiBlog
+
+[https://wikilocos.blogspot.com/feeds/posts/default]
+name=Wikilocos
+
+[https://orejotas.wordpress.com/feed/atom/]
+name=Wikipedistas con botones
+
+[https://wikitira.blogspot.com/rss.xml]
+name=Wikitira
+
+[https://lenguasyredes.blogspot.com/rss.xml]
+name=lenguasyredes
+
+[https://blog.wikimedia.es/feed/]
+name=Wikimedia España
+
+[https://petrohs-log.blogspot.com/feeds/posts/default/-/wikipedia?alt=rss]
+name=Usuario:PetrohsW
+
+[https://jorgeabreu.blogspot.com/feeds/posts/default/-/wikimedia?alt=rss]
+name=Jorge Abreu
+
+[http://tramullas.com/tags/wikipedia/feed/]
+name=Usuario:Tramullas
+

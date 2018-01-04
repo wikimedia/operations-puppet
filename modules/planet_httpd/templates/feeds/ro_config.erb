@@ -1,0 +1,42 @@
+# ! This file is managed by puppet !
+# ro.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = ro.planet.wikimedia
+link            = https://ro.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/ro
+cache_directory = /var/cache/planet/ro/
+output_dir      = /var/www/planet/ro/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+# Subscription configuration
+
+[https://www.strainu.ro/category/projects/wikipedia-projects/feed/]
+name=Strainu
+
+[https://promitt.wordpress.com/category/wikipedia/feed/atom/]
+name=Giku Promitt
+
+[https://wpdist.blogspot.com/feeds/posts/default?alt=rss]
+name=Andrei
+
+[https://rowiki.wordpress.com/feed/atom/]
+name=Jurnalul Wikipediei româneşti
+
+[http://www.smash.ro/teme/wikipedia/feed/]
+name=SMASH
+
+[http://wikilovesmonuments.ro/feed/]
+name=Wiki Loves Monuments

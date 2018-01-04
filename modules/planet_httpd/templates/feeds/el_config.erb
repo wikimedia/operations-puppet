@@ -1,0 +1,29 @@
+# ! This file is managed by puppet !
+# el.planet.wm - Planet Venus configuration file
+
+# Documentation: <file:///usr/share/doc/planet-venus>
+# Examples:      <file:///usr/share/planet-venus/example>
+# Filters:       <file:///usr/share/planet-venus/filter>
+# Themes:        <file:///usr/share/planet-venus/theme>
+
+# Global configuration
+
+[Planet]
+
+name            = el.planet.wikimedia
+link            = https://el.planet.<%= scope.lookupvar('planet::planet_domain_name') %>/
+owner_name      = planet
+owner_email     = planet@wikimedia.org
+output_theme    = /usr/share/planet-venus/theme/wikimedia/el
+cache_directory = /var/cache/planet/el/
+output_dir      = /var/www/planet/el/
+feed_timeout    = 20
+items_per_page  = 60
+log_level       = DEBUG
+
+[https://magioladitis.blogspot.com/feeds/posts/default]
+name=Magioladitis
+
+[https://blog.wikimedia.gr/feed/]
+name=Wikimedia Community User Group Greece
+
