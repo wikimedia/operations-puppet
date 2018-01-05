@@ -10,9 +10,6 @@ class mailman::listserve {
         source => 'puppet:///modules/mailman/mm_cfg.py',
     }
 
-    # Install as many languages as possible
-    include locales::extended
-
     debconf::set { 'mailman/site_languages':
         value  => 'sk, gl, fa, ast, ar, ca, cs, da, de, en, es, et, eu, fi, fr, he, hr, hu, ia, it, ja, ko, lt, nl, no, pl, pt, pt_BR, ro, ru, sl, sr, sv, tr, uk, vi, zh_CN, zh_TW',
         notify => Exec['dpkg-reconfigure mailman'],
@@ -26,7 +23,7 @@ class mailman::listserve {
     exec { 'dpkg-reconfigure mailman':
         command     => '/usr/sbin/dpkg-reconfigure -fnoninteractive mailman',
         refreshonly => true,
-        require     => Class['locales::extended'],
+        require     => Class['::profile::locales::extended'],
         before      => Service['mailman'],
     }
 

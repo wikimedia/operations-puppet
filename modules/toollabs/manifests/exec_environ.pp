@@ -7,7 +7,7 @@
 
 class toollabs::exec_environ {
 
-    include ::locales::extended
+    include ::profile::locales::extended
     include ::identd
     include ::redis::client::python
     include ::mediawiki::packages::fonts
