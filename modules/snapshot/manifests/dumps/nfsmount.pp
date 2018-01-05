@@ -11,7 +11,7 @@ define snapshot::dumps::nfsmount(
         ensure => 'directory',
     }
 
-    if (defined('$server')) {
+    if (defined('$server') and $server != '') {
         mount { $mountpoint:
             ensure   => 'mounted',
             device   => "${server}:/data",
