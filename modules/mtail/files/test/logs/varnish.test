@@ -7,3 +7,4 @@ url /w/load.php	cache_status hit-front	http_status 304	http_method GET	cache_con
 url /wikipedia/commons/5/51/Tang_Shaoyi.jpg	cache_status int-front	http_status 301	http_method GET	cache_control -	inm -
 url /wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/250px-Flag_of_North_Korea.svg.png	cache_status hit-front	http_status 200	http_method GET	cache_control -	inm -
 url /wikipedia/en/thumb/f/fd/Portal-puzzle.svg/16px-Portal-puzzle.svg.png	cache_status hit-front	http_status 200	http_method GET	cache_control -	inm -
+url /test_for_invalid_method	cache_status hit-front	http_status 200	http_method FOOZ	cache_control -	inm -
