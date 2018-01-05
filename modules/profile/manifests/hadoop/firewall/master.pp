@@ -3,8 +3,8 @@
 # Set of common firewall rules for Hadoop Master nodes (active and standby)
 #
 class profile::hadoop::firewall::master(
-    $analytics_srange       = hiera('profile::hadoop::firewall::master::analytics_srange', 'DOMAIN_NETWORKS'),
-    $analytics_druid_srange = hiera('profile::hadoop::firewall::master::analytics_druid_srange', 'DOMAIN_NETWORKS'),
+    $analytics_srange       = hiera('profile::hadoop::firewall::master::analytics_srange', '$DOMAIN_NETWORKS'),
+    $analytics_druid_srange = hiera('profile::hadoop::firewall::master::analytics_druid_srange', '$DOMAIN_NETWORKS'),
 ) {
 
     ferm::service{ 'hadoop-hdfs-namenode':
