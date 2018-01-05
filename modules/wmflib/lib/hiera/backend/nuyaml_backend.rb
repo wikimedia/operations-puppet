@@ -75,7 +75,7 @@ class Hiera
         @expand_path = config[:expand_path] || []
       end
 
-      def get_path(key, scope, source)
+      def get_path(key, scope, source, context)
         config_section = :nuyaml
         # Special case: regex
         if %r{^regex/}.match(source)
@@ -107,7 +107,7 @@ class Hiera
         # with fairly small yaml files as opposed to a very large one.
         # Example:
         # $apache::mpm::worker will be in common/apache/mpm.yaml
-        paths = @expand_path.map{ |x| Backend.parse_string(x, scope) }
+        paths = @expand_path.map{ |x| Backend.parse_string(x, scope, {}, context) }
         if paths.include? source
           namespaces = key.gsub(/^::/, '').split('::')
           namespaces.pop
@@ -120,19 +120,19 @@ class Hiera
         Backend.datafile(config_section, scope, source, "yaml")
       end
 
-      def plain_lookup(key, data, scope)
+      def plain_lookup(key, data, scope, context)
           return nil unless data.include?(key)
-          Backend.parse_answer(data[key], scope)
+          Backend.parse_answer(data[key], scope, {}, context)
       end
 
-      def regex_lookup(key, matchon, data, scope)
+      def regex_lookup(key, matchon, data, scope, context)
         data.each do |label, datahash|
           r = datahash["__regex"]
           Hiera.debug("Scanning label #{label} for matches to '#{r}' in '#{matchon}' ")
           next unless r.match(matchon)
           Hiera.debug("Label #{label} matches; searching within it")
           next unless datahash.include?(key)
-          return Backend.parse_answer(datahash[key], scope)
+          return Backend.parse_answer(datahash[key], scope, {}, context)
         end
         return nil
       rescue => detail
@@ -140,7 +140,7 @@ class Hiera
         return nil
       end
 
-      def lookup(key, scope, order_override, resolution_type)
+      def lookup(key, scope, order_override, resolution_type, context)
         answer = nil
 
         Hiera.debug("Looking up #{key}")
@@ -148,7 +148,7 @@ class Hiera
         Backend.datasources(scope, order_override) do |source|
           Hiera.debug("Loading info from #{source} for #{key}")
 
-          yamlfile = get_path(key, scope, source)
+          yamlfile = get_path(key, scope, source, context)
 
           Hiera.debug("Searching for #{key} in #{yamlfile}")
 
@@ -166,9 +166,9 @@ class Hiera
 
           if %r{regex/(.*)$} =~ source
             matchto = Regexp.last_match(1)
-            new_answer = regex_lookup(key, matchto, data, scope)
+            new_answer = regex_lookup(key, matchto, data, scope, context)
           else
-            new_answer = plain_lookup(key, data, scope)
+            new_answer = plain_lookup(key, data, scope, context)
           end
 
           next if new_answer.nil?
@@ -179,7 +179,7 @@ class Hiera
           Hiera.debug("Found #{key} in #{source}")
 
           # for array resolution we just append to the array whatever
-          # we find, we then goes onto the next file and keep adding to
+          # we find, we then go onto the next file and keep adding to
           # the array
           #
           # for priority searches we break after the first found data
@@ -190,16 +190,24 @@ class Hiera
             raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
             answer ||= []
             answer << new_answer
-          when :hash
+          when :hash, Hash
             raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
             answer ||= {}
-            answer = Backend.merge_answer(new_answer, answer)
+            if resolution_type == :hash
+              rt = nil
+            else
+              rt = resolution_type
+            end
+
+            answer = Backend.merge_answer(new_answer, answer, rt)
           else
             answer = new_answer
             break
           end
         end
-
+        if answer.nil?
+          throw(:no_such_key)
+        end
         answer
       end
     end
