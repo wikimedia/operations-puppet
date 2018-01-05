@@ -1,0 +1,3 @@
+graphite::web::cluster_servers:
+  - graphite2001.codfw.wmnet
+  - graphite2002.codfw.wmnet
