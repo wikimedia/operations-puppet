@@ -1,6 +1,10 @@
 # let users publish their own HTML in their home dirs
 class profile::microsites::peopleweb {
 
+    class { '::httpd':
+        modules => ['userdir', 'cgi', 'php5', 'rewrite', 'headers'],
+    }
+
     class { '::publichtml':
         sitename     => 'people.wikimedia.org',
         server_admin => 'noc@wikimedia.org',
