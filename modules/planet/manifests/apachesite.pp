@@ -2,12 +2,12 @@
 define planet::apachesite {
 
     if $title == 'en' {
-        $priority = '10'
+        $priority = 10
     } else {
-        $priority = '50'
+        $priority = 50
     }
 
-    apache::site { "${title}.planet.${planet::planet_domain_name}":
+    httpd::site { "${title}.planet.${planet::planet_domain_name}":
         content  => template('planet/apache/planet-language.erb'),
         priority => $priority,
     }
