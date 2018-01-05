@@ -1749,7 +1749,7 @@ node /^netmon(1002|2001)\.wikimedia\.org$/ {
 
 # jessie VM for servermon until it supports stretch (T170653)
 node 'netmon1003.wikimedia.org' {
-    role(network::monitor, servermon::wmf)
+    role(network::monitor, servermon)
     interface::add_ip6_mapped { 'main': }
 }
 

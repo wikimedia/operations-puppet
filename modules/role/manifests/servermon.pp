@@ -1,4 +1,4 @@
-# Class: role::servermon::wmf
+# Class: role::servermon
 #
 # This class installs all the servermon related parts as WMF requires it
 #
@@ -10,10 +10,10 @@
 # Requires:
 #
 # Sample Usage:
-#       include role::servermon::wmf
+#       role(servermon)
 #
 # filtertags: labs-project-servermon
-class role::servermon::wmf {
+class role::servermon {
     include ::apache
     include ::apache::mod::proxy_http
     include ::apache::mod::proxy
@@ -36,7 +36,7 @@ class role::servermon::wmf {
 
     class { '::servermon':
         ensure      => 'present',
-        directory   => '/srv/deployment/servermon/servermon',
+        directory   => '/srv/deployment/servermon/servermon/servermon',
         db_engine   => 'mysql',
         db_name     => 'puppet',
         db_user     => $db_user,
