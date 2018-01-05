@@ -190,6 +190,10 @@ class profile::planet::venus (
         planet_http_proxy  => $planet_http_proxy,
     }
 
+    class {'::httpd':
+        modules => ['rewrite', 'headers'],
+    }
+
     ferm::service { 'planet-http':
         proto  => 'tcp',
         port   => '80',
