@@ -149,6 +149,8 @@ SKIP_SOUTH_TESTS = True
 DATE_FORMAT = "d/m/Y H:i"
 DATETIME_FORMAT = "d/m/Y H:i"
 HOST_TIMEOUT = 2700
+# Purge host after 10 days of inactivity. This is a garbage collection mechanism
+HOST_MAX_INACTIVE_DAYS = 10
 <% if @managed_puppet_models %>
 MANAGED_PUPPET_MODELS = True
 <% else %>
