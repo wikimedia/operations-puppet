@@ -217,7 +217,9 @@ class network::constants {
                     '208.80.155.120',               # labpuppetmaster1002.wikimedia.org
                     '2620:0:861:4:208:80:155:120',  # labpuppetmaster1002.wikimedia.org
                 ],
-            }
+            'analytics_networks' => $labs_networks,
+            'druid_public_hosts' => $labs_networks,
+        }
     }
 
 
