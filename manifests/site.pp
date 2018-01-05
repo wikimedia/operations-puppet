@@ -1033,14 +1033,7 @@ node 'graphite2002.codfw.wmnet' {
 
 # replaced carbon and install1001/install2001 (T132757, T84380, T156440)
 node /^install[12]002\.wikimedia\.org$/ {
-    role(installserver::tftp,
-        installserver::dhcp,
-        installserver::http,
-        installserver::proxy,
-        installserver::preseed,
-        aptrepo::wikimedia)
-
-    interface::add_ip6_mapped { 'main': }
+    role(installserver)
 }
 
 # Phabricator
