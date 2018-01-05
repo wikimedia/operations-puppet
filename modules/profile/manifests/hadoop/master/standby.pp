@@ -13,8 +13,12 @@ class profile::hadoop::master::standby(
     $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize', 2048),
     $statsd                   = hiera('statsd'),
 ) {
-
+    # Hadoop masters need Zookeeper package from CDH, pin CDH over Debian.
+    include ::profile::cdh::apt_pin
     include ::profile::hadoop::common
+
+    # Force apt-get update to run before we try to install packages.
+    Class['::profile::cdh::apt_pin'] -> Exec['apt-get update'] -> Class['::cdh::hadoop']
 
     # Ensure that druid user exists on standby namenodes nodes.
     class { '::druid::cdh::hadoop::user':  }
