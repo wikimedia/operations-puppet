@@ -22,10 +22,6 @@ class planet (
     $planet_http_proxy,
 ) {
 
-    # locales are essential for planet
-    # if a new language is added check these too
-    include ::locales::extended
-
     # things done once for all planet per languages
     include ::planet::packages
     include ::planet::dirs
