@@ -89,11 +89,17 @@ class profile::hadoop::worker(
         require => Package['python3-numpy'],
     }
 
+    if $::realm == 'production' {
+        $analytics_srange = '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+    } else {
+        $analytics_srange = '$DOMAIN_NETWORKS'
+    }
+
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
         proto  => 'tcp',
         port   => '1024:65535',
-        srange => '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))',
+        srange => $analytics_srange,
     }
 
     if $monitoring_enabled {
