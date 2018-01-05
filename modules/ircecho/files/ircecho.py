@@ -129,7 +129,7 @@ class EchoReader():
 
 class EchoBot(SingleServerIRCBot):
     def __init__(self, chans, nickname, server):
-        print('*** Connecting to IRC server %s...' % server)
+        print('Connecting to IRC server %s...' % server)
         SingleServerIRCBot.__init__(self, [(server, 6667)], nickname, 'IRC echo bot')
         self.chans = chans
 
@@ -137,7 +137,7 @@ class EchoBot(SingleServerIRCBot):
         c.nick(c.get_nickname() + '_')
 
     def on_welcome(self, c, e):
-        print('*** Connected')
+        print('Connected')
         for chan in [self.chans]:
             c.join(chan)
 
