@@ -16,7 +16,8 @@ class profile::hadoop::master(
     $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
     $statsd                   = hiera('statsd'),
 ){
-
+    # Hadoop masters need Zookeeper package from CDH, pin CDH over Debian.
+    include ::profile::hadoop::apt_pin
     include ::profile::hadoop::common
 
     class { '::cdh::hadoop::master': }

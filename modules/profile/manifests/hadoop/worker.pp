@@ -12,7 +12,8 @@ class profile::hadoop::worker(
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
     $statsd             = hiera('statsd'),
 ) {
-
+    # Hadoop workers need Zookeeper package from CDH, pin CDH over Debian.
+    include ::profile::hadoop::apt_pin
     include ::profile::hadoop::common
 
     # hive::client is nice to have for jobs launched
