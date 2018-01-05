@@ -135,7 +135,7 @@ class apt(
         default => absent,
     }
 
-    if $::operatingsystem == 'Debian' {
+    if os_version('debian <= jessie') {
         apt::repository { 'wikimedia-experimental':
             ensure     => $use_experimental_ensure,
             uri        => 'http://apt.wikimedia.org/wikimedia',
