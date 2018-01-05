@@ -231,6 +231,13 @@ class profile::hadoop::common (
         # Yarn App Master possible port ranges
         yarn_app_mapreduce_am_job_client_port_range => '55000-55199',
 
+        core_site_extra_properties                  => {
+            # Allow superset running as 'superset' user on thorium.eqiad.wmnet
+            # to run jobs as users in the analytics-users and analytics-privatedata-users groups.
+            'hadoop.proxyusers.superset.hosts'  => 'thorium.eqiad.wmnet',
+            'hadoop.proxyusers.superset.groups' => 'analytics-users,analytics-privatedata-users',
+        },
+
         yarn_site_extra_properties                  => {
             # Enable FairScheduler preemption. This will allow the essential queue
             # to preempt non-essential jobs.
