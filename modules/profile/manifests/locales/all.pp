@@ -1,11 +1,19 @@
-# == Class: locales::all
+# == Class: profile::locales::all
 #
 # Provisions all available supported locales. WARNING: this can take a very
-# long time on Ubuntu systems; consider using locales::extended.
+# long time on Ubuntu systems; consider using profile::locales::extended.
 
-class locales::all {
-    include ::locales
+class profile::locales::all {
 
+    package { 'locales':
+        ensure => present,
+    }
+
+    exec { 'locale-gen':
+        command     => '/usr/sbin/locale-gen --purge',
+        refreshonly => true,
+        require     => Package['locales'],
+    }
     # Debian ships a locales-all package which has all locales pre-generated.
     # Ubuntu doesn't, so we're forced to generate them locally every time :(
     # lint:ignore:case_without_default
