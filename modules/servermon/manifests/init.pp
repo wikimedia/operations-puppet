@@ -86,7 +86,7 @@ class servermon(
         hasstatus => false,
     }
 
-    file { "${directory}/settings.py":
+    file { "${directory}/servermon/settings.py":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
@@ -104,7 +104,7 @@ class servermon(
     }
 
     cron { 'servermon_make_updates':
-        command => "${directory}/manage.py make_updates --pythonpath=${directory}",
+        command => "${directory}/manage.py make_updates",
         user    => 'www-data',
         hour    => '*',
         minute  => '35',

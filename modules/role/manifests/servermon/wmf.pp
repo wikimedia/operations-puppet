@@ -36,7 +36,7 @@ class role::servermon::wmf {
 
     class { '::servermon':
         ensure      => 'present',
-        directory   => '/srv/deployment/servermon/servermon/servermon',
+        directory   => '/srv/deployment/servermon/servermon',
         db_engine   => 'mysql',
         db_name     => 'puppet',
         db_user     => $db_user,
