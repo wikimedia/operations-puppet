@@ -113,7 +113,7 @@ groups:
                  statistics-users) and also provides access to research mysql
                  credentials on stat1006 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, deskana,
-              dduvall, ezachte, gilles, halfak,
+              dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, yuvipanda,
@@ -194,7 +194,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen]
+              fdans, shiladsen, esanders]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
