@@ -289,6 +289,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:webperf'
         end
+        mtail_files = filter_files_by("modules/mtail/files/**")
+        unless mtail_files.empty?
+          desc 'Run tox for mtail'
+          task :mtail do
+            res = system("tox -e mtail")
+            raise 'Tests for mtail failed!' if !res
+          end
+          tasks << 'tox:mtail'
+        end
         tox_files = filter_files_by("*.py")
         unless tox_files.empty?
           desc 'Run flake8 on python files via tox'
