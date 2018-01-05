@@ -5,7 +5,7 @@
 # as well as the set of statsite backends that listen on these ports.
 #
 # filtertags: labs-project-graphite
-class role::statsd {
+class profile::statsd {
 
     class { '::statsd_proxy':
         server_port   => 8125,

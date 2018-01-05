@@ -9,6 +9,7 @@ class role::graphite::production {
 
     include ::standard
     include ::base::firewall
+    include ::profile::statsd # all graphite hosts also include statsd
 
     class { 'role::graphite::base':
         storage_dir      => $storage_dir,
@@ -117,4 +118,3 @@ class role::graphite::production {
         srange => '$PRODUCTION_NETWORKS',
     }
 }
-
