@@ -1055,7 +1055,8 @@ node 'iron.wikimedia.org' {
         description => 'Experimental Yubico two factor authentication bastion',
     }
     interface::add_ip6_mapped { 'main': }
-    role(bastionhost::twofa, access_new_install)
+    role(bastionhost::twofa)
+    include ::role::access_new_install
 }
 
 # The host is going to be decom as part of T181518
