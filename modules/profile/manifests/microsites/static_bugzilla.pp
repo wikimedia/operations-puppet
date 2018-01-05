@@ -1,6 +1,10 @@
 # static HTML archive of old Bugzilla tickets
 class profile::microsites::static_bugzilla {
 
+    class {'::httpd':
+        modules => ['headers', 'rewrite'],
+    }
+
     include ::bugzilla_static
 
     ferm::service { 'bugzilla_static_http':
