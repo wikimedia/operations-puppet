@@ -4,16 +4,7 @@ class profile::microsites::wikibase(
   $server_admin = hiera('profile::microsites::wikibase::server_admin'),
 ) {
 
-    include ::apache
-    include ::apache::mod::headers
-
-    ferm::service { 'wikibase_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHE_MISC',
-    }
-
-    apache::site { 'wikiba.se':
+    httpd::site { 'wikiba.se':
         content => template('profile/wikibase/apache-wikibase.erb'),
     }
 

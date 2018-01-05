@@ -14,10 +14,7 @@ class bugzilla_static {
         source => 'puppet:///modules/bugzilla_static/static-bz-index.html';
     }
 
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
-    apache::site { 'static-bugzilla.wikimedia.org':
+    httpd::site { 'static-bugzilla.wikimedia.org':
         content  => template('bugzilla_static/apache/static-bugzilla.wikimedia.org.erb'),
         priority => 20,
     }
