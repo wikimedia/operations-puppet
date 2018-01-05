@@ -7,6 +7,7 @@ Requires=varnish.service
 SyslogIdentifier=varnishmtail-backend
 Restart=always
 ExecStart=/usr/local/bin/varnishmtail-backend <%= @varnishmtail_backend_progs %> <%= @varnishmtail_backend_port %>
+ExecReload=/bin/systemctl kill -s HUP varnishmtail-backend.service
 
 [Install]
 WantedBy=multi-user.target
