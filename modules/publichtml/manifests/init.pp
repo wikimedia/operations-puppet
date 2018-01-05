@@ -5,17 +5,16 @@ class publichtml(
     $docroot      = '/srv/org/wikimedia/publichtml',
     $server_admin = undef,
 ) {
-    include ::apache::mod::userdir
-    include ::apache::mod::cgi
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
+
+    class { '::httpd':
+        modules => ['userdir', 'cgi', 'php5', 'rewrite', 'headers'],
+    }
 
     system::role { 'publichtml':
         description => 'web server of public_html directories',
     }
 
-    apache::site { $sitename:
+    httpd::site { $sitename:
         content => template('publichtml/apacheconfig.erb'),
     }
 
