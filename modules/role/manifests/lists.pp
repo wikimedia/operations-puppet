@@ -7,4 +7,5 @@ class role::lists {
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::profile::lists
+    include ::profile::locales::extended
 }
