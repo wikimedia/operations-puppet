@@ -16,7 +16,8 @@ describe 'httpd' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_service('apache2') }
         it { is_expected.to contain_exec('apache2_test_config_and_restart')
-                              .with_refreshonly(true)                                                              .that_comes_before('Service[apache2]')
+                              .with_refreshonly(true)
+                              .that_comes_before('Service[apache2]')
         }
         it { is_expected.to contain_file('/etc/apache2/sites-available')
                               .with({'owner' => 'root', 'ensure' => 'directory'})
