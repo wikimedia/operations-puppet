@@ -3,6 +3,10 @@
 #
 class profile::microsites::transparency {
 
+    class {'::httpd':
+        modules => ['headers', 'authnz_ldap'],
+    }
+
     include ::passwords::misc::private_static_site
     include ::passwords::ldap::production
 
@@ -39,13 +43,7 @@ class profile::microsites::transparency {
         ],
     }
 
-    apache::site { 'transparency.wikimedia.org':
+    httpd::site { 'transparency.wikimedia.org':
         content => template('role/apache/sites/transparency.wikimedia.org.erb'),
-    }
-
-    ferm::service { 'transparency_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHE_MISC',
     }
 }
