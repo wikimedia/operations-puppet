@@ -135,9 +135,14 @@ class apt(
         default => absent,
     }
 
+    $use_experimental_ensure_os = $::lsbdistcodename ? {
+        stretch => absent,
+        default => $use_experimental_ensure,
+    }
+
     if $::operatingsystem == 'Debian' {
         apt::repository { 'wikimedia-experimental':
-            ensure     => $use_experimental_ensure,
+            ensure     => $use_experimental_ensure_os,
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'experimental',
