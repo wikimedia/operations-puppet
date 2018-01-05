@@ -27,3 +27,6 @@ profile::hadoop::master::hadoop_user_groups: "analytics-users analytics-privated
 profile::hadoop::common::hadoop_namenode_opts: "-Xms6144m -Xmx6144m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10080:/etc/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml"
 profile::hadoop::common::yarn_resourcemanager_opts: "-Xms2048m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10083:/etc/hadoop/prometheus_yarn_resourcemanager_jmx_exporter.yaml"
 profile::hadoop::common::mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:10086:/etc/hadoop/prometheus_mapreduce_history_jmx_exporter.yaml"
+
+profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
+profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
