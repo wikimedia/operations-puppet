@@ -8,11 +8,16 @@ class profile::analytics::database::meta::backup_dest(
     $oozie_host          = hiera('profile::analytics::database::meta::backup_dest::oozie_host'),
 ) {
 
+    $backup_dir_group = $::realm ? {
+        'production' => 'analytics-admins',
+        'labs'       => "project-${::labsproject}",
+    }
+
     if !defined(File['/srv/backup']) {
         file { '/srv/backup':
             ensure => 'directory',
             owner  => 'root',
-            group  => 'analytics-admins',
+            group  => $backup_dir_group,
             mode   => '0755',
         }
     }
@@ -23,7 +28,7 @@ class profile::analytics::database::meta::backup_dest(
         ]:
         ensure => 'directory',
         owner  => 'root',
-        group  => 'analytics-admins',
+        group  => $backup_dir_group,
         mode   => '0750',
     }
 
