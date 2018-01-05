@@ -47,5 +47,6 @@ define varnish::logging::rls( $statsd_server = 'statsd' ) {
 
     mtail::program { 'varnishrls':
         source => 'puppet:///modules/mtail/programs/varnishrls.mtail',
+        notify => Service['varnishmtail'],
     }
 }

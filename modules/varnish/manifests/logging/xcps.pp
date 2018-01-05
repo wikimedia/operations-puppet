@@ -47,5 +47,6 @@ define varnish::logging::xcps( $statsd_server = 'statsd' ) {
 
     mtail::program { 'varnishxcps':
         source => 'puppet:///modules/mtail/programs/varnishxcps.mtail',
+        notify => Service['varnishmtail'],
     }
 }

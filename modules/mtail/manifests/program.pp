@@ -46,6 +46,7 @@ define mtail::program(
         ensure  => $ensure,
         content => $content,
         source  => $source,
+        notify  => $notify,
         require => File[$destination],
     }
 }
