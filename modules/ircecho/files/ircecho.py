@@ -36,6 +36,7 @@ class EchoNotifier(threading.Thread):
     def __init__(self, notifier):
         threading.Thread.__init__(self)
         self.notifier = notifier
+        self.daemon = True
 
     def run(self):
         self.notifier.loop()
