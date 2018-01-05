@@ -4,8 +4,9 @@
 # T599 - https://15.wikipedia.org (aka. annual report 2015)
 class profile::microsites::annualreport {
 
-    include ::apache
-    include ::apache::mod::headers
+    class {'::httpd':
+        modules => ['headers'],
+    }
 
     ferm::service { 'annualreport_http':
         proto  => 'tcp',
@@ -13,11 +14,11 @@ class profile::microsites::annualreport {
         srange => '$CACHE_MISC',
     }
 
-    apache::site { 'annual.wikimedia.org':
+    httpd::site { 'annual.wikimedia.org':
         source => 'puppet:///modules/profile/annualreport/annual.wikimedia.org',
     }
 
-    apache::site { '15.wikipedia.org':
+    httpd::site { '15.wikipedia.org':
         source => 'puppet:///modules/profile/annualreport/15.wikipedia.org',
     }
 
