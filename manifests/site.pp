@@ -1003,8 +1003,12 @@ node /labweb100[12]\.eqiad\.wmnet/ {
 
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
-    role(graphite::production, statsd, performance::site, graphite::alerts,
-        restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts)
+    role(graphite::primary)
+    # TODO: move the roles below to ::role::alerting::host
+    include ::role::graphite::alerts
+    include ::role::restbase::alerts
+    include ::role::graphite::alerts::reqstats
+    include ::role::elasticsearch::alerts
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
@@ -1014,17 +1018,17 @@ node 'graphite1002.eqiad.wmnet' {
 
 # graphite additional machine, for additional space
 node 'graphite1003.eqiad.wmnet' {
-    role(graphite::production, statsd)
+    role(graphite::production)
 }
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
-    role(graphite::production, statsd, performance::site)
+    role(graphite::primary)
 }
 
 # graphite additional machine, for additional space
 node 'graphite2002.codfw.wmnet' {
-    role(graphite::production, statsd)
+    role(graphite::production)
 }
 
 # replaced carbon and install1001/install2001 (T132757, T84380, T156440)
