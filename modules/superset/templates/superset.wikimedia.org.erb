@@ -19,12 +19,12 @@
     </Directory>
 
     <Location />
-        AuthName "WMF Labs (use wiki login name not shell)"
+        AuthName "WMF LDAP (use shell username, not Wikitech name)"
         AuthType Basic
         AuthBasicProvider ldap
         AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
         AuthLDAPBindPassword <%= @proxypass %>
-        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+        AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?uid"
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
         # Set a header so that superset/flask can authenticate the user.
