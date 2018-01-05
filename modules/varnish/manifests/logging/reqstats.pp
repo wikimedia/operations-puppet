@@ -63,5 +63,6 @@ define varnish::logging::reqstats(
 
     mtail::program { 'varnishreqstats':
         source => 'puppet:///modules/mtail/programs/varnishreqstats.mtail',
+        notify => Service['varnishmtail'],
     }
 }

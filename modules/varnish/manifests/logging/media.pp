@@ -45,5 +45,6 @@ define varnish::logging::media( $statsd_server = 'statsd' ) {
 
     mtail::program { 'varnishmedia':
         source => 'puppet:///modules/mtail/programs/varnishmedia.mtail',
+        notify => Service['varnishmtail'],
     }
 }

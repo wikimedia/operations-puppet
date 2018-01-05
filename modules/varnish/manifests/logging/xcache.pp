@@ -52,5 +52,6 @@ define varnish::logging::xcache(
 
     mtail::program { 'varnishxcache':
         source => 'puppet:///modules/mtail/programs/varnishxcache.mtail',
+        notify => Service['varnishmtail'],
     }
 }

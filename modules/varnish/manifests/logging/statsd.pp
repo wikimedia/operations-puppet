@@ -64,5 +64,6 @@ define varnish::logging::statsd(
     mtail::program { 'varnishbackend':
         source      => 'puppet:///modules/mtail/programs/varnishbackend.mtail',
         destination => '/etc/varnishmtail-backend',
+        notify      => Service['varnishmtail-backend'],
     }
 }
