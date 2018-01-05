@@ -1,6 +1,12 @@
 # let users publish their own HTML in their home dirs
 class profile::microsites::peopleweb {
 
+    ferm::service { 'people-http':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$CACHE_MISC',
+    }
+
     class { '::httpd':
         modules => ['userdir', 'cgi', 'php5', 'rewrite', 'headers'],
     }
