@@ -1,11 +1,20 @@
-# == Class: locales::extended
+# == Class: profile::locales::extended
 #
 # Provisions a set of "extended" hand-picked locales that are useful on most
 # systems. This is a tradeoff between the cost of generating all locales and
 # their relative usefulness.
 
-class locales::extended {
-    include ::locales
+class profile::locales::extended {
+
+    package { 'locales':
+        ensure => present,
+    }
+
+    exec { 'locale-gen':
+        command     => '/usr/sbin/locale-gen --purge',
+        refreshonly => true,
+        require     => Package['locales'],
+    }
 
     # Ubuntu has a nice supported.d mechanism; Debian doesn't, so fall back
     # into overwriting the systems config. For Debian systems, though,
@@ -18,7 +27,7 @@ class locales::extended {
 
     file { $localeconf:
         ensure => present,
-        source => 'puppet:///modules/locales/locales-extended',
+        source => 'puppet:///modules/profile/locales/locales-extended',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

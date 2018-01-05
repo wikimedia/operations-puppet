@@ -8,6 +8,7 @@ class role::lists {
     include ::profile::base::firewall
 
     include ::profile::lists
+    include ::profile::locales::extended
 
     class { '::httpd':
         modules => [
@@ -19,4 +20,5 @@ class role::lists {
             'auth_digest',
             ],
     }
+
 }
