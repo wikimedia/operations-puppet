@@ -27,7 +27,7 @@
 #   Number of gevent workers
 #
 # [*worker_class*]
-#   Gunicorn worker-class. sync or gevent.  Default: sync
+#   Gunicorn worker-class.  Default: sync
 #
 # [*admin_user*]
 #   Web UI admin user
@@ -72,7 +72,7 @@ class superset(
 ) {
     requires_os('debian >= jessie')
     require_package(
-        'python',
+        'python3',
         'virtualenv',
         'firejail',
     )
