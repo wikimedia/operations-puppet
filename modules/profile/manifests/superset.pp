@@ -36,14 +36,14 @@
 #   statsd host:port
 #
 class profile::superset(
-    $workers           = hiera('profile::superset::workers', 1),
-    $database_uri      = hiera('profile::superset::database_uri', 'sqlite:////var/lib/superset/superset.db'),
-    $database_password = hiera('profile::superset::database_password', undef),
-    $admin_user        = hiera('profile::superset::admin_user', 'admin'),
-    $admin_password    = hiera('profile::superset::admin_password', 'admin'),
-    $secret_key        = hiera('profile::superset::secret_key', 'not_really_a_secret_key'),
+    $workers            = hiera('profile::superset::workers', 1),
+    $database_uri       = hiera('profile::superset::database_uri', 'sqlite:////var/lib/superset/superset.db'),
+    $database_password  = hiera('profile::superset::database_password', undef),
+    $admin_user         = hiera('profile::superset::admin_user', 'admin'),
+    $admin_password     = hiera('profile::superset::admin_password', 'admin'),
+    $secret_key         = hiera('profile::superset::secret_key', 'not_really_a_secret_key'),
     $ldap_proxy_enabled = hiera('profile::superset::ldap_proxy_enabled', false),
-    $statsd            = hiera('statsd', undef),
+    $statsd             = hiera('statsd', undef),
 ) {
     # If given $database_password, insert it into $database_uri.
     $full_database_uri = $database_password ? {
@@ -88,6 +88,8 @@ class profile::superset(
 
     class { '::superset':
         workers          => $workers,
+        # gthread requires python3.
+        worker_class     => 'gthread',
         database_uri     => $full_database_uri,
         secret_key       => $secret_key,
         admin_user       => $admin_user,
