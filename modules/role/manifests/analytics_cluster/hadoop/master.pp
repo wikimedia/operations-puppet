@@ -7,9 +7,9 @@ class role::analytics_cluster::hadoop::master {
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 
-    include ::profile::hadoop::mysql_password
     include ::profile::hadoop::master
     include ::profile::hadoop::users
+    include ::profile::hadoop::mysql_password
     include ::profile::hadoop::firewall::master
     include ::profile::hadoop::logstash
     include ::profile::base::firewall
