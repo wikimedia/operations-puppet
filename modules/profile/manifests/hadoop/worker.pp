@@ -9,6 +9,7 @@
 #
 class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
+    $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
     $statsd             = hiera('statsd'),
 ) {
 
@@ -93,7 +94,7 @@ class profile::hadoop::worker(
     ferm::service{ 'hadoop-access':
         proto  => 'tcp',
         port   => '1024:65535',
-        srange => '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))',
+        srange => $ferm_srange,
     }
 
     if $monitoring_enabled {
