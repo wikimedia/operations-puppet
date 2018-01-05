@@ -24,6 +24,7 @@ class profile::releases::mediawiki (
     }
 
     class { '::contint::composer': }
+    class { '::contint::packages::php': }
 
     class { '::apache::mod::rewrite': }
     class { '::apache::mod::headers': }
