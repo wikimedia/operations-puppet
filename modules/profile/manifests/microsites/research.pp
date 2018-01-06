@@ -5,6 +5,7 @@ class profile::microsites::research(
 ) {
 
     httpd::site { 'research.wikimedia.org':
+        ensure  => 'absent',
         content => template('profile/research/apache-research.wikimedia.org.erb'),
     }
 
