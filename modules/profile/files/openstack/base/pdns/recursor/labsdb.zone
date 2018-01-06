@@ -46,9 +46,6 @@ akwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 akwikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 akwiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 alswiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-alswikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-alswikiquote	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-alswiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 amwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 amwikimedia	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 amwikiquote	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
@@ -524,8 +521,6 @@ mnwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mnwikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mnwiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 movementroleswiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-mowiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
-mowiktionary	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mrjwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mrwiki	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
 mrwikibooks	1H	IN	CNAME	s3.analytics.db.svc.eqiad.wmflabs.
