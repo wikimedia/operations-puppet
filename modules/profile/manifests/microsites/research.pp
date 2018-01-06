@@ -6,6 +6,7 @@ class profile::microsites::research(
 
     httpd::site { 'research.wikimedia.org':
         content => template('profile/research/apache-research.wikimedia.org.erb'),
+        ensure  => 'absent',
     }
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
