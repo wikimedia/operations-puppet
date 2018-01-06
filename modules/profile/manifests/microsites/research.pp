@@ -5,7 +5,6 @@ class profile::microsites::research(
 ) {
 
     httpd::site { 'research.wikimedia.org':
-        ensure  => 'absent',
         content => template('profile/research/apache-research.wikimedia.org.erb'),
     }
 
@@ -13,12 +12,12 @@ class profile::microsites::research(
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/research', {'ensure' => 'directory' })
 
-    git::clone { 'research/landing-page':
-        ensure    => 'present',
-        source    => 'gerrit',
-        directory => '/srv/org/wikimedia/research',
-        branch    => 'master',
-    }
+    #git::clone { 'research/landing-page':
+    #    ensure    => 'present',
+    #    source    => 'gerrit',
+    #    directory => '/srv/org/wikimedia/research',
+    #    branch    => 'master',
+    #}
 
 }
 
