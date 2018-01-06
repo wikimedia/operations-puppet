@@ -1,6 +1,7 @@
 class profile::dumps::generation::worker::common(
     $nfs_server = hiera('dumps_nfs_server'),
     $managed_subdirs = hiera('dumps_managed_subdirs'),
+    $datadir_mount_type = hiera('dumps_datadir_mount_type'),
     $php = hiera('snapshot::dumps::php'),
 ) {
     # mw packages and dependencies
@@ -12,13 +13,15 @@ class profile::dumps::generation::worker::common(
 
     class { '::dumpsuser': }
 
-    snapshot::dumps::nfsmount { 'dumpsdatamount':
+    snapshot::dumps::datamount { 'dumpsdatamount':
         mountpoint      => $xmldumpsmount,
+        mount_type      => $datadir_mount_type,
         server          => $nfs_server,
         managed_subdirs => $managed_subdirs,
         user            => 'dumpsgen',
         group           => 'dumpsgen',
     }
+
     # dataset server config files,
     # stages files, dblists, html templates
     class { '::snapshot::dumps::dirs':

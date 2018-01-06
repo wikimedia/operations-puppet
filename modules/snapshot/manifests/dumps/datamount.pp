@@ -1,17 +1,25 @@
-define snapshot::dumps::nfsmount(
+define snapshot::dumps::datamount(
     $mountpoint = undef,
+    $mount_type = undef,
     $server = undef,
     $managed_subdirs = [],
     $user = undef,
     $group = undef,
 ) {
-    require_package('nfs-common')
-
-    file { [ $mountpoint ]:
-        ensure => 'directory',
+    if ($mount_type == 'local' or $mount_type == 'nfs') {
+        file { [ $mountpoint ]:
+            ensure => 'directory',
+        }
+    }
+    elsif ($mount_type == 'labslvm') {
+        labs_lvm::volume { 'data-local-disk':
+            mountat => $mountpoint,
+        }
     }
 
-    if (defined('$server') and $server != '') {
+    if ($mount_type == 'nfs') {
+        require_package('nfs-common')
+
         mount { $mountpoint:
             ensure   => 'mounted',
             device   => "${server}:/data",
@@ -22,9 +30,8 @@ define snapshot::dumps::nfsmount(
             remounts => false,
         }
     }
-    else {
-        # manage some directories that the nfs server
-        # server would otherwise take care of for us
+
+    if ($managed_subdirs) {
         file { $managed_subdirs:
             ensure => 'directory',
             mode   => '0755',
