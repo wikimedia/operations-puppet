@@ -91,6 +91,15 @@ sub cluster_be_backend_response {
 		}
 	}
 
+	// Vary on Zero flag for unpatrolled files so that Zero pirates can get special treatment
+	if (beresp.http.X-MediaWiki-Patrol-Status) {
+		if (beresp.http.Vary) {
+			set beresp.http.Vary = beresp.http.Vary + ",X-CS";
+		} else {
+			set beresp.http.Vary = "X-CS";
+		}
+	}
+
 	call upload_common_backend_response;
 
 	if (std.integer(beresp.http.Content-Length, 0) >= 1024 * 16 * 16 * 16 * 16 * 16) { // 1GB

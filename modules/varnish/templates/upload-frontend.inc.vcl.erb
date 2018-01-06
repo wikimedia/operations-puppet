@@ -182,6 +182,11 @@ sub cluster_fe_deliver {
 			set resp.http.X-Webkit-CSP-Report-Only = resp.http.Content-Security-Policy-Report-Only;
 		}
 	}
+
+	// If response data is unpatrolled, deny access to Zero users
+	if (req.http.X-CS && resp.http.X-MediaWiki-Patrol-Status) {
+		return (synth(403, "Disallowed"));
+	}
 }
 
 sub cluster_fe_err_synth {
