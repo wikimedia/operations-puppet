@@ -1093,7 +1093,8 @@ node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
 # profile::racktables             - https://racktables.wikimedia.org
 # kafka::analytics::burrow is a Kafka consumer lag monitor
 node 'krypton.eqiad.wmnet' {
-    role(webserver_misc_apps,kafka::analytics::burrow)
+    role(webserver_misc_apps)
+    include ::role::kafka::analytics::burrow
 }
 
 node /kubernetes[12]00[1-4]\.(codfw|eqiad)\.wmnet/ {
