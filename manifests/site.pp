@@ -1267,11 +1267,12 @@ node /^logstash100[4-6]\.eqiad\.wmnet$/ {
 
 # logstash collectors (Ganeti VM)
 node 'logstash1007.eqiad.wmnet' {
-    role(logstash::collector, kibana, logstash::apifeatureusage, logstash::eventlogging)
+    role(logstash)
+    include ::role::logstash::eventlogging
     include ::lvs::realserver
 }
 node /^logstash100[8-9]\.eqiad\.wmnet$/ {
-    role(logstash::collector, kibana, logstash::apifeatureusage)
+    role(logstash)
     include ::lvs::realserver
 }
 
