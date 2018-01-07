@@ -136,7 +136,55 @@ class snapshot::dumps::configs(
             },
             media => {
                 skipdblist    => "${dblistsdir}/skipmonitor.dblist,${dblistsdir}/globalusage.dblist",
-            }
+            },
+        },
+    }
+
+    $labsconfig = {
+        allwikis => {
+            global => {
+                dblist        => "${apachedir}/dblists/all-labs.dblist",
+                closedlist    => "${apachedir}/dblists/closed-labs.dblist",
+                flowlist      => "${apachedir}/dblists/flow_only_labs.dblist",
+                skipdblist    => "${dblistsdir}/skip-labs.dblist",
+                keep          => '2',
+                chunksEnabled => '0',
+            },
+            big => {
+                dblist            => "${dblistsdir}/labs_bigwikis.dblist",
+                closedlist        => "${apachedir}/dblists/closed-labs.dblist",
+                flowlist          => "${apachedir}/dblists/flow_only_labs.dblist",
+                skipdblist        => "${dblistsdir}/skipmonitor.dblist",
+                keep              => '2',
+                chunksEnabled     => '1',
+                chunksForAbstract => '4',
+                chunksForPagelogs => '4',
+                checkpointTime    => '720',
+                recombineHistory  => '0',
+                revsPerJob        => '70000',
+                retryWait         => '30',
+                maxRetries        => '3',
+                revsMargin        => '20',
+                fixeddumporder    => '1',
+                wikis => {
+                    enwiki => {
+                        pagesPerChunkHistory  => '20000,40000,70000,80000',
+                        pagesPerChunkAbstract => '4000',
+                    },
+                    simplewiki => {
+                        pagesPerChunkHistory  => '20000,50000,90000,140000',
+                        pagesPerChunkAbstract => '60000',
+                    },
+                    wikidatawiki => {
+                        pagesPerChunkHistory  => '540000,30000,20000,30000',
+                        pagesPerChunkAbstract => '25000',
+                    },
+                },
+            },
+            en => {},
+            wd => {},
+            monitor => {},
+            media => {},
         },
     }
 
@@ -145,6 +193,15 @@ class snapshot::dumps::configs(
     snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
         configtype => 'allwikis',
         config     => $config,
+        publicdir  => $publicdir,
+        privatedir => $privatedir,
+        tempdir    => $tempdir,
+    }
+
+    # for xml/sql dumps testing in beta
+    snapshot::dumps::wikiconf { 'wikidump.conf.labs':
+        configtype => 'allwikis',
+        config     => $labsconfig,
         publicdir  => $publicdir,
         privatedir => $privatedir,
         tempdir    => $tempdir,
