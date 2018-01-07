@@ -1429,7 +1429,8 @@ node 'ms1002.eqiad.wmnet' {
 }
 
 node /^ms-fe1005\.eqiad\.wmnet$/ {
-    role(swift::proxy, swift::stats_reporter)
+    role(swift::proxy)
+    include ::role::swift::stats_reporter
     include ::lvs::realserver
 }
 
@@ -1456,7 +1457,8 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 }
 
 node /^ms-fe2005\.codfw\.wmnet$/ {
-    role(swift::proxy, swift::stats_reporter)
+    role(swift::proxy)
+    include ::role::swift::stats_reporter
     include ::lvs::realserver
 }
 
@@ -1673,12 +1675,14 @@ node /^mw225[4-8]\.codfw\.wmnet$/ {
 
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
-    role(xenon, logging::mediawiki::udp2log)
+    role(logging::mediawiki::udp2log)
+    include ::role::xenon
 }
 
 # mw logging host eqiad
 node 'mwlog1001.eqiad.wmnet' {
-    role(xenon, logging::mediawiki::udp2log)
+    role(logging::mediawiki::udp2log)
+    include ::role::xenon
 }
 
 node 'mx1001.wikimedia.org' {
@@ -1705,14 +1709,13 @@ node 'mx2001.wikimedia.org' {
 
 # Experimental Jupyter notebook servers
 node 'notebook1001.eqiad.wmnet' {
-    role(paws_internal::jupyterhub, analytics_cluster::client, paws_internal::mysql_access)
-    include ::standard
+    role(paws_internal)
 }
 
 # cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
-    role(mgmt::drac_ilo, cluster::management)
-
+    role(cluster::management)
+    include ::role::mgmt::drac_ilo
     interface::add_ip6_mapped { 'main': }
 }
 
