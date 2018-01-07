@@ -1,4 +1,274 @@
-/* Local overrides for Wikimedia. Tested on Gerrit 2.12.3 */
+</style>
+
+<script src="/r/static/gerritLogin.js"></script>
+
+<style>
+/* Local overrides for Wikimedia. Tested on Gerrit 2.13.9 */
+
+#error_message {
+    flex: 1;
+    width: auto;
+    border: 1px solid #ffa2a2;
+    background: #f55;
+    padding: 10px;
+    margin: 0 0 15px;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 400;
+}
+
+/**
+ * LDAP login
+ */
+#login_form {
+    position: relative;
+    background: rgba(255, 255, 255, .75);
+    width: 350px;
+    padding: 80px 40px 40px;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8);
+    -moz-box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8);
+    -ms-box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8);
+    box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8)
+}
+
+#login_form:before {
+    background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
+    background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 168px;
+    width: 350px
+}
+
+#login_form table {
+    display: flex;
+    padding-top: 100px
+}
+
+#login_form table tbody {
+    flex: 1
+}
+
+#login_form table tbody th, #login_form table tbody tr:nth-child(3) td:first-child,
+#login_form table tbody tr:nth-child(4) td:first-child {
+    display: none
+}
+
+#login_form table tbody td {
+    flex: 1;
+    -ms-flex: 1 0 auto;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    -ms-flex-direction: column
+}
+
+#login_form table tbody tr {
+    display: flex;
+    justify-content: center;
+    flex-direction: row
+}
+
+#login_form table tbody tr:nth-child(3) {
+    margin-bottom: 30px
+}
+
+#login_form table tbody tr:nth-child(3) td, #login_form table tbody tr:nth-child(4) td {
+    flex-direction: row
+}
+
+#login_form input[type=text], #login_form input[type=password] {
+    border: 0;
+    border-left: 5px solid #ff8700;
+    background: #ebebeb;
+    padding: 0 15px;
+    height: 40px;
+    margin-bottom: 15px;
+    color: #585858;
+    font-size: 1em;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1)
+}
+
+#login_form input[type=text]:-moz-placeholder, #login_form input[type=text]:-ms-input-placeholder,
+#login_form input[type=text]:-webkit-input-placeholder, #login_form input[type=password]:-moz-placeholder,
+#login_form input[type=password]:-ms-input-placeholder, #login_form input[type=password]:-webkit-input-placeholder {
+    color: #afafaf
+}
+
+#login_form input[type=text]:focus, #login_form input[type=password]:focus {
+    background: #fafafa
+}
+
+#login_form a#cancel_link, #login_form input[type=submit] {
+    flex: 1;
+    align-self: center;
+    border: 0;
+    border-bottom: 5px solid #ff8700;
+    background: #ebebeb;
+    padding: 0 15px;
+    height: 50px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #585858;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1)
+}
+
+#login_form a#cancel_link:focus, #login_form a#cancel_link:hover,
+#login_form input[type=submit]:focus, #login_form input[type=submit]:hover {
+    color: #ff8700;
+    background: #fafafa
+}
+
+#login_form a#cancel_link {
+    margin-left: 30px;
+    margin-top: 3px;
+    line-height: 45px;
+    height: 45px;
+    text-align: center
+}
+
+#login_form #f_remember + label {
+    color: #8b8b8b;
+    line-height: 20px
+}
+
+#login_form #f_remember + label:focus, #login_form #f_remember + label:hover {
+    color: #585858
+}
+
+#login_form #f_remember {
+    position: absolute;
+    opacity: 0
+}
+
+#login_form #f_remember + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0
+}
+
+#login_form #f_remember + label:before {
+    content: "";
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    width: 20px;
+    height: 20px;
+    background: #fff
+}
+
+#login_form #f_remember:checked + label:before, #login_form #f_remember:hover + label:before {
+    background: #ff8700
+}
+
+#login_form #f_remember:focus + label:before {
+    background: #ff8700;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1)
+}
+
+#login_form #f_remember:disabled + label {
+    color: #b8b8b8;
+    cursor: auto
+}
+
+#login_form #f_remember:disabled + label:before {
+    box-shadow: none;
+    background: #ddd
+}
+
+#login_form #f_remember:checked + label:after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    background: #fff;
+    width: 2px;
+    height: 2px;
+    box-shadow: 2px 0 0 #fff, 4px 0 0 #fff, 4px -2px 0 #fff, 4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
+    transform: rotate(45deg)
+}
+
+body {
+  visibility: hidden;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+body, .gwt-DialogBox .dialogMiddleCenter {
+	color: #353535 !important;
+	background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
+	position: static;
+}
+
+.wm-gerrit-heading {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	margin: 7px 13px;
+	padding: 0;
+
+	/* This font and color aren't used since there is an image there,
+	 * but is kept for consistency when used for display of alt-text
+	 */
+	font-weight: normal;
+	letter-spacing: -1px;
+	color: #990000;
+
+	min-height: 60px;
+	min-width: 60px;
+	background: transparent no-repeat 0 0;
+	background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
+	background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
+	text-indent: -9999px;
+	overflow: hidden;
+}
+
+/* Login Handling */
+/* Background image handling */
+html { height: 100%; }
+html body.loginParent {
+        height: 100%;
+        background-image: url(/r/static/1024px-Sea_and_sky_light.jpg) !important;
+        background-position: center center !important;
+        background-repeat:  no-repeat !important;
+        background-attachment: fixed !important;
+        background-size:  cover !important;
+        background-color: #999 !important;
+}
+
+html body.loginParent .wm-gerrit-heading {
+        background-image: none;
+}
+
+/* Hide old components */
+html body.loginParent #gerrit_topmenu { display: none; }
+html body.loginParent #gerrit_header { display: none; }
+html body.loginParent #gerrit_body {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        resize: both;
+        overflow: auto;
+}
+html body.loginParent #gerrit_body h1 {
+        display: none;
+}
 
 .com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
 	/*
@@ -22,11 +292,6 @@
 /**
  * General
  */
-body, .gwt-DialogBox .dialogMiddleCenter {
-	color: #353535 !important;
-	background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
-	position: static;
-}
 
 a,
 a:visited {
@@ -63,29 +328,6 @@ table.changeTable a.gwt-Anchor {
  */
 #gerrit_header {
 	display: block !important;
-}
-.wm-gerrit-heading {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	margin: 7px 13px;
-	padding: 0;
-
-	/* This font and color aren't used since there is an image there,
-	 * but is kept for consistency when used for display of alt-text
-	 */
-	font-weight: normal;
-	letter-spacing: -1px;
-	color: #990000;
-
-	min-height: 60px;
-	min-width: 60px;
-	background: transparent no-repeat 0 0;
-	background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
-	background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
-	text-indent: -9999px;
-	overflow: hidden;
 }
 
 /**
@@ -159,27 +401,6 @@ table.changeTable a.gwt-Anchor {
 }
 .com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
 	font-size: small !important;
-}
-
-/**
- * LDAP login
- */
-#gerrit_body h1 {
-	font-family: Arial Unicode MS, Arial, sans-serif;
-	font-size: 16pt;
-	font-weight: normal;
-}
-
-#login_form {
-	font-size: 13px;
-}
-
-#login_form th {
-	font-weight: normal;
-}
-
-#login_form input[type="submit"] {
-	font-size: 12px;
 }
 
 /* Changes for gerrit 2.12 */
