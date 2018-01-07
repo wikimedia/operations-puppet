@@ -1,14 +1,282 @@
-/* Local overrides for Wikimedia. Tested on Gerrit 2.12.3 */
+</style>
+
+<script src="/r/static/gerritLogin.cache.js"></script>
+
+<style>
+/* Local overrides for Wikimedia. Tested on Gerrit 2.13.9 */
+
+#error_message {
+    flex: 1;
+    width: auto;
+    border: 1px solid #ffa2a2;
+    background: #f55;
+    padding: 10px;
+    margin: 0 0 15px;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 400;
+}
+
+/**
+ * LDAP login
+ */
+#login_form {
+    position: relative;
+    background: rgba(255, 255, 255, .75);
+    width: 350px;
+    padding: 80px 40px 40px;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8);
+    -moz-box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8);
+    -ms-box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8);
+    box-shadow: 5px 5px 50px -16px rgba(0, 0, 0, .8)
+}
+
+#login_form:before {
+    background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
+    background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 168px;
+    width: 350px
+}
+
+#login_form table {
+    display: flex;
+    padding-top: 100px
+}
+
+#login_form table tbody {
+    flex: 1
+}
+
+#login_form table tbody th, #login_form table tbody tr:nth-child(3) td:first-child,
+#login_form table tbody tr:nth-child(4) td:first-child {
+    display: none
+}
+
+#login_form table tbody td {
+    flex: 1;
+    -ms-flex: 1 0 auto;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    -ms-flex-direction: column
+}
+
+#login_form table tbody tr {
+    display: flex;
+    justify-content: center;
+    flex-direction: row
+}
+
+#login_form table tbody tr:nth-child(3) {
+    margin-bottom: 30px
+}
+
+#login_form table tbody tr:nth-child(3) td, #login_form table tbody tr:nth-child(4) td {
+    flex-direction: row
+}
+
+#login_form input[type=text], #login_form input[type=password] {
+    border: 0;
+    border-left: 5px solid #ff8700;
+    background: #ebebeb;
+    padding: 0 15px;
+    height: 40px;
+    margin-bottom: 15px;
+    color: #585858;
+    font-size: 1em;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1)
+}
+
+#login_form input[type=text]:-moz-placeholder, #login_form input[type=text]:-ms-input-placeholder,
+#login_form input[type=text]:-webkit-input-placeholder, #login_form input[type=password]:-moz-placeholder,
+#login_form input[type=password]:-ms-input-placeholder, #login_form input[type=password]:-webkit-input-placeholder {
+    color: #afafaf
+}
+
+#login_form input[type=text]:focus, #login_form input[type=password]:focus {
+    background: #fafafa
+}
+
+#login_form a#cancel_link, #login_form input[type=submit] {
+    flex: 1;
+    align-self: center;
+    border: 0;
+    border-bottom: 5px solid #ff8700;
+    background: #ebebeb;
+    padding: 0 15px;
+    height: 50px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #585858;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1)
+}
+
+#login_form a#cancel_link:focus, #login_form a#cancel_link:hover,
+#login_form input[type=submit]:focus, #login_form input[type=submit]:hover {
+    color: #ff8700;
+    background: #fafafa
+}
+
+#login_form a#cancel_link {
+    margin-left: 30px;
+    margin-top: 3px;
+    line-height: 45px;
+    height: 45px;
+    text-align: center
+}
+
+#login_form #f_remember + label {
+    color: #8b8b8b;
+    line-height: 20px
+}
+
+#login_form #f_remember + label:focus, #login_form #f_remember + label:hover {
+    color: #585858
+}
+
+#login_form #f_remember {
+    position: absolute;
+    opacity: 0
+}
+
+#login_form #f_remember + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0
+}
+
+#login_form #f_remember + label:before {
+    content: "";
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    width: 20px;
+    height: 20px;
+    background: #fff
+}
+
+#login_form #f_remember:checked + label:before, #login_form #f_remember:hover + label:before {
+    background: #ff8700
+}
+
+#login_form #f_remember:focus + label:before {
+    background: #ff8700;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1)
+}
+
+#login_form #f_remember:disabled + label {
+    color: #b8b8b8;
+    cursor: auto
+}
+
+#login_form #f_remember:disabled + label:before {
+    box-shadow: none;
+    background: #ddd
+}
+
+#login_form #f_remember:checked + label:after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    background: #fff;
+    width: 2px;
+    height: 2px;
+    box-shadow: 2px 0 0 #fff, 4px 0 0 #fff, 4px -2px 0 #fff, 4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
+    transform: rotate(45deg)
+}
+
+body {
+    visibility: hidden;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+body, .gwt-DialogBox .dialogMiddleCenter {
+    color: #353535 !important;
+    background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
+    position: static;
+}
+
+.wm-gerrit-heading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 7px 13px;
+    padding: 0;
+    /* This font and color aren't used since there is an image there,
+     * but is kept for consistency when used for display of alt-text
+     */
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: #990000;
+    min-height: 60px;
+    min-width: 60px;
+    background: transparent no-repeat 0 0;
+    background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
+    background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+/* Login Handling */
+/* Background image handling */
+html { height: 100%; }
+html body.loginParent {
+    height: 100%;
+    background-image: url(/r/static/1024px-Sea_and_sky_light.cache.jpg) !important;
+    background-position: center center !important;
+    background-repeat:  no-repeat !important;
+    background-attachment: fixed !important;
+    background-size:  cover !important;
+    background-color: #999 !important;
+}
+
+html body.loginParent .wm-gerrit-heading {
+    background-image: none;
+}
+
+/* Hide old components */
+html body.loginParent #gerrit_topmenu { display: none; }
+html body.loginParent #gerrit_header { display: none; }
+html body.loginParent #gerrit_body {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    resize: both;
+    overflow: auto;
+    margin-top: 10%;
+}
+html body.loginParent #gerrit_body h1 {
+    display: none;
+}
 
 .com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
-	/*
-	 * Fixes IE copying text
-	 *
-	 * https://bugs.chromium.org/p/gerrit/issues/detail?id=4647
-	 */
-	-ms-user-select: text !important;
-	/* For browsers that doint prefix there css */
-	user-select: text;
+    /*
+     * Fixes IE copying text
+     *
+     * https://bugs.chromium.org/p/gerrit/issues/detail?id=4647
+     */
+    -ms-user-select: text !important;
+    /* For browsers that doint prefix there css */
+    user-select: text;
 }
 
 /**
@@ -16,39 +284,34 @@
  *               and for inline review messages, so we can write code there.
  */
 .com-google-gerrit-client-change-CommitBox_BinderImpl_GenCss_style-text {
-	white-space: pre-wrap !important;
+    white-space: pre-wrap !important;
 }
 
 /**
  * General
  */
-body, .gwt-DialogBox .dialogMiddleCenter {
-	color: #353535 !important;
-	background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
-	position: static;
-}
 
 a,
 a:visited {
-	color: #0654ac !important;
-	text-decoration: none;
+    color: #0654ac !important;
+    text-decoration: none;
 }
 
 a:hover {
-	color: #0654ac !important;
-	text-decoration: underline;
+    color: #0654ac !important;
+    text-decoration: underline;
 }
 
 /* Make the repo links turn blue */
 table.changeTable a.gwt-Anchor {
-	color: #0654ac !important;
+    color: #0654ac !important;
 }
 
 /* Search queries / Dashboards
  * have links in every cell, make those easier on the eyes
  */
 .GJEA35ODNB a.gwt-InlineHyperlink {
-	color: #222 !important;
+    color: #222 !important;
 }
 
 /**
@@ -62,72 +325,49 @@ table.changeTable a.gwt-Anchor {
  * logo as well, to avoid page content from overlapping the logo.
  */
 #gerrit_header {
-	display: block !important;
-}
-.wm-gerrit-heading {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	margin: 7px 13px;
-	padding: 0;
-
-	/* This font and color aren't used since there is an image there,
-	 * but is kept for consistency when used for display of alt-text
-	 */
-	font-weight: normal;
-	letter-spacing: -1px;
-	color: #990000;
-
-	min-height: 60px;
-	min-width: 60px;
-	background: transparent no-repeat 0 0;
-	background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
-	background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
-	text-indent: -9999px;
-	overflow: hidden;
+    display: block !important;
 }
 
 /**
  * Top menu (navigation)
  */
 #gerrit_topmenu {
-	position: relative;
-	top: 0;
-	left: 85px;
-	margin-right: 200px;
-	background: none;
-	/* Make sure it is above the logo or we can not clck the sub menu items */
-	z-index: 1;
-	/* Ensure logo is not cut off by page content */
-	/* 74px = 60px height + (2 x 7px) margin */
-	min-height: 74px;
+    position: relative;
+    top: 0;
+    left: 85px;
+    margin-right: 200px;
+    background: none;
+    /* Make sure it is above the logo or we can not clck the sub menu items */
+    z-index: 1;
+    /* Ensure logo is not cut off by page content */
+    /* 74px = 60px height + (2 x 7px) margin */
+    min-height: 74px;
 }
 
 #gerrit_topmenu tbody tr td table {
-	border: 0;
+    border: 0;
 }
 
 /* Line between tabs and the corresponding sub menu */
 #gerrit_topmenu tbody tr td table.gwt-TabBar {
-	border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
 }
 
 .gwt-TabBarItem {
-	color: #353535;
-	border-bottom: 3px solid transparent;
-	border-right: 0 !important;
+    color: #353535;
+    border-bottom: 3px solid transparent;
+    border-right: 0 !important;
 }
 
 .gwt-TabBarItem-selected {
-	color: #990000 !important;
-	border-bottom-color: #990000;
+    color: #990000 !important;
+    border-bottom-color: #990000;
 }
 
 .gwt-TabBar .gwt-TabBarItem,
 .gwt-TabBar .gwt-TabBarRest,
 .gwt-TabPanelBottom {
-	background: 0 !important;
+    background: 0 !important;
 }
 
 /**
@@ -139,7 +379,7 @@ table.changeTable a.gwt-Anchor {
  * and also matches the height if the input field
  */
 #gerrit_topmenu .gwt-Button {
-	padding: 3px 6px;
+    padding: 3px 6px;
 }
 
 /**
@@ -147,7 +387,7 @@ table.changeTable a.gwt-Anchor {
  * Gerrit commit message font is too small
  */
 .com-google-gerrit-client-change-CommitBox_BinderImpl_GenCss_style-text {
-	font-size: 9pt !important;
+    font-size: 9pt !important;
 }
 
 /**
@@ -155,31 +395,10 @@ table.changeTable a.gwt-Anchor {
  * Gerrit diff font isn't big enough, either
  */
 .com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-table .CodeMirror {
-	font-size: 9pt !important;
+    font-size: 9pt !important;
 }
 .com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
-	font-size: small !important;
-}
-
-/**
- * LDAP login
- */
-#gerrit_body h1 {
-	font-family: Arial Unicode MS, Arial, sans-serif;
-	font-size: 16pt;
-	font-weight: normal;
-}
-
-#login_form {
-	font-size: 13px;
-}
-
-#login_form th {
-	font-weight: normal;
-}
-
-#login_form input[type="submit"] {
-	font-size: 12px;
+    font-size: small !important;
 }
 
 /* Changes for gerrit 2.12 */
@@ -211,28 +430,28 @@ table.changeTable a.gwt-Anchor {
 
 /** Zuul test result. From OpenStack Foundation */
 .ci_comment_test_name {
-	display: inline-block;
-	*display: inline;
-	*zoom: 1;
-	width: auto !important;
-	width: 25em;
-	min-width: 20em;
-	padding-bottom: 2pt;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: auto !important;
+    width: 25em;
+    min-width: 20em;
+    padding-bottom: 2pt;
 }
 
 .ci_comment_test_result {
 }
 
 .ci_result_SUCCESS {
-	color: #007f00;
+    color: #007f00;
 }
 .ci_result_FAILURE {
-	color: #cf2f19;
+    color: #cf2f19;
 }
 .ci_result_UNSTABLE {
-	color: #e39f00;
+    color: #e39f00;
 }
 .ci_result_LOST {
-	color: #e39f00;
+    color: #e39f00;
 }
 li.ci_comment_test { list-style-type: none; }
