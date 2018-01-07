@@ -1,0 +1,5 @@
+cluster: eventbus
+admin::groups:
+  - eventbus-admins
+role::lvs::realserver::pools:
+  eventbus: {}
