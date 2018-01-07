@@ -1140,8 +1140,8 @@ node 'labcontrol1002.wikimedia.org' {
 #  - silver (wikitech.wikimedia.org), and
 #  - californium (horizon.wikimedia.org)
 node 'labtestweb2001.wikimedia.org' {
-    role(wmcs::openstack::labtest::web,
-          mariadb::wikitech)
+    role(wmcs::openstack::labtest::web)
+    include ::role::mariadb::wikitech
     include ::base::firewall
     include ::ldap::role::client::labs
 
@@ -1150,11 +1150,7 @@ node 'labtestweb2001.wikimedia.org' {
 
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
-    role(labs::graphite,
-          labs::prometheus,
-          grafana::labs)
-    include ::standard
-    include ::base::firewall
+    role(labs::monitoring)
 }
 
 # role spare until pushed into service via T165784
@@ -1192,7 +1188,8 @@ node /labsdb10(09|10|11)\.eqiad\.wmnet/ {
 }
 
 node 'labsdb1004.eqiad.wmnet' {
-    role(postgres::master, labs::db::slave)
+    role(postgres::master)
+    include ::role::labs::db::slave
 }
 
 node 'labsdb1005.eqiad.wmnet' {
@@ -1992,8 +1989,8 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    role(wmcs::openstack::main::wikitech,
-          mariadb::wikitech)
+    role(wmcs::openstack::main::wikitech)
+    include ::role::mariadb::wikitech
     include ::base::firewall
     include ::standard
 
