@@ -118,6 +118,22 @@ maxrevs=100000
 <% end -%>
 <% end -%>
 
+[labssmall]
+# generic settings for small wikis in labs
+<% @config[@configtype]['labs_small'].keys.sort.each do |bigsetting| -%>
+<% if bigsetting != 'wikis' -%>
+<%= bigsetting %>=<%= @config[@configtype]['labs_small'][bigsetting] %>
+<% end -%>
+<% end -%>
+
+[labsbig]
+# generic settings for big wikis in labs
+<% @config[@configtype]['labs_big'].keys.sort.each do |bigsetting| -%>
+<% if bigsetting != 'wikis' -%>
+<%= bigsetting %>=<%= @config[@configtype]['labs_big'][bigsetting] %>
+<% end -%>
+<% end -%>
+
 ########################
 # wiki-specific settings
 
