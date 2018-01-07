@@ -51,6 +51,14 @@ class snapshot::dumps::dblists {
         group   => 'root',
         content => "${bigwikis_dblist}\n",
     }
+    file { "${dblistsdir}/bigwikis-labs.dblist":
+        ensure  => 'present',
+        path    => "${dblistsdir}/bigwikis-labs.dblist",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => "${labs_bigwikis_dblist}\n",
+    }
     file { "${dblistsdir}/skip.dblist":
         ensure  => 'present',
         path    => "${dblistsdir}/skip.dblist",

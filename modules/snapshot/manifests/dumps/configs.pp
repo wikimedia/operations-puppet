@@ -151,7 +151,7 @@ class snapshot::dumps::configs(
                 chunksEnabled => '0',
             },
             big => {
-                dblist            => "${dblistsdir}/labs_bigwikis.dblist",
+                dblist            => "${dblistsdir}/bigwikis-labs.dblist",
                 closedlist        => "${apachedir}/dblists/closed-labs.dblist",
                 flowlist          => "${apachedir}/dblists/flow_only_labs.dblist",
                 skipdblist        => "${dblistsdir}/skipmonitor.dblist",
