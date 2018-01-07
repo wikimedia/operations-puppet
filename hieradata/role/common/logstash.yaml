@@ -1,3 +1,6 @@
+role::logstash::apifeatureusage::elastic_hosts:
+  - search.svc.codfw.wmnet
+  - search.svc.eqiad.wmnet
 cluster: logstash
 admin::groups:
   - logstash-roots
@@ -52,4 +55,3 @@ role::kibana::ldap_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
-
