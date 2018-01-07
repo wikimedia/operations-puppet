@@ -1,7 +1,0 @@
-burrow::lagcheck_intervals: 100
-burrow::httpserver_port: 8000
-burrow::consumer_groups:
-  - eventlogging_processor_client_side_00
-  - eventlogging_consumer_mysql_00
-  - eventlogging_consumer_mysql_eventbus_00
-  - eventlogging_consumer_files_00
