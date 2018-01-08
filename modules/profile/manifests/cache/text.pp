@@ -87,14 +87,6 @@ class profile::cache::text(
         backend_warming  => $backend_warming,
     }
 
-    # varnishkafka eventlogging listens for eventlogging
-    # requests and logs them to the eventlogging-client-side
-    # topic.  EventLogging servers consume and process this
-    # topic into many JSON based kafka topics for further
-    # consumption.
-    # TODO: Move this to profile, include from role::cache::text.
-    class { '::role::cache::kafka::eventlogging': }
-
     # ResourceLoader browser cache hit rate and request volume stats.
     ::varnish::logging::rls { 'rls':
         statsd_server => $statsd_host,

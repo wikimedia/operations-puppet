@@ -1,36 +1,46 @@
-# === Define role::cache::kafka::eventlogging
+# === Class profile::cache::kafka::eventlogging
 #
 # Sets up a varnishkafka logging endpoint for collecting
 # analytics events coming from external clients.
+#
+# TODO: This class is still in test mode
 #
 # More info: https://wikitech.wikimedia.org/wiki/Analytics/EventLogging
 #
 # === Parameters
 #
-# [*varnish_name*]
-#   The name of the varnish instance to read shared logs from.
-#   Default 'frontend'
-# [*varnish_svc_name*]
-#   The name of the init unit for the above.
-#   Default 'varnish-frontend'
-# [*kafka_protocol_version*]
-#   Kafka API version to use, needed for brokers < 0.10
-#   https://issues.apache.org/jira/browse/KAFKA-3547
+# [*kafka_cluster_name*]
+#   Name of the Kafka cluster in the kafka_clusters hash to be passed to the
+#   kafka_config() function.  Default: jumbo.
 #
-class role::cache::kafka::eventlogging(
-    $varnish_name           = 'frontend',
-    $varnish_svc_name       = 'varnish-frontend',
-    $kafka_protocol_version = '0.9.0.1',
-) inherits role::cache::kafka
-{
+# [*cache_cluster*]
+#   The name of the cache cluster.
+#
+# [*statsd*]
+#   The host to send statsd data to.
+#
+class profile::cache::kafka::eventlogging(
+    $kafka_cluster_name = hiera('profile::cache::kafka::eventlogging::kafka_cluster_name', 'jumbo')
+    $cache_cluster      = hiera('cache::cluster'),
+    $statsd             = hiera('statsd'),
+) {
+    # Include this class to get key and certificate for varnishkafka
+    # to produce to Kafka over SSL/TLS.
+    require ::profile::cache::kafka::certificate
+
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     $varnish_opts = { 'q' => 'ReqURL ~ "^/(beacon/)?event(\.gif)?\?"' }
 
+    $config = kafka_config($kafka_cluster_name)
+    # Array of kafka brokers in jumbo-eqiad with SSL port 9093
+    $kafka_brokers = $config['brokers']['ssl_array']
+
+    $topic            = "webrequest_${cache_cluster}_test"
+    $varnish_name     = 'frontend'
+    $varnish_svc_name = 'varnish-frontend'
+
     varnishkafka::instance { 'eventlogging':
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
         brokers                     => $kafka_brokers,
-        # lint:endignore
         # Note that this format uses literal tab characters.
         # The '-' in this string used to be %{X-Client-IP@ip}o.
         # EventLogging clientIp logging has been removed as part of T128407.
@@ -41,7 +51,6 @@ class role::cache::kafka::eventlogging(
         varnish_svc_name            => $varnish_svc_name,
         varnish_opts                => $varnish_opts,
         topic_request_required_acks => '1',
-        force_protocol_version      => $kafka_protocol_version,
     }
 
     include ::standard
@@ -51,16 +60,20 @@ class role::cache::kafka::eventlogging(
         description   => 'eventlogging Varnishkafka log producer',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
         contact_group => 'admins,analytics',
-        require       => Class['::varnishkafka'],
+        require       => Varnishkafka::Instance['eventlogging'],
     }
 
     $cache_type = hiera('cache::cluster')
-    $graphite_metric_prefix = "varnishkafka.${::hostname}.eventlogging.${cache_type}"
+    $graphite_metric_prefix = "varnishkafka.${::hostname}.eventlogging.${cache_cluster}"
 
     # Sets up Logster to read from the Varnishkafka instance stats JSON file
     # and report metrics to statsd.
     varnishkafka::monitor::statsd { 'eventlogging':
         graphite_metric_prefix => $graphite_metric_prefix,
-        statsd_host_port       => hiera('statsd'),
+        statsd_host_port       => $statsd,
     }
+
+    # Make sure varnishes are configured and started for the first time
+    # before the instances as well, or they fail to start initially...
+    Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance['eventlogging']
 }
