@@ -28,17 +28,21 @@ import sys
 import urllib.parse
 
 
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
 def die(s):
-    print('*** {}'.format(s), file=sys.stderr)
+    eprint('*** {}'.format(s))
     exit(1)
 
-
-def http_req(verb, path, body=None):
+def http_req(username, password, verb, path, body=None):
     path = '/api%s' % path
     conn = http.client.HTTPConnection('localhost', 15672)
+    credentials = '{}:{}'.format(username, password)
+    b = credentials.encode()
     headers = {
         'Authorization': 'Basic {}'.format(
-            base64.b64encode(b'guest:guest').decode('ascii')),
+            base64.b64encode(b).decode('ascii')),
     }
     if body:
         headers['Content-Type'] = 'application/json'
@@ -53,11 +57,20 @@ def http_req(verb, path, body=None):
     if resp.status == 401:
         die('Access refused: {}'.format(path))
     if resp.status == 404:
-        die('Not found: {}'.format(path))
+        # Rabbitmq manages queues dynamically so
+        # the existence of a queue may depend on a message
+        # ever needing to be delivered to it.  Even
+        # necessary queues are often created on-demand.
+        eprint('Queue not found!')
+        return json.dumps('')
     if resp.status == 301:
         url = urllib.parse.urlparse(resp.getheader('location'))
         [host, port] = url.netloc.split(':')
-        return http_req(verb, url.path + '?' + url.query, body)
+        return http_req(username,
+                        password,
+                        verb,
+                        url.path + '?' + url.query,
+                        body)
     if resp.status < 200 or resp.status > 400:
         raise Exception(
             'Received {:d} {} for path {}\n{}'.format(
@@ -65,12 +78,19 @@ def http_req(verb, path, body=None):
     return resp_body
 
 
-def http_json(verb, path, body=None):
-    return json.loads(http_req(verb, path, body))
+def http_json(username, password, verb, path, body=None):
+    return json.loads(http_req(username, password, verb, path, body))
 
 
-def message_count(queue):
-    return http_json('GET', '/queues/%2F/{}'.format(queue))['messages_ready']
+def message_count(username, password, queue):
+    out = http_json(username,
+                     password,
+                     'GET',
+                     '/queues/%2F/{}'.format(queue))
+    if not out:
+        return None
+    return out['messages_ready']
+
 
 
 def main():
@@ -86,14 +106,29 @@ def main():
     parser.add_argument(
         'queue', metavar='QUEUE', nargs=1,
         help='queue to read messages from')
+    parser.add_argument(
+        '--username', default='drainqueue',
+        help='username to connect to rabbitmq')
+    parser.add_argument(
+        '--password', default='',
+        help='password to connect to rabbitmq')
+
     args = parser.parse_args()
     queue = args.queue[0]
+    username = args.username
+    password = args.password
 
     if args.silent:
-        http_req('DELETE', '/queues/%2F/{}/contents'.format(queue))
+        http_req(username,
+                 password,
+                 'DELETE',
+                 '/queues/%2F/{}/contents'.format(queue))
 
     else:
-        ready = message_count(queue)
+        ready = message_count(username, password, queue)
+        if ready is None:
+            return
+        print("message count is {}".format(ready))
         while ready > 0:
             msgs = http_json(
                 'POST',
@@ -113,7 +148,7 @@ def main():
             if args.requeue:
                 ready = 0  # prevent infinte loops
             else:
-                ready = message_count(queue)
+                ready = message_count(username, password, queue)
 
 
 if __name__ == '__main__':

@@ -10,7 +10,6 @@ class profile::openstack::base::rabbitmq(
 ){
 
     class { '::rabbitmq':
-        running      => $::fqdn == $nova_controller,
         file_handles => $file_handles,
     }
     contain '::rabbitmq'
