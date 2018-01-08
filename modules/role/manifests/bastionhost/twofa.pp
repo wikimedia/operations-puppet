@@ -7,6 +7,9 @@ class role::bastionhost::twofa {
     include ::standard
     include ::profile::base::firewall
     include ::profile::backup::host
+
+    # Needed to allow installation of servers in the labs subnet
+    include ::profile::access_new_install
     include ::passwords::yubiauth
 
     backup::set {'home': }
