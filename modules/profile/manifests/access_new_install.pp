@@ -2,7 +2,7 @@
 #  to set up the initial puppet run.
 # This key is dangerous, do not deploy widely!
 # Also install a convenience script to ssh in using this key
-class role::access_new_install {
+class profile::access_new_install {
     file { '/root/.ssh/new_install':
         owner     => 'root',
         group     => 'root',

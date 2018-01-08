@@ -1056,7 +1056,6 @@ node 'iron.wikimedia.org' {
     }
     interface::add_ip6_mapped { 'main': }
     role(bastionhost::twofa)
-    include ::role::access_new_install
 }
 
 # The host is going to be decom as part of T181518
@@ -1825,14 +1824,8 @@ node /poolcounter[12]00[12]\.(codfw|eqiad)\.wmnet/ {
 }
 
 node /^prometheus200[34]\.codfw\.wmnet$/ {
-    role(prometheus::ops, prometheus::global, prometheus::services, prometheus::analytics,
-      prometheus::k8s)
-
+    role(prometheus)
     include ::base::firewall
-    include ::standard
-    include ::lvs::realserver
-
-    interface::add_ip6_mapped { 'main': }
 }
 
 node 'puppetcompiler1001.eqiad.wmnet' {
@@ -1841,21 +1834,11 @@ node 'puppetcompiler1001.eqiad.wmnet' {
 }
 
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
-    role(prometheus::ops, prometheus::global, prometheus::services, prometheus::analytics,
-      prometheus::k8s)
-
-    include ::lvs::realserver
-
-    interface::add_ip6_mapped { 'main': }
+    role(prometheus)
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
-    role(
-        ipmi::mgmt, access_new_install,
-        puppetmaster::frontend,
-    )
-    include ::standard
-    interface::add_ip6_mapped { 'main': }
+    role(puppetmaster::frontend)
 }
 
 node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
