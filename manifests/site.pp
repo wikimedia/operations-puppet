@@ -2,12 +2,11 @@
 # site.pp
 # Base nodes
 
-# Default variables. this way, they work with an ENC (as in labs) as well.
-if !defined('$cluster') {
-    $cluster = 'misc'
-}
-
 # Node definitions (alphabetic order)
+
+node 'labtestcontrol2003.wikimedia.org' {
+    include ::rabbitmq::test
+}
 
 node 'acamar.wikimedia.org' {
     role(recursor)
@@ -971,12 +970,6 @@ node 'labtestnet2001.codfw.wmnet' {
 
 node 'labtestcontrol2001.wikimedia.org' {
     role(wmcs::openstack::labtest::control)
-    include ::standard
-    include ::base::firewall
-}
-
-node 'labtestcontrol2003.wikimedia.org' {
-    role(wmcs::openstack::labtestn::control)
     include ::standard
     include ::base::firewall
 }
