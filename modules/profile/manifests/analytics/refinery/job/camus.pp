@@ -2,10 +2,17 @@
 # Uses camus::job to set up cron jobs to
 # import data from Kafka into Hadoop.
 #
-class profile::analytics::refinery::job::camus {
+# == Parameters
+# [*kafka_cluster_name*]
+#   Name of the Kafka cluster in the kafka_clusters hash that will be used
+#   to look up brokers from which Camus will import data.  Default: analytics
+#
+class profile::analytics::refinery::job::camus(
+    $kafka_cluster_name = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'analytics')
+) {
     require ::profile::analytics::refinery
 
-    $kafka_config = kafka_config('analytics')
+    $kafka_config = kafka_config($kafka_cluster_name)
 
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
     # If you build a new camus or refinery, and you want to use it, you'll
