@@ -1943,9 +1943,11 @@ node 'rutherfordium.eqiad.wmnet' {
 # Right now, both rt-server and rt-clients run on the same node
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
-    role(test,
-        parsoid::testing, parsoid::rt_server, parsoid::rt_client,
-        parsoid::vd_server, parsoid::vd_client, parsoid::diffserver)
+    role(parsoid::testing)
+    include ::role::test
+    include ::role::parsoid::rt_server, ::role::parsoid::vd_server
+    include ::role::parsoid::rt_client, ::role::parsoid::vd_client
+    include ::role::parsoid::diffserver
 }
 
 # cluster management (cumin master)
@@ -2112,7 +2114,8 @@ node 'tin.eqiad.wmnet', 'naos.codfw.wmnet' {
 
 # test system for performance team (T117888)
 node 'tungsten.eqiad.wmnet' {
-    role(test, xhgui::app)
+    role(xhgui::app)
+    include ::role::test
 }
 
 # replaced magnesium (RT) (T119112 T123713)
