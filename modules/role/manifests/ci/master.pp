@@ -24,4 +24,17 @@ class role::ci::master {
     include ::profile::ci::shipyard
     include ::profile::zuul::merger
     include ::profile::zuul::server
+
+    group { 'thisisadummygroup':
+        ensure => present,
+        system => true,
+        gid    => 667,
+    }
+
+    user { 'thisisadummysystemuser':
+        system  => true,
+        group   => 'thisisadummygroup',
+        groups  => ['docker'],
+        require => Class['::standard'],
+    }
 }
