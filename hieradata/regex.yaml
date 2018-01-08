@@ -254,7 +254,7 @@ smart_health_ulsfo:
   profile::base::check_smart: true
 
 smart_health_eqiad:
-  __regex: !ruby/regexp /^(analytics10[234][0-9]|aqs1004|conf1001|cp1045|db1039|db1001|db1087|db1011|druid1001|elastic1017|es1015|etcd1001|ganeti1001|graphite1.*|kafka1001|kafka-jumbo1001|kube.*|labmon1001|labcontrol1001|labvirt1001|labvirt1010|labsdb1009|labstore1006|lvs1007logstash1008|mw11.*|maps1001|mc1019|ms-be1013|ms-be1039|ores1001|oresrdb1002|phab1001|poolcounter1001|mwlog1001|netmon1.*|puppetmaster1001|pc1004|sca1003|scb1001|thumbor1.*|tin|tungsten|wdqs1003|wtp1025|xenon).eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(analytics10[234][0-9]|aqs1004|conf1001|cp1045|db1001|db1087|db1011|druid1001|elastic1017|es1015|etcd1001|ganeti1001|graphite1.*|kafka1001|kafka-jumbo1001|kube.*|labmon1001|labcontrol1001|labvirt1001|labvirt1010|labsdb1009|labstore1006|lvs1007logstash1008|mw11.*|maps1001|mc1019|ms-be1013|ms-be1039|ores1001|oresrdb1002|phab1001|poolcounter1001|mwlog1001|netmon1.*|puppetmaster1001|pc1004|sca1003|scb1001|thumbor1.*|tin|tungsten|wdqs1003|wtp1025|xenon).eqiad\.wmnet$/
   profile::base::check_smart: true
 
 labtestpuppetmaster:
