@@ -29,7 +29,6 @@ class shinken::ircbot(
         '/var/log/ircecho/irc-cloud.log'          => '#wikimedia-cloud',
         '/var/log/ircecho/irc-cloud-feed.log'     => '#wikimedia-cloud-feed',
         '/var/log/ircecho/irc-cvn.log'            => '#countervandalism',
-        '/var/log/ircecho/irc-wmt.log'            => '##wmt',
         '/var/log/ircecho/irc-ores.log'           => '#wikimedia-ai',
     }
 

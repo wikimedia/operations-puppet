@@ -186,7 +186,3 @@ private:
       home: true
       project: true
       scratch: true
-  wmt:
-    gid: 52488
-    mounts:
-      project: true
