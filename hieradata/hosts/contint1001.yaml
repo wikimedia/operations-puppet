@@ -4,3 +4,6 @@ profile::ci::jenkins::service_enable: true
 profile::ci::jenkins::service_monitor: true
 profile::zuul::server::service_ensure: running
 profile::zuul::server::service_enable: true
+
+# Docker requires the overlay / overlayFS kernel module
+profile::base::overlayfs: true
