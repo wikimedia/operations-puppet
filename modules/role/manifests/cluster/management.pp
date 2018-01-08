@@ -11,8 +11,8 @@ class role::cluster::management {
 
     include ::profile::mariadb::wmf_root_client
     include ::role::cumin::master
-    include ::role::ipmi::mgmt
-    include ::role::access_new_install
+    include ::profile::ipmi::mgmt
+    include ::profile::access_new_install
     include ::profile::conftool::client
     include ::profile::switchdc
     include ::profile::debdeploy

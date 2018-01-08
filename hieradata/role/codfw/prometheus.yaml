@@ -1,7 +1,6 @@
-profile::base::domain_search:
-  - wikimedia.org
-  - eqiad.wmnet
-  - codfw.wmnet
-  - esams.wmnet
-  - ulsfo.wmnet
-  - eqsin.wmnet
+prometheus::server::memory_chunks: '3145728'
+prometheus::server::max_chunks_to_persist: '1048576'
+lvs::realserver::realserver_ips:
+ - 10.2.1.25
+profile::base::remote_syslog_tls: ['syslog.eqiad.wmnet:6514', 'syslog.codfw.wmnet:6514']
+profile::base::remote_syslog: []
