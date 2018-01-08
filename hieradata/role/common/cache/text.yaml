@@ -116,3 +116,7 @@ profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
 
 profile::cache::base::varnish_version: 5
 apt::use_experimental: true
+
+# Monitor varnishkafka-eventlogging process.
+profile::cache::kafka::webrequest::monitoring_enabled: true
+profile::cache::kafka::webrequest::kafka_cluster_name: analytics
