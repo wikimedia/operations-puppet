@@ -5,6 +5,7 @@ class role::puppetmaster::frontend {
         description => 'Puppetmaster frontend'
     }
 
+    include ::standard
     include ::base::firewall
 
     include ::profile::backup::host
@@ -17,4 +18,10 @@ class role::puppetmaster::frontend {
     # config-master.wikimedia.org
     include ::profile::configmaster
     include ::profile::discovery::client
+
+    # IPMI management
+    include ::profile::ipmi::mgmt
+    include ::profile::access_new_install
+
+    interface::add_ip6_mapped { 'main': }
 }
