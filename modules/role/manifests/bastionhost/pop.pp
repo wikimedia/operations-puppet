@@ -6,5 +6,5 @@ class role::bastionhost::pop {
     require ::role::bastionhost::general
     require ::role::installserver::tftp
     require ::role::prometheus::ops
-    require ::role::ipmi::mgmt
+    require ::profile::ipmi::mgmt
 }
