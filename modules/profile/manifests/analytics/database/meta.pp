@@ -4,7 +4,7 @@
 # and other Analytics Cluster services.
 #
 class profile::analytics::database::meta(
-    $monitoring_enabled = hiera('profile::analytics::database::meta::monitoring_enabled'),
+    $monitoring_enabled = hiera('profile::analytics::database::meta::monitoring_enabled', false),
 ) {
     # Some CDH database init scripts need Java to run.
     require ::profile::java::analytics
