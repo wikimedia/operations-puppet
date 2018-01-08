@@ -110,3 +110,6 @@ profile::cache::kafka::webrequest::monitoring_enabled: true
 # should probably change this to main-codfw.  If you don't things will probably be fine,
 # but statsv will have to send messages over UDP cross-DC to the active statsd instance.
 profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
+
+# Monitor varnishkafka-eventlogging process.
+profile::cache::kafka::eventlogging::monitoring_enabled: true
