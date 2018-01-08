@@ -123,17 +123,6 @@ define command{
 	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-cvn.log
     }
 
-# IRC output for WMT
-define command{
-	command_name	notify-host-by-irc-wmt
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-wmt.log
-	}
-
-define command{
-	command_name	notify-service-by-irc-wmt
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-wmt.log
-	}
-
 # IRC output for ORES
 define command{
         command_name    notify-host-by-irc-ores
