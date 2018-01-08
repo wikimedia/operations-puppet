@@ -1,7 +1,7 @@
 define swift::mount_filesystem (
     $mount_base = '/srv/swift-storage',
 ){
-    if ($title !~ /^[hvs]d[a-z]+[0-9]+$/) {
+    if ($title !~ /^([hvs]d|lv\-)[a-z]+[0-9]+$/) {
         fail("Invalid name ${title} for swift::mount_filesystem")
     }
 
