@@ -66,7 +66,7 @@ class role::analytics_cluster::refinery {
     }
 
     logrotate::conf { 'refinery':
-        source  => 'puppet:///modules/role/analytics_cluster/refinery-logrotate.conf',
+        source  => 'puppet:///modules/profile/analytics/refinery-logrotate.conf',
         require => File[$log_dir],
     }
 }
