@@ -1,4 +1,4 @@
-# == Define role::analytics_cluster::refinery::job::json_refine_job
+# == Define profile::analytics::refinery::job::json_refine_job
 #
 # Installs a cron job to run the JsonRefine Spark job.  This is
 # used to import arbitrary JSON data (EventLogging, EventBus, etc.)
@@ -6,7 +6,7 @@
 #
 # For description of the parameters, see:
 # https://github.com/wikimedia/analytics-refinery-source/blob/master/refinery-job/src/main/scala/org/wikimedia/analytics/refinery/job/JsonRefine.scala
-define role::analytics_cluster::refinery::job::json_refine_job (
+define profile::analytics::refinery::job::json_refine_job (
     $input_base_path,
     $input_regex,
     $input_capture,
@@ -28,9 +28,9 @@ define role::analytics_cluster::refinery::job::json_refine_job (
     $weekday             = undef,
     $ensure              = 'present',
 ) {
-    require ::role::analytics_cluster::refinery
+    require ::profile::analytics::refinery
 
-    $refinery_path = $role::analytics_cluster::refinery::path
+    $refinery_path = $profile::analytics::refinery::path
 
     # If $refinery_job_jar not given, use the symlink at artifacts/refinery-job.jar
     $_refinery_job_jar = $refinery_job_jar ? {
@@ -39,7 +39,7 @@ define role::analytics_cluster::refinery::job::json_refine_job (
     }
 
     $job_name = "json_refine_${title}"
-    $log_file = "${role::analytics_cluster::refinery::log_dir}/${job_name}.log"
+    $log_file = "${profile::analytics::refinery::log_dir}/${job_name}.log"
 
     # Build whitelist or blacklist table option
     if $table_whitelist {

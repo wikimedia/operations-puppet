@@ -1,10 +1,10 @@
-# == Class role::analytics_cluster::refinery::job::data_check
+# == Class profile::analytics::refinery::job::data_check
 # Configures cron jobs that send email about the faultyness of webrequest data
 #
 # These checks walk HDFS through the plain file system.
 #
-class role::analytics_cluster::refinery::job::data_check {
-    require ::role::analytics_cluster::refinery
+class profile::analytics::refinery::job::data_check {
+    require ::profile::analytics::refinery
 
     # This should not be hardcoded.  Instead, one should be able to use
     # $::cdh::hadoop::mount::mount_point to reference the user supplied
@@ -19,7 +19,7 @@ class role::analytics_cluster::refinery::job::data_check {
     #   https://gerrit.wikimedia.org/r/#/c/186254
     # the cron runs as hdfs instead.
     cron { 'refinery data check hdfs_mount':
-        command     => "${::role::analytics_cluster::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet --percent-lost",
+        command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet --percent-lost",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
         hour        => 10,
@@ -27,7 +27,7 @@ class role::analytics_cluster::refinery::job::data_check {
     }
 
     cron { 'refinery data check pageviews':
-        command     => "${::role::analytics_cluster::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
+        command     => "${::profile::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs', # See comment in first cron above
         hour        => 10,
