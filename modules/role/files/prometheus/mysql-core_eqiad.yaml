@@ -100,7 +100,6 @@
     shard: s7
     role: slave
   targets:
-  - db1039:9104
   - db1069:9104
   - db1079:9104
   - db1086:9104
