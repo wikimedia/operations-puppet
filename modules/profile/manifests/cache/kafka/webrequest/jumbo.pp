@@ -19,8 +19,11 @@
 class profile::cache::kafka::webrequest::jumbo(
     $cache_cluster     = hiera('cache::cluster'),
     $statsd_host       = hiera('statsd'),
-    $ssl_key_password  = hiera('profile::cache::kafka::webrequest::jumbo::ssl_key_password', undef),
 ) {
+    # Include this class to get key and certificate for varnishkafka
+    # to produce to Kafka over SSL/TLS.
+    require ::profile::cache::kafka::certificate
+
     $config = kafka_config('jumbo-eqiad')
 
     # Array of kafka brokers in jumbo-eqiad with SSL port 9093
@@ -53,48 +56,6 @@ class profile::cache::kafka::webrequest::jumbo(
     # have mutiple DCs depooled in DNS and ~8 servers in the remaining DC to
     # split traffic, we could peak at ~9000
     $peak_rps_estimate = 9000
-
-    # TLS/SSL configuration
-    $ssl_ca_location = '/etc/ssl/certs/Puppet_Internal_CA.pem'
-    $ssl_location = '/etc/varnishkafka/ssl'
-    $ssl_location_private = '/etc/varnishkafka/ssl/private'
-
-    $ssl_key_location_secrets_path = 'certificates/varnishkafka/varnishkafka.key.private.pem'
-    $ssl_key_location = "${ssl_location_private}/varnishkafka.key.pem"
-
-    $ssl_certificate_secrets_path = 'certificates/varnishkafka/varnishkafka.crt.pem'
-    $ssl_certificate_location = "${ssl_location}/varnishkafka.crt.pem"
-    $ssl_cipher_suites = 'ECDHE-ECDSA-AES256-GCM-SHA384'
-
-    file { $ssl_location:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
-    file { $ssl_location_private:
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
-        require => File[$ssl_location],
-    }
-
-    file { $ssl_key_location:
-        content => secret($ssl_key_location_secrets_path),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        require => File[$ssl_location_private],
-    }
-
-    file { $ssl_certificate_location:
-        content => secret($ssl_certificate_secrets_path),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
 
     varnishkafka::instance { 'webrequest-jumbo-duplicate':
         # FIXME - top-scope var without namespace, will break in puppet 2.8
@@ -133,15 +94,11 @@ class profile::cache::kafka::webrequest::jumbo(
         force_protocol_version       => $kafka_protocol_version,
         #TLS/SSL config
         ssl_enabled                  => true,
-        ssl_ca_location              => $ssl_ca_location,
-        ssl_key_password             => $ssl_key_password,
-        ssl_key_location             => $ssl_key_location,
-        ssl_certificate_location     => $ssl_certificate_location,
-        ssl_cipher_suites            => $ssl_cipher_suites,
-        require                      => [
-            File[$ssl_key_location],
-            File[$ssl_certificate_location]
-        ],
+        ssl_ca_location              => $::profile::cache::kafka::certificate::ssl_ca_location,
+        ssl_key_password             => $::profile::cache::kafka::certificate::ssl_key_password,
+        ssl_key_location             => $::profile::cache::kafka::certificate::ssl_key_location,
+        ssl_certificate_location     => $::profile::cache::kafka::certificate::ssl_certificate_location,
+        ssl_cipher_suites            => $::profile::cache::kafka::certificate::ssl_cipher_suites,
     }
 
     $graphite_metric_prefix = "varnishkafka.${::hostname}.webrequest_jumbo_duplicate.${cache_cluster}"
