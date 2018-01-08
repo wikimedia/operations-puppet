@@ -1,4 +1,4 @@
-projects: [ 'tools', 'deployment-prep', 'extdist', 'analytics', 'integration', 'shinken', 'cvn', 'wdq-mm', 'wmt' ]
+projects: [ 'tools', 'deployment-prep', 'extdist', 'analytics', 'integration', 'shinken', 'cvn', 'wdq-mm' ]
 output_path: '/etc/shinken/generated'
 site: <%= scope.lookupvar("::site") %>
 keystone_host: <%= scope.call_function(:hiera, ['labs_keystone_host']) %>
