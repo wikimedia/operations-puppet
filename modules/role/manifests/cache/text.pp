@@ -14,6 +14,13 @@ class role::cache::text {
     # (called 'statsv') then consumes these and emits metrics.
     include ::profile::cache::kafka::statsv
 
+    # varnishkafka eventlogging listens for eventlogging beacon
+    # requests and logs them to the eventlogging-client-side
+    # topic.  EventLogging servers consume and process this
+    # topic into many JSON based kafka topics for further
+    # consumption.
+    include ::profile::cache::kafka::eventlogging
+
     # TODO: refactor all this so that we have separate roles for production and labs
     if $::realm == 'production' and $::hostname != 'cp1008' {
         include ::role::ipsec
