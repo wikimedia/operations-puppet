@@ -1,5 +1,5 @@
 define swift::init_device($partition_nr='1') {
-    if ($title !~ /^([hvs]d[a-z]+|md[0-9]+)$/) {
+    if ($title !~ /^([hvs]d[a-z]+|md[0-9]+|lv\-[a-z]+)$/) {
         fail("Invalid name ${title} for swift::init_device")
     }
 
