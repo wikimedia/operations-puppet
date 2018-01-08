@@ -4,14 +4,21 @@
 # and ensures that bacula backs up Hadoop NameNode fsimages,
 # in the case we need to recover if both Hadoop NameNodes.
 #
-class profile::hadoop::backup::namenode {
+class profile::hadoop::backup::namenode(
+    $monitoring_enabled = hiera('profile::hadoop::backup::namenode::monitoring_enabled', false),
+) {
     require ::profile::hadoop::common
+
+    $backup_dir_group = $::realm ? {
+        'production' => 'analytics-admins',
+        'labs'       => "project-${::labsproject}",
+    }
 
     if !defined(File['/srv/backup']) {
         file { '/srv/backup':
             ensure => 'directory',
             owner  => 'root',
-            group  => 'analytics-admins',
+            group  => $backup_dir_group,
             mode   => '0755',
         }
     }
@@ -23,7 +30,7 @@ class profile::hadoop::backup::namenode {
         ]:
         ensure  => 'directory',
         owner   => 'hdfs',
-        group   => 'analytics-admins',
+        group   => $backup_dir_group,
         mode    => '0750',
         require => File['/srv/backup']
     }
@@ -51,13 +58,15 @@ class profile::hadoop::backup::namenode {
         }
     }
 
-    # Alert if backup gets stale.
-    $warning_threshold_hours = 26
-    $critical_threshold_hours = 48
-    nrpe::monitor_service { 'hadoop-namenode-backup-age':
-        description   => 'Age of most recent Hadoop NameNode backup files',
-        nrpe_command  => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${destination} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
-        contact_group => 'analytics',
+    if $monitoring_enabled {
+        # Alert if backup gets stale.
+        $warning_threshold_hours = 26
+        $critical_threshold_hours = 48
+        nrpe::monitor_service { 'hadoop-namenode-backup-age':
+            description   => 'Age of most recent Hadoop NameNode backup files',
+            nrpe_command  => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${destination} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
+            contact_group => 'analytics',
+        }
     }
 
     # Bacula will also back up this directory.
