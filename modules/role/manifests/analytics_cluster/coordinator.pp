@@ -38,10 +38,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::oozie::server
     include ::profile::oozie::server::database
 
-    # Camus crons import data into
-    # from Kafka into HDFS.
-    include ::role::analytics_cluster::refinery::job::camus
-
     # Include a weekly cron job to run hdfs balancer.
     include ::role::analytics_cluster::hadoop::balancer
 
@@ -52,11 +48,16 @@ class role::analytics_cluster::coordinator {
     include ::role::analytics_cluster::hive::site_hdfs
 
     # Various crons that launch Hadoop jobs.
-    include ::role::analytics_cluster::refinery
-    include ::role::analytics_cluster::refinery::job::data_drop
-    include ::role::analytics_cluster::refinery::job::project_namespace_map
-    include ::role::analytics_cluster::refinery::job::sqoop_mediawiki
-    include ::role::analytics_cluster::refinery::job::json_refine
+    include ::profile::analytics::refinery
+
+    # Camus crons import data into
+    # from Kafka into HDFS.
+    include ::profile::analytics::refinery::job::camus
+
+    include ::profile::analytics::refinery::job::data_drop
+    include ::profile::analytics::refinery::job::project_namespace_map
+    include ::profile::analytics::refinery::job::sqoop_mediawiki
+    include ::profile::analytics::refinery::job::json_refine
 
     include standard
     include ::profile::base::firewall
