@@ -1,9 +1,9 @@
-# == Class role::analytics_cluster::refinery::job::camus
+# == Class profile::analytics::refinery::job::camus
 # Uses camus::job to set up cron jobs to
 # import data from Kafka into Hadoop.
 #
-class role::analytics_cluster::refinery::job::camus {
-    require ::role::analytics_cluster::refinery
+class profile::analytics::refinery::job::camus {
+    require ::profile::analytics::refinery
 
     $kafka_config = kafka_config('analytics')
 
@@ -13,10 +13,10 @@ class role::analytics_cluster::refinery::job::camus {
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
-        script        => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics_cluster::refinery::path}/python && ${role::analytics_cluster::refinery::path}/bin/camus",
+        script        => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
         kafka_brokers => suffix($kafka_config['brokers']['array'], ':9092'),
-        camus_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
-        check_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.35.jar",
+        camus_jar     => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
+        check_jar     => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.35.jar",
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
@@ -45,7 +45,7 @@ class role::analytics_cluster::refinery::job::camus {
         minute  => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
-        libjars => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
+        libjars => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
     }
 
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
