@@ -10,31 +10,28 @@
 # [*cache_cluster*]
 #   the name of the cache cluster
 #
-# [*statsd_host*]
-#   the host to send statsd data to.
+# [*statsd*]
+#   The host:port to send statsd data to.
 #
 # [*ssl_key_password*]
 #   the password to decrypt the TLS client certificate.
 #
 class profile::cache::kafka::webrequest::jumbo(
     $cache_cluster     = hiera('cache::cluster'),
-    $statsd_host       = hiera('statsd'),
+    $statsd            = hiera('statsd'),
 ) {
     # Include this class to get key and certificate for varnishkafka
     # to produce to Kafka over SSL/TLS.
     require ::profile::cache::kafka::certificate
 
-    $config = kafka_config('jumbo-eqiad')
+    $config = kafka_config('jumbo')
 
     # Array of kafka brokers in jumbo-eqiad with SSL port 9093
     $kafka_brokers = $config['brokers']['ssl_array']
 
     $topic = "webrequest_${cache_cluster}_test"
-    # These used to be parameters, but I don't really see why given we never change
-    # them
     $varnish_name           = 'frontend'
     $varnish_svc_name       = 'varnish-frontend'
-    $kafka_protocol_version = '0.9.0.1'
 
     # For any info about the following settings, please check
     # profile::cache::kafka::webrequest.
@@ -58,10 +55,7 @@ class profile::cache::kafka::webrequest::jumbo(
     $peak_rps_estimate = 9000
 
     varnishkafka::instance { 'webrequest-jumbo-duplicate':
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
         brokers                      => $kafka_brokers,
-        # lint:endignore
         topic                        => $topic,
         format_type                  => 'json',
         compression_codec            => 'snappy',
@@ -91,7 +85,6 @@ class profile::cache::kafka::webrequest::jumbo(
         # this often.  This is set at 15 so that
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
-        force_protocol_version       => $kafka_protocol_version,
         #TLS/SSL config
         ssl_enabled                  => true,
         ssl_ca_location              => $::profile::cache::kafka::certificate::ssl_ca_location,
@@ -107,11 +100,10 @@ class profile::cache::kafka::webrequest::jumbo(
     # and report metrics to statsd.
     varnishkafka::monitor::statsd { 'webrequest-jumbo-duplicate':
         graphite_metric_prefix => $graphite_metric_prefix,
-        statsd_host_port       => $statsd_host,
+        statsd_host_port       => $statsd,
     }
 
     # Make sure varnishes are configured and started for the first time
     # before the instances as well, or they fail to start initially...
     Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance['webrequest-jumbo-duplicate']
-
 }
