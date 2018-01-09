@@ -1,6 +1,8 @@
 # filtertags: labs-project-tools
 class role::toollabs::k8s::worker {
     include ::toollabs::infrastructure
+    include ::base::firewall
+    include ::toollabs::ferm_restart_handler
 
     $flannel_etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts'), ':2379'), 'https://'), ',')
 
@@ -71,6 +73,4 @@ class role::toollabs::k8s::worker {
     ferm::rule {'rest-of-everything':
         rule => 'saddr 10.0.0.0/8 proto tcp dport (1:8472 8473:10249 10251:10254 10256:65535) ACCEPT;'
     }
-
-    include profile::base::firewall
 }
