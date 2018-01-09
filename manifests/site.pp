@@ -1447,14 +1447,6 @@ node /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
-node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    role(spare::system)
-}
-
-node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^ms-fe2005\.codfw\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::stats_reporter
