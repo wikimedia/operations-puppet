@@ -26,10 +26,7 @@
         # Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
     </Location>
 
-
-    Alias /media/ /usr/lib/python2.7/dist-packages/django/contrib/admin/media/
-    ProxyPass /media/ !
-    Alias /static/ /srv/deployment/servermon/servermon/servermon/servermon/static/
+    Alias /static/ /srv/deployment/servermon/servermon/servermon/servermon/staticfiles/
     ProxyPass /static/ !
 
     ProxyPass / http://127.0.0.1:8090/
