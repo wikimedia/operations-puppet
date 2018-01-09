@@ -21,7 +21,6 @@ profile::restbase::eventlogging_service_uri: "http://eventbus.discovery.wmnet:80
 profile::restbase::cxserver_uri: "http://cxserver.discovery.wmnet:8080"
 profile::restbase::recommendation_uri: "http://recommendation-api.discovery.wmnet:9632"
 profile::restbase::cassandra_user: restb
-profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls:
   ca: /dev/null

@@ -7,9 +7,6 @@
 # [*cassandra_user*]
 #   Cassandra user name.
 #
-# [*cassandra_password*]
-#   Cassandra password.
-#
 # [*seeds*]
 #   Array of cassandra hosts (IP or host names) to contact.
 #
@@ -70,7 +67,6 @@
 
 class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
-    $cassandra_password = hiera('profile::restbase::cassandra_password'),
     $seeds_ng = hiera('profile::restbase::seeds_ng', []),
     $hosts = hiera('profile::restbase::hosts'),
     $cassandra_local_dc = hiera('profile::restbase::cassandra_local_dc'),
@@ -90,6 +86,8 @@ class profile::restbase(
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
 ) {
+    include ::passwords::cassandra
+
     # Default values that need no overriding
     $port = 7231
     $page_size = 250
@@ -114,7 +112,7 @@ class profile::restbase(
             cassandra_local_dc       => $cassandra_local_dc,
             cassandra_datacenters    => $cassandra_datacenters,
             cassandra_user           => $cassandra_user,
-            cassandra_password       => $cassandra_password,
+            cassandra_password       => $passwords::cassandra::restbase,
             cassandra_tls            => $cassandra_tls,
             parsoid_uri              => $parsoid_uri,
             graphoid_uri             => $graphoid_uri,
