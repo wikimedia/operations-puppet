@@ -14,13 +14,6 @@ class mediawiki::firejail {
         mode   => '0555',
     }
 
-    file { '/usr/local/bin/mediawiki-firejail-ffmpeg2theora':
-        source => 'puppet:///modules/mediawiki/mediawiki-firejail-ffmpeg2theora',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
     file { '/usr/local/bin/mediawiki-firejail-rsvg-convert':
         source => 'puppet:///modules/mediawiki/mediawiki-firejail-rsvg-convert',
         owner  => 'root',
