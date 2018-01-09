@@ -4,8 +4,3 @@ lowercaseOutputName: false
 whitelistObjectNames:
   - 'Hadoop:service=DataNode,name=DataNodeActivity*'
   - 'Hadoop:service=DataNode,name=FSDatasetState*'
-  - 'java.lang:type=ClassLoading'
-  - 'java.lang:type=Compilation'
-  - 'java.lang:type=GarbageCollector*'
-  - 'java.lang:type=Memory'
-  - 'java.lang:type=MemoryPool*'
