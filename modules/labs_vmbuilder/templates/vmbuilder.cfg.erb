@@ -11,7 +11,7 @@ tmp = /mnt/vmbuilder/temp
 destdir = /mnt/vmbuilder/images
 
 [ubuntu]
-suite = <%= lsbdistcodename %>
+suite = <%= @lsbdistcodename %>
 flavour = virtual
 mirror = http://mirrors.wikimedia.org/ubuntu/
 components = main,restricted,multiverse,universe
