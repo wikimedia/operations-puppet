@@ -4,6 +4,7 @@
 #
 class profile::hive::server(
     $monitoring_enabled  = hiera('profile::hive::server::monitoring_enabled', false),
+    $ferm_srange         = hiera('profile::hive::server::ferm_srange', '$DOMAIN_NETWORKS'),
     $statsd              = hiera('statsd')
 ) {
     include ::profile::hive::client
@@ -19,7 +20,7 @@ class profile::hive::server(
     ferm::service{ 'hive_server':
         proto  => 'tcp',
         port   => '10000',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => $ferm_srange,
     }
 
     # Include icinga alerts if production realm.

@@ -4,6 +4,7 @@
 #
 class profile::oozie::server(
     $monitoring_enabled = hiera('profile::oozie::server::monitoring_enabled', false),
+    $ferm_srange        = hiera('profile::oozie::server::ferm_srange', '$DOMAIN_NETWORKS'),
     $jvm_opts           = hiera('profile::oozie::server::jvm_opts', '-Xmx2048m'),
 ) {
     require ::profile::oozie::client
@@ -43,7 +44,7 @@ class profile::oozie::server(
     ferm::service{ 'oozie_server':
         proto  => 'tcp',
         port   => '11000',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => $ferm_srange,
     }
 
     # Include icinga alerts if production realm.

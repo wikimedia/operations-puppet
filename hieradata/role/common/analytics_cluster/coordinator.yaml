@@ -2,9 +2,12 @@
 profile::analytics::database::meta::backup::rsync_dest: 'analytics1002.eqiad.wmnet::backup/mysql/analytics-meta'
 
 profile::hive::server::monitoring_enabled: true
+profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::metastore::monitoring_enabled: true
+profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::analytics::database::meta::monitoring_enabled: true
 profile::oozie::server::monitoring_enabled: true
+profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 
 # Following Cloudera recommandations for ~20 users
 profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g'

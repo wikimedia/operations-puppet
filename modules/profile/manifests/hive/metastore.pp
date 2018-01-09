@@ -4,6 +4,7 @@
 #
 class profile::hive::metastore(
     $monitoring_enabled = hiera('profile::hive::metastore::monitoring_enabled', false),
+    $ferm_srange        = hiera('profile::hive::metastore::ferm_srange', '$DOMAIN_NETWORKS'),
     $statsd             = hiera('statsd'),
 ) {
 
@@ -20,7 +21,7 @@ class profile::hive::metastore(
     ferm::service{ 'hive_metastore':
         proto  => 'tcp',
         port   => '9083',
-        srange => '$ANALYTICS_NETWORKS',
+        srange => $ferm_srange,
     }
 
     # Include icinga alerts if production realm.
