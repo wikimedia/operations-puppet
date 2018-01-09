@@ -21,6 +21,7 @@ class snapshot::dumps::configs(
                 skipdblist    => "${dblistsdir}/skip.dblist",
                 keep          => '10',
                 chunksEnabled => '0',
+                adminmail     => 'ops-dumps@wikimedia.org',
             },
             big => {
                 dblist            => "${dblistsdir}/bigwikis.dblist",
@@ -149,6 +150,7 @@ class snapshot::dumps::configs(
                 skipdblist    => "${dblistsdir}/skip-labs.dblist",
                 keep          => '2',
                 chunksEnabled => '0',
+                adminmail     => 'nomail',
             },
             big => {
                 dblist            => "${dblistsdir}/bigwikis-labs.dblist",
