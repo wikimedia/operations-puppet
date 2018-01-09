@@ -1,7 +1,7 @@
 counter varnish_requests by status, method
 
 /\thttp_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\t/ {
-    /http_method (OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT|PURGE|PATCH)/ {
+    /http_method (OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT|PURGE|PATCH)\t/ {
       varnish_requests[$status][$method]++
     } else {
       varnish_requests[$status]["invalid"]++
