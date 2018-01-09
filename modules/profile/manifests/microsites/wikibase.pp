@@ -1,7 +1,7 @@
 # https://wikiba.se (T99531)
 class profile::microsites::wikibase(
-  $server_name = hiera('profile::microsites::wikibase::server_name'),
-  $server_admin = hiera('profile::microsites::wikibase::server_admin'),
+  $server_name = hiera('profile::microsites::wikibase::server_name', 'localhost'),
+  $server_admin = hiera('profile::microsites::wikibase::server_admin', 'nobody@example.org'),
 ) {
 
     httpd::site { 'wikiba.se':
