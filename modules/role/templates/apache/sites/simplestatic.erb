@@ -4,8 +4,8 @@
 
 <% @host_names.each do |host_name| -%>
     <VirtualHost *:80>
-        ServerName <%= host_name %>
-        DocumentRoot <%= base_path %>/<%= host_name %>
+        ServerName <%= @host_name %>
+        DocumentRoot <%= @base_path %>/<%= @host_name %>
 
         # Redirect HTTP to HTTPS
         # Assumes that X-Forwarded-Proto is being set by a layer in front of apache
@@ -18,7 +18,7 @@
         # Enable HSTS
         Header always set Strict-Transport-Security "max-age=31536000"
 
-        <Directory <%= base_path %>/<%= host_name %>>
+        <Directory <%= @base_path %>/<%= @host_name %>>
             Require all granted
         </Directory>
     </VirtualHost>
