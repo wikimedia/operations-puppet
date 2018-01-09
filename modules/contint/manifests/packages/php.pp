@@ -57,6 +57,7 @@ class contint::packages::php {
             'php7.0-tidy',
             'php-xdebug',
             'php7.0-phpdbg',  # php70-phpdbg -qrr ...
+            'php7.0-zip', # composer wants it, and we install it for jessie below
             # ..and these are part of php5-common,
             # but now are separate packages
             'php7.0-bcmath',
