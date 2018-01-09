@@ -10,6 +10,7 @@
 class profile::analytics::refinery::job::camus(
     $kafka_cluster_name = hiera('profile::analytics::refinery::job::camus::kafka_cluster_name', 'analytics')
 ) {
+    require ::profile::hadoop::common
     require ::profile::analytics::refinery
 
     $kafka_config = kafka_config($kafka_cluster_name)
@@ -20,10 +21,13 @@ class profile::analytics::refinery::job::camus(
     # for a particular camus::job instance by setting the parameter on
     # the camus::job declaration.
     Camus::Job {
-        script        => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
-        kafka_brokers => suffix($kafka_config['brokers']['array'], ':9092'),
-        camus_jar     => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
-        check_jar     => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.35.jar",
+        script             => "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python && ${profile::analytics::refinery::path}/bin/camus",
+        kafka_brokers      => suffix($kafka_config['brokers']['array'], ':9092'),
+        camus_jar          => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf7.jar",
+        check_jar          => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.35.jar",
+        template_variables => {
+            'hadoop_cluster_name' => $::profile::hadoop::common::cluster_name
+        }
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest

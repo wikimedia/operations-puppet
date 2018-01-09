@@ -13,12 +13,12 @@ mapreduce.job.queuename=essential
 fs.permissions.umask-mode=027
 
 # final top-level data output directory, sub-directory will be dynamically created for each topic pulled
-etl.destination.path=hdfs://analytics-hadoop/wmf/data/raw/webrequest
+etl.destination.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/data/raw/webrequest
 etl.destination.overwrite=true
 # HDFS location where you want to keep execution files, i.e. offsets, error logs, and count files
-etl.execution.base.path=hdfs://analytics-hadoop/wmf/camus/webrequest
+etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/webrequest
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
-etl.execution.history.path=hdfs://analytics-hadoop/wmf/camus/webrequest/history
+etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/webrequest/history
 
 # Our timestamps look like 2013-09-20T15:40:17
 camus.message.timestamp.format=yyyy-MM-dd'T'HH:mm:ss
