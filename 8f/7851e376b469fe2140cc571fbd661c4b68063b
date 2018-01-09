@@ -1,0 +1,8 @@
+Code-Review+2: Cmjohnson <cmjohnson@wikimedia.org>
+Verified+2: Cmjohnson <cmjohnson@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Cmjohnson <cmjohnson@wikimedia.org>
+Submitted-at: Tue, 09 Jan 2018 16:54:59 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/403197
+Project: operations/puppet
+Branch: refs/heads/production
