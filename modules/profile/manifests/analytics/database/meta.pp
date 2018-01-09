@@ -5,6 +5,7 @@
 #
 class profile::analytics::database::meta(
     $monitoring_enabled = hiera('profile::analytics::database::meta::monitoring_enabled', false),
+    $ferm_srange        = hiera('profile::analytics::database::meta::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
     # Some CDH database init scripts need Java to run.
     require ::profile::java::analytics
@@ -51,7 +52,7 @@ class profile::analytics::database::meta(
     ferm::service{ 'analytics-mysql-meta':
         proto  => 'tcp',
         port   => '3306',
-        srange => '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))',
+        srange => $ferm_srange,
     }
 
     # Include icinga alerts if production realm.
