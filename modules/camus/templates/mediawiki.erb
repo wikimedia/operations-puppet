@@ -8,12 +8,12 @@
 mapreduce.job.queuename=essential
 
 # final top-level data output directory, sub-directory will be dynamically created for each topic pulled
-etl.destination.path=hdfs://analytics-hadoop/wmf/data/raw/mediawiki
+etl.destination.path=hdfs://<%= @hadoop_cluster_name %>/wmf/data/raw/mediawiki
 etl.destination.overwrite=true
 # HDFS location where you want to keep execution files, i.e. offsets, error logs, and count files
-etl.execution.base.path=hdfs://analytics-hadoop/wmf/camus/mediawiki
+etl.execution.base.path=hdfs://<%= @hadoop_cluster_name %>/wmf/camus/mediawiki
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
-etl.execution.history.path=hdfs://analytics-hadoop/wmf/camus/mediawiki/history
+etl.execution.history.path=hdfs://<%= @hadoop_cluster_name %>/wmf/camus/mediawiki/history
 
 # Concrete implementation of the Decoder class to use.
 camus.message.decoder.class=org.wikimedia.analytics.refinery.camus.coders.AvroBinaryMessageDecoder
