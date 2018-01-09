@@ -36,9 +36,9 @@ class proxysql (
         content => template('proxysql/proxysql.cnf.erb'),
     }
 
-    # mostly sqlite intenal config cache, let's make sure it has
+    # mostly sqlite internal config cache, let's make sure it has
     # the right owner
-    file {'/var/run/proxysql':
+    file {'/var/lib/proxysql':
         ensure => directory,
         owner  => 'proxysql',
         group  => 'proxysql',
