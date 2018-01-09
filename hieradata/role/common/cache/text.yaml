@@ -100,6 +100,9 @@ profile::cache::base::be_runtime_params:
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
 
+# Enable varnishkafka-webrequest instance monitoring.
+profile::cache::kafka::webrequest::monitoring_enabled: true
+
 # This should match an entry in the kafka_clusters hash (defined in common.yaml).
 # We use the fully qualified kafka cluster name (with datacenter), because we want
 # to route all statsv -> statsd traffic to the datacenter that hosts the master
