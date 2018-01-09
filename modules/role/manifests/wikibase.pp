@@ -2,6 +2,7 @@
 class role::wikibase {
 
     include ::standard
+    include ::profile::microsites::httpd
     include ::profile::microsites::wikibase
 
     system::role { 'wikibase':
