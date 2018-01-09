@@ -2,11 +2,6 @@
 require 'spec_helper'
 
 describe 'pick_initscript' do
-  before :each do
-    @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
-    @scope = Puppet::Parser::Scope.new(@compiler)
-  end
-
   it 'Returns false if no init script provided' do
     should run.with_params('apache2', 'systemd', false, false, false, false, true).and_return(false)
   end

@@ -37,7 +37,7 @@ describe 'base::expose_puppet_certs', :type => :define do
   describe 'all files are removed when ensure => absent' do
     let(:params) { { :ensure => 'absent' } }
 
-    it { should contain_file('/my/ssl/dir/ssl/').with({ 'ensure' => 'absent' }) }
+    it { should contain_file('/my/ssl/dir/ssl').with({ 'ensure' => 'absent' }) }
     it { should contain_file('/my/ssl/dir/ssl/cert.pem').with({ 'ensure' => 'absent' }) }
     it { should contain_file('/my/ssl/dir/ssl/server.key').with({ 'ensure' => 'absent' }) }
   end
