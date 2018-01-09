@@ -3,7 +3,7 @@
 NUMTHREADS=${NUMTHREADS:-16}
 BACKUPDIR=${BACKUPDIR:-"/srv/backups"}
 # FIXME: All shards, including misc
-SHARDS=${SHARDS:-"s2 s3 s5 s6 s7 x1"}
+SHARDS=${SHARDS:-"s2 s3 s5 s6 s7 s8 x1"}
 SERVER=${SERVER:-"localhost"}
 ROWSMAX=${ROWSMAX:-20000000}
 
