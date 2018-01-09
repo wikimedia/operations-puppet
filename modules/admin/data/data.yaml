@@ -194,7 +194,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen, imarlier]
+              fdans, shiladsen]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
@@ -234,7 +234,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak, imarlier,
+    members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko,
               nuria, otto, deskana, arnad, jgonsior, jgreen,
               bsitzmann, dbrant, nettrom, leila, cwdent,
@@ -460,7 +460,7 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, gilles, phedenskog, imarlier]
+    members: [krinkle, gilles, phedenskog]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
