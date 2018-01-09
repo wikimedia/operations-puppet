@@ -586,6 +586,10 @@ profile::cassandra::settings:
 #
 # General
 #
+role::lvs::realserver::pools:
+  restbase: {}
+service::configuration::log_dir: "/var/log"
+
 admin::groups:
   - restbase-roots
   - restbase-admins
