@@ -157,6 +157,8 @@ class profile::hadoop::common (
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
 
+    notify { "HADOOP COMMON CLUSTER NAME IS: ${cluster_name}": }
+
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
     # and are made available by profile::cdh::apt.
