@@ -1,0 +1,7 @@
+Code-Review+2: Tim Starling <tstarling@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Tim Starling <tstarling@wikimedia.org>
+Submitted-at: Tue, 09 Jan 2018 04:33:45 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/397912
+Project: operations/puppet
+Branch: refs/heads/production
