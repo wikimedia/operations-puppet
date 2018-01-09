@@ -5741,6 +5741,16 @@ host notebook1001 {
     fixed-address notebook1001.eqiad.wmnet;
 }
 
+host notebook1003 {
+    hardware ethernet D0:94:66:1B:49:A;
+    fixed-address notebook1003.eqiad.wmnet;
+}
+
+host notebook1004 {
+    hardware ethernet D0:94:66:1B:33:67;
+    fixed-address notebook1004.eqiad.wmnet;
+}
+
 host ocg1001{
     hardware ethernet F0:1F:AF:E8:AE:EA;
     fixed-address ocg1001.eqiad.wmnet;
