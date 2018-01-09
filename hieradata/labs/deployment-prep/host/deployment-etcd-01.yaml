@@ -1,0 +1,10 @@
+profile::etcd::discovery: "deployment-etcd-01=http://deployment-etcd-01.deployment-prep.eqiad.wmflabs:2380"
+profile::etcd::use_client_certs: false
+profile::etcd::cluster_bootstrap: true
+profile::etcd::use_proxy: true
+profile::etcd::do_backup: false
+profile::etcd::allow_from: "$DOMAIN_NETWORKS"
+profile::etcd::tlsproxy::cert_name: "etcd.%{::domain}"
+profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"],}
+profile::etcd::tlsproxy::salt: "A9BwLWh0"
+sslcert::certificate::chain: false
