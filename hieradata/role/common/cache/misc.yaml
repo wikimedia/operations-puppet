@@ -305,3 +305,6 @@ profile::cache::base::be_runtime_params:
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
 profile::cache::ssl::unified::letsencrypt: false
+
+# Enable varnishkafka-webrequest instance monitoring.
+profile::cache::kafka::webrequest::monitoring_enabled: true
