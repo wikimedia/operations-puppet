@@ -23,7 +23,7 @@ webroot=http://download.wikimedia.org
 fileperms=0644
 
 [reporting]
-adminmail=ops-dumps@wikimedia.org
+adminmail=<%= @config[@configtype]['global']['adminmail'] %>
 mailfrom=root@wikimedia.org
 smtpserver=<%= @mail_smarthost[0] %>
 # 15 minutes is long enough to decide a lock is expired, right?
