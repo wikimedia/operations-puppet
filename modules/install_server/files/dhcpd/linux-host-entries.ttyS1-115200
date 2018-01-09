@@ -3978,34 +3978,6 @@ host ms-be2039 {
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host ms-be3001 {
-    hardware ethernet 24:B6:FD:F6:13:AC;
-    fixed-address ms-be3001.esams.wmnet;
-}
-
-host ms-be3002 {
-    hardware ethernet 24:B6:FD:F6:17:3C;
-    fixed-address ms-be3002.esams.wmnet;
-}
-
-host ms-be3003 {
-    hardware ethernet 24:B6:FD:F6:17:38;
-    fixed-address ms-be3003.esams.wmnet;
-}
-
-host ms-be3004 {
-    hardware ethernet 24:B6:FD:F6:1C:3C;
-    fixed-address ms-be3004.esams.wmnet;
-}
-
-# ms-be3004's primary NIC is broken and can't PXE(?). The secondary NIC works
-# for PXE, and the primary NIC works otherwise, so add an entry here as to
-# allow for this strange mode of booting the installer.
-host ms-be3004-B {
-    hardware ethernet 24:B6:FD:F6:1C:3D;
-    fixed-address ms-be3004.esams.wmnet;
-}
-
 host ms-fe1005 {
     hardware ethernet F4:E9:D4:AE:F4:E0;
     fixed-address ms-fe1005.eqiad.wmnet;
@@ -4060,16 +4032,6 @@ host ms-fe2008 {
     fixed-address ms-fe2008.codfw.wmnet;
     option pxelinux.pathprefix "stretch-installer/";
     filename "stretch-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host ms-fe3001 {
-    hardware ethernet 24:B6:FD:F5:B2:84;
-    fixed-address ms-fe3001.esams.wmnet;
-}
-
-host ms-fe3002 {
-    hardware ethernet 24:B6:FD:F5:B3:E4;
-    fixed-address ms-fe3002.esams.wmnet;
 }
 
 host multatuli {
