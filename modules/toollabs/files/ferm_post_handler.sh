@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 /usr/bin/logger -i -t ${0} "restart firewall components post ferm management"
 
