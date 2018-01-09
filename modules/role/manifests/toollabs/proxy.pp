@@ -3,7 +3,7 @@ class role::toollabs::proxy {
     include ::toollabs::proxy
     include ::role::toollabs::k8s::webproxy
     include ::base::firewall
-    include ::toollabs::ferm_restart_handler
+    include ::toollabs::ferm_handlers
 
     ferm::service { 'proxymanager':
         proto  => 'tcp',
