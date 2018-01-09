@@ -2667,6 +2667,15 @@ users:
     email: vinithacse@gmail.com
     expiry_date: 2018-03-31
     expiry_contact: nuria@wikimedia.org
+  cy534:
+    ensure: present
+    gid: 500
+    name: cy534
+    realname:  Christian Covington
+    ssh_keys:
+    - AAAAB3NzaC1yc2EAAAADAQABAAACAQDBxzztOka1AJvg4W3N4OnYbvr4nz+iDg3mgWlG8f0jbIc1tY9Ned8yfxd8mK+/K/TGMRBGxIwanODE+tvvKHOsULtYrlElIbd25eZY1PAAhWalrhbVZefPHgW3OLuA60FKcZeggJAiOYs9Q4jV0m8ZngIgVPSkrbF/Kr9Jg+HSERDaFmZL/CDy4f9QHsPBU+E6R0C5A06wnCmPwPE3aUhhBwahwxqgkftBywepszho3GTuDYRtS1XuCBobVpmCqkArchY9938AfBb4gI6sf+0ooaxt5e3O9QU1iLphGoRxEfe+u33Crqcf7HXfGnE750q4auNA4UpPJseOLhW7o43zKwJKrR/kb4s5qx91nq0P1HOChHEFrbzPQlAfnGrz3Cw8SLD38+eUryHpVwIw2WNr43a584Qye+CVzWCylcSjEzLsN+PCG4hlukAcWok+W8gQjfTgUCCpMuWG42Wb5GwAGlTtiy8iqLqYSLauWDP5DMm6bYUKFOgzHYseUYZ4CbvCol6SSuy61qt7BHveIvK4G60OkqdJ7LVB62scm714/VkrHJzX0pu3k7C0/89evHKZ1CuN3KNIQn7fMdVpY41kn7wNxHC/VYO2f2v8cmFxv0Ewr31ILPU2zUJz0+Pj0Bpd92ePtre6FJP76IOBHyGjchGFTn+2qwStMuIQ0uFKHw== christian@christian-XPS-15-9550
+    uid: 18627
+    email: christian.t.covington@gmail.com
 
 ldap_only_users:
   abartov:
