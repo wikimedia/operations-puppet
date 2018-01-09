@@ -1485,11 +1485,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-# mw1180-1200 are spares
-node /^mw1(1[8-9][0-9]|200)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # mw1201-1208 are api apaches
 node /^mw120[1-8]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
