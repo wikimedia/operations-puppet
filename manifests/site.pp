@@ -1721,13 +1721,13 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
-    role(network::monitor, librenms, rancid, smokeping, netbox)
-    interface::add_ip6_mapped { 'main': }
+    role(netmon)
 }
 
 # jessie VM for servermon until it supports stretch (T170653)
 node 'netmon1003.wikimedia.org' {
-    role(network::monitor, servermon)
+    role(servermon)
+    include ::role::network::monitor
     interface::add_ip6_mapped { 'main': }
 }
 
