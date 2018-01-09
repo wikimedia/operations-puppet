@@ -910,7 +910,6 @@ commonswiki	1H	IN	CNAME	s4.analytics.db.svc.eqiad.wmflabs.
 
 s5	1H	IN	CNAME	s5.analytics.db.svc.eqiad.wmflabs.
 dewiki	1H	IN	CNAME	s5.analytics.db.svc.eqiad.wmflabs.
-wikidatawiki	1H	IN	CNAME	s5.analytics.db.svc.eqiad.wmflabs.
 
 s6	1H	IN	CNAME	s6.analytics.db.svc.eqiad.wmflabs.
 frwiki	1H	IN	CNAME	s6.analytics.db.svc.eqiad.wmflabs.
@@ -932,3 +931,6 @@ ukwiki	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
 viwiki	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
 centralauth	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
 meta	1H	IN	CNAME	s7.analytics.db.svc.eqiad.wmflabs.
+
+s8	1H	IN	CNAME	s8.analytics.db.svc.eqiad.wmflabs.
+wikidatawiki	1H	IN	CNAME	s8.analytics.db.svc.eqiad.wmflabs.
