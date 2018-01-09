@@ -1,0 +1,7 @@
+Code-Review+2: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-at: Tue, 09 Jan 2018 11:49:10 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/359453
+Project: operations/puppet
+Branch: refs/heads/production
