@@ -42,7 +42,7 @@ class role::mariadb::dbstore(
     }
 
     mariadb::monitor_replication {
-        ['s1','s2','s3','s4','s5','s6','s7','m2','m3','x1']:
+        ['s1','s2','s3','s4','s5','s6','s7','s8','m2','m3','x1']:
         is_critical   => false,
         contact_group => 'admins', # only show on nagios/irc
         lag_warn      => $lag_warn,
