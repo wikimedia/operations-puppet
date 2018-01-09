@@ -90,6 +90,8 @@ class profile::restbase(
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
 ) {
+    include ::passwords::cassandra
+
     # Default values that need no overriding
     $port = 7231
     $page_size = 250
