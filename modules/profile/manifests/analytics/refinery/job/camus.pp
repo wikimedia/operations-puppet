@@ -14,6 +14,9 @@ class profile::analytics::refinery::job::camus(
 
     $kafka_config = kafka_config($kafka_cluster_name)
 
+    # Used when configuring hdfs paths in camus templates.
+    $hadoop_cluster_name = $::profile::hadoop::common::cluster_name
+
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
     # If you build a new camus or refinery, and you want to use it, you'll
     # need to change these.  You can also override these defaults

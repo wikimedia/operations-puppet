@@ -10,17 +10,17 @@ mapreduce.job.queuename=default
 
 # final top-level data output directory, sub-directory will be dynamically
 # created for each topic pulled
-etl.destination.path=hdfs://analytics-hadoop/wmf/data/raw/event
+etl.destination.path=hdfs://<%= @hadoop_cluster_name %>/wmf/data/raw/event
 
 # Allow overwrites of previously imported files in etl.destination.path
 etl.destination.overwrite=true
 
 # HDFS location where you want to keep execution files, i.e. offsets,
 # error logs, and count files
-etl.execution.base.path=hdfs://analytics-hadoop/wmf/camus/eventbus
+etl.execution.base.path=hdfs://<%= @hadoop_cluster_name %>/wmf/camus/eventbus
 
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
-etl.execution.history.path=hdfs://analytics-hadoop/wmf/camus/eventbus/history
+etl.execution.history.path=hdfs://<%= @hadoop_cluster_name %>/wmf/camus/eventbus/history
 
 # Our
 # Our timestamps look like 2013-09-20T15:40:17+00:00
