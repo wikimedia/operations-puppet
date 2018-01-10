@@ -3,14 +3,9 @@
 ####  as template('base/resolv.conf.erb')
 #####################################################################
 # Resolver configuration for site <%= @site %>
+<%- ip = scope.lookupvar('::ipaddress') -%>
 search <%= Array(@domain_search).join(' ') %>
 options timeout:1 attempts:3
-<% if @nameservers_override.nil? -%>
-<% @nameservers.each do |nameserver| -%>
+<% @nameservers.select{|ns| ns != ip }.each do |nameserver| -%>
 nameserver <%= nameserver %>
-<% end -%>
-<% else -%>
-<% @nameservers_override.each do |nameserver| -%>
-nameserver <%= nameserver %>
-<% end -%>
 <% end -%>
