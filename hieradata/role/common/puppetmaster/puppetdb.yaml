@@ -1,0 +1,12 @@
+profile::puppetdb::database::users:
+  replication@nihal-v4:
+    user: replication
+    database: all
+    cidr: 10.192.16.184/32
+    attrs: REPLICATION
+  puppetdb@nihal-v4:
+    user: puppetdb
+    database: puppetdb
+    cidr: 10.192.16.184/32
+profile::puppetdb::master: nitrogen.eqiad.wmnet
+profile::puppetdb::slaves: [nihal.codfw.wmnet]
