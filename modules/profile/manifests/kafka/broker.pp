@@ -39,6 +39,9 @@
 #
 # See https://wikitech.wikimedia.org/wiki/Cergen for more details.
 #
+# Note that this class configures java.security to set jdk.certpath.disabledAlgorithms
+# to restrict the types of sigalgs used for authentication certificates.
+#
 # == Parameters
 #
 # [*kafka_cluster_name*]
@@ -132,6 +135,12 @@ class profile::kafka::broker(
     $brokers_string = $config['brokers']['string']
 
     require_package('openjdk-8-jdk')
+
+    # Use a custom java.security on this host, so that we can restrict the allowed
+    # certiifcate sigalgs.  See: https://phabricator.wikimedia.org/T182993
+    file { '/etc/java-8-openjdk/security/java.security':
+        source => 'puppet:///modules/profile/kafka/java.security',
+    }
 
     # WMF's librdkafka is overriding that in Debian stretch. Require the Stretch version.
     # https://packages.debian.org/stretch/librdkafka1
@@ -296,6 +305,7 @@ class profile::kafka::broker(
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
         super_users                      => $super_users,
+        require                          => File['/etc/java-8-openjdk/security/java.security'],
     }
 
     # If both auth ACLs AND plaintext is enabled, we need to allow some basic ANONYMOUS
