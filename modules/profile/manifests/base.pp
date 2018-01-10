@@ -6,6 +6,7 @@ class profile::base(
     $use_apt_proxy = hiera('profile::base::use_apt_proxy', true),
     $purge_apt_sources = hiera('profile::base::purge_apt_sources', false),
     $domain_search = hiera('profile::base::domain_search', $::domain),
+    $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
     $remote_syslog = hiera('profile::base::remote_syslog', ['syslog.eqiad.wmnet', 'syslog.codfw.wmnet']),
     $remote_syslog_tls = hiera('profile::base::remote_syslog_tls', []),
     $notifications_enabled = hiera('profile::base::notifications_enabled', '1'),
@@ -54,6 +55,7 @@ class profile::base(
 
     class { '::base::resolving':
         domain_search => $domain_search,
+        nameservers   => $nameservers,
     }
 
     class { '::rsyslog': }

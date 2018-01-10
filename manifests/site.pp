@@ -12,17 +12,11 @@ if !defined('$cluster') {
 node 'acamar.wikimedia.org' {
     role(recursor)
 
-    # use achernar (directly) + eqiad LVS (avoid self-dep)
-    $nameservers_override = [ '208.80.153.42', '208.80.154.254' ]
-
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'achernar.wikimedia.org' {
     role(recursor)
-
-    # use acamar (directly) + eqiad LVS (avoid self-dep)
-    $nameservers_override = [ '208.80.153.12', '208.80.154.254' ]
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -142,9 +136,6 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(recursor)
-
-    # use hydrogen (directly) + codfw LVS (avoid self-dep)
-    $nameservers_override = [ '208.80.154.50', '208.80.153.254' ]
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -702,6 +693,7 @@ node 'eeden.wikimedia.org' {
     role(authdns::server)
 
     # use eqiad LVS + codfw LVS (avoid self-dep)
+    # TODO: this was probably wrong, and surely has no effect on the catalog. Remove?
     $nameservers_override = [ '208.80.154.254', '208.80.153.254' ]
 
     interface::add_ip6_mapped { 'main': }
@@ -894,10 +886,6 @@ node 'heze.codfw.wmnet' {
 # DNS recursor
 node 'hydrogen.wikimedia.org' {
     role(recursor)
-
-    # use chromium (directly) + codfw LVS (avoid self-dep)
-    $nameservers_override = [ '208.80.154.157', '208.80.153.254' ]
-
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1276,12 +1264,6 @@ node /^logstash100[8-9]\.eqiad\.wmnet$/ {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
-
-    # lvs100[25] are LVS balancers for the eqiad recursive DNS IP,
-    #   so they need to use the recursive DNS backends directly
-    #   (chromium and hydrogen) with fallback to codfw
-    # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
     role(lvs::balancer)
 
     lvs::interface_tweaks {
@@ -1293,13 +1275,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 }
 
 node /^lvs10(0[789]|10)\.eqiad\.wmnet$/ {
-
-    # lvs1008,10 are LVS balancers for the eqiad recursive DNS IP,
-    #   so they need to use the recursive DNS backends directly
-    #   (chromium and hydrogen) with fallback to codfw
-    # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
-
     role(lvs::balancer)
 
     lvs::interface_tweaks {
@@ -1316,11 +1291,6 @@ node /^lvs101[12]\.eqiad\.wmnet$/ {
 
 # codfw lvs
 node /lvs200[1-6]\.codfw\.wmnet/ {
-    # lvs200[25] are LVS balancers for the codfw recursive DNS IP,
-    #   so they need to use the recursive DNS backends directly
-    #   (acamar and achernar) with fallback to eqiad
-    # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
     role(lvs::balancer)
     lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000;
@@ -1332,12 +1302,6 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
 
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
-    # lvs300[24] are LVS balancers for the esams recursive DNS IP,
-    #   so they need to use the recursive DNS backends directly
-    #   (nescio and maerlant) with fallback to eqiad
-    # (doing this for all lvs for now, see T103921)
-    $nameservers_override = [ '91.198.174.106', '91.198.174.122', '208.80.154.254' ]
-
     role(lvs::balancer)
     lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 20000;
@@ -1350,9 +1314,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[567]\.ulsfo\.wmnet$/ {
-    # ns override for all lvs for now, see T103921
-    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.254' ]
-
     role(lvs::balancer)
     lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000;

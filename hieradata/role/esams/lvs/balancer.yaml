@@ -1,3 +1,11 @@
 profile::pybal::config_host: conf1003.eqiad.wmnet
 profile::lvs::tagged_subnets:
   - public1-esams
+# lvs300[24] are LVS balancers for the esams recursive DNS IP,
+#   so they need to use the recursive DNS backends directly
+#   (nescio and maerlant) with fallback to eqiad
+# (doing this for all lvs for now, see T103921)
+profile::base::nameservers:
+  - '91.198.174.106' # nescio
+  - '91.198.174.122' # maerlant
+  - '208.80.154.254' # eqiad lvs
