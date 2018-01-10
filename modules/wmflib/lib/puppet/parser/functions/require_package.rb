@@ -26,7 +26,6 @@ module Puppet::Parser::Functions
       class_name = 'packages::' + package_name.tr('-+', '_')
 
       # Create host class
-
       host = compiler.topscope.find_hostclass(class_name)
       unless host
         host = Puppet::Resource::Type.new(:hostclass, class_name)
@@ -34,19 +33,26 @@ module Puppet::Parser::Functions
       end
 
       # Create class scope
-
       cls = Puppet::Parser::Resource.new(
           'class', class_name, :scope => compiler.topscope)
-      catalog.add_resource(cls) rescue nil
-      host.evaluate_code(cls) rescue nil
+      begin
+        catalog.add_resource(cls)
+      rescue
+        nil
+      end
+      begin
+        host.evaluate_code(cls)
+      rescue
+        nil
+      end
 
       # Create package resource
-
       begin
         host_scope = compiler.topscope.class_scope(host)
         host_scope.call_function(:create_resources,
                                  ['package', { package_name => { :ensure => 'present' } }])
       rescue Puppet::Resource::Catalog::DuplicateResourceError
+        nil
       end
 
       # Declare dependency
