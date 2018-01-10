@@ -1,9 +1,10 @@
 class base::resolving (
     $domain_search = $::domain,
     $labs_additional_domains = [],
+    $nameservers = $::nameservers,
 ){
-    if ! $::nameservers {
-        fail('Variable $::nameservers is not defined!')
+    if ! $nameservers {
+        fail('Variable $nameservers is not defined!')
     }
 
     if $::realm == 'labs' {

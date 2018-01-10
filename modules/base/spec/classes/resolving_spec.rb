@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'base::resolving' do
-    it 'requires $::nameservers' do
+    it 'requires $nameservers' do
         should compile.and_raise_error(
-            /Variable \$::nameservers is not defined!/)
+            /Variable \$nameservers is not defined!/)
     end
-    context "when nameservers are defined" do
+    context "when \$::nameservers are defined" do
       let(:facts) { {'domain' => 'example.com'} }
       let(:node_params){ {'nameservers' => ['1.2.3.4'], 'realm' => 'production'}}
       it { is_expected.to compile.with_all_deps }
@@ -19,7 +19,7 @@ describe 'base::resolving' do
         expect(content).to match(/search example.com\noptions timeout:1 attempts:3\nnameserver 1.2.3.4\n/)
       end
       context "when nameservers are overridden" do
-        let(:node_params){ super().merge({'nameservers_override' => ['2.2.2.2'] })}
+        let(:params) { {'nameservers' => ['2.2.2.2']}}
         it "nameserver is changed in resolv.conf" do
           content = catalogue.resource('file', '/etc/resolv.conf').send(:parameters)[:content]
 
