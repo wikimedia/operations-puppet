@@ -8,10 +8,14 @@
 # [*port*]
 #   Port to run the Parsoid service on. Default: 8000
 #
-# [*settings_file*]
-#   Location of the old-format Parsoid configuration and settings file. Note
-#   that Parsoid still draws part of its configuration from there when it is
-#   specified. Default: 'conf/wmf/localsettings.js'
+# [*conf*]
+#   Hash or YAML-formatted string that gets merged into the service's
+#   configuration.  Only applicable for non-scap3 deployments.
+#
+# [*no_workers*]
+#   Number of http workers to start.  Default: 'ncpu' (i.e. start as many
+#   workers as there are CPUs)  The same meaning as in service::node
+#   Only applicable for non-scap3 deployments.
 #
 # [*logging_name*]
 #   The logging name to send to logstash. Default: 'parsoid'
@@ -33,12 +37,14 @@
 #   'http://api.svc.eqiad.wmnet'
 #
 # [*discovery*]
-# If defined, will use that discovery key to discover if the current datacenter is active
-# for the MediaWiki API, and use HTTP or HTTPS to connect the host ${discovery}.discovery.wmnet
+#   If defined, will use that discovery key to discover if the current
+#   datacenter is active for the MediaWiki API, and use HTTP or HTTPS to
+#   connect the host ${discovery}.discovery.wmnet
 #
 class parsoid(
     $port          = 8000,
-    $settings_file = 'conf/wmf/localsettings.js',
+    $conf          = undef,
+    $no_workers    = 'ncpu',
     $logging_name  = 'parsoid',
     $statsd_prefix = 'parsoid',
     $deployment    = 'scap3',
@@ -92,6 +98,8 @@ class parsoid(
     } else {
         service::node::config { 'parsoid':
             port           => $port,
+            config         => $conf,
+            no_workers     => $no_workers,
             starter_module => 'src/lib/index.js',
             entrypoint     => 'apiServiceWorker',
             logging_name   => $logging_name,
@@ -99,9 +107,6 @@ class parsoid(
             heartbeat_to   => 180000,
             statsd_prefix  => $statsd_prefix,
             auto_refresh   => false,
-            config         => {
-                localsettings => $settings_file,
-            },
         }
     }
 }
