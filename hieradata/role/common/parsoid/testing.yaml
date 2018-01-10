@@ -1,1 +1,2 @@
 parsoid::testing::parsoid_port: 8142
+parsoid::testing::default_api_proxy_uri: 'http://api-rw.discovery.wmnet'

@@ -1,0 +1,23 @@
+# Note that this is only the parsoid service config, not all of service-runner
+# as is normally found in Parsoid's config.yaml
+
+devAPI: true
+loadWMF: true
+rtTestMode: true
+
+useBatchAPI: true
+useSelser: true
+useWorker: true
+
+defaultAPIProxyURI: <%= @default_api_proxy_uri %>
+
+linting: true;
+linter:
+  apiSampling: 1000
+  sendAPI: false
+
+rtTestMode: true
+
+loggerSampling:
+  - - 'warn/dsr/inconsistent'
+    - 5
