@@ -3,6 +3,7 @@ class profile::tcpircbot(
 ){
 
     include passwords::logmsgbot
+    include ::tcpircbot
 
     tcpircbot::instance { 'logmsgbot':
         ensure   => $ensure,

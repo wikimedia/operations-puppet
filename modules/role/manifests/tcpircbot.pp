@@ -4,9 +4,5 @@ class role::tcpircbot {
         description => 'tcpircbot server',
     }
 
-    include ::tcpircbot
-
-    class { '::profile::tcpircbot':
-        ensure => 'present',
-    }
+    include ::profile::tcpircbot
 }
