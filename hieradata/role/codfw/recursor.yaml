@@ -1,3 +1,8 @@
 profile::bird::neighbors_list:
   - 208.80.153.192 # cr1-codfw loopback
   - 208.80.153.193 # cr2-codfw loopback
+profile::base::nameservers:
+#  - '208.80.153.12' # acamar
+#  - '208.80.153.42' # achenar
+  - '208.80.153.254' # codfw lvs
+  - '208.80.154.254' # eqiad lvs
