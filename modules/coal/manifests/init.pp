@@ -1,6 +1,16 @@
 # == Class: coal
 #
-# Store a basic set of Navigation Timing metrics in Whisper files.
+# Captures NavigationTiming events from Kafka and writes
+# a subset of metric directly to Whisper files.
+#
+# This complements webperf::navtiming, which uses StatsD and writes
+# to Graphite's default backend via carbon.  StatsD produces derived metrics,
+# like 'p99' and 'sample_rate'. Graphite aggregates Carbon's Whisper files
+# at varying resolutions as data gets older.
+#
+# Coal, on the other hand, simply retains data for 1 year at a constant
+# resolution of 1-minute.
+#
 # See https://meta.wikimedia.org/wiki/Schema:NavigationTiming &
 # http://www.mediawiki.org/wiki/Extension:NavigationTiming
 #
@@ -10,11 +20,14 @@
 #   URI of EventLogging event publisher to subscribe to.
 #   For example, 'tcp://eventlogging.eqiad.wmnet:8600'.
 #
+# [*kafka_brokers*]
+#   String of comma separated Kafka bootstrap brokers.
+#
 class coal( $endpoint ) {
     require_package('python-flask')
     require_package('python-numpy')
     require_package('python-whisper')
-    require_package('python-zmq')
+    require_package('python-kafka')
 
     group { 'coal':
         ensure => present,

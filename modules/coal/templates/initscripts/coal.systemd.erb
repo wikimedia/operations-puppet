@@ -1,11 +1,14 @@
 [Unit]
-Description=Navigation Timing Whisper logger
+Description=Navigation Timing Whisper writer
 
 [Service]
 User=coal
 Group=coal
 Restart=always
-ExecStart=/usr/local/bin/coal --whisper-dir "/var/lib/coal" "<%= @endpoint %>"
+ExecStart=/usr/local/bin/coal \
+    --whisper-dir "/var/lib/coal" \
+    --brokers <%= @kafka_brokers %> \
+    --consumer-group coal
 
 [Install]
 WantedBy=multi-user.target

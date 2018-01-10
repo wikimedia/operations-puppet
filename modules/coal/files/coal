@@ -25,6 +25,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import argparse
+import json
 import collections
 import dateutil.parser
 import errno
@@ -37,7 +38,7 @@ import signal
 import time
 
 import whisper
-import zmq
+from kafka import KafkaConsumer
 
 
 WINDOW_SPAN = 60 * 5  # Size of sliding window, in seconds.
@@ -105,10 +106,10 @@ class WhisperLogger(object):
         default=os.getcwd(),
         help='Path for Whisper files. Defaults to working directory.'
     )
-    arg_parser.add_argument(
-        'endpoint',
-        help='EventLogging endpoint URL.'
-    )
+    ap.add_argument('--brokers', required=True,
+        help='Comma-separated list of kafka brokers')
+    ap.add_argument('--consumer-group', required=True,
+        help='Consumer group to register with Kafka')
 
     def __init__(self):
         self.args = self.arg_parser.parse_args()
@@ -128,10 +129,20 @@ class WhisperLogger(object):
     def run(self):
         self.create_whisper_files()
 
-        self.log.info('Connecting to %s.', self.args.endpoint)
-        socket = zmq.Context().socket(zmq.SUB)
-        socket.connect(self.args.endpoint)
-        socket.subscribe = b''
+        # Based on webperf/navtiming.py
+        kafka_bootstrap_servers = tuple(self.args.brokers.split(','))
+        kafka_topics = ('eventlogging_NavigationTiming', 'eventlogging_SaveTiming')
+        kafka_consumer_timeout_seconds = 60
+        consumer = KafkaConsumer(
+            *kafka_topics,
+            bootstrap_servers=kafka_bootstrap_servers,
+            group_id=self.args.consumer_group,
+            auto_offset_reset='latest',
+            enable_auto_commit=False,
+            consumer_timeout_ms=kafka_consumer_timeout_seconds * 1000
+        )
+
+        self.log.info('Starting Kafka consumer')
 
         # Accumulate a full WINDOW_SPAN's worth of samples before the first
         # update. After that, update every UPDATE_INTERVAL seconds.
