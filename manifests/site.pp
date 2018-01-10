@@ -1877,7 +1877,7 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 
 # restbase eqiad cluster
 node /^restbase101[135678]\.eqiad\.wmnet$/ {
-    role(system::spare)
+    role(spare::system)
 }
 
 node /^restbase10(0[789]|1[024])\.eqiad\.wmnet$/ {
@@ -1886,7 +1886,7 @@ node /^restbase10(0[789]|1[024])\.eqiad\.wmnet$/ {
 
 # restbase codfw cluster
 node /^restbase20(0[789]|1[012])\.codfw\.wmnet$/ {
-    role(system::spare)
+    role(spare::system)
 }
 
 node /^restbase200[123456]\.codfw\.wmnet$/ {
