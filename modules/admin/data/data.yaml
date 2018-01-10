@@ -191,7 +191,7 @@ groups:
                  add them instead to the analytics-users group.  statistics-* groups
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
-              leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
+              leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier, bawolff,
               madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans, shiladsen, esanders]
@@ -235,7 +235,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak, imarlier,
-              halfak, dr0ptp4kt, bearloga, elukey, ppchelko,
+              halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff,
               nuria, otto, deskana, arnad, jgonsior, jgreen,
               bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
