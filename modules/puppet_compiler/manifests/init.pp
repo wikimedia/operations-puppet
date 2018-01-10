@@ -101,7 +101,6 @@ class puppet_compiler(
     class { 'puppetdb::app':
         db_driver  => 'hsqldb',
         ca_path    => '/etc/puppetdb/ssl/ca.pem',
-        heap_size  => '3G',
         db_rw_host => undef,
         perform_gc => true,
         bind_ip    => '0.0.0.0',
