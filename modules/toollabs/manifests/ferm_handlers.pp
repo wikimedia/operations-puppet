@@ -7,10 +7,6 @@ class toollabs::ferm_handlers{
 
     file {'/usr/local/sbin/ferm_restart_handler':
         ensure => 'absent',
-        source => 'puppet:///modules/toollabs/ferm_restart_handler.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     file {'/usr/local/sbin/ferm_pre_handler':
@@ -29,7 +25,7 @@ class toollabs::ferm_handlers{
 
     ferm::conf{'ferm_pre_handler':
         prio      => '00',
-        content   => '@hook post "/usr/local/sbin/ferm_pre_handler";',
+        content   => '@hook pre "/usr/local/sbin/ferm_pre_handler";',
         subscribe => File['/usr/local/sbin/ferm_pre_handler'],
     }
 
