@@ -9,8 +9,9 @@ class role::parsoid::testing {
 
     class { '::parsoid':
         port          => $parsoid_port,
-        settings_file => '/srv/deployment/parsoid/deploy/src/localsettings.js',
         deployment    => 'git',
+        no_workers    => 1,
+        conf          => template('testreduce/parsoid-rt.config.yaml.erb'),
     }
 
     file { '/usr/local/bin/update_parsoid.sh':
@@ -18,15 +19,6 @@ class role::parsoid::testing {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-    }
-
-    # Use this parsoid instance for parsoid rt-testing
-    file { '/srv/deployment/parsoid/deploy/src/localsettings.js':
-        content => template('testreduce/parsoid-rt-client.rttest.localsettings.js.erb'),
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0444',
-        before  => Service['parsoid'],
     }
 
     # mysql client and configuration to provide command line access to
