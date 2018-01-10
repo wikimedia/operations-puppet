@@ -235,7 +235,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak, imarlier,
-              halfak, dr0ptp4kt, bearloga, elukey, ppchelko,
+              halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff,
               nuria, otto, deskana, arnad, jgonsior, jgreen,
               bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
