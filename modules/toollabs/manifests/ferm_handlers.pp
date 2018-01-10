@@ -7,10 +7,6 @@ class toollabs::ferm_handlers{
 
     file {'/usr/local/sbin/ferm_restart_handler':
         ensure => 'absent',
-        source => 'puppet:///modules/toollabs/ferm_restart_handler.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     file {'/usr/local/sbin/ferm_pre_handler':
