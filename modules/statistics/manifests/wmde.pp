@@ -10,6 +10,8 @@ class statistics::wmde(
     $user  = 'analytics-wmde'
 ) {
 
+    require_package('php5-dom')
+
     # The statistics module needs to be loaded before this one
     Class['::statistics'] -> Class['::statistics::wmde']
 
