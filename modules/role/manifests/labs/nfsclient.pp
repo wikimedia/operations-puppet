@@ -139,4 +139,18 @@ class role::labs::nfsclient(
             require => Labstore::Nfs_mount['scratch-on-labstore1003'],
         }
     }
+
+    $dumps_servers = hiera('dumps_dist_nfs_servers')
+
+    $dumps_servers.each |String $server| {
+        labstore::nfs_mount { $server:
+            mount_name  => 'dumps',
+            project     => $::labsproject,
+            options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+            mount_path  => "/mnt/nfs/dumps-${server}",
+            share_path  => '/dumps',
+            server      => $server,
+            lookupcache => $lookupcache,
+        }
+    }
 }
