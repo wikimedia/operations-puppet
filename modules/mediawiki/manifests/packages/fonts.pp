@@ -47,6 +47,7 @@ class mediawiki::packages::fonts {
         'fonts-smc',                 # T33950
         'fonts-hosny-amiri',         # T135347
         'fonts-taml-tscu',           # T117919
+        'fonts-noto',                # T184664
     ]:
         ensure => present,
     }
