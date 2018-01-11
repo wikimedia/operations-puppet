@@ -37,8 +37,11 @@
 #
 module Puppet::Parser::Functions
   newfunction(:slice_network_constants, :type => :rvalue, :arity => -2) do |args|
-    fail ArgumentError, 'slice_network_constants() requires an argument' if args.empty?
-    fail ArgumentError, 'slice_network_constants() cannot handle more than 2 values' if args.length > 2
+    if args.empty? || args.length > 2
+      raise(ArgumentError, "slice_network_constants(): " +
+            "Wrong number of arguments given (#{args.length})")
+    end
+
     all_network_subnets = lookupvar('all_network_subnets')
     realm = args[0]
     options = args[1] if args.length > 1
@@ -48,16 +51,20 @@ module Puppet::Parser::Functions
     description = options['description'] if options
 
     unless all_network_subnets.key?(realm)
-        fail ArgumentError, 'slice_network_constants() realm non existant in network::subnets'
+        raise(Puppet::ParseError, "slice_network_constants(): " +
+              "realm non-existent in network::subnets")
     end
     if requested_site && (!all_network_subnets[realm].key? requested_site)
-        fail ArgumentError, "slice_network_constants() site specified must be present in network::subnets[#{realm}]. #{requested_site} was provided"
+        raise(Puppet::ParseError, "slice_network_constants(): " +
+              "site #{requested_site} not in network::subnets[#{realm}]")
     end
     if requested_sphere && (!['public', 'private'].include? requested_sphere)
-        fail ArgumentError, "slice_network_constants() sphere can only be public/private. #{requested_sphere} was provided"
+        raise(Puppet::ParseError, "slice_network_constants(): " +
+              "sphere #{requested_sphere} is not valid")
     end
     if af && (!['ipv4', 'ipv6'].include? af)
-        fail ArgumentError, "slice_network_constants() address family specified can only be ipv4 or ipv6. #{af} was provided"
+        raise(Puppet::ParseError, "slice_network_constants(): " +
+              "address family #{af} is not valid")
     end
 
     # And let's get our data back
