@@ -5,7 +5,7 @@ class role::wikilabels::staging {
 
     include ::wikilabels::session
 
-    class { '::profile::wikilabels::server':
+    class { '::profile::wikilabels':
         branch => 'master',
     }
 }

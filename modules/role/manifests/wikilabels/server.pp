@@ -5,7 +5,7 @@ class role::wikilabels::server {
 
     include ::wikilabels::session
 
-    class { '::profile::wikilabels::server':
+    class { '::profile::wikilabels':
         branch => 'deploy',
     }
 }
