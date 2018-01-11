@@ -133,13 +133,13 @@
     shard: x1
     role: slave
   targets:
-  - db1055:9104
+  - db1031:9104
   - db1056:9104
 - labels:
     shard: x1
     role: master
   targets:
-  - db1031:9104
+  - db1055:9104
 
 - labels:
     shard: es1
