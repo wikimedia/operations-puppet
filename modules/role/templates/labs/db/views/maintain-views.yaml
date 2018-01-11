@@ -259,6 +259,10 @@ customviews:
       as fa_major_mime, if(fa_deleted&1,null,fa_minor_mime) as fa_minor_mime, if(fa_deleted&2,null,fa_description) as
       fa_description, fa_user, fa_user_text, fa_timestamp, fa_deleted, if(fa_deleted&1,null,fa_sha1) as fa_sha1
     where: (fa_deleted&4)=0
+  global_preferences:
+    source: global_preferences
+    view: select gp_user, gp_property, gp_value
+    where: gp_property in ( 'disablemail', 'fancysig', 'gender', 'nickname' )
   globaluser:
     source: globaluser
     view: >
