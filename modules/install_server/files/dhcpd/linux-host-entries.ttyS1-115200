@@ -4771,6 +4771,11 @@ host mw1339 {
         fixed-address mw1339.eqiad.wmnet;
 }
 
+host mw1340 {
+        hardware ethernet 18:66:DA:99:50:FA;
+        fixed-address mw1340.eqiad.wmnet;
+}
+
 host mw1341 {
         hardware ethernet 18:66:DA:99:50:1C;
         fixed-address mw1341.eqiad.wmnet;
