@@ -9,7 +9,7 @@ class profile::analytics::refinery::job::streams_check {
     require ::profile::analytics::refinery
 
     # Shortcut var to DRY up cron commands.
-    $refinery_path = $role::analytics_cluster::refinery::path
+    $refinery_path = $profile::analytics::refinery::path
 
     $refinery_job_jar = "${refinery_path}/artifacts/refinery-job.jar"
     $spark_num_executors = 4
