@@ -12,6 +12,7 @@ Theory of operation:
 
 
 import argparse
+import datetime
 import getpass
 import json
 import logging
@@ -91,8 +92,7 @@ class CheckService(object):
     """Shell class for checking services."""
 
     def __init__(self, host, service_name, logstash_host, user='', password='',
-                 verbose=False, delay=120, fail_threshold=2.0,
-                 absolute_threshold=1.0):
+                 delay=120, fail_threshold=2.0, absolute_threshold=1.0):
         """Initialize the checker."""
         self.host = host
         self.service_name = service_name
@@ -101,10 +101,54 @@ class CheckService(object):
         self.fail_threshold = fail_threshold
         self.absolute_threshold = absolute_threshold
         self.auth = None
+        self._cache_dir = None
+        self._cached_timestamp = None
         self.logger = logging.getLogger(__name__)
 
         if user:
             self.auth = '{}:{}'.format(user, password)
+
+    @property
+    def cache_dir(self):
+        """
+        Where we can stash persistent information for logstash_checker
+        """
+        if self._cache_dir:
+            return self._cache_dir
+
+        base_path = '/tmp'
+        cache_name = 'logstash-checker-cache'
+        mw_profile = '/etc/profile.d/mediawiki.sh'
+
+        if self.service_name == 'mwdeploy' and os.path.isfile(mw_profile):
+            with open(mw_profile) as f:
+                profile = f.readlines()
+            mw_lines = [l for l in profile if l.startswith('MEDIAWIKI')]
+            mw_profile = {}
+            for mw_line in mw_lines:
+                k, v = mw_line.split('=')
+                mw_profile[k] = v.strip('"\n ')
+
+            staging_dir = mw_profile.get('MEDIAWIKI_STAGING_DIR')
+
+            if staging_dir:
+                base_path = os.path.join(staging_dir, '.git')
+
+        self._cache_dir = os.path.join(base_path, cache_name)
+
+        self.logger.debug('Using cache directory "{}"'.format(self._cache_dir))
+        return self._cache_dir
+
+    @property
+    def cached_timestamp_path(self):
+        if self._cached_timestamp:
+            return self._cached_timestamp
+
+        self._cached_timestamp = os.path.join(
+            self.cache_dir,
+            '{}.timestamp'.format(self.host))
+
+        return self._cached_timestamp
 
     def _logstash_query(self):
         if self.service_name == 'mwdeploy':
@@ -221,6 +265,59 @@ class CheckService(object):
             }
         }
 
+    def _save_cached_ts(self, ts):
+        """
+        Saves a cached timestamp to disk
+        """
+        if not os.path.isdir(self.cache_dir):
+            os.makedirs(self.cache_dir, 02770)
+
+        data = {'timestamp': ts}
+        data_json = json.dumps(data)
+
+        self.logger.debug('Saving cached timestamp {}'.format(data_json))
+        with open(self.cached_timestamp_path, 'w') as f:
+            f.write(data_json)
+
+    def _rm_cached_ts(self):
+        """
+        Remove cached ts file
+        """
+        if os.path.exists(self.cached_timestamp_path):
+            os.unlink(self.cached_timestamp_path)
+
+    def _get_cached_ts(self, ts):
+        """
+        Returns a cached timestamp if one is available
+        """
+        if not os.path.exists(self.cached_timestamp_path):
+            return ts
+
+        with open(self.cached_timestamp_path) as f:
+            cached_data = json.load(f)
+
+        cached_ts = cached_data.get('timestamp')
+
+        if not cached_ts:
+            self._rm_cached_ts()
+            return ts
+
+        try:
+            ts_datetime = datetime.datetime.fromtimestamp(int(cached_ts)/1000)
+        except ValueError:
+            self._rm_cached_ts()
+            return ts
+
+        one_day_ago = datetime.datetime.utcnow() - datetime.timedelta(days=1)
+        ts_still_valid = ts_datetime > one_day_ago
+
+        if not ts_still_valid:
+            self._rm_cached_ts()
+            return ts
+
+        self.logger.debug('Using cached timestamp {}'.format(cached_ts))
+        return cached_ts
+
     def run(self):
         """
         Query logstash and check error rate.
@@ -253,14 +350,15 @@ class CheckService(object):
         except ValueError:
             raise ValueError("Logstash request returned error")
 
-        self.logger.debug('logstash response %s', r)
+        self.logger.debug('logstash response {}'.format(r))
 
         # Calculate mean event rates before / after the deploy.
         entries = r['aggregations']['2']['buckets']
         cutoff_ts = (time.time() - self.delay) * 1000
+        before_cutoff_ts = self._get_cached_ts(cutoff_ts)
 
         counts_before = [entry['doc_count'] for entry in entries
-                         if entry['key'] < cutoff_ts]
+                         if entry['key'] < before_cutoff_ts]
 
         mean_before = float(sum(counts_before)) / max(1, len(counts_before))
 
@@ -283,10 +381,16 @@ class CheckService(object):
                               percent_over, mean_before, mean_after,
                               target_error_rate)
 
+            if self.service_name == 'mwdeploy':
+                self._save_cached_ts(cutoff_ts)
+
         else:
             self.logger.info('OK (Avg. Error rate: '
                              'Before: %.2f, After: %.2f, Threshold: %.2f)',
                              mean_before, mean_after, target_error_rate)
+
+            if self.service_name == 'mwdeploy':
+                self._rm_cached_ts()
 
         return over_threshold
 
