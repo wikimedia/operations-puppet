@@ -52,11 +52,38 @@ class mediawiki::packages::fonts {
     }
 
     if os_version('ubuntu >= trusty') {
-        require_package('ttf-bengali-fonts', 'ttf-devanagari-fonts', 'ttf-gujarati-fonts', 'ttf-kannada-fonts', 'ttf-oriya-fonts', 'ttf-punjabi-fonts', 'ttf-tamil-fonts', 'ttf-telugu-fonts', 'ttf-kochi-gothic', 'ttf-kochi-mincho', 'fonts-mgopen')
+        require_package(
+            'ttf-bengali-fonts',
+            'ttf-devanagari-fonts',
+            'ttf-gujarati-fonts',
+            'ttf-kannada-fonts',
+            'ttf-oriya-fonts',
+            'ttf-punjabi-fonts',
+            'ttf-tamil-fonts',
+            'ttf-telugu-fonts',
+            'ttf-kochi-gothic',
+            'ttf-kochi-mincho',
+            'fonts-mgopen'
+        )
     }
 
     if os_version('debian >= jessie') {
-        require_package('fonts-beng', 'fonts-deva', 'fonts-gujr', 'fonts-knda', 'fonts-mlym', 'fonts-orya', 'fonts-guru', 'fonts-taml', 'fonts-telu', 'fonts-gujr-extra', 'fonts-noto-cjk', 'fonts-sil-lateef', 'fonts-ipafont-gothic', 'fonts-ipafont-mincho')
+        require_package(
+            'fonts-beng',
+            'fonts-deva',
+            'fonts-gujr',
+            'fonts-knda',
+            'fonts-mlym',
+            'fonts-orya',
+            'fonts-guru',
+            'fonts-taml',
+            'fonts-telu',
+            'fonts-gujr-extra',
+            'fonts-noto-cjk',
+            'fonts-sil-lateef',
+            'fonts-ipafont-gothic',
+            'fonts-ipafont-mincho'
+        )
     }
 
     # In older releases (up to the version present in trusty), fontconfig-config provided
