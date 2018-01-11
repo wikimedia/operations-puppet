@@ -112,7 +112,8 @@ def time_ago(s)
 end
 
 if failcount == :failed
-    puts "CRITICAL: Catalog fetch fail. Either compilation failed or puppetmaster has issues"
+    puts "CRITICAL: Catalog fetch fail. " +
+         "Either compilation failed or puppetmaster has issues"
     exit 2
 end
 
@@ -130,12 +131,15 @@ end
 human_time_since_last_run = time_ago(time_since_last_run)
 
 if enabled_only && enabled == false
-    puts "OK: Puppet is currently disabled, not alerting. Last run #{human_time_since_last_run} ago with #{failcount} failures"
+    puts "OK: Puppet is currently disabled, not alerting. " +
+         "Last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 0
 end
 
 unless enabled
-    puts "WARNING: Puppet is currently disabled, message: #{disabled_message}, last run #{human_time_since_last_run} ago with #{failcount} failures"
+    puts "WARNING: Puppet is currently disabled, " +
+         "message: #{disabled_message}, " +
+         "last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
 end
 
@@ -159,5 +163,6 @@ if time_since_last_run >= warn
     exit 1
 end
 
-puts "OK: Puppet is currently enabled, last run #{human_time_since_last_run} ago with #{failcount} failures"
+puts "OK: Puppet is currently enabled, " +
+     "last run #{human_time_since_last_run} ago with #{failcount} failures"
 exit 0
