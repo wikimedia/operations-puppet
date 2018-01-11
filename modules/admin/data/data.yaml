@@ -2925,3 +2925,7 @@ ldap_only_users:
     ensure: present
     realname: Jack Gleeson
     email: jgleeson@wikimedia.org
+  tonina:
+    ensure: present
+    realname: Tonina Zhelyazkova
+    email: tonina.zhelyazkova@wikimedia.de
