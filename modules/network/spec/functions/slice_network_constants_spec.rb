@@ -10,17 +10,17 @@ describe "slice_network_constants" do
   end
 
   it "should raise a ParseError if there are less than 1 arguments" do
-    is_expected.to run.with_params.and_raise_error(ArgumentError)
+    is_expected.to run.with_params.and_raise_error(Puppet::ParseError)
   end
 
   it "should raise a ParseError if there are more than 2 arguments" do
-    is_expected.to run.with_params('a', 'b', 'c').and_raise_error(ArgumentError)
+    is_expected.to run.with_params('a', 'b', 'c').and_raise_error(Puppet::ParseError)
   end
 
   # Test realm
   it "should complain about invalid realm" do
     scope.stubs(:lookupvar).with('all_network_subnets').returns(all_network_subnets)
-    expect { scope.function_slice_network_constants(['nosuchrealm']) }.to raise_error(ArgumentError)
+    expect { scope.function_slice_network_constants(['nosuchrealm']) }.to raise_error(Puppet::ParseError)
   end
 
   it "should return for valid realm" do
@@ -32,7 +32,7 @@ describe "slice_network_constants" do
   # Test site
   it "should complain about invalid site" do
     scope.stubs(:lookupvar).with('all_network_subnets').returns(all_network_subnets)
-    expect { scope.function_slice_network_constants(['production', { 'site' => 'nosuchsite'}])}.to raise_error(ArgumentError)
+    expect { scope.function_slice_network_constants(['production', { 'site' => 'nosuchsite'}])}.to raise_error(Puppet::ParseError)
   end
 
   it "should return for valid site" do
@@ -45,7 +45,7 @@ describe "slice_network_constants" do
   # Test sphere
   it "should complain about invalid sphere" do
     scope.stubs(:lookupvar).with('all_network_subnets').returns(all_network_subnets)
-    expect{ scope.function_slice_network_constants(['production', { 'sphere' => 'nosuchsphere'}])}.to raise_error(ArgumentError)
+    expect{ scope.function_slice_network_constants(['production', { 'sphere' => 'nosuchsphere'}])}.to raise_error(Puppet::ParseError)
   end
 
   it "should return for valid sphere" do
@@ -58,7 +58,7 @@ describe "slice_network_constants" do
   # Test AF
   it "should complain about invalid af" do
     scope.stubs(:lookupvar).with('all_network_subnets').returns(all_network_subnets)
-    expect{ scope.function_slice_network_constants(['production', { 'af' => 'nosuchaf'}])}.to raise_error(ArgumentError)
+    expect{ scope.function_slice_network_constants(['production', { 'af' => 'nosuchaf'}])}.to raise_error(Puppet::ParseError)
   end
 
   it "should return for valid af" do
