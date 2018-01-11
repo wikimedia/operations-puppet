@@ -7,21 +7,21 @@
 class profile::ci::website {
     # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
     # and behind a varnish cache. See also T62822
-    class { '::apache::mod::headers': }
-    class { '::apache::mod::rewrite': }
-
+    class { '::httpd':
+        modules => ['headers', 'rewrite'],
+    }
     # Apache configuration for integration.wikimedia.org
-    apache::site { 'integration.wikimedia.org':
+    httpd::site { 'integration.wikimedia.org':
         content => template('contint/apache/integration.wikimedia.org.erb'),
     }
 
     # Apache configuration for integration.mediawiki.org
-    apache::site { 'integration.mediawiki.org':
+    httpd::site { 'integration.mediawiki.org':
         content => template('contint/apache/integration.mediawiki.org.erb'),
     }
 
     # Apache configuration for doc.wikimedia.org
-    apache::site { 'doc.wikimedia.org':
+    httpd::site { 'doc.wikimedia.org':
         content => template('contint/apache/doc.wikimedia.org.erb'),
     }
 
