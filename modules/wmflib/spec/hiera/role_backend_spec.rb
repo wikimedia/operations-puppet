@@ -23,30 +23,43 @@ describe 'role_backend' do
   end
 
   it "get_path returns the correct path" do
-    expect(@backend.get_path('pippo', 'test', 'common', @scope)).to eq("spec/fixtures/hieradata/role/common/test.yaml")
+    path = @backend.get_path('pippo', 'test', 'common', @scope)
+    expect(path).to eq("spec/fixtures/hieradata/role/common/test.yaml")
   end
 
   it "lookup returns nil when no role is defined" do
-    expect(@backend.lookup('admin::groups', @topscope, nil, nil)).to eq(nil)
+    groups = @backend.lookup('admin::groups', @topscope, nil, nil)
+    expect(groups).to eq(nil)
   end
 
   it "lookup returns a value when a role is defined" do
     @scope.function_role(['test'])
-    expect(@backend.lookup('admin::groups', @topscope, nil, nil)).to eq(['FooBar'])
+    groups = @backend.lookup('admin::groups', @topscope, nil, nil)
+    expect(groups).to eq(['FooBar'])
   end
 
   it "lookup raises an error if conflicting values are given in different roles" do
     @scope.function_role(['test', 'test2'])
-    expect {@backend.lookup('admin::groups', @topscope, nil, nil)}.to raise_error(Exception, "Conflicting value for admin::groups found in role test2")
+    groups = @backend.lookup('admin::groups', @topscope, nil, nil)
+    expect(groups).to raise_exception
   end
 
   it "merges values when using an array lookup" do
     @scope.function_role(['test', 'test2'])
-    expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['FooBar'], ['FooBar1']])
+    groups = @backend.lookup('admin::groups', @topscope, nil, nil)
+    expect(groups).to eq([['FooBar'], ['FooBar1']])
   end
 
   it "merges values when using hash lookup" do
     @scope.function_role(['test', 'test2'])
-    expect(@backend.lookup('an_hash', @topscope, nil, :hash)).to eq({"test2" => true, "test3" => {"another" => "level"}, "test" => true})
+    an_hash = @backend.lookup('an_hash', @topscope, nil, :hash)
+    expected_hash = {
+      "test2" => true,
+      "test3" => {
+        "another" => "level"
+      },
+      "test" => true,
+    }
+    expect(an_hash).to eq(expected_hash)
   end
 end

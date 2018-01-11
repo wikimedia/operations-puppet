@@ -1,5 +1,5 @@
 Metrics/LineLength:
-  Max: 159
+  Max: 144
 
 Style/BlockDelimiters:
   Enabled: false
