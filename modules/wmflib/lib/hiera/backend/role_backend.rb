@@ -101,11 +101,15 @@ class Hiera
       def merge_answer(new_answer, answer, resolution_type)
         case resolution_type
         when :array
-          raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
+          unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
+            raise Exception, "Hiera mismatch: expected Array, got #{new_answer.class}"
+          end
           answer ||= []
           answer << new_answer
         when :hash
-          raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
+          unless new_answer.kind_of? Hash
+            raise Exception, "Hiera mismatch: expected Hash, got #{new_answer.class}"
+          end
           answer ||= {}
           answer = Backend.merge_answer(new_answer, answer)
         else

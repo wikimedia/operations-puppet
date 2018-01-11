@@ -71,12 +71,16 @@ class Hiera
 
           case resolution_type
           when :array
-            raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array
+            unless new_answer.kind_of? Array
+              raise Exception, "Hiera mismatch: expected Array, got #{new_answer.class}"
+            end
             # The plugins already return an array of answers, so just concatenate it.
             answer ||= []
             answer += new_answer
           when :hash
-            raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
+            unless new_answer.kind_of? Hash
+              raise Exception, "Hiera mismatch: expected Hash, got #{new_answer.class}"
+            end
             answer ||= {}
             answer = Backend.merge_answer(new_answer, answer)
           else
