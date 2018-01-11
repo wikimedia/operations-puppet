@@ -502,11 +502,11 @@ node 'db1114.eqiad.wmnet' {
 
 ## x1 shard
 # eqiad
-node 'db1031.eqiad.wmnet' {
+node 'db1055.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(55|56)\.eqiad\.wmnet/ {
+node /^db10(31|56)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
