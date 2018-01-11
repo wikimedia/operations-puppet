@@ -548,9 +548,7 @@ krb5.kdc.bad.policy = tryLast
 jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1 jdkCA & usage TLSServer, \
      RSA keySize < 1024, DSA keySize < 1024, EC keySize < 224
 
-# TODO: Temporiarly disable this.  It is not working with Puppet signed certificates.
-# Not sure why yet.
-#jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1, RSA, DSA, EC keySize < 224
+jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1, DSA, RSA keySize < 2048, EC keySize < 224
 
 #
 # Algorithm restrictions for signed JAR files
