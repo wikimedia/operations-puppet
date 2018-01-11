@@ -73,6 +73,13 @@ class mediawiki::packages::fonts {
         )
     }
 
+    if os_version('debian > jessie') {
+        require_package(
+            'fonts-noto-hinted',  # T184664
+            'fonts-noto-unhinted' # T184664
+        )
+    }
+
     if os_version('debian >= jessie') {
         require_package(
             'fonts-beng',
@@ -89,8 +96,6 @@ class mediawiki::packages::fonts {
             'fonts-sil-lateef',
             'fonts-ipafont-gothic',
             'fonts-ipafont-mincho',
-            'fonts-noto-hinted', # T184664
-            'fonts-noto-unhinted' # T184664
         )
     }
 
