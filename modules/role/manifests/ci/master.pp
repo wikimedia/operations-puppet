@@ -18,7 +18,10 @@ class role::ci::master {
     include ::profile::ci::firewall
 
     include ::profile::ci::jenkins
+
+    include ::profile::ci::proxy_common
     include ::profile::ci::proxy_jenkins
+    include ::profile::ci::proxy_zuul
 
     include ::profile::ci::slave
     include ::profile::ci::website
@@ -27,8 +30,6 @@ class role::ci::master {
     include ::profile::ci::shipyard
 
     include ::profile::zuul::merger
-
     include ::profile::zuul::server
-    include ::profile::ci::proxy_zuul
 
 }
