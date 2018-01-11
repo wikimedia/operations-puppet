@@ -1,0 +1,3 @@
+# Export dumps to Cloud VPS instances
+/srv/dumps/xmldatadumps	10.68.0.0/16(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)
+/srv/dumps/xmldatadumps/public 10.68.0.0/16(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)

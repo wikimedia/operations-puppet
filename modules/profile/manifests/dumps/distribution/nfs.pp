@@ -29,9 +29,18 @@ class profile::dumps::distribution::nfs {
         content => 'options lockd nlm_udpport=32768 nlm_tcpport=32769',
     }
 
+    file { '/etc/exports':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source => 'puppet:///modules/profile/dumps/distribution/nfs-exports',
+        require => Package['nfs-kernel-server'],
+    }
+
     # Manage state manually
     service { 'nfs-kernel-server':
         enable => false,
+        require => Package['nfs-kernel-server'],
     }
 
 }
