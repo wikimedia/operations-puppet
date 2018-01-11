@@ -26,16 +26,15 @@ class profile::releases::mediawiki (
     class { '::contint::composer': }
     class { '::contint::packages::php': }
 
-    class { '::apache::mod::rewrite': }
-    class { '::apache::mod::headers': }
-    class { '::apache::mod::proxy': }
-    class { '::apache::mod::proxy_http': }
+    class { '::httpd':
+        modules => ['rewrite', 'headers', 'proxy', 'proxy_http'],
+    }
 
-    apache::site { $sitename:
+    httpd::site { $sitename:
         content => template('releases/apache.conf.erb'),
     }
 
-    apache::site { $sitename_jenkins:
+    httpd::site { $sitename_jenkins:
         content => template('releases/apache-jenkins.conf.erb'),
     }
 
