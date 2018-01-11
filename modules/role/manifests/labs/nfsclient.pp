@@ -139,4 +139,37 @@ class role::labs::nfsclient(
             require => Labstore::Nfs_mount['scratch-on-labstore1003'],
         }
     }
+
+    if $::labsproject == 'testlabs' {
+
+      labstore::nfs_mount { 'dumps-on-labstore1006':
+          mount_name  => 'dumps',
+          project     => $::labsproject,
+          options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+          mount_path  => '/mnt/nfs/labstore1006-dumps',
+          share_path  => '/public',
+          server      => 'labstore1006.wikimedia.org',
+          lookupcache => $lookupcache,
+      }
+
+      labstore::nfs_mount { 'dumps-on-labstore1007':
+          mount_name  => 'dumps',
+          project     => $::labsproject,
+          options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
+          mount_path  => '/mnt/nfs/labstore1007-dumps',
+          share_path  => '/public',
+          server      => 'labstore1007.wikimedia.org',
+          lookupcache => $lookupcache,
+      }
+
+      if mount_nfs_volume($::labsproject, 'dumps') {
+          file { '/public/newdumps':
+              ensure  => 'link',
+              force   => true,
+              target  => '/mnt/nfs/labstore1006-dumps',
+              require => Labstore::Nfs_mount['dumps-on-labstore1006'],
+          }
+      }
+    }
+
 }
