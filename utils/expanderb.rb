@@ -15,14 +15,14 @@ require 'ostruct'
 require 'English'
 
 # Filename of the ERB template we are going to expand
-$filename = nil
+filename = nil
 
 # Parsing the options
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: expanderb.rb -f FILENAME [key=val [key2=val]]"
 
   opts.on('-f', '--filename FILENAME', 'ERB filename to expand') do |f|
-    $filename = f
+    filename = f
   end
 
   opts.on_tail('-h', '--help', 'Show this message') do
@@ -35,7 +35,7 @@ end
 begin
   # -f is mandatory
   optparse.parse!
-  if $filename.nil?
+  if filename.nil?
     puts "You must specify an ERB filename."
     puts optparse
     exit
@@ -63,7 +63,7 @@ end
 
 # Parse template
 begin
-  puts render_erb(File.read($filename), template_values)
+  puts render_erb(File.read(filename), template_values)
 rescue
   p "Something went wrong, usually because you are missing a variable."
   p $ERROR_INFO.to_s

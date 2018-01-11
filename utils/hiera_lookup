@@ -87,7 +87,7 @@ class Hiera
     class << self
       alias_method :old_datadir, :datadir
       def datadir(backend, scope)
-        old_datadir(backend, scope).gsub(%r{^.*(?=/hieradata)}, $DIR)
+        old_datadir(backend, scope).gsub(%r{^.*(?=/hieradata)}, DIR)
       end
     end
   end
@@ -101,12 +101,12 @@ else
   verbose = false
 end
 
-$DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
-$LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
+DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
+$LOAD_PATH << File.join(DIR, 'modules/wmflib/lib')
 
 scope = determine_scope
 
-cfg = File.join($DIR, "modules/puppetmaster/files/#{scope['::realm']}.hiera.yaml")
+cfg = File.join(DIR, "modules/puppetmaster/files/#{scope['::realm']}.hiera.yaml")
 unless File.exist?(cfg)
   Kernel.abort("Hiera cfg file not found for realm '#{scope['::realm']}': #{cfg}")
 end

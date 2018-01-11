@@ -8,11 +8,6 @@ Style/ClassVars:
   Exclude:
     - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
 
-Style/GlobalVars:
-  Exclude:
-    - 'utils/expanderb.rb'
-    - 'utils/hiera_lookup'
-
 Style/HashSyntax:
   Enabled: false
 
