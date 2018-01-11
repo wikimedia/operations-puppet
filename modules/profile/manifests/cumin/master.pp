@@ -1,5 +1,5 @@
 class profile::cumin::master (
-    $puppetdb_host  = hiera('puppetmaster::puppetdb::master'),
+    $puppetdb_host  = hiera('profile::cumin::master::puppetdb_host'),
     $datacenters    = hiera('datacenters'),
 ) {
     include passwords::phabricator
