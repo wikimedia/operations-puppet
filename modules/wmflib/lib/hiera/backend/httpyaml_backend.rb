@@ -15,7 +15,8 @@ class Hiera
           # Small hack: We don't want to search any datasource but the
           # httpyaml/%{::labsproject} hierarchy here; so we plainly exit
           # in any other case.
-          next unless source.start_with?('httpyaml/') && source.length > 'httpyaml/'.length
+          next unless source.start_with?('httpyaml/') &&
+                      source.length > 'httpyaml/'.length
 
           data = @cache.read(source)
 
@@ -25,11 +26,15 @@ class Hiera
           new_answer = Backend.parse_answer(data[key], scope)
           case resolution_type
           when :array
-            raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
+            unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
+              raise Exception, "Hiera mismatch: expected Array, got #{new_answer.class}"
+            end
             answer ||= []
             answer << new_answer
           when :hash
-            raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
+            unless new_answer.kind_of? Hash
+              raise Exception, "Hiera mismatch: expected Hash, got #{new_answer.class}"
+            end
             answer ||= {}
             answer = Backend.merge_answer(new_answer, answer)
           else

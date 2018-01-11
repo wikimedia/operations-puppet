@@ -9,8 +9,9 @@ class Hiera
       @url_prefix = config[:url_prefix]
       @http = HTTPClient.new(:agent_name => 'HieraHttpCache/0.1')
 
-      # Use the operating system's certificate store, not ruby-httpclient's cacert.p7s which doesn't
-      # even have the root used to sign Let's Encrypt CAs (DST Root CA X3)
+      # Use the operating system's certificate store, not ruby-httpclient's
+      # cacert.p7s which doesn't even have the root used to sign Let's Encrypt
+      # CAs (DST Root CA X3)
       @http.ssl_config.clear_cert_store
       @http.ssl_config.set_default_paths
 
@@ -27,7 +28,8 @@ class Hiera
     def read(path, _expected_type = Hash, _default = nil)
       read_file(path)
     rescue => detail
-      # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
+      # When failing to read data, we raise an exception
+      # see https://phabricator.wikimedia.org/T78408
       error = "Reading data from #{path} failed: #{detail.class}: #{detail}"
       raise error
     end
@@ -70,7 +72,8 @@ class Hiera
       Hiera.debug("Fetching #{url}")
       res = @http.get(url)
       if res.status_code != 200
-        raise IOError, "Could not correctly fetch revision for #{path}, HTTP status code #{res.status_code}, content #{res.data}"
+        raise IOError, "Could not correctly fetch revision for #{path}, " +
+                       "HTTP status code #{res.status_code}, content #{res.data}"
       end
       # We shamelessly throw exceptions here, and catch them upper in the chain
       # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read

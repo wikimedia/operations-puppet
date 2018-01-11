@@ -13,8 +13,9 @@ class Hiera
       @endpoint = config[:endpoint] || '/w/api.php'
       @http = HTTPClient.new(:agent_name => 'HieraMwCache/0.1')
 
-      # Use the operating system's certificate store, not ruby-httpclient's cacert.p7s which doesn't
-      # even have the root used to sign Let's Encrypt CAs (DST Root CA X3)
+      # Use the operating system's certificate store, not ruby-httpclient's
+      # cacert.p7s which doesn't even have the root used to sign Let's Encrypt
+      # CAs (DST Root CA X3)
       @http.ssl_config.clear_cert_store
       @http.ssl_config.set_default_paths
 
@@ -31,11 +32,13 @@ class Hiera
     def read(path, expected_type, default = nil, &block)
       read_file(path, expected_type, &block)
     rescue Hiera::MediawikiPageNotFoundError => detail
-      # Any errors other than this will cause hiera to raise an error and puppet to fail.
+      # Any errors other than this will cause hiera to raise an error and
+      # puppet to fail.
       Hiera.debug("Page #{detail} is non-existent, setting defaults #{default}")
       @cache[path][:data] = default
     rescue => detail
-      # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
+      # When failing to read data, we raise an exception
+      # see https://phabricator.wikimedia.org/T78408
       error = "Reading data from #{path} failed: #{detail.class}: #{detail}"
       raise error
     end
@@ -48,7 +51,9 @@ class Hiera
         @cache[path][:data] = block_given? ? yield(data) : data
 
         if !@cache[path][:data].nil? && !@cache[path][:data].is_a?(expected_type)
-          raise TypeError, "Data retrieved from #{path} is #{@cache[path][:data].class}, not #{expected_type} or nil"
+          raise TypeError, "Data retrieved from #{path} is " +
+                           "#{@cache[path][:data].class}, " +
+                           "not #{expected_type} or nil"
         end
       end
 
@@ -105,7 +110,8 @@ class Hiera
       Hiera.debug("Fetching #{url}")
       res = @http.get(url)
       if res.status_code != 200
-        raise IOError, "Could not correctly fetch revision for #{path}, HTTP status code #{res.status_code}"
+        raise IOError, "Could not correctly fetch revision for #{path}, " +
+                       "HTTP status code #{res.status_code}"
       end
       # We shamelessly throw exceptions here, and catch them upper in the chain
       # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read
