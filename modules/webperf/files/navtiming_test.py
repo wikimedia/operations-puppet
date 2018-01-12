@@ -18,6 +18,14 @@ class TestNavTiming(unittest.TestCase):
     # addition to the value diff, not instead of the diff.
     longMessage = True
 
+    def flatten(self, values):
+        for value in values:
+            if isinstance(value, list):
+                for subvalue in self.flatten(value):
+                    yield subvalue
+            else:
+                yield value
+
     def test_parse_ua(self):
         data_path = os.path.join(os.path.dirname(__file__), 'navtiming_ua_data.yaml')
         with open(data_path) as data_file:
@@ -36,6 +44,8 @@ class TestNavTiming(unittest.TestCase):
         with open(fixture_path) as fixture_file:
             cases = yaml.safe_load(fixture_file)
             for key, case in cases.items():
+                if key == 'templates':
+                    continue
                 if isinstance(case['input'], list):
                     messages = case['input']
                 else:
@@ -52,7 +62,7 @@ class TestNavTiming(unittest.TestCase):
                 # print "" # debug
                 self.assertItemsEqual(
                     actual,
-                    case['expect'],
+                    self.flatten(case['expect']),
                     key
                 )
 
