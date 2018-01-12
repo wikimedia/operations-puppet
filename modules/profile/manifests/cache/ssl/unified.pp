@@ -32,7 +32,6 @@ class profile::cache::ssl::unified(
         $certs = [
             'globalsign-2017-ecdsa-unified', 'globalsign-2017-rsa-unified',
             'digicert-2017-ecdsa-unified', 'digicert-2017-rsa-unified',
-            'digicert-2016-ecdsa-unified', 'digicert-2016-rsa-unified',
         ]
         tlsproxy::localssl { 'unified':
             server_name    => 'www.wikimedia.org',
