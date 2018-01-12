@@ -12,3 +12,4 @@ fi
 alias my='mysql --disable-auto-rehash --skip-ssl --host=localhost --user=root --prompt="\u@$(hostname)[\d]> " --pager="grcat /etc/mysql/grcat.config | less -RSFXin"'
 alias mysqlbinlog='mysqlbinlog -vv --base64-output=DECODE-ROWS --skip-ssl'
 alias ls='ls --color=auto'
+alias skip-slave-start='systemctl set-environment MYSQLD_OPTS="--skip-slave-start"'
