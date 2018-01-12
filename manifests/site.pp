@@ -1499,7 +1499,6 @@ node /^mw133[4-7]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-
 # T165519
 # ROW C eqiad appservers
 node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
@@ -1508,6 +1507,11 @@ node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
 
 # ROW B eqiad api-appservers
 node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# ROW C api-appservers
+node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -1523,6 +1527,11 @@ node 'mw1307.eqiad.wmnet' {
 
 # ROW B videoscaler
 node 'mw1318.eqiad.wmnet' {
+    role(mediawiki::videoscaler)
+}
+
+# ROW C videoscaler
+node 'mw1338.eqiad.wmnet' {
     role(mediawiki::videoscaler)
 }
 
