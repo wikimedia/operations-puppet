@@ -37,7 +37,7 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::generatecaptcha': ensure => $ensure }
     class { 'mediawiki::maintenance::pageassessments': ensure => $ensure }
     class { 'mediawiki::maintenance::uploads': ensure => $ensure }
-    class { 'mediawiki::maintenance::readinglists': ensure => $ensure }
+    class { 'mediawiki::maintenance::readinglists': ensure => absent }
 
     # Include the cache warmup script; requires node and conftool
     require ::profile::conftool::client
