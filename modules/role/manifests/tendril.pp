@@ -31,6 +31,9 @@ class role::tendril {
         auth_name    => 'WMF Labs (use wiki login name not shell) - nda/ops/wmf',
     }
 
+    # MariaDB (Tendril) maintenance
+    include ::profile::mariadb::maintenance
+
     # Make tendril active-passive cross-datacenter until a local db backend is
     # available on codfw to avoid cross-dc queries or TLS is used to connect
     if hiera('do_acme', true) {
