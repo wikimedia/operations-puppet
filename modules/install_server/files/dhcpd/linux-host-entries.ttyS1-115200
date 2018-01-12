@@ -4764,6 +4764,8 @@ host mw1337 {
 host mw1338 {
         hardware ethernet 18:66:DA:99:52:38;
         fixed-address mw1338.eqiad.wmnet;
+        option pxelinux.pathprefix "stretch-installer/";
+        filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mw1339 {

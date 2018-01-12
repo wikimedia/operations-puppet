@@ -1494,21 +1494,9 @@ node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# ROW C eqiad jobrunners
-node /^mw133[4-7]\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
-
-# T165519
-# ROW C eqiad appservers
-node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
-# ROW B eqiad api-appservers
-node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
+# ROW A videoscaler
+node 'mw1307.eqiad.wmnet' {
+    role(mediawiki::videoscaler)
 }
 
 # ROW A eqiad jobrunners
@@ -1516,14 +1504,35 @@ node /^mw13(0[89]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# ROW A videoscaler
-node 'mw1307.eqiad.wmnet' {
-    role(mediawiki::videoscaler)
+# ROW B eqiad api-appservers
+node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
 }
 
 # ROW B videoscaler
 node 'mw1318.eqiad.wmnet' {
     role(mediawiki::videoscaler)
+}
+
+# T165519
+# ROW C eqiad appservers
+node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# ROW C eqiad jobrunners
+node /^mw133[4-7]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# ROW C videoscaler
+node 'mw1338.eqiad.wmnet' {
+    role(mediawiki::videoscaler)
+}
+
+# ROW C api-appservers
+node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
 }
 
 
