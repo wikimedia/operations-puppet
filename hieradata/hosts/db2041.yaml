@@ -1,2 +1,1 @@
 mariadb::shard: 's2'
-mariadb::socket: '/tmp/mysql.sock'
