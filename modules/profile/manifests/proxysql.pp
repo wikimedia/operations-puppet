@@ -25,23 +25,6 @@ class profile::proxysql {
     #    notrack => true,
     #}
 
-    # we need to setup the service, as by default there is only an init.d script
-    # that start as root. We will not start it by default, but will have monitoring
-    # to check it is running. We can change that in the future.
-    systemd::unit { 'proxysql':
-        ensure  => present,
-        content => systemd_template('proxysql'),
-        require => Class['proxysql'],
-    }
-
-    file {'/run/proxysql':
-        ensure  => directory,
-        owner   => 'proxysql',
-        group   => 'proxysql',
-        mode    => '0755',
-        require => Class['proxysql'],
-    }
-
     # Let's add proxysql user to the mysql group so it can access mysql's
     # tls client certs
     exec { 'proxysql membership to mysql':
@@ -59,7 +42,7 @@ class profile::proxysql {
         content => template('profile/proxysql/root.my.cnf.erb'),
     }
 
-    # I think with systemd there should be only 1 process running ?
+    # With systemd there should be only 1 process running
     nrpe::monitor_service { 'proxysql':
         description   => 'proxysql processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C proxysql',

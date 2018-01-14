@@ -6,42 +6,24 @@ class proxysql (
     $admin_user      = 'admin',
     $admin_port      = 6032,
     $admin_interface = '127.0.0.1',
-    $admin_socket    = '/tmp/proxysql_admin.sock',
+    $admin_socket    = '/run/proxysql_admin.sock',
     $mysql_port      = 6033,
     $mysql_interface = '0.0.0.0',
-    $mysql_socket    = '/tmp/proxysql.sock',
+    $mysql_socket    = '/run/proxysql.sock',
     ) {
 
-    # We need to manualy setup users, as the package doesn't do it for us
-    group { 'proxysql':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'proxysql':
-        ensure     => present,
-        gid        => 'proxysql',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
-    }
+    # install the proxy and the user/group
+    package { 'proxysql':
+        ensure => installed,
+    }    
 
     # Minimal basic config, with the right owner
-    file { '/etc/proxysql.cnf':
+    file { '/etc/proxysql.cfg':
         ensure  => present,
         owner   => 'proxysql',
         group   => 'proxysql',
         mode    => '0440',
         content => template('proxysql/proxysql.cnf.erb'),
-    }
-
-    # mostly sqlite internal config cache, let's make sure it has
-    # the right owner
-    file {'/var/lib/proxysql':
-        ensure => directory,
-        owner  => 'proxysql',
-        group  => 'proxysql',
-        mode   => '0750',
+        requite => Package['proxysql'],
     }
 }
