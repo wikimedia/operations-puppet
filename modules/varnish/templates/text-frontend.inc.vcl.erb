@@ -86,24 +86,22 @@ sub cluster_fe_recv_pre_purge {
 				call tag_carrier;
 			}
 
-			// Rewrite mobile hostnames to desktop hostnames as x-dt-host. All
-			// hostnames are being rewritten by the regex in the final else
-			// clause, except for m.mediawiki.org and m.wikidata.org which are
-			// rewritten here (because of the www.).
+			// Rewrite mobile hostnames to desktop hostnames as x-dt-host.
 			if (req.http.host == "m.mediawiki.org") {
 				set req.http.x-dt-host = "www.mediawiki.org";
+			} else if (req.http.host == "m.wikimediafoundation.org") {
+				set req.http.x-dt-host = "wikimediafoundation.org";
+			} else if (req.http.host == "m.wikisource.org") {
+				set req.http.x-dt-host = "wikisource.org";
 			} else if (req.http.host == "m.wikidata.org") {
 				set req.http.x-dt-host = "www.wikidata.org";
 			} else {
-				// All other hostnames are taken care of here.
 				// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
-				// as well as (m|zero).<project>.org by <project>.org
 				//
 				// Example:
-				// m.wikimediafoundation.org -> wikimediafoundation.org
 				// it.m.wikipedia.org -> it.wikipedia.org
 				// en.zero.wikipedia.org -> en.wikipedia.org
-				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+\.)?(m|zero)\.", "\1");
+				set req.http.x-dt-host = regsub(req.http.host, "^([a-z0-9-]+)\.(m|zero)\.", "\1.");
 			}
 
 			if (req.url ~ "^/api/rest_v1/") {

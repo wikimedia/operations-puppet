@@ -18,7 +18,7 @@ server s1 {
     txresp
 
     rxreq
-    expect req.http.x-dt-host == "wikipedia.org"
+    expect req.http.x-dt-host == "m.wikipedia.org"
     txresp
 
     rxreq
