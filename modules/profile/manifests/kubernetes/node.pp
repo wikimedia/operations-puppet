@@ -38,6 +38,15 @@ class profile::kubernetes::node(
         kubeconfig     => $kubeproxy_config,
     }
 
+    # If the host considers itself as a router (IP forwarding enabled), it will
+    # ignore all router advertisements, breaking IPv6 SLAAC. Accept Router
+    # Advertisements even if forwarding is enabled.
+    sysctl::parameters { 'ipv6-accept-ra':
+        values => {
+            "net.ipv6.conf.${facts['interface_primary']}.accept_ra" => 2,
+        },
+    }
+
     # We can't use this for VMs because of the AAAA lookups
     if $prod_firewalls {
         $master_hosts_ferm = join($master_hosts, ' ')
