@@ -49,14 +49,6 @@ class apt(
         purge   => $purge_sources,
     }
 
-    # This will munge /etc/apt/apt.conf that get's created during installation
-    # process (either labs vmbuilder or d-i). Given the ones below exist, it is
-    # no longer needed after the installation is over
-    file { '/etc/apt/apt.conf':
-        ensure => absent,
-        notify => Exec['apt-get update'],
-    }
-
     if $use_proxy {
         $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
@@ -66,12 +58,14 @@ class apt(
                 priority => '80',
                 key      => 'Acquire::http::Proxy::security.debian.org',
                 value    => $http_proxy,
+                before   => File['/etc/apt/apt.conf'],
             }
             apt::conf { 'security-cdn-debian-proxy':
                 ensure   => present,
                 priority => '80',
                 key      => 'Acquire::http::Proxy::security-cdn.debian.org',
                 value    => $http_proxy,
+                before   => File['/etc/apt/apt.conf']
             }
         } elsif $::operatingsystem == 'Ubuntu' {
             apt::conf { 'security-ubuntu-proxy':
@@ -79,6 +73,7 @@ class apt(
                 priority => '80',
                 key      => 'Acquire::http::Proxy::security.ubuntu.com',
                 value    => $http_proxy,
+                before   => File['/etc/apt/apt.conf']
             }
 
             apt::conf { 'ubuntu-cloud-archive-proxy':
@@ -86,6 +81,7 @@ class apt(
                 priority => '80',
                 key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
                 value    => $http_proxy,
+                before   => File['/etc/apt/apt.conf']
             }
 
             apt::conf { 'old-releases-proxy':
@@ -93,6 +89,7 @@ class apt(
                 priority => '80',
                 key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
                 value    => $http_proxy,
+                before   => File['/etc/apt/apt.conf']
             }
         } else {
             fail("Unknown operating system '${::operatingsystem}'.")
@@ -150,5 +147,14 @@ class apt(
         priority => '90',
         key      => 'APT::Install-Recommends',
         value    => '0',
+        before   => File['/etc/apt/apt.conf'],
+    }
+
+    # This will munge /etc/apt/apt.conf that get's created during installation
+    # process (either labs vmbuilder or d-i). Given the ones below exist, it is
+    # no longer needed after the installation is over
+    file { '/etc/apt/apt.conf':
+        ensure => absent,
+        notify => Exec['apt-get update'],
     }
 }
