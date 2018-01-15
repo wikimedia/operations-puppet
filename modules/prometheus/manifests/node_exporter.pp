@@ -11,6 +11,12 @@
 # [*$ignored_devices*]
 #  Regular expression to exclude block devices from being reported
 #
+# [*$ignored_fs_types*]
+#  Regular expression to exclude filesystem types from being reported
+#
+# [*$ignored_mount_points*]
+#  Regular expression to exclude mount points from being reported
+#
 # [*$collectors_extra*]
 #  List of extra collectors to be enabled.
 #
@@ -24,7 +30,9 @@
 
 
 class prometheus::node_exporter (
-    $ignored_devices  = "^(ram|loop|fd)\\\\d+\$",
+    $ignored_devices  = '^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\\\d+n\\\\d+p)\\\\d+$',
+    $ignored_fs_types  = '^(sys|proc|auto)fs$',
+    $ignored_mount_points  = '^/(sys|proc|dev)($|/)',
     $collectors_extra = [],
     $web_listen_address = ':9100',
 ) {
