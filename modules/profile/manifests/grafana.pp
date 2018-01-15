@@ -1,9 +1,8 @@
-# == Class: role::grafana::base
+# == Class: profile::grafana
 #
 # Grafana is a dashboarding webapp for Graphite.
-# This is a base role that should not be applied by itself
 #
-class role::grafana::base(
+class profile::grafana (
     $readonly_domain,
     $admin_domain,
     $secret_key,
@@ -172,7 +171,7 @@ class role::grafana::base(
     #
 
     apache::site { $readonly_domain:
-        content => template('role/apache/sites/grafana-readonly.erb'),
+        content => template('profile/apache/sites/grafana-readonly.erb'),
         require => Class['::grafana'],
     }
 
@@ -182,7 +181,7 @@ class role::grafana::base(
     }
 
     apache::site { $admin_domain:
-        content => template('role/apache/sites/grafana-admin.erb'),
+        content => template('profile/apache/sites/grafana-admin.erb'),
         require => Class['::grafana'],
     }
 
