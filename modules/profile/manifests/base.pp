@@ -29,6 +29,8 @@ class profile::base(
         use_proxy     => $use_apt_proxy,
         purge_sources => $purge_apt_sources,
     }
+    # Class apt must be applied before any package is added.
+    Class['apt'] -> Package <| |>
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
         ensure => directory,
