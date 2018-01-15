@@ -56,6 +56,8 @@ class apt(
         ensure => absent,
         notify => Exec['apt-get update'],
     }
+    Apt::Conf <| |> -> File['/etc/apt/apt.conf']
+    Apt::Pin <| |> -> File['/etc/apt/apt.conf']
 
     if $use_proxy {
         $http_proxy = "http://webproxy.${::site}.wmnet:8080"
