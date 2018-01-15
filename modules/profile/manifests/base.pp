@@ -25,9 +25,12 @@ class profile::base(
     $overlayfs = hiera('profile::base::overlayfs', false),
 ) {
     require ::profile::base::certificates
+
+    # Apt configuration needs to happen before anything else happens.
     class { '::apt':
         use_proxy     => $use_apt_proxy,
         purge_sources => $purge_apt_sources,
+        stage         => 'apt-config'
     }
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:

@@ -22,6 +22,11 @@ if !defined('$realm') {
     $realm = hiera('realm', 'production')
 }
 
+stage { 'apt-config':
+    before => Stage['main']
+}
+
+
 if $realm == 'labs' {
     # Pull the project name from the certname.
     # Labs certs are <hostname>.<projname>.<site>.wmflabs
