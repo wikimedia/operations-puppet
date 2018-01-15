@@ -1165,11 +1165,6 @@ node 'labnodepool1001.eqiad.wmnet' {
 }
 
 ## labsdb dbs
-node /labsdb100[13]\.eqiad\.wmnet/ {
-    # this role is depecated and its nodes scheduled for decom
-    role(mariadb::labs_deprecated)
-}
-
 node /labsdb10(09|10|11)\.eqiad\.wmnet/ {
     role(labs::db::replica)
 }
@@ -1189,6 +1184,11 @@ node 'labsdb1006.eqiad.wmnet' {
 
 node 'labsdb1007.eqiad.wmnet' {
     role(osm::master)
+}
+
+# old labsdbs, to be decommed. T142807
+node /labsdb100[13]\.eqiad\.wmnet/ {
+    role(spare::system)
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
