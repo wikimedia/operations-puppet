@@ -24,7 +24,9 @@
 
 
 class prometheus::node_exporter (
-    $ignored_devices  = "^(ram|loop|fd)\\\\d+\$",
+    $ignored_devices  = '^(ram|loop|fd)\\\\d+\$',
+    $ignored_fs_types  = '^(sys|proc|auto)fs$',
+    $ignored_mount_points  = '^/(sys|proc|dev)($|/)',
     $collectors_extra = [],
     $web_listen_address = ':9100',
 ) {
