@@ -1,0 +1,18 @@
+<% @ldap['servers'].each do |_, server| -%>
+[[servers]]
+  <%- server.each do |k ,v| %>
+    <%= k %> = <%= v %>
+  <%- end -%>
+<%- end -%>
+
+[servers.attributes]
+<%- @ldap['servers.attributes'].each do |k, v| -%>
+  <%= k %> = <%= v %>
+<%- end -%>
+
+<%- @ldap['servers.group_mappings'].each do |_, group| -%>
+[[servers.group_mappings]]
+  <%- group.each do |k ,v| %>
+    <%= k %> = <%= v %>
+  <%- end -%>
+<%- end -%>
