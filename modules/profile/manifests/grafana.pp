@@ -1,15 +1,14 @@
-# == Class: role::grafana::base
+# == Class: profile::grafana
 #
 # Grafana is a dashboarding webapp for Graphite.
-# This is a base role that should not be applied by itself
 #
-class role::grafana::base(
-    $readonly_domain,
-    $admin_domain,
-    $secret_key,
-    $admin_password,
-    $ldap_editor_description,
-    $ldap_editor_groups,
+class profile::grafana (
+    $readonly_domain=hiera('profile::grafana::readonly_domain'),
+    $admin_domain=hiera('profile::grafana::admin_domain'),
+    $secret_key=hiera('profile::grafana::secret_key'),
+    $admin_password=hiera('profile::grafana::admin_password'),
+    $ldap_editor_description=hiera('profile::grafana::ldap_editor_description'),
+    $ldap_editor_groups=hiera('profile::grafana::ldap_edit_groups'),
 ) {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
@@ -172,7 +171,7 @@ class role::grafana::base(
     #
 
     apache::site { $readonly_domain:
-        content => template('role/apache/sites/grafana-readonly.erb'),
+        content => template('profile/apache/sites/grafana-readonly.erb'),
         require => Class['::grafana'],
     }
 
@@ -182,7 +181,7 @@ class role::grafana::base(
     }
 
     apache::site { $admin_domain:
-        content => template('role/apache/sites/grafana-admin.erb'),
+        content => template('profile/apache/sites/grafana-admin.erb'),
         require => Class['::grafana'],
     }
 

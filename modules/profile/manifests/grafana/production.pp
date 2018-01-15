@@ -6,7 +6,7 @@
 class profile::grafana::production {
     include ::passwords::grafana::production
 
-    class { '::role::grafana::base':
+    class { '::profile::grafana':
         readonly_domain         => 'grafana.wikimedia.org',
         admin_domain            => 'grafana-admin.wikimedia.org',
         secret_key              => $passwords::grafana::production::secret_key,
