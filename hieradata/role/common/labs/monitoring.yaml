@@ -5,3 +5,15 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+profile::grafana::readonly_domain: grafana-labs.wikimedia.org
+profile::grafana::admin_domain: grafana-labs-admin.wikimedia.org
+profile::grafana::ldap_editor_description: LDAP Users (Wikitech)
+profile::grafana::ldap_editor:
+  - cn=ops,ou=groups,dc=wikimedia,dc=org
+  - cn=nda,ou=groups,dc=wikimedia,dc=org
+  - cn=wmf,ou=groups,dc=wikimedia,dc=org
+  - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
+  - cn=project-bastion,ou=groups,dc=wikimedia,dc=org'
+# In private repo
+#profile::grafana::secret_key:
+#profile::grafana::admin_password:
