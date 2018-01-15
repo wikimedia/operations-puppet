@@ -83,7 +83,7 @@ class wdqs::gui(
         mode   => '0755',
     }
 
-    $cron_log = "${log_dir}/reloadCategories.log"
+    $reload_categories_log = "${log_dir}/reloadCategories.log"
     # the reload-categories cron needs to reload nginx once the categories are up to date
     sudo::user { "${username}-reload-nginx":
       ensure     => present,
@@ -96,7 +96,7 @@ class wdqs::gui(
     # do not want them to be too far from one another.
     cron { 'reload-categories':
         ensure  => present,
-        command => "/usr/local/bin/reloadCategories.sh >> ${cron_log}",
+        command => "/usr/local/bin/reloadCategories.sh >> ${reload_categories_log}",
         user    => $username,
         weekday => 1,
         minute  => fqdn_rand(60),
@@ -114,7 +114,7 @@ class wdqs::gui(
 
     logrotate::rule { 'wdqs-reload-categories':
         ensure       => present,
-        file_glob    => $cron_log,
+        file_glob    => $reload_categories_log,
         frequency    => 'monthly',
         missing_ok   => true,
         not_if_empty => true,
@@ -134,14 +134,4 @@ class wdqs::gui(
         su           => "${username} wikidev",
     }
 
-    # Remove categories*.log files after 30 days.
-    logrotate::rule { 'wdqs-categories-logs':
-        ensure       => present,
-        file_glob    => "${log_dir}/categories*.log",
-        missing_ok   => true,
-        not_if_empty => true,
-        rotate       => 0,
-        max_age      => 30,
-        su           => "${username} wikidev",
-    }
 }
