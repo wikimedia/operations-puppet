@@ -3,12 +3,12 @@
 # Grafana is a dashboarding webapp for Graphite.
 #
 class profile::grafana (
-    $readonly_domain,
-    $admin_domain,
-    $secret_key,
-    $admin_password,
-    $ldap_editor_description,
-    $ldap_editor_groups,
+    $readonly_domain=hiera('profile::grafana::readonly_domain'),
+    $admin_domain=hiera('profile::grafana::admin_domain'),
+    $secret_key=hiera('profile::grafana::secret_key'),
+    $admin_password=hiera('profile::grafana::admin_password'),
+    $ldap_editor_description=hiera('profile::grafana::ldap_editor_description'),
+    $ldap_editor_groups=hiera('profile::grafana::ldap_edit_groups'),
 ) {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
