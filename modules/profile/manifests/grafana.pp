@@ -10,6 +10,7 @@ class profile::grafana (
     $ldap_editor_description=hiera('profile::grafana::ldap_editor_description'),
     $ldap_editor_groups=hiera('profile::grafana::ldap_edit_groups'),
     $config=hiera('profile::grafana::config', {}),
+    $ldap=hiera('profile::grafana::ldap', undef),
 ) {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
@@ -100,6 +101,7 @@ class profile::grafana (
 
     class { '::grafana':
         config => $end_config,
+        ldap   => $ldap,
     }
 
     ferm::service { 'grafana_http':
