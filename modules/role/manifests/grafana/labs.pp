@@ -6,7 +6,7 @@
 class role::grafana::labs {
     include ::passwords::grafana::labs
 
-    class { '::role::grafana::base':
+    class { '::profile::grafana':
         readonly_domain         => 'grafana-labs.wikimedia.org',
         admin_domain            => 'grafana-labs-admin.wikimedia.org',
         secret_key              => $passwords::grafana::labs::secret_key,
