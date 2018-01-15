@@ -38,6 +38,21 @@ class profile::kubernetes::node(
         kubeconfig     => $kubeproxy_config,
     }
 
+    # Set the host as a router for IPv6 in order to allow pods to have an IPv6
+    # address
+    # If the host considers itself as a router (IP forwarding enabled), it will
+    # ignore all router advertisements, breaking IPv6 SLAAC. Accept Router
+    # Advertisements even if forwarding is enabled, but only on the primary
+    # interface
+    # lint:ignore:arrow_alignment
+    sysctl::parameters { 'ipv6-accept-ra':
+        values => {
+            'net.ipv6.conf.all.forwarding' => 1,
+            "net.ipv6.conf.${facts['interface_primary']}.accept_ra" => 2,
+        },
+    }
+    # lint:endignore
+
     # We can't use this for VMs because of the AAAA lookups
     if $prod_firewalls {
         $master_hosts_ferm = join($master_hosts, ' ')
