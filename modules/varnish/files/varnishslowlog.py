@@ -139,7 +139,14 @@ class VarnishSlowLog(object):
         elif tag == 'ReqHeader':
             splitagain = value.split(None, 1)
             header_name = splitagain[0][:-1]
-            header_value = splitagain[1]
+
+            if len(splitagain) == 2:
+                header_value = splitagain[1]
+            else:
+                # ReqHeader can occasionaly have no associated value. Set value
+                # to empty string if that is the case.
+                header_value = ''
+
             self.tx['request-' + header_name] = header_value
         elif tag == 'RespHeader':
             splitagain = value.split(None, 1)
