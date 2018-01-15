@@ -127,13 +127,13 @@ profile::cassandra::instances:
       listen_address: 10.64.48.139
     c:
       listen_address: 10.64.48.140
-  "restbase1016.eqiad.wmnet":
-    a:
-      listen_address: 10.64.0.32
-    b:
-      listen_address: 10.64.0.33
-    c:
-      listen_address: 10.64.0.34
+  #"restbase1016.eqiad.wmnet":
+  #  a:
+  #    listen_address: 10.64.0.32
+  #  b:
+  #    listen_address: 10.64.0.33
+  #  c:
+  #    listen_address: 10.64.0.34
   # "restbase1017.eqiad.wmnet":
   #   a:
   #     listen_address: 10.64.32.130

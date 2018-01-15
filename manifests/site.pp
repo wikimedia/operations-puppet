@@ -1881,11 +1881,11 @@ node /^relforge100[1-2]\.eqiad\.wmnet/ {
 }
 
 # restbase eqiad cluster
-node /^restbase101[356]\.eqiad\.wmnet$/ {
+node /^restbase101[35]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-node /^restbase10(0[789]|1[012478])\.eqiad\.wmnet$/ {
+node /^restbase10(0[789]|1[0124678])\.eqiad\.wmnet$/ {
     role(restbase::production_ng)
 }
 
