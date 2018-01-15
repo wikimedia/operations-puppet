@@ -87,7 +87,8 @@ class VarnishSlowLog(object):
                 self.args.logstash_server[0],
                 port=self.args.logstash_server[1],
                 version=1,
-                message_type='varnishslowlog'
+                message_type='logback',
+                tags=['varnishslowlog']
             )
         else:
             handler = logging.StreamHandler(sys.stdout)
