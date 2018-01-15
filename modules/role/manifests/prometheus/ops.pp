@@ -578,10 +578,16 @@ class role::prometheus::ops {
     $jmx_exporter_jobs = [
       {
         'job_name'        => 'jmx_kafka',
-        'scrape_timeout'  => '25s',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/jmx_kafka_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'jmx_puppetdb',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_puppetdb_*.yaml" ]}
         ],
       },
     ]
@@ -592,6 +598,11 @@ class role::prometheus::ops {
         site       => $::site,
     }
 
+    prometheus::jmx_exporter_config{ "puppetdb_${::site}":
+        dest       => "${targets_path}/jmx_puppetdb_${::site}.yaml",
+        class_name => 'role::puppetmaster::puppetdb',
+        site       => $::site,
+    }
 
     $etherpad_jobs = [
       {
