@@ -1,3 +1,2 @@
 mariadb::shard: 's1'
 mariadb::binlog_format: 'ROW'
-mariadb::socket: '/tmp/mysql.sock'
