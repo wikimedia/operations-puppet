@@ -15,6 +15,16 @@ profile::grafana::ldap_edit_groups:
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
   - cn=grafana-admin,ou=groups,dc=wikimedia,dc=org
+profile::grafana::config:
+  auth.proxy:
+    enabled: false
+  auth.ldap:
+    enabled: true
+    allow_sign_up: true
+    config_file: ADDME # TO BE ADDED
+  auth.anonymous:
+    enabled: true
+    org_name: Wikimedia
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
