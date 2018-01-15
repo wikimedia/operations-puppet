@@ -10,6 +10,10 @@
 #   For a list of available configuration options and their purpose,
 #   see <http://docs.grafana.org/installation/configuration/>.
 #
+# [*ldap*]
+#   A hash meant of ldap.toml configuration options
+#   See http://docs.grafana.org/installation/ldap/
+#
 # === Examples
 #
 #  class { '::grafana':
@@ -21,7 +25,10 @@
 #    },
 #  }
 #
-class grafana( $config ) {
+class grafana(
+    $config,
+    $ldap = undef,
+) {
 
     $defaults = {
         'dashboards.json' => {
@@ -62,4 +69,14 @@ class grafana( $config ) {
             Package['grafana'],
         ],
     }
+
+    if $ldap {
+        file { '/etc/grafana/ldap.toml':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            content => template('grafana/ldap.toml.erb'),
+        }
+    }
+
 }

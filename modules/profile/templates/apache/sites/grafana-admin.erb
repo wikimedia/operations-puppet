@@ -13,6 +13,17 @@
   # The X-WEBAUTH-USER should only be set by us.
   RequestHeader unset X-WEBAUTH-USER
 
+  <% if @ldap %>
+  # Automatically log in all visitors as anonymous.
+  RequestHeader set X-WEBAUTH-USER "Anonymous"
+
+  <Proxy *>
+    <Limit POST PUT DELETE>
+      Require all denied
+    </Limit>
+  </Proxy>
+  <% else %>
+
   # Rewrite REMOTE_USER envvar into X-WEBAUTH-USER header.
   RewriteRule .* - [E=WEBAUTH_USER:%{LA-U:REMOTE_USER}]
   RequestHeader set X-WEBAUTH-USER %{WEBAUTH_USER}e env=WEBAUTH_USER
@@ -28,4 +39,5 @@
     Require ldap-group <%= group %>
     <% end -%>
   </Proxy>
+  <% end %>
 </VirtualHost>
