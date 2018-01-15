@@ -23,7 +23,7 @@
     shard: s2
     role: slave
   targets:
-  - db2035:9104
+  - db2017:9104
   - db2041:9104
   - db2049:9104
   - db2056:9104
@@ -35,7 +35,7 @@
     shard: s2
     role: master
   targets:
-  - db2017:9104
+  - db2035:9104
 
 - labels:
     shard: s3

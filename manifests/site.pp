@@ -314,11 +314,11 @@ node /^db1(053|060|074|076|090)\.eqiad\.wmnet/ {
 
 # s2 (large wikis) core production dbs on codfw
 # codfw master
-node 'db2017.codfw.wmnet' {
+node 'db2035.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(35|41|49|56|63|64)\.codfw\.wmnet/ {
+node /^db20(17|41|49|56|63|64)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
