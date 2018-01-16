@@ -21,8 +21,7 @@ server = <%= @server %>
 <% if @certname %>certname = <%= @certname %><% end %>
 <% if @dns_alt_names %>dns_alt_names = <%= @dns_alt_names %><% end %>
 daemonize = false
-http_connect_timeout = 60
-http_read_timeout = 960
+configtimeout = 960
 usecacheonfailure = false
 splay = true
 pluginsync = true
