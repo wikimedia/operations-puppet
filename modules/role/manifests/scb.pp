@@ -22,7 +22,6 @@ class role::scb {
     include ::profile::ores::web
     include ::profile::nutcracker
 
-
     include ::profile::cpjobqueue
     include ::profile::recommendation_api
     include ::profile::mobileapps
