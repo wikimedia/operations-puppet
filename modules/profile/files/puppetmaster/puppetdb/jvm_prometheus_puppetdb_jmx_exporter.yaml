@@ -6,3 +6,8 @@ whitelistObjectNames:
   - 'com.puppetlabs.puppetdb.command:type=replace facts.3,name=*'
   - 'com.puppetlabs.puppetdb.http.server:type=/v3/commands,name=*'
   - 'com.puppetlabs.puppetdb.http.server:type=/v3/nodes,name=*'
+  - 'com.puppetlabs.puppetdb.query.population:type=default,name=num-nodes'
+  - 'com.puppetlabs.puppetdb.query.population:type=default,name=num-resources'
+  - 'com.puppetlabs.puppetdb.query.population:type=default,name=pct-resource-dupes'
+  - 'com.puppetlabs.puppetdb.scf.storage:type=default,name=duplicate-pct'
+  - 'org.apache.activemq:BrokerName=localhost,Type=Queue,Destination=com.puppetlabs.puppetdb.commands'
