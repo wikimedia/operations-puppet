@@ -39,6 +39,7 @@ class profile::eventstreams(
 ) {
     $kafka_config = kafka_config($kafka_cluster_name)
     $broker_list = $kafka_config['brokers']['string']
+
     service::packages { 'eventstreams':
         pkgs     => ['librdkafka++1', 'librdkafka1'],
     }

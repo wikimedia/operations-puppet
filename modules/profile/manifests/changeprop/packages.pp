@@ -5,5 +5,4 @@ class profile::changeprop::packages() {
         pkgs     => ['librdkafka++1', 'librdkafka1'],
         dev_pkgs => ['librdkafka-dev'],
     }
-
 }
