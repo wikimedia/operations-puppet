@@ -41,7 +41,6 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
       # We do this for the require in postgres::db
       $require_class = 'postgresql::master'
       class { '::postgresql::master':
-          includes => ['tuning.conf'],
           root_dir => '/srv/postgres',
           use_ssl  => true,
       }
@@ -49,7 +48,6 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
   } else {
       $require_class = 'postgresql::slave'
       class { '::postgresql::slave':
-          includes         => ['tuning.conf'],
           master_server    => $master,
           root_dir         => '/srv/postgres',
           replication_pass => $replication_pass,
