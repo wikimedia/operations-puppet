@@ -6,7 +6,7 @@
 # Virtio has shown to be non-determinstic on certain host:client kernel
 # version matchups (IO freezing)
 class openstack::nova::compute::audit(
-    $whitelist_kernels=['4.4.0-81-generic', '4.4.0-109-generic'],
+    $whitelist_kernels=['4.4.0-109-generic'],
     ) {
 
     if os_version('ubuntu >= trusty') {
