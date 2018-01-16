@@ -1,2 +1,0 @@
-profile::pmacct::kafka_cluster: 'jumbo-eqiad'
-profile::pmacct::librdkafka_config: []

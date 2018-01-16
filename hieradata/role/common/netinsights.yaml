@@ -1,0 +1,2 @@
+profile::netinsights::kafka_cluster: 'jumbo-eqiad'
+profile::netinsights::librdkafka_config: []
