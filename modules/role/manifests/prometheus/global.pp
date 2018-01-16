@@ -53,8 +53,8 @@ class role::prometheus::global {
     ]
 
     prometheus::server { 'global':
-        # one year
-        storage_retention    => '8760h0m0s',
+        # fifteen months
+        storage_retention    => '10950h0m0s',
         listen_address       => '127.0.0.1:9904',
         scrape_configs_extra => $federation_jobs,
     }
