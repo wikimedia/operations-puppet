@@ -1023,7 +1023,7 @@ users:
     gid: 500
     name: maxsem
     realname: Max Semenik
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfuBTpiiDX2o68s2Lyc2LDT1r39IN3V4bzPVsdZEcJKcti9chfO2BK1xUGZ+KWbUSvQn8TtT0MDTTDDlXEK/oc+MlNn5o+K/xY6lUkyQuWLHZi8GaOuLaqude9myv+u+RGvuvTvre2bVNwAZ94XpSa5gN9BUdrZHeeLGw1NxE9g+675mRxg/2nBM7sPYr7S9MFTxNuW9HUfyXoGx0NZrsTR7gLz0H4ET6HYgLMXVVKIaNLyKkfDdJ/ywmd61LGdp+jUjWjPeClrhutyk/3z//fauC/S1OtyD1IP29Eg3wJbxWaWRnanAq5EueEopz2lOProwOVPnwTYNLk2GRa/xiV msemenik@MaxSem.corp.wikimedia.org]
     uid: 1220
     email: msemenik@wikimedia.org
   mattflaschen:
