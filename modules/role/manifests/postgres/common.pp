@@ -3,7 +3,13 @@ class role::postgres::common {
 
     $root_dir = '/srv/postgres'
 
-    file { '/etc/postgresql/9.4/main/tuning.conf':
+    $pgversion = $::lsbdistcodename ? {
+        'stretch' => '9.6',
+        'jessie'  => '9.4',
+        'trusty'  => '9.3',
+    }
+
+    file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure => 'present',
         owner  => 'root',
         group  => 'root',
@@ -25,4 +31,3 @@ class role::postgres::common {
         srange => '$LABS_NETWORKS',
     }
 }
-
