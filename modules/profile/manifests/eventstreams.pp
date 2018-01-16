@@ -37,6 +37,10 @@ class profile::eventstreams(
     $streams = hiera('profile::eventstreams::streams'),
     $rdkafka_config = hiera('profile::eventstreams::rdkafka_config')
 ) {
+    # Pin librdkafka to specific version since node-rdkafka is built on it.
+    # See: https://phabricator.wikimedia.org/T185016
+    requrie ::profile::kafka::librdkafka::pin
+
     $kafka_config = kafka_config($kafka_cluster_name)
     $broker_list = $kafka_config['brokers']['string']
     service::packages { 'eventstreams':
