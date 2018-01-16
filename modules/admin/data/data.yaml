@@ -9,7 +9,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              nschaaf, zhousquared, gwicke]
+              nschaaf, zhousquared, gwicke, dpatrick]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [siddharth11, adavenport]
@@ -61,7 +61,7 @@ groups:
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, ssastry,
               tgr, phuedx, ejegg, twentyafterfour, legoktm, catrope,
-              mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
+              mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
               musikanimal, jdrewniak, pnorman]
@@ -192,7 +192,7 @@ groups:
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
-              madhuvishy, tjones, legoktm, dcausse, bearloga, dpatrick, atgomez, dstrine,
+              madhuvishy, tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans, shiladsen, esanders]
   statistics-users:
@@ -204,7 +204,7 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann, amire80,
               deskana, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, kartik, nikerabbit, pcoombe,
-              neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez, dstrine,
+              neilpquinn-wmf, maxsem, jminor, atgomez, dstrine,
               ladsgroup, ovasileva, shiladsen]
   statistics-admins:
     posix_name: stats
@@ -1887,13 +1887,12 @@ users:
     uid: 2377
     email: aklapper@wikimedia.org
   dpatrick:
-    ensure: present
+    ensure: absent
     gid: 500
     name: dpatrick
     realname: Darian Anthony Patrick
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3dtG8+VT7ldgcssl6OFgWbZThbShLay2LufVhVCmXEyOzoBGV3miwhyN1WGodp7aJ53txKPMDeakcyS9NtGL17avwJ/BccQrqxK8htqHvNJJOvvH8wrVSQpa0VwZ4MdGQXs+EJ9rTfb4ZWbi9uhg5DVSe/l6aeUR0w70rBvRjJS4XudJo71tvM8nqcYbusutkeJN97LLPBPCKq6mrhu1p80Lc3ZK3IYnyHceDxYDyfvbWVBfNDKEbRD64ogDvaG3tmMF1Fl0AL6Bujf1MOxlm8iykbog5kCFh74gECJ6B4OBLQ6i/sZ4U4uJa2Ucj4BRR7B8xX6RFGcfS03+m7KFN dpatrick_prod]
+    ssh_keys: []
     uid: 12203
-    email: dpatrick@wikimedia.org
   dcausse:
     ensure: present
     gid: 500
