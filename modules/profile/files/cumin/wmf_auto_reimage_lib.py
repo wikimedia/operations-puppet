@@ -472,13 +472,15 @@ def validate_hosts(hosts, no_raise=False):
         command = "puppet cert list --all 2> /dev/null | egrep '({hosts})'".format(
             hosts='|'.join(hosts))
 
-    exit_code, worker = run_cumin('validate_hosts', get_puppet_ca_master(), [command])
+    exit_code, worker = run_cumin(
+        'validate_hosts', get_puppet_ca_master(), [command], ignore_exit=True)
 
-    missing = []
+    missing = hosts[:]
+    output = ''
     for _, output in worker.get_results():
         for host in hosts:
-            if '+ "{host}"'.format(host=host) not in output.message():
-                missing.append(host)
+            if '+ "{host}"'.format(host=host) in output.message():
+                missing.remove(host)
 
     if missing:
         message = ('Signed cert on Puppet not found for hosts {missing} '
@@ -492,7 +494,7 @@ def validate_hosts(hosts, no_raise=False):
             raise RuntimeError(message)
     else:
         if len(hosts) == 1:
-            print_line('Validated host', host=host)
+            print_line('Validated host', host=hosts[0])
         else:
             print_line('Validated hosts: {hosts}'.format(hosts=hosts))
 
