@@ -1451,7 +1451,7 @@ node /^mw120[1-8]\.eqiad\.wmnet$/ {
 
 # mw1209-1216, 1218-1220 are apaches
 node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(spare::system)
 }
 
 # mw1259-60 are videoscalers
