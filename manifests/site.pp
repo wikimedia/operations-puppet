@@ -1776,11 +1776,6 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
     role(prometheus)
 }
 
-node 'puppetcompiler1001.eqiad.wmnet' {
-    role(test)
-    interface::add_ip6_mapped { 'main': }
-}
-
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
     role(prometheus)
 }

@@ -332,13 +332,6 @@ host poolcounter2002 {
     fixed-address poolcounter2002.codfw.wmnet;
 }
 
-host puppetcompiler1001 {
-    hardware ethernet aa:00:00:25:33:57;
-    fixed-address puppetcompiler1001.eqiad.wmnet;
-    option pxelinux.pathprefix "stretch-installer/";
-    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
-}
-
 # ganeti VMs used for pybal testing/development
 host pybal-test2001 {
     hardware ethernet aa:00:00:16:8d:f9;
