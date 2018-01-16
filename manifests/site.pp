@@ -1577,92 +1577,121 @@ node 'mw1338.eqiad.wmnet' {
 
 ## DATACENTER: CODFW
 
-# ROW A codfw appservers: mw2017, mw2075-mw2079, and mw2215-2250
+# Debug servers
 
 # mw2017/mw2099 are codfw test appservers
 node /^mw20(17|99)\.codfw\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-#mw2097, mw2100-mw2117 are appservers
+# Hosts to decommission (if any)
+# TODO: mw2099-2134 should be decommissioned as soon as we have the new systems
+
+# Appservers
+
+# Row A
+
+# mw2224-38 are in rack A3
+# mw2239-42 are in rack A4
+node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# Row B
+
+# mw2097, mw2100-mw2117 are in rack B3
 node /^mw2(097|10[0-9]|11[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
     include ::base::firewall
 }
+#mw2254-2258 are in rack B3
+node /^mw225[4-8]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
 
-#mw2120-2147 are api appservers
+# Row C
+
+# mw2163-mw2186 are in rack C3
+# mw2187-mw2199 are in rack C4
+node /^mw21(6[3-9]|[7-9][0-9])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# Api
+
+# Row A
+
+# mw2215-2223 are in rack A3
+node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# mw2251-2253 are rack A4
+node /^mw225[1-3]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# Row B
+
+# mw2120-2147 are in rack B4
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# ROW B codfw appservers
+# Row C
+
+# mw2200-2214 are in rack C4
+node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+
+# Imagescalers
+
+# Row C (C3)
+node /^mw215[01]\.codfw\.wmnet$/ {
+    role(mediawiki::imagescaler)
+}
+
+# Row A (A4)
+node /^mw224[45]\.codfw\.wmnet$/ {
+    role(mediawiki::imagescaler)
+}
+
+# Jobrunners
+
+# Row A
+
+# mw2243, mw2247-mw2250 are in rack A4
+node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Row C
+
+# mw2153-62 are in rack C3
+node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Videoscalers
+
+# Row A (A4)
+
+node 'mw2246.codfw.wmnet' {
+    role(mediawiki::videoscaler)
+}
+
+# Row B (B3-B4)
 
 node /^mw211[89]\.codfw\.wmnet$/ {
     role(mediawiki::videoscaler)
 }
 
-# ROW C codfw appservers: mw2150-mw2234
+# Row C (C3)
 
-#mw2150-mw2151 are imagescalers
-node /^mw215[01]\.codfw\.wmnet$/ {
-    role(mediawiki::imagescaler)
-}
-
-#mw2152 is a videoscaler
 node 'mw2152.codfw.wmnet' {
     role(mediawiki::videoscaler)
-}
-
-#mw2153-62 are jobrunners
-node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
-#mw2163-mw2199 are appservers
-node /^mw21(6[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
-#mw2200-2214 are api appservers
-node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
-# New Appservers, in row A3/A4
-
-#mw2215-2223 are api appservers
-node /^mw22(1[5-9]|2[0123])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
-# mw2224-42 are appservers
-node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
-#mw2244-mw2245 are imagescalers
-node /^mw224[45]\.codfw\.wmnet$/ {
-    role(mediawiki::imagescaler)
-}
-
-# mw2246 is a videoscaler
-node 'mw2246.codfw.wmnet' {
-    role(mediawiki::videoscaler)
-}
-
-# mw2247-2250 are jobrunners
-node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
-#mw2251-2253 are api-appservers
-node /^mw225[1-3]\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
-#mw2254-2258 are appservers
-node /^mw225[4-8]\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
 }
 
 ## END MEDIAWIKI APPLICATION SERVERS
