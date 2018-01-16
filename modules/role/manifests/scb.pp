@@ -13,6 +13,18 @@ class role::scb {
         description => "Service cluster B; includes:\n\t${msg_services}"
     }
 
+    # https://phabricator.wikimedia.org/T185016
+    # Need to keep librddkafka from upgrading until
+    # node-rdkafka is rebuilt with later version,
+    # and we are sure that version is compatible with
+    # main kafka broker version (currently 0.9.0.1).
+    apt::pin { 'librdkafka1':
+        package  => 'librdkafka1',
+        pin      => 'version 0.9.*',
+        priority => '1002',
+        before   => Package['librdkafka1'],
+    }
+
     include ::standard
     include ::base::firewall
     include role::lvs::realserver
