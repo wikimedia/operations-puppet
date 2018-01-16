@@ -1432,11 +1432,17 @@ node /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
-# mwdebug servers are for mediawiki testing/debugging
-# They replace mw1017 and mw1099
+
+## MEDIAWIKI APPLICATION SERVERS
+
+## DATACENTER: EQIAD
+
+# Debug servers
 node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
+
+# Hosts to decommission (if any)
 
 # mw1201-1208 are api apaches
 node /^mw120[1-8]\.eqiad\.wmnet$/ {
@@ -1448,93 +1454,128 @@ node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-#mw1221-mw1235 are api apaches
-node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
-#mw1238-mw1258 are apaches
-node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
-#mw1259-60 are videoscalers
+# mw1259-60 are videoscalers
 node /^mw12(59|60)\.eqiad\.wmnet/ {
     role(mediawiki::videoscaler)
 }
 
-# ROW A eqiad appservers
-#mw1261 - mw1275
+# Appservers (serving normal website traffic)
 
+# Row A
+
+# mw1261 - mw1275 are in rack A7
 node /^mw126[1-5]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
-
 node /^mw12(6[6-9]|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# ROW A eqiad api appserver
-# mw1276 - mw1290
-node /^mw127[6-9]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::canary_api)
-}
+# Row C
 
-node /^mw12(8[0-9]|90)\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
-# ROW A eqiad imagescalers
-node /^mw129[3-8]\.eqiad\.wmnet$/ {
-    role(mediawiki::imagescaler)
-}
-
-# ROW A eqiad jobrunners
-node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
-# ROW C eqiad jobrunners
-node /^mw133[4-7]\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
-# T165519
-# ROW C eqiad appservers
+# mw1319-33 are in rack C6
 node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# ROW B eqiad api-appservers
-node /^mw13(1[2-7])\.eqiad\.wmnet$/ {
+# Row D
+
+#mw1238-mw1258 are in rack D5
+node /^mw12(3[8-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# API (serving api traffic)
+
+# Row A
+
+# mw1276 - mw1283 are in rack A7
+node /^mw127[6-9]\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::canary_api)
+}
+node /^mw128[0-3]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# ROW C api-appservers
+# mw1312 is in rack A6
+node 'mw1312.eqiad.wmnet' {
+    role(mediawiki::appserver::api)
+}
+
+# Row B
+
+# mw1284-1290 are in rack B6
+node /^mw12(8[4-9]|90)\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# mw1313-17 are in rack B7
+node /^mw13(1[3-7])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+# Row C
+
+# mw1339-48 are in rack C6
 node /^mw13(39|4[0-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# ROW A eqiad jobrunners
+# Row D
+# mw1221-mw1235 are in rack D5
+node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+
+# Imagescalers (mostly obsolete functionality, replaced by thumbor)
+
+# Row B (B6)
+node /^mw129[3-8]\.eqiad\.wmnet$/ {
+    role(mediawiki::imagescaler)
+}
+
+# Jobrunners (now mostly used via changepropagation as a LVS endpoint)
+
+# Row A
+
+# mw1308-mw1311 are in rack A6
 node /^mw13(0[89]|1[01])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# ROW A videoscaler
+# Row B
+
+# mw1299-mw1306 are in rack B6
+node /^mw1(299|30[0-6])\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Row C
+
+# mw1334-mw1337 are in rack C6
+node /^mw133[4-7]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Videoscalers
+
+# Row A (A6)
 node 'mw1307.eqiad.wmnet' {
     role(mediawiki::videoscaler)
 }
 
-# ROW B videoscaler
+# Row B (B7)
 node 'mw1318.eqiad.wmnet' {
     role(mediawiki::videoscaler)
 }
 
-# ROW C videoscaler
+# Row C (C6)
 node 'mw1338.eqiad.wmnet' {
     role(mediawiki::videoscaler)
 }
 
+## DATACENTER: CODFW
 
 # ROW A codfw appservers: mw2017, mw2075-mw2079, and mw2215-2250
 
@@ -1623,6 +1664,8 @@ node /^mw225[1-3]\.codfw\.wmnet$/ {
 node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
+
+## END MEDIAWIKI APPLICATION SERVERS
 
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
