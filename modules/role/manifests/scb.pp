@@ -22,6 +22,9 @@ class role::scb {
     include ::profile::ores::web
     include ::profile::nutcracker
 
+    # Pin librdkfaka to specific version since node-rdkafka is built on it.
+    # See: https://phabricator.wikimedia.org/T185016
+    include ::profile::kafka::librdkafka::pin
 
     include ::profile::cpjobqueue
     include ::profile::recommendation_api
