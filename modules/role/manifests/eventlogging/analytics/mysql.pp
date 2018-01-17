@@ -32,16 +32,6 @@ class role::eventlogging::analytics::mysql {
         ['mysql-m4-master-00']
     )
 
-    # Where possible, if this is set, it will be included in client configuration
-    # to avoid having to do API version for Kafka < 0.10 (where there is not a version API).
-    $kafka_api_version         = $role::eventlogging::analytics::server::kafka_config['api_version']
-
-    # Append this to query params if set.
-    $kafka_api_version_param = $kafka_api_version ? {
-        undef   => '',
-        default => "&api_version=${kafka_api_version}"
-    }
-
     $kafka_consumer_scheme = $role::eventlogging::analytics::server::kafka_consumer_scheme
     $kafka_brokers_string  = $role::eventlogging::analytics::server::kafka_brokers_string
 
@@ -68,7 +58,7 @@ class role::eventlogging::analytics::mysql {
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
         # auto commit offsets to kafka more often for mysql consumer
-        input  => "${map_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${kafka_api_version_param}${map_function}",
+        input  => "${map_scheme}${kafka_consumer_uri}&auto_commit_interval_ms=1000${map_function}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => 'eventlogging_consumer_mysql_00',
         # Restrict permissions on this config file since it contains a password.
@@ -97,7 +87,7 @@ class role::eventlogging::analytics::mysql {
     # want bugs in one to affect the other.
     eventlogging::service::consumer { 'mysql-eventbus':
         # auto commit offsets to kafka more often for mysql consumer
-        input        => "${kafka_consumer_uri_eventbus}&auto_commit_interval_ms=1000${kafka_api_version_param}",
+        input        => "${kafka_consumer_uri_eventbus}&auto_commit_interval_ms=1000",
         output       => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         # Load and cache local (EventBus) schemas so those events can be inserted into MySQL too.
         # This will require a restart of the consumer process(es) when there are any new schemas.
