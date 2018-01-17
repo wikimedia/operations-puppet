@@ -6,9 +6,6 @@
 class role::eventlogging::analytics::processor{
     include role::eventlogging::analytics::server
 
-    # Where possible, if this is set, it will be included in client configuration
-    # to avoid having to do API version for Kafka < 0.10 (where there is not a version API).
-    $kafka_api_version         = $role::eventlogging::analytics::server::kafka_config['api_version']
     $kafka_brokers_string      = $role::eventlogging::analytics::server::kafka_config['brokers']['string']
 
     $kafka_consumer_group = hiera(
@@ -47,13 +44,6 @@ class role::eventlogging::analytics::processor{
         default => "${kafka_producer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
     }
 
-    # Append this to query params of kafka-python writer if set.
-    # kafka-confluent defaults to setting this to 0.9 anyway.
-    $kafka_api_version_param = $kafka_api_version ? {
-        undef   => '',
-        default => "&api_version=${kafka_api_version}"
-    }
-
     # Increase number and backoff time of retries for async
     # analytics uses.  If metadata changes, we should give
     # more time to retry. NOTE: testing this in production
@@ -65,7 +55,7 @@ class role::eventlogging::analytics::processor{
         # args for kafka-confluent handler writer
         'kafka-confluent://' => 'message.send.max.retries=6,retry.backoff.ms=200',
         # args for kafka-python handler writer
-        'kafka://'           => "retries=6&retry_backoff_ms=200${kafka_api_version_param}"
+        'kafka://'           => "retries=6&retry_backoff_ms=200"
     }
 
     # Incoming format from /beacon/event via varnishkafka eventlogging-client-side
@@ -79,7 +69,7 @@ class role::eventlogging::analytics::processor{
     $format = '%q %{recvFrom}s %{seqId}d %D %o %u'
     eventlogging::service::processor { $client_side_processors:
         format         => $format,
-        input          => "${kafka_client_side_raw_uri}${kafka_api_version_param}",
+        input          => "${kafka_client_side_raw_uri}",
         sid            => $kafka_consumer_group,
         outputs        => [
             "${kafka_schema_output_uri}&${kafka_producer_args}",
