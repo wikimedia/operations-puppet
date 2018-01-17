@@ -1,6 +1,14 @@
 class role::mariadb::otrsbackups {
+
+    system::role { 'mariadb::otrsbackups':
+        description => "OTRS backups and generic disk storage",
+    }
+
+    include ::standard
+    include ::base::firewall
     include ::profile::backup::host
 
+    # this needs to be moved to a profile
     file { '/srv/backups':
         ensure => directory,
         owner  => 'root',
