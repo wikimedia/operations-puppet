@@ -24,7 +24,6 @@ class role::mariadb::temporary_storage {
 
     include ::standard
     include ::profile::base::firewall
-    include ::profile::mariadb::monitor
     # mariadb port not open to the world (change for remote managing)
     # include ::role::mariadb::ferm
 
