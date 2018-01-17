@@ -22,7 +22,7 @@ class profile::webperf(
     }
 
     # Use brokers from this Kafka cluster to consume metrics.
-    $kafka_config  = kafka_config('analytics')
+    $kafka_config  = kafka_config('jumbo-eqiad')
     $kafka_brokers = $kafka_config['brokers']['string']
 
     # Aggregate client-side latency measurements collected via the
