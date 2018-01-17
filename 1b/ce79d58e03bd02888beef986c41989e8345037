@@ -1,0 +1,8 @@
+Code-Review+1: Rush <rush@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Marostegui <marostegui@wikimedia.org>
+Submitted-by: Marostegui <marostegui@wikimedia.org>
+Submitted-at: Wed, 17 Jan 2018 06:43:35 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/404323
+Project: operations/puppet
+Branch: refs/heads/production
