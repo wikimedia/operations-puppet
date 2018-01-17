@@ -1,0 +1,8 @@
+Code-Review+1: Subramanya Sastry <ssastry@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 17 Jan 2018 16:51:18 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/404691
+Project: operations/puppet
+Branch: refs/heads/production
