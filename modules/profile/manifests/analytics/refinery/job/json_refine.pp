@@ -56,6 +56,7 @@ class profile::analytics::refinery::job::json_refine {
         'PublishStashedFile',
         'CentralAuthCreateLocalAccountJob',
         'gwtoolsetUploadMediafileJob',
+        'gwtoolsetUploadMetadataJob',
     ]
     $table_blacklist = sprintf('.*(%s)$', join($problematic_jobs, '|'))
 
