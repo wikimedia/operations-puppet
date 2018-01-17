@@ -161,7 +161,8 @@ class profile::phabricator::main (
         mysql_admin_pass => $mysql_admin_pass,
         libraries        => [ "${phab_root_dir}/libext/Sprint/src",
                               "${phab_root_dir}/libext/security/src",
-                              "${phab_root_dir}/libext/misc/" ],
+                              "${phab_root_dir}/libext/misc",
+                              "${phab_root_dir}/libext/translations/src" ],
         settings         => {
             'cluster.search'                         => $cluster_search,
             'darkconsole.enabled'                    => false,
