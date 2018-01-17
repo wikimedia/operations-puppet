@@ -28,6 +28,7 @@ define puppetmaster::web_frontend(
     $priority=90,
     $alt_names=undef,
     $cert_secret_path = 'puppetmaster',
+    $ssl_ca_revocation_check = undef,
 ){
     $server_name = $title
     $ssldir = '/var/lib/puppet/ssl'
