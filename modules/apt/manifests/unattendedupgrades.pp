@@ -21,6 +21,10 @@ class apt::unattendedupgrades(
         ensure => 'present',
     }
 
+    package { 'python3-apt':
+        ensure => 'present',
+    }
+
     # dpkg tries to determine the most conservative default action in case of
     # conffile conflict. This tells dpkg to use that action without asking
     apt::conf { 'dpkg-force-confdef':
@@ -81,10 +85,11 @@ class apt::unattendedupgrades(
     }
 
     file { '/usr/local/sbin/apt-upgrade':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/apt/apt-upgrade.py',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-upgrade.py',
+        require => Package['python3-apt'],
     }
 }
