@@ -81,10 +81,11 @@ class apt::unattendedupgrades(
     }
 
     file { '/usr/local/sbin/apt-upgrade':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/apt/apt-upgrade.py',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/apt/apt-upgrade.py',
+        require => Package['python3-apt'],
     }
 }
