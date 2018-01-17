@@ -1,7 +1,8 @@
-# == Class profile::cache::kafka::certs
+# == Class profile::cache::kafka::certificate
 # Installs certificates and keys for varnishkafka to produce to Kafka over TLS.
 # This expects that a 'varnishkafka' SSL/TLS key and certificate is created by Cergen and
 # signed by our PuppetCA, and available in the Puppet private secrets module.
+#
 # == Parameters.
 #
 # [*ssl_key_password*]
