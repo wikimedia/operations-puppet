@@ -948,25 +948,18 @@ node 'labtestnet2002.codfw.wmnet' {
 
 node 'labtestnet2001.codfw.wmnet' {
     role(wmcs::openstack::labtest::net)
-    include ::standard
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
     role(wmcs::openstack::labtest::control)
-    include ::standard
-    include ::base::firewall
 }
 
 node 'labtestcontrol2003.wikimedia.org' {
     role(wmcs::openstack::labtestn::control)
-    include ::standard
-    include ::base::firewall
 }
 
 node 'labtestpuppetmaster2001.wikimedia.org' {
     role(wmcs::openstack::labtest::puppetmaster::frontend)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -978,7 +971,6 @@ node 'labtestservices2001.wikimedia.org' {
 
 node /labtestservices200[23]\.wikimedia\.org/ {
     role(wmcs::openstack::labtestn::services)
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1122,7 +1114,6 @@ node 'labcontrol1002.wikimedia.org' {
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web)
     include ::role::mariadb::wikitech
-    include ::base::firewall
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
