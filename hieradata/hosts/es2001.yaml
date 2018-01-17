@@ -1,2 +1,0 @@
-profile::base::check_disk_options: -w 5% -c 1% -W 6% -K 3% -l -e --exclude-type=tracefs
-profile::base::check_disk_critical: false
