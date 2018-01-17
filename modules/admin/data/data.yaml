@@ -123,7 +123,7 @@ groups:
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              samwalton9, fdans, samtar, mlitn, shrlak, niharika29, goransm,
+              fdans, mlitn, shrlak, niharika29, goransm,
               pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan, groovier]
   ldap-admins:
     gid: 715
@@ -2371,7 +2371,7 @@ users:
     uid: 15457
     email: mkramer@wikimedia.org
   samwalton9:
-    ensure: present
+    ensure: absent
     gid: 500
     name: samwalton9
     realname: Sam Walton
@@ -2379,8 +2379,6 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBSqKkOktF20xShNmJgeOpkhDYXFgcCvNPKbexn67on5M0hPNTKZjptFPCeoQh/i3suAvPDFakDt0pEcCZzzzcwArM21LJ2EFWeqwl6il20L45aD52y8zYYPrTtAi2YaqP77kbSl7/jVW0AFzM6m/G9e5550oeZKDbHGkANpi9uAqn7EjTI88i0txnTEGG6Bwu4G4H/08BsKbkW2C3sB2/h4V1GEHMhxlDEfhlEsVqfaYgrxmXJsTyAjsgawx+fIuqDJsrIFCWlu7IIfur+g0o+DVIDE5kCzZLUeD7FfwP0ym03f7fXF/yjg0sQzXKPF1eXLKXod+7Mn+KOnxLnj+d Swalton@wikimedia.org
     uid: 15557
     email: swalton@wikimedia.org
-    expiry_date: 2018-01-01
-    expiry_contact: legoktm@wikimedia.org
   volker-e:
     ensure: present
     gid: 500
@@ -2467,7 +2465,7 @@ users:
     uid: 11106
     email: lziemba@wikimedia.org
   samtar:
-    ensure: present
+    ensure: absent
     gid: 500
     name: samtar
     realname: Sam Tarling
@@ -2475,8 +2473,6 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAthC8yN9ImF+F6DQsI4GqYdAKhEtwfZ/+S7xBg2V5Kz5LLrN/KWUN9uiKsUZJfyl2xD12mpu5Mf3nU7c9QoSyZz40Z2GCN/J3IsYLI+6bPFKM7iA65lWHkWcX93JBH0QBlvua9wOAEMMndzeZrloVzJW3PwDa42UikznWYSyoaF60L6eEh+cUs91zZk14GS1gpD+5h+99nzNlBBmgv5aTv53q5JqzdaWXA83X7sZAjQNfLjpT1EDna0z97Agt7DKcKhHbhJqQ67EEZyVH66DtaoNod2cgn0Os74MDX6aNXu69u4pBxGHD7Oh/TY63kY9sB6pHuZ44X5iC2RbhvKSBjw==
     uid: 12744
     email: samtar.on.en.wp@gmail.com
-    expiry_date: 2018-01-01
-    expiry_contact: legoktm@wikimedia.org
   nithum:
     ensure: present
     gid: 500
