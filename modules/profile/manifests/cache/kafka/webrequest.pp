@@ -1,34 +1,39 @@
 # === class profile::cache::kafka::webrequest
 #
 # Sets up a varnishkafka instance producing varnish
-# webrequest logs to the analytics Kafka brokers in eqiad.
+# webrequest logs to a Kafka cluster via TLS.
 #
 # === Parameters
 #
-# [*monitoring_enabled*]
-#   True if the varnishkafka instance should be monitored.
-#
 # [*cache_cluster*]
-#   the name of the cache cluster
+#   The name of the cache cluster.
 #
 # [*statsd*]
 #   The host:port to send statsd data to.
 #
+# [*kafka_cluster_name*]
+#   Name of the Kafka cluster in the hiera kafka_clusters hash.  This can
+#   be unqualified (without DC suffix) or fully qualified. Default: jumbo
+#
+# [*monitoring_enabled*]
+#   True if the varnishkafka instance should be monitored.  Default: false
+#
 class profile::cache::kafka::webrequest(
-    $monitoring_enabled = hiera('profile::cache::kafka::webrequest::monitoring_enabled', false),
     $cache_cluster      = hiera('cache::cluster'),
     $statsd             = hiera('statsd'),
+    $kafka_cluster_name = hiera('profile::cache::kafka::webrequest::kafka_cluster_name', 'jumbo'),
+    $monitoring_enabled = hiera('profile::cache::kafka::webrequest::monitoring_enabled', false),
 ) {
-    $config = kafka_config('analytics')
-    # NOTE: This is used by inheriting classes role::cache::kafka::*
-    $kafka_brokers = $config['brokers']['array']
+    # Include this class to get key and certificate for varnishkafka
+    # to produce to Kafka over SSL/TLS.
+    require ::profile::cache::kafka::certificate
 
-    $topic = "webrequest_${cache_cluster}"
-    # These used to be parameters, but I don't really see why given we never change
-    # them
-    $varnish_name           = 'frontend'
-    $varnish_svc_name       = 'varnish-frontend'
-    $kafka_protocol_version = '0.9.0.1'
+    $config = kafka_config($kafka_cluster_name)
+    $kafka_brokers = $config['brokers']['ssl_array']
+
+    $topic            = "webrequest_${cache_cluster}"
+    $varnish_name     = 'frontend'
+    $varnish_svc_name = 'varnish-frontend'
 
     # Background task: T136314
     # Background info about the parameters used:
@@ -88,10 +93,7 @@ class profile::cache::kafka::webrequest(
     $peak_rps_estimate = 9000
 
     varnishkafka::instance { 'webrequest':
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
         brokers                      => $kafka_brokers,
-        # lint:endignore
         topic                        => $topic,
         format_type                  => 'json',
         compression_codec            => 'snappy',
@@ -121,7 +123,13 @@ class profile::cache::kafka::webrequest(
         # this often.  This is set at 15 so that
         # stats will be fresh when polled from gmetad.
         log_statistics_interval      => 15,
-        force_protocol_version       => $kafka_protocol_version,
+        #TLS/SSL config
+        ssl_enabled                  => true,
+        ssl_ca_location              => $::profile::cache::kafka::certificate::ssl_ca_location,
+        ssl_key_password             => $::profile::cache::kafka::certificate::ssl_key_password,
+        ssl_key_location             => $::profile::cache::kafka::certificate::ssl_key_location,
+        ssl_certificate_location     => $::profile::cache::kafka::certificate::ssl_certificate_location,
+        ssl_cipher_suites            => $::profile::cache::kafka::certificate::ssl_cipher_suites,
     }
 
     if $monitoring_enabled {
