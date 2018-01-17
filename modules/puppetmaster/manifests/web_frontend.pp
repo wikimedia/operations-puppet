@@ -21,6 +21,14 @@
 #
 # [*alt_names*]
 #   Alternative names, if any, which should be accepted.
+#
+# [*cert_secret_path*]
+#   Path to puppet keys/certs in secrets repository.
+#
+# [*ssl_ca_revocation_check*]
+#   CRL-based revocation checking setting in apache. See apache
+#   SSLCARevocationCheck documentation for full details.
+#   Valid settings: chain|leaf|none
 define puppetmaster::web_frontend(
     $workers,
     $master,
@@ -28,6 +36,7 @@ define puppetmaster::web_frontend(
     $priority=90,
     $alt_names=undef,
     $cert_secret_path = 'puppetmaster',
+    $ssl_ca_revocation_check = undef,
 ){
     $server_name = $title
     $ssldir = '/var/lib/puppet/ssl'

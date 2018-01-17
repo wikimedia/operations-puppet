@@ -12,6 +12,9 @@
     # CRL checking by commenting the next line, but this is not recommended.
     # NOTE: https://tickets.puppetlabs.com/browse/PUP-2310 says that CRL is not updated. Need to reevaluate this
     SSLCARevocationPath     <%= scope.lookupvar('::puppetmaster::ssl::ssldir') %>/crl
+    <% if @ssl_ca_revocation_check -%>
+    SSLCARevocationCheck    <%= @ssl_ca_revocation_check %>
+    <% end -%>
     SSLVerifyClient <%= scope.lookupvar('puppetmaster::verify_client') %>
     SSLVerifyDepth  1
     SSLOptions +StdEnvVars

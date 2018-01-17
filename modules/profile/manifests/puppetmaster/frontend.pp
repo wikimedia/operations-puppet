@@ -8,6 +8,7 @@ class profile::puppetmaster::frontend(
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
     $servers = hiera('puppetmaster::servers', {}),
     $puppet_major_version = hiera('puppet_major_version', undef),
+    $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
     $allow_from = [
       '*.wikimedia.org',
       '*.eqiad.wmnet',
@@ -65,19 +66,21 @@ class profile::puppetmaster::frontend(
 
     # Main site to respond to
     ::puppetmaster::web_frontend { $web_hostname:
-        master       => $ca_server,
-        workers      => $workers,
-        bind_address => $::puppetmaster::bind_address,
-        priority     => 40,
+        master                  => $ca_server,
+        workers                 => $workers,
+        bind_address            => $::puppetmaster::bind_address,
+        priority                => 40,
+        ssl_ca_revocation_check => $ssl_ca_revocation_check,
     }
 
     # On all the puppetmasters, we should respond
     # to the FQDN too, in case we point them explicitly
     ::puppetmaster::web_frontend { $::fqdn:
-        master       => $ca_server,
-        workers      => $workers,
-        bind_address => $::puppetmaster::bind_address,
-        priority     => 50,
+        master                  => $ca_server,
+        workers                 => $workers,
+        bind_address            => $::puppetmaster::bind_address,
+        priority                => 50,
+        ssl_ca_revocation_check => $ssl_ca_revocation_check,
     }
 
     # Run the rsync servers on all puppetmaster frontends, and activate
