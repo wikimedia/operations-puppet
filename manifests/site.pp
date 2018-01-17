@@ -1890,11 +1890,11 @@ node /^restbase10(0[789]|1[0124678])\.eqiad\.wmnet$/ {
 }
 
 # restbase codfw cluster
-node /^restbase20(0[789]|1[012])\.codfw\.wmnet$/ {
+node /^restbase200[789]\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
-node /^restbase200[123456]\.codfw\.wmnet$/ {
+node /^restbase20(0[123456]|1[012])\.codfw\.wmnet$/ {
     role(restbase::production_ng)
 }
 

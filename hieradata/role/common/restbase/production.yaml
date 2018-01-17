@@ -211,27 +211,27 @@ profile::cassandra::instances:
       listen_address: 10.192.48.55
     c:
       listen_address: 10.192.48.56
-  "restbase2010.codfw.wmnet":
-    a:
-      listen_address: 10.192.16.186
-    b:
-      listen_address: 10.192.16.187
-    c:
-      listen_address: 10.192.16.188
-  "restbase2011.codfw.wmnet":
-    a:
-      listen_address: 10.192.32.152
-    b:
-      listen_address: 10.192.32.153
-    c:
-      listen_address: 10.192.32.154
-  "restbase2012.codfw.wmnet":
-    a:
-      listen_address: 10.192.48.68
-    b:
-      listen_address: 10.192.48.69
-    c:
-      listen_address: 10.192.48.70
+  #"restbase2010.codfw.wmnet":
+  #  a:
+  #    listen_address: 10.192.16.186
+  #  b:
+  #    listen_address: 10.192.16.187
+  #  c:
+  #    listen_address: 10.192.16.188
+  #"restbase2011.codfw.wmnet":
+  #  a:
+  #    listen_address: 10.192.32.152
+  #  b:
+  #    listen_address: 10.192.32.153
+  #  c:
+  #    listen_address: 10.192.32.154
+  #"restbase2012.codfw.wmnet":
+  #  a:
+  #    listen_address: 10.192.48.68
+  #  b:
+  #    listen_address: 10.192.48.69
+  #  c:
+  #    listen_address: 10.192.48.70
 
 
 profile::cassandra::settings:
