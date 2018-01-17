@@ -777,17 +777,10 @@ node /^es201[89]\.codfw\.wmnet/ {
 # storage on the backup system
 node 'es2001.codfw.wmnet' {
     role(mariadb::otrsbackups)
-    include ::standard
-    include ::base::firewall
-    # temporary measure until mysql is uninstalled
-    include ::mariadb::mysqld_safe
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
-    include ::standard
-    include ::base::firewall
-    # temporary measure until mysql is uninstalled
-    include ::mariadb::mysqld_safe
+    role(mariadb::temporary_storage)
 }
 
 # Backup system, see T176505.
