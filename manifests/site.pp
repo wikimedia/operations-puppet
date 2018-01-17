@@ -937,9 +937,7 @@ node /^labtestvirt2003\.codfw\.wmnet$/ {
 }
 
 node 'labtestmetal2001.codfw.wmnet' {
-    # WIP
-    include ::standard
-    include ::base::firewall
+    role(test)
 }
 
 node 'labtestnet2002.codfw.wmnet' {
@@ -1092,8 +1090,7 @@ node /kubestage100[12]\.eqiad\.wmnet/ {
 }
 
 node /labcontrol100[34]\.wikimedia\.org/ {
-    include ::base::firewall
-    include ::standard
+    role(test)
 }
 
 node 'labcontrol1001.wikimedia.org' {
