@@ -81,6 +81,9 @@
 # [*log_retention_hours*]
 #   Hiera: profile::kafka::broker::log_retention_hours  Default: 168 (1 week)
 #
+# [*log_retention_bytes*]
+#   Hiera: profile::kafka::broker::log_retention_bytes Default: undef
+#
 # [*num_recovery_threads_per_data_dir*]
 #   Hiera: profile::kafka::broker::num_recovery_threads_per_data_dir  Default undef
 #
@@ -120,6 +123,7 @@ class profile::kafka::broker(
     $log_dirs                          = hiera('profile::kafka::broker::log_dirs', ['/srv/kafka/data']),
     $auto_leader_rebalance_enable      = hiera('profile::kafka::broker::auto_leader_rebalance_enable', true),
     $log_retention_hours               = hiera('profile::kafka::broker::log_retention_hours', 168),
+    $log_retention_bytes               = hiera('profile::kafka::broker::log_retention_bytes', undef),
     $num_recovery_threads_per_data_dir = hiera('profile::kafka::broker::num_recovery_threads_per_data_dir', undef),
     $num_io_threads                    = hiera('profile::kafka::broker::num_io_threads', 1),
     $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers', undef),
@@ -300,6 +304,8 @@ class profile::kafka::broker(
         ssl_enabled_protocols            => $ssl_enabled_protocols,
         ssl_cipher_suites                => $ssl_cipher_suites,
 
+        log_retention_hours              => $log_retention_hours,
+        log_retention_bytes              => $log_retention_bytes,
         auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
         num_replica_fetchers             => $num_replica_fetchers,
         message_max_bytes                => $message_max_bytes,
