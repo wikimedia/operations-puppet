@@ -5,7 +5,6 @@ import os
 import sys
 import apt
 import apt_pkg
-import apt.cache
 
 # Common usage:
 #   'apt-upgrade stretch-security        upgrade packages from stretch-security
@@ -32,7 +31,7 @@ def print_verbose_pkg(verbose, pkg):
     if not verbose:
         return
     name = pkg.name
-    orig = pkg._pkg.current_ver.ver_str
+    orig = pkg.installed.version
     if pkg.marked_delete:
         dest = "remove"
     else:
@@ -84,15 +83,14 @@ def run(src, simulate, verbose):
     :param simulate: boolean
     :param verbose: boolean
     """
-    cache = apt.Cache()
+    cache = apt.cache.FilteredCache()
     print_verbose(verbose, "Updating cache ...")
     cache.update()
     cache.open(None)
-    fcache = apt.cache.FilteredCache(cache)
-    fcache.set_filter(AptFilter(src))
+    cache.set_filter(AptFilter(src))
 
     pkgs_to_upgrade = False
-    for pkg_name in fcache.keys():
+    for pkg_name in cache.keys():
             pkgs_to_upgrade += pkg_upgrade(verbose, cache[pkg_name])
 
     if not pkgs_to_upgrade:
