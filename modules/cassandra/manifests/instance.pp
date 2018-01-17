@@ -356,14 +356,13 @@ define cassandra::instance(
         require => Package['cassandra'],
     }
 
-    file { [$instance_data_file_directories,
-            $commitlog_directory,
-            $saved_caches_directory]:
-        ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0750',
-        require => File[$data_directory_base],
+    # (instance_)data_file_directories is an array of arbitrary, fully-qualified
+    # paths. Since we cannot guarantee a common base path, ensure will not work.
+    [$instance_data_file_directories, $commitlog_directory, $saved_caches_directory].each | $data_dir | {
+        exec { 'install-data-directory':
+            command => 'install -o cassandra -g cassandra -m 750 -d ${data_dir}',
+            path => '/usr/bin/:/bin/'
+        }
     }
 
     file { "${config_directory}/cassandra-env.sh":
