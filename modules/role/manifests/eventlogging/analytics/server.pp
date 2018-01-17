@@ -24,7 +24,7 @@ class role::eventlogging::analytics::server {
     }
 
     # Get the Kafka configuration
-    $kafka_config         = kafka_config('analytics')
+    $kafka_config         = kafka_config('jumbo-eqiad')
     $kafka_brokers_string = $kafka_config['brokers']['string']
 
     # Using kafka-confluent as a consumer is not currently supported by this puppet module,
@@ -32,8 +32,8 @@ class role::eventlogging::analytics::server {
     $kafka_consumer_scheme = 'kafka://'
 
     # Commonly used Kafka input URIs.
-    $kafka_mixed_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed"
-    $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side"
+    $kafka_mixed_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-valid-mixed&auto_offset_reset=earliest"
+    $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side&auto_offset_reset=earliest"
 
     eventlogging::plugin { 'plugins':
         source => 'puppet:///modules/eventlogging/plugins.py',
