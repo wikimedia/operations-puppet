@@ -248,6 +248,10 @@ html body.loginParent {
     background-color: #999 !important;
 }
 
+html body.loginParent:after {
+    content: "Adrian Dreßler";
+}
+
 html body.loginParent .wm-gerrit-heading {
     background-image: none;
 }
