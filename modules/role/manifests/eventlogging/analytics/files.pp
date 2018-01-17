@@ -45,16 +45,6 @@ class role::eventlogging::analytics::files {
         'eventlogging_consumer_files_00'
     )
 
-    # Where possible, if this is set, it will be included in client configuration
-    # to avoid having to do API version for Kafka < 0.10 (where there is not a version API).
-    $kafka_api_version         = $role::eventlogging::analytics::server::kafka_config['api_version']
-
-    # Append this to query params if set.
-    $kafka_api_version_param = $kafka_api_version ? {
-        undef   => '',
-        default => "&api_version=${kafka_api_version}"
-    }
-
     # These commonly used URIs are defined for DRY purposes in
     # role::eventlogging::analytics::server.
     $kafka_client_side_raw_uri = $role::eventlogging::analytics::server::kafka_client_side_raw_uri
@@ -62,7 +52,7 @@ class role::eventlogging::analytics::files {
 
     # Raw client side events:
     eventlogging::service::consumer { 'client-side-events.log':
-        input  => "${kafka_client_side_raw_uri}&raw=True${kafka_api_version_param}",
+        input  => "${kafka_client_side_raw_uri}&raw=True",
         output => "file://${out_dir}/client-side-events.log",
         sid    => $kafka_consumer_group,
     }
@@ -71,7 +61,7 @@ class role::eventlogging::analytics::files {
     # 'blacklisted' during processing.  Events are blacklisted
     # from these logs for volume reasons.
     eventlogging::service::consumer { 'all-events.log':
-        input  =>  "${kafka_mixed_uri}${kafka_api_version_param}",
+        input  => $kafka_mixed_uri,
         output => "file://${out_dir}/all-events.log",
         sid    => $kafka_consumer_group,
     }

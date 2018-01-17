@@ -24,7 +24,7 @@ class role::eventlogging::analytics::server {
     }
 
     # Get the Kafka configuration
-    $kafka_config         = kafka_config('analytics')
+    $kafka_config         = kafka_config('jumbo')
     $kafka_brokers_string = $kafka_config['brokers']['string']
 
     # Using kafka-confluent as a consumer is not currently supported by this puppet module,
