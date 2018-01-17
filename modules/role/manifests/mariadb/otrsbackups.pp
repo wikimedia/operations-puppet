@@ -1,6 +1,15 @@
+# host where otrs backups are sent before being sent to bacula
 class role::mariadb::otrsbackups {
+
+    system::role { 'mariadb::otrsbackups':
+        description => 'OTRS backups and generic disk storage',
+    }
+
+    include ::standard
+    include ::profile::base::firewall
     include ::profile::backup::host
 
+    # this needs to be moved to a profile
     file { '/srv/backups':
         ensure => directory,
         owner  => 'root',
