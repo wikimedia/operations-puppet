@@ -262,7 +262,6 @@ html body.loginParent #gerrit_body {
     align-items: center;
     resize: both;
     overflow: auto;
-    margin-top: 10%;
 }
 html body.loginParent #gerrit_body h1 {
     display: none;
