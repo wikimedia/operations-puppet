@@ -18,7 +18,7 @@ client c1 {
     txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "If-Cached: 15f0fff99ed5aae4edffdd6496d7131f"
     rxresp
     expect resp.status == 412
-    expect resp.msg == "Entity not in cache"
+    expect resp.reason == "Entity not in cache"
 } -run
 
 client c2 {
@@ -35,5 +35,5 @@ client c2 {
     txreq -url "/test" -hdr "Host: upload.wikimedia.org" -hdr "If-Cached: mismatched-etag"
     rxresp
     expect resp.status == 412
-    expect resp.msg == "Etag mismatch"
+    expect resp.reason == "Etag mismatch"
 } -run

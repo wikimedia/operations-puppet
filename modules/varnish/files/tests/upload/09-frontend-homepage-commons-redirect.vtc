@@ -18,7 +18,7 @@ client c1 {
     rxresp
 
     expect resp.status == 301
-    expect resp.msg == "Moved Permanently"
+    expect resp.reason == "Moved Permanently"
     expect resp.http.Location == "https://commons.wikimedia.org/"
     expect resp.http.Connection == "keep-alive"
     expect resp.http.Content-Length == 0
