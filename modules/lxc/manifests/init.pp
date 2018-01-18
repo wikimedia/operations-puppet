@@ -17,35 +17,38 @@ class lxc(
         ensure => present,
     }
 
-    # T154294: Running a jessie image in the container requires newer versions
-    # of LXC and it's dependencies than Trusty or Jessie shipped with.
-    # Install the versions provided by backports instead.
-    $backports = $::lsbdistcodename ? {
-        trusty => [
-            'cgroup-lite',
-            'liblxc1',
-            'lxc',
-            'lxc-common',
-            'lxc-templates',
-            'lxc1',
-            'python3-lxc',
-        ],
-        jessie => [
-            'libapparmor1',
-            'liblxc1',
-            'libseccomp2',
-            'lxc',
-            'python3-lxc',
-        ],
+    if os_version('ubuntu == trusty || debian == jessie') {
+        # T154294: Running a jessie image in the container requires newer versions
+        # of LXC and it's dependencies than Trusty or Jessie shipped with.
+        # Install the versions provided by backports instead.
+        $backports = $::lsbdistcodename ? {
+            trusty => [
+                'cgroup-lite',
+                'liblxc1',
+                'lxc',
+                'lxc-common',
+                'lxc-templates',
+                'lxc1',
+                'python3-lxc',
+            ],
+            jessie => [
+              'libapparmor1',
+              'liblxc1',
+              'libseccomp2',
+              'lxc',
+              'python3-lxc',
+            ],
+        }
+
+        apt::pin { $backports:
+          pin      => "release a=${::lsbdistcodename}-backports",
+          priority => 500,
+          before   => Package[$backports],
+        }
     }
 
-    apt::pin { $backports:
-      pin      => "release a=${::lsbdistcodename}-backports",
-      priority => 500,
-    }
-    package { $backports:
-      ensure  => present,
-      require => Apt::Pin[$backports],
+    package { 'lxc':
+      ensure => present,
     }
 
     if os_version('debian >= jessie') {
