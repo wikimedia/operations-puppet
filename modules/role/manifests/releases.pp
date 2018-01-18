@@ -12,6 +12,7 @@ class role::releases {
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::releases::mediawiki
+    include ::profile::releases::mediawiki::security
     include ::profile::releases::reprepro
 
 }
