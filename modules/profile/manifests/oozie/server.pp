@@ -6,6 +6,7 @@ class profile::oozie::server(
     $monitoring_enabled = hiera('profile::oozie::server::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::oozie::server::ferm_srange', '$DOMAIN_NETWORKS'),
     $jvm_opts           = hiera('profile::oozie::server::jvm_opts', '-Xmx2048m'),
+    $java_home          = hiera('profile::oozie::server::java_home', undef)
 ) {
     require ::profile::oozie::client
 
@@ -29,6 +30,7 @@ class profile::oozie::server(
         # settings look like they are properly configured.
         authorization_service_authorization_enabled => false,
         jvm_opts                                    => $jvm_opts,
+        java_home                                   => $java_home,
     }
 
     # Oozie is creating event logs in /var/log/oozie.
