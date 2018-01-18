@@ -34,8 +34,8 @@
 # filtertags: labs-project-deployment-prep
 class profile::eventstreams(
     $kafka_cluster_name = hiera('profile::eventstreams::kafka_cluster_name'),
-    $streams = hiera('profile::eventstreams::streams'),
-    $rdkafka_config = hiera('profile::eventstreams::rdkafka_config')
+    $streams            = hiera('profile::eventstreams::streams'),
+    $rdkafka_config     = hiera('profile::eventstreams::rdkafka_config', {})
 ) {
     $kafka_config = kafka_config($kafka_cluster_name)
     $broker_list = $kafka_config['brokers']['string']
