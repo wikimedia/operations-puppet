@@ -26,6 +26,12 @@ a { color: #0645AD; text-decoration: none; }
 a:hover { text-decoration: underline; }
 code { font-family: sans-serif; }
 .text-muted { color: #777; }
+@media screen and (max-device-width: 720px) and (orientation: portrait) {
+body { font: 22px/1.6 sans-serif; }
+.content { max-width: 100%; }
+a img { float: none; display: block; width: 80%; margin: auto; }
+.content-text { width: 100%; }
+}
 </style>
 <div class="content" role="main">
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
