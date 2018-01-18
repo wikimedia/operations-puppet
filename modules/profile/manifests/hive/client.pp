@@ -10,6 +10,7 @@ class profile::hive::client(
     $metastore_host         = hiera('profile::hive::client::hive_metastore_host'),
     $hive_server_opts       = hiera('profile::hive::client::hive_server_opts', undef),
     $hive_metastore_opts    = hiera('profile::hive::client::hive_metastore_opts', undef),
+    $java_home              = hiera('profile::hive::client::java_home', undef),
 ) {
     require ::profile::hadoop::common
 
@@ -38,6 +39,7 @@ class profile::hive::client(
         hive_server_opts          => $hive_server_opts,
         hive_metastore_opts       => $hive_metastore_opts,
         metastore_host            => $metastore_host,
+        java_home                 => $java_home,
     }
 
     # Set up a wrapper script for beeline, the command line
