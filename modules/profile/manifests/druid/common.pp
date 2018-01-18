@@ -12,11 +12,11 @@
 class profile::druid::common(
     $druid_cluster_name             = hiera('profile::druid::common::druid_cluster_name'),
     $zookeeper_cluster_name         = hiera('profile::druid::common::zookeeper_cluster_name'),
-    $private_properties             = hiera('profile::druid::common::private_properties'),
-    $properties                     = hiera('profile::druid::common::properties'),
+    $private_properties             = hiera('profile::druid::common::private_properties', {}),
+    $properties                     = hiera('profile::druid::common::properties', {}),
     $zookeeper_clusters             = hiera('zookeeper_clusters'),
-    $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name'),
-    $use_cdh                        = hiera('profile::druid::common::use_cdh'),
+    $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name', 'druid'),
+    $use_cdh                        = hiera('profile::druid::common::use_cdh', false),
 ) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics

@@ -6,11 +6,11 @@
 # haver finer control over how Druid accepts indexing tasks.
 #
 class profile::druid::overlord(
-    $properties         = hiera('profile::druid::overlord::properties'),
-    $env                = hiera('profile::druid::overlord::env'),
-    $ferm_srange        = hiera('profile::druid::overlord::ferm_srange'),
-    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
-    $monitoring_enabled = hiera('profile::druid::overlord::monitoring_enabled'),
+    $properties         = hiera('profile::druid::overlord::properties', {}),
+    $env                = hiera('profile::druid::overlord::env', {}),
+    $ferm_srange        = hiera('profile::druid::overlord::ferm_srange', '$DOMAIN_NETWORKS'),
+    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
+    $monitoring_enabled = hiera('profile::druid::overlord::monitoring_enabled', false),
 ) {
 
     require ::profile::druid::common

@@ -6,11 +6,11 @@
 # haver finer control over how Druid accepts queries.
 #
 class profile::druid::coordinator(
-    $properties         = hiera('profile::druid::coordinator::properties'),
-    $env                = hiera('profile::druid::coordinator::env'),
-    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
-    $ferm_srange        = hiera('profile::druid::coordinator::ferm_srange'),
-    $monitoring_enabled = hiera('profile::druid::coordinator::monitoring_enabled'),
+    $properties         = hiera('profile::druid::coordinator::properties', {}),
+    $env                = hiera('profile::druid::coordinator::env', {}),
+    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
+    $ferm_srange        = hiera('profile::druid::coordinator::ferm_srange', '$DOMAIN_NETWORKS'),
+    $monitoring_enabled = hiera('profile::druid::coordinator::monitoring_enabled', false),
 ) {
 
     require ::profile::druid::common
