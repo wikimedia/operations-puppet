@@ -11,6 +11,11 @@ class role::labs::mediawiki_vagrant {
     include ::vagrant::lxc
     include ::vagrant::mediawiki
 
+    if os_version('debian != jessie') {
+        # T180377
+        warning('Currently this role is only supported on Debian Jessie.')
+    }
+
     # Ensure that secondary disks are mounted first if they are being used.
     Labs_lvm::Volume <| |> -> Class['role::labs::mediawiki_vagrant']
 
