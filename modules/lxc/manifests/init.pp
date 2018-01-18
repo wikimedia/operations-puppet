@@ -37,15 +37,24 @@ class lxc(
             'lxc',
             'python3-lxc',
         ],
+        stretch => [
+            'libapparmor1',
+            'liblxc1',
+            'libseccomp2',
+            'lxc',
+            'python3-lxc',
+        ],
     }
 
-    apt::pin { $backports:
-      pin      => "release a=${::lsbdistcodename}-backports",
-      priority => 500,
-    }
-    package { $backports:
-      ensure  => present,
-      require => Apt::Pin[$backports],
+    if $backports {
+      apt::pin { $backports:
+        pin      => "release a=${::lsbdistcodename}-backports",
+        priority => 500,
+      }
+      package { $backports:
+        ensure  => present,
+        require => Apt::Pin[$backports],
+      }
     }
 
     if os_version('debian >= jessie') {
