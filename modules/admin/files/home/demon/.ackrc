@@ -1,3 +1,9 @@
---ignore-case
---ignore-file=ext:ser
--s
+--color-filename=white
+--color-lineno=cyan
+--color-match=magenta underline
+--ignore-dir=.idea
+--ignore-dir=build
+--type-add=css=.styl
+--type-add=js=.coffee
+--type-set=md=.markdown,.md
+-i

@@ -1,40 +1,64 @@
-[user]
-	name = Chad Horohoe
-	email = chadh@wikimedia.org
 [alias]
-	push-for-review = push origin HEAD:refs/for/master
-	up = pull --ff-only
-	log-graph = log --graph --oneline --branches --all
-	rollback = reset --hard HEAD~1
-	amend = commit -a --amend
-	sub-up = submodule update --init --recursive
-	push-for-review-g = push gerrit HEAD:refs/for/master
-	praise = blame
-	set = reset --hard
-[core]
-	editor = vim
-[color]
-	branch = auto
-	diff = auto
-	status = auto
-[color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
-[color "diff"]
-	meta = yellow bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
-[color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
-[mergetool]
-	keepBackup = false
-[gitreview]
-	username = demon
-[url "https://gerrit.wikimedia.org/r/p/"]
-	insteadOf = "gerrit:"
+  amend = commit -a --amend
+  fetch-fast = fetch --recurse-submodules --jobs=8 --prune
+  gerrit-setup = !hook="$(git rev-parse --git-dir)/hooks/commit-msg" && curl "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" > $hook && chmod +x $hook
+  git = !git
+  log-graph = log --graph --oneline --branches --all
+  mergeit = !git push origin HEAD:refs/for/${1:-`git rev-parse --abbrev-ref HEAD`}%l=Code-Review+2
+  oneline = log --no-merges --pretty=format:"%h%x09%an%x09%ad%x09%s"
+  praise = blame
+  review = !git push origin HEAD:refs/for/${1:-`git rev-parse --abbrev-ref HEAD`}
+  rollback = reset --hard HEAD~1
+  set = reset --hard
+  show-files = show --name-only
+  sub-up = submodule update --init --recursive
+  tyler = !git push origin HEAD:refs/for/${1:-`git rev-parse --abbrev-ref HEAD`}%r=thcipriani
+  up = pull --ff-only
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore_global
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  frag = magenta bold
+  meta = yellow bold
+  new = green bold
+  old = red bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  process = git-lfs filter-process
+  required = true
+  smudge = git-lfs smudge -- %f
+[gitreview]
+  username = demon
+[git-change]
+  gerrit-ssh-host = gerrit.wikimedia.org
+[http]
+  cookiefile = ~/.gitcookies
+[merge]
+  keepBackup = false
+  conflictstyle = diff3
+[push]
+  default = simple
+[url "https://gerrit.wikimedia.org/r/p/"]
+  insteadOf = "gerrit:"
+[url "https://github.com/"]
+  insteadOf = "github:"
+[url "https://phabricator.wikimedia.org/source/"]
+  insteadOf = "phab:"
+[user]
+  email = chadh@wikimedia.org
+  name = Chad Horohoe
+  signingkey = 23107F8A
