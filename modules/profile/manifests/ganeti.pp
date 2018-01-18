@@ -7,7 +7,9 @@ class profile::ganeti (
     class { '::ganeti': }
 
     # Ganeti hosts have KSM enabled. So get stats about it
-    diamond::collector { 'KSM': }
+    diamond::collector { 'KSM':
+        ensure => absent,
+    }
 
     # Ganeti needs intracluster SSH root access
     ssh::userkey { 'root-ganeti':
