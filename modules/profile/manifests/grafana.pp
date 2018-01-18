@@ -157,15 +157,15 @@ class profile::grafana (
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => [
-            Service['grafana-server'],
-            Package['python-sqlalchemy'],
-        ],
+        require => Package['python-sqlalchemy'],
     }
 
     exec { '/usr/local/sbin/grafana_create_anon_user --create':
         unless  => '/usr/local/sbin/grafana_create_anon_user --check',
-        require => File['/usr/local/sbin/grafana_create_anon_user'],
+        require => [
+            Service['grafana-server'],
+            File['/usr/local/sbin/grafana_create_anon_user'],
+        ]
     }
 
     # Serve Grafana via two different vhosts:

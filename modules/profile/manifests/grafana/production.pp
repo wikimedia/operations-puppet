@@ -4,7 +4,7 @@
 # It powers <https://grafana.wikimedia.org>.
 #
 class profile::grafana::production {
-    require ::profile::grafana
+    include ::profile::grafana
 
     grafana::dashboard { 'varnish-http-errors':
         source => 'puppet:///modules/grafana/dashboards/varnish-http-errors',
