@@ -1,1 +1,0 @@
-mediawiki::forward_syslog: "logstash.svc.eqiad.wmnet:10514"
