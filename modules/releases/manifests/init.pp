@@ -32,6 +32,7 @@ class releases (
 ) {
 
     ensure_resource('file', '/srv/mediawiki', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/patches', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/releases', {'ensure' => 'directory' })
