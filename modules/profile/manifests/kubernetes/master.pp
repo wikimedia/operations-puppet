@@ -94,7 +94,7 @@ class profile::kubernetes::master(
     # Alert us if etcd requests latencies exceed a certain threshold. TODO: reevaluate
     # thresholds
     monitoring::check_prometheus { 'etcd_request_latencies':
-        description     => 'etc request latencies',
+        description     => 'etcd request latencies',
         query           => "scalar(\
             sum(rate(etcd_request_latencies_summary_sum{\
             job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m]))/\
