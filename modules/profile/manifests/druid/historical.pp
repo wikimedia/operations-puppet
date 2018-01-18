@@ -1,11 +1,11 @@
 # Class: profile::druid::historical
 #
 class profile::druid::historical(
-    $properties         = hiera('profile::druid::historical::properties'),
-    $env                = hiera('profile::druid::historical::env'),
-    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload'),
-    $ferm_srange        = hiera('profile::druid::ferm_srange'),
-    $monitoring_enabled = hiera('profile::druid::historical::monitoring_enabled'),
+    $properties         = hiera('profile::druid::historical::properties', {}),
+    $env                = hiera('profile::druid::historical::env', {}),
+    $daemon_autoreload  = hiera('profile::druid::daemons_autoreload', true),
+    $ferm_srange        = hiera('profile::druid::ferm_srange', '$DOMAIN_NETWORKS'),
+    $monitoring_enabled = hiera('profile::druid::historical::monitoring_enabled', false),
 ) {
 
     require ::profile::druid::common
