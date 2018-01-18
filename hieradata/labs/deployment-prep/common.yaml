@@ -362,7 +362,7 @@ prometheus_nodes:
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
 # Eventstreams config
-profile::eventstreams::kafka_cluster_name: main
+profile::eventstreams::kafka_cluster_name: jumbo
 profile::eventstreams::streams:
   test:
     topics: ["%{::site}.test.event"]
@@ -370,7 +370,6 @@ profile::eventstreams::streams:
     topics: ["%{::site}.mediawiki.revision-create"]
   recentchange:
     topics: ["%{::site}.mediawiki.recentchange"]
-profile::eventstreams::rdkafka_config: {}
 
 cache::be_transient_gb: 0
 cache::fe_transient_gb: 0
