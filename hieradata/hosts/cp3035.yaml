@@ -1,0 +1,2 @@
+profile::cache::base::varnish_version: 5
+apt::use_experimental: true
