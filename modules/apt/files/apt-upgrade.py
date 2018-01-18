@@ -31,7 +31,10 @@ def print_verbose_pkg(verbose, pkg):
     if not verbose:
         return
     name = pkg.name
-    orig = pkg.installed.version
+    if pkg.is_installed:
+        orig = pkg.installed.version
+    else:
+        orig = "absent"
     if pkg.marked_delete:
         dest = "remove"
     else:
