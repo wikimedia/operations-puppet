@@ -6170,7 +6170,7 @@ host mw2139 {
 }
 
 host mw2140 {
-    hardware ethernet B0:83:FE:DE:FD:BA;
+    hardware ethernet D0:94:66:0B:6F:DE;
     fixed-address mw2140.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
