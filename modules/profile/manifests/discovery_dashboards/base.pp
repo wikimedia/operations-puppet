@@ -5,7 +5,7 @@
 #
 # filtertags: labs-project-search labs-project-shiny-r
 class profile::discovery_dashboards::base {
-    include ::shiny_server
+    require profile::shiny_server
 
     $cran_packages = [
         # Needed by Search metrics dashboard:
