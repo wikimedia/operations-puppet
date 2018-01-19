@@ -48,7 +48,13 @@ class profile::hadoop::worker(
     class { '::cdh::spark': }
 
     # Spark 2 is manually packaged by us, it is not part of CDH.
-    require_package('spark2')
+    # The deb package creates as post-install step a symlink like
+    # /etc/spark/conf/hive-site.xml -> /etc/hive/conf.analytics/hive-site.xml
+    # This package needs to be installed after the deploy of the Hive configuration.
+    # (should be guaranteed by the puppet evaluation order).
+    package { 'spark2':
+        ensure => present,
+    }
 
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
