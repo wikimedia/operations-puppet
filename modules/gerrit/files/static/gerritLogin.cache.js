@@ -22,6 +22,7 @@
     function init() {
       form = document.getElementById("login_form");
       if (form) {
+        hideBody();
         document.body.className = "loginParent";
       }
       usernameField = document.getElementById("f_user");
@@ -45,6 +46,15 @@
         var body = document.getElementsByTagName("body");
         if (body && body.length) {
           body[0].style.visibility = "visible";
+        }
+      }, 500);
+    }
+
+    function hideBody() {
+      setTimeout(function() {
+        var body = document.getElementsByTagName("body");
+        if (body && body.length) {
+          body[0].style.visibility = "hidden";
         }
       }, 500);
     }
@@ -89,6 +99,7 @@
     window.onload = function() {
       init();
     };
+
     return this;
   })();
 }
