@@ -26,7 +26,8 @@ es_codfw_rack_b8:
   profile::elasticsearch::rack: B8
   profile::elasticsearch::row:  B
 
-es_codfw_rack_c1:
+d
+as_codfw_rack_c1:
   __regex: !ruby/regexp /^elastic20(13|14|15|31)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C1
   profile::elasticsearch::row:  C
@@ -212,7 +213,7 @@ labtest:
 # be applied to HP RAIDs when available. Systems where this is not currently
 # compatible are ignored and do not send any alert.
 db_like_raid_policy:
-  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
+  __regex: !ruby/regexp /^((db|dbstore|es|pc)[12]\d\d\d|labsdb1\d(1[0-9]|0[4-9]))\.(eqiad|codfw)\.wmnet$/
   profile::base::check_raid_policy: 'WriteBack'
 
 # disable screen monitoring, fallback for servers not covered by roles (T165348)
