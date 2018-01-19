@@ -212,7 +212,7 @@ labtest:
 # be applied to HP RAIDs when available. Systems where this is not currently
 # compatible are ignored and do not send any alert.
 db_like_raid_policy:
-  __regex: !ruby/regexp /^(db|dbstore|es|pc|labsdb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
+  __regex: !ruby/regexp /^((db|dbstore|es|pc)[12]\d\d\d|labsdb1\d(1[0-9]|0[4-9]))\.(eqiad|codfw)\.wmnet$/
   profile::base::check_raid_policy: 'WriteBack'
 
 # disable screen monitoring, fallback for servers not covered by roles (T165348)
