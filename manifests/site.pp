@@ -87,11 +87,6 @@ node 'bast2001.wikimedia.org' {
 }
 
 # Bastion in the Netherlands (replaced bast3001)
-node 'bast3002.wikimedia.org' {
-    role(bastionhost::pop)
-
-    interface::add_ip6_mapped { 'main': }
-}
 
 # Bastion in California
 node 'bast4001.wikimedia.org' {
