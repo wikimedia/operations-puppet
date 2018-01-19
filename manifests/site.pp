@@ -964,9 +964,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 }
 
 node /labweb100[12]\.eqiad\.wmnet/ {
-    role(mediawiki::appserver)
-
-    include ::ldap::role::client::labs
+    role(wmcs::openstack::main::labweb)
 
     interface::add_ip6_mapped { 'main': }
 }
