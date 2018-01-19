@@ -89,6 +89,7 @@
     window.onload = function() {
       init();
     };
+
     return this;
   })();
 }

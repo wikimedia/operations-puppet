@@ -204,7 +204,6 @@
 }
 
 body {
-    visibility: hidden;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -250,6 +249,7 @@ html body.loginParent {
 
 html body.loginParent:after {
     content: "Image by Adrian Dreßler";
+    float: right;
 }
 
 html body.loginParent .wm-gerrit-heading {
