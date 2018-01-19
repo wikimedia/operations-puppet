@@ -1721,59 +1721,10 @@ host db2014 {
     filename "lpxelinux.0";
 }
 
-host db2016 {
-    hardware ethernet d4:ae:52:90:39:8c;
-    fixed-address db2016.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2017 {
-    hardware ethernet d4:ae:52:95:4a:d7;
-    fixed-address db2017.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2018 {
-    hardware ethernet d4:ae:52:8b:9f:b3;
-    fixed-address db2018.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2019 {
-    hardware ethernet d4:ae:52:90:3b:53;
-    fixed-address db2019.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host db2020 {
     hardware ethernet d4:ae:52:95:4a:e0;
     fixed-address db2020.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2023 {
-    hardware ethernet d4:ae:52:90:39:98;
-    fixed-address db2023.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2028 {
-    hardware ethernet d4:ae:52:95:4d:9e;
-    fixed-address db2028.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host db2029 {
-    hardware ethernet d4:ae:52:8f:21:24;
-    fixed-address db2029.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
     filename "lpxelinux.0";
 }
 
