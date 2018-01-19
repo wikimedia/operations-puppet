@@ -22,7 +22,7 @@ class profile::openstack::labtest::nova::common(
     ) {
 
     require ::profile::openstack::labtest::cloudrepo
-    class {'::profile::openstack::base::nova::common':
+    class {'::profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,
         nova_api_host            => $nova_api_host,
@@ -44,5 +44,5 @@ class profile::openstack::labtest::nova::common(
         rabbit_pass              => $rabbit_pass,
         spice_hostname           => $spice_hostname,
     }
-    contain '::profile::openstack::base::nova::common'
+    contain '::profile::openstack::base::nova::common::nova_network'
 }
