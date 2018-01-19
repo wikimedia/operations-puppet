@@ -1,0 +1,37 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+# This config is behind misc-web which handles ssl for us.
+<VirtualHost *:80>
+    ServerName <%= @webserver_hostname %>
+
+    RewriteEngine on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+
+    WSGIDaemonProcess horizon user=horizon group=horizon processes=3 threads=10 python-path=<%= @venv_dir %>/lib/python3.4/site-packages display-name=horizon
+    WSGIProcessGroup horizon
+    WSGIScriptAlias / <%= @venv_dir %>/lib/python3.4/site-packages/openstack_dashboard/wsgi/django.wsgi process-group=horizon
+
+    <Directory <%= @venv_dir %>/lib/python3.4/site-packages/openstack_dashboard/wsgi>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    Alias /static <%= @venv_dir %>/lib/python3.4/site-packages/openstack_dashboard/static/
+    <Directory <%= @venv_dir %>/lib/python3.4/site-packages/openstack_dashboard/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    ErrorLogFormat "%{cu}t %M"
+    ErrorLog /var/log/apache2/horizon_error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/horizon_access.log combined
+</VirtualHost>
