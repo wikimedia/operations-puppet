@@ -59,6 +59,7 @@ member: {user_dn}
                          'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org',
                          'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
                          'cn=ciadmin,ou=groups,dc=wikimedia,dc=org',
+                         'cn=releng,ou=groups,dc=wikimedia,dc=org',
                          'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org']
     ldapdata = ldap_conn.search_s(
         base_dn,
