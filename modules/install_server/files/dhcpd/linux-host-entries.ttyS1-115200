@@ -419,6 +419,13 @@ host bast3002 {
     filename "lpxelinux.0";
 }
 
+host bast3003 {
+    hardware ethernet 24:B6:FD:F6:17:3A;
+    fixed-address bast3003.wikimedia.org;
+
+    next-server 208.80.154.22; # install1002 (tftp server)
+}
+
 host bast4001 {
     hardware ethernet 90:b1:1c:4d:42:49;
     fixed-address bast4001.wikimedia.org;
