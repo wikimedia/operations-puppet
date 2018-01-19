@@ -93,6 +93,13 @@ node 'bast3002.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+# replacement for bast3002 (T184936)
+node 'bast3003.wikimedia.org' {
+    role(bastionhost::pop)
+
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Bastion in California
 node 'bast4001.wikimedia.org' {
     role(bastionhost::pop)
