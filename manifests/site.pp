@@ -497,12 +497,15 @@ node 'db1055.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db10(31|56)\.eqiad\.wmnet/ {
+node 'db1056.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # To be decommissioned T184054
 node 'db1029.eqiad.wmnet' {
+    role(spare::system)
+}
+node 'db1031.eqiad.wmnet' {
     role(spare::system)
 }
 
