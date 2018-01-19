@@ -22,7 +22,7 @@ class profile::openstack::main::nova::common(
     ) {
 
     require ::profile::openstack::main::cloudrepo
-    class {'profile::openstack::base::nova::common':
+    class {'profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,
         nova_api_host            => $nova_api_host,

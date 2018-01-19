@@ -1,4 +1,4 @@
-class openstack::nova::common(
+class openstack::nova::common::nova_network(
     $version,
     $nova_controller,
     $nova_api_host,
@@ -32,45 +32,22 @@ class openstack::nova::common(
 
     $nova_controller_ip = ipresolve($nova_controller,4)
 
-    $packages = [
-        'unzip',
-        'bridge-utils',
-        'nova-common',
-    ]
-
-    package { $packages:
-        ensure => 'present',
-    }
-
-    # For some reason the Mitaka nova-common package installs
-    #  a logrotate rule for nova/*.log and also a nova/nova-manage.log.
-    #  This is redundant and makes log-rotate unhappy.
-    # Not to mention, nova-manage.log is very low traffic and doesn't
-    #  really need to be rotated anyway.
-    file { '/etc/logrotate.d/nova-manage':
-        ensure  => 'absent',
-        require => Package['nova-common'],
+    class {'openstack::nova::common::base':
+        version => $version,
     }
 
     file {
         '/etc/nova/nova.conf':
-            content => template("openstack/${version}/nova/common/nova.conf.erb"),
+            content => template("openstack/${version}/nova/common/nova_network/nova.conf.erb"),
             owner   => 'nova',
             group   => 'nogroup',
             mode    => '0440',
             require => Package['nova-common'];
         '/etc/nova/api-paste.ini':
-            content => template("openstack/${version}/nova/common/api-paste.ini.erb"),
+            content => template("openstack/${version}/nova/common/nova_network/api-paste.ini.erb"),
             owner   => 'nova',
             group   => 'nogroup',
             mode    => '0440',
             require => Package['nova-common'];
-    }
-
-    file { '/etc/nova/policy.json':
-        source => "puppet:///modules/openstack/${version}/nova/common/policy.json",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
     }
 }
