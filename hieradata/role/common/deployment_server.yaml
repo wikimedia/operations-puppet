@@ -141,6 +141,8 @@ scap::sources:
     repository: operations/software/servermon
   striker/deploy:
     repository: labs/striker/deploy
+  openstack/horizon/deploy:
+    repository: openstack/horizon/deploy
   tilerator/deploy:
     repository: maps/tilerator/deploy
 #    lvs_service: tilerator
