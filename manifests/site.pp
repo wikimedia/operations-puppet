@@ -472,29 +472,6 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 
-# pending to be decommissioned T184090
-node 'db2016.codfw.wmnet' {
-    role(spare::system)
-}
-node 'db2017.codfw.wmnet' {
-    role(spare::system)
-}
-node 'db2018.codfw.wmnet' {
-    role(spare::system)
-}
-node 'db2019.codfw.wmnet' {
-    role(spare::system)
-}
-node 'db2023.codfw.wmnet' {
-    role(spare::system)
-}
-node 'db2028.codfw.wmnet' {
-    role(spare::system)
-}
-node 'db2029.codfw.wmnet' {
-    role(spare::system)
-}
-
 # pending to be provisioned T170662
 node 'db2092.codfw.wmnet' {
     role(spare::system)
