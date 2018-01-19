@@ -274,10 +274,10 @@ host = asw-esams.mgmt.esams.wmnet
 menu = Hosts
 title = Sampled Hosts
 
-+++ bast3002
-menu = bast3002
-title = bast3002.wikimedia.org
-host = bast3002.wikimedia.org
++++ bast3003
+menu = bast3003
+title = bast3003.wikimedia.org
+host = bast3003.wikimedia.org
 
 + ulsfo
 
