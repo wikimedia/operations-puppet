@@ -86,9 +86,11 @@
       }
     }
 
-    window.onload = function() {
-      init();
-    };
+    if (document.getElementById("login_form")) {
+      window.onload = function() {
+        init();
+      };
+    }
     return this;
   })();
 }
