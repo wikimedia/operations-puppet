@@ -1,3 +1,2 @@
-mariadb::shard: 's1'
-mariadb::socket: '/tmp/mysql.sock'
-profile::base::notifications_enabled: '0'
+mariadb::shard: 'x1'
+mariadb::binlog_format: 'ROW'

@@ -3,7 +3,6 @@
     role: slave
   targets:
   - db2016:9104
-  - db2034:9104
   - db2042:9104
   - db2055:9104
   - db2062:9104
@@ -176,3 +175,4 @@
     role: master
   targets:
   - db2033:9104
+  - db2034:9104
