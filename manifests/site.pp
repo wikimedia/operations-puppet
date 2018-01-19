@@ -296,7 +296,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db20(16|42|55|62|69|70|71|72)\.codfw\.wmnet/ {
+node /^db20(42|55|62|69|70|71|72)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -318,7 +318,7 @@ node 'db2035.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(17|41|49|56|63|64)\.codfw\.wmnet/ {
+node /^db20(41|49|56|63|64)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -339,7 +339,7 @@ node 'db2043.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(18|36|50|57|74)\.codfw\.wmnet/ {
+node /^db20(36|50|57|74)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -364,7 +364,7 @@ node 'db2051.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(19|37|44|58|65|73)\.codfw\.wmnet/ {
+node /^db20(37|44|58|65|73)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -386,7 +386,7 @@ node 'db2052.codfw.wmnet' {
 }
 
 # See also db2084 and db2089 below
-node /^db20(23|38|59|66|75)\.codfw\.wmnet/ {
+node /^db20(38|59|66|75)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -409,10 +409,6 @@ node 'db2039.codfw.wmnet' {
 
 node /^db20(46|53|60|67|76)\.codfw\.wmnet/ {
     role(mariadb::core)
-}
-
-node 'db2028.codfw.wmnet' {
-    role(spare::system)
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
@@ -442,7 +438,7 @@ node 'db2040.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(29|47|54|61|68|77)\.codfw\.wmnet/ {
+node /^db20(47|54|61|68|77)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -474,6 +470,29 @@ node /^db1(096|097|098|099|101|103|105)\.eqiad\.wmnet/ {
 }
 node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
+}
+
+# pending to be decommissioned T184090
+node 'db2016.codfw.wmnet' {
+    role(spare::system)
+}
+node 'db2017.codfw.wmnet' {
+    role(spare::system)
+}
+node 'db2018.codfw.wmnet' {
+    role(spare::system)
+}
+node 'db2019.codfw.wmnet' {
+    role(spare::system)
+}
+node 'db2023.codfw.wmnet' {
+    role(spare::system)
+}
+node 'db2028.codfw.wmnet' {
+    role(spare::system)
+}
+node 'db2029.codfw.wmnet' {
+    role(spare::system)
 }
 
 # pending to be provisioned T170662

@@ -2,7 +2,6 @@
     shard: s1
     role: slave
   targets:
-  - db2016:9104
   - db2042:9104
   - db2055:9104
   - db2062:9104
@@ -22,7 +21,6 @@
     shard: s2
     role: slave
   targets:
-  - db2017:9104
   - db2041:9104
   - db2049:9104
   - db2056:9104
@@ -40,7 +38,6 @@
     shard: s3
     role: slave
   targets:
-  - db2018:9104
   - db2036:9104
   - db2050:9104
   - db2057:9104
@@ -57,7 +54,6 @@
   targets:
   - db2037:9104
   - db2044:9104
-  - db2051:9104
   - db2058:9104
   - db2065:9104
   - db2073:9104
@@ -67,13 +63,12 @@
     shard: s4
     role: master
   targets:
-  - db2019:9104
+  - db2051:9104
 
 - labels:
     shard: s5
     role: slave
   targets:
-  - db2023:9104
   - db2038:9104
   - db2059:9104
   - db2066:9104
@@ -107,7 +102,6 @@
     shard: s7
     role: slave
   targets:
-  - db2029:9104
   - db2047:9104
   - db2054:9104
   - db2061:9104
