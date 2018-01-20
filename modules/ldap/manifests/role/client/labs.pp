@@ -1,7 +1,7 @@
 class ldap::role::client::labs(
     $ldapincludes=['openldap', 'utils'],
-    $restricted_to = $::restricted_to,
-    $restricted_from = $::restricted_from,
+    $restricted_to = [],
+    $restricted_from = [],
 ) {
     include ::ldap::role::config::labs
 
