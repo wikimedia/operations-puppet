@@ -1,10 +1,10 @@
-# == Class: role::striker::web
+# == Class: profile::striker::web
 #
 # Striker is a Django application for managing data related to Tool Labs
 # tools.
 #
 # filtertags: labs-project-striker
-class role::striker::web {
+class profile::striker::web {
     include ::memcached
     include ::striker::apache
     include ::striker::uwsgi
