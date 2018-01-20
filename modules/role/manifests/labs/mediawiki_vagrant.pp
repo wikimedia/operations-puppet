@@ -9,7 +9,7 @@
 class role::labs::mediawiki_vagrant {
     if !os_version('debian jessie') {
         # T180377
-        warning('Currently this role is only supported on Debian Jessie.')
+        notify{"Currently this role is only supported on Debian Jessie.":}
     }
 
     include ::vagrant
