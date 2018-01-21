@@ -11,7 +11,7 @@
 class ircecho (
     $ircecho_logs,
     $ircecho_nick,
-    $ircecho_server = 'chat.freenode.net 6667',
+    $ircecho_server = 'chat.freenode.net +6697',
     $ensure = 'present',
 ) {
 

@@ -17,7 +17,7 @@ class icinga::ircbot(
         '/var/log/icinga/irc-reading-web.log' => '#wikimedia-reading-web-bots',
     }
     $ircecho_nick   = 'icinga-wm'
-    $ircecho_server = 'chat.freenode.net'
+    $ircecho_server = 'chat.freenode.net +6697'
 
     class { '::ircecho':
         ensure         => $ensure,
