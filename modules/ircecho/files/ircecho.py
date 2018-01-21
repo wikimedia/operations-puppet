@@ -129,7 +129,7 @@ class EchoReader():
 
 
 class EchoBot(SingleServerIRCBot):
-    def __init__(self, chans, nickname, server, ssl):
+    def __init__(self, chans, nickname, server, nickserv_pass, ssl):
         print('Connecting to IRC server %s...' % server)
 
         if ssl:
@@ -140,6 +140,7 @@ class EchoBot(SingleServerIRCBot):
         SingleServerIRCBot.__init__(self, [(server, port)], nickname, 'IRC echo bot')
         self.chans = chans
         self.use_ssl = ssl
+        self.nickserv_pass = nickserv_pass
 
     def connect(self, *args, **kwargs):
         if self.use_ssl:
@@ -148,6 +149,9 @@ class EchoBot(SingleServerIRCBot):
             self.connection.connect(*args, connect_factory=ssl_factory, **kwargs)
         else:
             self.connection.connect(*args, **kwargs)
+
+        if self.nickserv_pass:
+            self.connection.privmsg("Nickserv", "identify " + self.nickserv_pass)
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + '_')
@@ -195,16 +199,18 @@ class EventHandler(pyinotify.ProcessEvent):
 
 
 parser = OptionParser(conflict_handler='resolve')
-parser.set_usage('ircecho [--infile=<filename>] <channel> <nickname> <server> <ssl>')
+parser.set_usage('ircecho [--infile=<filename>] <channel> ' +
+                 '<nickname> <server> <nickserv_pass> <ssl>')
 parser.add_option('--infile', dest='infile',
                   help='Read input from the specific file instead of from stdin')
 (options, args) = parser.parse_args()
 chans = args[0]
 nickname = args[1]
 server = args[2]
-ssl = args[3]
+nickserv_pass = args[3]
+ssl = args[4]
 global bot
-bot = EchoBot(chans, nickname, server, ssl)
+bot = EchoBot(chans, nickname, server, nickserv_pass, ssl)
 global reader
 reader = EchoReader(options.infile)
 try:
