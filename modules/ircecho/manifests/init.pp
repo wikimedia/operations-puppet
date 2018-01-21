@@ -8,10 +8,11 @@
 # }
 # $ircecho_nick = "icinga-wm"
 # $ircecho_server = "chat.freenode.net"
+# $ircecho_ssl = false # whether to connect to irc using ssl or not
 class ircecho (
     $ircecho_logs,
     $ircecho_nick,
-    $ircecho_server = 'chat.freenode.net',
+    $ircecho_server = 'chat.freenode.net 6667'
     $ensure = 'present',
 ) {
 
