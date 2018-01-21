@@ -8,11 +8,13 @@
 # }
 # $ircecho_nick = "icinga-wm"
 # $ircecho_server = "chat.freenode.net"
+# $ircecho_ssl = false # weather to connect to irc using ssl or not
 class ircecho (
     $ircecho_logs,
     $ircecho_nick,
     $ircecho_server = 'chat.freenode.net',
     $ensure = 'present',
+    $ircecho_ssl = false,
 ) {
 
     require_package(['python-pyinotify', 'python-irc'])
