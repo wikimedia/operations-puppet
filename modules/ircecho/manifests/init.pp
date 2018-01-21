@@ -7,11 +7,11 @@
 #  "/var/log/nagios/irc2.log" => "#irc2",
 # }
 # $ircecho_nick = "icinga-wm"
-# $ircecho_server = "chat.freenode.net"
+# $ircecho_server = "chat.freenode.net 6667"
 class ircecho (
     $ircecho_logs,
     $ircecho_nick,
-    $ircecho_server = 'chat.freenode.net',
+    $ircecho_server = 'chat.freenode.net 6667',
     $ensure = 'present',
 ) {
 
