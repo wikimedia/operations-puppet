@@ -397,7 +397,7 @@ node 'db1061.eqiad.wmnet' {
 }
 
 # See also db1096 and db1098 below
-node /^db10(30|85|88|93)\.eqiad\.wmnet/ {
+node /^db10(30|63|85|88|93)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -449,7 +449,7 @@ node 'db1071.eqiad.wmnet' {
 }
 
 # See also db1099 and db1101 below
-node /^db1(063|104|092|087|109)\.eqiad\.wmnet/ {
+node /^db1(104|092|087|109)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 

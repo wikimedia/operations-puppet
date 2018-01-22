@@ -85,6 +85,7 @@
     role: slave
   targets:
   - db1030:9104
+  - db1063:9104
   - db1085:9104
   - db1088:9104
   - db1093:9104
@@ -116,7 +117,6 @@
     shard: s8
     role: slave
   targets:
-  - db1063:9104
   - db1087:9104
   - db1092:9104
   - db1099:13318

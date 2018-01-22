@@ -1,2 +1,2 @@
-mariadb::shard: 's8'
+mariadb::shard: 's6'
 profile::base::notifications_enabled: '0'
