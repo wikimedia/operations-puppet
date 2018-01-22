@@ -424,6 +424,8 @@ host bast3003 {
     fixed-address bast3003.wikimedia.org;
 
     next-server 208.80.154.22; # install1002 (tftp server)
+    option pxelinux.pathprefix "stretch-installer/";
+    filename "stretch-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bast4001 {
