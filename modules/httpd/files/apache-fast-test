@@ -1,0 +1,253 @@
+#!/usr/bin/perl
+#
+# Copyright (c) 2014,2015 Jeff Green <jgreen@wikimedia.org>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+# of the Software, and to permit persons to whom the Software is furnished to do
+# so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+use strict;
+no warnings 'threads';
+use threads;
+use threads::shared;
+use LWP::UserAgent;
+use Net::DNS::Resolver;
+use Time::HiRes;
+
+my $threads = 50; # how many concurrent threads?
+my $timeout_limit = 3; # how many timeouts to tolerate before dropping a server
+my $timeout = 10; # seconds before LWP gives up on a web request
+my $pad_length = 25; # server hostname column width in report
+my $default_staging_server = 'mwdebug1001.eqiad.wmnet';
+
+# get a list of servers to test
+my $servers;
+if ($ARGV[1]) {
+	# explicit list of servers
+	for (@ARGV[1..$#ARGV]) {
+		chomp;
+		if (/^pybal$/) {
+			# list of production servers from pybal config (URL or local file)
+			$servers = get_server_list_from_pybal_config(qw(
+				http://config-master.eqiad.wmnet/pybal/eqiad/apaches
+				http://config-master.eqiad.wmnet/pybal/eqiad/api
+				http://config-master.eqiad.wmnet/pybal/codfw/apaches
+				http://config-master.eqiad.wmnet/pybal/codfw/api
+			));
+		} elsif (/^(eqiad|codfw)$/i) {
+			my $dc = $1;
+			$servers = get_server_list_from_pybal_config((
+				"http://config-master.eqiad.wmnet/pybal/$dc/apaches",
+				"http://config-master.eqiad.wmnet/pybal/$dc/api"
+			));
+		} elsif (/^([\w\.]+)$/) {
+			$servers->{$1} = 1;
+		}
+	}
+} else {
+	$servers->{$default_staging_server} = 1;
+}
+
+# thread-shared variables used for test/result
+my @queue : shared; # job_ids grouped in per-thread batches
+my %result :shared; # threads return stuff here
+my %timeouts :shared; # server timeout counter
+
+# read in the list of urls
+my $urls;
+if (defined $ARGV[0]) {
+	$urls = get_url_list($ARGV[0]);
+}
+
+# do the server DNS lookups in advance, threading DNS lookups is fraught with peril
+my $resolver = Net::DNS::Resolver->new;
+for my $host (sort keys %{$servers}) {
+	my $answer = $resolver->search($host);
+	if ($answer) {
+		for my $r ($answer->answer) {
+			if ($r->type eq 'A') {
+				my $batch;
+	 			$servers->{$host} = $r->address; # grab the first A record
+				for my $url (sort keys %{$urls}) {
+					$batch .= "$servers->{$host}\t$url\n";
+				}
+				push @queue, $batch if defined $batch;
+				last;
+			}
+		}
+	}
+	unless ($servers->{$host} > 1) {
+		print "[31mno IP found for $host[0m\n";
+		delete $servers->{$host};
+	}
+}
+
+# informative output
+if (scalar @queue) {
+	print "testing " . (keys %{$urls}) . ' urls on ' . (keys %{$servers}) . ' servers, totalling ' .
+		((keys %{$urls}) * (keys %{$servers}))  . " requests\n";
+} else {
+	print "\n  usage: $0 url_file [server spec]\n\n" .
+		"   url_file: (web or local file containing one http/https URL per line\n" .
+		"     ./urls.txt\n".
+		"     http://somehost.eqiad.wmnet/test_urls.txt\n\n" .
+		"   server spec:\n" .
+		"     (none)      use staging server $default_staging_server\n" .
+		"     pybal       fetch full webserver list from live pybal configuration\n" .
+		"     eqiad|codfw fetch full webserver list for a specific datacenter\n" .
+		"     host1 host2 host3\n\n";
+	exit;
+}
+
+# spawn worker threads to do api web requests, then reap them
+print "spawning threads";
+for (1..$threads) {
+	last unless scalar @queue;
+	threads->new(sub { process_queue_task() });
+}
+while (threads->list) {
+	sleep 0.1;
+	for my $thr (threads->list(threads::joinable)) {
+		$thr->join;
+	}
+}
+print "\n";
+
+# can't nest hashes with threads::shared, so we retrieve from shared %result hash
+print "\n";
+for my $url (sort keys %{$urls}) {
+	my ($highlight, $previous_result, $report);
+	for my $host (sort keys %{$servers}) {
+		my $ip = $servers->{$host};
+		next unless defined $result{"$ip\t$url"};
+		$report .= "  " . sprintf("%-${pad_length}s",$host) . $result{"$ip\t$url"} . "\n";
+		$highlight++ if defined($previous_result) and ($previous_result ne $result{"$ip\t$url"});
+		$previous_result = $result{"$ip\t$url"};
+	}
+	if (defined $highlight) {
+		print "[31m$url\n$report[0m";
+	} else {
+		print "$url\n * $previous_result\n"; # short form output
+	}
+}
+
+exit;
+
+
+
+
+
+
+# SUBROUTINES
+sub process_queue_task {
+	my $name = 'thread' . threads->self->tid();
+	print '.';
+	while (defined $queue[0]) {
+		for my $job (split("\n", shift @queue)) {
+			my ($ip,$url) = split("\t", $job);
+			if (($timeouts{$ip} < $timeout_limit) and ($url =~ /^(https?):\/\/([^\/]+)(.*)$/)) {
+				my ($protocol,$host,$path) = ($1,$2,$3);
+				$path = (defined $path) ? $path : '';
+				my $ua = LWP::UserAgent->new(timeout => $timeout);
+				my $request = HTTP::Request->new(GET => "http://$ip$path");
+				$request->header(
+					'Host' => $host,
+					'User_Agent' => $0,
+					'X-Forwarded-Proto' => $protocol, # proxies add this
+				);
+				my $r = $ua->simple_request($request);
+				if ($r->is_success) {
+					$result{"$ip\t$url"} = $r->status_line . ' ' . get_mw_response_size($r->content);
+				} elsif (($r->is_error) and ($r->status_line =~ /^500 can't connect/i)) { # simple timeout, drop the data
+					$timeouts{$ip}++;
+					print "$name dropped $ip, too many timeouts\n" if $timeouts{$ip} >= $timeout_limit;
+				} elsif ($r->is_error) { # report other errors
+					$result{"$ip\t$url"} = $r->status_line;
+				} else {
+					$result{"$ip\t$url"} = $r->status_line . ' ' . $r->header('Location');
+				}
+			}
+		}
+	}
+}
+
+sub get_mw_response_size {
+	my $body = shift;
+	$body =~ s/mw.config.set\([^()]+\);//mg; # remove transaction metadata
+	return length($body);
+}
+
+sub get_server_list_from_pybal_config {
+	my $servers;
+	for my $source (@_) {
+		my $content;
+		if ($source =~ /^http/) {
+			$content = slurp_http_doc($source);
+		} else {
+			$content = slurp_local_file($source);
+		}
+		for my $line (split /^/, $content) {
+			next if $line =~ /^\s*#/;
+			if ( ($line =~ /'enabled':\s+True/i) and ($line =~ /'host':\s+'([\.\w]+)'/) ) {
+				$servers->{$1} = 1;
+			}
+		}
+	}
+	return $servers;
+}
+
+sub get_url_list {
+	my ($content,$urls);
+	my $source = shift;
+	if ($source =~ /^http/) {
+		$content = slurp_http_doc($source);
+	} else {
+		$content = slurp_local_file($source);
+	}
+	for my $line (split /^/, $content) {
+		chomp $line;
+		if ($line =~ /^\s*(http\S+)/) {
+			$urls->{$1}++;
+		}
+	}
+	unless (keys %{$urls}) {
+		die "[31mno urls found in $source[0m\n";
+	}
+	return $urls;
+}
+
+sub slurp_http_doc {
+	my $url = shift;
+	my $ua = LWP::UserAgent->new(timeout => $timeout);
+	my $request = HTTP::Request->new(GET => $url);
+	my $r = $ua->simple_request($request);
+	if ($r->is_success) {
+		return $r->content;
+	} else {
+		print "[31merror fetching '$url'\n " . $r->status_line . "[0m\n";
+	}
+}
+
+sub slurp_local_file {
+	my $file = shift;
+	local $/ = undef;
+	open FILE, $file or die "can't open file '$file': $!";
+	binmode FILE;
+	my $content = <FILE>;
+	close FILE;
+	return $content;
+}
