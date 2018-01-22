@@ -6,6 +6,8 @@ class puppetmaster::puppetdb(
     $port       = 443,
     $jetty_port = 8080,
     $jvm_opts   ='-Xmx4G',
+    $puppetdb_major_version=undef,
+    $puppetdb_package_variant=undef,
 ) {
     requires_os('debian >= jessie')
 
@@ -34,10 +36,12 @@ class puppetmaster::puppetdb(
     ## PuppetDB installation
 
     class { 'puppetdb::app':
-        db_rw_host  => $master,
-        db_ro_host  => $::fqdn,
-        db_password => $puppetdb_pass,
-        perform_gc  => ($master == $::fqdn), # only the master must perform GC
-        jvm_opts    => $jvm_opts,
+        db_rw_host               => $master,
+        db_ro_host               => $::fqdn,
+        db_password              => $puppetdb_pass,
+        perform_gc               => ($master == $::fqdn), # only the master must perform GC
+        jvm_opts                 => $jvm_opts,
+        puppetdb_major_version   => $puppetdb_major_version,
+        puppetdb_package_variant => $puppetdb_package_variant,
     }
 }
