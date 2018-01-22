@@ -127,7 +127,9 @@ COMMUNITY_EXTENSIONS = [
 SLOW_PROCESSING_LIMIT = 30000
 
 SUBPROCESS_USE_TIMEOUT = True
-SUBPROCESS_TIMEOUT = 60
+# The Varnish slow log currently uses 60s as its threshold. This helps
+# avoiding hitting the slow log for expected subprocess timeout situations.
+SUBPROCESS_TIMEOUT = 59
 
 VIPS_ENGINE_MIN_PIXELS = 10000000
 
