@@ -1,8 +1,18 @@
 # ==  Class puppetdb::app
 #
 # Sets up the puppetdb clojure app.
-# This assumes you're using
+# This assumes you're using ...magic!
 #
+# === Parameters
+#
+# [*puppetdb_major_version*]
+#   Major version of puppetdb to configure.
+#   values: 4 or undef (default)
+#
+# [*puppetdb_package_variant*]
+#   Package(er) variant.
+#   values: "puppetlabs" or undef (default)
+
 class puppetdb::app(
     $db_rw_host,
     $ca_path='/etc/ssl/certs/Puppet_Internal_CA.pem',
@@ -15,6 +25,8 @@ class puppetdb::app(
     $bind_ip=undef,
     $ssldir=puppet_ssldir(),
     $command_processing_threads=16,
+    $puppetdb_major_version=undef,
+    $puppetdb_package_variant=undef,
 ) {
     requires_os('debian >= jessie')
 
