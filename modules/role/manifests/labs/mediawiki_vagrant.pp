@@ -7,9 +7,9 @@
 #
 # filtertags: labs-common
 class role::labs::mediawiki_vagrant {
-    if !os_version('debian jessie') {
+    if !os_version('debian jessie | debian stretch') {
         # T180377
-        notify{'Currently this role is only supported on Debian Jessie.':}
+        notify{'Currently this role is only supported on Debian Jessie or Debian Stretch.':}
     }
 
     include ::vagrant
