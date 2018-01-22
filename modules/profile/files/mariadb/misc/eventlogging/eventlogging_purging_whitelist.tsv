@@ -997,7 +997,6 @@ MediaWikiPingback	event_memoryLimit
 MediaWikiPingback	event_database
 MediaWikiPingback	event_machine
 MediaWikiPingback	event_serverSoftware
-QuickSurveyInitiation	userAgent
 QuickSurveyInitiation	webHost
 QuickSurveyInitiation	wiki
 QuickSurveyInitiation	event_beaconCapable
@@ -1005,7 +1004,6 @@ QuickSurveyInitiation	event_eventName
 QuickSurveyInitiation	event_surveyCodeName
 QuickSurveyInitiation	event_surveyInstanceToken
 QuickSurveyInitiation	event_surveySessionToken
-QuickSurveysResponses	userAgent
 QuickSurveysResponses	webHost
 QuickSurveysResponses	wiki
 QuickSurveysResponses	event_countryCode
@@ -1020,8 +1018,6 @@ QuickSurveysResponses	event_surveyInstanceToken
 QuickSurveysResponses	event_surveyResponseValue
 QuickSurveysResponses	event_surveySessionToken
 QuickSurveysResponses	event_userLanguage
-QuickSurveysResponses	event_pageId
-QuickSurveysResponses	event_pageTitle
 Kartographer	webHost
 Kartographer	wiki
 Kartographer	event_feature
