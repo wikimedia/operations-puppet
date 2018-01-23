@@ -1,0 +1,6 @@
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: false
+startDelaySeconds: 10
+whitelistObjectNames:
+  - 'metrics:name=*'
