@@ -199,7 +199,7 @@ groups:
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               madhuvishy, tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
-              fdans, shiladsen, esanders]
+              fdans, shiladsen, esanders, risler]
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
