@@ -28,7 +28,7 @@ groups:
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
-              ayounsi, herron, aborrero]
+              ayounsi, herron, aborrero, bstorm]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-staff-group:
     # No gid for this group on purpose, it's a system provided one
