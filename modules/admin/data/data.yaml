@@ -12,7 +12,7 @@ groups:
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
-    members: [siddharth11, adavenport]
+    members: [adavenport]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -2819,7 +2819,7 @@ ldap_only_users:
     realname: Joseph Seddon
     email: jseddon@wikimedia.org
   siddharth11:
-    ensure: absent
+    ensure: present
     realname: Siddarth Parmar
     email: sparmar@wikimedia.org
   spatton:
