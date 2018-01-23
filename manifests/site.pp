@@ -1042,6 +1042,7 @@ node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
 # mirroring all data from the main Kafka clusters in both main datacenters.
 node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
     role(kafka::jumbo::broker)
+    interface::add_ip6_mapped { 'main': }
 }
 
 
