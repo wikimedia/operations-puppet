@@ -2685,6 +2685,15 @@ users:
     - AAAAB3NzaC1yc2EAAAADAQABAAACAQDBxzztOka1AJvg4W3N4OnYbvr4nz+iDg3mgWlG8f0jbIc1tY9Ned8yfxd8mK+/K/TGMRBGxIwanODE+tvvKHOsULtYrlElIbd25eZY1PAAhWalrhbVZefPHgW3OLuA60FKcZeggJAiOYs9Q4jV0m8ZngIgVPSkrbF/Kr9Jg+HSERDaFmZL/CDy4f9QHsPBU+E6R0C5A06wnCmPwPE3aUhhBwahwxqgkftBywepszho3GTuDYRtS1XuCBobVpmCqkArchY9938AfBb4gI6sf+0ooaxt5e3O9QU1iLphGoRxEfe+u33Crqcf7HXfGnE750q4auNA4UpPJseOLhW7o43zKwJKrR/kb4s5qx91nq0P1HOChHEFrbzPQlAfnGrz3Cw8SLD38+eUryHpVwIw2WNr43a584Qye+CVzWCylcSjEzLsN+PCG4hlukAcWok+W8gQjfTgUCCpMuWG42Wb5GwAGlTtiy8iqLqYSLauWDP5DMm6bYUKFOgzHYseUYZ4CbvCol6SSuy61qt7BHveIvK4G60OkqdJ7LVB62scm714/VkrHJzX0pu3k7C0/89evHKZ1CuN3KNIQn7fMdVpY41kn7wNxHC/VYO2f2v8cmFxv0Ewr31ILPU2zUJz0+Pj0Bpd92ePtre6FJP76IOBHyGjchGFTn+2qwStMuIQ0uFKHw== christian@christian-XPS-15-9550
     uid: 18627
     email: christian.t.covington@gmail.com
+  mneisler:
+    ensure: present
+    gid: 500
+    name: mneisler
+    realname: Megan Neisler
+    ssh_keys:
+    - AAAAB3NzaC1yc2EAAAADAQABAAACAQCyCPFZyyNoNnyQH0dk/+XYmVpnxri8Z5nOg1vW6r82UAPjtquqAp79a6XEs28F5yRDob9z3wtqK1U9seVt6wf3t5+4k4B0cBR8oplLPBfI/CTAKdqugI0XwvjYxEp3KV77sF9SVOfFexhs1vOD5WRnJnQ3WpBkCo9bW7X/xq+oMchz8knCvHQ7NqAe+poJLHjMjJnaRSnZviQn5RSyset13c0kzevxDzvE7BugYR3p329ZrKpp17wPVOt4lnoXnokItZF9WqY4/nLaZIAieCuXLrA8rNIvsciNvKeMuWhaPd1v5UdFMG/jQ2jaHA74Sxxds7VgCrhJK9YHtyXV4JYmbiDGbh4nIsgpSd3w8dnRM/6TcxWMmnLkePS1uzYOfaTp/SONFoNqwPrF3hsm9Pg9O4f4vdSxoZ/3B7hO7yD/BlYrYVU7UDOgwuxjBTX2JhnZpCgmAX9P9sNMprHrcGDrLpeqGBH6E6Vx/z6QwBpatf/Q8WVJJU2Q5wqBvqEibl5rmDE8b+Eyw/k1gRoxNYp7bV81e5ht4e7hLbXkFVdn64JCavKur6mXCbGFPlklgCA/svpJLUl7dcdm+s67V615r8CzIyDwl7e8sGc+586X4zM1Uqvy84xL5l/ASLTObSkU5p3xgNWyEWYm+fTu0l0PdgoOxtEFg8nM89N/XdAFHw== mneisler@wikimedia.org
+    uid: 18650
+    email: mneisler@wikimedia.org
 
 ldap_only_users:
   abartov:
