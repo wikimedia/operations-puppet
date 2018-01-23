@@ -37,6 +37,7 @@ class package_builder(
         'dh-make',
         'dh-autoreconf',
         'dh-golang',
+        'dh-make-golang',
         'dh-systemd',
         'openstack-pkg-tools',
         'git-buildpackage',
