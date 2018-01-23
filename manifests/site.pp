@@ -121,8 +121,6 @@ node 'bromine.eqiad.wmnet' {
 node 'californium.wikimedia.org' {
     role(striker::web)
     include ::role::wmcs::openstack::main::horizon
-    include ::standard
-    include ::base::firewall
     include ::ldap::role::client::labs
 
     interface::add_ip6_mapped { 'main': }
