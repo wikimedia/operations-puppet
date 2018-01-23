@@ -891,15 +891,11 @@ node 'kraz.wikimedia.org' {
 
 node 'labpuppetmaster1001.wikimedia.org' {
     role(wmcs::openstack::main::puppetmaster::frontend)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'labpuppetmaster1002.wikimedia.org' {
     role(wmcs::openstack::main::puppetmaster::backend)
-    include ::standard
-    include ::base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
