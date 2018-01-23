@@ -2694,6 +2694,15 @@ users:
     - AAAAB3NzaC1yc2EAAAADAQABAAACAQCyCPFZyyNoNnyQH0dk/+XYmVpnxri8Z5nOg1vW6r82UAPjtquqAp79a6XEs28F5yRDob9z3wtqK1U9seVt6wf3t5+4k4B0cBR8oplLPBfI/CTAKdqugI0XwvjYxEp3KV77sF9SVOfFexhs1vOD5WRnJnQ3WpBkCo9bW7X/xq+oMchz8knCvHQ7NqAe+poJLHjMjJnaRSnZviQn5RSyset13c0kzevxDzvE7BugYR3p329ZrKpp17wPVOt4lnoXnokItZF9WqY4/nLaZIAieCuXLrA8rNIvsciNvKeMuWhaPd1v5UdFMG/jQ2jaHA74Sxxds7VgCrhJK9YHtyXV4JYmbiDGbh4nIsgpSd3w8dnRM/6TcxWMmnLkePS1uzYOfaTp/SONFoNqwPrF3hsm9Pg9O4f4vdSxoZ/3B7hO7yD/BlYrYVU7UDOgwuxjBTX2JhnZpCgmAX9P9sNMprHrcGDrLpeqGBH6E6Vx/z6QwBpatf/Q8WVJJU2Q5wqBvqEibl5rmDE8b+Eyw/k1gRoxNYp7bV81e5ht4e7hLbXkFVdn64JCavKur6mXCbGFPlklgCA/svpJLUl7dcdm+s67V615r8CzIyDwl7e8sGc+586X4zM1Uqvy84xL5l/ASLTObSkU5p3xgNWyEWYm+fTu0l0PdgoOxtEFg8nM89N/XdAFHw== mneisler@wikimedia.org
     uid: 18650
     email: mneisler@wikimedia.org
+  bstorm:
+    ensure: present
+    gid: 500
+    name: bstorm
+    realname: Brooke Storm
+    ssh_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCmlqfMXTHX55tpcUeYOxp+RAJ11y6CW9v48PV5Sg/HrYWw8M3sP1/aqqFQI9XOKIN2AMSNPE4zUqHORhXP1E5AwKW2hln38btoQdiJn4icKsUuBQo36JVsoRXDpwiUCnNt21TY0IB0AwYBG3iR364D845BxZkgPLyWGB9QyPJBVV9GtWc9sYfn2XYpY1qDGuimG3hPMIk+C9H3FU40Pss0+2D8NVsT483OdmntPRGZ+zZSRc2laIBawc6hF5p6bSZVh/u+sLjHLY+wCexdWX0+3NQspuWD8DGsBVA8zlgan8Zz96sHEqbg5hp9KYkI2OSKvJImphBkShHHVDPTm9yMgw/UPBSDrUW0y45BJtgyqKPII8jOFJIWzeDDkQFMks/sATPlruuhMMh2ATNGsDaeIib+M46RhmubBxXfPF9ktfXLY11/nYiDMxdiIQs5Ho/hp+bl//q2HlCKWugdZz9nFlAqL6VGVnOyU+F0NA+oGwmMtDYehFo4C7AqhGJmry8TNruJtsDPyCv01BNn3NytSZJjRWQ902LFRNSkznoJ+cc4S6hnHRELI1xVJtFbq6SM4ZEQzlIDuS3GLZLPUyjWYR3KfQ3jj8si5c/xqyg+9JLNJVX9LcqIrvCT/hzdFDV65NeQyC7XdW4HZYDz72H3Pa08DpPYrwnnXWblaO5Jw== bstorm@wikimedia.org
+    uid: 18713
+    email: bstorm@wikimedia.org
 
 ldap_only_users:
   abartov:
