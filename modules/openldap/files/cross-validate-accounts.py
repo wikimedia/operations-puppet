@@ -240,13 +240,14 @@ def validate_duplicated_ops_permissions(users):
                 #    cluster-wide root permissions, so might be used in addition to ops privs
                 # researchers enables mysql access in addition to cluster-wide root permissions,
                 #    so might be used in addition to ops privs
+                # ops-staff-group is auto-generated from the ops membership
                 # statistics-privatedata-users enables mysql access as well
                 # deploy-phabricator concerns handling of keyholder for deployment
                 # analytics-search-users concerns user creation in HDFS
                 # contint-docker is about being able to issue docker commands
                 # directly and execute scripts issuing docker commands
                 groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
-                                          'researchers',
+                                          'researchers', 'ops-staff-group',
                                           'statistics-privatedata-users',
                                           'contint-docker',
                                           'deploy-phabricator', 'analytics-search-users'])
