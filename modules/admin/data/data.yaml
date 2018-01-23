@@ -1271,7 +1271,7 @@ users:
     gid: 500
     name: ezachte
     realname: Erik Zachte
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAk/AEZRNX8meVm3hOdid1mU4uIYXREvdEmzumZUzovZ2cD441GWkL/jnpAkzAzb225HeXnad0p+bfAjFuANX4RRB3kF8HutG2xxJOPdjVanJeDqigfzFIU8782HoNu0XJomJVREglP8/+X5EQZlQnISXp5kMqNpqswB23uSKx0hYM3+vrKOzPLET87F1kQ+ZhvELY1AZXdbP0MPwLAp0m73QLiGhV+Df8x2wLB5L6TdFVQfksvzzs9F/tf/TKUxN4arZ4KxNrCW7BkLr8+biqpTgTCPy/zRUaSSDivpCnjGVfn+MF3hp4BIVXQwHDIOT143frGXmqHzxnVE9D4lSlQQ== ezachte wmf rsa-key-20170529]
+    ssh_keys: []
     uid: 523
     email: ezachte@wikimedia.org
   jamesur:
