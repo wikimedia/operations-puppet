@@ -31,12 +31,6 @@ class profile::wdqs (
     $prometheus_agent_port = '9101'
     $prometheus_agent_config = '/etc/wdqs/wdqs-updater-prometheus-jmx.yaml'
 
-    # TODO: this is for cleanup of the previous wdqs-updater prometheus exproter
-    # it will be removed in a future commit
-    package { 'prometheus-wdqs-updater-exporter':
-        ensure => absent,
-    }
-
     # WDQS Updater service
     profile::prometheus::jmx_exporter { 'wdqs-updater':
         hostname => $::hostname,
