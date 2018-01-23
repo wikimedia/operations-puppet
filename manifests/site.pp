@@ -1561,7 +1561,6 @@ node /^mw20(17|99)\.codfw\.wmnet$/ {
 #mw2097, mw2100-mw2117 are appservers
 node /^mw2(097|10[0-9]|11[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
-    include ::base::firewall
 }
 
 #mw2120-2147 are api appservers
