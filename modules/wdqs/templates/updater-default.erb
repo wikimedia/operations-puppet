@@ -1,1 +1,4 @@
 LOG_CONFIG=/etc/wdqs/logback-wdqs-updater.xml
+<%- if @extra_jvm_opts -%>
+EXTRA_JVM_OPTS=<%= @extra_jvm_opts %>
+<%- end -%>
