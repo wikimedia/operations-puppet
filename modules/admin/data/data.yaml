@@ -2273,7 +2273,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5+qOyQlchRnrwpMI0ojTd5WbXlAY2YrYqt0tap9/4u/9X+FqHcnRsHtsrwcAdUVJE3NJRWyqsz/yhmXQyFBNQ9qGvfGZRanIZAIVACgWttjhNvZxB/u/Em1AxsetH61fv/IrlquBR1heO8zzpNPBC0DA5Xirnxz27RAok046JL1zf56/of+iHAsqoN6rJsF1SaOjXQg+w6yCyurP/mfbLYc83kTYEQChtj7ys82Bn2m3v9EWDk2g302k3L2zIgUJb4a32I1HwZBgRig4+GfD/HJVQyUa6Era53QNfORp5Zrf45x0KMnce2mo2Nwytxhd/y7pYzS7n9jRiaxOYF2LD Michele@macbook-pro-di-michele-tizzoni-2.local
     uid: 15221
     email: michele.tizzoni@isi.it
-    expiry_date: 2018-01-26
+    expiry_date: 2018-07-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   panisson:
     ensure: present
@@ -2284,7 +2284,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAsBQKrAubJDt58PL86InNxz0/BEYRJoWbrJw6FCI8B6/GUkGRWiL17Kt7XhiB/6ShNtD6/Md4puA/fB08LJ+GUYxV58eVLpWfdCSTu25AIC2lAiFXwWcFKX7YY4xMYWPCiMkXInODLut8s2o7IuJsikB88m29scZxEVdkxEEupvuf78V7obBjcXGTwed4qMgAzcKjuj3TJZ3DNfGzlylos3NAYGPZ2O0dVIIaGnjsft/quuFKpZHGJe9Td/JUcZ3ddgG8/gO9QXsmNJ4xDUCLdnfen8eI01gfUG5Oe1dJpNw+H2k3HlTefSDUKPrT2SQo9x/tKcstxlKXRxGXaCYt8w== panisson@nbdotti33
     uid: 15217
     email: andre.panisson@isi.it
-    expiry_date: 2018-01-26
+    expiry_date: 2018-07-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   paolotti:
     ensure: present
@@ -2295,7 +2295,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6lmYG3kuDwouTAy19p33dHldzI1Y4JrMv46Ga23FFSKVR3R2yv7Eu6YFt2Gm7W+TUHkE3EjMlNvLFxtxQMqeoWRK8ahuqQruUAocO55jOmhJvIRW6OP3wGABznwaIM7PWvZPmyuUpZj1zKuhnK5EnVPv9v/9258eCltJtvD8sSpA9CNm6h+RpQFSvvgtnUw0qr8t5RiOr3KK0mXuO1YHQI9LO12Fl+LoszlyV7dF1tChNyN6hYX7QBgNDDhRXahkTmUSEmXMqIhO1wW+GiRyYFIjMBfXA/+HHcCgZzg74qnlU2Pb9QXWQrFwx3vK/KMLchl7iV5H9gfLSX4jzC5eZ daniela.paolotti@gmail.com
     uid: 15237
     email: daniela.paolotti@isi.it
-    expiry_date: 2018-01-26
+    expiry_date: 2018-07-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   ciro:
     ensure: present
@@ -2306,7 +2306,7 @@ users:
       - ssh-dss AAAAB3NzaC1kc3MAAACBAJMN2HY4SvYvpse+DMZPY2Rn2W0Uy2Og01tug+vpF96RwN4bad7Z0ryRNno4LcnlaWtl5D6yhLDbibxZSNFn1pXN/Iqj3Took4YJsyXuLkFFN5IYY/ETWphRDqGXIYFWwG9oVLayKk+5wfPz8STBsajXLcliU67YmPyC5tk2IX49AAAAFQDoPyrcuaMbMvHNynsZWXM5h6lF9wAAAIAGd8MyyN9sMosoow783UgLyM0cF0XjdIl0Pzk9Ry5qmYtOp/hWEJRM9bC2I7R+ZhLzoqm1eOJGw8lNbt1PRa3woafJLtget9fPJujn9Csa1jMP2hHjzjSX6C8jtLPGHMVlWu0dgNOfelhcnidP3atjo4bp+gEvXNBRB/W9ZwNNZQAAAIBDPtyrwmvbI3vjwVwOIbFV66B4CTzRzIucmfRjrdKcwHe3eG7K597yP+kUFpMdUq8GlWFeHRpLDZd7nGZ2fXkZZz1ar95EpxPf7Q842We17B6EXgQNr9yZgso3x378eoUGJP9TKgR9ZSZ4iK4S4qIcstflhMheOxb5fZ5ckg2bfw==
     uid: 15247
     email: ciro.cattuto@isi.it
-    expiry_date: 2018-01-26
+    expiry_date: 2018-07-26
     expiry_contact: dario@wikimedia.org, dandreescu@wikimedia.org
   psinger:
     ensure: absent
@@ -2344,7 +2344,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTzLfXEWbB8g/rN0l9Jiva80PTQ0LOIGzANPQ2DFkPdwvutxWesEfkcI6wbUWQJdmRzhaUyCFetHdzcBMf71h3JczYX6AvtNetsTcXG8Fc4J0qajglF16Uso7/CFIA5XEkmGa15YWXQ63Y6Tlx18ARhY5f+sMPlJUn/Zxi9jd9gc+7AjwlxrTyhkKgzr2HmlVAxphbZmF7yfB3m4d0STyH4RlphVx+7zTCC4zGyDT9vwBqhQxZ0VKRllpu+lMXdR5gJiURAqgBEp5G5cDg1mN70PjRo8ZG+DgrFmLQKLRgzl6a4U9IFg6YhaE7TiGtz25e9Weo4mjoTPZAsjpEkE73 markus.kroetzsch@tu-dresden.de
     uid: 1023
     email: markus.kroetzsch@tu-dresden.de
-    expiry_date: 2018-01-29
+    expiry_date: 2018-07-29
     expiry_contact: leila@wikimedia.org
   akrausetud:
     ensure: present
