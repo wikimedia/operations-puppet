@@ -13,6 +13,7 @@ class wdqs::updater(
     $package_dir = $::wdqs::package_dir,
     $username = $::wdqs::username,
     $data_dir = $::wdqs::data_dir,
+    $extra_jvm_opts = undef,
 ){
     file { '/etc/default/wdqs-updater':
         ensure  => present,
