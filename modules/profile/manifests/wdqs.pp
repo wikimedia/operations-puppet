@@ -9,8 +9,8 @@ class profile::wdqs (
     $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
     $updater_options = hiera('profile::wdqs::updater_options'),
     $nodes = hiera('profile::wdqs::nodes'),
+    $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
-    require ::profile::prometheus::wdqs_updater_exporter
     require ::profile::prometheus::blazegraph_exporter
 
     $nagios_contact_group = 'admins,wdqs-admins'
@@ -27,10 +27,30 @@ class profile::wdqs (
         logstash_host          => $logstash_host,
     }
 
+    $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
+    $prometheus_agent_port = '9101'
+    $prometheus_agent_config = '/etc/wdqs/wdqs-updater-prometheus-jmx.yaml'
+
+    # TODO: this is for cleanup of the previous wdqs-updater prometheus exproter
+    # it will be removed in a future commit
+    package { 'prometheus-wdqs-updater-exporter':
+        ensure => absent,
+    }
+
     # WDQS Updater service
+    profile::prometheus::jmx_exporter { 'wdqs-updater':
+        hostname => $::hostname,
+        port => $prometheus_agent_port,
+        prometheus_nodes => $prometheus_nodes,
+        config_file => $prometheus_agent_config,
+        content => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
+    }
+
     class { 'wdqs::updater':
-        options       => $updater_options,
-        logstash_host => $logstash_host,
+        options        => $updater_options,
+        logstash_host  => $logstash_host,
+        extra_jvm_opts => "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
+        require => Profile::Prometheus::Jmx_exporter['wdqs-updater'],
     }
 
     # Service Web proxy
