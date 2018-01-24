@@ -107,7 +107,7 @@ node 'bast4002.wikimedia.org' {
 }
 
 node 'bohrium.eqiad.wmnet' {
-    role(piwik::server)
+    role(piwik)
 }
 
 # VM with webserver for misc. static sites

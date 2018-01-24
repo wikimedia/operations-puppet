@@ -192,7 +192,7 @@ wdqs-canary: P{wdqs1003.eqiad.wmnet}
 yubiauth: P{O:yubiauth_server}
 
 # Miscellaneous groups
-misc-analytics: P{O:statistics::web or O:piwik::server or O:analytics_cluster::coordinator} or A:eventlogging
+misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::coordinator} or A:eventlogging
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:releases or O:otrs} or A:planet
 misc-devel: P{O:webperf or O:ve or O:archiva} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:restbase::test_cluster or O:authdns::testns or O:cache::canary}
