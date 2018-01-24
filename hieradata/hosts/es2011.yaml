@@ -1,4 +1,4 @@
 mariadb::shard: 'es1'
 mariadb::mysql_role: 'standalone'
 mariadb::binlog_format: 'ROW'
-mariadb::socket: '/tmp/mysql.sock'
+profile::base::notifications_enabled: '0'
