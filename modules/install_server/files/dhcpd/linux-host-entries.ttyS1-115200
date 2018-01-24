@@ -2897,6 +2897,8 @@ host es2004 {
 host es2011 {
     hardware ethernet 14:18:77:54:48:37;
     fixed-address es2011.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
 }
 
 host es2012 {
