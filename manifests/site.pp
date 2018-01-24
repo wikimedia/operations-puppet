@@ -834,6 +834,10 @@ node 'eventlog1001.eqiad.wmnet' {
     role(eventlogging::analytics)
 }
 
+node 'eventlog1002.eqiad.wmnet' {
+    role(spare::system)
+}
+
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
     role(lists)

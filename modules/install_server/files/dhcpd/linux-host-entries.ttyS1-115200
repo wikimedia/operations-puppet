@@ -2964,6 +2964,11 @@ host eventlog1001 {
     filename "lpxelinux.0";
 }
 
+host eventlog1002 {
+    hardware ethernet 14:18:77:5B:0D:42;
+    fixed-address eventlog1001.eqiad.wmnet;
+}
+
 host flerovium {
     hardware ethernet F4:E9:D4:CD:90:30;
     fixed-address flerovium.eqiad.wmnet;
