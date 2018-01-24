@@ -907,15 +907,11 @@ node 'labpuppetmaster1002.wikimedia.org' {
 # and the powerdns auth and recursive services for instances.
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services_primary)
-    include ::standard
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
 node 'labservices1002.wikimedia.org' {
     role(wmcs::openstack::main::services_secondary)
-    include ::standard
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -1082,8 +1078,6 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
-
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -1095,8 +1089,6 @@ node 'labcontrol1001.wikimedia.org' {
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
-
-    include ::base::firewall
     include ::ldap::role::client::labs
 }
 
@@ -1929,9 +1921,6 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 node 'silver.wikimedia.org' {
     role(wmcs::openstack::main::wikitech)
     include ::role::mariadb::wikitech
-    include ::base::firewall
-    include ::standard
-
     interface::add_ip6_mapped { 'main': }
 }
 
