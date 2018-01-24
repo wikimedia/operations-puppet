@@ -1,6 +1,6 @@
-# == Class: role::piwik::server
+# == Class: role::piwik
 #
-class role::piwik::server {
+class role::piwik {
     include ::standard
     include ::profile::base::firewall
     include ::profile::piwik::webserver
@@ -9,7 +9,7 @@ class role::piwik::server {
     include ::profile::piwik::backup
     include ::profile::piwik::database
 
-    system::role { 'piwik::server':
+    system::role { 'piwik':
         description => 'Analytics piwik server',
     }
 }
