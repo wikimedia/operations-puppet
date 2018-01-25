@@ -113,11 +113,11 @@ class phabricator (
             'php-dev',
             'php-curl',
             'php-cli',
+            'php-fpm',
             'php-json',
             'php-ldap']:
                 ensure => present;
         }
-        include ::apache::mod::php7
     } else {
         # jessie - PHP (5.5/5.6) packages and Apache module
         package { [
@@ -128,11 +128,11 @@ class phabricator (
             'php5-dev',
             'php5-curl',
             'php5-cli',
+            'php5-fpm',
             'php5-json',
             'php5-ldap']:
                 ensure => present;
         }
-        include ::apache::mod::php5
     }
 
     # common packages that exist in trusty/jessie/stretch
@@ -149,7 +149,7 @@ class phabricator (
 
     $phab_servername = hiera('phabricator_servername', $phab_settings['phabricator.base-uri'])
 
-    apache::site { 'phabricator':
+    nginx::site { 'phabricator':
         content => template('phabricator/phabricator-default.conf.erb'),
         require => $base_requirements,
     }
@@ -165,7 +165,7 @@ class phabricator (
         group  => 'root',
     }
 
-    apache::site { 'git.wikimedia.org':
+    nginx::site { 'git.wikimedia.org':
         content => template('phabricator/gitblit_vhost.conf.erb'),
         require => File['/srv/git.wikimedia.org'],
     }
