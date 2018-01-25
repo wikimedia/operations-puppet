@@ -439,9 +439,9 @@ def run_cumin(label, hosts_query, commands, timeout=30, installer=False, ignore_
     else:
         config = cumin_config
 
-    hosts = query.Query(config, logger=logger).execute(hosts_query)
-    target = transports.Target(hosts, logger=logger)
-    worker = transport.Transport.new(config, target, logger=logger)
+    hosts = query.Query(config).execute(hosts_query)
+    target = transports.Target(hosts)
+    worker = transport.Transport.new(config, target)
 
     ok_codes = None
     if ignore_exit:
