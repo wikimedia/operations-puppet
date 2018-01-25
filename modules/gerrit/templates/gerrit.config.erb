@@ -83,6 +83,8 @@
     database = <%= @db_name %>
     username = <%= @db_user %>
     url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+[gc]
+    aggressive = true
 [gerrit]
     basePath = <%= @git_dir %>
     canonicalWebUrl = <%= @url %>
