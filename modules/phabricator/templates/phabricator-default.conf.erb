@@ -1,71 +1,36 @@
-# Apache configuration for Phabricator (<%= @phab_servername %>)
+# NGINX configuration for Phabricator (<%= @phab_servername %>)
 # This file is managed by Puppet.
 
-<VirtualHost *:80>
-  ServerName <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>
-<%- @serveraliases.each do |name| -%>
-  ServerAlias <%= name %>
-<% end -%>
-<% if !@serveradmin.empty? -%>
-  ServerAdmin <%= @serveradmin %>
-<%- end %>
-  DocumentRoot <%= @docroot %>
+server {
+  server_name <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>;
+  root        <%= @docroot %>;
 
-  SetEnv PHABRICATOR_ENV www
+  location / {
+    index index.php;
+    rewrite ^/(.*)$ /index.php?__path__=/$1 last;
+  }
 
-  <IfModule mod_remoteip.c>
-    RemoteIPHeader X-Client-IP
-    RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
-  </IfModule>
+  location /index.php {
+    fastcgi_pass   localhost:9000;
+    fastcgi_index   index.php;
 
-  RewriteEngine on
+    fastcgi_param PHABRICATOR_ENV www;
 
-<% if !@serveraliases.empty? -%>
-<%- @serveraliases.each do |name| -%>
-  # Read robots.txt from disk for the alternative domain
-  RewriteCond "%{HTTP_HOST}" "<%= name.gsub('.', '\.') %>"
-  RewriteRule ^/robots.txt$ <%= @phabdir %>/robots.txt [L]
+    #required if PHP was built with --enable-force-cgi-redirect
+    fastcgi_param  REDIRECT_STATUS    200;
 
-<%- end %>
+    #variables to make the $_SERVER populate in PHP
+    fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+    fastcgi_param  QUERY_STRING       $query_string;
+    fastcgi_param  REQUEST_METHOD     $request_method;
+    fastcgi_param  CONTENT_TYPE       $content_type;
+    fastcgi_param  CONTENT_LENGTH     $content_length;
 
-  <Files "robots.txt">
-    Require all granted
-  </Files>
-<%- end %>
+    fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
 
-  <Location "/">
-    <RequireAll>
-      Include phabbanlist.conf
-      Require all granted
-    </RequireAll>
-  </Location>
+    fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+    fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
 
-  <Directory "<%= @docroot %>">
-    Options Indexes FollowSymLinks MultiViews
-    Require all granted
-  </Directory>
-
-  LogLevel warn
-  ErrorLog /var/log/apache2/phabricator_error.log
-  CustomLog /var/log/apache2/phabricator_access.log wmf
-  ServerSignature Off
-
-
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-
-<% if !@serveraliases.empty? -%>
-<%- @serveraliases.each do |name| -%>
-  # Redirect server alias home to the main server name
-  RewriteCond "%{HTTP_HOST}" "<%= name.gsub('.', '\.') %>"
-  RewriteRule ^/$ "<%= @phab_servername %>" [R,L]
-<%- end %>
-<%- end %>
-
-  RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
-  RewriteRule ^/favicon.ico   -                       [L,QSA]
-  RewriteRule ^/project/sprint/board/(.*) /project/board/$1 [L,QSA,R=301]
-  RewriteRule ^/maniphest/task/create/? /maniphest/task/edit/form/1/ [L,QSA,NE,R=301]
-  RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
-
-</VirtualHost>
+    fastcgi_param  REMOTE_ADDR        $remote_addr;
+  }
+}
