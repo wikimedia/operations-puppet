@@ -25,6 +25,10 @@ class package_builder(
         $dh_php='dh-php'
     }
 
+    if os_version('debian >= stretch') {
+        require_package('dh-make-golang')
+    }
+
     require_package([
         'cowbuilder',
         'build-essential',
@@ -37,7 +41,6 @@ class package_builder(
         'dh-make',
         'dh-autoreconf',
         'dh-golang',
-        'dh-make-golang',
         'dh-systemd',
         'openstack-pkg-tools',
         'git-buildpackage',
