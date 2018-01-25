@@ -173,6 +173,7 @@
     includeDiff = true
     connectTimeout = 1 min
     smtpServer = <%= @mail_smarthost[0] %>
+    smtpEncryption = <%= @smtp_encryption %>
 [sshd]
     <%- if @slave %>
     listenAddress = off

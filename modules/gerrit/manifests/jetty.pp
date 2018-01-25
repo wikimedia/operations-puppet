@@ -18,6 +18,7 @@ class gerrit::jetty(
     $log_port = '4560',
     $config = 'gerrit.config.erb',
     $git_open_files = 20000,
+    $smtp_encryption = 'none',
     ) {
 
     group { 'gerrit2':
