@@ -356,14 +356,14 @@ define cassandra::instance(
         require => Package['cassandra'],
     }
 
-    file { [$instance_data_file_directories,
-            $commitlog_directory,
-            $saved_caches_directory]:
-        ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0750',
-        require => File[$data_directory_base],
+    # Storage directories are an array of arbitrary, fully-qualified paths;
+    # Since we cannot guarantee a common base path, ensure will not work.
+    flatten([$instance_data_file_directories, $commitlog_directory, $saved_caches_directory]).each | $data_dir | {
+        exec { "install-${data_dir}":
+            command => "install -o cassandra -g cassandra -m 750 -d ${data_dir}",
+            path    => '/usr/bin/:/bin/',
+            before  => Systemd::Service[$service_name]
+        }
     }
 
     file { "${config_directory}/cassandra-env.sh":
@@ -519,7 +519,6 @@ define cassandra::instance(
         ensure  => present,
         content => systemd_template('cassandra'),
         require => [
-            File[$instance_data_file_directories],
             File["${config_directory}/cassandra-env.sh"],
             File["${config_directory}/cassandra.yaml"],
             File["${config_directory}/cassandra-rackdc.properties"],
