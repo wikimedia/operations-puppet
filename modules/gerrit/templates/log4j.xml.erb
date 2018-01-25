@@ -159,6 +159,10 @@
     <logger name="velocity">
         <level value="WARN"/>
     </logger>
+    <!-- Silence OBNOXIOUS spam about on every single comment from CI -->
+    <logger name="com.google.gerrit.server.extensions.events.EventUtil">
+      <level value="ERROR"/>
+    </logger>
     <root>
         <level value="INFO"/>
         <appender-ref ref="error_log"/>
