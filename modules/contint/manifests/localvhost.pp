@@ -20,7 +20,7 @@ define contint::localvhost(
     $log_prefix = $name,
 ){
 
-    httpd::site { "${name}.localhost":
+    apache::site { "${name}.localhost":
         content => template('contint/apache/localvhost.erb'),
     }
 
@@ -32,7 +32,7 @@ define contint::localvhost(
         default      => true,
     }
 
-    httpd::conf { "listen-localhost-${port}":
+    apache::conf { "listen-localhost-${port}":
         content  => template('contint/apache/listen.erb'),
         replaces => "conf.d/listen-localhost-${port}",
     }
