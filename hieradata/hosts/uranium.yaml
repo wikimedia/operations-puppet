@@ -1,2 +1,0 @@
-apache::logrotate::period: "daily"
-apache::logrotate::rotate: 14
