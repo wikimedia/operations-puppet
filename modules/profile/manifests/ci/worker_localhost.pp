@@ -17,8 +17,7 @@ class profile::ci::worker_localhost(
         group  => 'root',
     }
 
-    class { '::httpd':
-        modules => ['rewrite'],
+    class { '::apache::mod::rewrite':
     }
 
     contint::localvhost { 'worker':
@@ -27,7 +26,7 @@ class profile::ci::worker_localhost(
         log_prefix => 'worker',
         require    => [
             File['/srv/localhost-worker'],
-            Class['::httpd'],
+            Class['::apache::mod::rewrite'],
         ],
     }
 
