@@ -2,13 +2,19 @@
 # schedule a host downtime in Icinga
 # Daniel Zahn (dzahn) 20150513 - T79842
 #
-#   usage: ./icinga-downtime -h <hostname> -d <duration> -r <reason>
-# example: ./icinga-downtime -h mw1021 -d 7200 -r "something happened"
-#
-# -h <hostname> should be the (short) name of a host as shown in the Icinga UI
-# -d <duration> how long should the downtime last, in seconds (default 7200 (2h))
-# -r <reason>   a string with the reason for the downtime
-#
+
+usage() {
+    cat<<EOF
+Usage: $0  -h <hostname> -d <duration-seconds> -r <reason>
+Example: ./icinga-downtime -h mw1021 -d 7200 -r "something happened"
+
+Options:
+ -h  short name of a host as shown in the Icinga UI
+ -d  length of the downtime, in seconds
+     default 7200 (2h)
+ -r  a string with the reason for the downtime
+EOF
+}
 
 commandfile="/var/lib/nagios/rw/nagios.cmd"
 logfile="/var/log/icinga/icinga.log"
@@ -27,18 +33,20 @@ case $opts in
     ;;
     \?)
         echo "invalid option: '$OPTARG'"
+        usage
         exit 1
     ;;
     :)
         echo "option '$OPTARG' requires an argument"
+        usage
         exit 1
     ;;
 esac
 done
 
 if [ -z "$hostname" ] || [ -z "$reason" ]; then
-    echo "usage: $0 -h <hostname> -d <duration> -r <reason>"
-    exit
+    usage
+    exit 1
 fi
 
 if [ -z "$duration" ]; then
