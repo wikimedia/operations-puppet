@@ -70,6 +70,15 @@ class vagrant::mediawiki(
         require => Git::Clone['mediawiki/vagrant'],
     }
 
+    file { "${install_directory}/.vagrant/machines":
+        ensure  => directory,
+        owner   => 'mwvagrant',
+        group   => 'wikidev',
+        mode    => '0755',
+        require => Git::Clone['mediawiki/vagrant'],
+    }
+
+
     file { '/usr/local/bin/labs-vagrant':
         ensure  => 'present',
         owner   => 'root',
