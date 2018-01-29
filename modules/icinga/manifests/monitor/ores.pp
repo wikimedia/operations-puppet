@@ -25,7 +25,7 @@ class icinga::monitor::ores {
         contact_group => 'team-scoring',
     }
 
-    $web_nodes = [ 'ores-web-03', 'ores-web-05' ]
+    $web_nodes = [ 'ores-web-01', 'ores-web-02' ]
 
     icinga::monitor::ores_labs_web_node { $web_nodes: }
 
