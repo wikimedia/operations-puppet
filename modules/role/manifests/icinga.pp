@@ -33,6 +33,7 @@ class role::icinga {
     include icinga::monitor::performance
     include icinga::monitor::services
     include icinga::monitor::reading_web
+    include icinga::monitor::test
     include icinga::event_handlers::raid
     include ::profile::bird::anycast_monitoring
     include ::profile::prometheus::alerts
