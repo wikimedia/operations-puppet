@@ -25,3 +25,7 @@ openstack:
     query_params:
         project: <%= @labsproject %>
     <%- end -%>
+
+plugins:
+    backends:
+        - cumin_file_backend
