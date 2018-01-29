@@ -3,9 +3,9 @@
 #
 # SYNTAX:
 #
-#	define command{
+#   define command{
 #               template      <templatename>
-#		name          <objectname>
+#       name          <objectname>
 #               command_name  <commandname>
 #               command_line  <commandline>
 #               }
@@ -25,112 +25,112 @@
 
 # 'host-notify-by-email' command definition
 define command{
-	command_name	host-notify-by-email
-	command_line	/usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" $CONTACTEMAIL$
-	}
+    command_name    host-notify-by-email
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" $CONTACTEMAIL$
+    }
 
 
 # 'notify-by-email' command definition
 define command{
-	command_name	notify-by-email
-	command_line	/usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
-	}
+    command_name    notify-by-email
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nNotes URLs: $SERVICENOTESURL$\n\nAdditional Info:\n\n$SERVICEOUTPUT$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' |  /usr/bin/mail -s "** $NOTIFICATIONTYPE$ alert - $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+    }
 
 # 'notify-by-sms-gateway' command definitions
 define command{
-	command_name	host-notify-by-sms-gateway
-	command_line	echo "Host $HOSTALIAS$ is $HOSTSTATE$\nInfo: $HOSTOUTPUT$\nTime: $LONGDATETIME$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" $CONTACTADDRESS1$
-	}
+    command_name    host-notify-by-sms-gateway
+    command_line    echo "Host $HOSTALIAS$ is $HOSTSTATE$\nInfo: $HOSTOUTPUT$\nTime: $LONGDATETIME$" | /usr/bin/mail -s "Host $HOSTSTATE$ alert for $HOSTNAME$!" $CONTACTADDRESS1$
+    }
 define command{
-	command_name	notify-by-sms-gateway
-	command_line	echo "$SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ at $LONGDATETIME$" | /usr/bin/mail -s "nagios" $CONTACTADDRESS1$
-	}
+    command_name    notify-by-sms-gateway
+    command_line    echo "$SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ at $LONGDATETIME$" | /usr/bin/mail -s "nagios" $CONTACTADDRESS1$
+    }
 
 # new and improved 'notify-by-sms-gateway' command definitions
 define command{
-	command_name	new-host-notify-by-sms-gateway
-	command_line	echo "$NOTIFICATIONTYPE$: $HOSTNAME$ is $HOSTSTATE$\n$HOSTOUTPUT$\n$HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME" $CONTACTADDRESS1$
-	}
+    command_name    new-host-notify-by-sms-gateway
+    command_line    echo "$NOTIFICATIONTYPE$: $HOSTNAME$ is $HOSTSTATE$\n$HOSTOUTPUT$\n$HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME" $CONTACTADDRESS1$
+    }
 define command{
-	command_name	new-notify-by-sms-gateway
-	command_line	echo "$NOTIFICATIONTYPE$: $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$:\n$SERVICEOUTPUT$\n$SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME" $CONTACTADDRESS1$
-	}
+    command_name    new-notify-by-sms-gateway
+    command_line    echo "$NOTIFICATIONTYPE$: $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$:\n$SERVICEOUTPUT$\n$SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME" $CONTACTADDRESS1$
+    }
 
 # global IRC output for operations
 define command{
-	command_name	notify-host-by-irc
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc.log
-	}
+    command_name    notify-host-by-irc
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc.log
+    }
 
 define command{
-	command_name	notify-service-by-irc
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc.log
-	}
+    command_name    notify-service-by-irc
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc.log
+    }
 
 # IRC output for wikidata
 define command{
-	command_name	notify-host-by-irc-wikidata
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-wikidata.log
-	}
+    command_name    notify-host-by-irc-wikidata
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-wikidata.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-wikidata
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-wikidata.log
-	}
+    command_name    notify-service-by-irc-wikidata
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-wikidata.log
+    }
 
 # IRC output for interactive
 define command{
-	command_name	notify-host-by-irc-interactive
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-interactive.log
-	}
+    command_name    notify-host-by-irc-interactive
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-interactive.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-interactive
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-interactive.log
-	}
+    command_name    notify-service-by-irc-interactive
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-interactive.log
+    }
 
-	# IRC output for RelEng team
+    # IRC output for RelEng team
 define command{
-	command_name	notify-host-by-irc-releng
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-releng.log
-	}
+    command_name    notify-host-by-irc-releng
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-releng.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-releng
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-releng.log
-	}
+    command_name    notify-service-by-irc-releng
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-releng.log
+    }
 
 # IRC output for (tool)labs
 define command{
-	command_name	notify-host-by-irc-labs
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-cloud-feed.log
-	}
+    command_name    notify-host-by-irc-labs
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-cloud-feed.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-labs
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-cloud-feed.log
-	}
+    command_name    notify-service-by-irc-labs
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-cloud-feed.log
+    }
 
 # IRC output for Analytics
 define command{
-	command_name	notify-host-by-irc-analytics
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-analytics.log
-	}
+    command_name    notify-host-by-irc-analytics
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-analytics.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-analytics
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-analytics.log
-	}
+    command_name    notify-service-by-irc-analytics
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-analytics.log
+    }
 
 # IRC output for Countervandalism Network
 define command{
-	command_name	notify-host-by-irc-cvn
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-cvn.log
-	}
+    command_name    notify-host-by-irc-cvn
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-cvn.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-cvn
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-cvn.log
+    command_name    notify-service-by-irc-cvn
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-cvn.log
     }
 
 # IRC output for ORES
@@ -146,33 +146,33 @@ define command{
 
 # IRC output for performance
 define command{
-	command_name	notify-host-by-irc-performance
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-performance.log
-	}
+    command_name    notify-host-by-irc-performance
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-performance.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-performance
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-performance.log
-	}
+    command_name    notify-service-by-irc-performance
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-performance.log
+    }
 
 # IRC output for fundraising
 define command{
-	command_name	notify-host-by-irc-fundraising
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-fundraising.log
-	}
+    command_name    notify-host-by-irc-fundraising
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-fundraising.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-fundraising
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-fundraising.log
-	}
+    command_name    notify-service-by-irc-fundraising
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-fundraising.log
+    }
 
 # IRC output for Reading Web
 define command{
-	command_name	notify-host-by-irc-reading-web
-	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-reading-web.log
-	}
+    command_name    notify-host-by-irc-reading-web
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-reading-web.log
+    }
 
 define command{
-	command_name	notify-service-by-irc-reading-web
-	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-reading-web.log
-	}
+    command_name    notify-service-by-irc-reading-web
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-reading-web.log
+    }
