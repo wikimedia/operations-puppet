@@ -46,6 +46,16 @@ define command{
 	command_line	echo "$SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ at $LONGDATETIME$" | /usr/bin/mail -s "nagios" $CONTACTADDRESS1$
 	}
 
+# new and improved 'notify-by-sms-gateway' command definitions
+define command{
+	command_name	new-host-notify-by-sms-gateway
+	command_line	echo "$NOTIFICATIONTYPE$: $HOSTNAME$ is $HOSTSTATE$\n$HOSTOUTPUT$\n$HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME" $CONTACTADDRESS1$
+	}
+define command{
+	command_name	new-notify-by-sms-gateway
+	command_line	echo "$NOTIFICATIONTYPE$: $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$:\n$SERVICEOUTPUT$\n$SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME" $CONTACTADDRESS1$
+	}
+
 # global IRC output for operations
 define command{
 	command_name	notify-host-by-irc
