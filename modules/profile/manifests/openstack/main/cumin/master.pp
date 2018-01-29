@@ -98,4 +98,13 @@ class profile::openstack::main::cumin::master(
             source  => 'puppet:///modules/profile/openstack/main/cumin/cumin_file_backend.py',
             require => File['/etc/cumin'],
         }
+
+        file { '/usr/local/sbin/nfs-hostlist':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0750',
+            source  => 'puppet:///modules/profile/openstack/main/cumin/nfs_hostlist.py',
+            require => File['/etc/cumin'],
+        }
 }
