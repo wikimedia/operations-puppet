@@ -89,4 +89,13 @@ class profile::openstack::main::cumin::master(
             content => template('profile/openstack/main/cumin/ssh_config.erb'),
             require => File['/etc/cumin'],
         }
+
+        file { '/usr/local/lib/python2.7/dist-packages/cumin_file_backend.py':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
+            source  => 'puppet:///modules/profile/openstack/main/cumin/cumin_file_backend.py',
+            require => File['/etc/cumin'],
+        }
 }
