@@ -1,9 +1,9 @@
-class ldap::role::client::labs(
-    $ldapincludes=['openldap', 'utils'],
-    $restricted_to = $::restricted_to,
-    $restricted_from = $::restricted_from,
+class profile::ldap::client::labs(
+    $ldapincludes=hiera('profile::ldap::client::labs::ldapincludes', ['openldap', 'utils']),
+    $restricted_to=hiera('profile::ldap::client::labs::restricted_to', $::restricted_to),
+    $restricted_from=hiera('profile::ldap::client::labs::restricted_from', $::restricted_from),
 ) {
-    include ::ldap::role::config::labs
+    class { '::ldap::config::labs': }
 
     if ( $::realm == 'labs' ) {
         $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils']
@@ -52,6 +52,6 @@ class ldap::role::client::labs(
 
     class{ '::ldap::client::includes':
         ldapincludes => $includes,
-        ldapconfig   => $ldap::role::config::labs::ldapconfig,
+        ldapconfig   => $ldap::config::labs::ldapconfig,
     }
 }

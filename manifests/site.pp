@@ -908,12 +908,12 @@ node 'labpuppetmaster1002.wikimedia.org' {
 # and the powerdns auth and recursive services for instances.
 node 'labservices1001.wikimedia.org' {
     role(wmcs::openstack::main::services_primary)
-    include ::ldap::role::client::labs
+    include profile::ldap::client::labs
 }
 
 node 'labservices1002.wikimedia.org' {
     role(wmcs::openstack::main::services_secondary)
-    include ::ldap::role::client::labs
+    include profile::ldap::client::labs
 }
 
 node /^labtestneutron200[1-2]\.codfw.wmnet$/ {
@@ -967,7 +967,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
 node /labweb100[12]\.eqiad\.wmnet/ {
     role(mediawiki::appserver)
 
-    include ::ldap::role::client::labs
+    include profile::ldap::client::labs
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -1079,7 +1079,7 @@ node /labcontrol100[34]\.wikimedia\.org/ {
 
 node 'labcontrol1001.wikimedia.org' {
     role(wmcs::openstack::main::control)
-    include ::ldap::role::client::labs
+    include profile::ldap::client::labs
 }
 
 # labcontrol1002 is a hot spare for 1001.
@@ -1090,7 +1090,7 @@ node 'labcontrol1001.wikimedia.org' {
 #  'keystone endpoint-create' and 'keystone endpoint-delete.'
 node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
-    include ::ldap::role::client::labs
+    include profile::ldap::client::labs
 }
 
 # This is the labtest server that implements both:
@@ -1099,7 +1099,7 @@ node 'labcontrol1002.wikimedia.org' {
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web)
     include ::role::mariadb::wikitech
-    include ::ldap::role::client::labs
+    include profile::ldap::client::labs
 
     interface::add_ip6_mapped { 'main': }
 }
