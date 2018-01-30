@@ -1,4 +1,4 @@
-class ldap::role::config::labs {
+class profile::ldap::config::labs {
     $hieraldapconfig = hiera_hash('labsldapconfig', {})
 
     $basedn = 'dc=wikimedia,dc=org'
