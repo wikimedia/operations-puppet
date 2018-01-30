@@ -209,8 +209,8 @@ class toollabs::bastion(
         ensure  => absent,
     }
 
-    include ::ldap::role::config::labs
-    $ldapconfig = $ldap::role::config::labs::ldapconfig
+    include ::ldap::config::labs
+    $ldapconfig = $ldap::config::labs::ldapconfig
 
     file { '/etc/toollabs-cronhost':
         ensure  => file,
