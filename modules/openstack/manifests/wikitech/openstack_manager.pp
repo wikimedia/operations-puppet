@@ -10,17 +10,15 @@ class openstack::wikitech::openstack_manager(
 
     require ::mediawiki::users
     include ::mediawiki::multimedia
-    include ::apache
-    include ::apache::mod::alias
-    include ::apache::mod::ssl
-    include ::apache::mod::php5
     # ::mediawiki::scap supports syncing the wikitech wiki from tin.
     include ::mediawiki::scap
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
     include ::profile::backup::host
     include ::nrpe
     include ::imagemagick::install
+
+    class { '::httpd':
+        modules => ['alias', 'ssl', 'php5', 'rewrite', 'headers'],
+    }
 
     class {'::openstack::wikitech::wikitechprivatesettings':
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
@@ -65,7 +63,7 @@ class openstack::wikitech::openstack_manager(
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'compat', true)
-    apache::site { $webserver_hostname:
+    httpd::site { $webserver_hostname:
         content => template('openstack/wikitech/wikitech.wikimedia.org.erb'),
     }
 
