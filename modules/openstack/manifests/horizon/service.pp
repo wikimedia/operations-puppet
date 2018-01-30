@@ -10,16 +10,14 @@ class openstack::horizon::service(
     $webserver_hostname = 'horizon.wikimedia.org'
 ) {
 
-    include ::apache
-    include ::apache::mod::ssl
-    include ::apache::mod::wsgi
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
+    class { '::httpd':
+        modules => ['ssl', 'wsgi', 'rewrite', 'headers'],
+    }
+
     include ::memcached
 
     package { 'openstack-dashboard':
         ensure  => 'present',
-        require => Class['::apache::mod::wsgi'];
     }
 
     require_package([
@@ -287,7 +285,7 @@ class openstack::horizon::service(
         mode   => '0744',
     }
 
-    apache::site { $webserver_hostname:
+    httpd::site { $webserver_hostname:
         content => template("openstack/${version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
     }
