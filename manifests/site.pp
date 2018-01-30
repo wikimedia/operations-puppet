@@ -119,10 +119,7 @@ node 'bromine.eqiad.wmnet' {
 # and Toolforge admin console AKA Striker
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
-    role(striker::web)
-    include ::role::wmcs::openstack::main::horizon
-    include ::ldap::role::client::labs
-
+    role(wmcs::web_interfaces)
     interface::add_ip6_mapped { 'main': }
 }
 
