@@ -6,5 +6,4 @@ class role::mediawiki::appserver {
     include ::profile::base::firewall
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
-
 }

@@ -11,7 +11,7 @@ class role::labs::instance {
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
     }
 
-    class { 'ldap::role::client::labs':
+    class { 'profile::ldap::client::labs':
         # Puppet requires ldap, so we need to update ldap before anything
         #  happens to puppet.
         before => File['/etc/puppet/puppet.conf'],

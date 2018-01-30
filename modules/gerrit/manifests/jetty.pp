@@ -43,8 +43,8 @@ class gerrit::jetty(
     $phab_token = $passwords::gerrit::gerrit_phab_token
 
     # Setup LDAP
-    include ::ldap::role::config::labs
-    $ldapconfig = $ldap::role::config::labs::ldapconfig
+    include ::ldap::config::labs
+    $ldapconfig = $::ldap::config::labs::ldapconfig
 
     $ldap_hosts = $ldapconfig['servernames']
     $ldap_base_dn = $ldapconfig['basedn']

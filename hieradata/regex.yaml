@@ -195,7 +195,7 @@ labtest:
   cluster: labtest
   # no Icinga SMS for test machines
   do_paging: false
-  # class ldap::role::config::labs {
+  # class ::ldap::config::labs {
   #    $hieraldapconfig = hiera_hash('labsldapconfig', {})
   labsldapconfig:
     hostname: labtestservices2001.wikimedia.org
