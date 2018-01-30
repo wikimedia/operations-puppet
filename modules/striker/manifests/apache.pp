@@ -19,15 +19,12 @@ class striker::apache(
     $servers,
     $port = 80,
 ){
-    include ::apache
-    include ::apache::mod::expires
-    include ::apache::mod::headers
-    include ::apache::mod::lbmethod_byrequests
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_balancer
-    include ::apache::mod::proxy_http
 
-    apache::site { 'striker':
+    class { '::httpd':
+        modules => ['expires', 'headers', 'lbmethod_byrequests', 'proxy', 'proxy_balancer', 'proxy_http'],
+    }
+
+    httpd::site { 'striker':
         content => template('striker/apache.conf.erb'),
     }
 }
