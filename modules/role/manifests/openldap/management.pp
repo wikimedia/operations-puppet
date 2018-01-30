@@ -3,10 +3,10 @@
 # both users on labs as well as access control for many things in prod
 class role::openldap::management {
 
-    require ::ldap::role::config::labs
+    require ::ldap::config::labs
     include passwords::phabricator
 
-    $ldapconfig = $ldap::role::config::labs::ldapconfig
+    $ldapconfig = $::ldap::config::labs::ldapconfig
 
     class { '::ldap::management':
         server   => $ldapconfig['servernames'][0],

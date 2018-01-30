@@ -29,7 +29,7 @@ class profile::hue (
     class { '::cdh::spark': }
 
     # LDAP Labs config is the same as LDAP in production.
-    include ::ldap::role::config::labs
+    include ::ldap::config::labs
 
     class { '::cdh::hue':
         # We always host hive-server on the same node as hive-metastore.
@@ -41,10 +41,10 @@ class profile::hue (
         database_name              => $database_name,
         database_port              => $database_port,
         smtp_from_email            => "hue@${::fqdn}",
-        ldap_url                   => inline_template('<%= scope.lookupvar("ldap::role::config::labs::servernames").collect { |host| "ldaps://#{host}" }.join(" ") %>'),
-        ldap_bind_dn               => $ldap::role::config::labs::ldapconfig['proxyagent'],
-        ldap_bind_password         => $ldap::role::config::labs::ldapconfig['proxypass'],
-        ldap_base_dn               => $ldap::role::config::labs::basedn,
+        ldap_url                   => inline_template('<%= scope.lookupvar("::ldap::config::labs::servernames").collect { |host| "ldaps://#{host}" }.join(" ") %>'),
+        ldap_bind_dn               => $::ldap::config::labs::ldapconfig['proxyagent'],
+        ldap_bind_password         => $::ldap::config::labs::ldapconfig['proxypass'],
+        ldap_base_dn               => $::ldap::config::labs::basedn,
         ldap_username_pattern      => 'uid=<username>,ou=people,dc=wikimedia,dc=org',
         ldap_user_filter           => 'objectclass=person',
         ldap_user_name_attr        => 'uid',
