@@ -19,15 +19,8 @@ class striker::apache(
     $servers,
     $port = 80,
 ){
-    include ::apache
-    include ::apache::mod::expires
-    include ::apache::mod::headers
-    include ::apache::mod::lbmethod_byrequests
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_balancer
-    include ::apache::mod::proxy_http
 
-    apache::site { 'striker':
+    httpd::site { 'striker':
         content => template('striker/apache.conf.erb'),
     }
 }
