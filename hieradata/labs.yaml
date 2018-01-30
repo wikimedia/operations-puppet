@@ -16,6 +16,7 @@ labsdnsconfig:
   recursor: 'labs-recursor0.wikimedia.org'
   recursor_secondary: 'labs-recursor1.wikimedia.org'
 
+profile::base::overlayfs: true
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 profile::openstack::main::version: 'liberty'
