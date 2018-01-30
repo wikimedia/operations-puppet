@@ -1,9 +1,9 @@
 # Provision /etc/ldap.yaml file, with credentials for
 # readonly access to the labs ldap
 class ldap::yamlcreds {
-    include ::ldap::role::config::labs
+    include ::ldap::config::labs
 
-    $ldapconfig = $::ldap::role::config::labs::ldapconfig
+    $ldapconfig = $::ldap::config::labs::ldapconfig
 
     $ldap_pw = $ldapconfig['basedn']
     $client_readable_config = {

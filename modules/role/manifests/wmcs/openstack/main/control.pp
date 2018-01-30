@@ -9,4 +9,5 @@ class role::wmcs::openstack::main::control {
     include ::profile::openstack::main::nova::common
     include ::profile::openstack::main::nova::conductor::service
     include ::profile::openstack::main::nova::scheduler::service
+    include ::profile::ldap::client::labs
 }
