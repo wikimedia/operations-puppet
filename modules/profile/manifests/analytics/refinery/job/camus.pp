@@ -18,7 +18,9 @@ class profile::analytics::refinery::job::camus(
 
     # Temporary while we migrate camus jobs over to new kafka cluster.
     $kafka_config_analytics  = kafka_config('analytics')
+    $kafka_config_jumbo      = kafka_config('jumbo')
     $kafka_brokers_analytics = suffix($kafka_config_analytics['brokers']['array'], ':9092')
+    $kafka_brokers_jumbo     = suffix($kafka_config_jumbo['brokers']['array'], ':9092')
 
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
     # If you build a new camus or refinery, and you want to use it, you'll
@@ -75,6 +77,13 @@ class profile::analytics::refinery::job::camus(
     camus::job { 'mediawiki_job':
         minute        => '10',
         kafka_brokers => $kafka_brokers_analytics,
+    }
+
+    # Import netflow queue topics into /wmf/data/raw/netflow
+    # once every hour.
+    camus::job { 'netflow':
+        minute        => '30',
+        kafka_brokers => $kafka_brokers_jumbo,
     }
 
 }
