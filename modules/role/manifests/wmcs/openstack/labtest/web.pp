@@ -7,4 +7,8 @@ class role::wmcs::openstack::labtest::web {
     include ::profile::openstack::labtest::observerenv
     include ::profile::openstack::labtest::wikitech::service
     include ::profile::openstack::labtest::horizon::dashboard
+
+    class { '::httpd':
+        modules => ['alias', 'ssl', 'php5', 'rewrite', 'headers'],
+    }
 }

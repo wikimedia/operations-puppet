@@ -5,4 +5,8 @@ class role::wmcs::openstack::main::wikitech {
     include ::profile::openstack::main::cloudrepo
     include ::profile::openstack::main::clientlib
     include ::profile::openstack::main::wikitech::service
+
+    class { '::httpd':
+        modules => ['alias', 'ssl', 'php5', 'rewrite', 'headers'],
+    }
 }
