@@ -109,3 +109,10 @@ scap::dsh::groups:
       - maps-test2002.codfw.wmnet
       - maps-test2003.codfw.wmnet
       - maps-test2004.codfw.wmnet
+  threed:
+    conftool:
+      - {'cluster': 'imagescaler', 'service': 'apache2'}
+      - {'cluster': 'thumbor', 'service': 'apache2'}
+  threed-canaries:
+    hosts:
+      - mw2150.codfw.wmnet

@@ -213,6 +213,11 @@ scap::dsh::groups:
         hosts:
           - deployment-restbase01.deployment-prep.eqiad.wmflabs
           - deployment-restbase02.deployment-prep.eqiad.wmflabs
+    threed:
+        hosts:
+          - deployment-mediawiki05.deployment-prep.eqiad.wmflabs
+          - deployment-imagescaler01.deployment-prep.eqiad.wmflabs
+          - deployment-imagescaler02.deployment-prep.eqiad.wmflabs
 
 "profile::etcd::tlsproxy::read_only": false
 
