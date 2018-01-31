@@ -81,12 +81,7 @@ class apt::unattendedupgrades(
     }
 
     file { '/usr/local/sbin/report-pending-upgrades':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/apt/report-pending-upgrades.sh',
-        require => Package['apt-show-versions'],
+        ensure => absent,
     }
 
     file { '/usr/local/sbin/apt-upgrade':
