@@ -5,6 +5,8 @@ import os
 import sys
 import apt
 import apt_pkg
+import subprocess
+import re
 
 # Common usage:
 #   'apt-upgrade stretch-security        upgrade packages from stretch-security
@@ -60,7 +62,7 @@ def pkg_upgrade(verbose, pkg):
     return marked_upgrade
 
 
-class AptFilter(apt.cache.Filter):
+class AptFilterUpgradeableSrc(apt.cache.Filter):
     """ filter for python-apt cache to filter only packages upgradable from a
     specific source.
     """
@@ -78,18 +80,32 @@ class AptFilter(apt.cache.Filter):
 
         return False
 
+class AptFilterUpgradeable(apt.cache.Filter):
+    """ filter for python-apt cache to get only upgradeable packages.
+    """
 
-def run(src, simulate, verbose):
-    """ run the cache update, calculate upgrades and commit them
+    def __init__(self):
+        super().__init__()
+
+    def apply(self, pkg):
+        """ filtering function
+        :param pkg: Package
+        """
+
+        if pkg.is_installed and pkg.is_upgradable:
+            return True
+
+        return False
+
+
+def run_upgrade(cache, src, simulate, verbose):
+    """ calculate upgrades and commit them
+    :param cache: apt.Cache
     :param src: str
     :param simulate: boolean
     :param verbose: boolean
     """
-    cache = apt.cache.FilteredCache()
-    print_verbose(verbose, "Updating cache ...")
-    cache.update()
-    cache.open(None)
-    cache.set_filter(AptFilter(src))
+    cache.set_filter(AptFilterUpgradeableSrc(src))
 
     pkgs_to_upgrade = False
     for pkg_name in cache.keys():
@@ -108,23 +124,106 @@ def run(src, simulate, verbose):
     else:
         print_verbose(verbose, "Simulate, not performing changes")
 
-    cache.close()
+
+def run_upgrade_report_archive(cache, archive, verbose):
+    """ calculate upgrades from a given archive
+    :param cache: apt.Cache
+    :param archive: str
+    :param verbose: boolean
+    """
+    if archive:
+        cache.set_filter(AptFilterUpgradeableSrc(archive))
+    else:
+        cache.set_filter(AptFilterUpgradeable())
+
+    # { 'archive1' : { pkg1, pkg2 }, 'archive2' : { pkg3, pkg4 }}
+    dictionary = dict()
+    for pkg_name in cache.keys():
+        archive = cache[pkg_name].candidate.origins[0].archive
+        if archive not in dictionary:
+            dictionary[archive] = set()
+
+        dictionary[archive].add(pkg_name)
+
+    upgradeable_count = 0
+    for archive in dictionary:
+        pkgset = dictionary[archive]
+        amount = len(pkgset)
+        upgradeable_count += amount
+
+        list = "{}".format(', '.join(p for p in pkgset))
+        report = "{} upgradeable packages from {}: {}".format(str(amount), archive, list)
+        print_verbose(verbose, "{}".format(report))
+
+    return upgradeable_count
+
+
+def run_unattended_upgrades_report(verbose):
+    """ run unattended_upgrades, parse the ouput and generate a report
+    :param verbose: boolean
+    """
+    # Explicitly intended. If this becomes an interface problem later, we will deal with it
+    cmd = "LANG=C unattended-upgrades --dry-run -v -d"
+    grep1 = "| grep \"Packages that will be upgraded:\""
+    awk = " | awk -F':' '{print $2}'"
+    grep2 = " | grep -v ^[[:space:]]*$"
+    proc = "{} {} {} {}".format(cmd, grep1, awk, grep2)
+    pkgs = subprocess.check_output(proc, shell=True, stderr=subprocess.DEVNULL)
+
+    unattended_count = 0
+    for n in pkgs.split():
+        unattended_count += 1
+
+    list = "{}".format(', '.join(p.decode() for p in pkgs.split()))
+    report = "{} upgradeable packages by unattended-upgrades: {}".format(unattended_count, list)
+    print_verbose(verbose, "{}".format(report))
+    return unattended_count
+
+
+def run_report(cache, archive, verbose):
+    """ calculate upgrades and report them
+    :param cache: apt.Cache
+    :param verbose: boolean
+    :param archive: str
+    """
+    upgradeable_count = run_upgrade_report_archive(cache, archive, verbose)
+
+    if archive:
+        return
+    else:
+        unattended_count = run_unattended_upgrades_report(verbose)
+
+    system = "{} upgradeable packages in the system".format(str(upgradeable_count))
+    unattended = "{} upgradeable packages by unattended-upgrades".format(str(unattended_count))
+    report ="{}, {}".format(system, unattended)
+    print_verbose(verbose, "{}".format(report))
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run a targeted upgrade of packages")
+    parser = argparse.ArgumentParser(description="Utility to help with targeted upgrades of packages")
     parser.add_argument('-v', action='store_true', help="be verbose")
     parser.add_argument('-s', action='store_true',
                         help="simulate operations")
-    parser.add_argument('source',
+    parser.add_argument('source', nargs="?",
                         help="Main argument: source repository to upgrade from")
+    parser.add_argument('--report', action='store_true',
+                        help="Generate a report of pending upgrades per repository")
     args = parser.parse_args()
 
     if os.geteuid() != 0:
         sys.exit("root needed")
 
-    run(args.source, args.s, args.v)
+    cache = apt.cache.FilteredCache()
+    print_verbose(args.v, "Updating cache ...")
+    cache.update()
+    cache.open(None)
 
+    if args.report:
+        run_report(cache, args.source, args.v)
+    elif args.source:
+        run_upgrade(cache, args.source, args.s, args.v)
+
+    cache.close()
 
 if __name__ == "__main__":
     main()
