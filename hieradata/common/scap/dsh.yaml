@@ -116,3 +116,10 @@ scap::dsh::groups:
     hosts:
       - puppetboard1001.eqiad.wmnet
       - puppetboard2001.codfw.wmnet
+  threedtopng:
+    conftool:
+      - {'cluster': 'imagescaler', 'service': 'apache2'}
+      - {'cluster': 'thumbor', 'service': 'thumbor'}
+  threedtopng-canaries:
+    hosts:
+      - mw2150.codfw.wmnet
