@@ -11,11 +11,6 @@ class profile::grafana (
     $ldap_editor_groups=hiera('profile::grafana::ldap_edit_groups'),
     $config=hiera('profile::grafana::config', {}),
 ) {
-    include ::apache::mod::authnz_ldap
-    include ::apache::mod::headers
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-    include ::apache::mod::rewrite
 
     include ::profile::backup::host
 
@@ -174,7 +169,7 @@ class profile::grafana (
     # - grafana-admin.wikimedia.org (read/write, but requires LDAP)
     #
 
-    apache::site { $readonly_domain:
+    httpd::site { $readonly_domain:
         content => template('profile/apache/sites/grafana-readonly.erb'),
         require => Class['::grafana'],
     }
@@ -184,7 +179,7 @@ class profile::grafana (
         check_command => "check_http_url!${readonly_domain}!/",
     }
 
-    apache::site { $admin_domain:
+    httpd::site { $admin_domain:
         content => template('profile/apache/sites/grafana-admin.erb'),
         require => Class['::grafana'],
     }

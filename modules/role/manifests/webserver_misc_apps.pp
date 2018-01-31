@@ -9,6 +9,18 @@ class role::webserver_misc_apps {
     include ::standard
     include ::profile::base::firewall
 
+    $apache_modules_common = ['ssl', 'rewrite', 'headers', 'authnz_ldap', 'proxy', 'proxy_http']
+
+    if os_version('debian == stretch') {
+        $apache_modules = concat($apache_modules_common, 'php7.0')
+    } else {
+        $apache_modules = concat($apache_modules_common, 'php5')
+    }
+
+    class { '::httpd':
+        modules => $apache_modules,
+    }
+
     include ::profile::wikimania_scholarships # https://scholarships.wikimedia.org
     include ::profile::iegreview              # https://iegreview.wikimedia.org
     include ::profile::grafana::production    # https://grafana.wikimedia.org

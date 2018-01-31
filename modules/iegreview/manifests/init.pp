@@ -46,10 +46,6 @@ class iegreview(
     $smtp_host            = 'localhost',
     $restbase_url         = 'https://en.wikipedia.org/api/rest_v1/transform/wikitext/to/html',
 ) {
-    include ::apache
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     include passwords::mysql::iegreview
 
@@ -65,7 +61,7 @@ class iegreview(
     require_package('php5-mysql')
     require_package('php5-curl')
 
-    apache::site { $hostname:
+    httpd::site { $hostname:
         content => template('iegreview/apache.conf.erb'),
     }
 

@@ -28,7 +28,7 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
         content => template('racktables/racktables.config.erb'),
     }
 
-    apache::site { 'racktables.wikimedia.org':
+    httpd::site { 'racktables.wikimedia.org':
         content => template('racktables/racktables.wikimedia.org.erb'),
     }
 
@@ -37,7 +37,6 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
         path    => '/etc/php5/apache2/php.ini',
         line    => 'memory_limit = 256M',
         match   => '^\s*memory_limit',
-        require => Class['::apache::mod::php5'],
         notify  => Service['apache2'],
     }
 }
