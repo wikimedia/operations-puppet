@@ -113,7 +113,6 @@ class profile::prometheus::k8s::staging (
     ]
 
     prometheus::server { 'k8s-staging':
-        storage_encoding      => '2',
         listen_address        => '127.0.0.1:9907',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,

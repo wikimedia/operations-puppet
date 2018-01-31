@@ -837,7 +837,6 @@ class role::prometheus::ops {
     }
 
     prometheus::server { 'ops':
-        storage_encoding      => '2',
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
