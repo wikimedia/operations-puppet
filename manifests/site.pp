@@ -1708,7 +1708,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 }
 
 node /^ores100[1-9]\.eqiad\.wmnet$/ {
-    role(ores::stresstest)
+    role(spare::system)
 }
 
 # not used yet - stalled until stress test is over T165170
