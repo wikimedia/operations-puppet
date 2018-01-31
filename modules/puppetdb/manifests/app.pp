@@ -27,8 +27,35 @@ class puppetdb::app(
 
     ## PuppetDB installation
 
-    package { 'puppetdb':
-        ensure => present,
+    require_package('puppetdb')
+
+    # Temporary conditional to support puppetlabs puppetdb 4 package
+    # clean up after puppetdb upgrade
+    if $puppetdb_major_version == 4 {
+
+        # Symlink /etc/puppetdb to /etc/puppetlabs/puppetdb
+        file { '/etc/puppetdb':
+            ensure => link,
+            target => '/etc/puppetlabs/puppetdb',
+        }
+
+        file { '/var/lib/puppetdb':
+            ensure => directory,
+            owner  => 'puppetdb',
+            group  => 'puppetdb',
+        }
+
+        file { '/etc/default/puppetdb':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            content => template('puppetdb/etc/default/puppetdb.erb'),
+        }
+
+        service { 'puppetdb':,
+            ensure => running,
+        }
+
     }
 
     ## Configuration
@@ -39,7 +66,6 @@ class puppetdb::app(
         group   => 'root',
         mode    => '0750',
         recurse => true,
-        require => Package['puppetdb'],
     }
 
     # Ensure the default debian config file is not there
@@ -128,11 +154,17 @@ class puppetdb::app(
         require  => Base::Expose_puppet_certs['/etc/puppetdb'],
     }
 
-    # Systemd unit and service declaration
-    systemd::service { 'puppetdb':
-        ensure  => present,
-        content => template('puppetdb/puppetdb.service.erb'),
-        restart => true,
+    # Temporary conditional to support puppetlabs puppetdb 4 package
+    # clean up after puppetdb upgrade
+    unless $puppetdb_major_version == 4 {
+
+        # Systemd unit and service declaration
+        systemd::service { 'puppetdb':
+            ensure  => present,
+            content => template('puppetdb/puppetdb.service.erb'),
+            restart => true,
+        }
+
     }
 
     puppetdb::config { 'command-processing':
