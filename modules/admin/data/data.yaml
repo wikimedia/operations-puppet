@@ -9,7 +9,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar]
+              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport]
@@ -250,7 +250,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
-              flemmerich, mkroetzsch, akrausetud, filippo, pmiazga, faidon,
+              flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk, cy534]
   analytics-admins:
@@ -2347,16 +2347,12 @@ users:
     expiry_date: 2018-07-29
     expiry_contact: leila@wikimedia.org
   akrausetud:
-    ensure: present
+    ensure: absent
     gid: 500
     name: akrausetud
     realname: Alexander Krause
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoD/Zl3L6h+F3gWsN+D/URX1vo8xNGN+FU/NvlU61NEBfmlDYsP+Qses8BOA1xVzj21G6CDZDwWyBaY8TXJJ0FEVeZaisW7y2tf8UKPh7t55ttVIQQUrt5oWm4ZCObWYI+As52VZJbKulpA0Ihzp6tQryqJsdh5OlVQIzwIjEMQ/9WTvn45ZESIiYbpTJjFKqKv/uNU5HbZJzDDOGcvXmhirO3t3kOF3zgrrTROFqjn/rD/nK1uGRD/pSrNWOLnePBT2z/mn1vRWwOlHPUBe915Rwl+bGpGkr0aaljwp39gdeyEpPMJBLCAEv2mLOVT7Dw2dK25sZKSxIaecKDwhJsQ==
+    ssh_keys: []
     uid: 15329
-    email: alexander.krause@tu-dresden.de
-    expiry_date: 2018-01-29
-    expiry_contact: leila@wikimedia.org
   debt:
     ensure: present
     gid: 500
