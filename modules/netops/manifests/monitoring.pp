@@ -92,7 +92,7 @@ class netops::monitoring {
         'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr1-esams', 'cr2-esams'] },
         'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
         # ulsfo
-        'asw-ulsfo'     => { ipv4 => '10.128.128.6', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
+        'asw2-ulsfo'     => { ipv4 => '10.128.128.7', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
     }
     create_resources(netops::check, $switches, $switches_defaults)
 

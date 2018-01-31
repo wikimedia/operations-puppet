@@ -299,10 +299,10 @@ menu = cr2-ulsfo
 title = cr2-ulsfo.wikimedia.org
 host = cr2-ulsfo.wikimedia.org
 
-+++ asw-ulsfo
-menu = asw-ulsfo
-title = asw-ulsfo.mgmt.ulsfo.wmnet
-host = asw-ulsfo.mgmt.ulsfo.wmnet
++++ asw2-ulsfo
+menu = asw2-ulsfo
+title = asw2-ulsfo.mgmt.ulsfo.wmnet
+host = asw2-ulsfo.mgmt.ulsfo.wmnet
 
 ++ Hosts
 menu = Hosts
