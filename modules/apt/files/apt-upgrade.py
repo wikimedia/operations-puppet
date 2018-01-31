@@ -5,11 +5,13 @@ import os
 import sys
 import apt
 import apt_pkg
+import socket
 
-# Common usage:
-#   'apt-upgrade stretch-security        upgrade packages from stretch-security
-#   'apt-upgrade stretch-security -s     like above, but simulating operations
-#   'apt-upgrade stretch-security -v     like above, but being verbose
+# Usage:
+#
+#  % apt-upgrade upgrade <suite> [-yv]
+#  % apt-upgrade report [<suite>]
+#  % apt-upgrade list
 #
 # make sure you hold+pin beforehand those packages that should not be upgraded
 
@@ -20,7 +22,7 @@ def print_verbose(verbose, msg):
     :param msg: str
     """
     if verbose:
-        print(msg)
+        print("{}: {}".format(socket.gethostname(), msg))
 
 
 def print_verbose_pkg(verbose, pkg):
@@ -30,16 +32,19 @@ def print_verbose_pkg(verbose, pkg):
     """
     if not verbose:
         return
+    archive = pkg.candidate.origins[0].archive
+    if not archive:
+        archive = "[unknown]"
     name = pkg.name
     if pkg.is_installed:
-        orig = pkg.installed.version
+        vorig = pkg.installed.version
     else:
-        orig = "absent"
-    if pkg.marked_delete:
-        dest = "remove"
+        vorig = "absent"
+    if not pkg.marked_delete:
+        vdest = pkg.candidate.version
     else:
-        dest = pkg.candidate.version
-    print_verbose(verbose, '{} {} --> {}'.format(name, orig, dest))
+        vdest = "remove"
+    print_verbose(verbose, '{}: {} {} --> {}'.format(archive, name, vorig, vdest))
 
 
 def pkg_upgrade(verbose, pkg):
@@ -60,8 +65,8 @@ def pkg_upgrade(verbose, pkg):
     return marked_upgrade
 
 
-class AptFilter(apt.cache.Filter):
-    """ filter for python-apt cache to filter only packages upgradable from a
+class AptFilterUpgradeableSrc(apt.cache.Filter):
+    """ filter for python-apt cache to filter only packages upgradeable from a
     specific source.
     """
 
@@ -70,7 +75,7 @@ class AptFilter(apt.cache.Filter):
         self.src = src
 
     def apply(self, pkg):
-        """ filtering function
+        """ filtering function: installed and upgradeable pkgs, from a given archive
         :param pkg: Package
         """
         if pkg.is_installed and pkg.is_upgradable and pkg.candidate.origins[0].archive == self.src:
@@ -79,51 +84,141 @@ class AptFilter(apt.cache.Filter):
         return False
 
 
-def run(src, simulate, verbose):
-    """ run the cache update, calculate upgrades and commit them
-    :param src: str
-    :param simulate: boolean
+class AptFilterUpgradeable(apt.cache.Filter):
+    """ filter for python-apt cache to get only upgradeable packages.
+    """
+
+    def apply(self, pkg):
+        """ filtering function: installed and upgradeable pkgs
+        :param pkg: Package
+        """
+
+        if pkg.is_installed and pkg.is_upgradable:
+            return True
+
+        return False
+
+
+def sort_pkgs_by_archive(pkg_list):
+    """ sort pacakges by th archive attribute of the candidate origin
+    :param pkg_list: Package list
+    """
+    return sorted(pkg_list, key=lambda pkg: pkg.candidate.origins[0].archive)
+
+
+def calculate_upgrades(cache, verbose):
+    """ calculate upgrades and print the changes
+    :param cache: apt.Cache
     :param verbose: boolean
     """
-    cache = apt.cache.FilteredCache()
-    print_verbose(verbose, "Updating cache ...")
-    cache.update()
-    cache.open(None)
-    cache.set_filter(AptFilter(src))
-
-    pkgs_to_upgrade = False
     for pkg_name in cache.keys():
-            pkgs_to_upgrade += pkg_upgrade(verbose, cache[pkg_name])
+        pkg_upgrade(verbose, cache[pkg_name])
 
-    if not pkgs_to_upgrade:
-        print_verbose(verbose, 'No packages found to upgrade from {}'.format(src))
-        return
-
-    # report what we will be doing
-    for pkg in cache.get_changes():
+    # report changes
+    for pkg in sort_pkgs_by_archive(cache.get_changes()):
         print_verbose_pkg(verbose, pkg)
 
-    if not simulate:
-        cache.commit()
-    else:
-        print_verbose(verbose, "Simulate, not performing changes")
+    return len(cache.get_changes())
 
-    cache.close()
+
+def run_upgrade(cache, src, confirm, verbose):
+    """ main upgrade routine: calculate upgrades and commit them
+    :param cache: apt.Cache
+    :param src: str
+    :param confirm: boolean
+    :param verbose: boolean
+    """
+    cache.set_filter(AptFilterUpgradeableSrc(src))
+
+    if not calculate_upgrades(cache, verbose):
+        print_verbose(verbose, 'no packages found to upgrade from {}'.format(src))
+        return
+
+    if not confirm:
+        confirm = input("commit changes? [y/N]: ")
+        if confirm[:1] != 'y' or confirm[:1] != 'Y':
+            return
+
+    cache.commit()
+
+
+def run_report(cache, archive):
+    """ calculate upgrades and report them
+    :param cache: apt.Cache
+    :param archive: str
+    """
+    if archive:
+        cache.set_filter(AptFilterUpgradeableSrc(archive))
+    else:
+        cache.set_filter(AptFilterUpgradeable())
+
+    return calculate_upgrades(cache, True)
+
+
+def run_list(cache):
+    """ list available archives from which packages can be upgraded
+    :param cache: apt.Cache
+    """
+    cache.set_filter(AptFilterUpgradeable())
+    calculate_upgrades(cache, False)
+    archives = set()
+    for pkg in cache.get_changes():
+        archive = pkg.candidate.origins[0].archive
+        if archive:
+            archives.add(archive)
+        else:
+            archives.add("[unknown]")
+
+    if len(archives) == 0:
+        return
+
+    print_verbose(True, "available sources of upgrades: {}".format(", ".join(a for a in archives)))
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run a targeted upgrade of packages")
-    parser.add_argument('-v', action='store_true', help="be verbose")
-    parser.add_argument('-s', action='store_true',
-                        help="simulate operations")
-    parser.add_argument('source',
-                        help="Main argument: source repository to upgrade from")
+    parser = argparse.ArgumentParser(description="Utility to help with upgrades of packages")
+    parser.add_argument("-u", action="store_true", help="don't run cache update")
+    subparser = parser.add_subparsers(help="possible operations (pass -h to know usage of each)",
+                                      dest="operation")
+    subparser.add_parser("list", help="list available sources of upgrades")
+    upgrade_parser = subparser.add_parser("upgrade",
+                                          help="upgrade packages from a given archive")
+    upgrade_parser.add_argument("archive", action="store",
+                                help="archive to upgrade packages from")
+    upgrade_parser.add_argument("-y", action="store_true",
+                                help="actually perform changes (will prompt otherwise)")
+    upgrade_parser.add_argument('-v', action='store_true', help="report changes to be performed")
+
+    report_parser = subparser.add_parser("report",
+                                         help="report pending package upgrades")
+    report_parser.add_argument("archive", action="store", nargs="?",
+                               help="archive to report pending upgrades from")
+
     args = parser.parse_args()
 
     if os.geteuid() != 0:
         sys.exit("root needed")
 
-    run(args.source, args.s, args.v)
+    if not args.operation:
+        parser.print_help()
+        sys.exit(1)
+
+    cache = apt.cache.FilteredCache()
+
+    if not args.u:
+        print_verbose(True, "updating apt cache ...")
+        cache.update()
+
+    cache.open(None)
+
+    if args.operation == "upgrade":
+        run_upgrade(cache, args.archive, args.y, args.v)
+    elif args.operation == "report":
+        run_report(cache, args.archive)
+    elif args.operation == "list":
+        run_list(cache)
+
+    cache.close()
 
 
 if __name__ == "__main__":
