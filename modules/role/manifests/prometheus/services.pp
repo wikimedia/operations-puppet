@@ -64,7 +64,6 @@ class role::prometheus::services {
     }
 
     prometheus::server { 'services':
-        storage_encoding      => '2',
         listen_address        => '127.0.0.1:9903',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,

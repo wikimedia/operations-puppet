@@ -93,7 +93,6 @@ class role::labs::prometheus {
     }
 
     prometheus::server { 'labs':
-        storage_encoding      => '2',
         listen_address        => ':9900',
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
