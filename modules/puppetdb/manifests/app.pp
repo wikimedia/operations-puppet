@@ -27,8 +27,34 @@ class puppetdb::app(
 
     ## PuppetDB installation
 
-    package { 'puppetdb':
-        ensure => present,
+    require_package('puppetdb')
+
+    # Create files to support puppetlabs puppetdb 4 package
+    if $puppetdb_major_version == 4 and $puppetdb_package_variant == 'puppetlabs' {
+
+        # Symlink /etc/puppetdb to /etc/puppetlabs/puppetdb
+        file { '/etc/puppetdb':
+            ensure => link,
+            target => '/etc/puppetlabs/puppetdb',
+        }
+
+        file { '/var/lib/puppetdb':
+            ensure => directory,
+            owner  => 'puppetdb',
+            group  => 'puppetdb',
+        }
+
+        file { '/etc/default/puppetdb':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            content => template('puppetdb/etc/default/puppetdb.erb'),
+        }
+
+        service { 'puppetdb':,
+            ensure => running,
+        }
+
     }
 
     ## Configuration
@@ -39,7 +65,6 @@ class puppetdb::app(
         group   => 'root',
         mode    => '0750',
         recurse => true,
-        require => Package['puppetdb'],
     }
 
     # Ensure the default debian config file is not there
@@ -128,11 +153,16 @@ class puppetdb::app(
         require  => Base::Expose_puppet_certs['/etc/puppetdb'],
     }
 
-    # Systemd unit and service declaration
-    systemd::service { 'puppetdb':
-        ensure  => present,
-        content => template('puppetdb/puppetdb.service.erb'),
-        restart => true,
+    # Don't manage puppetdb systemd service on newer versions. It is included in the package.
+    unless $puppetdb_major_version == 4 and $puppetdb_package_variant == 'puppetlabs' {
+
+        # Systemd unit and service declaration
+        systemd::service { 'puppetdb':
+            ensure  => present,
+            content => template('puppetdb/puppetdb.service.erb'),
+            restart => true,
+        }
+
     }
 
     puppetdb::config { 'command-processing':
