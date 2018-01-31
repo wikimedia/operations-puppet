@@ -11,12 +11,6 @@ class profile::racktables (
     system::role { 'racktables': description => 'Racktables server' }
 
     include ::standard
-    include ::apache
-    include ::apache::mod::php5
-    include ::apache::mod::ssl
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
     include ::passwords::racktables
 
     ferm::service { 'racktables-http':

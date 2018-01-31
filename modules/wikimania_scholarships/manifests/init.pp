@@ -30,13 +30,10 @@ class wikimania_scholarships(
 ) {
 
     include ::passwords::mysql::wikimania_scholarships
-    include ::apache
 
     if os_version('debian == stretch') {
-        include ::apache::mod::php7
         require_package('php7.0-mysql')
     } else {
-        include ::apache::mod::php5
         require_package('php5-mysql')
     }
 
@@ -53,7 +50,7 @@ class wikimania_scholarships(
         deploy_user  => 'deploy-service'
     }
 
-    apache::site { 'scholarships.wikimedia.org':
+    httpd::site { 'scholarships.wikimedia.org':
         content => template('wikimania_scholarships/apache.conf.erb'),
     }
 
@@ -72,10 +69,6 @@ class wikimania_scholarships(
         owner  => 'www-data',
         group  => 'root',
     }
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
 }
 
 

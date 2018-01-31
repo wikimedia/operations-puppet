@@ -28,16 +28,15 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
         content => template('racktables/racktables.config.erb'),
     }
 
-    apache::site { 'racktables.wikimedia.org':
+    httpd::site { 'racktables.wikimedia.org':
         content => template('racktables/racktables.wikimedia.org.erb'),
     }
 
     # Increase the default memory limit T102092
     file_line { 'racktables_php_memory':
-        path    => '/etc/php5/apache2/php.ini',
-        line    => 'memory_limit = 256M',
-        match   => '^\s*memory_limit',
-        require => Class['::apache::mod::php5'],
-        notify  => Service['apache2'],
+        path   => '/etc/php5/apache2/php.ini',
+        line   => 'memory_limit = 256M',
+        match  => '^\s*memory_limit',
+        notify => Service['apache2'],
     }
 }
