@@ -1,3 +1,0 @@
-mariadb::shard: 's6'
-mariadb::socket: '/tmp/mysql.sock'
-profile::base::notifications_enabled: '0'

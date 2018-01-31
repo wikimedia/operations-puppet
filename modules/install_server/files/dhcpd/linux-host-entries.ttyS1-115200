@@ -1283,13 +1283,6 @@ host db1029 {
     filename "lpxelinux.0";
 }
 
-host db1030 {
-    hardware ethernet 78:2b:cb:03:64:de;
-    fixed-address db1030.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host db1031 {
     hardware ethernet 78:2b:cb:03:64:53;
     fixed-address db1031.eqiad.wmnet;
