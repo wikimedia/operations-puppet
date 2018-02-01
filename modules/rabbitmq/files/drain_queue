@@ -131,6 +131,8 @@ def main():
         print("message count is {}".format(ready))
         while ready > 0:
             msgs = http_json(
+                username,
+                password,
                 'POST',
                 '/queues/%2F/{}/get'.format(queue),
                 json.dumps({
