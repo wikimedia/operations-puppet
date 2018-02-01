@@ -186,7 +186,8 @@ class _WMFRewriteContext(WSGIContext):
             'Server',
             'Processing-Time',
             'Processing-Utime',
-            'Request-Date'
+            'Request-Date',
+            'Thumbor-Request-Id'
         ]
 
         # add in the headers if we've got them
