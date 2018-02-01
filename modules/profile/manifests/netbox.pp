@@ -12,7 +12,9 @@
 # Sample Usage:
 #       include profile::netbox
 #
-class profile::netbox ($active_server = hiera('profile::netbox::active_server', 'netmon1002.wikimedia.org')) {
+class profile::netbox (
+    $active_server = hiera('profile::netbox::active_server'),
+) {
 
 # lint:ignore:wmf_styleguide
     include ::apache
