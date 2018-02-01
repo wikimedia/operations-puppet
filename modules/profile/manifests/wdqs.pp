@@ -50,7 +50,7 @@ class profile::wdqs (
         options        => $updater_options,
         logstash_host  => $logstash_host,
         extra_jvm_opts => "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
-        require        => Profile::Prometheus::Jmx_exporter['wdqs-updater'],
+        require        => Profile::Prometheus::Jmx_exporter['wdqs_updater'],
     }
 
     # Service Web proxy
