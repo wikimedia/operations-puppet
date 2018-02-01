@@ -91,13 +91,6 @@ host dbmonitor2001 {
     filename "lpxelinux.0";
 }
 
-host diadem {
-    hardware ethernet aa:00:00:eb:b1:27;
-    fixed-address diadem.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 # ganeti VM used for d-i testing
 host d-i-test {
     hardware ethernet aa:00:00:3b:60:cb;
@@ -107,13 +100,6 @@ host d-i-test {
 host dubnium {
     hardware ethernet aa:00:00:2f:d8:57;
     fixed-address dubnium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host dysprosium {
-    hardware ethernet aa:00:00:a9:4b:3c;
-    fixed-address dysprosium.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }

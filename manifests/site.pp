@@ -283,11 +283,6 @@ node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
 
-# DMARC processing (T169566)
-node /^(diadem|dysprosium)\.wikimedia\.org$/ {
-    role(dmarc)
-}
-
 node 'dataset1001.wikimedia.org' {
     role(dumps::web::xmldumps_active)
 }
