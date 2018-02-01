@@ -108,16 +108,33 @@ class openstack::designate::service(
             mode    => '0440';
     }
 
-    # These would be automatically included in a correct designate package...
-    # probably this can be ripped out in Liberty.
-    logrotate::conf { 'designate-mdns':
+    # Designate logrotate configurations were messed up for a long time
+    # late Liberty versions fix this but this logrotate setup here should
+    # ensure consistent state (T186142).  Absented things here can be removed
+    # at a later date esp post Liberty.
+    logrotate::conf { 'designate-common':
         ensure => 'present',
-        source => 'puppet:///modules/openstack/designate/designate-mdns.logrotate',
+        source => 'puppet:///modules/openstack/designate/designate-common.logrotate',
     }
 
-    logrotate::conf { 'designate-pool-manager':
-        ensure => 'present',
-        source => 'puppet:///modules/openstack/designate/designate-pool-manager.logrotate',
+    file {'/etc/logrotate.d/designate-api':
+        ensure => 'absent',
+    }
+
+    file {'/etc/logrotate.d/designate-central':
+        ensure => 'absent',
+    }
+
+    file {'/etc/logrotate.d/designate-sink':
+        ensure => 'absent',
+    }
+
+    file {'/etc/logrotate.d/designate-mdns':
+        ensure => 'absent',
+    }
+
+    file {'/etc/logrotate.d/designate-pool-manager':
+        ensure => 'absent',
     }
 
     file { '/var/lib/designate/.ssh/':
