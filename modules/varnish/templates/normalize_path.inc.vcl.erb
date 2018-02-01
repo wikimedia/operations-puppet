@@ -1,59 +1,71 @@
 C{
 
-/*******************************************************************************
- * URL-Path (not query!) normalization:
+/******************************************************************************
+ * normalize_path_encoding(): URL-Path (not Query!) normalization
  *
- * For MediaWiki's purposes, the 256 characters can be divided into two sets
- * named Always-Decode and Always-Encode, which means every path has exactly
- * one canonical encoding:
+ * This function requires as input a "decoder_ring", which must be a pointer
+ * to a 256-element array of size_t elements.  The indices are the 256
+ * possible byte values, and the values control the normalization of the given
+ * character in the URL path.  Legal values are currently 0, 1, and 2:
  *
- * Always-Decode:
- *   Unreserved Set (RFC 3986): 0-9 A-Z a-z - . _ ~
- *   MW-specific from wfUrlencode: ! $ ( ) * , : ; / @
- * Always-Encode:
- *   Unprintables and space: 0x00-0x20 0x7F-0xFF
- *   MediaWiki disallowed title chars: # < > [ ] | { }
- *   Observed canonical encodes: " % & ' + = \ ^ ` ?
+ * 0 -> Always encode this character as a hex escape (%XX)
+ * 1 -> Always decode a hex escape representing this character back into the
+ *      literal character byte.
+ * 2 -> Do not change the encoding of this character, allowing both forms to
+ *      pass through.
  *
- * Additional notes:-------------------
- * Canonical form for percent-encoding hex digits is uppercase.
- * "Observed canonical encodes" - tested live WP titles containing these
- *   characters, observed MW rel=canonical uses the percent-encoded form.
- * Won't ever actually get encoded:
- *   space ( ) - Can't be transmitted in HTTP request anyways
- *   question (?) - Starts query part, used to delimit path below
- * Literal Percent (%) - Obviously, only encode if not followed by hex digits
+ * The parsing of the input URL's existing hex escapes is case-insensitive
+ * (%AB == %ab == %Ab == %aB).  All hex escapes in the final normalized URL
+ * are normalized to upper case hex digits, even if they didn't need any other
+ * normalization transformation (even case "2" above).
  *
- * Restbase:-------------------
- * Believed to use MW encoding rules above, but has a special exception for
- *   forward-slash: We can neither encode nor decode either form of the
- *   forward-slash for RB; it must be preserved.  This is because RB needs
- *   forward-slashes from MediaWiki titles to be in %2F form, but still needs
- *   its own functional path-delimiting slashes unencoded.
+ * RFC 3986 splits the 256 possible byte values completely into 3 sets:
+ * 66 Unreserved: 0-9 A-Z a-z - . _ ~ 
+ * 18 Reserved: : / ? # [ ] @ ! $ & ' ( ) * + , ; =
+ * 172 Disallowed: 0x00-0x20 0x7F-0xFF < > | { } " % \ ^ `
  *
- * upload.wikimedia.org:---------
- *   MW seems to use PHP's rawurlencode() directly when translating from
- *   MediaWiki File titles to storage URLs.  Note the filenames never contain
- *   spaces (would be underscores), and cannot have forward slashes (which will
- *   still exist in the rest of the path un-encoded).  The rules we should obey
- *   to be consistent with it would be:
+ * As a generic URL normalizer without application-specific knowledge, the best
+ * one can do at normalization by the RFC rules is:
+ * * Unreserved: always decode (array value 1)
+ * * Reserved: do not touch (array value 2)
+ * * Disallowed: input is malformed if these exist, but encoding them is best
+ *               reasonable option in that case (array value 0)
  *
- * Always-Decode: 0-9 A-Z a-z - . _ ~ /
- * Always-Encode: Everything Else
- ******************************************************************************/
+ * A generic normalizer that matches the above values is provided as
+ * "generic_decoder_ring" below which can be used as the decoder_ring argument.
+ *
+ * More-specific decoder rings which increase the amount of normalization can
+ * be built with application-specific knowledge, while still conforming to
+ * RFCs, by changing some of the Reserved set's 2s into 0s or 1s as warranted.
+ *
+ * Note that since we're specifically operating on the Path component, which is
+ * delimited by literal '?' or '#', that these Reserved characters should not
+ * be changed from their 2 value given in the generic_decoder_ring definition.
+ * Changing them to 0 will do nothing due to implementation details (which
+ * could change in the future!), and changing them to 1 would break the
+ * normalized interpretation.
+ *
+ * Therefore, there are 16 reasonable characters, all from Reserved, that
+ * custom application-specific decoders can set to 0 or 1 instead of their
+ * default value of 2 from the generic_decoder_ring, if warranted:
+ * : / [ ] @ ! $ & ' ( ) * + , ; =
+ *
+ * Changing any of the Unreserved or Disallowed characters from their
+ * respective values of 1 or 0 is allowed by this code, but if this seems
+ * necessary for your application-specific scheme, said scheme is probably
+ * broken according to RFC rules and this should be alarming.
+ *****************************************************************************/
 
 #include <inttypes.h>
 #include <string.h>
 
-<%- if scope.call_function(:hiera, ['cluster']) == "cache_upload" -%>
-
-static const uintptr_t decoder_ring[256] = {
+static const size_t generic_decoder_ring[256] = {
   // 0x00-0x1F (all unprintable)
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
+    0,2,0,2,2,0,2,2,2,2,2,2,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,2,0,2,0,2,
   //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
-    0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
+    2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,0,2,0,1,
   //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
     0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
   // 0x80-0xFF (all unprintable)
@@ -63,27 +75,7 @@ static const uintptr_t decoder_ring[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-<%- else -%>
-
-static const uintptr_t decoder_ring[256] = {
-  // 0x00-0x1F (all unprintable)
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
-    0,1,0,0,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,
-  //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
-  //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
-    0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
-  // 0x80-0xFF (all unprintable)
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-};
-
-<%- end -%>
-
-static const uintptr_t hex_finder[256] = {
+static const size_t hex_finder[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ...
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
@@ -97,7 +89,7 @@ static const uintptr_t hex_finder[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-static const uintptr_t hex_dec[256] = {
+static const size_t hex_dec[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,0,0,0,0,0,0,
     0,10,11,12,13,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -115,13 +107,14 @@ static const char hex_enc[16] = {
 #define DO_DECODE(_c) (decoder_ring[(uint8_t)(_c)])
 #define IS_HEX(_c) (hex_finder[(uint8_t)(_c)])
 #define HEX_DECODE(_c1,_c2) \
-    (hex_dec[(uint8_t)(_c1)] << 4 | hex_dec[(uint8_t)(_c2)])
+    ((hex_dec[(uint8_t)(_c1)] << 4) | hex_dec[(uint8_t)(_c2)])
 #define HEX_ENC_TOP(_c) (hex_enc[((uint8_t)(_c)) >> 4])
 #define HEX_ENC_BOTTOM(_c) (hex_enc[((uint8_t)(_c)) & 0xF])
-#define HEX_IS_LOWER(_c) \
-    (uint8_t)((((uint8_t)(_c)) & 0x40) >> 6 & (((uint8_t)(_c)) & 0x20) >> 5)
+#define HEX_IS_LOWER(_c) ((uint8_t)(((((uint8_t)(_c)) & 0x40) >> 6) \
+                                  & ((((uint8_t)(_c)) & 0x20) >> 5)))
 
-void normalize_path_encoding(const struct vrt_ctx *ctx, const int doslash) {
+void normalize_path_encoding(const struct vrt_ctx *ctx, const size_t* decoder_ring)
+{
     const char* vrt_url = VRT_r_req_url(ctx);
     const size_t in_url_len = strlen(vrt_url);
 
@@ -139,15 +132,15 @@ void normalize_path_encoding(const struct vrt_ctx *ctx, const int doslash) {
     char* out_p = out_url;
     unsigned dirty = 0;
 
-    while(1) {
+    while (1) {
         const char c = *in_p++;
         if (c == '\0') {
             *out_p = '\0';
             break;
         }
-        else if (c == '?') {
+        else if (c == '?' || c == '#') {
             if (dirty) {
-                *out_p++ = '?';
+                *out_p++ = c;
                 strcpy(out_p, in_p);
             }
             break;
@@ -156,8 +149,8 @@ void normalize_path_encoding(const struct vrt_ctx *ctx, const int doslash) {
             const char x1 = *in_p++;
             const char x2 = *in_p++;
             const char x = HEX_DECODE(x1, x2);
-            if (DO_DECODE(x) && (doslash || x != '/')) {
-                dirty = 1;
+            if (DO_DECODE(x) == 1U) {
+                dirty = 1U;
                 *out_p++ = x;
             }
             else {
@@ -172,7 +165,7 @@ void normalize_path_encoding(const struct vrt_ctx *ctx, const int doslash) {
             *out_p++ = c;
         }
         else {
-            dirty = 1;
+            dirty = 1U;
             *out_p++ = '%';
             *out_p++ = HEX_ENC_TOP(c);
             *out_p++ = HEX_ENC_BOTTOM(c);
@@ -195,110 +188,3 @@ void normalize_path_encoding(const struct vrt_ctx *ctx, const int doslash) {
 #undef HEX_IS_LOWER
 
 }C
-
-/************ Previous implementation, incomplete text normalization *********/
-
-C{
-#include <string.h>
-
-/* DIY hexadecimal conversion, since it is simple enough for a fixed
- * width, and all the relevant standard C library functions promise to
- * malfunction if the locale is set to anything other than "C"
- */
-#define NP_HEX_DIGIT(c) ( \
-	(c) >= '0' && (c) <= '9' ? (c) - '0' : ( \
-		(c) >= 'A' && (c) <= 'F' ? (c) - 'A' + 0x0a : ( \
-			(c) >= 'a' && (c) <= 'f' ? (c) - 'a' + 0x0a : -1 ) ) )
-#define NP_IS_HEX(c) (NP_HEX_DIGIT(c) != -1)
-#define NP_HEXCHAR(c1, c2) (char)( (NP_HEX_DIGIT(c1) << 4) | NP_HEX_DIGIT(c2) )
-
-void raw_normalize_path(const struct vrt_ctx *ctx, const int doslash) {
-	/* Rewrite the path part of the URL, replacing unnecessarily escaped
-	 * punctuation with the actual characters. The character list is from
-	 * MediaWiki's wfUrlencode(), so the URLs produced here will be the same as
-	 * the ones produced by MediaWiki in href attributes. Doing this reduces
-	 * cache fragmentation and fixes T29935, i.e. stale cache entries due to
-	 * MediaWiki purging only the wfUrlencode'd version of the URL.
-	 */
-	const char * url = VRT_r_req_url(ctx);
-	size_t i, outPos;
-	const size_t urlLength = strlen(url);
-	// index for the last position %XX can start at:
-	const size_t lastConvertIdx = urlLength > 2 ? urlLength - 3 : 0;
-	char c;
-	int dirty = 0;
-
-	/* Allocate destination memory from the stack using the C99
-	 * variable-length automatic feature. We know the length in advance
-	 * because this function can only shorten the input string.
-	 */
-	char destBuffer[urlLength + 1];
-	if (url) {
-		for (i = 0, outPos = 0; i < urlLength; i++) {
-			if (i <= lastConvertIdx && url[i] == '%' && NP_IS_HEX(url[i+1]) && NP_IS_HEX(url[i+2])) {
-				c = NP_HEXCHAR(url[i+1], url[i+2]);
-				if (c == ';'
-					|| c == '@'
-					|| c == '$'
-					|| c == '!'
-					|| c == '*'
-					|| c == '('
-					|| c == ')'
-					|| c == ','
-					|| c == ':'
-					|| (doslash && c == '/'))
-				{
-					destBuffer[outPos++] = c;
-					dirty = 1;
-					i += 2;
-				} else {
-					destBuffer[outPos++] = url[i];
-				}
-			} else if (url[i] == '?') {
-				/* Reached the query part. Just copy the rest of the URL
-				 * to the destination.
-				 */
-				memcpy(destBuffer + outPos, url + i, sizeof(char) * (urlLength - i));
-				outPos += urlLength - i;
-				i = urlLength;
-			} else {
-				destBuffer[outPos++] = url[i];
-			}
-		}
-		destBuffer[outPos] = '\0';
-
-		/* Set req.url. This will copy our stack buffer into the workspace.
-		 * VRT_l_req_url() is varadic, and concatenates its arguments. The
-		 * vrt_magic_string_end marks the end of the list.
-		 */
-		if (dirty) {
-			VRT_l_req_url(ctx, destBuffer, vrt_magic_string_end);
-		}
-	}
-}
-
-#undef NP_IS_HEX
-#undef NP_HEX_DIGIT
-#undef NP_HEXCHAR
-
-}C
-
-<%- if scope.call_function(:hiera, ['cluster']) == "cache_upload" -%>
-// Upload uses the new full-normalization code
-
-sub normalize_upload_path {
-    C{ normalize_path_encoding(ctx, 1); }C
-}
-
-<%- else -%>
-// Text still uses the previous implementation
-
-sub normalize_mediawiki_path {
-    C{ raw_normalize_path(ctx, 1); }C
-}
-
-sub normalize_rest_path {
-    C{ raw_normalize_path(ctx, 0); }C
-}
-
-<%- end -%>

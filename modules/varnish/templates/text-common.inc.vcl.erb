@@ -1,6 +1,75 @@
-// Common functions for the Text/Mobile Varnish clusters
+// Common functions for the Text Varnish cluster
 
 include "normalize_path.inc.vcl";
+
+/******************************************************************************
+ * For MediaWiki's purposes, building on the RFC explanation in
+ * normalize_path_encoding(), all of the 16 characters which are generically
+ * un-forced can be put into a specific subsets that are either always-decoded
+ * or always-encoded, giving us "complete" normalization:
+ *
+ * 10 Always-Decode: : / @ ! $ ( ) * , ;
+ * 6 Always-Encode: [ ] & ' + =
+ *
+ * The set of 10 Always-Decode exactly matches MW's "wfUrlencode".  For the
+ * Always-Encode set: the square brackers are part of MediaWiki's set of
+ * disallowed Title characters, and the rest come from observing Wikipedia's
+ * live behavior for these bytes when sent in either form (the canonical title
+ * always normalizes these as encoded).  The rest of the normal generic decoder
+ * settings were also observationally tested to conform to the RFC.
+ *****************************************************************************/
+
+sub normalize_mediawiki_path { C{
+    static const size_t mediawiki_decoder_ring[256] = {
+      // 0x00-0x1F (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+        0,1,0,2,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,2,
+      //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
+      //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
+        0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
+      // 0x80-0xFF (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    };
+
+    normalize_path_encoding(ctx, mediawiki_decoder_ring);
+}C }
+
+/******************************************************************************
+ * Restbase:
+ * Believed to use MW encoding rules above, but has a special exception for
+ *   forward-slash: We can neither encode nor decode either form of the
+ *   forward-slash for RB; it must be preserved.  This is because RB needs
+ *   forward-slashes from MediaWiki titles to be in %2F form, but still needs
+ *   its own functional path-delimiting slashes unencoded.  Ref: T127387
+ * Therefore, the table below is almost identical to the MW one above, but note
+ *   that the '/' is set to 2 (as it would be in generic_decoder_ring), which
+ *   means do not change its encoding status.
+ *****************************************************************************/
+
+sub normalize_rest_path { C{
+    static const size_t restbase_decoder_ring[256] = {
+      // 0x00-0x1F (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+        0,1,0,2,1,0,0,0,1,1,1,0,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,2,
+      //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
+      //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
+        0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
+      // 0x80-0xFF (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    };
+
+    normalize_path_encoding(ctx, restbase_decoder_ring);
+}C }
 
 sub text_common_misspass_restore_cookie {
 	// Restore the original Cookie header for upstream
