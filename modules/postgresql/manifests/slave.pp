@@ -58,7 +58,7 @@ class postgresql::slave(
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///modules/postgresql/slave.conf',
-        require => Class['postgresql::server'],
+        require => Package["postgresql-${pgversion}"],
     }
 
     file { "${data_dir}/recovery.conf":
@@ -67,7 +67,7 @@ class postgresql::slave(
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/recovery.conf.erb'),
-        before  => Class['postgresql::server'],
+        before  => Service['postgresql'],
         require => Exec["pg_basebackup-${master_server}"],
     }
 
@@ -78,7 +78,7 @@ class postgresql::slave(
             command     => "/usr/bin/pg_basebackup -X stream -D ${data_dir} -h ${master_server} -U replication -w",
             user        => 'postgres',
             unless      => "/usr/bin/test -f ${data_dir}/PG_VERSION",
-            before      => Class['postgresql::server'],
+            before      => Service['postgresql'],
         }
     }
 
