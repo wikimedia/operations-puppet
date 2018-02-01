@@ -1,3 +1,4 @@
 profile::librenms::sitename: 'librenms.wikimedia.org'
 profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
 profile::netbox::active_server: netmon1002.wikimedia.org
+profile::netbox::slaves: [ 'netmon1002.wikimedia.org' ]
