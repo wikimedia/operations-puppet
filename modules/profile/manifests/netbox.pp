@@ -45,6 +45,46 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
             use_ssl  => true,
         }
         $on_master = true
+        postgresql::user { 'replication@netmon2001':
+            ensure   => present,
+            user     => 'replication',
+            database => 'all',
+            password => $replication_pass,
+            cidr     => '208.80.153.110/32',
+            master   => $on_master,
+            attrs    => 'REPLICATION',
+        }
+        # User for standby netbox server to query the master DB
+        postgresql::user { 'netbox@netmon2001':
+            ensure   => present,
+            user     => 'netbox',
+            database => 'netbox',
+            password => $db_password,
+            cidr     => '208.80.153.110/32',
+            master   => $on_master,
+        }
+        # Create the netbox user for localhost
+        # This works on every server and is used for read-only db lookups
+        postgresql::user { 'netbox@localhost':
+            ensure   => present,
+            user     => 'netbox',
+            database => 'netbox',
+            password => $db_password,
+            master   => $on_master,
+        }
+
+        # Create the database
+        postgresql::db { 'netbox':
+            owner   => 'netbox',
+            require => Class[$require_class],
+        }
+        postgresql::user { 'prometheus@localhost':
+            user     => 'prometheus',
+            database => 'postgres',
+            type     => 'local',
+            method   => 'peer',
+        }
+
     } else {
         $require_class = 'postgresql::slave'
         class { '::postgresql::slave':
@@ -54,46 +94,6 @@ class profile::netbox ($active_server = hiera('profile::netbox::active_server', 
             use_ssl          => true,
         }
         $on_master = false
-    }
-
-    postgresql::user { 'replication@netmon2001':
-        ensure   => present,
-        user     => 'replication',
-        database => 'all',
-        password => $replication_pass,
-        cidr     => '208.80.153.110/32',
-        master   => $on_master,
-        attrs    => 'REPLICATION',
-    }
-    # User for standby netbox server to query the master DB
-    postgresql::user { 'netbox@netmon2001':
-        ensure   => present,
-        user     => 'netbox',
-        database => 'netbox',
-        password => $db_password,
-        cidr     => '208.80.153.110/32',
-        master   => $on_master,
-    }
-    # Create the netbox user for localhost
-    # This works on every server and is used for read-only db lookups
-    postgresql::user { 'netbox@localhost':
-        ensure   => present,
-        user     => 'netbox',
-        database => 'netbox',
-        password => $db_password,
-        master   => $on_master,
-    }
-
-    # Create the database
-    postgresql::db { 'netbox':
-        owner   => 'netbox',
-        require => Class[$require_class],
-    }
-    postgresql::user { 'prometheus@localhost':
-        user     => 'prometheus',
-        database => 'postgres',
-        type     => 'local',
-        method   => 'peer',
     }
 
     class { '::netbox':
