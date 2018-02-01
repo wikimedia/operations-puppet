@@ -3,3 +3,4 @@ admin::groups:
   - deployment
   - restricted
   - mw-log-readers
+monitor_screens: false
