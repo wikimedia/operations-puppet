@@ -12,6 +12,9 @@ class role::thumbor::mediawiki {
     include ::profile::prometheus::nutcracker_exporter
     include ::profile::thumbor
     include ::lvs::realserver
+    include ::profile::conftool::client
+
+    class { 'conftool::scripts': }
 
     class { '::memcached':
         size => 100,
