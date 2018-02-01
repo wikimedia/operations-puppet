@@ -1,3 +1,9 @@
+include "normalize_path.inc.vcl";
+
+sub misc_normalize_path {
+    C{ normalize_path_encoding(ctx, generic_decoder_ring); }C
+}
+
 sub misc_recv_pass {
     if (req.method != "GET" && req.method != "HEAD") {
         // We only deal with GET and HEAD
