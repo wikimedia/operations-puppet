@@ -4,6 +4,8 @@ class profile::thumbor(
     $logstash_port = hiera('logstash_logback_port'),
     $swift_sharded_containers = hiera_array('swift::proxy::shard_container_list'),
 ) {
+    include ::profile::conftool::client
+    class { 'conftool::scripts': }
 
     class { '::thumbor::nutcracker':
         thumbor_memcached_servers => $memcached_servers_nutcracker,
