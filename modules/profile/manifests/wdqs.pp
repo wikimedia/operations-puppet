@@ -43,7 +43,7 @@ class profile::wdqs (
         port             => $prometheus_agent_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $prometheus_agent_config,
-        content          => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
+        source           => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
     }
 
     class { 'wdqs::updater':
