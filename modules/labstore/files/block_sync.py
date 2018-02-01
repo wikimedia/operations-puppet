@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
     local_device = '/dev/{}/{}'.format(args.l_vg, args.l_lv)
 
-    lock_file = open('/var/lock/{}_{}_backup.lock'.format(args.r_vg, args.r_lv, 'w+'))
+    lock_file = open('/var/lock/{}_{}_backup.lock'.format(args.r_vg, args.r_lv), 'w+')
     fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
 
     try:
