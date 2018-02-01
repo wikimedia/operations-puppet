@@ -33,7 +33,7 @@ fi
 EXCLUDE_PATTERN='(Heads|Sectors Per Track|Cylinders|Unique Identifier|Logical Drive Label):'
 OUTPUT=""
 while read -r CONTROLLER; do
-    OUTPUT="${OUTPUT}$(/usr/bin/sudo /usr/sbin/hpssacli controller slot="${CONTROLLER}" ld all show detail | grep -Ev "${EXCLUDE_PATTERN}")\n"
+    OUTPUT="${OUTPUT}$(/usr/bin/sudo /usr/sbin/hpssacli controller slot="${CONTROLLER}" pd all show detail | grep -Ev "${EXCLUDE_PATTERN}")\n"
 done < <(/usr/bin/sudo /usr/sbin/hpssacli controller all show | grep -Eo 'Slot [0-9] ' | cut -d' ' -f2)
 
 PYTHON_SCRIPT="
