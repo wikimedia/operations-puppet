@@ -6,4 +6,7 @@ class profile::openstack::main::nova::api::service(
     class {'profile::openstack::base::nova::api::service':
         nova_api_host => $nova_api_host,
     }
+
+    class {'::openstack::nova::log_fixes':}
+    contain '::openstack::nova::log_fixes'
 }

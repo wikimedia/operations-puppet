@@ -2,8 +2,6 @@ admin::groups:
   - labnet-users
   - wmcs-roots
 
-openstack::log_group: labnet-users
-
 # routing and nat host with lots of addresses
 # lock down SSH to administrative IP only
 profile::base::ssh_server_settings:
