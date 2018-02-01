@@ -21,6 +21,11 @@ class apt::unattendedupgrades(
         ensure => 'present',
     }
 
+    # disable this cron job which is not useful and can produce cronspam
+    file { '/etc/cron.daily/apt-show-versions':
+        ensure => 'absent',
+    }
+
     package { 'python3-apt':
         ensure => 'present',
     }
