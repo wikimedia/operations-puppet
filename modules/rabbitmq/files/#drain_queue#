@@ -1,0 +1,62 @@
+():
+    parser = argparse.ArgumentParser(
+        description='Drain an oslo.message rabbitmq queue')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--dry-run', dest='requeue', action='store_true',
+        help='return messages to the queue after printing')
+    group.add_argument(
+        '--silent', dest='silent', action='store_true',
+        help='silent mode')
+    parser.add_argument(
+        'queue', metavar='QUEUE', nargs=1,
+        help='queue to read messages from')
+    parser.add_argument(
+        '--username', default='drainqueue',
+        help='username to connect to rabbitmq')
+    parser.add_argument(
+        '--password', default='',
+        help='password to connect to rabbitmq')
+
+    args = parser.parse_args()
+    queue = args.queue[0]
+    username = args.username
+    password = args.password
+
+    if args.silent:
+        http_req(username,
+                 password,
+                 'DELETE',
+                 '/queues/%2F/{}/contents'.format(queue))
+
+    else:
+        ready = message_count(username, password, queue)
+        if ready is None:
+            return
+        print("message count is {}".format(ready))
+        while ready > 0:
+            msgs = http_json(
+                username,
+                password,
+                'POST',
+                '/queues/%2F/{}/get'.format(queue),
+                json.dumps({
+                    'count': 1000,  # Limit response size
+                    'requeue': args.requeue,
+                    'encoding': 'auto'
+                })
+            )
+
+            for m in msgs:
+                payload = json.loads(m['payload'])
+                msg = json.loads(payload['oslo.message'])
+                print(json.dumps(msg))
+
+            if args.requeue:
+                ready = 0  # prevent infinte loops
+            else:
+                ready = message_count(username, password, queue)
+
+
+if __name__ == '__main__':
+    main()
