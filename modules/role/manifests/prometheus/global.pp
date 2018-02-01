@@ -53,6 +53,11 @@ class role::prometheus::global {
       },
     ]
 
+    prometheus::rule { 'rules_global.conf':
+        instance => 'global',
+        source   => 'puppet:///modules/role/prometheus/rules_global.conf',
+    }
+
     prometheus::server { 'global':
         # 52 + 52/4 weeks
         storage_retention    => '10920h0m0s',
