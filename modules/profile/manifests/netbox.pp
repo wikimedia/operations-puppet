@@ -14,6 +14,7 @@
 #
 class profile::netbox (
     $active_server = hiera('profile::netbox::active_server'),
+    $slaves = hiera('profile::netbox::slaves', undef),
 ) {
 
 # lint:ignore:wmf_styleguide
@@ -85,6 +86,16 @@ class profile::netbox (
             database => 'postgres',
             type     => 'local',
             method   => 'peer',
+        }
+
+        if $slaves {
+            $slaves_ferm = join($slaves, ' ')
+            # Access to postgres master from postgres slaves
+            ferm::service { 'netbox_postgres':
+                proto  => 'tcp',
+                port   => '5432',
+                srange => "@resolve((${slaves_ferm}))",
+            }
         }
 
     } else {
