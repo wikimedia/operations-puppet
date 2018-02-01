@@ -17,6 +17,9 @@ sub cluster_fe_recv_pre_purge {
             call tag_carrier_cleanup;
         }
     }
+
+    // Normalize paths before purging
+    call misc_normalize_path;
 }
 
 sub cluster_fe_recv {
