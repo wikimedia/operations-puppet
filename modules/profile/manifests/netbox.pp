@@ -94,7 +94,7 @@ class profile::netbox (
             ferm::service { 'netbox_postgres':
                 proto  => 'tcp',
                 port   => '5432',
-                srange => "@resolve((${slaves_ferm}))",
+                srange => "(@resolve((${slaves_ferm})) @resolve((${slaves_ferm}), AAAA))",
             }
         }
 
