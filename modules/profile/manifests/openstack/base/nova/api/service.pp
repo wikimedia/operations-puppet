@@ -11,4 +11,7 @@ class profile::openstack::base::nova::api::service(
         active => ($::fqdn == $nova_api_host),
     }
     contain '::openstack::nova::api::monitor'
+
+    class {'::openstack::nova::log_fixes':}
+    contain '::openstack::nova::log_fixes'
 }

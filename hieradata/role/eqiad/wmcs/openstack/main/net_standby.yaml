@@ -1,5 +1,3 @@
 admin::groups:
   - labnet-users
   - wmcs-roots
-
-openstack::log_group: labnet-users
