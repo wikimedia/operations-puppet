@@ -67,7 +67,7 @@ class postgresql::slave(
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/recovery.conf.erb'),
-        before  => Service['postgresql'],
+        before  => Service[$::postgresql::server::service_name],
         require => Exec["pg_basebackup-${master_server}"],
     }
 
@@ -78,7 +78,7 @@ class postgresql::slave(
             command     => "/usr/bin/pg_basebackup -X stream -D ${data_dir} -h ${master_server} -U replication -w",
             user        => 'postgres',
             unless      => "/usr/bin/test -f ${data_dir}/PG_VERSION",
-            before      => Service['postgresql'],
+            before      => Service[$::postgresql::server::service_name],
         }
     }
 
