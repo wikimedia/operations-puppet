@@ -13,7 +13,7 @@ service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqia
 profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
 profile::changeprop::purge_host: deployment-cache-text04.deployment-prep.eqiad.wmflabs
-profile::changeprop::ores_uris: ['http://deployment-sca03.deployment-prep.eqiad.wmflabs:8081']
+profile::changeprop::ores_uris: ['http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081']
 profile::changeprop::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 profile::changeprop::purge_port: 4827
 # Used to sync the setting between all Kafka clusters and clients.
