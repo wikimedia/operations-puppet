@@ -48,12 +48,21 @@ class profile::netbox (
             use_ssl  => true,
         }
         $on_master = true
-        postgresql::user { 'replication@netmon2001':
+        postgresql::user { 'replication@netmon2001-ipv4':
             ensure   => present,
             user     => 'replication',
-            database => 'all',
+            database => 'replication',
             password => $replication_pass,
             cidr     => '208.80.153.110/32',
+            master   => $on_master,
+            attrs    => 'REPLICATION',
+        }
+        postgresql::user { 'replication@netmon2001-ipv6':
+            ensure   => present,
+            user     => 'replication',
+            database => 'replication',
+            password => $replication_pass,
+            cidr     => '2620:0:860:4:208:80:153:110/128',
             master   => $on_master,
             attrs    => 'REPLICATION',
         }
