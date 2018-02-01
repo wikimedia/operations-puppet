@@ -1697,6 +1697,14 @@ node 'mx2001.wikimedia.org' {
 node 'notebook1001.eqiad.wmnet' {
     role(paws_internal)
 }
+#notebook100[34] are new systems being placed into service on T183935
+node 'notebook1003.eqiad.wmnet' {
+    role(spare::system)
+}
+
+node 'notebook1004.eqiad.wmnet' {
+    role(spare::system)
+}
 
 # cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
