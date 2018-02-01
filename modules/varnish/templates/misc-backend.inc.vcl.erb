@@ -1,6 +1,10 @@
 include "misc-common.inc.vcl";
 
-sub cluster_be_recv_pre_purge { }
+sub cluster_be_recv_pre_purge {
+	if (req.method == "PURGE") {
+		call misc_normalize_path;
+	}
+}
 
 sub cluster_be_recv { }
 
