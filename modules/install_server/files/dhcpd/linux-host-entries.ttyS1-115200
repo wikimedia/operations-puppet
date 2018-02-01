@@ -7721,6 +7721,11 @@ host terbium {
     filename "lpxelinux.0";
 }
 
+host tendril2001 {
+    hardware ethernet D0:94:66:2A:77:C9;
+    fixed-address tendril2001.codfw.wmnet;
+}
+
 host tin {
     hardware ethernet 90:b1:1c:00:a4:1d;
     fixed-address tin.eqiad.wmnet;
