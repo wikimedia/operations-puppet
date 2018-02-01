@@ -180,6 +180,12 @@ for my $slot (sort @controllers) {
 		next if (/^\S.*in Slot $slot/);
 		next if /^ *array [A-Z]$/;
 		next if /^ *unassigned/;
+		if (/^ *HBA Drives/) {
+			# HBA mode implies to logical drives, thus reset the "drives found" check and proceed with
+			# checking physical drives.
+			$nodrives = 0;
+			next;
+		}
 		if (/^ *(array [A-Z]) \(Failed\)$/) {
 			record('CRITICAL');
 			push @{$status{'Failed'}}, $1;
