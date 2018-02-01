@@ -2,6 +2,34 @@
 
 include "normalize_path.inc.vcl";
 
+/******************************************************************************
+ * upload.wikimedia.org:
+ * MW seems to use PHP's rawurlencode() directly when translating from
+ * MediaWiki File titles to storage URLs, without additional exceptions.
+ * Therefore, all 16 characters from the Customizable Set are all changed to
+ * zero-values here (force-encode) to obtain complete normalization:
+ *****************************************************************************/
+
+sub normalize_upload_path { C{
+    static const size_t upload_decoder_ring[256] = {
+      // 0x00-0x1F (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+        0,0,0,2,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,2,
+      //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
+        0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
+      //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
+        0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
+      // 0x80-0xFF (all unprintable)
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    };
+
+    normalize_path_encoding(ctx, upload_decoder_ring);
+}C }
+
 sub upload_normalize_path {
 	if (req.http.host ~ "^upload\.wikimedia\.org$") {
 		call normalize_upload_path;
