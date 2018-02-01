@@ -52,15 +52,6 @@ class openstack::nova::common(
         require => Package['nova-common'],
     }
 
-    # Allow unprivileged users to look at nova logs
-    file { '/var/log/nova':
-        ensure  => 'directory',
-        owner   => 'nova',
-        group   => hiera('openstack::log_group', 'adm'),
-        mode    => '0750',
-        require => Package['nova-common'],
-    }
-
     file {
         '/etc/nova/nova.conf':
             content => template("openstack/${version}/nova/common/nova.conf.erb"),
