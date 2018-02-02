@@ -55,3 +55,7 @@ swift::proxy::shard_container_list: [
   'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded'
 # no trailing comma!
  ]
+swift::proxy::private_container_list: [
+  'wikipedia-office-local-public'
+# no trailing comma!
+ ]
