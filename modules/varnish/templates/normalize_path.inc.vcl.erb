@@ -1,12 +1,13 @@
 C{
 
 /******************************************************************************
- * normalize_path_encoding(): URL-Path (not Query!) normalization
+ * normalize_url(): URL normalization
  *
- * This function requires as input a "decoder_ring", which must be a pointer
- * to a 256-element array of size_t elements.  The indices are the 256
- * possible byte values, and the values control the normalization of the given
- * character in the URL path.  Legal values are currently 0, 1, and 2:
+ * This function requires as input a "path_decoder_ring" used to normalize the
+ * encoding of the Path portion of the URL, which must be a pointer to a
+ * 256-element array of size_t elements.  The indices are the 256 possible byte
+ * values, and the values control the normalization of the given character in
+ * the URL path.  Legal values are currently 0, 1, and 2:
  *
  * 0 -> Always encode this character as a hex escape (%XX)
  * 1 -> Always decode a hex escape representing this character back into the
@@ -25,17 +26,18 @@ C{
  * 172 Disallowed: 0x00-0x20 0x7F-0xFF < > | { } " % \ ^ `
  *
  * As a generic URL normalizer without application-specific knowledge, the best
- * one can do at normalization by the RFC rules is:
+ * one can do at normalization of a URL by the RFC rules is:
  * * Unreserved: always decode (array value 1)
  * * Reserved: do not touch (array value 2)
  * * Disallowed: input is malformed if these exist, but encoding them is best
  *               reasonable option in that case (array value 0)
  *
  * A generic normalizer that matches the above values is provided as
- * "generic_decoder_ring" below which can be used as the decoder_ring argument.
+ * "generic_decoder_ring" below which can be used as the path_decoder_ring
+ * argument.
  *
- * More-specific decoder rings which increase the amount of normalization can
- * be built with application-specific knowledge, while still conforming to
+ * More-specific path decoder rings which increase the amount of normalization
+ * can be built with application-specific knowledge, while still conforming to
  * RFCs, by changing some of the Reserved set's 2s into 0s or 1s as warranted.
  *
  * Note that since we're specifically operating on the Path component, which is
@@ -55,6 +57,10 @@ C{
  * Customizable set to values other than those shown in the
  * generic_decoder_ring is allowed by the code, but will almost certainly lead
  * to broken or buggy URL normalization.
+ *
+ * At this time, the query portion of the request is copied verbatim without
+ * any normalization.  Any fragment portion is discarded, as this isn't meant
+ * to be transmitted in requests.
  *****************************************************************************/
 
 #include <inttypes.h>
@@ -114,8 +120,9 @@ static const char hex_enc[16] = {
 #define HEX_IS_LOWER(_c) ((uint8_t)(((((uint8_t)(_c)) & 0x40) >> 6) \
                                   & ((((uint8_t)(_c)) & 0x20) >> 5)))
 
-void normalize_path_encoding(const struct vrt_ctx *ctx, const size_t* decoder_ring)
+void normalize_url(const struct vrt_ctx *ctx, const size_t* path_decoder_ring)
 {
+    const size_t* decoder_ring = path_decoder_ring; // name alias for macros
     const char* vrt_url = VRT_r_req_url(ctx);
     const size_t in_url_len = strlen(vrt_url);
 
@@ -138,9 +145,13 @@ void normalize_path_encoding(const struct vrt_ctx *ctx, const size_t* decoder_ri
         if (c == '\0') {
             *out_p = '\0';
             break;
-        } else if (c == '?' || c == '#') {
+        } else if (c == '#') {
+            dirty = 1U;
+            *out_p = '\0';
+            break;
+        } else if (c == '?') {
             if (dirty) {
-                *out_p++ = c;
+                *out_p++ = '?';
                 strcpy(out_p, in_p);
             }
             break;
