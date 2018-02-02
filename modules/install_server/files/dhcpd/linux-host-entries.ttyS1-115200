@@ -2923,7 +2923,7 @@ host eventlog1001 {
 
 host eventlog1002 {
     hardware ethernet 14:18:77:5B:0D:42;
-    fixed-address eventlog1001.eqiad.wmnet;
+    fixed-address eventlog1002.eqiad.wmnet;
 }
 
 host flerovium {
