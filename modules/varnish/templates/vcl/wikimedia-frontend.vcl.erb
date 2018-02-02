@@ -340,18 +340,28 @@ sub vcl_recv {
 	unset req.http.X-CP-Full-Cipher;
 	<%- end -%>
 
-	// The idea here is to block our worst clients (in TLS terms: those
-	// using DES-CBC3-SHA, which is not forward-secret, and the bulk of
-	// which are also IE[78]/XP).  This will remain in place until the
-	// future removal of protocol-level support.
-	if (req.http.X-Connection-Properties ~ "C=DES-CBC3-SHA;" && req.url != "/sec-warning" && req.url != "/test-sec-warning" && req.url !~ "^/static/images/") {
-		set req.http.Location = "https://" + req.http.Host + "/sec-warning";
-		return (synth(302, "Browser Connection Security Redirect"));
+	// Random 2% page replacement with browser security warning if TLS
+	// version < 1.2 and/or cipher lacks ECDHE-based forward secrecy.  This
+	// combination of filters amounts to roughly 3% of all requests as of
+	// this writing, so page replacement rate will be approximately 0.06%
+	// of all requests (6 out of every 10K).  That number will be further
+	// reduced a bit by the cache_text URL filtering to avoid breaking
+	// load.php and Special: pages, etc.
+	// There's no active campaign to ramp this up higher for any particular
+	// subsets of this filter at this time; this is just a general push
+	// that hopes to influence users to upgrade away from very old/insecure
+	// UAs where possible, before we launch into the next hard campaign.
+	if (req.url == "/test-sec-warning"
+	    || (req.http.X-Connection-Properties ~ "C=(DHE-RSA-)?AES128-SHA);|SSL=TLSv1(\.1)?;"
+	    <%- if scope.function_hiera(['cache::cluster']) == "text" -%>
+		&& (
+			( req.url ~ "^/wiki/" && req.url !~ ":" )
+			|| req.url ~ "^(/w/api\.php|/api/rest_v1)"
+		)
+	    <%- end -%>
+	    && std.random(0,100) < 2.0)) {
+		return (synth(418, "Browser Connection Security Warning"));
 	}
-	if (req.url == "/sec-warning" || req.url == "/test-sec-warning") {
-		return (synth(200, "Browser Connection Security Warning"));
-	}
-
 
 	call cluster_fe_recv;
 	call wm_common_recv_pass;
@@ -558,15 +568,9 @@ sub vcl_synth {
 		call cluster_fe_err_synth;
 
 		// Browser sec warning
-		if (resp.reason == "Browser Connection Security Redirect") {
-			set resp.http.Location = req.http.Location;
-			set resp.http.Content-Length = "0"; // T64245
-			return(deliver);
-		}
-		// Browser sec warning
 		if (resp.reason == "Browser Connection Security Warning") {
 			set resp.http.Connection = "keep-alive";
-			set resp.http.Cache-Control = "public, max-age=3600, s-maxage=3600";
+			set resp.http.Cache-Control = "max-age=0, must-revalidate, no-cache, no-store";
 			set resp.http.Content-Type = "text/html; charset=utf-8";
 			call browser_sec_synth;
 			return (deliver);
