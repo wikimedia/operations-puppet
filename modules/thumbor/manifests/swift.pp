@@ -10,6 +10,8 @@
 #    $swift_account = 'thumbor',
 #    $swift_user = 'thumbor',
 #    $swift_sharded_containers = [],
+#    $swift_private_containers = [],
+#    $swift_private_containers_secret,
 #    $swift_host = "https://ms-fe.svc.${::site}.wmnet",
 #
 # === Examples
@@ -23,6 +25,8 @@ class thumbor::swift (
     $swift_account = 'mw',
     $swift_user = 'thumbor',
     $swift_sharded_containers = [],
+    $swift_private_containers = [],
+    $swift_private_containers_secret = '',
     $swift_host = "https://ms-fe.svc.${::site}.wmnet",
 ) {
     file { '/etc/thumbor.d/80-thumbor-swift.conf':

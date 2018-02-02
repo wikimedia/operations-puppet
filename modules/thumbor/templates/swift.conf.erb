@@ -14,6 +14,12 @@ SWIFT_SHARDED_CONTAINERS = [
     '<%= container %>',
   <%- end %>
 ]
+SWIFT_PRIVATE_CONTAINERS = [
+  <%- @swift_private_containers.sort.each do |container| -%>
+    '<%= container %>',
+  <%- end %>
+]
+SWIFT_PRIVATE_SECRET = '<%= @swift_private_containers_secret %>'
 SWIFT_CONNECTION_TIMEOUT = 20
 # Needs to be at least 1 due to bug in python-swiftclient < 3.1.0 https://bugs.launchpad.net/gnocchi/+bug/1589926
 SWIFT_RETRIES = 1
