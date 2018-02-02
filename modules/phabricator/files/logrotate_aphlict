@@ -1,4 +1,4 @@
-/var/log/aphlict {
+/var/log/aphlict/*.log {
     daily
     compress
     delaycompress
