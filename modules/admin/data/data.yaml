@@ -9,7 +9,8 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior]
+              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
+              yuvipanda]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport]
@@ -25,7 +26,7 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, yuvipanda,
+    members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
               ayounsi, herron, aborrero, bstorm]
@@ -121,7 +122,7 @@ groups:
               dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
               leila, mattflaschen, milimetric, nettrom, bearloga,
-              nuria, ori, otto, yuvipanda,
+              nuria, ori, otto,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, dbrant, maxsem,
@@ -1424,12 +1425,11 @@ users:
     ssh_keys: []
     uid: 2516
   yuvipanda:
-    ensure: present
+    ensure: absent
     gid: 500
     name: yuvipanda
     realname: Yuvi Panda
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDb5W/ZKwHHevB0ZGr+yVimNySadaNuJVfZW453U5FSF4nCLj2gvm/gKpEj4bv8MHzOsF5casl6u1T4Mz4gCeU4Q9gbhiMfghiYm7DPxWdR6uDn0vcbb+rtGpcu8XMGfGYsmFLWwL0qs8kgpixviAQ+AYGqCJug4b+6TVOoCKV/Ba5cOXhfx1MAIExwlhTpxtkec+g2/2BzQeZon0/4INzIutXgLGF47n1oosHEWpaehg4NMGjjT8b9w2UdnCWaTNpUsMca+LU2aK0lHVIQ2i5c56Exd8zcPEt/78O3HpQFH256QHkBxcBo9+z+sf87fHyOcgiAd5T3eKI0zLKQM6WT yuvipanda@courage
+    ssh_keys: []
     uid: 2029
     email: yuvipanda@gmail.com
   haithams:
