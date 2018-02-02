@@ -17,10 +17,6 @@ include "normalize_path.inc.vcl";
  * live behavior for these bytes when sent in either form (the canonical title
  * always normalizes these as encoded).  The rest of the normal generic decoder
  * settings were also observationally tested to conform to the RFC.
- *
- * XXX However, for this first commit, we're merely switching to this new
- * normalization code with minimal behavior change from the old code, which
- * means not enforcing the Always-Encode set above.
  *****************************************************************************/
 
 sub normalize_mediawiki_path { C{
@@ -28,9 +24,9 @@ sub normalize_mediawiki_path { C{
       // 0x00-0x1F (all unprintable)
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
       //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
-        0,1,0,2,1,0,2,2,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2,0,2,
+        0,1,0,2,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,2,
       //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,0,2,0,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
       //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
         0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
       // 0x80-0xFF (all unprintable)
@@ -60,9 +56,9 @@ sub normalize_rest_path { C{
       // 0x00-0x1F (all unprintable)
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
       //  ! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ?
-        0,1,0,2,1,0,2,2,1,1,1,2,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,0,2,0,2,
+        0,1,0,2,1,0,0,0,1,1,1,0,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,2,
       //@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,0,2,0,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,
       //` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~ <DEL>
         0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,
       // 0x80-0xFF (all unprintable)
