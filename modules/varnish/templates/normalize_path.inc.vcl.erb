@@ -58,9 +58,19 @@ C{
  * generic_decoder_ring is allowed by the code, but will almost certainly lead
  * to broken or buggy URL normalization.
  *
- * At this time, the query portion of the request is copied verbatim without
- * any normalization.  Any fragment portion is discarded, as this isn't meant
- * to be transmitted in requests.
+ * The query portion of the URL, if any, is only normalized according to the
+ * convservative generic_decoder_ring rules, rather than the path- and
+ * application- specific path_decoder_ring.  Very little else is safe all
+ * things considered, and application-specific rules would probably have to be
+ * written as code rather than a lookup table.  I've found
+ * potentially-dangerous counter-examples in our sampled URL logs for things as
+ * simple as the normalization of + to %20, or simple sorting of parameters
+ * after breaking on & (due to array-style parameter usage, using both encoded
+ * and un-encoded brackets...).  Sorting would be a good thing to add here, but
+ * it would have to be sensitive to all forms of array params...
+ *
+ * Any fragment portion is discarded, as this isn't meant to be transmitted in
+ * requests.
  *****************************************************************************/
 
 #include <inttypes.h>
@@ -150,11 +160,12 @@ void normalize_url(const struct vrt_ctx *ctx, const size_t* path_decoder_ring)
             *out_p = '\0';
             break;
         } else if (c == '?') {
-            if (dirty) {
-                *out_p++ = '?';
-                strcpy(out_p, in_p);
-            }
-            break;
+            // Switch decoders for the query part. Logically, we should stop
+            // treating '?' as special at this point as well, but continuing to
+            // let them use this else clause achieves the same effect and
+            // doesn't add more state/branching.
+            *out_p++ = '?';
+            decoder_ring = generic_decoder_ring;
         } else if (c == '%' && IS_HEX(*in_p) && IS_HEX(*(in_p + 1))) {
             const char x1 = *in_p++;
             const char x2 = *in_p++;
