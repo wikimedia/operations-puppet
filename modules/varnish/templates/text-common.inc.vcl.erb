@@ -4,9 +4,9 @@ include "normalize_path.inc.vcl";
 
 /******************************************************************************
  * For MediaWiki's purposes, building on the RFC explanation in
- * normalize_path_encoding(), all of the 16 characters in the Customizable Set
+ * normalize_url(), all of the 16 characters in the Customizable Set
  * can be put into a specific subsets that are either always-decoded or
- * always-encoded, giving us "complete" normalization:
+ * always-encoded for the Path part, giving us "complete" normalization:
  *
  * 10 Always-Decode: : / @ ! $ ( ) * , ;
  * 6 Always-Encode: [ ] & ' + =
@@ -36,7 +36,7 @@ sub normalize_mediawiki_path { C{
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     };
 
-    normalize_path_encoding(ctx, mediawiki_decoder_ring);
+    normalize_url(ctx, mediawiki_decoder_ring);
 }C }
 
 /******************************************************************************
@@ -68,7 +68,7 @@ sub normalize_rest_path { C{
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     };
 
-    normalize_path_encoding(ctx, restbase_decoder_ring);
+    normalize_url(ctx, restbase_decoder_ring);
 }C }
 
 sub text_common_misspass_restore_cookie {

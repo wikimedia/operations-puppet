@@ -1,7 +1,7 @@
 include "normalize_path.inc.vcl";
 
 sub misc_normalize_path {
-    C{ normalize_path_encoding(ctx, generic_decoder_ring); }C
+    C{ normalize_url(ctx, generic_decoder_ring); }C
 }
 
 sub misc_recv_pass {
