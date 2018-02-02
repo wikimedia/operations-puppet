@@ -902,11 +902,6 @@ node 'hydrogen.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# to be decom'ed, formerly Phabricator (T163938)
-node 'iridium.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # irc.wikimedia.org
 node 'kraz.wikimedia.org' {
     role(mw_rc_irc)

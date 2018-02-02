@@ -3123,13 +3123,6 @@ host hydrogen {
     filename "lpxelinux.0";
 }
 
-host iridium {
-    hardware ethernet f0:1f:af:e8:c5:27;
-    fixed-address iridium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host iron {
     hardware ethernet 78:2b:cb:09:0d:5c;
     fixed-address iron.wikimedia.org;
