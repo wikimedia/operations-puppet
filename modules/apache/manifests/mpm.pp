@@ -38,8 +38,16 @@ class apache::mpm(
     $rejected_mods = prefix($rejected_mpms, 'mpm_')
 
     if $mpm != 'prefork' {
-        # mod_php5 is unsafe for threaded MPMs
-        apache::mod_conf { 'php5':
+        if os_version('debian >= buster') {
+          $php_version = 'php7.1'
+        } elsif os_version('debian == stretch') {
+          $php_version = 'php7'
+        } else {
+          $php_version = 'php5'
+        }
+
+        # mod_php5 or 7 or 7.1 is unsafe for threaded MPMs
+        apache::mod_conf { $php_version:
             ensure => absent,
             before => Apache::Mod_conf[$selected_mod],
         }
