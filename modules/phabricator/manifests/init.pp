@@ -105,8 +105,10 @@ class phabricator (
     # warning: currently Phabricator supports PHP 7.1 but not PHP 7.0
     # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
     if os_version('debian >= stretch') {
+        $php_fpm = 'php-fpm'
         package { [
             'php-apcu',
+            $php_fpm,
             'php-mysql',
             'php-gd',
             'php-mailparse',
@@ -117,11 +119,12 @@ class phabricator (
             'php-ldap']:
                 ensure => present;
         }
-        include ::apache::mod::php7
     } else {
-        # jessie - PHP (5.5/5.6) packages and Apache module
+        # jessie - PHP (5.6) packages and Apache module
+        $php_fpm = 'php5-fpm'
         package { [
             'php5-apcu',
+            $php_fpm,
             'php5-mysql',
             'php5-gd',
             'php5-mailparse',
@@ -132,8 +135,9 @@ class phabricator (
             'php5-ldap']:
                 ensure => present;
         }
-        include ::apache::mod::php5
     }
+
+    include ::apache::mod::proxy_fcgi
 
     # common packages that exist in trusty/jessie/stretch
     package { [
@@ -213,16 +217,37 @@ class phabricator (
 
     $opcache_validate = hiera('phabricator_opcache_validate', 0)
 
-    file { '/etc/php5/apache2/php.ini':
+    # TODO: Add support for php 7.1
+    file { '/etc/php5/fpm/php-fpm.conf':
+        content => template('phabricator/php-fpm.conf.erb'),
+        mode    => '0755',
+        notify  => Service['php5-fpm'],
+        require => Package[$php_fpm],
+    }
+
+    file { '/etc/php5/fpm/pool.d/www.conf':
+        ensure => 'present',
+        mode   => '0755',
+        source => template('phabricator/www.conf.erb'),
+        notify => Service['php5-fpm'],
+    }
+
+    file { '/etc/php5/fpm/php.ini':
         content => template('phabricator/php.ini.erb'),
-        notify  => Service['apache2'],
-        require => Package['libapache2-mod-php5'],
+        mode    => '0755',
+        notify  => Service['php5-fpm'],
+        require => Package[$php_fpm],
     }
 
     file { '/etc/apache2/phabbanlist.conf':
         source  => 'puppet:///modules/phabricator/apache/phabbanlist.conf',
-        require => Package['libapache2-mod-php5'],
+        require => Package[$php_fpm],
         notify  => Service['apache2'],
+    }
+
+    service { 'php5-fpm':
+        ensure  => running,
+        require => Package[$php_fpm],
     }
 
     file { $confdir:

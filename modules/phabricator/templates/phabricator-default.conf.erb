@@ -45,6 +45,11 @@
     Require all granted
   </Directory>
 
+  # php-fpm
+  <FilesMatch \.php$>
+      SetHandler "proxy:unix:/run/php5-fpm.sock|fcgi://localhost/"
+  </FilesMatch>
+
   LogLevel warn
   ErrorLog /var/log/apache2/phabricator_error.log
   CustomLog /var/log/apache2/phabricator_access.log wmf
