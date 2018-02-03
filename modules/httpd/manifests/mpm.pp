@@ -29,7 +29,14 @@ class httpd::mpm(
 
     # mod_php5 is unsafe for threaded MPMs
     if $mpm != 'prefork' {
-        httpd::mod_conf { 'php5':
+        if os_version('debian >= buster') {
+          $php_version = 'php7.1'
+        } elsif os_version('debian == stretch') {
+          $php_version = 'php7'
+        } else {
+          $php_version = 'php5'
+        }
+        httpd::mod_conf { $php_version:
             ensure => absent,
             before => Httpd::Mod_conf[$selected_mod],
         }
