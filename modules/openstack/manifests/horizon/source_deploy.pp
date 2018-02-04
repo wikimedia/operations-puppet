@@ -63,8 +63,9 @@ class openstack::horizon::source_deploy(
     }
 
     user { 'horizon':
-        gid    => 'horizon',
-        system => true,
+        gid        => 'horizon',
+        system     => true,
+        managehome => true,
     }
 
     # This is a trivial policy file that forbids everything.  We'll use it
