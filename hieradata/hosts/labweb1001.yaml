@@ -8,4 +8,4 @@ apache::logrotate::rotate: 30
 role::mediawiki::webserver::tls: false
 
 profile::openstack::main::version: queens
-profile::openstack::main::horizon::webserver_hostname: newhorizon.wmflabs.org
+profile::openstack::main::horizon::webserver_hostname: newhorizon.wikimedia.org
