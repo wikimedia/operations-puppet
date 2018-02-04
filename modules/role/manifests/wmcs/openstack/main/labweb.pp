@@ -17,7 +17,7 @@ class role::wmcs::openstack::main::labweb {
     #include ::profile::prometheus::hhvm_exporter
 
     # Horizon:
-    include ::profile::openstack::base::horizon::dashboard_source_deploy
+    include ::profile::openstack::main::horizon::dashboard_source_deploy
 
     # Striker:
     ## (this profile not yet written)
