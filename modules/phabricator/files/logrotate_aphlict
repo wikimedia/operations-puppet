@@ -2,6 +2,7 @@
     daily
     compress
     delaycompress
+    copytruncate
     missingok
     notifempty
     rotate 7
