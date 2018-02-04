@@ -39,6 +39,9 @@ cache::app_directors:
   californium:
     backends:
       eqiad: 'californium.wikimedia.org'
+  labweb:
+    backends:
+      eqiad: 'labweb1001.eqiad.wmnet'
   darmstadtium:
     be_opts:
       port: 81
@@ -202,6 +205,8 @@ cache::req_handling:
     director: 'graphite'
   horizon.wikimedia.org:
     director: 'californium'
+  newhorizon.wikimedia.org:
+    director: 'labweb'
   hue.wikimedia.org:
     director: 'thorium'
   iegreview.wikimedia.org:

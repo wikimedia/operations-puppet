@@ -6,3 +6,5 @@ apache::logrotate::period: 'daily'
 apache::logrotate::rotate: 30
 
 role::mediawiki::webserver::tls: false
+
+profile::openstack::base::version: queens
