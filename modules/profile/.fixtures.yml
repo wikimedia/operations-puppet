@@ -3,3 +3,5 @@ fixtures:
         profile: "#{source_dir}"
         sslcert: "../../../../sslcert"
         wmflib: "../../../../wmflib"
+        ldap: "../../../../ldap"
+        phabricator: "../../../../phabricator"

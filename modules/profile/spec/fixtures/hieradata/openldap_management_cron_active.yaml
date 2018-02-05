@@ -1,0 +1,2 @@
+# openldap::management
+profile::openldap::management::cron_active: true
