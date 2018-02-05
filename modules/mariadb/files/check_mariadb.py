@@ -68,10 +68,7 @@ class WMFMariaDB:
             config.read('/root/.my.cnf')
             user = config['labsdb']['user']
             password = config['labsdb']['password']
-            if host.startswith('labsdb1001') or host.startswith('labsdb1003'):
-                ssl = None
-            else:
-                ssl = {'ca': '/etc/ssl/certs/Puppet_Internal_CA.pem'}
+            ssl = {'ca': '/etc/ssl/certs/Puppet_Internal_CA.pem'}
             mysql_sock = None
             charset = None
 

@@ -2,7 +2,6 @@
 set -e
 
 PRIVATE_DATA="/usr/local/sbin/check_private_data.py"
-PRIVATE_DATA_STRECTH="/usr/local/sbin/check_private_data.py -S /var/run/mysqld/mysqld.sock"
 REPORT_PATH="/var/log/private_data_report_${HOSTNAME}.log"
 
 if [ ! -f "$PRIVATE_DATA" ]
@@ -21,12 +20,7 @@ fi
 
 echo "Start time: $(date)" > "$REPORT_PATH"
 
-if [ "$HOSTNAME" == "labsdb1001" ] || [ "$HOSTNAME" == "labsdb1003" ]
-then
-	$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
-else
-	$PRIVATE_DATA_STRECTH >> "$REPORT_PATH" 2>&1
-fi
+$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
 
 DATA=$(/bin/egrep -v "^--|^Start time|wmf_checksums" -c "$REPORT_PATH")
 
