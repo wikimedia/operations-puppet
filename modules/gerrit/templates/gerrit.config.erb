@@ -161,7 +161,13 @@
 [mimetype "text/x-php"]
     safe = true
 [noteDb "changes"]
-    autoMigrate = true
+    autoMigrate = false
+    trial = false
+    write = true
+    read = true
+    sequence = true
+    primaryStorage = note db
+    disableReviewDb = true
 [pack]
     deltacompression = true
 [receive]
