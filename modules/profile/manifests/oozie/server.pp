@@ -6,7 +6,7 @@ class profile::oozie::server(
     $monitoring_enabled = hiera('profile::oozie::server::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::oozie::server::ferm_srange', '$DOMAIN_NETWORKS'),
     $jvm_opts           = hiera('profile::oozie::server::jvm_opts', '-Xmx2048m'),
-    $java_home          = hiera('profile::oozie::server::java_home', undef)
+    $java_home          = hiera('profile::oozie::server::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre')
 ) {
     require ::profile::oozie::client
 

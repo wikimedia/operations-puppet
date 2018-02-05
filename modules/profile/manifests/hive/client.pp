@@ -10,7 +10,7 @@ class profile::hive::client(
     $metastore_host         = hiera('profile::hive::client::hive_metastore_host'),
     $hive_server_opts       = hiera('profile::hive::client::hive_server_opts', undef),
     $hive_metastore_opts    = hiera('profile::hive::client::hive_metastore_opts', undef),
-    $java_home              = hiera('profile::hive::client::java_home', undef),
+    $java_home              = hiera('profile::hive::client::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
 ) {
     require ::profile::hadoop::common
 

@@ -151,7 +151,7 @@ class profile::hadoop::common (
     $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb', undef),
     $yarn_scheduler_minimum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores', undef),
     $yarn_scheduler_maximum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores', undef),
-    $java_home                                = hiera('profile::hadoop::common::java_home', undef),
+    $java_home                                = hiera('profile::hadoop::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
