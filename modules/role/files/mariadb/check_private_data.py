@@ -214,7 +214,7 @@ def main(mysql_socket):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-S', action='store', dest='mysql_socket',
-                        default='/tmp/mysql.sock',
+                        default='/run/mysqld/mysqld.sock',
                         help='Set MySQL socket file')
     results = parser.parse_args()
     main(results.mysql_socket)
