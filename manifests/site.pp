@@ -1164,11 +1164,6 @@ node 'labsdb1007.eqiad.wmnet' {
     role(osm::master)
 }
 
-# old labsdbs, to be decommed. T142807
-node /labsdb100[13]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 node /labstore100[12]\.eqiad\.wmnet/ {
     # soon to be recommissioned in T158196
     include ::standard
