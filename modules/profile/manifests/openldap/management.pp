@@ -1,9 +1,17 @@
+# == Class profile::openldap::management
+#
 # Tools / scripts for helping manage the users in LDAP installation
 # Note: This is for the so-called 'labs LDAP', which is used to manage
 # both users on labs as well as access control for many things in prod
-class role::openldap::management {
-
-    require ::ldap::config::labs
+#
+# === Parameters
+#
+# [*cron_active*] Whether to activate the daily account consistency check or not.
+#
+class profile::openldap::management(
+    Boolean $cron_active = hiera('profile::openldap::management::cron_active'),
+) {
+    require ::profile::ldap::client::labs
     include passwords::phabricator
 
     $ldapconfig = $::ldap::config::labs::ldapconfig
@@ -38,11 +46,10 @@ class role::openldap::management {
         system => true,
     }
 
-    $ensure = $::mw_primary ? {
-        $::site => 'present',
-        default => 'absent',
+    $ensure = $cron_active ? {
+        true => present,
+        default => absent
     }
-
     cron { 'daily_account_consistency_check':
         ensure  => $ensure,
         require => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
