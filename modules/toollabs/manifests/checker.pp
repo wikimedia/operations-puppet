@@ -43,20 +43,8 @@ class toollabs::checker inherits toollabs {
         'redis'                           => {
             path                          => '/redis',
         },
-        'labsdb_labsdb1001'               => {
-            path                          => '/labsdb/labsdb1001',
-        },
-        'labsdb_labsdb1003'               => {
-            path                          => '/labsdb/labsdb1003',
-        },
         'labsdb_labsdb1005'               => {
             path                          => '/labsdb/labsdb1005',
-        },
-        'labsdb_labsdb1001rw'             => {
-            path                          => '/labsdb/labsdb1001rw',
-        },
-        'labsdb_labsdb1003rw'             => {
-            path                          => '/labsdb/labsdb1003rw',
         },
         'labsdb_labsdb1004rw'             => {
             path                          => '/labsdb/labsdb1004rw',
