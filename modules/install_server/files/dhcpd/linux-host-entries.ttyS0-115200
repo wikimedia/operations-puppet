@@ -404,7 +404,7 @@ host puppetdb1001 {
 }
 
 host puppetdb2001 {
-    hardware ethernet aa:00:00:e8:86:f7
+    hardware ethernet aa:00:00:e8:86:f7;
     fixed-address puppetdb2001.codfw.wmnet;
 }
 
