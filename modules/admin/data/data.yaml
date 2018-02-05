@@ -2956,3 +2956,7 @@ ldap_only_users:
     ensure: present
     realname: Tonina Zhelyazkova
     email: tonina.zhelyazkova@wikimedia.de
+  samtar:
+    ensure: present
+    realname: Sam Tarling
+    email: samtar.on.en.wp@gmail.com
