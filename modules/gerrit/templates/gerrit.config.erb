@@ -173,10 +173,16 @@
     safe = true
 [mimetype "text/x-php"]
     safe = true
-[noteDb "changes"]
-    autoMigrate = true
 [plugin "webhooks"]
     sslVerify = true
+[noteDb "changes"]
+    autoMigrate = false
+    trial = false
+    write = true
+    read = true
+    sequence = true
+    primaryStorage = note db
+    disableReviewDb = true
 [pack]
     deltacompression = true
 [receive]
