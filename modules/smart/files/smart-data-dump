@@ -71,7 +71,7 @@ def get_fact(fact_name):
 
     raw_output = subprocess.check_output(['/usr/bin/facter', '--puppet', '--json', fact_name])
     try:
-        fact_value = json.loads(str(raw_output, 'utf8')).get(fact_name, None)
+        fact_value = json.loads(str(raw_output, 'utf8', 'ignore')).get(fact_name, None)
     except ValueError:
         return None
 
@@ -85,7 +85,7 @@ def megaraid_list_pd():
     raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/usr/sbin/smartctl',
                                           '--scan-open'])
     for line in raw_output.splitlines():
-        line = str(line, 'utf8')
+        line = str(line, 'utf8', 'ignore')
         if 'megaraid,' not in line:
             continue
         if line.startswith('#'):
@@ -102,7 +102,7 @@ def hpsa_list_pd():
                                           'controller', 'all', 'show', 'config'])
     in_controller = False
     for line in raw_output.splitlines():
-        line = str(line, 'utf8')
+        line = str(line, 'utf8', 'ignore')
         m = re.match('^Smart Array .* in Slot (\d+)', line)
         if m:
             in_controller = True
@@ -124,7 +124,7 @@ def noraid_list_pd():
     raw_output = subprocess.check_output(['/usr/bin/timeout', '60', '/bin/lsblk', '--noheadings',
                                           '--output', 'NAME,TYPE', '--raw'])
     for line in raw_output.splitlines():
-        line = str(line, 'utf8')
+        line = str(line, 'utf8', 'ignore')
         name, disk_type = line.split(' ', 1)
         if disk_type != 'disk':
             continue
@@ -165,11 +165,12 @@ def collect_smart_metrics(disks, registry):
     for disk in disks:
         args = ['--info', '--health']
         args.extend(disk.smart_args)
-        _parse_smart_info(str(_run_smartctl(args), 'utf8'), disk, smart_healthy, device_info)
+        _parse_smart_info(str(_run_smartctl(args), 'utf8', 'ignore'), disk, smart_healthy,
+                          device_info)
 
         args = ['--attributes']
         args.extend(disk.smart_args)
-        _parse_smart_attributes(str(_run_smartctl(args), 'utf8'), disk, smart_attributes)
+        _parse_smart_attributes(str(_run_smartctl(args), 'utf8', 'ignore'), disk, smart_attributes)
 
 
 def _parse_smart_attributes(output, disk, attributes):
