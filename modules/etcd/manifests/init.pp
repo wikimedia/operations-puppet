@@ -56,7 +56,7 @@ class etcd (
     String $cluster_name = $::domain,
     Stdlib::Compat::String $cluster_state = undef,
     Stdlib::Compat::String $srv_dns = undef,
-    Array[String] $peers_list = undef,
+    Variant[Array[String], Undef] $peers_list = undef,
     Boolean $use_ssl = false,
     Boolean $use_client_certs = false,
     Integer $heartbeat_interval = 100,
