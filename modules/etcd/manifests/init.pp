@@ -29,7 +29,7 @@
 #   Domain to use for DNS-based cluster discovery.
 #
 # [*peers_list*]
-#   When DNS-based cluster discovery is not available, provide a peers list
+#   When DNS-based cluster discovery is not available, provide a peers list as a string
 #
 # [*use_ssl*]
 #   set to true if you want to impose use of HTTPS to communicate with
@@ -56,7 +56,7 @@ class etcd (
     String $cluster_name = $::domain,
     Stdlib::Compat::String $cluster_state = undef,
     Stdlib::Compat::String $srv_dns = undef,
-    Variant[Array[String], Undef] $peers_list = undef,
+    Stdlib::Compat::String $peers_list = undef,
     Boolean $use_ssl = false,
     Boolean $use_client_certs = false,
     Integer $heartbeat_interval = 100,
