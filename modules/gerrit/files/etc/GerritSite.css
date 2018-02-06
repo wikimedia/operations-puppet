@@ -210,7 +210,7 @@ body {
 /* Login Handling */
 /* Background image handling */
 html { height: 100%; }
-html body.loginParent {
+html.loginParent body {
     height: 100%;
     background-image: url(/r/static/1024px-Sea_and_sky_light.cache.jpg) !important;
     background-position: center center !important;
@@ -220,18 +220,18 @@ html body.loginParent {
     background-color: #999 !important;
 }
 
-html body.loginParent:after {
+html.loginParent body:after {
     content: "Image by Adrian Dreßler";
 }
 
-html body.loginParent .wm-gerrit-heading {
+html.loginParent body .wm-gerrit-heading {
     background-image: none;
 }
 
 /* Hide old components */
-html body.loginParent #gerrit_topmenu { display: none; }
-html body.loginParent #gerrit_header { display: none; }
-html body.loginParent #gerrit_body {
+html.loginParent body #gerrit_topmenu { display: none; }
+html.loginParent body #gerrit_header { display: none; }
+html.loginParent body #gerrit_body {
     display: flex;
     height: 100%;
     justify-content: center;
@@ -239,7 +239,7 @@ html body.loginParent #gerrit_body {
     resize: both;
     overflow: auto;
 }
-html body.loginParent #gerrit_body h1 {
+html.loginParent body #gerrit_body h1 {
     display: none;
 }
 
