@@ -29,5 +29,5 @@ profile::redis::master::instances: ['6379']
 profile::redis::master::settings:
   bind: "0.0.0.0"
 
-profile::maps::apps::kartotherian_style: 'osm-bright-style'
+profile::maps::apps::kartotherian_style: '''@kartotherian/osm-bright-style'''
 profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
