@@ -207,33 +207,6 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-body, .gwt-DialogBox .dialogMiddleCenter {
-    color: #353535 !important;
-    background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
-    position: static;
-}
-
-.wm-gerrit-heading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 7px 13px;
-    padding: 0;
-    /* This font and color aren't used since there is an image there,
-     * but is kept for consistency when used for display of alt-text
-     */
-    font-weight: normal;
-    letter-spacing: -1px;
-    color: #990000;
-    min-height: 60px;
-    min-width: 60px;
-    background: transparent no-repeat 0 0;
-    background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
-    background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
-    text-indent: -9999px;
-    overflow: hidden;
-}
-
 /* Login Handling */
 /* Background image handling */
 html { height: 100%; }
@@ -292,6 +265,11 @@ html body.loginParent #gerrit_body h1 {
 /**
  * General
  */
+body, .gwt-DialogBox .dialogMiddleCenter {
+    color: #353535 !important;
+    background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
+    position: static;
+}
 
 a,
 a:visited {
@@ -328,6 +306,27 @@ table.changeTable a.gwt-Anchor {
  */
 #gerrit_header {
     display: block !important;
+}
+
+.wm-gerrit-heading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 7px 13px;
+    padding: 0;
+    /* This font and color aren't used since there is an image there,
+     * but is kept for consistency when used for display of alt-text
+     */
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: #990000;
+    min-height: 60px;
+    min-width: 60px;
+    background: transparent no-repeat 0 0;
+    background-image: url(/r/static/wikimedia-codereview-logo.cache.png);
+    background-image: linear-gradient(transparent,transparent), url(/r/static/wikimedia-codereview-logo.cache.svg);
+    text-indent: -9999px;
+    overflow: hidden;
 }
 
 /**
