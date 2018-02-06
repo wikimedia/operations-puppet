@@ -1,7 +1,3 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-#####################################################################
-
 abuse_filter,af_id,K
 abuse_filter,af_pattern,K
 abuse_filter,af_user,K
