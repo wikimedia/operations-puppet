@@ -10,3 +10,6 @@ profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::active: false
 profile::etcd::tlsproxy::read_only: true
 profile::zookeeper::cluster_name: main-codfw
+# Raise election timeout to account for disk latencies during raid resyncs
+# see T162013
+profile::etcd::election_timeout: 3000
