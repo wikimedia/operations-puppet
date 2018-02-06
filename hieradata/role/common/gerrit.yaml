@@ -27,6 +27,7 @@ gerrit::jetty::replication:
             - '+refs/heads/*:refs/heads/*'
             - '+refs/tags/*:refs/tags/*'
         createMissingRepositories: false
+        maxRetries: 50
     slaves:
         url: 'gerrit2@gerrit2001.wikimedia.org:/srv/gerrit/git/${name}.git'
         mirror: true
