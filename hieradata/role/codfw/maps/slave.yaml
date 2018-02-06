@@ -14,6 +14,3 @@ profile::cassandra::single_instance::seeds:
   - '10.192.48.57'
 
 profile::maps::osm_slave::master: 'maps2001.codfw.wmnet'
-
-profile::maps::apps::kartotherian_style: '''@kartotherian/osm-bright-style'''
-profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
