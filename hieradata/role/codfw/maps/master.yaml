@@ -25,3 +25,6 @@ profile::maps::osm_master::slaves:
     ip_address: 10.192.32.146
   maps2004:
     ip_address: 10.192.48.57
+
+profile::maps::apps::kartotherian_style: '''@kartotherian/osm-bright-style'''
+profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
