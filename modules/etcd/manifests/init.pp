@@ -38,17 +38,29 @@
 # [*use_client_certs*]
 #   Whether to require use of SSL certificates to connect to etcd.
 #
+# [*heartbeat_interval*]
+#   Interval (in ms) at which etcd sends heartbeats to other peers. See
+#   https://github.com/coreos/etcd/blob/release-2.2/Documentation/tuning.md for
+#   details. Default value: 100
+#
+# [*election_timeout*]
+#   Timeout for receiving election responses. Should usually be at least 10x the
+#   heartbeat_interval. See the tuning document as well for details. Should be raised
+#   whenever some latencies are present. Default value: 1000
+#
 class etcd (
-    $host             = '127.0.0.1',
-    $client_port      = 2379,
-    $adv_client_port  = 2379,
-    $peer_port        = 2380,
-    $cluster_name     = $::domain,
-    $cluster_state    = undef,
-    $srv_dns          = undef,
-    $peers_list       = undef,
-    $use_ssl          = false,
-    $use_client_certs = false,
+    String  $host             = '127.0.0.1',
+    Integer $client_port      = 2379,
+    Integer $adv_client_port  = 2379,
+    Integer $peer_port        = 2380,
+    String $cluster_name     = $::domain,
+    Stdlib::Compat::String $cluster_state    = undef,
+    Stdlib::Compat::String $srv_dns          = undef,
+    Array[String] $peers_list       = undef,
+    Boolean $use_ssl          = false,
+    Boolean $use_client_certs = false,
+    Integer $heartbeat_interval = 100,
+    Integer $election_timeout = 1000,
     ) {
     # This module is jessie only for now
     requires_os('debian >= jessie')

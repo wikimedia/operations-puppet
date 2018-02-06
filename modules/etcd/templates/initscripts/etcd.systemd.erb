@@ -30,6 +30,8 @@ Environment=ETCD_KEY_FILE=/var/lib/etcd/ssl/private_keys/server.key
 Environment=ETCD_CA_FILE=/etc/ssl/certs/Puppet_Internal_CA.pem
 <%- end -%>
 <% end -%>
+Environment=ETCD_ELECTION_TIMEOUT=<%= @election_timeout %>
+Environment=ETCD_HEARTBEAT_INTERVAL=<%= @heartbeat_interval %>
 ExecStart=/usr/bin/etcd
 Restart=always
 RestartSec=10s

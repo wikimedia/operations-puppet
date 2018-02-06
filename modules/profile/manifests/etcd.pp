@@ -44,6 +44,8 @@ class profile::etcd(
     $do_backup = hiera('profile::etcd::do_backup'),
     $client_port = hiera('etcd::client_port', 2379),
     $peer_port = hiera('etcd::peer_port', 2380),
+    $heartbeat_interval = hiera('profile::etcd::heartbeat_interval', 100),
+    $election_timeout = hiera('profile::etcd::election_timeout', 1000),
 ){
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -71,15 +73,17 @@ class profile::etcd(
 
     # Service & firewalls
     class { '::etcd':
-        host             => $::fqdn,
-        cluster_name     => $cluster_name,
-        cluster_state    => $cluster_state,
-        client_port      => $real_client_port,
-        adv_client_port  => $adv_client_port,
-        srv_dns          => $srv_dns,
-        peers_list       => $peers_list,
-        use_ssl          => true,
-        use_client_certs => $use_client_certs,
+        host               => $::fqdn,
+        cluster_name       => $cluster_name,
+        cluster_state      => $cluster_state,
+        client_port        => $real_client_port,
+        adv_client_port    => $adv_client_port,
+        srv_dns            => $srv_dns,
+        peers_list         => $peers_list,
+        use_ssl            => true,
+        use_client_certs   => $use_client_certs,
+        election_timeout   => $election_timeout,
+        heartbeat_interval => $heartbeat_interval,
     }
 
     class { '::etcd::monitoring': }
