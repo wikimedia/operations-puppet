@@ -1,0 +1,7 @@
+# Mdadm periodic cron for WMF production hosts
+# Copyright (c) 2017 Wikimedia Foundation
+#
+# This file is managed by puppet.
+# This will run on a randomly picked day of the week at 5:57 AM on the first week of each month
+# It differs from the standard debian cron by picking a weekday instead of sunday.
+57 5 * * <%= @dow %> root if [ -x /usr/share/mdadm/checkarray ] && [ $(date +\%d) -le 7 ]; then /usr/share/mdadm/checkarray --cron --all --idle --quiet; fi
