@@ -71,4 +71,16 @@ class profile::analytics::refinery::job::json_refine {
         table_blacklist  => $table_blacklist,
         minute           => 25,
     }
+
+    # Neflow data
+    profile::analytics::refinery::job::json_refine_job { 'neflow':
+        # This is imported by camus_job { 'netflow': }
+        input_base_path  => '/wmf/data/raw/netflow',
+        # 'datacenter' is extracted from the input path into a Hive table partition
+        input_regex      => '(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+        input_capture    => 'table,year,month,day,hour',
+        output_base_path => '/wmf/data/netflow',
+        output_database  => 'netflow',
+        minute           => 45,
+    }
 }
