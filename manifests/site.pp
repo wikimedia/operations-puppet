@@ -79,6 +79,12 @@ node 'bast1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
+#bast1001 replacement, see T186623
+node 'bast1002.wikimedia.org' {
+    role(spare::system)
+}
+
+
 # Bastion in Texas
 node 'bast2001.wikimedia.org' {
     role(bastionhost::general)
