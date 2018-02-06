@@ -8,7 +8,7 @@
 mapreduce.job.queuename=default
 
 # final top-level data output directory, sub-directory will be dynamically created for each topic pulled
-etl.destination.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/data/raw/netflow
+etl.destination.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/data/raw
 etl.destination.overwrite=true
 # HDFS location where you want to keep execution files, i.e. offsets, error logs, and count files
 etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/netflow
