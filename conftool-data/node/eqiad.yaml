@@ -290,3 +290,13 @@ eqiad:
     druid1004.eqiad.wmnet: [druid-public-broker]
     druid1005.eqiad.wmnet: [druid-public-broker]
     druid1006.eqiad.wmnet: [druid-public-broker]
+  ores:
+    ores1001.eqiad.wmnet: [ores]
+    ores1002.eqiad.wmnet: [ores]
+    ores1003.eqiad.wmnet: [ores]
+    ores1004.eqiad.wmnet: [ores]
+    ores1005.eqiad.wmnet: [ores]
+    ores1006.eqiad.wmnet: [ores]
+    ores1007.eqiad.wmnet: [ores]
+    ores1008.eqiad.wmnet: [ores]
+    ores1009.eqiad.wmnet: [ores]
