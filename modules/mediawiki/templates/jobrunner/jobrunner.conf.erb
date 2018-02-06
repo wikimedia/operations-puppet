@@ -31,14 +31,12 @@ end
             ],
             "low-priority": [
                 "cirrusSearchLinksUpdate",
-                "htmlCacheUpdate",
             ]
         },
         "html": {
             // Temp config for T173710
             "runners": <%= runners_for('html') %>,
             "include": [
-                "htmlCacheUpdate",
                 "refreshLinks",
                 "refreshLinksDynamic",
             ],
