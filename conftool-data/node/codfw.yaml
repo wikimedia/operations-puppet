@@ -306,3 +306,13 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
+  ores:
+    ores2001.eqiad.wmnet: [ores]
+    ores2002.eqiad.wmnet: [ores]
+    ores2003.eqiad.wmnet: [ores]
+    ores2004.eqiad.wmnet: [ores]
+    ores2005.eqiad.wmnet: [ores]
+    ores2006.eqiad.wmnet: [ores]
+    ores2007.eqiad.wmnet: [ores]
+    ores2008.eqiad.wmnet: [ores]
+    ores2009.eqiad.wmnet: [ores]
