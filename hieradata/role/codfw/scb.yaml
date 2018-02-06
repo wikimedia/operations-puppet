@@ -9,23 +9,3 @@ profile::nutcracker::redis_pools:
         host: 10.192.16.122
         port: 6382
     listen: '/var/run/nutcracker/redis_codfw.sock 0666'
-  ores_queue:
-    redis_auth: "%{hiera('profile::ores::web::redis_password')}"
-    listen: 127.0.0.1:6379
-    server_map:
-      oresrdb2001:
-        host: 10.192.16.31
-        port: 6379
-      oresrdb2002:
-        host: 10.192.32.21
-        port: 6379
-  ores_cache:
-    redis_auth: "%{hiera('profile::ores::web::redis_password')}"
-    listen: 127.0.0.1:6380
-    server_map:
-      oresrdb2001:
-        host: 10.192.16.31
-        port: 6380
-      oresrdb2002:
-        host: 10.192.32.21
-        port: 6380
