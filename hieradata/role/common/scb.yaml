@@ -11,11 +11,9 @@ admin::groups:
   - zotero-admin
   - mobileapps-admin
   - changeprop-admin
-  - ores-admin
   - pdfrender-admin
   - recommendation-admin
 role::lvs::realserver::pools:
-  ores: {}
   apertium: {}
   mobileapps: {}
   graphoid: {}
@@ -55,9 +53,6 @@ profile::graphoid::error_headers:
 
 profile::citoid::zotero_port: 1969
 profile::citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
-profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
-# The password is in the private store, this is here for completeness
-# profile::ores::web::redis_password: nothing
 
 
 ### BEGIN EVENTSTREAMS ###
