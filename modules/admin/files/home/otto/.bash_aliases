@@ -6,3 +6,7 @@ alias hproxy="export http_proxy=http://webproxy.eqiad.wmnet:8080; export HTTPS_P
 alias slog='sudo tail -n 200 -f /var/log/syslog'
 alias pvl='pv -l > /dev/null'
 alias klog='sudo tail -f /var/log/kafka/server.log /var/log/kafka/kafka-authorizer.log'
+alias dt='date +%FT%T'
+alias ds='date +%s'
+alias dcamus='date +%Y/%m/%d/%H'
+alias dhive='date +year=%Y/month=%-m/day=%-d/hour=%-H'
