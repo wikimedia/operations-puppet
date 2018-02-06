@@ -9,23 +9,3 @@ profile::nutcracker::redis_pools:
         host: 10.64.0.201
         port: 6382
     listen: '/var/run/nutcracker/redis_eqiad.sock 0666'
-  ores_queue:
-    redis_auth: "%{hiera('profile::ores::web::redis_password')}"
-    listen: 127.0.0.1:6379
-    server_map:
-      oresrdb1001:
-        host: 10.64.48.129
-        port: 6379
-      oresrdb1002:
-        host: 10.64.0.10
-        port: 6379
-  ores_cache:
-    redis_auth: "%{hiera('profile::ores::web::redis_password')}"
-    listen: 127.0.0.1:6380
-    server_map:
-      oresrdb1001:
-        host: 10.64.48.129
-        port: 6380
-      oresrdb1002:
-        host: 10.64.0.10
-        port: 6380
