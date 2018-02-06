@@ -20,10 +20,13 @@
     var passwordField = null;
 
     function init() {
-      form = document.getElementById("login_form");
-      if (form) {
-        document.body.className = "loginParent";
+      if (/Sign In/.test(document.title) && /\/login/.test(location.href)) {
+        document.documentElement.className = "loginParent";
       }
+    }
+
+    function onLoad() {
+      form = document.getElementById("login_form");
       usernameField = document.getElementById("f_user");
       passwordField = document.getElementById("f_pass");
 
@@ -86,9 +89,12 @@
       }
     }
 
+    init();
+
     window.onload = function() {
-      init();
+      onLoad();
     };
+
     return this;
   })();
 }
