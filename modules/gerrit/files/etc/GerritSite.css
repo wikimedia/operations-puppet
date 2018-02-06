@@ -203,15 +203,14 @@
     transform: rotate(45deg)
 }
 
-body {
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
 /* Login Handling */
 /* Background image handling */
-html { height: 100%; }
+html.loginParent { height: 100%; }
 html.loginParent body {
     height: 100%;
+
+    font-family: 'Source Sans Pro', sans-serif;
+
     background-image: url(/r/static/1024px-Sea_and_sky_light.cache.jpg) !important;
     background-position: center center !important;
     background-repeat:  no-repeat !important;
