@@ -1724,13 +1724,8 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-node /^ores100[1-9]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-# not used yet - stalled until stress test is over T165170
-node /^ores200[1-9]\.codfw\.wmnet$/ {
-    role(spare::system)
+node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
+    role(ores)
 }
 
 node /^oresrdb100[12]\.eqiad\.wmnet$/ {
