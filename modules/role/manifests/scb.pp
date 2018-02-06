@@ -17,11 +17,7 @@ class role::scb {
     include ::base::firewall
     include role::lvs::realserver
 
-    # Ores
-    include ::profile::ores::worker
-    include ::profile::ores::web
     include ::profile::nutcracker
-
 
     include ::profile::cpjobqueue
     include ::profile::recommendation_api
