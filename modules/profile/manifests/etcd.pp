@@ -126,5 +126,14 @@ class profile::etcd(
             ensure => present,
             values => { 'dev.raid.speed_limit_max' => '20000' },
         }
+        # Only run on a weekday of our choice, and vary it between servers
+        $dow = fqdn_rand(5, 'md_checkarray') + 1
+        # Replace the default mdadm script from upstream with our own
+        file { '/etc/cron.d/mdadm':
+            content => template('profile/etcd/mdadm-cron.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 }
