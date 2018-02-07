@@ -42,6 +42,9 @@ class netops::monitoring {
         'cr1-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', bgp => true, },
         'cr2-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', bgp => true, },
         'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6',   },
+        # eqsin
+        'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', },
+        'cr1-eqsin'  => { ipv4 => '103.102.166.129', ipv6 => '2001:df2:e500:ffff::2', bgp => true, },
     }
     create_resources(netops::check, $routers, $routers_defaults)
 
@@ -51,6 +54,7 @@ class netops::monitoring {
         'mr1-codfw.oob' => { ipv4 => '216.117.46.36',   },
         'mr1-esams.oob' => { ipv4 => '164.138.24.90',   },
         'mr1-ulsfo.oob' => { ipv4 => '209.237.234.242', },
+        'mr1-eqsin.oob' => { ipv4 => '27.111.227.106',  ipv6 => '2403:b100:3001:9::2', },
         're0.cr1-eqiad' => { ipv4 => '10.65.0.12',      parents => ['mr1-eqiad'] },
         're0.cr2-eqiad' => { ipv4 => '10.65.0.14',      parents => ['mr1-eqiad'] },
         're0.cr1-codfw' => { ipv4 => '10.193.0.10',     parents => ['mr1-codfw'] },
@@ -59,6 +63,7 @@ class netops::monitoring {
         're0.cr2-esams' => { ipv4 => '10.21.0.117',     parents => ['mr1-esams'] },
         're0.cr1-ulsfo' => { ipv4 => '10.128.128.2',    parents => ['mr1-ulsfo'] },
         're0.cr2-ulsfo' => { ipv4 => '10.128.128.3',    parents => ['mr1-ulsfo'] },
+        're0.cr1-eqsin' => { ipv4 => '10.132.128.2',    parents => ['mr1-eqsin'] },
 
     }
     create_resources(netops::check, $oob)
@@ -92,7 +97,9 @@ class netops::monitoring {
         'asw-esams'     => { ipv4 => '10.21.0.104',  parents => ['cr1-esams', 'cr2-esams'] },
         'csw2-esams'    => { ipv4 => '10.21.0.105',  parents => ['asw-esams']  },
         # ulsfo
-        'asw2-ulsfo'     => { ipv4 => '10.128.128.7', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
+        'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr1-ulsfo', 'cr2-ulsfo'] },
+        # eqsin
+        'asw1-eqsin'    => { ipv4 => '10.132.128.4', parents => ['cr1-eqsin'] },
     }
     create_resources(netops::check, $switches, $switches_defaults)
 
