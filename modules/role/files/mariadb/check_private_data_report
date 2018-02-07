@@ -28,7 +28,7 @@ else
 	$PRIVATE_DATA_STRECTH >> "$REPORT_PATH" 2>&1
 fi
 
-DATA=$(/bin/egrep -v "^--|^Start time|wmf_checksums" -c "$REPORT_PATH")
+DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "$REPORT_PATH")
 
 if [ "$DATA" -gt "0" ]
 then
