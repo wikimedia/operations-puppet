@@ -85,11 +85,13 @@ profile::eventstreams::streams:
 profile::eventstreams::rdkafka_config:
   # Send rdkafka stats to statsd once per minute.
   statistics.interval.ms: 60000
+  # TODO: remove this config when we move to Kafka jumbo (1.0)
   # Specify Kafka API version as workaround for Brokers < 0.10
   # https://github.com/edenhill/librdkafka/wiki/Broker-version-compatibility
-  # This will not be necessary when the target Kafka cluster will be running 0.10
-  # librdkafka 0.9.4.x default for api.version.request is false, no need to set it
+  # This will not be necessary when the target Kafka cluster will be running 0.10+
   broker.version.fallback: '0.9.0.1'
+  api.version.request: 'false'
+
 ### END EVENTSTREAMS ###
 
 ### BEGIN CHANGEPROP ###
