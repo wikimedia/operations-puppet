@@ -11,7 +11,21 @@ class role::logging::kafkatee::webrequest::ops {
 
     require_package('socat')
 
-    $webrequest_log_directory = $::role::logging::kafkatee::webrequest::base::webrequest_log_directory
+    $log_directory = '/srv/log'
+    $webrequest_log_directory = "${log_directory}/webrequest"
+    file { [$log_directory, $webrequest_log_directory]:
+        ensure => 'directory',
+        owner  => 'kafkatee',
+        group  => 'kafkatee',
+    }
+
+    # if the logs in $log_directory should be rotated
+    # then configure a logrotate.d script to do so.
+    logrotate::conf { 'kafkatee-webrequest':
+        ensure  => 'present',
+        content => template('role/logging/kafkatee_logrotate.erb'),
+    }
+
     $logstash_host = hiera('logstash_host')
     $logstash_port = hiera('logstash_json_lines_port')
 
