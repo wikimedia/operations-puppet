@@ -415,9 +415,11 @@ sub wm_common_backend_response {
 			set beresp.keep = <%= @vcl_config.fetch("keep", "7d") %>;
 		}
 
-		// Hard TTL cap on all fetched objects (default 1d)
-		if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
-			set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>;
+		// Hard TTL cap on all fetched objects (default 1d), minus
+		// random amount up to 5% of 1d to swizzle natural expiries
+		if (beresp.ttl >= <%= @vcl_config.fetch("ttl_cap", "1d") %>) {
+			set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "1d") %>
+				- std.duration(std.random(0,4320) + "s", 0s);
 		}
 
 		set beresp.grace = <%= @vcl_config.fetch("grace_sick", "60m") %>;
