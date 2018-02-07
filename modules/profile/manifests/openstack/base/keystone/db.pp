@@ -10,6 +10,14 @@ class profile::openstack::base::keystone::db(
         ensure => 'present',
     }
 
+    file {'/etc/mysql/my.cnf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('profile/openstack/base/keystone/db/my.cnf.erb'),
+        require => Package['mysql-server'],
+    }
+
     # XXX: what purpose does this serve?
     ferm::service { 'mysql_iron':
         proto  => 'tcp',
