@@ -448,6 +448,12 @@ host bast4002 {
     next-server 208.80.153.53; # install2002 (tftp server)
 }
 
+host bast5001 {
+    hardware ethernet F4:E9:D4:D0:8B:80;
+    fixed-address bast5001.wikimedia.org;
+    next-server 208.80.153.53; # install2002 (tftp server)
+}
+
 host californium {
     hardware ethernet 84:2b:2b:fd:b9:f6;
     fixed-address californium.wikimedia.org;
