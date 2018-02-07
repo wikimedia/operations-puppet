@@ -18,4 +18,26 @@ class profile::prometheus::alerts {
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/prometheus-druid?refresh=1m&panelId=41&fullscreen&orgId=1']
     }
+
+    # Monitor Varnish HTTP availability as seen by looking at status codes
+    monitoring::check_prometheus { 'varnish_text_http_availability':
+        description     => 'HTTP availability for Varnish text (5m period)',
+        query           => '1 - site_job:varnish_requests:avail5m{job="varnish-text"}',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
+        method          => 'le',
+        warning         => 99,
+        critical        => 98,
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=3&fullscreen&orgId=1&from=now-3h&to=now&var-site=ulsfo&var-site=esams&var-site=eqiad&var-site=codfw&var-cache_type=text']
+    }
+
+    # Monitor Varnish HTTP availability as seen by looking at status codes
+    monitoring::check_prometheus { 'varnish_upload_http_availability':
+        description     => 'HTTP availability for Varnish upload (5m period)',
+        query           => '1 - site_job:varnish_requests:avail5m{job="varnish-upload"}',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
+        method          => 'le',
+        warning         => 99,
+        critical        => 98,
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=3&fullscreen&orgId=1&from=now-3h&to=now&var-site=ulsfo&var-site=esams&var-site=eqiad&var-site=codfw&var-cache_type=upload']
+    }
 }
