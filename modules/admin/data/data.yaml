@@ -9,7 +9,7 @@ groups:
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
-              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud]
+              nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport]
@@ -241,7 +241,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
-              nuria, otto, deskana, arnad, jgonsior, jgreen,
+              nuria, otto, deskana, arnad, jgreen,
               bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jkatz, madhuvishy,
@@ -2430,12 +2430,8 @@ users:
     gid: 500
     name: jgonsior
     realname: Julius Gonsior
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD1r7OXp7M2oYoTVw/e7ccbF6tHdmM0ZeLpwwMzPAS07zfY31TQ9F3Ww0KPDyKcDt0Cndbg5izpkGlQ6rwTVaeeBlp3IbAwn+YtuZjVjoNny3OyTM1WRjmGbimxglrfUWWjn5yhu4VzrVkA9XYGn7mlJtCmV/kQzXzcAXgF19L9YCOnfBILy7HB5CPpj7H/N+ACmZVAaTiOCLpXb60P3ffVp93Lfzzlau7sPmel/MJOSSWAH8MUhIdGlUXTyk6+b06pSIGk3kAJjtAvtvT1ACjNeyPE1QYJSYm/Lk3MbrjxHvdJipquq3tgxp7StfqY9ppXq5GwvoEecFLd9D59WTHD ragada@thinkpad
+    ssh_keys: []
     uid: 15338
-    email: julius@gaenseri.ch
-    expiry_date: 2018-05-30
-    expiry_contact: leila@wikimedia.org
   piccardi:
     ensure: present
     gid: 500
