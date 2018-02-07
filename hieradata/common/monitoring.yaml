@@ -220,6 +220,12 @@ monitoring::groups:
   scb_codfw:
     description: Service Cluster B servers codfw
 
+# ORES
+  ores_eqiad:
+    description: ORES servers eqiad
+  ores_codfw:
+    description: ORES servers codfw
+
 # Swift
   swift:
     description: swift servers
