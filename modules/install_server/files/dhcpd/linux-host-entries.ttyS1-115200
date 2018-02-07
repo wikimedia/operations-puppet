@@ -3799,12 +3799,12 @@ host labvirt1022 {
 
 host labweb1001 {
     hardware ethernet 18:66:DA:A5:0B:57;
-    fixed-address labweb1001.eqiad.wmnet;
+    fixed-address labweb1001.wikimedia.org;
 }
 
 host labweb1002 {
     hardware ethernet 18:66:DA:A5:07:E1;
-    fixed-address labweb1002.eqiad.wmnet;
+    fixed-address labweb1002.wikimedia.org;
 }
 
 host lawrencium {
