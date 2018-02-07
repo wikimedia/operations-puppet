@@ -2426,7 +2426,7 @@ users:
     expiry_date: 2018-05-30
     expiry_contact: leila@wikimedia.org
   jgonsior:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jgonsior
     realname: Julius Gonsior
