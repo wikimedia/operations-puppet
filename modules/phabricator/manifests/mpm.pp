@@ -4,7 +4,7 @@
 # More performance specific tweaks to follow here
 
 class phabricator::mpm {
-    apache::conf { 'mpm_prefork':
+    httpd::conf { 'mpm_prefork':
         source => 'puppet:///modules/phabricator/apache/mpm_prefork.conf',
     }
 }
