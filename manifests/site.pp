@@ -630,16 +630,7 @@ node 'db1011.eqiad.wmnet' {
 }
 
 node 'dbstore1001.eqiad.wmnet' {
-    include ::role::mariadb::backup
-    # 24h delay on all repl streams
-    class { '::role::mariadb::dbstore':
-        lag_warn     => 90000,
-        lag_crit     => 180000,
-        # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
-        # don't spam Icinga with warnings. This will not block properly critical alerts.
-        warn_stopped => false,
-        socket       => '/tmp/mysql.sock',
-    }
+    role(mariadb::temporary_storage)
 }
 
 node 'dbstore1002.eqiad.wmnet' {
@@ -649,6 +640,8 @@ node 'dbstore1002.eqiad.wmnet' {
 node 'dbstore2001.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
     include ::role::mariadb::backup_mydumper
+    # include ::role::mariadb::backup
+
 }
 
 node 'dbstore2002.codfw.wmnet' {
