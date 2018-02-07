@@ -7,7 +7,7 @@
     "member_or_target":"rule:target or rule:member",
     "admin_or_member_or_target":"rule:member_or_target or rule:admin",
     "admin_or_target":"rule:admin or rule:target",
-    "zone_primary_or_admin": "('PRIMARY':%(zone_type)s and rule:admin_or_owner) OR ('SECONDARY':%(zone_type)s AND is_admin:True)"
+    "zone_primary_or_admin": "('PRIMARY':%(zone_type)s and rule:admin_or_owner) OR ('SECONDARY':%(zone_type)s AND is_admin:True)",
 
     "default": "rule:admin_or_projectadmin",
 
