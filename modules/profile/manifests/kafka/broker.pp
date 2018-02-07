@@ -335,6 +335,9 @@ class profile::kafka::broker(
         }
     }
 
+    # Temporary for T186598
+    class { '::ferm::ipsec_allow': }
+
     $ferm_srange = $::realm ? {
         'production' => '($PRODUCTION_NETWORKS $FRACK_NETWORKS)',
         'labs'       => '($LABS_NETWORKS)',
