@@ -2,7 +2,6 @@
 #
 class phabricator::monitoring {
 
-    include ::apache::mod::status
     diamond::collector { 'ApacheStatusSimple':
         source   => 'puppet:///modules/phabricator/monitor/apache_status.py',
     }
