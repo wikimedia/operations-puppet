@@ -1,1 +1,2 @@
 mariadb::shard: 's7'
+mariadb::binlog_format: 'STATEMENT'
