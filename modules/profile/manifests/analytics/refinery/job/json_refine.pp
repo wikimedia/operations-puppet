@@ -75,7 +75,7 @@ class profile::analytics::refinery::job::json_refine {
     # Netflow data
     profile::analytics::refinery::job::json_refine_job { 'netflow':
         # This is imported by camus_job { 'netflow': }
-        input_base_path  => '/wmf/data/raw',
+        input_base_path  => '/wmf/data/raw/netflow',
         input_regex      => '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
         input_capture    => 'table,year,month,day,hour',
         output_base_path => '/wmf/data/wmf',
