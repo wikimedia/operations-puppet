@@ -41,7 +41,7 @@ class role::ipsec ($hosts = undef) {
                     $cluster_nodes['codfw']
                 )
             }
-        } elsif $::hostname =~ /^kafka10/ {
+        } elsif $::hostname =~ /^kafka10/ or $::hostname =~ /^kafka-jumbo10/ {
             # kafka brokers (only in eqiad for now) associate with all non-eqiad caches
             $text    = hiera('cache::text::nodes')
             $misc    = hiera('cache::misc::nodes')

@@ -13,6 +13,9 @@ class role::kafka::jumbo::broker {
     include base::firewall
     include profile::kafka::broker
 
+    # This is temporary until T182993 is completed
+    include ::role::ipsec
+
     # Mirror from other Kafka cluster to jumbo.
     # TODO:  The new 0.11 Kafka MirrorMaker doesn't work with Kafka Brokers < 0.9.
     # Kafka main clusters are still on 0.9, so we can't colocate MirrorMaker alongside
