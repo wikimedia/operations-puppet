@@ -1031,11 +1031,6 @@ node 'iron.wikimedia.org' {
     role(bastionhost::twofa)
 }
 
-# The host is going to be decom as part of T181518
-node 'kafka1018.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # Analytics Kafka Brokers
 node /kafka10(12|13|14|20|22|23)\.eqiad\.wmnet/ {
     role(kafka::analytics)
