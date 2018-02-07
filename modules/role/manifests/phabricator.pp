@@ -15,4 +15,14 @@ class role::phabricator {
     include ::profile::phabricator::main
     include ::phabricator::monitoring
     include ::phabricator::mpm
+
+    if os_version('debian >= stretch') {
+        $php_module = 'php7'
+    } else {
+        $php_module = 'php5'
+    }
+
+    class { '::httpd':
+        modules => [status, $php_module],
+    }
 }
