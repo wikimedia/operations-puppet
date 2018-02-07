@@ -1,0 +1,90 @@
+varnishtest "Swizzling TTLs by up to 5% reduction if >=60s"
+
+# Using backend to test here, because frontend has randomized admission
+# probabilities which reduce ttl dramatically for hit-for-miss,
+# probabilistically sometimes causing this test to fail there.
+#
+# Also note x-swiz-ttl tests use a lower bound that's ~1s lower than the
+# expected range, because rarely varnish actually recalculates a
+# slightly-shorter ttl by the time it's read in vcl_deliver (e.g. for the 30s
+# test with no change, we sometimes observe 29.9).
+
+server s1 {
+    rxreq
+    expect req.url == "/30"
+    txresp -hdr "Cache-Control: max-age=30" -bodylen 16
+
+    rxreq
+    expect req.url == "/300"
+    txresp -hdr "Cache-Control: max-age=300" -bodylen 16
+
+    rxreq
+    expect req.url == "/3000"
+    txresp -hdr "Cache-Control: max-age=3000" -bodylen 16
+
+    rxreq
+    expect req.url == "/30000"
+    txresp -hdr "Cache-Control: max-age=30000" -bodylen 16
+
+    rxreq
+    expect req.url == "/300000"
+    txresp -hdr "Cache-Control: max-age=300000" -bodylen 16
+
+    rxreq
+    expect req.url == "/3000000"
+    txresp -hdr "Cache-Control: max-age=3000000" -bodylen 16
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    sub vcl_backend_response {
+        set beresp.http.x-orig-ttl = beresp.ttl;
+    }
+
+    sub vcl_deliver {
+        set resp.http.x-swiz-ttl = obj.ttl;
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-backend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/30" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.http.x-orig-ttl == 30.000
+    expect resp.http.x-swiz-ttl <= 30
+    expect resp.http.x-swiz-ttl >= 29
+
+    txreq -url "/300" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.http.x-orig-ttl == 300.000
+    expect resp.http.x-swiz-ttl <= 300
+    expect resp.http.x-swiz-ttl >= 284
+
+    txreq -url "/3000" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.http.x-orig-ttl == 3000.000
+    expect resp.http.x-swiz-ttl <= 3000
+    expect resp.http.x-swiz-ttl >= 2849
+
+    txreq -url "/30000" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.http.x-orig-ttl == 30000.000
+    expect resp.http.x-swiz-ttl <= 30000
+    expect resp.http.x-swiz-ttl >= 28499
+
+    txreq -url "/300000" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.http.x-orig-ttl == 300000.000
+    expect resp.http.x-swiz-ttl <= 86400
+    expect resp.http.x-swiz-ttl >= 82079
+
+    txreq -url "/3000000" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.http.x-orig-ttl == 3000000.000
+    expect resp.http.x-swiz-ttl <= 86400
+    expect resp.http.x-swiz-ttl >= 82079
+} -run
