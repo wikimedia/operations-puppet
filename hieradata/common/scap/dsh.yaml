@@ -109,3 +109,10 @@ scap::dsh::groups:
       - maps-test2002.codfw.wmnet
       - maps-test2003.codfw.wmnet
       - maps-test2004.codfw.wmnet
+  ores:
+    conftool:
+      - {'cluster': 'ores', 'service': 'ores'}
+  ores-canaries:
+    hosts:
+      - ores1001.eqiad.wmnet
+      - ores2001.codfw.wmnet
