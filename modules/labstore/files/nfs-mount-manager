@@ -71,8 +71,23 @@ case "$1" in
                 to_umount $mount_point;
             done
             ;;
+        kill-active)
+            if [ -z "$2" ]; then
+                echo "No mount path supplied"
+                exit 1
+            fi
+            if /usr/bin/test -e $2; then
+                # print active processes first
+                lsof +f -- $2 | tail -n +2
+                # Use the terse flag for lsof to extract just pids and then pipe to kill
+                lsof -t +f -- $2 | xargs --no-run-if-empty kill -9
+            else
+                echo "Invalid path"
+            fi
+            ;;
         *)
-            /bin/echo 'check | mount | umount <mount_path>'
+            /bin/echo 'check | mount | umount | kill-active <mount_path>'
+            /bin/echo 'warning: kill-active command kills all processes that are actively accessing <mount_path>'
             /bin/echo 'clean' -- remove all mounts defined in /etc/fstab
             ;;
 esac
