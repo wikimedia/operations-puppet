@@ -976,7 +976,7 @@ node /labtestservices200[23]\.wikimedia\.org/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /labweb100[12]\.eqiad\.wmnet/ {
+node /labweb100[12]\.wikimedia\.org/ {
     role(wmcs::openstack::main::labweb)
 
     interface::add_ip6_mapped { 'main': }
