@@ -186,10 +186,6 @@ class profile::phabricator::main (
     }
     # lint:endignore
 
-    # common Apache modules
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
     class { '::phabricator::aphlict':
         ensure  => $aphlict_ensure,
         basedir => $phab_root_dir,
