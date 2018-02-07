@@ -87,5 +87,28 @@ class profile::prometheus::alerts {
         method          => 'ge',
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+
+    # Varnish HTTP availability as seen by looking at status codes
+    monitoring::check_prometheus { 'varnish_http_availability':
+        description     => 'HTTP availability for Varnish',
+        query           => '100 * (1 - site_job:varnish_requests:avail5m)',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
+        method          => 'le',
+        retries         => 2,
+        warning         => 99.95,
+        critical        => 99.93,
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=3&fullscreen&refresh=1m&orgId=1']
+    }
+
+    # Nginx HTTP availability as seen by looking at status codes
+    monitoring::check_prometheus { 'nginx_http_availability':
+        description     => 'HTTP availability for Nginx',
+        query           => '100 * (1 - site_cluster:nginx_requests:avail5m)',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/global',
+        method          => 'le',
+        retries         => 2,
+        warning         => 99.95,
+        critical        => 99.93,
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=4&fullscreen&refresh=1m&orgId=1']
     }
 }
