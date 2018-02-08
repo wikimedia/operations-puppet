@@ -13,6 +13,7 @@ class profile::cumin::master (
         'cumin',
         'python-dnspython',
         'python-phabricator',
+        'python-requests',
     ])
 
     file { $cumin_log_path:
@@ -86,6 +87,14 @@ class profile::cumin::master (
     file { '/usr/local/sbin/wmf-auto-reimage-host':
         ensure => present,
         source => 'puppet:///modules/profile/cumin/wmf_auto_reimage_host.py',
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file { '/usr/local/sbin/wmf-upgrade-varnish':
+        ensure => present,
+        source => 'puppet:///modules/profile/cumin/wmf_upgrade_varnish.py',
         mode   => '0544',
         owner  => 'root',
         group  => 'root',
