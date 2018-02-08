@@ -28,17 +28,9 @@ class profile::ntp {
     }
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
 
-    # NOTE to the future: we *should* be using regional
-    #   NTP pool aliases, removing the per-server "restrict"
-    #   lines in the config template, and adding a
-    #   "restrict source ..." line, but current stable
-    #   versions of ntpd do not yet support "restrict source"
-    # The current sets of peers have some thought and research
-    #   behind them based on current S2 lists (Sept 2014), but
-    #   they will need long-term periodic upkeep until we can
-    #   switch to per-site pool addrs + "restrict source"
-    # Updated Apr 2017 (correcting only disfunctional ones)
-    # These are the pool servers used by the peers above
+    # Legacy manual peer lists, for pre- stretch systems that lack ntpd with
+    # "restrict source" functionality and proper "pool" behavior
+    # Last Updated Apr 2017 (correcting only disfunctional ones)
     $peer_upstreams = {
         'chromium.wikimedia.org' => [
             'ac-ntp1.net.cmu.edu',
@@ -78,6 +70,13 @@ class profile::ntp {
         ],
     }
 
+    # Pooling configuration for stretch+ ntp versions:
+    $pool_zone = $::site ? {
+        esams   => 'nl',
+        eqsin   => 'sg',
+        default => 'us',
+    }
+
     # TODO: generate from $network::constants::all_networks
     $our_networks_acl = [
       '10.0.0.0 mask 255.0.0.0',
@@ -91,8 +90,17 @@ class profile::ntp {
       '2001:df2:e500:: mask ffff:ffff:ffff::',
     ]
 
+    if os_version('debian >= stretch') {
+        $wmf_server_upstream_pools = ["0.${pool_zone}.pool.ntp.org"]
+        $wmf_server_upstreams = []
+    } else {
+        $wmf_server_upstream_pools = []
+        $wmf_server_upstreams = $peer_upstreams[$::fqdn]
+    }
+
     ntp::daemon { 'server':
-        servers   => $peer_upstreams[$::fqdn],
+        servers   => $wmf_server_upstreams,
+        pools     => $wmf_server_upstream_pools,
         peers     => $wmf_server_peers,
         time_acl  => $our_networks_acl,
         query_acl => $::standard::ntp::monitoring_acl,
