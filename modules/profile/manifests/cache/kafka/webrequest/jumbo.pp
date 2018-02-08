@@ -18,7 +18,7 @@
 #   The host:port to send statsd data to.
 #
 class profile::cache::kafka::webrequest::jumbo(
-    $kafka_cluster_name = hiera('profile::cache::kafka::webrequest::jumbo::kafka_cluster_name', 'jumbo'),
+    $kafka_cluster_name = hiera('profile::cache::kafka::webrequest::jumbo::kafka_cluster_name', 'jumbo-eqiad'),
     $cache_cluster      = hiera('cache::cluster'),
     $statsd             = hiera('statsd'),
 ) {
