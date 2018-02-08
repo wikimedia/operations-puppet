@@ -7,4 +7,7 @@ class role::cache::misc {
     include ::profile::cache::ssl::unified
     include ::profile::cache::misc
     include ::role::ipsec
+
+    # Temp. Varnishkafka testing instance for T185136
+    include ::profile::cache::kafka::webrequest::jumbo
 }
