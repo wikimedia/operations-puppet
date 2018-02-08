@@ -91,6 +91,14 @@ class profile::cumin::master (
         group  => 'root',
     }
 
+    file { '/usr/local/sbin/wmf-upgrade-varnish':
+        ensure => present,
+        source => 'puppet:///modules/profile/cumin/wmf_upgrade_varnish.py',
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     class { '::phabricator::bot':
         username => 'ops-monitoring-bot',
         token    => $passwords::phabricator::ops_monitoring_bot_token,
