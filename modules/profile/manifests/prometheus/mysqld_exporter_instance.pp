@@ -1,4 +1,4 @@
-define role::prometheus::mysqld_exporter_instance (
+define profile::prometheus::mysqld_exporter_instance (
     $socket = "/run/mysqld/mysqld.${title}.sock",
     $port = 13306,
     ) {

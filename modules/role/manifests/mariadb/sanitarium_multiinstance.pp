@@ -14,12 +14,6 @@ class role::mariadb::sanitarium_multiinstance {
 
     include ::standard
     include ::profile::base::firewall
-    #FIXME:
-    ferm::service { 'sanitarium_multiinstance':
-        proto  => 'tcp',
-        port   => '3311:3320',
-        srange => '$PRODUCTION_NETWORKS',
-    }
 
     include role::labs::db::common
     include role::labs::db::check_private_data
@@ -47,25 +41,37 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     mariadb::instance {'s2':
         port => 3312,
     }
-    role::prometheus::mysqld_exporter_instance {'s2':
+    profile::mariadb::ferm {'s2':
+        port => 3312,
+    }
+    profile::prometheus::mysqld_exporter_instance {'s2':
         port => 13312,
     }
     mariadb::instance {'s4':
         port => 3314,
     }
-    role::prometheus::mysqld_exporter_instance {'s4':
+    profile::mariadb::ferm {'s4':
+        port => 3314,
+    }
+    profile::prometheus::mysqld_exporter_instance {'s4':
         port => 13314,
     }
     mariadb::instance {'s6':
         port => 3316,
     }
-    role::prometheus::mysqld_exporter_instance {'s6':
+    profile::mariadb::ferm {'s6':
+        port => 3316,
+    }
+    profile::prometheus::mysqld_exporter_instance {'s6':
         port => 13316,
     }
     mariadb::instance {'s7':
         port => 3317,
     }
-    role::prometheus::mysqld_exporter_instance {'s7':
+    profile::mariadb::ferm {'s7':
+        port => 3317,
+    }
+    profile::prometheus::mysqld_exporter_instance {'s7':
         port => 13317,
     }
 

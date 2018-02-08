@@ -1,7 +1,7 @@
 class role::mariadb::misc::eventlogging::master {
     include ::standard
     include ::profile::base::firewall
-    include ::profile::mariadb::ferm
+    ::profile::mariadb::ferm { 'eventlogging_master': }
     include ::profile::mariadb::monitor
 
     include ::profile::mariadb::misc::eventlogging::database
