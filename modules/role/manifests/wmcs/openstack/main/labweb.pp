@@ -9,10 +9,10 @@ class role::wmcs::openstack::main::labweb {
     }
 
     include ::profile::ldap::client::labs
+    include ::profile::base::firewall
 
     # Wikitech:
     #include ::role::mediawiki::webserver
-    #include ::profile::base::firewall
     #include ::profile::prometheus::apache_exporter
     #include ::profile::prometheus::hhvm_exporter
 
