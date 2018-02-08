@@ -8,10 +8,12 @@
 # }
 # $ircecho_nick = "icinga-wm"
 # $ircecho_server = "chat.freenode.net 6667"
+# $ircecho_pass = false # Can be string or false. # used for connecting to irc with a password
 class ircecho (
     $ircecho_logs,
     $ircecho_nick,
     $ircecho_server = 'chat.freenode.net +6697',
+    $ircecho_pass = false,
     $ensure = 'present',
 ) {
 
