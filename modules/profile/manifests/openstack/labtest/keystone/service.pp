@@ -25,7 +25,6 @@ class profile::openstack::labtest::keystone::service(
     $designate_host = hiera('profile::openstack::labtest::designate_host'),
     $designate_host_standby = hiera('profile::openstack::labtest::designate_host_standby'),
     $horizon_host = hiera('profile::openstack::labtest::horizon_host'),
-    $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $puppetmaster_hostname = hiera('profile::openstack::labtest::puppetmaster_hostname'),
     ) {
 
@@ -66,7 +65,6 @@ class profile::openstack::labtest::keystone::service(
         designate_host              => $designate_host,
         designate_host_standby      => $designate_host_standby,
         horizon_host                => $horizon_host,
-        labweb_hosts                => $labweb_hosts,
         require                     => Class['profile::openstack::base::keystone::db'],
     }
     contain '::profile::openstack::base::keystone::service'

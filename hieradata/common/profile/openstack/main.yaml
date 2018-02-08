@@ -17,7 +17,4 @@ profile::openstack::main::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::main::rabbit_monitor_user: 'monitoring'
 profile::openstack::main::rabbit_file_handles: 8192
 profile::openstack::main::ldap_hosts: ['ldap-labs.eqiad.wikimedia.org', 'ldap-labs.codfw.wikimedia.org']
-profile::openstack::main::labweb_hosts:
-  - labweb1001.wikimedia.org
-  - labweb1002.wikimedia.org
 profile::openstack::main::statsd_host: 'labmon1001.eqiad.wmnet'
