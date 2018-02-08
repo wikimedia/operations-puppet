@@ -79,7 +79,7 @@ class profile::analytics::refinery::job::json_refine {
         input_regex      => '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
         input_capture    => 'table,year,month,day,hour',
         output_base_path => '/wmf/data/wmf',
-        output_database  => 'netflow',
+        output_database  => 'wmf',
         minute           => 45,
     }
 }
