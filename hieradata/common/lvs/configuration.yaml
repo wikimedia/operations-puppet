@@ -53,6 +53,9 @@ lvs::configuration::lvs_service_ips:
     esams:
       dns_rec: 91.198.174.216
       dns_rec6: 2620:0:862:ed1a::3:fe
+    ulsfo:
+      dns_rec: 198.35.26.127
+      dns_rec6: 2620:0:863:ed1a::3:fe
   misc_web: &ip_block006
     codfw:
       misc_weblb: 208.80.153.248
@@ -262,6 +265,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     - esams
+    - ulsfo
     protocol: udp
     ip: *ip_block005
     port: 53
@@ -286,6 +290,7 @@ lvs::configuration::lvs_services:
     - eqiad
     - codfw
     - esams
+    - ulsfo
     protocol: tcp
     ip: *ip_block005
     port: 53
