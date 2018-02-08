@@ -328,10 +328,11 @@ menu = cr1-eqsin
 title = cr1-eqsin.wikimedia.org
 host = cr1-eqsin.wikimedia.org
 
-+++ asw1-eqsin
-menu = asw1-eqsin
-title = asw1-eqsin.mgmt.eqsin.wmnet
-host = asw1-eqsin.mgmt.eqsin.wmnet
+# Commented out until T186650 is solved
+#+++ asw1-eqsin
+#menu = asw1-eqsin
+#title = asw1-eqsin.mgmt.eqsin.wmnet
+#host = asw1-eqsin.mgmt.eqsin.wmnet
 
 ++ Hosts
 menu = Hosts
