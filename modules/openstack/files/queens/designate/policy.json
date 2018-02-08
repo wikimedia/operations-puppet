@@ -1,5 +1,6 @@
 {
     "admin": "role:admin or is_admin:True",
+    "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
     "member": "tenant:%(tenant_id)s",
     "admin_or_member": "rule:admin or role:user or role:projectadmin",
     "admin_or_projectadmin": "rule:admin or role:projectadmin",
