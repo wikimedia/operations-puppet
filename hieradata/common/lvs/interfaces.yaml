@@ -190,3 +190,10 @@ lvs::interfaces::vlan_data:
       lvs4005: 'eth0:198.35.26.9'
       lvs4006: 'eth0:198.35.26.10'
       lvs4007: 'eth0:198.35.26.11'
+  public1-eqsin:
+    id: "510"
+    netmask: '255.255.255.240'
+    iface:
+      lvs5001: 'eth0:103.102.166.10'
+      lvs5001: 'eth0:103.102.166.11'
+      lvs5001: 'eth0:103.102.166.12'

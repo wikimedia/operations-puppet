@@ -674,9 +674,10 @@ node /^dns400[12]\.wikimedia\.org$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
-# new dns systems for eqsin (further config to do here...)
 node /^dns500[12]\.wikimedia\.org$/ {
-    role(spare::system)
+    role(recursor)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Druid analytics-eqiad (non public) servers.

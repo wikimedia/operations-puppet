@@ -1,7 +1,8 @@
 profile::pybal::config_host: conf2003.codfw.wmnet
-profile::lvs::tagged_subnets: []
+profile::lvs::tagged_subnets:
+  - public1-eqsin
 # ns override for all lvs for now, see T103921
 profile::base::nameservers:
-  - '208.80.153.12' # acamar
-  - '208.80.153.42' # achenar
-  - '208.80.154.254' # eqiad lvs
+  - '103.102.166.8' # dns5001
+  - '103.102.166.9' # dns5002
+  - '208.80.153.254' # codfw lvs
