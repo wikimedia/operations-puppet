@@ -313,6 +313,35 @@ menu = bast4002
 title = bast4002.wikimedia.org
 host = bast4002.wikimedia.org
 
++ eqsin
+
+menu = eqsin
+title = Wikimedia Singapore network
+alerts = bigloss,someloss,startloss
+
+++ Core
+menu = Core
+title = Core Network Infrastructure
+
++++ cr1-eqsin
+menu = cr1-eqsin
+title = cr1-eqsin.wikimedia.org
+host = cr1-eqsin.wikimedia.org
+
++++ asw1-eqsin
+menu = asw1-eqsin
+title = asw1-eqsin.mgmt.eqsin.wmnet
+host = asw1-eqsin.mgmt.eqsin.wmnet
+
+++ Hosts
+menu = Hosts
+title = Sampled Hosts
+
++++ bast5001
+menu = bast5001
+title = bast5001.wikimedia.org
+host = bast5001.wikimedia.org
+
 + DNS
 probe = DNS
 menu = DNS latency
