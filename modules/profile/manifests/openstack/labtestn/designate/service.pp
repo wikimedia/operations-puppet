@@ -15,6 +15,7 @@ class profile::openstack::labtestn::designate::service(
     $rabbit_pass = hiera('profile::openstack::labtestn::nova::rabbit_pass'),
     $osm_host = hiera('profile::openstack::labtestn::osm_host'),
     $horizon_host = hiera('profile::openstack::labtestn::horizon_host'),
+    $labweb_hosts = hiera('profile::openstack::labtestn::labweb_hosts'),
     ) {
 
     require ::profile::openstack::labtestn::clientlib
@@ -35,6 +36,7 @@ class profile::openstack::labtestn::designate::service(
         rabbit_pass                => $rabbit_pass,
         osm_host                   => $osm_host,
         horizon_host               => $horizon_host,
+        labweb_hosts               => $labweb_hosts,
     }
     contain '::profile::openstack::base::designate::service'
 }
