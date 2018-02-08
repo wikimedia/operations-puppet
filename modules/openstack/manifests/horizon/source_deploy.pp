@@ -82,6 +82,17 @@ class openstack::horizon::source_deploy(
         deploy_user  => 'deploy-service',
     }
 
+    # allow deploy-service to restart apache as root.
+    # Also, it needs to sudo as horizon to gather and compress
+    #  static content.
+    sudo::user { 'mwdeploy':
+        privileges => [
+            'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
+            'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
+            'ALL = (horizon) NOPASSWD: ALL',
+        ],
+    }
+
     httpd::site { $webserver_hostname:
         content => template("openstack/${version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
