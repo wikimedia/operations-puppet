@@ -638,10 +638,7 @@ node 'dbstore1002.eqiad.wmnet' {
 }
 
 node 'dbstore2001.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
-    include ::role::mariadb::backup_mydumper
-    # include ::role::mariadb::backup
-
+    role(mariadb::dbstore_multiinstance_that_can_generate_backups_and_send_them_to_bacula)
 }
 
 node 'dbstore2002.codfw.wmnet' {
