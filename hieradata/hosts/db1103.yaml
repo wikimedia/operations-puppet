@@ -1,4 +1,4 @@
 # Buffer pool sizes/instance enabled
-profile::mariadb::core_multiinstance::num_instances: 2
-profile::mariadb::core_multiinstance::s2: '185G'
-profile::mariadb::core_multiinstance::s4: '185G'
+profile::mariadb::core::multiinstance::num_instances: 2
+profile::mariadb::core::multiinstance::s2: '185G'
+profile::mariadb::core::multiinstance::s4: '185G'
