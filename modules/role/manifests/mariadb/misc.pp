@@ -22,7 +22,7 @@ class role::mariadb::misc(
     include ::profile::mariadb::monitor
     include ::passwords::misc::scripts
     include ::profile::base::firewall
-    include ::profile::mariadb::ferm
+    ::profile::mariadb::ferm { 'misc': }
     # hack until m5 servers are bought and proxy is in use
     if $shard == 'm5' {
         include ::profile::mariadb::ferm_wmcs
