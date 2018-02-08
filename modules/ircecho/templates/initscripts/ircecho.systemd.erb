@@ -7,7 +7,7 @@ User=nobody
 Group=nogroup
 Type=simple
 EnvironmentFile=-/etc/default/ircecho
-ExecStart=/usr/local/bin/ircecho --infile=${INFILE} $CHANS $NICK $SERVER
+ExecStart=/usr/local/bin/ircecho --infile=${INFILE} $CHANS $NICK $SERVER $NICKSERV_PASS
 Restart=always
 RestartSec=10s
 
