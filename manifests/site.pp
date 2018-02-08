@@ -668,9 +668,10 @@ node 'deploy1001.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# new dns systems T179204
 node /^dns400[12]\.wikimedia\.org$/ {
-    role(spare::system)
+    role(recursor)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # new dns systems for eqsin (further config to do here...)

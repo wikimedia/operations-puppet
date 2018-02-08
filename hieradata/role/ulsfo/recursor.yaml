@@ -1,0 +1,6 @@
+profile::bird::neighbors_list:
+  - 198.35.26.192 # cr1-ulsfo loopback
+  - 198.35.26.193 # cr2-ulsfo loopback
+profile::base::nameservers:
+  - '208.80.153.254' # codfw lvs
+  - '208.80.154.254' # eqiad lvs
