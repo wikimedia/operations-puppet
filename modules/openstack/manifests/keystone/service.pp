@@ -34,16 +34,67 @@ class openstack::keystone::service(
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks
 
-    package { 'keystone':
-        ensure  => 'present',
-    }
+    $packages = [
+        'keystone',
+        'alembic',
+        'python-alembic',
+        'python-amqp',
+        'python-castellan',
+        'python-cliff',
+        'python-cmd2',
+        'python-concurrent.futures',
+        'python-cryptography',
+        'python-dateutil',
+        'python-designateclient',
+        'python-dogpile.cache',
+        'python-eventlet',
+        'python-funcsigs',
+        'python-futurist',
+        'python-glanceclient',
+        'python-jinja2',
+        'python-jsonschema',
+        'python-keystone',
+        'python-keystonemiddleware',
+        'python-oath',
+        'python-kombu',
+        'python-mysql.connector',
+        'python-memcache',
+        'python-migrate',
+        'python-mock',
+        'python-nova',
+        'python-novaclient',
+        'python-openssl',
+        'python-oslo.cache',
+        'python-oslo.db',
+        'python-oslo.log',
+        'python-oslo.messaging',
+        'python-oslo.middleware',
+        'python-oslo.rootwrap',
+        'python-oslo.service',
+        'python-pkg-resources',
+        'python-pyasn1',
+        'python-pycadf',
+        'python-pyinotify',
+        'python-pymysql',
+        'python-pyparsing',
+        'python-pysaml2',
+        'python-routes',
+        'python-setuptools',
+        'python-sqlalchemy',
+        'python-unicodecsv',
+        'python-warlock',
+        'ldap-utils',
+        'ldapvi',
+        'python-ldap',
+        'python-ldappool',
+        'python3-ldap3',
+        'ruby-ldap',
+        'python-mwclient',
+        'websockify',
+    ]
 
-    package { 'python-oath':
-        ensure  => 'present',
-    }
-
-    package { 'python-mysql.connector':
-        ensure  => 'present',
+    package { $packages:
+        ensure => 'present',
     }
 
     group {'keystone':
@@ -123,6 +174,11 @@ class openstack::keystone::service(
             mode    => '0644',
             notify  => Service['keystone'],
             recurse => true;
+    }
+
+    file {'/var/lib/keystone/keystone.db':
+        ensure  => 'absent',
+        require => Package['keystone'],
     }
 
     service { 'keystone':
