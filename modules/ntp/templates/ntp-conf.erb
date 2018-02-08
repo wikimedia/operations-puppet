@@ -1,20 +1,20 @@
 ### Wikimedia ntp configuration
 
+# By default ignore any packets we receive
+restrict default ignore
+
 ### Servers and Peers: #########################################
 
 <% @peers.each do |val| -%>
 peer <%= val %>
-restrict <%= val %> kod notrap noquery
+restrict <%= val %> notrap nomodify noquery
 <% end -%>
 <% @servers.each do |val| -%>
 server <%= val %>
-restrict <%= val %> kod notrap noquery
+restrict <%= val %> notrap nomodify noquery
 <% end -%>
 
-### Access Control: ############################################
-
-# By default ignore any packets we receive
-restrict default ignore
+### Non-Peer Access Control: ###################################
 
 # Allow everything from localhost addresses
 restrict 127.0.0.1
@@ -23,14 +23,14 @@ restrict ::1
 <% if @time_acl.count -%>
 # Allow non-peering time service from these:
 <% @time_acl.each do |val| -%>
-restrict <%= val %> kod notrap noquery nopeer
+restrict <%= val %> notrap nomodify noquery nopeer
 <% end -%>
 <% end -%>
 
 <% if @query_acl.count -%>
 # Allow non-peering time service *and* info queries:
 <% @query_acl.each do |val| -%>
-restrict <%= val %> kod notrap nomodify nopeer
+restrict <%= val %> notrap nomodify nopeer
 <% end -%>
 <% end -%>
 
