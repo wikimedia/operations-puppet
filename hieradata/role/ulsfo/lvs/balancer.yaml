@@ -1,5 +1,6 @@
 profile::pybal::config_host: conf2003.codfw.wmnet
-profile::lvs::tagged_subnets: []
+profile::lvs::tagged_subnets:
+  - public1-ulsfo
 # ns override for all lvs for now, see T103921
 profile::base::nameservers:
   - '208.80.153.12' # acamar

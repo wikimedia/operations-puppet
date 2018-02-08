@@ -183,3 +183,10 @@ lvs::interfaces::vlan_data:
       lvs3002: 'eth0:91.198.174.12'
       lvs3003: 'eth0:91.198.174.13'
       lvs3004: 'eth0:91.198.174.14'
+  public1-ulsfo:
+    id: "1201"
+    netmask: '255.255.255.240'
+    iface:
+      lvs4005: 'eth0:198.35.26.9'
+      lvs4006: 'eth0:198.35.26.10'
+      lvs4007: 'eth0:198.35.26.11'
