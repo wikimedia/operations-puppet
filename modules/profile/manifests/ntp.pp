@@ -4,7 +4,8 @@
 class profile::ntp {
 
     $wmf_peers = $::standard::ntp::wmf_peers
-    # Combines the peers above into a single list
+
+    # A list of all global peers, used in the core sites' case below
     $wmf_all_peers = array_concat(
         $wmf_peers['eqiad'],
         $wmf_peers['codfw'],
@@ -12,6 +13,20 @@ class profile::ntp {
         $wmf_peers['ulsfo'],
         $wmf_peers['eqsin']
     )
+
+    # wmf_peers is a list of peer servers that exist within each site,
+    # while wmf_server_peers here is a list of servers a given server should
+    # peer with globally, which is in the most-general terms:
+    # 1) All peers at both core sites
+    # 2) For core sites: All peers at all non-core sites
+    # 3) Exclude self from final list
+    $wmf_server_peers_plus_self = $::site ? {
+        esams   => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw'], $wmf_peers['esams']),
+        ulsfo   => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw'], $wmf_peers['ulsfo']),
+        eqsin   => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw'], $wmf_peers['eqsin']),
+        default => $wmf_all_peers, # core sites
+    }
+    $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
 
     # NOTE to the future: we *should* be using regional
     #   NTP pool aliases, removing the per-server "restrict"
@@ -76,10 +91,9 @@ class profile::ntp {
       '2001:df2:e500:: mask ffff:ffff:ffff::',
     ]
 
-
     ntp::daemon { 'server':
         servers   => $peer_upstreams[$::fqdn],
-        peers     => delete($wmf_all_peers, $::fqdn),
+        peers     => $wmf_server_peers,
         time_acl  => $our_networks_acl,
         query_acl => $::standard::ntp::monitoring_acl,
     }
