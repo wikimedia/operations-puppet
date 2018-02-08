@@ -137,7 +137,7 @@ def run_upgrade(cache, src, confirm, verbose):
 
     if not confirm:
         confirm = input("commit changes? [y/N]: ")
-        if confirm[:1] != 'y' or confirm[:1] != 'Y':
+        if confirm[:1] != "y" and confirm[:1] != "Y":
             return
 
     cache.commit()
