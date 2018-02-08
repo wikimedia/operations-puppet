@@ -8,7 +8,7 @@ class role::mariadb::parsercache(
     include ::standard
     include ::profile::base::firewall
     include ::profile::mariadb::monitor
-    include ::profile::mariadb::ferm
+    ::profile::mariadb::ferm { 'parsercache': }
     include ::passwords::misc::scripts
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'parsercache',

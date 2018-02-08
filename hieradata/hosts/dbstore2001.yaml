@@ -1,9 +1,9 @@
 # Buffer pool sizes/instance enabled
-role::mariadb::dbstore_multiinstance::num_instances: 7
-role::mariadb::dbstore_multiinstance::s2: '15G'
-role::mariadb::dbstore_multiinstance::s3: '20G'
-role::mariadb::dbstore_multiinstance::s5: '5G'
-role::mariadb::dbstore_multiinstance::s6: '15G'
-role::mariadb::dbstore_multiinstance::s7: '20G'
-role::mariadb::dbstore_multiinstance::s8: '20G'
-role::mariadb::dbstore_multiinstance::x1: '5G'
+profile::mariadb::dbstore_multiinstance::num_instances: 7
+profile::mariadb::dbstore_multiinstance::s2: '15G'
+profile::mariadb::dbstore_multiinstance::s3: '20G'
+profile::mariadb::dbstore_multiinstance::s5: '5G'
+profile::mariadb::dbstore_multiinstance::s6: '15G'
+profile::mariadb::dbstore_multiinstance::s7: '20G'
+profile::mariadb::dbstore_multiinstance::s8: '20G'
+profile::mariadb::dbstore_multiinstance::x1: '5G'
