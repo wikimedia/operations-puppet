@@ -13,3 +13,5 @@ profile::openstack::labtestn::rabbit_monitor_user: 'monitoring'
 profile::openstack::labtestn::rabbit_file_handles: 8192
 profile::openstack::labtestn::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::labtestn::ldap_hosts: ['labtestservices2001.wikimedia.org']
+profile::openstack::labtestn::labweb_hosts:
+  - 'labtestweb2002.wikimedia.org'
