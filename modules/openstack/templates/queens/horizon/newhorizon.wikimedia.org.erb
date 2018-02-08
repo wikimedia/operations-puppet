@@ -23,8 +23,8 @@
         Require all granted
     </Directory>
 
-    Alias /static <%= @venv_dir %>/lib/python3.5/site-packages/openstack_dashboard/static/
-    <Directory <%= @venv_dir %>/lib/python3.5/site-packages/openstack_dashboard/>
+    Alias /static /srv/deployment/horizon/deploy/horizon/static
+    <Directory /srv/deployment/horizon/deploy/horizon/static/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
