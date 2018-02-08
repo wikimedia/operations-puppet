@@ -15,7 +15,7 @@ class standard::ntp::timesyncd () {
         eqiad => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         codfw => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         esams => concat($wmf_peers['esams'], $wmf_peers['eqiad']),
-        ulsfo => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
+        ulsfo => concat($wmf_peers['ulsfo'], $wmf_peers['codfw']),
         eqsin => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
     }
 

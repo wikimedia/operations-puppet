@@ -10,7 +10,7 @@ class standard::ntp::client () {
         eqiad => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         codfw => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         esams => array_concat($wmf_peers['esams'], $wmf_peers['eqiad']),
-        ulsfo => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
+        ulsfo => array_concat($wmf_peers['ulsfo'], $wmf_peers['codfw']),
         eqsin => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
     }
 
