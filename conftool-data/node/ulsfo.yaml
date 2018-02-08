@@ -13,3 +13,6 @@ ulsfo:
     cp4024.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4025.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
     cp4026.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+  dns:
+    dns4001.wikimedia.org: [pdns_recursor]
+    dns4002.wikimedia.org: [pdns_recursor]
