@@ -21,6 +21,8 @@
     diskLimit = 256m
 [capability]
     administrateServer = group ldap/ops
+[change]
+    disablePrivateChanges = true
 [changeCleanup]
     # Not actually used, but Gerrit complains if unset
     interval = 1 week
