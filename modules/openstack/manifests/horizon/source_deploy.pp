@@ -85,7 +85,7 @@ class openstack::horizon::source_deploy(
     # allow deploy-service to restart apache as root.
     # Also, it needs to sudo as horizon to gather and compress
     #  static content.
-    sudo::user { 'mwdeploy':
+    sudo::user { 'deploy-service':
         privileges => [
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
