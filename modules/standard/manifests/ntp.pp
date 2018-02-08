@@ -19,7 +19,10 @@ class standard::ntp {
             'nescio.wikimedia.org',       # esams recdns
             'maerlant.wikimedia.org',     # esams recdns
         ],
-        ulsfo => [],
+        ulsfo => [
+            'dns4001.wikimedia.org',
+            'dns4002.wikimedia.org',
+        ],
         eqsin => [],
     }
 
