@@ -29,6 +29,7 @@ class profile::openstack::main::keystone::service(
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
     $horizon_host = hiera('profile::openstack::main::horizon_host'),
+    $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
     ) {
 
     require ::profile::openstack::main::clientlib
@@ -59,6 +60,7 @@ class profile::openstack::main::keystone::service(
         designate_host              => $designate_host,
         designate_host_standby      => $designate_host_standby,
         horizon_host                => $horizon_host,
+        labweb_hosts                => $labweb_hosts,
     }
 
     class {'::profile::openstack::base::keystone::hooks':
