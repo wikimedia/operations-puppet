@@ -4,19 +4,9 @@ class librenms::web(
     $active_server,
 ) {
 
-    if os_version('debian >= stretch') {
-        include ::apache::mod::php7
-    } else {
-        include ::apache::mod::php5
-    }
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-    include ::apache::mod::ssl
-
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { $sitename:
+    httpd::site { $sitename:
         content => template('librenms/apache.conf.erb'),
     }
 
@@ -24,7 +14,7 @@ class librenms::web(
         subjects   => 'librenms.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl'],
+        require    => Class['httpd'],
     }
 
     if $active_server == $::fqdn {
