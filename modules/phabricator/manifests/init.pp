@@ -214,13 +214,11 @@ class phabricator (
     file { '/etc/php5/apache2/php.ini':
         content => template('phabricator/php.ini.erb'),
         notify  => Service['apache2'],
-        require => Package['libapache2-mod-php5'],
     }
 
     file { '/etc/apache2/phabbanlist.conf':
-        source  => 'puppet:///modules/phabricator/apache/phabbanlist.conf',
-        require => Package['libapache2-mod-php5'],
-        notify  => Service['apache2'],
+        source => 'puppet:///modules/phabricator/apache/phabbanlist.conf',
+        notify => Service['apache2'],
     }
 
     file { $confdir:
