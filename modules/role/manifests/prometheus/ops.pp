@@ -866,7 +866,7 @@ class role::prometheus::ops {
     }
 
     # Query puppet exported resources and generate a list of hosts for
-    # prometheus to poll metrics from. Ganglia::Cluster is used to generate the
+    # prometheus to poll metrics from. ? is used to generate the
     # mapping from cluster to a list of its members.
     $content = $::use_puppetdb ? {
         true => template('role/prometheus/node_site.yaml.erb'),

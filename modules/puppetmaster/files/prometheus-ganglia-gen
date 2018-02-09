@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Generate prometheus targets to be polled, based on puppet's exported
-# resource Ganglia::Cluster.
+# resource ?
 
 
 import argparse
@@ -27,7 +27,7 @@ class PrometheusClusterGen(object):
         FROM param_values
             JOIN param_names ON param_names.id = param_values.param_name_id
             JOIN resources ON param_values.resource_id = resources.id
-        WHERE restype = 'Ganglia::Cluster'
+        WHERE restype = '?'
         GROUP BY resources.id ORDER BY resources.title ASC
         """
 
@@ -73,7 +73,7 @@ class PrometheusClusterGen(object):
                 yield h
         except Exception as e:
             self.log.exception(
-                    'Could not generate output for resource Ganglia::Cluster')
+                    'Could not generate output for resource ?')
             sys.exit(30)
 
     def site_targets(self, sites, filter_hostnames=None, target_suffix=':9100'):
