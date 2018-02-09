@@ -14,9 +14,6 @@ define prometheus::web (
 ) {
     include ::prometheus
 
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-
     # Previously installed hosts with this class used nginx;
     #  turn off and remove nginx to avoid collisions
     #  on port 80.
@@ -37,8 +34,8 @@ define prometheus::web (
     }
 
     # Single prometheus apache site, will include /etc/prometheus-apache/*.conf
-    if !defined(Apache::Site['prometheus']) {
-        apache::site{ 'prometheus':
+    if !defined(Httpd::Site['prometheus']) {
+        httpd::site{ 'prometheus':
             source  => 'puppet:///modules/prometheus/prometheus-apache.conf'
         }
     }

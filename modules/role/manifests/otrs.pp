@@ -4,10 +4,16 @@
 #
 # filtertags: labs-project-otrs
 class role::otrs {
+
     system::role { 'otrs':
         description => 'OTRS Web Application Server',
     }
+
     include ::standard
     include ::profile::base::firewall
     include ::profile::otrs
+
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'remoteip', 'perl'],
+    }
 }

@@ -13,10 +13,6 @@
 #   include otrs::web
 #
 class otrs::web {
-    include ::apache::mod::perl
-    include ::apache::mod::remoteip
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     # We override the default mpm_prefork to set the apache setting for
     # MaxConnectionsPerChild. The chosen number is experimentally derived from
@@ -24,7 +20,7 @@ class otrs::web {
     # Otherwise, OTRS memory leaks through the roof causing OOM to show up
     # We use the declarative form of the class instead of the inclusion to
     # explicitly show that we use the prefork mpm
-    class { '::apache::mpm':
+    class { '::httpd::mpm':
         mpm    => 'prefork',
         source => 'puppet:///modules/otrs/mpm_prefork.conf',
     }
@@ -33,7 +29,7 @@ class otrs::web {
     $cache_misc_nodes = hiera('cache::misc::nodes')
     $trusted_proxies = $cache_misc_nodes[$::site]
 
-    apache::site { 'ticket.wikimedia.org':
+    httpd::site { 'ticket.wikimedia.org':
         content => template('otrs/ticket.wikimedia.org.erb'),
     }
 }
