@@ -11,7 +11,7 @@ class standard::ntp::client () {
         codfw => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         esams => array_concat($wmf_peers['esams'], $wmf_peers['eqiad']),
         ulsfo => array_concat($wmf_peers['ulsfo'], $wmf_peers['codfw']),
-        eqsin => array_concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
+        eqsin => array_concat($wmf_peers['eqsin'], $wmf_peers['codfw']),
     }
 
     ntp::daemon { 'client':

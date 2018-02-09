@@ -16,7 +16,7 @@ class standard::ntp::timesyncd () {
         codfw => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
         esams => concat($wmf_peers['esams'], $wmf_peers['eqiad']),
         ulsfo => concat($wmf_peers['ulsfo'], $wmf_peers['codfw']),
-        eqsin => concat($wmf_peers['eqiad'], $wmf_peers['codfw']),
+        eqsin => concat($wmf_peers['eqsin'], $wmf_peers['codfw']),
     }
 
     file { '/etc/systemd/timesyncd.conf':

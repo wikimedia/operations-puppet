@@ -23,7 +23,10 @@ class standard::ntp {
             'dns4001.wikimedia.org',
             'dns4002.wikimedia.org',
         ],
-        eqsin => [],
+        eqsin => [
+            'dns5001.wikimedia.org',
+            'dns5002.wikimedia.org',
+        ],
     }
 
     # ntp monitoring queries
