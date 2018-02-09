@@ -2283,6 +2283,11 @@ host dns4002 {
     fixed-address dns4002.wikimedia.org;
 }
 
+host dns5001 {
+    hardware ethernet F4:E9:D4:D0:AC:00;
+    fixed-address dns5001.wikimedia.org;
+}
+
 host dumpsdata1001 {
     hardware ethernet 18:66:DA:FA:5E:A0;
     fixed-address dumpsdata1001.eqiad.wmnet;
