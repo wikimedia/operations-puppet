@@ -11,5 +11,23 @@ class role::netmon {
     include ::profile::netbox
     include ::profile::prometheus::postgres_exporter
 
+    if os_version('debian >= stretch') {
+        $php_module = 'php7'
+    } else {
+        $php_module = 'php5'
+    }
+
+    class { '::httpd':
+        modules => ['headers',
+                    'rewrite',
+                    'proxy',
+                    'proxy_http',
+                    'ssl',
+                    'wsgi',
+                    'fcgid',
+                    $php_module,
+                    ],
+    }
+
     interface::add_ip6_mapped { 'main': }
 }
