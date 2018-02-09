@@ -417,10 +417,6 @@ node /^db10(63|85|88|93)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# To be decommissioned T184397
-node 'db1030.eqiad.wmnet' {
-    role(spare::system)
-}
 # s6 core production dbs on codfw
 # codfw master
 node 'db2039.codfw.wmnet' {
