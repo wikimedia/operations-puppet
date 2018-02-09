@@ -10,4 +10,8 @@ class role::otrs {
     include ::standard
     include ::profile::base::firewall
     include ::profile::otrs
+
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'remoteip, 'perl'],
+    } 
 }
