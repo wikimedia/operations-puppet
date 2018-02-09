@@ -88,18 +88,6 @@
     canonicalWebUrl = <%= @url %>
     reportBugUrl = https://phabricator.wikimedia.org/maniphest/task/create/?projects=PHID-PROJ-lc5rwomzjp6fmcdpbw43
     serverId = e9e9afe9-4712-486d-8885-f54b72dd1951
-[gitweb]
-    url = https://phabricator.wikimedia.org
-    type = custom
-    revision = "/r/revision/${project};${commit}"
-    project = /r/project/${project}
-    branch = "/r/branch/${project};${branch}"
-    tag = "/r/tag/${project};${tag}"
-    filehistory = "/r/p/${project}/;history/${file}/;${branch}"
-    file = "/r/p/${project}/;browse/HEAD/${file};${commit}"
-    roottree = "/r/p/${project}/;browse/HEAD/;${commit}"
-    linkname = diffusion
-    urlEncode = false
 [groups]
     newGroupsVisibleToAll = true
 [httpd]
