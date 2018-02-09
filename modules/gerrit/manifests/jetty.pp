@@ -7,6 +7,7 @@ class gerrit::jetty(
     $db_host = 'localhost',
     $replication = '',
     $url = "https://${::gerrit::host}/r",
+    $gitiles_url = "https://${::gerrit::host}/g",
     $db_name = 'reviewdb',
     $db_user = 'gerrit',
     $git_dir = 'git',
@@ -209,6 +210,14 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
         content => template("gerrit/${config}"),
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
+    file { '/var/lib/gerrit2/review_site/etc/gitiles.config':
+        content => template('gerrit/gitiles.config.erb'),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
