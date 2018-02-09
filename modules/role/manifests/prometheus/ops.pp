@@ -281,7 +281,7 @@ class role::prometheus::ops {
       },
     ]
 
-    # Generate a list of hosts running memcached from Ganglia cluster definition
+    # Generate a list of hosts running memcached from wikimedia_clusters definition in Hiera
     prometheus::cluster_config{ "memcached_${::site}":
         dest    => "${targets_path}/memcached_${::site}.yaml",
         site    => $::site,
@@ -300,7 +300,7 @@ class role::prometheus::ops {
       },
     ]
 
-    # Generate a list of hosts running hhvm from Ganglia cluster definition
+    # Generate a list of hosts running hhvm from wikimedia_clusters definition in Hiera
     # TODO: generate the configuration based on hosts with hhvm class applied
     prometheus::cluster_config{ "hhvm_jobrunner_${::site}":
         dest    => "${targets_path}/hhvm_jobrunner_${::site}.yaml",
@@ -359,7 +359,7 @@ class role::prometheus::ops {
       },
     ]
 
-    # Generate a list of hosts running apache from Ganglia cluster definition
+    # Generate a list of hosts running apache from wikimedia_clusters definition in Hiera
     # TODO(filippo): generate the configuration based on hosts with apache class applied
     prometheus::cluster_config{ "apache_jobrunner_${::site}":
         dest    => "${targets_path}/apache_jobrunner_${::site}.yaml",

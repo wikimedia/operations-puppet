@@ -23,7 +23,7 @@
 module Puppet::Parser::Functions
   newfunction(:get_clusters, :type => :rvalue) do |args|
     all = {}
-    # Ganglia config is the source of truth about clusters/site
+    # Hiera is the source of truth about clusters/site
     cluster_config = call_function(:hiera, ['wikimedia_clusters', {}])
 
     # Arguments are an hash of selectors
