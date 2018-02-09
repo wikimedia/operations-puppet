@@ -1208,10 +1208,6 @@ node 'lithium.eqiad.wmnet' {
     role(syslog::centralserver)
 }
 
-node /^logstash100[1-3]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
 }
