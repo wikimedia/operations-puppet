@@ -74,14 +74,4 @@ class profile::gerrit::server(
         config      => $config,
         log_host    => $log_host,
     }
-
-    class { '::apache::mod::rewrite': }
-
-    class { '::apache::mod::proxy': }
-
-    class { '::apache::mod::proxy_http': }
-
-    class { '::apache::mod::ssl': }
-
-    class { '::apache::mod::headers': }
 }

@@ -28,7 +28,7 @@ class gerrit::proxy(
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { $tls_host:
+    httpd::site { $tls_host:
         content => template('gerrit/apache.erb'),
     }
 
