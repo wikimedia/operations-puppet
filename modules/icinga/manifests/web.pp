@@ -9,11 +9,6 @@ class icinga::web {
     package { 'icinga-doc':
         ensure => present,
     }
-    include ::apache
-    include ::apache::mod::php5
-    include ::apache::mod::ssl
-    include ::apache::mod::headers
-    include ::apache::mod::cgi
 
     ferm::service { 'icinga-https':
       proto => 'tcp',
@@ -44,20 +39,16 @@ class icinga::web {
         }
     }
 
-    # install the Icinga Apache site
-    include ::apache::mod::rewrite
-    include ::apache::mod::authnz_ldap
-
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     letsencrypt::cert::integrated { 'icinga':
         subjects   => 'icinga.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl'],
+        require    => Class['httpd'],
     }
 
-    apache::site { 'icinga.wikimedia.org':
+    httpd::site { 'icinga.wikimedia.org':
         content => template('icinga/icinga.wikimedia.org.erb'),
     }
 
