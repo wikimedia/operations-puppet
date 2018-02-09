@@ -25,6 +25,10 @@ class profile::otrs(
         trusted_networks   => $network::constants::all_networks,
     }
 
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'remoteip', 'perl'],
+    }
+
     # TODO: On purpose here since it references a file not in a module which is
     # used by other classes as well
     # lint:ignore:puppet_url_without_modules
