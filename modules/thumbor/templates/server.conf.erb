@@ -197,8 +197,19 @@ MAX_ANIMATED_GIF_AREA = 100000000
 
 ################################### Logging ##################################
 
+## This configuration indicates whether thumbor should use a custom error
+## handler.
+## Defaults to: False
+USE_CUSTOM_ERROR_HANDLING = True
+
+## Error reporting module. Needs to contain a class called ErrorHandler with a
+## handle_error(context, handler, exception) method.
+## Defaults to: thumbor.error_handlers.sentry
+ERROR_HANDLER_MODULE = 'wikimedia_thumbor.error_handlers.logstash'
+
 from wikimedia_thumbor.logging.filter.context import ContextFilter
 from wikimedia_thumbor.logging.filter.http404 import Http404Filter
+from wikimedia_thumbor.logging.filter.error import ErrorFilter
 
 # Sends 404s to a dedicated rotating log file and filters them out of the error log
 # The error log still goes out to stdout, to be grabbed by systemd
@@ -226,6 +237,9 @@ THUMBOR_LOG_CONFIG = {
         },
         'silentcontext': {
             '()': ContextFilter,
+        },
+        'error': {
+            '()': ErrorFilter,
         }
     },
     'handlers': {
@@ -262,7 +276,7 @@ THUMBOR_LOG_CONFIG = {
             'message_type': 'logback',
             'fqdn': False,
             'tags': ['thumbor'],
-            'filters': ['context', '404exclude']
+            'filters': ['context', '404exclude', 'error']
 <% end %>
         }
     },
