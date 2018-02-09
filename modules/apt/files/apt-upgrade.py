@@ -6,33 +6,21 @@ import sys
 import apt
 import apt_pkg
 import socket
+import logging
 
 # Usage:
 #
-#  % apt-upgrade [-u] upgrade <suite> [-yvh]
-#  % apt-upgrade [-u] report [<suite>] [-h]
-#  % apt-upgrade [-u] list [-h]
-#
+#  % apt-upgrade [-un] upgrade <suite> [-yh]
+#  % apt-upgrade [-un] report [<suite>] [-h]
+#  % apt-upgrade [-un] list [-h]
 #
 # make sure you hold+pin beforehand those packages that should not be upgraded
 
 
-def print_verbose(verbose, msg):
-    """ print information if verbose
-    :param verbose: boolean
-    :param msg: str
-    """
-    if verbose:
-        print("{}: {}".format(socket.gethostname(), msg))
-
-
-def print_verbose_pkg(verbose, pkg):
+def print_output_pkg(pkg):
     """ print information about a package
-    :param verbose: boolean
     :param pkg: Package
     """
-    if not verbose:
-        return
     archive = pkg.candidate.origins[0].archive
     if not archive:
         archive = "[unknown]"
@@ -45,12 +33,11 @@ def print_verbose_pkg(verbose, pkg):
         vdest = pkg.candidate.version
     else:
         vdest = "remove"
-    print_verbose(verbose, '{}: {} {} --> {}'.format(archive, name, vorig, vdest))
+    logging.info('{}: {} {} --> {}'.format(archive, name, vorig, vdest))
 
 
-def pkg_upgrade(verbose, pkg):
+def pkg_upgrade(pkg):
     """ try to mark a package for upgrade
-    :param verbose: boolean
     :param pkg: Package
     """
     if not pkg.is_installed:
@@ -59,7 +46,7 @@ def pkg_upgrade(verbose, pkg):
         pkg.mark_upgrade()
         marked_upgrade = True
     except apt_pkg.Error as e:
-        print_verbose(verbose, '{} not for upgrade: {}'.format(pkg.name, str(e)))
+        logging.info('{} not for upgrade: {}'.format(pkg.name, str(e)))
         pkg.mark_keep()
         marked_upgrade = False
 
@@ -107,32 +94,30 @@ def sort_pkgs_by_archive(pkg_list):
     return sorted(pkg_list, key=lambda pkg: pkg.candidate.origins[0].archive)
 
 
-def calculate_upgrades(cache, verbose):
+def calculate_upgrades(cache):
     """ calculate upgrades and print the changes
     :param cache: apt.Cache
-    :param verbose: boolean
     """
     for pkg_name in cache.keys():
-        pkg_upgrade(verbose, cache[pkg_name])
+        pkg_upgrade(cache[pkg_name])
 
     # report changes
     for pkg in sort_pkgs_by_archive(cache.get_changes()):
-        print_verbose_pkg(verbose, pkg)
+        print_output_pkg(pkg)
 
     return len(cache.get_changes())
 
 
-def run_upgrade(cache, src, confirm, verbose):
+def run_upgrade(cache, src, confirm):
     """ main upgrade routine: calculate upgrades and commit them
     :param cache: apt.Cache
     :param src: str
     :param confirm: boolean
-    :param verbose: boolean
     """
     cache.set_filter(AptFilterUpgradeableSrc(src))
 
-    if not calculate_upgrades(cache, verbose):
-        print_verbose(verbose, 'no packages found to upgrade from {}'.format(src))
+    if not calculate_upgrades(cache):
+        logging.info('no packages found to upgrade from {}'.format(src))
         return
 
     if not confirm:
@@ -153,7 +138,7 @@ def run_report(cache, archive):
     else:
         cache.set_filter(AptFilterUpgradeable())
 
-    return calculate_upgrades(cache, True)
+    return calculate_upgrades(cache)
 
 
 def run_list(cache):
@@ -161,7 +146,9 @@ def run_list(cache):
     :param cache: apt.Cache
     """
     cache.set_filter(AptFilterUpgradeable())
-    calculate_upgrades(cache, False)
+    logging.disable(logging.INFO)
+    calculate_upgrades(cache)
+    logging.disable(logging.NOTSET)
     archives = set()
     for pkg in cache.get_changes():
         archive = pkg.candidate.origins[0].archive
@@ -173,12 +160,13 @@ def run_list(cache):
     if len(archives) == 0:
         return
 
-    print_verbose(True, "{}".format(", ".join(a for a in sorted(archives))))
+    logging.info("{}".format(", ".join(a for a in sorted(archives))))
 
 
 def main():
     parser = argparse.ArgumentParser(description="Utility to help with upgrades of packages")
     parser.add_argument("-u", action="store_true", help="don't run cache update")
+    parser.add_argument("-n", action="store_true", help="don't print the node name")
     subparser = parser.add_subparsers(help="possible operations (pass -h to know usage of each)",
                                       dest="operation")
     subparser.add_parser("list", help="list available sources of upgrades")
@@ -188,8 +176,6 @@ def main():
                                 help="archive to upgrade packages from")
     upgrade_parser.add_argument("-y", action="store_true",
                                 help="actually perform changes (will prompt otherwise)")
-    upgrade_parser.add_argument('-v', action='store_true', help="report changes to be performed")
-
     report_parser = subparser.add_parser("report",
                                          help="report pending package upgrades")
     report_parser.add_argument("archive", action="store", nargs="?",
@@ -204,22 +190,30 @@ def main():
         parser.print_help()
         sys.exit(1)
 
+    if args.n:
+        logging_format = "%(message)s"
+    else:
+        logging_format = "{}: %(message)s".format(socket.gethostname())
+
+    logging.basicConfig(format=logging_format, level=logging.INFO)
+
     cache = apt.cache.FilteredCache()
 
     if not args.u:
-        print_verbose(True, "updating apt cache ...")
+        logging.info("updating apt cache ...")
         cache.update()
 
     cache.open(None)
 
     if args.operation == "upgrade":
-        run_upgrade(cache, args.archive, args.y, args.v)
+        run_upgrade(cache, args.archive, args.y)
     elif args.operation == "report":
         run_report(cache, args.archive)
     elif args.operation == "list":
         run_list(cache)
 
     cache.close()
+    logging.shutdown()
 
 
 if __name__ == "__main__":
