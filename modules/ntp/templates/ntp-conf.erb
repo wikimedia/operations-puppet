@@ -10,7 +10,7 @@ restrict default ignore
 restrict source notrap nomodify noquery
 
 <% @peers.each do |val| -%>
-peer <%= val %> iburst
+peer <%= val %> xleave
 <% end -%>
 
 <% @servers.each do |val| -%>
@@ -23,11 +23,11 @@ pool <%= val %> iburst
 
 <% else -%>
 <% @peers.each do |val| -%>
-peer <%= val %>
+peer <%= val %> xleave
 restrict <%= val %> notrap nomodify noquery
 <% end -%>
 <% @servers.each do |val| -%>
-server <%= val %>
+server <%= val %> iburst
 restrict <%= val %> notrap nomodify noquery
 <% end -%>
 <% end -%>
