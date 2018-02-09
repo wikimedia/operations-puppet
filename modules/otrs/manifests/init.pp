@@ -57,6 +57,7 @@ class otrs(
 
     # Installation
     $packages = [
+        'libapache2-mod-perl2',
         'libapache-dbi-perl',
         'libdbd-mysql-perl',
         'libgd-graph-perl',
