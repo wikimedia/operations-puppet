@@ -15,15 +15,14 @@ class PuppetDBApi(object):
     def __init__(self, puppetdb_config_file):
         config = configparser.ConfigParser()
         config.read(puppetdb_config_file)
-        self.host = config['main']['server']
-        self.port = config['main']['port']
+        # TODO: add support for multiple urls
+        self.server_url = config['main']['server_urls']
 
     def url_for(self, endpoint):
-        # TODO: use /pdb/query/v4 when we upgrade.
-        return 'https://{h}:{p}/v4/{ep}'.format(h=self.host, p=self.port, ep=endpoint)
+        return '{url}/pdb/query/v4/{ep}'.format(url=self.server_url, ep=endpoint)
 
     def get(self, endpoint):
-        return requests.get(self.url_for(endpoint)).json()
+        return requests.get(self.url_for(endpoint), verify='/var/lib/puppet/server/ssl/ca/ca_crt.pem').json()
 
 
 def main():
@@ -39,7 +38,7 @@ def main():
     os.makedirs(factsdir)
     conf = os.environ.get('PUPPETDB_CONFIG_FILE', '/etc/puppet/puppetdb.conf')
     pdb = PuppetDBApi(conf)
-    for node in pdb.get('nodes/'):
+    for node in pdb.get('nodes'):
         if node.get('deactivated', True) is not None:
             continue
         nodename = node['certname']
