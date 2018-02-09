@@ -14,7 +14,8 @@ class icinga::monitor::checkpaging {
 
     # temp test for SMS content changes (T185862)
     @monitoring::host { 'foobar.wmflabs.org':
-        host_fqdn => 'foobar.wmflabs.org',
+        host_fqdn     => 'foobar.wmflabs.org',
+        contact_group => 'test-paging',
     }
 
     monitoring::service { 'test_service':
