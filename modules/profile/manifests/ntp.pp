@@ -98,12 +98,25 @@ class profile::ntp {
         $wmf_server_upstreams = $peer_upstreams[$::fqdn]
     }
 
+    # Extra config only for our servers (not clients):
+    # maxclock 16 is to better support our large-ish "peer" lists
+    # minsane 2 requires 2 (default: 1) sane upstreams/peers present to be in sync
+    # orphan 12 - if no internet servers are reachable, our servers will
+    #     operate as an orphaned peer island and maintain some kind of stable
+    #     sync with each other.  Without this, if all of our global servers
+    #     lost their upstreams, within a few minutes we'd have no time syncing
+    #     happening at all ("peer" only protects you from some servers losing
+    #     upstreams, not all).  A plausible scenario here would be some global
+    #     screwup of pool.ntp.org DNS ops.
+    $extra_config = 'tos maxclock 16 minsane 2 orphan 12'
+
     ntp::daemon { 'server':
-        servers   => $wmf_server_upstreams,
-        pools     => $wmf_server_upstream_pools,
-        peers     => $wmf_server_peers,
-        time_acl  => $our_networks_acl,
-        query_acl => $::standard::ntp::monitoring_acl,
+        servers      => $wmf_server_upstreams,
+        pools        => $wmf_server_upstream_pools,
+        peers        => $wmf_server_peers,
+        time_acl     => $our_networks_acl,
+        extra_config => $extra_config,
+        query_acl    => $::standard::ntp::monitoring_acl,
     }
 
     ferm::service { 'ntp':

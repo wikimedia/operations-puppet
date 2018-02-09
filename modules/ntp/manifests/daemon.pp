@@ -1,4 +1,4 @@
-define ntp::daemon($servers=[], $pools=[], $peers=[], $query_acl=[], $time_acl=[],
+define ntp::daemon($servers=[], $pools=[], $peers=[], $query_acl=[], $time_acl=[], $extra_config='',
     $ensure=hiera('ntp::daemon::ensure', 'present')) {
     package { 'ntp': ensure => present }
 
