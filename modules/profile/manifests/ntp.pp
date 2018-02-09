@@ -99,16 +99,23 @@ class profile::ntp {
     }
 
     # Extra config only for our servers (not clients):
-    # maxclock 16 is to better support our large-ish "peer" lists
     # minsane 2 requires 2 (default: 1) sane upstreams/peers present to be in sync
-    # orphan 12 - if no internet servers are reachable, our servers will
+    # maxclock 14 is to better support our large-ish "peer" lists at cores
+    #        (if we set it this high non-core, it results in way too many pool peers)
+    #        (as we add more edge DCs, we'll need to bump this value by 2 each time)
+    #        (could abstract this as $count_wmf_peers + 4)
+    # orphan <stratum> - if no internet servers are reachable, our servers will
     #     operate as an orphaned peer island and maintain some kind of stable
     #     sync with each other.  Without this, if all of our global servers
     #     lost their upstreams, within a few minutes we'd have no time syncing
     #     happening at all ("peer" only protects you from some servers losing
     #     upstreams, not all).  A plausible scenario here would be some global
-    #     screwup of pool.ntp.org DNS ops.
-    $extra_config = 'tos maxclock 16 minsane 2 orphan 12'
+    #     screwup of pool.ntp.org DNS ops.  So set cores to do the orphan job.
+    $extra_config = $::site ? {
+        eqiad   => 'tos maxclock 14 minsane 2 orphan 12',
+        codfw   => 'tos maxclock 14 minsane 2 orphan 12',
+        default => 'tos minsane 2 orphan 13',
+    }
 
     ntp::daemon { 'server':
         servers      => $wmf_server_upstreams,
