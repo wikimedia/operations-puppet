@@ -49,11 +49,11 @@ define command{
 # new and improved 'notify-by-sms-gateway' command definitions
 define command{
     command_name    new-host-notify-by-sms-gateway
-    command_line    echo "$NOTIFICATIONTYPE$: $HOSTNAME$ is $HOSTSTATE$\n$HOSTOUTPUT$\n$HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME$" $CONTACTADDRESS1$
+    command_line    echo "$NOTIFICATIONTYPE$: $HOSTNAME$ is $HOSTSTATE$\n$HOSTOUTPUT$\n$HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | 's/ACKNOWLEDGEMENT/ACK/' | cut -c 1-135 | /usr/bin/mail $CONTACTADDRESS1$
     }
 define command{
     command_name    new-notify-by-sms-gateway
-    command_line    echo "$NOTIFICATIONTYPE$: $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$:\n$SERVICEOUTPUT$\n$SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ $HOSTNAME$" $CONTACTADDRESS1$
+    command_line    echo "$NOTIFICATIONTYPE$: $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$:\n$SERVICEOUTPUT$\n$SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" | 's/ACKNOWLEDGEMENT/ACK/' | cut -c 1-135 | /usr/bin/mail $CONTACTADDRESS1$
     }
 
 # global IRC output for operations
