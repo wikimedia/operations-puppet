@@ -1,6 +1,6 @@
 bbr_congestion_control: true
 varnish::dynamic_backend_caches: false
-apt::use_experimental: true
+apt::use_experimental: false
 cache::lua_support: true
 cluster: cache_canary
 cache::cluster: canary
@@ -90,7 +90,7 @@ profile::cache::base::be_runtime_params:
     - nuke_limit=1000
     - lru_interval=31
 profile::cache::base::admission_policy: 'exp'
-profile::cache::base::varnish_version: 5
+profile::cache::base::varnish_version: 4
 profile::cache::base::allow_iptables: true
 # Profile::cache::ssl::unified
 profile::cache::ssl::unified::monitoring: true
