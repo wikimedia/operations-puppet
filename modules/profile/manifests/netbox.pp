@@ -17,16 +17,6 @@ class profile::netbox (
     $slaves = hiera('profile::netbox::slaves', undef),
 ) {
 
-# lint:ignore:wmf_styleguide
-    include ::apache
-    include ::apache::mod::headers
-    include ::apache::mod::proxy_http
-    include ::apache::mod::proxy
-    include ::apache::mod::rewrite
-    include ::apache::mod::ssl
-    include ::apache::mod::wsgi
-# lint:endignore
-
     include passwords::netbox
     $db_password = $passwords::netbox::db_password
     $secret_key = $passwords::netbox::secret_key
@@ -127,7 +117,7 @@ class profile::netbox (
     }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { 'netbox.wikimedia.org':
+    httpd::site { 'netbox.wikimedia.org':
         content => template('profile/netbox/netbox.wikimedia.org.erb'),
     }
 
@@ -135,7 +125,7 @@ class profile::netbox (
         subjects   => 'netbox.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl'],
+        require    => Class['httpd'],
     }
     if $active_server == $::fqdn {
         $monitoring_ensure = 'present'
