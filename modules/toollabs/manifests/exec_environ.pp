@@ -45,6 +45,7 @@ class toollabs::exec_environ {
         'luarocks',
         'mono-complete',
         'mono-fastcgi-server',         # T85142
+        'mono-vbnc',                   # T186846
         'npm',                         # T1102
         'nodejs',
         'openjdk-7-jre-headless',
@@ -147,6 +148,7 @@ class toollabs::exec_environ {
         'php5-redis',
         'php5-sqlite',
         'php5-xdebug',                 # T72313
+        'php5-xhprof',                 # T179343
         'php5-xsl',
 
         # Fonts for vCat tool.

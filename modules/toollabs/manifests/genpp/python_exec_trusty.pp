@@ -107,6 +107,8 @@ class toollabs::genpp::python_exec_trusty {
         'python3-sqlalchemy',   # 0.8.4
         'python-svn',           # 1.7.8
         # python3-svn is not available
+        'python-tk',            # 2.7.5
+        'python3-tk',           # 3.4.0
         'python-twisted',       # 13.2.0
         # python3-twisted is not available
         'python-twitter',       # 1.1

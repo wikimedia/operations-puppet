@@ -107,6 +107,8 @@ class toollabs::genpp::python_exec_jessie {
         'python3-sqlalchemy',   # 0.9.8
         'python-svn',           # 1.7.8
         # python3-svn is not available
+        'python-tk',            # 2.7.8
+        'python3-tk',           # 3.4.2
         'python-twisted',       # 14.0.2
         # python3-twisted is not available
         'python-twitter',       # 1.1
