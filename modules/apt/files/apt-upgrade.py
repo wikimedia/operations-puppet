@@ -173,7 +173,7 @@ def run_list(cache):
     if len(archives) == 0:
         return
 
-    print_verbose(True, "available sources of upgrades: {}".format(", ".join(a for a in archives)))
+    print_verbose(True, "{}".format(", ".join(a for a in sorted(archives))))
 
 
 def main():
