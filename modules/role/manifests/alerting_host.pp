@@ -12,5 +12,16 @@ class role::alerting_host {
     include ::role::icinga
     include ::role::tcpircbot
     include ::role::certspotter
+
+    if os_version('debian >= stretch') {
+        $php_module = 'php7'
+    } else {
+        $php_module = 'php5'
+    }
+
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'authnz_ldap', 'cgi', 'ssl', $php_module],
+    }
+
     interface::add_ip6_mapped { 'main': }
 }
