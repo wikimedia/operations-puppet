@@ -60,6 +60,7 @@ environ_packages = {
         'scipy',                # T103136
         'sqlalchemy',
         'svn',                  # T58996
+        'tk',                   # T182562
         'twisted',
         'twitter',
         'unicodecsv',           # T86015
