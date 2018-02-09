@@ -221,13 +221,10 @@ class role::graphite::base(
     }
 
 
-    include ::apache
-    include ::apache::mod::uwsgi
 
     if $auth {
         # Production
         include ::passwords::ldap::production
-        include ::apache::mod::authnz_ldap
 
         $ldap_authurl  = 'ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
         $ldap_bindpass = $passwords::ldap::production::proxypass
@@ -241,7 +238,7 @@ class role::graphite::base(
         $apache_auth   = template('role/graphite/apache-auth-ldap.erb')
     }
 
-    apache::site { $hostname:
+    httpd::site { $hostname:
         content => template('role/graphite/graphite.apache.erb'),
     }
 

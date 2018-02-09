@@ -4,12 +4,6 @@
 # web performance dashboards.
 #
 class role::performance::site {
-    include ::apache
-    include ::apache::mod::headers
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-    include ::apache::mod::rewrite
-    include ::apache::mod::uwsgi
 
     class { '::coal':
         endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
@@ -36,7 +30,7 @@ class role::performance::site {
         notify    => Service['apache2']
     }
 
-    apache::site { 'performance.wikimedia.org':
+    httpd::site { 'performance.wikimedia.org':
         content => template('role/apache/sites/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
     }
