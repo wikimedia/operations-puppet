@@ -76,7 +76,7 @@ class role::eventlogging::analytics::processor{
     #   %D          - ISO-8601 dt
     #   %o          - omit
     #   %u          - userAgent
-    $format = '%q %{recvFrom}s %{seqId}d %D %o %u'
+    $format = '%q %{recvFrom}s %{seqId}d %D %{ip}i %u'
     eventlogging::service::processor { $client_side_processors:
         format         => $format,
         input          => "${kafka_client_side_raw_uri}${kafka_api_version_param}",

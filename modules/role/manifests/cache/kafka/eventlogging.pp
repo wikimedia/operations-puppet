@@ -32,9 +32,7 @@ class role::cache::kafka::eventlogging(
         brokers                     => $kafka_brokers,
         # lint:endignore
         # Note that this format uses literal tab characters.
-        # The '-' in this string used to be %{X-Client-IP@ip}o.
-        # EventLogging clientIp logging has been removed as part of T128407.
-        format                      => '%q	%l	%n	%{%FT%T}t	-	"%{User-agent}i"',
+        format                      => '%q	%l	%n	%{%FT%T}t	%{X-Client-IP}o	"%{User-agent}i"',
         format_type                 => 'string',
         topic                       => 'eventlogging-client-side',
         varnish_name                => $varnish_name,
