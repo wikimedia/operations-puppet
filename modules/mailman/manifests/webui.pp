@@ -1,19 +1,21 @@
 class mailman::webui {
-    include ::apache
-    apache::mod_conf { [
-        'ssl',
-        'headers',
-        'rewrite',
-        'alias',
-        'setenvif',
-        'auth_digest',
-    ]: }
+
+    class { '::httpd':
+        modules => [
+            'headers',
+            'rewrite',
+            'alias',
+            'ssl',
+            'setenvif',
+            'auth_digest',
+            ],
+    }
 
     $lists_servername = hiera('mailman::lists_servername')
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { 'lists.wikimedia.org':
+    httpd::site { 'lists.wikimedia.org':
         content => template('mailman/lists.wikimedia.org.erb'),
     }
 
@@ -23,7 +25,7 @@ class mailman::webui {
         owner     => 'root',
         group     => 'www-data',
         mode      => '0440',
-        require   => Class['apache'],
+        require   => Class['httpd'],
         show_diff => false,
     }
 
