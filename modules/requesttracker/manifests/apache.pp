@@ -7,7 +7,7 @@ class requesttracker::apache($apache_site) {
         $rt_apache_conf = 'requesttracker/rt4.apache.erb'
     }
 
-    apache::site { 'rt.wikimedia.org':
+    httpd::site { 'rt.wikimedia.org':
         content => template($rt_apache_conf),
     }
 

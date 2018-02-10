@@ -4,12 +4,9 @@ class profile::requesttracker {
 
     include ::passwords::misc::rt
 
-    class { '::apache': }
-    class { '::apache::mod::ssl': }
-    class { '::apache::mod::perl': }
-    class { '::apache::mod::rewrite': }
-    class { '::apache::mod::headers': }
-    class { '::apache::mod::fastcgi': }
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'ssl', 'perl', 'fastcgi'],
+    }
 
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',
