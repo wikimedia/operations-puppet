@@ -7,4 +7,8 @@ class role::lists {
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::profile::lists
+
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'alias', 'setenvif', 'auth_digest'],
+    }
 }

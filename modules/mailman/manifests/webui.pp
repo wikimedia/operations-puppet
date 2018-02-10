@@ -1,6 +1,6 @@
 class mailman::webui {
-    include ::apache
-    apache::mod_conf { [
+
+    httpd::mod_conf { [
         'ssl',
         'headers',
         'rewrite',
@@ -13,7 +13,7 @@ class mailman::webui {
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    apache::site { 'lists.wikimedia.org':
+    httpd::site { 'lists.wikimedia.org':
         content => template('mailman/lists.wikimedia.org.erb'),
     }
 
@@ -23,7 +23,7 @@ class mailman::webui {
         owner     => 'root',
         group     => 'www-data',
         mode      => '0440',
-        require   => Class['apache'],
+        require   => Class['httpd'],
         show_diff => false,
     }
 
