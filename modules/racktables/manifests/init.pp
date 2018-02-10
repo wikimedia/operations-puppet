@@ -28,7 +28,7 @@ class racktables ($racktables_host, $racktables_db_host, $racktables_db) {
         content => template('racktables/racktables.config.erb'),
     }
 
-    apache::site { 'racktables.wikimedia.org':
+    httpd::site { 'racktables.wikimedia.org':
         content => template('racktables/racktables.wikimedia.org.erb'),
     }
 

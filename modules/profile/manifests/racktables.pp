@@ -11,11 +11,10 @@ class profile::racktables (
     system::role { 'racktables': description => 'Racktables server' }
 
     include ::standard
-    include ::apache
-    include ::apache::mod::php5
-    include ::apache::mod::ssl
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
+
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'ssl', 'php5'],
+    }
 
     include ::passwords::racktables
 
