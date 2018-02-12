@@ -10,9 +10,6 @@ Puppet::Parser::Functions.newfunction(:query_resources, :type => :rvalue, :arity
 
   If the third parameters is false the result will be a an array of all resources found.
 
-  If the (optional) fourth parameter is added, it will be possible to order the result based
-  on one resource field
-
   Examples:
 
     Returns the parameters and such for the ntp class for all CentOS nodes:
@@ -31,12 +28,9 @@ Puppet::Parser::Functions.newfunction(:query_resources, :type => :rvalue, :arity
 
       query_resources(false, 'Class["apache"]', false)
 
-    Same as above, but ordered by resource title (ascending)
-      query_resources(false, 'Class["apache"]', false, 'title')
-
 EOT
-) do |args|
-  nodequery, resquery, grouphosts, order_by = args
+                                     ) do |args|
+  nodequery, resquery, grouphosts = args
 
   require 'puppet/util/puppetdb'
   # This is needed if the puppetdb library isn't pluginsynced to the master
@@ -47,8 +41,36 @@ EOT
     $LOAD_PATH.shift
   end
 
-  puppetdb = PuppetDB::Connection.new(Puppet::Util::Puppetdb.server, Puppet::Util::Puppetdb.port)
-  nodequery = puppetdb.parse_query nodequery, :facts if nodequery and nodequery.is_a? String and ! nodequery.empty?
-  resquery = puppetdb.parse_query resquery, :none if resquery and resquery.is_a? String and ! resquery.empty?
-  return puppetdb.resources(nodequery, resquery, nil, grouphosts, order_by)
+  PuppetDB::Connection.check_version
+
+  uri = URI(Puppet::Util::Puppetdb.config.server_urls.first)
+  puppetdb = PuppetDB::Connection.new(uri.host, uri.port, uri.scheme == 'https')
+  parser = PuppetDB::Parser.new
+  nodequery = parser.parse nodequery, :facts if nodequery and nodequery.is_a? String
+  resquery = parser.parse resquery, :none if resquery and resquery.is_a? String
+
+  # Construct query
+  if resquery && !resquery.empty?
+    if nodequery && !nodequery.empty?
+      q = ['and', resquery, nodequery]
+    else
+      q = resquery
+    end
+  else
+    fail "PuppetDB resources query error: at least one argument must be non empty; arguments were: nodequery: #{nodequery.inspect} and requery: #{resquery.inspect}"
+  end
+
+  # Fetch the results
+  results = puppetdb.query(:resources, q)
+
+  # If grouphosts is true create a nested hash with nodes and resources
+  if grouphosts
+    results.reduce({}) do |ret, resource|
+      ret[resource['certname']] = [] unless ret.key? resource['certname']
+      ret[resource['certname']] << resource
+      ret
+    end
+  else
+    results
+  end
 end
