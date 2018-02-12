@@ -1,0 +1,38 @@
+puppet agent --disable 'keystone bootstrap'
+source /etc/keystone/bootstrap/admintoken
+keystone --version
+
+apt-get -y install crudini
+crudini --get /etc/keystone/keystone.conf  DEFAULT admin_token
+crudini --set /etc/keystone/keystone.conf  DEFAULT admin_token <%= admin_token %>
+crudini --get /etc/keystone/keystone.conf  DEFAULT admin_token
+
+# bootstrapping with LDAP for user auth is a bit weird
+# we essentially set an open policy to bootstrap before
+# in use to set initial auth provider.  This should
+# never ever persist past the steps in this file.
+cp /etc/keystone/bootstrap/policy.json /etc/keystone/policy.json
+service keystone restart
+
+# CREATE DATABASE keystone;
+# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'localhost' \
+#  IDENTIFIED BY '<%= @db_pass %>';
+# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'%' \
+#  IDENTIFIED BY '<%= @db_pass %>';
+su -s /bin/sh -c "keystone-manage db_sync" keystone
+openstack service create --name keystone --description "OpenStack Identity" identity
+openstack endpoint create --region <%= @region %> identity public http://<%= @ipaddress %>:5000/v3
+openstack endpoint create --region <%= @region %> identity internal http://<%= @ipaddress %>:5000/v3
+openstack endpoint create --region <%= @region %> identity admin http://<%= @ipaddress %>:35357/v3
+openstack endpoint list
+openstack project create --domain default --description "Admin Project" admin
+openstack project list
+openstack user list
+/usr/bin/openstack role create --or-show _member_
+/usr/bin/openstack role create --or-show admin
+/usr/bin/openstack role create --or-show observer
+/usr/bin/openstack role create --or-show projectadmin
+/usr/bin/openstack role create --or-show glanceadmin
+/usr/bin/openstack role create --or-show user
+openstack role list
+openstack role add --project admin --user novaadmin admin
