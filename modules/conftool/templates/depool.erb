@@ -2,8 +2,8 @@
 set -e
 if [ -z $1 ]; then
     echo "Depooling <%= scope.lookupvar('fqdn') %> from all services..."
-    confctl --quiet --find --action set/pooled=no '<%= scope.lookupvar('fqdn') %>'
+    confctl --quiet select 'name=<%= scope.lookupvar('fqdn') %>' set/pooled=no
 else
-    echo "Depooling <%= scope.lookupvar('fqdn') %> from $1..."
+    echo "Depooling <%= scope.lookupvar('fqdn') %> from ${1}..."
     confctl --quiet select "${1},name=<%= scope.lookupvar('fqdn') %>" set/pooled=no
 fi
