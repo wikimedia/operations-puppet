@@ -1,3 +1,17 @@
+# 'source observerenv.sh' will set these shell environment values
+# from /etc/novaobservers.yaml
+#
+# OS_PROJECT_DOMAIN_ID
+# OS_REGION_NAME
+# OS_USER_DOMAIN_ID
+# OS_IDENTITY_API_VERSION
+# OS_PASSWORD
+# OS_AUTH_URL
+# OS_USERNAME
+# OS_TENANT_NAME
+# OS_INTERFACE
+# OS_NO_CACHE
+
 # Largely cribbed from https://gist.github.com/pkuczynski/8665367
 parse_yaml() {
     file='/etc/novaobserver.yaml'
