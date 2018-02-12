@@ -72,6 +72,13 @@ class base::monitoring::host(
         mode   => '0555',
         source => 'puppet:///modules/base/check_sysctl',
     }
+    file { '/usr/lib/nagios/plugins/check_established_connections':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/base/monitoring/check_established_connections.sh',
+    }
 
     file { '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
         ensure => present,
