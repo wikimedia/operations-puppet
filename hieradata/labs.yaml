@@ -97,7 +97,6 @@ zookeeper_clusters:
     hosts:
       "%{::fqdn}": 1
 
-profile::base::environment: "future"
 profile::base::nrpe_allowed_hosts: '10.68.16.210'
 profile::base::ssh_server_settings:
   disable_agent_forwarding: false
