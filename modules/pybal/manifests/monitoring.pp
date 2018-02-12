@@ -1,7 +1,7 @@
 # === Class pybal::monitoring
 # Collect data from pybal
 
-class pybal::monitoring {
+class pybal::monitoring($config_host="config-master.${site}.wmnet") {
 
     require_package([
         'libmonitoring-plugin-perl',
@@ -41,5 +41,13 @@ class pybal::monitoring {
         check_interval => 5,
         timeout        => 60,
         require        => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
+    }
+
+    nrpe::monitor_service { 'pybal_etcd_connections':
+        description    => 'PyBal connections to etcd',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_established_connections ${config_host} 2379 1",
+        check_interval => 5,
+        timeout        => 60,
+        require        => File['/usr/lib/nagios/plugins/check_established_connections'],
     }
 }
