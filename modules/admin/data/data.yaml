@@ -31,10 +31,15 @@ groups:
               ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
               ayounsi, herron, aborrero, bstorm]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  ops-staff-group:
+  ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
     members: *ops_members
+    posix_name: adm
+  ops-staff-group:
+    # No gid for this group on purpose, it's a system provided one
+    description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
+    members: []
     posix_name: staff
   parsoid-roots:
     gid: 701
