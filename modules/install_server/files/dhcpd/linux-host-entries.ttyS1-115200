@@ -4045,6 +4045,27 @@ host lvs4007 {
     filename "lpxelinux.0";
 }
 
+host lvs5001 {
+    hardware ethernet F4:E9:D4:D0:8D:40;
+    fixed-address lvs5001.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host lvs5002 {
+    hardware ethernet F4:E9:D4:D0:25:70;
+    fixed-address lvs5002.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host lvs5003 {
+    hardware ethernet F4:E9:D4:D0:77:40;
+    fixed-address lvs5003.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
 host maerlant {
     hardware ethernet a4:ba:db:30:d1:12;
     fixed-address maerlant.wikimedia.org;
