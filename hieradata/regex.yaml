@@ -264,3 +264,10 @@ smart_health_eqsin:
 labtestpuppetmaster:
   __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
+
+puppetdb4_servers:
+  __regex: !ruby/regexp /^puppetdb[12]001\.(eqiad|codfw)\.wmnet$/
+  profile::puppetdb::master: puppetdb1001.eqiad.wmnet
+  profile::puppetdb::slaves:
+  - puppetdb2001.codfw.wmnet
+  puppetdb_major_version: 4
