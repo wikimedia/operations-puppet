@@ -10,7 +10,7 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda]
+              yuvipanda, shrlak]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport]
@@ -129,7 +129,7 @@ groups:
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, joewalsh, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              fdans, mlitn, shrlak, niharika29, goransm,
+              fdans, mlitn, niharika29, goransm,
               pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan, groovier]
   ldap-admins:
     gid: 715
@@ -240,7 +240,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, dfoy, aude, jforrester, nithum, shrlak, imarlier,
+    members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
               nuria, otto, deskana, arnad, jgreen,
               bsitzmann, dbrant, nettrom, leila, cwdent,
@@ -2487,7 +2487,7 @@ users:
     expiry_date: 2018-06-15
     expiry_contact: dario@wikimedia.org
   shrlak:
-    ensure: present
+    ensure: absent
     gid: 500
     name: shrlak
     realname: Shreyas Lakhtakia
