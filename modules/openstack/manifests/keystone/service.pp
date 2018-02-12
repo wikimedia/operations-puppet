@@ -72,7 +72,6 @@ class openstack::keystone::service(
         'python3-ldap3',
         'ruby-ldap',
         'python-mwclient',
-        'websockify',
     ]
 
     package { $packages:
