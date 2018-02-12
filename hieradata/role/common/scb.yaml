@@ -12,7 +12,6 @@ admin::groups:
   - mobileapps-admin
   - changeprop-admin
   - ores-admin
-  - pdfrender-admin
   - recommendation-admin
 role::lvs::realserver::pools:
   ores: {}
@@ -23,7 +22,6 @@ role::lvs::realserver::pools:
   citoid: {}
   mathoid: {}
   eventstreams: {}
-  pdfrender: {}
   "recommendation-api": {}
 
 ### BEGIN GRAPHOID

@@ -54,9 +54,6 @@
 # [*eventlogging_service_uri*]
 #   Eventlogging service URI. Format: http://eventbus.svc.eqiad.wmnet:8085/v1/events
 #
-# [*pdfrender_uri*]
-#   PDF Render service URI. Format: http://pdfrender.svc.eqiad.wmnet:5252
-#
 # [*citoid_uri*]
 #   Citoid service URI. Format: http://citoid.svc.eqiad.wmnet:1970
 #
@@ -84,7 +81,6 @@ class profile::restbase(
     $mathoid_uri    = hiera('profile::restbase::mathoid_uri'),
     $aqs_uri        = hiera('profile::restbase::aqs_uri'),
     $eventlogging_service_uri = hiera('profile::restbase::eventlogging_service_uri'),
-    $pdfrender_uri  = hiera('profile::restbase::pdfrender_uri'),
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
@@ -95,7 +91,6 @@ class profile::restbase(
     $page_size = 250
 
     require ::service::configuration
-    $pdfrender_key = $::service::configuration::pdfrender_key
     $local_logfile = "${service::configuration::log_dir}/${title}/main.log"
 
     service::node { 'restbase':
@@ -122,8 +117,6 @@ class profile::restbase(
             mobileapps_uri           => $mobileapps_uri,
             citoid_uri               => $citoid_uri,
             eventlogging_service_uri => $eventlogging_service_uri,
-            pdfrender_uri            => $pdfrender_uri,
-            pdfrender_key            => $pdfrender_key,
             cxserver_uri             => $cxserver_uri,
             recommendation_uri       => $recommendation_uri,
             aqs_uri                  => $aqs_uri,

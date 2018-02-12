@@ -4,8 +4,7 @@ class role::scb {
 
     $services = [
         'ORES', 'changeprop', 'citoid', 'cpjobqueue', 'cxserver',
-        'eventstreams', 'graphoid', 'mathoid', 'mobileapps',
-        'pdfrender',
+        'eventstreams', 'graphoid', 'mathoid', 'mobileapps'
     ]
     $msg_services = join($services, "\n\t")
 
@@ -33,5 +32,4 @@ class role::scb {
     include ::profile::changeprop
     include ::profile::apertium
     include ::profile::eventstreams
-    include ::profile::pdfrender
 }

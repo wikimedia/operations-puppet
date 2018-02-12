@@ -96,7 +96,6 @@ scap::sources:
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
-  electron-render/deploy: {}
   eventlogging/eventbus:
     repository: eventlogging
     scap_repository: eventlogging/scap/eventbus
