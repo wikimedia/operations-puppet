@@ -8,8 +8,12 @@ class role::graphite::production {
     $storage_dir = '/var/lib/carbon'
 
     include ::standard
-    include ::base::firewall
+    include ::profile::base::firewall
     include ::profile::statsd # all graphite hosts also include statsd
+
+    class { '::httpd':
+        modules => ['uwsgi', 'authnz_ldap'],
+    }
 
     class { 'role::graphite::base':
         storage_dir      => $storage_dir,
