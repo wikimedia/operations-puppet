@@ -1,10 +1,11 @@
-# == Class role::kafka::analytics::burrow
+# == Class profile::kafka::burrow::analytics
+#
 # Role classes for burrow, a consumer offset lag monitoring tool
 # for Kafka.
 #
-class role::kafka::analytics::burrow {
+class profile::kafka::burrow::analytics {
 
-    $config = kafka_config('analytics')
+    $config = kafka_config('anaytics')
 
     # One of the params for Class: burrow is consumer_groups, this is configured
     # through hiera and hence not explicitly passed here
@@ -15,13 +16,14 @@ class role::kafka::analytics::burrow {
         kafka_brokers      => $config['brokers']['array'],
         smtp_server        => 'mx1001.wikimedia.org',
         from_email         => "burrow@${::fqdn}",
-        to_emails          => ['analytics-alerts@wikimedia.org']
+        to_emails          => ['analytics-alerts@wikimedia.org'],
+        httpserver_port    => 8000,
     }
 
-    # Burrow has an HTTP REST API on port 8000
-    ferm::service { 'burrow':
+    # Burrow offers an HTTP REST API
+    ferm::service { 'burrow-analytics':
         proto  => 'tcp',
-        port   => '8000',
+        port   => 8000,
         srange => '$DOMAIN_NETWORKS',
     }
 }
