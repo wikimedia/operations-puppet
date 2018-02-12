@@ -11,6 +11,10 @@ class role::graphite::production {
     include ::base::firewall
     include ::profile::statsd # all graphite hosts also include statsd
 
+    class { '::httpd':
+        modules => ['uwsgi', 'authnz_ldap'],
+    }
+
     class { 'role::graphite::base':
         storage_dir      => $storage_dir,
         auth             => true,
