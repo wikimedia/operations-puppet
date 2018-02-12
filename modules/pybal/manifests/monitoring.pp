@@ -1,7 +1,7 @@
 # === Class pybal::monitoring
 # Collect data from pybal
 
-class pybal::monitoring {
+class pybal::monitoring($config_host, $lvs_services, $lvs_class_hosts) {
 
     require_package([
         'libmonitoring-plugin-perl',
@@ -41,5 +41,28 @@ class pybal::monitoring {
         check_interval => 5,
         timeout        => 60,
         require        => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
+    }
+
+    # Get the configuration of all services for this LVS host
+    $services = filter($lvs_services) |$name,$service| { $::site in $service['sites'] and $::hostname in $lvs_class_hosts[$service['class']] }
+
+    # Every given service might be configured twice (IPv4 and IPv6)
+    $ip_class_services = map($services) |$name,$service| {
+        type($service['ip'][$::site]) ? {
+            Type[Array]  => 2,
+            Type[String] => 1,
+            default      => fail('Unexpected data in service configuration'),
+        }
+    }
+
+    # Sum all values
+    $n_etcd_connections = reduce($ip_class_services) |$memo,$value| { $memo + $value }
+
+    nrpe::monitor_service { 'pybal_etcd_connections':
+        description    => 'PyBal connections to etcd',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_established_connections ${config_host} 2379 ${n_etcd_connections}",
+        check_interval => 5,
+        timeout        => 60,
+        require        => File['/usr/lib/nagios/plugins/check_established_connections'],
     }
 }

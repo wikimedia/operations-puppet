@@ -62,7 +62,11 @@ class profile::pybal(
         config_host     => $config_host
     }
 
-    class { '::pybal::monitoring': }
+    class { '::pybal::monitoring':
+        config_host     => $config_host,
+        lvs_services    => $::lvs::configuration::lvs_services,
+        lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+    }
 
     # Sites with MediaWiki appservers need runcommand
     if $::site in keys($wikimedia_clusters['appserver']['sites']) {
