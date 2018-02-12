@@ -1,16 +1,14 @@
 class PuppetDB::ASTNode
   attr_accessor :type, :value, :children
 
-  def initialize(type, value, children=[])
+  def initialize(type, value, children = [])
     @type = type
     @value = value
     @children = children
   end
 
-  def capitalize!
-    @value=@value.to_s.split("::").collect { |s| s.capitalize }.join("::")
-    @children.each { |c| c.capitalize! }
-    return self
+  def capitalize_class(name)
+    name.to_s.split('::').collect(&:capitalize).join('::')
   end
 
   # Generate the the query code for a subquery
@@ -26,9 +24,9 @@ class PuppetDB::ASTNode
     if from_mode == :none
       return query
     else
-      return ['in', (from_mode == :nodes) ? 'name' : 'certname',
-        ['extract', (to_mode == :nodes) ? 'name' : 'certname',
-          ["select-#{to_mode.to_s}", query]]]
+      return ['in', 'certname',
+              ['extract', 'certname',
+               ["select_#{to_mode}", query]]]
     end
   end
 
@@ -40,58 +38,108 @@ class PuppetDB::ASTNode
     case @type
     when :booleanop
       @children.each do |c|
-        if c.type == :booleanop and c.value == @value
+        if c.type == :booleanop && c.value == @value
           c.children.each { |cc| @children << cc }
           @children.delete c
         end
       end
     end
-    @children.each { |c| c.optimize }
-    return self
+    @children.each(&:optimize)
+    self
   end
 
   # Evalutate the node and all children
   #
   # @param mode [Symbol] The query mode we are evaluating for
   # @return [Array] the resulting PuppetDB query
-  def evaluate(mode = :nodes)
+  def evaluate(mode = [:nodes])
     case @type
-    when :booleanop
-      return [@value.to_s, *evaluate_children(mode)]
-    when :subquery
-      return subquery(mode, @value, *evaluate_children(@value))
-    when :exp
-      case @value
-      when :equals      then op = '='
-      when :greaterthan then op = '>'
-      when :lessthan    then op = '<'
-      when :match       then op = '~'
-      end
-
-      case mode
-      when :nodes,:facts # Do a subquery to match nodes matching the facts
-        return subquery(mode, :facts, ['and', ['=', 'name', @children[0].evaluate(mode)], [op, 'value', @children[1].evaluate(mode)]])
-      when :resources
-        paramname = @children[0].evaluate(mode)
-        case paramname
-        when "tag"
-          return [op, paramname, @children[1].evaluate(mode)]
+    when :comparison
+      left = @children[0].evaluate(mode)
+      right = @children[1].evaluate(mode)
+      if mode.last == :subquery
+        left = left[0] if left.length == 1
+        comparison(left, right)
+      elsif mode.last == :resources
+        if left[0] == 'tag'
+          comparison(left[0], right)
         else
-          return [op, ['parameter', paramname], @children[1].evaluate(mode)]
+          comparison(['parameter', left[0]], right)
+        end
+      else
+        subquery(mode.last,
+                 :fact_contents,
+                 ['and', left, comparison('value', right)])
+      end
+    when :boolean
+      value
+    when :string
+      value
+    when :number
+      value
+    when :date
+      require 'chronic'
+      ret = Chronic.parse(value, :guess => false).first.utc.iso8601
+      fail "Failed to parse datetime: #{value}" if ret.nil?
+      ret
+    when :booleanop
+      [value.to_s, *evaluate_children(mode)]
+    when :subquery
+      mode.push :subquery
+      ret = subquery(mode[-2], value + 's', children[0].evaluate(mode))
+      mode.pop
+      ret
+    when :regexp_node_match
+      mode.push :regexp
+      ret = ['~', 'certname', Regexp.escape(value.evaluate(mode))]
+      mode.pop
+      ret
+    when :identifier_path
+      if mode.last == :subquery || mode.last == :resources
+        evaluate_children(mode)
+      elsif mode.last == :regexp
+        evaluate_children(mode).join '.'
+      else
+        # Check if any of the children are of regexp type
+        # in that case we need to escape the others and use the ~> operator
+        if children.any? { |c| c.type == :regexp_identifier }
+          mode.push :regexp
+          ret = ['~>', 'path', evaluate_children(mode)]
+          mode.pop
+          ret
+        else
+          ['=', 'path', evaluate_children(mode)]
         end
       end
-    when :string
-      return @value.to_s
-    when :number
-      return @value
-    when :boolean
-      return @value
-    when :resourcetitle
-      return [@value, 'title', @children[0].evaluate(mode)]
-    when :resourcetype
-      return ['=', 'type', @value]
-    when :resexported
-      return ['=', 'exported', @value]
+    when :regexp_identifier
+      value
+    when :identifier
+      mode.last == :regexp ? Regexp.escape(value) : value
+    when :resource
+      mode.push :resources
+      regexp = value[:title].type == :regexp_identifier
+      if !regexp && value[:type].capitalize == 'Class'
+        title = capitalize_class(value[:title].evaluate)
+      else
+        title = value[:title].evaluate
+      end
+      ret = subquery(mode[-2], :resources,
+                     ['and',
+                      ['=', 'type', capitalize_class(value[:type])],
+                      [regexp ? '~' : '=', 'title', title],
+                      ['=', 'exported', value[:exported]],
+                      *evaluate_children(mode)])
+      mode.pop
+      ret
+    end
+  end
+
+  # Helper method to produce a comparison expression
+  def comparison(left, right)
+    if @value[0] == '!'
+      ['not', [@value[1], left, right]]
+    else
+      [@value, left, right]
     end
   end
 
@@ -99,6 +147,6 @@ class PuppetDB::ASTNode
   #
   # @return [Array] The evaluate results of the children nodes
   def evaluate_children(mode)
-    return children.collect { |c| c.evaluate mode }
+    children.collect { |c| c.evaluate mode }
   end
 end
