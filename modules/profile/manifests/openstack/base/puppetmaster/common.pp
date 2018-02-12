@@ -12,6 +12,7 @@ class profile::openstack::base::puppetmaster::common(
     $encapi_db_pass = hiera('profile::openstack::base::puppetmaster::common::encapi_db_pass'),
     $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::common::encapi_statsd_prefix'),
     $statsd_host = hiera('profile::openstack::base::puppetmaster::common::statsd_host'),
+    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     ) {
 
     # array of puppetmasters
@@ -43,18 +44,19 @@ class profile::openstack::base::puppetmaster::common(
         run_every_minutes => '1',
     }
 
+    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     ferm::rule{'puppetmaster':
         ensure => 'present',
         rule   => "saddr (${labs_instance_range} ${baremetal_servers_str}
                           @resolve(${horizon_host}) @resolve(${horizon_host}, AAAA)
-                          @resolve((${all_puppetmasters})))
+                          @resolve((${all_puppetmasters})) ${labweb_ips})
                           proto tcp dport 8141 ACCEPT;",
     }
 
     ferm::rule{'puppetbackend':
         ensure => 'present',
         rule   => "saddr (@resolve(${horizon_host}) @resolve(${designate_host})
-                          @resolve(${horizon_host}, AAAA))
+                          @resolve(${horizon_host}, AAAA) ${labweb_ips})
                           proto tcp dport 8101 ACCEPT;",
     }
 
