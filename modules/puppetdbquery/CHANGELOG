@@ -1,3 +1,45 @@
+3.0.1:
+- Rename the `query` face to `puppetdbquery` in more places so it actually works (#106) (@mateusz-gozdek-sociomantic)
+
+3.0.0:
+- Added hiera v5 backend (@edestecd)
+- Fix regression on using a regexp pattern in facts query (@unki)
+- Rename `query` face to `puppetdbquery` to avoid clash with bundled query tool in PuppetDB (#105)
+
+2.3.0:
+- query_nodes and query_facts now have versions using the v4 function API.
+
+2.2.0:
+- Avoid reinitialization of constant (@davidmogar)
+- Fix query_resources bug when grouphosts is true (@andvgal)
+- Allow allow matching facts by regular expression (@unki)
+- Support querying for nested keys inside of facts (@mcasper)
+
+2.1.1:
+- Send datetimes in ISO8601 variant that PuppetDB can handle. (#81)
+
+2.1.0:
+- Add extract operations to only fetch necessary fields
+
+2.0.3:
+- Fixed return format in query_facts function (#71)
+- Added unit tests for functions
+- Handle HTTP URLs
+- Don't subquery the resource specification in query_resources (#73)
+
+2.0.2:
+- Fixed invalid method call in query_facts (thanks ayohrling)
+- Allow empty facts list in fact query face (thanks ayohrling)
+
+2.0.1:
+- Fix >= and <= operators
+
+2.0.0:
+- switch to use v4 API
+- add support for structured facts
+- add syntactic sugar for date queries (@ sign in front of string)
+- add arbitrary subquery support (# sign)
+
 1.6.1:
 - add require statements needed in some puppet versions to avoid loaderror
 
