@@ -1,10 +1,12 @@
-# == Define Class: burrow
+# == Define: burrow
+#
 # Burrow is a consumer offset lag monitoring tool for Kafka
 # This module helps set up a burrow service that provides a
 # http endpoint to query, and will email notifications on
 # consumer groups statuses.
 #
 # == Parameters
+#
 # $client_id          - The client ID string to provide to Kafka when consuming
 # $httpserver_port    - Port at which to make the burrow http endpoint available
 # $lagcheck_intervals - Length of window of offsets used to monitor lag
@@ -19,7 +21,7 @@
 # $to_email           - Comma separated email addresses to send email notification to
 # $email_template     - The name of the email template to use for Burrow's alerts
 
-class burrow (
+define burrow (
     $zookeeper_hosts,
     $zookeeper_path,
     $kafka_cluster_name,
@@ -33,12 +35,11 @@ class burrow (
     $httpserver_port = 8000,
     $lagcheck_intervals = 10,
     $email_template = 'burrow/email.tmpl.erb'
-
 )
 {
     require_package('burrow')
 
-    file { '/etc/burrow/burrow.cfg':
+    file { "/etc/burrow/burrow-${title}.cfg":
         ensure  => $ensure,
         content => template('burrow/burrow.cfg.erb'),
     }
@@ -48,9 +49,9 @@ class burrow (
         content => template($email_template),
     }
 
-    service { 'burrow':
+    service { "burrow-${title}":
         ensure    => ensure_service($ensure),
         enable    => true,
-        subscribe => File['/etc/burrow/burrow.cfg'],
+        subscribe => File["/etc/burrow/burrow-${title}.cfg"],
     }
 }
