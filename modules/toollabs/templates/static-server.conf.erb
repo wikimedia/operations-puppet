@@ -15,6 +15,8 @@
 server {
     resolver <%= @resolver %> ipv6=off;
 
+    add_header X-Clacks-Overhead "GNU Terry Pratchett";
+
     listen 80;
 
     <%- if @ssl_certificate_name != false -%>
@@ -65,11 +67,22 @@ server {
     }
 
     location ^~ /cdnjs/ {
-        autoindex on;
-        add_header Access-Control-Allow-Origin '*';
-        expires 30d; # These are all immutable URLs
-        root /srv/; # Is ok, nginx ensures that this is /cdnjs/* only
+        root /srv/;
+        try_files $uri @cdnjsproxy;
     }
+
+    location @cdnjsproxy {
+        proxy_hide_header       Set-Cookie;
+        proxy_set_header        Cookie "";
+
+        # And hide the referrer for privacy reasons
+        proxy_set_header        Referer "https://<%= @web_domain %>/cdnjs/";
+
+        # Proxy to cdnjs.cloudflare.com
+        rewrite ^/cdnjs(.*)$ $1 break;
+        proxy_pass https://cdnjs.cloudflare.com;
+    }
+
 
     # Special handling for /fontcdn, reverse proxy to google's fonts service
     location = /fontcdn {
