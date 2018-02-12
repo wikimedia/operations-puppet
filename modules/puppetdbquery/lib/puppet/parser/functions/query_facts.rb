@@ -13,10 +13,13 @@ Puppet::Parser::Functions.newfunction(:query_facts, :type => :rvalue, :arity => 
   contains the facts specified.
 
 EOT
-) do |args|
+                                     ) do |args|
   query, facts = args
+  facts = facts.map { |fact| fact.match(/\./) ? fact.split('.') : fact }
+  facts_for_query = facts.map { |fact| fact.is_a?(Array) ? fact.first : fact }
 
   require 'puppet/util/puppetdb'
+
   # This is needed if the puppetdb library isn't pluginsynced to the master
   $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..'))
   begin
@@ -25,7 +28,11 @@ EOT
     $LOAD_PATH.shift
   end
 
-  puppetdb = PuppetDB::Connection.new(Puppet::Util::Puppetdb.server, Puppet::Util::Puppetdb.port)
-  query = puppetdb.parse_query query, :facts if query.is_a? String
-  puppetdb.facts(facts, query)
+  PuppetDB::Connection.check_version
+
+  uri = URI(Puppet::Util::Puppetdb.config.server_urls.first)
+  puppetdb = PuppetDB::Connection.new(uri.host, uri.port, uri.scheme == 'https')
+  parser = PuppetDB::Parser.new
+  query = parser.facts_query query, facts_for_query if query.is_a? String
+  parser.facts_hash(puppetdb.query(:facts, query, :extract => [:certname, :name, :value]), facts)
 end
