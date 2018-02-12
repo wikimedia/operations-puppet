@@ -4,24 +4,31 @@ Simple helper for the cdnjs mirror
 Makes a packages.json that is just a list containing
 contents of all the packages.json found in the repository.
 """
-import os
-import glob
 import argparse
+import http.client
 import json
+from urllib.request import urlopen
 
-argparser = argparse.ArgumentParser()
-argparser.add_argument('cdnjspath', help='Path to CDNJS git checkout')
-argparser.add_argument('outputpath', help='Path to html output')
-args = argparser.parse_args()
+def main():
+    """Main script"""
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('outputpath', help='Path to output JSON')
+    args = argparser.parse_args()
 
-libs_path = os.path.join(args.cdnjspath, 'ajax', 'libs')
+    fields = "version,description,homepage,keywords,license,repository,author,assets"
+    upstream_url = "https://api.cdnjs.com/libraries?fields={}".format(fields)
+    resp = urlopen(upstream_url)
+    raw_json = ""
+    try:
+        raw_json = resp.read().decode('utf-8')
+    except http.client.IncompleteRead as inc_read:
+        raw_json = raw_json + inc_read.partial.decode('utf-8')
 
-files = glob.glob(os.path.join(libs_path, '*', 'package.json'))
+    processed_json = json.loads(raw_json)
+    packages = processed_json['results']
 
-packages = []
-for file in files:
-    with open(file, encoding='utf-8') as f:
-        packages.append(json.load(f))
+    with open(args.outputpath, 'w', encoding='utf-8') as f:
+        json.dump(packages, f)
 
-with open(args.outputpath, 'w', encoding='utf-8') as f:
-    json.dump(packages, f)
+if __name__ == "__main__":
+    main()
