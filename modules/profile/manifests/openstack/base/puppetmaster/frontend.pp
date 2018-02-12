@@ -13,6 +13,7 @@ class profile::openstack::base::puppetmaster::frontend(
     $encapi_db_pass = hiera('profile::openstack::base::puppetmaster::encapi::db_pass'),
     $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::encapi::statsd_prefix'),
     $statsd_host = hiera('profile::openstack::base::statsd_host'),
+    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     ) {
 
     include ::network::constants
@@ -47,6 +48,7 @@ class profile::openstack::base::puppetmaster::frontend(
         encapi_db_pass           => $encapi_db_pass,
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
+        labweb_hosts             => $labweb_hosts,
     }
 
     if ! defined(Class['puppetmaster::certmanager']) {

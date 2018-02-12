@@ -13,6 +13,7 @@ class profile::openstack::base::puppetmaster::backend(
     $encapi_db_pass = hiera('profile::openstack::base::puppetmaster::encapi::db_pass'),
     $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::encapi::statsd_prefix'),
     $statsd_host = hiera('profile::openstack::base::statsd_host'),
+    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     ) {
 
     require ::profile::conftool::client
@@ -31,6 +32,7 @@ class profile::openstack::base::puppetmaster::backend(
         encapi_db_pass           => $encapi_db_pass,
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
+        labweb_hosts             => $labweb_hosts,
     }
 
     # Only allow puppet access from the instances
