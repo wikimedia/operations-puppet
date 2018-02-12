@@ -9,89 +9,45 @@ class PuppetDB::Connection
 
   include Puppet::Util::Logging
 
-  def initialize(host='puppetdb', port=443, use_ssl=true)
+  def initialize(host = 'puppetdb', port = 443, use_ssl = true)
     @host = host
     @port = port
     @use_ssl = use_ssl
-    @parser = PuppetDB::Parser.new
   end
 
-  # Parse a query string into a PuppetDB query
-  #
-  # @param query [String] the query string to parse
-  # @param endpoint [Symbol] the endpoint for which the query should be evaluated
-  # @return [Array] the PuppetDB query
-  def parse_query(query, endpoint = :nodes)
-    if query = @parser.scan_str(query)
-      query.optimize.evaluate endpoint
+  def self.check_version
+    require 'puppet/util/puppetdb'
+    unless Puppet::Util::Puppetdb.config.respond_to?('server_urls')
+      Puppet.warning <<-EOT
+It looks like you are using a PuppetDB version < 3.0.
+This version of puppetdbquery requires at least PuppetDB 3.0 to work.
+Downgrade to puppetdbquery 1.x to use it with PuppetDB 2.x.
+EOT
     end
-  end
-
-  # Get the listed facts for all nodes matching query
-  # return it as a hash of hashes
-  #
-  # @param facts [Array] the list of facts to fetch
-  # @param nodequery [Array] the query to find the nodes to fetch facts for
-  # @return [Hash] a hash of hashes with facts for each node mathing query
-  def facts(facts, nodequery, http = nil)
-    if facts.empty?
-      q = ['in', 'certname', ['extract', 'certname', ['select-facts', nodequery]]]
-    else
-      q = ['and', ['in', 'certname', ['extract', 'certname', ['select-facts', nodequery]]], ['or', *facts.collect { |f| ['=', 'name', f]}]]
-    end
-    facts = {}
-    query(:facts, q, http).each do |fact|
-      if facts.include? fact['certname']
-        facts[fact['certname']][fact['name']] = fact['value']
-      else
-        facts[fact['certname']] = { fact['name'] => fact['value'] }
-      end
-    end
-    facts
-  end
-
-  # Get the listed resources for all nodes matching query
-  # return it as a hash of hashes
-  #
-  # @param resquery [Array] a resources query for what resources to fetch
-  # @param nodequery [Array] the query to find the nodes to fetch resources for, optionally empty
-  # @param grouphosts [Boolean] whether or not to group the results by the host they belong to
-  # @param order_by [String] a field to order the result by
-  # @return [Hash|Array] a hash of hashes with resources for each node mathing query or array if grouphosts was false
-  def resources(nodequery, resquery, http=nil, grouphosts=true, order_by=nil)
-    if resquery and ! resquery.empty?
-      if nodequery and ! nodequery.empty?
-        q = ['and', resquery, nodequery]
-      else
-        q = resquery
-      end
-    else
-      raise RuntimeError, "PuppetDB resources query error: at least one argument must be non empty; arguments were: nodequery: #{nodequery.inspect} and requery: #{resquery.inspect}"
-    end
-    resources = {}
-    results = query(:resources, q, http, order_by)
-
-    if grouphosts
-      results.each do |resource|
-        unless resources.has_key? resource['certname']
-          resources[resource['certname']] = []
-        end
-        resources[resource['certname']] << resource
-      end
-    else
-      resources = results
-    end
-
-    return resources
+  rescue LoadError
   end
 
   # Execute a PuppetDB query
   #
   # @param endpoint [Symbol] :resources, :facts or :nodes
   # @param query [Array] query to execute
+  # @param options [Hash] specify extract values or http connection
   # @return [Array] the results of the query
-  def query(endpoint, query = nil, http = nil, order_by = nil, version = :v3)
+  def query(endpoint, query = nil, options = {}, version = :v4)
     require 'json'
+
+    default_options = {
+      :http => nil,   # A HTTP object to be used for the connection
+      :extract => nil # An array of fields to extract
+    }
+
+    if options.is_a? Hash
+      options = default_options.merge options
+    else
+      Puppet.deprecation_warning 'Specify http object with :http key instead'
+      options = default_options.merge(:http => options)
+    end
+    http = options[:http]
 
     unless http
       require 'puppet/network/http_pool'
@@ -99,18 +55,17 @@ class PuppetDB::Connection
     end
     headers = { 'Accept' => 'application/json' }
 
-    uri = "/#{version}/#{endpoint}"
-    uri += URI.escape "?query=#{query.to_json}" unless query.nil? || query.empty?
-    unless order_by.nil?
-      field, order = order_by.downcase.split(" ")
-      order ||= 'asc'
-      order_query = [{'field' => field, 'order' => order}]
-      uri += URI.escape "&order-by=#{order_query.to_json}"
+    if options[:extract]
+      query = PuppetDB::ParserHelper.extract(*Array(options[:extract]), query)
     end
+
+    uri = "/pdb/query/#{version}/#{endpoint}"
+    uri += URI.escape "?query=#{query.to_json}" unless query.nil? || query.empty?
+
     debug("PuppetDB query: #{query.to_json}")
 
     resp = http.get(uri, headers)
-    raise "PuppetDB query error: [#{resp.code}] #{resp.msg}, query: #{query.to_json}" unless resp.kind_of?(Net::HTTPSuccess)
+    fail "PuppetDB query error: [#{resp.code}] #{resp.msg}, query: #{query.to_json}" unless resp.is_a?(Net::HTTPSuccess)
     JSON.parse(resp.body)
   end
 end
