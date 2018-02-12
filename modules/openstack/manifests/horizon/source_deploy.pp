@@ -80,6 +80,7 @@ class openstack::horizon::source_deploy(
 
     scap::target { 'horizon/deploy':
         deploy_user  => 'deploy-service',
+        service_name => 'apache2',
     }
 
     # allow deploy-service to restart apache as root.
