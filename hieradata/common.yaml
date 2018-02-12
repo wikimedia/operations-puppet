@@ -299,6 +299,12 @@ wikimedia_clusters:
     id: 64
     sites:
       eqiad: []
+  ores:
+    description: "ORES Cluster"
+    id: 65
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 statistics_servers:
