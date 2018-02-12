@@ -65,7 +65,6 @@ class openstack::keystone::service(
         'python-sqlalchemy',
         'python-unicodecsv',
         'python-warlock',
-        'ldap-utils',
         'ldapvi',
         'python-ldap',
         'python-ldappool',
@@ -73,6 +72,14 @@ class openstack::keystone::service(
         'ruby-ldap',
         'python-mwclient',
     ]
+
+    # can also come from ldap/manifests/client/openldap.pp
+    # depending on deployment
+    if ! defined(Package['ldap-utils']){
+        package { 'ldap-utils':
+            ensure => 'present',
+        }
+    }
 
     package { $packages:
         ensure => 'present',
