@@ -95,12 +95,12 @@ if $realm == 'labs' {
     $nameservers = [ ipresolve($dnsconfig['recursor'],4), ipresolve($dnsconfig['recursor_secondary'],4) ]
 } else {
     $nameservers = $site ? {
-        'eqiad' => [ '208.80.154.254', '208.80.153.254' ], # eqiad -> eqiad, codfw
-        'codfw' => [ '208.80.153.254', '208.80.154.254' ], # codfw -> codfw, eqiad
-        'ulsfo' => [ '198.35.26.127',  '208.80.153.254' ], # ulsfo -> ulsfo, codfw
-        'esams' => [ '91.198.174.216', '208.80.154.254' ], # esams -> esams, eqiad
-        'eqsin' => [ '208.80.153.254', '208.80.154.254' ], # eqsin -> codfw, eqiad
-        default => [ '208.80.154.254', '208.80.153.254' ], #       -> eqiad, codfw
+        'eqiad' => [ '208.80.154.254',  '208.80.153.254' ], # eqiad -> eqiad, codfw
+        'codfw' => [ '208.80.153.254',  '208.80.154.254' ], # codfw -> codfw, eqiad
+        'ulsfo' => [ '198.35.26.127',   '208.80.153.254' ], # ulsfo -> ulsfo, codfw
+        'esams' => [ '91.198.174.216',  '208.80.154.254' ], # esams -> esams, eqiad
+        'eqsin' => [ '103.102.166.254', '208.80.153.254' ], # eqsin -> eqsin, codfw
+        default => [ '208.80.154.254',  '208.80.153.254' ], #       -> eqiad, codfw
     }
 }
 
