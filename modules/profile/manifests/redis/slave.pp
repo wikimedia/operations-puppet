@@ -7,7 +7,7 @@ class profile::redis::slave(
     # Figure out the redis instances running on the master from Puppetdb
     $resources = query_resources(
         "fqdn='${master}'",
-        'Redis::Instance', false)
+        'Redis::Instance[~".*"]', false)
     $password = $resources[0]['parameters']['settings']['requirepass']
     $redis_ports = inline_template("<%= @resources.map{|r| r['title']}.join ' ' -%>")
     $instances = split($redis_ports, ' ')

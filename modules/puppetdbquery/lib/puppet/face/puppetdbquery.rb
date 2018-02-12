@@ -1,24 +1,29 @@
-require 'puppet/application/query'
+require 'puppet/application/puppetdbquery'
 require 'puppet/face'
 require 'puppet/util/colors'
 
-Puppet::Face.define(:query, '1.0.0') do
+Puppet::Face.define(:puppetdbquery, '1.0.0') do
   require 'puppetdb/connection'
+  PuppetDB::Connection.check_version
 
   extend Puppet::Util::Colors
 
-  copyright "Puppet Labs & Erik Dalen", 2012..2013
-  license   "Apache 2 license; see COPYING"
+  copyright 'Erik Dalen', 2012..2017
+  license 'Apache 2 license; see COPYING'
 
-
-  option '--puppetdb_host PUPPETDB' do
-    summary "Host running PuppetDB. "
-    default_to { Puppet::Application::Query.setting[:host] }
+  option '--host PUPPETDB' do
+    summary 'Host running PuppetDB. '
+    default_to { Puppet::Application::Puppetdbquery.setting[:host] }
   end
 
-  option '--puppetdb_port PORT' do
+  option '--port PORT' do
     summary 'Port PuppetDB is running on'
-    default_to { Puppet::Application::Query.setting[:port] }
+    default_to { Puppet::Application::Puppetdbquery.setting[:port] }
+  end
+
+  option '--no_ssl' do
+    summary 'Talk plain HTTP instead of HTTPS'
+    default_to { !Puppet::Application::Puppetdbquery.setting[:use_ssl] }
   end
 
   action :facts do
@@ -28,7 +33,7 @@ Puppet::Face.define(:query, '1.0.0') do
       Here is a ton of more useful information :)
     EOT
 
-    arguments "<query>"
+    arguments '<query>'
 
     option '--facts FACTS' do
       summary 'facts to return that represent each host'
@@ -40,22 +45,28 @@ Puppet::Face.define(:query, '1.0.0') do
     end
 
     when_invoked do |query, options|
-      puppetdb = PuppetDB::Connection.new options[:puppetdb_host], options[:puppetdb_port]
-      puppetdb.facts(options[:facts].split(','), puppetdb.parse_query(query, :facts))
+      puppetdb = PuppetDB::Connection.new options[:host], options[:port], !options[:no_ssl]
+      parser = PuppetDB::Parser.new
+      if options[:facts] != ''
+        facts = options[:facts].split(',')
+        factquery = parser.facts_query(query, facts)
+      else
+        facts = [:all]
+        factquery = parser.parse(query, :facts)
+      end
+      parser.facts_hash(puppetdb.query(:facts, factquery, :extract => [:certname, :name, :value]), facts)
     end
-
   end
 
   action :nodes do
-
     summary 'Perform complex queries for nodes from PuppetDB'
     description <<-EOT
       Here is a ton of more useful information :)
     EOT
 
-    arguments "<query>"
+    arguments '<query>'
 
-    option '--node_info BOOLEAN' do
+    option '--node_info' do
       summary 'return full info about each node or just name'
       description <<-EOT
         If true the full information about each host is returned including fact, report and catalog timestamps.
@@ -64,16 +75,18 @@ Puppet::Face.define(:query, '1.0.0') do
     end
 
     when_invoked do |query, options|
-      puppetdb = PuppetDB::Connection.new options[:puppetdb_host], options[:puppetdb_port]
-      nodes = puppetdb.query(:nodes, puppetdb.parse_query(query, :nodes))
+      puppetdb = PuppetDB::Connection.new options[:host], options[:port], !options[:no_ssl]
+      parser = PuppetDB::Parser.new
+      query = parser.parse(query, :nodes)
 
       if options[:node_info]
-        Hash[nodes.collect { |node| [node['name'], node.reject{|k,v| k == "name"}] }]
+        nodes = puppetdb.query(:nodes, query)
+        Hash[nodes.collect { |node| [node['certname'], node.reject { |k, _v| k == 'certname' }] }]
       else
-        nodes.collect { |node| node['name'] }
+        nodes = puppetdb.query(:nodes, query, :extract => :certname)
+        nodes.collect { |node| node['certname'] }
       end
     end
-
   end
 
   action :events do
@@ -83,7 +96,7 @@ Puppet::Face.define(:query, '1.0.0') do
       Get all avents for nodes matching the query specified.
     EOT
 
-    arguments "<query>"
+    arguments '<query>'
 
     option '--since SINCE' do
       summary 'Get events since this time'
@@ -114,11 +127,12 @@ Puppet::Face.define(:query, '1.0.0') do
         require 'chronic'
       rescue LoadError
         Puppet.err "Failed to load 'chronic' dependency. Install using `gem install chronic`"
-        raise $!
+        raise
       end
 
-      puppetdb = PuppetDB::Connection.new options[:puppetdb_host], options[:puppetdb_port]
-      nodes = puppetdb.query(:nodes, puppetdb.parse_query(query, :nodes)).collect { |n| n['name']}
+      puppetdb = PuppetDB::Connection.new options[:host], options[:port], !options[:no_ssl]
+      parser = PuppetDB::Parser.new
+      nodes = puppetdb.query(:nodes, parser.parse(query, :nodes)).collect { |n| n['certname'] }
       starttime = Chronic.parse(options[:since], :context => :past, :guess => false).first.getutc.strftime('%FT%T.000Z')
       endtime = Chronic.parse(options[:until], :context => :past, :guess => false).last.getutc.strftime('%FT%T.000Z')
 
@@ -126,18 +140,18 @@ Puppet::Face.define(:query, '1.0.0') do
       # Event API doesn't support subqueries at the moment and
       # we can't do too big queries, so fetch events for some nodes at a time
       nodes.each_slice(20) do |nodeslice|
-        eventquery = ['and', ['>', 'timestamp', starttime], ['<', 'timestamp', endtime], ['or', *nodeslice.collect { |n| ['=', 'certname', n]}]]
+        eventquery = ['and', ['>', 'timestamp', starttime], ['<', 'timestamp', endtime], ['or', *nodeslice.collect { |n| ['=', 'certname', n] }]]
         eventquery << ['=', 'status', options[:status]] if options[:status] != 'all'
-        events.concat puppetdb.query(:events, eventquery, nil, :v3)
+        events.concat puppetdb.query(:events, eventquery)
       end
 
       events.sort_by do |e|
-        "#{e['timestamp']}+#{e['resource-type']}+#{e['resource-title']}+#{e['property']}"
+        "#{e['timestamp']}+#{e['resource_type']}+#{e['resource_title']}+#{e['property']}"
       end.each do |e|
-        out="#{e['certname']}: #{e['timestamp']}: #{e['resource-type']}[#{e['resource-title']}]"
-        out+="/#{e['property']}" if e['property']
-        out+=" (#{e['old-value']} -> #{e['new-value']})" if e['old-value'] && e['new-value']
-        out+=": #{e['message']}" if e['message']
+        out = "#{e['certname']}: #{e['timestamp']}: #{e['resource_type']}[#{e['resource_title']}]"
+        out += "/#{e['property']}" if e['property']
+        out += " (#{e['old_value']} -> #{e['new_value']})" if e['old_value'] && e['new_value']
+        out += ": #{e['message']}" if e['message']
         out.chomp!
         case e['status']
         when 'failure'
@@ -145,7 +159,7 @@ Puppet::Face.define(:query, '1.0.0') do
         when 'success'
           puts colorize(:green, out)
         when 'skipped'
-          puts colorize(:hyellow, out) unless e['resource-type'] == 'Schedule'
+          puts colorize(:hyellow, out) unless e['resource_type'] == 'Schedule'
         when 'noop'
           puts out
         end

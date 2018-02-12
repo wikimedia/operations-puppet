@@ -8,24 +8,29 @@ class Hiera
           # This is needed when we run from hiera cli
           Puppet.initialize_settings unless Puppet[:confdir]
           require 'puppet/util/puppetdb'
-          server = Puppet::Util::Puppetdb.server
-          port = Puppet::Util::Puppetdb.port
+          PuppetDB::Connection.check_version
+          uri = URI(Puppet::Util::Puppetdb.config.server_urls.first)
+          host = uri.host
+          port = uri.port
+          ssl = uri.scheme == 'https'
         rescue
-          server = 'puppetdb'
+          host = 'puppetdb'
           port = 443
+          ssl = true
         end
 
-        Hiera.debug("Hiera PuppetDB backend starting")
+        Hiera.debug('Hiera PuppetDB backend starting')
 
-        @puppetdb = PuppetDB::Connection.new(server, port)
+        @puppetdb = PuppetDB::Connection.new(host, port, ssl)
+        @parser = PuppetDB::Parser.new
       end
 
-      def lookup(key, scope, order_override, resolution_type)
-        return nil if key.end_with? "::_nodequery"
+      def lookup(key, scope, order_override, _resolution_type)
+        return nil if key.end_with? '::_nodequery'
 
         Hiera.debug("Looking up #{key} in PuppetDB backend")
 
-        if nodequery = Backend.lookup(key + "::_nodequery", nil, scope, order_override, :priority)
+        if nodequery = Backend.lookup(key + '::_nodequery', nil, scope, order_override, :priority)
           Hiera.debug("Found nodequery #{nodequery.inspect}")
 
           # Support specifying the query in a few different ways
@@ -38,11 +43,11 @@ class Hiera
             query = nodequery.to_s
           end
 
-          if fact then
-            query = @puppetdb.parse_query query, :facts if query.is_a? String
-            @puppetdb.facts([fact], query).each_value.collect { |facts| facts[fact] }.sort
+          if fact
+            query = @parser.facts_query query, [fact]
+            @puppetdb.query(:facts, query).collect { |f| f['value'] }.sort
           else
-            query = @puppetdb.parse_query query, :nodes if query.is_a? String
+            query = @parser.parse query, :nodes if query.is_a? String
             @puppetdb.query(:nodes, query).collect { |n| n['name'] }
           end
         end
