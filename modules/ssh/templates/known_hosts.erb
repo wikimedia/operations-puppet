@@ -1,6 +1,6 @@
 # This file is managed by puppet
 <%-
-scope.function_query_resources([false, '@@Sshkey', false, 'title asc']).each do |resource|
+scope.function_query_resources([false, '@@Sshkey[~".*"]', false]).each do |resource|
   parameters = resource['parameters']
   aliases = parameters['host_aliases'].select{ |el| el !~ /^---/}.join(',')
   if parameters['ensure'] == 'present' -%>
