@@ -104,6 +104,12 @@ class icinga::plugins {
         group  => 'root',
         mode   => '0755',
     }
+    file { '/usr/lib/nagios/plugins/check_established_connections':
+        source => 'puppet:///modules/icinga/check_established_connections.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 
     class { '::nagios_common::commands':
     }
