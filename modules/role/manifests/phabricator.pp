@@ -14,10 +14,9 @@ class role::phabricator {
     include ::profile::phabricator::main
     include ::phabricator::monitoring
     include ::phabricator::mpm
-    include ::profile::prometheus::apache_exporter
 
     if os_version('debian >= stretch') {
-        $php_module = 'php7'
+        $php_module = 'php71'
     } else {
         $php_module = 'php5'
     }
