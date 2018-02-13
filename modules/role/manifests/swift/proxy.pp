@@ -13,6 +13,10 @@ class role::swift::proxy (
     include ::swift::ring
     include ::swift::container_sync
 
+    include ::profile::conftool::client
+    class { 'conftool::scripts': }
+
+
     class { '::swift::proxy':
         statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
     }
