@@ -21,10 +21,10 @@ class profile::mariadb::proxy (
 
     if $firewall == 'internal' {
         include ::profile::base::firewall
-        ::profile::mariadb::ferm { 'dbproxy': }
+        include ::profile::mariadb::ferm
     } elsif $firewall == 'cloud' {
         include ::profile::base::firewall
-        ::profile::mariadb::ferm { 'dbproxy': }
+        include ::profile::mariadb::ferm
         include ::profile::mariadb::ferm_wmcs
     } elsif $firewall != 'disabled' {
         fail('profile::mariadb::proxy::firewall can only be internal, cloud or disabled.')
