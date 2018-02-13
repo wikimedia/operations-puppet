@@ -1,0 +1,29 @@
+; Custom WMF config changes that overide the defaults in
+; /etc/php/7.2/apache2/php.ini
+[PHP]
+
+expose_php = On
+
+max_execution_time = 10
+
+track_errors = Off
+
+post_max_size = 10M
+
+upload_max_filesize = 10M
+
+[Date]
+date.timezone = <%= @timezone %>
+
+[opcache]
+opcache.memory_consumption=128
+
+opcache.interned_strings_buffer=16
+
+opcache.max_accelerated_files=10000
+
+opcache.validate_timestamps=<%= @opcache_validate %>
+
+; If enabled, a fast shutdown sequence is used for the accelerated code
+; Depending on the used Memory Manager this may cause some incompatibilities.
+opcache.fast_shutdown=1
