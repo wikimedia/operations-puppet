@@ -231,7 +231,7 @@ def main():
     else:
         logging_format = "{}: %(message)s".format(socket.gethostname())
 
-    logging.basicConfig(format=logging_format, level=logging.INFO)
+    logging.basicConfig(format=logging_format, level=logging.INFO, stream=sys.stdout)
 
     cache = apt.cache.FilteredCache()
 
