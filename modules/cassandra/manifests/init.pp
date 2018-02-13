@@ -170,10 +170,10 @@ class cassandra (
     # Cassandra 3.x is installed using the newer component convention, (and
     # from dists/stretch-wikimedia).
     if ($target_version in ['3.x', 'dev']) {
-        apt::repository { 'wikimedia-cassandra33':
+        apt::repository { 'wikimedia-cassandra311':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'stretch-wikimedia',
-            components => 'component/cassandra33',
+            components => 'component/cassandra311',
             before     => Package['cassandra'],
         }
     }
