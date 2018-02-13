@@ -959,7 +959,7 @@ lvs::configuration::lvs_services:
     port: 8081
     depool-threshold: '.5'
     conftool:
-      cluster: scb
+      cluster: ores
       service: ores
     icinga:
       check_command: "check_http_lvs_on_port!ores.svc.%{::site}.wmnet!8081!/v2/scores/"
