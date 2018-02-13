@@ -5,6 +5,7 @@ class statistics::packages {
     include ::imagemagick::install
 
     require_package([
+        'openjdk-8-jdk',
         'time',
         'emacs',
         'mc',
@@ -37,9 +38,6 @@ class statistics::packages {
     ])
 
 
-    # TODO: remove after T152712
-    # If available, install openjdk-7-jdk
-
     if os_version('debian >= stretch') {
         require_package(
             'libgsl2',
@@ -58,7 +56,6 @@ class statistics::packages {
 
     else {
         require_package(
-            'openjdk-7-jdk',
             'libgsl0ldbl',
             'gsl-bin',
             'libgsl0-dev',
