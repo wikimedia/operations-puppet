@@ -364,12 +364,18 @@ profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 # Eventstreams config
 profile::eventstreams::kafka_cluster_name: jumbo
 profile::eventstreams::streams:
-  test:
-    topics: ["%{::site}.test.event"]
+  page-delete:
+    topics: ["%{::site}.mediawiki.page-delete"]
+  page-undelete:
+    topics: ["%{::site}.mediawiki.page-undelete"]
+  page-properties-change:
+    topics: ["%{::site}.mediawiki.page-properties-change"]
   revision-create:
     topics: ["%{::site}.mediawiki.revision-create"]
   recentchange:
     topics: ["%{::site}.mediawiki.recentchange"]
+  test:
+    topics: ["%{::site}.test.event"]
 
 cache::be_transient_gb: 0
 cache::fe_transient_gb: 0
