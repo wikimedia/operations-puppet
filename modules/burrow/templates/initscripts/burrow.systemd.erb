@@ -1,0 +1,15 @@
+[Unit]
+Description=Burrow - Kafka <%= @title %> Consumer Offset Monitor
+
+[Service]
+User=burrow
+
+# Burrow creates this file. Setting PIDFile here manually
+# keeps systemd from creating its own pidfile that
+# conflicts with Burrow's.
+PIDFile=/var/log/burrow-<%= @title %>.pid
+
+ExecStart=/usr/bin/Burrow --config /etc/burrow/burrow-<%= @title %>.cfg
+
+[Install]
+WantedBy=multi-user.target
