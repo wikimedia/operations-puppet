@@ -4,8 +4,8 @@
 #
 define profile::kafka::burrow(
     $http_port,
-    $consumer_groups,
-    $to_emails = ['analytics-alerts@wikimedia.org'],
+    $consumer_groups = undef,
+    $to_emails = [],
 ) {
 
     $config = kafka_config($title)
