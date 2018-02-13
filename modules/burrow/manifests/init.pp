@@ -49,9 +49,16 @@ define burrow (
         content => template($email_template),
     }
 
-    service { "burrow-${title}":
-        ensure    => ensure_service($ensure),
-        enable    => true,
+    systemd::service { "burrow-${title}":
+        ensure    => present,
+        content   => systemd_template('burrow'),
+        restart   => true,
         subscribe => File["/etc/burrow/burrow-${title}.cfg"],
+        require   => Package['burrow'],
+    }
+
+    service { 'burrow':
+        ensure  => stopped,
+        require => Package['burrow'],
     }
 }
