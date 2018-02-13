@@ -17,12 +17,17 @@ class role::phabricator {
     include ::profile::prometheus::apache_exporter
 
     if os_version('debian >= stretch') {
-        $php_module = 'php7'
+        $php_module = 'php7.2'
     } else {
         $php_module = 'php5'
     }
 
+    $apache_lib = "libapache2-mod-${php_module}"
+
+    require_package($apache_lib)
+
     class { '::httpd':
         modules => ['headers', 'rewrite', 'remoteip', $php_module],
+        require => Package[$apache_lib],
     }
 }
