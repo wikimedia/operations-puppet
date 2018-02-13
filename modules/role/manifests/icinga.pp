@@ -29,6 +29,7 @@ class role::icinga {
     include icinga::monitor::gsb
     include icinga::monitor::commons
     include icinga::monitor::elasticsearch
+    include icinga::monitor::maps
     include icinga::monitor::wdqs
     include icinga::monitor::performance
     include icinga::monitor::services
