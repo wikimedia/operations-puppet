@@ -101,21 +101,29 @@ class phabricator (
         $storage_pass = $mysql_admin_pass
     }
 
-    # stretch - PHP (7.0) packages and Apache module
-    # warning: currently Phabricator supports PHP 7.1 but not PHP 7.0
+    # stretch - PHP (7.2) packages and Apache module
+    # warning: currently Phabricator supports PHP 7.1+ but not PHP 7.0
     # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
     if os_version('debian >= stretch') {
+        apt::repository { 'wikimedia-php72':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'thirdparty/php72',
+        }
+
         package { [
             'php-apcu',
-            'php-mysql',
-            'php-gd',
             'php-mailparse',
-            'php-dev',
-            'php-curl',
-            'php-cli',
-            'php-json',
-            'php-ldap']:
-                ensure => present;
+            'php7.2-mysql',
+            'php7.2-gd',
+            'php7.2-dev',
+            'php7.2-curl',
+            'php7.2-cli',
+            'php7.2-json',
+            'php7.2-ldap',
+            'php7.2-mbstring']:
+                ensure  => present,
+                require => Apt::Repository['wikimedia-php72'],
         }
     } else {
         # jessie - PHP (5.5/5.6) packages and Apache module
@@ -211,9 +219,16 @@ class phabricator (
 
     $opcache_validate = hiera('phabricator_opcache_validate', 0)
 
-    file { '/etc/php5/apache2/php.ini':
-        content => template('phabricator/php.ini.erb'),
-        notify  => Service['apache2'],
+    if os_version('debian >= stretch') {
+      file { '/etc/php/7.2/apache2/php.ini':
+          content => template('phabricator/php72.ini.erb'),
+          notify  => Service['apache2'],
+      }
+    } else {
+      file { '/etc/php5/apache2/php.ini':
+          content => template('phabricator/php56.ini.erb'),
+          notify  => Service['apache2'],
+      }
     }
 
     file { '/etc/apache2/phabbanlist.conf':
