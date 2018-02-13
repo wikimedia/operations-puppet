@@ -1231,6 +1231,90 @@ host cp4032 {
     filename "lpxelinux.0";
 }
 
+host cp5001 {
+    hardware ethernet F4:E9:D4:D0:28:D0;
+    fixed-address cp5001.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5002 {
+    hardware ethernet F4:E9:D4:D0:2A:50;
+    fixed-address cp5002.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5003 {
+    hardware ethernet F4:E9:D4:D0:06:10;
+    fixed-address cp5003.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5004 {
+    hardware ethernet F4:E9:D4:D0:21:60;
+    fixed-address cp5004.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5005 {
+    hardware ethernet F4:E9:D4:D0:29:40;
+    fixed-address cp5005.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5006 {
+    hardware ethernet F4:E9:D4:D0:24:F0;
+    fixed-address cp5006.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5007 {
+    hardware ethernet F4:E9:D4:D0:27:80;
+    fixed-address cp5007.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5008 {
+    hardware ethernet F4:E9:D4:D0:00:20;
+    fixed-address cp5008.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5009 {
+    hardware ethernet F4:E9:D4:D0:2D:80;
+    fixed-address cp5009.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5010 {
+    hardware ethernet F4:E9:D4:D0:04:70;
+    fixed-address cp5010.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5011 {
+    hardware ethernet F4:E9:D4:CF:FB:D0;
+    fixed-address cp5011.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host cp5012 {
+    hardware ethernet F4:E9:D4:CF:F0:00;
+    fixed-address cp5012.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
 host contint1001 {
      hardware ethernet 14:18:77:5b:29:c7;
      fixed-address contint1001.wikimedia.org;
