@@ -22,6 +22,7 @@
     function init() {
       if (/Sign In/.test(document.title) && /\/login/.test(location.href)) {
         document.documentElement.className = "loginParent";
+        document.cookie = 'GerritAccount=; Path=/r; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       }
     }
 
