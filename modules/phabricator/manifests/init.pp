@@ -101,21 +101,28 @@ class phabricator (
         $storage_pass = $mysql_admin_pass
     }
 
-    # stretch - PHP (7.0) packages and Apache module
+    # stretch - PHP (7.1) packages and Apache module
     # warning: currently Phabricator supports PHP 7.1 but not PHP 7.0
     # https://secure.phabricator.com/rPa2cd3d9a8913d5709e2bc999efb75b63d7c19696
     if os_version('debian >= stretch') {
+        apt::repository { 'wikimedia-php71':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php71',
+        }
+
         package { [
             'php-apcu',
-            'php-mysql',
-            'php-gd',
-            'php-mailparse',
-            'php-dev',
-            'php-curl',
-            'php-cli',
-            'php-json',
-            'php-ldap']:
-                ensure => present;
+            'php7.1-mysql',
+            'php7.1-gd',
+            'php7.1-mailparse',
+            'php7.1-dev',
+            'php7.1-curl',
+            'php7.1-cli',
+            'php7.1-json',
+            'php7.1-ldap']:
+                ensure  => present,
+                require => Apt::repository['wikimedia-php71'],
         }
     } else {
         # jessie - PHP (5.5/5.6) packages and Apache module
@@ -211,9 +218,16 @@ class phabricator (
 
     $opcache_validate = hiera('phabricator_opcache_validate', 0)
 
-    file { '/etc/php5/apache2/php.ini':
-        content => template('phabricator/php.ini.erb'),
-        notify  => Service['apache2'],
+    if os_version('debian >= stretch') {
+      file { '/etc/php/7.1/apache2/php.ini':
+          content => template('phabricator/php71.ini.erb'),
+          notify  => Service['apache2'],
+      }
+    } else {
+      file { '/etc/php5/apache2/php.ini':
+          content => template('phabricator/php56.ini.erb'),
+          notify  => Service['apache2'],
+      }
     }
 
     file { '/etc/apache2/phabbanlist.conf':
