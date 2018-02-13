@@ -44,7 +44,7 @@ define burrow (
         content => template('burrow/burrow.cfg.erb'),
     }
 
-    file { '/etc/burrow/email.tmpl':
+    file { "/etc/burrow/email-${title}.tmpl":
         ensure  => $ensure,
         content => template($email_template),
     }
@@ -57,8 +57,10 @@ define burrow (
         require   => Package['burrow'],
     }
 
-    service { 'burrow':
-        ensure  => stopped,
-        require => Package['burrow'],
+    if ! defined(Service['burrow']) {
+        service { 'burrow':
+            ensure  => stopped,
+            require => Package['burrow'],
+        }
     }
 }

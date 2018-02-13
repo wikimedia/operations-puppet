@@ -15,4 +15,6 @@ class role::webserver_misc_apps {
     include ::profile::racktables             # https://racktables.wikimedia.org
 
     include ::profile::kafka::burrow::analytics
+    include ::profile::kafka::burrow::main::eqiad
+    include ::profile::kafka::burrow::main::codfw
 }
