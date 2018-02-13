@@ -23,6 +23,12 @@ class librenms(
     $install_dir='/srv/librenms',
     $rrd_dir="${install_dir}/rrd",
 ) {
+
+    # NOTE: scap will manage the deploy user
+    scap::target { 'librenms/librenms':
+        deploy_user => 'deploy-librenms',
+    }
+
     group { 'librenms':
         ensure => present,
     }
@@ -34,6 +40,8 @@ class librenms(
         home       => '/nonexistent',
         system     => true,
         managehome => false,
+        groups     => ['deploy-librenms'],
+        require    => Scap::Target['librenms/librenms'],
     }
 
     file { '/srv/librenms':
@@ -59,6 +67,11 @@ class librenms(
         owner   => 'www-data',
         group   => 'librenms',
         require => Group['librenms'],
+    }
+
+    file { $install_dir:
+        mode    => 'g+w',
+        require => User['librenms'],
     }
 
     logrotate::conf { 'librenms':

@@ -17,12 +17,6 @@ class profile::librenms (
     include ::passwords::librenms
     include ::passwords::network
 
-    # NOTE: scap will manage the deploy user
-    scap::target { 'librenms/librenms':
-        deploy_user => 'deploy-librenms',
-        before      => Class['::librenms'],
-    }
-
     $config = {
         'title_image'      => '//upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg/140px-Wikimedia_Foundation_logo_-_horizontal_%282012-2016%29.svg.png',
 
