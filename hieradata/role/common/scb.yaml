@@ -60,6 +60,31 @@ profile::eventstreams::kafka_cluster_name: analytics
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
 profile::eventstreams::streams:
+  page-create:
+    description: "Mediawiki Page Create feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/create"
+    topics:
+      - eqiad.mediawiki.page-create
+      - confw.mediawiki.page-create
+  page-delete:
+    description: "Mediawiki Page Delete feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/delete"
+    topics:
+      - eqiad.mediawiki.page-delete
+      - confw.mediawiki.page-delete
+  page-move:
+    description: "Mediawiki Page Move feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/move"
+    topics:
+      - eqiad.mediawiki.page-move
+      - confw.mediawiki.page-move
+  page-undelete:
+    description: "Mediawiki Page Delete feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/undelete"
+    topics:
+      - eqiad.mediawiki.page-undelete
+      - confw.mediawiki.page-undelete
+  page-properties-change:
+    description: "Mediawiki Page Properties Change feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/properties-change"
+    topics:
+      - eqiad.mediawiki.page-properties-change
+      - confw.mediawiki.page-properties-change
   recentchange:
     description: "Mediawiki RecentChanges feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange"
     topics:
