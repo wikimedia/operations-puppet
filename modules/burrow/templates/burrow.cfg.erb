@@ -1,7 +1,7 @@
 [general]
 logdir=/var/log/burrow
 logconfig=/etc/burrow/logging.cfg
-pidfile=burrow.pid
+pidfile=burrow-<%= @title %>.pid
 client-id=<%= @client_id %>
 group-blacklist=^(console-consumer-|python-kafka-consumer-).*$
 
@@ -11,7 +11,7 @@ group-blacklist=^(console-consumer-|python-kafka-consumer-).*$
 <% end -%>
 port=2181
 timeout=6
-lock-path=/etc/burrow/notifier
+lock-path=/etc/burrow/notifier-<%= @title %>
 
 [kafka "<%= @kafka_cluster_name %>"]
 <% @kafka_brokers.each do |host| -%>
@@ -40,7 +40,7 @@ port=<%= @httpserver_port %>
 server=<%= @smtp_server %>
 port=25
 from=<%= @from_email %>
-template=/etc/burrow/email.tmpl
+template=/etc/burrow/email-<%= @title %>.tmpl
 
 <% @to_emails.each do |to_email| -%>
 [email "<%= to_email %>"]
