@@ -149,7 +149,7 @@ class cassandra (
         ensure  => 'installed',
     }
 
-    # Cassandra and JVM utils
+    # Tools packages
     package { 'cassandra-tools-wmf':
         ensure  => 'installed',
         require => Package['cassandra'],
@@ -166,6 +166,18 @@ class cassandra (
         '3.x' => hiera('cassandra::version', '3.11.0-wmf5'),
         'dev' => hiera('cassandra::version', '3.11.0-wmf5')
     }
+
+    # Cassandra 3.x is installed using the newer component convention, (and
+    # from dists/stretch-wikimedia).
+    if ($package_version in ['3.x', 'dev']) {
+        apt::repository { 'wikimedia-cassandra33':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'stretch-wikimedia',
+            components => 'component/cassandra33',
+            before     => Package['cassandra'],
+        }
+    }
+
     package { 'cassandra':
         ensure  => $package_version,
         require => Package['openjdk-8-jdk'],
