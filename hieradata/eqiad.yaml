@@ -84,3 +84,20 @@ prometheus_nodes:
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "globalsign-2017"
+
+# MySQL backup hosts and ports
+mysql_backups:
+  s1: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s2: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s3: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s4: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s5: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s6: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s7: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  s8: [ 'dbstore1002.eqiad.wmnet', 3306 ]
+  x1: [ 'db2034.codfw.wmnet', 3306 ]
+  m1: [ 'db1001.eqiad.wmnet', 3306 ]
+  m2: [ 'db2011.codfw.wmnet', 3306 ]
+  m3: [ 'db1059.eqiad.wmnet', 3306 ]
+  m5: [ 'db2030.codfw.wmnet', 3306 ]
+

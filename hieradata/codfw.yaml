@@ -46,3 +46,19 @@ prometheus_nodes:
 public_tls_unified_cert_vendor: "globalsign-2017"
 
 puppet_major_version: 4
+
+# MySQL backup hosts and ports
+mysql_backups:
+  s1: [ 'dbstore2002.eqiad.wmnet', 3311 ]
+  s2: [ 'dbstore2001.eqiad.wmnet', 3312 ]
+  s3: [ 'dbstore2001.eqiad.wmnet', 3313 ]
+  s4: [ 'dbstore2002.eqiad.wmnet', 3314 ]
+  s5: [ 'dbstore2001.eqiad.wmnet', 3315 ]
+  s6: [ 'dbstore2001.eqiad.wmnet', 3316 ]
+  s7: [ 'dbstore2001.eqiad.wmnet', 3317 ]
+  s8: [ 'dbstore2001.eqiad.wmnet', 3318 ]
+  x1: [ 'dbstore2001.eqiad.wmnet', 3320 ]
+  m1: [ 'db2078.codfw.wmnet', 3306 ]
+  m2: [ 'db2011.codfw.wmnet', 3306 ]
+  m3: [ 'db2012.codfw.wmnet', 3306 ]
+  m5: [ 'db2030.codfw.wmnet', 3306 ]
