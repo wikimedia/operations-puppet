@@ -12,4 +12,15 @@ class profile::maps::alerts {
         from            => '1day',
         percentage      => 90,
     }
+
+
+    monitoring::check_prometheus { 'osm-sync-lag-eqiad':
+      description     => 'OSM synchronization lag - eqiad',
+      dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/maps-performances?panelId=11&fullscreen&orgId=1'],
+      query           => 'scalar(time()-osm_sync_timestamp{cluster="maps"})',
+      warning         => 10,
+      critical        => 10,
+      prometheus_url  => "http://prometheus.svc.eqiad.wmnet/ops",
+    }
+
 }
