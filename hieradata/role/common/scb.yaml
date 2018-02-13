@@ -65,6 +65,21 @@ profile::eventstreams::kafka_cluster_name: analytics
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
 profile::eventstreams::streams:
+  page-delete:
+    description: "Mediawiki Page Delete feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/delete"
+    topics:
+      - eqiad.mediawiki.page-delete
+      - confw.mediawiki.page-delete
+  page-undelete:
+    description: "Mediawiki Page Delete feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/undelete"
+    topics:
+      - eqiad.mediawiki.page-undelete
+      - confw.mediawiki.page-undelete
+  page-properties-change:
+    description: "Mediawiki Page Properties Change feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/blob/master/jsonschema/mediawiki/page/properties-change"
+    topics:
+      - eqiad.mediawiki.page-properties-change
+      - confw.mediawiki.page-properties-change
   recentchange:
     description: "Mediawiki RecentChanges feed. Schema: https://github.com/wikimedia/mediawiki-event-schemas/tree/master/jsonschema/mediawiki/recentchange"
     topics:
