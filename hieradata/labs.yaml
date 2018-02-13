@@ -130,6 +130,7 @@ profile::diffscan::ipranges:
   - 91.198.174.0/24
   - 198.35.26.0/23
   - 208.80.152.0/22
+  - 103.102.166.0/24
 profile::diffscan::emailto: root@wikimedia.org
 profile::diffscan::groupname: Labs-to-public-v4
 
