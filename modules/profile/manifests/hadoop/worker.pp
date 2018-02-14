@@ -35,11 +35,6 @@ class profile::hadoop::worker(
         class { 'cdh::hadoop::journalnode': }
     }
 
-    # Use jmxtrans for sending metrics
-    class { '::cdh::hadoop::jmxtrans::worker':
-        statsd  => $statsd,
-    }
-
     # Spark Python stopped working in Spark 1.5.0 with Oozie,
     # for complicated reasons.  We need to be able to set
     # SPARK_HOME in an oozie launcher, and that SPARK_HOME
