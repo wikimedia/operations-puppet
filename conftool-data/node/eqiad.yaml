@@ -153,6 +153,13 @@ eqiad:
     scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
     scb1003.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
     scb1004.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, apertium, cxserver, ores, eventstreams, pdfrender, "recommendation-api"]
+    # TODO: This is wrong, but is on purpose right now. We want to be able to
+    # gradually increase mathoid traffic sent to kubernetes and we currently
+    # don't support a service being provided by >1 clusters, so reuse scb for now
+    kubernetes1001.eqiad.wnnet: [mathoid]
+    kubernetes1002.eqiad.wnnet: [mathoid]
+    kubernetes1003.eqiad.wnnet: [mathoid]
+    kubernetes1004.eqiad.wnnet: [mathoid]
   dns:
     chromium.wikimedia.org: [pdns_recursor]
     hydrogen.wikimedia.org: [pdns_recursor]
