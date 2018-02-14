@@ -257,6 +257,26 @@ smart_health_eqiad:
   __regex: !ruby/regexp /^(analytics1.*|aqs1.*|conf1.*|cp1045|db.*|druid1.*|elastic1.*|es1.*|etcd1.*|ganeti1.*|graphite1.*|kafka1.*|kube1.*|lab.*|lvs1.*|logstash1.*|mw1.*|maps1.*|mc1.*|ms-be1.*|ores1.*|phab1.*|poolcounter1.*|mwlog1.*|netmon1.*|puppetmaster1.*|pc1.*|restbase1.*|scb1.*|stat1.*|thumbor1.*|tin|tungsten|wdqs1.*|wtp1.*|xenon).eqiad\.wmnet$/
   profile::base::check_smart: true
 
+# smart_health_wikimedia_labs:
+#   __regex: !ruby/regexp /^(silver|californium|labcontrol.*|labpuppetmaster.*|labservices.*|labstore.*|labtestcontrol.*|labtestpuppetmaster.*|labtestservices.*|labtestweb.*|labweb.*).wikimedia.org$/
+#   profile::base::check_smart: true
+#
+# smart_health_wikimedia_dns:
+#   __regex: !ruby/regexp /^(acamar|dns.*|hydrogen).wikimedia.org$/
+#   profile::base::check_smart: true
+#
+# smart_health_wikimedia_ulsfo:
+#   __regex: !ruby/regexp /^(lvs4.*|bast4.*).wikimedia.org$/
+#   profile::base::check_smart: true
+
+smart_health_wikimedia_misc:
+  __regex: !ruby/regexp /^(dataset1001|ms1001|netmon.*|sodium|multatuli|cp1008|radium|rhenium).wikimedia.org$/
+  profile::base::check_smart: true
+
+smart_health_wikimedia_monitor:
+  __regex: !ruby/regexp /^(tegmen|einsteinium|contint.*|iron|cobalt|gerrit2001).wikimedia.org$/
+  profile::base::check_smart: true
+
 smart_health_eqsin:
   __regex: !ruby/regexp /^.*\.eqsin\.wmnet$/
   profile::base::check_smart: true
