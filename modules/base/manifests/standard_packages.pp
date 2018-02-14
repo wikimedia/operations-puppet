@@ -87,6 +87,15 @@ class base::standard_packages {
         require_package('mcelog')
     }
 
+    # for HP servers only - install the backplane health service and CLI
+    # As of February 2018, we are using a version of Facter where manufacturer
+    # is a current fact.  In a future upgrade, it will be a legacy fact and
+    # should be replaced with a parse of the dmi fact (which will be a map not
+    # a string).
+    if $facts['is_virtual'] == false and $facts['manufacturer'] == 'HP' {
+        require_package('hp-health')
+    }
+
     # Pulled in via tshark below, defaults to "no"
     debconf::seen { 'wireshark-common/install-setuid': }
     package { 'tshark': ensure => present }
