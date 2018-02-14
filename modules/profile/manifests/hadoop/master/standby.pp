@@ -11,7 +11,6 @@
 class profile::hadoop::master::standby(
     $monitoring_enabled       = hiera('profile::hadoop::standby_master::monitoring_enabled', false),
     $hadoop_namenode_heapsize = hiera('profile::hadoop::standby::namenode_heapsize', 2048),
-    $statsd                   = hiera('statsd'),
 ) {
     # Hadoop masters need Zookeeper package from CDH, pin CDH over Debian.
     include ::profile::cdh::apt_pin
@@ -24,11 +23,6 @@ class profile::hadoop::master::standby(
     class { '::druid::cdh::hadoop::user':  }
 
     class { '::cdh::hadoop::namenode::standby': }
-
-    # Use jmxtrans for sending metrics
-    class { '::cdh::hadoop::jmxtrans::namenode':
-        statsd  => $statsd,
-    }
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
@@ -51,27 +45,21 @@ class profile::hadoop::master::standby(
         # The goal is to get alarms for long running memory leaks like T153951.
         # Only include heap size alerts if heap size is configured.
         if $hadoop_namenode_heapsize {
-            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9
-            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95
-            monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usage':
+            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9 * 1000000
+            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95 * 1000000
+            monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
                 description     => 'HDFS standby Namenode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=4&fullscreen'],
-                metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
-                from            => '60min',
+                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:10080\",area=\"heap\"}[60m]))",
                 warning         => $nn_jvm_warning_threshold,
                 critical        => $nn_jvm_critical_threshold,
-                percentage      => '60',
                 contact_group   => 'analytics',
+                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
             }
         }
     }
 
     class { '::cdh::hadoop::resourcemanager': }
-
-    # Use jmxtrans for sending metrics
-    class { 'cdh::hadoop::jmxtrans::resourcemanager':
-        statsd  => $statsd,
-    }
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
@@ -84,17 +72,16 @@ class profile::hadoop::master::standby(
         # Only include heap size alerts if heap size is configured.
         $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_resourcemanager_heapsize {
-            $rm_jvm_warning_threshold = $hadoop_resourcemanager_heapsize * 0.9
-            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize  * 0.95
-            monitoring::graphite_threshold { 'hadoop-yarn-resourcemananager-heap-usage':
+            $rm_jvm_warning_threshold = $hadoop_resourcemanager_heapsize * 0.9 * 1000000
+            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize  * 0.95 * 1000000
+            monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
                 description     => 'YARN standby Resource Manager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=12&fullscreen'],
-                metric          => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
-                from            => '60min',
+                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:10083\",area=\"heap\"}[60m]))",
                 warning         => $rm_jvm_warning_threshold,
                 critical        => $rm_jvm_critical_threshold,
-                percentage      => '60',
                 contact_group   => 'analytics',
+                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
             }
         }
     }
