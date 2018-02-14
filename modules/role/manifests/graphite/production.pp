@@ -12,7 +12,7 @@ class role::graphite::production {
     include ::profile::statsd # all graphite hosts also include statsd
 
     class { '::httpd':
-        modules => ['uwsgi', 'authnz_ldap'],
+        modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'uwsgi', 'authnz_ldap'],
     }
 
     class { 'role::graphite::base':
