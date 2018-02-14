@@ -48,7 +48,7 @@ class openstack::nova::compute::monitor(
     #  https://serverfault.com/questions/359958/nagios-nrpe-check-procs-wrong-return-value
     nrpe::monitor_service { 'ensure_single_nova_compute_proc':
         ensure       => $ensure,
-        description  => 'nova-compute process',
+        description  => 'nova-compute proc maximum',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
         retries      => 5,
     }
@@ -60,7 +60,7 @@ class openstack::nova::compute::monitor(
     # transition where this persistent bad state will alert above.
     nrpe::monitor_service { 'ensure_nova_compute_running':
         ensure       => $ensure,
-        description  => 'nova-compute process',
+        description  => 'nova-compute proc minimum',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
         retries      => 1,
     }
