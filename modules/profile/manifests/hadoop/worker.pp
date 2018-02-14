@@ -158,8 +158,8 @@ class profile::hadoop::worker(
         # Only include heap size alerts if heap size is configured.
         $hadoop_datanode_heapsize = $::cdh::hadoop::hadoop_heapsize
         if $hadoop_datanode_heapsize {
-            $dn_jvm_warning_threshold  = $hadoop_datanode_heapsize * 0.9 * 1000000
-            $dn_jvm_critical_threshold = $hadoop_datanode_heapsize * 0.95 * 1000000
+            $dn_jvm_warning_threshold  = floor($hadoop_datanode_heapsize * 0.9 * 1000000)
+            $dn_jvm_critical_threshold = floor($hadoop_datanode_heapsize * 0.95 * 1000000)
             monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
                 description     => 'HDFS DataNode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=1&fullscreen&orgId=1'],
@@ -173,8 +173,8 @@ class profile::hadoop::worker(
 
         $hadoop_nodemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_nodemanager_heapsize {
-            $nm_jvm_warning_threshold  = $hadoop_nodemanager_heapsize * 0.9 * 1000000
-            $nm_jvm_critical_threshold = $hadoop_nodemanager_heapsize * 0.95 * 1000000
+            $nm_jvm_warning_threshold  = floor($hadoop_nodemanager_heapsize * 0.9 * 1000000)
+            $nm_jvm_critical_threshold = floor($hadoop_nodemanager_heapsize * 0.95 * 1000000)
             monitoring::check_prometheus { 'analytics_hadoop_yarn_nodemanager':
                 description     => 'YARN NodeManager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=17&fullscreen'],

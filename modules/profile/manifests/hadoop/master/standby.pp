@@ -45,8 +45,8 @@ class profile::hadoop::master::standby(
         # The goal is to get alarms for long running memory leaks like T153951.
         # Only include heap size alerts if heap size is configured.
         if $hadoop_namenode_heapsize {
-            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9 * 1000000
-            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95 * 1000000
+            $nn_jvm_warning_threshold  = floor($hadoop_namenode_heapsize * 0.9 * 1000000)
+            $nn_jvm_critical_threshold = floor($hadoop_namenode_heapsize * 0.95 * 1000000)
             monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
                 description     => 'HDFS standby Namenode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=4&fullscreen'],
@@ -72,8 +72,8 @@ class profile::hadoop::master::standby(
         # Only include heap size alerts if heap size is configured.
         $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_resourcemanager_heapsize {
-            $rm_jvm_warning_threshold = $hadoop_resourcemanager_heapsize * 0.9 * 1000000
-            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize  * 0.95 * 1000000
+            $rm_jvm_warning_threshold = floor($hadoop_resourcemanager_heapsize * 0.9 * 1000000)
+            $rm_jvm_critical_threshold = floor($hadoop_resourcemanager_heapsize  * 0.95 * 1000000)
             monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
                 description     => 'YARN standby Resource Manager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=12&fullscreen'],
