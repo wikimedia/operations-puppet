@@ -18,9 +18,10 @@
 #  db.results.ensureIndex( { 'meta.url' : 1 } );
 #
 class role::xhgui::app {
-    include ::apache::mod::authnz_ldap
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
+
+    class { '::httpd':
+        modules => ['authnz_ldap', 'php5', 'rewrite'],
+    }
 
     include ::mongodb
 
@@ -47,14 +48,14 @@ class role::xhgui::app {
         path   => '/etc/php5/apache2/php.ini',
         match  => '^;?memory_limit\s*=',
         line   => 'memory_limit = 512M',
-        notify => Class['::apache'],
+        notify => Class['::httpd'],
     }
 
     file_line { 'enable_php_opcache':
         line   => 'opcache.enable=1',
         match  => '^;?opcache.enable\s*\=',
         path   => '/etc/php5/apache2/php.ini',
-        notify => Class['::apache'],
+        notify => Class['::httpd'],
     }
 
     ferm::service { 'xhgui_mongodb':
@@ -95,7 +96,7 @@ class role::xhgui::app {
         mode   => '0755',
     } ->
 
-    apache::site { 'xhgui_apache_site':
+    httpd::site { 'xhgui_apache_site':
         content => template('role/apache/sites/xhgui.erb'),
     }
 }
