@@ -32,9 +32,19 @@ class profile::pmacct (
         default => $librdkafka_config,
     }
 
+    $tags_mapping = {
+        1000 => '208.80.154.196/30',  #eqiad
+        2000 => '208.80.153.192/29',  #codfw
+        3000 => '91.198.174.244/30',  #esams
+        4000 => '198.35.26.192/30',   #ulsfo
+        5000 => '103.102.166.128/30', #eqsin
+    }
+
+
     class { '::pmacct':
         kafka_brokers     => $kafka_config['brokers']['string'],
         librdkafka_config => $pmacct_librdkafka_conf,
+        tags_mapping      => $tags_mapping,
     }
 
     include ::standard
