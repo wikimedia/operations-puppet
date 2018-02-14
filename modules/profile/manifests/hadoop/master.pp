@@ -14,7 +14,6 @@ class profile::hadoop::master(
     $monitoring_enabled       = hiera('profile::hadoop::master::monitoring_enabled', false),
     $hadoop_namenode_heapsize = hiera('profile::hadoop::master::namenode_heapsize', 2048),
     $hadoop_user_groups       = hiera('profile::hadoop::master::hadoop_user_groups'),
-    $statsd                   = hiera('statsd'),
 ){
     # Hadoop masters need Zookeeper package from CDH, pin CDH over Debian.
     include ::profile::cdh::apt_pin
@@ -24,11 +23,6 @@ class profile::hadoop::master(
     Class['::profile::cdh::apt_pin'] -> Exec['apt-get update'] -> Class['::cdh::hadoop']
 
     class { '::cdh::hadoop::master': }
-
-    # Use jmxtrans for sending metrics
-    class { '::cdh::hadoop::jmxtrans::master':
-        statsd  => $statsd,
-    }
 
     # This will create HDFS user home directories
     # for all users in the provided groups.
@@ -136,72 +130,67 @@ class profile::hadoop::master(
         }
 
         # Alert if the HDFS space consumption raises above a safe threshold.
-        monitoring::graphite_threshold { 'hadoop-hdfs-percent-used':
-            description     => 'HDFS capacity used percentage',
+        monitoring::check_prometheus { 'hadoop-hdfs-capacity-gb-remaining':
+            description     => 'HDFS capacity reimaing GBs',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=47&fullscreen'],
-            metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.NameNodeInfo.PercentUsed.mean",
-            from            => '30min',
-            warning         => 85,
-            critical        => 90,
-            percentage      => '60',
+            query           => "scalar(Hadoop_NameNode_CapacityRemainingGB{instance=\"${::hostname}:10080\"})",
+            warning         => 200000,
+            critical        => 100000,
             contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
         # Alert in case of HDFS currupted or missing blocks. In the ideal state
         # these values should always be 0.
-        monitoring::graphite_threshold { 'hadoop-hdfs-corrupt-blocks':
+        monitoring::check_prometheus { 'hadoop-hdfs-corrupt-blocks':
             description     => 'HDFS corrupt blocks',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=39&fullscreen'],
-            metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.CorruptBlocks.mean",
-            from            => '30min',
+            query           => "scalar(Hadoop_NameNode_CorruptBlocks{instance=\"${::hostname}:10080\"})",
             warning         => 2,
             critical        => 5,
-            percentage      => '60',
             contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
-        monitoring::graphite_threshold { 'hadoop-hdfs-missing-blocks':
+        monitoring::check_prometheus { 'hadoop-hdfs-missing-blocks':
             description     => 'HDFS missing blocks',
             dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=40&fullscreen'],
-            metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.FSNamesystem.MissingBlocks.mean",
-            from            => '180min',
+            query           => "scalar(Hadoop_NameNode_MissingBlocks{instance=\"${::hostname}:10080\"})",
             warning         => 2,
             critical        => 5,
-            percentage      => '60',
             contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
 
         # Java heap space used alerts.
         # The goal is to get alarms for long running memory leaks like T153951.
         # Only include heap size alerts if heap size is configured.
         if $hadoop_namenode_heapsize {
-            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9
-            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95
-            monitoring::graphite_threshold { 'hadoop-hdfs-namenode-heap-usaage':
+            $nn_jvm_warning_threshold  = $hadoop_namenode_heapsize * 0.9 * 1000000
+            $nn_jvm_critical_threshold = $hadoop_namenode_heapsize * 0.95 * 1000000
+            monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usaage':
                 description     => 'HDFS active Namenode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1'],
-                metric          => "Hadoop.NameNode.${::hostname}_eqiad_wmnet_9980.Hadoop.NameNode.JvmMetrics.MemHeapUsedM.upper",
-                from            => '60min',
+                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:10080\",area=\"heap\"}[60m]))",
                 warning         => $nn_jvm_warning_threshold,
                 critical        => $nn_jvm_critical_threshold,
-                percentage      => '60',
                 contact_group   => 'analytics',
+                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
             }
         }
 
         $hadoop_resourcemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_resourcemanager_heapsize {
-            $rm_jvm_warning_threshold  = $hadoop_resourcemanager_heapsize * 0.9
-            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize * 0.95
-            monitoring::graphite_threshold { 'hadoop-yarn-resourcemananager-heap-usage':
+            $rm_jvm_warning_threshold  = $hadoop_resourcemanager_heapsize * 0.9 * 1000000
+            $rm_jvm_critical_threshold = $hadoop_resourcemanager_heapsize * 0.95 * 1000000
+            monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
                 description     => 'YARN active ResourceManager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1'],
-                metric          => "Hadoop.ResourceManager.${::hostname}_eqiad_wmnet_9983.Hadoop.ResourceManager.JvmMetrics.MemHeapUsedM.upper",
-                from            => '60min',
+                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:10083\",area=\"heap\"}[60m]))",
                 warning         => $rm_jvm_warning_threshold,
                 critical        => $rm_jvm_critical_threshold,
-                percentage      => '60',
                 contact_group   => 'analytics',
+                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
             }
         }
     }
