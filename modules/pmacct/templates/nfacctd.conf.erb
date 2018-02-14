@@ -18,6 +18,8 @@ bgp_peer_as_skip_subas: true
 bgp_aspath_radius: 2
 nfacctd_as_new: bgp
 
+pre_tag_map: /etc/pmacct/pretag.map
+
 <% if @kafka_brokers -%>
 plugins: kafka
 kafka_output: json

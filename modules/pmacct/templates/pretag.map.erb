@@ -1,0 +1,5 @@
+# Managed by puppet
+
+<% tags_mapping.each do |tag,ip| %>
+set_tag=<%= tag %> ip=<%= ip %>
+<% end %>
