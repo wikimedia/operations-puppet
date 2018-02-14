@@ -136,6 +136,7 @@ class profile::hadoop::master(
             query           => "scalar(Hadoop_NameNode_CapacityRemainingGB{instance=\"${::hostname}:10080\"})",
             warning         => 200000,
             critical        => 100000,
+            method          => 'le',
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
         }
