@@ -10,10 +10,10 @@ class role::archiva {
     include ::standard
     include ::profile::base::firewall
 
-    require_package('openjdk-7-jdk')
+    require_package('openjdk-8-jdk')
 
     class { '::archiva':
-        require => Package['openjdk-7-jdk'],
+        require => Package['openjdk-8-jdk'],
     }
 
     # Set up a reverse proxy for the archiva service.
