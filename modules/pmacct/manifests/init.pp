@@ -20,6 +20,7 @@
 class pmacct(
   $kafka_brokers     = undef,
   $librdkafka_config = undef,
+  $tags_mapping      = undef,
 ) {
     package { 'pmacct':
         ensure => present,
@@ -37,6 +38,15 @@ class pmacct(
         require => Package['pmacct'],
         before  => Service['nfacctd'],
         notify  => Service['nfacctd'],
+    }
+
+    file { '/etc/pmacct/pretag.map':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('pmacct/pretag.map.erb'),
+        before  => File['/etc/pmacct/nfacctd.conf'],
     }
 
     if $librdkafka_config != undef {
