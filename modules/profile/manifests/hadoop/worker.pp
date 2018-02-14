@@ -10,7 +10,6 @@
 class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
-    $statsd             = hiera('statsd'),
 ) {
     # Hadoop workers need Zookeeper package from CDH, pin CDH over Debian.
     include ::profile::cdh::apt_pin
@@ -33,11 +32,6 @@ class profile::hadoop::worker(
     # but it is not a strict requirement.
     if $::fqdn in $::cdh::hadoop::journalnode_hosts {
         class { 'cdh::hadoop::journalnode': }
-    }
-
-    # Use jmxtrans for sending metrics
-    class { '::cdh::hadoop::jmxtrans::worker':
-        statsd  => $statsd,
     }
 
     # Spark Python stopped working in Spark 1.5.0 with Oozie,
@@ -164,33 +158,31 @@ class profile::hadoop::worker(
         # Only include heap size alerts if heap size is configured.
         $hadoop_datanode_heapsize = $::cdh::hadoop::hadoop_heapsize
         if $hadoop_datanode_heapsize {
-            $dn_jvm_warning_threshold  = $hadoop_datanode_heapsize * 0.9
-            $dn_jvm_critical_threshold = $hadoop_datanode_heapsize * 0.95
-            monitoring::graphite_threshold { 'analytics_hadoop_hdfs_datanode':
+            $dn_jvm_warning_threshold  = $hadoop_datanode_heapsize * 0.9 * 1000000
+            $dn_jvm_critical_threshold = $hadoop_datanode_heapsize * 0.95 * 1000000
+            monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
                 description     => 'HDFS DataNode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=1&fullscreen&orgId=1'],
-                metric          => "Hadoop.DataNode.${::hostname}_eqiad_wmnet_9981.Hadoop.DataNode.JvmMetrics.MemHeapUsedM.upper",
-                from            => '60min',
+                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:51010\",area=\"heap\"}[60m])",
                 warning         => $dn_jvm_critical_threshold,
                 critical        => $dn_jvm_critical_threshold,
-                percentage      => '60',
                 contact_group   => 'analytics',
+                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
             }
         }
 
         $hadoop_nodemanager_heapsize = $::cdh::hadoop::yarn_heapsize
         if $hadoop_nodemanager_heapsize {
-            $nm_jvm_warning_threshold  = $hadoop_nodemanager_heapsize * 0.9
-            $nm_jvm_critical_threshold = $hadoop_nodemanager_heapsize * 0.95
-            monitoring::graphite_threshold { 'analytics_hadoop_yarn_nodemanager':
+            $nm_jvm_warning_threshold  = $hadoop_nodemanager_heapsize * 0.9 * 1000000
+            $nm_jvm_critical_threshold = $hadoop_nodemanager_heapsize * 0.95 * 1000000
+            monitoring::check_prometheus { 'analytics_hadoop_yarn_nodemanager':
                 description     => 'YARN NodeManager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?orgId=1&panelId=17&fullscreen'],
-                metric          => "Hadoop.NodeManager.${::hostname}_eqiad_wmnet_9984.Hadoop.NodeManager.JvmMetrics.MemHeapUsedM.upper",
-                from            => '60min',
+                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:8141\",area=\"heap\"}[60m]))",
                 warning         => $nm_jvm_critical_threshold,
                 critical        => $nm_jvm_critical_threshold,
-                percentage      => '60',
                 contact_group   => 'analytics',
+                prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
             }
         }
     }
