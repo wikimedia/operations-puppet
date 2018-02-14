@@ -27,7 +27,7 @@ class openstack::nova::compute::service(
         ensure  => 'present',
         require => Package['qemu-system'],
     }
-
+    
     # use exec to set the shell to not shadow the manage
     # the user for the package which causes Puppet
     # to see the user as a dependency anywhere the
