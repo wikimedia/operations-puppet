@@ -28,6 +28,14 @@ class openstack::nova::compute::service(
         require => Package['qemu-system'],
     }
 
+    # Install the hp-health package to access backplane information
+    # on HP servers only
+    if $::manufacturer == 'HP' {
+        package { 'hp-health':
+            ensure => 'present',
+        }
+    }
+
     # use exec to set the shell to not shadow the manage
     # the user for the package which causes Puppet
     # to see the user as a dependency anywhere the
