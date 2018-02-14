@@ -29,15 +29,6 @@ class openstack::nova::compute::monitor(
         nrpe_command => "/usr/local/lib/nagios/plugins/check_ssl_certfile /etc/ssl/localcerts/${certname}.crt",
     }
 
-    # The weird [n] is an attempt to keep check_procs from counting itself.
-    #  https://serverfault.com/questions/359958/nagios-nrpe-check-procs-wrong-return-value
-    nrpe::monitor_service { 'check_nova_compute_process':
-        ensure       => $ensure,
-        description  => 'nova-compute process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
-        retries      => 5,
-    }
-
     # Having multiple nova-compute process running long term has been known to happen
     # when puppet staggers a restart and nova gets very confused with dualing processes
     # pulling from rabbimq and potentially executing conflicting instructions.  A transient
@@ -63,5 +54,22 @@ class openstack::nova::compute::monitor(
         description  => 'nova-compute proc minimum',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n] /usr/bin/nova-compute'",
         retries      => 1,
+    }
+
+    # Where a stopped nova-compute processes means we are no longer processing
+    # control plane messaging above, this check makes sure that at least one (even
+    # if it is a token administrative) instance is running.  If a hypervisor
+    # does reboot it will come up without running instances even after the nova-compute
+    # processes has been fully restored.
+
+    # This means we need to have a token administrative instance running on all
+    # active hypervisors as a canary:
+    # OS_TENANT_NAME=testlabs openstack server create \
+    # --flavor 2 --image <image-id> --availability-zone host:<hypervisor> <instance>
+    nrpe::monitor_service { 'ensure_running_kvm_instances':
+        ensure       => $ensure,
+        description  => 'ensure kvm processes are running',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:75 --ereg-argument-array /usr/bin/kvm',
+        retries      => 2,
     }
 }
