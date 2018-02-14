@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 """Upgrade/downgrade Varnish on the given cache host between version 4 and
-version 5
+version 5.
 
 - Set Icinga downtime
 - Depool
-- Disable puppet
-- Wait for admin to merge hiera puppet change
+- Disable puppet (unless invoked with --hiera-merged)
+- Wait for admin to merge hiera puppet change (unless invoked with --hiera-merged)
 - Remove packages
-- Re-enable puppet and run it to upgrade
+- Re-enable puppet and run it to upgrade/downgrade
 - Run a test request through frontend and backend
 - Remove Icinga downtime
 - Repool
@@ -38,6 +38,9 @@ def parse_args():
     parser.add_argument(
         '--downgrade', action='store_true',
         help='Downgrade varnish instead of upgrading it')
+    parser.add_argument(
+        '--hiera-merged', action='store_true',
+        help='Pass this flag if hiera is already updated and puppet is disabled on the host')
 
     args = parser.parse_args()
     return args
@@ -155,10 +158,24 @@ def main():
 
     logger.info(reason)
 
-    # Check that puppet is not already disabled
-    if not run_cumin(args.host, ['puppet-enabled']):
-        logger.error("puppet is disabled on {}. Exiting.".format(args.host))
-        return 1
+    if not args.hiera_merged:
+        # Check that puppet is not already disabled. We skip this check if
+        # invoked with --hiera-merged because in that case puppet must
+        # necessarily be disabled already. If that were not the case, it would
+        # fail because of the discrepancy between the hiera setting
+        # profile::cache::base::varnish_version and the Varnish version
+        # installed on the system.
+        if not run_cumin(args.host, ['puppet-enabled']):
+            logger.error("puppet is disabled on {}. Exiting.".format(args.host))
+            return 1
+    else:
+        logger.info("Not disabling puppet/waiting for puppet merge as requested (--hiera-merged)")
+
+        # On the contrary, make sure puppet *is* disabled if invoked with
+        # --hiera-merged
+        if run_cumin(args.host, ['puppet-enabled']):
+            logger.error("puppet is enabled on {}. Exiting.".format(args.host))
+            return 1
 
     # Set Icinga downtime for the host to be upgraded
     icinga_downtime(args.host, reason, 1200)
@@ -170,22 +187,30 @@ def main():
     logging.info("Waiting for {} to be drained.".format(args.host))
     time.sleep(30)
 
-    # Disable puppet
-    if not run_cumin(args.host, ['disable-puppet "{message}"'.format(message=reason)]):
-        logger.error("Failed to disable puppet on {}. Exiting.".format(args.host))
-        return 1
+    if not args.hiera_merged:
+        # Disable puppet
+        if not run_cumin(args.host, ['disable-puppet "{message}"'.format(message=reason)]):
+            logger.error("Failed to disable puppet on {}. Exiting.".format(args.host))
+            return 1
 
-    # Wait for admin to merge the puppet patch toggling hiera settings
-    if not ask_confirmation("Waiting for you to puppet-merge "
-                            "the change toggling {}'s hiera settings".format(args.host)):
-        return 1
+        # Wait for admin to merge the puppet patch toggling hiera settings
+        if not ask_confirmation("Waiting for you to puppet-merge "
+                                "the change toggling {}'s hiera settings".format(args.host)):
+            return 1
 
     # Remove old stuff
     pre_puppet(args.host, downgrading=args.downgrade)
 
     # Enable and run puppet
-    cmd = 'run-puppet-agent --enable "{message}"'.format(message=reason)
-    if not run_cumin(args.host, [cmd], timeout=300):
+    if args.hiera_merged:
+        # If invoked with --hiera-merged we need to enable puppet and run
+        # puppet agent in two separate steps as we do not know the message used
+        # when disabling puppet
+        cmds = ['puppet agent --enable', 'run-puppet-agent']
+    else:
+        cmds = ['run-puppet-agent --enable "{message}"'.format(message=reason)]
+
+    if not run_cumin(args.host, cmds, timeout=300):
         logger.error("Failed to enable and run puppet on {}. Exiting.".format(args.host))
         return 1
 
