@@ -117,7 +117,7 @@ class role::mail::mx(
 
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',
-        check_command => 'check_smtp_tls',
+        check_command => 'check_smtp_tls_le',
     }
 
     ferm::service { 'exim-smtp':
