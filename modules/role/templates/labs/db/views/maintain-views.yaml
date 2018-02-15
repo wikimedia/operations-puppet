@@ -143,9 +143,10 @@ fullviews:
   - watchlist_count
 
 # Deliberately excluded:
-# - spamblacklist   T178052
-# - suppress        T178052
-# - titleblacklist  T178052
+# - abusefilterprivatedetails  T187455
+# - spamblacklist              T178052
+# - suppress                   T178052
+# - titleblacklist             T178052
 logging_whitelist:
   - abusefilter
   - articlefeedbackv5
