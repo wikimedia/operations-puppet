@@ -5,18 +5,12 @@
 class profile::hive::metastore(
     $monitoring_enabled = hiera('profile::hive::metastore::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hive::metastore::ferm_srange', '$DOMAIN_NETWORKS'),
-    $statsd             = hiera('statsd'),
 ) {
 
     require ::profile::hive::client
 
     # Setup hive-metastore
     class { '::cdh::hive::metastore': }
-
-    # Use jmxtrans for sending metrics
-    class { '::cdh::hive::jmxtrans::metastore':
-        statsd  => $statsd,
-    }
 
     ferm::service{ 'hive_metastore':
         proto  => 'tcp',

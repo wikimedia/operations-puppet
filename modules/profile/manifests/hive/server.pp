@@ -5,17 +5,11 @@
 class profile::hive::server(
     $monitoring_enabled  = hiera('profile::hive::server::monitoring_enabled', false),
     $ferm_srange         = hiera('profile::hive::server::ferm_srange', '$DOMAIN_NETWORKS'),
-    $statsd              = hiera('statsd')
 ) {
     include ::profile::hive::client
 
     # Setup hive-server
     class { '::cdh::hive::server': }
-
-    # Use jmxtrans for sending metrics
-    class { '::cdh::hive::jmxtrans::server':
-        statsd  => $statsd,
-    }
 
     ferm::service{ 'hive_server':
         proto  => 'tcp',
