@@ -54,6 +54,7 @@ class base::kernel(
             'ppdev',
             'acpi_power_meter',
             'bluetooth',
+            'v4l2-common',
         ],
     }
 
