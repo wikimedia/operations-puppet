@@ -49,3 +49,5 @@ cache::upload::nodes:
     - 'cp5004.eqsin.wmnet'
     - 'cp5005.eqsin.wmnet'
 #    - 'cp5006.eqsin.wmnet' # borked for now
+profile::cache::base::varnish_version: 5
+apt::use_experimental: true
