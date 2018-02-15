@@ -13,10 +13,8 @@ class profile::zookeeper::server (
     $sync_limit             = hiera('profile::zookeeper::sync_limit'),
     $statsd_host            = hiera('statsd'),
 ) {
-    # FIXME:
-    # This require package probably belongs to the zookeeper module, not this
-    # profile.
-    require_package('openjdk-7-jdk')
+
+    require_package('default-jre-headless')
 
     class { '::zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
