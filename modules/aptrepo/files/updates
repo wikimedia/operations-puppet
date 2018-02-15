@@ -133,6 +133,15 @@ Architectures: amd64 source
 VerifyRelease: 74A941BA219EC810
 ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
 
+Name: tor-stretch
+Method: http://deb.torproject.org/torproject.org/
+Components: main>thirdparty/tor
+UDebComponents:
+Suite: stretch
+Architectures: amd64 source
+VerifyRelease: 74A941BA219EC810
+ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
+
 Name: grafana
 Method: https://packagecloud.io/grafana/stable/debian
 Components: main>thirdparty
