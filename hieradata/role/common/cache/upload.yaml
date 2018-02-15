@@ -75,3 +75,5 @@ profile::cache::ssl::unified::letsencrypt: false
 
 # Enable varnishkafka-webrequest instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true
+profile::cache::base::varnish_version: 5
+apt::use_experimental: true
