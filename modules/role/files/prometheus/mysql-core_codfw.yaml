@@ -2,7 +2,6 @@
     shard: s1
     role: slave
   targets:
-  - db2042:9104
   - db2055:9104
   - db2062:9104
   - db2069:9104
