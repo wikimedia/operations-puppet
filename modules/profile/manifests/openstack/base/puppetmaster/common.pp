@@ -45,18 +45,20 @@ class profile::openstack::base::puppetmaster::common(
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
+    $labweb_aaaa = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
+
     ferm::rule{'puppetmaster':
         ensure => 'present',
         rule   => "saddr (${labs_instance_range} ${baremetal_servers_str}
                           @resolve(${horizon_host}) @resolve(${horizon_host}, AAAA)
-                          @resolve((${all_puppetmasters})) ${labweb_ips})
+                          @resolve((${all_puppetmasters})) ${labweb_ips} ${labweb_aaaa})
                           proto tcp dport 8141 ACCEPT;",
     }
 
     ferm::rule{'puppetbackend':
         ensure => 'present',
         rule   => "saddr (@resolve(${horizon_host}) @resolve(${designate_host})
-                          @resolve(${horizon_host}, AAAA) ${labweb_ips})
+                          @resolve(${horizon_host}, AAAA) ${labweb_ips} ${labweb_aaaa})
                           proto tcp dport 8101 ACCEPT;",
     }
 
