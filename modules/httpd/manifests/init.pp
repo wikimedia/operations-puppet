@@ -55,6 +55,12 @@ class httpd(
         priority => 0,
     }
 
+    # server status page
+    httpd::conf { 'server-status':
+        source   => 'puppet:///modules/httpd/status.conf',
+        priority => 10,
+    }
+
     httpd::site { 'dummy':
         source   => 'puppet:///modules/httpd/dummy.conf',
         priority => 0,
