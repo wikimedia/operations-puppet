@@ -55,7 +55,6 @@ class contint::packages::python {
 
     # Python 3
     require_package(
-        'python3',
         'python3-dev',
         'python3-tk',  # For pywikibot/core running tox-doc
     )

@@ -27,7 +27,7 @@
 #
 class keyholder($require_encrypted_keys='yes') {
 
-    require_package('python3', 'python3-yaml')
+    require_package('python3-yaml')
 
     group { 'keyholder':
         ensure => present,

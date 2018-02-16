@@ -72,7 +72,6 @@ class superset(
 ) {
     requires_os('debian >= jessie')
     require_package(
-        'python3',
         'virtualenv',
         'firejail',
     )
