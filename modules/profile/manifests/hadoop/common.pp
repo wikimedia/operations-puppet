@@ -263,6 +263,9 @@ class profile::hadoop::common (
         java_home                                   => $java_home,
     }
 
+    # Make HDFS accessible to non-jvm applications
+    require_package('libhdfs0')
+
     class { '::ores::base': }
 
     if $::realm == 'labs' {
