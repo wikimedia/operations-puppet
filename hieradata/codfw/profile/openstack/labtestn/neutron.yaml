@@ -1,0 +1,2 @@
+profile::openstack::labtestn::neutron::network_flat_interface: 'eth1.2105'
+profile::openstack::labtestn::neutron::network_flat_interface_vlan: '2105'
