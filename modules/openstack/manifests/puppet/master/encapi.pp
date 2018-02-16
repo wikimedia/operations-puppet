@@ -8,6 +8,7 @@ class openstack::puppet::master::encapi(
     $mysql_password,
     $labs_instance_range,
     $puppetmasters,
+    $labweb_hosts,
 ) {
     $horizon_host_ip = ipresolve($horizon_host, 4)
 
@@ -31,6 +32,23 @@ class openstack::puppet::master::encapi(
         source => 'puppet:///modules/openstack/puppet/master/encapi/labspuppetbackend.py',
     }
 
+    # uwsgi security rules:
+    #
+    # Each of these is a pair of sequential rules.  They have to be adjacent
+    #  and Puppet can't be trusted to insert them in the correct order.
+    #
+    # The first rule says "If the request is from a horizon host, skip the next rule."
+    #
+    # The second rule says "If this is a post, throw a 403"
+    #
+    # The sum effect is to allow POSTs only from horizon.
+    #
+    # I look forward to someone pointing out a better way to do this!
+
+    $labweb_rules = $labweb_hosts.map |$host| { sprintf("^%s\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden", ipresolve([<%= host %>, 4])) }
+    $labweb_rules_v6 = $labweb_hosts.map |$host| { sprintf("^%s\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden", ipresolve([<%= host %>, 6])) }
+    $horizon_rule = "^${horizon_host_ip}\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden"
+
     uwsgi::app { 'labspuppetbackend':
         settings  => {
             uwsgi => {
@@ -47,18 +65,10 @@ class openstack::puppet::master::encapi(
                     "STATSD_HOST=${statsd_host}",
                     "STATSD_PREFIX=${statsd_prefix}",
                 ],
-                # This next rule is actually two rules jammed together -- they have to be
-                #  sequential and Puppet can't be trusted to insert them in the correct order.
-                #
-                # The first rule says "If the request is from the horizon host, anything goes."
-                #
-                # The second rule says "If this is a post, throw a 403"
-                #
-                # The sum effect is to allow POSTs only from horizon.
-                #
-                'route-remote-addr' => "^${horizon_host_ip}\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden",
+                'route-remote-addr' => flatten($horizon_rule, $labweb_rules, $labweb_rules_v6),
             },
         },
+
         subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
     }
 
