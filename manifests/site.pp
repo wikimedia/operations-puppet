@@ -568,31 +568,23 @@ node 'db2011.codfw.wmnet' {
 ## m3 shard
 node 'db1059.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
-        shard  => 'm3',
         master => true,
     }
 }
 
 node 'db1043.eqiad.wmnet' {
-    class { '::role::mariadb::misc::phabricator':
-        shard => 'm3',
-    }
+    role(mariadb::misc::phabricator)
 }
 node 'db1053.eqiad.wmnet' {
-    class { '::role::mariadb::misc::phabricator':
-        shard => 'm3',
-    }
+    role(mariadb::misc::phabricator)
 }
 
+# codfw
 node 'db2012.codfw.wmnet' {
-    class { '::role::mariadb::misc::phabricator':
-        shard => 'm3',
-    }
+    role(mariadb::misc::phabricator)
 }
 node 'db2042.codfw.wmnet' {
-    class { '::role::mariadb::misc::phabricator':
-        shard => 'm3',
-    }
+    role(mariadb::misc::phabricator)
 }
 
 # m4 shard
