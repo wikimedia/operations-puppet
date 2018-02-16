@@ -31,6 +31,7 @@ def before_request():
         passwd=os.environ['MYSQL_PASSWORD'],
         charset='utf8'
     )
+    g.allowed_writers = os.environ['ALLOWED_WRITERS'].strip().split(','),
 
 
 @app.teardown_request
@@ -94,6 +95,13 @@ def get_all_roles():
 @statsd.timer('set_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 def set_roles(project, prefix):
+
+    if request.remote_addr not in g.allowed_writers:
+        return Response(
+            yaml.dump({'status': 'forbidden'}),
+            status=403,
+            mimetype='application/x-yaml')
+
     prefix = _preprocess_prefix(prefix)
     try:
         roles = yaml.safe_load(request.data)
@@ -176,6 +184,13 @@ def get_hiera(project, prefix):
 @statsd.timer('set_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
 def set_hiera(project, prefix):
+
+    if request.remote_addr not in g.allowed_writers:
+        return Response(
+            yaml.dump({'status': 'forbidden'}),
+            status=403,
+            mimetype='application/x-yaml')
+
     prefix = _preprocess_prefix(prefix)
     try:
         hiera = yaml.safe_load(request.data)
@@ -339,6 +354,13 @@ def get_prefixes_for_role(role):
 @statsd.timer('delete_prefix')
 @app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
 def delete_prefix(project, prefix):
+
+    if request.remote_addr not in g.allowed_writers:
+        return Response(
+            yaml.dump({'status': 'forbidden'}),
+            status=403,
+            mimetype='application/x-yaml')
+
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
     try:
