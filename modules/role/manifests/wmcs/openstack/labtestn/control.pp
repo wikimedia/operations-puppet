@@ -12,4 +12,5 @@ class role::wmcs::openstack::labtestn::control {
     include ::profile::openstack::labtestn::nova::scheduler::service
     include ::profile::openstack::labtestn::nova::api::service
     include ::profile::openstack::labtestn::nova::spiceproxy::service
+    include ::profile::openstack::labtestn::neutron::service
 }
