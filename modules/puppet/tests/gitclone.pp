@@ -1,2 +1,0 @@
-#
-include ::puppet::self::gitclone
