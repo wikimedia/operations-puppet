@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus exporter for the Kafka Burrow daemon
+Documentation=https://prometheus.io/docs/introduction/overview/
+
+[Service]
+Restart=always
+User=prometheus
+EnvironmentFile=/etc/default/<%= @service_name %>
+ExecStart=/usr/bin/prometheus-burrow-exporter $ARGS
+
+[Install]
+WantedBy=multi-user.target
