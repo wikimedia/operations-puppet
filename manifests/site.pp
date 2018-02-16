@@ -323,7 +323,7 @@ node 'db1054.eqiad.wmnet' {
 }
 
 # eqiad replicas
-node /^db1(053|060|074|076|090)\.eqiad\.wmnet/ {
+node /^db1(060|074|076|090)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -574,6 +574,11 @@ node 'db1059.eqiad.wmnet' {
 }
 
 node 'db1043.eqiad.wmnet' {
+    class { '::role::mariadb::misc::phabricator':
+        shard => 'm3',
+    }
+}
+node 'db1053.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
         shard => 'm3',
     }
