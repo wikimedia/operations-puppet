@@ -7,7 +7,6 @@ define profile::kafka::burrow(
     $consumer_groups = undef,
     $to_emails = [],
 ) {
-
     $config = kafka_config($title)
     $smtp_server = 'mx1001.wikimedia.org'
     $kafka_cluster_name = $config['name']
