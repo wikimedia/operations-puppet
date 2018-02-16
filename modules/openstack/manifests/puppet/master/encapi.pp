@@ -32,47 +32,29 @@ class openstack::puppet::master::encapi(
         source => 'puppet:///modules/openstack/puppet/master/encapi/labspuppetbackend.py',
     }
 
-    # uwsgi security rules:
-    #
-    #  We're going to pass an array of rules to route-remote-addr.
-    #
-    #  Each 'rule' is actually a route-remote-addr rule with a
-    #  second rule hanging off the end of it.  The two have
-    #  to be adjacent and puppet can't be trusted to insert them
-    #  in the correct order.
-    #
-    #  The first rule says "If the request is from a horizon host, skip the next rule."
-    #
-    #  The second rule says "If this is a post, throw a 403"
-    #
-    #  The sum effect is to allow POSTs only from horizon.
-    #
-    #  We're passing a bunch of these rule-and-a-halfs to uwsgi::app
-    #  and it will insert a bunch of route-remote-addr rules.
-    #
-    # I look forward to someone pointing out a better way to do this!
-
-    $labweb_rules = $labweb_hosts.map |$host| { sprintf("^%s\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden", ipresolve($host, 4)) }
-    $labweb_rules_v6 = $labweb_hosts.map |$host| { sprintf("^%s\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden", ipresolve($host, 6)) }
-    $horizon_rule = "^${horizon_host_ip}\$ continue:\nroute-if=equal:\${REQUEST_METHOD};POST break:403 Forbidden"
+    # The app will check that the requesting IP is in  ALLOWED_WRITERS
+    #  before writing or deleting.
+    $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
+    $labweb_ips_v6 = $labweb_hosts.map |$host| { ipresolve($host, 6) }
+    $allowed_writers = flatten([$labweb_ips, $labweb_ips_v6, $horizon_host_ip])
 
     uwsgi::app { 'labspuppetbackend':
         settings  => {
             uwsgi => {
-                plugins             => 'python3',
-                'wsgi-file'         => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
-                callable            => 'app',
-                master              => true,
-                http-socket         => '0.0.0.0:8101',
-                env                 => [
+                plugins     => 'python3',
+                'wsgi-file' => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
+                callable    => 'app',
+                master      => true,
+                http-socket => '0.0.0.0:8101',
+                env         => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
                     "MYSQL_USERNAME=${mysql_username}",
                     "MYSQL_PASSWORD=${mysql_password}",
                     "STATSD_HOST=${statsd_host}",
                     "STATSD_PREFIX=${statsd_prefix}",
+                    "ALLOWED_WRITERS=${allowed_writers}",
                 ],
-                'route-remote-addr' => flatten([$horizon_rule, $labweb_rules, $labweb_rules_v6]),
             },
         },
 
