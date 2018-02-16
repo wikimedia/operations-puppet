@@ -7,10 +7,14 @@ define profile::kafka::burrow(
     $consumer_groups = undef,
     $to_emails = [],
 ) {
-
     $config = kafka_config($title)
     $smtp_server = 'mx1001.wikimedia.org'
     $kafka_cluster_name = $config['name']
+
+    profile::prometheus::burrow_exporter { '$kafka_cluster_name':
+        burrow_addr => "localhost:${http_port}",
+        port        => $http_port + 1000,
+    }
 
     burrow { $kafka_cluster_name:
         zookeeper_hosts    => $config['zookeeper']['hosts'],
