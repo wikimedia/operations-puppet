@@ -23,6 +23,7 @@ plugins: kafka
 kafka_output: json
 kafka_topic: netflow
 kafka_broker_host: <%= @kafka_brokers %>
+kafka_partition: -1
 kafka_refresh_time: 60
 kafka_history: 1m
 kafka_history_roundoff: m
