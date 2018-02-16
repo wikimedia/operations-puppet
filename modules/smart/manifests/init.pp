@@ -1,7 +1,7 @@
 class smart (
     $ensure = present,
 ) {
-    require_package(['python3-prometheus-client', 'python3', 'bsdutils'])
+    require_package(['python3-prometheus-client', 'bsdutils'])
 
     $outfile = '/var/lib/prometheus/node.d/device_smart.prom'
 

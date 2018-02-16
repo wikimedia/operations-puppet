@@ -10,7 +10,7 @@
 # queried via HTTP by using 'module=<name>' on the query string.
 
 class prometheus::snmp_exporter {
-    require_package(['prometheus-snmp-exporter', 'python3', 'python3-yaml'])
+    require_package(['prometheus-snmp-exporter', 'python3-yaml'])
 
     prometheus::snmp_exporter::module { 'default':
         template => 'default',

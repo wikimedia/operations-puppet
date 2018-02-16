@@ -37,7 +37,6 @@ class jupyterhub (
 
     ensure_packages([
                     'lua-cjson',
-                    'python3',
                     'python3-venv',
                     'pwgen',
                     ])
