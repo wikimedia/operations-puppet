@@ -14,7 +14,6 @@
     shard: m3
     role: slave
   targets:
-  - db2012:9104
   - db2042:9104
 
 - labels:
