@@ -44,6 +44,7 @@ class role::mariadb::misc::phabricator(
         config    => 'role/mariadb/mysqld_config/phabricator.my.cnf.erb',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
+        basedir   => '/opt/wmf-mariadb101', # FIXME: config should default to 10.1
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
         ssl       => $ssl,
