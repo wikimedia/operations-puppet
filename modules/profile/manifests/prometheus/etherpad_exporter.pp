@@ -10,6 +10,8 @@ class profile::prometheus::etherpad_exporter (
         ensure  => running,
     }
 
+    base::service_auto_restart { 'prometheus-etherpad-exporter': }
+
     ferm::service { 'prometheus-etherpad-exporter':
         proto  => 'tcp',
         port   => '9198',
