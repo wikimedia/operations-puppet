@@ -135,4 +135,12 @@
     "network:create_private_dns_domain": [["rule:admin_or_projectadmin"]],
     "network:create_public_dns_domain": [["rule:admin_or_projectadmin"]],
     "network:delete_dns_domain": [["rule:admin_or_projectadmin"]]
+
+
+    "compute:attach_volume": "!",
+    "compute:detach_volume": "!",
+    "compute:swap_volume": "!",
+
+    "compute:attach_interface": "!",
+    "compute:detach_interface": "!"
 }
