@@ -6,6 +6,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     $dhcp_domain = hiera('profile::openstack::base::nova::dhcp_domain'),
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $webserver_hostname = hiera('profile::openstack::base::horizon::webserver_hostname'),
+    $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     ) {
 
     class { '::openstack::horizon::source_deploy':
