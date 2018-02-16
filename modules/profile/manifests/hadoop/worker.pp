@@ -68,7 +68,6 @@ class profile::hadoop::worker(
         'python-dateutil',
         'python-sympy',
         'python-docopt',
-        'python3',
         'python3-tabulate',
         'python3-scipy',
         'python3-enchant',

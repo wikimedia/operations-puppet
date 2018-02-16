@@ -39,7 +39,6 @@ class striker::uwsgi(
         'libmysqlclient18',
         'libsasl2-2',
         'libssl1.0.0',
-        'python3',
         'python3-wheel',
         'python-virtualenv',
     )

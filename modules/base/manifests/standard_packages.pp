@@ -33,6 +33,7 @@ class base::standard_packages {
         'ngrep',
         'pv',
         'psmisc',
+        'python3',
         'quickstack',
         'screen',
         'strace',
