@@ -55,12 +55,6 @@ class httpd(
         priority => 0,
     }
 
-    # server status page
-    httpd::conf { 'server-status':
-        source   => 'puppet:///modules/httpd/status.conf',
-        priority => 50,
-    }
-
     httpd::site { 'dummy':
         source   => 'puppet:///modules/httpd/dummy.conf',
         priority => 0,
@@ -87,6 +81,32 @@ class httpd(
 
     httpd::mod_conf { concat(['status'], $modules):
         ensure => present
+    }
+
+
+    # The default mod_status configuration enables /server-status on all vhosts for
+    # local requests, but it does not correctly distinguish between requests which
+    # are truly local and requests that have been proxied. Because most of our
+    # Apaches sit behind a reverse proxy, the default configuration is not safe, so
+    # we make sure to replace it with a more conservative configuration that makes
+    # /server-status accessible only to requests made via the loopback interface.
+    # See T113090.
+
+    file { [
+        '/etc/apache2/mods-available/status.conf',
+        '/etc/apache2/mods-enabled/status.conf',
+    ]:
+        ensure  => absent,
+        before  => Httpd::Mod_conf['status'],
+        require => Package['apache2'],
+    }
+
+
+    # server status page
+    httpd::conf { 'server-status':
+        source   => 'puppet:///modules/httpd/status.conf',
+        priority => 50,
+        require  => Httpd::Mod_conf['status'],
     }
 
     # Check the status
