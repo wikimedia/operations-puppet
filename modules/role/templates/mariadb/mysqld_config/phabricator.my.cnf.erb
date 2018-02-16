@@ -2,7 +2,7 @@
 
 [client]
 port   = 3306
-socket = /tmp/mysql.sock
+socket = <%= @socket %>
 <% if @ssl == 'on' %>
 # ssl
 ssl-ca=/etc/mysql/ssl/cacert.pem
@@ -22,7 +22,7 @@ ssl-verify-server-cert
 [mysqld]
 
 user       = mysql
-socket     = /tmp/mysql.sock
+socket     = <%= @socket %>
 port       = 3306
 extra_port = 3307
 basedir    = <%= @basedir %>

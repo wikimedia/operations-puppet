@@ -31,7 +31,6 @@ class role::mariadb::misc::phabricator(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
-        socket      => '/tmp/mysql.sock',
     }
 
     $read_only = $master ? {
@@ -85,7 +84,6 @@ class role::mariadb::misc::phabricator(
         shard      => $shard,
         datacenter => $::site,
         enabled    => $master,
-        socket     => '/tmp/mysql.sock',
     }
 
     unless $master {
@@ -93,7 +91,6 @@ class role::mariadb::misc::phabricator(
             is_critical   => false,
             contact_group => 'admins',
             multisource   => false,
-            socket        => '/tmp/mysql.sock',
         }
     }
 }
