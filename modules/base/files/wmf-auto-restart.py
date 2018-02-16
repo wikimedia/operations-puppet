@@ -65,7 +65,7 @@ def check_restart(service_name, dry_run):
 
     logger.debug("Service pids: %s", service_pids)
 
-    restart_needed = False
+    pids_to_restart = set()
     for line in del_files.splitlines():
         cols = line.split(maxsplit=7)
         try:
@@ -79,32 +79,34 @@ def check_restart(service_name, dry_run):
                 continue
 
             if pid in service_pids:
-                restart_needed = True
-                logger.info("Detected necessary restart for service %s (%s)", service_name, pid)
-                if not native_systemd_unit:
-                    logger.warning("Service %s uses a legacy sysvinit script", service_name)
-                    logger.warning("Consider using a systemd unit instead")
-
-                if dry_run:
-                    logger.info("Skipping restart since --dry-run was specified")
-                else:
-                    cmd = ["/bin/systemctl", "restart", service_name]
-                    try:
-                        restart_output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-                        logger.info("Restarted service %s", service_name)
-                        if restart_output:
-                            logger.info(restart_output)
-                    except subprocess.CalledProcessError as e:
-                        logger.error("Failed to restart service %s:", service_name)
-                        logger.error(e.output)
-                        return 1
+                pids_to_restart.add(pid)
 
         except ValueError:
             logger.error("Malformed line in lsof output:")
             logger.error(line)
             continue
 
-    if not restart_needed:
+    if pids_to_restart:
+        for pid in pids_to_restart:
+            logger.info("Detected necessary restart for service %s (%s)", service_name, pid)
+            if not native_systemd_unit:
+                logger.warning("Service %s uses a legacy sysvinit script", service_name)
+                logger.warning("Consider using a systemd unit instead")
+
+            if dry_run:
+                logger.info("Skipping restart since --dry-run was specified")
+            else:
+                cmd = ["/bin/systemctl", "restart", service_name]
+                try:
+                    restart_output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+                    logger.info("Restarted service %s", service_name)
+                    if restart_output:
+                        logger.info(restart_output)
+                except subprocess.CalledProcessError as e:
+                    logger.error("Failed to restart service %s:", service_name)
+                    logger.error(e.output)
+                    return 1
+    else:
         logger.info("No restart necessary for service %s", service_name)
 
     return 0
