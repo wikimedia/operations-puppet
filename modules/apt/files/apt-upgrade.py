@@ -130,13 +130,15 @@ def calculate_upgrades(cache, exclude_file):
     for pkg_name in cache.keys():
         pkg_upgrade(cache[pkg_name])
 
-    exclude_packages(cache.get_changes(), exclude_file)
+    pkg_list = sort_pkgs_by_archive(cache.get_changes())
+    exclude_packages(pkg_list, exclude_file)
 
-    # report changes
-    for pkg in sort_pkgs_by_archive(cache.get_changes()):
-        print_output_pkg("[change]", pkg)
+    # excluding packages generates new changes, so sort again
+    pkg_list = sort_pkgs_by_archive(cache.get_changes())
+    for pkg in pkg_list:
+        print_output_pkg("", pkg)
 
-    return len(cache.get_changes())
+    return len(pkg_list)
 
 
 def run_upgrade(cache, src, confirm, exclude_file):
