@@ -35,6 +35,7 @@ class profile::openstack::base::puppetmaster::common(
         statsd_prefix       => $encapi_statsd_prefix,
         labs_instance_range => $labs_instance_range,
         puppetmasters       => $puppetmasters,
+        labweb_hosts        => $labweb_hosts,
     }
 
     # Update git checkout.  This is done via a cron
