@@ -42,6 +42,8 @@ class profile::prometheus::openldap_exporter (
         require => File['/etc/prometheus/openldap-exporter.yaml'],
     }
 
+    base::service_auto_restart { 'prometheus-openldap-exporter': }
+
     ferm::service { 'prometheus-openldap-exporter':
         proto  => 'tcp',
         port   => '9142',
