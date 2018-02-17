@@ -2,10 +2,17 @@
 
     # Make robots.txt editable via Mediawiki:robots.txt
     RewriteRule ^/robots\.txt$ /w/robots.php [L]
+
+    # Redirect URLs like /?curid=xxxx so that they can be blocked by robots.txt
+    RewriteCond %{QUERY_STRING} !=""
+    RewriteRule ^/$ /w/index.php [R=301,L]
+
     # Primary wiki redirector:
     RewriteRule ^/$ /w/index.php
+
     # Configurable favicon
     RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
+
     # Configurable apple-touch-icon.png
     RewriteRule ^/apple-touch-icon\.png$ /w/touch.php [L]
 
