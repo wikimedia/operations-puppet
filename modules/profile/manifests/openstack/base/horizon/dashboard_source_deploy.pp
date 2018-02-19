@@ -25,7 +25,5 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         srange => '$CACHE_MISC'
     }
 
-    class { '::memcached':
-        ip  => '127.0.0.1',
-    }
+    class { '::memcached': }
 }
