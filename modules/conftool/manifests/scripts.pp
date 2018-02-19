@@ -22,36 +22,16 @@ class conftool::scripts {
         source => 'puppet:///modules/conftool/pooler_loop.rb',
     }
 
-    file { '/usr/local/bin/pool':
+    file { [
+        '/usr/local/bin/pool',
+        '/usr/local/bin/depool',
+        '/usr/local/bin/drain',
+        '/usr/local/bin/decommission'
+    ]:
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('conftool/pool.erb'),
+        content => template('conftool/conftool-simple-command.erb'),
     }
-
-    file { '/usr/local/bin/depool':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('conftool/depool.erb'),
-    }
-
-    file { '/usr/local/bin/drain':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('conftool/drain.erb'),
-    }
-
-    file { '/usr/local/bin/decommission':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('conftool/decommission.erb'),
-    }
-
 }

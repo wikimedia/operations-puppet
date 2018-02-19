@@ -1,0 +1,43 @@
+#!/bin/bash
+set -u
+action="${0}"
+case $action in
+    "pool")
+        $old_action = "set/pooled=yes"
+        ;;
+    "depool")
+        $old_action = "set/pooled=no"
+        ;;
+    "drain")
+        $old_action = "set/weight=0"
+        ;;
+    "decommission")
+        $old_action = "set/pooled=inactive"
+	;;
+    default)
+        echo "Invalid command: ${0}"
+        exit 2
+esac
+
+function do_action() {
+    if [ -z $1 ]; then
+        confctl --quiet "${action}"
+    else
+        confctl --quiet "${action}" --service "${1}"
+    fi
+}
+
+function do_old_action() {
+    host="<%= scope.lookupvar('::fqdn') %>"
+    if [ -z $1 ]; then
+        confctl --quiet --find "${host}" --action $old_action
+    else
+        confctl --quiet select "${1},name=${host}" $old_action
+    fi
+}
+
+do_action > /dev/null
+# Compatibility with confctl < 1.0
+if "$?" -eq 2 then
+    do_old_action
+fi
