@@ -2723,6 +2723,17 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7kVBeBx3ecxOKoWSeCEZHFe2QZ0be09uQ6JjsoaBnm2LHNRg3+0ju0drSdRlnHNmfL8S8NKzSD2SFLHwXGqd4pj8IGQRApJLbHjzT2oiNAylYQeEjSJKFjsC812tnzfa3yu7EGPuwuiz5WGBeNWemugDaGy78UTVdgwe46fSkCmYSrfOrYgCYRhgLUO4s0Jm/pH7u+q0iGzNflpcCGz8QgfZ2Dd5loumpMmmswDT9xe9+wyjyZmYqvRlH1KVbK19BSJhKdTwV8C617+6X/psdPVu9nOIUaHEJ6X0ByaiQvIvnRHIu6MKTssfPwkMEa2Ga6I7bVbiO/igeCaOunz7i+sPLupz6pwlxTPqS15cu3KIgJxwgwdsCJLyrQ1yJ2jaWVN3PKhBzlJaAcfn9hEGGlFTtEgx4jkay8xPaHpgQ8Qfi+aDDF6XggdtFa2Gxb8pb2FSrxuoFoTNdiLnB2xDI4qMF211uyRoX684M9WXNm4LdNucA52kDCXJC7DOyejp7ToaFyKgZAWWASYHset6nIvFy8ciAiVS0tfjMevJ1GwFy0znb7Hx2YzmADgInCYNcaT9RKNz/3ObFaBvlbAwcCeKB34gOyftTwZvX1T3G49XGQX54M7eq8tIlTXn8CaL8Vf/q1D8BoskbQfNXypLs7pJNgrpeKcaGMIwEsvcJ7Q== vgutierrez@yubikey4nano
     uid: 18837
     email: vgutierrez@wikimedia.org
+  katie:
+    ensure: present
+    gid: 500
+    name: katie
+    realname: Katie Lin
+    ssh_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5FwLyUfc5hYG83CGA7eXsIk1ZfvldzJEoYcxYRLycK1L2AXKxv6Hpk+D5zgVE3nrNSEhMSZBJFtLfBzqHOH96e3EdUQp12CqWnok5Y73piVofjKFm5Qi2HdTdDtnm4IuOOYsFVG82za5oE24lbqMR6qsJrxDpS/B6VbAcPRQ15p90sj/S0h0wWbxCzC6Zrmjdb/V1+VCNAw7Qflxg+GMA5XiCXdScnJIWQEEONJhmCEzhuZmg2cyY19FOJiKoyd2AD7lFRlLH0OQQCzDCMcKtCmz++NCuqd+agD9/ApFp0k8XsMhJvGPYt6x9BM/24JPyVL40TXU4N9X2In4+1iXX katielin@mbp15-2.local
+    uid: 18876
+    email: katielin2532@gmail.com
+    expiry_date: 2018-06-30
+    expiry_contact: mhernandez@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
