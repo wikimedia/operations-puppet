@@ -15,11 +15,8 @@ class toollabs::checker inherits toollabs {
                     'python-pymysql',
                     'python-redis',
                     'uwsgi',
-                    'uwsgi-plugin-python')
-
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
+                    'uwsgi-plugin-python',
+                    'toollabs-webservice')
 
     $checks = {
         'self'                            => {

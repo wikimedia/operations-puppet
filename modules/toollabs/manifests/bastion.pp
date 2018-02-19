@@ -166,13 +166,7 @@ class toollabs::bastion(
         }
     }
 
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
-
-    package { 'mosh':
-        ensure => present,
-    }
+    require_package(['toollabs-webservice', 'mosh' ] )
 
     motd::script { 'bastion-banner':
         ensure => present,

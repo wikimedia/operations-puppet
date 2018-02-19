@@ -15,7 +15,7 @@ class toollabs::exec_environ {
     # T65000
     include ::imagemagick::install
 
-    package { [
+    require_package([
         # Please keep all packages in each group sorted in alphabetical order
 
         # Locales (T60500)
@@ -319,9 +319,9 @@ class toollabs::exec_environ {
         'zbar-tools',                  # T58996
         'debootstrap',                 # T138138
         'fakechroot',                  # T138138
-        ]:
-        ensure => latest,
-    }
+        'misctools'
+        ]
+    )
 
     file { '/etc/mysql/conf.d/override.my.cnf':
         ensure => file,
@@ -334,7 +334,7 @@ class toollabs::exec_environ {
     if $::lsbdistcodename == 'trusty' {
         include ::toollabs::genpp::python_exec_trusty
         # No obvious package available for libgdal
-        package { [
+        require_package([
             'hhvm',                        # T78783
             'libboost-python1.54.0',
             'libmpc3',
@@ -347,10 +347,9 @@ class toollabs::exec_environ {
             'opencv-data',                 # T142321
             'python-flake8',
             'python3-flake8',
-            'tcl-thread',
-            ]:
-            ensure => latest,
-        }
+            'tcl-thread'
+            ]
+        )
 
         # T135861: PHP 5.5 sessionclean cron job hanging on tool labs bastions
         file { '/usr/lib/php5/sessionclean':
@@ -381,7 +380,7 @@ class toollabs::exec_environ {
     } elsif $::lsbdistcodename == 'jessie' {
         include ::toollabs::genpp::python_exec_jessie
         # No obvious package available for libgdal
-        package { [
+        require_package([
             'hhvm',                        # T78783
             'libboost-python1.55.0',
             'libmpc3',
@@ -394,14 +393,9 @@ class toollabs::exec_environ {
             'opencv-data',                 # T142321
             'python-flake8',
             'python3-flake8',
-            'tcl-thread',
-            ]:
-            ensure => latest,
-        }
-    }
-
-    package { 'misctools':
-        ensure => latest,
+            'tcl-thread'
+            ]
+        )
     }
 
     sysctl::parameters { 'tool labs':

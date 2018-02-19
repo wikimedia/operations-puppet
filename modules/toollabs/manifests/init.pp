@@ -10,9 +10,7 @@ class toollabs (
 
     include ::labs_lvm
 
-    package { ['nano', 'at']:
-        ensure => latest,
-    }
+    require_package(['nano', 'at'])
 
     alternatives::select { 'editor':
         path => '/bin/nano',

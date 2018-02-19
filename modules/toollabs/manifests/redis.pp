@@ -11,9 +11,7 @@ class toollabs::redis (
     include ::redis::client::python
     include ::labs_lvm
 
-    package { 'python-virtualenv':
-        ensure => latest,
-    }
+    require_package('python-virtualenv')
 
     labs_lvm::volume { 'redis-disk':
         mountat => '/srv',

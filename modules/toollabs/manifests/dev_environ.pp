@@ -12,7 +12,7 @@ class toollabs::dev_environ {
     if os_version('ubuntu trusty') {
         include ::toollabs::genpp::python_dev_trusty
         include ::phabricator::arcanist # T139738
-        package { [
+        require_package([
             'bundler',  # T120287
             # Previously we installed libmariadbclient-dev, but that causes
             # dependency issues on Trusty.  libmariadbclient-dev formerly
@@ -21,23 +21,21 @@ class toollabs::dev_environ {
             'libmysqlclient-dev',
             'libboost-python1.54-dev',
             'redis-tools',
-        ]:
-            ensure  => latest,
-        }
+            ]
+        )
     } elsif os_version('debian jessie') {
         include ::toollabs::genpp::python_dev_jessie
         include ::phabricator::arcanist # T139738
-        package { [
+        require_package([
             'bundler',  # T120287
             'libmariadb-client-lgpl-dev',
             'libmariadb-client-lgpl-dev-compat',
             'libboost-python1.55-dev',
-        ]:
-            ensure  => latest,
-        }
+            ]
+        )
     }
 
-    package { [
+    require_package([
         'ant',
         'apt-file',
         'autoconf',
@@ -95,9 +93,8 @@ class toollabs::dev_environ {
         'tcl8.5-dev',
         'tig',
         'valgrind',                    # T87117.
-    ]:
-        ensure => latest,
-    }
+        ]
+    )
 
     # pastebinit configuration for https://tools.wmflabs.org/paste/.
     file { '/etc/pastebin.d':

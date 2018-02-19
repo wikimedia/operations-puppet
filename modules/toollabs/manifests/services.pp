@@ -12,13 +12,7 @@ class toollabs::services(
 
     include ::gridengine::submit_host
 
-    package { 'tools-manifest':
-        ensure => latest,
-    }
-
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
+    require_package(['tools-manifest', 'toollabs-webservice'])
 
     file { '/usr/local/bin/webservice':
         ensure => link,
