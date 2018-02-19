@@ -261,10 +261,10 @@ smart_health_eqiad:
 #   __regex: !ruby/regexp /^(silver|californium|labcontrol.*|labpuppetmaster.*|labservices.*|labstore.*|labtestcontrol.*|labtestpuppetmaster.*|labtestservices.*|labtestweb.*|labweb.*).wikimedia.org$/
 #   profile::base::check_smart: true
 #
-# smart_health_wikimedia_recursor:
-#   __regex: !ruby/regexp /^(acamar|dns.*).wikimedia.org$/
-#   profile::base::check_smart: true
-#
+smart_health_wikimedia_recursor:
+  __regex: !ruby/regexp /^(acamar|dns.*).wikimedia.org$/
+  profile::base::check_smart: true
+
 smart_health_wikimedia_authdns:
   __regex: !ruby/regexp /^eeden.wikimedia.org$/
   profile::base::check_smart: true
