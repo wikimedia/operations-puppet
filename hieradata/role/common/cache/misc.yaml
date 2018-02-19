@@ -42,6 +42,7 @@ cache::app_directors:
   labweb:
     backends:
       eqiad: 'labweb1001.wikimedia.org'
+      eqiad: 'labweb1002.wikimedia.org'
   darmstadtium:
     be_opts:
       port: 81
