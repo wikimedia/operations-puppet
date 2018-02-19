@@ -126,14 +126,22 @@ ON `testreduce_0715`.* TO 'ssastry'@'10.64.16.151';
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, DROP
 ON `testreduce_vd`.* TO 'ssastry'@'10.64.16.151';
 
--- striker application user. Will connect to DB from californium.
+-- striker application user. Will connect to DB from californium, labweb1001 and labweb1002
 GRANT SELECT, INSERT, UPDATE, DELETE ON striker.* TO 'striker'@'208.80.154.147'
 IDENTIFIED BY '<%= @striker_pass %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON striker.* TO 'striker'@'208.80.154.160'
+IDENTIFIED BY '<%= @striker_pass %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON striker.* TO 'striker'@'208.80.155.109'
+IDENTIFIED BY '<%= @striker_pass %>';
 
--- striker admin user. Will connect to DB from terbium and californium.
+-- striker admin user. Will connect to DB from terbium, californium, labweb1001 and labweb1002
+GRANT ALL ON striker.* TO 'striker_admin'@'10.64.32.13'
+IDENTIFIED BY '<%= @striker_admin_pass %>';
 GRANT ALL ON striker.* TO 'striker_admin'@'208.80.154.147'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
-GRANT ALL ON striker.* TO 'striker_admin'@'10.64.32.13'
+GRANT ALL ON striker.* TO 'striker_admin'@'208.80.154.160'
+IDENTIFIED BY '<%= @striker_admin_pass %>';
+GRANT ALL ON striker.* TO 'striker_admin'@'208.80.155.109'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
 
 -- labspuppetbackend user, will run on the labs puppetmaster host --
