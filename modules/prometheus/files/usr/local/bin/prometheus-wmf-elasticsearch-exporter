@@ -1,0 +1,77 @@
+#!/usr/bin/python
+import argparse
+import json
+import logging
+import socket
+
+import sys
+
+import time
+from urllib2 import Request, urlopen, URLError
+
+from prometheus_client import start_http_server, Summary
+from prometheus_client.core import GaugeMetricFamily, REGISTRY
+
+log = logging.getLogger(__name__)
+
+
+class PrometheusWMFElasticsearchExporter(object):
+
+    scrape_duration = Summary(
+        'wmf_elasticsearch_scrape_duration_seconds', 'WMF Elasticsearch exporter scrape duration')
+
+    base_url = 'http://localhost:9200'
+    latency_url = base_url + '/_nodes/latencyStats'
+
+    @scrape_duration.time()
+    def collect(self):
+        try:
+            req = Request(self.latency_url)
+            response = urlopen(req)
+            data = json.load(response)
+            hostname = socket.gethostname()
+            nodes = data['nodes']
+
+            # we only want to collect latencies for the local node, so let's filter out everything else
+            latencies = next(n['latencies'] for _, n in nodes.iteritems() if n['name'] == hostname)
+
+            per_node_latency = GaugeMetricFamily('wmf_elasticsearch_per_node_latency', 'Per node latency percentiles',
+                                                 labels=['type', 'percentile'])
+
+            for type, latency in latencies.iteritems():
+                for lat in latency:
+                    per_node_latency.add_metric([type, str(lat['percentile'])], lat['latencyMs'])
+            yield per_node_latency
+        except URLError:
+            return
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-l', '--listen', metavar='ADDRESS',
+                        help='Listen on this address', default=':9109')
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Enable debug logging')
+    args = parser.parse_args()
+
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.WARNING)
+
+    address, port = args.listen.split(':', 1)
+
+    log.info('Starting blazegraph_exporter on %s:%s', address, port)
+
+    REGISTRY.register(PrometheusWMFElasticsearchExporter())
+    start_http_server(int(port), addr=address)
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
