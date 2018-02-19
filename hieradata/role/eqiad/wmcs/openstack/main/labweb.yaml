@@ -1,0 +1,69 @@
+---
+memcached::ip: 127.0.0.1
+nginx::variant: light
+
+admin::groups:
+  - wmcs-roots
+  - deployment
+
+striker::apache::server_name: toolsadmin.wikimedia.org
+striker::apache::docroot: /srv/deployment/striker/deploy/public_html
+striker::apache::servers:
+  - http://127.0.0.1:8081
+striker::apache::port: 80
+
+striker::uwsgi::port: 8081
+striker::uwsgi::config:
+  debug:
+    DEBUG: false
+  ldap:
+    SERVER_URI: ldaps://ldap-labs.eqiad.wikimedia.org:636
+    BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
+    TLS: false
+  oauth:
+    CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+  phabricator:
+    USER: StrikerBot
+  db:
+    ENGINE: django.db.backends.mysql
+    NAME: striker
+    USER: striker
+    HOST: m5-master.eqiad.wmnet
+    PORT: 3306
+  cache:
+    LOCATION: 127.0.0.1:11000
+  xff:
+    USE_XFF_HEADER: true
+    # CIDR not supported, but substring/prefix match is
+    # Should match IPs presented by the misc cache servers + 127.0.0.1
+    TRUSTED_PROXY_LIST: "127.0.0.1 10. 208.80.152. 208.80.153. 208.80.154. 208.80.155. 91.198.174. 198.35.26."
+  https:
+    REQUIRE_HTTPS: true
+  logging:
+    HANDLERS: file logstash
+    FILE_FILENAME: /srv/log/striker/striker.log
+    LOGSTASH_HOST: logstash.svc.eqiad.wmnet
+    LOGSTASH_PORT: 11514
+  static:
+    STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
+
+striker::uwsgi::secret_config:
+  # These values are only here to show the expected keys.
+  # Actual values should be provided in the private or secret repos
+  secrets:
+    SECRET_KEY: "50 char random string used by Django to salt things"
+  ldap:
+    BIND_PASSWORD: "striker::uwsgi::config::ldap::BIND_USER's password"
+  oauth:
+    CONSUMER_SECRET: "striker::uwsgi::config::oauth::CONSUMER_KEY's secret"
+  phabricator:
+    TOKEN: "striker::uwsgi::config::phabricator::USER's API token"
+  db:
+    PASSWORD: "striker::uwsgi::config::db::USER's password"
+
+apache::logrotate::period: 'daily'
+apache::logrotate::rotate: 30
+
+role::mediawiki::webserver::tls: false
+
+profile::openstack::main::version: ocata
