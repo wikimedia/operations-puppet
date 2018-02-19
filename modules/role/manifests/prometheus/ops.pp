@@ -11,7 +11,7 @@ class role::prometheus::ops {
     include ::base::firewall
 
     $targets_path = '/srv/prometheus/ops/targets'
-    $storage_retention = hiera('prometheus::server::storage_retention', '4032h0m0s')
+    $storage_retention = hiera('prometheus::server::storage_retention', '2190h0m0s')
     $max_chunks_to_persist = hiera('prometheus::server::max_chunks_to_persist', '524288')
     $memory_chunks = hiera('prometheus::server::memory_chunks', '1048576')
 
@@ -798,6 +798,22 @@ class role::prometheus::ops {
         port       => '9108',
     }
 
+    $wmf_elasticsearch_jobs = [
+        {
+            'job_name'        => 'wmf_elasticsearch',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/wmf_elasticsearch_*.yaml" ]}
+            ],
+        },
+    ]
+    prometheus::class_config { "wmf_elasticsearch_${::site}":
+        dest       => "${targets_path}/wmf_elasticsearch_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::prometheus::wmf_elasticsearch_exporter',
+        port       => '9109',
+    }
+
     $nutcracker_jobs = [
         {
             'job_name'        => 'nutcracker',
@@ -859,7 +875,7 @@ class role::prometheus::ops {
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $pdu_jobs,
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
-            $etherpad_jobs, $elasticsearch_jobs,
+            $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
             $kafka_burrow_jobs
         ),
