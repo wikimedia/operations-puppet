@@ -49,6 +49,7 @@ class striker::uwsgi(
             'libsasl2-2',
             'python3-wheel',
             'python-virtualenv',
+            'libmariadbclient18',
         )
     }
 
