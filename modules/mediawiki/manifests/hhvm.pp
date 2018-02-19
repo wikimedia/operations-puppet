@@ -27,6 +27,7 @@ class mediawiki::hhvm {
         user          => $::mediawiki::users::web,
         group         => $::mediawiki::users::web,
         fcgi_settings => {
+            # See https://docs.hhvm.com/hhvm/configuration/INI-settings
             hhvm => {
                 xenon          => {
                     period => to_seconds('10 minutes'),
@@ -38,6 +39,7 @@ class mediawiki::hhvm {
                     source_root           => '/srv/mediawiki/docroot',
                     error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
                     error_document404     => '/srv/mediawiki/errorpages/404.php',
+                    # Currently testing on Beta Cluster: auto_prepend_file (T180183)
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
                     thread_count          => $max_threads,
                     ip                    => '127.0.0.1',
