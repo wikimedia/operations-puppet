@@ -7,6 +7,7 @@ class role::elasticsearch::relforge {
     include ::base::firewall
     include ::profile::elasticsearch
     include ::profile::prometheus::elasticsearch_exporter
+    include ::profile::prometheus::wmf_elasticsearch_exporter
     include ::elasticsearch::nagios::check
     include ::profile::mjolnir::kafka_daemon
 
