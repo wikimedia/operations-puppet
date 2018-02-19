@@ -7,16 +7,16 @@ class profile::mariadb::proxy::master (
     ) {
     # patch until all haproxies have been upgraded to 1.7
     if os_version('debian >= stretch') {
-        $master_template = 'db-master-stretch.cfg'
+        $master_template = 'db-master-stretch.cfg.erb'
     } else {
-        $master_template = 'db-master.cfg'
+        $master_template = 'db-master.cfg.erb'
     }
 
     file { '/etc/haproxy/conf.d/db-master.cfg':
         owner   => 'haproxy',
         group   => 'haproxy',
         mode    => '0440',
-        content => template("profile/mariadb/proxy/${master_template}.erb"),
+        content => template("profile/mariadb/proxy/${master_template}"),
     }
 
     nrpe::monitor_service { 'haproxy_failover':
