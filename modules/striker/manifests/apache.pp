@@ -20,6 +20,9 @@ class striker::apache(
     $port = 80,
 ){
 
+    httpd::mod_conf { 'proxy':
+    }
+
     httpd::site { 'striker':
         content => template('striker/apache.conf.erb'),
     }
