@@ -2981,3 +2981,7 @@ ldap_only_users:
     ensure: present
     realname: Sam Tarling
     email: samtar.on.en.wp@gmail.com
+  cgauthier:
+    ensure: present
+    realname: Charlotte Gauthier
+    email: cgauthier@wikimedia.org
