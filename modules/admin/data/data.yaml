@@ -266,6 +266,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
     members: [joal, nuria, mforns, milimetric, fdans, tbayer]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
+                 'ALL = (yarn)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
