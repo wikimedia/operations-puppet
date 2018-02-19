@@ -15,7 +15,7 @@
 define profile::prometheus::burrow_exporter(
     $prometheus_nodes,
     $burrow_addr = 'localhost:8000',
-    $hostname = $::hostname,
+    $hostname = '0.0.0.0',
     $port = '9000',
 ) {
     prometheus::burrow_exporter { $title:
