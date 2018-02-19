@@ -9,3 +9,5 @@ role::mediawiki::webserver::tls: false
 
 profile::openstack::main::version: ocata
 profile::openstack::main::horizon::webserver_hostname: newhorizon.wikimedia.org
+
+striker::apache::server_name: newtoolsadmin.wikimedia.org

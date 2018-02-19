@@ -289,6 +289,8 @@ cache::req_handling:
     caching: 'pass'
   toolsadmin.wikimedia.org:
     director: 'californium'
+  newtoolsadmin.wikimedia.org:
+    director: 'labweb'
   transparency.wikimedia.org:
     director: 'bromine'
   yarn.wikimedia.org:
