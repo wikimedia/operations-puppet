@@ -522,11 +522,13 @@ node 'db1031.eqiad.wmnet' {
 }
 
 # codfw
-node 'db2033.codfw.wmnet' {
+# x1 codfw master
+node 'db2034.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node 'db2034.codfw.wmnet' {
+# x1 codfw slave - BBU is broken - T184888
+node 'db2033.codfw.wmnet' {
     role(mariadb::core)
 }
 
