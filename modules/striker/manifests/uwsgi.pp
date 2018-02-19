@@ -32,15 +32,25 @@ class striker::uwsgi(
     include service::configuration
 
     # Packages needed by python wheels
-    require_package(
-        'libffi6',
-        'libldap-2.4-2',
-        'libmysqlclient18',
-        'libsasl2-2',
-        'libssl1.0.0',
-        'python3-wheel',
-        'python-virtualenv',
-    )
+    if os_version('ubuntu trusty') {
+        require_package(
+            'libffi6',
+            'libldap-2.4-2',
+            'libmysqlclient18',
+            'libsasl2-2',
+            'libssl1.0.0',
+            'python3-wheel',
+            'python-virtualenv',
+        )
+    } else {
+        require_package(
+            'libffi6',
+            'libldap-2.4-2',
+            'libsasl2-2',
+            'python3-wheel',
+            'python-virtualenv',
+        )
+    }
 
     $log_dir = "${service::configuration::log_dir}/striker"
     $logstash_host = $config['logging']['LOGSTASH_HOST']
