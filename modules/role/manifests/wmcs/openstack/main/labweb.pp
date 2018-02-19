@@ -20,5 +20,5 @@ class role::wmcs::openstack::main::labweb {
     include ::profile::openstack::main::horizon::dashboard_source_deploy
 
     # Striker:
-    ## (this profile not yet written)
+    include ::profile::openstack::base::striker::web
 }
