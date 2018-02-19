@@ -8,7 +8,7 @@ class striker::build {
         'build-essential',
         'libffi-dev',
         'libldap2-dev',
-        'libmysqlclient-dev',
+        'libmariadbclient-dev',
         'libsasl2-dev',
         'libssl-dev',
         'python3',
