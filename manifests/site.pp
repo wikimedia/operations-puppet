@@ -1422,9 +1422,9 @@ node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-# mw1259-60 are videoscalers
+# former video scalers, to be decommissioned (T187466)
 node /^mw12(59|60)\.eqiad\.wmnet/ {
-    role(mediawiki::videoscaler)
+    role(spare::system)
 }
 
 # Appservers (serving normal website traffic)
