@@ -265,10 +265,10 @@ smart_health_eqiad:
 #   __regex: !ruby/regexp /^(acamar|dns.*).wikimedia.org$/
 #   profile::base::check_smart: true
 #
-# smart_health_wikimedia_authdns:
-#   __regex: !ruby/regexp /^eeden.wikimedia.org$/
-#   profile::base::check_smart: true
-#
+smart_health_wikimedia_authdns:
+  __regex: !ruby/regexp /^eeden.wikimedia.org$/
+  profile::base::check_smart: true
+
 smart_health_wikimedia_bast:
   __regex: !ruby/regexp /^bast.*.wikimedia.org$/
   profile::base::check_smart: true
