@@ -5,7 +5,7 @@ class role::wmcs::openstack::main::labweb {
 
     require_package('libapache2-mod-wsgi-py3')
     class { '::httpd':
-        modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi', 'proxy'],
+        modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi', 'proxy', 'expires'],
     }
 
     include ::profile::ldap::client::labs
