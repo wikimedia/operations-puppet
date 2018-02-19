@@ -166,6 +166,11 @@ then
 	if $varnishadm $instance vcl.use $vcl_label
 	then
 	    printf "$msg_use_ok" $vcl_label
+
+	    # Discard old VCL
+	    $varnishadm $instance vcl.list | awk '/available/ && $4 ~ /^vcl/ { print $4 }' | while read discard_vcl; do
+	        $varnishadm $instance vcl.discard $discard_vcl
+	    done
 	else
 	    printf "$msg_use_failed" $vcl_label
 	    exitstatus=1
