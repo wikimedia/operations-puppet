@@ -12,6 +12,7 @@ class openstack::horizon::source_deploy(
         'python-wheel',
         'python-virtualenv',
         'virtualenv',
+        'gettext',
     )
 
     file { '/etc/openstack-dashboard/local_settings.py':
