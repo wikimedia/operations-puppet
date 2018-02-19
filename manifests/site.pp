@@ -655,9 +655,15 @@ node /^dbproxy10(01|02|03|04|05|06|07|08|09)\.eqiad\.wmnet$/ {
 }
 
 # labsdb proxies (controling replica service dbs)
-node /^dbproxy101[01]\.eqiad\.wmnet$/ {
+# analytics proxy
+node 'dbproxy1010.eqiad.wmnet' {
+    role(mariadb::proxy::replicas)
+}
+# web proxy
+node 'dbproxy1011.eqiad.wmnet' {
     role(mariadb::proxy::master)
 }
+
 
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
