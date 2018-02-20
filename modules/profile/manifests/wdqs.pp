@@ -9,6 +9,8 @@ class profile::wdqs (
     $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
     $updater_options = hiera('profile::wdqs::updater_options'),
     $nodes = hiera('profile::wdqs::nodes'),
+    $kafka_broker = hiera('profile::wdqs::kafka_broker'),
+    $cluster_names = hiera('profile::wdqs::cluster_names'),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
@@ -44,6 +46,7 @@ class profile::wdqs (
         options        => $updater_options,
         logstash_host  => $logstash_host,
         extra_jvm_opts => "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
+        kafka_broker   => $kafka_broker,
         require        => Profile::Prometheus::Jmx_exporter['wdqs_updater'],
     }
 
