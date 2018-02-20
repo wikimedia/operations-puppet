@@ -6,7 +6,6 @@ class profile::openstack::main::horizon::dashboard_source_deploy(
     $dhcp_domain = hiera('profile::openstack::main::nova::dhcp_domain'),
     $ldap_user_pass = hiera('profile::openstack::main::ldap_user_pass'),
     $webserver_hostname = hiera('profile::openstack::main::horizon::webserver_hostname'),
-    $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
     ) {
 
     require ::profile::openstack::main::clientlib
@@ -18,6 +17,5 @@ class profile::openstack::main::horizon::dashboard_source_deploy(
         dhcp_domain         => $dhcp_domain,
         ldap_user_pass      => $ldap_user_pass,
         webserver_hostname  => $webserver_hostname,
-        labweb_hosts        => $labweb_hosts,
     }
 }
