@@ -12,7 +12,8 @@ profile::wdqs::nodes:
   - 'wdqs2001.codfw.wmnet'
   - 'wdqs2002.codfw.wmnet'
   - 'wdqs2003.codfw.wmnet'
-
+profile::wdqs::use_kafka_for_updates: false
+profile::wdqs::cluster_names: []
 admin::groups:
   - wdqs-admins
 cluster: wdqs
