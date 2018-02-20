@@ -365,8 +365,14 @@ node 'db1068.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(064|081|084|091|111|112)\.eqiad\.wmnet/ {
+# see also db1097 and db1103 below
+node /^db1(064|081|084|091)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# s4-test hosts on eqiad
+node /^db1(111|112)\.eqiad\.wmnet/ {
+    role(mariadb::core_test)
 }
 
 # row-based replication to sanitarium (T150960)
@@ -380,7 +386,8 @@ node 'db2051.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(44|58|65|73)\.codfw\.wmnet/ {
+# see also db2084 and db2091 below
+node /^db20(58|65|73)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -562,6 +569,11 @@ node 'db1020.eqiad.wmnet' {
 }
 
 node 'db2011.codfw.wmnet' {
+    class { '::role::mariadb::misc':
+        shard => 'm2',
+    }
+}
+node 'db2044.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm2',
     }
