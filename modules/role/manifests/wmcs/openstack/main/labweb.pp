@@ -12,6 +12,7 @@ class role::wmcs::openstack::main::labweb {
 
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
+    include ::profile::openstack::main::nutcracker
 
     # Wikitech:
     #include ::role::mediawiki::webserver
