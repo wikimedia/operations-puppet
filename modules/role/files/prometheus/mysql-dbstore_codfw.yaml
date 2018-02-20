@@ -15,7 +15,6 @@
     shard: s3
     role: slave
   targets:
-  - dbstore2001:13313
   - dbstore2002:13313
 
 - labels:
