@@ -18,6 +18,3 @@ thumbor_memcached_servers_nutcracker:
 thumbor::poolcounter_server: 'poolcounter1001.eqiad.wmnet'
 
 thumbor::stl_support: true
-
-# keys are to be defined in private repo
-#thumbor::mediawiki::shared_secret

@@ -3,8 +3,6 @@ class profile::thumbor(
     $logstash_host = hiera('logstash_host'),
     $logstash_port = hiera('logstash_logback_port'),
     $swift_sharded_containers = hiera_array('swift::proxy::shard_container_list'),
-    $swift_private_containers = hiera_array('swift::proxy::private_container_list'),
-    $thumbor_mediawiki_shared_secret = hiera('thumbor::mediawiki::shared_secret'),
 ) {
     include ::profile::conftool::client
     class { 'conftool::scripts': }
@@ -22,10 +20,8 @@ class profile::thumbor(
     $swift_account_keys = $::swift::params::account_keys
 
     class { '::thumbor::swift':
-        swift_key                       => $swift_account_keys['mw_thumbor'],
-        swift_sharded_containers        => $swift_sharded_containers,
-        swift_private_containers        => $swift_private_containers,
-        thumbor_mediawiki_shared_secret => $thumbor_mediawiki_shared_secret,
+        swift_key                => $swift_account_keys['mw_thumbor'],
+        swift_sharded_containers => $swift_sharded_containers,
     }
 
     ferm::service { 'thumbor':
