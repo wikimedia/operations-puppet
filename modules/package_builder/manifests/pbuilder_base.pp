@@ -50,14 +50,6 @@ define package_builder::pbuilder_base(
 
     $cowdir = "${basepath}/base-${distribution}-${architecture}.cow"
 
-    # We need to be explicit with specifying only released distros since the
-    # other chroots supported (like unstable) are not present on security.debian.org
-    if ($distribution == 'stretch' or $distribution == 'jessie' or $distribution == 'buster') {
-        $security_apt = "--othermirror \"deb http://security.debian.org/ ${distribution}/updates ${components}\""
-    } else {
-        $security_apt = ''
-    }
-
     $command = "/usr/sbin/cowbuilder --create \
                         --mirror ${mirror} \
                         --distribution ${distribution} \
@@ -65,16 +57,15 @@ define package_builder::pbuilder_base(
                         --architecture ${architecture} \
                         --basepath \"${cowdir}\" \
                         --debootstrapopts --variant=buildd \
-                        ${security_apt} ${arg}"
+                        ${arg}"
 
     exec { "cowbuilder_init_${distribution}-${architecture}":
         command => $command,
         creates => $cowdir,
     }
 
-    $update_command = "/usr/sbin/cowbuilder --update --override-config \
+    $update_command = "/usr/sbin/cowbuilder --update \
                     --basepath \"${cowdir}\" \
-                    ${security_apt} \
                     >/dev/null 2>&1"
 
     cron { "cowbuilder_update_${distribution}-${architecture}":
