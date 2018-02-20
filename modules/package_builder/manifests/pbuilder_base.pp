@@ -50,11 +50,18 @@ define package_builder::pbuilder_base(
 
     $cowdir = "${basepath}/base-${distribution}-${architecture}.cow"
 
+    if os_version('debian >= jessie') {
+        $security_apt = "deb http://security.debian.org/ ${distribution}/updates ${components}"
+    } else {
+        $security_apt = "deb http://security.ubuntu.com/ubuntu trusty-security ${components}"
+    }
+
     $command = "/usr/sbin/cowbuilder --create \
                         --mirror ${mirror} \
                         --distribution ${distribution} \
                         --components \"${components}\" \
                         --architecture ${architecture} \
+                        --othermirror \"${security_apt}\" \
                         --basepath \"${cowdir}\" \
                         --debootstrapopts --variant=buildd \
                         ${arg}"
@@ -66,6 +73,7 @@ define package_builder::pbuilder_base(
 
     $update_command = "/usr/sbin/cowbuilder --update \
                     --basepath \"${cowdir}\" \
+                    --othermirror \"${security_apt}\" \
                     >/dev/null 2>&1"
 
     cron { "cowbuilder_update_${distribution}-${architecture}":
