@@ -832,6 +832,28 @@ class role::prometheus::ops {
         port       => '9187',
     }
 
+    $kafka_burrow_jobs = [
+      {
+        'job_name'        => 'burrow',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/burrow_*.yaml" ]}
+        ],
+      },
+    ]
+
+    $burrow_kafka_main_port = $::site ? {
+        'codfw' => '9600',
+        'eqiad' => '9500',
+    }
+
+    prometheus::class_config{ "burrow_main_${::site}":
+        dest       => "${targets_path}/burrow_main_${::site}.yaml",
+        site       => $::site,
+        class_name => "profile::kafka::burrow::main::${::site}",
+        port       => $burrow_kafka_main_port,
+    }
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
@@ -843,7 +865,8 @@ class role::prometheus::ops {
             $nginx_jobs, $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs,
-            $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs
+            $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs,
+            kafka_burrow_jobs
         ),
         global_config_extra   => $config_extra,
     }
