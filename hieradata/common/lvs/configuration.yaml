@@ -147,6 +147,8 @@ lvs::configuration::lvs_service_ips:
     codfw: 10.2.1.26
   druid-public-broker: &ip_block040
     eqiad: 10.2.2.38
+  labweb: &ip_block041
+    eqiad: 10.2.2.40
 
 lvs::configuration::lvs_services:
   text:
@@ -1368,3 +1370,24 @@ lvs::configuration::lvs_services:
       IdleConnection:
         max-delay: 300
         timeout-clean-reconnect: 3
+  labweb:
+    description: 'lvs for labweb services: horizon, striker, wikitech'
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block041
+    port: 80
+    depool-threshold: '.5'
+    conftool:
+      cluster: labweb
+      service: labweb
+    icinga:
+      check_command: check_http_on_port!80
+      critical: true
+      sites:
+        eqiad:
+          hostname: labweb.svc.eqiad.wmnet
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 30
