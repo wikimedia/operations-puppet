@@ -24,7 +24,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     ferm::service { 'horizon_http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHE_MISC'
+        srange => '$DOMAIN_NETWORKS'
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
