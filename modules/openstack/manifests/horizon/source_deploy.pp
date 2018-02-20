@@ -92,6 +92,8 @@ class openstack::horizon::source_deploy(
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
             'ALL = (horizon) NOPASSWD: ALL',
+            'ALL = (root) NOPASSWD: /bin/chown -R horizon /srv/deployment/horizon/venv/*',
+            'ALL = (root) NOPASSWD: /bin/chown -R deploy-service /srv/deployment/horizon/venv/*',
         ],
     }
 
