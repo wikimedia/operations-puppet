@@ -1,0 +1,3 @@
+# test the kafka based updater on wdqs2001 first
+# this will move to the default once the test is completed
+profile::wdqs::use_kafka_for_updates: true
