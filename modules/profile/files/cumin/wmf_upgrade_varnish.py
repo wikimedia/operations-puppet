@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """Upgrade/downgrade Varnish on the given cache host between version 4 and
 version 5.
@@ -13,8 +13,6 @@ version 5.
 - Remove Icinga downtime
 - Repool
 """
-
-from __future__ import print_function
 
 import argparse
 import logging
@@ -83,8 +81,8 @@ def ask_confirmation(message):
     print(message)
     print('Type "done" to proceed')
 
-    for _ in xrange(3):
-        resp = raw_input('> ')
+    for _ in range(3):
+        resp = input('> ')
         if resp == 'done':
             break
 

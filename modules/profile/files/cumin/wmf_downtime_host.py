@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Downtime a host on Icinga."""
 
 import argparse

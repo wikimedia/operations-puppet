@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2018 Emanuele Rocca
 # Copyright 2018 Wikimedia Foundation, Inc.
@@ -33,8 +33,6 @@ Usage example:
         --repool-cmd="pool"
 """
 
-from __future__ import print_function
-
 import argparse
 import logging
 import sys
@@ -58,11 +56,11 @@ def parse_args():
     parser.add_argument(
         '--depool-cmd',
         required=True,
-        help=('Command used to depool the service (eg: "service pybal stop")'))
+        help='Command used to depool the service (eg: "service pybal stop")')
     parser.add_argument(
         '--repool-cmd',
         required=True,
-        help=('Command used to repool the service (eg: "pool")'))
+        help='Command used to repool the service (eg: "pool")')
 
     args = parser.parse_args()
     return args
