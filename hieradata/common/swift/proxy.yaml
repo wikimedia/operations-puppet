@@ -55,7 +55,44 @@ swift::proxy::shard_container_list: [
   'wikipedia-zh-local-thumb', 'wikipedia-zh-local-transcoded'
 # no trailing comma!
  ]
+
+# Manually generated from private.dblist
+# Needs to be updated whenever a new private wiki is added
 swift::proxy::private_container_list: [
-  'wikipedia-office-local-public'
+  'wikipedia-arbcom-cs-local-public',
+  'wikipedia-arbcom-de-local-public',
+  'wikipedia-arbcom-en-local-public',
+  'wikipedia-arbcom-fi-local-public',
+  'wikipedia-arbcom-nl-local-public',
+  'wikipedia-auditcom-local-public',
+  'wikipedia-boardgovcom-local-public',
+  'wikipedia-board-local-public',
+  'wikipedia-chair-local-public',
+  'wikipedia-chapcom-local-public',
+  'wikipedia-checkuser-local-public',
+  'wikipedia-collab-local-public',
+  'wikimedia-ec-local-public',
+  'wikipedia-electcom-local-public',
+  'wikipedia-exec-local-public',
+  'wikipedia-fdc-local-public',
+  'wikipedia-grants-local-public',
+  'wikipedia-iegcom-local-public',
+  'wikimedia-il-local-public',
+  'wikipedia-internal-local-public',
+  'wikipedia-legalteam-local-public',
+  'wikipedia-movementroles-local-public',
+  'wikimedia-noboard-chapters-local-public',
+  'wikipedia-office-local-public',
+  'wikipedia-ombudsmen-local-public',
+  'wikipedia-otrs-wiki-local-public',
+  'wikipedia-projectcom-local-public',
+  'wikipedia-searchcom-local-public',
+  'wikipedia-spcom-local-public',
+  'wikipedia-steward-local-public',
+  'wikipedia-techconduct-local-public',
+  'wikipedia-transitionteam-local-public',
+  'wikipedia-wg-en-local-public',
+  'wikipedia-wikimaniateam-local-public',
+  'wikipedia-zero-local-public'
 # no trailing comma!
  ]
