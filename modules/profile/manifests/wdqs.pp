@@ -9,6 +9,8 @@ class profile::wdqs (
     $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
     $updater_options = hiera('profile::wdqs::updater_options'),
     $nodes = hiera('profile::wdqs::nodes'),
+    $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates'),
+    $cluster_names = hiera('profile::wdqs::cluster_names'),
     $prometheus_nodes = hiera('prometheus_nodes'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
@@ -40,10 +42,16 @@ class profile::wdqs (
         source           => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
     }
 
+    $kafka_brokers = $use_kafka_for_updates ? {
+        true    => kafka_config()['brokers']['array'],
+        default => [],
+    }
+
     class { 'wdqs::updater':
         options        => $updater_options,
         logstash_host  => $logstash_host,
         extra_jvm_opts => "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
+        kafka_brokers   => $kafka_brokers,
         require        => Profile::Prometheus::Jmx_exporter['wdqs_updater'],
     }
 
