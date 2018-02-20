@@ -41,7 +41,7 @@ cache::app_directors:
       eqiad: 'californium.wikimedia.org'
   labweb:
     backends:
-      eqiad: 'labweb.svc.wikimedia.org'
+      eqiad: 'labweb.svc.eqiad.wmnet'
   darmstadtium:
     be_opts:
       port: 81
