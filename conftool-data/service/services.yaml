@@ -263,4 +263,11 @@ druid-public:
     default_values:
       pooled: 'yes'
       weight: 10
-
+labweb:
+  labweb:
+    port: 80
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
