@@ -18,9 +18,14 @@ class profile::conftool::client(
     $tcpircbot_port = hiera('tcpircbot_port', 9200),
     $protocol = hiera('profile::conftool::client::protocol', 'https')
 ) {
+
+    $socks_pkg = os_version('Debian >= stretch') ? {
+        true    => 'python-socks',
+        default => 'python-pysocks'
+    }
     require_package(
         'python-conftool',
-        'python-pysocks',
+        $socks_pkg,
     )
     require ::passwords::etcd
 
