@@ -10,6 +10,8 @@
 #    $swift_account = 'thumbor',
 #    $swift_user = 'thumbor',
 #    $swift_sharded_containers = [],
+#    $swift_private_containers = [],
+#    $thumbor_mediawiki_shared_secret,
 #    $swift_host = "https://ms-fe.svc.${::site}.wmnet",
 #
 # === Examples
@@ -23,6 +25,8 @@ class thumbor::swift (
     $swift_account = 'mw',
     $swift_user = 'thumbor',
     $swift_sharded_containers = [],
+    $swift_private_containers = [],
+    $thumbor_mediawiki_shared_secret = '',
     $swift_host = "https://ms-fe.svc.${::site}.wmnet",
 ) {
     file { '/etc/thumbor.d/80-thumbor-swift.conf':
@@ -32,5 +36,15 @@ class thumbor::swift (
         mode    => '0440',
         content => template('thumbor/swift.conf.erb'),
         require => Package['python-thumbor-wikimedia'],
+    }
+
+    file { '/etc/thumbor.d/80-thumbor-swift-secret.conf':
+        ensure    => present,
+        owner     => 'thumbor',
+        group     => 'thumbor',
+        mode      => '0440',
+        content   => template('thumbor/swift-secret.conf.erb'),
+        require   => Package['python-thumbor-wikimedia'],
+        show_diff => false,
     }
 }
