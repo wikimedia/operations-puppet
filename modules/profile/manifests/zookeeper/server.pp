@@ -14,7 +14,7 @@ class profile::zookeeper::server (
     $statsd_host            = hiera('statsd'),
 ) {
 
-    require_package('default-jdk-headless')
+    require_package('default-jdk')
 
     class { '::zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
