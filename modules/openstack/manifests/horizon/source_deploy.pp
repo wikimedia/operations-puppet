@@ -5,7 +5,6 @@ class openstack::horizon::source_deploy(
     $wmflabsdotorg_pass,
     $dhcp_domain,
     $ldap_user_pass,
-    $labweb_hosts,
     $venv_dir      = '/srv/deployment/horizon/venv',
     $webserver_hostname = 'newhorizon.wikimedia.org'
 ) {
