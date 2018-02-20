@@ -1856,8 +1856,6 @@ host db2036 {
 host db2037 {
     hardware ethernet a0:d3:c1:f9:8c:b4;
     fixed-address db2037.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2038 {
