@@ -1,9 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Library for the wmf-auto-reimage and wmf-auto-reimage-host scripts."""
-from __future__ import print_function
 
 import argparse
-import ConfigParser
+import configparser
 import getpass
 import logging
 import os
@@ -17,12 +16,11 @@ from collections import defaultdict
 from datetime import datetime
 from logging import FileHandler
 
-from conftool import configuration, kvobject, loader
-from conftool.drivers import BackendError
-
 import cumin
 import dns.resolver
 
+from conftool import configuration, kvobject, loader
+from conftool.drivers import BackendError
 from cumin import query, transport, transports
 from phabricator import Phabricator
 
@@ -263,7 +261,7 @@ def get_mgmts(hosts):
             continue
 
         while True:
-            mgmt = raw_input("What is the MGMT FQDN for host '{host}'? ".format(host=host))
+            mgmt = input("What is the MGMT FQDN for host '{host}'? ".format(host=host))
 
             if is_hostname_valid(mgmt):
                 break
@@ -296,7 +294,7 @@ def check_remote_ipmi(mgmt):
 
 def get_phabricator_client():
     """Return a Phabricator client instance."""
-    parser = ConfigParser.SafeConfigParser()
+    parser = configparser.ConfigParser()
     parser_mode = 'phabricator_bot'
     parser.read(PHABRICATOR_CONFIG_FILE)
 
