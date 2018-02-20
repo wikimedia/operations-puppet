@@ -7,9 +7,6 @@
 [submodule "modules/varnishkafka"]
 	path = modules/varnishkafka
 	url = https://gerrit.wikimedia.org/r/operations/puppet/varnishkafka
-[submodule "modules/kafkatee"]
-	path = modules/kafkatee
-	url = https://gerrit.wikimedia.org/r/operations/puppet/kafkatee
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = https://gerrit.wikimedia.org/r/operations/puppet/nginx

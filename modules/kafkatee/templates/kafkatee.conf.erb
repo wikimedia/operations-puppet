@@ -1,0 +1,217 @@
+#######################################################################
+#                                                                     #
+#                    kafkatee configuration file                      #
+#                                                                     #
+#                                                                     #
+#######################################################################
+#                                                                     #
+# Syntax:                                                             #
+#  <property-name> = <value>                                          #
+#  input <type args..>                                                #
+#  output <type arg..>                                                #
+#                                                                     #
+# Boolean property values:                                            #
+#   >0, "true", "yes", "on", "" - interpreted as true                 #
+#  everything else              - interpreted as false                #
+#                                                                     #
+#                                                                     #
+# The configuration file consists of:                                 #
+#   - Configuration properties (key = value) to control various       #
+#     aspects of kafkatee.                                            #
+#   - Inputs                                                          #
+#   - Outputs                                                         #
+#                                                                     #
+#######################################################################
+
+
+#######################################################################
+#                                                                     #
+# Configuration properties                                            #
+#                                                                     #
+#######################################################################
+
+#######################################################################
+#                                                                     #
+# Kafka configuration                                                 #
+#                                                                     #
+# Kafka configuration properties are prefixed with "kafka."           #
+# and topic properties are prefixed with "kafka.topic.".              #
+#                                                                     #
+# For the full range of Kafka handle and topic configuration          #
+# properties, see:                                                    #
+#  http://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md #
+#                                                                     #
+# And the Apache Kafka configuration reference:                       #
+#  http://kafka.apache.org/08/configuration.html                      #
+#                                                                     #
+#######################################################################
+
+# Initial list of kafka brokers
+# Default: none
+kafka.metadata.broker.list = <%= Array(@kafka_brokers).sort.join(',') %>
+
+
+# Offset commit store method: 'file' - local file store (offset.store.path, et.al),
+# 'broker' - broker commit store (requires Apache Kafka 0.8.2 or later on the broker).
+kafka.offset.store.method=<%= @kafka_offset_store_method %>
+
+# Offset file directory.
+# Each topic + partition combination has its own offset file.
+# Default: current directory
+kafka.topic.offset.store.path = <%= @kafka_offset_store_path %>
+
+# If the request offset was not found on broker, or there is no
+# initial offset known (no stored offset), then reset the offset according
+# to this configuration.
+# Values: smallest (oldest/beginning), largest (newest/end), error (fail)
+# Default: largest
+kafka.topic.auto.offset.reset = <%= @kafka_offset_reset %>
+
+# Maximum message size.
+# Should be synchronized on all producers, brokers and consumers.
+# Default: 4000000
+<%= @kafka_message_max_bytes ? "kafka.message.max.bytes = #{@kafka_messages_max_bytes}" : '#kafka.message.max.bytes = 10000000' %>
+
+# Kafka Consumer group.id
+kafka.group.id=<%= @kafka_group_id %>
+
+# Kafka debugging
+# Default: none
+#kafka.debug = msg,topic,broker
+
+
+#######################################################################
+#                                                                     #
+# Misc configuration                                                  #
+#                                                                     #
+#######################################################################
+
+# Pid file location
+# Default: /var/run/kafkatee.pid
+pid.file.path = <%= @pidfile %>
+
+# Daemonize (background)
+# Default: true
+daemonize = false
+
+# Logging output level
+# 1 = only emergencies .. 6 = info, 7 = debug
+# Default: 6 (info)
+#log.level = 7
+
+
+#
+# JSON Statistics
+#
+# Statistics is collected from kafkatee itself(*) as well as librdkafka
+# Each JSON object has a top level key of either 'kafkatee' or
+# 'kafka' to indicate which type of statistics the object contains.
+# Each line is a valid JSON object.
+#
+# *: kafkatee does not currently output any stats of its own, just from rdkafka.
+#
+
+# Statistics output interval
+# Defaults to 60 seconds, use 0 to disable.
+log.statistics.interval = <%= @log_statistics_interval %>
+
+# Statistics output file
+# Defaults to /tmp/kafkatee.stats.json
+log.statistics.file = <%= @log_statistics_file %>
+
+
+# Command to run on startup, before starting IO.
+# Default: none
+#command.init = ./my-script.sh
+
+# Command to run on termination after all IOs have been stopped.
+# Default: none
+#command.term = ./my-cleanup-script.sh
+
+# Set environment variable which will be available for all sub-sequent
+# command executions (command.*, input pipe, output pipe, ..)
+#setenv.NMSGS=12
+# clear:
+#setenv.LD_LIBRARY_PATH=
+
+#######################################################################
+#                                                                     #
+# Message transformation                                              #
+#                                                                     #
+# A message read from one of the inputs may be transformed before     #
+# being enqueued on the output queues.                                #
+#                                                                     #
+# Transformation requires that the input and output encoding differs, #
+# i.e., 'input [encoding=json] ..' and 'output.encoding=string'       #
+#                                                                     #
+# While the input encoding is configured per input, the output        #
+# encoding is configured globally, all outputs will receive the same  #
+# message.                                                            #
+#                                                                     #
+# The currently supported transformation(s) are:                      #
+#  JSON input -> string output:                                       #
+#    JSON data is formatted according to the output.format            #
+#    configuration. The %{field} syntax references the field in the   #
+#    original JSON object by the same name and outputs its value.     #
+#                                                                     #
+# If the input and output encoding matches then the message remains   #
+# untouched.                                                          #
+#                                                                     #
+# The output message delimiter (defaults to newline (\n)) is          #
+# configurable (output.delimiter) and always appended to all output   #
+# messages regardless of transformation.                              #
+# The input is always stripped of its delimiter (which is newline     #
+# for pipe inputs).                                                   #
+#                                                                     #
+#######################################################################
+
+# Output encoding: string or json
+# Default: string
+output.encoding = <%= @output_encoding %>
+
+#######################################################################
+# Output formatting                                                   #
+#                                                                     #
+# The format string is made up of %{..}-tokens and literals.          #
+#                                                                     #
+# Tokens:                                                             #
+#                                                                     #
+#  %{FIELD}                                                           #
+#    Retrieves the value from the JSON object's field with the        #
+#    same name.                                                       #
+#                                                                     #
+#  %{FIELD?DEFAULT}                                                   #
+#    'DEFAULT' is the default string to use if no field was matched,  #
+#     the default default string is "-".                              #
+#                                                                     #
+#  Literals are copied verbatim to the output string.                 #
+#                                                                     #
+#  Example JSON: {"task":19, "name":"Mike"}                           #
+#  Example format: Got task %{task} for user %{name?unknown}          #
+#  Example output: Got task 19 for user Mike                          #
+#                                                                     #
+# Note: Multi-level JSON objects are flattened:                       #
+#       JSON:  {"a": {"b": 9}, "c": "hi"}                             #
+#       Gives: { "b": 9, "c": "hi" }                                  #
+#                                                                     #
+#######################################################################
+
+# Output format for JSON -> string transformation.
+# Default: none
+<%= @output_format ? "output.format = #{@output_format}" : "#output.format =" %>
+
+# Output delimiter
+# The output message ends with this delimiter.
+# Supports \n, \r, \t, \0.
+# Default: newline (\n)
+#output.delimiter = ;END;\n
+
+
+# Maximum queue size for each output, in number of messages
+# Default: 100000
+#output.queue.size = 1000000
+<%= @output_queue_size ? "output.queue.size = #{@output_queue_size}" : '#output.queue.size = 1000000' %>
+
+
+# Include other config files in /etc/kafkatee.d/*.conf
+include /etc/kafkatee.d/*.conf
