@@ -18,7 +18,10 @@ class profile::conftool::client(
     $tcpircbot_port = hiera('tcpircbot_port', 9200),
     $protocol = hiera('profile::conftool::client::protocol', 'https')
 ) {
-    require_package('python-conftool')
+    require_package(
+        'python-conftool',
+        'python-pysocks',
+    )
     require ::passwords::etcd
 
     class { '::etcd::client::globalconfig':
