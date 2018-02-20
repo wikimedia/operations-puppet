@@ -2,3 +2,9 @@ LOG_CONFIG=/etc/wdqs/logback-wdqs-updater.xml
 <%- if @extra_jvm_opts -%>
 EXTRA_JVM_OPTS=<%= @extra_jvm_opts %>
 <%- end -%>
+<%- if @kafka_brokers -%>
+KAFKA_BROKERS="<%= @kafka_brokers.join(',') %>"
+<%- end -%>
+<%- if @cluster_names -%>
+CLUSTER_NAMES="<%= @cluster_names.join(',') %>"
+<%- end -%>
