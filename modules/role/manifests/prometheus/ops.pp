@@ -842,16 +842,11 @@ class role::prometheus::ops {
       },
     ]
 
-    $burrow_kafka_main_port = $::site ? {
-        'codfw' => '9600',
-        'eqiad' => '9500',
-    }
-
     prometheus::class_config{ "burrow_main_${::site}":
         dest       => "${targets_path}/burrow_main_${::site}.yaml",
         site       => $::site,
         class_name => "profile::kafka::burrow::main::${::site}",
-        port       => $burrow_kafka_main_port,
+        port       => '9600',
     }
 
     prometheus::server { 'ops':
