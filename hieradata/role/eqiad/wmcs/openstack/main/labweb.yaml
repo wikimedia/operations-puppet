@@ -66,3 +66,6 @@ apache::logrotate::rotate: 30
 role::mediawiki::webserver::tls: false
 
 profile::openstack::main::version: ocata
+
+lvs::realserver::realserver_ips:
+    - '10.2.2.40' # labweb.svc.eqiad.wmnet
