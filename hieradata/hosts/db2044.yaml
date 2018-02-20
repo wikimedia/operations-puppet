@@ -1,1 +1,1 @@
-mariadb::shard: 's4'
+profile::base::notifications_enabled: '0'
