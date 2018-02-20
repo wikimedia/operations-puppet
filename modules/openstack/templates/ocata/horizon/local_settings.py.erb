@@ -115,8 +115,8 @@ SESSION_ENGINE='django.contrib.sessions.backends.cache'
 CACHES = {
    'default': {
        'BACKEND' : 'django.core.cache.backends.memcached.MemcachedCache',
-       <% @labweb_hosts.each do |hostname| %>
-       'LOCATION' : '<%= scope.function_ipresolve([@hostname, 4]) %>:11000',
+       <% @labweb_hosts.each do |thishost| %>
+       'LOCATION' : '<%= scope.function_ipresolve([thishost, 4]) %>:11000',
        <% end %>
    }
 }
