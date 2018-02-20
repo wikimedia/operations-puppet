@@ -23,4 +23,6 @@ class role::wmcs::openstack::main::labweb {
 
     # Striker:
     include ::profile::openstack::base::striker::web
+
+    include role::lvs::realserver
 }

@@ -69,3 +69,6 @@ profile::openstack::main::version: ocata
 
 lvs::realserver::realserver_ips:
     - '10.2.2.40' # labweb.svc.eqiad.wmnet
+
+role::lvs::realserver::pools:
+  labweb: {}
