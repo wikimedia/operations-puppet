@@ -2,7 +2,16 @@
 set -u
 
 action=$(basename "${0}")
-service="${1:-all services}"
+_service="${1:-all services}"
+# Keep compatibility with the old model allowing to select any generic tag
+service=$(printf '%s' "${_service//service=/}")
+
+# Break compatibility with selecting anything else than services
+if [[ $service =~ "=" ]]; then
+    echo "Selection of any tag different from 'service' is not allowed"
+    exit 3
+fi
+
 host=$(hostname -f)
 old_action=""
 msg=""
@@ -49,7 +58,10 @@ function do_old_action() {
 
 echo "${msg}"
 do_action "${service}"
+retval=$?
 # Compatibility with confctl < 1.0
-if [ $? -eq 2 ]; then
+if [ $retval -eq 2 ]; then
     do_old_action "${service}"
+    retval=$?
 fi
+exit $retval
