@@ -32,6 +32,5 @@ class thumbor::swift (
         mode    => '0440',
         content => template('thumbor/swift.conf.erb'),
         require => Package['python-thumbor-wikimedia'],
-        notify  => Service['thumbor-instances'],
     }
 }
