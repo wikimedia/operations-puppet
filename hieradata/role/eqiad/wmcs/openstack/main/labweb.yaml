@@ -1,6 +1,4 @@
 ---
-memcached::ip: 127.0.0.1
-
 admin::groups:
   - wmcs-roots
   - deployment
