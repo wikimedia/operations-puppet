@@ -17,6 +17,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         dhcp_domain         => $dhcp_domain,
         ldap_user_pass      => $ldap_user_pass,
         webserver_hostname  => $webserver_hostname,
+        labweb_hosts        => $labweb_hosts,
     }
     contain '::openstack::horizon::source_deploy'
 
