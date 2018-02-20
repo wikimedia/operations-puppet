@@ -28,9 +28,6 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
-    class { '::memcached':
-    }
-
     ferm::service { 'horizon_memcached':
         proto  => 'tcp',
         port   => '11000',
