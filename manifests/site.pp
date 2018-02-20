@@ -950,7 +950,7 @@ node /^labtestvirt2003\.codfw\.wmnet$/ {
 }
 
 node 'labtestmetal2001.codfw.wmnet' {
-    role(test)
+    role(wmcs::openstack::labtestn::virt)
 }
 
 node 'labtestnet2002.codfw.wmnet' {
