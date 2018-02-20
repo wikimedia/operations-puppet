@@ -11,9 +11,9 @@ class profile::cumin::master (
 
     require_package([
         'cumin',
-        'python-dnspython',
-        'python-phabricator',
-        'python-requests',
+        'python3-dnspython',
+        'python3-phabricator',
+        'python3-requests',
     ])
 
     file { $cumin_log_path:
@@ -68,7 +68,7 @@ class profile::cumin::master (
         group  => 'root',
     }
 
-    file { '/usr/local/lib/python2.7/dist-packages/wmf_auto_reimage_lib.py':
+    file { '/usr/local/lib/python3/dist-packages/wmf_auto_reimage_lib.py':
         ensure => present,
         source => 'puppet:///modules/profile/cumin/wmf_auto_reimage_lib.py',
         mode   => '0644',

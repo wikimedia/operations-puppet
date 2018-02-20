@@ -90,7 +90,7 @@ class profile::openstack::main::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        file { '/usr/local/lib/python2.7/dist-packages/cumin_file_backend.py':
+        file { '/usr/local/lib/python3/dist-packages/cumin_file_backend.py':
             ensure  => 'present',
             owner   => 'root',
             group   => 'root',
