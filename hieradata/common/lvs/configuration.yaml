@@ -1383,7 +1383,7 @@ lvs::configuration::lvs_services:
       service: labweb
     icinga:
       check_command: check_http_on_port!80
-      critical: true
+      critical: false
       sites:
         eqiad:
           hostname: labweb.svc.eqiad.wmnet
