@@ -12,9 +12,9 @@
 # - $data_dir: Directory where the database should be stored
 # - $log_dir: Directory where the logs go
 # - $endpoint: External endpoint name
-# - $blazegraph_heap_size: heapsize for blazegraph
 # - $blazegraph_options: options for Blazegraph startup script
-# - $updater_options: options for updater startup script
+# - $blazegraph_heap_size: heapsize for blazegraph
+# - $blazegraph_config_file: Blazegraph properties config file
 class wdqs(
     $logstash_host,
     $logstash_json_port = 11514,
