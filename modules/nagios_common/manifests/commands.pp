@@ -31,6 +31,8 @@ class nagios_common::commands(
         # check_prometheus_metric
         'jq',
         'curl',
+        # check_etcd_mw_config_lastindex
+        'python3-requests',
     ])
 
     file { "${config_dir}/commands":
@@ -44,6 +46,7 @@ class nagios_common::commands(
         'check_all_memcached.php',
         'check_bgp',
         'check_dsh_groups',
+        'check_etcd_mw_config_lastindex',
         'check_grafana_alert',
         'check_graphite',
         'check_graphite_freshness',
