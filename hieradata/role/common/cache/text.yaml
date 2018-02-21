@@ -77,9 +77,6 @@ cache::req_handling:
       '^/w/api\.php':
         director: 'api'
         debug_director: 'appservers_debug'
-      '^/w/thumb(_handler)?\.php':
-        director: 'rendering'
-        debug_director: 'appservers_debug'
 cache::fe_transient_gb: 5
 cache::be_transient_gb: 2
 # Profile::cache::base
