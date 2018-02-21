@@ -846,7 +846,7 @@ class role::prometheus::ops {
         dest       => "${targets_path}/burrow_main_${::site}.yaml",
         site       => $::site,
         class_name => "profile::kafka::burrow::main::${::site}",
-        port       => '9600',
+        port       => '9500',
     }
 
     prometheus::server { 'ops':
