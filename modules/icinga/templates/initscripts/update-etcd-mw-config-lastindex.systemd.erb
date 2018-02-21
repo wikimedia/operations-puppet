@@ -1,0 +1,11 @@
+[Unit]
+Description=Update the etcd last modified index for MediaWiki config
+Requires=network.target
+
+[Service]
+User=icinga
+ExecStart=/usr/local/bin/update-etcd-mw-config-lastindex
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

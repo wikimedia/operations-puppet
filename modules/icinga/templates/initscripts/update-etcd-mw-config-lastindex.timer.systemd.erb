@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the script to update the etcd last modified index for MediaWiki config
+
+[Timer]
+# Run the unit with the same name roughly every 30 seconds (see AccuracySec)
+OnUnitInactiveSec=30
+# The actual execution time is between the scheduled one and AccuracySec later
+AccuracySec=15
+
+[Install]
+WantedBy=multi-user.target
