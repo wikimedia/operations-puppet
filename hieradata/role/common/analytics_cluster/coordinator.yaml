@@ -11,6 +11,6 @@ profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 
 # Following Cloudera recommandations for ~20 users
-profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g'
+profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g -Xms4g -Xmx10g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/hadoop/prometheus_hive_metastore_jmx_exporter.yaml'
 profile::hive::client::hive_server_opts: '-Xms4g -Xmx6g'
-profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
+profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:12000:/etc/oozie/prometheus_oozie_server_jmx_exporter.yaml'
