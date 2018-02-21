@@ -619,6 +619,12 @@ node 'db2030.codfw.wmnet' {
     }
 }
 
+node 'db2037.codfw.wmnet' {
+    class { '::role::mariadb::misc':
+        shard => 'm5',
+    }
+}
+
 # sanitarium
 node 'db1095.eqiad.wmnet' {
     role(mariadb::sanitarium_multisource)
