@@ -1,0 +1,14 @@
+[Unit]
+Description=kafkatee-<%= @title %>
+After=local-fs.target
+After=network.target
+
+[Service]
+Type=simple
+User=kafkatee
+ExecStart=/usr/bin/kafkatee -D -c /etc/kafkatee/<%= @title %>.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.targets

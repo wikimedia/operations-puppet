@@ -1,4 +1,0 @@
-# Note: This file is managed by Puppet.
-
-# <%= @title %> kafka input
-input [<%= @options.map { |key,val| "#{key}=#{val}" }.join(',') %>] kafka topic <%= @topic %> partition <%= @partitions %> from <%= @offset %>
