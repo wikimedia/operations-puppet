@@ -43,6 +43,14 @@ class profile::analytics::refinery::job::camus(
     camus::job { 'webrequest':
         check         => true,
         minute        => '*/10',
+        kafka_brokers => $kafka_brokers_jumbo,
+    }
+
+    # TODO: This camus job will be removed once all webrequest topics have moved to jumbo.
+    # See: https://phabricator.wikimedia.org/T185136
+    camus::job { 'webrequest-analytics':
+        check         => true,
+        minute        => '*/10',
         kafka_brokers => $kafka_brokers_analytics,
     }
 
