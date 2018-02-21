@@ -31,7 +31,6 @@ class role::mariadb::misc(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
-        socket      => '/tmp/mysql.sock', # temporary workaround T148507
     }
 
     include mariadb::packages_wmf
@@ -40,6 +39,7 @@ class role::mariadb::misc(
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
         datadir   => '/srv/sqldata',
+        basedir   => '/opt/wmf-mariadb101',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',
         read_only => $read_only,
@@ -55,7 +55,6 @@ class role::mariadb::misc(
         shard      => $shard,
         datacenter => $::site,
         enabled    => $master,
-        socket     => '/tmp/mysql.sock', # temporary workaround T148507
     }
 }
 
