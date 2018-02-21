@@ -3,12 +3,12 @@
 [main]
 logdir = /var/log/puppet
 vardir = /var/lib/puppet
-ssldir = <%= ssldir %>
+ssldir = <%= @ssldir %>
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
 
 [agent]
-server = <%= server %>
+server = <%= @server %>
 configtimeout = 480
 splay = true
 pluginsync = true
@@ -17,24 +17,24 @@ report = true
 # only set agent certname if not 'localhost',
 # i.e. not single self hosted puppetmaster.  (The original
 # puppetmaster::self did not explicitly set an agent certname.)
-if certname != 'localhost'
+if @certname != 'localhost'
 -%>
-certname = <%= certname %>
+certname = <%= @certname %>
 <% end -%>
 
-<% if is_puppetmaster -%>
+<% if @is_puppetmaster -%>
 [master]
-bindaddress = <%= bindaddress %>
-certname = <%= certname %>
+bindaddress = <%= @bindaddress %>
+certname = <%= @certname %>
 thin_storeconfigs = true
 modulepath = /etc/puppet/secret/modules:/etc/puppet/private/modules:/etc/puppet/modules
 
 # SSL
-ssldir = <%= ssldir %>/
+ssldir = <%= @ssldir %>/
 ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
-hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
-hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
+hostcert = /var/lib/puppet/server/ssl/certs/<%= @fqdn %>.pem
+hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= @fqdn %>.pem
 
 <% scope.lookupvar('puppet::self::config::config').sort.each do |setting, value| -%>
 <%= setting %> = <%= value %>
