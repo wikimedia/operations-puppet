@@ -18,6 +18,6 @@ END {
         exit 0
     }
 
-    printf \"WARNING: %d %s\n\", count, msg
-    exit 1
+    printf \"CRITICAL: %d %s\n\", count, msg
+    exit 2
 }"
