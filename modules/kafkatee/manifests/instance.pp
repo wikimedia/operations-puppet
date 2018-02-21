@@ -1,11 +1,10 @@
-# == Class: kafkatee
+# == Define: kafkatee::instance
 #
-# Installs and configures a kafkatee instance. This does not configure any
-# inputs or outputs for the kafkatee instance.  You should configure them
-# using the kafkatee::input and kafkatee::output defines.
+# Installs and configures a kafkatee instance.
 #
 # == Parameters:
 # $kafka_brokers             - Array of Kafka broker addresses.
+# $inputs                    - Array of kafkatee input configs.  See README.
 # $kafka_offset_store_method - Ether 'none', 'file', or 'broker'.  Default: file
 # $kafka_offset_store_path   - Path in which to store consumed Kafka offsets.
 #                              Default: /var/cache/kafkatee/offsets
@@ -48,30 +47,36 @@
 #                              work properly.
 #                              Default: true
 
-class kafkatee(
-    $configure_rsyslog = true,
-) {
-    require_package('kafkatee')
+define kafkatee::instance (
+    $kafka_brokers,
+    $inputs,
+    $kafka_offset_store_method = 'file',
+    $kafka_offset_store_path   = '/var/cache/kafkatee/offsets',
+    $kafka_offset_reset        = 'largest',
+    $kafka_message_max_bytes   = undef,
+    $kafka_group_id            = $::fqdn,
+    $pidfile                   = '/var/run/kafkatee/kafkatee.pid',
+    $log_statistics_file       = '/var/cache/kafkatee/kafkatee.stats.json',
+    $log_statistics_interval   = 60,
+    $output_encoding           = 'string',
+    $output_format             = undef,
+    $output_queue_size         = undef,
+)
+{
+    require ::kafkatee
 
-    # Declare packaged rsyslog config to ensure it isn't purged.
-    file { '/etc/rsyslog.d/75-kafkatee.conf':
-        ensure  => 'file',
-        require => Class['::kafkatee'],
+    file { "/etc/kafkatee/<%= ${title} %>.outputs":
+        ensure  => 'directory',
+        require => Package['kafkatee'],
     }
 
-    file { '/etc/kafkatee':
-        ensure => 'directory',
+    file { "/etc/kafkatee/<%= ${title} %>.conf":
+        content => template('kafkatee/kafkatee.conf.erb'),
+        require => Package['kafkatee'],
     }
 
-    if $configure_rsyslog {
-        # Basic logrotate.d configuration to rotate /var/log/kafkatee.log
-        logrotate::conf { 'kafkatee':
-            source => 'puppet:///modules/kafkatee/kafkatee_logrotate',
-        }
-        # Basic rsyslog configuration to create /var/log/kafkatee.log
-        rsyslog::conf { 'kafkatee':
-            source   => 'puppet:///modules/kafkatee/kafkatee_rsyslog.conf',
-            priority => 70,
-        }
+    base::service_unit { "kafkatee-${title}":
+        systemd => systemd_template('kafkatee'),
+        require => File["/etc/kafkatee/<%= ${title} %>.conf"],
     }
 }
