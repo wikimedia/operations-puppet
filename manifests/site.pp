@@ -380,7 +380,7 @@ node 'db2051.codfw.wmnet' {
     role(mariadb::core)
 }
 
-node /^db20(37|44|58|65|73)\.codfw\.wmnet/ {
+node /^db20(44|58|65|73)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
