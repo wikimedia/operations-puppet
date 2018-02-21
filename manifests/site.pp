@@ -568,15 +568,15 @@ node 'db1020.eqiad.wmnet' {
     }
 }
 
-node 'db2011.codfw.wmnet' {
-    class { '::role::mariadb::misc':
-        shard => 'm2',
-    }
-}
 node 'db2044.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm2',
     }
+}
+
+# Pending to be decommissioned: T187886
+node 'db2011.codfw.wmnet' {
+    role(spare::system)
 }
 
 ## m3 shard

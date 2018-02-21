@@ -8,7 +8,6 @@
     shard: m2
     role: slave
   targets:
-  - db2011:9104
   - db2044:9104
 
 - labels:
