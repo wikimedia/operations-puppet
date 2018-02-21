@@ -40,6 +40,7 @@ class role::mariadb::misc(
         config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
         basedir   => '/opt/wmf-mariadb101',
         datadir   => '/srv/sqldata',
+        basedir   => '/opt/wmf-mariadb101',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',
         read_only => $read_only,
