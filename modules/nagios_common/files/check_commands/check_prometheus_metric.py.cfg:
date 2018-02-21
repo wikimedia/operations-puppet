@@ -1,0 +1,10 @@
+define command {
+    command_name check_prometheus
+    command_line $USER1$/check_prometheus_metric.py -H '$ARG1$' -w '$ARG3$' -c '$ARG4$' -m '$ARG6$' '$ARG2$'
+}
+
+# check_prometheus, treating a NaN result as ok
+define command {
+    command_name check_prometheus_nan_ok
+    command_line $USER1$/check_prometheus_metric.py -H '$ARG1$' -w '$ARG3$' -c '$ARG4$' -m '$ARG6$' --nan-ok '$ARG2$'
+}

@@ -28,9 +28,8 @@ class nagios_common::commands(
         # check_bgp/check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
-        # check_prometheus_metric
-        'jq',
-        'curl',
+        # check_prometheus_metric.py
+        'python3-requests',
     ])
 
     file { "${config_dir}/commands":
@@ -50,7 +49,7 @@ class nagios_common::commands(
         'check_ifstatus_nomon',
         'check_jnx_alarms',
         'check_ores_workers',
-        'check_prometheus_metric',
+        'check_prometheus_metric.py',
         'check_ssl',
         'check_sslxNN',
         'check_to_check_nagios_paging',
