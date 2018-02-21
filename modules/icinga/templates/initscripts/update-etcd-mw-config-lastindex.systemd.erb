@@ -1,0 +1,12 @@
+[Unit]
+Description=Update the etcd last modified index for MediaWiki config
+
+[Service]
+User=root
+Environment=ETCD_DATACENTER=<%= @site %>
+ExecStart=/usr/local/sbin/update-etcd-mw-config-lastindex
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
