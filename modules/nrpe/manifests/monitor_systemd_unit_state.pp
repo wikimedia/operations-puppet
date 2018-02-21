@@ -9,7 +9,8 @@ define nrpe::monitor_systemd_unit_state(
     $timeout = 10,
     $critical = false,
     $ensure = 'present',
-    $expected_state = 'active'
+    $expected_state = 'active',
+    $lastrun = '',
     ){
 
     if $::initsystem != 'systemd' {
@@ -27,7 +28,7 @@ define nrpe::monitor_systemd_unit_state(
     nrpe::monitor_service { "${unit}-state":
         ensure       => $ensure,
         description  => $description,
-        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state '${unit}' ${expected_state}",
+        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state '${unit}' ${expected_state} ${lastrun}",
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,
