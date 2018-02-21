@@ -52,7 +52,7 @@ class toollabs::apt_pinning {
         }
         apt::pin { 'toolforge-kubernetes-client-pinning':
             package  => 'kubernetes-client',
-            pin      => 'version 1.4.6-6',
+            pin      => 'version 1.4.6-3',
             priority => '1001',
         }
     }
