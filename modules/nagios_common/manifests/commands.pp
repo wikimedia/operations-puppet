@@ -28,9 +28,6 @@ class nagios_common::commands(
         # check_bgp/check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
-        # check_prometheus_metric
-        'jq',
-        'curl',
     ])
 
     file { "${config_dir}/commands":
@@ -50,7 +47,6 @@ class nagios_common::commands(
         'check_ifstatus_nomon',
         'check_jnx_alarms',
         'check_ores_workers',
-        'check_prometheus_metric',
         'check_ssl',
         'check_sslxNN',
         'check_to_check_nagios_paging',
@@ -113,6 +109,16 @@ class nagios_common::commands(
         config_dir => $config_dir,
         owner      => $owner,
         group      => $group
+    }
+
+    # Check Prometheus metrics
+    require_package('python3-requests')
+    nagios_common::check_command { 'check_prometheus_metric.py':
+        require       => File["${config_dir}/commands"],
+        config_source => 'puppet:///modules/nagios_common/check_commands/check_prometheus_metric.cfg',
+        config_dir    => $config_dir,
+        owner         => $owner,
+        group         => $group,
     }
 
     # Check that the icinga config works
