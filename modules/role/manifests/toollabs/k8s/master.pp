@@ -2,6 +2,7 @@
 class role::toollabs::k8s::master(
     $use_puppet_certs = false,
 ) {
+    include ::toollabs::apt_pinning
     include ::toollabs::infrastructure
     include ::base::firewall
 
