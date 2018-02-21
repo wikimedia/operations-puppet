@@ -1756,7 +1756,7 @@ node /^oresrdb200[12]\.codfw\.wmnet$/ {
 # and writes to a couple of files for quick and easy ops debugging.,
 node 'oxygen.eqiad.wmnet'
 {
-    role(logging::kafkatee::webrequest::ops)
+    role(logging::webrequest::ops)
 }
 
 # parser cache databases
