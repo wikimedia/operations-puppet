@@ -213,5 +213,10 @@ output.encoding = <%= @output_encoding %>
 <%= @output_queue_size ? "output.queue.size = #{@output_queue_size}" : '#output.queue.size = 1000000' %>
 
 
-# Include other config files in /etc/kafkatee.d/*.conf
-include /etc/kafkatee.d/*.conf
+# Kafkatee inputs
+<% @inputs.each do |input| -%>
+input [<%= input['options'].map { |key,val| "#{key}=#{val}" }.join(',') %>] kafka topic <%= input['topic'] %> partition <%= input['partitions'] %> from <%= input['offset'] %>
+<% end -%>
+
+# Include output config files in /etc/kafkatee/<%= @title %>.outputs/*.conf
+include /etc/kafkatee/<%= @title %>.outputs/*.conf
