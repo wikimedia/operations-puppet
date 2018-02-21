@@ -593,6 +593,10 @@ node 'db2012.codfw.wmnet' {
     role(spare::system)
 }
 
+node 'db2030.codfw.wmnet' {
+    role(spare::system)
+}
+
 # m4 shard
 
 node 'db1107.eqiad.wmnet' {
@@ -613,7 +617,7 @@ node 'db1009.eqiad.wmnet' {
     }
 }
 
-node 'db2030.codfw.wmnet' {
+node 'db2037.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }
