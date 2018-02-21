@@ -26,6 +26,33 @@ class profile::kafkatee::webrequest::ops {
     $logstash_host = hiera('logstash_host')
     $logstash_port = hiera('logstash_json_lines_port')
 
+
+    # TODO: These webrequest-analytics outputs will be removed when the webrequest-analytics
+    # kafkatee instance is removed as part of https://phabricator.wikimedia.org/T185136.
+    kafkatee::output { 'sampled-1000-analytics':
+        instance_name => 'webrequest-analytics',
+        destination   => "${webrequest_log_directory}/sampled-1000.json",
+        sample        => 1000,
+    }
+
+    kafkatee::output { '5xx-analytics':
+        instance_name => 'webrequest-analytics',
+        # Adding --line-buffered here ensures that the output file will only have full lines written to it.
+        # Otherwise kafkatee buffers and sends to the pipe whenever it feels like, which causes grep to
+        # work on non-full lines.
+        destination   => "/bin/grep --line-buffered '\"http_status\":\"5' >> ${webrequest_log_directory}/5xx.json",
+        type          => 'pipe',
+    }
+
+    # Send 5xx to logstash, append "type: webrequest" for logstash to pick up
+    kafkatee::output { 'logstash-5xx-analytics':
+        instance_name => 'webrequest-analytics',
+        destination   => "/bin/grep --line-buffered '\"http_status\":\"5' | jq --compact-output --arg type webrequest '. + {type: \$type}' | socat - TCP:${logstash_host}:${logstash_port}",
+        type          => 'pipe',
+    }
+    ### END webrequest-analytics outputs
+
+
     kafkatee::output { 'sampled-1000':
         instance_name => 'webrequest',
         destination   => "${webrequest_log_directory}/sampled-1000.json",
