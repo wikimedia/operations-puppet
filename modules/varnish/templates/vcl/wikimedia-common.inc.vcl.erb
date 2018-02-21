@@ -439,7 +439,7 @@ sub wm_common_backend_response {
 	}
 
 	// Compress compressible things if the backend didn't already
-	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
+	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla") {
 		set beresp.do_gzip = true;
 	}
 
