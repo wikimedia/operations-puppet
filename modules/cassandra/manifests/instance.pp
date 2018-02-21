@@ -362,7 +362,8 @@ define cassandra::instance(
         exec { "install-${data_dir}":
             command => "install -o cassandra -g cassandra -m 750 -d ${data_dir}",
             path    => '/usr/bin/:/bin/',
-            before  => Systemd::Service[$service_name]
+            before  => Systemd::Service[$service_name],
+            creates => $data_dir,
         }
     }
 
