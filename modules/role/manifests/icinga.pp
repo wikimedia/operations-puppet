@@ -37,6 +37,8 @@ class role::icinga {
     include ::profile::bird::anycast_monitoring
     include ::profile::prometheus::alerts
 
+    class { '::icinga::monitor::etcd_mw_config': }
+
     $monitoring_groups = hiera('monitoring::groups')
     create_resources(monitoring::group, $monitoring_groups)
 
