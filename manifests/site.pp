@@ -613,7 +613,7 @@ node 'db1009.eqiad.wmnet' {
     }
 }
 
-node 'db2030.codfw.wmnet' {
+node 'db2037.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm5',
     }
