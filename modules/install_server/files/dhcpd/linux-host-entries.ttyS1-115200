@@ -2224,6 +2224,11 @@ host db2092 {
     fixed-address db2092.codfw.wmnet;
 }
 
+host db2093 {
+    hardware ethernet D0:94:66:2A:77:C9;
+    fixed-address db2093.codfw.wmnet;
+}
+
 host dbproxy1001 {
     hardware ethernet 84:2b:2b:fd:bd:56;
     fixed-address dbproxy1001.eqiad.wmnet;
@@ -7798,11 +7803,6 @@ host terbium {
     fixed-address terbium.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
-}
-
-host tendril2001 {
-    hardware ethernet D0:94:66:2A:77:C9;
-    fixed-address tendril2001.codfw.wmnet;
 }
 
 host tin {
