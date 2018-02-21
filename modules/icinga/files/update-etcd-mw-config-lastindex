@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# Check the current maximum modifiedIndex on etcd for the mediawiki-config
+# directory and update, if needed, the INDEX_FILE to reflect its latest value.
+#
+
+set -e
+
+INDEX_FILE=/var/run/etcd_mw_config_lastindex
+
+if [[ -z "${ETCD_DATACENTER}" ]]; then
+    echo "Required environment variable ETCD_DATACENTER is not set"
+    exit 2
+fi
+
+# Gather a random etcd host (they are already shuffled) and port
+host="$(dig +short SRV "_etcd._tcp.${ETCD_DATACENTER}.wmnet" | awk 'NR==1 {{sub(/\.$/,"",$4)} print $4":"$3}')"
+if [[ -z "${host}" ]]; then
+    echo "Unable to get etcd host"
+    exit 3
+fi
+
+# Define the URL to use to call etcd in order to get the MediaWiki config directory
+url="https://${host}/v2/keys/conftool/v1/mediawiki-config?recursive=true"
+
+# Find the maximum modifiedIndex in the whole directory
+index="$(curl -m 2 -s "${url}" | jq '[.. | .modifiedIndex? | numbers] | max')"
+
+# Validate the new index
+if [[ "${index}" =~ ^[0-9]+$ && "${index}" -gt "0" ]]; then
+    old_index=0
+    if [[ -f ${INDEX_FILE} ]]; then
+        # Gather the old index for comparison
+        old_index=$(<${INDEX_FILE})
+    fi
+
+    # Update it only if they differ
+    if [[ "${index}" != "${old_index}" ]]; then
+        echo "Updating last index to '${index}'"
+        echo -n "${index}" > "${INDEX_FILE}"
+    fi
+else
+    echo "Got invalid last index '${index}'"
+    exit 4
+fi
