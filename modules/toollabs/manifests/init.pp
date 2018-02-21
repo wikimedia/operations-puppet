@@ -9,7 +9,6 @@ class toollabs (
 ) {
 
     include ::labs_lvm
-    include ::toollabs::apt_pinning
 
     package { ['nano', 'at']:
         ensure => latest,
