@@ -169,10 +169,10 @@ class profile::hadoop::master(
         if $hadoop_namenode_heapsize {
             $nn_jvm_warning_threshold  = floor($hadoop_namenode_heapsize * 0.9 * 1000000)
             $nn_jvm_critical_threshold = floor($hadoop_namenode_heapsize * 0.95 * 1000000)
-            monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usaage':
+            monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
                 description     => 'HDFS active Namenode JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=4&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:10080\",area=\"heap\"}[60m]))",
+                query           => "scalar(quantile_over_time(0.8,jvm_memory_bytes_used{instance=\"${::hostname}:10080\",area=\"heap\"}[120m]))",
                 warning         => $nn_jvm_warning_threshold,
                 critical        => $nn_jvm_critical_threshold,
                 contact_group   => 'analytics',
@@ -187,7 +187,7 @@ class profile::hadoop::master(
             monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
                 description     => 'YARN active ResourceManager JVM Heap usage',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/analytics-hadoop?panelId=12&fullscreen&orgId=1'],
-                query           => "scalar(quantile_over_time(0.6,jvm_memory_bytes_used{instance=\"${::hostname}:10083\",area=\"heap\"}[60m]))",
+                query           => "scalar(quantile_over_time(0.8,jvm_memory_bytes_used{instance=\"${::hostname}:10083\",area=\"heap\"}[120m]))",
                 warning         => $rm_jvm_warning_threshold,
                 critical        => $rm_jvm_critical_threshold,
                 contact_group   => 'analytics',
