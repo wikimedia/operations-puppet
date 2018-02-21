@@ -1,8 +1,8 @@
 import unittest
 import time
 
-from check_prometheus import PrometheusCheck, PREDICATE
-from check_prometheus import EX_OK, EX_CRITICAL, EX_WARNING, EX_UNKNOWN
+from check_prometheus_metric import PrometheusCheck, PREDICATE
+from check_prometheus_metric import EX_OK, EX_CRITICAL, EX_WARNING, EX_UNKNOWN
 
 from prometheus_client.parser import text_string_to_metric_families
 
