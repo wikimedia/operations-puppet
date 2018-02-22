@@ -41,7 +41,7 @@ class profile::openstack::main::designate::service(
 
     class {'::openstack::designate::monitor':
         active         => ($::fqdn == $designate_host),
-        critial        => true,
+        critical       => true,
         contact_groups => 'wmcs-team',
     }
 }
