@@ -46,8 +46,4 @@ class role::mariadb::parsercache(
         socket     => '/tmp/mysql.sock',
     }
 
-    # mysql monitoring access from tendril (db1011)
-    ferm::rule { 'mysql_tendril':
-        rule => 'saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;',
-    }
 }
