@@ -18,18 +18,17 @@ class profile::openstack::base::keystone::db(
         require => Package['mysql-server'],
     }
 
-    # XXX: what purpose does this serve?
-    ferm::service { 'mysql_iron':
+    # mysql monitoring and administration from root clients/tendril
+    $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
+    ferm::service { 'mysql_admin_standard':
         proto  => 'tcp',
         port   => '3306',
-        srange => '@resolve(iron.wikimedia.org)',
+        srange => "(${mysql_root_clients})",
     }
-
-    # mysql monitoring access from tendril (db1011)
-    ferm::service { 'mysql_tendril':
+    ferm::service { 'mysql_admin_alternative':
         proto  => 'tcp',
-        port   => '3306',
-        srange => '@resolve(tendril.wikimedia.org)',
+        port   => '3307',
+        srange => "(${mysql_root_clients})",
     }
 
     ferm::rule{'mysql_nova':
