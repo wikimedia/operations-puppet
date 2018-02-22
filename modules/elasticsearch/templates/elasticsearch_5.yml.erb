@@ -443,6 +443,12 @@ index.load_fixed_bitset_filters_eagerly: false
 reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
 <% end %>
 
+##
+# Settings for the LTR plugin
 <% if @script_max_compilations_per_minute %>
 script.max_compilations_per_minute: <%=@script_max_compilations_per_minute%>
 <% end %>
+
+<% if @ltr_cache_size %>
+ltr.caches.max_mem: <%=@ltr_cache_size%>
+<%end%>

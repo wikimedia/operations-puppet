@@ -80,6 +80,7 @@
 #        and port are used. Defaults to undef, which means no remote reindex can occur.
 # - $script_max_compilations_per_minute: integer, max number of script
 #        compilations per minute, defaults to undef (see T171579).
+# - $ltr_cache_size: string, Size of memory cache for LTR plugin.
 #
 # == Sample usage:
 #
@@ -120,6 +121,7 @@ class elasticsearch(
     $curator_uses_unicast_hosts = true,
     $reindex_remote_whitelist = undef,
     $script_max_compilations_per_minute = undef,
+    $ltr_cache_size = '10mb',
 ) {
 
     # Check arguments
