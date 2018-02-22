@@ -10,7 +10,6 @@ class profile::openstack::base::nutcracker(
 
     class {'::profile::mediawiki::nutcracker':
         memcached_servers => $memcached_servers,
-        redis_shards      => {'sessions' => {'eqiad' => []}},
         datacenters       => [],
     }
 
