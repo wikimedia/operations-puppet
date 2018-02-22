@@ -26,6 +26,8 @@ class profile::openstack::main::nova::network::service(
     }
 
     class {'::openstack::nova::network::monitor':
-        active => ($::fqdn == $nova_network_host),
+        active         => ($::fqdn == $nova_network_host),
+        critical       => true,
+        contact_groups => 'wmcs-team',
     }
 }

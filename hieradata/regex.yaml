@@ -204,7 +204,6 @@ labtest:
   mariadb::monitor_disk::is_critical: false
   openstack::designate::monitor::critical: false
   openstack::nova::conductor::monitor::critical: false
-  openstack::nova::network::monitor::critical: false
   icinga::monitor::toollabs::critical: false
 
 # require WriteBack policy to all hosts (independent of the role) that look
