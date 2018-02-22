@@ -6,12 +6,12 @@ class profile::openstack::base::nutcracker(
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
 ) {
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
-    $memcached_pools = $labweb_ips.map |$ip| { "${ip}:11000:1" }
+    $memcached_servers = $labweb_ips.map |$ip| { "${ip}:11000:1" }
 
-    class {'::profile::nutcracker':
-        redis_pools     => [],
-        memcached_pools => $memcached_pools,
-        monitor_port    => 0,
+    class {'::profile::mediawiki::nutcracker':
+        memcached_servers => $memcached_servers,
+        redis_shards      => {'sessions' => {'eqiad' => []}},
+        datacenters       => [],
     }
 
     class { '::memcached':
