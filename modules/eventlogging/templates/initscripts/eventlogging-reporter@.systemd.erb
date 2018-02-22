@@ -1,0 +1,15 @@
+[Unit]
+Description=Eventlogging Reporter %i
+PartOf=eventlogging.service
+
+[Service]
+Type=simple
+User=eventlogging
+Group=eventlogging
+Environment=PYTHONPATH=<%= @eventlogging_path %>
+ExecStart=<%= @eventlogging_path %>/bin/eventlogging-reporter "@<%= @config_file %>"
+Restart=always
+SyslogIdentifier=eventlogging-reporter@%i
+
+[Install]
+WantedBy=multi-user.target
