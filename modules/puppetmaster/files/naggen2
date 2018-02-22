@@ -131,9 +131,8 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
         super(NagiosGeneratorPuppetDB, self).load_config(configfile)
 
     def _query(self, what):
-        url = "https://%s:%s/v3/resources/%s" % (
-            self.config.get('main', 'server'),
-            self.config.get('main', 'port'),
+        url = "%s/pdb/query/v4/resources/%s" % (
+            self.config.get('main', 'server_urls'),
             self.restype[what]
         )
         resources_raw = requests.get(url, params={
