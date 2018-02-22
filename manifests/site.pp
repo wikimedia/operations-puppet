@@ -375,11 +375,6 @@ node /^db1(111|112)\.eqiad\.wmnet/ {
     role(mariadb::core_test)
 }
 
-# row-based replication to sanitarium (T150960)
-node 'db1064.eqiad.wmnet' {
-    role(mariadb::core)
-}
-
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2051.codfw.wmnet' {
@@ -387,7 +382,7 @@ node 'db2051.codfw.wmnet' {
 }
 
 # see also db2084 and db2091 below
-node /^db20(58|65|73)\.codfw\.wmnet/ {
+node /^db20(58|65|73|90)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
