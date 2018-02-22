@@ -68,15 +68,18 @@ define eventlogging::service::consumer(
     $mode         = '0644',
     $reload_on    = undef,
 ) {
-    # eventlogging-consumer puppetization currently only works on Ubuntu with upstart
-    if $::operatingsystem != 'Ubuntu' {
-        fail('eventlogging::service::consumer currently only works on Ubuntu with upstart.')
-    }
 
     Class['eventlogging::server'] -> Eventlogging::Service::Consumer[$title]
 
+    # eventlogging will run out of the path configured in the
+    # eventlogging::server class.
+    $eventlogging_path = $eventlogging::server::eventlogging_path
+    $eventlogging_log_dir = $eventlogging::server::log_dir
     $basename = regsubst($title, '\W', '-', 'G')
     $config_file = "/etc/eventlogging.d/consumers/${basename}"
+    $service_name = "eventlogging-consumer-${basename}"
+    $_log_file = "${eventlogging_log_dir}/${service_name}.log"
+
     file { $config_file:
         ensure  => $ensure,
         content => template('eventlogging/consumer.erb'),
@@ -85,15 +88,29 @@ define eventlogging::service::consumer(
         mode    => $mode,
     }
 
-    # Upstart specific reload command for this eventlogging consumer task.
-    $reload_cmd = "/sbin/reload eventlogging/consumer NAME=${basename} CONFIG=${config_file}"
-    # eventlogging-consumer can be SIGHUPed via reload.
-    # Note that this does not restart the service, so no
-    # events in flight should be lost.
-    # This will only happen if $reload_on is provided.
-    exec { "reload eventlogging-consumer-${basename}":
-        command     => $reload_cmd,
-        refreshonly => true,
-        subscribe   => $reload_on,
+    if os_version('debian >= stretch') {
+        rsyslog::conf { $service_name:
+            content  => template('eventlogging/rsyslog.conf.erb'),
+            priority => 80,
+            before   => Systemd::Service[$service_name],
+        }
+        systemd::service { "eventlogging-consumer@${basename}":
+            ensure  => present,
+            content => systemd_template('eventlogging-consumer@'),
+            restart => true,
+            require => [File[$config_file], File["/etc/rsyslog.d/80-${service_name}.conf"]],
+        }
+    } else {
+        # Upstart specific reload command for this eventlogging consumer task.
+        $reload_cmd = "/sbin/reload eventlogging/consumer NAME=${basename} CONFIG=${config_file}"
+        # eventlogging-consumer can be SIGHUPed via reload.
+        # Note that this does not restart the service, so no
+        # events in flight should be lost.
+        # This will only happen if $reload_on is provided.
+        exec { "reload eventlogging-consumer-${basename}":
+            command     => $reload_cmd,
+            refreshonly => true,
+            subscribe   => $reload_on,
+        }
     }
 }

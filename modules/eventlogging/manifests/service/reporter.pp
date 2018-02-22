@@ -30,9 +30,31 @@ define eventlogging::service::reporter(
 ) {
     Class['eventlogging::server'] -> Eventlogging::Service::Reporter[$title]
 
+    # eventlogging will run out of the path configured in the
+    # eventlogging::server class.
+    $eventlogging_path = $eventlogging::server::eventlogging_path
+    $eventlogging_log_dir = $eventlogging::server::log_dir
     $basename = regsubst($title, '\W', '-', 'G')
-    file { "/etc/eventlogging.d/reporters/${basename}":
+    $config_file = "/etc/eventlogging.d/reporters/${basename}"
+    $service_name = "eventlogging-consumer-${basename}"
+    $_log_file = "${eventlogging_log_dir}/${service_name}.log"
+
+    file { $config_file:
         ensure  => $ensure,
         content => template('eventlogging/reporter.erb'),
+    }
+
+    if os_version('debian >= stretch') {
+        rsyslog::conf { $service_name:
+            content  => template('eventlogging/rsyslog.conf.erb'),
+            priority => 80,
+            before   => Systemd::Service[$service_name],
+        }
+        systemd::service { "eventlogging-reporter@${basename}":
+            ensure  => present,
+            content => systemd_template('eventlogging-reporter@'),
+            restart => true,
+            require => [File[$config_file], File["/etc/rsyslog.d/80-${service_name}.conf"]],
+        }
     }
 }
