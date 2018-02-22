@@ -8,9 +8,13 @@ class profile::openstack::base::nutcracker(
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
     $memcached_servers = $labweb_ips.map |$ip| { "${ip}:11000:1" }
 
+    $redis_servers = $labweb_ips.map |$ip| { $host => {'host' => $ip, 'port' => '6378' }}
+    $redis_shards = {'jobqueue' => {'eqiad' => $redis_servers},
+                     'sessions' => {'eqiad' => $redis_servers}}
+
     class {'::profile::mediawiki::nutcracker':
         memcached_servers => $memcached_servers,
-        redis_shards      => {'sessions' => {'eqiad' => []}},
+        redis_shards      => $redis_shards,
         datacenters       => [],
     }
 
