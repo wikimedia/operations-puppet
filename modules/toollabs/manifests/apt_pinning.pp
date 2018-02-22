@@ -43,17 +43,17 @@ class toollabs::apt_pinning {
         apt::pin { 'toolforge-kubernetes-node-pinning':
             package  => 'kubernetes-node',
             pin      => 'version 1.4.6-6',
-            priority => '1001',
+            priority => '2000',
         }
         apt::pin { 'toolforge-kubernetes-master-pinning':
             package  => 'kubernetes-master',
             pin      => 'version 1.4.6-6',
-            priority => '1001',
+            priority => '2000',
         }
         apt::pin { 'toolforge-kubernetes-client-pinning':
             package  => 'kubernetes-client',
             pin      => 'version 1.4.6-3',
-            priority => '1001',
+            priority => '2000',
         }
     }
     # paws
