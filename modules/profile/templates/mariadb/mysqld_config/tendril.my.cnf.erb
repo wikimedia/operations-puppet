@@ -52,29 +52,19 @@ plugin-load        = ha_tokudb
 #plugin-load        = federated
 open-files-limit   = 100000
 
-table_open_cache       = 10000
-table_definition_cache = 10000
-default-storage-engine = InnoDB
+table_open_cache       = 5000
+table_definition_cache = 5000
+default-storage-engine = Aria
 
 transaction-isolation          = READ-COMMITTED
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 15G
+innodb_buffer_pool_size        = 4G
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 innodb_file_format             = barracuda
 aria_pagecache_buffer_size     = 1G
-tokudb_cache_size              = 30G
-
-log-bin
-log-slave_updates
-sync-binlog                    = 0
-binlog-cache-size              = 1M
-max-binlog-size                = 1000M
-binlog-format                  = <%= @binlog_format %>
-binlog_cache_size              = 1M
-expire_logs_days               = 7
-slave_transaction_retries      = 4294967295
+tokudb_cache_size              = 24G
 
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
