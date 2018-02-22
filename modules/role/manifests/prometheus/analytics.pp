@@ -26,7 +26,6 @@ class role::prometheus::analytics {
     $jmx_exporter_jobs = [
       {
         'job_name'        => 'jmx_druid',
-        'scrape_timeout'  => '25s',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/jmx_druid_*.yaml" ]}
@@ -34,10 +33,16 @@ class role::prometheus::analytics {
       },
       {
         'job_name'        => 'jmx_hadoop',
-        'scrape_timeout'  => '25s',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/jmx_hadoop_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'jmx_hive',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_hive_*.yaml" ]}
         ],
       },
     ]
@@ -69,6 +74,12 @@ class role::prometheus::analytics {
     prometheus::jmx_exporter_config{ "druid_analytics_${::site}":
         dest       => "${targets_path}/jmx_druid_analytics_${::site}.yaml",
         class_name => 'role::druid::analytics::worker',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hive_analytics_${::site}":
+        dest       => "${targets_path}/jmx_hive_analytics_${::site}.yaml",
+        class_name => 'role::analytics_cluster::coordinator',
         site       => $::site,
     }
 
