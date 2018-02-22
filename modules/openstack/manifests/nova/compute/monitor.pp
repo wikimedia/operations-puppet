@@ -4,6 +4,7 @@
 class openstack::nova::compute::monitor(
     $active,
     $certname,
+    $verify_instances=false,
 ){
 
     # monitoring::service doesn't take a bool
@@ -56,20 +57,23 @@ class openstack::nova::compute::monitor(
         retries      => 1,
     }
 
-    # Where a stopped nova-compute processes means we are no longer processing
-    # control plane messaging above, this check makes sure that at least one (even
-    # if it is a token administrative) instance is running.  If a hypervisor
-    # does reboot it will come up without running instances even after the nova-compute
-    # processes has been fully restored.
+    if ($active) and ($verify_instances) {
 
-    # This means we need to have a token administrative instance running on all
-    # active hypervisors as a canary:
-    # OS_TENANT_NAME=testlabs openstack server create \
-    # --flavor 2 --image <image-id> --availability-zone host:<hypervisor> <instance>
-    nrpe::monitor_service { 'ensure_running_kvm_instances':
-        ensure       => $ensure,
-        description  => 'ensure kvm processes are running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:75 --ereg-argument-array /usr/bin/kvm',
-        retries      => 2,
+        # Where a stopped nova-compute processes means we are no longer processing
+        # control plane messaging above, this check makes sure that at least one (even
+        # if it is a token administrative) instance is running.  If a hypervisor
+        # does reboot it will come up without running instances even after the nova-compute
+        # processes has been fully restored.
+
+        # This means we need to have a token administrative instance running on all
+        # active hypervisors as a canary:
+        # OS_TENANT_NAME=testlabs openstack server create \
+        # --flavor 2 --image <image-id> --availability-zone host:<hypervisor> <instance>
+        nrpe::monitor_service { 'ensure_running_kvm_instances':
+            ensure       => $ensure,
+            description  => 'ensure kvm processes are running',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:75 --ereg-argument-array /usr/bin/kvm',
+            retries      => 2,
+        }
     }
 }

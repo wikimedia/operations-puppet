@@ -19,7 +19,8 @@ class profile::openstack::main::nova::compute::service(
     }
 
     class {'::openstack::nova::compute::monitor':
-        active   => true,
-        certname => $certname,
+        active           => true,
+        certname         => $certname,
+        verify_instances => true,
     }
 }
