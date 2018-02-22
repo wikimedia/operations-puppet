@@ -4,13 +4,14 @@
 #
 class profile::openstack::base::nutcracker(
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
+    $redis_shards = hiera('profile::openstack::base::nutcracker::redis::shards'),
 ) {
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
     $memcached_servers = $labweb_ips.map |$ip| { "${ip}:11000:1" }
 
     class {'::profile::mediawiki::nutcracker':
         memcached_servers => $memcached_servers,
-        redis_shards      => {'sessions' => {'eqiad' => []}},
+        redis_shard       => $redis_shards,
         datacenters       => [],
     }
 
