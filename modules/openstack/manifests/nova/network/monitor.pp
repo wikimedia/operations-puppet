@@ -18,16 +18,18 @@ class openstack::nova::network::monitor(
 
     nrpe::monitor_service { 'check_nova_network_process':
         ensure       => $ensure,
+        critical     => $critical,
         description  => 'nova-network process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
-        critical     => $critical,
+        contact_group => 'wmcs-team',
     }
 
     nrpe::monitor_service { 'conntrack_table_size':
         ensure        => $ensure,
+        critical      => $critical,
         description   => 'Check size of conntrack table',
         nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
         require       => File['/usr/lib/nagios/plugins/check_conntrack'],
-        contact_group => 'admins',
+        contact_group => 'wmcs-team',
     }
 }
