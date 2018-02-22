@@ -4,7 +4,7 @@ Description=Prometheus WMF Elasticsearch Exporter
 [Service]
 Restart=always
 User=prometheus
-ExecStart='/usr/local/bin/prometheus-wmf-elasticsearch-exporter'
+ExecStart=/usr/local/bin/prometheus-wmf-elasticsearch-exporter
 
 [Install]
 WantedBy=multi-user.target
