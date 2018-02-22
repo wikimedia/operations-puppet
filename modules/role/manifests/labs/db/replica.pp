@@ -10,17 +10,32 @@ class role::labs::db::replica {
     include ::profile::mariadb::monitor
     include ::profile::base::firewall
 
-    ferm::service{ 'mariadb_labs_db_replica':
+
+    # mysql monitoring and administration from root clients/tendril
+    $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
+    ferm::service { 'mysql_admin_standard':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => "${mysql_root_clients}",
+    }
+    ferm::service { 'mysql_admin_alternative':
+        proto  => 'tcp',
+        port   => '3307',
+        srange => "${mysql_root_clients}",
+    }
+
+    ferm::service { 'mysql_labs_db_proxy':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => "(@resolve((db1011.eqiad.wmnet)) \
-@resolve((neodymium.eqiad.wmnet)) @resolve((sarin.codfw.wmnet)) \
-@resolve((dbproxy1010.eqiad.wmnet)) @resolve((dbproxy1011.eqiad.wmnet)) \
-@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet)))",
+        srange  => "(@resolve((dbproxy1010.eqiad.wmnet)) @resolve((dbproxy1011.eqiad.wmnet))",
     }
-    ferm::rule { 'mariadb_dba':
-        rule => 'saddr @resolve((db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
+
+    ferm::servicei { 'mysql_labs_db_admin':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => "(@resolve((labstore1004.eqiad.wmnet)) @resolve((labstore1005.eqiad.wmnet)))",
     }
 
     include ::passwords::misc::scripts
