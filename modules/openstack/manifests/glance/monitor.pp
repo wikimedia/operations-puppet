@@ -1,5 +1,6 @@
 class openstack::glance::monitor(
     $active,
+    $contact_groups='admins',
 ) {
 
     require openstack::glance::service
@@ -16,5 +17,6 @@ class openstack::glance::monitor(
         ensure        => $ensure,
         description   => 'glance-api http',
         check_command => 'check_http_on_port!9292',
+        contact_group => $contact_groups,
     }
 }
