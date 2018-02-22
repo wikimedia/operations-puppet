@@ -39,8 +39,9 @@ class profile::openstack::main::designate::service(
         labweb_hosts               => $labweb_hosts,
     }
 
-
     class {'::openstack::designate::monitor':
-        active => ($::fqdn == $designate_host),
+        active         => ($::fqdn == $designate_host),
+        critial        => true,
+        contact_groups => 'wmcs-team',
     }
 }

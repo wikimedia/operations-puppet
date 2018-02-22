@@ -39,4 +39,9 @@ class profile::openstack::labtest::designate::service(
         labweb_hosts               => $labweb_hosts,
     }
     contain '::profile::openstack::base::designate::service'
+
+    class {'::openstack::designate::monitor':
+        active         => ($::fqdn == $designate_host),
+    }
+    contain '::openstack::designate::monitor'
 }
