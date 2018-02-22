@@ -1,0 +1,15 @@
+[Unit]
+Description=Eventlogging Forwarder %i
+PartOf=eventlogging.service
+
+[Service]
+Type=simple
+User=eventlogging
+Group=eventlogging
+Environment=PYTHONPATH=<%= @eventlogging_path %>
+ExecStart=<%= @eventlogging_path %>/bin/eventlogging-forwarder "@<%= @config_file %>"
+Restart=always
+SyslogIdentifier=eventlogging-forwarder@%i
+
+[Install]
+WantedBy=multi-user.target
