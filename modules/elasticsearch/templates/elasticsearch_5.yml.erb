@@ -444,5 +444,13 @@ reindex.remote.whitelist: "<%= @reindex_remote_whitelist %>"
 <% end %>
 
 <% if @script_max_compilations_per_minute %>
+##
+# LTR query executions are considered compilations, increase as appropriate.
 script.max_compilations_per_minute: <%=@script_max_compilations_per_minute%>
 <% end %>
+
+<%- if @ltr_cache_size -%>
+##
+# Size the LTR cache to prevent churn under normal and AB testing scenarios
+ltr.caches.max_mem: <%=@ltr_cache_size%>
+<%- end -%>
