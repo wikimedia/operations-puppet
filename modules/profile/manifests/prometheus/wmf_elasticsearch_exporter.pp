@@ -9,7 +9,7 @@ class profile::prometheus::wmf_elasticsearch_exporter(
     ferm::service { 'prometheus_wmf_elasticsearch_exporter':
         proto  => 'tcp',
         port   => '9109',
-        srange => "(@resolve(${prometheus_nodes_ferm}) @resolve(${prometheus_nodes_ferm}, AAAA))",
+        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
 }
