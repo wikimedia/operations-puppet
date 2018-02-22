@@ -18,9 +18,9 @@ class profile::kafkatee::webrequest::ops {
 
     # if the logs in $log_directory should be rotated
     # then configure a logrotate.d script to do so.
-    logrotate::conf { 'kafkatee-webrequest':
+    logrotate::conf { 'kafkatee-ops':
         ensure  => 'present',
-        content => template('role/logging/kafkatee_logrotate.erb'),
+        content => template('profile/kafkatee/kafkatee_ops_logrotate.erb'),
     }
 
     $logstash_host = hiera('logstash_host')
