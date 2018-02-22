@@ -21,7 +21,7 @@ class profile::openstack::labtest::glance(
     contain '::profile::openstack::base::glance'
 
     class {'::openstack::glance::monitor':
-        active => ($::fqdn == $nova_controller),
+        active         => ($::fqdn == $nova_controller),
     }
     contain '::openstack::glance::monitor'
 }

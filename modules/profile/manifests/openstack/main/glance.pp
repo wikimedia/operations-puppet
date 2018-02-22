@@ -28,6 +28,7 @@ class profile::openstack::main::glance(
     }
 
     class {'openstack::glance::monitor':
-        active => ($::fqdn == $nova_controller),
+        active         => ($::fqdn == $nova_controller),
+        contact_groups => 'wmcs-team,admins',
     }
 }
