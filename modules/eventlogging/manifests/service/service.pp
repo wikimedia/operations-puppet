@@ -103,16 +103,6 @@ define eventlogging::service::service(
         default => $_log_file,
     }
 
-    # ensure the rsyslog log file has sane permisions
-    file { $_log_file:
-        ensure  => present,
-        replace => false,
-        content => '',
-        owner   => 'eventlogging',
-        group   => 'eventlogging',
-        mode    => '0644',
-        before  => Rsyslog::Conf[$service_name],
-    }
     # Rsyslog configuration that routes logs to a file.
     rsyslog::conf { $service_name:
         content  => template('eventlogging/rsyslog.conf.erb'),
