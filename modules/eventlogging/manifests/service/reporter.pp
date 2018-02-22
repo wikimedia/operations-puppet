@@ -31,8 +31,19 @@ define eventlogging::service::reporter(
     Class['eventlogging::server'] -> Eventlogging::Service::Reporter[$title]
 
     $basename = regsubst($title, '\W', '-', 'G')
-    file { "/etc/eventlogging.d/reporters/${basename}":
+    $config_file = "/etc/eventlogging.d/reporters/${basename}"
+
+    file { $config_file:
         ensure  => $ensure,
         content => template('eventlogging/reporter.erb'),
+    }
+
+    if os_version('debian >= stretch') {
+        systemd::service { "eventlogging-reporter@${basename}":
+            ensure  => present,
+            content => systemd_template('eventlogging-reporter@'),
+            restart => true,
+            require => File[$config_file],
+        }
     }
 }
