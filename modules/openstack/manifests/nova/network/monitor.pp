@@ -1,6 +1,7 @@
 class openstack::nova::network::monitor(
     $active,
-    $critical=true,
+    $critical=false,
+    $contact_groups='admins',
     ) {
 
     # monitoring::service doesn't take a bool
@@ -21,7 +22,7 @@ class openstack::nova::network::monitor(
         critical      => $critical,
         description   => 'nova-network process',
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
-        contact_group => 'wmcs-team',
+        contact_group => $contact_groups,
     }
 
     nrpe::monitor_service { 'conntrack_table_size':
@@ -30,6 +31,6 @@ class openstack::nova::network::monitor(
         description   => 'Check size of conntrack table',
         nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
         require       => File['/usr/lib/nagios/plugins/check_conntrack'],
-        contact_group => 'wmcs-team',
+        contact_group => $contact_groups,
     }
 }
