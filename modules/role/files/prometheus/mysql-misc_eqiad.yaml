@@ -50,5 +50,5 @@
     shard: tendril
     role: standalone
   targets:
-  - db1011:9104
+  - db1115:9104
 

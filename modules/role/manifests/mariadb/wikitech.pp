@@ -24,9 +24,17 @@ class role::mariadb::wikitech {
         tmpdir  => '/srv/tmp',
     }
 
-    # mysql monitoring access from tendril (db1011)
-    ferm::rule { 'mysql_tendril':
-        rule => 'saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;',
+    # mysql monitoring and administration from root clients/tendril
+    $mysql_root_clients = join($::network::constants::special_hosts['production']['mysql_root_clients'], ' ')
+    ferm::service { 'mysql_admin_standard':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => "(${mysql_root_clients})",
+    }
+    ferm::service { 'mysql_admin_alternative':
+        proto  => 'tcp',
+        port   => '3307',
+        srange => "(${mysql_root_clients})",
     }
 
     # mysql from deployment master servers and maintenance hosts (T98682, T109736)
