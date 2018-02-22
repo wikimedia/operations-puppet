@@ -93,7 +93,7 @@ class toollabs::apt_pinning {
     if os_version('debian == jessie') or os_version('ubuntu == trusty') {
         $nginx_pkg_version = $facts['lsbdistcodename'] ? {
             'trusty'  => 'version 1.4.6-1ubuntu3.8',
-            'jessie'  => 'version 1.13.6+wmf1~jessie1',
+            'jessie'  => 'version 1.13.6-2+wmf1~jessie1',
         }
         apt::pin { 'toolforge-nginx-pinning':
             package  => 'nginx-*',
