@@ -11,14 +11,15 @@ class profile::mariadb::misc::tendril {
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'misc',
         mysql_shard => 'tendril',
-        mysql_role  => 'standalone',
+        mysql_role  => 'standalone', # FIXME
     }
 
     class { 'mariadb::config':
-        config  => 'profile/mariadb/mysqld_config/tendril.my.cnf.erb',
-        datadir => '/srv/sqldata',
-        basedir => '/opt/wmf-mariadb101',
-        tmpdir  => '/srv/tmp',
-        ssl     => 'puppet-cert',
+        config        => 'profile/mariadb/mysqld_config/tendril.my.cnf.erb',
+        datadir       => '/srv/sqldata',
+        basedir       => '/opt/wmf-mariadb101',
+        tmpdir        => '/srv/tmp',
+        binlog_format => 'ROW',
+        ssl           => 'puppet-cert',
     }
 }
