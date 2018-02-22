@@ -24,4 +24,11 @@ class profile::openstack::base::nutcracker(
         port   => '11000',
         srange => $labweb_ips_ferm
     }
+
+    # Why doesn't profile::mediawiki::nutcracker handle this?
+    file { '/var/run/nutcracker'
+        ensure => 'directory',
+        owner  => 'nutcracker',
+        group  => 'nutcracker',
+    }
 }
