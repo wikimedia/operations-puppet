@@ -67,8 +67,19 @@ define eventlogging::service::processor(
     Class['eventlogging::server'] -> Eventlogging::Service::Processor[$title]
 
     $basename = regsubst($title, '\W', '-', 'G')
-    file { "/etc/eventlogging.d/processors/${basename}":
+    $config_file = "/etc/eventlogging.d/processors/${basename}"
+
+    file { $config_file:
         ensure  => $ensure,
         content => template('eventlogging/processor.erb'),
+    }
+
+    if os_version('debian >= stretch') {
+        systemd::service { "eventlogging-processor@${basename}":
+            ensure  => present,
+            content => systemd_template('eventlogging-processor@'),
+            restart => true,
+            require => File[$config_file],
+        }
     }
 }

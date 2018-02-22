@@ -45,6 +45,5 @@ define eventlogging::plugin(
         content => $content,
         source  => $source,
         require => File['/usr/local/lib/eventlogging'],
-        notify  => Service['eventlogging/init'],
     }
 }

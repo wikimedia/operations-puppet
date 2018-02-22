@@ -1,0 +1,17 @@
+[Unit]
+Description=Eventlogging Consumer %i
+PartOf=eventlogging.service
+
+[Service]
+Type=simple
+User=eventlogging
+Group=eventlogging
+Environment=PYTHONPATH=<%= @eventlogging_path %>
+ExecStart=<%= @eventlogging_path %>/bin/eventlogging-consumer "@<%= @config_file %>"
+# This causes topic config and local schemas to be reloaded.
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+SyslogIdentifier=eventlogging-consumer@%i
+
+[Install]
+WantedBy=multi-user.target

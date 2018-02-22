@@ -115,11 +115,35 @@ class eventlogging::server(
         missing_ok   => true,
     }
 
-    # Temporary conditional while we migrate eventlogging service over to
-    # using systemd on Debian Jessie.  This will allow us to individually
-    # configure services on new nodes while not affecting the running
-    # eventlogging analytics instance on Ubuntu Trusty.
-    if $::operatingsystem == 'Ubuntu' {
+    file { '/etc/init/eventlogging/consumer.conf':
+        content => template('eventlogging/upstart/consumer.conf.erb'),
+        require => File['/etc/eventlogging.d/consumers'],
+    }
+    file { '/etc/init/eventlogging/forwarder.conf':
+        content => template('eventlogging/upstart/forwarder.conf.erb'),
+        require => File['/etc/eventlogging.d/forwarders'],
+    }
+    file { '/etc/init/eventlogging/multiplexer.conf':
+        content => template('eventlogging/upstart/multiplexer.conf.erb'),
+        require => File['/etc/eventlogging.d/multiplexers'],
+    }
+    file { '/etc/init/eventlogging/processor.conf':
+        content => template('eventlogging/upstart/processor.conf.erb'),
+        require => File['/etc/eventlogging.d/processors'],
+    }
+    file { '/etc/init/eventlogging/reporter.conf':
+        content => template('eventlogging/upstart/reporter.conf.erb'),
+        require => File['/etc/eventlogging.d/reporters'],
+    }
+
+    if os_version('debian >= stretch') {
+        systemd::service { 'eventlogging':
+            ensure  => present,
+            content => systemd_template('eventlogging'),
+            restart => true,
+            require => User['eventlogging'],
+        }
+    } else {
         # Manage EventLogging services with 'eventloggingctl'.
         # Usage: eventloggingctl {start|stop|restart|status|tail}
         file { '/sbin/eventloggingctl':
@@ -137,26 +161,7 @@ class eventlogging::server(
         file { '/etc/init/eventlogging/init.conf':
             content => template('eventlogging/upstart/init.conf.erb'),
         }
-        file { '/etc/init/eventlogging/consumer.conf':
-            content => template('eventlogging/upstart/consumer.conf.erb'),
-            require => File['/etc/eventlogging.d/consumers'],
-        }
-        file { '/etc/init/eventlogging/forwarder.conf':
-            content => template('eventlogging/upstart/forwarder.conf.erb'),
-            require => File['/etc/eventlogging.d/forwarders'],
-        }
-        file { '/etc/init/eventlogging/multiplexer.conf':
-            content => template('eventlogging/upstart/multiplexer.conf.erb'),
-            require => File['/etc/eventlogging.d/multiplexers'],
-        }
-        file { '/etc/init/eventlogging/processor.conf':
-            content => template('eventlogging/upstart/processor.conf.erb'),
-            require => File['/etc/eventlogging.d/processors'],
-        }
-        file { '/etc/init/eventlogging/reporter.conf':
-            content => template('eventlogging/upstart/reporter.conf.erb'),
-            require => File['/etc/eventlogging.d/reporters'],
-        }
+
         # daemon service http service is not supported using upstart.
         # See: eventlogging::service::service
 
