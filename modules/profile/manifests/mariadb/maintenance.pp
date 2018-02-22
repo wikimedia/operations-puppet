@@ -9,7 +9,7 @@ class profile::mariadb::maintenance(
 
     class { 'tendril::maintenance':
         ensure           => $ensure,
-        tendril_host     => 'db1011.eqiad.wmnet',
+        tendril_host     => 'db1115.eqiad.wmnet',
         tendril_user     => 'watchdog',
         tendril_password => $passwords::tendril::db_pass,
     }
