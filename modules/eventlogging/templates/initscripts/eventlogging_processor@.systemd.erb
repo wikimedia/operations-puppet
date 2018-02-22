@@ -1,0 +1,16 @@
+[Unit]
+Description=Eventlogging Processor (partition %i)
+PartOf=eventlogging.service
+
+[Service]
+Type=simple
+User=eventlogging
+Group=eventlogging
+EnvironmentFile=<%= @config_file %>
+Environment=PYTHONPATH=<%= @eventlogging_path %>
+ExecStart=<%= @eventlogging_path %>/bin/eventlogging-processor $ARGS
+Restart=always
+SyslogIdentifier=eventlogging_processor@%i
+
+[Install]
+WantedBy=multi-user.target
