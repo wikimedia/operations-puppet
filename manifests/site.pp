@@ -646,16 +646,8 @@ node 'db1102.eqiad.wmnet' {
 }
 
 # tendril db
-node 'db1115.eqiad.wmnet' {
-    role(mariadb::misc::tendril)
-}
-
-node 'db2093.codfw.wmnet' {
-    role(mariadb::misc::tendril)
-}
-
 node 'db1011.eqiad.wmnet' {
-    role(spare::system)
+    role(mariadb::tendril)
 }
 
 node 'dbstore1001.eqiad.wmnet' {
