@@ -27,3 +27,6 @@ profile::elasticsearch::reindex_remote_whitelist: 'search.svc.eqiad.wmnet:9243,s
 # We have seen (T169498) servers completely exhaust their CPU though, so setting
 # this to match cpu counts to prevent overcommit of CPU resources.
 profile::elasticsearch::search_thread_pool_executors: 32
+
+# Increase the per-node cache for compiled LTR models from default 10MB
+profile::elasticsearch::ltr_cache_size: '100mb'
