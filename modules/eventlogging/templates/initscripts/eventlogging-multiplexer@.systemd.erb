@@ -1,0 +1,15 @@
+[Unit]
+Description=Eventlogging Multiplexer %i
+PartOf=eventlogging.service
+
+[Service]
+Type=simple
+User=eventlogging
+Group=eventlogging
+Environment=PYTHONPATH=<%= @eventlogging_path %>
+ExecStart=<%= @eventlogging_path %>/bin/eventlogging-multiplexer "@<%= @config_file %>"
+Restart=always
+SyslogIdentifier=eventlogging-multiplexer@%i
+
+[Install]
+WantedBy=eventlogging.service multi-user.target

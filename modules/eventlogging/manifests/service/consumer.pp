@@ -68,12 +68,12 @@ define eventlogging::service::consumer(
     $mode         = '0644',
     $reload_on    = undef,
 ) {
-    # eventlogging-consumer puppetization currently only works on Ubuntu with upstart
-    if $::operatingsystem != 'Ubuntu' {
-        fail('eventlogging::service::consumer currently only works on Ubuntu with upstart.')
-    }
 
     Class['eventlogging::server'] -> Eventlogging::Service::Consumer[$title]
+
+    # eventlogging will run out of the path configured in the
+    # eventlogging::server class.
+    $eventlogging_path = $eventlogging::server::eventlogging_path
 
     $basename = regsubst($title, '\W', '-', 'G')
     $config_file = "/etc/eventlogging.d/consumers/${basename}"
@@ -85,15 +85,24 @@ define eventlogging::service::consumer(
         mode    => $mode,
     }
 
-    # Upstart specific reload command for this eventlogging consumer task.
-    $reload_cmd = "/sbin/reload eventlogging/consumer NAME=${basename} CONFIG=${config_file}"
-    # eventlogging-consumer can be SIGHUPed via reload.
-    # Note that this does not restart the service, so no
-    # events in flight should be lost.
-    # This will only happen if $reload_on is provided.
-    exec { "reload eventlogging-consumer-${basename}":
-        command     => $reload_cmd,
-        refreshonly => true,
-        subscribe   => $reload_on,
+    if os_version('debian >= stretch') {
+        systemd::service { "eventlogging-consumer@${basename}":
+            ensure  => present,
+            content => systemd_template('eventlogging-consumer@'),
+            restart => true,
+            require => File[$config_file],
+        }
+    } else {
+        # Upstart specific reload command for this eventlogging consumer task.
+        $reload_cmd = "/sbin/reload eventlogging/consumer NAME=${basename} CONFIG=${config_file}"
+        # eventlogging-consumer can be SIGHUPed via reload.
+        # Note that this does not restart the service, so no
+        # events in flight should be lost.
+        # This will only happen if $reload_on is provided.
+        exec { "reload eventlogging-consumer-${basename}":
+            command     => $reload_cmd,
+            refreshonly => true,
+            subscribe   => $reload_on,
+        }
     }
 }

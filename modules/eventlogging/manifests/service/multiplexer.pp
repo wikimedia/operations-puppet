@@ -36,9 +36,24 @@ define eventlogging::service::multiplexer(
 ) {
     Class['eventlogging::server'] -> Eventlogging::Service::Multiplexer[$title]
 
+    # eventlogging will run out of the path configured in the
+    # eventlogging::server class.
+    $eventlogging_path = $eventlogging::server::eventlogging_path
+
     $basename = regsubst($title, '\W', '-', 'G')
-    file { "/etc/eventlogging.d/multiplexers/${basename}":
+    $config_file = "/etc/eventlogging.d/multiplexers/${basename}"
+
+    file { $config_file:
         ensure  => $ensure,
         content => template('eventlogging/multiplexer.erb'),
+    }
+
+    if os_version('debian >= stretch') {
+        systemd::service { "eventlogging-multiplexer@${basename}":
+            ensure  => present,
+            content => systemd_template('eventlogging-multiplexer@'),
+            restart => true,
+            require => File[$config_file],
+        }
     }
 }
