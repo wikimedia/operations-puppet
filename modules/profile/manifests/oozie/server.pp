@@ -33,15 +33,6 @@ class profile::oozie::server(
         java_home                                   => $java_home,
     }
 
-
-    # Context in:
-    # https://phabricator.wikimedia.org/T184794#3897276
-    # https://community.cloudera.com/t5/CDH-Manual-Installation/Oozie-duplicates-CATALINA-OPTS-variables-in-oozie-env-sh/m-p/63654#M1607
-    file { 'duplicated-oozie-env.sh':
-        ensure => absent,
-        path   => '/usr/lib/oozie/bin/oozie-env.sh',
-    }
-
     # Oozie is creating event logs in /var/log/oozie.
     # It rotates them but does not delete old ones.  Set up cronjob to
     # delete old files in this directory.
