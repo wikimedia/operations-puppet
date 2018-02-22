@@ -76,6 +76,11 @@ server {
         # Proxy to cdnjs.cloudflare.com
         rewrite ^/cdnjs(.*)$ $1 break;
         proxy_pass https://cdnjs.cloudflare.com;
+        # Get rid of CloudFlare headers that not helpful here.
+        proxy_hide_header        CF-Cache-Status;
+        proxy_hide_header        CF-RAY;
+        proxy_hide_header        Expect-CT;
+        proxy_hide_header        Strict-Transport-Security;
     }
 
 
@@ -103,6 +108,8 @@ server {
 
             # subs_filter works only on uncompressed data
             proxy_set_header Accept-Encoding "";
+            proxy_hide_header Link;
+            proxy_hide_header Strict-Transport-Security;
 
             # Rewrite references to the upstream to point to our proxy
             subs_filter_types text/css;
@@ -113,6 +120,7 @@ server {
         location ^~ /fontcdn/ {
             rewrite ^/fontcdn(/.*)$ $1 break;
             proxy_pass https://fonts.gstatic.com;
+            proxy_hide_header Strict-Transport-Security;
         }
     }
 
