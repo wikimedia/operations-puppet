@@ -131,11 +131,20 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
         super(NagiosGeneratorPuppetDB, self).load_config(configfile)
 
     def _query(self, what):
-        url = "https://%s:%s/v3/resources/%s" % (
-            self.config.get('main', 'server'),
-            self.config.get('main', 'port'),
-            self.restype[what]
-        )
+        try:
+            url = "%s/pdb/query/v4/resources/%s" % (
+                self.config.get('main', 'server_urls'),
+                self.restype[what]
+            )
+        except:
+            self.log.debug('PuppetDB version 4 setting "server_urls" not found in configfile. Trying PuppetDB version 2 settings "server" "port" and PuppetDB API v3.')
+            url = "https://%s:%s/v3/resources/%s" % (
+                self.config.get('main', 'server'),
+                self.config.get('main', 'port'),
+                self.restype[what]
+            )
+        else:
+            self.log.debug('Found PuppetDB version 4 setting "server_urls" in configfile. Using PuppetDB API v4.')
         resources_raw = requests.get(url, params={
             'query': '["and", \
                         ["=", ["parameter", "ensure"], "present"], \
@@ -158,7 +167,8 @@ class NagiosGeneratorPuppetDB(NagiosGeneratorBase):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='Nagios config file generator -- Outputs a Nagios service or host config from a PuppetDB or MySQL(deprecated) backend.',
+                                     epilog='Note: Environment variable REQUESTS_CA_BUNDLE may be used to specify the CA certificate bundle location (file or directory) used when establishing HTTPS connection to PuppetDB.' )
     parser.add_argument('--type', '-t',
                         dest='type',
                         help="type of file to generate",
