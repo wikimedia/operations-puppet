@@ -1,3 +1,16 @@
+<% if @systemd_conf_format -%>
+<% if @sid %><% @args += '--sid ' + @sid + ' ' -%><% end -%>
+<% @args += @format + ' ' -%>
+<% @args += @input + ' ' -%>
+<% @args += @outputs.join("\n")  + ' ' -%>
+<% if @output_invalid -%>
+<% if @output_invalid == true or @output_invalid == 'true' -%>
+<% @args += '--output-invalid ' -%>
+<% else -%>
+<% @args += '--output-invalid ' + @output_invalid + ' ' -%>
+<% end -%>
+ARGS=<%= @args -%>
+<% else %>
 <% if @sid -%>
 --sid
 <%= @sid %>
@@ -10,5 +23,6 @@
 --output-invalid
 <% else -%>
 --output-invalid <%= @output_invalid %>
+<% end -%>
 <% end -%>
 <% end -%>
