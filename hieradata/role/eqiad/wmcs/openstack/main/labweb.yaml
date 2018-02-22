@@ -70,3 +70,21 @@ lvs::realserver::realserver_ips:
 
 role::lvs::realserver::pools:
   labweb: {}
+
+redis::shards:
+  jobqueue:
+    eqiad:
+      labweb1001: #rdb1001
+        host: 208.80.154.160
+        port: 6378
+      labweb1002:
+        host: 208.80.155.109
+        port: 6379
+  sessions:
+    eqiad:
+      labweb1001: #rdb1001
+        host: 208.80.154.160
+        port: 6378
+      labweb1002:
+        host: 208.80.155.109
+        port: 6379
