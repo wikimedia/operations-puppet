@@ -152,7 +152,7 @@ cache::app_directors:
       codfw: 'wdqs.svc.codfw.wmnet'
   wdqs_director_ldf:
     backends:
-      eqiad: 'wdqs1004.eqiad.wmnet'
+      eqiad: 'wdqs1005.eqiad.wmnet'
   ores:
     be_opts:
       port: 8081
