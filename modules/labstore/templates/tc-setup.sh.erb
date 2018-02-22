@@ -62,6 +62,10 @@ clean_egress
 
 /sbin/tc class add dev $iface parent 1: classid 1:5 htb rate $nfs_write
 
+/sbin/tc class add dev $iface parent 1: classid 1:6 htb rate $nfs_write
+
+/sbin/tc class add dev $iface parent 1: classid 1:7 htb rate $nfs_write
+
 /sbin/tc class add dev $iface parent 1: classid 1:100 htb rate $egress
 
 /sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
@@ -79,6 +83,12 @@ clean_egress
 
 /sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
       match ip dst 10.64.37.18 flowid 1:5
+
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
+      match ip dst 208.80.154.7 flowid 1:6
+
+/sbin/tc filter add dev $iface parent 1: protocol ip prio 0 u32 \
+      match ip dst 208.80.155.106 flowid 1:7
 
 #-------------------------------------
 
@@ -113,6 +123,10 @@ fi
 
 /sbin/tc class add dev ifb0 parent 1: classid 1:5 htb rate $nfs_read
 
+/sbin/tc class add dev ifb0 parent 1: classid 1:6 htb rate $nfs_dumps_read
+
+/sbin/tc class add dev ifb0 parent 1: classid 1:7 htb rate $nfs_dumps_read
+
 /sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.37.6 flowid 1:1
 
@@ -127,3 +141,9 @@ fi
 
 /sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
       match ip src 10.64.37.18 flowid 1:5
+
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+      match ip src 208.80.154.7 flowid 1:6
+
+/sbin/tc filter add dev ifb0 parent 1: protocol ip prio 0 u32 \
+      match ip src 208.80.155.106 flowid 1:7
