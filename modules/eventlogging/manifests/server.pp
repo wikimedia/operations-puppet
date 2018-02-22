@@ -115,11 +115,14 @@ class eventlogging::server(
         missing_ok   => true,
     }
 
-    # Temporary conditional while we migrate eventlogging service over to
-    # using systemd on Debian Jessie.  This will allow us to individually
-    # configure services on new nodes while not affecting the running
-    # eventlogging analytics instance on Ubuntu Trusty.
-    if $::operatingsystem == 'Ubuntu' {
+    if os_version('debian >= stretch') {
+        systemd::service { 'eventlogging':
+            ensure  => present,
+            content => systemd_template('eventlogging'),
+            restart => true,
+            require => User['eventlogging'],
+        }
+    } else {
         # Manage EventLogging services with 'eventloggingctl'.
         # Usage: eventloggingctl {start|stop|restart|status|tail}
         file { '/sbin/eventloggingctl':
@@ -127,16 +130,6 @@ class eventlogging::server(
             mode   => '0755',
         }
 
-        # Upstart job definitions.
-        file { '/etc/init/eventlogging':
-            ensure  => 'directory',
-            recurse => true,
-            purge   => true,
-            force   => true,
-        }
-        file { '/etc/init/eventlogging/init.conf':
-            content => template('eventlogging/upstart/init.conf.erb'),
-        }
         file { '/etc/init/eventlogging/consumer.conf':
             content => template('eventlogging/upstart/consumer.conf.erb'),
             require => File['/etc/eventlogging.d/consumers'],
@@ -157,6 +150,18 @@ class eventlogging::server(
             content => template('eventlogging/upstart/reporter.conf.erb'),
             require => File['/etc/eventlogging.d/reporters'],
         }
+
+        # Upstart job definitions.
+        file { '/etc/init/eventlogging':
+            ensure  => 'directory',
+            recurse => true,
+            purge   => true,
+            force   => true,
+        }
+        file { '/etc/init/eventlogging/init.conf':
+            content => template('eventlogging/upstart/init.conf.erb'),
+        }
+
         # daemon service http service is not supported using upstart.
         # See: eventlogging::service::service
 
