@@ -6,7 +6,7 @@ class role::mariadb::misc::tendril {
     }
 
     include ::standard
-    include ::profile::base::firewall
+    include ::profile::base::firewal
     include ::profile::mariadb::ferm
 
     include ::profile::mariadb::misc::tendril
