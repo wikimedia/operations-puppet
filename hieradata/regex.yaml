@@ -202,7 +202,6 @@ labtest:
     secondary_hostname: labtestservices2001.wikimedia.org
   mariadb::monitor_process::is_critical: false
   mariadb::monitor_disk::is_critical: false
-  openstack::designate::monitor::critical: false
   openstack::nova::conductor::monitor::critical: false
   icinga::monitor::toollabs::critical: false
 
