@@ -202,7 +202,6 @@ labtest:
     secondary_hostname: labtestservices2001.wikimedia.org
   mariadb::monitor_process::is_critical: false
   mariadb::monitor_disk::is_critical: false
-  icinga::monitor::toollabs::critical: false
 
 # require WriteBack policy to all hosts (independent of the role) that look
 # like databases. Currently this only works for megacli systems, but it will
