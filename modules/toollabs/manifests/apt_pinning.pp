@@ -46,11 +46,11 @@ class toollabs::apt_pinning {
     #
     $libpam_pkg_version = $facts['lsbdistcodename'] ? {
         'trusty'  => 'version 1.1.8-1ubuntu2.2',
-        'jessie'  => 'version 1.1.8-3.1+deb8u1',
+        'jessie'  => 'version 1.1.8-3.1+deb8u1+b1',
         'stretch' => 'version 1.1.8-3.6',
     }
     apt::pin { 'toolforge-libpam-pinning':
-        package  => 'libpam-runtime',
+        package  => 'libpam-runtime libpam-modules*',
         pin      => $libpam_pkg_version,
         priority => '1001',
     }
