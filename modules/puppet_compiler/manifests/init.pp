@@ -6,6 +6,7 @@ class puppet_compiler(
     $ensure  = 'present',
     $user    = 'jenkins-deploy',
     $homedir = '/srv/home/jenkins-deploy',
+    $puppetdb_major_version = undef,
     ) {
 
     require ::puppet_compiler::packages
@@ -94,29 +95,18 @@ class puppet_compiler(
         rmdirs  => true,
     }
 
-
     require_package('openjdk-8-jdk')
 
-    # Add a puppetdb instance with a local database.
-    class { 'puppetdb::app':
-        db_driver  => 'hsqldb',
-        ca_path    => '/etc/puppetdb/ssl/ca.pem',
-        db_rw_host => undef,
-        perform_gc => true,
-        bind_ip    => '0.0.0.0',
-        ssldir     => "${vardir}/ssl",
-        require    => Exec['Generate CA for the compiler']
-    }
 
-    file { '/etc/puppetdb/ssl/ca.pem':
-        source => "${vardir}/ssl/certs/ca.pem",
-        owner  => $user,
-        before => Service['puppetdb']
+    $puppetdb_port = $puppetdb_major_version ? {
+        4       => '443',
+        default => '8081',
     }
 
     class { 'puppetmaster::puppetdb::client':
-        host => $::fqdn,
-        port => 8081,
+        host                   => $::fqdn,
+        port                   => $puppetdb_port,
+        puppetdb_major_version => $puppetdb_major_version,
     }
     # puppetdb configuration
     file { "${vardir}/puppetdb.conf":

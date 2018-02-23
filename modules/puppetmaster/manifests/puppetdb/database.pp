@@ -21,6 +21,7 @@ class puppetmaster::puppetdb::database(
     String $shared_buffers,
     String $replication_pass,
     String $puppetdb_pass,
+    Optional[String] $ssldir = undef,
     Hash $puppetdb_users={},
 ) {
     # Tuning
@@ -46,6 +47,7 @@ class puppetmaster::puppetdb::database(
             includes => ['tuning.conf'],
             root_dir => '/srv/postgres',
             use_ssl  => true,
+            ssldir   => $ssldir,
         }
     } else {
         class { '::postgresql::slave':
@@ -54,6 +56,7 @@ class puppetmaster::puppetdb::database(
             root_dir         => '/srv/postgres',
             replication_pass => $replication_pass,
             use_ssl          => true,
+            ssldir           => $ssldir,
         }
     }
 

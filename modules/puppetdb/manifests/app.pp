@@ -74,13 +74,21 @@ class puppetdb::app(
         ensure => absent,
     }
 
+    if $puppetdb_major_version == 4 {
+        $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
+        $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
+    } else {
+        $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?ssl=true"
+        $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
+    }
+
     if $db_driver == 'postgres' {
         $default_db_settings = {
             'classname'   => 'org.postgresql.Driver',
             'subprotocol' => 'postgresql',
             'username'    => 'puppetdb',
             'password'    => $db_password,
-            'subname'     => "//${db_rw_host}:5432/puppetdb?ssl=true",
+            'subname'     => $postgres_rw_db_subname,
         }
     } elsif $db_driver == 'hsqldb' {
         $default_db_settings = {
@@ -109,7 +117,7 @@ class puppetdb::app(
     if $db_ro_host and $db_driver == 'postgres' {
         $read_db_settings = merge(
             $default_db_settings,
-            {'subname' => "//${db_ro_host}:5432/puppetdb?ssl=true"}
+            {'subname' => $postgres_ro_db_subname}
         )
         puppetdb::config { 'read-database':
             settings => $read_db_settings,
