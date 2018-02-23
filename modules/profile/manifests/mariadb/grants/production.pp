@@ -53,6 +53,8 @@ class profile::mariadb::grants::production(
         $striker_admin_pass  = $passwords::striker::admin_db_password
         $labspuppet_pass     = hiera('labspuppetbackend_mysql_password')
         $labsdbaccounts_pass = $passwords::labsdbaccounts::db_password
+        $wikiuser_pass       = $passwords::misc::scripts::wikiuser_pass
+        $wikiadmin_pass      = $passwords::misc::scripts::wikiadmin_pass
         $rddmarc_pass        = $passwords::rddmarc::db_password
         $phab_admin_pass     = $passwords::mysql::phabricator::admin_pass
         $phab_app_pass       = $passwords::mysql::phabricator::app_pass
