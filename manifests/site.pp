@@ -1080,6 +1080,11 @@ node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
 }
 
 
+# Kafka Burrow Consumer lag monitoring (T187901, T187805)
+node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
+    role(test)
+}
+
 # virtual machine for misc. applications
 # (as opposed to static sites using 'webserver_misc_static')
 #
