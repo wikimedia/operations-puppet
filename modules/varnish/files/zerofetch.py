@@ -57,7 +57,8 @@ class ZeroFetcher:
         if login2_data['login']['result'] != 'Success':
             raise Exception('API login phase2 gave result ' +
                             login2_data['login']['result'] +
-                            ', expected "Success"')
+                            ' with reason "' + login2_data['login']['reason'] +
+                            '", expected "Success"')
         self.logged_in = True
 
     # Logout method, which only acts if we're currently logged-in
