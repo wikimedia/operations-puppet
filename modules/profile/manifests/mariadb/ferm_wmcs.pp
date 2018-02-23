@@ -8,7 +8,7 @@ class profile::mariadb::ferm_wmcs(
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
     $horizon_host = hiera('profile::openstack::main::horizon_host'),
-    $labweb_hosts = hiera('profile::openstack::labtestn::labweb_hosts'),
+    $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
     $osm_host = hiera('profile::openstack::main::osm_host'),
     ) {
 
