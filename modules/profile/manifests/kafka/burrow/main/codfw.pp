@@ -12,7 +12,7 @@ class profile::kafka::burrow::main::codfw(
 
     profile::prometheus::burrow_exporter { 'main-codfw':
         burrow_addr      => 'localhost:8200',
-        port             => 9600,
+        port             => 9500,
         prometheus_nodes => $prometheus_nodes,
     }
 }

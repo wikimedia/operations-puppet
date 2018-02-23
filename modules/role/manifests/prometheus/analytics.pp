@@ -126,7 +126,7 @@ class role::prometheus::analytics {
     prometheus::class_config{ "burrow_analytics_${::site}":
         dest       => "${targets_path}/burrow_analytics_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::kafka::burrow::analytics',
+        class_name => "role::kafka::monitoring::${::site}",
         port       => '9000',
     }
 
