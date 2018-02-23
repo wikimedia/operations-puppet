@@ -192,6 +192,16 @@ host install2002 {
     filename "lpxelinux.0";
 }
 
+host kafkamon1001 {
+    hardware ethernet aa:00:00:ed:c5:11;
+    fixed-address kafkamon1001.eqiad.wmnet;
+}
+
+host kafkamon2001 {
+    hardware ethernet aa:00:00:ca:30:e0;
+    fixed-address kafkamon2001.codfw.wmnet;
+}
+
 host kraz {
     hardware ethernet aa:00:00:e9:b4:28;
     fixed-address kraz.wikimedia.org;
