@@ -41,7 +41,7 @@ class icinga::monitor::toollabs {
         description   => 'tools nginx proxy health',
         check_command => 'check_http_url!tools.wmflabs.org!/.well-known/healthz',
         host          => 'tools.wmflabs.org',
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team,admins',
     }
 
     # complex checks via a wsgi app running on a cluster for this purpose.
@@ -88,7 +88,7 @@ class icinga::monitor::toollabs {
         description   => 'Verify internal DNS from within Tools',
         check_command => "${checker}!/labs-dns/private!OK",
         host          => $test_entry_host,
-        contact_group => 'wmcs-team',
+        contact_group => 'wmcs-team,admins',
     }
 
     monitoring::service { 'tools-checker-nfs-home':
@@ -120,7 +120,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team,admins',
     }
 
     monitoring::service { 'tools-checker-etcd-flannel':
@@ -129,7 +129,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team,admins',
     }
 
     monitoring::service { 'tools-checker-etcd-k8s':
@@ -138,7 +138,7 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team,admins',
     }
 
     monitoring::service { 'tools-checker-k8s-node-ready':
@@ -147,6 +147,6 @@ class icinga::monitor::toollabs {
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team',
+        contact_group  => 'wmcs-team,admins',
     }
 }
