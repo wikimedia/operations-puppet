@@ -3,9 +3,7 @@
 # * relevant cert expirary is monitored in
 #   icinga::monitor::certs
 
-class icinga::monitor::toollabs (
-    $critical = true,
-) {
+class icinga::monitor::toollabs {
 
     # toolserver.org (redirect page to Tool Labs)
     @monitoring::host { 'www.toolserver.org':
@@ -43,6 +41,7 @@ class icinga::monitor::toollabs (
         description   => 'tools nginx proxy health',
         check_command => 'check_http_url!tools.wmflabs.org!/.well-known/healthz',
         host          => 'tools.wmflabs.org',
+        contact_group => 'wmcs-team',
     }
 
     # complex checks via a wsgi app running on a cluster for this purpose.
@@ -58,10 +57,11 @@ class icinga::monitor::toollabs (
     $checker="check_http_url_at_address_for_string_with_timeout!300!${test_entry_host}"
 
     monitoring::service { 'tools-checker-self':
+        critical      => true,
         description   => 'toolschecker service itself needs to return OK',
         check_command => "${checker}!/self!OK",
         host          => $test_entry_host,
-        critical      => $critical,
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-dumps':
@@ -77,23 +77,26 @@ class icinga::monitor::toollabs (
     }
 
     monitoring::service { 'tools-checker-ldap':
+        critical      => true,
         description   => 'Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
-        critical      => $critical,
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
         description   => 'Verify internal DNS from within Tools',
         check_command => "${checker}!/labs-dns/private!OK",
         host          => $test_entry_host,
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-nfs-home':
+        critical      => true,
         description   => 'NFS read/writeable on labs instances',
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
-        critical      => $critical,
+        contact_group => 'wmcs-team',
     }
 
     # new instances will block on this for spinup if failing
@@ -117,22 +120,33 @@ class icinga::monitor::toollabs (
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
+        contact_group  => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-etcd-flannel':
-        description   => 'All Flannel etcd nodes are healthy',
-        check_command => "${checker}!/etcd/flannel!OK",
-        host          => $test_entry_host,
+        description    => 'All Flannel etcd nodes are healthy',
+        check_command  => "${checker}!/etcd/flannel!OK",
+        host           => $test_entry_host,
+        check_interval => 5,
+        retry_interval => 5,
+        contact_group  => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-etcd-k8s':
-        description   => 'All k8s etcd nodes are healthy',
-        check_command => "${checker}!/etcd/k8s!OK",
-        host          => $test_entry_host,
+        description    => 'All k8s etcd nodes are healthy',
+        check_command  => "${checker}!/etcd/k8s!OK",
+        host           => $test_entry_host,
+        check_interval => 5,
+        retry_interval => 5,
+        contact_group  => 'wmcs-team',
     }
+
     monitoring::service { 'tools-checker-k8s-node-ready':
-        description   => 'All k8s worker nodes are healthy',
-        check_command => "${checker}!/k8s/nodes/ready!OK",
-        host          => $test_entry_host,
+        description    => 'All k8s worker nodes are healthy',
+        check_command  => "${checker}!/k8s/nodes/ready!OK",
+        host           => $test_entry_host,
+        check_interval => 5,
+        retry_interval => 5,
+        contact_group  => 'wmcs-team',
     }
 }
