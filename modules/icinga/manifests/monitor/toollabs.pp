@@ -30,7 +30,7 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools.wmflabs.org':
-        description   => 'tools homepage (admin tool)',
+        description   => 'toolschecker: tools homepage (admin tool)',
         check_command => 'check_http_slow!20',
         host          => 'tools.wmflabs.org',
     }
@@ -38,7 +38,7 @@ class icinga::monitor::toollabs {
     # Monitors the tools nginx proxy by hitting the health endpoint
     # defined in dynamicproxy nginx.conf
     monitoring::service {'tools-proxy':
-        description   => 'tools nginx proxy health',
+        description   => 'toolschecker: tools nginx proxy health',
         check_command => 'check_http_url!tools.wmflabs.org!/.well-known/healthz',
         host          => 'tools.wmflabs.org',
         contact_group => 'wmcs-team,admins',
@@ -65,27 +65,27 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools-checker-dumps':
-        description   => 'Make sure enwiki dumps are not empty',
+        description   => 'toolschecker: Make sure enwiki dumps are not empty',
         check_command => "${checker}!/dumps!OK",
         host          => $test_entry_host,
     }
 
     monitoring::service { 'tools-checker-redis':
-        description   => 'Redis set/get',
+        description   => 'toolschecker: Redis set/get',
         check_command => "${checker}!/redis!OK",
         host          => $test_entry_host,
     }
 
     monitoring::service { 'tools-checker-ldap':
         critical      => true,
-        description   => 'Test LDAP for query',
+        description   => 'toolschecker: Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team',
     }
 
     monitoring::service { 'tools-checker-labs-dns-private':
-        description   => 'Verify internal DNS from within Tools',
+        description   => 'toolschecker: Verify internal DNS from within Tools',
         check_command => "${checker}!/labs-dns/private!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team,admins',
@@ -93,7 +93,7 @@ class icinga::monitor::toollabs {
 
     monitoring::service { 'tools-checker-nfs-home':
         critical      => true,
-        description   => 'NFS read/writeable on labs instances',
+        description   => 'toolschecker: NFS read/writeable on labs instances',
         check_command => "${checker}!/nfs/home!OK",
         host          => $test_entry_host,
         contact_group => 'wmcs-team',
@@ -101,7 +101,7 @@ class icinga::monitor::toollabs {
 
     # new instances will block on this for spinup if failing
     monitoring::service { 'tools-checker-nfs-showmount':
-        description   => 'showmount succeeds on a labs instance',
+        description   => 'toolschecker: showmount succeeds on a labs instance',
         check_command => "${checker}!/nfs/secondary_cluster_showmount!OK",
         host          => $test_entry_host,
     }
@@ -109,13 +109,13 @@ class icinga::monitor::toollabs {
     # become toolschecker
     # crontab -e (from a bastion)
     monitoring::service { 'tools-checker-toolscron':
-        description   => 'check mtime mod from tools cron job',
+        description   => 'toolschecker: check mtime mod from tools cron job',
         check_command => "${checker}!/toolscron!OK",
         host          => $test_entry_host,
     }
 
     monitoring::service { 'tools-checker-grid-start-trusty':
-        description    => 'Start a job and verify on Trusty',
+        description    => 'toolschecker: Start a job and verify on Trusty',
         check_command  => "${checker}!/grid/start/trusty!OK",
         host           => $test_entry_host,
         check_interval => 5,
@@ -124,7 +124,7 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools-checker-etcd-flannel':
-        description    => 'All Flannel etcd nodes are healthy',
+        description    => 'toolschecker: All Flannel etcd nodes are healthy',
         check_command  => "${checker}!/etcd/flannel!OK",
         host           => $test_entry_host,
         check_interval => 5,
@@ -133,7 +133,7 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools-checker-etcd-k8s':
-        description    => 'All k8s etcd nodes are healthy',
+        description    => 'toolschecker: All k8s etcd nodes are healthy',
         check_command  => "${checker}!/etcd/k8s!OK",
         host           => $test_entry_host,
         check_interval => 5,
@@ -142,7 +142,7 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'tools-checker-k8s-node-ready':
-        description    => 'All k8s worker nodes are healthy',
+        description    => 'toolschecker: All k8s worker nodes are healthy',
         check_command  => "${checker}!/k8s/nodes/ready!OK",
         host           => $test_entry_host,
         check_interval => 5,
