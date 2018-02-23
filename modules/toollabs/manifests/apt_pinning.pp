@@ -1,17 +1,37 @@
-# This class holds all the apt pinning for key packages in the Toolforge
+# This class holds all the apt pinning for key packages in the Toolforge cluster
 
 class toollabs::apt_pinning {
 
     #
     # linux kernel
     #
-    $linux_pkg = $facts['lsbdistcodename'] ? {
+    # virtual meta-package, they usually have 3 levels of indirection:
+    # linux-meta -> linux-meta-4.9 -> linux-image-4.9-xx
+    # trusty is a bit different, only 2 levels but different 'flavours'
+    $linux_meta_pkg = $facts['lsbdistcodename'] ? {
         'trusty'  => 'linux-image-generic',
+        'jessie'  => 'linux-meta',
+        'stretch' => 'linux-image-amd64',
+    }
+    $linux_meta_pkg_version = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'version 3.13.0.141.151',
+        'jessie'  => 'version 1.16',
+        'stretch' => 'version 4.9+80+deb9u3',
+    }
+    apt::pin { 'toolforge-linux-meta-pinning':
+        package  => $linux_meta_pkg,
+        pin      => $linux_meta_pkg_version,
+        priority => '1001',
+    }
+    # actual kernel package. Pinning only this is not enough, given that the meta-package
+    # could be upgraded pointing to another version and then you would have a pending reboot
+    $linux_pkg = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'linux-image-3.13.0-141-generic',
         'jessie'  => 'linux-image-4.9.0-0.bpo.5-amd64',
         'stretch' => 'linux-image-4.9.0-5-amd64',
     }
     $linux_pkg_version = $facts['lsbdistcodename'] ? {
-        'trusty'  => 'version 3.13.0.141.151',
+        'trusty'  => 'version 3.13.0-141.190',
         'jessie'  => 'version 4.9.65-3+deb9u1~bpo8+2',
         'stretch' => 'version 4.9.65-3+deb9u2',
     }
