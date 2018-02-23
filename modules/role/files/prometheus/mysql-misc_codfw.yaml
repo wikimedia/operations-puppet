@@ -22,3 +22,8 @@
   targets:
   - db2037:9104
 
+- labels:
+    shard: tendril
+    role: standalone
+  targets:
+  - db2093:9104
