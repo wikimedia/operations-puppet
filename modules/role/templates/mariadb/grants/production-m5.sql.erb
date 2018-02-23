@@ -134,8 +134,10 @@ IDENTIFIED BY '<%= @striker_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE ON striker.* TO 'striker'@'208.80.155.109'
 IDENTIFIED BY '<%= @striker_pass %>';
 
--- striker admin user. Will connect to DB from terbium, californium, labweb1001 and labweb1002
+-- striker admin user. Will connect to DB from terbium/wasat, californium, labweb1001 and labweb1002
 GRANT ALL ON striker.* TO 'striker_admin'@'10.64.32.13'
+IDENTIFIED BY '<%= @striker_admin_pass %>';
+GRANT ALL ON striker.* TO 'striker_admin'@'10.192.48.45'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
 GRANT ALL ON striker.* TO 'striker_admin'@'208.80.154.147'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
