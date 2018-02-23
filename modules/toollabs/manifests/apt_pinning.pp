@@ -42,16 +42,26 @@ class toollabs::apt_pinning {
     }
 
     #
-    # pam libs
+    # pam libs and related packages
     #
     $libpam_pkg_version = $facts['lsbdistcodename'] ? {
         'trusty'  => 'version 1.1.8-1ubuntu2.2',
-        'jessie'  => 'version 1.1.8-3.1+deb8u1',
+        'jessie'  => 'version 1.1.8-3.1+deb8u1*',
         'stretch' => 'version 1.1.8-3.6',
     }
     apt::pin { 'toolforge-libpam-pinning':
-        package  => 'libpam-runtime',
+        package  => 'libpam-runtime libpam-modules* libpam0g',
         pin      => $libpam_pkg_version,
+        priority => '1001',
+    }
+    $libpam_ldapd_pkg_version = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'version 0.8.13-3ubuntu1',
+        'jessie'  => 'version 0.9.4-3+deb8u1',
+        'stretch' => 'version 0.9.7-2',
+    }
+    apt::pin { 'toolforge-libpam-ldapd-pinning':
+        package  => 'libpam-ldapd nslcd*',
+        pin      => $libpam_ldapd_pkg_version,
         priority => '1001',
     }
 
