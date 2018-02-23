@@ -2752,10 +2752,6 @@ ldap_only_users:
     ensure: present
     realname: Victoria Coleman
     email: vcoleman@wikimedia.org
-  chrisneuroth:
-    ensure: present
-    realname: Christoph Neuroth
-    email: christoph.neuroth_ext@wikimedia.de
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
