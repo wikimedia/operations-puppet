@@ -10,7 +10,7 @@ class toollabs::apt_pinning {
     # trusty is a bit different, only 2 levels but different 'flavours'
     $linux_meta_pkg = $facts['lsbdistcodename'] ? {
         'trusty'  => 'linux-image-generic',
-        'jessie'  => 'linux-meta',
+        'jessie'  => 'linux-meta*',
         'stretch' => 'linux-image-amd64',
     }
     $linux_meta_pkg_version = $facts['lsbdistcodename'] ? {
