@@ -38,6 +38,7 @@ class postgresql::server(
     $port             = '5432',
     $root_dir         = '/var/lib/postgresql',
     $use_ssl          = false,
+    $ssldir           = undef,
 ) {
 
     package { [
@@ -87,6 +88,7 @@ class postgresql::server(
             provide_private => true,
             user            => 'postgres',
             group           => 'postgres',
+            ssldir          => $ssldir,
         }
     }
 
