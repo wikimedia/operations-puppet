@@ -6,13 +6,13 @@
 # filtertags: labs-project-striker
 class role::striker::web {
 
-    requires_os('debian stretch')
-
-    require_package('libapache2-mod-wsgi-py3')
-    class { '::httpd':
-        modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi',
-                    'proxy', 'expires', 'proxy_http', 'proxy_balancer',
-                    'lbmethod_byrequests'],
+    if os_version('debian >= stretch') {
+        require_package('libapache2-mod-wsgi-py3')
+        class { '::httpd':
+            modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi',
+                        'proxy', 'expires', 'proxy_http', 'proxy_balancer',
+                        'lbmethod_byrequests'],
+        }
     }
 
     include ::memcached
