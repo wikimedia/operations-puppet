@@ -8,6 +8,9 @@ class profile::openstack::main::nova::conductor::service(
     }
 
     class {'::openstack::nova::conductor::monitor':
-        active => ($::fqdn == $nova_controller),
+        active         => ($::fqdn == $nova_controller),
+        critical       => true,
+        contact_groups => 'wmcs-team',
     }
+    contain '::openstack::nova::conductor::monitor'
 }
