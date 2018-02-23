@@ -5,7 +5,8 @@
 
 class openstack::nova::conductor::monitor(
     $active,
-    $critical = true,
+    $critical=false,
+    $contact_groups='admins',
     ) {
 
     # monitoring::service doesn't take a bool
@@ -17,9 +18,10 @@ class openstack::nova::conductor::monitor(
     }
 
     nrpe::monitor_service { 'check_nova_conductor_process':
-        ensure       => $ensure,
-        description  => 'nova-conductor process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-conductor'",
-        critical     => $critical,
+        ensure        => $ensure,
+        critical      => $critical,
+        description   => 'nova-conductor process',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-conductor'",
+        contact_group => $contact_groups,
     }
 }
