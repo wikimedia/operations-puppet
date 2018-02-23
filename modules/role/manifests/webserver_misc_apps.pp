@@ -13,8 +13,4 @@ class role::webserver_misc_apps {
     include ::profile::iegreview              # https://iegreview.wikimedia.org
     include ::profile::grafana::production    # https://grafana.wikimedia.org
     include ::profile::racktables             # https://racktables.wikimedia.org
-
-    include ::profile::kafka::burrow::analytics
-    include ::profile::kafka::burrow::main::eqiad
-    include ::profile::kafka::burrow::main::codfw
 }

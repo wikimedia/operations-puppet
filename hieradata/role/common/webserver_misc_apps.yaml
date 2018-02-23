@@ -1,11 +1,5 @@
 standard::has_default_mail_relay: false
 
-profile::kafka::burrow:analytics::consumer_groups:
-  - eventlogging_processor_client_side_00
-  - eventlogging_consumer_mysql_00
-  - eventlogging_consumer_mysql_eventbus_00
-  - eventlogging_consumer_files_00
-
 profile::grafana::readonly_domain: grafana.wikimedia.org
 profile::grafana::admin_domain: grafana-admin.wikimedia.org
 profile::grafana::ldap_editor_description: nda/ops/wmf/grafana-admin
