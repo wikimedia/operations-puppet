@@ -7,4 +7,9 @@ class profile::openstack::labtest::nova::api::service(
         nova_api_host => $nova_api_host,
     }
     contain '::profile::openstack::base::nova::api::service'
+
+    class {'::openstack::nova::api::monitor':
+        active   => ($::fqdn == $nova_api_host),
+    }
+    contain '::openstack::nova::api::monitor'
 }
