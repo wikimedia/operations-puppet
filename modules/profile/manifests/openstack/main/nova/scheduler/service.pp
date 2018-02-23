@@ -10,6 +10,9 @@ class profile::openstack::main::nova::scheduler::service(
     }
 
     class {'::openstack::nova::scheduler::monitor':
-        active => ($::fqdn == $nova_controller),
+        active         => ($::fqdn == $nova_controller),
+        critical       => true,
+        contact_groups => 'wmcs-team',
     }
+    contain '::openstack::nova::scheduler::monitor'
 }
