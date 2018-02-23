@@ -1082,7 +1082,7 @@ node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
 
 # Kafka Burrow Consumer lag monitoring (T187901, T187805)
 node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
-    role(test)
+    role(kafka::monitoring)
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -1093,7 +1093,6 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 # profile::iegreview              - https://iegreview.wikimedia.org
 # profile::grafana::production    - https://grafana.wikimedia.org
 # profile::racktables             - https://racktables.wikimedia.org
-# profile::kafka::burrow::analytics is a Kafka consumer lag monitor
 node 'krypton.eqiad.wmnet' {
     role(webserver_misc_apps)
 }
