@@ -40,6 +40,7 @@ class postgresql::slave(
     $ensure='present',
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
+    $ssldir=undef,
 ) {
 
     $data_dir = "${root_dir}/${pgversion}/main"
@@ -50,6 +51,7 @@ class postgresql::slave(
         includes  => [ $includes, 'slave.conf'],
         root_dir  => $root_dir,
         use_ssl   => $use_ssl,
+        ssldir    => $ssldir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/slave.conf":
