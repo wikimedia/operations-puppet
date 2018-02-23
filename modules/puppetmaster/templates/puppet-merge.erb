@@ -13,10 +13,11 @@ RESET=$(tput sgr0)
 FORCE=0
 USAGE=0
 QUIET=0
+SKIPCONFCTL=0
 BASEDIR="/var/lib/git/operations/puppet"
 CONFFILE="/etc/puppet-merge.conf"
 
-usage="$(basename ${0}) [-y|--yes] [SHA1]
+usage="$(basename ${0}) [-y|--yes] [--skip-confctl] [SHA1]
 
 Fetches changes from origin and from all submodules.
 Shows diffs between HEAD and FETCH_HEAD, including diffs
@@ -30,13 +31,14 @@ It also runs the conftool merge if necessary.
 SHA1 equals HEAD if not specified
 "
 
-TEMP=$(getopt -o yhq --long yes,help,quiet -n "$0" -- "$@")
+TEMP=$(getopt -o yhqs --long yes,help,quiet,skip-confctl -n "$0" -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
 eval set -- "$TEMP"
 while true; do
     case "$1" in
         -y|--yes) FORCE=1; shift ;;
+        -s|--skip-confctl|--yes) SKIPCONFCTL=1; shift ;;
         -h|--help) USAGE=1; shift ;;
         -q|--quiet) QUIET=1; shift ;;
         --) shift ; break ;;
@@ -50,6 +52,16 @@ fi
 
 if [ -f $CONFFILE ]; then
     . $CONFFILE
+fi
+
+# Make sure we have .etcdrc; without it the (possibly upcoming) conftool-update
+#  call will fail
+if [ $SKIPCONFCTL -ne 1 ]; then
+  if [ ! -f $HOME/.etcdrc ]; then
+    echo "Unable to find $HOME/.etcdrc which is required for conftool updates."
+    echo "Consider using 'sudo -i' or the --skip-confctl option."
+    exit 1
+  fi
 fi
 
 sha1=${1:-}
@@ -210,9 +222,13 @@ if [ -z ${sha1} ]; then # Only loop through the other servers if called without 
   # avoid a syntax error if this list is empty
   true
 fi
-# conftool-merge does need to run from >1 frontend, avoid running a second time
-if [ $running_user != $git_user ]; then
-    echo "Now running conftool-merge to sync any changes to conftool data"
-    /usr/local/bin/conftool-merge
+
+if [ $SKIPCONFCTL -ne 1 ]; then
+  # conftool-merge does need to run from >1 frontend, avoid running a second time
+  if [ $running_user != $git_user ]; then
+      echo "Now running conftool-merge to sync any changes to conftool data"
+      /usr/local/bin/conftool-merge
+  fi
 fi
+
 <%- end -%>
