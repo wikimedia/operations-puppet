@@ -4,7 +4,13 @@ class puppetmaster::puppetdb::client($host, $port=443) {
     # Only 3.5+ puppetmasters can work with our version of puppetdb
     requires_os('debian >= jessie')
 
-    require_package('puppetdb-terminus')
+    if os_version('debian == jessie') {
+        require_package('puppetdb-terminus')
+    }
+
+    if os_version('debian >= stretch') {
+        require_package('puppetdb-termini')
+    }
 
     file { '/etc/puppet/puppetdb.conf':
         ensure  => present,
