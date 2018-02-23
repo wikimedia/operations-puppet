@@ -30,3 +30,6 @@ profile::elasticsearch::search_thread_pool_executors: 32
 
 # Increase the per-node cache for compiled LTR models from default 10MB
 profile::elasticsearch::ltr_cache_size: '100mb'
+
+# Make the full cpu resources available for indexing
+profile::elasticsearch::bulk_thread_pool_executors: 32
