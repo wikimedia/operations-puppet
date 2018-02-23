@@ -1079,10 +1079,14 @@ node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
     role(kafka::jumbo::broker)
 }
 
+# Kafka Burrow Consumer lag monitoring for eqiad Kafka clusters
+node 'kafkamon1001.eqiad.wmnet' {
+    role(kafka::monitoring::eqiad)
+}
 
-# Kafka Burrow Consumer lag monitoring (T187901, T187805)
-node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
-    role(test)
+# Kafka Burrow Consumer lag monitoring for codfw Kafka clusters
+node 'kafkamon2001.codfw.wmnet' {
+    role(kafka::monitoring::codfw)
 }
 
 # virtual machine for misc. applications
@@ -1092,7 +1096,6 @@ node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
 # profile::iegreview              - https://iegreview.wikimedia.org
 # profile::grafana::production    - https://grafana.wikimedia.org
 # profile::racktables             - https://racktables.wikimedia.org
-# profile::kafka::burrow::analytics is a Kafka consumer lag monitor
 node 'krypton.eqiad.wmnet' {
     role(webserver_misc_apps)
 }
