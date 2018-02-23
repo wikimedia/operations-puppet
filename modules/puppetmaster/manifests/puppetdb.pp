@@ -7,6 +7,7 @@ class puppetmaster::puppetdb(
     $jetty_port = 8080,
     $jvm_opts   ='-Xmx4G',
     $puppetdb_major_version=undef,
+    $ssldir = undef,
 ) {
     requires_os('debian >= jessie')
 
@@ -18,6 +19,7 @@ class puppetmaster::puppetdb(
         ensure          => present,
         provide_private => true,
         require         => Class['nginx'],
+        ssldir          => $ssldir,
     }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'mid')
@@ -41,5 +43,6 @@ class puppetmaster::puppetdb(
         perform_gc             => ($master == $::fqdn), # only the master must perform GC
         jvm_opts               => $jvm_opts,
         puppetdb_major_version => $puppetdb_major_version,
+        ssldir                 => $ssldir,
     }
 }

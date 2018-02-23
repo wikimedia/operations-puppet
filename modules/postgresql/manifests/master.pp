@@ -48,6 +48,7 @@ class postgresql::master(
     $wal_keep_segments=128,
     $root_dir='/var/lib/postgresql',
     $use_ssl=false,
+    $ssldir=undef,
     $locale='en_US.UTF-8',
 ) {
 
@@ -59,6 +60,7 @@ class postgresql::master(
         includes  => [ $includes, 'master.conf'],
         root_dir  => $root_dir,
         use_ssl   => $use_ssl,
+        ssldir    => $ssldir,
     }
 
     file { "/etc/postgresql/${pgversion}/main/master.conf":

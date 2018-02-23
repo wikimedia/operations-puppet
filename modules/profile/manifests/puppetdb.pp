@@ -4,6 +4,7 @@ class profile::puppetdb(
     $jvm_opts = hiera('profile::puppetdb::jvm_opts', '-Xmx4G'),
     $prometheus_nodes = hiera('prometheus_nodes'),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
+    $ssldir = undef,
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -16,6 +17,7 @@ class profile::puppetdb(
         master                 => $master,
         jvm_opts               => "${jvm_opts} ${prometheus_java_opts}",
         puppetdb_major_version => $puppetdb_major_version,
+        ssldir                 => $ssldir,
     }
 
     # Export JMX metrics to prometheus

@@ -9,6 +9,7 @@ class profile::puppetdb::database(
     $replication_password = hiera('puppetdb::password::replication'),
     $puppetdb_password =  hiera('puppetdb::password::rw'),
     $users = hiera('profile::puppetdb::database::users', {}),
+    $ssldir = undef,
 ) {
     include ::passwords::postgres
 
@@ -30,6 +31,7 @@ class profile::puppetdb::database(
         replication_pass => $replication_password,
         puppetdb_pass    => $puppetdb_password,
         puppetdb_users   => $users,
+        ssldir           => $ssldir,
     }
 
     # Monitoring
