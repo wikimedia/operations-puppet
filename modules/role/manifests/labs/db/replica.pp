@@ -31,7 +31,7 @@ class role::labs::db::replica {
         srange  => '(@resolve((dbproxy1010.eqiad.wmnet)) @resolve((dbproxy1011.eqiad.wmnet)))',
     }
 
-    ferm::servicei { 'mysql_labs_db_admin':
+    ferm::service { 'mysql_labs_db_admin':
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
