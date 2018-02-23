@@ -128,6 +128,12 @@ class network::constants {
                     '10.64.48.117',                       # kafka-jumbo1006.eqiad.wmnet
                     '2620:0:861:107:1a66:daff:fefc:d27c', # kafka-jumbo1006.eqiad.wmnet
                 ],
+            'kafka_monitors' => [
+                    '10.64.0.129',                # kafkamon1001.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:129', # kafkamon1001.eqiad.wmnet
+                    '10.192.0.97',                # kafkamon2001.codfw.wmnet
+                    '2620:0:860:101:10:192:0:97', # kafkamon2001.codfw.wmnet
+                ],
             'zookeeper_hosts_main' => [
                     '10.64.0.18',                         # conf1001.eqiad.wmnet
                     '2620:0:861:101:d6ae:52ff:fe73:60e6', # conf1001.eqiad.wmnet
