@@ -14,5 +14,6 @@ class role::webserver_misc_static {
     include ::profile::microsites::transparency    # https://transparency.wikimedia.org
     include ::profile::microsites::wikibase        # https://wikiba.se
     include ::profile::microsites::research        # https://research.wikimedia.org (T183916)
+    include ::profile::microsites::design          # https://design.wikimedia.org (T185282)
 
 }
