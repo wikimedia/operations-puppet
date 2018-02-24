@@ -249,7 +249,7 @@ def main():
             if args.aliases and svc in shards:
                 # Ensure that there are wikidb aliases for shards
                 dblist = requests.get(
-                    'https://noc.wikimedia.org/conf/{}.dblist'.format(svc))
+                    'https://noc.wikimedia.org/conf/dblists/{}.dblist'.format(svc))
                 try:
                     dblist.raise_for_status()
                 except requests.exceptions.HTTPError:
