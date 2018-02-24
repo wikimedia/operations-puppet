@@ -101,6 +101,9 @@ cache::app_directors:
   dbtree:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
+  design:
+    backends:
+      eqiad: 'bromine.eqiad.wmnet'
   phabricator:
     backends:
       eqiad: 'phab1001.eqiad.wmnet'
