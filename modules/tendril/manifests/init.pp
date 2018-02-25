@@ -35,7 +35,11 @@ class tendril (
         require    => Class['apache::mod::ssl']
     }
 
-    require_package('php5-mysql')
+    require_package(
+        'php5-mysql',
+        'php5-memcache', # do not install -memcached, it won't work
+        'memcached', # memcached expected by default on localhost
+    )
 
     file { '/srv/tendril':
         ensure => 'directory',
