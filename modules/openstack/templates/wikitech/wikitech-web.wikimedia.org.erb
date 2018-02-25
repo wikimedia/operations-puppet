@@ -1,0 +1,79 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @webserver_hostname %>
+
+    RequestHeader unset Proxy early
+
+    RewriteEngine on
+    SSLEngine on
+    SSLCertificateFile /etc/acme/cert/<%= @certificate %>.crt
+    SSLCertificateChainFile /etc/acme/cert/<%= @certificate %>.chain.crt
+    SSLCertificateKeyFile /etc/acme/key/<%= @certificate %>.key
+    <%= @ssl_settings.join("\n    ") %>
+
+    RedirectMatch ^/$ http://<%= @webserver_hostname %>/wiki/
+
+    RewriteRule ^/view/(.*)$ http://<%= @webserver_hostname %>/wiki/$1 [L,R]
+    RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
+    RewriteRule ^/(.*)         http://<%= @webserver_hostname %>/$1 [L,R]
+
+    DocumentRoot /srv/mediawiki/docroot/wikimedia.org
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /srv/mediawiki/docroot/wikimedia.org>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+    <Directory /srv/org/wikimedia/controller/wikis/images>
+        php_flag engine off
+        Require all granted
+    </Directory>
+    <Directory /srv/math-images>
+        php_flag engine off
+        Require all granted
+    </Directory>
+    <Location /server-status>
+        SetHandler server-status
+        Require host <%= @webserver_hostname %>
+    </Location>
+    <Directory /a/backup/public>
+        php_flag engine off
+        Options Indexes
+        IndexOptions FancyIndexing
+        Require all granted
+    </Directory>
+
+    # Primary wiki redirector:
+    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
+    RewriteRule ^/w/$ /w/index.php
+
+    Include "sites-enabled/public-wiki-rewrites.incl"
+
+    Alias /w/images/math /srv/math-images
+    Alias /w/images /srv/org/wikimedia/controller/wikis/images
+    Alias /dumps /a/backup/public
+
+    ErrorDocument 404 /w/404.php
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log wmf
+    ServerSignature Off
+
+    # Beacon requests that are normally handled by Varnish. We don't need these
+    # requests to do anything, but they shouldn't show up in the JavaScript
+    # error console as errors.
+    RedirectMatch 204 beacon/(.*)$
+</VirtualHost>
