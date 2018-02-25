@@ -88,3 +88,9 @@ profile::openstack::base::nutcracker::redis::shards:
       labweb1002:
         host: 208.80.155.109
         port: 6379
+
+
+# Wikitech things:
+profile::openstack::base::wikitech::web::osm_host: 'wikitech.wikimedia.org'
+profile::openstack::base::wikitech::web::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
+profile::openstack::main::wikitech::web::db_name: 'labswiki'
