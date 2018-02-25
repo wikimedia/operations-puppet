@@ -13,17 +13,14 @@ class role::wmcs::openstack::main::labweb {
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
     include ::profile::openstack::main::nutcracker
+    include ::role::lvs::realserver
 
     # Wikitech:
-    #include ::role::mediawiki::webserver
-    #include ::profile::prometheus::apache_exporter
-    #include ::profile::prometheus::hhvm_exporter
+    include ::profile::openstack::main::wikitech::web
 
     # Horizon:
     include ::profile::openstack::main::horizon::dashboard_source_deploy
 
     # Striker:
     include ::profile::openstack::base::striker::web
-
-    include role::lvs::realserver
 }
