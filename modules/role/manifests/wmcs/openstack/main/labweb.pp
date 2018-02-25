@@ -15,9 +15,22 @@ class role::wmcs::openstack::main::labweb {
     include ::profile::openstack::main::nutcracker
 
     # Wikitech:
-    #include ::role::mediawiki::webserver
-    #include ::profile::prometheus::apache_exporter
-    #include ::profile::prometheus::hhvm_exporter
+    include ::profile::mediawiki::common
+    include ::mediawiki::web
+    include ::mediawiki::web::sites
+    include ::mediawiki::packages::fonts
+
+    #include ::apache::monitoring
+    #nrpe::monitor_service { 'hhvm':
+        #description  => 'HHVM processes',
+        #nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
+    #}
+
+
+
+
+    include ::profile::prometheus::apache_exporter
+    include ::profile::prometheus::hhvm_exporter
 
     # Horizon:
     include ::profile::openstack::main::horizon::dashboard_source_deploy
@@ -25,5 +38,5 @@ class role::wmcs::openstack::main::labweb {
     # Striker:
     include ::profile::openstack::base::striker::web
 
-    include role::lvs::realserver
+    include ::role::lvs::realserver
 }
