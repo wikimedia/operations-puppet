@@ -6,5 +6,17 @@ class role::lists {
     include ::standard
     include ::profile::backup::host
     include ::profile::base::firewall
+
     include ::profile::lists
+
+    class { '::httpd':
+        modules => [
+            'ssl',
+            'headers',
+            'rewrite',
+            'alias',
+            'setenvif',
+            'auth_digest',
+            ],
+    }
 }

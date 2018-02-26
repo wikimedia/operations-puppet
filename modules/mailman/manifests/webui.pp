@@ -1,17 +1,6 @@
 # Sets up a web server to be used by mailman.
 class mailman::webui {
 
-    class { '::httpd':
-        modules => [
-            'ssl',
-            'headers',
-            'rewrite',
-            'alias',
-            'setenvif',
-            'auth_digest',
-            ],
-    }
-
     $lists_servername = hiera('mailman::lists_servername')
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
