@@ -865,6 +865,13 @@ class role::prometheus::ops {
         port       => '9500',
     }
 
+    prometheus::class_config{ "burrow_jumbo_${::site}":
+        dest       => "${targets_path}/burrow_jumbo_${::site}.yaml",
+        site       => $::site,
+        class_name => 'role::kafka::monitoring',
+        port       => '9700',
+    }
+
     prometheus::server { 'ops':
         listen_address        => '127.0.0.1:9900',
         storage_retention     => $storage_retention,
