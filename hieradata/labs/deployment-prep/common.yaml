@@ -237,6 +237,8 @@ scap::dsh::groups:
 "profile::elasticsearch::cluster_name": beta-search
 "profile::elasticsearch::reindex_remote_whitelist": ''
 profile::elasticsearch::search_shard_count_limit: 1000
+# Increase the per-node cache for compiled LTR models from default 10MB
+profile::elasticsearch::ltr_cache_size: '100mb'
 # By default elasticsearch sets this to ((# of available_processors * 3) / 2) + 1,
 # which works out to 49 for our servers. When search is stalled on IO it makes sense
 # to have more threads than cores, but we never see our servers stalled out on IO.
