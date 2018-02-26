@@ -96,7 +96,7 @@ class puppetmaster(
         ensure  => present,
     }
 
-    if os_version('debian >= jessie') {
+    if os_version('debian == jessie') {
         # Until we use activerecord
         package { 'ruby-activerecord-deprecated-finders':
             ensure => present,
