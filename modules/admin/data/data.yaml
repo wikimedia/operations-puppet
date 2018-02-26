@@ -117,7 +117,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [milimetric, demon, andyrussg]
+    members: [milimetric, demon, andyrussg, imarlier]
   researchers:
     gid: 714
     description: Access statistics number crunching hosts (like
