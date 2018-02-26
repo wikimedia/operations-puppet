@@ -50,6 +50,18 @@ TOOLS_PREFIX_CLASSIFIER = {
 }
 
 
+def add_one_of_each(classifier, hostgroups):
+    hostgroups.update({"one_of_each":[]})
+    for prefix in classifier.values():
+        if prefix == "all":
+            continue
+        if not hostgroups[prefix]:
+            continue
+        node = hostgroups[prefix][0]
+        hostgroups["one_of_each"].append(node)
+
+    return hostgroups
+
 def get_hostgroups(classifier, observer_pass):
     hostgroups = {name: [] for name in classifier.values()}
     client = novaclient.Client(
@@ -75,7 +87,7 @@ def get_hostgroups(classifier, observer_pass):
                 role = classifier[prefix]
                 hostgroups[role].append(name + ".tools.eqiad.wmflabs")
 
-    return hostgroups
+    return add_one_of_each(classifier, hostgroups)
 
 
 if __name__ == '__main__':
