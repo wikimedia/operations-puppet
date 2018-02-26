@@ -39,5 +39,19 @@ define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
             File[$cfg],
         ],
     }
-}
 
+    # This sets the queue count at runtime if it's incorrect (first run or
+    # change of numa_networking setting, before the module parameter from
+    # ::modparams can take effect on next boot).  Changing at runtime *will*
+    # blip the interface.  This shouldn't be an issue for first-run scenarios,
+    # but might require a depool when changing $numa_networking on live
+    # production hosts that can't handle short network blips.
+    $num_queues = $::interface::rps::modparams::num_queues
+    exec { "ethtool_rss_combined_channels_${interface}":
+        path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+        command => "ethtool -L ${interface} combined ${num_queues}",
+        unless  => "test $(ethtool -l ${interface} | tail -4 | awk '/Combined:/ { print \$2 }') = '${num_queues}'",
+        require => Package['ethtool'],
+        before  => Exec["rps-${interface}"],
+    }
+}
