@@ -1,9 +1,9 @@
 class profile::ores::web(
     $redis_host = hiera('profile::ores::web::redis_host'),
     $redis_password = hiera('profile::ores::web::redis_password'),
-    $web_workers = hiera('profile::ores::web::workers', 48),
-    $celery_workers = hiera('profile::ores::celery::workers', 35),
-    $celery_queue_maxsize = hiera('profile::ores::celery::queue_maxsize', 100),
+    $web_workers = hiera('profile::ores::web::workers'),
+    $celery_workers = hiera('profile::ores::celery::workers'),
+    $celery_queue_maxsize = hiera('profile::ores::celery::queue_maxsize'),
 ){
     class { '::ores::web':
         redis_password       => $redis_password,
