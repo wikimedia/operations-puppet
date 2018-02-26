@@ -4,6 +4,10 @@ admin::groups:
 role::lvs::realserver::pools:
   ores: {}
 
+profile::ores::celery::queue_maxsize: 100
+profile::ores::celery::workers: 45
+
 profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 # The password is in the private store, this is here for completeness
 # profile::ores::web::redis_password: nothing
+profile::ores::web::workers: 48
