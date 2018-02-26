@@ -6,9 +6,12 @@
 #
 # [*name*]
 #   Service port.
-#    $swift_key,
+#    $swift_key = '',
 #    $swift_account = 'thumbor',
 #    $swift_user = 'thumbor',
+#    $swift_private_key = '',
+#    $swift_private_account = 'thumbor',
+#    $swift_private_user = 'thumbor_private',
 #    $swift_sharded_containers = [],
 #    $swift_private_containers = [],
 #    $thumbor_mediawiki_shared_secret,
@@ -21,9 +24,12 @@
 #
 
 class thumbor::swift (
-    $swift_key,
+    $swift_key = '',
     $swift_account = 'mw',
     $swift_user = 'thumbor',
+    $swift_private_key = '',
+    $swift_private_account = 'mw',
+    $swift_private_user = 'thumbor_private',
     $swift_sharded_containers = [],
     $swift_private_containers = [],
     $thumbor_mediawiki_shared_secret = '',

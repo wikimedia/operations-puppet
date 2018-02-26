@@ -8,6 +8,8 @@ SWIFT_API_PATH = '/v1/AUTH_<%= @swift_account %>'
 SWIFT_AUTH_PATH = '/auth/v1.0'
 SWIFT_USER = '<%= @swift_account %>:<%= @swift_user %>'
 SWIFT_KEY = '<%= @swift_key %>'
+SWIFT_PRIVATE_USER = '<%= @swift_private_account %>:<%= @swift_private_user %>'
+SWIFT_PRIVATE_KEY = '<%= @swift_private_key %>'
 #SWIFT_PATH_PREFIX = 'thumbor/'
 SWIFT_SHARDED_CONTAINERS = [
   <%- @swift_sharded_containers.sort.each do |container| -%>
