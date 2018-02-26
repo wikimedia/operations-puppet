@@ -1233,10 +1233,10 @@ node /^lvs10(0[789]|10)\.eqiad\.wmnet$/ {
     role(lvs::balancer)
 
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000;
-        'eth1': bnx2x => true, txqlen => 10000;
-        'eth2': bnx2x => true, txqlen => 10000;
-        'eth3': bnx2x => true, txqlen => 10000;
+        'eth0': txqlen => 10000;
+        'eth1': txqlen => 10000;
+        'eth2': txqlen => 10000;
+        'eth3': txqlen => 10000;
     }
 }
 
@@ -1248,10 +1248,10 @@ node /^lvs101[12]\.eqiad\.wmnet$/ {
 node /lvs200[1-6]\.codfw\.wmnet/ {
     role(lvs::balancer)
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000;
-        'eth1': bnx2x => true, txqlen => 10000;
-        'eth2': bnx2x => true, txqlen => 10000;
-        'eth3': bnx2x => true, txqlen => 10000;
+        'eth0': txqlen => 10000;
+        'eth1': txqlen => 10000;
+        'eth2': txqlen => 10000;
+        'eth3': txqlen => 10000;
     }
 }
 
@@ -1259,7 +1259,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
 node /^lvs300[1-4]\.esams\.wmnet$/ {
     role(lvs::balancer)
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 20000;
+        'eth0': txqlen => 20000;
     }
 }
 
@@ -1271,7 +1271,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 node /^lvs400[567]\.ulsfo\.wmnet$/ {
     role(lvs::balancer)
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000;
+        'eth0': txqlen => 10000;
     }
 }
 
@@ -1279,7 +1279,7 @@ node /^lvs400[567]\.ulsfo\.wmnet$/ {
 node /^lvs500[123]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
     lvs::interface_tweaks {
-        'eth0': bnx2x => true, txqlen => 10000;
+        'eth0': txqlen => 10000;
     }
 }
 
