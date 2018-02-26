@@ -81,7 +81,7 @@ node 'bast1001.wikimedia.org' {
 
 #bast1001 replacement, see T186623
 node 'bast1002.wikimedia.org' {
-    role(spare::system)
+    role(bastionhost::general)
 }
 
 
