@@ -22,7 +22,7 @@
 # License http://www.apache.org/licenses/LICENSE-2.0
 
 require 'puppet'
-require 'mysql'
+require 'mysql2'
 require 'English'
 
 Puppet::Reports.register_report(:servermon) do
@@ -58,7 +58,7 @@ Puppet::Reports.register_report(:servermon) do
           return true
         end
         begin
-            con = Mysql.new dbserver, dbuser, dbpassword, 'puppet'
+            con = Mysql2::Client.new(dbserver, dbuser, dbpassword, :database => 'puppet')
             # First we try to update the host, if it fails, insert it
             update_host = "UPDATE hosts SET \
             environment = '#{environment}', \
@@ -76,7 +76,7 @@ Puppet::Reports.register_report(:servermon) do
             query = "SELECT id from hosts \
             WHERE name='#{host}'"
             rs = con.query(query)
-            host_id = rs.fetch_row[0]
+            host_id = rs.first['id']
             if log_level == 'debug'
                 puts "Got host: #{host} with id: #{host_id}"
             end
@@ -98,7 +98,7 @@ Puppet::Reports.register_report(:servermon) do
                     end
                     rs = con.query(select_fact_name)
                     # So we need to insert a fact_name
-                    if rs.num_rows.zero?
+                    if rs.count.zero?
                         insert_fact_name = "INSERT INTO fact_names(name, updated_at, created_at) \
                         VALUES('#{key}', '#{time}', '#{time}')"
                         if log_level == 'debug'
@@ -107,9 +107,9 @@ Puppet::Reports.register_report(:servermon) do
                         con.query(insert_fact_name)
                         # Should have been inserted, fetch it
                         rs = con.query(select_fact_name)
-                        fact_id = rs.fetch_row[0]
+                        fact_id = rs.first['id']
                     else
-                        fact_id = rs.fetch_row[0]
+                        fact_id = rs.first['id']
                         if log_level == 'debug'
                             puts "Got fact: #{key} with id: #{fact_id}"
                         end
@@ -137,7 +137,7 @@ Puppet::Reports.register_report(:servermon) do
                     # rubocop:enable Style/Next
                 end
             end
-        rescue Mysql::Error => e
+        rescue Mysql2::Error => e
             puts "Mysql error: #{e.errno}, #{e.error}"
             puts e.errno
             puts e.error
