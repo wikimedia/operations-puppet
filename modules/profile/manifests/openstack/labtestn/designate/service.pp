@@ -18,7 +18,7 @@ class profile::openstack::labtestn::designate::service(
     $labweb_hosts = hiera('profile::openstack::labtestn::labweb_hosts'),
     ) {
 
-    require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::base::backports
     class{'::profile::openstack::base::designate::service':
         version                    => $version,
         designate_host             => $designate_host,

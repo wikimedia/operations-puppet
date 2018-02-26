@@ -1,4 +1,4 @@
-profile::openstack::labtestn::version: 'liberty'
+profile::openstack::labtestn::version: 'mitaka'
 profile::openstack::labtestn::nova_controller: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova_controller_standby: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova_api_host: 'labtestcontrol2003.wikimedia.org'
