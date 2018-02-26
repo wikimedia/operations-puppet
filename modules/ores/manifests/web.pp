@@ -1,17 +1,17 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
 class ores::web(
-    $web_workers = 48,
+    $web_workers,
     $redis_host = '127.0.0.1',
     $redis_password = undef,
     $port = 8081,
     $graphite_server = 'graphite-in.eqiad.wmnet',
     $deployment = 'scap3',
-    $celery_workers = 35,
+    $celery_workers,
     $extra_config = undef,
     $ores_config_user = 'deploy-service',
     $ores_config_group = 'deploy-service',
-    $celery_queue_maxsize = 100,
+    $celery_queue_maxsize,
 ) {
     require ::ores::base
 
