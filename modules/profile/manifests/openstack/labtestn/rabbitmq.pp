@@ -9,7 +9,7 @@ class profile::openstack::labtestn::rabbitmq(
     $designate_host = hiera('profile::openstack::labtestn::designate_host'),
 ){
 
-    require ::profile::openstack::labtestn::cloudrepo
+    require ::profile::openstack::labtestn::clientlib
     class {'::profile::openstack::base::rabbitmq':
         nova_controller  => $nova_controller,
         monitor_user     => $monitor_user,
