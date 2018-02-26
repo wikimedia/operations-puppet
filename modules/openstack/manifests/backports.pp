@@ -9,10 +9,20 @@
 # priority and will by default be chosen.
 
 class openstack::backports {
+
     requires_os('debian == jessie')
+
+    file{'/etc/apt/preferences.d/openstack.pref':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/openstack/backports/openstack.pref',
+    }
+
     apt::conf{'backports-default-release':
         key      => 'APT::Default-Release',
         value    => 'jessie-backports',
         priority => '00',
+        require  => File['/etc/apt/preferences.d/openstack.pref'],
     }
 }
