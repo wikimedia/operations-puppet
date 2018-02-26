@@ -3644,14 +3644,14 @@ host labtestvirt2002 {
 host labtestvirt2003 {
     hardware ethernet 30:e1:71:60:e9:7c;
     fixed-address labtestvirt2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
 host labtestmetal2001 {
     hardware ethernet 30:e1:71:63:0e:88;
     fixed-address labtestmetal2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
@@ -3672,14 +3672,14 @@ host labtestnet2002 {
 host labtestneutron2001 {
     hardware ethernet 78:2b:cb:48:f9:61;
     fixed-address labtestneutron2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
 host labtestneutron2002 {
     hardware ethernet 30:e1:71:55:a2:40;
     fixed-address labtestneutron2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
@@ -3700,14 +3700,14 @@ host labtestservices2001 {
 host labtestservices2002 {
     hardware ethernet 30:e1:71:70:a3:34;
     fixed-address labtestservices2002.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
 host labtestservices2003 {
     hardware ethernet 30:e1:71:63:0e:f8;
     fixed-address labtestservices2003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
 
