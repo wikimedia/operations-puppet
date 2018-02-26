@@ -3,7 +3,6 @@
 
 define lvs::interface_tweaks(
   $interface=$name,
-  $bnx2x=false,
   $txqlen=false,
   $rss_pattern='',
   $do_rps=true,
@@ -38,7 +37,7 @@ define lvs::interface_tweaks(
     }
 
     # bnx2x-specific stuff
-    if $bnx2x {
+    if $facts['net_driver'][$interface] == 'bnx2x' {
         # Max for bnx2x/BCM57800, seems to eliminate the spurious rx drops under heavy traffic
         interface::ring { "${name} rxring":
             interface => $interface,
