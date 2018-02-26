@@ -7638,8 +7638,6 @@ host rhenium {
 host rhodium {
     hardware ethernet 18:03:73:f1:56:d2;
     fixed-address rhodium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host ruthenium {
