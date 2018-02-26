@@ -66,6 +66,7 @@ cluster: cache_text
     - fa.wikipedia.beta.wmflabs.org
     - fa.m.wikipedia.beta.wmflabs.org
     - fa.zero.wikipedia.beta.wmflabs.org
+    - fr.wikipedia.beta.wmflabs.org
     - he.wikipedia.beta.wmflabs.org
     - he.m.wikipedia.beta.wmflabs.org
     - he.zero.wikipedia.beta.wmflabs.org
