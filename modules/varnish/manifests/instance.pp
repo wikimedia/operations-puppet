@@ -10,8 +10,7 @@ define varnish::instance(
     $app_directors={},
     $app_def_be_opts={},
     $backend_caches={},
-    $extra_vcl = [],
-    $start_cmd_prefix = '',
+    $extra_vcl = []
 ) {
 
     include ::varnish::common

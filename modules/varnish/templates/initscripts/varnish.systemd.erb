@@ -28,7 +28,7 @@ Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 # rsyslog will see this in $programname
 SyslogIdentifier=varnish<%= @instancesuffix %>
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
-ExecStart=<%= @start_cmd_prefix %>/usr/sbin/varnishd \
+ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \

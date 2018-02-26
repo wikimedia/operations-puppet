@@ -141,26 +141,6 @@ class profile::base(
         }
     }
 
-    if $::numa_networking == 'isolate' {
-        grub::bootparam { 'isolcpus':
-            value => join(sort(flatten($facts['numa']['device_to_htset'][$facts['interface_primary']])), ',')
-        }
-
-        sysctl::parameters { 'numa_isolation':
-            values => { 'vm.zone_reclaim_mode' => 7 },
-        }
-
-        sysfs::parameters { 'cache_numa_isolate':
-            values => {
-                'bus/workqueue/devices/writeback/numa'    => 0,
-                'bus/workqueue/devices/writeback/cpumask' => $facts['numa']['device_to_cpumask_invert'][$facts['interface_primary']],
-            }
-        }
-    }
-    else {
-        grub::bootparam { 'isolcpus': ensure => 'absent' }
-    }
-
     if $check_smart and $facts['is_virtual'] == false {
         class { '::smart': }
     }

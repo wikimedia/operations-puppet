@@ -90,13 +90,6 @@ class cacheproxy::instance_pair (
     # Set a reduced keep value for frontends
     $fe_keep_vcl_config = merge($fe_vcl_config, { 'keep' => '1d', })
 
-    if $::numa_networking == 'isolate' {
-        $nnodes = join($facts['numa']['device_to_node'][$facts['interface_primary']],',')
-        $fe_cmd_prefix = "/usr/bin/numactl -a -N ${nnodes} -m ${nnodes} "
-    } else {
-        $fe_cmd_prefix = ''
-    }
-
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_type}-frontend":
         instance_name      => 'frontend',
@@ -116,7 +109,6 @@ class cacheproxy::instance_pair (
             },
         },
         vcl_config         => $fe_keep_vcl_config,
-        start_cmd_prefix   => $fe_cmd_prefix,
     }
     # lint:endignore
 }

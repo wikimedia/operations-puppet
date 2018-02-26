@@ -1,4 +1,4 @@
 <%- nnodes = @facts['numa']['device_to_node'][@numa_iface].join(',') -%>
 [Service]
 ExecStart=
-ExecStart=/usr/bin/numactl -a -N <%= nnodes %> <% if @numa_networking == 'isolate' %>-m <%= nnodes %> <% end %>/usr/sbin/nginx -g 'daemon on; master_process on;'
+ExecStart=/usr/bin/numactl -a -N <%= nnodes %> /usr/sbin/nginx -g 'daemon on; master_process on;'
