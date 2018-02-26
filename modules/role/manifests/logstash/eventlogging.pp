@@ -10,15 +10,17 @@ class role::logstash::eventlogging {
     $topic = 'eventlogging_EventError'
     $kafka_config = kafka_config('analytics')
 
-    logstash::input::kafka { $topic:
-        tags              => [$topic, 'kafka'],
-        type              => 'eventlogging',
-        bootstrap_servers => $kafka_config['brokers']['string'],
+    # some environments (like deployment-prep) don't have access to the
+    # analytics kafka cluster, so let's guard against that
+    if $kafka_config != undef {
+        logstash::input::kafka { $topic:
+            tags              => [$topic, 'kafka'],
+            type              => 'eventlogging',
+            bootstrap_servers => $kafka_config['brokers']['string'],
+        }
     }
-    # lint:ignore:puppet_url_without_modules
     logstash::conf { 'filter_eventlogging':
         source   => 'puppet:///modules/role/logstash/filter-eventlogging.conf',
         priority => 50,
     }
-    # lint:endignore
 }
