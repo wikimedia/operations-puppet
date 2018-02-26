@@ -1,0 +1,11 @@
+Package: python-warlock
+Pin: release a=jessie-backports
+Pin-Priority: 2001
+
+Package: python-jsonschema
+Pin: release a=jessie-backports
+Pin-Priority: 2001
+
+Package: python-funcsigs
+Pin: release a=jessie-backports
+Pin-Priority: 2001
