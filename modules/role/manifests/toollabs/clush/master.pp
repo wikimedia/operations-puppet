@@ -81,4 +81,14 @@ class role::toollabs::clush::master(
         mode    => '0444',
         content => ini($groups_config),
     }
+
+    # to be used like this: `clush --hostfile /etc/clustershell/toolforge_canary_list.txt 'cmd'`
+    # the list of servers is maintained by hand!
+    file { '/etc/clustershell/toolforge_canary_list.txt':
+        ensure => file,
+        source => 'puppet:///modules/role/files/toollabs/clush/toolforge_canary_list.txt',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
 }
