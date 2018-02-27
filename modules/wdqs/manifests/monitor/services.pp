@@ -6,6 +6,23 @@ class wdqs::monitor::services(
     $username=$::wdqs::username
 ) {
 
+    require_package('python3-requests')
+    file { '/usr/lib/nagios/plugins/check_wdqs_categories.py':
+        source => 'puppet:///modules/base/wdqs/check_wdqs_categories.py',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+
+    # categories are updated weekly, this is a low frequency check
+    nrpe::monitor_service { 'WDQS_Categories_Lag':
+        description    => 'WDQS Categories update lag',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_wdqs_categories.py',
+        check_interval => 720, # every 6 hours
+        retry_interval => 60,  # retry after 1 hour
+    }
+
     nrpe::monitor_service { 'WDQS_Internal_HTTP_endpoint':
         description  => 'WDQS HTTP Port',
         nrpe_command => '/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 80 -w 10 -u /readiness-probe',
