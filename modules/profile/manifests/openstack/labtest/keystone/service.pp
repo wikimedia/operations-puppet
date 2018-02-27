@@ -75,5 +75,17 @@ class profile::openstack::labtest::keystone::service(
         version => $version,
     }
     contain '::profile::openstack::base::keystone::hooks'
+
+    class {'::openstack::keystone::monitor::services':
+        active         => $::fqdn == $nova_controller,
+        auth_port      => $auth_port,
+        public_port    => $public_port,
+    }
+    contain '::openstack::keystone::monitor::services'
+
+    class {'::openstack::keystone::monitor::projects_and_users':
+        active         => $::fqdn == $nova_controller,
+    }
+    contain '::openstack::keystone::monitor::projects_and_users'
 }
 

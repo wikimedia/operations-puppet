@@ -30,6 +30,8 @@ class profile::openstack::main::keystone::service(
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
     $horizon_host = hiera('profile::openstack::main::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
+    $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
+    $public_port = hiera('profile::openstack::base::keystone::public_port'),
     ) {
 
     require ::profile::openstack::main::clientlib
@@ -81,4 +83,19 @@ class profile::openstack::main::keystone::service(
         nova_user       => $spread_check_user,
         nova_password   => $spread_check_password,
     }
+
+    class {'::openstack::keystone::monitor::services':
+        active         => $::fqdn == $nova_controller,
+        critical       => true,
+        auth_port      => $auth_port,
+        public_port    => $public_port,
+        contact_groups => 'wmcs-team',
+    }
+    contain '::openstack::keystone::monitor::services'
+
+    class {'::openstack::keystone::monitor::projects_and_users':
+        active         => $::fqdn == $nova_controller,
+        contact_groups => 'wmcs-team,admins',
+    }
+    contain '::openstack::keystone::monitor::projects_and_users'
 }
