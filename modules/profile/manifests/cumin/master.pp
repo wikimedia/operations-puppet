@@ -100,6 +100,14 @@ class profile::cumin::master (
         group  => 'root',
     }
 
+    file { '/usr/local/sbin/wmf-upgrade-and-reboot':
+        ensure => present,
+        source => 'puppet:///modules/profile/cumin/wmf_upgrade_and_reboot.py',
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     class { '::phabricator::bot':
         username => 'ops-monitoring-bot',
         token    => $passwords::phabricator::ops_monitoring_bot_token,
