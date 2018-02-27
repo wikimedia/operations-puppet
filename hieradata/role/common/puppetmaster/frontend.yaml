@@ -17,3 +17,5 @@ profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
 profile::discovery::watch_interval: 60
 profile::puppetmaster::common::storeconfigs: puppetdb
+profile::puppetmaster::frontend::test_servers:
+    - { worker: rhodium.eqiad.wmnet, loadfactor: 20 }
