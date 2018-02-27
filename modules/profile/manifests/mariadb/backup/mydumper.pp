@@ -7,6 +7,11 @@
 class profile::mariadb::backup::mydumper {
     include ::passwords::mysql::dump
 
+    require_package(
+        'python3',
+        'python3-yaml',
+    )
+
     group { 'dump':
         ensure => present,
         system => true,
@@ -28,29 +33,31 @@ class profile::mariadb::backup::mydumper {
         mode   => '0600', # implicitly 0700 for dirs
     }
 
-    file { '/usr/local/bin/dump_shards':
-        ensure => present,
-        owner  => 'dump',
-        group  => 'dump',
-        mode   => '0555',
-        source => 'puppet:///modules/role/mariadb/dump_shards.sh',
-    }
-
-    file { '/etc/mysql/dump_shards.cnf':
+    $user = $passwords::mysql::dump::user
+    $password = $passwords::mysql::dump::pass
+    file { '/etc/mysql/backup.cnf':
         ensure  => present,
         owner   => 'dump',
         group   => 'dump',
         mode    => '0400',
-        content => "[client]\nuser=${passwords::mysql::dump::user}\npassword=${passwords::mysql::dump::pass}\n",
+        content => template("profile/mariadb/backup-${::site}.cnf.erb")
     }
 
-    cron { 'dumps-shards':
+    file { '/usr/local/bin/dump_sections.py':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => File['/etc/mysql/backup.cnf'],
+    }
+
+    cron { 'dumps-sections':
         minute  => 0,
-        hour    => 22,
+        hour    => 19,
         weekday => 2,
         user    => 'dump',
-        command => '/usr/local/bin/dump_shards >/dev/null 2>&1',
-        require => [File['/usr/local/bin/dump_shards'],
+        command => '/usr/bin/python3 /usr/local/bin/dump_sections.py >/dev/null 2>&1',
+        require => [File['/usr/local/bin/dump_sections.py'],
                     File['/srv/backups'],
         ],
     }
