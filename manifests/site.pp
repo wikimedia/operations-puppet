@@ -663,7 +663,7 @@ node 'dbstore1002.eqiad.wmnet' {
 }
 
 node 'dbstore2001.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance_backups)
+    role(mariadb::dbstore_multiinstance)
 }
 
 node 'dbstore2002.codfw.wmnet' {
@@ -825,7 +825,7 @@ node /^es201[89]\.codfw\.wmnet/ {
 # These nodes are temporarilly up until we get proper
 # storage on the backup system
 node 'es2001.codfw.wmnet' {
-    role(mariadb::otrsbackups)
+    role(mariadb::backups)
 }
 
 node /^es200[234]\.codfw\.wmnet/ {
