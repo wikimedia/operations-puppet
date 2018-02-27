@@ -60,4 +60,14 @@ class profile::conftool::client(
         group  => 'root',
         mode   => '0444',
     }
+
+    # json schemas container
+    file {'/etc/conftool/json-schema/':
+        ensure  => directory,
+        source  => 'puppet:///modules/profile/conftool/json-schema/',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        recurse => true,
+    }
 }
