@@ -1,0 +1,13 @@
+{
+    "id": "mediawiki-config/wmf_datacenter",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Represents a selection of one of the WMF main datacenters",
+    "type": "object",
+    "required": [ "val" ],
+    "properties": {
+        "val": {
+            "enum": [ "eqiad", "codfw" ]
+        }
+    },
+    "additionalProperties": false
+}
