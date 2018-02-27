@@ -86,7 +86,7 @@ class role::toollabs::clush::master(
     # the list of servers is maintained by hand!
     file { '/etc/clustershell/toolforge_canary_list.txt':
         ensure => file,
-        source => 'puppet:///modules/role/files/toollabs/clush/toolforge_canary_list.txt',
+        source => 'puppet:///modules/role/toollabs/clush/toolforge_canary_list.txt',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
