@@ -1,5 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::docker::registry {
+
+    include ::toollabs::base
     include ::toollabs::infrastructure
 
     require ::role::labs::lvm::srv

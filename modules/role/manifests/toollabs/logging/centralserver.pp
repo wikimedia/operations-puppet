@@ -2,6 +2,8 @@
 #
 # filtertags: labs-project-tools
 class role::toollabs::logging::centralserver {
+
+    include ::toollabs::base
     include ::base::firewall
 
     system::role { 'tools::logreceiver':

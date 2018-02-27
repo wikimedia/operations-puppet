@@ -1,7 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::k8s::worker {
 
-    include ::toollabs::apt_pinning
+    include ::toollabs::base
     include ::toollabs::infrastructure
     include ::base::firewall
     include ::toollabs::ferm_handlers

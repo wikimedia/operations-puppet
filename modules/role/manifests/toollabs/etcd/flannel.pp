@@ -1,5 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::etcd::flannel {
+
+    include ::toollabs::base
     include ::etcd
 
     include ::base::firewall

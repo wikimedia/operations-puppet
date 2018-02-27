@@ -1,7 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::k8s::bastion {
 
-    include ::toollabs::apt_pinning
+    include ::toollabs::base
     $master_host = hiera('k8s::master_host')
     $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
