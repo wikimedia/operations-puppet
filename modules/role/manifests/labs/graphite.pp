@@ -7,6 +7,10 @@ class role::labs::graphite {
     include graphite::labs::archiver
     include role::statsite
 
+    class { '::httpd':
+        modules => ['proxy', 'proxy_http'],
+    }
+
     class { 'role::graphite::base':
         storage_dir  => '/srv/carbon',
         auth         => false,
