@@ -45,9 +45,14 @@ class profile::cache::misc(
         'req_handling'     => $req_handling,
     }
 
+    $be_vcl_config = merge($common_vcl_config, {
+        'varnish_probe_ms' => $::profile::cache::base::core_probe_timeout_ms,
+    })
+
     $fe_vcl_config = merge($common_vcl_config, {
         'admission_policy' => $admission_policy,
         'fe_mem_gb'        => $::varnish::common::fe_mem_gb,
+        'varnish_probe_ms' => 100,
     })
 
     class { 'cacheproxy::instance_pair':

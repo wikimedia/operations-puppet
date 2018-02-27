@@ -54,13 +54,15 @@ class profile::cache::upload(
     # upload-frontend case.  All tiers of backend share the same policies.
 
     $be_vcl_config = merge($common_vcl_config, {
-        'pass_random' => true,
+        'pass_random'      => true,
+        'varnish_probe_ms' => $::profile::cache::base::core_probe_timeout_ms,
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
         'pass_random'      => false,
         'admission_policy' => $admission_policy,
         'fe_mem_gb'        => $::varnish::common::fe_mem_gb,
+        'varnish_probe_ms' => 100,
     })
 
     # See T145661 for storage binning rationale

@@ -5,7 +5,7 @@
 define varnish::common::directors(
     $instance,
     $directors,
-    $extraopts)
+    $reload_vcl_opts)
 {
     $conftool_namespace = '/conftool/v1/pools'
 
@@ -29,6 +29,6 @@ define varnish::common::directors(
         ensure     => present,
         watch_keys => $keyspaces,
         content    => template('varnish/vcl/directors.vcl.tpl.erb'),
-        reload     => "/usr/local/bin/confd-reload-vcl ${service_name} ${extraopts}",
+        reload     => "/usr/local/bin/confd-reload-vcl ${service_name} ${reload_vcl_opts}",
     }
 }
