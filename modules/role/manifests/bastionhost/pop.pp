@@ -7,4 +7,8 @@ class role::bastionhost::pop {
     require ::role::installserver::tftp
     require ::role::prometheus::ops
     require ::profile::ipmi::mgmt
+
+    class { '::httpd':
+        modules => ['proxy', 'proxy_http'],
+    }
 }
