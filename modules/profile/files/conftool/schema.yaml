@@ -19,6 +19,15 @@ mwconfig:
   path: "mediawiki-config"
   tags:
     - scope
+  json_schema:
+    base_path: "/etc/conftool/json-schema/mediawiki-config"
+    rules:
+      db_read_only:
+        schema: "db_read_only.schema"
+        selector: "name=ReadOnly"
+      wmf_datacenter:
+        schema: "wmf_datacenter.schema"
+        selector: "name=WMFMasterDatacenter"
   schema:
     val:
       type: "any"

@@ -1,0 +1,11 @@
+{
+    "id": "mediawiki-config/dbReadOnly",
+    "type": "object",
+    "required": [ "val" ],
+    "properties": {
+        "val": {
+            "enum": [ {"type": "string"}, false ]
+        }
+    },
+    "additionalProperties": false
+}
