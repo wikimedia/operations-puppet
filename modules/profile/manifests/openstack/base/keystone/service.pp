@@ -73,13 +73,6 @@ class profile::openstack::base::keystone::service(
     }
     contain '::openstack::keystone::service'
 
-    class {'::openstack::keystone::monitor':
-        active      => $::fqdn == $nova_controller,
-        auth_port   => $auth_port,
-        public_port => $public_port,
-    }
-    contain '::openstack::keystone::monitor'
-
     class {'::openstack::util::envscripts':
         ldap_user_pass        => $ldap_user_pass,
         nova_controller       => $nova_controller,

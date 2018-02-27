@@ -4,7 +4,7 @@
 class openstack::designate::monitor (
     $active,
     $critical=false,
-    $contact_groups='admins',
+    $contact_groups='wmcs-bots,admins',
     ) {
 
     # monitoring::service doesn't take a bool

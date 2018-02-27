@@ -1,6 +1,6 @@
 class openstack::glance::monitor(
     $active,
-    $contact_groups='admins',
+    $contact_groups='wmcs-bots,admins',
 ) {
 
     require openstack::glance::service
