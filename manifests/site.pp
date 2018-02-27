@@ -1229,18 +1229,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
 }
 
-node /^lvs10(0[789]|10)\.eqiad\.wmnet$/ {
-    role(lvs::balancer)
-
-    lvs::interface_tweaks {
-        'eth0': txqlen => 10000;
-        'eth1': txqlen => 10000;
-        'eth2': txqlen => 10000;
-        'eth3': txqlen => 10000;
-    }
-}
-
-node /^lvs101[12]\.eqiad\.wmnet$/ {
+node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
