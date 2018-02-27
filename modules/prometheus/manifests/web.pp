@@ -14,10 +14,6 @@ define prometheus::web (
 ) {
     include ::prometheus
 
-    class { '::httpd':
-        modules => ['proxy', 'proxy_http'],
-    }
-
     # Previously installed hosts with this class used nginx;
     #  turn off and remove nginx to avoid collisions
     #  on port 80.

@@ -10,5 +10,9 @@ class role::prometheus {
     # TODO: use role::lvs::realserver instead
     include ::lvs::realserver
 
+    class { '::httpd':
+        modules => ['proxy', 'proxy_http'],
+    }
+
     interface::add_ip6_mapped { 'main': }
 }
