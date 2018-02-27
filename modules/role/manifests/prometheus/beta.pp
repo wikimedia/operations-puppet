@@ -6,6 +6,11 @@
 # filtertags: labs-project-deployment-prep
 
 class role::prometheus::beta {
+
+    class { '::httpd':
+        modules => ['proxy', 'proxy_http'],
+    }
+
     $targets_path = '/srv/prometheus/beta/targets'
     $rules_path = '/srv/prometheus/beta/rules'
 
