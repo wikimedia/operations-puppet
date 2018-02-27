@@ -6,7 +6,8 @@ class profile::puppetmaster::frontend(
     $web_hostname = hiera('profile::puppetmaster::frontend::web_hostname', 'puppet'),
     $prevent_cherrypicks = hiera('profile::puppetmaster::frontend::prevent_cherrypicks', true),
     $ca_server = hiera('puppetmaster::ca_server', 'puppetmaster1001.eqiad.wmnet'),
-    $servers = hiera('puppetmaster::servers', {}),
+    Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
+    Puppetmaster::Backends $test_servers = hiera('profile::puppetmaster::frontend::test_servers', []),
     $puppet_major_version = hiera('puppet_major_version', undef),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
     $allow_from = [
@@ -83,6 +84,23 @@ class profile::puppetmaster::frontend(
         ssl_ca_revocation_check => $ssl_ca_revocation_check,
     }
 
+    # We want to be able to test new things on our infrastructure, having a separated
+    # frontend for testing
+    if $test_servers != [] {
+        $alt_names = prefix(
+            ['codfw.wmnet', 'eqiad.wmnet', 'eqsin.wmnet', 'esams.wmnet', 'ulsfo.wmnet'],
+            'puppetmaster.test.'
+        )
+
+        ::puppetmaster::web_frontend { 'puppetmaster.test.eqiad.wmnet':
+            master                  => $ca_server,
+            workers                 => $test_servers,
+            alt_names               => $alt_names,
+            bind_address            => $::puppetmaster::bind_address,
+            priority                => 60,
+            ssl_ca_revocation_check => $ssl_ca_revocation_check,
+        }
+    }
     # Run the rsync servers on all puppetmaster frontends, and activate
     # crons syncing from the master
     class { '::puppetmaster::rsync':
