@@ -6,9 +6,11 @@
 # === Parameters
 #
 # [*workers*]
-#   A list of workers, as an array of hashes in the form:
-#     [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
-#   If loadfactor is omitted, it is assumed to be equal to 1
+#   Array of hashes in the form. If 'loadfactor' is omitted, it is assumed to
+#   be equal to 1.
+#   An 'offline' parameter is supported to allow fully depooling a host
+#   without removing it from the stanza.
+#    [{ 'worker' => 'worker1.example.com', loadfactor => '1' }]
 #
 # [*master*]
 #   The fqdn of the master frontend (e.g. puppetmaster1001.eqiad.wmnet)
