@@ -1,0 +1,15 @@
+title: mediawiki-config/db/readonly
+id: mediawiki-config/db/readonly
+$schema: http://json-schema.org/draft-04/schema#
+description: >
+  Represents the read-only state of MediaWiki
+type: object
+required:
+  - val
+properties:
+  val:
+    description: "An helpful message if read-only is active, false otherwise"
+    oneOf:
+      - type: string
+      - enum: [ false ]
+additionalProperties: false
