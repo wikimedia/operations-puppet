@@ -25,6 +25,7 @@ class profile::cache::base(
     $logstash_json_lines_port = hiera('logstash_json_lines_port', undef),
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
+    $max_core_rtt = hiera('max_core_rtt'),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -92,6 +93,10 @@ class profile::cache::base(
     class { 'varnish::zero_update':
         site         => $zero_site,
     }
+
+    # Varnish probes normally take 2xRTT, so for WAN cases give them
+    # an outer max of 3xRTT, + 100ms for local hiccups
+    $core_probe_timeout_ms = ($max_core_rtt * 3) + 100
 
     ###########################################################################
     # Analytics/Logging stuff

@@ -58,12 +58,17 @@ class profile::cache::text(
         'req_handling'     => $req_handling,
     }
 
-    $be_vcl_config = $common_vcl_config
+    $be_vcl_config = merge($common_vcl_config, {
+        'varnish_probe_ms' => $::profile::cache::base::core_probe_timeout_ms,
+    })
 
     $fe_vcl_config = merge($common_vcl_config, {
         'enable_geoiplookup' => true,
         'admission_policy'   => $admission_policy,
         'fe_mem_gb'          => $::varnish::common::fe_mem_gb,
+        # RTT is ~0, but 100ms is to accomodate small local hiccups, similar to
+        # the +100 added in $::profile::cache::base::core_probe_timeout_ms
+        'varnish_probe_ms'   => 100,
     })
 
     $text_storage_args = $::profile::cache::base::file_storage_args
