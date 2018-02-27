@@ -5,14 +5,9 @@
 #
 set -e
 set -x
-pwd
 . /etc/profile.d/mediawiki.sh
 cd $MEDIAWIKI_STAGING_DIR
-pwd
 git remote update
-git reset --hard "$ZUUL_COMMIT"
-git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT"
-git submodule update --init --rebase
-git submodule update --remote portals
-git submodule status
+git reset --hard origin/master
+git submodule update --init --rebase --recursive --remote
 touch wmf-config/InitialiseSettings.php
