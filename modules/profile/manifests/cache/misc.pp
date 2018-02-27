@@ -45,9 +45,16 @@ class profile::cache::misc(
         'req_handling'     => $req_handling,
     }
 
+    $be_vcl_config = merge($common_vcl_config, {
+        'varnish_probe_ms' => $::profile::cache::base::core_probe_timeout_ms,
+    })
+
     $fe_vcl_config = merge($common_vcl_config, {
         'admission_policy' => $admission_policy,
         'fe_mem_gb'        => $::varnish::common::fe_mem_gb,
+        # RTT is ~0, but 100ms is to accomodate small local hiccups, similar to
+        # the +100 added in $::profile::cache::base::core_probe_timeout_ms
+        'varnish_probe_ms' => 100,
     })
 
     class { 'cacheproxy::instance_pair':
@@ -56,7 +63,7 @@ class profile::cache::misc(
         app_directors    => $app_directors,
         app_def_be_opts  => $app_def_be_opts,
         fe_vcl_config    => $fe_vcl_config,
-        be_vcl_config    => $common_vcl_config,
+        be_vcl_config    => $be_vcl_config,
         fe_extra_vcl     => ['misc-common', 'zero'],
         be_extra_vcl     => ['misc-common'],
         be_storage       => $::profile::cache::base::file_storage_args,
