@@ -1,191 +1,96 @@
-#!/bin/sh
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-# reload-varnish: Script to reload varnishd from VCL defined in
-# /etc/default/varnish.
+# VCL reloader for Varnish, adapted to current WMF-specific needs!
 #
-# Stig Sandbeck Mathisen <ssm@debian.org>
-
-# Explicit umask to avoid /var/lib/varnish/ perms issues
-umask 022
-
-# Settings
-defaults=/etc/default/varnish
-secret=/etc/varnish/secret
-instance=""
-
-# Paths
-varnishadm=/usr/bin/varnishadm
-date=/bin/date
-tempfile=/bin/tempfile
-
-# Messages
-# msg_no_varnishadm: varnishadm
-msg_no_varnishadm="Error: Cannot execute %s\n"
-msg_no_management="Management port disabled. \$DAEMON_OPTS must contain '-T hostname:port'\n"
-# msg_defaults_not_readable: defaults
-msg_defaults_not_readable="Error: %s is not readable\n"
-# msg_defaults_not_there: defaults
-msg_defaults_not_there="Error: %s does not exist\n"
-msg_no_vcl="Error: No VCL file used, nothing to reload\n"
-msg_usage="Usage: $0 [-h][-c][-q][-n instance]\n\t-h\tdisplay help\n\t-q\tquiet\n\t-c\tcompile only, do not reload\n"
-# msg_compile_only: varnishadm, mgmt_interface, vcl_label
-msg_compile_only="To activate, run:\n\t%s -T %s \\\\\n\tvcl.use %s\n"
-# msg_compile_failed: vcl_label, vcl_file
-msg_compile_failed="Error: vcl.load %s %s failed"
-# msg_use_ok: vcl_label
-msg_use_ok="VCL reloaded, active label is %s\n"
-# msg_use_failed: vcl_label
-msg_use_failed="Error: vcl.use %s failed\n"
-# msg_secret_not_readable: secret
-msg_secret_not_readable="Error: Secret file %s is not readable\n"
-# msg_secret_not_there: secret
-msg_secret_not_there="Error: Secret file %s does not exist\n"
-
-# Generate a label, prefixed with the caller's username, from the
-# kernel random uuid generator, fallback to timestamp
-if [ -f /proc/sys/kernel/random/uuid ]
-then
-    uuid=$(cat /proc/sys/kernel/random/uuid)
-    vcl_label="vcl-${LOGNAME}${LOGNAME:+-}${uuid}"
-else
-    vcl_label="$($date +${LOGNAME}${LOGNAME:+-}%s.%N)"
-fi
-
-# parse command line arguments
-while getopts n:hcq flag
-do
-    case $flag in
-	h)
-	    printf >&2 "$msg_usage"
-	    exit 0
-	    ;;
-	c)
-	    compile_only=1
-	    ;;
-	q)
-	    quiet=1
-	    ;;
-	n)
-		if [  -n "$OPTARG" ] ; then
-			instance="-n $OPTARG"
-			defaults="${defaults}-${OPTARG}"
-		fi
-		;;
-	*)
-	    printf >&2 "$msg_usage\n"
-	    exit 1
-	    ;;
-    esac
-done
-
-# Load defaults file
-if [ -f "$defaults" ]
-then
-    if [ -r "$defaults" ]
-    then
-	. "$defaults"
-    else
-	printf >&2 "$msg_defaults_not_readable" $defaults
-	exit 1
-    fi
-else
-    printf >&2 "$msg_defaults_not_there" $defaults
-    exit 1
-fi
-
-# Parse $DAEMON_OPTS (options must be kept in sync with varnishd).
-# Extract the -f and the -T option, and (try to) ensure that the
-# management interface is on the form hostname:address.
-OPTIND=1
-while getopts a:b:dFf:g:h:l:n:P:p:S:s:T:t:u:Vw: flag $DAEMON_OPTS
-do
-    case $flag in
-		f)
-			if [ -f "$OPTARG" ]; then
-				vcl_file="$OPTARG"
-			fi
-			;;
-		T)
-			if [ -n "$OPTARG" -a "$OPTARG" != "${OPTARG%%:*}" ]
-			then
-				mgmt_interface="$OPTARG"
-			fi
-			;;
-		S)
-			secret="$OPTARG"
-			;;
-    esac
-done
+# Copyright 2018 Brandon Black
+# Copyright 2018 Wikimedia Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 
-# Sanity checks
-if [ ! -x "$varnishadm" ]
-then
-    printf >&2 "$msg_no_varnishadm" $varnishadm
-    exit 1
-fi
+import os
+import re
+import uuid
+import argparse
+import subprocess
 
-if [ -z "$mgmt_interface" ]
-then
-    printf >&2 "$msg_no_management"
-    exit 1
-fi
 
-if [ -z "$vcl_file" ]
-then
-    printf >&2 "$msg_no_vcl"
-    exit 1
-fi
+def file_exists(fname):
+    """Helper for argparse to do check if a filename argument exists"""
+    if not os.path.exists(fname):
+        raise argparse.ArgumentTypeError("{0} does not exist".format(fname))
+    return fname
 
-# Check secret file
-if [ -f "$secret" ]
-	then
-	if [ ! -r "$secret" ]
-	then
-		printf >&2 "$msg_secret_not_readable" $secret
-		exit 1
-	fi
-else
-	printf >&2 "$msg_secret_not_there" $secret
-	exit 1
-fi
 
-logfile=$($tempfile -n /tmp/$vcl_label)
+def parse_options():
+    """Parse command-line options, return args hash"""
+    parser = argparse.ArgumentParser(description="VCL Reloader")
+    parser.add_argument('--file', '-f', dest="vcl_file", type=file_exists,
+                        metavar="FILE", help="VCL file", required=True)
+    parser.add_argument('--instance_name', '-n', dest="instance_name",
+                        help="name of varnish instance", default='')
+    parser.add_argument('--delay', '-d', type=int, default=5,
+                        help="delay secs between vcl.load and vcl.use")
+    parser.add_argument('--compile-only', '-c', action='store_true',
+                        help="test compilation, but do not use")
 
-# Compile and maybe reload
-if $varnishadm $instance vcl.load $vcl_label $vcl_file
-then
-    if [ -n "$compile_only" ]
-    then
-	printf "$msg_compile_only" $varnishadm $mgmt_interface $vcl_label
-    else
-	# Warm-up period before switching to the new configuration
-	# https://phabricator.wikimedia.org/T157430
-	sleep 2
+    return parser.parse_args()
 
-	if $varnishadm $instance vcl.use $vcl_label
-	then
-	    printf "$msg_use_ok" $vcl_label
-	else
-	    printf "$msg_use_failed" $vcl_label
-	    exitstatus=1
-	fi
-    fi
-else
-    printf "$msg_compile_failed" $vcl_label $vcl_file
-    exitstatus=1
-fi 
 
-if [ -n "$exitstatus" ] ; then
-	echo "$vcl_file $vcl_label reload failed" > $logfile
-fi
+def do_cmd(cmd):
+    """echo + exec cmd with normal output, raises on rv!=0"""
+    print 'Executing: %s' % cmd
+    subprocess.check_call(cmd, shell=True)
 
-# Blather
-if [ -z "${quiet}" -o -n "$exitstatus" ]
-then
-    cat >&2 $logfile
-fi
 
-# Cleanup
-rm -f $logfile
-exit $exitstatus
+def get_cmd_output(args):
+    """exec args, returns stdout. raises on rv!=0 w/ stderr in msg"""
+
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (p_out, p_err) = p.communicate()
+    if p.returncode != 0:
+        raise Exception("Command %s failed with exit code %i, stderr:\n%s" %
+                        (" ".join(args), p.returncode, p_err))
+    return p_out
+
+
+def main():
+    args = parse_options()
+    os.umask(022)
+
+    if args.instance_name != '':
+        args.instance_name = ' -n ' + args.instance_name
+    vadm_cmd = '/usr/bin/varnishadm%s' % args.instance_name
+    vcl_label = 'vcl-%s' % str(uuid.uuid4())
+
+    do_cmd('%s vcl.load %s %s' % (vadm_cmd, vcl_label, args.vcl_file))
+
+    if not args.compile_only:
+        # First sleep is T157430
+        os.sleep(args.delay)
+        do_cmd('%s vcl.use %s' % (vadm_cmd, vcl_label))
+
+        # Second sleep is insurance against unknown varnish bugs
+        os.sleep(1)
+        for l in get_cmd_output('%s vcl.list' % vadm_cmd).splitlines():
+            match = re.match(r'^available\s+\S+\s+[0-9]+\s+(boot|vcl-\S+)$', l)
+            if match:
+                do_cmd('%s vcl.discard %s' % (vadm_cmd, match.group(1)))
+
+
+if __name__ == '__main__':
+    main()
+
+# vim: set ts=4 sw=4 et:

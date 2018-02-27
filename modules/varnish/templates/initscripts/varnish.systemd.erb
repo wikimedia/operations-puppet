@@ -27,12 +27,12 @@ Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
 <% end -%>
 # rsyslog will see this in $programname
 SyslogIdentifier=varnish<%= @instancesuffix %>
-ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
+ExecReload=/usr/share/varnish/reload-vcl <%= @reload_vcl_opts %>
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
--f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
+<%= @vcl_file_opt -%> \
 -p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \
 -p vsl_reclen=2048 \
 -p workspace_backend=128k \
@@ -46,7 +46,7 @@ ExecStart=/usr/sbin/varnishd \
 -p gzip_level=8 \
 -p gzip_memlevel=9 \
 <%= @runtime_params -%> \
-<%= @extraopts -%> \
+<%= @instance_opt -%> \
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>-p cc_command=${CC_COMMAND}<% end %>
 
 [Install]

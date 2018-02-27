@@ -17,12 +17,21 @@ define varnish::instance(
 
     if $instance_name == '' {
         $instancesuffix = ''
-        $extraopts = ''
+        $instance_opt = ''
     }
     else {
         $instancesuffix = "-${instance_name}"
-        $extraopts = "-n ${instance_name}"
+        $instance_opt = "-n ${instance_name}"
     }
+
+    # T157430 - vcl reloads should delay between load and use for the whole
+    # probe window to avoid possibility of spurious 503s.
+    # 5 probe window -> timeout*5 + interval*4, then round up whole seconds,
+    # then set a sane mininum of 2s
+    $vcl_reload_delay_s = max(2, ceiling((($vcl_config{varnish_probe_ms} * 5) + (100 * 4)) / 1000))
+
+    $vcl_file_opt = "-f /etc/varnish/wikimedia_${vcl}.vcl"
+    $reload_vcl_opts = "${instance_opt} ${vcl_file_opt} -d ${vcl_reload_delay_s}"
 
     # Install VCL include files shared by all instances
     require ::varnish::common::vcl
@@ -61,10 +70,10 @@ define varnish::instance(
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
 
     varnish::common::directors { $vcl:
-        instance  => $inst,
-        directors => $backend_caches,
-        extraopts => $extraopts,
-        before    => [
+        instance        => $inst,
+        directors       => $backend_caches,
+        reload_vcl_opts => $reload_vcl_opts,
+        before          => [
             File["/etc/varnish/wikimedia_${vcl}.vcl"],
             Service["varnish${instancesuffix}"]
         ],
@@ -131,17 +140,6 @@ define varnish::instance(
         backend_caches  => $backend_caches,
     }
 
-    # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
-    #   even under systemd where the init part itself does not.  This
-    #   situation should be cleaned up later after all varnishes are on
-    #   systemd.
-    file { "/etc/default/varnish${instancesuffix}":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/varnish-default.erb"),
-    }
-
     if ($inst == 'backend') {
         # -sfile needs CAP_DAC_OVERRIDE and CAP_FOWNER too
         $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_DAC_OVERRIDE CAP_FOWNER'
@@ -196,7 +194,7 @@ define varnish::instance(
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
             ],
-        command     => "/usr/share/varnish/reload-vcl ${extraopts} || (touch ${vcl_failed_file}; false)",
+        command     => "/usr/share/varnish/reload-vcl ${reload_vcl_opts} || (touch ${vcl_failed_file}; false)",
         unless      => "test -f ${vcl_failed_file}",
         path        => '/bin:/usr/bin',
         refreshonly => true,
@@ -204,7 +202,7 @@ define varnish::instance(
 
     exec { "retry-load-new-vcl-file${instancesuffix}":
         require => Exec["load-new-vcl-file${instancesuffix}"],
-        command => "/usr/share/varnish/reload-vcl ${extraopts} && (rm ${vcl_failed_file}; true)",
+        command => "/usr/share/varnish/reload-vcl ${reload_vcl_opts} && (rm ${vcl_failed_file}; true)",
         onlyif  => "test -f ${vcl_failed_file}",
         path    => '/bin:/usr/bin',
     }
