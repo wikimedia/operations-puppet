@@ -30,6 +30,15 @@ class beta::autoupdater {
         source  => 'puppet:///modules/beta/wmf-beta-mwconfig-update',
     }
 
+    cron { 'wmf-beta-mwconfig-update':
+        ensure      => present,
+        command     => '/usr/local/bin/wmf-beta-mwconfig-update',
+        environment => 'MAILTO="qa-alerts@lists.wikimedia.org,betacluster-alerts@lists.wikimedia.org"',
+        user        => 'mwdeploy',
+        minute      => '*/20',
+        require     => File['/usr/local/bin/wmf-beta-mwconfig-update'],
+    }
+
     file { '/usr/local/bin/wmf-beta-update-databases.py':
         owner  => 'root',
         group  => 'root',
