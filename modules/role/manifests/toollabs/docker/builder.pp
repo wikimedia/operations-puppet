@@ -1,5 +1,7 @@
 # filtertags: labs-project-tools
 class role::toollabs::docker::builder {
+
+    include ::toollabs::base
     include ::toollabs::infrastructure
 
     class { '::profile::docker::storage':

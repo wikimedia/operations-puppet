@@ -5,5 +5,6 @@ class role::toollabs::redis {
         description => 'Server that hosts shared Redis instance',
     }
 
+    include ::toollabs::base
     include ::toollabs::redis
 }

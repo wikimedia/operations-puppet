@@ -21,6 +21,7 @@ class role::toollabs::clush::master(
     $observer_pass = hiera('profile::openstack::main::observer_password'),
     ) {
 
+    include ::toollabs::base
     require ::profile::openstack::main::clientlib
     include ::toollabs::infrastructure
 

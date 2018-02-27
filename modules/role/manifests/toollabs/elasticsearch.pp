@@ -4,6 +4,8 @@
 #
 # filtertags: labs-project-tools
 class role::toollabs::elasticsearch {
+
+    include ::toollabs::base
     include ::base::firewall
     include ::elasticsearch
 
