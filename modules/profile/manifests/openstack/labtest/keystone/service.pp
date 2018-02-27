@@ -27,6 +27,8 @@ class profile::openstack::labtest::keystone::service(
     $horizon_host = hiera('profile::openstack::labtest::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $puppetmaster_hostname = hiera('profile::openstack::labtest::puppetmaster_hostname'),
+    $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
+    $public_port = hiera('profile::openstack::base::keystone::public_port'),
     ) {
 
     class{'::profile::openstack::base::keystone::db':
@@ -75,5 +77,17 @@ class profile::openstack::labtest::keystone::service(
         version => $version,
     }
     contain '::profile::openstack::base::keystone::hooks'
+
+    class {'::openstack::keystone::monitor::services':
+        active      => $::fqdn == $nova_controller,
+        auth_port   => $auth_port,
+        public_port => $public_port,
+    }
+    contain '::openstack::keystone::monitor::services'
+
+    class {'::openstack::keystone::monitor::projects_and_users':
+        active => $::fqdn == $nova_controller,
+    }
+    contain '::openstack::keystone::monitor::projects_and_users'
 }
 
