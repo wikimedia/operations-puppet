@@ -22,5 +22,7 @@ class profile::openstack::main::nova::compute::service(
         active           => true,
         certname         => $certname,
         verify_instances => true,
+        contact_groups   => 'wmcs-team,admins',
     }
+    contain '::openstack::nova::compute::monitor'
 }
