@@ -12,6 +12,10 @@ class role::prometheus::tools {
 
     require ::profile::labs::lvm::srv
 
+    class { '::httpd':
+        modules => ['proxy', 'proxy_http'],
+    }
+
     prometheus::server { 'tools':
         listen_address       => '127.0.0.1:9902',
         external_url         => 'https://tools-prometheus.wmflabs.org/tools',
