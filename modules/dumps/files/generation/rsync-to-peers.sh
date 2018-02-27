@@ -55,7 +55,8 @@ make_statusfiles_tarball() {
         ( cd "$xmldumpsdir"; /bin/tar cfp "$tarballpath" *html *json )
         # add per-wiki files next: ( cd /data/xmldatadumps/public; /usr/bin/find . -maxdepth 3 -regextype sed -regex ".*/20171120/.*\(json\|html\|txt\)" )
         ( cd "$xmldumpsdir"; /usr/bin/find "." -maxdepth 3 -regextype sed -regex ".*/${latestrun}/.*\.\(json\|html\|txt\)" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
-
+	# add txt files from 'latest' directory, they also will be skipped by the regular rsync
+	( cd "$xmldumpsdir"; /usr/bin/find "." -maxdepth 3 -regextype sed -regex ".*/latest/.*\.txt" | /usr/bin/xargs -s 1048576 /bin/tar rfp "$tarballpath" )
         # if no files found, there will be no tarball created either
 	if [ -f "$tarballpath" ]; then
             /bin/gzip "$tarballpath"
