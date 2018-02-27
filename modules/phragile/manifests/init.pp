@@ -21,9 +21,9 @@ class phragile(
 
     requires_realm('labs')
 
-    include ::apache
-    include ::apache::mod::rewrite
-    include ::apache::mod::php5
+    class { '::httpd':
+        modules => ['rewrite', 'php5'],
+    }
 
     package { [
         'php5-cli',
@@ -105,10 +105,9 @@ class phragile(
         require => Exec['composer_install'],
     }
 
-    apache::conf { 'apache_conf':
+    httpd::conf { 'apache_conf':
         ensure  => present,
         content => template('phragile/apache.conf.erb'),
-        require => Class['::apache::mod::rewrite'],
     }
 
     file { "${install_dir}/storage":
