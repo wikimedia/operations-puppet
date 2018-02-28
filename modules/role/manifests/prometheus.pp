@@ -5,6 +5,7 @@ class role::prometheus {
     include ::role::prometheus::services
     include ::role::prometheus::analytics
     include ::role::prometheus::k8s
+    include ::conftool::scripts
 
     include ::standard
     # TODO: use role::lvs::realserver instead
