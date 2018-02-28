@@ -14,7 +14,8 @@ class coal( $endpoint ) {
     require_package('python-flask')
     require_package('python-numpy')
     require_package('python-whisper')
-    require_package('python-zmq')
+    require_packages('python-confluent-kafka')
+    require_packages('python-dateutil')
 
     group { 'coal':
         ensure => present,
