@@ -156,6 +156,27 @@ class openstack::keystone::service(
             recurse => true;
     }
 
+    if os_version('debian == jessie') {
+
+        file {'/etc/keystone/original':
+            ensure  => 'directory',
+            owner   => 'keystone',
+            group   => 'keystone',
+            mode    => '0755',
+            recurse => true,
+            source  => "puppet:///openstack/${version}keystone/original",
+            require => Package['keystone'],
+        }
+
+        file {'/etc/keystone/bootstrap/keystone.conf.bootstrap':
+            ensure => 'present',
+            owner   => 'keystone',
+            group   => 'keystone',
+            mode    => '0755',
+            content => template('openstack/bootstrap/keystone/keystone.conf.bootstrap.erb'),
+        }
+    }
+
     file {'/var/lib/keystone/keystone.db':
         ensure  => 'absent',
         require => Package['keystone'],
