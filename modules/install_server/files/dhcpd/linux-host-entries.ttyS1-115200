@@ -1848,13 +1848,6 @@ host db1115 {
     fixed-address db1115.eqiad.wmnet;
 }
 
-host db2011 {
-    hardware ethernet 78:2b:cb:66:aa:3e;
-    fixed-address db2011.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host db2012 {
     hardware ethernet d4:ae:52:68:9d:69;
     fixed-address db2012.codfw.wmnet;
