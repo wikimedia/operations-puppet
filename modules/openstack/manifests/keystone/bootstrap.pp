@@ -13,14 +13,6 @@ class openstack::keystone::bootstrap(
         mode   => '0655',
     }
 
-    file { '/etc/keystone/bootstrap/policy.json':
-        owner   => 'keystone',
-        group   => 'keystone',
-        mode    => '0544',
-        source  => 'puppet:///modules/openstack/bootstrap/keystone/policy.json',
-        require => File['/etc/keystone/bootstrap'],
-    }
-
     file { '/etc/keystone/bootstrap/admintoken':
         owner   => 'keystone',
         group   => 'keystone',
@@ -34,6 +26,14 @@ class openstack::keystone::bootstrap(
         group   => 'keystone',
         mode    => '0544',
         content => template('openstack/bootstrap/keystone/keystone_seed.sh.erb'),
+        require => File['/etc/keystone/bootstrap'],
+    }
+
+    file { '/etc/keystone/bootstrap/keystone.conf.bootstrap':
+        owner   => 'keystone',
+        group   => 'keystone',
+        mode    => '0544',
+        content => template('openstack/bootstrap/keystone/keystone.conf.bootstrap.erb'),
         require => File['/etc/keystone/bootstrap'],
     }
 }

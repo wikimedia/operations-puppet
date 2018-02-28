@@ -1,0 +1,42 @@
+# config for templated.Catalog, using camelCase because I don't want to do
+# translations for keystone compat
+catalog.regionOne.identity.publicURL = http://localhost:$(public_port)s/v2.0
+catalog.regionOne.identity.adminURL = http://localhost:$(admin_port)s/v2.0
+catalog.regionOne.identity.internalURL = http://localhost:$(public_port)s/v2.0
+catalog.regionOne.identity.name = Identity Service
+
+# fake compute service for now to help novaclient tests work
+catalog.regionOne.computev21.publicURL = http://localhost:8774/v2.1/$(tenant_id)s
+catalog.regionOne.computev21.adminURL = http://localhost:8774/v2.1/$(tenant_id)s
+catalog.regionOne.computev21.internalURL = http://localhost:8774/v2.1/$(tenant_id)s
+catalog.regionOne.computev21.name = Compute Service V2.1
+
+catalog.regionOne.volumev2.publicURL = http://localhost:8776/v2/$(tenant_id)s
+catalog.regionOne.volumev2.adminURL = http://localhost:8776/v2/$(tenant_id)s
+catalog.regionOne.volumev2.internalURL = http://localhost:8776/v2/$(tenant_id)s
+catalog.regionOne.volumev2.name = Volume Service V2
+
+catalog.regionOne.ec2.publicURL = http://localhost:8773/services/Cloud
+catalog.regionOne.ec2.adminURL = http://localhost:8773/services/Admin
+catalog.regionOne.ec2.internalURL = http://localhost:8773/services/Cloud
+catalog.regionOne.ec2.name = EC2 Service
+
+catalog.regionOne.image.publicURL = http://localhost:9292
+catalog.regionOne.image.adminURL = http://localhost:9292
+catalog.regionOne.image.internalURL = http://localhost:9292
+catalog.regionOne.image.name = Image Service
+
+catalog.regionOne.network.publicURL = http://localhost:9696
+catalog.regionOne.network.adminURL = http://localhost:9696
+catalog.regionOne.network.internalURL = http://localhost:9696
+catalog.regionOne.network.name = Network Service
+
+catalog.regionOne.orchestration.publicURL = http://localhost:8004/v1/$(tenant_id)s
+catalog.regionOne.orchestration.adminURL = http://localhost:8004/v1/$(tenant_id)s
+catalog.regionOne.orchestration.internalURL = http://localhost:8004/v1/$(tenant_id)s
+catalog.regionOne.orchestration.name = Orchestration Service
+
+catalog.regionOne.metering.publicURL = http://localhost:8777
+catalog.regionOne.metering.adminURL = http://localhost:8777
+catalog.regionOne.metering.internalURL = http://localhost:8777
+catalog.regionOne.metering.name = Telemetry Service
