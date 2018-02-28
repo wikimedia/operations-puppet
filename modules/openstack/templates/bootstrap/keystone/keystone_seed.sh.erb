@@ -1,32 +1,35 @@
-puppet agent --disable 'keystone bootstrap'
-source /etc/keystone/bootstrap/admintoken
-keystone --version
+# CREATE DATABASE keystone;
+# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'<%= @ipaddress =>' IDENTIFIED BY '<%= @db_pass %>';
+# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'%' IDENTIFIED BY '<%= @db_pass %>';
 
 apt-get -y install crudini
-crudini --get /etc/keystone/keystone.conf  DEFAULT admin_token
-crudini --set /etc/keystone/keystone.conf  DEFAULT admin_token <%= @admin_token %>
-crudini --get /etc/keystone/keystone.conf  DEFAULT admin_token
+keystone --version
+sudo puppet agent --disable 'keystone bootstrap'
+source /etc/keystone/bootstrap/admintoken
 
-# bootstrapping with LDAP for user auth is a bit weird
-# we essentially set an open policy to bootstrap before
-# in use to set initial auth provider.  This should
-# never ever persist past the steps in this file.
-cp /etc/keystone/bootstrap/policy.json /etc/keystone/policy.json
-service keystone restart
+service keystone stop
+cp /etc/keystone/original/* /etc/keystone
+cp /etc/keystone/bootstrap/keystone.conf.bootstrap /etc/keystone/keystone.conf
 
-# CREATE DATABASE keystone;
-# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'localhost' \
-#  IDENTIFIED BY '<%= @db_pass %>';
-# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'%' \
-#  IDENTIFIED BY '<%= @db_pass %>';
 su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+service keystone restart
+openstack domain create --description "Default Domain" Default
 openstack service create --name keystone --description "OpenStack Identity" identity
 openstack endpoint create --region <%= @region %> identity public http://<%= @ipaddress %>:5000/v3
 openstack endpoint create --region <%= @region %> identity internal http://<%= @ipaddress %>:5000/v3
 openstack endpoint create --region <%= @region %> identity admin http://<%= @ipaddress %>:35357/v3
+
+# there seems to be a bug where service list will report
+# as non-existent using openstack client until there is 
+# a service registered that is not keystone itself.
+# using the old keystone client did not have this issue.
 openstack endpoint list
+
 openstack project create --domain default --description "Admin Project" admin
 openstack project list
+
+# This will be empty
 openstack user list
 /usr/bin/openstack role create --or-show _member_
 /usr/bin/openstack role create --or-show admin
@@ -35,4 +38,11 @@ openstack user list
 /usr/bin/openstack role create --or-show glanceadmin
 /usr/bin/openstack role create --or-show user
 openstack role list
+
+# enable puppet and pull in full config with ldap
+sudo puppet agent --enable && sudo puppet agent --test
+
+# This should now show ldap users
+service keystone restart
+openstack user list
 openstack role add --project admin --user novaadmin admin
