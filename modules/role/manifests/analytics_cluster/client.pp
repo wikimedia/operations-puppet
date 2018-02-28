@@ -12,6 +12,9 @@ class role::analytics_cluster::client {
     require ::profile::hive::client
     require ::profile::oozie::client
 
+    # Spark 2 is manually packaged by us, it is not part of CDH.
+    require ::profile::hadoop::spark2
+
     # These don't require any extra configuration,
     # so no role class is needed.
     require ::cdh::pig
@@ -19,8 +22,7 @@ class role::analytics_cluster::client {
     require ::cdh::mahout
     require ::cdh::spark
 
-    # Spark 2 is manually packaged by us, it is not part of CDH.
-    require_package('spark2')
+
 
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.

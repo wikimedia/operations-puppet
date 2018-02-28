@@ -26,6 +26,9 @@ class profile::hadoop::worker(
     # JSON backed Hive tables.
     include ::profile::hive::client
 
+    # Spark 2 is manually packaged by us, it is not part of CDH.
+    include ::profile::hadoop::spark2
+
     class { '::cdh::hadoop::worker': }
 
     # The HDFS journalnodes are co-located for convenience,
@@ -40,15 +43,6 @@ class profile::hadoop::worker(
     # needs to point at a locally installed spark directory
     # in order load Spark Python dependencies.
     class { '::cdh::spark': }
-
-    # Spark 2 is manually packaged by us, it is not part of CDH.
-    # The deb package creates as post-install step a symlink like
-    # /etc/spark/conf/hive-site.xml -> /etc/hive/conf.analytics/hive-site.xml
-    # This package needs to be installed after the deploy of the Hive configuration.
-    # (should be guaranteed by the puppet evaluation order).
-    package { 'spark2':
-        ensure => present,
-    }
 
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
