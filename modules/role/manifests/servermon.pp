@@ -14,14 +14,17 @@
 #
 # filtertags: labs-project-servermon
 class role::servermon {
-    include ::apache
-    include ::apache::mod::proxy_http
-    include ::apache::mod::proxy
-    include ::apache::mod::rewrite
-    include ::apache::mod::ssl
-    include ::apache::mod::auth_basic
-    include ::apache::mod::authnz_ldap
-    include ::apache::mod::headers
+
+    class { '::httpd':
+        modules => [ 'proxy',
+                     'proxy_http',
+                     'rewrite',
+                     'ssl',
+                     'auth_basic',
+                     'authnz_ldap',
+                     'headers',
+                   ],
+    }
 
     system::role { 'servermon': description => 'Servermon server' }
 
@@ -46,7 +49,7 @@ class role::servermon {
         admins      => '("Ops Team", "ops@lists.wikimedia.org")',
     }
 
-    apache::site { 'servermon.wikimedia.org':
+    httpd::site { 'servermon.wikimedia.org':
         content => template('role/servermon/servermon.wikimedia.org.erb'),
     }
 
