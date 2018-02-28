@@ -11,6 +11,7 @@ class mediawiki::web {
     include ::mediawiki::web::modules
     include ::mediawiki::web::mpm_config
 
+    include ::hhvm::admin
 
     file { '/etc/apache2/apache2.conf':
         content => template('mediawiki/apache/apache2.conf.erb'),
