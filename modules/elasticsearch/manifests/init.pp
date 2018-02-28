@@ -121,7 +121,7 @@ class elasticsearch(
     $curator_uses_unicast_hosts = true,
     $reindex_remote_whitelist = undef,
     $script_max_compilations_per_minute = undef,
-    $ltr_cache_size = '10mb',
+    $ltr_cache_size = undef,
 ) {
 
     # Check arguments
