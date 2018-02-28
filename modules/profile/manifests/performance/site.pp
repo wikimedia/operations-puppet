@@ -1,13 +1,17 @@
-# == Class: role::performance::site
+# == Class: profile::performance::site
 #
-# This role provisions <http://performance.wikimedia.org>, a static site with
+# This profile provisions <http://performance.wikimedia.org>, a static site with
 # web performance dashboards.
 #
-class role::performance::site {
-
-    class { '::coal':
-        endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
-    }
+# Parameters:
+#
+#  [*coal_whisper_dir*]
+#    Where coal whisper files are located.
+#    Default: /var/lib/coal
+#
+class profile::performance::site(
+    $coal_whisper_dir = hiera('profile::performance::site::coal_whisper_dir', '/var/lib/coal')
+) {
 
     file { '/srv/org':
         ensure => directory,
@@ -38,6 +42,6 @@ class role::performance::site {
     # Make Coal's whisper files accessible to Graphite front-ends.
     file { '/var/lib/carbon/whisper/coal':
         ensure => link,
-        target => '/var/lib/coal',
+        target => $coal_whisper_dir,
     }
 }
