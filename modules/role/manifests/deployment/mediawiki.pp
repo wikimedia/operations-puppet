@@ -13,6 +13,7 @@ class role::deployment::mediawiki(
     include ::scap::master
     include ::profile::scap::dsh
     include ::scap::ferm
+    include ::hhvm::admin
 
     # Keyholder
     require ::keyholder

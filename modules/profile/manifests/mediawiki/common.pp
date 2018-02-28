@@ -12,6 +12,7 @@ class profile::mediawiki::common(
         forward_syslog => "${logstash_host}:${logstash_syslog_port}",
         log_aggregator => $log_aggregator,
     }
+    class { '::hhvm::admin': }
 
     class { '::tmpreaper':
     }
