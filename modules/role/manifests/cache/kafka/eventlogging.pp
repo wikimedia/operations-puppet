@@ -18,11 +18,17 @@
 #   https://issues.apache.org/jira/browse/KAFKA-3547
 #
 class role::cache::kafka::eventlogging(
+    # TODO: This whole class is being refactored in https://gerrit.wikimedia.org/r/#/c/403067/
+    # This temporarily fixes a puppet error in deployment-prep.
+    $kafka_cluster_name     = hiera('profile::cache::kafka::eventlogging::kafka_cluster_name', 'analytics')
     $varnish_name           = 'frontend',
     $varnish_svc_name       = 'varnish-frontend',
     $kafka_protocol_version = '0.9.0.1',
-) inherits role::cache::kafka
+)
 {
+    $kafka_config = kafka_config($kafka_cluster_name)
+    $kafka_brokers = $kafka_config['brokers']['array']
+
     # Set varnish.arg.q or varnish.arg.m according to Varnish version
     $varnish_opts = { 'q' => 'ReqURL ~ "^/(beacon/)?event(\.gif)?\?"' }
 
@@ -61,4 +67,6 @@ class role::cache::kafka::eventlogging(
         graphite_metric_prefix => $graphite_metric_prefix,
         statsd_host_port       => hiera('statsd'),
     }
+
+    Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance <| |>
 }
