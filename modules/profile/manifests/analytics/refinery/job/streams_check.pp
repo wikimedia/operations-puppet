@@ -11,6 +11,7 @@ class profile::analytics::refinery::job::streams_check {
     # Shortcut var to DRY up cron commands.
     $refinery_path = $profile::analytics::refinery::path
 
+    # https://phabricator.wikimedia.org/T159962
     $refinery_job_jar = "${refinery_path}/artifacts/refinery-job-spark-2.1.jar"
     $spark_num_executors = 4
     $spark_executor_cores = 3
