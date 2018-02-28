@@ -1,5 +1,6 @@
 class puppetmaster::generators($ensure = 'present'){
 
+    # python-mysqldb is used as one of python-sqlalchemy backends
     $packages = ['python-jinja2', 'python-mysqldb', 'python-sqlalchemy', 'python-requests']
     require_package($packages)
 
