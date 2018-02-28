@@ -5,9 +5,7 @@
 #
 class role::performance::site {
 
-    class { '::coal':
-        endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
-    }
+    $coal_whisper_dir = hiera('performance::coal_whisper_dir')
 
     file { '/srv/org':
         ensure => directory,
@@ -38,6 +36,6 @@ class role::performance::site {
     # Make Coal's whisper files accessible to Graphite front-ends.
     file { '/var/lib/carbon/whisper/coal':
         ensure => link,
-        target => '/var/lib/coal',
+        target => $coal_whisper_dir,
     }
 }
