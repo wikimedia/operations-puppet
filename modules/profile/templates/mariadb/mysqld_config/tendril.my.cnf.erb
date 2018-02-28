@@ -46,7 +46,6 @@ connect_timeout    = 3
 max_connect_errors = 1000000000
 query_cache_size   = 0
 query_cache_type   = 0
-event_scheduler    = 1
 plugin-load        = ha_tokudb
 #plugin-load        = connect
 #plugin-load        = federated
@@ -65,6 +64,12 @@ innodb_flush_method            = O_DIRECT
 innodb_file_format             = barracuda
 aria_pagecache_buffer_size     = 2G
 tokudb_cache_size              = 30G
+<% if @hostname = 'db1115' %>
+    event_scheduler = 1
+<% else %>
+    event_scheduler = 0
+<% end %>
+
 
 # Binlog disabled as replication is not possible so far due to
 # events breaking replication and performance while replicating such a big amount of writes
