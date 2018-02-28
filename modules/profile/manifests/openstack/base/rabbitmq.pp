@@ -14,6 +14,8 @@ class profile::openstack::base::rabbitmq(
         file_handles => $file_handles,
     }
     contain '::rabbitmq'
+    class{'::rabbitmq::plugins':}
+    contain '::rabbitmq::plugins'
 
     class {'::rabbitmq::cleanup':
         password => $cleanup_password,
