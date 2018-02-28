@@ -3,7 +3,6 @@
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
 class mediawiki::hhvm {
-    include ::hhvm::admin
     include ::hhvm::monitoring
     include ::hhvm::debug
     include ::mediawiki::hhvm::housekeeping

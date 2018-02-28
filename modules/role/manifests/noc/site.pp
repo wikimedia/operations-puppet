@@ -10,5 +10,7 @@ class role::noc::site {
     }
 
     include ::noc
+
+    class { '::hhvm::admin': }
 }
 
