@@ -10,6 +10,7 @@
 
 class labstore::monitoring::interfaces(
     $monitor_iface = 'eth0',
+    $contact_groups='wmcs-team,admins',
 ) {
 
     $int_throughput_warn = '93750000'  # 750Mbps
@@ -23,6 +24,7 @@ class labstore::monitoring::interfaces(
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
         percentage      => '10',        # smooth over peaks
+        contact_group   => $contact_groups,
     }
 
     monitoring::graphite_threshold { 'network_in_saturated':
@@ -33,6 +35,7 @@ class labstore::monitoring::interfaces(
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
         percentage      => '10',        # smooth over peaks
+        contact_group   => $contact_groups,
     }
 
     monitoring::graphite_threshold { 'high_iowait_stalling':
@@ -43,6 +46,7 @@ class labstore::monitoring::interfaces(
         warning         => '40', # Based off looking at history of metric
         critical        => '60',
         percentage      => '50', # Ignore small spikes
+        contact_group   => $contact_groups,
     }
 
     # Monitor for high load consistently, is a 'catchall'
@@ -54,5 +58,6 @@ class labstore::monitoring::interfaces(
         warning         => '16',
         critical        => '24',
         percentage      => '50', # Don't freak out on spikes
+        contact_group   => $contact_groups,
     }
 }
