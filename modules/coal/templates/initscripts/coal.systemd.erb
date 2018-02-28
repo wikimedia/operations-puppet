@@ -5,7 +5,7 @@ Description=Navigation Timing Whisper logger
 User=coal
 Group=coal
 Restart=always
-ExecStart=/usr/local/bin/coal --whisper-dir "/var/lib/coal" "<%= @endpoint %>"
+ExecStart=/usr/local/bin/coal --whisper-dir "<%= @whisper_dir %>" --brokers "<%= @kafka_brokers %>" --consumer-group "<%= @kafka_consumer_group %>" --topic "<%= @kafka_topic %>"
 
 [Install]
 WantedBy=multi-user.target
