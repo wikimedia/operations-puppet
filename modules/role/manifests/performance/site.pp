@@ -5,8 +5,16 @@
 #
 class role::performance::site {
 
+    # Consumes from eventlogging, on the analytics kafka cluster
+    $kafka_config  = kafka_config('analytics')
+    $kafka_brokers = $kafka_config['brokers']['string']
+
+    $coal_whisper_dir = '/var/lib/coal'
+
+    # Additional vars have defaults set in modules/coal/init.pp
     class { '::coal':
-        endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
+        kafka_brokers => $kafka_brokers,
+        whisper_dir => $coal_whisper_dir
     }
 
     file { '/srv/org':
@@ -38,6 +46,6 @@ class role::performance::site {
     # Make Coal's whisper files accessible to Graphite front-ends.
     file { '/var/lib/carbon/whisper/coal':
         ensure => link,
-        target => '/var/lib/coal',
+        target => $coal_whisper_dir,
     }
 }
