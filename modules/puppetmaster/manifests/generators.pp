@@ -1,6 +1,6 @@
 class puppetmaster::generators($ensure = 'present'){
 
-    $packages = ['python-jinja2', 'python-mysqldb', 'python-sqlalchemy']
+    $packages = ['python-jinja2', 'python-mysqldb', 'python-sqlalchemy', 'python-requests']
     require_package($packages)
 
     file {'/usr/local/bin/naggen2':
