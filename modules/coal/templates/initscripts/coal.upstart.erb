@@ -10,4 +10,8 @@ setgid coal
 respawn
 respawn limit unlimited
 
-exec /usr/local/bin/coal --whisper-dir "/var/lib/coal" "<%= @endpoint %>"
+exec /usr/local/bin/coal --brokers "<%= @kafka_brokers %>" --consumer-group "<%= @kafka_consumer_group %>" \
+  <% @kafka_topics.each do |topic| %>
+	--topic "<%= @kafka_topic %>" \
+  <% end %>
+	--whisper-dir "<%= @whisper_dir %>"
