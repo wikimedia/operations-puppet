@@ -4,7 +4,9 @@
 # To do so, you should create a new class that includes
 # this class, and configure the outputs there.
 #
-class profile::kafkatee::webrequest::base {
+class profile::kafkatee::webrequest::base(
+    $output_config = hiera('profile::kafkatee::webrequest::base::output_config', true),
+) {
     $kafka_analytics_config = kafka_config('analytics')
     $kafka_config = kafka_config('jumbo-eqiad')
 
@@ -50,7 +52,8 @@ class profile::kafkatee::webrequest::base {
             $input_webrequest_misc,
             $input_webrequest_text,
             $input_webrequest_upload,
-        ]
+        ],
+        output_config   => $output_config,
     }
 
     # Install kafkatee configured to consume from
@@ -63,6 +66,7 @@ class profile::kafkatee::webrequest::base {
             $input_webrequest_misc,
             $input_webrequest_text,
             $input_webrequest_upload,
-        ]
+        ],
+        output_config   => $output_config,
     }
 }
