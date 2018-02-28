@@ -10,11 +10,17 @@
 #   URI of EventLogging event publisher to subscribe to.
 #   For example, 'tcp://eventlogging.eqiad.wmnet:8600'.
 #
-class coal( $endpoint ) {
+class coal(
+    $kafka_brokers,
+    $kafka_topic = 'eventlogging_NavigationTiming',
+    $kafka_consumer_group = 'coal',
+    $whisper_dir = '/var/lib/coal'
+  ) {
     require_package('python-flask')
     require_package('python-numpy')
     require_package('python-whisper')
-    require_package('python-zmq')
+    require_package('python-confluent-kafka')
+    require_package('python-dateutil')
 
     group { 'coal':
         ensure => present,
@@ -59,7 +65,7 @@ class coal( $endpoint ) {
         notify => Service['coal'],
     }
 
-    file { '/var/lib/coal':
+    file { $whisper_dir:
         ensure => directory,
         owner  => 'coal',
         group  => 'coal',
@@ -68,6 +74,7 @@ class coal( $endpoint ) {
     }
 
     base::service_unit { 'coal':
+        # uses: $kafka_brokers, $kafka_topic, $kafka_consumer_group, $whisper_dir
         ensure  => present,
         systemd => systemd_template('coal'),
         upstart => upstart_template('coal'),
