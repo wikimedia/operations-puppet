@@ -5,6 +5,7 @@ class pybal::monitoring($config_host, $lvs_services, $lvs_class_hosts) {
 
     require_package([
         'libmonitoring-plugin-perl',
+        'python-enum',
         'python-prometheus-client',
         'python-requests',
     ])
@@ -41,6 +42,22 @@ class pybal::monitoring($config_host, $lvs_services, $lvs_class_hosts) {
         check_interval => 5,
         timeout        => 60,
         require        => File['/usr/local/lib/nagios/plugins/check_pybal_ipvs_diff'],
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_pybal_bgp_sessions':
+        ensure => present,
+        source => 'puppet:///modules/pybal/check_pybal_bgp_sessions.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    nrpe::monitor_service { 'pybal_bgp_sessions':
+        description    => 'PyBal BGP sessions check',
+        nrpe_command   => "/usr/local/lib/nagios/plugins/check_pybal_bgp_sessions --pybal-url http://localhost:9090/metrics",
+        check_interval => 5,
+        timeout        => 60,
+        require        => File['/usr/local/lib/nagios/plugins/check_pybal_bgp_sessions'],
     }
 
     # Get the configuration of all services for this LVS host
