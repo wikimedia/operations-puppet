@@ -1,13 +1,13 @@
-# == Class: role::performance::site
+# == Class: profile::performance::site
 #
-# This role provisions <http://performance.wikimedia.org>, a static site with
+# This profile provisions <http://performance.wikimedia.org>, a static site with
 # web performance dashboards.
 #
-class role::performance::site {
+class profile::performance::site {
 
-    class { '::coal':
-        endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
-    }
+    require ::profile::performance::coal
+
+    $coal_whisper_dir = $::profile::performance::coal::coal_whisper_dir
 
     file { '/srv/org':
         ensure => directory,
@@ -31,13 +31,13 @@ class role::performance::site {
     }
 
     httpd::site { 'performance.wikimedia.org':
-        content => template('role/apache/sites/performance.wikimedia.org.erb'),
+        content => template('profile/performance/site/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
     }
 
     # Make Coal's whisper files accessible to Graphite front-ends.
     file { '/var/lib/carbon/whisper/coal':
         ensure => link,
-        target => '/var/lib/coal',
+        target => $coal_whisper_dir,
     }
 }
