@@ -381,4 +381,4 @@ profile::eventstreams::streams:
 cache::be_transient_gb: 0
 cache::fe_transient_gb: 0
 
-profile::cache::kafka::webrequest::kafka_cluster_name: deployment-prep
+profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-deployment-prep
