@@ -17,6 +17,12 @@ swift::params::accounts:
         auth:         'http://ms-fe.svc.codfw.wmnet'
         user:         'mw:thumbor'
         stats_enabled: 'no'
+    mw_thumbor_private:
+        access:       ''
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.codfw.wmnet'
+        user:         'mw:thumbor_private'
+        stats_enabled: 'no'
     dispersion:
         access:       '.admin'
         account_name: 'AUTH_dispersion'
