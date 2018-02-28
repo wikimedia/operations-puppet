@@ -125,7 +125,6 @@ class profile::netbox (
         subjects   => 'netbox.wikimedia.org',
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['httpd'],
     }
     if $active_server == $::fqdn {
         $monitoring_ensure = 'present'
