@@ -2,6 +2,7 @@
 class profile::mediawiki::maintenance {
 
     include ::mediawiki::packages::php5
+    class { '::hhvm::admin': }
 
     # Deployment
     include ::scap::scripts
