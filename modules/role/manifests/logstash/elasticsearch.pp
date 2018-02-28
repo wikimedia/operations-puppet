@@ -35,6 +35,7 @@ class role::logstash::elasticsearch {
     class { '::elasticsearch':
         require                    => File['/usr/share/elasticsearch/plugins'],
         curator_uses_unicast_hosts => false, # elasticsearch API is only exposed to localhost
+        ltr_cache_size             => undef,
     }
 
     $logstash_nodes = hiera('logstash::cluster_hosts')
