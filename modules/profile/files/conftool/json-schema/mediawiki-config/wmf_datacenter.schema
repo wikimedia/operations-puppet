@@ -1,12 +1,20 @@
-id: mediawiki-config/wmf_datacenter,
-$schema: http://json-schema.org/draft-04/schema#
-description: >
-    Represents a selection of one of the WMF main datacenters
-type: object
-required: [ val ]
-properties:
-  val:
-    description: "The WMF name of the datacenter"
-    type: string
-    enum: [ "eqiad", "codfw" ]
-additionalProperties: false
+{
+    "description": "Represents a selection of one of the WMF main datacenters\n",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "required": [
+        "val"
+    ],
+    "type": "object",
+    "properties": {
+        "val": {
+            "enum": [
+                "eqiad",
+                "codfw"
+            ],
+            "type": "string",
+            "description": "The WMF name of the datacenter"
+        }
+    },
+    "id": "mediawiki-config/wmf_datacenter,"
+}
