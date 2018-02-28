@@ -187,6 +187,9 @@ def main():
         # if debug mode, print to stderr
         logging.basicConfig(level=logging.DEBUG, format=log_format)
 
+    # Redirect warnings to logging, instead of stderr
+    logging.captureWarnings(True)
+
     log.info('Generating output for resource %s', args.type)
     tstart = time.time()
     if args.puppetdb:
