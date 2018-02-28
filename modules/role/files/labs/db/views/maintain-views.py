@@ -48,7 +48,7 @@ class SchemaOperations():
         """ Do operation or simulate
         :param query: str
         """
-        logging.debug("SQL: {}".format(query))
+        logging.debug("SQL: %s", query)
         if not self.dry_run:
             self.cursor.execute(query)
 
@@ -112,10 +112,10 @@ class SchemaOperations():
         """
         if self.table_exists(view, self.db):
             # If it does, create or replace the view for it.
-            logging.info("[{}] ".format(view))
+            logging.info("[%s] ", view)
             if (
-                not self.table_exists(view, self.db_p) or
-                self._confirm('View already exists. Replace?')
+                    not self.table_exists(view, self.db_p) or
+                    self._confirm('View already exists. Replace?')
             ):
                 # Can't use pymysql to build this
                 self.write_execute("""
@@ -128,9 +128,8 @@ class SchemaOperations():
             # Some views only exist in CentralAuth, some only in MediaWiki,
             # etc.
             logging.debug(
-                ("Skipping full view {} on database {} as the table does not"
-                    " seem to exist.")
-                .format(view, self.db)
+                ("Skipping full view %s on database %s as the table does not"
+                 " seem to exist."), view, self.db
             )
 
     def check_customview_source(self, view_name, source):
@@ -156,13 +155,12 @@ class SchemaOperations():
         if self.table_exists(source_table, source_db):
             # If it does, take this source into account.
             return source_db, source_table
-        else:
-            logging.debug(
-                ("Failed to find table {} in database {} as a source for"
-                    " view {}")
-                .format(source_table, source_db, view_name)
-            )
-            return ()
+
+        logging.debug(
+            ("Failed to find table %s in database %s as a source for"
+             " view %s"), source_table, source_db, view_name
+        )
+        return ()
 
     def do_customview(self, view_name, view_details):
         """ Process a custom view's sources, and if they're all present, and the
@@ -193,13 +191,45 @@ class SchemaOperations():
                 "`{}`.`{}`".format(source_db, source_table)
             )
 
-        if len(sources) == len(sources_checked):
+        # This cannot process a left-joined view that has multiple source tables
+        # in the sources array
+        if len(sources) > 1 and 'join' in view_details:
+            logging.warning("I don't know how to do joins with multiple sources")
+            return
 
+        # Check that joined table exists if used
+        if 'join' in view_details:
+            joins_checked = []
+            joined_tables = set().union(*(x.keys() for x in view_details['join']))
+            for joined_table in joined_tables:
+                result = self.check_customview_source(view_name, joined_table)
+                if not result:
+                    break
+                source_db, j_table = result
+                joins_checked.append(
+                    "`{}`.`{}`".format(source_db, j_table)
+                )
+
+            if len(joined_tables) != len(joins_checked):
+                # If any joined source was not found, ignore this view.
+                # Some views only exist in CentralAuth, some only in MediaWiki,
+                # etc.
+                logging.debug(
+                    ("Skipping custom view %s on database %s as not all joined sources"
+                     " were verified.\nJoins requested: %s\nVerified sources: %s"),
+                    view_name,
+                    self.db,
+                    str(view_details["join"]),
+                    str(joins_checked)
+                )
+                return
+
+        if len(sources) == len(sources_checked):
             if (
-                not self.table_exists(view_name, self.db_p) or
-                self._confirm('View already exists. Replace?')
+                    not self.table_exists(view_name, self.db_p) or
+                    self._confirm('View already exists. Replace?')
             ):
-                logging.info("[{}] ".format(view_name))
+                logging.info("[%s] ", view_name)
                 self.create_customview(
                     view_name,
                     view_details,
@@ -210,14 +240,12 @@ class SchemaOperations():
             # Some views only exist in CentralAuth, some only in MediaWiki,
             # etc.
             logging.debug(
-                ("Skipping custom view {} on database {} as not all sources"
-                    " were verified.\nSources: {}\nVerified sources: {}")
-                .format(
-                    view_name,
-                    self.db,
-                    str(view_details["source"]),
-                    str(sources_checked)
-                )
+                ("Skipping custom view %s on database %s as not all sources"
+                 " were verified.\nSources: %s\nVerified sources: %s"),
+                view_name,
+                self.db,
+                str(view_details["source"]),
+                str(sources_checked)
             )
 
     def create_customview(self, view_name, view_details, sources):
@@ -241,8 +269,32 @@ class SchemaOperations():
             ",".join(sources)
         )
 
+        # Note that we are only doing left outer joins for now.
+        # To do an inner join, use multiple sources and a where clause.
+        # Combining the two won't work right now.
+        if "join" in view_details:
+            for join in view_details["join"]:
+                for join_table, cond in join.items():
+                    query += " LEFT JOIN {} {}".format(
+                        join_table,
+                        cond
+                    )
         if "where" in view_details:
             query += " WHERE {}\n".format(view_details["where"])
+
+        if "logging_where" in view_details:
+            if '$INSERTED_EXPR$' in query:
+                query = query.replace(
+                    '$INSERTED_EXPR$',
+                    ("log_type IN ('" +
+                     "', '".join(view_details["logging_where"]) +
+                     "')\n")
+                )
+            else:
+                query += ("log_type IN ('" +
+                          "', '".join(view_details["logging_where"]) +
+                          "')\n")
+
         if "group" in view_details:
             # Technically nothing is using this at the moment...
             query += " GROUP BY {}\n".format(view_details["group"])
@@ -259,7 +311,7 @@ class SchemaOperations():
         """
 
         if not self.database_exists(self.db):
-            logging.warning('DB {} does not exist to create views'.format(self.db))
+            logging.warning('DB %s does not exist to create views', self.db)
             return
 
         if not self.database_exists(self.db_p):
@@ -268,11 +320,11 @@ class SchemaOperations():
                 "CREATE DATABASE `{}`;".format(self.db_p)
             )
 
-        logging.info("Full views for {}:".format(self.db))
+        logging.info("Full views for %s:", self.db)
         for view in fullviews:
             self.do_fullview(view)
 
-        logging.info("Custom views for {}:".format(self.db))
+        logging.info("Custom views for %s:", self.db)
         for view_name, view_details in customviews.items():
             self.do_customview(view_name, view_details)
 
@@ -282,7 +334,7 @@ class SchemaOperations():
             if self._confirm('Drop {}?'.format(self.db_p)):
                 self.write_execute("DROP DATABASE `{}`;".format(self.db_p))
         else:
-            logging.warning('DB {} does not exist'.format(self.db_p))
+            logging.warning('DB %s does not exist', self.db_p)
 
     def _confirm(self, msg):
         """Prompt for confirmation unless self.replace_all is true."""
@@ -292,8 +344,7 @@ class SchemaOperations():
         )
 
 
-if __name__ == "__main__":
-
+def main():
     argparser = argparse.ArgumentParser(
         "maintain-views",
         description="Maintain labsdb sanitized views of replica databases"
@@ -411,22 +462,10 @@ if __name__ == "__main__":
         charset="utf8"
     )
 
-    # This is weirdly arranged and should be cleaned up
-    # to be more explicit at the config file layer
-    if 'logging' in customviews.keys():
-        safelog = ("log_type IN ('" +
-                   "', '".join(config["logging_whitelist"]) +
-                   "')")
-        customviews["logging"]["where"] = safelog
-        customviews["logging_logindex"]["where"] = ("(log_deleted&1)=0 and " +
-                                                    safelog)
-        customviews["logging_userindex"]["where"] = ("(log_deleted&4)=0 and " +
-                                                     safelog)
-
     # This will include private and deleted dbs at this stage
     all_dbs_file = "{}/dblists/all.dblist".format(args.mediawiki_config)
-    with open(all_dbs_file) as f:
-        all_available_dbs = f.read().splitlines()
+    with open(all_dbs_file) as all_f:
+        all_available_dbs = all_f.read().splitlines()
     all_available_dbs = all_available_dbs + config['add_to_all_dbs']
 
     # argparse will ensure we are declaring explicitly
@@ -436,23 +475,23 @@ if __name__ == "__main__":
 
     # purge all sensitive dbs so they are never attempted
     allowed_dbs = dbs
-    for list in sensitive_db_lists:
-        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, list)
-        with open(path) as file:
-            pdbs = [db for db in file.read().splitlines()]
+    for db_list in sensitive_db_lists:
+        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, db_list)
+        with open(path) as db_file:
+            pdbs = [db for db in db_file.read().splitlines()]
             allowed_dbs = [x for x in allowed_dbs if x not in pdbs]
 
-    logging.debug("Removing {} dbs as sensitive".format(len(dbs) - len(allowed_dbs)))
+    logging.debug("Removing %s dbs as sensitive", len(dbs) - len(allowed_dbs))
     if not allowed_dbs:
         logging.error('None of the specified dbs are allowed')
         sys.exit(1)
 
     # assign all metadata from lists
     dbs_with_metadata = {x: {} for x in allowed_dbs}
-    for list, meta in dbs_metadata.items():
-        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, list)
-        with open(path) as file:
-            mdbs = [db for db in file.read().splitlines()]
+    for db_list, meta in dbs_metadata.items():
+        path = "{}/dblists/{}.dblist".format(args.mediawiki_config, db_list)
+        with open(path) as db_file:
+            mdbs = [db for db in db_file.read().splitlines()]
         for db in mdbs:
             if db in dbs_with_metadata:
                 dbs_with_metadata[db].update(meta)
@@ -483,7 +522,11 @@ if __name__ == "__main__":
                 logging.info('cleanup is enabled')
                 live_tables = ops.tables(ops.db_p)
                 dead_tables = [t for t in live_tables if t not in all_tables]
-                logging.info('cleaning {} tables'.format(len(dead_tables)))
+                logging.info('cleaning %s tables', len(dead_tables))
                 for dt in dead_tables:
-                    logging.info("Dropping view {}".format(dt))
+                    logging.info("Dropping view %s", dt)
                     ops.drop_view(dt)
+
+
+if __name__ == "__main__":
+    main()
