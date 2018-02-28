@@ -21,6 +21,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     # This is rendered elsewhere by role::analytics_cluster::mysql_password.
     $db_password_file = '/user/hdfs/mysql-analytics-labsdb-client-pw.txt'
     $log_file         = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
+    $log_error_file   = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-error.log"
     # number of parallel processors to use when sqooping (querying MySQL)
     $num_processors   = 3
     # number of sqoop mappers to use, but only for tables on big wiki
@@ -29,7 +30,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $orm_jar_file     = "${::profile::analytics::refinery::path}/artifacts/mediawiki-tables-sqoop-orm.jar"
 
     cron { 'refinery-sqoop-mediawiki':
-        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --labsdb --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --jar-file ${orm_jar_file} --user ${db_user} --password-file ${db_password_file} --timestamp \$(/bin/date '+\\%Y\\%m01000000') --snapshot \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --mappers ${num_mappers} --processors ${num_processors} >> ${log_file} 2>&1",
+        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --labsdb --jdbc-host ${db_host} --output-dir ${$output_directory} --wiki-file  ${wiki_file} --tables archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups --jar-file ${orm_jar_file} --user ${db_user} --password-file ${db_password_file} --from-timestamp 20010101000000 --to-timestamp \$(/bin/date '+\\%Y\\%m01000000') --partition-name snapshot --partition-value \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --mappers ${num_mappers} --processors ${num_processors} 1>> ${log_file} 2>> ${log_error_file}",
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
@@ -37,3 +38,4 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         monthday => '2',
     }
 }
+
