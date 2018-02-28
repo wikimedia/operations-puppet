@@ -5,8 +5,13 @@
 #
 class role::performance::site {
 
+    # Consumes from eventlogging, on the analytics kafka cluster
+    $kafka_config  = kafka_config('analytics')
+    $kafka_brokers = $kafka_config['brokers']['string']
+
+    # Additional vars have defaults set in modules/coal/init.pp
     class { '::coal':
-        endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
+        kafka_brokers => $kafka_brokers
     }
 
     file { '/srv/org':
