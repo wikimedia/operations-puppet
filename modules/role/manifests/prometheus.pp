@@ -5,6 +5,7 @@ class role::prometheus {
     include ::role::prometheus::services
     include ::role::prometheus::analytics
     include ::role::prometheus::k8s
+    include ::conftool::scripts # lint:ignore:wmf_styleguide
 
     include ::standard
     # TODO: use role::lvs::realserver instead
