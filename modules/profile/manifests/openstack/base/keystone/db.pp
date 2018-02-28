@@ -14,7 +14,7 @@ class profile::openstack::base::keystone::db(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('profile/openstack/base/keystone/db/my.cnf.erb'),
+        content => template("profile/openstack/base/keystone/db/${::lsbdistcodename}.my.cnf.erb"),
         require => Package['mysql-server'],
     }
 
