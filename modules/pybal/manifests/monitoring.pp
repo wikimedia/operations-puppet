@@ -64,4 +64,15 @@ class pybal::monitoring($config_host, $lvs_services, $lvs_class_hosts) {
         timeout        => 60,
         require        => File['/usr/lib/nagios/plugins/check_established_connections'],
     }
+
+    $prometheus_labels = "{instance=\"${::hostname}:9090\"}"
+    monitoring::check_prometheus { 'pybal_bgp_sessions':
+        description     => 'PyBal BGP sessions are established',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/pybal-bgp?var-datasource=${::site}%20prometheus%2Fops"],
+        query           => "pybal_bgp_session_established${prometheus_labels} and ignoring (asn, peer) pybal_bgp_enabled${prometheus_labels} == 1",
+        method          => 'le',
+        warning         => 0,
+        critical        => 0,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
 }
