@@ -1,32 +1,60 @@
-puppet agent --disable 'keystone bootstrap'
-source /etc/keystone/bootstrap/admintoken
+# CREATE DATABASE keystone;
+# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'<%= @ipaddress =>' IDENTIFIED BY '<%= @db_pass %>';
+# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'%' IDENTIFIED BY '<%= @db_pass %>';
+
 keystone --version
+sudo puppet agent --disable 'keystone bootstrap'
+source /etc/keystone/bootstrap/admintoken
 
-apt-get -y install crudini
-crudini --get /etc/keystone/keystone.conf  DEFAULT admin_token
-crudini --set /etc/keystone/keystone.conf  DEFAULT admin_token <%= @admin_token %>
-crudini --get /etc/keystone/keystone.conf  DEFAULT admin_token
+service keystone stop
+cp /etc/keystone/original/* /etc/keystone
+cp /etc/keystone/bootstrap/keystone.conf.bootstrap /etc/keystone/keystone.conf
 
-# bootstrapping with LDAP for user auth is a bit weird
-# we essentially set an open policy to bootstrap before
-# in use to set initial auth provider.  This should
-# never ever persist past the steps in this file.
-cp /etc/keystone/bootstrap/policy.json /etc/keystone/policy.json
+su -s /bin/sh -c "keystone-manage db_sync" keystone
+
 service keystone restart
 
-# CREATE DATABASE keystone;
-# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'localhost' \
-#  IDENTIFIED BY '<%= @db_pass %>';
-# GRANT ALL PRIVILEGES ON <%= @db_user %>.* TO 'keystone'@'%' \
-#  IDENTIFIED BY '<%= @db_pass %>';
-su -s /bin/sh -c "keystone-manage db_sync" keystone
+# Shenangians with "domain" handling in Liberty vs Mitaka
+openstack domain create --description "Default Domain" Default
+
+#  There is some disagreemnt between outcomes for 'keystone boostrap' vs 
+# manual domain creation vs upgrade domain creation.  <=Liberty set the ID
+# for a domain to 'default' literal where Mitaka wants to set a proper UUID
+# except this causes chaos for us at the moment and is not consistent
+# with any existing environments.
+#  This is manually "fixing" this to match the Liberty=>Mitaka upgrade path case
+## https://ask.openstack.org/en/question/95889/domainnotfound-could-not-find-domain-default/
+## https://bugs.launchpad.net/openstack-manuals/+bug/1642472
+## https://bugs.launchpad.net/keystone/+bug/1596869
+## https://bugs.launchpad.net/keystone/+bug/1596869/comments/12
+## https://bugs.launchpad.net/keystone/+bug/1596869/comments/13
+
+openstack domain list
+# Get the "UUID" for the default domain
+$DUUID=openstack domain list | grep Default | cut -d ' ' -f 2 
+service keystone stop
+mysqldump keystone > /tmp/keystone.backup
+cat /tmp/keystone.backup | sed -e "s/${DUUID}/default/g" | mysql keystone
+service keystone start
+openstack domain list
+# (Valid output:)
+# | default | Default | True    | Default Domain | 
+
 openstack service create --name keystone --description "OpenStack Identity" identity
 openstack endpoint create --region <%= @region %> identity public http://<%= @ipaddress %>:5000/v3
 openstack endpoint create --region <%= @region %> identity internal http://<%= @ipaddress %>:5000/v3
 openstack endpoint create --region <%= @region %> identity admin http://<%= @ipaddress %>:35357/v3
+
+# there seems to be a bug where service list will report
+# as non-existent using openstack client until there is 
+# a service registered that is not keystone itself.
+# using the old keystone client did not have this issue.
 openstack endpoint list
+
 openstack project create --domain default --description "Admin Project" admin
 openstack project list
+
+# This will be empty
 openstack user list
 /usr/bin/openstack role create --or-show _member_
 /usr/bin/openstack role create --or-show admin
@@ -35,4 +63,18 @@ openstack user list
 /usr/bin/openstack role create --or-show glanceadmin
 /usr/bin/openstack role create --or-show user
 openstack role list
+
+# enable puppet and pull in full config with ldap
+sudo puppet agent --enable && sudo puppet agent --test
+
+# This should now show ldap users
+service keystone restart
+openstack user list
 openstack role add --project admin --user novaadmin admin
+
+# exit
+# source /root/novaenv.sh
+openstack user list
+openstack endpoint list
+openstack domain list
+openstack token issue
