@@ -67,17 +67,6 @@ class rabbitmq(
         refreshonly => true,
     }
 
-    # this appears to be idempotent
-    # https://www.rabbitmq.com/management.html
-    # Needed for https://www.rabbitmq.com/management-cli.html
-    # rabbitmq-plugins -E list | egrep '\[E\*]\srabbitmq_management
-    exec { 'enable_management_plugin':
-        command     => 'rabbitmq-plugins enable rabbitmq_management',
-        path        => ['/usr/sbin/'],
-        subscribe   => Package['rabbitmq-server'],
-        refreshonly => true,
-    }
-
     service { 'rabbitmq-server':
         ensure  => $running,
         require => Package['rabbitmq-server'],
