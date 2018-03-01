@@ -8,7 +8,7 @@ $config['rrd_dir']     = "<%= @rrd_dir %>";
 $config['log_file']    = "/var/log/librenms.log";
 $config['user']        = "librenms";
 
-$config['alert']['macros']['rule']['is_main_intf'] = '%ports.ifAlias ~ "^(Cust|Transit|Peering|Core).*"';
+$config['alert']['macros']['rule']['is_main_intf'] = '%ports.ifAlias ~ "^(Cust|Transit|Peering|Core|Transport).*"';
 
 # State sensor of type "jnxFruState" that is not "online" or "empty"
 $config['alert']['macros']['rule']['junos_state_down'] = '%sensors.sensor_class = "state" && %sensors.sensor_current != "6" && %sensors.sensor_type = "jnxFruState" && %sensors.sensor_current != "2"';
