@@ -5,4 +5,9 @@ class role::mediawiki::memcached inherits role::memcached {
     system::role { 'mediawiki::memcached':
         description => 'memcached+redis sessions',
     }
+
+    # dynomite testing (T97562)
+    if $::realm == 'labs' {
+        include ::profile::mediawiki::dynomite_wancache
+    }
 }

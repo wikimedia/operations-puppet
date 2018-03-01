@@ -543,3 +543,53 @@ jenkins_agent_username: 'jenkins-slave'
 
 # HTTP proxy (can be used as an env variable)
 http_proxy: "http://webproxy.%{::site}.wmnet:8080"
+
+# Server pools for shared dynomite-based multi-datacenter cache.
+# Each server has a dynomite service and a local memcached service.
+# Servers are assigned a unique 32-bit unsigned integer token that defines
+# a position on the hash ring and thus the cache keys the server manages.
+# For example, if a server is added with a token halfway between that of
+# two other servers, it will split the load in half for the adjacent
+# server with the smaller token (hash mapping is clockwise).
+mediawiki_wancache_store_servers:
+  eqiad:
+    10.64.0.80: 238609294
+    10.64.0.81: 477218588
+    10.64.0.82: 715827882
+    10.64.0.83: 954437176
+    10.64.0.84: 1193046470
+    10.64.16.107: 1431655764
+    10.64.16.108: 1670265058
+    10.64.16.109: 1908874352
+    10.64.16.110: 2147483646
+    10.64.32.208: 2386092940
+    10.64.32.209: 2624702234
+    10.64.32.210: 2863311528
+    10.64.32.211: 3101920822
+    10.64.32.212: 3340530116
+    10.64.48.155: 3579139410
+    10.64.48.156: 3817748704
+    10.64.48.157: 4056357998
+    10.64.48.158: 4294967292
+  codfw:
+    10.192.0.83: 238609294
+    10.192.0.84: 477218588
+    10.192.0.85: 715827882
+    10.192.0.86: 954437176
+    10.192.16.60: 1193046470
+    10.192.16.61: 1431655764
+    10.192.16.62: 1670265058
+    10.192.16.194: 1908874352
+    10.192.32.159: 2147483646
+    10.192.32.160: 2386092940
+    10.192.32.161: 2624702234
+    10.192.32.162: 2863311528
+    10.192.32.163: 3101920822
+    10.192.48.76: 3340530116
+    10.192.48.77: 3579139410
+    10.192.48.78: 3817748704
+    10.192.48.79: 4056357998
+    10.192.48.80: 4294967292
+mediawiki_wancache_store_port: 11211
+mediawiki_wancache_dynomite_port: 8101
+mediawiki_wancache_dynomite_stats_port: 22221
