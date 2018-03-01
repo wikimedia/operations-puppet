@@ -10,6 +10,7 @@ class profile::openstack::base::wikitech::web(
     class {'::mediawiki': }
     class {'::mediawiki::multimedia':}
     class {'::profile::backup::host':}
+    class {'hhvm::admin':}
 
 
     # common code snippets that are included in the virtualhosts.
