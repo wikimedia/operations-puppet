@@ -18,11 +18,17 @@ class tendril (
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
+    if os_version('debian >= stretch') {
+        $php_module = 'php7.0'
+    } else {
+        $php_module = 'php5'
+    }
+
     class { '::httpd':
         modules => ['rewrite',
                     'headers',
                     'ssl',
-                    'php5',
+                    $php_module,
                     'authnz_ldap',
                     ],
     }
