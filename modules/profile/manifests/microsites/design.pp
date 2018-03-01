@@ -12,12 +12,18 @@ class profile::microsites::design(
     ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikimedia/design', {'ensure' => 'directory' })
 
-    # git::clone { 'FIXME':
-    #   ensure    => 'latest',
-    #   source    => 'gerrit',
-    #   directory => '/srv/org/wikimedia/design',
-    #   branch    => 'master',
-    # }
+     git::clone { 'design/landing-page':
+       ensure    => 'latest',
+       source    => 'gerrit',
+       directory => '/srv/org/wikimedia/design',
+       branch    => 'master',
+     }
 
+     git::clone { 'design/style-guide':
+       ensure    => 'latest',
+       source    => 'gerrit',
+       directory => '/srv/org/wikimedia/design-style-guide',
+       branch    => 'master',
+     }
 }
 
