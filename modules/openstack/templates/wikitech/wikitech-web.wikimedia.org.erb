@@ -1,4 +1,5 @@
 #####################################################################
+
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 # vim: filetype=apache
@@ -6,60 +7,45 @@
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
     ServerName <%= @webserver_hostname %>
+    ServerAlias wmflabs.org www.wmflabs.org
 
-    RequestHeader unset Proxy early
+    DocumentRoot "/srv/mediawiki/docroot/wikimedia.org"
 
-    RewriteEngine on
+    AllowEncodedSlashes On
 
-    DocumentRoot /srv/mediawiki/docroot/wikimedia.org
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride None
-    </Directory>
-    <Directory /srv/mediawiki/docroot/wikimedia.org>
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride None
-        Require all granted
-    </Directory>
-    <Directory /srv/org/wikimedia/controller/wikis/images>
-        Require all granted
-    </Directory>
-    <Directory /srv/math-images>
-        Require all granted
-    </Directory>
-    <Location /server-status>
-        SetHandler server-status
-        Require host <%= @webserver_hostname %>
-    </Location>
-    <Directory /a/backup/public>
-        Options Indexes
-        IndexOptions FancyIndexing
-        Require all granted
-    </Directory>
+    RewriteEngine On
+
+    ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    retry=0
+    ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/thumb_handler.php retry=0
+    ProxyPass       /w/extensions        !
+    ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1           retry=0
+    RewriteRule     ^/w/wiki\.phtml$     /w/index.php [L,QSA,NE]
+
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    # ShortURL redirect T80309
+    RewriteRule ^/s/.*$ /w/index.php
+
+    # The rest are served by the upload cluster
+    # First grab the subdomain from HTTP_HOST
+    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.wikimedia\.org
+    # Now use it
+    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikimedia/%1/$1 [R=302]
 
     # Primary wiki redirector:
     Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
     RewriteRule ^/w/$ /w/index.php
 
+    Include "sites-enabled/api-rewrites.incl"
     Include "sites-enabled/public-wiki-rewrites.incl"
+    Include "sites-enabled/wikimedia-common.incl"
+    Include "sites-enabled/wikimedia-legacy.incl"
 
-    Alias /w/images/math /srv/math-images
-    Alias /w/images /srv/org/wikimedia/controller/wikis/images
-    Alias /dumps /a/backup/public
+    # Early phase 2 compatibility URLs
+    RewriteRule ^/wiki\.phtml$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
 
-    ErrorDocument 404 /w/404.php
-
-    ErrorLog /var/log/apache2/error.log
-
-    # Possible values include: debug, info, notice, warn, error, crit,
-    # alert, emerg.
-    LogLevel warn
-
-    CustomLog /var/log/apache2/access.log wmf
-    ServerSignature Off
-
-    # Beacon requests that are normally handled by Varnish. We don't need these
-    # requests to do anything, but they shouldn't show up in the JavaScript
-    # error console as errors.
-    RedirectMatch 204 beacon/(.*)$
+    # and is for the others...
+    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.org/math/$1 [R=301]
 </VirtualHost>
