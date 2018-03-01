@@ -11,7 +11,12 @@ class profile::analytics::refinery::job::streams_check {
     # Shortcut var to DRY up cron commands.
     $refinery_path = $profile::analytics::refinery::path
 
-    $refinery_job_jar = "${refinery_path}/artifacts/refinery-job-spark-2.1.jar"
+    # Temporarliy run stream job from this jar.  We are currently in the process
+    # of updating to spark 2.2.1, and spark2-submit requires jobs to be compiled
+    # with spark 2.2.1.  We haven't yet deployed refinery with jobs on spark 2.2.1
+    # but will soon.  See: https://phabricator.wikimedia.org/T159962
+    # $refinery_job_jar = "${refinery_path}/artifacts/refinery-job-spark-2.1.jar"
+    $refinery_job_jar = '/home/joal/refinery-job-spark-2.2-0.0.59.jar'
     $spark_num_executors = 4
     $spark_executor_cores = 3
     $spark_driver_memory = '2G'
