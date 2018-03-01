@@ -129,10 +129,11 @@ class mediawiki_singlenode(
 
     Mwextension <| |> -> Exec['mediawiki_update']
 
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
+    class { '::httpd':
+        modules => ['php5', 'rewrite'],
+    }
 
-    apache::site { 'wikicontroller':
+    httpd::site { 'wikicontroller':
         content => template($apache_site_template),
     }
 
