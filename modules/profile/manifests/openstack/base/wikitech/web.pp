@@ -11,6 +11,8 @@ class profile::openstack::base::wikitech::web(
     class {'::mediawiki::multimedia':}
     class {'::profile::backup::host':}
 
+    class { '::scap::scripts': }
+
     # The following is derived from hhvm::admin
     #  but reworked to avoid package conflicts
     include ::network::constants
