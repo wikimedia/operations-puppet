@@ -3,11 +3,15 @@
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
 class mediawiki::hhvm {
-    include ::hhvm::monitoring
     include ::hhvm::debug
     include ::mediawiki::hhvm::housekeeping
 
     include ::mediawiki::users
+
+    # Temporary: we are decommissioning the diamond collector.
+    diamond::collector { 'HhvmApc':
+        ensure => absent,
+    }
 
     # Derive HHVM's thread count by taking the smallest of:
     #  - the memory of the system divided by a typical thread memory allocation
