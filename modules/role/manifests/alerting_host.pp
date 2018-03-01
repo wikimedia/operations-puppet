@@ -14,7 +14,7 @@ class role::alerting_host {
     include ::role::certspotter
 
     if os_version('debian >= stretch') {
-        $php_module = 'php7'
+        $php_module = 'php7.0'
     } else {
         $php_module = 'php5'
     }
