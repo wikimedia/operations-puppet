@@ -22,11 +22,9 @@
         Require all granted
     </Directory>
     <Directory /srv/org/wikimedia/controller/wikis/images>
-        php_flag engine off
         Require all granted
     </Directory>
     <Directory /srv/math-images>
-        php_flag engine off
         Require all granted
     </Directory>
     <Location /server-status>
@@ -34,7 +32,6 @@
         Require host <%= @webserver_hostname %>
     </Location>
     <Directory /a/backup/public>
-        php_flag engine off
         Options Indexes
         IndexOptions FancyIndexing
         Require all granted
