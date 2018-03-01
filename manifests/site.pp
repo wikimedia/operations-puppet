@@ -301,7 +301,7 @@ node 'db1052.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db10(65|66|67|73|80|83|89)\.eqiad\.wmnet/ {
+node /^db1(065|066|067|073|080|083|089|114)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -499,10 +499,6 @@ node 'db2092.codfw.wmnet' {
 # pending to be provisioned T184161
 # This host holds a temporary copy of db1011 T184704
 node 'db1113.eqiad.wmnet' {
-    role(spare::system)
-}
-
-node 'db1114.eqiad.wmnet' {
     role(spare::system)
 }
 
