@@ -45,9 +45,13 @@ class profile::wdqs (
 
 
     if( $use_kafka_for_updates ) {
-        $kafka_brokers = join(kafka_config('jumbo-eqiad')['brokers']['array'], ',')
-        $joined_cluster_names = join($cluster_names, ',')
-        $extra_updater_options = "--kafka ${kafka_brokers} --clusters ${joined_cluster_names}"
+        $kafka_brokers = kafka_config('jumbo-eqiad')['brokers']['string']
+        if( count($cluster_names) > 0 ) {
+            $joined_cluster_names = join($cluster_names, ',')
+            $extra_updater_options = "--kafka ${kafka_brokers} --clusters ${joined_cluster_names}"
+        } else {
+            $extra_updater_options = "--kafka ${kafka_brokers}"
+        }
     } else {
         $extra_updater_options = $rc_options
     }
