@@ -50,7 +50,7 @@ class profile::mariadb::backup::mydumper {
         group   => 'root',
         mode    => '0755',
         source  => 'puppet:///modules/profile/mariadb/dump_sections.py',
-        require => File['/etc/mysql/backup.cnf'],
+        require => File['/etc/mysql/backups.cnf'],
     }
 
     cron { 'dumps-sections':
