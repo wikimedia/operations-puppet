@@ -7,16 +7,19 @@ class role::simplelamp(
     $mysql_local = true,
     $mysql_datadir = '/srv/mysql',
 ) {
-    include ::apache
-    include ::apache::mod::rewrite
+
     include ::memcached
 
     if os_version('debian >= stretch') {
-        include ::apache::mod::php7
+        $php_module = 'php7.0'
         require_package('php-mysql', 'php-cli')
     } else {
-        include ::apache::mod::php5
+        $php_module = 'php5'
         require_package('php5-mysql', 'php5-cli')
+    }
+
+    class { '::httpd':
+        modules => ['rewrite', $php_module],
     }
 
     $bind_address = $mysql_local ? {
