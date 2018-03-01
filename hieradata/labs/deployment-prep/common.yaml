@@ -158,6 +158,15 @@ profile::memcached::size: '3000'
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::port: '11211'
+
+mediawiki_wancache_store_servers:
+    eqiad:
+      10.68.23.25: 1000001  # deployment-memc04
+      10.68.23.49: 1000002  # deployment-memc05
+mediawiki_wancache_store_port: 11211
+mediawiki_wancache_dynomite_port: 8101
+mediawiki_wancache_dynomite_stats_port: 22221
+
 "profile::cache::base::packages_version": latest
 "keyholder::trusted_groups":
    - wikidev
