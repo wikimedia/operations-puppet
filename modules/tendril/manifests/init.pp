@@ -18,13 +18,16 @@ class tendril (
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-    include ::apache::mod::ssl
-    include ::apache::mod::php5
-    include ::apache::mod::authnz_ldap
+    class { '::httpd':
+        modules => ['rewrite',
+                    'headers',
+                    'ssl',
+                    'php5',
+                    'authnz_ldap',
+                    ],
+    }
 
-    apache::site { $site_name:
+    httpd::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
     }
 
@@ -32,7 +35,6 @@ class tendril (
         subjects   => $site_name,
         puppet_svc => 'apache2',
         system_svc => 'apache2',
-        require    => Class['apache::mod::ssl']
     }
 
     require_package(
