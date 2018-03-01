@@ -210,6 +210,8 @@ cache::req_handling:
     director: 'californium'
   newhorizon.wikimedia.org:
     director: 'labweb'
+  newwikitech.wikimedia.org:
+    director: 'labweb'
   hue.wikimedia.org:
     director: 'thorium'
   iegreview.wikimedia.org:
