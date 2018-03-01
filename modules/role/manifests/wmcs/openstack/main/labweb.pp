@@ -7,7 +7,7 @@ class role::wmcs::openstack::main::labweb {
     class { '::httpd':
         modules => ['alias', 'ssl', 'rewrite', 'headers', 'wsgi',
                     'proxy', 'expires', 'proxy_http', 'proxy_balancer',
-                    'lbmethod_byrequests'],
+                    'lbmethod_byrequests', 'proxy_fcgi'],
     }
 
     include ::profile::ldap::client::labs
