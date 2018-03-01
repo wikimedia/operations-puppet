@@ -14,9 +14,9 @@ DEFAULT_PORT = 3306
 DEFAULT_ROWS = 20000000
 RETENTION_DAYS = 18
 BACKUP_DIR = '/srv/backups'
-DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
+DATE_FORMAT = '%Y-%m-%d--%H-%M-%S'
 # FIXME: backups will stop working on Jan 1st 2100
-DUMPNAME_REGEX = 'dump\.[a-z0-9\-]+\.(20\d\d-[01]\d-[0123]\d\T\d\d:\d\d:\d\d)'
+DUMPNAME_REGEX = 'dump\.[a-z0-9\-]+\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
 DUMPNAME_FORMAT = 'dump.{0}.{1}'  # where 0 is the section and 1 the date
 
 
