@@ -21,6 +21,16 @@ class profile::openstack::base::wikitech::web(
         priority => 1,
     }
 
+    httpd::conf { 'server_header':
+        content  => template('mediawiki/apache/server-header.conf.erb'),
+    }
+
+    # Add headers lost by mod_proxy_fastcgi
+    httpd::conf { 'fcgi_headers':
+        source   => 'puppet:///modules/mediawiki/apache/configs/fcgi_headers.conf',
+        priority => 0,
+    }
+
     httpd::site { 'hhvm_admin':
         content => template('hhvm/hhvm-admin.conf.erb'),
     }
