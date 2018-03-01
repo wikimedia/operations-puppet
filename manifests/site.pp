@@ -1962,7 +1962,6 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
     role(wmcs::openstack::main::wikitech)
-    include ::role::mariadb::wikitech
     interface::add_ip6_mapped { 'main': }
 }
 
