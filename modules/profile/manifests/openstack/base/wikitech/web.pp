@@ -11,6 +11,26 @@ class profile::openstack::base::wikitech::web(
     class {'::mediawiki::multimedia':}
     class {'::profile::backup::host':}
 
+    # The following is derived from hhvm::admin
+    #  but reworked to avoid package conflicts
+    include ::network::constants
+    httpd::conf { 'hhvm_admin_port':
+        ensure   => $ensure,
+        content  => "Listen ${port}\n",
+        priority => 1,
+    }
+
+    httpd::site { 'hhvm_admin':
+        ensure  => $ensure,
+        content => template('hhvm/hhvm-admin.conf.erb'),
+    }
+
+    httpd::service { 'hhvm_admin':
+        proto  => 'tcp',
+        port   => $port,
+        srange => '$DOMAIN_NETWORKS',
+    }
+    # end hhvm::admin bits
 
     # common code snippets that are included in the virtualhosts.
     # from ::mediawiki::web::sites
