@@ -156,7 +156,6 @@ define varnish::instance(
             enable  => true,
             require => [
                 Package['varnish'],
-                File["/etc/default/varnish${instancesuffix}"],
                 File["/etc/varnish/${vcl}.inc.vcl"],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
