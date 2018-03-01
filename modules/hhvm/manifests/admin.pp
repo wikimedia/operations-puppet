@@ -9,18 +9,18 @@
 #   Port the admin site should listen on (default: 9002).
 #
 class hhvm::admin(
-    $ensure = present,
-    $port   = 9002, # TODO/puppet4 declare as integer
+    Wmflib::Ensure $ensure = present,
+    Integer $port   = 9002,
 ) {
     include ::network::constants
 
-    apache::conf { 'hhvm_admin_port':
+    httpd::conf { 'hhvm_admin_port':
         ensure   => $ensure,
         content  => "Listen ${port}\n",
         priority => 1,
     }
 
-    apache::site { 'hhvm_admin':
+    httpd::site { 'hhvm_admin':
         ensure  => $ensure,
         content => template('hhvm/hhvm-admin.conf.erb'),
     }
