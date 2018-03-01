@@ -13,7 +13,6 @@ class hhvm::admin(
     $port   = 9002, # TODO/puppet4 declare as integer
 ) {
     include ::network::constants
-    include ::apache::mod::proxy_fcgi
 
     apache::conf { 'hhvm_admin_port':
         ensure   => $ensure,
