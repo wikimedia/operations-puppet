@@ -43,6 +43,41 @@ class profile::openstack::base::wikitech::service(
         mode   => '0755',
     }
 
+    # common code snippets that are included in the virtualhosts.
+    # from ::mediawiki::web::sites
+    file { '/etc/apache2/sites-enabled/wikimedia-common.incl':
+        ensure  => present,
+        content => template('mediawiki/apache/sites/wikimedia-common.incl.erb'),
+        before  => Service['apache2'],
+    }
+
+    file { '/etc/apache2/sites-enabled/wikimedia-legacy.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/wikimedia-legacy.incl',
+        before => Service['apache2'],
+    }
+
+    file { '/etc/apache2/sites-enabled/public-wiki-rewrites.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/public-wiki-rewrites.incl',
+        before => Service['apache2'],
+    }
+
+    file { '/etc/apache2/sites-enabled/api-rewrites.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/api-rewrites.incl',
+        before => Service['apache2'],
+    }
+
+    file { '/etc/apache2/sites-enabled/wikidata-uris.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/sites/wikidata-uris.incl',
+        before => Service['apache2'],
+    }
+
+
+
+
     # On app servers and image scalers, convert(1) from imagemagick is
     # contained in a firejail profile. Silver receives the same setting
     # in wmf-config/CommonSettings.php via $wgImageMagickConvertCommand
