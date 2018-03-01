@@ -46,11 +46,6 @@ class openstack::wikitech::web(
             mode   => '0755',
             owner  => 'root',
             group  => 'root';
-        '/usr/local/sbin/db-bak.sh':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///modules/openstack/wikitech/db-bak.sh';
         '/usr/local/sbin/mw-files.sh':
             owner  => 'root',
             group  => 'root',
@@ -75,12 +70,9 @@ class openstack::wikitech::web(
 
     cron {
         'db-bak':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 1,
-            minute  => 0,
-            command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
+            ensure  => absent;
+        'backup-cleanup':
+            ensure  => absent;
         'mw-xml':
             ensure  => 'present',
             user    => 'root',
@@ -94,13 +86,6 @@ class openstack::wikitech::web(
             hour    => 2,
             minute  => 0,
             command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
-        'backup-cleanup':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 3,
-            minute  => 0,
-            command => 'find /a/backup -type f -mtime +2 -delete',
             require => File['/a/backup'];
         'run-jobs':
             ensure  => 'present',
