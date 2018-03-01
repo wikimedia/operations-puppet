@@ -14,3 +14,6 @@ profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::client::hive_metastore_opts: '-Xms4g -Xmx10g -Xms4g -Xmx10g -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:9183:/etc/hive/prometheus_hive_metastore_jmx_exporter.yaml'
 profile::hive::client::hive_server_opts: '-Xms4g -Xmx6g'
 profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
+
+# Build and install oozie sharelib for our custom spark2 package.
+profile::hadoop::spark2::install_oozie_sharelib: true

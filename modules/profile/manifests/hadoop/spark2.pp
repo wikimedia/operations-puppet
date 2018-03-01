@@ -2,7 +2,9 @@
 # Ensure that the WMF creaed spark2 package is installed,
 # and that Oozie has a spark2 sharelib.
 # See also: https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.6.0/bk_spark-component-guide/content/ch_oozie-spark-action.html#spark-config-oozie-spark2
-class profile::hadoop::spark2 {
+class profile::hadoop::spark2(
+    $install_oozie_sharelib = hiera('profile::hadoop::spark2::install_oozie_sharelib', false)
+) {
     require ::profile::hadoop::common
 
     # The deb package creates as post-install step a symlink like
@@ -19,15 +21,13 @@ class profile::hadoop::spark2 {
 
     # If running on an oozie server, we can build and install a spark2
     # sharelib in HDFS so that oozie actions can launch spark2 jobs.
-    if defined(Class['::profile::oozie::server']) {
-        Class['::profile::oozie::server'] -> Class['::profile::hadoop::spark2']
-
+    if $install_oozie_sharelib {
         file { '/usr/local/bin/spark2_oozie_sharelib_install':
-            source  => 'puppet:///modules/profile/hadoop/spark2_oozie_sharelib_install',
+            source  => 'puppet:///modules/profile/hadoop/spark2_oozie_sharelib_install.sh',
             owner   => 'oozie',
             group   => 'root',
             mode    => '0744',
-            require => Package['spark2'],
+            require => [Class['::profile::oozie::server'], Package['spark2']],
         }
 
         exec { 'spark2_oozie_sharelib_install':
