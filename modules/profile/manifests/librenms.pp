@@ -127,7 +127,6 @@ class profile::librenms (
         install_dir   => $install_dir,
         rrd_dir       => '/srv/librenms/rrd',
         config        => $config,
-        require       => Package['librenms/librenms'],
         active_server => $active_server,
     }
     class { '::librenms::syslog':
