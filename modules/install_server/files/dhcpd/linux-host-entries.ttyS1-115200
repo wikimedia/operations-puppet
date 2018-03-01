@@ -4527,13 +4527,6 @@ host mc2036 {
     filename "lpxelinux.0";
 }
 
-host mira {
-    hardware ethernet D4:AE:52:AD:59:99;
-    fixed-address mira.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host sodium {
     hardware ethernet f4:e9:d4:94:c5:90;
     fixed-address sodium.wikimedia.org;

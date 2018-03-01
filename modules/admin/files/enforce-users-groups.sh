@@ -14,7 +14,7 @@ ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
          "mwdeploy" \   # eventlog*
-         "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
+         "releases" \   # deployment.eqiad.wmnet
          "reprepro" \   # bromine.eqiad.wmnet
          "mysql" \      # db1015.eqiad.wmnet T134476
          "parsoid-rt"); # ruthenium.eqiad.wmnet T90966
