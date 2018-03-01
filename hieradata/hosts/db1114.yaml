@@ -1,0 +1,2 @@
+mariadb::shard: 's1'
+profile::base::notifications_enabled: '0'
