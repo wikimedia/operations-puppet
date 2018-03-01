@@ -70,13 +70,13 @@ class role::eventlogging::analytics::processor{
 
     # Incoming format from /beacon/event via varnishkafka eventlogging-client-side
     # is of the format:
-    #   %q          - GET query with encoded event
-    #   %{recvFrom} - recvFrom hostname
-    #   %{seqId}    - sequence #
-    #   %D          - ISO-8601 dt
-    #   %o          - omit
-    #   %u          - userAgent
-    $format = '%q %{recvFrom}s %{seqId}d %D %{ip}i %u'
+    #   %q              - GET query with encoded event
+    #   %{recvFrom}     - recvFrom hostname
+    #   %{seqId}        - sequence #
+    #   %D              - ISO-8601 dt
+    #   %o              - omit
+    #   %{user_agent}i  - raw User-Agent string, this will be parsed by eventlogging-processor
+    $format = '%q %{recvFrom}s %{seqId}d %D %{ip}i "%{user_agent}i"'
     eventlogging::service::processor { $client_side_processors:
         format         => $format,
         input          => "${kafka_client_side_raw_uri}${kafka_api_version_param}",
