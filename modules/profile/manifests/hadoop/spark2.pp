@@ -20,14 +20,12 @@ class profile::hadoop::spark2 {
     # If running on an oozie server, we can build and install a spark2
     # sharelib in HDFS so that oozie actions can launch spark2 jobs.
     if defined(Class['::profile::oozie::server']) {
-        Class['::profile::oozie::server'] -> Class['::profile::hadoop::spark2']
-
         file { '/usr/local/bin/spark2_oozie_sharelib_install':
-            source  => 'puppet:///modules/profile/hadoop/spark2_oozie_sharelib_install',
+            source  => 'puppet:///modules/profile/hadoop/spark2_oozie_sharelib_install.sh',
             owner   => 'oozie',
             group   => 'root',
             mode    => '0744',
-            require => Package['spark2'],
+            require => [Class['::profile::oozie::server'], Package['spark2']],
         }
 
         exec { 'spark2_oozie_sharelib_install':
