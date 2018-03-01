@@ -146,10 +146,6 @@ class openstack::wikitech::openstack_manager(
             user    => $::mediawiki::users::web,
             command => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb} > /dev/null 2>&1";
         'update-smw':
-            ensure  => 'present',
-            user    => $::mediawiki::users::web,
-            hour    => '*/6',
-            minute  => 20,
-            command => "/usr/local/bin/mwscript extensions/SemanticMediaWiki/maintenance/SMW_refreshData.php --wiki=${wikidb} > /dev/null 2>&1";
+            ensure  => absent;
     }
 }
