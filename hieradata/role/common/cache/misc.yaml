@@ -296,6 +296,8 @@ cache::req_handling:
     director: 'labweb'
   transparency.wikimedia.org:
     director: 'bromine'
+  transparency-private.wikimedia.org:
+    director: 'bromine'
   yarn.wikimedia.org:
     director: 'thorium'
 # Profile::cache::base
