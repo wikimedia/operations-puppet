@@ -8,7 +8,7 @@
 #   unassigned).
 #   Default: '>=0.1'
 class elasticsearch::nagios::check(
-    $threshold = '>=0.1',
+    $threshold = '>=0.15',
 ) {
     monitoring::service { 'elasticsearch shards':
         check_command => "check_elasticsearch_shards_threshold!${threshold}",
