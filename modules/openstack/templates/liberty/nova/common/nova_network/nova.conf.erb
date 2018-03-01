@@ -135,13 +135,22 @@ scheduler_host_subset_size = 2
 #  a pretty good first approximation.
 weight_setting = cpu.percent=-1.0
 
-
 [database]
 # http://docs.sqlalchemy.org/en/latest/core/pooling.html
 connection=mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
 max_overflow = 25
 max_pool_size = 10
-pool_timeout = 60
+min_pool_size = 0
+pool_timeout = 10
+idle_timeout = 10
+
+[api_database]
+# http://docs.sqlalchemy.org/en/latest/core/pooling.html
+connection=mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_overflow = 25
+max_pool_size = 10
+pool_timeout = 10
+idle_timeout = 10
 
 [glance]
 host=<%= @glance_host %>
