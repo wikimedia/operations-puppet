@@ -6,9 +6,9 @@
 class role::xenon {
     include ::xenon
 
-    include ::apache::mod::mime
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
+    class { '::httpd':
+        modules => ['mime', 'proxy', 'proxy_http'],
+    }
 
     redis::instance { '6379':
         settings => {
@@ -20,7 +20,7 @@ class role::xenon {
 
     Service['redis-server'] ~> Service['xenon-log']
 
-    apache::site { 'xenon':
+    httpd::site { 'xenon':
         content => template('role/apache/sites/xenon.erb'),
     }
 
