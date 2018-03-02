@@ -4,6 +4,7 @@
 
 define profile::mariadb::ferm (
     $port = '3306',
+    $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
 ) {
     if $port == '3306' {
         $rule_name = 'mariadb_internal'
@@ -15,6 +16,15 @@ define profile::mariadb::ferm (
         port    => $port,
         notrack => true,
         srange  => '$INTERNAL',
+    }
+
+    # labweb hosts need db access to use swift for wikitech images
+    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
+    ferm::service{ 'labweb':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => $labweb_ips,
     }
 
     # auxiliary port. FIXME for non-standard ports
