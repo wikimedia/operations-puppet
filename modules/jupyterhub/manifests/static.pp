@@ -22,8 +22,9 @@ class jupyterhub::static (
     $ldap_groups = [],
 ) {
 
-    include ::apache::mod::auth_basic
-    include ::apache::mod::authnz_ldap
+    class { '::httpd:'
+        modules => ['auth_basic', 'authnz_ldap'],
+    }
 
     include ::passwords::ldap::wmf_cluster
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
@@ -35,7 +36,7 @@ class jupyterhub::static (
         mode   => '0755',
     }
 
-    apache::site { $sitename:
+    httpd::site { $sitename:
         content => template('jupyterhub/apache/nbstatic.conf.erb'),
     }
 
