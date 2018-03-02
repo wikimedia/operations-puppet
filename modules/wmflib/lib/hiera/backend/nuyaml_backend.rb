@@ -140,6 +140,15 @@ class Hiera
         return nil
       end
 
+      # Hiera 3 supports "segmented lookup" by splitting keys on dots, to allow looking up values
+      # inside nested structures. In this case reconstruct the segmented key into its original form
+      # and perform a lookup.
+      def lookup_with_segments(segments, scope, order_override, resolution_type, context)
+        Hiera.debug("Got a segmented key #{segments}")
+
+        lookup(segments.join('.'), scope, order_override, resolution_type, context)
+      end
+
       def lookup(key, scope, order_override, resolution_type, context)
         answer = nil
 
@@ -204,6 +213,7 @@ class Hiera
           end
         end
         if answer.nil?
+          Hiera.debug("No answer! #{key}")
           throw(:no_such_key)
         end
         answer
