@@ -69,12 +69,9 @@ class role::logging::mediawiki::udp2log(
         forward_messages    =>   $forward_messages,
         mirror_destinations =>   $mirror_destinations,
         template_variables  => {
-            error_processor_host => 'eventlog1001.eqiad.wmnet',
-            error_processor_port => 8423,
-
             # forwarding to logstash
-            logstash_host        => $logstash_host,
-            logstash_port        => $logstash_port,
+            logstash_host => $logstash_host,
+            logstash_port => $logstash_port,
         },
     }
 
