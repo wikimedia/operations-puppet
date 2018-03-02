@@ -11,7 +11,7 @@ group-blacklist=^(console-consumer-|python-kafka-consumer-).*$
 <% end -%>
 port=2181
 timeout=6
-lock-path=/etc/burrow/notifier-<%= @title %>
+lock-path=/burrow/notifier-<%= @title %>
 
 [kafka "<%= @kafka_cluster_name %>"]
 <% @kafka_brokers.each do |host| -%>
