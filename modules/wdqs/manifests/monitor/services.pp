@@ -63,4 +63,14 @@ class wdqs::monitor::services(
         percentage      => '30', # Don't freak out on spikes
         contact_group   => hiera('contactgroups', 'admins'),
     }
+
+    monitoring::check_prometheus { 'WDQS_Lag':
+        description     => 'High lag',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
+        query           => "blazegraph_lastupdated{instance='${::hostname}:9193'}",
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        warning         => '1200', # 20 minutes
+        critical        => '3600', # 60 minutes
+        contact_group   => hiera('contactgroups', 'admins'),
+    }
 }
