@@ -1,0 +1,28 @@
+profile::wdqs::use_git_deploy: true
+profile::wdqs::package_dir: '/srv/deployment/wdqs/wdqs'
+profile::wdqs::data_dir: '/srv/wdqs'
+profile::wdqs::endpoint: 'https://query.wikidata.org' #TODO: choose endpoint name (or is it used only for UI?)
+profile::wdqs::use_kafka_for_updates: false
+profile::wdqs::cluster_names: [ 'eqiad', 'codfw' ]
+profile::wdqs::updater_options: '-n wdq'
+profile::wdqs::rc_updater_options: '-b 500 -T 1200'
+profile::wdqs::blazegraph_config_file: '/etc/wdqs/RWStore.properties'
+profile::wdqs::blazegraph_heap_size: '32g'
+profile::wdqs::enable_ldf: false
+profile::wdqs::nodes:
+  - 'wdqs1006.eqiad.wmnet'
+  - 'wdqs1007.eqiad.wmnet'
+  - 'wdqs1008.eqiad.wmnet'
+  - 'wdqs2004.codfw.wmnet'
+  - 'wdqs2005.codfw.wmnet'
+  - 'wdqs2006.codfw.wmnet'
+admin::groups:
+  - wdqs-admins
+cluster: wdqs-internal
+contactgroups: admins,wdqs-admins
+role::lvs::realserver::pools:
+  wdqs-internal: {}
+
+# exclude wdqs hosts from screen monitoring
+# they are often used to monitor logs, for example by smalyshev
+monitor_screens: false
