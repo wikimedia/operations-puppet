@@ -70,6 +70,7 @@ allow *
 path ~ ^/puppet/v3/catalog/([^/]+)$
 method find
 allow $1
+allow elnath.codfw.wmnet
 
 # allow nodes to retrieve their own node definition
 path ~ ^/puppet/v3/node/([^/]+)$
