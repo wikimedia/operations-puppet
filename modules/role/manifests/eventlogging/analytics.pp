@@ -9,5 +9,4 @@ class role::eventlogging::analytics {
     include ::role::eventlogging::analytics::processor
     include ::role::eventlogging::analytics::mysql
     include ::role::eventlogging::analytics::files
-    include ::role::logging::mediawiki::errors
 }
