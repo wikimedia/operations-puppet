@@ -9,43 +9,5 @@
     ServerName <%= @webserver_hostname %>
     ServerAlias wmflabs.org www.wmflabs.org
 
-    DocumentRoot "/srv/mediawiki/docroot/wikimedia.org"
-
-    AllowEncodedSlashes On
-
-    RewriteEngine On
-
-    ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    retry=0
-    ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/thumb_handler.php retry=0
-    ProxyPass       /w/extensions        !
-    ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1           retry=0
-    RewriteRule     ^/w/wiki\.phtml$     /w/index.php [L,QSA,NE]
-
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    # ShortURL redirect T80309
-    RewriteRule ^/s/.*$ /w/index.php
-
-    # The rest are served by the upload cluster
-    # First grab the subdomain from HTTP_HOST
-    RewriteCond %{HTTP_HOST} ([a-z\-]+)\.wikimedia\.org
-    # Now use it
-    RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/wikimedia/%1/$1 [R=302]
-
-    # Primary wiki redirector:
-    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
-    RewriteRule ^/w/$ /w/index.php
-
-    Include "sites-enabled/api-rewrites.incl"
-    Include "sites-enabled/public-wiki-rewrites.incl"
     Include "sites-enabled/wikimedia-common.incl"
-    Include "sites-enabled/wikimedia-legacy.incl"
-
-    # Early phase 2 compatibility URLs
-    RewriteRule ^/wiki\.phtml$ %{ENV:RW_PROTO}://%{SERVER_NAME}/w/index.php [R=301,L]
-
-    # and is for the others...
-    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.org/math/$1 [R=301]
 </VirtualHost>
