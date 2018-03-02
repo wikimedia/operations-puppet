@@ -137,7 +137,7 @@ node 'californium.wikimedia.org' {
 
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
-    role(restbase::test_cluster)
+    role(spare::system)
 }
 
 # DNS recursor
@@ -1897,7 +1897,7 @@ node /^restbase20(0[1-9]|1[012])\.codfw\.wmnet$/ {
 
 # cassandra multi-dc temporary test T111382
 node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
-    role(restbase::test_cluster)
+    role(spare::system)
 }
 
 # cassandra/restbase dev cluster
