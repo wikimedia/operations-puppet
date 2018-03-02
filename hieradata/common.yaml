@@ -220,7 +220,7 @@ wikimedia_clusters:
       eqiad: []
       codfw: []
   wdqs:
-    description: "Wikidata Query Service"
+    description: "Wikidata Query Service - Public cluster"
     id: 49
     sites:
       eqiad: []
@@ -302,6 +302,12 @@ wikimedia_clusters:
   ores:
     description: "ORES Cluster"
     id: 65
+    sites:
+      eqiad: []
+      codfw: []
+  wdqs-internal:
+    description: "Wikidata Query Service - Internal cluster"
+    id: 66
     sites:
       eqiad: []
       codfw: []

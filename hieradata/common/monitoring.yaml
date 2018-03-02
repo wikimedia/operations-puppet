@@ -232,9 +232,13 @@ monitoring::groups:
 
 # Wikidata Query Service
   wdqs_eqiad:
-    description: Wikidata Query Service (eqiad)
+    description: Wikidata Query Service - Public cluster (eqiad)
   wdqs_codfw:
-    description: Wikidata Query Service (codfw)
+    description: Wikidata Query Service - Public cluster (codfw)
+  wdqs-internal_eqiad:
+    description: Wikidata Query Service - Internal cluster (eqiad)
+  wdqs-internal_codfw:
+    description: Wikidata Query Service - Internal cluster (codfw)
 
 # Zotero
   zotero_eqiad:
