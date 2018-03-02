@@ -16,10 +16,12 @@ class icinga::monitor::toollabs {
     }
 
     monitoring::service { 'paws_main_page':
-        description   => 'PAWS Main page',
-        check_command => 'check_http_url!paws.wmflabs.org!/paws/hub/login',
-        host          => 'paws.wmflabs.org',
-        contact_group => 'team-paws',
+        description    => 'PAWS Main page',
+        check_command  => 'check_http_url!paws.wmflabs.org!/paws/hub/login',
+        host           => 'paws.wmflabs.org',
+        contact_group  => 'team-paws',
+        check_interval => 5,
+        retry_interval => 5,
     }
 
     # this homepage is served by a tool running within tools
@@ -114,13 +116,15 @@ class icinga::monitor::toollabs {
         host          => $test_entry_host,
     }
 
+    # The mechanism for this test is too flaky to page.  We need to revise
+    # if persisting with SMS notification.
     monitoring::service { 'tools-checker-grid-start-trusty':
         description    => 'toolschecker: Start a job and verify on Trusty',
         check_command  => "${checker}!/grid/start/trusty!OK",
         host           => $test_entry_host,
         check_interval => 5,
         retry_interval => 5,
-        contact_group  => 'wmcs-team,admins',
+        contact_group  => 'wmcs-bots,admins',
     }
 
     monitoring::service { 'tools-checker-etcd-flannel':
