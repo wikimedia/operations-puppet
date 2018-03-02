@@ -75,7 +75,7 @@ groups:
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dcausse,
               bsitzmann, mholloway-shell, dduvall, dereckson,
               ladsgroup, bawolff, zfilipin, addshore, niharika29, ppchelko, pmiazga,
-              musikanimal, jdrewniak, pnorman]
+              musikanimal, jdrewniak, pnorman, sbisson]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -355,8 +355,8 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   maps-admins:
     gid: 753
-    description: admin for maps-test cluster
-    members: [maxsem, eevans, pnorman]
+    description: admin for maps clusters
+    members: [maxsem, eevans, pnorman, sbisson]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -370,7 +370,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [maxsem, pnorman]
+    members: [maxsem, pnorman, sbisson]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -405,7 +405,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [maxsem, pnorman]
+    members: [maxsem, pnorman, sbisson]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
