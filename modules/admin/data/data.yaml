@@ -355,8 +355,8 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   maps-admins:
     gid: 753
-    description: admin for maps-test cluster
-    members: [maxsem, eevans, pnorman]
+    description: admin for maps clusters
+    members: [maxsem, eevans, pnorman, sbisson]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
