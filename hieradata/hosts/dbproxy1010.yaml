@@ -4,5 +4,5 @@ profile::mariadb::proxy::socket: '/tmp/haproxy.socket'
 # remember to add the port like this 'host:port'
 profile::mariadb::proxy::replicas::servers:
   labsdb1009: '10.64.4.14'
-#  labsdb1010: '10.64.37.23' under maintenance
+  labsdb1010: '10.64.37.23'
 profile::mariadb::proxy::firewall: 'disabled'
