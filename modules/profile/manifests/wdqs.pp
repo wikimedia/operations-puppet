@@ -13,6 +13,7 @@ class profile::wdqs (
     $cluster_names = hiera('profile::wdqs::cluster_names'),
     $rc_options = hiera('profile::wdqs::rc_updater_options'),
     $prometheus_nodes = hiera('prometheus_nodes'),
+    $contact_groups = hiera('contactgroups', 'admins'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -90,5 +91,7 @@ class profile::wdqs (
     # Monitoring
     class { '::wdqs::monitor::blazegraph': }
     class { '::wdqs::monitor::updater': }
-    class { '::wdqs::monitor::services': }
+    class { '::wdqs::monitor::services':
+        contact_groups => $contact_groups,
+    }
 }

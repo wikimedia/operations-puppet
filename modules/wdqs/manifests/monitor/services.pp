@@ -3,7 +3,8 @@
 # Service monitoring for WDQS setup
 #
 class wdqs::monitor::services(
-    $username=$::wdqs::username
+    $contact_groups,
+    $username=$::wdqs::username,
 ) {
 
     require_package('python3-requests')
@@ -53,14 +54,13 @@ class wdqs::monitor::services(
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -u ${username} --ereg-argument-array '^java .* org.wikidata.query.rdf.tool.Update'",
     }
 
-    monitoring::graphite_threshold { 'WDQS_Lag':
+    monitoring::check_prometheus { 'WDQS_Lag':
         description     => 'High lag',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
-        metric          => "servers.${::hostname}.BlazegraphCollector.lag",
-        from            => '30min',
-        warning         => '600', # 10 minutes
-        critical        => '1800', # 30 minutes
-        percentage      => '30', # Don't freak out on spikes
-        contact_group   => hiera('contactgroups', 'admins'),
+        query           => "blazegraph_lastupdated{instance='${::hostname}:9193'}",
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        warning         => '1200', # 20 minutes
+        critical        => '3600', # 60 minutes
+        contact_group   => $contact_groups,
     }
 }
