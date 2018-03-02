@@ -89,8 +89,6 @@ class profile::wdqs (
     }
 
     # Monitoring
-    class { '::wdqs::monitor::blazegraph': }
-    class { '::wdqs::monitor::updater': }
     class { '::wdqs::monitor::services':
         contact_groups => $contact_groups,
     }
