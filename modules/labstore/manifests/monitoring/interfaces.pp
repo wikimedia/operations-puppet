@@ -15,12 +15,13 @@ class labstore::monitoring::interfaces(
 
     $int_throughput_warn = '93750000'  # 750Mbps
     $int_throughput_crit = '106250000' # 850Mbps
+    $interval = '10min' # see T188624
 
     monitoring::graphite_threshold { 'network_out_saturated':
         description     => 'Outgoing network saturation',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
         metric          => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
-        from            => '30min',
+        from            => $interval,
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
         percentage      => '10',        # smooth over peaks
@@ -31,7 +32,7 @@ class labstore::monitoring::interfaces(
         description     => 'Incoming network saturation',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/labs-monitoring'],
         metric          => "servers.${::hostname}.network.${monitor_iface}.rx_byte",
-        from            => '30min',
+        from            => $interval,
         warning         => $int_throughput_warn,
         critical        => $int_throughput_crit,
         percentage      => '10',        # smooth over peaks
