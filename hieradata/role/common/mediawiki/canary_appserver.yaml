@@ -8,19 +8,6 @@ admin::groups:
   - deployment
   - perf-roots
   - mediawiki-testers
-hhvm::extra::fcgi:
-  hhvm:
-    mysql:
-      connect_timeout: 3000
-    stats:
-      enable: true
-      sql: true
-      sql_table: true
-      web: true
-hhvm::extra::cli:
-  hhvm:
-    mysql:
-      connect_timeout: 3000
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true
