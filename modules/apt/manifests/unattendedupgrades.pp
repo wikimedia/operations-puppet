@@ -17,10 +17,6 @@ class apt::unattendedupgrades(
         ensure => 'present',
     }
 
-    package { 'apt-show-versions':
-        ensure => 'present',
-    }
-
     # disable this cron job which is not useful and can produce cronspam
     file { '/etc/cron.daily/apt-show-versions':
         ensure => 'absent',
