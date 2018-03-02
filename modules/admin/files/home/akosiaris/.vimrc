@@ -28,7 +28,7 @@
 " General {
      filetype plugin indent on " load filetype plugins/indent settings
 "    set autochdir " always switch to the current file directory
-    set backspace=indent,eol,start " make backspace a more flexible
+     set backspace=indent,eol,start " make backspace a more flexible
 "    set backup " make backup files
 "    set backupdir=~/.vim/backup " where to put backup files
 "    set clipboard+=unnamed " share windows clipboard
@@ -55,6 +55,7 @@
      set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,
                     \*.jpg,*.gif,*.png
      set wildmode=list:longest " turn on wild mode huge list
+     set tags=./tags;
 " }
 
 " Vim UI {
