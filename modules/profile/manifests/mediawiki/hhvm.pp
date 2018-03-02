@@ -1,22 +1,23 @@
-# == Class: mediawiki::hhvm
+# == Class: profile::mediawiki::hhvm
 #
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
 # === Parameters
+# [*user*]
+#   The user to run HHVM as
+#
 # [*extra_fcgi*]
 #   Supplemental settings for FastCGI mode
 #
 # [*extra_cli*]
 #   Supplemental settings for CLI mode.
 #
-class mediawiki::hhvm(
-    Hash $extra_fcgi = {},
-    Hash $extra_cli = {},
+class profile::mediawiki::hhvm(
+    String $user = hiera('mediawiki::users::web', 'www-data'),
+    Hash $extra_fcgi = hiera('mediawiki::hhvm::extra_fcgi', {}),
+    Hash $extra_cli = hiera('mediawiki::hhvm::extra_cli', {}),
 ) {
-    include ::hhvm::debug
-    include ::mediawiki::hhvm::housekeeping
-
-    include ::mediawiki::users
+    class { 'hhvm::debug': }
 
     # Temporary: we are decommissioning the diamond collector.
     diamond::collector { 'HhvmApc':
@@ -136,4 +137,13 @@ class mediawiki::hhvm(
         before  => Service['hhvm'],
     }
 
+    # This command is useful prune the hhvm bytecode cache from old tables that
+    # are just left around
+
+    file { '/usr/local/sbin/hhvm_cleanup_cache':
+        source => 'puppet:///modules/profile/mediawiki/hhvm/cleanup_cache',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }

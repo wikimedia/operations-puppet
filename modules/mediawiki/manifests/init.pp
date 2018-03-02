@@ -29,7 +29,7 @@ class mediawiki (
     include ::mediawiki::mwrepl
 
 
-    include ::mediawiki::hhvm
+    include ::profile::mediawiki::hhvm
 
     # This profile is used to contain the convert command of imagemagick using
     # firejail Profiles specific to the image/video scalers are handled via
