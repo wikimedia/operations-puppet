@@ -116,12 +116,22 @@ class Hiera
         [false, answer]
       end
 
-      def lookup(key, scope, order_override, resolution_type)
+      # Hiera 3 supports "segmented lookup" by splitting keys on dots, to allow looking up values
+      # inside nested structures. In this case reconstruct the segmented key into its original form
+      # and perform a lookup.
+      def lookup_with_segments(segments, scope, order_override, resolution_type, context)
+        Hiera.debug("Got a segmented key #{segments}")
+
+        return lookup(segments.join('.'), scope, order_override, resolution_type, context)
+      end
+
+      def lookup(key, scope, order_override, resolution_type, context)
+        Hiera.debug("Looking up #{key}")
         topscope_var = '_roles'
         resultset = nil
-        return nil unless scope.include?topscope_var
+        throw(:no_such_key) unless scope.include?topscope_var
         roles = scope[topscope_var]
-        return nil if roles.nil?
+        throw(:no_such_key) if roles.nil?
         if Config.include?(:role_hierarchy)
           hierarchy = Config[:role_hierarchy]
         else
@@ -171,6 +181,10 @@ class Hiera
               resultset = answer
             end
           end
+        end
+        if resultset.nil? || resultset.empty?
+          Hiera.debug("No answer for #{key}!")
+          throw(:no_such_key)
         end
         resultset
       end
