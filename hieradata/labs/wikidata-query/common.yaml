@@ -3,7 +3,7 @@ profile::wdqs::use_git_deploy: false
 profile::wdqs::package_dir: '/srv/wdqs/blazegraph'
 profile::wdqs::data_dir: '/srv/wdqs/blazegraph'
 profile::wdqs::endpoint: ''
-profile::wdqs::updater_options: '-n wdq -s -l en'
+profile::wdqs::rc_updater_options: '-n wdq -s -l en'
 profile::wdqs::blazegraph_config_file: 'RWStore.properties'
 profile::wdqs::blazegraph_options: ''
 profile::wdqs::blazegraph_heap_size: '8g'
