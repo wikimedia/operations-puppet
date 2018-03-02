@@ -9,16 +9,6 @@ class wdqs::monitor::updater(
     require ::wdqs::updater
 
     diamond::collector { 'WDQSUpdater':
-        settings => {
-            counters => [
-                '"updates/Count"',
-                '"updates/MeanRate"',
-                '"updates/OneMinuteRate"',
-                '"batch-progress/Count"',
-                '"batch-progress/MeanRate"',
-                '"batch-progress/OneMinuteRate"',
-            ],
-        },
-        source   => 'puppet:///modules/wdqs/monitor/wdqs_updater.py',
+        ensure => absent,
     }
 }
