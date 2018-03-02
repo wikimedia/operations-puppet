@@ -189,21 +189,17 @@ class hhvm(
         },
     }
 
-    $cli_hiera    = hiera_hash('hhvm::extra::cli', {})
-    $fcgi_hiera   = hiera_hash('hhvm::extra::fcgi', {})
-
-
     ## Config files
 
     file { '/etc/hhvm/php.ini':
-        content => php_ini($common_defaults, $cli_defaults, $cli_settings, $cli_hiera),
+        content => php_ini($common_defaults, $cli_defaults, $cli_settings),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
     }
 
     file { '/etc/hhvm/server.ini':
-        content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings, $fcgi_hiera),
+        content => php_ini($common_defaults, $fcgi_defaults, $fcgi_settings),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
