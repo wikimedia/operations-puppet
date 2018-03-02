@@ -17,6 +17,7 @@ hhvm::extra::fcgi:
       sql: true
       sql_table: true
       web: true
+    enable_reusable_tc: true
 hhvm::extra::cli:
   hhvm:
     mysql:
