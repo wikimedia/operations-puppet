@@ -85,6 +85,10 @@ profile::cache::base::storage_parts:
   - vdb
   - vdb
 varnish::dynamic_backend_caches: false
+# Worst path rtt through our network, used in prod to determine timeouts. Not
+# particularly useful in labs, but necessary as the setting has no default
+# value in puppet.
+max_core_rtt: 60
 
 swift::proxy::tld: 'beta.wmflabs.org'
 
