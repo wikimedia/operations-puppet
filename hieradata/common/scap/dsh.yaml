@@ -76,15 +76,9 @@ scap::dsh::groups:
       - {'cluster': 'maps', 'service': 'cassandra', 'datacenters': ['codfw']}
       - {'cluster': 'restbase', 'service': 'cassandra'}
     hosts:
-      - cerium.eqiad.wmnet
-      - praseodymium.eqiad.wmnet
       - restbase-dev1001.eqiad.wmnet
       - restbase-dev1002.eqiad.wmnet
       - restbase-dev1003.eqiad.wmnet
-      - restbase-test2001.codfw.wmnet
-      - restbase-test2002.codfw.wmnet
-      - restbase-test2003.codfw.wmnet
-      - xenon.eqiad.wmnet
   discovery-analytics:
     hosts:
       - stat1005.eqiad.wmnet
