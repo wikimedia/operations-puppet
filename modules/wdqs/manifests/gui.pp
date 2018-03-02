@@ -22,6 +22,7 @@ class wdqs::gui(
     $port = 80,
     $additional_port = 8888,
     $use_git_deploy = $::wdqs::use_git_deploy,
+    $enable_ldf = true,
 ) {
 
     $alias_map = "${data_dir}/aliases.map"

@@ -75,7 +75,12 @@ server {
         rewrite ^ /bigdata/namespace/$aliased/sparql last;
     }
 
-    location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|ldf|assets) {
+<% if @enable_ldf -%>
+  location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|ldf|assets) {
+<% else -%>
+  location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|assets) {
+<% end -%>
+
         if ( $uri ~ ^/bigdata/assets ) {
             add_header Cache-Control "public, max-age=604800, s-maxage=604800";
         }

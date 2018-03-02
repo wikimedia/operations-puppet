@@ -8,4 +8,5 @@ profile::wdqs::blazegraph_config_file: 'RWStore.properties'
 profile::wdqs::blazegraph_options: ''
 profile::wdqs::blazegraph_heap_size: '8g'
 profile::wdqs::cluster_names: []
+profile::wdqs::enable_ldf: true
 profile::wdqs::use_kafka_for_updates: false
