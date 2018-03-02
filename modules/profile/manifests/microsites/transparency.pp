@@ -42,4 +42,8 @@ class profile::microsites::transparency {
     httpd::site { 'transparency.wikimedia.org':
         content => template('role/apache/sites/transparency.wikimedia.org.erb'),
     }
+
+    httpd::site { 'transparency-private.wikimedia.org':
+        content => template('role/apache/sites/transparency-private.wikimedia.org.erb'),
+    }
 }
