@@ -10,4 +10,16 @@
     ServerAlias wmflabs.org www.wmflabs.org
 
     Include "sites-enabled/wikimedia-common.incl"
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory "/srv/mediawiki/docroot/wikimedia.org">
+        Options -Indexes +FollowSymLinks +MultiViews
+        AllowOverride None
+
+        Require all granted
+    </Directory>
 </VirtualHost>
