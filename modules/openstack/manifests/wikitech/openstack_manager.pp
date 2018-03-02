@@ -64,27 +64,12 @@ class openstack::wikitech::openstack_manager(
     }
 
     file {
-        '/a':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755';
         '/var/www/robots.txt':
             ensure => 'present',
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
             source => 'puppet:///modules/openstack/wikitech/wikitech-robots.txt';
-        '/a/backup':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755';
-        '/a/backup/public':
-            ensure => directory,
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root';
         '/usr/local/sbin/mw-files.sh':
             owner  => 'root',
             group  => 'root',
@@ -112,20 +97,6 @@ class openstack::wikitech::openstack_manager(
             ensure  => absent;
         'backup-cleanup':
             ensure  => absent;
-        'mw-xml':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 1,
-            minute  => 30,
-            command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
-        'mw-files':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 2,
-            minute  => 0,
-            command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
         'run-jobs':
             ensure  => 'present',
             user    => $::mediawiki::users::web,

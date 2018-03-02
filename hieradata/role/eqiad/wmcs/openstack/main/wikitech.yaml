@@ -1,3 +1,5 @@
 ---
 admin::groups:
   - wmcs-roots
+
+profile::openstack::main::wikitech::wikitech_static_sync_host: 'silver'
