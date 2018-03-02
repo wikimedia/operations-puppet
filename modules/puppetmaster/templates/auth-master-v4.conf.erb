@@ -70,6 +70,8 @@ allow *
 path ~ ^/puppet/v3/catalog/([^/]+)$
 method find
 allow $1
+# Temporarily allow elnath for full catalog compilation T188544#4016233
+allow elnath.codfw.wmnet
 
 # allow nodes to retrieve their own node definition
 path ~ ^/puppet/v3/node/([^/]+)$
