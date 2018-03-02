@@ -36,7 +36,7 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra311 component/puppetdb4 thirdparty/tor
+Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra311 component/puppetdb4 thirdparty/tor thirdparty/php71
 UDebComponents: main
 Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 tor-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
