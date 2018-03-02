@@ -2808,6 +2808,10 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
+  lucaswerkmeister-wmde:
+    ensure: present
+    realname: Lucas Werkmeister
+    email: lucas.werkmeister@wikimedia.de
   mhernandez:
     ensure: present
     realname: Megan Hernandez
