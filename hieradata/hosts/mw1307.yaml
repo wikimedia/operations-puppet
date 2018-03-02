@@ -6,7 +6,7 @@ profile::mediawiki::jobrunner::runners:
   transcode: 10
   transcode_prioritized: 8
 nutcracker::verbosity: "4"
-hhvm::extra::fcgi:
+mediawiki::hhvm::extra_fcgi:
   hhvm:
     server:
       connection_timeout_seconds: 86400

@@ -7,7 +7,7 @@ admin::groups:
   - perf-roots
 mediawiki::web::mpm_config::workers_limit: 100
 nutcracker::verbosity: "4"
-hhvm::extra::fcgi:
+mediawiki::hhvm::extra_fcgi:
   hhvm:
     server:
       light_process_count: "10"
