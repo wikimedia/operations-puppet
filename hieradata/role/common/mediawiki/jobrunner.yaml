@@ -11,7 +11,7 @@ profile::mediawiki::jobrunner::runners:
   html: 8
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
-hhvm::extra::fcgi:
+mediawiki::hhvm::extra_fcgi:
   max_execution_time: 1200
   curl:
     "namedPools.cirrus-codfw":

@@ -7,14 +7,6 @@ admin::groups:
   - perf-roots
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
-hhvm::extra::fcgi:
-  hhvm:
-    mysql:
-      connect_timeout: 3000
-hhvm::extra::cli:
-  hhvm:
-    mysql:
-      connect_timeout: 3000
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true

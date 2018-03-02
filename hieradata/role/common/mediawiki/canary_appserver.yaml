@@ -8,22 +8,11 @@ admin::groups:
   - deployment
   - perf-roots
   - mediawiki-testers
-hhvm::extra::fcgi:
+mediawiki::hhvm::extra::fcgi:
   # https://phabricator.wikimedia.org/T180183
   auto_prepend_file: /srv/mediawiki/wmf-config/PhpAutoPrepend.php
   hhvm:
-    mysql:
-      connect_timeout: 3000
-    stats:
-      enable: true
-      sql: true
-      sql_table: true
-      web: true
     enable_reusable_tc: true
-hhvm::extra::cli:
-  hhvm:
-    mysql:
-      connect_timeout: 3000
 apache::logrotate::rotate: 12
 nutcracker::verbosity: "4"
 role::mediawiki::webserver::tls: true

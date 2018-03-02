@@ -2,7 +2,17 @@
 #
 # Configures HHVM to serve MediaWiki in FastCGI mode.
 #
-class mediawiki::hhvm {
+# === Parameters
+# [*extra_fcgi*]
+#   Supplemental settings for FastCGI mode
+#
+# [*extra_cli*]
+#   Supplemental settings for CLI mode.
+#
+class mediawiki::hhvm(
+    Hash $extra_fcgi = {},
+    Hash $extra_cli = {},
+) {
     include ::hhvm::debug
     include ::mediawiki::hhvm::housekeeping
 
@@ -25,48 +35,57 @@ class mediawiki::hhvm {
     # We want to have the same number of arenas as our threads
     $malloc_arenas = $max_threads
 
+    $fcgi_settings =  {
+        # See https://docs.hhvm.com/hhvm/configuration/INI-settings
+        hhvm  =>
+        {
+            xenon          => {
+                period => to_seconds('10 minutes'),
+            },
+            error_handling => {
+                call_user_handler_on_fatals => true,
+            },
+            server         => {
+                source_root           => '/srv/mediawiki/docroot',
+                error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
+                error_document404     => '/srv/mediawiki/errorpages/404.php',
+                # Currently testing on Beta Cluster: auto_prepend_file (T180183)
+                request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
+                thread_count          => $max_threads,
+                ip                    => '127.0.0.1',
+            },
+            pcre_cache_type => 'lru',
+        },
+        curl  => {
+            namedPools   => 'cirrus-eqiad,cirrus-codfw',
+            # ugly hack to work around colision in the hash
+            'namedPools.cirrus-codfw' => {
+                size => '20',
+            },
+            'namedPools.cirrus-eqiad' => {
+                size => '20',
+            },
+        },
+        mysql => {
+            connect_timeout => 3000,
+        },
+    }
+
+    $cli_settings = {
+        curl => {
+            namedPools => 'cirrus-eqiad,cirrus-codfw',
+        },
+        mysql => {
+            connect_timeout => 3000,
+        },
+    }
+
     class { '::hhvm':
-        # lint:ignore:arrow_alignment
         user          => $::mediawiki::users::web,
         group         => $::mediawiki::users::web,
-        fcgi_settings => {
-            # See https://docs.hhvm.com/hhvm/configuration/INI-settings
-            hhvm => {
-                xenon          => {
-                    period => to_seconds('10 minutes'),
-                },
-                error_handling => {
-                    call_user_handler_on_fatals => true,
-                },
-                server         => {
-                    source_root           => '/srv/mediawiki/docroot',
-                    error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
-                    error_document404     => '/srv/mediawiki/errorpages/404.php',
-                    # Currently testing on Beta Cluster: auto_prepend_file (T180183)
-                    request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
-                    thread_count          => $max_threads,
-                    ip                    => '127.0.0.1',
-                },
-                pcre_cache_type => 'lru',
-            },
-            curl => {
-                namedPools   => 'cirrus-eqiad,cirrus-codfw',
-                # ugly hack to work around colision in the hash
-                'namedPools.cirrus-codfw' => {
-                    size => '20',
-                },
-                'namedPools.cirrus-eqiad' => {
-                    size => '20',
-                },
-            },
-        },
-        cli_settings => {
-            curl => {
-                namedPools => 'cirrus-eqiad,cirrus-codfw',
-            },
-        },
+        fcgi_settings => deep_merge($fcgi_settings, $extra_fcgi),
+        cli_settings  => deep_merge($cli_settings, $extra_cli),
         malloc_arenas => $malloc_arenas,
-        # lint:endignore
     }
 
 
