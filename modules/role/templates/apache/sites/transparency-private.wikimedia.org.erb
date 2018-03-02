@@ -1,0 +1,19 @@
+# vim:ft=apache: ts=4 sw=4
+# Apache configuration for <https://transparency-private.wikimedia.org>
+# This file is managed by Puppet.
+<VirtualHost *:80>
+    ServerName transparency-private.wikimedia.org
+    DocumentRoot <%= @private_docroot %>
+
+    <Directory <%= @private_docroot%>>
+      AuthName "<%= @auth_ldap['name'] %>"
+      AuthType Basic
+      AuthBasicProvider ldap
+      AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
+      AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
+      AuthLDAPURL "<%= @auth_ldap['url'] %>"
+      <% @auth_ldap['groups'].each do |group| -%>
+      Require ldap-group <%= group %>
+      <% end -%>
+    </Directory>
+</VirtualHost>
