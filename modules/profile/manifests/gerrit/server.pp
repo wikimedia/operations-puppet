@@ -74,4 +74,8 @@ class profile::gerrit::server(
         config      => $config,
         log_host    => $log_host,
     }
+
+    class { '::gerrit::replication_key':
+        require => Class['gerrit'],
+    }
 }
