@@ -44,16 +44,6 @@ define burrow (
         content => template('burrow/burrow.cfg.erb'),
     }
 
-    if ! defined(File['/var/run/burrow']){
-        file { '/var/run/burrow':
-            ensure  => directory,
-            owner   => 'burrow',
-            group   => 'burrow',
-            mode    => '0755',
-            require => Package['burrow'],
-        }
-    }
-
     file { "/etc/burrow/email-${title}.tmpl":
         ensure  => $ensure,
         content => template($email_template),
@@ -64,7 +54,7 @@ define burrow (
         content   => systemd_template('burrow'),
         restart   => true,
         subscribe => File["/etc/burrow/burrow-${title}.cfg"],
-        require   => [Package['burrow'], File['/var/run/burrow']]
+        require   => Package['burrow'],
     }
 
     if ! defined(Service['burrow']) {
