@@ -1,7 +1,7 @@
 [general]
 logdir=/var/log/burrow
 logconfig=/etc/burrow/logging.cfg
-pidfile=burrow-<%= @title %>.pid
+pidfile=/var/run/burrow/burrow-<%= @title %>.pid
 client-id=<%= @client_id %>
 group-blacklist=^(console-consumer-|python-kafka-consumer-).*$
 
