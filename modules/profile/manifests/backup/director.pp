@@ -136,8 +136,8 @@ class profile::backup::director(
     bacula::director::fileset { 'var-vmail':
         includes => [ '/var/vmail' ]
     }
-    bacula::director::fileset { 'mysql-srv-backups':
-        includes => [ '/srv/backups' ]
+    bacula::director::fileset { 'mysql-srv-backups-latest':
+        includes => [ '/srv/backups/latest' ]
     }
     bacula::director::fileset { 'var-lib-carbon-whisper':
         includes => [ '/var/lib/carbon/whisper' ]
@@ -150,11 +150,6 @@ class profile::backup::director(
     }
     bacula::director::fileset { 'srv-deployment':
         includes => [ '/srv' ]
-    }
-    # As all /a this will hopefully no longer be needed at some point and will
-    # be killed with fire
-    bacula::director::fileset { 'mysql-a-backups':
-        includes => [ '/a/backups' ]
     }
     bacula::director::fileset { 'mysql-bpipe-xfalse-pfalse-ifalse':
         includes => [],
@@ -210,9 +205,6 @@ class profile::backup::director(
     }
     bacula::director::fileset { 'etcd':
         includes => [ '/srv/backups/etcd' ]
-    }
-    bacula::director::fileset { 'otrsdb':
-        includes => [ '/srv/backups/m2' ]
     }
 
     bacula::director::fileset { 'librenms':
