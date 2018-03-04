@@ -4,6 +4,6 @@ class profile::mariadb::backup::bacula (
     $active = hiera('profile::mariadb::backup::bacula::active', false),
 ) {
     if $active {
-        backup::set { 'mysql-srv-backups': }
+        backup::set { 'mysql-srv-backups-latest': }
     }
 }
