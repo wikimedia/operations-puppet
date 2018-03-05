@@ -1,0 +1,5 @@
+# Hiera settings for dumps distribution servers (labstore1006|7)
+
+profile::dumps::distribution::miscdumpsdir: '/srv/dumps/xmldatadumps/public/other'
+profile::dumps::distribution::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public'
+profile::dumps::distribution::dumpstempdir: '/srv/dumps/xmldatadumps/temp'
