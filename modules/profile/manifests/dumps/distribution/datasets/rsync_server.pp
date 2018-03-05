@@ -1,4 +1,4 @@
-class profile::dumps::web::rsync_server(
+class profile::dumps::distribution::datasets::rsync_server(
     $rsync_clients = hiera('dumps_web_rsync_server_clients'),
 ) {
     # By default the resolve() function in ferm performs only an IPv4/A DNS
