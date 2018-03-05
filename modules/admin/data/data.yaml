@@ -655,6 +655,12 @@ groups:
     privileges: ['ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = NOPASSWD: /bin/dmesg *',
                  'ALL = (syslog) NOPASSWD: ALL']
+  graphite-admins:
+    description: Group to enable access to Graphite servers
+    gid: 800
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
+                 'ALL = NOPASSWD: /bin/journalctl *']
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
