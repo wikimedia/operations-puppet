@@ -17,7 +17,7 @@ swift::params::accounts:
         auth:         'http://ms-fe.svc.eqiad.wmnet'
         user:         'mw:thumbor'
         stats_enabled: 'no'
-    mw_thumbor_private:
+    mw_thumbor-private:
         access:       ''
         account_name: 'AUTH_mw'
         auth:         'http://ms-fe.svc.eqiad.wmnet'
