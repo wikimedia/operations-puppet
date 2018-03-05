@@ -658,7 +658,7 @@ groups:
   graphite-admins:
     description: Group to enable access to Graphite servers
     gid: 800
-    members: []
+    members: [imarlier]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
                  'ALL = NOPASSWD: /bin/journalctl *']
   contint-docker:
