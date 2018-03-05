@@ -58,7 +58,7 @@ class piwik (
             command     => $cmd,
             user        => $piwik_username,
             environment => "MAILTO=${archive_cron_email}",
-            hour        => '8',
+            hour        => '0,8,16',
             minute      => '0',
             month       => '*',
             monthday    => '*',
