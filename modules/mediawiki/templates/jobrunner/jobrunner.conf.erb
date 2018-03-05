@@ -24,28 +24,11 @@ end
                 "gwtoolsetUploadMetadataJob",
                 "uploadFromUrl",
                 "webVideoTranscode",
-                "webVideoTranscodePrioritized",
-                // Temp config for T173710
-                "refreshLinks",
-                "refreshLinksDynamic"
+                "webVideoTranscodePrioritized"
             ],
             "low-priority": [
-                "cirrusSearchLinksUpdate",
-                "htmlCacheUpdate",
+                "cirrusSearchLinksUpdate"
             ]
-        },
-        "html": {
-            // Temp config for T173710
-            "runners": <%= runners_for('html') %>,
-            "include": [
-                "htmlCacheUpdate",
-                "refreshLinks",
-                "refreshLinksDynamic",
-            ],
-            "low-priority": [
-                "refreshLinksDynamic",
-                "refreshLinks",
-            ],
         },
         "gwt": {
             "runners": <%=  runners_for('gwt')  %>,
