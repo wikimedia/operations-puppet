@@ -21,7 +21,7 @@ swift::params::accounts:
         access:       ''
         account_name: 'AUTH_mw'
         auth:         'http://ms-fe.svc.eqiad.wmnet'
-        user:         'mw:thumbor_private'
+        user:         'mw:thumbor-private'
         stats_enabled: 'no'
     dispersion:
         access:       '.admin'
