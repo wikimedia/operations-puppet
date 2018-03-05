@@ -1,0 +1,23 @@
+#!/bin/bash
+# eventloggingctl -- Manage EventLogging services
+# Usage: eventloggingctl {start|stop|restart|status|tail}
+#
+command=$1
+shift
+case "$command" in
+    status)
+        systemctl list-units | egrep '^eventlogging'
+        ;;
+    start|restart)
+        systemctl restart eventlogging.service
+        ;;
+    stop)
+        systemctl stop eventlogging.service
+        ;;
+    tail)
+        tail "$@" /var/log/eventlogging/eventlogging-*.log
+        ;;
+    *)
+        echo >&2 "Usage: ${0##*/} {start|restart|stop|status|tail}"
+        ;;
+esac
