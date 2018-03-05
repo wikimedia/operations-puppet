@@ -1,5 +1,6 @@
 class profile::openstack::labtestn::keystone::service(
     $version = hiera('profile::openstack::labtestn::version'),
+    $region = hiera('profile::openstack::labtestn::region'),
     $nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
     $osm_host = hiera('profile::openstack::labtestn::osm_host'),
     $db_host = hiera('profile::openstack::labtestn::keystone::db_host'),
@@ -43,6 +44,7 @@ class profile::openstack::labtestn::keystone::service(
     require ::profile::openstack::labtestn::clientlib
     class {'::profile::openstack::base::keystone::service':
         version                     => $version,
+        region                      => $region,
         nova_controller             => $nova_controller,
         osm_host                    => $osm_host,
         db_host                     => $db_host,
