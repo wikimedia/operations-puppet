@@ -120,6 +120,11 @@ class eventlogging::server(
             restart => true,
             require => User['eventlogging'],
         }
+
+        file { '/sbin/eventloggingctl':
+            source => 'puppet:///modules/eventlogging/eventloggingctl.systemd',
+            mode   => '0755',
+        }
     } else {
         # Manage EventLogging services with 'eventloggingctl'.
         # Usage: eventloggingctl {start|stop|restart|status|tail}
