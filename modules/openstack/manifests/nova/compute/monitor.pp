@@ -76,7 +76,7 @@ class openstack::nova::compute::monitor(
         nrpe::monitor_service { 'ensure_running_kvm_instances':
             ensure        => $ensure,
             description   => 'ensure kvm processes are running',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:75 --ereg-argument-array /usr/bin/kvm',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:95 --ereg-argument-array /usr/bin/kvm',
             retries       => 2,
             contact_group => $contact_groups,
         }
