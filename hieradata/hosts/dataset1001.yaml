@@ -1,9 +1,9 @@
-profile::dumps::cleanup::isreplica: true
-profile::dumps::cleanup::labscopy: false
-profile::dumps::basedatadir: '/data/xmldatadumps'
-profile::dumps::miscdumpsdir: '/data/xmldatadumps/public/other'
-profile::dumps::xmldumpspublicdir: '/data/xmldatadumps/public'
-profile::dumps::dumpstempdir: '/data/xmldatadumps/temp'
+profile::dumps::distribution::datasets::cleanup::isreplica: true
+profile::dumps::distribution::datasets::cleanup::isreplica: false
+profile::dumps::distribution::basedatadir: '/data/xmldatadumps'
+profile::dumps::distribution::miscdumpsdir: '/data/xmldatadumps/public/other'
+profile::dumps::distribution::xmldumpspublicdir: '/data/xmldatadumps/public'
+profile::dumps::distribution::dumpstempdir: '/data/xmldatadumps/temp'
 
 profile::dumps::nfs::clients_wanted: 'public'
 
