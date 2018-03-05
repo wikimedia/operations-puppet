@@ -18,12 +18,18 @@ service keystone restart
 
 # Shenangians with "domain" handling in Liberty vs Mitaka
 openstack domain create --description "Default Domain" Default
-
-#  There is some disagreemnt between outcomes for 'keystone boostrap' vs 
-# manual domain creation vs upgrade domain creation.  <=Liberty set the ID
-# for a domain to 'default' literal where Mitaka wants to set a proper UUID
-# except this causes chaos for us at the moment and is not consistent
-# with any existing environments.
+#
+# TIL the doc guide does not follow the newly minted 'keystone-manage bootstrap'
+# mechanism, which has a different outcome(s) itself from upgrading an existing 
+# Liberty deploy.
+#
+# https://docs.openstack.org/mitaka/install-guide-ubuntu/keystone-services.html
+# https://docs.openstack.org/releasenotes/keystone/mitaka.html
+#
+#  <=Liberty set the ID for a domain to 'default' literal where Mitaka
+# wants to set a proper UUID except this causes chaos for us at the moment
+# and is not consistent with any existing environments.
+#
 #  This is manually "fixing" this to match the Liberty=>Mitaka upgrade path case
 ## https://ask.openstack.org/en/question/95889/domainnotfound-could-not-find-domain-default/
 ## https://bugs.launchpad.net/openstack-manuals/+bug/1642472
