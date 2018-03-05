@@ -5,7 +5,6 @@ class role::eventlogging::analytics {
     include ::standard
     include ::base::firewall
     interface::add_ip6_mapped { 'main': }
-    include ::role::eventlogging::analytics::zeromq
     include ::role::eventlogging::analytics::processor
     include ::role::eventlogging::analytics::mysql
     include ::role::eventlogging::analytics::files

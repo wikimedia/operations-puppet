@@ -21,9 +21,6 @@ mediawiki_memcached_servers:
   - '10.64.48.157:11211:1 "shard17"'
   - '10.64.48.158:11211:1 "shard18"'
 
-# Eventlogging
-eventlogging_host: 10.64.32.167 # eventlog1001
-
 # Kafka Topic eventlogging-client-side with
 # raw eventlogging events has 12 partitions
 # in production.  Run 12 processors.
