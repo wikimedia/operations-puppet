@@ -11,7 +11,6 @@ class profile::tcpircbot(
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
             '::ffff:127.0.0.1/128',             # loopback
-            '::ffff:10.64.32.167/128',          # logging: eventlog1001
             '::ffff:10.64.0.196/128',           # deployment eqiad v4: tin
             '2620:0:861:101:10:64:0:196/128',   # deployment eqiad v6: tin
             '::ffff:10.192.32.22/128',          # deployment codfw v4: naos
@@ -38,7 +37,6 @@ class profile::tcpircbot(
     }
 
     $allowed_hosts = [
-        'eventlog1001.eqiad.wmnet',     # logging eqiad
         'tin.eqiad.wmnet',              # deployment eqiad
         'naos.codfw.wmnet',             # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
