@@ -1,4 +1,4 @@
-class profile::dumps::web::cleanup(
+class profile::dumps::generation::server::cleanup(
     $isreplica = hiera('profile::dumps::cleanup::isreplica'),
     $labscopy = hiera('profile::dumps::cleanup::labscopy'),
     $miscdumpsdir = hiera('profile::dumps::miscdumpsdir'),

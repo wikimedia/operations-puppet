@@ -1,4 +1,4 @@
-class profile::dumps::web::dumpstatusfiles_sync(
+class profile::dumps::distribution::datasets::dumpstatusfiles_sync(
     $rsyncer_settings = hiera('profile::dumps::rsyncer'),
 ) {
     $mntpoint = $rsyncer_settings['dumps_mntpoint']
