@@ -27,7 +27,7 @@ class role::labs::nfs::misc(
     # not be carried over to the new labstore6,7
     # servers, they have cleanups already added
     # in the role
-    include ::profile::dumps::web::cleanup
+    include ::profile::dumps::distribution::datasets::cleanup
     include ::profile::dumps::web::dumpsuser
 
     rsync::server::module { 'pagecounts':
