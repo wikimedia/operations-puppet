@@ -1,0 +1,78 @@
+[DEFAULT]
+my_ip = <%= @ipaddress %>
+pybasedir = /usr/lib/python2.7/dist-packages
+state_path = /var/lib/nova
+enabled_apis = osapi_compute,metadata
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+network_api_class = nova.network.neutronv2.api.API
+default_floating_pool = ext-nat
+linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
+security_group_api = neutron
+[api_database]
+[barbican]
+[cells]
+[cinder]
+[conductor]
+[cors]
+[cors.subdomain]
+[database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+[ephemeral_storage_encryption]
+[glance]
+[guestfs]
+[hyperv]
+[image_file_url]
+[ironic]
+[keymgr]
+[keystone_authtoken]
+auth_host = 127.0.0.1
+auth_protocol = http
+admin_user = admin
+admin_tenant_name = admin
+[libvirt]
+[matchmaker_redis]
+[metrics]
+
+[neutron]
+service_metadata_proxy = true
+metadata_proxy_shared_secret =
+url = http://127.0.0.1:9696
+auth_url = http://127.0.0.1:5000/v3
+auth_type = v3password
+password =
+project_domain_name = default
+project_name = admin
+tenant_name = admin
+user_domain_id = default
+user_domain_name = default
+username = admin
+
+[osapi_v21]
+[oslo_concurrency]
+lock_path = /var/lock/nova
+
+[oslo_messaging_amqp]
+[oslo_messaging_notifications]
+
+[oslo_messaging_rabbit]
+rabbit_host = localhost
+rabbit_userid = guest
+rabbit_password =
+
+[oslo_middleware]
+[oslo_policy]
+[rdp]
+[serial_console]
+
+[spice]
+server_listen = 0.0.0.0
+server_proxyclient_address = $my_ip
+enabled = true
+
+[ssl]
+[trusted_computing]
+[upgrade_levels]
+[vmware]
+[vnc]
+[workarounds]
+[xenserver]
