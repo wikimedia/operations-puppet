@@ -21,12 +21,7 @@ class role::analytics_cluster::client {
     require ::cdh::sqoop
     require ::cdh::mahout
     require ::cdh::spark
-
-
-
-    # Mount HDFS via Fuse on Analytics client nodes.
-    # This will mount HDFS at /mnt/hdfs read only.
-    class { '::cdh::hadoop::mount': }
+    require ::profile::hadoop::hdfs::mountpoint
 
     # These packages are useful, install them.
     require_package(
