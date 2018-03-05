@@ -23,6 +23,7 @@ class profile::thumbor(
 
     class { '::thumbor::swift':
         swift_key                       => $swift_account_keys['mw_thumbor'],
+        swift_private_key               => $swift_account_keys['mw_thumbor-private'],
         swift_sharded_containers        => $swift_sharded_containers,
         swift_private_containers        => $swift_private_containers,
         thumbor_mediawiki_shared_secret => $thumbor_mediawiki_shared_secret,
