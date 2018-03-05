@@ -28,4 +28,17 @@ class openstack::nova::common::base(
         owner  => 'root',
         group  => 'root',
     }
+
+    if os_version('debian == jessie') {
+
+        file {'/etc/nova/original':
+            ensure  => 'directory',
+            owner   => 'nova',
+            group   => 'nova',
+            mode    => '0755',
+            recurse => true,
+            source  => "puppet:///modules/openstack/${version}/nova/original",
+            require => Package['nova-common'],
+        }
+    }
 }
