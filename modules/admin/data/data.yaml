@@ -10,7 +10,7 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda, shrlak]
+              yuvipanda, shrlak, joewalsh]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport]
@@ -132,7 +132,7 @@ groups:
               daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
-              nikerabbit, dstrine, joewalsh, mpany, jsamra,
+              nikerabbit, dstrine, mpany, jsamra,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
               fdans, mlitn, niharika29, goransm,
               pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan, groovier]
@@ -204,7 +204,7 @@ groups:
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               madhuvishy, tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
-              joewalsh, marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
+              marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans, shiladsen, esanders, risler]
   statistics-users:
     gid: 726
@@ -257,7 +257,7 @@ groups:
               bmansurov, atgomez, amire80, kartik, pcoombe, foks, mpany, jsamra,
               jdlrobson, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro,
               flemmerich, mkroetzsch, filippo, pmiazga, faidon,
-              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal, joewalsh,
+              piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk, cy534]
   analytics-admins:
     gid: 732
@@ -2175,14 +2175,12 @@ users:
     uid: 14124
     email: jsutherland@wikimedia.org
   joewalsh:
-    ensure: present
+    ensure: absent
     gid: 500
     name: joewalsh
     realname: Joe Walsh
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC62lqIiUm85t0/H/LtVU248hyLrJLLldWw1CzS2N/PWqhoT/JtvnOS4orC/oln1A73jHp6ArSRVwIQDPdBUoNdQTQgiO5b9ScX+CsRLMGqwE2nMydXHy17xbaDMVwJ7ga+xUaQH8ZgURY3d92bfpiZq1xy4LOM83UuL08kKqgK8wGi/He3w3GLWQrpsBS/Ir6EPtqiOLgg1X8/D4tuofZcntuYdCyXcd3NXOuOiWLgpQterErt6UKtIo/ZcEcjQuyxW6lHwxalcy6nTeJ2hedH75eHVFDnbj3ndhi1b2uwfE5rMxbFVi/A2hsGs128P+vR8JGhSexvAzSvCUZ3P7pixK9egMuG4z1jwuFGqHX57r0S2KAGVc8iD7wTMdfLjEN3ONL3DTUdo1vlU3HYI1uUXi1ViPtXa2NSwAJ7qQ0ofU2J0F1u7gC+BxyCps6Eez855KuWH01Yc+BGQ86HiUm0Q/3cbBM1PmolxfKp4HwQ6gfwbAv+AKiIFvcQPbaE46dbpnbVnzOA1S1sU7kvAbQtgpLSi/3HzEfpwRU34/Z6xf93u8uekdfKN69s6KWGQF4JXRdV31X8RAdK3q2Dp9hUWjSwwjdWSHwCI48YQl+EoF48lDgbp+COgWlJ97AkUWYNhnhucyb/Xof2Q7jLIdnGfsgiszKQ8aCjeDd+ErP1fw== joewalsh@wikimedia.org
+    ssh_keys: []
     uid: 14815
-    email: joewalsh@wikimedia.org
   bawolff:
     ensure: present
     gid: 500
