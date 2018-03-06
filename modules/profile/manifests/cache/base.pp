@@ -14,7 +14,7 @@ class profile::cache::base(
     $purge_host_not_upload_re = hiera('profile::cache::base::purge_host_not_upload_re'),
     $storage_parts = hiera('profile::cache::base::purge_host_not_upload_re'),
     $packages_version = hiera('profile::cache::base::packages_version', 'installed'),
-    $varnish_version = hiera('profile::cache::base::varnish_version', 4),
+    $varnish_version = hiera('profile::cache::base::varnish_version', 5),
     $purge_host_regex = hiera('profile::cache::base::purge_host_regex', ''),
     $purge_multicasts = hiera('profile::cache::base::purge_multicasts', ['239.128.0.112']),
     $purge_varnishes = hiera('profile::cache::base::purge_varnishes', ['127.0.0.1:3128', '127.0.0.1:3127']),

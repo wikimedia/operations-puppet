@@ -110,12 +110,8 @@ sub cluster_fe_backend_response {
             && bereq.http.X-CDIS == "miss"
             && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$"
             && std.integer(beresp.http.Content-Length, 1024) >= 1024) {
-		<%- if @varnish_version == 5 -%>
 		// HFM
 		set beresp.ttl = 10m;
-		<%- else -%>
-		set beresp.ttl = 0s;
-		<%- end -%>
 		set beresp.grace = 60s;
 		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
@@ -126,12 +122,7 @@ sub cluster_fe_backend_response {
 	if (std.integer(beresp.http.Content-Length, 0) >= 262144 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		// HFP
 		set beresp.http.X-CDIS = "pass";
-		<%- if @varnish_version == 5 -%>
 		return(pass(beresp.ttl));
-		<%- else -%>
-		set beresp.uncacheable = true;
-		return (deliver);
-		<%- end -%>
 	}
 <% end -%>
 
