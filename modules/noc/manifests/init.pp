@@ -5,20 +5,19 @@ class noc {
     # NOC needs a working mediawiki installation at the moment
     include ::mediawiki
 
-    include ::apache
+    class { '::httpd':
+        modules => ['rewrite', 'headers'],
+    }
 
     apache::def { 'HHVM': }
 
     include ::mediawiki::web::php_engine
 
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
-    apache::site { 'noc.wikimedia.org':
+    httpd::site { 'noc.wikimedia.org':
         content => template('noc/noc.wikimedia.org.erb'),
     }
 
-    apache::site { 'dbtree.wikimedia.org':
+    httpd::site { 'dbtree.wikimedia.org':
         content => template('noc/dbtree.wikimedia.org.erb'),
     }
 
