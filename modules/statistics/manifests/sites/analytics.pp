@@ -56,11 +56,7 @@ class statistics::sites::analytics {
         ],
     }
 
-    include ::apache::mod::headers
-    # mod rewrite is used to redirect the deprecated datasets.wikimedia.org to
-    # analytics.wikimedia.org/datasets/archive
-    include ::apache::mod::rewrite
-    apache::site { 'analytics':
+    httpd::site { 'analytics':
         content => template('statistics/analytics.wikimedia.org.erb'),
         require => File[$document_root],
     }

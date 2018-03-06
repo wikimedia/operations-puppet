@@ -4,6 +4,7 @@ class role::analytics_cluster::webserver {
         description => 'Webserver hosting the main Analytics websites'
     }
 
+    include ::profile::analytics::httpd
     include ::profile::analytics::cluster::gitconfig
 
     include ::profile::statistics::web

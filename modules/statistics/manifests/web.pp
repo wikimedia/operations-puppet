@@ -34,12 +34,6 @@ class statistics::web {
         group  => 'root',
     }
 
-    include ::apache::mod::rewrite
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_http
-    include ::apache::mod::headers
-    include ::apache::mod::cgi
-
     # Allow rsyncing from statistics::servers
     # NOTE: This does not set up any rsync modules; that must be done
     # in other classes.

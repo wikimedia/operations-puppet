@@ -42,7 +42,7 @@ class statistics::sites::stats {
         auto_ferm   => true,
     }
 
-    apache::site { 'stats.wikimedia.org':
+    httpd::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),
     }
 
