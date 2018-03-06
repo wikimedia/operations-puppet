@@ -2397,6 +2397,11 @@ host dns5001 {
     fixed-address dns5001.wikimedia.org;
 }
 
+host dns5002 {
+    hardware ethernet F4:E9:D4:D0:78:70;
+    fixed-address dns5002.wikimedia.org;
+}
+
 host dumpsdata1001 {
     hardware ethernet 18:66:DA:FA:5E:A0;
     fixed-address dumpsdata1001.eqiad.wmnet;
