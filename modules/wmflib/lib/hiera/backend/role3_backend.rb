@@ -190,7 +190,7 @@ class Hiera
             end
           end
         end
-        if resultset.nil? || resultset.empty?
+        if resultset.nil?
           Hiera.debug("No answer for #{key}!")
           throw(:no_such_key)
         end
