@@ -1,9 +1,9 @@
 :backends:
   - nuyaml3
   - role3
-:role3:
+:role:
   :datadir: /etc/puppet/hieradata
-:nuyaml3:
+:nuyaml:
   :datadir: /etc/puppet/hieradata
   :expand_path:
     - common
