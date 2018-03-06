@@ -35,9 +35,8 @@ class dnsrecursor::labsaliaser(
     cron { 'labs-ip-alias-dump':
         ensure  => 'present',
         user    => 'root',
-        command => '/usr/local/bin/labs-ip-alias-dump.py --check-changes-only || /usr/local/bin/labs-ip-alias-dump.py',
+        command => 'if ! `/usr/local/bin/labs-ip-alias-dump.py --check-changes-only`; then /usr/local/bin/labs-ip-alias-dump.py; /usr/bin/rec_control reload-lua-script; fi',
         minute  => 30,
-        notify  => Service['pdns-recursor'],
         require => File[
             '/usr/local/bin/labs-ip-alias-dump.py',
             '/etc/labs-dns-alias.yaml'
