@@ -59,7 +59,7 @@ set -x
 /usr/bin/hdfs dfs -put  /usr/lib/spark2/python/lib/py* $spark2_sharelib_dir/
 
 # Copy the oozie-sharelib-spark jar file from the spark 1 oozie sharelib
-/usr/bin/hdfs dfs -put /usr/lib/spark/assembly/lib/spark-assembly*.jar $spark2_sharelib_dir/
+/usr/bin/hdfs dfs -put /usr/lib/oozie/oozie-sharelib-yarn/lib/spark/oozie-sharelib-spark*.jar $spark2_sharelib_dir/
 
 # Copy hive-site.xml (assumes this exists in /user/hive)
 /usr/bin/hdfs dfs -test -e /user/hive/hive-site.xml && /usr/bin/hdfs dfs -cp /user/hive/hive-site.xml $spark2_sharelib_dir/ || echo "Warning: could not install hive-site.xml into ${spark2_sharelib_dir}.  You might have to do this manually."
