@@ -10,6 +10,8 @@ admin::groups:
   - mediawiki-testers
 hhvm::extra::fcgi:
   hhvm:
+    # https://phabricator.wikimedia.org/T180183
+    auto_prepend_file: /srv/mediawiki/wmf-config/PhpAutoPrepend.php
     mysql:
       connect_timeout: 3000
     stats:
