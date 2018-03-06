@@ -7,7 +7,6 @@
 class profile::kafkatee::webrequest::base(
     $output_config = hiera('profile::kafkatee::webrequest::base::output_config', true),
 ) {
-    $kafka_analytics_config = kafka_config('analytics')
     $kafka_config = kafka_config('jumbo-eqiad')
 
     # Include all webrequest topics as inputs.
@@ -38,22 +37,6 @@ class profile::kafkatee::webrequest::base(
             'encoding' => 'json',
         },
         'offset'     => 'end',
-    }
-
-    # Install kafkatee configured to consume from
-    # the Analytics Kafka cluster.  The webrequest logs are
-    # in json, so we output them in the format they are received.
-    # TODO: This instance will be removed once all webrequest topics are in jumbo.
-    # See: https://phabricator.wikimedia.org/T185136
-    kafkatee::instance { 'webrequest-analytics':
-        kafka_brokers   => $kafka_analytics_config['brokers']['array'],
-        output_encoding => 'json',
-        inputs          => [
-            $input_webrequest_misc,
-            $input_webrequest_text,
-            $input_webrequest_upload,
-        ],
-        output_config   => $output_config,
     }
 
     # Install kafkatee configured to consume from
