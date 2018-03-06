@@ -4,9 +4,13 @@
 # running on the Hadoop cluster that might have failed. This profile does not
 # take care of alarming, that needs to be done separately.
 #
-
+# == Parameters
+# $kafka_cluster_name - This should match the value
+#                       profile::cache::kafka::statsv::kafka_cluster_name in
+#                       role/common/cache/text.yaml.
+#
 class profile::analytics::refinery::job::streams_check(
-    $kafka_cluster_name = hiera('profile::analytics::refinery:job::streams_check', 'analytics')
+    $kafka_cluster_name = hiera('profile::analytics::refinery:job::streams_check::kafka_cluster_name', 'jumbo-eqiad')
 ) {
     require ::profile::analytics::refinery
 
