@@ -23,16 +23,12 @@
 class statistics::sites::pivot {
     require ::statistics::web
 
-    include ::apache::mod::proxy_http
-    include ::apache::mod::proxy
-    include ::apache::mod::auth_basic
-    include ::apache::mod::authnz_ldap
     include ::passwords::ldap::production
 
     $proxypass = $passwords::ldap::production::proxypass
 
     # Set up the VirtualHost
-    apache::site { 'pivot.wikimedia.org':
+    httpd::site { 'pivot.wikimedia.org':
         content => template('statistics/pivot.wikimedia.org.erb'),
     }
 

@@ -8,11 +8,8 @@
 class statistics::sites::hue {
     require ::statistics::web
 
-    include ::apache::mod::proxy_http
-    include ::apache::mod::proxy
-
     # Set up the VirtualHost
-    apache::site { 'hue.wikimedia.org':
+    httpd::site { 'hue.wikimedia.org':
         content => template('statistics/hue.wikimedia.org.erb'),
     }
 
