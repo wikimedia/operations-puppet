@@ -212,12 +212,6 @@ sub text_common_backend_response {
 		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
 		// HFP
-		<%- if @varnish_version == 5 -%>
 		return(pass(607s));
-		<%- else -%>
-		set beresp.ttl = 607s;
-		set beresp.uncacheable = true;
-		return (deliver);
-		<%- end -%>
 	}
 }

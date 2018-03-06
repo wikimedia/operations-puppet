@@ -244,12 +244,8 @@ sub cluster_fe_backend_response {
 	if (beresp.status == 200
             && bereq.http.X-CDIS == "miss"
             && beresp.http.X-Cache-Int !~ " hit/([4-9]|[0-9]{2,})$") {
-		<%- if @varnish_version == 5 -%>
 		// HFM
 		set beresp.ttl = 10m;
-		<%- else -%>
-		set beresp.ttl = 0s;
-		<%- end -%>
 		set beresp.grace = 60s;
 		set beresp.keep = 0s;
 		set beresp.uncacheable = true;
