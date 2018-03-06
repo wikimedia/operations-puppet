@@ -54,6 +54,11 @@ node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
+#new hadoop nodes that will be pushed into service off T188294
+node /analytics107[0-7]).eqiad.wmnet/ {
+    role(spare)
+}
+
 # Analytics Query Service
 node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
