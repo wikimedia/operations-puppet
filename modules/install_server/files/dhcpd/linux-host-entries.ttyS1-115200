@@ -336,57 +336,41 @@ host analytics1069 {
 host analytics1070 {
     hardware ethernet 80:18:44:E5:5B:74;
     fixed-address analytics1070.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1071 {
     hardware ethernet 80:18:44:E5:61:54;
     fixed-address analytics1071.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1072 {
     hardware ethernet 80:18:44:E5:6A:88;
     fixed-address analytics1072.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1073 {
     hardware ethernet 80:18:44:E5:79:58;
     fixed-address analytics1073.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1074 {
     hardware ethernet 80:18:44:E5:5F:B8;
     fixed-address analytics1074.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1075 {
     hardware ethernet 80:18:44:E5:5E:58;
     fixed-address analytics1075.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1076 {
-    hardware ethernet 80:18:44:E5:69:74;
+    hardware ethernet F4:E9:D4:D5:21:60;
     fixed-address analytics1076.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1077 {
-    hardware ethernet 80:18:44:E5:97:1C;
+    hardware ethernet F4:E9:D4:D5:1D:40;
     fixed-address analytics1077.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host aqs1004 {
