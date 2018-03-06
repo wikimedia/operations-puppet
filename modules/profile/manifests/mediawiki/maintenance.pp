@@ -1,6 +1,11 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance {
 
+    # httpd for noc.wikimedia.org
+    class { '::httpd':
+        modules => ['rewrite', 'headers'],
+    }
+
     # Deployment
     include ::scap::scripts
 
