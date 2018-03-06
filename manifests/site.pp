@@ -630,6 +630,7 @@ node 'db1009.eqiad.wmnet' {
 node 'db1073.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm5',
+        master => true,
     }
 }
 
