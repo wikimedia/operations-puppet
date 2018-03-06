@@ -1,0 +1,26 @@
+:backends:
+  - nuyaml3
+  - role3
+:role3:
+  :datadir: /etc/puppet/hieradata
+:nuyaml3:
+  :datadir: /etc/puppet/hieradata
+  :expand_path:
+    - common
+    - "%{::site}"
+:private:
+  :datadir: /etc/puppet/private/hieradata
+:hierarchy:
+  - "hosts/%{::hostname}"
+  - "regex/%{::fqdn}"
+  - "%{::site}"
+  - "private/hosts/%{::hostname}" # Currently only used for labtest hosts
+  - "private/%{::site}"
+  - "common"
+  - "private/common"
+
+:role_hierarchy:
+  - "%{::site}"
+  - "common"
+  - "private/%{::site}"
+  - "private/common"
