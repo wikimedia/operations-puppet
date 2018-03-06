@@ -2868,7 +2868,7 @@ ldap_only_users:
     ensure: present
     realname: Siddarth Parmar
     email: sparmar@wikimedia.org
-    expiry_date: 2018-03-10
+    expiry_date: 2018-03-16
     expiry_contact: rstallman@wikimedia.org
   spatton:
     ensure: present
