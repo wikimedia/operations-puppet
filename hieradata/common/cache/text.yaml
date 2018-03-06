@@ -37,6 +37,6 @@ cache::text::nodes:
     - 'cp5007.eqsin.wmnet'
     - 'cp5008.eqsin.wmnet'
     - 'cp5009.eqsin.wmnet'
-#    - 'cp5010.eqsin.wmnet' # borked for now
+    - 'cp5010.eqsin.wmnet'
     - 'cp5011.eqsin.wmnet'
     - 'cp5012.eqsin.wmnet'
