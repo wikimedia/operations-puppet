@@ -71,4 +71,8 @@ class profile::reportupdater::jobs::mysql {
         repository => 'reportupdater-queries',
         output_dir => 'metrics/page-creation',
     }
+    reportupdater::job { 'pingback':
+        repository => 'reportupdater-queries',
+        output_dir => 'metrics/pingback',
+    }
 }
