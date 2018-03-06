@@ -9,18 +9,12 @@
 class statistics::sites::yarn {
     require ::statistics::web
 
-    include ::apache::mod::proxy_http
-    include ::apache::mod::proxy
-    include ::apache::mod::proxy_html
-    include ::apache::mod::xml2enc
-    include ::apache::mod::auth_basic
-    include ::apache::mod::authnz_ldap
     include ::passwords::ldap::production
 
     $proxypass = $passwords::ldap::production::proxypass
 
     # Set up the VirtualHost
-    apache::site { 'yarn.wikimedia.org':
+    httpd::site { 'yarn.wikimedia.org':
         content => template('statistics/yarn.wikimedia.org.erb'),
     }
 

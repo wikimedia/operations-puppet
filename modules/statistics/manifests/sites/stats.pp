@@ -51,7 +51,7 @@ class statistics::sites::stats (
         mode   => '0750',
     }
 
-    apache::site { 'stats.wikimedia.org':
+    httpd::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),
     }
 

@@ -5,10 +5,8 @@
 class statistics::sites::metrics {
     require ::statistics::web
 
-    include ::apache::mod::alias
-
     # Set up the VirtualHost
-    apache::site { 'metrics.wikimedia.org':
+    httpd::site { 'metrics.wikimedia.org':
         content => template('statistics/metrics.wikimedia.org.erb'),
     }
 
