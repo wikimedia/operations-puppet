@@ -28,12 +28,6 @@ class profile::puppetmaster::backend(
         base_config => $base_config,
     }
 
-    if os_version('debian >= stretch') {
-      $hiera_config = "${::realm}_hiera3"
-    } else {
-      $hiera_config = $::realm
-    }
-
     class { '::puppetmaster':
         server_type          => 'backend',
         config               => $::profile::puppetmaster::common::config,
@@ -42,7 +36,6 @@ class profile::puppetmaster::backend(
         allow_from           => $allow_from,
         extra_auth_rules     => $extra_auth_rules,
         puppet_major_version => $puppet_major_version,
-        hiera_config         => $hiera_config,
     }
 
     $puppetmaster_frontend_ferm = join(keys($puppetmasters), ' ')
