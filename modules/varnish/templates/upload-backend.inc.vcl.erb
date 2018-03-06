@@ -68,12 +68,7 @@ sub cluster_be_backend_response {
 	// hit-for-pass objects < 1024B size (T145661)
 	if (std.integer(beresp.http.Content-Length, 1024) < 1024 && beresp.status == 200) {
 		set beresp.http.X-CDIS = "pass";
-		<%- if @varnish_version == 5 -%>
 		return(pass(beresp.ttl));
-		<%- else -%>
-		set beresp.uncacheable = true;
-		return (deliver);
-		<%- end -%>
 	}
 
 	call pick_stevedore;
@@ -95,11 +90,7 @@ sub cluster_be_backend_response {
 
 	if (std.integer(beresp.http.Content-Length, 0) >= 1024 * 16 * 16 * 16 * 16 * 16) { // 1GB
 		// HFP
-		<%- if @varnish_version == 5 -%>
 		return(pass(beresp.ttl));
-		<%- else -%>
-		set beresp.uncacheable = true;
-		<%- end -%>
 	}
 	return (deliver);
 }

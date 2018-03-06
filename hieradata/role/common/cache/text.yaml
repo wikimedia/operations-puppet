@@ -113,5 +113,4 @@ profile::cache::kafka::webrequest::kafka_cluster_name: analytics
 # but statsv will have to send messages over UDP cross-DC to the active statsd instance.
 profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
 
-profile::cache::base::varnish_version: 5
 apt::use_experimental: true

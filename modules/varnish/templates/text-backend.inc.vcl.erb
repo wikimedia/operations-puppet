@@ -68,12 +68,8 @@ sub cluster_be_backend_response {
 		bereq.url !~ "^/wiki/Special:HideBanners") {
 		std.log("Cacheable object with Set-Cookie found. bereq.url: " + bereq.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
-		<%- if @varnish_version == 5 -%>
 		// HFM
 		set beresp.ttl = 10m;
-		<%- else -%>
-		set beresp.ttl = 0s;
-		<%- end -%>
 		set beresp.grace = 0s;
 		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
