@@ -17,4 +17,8 @@ class icinga::monitor::services {
     monitoring::grafana_alert { 'db/eventbus':
         contact_group   => 'team-services',
     }
+
+    monitoring::grafana_alert { 'db/jobqueue-eventbus':
+      contact_group   => 'team-services',
+    }
 }
