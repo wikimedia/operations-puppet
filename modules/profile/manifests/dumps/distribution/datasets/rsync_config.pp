@@ -1,4 +1,4 @@
-class profile::dumps::rsyncer(
+class profile::dumps::distribution::datasets::rsync_config(
     $rsync_clients = hiera('dumps_web_rsync_server_clients'),
     $rsyncer_settings = hiera('profile::dumps::rsyncer'),
     $stats_hosts = hiera('profile::dumps::stats_hosts'),
