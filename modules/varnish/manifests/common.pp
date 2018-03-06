@@ -1,5 +1,5 @@
 class varnish::common(
-    $varnish_version=4,
+    $varnish_version=5,
     $fe_runtime_params=[],
     $be_runtime_params=[],
     $log_slow_request_threshold='60.0',

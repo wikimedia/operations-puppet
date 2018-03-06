@@ -1,4 +1,4 @@
-class varnish::packages($version='installed', $varnish_version=4) {
+class varnish::packages($version='installed', $varnish_version=5) {
     package { [
         'varnish',
         'varnish-dbg',
@@ -7,18 +7,12 @@ class varnish::packages($version='installed', $varnish_version=4) {
         ensure  => $version,
     }
 
-    # Install VMODs on Varnish 4 instances
+    # Install VMODs
     package { [
         'varnish-modules',
         'libvmod-netmapper',
         'libvmod-tbf',
         ]:
         ensure  => 'installed',
-    }
-
-    if ($varnish_version == 4) {
-        package { 'libvmod-vslp':
-            ensure => 'installed',
-        }
     }
 }
