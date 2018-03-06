@@ -184,10 +184,17 @@ class puppetmaster(
         content => template("puppetmaster/${puppetmaster_auth_template}"),
     }
 
+    # Use hiera 3 backend configs on stretch masters (stretch has hiera version 3)
+    if os_version('debian >= stretch') {
+        $hiera_source => "puppet:///modules/puppetmaster/${hiera_config}_hiera3.hiera.yaml",
+    } else {
+        $hiera_source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
+    }
+
     # This is required for the mwyaml hiera backend
     require_package('ruby-httpclient')
     class { '::puppetmaster::hiera':
-        source => "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml",
+        source => $hiera_source,
     }
 
     # Small utility to generate ECDSA certs and submit the CSR to the puppet master
