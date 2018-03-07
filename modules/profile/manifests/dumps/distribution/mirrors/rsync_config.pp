@@ -6,9 +6,12 @@ class profile::dumps::distribution::mirrors::rsync_config(
 ) {
     $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
 
-    class {'::dumps::rsync::public':
-        hosts_allow     => $hosts_allow,
-        xmldumpsdir     => $xmldumpsdir,
-        miscdatasetsdir => $miscdatasetsdir,
+    file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/dumps/distribution/mirrors/rsyncd.conf.dumps_to_public.erb'),
+        notify  => Exec['update-rsyncd.conf'],
     }
 }
