@@ -10,6 +10,7 @@ class role::dumps::web::xmldumps_active {
     include ::profile::dumps::distribution::datasets::rsync_config
     include ::profile::dumps::distribution::mirrors::rsync_config
     include ::profile::dumps::fetcher
+    include ::profile::dumps::distribution::datasets::dumpstatusfiles_sync
 
     system::role { 'role::dumps::web::xmldumps': description => 'active web, nfs and rsync server of xml/sql dumps' }
 }
