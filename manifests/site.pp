@@ -1589,6 +1589,10 @@ node 'mw1338.eqiad.wmnet' {
 ## DATACENTER: CODFW
 
 # Debug servers
+# mwdebug2001 is in row A, mwdebug2002 is in row B
+node /^mwdebug200[12]\.codfw\.wmnet$/ {
+  role(mediawiki::canary_appserver)
+}
 
 # mw2017/mw2099 are codfw test appservers
 node /^mw20(17|99)\.codfw\.wmnet$/ {

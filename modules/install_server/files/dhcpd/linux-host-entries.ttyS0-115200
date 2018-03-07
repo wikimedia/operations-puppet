@@ -307,6 +307,20 @@ host mwdebug1002 {
     filename "lpxelinux.0";
 }
 
+host mwdebug2001 {
+    hardware ethernet aa:00:00:a4:ba:ce;
+    fixed-address mwdebug2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
+host mwdebug2002 {
+    hardware ethernet aa:00:00:ff:45:1e;
+    fixed-address mwdebug2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
+    filename "lpxelinux.0";
+}
+
 host mx1001 {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
@@ -519,5 +533,3 @@ host webperf2001 {
     hardware ethernet aa:00:00:02:8b:11;
     fixed-address webperf2001.codfw.wmnet;
 }
-
-
