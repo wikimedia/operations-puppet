@@ -1594,13 +1594,15 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
   role(mediawiki::canary_appserver)
 }
 
-# mw2017/mw2099 are codfw test appservers
-node /^mw20(17|99)\.codfw\.wmnet$/ {
-    role(mediawiki::canary_appserver)
-}
 
 # Hosts to decommission (if any)
 # TODO: mw2099-2134 should be decommissioned as soon as we have the new systems
+
+node /^mw20(17|99)\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
+
 
 # Appservers
 
