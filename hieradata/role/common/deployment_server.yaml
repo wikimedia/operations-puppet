@@ -179,3 +179,15 @@ scap::sources:
     repository: analytics/statsv
   "docker-pkg/deploy":
     repository: operations/docker-images/docker-pkg/deploy
+
+profile::kubernetes::deployment_server::services:
+  admin:
+    username: client-infrastructure
+    token: DUMMY
+    group: root
+    mode: 0400
+  mathoid:
+    username: mathoid
+    token: DUMMY
+    group: wikidev
+    mode: 0640
