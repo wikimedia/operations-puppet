@@ -179,3 +179,35 @@ scap::sources:
     repository: analytics/statsv
   "docker-pkg/deploy":
     repository: operations/docker-images/docker-pkg/deploy
+
+profile::kubernetes::deployment_server::configs:
+  /etc/kubernetes/admin-eqiad.config:
+    master_host: kubemaster.svc.eqiad.wmnet
+    username: client-infrastructure
+    token: DUMMY
+  /etc/kubernetes/admin-codfw.config:
+    master_host: kubemaster.svc.codfw.wmnet
+    username: client-infrastructure
+    token: DUMMY
+  /etc/kubernetes/admin-staging.config:
+    master_host: neon.eqiad.wmnet
+    username: client-infrastructure
+    token: DUMMY
+  /etc/kubernetes/mathoid-eqiad.config:
+    master_host: kubemaster.svc.eqiad.wmnet
+    username: mathoid
+    token: DUMMY
+    group: wikidev
+    mode: 640
+  /etc/kubernetes/mathoid-codfw.config:
+    master_host: kubemaster.svc.codfw.wmnet
+    username: mathoid
+    token: DUMMY
+    group: wikidev
+    mode: 640
+  /etc/kubernetes/mathoid-staging.config:
+    master_host: neon.eqiad.wmnet
+    username: mathoid
+    token: DUMMY
+    group: wikidev
+    mode: 640
