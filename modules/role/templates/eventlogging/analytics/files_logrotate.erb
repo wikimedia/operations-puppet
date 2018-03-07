@@ -2,7 +2,7 @@
        daily
        olddir <%= @out_dir %>/archive
        notifempty
-       maxage 30
+       maxage <%= @logs_max_age %>
        rotate 1000
        dateext
        compress
