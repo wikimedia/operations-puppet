@@ -12,6 +12,7 @@ class profile::wdqs (
     $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates'),
     $cluster_names = hiera('profile::wdqs::cluster_names'),
     $rc_options = hiera('profile::wdqs::rc_updater_options'),
+    $enable_ldf = hiera('profile::wdqs::enable_ldf'),
     $prometheus_nodes = hiera('prometheus_nodes'),
     $contact_groups = hiera('contactgroups', 'admins'),
 ) {
@@ -67,6 +68,7 @@ class profile::wdqs (
     # Service Web proxy
     class { '::wdqs::gui':
         logstash_host => $logstash_host,
+        enable_ldf    => $enable_ldf,
     }
 
     # Firewall
