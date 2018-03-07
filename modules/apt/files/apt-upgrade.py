@@ -236,7 +236,7 @@ def main():
         logging_format = "{}: %(message)s".format(socket.gethostname())
 
     logging.basicConfig(format=logging_format, level=logging.INFO, stream=sys.stdout)
-
+    os.environ['DEBIAN_FRONTEND'] = "noninteractive"
     cache = apt.cache.FilteredCache()
 
     if not args.u:
