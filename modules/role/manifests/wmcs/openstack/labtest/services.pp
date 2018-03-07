@@ -7,5 +7,4 @@ class role::wmcs::openstack::labtest::services {
     include ::profile::openstack::labtest::pdns::auth::service
     include ::profile::openstack::labtest::pdns::recursor::service
     include ::profile::openstack::labtest::designate::service
-    include ::profile::openstack::labtest::pdns::dns_floating_ip_updater
 }
