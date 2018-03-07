@@ -28,7 +28,7 @@ striker::uwsgi::config:
     HOST: m5-master.eqiad.wmnet
     PORT: 3306
   cache:
-    LOCATION: 127.0.0.1:11000
+    LOCATION: 127.0.0.1:11212
   xff:
     USE_XFF_HEADER: true
     # CIDR not supported, but substring/prefix match is
