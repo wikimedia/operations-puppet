@@ -1,7 +1,7 @@
 # filtertags: labs-project-bastion labs-project-mwoffliner
 class role::labs::bastion {
     system::role { 'labs::bastion':
-        description => 'Labs bastion host (with mosh enabled)',
+        description => 'Cloud VPS bastion host (with mosh enabled)',
     }
 
     file { '/etc/ssh/sshd_banner':
