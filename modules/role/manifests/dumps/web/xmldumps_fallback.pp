@@ -6,6 +6,7 @@ class role::dumps::web::xmldumps_fallback {
     include ::profile::base::firewall
     include ::profile::dumps::web::xmldumps_common
     include ::profile::dumps::rsyncer_peer
+    include ::profile::dumps::generation::server::dumpstatusfiles_sync
 
     system::role { 'role::dumps::web::xmldumps': description => 'fallback web, nfs and rsync server of xml/sql dumps' }
 }
