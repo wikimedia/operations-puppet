@@ -5,9 +5,7 @@
 # kafka as a middleman.
 #
 class profile::mjolnir::kafka_daemon(
-    # This is the analytics kafka cluster. For historical reasons
-    # it is named just 'eqiad'.
-    $kafka_config = kafka_config('eqiad'),
+    $kafka_config = kafka_config('jumbo-eqiad'),
 ) {
     class { 'mjolnir': }
 
