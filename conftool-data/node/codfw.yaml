@@ -163,6 +163,8 @@ codfw:
     mw2152.codfw.wmnet: [apache2]
     mw2246.codfw.wmnet: [apache2]
   testserver:
+    mwdebug2001.codfw.wmnet: [apache2]
+    mwdebug2002.codfw.wmnet: [apache2]
     mw2017.codfw.wmnet: [apache2]
     mw2099.codfw.wmnet: [apache2]
   parsoid:
