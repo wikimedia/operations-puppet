@@ -32,12 +32,15 @@ scap::dsh::groups:
       - {'cluster': 'videoscaler', 'service': 'apache2'}
       - {'cluster': 'jobrunner', 'service': 'apache2'}
       - {'cluster': 'testserver', 'service': 'apache2'}
+      - {'cluster': 'wikitech', 'service': 'apache2'}
     hosts:
       - tin.eqiad.wmnet
       - naos.codfw.wmnet
       - terbium.eqiad.wmnet
       - wasat.codfw.wmnet
       - silver.wikimedia.org
+      - labweb1001.wikimedia.org
+      - labweb1002.wikimedia.org
       - labtestweb2001.wikimedia.org
       - snapshot1001.eqiad.wmnet
       - snapshot1005.eqiad.wmnet
