@@ -1,67 +1,90 @@
 #!/usr/bin/python
+#
+# Copyright (c) 2017 Wikimedia Foundation and contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
 import argparse
 import ipaddress
+import logging
 import re
 import yaml
 
-from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
-from keystoneclient.v3 import client as keystone_client
-import novaclient.client as novaclient
-import designateclient.v2.client as designateclient
+import mwopenstackclients
+
+logger = logging.getLogger(__name__)
 
 PROJECT_ZONE_TEMPLATE = "{project}.wmflabs.org."
 FQDN_TEMPLATE = "instance-{server}.{project}.wmflabs.org."
-FQDN_REGEX = FQDN_TEMPLATE.replace('.', '\.').format(server='(.*)', project='{project}')
+FQDN_REGEX = FQDN_TEMPLATE.replace('.', '\.').format(
+    server='(.*)', project='{project}')
 managed_description = "MANAGED BY dns-floating-ip-updater.py IN PUPPET - DO NOT UPDATE OR DELETE"
 
-argparser = argparse.ArgumentParser()
+
+def managed_description_error(action, type, label):
+    logger.warning(
+        "Did not %s %s record for %s due to lack of managed_description!",
+        action,
+        type,
+        label
+    )
+
+
+argparser = argparse.ArgumentParser(
+    description='Update reverse DNS records for floating IPs')
+argparser.add_argument(
+    '-v', '--verbose', action='count', default=0, dest='loglevel',
+    help='Increase logging verbosity')
 argparser.add_argument(
     '--config-file',
     help='Path to config file',
     default='/etc/labs-floating-ips-dns-config.yaml',
     type=argparse.FileType('r')
 )
+argparser.add_argument(
+    '--envfile',
+    help='Path to OpenStack authentication YAML file',
+    default='/etc/novaadmin.yaml',
+)
 args = argparser.parse_args()
+
+logging.basicConfig(
+    level=max(logging.DEBUG, logging.WARNING - (10 * args.loglevel)),
+    format='%(asctime)s %(name)-12s %(levelname)-8s: %(message)s',
+    datefmt='%Y-%m-%dT%H:%M:%SZ'
+)
+logging.captureWarnings(True)
+# Quiet some noisy 3rd-party loggers
+logging.getLogger('requests').setLevel(logging.WARNING)
+logging.getLogger('urllib3').setLevel(logging.WARNING)
+logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
+
 config = yaml.safe_load(args.config_file)
 
-floating_ip_ptr_fqdn_matching_regex = re.compile(config['floating_ip_ptr_fqdn_matching_regex'])
+floating_ip_ptr_fqdn_matching_regex = re.compile(
+    config['floating_ip_ptr_fqdn_matching_regex'])
 
+client = mwopenstackclients.Clients(envfile=args.envfile)
 
-def print_managed_description_error(action, type, label):
-    print("Did not {action} {type} record for {label} due to lack of managed_description!".format(
-        action=action,
-        type=type,
-        label=label
-    ))
-
-
-def getKeystoneSession(config, project):
-    auth = generic.Password(
-        auth_url=config['nova_api_url'],
-        username=config['username'],
-        password=config['password'],
-        user_domain_name='Default',
-        project_domain_name='Default',
-        project_name=project)
-
-    return keystone_session.Session(auth=auth)
-
-
-observer_session = getKeystoneSession(config, config['admin_project_name'])
-keystone_client = keystone_client.Client(
-    session=observer_session, interface='public', connect_retries=5)
-
-keystone_sessions = {}
 project_main_zone_ids = {}
 public_addrs = {}
 existing_As = []
 # Go through every tenant
-for tenant in keystone_client.projects.list():
-    keystone_sessions[tenant.name] = getKeystoneSession(config, tenant.name)
+for tenant in client.keystoneclient().projects.list():
+    if tenant.name == 'admin':
+        continue
 
     server_addresses = {}
-    nova_client = novaclient.Client("2.0", session=keystone_sessions[tenant.name])
+    nova_client = client.novaclient(tenant.name)
     # Go through every instance
     for server in nova_client.servers.list():
         if server.addresses and 'public' in server.addresses:
@@ -71,23 +94,26 @@ for tenant in keystone_client.projects.list():
             ]
             # If the instance has a public IP...
             if public:
-                # Record their public IPs and generate their public name according to FQDN_TEMPLATE
-                # Technically there can be more than one floating (and/or fixed) IP
-                # Although this is never practically the case...
+                # Record their public IPs and generate their public name
+                # according to FQDN_TEMPLATE Technically there can be more
+                # than one floating (and/or fixed) IP Although this is never
+                # practically the case...
                 server_addresses[server.name] = public
-                A_FQDN = FQDN_TEMPLATE.format(server=server.name, project=tenant.name)
+                A_FQDN = FQDN_TEMPLATE.format(
+                    server=server.name, project=tenant.name)
                 public_addrs[A_FQDN, tenant.name] = True, public
 
-    designate_client = designateclient.Client(session=keystone_sessions[tenant.name])
+    dns = mwopenstackclients.DnsManager(
+        client, tenant=tenant.name)
     existing_match_regex = re.compile(FQDN_REGEX.format(project=tenant.name))
     # Now go through every zone the project controls
-    for zone in designate_client.zones.list():
+    for zone in dns.zones():
         # If this is their main zone, record the ID for later use
         if zone['name'] == PROJECT_ZONE_TEMPLATE.format(project=tenant.name):
             project_main_zone_ids[tenant.name] = zone['id']
 
         # Go through every recordset in the zone
-        for recordset in designate_client.recordsets.list(zone['id']):
+        for recordset in dns.recordsets(zone['id']):
             existing_As.append(recordset['name'])
             # No IPv6 support in labs so no AAAAs
             if recordset['type'] != 'A':
@@ -103,60 +129,79 @@ for tenant in keystone_client.projects.list():
                     # ... But instance has a different set of IPs. Update!
                     if recordset['description'] == managed_description:
                         new_records = server_addresses[match.group(1)]
-                        print(
-                            "Updating type A record for " +
-                            recordset['name'] +
-                            " - instance has different IPs - correct: " +
-                            str(new_records) +
-                            " vs. current: " +
-                            str(recordset['records'])
+                        logger.info(
+                            "Updating type A record for %s"
+                            " - instance has different IPs - correct: %s"
+                            " vs. current: %s",
+                            recordset['name'],
+                            str(new_records),
+                            str(recordset['records']),
                         )
                         recordset['records'] = new_records
-                        del recordset['status'], recordset['action'], recordset['links']
-                        designate_client.recordsets.update(
-                            zone['id'],
-                            recordset['id'],
-                            recordset
-                        )
+                        del recordset['status']
+                        del recordset['action']
+                        del recordset['links']
+                        try:
+                            dns.update_recordset(
+                                zone['id'],
+                                recordset['id'],
+                                recordset
+                            )
+                        except Exception:
+                            logger.exception(
+                                'Failed to update %s', recordset['name'])
                     else:
-                        print_managed_description_error('update', 'A', recordset['name'])
+                        managed_description_error(
+                            'update', 'A', recordset['name'])
                 elif match.group(1) not in server_addresses:
                     # ... But instance does not actually exist. Delete!
                     if recordset['description'] == managed_description:
-                        print(
-                            "Deleting type A record for " +
-                            recordset['name'] +
-                            " - instance does not exist"
+                        logger.info(
+                            "Deleting type A record for %s "
+                            " - instance does not exist",
+                            recordset['name']
                         )
-                        designate_client.recordsets.delete(zone['id'], recordset['id'])
+                        try:
+                            dns.delete_recordset(
+                                zone['id'], recordset['id'])
+                        except Exception:
+                            logger.exception(
+                                'Failed to delete %s', recordset['name'])
                     else:
-                        print_managed_description_error('delete', 'A', recordset['name'])
+                        managed_description_error(
+                            'delete', 'A', recordset['name'])
             elif '*' not in recordset['name']:
-                # Recordset is not one of our FQDN_TEMPLATE ones, so just store it so
-                # we can reflect its existence in PTR records where appropriate.
-                public_addrs[recordset['name'], tenant.name] = False, recordset['records']
+                # Recordset is not one of our FQDN_TEMPLATE ones, so just
+                # store it so we can reflect its existence in PTR records
+                # where appropriate.
+                public_addrs[recordset['name'], tenant.name] = (
+                    False, recordset['records'])
 
 # Now we go through all the A record data we have stored
 public_PTRs = {}
 for (A_FQDN, project), (managed_here, IPs) in public_addrs.items():
     # Set up any that need to be and don't already exist
     if managed_here and A_FQDN not in existing_As:
-        designate_client = designateclient.Client(session=keystone_sessions[project])
+        dns = mwopenstackclients.DnsManager(client, tenant=project)
         # Create instance-$instance.$project.wmflabs.org 120 IN A $IP
         # No IPv6 support in labs so no AAAAs
-        print("Creating A record for " + A_FQDN)
+        logger.info("Creating A record for %s", A_FQDN)
         if project in project_main_zone_ids:
-            designate_client.recordsets.create(
-                project_main_zone_ids[project],
-                A_FQDN,
-                'A',
-                IPs,
-                description=managed_description
-            )
+            try:
+                dns.create_recordset(
+                    project_main_zone_ids[project],
+                    A_FQDN,
+                    'A',
+                    IPs,
+                    description=managed_description
+                )
+            except Exception:
+                logger.exception('Failed to create %s', A_FQDN)
         else:
-            print("Oops! No main zone for that project.")
+            logger.warning("Oops! No main zone for project %s.", project)
 
-    # Generate PTR record data, handling rewriting for RFC 2317 delegation as configured
+    # Generate PTR record data, handling rewriting for RFC 2317 delegation as
+    # configured
     for IP in IPs:
         PTR_FQDN = ipaddress.ip_address(IP.decode('ascii')).reverse_pointer + '.'
         delegated_PTR_FQDN = floating_ip_ptr_fqdn_matching_regex.sub(
@@ -169,18 +214,18 @@ for (A_FQDN, project), (managed_here, IPs) in public_addrs.items():
             else:
                 public_PTRs[delegated_PTR_FQDN] = [A_FQDN]
         else:
-            print(
-                "Not handling " +
-                delegated_PTR_FQDN +
-                " because it doesn't end with " +
+            logger.warning(
+                "Not handling %s" +
+                " because it doesn't end with %s",
+                delegated_PTR_FQDN,
                 config['floating_ip_ptr_zone']
             )
 
 # Set up designate client to write recordsets with
-wmflabsdotorg_designate_client = designateclient.Client(session=keystone_sessions['wmflabsdotorg'])
+dns = mwopenstackclients.DnsManager(client, tenant='wmflabsdotorg')
 # Find the correct zone ID for the floating IP zone
 floating_ip_ptr_zone_id = None
-for zone in wmflabsdotorg_designate_client.zones.list():
+for zone in dns.zones():
     if zone['name'] == config['floating_ip_ptr_zone']:
         floating_ip_ptr_zone_id = zone['id']
         break
@@ -189,21 +234,26 @@ for zone in wmflabsdotorg_designate_client.zones.list():
 assert floating_ip_ptr_zone_id is not None
 
 existing_public_PTRs = {}
-# Go through each record in the delegated PTR zone, deleting any with our managed_description
-# that don't exist and updating any that don't match our public_PTRs data.
-for recordset in wmflabsdotorg_designate_client.recordsets.list(floating_ip_ptr_zone_id):
+# Go through each record in the delegated PTR zone, deleting any with our
+# managed_description that don't exist and updating any that don't match our
+# public_PTRs data.
+for recordset in dns.recordsets(floating_ip_ptr_zone_id):
     existing_public_PTRs[recordset['name']] = recordset
     if recordset['type'] == 'PTR':
         if recordset['name'] not in public_PTRs:
             if recordset['description'] == managed_description:
                 # Delete whole recordset, it shouldn't exist anymore.
-                print("Deleting PTR record " + recordset['name'])
-                wmflabsdotorg_designate_client.recordsets.delete(
-                    floating_ip_ptr_zone_id,
-                    recordset['id']
-                )
+                logger.info("Deleting PTR record %s", recordset['name'])
+                try:
+                    dns.delete_recordset(
+                        floating_ip_ptr_zone_id,
+                        recordset['id']
+                    )
+                except Exception:
+                    logger.exception('Failed to delete %s', recordset['name'])
             else:
-                print_managed_description_error('delete', 'PTR', recordset['name'])
+                managed_description_error(
+                    'delete', 'PTR', recordset['name'])
             continue
         new_records = set(public_PTRs[recordset['name']])
         if new_records != set(recordset['records']):
@@ -211,24 +261,35 @@ for recordset in wmflabsdotorg_designate_client.recordsets.list(floating_ip_ptr_
                 # Update the recordset to have the correct IPs
                 recordset['records'] = list(new_records)
                 del recordset['status'], recordset['action'], recordset['links']
-                print("Updating PTR record " + recordset['name'])
-                wmflabsdotorg_designate_client.recordsets.update(
-                    floating_ip_ptr_zone_id,
-                    recordset['id'],
-                    recordset
-                )
+                logger.info("Updating PTR record %s", recordset['name'])
+                try:
+                    dns.update_recordset(
+                        floating_ip_ptr_zone_id,
+                        recordset['id'],
+                        recordset
+                    )
+                except Exception:
+                    logger.exception('Failed to update %s', recordset['name'])
             else:
-                print_managed_description_error('update', 'PTR', recordset['name'])
+                managed_description_error(
+                    'update', 'PTR', recordset['name'])
 
 # Create PTRs in delegated PTR zone
 for delegated_PTR_FQDN, records in public_PTRs.items():
     # We already dealt with updating existing PTRs above.
     if delegated_PTR_FQDN not in existing_public_PTRs:
-        print("Creating PTR record " + delegated_PTR_FQDN + " pointing to " + str(records))
-        wmflabsdotorg_designate_client.recordsets.create(
-            floating_ip_ptr_zone_id,
+        logger.info(
+            "Creating PTR record %s pointing to %s",
             delegated_PTR_FQDN,
-            'PTR',
-            records,
-            description=managed_description
+            str(records)
         )
+        try:
+            dns.create_recordset(
+                floating_ip_ptr_zone_id,
+                delegated_PTR_FQDN,
+                'PTR',
+                records,
+                description=managed_description
+            )
+        except Exception:
+            logger.exception('Failed to create %s', delegated_PTR_FQDN)

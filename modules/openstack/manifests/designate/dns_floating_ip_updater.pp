@@ -1,20 +1,13 @@
 class openstack::designate::dns_floating_ip_updater(
-    $nova_controller,
-    $observer_user,
-    $observer_pass,
-    $observer_project,
     $floating_ip_ptr_zone,
     $floating_ip_ptr_fqdn_matching_regex,
     $floating_ip_ptr_fqdn_replacement_pattern,
     ) {
 
+    # also requires openstack::clientlib
     require_package('python-ipaddress')
 
     $config = {
-        'username'                                 => $observer_user,
-        'password'                                 => $observer_pass,
-        'nova_api_url'                             => "http://${nova_controller}:35357/v3",
-        'admin_project_name'                       => $observer_project,
         'floating_ip_ptr_zone'                     => $floating_ip_ptr_zone,
         'floating_ip_ptr_fqdn_matching_regex'      => $floating_ip_ptr_fqdn_matching_regex,
         'floating_ip_ptr_fqdn_replacement_pattern' => $floating_ip_ptr_fqdn_replacement_pattern,
@@ -41,5 +34,6 @@ class openstack::designate::dns_floating_ip_updater(
         minute  => '*/10',
         user    => 'root',
         command => '/etc/dns-floating-ip-updater.py >/dev/null 2>/dev/null',
+        require => File['/etc/dns-floating-ip-updater.py'],
     }
 }
