@@ -184,8 +184,9 @@ class puppetmaster(
         content => template("puppetmaster/${puppetmaster_auth_template}"),
     }
 
-    # Use hiera 3 backend configs on stretch masters (stretch has hiera version 3)
-    if os_version('debian >= stretch') {
+    # Use hiera 3 backend configs on production stretch masters (stretch has hiera version 3)
+    # limit to production realm until a labs_hiera3.hiera.yaml is created
+    if os_version('debian >= stretch') and $::realm == 'production' {
         $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}_hiera3.hiera.yaml"
     } else {
         $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
