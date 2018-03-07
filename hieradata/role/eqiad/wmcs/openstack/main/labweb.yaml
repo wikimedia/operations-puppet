@@ -94,4 +94,4 @@ profile::openstack::base::nutcracker::redis::shards:
 profile::openstack::main::wikitech::web::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::main::wikitech::web::webserver_hostname_aliases: 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org'
 profile::openstack::main::wikitech::web::db_name: 'labswiki'
-profile::openstack::main::wikitech::wikitech_static_sync_host: 'silver'
+profile::openstack::main::wikitech::wikitech_static_sync_host: 'labweb1001'

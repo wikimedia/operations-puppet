@@ -113,19 +113,9 @@ class openstack::wikitech::openstack_manager(
         'backup-cleanup':
             ensure  => absent;
         'mw-xml':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 1,
-            minute  => 30,
-            command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
+            ensure  => absent;
         'mw-files':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 2,
-            minute  => 0,
-            command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
+            ensure  => absent;
         'run-jobs':
             ensure  => 'present',
             user    => $::mediawiki::users::web,
