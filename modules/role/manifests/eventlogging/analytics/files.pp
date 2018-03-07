@@ -31,6 +31,14 @@ class role::eventlogging::analytics::files {
         mode   => '0664',
     }
 
+    # Log retention in labs is not important and might
+    # end up consuming a sizeable chunk of the disk partiton
+    # in which it is placed (usually the root one).
+    $logs_max_age = $::realm ? {
+        'labs'  => 4,
+        default => 30,
+    }
+
     logrotate::conf { 'eventlogging-files':
         ensure  => 'present',
         content => template('role/eventlogging/analytics/files_logrotate.erb'),
