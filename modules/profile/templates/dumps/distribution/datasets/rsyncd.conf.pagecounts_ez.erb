@@ -3,12 +3,11 @@
 ### puppet:///modules/dumps/rsync/rsyncd.conf.pagecounts_ez
 #####################################################################
 
-# write access from <%= @hosts_allow %> to pagecounts-ez directory.
+# write access from <%= @stats_hosts %> to pagecounts-ez directory.
 # Erik Z uses this.  See T80444.
 [pagecounts-ez]
 uid = <%= @user %>
 gid = <%= @deploygroup %>
 read only = false
 path = <%= @miscdatasetsdir %>/pagecounts-ez
-hosts allow = <%= @hosts_allow %>
-
+hosts allow = <%= @stats_hosts %>

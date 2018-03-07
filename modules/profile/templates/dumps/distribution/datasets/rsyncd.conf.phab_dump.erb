@@ -2,10 +2,10 @@
 ### puppet:///modules/dumps/rsync/rsyncd.conf.phab_dump.erb
 #####################################################################
 
-# write access from <%= @hosts_allow %> to other/misc directory.
+# write access from <%= @phab_hosts %> to other/misc directory.
 [other_misc]
 uid = root
 gid = root
 read only = false
 path = <%= @miscdatasetsdir %>/misc
-hosts allow = <%= @hosts_allow %>
+hosts allow = <%= @phab_hosts %>

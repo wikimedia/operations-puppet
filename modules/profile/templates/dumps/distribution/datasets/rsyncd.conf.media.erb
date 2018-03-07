@@ -3,12 +3,11 @@
 ### puppet:///modules/dumps/rsync/rsyncd.conf.media
 #####################################################################
 
-# write access from <%= @hosts_allow %> to media directory.
+# write access from <%= @stats_hosts %> to media directory.
 # Erik Z uses this.
 [media]
 uid = <%= @user %>
 gid = <%= @deploygroup %>
 read only = false
 path = <%= @miscdatasetsdir %>/media
-hosts allow = <%= @hosts_allow %>
-
+hosts allow = <%= @stats_hosts %>

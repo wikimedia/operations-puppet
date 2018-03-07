@@ -13,35 +13,45 @@ class profile::dumps::distribution::datasets::rsync_config(
     $deploygroup = $rsyncer_settings['dumps_deploygroup']
     $mntpoint = $rsyncer_settings['dumps_mntpoint']
 
-    class {'::dumps::rsync::media':
-        hosts_allow     => $stats_hosts,
-        user            => $user,
-        deploygroup     => $deploygroup,
-        miscdatasetsdir => $miscdatasetsdir,
+    file { '/etc/rsyncd.d/10-rsync-slowparse-logs.conf':
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/dumps/distribution/datasets/rsyncd.conf.slowparse_logs.erb'),
+        notify  => Exec['update-rsyncd.conf'],
     }
 
-    class {'::dumps::rsync::pagecounts_ez':
-        hosts_allow     => $stats_hosts,
-        user            => $user,
-        deploygroup     => $deploygroup,
-        miscdatasetsdir => $miscdatasetsdir,
+    file { '/etc/rsyncd.d/30-rsync-media.conf':
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/dumps/distribution/datasets/rsyncd.conf.media.erb'),
+        notify  => Exec['update-rsyncd.conf'],
+    }
+
+    file { '/etc/rsyncd.d/30-rsync-pagecounts_ez.conf':
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/dumps/distribution/datasets/rsyncd.conf.pagecounts_ez.erb'),
+        notify  => Exec['update-rsyncd.conf'],
+    }
+
+    file { '/etc/rsyncd.d/40-rsync-phab_dump.conf':
+        ensure  => 'present',
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/dumps/distribution/datasets/rsyncd.conf.phab_dump.erb'),
+        notify  => Exec['update-rsyncd.conf'],
     }
 
     class {'::dumps::rsync::peers':
         hosts_allow => $peer_hosts,
         datapath    => $mntpoint,
-    }
-
-    class {'::dumps::rsync::phab_dump':
-        hosts_allow     => $phab_hosts,
-        miscdatasetsdir => $miscdatasetsdir,
-    }
-
-    class {'::dumps::rsync::slowparse_logs':
-        hosts_allow     => $mwlog_hosts,
-        user            => $user,
-        group           => $group,
-        miscdatasetsdir => $miscdatasetsdir,
     }
 
     class {'::dumps::web::dumplists':
