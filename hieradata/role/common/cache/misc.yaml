@@ -212,6 +212,8 @@ cache::req_handling:
     director: 'labweb'
   newwikitech.wikimedia.org:
     director: 'labweb'
+  wikitech.wikimedia.org:
+    director: 'labweb'
   hue.wikimedia.org:
     director: 'thorium'
   iegreview.wikimedia.org:
