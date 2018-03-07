@@ -211,4 +211,30 @@ class toollabs::apt_pinning {
             priority => '1001',
         }
     }
+
+    #
+    # NFS libs and related packages
+    #
+    # nfs-common
+    $nfs_common_pkg_version = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'version 1:1.2.8-6ubuntu1.2',
+        'jessie'  => 'version 1:1.2.8-9',
+        'stretch' => 'version 1:1.3.4-2.1',
+    }
+    apt::pin { 'toolforge-nfs-common-pinning':
+        package  => 'nfs-common',
+        pin      => $nfs_common_pkg_version,
+        priority => '1001',
+    }
+    # libnfsidmap2
+    $libnfsidmap2_pkg_version = $facts['lsbdistcodename'] ? {
+        'trusty'  => 'version 0.25-5',
+        'jessie'  => 'version 0.25-5',
+        'stretch' => 'version 0.25-5.1',
+    }
+    apt::pin { 'toolforge-libnfsidmap2-pinning':
+        package  => 'libnfsidmap2',
+        pin      => $libnfsidmap2_pkg_version,
+        priority => '1001',
+    }
 }
