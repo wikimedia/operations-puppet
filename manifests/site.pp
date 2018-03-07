@@ -1745,17 +1745,16 @@ node 'mx2001.wikimedia.org' {
 }
 
 # Experimental Jupyter notebook servers
+# To be deprecated as part of T183935.
 node 'notebook1001.eqiad.wmnet' {
     role(paws_internal)
 }
-#notebook100[34] are new systems being placed into service on T183935
-node 'notebook1003.eqiad.wmnet' {
-    role(spare::system)
+
+# SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
+node /notebook100[34].eqiad.wmnet/ {
+    role(swap)
 }
 
-node 'notebook1004.eqiad.wmnet' {
-    role(spare::system)
-}
 
 # cluster management (cumin master) + other management tools
 node 'neodymium.eqiad.wmnet' {
