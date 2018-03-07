@@ -179,3 +179,20 @@ scap::sources:
     repository: analytics/statsv
   "docker-pkg/deploy":
     repository: operations/docker-images/docker-pkg/deploy
+
+profile::kubernetes::deployment_server::services:
+  admin:
+    username: client-infrastructure
+    group: root
+    mode: 0400
+  mathoid:
+    username: mathoid
+    group: wikidev
+    mode: 0640
+
+# Specified in the private repo in this form
+#profile::kubernetes::deployment_server::tokens:
+#  admin:
+#    token: dummy
+#  mathoid:
+#    token: dummy
