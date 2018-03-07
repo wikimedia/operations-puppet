@@ -7,5 +7,6 @@ class role::deployment_server {
     include ::role::deployment::mediawiki
     include ::profile::releases::mediawiki::security
     include ::profile::releases::upload
+    include ::profile::kubernetes::deployment_server
     backup::set {'home': }
 }
