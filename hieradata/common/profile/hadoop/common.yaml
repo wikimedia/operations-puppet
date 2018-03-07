@@ -43,14 +43,10 @@ profile::hadoop::common::mapreduce_task_io_sort_factor: 10
 
 # These Map/Reduce and YARN ApplicationMaster master settings are
 # settable per job.
-# All worker nodes are currently Dell R720s with 64G of RAM.
+# All worker nodes are currently Dell R720s with 64G of RAM and 24 cores
+# or R730dxs with 128G of RAM and 48 cores.
 
 # Choosing 2G for default application container size.
-# This is used as the base for the memory settings below.
-# It may be possible to increase since all nodes now have
-# 64G instead of 48G.
-# See: https://phabricator.wikimedia.org/T118501
-#
 # Map container size and JVM max heap size (-XmX)
 profile::hadoop::common::mapreduce_map_memory_mb: 2048
 profile::hadoop::common::mapreduce_map_java_opts: '-Xmx1638m'  # 0.8 * 2G
@@ -64,20 +60,16 @@ profile::hadoop::common::yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 
 profile::hadoop::common::yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
 
 # Save 12G for OS and other processes.
-# Memory available for use by Hadoop jobs:  64G - 12G == 52G.
-# 52G at 2G per container gives nodes with 64G RAM space for
-# 26 containers.
+# R720s will have 52G for YARN with room for 26 2G containers.
+# R730dxs will have 116G for YARN with room for 52 2G containers.
+profile::hadoop::common::reserved_memory_mb: 12288
+# NOTE: profile::hadoop::common::total_memory_mb is set in regex.yaml.
+# The values of yarn_nodemanager_resource_memory_mb and
+# yarn_scheduler_maximum_allocation_mb are set based on
+# total_memory_mb - reserved_memory_mb.
 
-# This is the total amount of memory that NodeManagers
-# will use for allocation to containers.
-profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 53248 # 64G - 12G
-
-# Setting _minimum_allocation_mb to 0 to allow Impala to submit small
-# reservation requests.
-profile::hadoop::common::yarn_scheduler_minimum_allocation_mb: 0
-profile::hadoop::common::yarn_scheduler_maximum_allocation_mb: 53248
-
-# Setting minimum_allocation_vcores to 0 to allow Impala to submit small
-# reservation requests.
+# Setting minimum_allocations to 0 to allow Impala to submit small reservation requests.
+# TODO: do we need to set these anymore?  We don't use Impala.
+profile::hadoop::common::yarn_scheduler_minimum_allocation_mb:       0
 profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores:   0
 profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores:   32
