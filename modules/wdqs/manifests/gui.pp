@@ -15,13 +15,13 @@
 class wdqs::gui(
     Optional[String] $logstash_host = undef,
     Wmflib::IpPort $logstash_syslog_port = 10514,
-    String $package_dir = $::wdqs::package_dir,
-    String $data_dir = $::wdqs::data_dir,
-    String $log_dir = $::wdqs::log_dir,
-    String $username = $::wdqs::username,
+    String $package_dir = '/srv/deployment/wdqs/wdqs',
+    String $data_dir = '/srv/wdqs',
+    String $log_dir = '/var/log/wdqs',
+    String $username = 'blazegraph',
     Wmflib::IpPort $port = 80,
     Wmflib::IpPort $additional_port = 8888,
-    Boolean $use_git_deploy = $::wdqs::use_git_deploy,
+    Boolean $use_git_deploy = true,
     Boolean $enable_ldf = true,
 ) {
 
