@@ -42,8 +42,10 @@ class toollabs::apt_pinning {
     }
 
     #
-    # pam libs and related packages
+    # nss/ldap/pam libs and related packages
     #
+    # dpkg -l | grep ^ii | egrep libnss\|ldap\|nscd\|nslcd\|pam | awk -F' ' '{print $3" "$2}' | sort -n
+    # libpam-runtime libpam-modules* libpam0g
     $libpam_pkg_version = $facts['lsbdistcodename'] ? {
         'trusty'  => 'version 1.1.8-1ubuntu2.2',
         'jessie'  => 'version 1.1.8-3.1+deb8u1*',
@@ -54,14 +56,81 @@ class toollabs::apt_pinning {
         pin      => $libpam_pkg_version,
         priority => '1001',
     }
+    # libpam-ldapd nslcd* libnss-ldapd
     $libpam_ldapd_pkg_version = $facts['lsbdistcodename'] ? {
         'trusty'  => 'version 0.8.13-3ubuntu1',
         'jessie'  => 'version 0.9.4-3+deb8u1',
         'stretch' => 'version 0.9.7-2',
     }
     apt::pin { 'toolforge-libpam-ldapd-pinning':
-        package  => 'libpam-ldapd nslcd*',
+        package  => 'libpam-ldapd nslcd* libnss-ldapd',
         pin      => $libpam_ldapd_pkg_version,
+        priority => '1001',
+    }
+    # ldapvi
+    $ldapvi_pkg_version = $facts['lsbdistcodename'] ? {
+	'trusty'  => 'version 1.7-9',
+	'jessie'  => 'version 1.7-9',
+	'stretch' => 'version 1.7-10*',
+    }
+    apt::pin { 'toolforge-ldapvi-pinning':
+        package  => 'ldapvi',
+        pin      => $ldapvi_pkg_version,
+        priority => '1001',
+    }
+    # sudo-ldap
+    $sudo_ldap_pkg_version = $facts['lsbdistcodename'] ? {
+	'trusty'  => 'version 1.8.9p5-1ubuntu1.4',
+	'jessie'  => 'version 1.8.10p3-1+deb8u5',
+	'stretch' => 'version 1.8.19p1-2.1',
+    }
+    apt::pin { 'toolforge-sudo-ldap-pinning':
+        package  => 'sudo-ldap',
+        pin      => $sudo_ldap_pkg_version,
+        priority => '1001',
+    }
+    # nscd
+    $nscd_pkg_version = $facts['lsbdistcodename'] ? {
+	'trusty'  => 'version 2.19-0ubuntu6.14',
+	'jessie'  => 'version 2.19-18+deb8u10',
+	'stretch' => 'version 2.24-11+deb9u1',
+    }
+    apt::pin { 'toolforge-nscd-pinning':
+        package  => 'nscd',
+        pin      => $nscd_pkg_version,
+        priority => '1001',
+    }
+    # libnss-db
+    $libnss_db_pkg_version = $facts['lsbdistcodename'] ? {
+	'trusty'  => 'version 2.2.3pre1-5build3',
+	'jessie'  => 'version 2.2.3pre1-5+b3',
+	'stretch' => 'version 2.2.3pre1-6+b1',
+    }
+    apt::pin { 'toolforge-libnss-db-pinning':
+        package  => 'libnss-db',
+        pin      => $libnss_db_pkg_version,
+        priority => '1001',
+    }
+    # python-ldap
+    $python_ldap_pkg_version = $facts['lsbdistcodename'] ? {
+	'trusty'  => 'version 2.4.10-1build1',
+	'jessie'  => 'version 2.4.10-1',
+	'stretch' => 'version 2.4.28-0.1',
+    }
+    apt::pin { 'toolforge-python-ldap-pinning':
+        package  => 'python-ldap',
+        pin      => $python_ldap_pkg_version,
+        priority => '1001',
+    }
+    # ldap-utils libldap*
+    $ldap_utils_pkg_version = $facts['lsbdistcodename'] ? {
+	'trusty'  => 'version 2.4.31-1+nmu2ubuntu8.4',
+	'jessie'  => 'version 2.4.41+dfsg-1+wmf1',
+	'stretch' => 'version 2.4.44+dfsg-5+deb9u1',
+    }
+    apt::pin { 'toolforge-ldap-utils-pinning':
+        package  => 'ldap-utils libldap*',
+        pin      => $ldap_utils_pkg_version,
         priority => '1001',
     }
 
