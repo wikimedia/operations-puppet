@@ -8,6 +8,7 @@ profile::wdqs::updater_options: '-n wdq'
 profile::wdqs::rc_updater_options: '-b 500 -T 1200'
 profile::wdqs::blazegraph_config_file: '/etc/wdqs/RWStore.properties'
 profile::wdqs::blazegraph_heap_size: '32g'
+profile::wdqs::enable_ldf: true
 profile::wdqs::nodes:
   - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1004.eqiad.wmnet'

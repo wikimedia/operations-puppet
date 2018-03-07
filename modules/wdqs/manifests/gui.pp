@@ -13,15 +13,16 @@
 # - $port: main GUI service port
 # - $additional_port: secondary port for internal requests
 class wdqs::gui(
-    $logstash_host = undef,
-    $logstash_syslog_port = 10514,
-    $package_dir = $::wdqs::package_dir,
-    $data_dir = $::wdqs::data_dir,
-    $log_dir = $::wdqs::log_dir,
-    $username = $::wdqs::username,
-    $port = 80,
-    $additional_port = 8888,
-    $use_git_deploy = $::wdqs::use_git_deploy,
+    Optional[String] $logstash_host = undef,
+    Integer[0, 65535] $logstash_syslog_port = 10514,
+    String $package_dir = $::wdqs::package_dir,
+    String $data_dir = $::wdqs::data_dir,
+    String $log_dir = $::wdqs::log_dir,
+    String $username = $::wdqs::username,
+    Integer[0, 65535] $port = 80,
+    Integer[0, 65535] $additional_port = 8888,
+    Boolean $use_git_deploy = $::wdqs::use_git_deploy,
+    Boolean $enable_ldf = true,
 ) {
 
     $alias_map = "${data_dir}/aliases.map"
