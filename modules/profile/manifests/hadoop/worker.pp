@@ -75,17 +75,29 @@ class profile::hadoop::worker(
         'libgomp1'
     )
 
-    # Need a specifc version of python-numpy for sklearn.
-    # There are some weird dependency / require_package
-    # issues that force us to use the package resource
-    # directly.
-    package { ['python-numpy', 'python3-numpy']:
-        ensure => '1:1.12.1-2~bpo8+1',
+
+    if os_version('debian >= stretch') {
+        require_package(
+            'python-numpy',
+            'python3-numpy',
+            'python3-sklearn',
+            'python3-sklearn-lib'
+        )
     }
-    package { ['python3-sklearn','python3-sklearn-lib']:
-        ensure  => 'installed',
-        require => Package['python3-numpy'],
+    else {
+        # Need a specifc version of python-numpy for sklearn in jessie.
+        # There are some weird dependency / require_package
+        # issues that force us to use the package resource
+        # directly.
+        package { ['python-numpy', 'python3-numpy']:
+            ensure => '1:1.12.1-2~bpo8+1',
+        }
+        package { ['python3-sklearn','python3-sklearn-lib']:
+            ensure  => 'installed',
+            require => Package['python3-numpy'],
+        }
     }
+
 
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
