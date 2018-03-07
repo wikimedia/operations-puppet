@@ -1,5 +1,5 @@
 class profile::dumps::distribution::datasets::rsync_config(
-    $rsyncer_settings = hiera('profile::dumps::rsyncer'),
+    $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
     $stats_hosts = hiera('profile::dumps::stats_hosts'),
     $peer_hosts = hiera('profile::dumps::peer_hosts'),
     $phab_hosts = hiera('profile::dumps::phab_hosts'),
