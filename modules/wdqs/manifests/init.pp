@@ -16,17 +16,17 @@
 # - $blazegraph_heap_size: heapsize for blazegraph
 # - $blazegraph_config_file: Blazegraph properties config file
 class wdqs(
-    $logstash_host,
-    $logstash_json_port = 11514,
-    $use_git_deploy = true,
-    $username = 'blazegraph',
-    $package_dir = '/srv/deployment/wdqs/wdqs',
-    $data_dir = '/srv/wdqs',
-    $log_dir = '/var/log/wdqs',
-    $endpoint = '',
-    $blazegraph_options = '',
-    $blazegraph_heap_size = '32g',
-    $blazegraph_config_file = 'RWStore.properties',
+    String $logstash_host,
+    Wmflib::IpPort $logstash_json_port = 11514,
+    Boolean $use_git_deploy = true,
+    String $username = 'blazegraph',
+    String $package_dir = '/srv/deployment/wdqs/wdqs',
+    String $data_dir = '/srv/wdqs',
+    String $log_dir = '/var/log/wdqs',
+    String $endpoint = '',
+    String $blazegraph_options = '',
+    String $blazegraph_heap_size = '32g',
+    String $blazegraph_config_file = 'RWStore.properties',
 ) {
 
     $deploy_user = 'deploy-service'

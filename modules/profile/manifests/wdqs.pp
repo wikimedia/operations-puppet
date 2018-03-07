@@ -1,20 +1,20 @@
 class profile::wdqs (
-    $logstash_host = hiera('logstash_host'),
-    $use_git_deploy = hiera('profile::wdqs::use_git_deploy'),
-    $package_dir = hiera('profile::wdqs::package_dir'),
-    $data_dir = hiera('profile::wdqs::data_dir'),
-    $endpoint = hiera('profile::wdqs::endpoint'),
-    $blazegraph_options = hiera('profile::wdqs::blazegraph_options'),
-    $blazegraph_heap_size = hiera('profile::wdqs::blazegraph_heap_size'),
-    $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
-    $updater_options = hiera('profile::wdqs::updater_options'),
-    $nodes = hiera('profile::wdqs::nodes'),
-    $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates'),
-    $cluster_names = hiera('profile::wdqs::cluster_names'),
-    $rc_options = hiera('profile::wdqs::rc_updater_options'),
-    $enable_ldf = hiera('profile::wdqs::enable_ldf'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
-    $contact_groups = hiera('contactgroups', 'admins'),
+    String $logstash_host = hiera('logstash_host'),
+    Boolean $use_git_deploy = hiera('profile::wdqs::use_git_deploy'),
+    String $package_dir = hiera('profile::wdqs::package_dir'),
+    String $data_dir = hiera('profile::wdqs::data_dir'),
+    String $endpoint = hiera('profile::wdqs::endpoint'),
+    String $blazegraph_options = hiera('profile::wdqs::blazegraph_options'),
+    String $blazegraph_heap_size = hiera('profile::wdqs::blazegraph_heap_size'),
+    String $blazegraph_config_file = hiera('profile::wdqs::blazegraph_config_file'),
+    String $updater_options = hiera('profile::wdqs::updater_options'),
+    Array[String] $nodes = hiera('profile::wdqs::nodes'),
+    Boolean $use_kafka_for_updates = hiera('profile::wdqs::use_kafka_for_updates'),
+    Array[String] $cluster_names = hiera('profile::wdqs::cluster_names'),
+    String $rc_options = hiera('profile::wdqs::rc_updater_options'),
+    Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf'),
+    Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
+    String $contact_groups = hiera('contactgroups', 'admins'),
 ) {
     require ::profile::prometheus::blazegraph_exporter
 
@@ -67,8 +67,11 @@ class profile::wdqs (
 
     # Service Web proxy
     class { '::wdqs::gui':
-        logstash_host => $logstash_host,
-        enable_ldf    => $enable_ldf,
+        logstash_host  => $logstash_host,
+        package_dir    => $package_dir,
+        data_dir       => $data_dir,
+        use_git_deploy => $use_git_deploy,
+        enable_ldf     => $enable_ldf,
     }
 
     # Firewall
