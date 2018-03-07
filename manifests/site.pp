@@ -2168,6 +2168,10 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
 }
 
+node /^wdqs200[4-6]\.codfw\.wmnet$/ {
+    role(wdqs_internal)
+}
+
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(test)
