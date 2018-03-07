@@ -23,11 +23,14 @@ class role::eventlogging::analytics::files {
         }
     }
 
+    $logs_dir_owner = 'eventlogging'
+    $logs_dir_group = 'eventlogging'
+
     # Logs are collected in <$log_dir> and rotated daily.
     file { [$out_dir, "${out_dir}/archive"]:
         ensure => 'directory',
-        owner  => 'eventlogging',
-        group  => 'eventlogging',
+        owner  => $logs_dir_owner,
+        group  => $logs_dir_group,
         mode   => '0664',
     }
 
