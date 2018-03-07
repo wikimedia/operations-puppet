@@ -1,1 +1,9 @@
+admin::groups:
+  - notebook-roots
+  - researchers
+  - analytics-users
+  - statistics-privatedata-users
+  - analytics-privatedata-users
+jupyterhub::web_proxy: http://webproxy.eqiad.wmnet:8080
+
 profile::jupyterhub::sitename: swap.wikimedia.org
