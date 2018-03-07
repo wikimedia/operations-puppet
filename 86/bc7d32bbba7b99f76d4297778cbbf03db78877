@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Arturo Borrero Gonzalez <aborrero@wikimedia.org>
+Submitted-by: Arturo Borrero Gonzalez <aborrero@wikimedia.org>
+Submitted-at: Wed, 07 Mar 2018 14:06:57 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/416943
+Project: operations/puppet
+Branch: refs/heads/production
