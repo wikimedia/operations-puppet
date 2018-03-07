@@ -1,6 +1,6 @@
 class profile::dumps::distribution::mirrors::rsync_config(
     $rsync_clients = hiera('dumps_web_rsync_server_clients'),
-    $rsyncer_settings = hiera('profile::dumps::rsyncer'),
+    $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
     $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
 ) {

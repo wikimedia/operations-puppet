@@ -4,14 +4,13 @@ profile::dumps::distribution::basedatadir: '/data/xmldatadumps'
 profile::dumps::distribution::miscdumpsdir: '/data/xmldatadumps/public/other'
 profile::dumps::distribution::xmldumpspublicdir: '/data/xmldatadumps/public'
 profile::dumps::distribution::dumpstempdir: '/data/xmldatadumps/temp'
-
-profile::dumps::nfs::clients_wanted: 'public'
-
-profile::dumps::rsyncer:
+profile::dumps::distribution::rsync_config:
   dumps_user: 'dumpsgen'
   dumps_group: 'dumpsgen'
   dumps_deploygroup: 'wikidev'
   dumps_mntpoint: '/data'
+
+profile::dumps::nfs::clients_wanted: 'public'
 
 admin::groups:
   - dataset-admins
