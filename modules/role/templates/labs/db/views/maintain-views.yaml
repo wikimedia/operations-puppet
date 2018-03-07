@@ -317,7 +317,7 @@ customviews:
     view: >
       select img_name, img_size, img_width, img_height, img_metadata, img_bits,
       img_media_type, img_major_mime, img_minor_mime,
-      coalesce(imgcomment_description_id,0) as img_comment_id,
+      coalesce(imgcomment_description_id,0) as imgcomment_description_id,
       case when imgcomment_description_id is null OR imgcomment_description_id = 0
       then img_description else comment_text end as img_description,
       img_user, img_user_text, img_timestamp, img_sha1
