@@ -8,7 +8,7 @@ groups:
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
               laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
-              psinger, midom, tparscal, dworley, ironholds, moushira, lpintscher, gpaumier,
+              psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
               yuvipanda, shrlak, joewalsh]
   absent_ldap:
@@ -1333,12 +1333,16 @@ users:
     ssh_keys: []
     uid: 3558
   ironholds:
-    ensure: absent
+    ensure: present
     gid: 500
     name: ironholds
     realname: Oliver Keyes
-    ssh_keys: []
-    uid: 5004
+    ssh_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC28nrvknbeIAlF31jJCw1ucjaToH7dcGtUtWuZM2dsfWRqjYx9xuIByEisePnS1r9EPh0y3swTDn6zBHlWGDkkuzPWkF3SXCWlOqPFI94AQRPyBqyUNecT8Hm3YMkTKFZNM3TKsKd+rrlgBgFU5RDGgkFZkrsEEG1KhOpOc0IbtHlJxxLqjoQZggBCQ7v9TRwnnlZ6WB25/4Fxd7tQLKWdYCbT4iiiSEG4A5A30GIRqE9bSzgMGzH3jjTQabxNlp7O690pUs3iPdbWn1qV/IThGDXKskfwhjbYKW4065+vnI1p8F8qA8Lu8B1N6pji1y407o6zQodSvmRS5TdlrrzF okeyes@uw.edu
+    uid: 18976
+    email: okeyes@uw.edu
+    expiry_date: 2018-06-30
+    expiry_contact: jmorgan@wikimedia.org
   nuria:
     ensure: present
     gid: 500
