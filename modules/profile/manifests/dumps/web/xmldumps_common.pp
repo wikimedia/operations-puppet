@@ -12,7 +12,7 @@ class profile::dumps::web::xmldumps_common(
 
     # better here once than copy-pasted into multiple roles.
     require profile::dumps::nfs
-    require profile::dumps::distribution::datasets::rsync_server
+    require profile::dumps::distribution::ferm
     # Using profile in generation/server path to not break rsyncer and rsyncer_peer hiera calls
     require profile::dumps::generation::server::dumpstatusfiles_sync
     require profile::dumps::distribution::datasets::cleanup
