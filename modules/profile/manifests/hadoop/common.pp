@@ -99,8 +99,30 @@
 #    Map-reduce History server JVM opts.
 #    Default: undef
 #
+#  [*yarn_scheduler_minimum_allocation_vcores*]
+#    Yarn scheduler specific setting.
+#    Default: undef
+#
+#  [*yarn_scheduler_maximum_allocation_vcores*]
+#    Yarn scheduler specific setting.
+#    Default: undef
+#
+#  [*total_memory_mb*]
+#    Total memory this node has. (In a future version of facter, we should be able to
+#    remove this param in favor of https://puppet.com/docs/facter/3.9/core_facts.html#memory.
+#    Default: undef
+#
+#  [*reserved_memory_mb*]
+#    Amount of memory to reserve for non YARN processes.  If both this and total_memory_mb are
+#    given, and yarn_nodemanager_resource_memory_mb and yarn_scheduler_maximum_allocation_mb are
+#    not given, then total_memory_mb - reserved_memory_mb will be used as their values.
+#    This allows memory for YARN processes to be configured based on total node memory
+#    which can vary between nodes in a heterogenous cluster.
+#    Default: undef
+#
 #  [*yarn_nodemanager_resource_memory_mb*]
-#    Map-reduce specific setting.
+#    Map-reduce specific setting.  If not set, but reserved_memory_mb and total_memory_mb are,
+#    This will be set to total_memory_mb - reserved_memory_mb.
 #    Default: undef
 #
 #  [*yarn_scheduler_minimum_allocation_mb*]
@@ -108,15 +130,8 @@
 #    Default: undef
 #
 #  [*yarn_scheduler_maximum_allocation_mb*]
-#    Yarn scheduler specific setting.
-#    Default: undef
-#
-#  [*yarn_scheduler_minimum_allocation_vcores*]
-#    Yarn scheduler specific setting.
-#    Default: undef
-#
-#  [*yarn_scheduler_maximum_allocation_vcores*]
-#    Yarn scheduler specific setting.
+#    Yarn scheduler specific setting.  If not set, but reserved_memory_mb and total_memory_mb are,
+#    This will be set to total_memory_mb - reserved_memory_mb.
 #    Default: undef
 #
 #  [*java_home*]
@@ -146,11 +161,16 @@ class profile::hadoop::common (
     $yarn_app_mapreduce_am_resource_mb        = hiera('profile::hadoop::common::yarn_app_mapreduce_am_resource_mb', undef),
     $yarn_app_mapreduce_am_command_opts       = hiera('profile::hadoop::common::yarn_app_mapreduce_am_command_opts', undef),
     $mapreduce_history_java_opts              = hiera('profile::hadoop::common::mapreduce_history_java_opts', undef),
+    $yarn_scheduler_minimum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores', undef),
+    $yarn_scheduler_maximum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores', undef),
+
+    $total_memory_mb                          = hiera('profile::hadoop::common::total_memory_mb', undef),
+    $reserved_memory_mb                       = hiera('profile::hadoop::common::reserved_memory_mb', undef),
+
     $yarn_nodemanager_resource_memory_mb      = hiera('profile::hadoop::common::yarn_nodemanager_resource_memory_mb', undef),
     $yarn_scheduler_minimum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_mb', undef),
     $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb', undef),
-    $yarn_scheduler_minimum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores', undef),
-    $yarn_scheduler_maximum_allocation_vcores = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores', undef),
+
     $java_home                                = hiera('profile::hadoop::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
@@ -172,6 +192,27 @@ class profile::hadoop::common (
     $hadoop_journal_directory                 = "${hadoop_var_directory}/journal"
 
     $zookeeper_hosts = keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts'])
+
+
+    # If are given the total_memory on this node, and the amount of memory we want to reserve
+    # for the OS, AND if the actual values for resource_memory or maximum_allocation are not
+    # specified, then set the amount of memory a Hadoop worker can use to
+    # $total_memory - $reserved_memory.
+    if $total_memory and $reserved_memory {
+        $_yarn_nodemanager_resource_memory_mb = $yarn_nodemanager_resource_memory_mb ? {
+            undef   => $total_memory_mb - $reserved_memory_mb,
+            default => $yarn_nodemanager_resource_memory_mb,
+        }
+        $_yarn_scheduler_maximum_allocation_mb  = $yarn_scheduler_maximum_allocation_mb ? {
+            undef   => $total_memory_mb - $reserved_memory_mb,
+            default => $yarn_scheduler_maximum_allocation_mb,
+        }
+    }
+    # Else just use what was provided, even if undef.
+    else {
+        $_yarn_nodemanager_resource_memory_mb  = $yarn_nodemanager_resource_memory_mb
+        $_yarn_scheduler_maximum_allocation_mb = $yarn_scheduler_maximum_allocation_mb
+    }
 
     class { '::cdh::hadoop':
         # Default to using running resourcemanager on the same hosts
@@ -198,14 +239,13 @@ class profile::hadoop::common (
 
         yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
         yarn_app_mapreduce_am_command_opts          => $yarn_app_mapreduce_am_command_opts,
-        yarn_nodemanager_resource_memory_mb         => $yarn_nodemanager_resource_memory_mb,
+        yarn_nodemanager_resource_memory_mb         => $_yarn_nodemanager_resource_memory_mb,
         yarn_scheduler_minimum_allocation_mb        => $yarn_scheduler_minimum_allocation_mb,
-        yarn_scheduler_maximum_allocation_mb        => $yarn_scheduler_maximum_allocation_mb,
+        yarn_scheduler_maximum_allocation_mb        => $_yarn_scheduler_maximum_allocation_mb,
         yarn_scheduler_minimum_allocation_vcores    => $yarn_scheduler_minimum_allocation_vcores,
         yarn_scheduler_maximum_allocation_vcores    => $yarn_scheduler_maximum_allocation_vcores,
 
-        # 256 MB
-        dfs_block_size                              => 268435456,
+        dfs_block_size                              => 268435456, # 256 MB
         io_file_buffer_size                         => 131072,
 
         # Turn on Snappy compression by default for maps and final outputs
