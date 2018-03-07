@@ -1,5 +1,7 @@
 # mediawiki maintenance server
-class profile::mediawiki::maintenance {
+class profile::mediawiki::maintenance (
+    $maintenance_server = hiera('maintenance_server'),
+){
 
     include ::mediawiki::packages::php5
 
@@ -10,8 +12,8 @@ class profile::mediawiki::maintenance {
         ensure => link,
         target => '/srv/mediawiki'
     }
-    $ensure = $::mw_primary ? {
-        $::site => 'present',
+    $ensure = $maintenance_server ? {
+        $::fqdn => 'present',
         default => 'absent',
     }
 
