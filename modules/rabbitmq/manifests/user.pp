@@ -23,13 +23,14 @@ define rabbitmq::user(
     ) {
 
     if ($ensure == 'present') {
-        exec {'rabbit_user_create':
+
+        exec {"rabbit_${username}_create":
             command => "/usr/sbin/rabbitmqctl add_user ${username} ${password}",
             unless  => "/usr/sbin/rabbitmqctl list_users | grep --quiet ${username}",
             notify  => Exec['rabbit_user_setup_perms'],
         }
 
-        exec {'rabbit_user_setup_perms':
+        exec {"rabbit_${username}_setup_perms":
             command     => "/usr/sbin/rabbitmqctl set_permissions ${username} ${permissions}",
             refreshonly => true,
         }
