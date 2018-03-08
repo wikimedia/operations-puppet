@@ -35,6 +35,12 @@ class haproxy(
         owner   => 'root',
         group   => 'root',
         content => template($template),
+        notify  => Exec['restart-haproxy']
+    }
+
+    exec { 'restart-haproxy':
+        command     => '/bin/systemctl restart haproxy',
+        refreshonly => true,
     }
 
     file { '/usr/lib/nagios/plugins/check_haproxy':

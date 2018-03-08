@@ -1,0 +1,45 @@
+listen thumbor
+    mode http
+    bind *:<%= @listen_port + 1000 %>
+
+    # Short because if Haproxy attempts to connect, the Thumbor instance it tries must be
+    # free (no other connection, because maxconn is 1)
+    timeout connect 1000ms
+
+    # Thumbor times out when processing of a given request takes 60s. Since we have certainty
+    # of only one request at a time being handled by a Thumbor instance, thanks to maxconn, we don't
+    # need that timeout to be much larger
+    timeout server 70000ms
+
+    # The server can take a while to respond (up to "timeout server" * 2 for the retry + "timeout queue")
+    timeout client 150000ms
+
+    # When a request is queued because all Thumbor instances are busy, we want to wait for an
+    # opportunity to run. Given that requests are a mix of short and long ones, it shouldn't be
+    # necessary to wait very long to get off the queue. If it does, then Thumbor is truly overloaded
+    # and we're better off 503ing.
+    timeout queue 10000ms
+
+    # Use first available Thumbor instance for next request
+    balance first
+    # Retry once on a different Thumbor instance in case of connection timeout or failure
+    retries 1
+    option redispatch 1
+
+    # Send X-Forwarded-For header to Thumbor instance
+    option forwardfor
+
+    # Send a unique request id to Thumbor instance
+    unique-id-format %{+X}o\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid
+    unique-id-header Thumbor-Request-Id
+
+    http-request set-header Proxy-Request-Date %Tl
+    http-request set-header X-Client-IP %[src]
+    http-response set-header Proxy-Response-Date %Tl
+    http-response set-header X-Upstream %si:%sp
+
+    # Maxconn 1 ensures that each Thumbor instance only handles one request at a time
+    # which is deliberate since Thumbor is single-threaded
+    <%- @ports.each do |port| -%>
+    server server<%= port -%> 127.0.0.1:<%= port -%> maxconn 1 check
+    <%- end -%>
