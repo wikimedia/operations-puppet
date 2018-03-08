@@ -37,6 +37,9 @@ def main():
         '--config', default='/etc/wikireplica_dns.yaml',
         help='Path to YAML config file')
     parser.add_argument(
+        '--envfile', default='/etc/novaadmin.yaml',
+        help='Path to OpenStack authentication YAML file')
+    parser.add_argument(
         '--zone',
         help='limit changes to the given zone')
     parser.add_argument(
@@ -56,6 +59,7 @@ def main():
     # Quiet some noisy 3rd-party loggers
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
+    logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
 
     with open(args.config) as f:
         config = yaml.safe_load(f)
@@ -81,7 +85,7 @@ def main():
         shards = all_shards
 
     dns = mwopenstackclients.DnsManager(
-        mwopenstackclients.Client(), 'noauth-project')
+        mwopenstackclients.Clients(envfile=args.envfile), 'noauth-project')
     for zone in zones:
         r = dns.zones(name=zone)
         if not r:
