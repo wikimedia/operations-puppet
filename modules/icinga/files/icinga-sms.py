@@ -101,12 +101,14 @@ if __name__ == "__main__":
                         help='List all contacts who can receive SMS,\
                         along with their addresses.')
     parser.add_argument('-d', '--address', nargs=1,
+                        metavar='<contact_name>',
                         help='Get the address for a contact name.\
                         expects 1 parameter, contact_name')
     parser.add_argument('-s', '--send', nargs=2,
-                        help='Send SMS to a contact name.\
-                        expects 2 parameters, contact_name and message')
+                        metavar='',
+                        help='Send a message to a contact name. -s <contact_name> <message>')
     parser.add_argument('-x', '--sendall', nargs=1,
+                        metavar='<message>',
                         help='Send SMS to ALL contacts who can receive SMS.\
                         expects 1 parameter, message')
 
