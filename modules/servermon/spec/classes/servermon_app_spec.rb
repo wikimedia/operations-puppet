@@ -6,6 +6,12 @@ describe 'servermon', :type => :class do
             'fake_secret'
         }
     end
+    let(:facts) do
+      {
+        :lsbdistrelease => '8.7',
+        :lsbdistid => 'Debian',
+      }
+    end
 
     let(:params) { {
         :ensure     => 'present',
