@@ -285,14 +285,13 @@ labtestpuppetmaster:
   __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
   puppetmaster: "puppetmaster2001.codfw.wmnet"
 
-# These should be removed in favor of https://puppet.com/docs/facter/3.9/core_facts.html#memory
-# if we ever get a more recent version of facter.
+# Vary Hadoop yarn_nodemanager_resource_memory_mb based on available RAM.
 hadoop_worker_64G_memory:
   __regex: !ruby/regexp /^analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]).eqiad.wmnet$/
-  profile::hadoop::common::total_memory_mb: 65536
+  profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 53248   # 64G - 12G
 hadoop_worker_128G_memory:
   __regex: !ruby/regexp /^analytics10(7[0-9]).eqiad.wmnet$/
-  profile::hadoop::common::total_memory_mb: 131072
+  profile::hadoop::common::yarn_nodemanager_resource_memory_mb: 118784  # 128G - 12G
 
 puppetdb4_servers:
   __regex: !ruby/regexp /^puppetdb[12]001\.(eqiad|codfw)\.wmnet$/
