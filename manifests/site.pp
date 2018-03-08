@@ -889,14 +889,17 @@ node 'etherpad1001.eqiad.wmnet' {
     role(etherpad)
 }
 
-# Receives log data from Kafka processes it, and broadcasts
-# to Kafka Schema based topics.
+
+# Old Eventlogging host, still up until all the consumers
+# have migrated away from it.
 node 'eventlog1001.eqiad.wmnet' {
     role(eventlogging::analytics)
 }
 
+# Receives log data from Kafka processes it, and broadcasts
+# to Kafka Schema based topics.
 node 'eventlog1002.eqiad.wmnet' {
-    role(spare::system)
+    role(eventlogging::analytics)
 }
 
 # virtual machine for mailman list server
