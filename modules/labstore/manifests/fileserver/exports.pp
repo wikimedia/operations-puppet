@@ -1,6 +1,7 @@
 class labstore::fileserver::exports(
     $observer_pass,
     ) {
+
     require_package(['python3-yaml'])
 
     group { 'nfsmanager':
