@@ -7,17 +7,19 @@ class profile::openstack::main::rabbitmq(
     $labs_hosts_range = hiera('profile::openstack::main::labs_hosts_range'),
     $nova_api_host = hiera('profile::openstack::main::nova_api_host'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
+    $nova_rabbit_password = hiera('profile::openstack::main::nova::rabbit_pass'),
 ){
 
     require ::profile::openstack::main::cloudrepo
     class {'::profile::openstack::base::rabbitmq':
-        nova_controller  => $nova_controller,
-        monitor_user     => $monitor_user,
-        monitor_password => $monitor_password,
-        cleanup_password => $cleanup_password,
-        file_handles     => $file_handles,
-        labs_hosts_range => $labs_hosts_range,
-        nova_api_host    => $nova_api_host,
-        designate_host   => $designate_host,
+        nova_controller      => $nova_controller,
+        monitor_user         => $monitor_user,
+        monitor_password     => $monitor_password,
+        cleanup_password     => $cleanup_password,
+        file_handles         => $file_handles,
+        labs_hosts_range     => $labs_hosts_range,
+        nova_api_host        => $nova_api_host,
+        designate_host       => $designate_host,
+        nova_rabbit_password => $nova_rabbit_password,
     }
 }
