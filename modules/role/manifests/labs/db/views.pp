@@ -5,6 +5,7 @@ class role::labs::db::views {
         'python-pymysql',
         'python-requests',
         'python-simplejson',
+        'python3-psutil'
     ]:
         ensure => present,
     }
@@ -27,6 +28,25 @@ class role::labs::db::views {
         group   => 'root',
         mode    => '0655',
         require => [Package['python3-yaml', 'python3-pymysql'],
+                    Git::Clone['operations/mediawiki-config'],
+        ],
+    }
+
+    file { '/etc/index-conf.yaml':
+        ensure  => file,
+        content => template('role/labs/db/views/index-conf.yaml'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+    file { '/usr/local/sbin/maintain_replica_indexes.py':
+        ensure  => file,
+        source  => 'puppet:///modules/role/labs/db/views/maintain_replica_indexes.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0655',
+        require => [Package['python3-yaml', 'python3-pymysql', 'python3-psutil'],
                     Git::Clone['operations/mediawiki-config'],
         ],
     }

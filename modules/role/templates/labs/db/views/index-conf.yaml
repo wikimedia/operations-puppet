@@ -1,0 +1,57 @@
+port: 3306
+mysql_user: "<%= @view_user %>"
+mysql_password: "<%= @view_pass %>"
+
+indexes:
+  - table: archive
+    name: user_timestamp
+    columns:
+      - ar_user
+      - ar_timestamp
+  - table: page_props
+    name: pp_value_prefix
+    columns:
+      - pp_value(767)
+  - table: logging
+    name: log_comment_type
+    columns:
+      - log_comment_id
+      - log_type
+      - log_deleted
+  - table: protected_titles
+    name: pt_reason_id
+    columns:
+      - pt_reason_id
+  - table: oldimage
+    name: oi_description_deleted
+    columns:
+      - oi_description_id
+      - oi_deleted
+  - table: ipblocks
+    name: ipb_reason_deleted
+    columns:
+      - ipb_reason_id
+      - ipb_deleted
+  - table: recentchanges
+    name: rc_comment_deleted
+    columns:
+      - rc_comment_id
+      - rc_deleted
+  - table: filearchive
+    name: fa_description_deleted
+    columns:
+      - fa_description_id
+      - fa_deleted
+  - table: filearchive
+    name: fa_reason
+    columns:
+      - fa_deleted_reason_id
+  - table: revision_comment_temp
+    name: revcomment_comment_id
+    columns:
+      - revcomment_comment_id
+  - table: image_comment_temp
+    name: imgcomment_description_id
+    columns:
+      - imgcomment_description_id
+      - imgcomment_name
