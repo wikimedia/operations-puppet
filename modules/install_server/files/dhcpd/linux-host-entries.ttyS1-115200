@@ -2320,8 +2320,6 @@ host dbstore2002 {
 host deploy1001 {
     hardware ethernet 18:66:DA:5F:CF:1F;
     fixed-address deploy1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host druid1001 {
