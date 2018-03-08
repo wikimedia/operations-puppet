@@ -17,4 +17,12 @@ class icinga::monitor::performance {
     monitoring::grafana_alert { 'db/resourceloader-alerts':
         contact_group   => 'team-performance',
     }
+
+    monitoring::grafana_alert { 'db/webpagereplay-desktop-alerts':
+        contact_group   => 'team-performance',
+    }
+
+    monitoring::grafana_alert { 'webpagereplay-mobile-alerts':
+        contact_group   => 'team-performance',
+    }
 }
