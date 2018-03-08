@@ -70,17 +70,6 @@ class profile::analytics::refinery::job::camus(
         libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
         kafka_brokers => $kafka_brokers_jumbo,
     }
-    # TODO: This camus job will be removed once all mediawiki avro topics have moved to jumbo.
-    # See: https://phabricator.wikimedia.org/T188136
-    camus::job { 'mediawiki-analytics':
-        check         => true,
-        minute        => '15',
-        # refinery-camus contains some custom decoder classes which
-        # are needed to import Avro binary data.
-        libjars       => "${profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.28.jar",
-        kafka_brokers => $kafka_brokers_analytics,
-    }
-
 
     # Import eventbus mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
