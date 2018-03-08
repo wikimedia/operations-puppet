@@ -10,7 +10,7 @@ describe 'systemd::service' do
       }
     }
     it {
-      is_expected.to compile.and_raise_error(/Unsupported systemd unit type invalid/)
+      is_expected.to compile.and_raise_error(/parameter 'unit_type' expects a match for Systemd::Unit_type/)
     }
   end
   context 'when using defaults' do
