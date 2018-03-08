@@ -38,14 +38,14 @@
 # }
 #
 define systemd::unit(
-    $content,
-    $ensure=present,
-    $restart=false,
-    $override=false,
+    String $content,
+    Wmflib::Ensure $ensure=present,
+    Boolean $restart=false,
+    Boolean $override=false,
 ){
     require ::systemd
 
-    if ($title =~ /^(.+)\.(\w+)$/ and $2 in $::systemd::unit_types){
+    if ($title =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit_type){
         $unit_name = $title
     } else {
         $unit_name = "${title}.service"
