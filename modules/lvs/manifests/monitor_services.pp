@@ -169,4 +169,18 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
     }
 
+    monitoring::service { 'check_maps_eqsin':
+        host          => 'upload-lb.eqsin.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Maps edge eqsin',
+        check_command => 'check_wmf_service!https://maps.wikimedia.org!15'
+    }
+
+    monitoring::service { 'check_restbase_eqsin':
+        host          => 'text-lb.eqsin.wikimedia.org',
+        group         => 'lvs',
+        description   => 'Restbase edge eqsin',
+        check_command => 'check_wmf_service!https://en.wikipedia.org/api/rest_v1!15',
+    }
+
 }

@@ -181,9 +181,8 @@ lvs::configuration::lvs_services:
           hostname: text-lb.esams.wikimedia.org
         ulsfo:
           hostname: text-lb.ulsfo.wikimedia.org
-        # XXX no monitoring yet, not online
-        #eqsin:
-        #  hostname: text-lb.eqsin.wikimedia.org
+        eqsin:
+          hostname: text-lb.eqsin.wikimedia.org
   text-https:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)"
     class: high-traffic1
@@ -237,9 +236,8 @@ lvs::configuration::lvs_services:
           hostname: upload-lb.esams.wikimedia.org
         ulsfo:
           hostname: upload-lb.ulsfo.wikimedia.org
-        # XXX no monitoring yet, not online
-        #eqsin:
-        #  hostname: upload-lb.eqsin.wikimedia.org
+        eqsin:
+          hostname: upload-lb.eqsin.wikimedia.org
   upload-https:
     description: "Images and other media, upload.%{::site}.wikimedia.org"
     class: high-traffic2
