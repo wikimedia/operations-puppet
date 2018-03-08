@@ -1,0 +1,33 @@
+#!/bin/sh
+# check_eventlogging_jobs
+#
+# EventLogging plug-in for Nagios/Icinga. Iterates through job instance
+# definition files in /etc/eventlogging.d and ensures that they are running.
+
+if [ ! -d "/etc/eventlogging.d" ]; then
+    echo "UNKNOWN: Can't find EventLogging job config dir /etc/eventlogging.d"
+    exit 3
+fi
+
+roles="forwarder processor multiplexer consumer reporter"
+set -- $roles
+stopped=""
+
+for role in "$@"; do
+    for config in /etc/eventlogging.d/${role}s/*; do
+        [ -e "$config" ] || break
+        name="$(basename $config)"
+        status=$(/bin/systemctl is-active "eventlogging-${role}@${name}")
+        if [ "$status" != "active" ]; then
+            stopped="eventlogging-${role}@${name} ${stopped}"
+        fi
+    done
+done
+
+if [ ! -z "$stopped" ]; then
+    echo "CRITICAL: Stopped EventLogging jobs: ${stopped}"
+    exit 2
+fi
+
+echo "OK: All defined EventLogging jobs are runnning."
+exit 0

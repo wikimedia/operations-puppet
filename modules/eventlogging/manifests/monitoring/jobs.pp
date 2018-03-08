@@ -4,9 +4,17 @@
 # eventlogging services are running.
 #
 class eventlogging::monitoring::jobs($ensure = 'present') {
-    file { '/usr/lib/nagios/plugins/check_eventlogging_jobs':
-        source => 'puppet:///modules/eventlogging/check_eventlogging_jobs',
-        mode   => '0755',
+
+    if os_version('debian >= stretch') {
+        file { '/usr/lib/nagios/plugins/check_eventlogging_jobs':
+            source => 'puppet:///modules/eventlogging/check_eventlogging_jobs.systemd',
+            mode   => '0755',
+        }
+    } else {
+        file { '/usr/lib/nagios/plugins/check_eventlogging_jobs':
+            source => 'puppet:///modules/eventlogging/check_eventlogging_jobs',
+            mode   => '0755',
+        }
     }
 
     nrpe::monitor_service { 'eventlogging-jobs':
