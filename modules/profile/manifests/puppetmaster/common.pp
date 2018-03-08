@@ -11,6 +11,7 @@ class profile::puppetmaster::common (
     $base_config,
     $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', 'activerecord'),
     $puppet_major_version = hiera('puppet_major_version', 3),
+    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
 ) {
     include passwords::puppet::database
 
@@ -46,10 +47,20 @@ class profile::puppetmaster::common (
         reports              => 'servermon',
     }
 
+    if $puppetdb_major_version == 4 and $storeconfigs == 'puppetdb' {
+        apt::repository { 'wikimedia-puppetdb4':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/puppetdb4',
+            before     => Class['puppetmaster::puppetdb::client'],
+        }
+    }
+
     if $storeconfigs == 'puppetdb' {
         $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
         class { 'puppetmaster::puppetdb::client':
-            host => $puppetdb_host,
+            host                   => $puppetdb_host,
+            puppetdb_major_version => $puppetdb_major_version,
         }
         $config = merge($base_config, $puppetdb_config, $active_record_db, $env_config)
     } elsif $storeconfigs == 'activerecord' {

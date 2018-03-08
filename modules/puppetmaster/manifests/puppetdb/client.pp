@@ -1,14 +1,26 @@
 # == Class puppetmaster::puppetdb::client
 # Configures a puppetmaster to work as a puppetdb client
-class puppetmaster::puppetdb::client($host, $port=443) {
+class puppetmaster::puppetdb::client(
+    $host,
+    $port=443,
+    $puppetdb_major_version=undef,
+) {
     # Only 3.5+ puppetmasters can work with our version of puppetdb
     requires_os('debian >= jessie')
 
-    require_package('puppetdb-terminus')
+    if $puppetdb_major_version == 4 {
+        $puppetdb_terminus_package = 'puppetdb-termini'
+        $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
+    } else {
+        $puppetdb_terminus_package = 'puppetdb-terminus'
+        $puppetdb_conf_template    = 'puppetmaster/puppetdb.conf.erb'
+    }
+
+    require_package($puppetdb_terminus_package)
 
     file { '/etc/puppet/puppetdb.conf':
         ensure  => present,
-        content => template('puppetmaster/puppetdb.conf.erb'),
+        content => template($puppetdb_conf_template),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
