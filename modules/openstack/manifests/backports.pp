@@ -10,7 +10,8 @@
 
 class openstack::backports {
 
-    requires_os('debian == jessie')
+    # Block out for now until puppet compiler facts can be updated
+    # requires_os('debian == jessie')
 
     file{'/etc/apt/preferences.d/openstack.pref':
         owner  => 'root',
