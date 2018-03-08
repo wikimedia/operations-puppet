@@ -1,3 +1,8 @@
+sudo service nova-api stop
+sudo service nova-conductor stop
+sudo service nova-scheduler stop
+sudo puppet agent --disable 'nova setup'
+
 # Note: Mitaka is the first release where nova and nova_api are
 # separated databases.
 #
@@ -17,3 +22,6 @@ openstack service create --name nova --description "OpenStack Compute" compute
 openstack endpoint create --region <%= @region %> compute public http://controller:8774/v2.1/%\(tenant_id\)s
 openstack endpoint create --region <%= @region %> compute internal http://controller:8774/v2.1/%\(tenant_id\)s
 openstack endpoint create --region <%= @region %> compute admin http://controller:8774/v2.1/%\(tenant_id\)s
+
+su -s /bin/sh -c "nova-manage api_db sync" nova; echo $?
+su -s /bin/sh -c "nova-manage db sync" nova; echo $?
