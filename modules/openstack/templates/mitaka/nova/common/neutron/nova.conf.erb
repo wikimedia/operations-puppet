@@ -1,34 +1,61 @@
 [DEFAULT]
+# https://docs.openstack.org/mitaka/install-guide-ubuntu/nova-controller-install.html
+auth_strategy = keystone
+use_neutron = True
+
 my_ip = <%= @ipaddress %>
 pybasedir = /usr/lib/python2.7/dist-packages
 state_path = /var/lib/nova
 enabled_apis = osapi_compute,metadata
+
+# By default, Compute uses an internal firewall driver.
+# Since the Networking service includes a firewall driver
+# disable the Compute firewall driver by using the
+# nova.virt.firewall.NoopFirewallDriver firewall driver.
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 network_api_class = nova.network.neutronv2.api.API
 default_floating_pool = ext-nat
 linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
 security_group_api = neutron
+
 [api_database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
+
 [barbican]
 [cells]
 [cinder]
 [conductor]
 [cors]
 [cors.subdomain]
+
 [database]
-connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova
+
 [ephemeral_storage_encryption]
 [glance]
+api_servers = http://<%= @glance_host %>:9292
 [guestfs]
 [hyperv]
 [image_file_url]
 [ironic]
 [keymgr]
 [keystone_authtoken]
-auth_host = 127.0.0.1
+auth_host = <%= @nova_controller %>
 auth_protocol = http
-admin_user = admin
+admin_user = novaadmin
 admin_tenant_name = admin
+auth_uri = http://<%= @nova_controller %>:5000
+auth_url = http://<%= @nova_controller %>:35357
+# is this needed?
+#memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = admin
+username = novaadmin
+password = <%= @ldap_user_pass %>
+
+
 [libvirt]
 [matchmaker_redis]
 [metrics]
@@ -50,14 +77,17 @@ username = admin
 [osapi_v21]
 [oslo_concurrency]
 lock_path = /var/lock/nova
-
+# docs suggest but ^ is the debian default
+#lock_path = /var/lib/nova/tmp
 [oslo_messaging_amqp]
 [oslo_messaging_notifications]
 
 [oslo_messaging_rabbit]
-rabbit_host = localhost
-rabbit_userid = guest
-rabbit_password =
+rabbit_host=<%= @rabbit_host %>
+rabbit_port = 5672
+rabbit_use_ssl = False
+rabbit_userid = <%= @rabbit_user %>
+rabbit_password = <%= @rabbit_pass %>
 
 [oslo_middleware]
 [oslo_policy]
@@ -74,5 +104,8 @@ enabled = true
 [upgrade_levels]
 [vmware]
 [vnc]
+# not set yet
+#vncserver_listen = $my_ip
+#vncserver_proxyclient_address = $my_ip
 [workarounds]
 [xenserver]

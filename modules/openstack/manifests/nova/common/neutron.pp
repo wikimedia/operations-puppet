@@ -1,5 +1,15 @@
 class openstack::nova::common::neutron(
     $version,
+    $db_user,
+    $db_pass,
+    $db_host,
+    $db_name,
+    $nova_controller,
+    $ldap_user_pass,
+    $rabbit_user,
+    $rabbit_host,
+    $rabbit_pass,
+    $glance_host,
     ) {
 
     class {'openstack::nova::common::base':
