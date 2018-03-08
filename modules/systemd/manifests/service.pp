@@ -21,32 +21,34 @@
 #   Additional service parameters we want to specify
 #
 define systemd::service(
-    $content,
-    $unit_type = 'service',
-    $ensure  = 'present',
-    $restart = false,
-    $override = false,
+    String $content,
+    Systemd::Unit_type $unit_type = 'service',
+    Wmflib::Ensure $ensure  = 'present',
+    Boolean $restart = false,
+    Boolean $override = false,
     $service_params = {},
 ){
-    require ::systemd
-    validate_ensure($ensure)
-    unless ($unit_type in $::systemd::unit_types) {
-        fail("Unsupported systemd unit type ${unit_type}")
-    }
 
-    # Use a fully specified label for the unit, unless it's of type "service"
-    $label =  $unit_type ? {
-        'service' => $title,
-        default   => "${title}.${unit_type}"
+    if $unit_type == 'service' {
+        $label = $title
+        $provider = undef
+    } else {
+        # Use a fully specified label for the unit.
+        $label = "${title}.${unit_type}"
+        # Force the provider of the service to be systemd if the unit type is
+        # not service. Otherwise, they'd fail on at least debian jessie
+        $provider = 'systemd'
     }
 
     $enable = $ensure ? {
         'present' => true,
         default   => false,
     }
+
     $base_params = {
         ensure   => ensure_service($ensure),
         enable   => $enable,
+        provider => $provider
     }
     $params = merge($base_params, $service_params)
     ensure_resource('service', $label, $params)
