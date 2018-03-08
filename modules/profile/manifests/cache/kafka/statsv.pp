@@ -39,7 +39,7 @@ class profile::cache::kafka::statsv(
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
         # Force more exact protocol version.
-        # TODO: can we change this in common.yaml kafka_clusters hash?
+        # TODO: remove this once kafka main clusters are upgraded to 1.x
         force_protocol_version      => '0.9.0.1',
     }
 
