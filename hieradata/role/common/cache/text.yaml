@@ -119,4 +119,5 @@ apt::use_experimental: true
 
 # Monitor varnishkafka-eventlogging process.
 profile::cache::kafka::eventlogging::monitoring_enabled: true
-profile::cache::kafka::eventlogging::kafka_cluster_name: analytics
+profile::cache::kafka::eventlogging::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::eventlogging::ssl_enabled: true
