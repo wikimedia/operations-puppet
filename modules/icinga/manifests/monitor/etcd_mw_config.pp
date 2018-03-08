@@ -11,16 +11,17 @@ class icinga::monitor::etcd_mw_config {
         source => 'puppet:///modules/icinga/update-etcd-mw-config-lastindex',
     }
 
-    systemd::unit { 'update-etcd-mw-config-lastindex':
+    systemd::service { 'update-etcd-mw-config-lastindex':
         ensure  => present,
         restart => true,
         content => systemd_template('update-etcd-mw-config-lastindex'),
     }
 
     systemd::service { 'update-etcd-mw-config-lastindex.timer':
-        ensure  => present,
-        restart => true,
-        content => systemd_template('update-etcd-mw-config-lastindex.timer'),
+        ensure         => present,
+        restart        => true,
+        service_params => { 'provider' => 'systemd' },
+        content        => systemd_template('update-etcd-mw-config-lastindex.timer'),
     }
 
     nrpe::monitor_systemd_unit_state { 'update-etcd-mw-config-lastindex':
