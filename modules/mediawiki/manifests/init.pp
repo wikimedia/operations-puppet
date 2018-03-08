@@ -70,4 +70,13 @@ class mediawiki (
         group  => 'wikidev',
         mode   => '0644',
     }
+
+    # Script to use for decommissioning a machine and move it to role::system::spare
+    file { '/root/decommission_appserver':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500',
+        source => 'puppet:///modules/mediawiki/decommission_appserver.sh',
+    }
 }
