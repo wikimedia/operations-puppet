@@ -8,6 +8,8 @@ class profile::openstack::base::rabbitmq(
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
+    $nova_user = hiera('profile::openstack::base::nova::rabbit_user'),
+    $nova_password = hiera('profile::openstack::base::nova::rabbit_pass'),
 ){
 
     class { '::rabbitmq':
@@ -22,6 +24,11 @@ class profile::openstack::base::rabbitmq(
         enabled  => $::fqdn == $nova_controller,
     }
     contain '::rabbitmq::cleanup'
+
+    class {'::openstack::nova::rabbit':
+        username => $nova_user,
+        password => $nova_password,
+    }
 
     class { '::rabbitmq::monitor':
         rabbit_monitor_username => $monitor_user,
