@@ -47,6 +47,7 @@ class role::puppetmaster::standalone(
     $use_enc = true,
     $labs_puppet_master = hiera('labs_puppet_master'),
     $puppet_major_version = hiera('puppet_major_version', 3),
+    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
@@ -79,13 +80,14 @@ class role::puppetmaster::standalone(
     $config = merge($base_config, $env_config)
 
     class { '::puppetmaster':
-        server_name          => $server_name,
-        allow_from           => $allow_from,
-        secure_private       => false,
-        prevent_cherrypicks  => $prevent_cherrypicks,
-        extra_auth_rules     => $extra_auth_rules,
-        config               => $config,
-        puppet_major_version => $puppet_major_version,
+        server_name            => $server_name,
+        allow_from             => $allow_from,
+        secure_private         => false,
+        prevent_cherrypicks    => $prevent_cherrypicks,
+        extra_auth_rules       => $extra_auth_rules,
+        config                 => $config,
+        puppet_major_version   => $puppet_major_version,
+        puppetdb_major_version => $puppetdb_major_version,
     }
 
     # Update git checkout
