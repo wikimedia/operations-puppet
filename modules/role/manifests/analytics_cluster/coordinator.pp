@@ -57,7 +57,7 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery::job::data_drop
     include ::profile::analytics::refinery::job::project_namespace_map
     include ::profile::analytics::refinery::job::sqoop_mediawiki
-    include ::profile::analytics::refinery::job::json_refine
+    include ::profile::analytics::refinery::job::refine
     include ::profile::analytics::refinery::job::streams_check
 
     include standard
