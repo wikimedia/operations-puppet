@@ -111,6 +111,10 @@ class thumbor (
         content => template('thumbor/nginx.conf.erb'),
     }
 
+    haproxy::site { 'thumbor':
+        content => template('thumbor/haproxy.cfg.erb'),
+    }
+
     # Multi instance setup.
     # * Mask default service from package
     # * Provide 'thumbor-instances' to stop and restart all configured
