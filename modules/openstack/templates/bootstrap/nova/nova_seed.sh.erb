@@ -1,0 +1,19 @@
+# Note: Mitaka is the first release where nova and nova_api are
+# separated databases.
+#
+# CREATE DATABASE nova_api;
+# CREATE DATABASE nova;
+#
+#GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'208.80.153.75' \
+#  IDENTIFIED BY '<%= @db_pass %>';
+#GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' \
+#  IDENTIFIED BY '<%= @db_pass %>';
+#GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'208.80.153.75' \
+#  IDENTIFIED BY '<%= @db_pass %>';
+#GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' \
+#  IDENTIFIED BY '<%= @db_pass %>';
+
+openstack service create --name nova --description "OpenStack Compute" compute
+openstack endpoint create --region <%= @region %> compute public http://controller:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region <%= @region %> compute internal http://controller:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region <%= @region %> compute admin http://controller:8774/v2.1/%\(tenant_id\)s
