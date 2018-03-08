@@ -128,11 +128,35 @@ class openstack::nova::compute::service(
         require => Package['nova-compute'],
     }
 
-    file { '/etc/default/libvirt-bin':
+    if os_version('debian == jessie') {
+
+        # /etc/default/libvirt-guests
+        # Guest management on host startup/reboot
+        service{'libvirt-guests':
+            ensure => 'stopped',
+        }
+
+        file {'/etc/libvirt/original':
+            ensure  => 'directory',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            recurse => true,
+            source  => "puppet:///modules/openstack/${version}/nova/libvirt/original",
+            require => Package['nova-compute'],
+        }
+    }
+
+    $libvirtd_conf = $facts['lsbdistcodename'] ? {
+        'trusty' => '/etc/default/libvirt-bin',
+        'jessie' => '/etc/default/libvirtd',
+    }
+
+    file { $libvirtd_conf:
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template("openstack/${version}/nova/compute/libvirt-bin.default.erb"),
+        content => template("openstack/${version}/nova/compute/libvirt.default.erb"),
         notify  => Service['libvirt-bin'],
         require => Package['nova-compute'],
     }
@@ -151,7 +175,12 @@ class openstack::nova::compute::service(
         require => Package['libvirt-bin'],
     }
 
-    service { 'libvirt-bin':
+    $libvirt_service = $facts['lsbdistcodename'] ? {
+        'trusty' => '/etc/default/libvirt-bin',
+        'jessie' => '/etc/default/libvirtd',
+    }
+
+    service { $libvirt_service:
         ensure  => 'running',
         enable  => true,
         require => Package['libvirt-bin'],
