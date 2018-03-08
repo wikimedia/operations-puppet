@@ -9,6 +9,7 @@ class profile::puppetmaster::frontend(
     Hash[String, Puppetmaster::Backends] $servers = hiera('puppetmaster::servers', {}),
     Puppetmaster::Backends $test_servers = hiera('profile::puppetmaster::frontend::test_servers', []),
     $puppet_major_version = hiera('puppet_major_version', undef),
+    $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $ssl_ca_revocation_check = hiera('profile::puppetmaster::frontend::ssl_ca_revocation_check', 'chain'),
     $allow_from = [
       '*.wikimedia.org',
@@ -53,16 +54,17 @@ class profile::puppetmaster::frontend(
     }
 
     class { '::puppetmaster':
-        bind_address         => '*',
-        server_type          => 'frontend',
-        is_git_master        => true,
-        workers              => $workers,
-        config               => $::profile::puppetmaster::common::config,
-        secure_private       => $secure_private,
-        prevent_cherrypicks  => $prevent_cherrypicks,
-        allow_from           => $allow_from,
-        extra_auth_rules     => $extra_auth_rules,
-        puppet_major_version => $puppet_major_version,
+        bind_address           => '*',
+        server_type            => 'frontend',
+        is_git_master          => true,
+        workers                => $workers,
+        config                 => $::profile::puppetmaster::common::config,
+        secure_private         => $secure_private,
+        prevent_cherrypicks    => $prevent_cherrypicks,
+        allow_from             => $allow_from,
+        extra_auth_rules       => $extra_auth_rules,
+        puppet_major_version   => $puppet_major_version,
+        puppetdb_major_version => $puppetdb_major_version,
     }
 
     # Main site to respond to
