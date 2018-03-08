@@ -179,7 +179,7 @@ class icinga(
         source => 'puppet:///modules/icinga/icinga-downtime.sh',
         owner  => 'root',
         group  => 'root',
-        mode   => '0550',
+        mode   => '0555',
     }
 
     # script to manually send SMS to Icinga contacts (T82937)
@@ -188,7 +188,7 @@ class icinga(
         source => 'puppet:///modules/icinga/icinga-sms.py',
         owner  => 'root',
         group  => 'root',
-        mode   => '0550',
+        mode   => '0555',
     }
 
     # Purge unmanaged nagios_host and nagios_services resources
