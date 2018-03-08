@@ -11,9 +11,9 @@ import re
 
 # Usage:
 #
-#  % apt-upgrade [-un] [-f exclude_file] upgrade <suite> [-yh]
-#  % apt-upgrade [-un] [-f exclude_file] report [<suite>] [-h]
-#  % apt-upgrade [-un] [-f exclude_file] list [-h]
+#  % apt-upgrade [-un] [-f exclude_file] [-x regex] upgrade <suite> [-yh]
+#  % apt-upgrade [-un] [-f exclude_file] [-x regex] report [<suite>] [-h]
+#  % apt-upgrade [-un] [-f exclude_file] [-x regex] list [-h]
 #
 # make sure you hold+pin beforehand those packages that should not be upgraded
 #
@@ -98,42 +98,29 @@ def sort_pkgs_by_archive(pkg_list):
     return sorted(pkg_list, key=lambda pkg: pkg.candidate.origins[0].archive)
 
 
-def exclude_packages(pkg_list, exclude_file):
-    """ read file with one regex per line of packages to exclude from
-        upgrades (mark as keep)
+def exclude_packages(pkg_list, exclude_regex_set):
+    """ exclude packages (mark as keep) if the match a regex in the set
     :param cache: apt.Cache
     :param file: str
-    :param exclude_file: str
+    :param exclude_regex_file: set(regex)
     """
-    if not exclude_file:
-        return
-
-    try:
-        f = open(exclude_file)
-    except OSError as e:
-        logging.warning("can't open exclude file: {}". format(e))
-        return
-
-    for line in f.readlines():
-        regex = re.compile(line[:-1])  # clean '\n'
+    for regex in exclude_regex_set:
         for pkg in pkg_list:
             if regex.match(pkg.name):
                 print_output_pkg("[excluded]", pkg)
                 pkg.mark_keep()
 
-    f.close()
 
-
-def calculate_upgrades(cache, exclude_file):
+def calculate_upgrades(cache, exclude_regex_set):
     """ calculate upgrades and print the changes
     :param cache: apt.Cache
-    :param exclude_file: str
+    :param exclude_regex_set: set(regex)
     """
     for pkg_name in cache.keys():
         pkg_upgrade(cache[pkg_name])
 
     pkg_list = sort_pkgs_by_archive(cache.get_changes())
-    exclude_packages(pkg_list, exclude_file)
+    exclude_packages(pkg_list, exclude_regex_set)
 
     # excluding packages generates new changes, so sort again
     pkg_list = sort_pkgs_by_archive(cache.get_changes())
@@ -143,16 +130,16 @@ def calculate_upgrades(cache, exclude_file):
     return len(pkg_list)
 
 
-def run_upgrade(cache, src, confirm, exclude_file):
+def run_upgrade(cache, src, confirm, exclude_regex_set):
     """ main upgrade routine: calculate upgrades and commit them
     :param cache: apt.Cache
     :param src: str
     :param confirm: boolean
-    :param exclude_file: str
+    :param exclude_regex_set: set(regex)
     """
     cache.set_filter(AptFilterUpgradeableSrc(src))
 
-    if not calculate_upgrades(cache, exclude_file):
+    if not calculate_upgrades(cache, exclude_regex_set):
         logging.info('no packages found to upgrade from {}'.format(src))
         return
 
@@ -164,28 +151,28 @@ def run_upgrade(cache, src, confirm, exclude_file):
     cache.commit()
 
 
-def run_report(cache, archive, exclude_file):
+def run_report(cache, archive, exclude_regex_set):
     """ calculate upgrades and report them
     :param cache: apt.Cache
     :param archive: str
-    :param exclude_file: str
+    :param exclude_regex_set: set(regex)
     """
     if archive:
         cache.set_filter(AptFilterUpgradeableSrc(archive))
     else:
         cache.set_filter(AptFilterUpgradeable())
 
-    return calculate_upgrades(cache, exclude_file)
+    return calculate_upgrades(cache, exclude_regex_set)
 
 
-def run_list(cache, exclude_file):
+def run_list(cache, exclude_regex_set):
     """ list available archives from which packages can be upgraded
     :param cache: apt.Cache
-    :param exclude_file: str
+    :param exclude_regex_set: set(regex)
     """
     cache.set_filter(AptFilterUpgradeable())
     logging.disable(logging.INFO)
-    calculate_upgrades(cache, exclude_file)
+    calculate_upgrades(cache, exclude_regex_set)
     logging.disable(logging.NOTSET)
     archives = set()
     for pkg in cache.get_changes():
@@ -201,12 +188,43 @@ def run_list(cache, exclude_file):
     logging.info("{}".format(", ".join(a for a in sorted(archives))))
 
 
+def exclude_regex_set(exclude_file, exclude_list):
+    """ calculates a list of regex to exclude files
+    :param exclude_file: str (file)
+    :param exclude_list: list(str)
+    """
+
+    regex_set = set()
+
+    if exclude_list:
+        for element in exclude_list:
+            regex = re.compile(element)
+            regex_set.add(regex)
+
+    if exclude_file:
+        try:
+            f = open(exclude_file)
+        except OSError as e:
+            logging.warning("can't open exclude file: {}". format(e))
+            return regex_set
+
+        for line in f.readlines():
+            regex = re.compile(line[:-1])  # clean '\n'
+            regex_set.add(regex)
+
+        f.close()
+
+    return regex_set
+
+
 def main():
     parser = argparse.ArgumentParser(description="Utility to help with upgrades of packages")
     parser.add_argument("-u", action="store_true", help="don't run cache update")
     parser.add_argument("-n", action="store_true", help="don't print the node name")
     parser.add_argument("-f", "--exclude-file",
                         help="read file (a regex per line) with packages to be excluded")
+    parser.add_argument("-x", "--exclude", action="append",
+                        help="a regex of packages to be excluded")
     subparser = parser.add_subparsers(help="possible operations (pass -h to know usage of each)",
                                       dest="operation")
     subparser.add_parser("list", help="list available sources of upgrades")
@@ -238,6 +256,7 @@ def main():
     logging.basicConfig(format=logging_format, level=logging.INFO, stream=sys.stdout)
     os.environ['DEBIAN_FRONTEND'] = "noninteractive"
     cache = apt.cache.FilteredCache()
+    regex_set = exclude_regex_set(args.exclude_file, args.exclude)
 
     if not args.u:
         logging.info("updating apt cache ...")
@@ -246,11 +265,11 @@ def main():
     cache.open(None)
 
     if args.operation == "upgrade":
-        run_upgrade(cache, args.archive, args.y, args.exclude_file)
+        run_upgrade(cache, args.archive, args.y, regex_set)
     elif args.operation == "report":
-        run_report(cache, args.archive, args.exclude_file)
+        run_report(cache, args.archive, regex_set)
     elif args.operation == "list":
-        run_list(cache, args.exclude_file)
+        run_list(cache, regex_set)
 
     cache.close()
     logging.shutdown()
