@@ -62,14 +62,14 @@ profile::hadoop::common::yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 
 # Save 12G for OS and other processes.
 # R720s will have 52G for YARN with room for 26 2G containers.
 # R730dxs will have 116G for YARN with room for 52 2G containers.
-profile::hadoop::common::reserved_memory_mb: 12288
-# NOTE: profile::hadoop::common::total_memory_mb is set in regex.yaml.
-# The values of yarn_nodemanager_resource_memory_mb and
-# yarn_scheduler_maximum_allocation_mb are set based on
-# total_memory_mb - reserved_memory_mb.
+# The value of profile::hadoop::common::yarn_nodemanager_resource_memory_mb is set in regex.yaml.
 
 # Setting minimum_allocations to 0 to allow Impala to submit small reservation requests.
-# TODO: do we need to set these anymore?  We don't use Impala.
-profile::hadoop::common::yarn_scheduler_minimum_allocation_mb:       0
+# TODO: do we need to set this anymore?  We don't use Impala.
+profile::hadoop::common::yarn_scheduler_minimum_allocation_mb: 0
+# Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
+# in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
+profile::hadoop::common::yarn_scheduler_maximum_allocation_mb: 53248
+
 profile::hadoop::common::yarn_scheduler_minimum_allocation_vcores:   0
 profile::hadoop::common::yarn_scheduler_maximum_allocation_vcores:   32
