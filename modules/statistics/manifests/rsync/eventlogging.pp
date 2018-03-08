@@ -20,9 +20,9 @@ class statistics::rsync::eventlogging {
         mode   => '0775',
     }
 
-    # eventlogging data logs from eventlog1001
+    # eventlogging data logs from eventlog1002
     statistics::rsync_job { 'eventlogging':
-        source         => 'eventlog1001.eqiad.wmnet::eventlogging/archive/*.gz',
+        source         => 'eventlog1002.eqiad.wmnet::eventlogging/archive/*.gz',
         destination    => $destination,
         retention_days => $retention_days,
     }
