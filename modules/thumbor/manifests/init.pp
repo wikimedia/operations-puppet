@@ -111,6 +111,14 @@ class thumbor (
         content => template('thumbor/nginx.conf.erb'),
     }
 
+    file { '/etc/haproxy/conf.d/thumbor.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('thumbor/haproxy.cfg.erb'),
+        notify  => Service['haproxy'],
+    }
+
     # Multi instance setup.
     # * Mask default service from package
     # * Provide 'thumbor-instances' to stop and restart all configured
