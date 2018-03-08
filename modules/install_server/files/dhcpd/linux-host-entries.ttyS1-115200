@@ -7844,7 +7844,7 @@ host wdqs1003 {
 }
 
 host wdqs1004 {
-    hardware ethernet 18:66:DA:AC:49:D5;
+    hardware ethernet D0:94:66:2F:AE:02;
     fixed-address wdqs1004.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
