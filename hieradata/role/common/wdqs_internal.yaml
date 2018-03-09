@@ -10,9 +10,9 @@ profile::wdqs::blazegraph_config_file: '/etc/wdqs/RWStore.properties'
 profile::wdqs::blazegraph_heap_size: '32g'
 profile::wdqs::enable_ldf: false
 profile::wdqs::nodes:
-  - 'wdqs1006.eqiad.wmnet'
-  - 'wdqs1007.eqiad.wmnet'
-  - 'wdqs1008.eqiad.wmnet'
+#  - 'wdqs1006.eqiad.wmnet'
+#  - 'wdqs1007.eqiad.wmnet'
+#  - 'wdqs1008.eqiad.wmnet'
   - 'wdqs2004.codfw.wmnet'
   - 'wdqs2005.codfw.wmnet'
   - 'wdqs2006.codfw.wmnet'
