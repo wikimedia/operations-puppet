@@ -26,6 +26,6 @@ class openstack::wikitech::wikitech_static_sync {
             hour    => 1,
             minute  => fqdn_rand(60),
             command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
+            require => File['/srv/backup/public'];
     }
 }
