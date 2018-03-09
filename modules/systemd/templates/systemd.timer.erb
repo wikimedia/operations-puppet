@@ -1,0 +1,15 @@
+[Unit]
+Description=Periodic execution of <%= @unit_name %>
+
+[Timer]
+Unit=<%= @unit_name %>
+# Accuracy sets the maximum time interval around the execution time we want to allow
+AccuracySec=<%= @accuracy %>
+<%- @timer_intervals.each do |timer| -%>
+<%= timer['start'] %>=<%= timer['interval'] %>
+<%- end -%>
+RandomizedDelaySec=<%= @splay %>
+
+[Install]
+WantedBy=multi-user.target
+
