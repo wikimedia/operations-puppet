@@ -1807,8 +1807,6 @@ host db1112 {
 host db1113 {
     hardware ethernet 80:18:44:DF:B7:08;
     fixed-address db1113.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db1114 {
