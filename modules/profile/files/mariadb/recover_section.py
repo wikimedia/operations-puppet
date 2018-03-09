@@ -11,14 +11,15 @@ DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
 DEFAULT_USER = 'root'
 BACKUP_DIR = '/srv/backups/latest'
-DATE_FORMAT = '%Y-%m-%d--%H-%M-%S'
 # FIXME: backups will stop working on Jan 1st 2100
 DUMPNAME_REGEX = 'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
 
 
 def parse_options():
     parser = argparse.ArgumentParser(description='Recover a logical backup')
-    parser.add_argument('section', help='Section name to recover')
+    parser.add_argument('section',
+                        help=('Section name or absolute path of the directory to recover' 
+                        '("s3", "/srv/backups/archive/dump.s3.2022-11-12--19-05-35")'))
     parser.add_argument('--host', help='Host to recover to', default=DEFAULT_HOST)
     parser.add_argument('--port', type=int, help='Port to recover to', default=DEFAULT_PORT)
     parser.add_argument('--user', help='User to connect for recovery', default=DEFAULT_USER)
@@ -65,20 +66,30 @@ def get_my_loader_cmd(backup_dir, options):
 
 
 def recover_logical_dump(options):
-    files = sorted(os.listdir(BACKUP_DIR), reverse=True)
     backup_name = None
-    for entry in files:
-        path = os.path.join(BACKUP_DIR, entry)
-        if not os.path.isdir(path):
-            continue
-        pattern = re.compile(DUMPNAME_REGEX)
-        match = pattern.match(entry)
-        if match is None:
-            continue
-        if options.section == match.group(1):
+    pattern = re.compile(DUMPNAME_REGEX)
+    
+    if options.section.startsWith('/'):
+    # Recover from absolute path
+        match = pattern.match(options.section)
+        if os.path.isdir(options.section) and match is not None:
             backup_name = match.group(0)
-            backup_dir = path
-            break
+            backup_dir = options.section
+    else:
+    # Recover from default dir
+        files = sorted(os.listdir(BACKUP_DIR), reverse=True)
+
+        for entry in files:
+            path = os.path.join(BACKUP_DIR, entry)
+            if not os.path.isdir(path):
+                continue
+            match = pattern.match(entry)
+            if match is None:
+                continue
+            if options.section == match.group(1):
+                backup_name = match.group(0)
+                backup_dir = path
+                break
 
     if backup_name is None:
         print('Latest backup with name "{}" not found'.format(options.section))
