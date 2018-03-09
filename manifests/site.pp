@@ -503,6 +503,7 @@ node 'db2092.codfw.wmnet' {
 
 # pending to be provisioned T184161
 # This host holds a temporary copy of db1011 T184704
+# This host holds a temporary copy of db1009 T189216
 node 'db1113.eqiad.wmnet' {
     role(spare::system)
 }
