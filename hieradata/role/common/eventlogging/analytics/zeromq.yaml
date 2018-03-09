@@ -1,0 +1,3 @@
+admin::groups:
+  - eventlogging-admins
+  - eventlogging-roots
