@@ -31,16 +31,6 @@ class openstack::wikitech::web(
             group  => 'root',
             mode   => '0644',
             source => 'puppet:///modules/openstack/wikitech/wikitech-robots.txt';
-        '/usr/local/sbin/mw-files.sh':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///modules/openstack/wikitech/mw-files.sh';
-        '/usr/local/sbin/mw-xml.sh':
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/openstack/wikitech/mw-xml.sh';
         '/usr/local/apache':
             ensure => 'directory',
             owner  => 'root',

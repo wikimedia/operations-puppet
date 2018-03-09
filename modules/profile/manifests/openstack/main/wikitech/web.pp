@@ -5,7 +5,6 @@ class profile::openstack::main::wikitech::web(
     $wikidb = hiera('profile::openstack::main::wikitech::db_name'),
     $wikitech_nova_ldap_proxyagent_pass = hiera('profile::openstack::base::ldap_proxyuser_pass'),
     $wikitech_nova_ldap_user_pass = hiera('profile::openstack::main::ldap_user_pass'),
-    $wikitech_static_sync_host = hiera('profile::openstack::main::wikitech::wikitech_static_sync_host'),
     ) {
 
     class {'profile::openstack::base::wikitech::web':
@@ -17,7 +16,5 @@ class profile::openstack::main::wikitech::web(
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
     }
 
-    if $wikitech_static_sync_host == $::hostname {
-        class {'::openstack::wikitech::wikitech_static_sync': }
-    }
+    class {'::openstack::wikitech::wikitech_static_sync': }
 }

@@ -22,4 +22,13 @@
 
         Require all granted
     </Directory>
+
+    <Directory /srv/backup/public>
+        php_flag engine off
+        Options Indexes
+        IndexOptions FancyIndexing
+        Require all granted
+    </Directory>
+
+    Alias /dumps /srv/backup/public
 </VirtualHost>
