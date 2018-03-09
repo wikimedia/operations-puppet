@@ -397,7 +397,7 @@ node 'db1070.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# See also db1096 and db1097 below
+# See also db1096 db1097 and db1113 below
 node /^db1(051|082|100|106|110)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -419,7 +419,7 @@ node 'db1061.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# See also db1096 and db1098 below
+# See also db1096 db1098 and db1113 below
 node /^db10(63|85|88|93)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
@@ -488,7 +488,7 @@ node /^db20(79|80|81|82|83)\.codfw\.wmnet/ {
 }
 
 # hosts with multiple shards
-node /^db1(096|097|098|099|101|103|105)\.eqiad\.wmnet/ {
+node /^db1(096|097|098|099|101|103|105|113)\.eqiad\.wmnet/ {
     role(mariadb::core_multiinstance)
 }
 node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
@@ -497,12 +497,6 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 
 # pending to be provisioned T170662
 node 'db2092.codfw.wmnet' {
-    role(spare::system)
-}
-
-
-# pending to be provisioned T184161
-node 'db1113.eqiad.wmnet' {
     role(spare::system)
 }
 
