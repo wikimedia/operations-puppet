@@ -73,6 +73,7 @@
   - db1100:9104
   - db1106:9104
   - db1110:9104
+  - db1113:13315
 - labels:
     shard: s5
     role: master
@@ -89,6 +90,7 @@
   - db1093:9104
   - db1096:13316
   - db1098:13316
+  - db1113:13316
 - labels:
     shard: s6
     role: master
