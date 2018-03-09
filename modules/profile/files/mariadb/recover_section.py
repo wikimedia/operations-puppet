@@ -11,14 +11,16 @@ DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
 DEFAULT_USER = 'root'
 BACKUP_DIR = '/srv/backups/latest'
-DATE_FORMAT = '%Y-%m-%d--%H-%M-%S'
 # FIXME: backups will stop working on Jan 1st 2100
 DUMPNAME_REGEX = 'dump\.([a-z0-9\-]+)\.(20\d\d-[01]\d-[0123]\d\--\d\d-\d\d-\d\d)'
 
 
 def parse_options():
     parser = argparse.ArgumentParser(description='Recover a logical backup')
-    parser.add_argument('section', help='Section name to recover')
+    parser.add_argument('section',
+                        help=('Section name or absolute path of the directory to recover'
+                              '("s3", "/srv/backups/archive/dump.s3.2022-11-12--19-05-35")')
+                        )
     parser.add_argument('--host', help='Host to recover to', default=DEFAULT_HOST)
     parser.add_argument('--port', type=int, help='Port to recover to', default=DEFAULT_PORT)
     parser.add_argument('--user', help='User to connect for recovery', default=DEFAULT_USER)
@@ -65,20 +67,30 @@ def get_my_loader_cmd(backup_dir, options):
 
 
 def recover_logical_dump(options):
-    files = sorted(os.listdir(BACKUP_DIR), reverse=True)
     backup_name = None
-    for entry in files:
-        path = os.path.join(BACKUP_DIR, entry)
-        if not os.path.isdir(path):
-            continue
-        pattern = re.compile(DUMPNAME_REGEX)
-        match = pattern.match(entry)
-        if match is None:
-            continue
-        if options.section == match.group(1):
-            backup_name = match.group(0)
-            backup_dir = path
-            break
+
+    if os.path.isabs(options.section):
+        # Recover from absolute path
+        backup_dir = options.section.rstrip(os.sep)  # basename() differs from unix basename
+        pattern = re.compile('.+(' + DUMPNAME_REGEX + ')')
+        if os.path.isdir(backup_dir) and pattern.match(backup_dir) is not None:
+            backup_name = os.path.basename(backup_dir)
+    else:
+        # Recover from default dir
+        files = sorted(os.listdir(BACKUP_DIR), reverse=True)
+
+        for entry in files:
+            path = os.path.join(BACKUP_DIR, entry)
+            if not os.path.isdir(path):
+                continue
+            pattern = re.compile(DUMPNAME_REGEX)
+            match = pattern.match(entry)
+            if match is None:
+                continue
+            if options.section == match.group(1):
+                backup_name = match.group(0)
+                backup_dir = path
+                break
 
     if backup_name is None:
         print('Latest backup with name "{}" not found'.format(options.section))
@@ -88,15 +100,18 @@ def recover_logical_dump(options):
     # untar any files
     if options.database:
         db_tar_name = '{}.gz.tar'.format(options.database)
-        print('Unarchiving {} ...'.format(db_tar_name))
         if os.path.isfile(os.path.join(backup_dir, db_tar_name)):
+            print('Unarchiving {} ...'.format(db_tar_name))
             untar_and_remove(db_tar_name, backup_dir)
     else:
-        print('Unarchiving consolidated databases...')
         files = os.listdir(backup_dir)
+        printed_message = False
         for entry in files:
             # TODO: serial unarchiving still, could be too slow
             if entry.endswith('.tar'):
+                if not printed_message:
+                    print('Unarchiving consolidated databases...')
+                    printed_message = True
                 untar_and_remove(entry, backup_dir)
     # run myloader
     print('Running myloader...')
