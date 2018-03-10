@@ -54,7 +54,7 @@ class VarnishSlowLog(object):
         ap.add_argument('--logstash-server', help='logstash server',
                         type=parse_logstash_server_string, default=None)
 
-        ap.add_argument('--slow-threshold', help='varnish fetch duration threshold',
+        ap.add_argument('--slow-threshold', help='varnish slow timing threshold',
                         type=float, default=10.0)
 
         ap.add_argument('--transaction-timeout', help='varnish transaction timeout',
@@ -68,10 +68,25 @@ class VarnishSlowLog(object):
 
         self.args = ap.parse_args(argument_list)
 
+        # No 'Resp' at frontend instances, as client misbehavior/slowness can
+        # induces these and they'll create a lot of noise (esp in upload
+        # cluster case with larger transfer sizes)
+        if self.args.varnishd_instance_name == 'frontend':
+            tstypes = ('Start', 'Req', 'ReqBody', 'Waitinglist',
+                       'Fetch', 'Process', 'Restart')
+        else:
+            tstypes = ('Start', 'Req', 'ReqBody', 'Waitinglist',
+                       'Fetch', 'Process', 'Resp', 'Restart')
+
+        # Build VSL query to find non-PURGEs with any timestamp > slow_threshold
+        timestamps = ['Timestamp:%s[3] > %f' % (timestamp, self.args.slow_threshold)
+                      for timestamp in tstypes]
+
+        query = 'ReqMethod ne "PURGE" and (%s)' % " or ".join(timestamps)
+
         self.cmd = [
             self.args.varnishlog_path,
-            # VSL query matching anything but purges
-            '-q', 'ReqMethod ne "PURGE" and Timestamp:Fetch[3] > %f' % self.args.slow_threshold,
+            '-q', query,
             # Set maximum Varnish transaction duration to track
             '-T', '%d' % self.args.transaction_timeout
         ]
