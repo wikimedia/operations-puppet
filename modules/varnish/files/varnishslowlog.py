@@ -129,6 +129,18 @@ class VarnishSlowLog(object):
             self.tx = {'id': splitagain[1], 'layer': self.layer}
         elif tag == 'End':
             if 'request-Host' in self.tx and 'http-url' in self.tx:
+                # The mediawiki application layer sends a response header
+                # called Backend-Timing, indicating how long it took Apache to
+                # serve the request.
+                # By subtracting such value from the fetch timing information
+                # reported by Varnish, we get a new field that can be used to
+                # single out responses that were significantly delayed by
+                # Varnish at some point.
+                mw_timing = self.tx.get('response-Backend-Timing')
+                if mw_timing:
+                    mw_seconds = float(mw_timing.split()[0].replace('D=', '')) / 1000000.0
+                    self.tx['time-varnishfetch'] = float(self.tx['time-fetch']) - mw_seconds
+
                 # Build log line: url - timeouts
                 log = self.tx['request-Host'] + self.tx['http-url']
                 for key, value in self.tx.items():
