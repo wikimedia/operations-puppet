@@ -2,11 +2,6 @@ class profile::openstack::base::wikitech::monitor(
     $osm_host = hiera('profile::openstack::base::osm_host'),
     ) {
 
-    monitoring::service { 'https':
-        description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${osm_host}",
-    }
-
     # T89323
     monitoring::service { 'wikitech-static-sync':
         description    => 'Wikitech and wt-static content in sync',
