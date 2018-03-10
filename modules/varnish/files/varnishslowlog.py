@@ -54,7 +54,7 @@ class VarnishSlowLog(object):
         ap.add_argument('--logstash-server', help='logstash server',
                         type=parse_logstash_server_string, default=None)
 
-        ap.add_argument('--slow-threshold', help='varnish fetch duration threshold',
+        ap.add_argument('--slow-threshold', help='varnish slow timing threshold',
                         type=float, default=10.0)
 
         ap.add_argument('--transaction-timeout', help='varnish transaction timeout',
@@ -68,10 +68,16 @@ class VarnishSlowLog(object):
 
         self.args = ap.parse_args(argument_list)
 
+        # Build VSL query to find non-PURGEs with any timestamp > slow_threshold
+        timestamps = [ 'Timestamp:%s[3] > %f' % (timestamp, self.args.slow_threshold)
+            for timestamp in ('Start', 'Req', 'ReqBody', 'Waitinglist',
+                              'Fetch', 'Process', 'Resp', 'Restart') ]
+
+        query = 'ReqMethod ne "PURGE" and (%s)' % " or ".join(timestamps)
+
         self.cmd = [
             self.args.varnishlog_path,
-            # VSL query matching anything but purges
-            '-q', 'ReqMethod ne "PURGE" and Timestamp:Fetch[3] > %f' % self.args.slow_threshold,
+            '-q', query,
             # Set maximum Varnish transaction duration to track
             '-T', '%d' % self.args.transaction_timeout
         ]
@@ -123,7 +129,13 @@ class VarnishSlowLog(object):
             self.tx = {'id': splitagain[1], 'layer': self.layer}
         elif tag == 'End':
             if 'request-Host' in self.tx and 'http-url' in self.tx:
-                self.logger.info(self.tx['request-Host'] + self.tx['http-url'], extra=self.tx)
+                # Build log line: url - timeouts
+                log = self.tx['request-Host'] + self.tx['http-url']
+                for key, value in self.tx.items():
+                    if key.startswith('time-'):
+                        log += " %s: %f" % (key, value)
+
+                self.logger.info(log, extra=self.tx)
             self.tx = {}
         elif tag == 'ReqMethod':
             self.tx['http-method'] = value
