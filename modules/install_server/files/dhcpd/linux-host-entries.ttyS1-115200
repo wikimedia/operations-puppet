@@ -448,9 +448,9 @@ host bast1002 {
     fixed-address bast1002.wikimedia.org;
 }
 
-host bast1003 {
+host bast-test {
     hardware ethernet 14:18:77:33:4A:D8;
-    fixed-address bast1003.wikimedia.org;
+    fixed-address bast-test.eqiad.wmnet;
 }
 
 host bast2001 {
