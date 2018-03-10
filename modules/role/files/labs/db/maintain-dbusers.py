@@ -76,6 +76,7 @@ ACCOUNT_CREATION_SQL = {
         SET DEFAULT ROLE labsdbuser FOR '{username}'@'%';
     """,
     'legacy': """
+        DROP USER IF EXISTS '{username}';
         CREATE USER '{username}'@'%'
                IDENTIFIED BY PASSWORD '{password_hash}';
         GRANT SELECT, SHOW VIEW ON `%\_p`.* TO '{username}'@'%';
