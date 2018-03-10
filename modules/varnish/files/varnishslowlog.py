@@ -177,6 +177,16 @@ class VarnishSlowLog(object):
 
             self.tx['response-' + header_name] = header_value
 
+            # Log Backend-Timing's D= value as floating seconds for easy
+            # filtering and comparison
+            if header_name == 'Backend-Timing':
+                try:
+                    bt_us_str = header_value.split()[0].replace('D=', '')
+                    bt_s = float(bt_us_str) / 1000000.0
+                    self.tx['time-be-delay'] = bt_s
+                except ValueError:
+                    pass
+
     def main(self):
         """Execute the command specified in self.cmd and call handle_record for
         each output line produced by the command"""
