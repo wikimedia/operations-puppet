@@ -17,6 +17,7 @@ class role::wmcs::openstack::main::labweb {
 
     # Wikitech:
     include ::profile::openstack::main::wikitech::web
+    include ::profile::openstack::main::wikitech::monitor
 
     # Horizon:
     include ::profile::openstack::main::horizon::dashboard_source_deploy
