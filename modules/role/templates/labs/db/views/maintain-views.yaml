@@ -190,6 +190,7 @@ allowed_logtypes: &allowed_logtypes
   - renameuser
   - review
   - rights
+  - spamblacklist
   - stable
   - student
   - tag
