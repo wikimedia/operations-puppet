@@ -17,7 +17,7 @@ import re
 #
 # make sure you hold+pin beforehand those packages that should not be upgraded
 #
-# More info at: https://wikitech.wikimedia.org/wiki/Apt-upgrades
+# More info at: https://wikitech.wikimedia.org/wiki/Apt-upgrade
 
 
 def print_output_pkg(tag, pkg):
