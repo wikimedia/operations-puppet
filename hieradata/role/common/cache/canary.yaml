@@ -98,7 +98,8 @@ profile::cache::ssl::unified::letsencrypt: false
 
 # Enable varnishkafka-webrequest instance monitoring.
 profile::cache::kafka::webrequest::monitoring_enabled: true
-profile::cache::kafka::webrequest::kafka_cluster_name: analytics
+profile::cache::kafka::webrequest::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::webrequest::ssl_enabled: true
 
 # This should match an entry in the kafka_clusters hash (defined in common.yaml).
 # We use the fully qualified kafka cluster name (with datacenter), because we want
