@@ -6,6 +6,15 @@
 class profile::analytics::refinery::job::json_refine {
     require ::profile::analytics::refinery
 
+    # update this when you want to change the version of the refinery job jar
+    # being used for the refine job.
+    $refinery_version = '0.0.58'
+    # Use this value by default
+    Profile::Analytics::Refinery::Job::Json_refine_job {
+        # Use this value as default refinery_job_jar.
+        refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
+    }
+
     # Refine EventLogging Analytics (capsule based) data.
     profile::analytics::refinery::job::json_refine_job { 'eventlogging_analytics':
         input_base_path  => '/wmf/data/raw/eventlogging',
