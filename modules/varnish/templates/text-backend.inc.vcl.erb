@@ -69,8 +69,11 @@ sub cluster_be_backend_response {
 		std.log("Cacheable object with Set-Cookie found. bereq.url: " + bereq.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
 		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
 		<%- if @varnish_version == 5 -%>
-		// HFM
-		set beresp.ttl = 10m;
+		// HFM, short ttl is to stay within shortlived for transient
+		// storage, to ensure no change in backend storage behavior as
+		// a result of the change from the 0s one-shot-pass we had with
+		// v3/v4 if these requests are sometimes common.
+		set beresp.ttl = 9s;
 		<%- else -%>
 		set beresp.ttl = 0s;
 		<%- end -%>
