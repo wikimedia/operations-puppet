@@ -18,6 +18,8 @@ class openstack::nova::compute::service(
         'jessie' => '/etc/default/libvirtd',
     }
 
+    # trusty: libvirtd:x:117:nova
+    # jessie: libvirt:x:121:nova
     $libvirt_unix_sock_group = $facts['lsbdistcodename'] ? {
         'trusty' => 'libvirtd',
         'jessie' => 'libvirt',
@@ -75,7 +77,7 @@ class openstack::nova::compute::service(
 
     file { "/var/lib/nova/${certname}.key":
         owner     => 'nova',
-        group     => 'libvirtd',
+        group     => $libvirt_unix_sock_group,
         mode      => '0440',
         content   => secret("ssl/${certname}.key"),
         require   => Package['nova-compute'],
