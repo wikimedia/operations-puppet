@@ -33,4 +33,8 @@ class standard::diamond {
             batch   => '20',
         },
     }
+
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'diamond': }
+    }
 }
