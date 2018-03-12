@@ -255,7 +255,14 @@ def main():
 
     logging.basicConfig(format=logging_format, level=logging.INFO, stream=sys.stdout)
     os.environ['DEBIAN_FRONTEND'] = "noninteractive"
-    cache = apt.cache.FilteredCache()
+
+    try:
+        cache = apt.cache.FilteredCache()
+    except SystemError as e:
+        logging.error("can't create cache: {}".format(str(e)))
+        logging.shotdown()
+        sys.exit(1)
+
     regex_set = exclude_regex_set(args.exclude_file, args.exclude)
 
     if not args.u:
