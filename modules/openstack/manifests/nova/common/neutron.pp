@@ -15,6 +15,7 @@ class openstack::nova::common::neutron(
     class {'openstack::nova::common::base':
         version => $version,
     }
+    contain 'openstack::nova::common::base'
 
     file {
         '/etc/nova/nova.conf':
