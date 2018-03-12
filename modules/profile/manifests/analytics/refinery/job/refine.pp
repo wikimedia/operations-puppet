@@ -22,7 +22,7 @@ class profile::analytics::refinery::job::refine {
         input_capture       => 'table,year,month,day,hour',
         output_base_path    => '/wmf/data/event',
         output_database     => 'event',
-        table_blacklist     => '^Edit|ChangesListHighlights$',
+        table_blacklist     => '^Edit|ChangesListHighlights|InputDeviceDynamics$',
         # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
         transform_functions => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip',
         minute              => 30,
