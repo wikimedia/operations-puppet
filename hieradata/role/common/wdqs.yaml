@@ -2,7 +2,7 @@ profile::wdqs::use_git_deploy: true
 profile::wdqs::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::wdqs::data_dir: '/srv/wdqs'
 profile::wdqs::endpoint: 'https://query.wikidata.org'
-profile::wdqs::use_kafka_for_updates: false
+profile::wdqs::use_kafka_for_updates: true
 profile::wdqs::cluster_names: [ 'eqiad', 'codfw' ]
 profile::wdqs::updater_options: '-n wdq'
 profile::wdqs::rc_updater_options: '-b 500 -T 1200'
