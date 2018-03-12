@@ -8,6 +8,9 @@ class openstack::nova::compute::service(
     $ca_target,
     ){
 
+    require openstack::nova::compute::audit
+
+    # Libvirt package is different in subtle ways across Ubuntu and Jessie
     $libvirt_service = $facts['lsbdistcodename'] ? {
         'trusty' => 'libvirt-bin',
         'jessie' => 'libvirtd',
@@ -24,8 +27,6 @@ class openstack::nova::compute::service(
         'trusty' => 'libvirtd',
         'jessie' => 'libvirt',
     }
-
-    require openstack::nova::compute::audit
 
     # Without qemu-system, apt will install qemu-kvm by default,
     # which is somewhat broken.
@@ -62,15 +63,29 @@ class openstack::nova::compute::service(
         require => Exec['set_shell_for_nova'],
     }
 
-    # qemu-kvm and qemu-system are alternative packages to meet the needs of
-    # libvirt.
-    #  Lately, Precise has been installing qemu-kvm by default.  That's
-    #  different
-    #  from our old, existing servers, and it also defaults to use spice for vms
-    #  even though spice is not installed.  Messy.
-    package { [ 'qemu-kvm' ]:
-        ensure  => absent,
-        require => Package['qemu-system'],
+    file { '/var/lib/nova/.ssh':
+        ensure  => 'directory',
+        owner   => 'nova',
+        group   => 'nova',
+        mode    => '0700',
+        require => Package['nova-compute'],
+    }
+
+    file { '/var/lib/nova/.ssh/id_rsa':
+        owner     => 'nova',
+        group     => 'nova',
+        mode      => '0600',
+        content   => secret('ssh/nova/nova.key'),
+        require   => File['/var/lib/nova/.ssh'],
+        show_diff => false,
+    }
+
+    file { '/var/lib/nova/.ssh/id_rsa.pub':
+        owner   => 'nova',
+        group   => 'nova',
+        mode    => '0600',
+        content => secret('ssh/nova/nova.pub'),
+        require => File['/var/lib/nova/.ssh'],
     }
 
     sslcert::certificate { $certname: }
@@ -101,49 +116,33 @@ class openstack::nova::compute::service(
         require => Sslcert::Certificate[$certname],
     }
 
-    # Some older VMs have a hardcoded path to the emulator
-    #  binary, /usr/bin/kvm.  Since the kvm/qemu reorg,
-    #  new distros don't create a kvm binary.  We can safely
-    #  alias kvm to qemu-system-x86_64 which keeps those old
-    #  instances happy.
-    file { '/usr/bin/kvm':
-        ensure  => link,
-        target  => '/usr/bin/qemu-system-x86_64',
-        require => Package['qemu-system'],
-    }
+    if os_version('ubuntu == trusty {
 
-    file { '/var/lib/nova/.ssh':
-        ensure  => 'directory',
-        owner   => 'nova',
-        group   => 'nova',
-        mode    => '0700',
-        require => Package['nova-compute'],
-    }
+        # On Ubuntu as of Liberty:
+        #   qemu-kvm and qemu-system are alternative packages to meet
+        #   the needs of libvirt.
+        package { [ 'qemu-kvm' ]:
+            ensure  => 'absent',
+            require => Package['qemu-system'],
+        }
 
-    file { '/var/lib/nova/.ssh/id_rsa':
-        owner     => 'nova',
-        group     => 'nova',
-        mode      => '0600',
-        content   => secret('ssh/nova/nova.key'),
-        require   => File['/var/lib/nova/.ssh'],
-        show_diff => false,
-    }
+        # On Ubuntu as of Liberty:
+        #   Some older VMs have a hardcoded path to the emulator
+        #   binary, /usr/bin/kvm.  Since the kvm/qemu reorg,
+        #   new distros don't create a kvm binary.  We can safely
+        #   alias kvm to qemu-system-x86_64 which keeps those old
+        #   instances happy.
+        #   (Note: Jessie handles this by creating a shell script shortcut)
+        file { '/usr/bin/kvm':
+            ensure  => 'link',
+            target  => '/usr/bin/qemu-system-x86_64',
+            require => Package['qemu-system'],
+        }
 
-    file { '/var/lib/nova/.ssh/id_rsa.pub':
-        owner   => 'nova',
-        group   => 'nova',
-        mode    => '0600',
-        content => secret('ssh/nova/nova.pub'),
-        require => File['/var/lib/nova/.ssh'],
-    }
-
-    file { '/etc/libvirt/libvirtd.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("openstack/${version}/nova/compute/libvirtd.conf.erb"),
-        notify  => Service[$libvirt_service],
-        require => Package['nova-compute'],
+        file { '/etc/libvirt/qemu/networks/autostart/default.xml':
+            ensure  => 'absent',
+            require => Package['libvirt-bin'],
+        }
     }
 
     if os_version('debian == jessie') {
@@ -165,6 +164,15 @@ class openstack::nova::compute::service(
         }
     }
 
+    file { '/etc/libvirt/libvirtd.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("openstack/${version}/nova/compute/libvirtd.conf.erb"),
+        notify  => Service[$libvirt_service],
+        require => Package['nova-compute'],
+    }
+
     file { $libvirt_default_conf:
         owner   => 'root',
         group   => 'root',
@@ -181,12 +189,6 @@ class openstack::nova::compute::service(
         content => template("openstack/${version}/nova/compute/nova-compute.conf.erb"),
         notify  => Service['nova-compute'],
         require => Package['nova-compute'],
-    }
-
-    # This seems irrelevant in Jessie
-    file { '/etc/libvirt/qemu/networks/autostart/default.xml':
-        ensure  => 'absent',
-        require => Package['libvirt-bin'],
     }
 
     service { $libvirt_service:
