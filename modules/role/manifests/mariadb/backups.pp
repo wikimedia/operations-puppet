@@ -4,6 +4,13 @@
 # If we are on the active datacenter, also send the backups to the
 # long-term storage.
 class role::mariadb::backups {
+    system::role { 'mariadb::backups':
+        description => 'Databases dumps and backups',
+    }
+
+    include ::profile::base::firewall
+    include ::standard
+
     include ::profile::backup::host
     include ::profile::mariadb::backup::mydumper
     include ::profile::mariadb::backup::bacula
