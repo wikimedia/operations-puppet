@@ -1990,10 +1990,9 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
 }
 
-# Silver is the new home of the wikitech web server.
+# Silver was wikitech; now slated for decom
 node 'silver.wikimedia.org' {
-    role(wmcs::openstack::main::wikitech)
-    interface::add_ip6_mapped { 'main': }
+    role(spare::system)
 }
 
 node 'sodium.wikimedia.org' {
