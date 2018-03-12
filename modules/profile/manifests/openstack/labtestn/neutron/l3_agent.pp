@@ -17,4 +17,16 @@ class profile::openstack::labtestn::neutron::l3_agent(
         up             => 'ip link set $IFACE up',
         down           => 'ip link set $IFACE down',
     }
+
+    $ext_ip = $facts['hostname'] ? {
+        'labtestneutron2001' => '10.192.22.4',
+        'labtestneutron2002' => '10.192.22.5',
+    }
+
+    interface::ip { 'eth1.2120':
+        interface => 'eth1.2120',
+        address   => $ext_ip,
+        prefixlen => '24',
+        require   => Interface::Tagged['eth1.2120'],
+    }
 }
