@@ -130,7 +130,7 @@ class base::monitoring::host(
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
     }
-    if $::initsystem == 'systemd' {
+    if ($::initsystem == 'systemd') and (hiera('monitor_systemd', true)) {
         file { '/usr/local/lib/nagios/plugins/check_systemd_state':
             ensure => present,
             source => 'puppet:///modules/base/check_systemd_state.py',
