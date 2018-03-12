@@ -1695,10 +1695,6 @@ node 'mw2246.codfw.wmnet' {
 
 # Row B (B3-B4)
 
-node /^mw211[89]\.codfw\.wmnet$/ {
-    role(mediawiki::videoscaler)
-}
-
 # Row C (C3)
 
 node 'mw2152.codfw.wmnet' {
