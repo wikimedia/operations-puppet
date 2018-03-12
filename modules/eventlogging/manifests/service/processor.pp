@@ -26,11 +26,11 @@
 #
 # [*input*]
 #   The URI of the raw log stream which the processor will take as its
-#   input. Example: 'tcp://eventlog1001.eqiad.wmnet:8421'.
+#   input. Example: 'tcp://eventlog1002.eqiad.wmnet:8421'.
 #
 # [*outputs*]
 #   An array of URIs to output to. Example: [
-#       'tcp://eventlog1001.eqiad.wmnet:8521',
+#       'tcp://eventlog1002.eqiad.wmnet:8521',
 #       'kafka:///localhost:9092?topic=eventlogging_%s(schema)s'
 #   ]
 #

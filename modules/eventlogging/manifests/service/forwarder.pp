@@ -11,7 +11,7 @@
 #
 # [*outputs*]
 #   An array of URIs to output to.  Defaults to an empty array.  Example: [
-#       'tcp://eventlog1001.eqiad.wmnet:8421',
+#       'tcp://eventlog1002.eqiad.wmnet:8421',
 #       'kafka:///localhost:9092?topic=eventlogging-server-side',
 #   ]
 #
@@ -28,7 +28,7 @@
 #  eventlogging::service::forwarder { 'kafka-zmq_8601':
 #    input      => 'kafka://?brokers=localhost:9092&topic=eventlogging',
 #    outputs    => [
-#       'tcp://eventlog1001.eqiad.wmnet:8421',
+#       'tcp://eventlog1002.eqiad.wmnet:8421',
 #       'kafka://?brokers=localhost:9092&topic=eventlogging',
 #    ],
 #  }
