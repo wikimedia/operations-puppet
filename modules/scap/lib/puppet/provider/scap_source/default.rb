@@ -106,12 +106,12 @@ Puppet::Type.type(:scap_source).provide(:default) do
     }
   end
 
-  def scap_init(path)
+  def scap_init
     umask = 0o002
     pwd = Etc.getpwnam(resource[:owner])
     uid = pwd.uid
     gid = pwd.gid
-    Dir.chdir(path) do
+    Dir.chdir(target_path) do
       Puppet::Util.withumask(umask) {
         Puppet::Util::Execution.execute(
           [
@@ -148,7 +148,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   def deploy_head_exists?
-    File.exists?(File.join(target_path, '.git', 'DEPLOY-HEAD'))
+    File.exists?(File.join(target_path, '.git', 'DEPLOY_HEAD'))
   end
 
   def create
