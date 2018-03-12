@@ -18,6 +18,11 @@ class openstack::nova::compute::service(
         'jessie' => '/etc/default/libvirtd',
     }
 
+    $libvirt_unix_sock_group = $facts['lsbdistcodename'] ? {
+        'trusty' => 'libvirtd',
+        'jessie' => 'libvirt',
+    }
+
     require openstack::nova::compute::audit
 
     # Without qemu-system, apt will install qemu-kvm by default,
@@ -33,6 +38,7 @@ class openstack::nova::compute::service(
         'websockify',
         'virt-top',
         'libvirt-bin',
+        'dnsmasq-base',
     ]:
         ensure  => 'present',
         require => Package['qemu-system'],

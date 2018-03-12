@@ -1,4 +1,7 @@
-unix_sock_group = "libvirtd"
+# 1->4 debug levels
+#log_level = 3
+
+unix_sock_group = "<%= @libvirt_unix_sock_group %>"
 unix_sock_rw_perms = "0770"
 auth_unix_ro = "none"
 auth_unix_rw = "none"

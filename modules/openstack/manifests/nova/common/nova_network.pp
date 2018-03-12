@@ -35,6 +35,7 @@ class openstack::nova::common::nova_network(
     class {'openstack::nova::common::base':
         version => $version,
     }
+    contain 'openstack::nova::common::base'
 
     file {
         '/etc/nova/nova.conf':
