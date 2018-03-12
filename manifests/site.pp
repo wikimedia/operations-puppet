@@ -1592,12 +1592,15 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 
 
 # Hosts to decommission (if any)
-# TODO: mw2099-2134 should be decommissioned as soon as we have the new systems
+# mw2097-2134 should be decommissioned as soon as we have the new systems
 
 node /^mw20(17|99)\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
+node /^mw2(097|1[0-2][0-9]|13[0-4])\.codfw\.wmnet/ {
+    role(spare::system)
+}
 
 
 # Appservers
@@ -1612,10 +1615,6 @@ node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
 
 # Row B
 
-# mw2097, mw2100-mw2117 are in rack B3
-node /^mw2(097|10[0-9]|11[0-7])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
 #mw2254-2258 are in rack B3
 node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
@@ -1645,8 +1644,8 @@ node /^mw225[1-3]\.codfw\.wmnet$/ {
 
 # Row B
 
-# mw2120-2147 are in rack B4
-node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
+# mw2135-2147 are in rack B4
+node /^mw21([3][5-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
