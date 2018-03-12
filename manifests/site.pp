@@ -886,7 +886,7 @@ node 'etherpad1001.eqiad.wmnet' {
 # Old Eventlogging host, still up until all the consumers
 # have migrated away from it.
 node 'eventlog1001.eqiad.wmnet' {
-    role(eventlogging::analytics)
+    role(eventlogging::analytics::legacy)
 }
 
 # Receives log data from Kafka processes it, and broadcasts
