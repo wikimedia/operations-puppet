@@ -1592,13 +1592,8 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 
 
 # Hosts to decommission (if any)
-# mw2097-2134 should be decommissioned as soon as we have the new systems
 
-node /^mw20(17|99)\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
-node /^mw2(097|1[0-2][0-9]|13[0-4])\.codfw\.wmnet/ {
+node 'mw2017.codfw.wmnet' {
     role(spare::system)
 }
 
