@@ -1,1 +1,4 @@
-profile::openstack::labtest::version: 'mitaka'
+profile::openstack::labtest::horizon::webserver_hostname: labtesthorizon.wikimedia.org
+striker::apache::server_name: labtesttoolsadmin.wikimedia.org
+
+profile::openstack::labtest::version: ocata
