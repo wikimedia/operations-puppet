@@ -37,7 +37,6 @@ scap::dsh::groups:
       - naos.codfw.wmnet
       - terbium.eqiad.wmnet
       - wasat.codfw.wmnet
-      - silver.wikimedia.org
       - labtestweb2001.wikimedia.org
       - snapshot1001.eqiad.wmnet
       - snapshot1005.eqiad.wmnet

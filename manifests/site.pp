@@ -1137,9 +1137,7 @@ node 'labcontrol1002.wikimedia.org' {
     role(wmcs::openstack::main::control)
 }
 
-# This is the labtest server that implements both:
-#  - silver (wikitech.wikimedia.org), and
-#  - californium (horizon.wikimedia.org)
+# This is the labtest server that implements wikitech, horizon, and striker.
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::web)
     include ::role::mariadb::wikitech

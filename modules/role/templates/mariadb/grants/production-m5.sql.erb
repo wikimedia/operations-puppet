@@ -147,10 +147,8 @@ GRANT ALL ON striker.* TO 'striker_admin'@'208.80.155.109'
 IDENTIFIED BY '<%= @striker_admin_pass %>';
 
 -- wikiadmin user for wikitech aka 'labswiki' --
--- Will connect from silver, labweb1001, labweb1002, terbiam/wasat, deployment --
+-- Will connect from labweb1001, labweb1002, terbiam/wasat, deployment --
 
-GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'208.80.154.136'
-IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'208.80.154.160'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'208.80.155.109'
@@ -167,10 +165,8 @@ GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.64.0.196'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 -- wikiuser for wikitech aka 'labswiki' --
--- Will connect from silver, labweb1001, labweb1002 --
+-- Will connect from labweb1001, labweb1002 --
 
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.154.136'
-IDENTIFIED BY '<%= @wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.154.160'
 IDENTIFIED BY '<%= @wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.155.109'
