@@ -32,6 +32,7 @@ class base::monitoring::host(
     $raid_check_interval = 10,
     $raid_retry_interval = 10,
     $notifications_enabled = '1',
+    $monitor_systemd = true,
 ) {
     include ::base::puppet::params # In order to be able to use some variables
 
@@ -130,15 +131,21 @@ class base::monitoring::host(
         description  => 'dhclient process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
     }
-    if $::initsystem == 'systemd' {
+    if ($::initsystem == 'systemd') {
+        $ensure_monitor_systemd = $monitor_systemd ? {
+            true   => present,
+            false  => absent,
+           default => present,
+        }
         file { '/usr/local/lib/nagios/plugins/check_systemd_state':
-            ensure => present,
+            ensure => $ensure_monitor_systemd,
             source => 'puppet:///modules/base/check_systemd_state.py',
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
         }
         ::nrpe::monitor_service { 'check_systemd_state':
+            ensure       => $ensure_monitor_systemd,
             description  => 'Check systemd state',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
         }
