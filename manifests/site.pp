@@ -1151,7 +1151,8 @@ node 'labcontrol1002.wikimedia.org' {
 
 # This is the labtest server that implements wikitech, horizon, and striker.
 node 'labtestweb2001.wikimedia.org' {
-    role(wmcs::openstack::labtest::web)
+    role(wmcs::openstack::labtest::labweb)
+
     include ::role::mariadb::wikitech
 
     interface::add_ip6_mapped { 'main': }

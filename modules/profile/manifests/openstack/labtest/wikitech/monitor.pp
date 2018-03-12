@@ -3,6 +3,6 @@ class profile::openstack::labtest::wikitech::monitor(
     ) {
 
     class {'::profile::openstack::base::wikitech::monitor':
-        osm_host => osm_host,
+        osm_host => $osm_host,
     }
 }
