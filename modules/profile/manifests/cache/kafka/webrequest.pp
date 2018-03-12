@@ -115,13 +115,6 @@ class profile::cache::kafka::webrequest(
         $ssl_cipher_suites        = undef
     }
 
-    # TEMPORARY HACK to aid in migration to kafka jumbo.
-    # this will be removed once all varnishkafka webrequest instances use jumbo.
-    $force_protocol_version  = $kafka_cluster_name ? {
-        'jumbo' => undef,
-        default => '0.9.0.1',
-    }
-
     varnishkafka::instance { 'webrequest':
         brokers                      => $kafka_brokers,
         topic                        => $topic,
@@ -160,7 +153,6 @@ class profile::cache::kafka::webrequest(
         ssl_key_location             => $ssl_key_location,
         ssl_certificate_location     => $ssl_certificate_location,
         ssl_cipher_suites            => $ssl_cipher_suites,
-        force_protocol_version       => $force_protocol_version,
     }
 
     if $monitoring_enabled {
