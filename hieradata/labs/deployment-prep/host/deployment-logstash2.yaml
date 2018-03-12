@@ -21,4 +21,6 @@ logstash::cluster_hosts:
 # Kibana
 role::kibana::vhost: logstash-beta.wmflabs.org
 role::kibana::serveradmin: root@deployment-logstash2.deployment-prep.eqiad.wmflabs
-role::kibana::auth_type: none
+role::kibana::auth_type: local
+role::kibana::auth_realm: "Logstash (ssh deployment-tin.eqiad.wmflabs sudo cat /root/secrets.txt)"
+role::kibana::auth_file: /etc/logstash/htpasswd
