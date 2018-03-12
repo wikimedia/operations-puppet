@@ -118,8 +118,8 @@ class profile::cache::kafka::webrequest(
     # TEMPORARY HACK to aid in migration to kafka jumbo.
     # this will be removed once all varnishkafka webrequest instances use jumbo.
     $force_protocol_version  = $kafka_cluster_name ? {
-        'jumbo' => undef,
-        default => '0.9.0.1',
+        'analytics' => '0.9.0.1',
+        default     => undef,
     }
 
     varnishkafka::instance { 'webrequest':

@@ -56,13 +56,6 @@ class profile::cache::kafka::eventlogging(
         $ssl_cipher_suites        = undef
     }
 
-    # TEMPORARY HACK to aid in migration to kafka jumbo.
-    # this will be removed once varnishkafka instances use jumbo instead of analytics.
-    $force_protocol_version  = $kafka_cluster_name ? {
-        'analytics' => '0.9.0.1',
-        default     => undef,
-    }
-
     varnishkafka::instance { 'eventlogging':
         brokers                     => $kafka_brokers,
         # Note that this format uses literal tab characters.
@@ -83,7 +76,6 @@ class profile::cache::kafka::eventlogging(
         ssl_key_location            => $ssl_key_location,
         ssl_certificate_location    => $ssl_certificate_location,
         ssl_cipher_suites           => $ssl_cipher_suites,
-        force_protocol_version      => $force_protocol_version,
     }
 
     if $monitoring_enabled {
