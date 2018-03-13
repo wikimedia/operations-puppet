@@ -29,6 +29,9 @@
 # [*logging_label*]
 #   The logging label to use both for logging and statsd.
 #
+# [*monitor_enable*]
+#   Whether RESTBase HTTP root monitoring is enabled.
+#
 # [*monitor_domain*]
 #   The domain to monitor during the service's operation.
 #
@@ -88,6 +91,7 @@ class profile::restbase(
     $citoid_uri     = hiera('profile::restbase::citoid_uri'),
     $cxserver_uri   = hiera('profile::restbase::cxserver_uri'),
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
+    $monitor_enable = hiera('profile::restbase::monitor_enable', true),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
 ) {
     # Default values that need no overriding
@@ -134,7 +138,14 @@ class profile::restbase(
         statsd_prefix     => $logging_label,
     }
 
+    $ensure_monitor_restbase = $monitor_enable ? {
+        true    => present,
+        false   => absent,
+        default => present,
+    }
+
     monitoring::service { 'restbase_http_root':
+        ensure        => $ensure_monitor_restbase,
         description   => 'Restbase root url',
         check_command => "check_http_port_url!${port}!/",
         contact_group => 'admins,team-services',
