@@ -1,4 +1,4 @@
-profile::openstack::main::horizon::webserver_hostname: newhorizon.wikimedia.org
-striker::apache::server_name: newtoolsadmin.wikimedia.org
+profile::openstack::main::horizon::webserver_hostname: horizon.wikimedia.org
+striker::apache::server_name: toolsadmin.wikimedia.org
 
 profile::openstack::main::version: ocata
