@@ -39,8 +39,19 @@ class profile::openstack::main::cumin::master(
             }
         }
 
-        package{'cumin':
-            ensure => 'present',
+        if os_version('debian == jessie') {
+            apt::pin { 'cumin-openstack-deps':
+                package  => 'python3-keystoneauth1 python3-keystoneclient python3-novaclient python3-debtcollector python3-keyring python3-oslo.config python3-oslo.i18n python3-oslo.serialization python3-oslo.utils python3-pbr python3-positional python3-requests python3-requests-kerberos python3-stevedore',
+                pin      => 'release a=jessie-backports',
+                priority => '1001',
+                before   => [Package['python3-keystoneauth1'], Package['python3-keystoneclient'], Package['python3-novaclient']],
+            }
+        }
+
+        # Explicitely require cumin's suggested packages to enable OpenStack backend,
+        # --install-suggests would recursively install many more unwanted dependencies.
+        package { ['cumin', 'python3-keystoneauth1', 'python3-keystoneclient', 'python3-novaclient']:
+            ensure => present,
         }
 
         # Variables used also in config.yaml
@@ -90,7 +101,15 @@ class profile::openstack::main::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        file { '/usr/local/lib/python2.7/dist-packages/cumin_file_backend.py':
+        if os_version('debian == jessie') {
+            $python_version = '3.4'
+        } elsif os_version('debian == stretch') {
+            $python_version = '3.5'
+        } else {
+            $python_version = '3.6'
+        }
+
+        file { "/usr/local/lib/python${python_version}/dist-packages/cumin_file_backend.py":
             ensure  => 'present',
             owner   => 'root',
             group   => 'root',
