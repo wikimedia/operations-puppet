@@ -13,6 +13,5 @@ profile::lvs::tagged_subnets:
 #   (chromium and hydrogen) with fallback to codfw
 # (doing this for all lvs for now, see T103921)
 profile::base::nameservers:
-  - '208.80.154.50' # hydrogen
   - '208.80.154.157' # chromium
   - '208.80.153.254' # codfw lvs
