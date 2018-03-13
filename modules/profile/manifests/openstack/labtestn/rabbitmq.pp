@@ -8,6 +8,7 @@ class profile::openstack::labtestn::rabbitmq(
     $nova_api_host = hiera('profile::openstack::labtestn::nova_api_host'),
     $designate_host = hiera('profile::openstack::labtestn::designate_host'),
     $nova_rabbit_password = hiera('profile::openstack::labtestn::nova::rabbit_pass'),
+    $neutron_rabbit_password = hiera('profile::openstack::labtestn::neutron::rabbit_pass'),
 ){
 
     require ::profile::openstack::labtestn::clientlib
@@ -23,4 +24,9 @@ class profile::openstack::labtestn::rabbitmq(
         nova_rabbit_password => $nova_rabbit_password,
     }
     contain '::profile::openstack::base::rabbitmq'
+
+    class {'::openstack::neutron::rabbit':
+        password => $neutron_rabbit_password,
+    }
+    contain '::openstack::neutron::rabbit'
 }
