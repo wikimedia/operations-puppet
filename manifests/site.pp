@@ -140,11 +140,6 @@ node 'californium.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# cerium, praseodymium and xenon are Cassandra test hosts
-node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(recursor)

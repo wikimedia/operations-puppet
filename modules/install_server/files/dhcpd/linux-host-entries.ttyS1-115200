@@ -506,13 +506,6 @@ host californium {
     filename "lpxelinux.0";
 }
 
-host cerium {
-    hardware ethernet 90:B1:1C:00:A0:21;
-    fixed-address cerium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host chromium {
     hardware ethernet 78:2b:cb:08:aa:48;
     fixed-address chromium.wikimedia.org;
@@ -6991,13 +6984,6 @@ host poolcounter1002 {
     filename "lpxelinux.0";
 }
 
-host praseodymium {
-    hardware ethernet 90:B1:1C:00:9E:2B;
-    fixed-address praseodymium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host prometheus1003 {
     hardware ethernet 18:66:DA:7F:0D:96;
     fixed-address prometheus1003.eqiad.wmnet;
@@ -7863,13 +7849,6 @@ host wtp2019 {
 host wtp2020 {
     hardware ethernet B0:83:FE:DB:D2:85;
     fixed-address wtp2020.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host xenon {
-    hardware ethernet 90:B1:1C:00:A3:08;
-    fixed-address xenon.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
