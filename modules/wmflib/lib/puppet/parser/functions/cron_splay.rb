@@ -7,10 +7,10 @@ require 'digest/md5'
 module Puppet::Parser::Functions
   newfunction(:cron_splay, :type => :rvalue, :doc => <<-EOS
 Given an array of fqdn which a cron is applicable to, and a period arg which is
-one of 'hourly', 'daily', or 'weekly', this sorts the fqdn set with
-per-datacenter interleaving for DC-numbered hosts, splays them to fixed even
-intervals within the total period, and then outputs a set of crontab time
-fields for the fqdn currently being compiled-for.
+one of 'hourly', 'daily', 'semiweekly-a', 'semiweekly-b', or 'weekly', this
+sorts the fqdn set with per-datacenter interleaving for DC-numbered hosts,
+splays them to fixed even intervals within the total period, and then outputs a
+set of crontab time fields for the fqdn currently being compiled-for.
 
 The idea here is to ensure each host in the set executes the cron once per time
 period, and also ensure the time between hosts is consistent (no edge cases
@@ -27,6 +27,10 @@ random "offset" for the splayed time values (so that the first host doesn't
 always start at 00:00), and is also used to permute the order of the hosts
 within each DC uniquely.
 
+Note that the semiweekly options require two separate crontab entries, which is
+why it's broken up into separate calls with 'semiweekly-a' and 'semiweekly-b',
+which should share the same seed argument.
+
 *Examples:*
 
     $times = fqdn_splay($hosts, 'weekly', 'foo-static-seed')
@@ -34,6 +38,21 @@ within each DC uniquely.
         minute   => $times['minute'],
         hour     => $times['hour'],
         weekday  => $times['weekday'],
+    }
+
+    # Semi-weekly operation hits every 3.5 days using dual crontab entries,
+    # which should have identical seed values:
+    $times_a = fqdn_splay($hosts, 'semiweekly-a', 'bar')
+    $times_b = fqdn_splay($hosts, 'semiweekly-b', 'bar')
+    cron { 'bar-a':
+        minute   => $times_a['minute'],
+        hour     => $times_a['hour'],
+        weekday  => $times_a['weekday'],
+    }
+    cron { 'bar-b':
+        minute   => $times_b['minute'],
+        hour     => $times_b['hour'],
+        weekday  => $times_b['weekday'],
     }
 
     EOS
@@ -65,6 +84,8 @@ within each DC uniquely.
        mins = 60
     when 'daily'
        mins = 24 * 60
+    when 'semiweekly'
+       mins = 84 * 60
     when 'weekly'
        mins = 7 * 24 * 60
     else
@@ -110,6 +131,16 @@ within each DC uniquely.
     # use the seed (again) to add a time offset to the splayed values,
     # the time offset never being larger than the splayed interval
     tval += Digest::MD5.hexdigest(seed).to_i(16) % (mins / ordered.length)
+
+    # semiweekly: the "tval" above is in a 3.5-day range of seconds (84*60).
+    # Treating it just like the "weekly" case from here will create correct
+    # cron entries if we add a 3.5-day offset to the b-case.
+    if period == 'semiweekly-a'
+        period = 'weekly'
+    elsif period == 'semiweekly-b'
+        tval += (84 * 60)
+        period = 'weekly'
+    end
 
     # generate the output
     output = {}
