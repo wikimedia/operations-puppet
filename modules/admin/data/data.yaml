@@ -2994,3 +2994,7 @@ ldap_only_users:
     ensure: present
     realname: Charlotte Gauthier
     email: cgauthier@wikimedia.org
+  chicocvenancio:
+    ensure: present
+    realname: Francisco Venancio
+    email: fvenancio@wikimedia.org
