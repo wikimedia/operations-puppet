@@ -3438,8 +3438,6 @@ host labpuppetmaster1002 {
 host labtestweb2001 {
     hardware ethernet 90:B1:1C:2D:7F:19;
     fixed-address labtestweb2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host labmon1001 {
