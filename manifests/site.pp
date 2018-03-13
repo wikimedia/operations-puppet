@@ -607,11 +607,6 @@ node 'db2012.codfw.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned: T187768
-node 'db2030.codfw.wmnet' {
-    role(spare::system)
-}
-
 # m4 shard
 
 node 'db1107.eqiad.wmnet' {
