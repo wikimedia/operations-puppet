@@ -1,0 +1,11 @@
+# CREATE DATABASE neutron;
+# GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'<%= @ipaddress %>' IDENTIFIED BY '<%= @db_pass %>';
+# GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%'  IDENTIFIED BY '<%= @db_pass %>';
+
+openstack service create --name neutron --description "OpenStack Networking" network
+
+openstack endpoint create --region <%= @region %> network public http://<%= @ipaddress %>:9696
+
+openstack endpoint create --region <%= @region %> network internal http://<%= @ipaddress %>:9696
+
+openstack endpoint create --region <%= @region %> network admin http://<%= @ipaddress %>:9696
