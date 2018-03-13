@@ -1,0 +1,54 @@
+[DEFAULT]
+auth_strategy = keystone
+core_plugin = neutron.plugins.ml2.plugin.Ml2Plugin
+service_plugins = router,metering
+allow_overlapping_ips = True
+notify_nova_on_port_status_changes = True
+rpc_backend = rabbit
+
+[agent]
+root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
+
+[cors]
+[cors.subdomain]
+
+[database]
+connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/neutron
+
+[keystone_authtoken]
+region_name = <%= @region %>
+auth_host = <%= @nova_controller %>
+auth_protocol = http
+# Change to neutron user
+admin_user = novaadmin
+admin_password = <%= @ldap_user_pass %>
+admin_tenant_name = admin
+
+[matchmaker_redis]
+
+[nova]
+region_name = <%= @region %>
+auth_url = http://<%= @nova_controller %>:5000/v3
+auth_type = v3password
+password = <%= @ldap_user_pass %>
+project_domain_name = default
+project_name = admin
+tenant_name = admin
+user_domain_id = default
+user_domain_name = default
+username = novaadmin
+
+[oslo_concurrency]
+lock_path = /var/lock/neutron
+
+[oslo_messaging_amqp]
+[oslo_messaging_notifications]
+
+[oslo_messaging_rabbit]
+rabbit_host = <%= @nova_controller %>
+rabbit_userid = guest
+rabbit_password =
+
+[oslo_policy]
+[quotas]
+[ssl]
