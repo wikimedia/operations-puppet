@@ -127,11 +127,10 @@ node 'bromine.eqiad.wmnet' {
     role(webserver_misc_static)
 }
 
-# Californium hosts openstack-dashboard AKA horizon
-# and Toolforge admin console AKA Striker
-#  It's proxied by the misc-web varnishes
+# Californium is the former host of horizon
+# and toolsadmin.  Now ready for decom.
 node 'californium.wikimedia.org' {
-    role(wmcs::web_interfaces)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
