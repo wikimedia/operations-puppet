@@ -1,4 +1,9 @@
 #
+# infra
+#
+puppetdb_host: puppetdb1001.eqiad.wmnet
+
+#
 # mediawiki
 #
 mediawiki_memcached_servers:

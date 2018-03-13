@@ -1855,6 +1855,10 @@ node /^puppetmaster[12]002\.(codfw|eqiad)\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
 }
 
+node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
+    role(puppetboard)
+}
+
 node /^puppetdb[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::puppetdb)
 }
