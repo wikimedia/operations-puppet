@@ -1,3 +1,11 @@
+#
+# infra
+#
+puppetdb_host: puppetdb2001.codfw.wmnet
+
+#
+# mediawiki
+#
 mediawiki_memcached_servers:
   - '10.192.0.83:11211:1 "shard01"'
   - '10.192.0.84:11211:1 "shard02"'
