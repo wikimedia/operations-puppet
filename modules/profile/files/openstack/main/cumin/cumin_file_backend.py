@@ -23,7 +23,7 @@ class HostsFileQuery(BaseQuery):
             according to parent :py:meth:`cumin.backends.BaseQuery.__init__`.
 
         """
-        super(HostsFileQuery, self).__init__(config)
+        super().__init__(config)
         self.hosts = NodeSet(resolver=RESOLVER_NOGROUP)
 
     def _execute(self):
