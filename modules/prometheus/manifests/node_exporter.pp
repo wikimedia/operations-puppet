@@ -77,4 +77,8 @@ class prometheus::node_exporter (
         upstart          => upstart_template('prometheus-node-exporter'),
         require          => Package['prometheus-node-exporter'],
     }
+
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'prometheus-node-exporter': }
+    }
 }
