@@ -36,9 +36,6 @@ cache::app_directors:
   bohrium:
     backends:
       eqiad: 'bohrium.eqiad.wmnet'
-  californium:
-    backends:
-      eqiad: 'californium.wikimedia.org'
   labweb:
     backends:
       eqiad: 'labweb.svc.eqiad.wmnet'
@@ -207,8 +204,6 @@ cache::req_handling:
   graphite.wikimedia.org:
     director: 'graphite'
   horizon.wikimedia.org:
-    director: 'californium'
-  newhorizon.wikimedia.org:
     director: 'labweb'
   wikitech.wikimedia.org:
     director: 'labweb'
@@ -293,8 +288,6 @@ cache::req_handling:
     director: 'mendelevium'
     caching: 'pass'
   toolsadmin.wikimedia.org:
-    director: 'californium'
-  newtoolsadmin.wikimedia.org:
     director: 'labweb'
   transparency.wikimedia.org:
     director: 'bromine'
