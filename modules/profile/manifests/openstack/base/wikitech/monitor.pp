@@ -18,7 +18,7 @@ class profile::openstack::base::wikitech::monitor(
 
     monitoring::service { 'wikitech-static-main-page':
         description   => 'Wikitech-static main page has content',
-        check_command => 'check_https_url_for_string!wikitech-static.wikimedia.org!/wiki/Main_Page?debug=true!Wikitech',
+        check_command => 'check_https_url_at_address_for_string!wikitech-static.wikimedia.org!/wiki/Main_Page?debug=true!Wikitech',
         contact_group => 'wmcs-bots,admins',
     }
 }
