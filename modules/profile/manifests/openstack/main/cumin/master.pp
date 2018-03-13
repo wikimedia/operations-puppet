@@ -40,7 +40,8 @@ class profile::openstack::main::cumin::master(
         }
 
         package{'cumin':
-            ensure => 'present',
+            ensure          => 'present',
+            install_options => ['--install-suggests'],
         }
 
         # Variables used also in config.yaml
@@ -90,7 +91,15 @@ class profile::openstack::main::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        file { '/usr/local/lib/python2.7/dist-packages/cumin_file_backend.py':
+        if os_version('debian == jessie') {
+            $python_version = '3.4'
+        } elsif os_version('debian == stretch') {
+            $python_version = '3.5'
+        } else {
+            $python_version = '3.6'
+        }
+
+        file { "/usr/local/lib/python${python_version}/dist-packages/cumin_file_backend.py":
             ensure  => 'present',
             owner   => 'root',
             group   => 'root',
