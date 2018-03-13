@@ -1131,7 +1131,7 @@ node 'labcontrol1002.wikimedia.org' {
 node 'labtestweb2001.wikimedia.org' {
     role(wmcs::openstack::labtest::labweb)
 
-    include ::role::mariadb::wikitech
+    include ::role::mariadb::labtestwikitech
 
     interface::add_ip6_mapped { 'main': }
 }
