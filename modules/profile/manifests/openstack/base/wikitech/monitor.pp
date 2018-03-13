@@ -15,4 +15,10 @@ class profile::openstack::base::wikitech::monitor(
         check_command  => 'check_wikitech_static_version',
         check_interval => 720,
     }
+
+    monitoring::service { 'wikitech-static-main-page':
+        description   => 'Wikitech-static main page has content',
+        check_command => 'check_https_url_for_string!wikitech-static.wikimedia.org!/wiki/Main_Page?debug=true!Wikitech',
+        contact_group => 'wmcs-bots,admins',
+    }
 }
