@@ -313,3 +313,7 @@ rhodium_puppetdb4:
   __regex: !ruby/regexp /^rhodium.eqiad.wmnet$/
   puppetdb_major_version: 4
   profile::puppetmaster::common::puppetdb_host: puppetdb1001.eqiad.wmnet
+
+restbase_dev_no_monitor:
+  __regex: !ruby/regexp restbase-dev1/^\d\d\d\.eqiad\.wmnet$/
+  monitor_restbase: false
