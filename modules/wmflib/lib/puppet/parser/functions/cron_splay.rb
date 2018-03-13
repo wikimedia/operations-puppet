@@ -7,9 +7,9 @@ require 'digest/md5'
 module Puppet::Parser::Functions
   newfunction(:cron_splay, :type => :rvalue, :doc => <<-EOS
 Given an array of fqdn which a cron is applicable to, and a period arg which is
-one of 'hourly', 'daily', or 'weekly', this sorts the fqdn set with
-per-datacenter interleaving for DC-numbered hosts, splays them to fixed even
-intervals within the total period, and then outputs a set of crontab time
+one of 'hourly', 'daily', 'semiweekly', or 'weekly', this sorts the fqdn set
+with per-datacenter interleaving for DC-numbered hosts, splays them to fixed
+even intervals within the total period, and then outputs a set of crontab time
 fields for the fqdn currently being compiled-for.
 
 The idea here is to ensure each host in the set executes the cron once per time
@@ -27,6 +27,9 @@ random "offset" for the splayed time values (so that the first host doesn't
 always start at 00:00), and is also used to permute the order of the hosts
 within each DC uniquely.
 
+Note that the semiweekly options require two separate crontab entries, using
+fields suffixed with '-a' and '-b' as shown in the example below.
+
 *Examples:*
 
     $times = fqdn_splay($hosts, 'weekly', 'foo-static-seed')
@@ -34,6 +37,19 @@ within each DC uniquely.
         minute   => $times['minute'],
         hour     => $times['hour'],
         weekday  => $times['weekday'],
+    }
+
+    # Semi-weekly operation hits every 3.5 days using dual crontab entries
+    $times = fqdn_splay($hosts, 'semiweekly', 'bar')
+    cron { 'bar-a':
+        minute   => $times['minute-a'],
+        hour     => $times['hour-a'],
+        weekday  => $times['weekday-a'],
+    }
+    cron { 'bar-b':
+        minute   => $times['minute-b'],
+        hour     => $times['hour-b'],
+        weekday  => $times['weekday-b'],
     }
 
     EOS
@@ -60,12 +76,16 @@ within each DC uniquely.
       raise(Puppet::ParseError, 'cron_splay(): Argument 3 must be an string')
     end
 
+    # all time values within the code are in units of minutes
+
     case period
     when 'hourly'
        mins = 60
     when 'daily'
        mins = 24 * 60
     when 'weekly'
+       mins = 7 * 24 * 60
+    when 'semiweekly'
        mins = 7 * 24 * 60
     else
       raise(Puppet::ParseError, 'cron_splay(): invalid period')
@@ -113,18 +133,29 @@ within each DC uniquely.
 
     # generate the output
     output = {}
-    output['minute'] = tval % 60
 
-    if period == 'hourly'
+    case period
+    when 'hourly'
+      output['minute'] = tval % 60
       output['hour'] = '*'
-    else
-      output['hour'] = (tval / 60) % 24
-    end
-
-    if period == 'weekly'
-      output['weekday'] = tval / 1440
-    else
       output['weekday'] = '*'
+    when 'daily'
+      output['minute'] = tval % 60
+      output['hour'] = (tval / 60) % 24
+      output['weekday'] = '*'
+    when 'weekly'
+      output['minute'] = tval % 60
+      output['hour'] = (tval / 60) % 24
+      output['weekday'] = tval / 1440
+    when 'semiweekly'
+      output['minute-a'] = tval % 60
+      output['hour-a'] = (tval / 60) % 24
+      output['weekday-a'] = tval / 1440
+      # tval2 for semiweekly is 3.5 days after tval, modulo 1w
+      tval2 = (tval + (84 * 60)) % (7 * 24 * 60)
+      output['minute-b'] = tval2 % 60
+      output['hour-b'] = (tval2 / 60) % 24
+      output['weekday-b'] = tval2 / 1440
     end
 
     output
