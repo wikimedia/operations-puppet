@@ -3,3 +3,7 @@ lowercaseOutputLabelNames: true
 lowercaseOutputName: false
 whitelistObjectNames:
   - 'Hadoop:service=ResourceManager,name=ClusterMetrics'
+  - 'Hadoop:service=ResourceManager,name=RpcActivityForPort8030'
+  - 'Hadoop:service=ResourceManager,name=RpcActivityForPort8031'
+  - 'Hadoop:service=ResourceManager,name=RpcActivityForPort8032'
+  - 'Hadoop:service=ResourceManager,name=RpcActivityForPort8033'
