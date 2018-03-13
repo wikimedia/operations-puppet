@@ -1,10 +1,12 @@
 class profile::openstack::labtestn::neutron::l3_agent(
+    $version = hiera('profile::openstack::labtestn::version'),
     $network_flat_interface = hiera('profile::openstack::labtestn::neutron::network_flat_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtestn::neutron::network_flat_interface_vlan'),
     ) {
 
     require ::profile::openstack::labtestn::clientlib
     class {'::profile::openstack::base::neutron::l3_agent':
+        version                     => $version,
         network_flat_interface      => $network_flat_interface,
         network_flat_interface_vlan => $network_flat_interface_vlan,
     }
