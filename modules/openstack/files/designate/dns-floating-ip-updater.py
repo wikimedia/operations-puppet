@@ -27,7 +27,7 @@ PROJECT_ZONE_TEMPLATE = "{project}.wmflabs.org."
 FQDN_TEMPLATE = "instance-{server}.{project}.wmflabs.org."
 FQDN_REGEX = FQDN_TEMPLATE.replace('.', '\.').format(
     server='(.*)', project='{project}')
-managed_description = "MANAGED BY dns-floating-ip-updater.py IN PUPPET - DO NOT UPDATE OR DELETE"
+MANAGED_DESCRIPTION = "MANAGED BY dns-floating-ip-updater.py IN PUPPET - DO NOT UPDATE OR DELETE"
 
 
 def managed_description_error(action, type, label):
@@ -80,6 +80,7 @@ public_addrs = {}
 existing_As = []
 # Go through every tenant
 for tenant in client.keystoneclient().projects.list():
+    logger.debug("Checking project %s", tenant.name)
     if tenant.name == 'admin':
         continue
 
@@ -95,25 +96,29 @@ for tenant in client.keystoneclient().projects.list():
             # If the instance has a public IP...
             if public:
                 # Record their public IPs and generate their public name
-                # according to FQDN_TEMPLATE Technically there can be more
+                # according to FQDN_TEMPLATE. Technically there can be more
                 # than one floating (and/or fixed) IP Although this is never
                 # practically the case...
                 server_addresses[server.name] = public
                 A_FQDN = FQDN_TEMPLATE.format(
                     server=server.name, project=tenant.name)
                 public_addrs[A_FQDN, tenant.name] = True, public
+                logger.debug("Found public IP %s -> %s", public, A_FQDN)
 
     dns = mwopenstackclients.DnsManager(
         client, tenant=tenant.name)
     existing_match_regex = re.compile(FQDN_REGEX.format(project=tenant.name))
     # Now go through every zone the project controls
     for zone in dns.zones():
+        logger.debug("Checking zone %s", zone['name'])
         # If this is their main zone, record the ID for later use
         if zone['name'] == PROJECT_ZONE_TEMPLATE.format(project=tenant.name):
             project_main_zone_ids[tenant.name] = zone['id']
 
         # Go through every recordset in the zone
         for recordset in dns.recordsets(zone['id']):
+            logger.debug("Found recordset %s %s",
+                recordset['name'], recordset['type'])
             existing_As.append(recordset['name'])
             # No IPv6 support in labs so no AAAAs
             if recordset['type'] != 'A':
@@ -127,7 +132,7 @@ for tenant in client.keystoneclient().projects.list():
                     set(recordset['records']) != set(server_addresses[match.group(1)])
                 ):
                     # ... But instance has a different set of IPs. Update!
-                    if recordset['description'] == managed_description:
+                    if recordset['description'] == MANAGED_DESCRIPTION:
                         new_records = server_addresses[match.group(1)]
                         logger.info(
                             "Updating type A record for %s"
@@ -137,15 +142,11 @@ for tenant in client.keystoneclient().projects.list():
                             str(new_records),
                             str(recordset['records']),
                         )
-                        recordset['records'] = new_records
-                        del recordset['status']
-                        del recordset['action']
-                        del recordset['links']
                         try:
                             dns.update_recordset(
                                 zone['id'],
                                 recordset['id'],
-                                recordset
+                                new_records,
                             )
                         except Exception:
                             logger.exception(
@@ -155,7 +156,7 @@ for tenant in client.keystoneclient().projects.list():
                             'update', 'A', recordset['name'])
                 elif match.group(1) not in server_addresses:
                     # ... But instance does not actually exist. Delete!
-                    if recordset['description'] == managed_description:
+                    if recordset['description'] == MANAGED_DESCRIPTION:
                         logger.info(
                             "Deleting type A record for %s "
                             " - instance does not exist",
@@ -193,7 +194,7 @@ for (A_FQDN, project), (managed_here, IPs) in public_addrs.items():
                     A_FQDN,
                     'A',
                     IPs,
-                    description=managed_description
+                    description=MANAGED_DESCRIPTION
                 )
             except Exception:
                 logger.exception('Failed to create %s', A_FQDN)
@@ -221,6 +222,25 @@ for (A_FQDN, project), (managed_here, IPs) in public_addrs.items():
                 config['floating_ip_ptr_zone']
             )
 
+# Clean up reverse proxies. We don't want to generate PTR records for dozens
+# or hundreds of hostnames that are sharing a single reverse proxy like
+# project-proxy handles. If any IP has more than 10 reverse mappings then we
+# will try to figure out a reasonable truncated list.
+proxies = (k for k in public_PTRs if len(public_PTRs[k]) > 10)
+proxy_fqdn_re = re.compile(FQDN_TEMPLATE.replace('.', '\.').format(
+        server='(.*)', project='(.*)'))
+for ptr in proxies:
+    logger.info("Trimming FQDN list for %s", ptr)
+    # Usually there will be an FQDN_TEMPLATE host in there somewhere
+    fqdns = [h for h in public_PTRs[ptr] if proxy_fqdn_re.match(h)]
+    if not fqdns:
+        # If for some reason there are no FQDN_TEMPLATE hosts take the whole
+        # giant list, but sorted just for fun
+        fqdns = sorted(public_PTRs[ptr])
+    # Only use the first 10 no matter how many ended up being found
+    public_PTRs[ptr] = fqdns[:10]
+    logger.debug("Trimmed FQDN list for %s is %s", ptr, public_PTRs[ptr])
+
 # Set up designate client to write recordsets with
 dns = mwopenstackclients.DnsManager(client, tenant='wmflabsdotorg')
 # Find the correct zone ID for the floating IP zone
@@ -241,7 +261,7 @@ for recordset in dns.recordsets(floating_ip_ptr_zone_id):
     existing_public_PTRs[recordset['name']] = recordset
     if recordset['type'] == 'PTR':
         if recordset['name'] not in public_PTRs:
-            if recordset['description'] == managed_description:
+            if recordset['description'] == MANAGED_DESCRIPTION:
                 # Delete whole recordset, it shouldn't exist anymore.
                 logger.info("Deleting PTR record %s", recordset['name'])
                 try:
@@ -257,16 +277,14 @@ for recordset in dns.recordsets(floating_ip_ptr_zone_id):
             continue
         new_records = set(public_PTRs[recordset['name']])
         if new_records != set(recordset['records']):
-            if recordset['description'] == managed_description:
+            if recordset['description'] == MANAGED_DESCRIPTION:
                 # Update the recordset to have the correct IPs
-                recordset['records'] = list(new_records)
-                del recordset['status'], recordset['action'], recordset['links']
                 logger.info("Updating PTR record %s", recordset['name'])
                 try:
                     dns.update_recordset(
                         floating_ip_ptr_zone_id,
                         recordset['id'],
-                        recordset
+                        list(new_records),
                     )
                 except Exception:
                     logger.exception('Failed to update %s', recordset['name'])
@@ -289,7 +307,7 @@ for delegated_PTR_FQDN, records in public_PTRs.items():
                 delegated_PTR_FQDN,
                 'PTR',
                 records,
-                description=managed_description
+                description=MANAGED_DESCRIPTION
             )
         except Exception:
             logger.exception('Failed to create %s', delegated_PTR_FQDN)
