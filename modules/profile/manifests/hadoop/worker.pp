@@ -12,8 +12,8 @@ class profile::hadoop::worker(
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
     # Hadoop workers need Zookeeper package from CDH, pin CDH over Debian.
-    include ::profile::cdh::apt_pin
-    include ::profile::hadoop::common
+    require ::profile::cdh::apt_pin
+    require ::profile::hadoop::common
 
     # Force apt-get update to run before we try to install packages.
     Class['::profile::cdh::apt_pin'] -> Exec['apt-get update'] -> Class['::cdh::hadoop']
