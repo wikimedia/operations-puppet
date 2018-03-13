@@ -438,9 +438,19 @@ sub wm_common_backend_response {
 		set beresp.ttl = beresp.ttl * std.random(0.95, 1.0);
 	}
 
-	// Compress compressible things if the backend didn't already
-	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla") {
-		set beresp.do_gzip = true;
+	// Compress compressible things if the backend didn't already, but
+	// avoid explicitly-defined CL < 860 bytes.  We've seen varnish do
+	// gzipping on CL:0 302 responses, resulting in output that has CE:gzip
+	// and CL:20 and sends a pointless gzip header.
+	// Very small content may actually inflate from gzipping, and
+	// sub-one-packet content isn't saving a lot of latency for the gzip
+	// costs (to the server and the client, who must also decompress it).
+	// The magic 860 number comes from Akamai, Google recommends anywhere
+	// from 150-1000.  See also:
+	// https://webmasters.stackexchange.com/questions/31750/what-is-recommended-minimum-object-size-for-gzip-performance-benefits
+	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font|sla"
+		&& (!beresp.http.content-length || beresp.http.content-length >= 860)) {
+			set beresp.do_gzip = true;
 	}
 
 	// set a 601s hit-for-pass object based on response conditions in vcl_backend_response:
