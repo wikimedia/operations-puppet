@@ -6,7 +6,7 @@ class openstack::horizon::source_deploy(
     $dhcp_domain,
     $ldap_user_pass,
     $venv_dir      = '/srv/deployment/horizon/venv',
-    $webserver_hostname = 'newhorizon.wikimedia.org'
+    $webserver_hostname = 'horizon.wikimedia.org'
 ) {
     require_package(
         'python-wheel',
