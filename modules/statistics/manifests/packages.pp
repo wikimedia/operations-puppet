@@ -42,7 +42,7 @@ class statistics::packages {
         require_package(
             'libgsl2',
             'gsl-bin',
-            'libgsl0-dev',
+            'libgsl-dev',
             'libgdal-dev',      # Requested by lzia for rgdal
             'g++',
             'libyaml-cpp-dev',  # Latest version of uaparser (https://github.com/ua-parser/uap-r) supports v0.5+
