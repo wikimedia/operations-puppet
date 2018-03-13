@@ -203,7 +203,7 @@ scap::dsh::groups:
             - deployment-mediawiki06.deployment-prep.eqiad.wmflabs
             - deployment-tin.deployment-prep.eqiad.wmflabs
             - deployment-mira.deployment-prep.eqiad.wmflabs
-            - deployment-snapshot01.deployment-prep.eqiad.wmflabs
+#            - deployment-snapshot01.deployment-prep.eqiad.wmflabs
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki04.deployment-prep.eqiad.wmflabs
