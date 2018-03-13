@@ -1931,11 +1931,6 @@ node /^restbase20(0[1-9]|1[012])\.codfw\.wmnet$/ {
     role(restbase::production_ng)
 }
 
-# cassandra multi-dc temporary test T111382
-node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 # cassandra/restbase dev cluster
 node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)

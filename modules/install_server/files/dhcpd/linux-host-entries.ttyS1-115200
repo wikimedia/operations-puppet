@@ -7369,27 +7369,6 @@ host restbase-dev1006 {
     filename "lpxelinux.0";
 }
 
-host restbase-test2001 {
-    hardware ethernet 90:B1:1C:2A:2F:0A;
-    fixed-address restbase-test2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host restbase-test2002 {
-    hardware ethernet 90:B1:1C:2D:68:02;
-    fixed-address restbase-test2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host restbase-test2003 {
-    hardware ethernet 90:B1:1C:2D:86:77;
-    fixed-address restbase-test2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host rhenium {
     hardware ethernet 78:2b:cb:2f:df:2f;
     fixed-address rhenium.wikimedia.org;
