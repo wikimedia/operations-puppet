@@ -50,12 +50,12 @@ node 'analytics1003.eqiad.wmnet' {
 # modules/role/templates/analytics_cluster/hadoop/net-topology.py.erb
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-1]).eqiad.wmnet/ {
+node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-2]).eqiad.wmnet/ {
     role(analytics_cluster::hadoop::worker)
 }
 
 #new hadoop nodes that will be pushed into service off T188294
-node /analytics107[2-7]\.eqiad.wmnet/ {
+node /analytics107[3-7]\.eqiad.wmnet/ {
     role(spare::system)
 }
 
