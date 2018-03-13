@@ -12,7 +12,7 @@ class statistics::user {
 
     user { $username:
         home       => $homedir,
-        groups     => ['wikidev'],
+        groups     => [],
         shell      => '/bin/bash',
         managehome => true,
         system     => true,
