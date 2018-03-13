@@ -32,7 +32,7 @@ class statistics::wmde::graphite(
     require_package(
         'php',
         'php-cli',
-        'php7.0-xml'
+        'php-xml'
     )
 
     include ::passwords::mysql::research
