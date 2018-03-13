@@ -27,7 +27,7 @@ define rabbitmq::user(
         exec {"rabbit_${username}_create":
             command => "/usr/sbin/rabbitmqctl add_user ${username} ${password}",
             unless  => "/usr/sbin/rabbitmqctl list_users | grep --quiet ${username}",
-            notify  => Exec['rabbit_user_setup_perms'],
+            notify  => Exec["rabbit_${username}_setup_perms"],
         }
 
         exec {"rabbit_${username}_setup_perms":
@@ -38,14 +38,14 @@ define rabbitmq::user(
         if ($administrator) {
             exec {"rabbit_user_${username}_adminstrator_tag":
                 command     => "/usr/sbin/rabbitmqctl set_user_tags ${username} administrator",
-                subscribe   => Exec['rabbit_user_setup_perms'],
+                subscribe   => Exec["rabbit_${username}_setup_perms"],
                 refreshonly => true,
             }
         }
     }
 
     if ($ensure == 'absent') {
-        exec {'rabbit_user_removal':
+        exec {"${username}-rabbit_user_removal":
             command => "/usr/sbin/rabbitmqctl delete_user ${username}",
             onlyif  => "/usr/sbin/rabbitmqctl list_users | grep --quiet ${username}",
         }
