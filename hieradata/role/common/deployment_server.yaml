@@ -74,6 +74,10 @@ scap::keyholder_agents:
     trusted_groups:
       - ops
 
+  deploy-puppetboard:
+    trusted_groups:
+      - ops
+
 # scap::source declarations.  These are created
 # by the scap::server class.  Each source listed here
 # will be cloned on the scap deploy server.
@@ -179,6 +183,8 @@ scap::sources:
     repository: analytics/statsv
   "docker-pkg/deploy":
     repository: operations/docker-images/docker-pkg/deploy
+  puppetboard/deploy:
+    repository: operations/software/puppetboard/deploy
 
 profile::kubernetes::deployment_server::services:
   admin:
