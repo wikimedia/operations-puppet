@@ -613,7 +613,7 @@ class role::prometheus::ops {
 
     prometheus::jmx_exporter_config{ "wdqs_updater_${::site}":
         dest       => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
-        class_name => 'role::wdqs',
+        class_name => 'profile::wdqs',
         site       => $::site,
     }
 
@@ -647,7 +647,7 @@ class role::prometheus::ops {
     prometheus::class_config{ "blazegraph_${::site}":
         dest       => "${targets_path}/blazegraph_${::site}.yaml",
         site       => $::site,
-        class_name => 'role::wdqs',
+        class_name => 'profile::wdqs',
         port       => '9193',
     }
 
