@@ -6,7 +6,8 @@
 # * firewall: controls the firewall, the options are:
 #   - 'disabled': no firewall is setup
 #   - 'cloud': firewall with holes to cloud network for cloud production services
-#   - 'internal': firewall only to the internal network
+#   - 'misc': firewall with holes to misc services: rt, librenms, gerrit
+#   - 'internal': firewall only to the internal network (10.x hosts)
 class profile::mariadb::proxy (
     $pid      = hiera('profile::mariadb::proxy::pid', '/run/haproxy/haproxy.pid'),
     $socket   = hiera('profile::mariadb::proxy::socket', '/run/haproxy/haproxy.sock'),
@@ -22,11 +23,15 @@ class profile::mariadb::proxy (
     if $firewall == 'internal' {
         include ::profile::base::firewall
         ::profile::mariadb::ferm { 'dbproxy': }
+    } elsif $firewall == 'misc' {
+        include ::profile::base::firewall
+        ::profile::mariadb::ferm { 'dbproxy': }
+        include ::profile::mariadb::ferm_misc
     } elsif $firewall == 'cloud' {
         include ::profile::base::firewall
         ::profile::mariadb::ferm { 'dbproxy': }
         include ::profile::mariadb::ferm_wmcs
     } elsif $firewall != 'disabled' {
-        fail('profile::mariadb::proxy::firewall can only be internal, cloud or disabled.')
+        fail('profile::mariadb::proxy::firewall can only be internal, misc, cloud or disabled.')
     }
 }
