@@ -25,4 +25,6 @@ define prometheus::hhvm_exporter (
         ensure  => running,
         require => Package['prometheus-hhvm-exporter'],
     }
+
+    base::service_auto_restart { 'prometheus-hhvm-exporter': }
 }
