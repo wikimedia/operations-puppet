@@ -8,6 +8,7 @@ profile::kubernetes::master::apiserver_count: 1
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
+  ServiceAccount: '--service-account-key-file=/etc/kubernetes/ssl/server.key'
   PersistentVolumeLabel: ''
   DefaultStorageClass: ''
   ResourceQuota: ''

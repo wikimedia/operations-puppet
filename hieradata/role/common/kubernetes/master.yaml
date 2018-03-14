@@ -4,6 +4,7 @@ profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
+  ServiceAccount: "--service-account-key-file=/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
   PersistentVolumeLabel: ''
   DefaultStorageClass: ''
   ResourceQuota: ''
