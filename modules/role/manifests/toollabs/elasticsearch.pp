@@ -9,6 +9,22 @@ class role::toollabs::elasticsearch {
     include ::base::firewall
     include ::elasticsearch
 
+    file { '/usr/share/elasticsearch/plugins':
+        ensure => 'directory',
+        force  => true,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        before => Class['::elasticsearch'],
+    }
+
+    apt::repository { 'wikimedia-elastic':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'component/elastic55 thirdparty/elastic55',
+        before     => Class['::elasticsearch'],
+    }
+
     class { '::nginx':
         variant => 'light',
     }
