@@ -83,7 +83,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [dartar, bearloga, tjones, cparle,
               ezachte, jamesur, jdlrobson, smalyshev,
-              leila, santhosh, amire80, foks, chelsyx, dbarratt]
+              leila, santhosh, amire80, foks, chelsyx, dbarratt, bmansurov]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
