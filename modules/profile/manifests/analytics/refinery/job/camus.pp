@@ -62,7 +62,7 @@ class profile::analytics::refinery::job::camus(
     # once every hour.
     camus::job { 'eventbus':
         minute        => '5',
-        kafka_brokers => $kafka_brokers_analytics,
+        kafka_brokers => $kafka_brokers_jumbo,
     }
 
     # Import mediawiki_* topics into /wmf/data/raw/mediawiki
