@@ -17,7 +17,7 @@ class openstack::neutron::common(
     file { '/etc/neutron/neutron.conf':
             owner   => 'neutron',
             group   => 'neutron',
-            mode    => '0440',
+            mode    => '0660',
             content => template("openstack/${version}/neutron/neutron.conf.erb"),
             require => Package['neutron-common'];
     }
@@ -25,7 +25,7 @@ class openstack::neutron::common(
     file { '/etc/neutron/policy.json':
             owner   => 'root',
             group   => 'root',
-            mode    => '0444',
+            mode    => '0644',
             source  => 'puppet:///modules/openstack/mitaka/neutron/policy.json',
             require => Package['neutron-common'];
     }

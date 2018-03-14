@@ -7,9 +7,9 @@ class openstack::neutron::dhcp_agent(
     }
 
     file { '/etc/neutron/dhcp_agent.ini':
-            owner   => 'neutron',
-            group   => 'neutron',
-            mode    => '0440',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
             content => template("openstack/${version}/neutron/dhcp_agent.ini.erb"),
             require => Package['neutron-common'];
     }
