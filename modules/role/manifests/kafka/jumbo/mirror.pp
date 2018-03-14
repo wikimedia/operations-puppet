@@ -62,9 +62,18 @@ class role::kafka::jumbo::mirror {
         jmx_port                  => 9996,
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
+        # Jumbo's MirrorMaker producer is being incredibly flaky.  We think
+        # this is likely due to version discrepencies, and hope to have them
+        # resolved after we upgrade main Kafka to 1.x.  For now, blacklisting
+        # these high volume job topics from replication seems to help.  We
+        # haven't needed these replicated out of main for any purpose yet, so
+        # this should be fine for now.  See T189464.
+        blacklist                 => '.*\.mediawiki\.job\..*',
+        whitelist                 => undef,
         # Seen OutOfMemoryError in this mirror maker instance, increase heap size.
         heap_opts                 => '-Xmx512M -Xms512M',
         producer_properties       => $producer_properties,
         consumer_properties       => $consumer_properties,
     }
+
 }
