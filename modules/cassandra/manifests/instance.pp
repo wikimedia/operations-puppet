@@ -175,6 +175,10 @@
 #   Control whether new nodes joining the cluster will get data they own.
 #   Default: true
 #
+# [*monitor_enabled*]
+#   Control whether Icinga monitoring checks are enabled.
+#   Default: true
+#
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
     $cluster_name,
@@ -245,6 +249,7 @@ define cassandra::instance(
     $internode_encryption             = none,
     $client_encryption_enabled        = false,
     $auto_bootstrap                   = true,
+    $monitor_enabled                  = true,
 ) {
     validate_absolute_path($commitlog_directory)
     validate_absolute_path($hints_directory)
