@@ -396,13 +396,28 @@ def create_accounts(config):
             """, (host, ))
             for row in cur:
                 with labsdb.cursor() as labsdb_cur:
-                    labsdb_cur.execute(
-                        ACCOUNT_CREATION_SQL[grant_type].format(
-                            username=row['mysql_username'],
-                            password_hash=row['password_hash'].decode('utf-8'),
-                            max_connections=10,
-                        ))
+                    create_acct_string = ACCOUNT_CREATION_SQL[grant_type].format(
+                        username=row['mysql_username'],
+                        password_hash=row['password_hash'].decode('utf-8'),
+                        max_connections=10,
+                    )
+                    try:
+                        labsdb_cur.execute(create_acct_string)
+                    except pymysql.err.InternalError as err:
+                        # When on a "legacy" server, it is possible there is an old
+                        # account that will need cleanup before we create it anew.
+                        if err.args[0] == 1396 and grant_type == 'legacy':
+                            labsdb_cur.execute(
+                                "DROP USER '{username}'@'%';".format(
+                                    username=row['mysql_username']
+                                ))
+                            labsdb_cur.execute(create_acct_string)
+                        else:
+                            # Fail properly if this was any other problem
+                            raise
+
                     labsdb.commit()
+
                 with acct_db.cursor() as write_cur:
                     write_cur.execute("""
                     UPDATE account_host
