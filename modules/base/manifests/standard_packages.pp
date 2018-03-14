@@ -121,6 +121,12 @@ class base::standard_packages {
                   'libpsl0',
                   'libwiretap4',
                   'libwsutil4',
+                  'libbind9-90',
+                  'libdns100',
+                  'libisc95',
+                  'libisccc90',
+                  'libisccfg90',
+                  'python-reportbug',
                   'libpng12-0'
             ]:
             ensure => absent,
