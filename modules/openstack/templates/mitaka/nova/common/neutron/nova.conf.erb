@@ -60,17 +60,18 @@ password = <%= @ldap_user_pass %>
 
 [neutron]
 service_metadata_proxy = true
-metadata_proxy_shared_secret =
-url = http://127.0.0.1:9696
-auth_url = http://127.0.0.1:5000/v3
+metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
+
+url = http://<%= @nova_controller %>:9696
+auth_url = http://<%= @nova_controller %>:5000/v3
 auth_type = v3password
-password =
+password = <%= @ldap_user_pass %>
 project_domain_name = default
 project_name = admin
 tenant_name = admin
 user_domain_id = default
 user_domain_name = default
-username = admin
+username = novaadmin
 
 [osapi_v21]
 [oslo_concurrency]
