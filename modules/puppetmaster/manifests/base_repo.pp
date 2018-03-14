@@ -24,4 +24,10 @@ class puppetmaster::base_repo (
         group              => $gitowner,
         require            => File["${gitdir}/operations"],
     }
+    file { "${gitdir}/operations/puppet/*":
+        ensure  => directory,
+        owner   => $owner,
+        group   => $group,
+        recurse => true,
+    }
 }
