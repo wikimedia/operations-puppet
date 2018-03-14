@@ -17,10 +17,10 @@ etl.destination.overwrite=true
 
 # HDFS location where you want to keep execution files, i.e. offsets,
 # error logs, and count files
-etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/eventbus
+etl.execution.base.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/eventbus-00
 
 # where completed Camus job output directories are kept, usually a sub-dir in the base.path
-etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/eventbus/history
+etl.execution.history.path=hdfs://<%= @template_variables['hadoop_cluster_name'] %>/wmf/camus/eventbus-00/history
 
 # Our
 # Our timestamps look like 2013-09-20T15:40:17+00:00
