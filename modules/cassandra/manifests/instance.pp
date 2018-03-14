@@ -245,6 +245,7 @@ define cassandra::instance(
     $internode_encryption             = none,
     $client_encryption_enabled        = false,
     $auto_bootstrap                   = true,
+    $monitor_enabled                  = true,
 ) {
     validate_absolute_path($commitlog_directory)
     validate_absolute_path($hints_directory)
