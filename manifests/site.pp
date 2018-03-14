@@ -2131,6 +2131,12 @@ node /^labvirt10(19|20)\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
+#labvirt10[21-21] are new labvirts, set to spare for now T172538
+node /^labvirt102[12]\.eqiad\.wmnet$/ {
+    role(spare::system)
+}
+
+
 # Wikidata query service
 node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
     role(wdqs)
