@@ -14,9 +14,10 @@ k8s_admin_users:
   - yuvipanda
 
 # Elasticsearch
-elasticsearch::version: 2
+elasticsearch::version: 5
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: labs-tools
+elasticsearch::curator_uses_unicast_hosts: false
 elasticsearch::expected_nodes: 3
 elasticsearch::heap_memory: '8G'
 elasticsearch::minimum_master_nodes: 2
