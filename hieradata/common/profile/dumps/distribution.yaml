@@ -9,3 +9,5 @@ profile::dumps::distribution::rsync_config:
   dumps_group: 'dumpsgen'
   dumps_deploygroup: 'wikidev'
   dumps_mntpoint: '/srv/dumps'
+
+do_acme: false
