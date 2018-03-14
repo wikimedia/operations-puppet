@@ -19,10 +19,4 @@ class profile::dumps::distribution::server {
         require => File['/srv/dumps'],
     }
 
-    file {'/srv/dumps/xmldatadumps':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
 }

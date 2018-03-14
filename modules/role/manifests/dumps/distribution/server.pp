@@ -9,6 +9,7 @@ class role::dumps::distribution::server {
     include ::profile::dumps::distribution::nfs
     include ::profile::dumps::distribution::rsync
     include ::profile::dumps::distribution::ferm
+    include ::profile::dumps::distribution::web
 
     include ::profile::dumps::distribution::datasets::cleanup
     include ::profile::dumps::distribution::datasets::cleanup_miscdatasets
