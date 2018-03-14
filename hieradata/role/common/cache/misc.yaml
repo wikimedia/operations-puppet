@@ -111,6 +111,10 @@ cache::app_directors:
   planet:
     backends:
       eqiad: 'planet1001.eqiad.wmnet'
+  puppetboard:
+    backends:
+      eqiad: 'puppetboard1001.eqiad.wmnet'
+      codfw: 'puppetboard2001.codfw.wmnet'
   pybal_config:
     backends:
       eqiad: 'puppetmaster1001.eqiad.wmnet'
@@ -249,6 +253,9 @@ cache::req_handling:
     caching: 'pass'
   '^([^.]+\.)?planet\.wikimedia\.org$':
     director: 'planet'
+  puppetboard.wikimedia.org:
+    director: 'puppetboard'
+    caching: 'pass'
   query.wikidata.org:
     director: 'wdqs_director'
     subpaths:
