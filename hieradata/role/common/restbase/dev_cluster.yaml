@@ -1,7 +1,6 @@
 # We don't want paging
 do_paging: false
 monitor_screens: false
-monitor_restbase: false
 
 #
 # RESTBase
@@ -23,7 +22,11 @@ profile::restbase::cxserver_uri: "http://cxserver.discovery.wmnet:8080"
 profile::restbase::recommendation_uri: "http://recommendation-api.discovery.wmnet:9632"
 profile::restbase::cassandra_user: restb
 profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+
+# Skip Icinga "root URL" monitoring check on dev hosts (T189050)
+profile::restbase::monitor_restbase: false
 profile::restbase::monitor_domain: en.wikipedia.org
+
 profile::restbase::cassandra_tls:
   ca: /dev/null
 # TODO: get this from cassandra's instances?
