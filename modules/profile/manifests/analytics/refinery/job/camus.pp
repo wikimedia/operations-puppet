@@ -52,11 +52,6 @@ class profile::analytics::refinery::job::camus(
         minute        => '5',
         kafka_brokers => $kafka_brokers_jumbo,
     }
-    # TODO: remove as part of T183297
-    camus::job { 'eventlogging-analytics':
-        minute        => '5',
-        kafka_brokers => $kafka_brokers_analytics,
-    }
 
     # Import eventbus topics into /wmf/data/raw/eventbus
     # once every hour.
