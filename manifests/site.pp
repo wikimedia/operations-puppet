@@ -587,11 +587,6 @@ node 'db1053.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-# Pending to be decommissioned: T187542
-node 'db1043.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # codfw
 node 'db2042.codfw.wmnet' {
     role(mariadb::misc::phabricator)
