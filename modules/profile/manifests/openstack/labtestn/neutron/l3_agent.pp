@@ -5,6 +5,7 @@ class profile::openstack::labtestn::neutron::l3_agent(
     ) {
 
     require ::profile::openstack::labtestn::clientlib
+    require ::profile::openstack::labtestn::neutron::common
     class {'::profile::openstack::base::neutron::l3_agent':
         version                     => $version,
         network_flat_interface      => $network_flat_interface,
