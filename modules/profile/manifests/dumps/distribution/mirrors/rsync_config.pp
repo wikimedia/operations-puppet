@@ -1,10 +1,13 @@
 class profile::dumps::distribution::mirrors::rsync_config(
-    $rsync_clients = hiera('dumps_web_rsync_server_clients'),
+    $rsync_mirrors = hiera('profile::dumps::distribution::datasets::mirrors'),
     $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
     $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
 ) {
-    $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
+    $active_mirrors = $rsync_clients.filter |$item| { item['active'] == 'yes' }
+    $ipv4_mirrors = $active_mirrors.reduce |$item| { item['ipv4'] }
+    $ipv6_mirrors = $active_mirrors.reduce |$item| { item['ipv6'] }
+    $hosts_allow = join(concat(flatten($ipv4_mirrors + $ipv6_mirrors), ' ')
 
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure  => 'present',
