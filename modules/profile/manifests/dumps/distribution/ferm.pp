@@ -4,10 +4,18 @@
 # a AAAA lookup mode for IPv6 addresses, but this equally fails if only
 # an IPv4 address is present.
 class profile::dumps::distribution::ferm(
-    $rsync_clients = hiera('dumps_web_rsync_server_clients'),
+    $internal_rsync_clients = hiera('dumps_web_rsync_server_clients'),
+    $rsync_mirrors = hiera('profile::dumps::distribution::datasets::mirrors'),
 ) {
-    $rsync_clients_ipv4_ferm = join(concat($rsync_clients['ipv4']['internal'], $rsync_clients['ipv4']['external']), ' ')
-    $rsync_clients_ipv6_ferm = join(concat($rsync_clients['ipv6']['internal'], $rsync_clients['ipv6']['external']), ' ')
+    $internal_clients_ipv4 = $internal_rsync_clients['ipv4']['internal']
+    $internal_clients_ipv6 = $internal_rsync_clients['ipv6']['internal']
+
+    $active_mirrors = $rsync_mirrors.filter |$item| { item['active'] == 'yes' }
+    $ipv4_mirrors = $active_mirrors.reduce |$item| { item['ipv4'] }
+    $ipv6_mirrors = $active_mirrors.reduce |$item| { item['ipv6'] }
+
+    $rsync_clients_ipv4_ferm = join(flatten($internal_clients_ipv4 + $ipv4_mirrors), ' ')
+    $rsync_clients_ipv6_ferm = join(flatten($internal_clients_ipv6 + $ipv6_mirrors), ' ')
 
     ferm::service {'dumps_rsyncd_ipv4':
         port   => '873',
