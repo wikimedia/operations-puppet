@@ -7,6 +7,8 @@
 class profile::hadoop::monitoring::nodemanager(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
+    require ::profile::hadoop::common
+
     $jmx_exporter_config_file = '/etc/hadoop/prometheus_yarn_nodemanager_jmx_exporter.yaml'
     $prometheus_jmx_exporter_nodemanager_port = 8141
     profile::prometheus::jmx_exporter { "yarn_nodemanager_${::hostname}":

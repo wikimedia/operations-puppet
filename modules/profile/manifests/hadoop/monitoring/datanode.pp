@@ -7,6 +7,8 @@
 class profile::hadoop::monitoring::datanode(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
+    require ::profile::hadoop::common
+
     $jmx_exporter_config_file = '/etc/hadoop/prometheus_hdfs_datanode_jmx_exporter.yaml'
     $prometheus_jmx_exporter_datanode_port = 51010
     profile::prometheus::jmx_exporter { "hdfs_datanode_${::hostname}":
