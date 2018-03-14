@@ -11,7 +11,7 @@ class openstack::neutron::metadata_agent(
         content => template("openstack/${version}/neutron/metadata_agent.ini.erb"),
         owner   => 'neutron',
         group   => 'neutron',
-        mode    => '0440',
+        mode    => '0640',
         require => Package['neutron-metadata-agent'];
     }
 }
