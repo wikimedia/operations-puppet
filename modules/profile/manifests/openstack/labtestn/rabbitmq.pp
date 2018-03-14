@@ -8,6 +8,7 @@ class profile::openstack::labtestn::rabbitmq(
     $nova_api_host = hiera('profile::openstack::labtestn::nova_api_host'),
     $designate_host = hiera('profile::openstack::labtestn::designate_host'),
     $nova_rabbit_password = hiera('profile::openstack::labtestn::nova::rabbit_pass'),
+    $neutron_rabbit_user = hiera('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = hiera('profile::openstack::labtestn::neutron::rabbit_pass'),
 ){
 
@@ -25,7 +26,9 @@ class profile::openstack::labtestn::rabbitmq(
     }
     contain '::profile::openstack::base::rabbitmq'
 
+    # move to base when appropriate along with lookups above
     class {'::openstack::neutron::rabbit':
+        username => $neutron_rabbit_user,
         password => $neutron_rabbit_password,
     }
     contain '::openstack::neutron::rabbit'
