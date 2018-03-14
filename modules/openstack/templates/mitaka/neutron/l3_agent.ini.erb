@@ -1,0 +1,12 @@
+[DEFAULT]
+interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+external_network_bridge =
+
+agent_mode = legacy
+handle_internal_only_routers = True
+enable_metadata_proxy = True
+
+# interface_driver = openvswitch
+# external_network_bridge = br-ex
+
+[AGENT]
