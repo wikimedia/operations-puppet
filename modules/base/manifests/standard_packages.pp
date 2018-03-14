@@ -132,4 +132,8 @@ class base::standard_packages {
             ensure => absent,
         }
     }
+
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'lldpd': }
+    }
 }
