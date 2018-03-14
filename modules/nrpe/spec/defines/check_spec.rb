@@ -11,8 +11,20 @@ describe 'nrpe::check', :type => :define do
     end
 
     context 'with nrpe class defined' do
-        let(:facts) { { :initsystem => 'systemd' } }
+        let(:facts) { {
+            :initsystem => 'systemd'
+        } }
+
+        # nrpe depends on os_version which needs lsb facts to be set. However
+        # facts are not set before the precondition leading os_version() to
+        # fail. Mock it and make it always return true.
+        before(:each) do
+            Puppet::Parser::Functions.newfunction(:os_version, :type => :rvalue) { |_|
+                true
+            }
+        end
         let(:pre_condition) { "class { 'nrpe': }" }
+
         it 'should create /etc/nagios/nrpe.d/something.cfg' do
             should contain_file('/etc/nagios/nrpe.d/something.cfg')
         end
