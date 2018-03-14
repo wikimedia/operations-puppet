@@ -170,17 +170,17 @@ class toollabs::apt_pinning {
     if os_version('debian == stretch') {
         apt::pin { 'toolforge-kubeadm-pinning':
             package  => 'kubeadm',
-            pin      => 'version 1.9.1-00',
+            pin      => 'version 1.9.4-00',
             priority => '1001',
         }
         apt::pin { 'toolforge-kubelet-pinning':
             package  => 'kubelet',
-            pin      => 'version 1.9.1-00',
+            pin      => 'version 1.9.4-00',
             priority => '1001',
         }
         apt::pin { 'toolforge-kubectl-pinning':
             package  => 'kubectl',
-            pin      => 'version 1.9.1-00',
+            pin      => 'version 1.9.4-00',
             priority => '1001',
         }
         apt::pin { 'toolforge-kubernetes-cni-pinning':
