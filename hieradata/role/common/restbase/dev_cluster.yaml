@@ -83,6 +83,10 @@ profile::cassandra::metrics_blacklist:
       - .*\.metrics\.Client\..*$
       - .*\.metrics\.ColumnFamily\..*$
 
+## Monitoring
+# skip Icinga monitoring on dev servers (T189050)
+profile::cassandra::monitor_enabled: false
+
 ## Instances
 profile::cassandra::instances:
   "restbase-dev1004.eqiad.wmnet":
