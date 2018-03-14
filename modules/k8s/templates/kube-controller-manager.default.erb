@@ -6,6 +6,6 @@
 DAEMON_ARGS=" \
 --leader-elect=true \
 <%- if @service_account_private_key_file -%>
---service_account_private_key_file=<%= @service_account_private_key_file -%> \
+--service-account-private-key-file=<%= @service_account_private_key_file -%> \
 <%- end -%>
 "
