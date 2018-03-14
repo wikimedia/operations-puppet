@@ -8,7 +8,8 @@ class profile::cassandra(
     $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist'),
     $graphite_host = hiera('graphite_host'),
     $prometheus_nodes = hiera('prometheus_nodes'),
-    $allow_analytics = hiera('profile::cassandra::allow_analytics')
+    $allow_analytics = hiera('profile::cassandra::allow_analytics'),
+    $monitor_enabled = hiera('profile::cassandra::monitor_enabled', true),
 ) {
     include ::passwords::cassandra
     $instances = $all_instances[$::fqdn]
@@ -49,6 +50,7 @@ class profile::cassandra(
     if $instances {
         $instance_names = keys($instances)
         ::cassandra::instance::monitoring{ $instance_names:
+            monitor_enabled  => $monitor_enabled,
             instances        => $instances,
             tls_cluster_name => $tls_cluster_name,
         }
@@ -58,6 +60,7 @@ class profile::cassandra(
                 'listen_address' => $::cassandra::listen_address,
         }}
         ::cassandra::instance::monitoring{ 'default':
+            monitor_enabled  => $monitor_enabled,
             instances        => $default_instances,
             tls_cluster_name => $tls_cluster_name,
         }
