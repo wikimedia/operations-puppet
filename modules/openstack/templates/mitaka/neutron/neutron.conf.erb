@@ -1,10 +1,17 @@
 [DEFAULT]
 auth_strategy = keystone
+
 core_plugin = neutron.plugins.ml2.plugin.Ml2Plugin
-service_plugins = router,metering
+
+# metering?
+service_plugins = router
 allow_overlapping_ips = True
-notify_nova_on_port_status_changes = True
+
 rpc_backend = rabbit
+
+#notify_nova_on_port_status_changes = True
+notify_nova_on_port_status_changes = True
+notify_nova_on_port_data_changes = True
 
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
@@ -46,8 +53,8 @@ lock_path = /var/lock/neutron
 
 [oslo_messaging_rabbit]
 rabbit_host = <%= @nova_controller %>
-rabbit_userid = guest
-rabbit_password =
+rabbit_userid = <%= @rabbit_user %>
+rabbit_password = <%= @rabbit_pass %>
 
 [oslo_policy]
 [quotas]

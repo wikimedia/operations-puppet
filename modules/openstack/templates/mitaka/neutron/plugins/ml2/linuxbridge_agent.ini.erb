@@ -1,0 +1,16 @@
+[DEFAULT]
+[agent]
+[linux_bridge]
+# Replace PROVIDER_INTERFACE_NAME with the name of the underlying
+# provider physical network interface.
+physical_interface_mappings = provider:PROVIDER_INTERFACE_NAME
+
+[securitygroup]
+enable_security_group = True
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+
+[vxlan]
+enable_vxlan = True
+# local_ip = OVERLAY_INTERFACE_IP_ADDRESS
+local_ip = <%= @ipaddress %>
+l2_population = True
