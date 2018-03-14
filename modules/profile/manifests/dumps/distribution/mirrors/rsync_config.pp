@@ -1,10 +1,13 @@
 class profile::dumps::distribution::mirrors::rsync_config(
-    $rsync_clients = hiera('dumps_web_rsync_server_clients'),
+    $rsync_mirrors = hiera('profile::dumps::distribution::datasets::mirrors'),
     $rsyncer_settings = hiera('profile::dumps::distribution::rsync_config'),
     $xmldumpsdir = hiera('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = hiera('profile::dumps::distribution::miscdumpsdir'),
 ) {
-    $hosts_allow = join(concat($rsync_clients['ipv4']['external'], $rsync_clients['ipv6']['external']), ' ')
+    # FIXME this is python shoved in here because dunno how to do list compr in puppet
+    $ipv4_mirrors = [ item['ipv4'] for item in $rsync_clients if item['active'] == 'yes'] ]
+    $ipv6_mirrors = [ item['ipv6'] for item in $rsync_clients if item['active'] == 'yes'] ]
+    $hosts_allow = join(concat($ipv4_mirrors, $ipv6_mirrors, ' ')
 
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure  => 'present',
