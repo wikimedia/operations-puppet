@@ -136,6 +136,9 @@ class profile::backup::director(
     bacula::director::fileset { 'var-vmail':
         includes => [ '/var/vmail' ]
     }
+    bacula::director::fileset { 'mysql-srv-backups':
+        includes => [ '/srv/backups/' ]
+    }
     bacula::director::fileset { 'mysql-srv-backups-latest':
         includes => [ '/srv/backups/latest' ]
     }
