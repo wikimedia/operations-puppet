@@ -592,11 +592,6 @@ node 'db2042.codfw.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
-# Pending to be decommissioned: T187543
-node 'db2012.codfw.wmnet' {
-    role(spare::system)
-}
-
 # m4 shard
 
 node 'db1107.eqiad.wmnet' {
