@@ -12,4 +12,9 @@ class rabbitmq::monitor(
         },
         source   => 'puppet:///modules/rabbitmq/rabbitmq.py',
     }
+
+    rabbitmq::user{"${rabbit_monitor_username}-diamond":
+        username => $rabbit_monitor_username,
+        password => $rabbit_monitor_password,
+    }
 }
