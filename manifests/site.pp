@@ -744,7 +744,15 @@ node /^elastic101[7-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic10[2-4][0-9]\.eqiad\.wmnet/ {
+# tagged as spare, waiting for decommission in https://phabricator.wikimedia.org/T189727
+node 'elastic1021.eqiad.wmnet' {
+    role(spare::system)
+}
+node /^elastic102[023456789]\.eqiad\.wmnet/ {
+    role(elasticsearch::cirrus)
+}
+
+node /^elastic10[3-4][0-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 

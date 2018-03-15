@@ -72,7 +72,7 @@ es_eqiad_rack_b6:
   profile::elasticsearch::row:  B
 
 es_eqiad_rack_c4:
-  __regex: !ruby/regexp /^elastic10(21|22|29)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(22|29)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C4
   profile::elasticsearch::row:  C
 
