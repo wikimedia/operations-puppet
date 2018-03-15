@@ -256,10 +256,10 @@ codfw:
     # TODO: This is wrong, but is on purpose right now. We want to be able to
     # gradually increase mathoid traffic sent to kubernetes and we currently
     # don't support a service being provided by >1 clusters, so reuse scb for now
-    kubernetes2001.codfw.wnnet: [mathoid]
-    kubernetes2002.codfw.wnnet: [mathoid]
-    kubernetes2003.codfw.wnnet: [mathoid]
-    kubernetes2004.codfw.wnnet: [mathoid]
+    kubernetes2001.codfw.wmnet: [mathoid]
+    kubernetes2002.codfw.wmnet: [mathoid]
+    kubernetes2003.codfw.wmnet: [mathoid]
+    kubernetes2004.codfw.wmnet: [mathoid]
   eventbus:
     kafka2001.codfw.wmnet: [eventbus]
     kafka2002.codfw.wmnet: [eventbus]
@@ -279,10 +279,10 @@ codfw:
   kubernetes:
     acrab.codfw.wmnet: [kubemaster]
     acrux.codfw.wmnet: [kubemaster]
-    kubernetes2001.codfw.wnnet: [mathoid]
-    kubernetes2002.codfw.wnnet: [mathoid]
-    kubernetes2003.codfw.wnnet: [mathoid]
-    kubernetes2004.codfw.wnnet: [mathoid]
+    kubernetes2001.codfw.wmnet: [mathoid]
+    kubernetes2002.codfw.wmnet: [mathoid]
+    kubernetes2003.codfw.wmnet: [mathoid]
+    kubernetes2004.codfw.wmnet: [mathoid]
   ores:
     ores2001.codfw.wmnet: [ores]
     ores2002.codfw.wmnet: [ores]
