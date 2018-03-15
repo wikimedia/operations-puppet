@@ -91,7 +91,7 @@ c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # This is enough, since we'll put a jupyterhub-singleuser script in
 # here from the LocalAuthenticator. This also enables users to install
 # things via pip easily and have them be immediately available
-c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/jupyter-venv/bin']
+c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/venv/bin']
 
 class VenvCreatingAuthenticator(Authenticator):
     """
@@ -110,7 +110,7 @@ class VenvCreatingAuthenticator(Authenticator):
     @gen.coroutine
     def add_user(self, user):
         home_path = os.path.join('/home', user.name)
-        venv_path = os.path.join(home_path, 'jupyter-venv')
+        venv_path = os.path.join(home_path, 'venv')
         if not os.path.exists(home_path):
             os.mkdir(home_path, 0o755)
             shutil.chown(home_path, user.name)
