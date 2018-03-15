@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-_puppetmaster="puppetmaster1001.eqiad.wmnet"
+_puppetmaster="$(puppet config print ca_server --section agent)"
 _dir=$(cd `dirname $0` && pwd)
 
 
