@@ -31,6 +31,7 @@ class base::standard_packages {
         'numactl',
         'ncdu',
         'ngrep',
+        'pigz',
         'pv',
         'psmisc',
         'python3',
