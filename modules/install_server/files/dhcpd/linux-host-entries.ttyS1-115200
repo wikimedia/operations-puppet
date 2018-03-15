@@ -2420,13 +2420,6 @@ host elastic1020 {
     filename "lpxelinux.0";
 }
 
-host elastic1021 {
-    hardware ethernet B0:83:FE:C0:97:E8;
-    fixed-address elastic1021.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host elastic1022 {
     hardware ethernet B0:83:FE:C0:B4:6F;
     fixed-address elastic1022.eqiad.wmnet;
