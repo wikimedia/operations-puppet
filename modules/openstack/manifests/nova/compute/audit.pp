@@ -12,12 +12,9 @@ class openstack::nova::compute::audit(
     $whitelist_kernels=['4.4.0-109-generic', '4.9.0-0.bpo.6-amd64'],
     ) {
 
-    notify{"nova-compute is only valid for ${whitelist_kernels} and not ${::kernelrelease}":}
-
-    # XXX: Need to update facts to have this be useful
-    # if os_version('ubuntu >= trusty') {
-    #     if ! ($::kernelrelease in $whitelist_kernels) {
-    #         fail("nova-compute is only valid for ${whitelist_kernels} and not ${::kernelrelease}")
-    #    }
-    #}
+    if os_version('ubuntu >= trusty') {
+        if ! ($::kernelrelease in $whitelist_kernels) {
+            fail("nova-compute is only valid for ${whitelist_kernels} and not ${::kernelrelease}")
+        }
+    }
 }
