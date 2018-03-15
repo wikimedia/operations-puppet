@@ -21,7 +21,14 @@ class profile::openstack::main::nova::common(
     $spice_hostname = hiera('profile::openstack::main::spice_hostname'),
     ) {
 
-    require ::profile::openstack::main::cloudrepo
+    if $facts['lsbdistcodename'] == 'jessie' {
+        require ::profile::openstack::base::backports
+    }
+
+    if $facts['lsbdistcodename'] == 'trusty' {
+        require ::profile::openstack::main::cloudrepo
+    }
+
     class {'profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,
