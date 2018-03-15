@@ -1,6 +1,7 @@
 # == Class profile::jupyterhub
 # Profile for setting up a Jupyterhub (SWAP) service.
 #
+# TODO: This class is being deprecated by profile::swap as part of T183145
 class profile::jupyterhub(
     $sitename    = hiera('profile::jupyterhub::sitename', 'jupyterhub'),
     $base_path   = hiera('profile::jupyterhub::base_path', '/srv/jupyterhub'),
