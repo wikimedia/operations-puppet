@@ -97,4 +97,9 @@ class profile::wdqs (
     class { '::wdqs::monitor::services':
         contact_groups => $contact_groups,
     }
+
+    # We want pigz to transfer data files between nodes. This is a pure admin
+    # concern, defined in the profile and not the wdqs class.
+    require_package('pigz')
+
 }
