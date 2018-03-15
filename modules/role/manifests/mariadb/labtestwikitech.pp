@@ -7,6 +7,8 @@ class role::mariadb::labtestwikitech {
         description => 'Wikitech Database',
     }
 
+    $basedir = '/opt/wmf-mariadb101'
+
     include ::standard
     include ::profile::mariadb::grants::core
     include ::profile::mariadb::monitor
