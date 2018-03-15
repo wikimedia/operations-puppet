@@ -25,4 +25,8 @@ define prometheus::apache_exporter (
         ensure  => running,
         require => Package['prometheus-apache-exporter'],
     }
+
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'prometheus-apache-exporter': }
+    }
 }
