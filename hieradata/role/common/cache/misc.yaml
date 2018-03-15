@@ -217,6 +217,10 @@ cache::req_handling:
     director: 'labtestspice'
   labtesthorizon.wikimedia.org:
     director: 'labtestweb2001'
+  labtestwikitech.wikimedia.org:
+    director: 'labtestweb2001'
+  labtesttoolsadmin.wikimedia.org:
+    director: 'labtestweb2001'
   logstash.wikimedia.org:
     director: 'logstash_director'
   metrics.wikimedia.org:
