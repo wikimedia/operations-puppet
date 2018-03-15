@@ -2,6 +2,9 @@ admin::groups:
   - druid-admins
 
 cluster: 'druid_analytics'
+
+profile::cdh::apt::pin_release: false
+
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.
