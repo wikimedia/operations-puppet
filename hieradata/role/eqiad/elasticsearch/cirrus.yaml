@@ -15,7 +15,6 @@ profile::elasticsearch::cluster_hosts:
   - elastic1018.eqiad.wmnet
   - elastic1019.eqiad.wmnet
   - elastic1020.eqiad.wmnet
-  - elastic1021.eqiad.wmnet
   - elastic1022.eqiad.wmnet
   - elastic1023.eqiad.wmnet
   - elastic1024.eqiad.wmnet

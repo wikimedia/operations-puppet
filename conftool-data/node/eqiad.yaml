@@ -222,7 +222,6 @@ eqiad:
     elastic1018.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
     elastic1019.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
     elastic1020.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
-    elastic1021.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
     elastic1022.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
     elastic1023.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
     elastic1024.eqiad.wmnet: [elasticsearch, elasticsearch-ssl]
