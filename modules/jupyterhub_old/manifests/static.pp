@@ -15,7 +15,7 @@
 #  List of ldap groups that can access the site
 
 
-class jupyterhub::static (
+class jupyterhub_old::static (
     $sitename,
     $static_path,
     $url_prefix,
@@ -37,7 +37,7 @@ class jupyterhub::static (
     }
 
     httpd::site { $sitename:
-        content => template('jupyterhub/apache/nbstatic.conf.erb'),
+        content => template('jupyterhub_old/apache/nbstatic.conf.erb'),
     }
 
 }
