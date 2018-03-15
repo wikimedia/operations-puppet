@@ -23,7 +23,7 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 ###############################
 
 # MySQL lookups (OTRS)
-hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %> : m2-slave.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %>
+hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %>
 
 # LDAP lookups (Office)
 ldap_default_servers = ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @other_site %>.wikimedia.org
