@@ -42,7 +42,6 @@ ExecStart=/usr/sbin/varnishd \
 -p thread_pool_stack=131072 \
 -p listen_depth=4096 -p vcc_err_unref=off \
 -p http_req_size=24576 \
--p gethdr_extrachance=0 \
 -p gzip_level=8 \
 -p gzip_memlevel=9 \
 <%= @runtime_params -%> \
