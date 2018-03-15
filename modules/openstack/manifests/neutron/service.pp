@@ -12,6 +12,6 @@ class openstack::neutron::service(
         owner   => 'root',
         group   => 'root',
         mode    => '0744',
-        require => Package['neutron-linuxbridge-agent'];
+        require => Package['neutron-server'],
     }
 }
