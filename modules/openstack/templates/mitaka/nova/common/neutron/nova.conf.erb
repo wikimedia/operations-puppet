@@ -32,13 +32,16 @@ connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova
 
 [ephemeral_storage_encryption]
+
 [glance]
 api_servers = http://<%= @glance_host %>:9292
+
 [guestfs]
 [hyperv]
 [image_file_url]
 [ironic]
 [keymgr]
+
 [keystone_authtoken]
 auth_host = <%= @nova_controller %>
 auth_protocol = http
@@ -74,10 +77,12 @@ user_domain_name = default
 username = novaadmin
 
 [osapi_v21]
+
 [oslo_concurrency]
 lock_path = /var/lock/nova
 # docs suggest but ^ is the debian default
 #lock_path = /var/lib/nova/tmp
+
 [oslo_messaging_amqp]
 [oslo_messaging_notifications]
 
