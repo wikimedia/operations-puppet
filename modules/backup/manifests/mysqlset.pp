@@ -17,11 +17,6 @@ define backup::mysqlset(
         fail("${method} is not allowed")
     }
 
-    if !defined(Package['pigz']) {
-        package { 'pigz':
-            ensure => present,
-        }
-    }
     if $method == 'predump' {
         $extras = {
                 'ClientRunBeforeJob' => '/etc/bacula/scripts/predump',
