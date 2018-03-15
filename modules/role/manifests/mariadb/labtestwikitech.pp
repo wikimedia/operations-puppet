@@ -7,8 +7,6 @@ class role::mariadb::labtestwikitech {
         description => 'Wikitech Database',
     }
 
-    $basedir = '/opt/wmf-mariadb101'
-
     include ::standard
     include ::profile::mariadb::grants::core
     include ::profile::mariadb::monitor
@@ -25,6 +23,7 @@ class role::mariadb::labtestwikitech {
     class { 'mariadb::config':
         config  => 'role/mariadb/mysqld_config/wikitech.my.cnf.erb',
         datadir => '/srv/sqldata',
+        basedir => '/opt/wmf-mariadb101',
         tmpdir  => '/srv/tmp',
     }
 
