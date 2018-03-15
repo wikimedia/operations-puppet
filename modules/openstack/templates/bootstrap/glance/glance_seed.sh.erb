@@ -1,0 +1,17 @@
+su -s /bin/sh -c "glance-manage db_sync" glance
+
+service glance-registry restart
+service glance-api restart
+
+openstack endpoint create --publicurl http://<%= @nova_controller %>:9292 --internalurl http://<%= @nova_controller %>:9292 --adminurl http://<%= @nova_controller %>:9292 --region <%= @region %> image
+
+openstack service create --name glance --description "OpenStack Image service" image
+
+openstack role add --user novaadmin --project admin glanceadmin
+
+# http://cdimage.debian.org/cdimage/openstack/current-8/
+
+wget http://cdimage.debian.org/cdimage/openstack/current-8/debian-8-openstack-amd64.qcow2
+
+# --visibility=public
+glance image-create --name "jessie" --disk-format=qcow2 --container-format=bare --property=architecture=x86_64 --progress --file ./debian-8-openstack-amd64.qcow2
