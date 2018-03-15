@@ -6,7 +6,7 @@ class openstack::neutron::ml2(
         ensure => 'present',
     }
 
-    file { '/etc/neutron/plugins/ml2/ml2_conf.in':
+    file { '/etc/neutron/plugins/ml2/ml2_conf.ini':
         content => template("openstack/${version}/neutron/plugins/ml2/ml2_conf.ini.erb"),
         owner   => 'root',
         group   => 'root',
