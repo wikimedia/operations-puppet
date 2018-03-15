@@ -12,6 +12,10 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
+map $upstream_http_location $redirect_uri {
+    "~https?://[^/]+/(?<location_uri>.*)$" "$location_uri";
+}
+
 server {
     resolver <%= @resolver %> ipv6=off;
 
@@ -81,8 +85,21 @@ server {
         proxy_hide_header        CF-RAY;
         proxy_hide_header        Expect-CT;
         proxy_hide_header        Strict-Transport-Security;
+        proxy_intercept_errors on;
+        error_page 301 302 307 308 = @handle_redirects;
     }
 
+    # In some cases, cdnjs redirects to ajax.cdnjs.com when sending requests to
+    # the main CDN.   This handles those at the proxy level and sends the request
+    # appropriately.
+    location @handle_redirects {
+      rewrite ^/$redirect_uri break;
+      proxy_pass https://ajax.cdnjs.com;
+      proxy_hide_header        CF-Cache-Status;
+      proxy_hide_header        CF-RAY;
+      proxy_hide_header        Expect-CT;
+      proxy_hide_header Strict-Transport-Security;
+    }
 
     # Special handling for /fontcdn, reverse proxy to google's fonts service
     location = /fontcdn {
