@@ -23,6 +23,10 @@ class smart (
         ensure => $ensure,
     }
 
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'smartd': }
+    }
+
     # Make sure we send smart alerts from smartd via syslog and not email.
     file { '/etc/smartmontools/run.d/10mail':
         ensure  => absent,
