@@ -9,9 +9,9 @@ class openstack::neutron::service(
     # Needed for setup and schema changes via neutron-db-manage
     file { '/etc/neutron/plugins/ml2/ml2_conf.ini':
         content => template("openstack/${version}/neutron/plugins/ml2/ml2_conf.ini.erb"),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0744',
+        owner   => 'neutron',
+        group   => 'neutron',
+        mode    => '0644',
         require => Package['neutron-server'],
     }
 
