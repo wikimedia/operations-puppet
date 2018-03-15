@@ -14,4 +14,9 @@ class openstack::neutron::service(
         mode    => '0744',
         require => Package['neutron-server'],
     }
+
+    service {'neutron-server':
+        ensure  => 'running',
+        require => Package['neutron-server'],
+    }
 }
