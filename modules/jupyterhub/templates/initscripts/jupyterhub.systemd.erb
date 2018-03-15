@@ -2,19 +2,23 @@
 Description=JupyterHub
 
 [Service]
-ExecStart=<%= @venv_path %>/bin/jupyterhub \
-    --config=<%= @venv_path %>/jupyterhub_config.py \
-    --no-ssl
-WorkingDirectory=<%= @venv_path %>
-Environment=AUTHENTICATOR=<%= @authenticator %>
-Environment=WHEELS_PATH=<%= @wheels_path %>
-Environment=DATA_PATH=<%= @data_path %>
-<% if @web_proxy %>Environment=SINGLEUSER_HTTP_PROXY=<%= @web_proxy %> <% end %>
-EnvironmentFile=<%= @venv_path %>/configproxy_auth_token
-PrivateTmp=yes
-PrivateDevices=yes
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing
+TimeoutStopSec=60
+
+
+WorkingDirectory=<%= @base_path %>
+
+# Only allow this process to write into user home directories
 ReadOnlyDirectories=/
 ReadWriteDirectories=<%= @data_path %> /home
+
+PrivateTmp=yes
+PrivateDevices=yes
+SyslogIdentifier=jupyterhub
+
+ExecStart=<%= @venv_path %>/bin/jupyterhub --config=<%= @config_path %>/jupyterhub_config.py --no-ssl
 
 [Install]
 WantedBy=multi-user.target
