@@ -17,6 +17,7 @@ class TestNavTiming(unittest.TestCase):
     # When passing a 'msg' to assert methods, display that in
     # addition to the value diff, not instead of the diff.
     longMessage = True
+    maxDiff = None
 
     def flatten(self, values):
         for value in values:
