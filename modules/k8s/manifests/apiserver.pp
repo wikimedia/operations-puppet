@@ -5,6 +5,7 @@ class k8s::apiserver(
     $kube_api_port = undef,
     $kubelet_port = undef,
     $service_cluster_ip_range = '192.168.0.0/17',
+    $service_node_port_range = undef,
     $admission_controllers = {
         'NamespaceLifecycle' => '',
         'LimitRanger' => '',

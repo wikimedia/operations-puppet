@@ -4,6 +4,7 @@ class profile::kubernetes::master(
     # SPECIAL VALUE: use 'all' to have this port be open to the world
     $accessible_to=hiera('profile::kubernetes::master::accessible_to'),
     $service_cluster_ip_range=hiera('profile::kubernetes::master::service_cluster_ip_range'),
+    $service_node_port_range=hiera('profile::kubernetes::master::service_node_port_range', undef),
     $apiserver_count=hiera('profile::kubernetes::master::apiserver_count'),
     $storage_backend=hiera('profile::kubernetes::master::storage_backend', 'etcd2'),
     $admission_controllers=hiera('profile::kubernetes::master::admission_controllers'),
@@ -40,6 +41,7 @@ class profile::kubernetes::master(
         authz_mode               => $authz_mode,
         storage_backend          => $storage_backend,
         service_cluster_ip_range => $service_cluster_ip_range,
+        service_node_port_range  => $service_node_port_range,
         apiserver_count          => $apiserver_count,
         admission_controllers    => $admission_controllers,
     }

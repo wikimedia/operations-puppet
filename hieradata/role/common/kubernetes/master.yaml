@@ -15,6 +15,7 @@ profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::authz_mode: 'RBAC'
 profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::service_node_port_range: '1-65535'
 # TODO: This needs to become a profile
 role::lvs::realserver::pools:
   kubemaster: {}
