@@ -29,4 +29,19 @@ class profile::mariadb::ferm_misc {
         notrack => true,
         srange  => '@resolve(cobalt.wikimedia.org)',
     }
+
+    ferm::service { 'exim1':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => '@resolve(mx1001.wikimedia.org)',
+    }
+
+    ferm::service { 'exim2':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => '@resolve(wiki-mail-eqiad.wikimedia.org)',
+    }
+
 }
