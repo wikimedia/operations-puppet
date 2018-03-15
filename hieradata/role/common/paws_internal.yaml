@@ -3,4 +3,4 @@ admin::groups:
   - researchers
   - statistics-privatedata-users
   - analytics-privatedata-users
-jupyterhub::web_proxy: http://webproxy.eqiad.wmnet:8080
+jupyterhub_old::web_proxy: http://webproxy.eqiad.wmnet:8080
