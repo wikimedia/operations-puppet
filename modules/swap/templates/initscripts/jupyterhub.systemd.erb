@@ -1,0 +1,23 @@
+[Unit]
+Description=JupyterHub
+
+[Service]
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing
+TimeoutStopSec=60
+
+WorkingDirectory=/srv/jupyterhub
+PrivateTmp=yes
+PrivateDevices=yes
+ReadOnlyDirectories=/
+ReadWriteDirectories=/srv/jupyterhub/data /home
+
+SyslogIdentifier=jupyterhub
+
+ExecStart=<%= @venv_path %>/bin/jupyterhub \
+    --config=/etc/jupyterhub/jupyterhub_config.py \
+    --no-ssl
+
+[Install]
+WantedBy=multi-user.target
