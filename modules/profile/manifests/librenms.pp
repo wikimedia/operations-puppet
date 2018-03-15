@@ -35,10 +35,10 @@ class profile::librenms (
             'community' => [ $passwords::network::snmp_ro_community ],
         },
         'irc_host'         => 'irc.freenode.org',
-        'irc_chan'         => '#wikimedia-netops-test,#wikimedia-netops',
+        'irc_chan'         => '#wikimedia-operations',
         'irc_alert'        => true,
         'irc_debug'        => false,
-        'irc_alert_chan'   => '#wikimedia-netops-test',
+        'irc_alert_chan'   => '#wikimedia-operations',
         'irc_alert_utf8'   => true,
         'irc_nick'         => 'librenms-wmf',
 
