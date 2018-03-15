@@ -281,10 +281,6 @@ smart_health_eqsin:
   __regex: !ruby/regexp /^.*\.eqsin\.wmnet$/
   profile::base::check_smart: true
 
-labtestpuppetmaster:
-  __regex: !ruby/regexp /^labtestpuppetmaster.*\.wikimedia\.org$/
-  puppetmaster: "puppet.codfw.wmnet"
-
 # Vary Hadoop yarn_nodemanager_resource_memory_mb based on available RAM.
 hadoop_worker_64G_memory:
   __regex: !ruby/regexp /^analytics10(2[89]|3[0-9]|4[0-9]|5[0-9]|6[0-9]).eqiad.wmnet$/
