@@ -10,7 +10,6 @@ class mariadb::packages_wmf(
         'libaio1',            # missing dependency on packages < 10.0.27
         'percona-toolkit',
         'libjemalloc1',       # missing dependency on packages < 10.0.27
-        'pigz',
         'grc',
         'python3-pymysql',    # for mariadb_check.py
     )
