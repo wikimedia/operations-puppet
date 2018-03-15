@@ -1,5 +1,6 @@
 class openstack::neutron::metadata_agent(
     $version,
+    $nova_controller,
     $metadata_proxy_shared_secret,
     ) {
 

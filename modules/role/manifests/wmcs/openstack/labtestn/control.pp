@@ -14,7 +14,7 @@ class role::wmcs::openstack::labtestn::control {
     include ::profile::openstack::labtestn::nova::api::service
     include ::profile::openstack::labtestn::neutron::common
     include ::profile::openstack::labtestn::neutron::service
-    include ::profile::openstack::labtestn::neutron::metadata_agent
-    #include ::profile::openstack::labtestn::nova::spiceproxy::service
-    #include ::profile::openstack::labtestn::pdns::dns_floating_ip_updater
+    # include ::profile::openstack::labtestn::neutron::metadata_agent
+    # include ::profile::openstack::labtestn::nova::spiceproxy::service
+    # include ::profile::openstack::labtestn::pdns::dns_floating_ip_updater
 }

@@ -10,6 +10,7 @@ class openstack::nova::common::neutron(
     $rabbit_host,
     $rabbit_pass,
     $glance_host,
+    $metadata_proxy_shared_secret,
     ) {
 
     class {'openstack::nova::common::base':

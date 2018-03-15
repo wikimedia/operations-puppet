@@ -8,20 +8,22 @@ class profile::openstack::base::nova::common::neutron(
     $ldap_user_pass = hiera('profile::openstack::base::ldap_user_pass'),
     $rabbit_user = hiera('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = hiera('profile::openstack::base::rabbit_pass'),
+    $metadata_proxy_shared_secret = hiera('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
     ) {
 
     class {'::openstack::nova::common::neutron':
-        version         => $version,
-        db_user         => $db_user,
-        db_pass         => $db_pass,
-        db_host         => $db_host,
-        db_name         => $db_name,
-        nova_controller => $nova_controller,
-        ldap_user_pass  => $ldap_user_pass,
-        rabbit_user     => $rabbit_user,
-        rabbit_host     => $nova_controller,
-        rabbit_pass     => $rabbit_pass,
-        glance_host     => $nova_controller,
+        version                      => $version,
+        db_user                      => $db_user,
+        db_pass                      => $db_pass,
+        db_host                      => $db_host,
+        db_name                      => $db_name,
+        nova_controller              => $nova_controller,
+        ldap_user_pass               => $ldap_user_pass,
+        rabbit_user                  => $rabbit_user,
+        rabbit_host                  => $nova_controller,
+        rabbit_pass                  => $rabbit_pass,
+        glance_host                  => $nova_controller,
+        metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
     }
     contain '::openstack::nova::common::neutron'
 }
