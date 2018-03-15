@@ -552,14 +552,13 @@ node 'db2078.codfw.wmnet' {
 }
 
 ## m2 shard
-node 'db1020.eqiad.wmnet' {
+node 'db1051.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
         master => true,
     }
 }
-
-node 'db1051.eqiad.wmnet' {
+node 'db1020.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
     }
