@@ -622,16 +622,16 @@ View with timings above threshold (for navtiming):
   - frontend.navtiming2.mediaWikiLoad.by_country.France:20922|ms
 
 # Sample from February 2018 (added 'isOversample')
-# https://meta.wikimedia.org/w/index.php?title=Schema:NavigationTiming&oldid=17703215
+# https://meta.wikimedia.org/w/index.php?title=Schema:NavigationTiming&oldid=17740037
 Uncached page view from desktop that includes isOversample=false:
  input: {"event": {"action": "history", "connectEnd": 6, "connectStart": 6, "dnsLookup": 1, "domComplete": 1965, "domInteractive": 956, "fetchStart": 1, "isAnon": false, "isHiDPI": false, "isHttp2": true, "isOversample": false, "loadEventEnd": 1968, "loadEventStart": 1965, "mediaWikiLoadComplete": 1270, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RS", "originRegion": "VO", "pageId": 1, "requestStart": 6, "responseEnd": 415, "responseStart": 380, "revId": 1, "unload": 4}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
  expect:
   - *expected_uncached_desktop
 
-# Sample from February 2018 (added 'isOversample')
-# https://meta.wikimedia.org/w/index.php?title=Schema:NavigationTiming&oldid=17703215
+# Sample from February 2018 (added 'isOversample', 'oversampleReason')
+# https://meta.wikimedia.org/w/index.php?title=Schema:NavigationTiming&oldid=17740037
 Uncached page view from desktop that includes isOversample=true:
- input: {"event": {"action": "history", "connectEnd": 6, "connectStart": 6, "dnsLookup": 1, "domComplete": 1965, "domInteractive": 956, "fetchStart": 1, "isAnon": false, "isHiDPI": false, "isHttp2": true, "isOversample": true, "loadEventEnd": 1968, "loadEventStart": 1965, "mediaWikiLoadComplete": 1270, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RS", "originRegion": "VO", "pageId": 1, "requestStart": 6, "responseEnd": 415, "responseStart": 380, "revId": 1, "unload": 4}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ input: {"event": {"action": "history", "connectEnd": 6, "connectStart": 6, "dnsLookup": 1, "domComplete": 1965, "domInteractive": 956, "fetchStart": 1, "isAnon": false, "isHiDPI": false, "isHttp2": true, "isOversample": true, "oversampleReason": [], "loadEventEnd": 1968, "loadEventStart": 1965, "mediaWikiLoadComplete": 1270, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "RS", "originRegion": "VO", "pageId": 1, "requestStart": 6, "responseEnd": 415, "responseStart": 380, "revId": 1, "unload": 4}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 8.1\", \"browser_minor\": \"0\", \"wmf_app_version\": \"-\", \"browser_major\": \"55\", \"browser_family\": \"Firefox\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
  expect:
   - frontend.navtiming_oversample.loadEventStart.desktop.authenticated:1965|ms
   - frontend.navtiming_oversample.loadEventStart.desktop.overall:1965|ms

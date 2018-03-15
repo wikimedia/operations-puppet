@@ -401,6 +401,12 @@ def handle_navigation_timing(meta):
     country_code = event.get('originCountry')
     continent = iso_3166_to_continent.get(country_code)
     country_name = iso_3166_whitelist.get(country_code)
+    # If we're oversampling by geo, we need to make sure that country_name is set
+    # Note that country_name will be undefined if country_code isn't in the whitelist
+    if 'isOversample' in event and event['isOversample'] and not country_name:
+        for oversample_geo in [reason[4:] for reason in event['oversampleReason'] if reason[0:4] == 'geo']:
+            if oversample_geo not in iso_3166_whitelist:
+                country_name = oversample_geo
 
     ua = parse_ua(meta['userAgent']) or ('Other', '_')
 
