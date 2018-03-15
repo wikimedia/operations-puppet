@@ -20,4 +20,40 @@ class profile::dumps::distribution::ferm(
         proto  => 'tcp',
         srange => "@resolve((${rsync_clients_ipv6_ferm}),AAAA)",
     }
+
+    ferm::service { 'labstore_analytics_nfs_portmapper_udp':
+        proto  => 'udp',
+        port   => '111',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service { 'labstore_analytics_nfs_portmapper_tcp':
+        proto  => 'tcp',
+        port   => '111',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service { 'labstore_analytics_nfs_nfs_service':
+        proto  => 'tcp',
+        port   => '2049',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service { 'labstore_analytics_nfs_rpc_statd_tcp':
+        proto  => 'tcp',
+        port   => '55659',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service { 'labstore_analytics_nfs_rpc_statd_udp':
+        proto  => 'udp',
+        port   => '55659',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service { 'labstore_analytics_nfs_rpc_mountd':
+        proto  => 'tcp',
+        port   => '38466',
+        srange => '$ANALYTICS_NETWORKS',
+    }
 }
