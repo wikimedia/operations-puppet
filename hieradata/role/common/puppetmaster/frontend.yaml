@@ -8,7 +8,6 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
-confd::monitor_files: false
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 7
 cluster: puppet
