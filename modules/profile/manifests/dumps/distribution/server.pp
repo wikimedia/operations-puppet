@@ -19,4 +19,5 @@ class profile::dumps::distribution::server {
         require => File['/srv/dumps'],
     }
 
+    interface::add_ip6_mapped { 'main': }
 }
