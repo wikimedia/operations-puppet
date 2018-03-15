@@ -1,5 +1,8 @@
 [DEFAULT]
 interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+# The external_network_bridge option
+# intentionally lacks a value to enable
+# multiple external networks on a single agent.
 external_network_bridge =
 
 agent_mode = legacy

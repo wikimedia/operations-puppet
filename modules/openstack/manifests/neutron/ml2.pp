@@ -1,5 +1,6 @@
 class openstack::neutron::ml2(
     $version,
+    $network_flat_interface,
     ) {
 
     package {'neutron-linuxbridge-agent':
