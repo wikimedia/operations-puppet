@@ -402,10 +402,42 @@ def handle_navigation_timing(meta):
     continent = iso_3166_to_continent.get(country_code)
     country_name = iso_3166_whitelist.get(country_code)
 
+    # Handle oversampling
+    if 'isOversample' in event and event['isOversample']:
+        is_oversample = True
+
+        # decode oversampleReason (string-encoded json)
+        try:
+            oversample_reasons = json.loads(event['oversampleReason'])
+        except ValueError:
+            # We know that we're oversampling, but we don't know why.
+            # Which means we're not going to aggregate to anywhere useful,
+            # so no reason to even make the metrics
+            logging.warning('Invalid oversampleReason value: "{}"'.format(
+                event['oversampleReason']))
+            return
+        except Exception:
+            # Same case here, but we can't even log anything
+            return
+
+        # If we're oversampling by geo, use the country code.  The
+        # whitelist is helpful for normal sampling, but defeats the
+        # purpose in this case
+        #
+        # oversample_reasons looks like this (defined in
+        #                ext.navigationTiming.js#L417-L435 ):
+        #    ['geo:XX', 'ua:Browser Agent String']
+        if len(filter(lambda reason: reason[0:4] == 'geo:',
+                      oversample_reasons)) > 0:
+            country_name = country_code
+    else:
+        # Not an oversample
+        is_oversample = False
+
     ua = parse_ua(meta['userAgent']) or ('Other', '_')
 
     for metric, value in metrics.items():
-        if 'isOversample' in event and event['isOversample']:
+        if is_oversample:
             prefix = 'frontend.navtiming_oversample'
         else:
             prefix = 'frontend.navtiming'
@@ -480,7 +512,7 @@ def handle_navigation_timing(meta):
         yield make_count('frontend.navtiming_discard', 'isSane')
     else:
         for metric, value in metrics_nav2.items():
-            if 'isOversample' in event and event['isOversample']:
+            if is_oversample:
                 prefix = 'frontend.navtiming2_oversample'
             else:
                 prefix = 'frontend.navtiming2'
