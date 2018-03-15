@@ -2159,7 +2159,7 @@ users:
     name: dereckson
     realname: Sebastien Santoro
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC72LsfzAEKAXX1184vQojgMfAE2bz3deNtM2vAyxNnpkAzvaqM2Oe1JjJ08E1qS9l5Gtc7zqLrbvSpf2uNkqAYAm/0O3098ykQdv7MOXwcDJNraJx0l5rdSkNxEryQZ9xlwPQ+eKp2avNCaL+YW5YPN7vjvu5bibJN8KtIsIsmBNhhQdTiLcaAX2ZlyOfVybVzLiPz5f0if38AgZlWJdKaNcXn1Yndw5cBzPrNl2Y9ODREFxrEEEz/OjwSHESbGHrkablfg8YiZV5V6p/0IYIfrkHMmKea4+l8f7f57XKCochFhqJP5oZ4/k4OWt63wSwu9hKqsBMjVMbxddBOit79t/dXdvlv3O05V399bW+I9C04rww9xuLJ8ujfmhQtk/sO08caJOBjgXx+EH8/+114n+PdL74AYLDnjE4nSUuJLL7aAmOu70d7C5R7kyBkK+P2AL67tq13VvORwYjbRP8EwRredQ/HHP2jqFXaF6+2/uVQ3Bv0uVvfVCcgprPl0d0OA+C0dBiSVaFfyVPtgj8qbRsntQMcHN+GN4rxZe6A4VEXOUZj+/XVWdKb0m36KlnDwPUHVkZvoc7czeJGX/d1s7RwW5BMn2PxUPcuBLi/100CVaHHC3HCShZpLm9vh2eaHsV927oZg9TuS9ptB9LYEpn46yIHY47b0jYDwY0StQ== dereckson-wikimedia-prod-20160324
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHYMYQ/kaUAic8f/GBjr8DDBRG+T6r8+lQBaV52engcF dereckson-wikimedia-prod-20180315
     uid: 2362
     email: dereckson@espace-win.org
   dstrine:
