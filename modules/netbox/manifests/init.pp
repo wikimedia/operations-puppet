@@ -53,7 +53,7 @@ class netbox(
 
   file { "${directory}/netbox/netbox/configuration.py":
       ensure  => $ensure,
-      owner   => 'root',
+      owner   => 'deploy-librenms',
       group   => 'www-data',
       mode    => '0440',
       content => template('netbox/configuration.py.erb'),
@@ -63,7 +63,7 @@ class netbox(
 
   file { "${directory}/netbox/netbox/ldap_config.py":
       ensure  => $ensure,
-      owner   => 'root',
+      owner   => 'deploy-librenms',
       group   => 'www-data',
       mode    => '0440',
       content => template('netbox/ldap_config.py.erb'),
