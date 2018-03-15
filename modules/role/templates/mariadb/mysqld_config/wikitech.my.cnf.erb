@@ -2,12 +2,12 @@
 
 [client]
 port   = 3306
-socket = /tmp/mysql.sock
+socket = <%= @socket %>
 
 [mysqld]
 
 user       = mysql
-socket     = /tmp/mysql.sock
+socket     = <%= @socket %>
 port       = 3306
 extra_port = 3307
 basedir    = <%= @basedir %>
