@@ -14,7 +14,7 @@ class role::mariadb::labtestwikitech {
     class { 'profile::mariadb::monitor::prometheus':
         mysql_group => 'wikitech',
         mysql_role  => 'standalone',
-        socket      => '/tmp/mysql.sock',
+        socket      => '/run/mysqld/mysqld.sock',
     }
 
     include mariadb::packages_wmf
