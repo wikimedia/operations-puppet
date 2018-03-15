@@ -2,5 +2,5 @@
     role: slave
     shard: multi
   targets:
-  - dbstore1001:9104
+#  - dbstore1001:9104 # broken T186596
   - dbstore1002:9104
