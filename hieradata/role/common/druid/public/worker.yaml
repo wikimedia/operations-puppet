@@ -2,6 +2,12 @@ admin::groups:
   - druid-admins
 
 cluster: 'druid_public'
+
+# Avoid an explicit pin to the cloudera apt component that can
+# force packages shared between the cdh and debian upstream distribution
+# to prefer the cdh version (we do it only for Hadoop nodes).
+profile::cdh::apt::pin_release: false
+
 # Druid nodes get their own Zookeeper cluster to isolate them
 # from the production ones.
 # Configure the zookeeper profile.

@@ -11,12 +11,7 @@ class profile::hadoop::worker(
     $monitoring_enabled = hiera('profile::hadoop::worker::monitoring_enabled', false),
     $ferm_srange        = hiera('profile::hadoop::worker::ferm_srange', '$DOMAIN_NETWORKS'),
 ) {
-    # Hadoop workers need Zookeeper package from CDH, pin CDH over Debian.
-    require ::profile::cdh::apt_pin
     require ::profile::hadoop::common
-
-    # Force apt-get update to run before we try to install packages.
-    Class['::profile::cdh::apt_pin'] -> Exec['apt-get update'] -> Class['::cdh::hadoop']
 
     # hive::client is nice to have for jobs launched
     # from random worker nodes as app masters so they
