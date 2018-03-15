@@ -11,3 +11,8 @@ openstack endpoint create --region <%= @region %> network internal http://<%= @i
 openstack endpoint create --region <%= @region %> network admin http://<%= @ipaddress %>:9696
 
 su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+
+# List loaded extensions
+neutron ext-list
+# agents and status
+neutron agent-list

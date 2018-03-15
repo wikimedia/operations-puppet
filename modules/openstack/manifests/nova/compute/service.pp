@@ -9,6 +9,7 @@ class openstack::nova::compute::service(
     ){
 
     require openstack::nova::compute::audit
+    include openstack::nova::compute::kmod
 
     # Libvirt package is different in subtle ways across Ubuntu and Jessie
     $libvirt_service = $facts['lsbdistcodename'] ? {
@@ -204,14 +205,6 @@ class openstack::nova::compute::service(
                       File['/etc/nova/nova-compute.conf'],
             ],
         require   => Package['nova-compute'],
-    }
-
-    # Starting with 3.18 (34666d467cbf1e2e3c7bb15a63eccfb582cdd71f) the netfilter code
-    # was split from the bridge kernel module into a separate module (br_netfilter)
-    if (versioncmp($::kernelversion, '3.18') >= 0) {
-        kmod::module { 'br_netfilter':
-            ensure => 'present',
-        }
     }
 
     # By default trusty allows the creation of user namespaces by unprivileged users

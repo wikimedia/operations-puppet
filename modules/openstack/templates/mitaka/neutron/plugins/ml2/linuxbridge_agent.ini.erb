@@ -1,3 +1,4 @@
+# https://github.com/openstack/neutron/blob/master/setup.cfg
 [DEFAULT]
 [agent]
 [linux_bridge]
@@ -7,7 +8,8 @@ physical_interface_mappings = provider:<%= @network_flat_interface %>
 
 [securitygroup]
 enable_security_group = True
-firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+# neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+firewall_driver = iptables
 
 [vxlan]
 enable_vxlan = True

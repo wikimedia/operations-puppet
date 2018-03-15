@@ -15,4 +15,9 @@ class openstack::neutron::metadata_agent(
         mode    => '0640',
         require => Package['neutron-metadata-agent'];
     }
+
+    service {'neutron-metadata-agent':
+        ensure  => 'running',
+        require => Package['neutron-metadata-agent'],
+    }
 }
