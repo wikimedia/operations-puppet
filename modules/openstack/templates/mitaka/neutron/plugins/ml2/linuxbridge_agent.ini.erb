@@ -3,7 +3,7 @@
 [linux_bridge]
 # Replace PROVIDER_INTERFACE_NAME with the name of the underlying
 # provider physical network interface.
-physical_interface_mappings = provider:PROVIDER_INTERFACE_NAME
+physical_interface_mappings = provider:<%= @network_flat_interface %>
 
 [securitygroup]
 enable_security_group = True
