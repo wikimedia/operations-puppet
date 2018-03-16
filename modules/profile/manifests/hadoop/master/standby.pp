@@ -62,6 +62,13 @@ class profile::hadoop::master::standby(
         include ::profile::hadoop::monitoring::namenode
         include ::profile::hadoop::monitoring::resourcemanager
 
+        # The prometheus exporters can technically be deployed stand-alone
+        # only requiring the hadoop commons configuration. The Hadoop daemons
+        # though use the jmx exporter as -javaagent, so it needs to be deployed
+        # before them to avoid any race conditions during the daemon first startup.
+        Class['profile::hadoop::monitoring::resourcemanager'] -> Class['cdh::hadoop::resourcemanager']
+        Class['profile::hadoop::monitoring::namenode'] -> Class['cdh::hadoop::namenode::standby']
+
         # Java heap space used alerts.
         # The goal is to get alarms for long running memory leaks like T153951.
         # Only include heap size alerts if heap size is configured.
