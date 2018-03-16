@@ -14,8 +14,12 @@ class openstack::neutron::dhcp_agent(
         require => Package['neutron-common'];
     }
 
-    service {'neutron-dhcp-agent':
-        ensure  => 'running',
-        require => Package['neutron-dhcp-agent'],
+
+    file { '/etc/neutron/dnsmasq-neutron.conf':
+        owner   => 'neutron',
+        group   => 'neutron',
+        mode    => '0640',
+        content => template("openstack/${version}/neutron/dnsmasq-neutron.conf.erb"),
+        require => Package['neutron-common'];
     }
 }

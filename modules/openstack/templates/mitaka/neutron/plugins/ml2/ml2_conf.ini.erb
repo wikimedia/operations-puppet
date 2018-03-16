@@ -1,3 +1,4 @@
+# https://docs.openstack.org/mitaka/networking-guide/config-ml2.html
 [DEFAULT]
 
 [ml2]
@@ -25,4 +26,12 @@ vni_ranges = 1:1000
 
 [securitygroup]
 enable_security_group = True
+# Networking uses iptables to achieve security group functions.
+# L2 agent with enable_ipset option enabled, it makes use of
+# IPset to improve security group’s performance, as it represents
+# a hash set which is insensitive to the number of elements.
+# When a port is created, L2 agent will add an additional IPset chain
+# to its iptables chain, if the security group that this port belongs
+# to has rules between other security group, the member of that
+# security group will be added to the ipset chain.
 enable_ipset = True
