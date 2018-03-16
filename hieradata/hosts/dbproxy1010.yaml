@@ -1,8 +1,4 @@
-profile::mariadb::proxy::pid: '/var/run/haproxy.pid'
-profile::mariadb::proxy::socket: '/tmp/haproxy.socket'
-# when upgraded to haproxy stretch version or higher,
-# remember to add the port like this 'host:port'
 profile::mariadb::proxy::replicas::servers:
-  labsdb1009: '10.64.4.14'
-  labsdb1010: '10.64.37.23'
+  labsdb1009: '10.64.4.14:3306'
+  labsdb1010: '10.64.37.23:3306'
 profile::mariadb::proxy::firewall: 'disabled'
