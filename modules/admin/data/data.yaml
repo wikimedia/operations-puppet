@@ -1671,7 +1671,7 @@ users:
     gid: 500
     name: bmansurov
     realname: Bahodir Mansurov
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDo4whVVoxM3qhsE2FPfQslsnkoZMQozoOlQln//9fEqQmm6ixZjrTqBLFlSD88ZBISR/42o7gxhEFNGYud70A46+txvnC5JoQjXlkRcZIhcegO1xJYu+dvmQAOAHSfwnM9XgZd55ib03v3ib8dVlQNwlMbO/ONOsJwwHLBYu43rhI2kimuEP00RvLwA+78S4x8c5E5haHbk063WzVpFAI5ntyAeANJ5EnEfiXhKV2J7R7YazXP178YOkgSRTBHJpb6CNTiuEtWfLCZ1MgS14vypD/cI20SzgvZovPQ/6kdaneziiNIhVLRPbFfVcg0HtvOxlld2NJwJfnkvWRTuJvp bmansurov@wikimedia.org]
     uid: 10570
     email: bmansurov@wikimedia.org
   west1:
