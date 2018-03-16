@@ -60,6 +60,7 @@ import os
 import time
 import pymysql
 import random
+import re
 from hashlib import sha1
 import subprocess
 import netifaces
@@ -380,7 +381,7 @@ def create_accounts(config):
     Find hosts with accounts in absent state, and creates them.
     """
     acct_db = get_accounts_db_conn(config)
-
+    username_re = re.compile('^[spu][0-9]')
     for host in config['labsdbs']['hosts']:
         labsdb = pymysql.connect(
             host,
@@ -406,7 +407,8 @@ def create_accounts(config):
                     except pymysql.err.InternalError as err:
                         # When on a "legacy" server, it is possible there is an old
                         # account that will need cleanup before we create it anew.
-                        if err.args[0] == 1396 and grant_type == 'legacy':
+                        if err.args[0] == 1396 and grant_type == 'legacy' and \
+                                username_re.match(row['mysql_username']):
                             labsdb_cur.execute(
                                 "DROP USER '{username}'@'%';".format(
                                     username=row['mysql_username']
