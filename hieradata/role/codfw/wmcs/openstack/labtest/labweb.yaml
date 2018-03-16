@@ -43,6 +43,8 @@ striker::uwsgi::config:
     LOGSTASH_PORT: 11514
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
+  openstack:
+    URL: http://labtestcontrol2001.wikimedia.org:5000/v3
 
 striker::uwsgi::secret_config:
   # These values are only here to show the expected keys.
