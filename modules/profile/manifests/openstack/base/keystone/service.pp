@@ -35,7 +35,6 @@ class profile::openstack::base::keystone::service(
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     $designate_host = hiera('profile::openstack::base::designate_host'),
     $designate_host_standby = hiera('profile::openstack::base::designate_host_standby'),
-    $horizon_host = hiera('profile::openstack::base::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     ) {
 
@@ -95,7 +94,7 @@ class profile::openstack::base::keystone::service(
     ferm::rule{'keystone_admin':
         ensure => 'present',
         rule   => "saddr (${labs_hosts_range} @resolve(${nova_controller_standby}) @resolve(${nova_api_host})
-                             @resolve(${designate_host}) @resolve(${designate_host_standby}) @resolve(${horizon_host})
+                             @resolve(${designate_host}) @resolve(${designate_host_standby})
                              ${labweb_ips}
                              @resolve(${osm_host})
                              ) proto tcp dport (35357) ACCEPT;",
