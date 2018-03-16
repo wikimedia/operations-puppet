@@ -1,1 +1,1 @@
-profile::puppetmaster::common::puppetdb_host: nihal.codfw.wmnet
+profile::puppetmaster::common::puppetdb_host: puppetdb2001.codfw.wmnet
