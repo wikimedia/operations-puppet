@@ -20,7 +20,7 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git
+Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22
 UDebComponents: main backports thirdparty experimental
 Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55
 Description: Wikimedia packages for Debian Jessie
@@ -36,7 +36,7 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra311 component/puppetdb4 thirdparty/tor thirdparty/php72
+Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra22 component/cassandra311 component/puppetdb4 thirdparty/tor thirdparty/php72
 UDebComponents: main
 Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 tor-stretch php72-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
