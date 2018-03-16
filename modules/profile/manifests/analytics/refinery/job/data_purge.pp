@@ -15,6 +15,8 @@ class profile::analytics::refinery::job::data_purge {
     $mediawiki_history_log_file = "${profile::analytics::refinery::log_dir}/drop-mediawiki-history.log"
     $banner_activity_log_file   = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
     $el_sanitization_log_file   = "${profile::analytics::refinery::log_dir}/eventlogging-sanitization.log"
+    $query_clicks_log_file      = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
+
 
     # Shortcut to refinery path
     $refinery_path = $profile::analytics::refinery::path
@@ -138,4 +140,16 @@ class profile::analytics::refinery::job::data_purge {
         hour        => '6',
         monthday    => '16'
     }
+
+    # keep this many days of search query click files
+    # cron runs once a day
+    $query_click_retention_days = 90
+    cron {'refinery-drop-query-clicks':
+        command     => "${env} && ${profile::analytics::refinery::path}/bin/refinery-drop-hive-partitions -d ${query_click_retention_days} -D discovery -t query_clicks_hourly,query_clicks_daily >> ${query_clicks_log_file}",
+        environment => 'MAILTO=discovery-alerts@lists.wikimedia.org',
+        user        => 'hdfs',
+        minute      => '30',
+        hour        => '3',
+    }
+
 }
