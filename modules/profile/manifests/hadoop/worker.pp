@@ -106,6 +106,13 @@ class profile::hadoop::worker(
         include ::profile::hadoop::monitoring::datanode
         include ::profile::hadoop::monitoring::nodemanager
 
+        # The prometheus exporters can technically be deployed stand-alone
+        # only requiring the hadoop commons configuration. The Hadoop daemons
+        # though use the jmx exporter as -javaagent, so it needs to be deployed
+        # before them to avoid any race conditions during the daemon first startup.
+        Class['profile::hadoop::monitoring::datanode'] -> Class['cdh::hadoop::worker']
+        Class['profile::hadoop::monitoring::datanode'] -> Class['cdh::hadoop::worker']
+
         # Icinga process alerts for DataNode and NodeManager
         nrpe::monitor_service { 'hadoop-hdfs-datanode':
             description   => 'Hadoop DataNode',
