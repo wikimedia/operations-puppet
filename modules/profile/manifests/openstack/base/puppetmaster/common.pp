@@ -1,6 +1,5 @@
 class profile::openstack::base::puppetmaster::common(
     $labs_instance_range = hiera('profile::openstack::base::puppetmaster::common::labs_instance_range'),
-    $horizon_host = hiera('profile::openstack::base::puppetmaster::common::horizon_host'),
     $designate_host = hiera('profile::openstack::base::puppetmaster::common::designate_host'),
     $puppetmaster_webhostname = hiera('profile::openstack::base::puppetmaster::web_hostname'),
     $puppetmaster_hostname = hiera('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
@@ -26,7 +25,6 @@ class profile::openstack::base::puppetmaster::common(
     }
 
     class { '::openstack::puppet::master::encapi':
-        horizon_host        => $horizon_host,
         mysql_host          => $encapi_db_host,
         mysql_db            => $encapi_db_name,
         mysql_username      => $encapi_db_user,
@@ -51,23 +49,22 @@ class profile::openstack::base::puppetmaster::common(
     ferm::rule{'puppetmaster':
         ensure => 'present',
         rule   => "saddr (${labs_instance_range} ${baremetal_servers_str}
-                          @resolve(${horizon_host}) @resolve(${horizon_host}, AAAA)
                           @resolve((${all_puppetmasters})) ${labweb_ips} ${labweb_aaaa})
                           proto tcp dport 8141 ACCEPT;",
     }
 
     ferm::rule{'puppetbackend':
         ensure => 'present',
-        rule   => "saddr (@resolve(${horizon_host}) @resolve(${designate_host})
-                          @resolve(${horizon_host}, AAAA) ${labweb_ips} ${labweb_aaaa})
+        rule   => "saddr (@resolve(${designate_host})
+                          ${labweb_ips} ${labweb_aaaa})
                           proto tcp dport 8101 ACCEPT;",
     }
 
     ferm::rule{'puppetbackendgetter':
         ensure => 'present',
         rule   => "saddr (${labs_instance_range} ${baremetal_servers_str}
-                   @resolve(${horizon_host}) @resolve(${horizon_host}, AAAA)
-                   @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA))
-                   proto tcp dport 8100 ACCEPT;",
+                          ${labweb_ips} ${labweb_aaaa}
+                          @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA))
+                          proto tcp dport 8100 ACCEPT;",
     }
 }

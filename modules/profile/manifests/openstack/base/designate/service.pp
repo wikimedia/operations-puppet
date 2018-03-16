@@ -23,7 +23,6 @@ class profile::openstack::base::designate::service(
     $keystone_public_port = hiera('profile::openstack::base::keystone::public_port'),
     $keystone_auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
-    $horizon_host = hiera('profile::openstack::base::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
     $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
     ) {
@@ -63,7 +62,7 @@ class profile::openstack::base::designate::service(
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     # Open designate API to Labs web UIs and the commandline on labcontrol
     ferm::rule { 'designate-api':
-        rule => "saddr (@resolve(${osm_host}) @resolve(${horizon_host})
+        rule => "saddr (@resolve(${osm_host}) 
                        ${labweb_ips} @resolve(${nova_controller})
                        @resolve(${monitoring_host})) proto tcp dport (9001) ACCEPT;",
     }

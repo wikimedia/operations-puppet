@@ -1,7 +1,9 @@
 # Allow Horizon to ask the puppetmaster about available roles
 path /resource_type
 auth any
-allow <%= @horizon_host %>
+<% @labweb_hosts.each do |labweb| -%>
+allow <%= @labweb %>
+<% end -%>
 <% @puppetmasters.values.flatten(1).map { |p| p['worker'] }.sort.each do |server| -%>
 allow <%= server %>
 <% end -%>

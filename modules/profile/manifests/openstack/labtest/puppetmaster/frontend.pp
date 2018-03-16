@@ -1,6 +1,5 @@
 class profile::openstack::labtest::puppetmaster::frontend(
     $labs_instance_range = hiera('profile::openstack::labtest::nova::fixed_range'),
-    $horizon_host = hiera('profile::openstack::labtest::horizon_host'),
     $designate_host = hiera('profile::openstack::labtest::designate_host'),
     $puppetmasters = hiera('profile::openstack::labtest::puppetmaster::servers'),
     $puppetmaster_ca = hiera('profile::openstack::labtest::puppetmaster::ca'),
@@ -19,7 +18,6 @@ class profile::openstack::labtest::puppetmaster::frontend(
     require ::profile::openstack::labtest::clientlib
     class {'::profile::openstack::base::puppetmaster::frontend':
         labs_instance_range      => $labs_instance_range,
-        horizon_host             => $horizon_host,
         designate_host           => $designate_host,
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,
