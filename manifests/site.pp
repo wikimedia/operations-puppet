@@ -123,7 +123,7 @@ node 'bohrium.eqiad.wmnet' {
 }
 
 # VM with webserver for misc. static sites
-node 'bromine.eqiad.wmnet' {
+node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
     role(webserver_misc_static)
 }
 
