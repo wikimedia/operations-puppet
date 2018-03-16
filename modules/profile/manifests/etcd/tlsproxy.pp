@@ -3,11 +3,20 @@ class profile::etcd::tlsproxy(
     $acls = hiera('profile::etcd::tlsproxy::acls'),
     $salt = hiera('profile::etcd::tlsproxy::salt'),
     $read_only = hiera('profile::etcd::tlsproxy::read_only'),
-){
+    Wmflib::IpPort $listen_port = hiera('profile::etcd::tlsproxy::listen_port'),
+    Wmflib::IpPort $upstream_port = hiera('profile::etcd::tlsproxy::upstream_port'),
+    Boolean $tls_upstream = hiera('profile::etcd::tlsproxy::tls_upstream')
+) {
     require ::tlsproxy::instance
     require ::passwords::etcd
 
     $accounts = $::passwords::etcd::accounts
+
+    # TODO: also support TLS cert auth to the backend
+    $upstream_scheme = $tls_upstream ? {
+        true    => 'https',
+        default => 'http'
+    }
 
     sslcert::certificate { $cert_name:
         skip_private => false,
