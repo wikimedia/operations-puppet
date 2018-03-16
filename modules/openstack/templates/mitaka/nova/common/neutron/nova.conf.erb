@@ -67,6 +67,8 @@ metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
 
 url = http://<%= @nova_controller %>:9696
 auth_url = http://<%= @nova_controller %>:5000/v3
+# set this?
+#admin_auth_url = http://<%= @nova_controller %>:35357/v2.0
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default

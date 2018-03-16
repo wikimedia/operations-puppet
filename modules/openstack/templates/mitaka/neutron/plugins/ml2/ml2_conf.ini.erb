@@ -8,6 +8,8 @@
 type_drivers = flat,vlan,vxlan
 tenant_network_types = vxlan
 
+# l2population is a sort of meta driver to
+# make overlay intelligently handle broadcast
 mechanism_drivers = linuxbridge,l2population
 extension_drivers = port_security
 
