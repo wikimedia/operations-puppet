@@ -32,26 +32,6 @@ menu = cr2-eqiad
 title = cr2-eqiad.wikimedia.org
 host = cr2-eqiad.wikimedia.org
 
-+++ asw-a-eqiad
-menu = asw-a-eqiad
-title = asw-a-eqiad.mgmt.eqiad.wmnet
-host = asw-a-eqiad.mgmt.eqiad.wmnet
-
-+++ asw-b-eqiad
-menu = asw-b-eqiad
-title = asw-b-eqiad.mgmt.eqiad.wmnet
-host = asw-b-eqiad.mgmt.eqiad.wmnet
-
-+++ asw-c-eqiad
-menu = asw-c-eqiad
-title = asw-c-eqiad.mgmt.eqiad.wmnet
-host = asw-c-eqiad.mgmt.eqiad.wmnet
-
-+++ asw2-d-eqiad
-menu = asw2-d-eqiad
-title = asw2-d-eqiad.mgmt.eqiad.wmnet
-host = asw2-d-eqiad.mgmt.eqiad.wmnet
-
 +++ mr1-eqiad
 menu = mr1-eqiad
 title = mr1-eqiad.wikimedia.org
@@ -151,26 +131,6 @@ menu = cr1-eqdfw
 title = cr1-eqdfw.wikimedia.org
 host = cr1-eqdfw.wikimedia.org
 
-+++ asw-a-codfw
-menu = asw-a-codfw
-title = asw-a-codfw.mgmt.codfw.wmnet
-host = asw-a-codfw.mgmt.codfw.wmnet
-
-+++ asw-b-codfw
-menu = asw-b-codfw
-title = asw-b-codfw.mgmt.codfw.wmnet
-host = asw-b-codfw.mgmt.codfw.wmnet
-
-+++ asw-c-codfw
-menu = asw-c-codfw
-title = asw-c-codfw.mgmt.codfw.wmnet
-host = asw-c-codfw.mgmt.codfw.wmnet
-
-+++ asw-d-codfw
-menu = asw-d-codfw
-title = asw-d-codfw.mgmt.codfw.wmnet
-host = asw-d-codfw.mgmt.codfw.wmnet
-
 +++ mr1-codfw
 menu = mr1-codfw
 title = mr1-codfw.wikimedia.org
@@ -219,11 +179,6 @@ menu = pfw3-codfw
 title = pfw3-codfw.wikimedia.org
 host = pfw3-codfw.wikimedia.org
 
-+++ fasw-c-codfw
-menu = fasw-c-codfw
-title = fasw-c-codfw.mgmt.codfw.wmnet
-host = fasw-c-codfw.mgmt.codfw.wmnet
-
 +++ rigel
 menu = rigel
 title = rigel.wikimedia.org
@@ -260,16 +215,6 @@ menu = cr2-knams
 title = cr2-knams.wikimedia.org
 host = cr2-knams.wikimedia.org
 
-+++ csw2-esams
-menu = csw2-esams
-title = csw2-esams.mgmt.esams.wmnet
-host = csw2-esams.mgmt.esams.wmnet
-
-+++ asw-esams
-menu = asw-esams
-title = asw-esams.mgmt.esams.wmnet
-host = asw-esams.mgmt.esams.wmnet
-
 ++ Hosts
 menu = Hosts
 title = Sampled Hosts
@@ -278,6 +223,11 @@ title = Sampled Hosts
 menu = bast3002
 title = bast3002.wikimedia.org
 host = bast3002.wikimedia.org
+
++++ bast3002-mgmt
+menu = bast3002-mgmt
+title = bast3002.mgmt.esams.wmnet
+host = bast3002.mgmt.esams.wmnet
 
 + ulsfo
 
@@ -299,11 +249,6 @@ menu = cr2-ulsfo
 title = cr2-ulsfo.wikimedia.org
 host = cr2-ulsfo.wikimedia.org
 
-+++ asw2-ulsfo
-menu = asw2-ulsfo
-title = asw2-ulsfo.mgmt.ulsfo.wmnet
-host = asw2-ulsfo.mgmt.ulsfo.wmnet
-
 ++ Hosts
 menu = Hosts
 title = Sampled Hosts
@@ -312,6 +257,11 @@ title = Sampled Hosts
 menu = bast4002
 title = bast4002.wikimedia.org
 host = bast4002.wikimedia.org
+
++++ bast4002-mgmt
+menu = bast4002-mgmt
+title = bast4002.mgmt.ulsfo.wmnet
+host = bast4002.mgmt.ulsfo.wmnet
 
 + eqsin
 
@@ -328,12 +278,6 @@ menu = cr1-eqsin
 title = cr1-eqsin.wikimedia.org
 host = cr1-eqsin.wikimedia.org
 
-# Commented out until T186650 is solved
-#+++ asw1-eqsin
-#menu = asw1-eqsin
-#title = asw1-eqsin.mgmt.eqsin.wmnet
-#host = asw1-eqsin.mgmt.eqsin.wmnet
-
 ++ Hosts
 menu = Hosts
 title = Sampled Hosts
@@ -342,6 +286,11 @@ title = Sampled Hosts
 menu = bast5001
 title = bast5001.wikimedia.org
 host = bast5001.wikimedia.org
+
++++ bast5001-mgmt
+menu = bast5001-mgmt
+title = bast5001.mgmt.eqsin.wmnet
+host = bast5001.mgmt.eqsin.wmnet
 
 + DNS
 probe = DNS
