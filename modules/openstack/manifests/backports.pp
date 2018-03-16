@@ -20,10 +20,24 @@ class openstack::backports {
         source => 'puppet:///modules/openstack/backports/openstack.pref',
     }
 
-    apt::conf{'backports-default-release':
+    apt::conf{ 'backports-default-release':
         key      => 'APT::Default-Release',
         value    => 'jessie-backports',
         priority => '00',
         require  => File['/etc/apt/preferences.d/openstack.pref'],
+        notify   => Exec['post-backports-apt-update'],
+    }
+
+    exec { 'post-backports-apt-update':
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+        logoutput   => true,
+        notify      => Exec['post-backports-apt-upgrade'],
+    }
+
+    exec { 'post-backports-apt-upgrade':
+        command     => '/usr/bin/apt-get upgrade -y',
+        refreshonly => true,
+        logoutput   => true,
     }
 }
