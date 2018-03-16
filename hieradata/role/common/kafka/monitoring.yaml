@@ -12,8 +12,9 @@ profile::kafka::monitoring::config:
   analytics:
     burrow_port: 8000
     burrow_exporter_port: 9000
-    to_emails: []
-    consumer_groups: []
+    to_emails: ['analytics-alerts@wikimedia.org']
+    consumer_groups:
+      - eventlogging_consumer_mysql_eventbus_00
   jumbo-eqiad:
     burrow_port: 8700
     burrow_exporter_port: 9700
@@ -22,5 +23,4 @@ profile::kafka::monitoring::config:
     consumer_groups:
       - eventlogging_processor_client_side_00
       - eventlogging_consumer_mysql_00
-      - eventlogging_consumer_mysql_eventbus_00
       - eventlogging_consumer_files_00
