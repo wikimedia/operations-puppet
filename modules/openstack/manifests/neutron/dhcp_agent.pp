@@ -1,5 +1,6 @@
 class openstack::neutron::dhcp_agent(
     $version,
+    $dhcp_domain,
     ) {
 
     package {'neutron-dhcp-agent':

@@ -1,6 +1,6 @@
 # Much of this is a placeholder config for now
 profile::openstack::labtestn::nova::dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
-profile::openstack::labtestn::nova::dhcp_domain: 'codfw.labtestn'
+profile::openstack::labtestn::nova::dhcp_domain: 'codfw.labtest'
 profile::openstack::labtestn::nova::dhcp_start: '172.16.128.10'
 profile::openstack::labtestn::nova::quota_floating_ips: '0'
 profile::openstack::labtestn::nova::network_flat_tagged_base_interface: 'eth1'
