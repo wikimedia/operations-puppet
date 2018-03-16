@@ -3857,16 +3857,17 @@ host labvirt1020 {
 host labvirt1021 {
     hardware ethernet 18:66:DA:BB:31:76;
     fixed-address labvirt1021.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    filename "lpxelinux.0";
 }
 
 host labvirt1022 {
     hardware ethernet D0:94:66:07:8F:0E;
     fixed-address labvirt1022.eqiad.wmnet;
-    option pxelinux.pathprefix "jessie-installer/";
-    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
+    filename "lpxelinux.0";
 }
+
 host labweb1001 {
     hardware ethernet 18:66:DA:A5:0B:57;
     fixed-address labweb1001.wikimedia.org;
