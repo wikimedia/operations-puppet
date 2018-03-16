@@ -68,6 +68,13 @@ class role::eventlogging::analytics::mysql {
     }
 
 
+    # NOTE: Most of EventLogging has been migrated to jumbo-eqiad Kafka, but eventbus events
+    # are replicated from main-eqiad, and the main -> jumbo MirrorMaker instance has been
+    # really flaky.  We need to time to investigate it, so revert back to consuming
+    # eventbus events into MySQL from the Kafka analytics cluster for now.
+    $kafka_config_analytics = kafka_config('analytlics')
+    $kafka_brokers_analytics = $kafka_config_analytics['brokers']['string']
+
     $eventbus_topics_to_consume = [
         # Various mediawiki events (via EventBus)
         'eqiad.mediawiki.page-create',
@@ -80,7 +87,7 @@ class role::eventlogging::analytics::mysql {
         'codfw.mediawiki.page-undelete',
     ]
     $eventbus_topics_string = join($eventbus_topics_to_consume, ',')
-    $kafka_consumer_uri_eventbus = "${kafka_consumer_scheme}/${kafka_brokers_string}?topics=${eventbus_topics_string}&auto_offset_reset=earliest"
+    $kafka_consumer_uri_eventbus = "${kafka_consumer_scheme}/${kafka_brokers_analytics}?topics=${eventbus_topics_string}&auto_offset_reset=earliest"
 
     # Use a separate mysql consumer process to insert eventbus events.
     # The schemas for these types of events are managed differently, and we don't
