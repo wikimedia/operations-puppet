@@ -534,6 +534,11 @@ host ununpentium {
     filename "lpxelinux.0";
 }
 
+host vega {
+    hardware ethernet aa:00:00:26:27:bf;
+    fixed-address vega.codfw.wmnet;
+}
+
 host webperf1001 {
     hardware ethernet aa:00:00:5e:f4:43;
     fixed-address webperf1001.eqiad.wmnet;
