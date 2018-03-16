@@ -1,6 +1,3 @@
-# Trial jessie/mitaka integration w/ Liberty/Trusty
-# Move this to role or profile level definition
-profile::openstack::main::version: 'mitaka'
 profile::openstack::base::nova::instance_dev: '/dev/mapper/tank-data'
 profile::openstack::main::nova::network_flat_interface: 'eth3.1102'
 profile::openstack::main::nova::network_flat_interface: 'eth3'
