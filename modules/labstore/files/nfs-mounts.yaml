@@ -165,13 +165,6 @@ private:
       home: true
       project: true
       scratch: true
-  wikidata-topicmaps:
-    gid: 51980
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   wikidumpparse:
     gid: 51824
     mounts:
