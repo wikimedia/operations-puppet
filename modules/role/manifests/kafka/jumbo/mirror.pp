@@ -68,7 +68,7 @@ class role::kafka::jumbo::mirror {
         # these high volume job topics from replication seems to help.  We
         # haven't needed these replicated out of main for any purpose yet, so
         # this should be fine for now.  See T189464.
-        blacklist                 => '.*mediawiki\.job\..*',
+        blacklist                 => '.*mediawiki\.job\..*|.*change-prop\..*',
         whitelist                 => false,
         # Seen OutOfMemoryError in this mirror maker instance, increase heap size.
         heap_opts                 => '-Xmx512M -Xms512M',
