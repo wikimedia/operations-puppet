@@ -1524,7 +1524,7 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 # Imagescalers (mostly obsolete functionality, replaced by thumbor)
 
 # Row B (B6)
-node /^mw129[3-8]\.eqiad\.wmnet$/ {
+node /^mw129[7-8]\.eqiad\.wmnet$/ {
     role(mediawiki::imagescaler)
 }
 
@@ -1555,6 +1555,11 @@ node /^mw133[4-7]\.eqiad\.wmnet$/ {
 
 # Row A (A6)
 node 'mw1307.eqiad.wmnet' {
+    role(mediawiki::videoscaler)
+}
+
+# Row B (B6)
+node /^mw129[3-6]\.eqiad\.wmnet$/ {
     role(mediawiki::videoscaler)
 }
 
