@@ -7,7 +7,8 @@
 class profile::hadoop::monitoring::resourcemanager(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
-    require ::profile::hadoop::common
+    include ::profile::hadoop::common
+    Class['cdh::hadoop'] -> Class['profile::hadoop::monitoring::resourcemanager']
 
     $jmx_exporter_config_file = '/etc/hadoop/prometheus_yarn_resourcemanager_jmx_exporter.yaml'
     $prometheus_jmx_exporter_resourcemanager_port = 10083

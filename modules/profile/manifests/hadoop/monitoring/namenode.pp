@@ -7,7 +7,8 @@
 class profile::hadoop::monitoring::namenode(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
-    require ::profile::hadoop::common
+    include ::profile::hadoop::common
+    Class['cdh::hadoop'] -> Class['profile::hadoop::monitoring::namenode']
 
     $jmx_exporter_config_file = '/etc/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml'
     $prometheus_jmx_exporter_namenode_port = 10080
