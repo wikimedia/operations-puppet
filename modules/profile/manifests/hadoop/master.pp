@@ -69,6 +69,14 @@ class profile::hadoop::master(
         include ::profile::hadoop::monitoring::resourcemanager
         include ::profile::hadoop::monitoring::history
 
+        # The prometheus exporters can technically be deployed stand-alone
+        # only requiring the hadoop commons configuration. The Hadoop daemons
+        # though use the jmx exporter as -javaagent, so it needs to be deployed
+        # before them to avoid any race conditions during the daemon first startup.
+        Class['profile::hadoop::monitoring::resourcemanager'] -> Class['cdh::hadoop::master']
+        Class['profile::hadoop::monitoring::namenode'] -> Class['cdh::hadoop::master']
+        Class['profile::hadoop::monitoring::history'] -> Class['cdh::hadoop::master']
+
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Primary',
