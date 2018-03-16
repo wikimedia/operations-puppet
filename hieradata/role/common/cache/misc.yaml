@@ -29,7 +29,7 @@ cache::app_def_be_opts:
   between_bytes_timeout: '60s'
   max_connections: 100
 cache::app_directors:
-  bromine:
+  webserver_misc_static:
     backends:
       eqiad: 'bromine.eqiad.wmnet'
   bohrium:
@@ -97,9 +97,6 @@ cache::app_directors:
   dbtree:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
-  design:
-    backends:
-      eqiad: 'bromine.eqiad.wmnet'
   phabricator:
     backends:
       eqiad: 'phab1001.eqiad.wmnet'
@@ -160,11 +157,11 @@ cache::app_directors:
       codfw: 'ores.svc.codfw.wmnet'
 cache::req_handling:
   15.wikipedia.org:
-    director: 'bromine'
+    director: 'webserver_misc_static'
   analytics.wikimedia.org:
     director: 'thorium'
   annual.wikimedia.org:
-    director: 'bromine'
+    director: 'webserver_misc_static'
   bugs.wikimedia.org:
     director: 'phabricator'
   bugzilla.wikimedia.org:
@@ -262,7 +259,7 @@ cache::req_handling:
   releases-jenkins.wikimedia.org:
     director: 'releases_jenkins'
   research.wikimedia.org:
-    director: 'bromine'
+    director: 'webserver_misc_static'
   rt.wikimedia.org:
     director: 'ununpentium'
   scholarships.wikimedia.org:
@@ -272,7 +269,7 @@ cache::req_handling:
   smokeping.wikimedia.org:
     director: 'netmon1002'
   static-bugzilla.wikimedia.org:
-    director: 'bromine'
+    director: 'webserver_misc_static'
   stats.wikimedia.org:
     director: 'thorium'
   stream.wikimedia.org:
@@ -289,9 +286,9 @@ cache::req_handling:
   toolsadmin.wikimedia.org:
     director: 'labweb'
   transparency.wikimedia.org:
-    director: 'bromine'
+    director: 'webserver_misc_static'
   transparency-private.wikimedia.org:
-    director: 'bromine'
+    director: 'webserver_misc_static'
   yarn.wikimedia.org:
     director: 'thorium'
 # Profile::cache::base
