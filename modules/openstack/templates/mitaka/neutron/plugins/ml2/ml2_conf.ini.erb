@@ -6,8 +6,8 @@
 # After you configure the ML2 plug-in
 # removing or changing values in the type_drivers
 # option can lead to database inconsistency.
-type_drivers = flat,vlan,vxlan
-tenant_network_types = vxlan
+type_drivers = flat
+tenant_network_types =
 
 # l2population is a sort of meta driver to
 # make overlay intelligently handle broadcast
@@ -15,7 +15,8 @@ mechanism_drivers = linuxbridge,l2population
 extension_drivers = port_security
 
 [ml2_type_flat]
-flat_networks = provider
+# List of physical_network names with which flat networks can be created
+flat_networks = <%= @network_flat_name %>
 
 [ml2_type_geneve]
 [ml2_type_gre]

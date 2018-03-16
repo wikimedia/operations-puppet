@@ -15,7 +15,7 @@ enabled_apis = osapi_compute,metadata
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 network_api_class = nova.network.neutronv2.api.API
 default_floating_pool = ext-nat
-linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
+linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
 security_group_api = neutron
 
 [api_database]
