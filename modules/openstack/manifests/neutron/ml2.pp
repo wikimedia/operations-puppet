@@ -1,6 +1,7 @@
 class openstack::neutron::ml2(
     $version,
     $network_flat_interface,
+    $network_flat_name,
     ) {
 
     include openstack::nova::compute::kmod

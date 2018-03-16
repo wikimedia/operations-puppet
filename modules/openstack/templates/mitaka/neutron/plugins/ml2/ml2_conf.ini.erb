@@ -11,7 +11,8 @@ tenant_network_types =
 
 # l2population is a sort of meta driver to
 # make overlay intelligently handle broadcast
-mechanism_drivers = linuxbridge,l2population
+#mechanism_drivers = linuxbridge,l2population
+mechanism_drivers = linuxbridge
 extension_drivers = port_security
 
 [ml2_type_flat]
@@ -23,7 +24,7 @@ flat_networks = <%= @network_flat_name %>
 [ml2_type_vlan]
 
 [ml2_type_vxlan]
-vni_ranges = 1:1000
+#vni_ranges = 1:1000
 
 [securitygroup]
 enable_security_group = True
