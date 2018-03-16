@@ -1136,14 +1136,9 @@ node 'labtestweb2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Labs Graphite and StatsD host
-node 'labmon1001.eqiad.wmnet' {
+# WMCS Graphite and StatsD hosts
+node /labmon100[12]\.eqiad\.wmnet/ {
     role(labs::monitoring)
-}
-
-# role spare until pushed into service via T165784
-node 'labmon1002.eqiad.wmnet' {
-    role(spare::system)
 }
 
 node 'labnet1001.eqiad.wmnet' {
