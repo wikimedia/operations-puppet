@@ -193,10 +193,6 @@ eqiad:
     wtp1047.eqiad.wmnet: [parsoid]
     wtp1048.eqiad.wmnet: [parsoid]
   imagescaler:
-    mw1293.eqiad.wmnet: [apache2,nginx]
-    mw1294.eqiad.wmnet: [apache2,nginx]
-    mw1295.eqiad.wmnet: [apache2,nginx]
-    mw1296.eqiad.wmnet: [apache2,nginx]
     mw1297.eqiad.wmnet: [apache2,nginx]
     mw1298.eqiad.wmnet: [apache2,nginx]
   restbase:
