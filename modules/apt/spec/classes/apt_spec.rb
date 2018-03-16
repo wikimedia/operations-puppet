@@ -25,13 +25,6 @@ describe 'apt' do
                        } }
         it { should compile }
       end
-
-      context "when using experimental repo" do
-        let(:params) { {
-                         :use_experimental => true,
-                       } }
-        it { should compile }
-      end
     end
   end
 end
