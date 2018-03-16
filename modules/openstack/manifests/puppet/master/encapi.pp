@@ -1,5 +1,4 @@
 class openstack::puppet::master::encapi(
-    $horizon_host,
     $mysql_host,
     $mysql_db,
     $mysql_username,
@@ -10,8 +9,6 @@ class openstack::puppet::master::encapi(
     $puppetmasters,
     $labweb_hosts,
 ) {
-    $horizon_host_ip = ipresolve($horizon_host, 4)
-
     require_package('python3-pymysql',
                     'python3-statsd',
                     'python3-flask',
@@ -36,7 +33,7 @@ class openstack::puppet::master::encapi(
     #  before writing or deleting.
     $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
     $labweb_ips_v6 = $labweb_hosts.map |$host| { ipresolve($host, 6) }
-    $allowed_writers = join(flatten([$labweb_ips, $labweb_ips_v6, $horizon_host_ip]),',')
+    $allowed_writers = join(flatten([$labweb_ips, $labweb_ips_v6]),',')
 
     uwsgi::app { 'labspuppetbackend':
         settings  => {

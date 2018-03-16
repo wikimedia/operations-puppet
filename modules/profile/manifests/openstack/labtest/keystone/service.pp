@@ -24,7 +24,6 @@ class profile::openstack::labtest::keystone::service(
     $nova_api_host = hiera('profile::openstack::labtest::nova_api_host'),
     $designate_host = hiera('profile::openstack::labtest::designate_host'),
     $designate_host_standby = hiera('profile::openstack::labtest::designate_host_standby'),
-    $horizon_host = hiera('profile::openstack::labtest::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $puppetmaster_hostname = hiera('profile::openstack::labtest::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
@@ -35,7 +34,6 @@ class profile::openstack::labtest::keystone::service(
         labs_hosts_range      => $labs_hosts_range,
         puppetmaster_hostname => $puppetmaster_hostname,
         designate_host        => $designate_host,
-        horizon_host          => $horizon_host,
         osm_host              => $osm_host,
     }
     contain '::profile::openstack::base::keystone::db'
@@ -67,7 +65,6 @@ class profile::openstack::labtest::keystone::service(
         nova_api_host               => $nova_api_host,
         designate_host              => $designate_host,
         designate_host_standby      => $designate_host_standby,
-        horizon_host                => $horizon_host,
         labweb_hosts                => $labweb_hosts,
         require                     => Class['profile::openstack::base::keystone::db'],
     }

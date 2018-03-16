@@ -1,6 +1,5 @@
 class profile::openstack::main::puppetmaster::backend(
     $labs_instance_range = hiera('profile::openstack::main::nova::fixed_range'),
-    $horizon_host = hiera('profile::openstack::main::horizon_host'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $puppetmaster_hostname = hiera('profile::openstack::main::puppetmaster_hostname'),
     $puppetmaster_ca = hiera('profile::openstack::main::puppetmaster::ca'),
@@ -20,7 +19,6 @@ class profile::openstack::main::puppetmaster::backend(
     include ::profile::openstack::main::cumin::master
     class {'::profile::openstack::base::puppetmaster::backend':
         labs_instance_range      => $labs_instance_range,
-        horizon_host             => $horizon_host,
         designate_host           => $designate_host,
         puppetmaster_webhostname => $puppetmaster_webhostname,
         puppetmaster_ca          => $puppetmaster_ca,

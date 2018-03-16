@@ -7,7 +7,6 @@ class profile::mariadb::ferm_wmcs(
     $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
-    $horizon_host = hiera('profile::openstack::main::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
     $osm_host = hiera('profile::openstack::main::osm_host'),
     ) {
@@ -31,13 +30,6 @@ class profile::mariadb::ferm_wmcs(
         port    => '3306',
         notrack => true,
         srange  => '(@resolve(labpuppetmaster1001.wikimedia.org) @resolve(labpuppetmaster1002.wikimedia.org))',
-    }
-
-    ferm::service{ 'horizon_and_striker':
-        proto   => 'tcp',
-        port    => '3306',
-        notrack => true,
-        srange  => "@resolve(${horizon_host})",
     }
 
     ferm::service{ 'wikitech':

@@ -14,7 +14,6 @@ class profile::openstack::labtestn::designate::service(
     $secondary_pdns = hiera('profile::openstack::labtestn::pdns::host_secondary'),
     $rabbit_pass = hiera('profile::openstack::labtestn::nova::rabbit_pass'),
     $osm_host = hiera('profile::openstack::labtestn::osm_host'),
-    $horizon_host = hiera('profile::openstack::labtestn::horizon_host'),
     $labweb_hosts = hiera('profile::openstack::labtestn::labweb_hosts'),
     ) {
 
@@ -35,7 +34,6 @@ class profile::openstack::labtestn::designate::service(
         secondary_pdns             => $secondary_pdns,
         rabbit_pass                => $rabbit_pass,
         osm_host                   => $osm_host,
-        horizon_host               => $horizon_host,
         labweb_hosts               => $labweb_hosts,
     }
     contain '::profile::openstack::base::designate::service'
