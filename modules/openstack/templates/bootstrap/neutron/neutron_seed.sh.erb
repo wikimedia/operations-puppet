@@ -1,3 +1,11 @@
+# https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance.html#launch-instance
+# https://docs.openstack.org/mitaka/networking-guide/deploy-lb-provider.html
+# https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance.html#launch-instance
+# https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-provider.html
+# https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
+# https://docs.openstack.org/horizon/latest/user/configure-access-and-security-for-instances.html
+
+
 # CREATE DATABASE neutron;
 # GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'<%= @ipaddress %>' IDENTIFIED BY '<%= @db_pass %>';
 # GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%'  IDENTIFIED BY '<%= @db_pass %>';
@@ -16,3 +24,6 @@ su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --co
 neutron ext-list
 # agents and status
 neutron agent-list
+
+neutron net-create flat-<%= @network_flat_name %> --provider:network_type=flat --provider:physical_network=<%= @network_flat_name %> --shared
+
