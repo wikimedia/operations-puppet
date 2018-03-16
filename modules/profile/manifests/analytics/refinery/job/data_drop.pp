@@ -12,6 +12,7 @@ class profile::analytics::refinery::job::data_drop {
     $druid_webrequest_log_file  = "${profile::analytics::refinery::log_dir}/drop-druid-webrequest.log"
     $mediawiki_history_log_file = "${profile::analytics::refinery::log_dir}/drop-mediawiki-history.log"
     $banner_activity_log_file   = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
+    $query_clicks_log_file      = "${profile::analytics::refinery::log_dir}/drop-query-clicks.log"
 
     # Shortcut var to DRY up cron commands.
     $env = "export PYTHONPATH=\${PYTHONPATH}:${profile::analytics::refinery::path}/python"
@@ -103,5 +104,16 @@ class profile::analytics::refinery::job::data_drop {
         user        => 'hdfs',
         minute      => '0',
         hour        => '2',
+    }
+
+    # keep this many days of search query click files
+    # cron runs once a day
+    $query_click_retention_days = 90
+    cron {'refinery-drop-query-clicks':
+        command     => "${env} && ${profile::analytics::refinery::path}/bin/refinery-drop-hive-partitions -d ${query_click_retention_days} -D discovery -t query_clicks_hourly,query_clicks_daily >> ${query_clicks_log_file}",
+        environment => 'MAILTO=discovery-alerts@lists.wikimedia.org'
+        user        => 'hdfs',
+        minute      => '30',
+        hour        => '3',
     }
 }
