@@ -111,14 +111,7 @@ def icinga_cancel_downtime(host):
 
 
 def pre_puppet(host, downgrading):
-    experimental_repo = ('echo deb http://apt.wikimedia.org/wikimedia jessie-wikimedia experimental'
-                         ' > /etc/apt/sources.list.d/wikimedia-experimental.list')
-
-    if downgrading:
-        experimental_repo = 'rm /etc/apt/sources.list.d/wikimedia-experimental.list'
-
     cmds = [
-        experimental_repo,
         'apt update',
         'service varnish-frontend stop',
         'service varnish stop',
