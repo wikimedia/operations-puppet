@@ -127,13 +127,6 @@ node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
     role(webserver_misc_static)
 }
 
-# Californium is the former host of horizon
-# and toolsadmin.  Now ready for decom.
-node 'californium.wikimedia.org' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 # DNS recursor
 node 'chromium.wikimedia.org' {
     role(recursor)

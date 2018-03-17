@@ -499,13 +499,6 @@ host bast5001 {
     next-server 208.80.153.53; # install2002 (tftp server)
 }
 
-host californium {
-    hardware ethernet 84:2b:2b:fd:b9:f6;
-    fixed-address californium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host chromium {
     hardware ethernet 78:2b:cb:08:aa:48;
     fixed-address chromium.wikimedia.org;
