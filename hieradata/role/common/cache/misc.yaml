@@ -31,7 +31,8 @@ cache::app_def_be_opts:
 cache::app_directors:
   webserver_misc_static:
     backends:
-      eqiad: 'bromine.eqiad.wmnet'
+#     eqiad: 'bromine.eqiad.wmnet'
+      codfw: 'vega.codfw.wmnet'
   bohrium:
     backends:
       eqiad: 'bohrium.eqiad.wmnet'
