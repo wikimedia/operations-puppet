@@ -131,7 +131,6 @@ node 'bromine.eqiad.wmnet', 'vega.codfw.wmnet' {
 # and toolsadmin.  Now ready for decom.
 node 'californium.wikimedia.org' {
     role(spare::system)
-    interface::add_ip6_mapped { 'main': }
 }
 
 # DNS recursor
