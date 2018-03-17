@@ -5,6 +5,8 @@ class role::webserver_misc_static {
         description => 'WMF misc sites web server'
     }
 
+    interface::add_ip6_mapped { 'main': }
+
     include ::standard
     include ::profile::base::firewall
     include ::profile::microsites::httpd
