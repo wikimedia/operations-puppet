@@ -1,4 +1,5 @@
-# == Class role::analytics_cluster::users
+# == Class profile::analytics::cluster::users
+#
 # Installs any special system users needed on analytics namenodes or clients.
 # This is used for ensuring that users exist for use in HDFS.
 #
@@ -9,7 +10,7 @@
 # And optionally:
 #   sudo -u hdfs hdfs dfs -chmod 775 /user/$user
 #
-class role::analytics_cluster::users {
+class profile::analytics::cluster::users {
     # analytics-search user will be use to deploy
     # wikimedia/discovery/analytics into HDFS.
     # The analytics-search-users group will be allowed to
