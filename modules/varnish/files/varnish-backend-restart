@@ -21,7 +21,7 @@ sync
 sleep 10
 /usr/sbin/service varnish start
 
-sleep 10
+sleep 15
 
 # Repool varnish-be
 confctl --quiet select name=`hostname -f`,service='varnish-be' set/pooled=yes
