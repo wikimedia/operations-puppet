@@ -1,5 +1,6 @@
 [DEFAULT]
-interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+# neutron.agent.linux.interface.BridgeInterfaceDriver
+interface_driver = linuxbridge
 dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
 dnsmasq_config_file = /etc/neutron/dnsmasq-neutron.conf
 

@@ -1,4 +1,4 @@
-class openstack::neutron::ml2(
+class openstack::neutron::linuxbridge_agent(
     $version,
     $network_flat_interface,
     $network_flat_name,
@@ -8,29 +8,11 @@ class openstack::neutron::ml2(
 
     $packages = [
         'neutron-linuxbridge-agent',
-        'neutron-plugin-ml2',
+        'libosinfo-1.0-0',
     ]
-
-    $invalid_files = [
-        '/etc/neutron/plugins/ml2/ml2_conf_sriov.ini',
-        '/etc/neutron/plugins/ml2/openvswitch_agent.ini',
-        '/etc/neutron/plugins/ml2/sriov_agent.ini',
-    ]
-
-    file { $invalid_files:
-        ensure => 'absent',
-    }
 
     package { $packages:
         ensure => 'present',
-    }
-
-    file { '/etc/neutron/plugins/ml2/ml2_conf.ini':
-        owner   => 'neutron',
-        group   => 'root',
-        mode    => '0744',
-        content => template("openstack/${version}/neutron/plugins/ml2/ml2_conf.ini.erb"),
-        require => Package['neutron-linuxbridge-agent'];
     }
 
     file { '/etc/neutron/plugins/ml2/linuxbridge_agent.ini':
