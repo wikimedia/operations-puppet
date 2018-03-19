@@ -68,4 +68,13 @@ class profile::puppetmaster::common (
     } else {
             $config = merge($base_config, $env_config)
     }
+
+    # Don't attempt to use puppet-master service on stretch, we're using passenger.
+    if os_version('debian >= stretch') {
+        service { 'puppet-master':
+            ensure  => stopped,
+            enable  => false,
+            require => Package['puppet'],
+        }
+    }
 }
