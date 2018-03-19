@@ -9,12 +9,12 @@ confctl --quiet select name=`hostname -f`,service='nginx' set/pooled=no
 confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=no
 
 # Wait a bit for the service to be drained
-sleep 15
+sleep 20
 
 # Restart varnish-frontend
 /usr/sbin/service varnish-frontend restart
 
-sleep 5
+sleep 15
 
 # Repool varnish-fe
 confctl --quiet select name=`hostname -f`,service='varnish-fe' set/pooled=yes
