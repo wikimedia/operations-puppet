@@ -3,7 +3,6 @@
 <IfModule mod_ssl.c>
 <% if server_type == 'standalone' or server_type == 'frontend' -%>
 	Listen 8140
-	<% if server_type == 'frontend' %>NameVirtualHost *:8140<% end %>
 <% end -%>
 <% if server_type == 'backend' or server_type == 'frontend' -%>
 	Listen 8141
