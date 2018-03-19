@@ -113,7 +113,7 @@ class eventlogging::server(
         missing_ok   => true,
     }
 
-    if os_version('debian >= stretch') {
+    if os_version('debian >= jessie') {
         systemd::service { 'eventlogging':
             ensure  => present,
             content => systemd_template('eventlogging'),
