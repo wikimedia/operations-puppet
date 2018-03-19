@@ -11,7 +11,6 @@ class requesttracker::apache($apache_site) {
         content => template($rt_apache_conf),
     }
 
-    # use this to have a NameVirtualHost *:443
     # avoid [warn] _default_ VirtualHost overlap
     file { '/etc/apache2/ports.conf':
         ensure => present,
