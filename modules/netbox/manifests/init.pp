@@ -51,7 +51,7 @@ class netbox(
   require_package('virtualenv', 'python3-pip')
 
 
-  file { "${directory}/netbox/netbox/configuration.py":
+  file { '/etc/netbox-configuration.py':
       ensure  => $ensure,
       owner   => 'deploy-librenms',
       group   => 'www-data',
@@ -61,7 +61,7 @@ class netbox(
       before  => Uwsgi::App['netbox'],
   }
 
-  file { "${directory}/netbox/netbox/ldap_config.py":
+  file { '/etc/netbox-ldap.py':
       ensure  => $ensure,
       owner   => 'deploy-librenms',
       group   => 'www-data',
