@@ -38,6 +38,10 @@ class profile::mediawiki::jobrunner(
         content  => template('profile/mediawiki/jobrunner/site.conf.erb'),
     }
 
+    # HHVM admin interface
+    class { '::hhvm::admin': }
+
+
     ::monitoring::service { 'jobrunner_http_hhvm':
         description   => 'HHVM jobrunner',
         check_command => 'check_http_jobrunner',

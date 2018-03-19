@@ -4,6 +4,9 @@ class role::mediawiki::webserver {
     include ::mediawiki::web
     include ::mediawiki::web::sites
     include ::mediawiki::packages::fonts
+
+    class { '::hhvm::admin': }
+
     # FIXME: These should all be merged into the generic sites class!
     if $::realm == 'labs' {
         include ::mediawiki::web::beta_sites
