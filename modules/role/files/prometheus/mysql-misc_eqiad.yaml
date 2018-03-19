@@ -51,12 +51,6 @@
     shard: m5
     role: master
   targets:
-  - db1009:9104
-
-- labels:
-    shard: m5
-    role: slave
-  targets:
   - db1073:9104
 
 - labels:

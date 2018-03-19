@@ -599,9 +599,7 @@ node 'db1108.eqiad.wmnet' {
 
 # m5 shard
 node 'db1009.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm5',
-    }
+    role(spare::system)
 }
 
 node 'db1073.eqiad.wmnet' {
