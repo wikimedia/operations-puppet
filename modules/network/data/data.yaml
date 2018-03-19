@@ -86,6 +86,7 @@ network::subnets:
           ipv4: 10.2.2.0/24
         private1-kubepods-eqiad:
           ipv4: 10.64.64.0/21
+          ipv6: 2620:0:861:cabe::/64
         private1-kubesvc-eqiad:
           ipv4: 10.64.72.0/24
         private1-kubestagepods-eqiad:
@@ -132,6 +133,7 @@ network::subnets:
           ipv4: 10.2.1.0/24
         private1-kubepods-codfw:
           ipv4: 10.192.64.0/21
+          ipv6: 2620:0:860:cabe::/64
         private1-kubesvc-codfw:
           ipv4: 10.192.72.0/24
     esams:
