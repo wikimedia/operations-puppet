@@ -1,6 +1,6 @@
 <%- if @mode == 'tilerator' -%>
 # Generates vtiles from database
-genall:
+genallraw:
   public: true
   formats: [pbf]
   uri: bridge://
@@ -15,6 +15,12 @@ genall:
       host: localhost
       user: {var: osmdb-user}
       password: {var: osmdb-pswd}
+
+genall:
+  uri: json2tags://
+  params:
+    source: {ref: genallraw}
+    tag: name
 
 # View tiles as generated directly from the database. Don't view zoom0-5
 genview:
@@ -75,13 +81,21 @@ gen:
     source: {ref: <%= @storage_id %>}
 <%- end -%>
 
+osm-localized:
+  uri: babel://
+  params:
+    source: {ref: <%= @storage_id %>}
+    tag: name
+    combineName: true
+    defaultLanguage: en
+
 # OSM PBF source
 osm-pbf:
   public: true
   formats: [pbf]
   uri: overzoom://
   params:
-    source: {ref: <%= @storage_id %>}
+    source: {ref: osm-localized}
     maxzoom: 19
   overrideInfo:
     attribution: 'Map data © <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
