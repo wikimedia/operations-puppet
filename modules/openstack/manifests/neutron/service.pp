@@ -6,17 +6,13 @@ class openstack::neutron::service(
         ensure => 'present',
     }
 
-    # Needed for setup and schema changes via neutron-db-manage
-    file { '/etc/neutron/plugins/ml2/ml2_conf.ini':
-        content => template("openstack/${version}/neutron/plugins/ml2/ml2_conf.ini.erb"),
-        owner   => 'neutron',
-        group   => 'neutron',
-        mode    => '0644',
-        require => Package['neutron-server'],
-    }
-
     service {'neutron-server':
-        ensure  => 'running',
-        require => Package['neutron-server'],
+        ensure    => 'running',
+        require   => Package['neutron-server'],
+        subscribe => [
+                      File['/etc/neutron/neutron.conf'],
+                      File['/etc/neutron/policy.json'],
+                      File['/etc/neutron/plugins/ml2/ml2_conf.ini'],
+            ],
     }
 }
