@@ -517,13 +517,13 @@ node 'db2033.codfw.wmnet' {
 node 'db1016.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
-        master => true,
     }
 }
 
 node 'db1063.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm1',
+        master => true,
     }
 }
 
