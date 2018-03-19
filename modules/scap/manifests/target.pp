@@ -59,10 +59,6 @@ define scap::target(
     include scap
     include scap::ferm
 
-    if os_version('debian >= stretch') {
-        require_package('git-lfs')
-    }
-
     if $manage_user
     {
         if !defined(Group[$deploy_user]) {
