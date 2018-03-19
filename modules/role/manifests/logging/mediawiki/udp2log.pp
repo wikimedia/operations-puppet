@@ -6,7 +6,6 @@ class role::logging::mediawiki::udp2log(
     $monitor = true,
     $log_directory = '/srv/mw-log',
     $rotate = 1000,
-    $rsync_slow_parse = false,
     $forward_messages = false,
     $mirror_destinations = undef,
 ) {
@@ -16,20 +15,6 @@ class role::logging::mediawiki::udp2log(
 
     include ::standard
     include ::profile::base::firewall
-
-    # Rsync archived slow-parse logs to dumps.wikimedia.org.
-    # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
-    include ::dumpsuser
-    if ($rsync_slow_parse) {
-        cron { 'rsync_slow_parse':
-            ensure      => 'absent',
-            command     => "/usr/bin/rsync -rt ${log_directory}/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
-            hour        => 23,
-            minute      => 15,
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => 'dumpsgen',
-        }
-    }
 
     class { '::udp2log':
         monitor          => $monitor,
