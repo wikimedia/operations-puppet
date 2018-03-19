@@ -13,13 +13,6 @@ class profile::openstack::base::wikitech::web(
 
     class { '::scap::scripts': }
 
-    # The following is derived from hhvm::admin
-    #  but reworked to avoid package conflicts
-    include ::network::constants
-    httpd::conf { 'hhvm_admin_port':
-        content  => "Listen 9002\n",
-        priority => 1,
-    }
 
     httpd::conf { 'server_header':
         content  => template('mediawiki/apache/server-header.conf.erb'),
@@ -31,16 +24,7 @@ class profile::openstack::base::wikitech::web(
         priority => 0,
     }
 
-    httpd::site { 'hhvm_admin':
-        content => template('hhvm/hhvm-admin.conf.erb'),
-    }
-
-    ferm::service { 'hhvm_admin':
-        proto  => 'tcp',
-        port   => 9002,
-        srange => '$DOMAIN_NETWORKS',
-    }
-    # end hhvm::admin bits
+    class { '::hhvm::admin': }
 
     # common code snippets that are included in the virtualhosts.
     # from ::mediawiki::web::sites
