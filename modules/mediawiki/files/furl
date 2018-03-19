@@ -693,7 +693,7 @@ while ($uri) {
         file_put_contents('php://stderr', $e->getMessage() . "\n");
         exit(1);
     }
-    if (preg_match('/Status: 30/', $resp) !== false && preg_match('/(?<=Location: )\S+/', $resp, $matches) !== false) {
+    if (preg_match('/Status: 30/', $resp) && preg_match('/(?<=Location: )\S+/', $resp, $matches)) {
         print $resp;
         $uri = $matches[0];
     } else {
