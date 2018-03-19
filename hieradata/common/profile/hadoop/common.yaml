@@ -34,6 +34,12 @@ profile::hadoop::common::datanode_mounts:
     - /var/lib/hadoop/data/l
     - /var/lib/hadoop/data/m
 
+# The datanode daemon by default begins the shutdown procedure as soon as
+# on volume/disk failure is registered. In our use case we want to keep the
+# datanode working in case of one/two (two is very unlikey on the same host)
+# disk failures.
+profile::hadoop::common::datanode_volumes_failed_tolerated: 2
+
 profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies: 10
 profile::hadoop::common::mapreduce_task_io_sort_mb: 200
 profile::hadoop::common::mapreduce_task_io_sort_factor: 10
