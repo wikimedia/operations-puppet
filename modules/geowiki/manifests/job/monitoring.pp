@@ -22,11 +22,12 @@ class geowiki::job::monitoring {
     # cron job to fetch geowiki data via https://stats.wikimedia/geowiki-private (private data)
     # and checks that the files are up-to-date and within
     # meaningful ranges.
-    cron { 'geowiki-monitoring':
-        minute      => 30,
-        hour        => 23,
-        user        => $::geowiki::user,
-        environment => 'MAILTO=analytics-alerts@wikimedia.org',
-        command     => "${::geowiki::scripts_path}/scripts/check_web_page.sh --private-part-user ${geowiki_http_user} --private-part-password-file ${geowiki_http_password_file}",
-    }
+    # Disabled for T173486
+    # cron { 'geowiki-monitoring':
+    #     minute      => 30,
+    #     hour        => 23,
+    #     user        => $::geowiki::user,
+    #     environment => 'MAILTO=analytics-alerts@wikimedia.org',
+    #     command     => "${::geowiki::scripts_path}/scripts/check_web_page.sh --private-part-user ${geowiki_http_user} --private-part-password-file ${geowiki_http_password_file}",
+    # }
 }
