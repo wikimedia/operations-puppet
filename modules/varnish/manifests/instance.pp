@@ -31,7 +31,7 @@ define varnish::instance(
     $vcl_reload_delay_s = max(2, ceiling((($vcl_config['varnish_probe_ms'] * 5) + (100 * 4)) / 1000.0))
 
     $vcl_file_opt = "-f /etc/varnish/wikimedia_${vcl}.vcl"
-    $reload_vcl_opts = "${instance_opt} ${vcl_file_opt} -d ${vcl_reload_delay_s}"
+    $reload_vcl_opts = "${instance_opt} ${vcl_file_opt} -d ${vcl_reload_delay_s} -a"
 
     # Install VCL include files shared by all instances
     require ::varnish::common::vcl
