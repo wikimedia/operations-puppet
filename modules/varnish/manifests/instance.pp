@@ -28,7 +28,7 @@ define varnish::instance(
     # probe window to avoid possibility of spurious 503s.
     # 5 probe window -> timeout*5 + interval*4, then round up whole seconds,
     # then set a sane mininum of 2s
-    $vcl_reload_delay_s = max(2, ceiling((($vcl_config['varnish_probe_ms'] * 5) + (100 * 4)) / 1000.0))
+    $vcl_reload_delay_s = max(2, ceiling((($vcl_config['varnish_probe_ms'] * 5) + (1000 * 4)) / 1000.0))
 
     $vcl_file_opt = "-f /etc/varnish/wikimedia_${vcl}.vcl"
     $reload_vcl_opts = "${instance_opt} ${vcl_file_opt} -d ${vcl_reload_delay_s} -a"
