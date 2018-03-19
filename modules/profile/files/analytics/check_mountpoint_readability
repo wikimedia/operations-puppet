@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Usage:
+#    check_mountpoint_readability path
+#
+# Execute a simple ls -l to establish if the path is readable or not. Useful
+# to periodically check if file systems like fuse_hdfs are still available or
+# not (sometimes during unclean failures the file system show as mounted but
+# it doesn't respond correctly to simple reads).
+#
+
+if [ -z "${1}" ]; then
+    echo "Usage: check_mountpoint_readability path"
+    exit 1
+fi
+
+/bin/ls "${1}" > /dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+    echo "OK"
+else
+    echo "CRITICAL"
+fi
