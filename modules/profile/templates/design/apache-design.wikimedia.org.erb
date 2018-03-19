@@ -9,6 +9,8 @@
     ErrorLog /var/log/apache2/<%= @server_name %>.error.log
     CustomLog /var/log/apache2/<%= @server_name %>.access.log wmf
 
+    Alias "/style-guide" "/srv/org/wikimedia/design-style-guide"
+
     <Directory />
         Options FollowSymLinks
         AllowOverride None
