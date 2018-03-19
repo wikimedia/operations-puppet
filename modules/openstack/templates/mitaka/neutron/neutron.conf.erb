@@ -1,7 +1,13 @@
 [DEFAULT]
+# debug = true
 auth_strategy = keystone
 
-core_plugin = ml2
+# New standards would dictate this should be the 
+# terse 'ml2' only but the Debian package for
+# neutron-server is doing some dynamic path loading
+# for the ini file that expects the verbose name here.
+# Use the verbose name until it is an issue
+core_plugin = neutron.plugins.ml2.plugin.Ml2Plugin
 
 # metering?
 service_plugins = router

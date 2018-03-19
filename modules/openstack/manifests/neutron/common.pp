@@ -30,6 +30,23 @@ class openstack::neutron::common(
             require => Package['neutron-common'];
     }
 
+    $invalid_files = [
+        '/etc/neutron/plugins/ml2/ml2_conf_sriov.ini',
+        '/etc/neutron/plugins/ml2/openvswitch_agent.ini',
+        '/etc/neutron/plugins/ml2/sriov_agent.ini',
+    ]
+
+    file { $invalid_files:
+        ensure => 'absent',
+    }
+
+    file { '/etc/neutron/plugins/ml2/ml2_conf.ini':
+        owner   => 'neutron',
+        group   => 'neutron',
+        mode    => '0744',
+        content => template("openstack/${version}/neutron/plugins/ml2/ml2_conf.ini.erb"),
+        require => Package['neutron-linuxbridge-agent'];
+    }
 
     if os_version('debian == jessie') {
 

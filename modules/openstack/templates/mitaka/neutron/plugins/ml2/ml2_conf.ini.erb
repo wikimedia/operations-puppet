@@ -1,30 +1,30 @@
+# https://github.com/openstack/neutron/blob/master/setup.cfg
 # https://docs.openstack.org/mitaka/networking-guide/config-ml2.html
 [DEFAULT]
-
+# debug = true
 [ml2]
 
 # After you configure the ML2 plug-in
 # removing or changing values in the type_drivers
 # option can lead to database inconsistency.
-type_drivers = flat
+type_drivers = flat, vlan
 tenant_network_types =
 
 # l2population is a sort of meta driver to
 # make overlay intelligently handle broadcast
-#mechanism_drivers = linuxbridge,l2population
-mechanism_drivers = linuxbridge
+mechanism_drivers = linuxbridge,l2population
 extension_drivers = port_security
 
 [ml2_type_flat]
 # List of physical_network names with which flat networks can be created
-flat_networks = <%= @network_flat_name %>
+# flat_networks = <%= @network_flat_name %>
 
 [ml2_type_geneve]
 [ml2_type_gre]
 [ml2_type_vlan]
 
 [ml2_type_vxlan]
-#vni_ranges = 1:1000
+vni_ranges = 1:10
 
 [securitygroup]
 enable_security_group = True
@@ -37,3 +37,5 @@ enable_security_group = True
 # to has rules between other security group, the member of that
 # security group will be added to the ipset chain.
 enable_ipset = True
+# neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+firewall_driver = iptables

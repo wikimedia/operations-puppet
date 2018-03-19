@@ -1,18 +1,12 @@
-# https://github.com/openstack/neutron/blob/master/setup.cfg
-[DEFAULT]
 [agent]
+
 [linux_bridge]
 # Replace PROVIDER_INTERFACE_NAME with the name of the underlying
 # provider physical network interface.
 physical_interface_mappings = <%= @network_flat_name %>:<%= @network_flat_interface %>
 
-[securitygroup]
-enable_security_group = True
-# neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
-firewall_driver = iptables
-
 [vxlan]
 #enable_vxlan = True
 # local_ip = OVERLAY_INTERFACE_IP_ADDRESS
-#local_ip = <%= @ipaddress %>
+# local_ip = <%= @ipaddress %>
 #l2_population = True
