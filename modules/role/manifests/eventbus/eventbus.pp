@@ -63,7 +63,7 @@ class role::eventbus::eventbus {
     #   meta[topic] == mediawiki.revision_create
     # in eqiad will be produced to
     #   eqiad.mediawiki.revsion_create
-    $kafka_output_uri = "${kafka_base_uri}?async=True&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}"
+    $kafka_output_uri = "${kafka_base_uri}?async=True&retries=3&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}"
     $outputs = [$kafka_output_uri]
 
     $access_log_level = $::realm ? {
