@@ -30,7 +30,7 @@ profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls:
   ca: /dev/null
 # TODO: get this from cassandra's instances?
-profile::restbase::seeds:
+profile::restbase::seeds_ng:
       - restbase-dev1004-a.eqiad.wmnet
       - restbase-dev1004-b.eqiad.wmnet
       - restbase-dev1005-a.eqiad.wmnet
