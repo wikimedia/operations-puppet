@@ -14,7 +14,7 @@ class profile::dumps::distribution::datasets::rsync_config(
     $mntpoint = $rsyncer_settings['dumps_mntpoint']
 
     file { '/etc/rsyncd.d/10-rsync-slowparse-logs.conf':
-        ensure  => 'present',
+        ensure  => 'absent',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
