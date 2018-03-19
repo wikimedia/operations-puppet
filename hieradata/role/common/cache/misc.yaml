@@ -114,7 +114,7 @@ cache::app_directors:
   pybal_config:
     backends:
       eqiad: 'puppetmaster1001.eqiad.wmnet'
-      # codfw: 'puppetmaster2001.codfw.wmnet'
+      codfw: 'puppetmaster2001.codfw.wmnet'
   releases:
     backends:
       eqiad: 'releases1001.eqiad.wmnet'
