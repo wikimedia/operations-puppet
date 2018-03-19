@@ -13,8 +13,10 @@ class profile::analytics::refinery {
     # Clone mediawiki/event-schemas so refinery can use them.
     class { '::eventschemas': }
 
-    # Include geoip for geolocating
-    class { '::geoip': }
+    if ! defined(Class['Geoip']) {
+        # Include geoip for geolocating
+        class { '::geoip': }
+    }
 
     # Some refinery python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
