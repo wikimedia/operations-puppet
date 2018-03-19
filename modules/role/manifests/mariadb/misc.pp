@@ -31,7 +31,6 @@ class role::mariadb::misc(
         mysql_group => 'misc',
         mysql_shard => $shard,
         mysql_role  => $mysql_role,
-        socket      => '/tmp/mysql.sock', # temporary workaround T148507
     }
 
     include mariadb::packages_wmf
@@ -55,7 +54,6 @@ class role::mariadb::misc(
         shard      => $shard,
         datacenter => $::site,
         enabled    => $master,
-        socket     => '/tmp/mysql.sock', # temporary workaround T148507
     }
 }
 
