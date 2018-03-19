@@ -33,6 +33,11 @@
 #    List of file system partitions to use on each Hadoop worker for HDFS.
 #    Default: undef
 #
+#  [*datanode_volumes_failed_tolerated*]
+#    Number of disk/volume failures tolerated by the datanode before
+#    shutting down.
+#    Default: undef
+#
 #  [*mapreduce_reduce_shuffle_parallelcopies*]
 #    Map-reduce specific setting.
 #    Default: undef
@@ -132,6 +137,7 @@ class profile::hadoop::common (
     $namenode_hosts                           = hiera('profile::hadoop::common::namenode_hosts'),
     $journalnode_hosts                        = hiera('profile::hadoop::common::journalnode_hosts'),
     $datanode_mounts                          = hiera('profile::hadoop::common::datanode_mounts', undef),
+    $datanode_volumes_failed_tolerated        = hiera('profile::hadoop::common::datanode_volumes_failed_tolerated', undef),
     $mapreduce_reduce_shuffle_parallelcopies  = hiera('profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies', undef),
     $mapreduce_task_io_sort_mb                = hiera('profile::hadoop::common::mapreduce_task_io_sort_mb', undef),
     $mapreduce_task_io_sort_factor            = hiera('profile::hadoop::common::mapreduce_task_io_sort_factor', undef),
@@ -183,6 +189,7 @@ class profile::hadoop::common (
         zookeeper_hosts                             => $zookeeper_hosts,
         dfs_name_dir                                => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
+        dfs_datanode_failed_volumes_tolerated       => $datanode_volumes_failed_tolerated,
 
         cluster_name                                => $cluster_name,
         namenode_hosts                              => $namenode_hosts,
