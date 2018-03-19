@@ -32,4 +32,8 @@ class scap (
         'python-requests',
         'python-jinja2',
     ])
+
+    if os_version('debian >= stretch') {
+        require_package('git-lfs')
+    }
 }
