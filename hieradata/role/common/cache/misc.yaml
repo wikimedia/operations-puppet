@@ -174,6 +174,8 @@ cache::req_handling:
     caching: 'pass'
   dbtree.wikimedia.org:
     director: 'dbtree'
+  design.wikimedia.org:
+    director: 'webserver_misc_static'
   docker-registry.wikimedia.org:
     director: 'darmstadtium'
   doc.wikimedia.org:
