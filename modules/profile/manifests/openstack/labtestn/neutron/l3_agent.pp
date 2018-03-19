@@ -2,6 +2,7 @@ class profile::openstack::labtestn::neutron::l3_agent(
     $version = hiera('profile::openstack::labtestn::version'),
     $network_flat_interface = hiera('profile::openstack::labtestn::neutron::network_flat_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtestn::neutron::network_flat_interface_vlan'),
+    $network_flat_name = hiera('profile::openstack::labtestn::neutron::network_flat_name'),
     ) {
 
     require ::profile::openstack::labtestn::clientlib
@@ -32,4 +33,11 @@ class profile::openstack::labtestn::neutron::l3_agent(
         prefixlen => '24',
         require   => Interface::Tagged['eth1.2120'],
     }
+
+    class {'::profile::openstack::base::neutron::linuxbridge_agent':
+        version                => $version,
+        network_flat_interface => $network_flat_interface,
+        network_flat_name      => $network_flat_name,
+    }
+    contain '::profile::openstack::base::neutron::linuxbridge_agent'
 }
