@@ -28,7 +28,7 @@ DATABASE_REPLICATION_BASE="$PLANET_DIR/database-replication"
 
 # -E 3857 is not required on newer versions of osm2pgsql
 osm2pgsql_common_opts="-E 3857  --flat-nodes $PLANET_DIR/nodes.bin"
-osm2pgsql_import_opts="--cache 10000 --number-processes 2"
+osm2pgsql_import_opts="--cache 40000 --number-processes 2"
 osm2pgsql_update_opts="--cache 1000 --number-processes 1"
 
 function show_setup_help() {
