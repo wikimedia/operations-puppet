@@ -4,6 +4,7 @@
 #
 # [*shard*]
 #   Database shard
+#
 # [*master*]
 #   Boolean value to establish if the host is acting as Master or Replica.
 #
@@ -19,12 +20,14 @@ class profile::mariadb::misc::eventlogging::database (
         false => 'slave',
     }
 
-    class { 'passwords::misc::scripts': }
+    if $::realm == 'production' {
+        class { 'passwords::misc::scripts': }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
+        class { 'profile::mariadb::monitor::prometheus':
+            mysql_group => 'misc',
+            mysql_shard => $shard,
+            mysql_role  => $mysql_role,
+        }
     }
 
     class { 'mariadb::packages_wmf': }
@@ -59,19 +62,21 @@ class profile::mariadb::misc::eventlogging::database (
         binlog_format => 'MIXED',
     }
 
-    # FIXME: instantiating a role in a profile is not
-    # allowed by our coding standard, but it needs to be
-    # refactored on a separate change since it is broadly used.
-    class { 'profile::mariadb::grants::production':
-        shard    => $shard,
-        prompt   => "EVENTLOGGING ${shard}",
-        password => $passwords::misc::scripts::mysql_root_pass,
-    }
+    if $::realm == 'production'  {
+        # FIXME: instantiating a role in a profile is not
+        # allowed by our coding standard, but it needs to be
+        # refactored on a separate change since it is broadly used.
+        class { 'profile::mariadb::grants::production':
+            shard    => $shard,
+            prompt   => "EVENTLOGGING ${shard}",
+            password => $passwords::misc::scripts::mysql_root_pass,
+        }
 
-    class { 'mariadb::heartbeat':
-        shard      => $shard,
-        datacenter => $::site,
-        enabled    => $master,
-        socket     => $mariadb_socket,
+        class { 'mariadb::heartbeat':
+            shard      => $shard,
+            datacenter => $::site,
+            enabled    => $master,
+            socket     => $mariadb_socket,
+        }
     }
 }
