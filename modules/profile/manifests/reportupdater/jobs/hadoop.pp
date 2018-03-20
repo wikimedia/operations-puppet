@@ -5,11 +5,8 @@
 # This requires that a Hadoop client is installed and the statistics compute role
 # for the published_datasets_path.
 class profile::reportupdater::jobs::hadoop {
-    # TODO: it would be better to depend on role::analytics_cluster::client, but
-    # that seems wrong from a profile.  Perhaps when analytics_cluster roles
-    # have been refactored to profiles.
-    Class['cdh::hadoop'] -> Class['profile::reportupdater::jobs::hadoop']
 
+    require ::profile::analytics::cluster::client
     require ::statistics::compute
 
     $base_path = '/srv/reportupdater'

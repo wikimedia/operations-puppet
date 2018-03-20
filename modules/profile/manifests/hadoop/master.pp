@@ -46,7 +46,7 @@ class profile::hadoop::master(
 
     file { '/usr/local/lib/nagios/plugins/check_hdfs_topology':
         ensure => present,
-        source => 'puppet:///modules/role/analytics_cluster/hadoop/check_hdfs_topology',
+        source => 'puppet:///modules/profile/hadoop/check_hdfs_topology',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
