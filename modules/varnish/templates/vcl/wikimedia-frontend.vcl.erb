@@ -372,10 +372,8 @@ sub vcl_purge {
 
 sub vcl_hit {
 	call wm_common_hit;
-	call wm_common_hit_grace;
 	call cluster_fe_hit;
-	// no default VCL. Expired ttl/grace behavior implemented in
-	// wm_common_hit_grace.
+	// no default VCL.
 	return (deliver);
 }
 
