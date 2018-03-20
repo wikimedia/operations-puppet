@@ -6752,8 +6752,6 @@ host terbium {
 host tin {
     hardware ethernet 90:b1:1c:00:a4:1d;
     fixed-address tin.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host tungsten {
