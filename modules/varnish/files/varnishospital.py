@@ -128,6 +128,7 @@ class VarnishHospital(object):
             'response_time': float(splitline[10]),
             'avg_response_time': float(splitline[11]),
             'http_response': " ".join(splitline[12:]),
+            'layer': self.layer,
         }
 
         self.logger.info("{} {}".format(log['origin_server'], log['transition']), extra=log)
