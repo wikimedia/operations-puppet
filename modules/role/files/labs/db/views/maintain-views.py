@@ -433,7 +433,7 @@ def main():
 
     all_tables = []
     all_tables = all_tables + config['fullviews']
-    all_tables = all_tables + config['logging_whitelist']
+    all_tables = all_tables + config['allowed_logtypes']
     all_tables = all_tables + list(config['customviews'].keys())
 
     if args.table:
