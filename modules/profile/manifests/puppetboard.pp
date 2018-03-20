@@ -61,6 +61,10 @@ class profile::puppetboard (
         ],
     }
 
+    class { '::httpd':
+        modules => ['headers', 'rewrite', 'authnz_ldap'],
+    }
+
     httpd::site { 'puppetboard.wikimedia.org':
         content => template('profile/puppetboard/puppetboard.wikimedia.org.erb'),
     }
