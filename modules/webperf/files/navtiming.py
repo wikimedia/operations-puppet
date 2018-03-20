@@ -418,7 +418,8 @@ def handle_navigation_timing(meta):
             return
         except Exception:
             # Same case here, but we can't even log anything useful
-            logging.exception('Unknown exception trying to decode oversample reasons')
+            logging.exception(
+                'Unknown exception trying to decode oversample reasons')
             return
 
         # If we're oversampling by geo, use the country code.  The
@@ -501,6 +502,10 @@ def handle_navigation_timing(meta):
         metrics_nav2['redirect'] = event['redirecting']
     if 'mediaWikiLoadComplete' in event:
         metrics_nav2['mediaWikiLoad'] = event['mediaWikiLoadComplete']
+
+    # If we got gaps in the Navigation Timing metrics, collect them
+    if 'gaps' in event:
+        metrics_nav2['gaps'] = event['gaps']
 
     # If one of the metrics are wrong, don't send them at all
     for metric, value in metrics_nav2.items():

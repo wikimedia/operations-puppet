@@ -469,10 +469,10 @@ Mobile page view:
   - frontend.navtiming2.mediaWikiLoad.by_continent.Europe:907|ms
   - frontend.navtiming2.mediaWikiLoad.by_country.Russia:907|ms
 
-# Sample from September 2017
-# https://meta.wikimedia.org/w/index.php?title=Schema:NavigationTiming&oldid=17216284
+# Sample from September 2017 (added gaps)
+# https://meta.wikimedia.org/w/index.php?diff=17854363&oldid=17740037
 View with timings above threshold (for navtiming):
- input: {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 203077, "domInteractive": 7403, "fetchStart": 0, "firstPaint": 9356, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 204085, "loadEventStart": 204083, "mediaWikiLoadComplete": 20922, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FR", "originRegion": "X", "pageId": 1, "requestStart": 4484, "responseEnd": 6286, "responseStart": 5027, "revId": 1}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"15063\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Edge\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
+ input: {"event": {"action": "view", "connectEnd": 0, "connectStart": 0, "dnsLookup": 0, "domComplete": 203077, "domInteractive": 7403, "fetchStart": 0, "firstPaint": 9356, "isAnon": true, "isHiDPI": false, "isHttp2": true, "loadEventEnd": 204085, "loadEventStart": 204083, "mediaWikiLoadComplete": 20922, "mediaWikiVersion": "1.30.0-wmf.19", "namespaceId": 1, "originCountry": "FR", "originRegion": "X", "pageId": 1, "requestStart": 4484, "responseEnd": 6286, "responseStart": 5027, "revId": 1, "gaps": 12}, "recvFrom": "example", "revision": 1, "schema": "NavigationTiming", "seqId": 1, "timestamp": 1, "userAgent": "{\"os_minor\": null, \"is_bot\": false, \"os_major\": null, \"device_family\": \"Other\", \"os_family\": \"Windows 10\", \"browser_minor\": \"15063\", \"wmf_app_version\": \"-\", \"browser_major\": \"15\", \"browser_family\": \"Edge\", \"is_mediawiki\": false}", "uuid": "example", "webHost": "example", "wiki": "example"}
  expect:
   # domComplete, loadEventStart and loadEventEnd are above threshold
   - frontend.navtiming.loadEventStart.by_continent.Europe:204083|ms
@@ -620,6 +620,13 @@ View with timings above threshold (for navtiming):
   - frontend.navtiming2.mediaWikiLoad.by_browser.Edge.all:20922|ms
   - frontend.navtiming2.mediaWikiLoad.by_continent.Europe:20922|ms
   - frontend.navtiming2.mediaWikiLoad.by_country.France:20922|ms
+  - frontend.navtiming2.gaps.desktop.anonymous:12|ms
+  - frontend.navtiming2.gaps.desktop.overall:12|ms
+  - frontend.navtiming2.gaps.overall:12|ms
+  - frontend.navtiming2.gaps.by_browser.Edge.15:12|ms
+  - frontend.navtiming2.gaps.by_browser.Edge.all:12|ms
+  - frontend.navtiming2.gaps.by_continent.Europe:12|ms
+  - frontend.navtiming2.gaps.by_country.France:12|ms
 
 # Sample from February 2018 (added 'isOversample')
 # https://meta.wikimedia.org/w/index.php?title=Schema:NavigationTiming&oldid=17740037
