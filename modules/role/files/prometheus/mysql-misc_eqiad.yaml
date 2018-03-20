@@ -2,14 +2,14 @@
     shard: m1
     role: master
   targets:
-  - db1016:9104
+  - db1063:9104
 
 - labels:
     shard: m1
     role: slave
   targets:
   - db1001:9104
-  - db1063:9104
+  - db1016:9104
 
 - labels:
     shard: m2
