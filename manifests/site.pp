@@ -2117,9 +2117,17 @@ node /^thumbor200[1234]\.codfw\.wmnet/ {
 }
 
 # deployment servers
-node 'tin.eqiad.wmnet', 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
+node 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
     role(deployment_server)
     interface::add_ip6_mapped { 'main': }
+}
+
+# former deployment server, ready for decom (T185275)
+node 'tin.eqiad.wmnet' {
+    role(spare::system)
+    # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': }
+    # lint:endignore
 }
 
 # test system for performance team (T117888)
