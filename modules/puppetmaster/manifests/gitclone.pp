@@ -132,6 +132,11 @@ class puppetmaster::gitclone(
                 require => Exec['/srv/private init'],
             }
 
+            # 'Lock' hook, allow commits only on master
+            file { '/srv/private/.git/hooks/pre-commit':
+                ensure  => absent,
+            }
+
             # Syncing hooks
             # This hook updates /var/lib and pushes changes to the backend workers
             file { '/srv/private/.git/hooks/post-commit':
@@ -170,6 +175,15 @@ class puppetmaster::gitclone(
             # This will transmit data to /var/lib...
             file { '/srv/private/hooks/post-receive':
                 source  => 'puppet:///modules/puppetmaster/git/private/post-receive',
+                owner   => $user,
+                group   => $group,
+                mode    => '0550',
+                require => Puppetmaster::Gitprivate['/srv/private'],
+            }
+
+            # This will lock commits on /srv/private on non-master hosts
+            file { '/srv/private/.git/hooks/pre-commit':
+                source  => 'puppet:///modules/puppetmaster/git/private/pre-commit',
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
