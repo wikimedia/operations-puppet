@@ -10,3 +10,4 @@ admin::groups:
   - analytics-search-users
   - analytics-wmde-users
 profile::statistics::private::graphite_host: 'graphite-in.eqiad.wmnet'
+profile::analytics::cluster::client::monitoring_enabled: true
