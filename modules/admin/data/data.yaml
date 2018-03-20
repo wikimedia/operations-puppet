@@ -3006,3 +3006,7 @@ ldap_only_users:
     ensure: present
     realname: Francisco Venancio
     email: fvenancio@wikimedia.org
+  mmiller:
+    ensure: present
+    realname: Marshall Miller
+    email: mmiller@wikimedia.org
