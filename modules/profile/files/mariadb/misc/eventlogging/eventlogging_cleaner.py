@@ -5,12 +5,29 @@
 This script enforces the Analytics data retention guidelines outlined in:
 https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Data_retention_and_auto-purging
 
-The script reads a whitelist (TSV file) with the following format for each line:
+The script reads a whitelist that can have one of two formats:
 
-Tablename\tfield
-Tablename\tfield2
+1) TSV:
+Tablename\tevent_field  # This field belongs to the EL schema, prefixed with 'event_'
+Tablename\tevent_field2  # This one as well.
+Tablename\tfield  # This field belongs to the EL EventCapsule, no prefix.
 Tablename2\tfield_bla
 [...]
+
+2) YAML:
+Tablename:
+    event:  # Within this block go all fields belonging to the EL schema.
+        field: keep  # Note they do not have the event_ prefix.
+        field2: keep
+    field: keep  # This field belongs to the EL EventCapsule.
+    userAgent:  # This script does not support partial purging of nested fields,
+                # so if the userAgent field has a spec block like this,
+                # it will be whitelisted in its entirety.
+        subfield: keep
+        subfield2: keep
+Tablename2:
+    fieldBla: keep
+    [...]
 
 The script works in the following way: for each table in the EventLogging database,
 it looks for any reference of it in the whitelist. If none is found, it means that
@@ -44,6 +61,7 @@ import re
 import sys
 import time
 import unittest
+import yaml
 
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock, Mock, call, patch
@@ -340,7 +358,7 @@ def check_not_valid_whitelist_table_prefixes(whitelist, tables):
     return not_valid_table_prefixes
 
 
-def parse_whitelist(rows):
+def parse_tsv_whitelist(rows):
     """Parse rows containing tables and their attributes to whitelist
 
     Returns a hashmap with the following format:
@@ -387,6 +405,43 @@ def parse_whitelist(rows):
     return whitelist_hash
 
 
+def parse_yaml_whitelist(whitelist_dict):
+    """Parse a whitelist dict containing tables and their attributes to whitelist.
+
+    Returns a dict with the following format:
+    - each key is a table name
+    - each value is a list of whitelisted fields
+    {
+        "tableName1": ["fieldName1", "fieldName2", ...],
+        "tableName2": [...],
+        ...
+    }
+    """
+    whitelist = {}
+    for table_name, table_dict in whitelist_dict.items():
+        if '.' in table_name or '*' in table_name:
+            raise RuntimeError(
+                'Bad characters in table name: {}.'.format(table_name))
+        whitelisted_fields = []
+        for field_name, field_spec in table_dict.items():
+            if '--' in field_name:
+                raise RuntimeError(
+                    'Bad characters in field name: {}.'.format(field_name))
+            elif field_name.lower() == 'event':
+                if type(field_spec) == str:
+                    raise RuntimeError('Can not whitelist the whole event.')
+                # Add all event fields to the whitelisted fields with event_ prefix.
+                event_fields = ['event_' + f for f in field_spec.keys()]
+                whitelisted_fields.extend(event_fields)
+            else:
+                # Note: If the userAgent field is in the spec,
+                # it will be completely whitelisted regardless of its spec.
+                # Partial purging of nested fields is not supported by this script.
+                whitelisted_fields.append(field_name)
+        whitelist[table_name] = sorted(whitelisted_fields)
+    return whitelist
+
+
 def relative_ts(reference_time, days):
     return (reference_time - timedelta(days=days)).strftime(DATE_FORMAT)
 
@@ -431,6 +486,8 @@ if __name__ == '__main__':
                              'a [client] section containing user and unix_socket path '
                              'fields, or alternatively user and password (but the first '
                              'option is preferred). Default: /etc/my.cnf')
+    parser.add_argument('--yaml', dest='yaml', type=bool, default=False,
+                        help='Use if the whitelist follows YAML format.')
     args = parser.parse_args()
 
     log_format = logging.Formatter('%(levelname)s: line %(lineno)d: %(message)s')
@@ -527,8 +584,12 @@ if __name__ == '__main__':
         # Parse whitelist file
         if args.whitelist:
             with open(args.whitelist, 'r') as whitelist_fd:
-                lines = csv.reader(whitelist_fd, delimiter='\t')
-                whitelist = parse_whitelist(lines)
+                if args.yaml:
+                    whitelist_dict = yaml.load(whitelist_fd)
+                    whitelist = parse_yaml_whitelist(whitelist_dict)
+                else:
+                    lines = csv.reader(whitelist_fd, delimiter='\t')
+                    whitelist = parse_tsv_whitelist(lines)
         else:
             whitelist = {}
 
@@ -690,24 +751,72 @@ class TestParser(unittest.TestCase):
         structure returned must have a specific format and organization).
         """
         rows = [["TestTable", "TestField"]]
-        result = parse_whitelist(rows)
+        result = parse_tsv_whitelist(rows)
         expected_result = {"TestTable": ["TestField"]}
         self.assertDictEqual(result, expected_result)
 
         rows = [["TestTable", "TestField"], ["TestTable", "TestField1"]]
-        result = parse_whitelist(rows)
+        result = parse_tsv_whitelist(rows)
         expected_result = {"TestTable": ["TestField", "TestField1"]}
         self.assertDictEqual(result, expected_result)
 
         rows = [["TestTable_1", "TestField"],
                 ["TestTable_1", "TestField2"],
                 ["TestTable1", "TestField1.test"]]
-        result = parse_whitelist(rows)
+        result = parse_tsv_whitelist(rows)
         expected_result = {
             "TestTable_1": ["TestField", "TestField2"],
             "TestTable1": ["TestField1.test"],
         }
         self.assertDictEqual(result, expected_result)
+
+    def test_parse_yaml_whitelist(self):
+        """
+        Test basic functionality of the YAML parser (for example the data
+        structure returned must have a specific format and organization).
+        """
+        whitelist_dict = {
+            'Table1': {
+                'Event': {
+                    'subField1': 'keep',
+                    'subField2': 'KEEP'
+                },
+                'capsuleField': 'Keep'
+            },
+            'Table2': {
+                'capsuleField': 'Keep',
+                'userAgent': {
+                    'subField': 'keep'
+                }
+            }
+        }
+        expected = {
+            'Table1': ['capsuleField', 'event_subField1', 'event_subField2'],
+            'Table2': ['capsuleField', 'userAgent'],
+        }
+        result = parse_yaml_whitelist(whitelist_dict)
+        self.assertDictEqual(result, expected)
+
+    def test_parse_yaml_whitelist_failure(self):
+        """
+        Test that YAML parser fails on whitelist input with errors.
+        """
+        # Use of keepall tag.
+        whitelist_dict = {'Table1': {'event': 'keepall'}}
+        with self.assertRaises(RuntimeError):
+            parse_yaml_whitelist(whitelist_dict)
+        # Bad characters in table name.
+        whitelist_dict = {'Table1.*': {'field': 'keep'}}
+        with self.assertRaises(RuntimeError):
+            parse_yaml_whitelist(whitelist_dict)
+        # Bad characters in table name (2).
+        whitelist_dict = {'Table1**': {'field': 'keep'}}
+        with self.assertRaises(RuntimeError):
+            parse_yaml_whitelist(whitelist_dict)
+        # Bad characters in field name.
+        whitelist_dict = {'Table1': {'field---': 'keep'}}
+        with self.assertRaises(RuntimeError):
+            parse_yaml_whitelist(whitelist_dict)
 
     def test_parse_guards(self):
         """
@@ -716,19 +825,19 @@ class TestParser(unittest.TestCase):
         """
         duplicate_rows = [["TestTable", "TestField"], ["TestTable", "TestField"]]
         with self.assertRaises(RuntimeError):
-            parse_whitelist(duplicate_rows)
+            parse_tsv_whitelist(duplicate_rows)
 
         wrong_chars_in_rows = [["TestTable.*", "TestField"], ["TestTable**", "TestField"]]
         with self.assertRaises(RuntimeError):
-            parse_whitelist(wrong_chars_in_rows)
+            parse_tsv_whitelist(wrong_chars_in_rows)
 
         wrong_chars_in_rows = [["TestTable", "TestField---"], ["TestTable", "TestField"]]
         with self.assertRaises(RuntimeError):
-            parse_whitelist(wrong_chars_in_rows)
+            parse_tsv_whitelist(wrong_chars_in_rows)
 
         too_many_el_in_rows = [["TestTable", "TestField", "NotRight"]]
         with self.assertRaises(RuntimeError):
-            parse_whitelist(too_many_el_in_rows)
+            parse_tsv_whitelist(too_many_el_in_rows)
 
 
 class TestTimestamps(unittest.TestCase):
