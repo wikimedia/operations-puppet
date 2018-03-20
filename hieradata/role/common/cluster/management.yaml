@@ -2,4 +2,4 @@ admin::groups:
   - datacenter-ops
 monitor_screens: false
 # TODO: use nihal in codfw?
-profile::cumin::master::puppetdb_host: nitrogen.eqiad.wmnet
+profile::cumin::master::puppetdb_host: puppetdb1001.eqiad.wmnet
