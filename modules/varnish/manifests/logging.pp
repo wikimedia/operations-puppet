@@ -98,4 +98,11 @@ class varnish::logging(
         group  => 'root',
         mode   => '0555',
     }
+
+    file { '/usr/local/bin/varnishospital':
+        source => 'puppet:///modules/varnish/varnishospital.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }

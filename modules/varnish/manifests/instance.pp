@@ -178,6 +178,18 @@ define varnish::instance(
         subscribe      => File['/usr/local/bin/varnishslowlog'],
     }
 
+    systemd::service { "varnish${instancesuffix}-hospital":
+        ensure         => present,
+        content        => systemd_template('varnishospital'),
+        restart        => true,
+        service_params => {
+            require => Service["varnish${instancesuffix}"],
+            enable  => true,
+        },
+        require        => File['/usr/local/bin/varnishospital'],
+        subscribe      => File['/usr/local/bin/varnishospital'],
+    }
+
     # This mechanism with the touch/rm conditionals in the pair of execs
     #   below should ensure that reload-vcl failures are retried on
     #   future puppet runs until they succeed.
