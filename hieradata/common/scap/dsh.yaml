@@ -13,9 +13,8 @@ scap::dsh::scap_proxies:
 
 scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
-  - "naos.codfw.wmnet"
   - "deploy1001.eqiad.wmnet"
-
+  - "naos.codfw.wmnet"
 
 scap::dsh::groups:
   jobrunner-canaries:
