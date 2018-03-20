@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2017 Wikimedia Foundation, Inc.
-#
+# Copyright (c) 2018 Wikimedia Foundation, Inc.
 
 import yaml
 import ldap
@@ -223,6 +222,50 @@ def print_pending_account_expirys(users):
     return log
 
 
+# Check that SSH keys in WMCS and production are distinct
+# Also warn if a DSS key is found
+def check_ssh_keys(yamldata):
+    log = ""
+
+    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
+    ldap_conn.protocol_version = ldap.VERSION3
+
+    # These users use hardware-based key storage and are using the restricted bastion, whitelist
+    whitelisted_users = ['bblack', 'tstarling']
+
+    for username, userdata in yamldata['users'].items():
+        ssh = userdata.get('ssh_keys', False)
+
+        if ssh:
+            wmcs_ssh_keys = set()
+            prod_ssh_keys = set()
+            ldapdata = ldap_conn.search_s(
+                "ou=people,dc=wikimedia,dc=org",
+                ldap.SCOPE_SUBTREE,
+                "(&(objectclass=ldapPublicKey)(uid=" + username + "))",
+                attrlist=['sshPublicKey'],
+            )
+
+            for i in ssh:
+                key_type = i.split()[0]
+                production_key = i.split()[1]
+
+                if key_type == "ssh-dss":
+                    log += username + " uses outdated DSA key for production access\n"
+                prod_ssh_keys.add(production_key)
+
+            if ldapdata:
+                if ldapdata[0][1]:
+                    for i in ldapdata[0][1]['sshPublicKey']:
+                        wmcs_ssh_keys.add(i.split()[1])
+
+            if wmcs_ssh_keys & prod_ssh_keys and username not in whitelisted_users:
+                log += username + " uses the same SSH key(s) in WMCS and production:\n"
+                log += "  " + str(wmcs_ssh_keys & prod_ssh_keys) + "\n"
+
+    return log
+
+
 # Check duplicated ops permissions
 def validate_duplicated_ops_permissions(users):
     log = ""
@@ -281,6 +324,7 @@ def main():
     run_test(validate_duplicated_ops_permissions(users))
     run_test(print_pending_account_expirys(users))
     run_test(validate_privileged_ldap_groups_memberships(users))
+    run_test(check_ssh_keys(yamldata))
 
 
 if __name__ == '__main__':
