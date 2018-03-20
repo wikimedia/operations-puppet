@@ -110,6 +110,51 @@ class profile::prometheus::k8s (
                 },
             ]
         },
+        {
+            'job_name'              => 'kubernetes-pods',
+            'bearer_token_file'     => $bearer_token_file,
+            'kubernetes_sd_configs' => [
+                {
+                    'api_server'        => "https://${master_host}:6443",
+                    'bearer_token_file' => $bearer_token_file,
+                    'role'              => 'pod',
+                },
+            ],
+            'relabel_configs' => [
+                {
+                    'action'        => 'keep',
+                    'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scrape'],
+                    'regex'         => true,
+                },
+                {
+                    'action'        => 'replace',
+                    'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
+                    'target_label'  => '__metrics_path__',
+                    'regex'         => '(.+)',
+                },
+                {
+                    'action'        => 'replace',
+                    'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_prometheus_io_port'],
+                    'regex'         => '([^:]+)(?::\d+)?;(\d+)',
+                    'replacement'   => '$1:$2',
+                    'target_label'  => '__address__',
+                },
+                {
+                    'action'        => 'labelmap',
+                    'regex'         => '__meta_kubernetes_pod_label_(.+)',
+                },
+                {
+                    'action'        => 'replace',
+                    'source_labels' => ['__meta_kubernetes_namespace'],
+                    'target_label'  => 'kubernetes_namespace',
+                },
+                {
+                    'action'        => 'replace',
+                    'source_labels' => ['__meta_kubernetes_pod_name'],
+                    'target_label'  => 'kubernetes_pod_name',
+                },
+            ]
+        },
     ]
 
     prometheus::server { 'k8s':
