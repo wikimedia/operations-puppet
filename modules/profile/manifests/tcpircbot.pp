@@ -39,7 +39,10 @@ class profile::tcpircbot(
     }
 
     $allowed_hosts = [
+<<<<<<< HEAD
         'tin.eqiad.wmnet',              # deployment eqiad
+=======
+>>>>>>> 40d6f2e9d0... switch deployment server from tin to deploy1001
         'deploy1001.eqiad.wmnet',       # deployment eqiad
         'naos.codfw.wmnet',             # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad

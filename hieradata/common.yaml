@@ -509,7 +509,7 @@ kafka_clusters:
         id: 1006
         rack: D
 
-deployment_server: tin.eqiad.wmnet
+deployment_server: deploy1001.eqiad.wmnet
 
 maintenance_server: terbium.eqiad.wmnet
 
