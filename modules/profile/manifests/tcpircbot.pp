@@ -41,7 +41,6 @@ class profile::tcpircbot(
     }
 
     $allowed_hosts = [
-        'tin.eqiad.wmnet',              # deployment eqiad
         'deploy1001.eqiad.wmnet',       # deployment eqiad
         'deploy2001.codfw.wmnet',       # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
