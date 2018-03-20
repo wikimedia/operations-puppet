@@ -1,4 +1,5 @@
-# == Class role::analytics_cluster::hive::site_hdfs
+# == Class profile::hive::site_hdfs
+#
 # Ensures latest /etc/hive/conf/hive-site.xml is in hdfs
 #
 # TODO: it would be much better if we had a nicer define or puppet function
@@ -6,7 +7,7 @@
 # filesystem.  If we figure that out, we can replace this class and also
 # the analytics_cluster::mysql_password class.
 #
-class role::analytics_cluster::hive::site_hdfs {
+class profile::hive::site_hdfs {
     Class['cdh::hive'] -> Class['role::analytics_cluster::hive::site_hdfs']
 
     $hdfs_path = '/user/hive/hive-site.xml'
