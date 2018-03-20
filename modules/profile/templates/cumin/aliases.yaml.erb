@@ -30,15 +30,17 @@ cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 <% end -%>
 <% end -%>
 cumin: P{O:cluster::management}
-db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc-servers) and A:codfw
-db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc-servers) and A:eqiad
-db-core: P{O:mariadb::core or O:mariadb::misc or O:mariadb::misc::phabricator or O:mariadb::misc::eventlogging or O:mariadb::core_multiinstance}
+db-all-codfw: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:codfw
+db-all-eqiad: (A:db-parsercache or A:db-labsdb or A:db-dbstore or A:db-core or A:db-misc or A:db-misc-servers or A:db-backups) and A:eqiad
+db-misc: P{O:mariadb::misc or O:mariadb::misc::phabricator or O:mariadb::misc::eventlogging::master or O:mariadb::misc::eventlogging::replica}
+db-backups: P{O:mariadb::backups or O:mariadb::temporary_storage}
+db-core: P{O:mariadb::core or O:mariadb::core_multiinstance}
 db-core-codfw: A:db-core and A:codfw
 db-core-eqiad: A:db-core and A:eqiad
 db-dbproxy: P{O:mariadb::proxy::master}
 db-dbstore: P{O:mariadb::backup or O:mariadb::dbstore or O:mariadb::dbstore_multiinstance}
 db-labsdb: P{O:labs::db::replica}
-db-misc-servers: P{O:mariadb::labs_deprecated or O:mariadb::sanitarium_multisource or O:mariadb::sanitarium_multiinstance}
+db-misc-servers: P{O:mariadb::sanitarium_multisource or O:mariadb::sanitarium_multiinstance}
 db-parsercache: P{O:mariadb::parsercache}
 dbmonitor: P{O:tendril}
 debugproxy: P{O:debug_proxy}
