@@ -3,7 +3,19 @@
 # Provisions font packages used by MediaWiki.
 #
 class mediawiki::packages::fonts {
-    package { [
+
+    if os_version('debian == jessie') {
+        require_package('fonts-noto') # T184664
+    }
+
+    if os_version('debian > jessie') {
+        require_package(
+            'fonts-noto-hinted',  # T184664
+            'fonts-noto-unhinted' # T184664
+        )
+    }
+
+    require_package(
         'fonts-arabeyes',
         'fonts-arphic-ukai',
         'fonts-arphic-uming',
@@ -47,22 +59,6 @@ class mediawiki::packages::fonts {
         'fonts-smc',                 # T33950
         'fonts-hosny-amiri',         # T135347
         'fonts-taml-tscu',           # T117919
-    ]:
-        ensure => present,
-    }
-
-    if os_version('debian == jessie') {
-        require_package('fonts-noto') # T184664
-    }
-
-    if os_version('debian > jessie') {
-        require_package(
-            'fonts-noto-hinted',  # T184664
-            'fonts-noto-unhinted' # T184664
-        )
-    }
-
-    require_package(
         'fonts-beng',
         'fonts-deva',
         'fonts-gujr',
