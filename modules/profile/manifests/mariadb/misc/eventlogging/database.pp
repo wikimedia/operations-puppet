@@ -4,6 +4,7 @@
 #
 # [*shard*]
 #   Database shard
+#
 # [*master*]
 #   Boolean value to establish if the host is acting as Master or Replica.
 #
@@ -21,10 +22,12 @@ class profile::mariadb::misc::eventlogging::database (
 
     class { 'passwords::misc::scripts': }
 
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'misc',
-        mysql_shard => $shard,
-        mysql_role  => $mysql_role,
+    if $::realm == 'production' {
+        class { 'profile::mariadb::monitor::prometheus':
+            mysql_group => 'misc',
+            mysql_shard => $shard,
+            mysql_role  => $mysql_role,
+        }
     }
 
     class { 'mariadb::packages_wmf': }
