@@ -25,8 +25,11 @@ class profile::mariadb::monitor::prometheus(
     $socket = '/run/mysqld/mysqld.sock',
     ) {
 
-    include role::prometheus::node_exporter
-    class { 'role::prometheus::mysqld_exporter':
-        socket => $socket,
+    if $::realm == 'production' {
+        include role::prometheus::node_exporter
+        class { 'role::prometheus::mysqld_exporter':
+            socket => $socket,
+        }
     }
+    # TODO: what if the host is on cloud?
 }
