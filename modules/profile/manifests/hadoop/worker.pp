@@ -148,7 +148,7 @@ class profile::hadoop::worker(
         # Make sure that this worker node has NodeManager running in a RUNNING state.
         # Install a custom check command for NodeManager Node-State:
         file { '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state':
-            source => 'puppet:///modules/role/analytics_cluster/hadoop/check_hadoop_yarn_node_state',
+            source => 'puppet:///modules/profile/hadoop/check_hadoop_yarn_node_state',
             owner  => 'root',
             group  => 'root',
             mode   => '0755',

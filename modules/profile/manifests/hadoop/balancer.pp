@@ -1,10 +1,12 @@
-# == Class role::analytics_cluster::hadoop::balancer
+# == Class profile::hadoop::balancer
+#
 # Runs hdfs balancer periodically to keep data balanced across all DataNodes
-class role::analytics_cluster::hadoop::balancer {
+#
+class profile::hadoop::balancer {
     require ::profile::hadoop::common
 
     file { '/usr/local/bin/hdfs-balancer':
-        source => 'puppet:///modules/role/analytics_cluster/hadoop/hdfs-balancer',
+        source => 'puppet:///modules/profile/hadoop/hdfs-balancer',
         mode   => '0754',
         owner  => 'hdfs',
         group  => 'hdfs',
@@ -13,7 +15,7 @@ class role::analytics_cluster::hadoop::balancer {
     # logrotate HDFS balancer's log files
     logrotate::conf { 'hdfs_balancer':
         ensure => 'present',
-        source => 'puppet:///modules/role/analytics_cluster/hadoop/hadoop_hdfs.logrotate',
+        source => 'puppet:///modules/profile/hadoop/hadoop_balancer.logrotate',
     }
 
     cron { 'hdfs-balancer':

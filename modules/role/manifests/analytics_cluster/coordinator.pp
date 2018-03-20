@@ -22,7 +22,7 @@ class role::analytics_cluster::coordinator {
         description => 'Analytics Cluster host running various Hadoop services (Hive, Camus, Oozie, ..) and maintenance scripts'
     }
 
-    include ::role::analytics_cluster::client
+    include ::profile::analytics::cluster::client
     include ::profile::analytics::database::meta
 
     # Back up analytics-meta MySQL instance
@@ -39,13 +39,13 @@ class role::analytics_cluster::coordinator {
     include ::profile::oozie::server::database
 
     # Include a weekly cron job to run hdfs balancer.
-    include ::role::analytics_cluster::hadoop::balancer
+    include ::profile::hadoop::balancer
 
     # We need hive-site.xml in HDFS.  This can be included
     # on any node with a Hive client, but we really only
     # want to include it in one place.  analytics1003
     # is a little special and standalone, so we do it here.
-    include ::role::analytics_cluster::hive::site_hdfs
+    include ::profile::hive::site_hdfs
 
     # Various crons that launch Hadoop jobs.
     include ::profile::analytics::refinery

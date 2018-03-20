@@ -7,5 +7,5 @@ class role::swap {
     system::role { 'SWAP (Jupyter Notebook)': }
     include ::standard
     include ::profile::swap
-    include ::role::analytics_cluster::client
+    include ::profile::analytics::cluster::client
 }
