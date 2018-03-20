@@ -668,12 +668,6 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
 }
 
-# will become a deployment server and fold into deployment stanza with tin/naos T175288
-node 'deploy1001.eqiad.wmnet' {
-    role(spare::system)
-    interface::add_ip6_mapped { 'main': }
-}
-
 node /^dns400[12]\.wikimedia\.org$/ {
     role(recursor)
 
@@ -2108,7 +2102,7 @@ node /^thumbor200[1234]\.codfw\.wmnet/ {
 }
 
 # deployment servers
-node 'tin.eqiad.wmnet', 'naos.codfw.wmnet' {
+node 'tin.eqiad.wmnet', 'deploy1001.eqiad.wmnet', 'naos.codfw.wmnet' {
     role(deployment_server)
     interface::add_ip6_mapped { 'main': }
 }
