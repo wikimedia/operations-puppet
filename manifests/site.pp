@@ -1677,6 +1677,12 @@ node 'mw2152.codfw.wmnet' {
     role(mediawiki::videoscaler)
 }
 
+# New codfw appservers mw2259-mw2290 (T188301).
+# To be distributed among rows.
+node /^mw22(59|[6-8][0-9]|90)\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
 ## END MEDIAWIKI APPLICATION SERVERS
 
 # mw logging host codfw
