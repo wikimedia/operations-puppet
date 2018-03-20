@@ -10,6 +10,14 @@ class profile::kubernetes::deployment_server(
         ensure => installed,
     }
 
+    git::clone { 'operations/deployment-charts':
+        ensure    => 'present', # Should be only updated by users
+        directory => '/srv/deployment-charts',
+        owner     => 'trebuchet', # Actually fix this with a logical name
+        group     => 'wikidev',
+        umask     => '002',
+    }
+
     # The deployment script
     file { '/usr/local/bin/scap-helm':
         ensure => file,
