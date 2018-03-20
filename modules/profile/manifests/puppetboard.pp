@@ -22,7 +22,7 @@ class profile::puppetboard (
     $venv_path = "${base_path}/venv"
     $directory = "${venv_path}/lib/python3.5/site-packages/puppetboard"
 
-    require_package('virtualenv', 'python3-pip')
+    require_package('make', 'python3-pip', 'virtualenv')
 
     file { "${base_path}/settings.py":
         ensure  => present,
