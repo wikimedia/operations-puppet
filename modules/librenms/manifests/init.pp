@@ -140,6 +140,8 @@ class librenms(
         require => [File["${install_dir}/config.php"] ],
     }
 
+    base::service_auto_restart { 'librenms-ircbot': }
+
     cron { 'librenms-discovery-all':
         ensure  => $cron_ensure,
         user    => 'librenms',
