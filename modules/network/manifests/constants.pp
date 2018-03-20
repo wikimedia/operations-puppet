@@ -58,8 +58,6 @@ class network::constants {
                     '2620:0:860:2:208:80:153:52',       # dbmonitor2001.wikimedia.org
                 ],
             'deployment_hosts' => [
-                    '10.64.0.196',                      # tin.eqiad.wmnet
-                    '2620:0:861:101:10:64:0:196',       # tin.eqiad.wmnet
                     '10.192.32.22',                     # naos.codfw.wmnet
                     '2620:0:860:103:10:192:32:22',      # naos.codfw.wmnet
                 ],

@@ -842,9 +842,9 @@ def check_uptime(host, minimum=0, maximum=None, installer=False):
 
 
 def run_apache_fast_test(host):
-    """Run apache-fast-test from tin on the given hosts.
+    """Run apache-fast-test from deploy1001 on the given hosts.
 
-    TODO: move out of oblivian's home and better define tin host
+    TODO: move out of oblivian's home and better define deploy1001 host
 
     Arguments:
     host -- the host against which the apache fast test must be executed

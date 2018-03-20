@@ -10,7 +10,7 @@ class openstack::wikitech::openstack_manager(
 
     require ::mediawiki::users
     include ::mediawiki::multimedia
-    # ::mediawiki::scap supports syncing the wikitech wiki from tin.
+    # ::mediawiki::scap supports syncing the wikitech wiki from deploy1001.
     include ::mediawiki::scap
     include ::profile::backup::host
     include ::nrpe
