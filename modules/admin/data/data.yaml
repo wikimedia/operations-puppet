@@ -2577,7 +2577,7 @@ users:
     name: cooltey
     realname: Cooltey Feng
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAAArRsGDz/viZw3cKmJUSuuChGUgvKWjBa1j+X1fiaOqFYhHWONOHNYqNTsLXzsfCptxkJjZMtmwd0SixphmGODuao0XjSERPREopHBPonZqtEdOrHLoyn/EZ43vIUvfBiGIkvq7ZfjLpg2u747x786EgeC8IBy/KN5Vqfll4JoVc22ZZOMssaXFKj4cYxUzTqT282nFIqTYlFFFobqZTwfFQOXuIyY2FV/1nz6tw1aIYiUcTgK+i9j+H5Tj3xbbIo6P6T7LWpG+zAm3OfEAfXTMjSJGzcfz1YvU+C1lvMemxCZUW5sOtq/Y5YxteIQ/oeKdF/5QT2vZX+0w5lMvb cfeng@wikimedia.org
+      - ssh-rsa []
     uid: 17764
     email: cfeng@wikimedia.org
   sharvaniharan:
