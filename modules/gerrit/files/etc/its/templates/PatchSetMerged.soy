@@ -23,13 +23,13 @@
  * @param submitterName
  * @param project
  * @param branch
- * @param escapedSubject
+ * @param subject
  * @param formatChangeUrl
  *
  */
 {template .PatchSetMerged autoescape="strict" kind="text"}
   Change {$changeNumber} **merged** by {$submitterName}:{\n}
-  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}
+  [{$project}@{$branch}] {$subject|escapeUri}{\n}{\n}
 
   {$formatChangeUrl}
 {/template}

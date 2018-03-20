@@ -21,7 +21,7 @@
  * line for ALL emails related to changes.
  * @param branch
  * @param project
- * @param escapedSubject
+ * @param subject
  * @param changeNumber
  * @param authorName
  * @param uploaderName
@@ -33,7 +33,7 @@
 {template .PatchSetCreated autoescape="strict" kind="text"}
 
   Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; owner: {$authorName ? $authorName : $authorUsername}):{\n}
-  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}
+  [{$project}@{$branch}] {$subject|escapeUri}{\n}{\n}
 
   {$formatChangeUrl}
 {/template}

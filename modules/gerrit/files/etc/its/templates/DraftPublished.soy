@@ -21,7 +21,7 @@
  * line for all related published comments
  * @param branch
  * @param project
- * @param escapedSubject
+ * @param subject
  * @param changeNumber
  * @param authorName
  * @param authorUsername
@@ -31,7 +31,7 @@
 {template .DraftPublished autoescape="strict" kind="text"}
 
   Change {$changeNumber} had a related patch set (by {$authorName ? $authorName : $authorUsername}) published:{\n}
-  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}
+  [{$project}@{$branch}] {$subject|escapeUri}{\n}{\n}
 
   {$formatChangeUrl}
 {/template}
