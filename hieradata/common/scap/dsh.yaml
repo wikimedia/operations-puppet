@@ -12,7 +12,7 @@ scap::dsh::scap_proxies:
   - "mw2290.codfw.wmnet" # D4 codfw
 
 scap::dsh::scap_masters:
-  - "tin.eqiad.wmnet"
+  - "deploy1001.eqiad.wmnet"
   - "naos.codfw.wmnet"
   - "deploy1001.eqiad.wmnet"
 
