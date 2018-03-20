@@ -152,7 +152,6 @@ class toollabs::exec_environ {
         'php5-xsl',
 
         # Fonts for vCat tool.
-        'fonts-ipafont-gothic',        # Japanese fonts.
         'ttf-indic-fonts-core',        # Many Indic languages.
 
         # Fonts for latex
