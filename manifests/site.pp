@@ -72,18 +72,12 @@ node 'baham.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# Bastion in Virginia
-node 'bast1001.wikimedia.org' {
+# Bastion in Virginia (bast1002 replacing bast1001 T186623)
+node 'bast1001.wikimedia.org', 'bast1002.wikimedia.org {
     role(bastionhost::general)
 
     interface::add_ip6_mapped { 'main': }
 }
-
-#bast1001 replacement, see T186623
-node 'bast1002.wikimedia.org' {
-    role(bastionhost::general)
-}
-
 
 # Bastion in Texas
 node 'bast2001.wikimedia.org' {
