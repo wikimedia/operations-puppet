@@ -9,6 +9,7 @@ scap::dsh::scap_proxies:
   - "mw2254.codfw.wmnet" # B3 codfw.
   - "mw2187.codfw.wmnet" # C4 codfw
   - "mw2215.codfw.wmnet" # A3 codfw
+  - "mw2290.codfw.wmnet" # D4 codfw
 
 scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
