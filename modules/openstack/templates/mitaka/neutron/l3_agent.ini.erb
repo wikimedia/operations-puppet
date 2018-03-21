@@ -1,17 +1,20 @@
 # https://docs.openstack.org/mitaka/config-reference/networking/networking_options_reference.html#l3-agent
 [DEFAULT]
+# default but important
+# enough to be explicit
+agent_mode = legacy
+
+router_delete_namespaces = true
+
 # neutron.agent.linux.interface.BridgeInterfaceDriver
 interface_driver = linuxbridge
+
 # The external_network_bridge option
 # intentionally lacks a value to enable
 # multiple external networks on a single agent.
 external_network_bridge =
 
-agent_mode = legacy
 handle_internal_only_routers = True
 enable_metadata_proxy = True
-
-# interface_driver = openvswitch
-# external_network_bridge = br-ex
 
 [AGENT]

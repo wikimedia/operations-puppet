@@ -14,24 +14,14 @@ class profile::openstack::labtestn::neutron::l3_agent(
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
+    # need to add bridge creation for bridge_mappings
+    # in linuxbridge_agent.ini
     interface::tagged { 'eth1.2120':
         base_interface => 'eth1',
         vlan_id        => '2120',
         method         => 'manual',
         up             => 'ip link set $IFACE up',
         down           => 'ip link set $IFACE down',
-    }
-
-    $ext_ip = $facts['hostname'] ? {
-        'labtestneutron2001' => '10.192.22.4',
-        'labtestneutron2002' => '10.192.22.5',
-    }
-
-    interface::ip { 'eth1.2120':
-        interface => 'eth1.2120',
-        address   => $ext_ip,
-        prefixlen => '24',
-        require   => Interface::Tagged['eth1.2120'],
     }
 
     class {'::profile::openstack::base::neutron::linuxbridge_agent':
