@@ -16,8 +16,7 @@ mechanism_drivers = linuxbridge,l2population
 extension_drivers = port_security
 
 [ml2_type_flat]
-# List of physical_network names with which flat networks can be created
-flat_networks = <%= @network_flat_name %>
+flat_networks = *
 
 [ml2_type_geneve]
 [ml2_type_gre]
