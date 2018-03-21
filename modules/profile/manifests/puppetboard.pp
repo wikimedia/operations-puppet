@@ -21,6 +21,7 @@ class profile::puppetboard (
     $config_path = "${base_path}/deploy"
     $venv_path = "${base_path}/venv"
     $directory = "${venv_path}/lib/python3.5/site-packages/puppetboard"
+    $puppet_ssl_dir = puppet_ssldir()
 
     require_package('make', 'python3-pip', 'virtualenv')
 

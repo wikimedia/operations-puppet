@@ -11,7 +11,7 @@ SECRET_KEY = os.urandom(24)
 <% end -%>
 PUPPETDB_HOST = '<%= @puppetdb_host %>'
 PUPPETDB_PORT = 443
-PUPPETDB_SSL_VERIFY = True
+PUPPETDB_SSL_VERIFY = '<%= @puppet_ssl_dir %>/certs/ca.pem'
 PUPPETDB_KEY = None
 PUPPETDB_CERT = None
 PUPPETDB_TIMEOUT = 20
