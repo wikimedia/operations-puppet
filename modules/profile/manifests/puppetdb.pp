@@ -49,4 +49,19 @@ class profile::puppetdb(
         srange => '$CUMIN_MASTERS',
     }
 
+    $puppetboard_hosts = query_resources(false, 'Class["profile::puppetboard"]', true).keys()
+    # Puppet reduce doesn't call the lambda if there is only one element
+    if size($puppetboard_hosts) == 1 {
+        $puppetboard_fqdns = $puppetboard_hosts[0]
+    } else {
+        $puppetboard_fqdns = $puppetboard_hosts.reduce('') |$list, $i| {
+            "${list}${i} "
+        }
+    }
+
+    ferm::service { 'puppetboard':
+        proto   => 'tcp',
+        port    => 443,
+        srange  => "@resolve((${puppetboard_fqdns}))",
+    }
 }
