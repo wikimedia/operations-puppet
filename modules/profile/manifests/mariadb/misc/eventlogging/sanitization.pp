@@ -12,6 +12,9 @@ class profile::mariadb::misc::eventlogging::sanitization {
         }
     }
 
+    $etc_directory_path = '/etc/eventlogging_cleaner'
+    $log_directory_path = '/var/log/eventlogging_cleaner'
+
     user { 'eventlogcleaner':
         gid        => 'eventlog',
         shell      => '/bin/false',
@@ -33,36 +36,32 @@ class profile::mariadb::misc::eventlogging::sanitization {
         require => Package['python3-pymysql'],
     }
 
-    if !defined(File['/etc/eventlogging']) {
-        file { '/etc/eventlogging':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
+    file { $etc_directory_path:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
-    if !defined(File['/var/log/eventlogging']) {
-        file { '/var/log/eventlogging':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'eventlog',
-            mode   => '0775',
-        }
+    file { $log_directory_path:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'eventlog',
+        mode   => '0775',
     }
 
-    file { '/etc/eventlogging/whitelist.tsv':
+    file { "${etc_directory_path}/whitelist.tsv":
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_purging_whitelist.tsv',
-        require => File['/etc/eventlogging'],
+        require => File[$etc_directory_path],
     }
 
     logrotate::rule { 'eventlogging-cleaner':
         ensure        => present,
-        file_glob     => '/var/log/eventlogging/eventlogging_cleaner.log',
+        file_glob     => "${log_directory_path}/eventlogging_cleaner.log",
         frequency     => 'daily',
         copy_truncate => true,
         compress      => true,
@@ -78,8 +77,8 @@ class profile::mariadb::misc::eventlogging::sanitization {
     # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
     # without doing any action to the db. This is useful to avoid gaps in
     # records sanitized if the script fails and does not commit a new timestamp.
-    $eventlogging_cleaner_command = '/usr/local/bin/eventlogging_cleaner --whitelist /etc/eventlogging/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2'
-    $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> /var/log/eventlogging/eventlogging_cleaner.log"
+    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${etc_directory_path}/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2"
+    $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> ${log_directory_path}/eventlogging_cleaner.log"
     cron { 'eventlogging_cleaner daily sanitization':
         ensure      => present,
         command     => $command,
@@ -89,8 +88,8 @@ class profile::mariadb::misc::eventlogging::sanitization {
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
         require     => [
             File['/usr/local/bin/eventlogging_cleaner'],
-            File['/etc/eventlogging/whitelist.tsv'],
-            File['/var/log/eventlogging'],
+            File["${etc_directory_path}/whitelist.tsv"],
+            File[$log_directory_path],
             User['eventlogcleaner'],
         ]
     }
