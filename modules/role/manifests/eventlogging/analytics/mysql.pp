@@ -76,7 +76,7 @@ class role::eventlogging::analytics::mysql {
     if $::realm == 'production' {
         $kafka_config_analytics = kafka_config('analytics')
     } else {
-        $kafka_config = kafka_config('jumbo')
+        $kafka_config_analytics = kafka_config('jumbo')
     }
     $kafka_brokers_analytics = $kafka_config_analytics['brokers']['string']
 
