@@ -60,7 +60,7 @@ probe varnish {
 		"User-agent: Varnish backend check"
 		"Connection: close";
 	.timeout = <%= @vcl_config.fetch('varnish_probe_ms') %>ms;
-	.interval = 1s;
+	.interval = 100ms;
 	.window = 5;
 	.threshold = 3;
 }
