@@ -741,6 +741,8 @@ Print	event_namespaceId
 Print	event_pageTitle
 Print	event_sessionToken
 Print	event_skin
+Print	webHost
+Print	wiki
 RelatedArticles	webHost
 RelatedArticles	wiki
 RelatedArticles	event_clickIndex
