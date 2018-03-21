@@ -6,6 +6,7 @@ class profile::puppetdb(
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
     $ssldir = hiera('profile::puppetdb::ssldir', undef),
     $ca_path = hiera('profile::puppetdb::ca_path', undef),
+    $puppetboard_hosts = hiera('profile::puppetdb::puppetboard_hosts', ''),
 ) {
 
     # Prometheus JMX agent for the Puppetdb's JVM
@@ -49,4 +50,11 @@ class profile::puppetdb(
         srange => '$CUMIN_MASTERS',
     }
 
+    if !empty($puppetboard_hosts) {
+        ferm::service { 'puppetboard':
+            proto  => 'tcp',
+            port   => 443,
+            srange => "@resolve((${puppetboard_hosts}))",
+        }
+    }
 }
