@@ -15,7 +15,7 @@ class profile::hadoop::balancer {
     # logrotate HDFS balancer's log files
     logrotate::conf { 'hdfs_balancer':
         ensure => 'present',
-        source => 'puppet:///modules/profile/hadoop/hadoop_balancer.logrotate',
+        source => 'puppet:///modules/profile/hadoop/hdfs_balancer.logrotate',
     }
 
     cron { 'hdfs-balancer':
