@@ -24,7 +24,14 @@ class role::eventlogging::analytics::server {
     }
 
     # Get the Kafka configuration
-    $kafka_config         = kafka_config('jumbo-eqiad')
+    # FIXME: temporary hardcoding the name of the Kafka cluster in labs
+    # to allow our environment to work properly in there. Needs to be removed
+    # with a proper parameter when migrating to role/profiles.
+    if $::realm == 'production' {
+        $kafka_config = kafka_config('jumbo-eqiad')
+    } else {
+        $kafka_config = kafka_config('jumbo')
+    }
     $kafka_brokers_string = $kafka_config['brokers']['string']
 
     # Using kafka-confluent as a consumer is not currently supported by this puppet module,
