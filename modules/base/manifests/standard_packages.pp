@@ -136,4 +136,17 @@ class base::standard_packages {
     if os_version('debian >= jessie') {
         base::service_auto_restart { 'lldpd': }
     }
+
+    # Safe restarts are supported since systemd 219:
+    # * systemd now provides a way to store file descriptors
+    # per-service in PID 1. This is useful for daemons to ensure
+    # that fds they require are not lost during a daemon
+    # restart. The fds are passed to the daemon on the next
+    # invocation in the same way socket activation fds are
+    # passed. This is now used by journald to ensure that the
+    # various sockets connected to all the system's stdout/stderr
+    # are not lost when journald is restarted.
+    if os_version('debian >= stretch') {
+        base::service_auto_restart { 'systemd-journald': }
+    }
 }
