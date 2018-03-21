@@ -11,10 +11,6 @@ class role::mariadb::labtestwikitech {
     include ::profile::mariadb::grants::core
     include ::profile::mariadb::monitor
     include passwords::misc::scripts
-    class { 'profile::mariadb::monitor::prometheus':
-        mysql_group => 'wikitech',
-        mysql_role  => 'standalone',
-    }
 
     include mariadb::packages_wmf
     include mariadb::service
