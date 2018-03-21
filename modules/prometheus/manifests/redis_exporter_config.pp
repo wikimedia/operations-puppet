@@ -22,7 +22,7 @@ define prometheus::redis_exporter_config(
 
     $resources = query_resources(
                   "Class[\"${class_name}\"]",
-                  'Prometheus::Redis_exporter',
+                  'Prometheus::Redis_exporter[~".*"]',
                   true)
     $site_clusters = get_clusters({'site' => $site})
 

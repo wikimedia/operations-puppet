@@ -17,7 +17,7 @@ define prometheus::pdu_config(
     validate_string($site)
     validate_hash($labels)
 
-    $pdu_resources = query_resources(false, 'Facilities::Monitor_pdu_3phase', false)
+    $pdu_resources = query_resources(false, 'Facilities::Monitor_pdu_3phase[~".*"]', false)
 
     file { $dest:
         ensure  => present,
