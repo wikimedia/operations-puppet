@@ -18,12 +18,6 @@
   - db1051:9104
 
 - labels:
-    shard: m2
-    role: slave
-  targets:
-  - db1020:9104
-
-- labels:
     shard: m3
     role: master
   targets:
