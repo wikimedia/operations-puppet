@@ -1,5 +1,6 @@
 class openstack::neutron::l3_agent(
     $version,
+    $enabled=true,
     ) {
 
     package {'neutron-l3-agent':
@@ -15,7 +16,7 @@ class openstack::neutron::l3_agent(
     }
 
     service {'neutron-l3-agent':
-        ensure  => 'running',
+        ensure  => $enabled,
         require => Package['neutron-l3-agent'],
     }
 

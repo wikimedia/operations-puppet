@@ -5,6 +5,14 @@
 # provider physical network interface.
 physical_interface_mappings = <%= @network_flat_name %>:<%= @network_flat_interface %>
 
+# https://specs.openstack.org/openstack/neutron-specs/specs/liberty/phy-net-bridge-mapping.html
+# brctl addbr br-external
+# brctl addbr br-<%= @network_flat_name %>
+# brctl addif br-external eth1.2120
+# brctl addif br-<%= @network_flat_name %> <%= @network_flat_interface %>
+#bridge_mappings = br-external:br-external,<%= @network_flat_name %>:<%= @network_flat_interface %>
+bridge_mappings = br-external:br-external
+
 [vxlan]
 enable_vxlan = True
 # local_ip = OVERLAY_INTERFACE_IP_ADDRESS
