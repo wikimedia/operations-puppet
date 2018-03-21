@@ -38,7 +38,7 @@ class role::mariadb::misc(
 
     class { 'mariadb::config':
         config    => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
-        basedir   => '/ops/wmf-mariadb101',
+        basedir   => '/opt/wmf-mariadb101',
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',
