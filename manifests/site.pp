@@ -1832,6 +1832,11 @@ node 'pc2006.codfw.wmnet' {
     }
 }
 
+# Test for T190090
+node 'ping1001.eqiad.wmnet' {
+    role(test)
+}
+
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(planet)
