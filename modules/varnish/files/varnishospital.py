@@ -118,8 +118,11 @@ class VarnishHospital(object):
         """
         splitline = line.split(None)
 
+        vcl_id, origin_server = splitline[3].split('.')
+
         log = {
-            'origin_server': splitline[3],
+            'vcl_id': vcl_id,
+            'origin_server': origin_server,
             'transition': "{} {}".format(splitline[4], splitline[5]),
             'window_bits': splitline[6],
             'good_probes': int(splitline[7]),
