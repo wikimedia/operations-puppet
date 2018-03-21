@@ -1,0 +1,8 @@
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Code-Review+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-at: Wed, 21 Mar 2018 13:54:01 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/400458
+Project: operations/puppet
+Branch: refs/heads/production
