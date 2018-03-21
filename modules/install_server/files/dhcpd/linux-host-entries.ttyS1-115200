@@ -4737,6 +4737,26 @@ host ms-be2039 {
     fixed-address ms-be2039.codfw.wmnet;
 }
 
+host ms-be2040 {
+    hardware ethernet D0:94:66:2D:6C:00;
+    fixed-address ms-be2040.codfw.wmnet;
+}
+
+host ms-be2041 {
+    hardware ethernet D0:94:66:2D:90:96;
+    fixed-address ms-be2041.codfw.wmnet;
+}
+
+host ms-be2042 {
+    hardware ethernet D0:94:66:2D:7C:0C;
+    fixed-address ms-be2042.codfw.wmnet;
+}
+
+host ms-be2043 {
+    hardware ethernet D0:94:66:2D:95:F4;
+    fixed-address ms-be2043.codfw.wmnet;
+}
+
 host ms-fe1005 {
     hardware ethernet F4:E9:D4:AE:F4:E0;
     fixed-address ms-fe1005.eqiad.wmnet;
