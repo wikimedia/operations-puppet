@@ -72,7 +72,12 @@ class role::eventlogging::analytics::mysql {
     # are replicated from main-eqiad, and the main -> jumbo MirrorMaker instance has been
     # really flaky.  We need to time to investigate it, so revert back to consuming
     # eventbus events into MySQL from the Kafka analytics cluster for now.
-    $kafka_config_analytics = kafka_config('analytics')
+    # NOTE2: added a conditional to support the labs use case.
+    if $::realm == 'production' {
+        $kafka_config_analytics = kafka_config('analytics')
+    } else {
+        $kafka_config = kafka_config('jumbo')
+    }
     $kafka_brokers_analytics = $kafka_config_analytics['brokers']['string']
 
     $eventbus_topics_to_consume = [
