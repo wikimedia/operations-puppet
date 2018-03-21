@@ -1596,11 +1596,23 @@ node /^mw225[4-8]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+#mw2268-70 are in rack B3
+node /^mw22(6[8-9]|70)\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
 # Row C
 
 # mw2163-mw2186 are in rack C3
 # mw2187-mw2199 are in rack C4
 node /^mw21(6[3-9]|[7-9][0-9])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# Row D
+
+#mw2271-77 are in rack D3
+node /^mw227[1-7]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -1625,6 +1637,11 @@ node /^mw21([3][5-9]|4[0-7])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
+# mw2261-mw2262 are in rack B3
+node /^mw226[1-2]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
 # Row C
 
 # mw2200-2214 are in rack C4
@@ -1632,6 +1649,12 @@ node /^mw22(0[0-9]|1[0-4])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
+# Row D
+
+#mw2283-90 are in rack D4
+node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
 
 # Imagescalers
 
@@ -1654,10 +1677,24 @@ node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
+# Row B
+
+# mw2263-7 are in rack B3
+node /^mw226[3-7]\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunners)
+}
+
 # Row C
 
 # mw2153-62 are in rack C3
 node /^mw21(5[3-9]|6[0-2])\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# Row D
+
+# mw2278-80 are in rack D3, mw2281-2 are in rack D4
+node /^mw22(7[8-9]|8[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
@@ -1669,30 +1706,15 @@ node 'mw2246.codfw.wmnet' {
     role(mediawiki::videoscaler)
 }
 
-# Row B (B3-B4)
+# Row B (B3)
+node /^mw22(59|60)\.codfw\.wmnet$/ {
+    role(mediawiki::videoscaler)
+}
 
 # Row C (C3)
 
 node 'mw2152.codfw.wmnet' {
     role(mediawiki::videoscaler)
-}
-
-# New codfw appservers mw2259-mw2290 (T188301).
-# To be distributed among roles.
-
-# Row B (B3)  (mw2259-mw2270)
-node /^mw22(59|6[0-9]|70)\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
-# Row D (D3)   (mw2271-mw2280)
-node /^mw22(7[1-9]|80)\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
-# Row D (D4)   (mw2281-mw2290)
-node /^mw22(8[1-9]|90)\.codfw\.wmnet$/ {
-    role(spare::system)
 }
 
 ## END MEDIAWIKI APPLICATION SERVERS
