@@ -33,22 +33,20 @@ class profile::mariadb::misc::eventlogging::replication (
 
     require_package('python3-pymysql')
 
-    if !defined(File['/etc/eventlogging']) {
-        file { '/etc/eventlogging':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
+    file { '/etc/eventlogging_sync':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
-    if !defined(File['/var/log/eventlogging']) {
-        file { '/var/log/eventlogging':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'eventlog',
-            mode   => '0775',
-        }
+    $log_directory_path = '/var/log/eventlogging_sync'
+
+    file { $log_directory_path:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'eventlog',
+        mode   => '0775',
     }
 
     file { '/usr/local/bin/eventlogging_sync.sh':
@@ -61,7 +59,7 @@ class profile::mariadb::misc::eventlogging::replication (
 
     logrotate::rule { 'eventlogging-sync':
         ensure        => present,
-        file_glob     => '/var/log/eventlogging/eventlogging_sync.log',
+        file_glob     => "${log_directory_path}/eventlogging_sync.log",
         frequency     => 'daily',
         copy_truncate => true,
         compress      => true,
@@ -72,7 +70,7 @@ class profile::mariadb::misc::eventlogging::replication (
     }
 
     rsyslog::conf { 'eventlogging_sync':
-        source   => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync_rsyslog.conf',
+        template => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_sync_rsyslog.conf.erb',
         priority => 20,
     }
 
