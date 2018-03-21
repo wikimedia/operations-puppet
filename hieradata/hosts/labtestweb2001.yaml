@@ -24,3 +24,43 @@ profile::openstack::base::nutcracker::redis::shards:
 profile::openstack::main::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
 profile::openstack::main::wikitech::web::webserver_hostname_aliases: 'labtestwikitech.m.wikimedia.org'
 profile::openstack::main::wikitech::web::db_name: 'labtestwiki'
+
+
+
+# Striker things
+striker::uwsgi::config:
+  debug:
+    DEBUG: false
+  ldap:
+    SERVER_URI: ldap://labtestservices2001.wikimedia.org:636
+    BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
+    TLS: false
+  oauth:
+    CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+  phabricator:
+    USER: StrikerBot
+  db:
+    ENGINE: django.db.backends.mysql
+    NAME: striker
+    USER: striker
+    HOST: labtestweb2001.wikimedia.org
+    PORT: 3306
+  cache:
+    LOCATION: 127.0.0.1:11212
+  xff:
+    USE_XFF_HEADER: true
+    # CIDR not supported, but substring/prefix match is
+    # Should match IPs presented by the misc cache servers + 127.0.0.1
+    TRUSTED_PROXY_LIST: "127.0.0.1 10. 208.80.152. 208.80.153. 208.80.154. 208.80.155. 91.198.174. 198.35.26."
+  https:
+    REQUIRE_HTTPS: true
+  logging:
+    HANDLERS: file logstash
+    FILE_FILENAME: /srv/log/striker/striker.log
+    LOGSTASH_HOST: logstash.svc.eqiad.wmnet
+    LOGSTASH_PORT: 11514
+  static:
+    STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
+  openstack:
+    URL: http://labtestcontrol2001.wikimedia.org:5000/v3
+
