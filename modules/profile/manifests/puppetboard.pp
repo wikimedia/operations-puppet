@@ -39,9 +39,9 @@ class profile::puppetboard (
         deployment_user => 'deploy-puppetboard',
         config          => {
             need-plugins => 'python3',
-            chdir        => $config_path,
+            chdir        => $directory,
             venv         => $venv_path,
-            wsgi         => 'wsgi',
+            wsgi         => 'puppetboard.wsgi',
             vacuum       => true,
             http-socket  => "127.0.0.1:${port}",
             # T164034: make sure Python has a sane default encoding
