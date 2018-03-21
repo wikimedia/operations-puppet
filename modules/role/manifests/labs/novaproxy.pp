@@ -74,8 +74,4 @@ class role::labs::novaproxy(
     nginx::site { 'wmflabs.org':
         content => template('role/labs/novaproxy-wmflabs.org.conf')
     }
-
-    logrotate::conf { 'nginx':
-        source => 'puppet:///modules/role/labs/novaproxy/novaproxy_logrotate',
-    }
 }
