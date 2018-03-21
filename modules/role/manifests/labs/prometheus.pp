@@ -92,6 +92,16 @@ class role::labs::prometheus {
         port       => '9199',
     }
 
+    # in jessie, install some depends from jessie-backports
+    # before calling prometheus::server
+    if os_version('debian == jessie') {
+        apt::pin { 'prometheus-jessie-depends-jessie-backports':
+            package  => 'libjs-jquery libjs-mustache',
+            pin      => 'release a=jessie-backports',
+            priority => '1001',
+        }
+    }
+
     prometheus::server { 'labs':
         listen_address        => ':9900',
         storage_retention     => $storage_retention,

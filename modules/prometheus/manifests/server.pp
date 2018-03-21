@@ -66,15 +66,6 @@ define prometheus::server (
 
     requires_os('debian >= jessie')
 
-    # in jessie, install some depends from jessie-backports
-    if os_version('debian == jessie') {
-        apt::pin { 'prometheus-jessie-depends-jessie-backports':
-            package  => 'libjs-jquery libjs-mustache',
-            pin      => 'release a=jessie-backports',
-            priority => '1001',
-        }
-    }
-
     require_package('prometheus')
 
     $global_config_default = {
