@@ -1,3 +1,7 @@
 ---
 lowercaseOutputLabelNames: true
 lowercaseOutputName: false
+blacklistObjectNames:
+  # mbeans with hostnames in them, blacklist to avoid metric cardinality explosion
+  - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/facts/*'
+  - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/nodes/*'
