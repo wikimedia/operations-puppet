@@ -11,6 +11,14 @@ sub tag_carrier {
     // setting them...
     call tag_carrier_cleanup;
 
+<% if @site == "eqsin" -%>
+    // eqsin - ignore these carriers if they accidentally land here - T189250
+    if (req.http.X-Carrier ~ "^(520-18|414-06|514-02|542-02|541-05|539-88)$") {
+        unset req.http.X-Carrier;
+        unset req.http.X-Carrier-Meta;
+    }
+<% end -%>
+
     // X-C, X-C-M, and X-T-P are set up in the common wikimedia.vcl now from
     // netmapper data, and are the source for these Zero headers
     if (req.http.X-Carrier) {
