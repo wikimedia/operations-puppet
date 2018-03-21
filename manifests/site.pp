@@ -1681,7 +1681,7 @@ node /^mw22(4[3789]|50)\.codfw\.wmnet$/ {
 
 # mw2263-7 are in rack B3
 node /^mw226[3-7]\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunners)
+    role(mediawiki::jobrunner)
 }
 
 # Row C
