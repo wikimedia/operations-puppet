@@ -11,6 +11,9 @@ class profile::ci::docker(
         dist       => "${::lsbdistcodename}-wikimedia",
         components => 'thirdparty/ci',
     }
+
+    require_package('blubber')
+
     class { '::docker':
         package_name => 'docker-ce',
         version      => '17.12.1~ce-0~debian',
