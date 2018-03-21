@@ -304,6 +304,9 @@ puppetdb4_servers:
   profile::puppetdb::master: puppetdb1001.eqiad.wmnet
   profile::puppetdb::slaves: [puppetdb2001.codfw.wmnet]
   puppetdb_major_version: 4
+  profile::puppetdb::puppetboard_hosts:
+    - puppetboard1001.eqiad.wmnet
+    - puppetboard2001.codfw.wmnet
 
 rhodium_puppetdb4:
   __regex: !ruby/regexp /^rhodium.eqiad.wmnet$/
