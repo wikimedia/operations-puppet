@@ -254,7 +254,7 @@ smart_health_eqiad:
   profile::base::check_smart: true
 
 smart_health_wikimedia_labs:
-  __regex: !ruby/regexp /^(californium|labcontrol.*|labpuppetmaster.*|labservices.*|labstore.*|labtestcontrol.*|labtestpuppetmaster.*|labtestservices.*|labtestweb.*|labweb.*).wikimedia.org$/
+  __regex: !ruby/regexp /^(labcontrol.*|labpuppetmaster.*|labservices.*|labstore.*|labtestcontrol.*|labtestpuppetmaster.*|labtestservices.*|labtestweb.*|labweb.*).wikimedia.org$/
   profile::base::check_smart: true
 
 smart_health_wikimedia_recursor:
