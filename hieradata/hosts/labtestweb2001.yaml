@@ -2,3 +2,25 @@ profile::openstack::labtest::horizon::webserver_hostname: labtesthorizon.wikimed
 striker::apache::server_name: labtesttoolsadmin.wikimedia.org
 
 profile::openstack::labtest::version: ocata
+
+
+profile::openstack::main::labweb_hosts:
+  - labtestweb2001.wikimedia.org
+
+profile::openstack::base::nutcracker::redis::shards:
+  jobqueue:
+    eqiad:
+      labweb1001: #rdb1001
+        host: 208.80.153.14
+        port: 6378
+  sessions:
+    eqiad:
+      labweb1001: #rdb1001
+        host: 208.80.153.14
+        port: 6378
+
+
+# Wikitech things:
+profile::openstack::main::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
+profile::openstack::main::wikitech::web::webserver_hostname_aliases: 'labtestwikitech.m.wikimedia.org'
+profile::openstack::main::wikitech::web::db_name: 'labtestwiki'
