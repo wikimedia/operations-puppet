@@ -369,7 +369,7 @@ def main():
     )
     argparser.add_argument(
         "--table",
-        help="Specify a single table to act on (currently only fullviews are supported)",
+        help="Specify a single table to act on",
         default=''
     )
     argparser.add_argument(
