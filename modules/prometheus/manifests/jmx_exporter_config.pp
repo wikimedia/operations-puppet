@@ -22,7 +22,7 @@ define prometheus::jmx_exporter_config(
 
     $resources = query_resources(
                   "Class[\"${class_name}\"]",
-                  'Prometheus::Jmx_exporter_instance',
+                  'Prometheus::Jmx_exporter_instance[~".*"]',
                   true)
     $site_clusters = get_clusters({'site' => $site})
 
