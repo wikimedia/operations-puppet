@@ -36,7 +36,7 @@ class profile::analytics::cluster::client(
         }
         nrpe::monitor_service { 'check_hadoop_mount_readability':
             description    => 'Check if the Hadoop HDFS Fuse mountpoint is readable',
-            nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}",
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',
