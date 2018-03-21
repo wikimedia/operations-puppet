@@ -6,3 +6,4 @@ blacklistObjectNames:
   - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/facts/*'
   - 'puppetlabs.puppetdb.http:name=/pdb/query/v4/nodes/*'
   - 'com.puppetlabs.puppetdb.http.server:type=/v3/nodes/*,name=*'
+  - 'com.puppetlabs.puppetdb.http.server:type=/v4/nodes/*,name=*'
