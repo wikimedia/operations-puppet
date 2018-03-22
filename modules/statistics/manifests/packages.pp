@@ -76,39 +76,30 @@ class statistics::packages {
 
     # Python packages
     require_package ([
-        'python-geoip',
         'libapache2-mod-python',
-        'python-mysqldb',
-        'python-yaml',
-        'python-dateutil',
-        'python-numpy',
-        'python-scipy',
-        'python-boto',       # Amazon S3 access (needed to get zero sms logs)
-        'python-pandas',     # Pivot tables processing
-        'python-requests',   # Simple lib to make API calls
-        'python-unidecode',  # Unicode simplification - converts everything to latin set
-        'python-ua-parser',  # For parsing User Agents
-        'python-matplotlib', # For generating plots of data
-        'python-netaddr',
-        'python-virtualenv', # T84378
-
-        # Aaron Halfaker (halfak) wants python{,3}-dev environments for module oursql
-        'python-dev',        # T83316
-        'python3-dev',       # T83316
-        'python-kafka',
-        'python-pymysql',
+        'python-geoip',             'python3-geoip',
+        'python-mysqldb',           'python3-mysqldb',
+        'python-yaml',              'python3-yaml',
+        'python-dateutil',          'python3-dateutil',
+        'python-numpy',             'python3-numpy',
+        'python-scipy',             'python3-scipy',
+        'python-boto',              'python3-boto',  # Amazon S3 access (to get zero sms logs)
+        'python-pandas',            'python3-pandas',
+        'python-requests',          'python3-requests',
+        'python-unidecode',         'python3-unidecode',
+        'python-ua-parser',         'python3-ua-parser'
+        'python-matplotlib',        'python3-matplotlib',
+        'python-netaddr',           'python3-netaddr',
+        'python-kafka',             'python3-kafka',
+        'python-confluent-kafka',   'python3-confluent-kafka',
+        'python-pymysql',           'python3-pymysql',
+        'python-virtualenv',        'python3-virtualenv', # T84378
+        'python-dev',               'python3-dev',        # T83316
     ])
 
     if os_version('debian >= jessie') {
         require_package([
             'virtualenv',
-        ])
-    }
-
-    # This is a custom package and currently not available on jessie, don't install on jessie for now
-    if os_version('ubuntu >= trusty') {
-        require_package([
-            'python-pygeoip', # For geo-encoding IP addresses
         ])
     }
 
@@ -127,8 +118,6 @@ class statistics::packages {
         'libcairo2-dev',
         'libxt-dev',
     ])
-
-
 
     # Use R from Jessie Backports on jessie boxes.
     if os_version('debian == jessie') {
