@@ -1,5 +1,5 @@
 profile::openstack::labtest::horizon::webserver_hostname: labtesthorizon.wikimedia.org
-profile::openstack::labtest::horizon::maintenance_mode: true
+profile::openstack::labtest::horizon::maintenance_mode: false
 
 striker::apache::server_name: labtesttoolsadmin.wikimedia.org
 
