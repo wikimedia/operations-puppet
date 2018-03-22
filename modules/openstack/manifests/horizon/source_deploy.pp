@@ -6,7 +6,8 @@ class openstack::horizon::source_deploy(
     $dhcp_domain,
     $ldap_user_pass,
     $venv_dir      = '/srv/deployment/horizon/venv',
-    $webserver_hostname = 'horizon.wikimedia.org'
+    $webserver_hostname = 'horizon.wikimedia.org',
+    $maintenance_mode = false
 ) {
     require_package(
         'python-wheel',
@@ -121,5 +122,13 @@ class openstack::horizon::source_deploy(
         owner   => 'horizon',
         mode    => '0755',
         require => File['/var/lib/openstack-dashboard'],
+    }
+
+    file { '/var/lib/openstack-dashboard/static/maintenance.html':
+        source  => "puppet:///modules/openstack/horizon/maintenance.html",
+        owner   => 'horizon',
+        group   => 'horizon',
+        mode    => '0755',
+        require => File['/var/lib/openstack-dashboard/static'],
     }
 }

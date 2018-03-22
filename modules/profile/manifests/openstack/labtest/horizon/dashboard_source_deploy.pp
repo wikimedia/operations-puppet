@@ -6,6 +6,7 @@ class profile::openstack::labtest::horizon::dashboard_source_deploy(
     $dhcp_domain = hiera('profile::openstack::labtest::nova::dhcp_domain'),
     $ldap_user_pass = hiera('profile::openstack::labtest::ldap_user_pass'),
     $webserver_hostname = hiera('profile::openstack::labtest::horizon::webserver_hostname'),
+    $maintenance_mode = hiera('profile::openstack::labtest::horizon::maintenance_mode'),
     ) {
 
     require ::profile::openstack::labtest::clientlib
@@ -17,5 +18,6 @@ class profile::openstack::labtest::horizon::dashboard_source_deploy(
         dhcp_domain         => $dhcp_domain,
         ldap_user_pass      => $ldap_user_pass,
         webserver_hostname  => $webserver_hostname,
+        maintenance_mode    => $maintenance_mode,
     }
 }
