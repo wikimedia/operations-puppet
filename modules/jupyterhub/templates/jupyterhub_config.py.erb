@@ -16,6 +16,7 @@ from tornado import gen
 PORT                = <%= @port %>
 # Path to frozen JupyterHub wheels.  This will be used when installing a new virtualenv
 # when a user logs into JupyterHub for the first time.
+DEPLOY_PATH          = '<%= @deploy_path %>'
 WHEELS_PATH          = '<%= @wheels_path %>'
 # Database URI, usually a SQLite path.
 DATABASE_URI         = '<%= @database_uri %>'
@@ -93,6 +94,7 @@ c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # things via pip easily and have them be immediately available
 c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/venv/bin']
 
+
 class VenvCreatingAuthenticator(Authenticator):
     """
     Authenticator that creates venvs for each user.
@@ -129,9 +131,7 @@ class VenvCreatingAuthenticator(Authenticator):
                 'install',
                 '--no-index',
                 '--find-links={wp}'.format(wp=WHEELS_PATH),
-                'jupyterhub',
-                'jupyter',
-                'jupyterlab'
+                '--requirement={dp}/frozen-requirments.txt'.format(dp=DEPLOY_PATH)
             ])
 
     @gen.coroutine
