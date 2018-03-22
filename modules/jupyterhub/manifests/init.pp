@@ -38,11 +38,14 @@ class jupyterhub (
         'nodejs-legacy', # For embedded configurable-http-proxy
         'virtualenv',
         'python3-venv',
+        'python3-wheel',
         # Packages for PDF exports
         'pandoc',
         'texlive-xetex',
         'texlive-fonts-recommended',
         'texlive-generic-recommended',
+        # For pyhive
+        'libsasl2-dev',
     )
 
     $deploy_repository = 'analytics/jupyterhub/deploy'
@@ -108,7 +111,7 @@ class jupyterhub (
         content   => systemd_template('jupyterhub'),
         restart   => true,
         subscribe => [
-            File['/etc/jupyterhub/jupyterhub_config.py'],
+            File["${config_path}/jupyterhub_config.py"],
             Exec['jupyterhub_generate_cookie_secret']
         ],
         require   => [
