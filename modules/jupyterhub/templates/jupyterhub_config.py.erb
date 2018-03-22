@@ -131,7 +131,7 @@ class VenvCreatingAuthenticator(Authenticator):
                 'install',
                 '--no-index',
                 '--find-links={wp}'.format(wp=WHEELS_PATH),
-                '--requirement={dp}/frozen-requirments.txt'.format(dp=DEPLOY_PATH)
+                '--requirement={dp}/frozen-requirements.txt'.format(dp=DEPLOY_PATH)
             ])
 
     @gen.coroutine
