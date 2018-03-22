@@ -93,6 +93,7 @@ c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # things via pip easily and have them be immediately available
 c.SystemdSpawner.extra_paths = ['/home/{USERNAME}/venv/bin']
 
+
 class VenvCreatingAuthenticator(Authenticator):
     """
     Authenticator that creates venvs for each user.
@@ -129,9 +130,7 @@ class VenvCreatingAuthenticator(Authenticator):
                 'install',
                 '--no-index',
                 '--find-links={wp}'.format(wp=WHEELS_PATH),
-                'jupyterhub',
-                'jupyter',
-                'jupyterlab'
+                <%= @user_venv_packages.sort.join(',\n                ') %>
             ])
 
     @gen.coroutine
