@@ -42,6 +42,10 @@ profile::cassandra::instances:
     "b": { listen_address: 10.64.48.123 }
 
 
+# Override for T184795, should be removed as soon as all the others
+# cassandra 2.2 use cases (like maps-test) are ready to upgrade.
+cassandra::version: '2.2.6-wmf3'
+
 profile::cassandra::settings:
   dc: "%{::site}"
   cluster_name: "Analytics Query Service Storage"

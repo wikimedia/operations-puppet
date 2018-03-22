@@ -177,6 +177,20 @@ class cassandra (
             before     => Package['cassandra'],
         }
     }
+    # Cassandra 2.2 is installed using the newer component convention, (and
+    # from dists/(stretch|jessie)-wikimedia). Since not all the 2.2 use cases
+    # (like maps-test) are ready to migrate to 2.2.6-wmf3, add an explicit
+    # workaround for the ones that specifically override cassandra::version
+    # in their hiera config (like AQS). Eventually this setting should become
+    # the default. T189529
+    elsif ($target_version == '2.2' and $package_version == '2.2.6-wmf3') {
+        apt::repository { 'wikimedia-cassandra22':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/cassandra22',
+            before     => Package['cassandra'],
+        }
+    }
 
     package { 'cassandra':
         ensure  => $package_version,
