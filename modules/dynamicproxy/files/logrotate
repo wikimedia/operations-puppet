@@ -3,6 +3,7 @@
 	missingok
 	rotate 1
 	compress
+	maxsize 2000M
 	delaycompress
 	notifempty
 	create 0640 www-data adm
