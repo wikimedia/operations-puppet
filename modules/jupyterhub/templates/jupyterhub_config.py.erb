@@ -86,8 +86,6 @@ c.JupyterHub.port = PORT
 # Do not kill servers when the hub restarts
 c.JupyterHub.cleanup_servers = False
 
-
-# Directory name of the venv that will be created in each user's homedir.
 c.JupyterHub.spawner_class = 'systemdspawner.SystemdSpawner'
 # This is enough, since we'll put a jupyterhub-singleuser script in
 # here from the LocalAuthenticator. This also enables users to install
@@ -122,6 +120,7 @@ class VenvCreatingAuthenticator(Authenticator):
                 '-u', user.name,
                 '/usr/bin/python3',
                 '-m', 'venv',
+                '--system-site-packages', # Include installed python system packages.
                 venv_path
             ])
             subprocess.check_call([
@@ -130,6 +129,7 @@ class VenvCreatingAuthenticator(Authenticator):
                 os.path.join(venv_path, 'bin', 'pip'),
                 'install',
                 '--no-index',
+                '--ignore-installed', # Install these packages to the venv directly.
                 '--find-links={wp}'.format(wp=WHEELS_PATH),
                 '--requirement={dp}/frozen-requirements.txt'.format(dp=DEPLOY_PATH)
             ])
