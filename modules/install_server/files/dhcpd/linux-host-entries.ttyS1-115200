@@ -3603,8 +3603,8 @@ host labtestcontrol2003 {
 host labtestvirt2002 {
     hardware ethernet 78:2b:cb:49:00:15;
     fixed-address labtestvirt2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labtestvirt2003 {
@@ -3680,8 +3680,8 @@ host labtestservices2003 {
 host labtestvirt2001 {
     hardware ethernet 90:B1:1C:2D:7E:B9;
     fixed-address labtestvirt2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
+    option pxelinux.pathprefix "trusty-installer/";
+    filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host labvirt1001 {
