@@ -3,7 +3,16 @@
 # Deploys the eventlogging_cleaner.py script to apply Analytics data
 # retention policies to the log database running in localhost.
 #
-class profile::mariadb::misc::eventlogging::sanitization {
+# Parameters:
+#
+# [*extra_parameters*]
+#   Extra parameters to add to the eventlogging cleaner cron in addition to the
+#   hardcoded ones. This can be useful in environments like labs in which we can
+#   use new/different parameters for testing.
+#
+class profile::mariadb::misc::eventlogging::sanitization(
+    $extra_parameters = hiera('profile::mariadb::misc::eventlogging::sanitization::extra_parameters', '')
+) {
 
     if !defined(Group['eventlog']) {
         group { 'eventlog':
@@ -77,7 +86,7 @@ class profile::mariadb::misc::eventlogging::sanitization {
     # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
     # without doing any action to the db. This is useful to avoid gaps in
     # records sanitized if the script fails and does not commit a new timestamp.
-    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${etc_directory_path}/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2"
+    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${etc_directory_path}/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
     $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> ${log_directory_path}/eventlogging_cleaner.log"
     cron { 'eventlogging_cleaner daily sanitization':
         ensure      => present,
