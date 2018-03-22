@@ -399,8 +399,11 @@ if __name__ == '__main__':
                              'Not compatible with --no-whitelist')
     parser.add_argument('--no-whitelist', action='store_true',
                         help='Bypass any whitelist and sanitization scheme. '
+                             '(default: false). Not compatible with --whitelist')
+    parser.add_argument('--no-whitelist-sanity-check', action='store_true',
+                        help='Bypass any whitelist sanity check '
                              '(default: false).'
-                             'Not compatible with --whitelist')
+                             'Ignored with --no-whitelist')
     parser.add_argument('--dbport', default=3306, type=int,
                         help='The target db port (default: 3306)')
     parser.add_argument('--dbname', default='log',
@@ -569,7 +572,7 @@ if __name__ == '__main__':
 
         # Sanity check
         bad_whitelist_entries = check_not_valid_whitelist_table_prefixes(whitelist, tables)
-        if bad_whitelist_entries:
+        if bad_whitelist_entries and not args.no_whitelist_sanity_check:
             log.error(
                 "Some table prefixes in the whitelist do not match any "
                 "table name retrieved from the database. Please review "
