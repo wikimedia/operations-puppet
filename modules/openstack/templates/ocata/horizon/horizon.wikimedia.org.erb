@@ -8,6 +8,14 @@
     ServerName <%= @webserver_hostname %>
 
     RewriteEngine on
+
+    <% if @maintenance_mode == true %>
+        # Redirect all pages to the maintenance alert
+        RewriteCond %{REQUEST_URI} !=/static/dashboard/img/logo-splash.svg
+        RewriteCond %{REQUEST_URI} !=/static/maintenance.html
+        RewriteRule ^.*$ - [R=503,L]
+    <% end %>
+
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteCond %{REQUEST_URI} !^/status$
     RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
