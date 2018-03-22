@@ -11,6 +11,7 @@
 
     <% if @maintenance_mode == true %>
         # Redirect all pages to the maintenance alert
+        ErrorDocument 503 /static/maintenance.html
         RewriteCond %{REQUEST_URI} !=/static/dashboard/img/logo-splash.svg
         RewriteCond %{REQUEST_URI} !=/static/maintenance.html
         RewriteRule ^.*$ - [R=503,L]
