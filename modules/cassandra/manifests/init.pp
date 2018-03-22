@@ -162,7 +162,7 @@ class cassandra (
     # We pin the version to a specific one
     $package_version = $target_version ? {
         '2.1' => hiera('cassandra::version', '2.1.13'),
-        '2.2' => hiera('cassandra::version', '2.2.6-wmf1'),
+        '2.2' => hiera('cassandra::version', '2.2.6-wmf3'),
         '3.x' => hiera('cassandra::version', '3.11.0-wmf5'),
         'dev' => hiera('cassandra::version', '3.11.0-wmf5')
     }
@@ -174,6 +174,21 @@ class cassandra (
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'stretch-wikimedia',
             components => 'component/cassandra311',
+            before     => Package['cassandra'],
+        }
+    }
+    # Cassandra 2.2 is installed using the newer component convention, (and
+    # from dists/(stretch|jessie)-wikimedia).
+    elsif ($target_version == '2.2') {
+        if os_version('debian == jessie') {
+            $distribution = 'jessie-wikimedia'
+        } else {
+            $distribution = 'stretch-wikimedia'
+        }
+        apt::repository { 'wikimedia-cassandra22':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => $distribution,
+            components => 'component/cassandra22',
             before     => Package['cassandra'],
         }
     }
