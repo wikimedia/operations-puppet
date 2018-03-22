@@ -28,7 +28,8 @@ class profile::mediawiki::deployment::server(
     }
 
     class {'::apache': }
-    class {'::mysql': }
+
+    require_package('mysql-client')
 
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
