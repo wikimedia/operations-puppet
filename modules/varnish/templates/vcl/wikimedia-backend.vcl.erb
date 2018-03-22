@@ -185,6 +185,21 @@ sub vcl_pipe {
 }
 
 sub vcl_backend_fetch {
+    // This is to avoid some corner-cases and bugs as noted in T125938 , e.g.
+    // applayer gzip turning 500s into junk-response 503s, applayer gzipping
+    // CL:0 bodies into a 20 bytes gzip header, applayer compressing tiny
+    // outputs in general, etc.
+    // According to my best reading of:
+    // https://varnish-cache.org/docs/5.1/users-guide/compression.html
+    // We should be able to unset bereq's AE header here to avoid requesting
+    // applayer gzip, and the rest of Varnish's gzip behaviors will still work
+    // sanely, basically as if the applayer decided on its own not to do
+    // gzipping.  We have do_gzip for compressible mime types elsewhere.  A
+    // reading of the Varnish fetch code seems to confirm that CE:gzip
+    // responses are handled properly regardless of bereq's AE:gzip as well.
+    if (!bereq.http.X-Next-Is-Cache) {
+        unset bereq.http.Accept-Encoding;
+    }
     call cluster_be_backend_fetch;
 }
 
