@@ -115,8 +115,11 @@ class profile::mediawiki::deployment::server(
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
     require_package('percona-toolkit', 'tig')
-    require_package('php5-readline') # bug T126262
-
+    if os_version('debian >= stretch') {
+        require_package('php7.0-readline') # bug T126262
+    } else {
+        require_package('php5-readline') # bug T126262
+    }
     # helper scripts for apache changes
     file  { '/usr/local/bin/apache-fast-test':
         owner  => 'root',
