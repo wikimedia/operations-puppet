@@ -1376,11 +1376,11 @@ node /^ms-fe100[6-8]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# Legacy Dell machines with partitioning scheme - T189633
 node /^ms-be101[3-5]\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
 
-# HP machines have different disk ordering T90922
 node /^ms-be10(1[6-9]|2[0-9]|3[0-9])\.eqiad\.wmnet$/ {
     role(swift::storage)
 }
@@ -1396,6 +1396,7 @@ node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# Legacy Dell machines with partitioning scheme - T189633
 node /^ms-be201[3-5]\.codfw\.wmnet$/ {
     role(swift::storage)
 }
@@ -1404,8 +1405,7 @@ node /^ms-be20(0[1-9]|1[0-2])\.codfw\.wmnet$/ {
     role(spare::system)
 }
 
-# HP machines have different disk ordering T90922
-node /^ms-be20(1[6-9]|2[0-9]|3[0-9])\.codfw\.wmnet$/ {
+node /^ms-be20(1[6-9]|2[0-9]|3[0-9]|4[0-9])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
