@@ -29,7 +29,7 @@ class profile::lists {
         hiera('mailman::lists::ipv6'),
     ]
 
-    class { 'exim4':
+    class { '::exim4':
         variant => 'heavy',
         config  => template('profile/exim/exim4.conf.mailman.erb'),
         filter  => template('profile/exim/system_filter.conf.mailman.erb'),
