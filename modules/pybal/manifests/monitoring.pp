@@ -69,10 +69,11 @@ class pybal::monitoring($config_host, $lvs_services, $lvs_class_hosts) {
     monitoring::check_prometheus { 'pybal_bgp_sessions':
         description     => 'PyBal BGP sessions are established',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/pybal-bgp?var-datasource=${::site}%20prometheus%2Fops"],
-        query           => "pybal_bgp_session_established${prometheus_labels} and ignoring (local_asn, peer) pybal_bgp_enabled${prometheus_labels} == 1",
+        query           => "scalar(pybal_bgp_session_established${prometheus_labels} and ignoring (local_asn, peer) pybal_bgp_enabled${prometheus_labels} == 1)",
         method          => 'le',
         warning         => 0,
         critical        => 0,
+        nan_ok          => true,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 }
