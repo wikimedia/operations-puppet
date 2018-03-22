@@ -73,7 +73,6 @@ class varnish::logging(
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
-        statsd_server => $statsd_host,
     }
 
     ::varnish::logging::statsd { 'default':
