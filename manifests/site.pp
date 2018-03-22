@@ -1396,7 +1396,7 @@ node /^ms-fe200[6-8]\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-be201[3-5]\.codfw\.wmnet$/ {
+node /^ms-be20(1[3-5]|4[0-3])\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
