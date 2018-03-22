@@ -68,17 +68,15 @@ class VarnishSlowLog(object):
 
         self.args = ap.parse_args(argument_list)
 
-        # Do not log on threshold violations in the 'Resp' at frontend
-        # instances, as client misbehavior/slowness can induce a long value
-        # here independent of any infrastructure problem, and those entries
-        # would create a lot of noise (esp in upload
-        # cluster case with larger transfer sizes)
-        if self.args.varnishd_instance_name == 'frontend':
-            tstypes = ('Start', 'Req', 'ReqBody', 'Waitinglist',
-                       'Fetch', 'Process', 'Restart')
-        else:
-            tstypes = ('Start', 'Req', 'ReqBody', 'Waitinglist',
-                       'Fetch', 'Process', 'Resp', 'Restart')
+        # Note slow 'Resp' is not included in the filter, as normal requests
+        # with slow true-client-side reception can raise this value throughout
+        # the stack, even in backends the request is passing through, as the
+        # response will only stream through them at the rate necessary to feed
+        # the fastest (possibly only) requesting parallel client.  Thus it
+        # generates too much slowlog noise, making it harder to spot the "real"
+        # problems.
+        tstypes = ('Start', 'Req', 'ReqBody', 'Waitinglist',
+                   'Fetch', 'Process', 'Restart')
 
         # Build VSL query to find non-PURGEs with any timestamp > slow_threshold
         timestamps = ['Timestamp:%s[3] > %f' % (timestamp, self.args.slow_threshold)
