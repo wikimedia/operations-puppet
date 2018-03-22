@@ -24,7 +24,7 @@ class toolserver_legacy {
         content => template('toolserver_legacy/www.toolserver.org.erb'),
     }
 
-    class { 'exim4':
+    class { '::exim4':
         queuerunner => 'separate',
         config      => template('toolserver_legacy/exim4.conf.erb'),
     }

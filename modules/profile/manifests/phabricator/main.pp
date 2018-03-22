@@ -242,7 +242,7 @@ class profile::phabricator::main (
     # Backup repositories
     backup::set { 'srv-repos': }
 
-    class { 'exim4':
+    class { '::exim4':
         variant => 'heavy',
         config  => template('role/exim/exim4.conf.phab.erb'),
         filter  => template('role/exim/system_filter.conf.erb'),
