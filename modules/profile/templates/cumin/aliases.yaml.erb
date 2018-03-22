@@ -50,7 +50,7 @@ dns-auth-canary: P{eeden.wikimedia.org}
 dns-rec: P{O:dnsrecursor}
 dns-rec-canary: P{hydrogen.wikimedia.org}
 druid: P{O:druid::analytics::worker or O:druid::public::worker}
-dumps: P{O:dumps::web::xmldumps_fallback or O:dumps::web::xmldumps_active or O:dumps::generation::server::primary or O:dumps::generation::server::fallback}
+dumps: P{O:dumps::web::xmldumps_fallback or O:dumps::web::xmldumps_active or O:dumps::generation::server::primary or O:dumps::generation::server::fallback or O:dumps::web::htmldumps)}
 elastic: P{O:elasticsearch::cirrus}
 elastic-canary: P{elastic1017.eqiad.wmnet}
 elastic-codfw: A:elastic and A:codfw
@@ -84,10 +84,11 @@ kafka-main-eqiad: A:kafka-main and A:eqiad
 kafka-jumbo-canary: P{kafka-jumbo1001.eqiad.wmnet}
 kafka-jumbo: P{O:kafka::jumbo::broker}
 kubernetes-etcd: P{O:etcd::kubernetes}
+kubernetes-etcd-network: P{O:etcd::networking}
 kubernetes-masters: P{O:kubernetes::master}
 kubernetes-staging: P{O:kubernetes::staging::etcd or O:kubernetes::staging::master or O:kubernetes::staging::worker}
 kubernetes-workers: P{O:kubernetes::worker}
-kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers
+kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers or A:kubernetes-etcd-network
 labcontrol: P{O:wmcs::openstack::main::control}
 labnet: P{O:wmcs::openstack::main::net or O:wmcs::openstack::main::net_standby}
 labpuppetmaster: P{O:wmcs::openstack::main::puppetmaster::frontend or O:wmcs::openstack::main::puppetmaster::backend}
@@ -161,6 +162,7 @@ poolcounter: P{O:poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
 poolcounter-eqiad: A:poolcounter and A:eqiad
 prometheus: P{O:prometheus::ops}
+puppetboard: P{O:puppetboard}
 puppetdb: P{O:puppetmaster::puppetdb}
 puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{O:puppetmaster::backend}
@@ -204,7 +206,7 @@ misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::coordinat
 misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:requesttracker or O:releases or O:otrs or O:webserver_misc_static} or A:planet
 misc-devel: P{O:webperf or O:ve or O:archiva or O:docker::registry} or A:debugproxy or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or O:cache::canary}
-misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:backup::offsite or O:backup or O:mirrors} or A:netmon
+misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:backup::offsite or O:backup or O:mirrors} or A:netmon or A:puppetboard
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
-misc-releng: P{O:labs::openstack::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
+misc-releng: P{O:labs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
 misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm
