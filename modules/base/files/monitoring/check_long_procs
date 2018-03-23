@@ -79,7 +79,7 @@ echo "${result["${pattern}"]},${check_pid},${run_time}"
 function getusername {
 
     proc_uid=$1
-    user_name=$(ps -u -p ${proc_uid} --no-headers | cut -d " " -f1)
+    user_name=$(ps -o user -p ${proc_uid} --no-headers)
 
 echo $user_name
 }
