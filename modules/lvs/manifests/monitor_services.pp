@@ -15,6 +15,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Mobileapps LVS eqiad',
         check_command => 'check_wmf_service!http://mobileapps.svc.eqiad.wmnet:8888!15',
+        contact_group => 'admins,mobileapps',
     }
 
     monitoring::service { 'check_mobileapps_cluster_codfw':
@@ -22,6 +23,7 @@ class lvs::monitor_services($contacts = 'admins,team-services', $critical = fals
         group         => 'lvs',
         description   => 'Mobileapps LVS codfw',
         check_command => 'check_wmf_service!http://mobileapps.svc.codfw.wmnet:8888!15',
+        contact_group => 'admins,mobileapps',
     }
 
     # Graphoid
