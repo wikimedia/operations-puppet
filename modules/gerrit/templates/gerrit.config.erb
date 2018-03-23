@@ -88,6 +88,8 @@
     url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [gc]
     aggressive = true
+    interval = 1 week
+    startTime = Sat 02:00
 [gerrit]
     basePath = <%= @git_dir %>
     canonicalWebUrl = <%= @url %>
