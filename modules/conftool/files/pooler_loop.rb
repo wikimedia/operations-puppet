@@ -73,14 +73,10 @@ def check_pooled_state(ip, port, pool, host, want_pooled)
   http.open_timeout = 1
   http.read_timeout = 2
 
-  begin
-    resp = http.start do |http|
-      http.get "/pools/#{pool}/#{host}"
-    end
-  rescue Timeout::Error
-    # If pybal is down, don't care about it
-    return true
+  resp = http.start do |http|
+    http.get "/pools/#{pool}/#{host}"
   end
+
   # ignore 404s
   # rubocop:disable Style/CaseEquality
   return true unless resp === Net::HTTPSuccess
@@ -124,7 +120,15 @@ end
     begin
       args[:lvs_uris].each do |uri|
         ip, port = uri
-        check_pooled_state(ip, port, args[:pool_name], args[:host], args[:pool])
+        begin
+          check_pooled_state(ip, port, args[:pool_name], args[:host], args[:pool])
+        rescue PybalError
+          raise
+        rescue Exception => ex
+          # Any other type of failure should not result in stopping the process.
+          # It's a good idea to still warn the user
+          puts "Warning: error while checking the pooled state on #{ip}:#{port}: #{ex}"
+        end
       end
       exit 0
     rescue PybalError => e
