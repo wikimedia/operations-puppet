@@ -5,4 +5,7 @@ class role::labs::monitoring {
     include ::profile::grafana
     include standard
     include ::base::firewall
+    include ::profile::openstack::base::clientlib {
+        version => hiera('profile::openstack::base::version'),
+    }
 }
