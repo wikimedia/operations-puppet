@@ -7,7 +7,13 @@ class role::deployment::mediawiki(
 
     # All needed classes for deploying mediawiki
     include ::mediawiki
-    include ::mediawiki::packages::php5
+
+    if os_version('debian' >= 'stretch') {
+        include ::mediawiki::packages::php7 # lint:ignore:wmf_styleguide
+    } else {
+        include ::mediawiki::packages::php5
+    }
+
     include ::profile::mediawiki::nutcracker
     include ::profile::conftool::client
     include ::scap::master
