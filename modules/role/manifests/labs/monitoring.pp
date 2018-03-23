@@ -5,4 +5,13 @@ class role::labs::monitoring {
     include ::profile::grafana
     include standard
     include ::base::firewall
+
+    $packages = [
+        'python-keystoneauth1',
+        'python-keystoneclient',
+    ]
+
+    package { $packages:
+        ensure => 'present',
+    }
 }
