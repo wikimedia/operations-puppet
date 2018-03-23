@@ -361,15 +361,12 @@ sub wm_common_backend_response {
 	// cases later.
 	unset beresp.http.X-CDIS;
 
-	/* Don't cache private, no-cache, no-store objects */
-	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
-		set beresp.ttl = 0s;
-		// translated to hit-for-pass below
-	}
+	/* why are we capping 4xx TTL?
 	// This should probably be only 404 XXX
 	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > 10m) {
 		set beresp.ttl = 10m;
 	}
+	*/
 
 	// Set keep, which influences the amount of time objects are kept available
 	// in cache for IMS requests (TTL+grace+keep). Scale keep to the app-provided
@@ -421,25 +418,34 @@ sub wm_common_backend_response {
 			set beresp.do_gzip = true;
 	}
 
-	// set a 601s hit-for-pass object based on response conditions in vcl_backend_response:
-	//    Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
-	//    These are generally uncacheable responses.  The 5xx exception
-	//    avoids us accidentally replacing a good stale/grace object with
-	//    an hfp (and then repeatedly passing on potentially-cacheable
-	//    content) due to an isolated 5xx response, and the exception for
-	//    underlying cache hits (detected from X-Cache-Int) is to avoid
-	//    creating a persist HFP object when a lower-level varnish
-	//    returned an expired object under grace-mode rules.
-	if (
-		beresp.ttl <= 0s
-		&& beresp.status < 500
-		&& (!beresp.http.X-Cache-Int || beresp.http.X-Cache-Int !~ " hit")
-	) {
-		set beresp.grace = 31s;
+	// Do not cache private, no-cache, no-store, zero-maxage objects. Disable
+	// request coalescing of uncacheable responses.
+	if (beresp.status < 500 && beresp.http.Cache-Control ~ "(private|no-cache|no-store|max-age=0|s-maxage=0)") {
 		set beresp.keep = 0s;
+
+		// How long are we keeping an expired HFP/HFM object for
+		// stale-while-revalidate-like purposes. In case of slow applayer
+		// responses, request coalescing can end up being
+		// accidentally enabled during the period of time between
+		// the expiration of HFP/HFM and the applayer responding
+		// with a CC header that would cause Varnish to re-create an
+		// HFP/HFM object by entering this branch. Set a grace period higher
+		// than the slowest possible applayer response to ensure request
+		// coalescing is always disabled for uncacheable objects.
+		set beresp.grace = 61s; // XXX: is this the slowest possible applayer response?
+
 		set beresp.http.X-CDIS = "pass";
-		// XXX: HFP for now, but this requires further work: T180712
-		return(pass(601s));
+
+		if (beresp.http.ETag || beresp.http.Last-Modified) {
+			// Use HFP for responses with ETag or Last-Modified as they are
+			// candidates for conditional requests. See T180712.
+			return(pass(90s));
+		} else {
+			// HFM otherwise.
+			set beresp.ttl = 90s;
+			set beresp.uncacheable = true;
+			return(deliver);
+		}
 	}
 }
 
