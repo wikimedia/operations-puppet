@@ -421,7 +421,8 @@ sub wm_common_backend_response {
 			set beresp.do_gzip = true;
 	}
 
-	// set a 601s hit-for-pass object based on response conditions in vcl_backend_response:
+	// Disable request coalescing of uncacheable responses based on response
+	// conditions in vcl_backend_response:
 	//    Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
 	//    These are generally uncacheable responses.  The 5xx exception
 	//    avoids us accidentally replacing a good stale/grace object with
@@ -438,8 +439,19 @@ sub wm_common_backend_response {
 		set beresp.grace = 31s;
 		set beresp.keep = 0s;
 		set beresp.http.X-CDIS = "pass";
-		// XXX: HFP for now, but this requires further work: T180712
-		return(pass(601s));
+
+		if (beresp.http.ETag || beresp.http.Last-Modified) {
+			// Use HFP for responses with ETag or Last-Modified as they are
+			// candidates for conditional requests. See T180712.
+			// Set a short TTL to minimize impact from wrong ones.
+			return(pass(90s));
+		} else {
+			// HFM otherwise. Set a "long" TTL given that the whole point of
+			// using HFM is that reponses that become cacheable do get cached.
+			set beresp.ttl = 601s;
+			set beresp.uncacheable = true;
+			return(deliver);
+		}
 	}
 }
 
