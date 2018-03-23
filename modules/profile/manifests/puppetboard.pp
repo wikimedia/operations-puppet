@@ -63,7 +63,7 @@ class profile::puppetboard (
     }
 
     class { '::httpd':
-        modules => ['headers', 'rewrite', 'authnz_ldap'],
+        modules => ['headers', 'rewrite', 'authnz_ldap', 'proxy', 'proxy_http'],
     }
 
     httpd::site { 'puppetboard.wikimedia.org':
