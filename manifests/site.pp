@@ -546,16 +546,6 @@ node 'db1020.eqiad.wmnet' {
     role(spare::system)
 }
 
-# To be decommissioned T190179
-node 'db1016.eqiad.wmnet' {
-    role(spare::system)
-}
-
-# To be decommissioned T190262
-node 'db1001.eqiad.wmnet' {
-    role(spare::system)
-}
-
 
 node 'db2044.codfw.wmnet' {
     class { '::role::mariadb::misc':
@@ -626,10 +616,6 @@ node 'db1115.eqiad.wmnet' {
 
 node 'db2093.codfw.wmnet' {
     role(mariadb::misc::tendril)
-}
-
-node 'db1011.eqiad.wmnet' {
-    role(spare::system)
 }
 
 node 'dbstore1001.eqiad.wmnet' {
