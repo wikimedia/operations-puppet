@@ -5,4 +5,5 @@ class role::labs::monitoring {
     include ::profile::grafana
     include standard
     include ::base::firewall
+    include ::profile::labs::monitoring
 }
