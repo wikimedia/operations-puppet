@@ -28,6 +28,16 @@
 #   instance's consumer.properties file.
 #   See: http://kafka.apache.org/documentation.html#oldconsumerconfigs
 #
+# [*new_conusumer*]
+#   If true, the new consumer client will be used, committing offsets
+#   to Kafka instead of Zookeeper.  This is the default in later versions.
+#   This option is not compatible with $blacklist, and if used, a $whitelist
+#   that excludes internal topics (^__.*) must be given as well, at least
+#   until MirrorMaker version has been updated.  If you use this, you must
+#   specify $source_brokers instead of $source_zookeeper_url.
+#   TODO: remove this option after version is updated.
+#   Default: false
+#
 # [*acks*]
 #   Required number of acks for a produce request. Default: all (all replicas)
 #
@@ -98,6 +108,7 @@ define confluent::kafka::mirror::instance(
     $source_zookeeper_url         = undef,
 
     $consumer_properties          = {},
+    $new_consumer                 = false,
 
     # Producer Settings
     $acks                         = 'all',
@@ -128,6 +139,14 @@ define confluent::kafka::mirror::instance(
 
     if (!$whitelist and !$blacklist) or ($whitelist and $blacklist) {
         fail('Must set only one of $whitelist or $blacklist.')
+    }
+
+    # TODO remove new_consumer checks after kafka 0.11+ update.
+    if ($new_consumer and $blacklist) {
+        fail('Cannot use $new_consumer with $blacklist, specify $whitelist instead.')
+    }
+    if ($new_consumer and $source_zookeeper_url) {
+        fail('Must specify $source_brokers instead of $source_zookeeper_url when using $new_consumer.')
     }
 
     $mirror_name = $title

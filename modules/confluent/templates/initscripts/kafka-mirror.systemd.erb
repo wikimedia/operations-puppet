@@ -26,6 +26,9 @@ ExecStart=/usr/bin/kafka-mirror-maker \
 <% else -%>
 --blacklist '<%= @blacklist %>' \
 <% end -%>
+<% if @new_consumer -%>
+--new.consumer \
+<% end -%>
 --num.streams <%= @num_streams %> \
 --offset.commit.interval.ms <%= @offset_commit_interval_ms %> \
 --consumer.config /etc/kafka/mirror/<%= @mirror_name %>/consumer.properties \
