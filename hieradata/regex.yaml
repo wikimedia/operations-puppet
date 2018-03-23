@@ -311,6 +311,6 @@ rhodium_puppetdb4:
   puppetdb_major_version: 4
   profile::puppetmaster::common::puppetdb_host: puppetdb1001.eqiad.wmnet
 
-codfw_puppetdb4:
-  __regex: !ruby/regexp /^puppetmaster200[12].codfw.wmnet$/
+puppetmaster_puppetdb4:
+  __regex: !ruby/regexp /^puppetmaster[12]00[12].(codfw|eqiad).wmnet$/
   puppetdb_major_version: 4

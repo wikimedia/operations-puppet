@@ -1,1 +1,1 @@
-profile::puppetmaster::common::puppetdb_host: nitrogen.eqiad.wmnet
+profile::puppetmaster::common::puppetdb_host: puppetdb1001.eqiad.wmnet
