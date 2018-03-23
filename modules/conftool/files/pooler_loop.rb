@@ -77,7 +77,7 @@ def check_pooled_state(ip, port, pool, host, want_pooled)
     resp = http.start do |http|
       http.get "/pools/#{pool}/#{host}"
     end
-  rescue Timeout::Error
+  rescue Timeout::Error, Errno::ECONNREFUSED
     # If pybal is down, don't care about it
     return true
   end
