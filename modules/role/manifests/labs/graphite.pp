@@ -8,6 +8,7 @@ class role::labs::graphite {
     include role::statsite
 
     class { '::uwsgi': }
+    class { '::apache::mod::uwsgi': }
 
     class { '::httpd':
         modules => ['proxy', 'proxy_http', 'rewrite', 'uwsgi',
