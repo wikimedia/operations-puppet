@@ -6,6 +6,7 @@ class role::labs::graphite {
     require ::profile::openstack::main::observerenv
     include graphite::labs::archiver
     include role::statsite
+    include ::uwsgi
 
     class { '::httpd':
         modules => ['proxy', 'proxy_http', 'rewrite', 'uwsgi',
