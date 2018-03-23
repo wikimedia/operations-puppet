@@ -65,4 +65,7 @@ striker::uwsgi::config:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:
     URL: http://labtestcontrol2001.wikimedia.org:5000/v3
+  wikitech:
+    SERVER_URL: https://labtestwikitech.wikimedia.org
+    USER: Striker
 
