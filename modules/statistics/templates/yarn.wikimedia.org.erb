@@ -32,9 +32,18 @@
         # links in the HTML hrefs, so we need a way to avoid broken links.
         # Not using 'ProxyHTMLEnable On' since it breaks the visualization of
         # Spark shell logs in the UI.
+
         # https://httpd.apache.org/docs/2.4/mod/mod_proxy_html.html#comment_3329
         SetOutputFilter INFLATE;proxy-html;DEFLATE
-        # contained in embedded JS script that cause a broken UI experience
+
+        # Force the Accept-Encoding: gzip request header (even when not explicitly
+        # asked) since for some reason the /static/ javascript content
+        # (see jar tf /usr/lib/hadoop-yarn/hadoop-yarn-common-2.6.0-cdh5.10.0.jar)
+        # is precompressed and Jetty, with its current settings, returns a 404
+        # without an explicit A-E:gzip request.
+        RequestHeader add Accept-Encoding gzip
+
+        # Links contained in embedded JS script that cause a broken UI experience
         # if left untouched.
         ProxyHTMLExtended On
         ProxyHTMLLinks a href
