@@ -6,9 +6,16 @@ define mediawiki::php_enmod {
     if (os_version('debian >= stretch')) {
         $modspath = '/etc/php/7.0/mods-available'
         $enmod = 'phpenmod'
+        $mailpath = '/etc/php/7.0/mods-available/mail.ini'
     } else {
         $modspath = '/etc/php5/mods-available'
         $enmod = 'php5enmod'
+        $mailpath = '/etc/php5/mods-available/mail.ini'
+    }
+
+    file { $mailpath:
+        ensure  => absent,
+        require => Package['php-mail'],
     }
 
     exec { "PHP module ${title} enable":

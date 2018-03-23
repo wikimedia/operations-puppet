@@ -34,9 +34,6 @@ class mediawiki::php {
             mode   => '0444',
         }
 
-        file { '/etc/php/7.0/mods-available/mail.ini':
-            ensure => absent,
-        }
     } else {
         # Only install PHP configuration files on Trusty, jessie
         # no longer installs Zend PHP
@@ -59,10 +56,6 @@ class mediawiki::php {
                 require => Package['php5-cli'],
             }
 
-            file { '/etc/php5/mods-available/mail.ini':
-                ensure  => absent,
-                require => Package['php-mail'],
-            }
         }
     }
 }
