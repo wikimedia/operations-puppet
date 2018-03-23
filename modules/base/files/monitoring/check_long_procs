@@ -75,7 +75,18 @@ echo "${result["${pattern}"]},${check_pid},${run_time}"
 
 }
 
+# get the user name running a process (by uid)
+function getusername {
+
+    proc_uid=$1
+    user_name=$(ps -u -p ${proc_uid} --no-headers | cut -d " " -f1)
+
+echo $user_name
+}
+
+
 # main
+
 result_screen=$(checkprocess SCREEN)
 result_tmux=$(checkprocess tmux)
 
@@ -92,23 +103,28 @@ return_code_tmux=$(echo $result_tmux | cut -d, -f1)
 pid_tmux=$(echo $result_tmux | cut -d, -f2)
 run_time_tmux=$(echo $result_tmux | cut -d, -f3)
 
+
 if [ $return_code_screen -eq 2 ]; then
-    echo "CRIT: Long running SCREEN process. (PID: ${pid_screen}, ${run_time_screen}s > ${crit_seconds}s)."
+    screen_user=$(getusername ${pid_screen})
+    echo "CRIT: Long running SCREEN process. (user: ${screen_user} PID: ${pid_screen}, ${run_time_screen}s > ${crit_seconds}s)."
     exit 2
 fi
 
 if [ $return_code_tmux -eq 2 ]; then
-    echo "CRIT: Long running tmux process. (PID: ${pid_tmux}, ${run_time_tmux}s > ${crit_seconds}s)."
+    tmux_user=$(getusername ${pid_tmux})
+    echo "CRIT: Long running tmux process. (user: ${tmux_user} PID: ${pid_tmux}, ${run_time_tmux}s > ${crit_seconds}s)."
     exit 2
 fi
 
 if [ $return_code_screen -eq 1 ]; then
-    echo "WARN: Long running SCREEN process. (PID: ${pid_screen}, ${run_time_screen}s > ${warn_seconds}s)."
+    screen_user=$(getusername ${pid_screen})
+    echo "WARN: Long running SCREEN process. (user: ${screen_user} PID: ${pid_screen}, ${run_time_screen}s > ${warn_seconds}s)."
     exit 1
 fi
 
 if [ $return_code_tmux -eq 1 ]; then
-    echo "WARN: Long running tmux process. (PID: ${pid_tmux}, ${run_time_tmux}s > ${warn_seconds}s)."
+    tmux_user=$(getusername ${pid_tmux})
+    echo "WARN: Long running tmux process. (user: ${tmux_user} PID: ${pid_tmux}, ${run_time_tmux}s > ${warn_seconds}s)."
     exit 1
 fi
 
