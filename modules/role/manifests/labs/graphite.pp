@@ -8,7 +8,8 @@ class role::labs::graphite {
     include role::statsite
 
     class { '::httpd':
-        modules => ['proxy', 'proxy_http', 'rewrite'],
+        modules => ['proxy', 'proxy_http', 'rewrite', 'uwsgi',
+                    'headers', 'authnz_ldap', 'ldap'],
     }
 
     class { 'role::graphite::base':
