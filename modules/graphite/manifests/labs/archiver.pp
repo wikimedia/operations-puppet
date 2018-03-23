@@ -4,6 +4,13 @@
 # hour
 class graphite::labs::archiver {
 
+    # prevent some cronspam if the delete cronjob is run before the script
+    file { '/srv/carbon/whisper/archived_metrics':
+        ensure => directory,
+        owner  => '_graphite',
+        group  => '_graphite',
+    }
+
     file { '/usr/local/bin/archive-instances':
         source => 'puppet:///modules/graphite/archive-instances',
         owner  => '_graphite',
