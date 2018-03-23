@@ -47,16 +47,15 @@ class role::kafka::jumbo::mirror {
     }
 
     $consumer_properties = {
-        'fetch.message.max.bytes'       => $producer_request_max_size,
         # RoundRobin results in more balanced consumer assignment when dealing
         # with many single partition topics.
-        'partition.assignment.strategy' => 'roundrobin',
-        # TODO: This property will only be used by new consumers, which we don't use yet.
-        # 'max.partition.fetch.bytes' => $producer_request_max_size
+        'partition.assignment.strategy' => 'org.apache.kafka.clients.consumer.RoundRobinAssignor',
+        'max.partition.fetch.bytes'     => $producer_request_max_size
     }
 
     ::confluent::kafka::mirror::instance { "${source_cluster_name}_to_${destination_cluster_name}":
-        source_zookeeper_url      => $source_config['zookeeper']['url'],
+        new_consumer              => true,
+        source_brokers            => split($source_config['brokers']['string'], ','),
         destination_brokers       => split($destination_config['brokers']['string'], ','),
         # Avoid conflict on port 9997 with main -> analytics mirror maker
         jmx_port                  => 9996,
@@ -65,11 +64,12 @@ class role::kafka::jumbo::mirror {
         # Jumbo's MirrorMaker producer is being incredibly flaky.  We think
         # this is likely due to version discrepencies, and hope to have them
         # resolved after we upgrade main Kafka to 1.x.  For now, blacklisting
-        # these high volume job topics from replication seems to help.  We
+        # high volume job topics from replication seems to help.  We
         # haven't needed these replicated out of main for any purpose yet, so
         # this should be fine for now.  See T189464.
-        blacklist                 => '.*mediawiki\.job\..*|.*change-prop\..*',
-        whitelist                 => false,
+        # blacklist doesn't work with new_consumer, use whitelist instead.
+        # blacklist                 => '.*mediawiki\.job\..*|.*change-prop\..*',
+        whitelist                 => '^(?!__).*\.(error|resource_change|mediawiki\.(page|recentchange|revision|user).*)$',
         # Seen OutOfMemoryError in this mirror maker instance, increase heap size.
         heap_opts                 => '-Xmx512M -Xms512M',
         producer_properties       => $producer_properties,
