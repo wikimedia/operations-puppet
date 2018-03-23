@@ -4,6 +4,7 @@ class profile::labs::monitoring {
     $packages = [
         'python-keystoneauth1',
         'python-keystoneclient',
+        'python-novaclient',
     ]
 
     package { $packages:
