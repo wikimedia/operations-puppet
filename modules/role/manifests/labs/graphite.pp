@@ -7,6 +7,8 @@ class role::labs::graphite {
     include graphite::labs::archiver
     include role::statsite
 
+    class { '::uwsgi': }
+
     class { '::httpd':
         modules => ['proxy', 'proxy_http', 'rewrite', 'uwsgi',
                     'headers', 'authnz_ldap', 'ldap'],
