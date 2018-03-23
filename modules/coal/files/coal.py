@@ -158,6 +158,8 @@ class WhisperLogger(object):
             first_timestamp = int(window[0][0])
 
             while True:
+                messages_deleted = 0
+
                 # Establish a sample period that begins with the oldest sample
                 end_timestamp = first_timestamp + WINDOW_SPAN
 
@@ -169,12 +171,19 @@ class WhisperLogger(object):
                     break
 
                 # Write the value of this window to the whisper file
-                current_value = self.median(
-                    [value for timestamp, value in window if timestamp <= end_timestamp])
+                values = [value for timestamp, value in window if timestamp <= end_timestamp]
+                if len(values) == 0:
+                    self.log.info('[{}] No metrics in window {} to {}'.format(
+                        metric, first_timestamp, end_timestamp))
+                    continue
+                current_value = self.median(values)
                 if self.args.dry_run:
-                    self.log.info('[{}] [{}] {}'.format(end_timestamp, metric,
+                    self.log.info('[{}] [{}] {}'.format(metric, end_timestamp,
                                   current_value))
                 else:
+                    self.log.info('[{}] {} values found between {} and {}: median {}'.format(
+                        metric, len(values), first_timestamp, end_timestamp,
+                        current_value))
                     whisper.update(self.get_whisper_file(metric), current_value,
                                    timestamp=end_timestamp)
 
@@ -182,6 +191,9 @@ class WhisperLogger(object):
                 for item in [item for item in window
                              if item[0] < (first_timestamp + UPDATE_INTERVAL)]:
                     window.remove(item)
+                    messages_deleted += 1
+                self.log.info('[{}] Removed {} data points between {} and {}'.format(
+                    metric, messages_deleted, first_timestamp, first_timestamp + UPDATE_INTERVAL))
 
                 # Move to the next window and loop again
                 first_timestamp += UPDATE_INTERVAL
