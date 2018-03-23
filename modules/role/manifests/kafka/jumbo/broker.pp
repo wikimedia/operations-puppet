@@ -6,7 +6,9 @@ class role::kafka::jumbo::broker {
         description => "Kafka Broker in a 'jumbo' Kafka cluster",
     }
 
-    interface::add_ip6_mapped { 'main': }
+    if $::realm == 'production' {
+        interface::add_ip6_mapped { 'main': }
+    }
 
     # Something in labs is including standard.  Only include if not already defined.
     if !defined(Class['::standard']) {
