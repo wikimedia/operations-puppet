@@ -844,11 +844,11 @@ node 'etherpad1001.eqiad.wmnet' {
     role(etherpad)
 }
 
-
 # Old Eventlogging host, still up until all the consumers
 # have migrated away from it.
+# Decom tracked in T189566
 node 'eventlog1001.eqiad.wmnet' {
-    role(eventlogging::analytics::legacy)
+    role(spare::system)
 }
 
 # Receives log data from Kafka processes it, and broadcasts
