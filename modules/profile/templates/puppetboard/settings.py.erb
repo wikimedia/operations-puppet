@@ -26,34 +26,68 @@ LOGLEVEL = 'info'
 NORMAL_TABLE_COUNT = 100
 LITTLE_TABLE_COUNT = 10
 TABLE_COUNT_SELECTOR = [10, 20, 50, 100, 500, 1000, 2000]
-DISPLAYED_METRICS = ['resources.total',
-                     'events.failure',
-                     'events.success',
-                     'resources.skipped',
-                     'events.noop']
-OFFLINE_MODE = False
+DISPLAYED_METRICS = [
+    'resources.total',
+    'events.failure',
+    'events.success',
+    'resources.skipped',
+    'events.noop',
+]
+OFFLINE_MODE = True
 ENABLE_CATALOG = False
 OVERVIEW_FILTER = None
 PAGE_TITLE = "Puppetboard"
 GRAPH_TYPE = 'pie'
-GRAPH_FACTS = ['architecture',
-               'clientversion',
-               'domain',
-               'lsbcodename',
-               'lsbdistcodename',
-               'lsbdistid',
-               'lsbdistrelease',
-               'lsbmajdistrelease',
-               'netmask',
-               'osfamily',
-               'puppetversion',
-               'processorcount']
-INVENTORY_FACTS = [('Hostname', 'fqdn'),
-                   ('IP Address', 'ipaddress'),
-                   ('OS', 'lsbdistdescription'),
-                   ('Architecture', 'hardwaremodel'),
-                   ('Kernel Version', 'kernelrelease'),
-                   ('Puppet Version', 'puppetversion'), ]
-REFRESH_RATE = 30
+GRAPH_FACTS = [
+    'architecture',
+    'augeasversion',
+    'bios_vendor',
+    'bios_version',
+    'boardmanufacturer',
+    'domain',
+    'facterversion',
+    'has_ipmi',
+    'initsystem',
+    'interface_primary',
+    'is_pe',
+    'is_virtual',
+    'kernelmajversion',
+    'kernelrelease',
+    'kernelversion',
+    'lldp_parent',
+    'lsbdistcodename',
+    'lsbdistid',
+    'lsbdistrelease',
+    'lsbmajdistrelease',
+    'lsbminordistrelease',
+    'lvm_support',
+    'manufacturer',
+    'netmask',
+    'operatingsystem',
+    'operatingsystemmajrelease',
+    'operatingsystemrelease',
+    'osfamily',
+    'package_provider',
+    'physicalcorecount',
+    'physicalprocessorcount',
+    'processorcount',
+    'productname',
+    'puppetversion',
+    'rubyversion',
+    'selinux',
+    'service_provider',
+    'type',
+    'virtual',
+]
+INVENTORY_FACTS = [
+    ('Hostname', 'fqdn'),
+    ('IP Address', 'ipaddress'),
+    ('OS', 'lsbdistdescription'),
+    ('Manufacturer', 'manufacturer'),
+    ('Kernel Version', 'kernelrelease'),
+    ('Puppet Version', 'puppetversion'),
+    ('Is Virtual', 'is_virtual'),
+]
+REFRESH_RATE = 300
 DAILY_REPORTS_CHART_ENABLED = True
 DAILY_REPORTS_CHART_DAYS = 8
