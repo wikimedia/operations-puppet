@@ -14,12 +14,12 @@ class role::kafka::analytics {
 
     # Mirror main Kafka cluster data to Jumbo Kafka cluster.
     # NOTE:  this is only running on the analytics Kafka brokers because
-    # of a 0.11 client compatibility issue.  Ideally this role would
+    # of a 0.11 client compatibility issue.  Ideally this class would
     # be included on the jumbo brokers instead.  But, since we need to consume
     # from a 0.9 cluster (main), we need to use a non 0.11 MirrorMaker version,
     # which is not available on the Kafka jumbo brokers, since they are 0.11.
     if $::hostname =~ /kafka10(20|22|23)/ {
-        include ::role::kafka::jumbo::mirror
+        include ::profile::kafka::mirror
     }
 
     include ::role::ipsec

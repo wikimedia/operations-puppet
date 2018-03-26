@@ -81,7 +81,10 @@ class profile::kafka::mirror(
     }
 
     $consumer_properties = {
-        'max.partition.fetch.bytes' => $producer_request_max_size
+        # RoundRobin results in more balanced consumer assignment when dealing
+        # with many single partition topics.
+        'partition.assignment.strategy' => 'org.apache.kafka.clients.consumer.RoundRobinAssignor',
+        'max.partition.fetch.bytes'     => $producer_request_max_size
     }
 
     # Minimum defaults for configuring a MirrorMaker instance.

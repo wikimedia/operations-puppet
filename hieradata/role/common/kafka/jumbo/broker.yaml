@@ -31,10 +31,20 @@ profile::kafka::broker::num_io_threads: 12
 profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
 profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
 
-# Mirror all topics from main to jumbo.
-profile::kafka::mirror::source_cluster_name: main
-profile::kafka::mirror::destination_cluster_name: jumbo
-profile::kafka::mirror::monitoring_enabled: true
-profile::kafka::mirror::properties:
-  num_streams: 2
-  offset_commit_interval_ms: 5000
+# Mirror all topics from main-eqiad to jumbo-eqiad.
+# We explictliy include the datacenter name in the Kafka cluster
+# Name here as we don't intend to ever mirror from main-codfw to jumbo.
+# TODO: these params are not currently being used, as
+# role::kafka::jumbo::broker does not yet include profile::kafka::mirror.
+# We need to upgrade main Kafka clusters to 1.x before we can do so.
+# Instead, these are set and used in role::kafka::analytics::broker,
+# which includes profile::kafka::mirror for main -> jumbo.
+# profile::kafka::mirror::source_cluster_name: main-eqiad
+# profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
+# profile::kafka::mirror::monitoring_enabled: true
+# profile::kafka::mirror::properties:
+#   whitelist: '^(?!__).+\.(error|resource_change|mediawiki\.(page|recentchange|revision|user).+)$'
+#   num_streams: 2
+#   offset_commit_interval_ms: 5000
+# # Seen OutOfMemoryError in this mirror maker instance, increase heap size.
+# heap_opts: '-Xmx512M -Xms512M'

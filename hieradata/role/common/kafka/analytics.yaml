@@ -2,3 +2,23 @@ admin::groups:
   - analytics-admins
 cluster: analytics_kafka
 nagios_group: analytics_eqiad
+
+# Mirror all topics from main-eqiad to jumbo-eqiad.
+# We explictliy include the datacenter name in the Kafka cluster
+# Name here as we don't intend to ever mirror from main-codfw to jumbo.
+# TODO: These should be removed once we are able to include
+# profile::kafka::mirror on jumbo brokers, with Kafka 1.x MirrorMaker.
+# For now, profile::kafka::mirror is included in role::kafka::analytics,
+# so we set these here.
+profile::kafka::mirror::source_cluster_name: main-eqiad
+profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
+profile::kafka::mirror::monitoring_enabled: true
+profile::kafka::mirror::properties:
+  whitelist: '^(?!__).+\.(error|resource_change|mediawiki\.(page|recentchange|revision|user).+)$'
+  num_streams: 2
+  offset_commit_interval_ms: 5000
+  # TODO: remove this one we use a newer version of MirrorMaker
+  # and it is not longer an option.
+  new_consumer: true
+  # Seen OutOfMemoryError in this mirror maker instance, increase heap size.
+  heap_opts: '-Xmx512M -Xms512M'
