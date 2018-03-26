@@ -29,14 +29,17 @@
 """
 import argparse
 import collections
-from kafka import KafkaConsumer
-import dateutil.parser
+import datetime
 import json
 import logging
 import os
 import os.path
+import socket
 import time
+
+import dateutil.parser
 import whisper
+from kafka import KafkaConsumer
 
 
 UPDATE_INTERVAL = 60  # How often we log values, in seconds
@@ -74,6 +77,71 @@ METRICS = (
 ARCHIVES = [(UPDATE_INTERVAL, RETENTION)]
 
 
+class WatchdogNotifier(object):
+    """A WatchdogNotifier sends watchdog keep-alive notifications to systemd.
+
+    Notifications will be rate-limited to at most four per WATCHDOG_USEC.
+    It is not the WatchdogNotifier's responsibility to call watchdog_notify().
+    To use the watchdog, set a WatchdogSec= value in the service's unit file.
+    """
+
+    def __init__(self, log=None):
+        self.log = log or logging.getLogger(__name__)
+        self.last_notified = datetime.datetime.min
+        self.max_interval = None
+        self.min_interval = None
+        self.addr = None
+        self.sock = None
+        self.is_enabled = False
+        if self._get_watchdog_enabled():
+            try:
+                self.max_interval = self._get_watchdog_interval()
+                self.min_interval = self.max_interval // 4
+                self.addr = self._get_watchdog_address()
+                self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+            except (KeyError, ValueError, socket.error):
+                self.log.exception('Watchdog environment is misconfigured!')
+            else:
+                self.is_enabled = True
+        if not self.is_enabled:
+            self.log.info('Could not find a valid watchdog. WatchdogNotifier '
+                          'will operate in dummy mode.')
+
+    def _get_watchdog_enabled(self):
+        watchdog_pid = os.environ.get(b'WATCHDOG_PID', '')
+        if watchdog_pid and int(watchdog_pid) != os.getpid():
+            return False
+        return 'WATCHDOG_USEC' in os.environ
+
+    def _get_watchdog_address(self):
+        address = os.environ['NOTIFY_SOCKET']
+        if address.startswith('/'):
+            return address
+        if address.startswith('@'):
+            return '\0' + address[1:]
+        raise ValueError('NOTIFY_SOCKET is invalid: "%s".', address)
+
+    def _get_watchdog_interval(self):
+        watchdog_usec = os.environ['WATCHDOG_USEC']
+        return datetime.timedelta(microseconds=int(watchdog_usec))
+
+    def watchdog_notify(self):
+        if not self.is_enabled:
+            return False
+        now = datetime.datetime.utcnow()
+        if now - self.last_notified < self.min_interval:
+            self.log.debug('Not pinging watchdog (too early).')
+            return False
+        try:
+            self.sock.sendto(b'WATCHDOG=1', self.addr)
+        except socket.error:
+            self.log.exception('Failed to notify watchdog!')
+            return False
+        self.log.debug('Watchdog PING')
+        self.last_notified = now
+        return True
+
+
 class WhisperLogger(object):
     def __init__(self, args):
         self.args = args
@@ -89,6 +157,7 @@ class WhisperLogger(object):
         formatter.converter = time.gmtime
         ch.setFormatter(formatter)
         self.log.addHandler(ch)
+        self.watchdog_notifier = WatchdogNotifier(log=self.log)
 
     def median(self, population):
         population = list(sorted(population))
@@ -234,6 +303,7 @@ class WhisperLogger(object):
                 self.log.info('Beginning poll cycle')
                 for message in consumer:
                     # Message was received
+                    self.watchdog_notifier.watchdog_notify()
                     if 'error' in message:
                         self.log.error('Kafka error: {}'.format(message.error))
                     else:
