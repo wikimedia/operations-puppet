@@ -40,4 +40,9 @@ class profile::reportupdater::jobs::hadoop {
         repository => 'reportupdater-queries',
         output_dir => 'metrics/browser',
     }
+
+    reportupdater::job { 'interlanguage':
+        repository => 'limn-language-data',
+        output_dir => 'metrics/interlanguage',
+    }
 }
