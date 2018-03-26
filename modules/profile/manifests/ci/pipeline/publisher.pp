@@ -1,8 +1,8 @@
-# == profile::ci::pipeline
+# == profile::ci::pipeline::publisher
 #
-# Profile that makes necessary provisions for building containers for
-# production.
-class profile::ci::pipeline(
+# Pipeline server that can publish Docker images to the WMF registry.
+#
+class profile::ci::pipeline::publisher(
     $docker_pusher_user = hiera('jenkins_agent_username'),
 ) {
     class{ '::docker_pusher':
