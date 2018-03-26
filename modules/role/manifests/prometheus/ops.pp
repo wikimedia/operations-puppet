@@ -605,6 +605,16 @@ class role::prometheus::ops {
         site       => $::site,
     }
 
+    # This config is to be removed once the Kafka analytics cluster
+    # has been totally replaced by the Kafka jumbo cluster.
+    # We include this now so that we can pick up MirrorMaker
+    # prometheus metrics.
+    prometheus::jmx_exporter_config{ "kafka_analytics_${::site}":
+        dest       => "${targets_path}/jmx_kafka_analytics_${::site}.yaml",
+        class_name => 'role::kafka::analytics',
+        site       => $::site,
+    }
+
     prometheus::jmx_exporter_config{ "puppetdb_${::site}":
         dest       => "${targets_path}/jmx_puppetdb_${::site}.yaml",
         class_name => 'role::puppetmaster::puppetdb',
