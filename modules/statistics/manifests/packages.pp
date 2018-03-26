@@ -95,6 +95,7 @@ class statistics::packages {
         'python-pymysql',           'python3-pymysql',
         'python-virtualenv',        'python3-virtualenv', # T84378
         'python-dev',               'python3-dev',        # T83316
+        'python-facets',            'python3-facets',
     ])
 
     if os_version('debian >= jessie') {
