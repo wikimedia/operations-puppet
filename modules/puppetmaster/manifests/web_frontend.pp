@@ -68,6 +68,7 @@ define puppetmaster::web_frontend(
             show_diff => false,
         }
     }
+
     apache::site { $server_name:
         ensure   => present,
         content  => template('puppetmaster/web-frontend.conf.erb'),
