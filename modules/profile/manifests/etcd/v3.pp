@@ -76,7 +76,9 @@ class profile::etcd::v3(
     }
 
     # Monitoring
-    class { '::etcd::v3::monitoring': }
+    class { '::etcd::v3::monitoring':
+        endpoint => "https://${::fqdn}:2379"
+    }
 
     # Firewall
     ferm::service { 'etcd_clients':
