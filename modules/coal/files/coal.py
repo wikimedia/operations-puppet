@@ -35,6 +35,7 @@ import json
 import logging
 import os
 import os.path
+import socket
 import time
 import whisper
 
@@ -89,6 +90,33 @@ class WhisperLogger(object):
         formatter.converter = time.gmtime
         ch.setFormatter(formatter)
         self.log.addHandler(ch)
+        self.last_ping = 0
+
+    def watchdog_ping(self):
+        watchdog_pid = os.environ.get('WATCHDOG_PID')
+        if watchdog_pid not in ('', str(os.getpid())):
+            return
+        watchdog_usec_raw = os.environ.get('WATCHDOG_USEC', '')
+        if not watchdog_usec_raw.isdigit():
+            return
+        watchdog_sec = int(watchdog_usec_raw) / 1e6
+        now = time.time()
+        if (now - self.last_ping) < (watchdog_sec / 4.0):
+            return
+        else:
+            self.last_ping = now
+        address = os.environ.get('NOTIFY_SOCKET', '')
+        if not address or address[0] not in ('@', '/'):
+            self.log.error('WATCHDOG_PID is set but NOTIFY_SOCKET is '
+                           'invalid: "%s"', address)
+            return
+        if address[0] == '@':
+            address = '\0' + address[1:]
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+        try:
+            sock.sendto(b'WATCHDOG=1', address)
+        except socket.error:
+            self.log.exception('Failed to notify watchdog')
 
     def median(self, population):
         population = list(sorted(population))
@@ -234,6 +262,7 @@ class WhisperLogger(object):
                 self.log.info('Beginning poll cycle')
                 for message in consumer:
                     # Message was received
+                    self.watchdog_ping()
                     if 'error' in message:
                         self.log.error('Kafka error: {}'.format(message.error))
                     else:

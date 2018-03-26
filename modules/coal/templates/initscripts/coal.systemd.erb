@@ -4,6 +4,7 @@ Description=Navigation Timing Whisper logger
 [Service]
 User=coal
 Group=coal
+WatchdogSec=60
 Restart=always
 ExecStart=/usr/local/bin/coal --brokers "<%= @kafka_brokers %>" --consumer-group "<%= @kafka_consumer_group %>" \
   <% @kafka_topics.each do | topic | -%>
