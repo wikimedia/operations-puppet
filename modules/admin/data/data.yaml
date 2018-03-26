@@ -2743,6 +2743,15 @@ users:
     email: katielin2532@gmail.com
     expiry_date: 2018-06-30
     expiry_contact: mhernandez@wikimedia.org
+samwilson:
+    ensure: present
+    gid: 500
+    name: samwilson
+    realname: Sam Wilson
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMoKvEnqjEQ1oanSYN/p+7Qx5tVOgRoVawGIu4Lo57+f samwilson
+    uid: 3205
+    email: swilson@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -2922,10 +2931,6 @@ ldap_only_users:
     ensure: present
     realname: Moska Noor
     email: mnoor@wikimedia.org
-  samwilson:
-    ensure: present
-    realname: Sam Wilson
-    email: swilson@wikimedia.org
   dmaza:
     ensure: present
     realname: Dayllan Maza
