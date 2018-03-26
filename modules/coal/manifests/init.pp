@@ -12,8 +12,8 @@
 #
 class coal(
     $kafka_brokers,
-    $kafka_topics = ['eventlogging_NavigationTiming', 'eventlogging_SaveTiming'],
     $kafka_consumer_group = 'coal',
+    $el_schemas = ['NavigationTiming', 'SaveTiming'],
     $whisper_dir = '/var/lib/coal',
     $log_dir = '/var/log/coal',
 ) {
@@ -72,7 +72,7 @@ class coal(
         group  => 'coal',
         mode   => '0755',
     }
-
+    
     file { $log_dir:
         ensure => directory,
         owner  => 'coal',
