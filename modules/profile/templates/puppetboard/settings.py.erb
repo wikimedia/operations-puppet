@@ -36,7 +36,7 @@ DISPLAYED_METRICS = [
 OFFLINE_MODE = True
 ENABLE_CATALOG = False
 OVERVIEW_FILTER = None
-PAGE_TITLE = "Puppetboard"
+PAGE_TITLE = "WMF Puppetboard"
 GRAPH_TYPE = 'donut'
 GRAPH_FACTS = [
     'architecture',
@@ -81,12 +81,15 @@ GRAPH_FACTS = [
 ]
 INVENTORY_FACTS = [
     ('Hostname', 'fqdn'),
-    ('IP Address', 'ipaddress'),
-    ('OS', 'lsbdistdescription'),
-    ('Manufacturer', 'manufacturer'),
+    ('Vendor', 'manufacturer'),
+    ('Model', 'productname'),
+    ('CPUs', 'processorcount'),
+    ('Memory', 'memorysize'),
+    ('BIOS Version', 'bios_version'),
+    ('BIOS Date', 'bios_release_date'),
+    ('Serial', 'serialnumber'),
+    ('OS', 'lsbdistcodename'),
     ('Kernel Version', 'kernelrelease'),
-    ('Puppet Version', 'puppetversion'),
-    ('Is Virtual', 'is_virtual'),
 ]
 REFRESH_RATE = 300
 DAILY_REPORTS_CHART_ENABLED = True
