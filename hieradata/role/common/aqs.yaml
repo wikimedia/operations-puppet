@@ -23,23 +23,23 @@ profile::cassandra::metrics_blacklist:
 # Instances
 profile::cassandra::instances:
   "aqs1004.eqiad.wmnet":
-    "a": { listen_address: 10.64.0.126 }
-    "b": { listen_address: 10.64.0.127 }
+    "a": { listen_address: 10.64.0.126, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.0.127, jmx_exporter_enabled: true }
   "aqs1005.eqiad.wmnet":
-    "a": { listen_address: 10.64.32.189 }
-    "b": { listen_address: 10.64.32.190 }
+    "a": { listen_address: 10.64.32.189, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.32.190, jmx_exporter_enabled: true }
   "aqs1006.eqiad.wmnet":
-    "a": { listen_address: 10.64.48.148 }
-    "b": { listen_address: 10.64.48.149 }
+    "a": { listen_address: 10.64.48.148, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.48.149, jmx_exporter_enabled: true }
   "aqs1007.eqiad.wmnet":
-    "a": { listen_address: 10.64.0.213 }
-    "b": { listen_address: 10.64.0.237 }
+    "a": { listen_address: 10.64.0.213, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.0.237, jmx_exporter_enabled: true }
   "aqs1008.eqiad.wmnet":
-    "a": { listen_address: 10.64.16.74 }
-    "b": { listen_address: 10.64.16.78 }
+    "a": { listen_address: 10.64.16.74, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.16.78, jmx_exporter_enabled: true }
   "aqs1009.eqiad.wmnet":
-    "a": { listen_address: 10.64.48.122 }
-    "b": { listen_address: 10.64.48.123 }
+    "a": { listen_address: 10.64.48.122, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.48.123, jmx_exporter_enabled: true }
 
 
 # Override for T184795, should be removed as soon as all the others
