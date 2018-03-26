@@ -70,7 +70,6 @@
 #   Recommendation API service URI. Format:
 #   http://recommendation-api.discovery.wmnet:9632
 #
-
 class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
     $cassandra_password = hiera('profile::restbase::cassandra_password'),
@@ -136,6 +135,15 @@ class profile::restbase(
         },
         logging_name      => $logging_label,
         statsd_prefix     => $logging_label,
+    }
+
+    sysctl::parameters { 'tcp_performance':
+        values => {
+            # Allow TIME_WAIT connection reuse state as attempt to
+            # reduce the usage of ephemeral ports.
+            # See <http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html>
+            'net.ipv4.tcp_tw_reuse' => 1,
+        },
     }
 
     $ensure_monitor_restbase = $monitor_restbase ? {
