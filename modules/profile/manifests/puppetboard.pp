@@ -62,6 +62,11 @@ class profile::puppetboard (
         ],
     }
 
+    ferm::service { 'puppetboard-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
     class { '::httpd':
         modules => ['headers', 'rewrite', 'authnz_ldap', 'proxy', 'proxy_http'],
     }
