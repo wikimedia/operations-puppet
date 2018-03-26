@@ -6,8 +6,8 @@ User=coal
 Group=coal
 Restart=always
 ExecStart=/usr/local/bin/coal --brokers "<%= @kafka_brokers %>" --consumer-group "<%= @kafka_consumer_group %>" \
-  <% @kafka_topics.each do | topic | -%>
-	--topic "<%= topic %>" \
+  <% @el_schemas.each do | schema | -%>
+	--schema "<%= schema %>" \
   <% end -%>
 	--whisper-dir "<%= @whisper_dir %>"
 
