@@ -9,8 +9,6 @@ require 'optparse'
 require 'yaml'
 
 require 'puppet'
-require 'puppet/ssl/certificate_authority'
-require 'puppet/util/command_line'
 
 OpenSSL::PKey::EC.send(:alias_method, :private?, :private_key?)
 
@@ -162,8 +160,10 @@ module Puppet
   module SSL
     # Extend the signing checks
     module CertificateAuthorityExtensions
-      def check_internal_signing_policies(hostname, csr, _allow_dns_alt_names)
-        super(hostname, csr, true)
+      def check_internal_signing_policies(hostname, csr, options = {})
+        options[:allow_dns_alt_names] = true
+        options[:allow_authorization_extensions] = true
+        super(hostname, csr, options)
       rescue Puppet::SSL::CertificateAuthority::CertificateSigningError => e
         if e.message.start_with?("CSR '#{csr.name}' subjectAltName contains a wildcard")
           true
