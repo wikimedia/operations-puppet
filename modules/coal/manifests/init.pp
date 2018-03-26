@@ -14,8 +14,9 @@ class coal(
     $kafka_brokers,
     $kafka_topics = ['eventlogging_NavigationTiming', 'eventlogging_SaveTiming'],
     $kafka_consumer_group = 'coal',
-    $whisper_dir = '/var/lib/coal'
-  ) {
+    $whisper_dir = '/var/lib/coal',
+    $log_dir = '/var/log/coal',
+) {
     require_package('python-flask')
     require_package('python-numpy')
     require_package('python-whisper')
@@ -62,7 +63,7 @@ class coal(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        notify => Service['coal'],
+        notify => Systemd::Service['coal'],
     }
 
     file { $whisper_dir:
@@ -70,13 +71,40 @@ class coal(
         owner  => 'coal',
         group  => 'coal',
         mode   => '0755',
-        before => Service['coal'],
     }
 
-    base::service_unit { 'coal':
-        # uses: $kafka_brokers, $kafka_topics, $kafka_consumer_group, $whisper_dir
+    file { $log_dir:
+        ensure => directory,
+        owner  => 'coal',
+        group  => 'coal',
+        mode   => '0755',
+    }
+
+    logrotate::rule { 'coal':
+        ensure       => present,
+        file_glob    => "${log_dir}/*.log",
+        not_if_empty => true,
+        max_age      => 30,
+        rotate       => 7,
+        date_ext     => true,
+        compress     => true,
+        missing_ok   => true,
+    }
+
+    rsyslog::conf { 'coal':
+        content  => template('coal/rsyslog.conf.erb'),
+        priority => 80,
+    }
+
+    systemd::service { 'coal':
         ensure  => present,
-        systemd => systemd_template('coal'),
-        upstart => upstart_template('coal'),
+        content => systemd_template('coal'),
+        restart => true,
+        require => [
+            User['coal'],
+            File[$whisper_dir],
+            File[$log_dir],
+            File['/usr/local/bin/coal'],
+        ],
     }
 }
