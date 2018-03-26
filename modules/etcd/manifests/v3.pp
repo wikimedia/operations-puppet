@@ -65,9 +65,9 @@
 class etcd::v3 (
     String $member_name = $::hostname,
     String $client_listen_host = $::fqdn,
-    Stdlib::Compat::Ipv4 $client_listen_ip = $::facts['networking']['ip'],
+    Stdlib::Compat::Ipv4 $client_listen_ip = $::facts['ipaddress'],
     String $peer_listen_host = $::fqdn,
-    Stdlib::Compat::Ipv4 $peer_listen_ip = $::facts['networking']['ip'],
+    Stdlib::Compat::Ipv4 $peer_listen_ip = $::facts['ipaddress'],
     String $cluster_name = $::domain,
     Wmflib::IpPort $adv_client_port = 2379,
     Integer $max_latency_ms = 10,
