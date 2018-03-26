@@ -16,6 +16,6 @@ class etcd::v3::monitoring(Stdlib::HTTPSurl $endpoint) {
 
     nrpe::monitor_service{ 'etcd_cluster_health':
         description  => 'Etcd cluster health',
-        nrpe_command => "/usr/local/bin/check_etcd_health ${::fqdn}",
+        nrpe_command => "/usr/local/bin/check_etcd_health ${endpoint}",
     }
 }
