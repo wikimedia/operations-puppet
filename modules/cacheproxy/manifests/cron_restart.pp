@@ -1,6 +1,6 @@
 # == Class cacheproxy::cron_restart
 #
-# Add a periodic restart every 3.5 days via cron, staggering the time across a
+# Add a periodic restart every week as a cron job, staggering the time across a
 # cluster
 #
 # === Parameters
@@ -10,15 +10,10 @@
 class cacheproxy::cron_restart ($nodes, $cache_cluster) {
     #TODO: maybe use the list of datacenters to do this?
     $all_nodes = array_concat($nodes['eqiad'], $nodes['esams'], $nodes['ulsfo'], $nodes['codfw'], $nodes['eqsin'])
-
-    # Semiweekly cron entries for restarts every 3.5 days
-    $times = cron_splay($all_nodes, 'semiweekly', "${cache_cluster}-backend-restarts")
-    $be_restart_a_h = $times['hour-a']
-    $be_restart_a_m = $times['minute-a']
-    $be_restart_a_d = $times['weekday-a']
-    $be_restart_b_h = $times['hour-b']
-    $be_restart_b_m = $times['minute-b']
-    $be_restart_b_d = $times['weekday-b']
+    $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
+    $be_restart_h = $times['hour']
+    $be_restart_m = $times['minute']
+    $be_restart_d = $times['weekday']
 
     file { '/etc/cron.d/varnish-backend-restart':
         mode    => '0444',
