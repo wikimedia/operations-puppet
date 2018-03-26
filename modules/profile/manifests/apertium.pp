@@ -82,6 +82,7 @@ class profile::apertium {
         'apertium-pt-gl',
         'apertium-rus',
         'apertium-rus-ukr',
+        'apertium-separable',
         'apertium-sme-nob',
         'apertium-spa',
         'apertium-spa-arg',
