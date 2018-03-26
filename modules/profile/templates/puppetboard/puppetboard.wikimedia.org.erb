@@ -13,6 +13,7 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     ProxyPreserveHost On
+    ProxyPassMatch "^/(static|offline)/" !
     ProxyPass / http://127.0.0.1:<%= @port %>/
     ProxyPassReverse / http://127.0.0.1:<%= @port %>/
 
@@ -26,16 +27,13 @@
     RequestHeader set X-WEBAUTH-USER %{WEBAUTH_USER}e env=WEBAUTH_USER
 
     Alias /static <%= @directory %>/static
+    Alias /offline <%= @directory %>/static
 
     <Directory <%= @directory %>/static>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
     </Directory>
-
-    <Location /static>
-        ProxyPass !
-    </Location>
 
     <Proxy *>
         AuthName "LDAP User (Wikitech)"
