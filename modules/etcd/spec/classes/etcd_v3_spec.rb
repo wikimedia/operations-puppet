@@ -14,7 +14,7 @@ describe 'etcd::v3' do
     on_supported_os(test_on).each do |os, facts|
         context "On #{os}" do
             let :facts do
-                facts
+                facts.merge({ networking: { ip: '1.1.1.1'} })
             end
             # Srv discovery test
             context "srv discovery" do

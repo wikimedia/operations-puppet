@@ -44,14 +44,17 @@ class profile::etcd::v3(
     if $discovery =~ /dns:(.*)/ {
         $peers_list = undef
         $srv_dns = $1
+        $certname = "_etcd-server-ssl._tcp.${srv_dns}"
     } else {
         $peers_list = $discovery
         $srv_dns = undef
+        $certname = $::fqdn
     }
 
     # TLS certs *for etcd use* in peer-to-peer communications.
     # Tlsproxy will use other certificates.
-    sslcert::certificate { "_etcd-server-ssl._tcp.${srv_dns}":
+
+    sslcert::certificate { $certname:
         skip_private => false,
         before       => Service['etcd'],
     }
@@ -69,10 +72,10 @@ class profile::etcd::v3(
         max_latency_ms   => $max_latency,
         adv_client_port  => 4001,
         trusted_ca       => '/etc/ssl/certs/Puppet_Internal_CA.pem',
-        client_cert      => "/etc/ssl/localcerts/${::fqdn}.crt",
-        client_key       => "/etc/ssl/private/${::fqdn}.crt",
-        peer_cert        => "/etc/ssl/localcerts/${::fqdn}.crt",
-        peer_key         => "/etc/ssl/private/${::fqdn}.crt",
+        client_cert      => "/etc/ssl/localcerts/${certname}.crt",
+        client_key       => "/etc/ssl/private/${certname}.key",
+        peer_cert        => "/etc/ssl/localcerts/${certname}.crt",
+        peer_key         => "/etc/ssl/private/${certname}.key",
     }
 
     # Monitoring

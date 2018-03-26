@@ -15,8 +15,14 @@
 # [*client_listen_host*]
 #   Host on which we will listen for client connections
 #
+# [*client_listen_ip*]
+#   IP on which we will listen for client connections
+#
 # [*peer_listen_host*]
 #   Host on which we will listen for client connections
+#
+# [*peer_listen_ip*]
+#   IP on which we will listen for peer connections
 #
 # [*adv_client_port*]
 #   The TCP port the ETCD server will advertise to clients. Useful if you
@@ -59,7 +65,9 @@
 class etcd::v3 (
     String $member_name = $::hostname,
     String $client_listen_host = $::fqdn,
+    Stdlib::Compat::Ipv4 $client_listen_ip = $::facts['networking']['ip'],
     String $peer_listen_host = $::fqdn,
+    Stdlib::Compat::Ipv4 $peer_listen_ip = $::facts['networking']['ip'],
     String $cluster_name = $::domain,
     Wmflib::IpPort $adv_client_port = 2379,
     Integer $max_latency_ms = 10,
@@ -86,8 +94,9 @@ class etcd::v3 (
     $data_dir = "/var/lib/etcd/${cluster_name}"
     $heartbeat_interval = 10 * $max_latency_ms
     $election_timeout = 10 * $heartbeat_interval
-    $peer_url = "https://${peer_listen_host}:2380"
-    $client_url = "https://${client_listen_host}:2379"
+    $peer_url = "https://${peer_listen_ip}:2380"
+    $adv_peer_url = "https://${peer_listen_host}:2380"
+    $client_url = "https://${client_listen_ip}:2379"
     $adv_client_url = "https://${client_listen_host}:${adv_client_port}"
 
     # Packages installation and setup
