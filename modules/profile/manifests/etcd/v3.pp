@@ -56,6 +56,8 @@ class profile::etcd::v3(
 
     sslcert::certificate { $certname:
         skip_private => false,
+        group        => 'etcd',
+        require      => Package['etcd-server'],
         before       => Service['etcd'],
     }
 
