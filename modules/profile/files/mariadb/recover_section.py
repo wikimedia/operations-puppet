@@ -27,9 +27,11 @@ def parse_options():
     parser.add_argument('--password', help='Password to recover', default='')
     parser.add_argument('--socket', help='Socket to recover to', default=None)
     parser.add_argument('--database', help='Only recover this database', default=None)
-    parser.add_argument('--replicate', help=('Enable binlog on import, for imports '
-                        'to a master that have to be replicated (but makes load slower)'),
-                        type=bool, default=False)
+    parser.add_argument('--replicate',
+                        help=('Enable binlog on import, for imports '
+                              'to a master that have to be replicated (but makes load slower).'
+                              'By default, binlog writes are disabled.'),
+                        action='store_true')
 
     return parser.parse_args()
 
