@@ -88,8 +88,6 @@ class varnish::logging(
     }
 
     ::varnish::logging::xcache { 'xcache':
-        key_prefix    => "varnish.${::site}.${cache_cluster}.xcache",
-        statsd_server => $statsd_host,
     }
 
     file { '/usr/local/bin/varnishslowlog':
