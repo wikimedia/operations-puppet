@@ -138,6 +138,17 @@ class profile::restbase(
         statsd_prefix     => $logging_label,
     }
 
+    sysctl::parameters { 'tcp_performance':
+        values => {
+            # Allow TIME_WAIT connection reuse state as attempt to
+            # prevent exhaustion of ephemeral ports.
+            # See <http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html>
+            'net.ipv4.tcp_tw_reuse'        => 1,
+            # Increase number of available ephemeral ports for TCP connections.
+            'net.ipv4.ip_local_port_range' => [ 10001, 60999 ],
+        },
+    }
+
     $ensure_monitor_restbase = $monitor_restbase ? {
         true    => present,
         false   => absent,
