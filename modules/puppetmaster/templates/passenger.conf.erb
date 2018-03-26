@@ -2,7 +2,10 @@
 
 # Passenger configuration
 PassengerHighPerformance on
-PassengerMaxPoolSize <%= @processorcount * 4 %>
+# Pool size calculation based on:
+# * memory available (scaled to account for caches)
+# * max RSS megabytes per worker
+PassengerMaxPoolSize <%= Integer(@memorysize_mb * 0.70 / 250) %>
 PassengerPoolIdleTime 1500
 PassengerMaxRequests 2000
 PassengerStatThrottleRate 120
