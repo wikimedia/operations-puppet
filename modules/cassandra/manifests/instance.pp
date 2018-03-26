@@ -492,7 +492,7 @@ define cassandra::instance(
         mode    => '0444',
     }
 
-    if ($target_version == '3.x') {
+    if ($target_version in ['3.x', 'dev']) {
         file { "${config_directory}/jvm.options":
             ensure  => present,
             content => template("${module_name}/jvm.options-${target_version}.erb"),
