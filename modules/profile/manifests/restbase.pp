@@ -70,7 +70,10 @@
 #   Recommendation API service URI. Format:
 #   http://recommendation-api.discovery.wmnet:9632
 #
-
+# [*enable_sysctl_tunables*]
+#   Enable special testing sysctl tunables.
+#   This is temp to allow a more fine grained rollout.
+#
 class profile::restbase(
     $cassandra_user = hiera('profile::restbase::cassandra_user'),
     $cassandra_password = hiera('profile::restbase::cassandra_password'),
@@ -93,6 +96,7 @@ class profile::restbase(
     $recommendation_uri = hiera('profile::restbase::recommendation_uri'),
     $monitor_restbase = hiera('profile::restbase::monitor_restbase', true),
     $monitor_domain = hiera('profile::restbase::monitor_domain'),
+    $enable_sysctl_tunables = hiera('profile::restbase::enable_sysctl_tunables', false),
 ) {
     # Default values that need no overriding
     $port = 7231
@@ -136,6 +140,18 @@ class profile::restbase(
         },
         logging_name      => $logging_label,
         statsd_prefix     => $logging_label,
+    }
+
+    # Tunables for T190213
+    if $enable_sysctl_tunables {
+        sysctl::parameters { 'tcp_performance':
+            values => {
+                # Allow TIME_WAIT connection reuse state as attempt to
+                # prevent exhaustion of ephemeral ports.
+                # See <http://vincent.bernat.im/en/blog/2014-tcp-time-wait-state-linux.html>
+                'net.ipv4.tcp_tw_reuse' => 1,
+            },
+        }
     }
 
     $ensure_monitor_restbase = $monitor_restbase ? {
