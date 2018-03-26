@@ -4,6 +4,10 @@ profile::kubernetes::master::accessible_to:
  - kubestage1002.eqiad.wmnet
  - prometheus1003.eqiad.wmnet
  - prometheus1004.eqiad.wmnet
+ - tin.eqiad.wmnet
+ - deploy1001.eqiad.wmnet
+ - naos.codfw.wmnet
+ - contint1001.wikimedia.org
 profile::kubernetes::master::apiserver_count: 1
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
