@@ -94,7 +94,7 @@ class profile::etcd::v3(
 
     ferm::service { 'etcd_peers':
         proto  => 'tcp',
-        port   => 23,
+        port   => 2380,
         srange => '$DOMAIN_NETWORKS',
     }
 }
