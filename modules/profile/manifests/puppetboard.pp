@@ -74,4 +74,9 @@ class profile::puppetboard (
     httpd::site { 'puppetboard.wikimedia.org':
         content => template('profile/puppetboard/puppetboard.wikimedia.org.erb'),
     }
+
+    monitoring::service { 'puppetboard-http':
+        description   => 'puppetboard.wikimedia.org',
+        check_command => 'check_http_unauthorized!puppetboard.wikimedia.org!/',
+    }
 }
