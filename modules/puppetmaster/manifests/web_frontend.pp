@@ -68,6 +68,28 @@ define puppetmaster::web_frontend(
             show_diff => false,
         }
     }
+
+    if $master == $::fqdn {
+        # When in 'CA mode' also install the keypair for 'puppet' in the puppet server.
+        file { "${ssldir}/server/certs/puppet.pem":
+            content   => secret("${cert_secret_path}/puppet_pubkey.pem"),
+            owner     => 'puppet',
+            group     => 'puppet',
+            mode      => '0640',
+            before    => Apache::Site[$server_name],
+            show_diff => false,
+        }
+
+        file { "${ssldir}/server/private_keys/puppet.pem":
+            content   => secret("${cert_secret_path}/puppet_privkey.pem"),
+            owner     => 'puppet',
+            group     => 'puppet',
+            mode      => '0640',
+            before    => Apache::Site[$server_name],
+            show_diff => false,
+        }
+    }
+
     apache::site { $server_name:
         ensure   => present,
         content  => template('puppetmaster/web-frontend.conf.erb'),
