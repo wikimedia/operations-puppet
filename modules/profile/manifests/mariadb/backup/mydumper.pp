@@ -53,12 +53,12 @@ class profile::mariadb::backup::mydumper {
         content => template("profile/mariadb/backups-${::site}.cnf.erb")
     }
 
-    file { '/usr/local/bin/dump_sections.py':
+    file { '/usr/local/bin/dump_section.py':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/profile/mariadb/dump_sections.py',
+        source => 'puppet:///modules/profile/mariadb/dump_section.py',
     }
     file { '/usr/local/bin/recover_section.py':
         ensure  => present,
@@ -74,8 +74,8 @@ class profile::mariadb::backup::mydumper {
         hour    => 19,
         weekday => 2,
         user    => 'dump',
-        command => '/usr/bin/python3 /usr/local/bin/dump_sections.py >/dev/null 2>&1',
-        require => [File['/usr/local/bin/dump_sections.py'],
+        command => '/usr/bin/python3 /usr/local/bin/dump_section.py --config-file=/etc/mysql/backups.cnf >/dev/null 2>&1',
+        require => [File['/usr/local/bin/dump_section.py'],
                     File['/etc/mysql/backups.cnf'],
                     File['/srv/backups/ongoing'],
         ],

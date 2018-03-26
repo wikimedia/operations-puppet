@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import datetime
 import os
 import re
@@ -13,7 +14,9 @@ DEFAULT_THREADS = 16
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
 DEFAULT_ROWS = 20000000
+DEFAULT_USER = 'root'
 RETENTION_DAYS = 18
+DEFAULT_BACKUP_DIR = '/srv/tmp'
 ONGOING_BACKUP_DIR = '/srv/backups/ongoing'
 FINAL_BACKUP_DIR = '/srv/backups/latest'
 ARCHIVE_BACKUP_DIR = '/srv/backups/archive'
@@ -33,14 +36,23 @@ def get_mydumper_cmd(name, config):
     # check parameters better to avoid unintended effects
     cmd = ['/usr/bin/mydumper']
     cmd.extend(['--compress', '--events', '--triggers', '--routines'])
-    cmd.extend(['--rows', str(DEFAULT_ROWS)])
-    log_file = os.path.join(ONGOING_BACKUP_DIR, 'log.{}'.format(name))
+    if 'backup_dir' in config:
+        backup_dir = config['backup_dir']
+    else:
+        backup_dir = ONGOING_BACKUP_DIR
+    
+    log_file = os.path.join(backup_dir, 'log.{}'.format(name))
     cmd.extend(['--logfile', log_file])
     formatted_date = datetime.datetime.now().strftime(DATE_FORMAT)
     dump_name = DUMPNAME_FORMAT.format(name, formatted_date)
-    output_dir = os.path.join(ONGOING_BACKUP_DIR, dump_name)
+    output_dir = os.path.join(backup_dir, dump_name)
     cmd.extend(['--outputdir', output_dir])
 
+    if 'rows' in config:
+        rows = int(config['rows'])
+    else:
+        rows = DEFAULT_ROWS
+    cmd.extend(['--rows', str(rows)])
     if 'threads' in config:
         threads = int(config['threads'])
     else:
@@ -56,7 +68,7 @@ def get_mydumper_cmd(name, config):
     else:
         port = DEFAULT_PORT
     cmd.extend(['--port', str(port)])
-    if 'regex' in config:
+    if 'regex' in config and config['regex'] is not None:
         cmd.extend(['--regex', config['regex']])
 
     if 'user' in config:
@@ -96,22 +108,27 @@ def logical_dump(name, config):
     if ' [ERROR] ' in log:
         return 1
 
-    output_dir = os.path.join(ONGOING_BACKUP_DIR, dump_name)
+    if 'backup_dir' in config:
+        backup_dir = config['backup_dir']
+    else:
+        backup_dir = ONGOING_BACKUP_DIR 
+    output_dir = os.path.join(backup_dir, dump_name)
     metadata_file_path = os.path.join(output_dir, 'metadata')
     with open(metadata_file_path, 'r') as metadata_file:
         metadata = metadata_file.read()
     if 'Finished dump at: ' not in metadata:
         return 2
 
-    # Backups seems ok, start consolidating it to fewer files
+    if 'backup_dir' not in config:
+        # Backups seems ok, start consolidating it to fewer files
 
-    if 'archive' in config and config['archive']:
-        archive_databases(output_dir)
+        if 'archive' in config and config['archive']:
+            archive_databases(output_dir)
 
-    # move the old latest one to the archive, and the current as the latest
+        # move the old latest one to the archive, and the current as the latest
 
-    move_dumps(name, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
-    os.rename(output_dir, os.path.join(FINAL_BACKUP_DIR, dump_name))
+        move_dumps(name, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
+        os.rename(output_dir, os.path.join(FINAL_BACKUP_DIR, dump_name))
 
     return 0
 
@@ -193,22 +210,67 @@ def archive_databases(source):
         tar_and_remove(source, name, schema_files)
 
 
+def parse_options():
+    parser = argparse.ArgumentParser(description='Create a mysql/mariadb logical backup')
+    parser.add_argument('section',
+                        help=('Section name of the backup. E.g.: "s3", "tendril". '
+                              'If section is set, --config-file is ignored. '
+                              'If it is empty, only config-file options will be used '
+                              'and other command line options will be ignored.'),
+                        nargs='?',
+                        default=None)
+    parser.add_argument('--config-file',
+                        help='Config file to use, by default, {}'.format(DEFAULT_CONFIG_FILE),
+                        default=DEFAULT_CONFIG_FILE)
+    parser.add_argument('--host', help='Host to generate the backup from', default=DEFAULT_HOST)
+    parser.add_argument('--port', type=int, help='Port to connect to', default=DEFAULT_PORT)
+    parser.add_argument('--user', help='User to connect for backup', default=DEFAULT_USER)
+    parser.add_argument('--password', help='Password used to connect.', default='')
+    parser.add_argument('--socket', help='Socket used to connect.', default=None)
+    parser.add_argument('--threads', type=int, help='Number of threads to use for exporting.', default=16)
+    parser.add_argument('--backup-dir', help='Patch used to create the backup.', default=DEFAULT_BACKUP_DIR)
+    parser.add_argument('--rows', type=int, help='Max number of rows to dump per file.', default=DEFAULT_THREADS)
+    parser.add_argument('--regex',
+                        help=('Only backup tables matching this regular expression,'
+                              'with format: database.table. Default: all tables'),
+                        default=None)
+
+    return parser.parse_args()
+
+
 def main():
-    config_file = yaml.load(open(DEFAULT_CONFIG_FILE))
 
-    if 'user' in config_file:
-        default_user = config_file['user']
-    if 'password' in config_file:
-        default_password = config_file['password']
+    options = parse_options()
+    if options.section is None:
+        # no section name, read the config file, validate it and
+        # execute it, including rotation of old dumps
+        try:
+            config_file = yaml.load(open(options.config_file))
+        except yaml.YAMLError as exc:
+            print("Error opening or parsing the YAML file")
+            sys.exit(-1)
+        if not isinstance(config_file, dict) or 'sections' not in config_file:
+            print("Error reading sections from file")
+            sys.exit(-1)
 
-    for name, config in config_file['sections'].items():
-        if 'user' not in config:
-            config['user'] = default_user
-        if 'password' not in config:
-            config['password'] = default_password
-        logical_dump(name, config)
+        default_options = config_file.copy()
+        del default_options['sections']
 
-    rotate_dumps(ARCHIVE_BACKUP_DIR, RETENTION_DAYS)
+        for section, config in config_file['sections'].items():
+            # fill up sections with default configurations
+            for default_key, default_value in default_options.items():
+                if default_key not in config:
+                    config[default_key] = default_value
+
+            logical_dump(section, config)
+
+        rotate_dumps(ARCHIVE_BACKUP_DIR, RETENTION_DAYS)
+    else:
+        # a section name was given, only dump that one,
+        # but perform no rotation
+        print(options.section)
+        print(options.__dict__)
+        logical_dump(options.section, options.__dict__)
 
 
 if __name__ == "__main__":
