@@ -6,14 +6,26 @@
 #
 # === Parameters
 #
-# [*endpoint*]
-#   URI of EventLogging event publisher to subscribe to.
-#   For example, 'tcp://eventlogging.eqiad.wmnet:8600'.
+# [*kafka_brokers*]
+#   List of kafka brokers to use for bootstrapping
+#
+# [*kafka_consumer_group*]
+#   Name of the consumer group to use for Kafka
+#
+# [*el_schemas*]
+#   Event Logging schemas that should be read from Kafka.  Topic names are
+#   derived from these values (eventlogging_$schema)
+#
+# [*whisper_dir*]
+#   Where to write the whisper files that are created
+#
+# [*log_dir*]
+#   Directory where coal's logs should be written by rsyslog
 #
 class coal(
     $kafka_brokers,
-    $kafka_topics = ['eventlogging_NavigationTiming', 'eventlogging_SaveTiming'],
     $kafka_consumer_group = 'coal',
+    $el_schemas = ['NavigationTiming', 'SaveTiming'],
     $whisper_dir = '/var/lib/coal',
     $log_dir = '/var/log/coal',
 ) {
