@@ -23,7 +23,7 @@ class role::ci::master {
     include ::profile::ci::slave
     include ::profile::ci::website
     include ::profile::ci::docker
-    include ::profile::ci::pipeline
+    include ::profile::ci::pipeline::publisher
     include ::profile::ci::shipyard
 
     include ::profile::zuul::merger
