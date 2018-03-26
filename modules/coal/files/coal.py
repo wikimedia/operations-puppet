@@ -42,6 +42,7 @@ import whisper
 UPDATE_INTERVAL = 60  # How often we log values, in seconds
 WINDOW_SPAN = UPDATE_INTERVAL * 5  # Size of sliding window, in seconds.
 RETENTION = 525949    # How many datapoints we retain. (One year's worth.)
+SCHEMAS = ('NavigationTiming', 'SaveTiming')
 METRICS = (
     'connectEnd',
     'connectStart',
@@ -77,8 +78,7 @@ ARCHIVES = [(UPDATE_INTERVAL, RETENTION)]
 class WhisperLogger(object):
     def __init__(self, args):
         self.args = args
-        self.windows = collections.defaultdict(list)
-        self.now = time.time()  # make it possible to be in the past
+
         # Log config
         self.log = logging.getLogger(__name__)
         self.log.setLevel(logging.DEBUG if self.args.verbose else logging.INFO)
@@ -89,6 +89,61 @@ class WhisperLogger(object):
         formatter.converter = time.gmtime
         ch.setFormatter(formatter)
         self.log.addHandler(ch)
+
+        #
+        # events is a dict, of dicts.  The keys are the schemas that we're working
+        # with.  It's necessary to operate at the schema level because the data
+        # for each event type is on a seperate Kafka topic, and we may be at very
+        # different locations on each topic.
+        #
+        # The key for each item in events is a timestamp that is aligned to the 
+        # minute boundary.  That is:
+        #     key = timestamp - (timestamp % 60)
+        #
+        # Each item is itself a dict, whose keys are the names of metrics.  Each
+        # of those is a list of values collected for that metric within the window,
+        # where the window is defined as
+        #     minute_boundary <= timestamp < (minute_boundary + UPDATE_INTERVAL)
+        #
+        # Thus, the resulting events dict will look something like this:
+        # events = {
+        #       'NavigationTiming': {
+        #           1522072560: {
+        #               'connectEnd': [1, 2, 5, 9, 2, 3],
+        #               'connectStart': [1, 1, 1, 1, 1],
+        #               .....
+        #           },
+        #           1522072620: {
+        #               'connectEnd': [.......],
+        #               .....
+        #           },
+        #       },
+        #       'SaveTiming': {
+        #           1522072560: {....},
+        #           ....
+        #       }  
+        #   }
+        self.events = {}
+        for schema in SCHEMAS:
+            self.events[schema] = {}
+
+        #
+        # offsets is a dict whose keys are schema names.  Each is itself a dict,
+        # whose keys are timestamps aligned to the minute boundary, as with events.  
+        # However, the content of each key is a single value representing the
+        # highest kafka offset seen within that boundary.
+        #
+        self.offsets = {}
+        for schema in SCHEMAS:
+            self.offsets[schema] = {}
+
+        # 
+        # Keep a timestamp that tracks the last time we flushed the recorded
+        # values for each schema
+        #
+        self.last_window_flushed = {}
+        for schema in SCHEMAS:
+            self.last_window_flushed[schema] = int(time.time() - (time.time() % 60))
 
     def median(self, population):
         population = list(sorted(population))
@@ -115,12 +170,23 @@ class WhisperLogger(object):
             except whisper.InvalidConfiguration:
                 pass  # Already exists.
 
+    #
+    # Process an incoming event
+    #
+    # Parameters:
+    #   meta: event dict (post JSON decoding)
+    #
+    # Returns:
+    #   None if no offsets need to be commited, or int representing the max offset flushed
+    #   
     def handle_event(self, meta):
-        if 'schema' not in meta:
+        if 'schema' in meta:
+            schema = meta['schema']
+        else:
             self.log.warning('Message received with no schema defined')
             return None
 
-        if meta['schema'] not in ('NavigationTiming', 'SaveTiming'):
+        if schema not in ('NavigationTiming', 'SaveTiming'):
             self.log.warning('Message received with invalid schema')
             return None
 
@@ -139,66 +205,147 @@ class WhisperLogger(object):
             self.log.warning('No event data contained in message')
             return None
 
+        minute_boundary = int(timestamp - (timestamp % UPDATE_INTERVAL))
+        if minute_boundary not in self.events[schema]:
+            self.events[schema][minute_boundary] = {}
+
         event = meta['event']
         for metric in METRICS:
             value = event.get(metric)
             if value:
-                window = self.windows[metric]
-                window.append((timestamp, value))
-        return timestamp
+                if metric not in self.events[schema][minute_boundary]:
+                    self.events[schema][minute_boundary][metric] = []
+                self.events[schema][minute_boundary][metric].append(value)
 
-    def flush_data(self):
-        self.log.debug('Flushing data')
-        for metric, window in sorted(self.windows.items()):
-            if len(window) == 0:
-                continue
+        # If this offset is the highest that we know about for this boundary,
+        # record it.
+        if minute_boundary not in self.offsets:
+            self.offsets[schema][minute_boundary] = meta['offset']
+        else:
+            if meta['offset'] > self.offsets[schema][minute_boundary]:
+                self.offsets[schema][minute_boundary] = meta['offset']
 
-            window.sort()
-            # Always start with the oldest sample
-            first_timestamp = int(window[0][0])
+        #
+        # Figure out whether to process the collected data, based on the timestamp
+        # Of the message being processed.  The idea here is that timestamp will
+        # be generally increasing.  Not monotonically, but close enough to 
+        # monotonically that we can fudge it by waiting an entra UPDATE_INTERVAL
+        # before processing each WINDOW_SPAN.
+        #
+        # Generally speaking, what this means is that events will have 6 active
+        # windows:
+        #   events = {
+        #       1522072560: {},
+        #       1522072620: {},
+        #       1522072680: {},
+        #       1522072740: {},
+        #       1522072800: {},
+        #       1522072860: {}
+        #   }
+        #
+        # As soon as a message is received that causes a new window to be created,
+        # the first 5 of these 6 windows will be processed.  The resulting data
+        # points will use the timestamp 1522072800.  Then, the dict with timestamp
+        # 1522072560 will be deleted.
+        #
+        # events then looks like this:
+        #   events = {
+        #       1522072620: {},
+        #       1522072680: {},
+        #       1522072740: {},
+        #       1522072800: {},
+        #       1522072860: {},
+        #       1522072920: {}
+        #   }
+        #
+        if (timestamp - WINDOW_SPAN - UPDATE_INTERVAL) > self.last_window_flushed:
+            return self.flush_data(meta['schema'])
 
-            while True:
-                messages_deleted = 0
 
-                # Establish a sample period that begins with the oldest sample
-                end_timestamp = first_timestamp + WINDOW_SPAN
+    #
+    # Flush the data that's been collected to graphite.  Commit the appropriate
+    # Kafka offsets so that if we restart, we don't re-process them.  The offsets
+    # committed will be only those in the oldest UPDATE_INTERVAL of WINDOW_SPAN
+    #
+    # NB: This function is intentionally written in such a way that it can easily
+    # be called from either handle_event, or from an async timer function, thus
+    # some of the extra sanity checking around boundary lengths and the like
+    #
+    # Parameters:
+    #   schema: string name of the schema that this message belongs to
+    #
+    # Returns:
+    #   None if there's no offsets to commit, int otherwise
+    #
+    def flush_data(self, schema):
+        self.log.debug('Flushing data for schema {}'.format(schema))
 
-                # There's no way to know that all of the data for the current window
-                # has been collected, so push on and process next interval.
-                if end_timestamp > int(window[-1][0]):
-                    self.log.debug('Last message timestamp {}, current window ends at {}'.format(
-                        int(window[-1][0]), end_timestamp))
-                    break
+        #
+        # Start with the oldest minute_boundary value, since it's possible
+        # that we're catching up
+        #
+        sorted_boundaries = sorted(self.events[schema].keys())
 
-                # Write the value of this window to the whisper file
-                values = [value for timestamp, value in window if timestamp <= end_timestamp]
-                if len(values) == 0:
-                    self.log.info('[{}] No metrics in window {} to {}'.format(
-                        metric, first_timestamp, end_timestamp))
-                    # jump to the next window
-                    first_timestamp += UPDATE_INTERVAL
-                    continue
-                current_value = self.median(values)
+        offset_to_return = None
+
+        while True:
+            if len(sorted_boundaries) == 0:
+                self.log.info('No data to process')
+                return offset_to_return
+
+            oldest_boundary = sorted_boundaries[0]
+
+            # 
+            # We don't want to flush the data that we've accumulated if there's a
+            # chance that we might still get data in one of the relevant windows.
+            #
+            # We're (relatively) naively assuming that UPDATE_INTERVAL is enough
+            # time to wait for any lagged messages, so we want to be sure that 
+            # it's been at least UPDATE_INTERVAL + WINDOW_SPAN since the oldest
+            # boundary.
+            #
+            if (oldest_boundary + WINDOW_SPAN + UPDATE_INTERVAL) > time.time():
+                self.log.info('All windows with sufficient data have been processed')
+                return offset_to_return
+
+            # 
+            # If we get here, we know that we have at least one window that can be
+            # processed.
+            #
+            # Start by creating a list of the timestamps that are within the current
+            # window.
+            #
+            boundaries_to_consider = [boundary for boundary in sorted_boundaries if 
+                                      boundary < (oldest_boundary + WINDOW_SPAN)]
+
+            # Make a dict of the metrics that have samples within this window, and
+            # put all of the collected samples into a list.  Don't assume that every
+            # metric present in the window is in the first boundary.
+            metrics_with_samples = {}
+            for boundary in boundaries_to_consider:
+                for metric in self.events[boundary]:
+                    if metric not in metrics_with_samples:
+                        metrics_with_samples[metric] = []
+                    metrics_with_samples[metric].extend(self.events[schema][boundary][metric])
+
+            # Get the median for each metric and write:
+            for metric,values in metrics_with_samples.items():
+                median_value = self.median(values)
                 if self.args.dry_run:
-                    self.log.info('[{}] [{}] {}'.format(metric, end_timestamp,
-                                  current_value))
+                    self.log.info('[{}] [{}] {}'.format(metric, 
+                                                        oldest_boundary + WINDOW_SPAN,
+                                                        median_value))
                 else:
-                    self.log.info('[{}] {} values found between {} and {}: median {}'.format(
-                        metric, len(values), first_timestamp, end_timestamp,
-                        current_value))
-                    whisper.update(self.get_whisper_file(metric), current_value,
-                                   timestamp=end_timestamp)
+                    whisper.update(self.get_whisper_file(metric), median_value,
+                                   timestamp=oldest_boundary + WINDOW_SPAN)
 
-                # Get rid of the first interval worth of items from the window
-                for item in [item for item in window
-                             if item[0] < (first_timestamp + UPDATE_INTERVAL)]:
-                    window.remove(item)
-                    messages_deleted += 1
-                self.log.info('[{}] Removed {} data points between {} and {}'.format(
-                    metric, messages_deleted, first_timestamp, first_timestamp + UPDATE_INTERVAL))
-
-                # Move to the next window and loop again
-                first_timestamp += UPDATE_INTERVAL
+            #
+            # Last thing to do is to commit the oldest offsets to Kafka, and then
+            # delete the oldest boundary from the events and offsets dicts
+            #
+            offset_to_return = self.offsets[schema][oldest_boundary]
+            del self.events[schema][oldest_boundary]
+            del self.offsets[schema][oldest_boundary]
 
     def run(self):
         window_start = time.time()
@@ -220,18 +367,23 @@ class WhisperLogger(object):
         #     other aio libraries that aren't packaged natively.
         #
         # This method, as written, implements #1.
-        while True:
-            try:
+        try:
+            while True:
                 self.log.info('Starting Kafka connection to brokers ({}).'.format(
                     self.args.brokers))
                 consumer = KafkaConsumer(
                     bootstrap_servers=self.args.brokers,
                     group_id=self.args.consumer_group,
-                    consumer_timeout_ms=UPDATE_INTERVAL * 1000)
-                self.log.info('Subscribing to topics: {}'.format(self.args.topics))
-                consumer.subscribe(self.args.topics)
+                    enable_auto_commit=False)
+
+                # Work out topic names based on schemas, and subscribe to the
+                # appropriate topics
+                topics = ['eventlogging_{}'.format(schema) for schema in self.args.schemas]
+                self.log.info('Subscribing to topics: {}'.format(topics))
+                consumer.subscribe(topics)
 
                 self.log.info('Beginning poll cycle')
+
                 for message in consumer:
                     # Message was received
                     if 'error' in message:
@@ -285,7 +437,10 @@ class WhisperLogger(object):
             finally:
                 try:
                     # Take a stab at flushing any remaining data, just in case
-                    self.flush_data()
+                    for topic in 
+                    offset = self.flush_data()
+                    if offset is not None:
+
                     consumer.close()
                 except Exception:
                     self.log.exception('Exception closing consumer')
@@ -297,8 +452,9 @@ if __name__ == '__main__':
                             help='Comma-separated list of Kafka brokers')
     arg_parser.add_argument('--consumer-group', required=True,
                             dest='consumer_group', help='Name of the Kafka consumer group')
-    arg_parser.add_argument('--topic', required=True, action='append',
-                            dest='topics', help='Kafka topic from which to consume')
+    arg_parser.add_argument('--schema', required=True, action='append',
+                            dest='schemas', 
+                            help='Schemas that we deal with, topic names are derived')
     arg_parser.add_argument('--whisper-dir', default=os.getcwd(),
                             required=False,
                             help='Path for Whisper files.  Defaults to current working dir')
