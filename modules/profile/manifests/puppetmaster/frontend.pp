@@ -36,6 +36,11 @@ class profile::puppetmaster::frontend(
         # Ensure cergen is present for managing TLS keys and
         # x509 certificates signed by the Puppet CA.
         class { '::cergen': }
+
+    }
+
+    class { '::puppetmaster::ca_server':
+        master => $ca_server
     }
 
     ## Configuration
