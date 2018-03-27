@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import sys
+from multiprocessing.pool import ThreadPool
 import yaml
 
 DEFAULT_CONFIG_FILE = '/etc/mysql/backups.cnf'
@@ -121,7 +122,11 @@ def logical_dump(name, config):
 
     # Backups seems ok, start consolidating it to fewer files
     if 'archive' in config and config['archive']:
-        archive_databases(output_dir)
+        if 'threads' in config:
+            threads = int(config['threads'])
+        else:
+            threads = DEFAULT_THREADS
+        archive_databases(output_dir, threads)
 
     return dump_name
 
@@ -179,20 +184,24 @@ def tar_and_remove(source, name, files):
     out, err = process.communicate()
 
 
-def archive_databases(source):
+def archive_databases(source, threads=DEFAULT_THREADS):
     """
     To avoid too many files per backup, archive each database file in
-    separate tar files for given directory "source".
+    separate tar files for given directory "source". The threads
+    parameter allows to control the concurrency (number of threads executing
+    tar in parallel).
     """
 
     files = sorted(os.listdir(source))
 
     schema_files = list()
     name = None
+    archival_schedule = dict()
+    pool = ThreadPool(threads)
     for item in files:
         if item.endswith('-schema-create.sql.gz') or item == 'metadata':
             if schema_files:
-                tar_and_remove(source, name, schema_files)
+                pool.apply_async(tar_and_remove, (source, name, schema_files))
                 schema_files = list()
             if item != 'metadata':
                 schema_files.append(item)
@@ -200,7 +209,10 @@ def archive_databases(source):
         else:
             schema_files.append(item)
     if schema_files:
-        tar_and_remove(source, name, schema_files)
+        pool.apply_async(tar_and_remove, (source, name, schema_files))
+        
+    pool.close()
+    pool.join()
 
 
 def parse_options():
