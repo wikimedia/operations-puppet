@@ -57,7 +57,7 @@ class profile::kafka::mirror(
             port             => $prometheus_jmx_exporter_port,
             prometheus_nodes => $prometheus_nodes,
             config_file      => $jmx_exporter_config_file,
-            source           => 'puppet:///modules/profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml',
+            content          => template('profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml.erb'),
         }
 
         # Generate icinga alert if Kafka Server is not running.
