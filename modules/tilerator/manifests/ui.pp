@@ -68,6 +68,7 @@ class tilerator::ui(
     $pgsql_pass,
     $redis_server,
     $redis_pass,
+    $style,
     $port           = 6535,
     $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
@@ -102,6 +103,8 @@ class tilerator::ui(
             redis_server       => $redis_url,
             ui_only            => true,
             daemon_only        => false,
+            style              => $style,
+            storage_id         => $storage_id,
         },
         contact_groups    => $contact_groups,
     }

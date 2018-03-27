@@ -44,6 +44,8 @@ class profile::maps::apps(
         redis_pass        => $redis_pass,
         conf_sources      => '/etc/tilerator/sources.yaml',
         contact_groups    => $contact_groups,
+        style             => $tilerator_style,
+        storage_id        => $storage_id,
     }
 
     class { '::tilerator::ui':
@@ -54,6 +56,7 @@ class profile::maps::apps(
         redis_pass        => $redis_pass,
         conf_sources      => '/etc/tileratorui/sources.yaml',
         contact_groups    => $contact_groups,
+        style             => $tilerator_style,
         storage_id        => $storage_id,
     }
 
@@ -63,6 +66,8 @@ class profile::maps::apps(
         pgsql_pass        => $pgsql_kartotherian_pass,
         conf_sources      => '/etc/kartotherian/sources.yaml',
         contact_groups    => $contact_groups,
+        style             => $kartotherian_style,
+        storage_id        => $storage_id,
     }
 
 }
