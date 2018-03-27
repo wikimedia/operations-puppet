@@ -189,4 +189,24 @@ class base::monitoring::host(
             nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 96 -c 480',
         }
     }
+
+    monitoring::check_prometheus { 'edac_correctable_errors':
+        description     => 'Memory correctable errors (EDAC)',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
+        query           => "scalar(node_edac_correctable_errors_total{instance=\"${::hostname}:9100\"})",
+        warning         => 1,
+        critical        => 3,
+        method          => 'ge',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
+
+    monitoring::check_prometheus { 'edac_uncorrectable_errors':
+        description     => 'Memory uncorrectable errors (EDAC)',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
+        query           => "scalar(node_edac_uncorrectable_errors_total{instance=\"${::hostname}:9100\"})",
+        warning         => 1,
+        critical        => 1,
+        method          => 'ge',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+    }
 }
