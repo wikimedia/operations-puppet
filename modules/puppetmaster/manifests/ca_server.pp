@@ -18,7 +18,7 @@ class puppetmaster::ca_server(
     $server_name = 'puppet',
     $cert_secret_path = 'puppetmaster',
 ){
-    $ssldir = '/var/lib/puppet/ssl/server'
+    $ssldir = '/var/lib/puppet/server/ssl'
 
     file { "${ssldir}/certs/${server_name}.pem":
         content   => secret("${cert_secret_path}/${server_name}_pubkey.pem"),
