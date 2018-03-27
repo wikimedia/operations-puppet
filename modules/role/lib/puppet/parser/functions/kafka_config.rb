@@ -85,8 +85,6 @@ module Puppet::Parser::Functions
         # string list of comma-separated host:ssl_port brokers
         'ssl_string' => brokers.map { |host, conf| "#{host}:#{conf['ssl_port'] || default_ssl_port}" }.sort.join(','),
 
-        # list of comma-separated host_9999 broker pairs used as graphite wildcards
-        'graphite'   => "{#{brokers.keys.map { |b| "#{b.tr '.', '_'}_#{jmx_port}" }.sort.join(',')}}",
         'size'       => brokers.keys.size
       },
       'jmx_port'  => jmx_port,

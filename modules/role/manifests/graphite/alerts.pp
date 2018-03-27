@@ -11,27 +11,22 @@ class role::graphite::alerts {
 
     $kafka_config = kafka_config('analytics')
 
-    # Alerts for EventLogging metrics in Kafka.
-    class { '::eventlogging::monitoring::graphite':
-        kafka_brokers_graphite_wildcard => $kafka_config['brokers']['graphite']
-    }
-
-    swift::monitoring::graphite_alerts { 'eqiad-prod': }
-    swift::monitoring::graphite_alerts { 'codfw-prod': }
-
-    # Use graphite's anomaly detection support.
-    monitoring::graphite_anomaly { 'kafka-analytics-eqiad-broker-MessagesIn-anomaly':
-        description     => 'Kafka Cluster analytics-eqiad Broker Messages In Per Second',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kafka?panelId=6&fullscreen&orgId=1&var-cluster=analytics-eqiad&var-kafka_brokers=All&var-kafka_servers=All'],
-        metric          => 'sumSeries(kafka.cluster.analytics-eqiad.kafka.*.kafka.server.BrokerTopicMetrics-AllTopics.MessagesInPerSec.OneMinuteRate)',
-        # check over the 60 data points (an hour?) and:
-        # - alert warn if more than 30 are under the confidence band
-        # - alert critical if more than 45 are under the confidecne band
-        check_window    => 60,
-        warning         => 30,
-        critical        => 45,
+    # Eventlogging
+    #   Warn/Alert if the db inserts of EventLogging data have dropped dramatically
+    #   Since the MySQL consumer is at the bottom of the pipeline
+    #   this metric is a good proxy to make sure events are flowing through the
+    #   kafka pipeline
+    monitoring::graphite_threshold { 'eventlogging_overall_inserted_rate':
+        description     => 'EventLogging overall insertion rate from MySQL consumer',
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=12&fullscreen&orgId=1'],
+        metric          => 'movingAverage(eventlogging.overall.inserted.rate, "10min")',
+        warning         => 50,
+        critical        => 10,
+        percentage      => 20, # At least 3 of the (25 - 10) = 15 readings
+        from            => '25min',
+        until           => '10min',
+        contact_group   => 'analytics',
         under           => true,
-        group           => 'analytics_eqiad',
     }
 
     # Monitor memcached error rate from MediaWiki. This is commonly a sign of
