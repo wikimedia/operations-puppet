@@ -12,6 +12,7 @@ import yaml
 
 DEFAULT_CONFIG_FILE = '/etc/mysql/backups.cnf'
 DEFAULT_THREADS = 16
+CONCURRENT_BACKUPS = 2
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
 DEFAULT_ROWS = 20000000
@@ -54,11 +55,7 @@ def get_mydumper_cmd(name, config):
     else:
         rows = DEFAULT_ROWS
     cmd.extend(['--rows', str(rows)])
-    if 'threads' in config:
-        threads = int(config['threads'])
-    else:
-        threads = DEFAULT_THREADS
-    cmd.extend(['--threads', str(threads)])
+    cmd.extend(['--threads', str(config['threads'])])
     if 'host' in config:
         host = config['host']
     else:
@@ -122,11 +119,7 @@ def logical_dump(name, config):
 
     # Backups seems ok, start consolidating it to fewer files
     if 'archive' in config and config['archive']:
-        if 'threads' in config:
-            threads = int(config['threads'])
-        else:
-            threads = DEFAULT_THREADS
-        archive_databases(output_dir, threads)
+        archive_databases(output_dir, config['threads'])
 
     return dump_name
 
@@ -150,7 +143,7 @@ def move_dumps(name, source, destination):
             os.rename(path, os.path.join(destination, entry))
 
 
-def rotate_dumps(source, days):
+def purge_dumps(source, days):
     """
     Remove subdirectories in ARCHIVE_BACKUP_DIR and all its contents for dirs that
     have the right format (dump.section.date) and are older than the given
@@ -184,7 +177,7 @@ def tar_and_remove(source, name, files):
     out, err = process.communicate()
 
 
-def archive_databases(source, threads=DEFAULT_THREADS):
+def archive_databases(source, threads):
     """
     To avoid too many files per backup, archive each database file in
     separate tar files for given directory "source". The threads
@@ -295,9 +288,18 @@ def parse_config_file(config_path):
         sys.exit(-1)
 
     default_options = config_file.copy()
+    # If individual thread configuration is set for each backup, it could have strang effects
+    if not 'threads' in default_options:
+        config['threads'] = DEFAULT_THREADS
+    
+    
+
     del default_options['sections']
 
     manual_config = config_file['sections']
+    if len(manual_config) > 1:
+        # Limit the threads only if there is more than 1 backup
+        default_options['threads'] = int(default_options['threads'] / CONCURRENT_BACKUPS)
     config = dict()
     for section, section_config in manual_config.items():
         # fill up sections with default configurations
@@ -314,28 +316,39 @@ def main():
     if options.section is None:
         # no section name, read the config file, validate it and
         # execute it, including rotation of old dumps
-
         config = parse_config_file(options.config_file)
-        if isinstance(config, dict):
-            for section, section_config in config.items():
-                dump_name = logical_dump(section, section_config)
-                if isinstance(dump_name, str):
-                    # This is not a manual backup, peform rotations
-                    # move the old latest one to the archive, and the current as the latest
-                    move_dumps(section, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
-                    os.rename(os.path.join(ONGOING_BACKUP_DIR, dump_name),
-                              os.path.join(FINAL_BACKUP_DIR, dump_name))
-                else:
-                    print('Error while performing backup of {}'.format(section))
-            rotate_dumps(ARCHIVE_BACKUP_DIR, RETENTION_DAYS)
+        exit_code = 0
+        dump_name = dict()
+        backup_pool = ThreadPool(CONCURRENT_BACKUPS)
+        for section, section_config in config.items():
+            dump_name[section] = backup_pool.apply_async(logical_dump, (section, section_config))
+
+        backup_pool.close()
+        backup_pool.join()
+
+        for section, section_config in config.items():
+            result = dump_name[section].get()
+            if not isinstance(result, str):
+                exit_code = result
+                print('Error while performing backup of {}'.format(section))
+            # This is not a manual backup, peform rotations
+            # move the old latest one to the archive, and the current as the latest
+            move_dumps(section, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
+            os.rename(os.path.join(ONGOING_BACKUP_DIR, result),
+                      os.path.join(FINAL_BACKUP_DIR, result))
+        purge_dumps(ARCHIVE_BACKUP_DIR, RETENTION_DAYS)
+        sys.exit(exit_code)
+
     else:
         # a section name was given, only dump that one,
         # but perform no rotation
         dump_name = logical_dump(options.section, options.__dict__)
         if isinstance(dump_name, str):
             print('Backup generated correctly: {}'.format(dump_name))
+            sys.exit(0)
         else:
             print('Error while performing backup of {}'.format(options.section))
+            sys.exit(dump_name)
 
 
 if __name__ == "__main__":
