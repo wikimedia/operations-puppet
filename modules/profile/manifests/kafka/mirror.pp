@@ -66,6 +66,10 @@ class profile::kafka::mirror(
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_maker_instance_name}/producer\\.properties'",
             require      => Confluent::Kafka::Mirror::Instance[$mirror_maker_instance_name],
         }
+
+        # Export prometheus based MirrorMaker alerts.
+        # This will be collected and realized by profile::prometheus::alerts.
+        @@profile::kafka::mirror::alerts { $mirror_maker_instance_name: }
     }
     else {
         $java_opts = ''

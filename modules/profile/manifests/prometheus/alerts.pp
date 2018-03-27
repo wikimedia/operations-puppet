@@ -18,4 +18,8 @@ class profile::prometheus::alerts {
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/prometheus-druid?refresh=1m&panelId=41&fullscreen&orgId=1']
     }
+
+    # Collect all alerts declared for Kafka MirrorMaker instances.
+    # These are declared and exported in profile::kafka::mirror.
+    Profile::Kafka::Mirror::Alerts <<| |>>
 }
