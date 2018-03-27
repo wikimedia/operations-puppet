@@ -28,6 +28,10 @@ mwconfig:
       wmf_datacenter:
         schema: "wmf_datacenter.schema"
         selector: "name=WMFMasterDatacenter"
+      db_server:
+        schema: "db-server.schema"
+        selector: "scope=db_(eqiad|codfw)"
+
   schema:
     val:
       type: "any"

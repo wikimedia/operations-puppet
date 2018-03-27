@@ -1,0 +1,38 @@
+{
+    "description": "Represents a database instance specific to a section\n",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "required": [
+        "val"
+    ],
+    "type": "object",
+    "properties": {
+        "val": {
+            "type": "object",
+            "properties": {
+               "sections": {
+                   "type": "array",
+                   "uniqueItems": true,
+                   "items": {
+                       "type": "object",
+                       "properties": {
+                           "section": { "type": "string", "enum": ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"] },
+                           "weight": {"type": "integer"},
+                           "special_uses": {
+                               "type": "array",
+                               "items": {
+                                   "type": "object",
+                                   "properties": {
+                                       "use": {"type": "string", "enum": ["vslow", "dump", "wathclist", "recentchanges", "recenchangeslinked", "contributions", "logpager"]},
+                                       "weight": {"type": "integer"}
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+            }
+        }
+    },
+    "id": "mediawiki-config/db-server",
+    "additionalProperties": false
+}
