@@ -11,7 +11,7 @@ class profile::openstack::labtest::puppetmaster::frontend(
     $encapi_db_user = hiera('profile::openstack::labtest::puppetmaster::encapi::db_user'),
     $encapi_db_pass = hiera('profile::openstack::labtest::puppetmaster::encapi::db_pass'),
     $encapi_statsd_prefix = hiera('profile::openstack::labtest::puppetmaster::encapi::statsd_prefix'),
-    $statsd_host = hiera('profile::openstack::labtest::statsd_host'),
+    $statsd_host = "%{hiera('wmcs::monitoring::master')}",
     $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     ) {
 

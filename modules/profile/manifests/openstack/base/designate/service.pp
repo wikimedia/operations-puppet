@@ -24,7 +24,7 @@ class profile::openstack::base::designate::service(
     $keystone_auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $osm_host = hiera('profile::openstack::base::osm_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
-    $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
+    $monitoring_host = "%{hiera('wmcs::monitoring::master')}",
     ) {
 
     $primary_pdns_ip = ipresolve($primary_pdns,4)

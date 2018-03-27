@@ -2,7 +2,7 @@ class profile::openstack::base::rabbitmq(
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $monitor_user = hiera('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = hiera('profile::openstack::base::rabbit_monitor_pass'),
-    $monitoring_host = hiera('profile::openstack::base::monitoring_host'),
+    $monitoring_host = "%{hiera('wmcs::monitoring::master')}",
     $cleanup_password = hiera('profile::openstack::base::rabbit_cleanup_pass'),
     $file_handles = hiera('profile::openstack::base::rabbit_file_handles'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
