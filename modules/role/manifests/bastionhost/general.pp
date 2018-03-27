@@ -29,4 +29,12 @@ class role::bastionhost::general {
       dest_host   => 'bast1002.wikimedia.org',
       module_path => '/home',
     }
+
+    if $::fqdn == "bast1001.wikimedia.org" {
+        motd::script { 'inactive_warning':
+            ensure   => $motd_ensure,
+            priority => 1,
+            content  => template('role/bastionhost/inactive.motd.erb'),
+        }
+    }
 }
