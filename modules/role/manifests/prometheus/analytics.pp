@@ -45,6 +45,25 @@ class role::prometheus::analytics {
           { 'files' => [ "${targets_path}/jmx_hive_*.yaml" ]}
         ],
       },
+      {
+        'job_name'        => 'cassandra',
+        'scrape_timeout'  => '25s',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_aqs_cassandra_*.yaml" ]}
+        ],
+        # Drop restbase table/cf 'meta' metrics, not needed
+        'metric_relabel_configs' => [
+          { 'source_labels' => ['columnfamily'],
+            'regex'  => 'meta',
+            'action' => 'drop',
+          },
+          { 'source_labels' => ['table'],
+            'regex'  => 'meta',
+            'action' => 'drop',
+          },
+        ],
+      },
     ]
 
     prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
@@ -80,6 +99,12 @@ class role::prometheus::analytics {
     prometheus::jmx_exporter_config{ "hive_analytics_${::site}":
         dest       => "${targets_path}/jmx_hive_analytics_${::site}.yaml",
         class_name => 'role::analytics_cluster::coordinator',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "cassandra_aqs_${::site}":
+        dest       => "${targets_path}/jmx_aqs_cassandra_${::site}.yaml",
+        class_name => 'role::aqs',
         site       => $::site,
     }
 
