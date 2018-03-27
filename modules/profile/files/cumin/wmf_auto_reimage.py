@@ -149,7 +149,8 @@ def run(args, user, log_path):
         for host in args.hosts:
             proc = reimage_host(host, mgmts[host], args)
             if args.sequential:
-                retcodes[host] = proc.wait()
+                ret = proc.wait()
+                retcodes[ret].append(host)
                 time.sleep(args.sleep)
             else:
                 procs[host] = proc
