@@ -35,3 +35,14 @@ profile::ci::docker::settings:
 docker::registry: docker-registry.discovery.wmnet
 docker::registry::username: uploader
 profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
+
+profile::kubernetes::deployment_server::services:
+  mathoid:
+    username: mathoid
+    group: wikidev
+    mode: '0640'
+
+# Specified in the private repo in this form
+#profile::kubernetes::deployment_server::tokens:
+#  mathoid:
+#    token: dummy
