@@ -3,8 +3,39 @@ counter varnish_backend_requests_seconds_bucket by le, status, method, backend
 counter varnish_backend_requests_seconds_sum by status, method, backend
 counter varnish_backend_requests_seconds_count by status, method, backend
 
-# TODO(filippo): add proper ttfb histograms once a mtail version with
-# https://github.com/google/mtail/issues/106 is deployed.
-/http_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\tbackend (vcl-[a-z0-9-]+|boot)\.(?P<backend>\S+)\t/ {
+/http_status (?P<status>[0-9][0-9][0-9])\thttp_method (?P<method>[A-Z]+)\tbackend (vcl-[a-z0-9-]+|boot)\.(?P<backend>\S+)\tttfb (?P<ttfb>[0-9.]+)/ {
   varnish_backend_requests_seconds_count[$status][$method][$backend]++
+  varnish_backend_requests_seconds_sum[$status][$method][$backend] += $ttfb
+
+  # these statements "fall through", so the histogram is cumulative. The
+  # collecting system can compute the percentile bands by taking the ratio of
+  # each bucket value over the final bucket.
+  $ttfb < 0.01 {
+    varnish_backend_requests_seconds_bucket["0.01"][$status][$method][$backend]++
+  }
+  $ttfb < 0.1 {
+    varnish_backend_requests_seconds_bucket["0.1"][$status][$method][$backend]++
+  }
+  $ttfb < 0.5 {
+    varnish_backend_requests_seconds_bucket["0.5"][$status][$method][$backend]++
+  }
+  $ttfb < 1 {
+    varnish_backend_requests_seconds_bucket["1.0"][$status][$method][$backend]++
+  }
+  $ttfb < 2 {
+    varnish_backend_requests_seconds_bucket["2.0"][$status][$method][$backend]++
+  }
+  $ttfb < 4 {
+    varnish_backend_requests_seconds_bucket["4.0"][$status][$method][$backend]++
+  }
+  $ttfb < 8 {
+    varnish_backend_requests_seconds_bucket["8.0"][$status][$method][$backend]++
+  }
+  $ttfb < 16 {
+    varnish_backend_requests_seconds_bucket["16.0"][$status][$method][$backend]++
+  }
+  $ttfb < 32 {
+    varnish_backend_requests_seconds_bucket["32.0"][$status][$method][$backend]++
+  }
+  varnish_backend_requests_seconds_bucket["+Inf"][$status][$method][$backend]++
 }
