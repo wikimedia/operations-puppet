@@ -18,4 +18,7 @@ class profile::prometheus::alerts {
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/prometheus-druid?refresh=1m&panelId=41&fullscreen&orgId=1']
     }
+
+    # Monitor throughput and dropped messages on MirrorMaker instances.
+    profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad': }
 }
