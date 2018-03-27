@@ -23,6 +23,19 @@ class role::toollabs::node::web {
         ensure => latest,
     }
 
+    # We have a tmp file problem to clean up
+    package { 'tmpreaper':
+        ensure => 'installed',
+    }
+
+    file { '/etc/tmpreaper.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/role/toollabs/web/tmpreaper.conf',
+        require => Package['tmpreaper'],
+    }
+
     class { '::gridengine::exec_host':
         config  => 'toollabs/gridengine/host-web.erb',
         require => File['/var/lib/gridengine'],
