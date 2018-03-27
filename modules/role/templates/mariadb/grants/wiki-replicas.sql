@@ -24,7 +24,10 @@ GRANT ALL PRIVILEGES ON `%\\_p`.* TO 'maintainviews'@'localhost'
 GRANT SELECT, DROP, CREATE VIEW ON `%wik%`.* TO 'maintainviews'@'localhost'
 GRANT SELECT (user, host) ON `mysql`.`user` TO 'maintainviews'@'localhost'
 
--- viewmater user
+-- maintainindexes user, used by cloud services team
+GRANT SELECT, INDEX, ALTER ON `%wik%`.* TO 'maintainindexes'@'localhost';
+
+-- viewmaster user
 GRANT SELECT ON *.* TO 'viewmaster'@'%'
 
 -- quarry user granted 48 connections #T180141
