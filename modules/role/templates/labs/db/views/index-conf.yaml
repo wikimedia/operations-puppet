@@ -1,6 +1,6 @@
 port: 3306
-mysql_user: "<%= @view_user %>"
-mysql_password: "<%= @view_pass %>"
+mysql_user: "<%= @idx_user %>"
+mysql_password: "<%= @idx_pass %>"
 
 indexes:
   - table: archive
