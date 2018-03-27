@@ -39,6 +39,7 @@ define nrpe::monitor_service( $description,
                               $retry_interval = 1,
                               $ensure         = 'present') {
     nrpe::check { "check_${title}":
+        ensure  => $ensure,
         command => $nrpe_command,
         before  => Monitoring::Service[$title],
     }
