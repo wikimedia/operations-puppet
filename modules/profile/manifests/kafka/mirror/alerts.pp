@@ -25,6 +25,9 @@
 # [*nagios_critical*]
 #   Default: false
 #
+# [*prometheus_url*]
+#   Default: "http://prometheus.svc.${::site}.wmnet/ops"
+#
 define profile::kafka::mirror::alerts(
     $mirror_name         = $title,
     $monitoring_period   = '30m',
@@ -32,8 +35,8 @@ define profile::kafka::mirror::alerts(
     $critical_throughput = 0,
     $contact_group       = 'admins',
     $nagios_critical     = false,
+    $prometheus_url      = "http://prometheus.svc.${::site}.wmnet/ops",
 ) {
-    $prometheus_url    = "http://prometheus.svc.${::site}.wmnet"
     $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=eqiad%20prometheus%2Fops&var-mirror_name=${mirror_name}"
 
     # Set check_prometheus defaults.
