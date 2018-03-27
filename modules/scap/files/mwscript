@@ -17,7 +17,15 @@ if [ -z "$TERM" ] || [ "$TERM" = unknown ] || [ "$TERM" = dumb ]; then
 fi
 
 # Allow overriding of PHP version or flags (e.g. "hhvm -d hhvm.stats.enable_hot_profiler=1")
-[ "$PHP" = "" ] && PHP=php5
+if [ -x "$(command -v php7)" ]; then
+	PHP_BIN=php7
+elif [ -x "$(command -v php5)" ]; then
+	PHP_BIN=php5
+else
+    PHP_BIN=php
+fi
+
+[ "$PHP" = "" ] && PHP=$PHP_BIN
 
 if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then
 	sudo -u "$MEDIAWIKI_WEB_USER" $PHP "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
