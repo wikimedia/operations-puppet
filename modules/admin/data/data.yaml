@@ -2743,7 +2743,7 @@ users:
     email: katielin2532@gmail.com
     expiry_date: 2018-06-30
     expiry_contact: mhernandez@wikimedia.org
-samwilson:
+  samwilson:
     ensure: present
     gid: 500
     name: samwilson
