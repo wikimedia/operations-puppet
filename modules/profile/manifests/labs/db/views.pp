@@ -1,5 +1,10 @@
 # deploy scripts and its dependencies to create replica views
-class role::labs::db::views {
+class profile::labs::db::views (
+    $view_user = hiera('profile::labs::db::views::maintainviews::user'),
+    $view_pass = hiera('profile::labs::db::views::maintainviews::db_pass'),
+    $idx_user = hiera('profile::labs::db::views::maintainindexes::user'),
+    $idx_pass = hiera('profile::labs::db::views::maintainindexes::db_pass'),
+){
 
     package { [
         'python-pymysql',
@@ -10,12 +15,9 @@ class role::labs::db::views {
         ensure => present,
     }
 
-    include passwords::labsdb::maintainviews
-    $view_user = $::passwords::labsdb::maintainviews::user
-    $view_pass = $::passwords::labsdb::maintainviews::db_pass
     file { '/etc/maintain-views.yaml':
         ensure  => file,
-        content => template('role/labs/db/views/maintain-views.yaml'),
+        content => template('profile/labs/db/views/maintain-views.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -23,7 +25,7 @@ class role::labs::db::views {
 
     file { '/usr/local/sbin/maintain-views':
         ensure  => file,
-        source  => 'puppet:///modules/role/labs/db/views/maintain-views.py',
+        source  => 'puppet:///modules/profile/labs/db/views/maintain-views.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0655',
@@ -34,7 +36,7 @@ class role::labs::db::views {
 
     file { '/etc/index-conf.yaml':
         ensure  => file,
-        content => template('role/labs/db/views/index-conf.yaml'),
+        content => template('profile/labs/db/views/index-conf.yaml'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -42,7 +44,7 @@ class role::labs::db::views {
 
     file { '/usr/local/sbin/maintain_replica_indexes.py':
         ensure  => file,
-        source  => 'puppet:///modules/role/labs/db/views/maintain_replica_indexes.py',
+        source  => 'puppet:///modules/profile/labs/db/views/maintain_replica_indexes.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0655',
@@ -53,7 +55,7 @@ class role::labs::db::views {
 
     file { '/usr/local/sbin/maintain-meta_p':
         ensure  => file,
-        source  => 'puppet:///modules/role/labs/db/views/maintain-meta_p.py',
+        source  => 'puppet:///modules/profile/labs/db/views/maintain-meta_p.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0655',
@@ -62,7 +64,7 @@ class role::labs::db::views {
 
     file { '/usr/local/src/heartbeat-views.sql':
         ensure => file,
-        source => 'puppet:///modules/role/labs/db/views/heartbeat-views.sql',
+        source => 'puppet:///modules/profile/labs/db/views/heartbeat-views.sql',
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
