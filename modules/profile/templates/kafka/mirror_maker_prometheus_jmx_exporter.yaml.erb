@@ -39,9 +39,11 @@ rules:
   name: kafka_tools_$1_$2
   labels:
     mirror_name: <%= @mirror_maker_instance_name %>
+    host: <%= @hostname %>
 
 # For everything else, the scraper does a good job.
+# Unfortunetly, we can't use labels for this, since we can't
+# match a name for everything, and labels can't be used without name being set.
+# Most of these come with a default client_id label though, and that should
+# contain the MirrorMaker instance name in it.
 - pattern: .*
-  labels:
-    mirror_name: <%= @mirror_maker_instance_name %>
-    host: <%= @hostname %>
