@@ -100,3 +100,31 @@ class VarnishBackendTest(unittest.TestCase):
         self.assertIn(('status=204,method=GET,backend=be_bohrium_eqiad_wmnet', 2), s)
         self.assertIn(('status=200,method=POST,backend=be_bohrium_eqiad_wmnet', 1), s)
         self.assertIn(('status=301,method=GET,backend=be_cp1065_eqiad_wmnet', 1), s)
+
+        bucket_samples = self.store.get_samples('varnish_backend_requests_seconds_bucket')
+        self.assertIn(('le=0.01,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.05,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.1,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.5,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=1.0,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=5.0,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=+Inf,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+
+        sum_samples = self.store.get_samples('varnish_backend_requests_seconds_sum')
+        self.assertIn(('status=301,method=GET,backend=be_cp1065_eqiad_wmnet', 0.001797),
+                      sum_samples)
+        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 1.229273),
+                      sum_samples)
+        self.assertIn(('status=200,method=GET,backend=be_phab1001_eqiad_wmnet', 1.245995),
+                      sum_samples)
+        self.assertIn(('status=200,method=GET,backend=be_labmon1001_eqiad_wmnet', 0.049231),
+                      sum_samples)
+        self.assertIn(('status=200,method=POST,backend=be_bohrium_eqiad_wmnet', 0.061224),
+                      sum_samples)
