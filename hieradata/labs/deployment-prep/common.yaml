@@ -8,7 +8,7 @@ puppetmaster::autosigner: true
 service::configuration::mwapi_uri: http://deployment-mediawiki04.deployment-prep.eqiad.wmflabs/w/api.php
 service::configuration::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
 #service::configuration::http_proxy:
-service::configuration::statsd_host: labmon1001.eqiad.wmnet
+service::configuration::statsd_host: "%{hiera('::wmcs::monitoring::master')}"
 service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 profile::citoid::zotero_port: 1969
@@ -122,7 +122,7 @@ profile::restbase::seeds:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
 # Cassandra (profile::cassandra)
-graphite_host: labmon1001.eqiad.wmnet
+graphite_host: "%{hiera('::wmcs::monitoring::master')}"
 profile::cassandra::allow_analytics: false
 profile::cassandra::metrics_whitelist: false
 profile::cassandra::metrics_blacklist:
@@ -177,7 +177,7 @@ profile::mediawiki::jobrunner::queue_servers:
     - deployment-redis01.deployment-prep.eqiad.wmflabs
 profile::mediawiki::jobrunner::aggr_servers:
     - deployment-redis01.deployment-prep.eqiad.wmflabs
-statsd: labmon1001.eqiad.wmnet:8125
+statsd: "%{hiera('::wmcs::monitoring::master')}":8125
 profile::mediawiki::jobrunner::runners:
   basic: 5
   gwt: 1
@@ -249,7 +249,7 @@ profile::elasticsearch::search_thread_pool_executors: 4
 
 profile::elasticsearch::storage_device: dm-0
 
-role::logstash::collector::statsd_host: labmon1001.eqiad.wmnet
+role::logstash::collector::statsd_host: "%{hiera('::wmcs::monitoring::master')}"
 role::logstash::apifeatureusage::elastic_hosts:
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 "redis::shards":
