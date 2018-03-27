@@ -95,8 +95,17 @@ class statistics::packages {
         'python-pymysql',           'python3-pymysql',
         'python-virtualenv',        'python3-virtualenv', # T84378
         'python-dev',               'python3-dev',        # T83316
-        'python-protobuf',          'python3-protobuf',
+        'python-protobuf',
     ])
+
+    # Python packages available only in stretch and not
+    # in Jessie. To be removed when all stat/notebook hosts will be
+    # stretch only.
+    if os_version('debian >= stretch') {
+        require_package([
+            'python3-protobuf',
+        ])
+    }
 
     if os_version('debian >= jessie') {
         require_package([
