@@ -33,6 +33,7 @@ profile::base::remote_syslog: []
 # Monitoring
 wmcs::monitoring::master: 'labmon1001.eqiad.wmnet'
 wmcs::monitoring::slave: 'labmon1002.eqiad.wmnet'
+wmcs::monitoring::whisper_dir: '/srv/carbon/whisper/'
 statsd: labmon1001.eqiad.wmnet:8125
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
 
