@@ -9,12 +9,4 @@ class role::deployment_server {
     include ::profile::releases::upload
     include ::profile::kubernetes::deployment_server
     backup::set {'home': }
-
-    rsync::quickdatacopy { 'deploy-srv':
-      ensure      => present,
-      auto_sync   => false,
-      source_host => 'tin.eqiad.wmnet',
-      dest_host   => 'deploy1001.eqiad.wmnet',
-      module_path => '/srv',
-    }
 }
