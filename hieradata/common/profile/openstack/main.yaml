@@ -20,3 +20,4 @@ profile::openstack::main::labweb_hosts:
   - labweb1001.wikimedia.org
   - labweb1002.wikimedia.org
 profile::openstack::main::statsd_host: 'labmon1001.eqiad.wmnet'
+profile::openstack::main::statsd_host_standby: 'labmon1002.eqiad.wmnet'
