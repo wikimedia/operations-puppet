@@ -63,7 +63,7 @@ define profile::kafka::mirror::alerts(
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-dropped_messages":
         description => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
-        query       => "sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}]))",
+        query       => "scalar(sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
         method      => 'gt',
         # This really should not happen, so alert early.
         warning     => 0,
