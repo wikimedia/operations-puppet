@@ -21,7 +21,7 @@ class profile::base(
     $check_raid_policy = hiera('profile::base::check_raid_policy', ''),
     $check_raid_interval = hiera('profile::base::check_raid_interval', 10),
     $check_raid_retry = hiera('profile::base::check_raid_retry', 10),
-    $check_smart = hiera('profile::base::check_smart', false),
+    $check_smart = hiera('profile::base::check_smart', true),
     $puppet_major_version = hiera('puppet_major_version', undef),
     $overlayfs = hiera('profile::base::overlayfs', false),
 ) {

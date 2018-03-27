@@ -226,56 +226,10 @@ syslog_tls_eqiad:
   profile::base::remote_syslog: []
 
 # Old hosts with mpt controllers and to be decom'd
-# smartmontools broken out of the box - T179078
+# smartmontools broken out of the box - T179078 and T86552
 smart_health_mpt:
   __regex: !ruby/regexp /^maps-test/
   profile::base::check_smart: false
-
-# Gradual SMART health checking rollout - T86552
-# NOTE: order matters! List exclusion regexps first.
-smart_health_codfw:
-  __regex: !ruby/regexp /^.*\.codfw\.wmnet$/
-  profile::base::check_smart: true
-
-smart_health_esams:
-  __regex: !ruby/regexp /^.*\.esams\.wmnet$/
-  profile::base::check_smart: true
-
-smart_health_ulsfo:
-  __regex: !ruby/regexp /^.*\.ulsfo\.wmnet$/
-  profile::base::check_smart: true
-
-smart_health_eqiad:
-  __regex: !ruby/regexp /^(analytics1.*|aqs1.*|conf1.*|cp.*|db.*|druid1.*|elastic1.*|es1.*|etcd1.*|ganeti1.*|graphite1.*|kafka1.*|kube1.*|lab.*|lvs1.*|logstash1.*|mw1.*|maps1.*|mc1.*|ms-be1.*|ores1.*|phab1.*|poolcounter1.*|mwlog1.*|netmon1.*|puppetmaster1.*|pc1.*|restbase1.*|scb1.*|stat1.*|thumbor1.*|tin|tungsten|wdqs1.*|wtp1.*|xenon).eqiad\.wmnet$/
-  profile::base::check_smart: true
-
-smart_health_wikimedia_labs:
-  __regex: !ruby/regexp /^(labcontrol.*|labpuppetmaster.*|labservices.*|labstore.*|labtestcontrol.*|labtestpuppetmaster.*|labtestservices.*|labtestweb.*|labweb.*).wikimedia.org$/
-  profile::base::check_smart: true
-
-smart_health_wikimedia_recursor:
-  __regex: !ruby/regexp /^(acamar|dns.*).wikimedia.org$/
-  profile::base::check_smart: true
-
-smart_health_wikimedia_authdns:
-  __regex: !ruby/regexp /^eeden.wikimedia.org$/
-  profile::base::check_smart: true
-
-smart_health_wikimedia_bast:
-  __regex: !ruby/regexp /^bast.*.wikimedia.org$/
-  profile::base::check_smart: true
-
-smart_health_wikimedia_misc:
-  __regex: !ruby/regexp /^(dataset1001|ms1001|netmon.*|sodium|multatuli|cp1008|radium|rhenium).wikimedia.org$/
-  profile::base::check_smart: true
-
-smart_health_wikimedia_monitor:
-  __regex: !ruby/regexp /^(tegmen|einsteinium|contint.*|iron|cobalt|gerrit2001).wikimedia.org$/
-  profile::base::check_smart: true
-
-smart_health_eqsin:
-  __regex: !ruby/regexp /^.*\.eqsin\.wmnet$/
-  profile::base::check_smart: true
 
 # Vary Hadoop yarn_nodemanager_resource_memory_mb based on available RAM.
 hadoop_worker_64G_memory:
