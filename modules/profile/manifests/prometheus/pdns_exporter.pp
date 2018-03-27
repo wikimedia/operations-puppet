@@ -1,4 +1,5 @@
 class profile::prometheus::pdns_exporter (
+    $monitoring_master = "%{hiera('wmcs::monitoring::master')}",
 ) {
     require_package('prometheus-pdns-exporter')
 
@@ -9,6 +10,6 @@ class profile::prometheus::pdns_exporter (
     ferm::service { 'prometheus-pdns-exporter':
         proto  => 'tcp',
         port   => '9192',
-        srange => '@resolve(labmon1001.eqiad.wmnet)', # Should be properly defined via Hiera for WMCS
+        srange => '@resolve(${monitoring_master})',
     }
 }

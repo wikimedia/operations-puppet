@@ -1,7 +1,9 @@
 # = Class: role::labs::graphite
 # Sets up graphite instance for monitoring labs, running on production hardware.
 # Instance is open to all, no password required to see metrics
-class role::labs::graphite {
+class role::labs::graphite (
+    $monitoring_master = "%{hiera('wmcs::monitoring::master')}"
+) {
 
     require ::profile::openstack::main::observerenv
     include graphite::labs::archiver
@@ -32,13 +34,13 @@ class role::labs::graphite {
     ferm::service { 'carbon_c_relay-local_relay_udp':
         proto  => 'udp',
         port   => '1903',
-        srange => '@resolve(labmon1001.eqiad.wmnet)',
+        srange => '@resolve(${monitoring_master})',
     }
 
     ferm::service { 'carbon_c_relay-local_relay_tcp':
         proto  => 'tcp',
         port   => '1903',
-        srange => '@resolve(labmon1001.eqiad.wmnet)',
+        srange => '@resolve(${monitoring_master})',
     }
 
     ferm::service { 'statsite_udp':

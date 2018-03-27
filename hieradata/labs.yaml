@@ -30,8 +30,11 @@ profile::openstack::main::observer_password: 'Fs6Dq2RtG8KwmM2Z'
 standard::has_admin: false
 profile::base::remote_syslog: []
 
-# Labs statsd instance
-statsd: labmon1001.eqiad.wmnet:8125
+# Monitoring
+wmcs::monitoring::master: labmon1001.eqiad.wmnet
+wmcs::monitoring::slave: labmon1002.eqiad.wmnet
+statsd: "%{hiera('wmcs::monitoring::master')}":8125
+statsite::instance::graphite_host: "%{hiera('wmcs::monitoring::master')}"
 
 # Other overrides
 elasticsearch::version: 2
@@ -42,7 +45,6 @@ elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
-statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
 puppetmaster::servers:
   "%{hiera('puppetmaster')}":
     - { worker: "%{hiera('puppetmaster')}", loadfactor: 10 }
