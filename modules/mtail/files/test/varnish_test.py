@@ -90,7 +90,23 @@ class VarnishBackendTest(unittest.TestCase):
 
     def testRespStatus(self):
         s = self.store.get_samples('varnish_backend_requests_seconds_count')
-        self.assertIn(('status=200,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 12), s)
-        self.assertIn(('status=204,method=GET,backend=be_bohrium_eqiad_wmnet', 2), s)
-        self.assertIn(('status=200,method=POST,backend=be_bohrium_eqiad_wmnet', 1), s)
-        self.assertIn(('status=301,method=GET,backend=be_cp1065_eqiad_wmnet', 1), s)
+        self.assertIn(('status_bucket=2xx,method=GET,backend=be_wdqs_svc_eqiad_wmnet', 12), s)
+        self.assertIn(('status_bucket=2xx,method=GET,backend=be_bohrium_eqiad_wmnet', 2), s)
+        self.assertIn(('status_bucket=2xx,method=POST,backend=be_bohrium_eqiad_wmnet', 1), s)
+        self.assertIn(('status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1), s)
+
+        bucket_samples = self.store.get_samples('varnish_backend_requests_seconds_bucket')
+        self.assertIn(('le=0.01,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.05,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.1,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=0.5,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=1.0,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=5.0,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
+        self.assertIn(('le=+Inf,status_bucket=3xx,method=GET,backend=be_cp1065_eqiad_wmnet', 1),
+                      bucket_samples)
