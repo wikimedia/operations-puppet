@@ -32,6 +32,10 @@ class role::labs::db::views {
         ],
     }
 
+    class { 'passwords::labsdb::maintainindexes':
+    }
+    $idx_user = $::passwords::labsdb::maintainindexes::user
+    $idx_pass = $::passwords::labsdb::maintainindexes::db_pass
     file { '/etc/index-conf.yaml':
         ensure  => file,
         content => template('role/labs/db/views/index-conf.yaml'),
