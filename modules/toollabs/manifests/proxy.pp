@@ -5,6 +5,7 @@ class toollabs::proxy(
     $ssl_install_certificate = true,
     $web_domain = 'tools.wmflabs.org',
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
+    $monitoring_master = "%{hiera('wmcs::monitoring::master')}",
 ) {
 
     include ::toollabs::infrastructure
@@ -109,7 +110,7 @@ class toollabs::proxy(
         minute          => '*/1',
         parser          => 'toolsweblogster.UrlFirstSegmentLogster', # Nothing more specific yet
         logfile         => '/var/log/nginx/access.log',
-        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}.",
+        logster_options => "-o statsd --statsd-host=${monitoring_master}:8125 --metric-prefix=${graphite_metric_prefix}.",
         require         => File['/usr/local/lib/python2.7/dist-packages/toolsweblogster.py'],
     }
 }
