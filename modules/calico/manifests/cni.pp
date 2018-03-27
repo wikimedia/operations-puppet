@@ -2,7 +2,7 @@
 #
 # Installs and configure the cni plugins for calico.
 
-class calico::cni {
+class calico::cni($kubeconfig) {
     require ::calico
 
     package { 'cni':
