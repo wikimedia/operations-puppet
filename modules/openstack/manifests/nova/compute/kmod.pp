@@ -7,4 +7,8 @@ class openstack::nova::compute::kmod {
             ensure => 'present',
         }
     }
+
+    kmod::module { 'nbd':
+        ensure => 'present',
+    }
 }
