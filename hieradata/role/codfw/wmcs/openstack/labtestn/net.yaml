@@ -1,2 +1,0 @@
-# temporary
-openstack::neutron::l3_agent::enabled: false
