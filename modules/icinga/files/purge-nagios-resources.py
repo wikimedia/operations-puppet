@@ -62,8 +62,10 @@ if __name__ == '__main__':
     hosts = readHostsFile(sys.argv[1])
     for resourcesPath in sys.argv[2:]:
         tmpfile = tempfile.NamedTemporaryFile(mode='w', dir=os.path.split(resourcesPath)[0])
+        resourcesStat = os.stat(resourcesPath)
         filterServices(resourcesPath, tmpfile, hosts)
-        os.chmod(tmpfile.name, os.stat(resourcesPath).st_mode)
+        os.chmod(tmpfile.name, resourcesStat.st_mode)
+        os.chown(tmpfile.name, resourcesStat.st_uid, resourcesStat.st_gid)
         os.rename(tmpfile.name, resourcesPath)
         try:
             # Will try to delete the file, which no longer exists
