@@ -135,6 +135,7 @@ class base::standard_packages {
 
     if os_version('debian >= jessie') {
         base::service_auto_restart { 'lldpd': }
+        base::service_auto_restart { 'cron': }
     }
 
     # Safe restarts are supported since systemd 219:
