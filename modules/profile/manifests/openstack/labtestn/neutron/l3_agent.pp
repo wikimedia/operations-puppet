@@ -3,6 +3,8 @@ class profile::openstack::labtestn::neutron::l3_agent(
     $network_flat_interface = hiera('profile::openstack::labtestn::neutron::network_flat_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtestn::neutron::network_flat_interface_vlan'),
     $network_flat_name = hiera('profile::openstack::labtestn::neutron::network_flat_name'),
+    $dmz_cidr = hiera('profile::openstack::labtestn::neutron::dmz_cidr'),
+    $network_public_ip = hiera('profile::openstack::labtestn::neutron::network_public_ip'),
     ) {
 
     require ::profile::openstack::labtestn::clientlib
@@ -11,6 +13,8 @@ class profile::openstack::labtestn::neutron::l3_agent(
         version                     => $version,
         network_flat_interface      => $network_flat_interface,
         network_flat_interface_vlan => $network_flat_interface_vlan,
+        dmz_cidr                    => $dmz_cidr,
+        network_public_ip           => $network_public_ip,
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
