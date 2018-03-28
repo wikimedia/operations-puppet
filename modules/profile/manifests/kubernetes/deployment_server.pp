@@ -2,6 +2,8 @@
 class profile::kubernetes::deployment_server(
     $services=hiera('profile::kubernetes::deployment_server::services', {}),
     $tokens=hiera('profile::kubernetes::deployment_server::tokens', {}),
+    $git_owner=hiera('profile::kubernetes::deployment_server::git_owner'),
+    $git_group=hiera('profile::kubernetes::deployment_server::git_group'),
 ){
     package { [
         'helm',
@@ -13,8 +15,8 @@ class profile::kubernetes::deployment_server(
     git::clone { 'operations/deployment-charts':
         ensure    => 'present', # Should be only updated by users
         directory => '/srv/deployment-charts',
-        owner     => 'trebuchet', # Actually fix this with a logical name
-        group     => 'wikidev',
+        owner     => $git_owner,
+        group     => $git_group,
         umask     => '002',
     }
 
