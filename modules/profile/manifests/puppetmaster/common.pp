@@ -44,7 +44,7 @@ class profile::puppetmaster::common (
     $puppetdb_config = {
         storeconfigs         => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => 'servermon',
+        reports              => 'servermon,puppetdb',
     }
 
     if $puppetdb_major_version == 4 and $storeconfigs == 'puppetdb' {
