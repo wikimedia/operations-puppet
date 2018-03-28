@@ -1,10 +1,17 @@
 class openstack::neutron::l3_agent(
     $version,
+    $dmz_cidr,
+    $network_public_ip,
     $enabled=true,
     ) {
 
     package {'neutron-l3-agent':
         ensure => 'present',
+    }
+
+    class {'openstack::neutron::l3_agent_hacks':
+        version => $version,
+        require => Package['neutron-l3-agent'],
     }
 
     file { '/etc/neutron/l3_agent.ini':
