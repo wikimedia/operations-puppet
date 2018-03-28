@@ -16,6 +16,7 @@ scap::dsh::scap_masters:
   - "naos.codfw.wmnet"
   - "deploy1001.eqiad.wmnet"
 
+
 scap::dsh::groups:
   jobrunner-canaries:
     hosts:
