@@ -11,7 +11,7 @@ from multiprocessing.pool import ThreadPool
 import yaml
 
 DEFAULT_CONFIG_FILE = '/etc/mysql/backups.cnf'
-DEFAULT_THREADS = 16
+DEFAULT_THREADS = 18
 CONCURRENT_BACKUPS = 2
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
@@ -77,7 +77,7 @@ def get_mydumper_cmd(name, config):
     return (cmd, dump_name, log_file)
 
 
-def logical_dump(name, config):
+def logical_dump(name, config, rotate):
     """
     Perform the logical backup of the given instance,
     with the given settings. Once finished sucesfully, consolidate the
@@ -99,12 +99,12 @@ def logical_dump(name, config):
 
     # Check backup finished correctly
     if ' CRITICAL ' in errors:
-        return -1
+        return 3
 
     with open(log_file, 'r') as output:
         log = output.read()
     if ' [ERROR] ' in log:
-        return -2
+        return 4
 
     if 'backup_dir' in config:
         backup_dir = config['backup_dir']
@@ -115,13 +115,19 @@ def logical_dump(name, config):
     with open(metadata_file_path, 'r') as metadata_file:
         metadata = metadata_file.read()
     if 'Finished dump at: ' not in metadata:
-        return -3
+        return 5
 
     # Backups seems ok, start consolidating it to fewer files
     if 'archive' in config and config['archive']:
         archive_databases(output_dir, config['threads'])
 
-    return dump_name
+    if rotate:
+        # This is not a manual backup, peform rotations
+        # move the old latest one to the archive, and the current as the latest
+        move_dumps(name, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
+        os.rename(output_dir, os.path.join(FINAL_BACKUP_DIR, dump_name))
+
+    return 0
 
 
 def move_dumps(name, source, destination):
@@ -283,10 +289,10 @@ def parse_config_file(config_path):
         config_file = yaml.load(open(config_path))
     except yaml.YAMLError:
         print('Error opening or parsing the YAML file {}'.format(config_path))
-        sys.exit(-1)
+        sys.exit(1)
     if not isinstance(config_file, dict) or 'sections' not in config_file:
         print('Error reading sections from file {}'.format(config_path))
-        sys.exit(-1)
+        sys.exit(2)
 
     default_options = config_file.copy()
     # If individual thread configuration is set for each backup, it could have strang effects
@@ -316,38 +322,26 @@ def main():
         # no section name, read the config file, validate it and
         # execute it, including rotation of old dumps
         config = parse_config_file(options.config_file)
-        exit_code = 0
-        dump_name = dict()
+        result = dict()
         backup_pool = ThreadPool(CONCURRENT_BACKUPS)
         for section, section_config in config.items():
-            dump_name[section] = backup_pool.apply_async(logical_dump, (section, section_config))
-
+            result[section] = backup_pool.apply_async(logical_dump, (section, section_config, True))
         backup_pool.close()
         backup_pool.join()
 
-        for section, section_config in config.items():
-            result = dump_name[section].get()
-            if not isinstance(result, str):
-                exit_code = result
-                print('Error while performing backup of {}'.format(section))
-            # This is not a manual backup, peform rotations
-            # move the old latest one to the archive, and the current as the latest
-            move_dumps(section, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
-            os.rename(os.path.join(ONGOING_BACKUP_DIR, result),
-                      os.path.join(FINAL_BACKUP_DIR, result))
         purge_dumps(ARCHIVE_BACKUP_DIR, RETENTION_DAYS)
-        sys.exit(exit_code)
+
+        sys.exit(result[max(result, key=lambda key: result[key].get())].get())
 
     else:
         # a section name was given, only dump that one,
         # but perform no rotation
-        dump_name = logical_dump(options.section, options.__dict__)
-        if isinstance(dump_name, str):
-            print('Backup generated correctly: {}'.format(dump_name))
-            sys.exit(0)
+        result = logical_dump(options.section, options.__dict__, False)
+        if 0 == result:
+            print('Backup {} generated correctly.'.format(options.section))
         else:
             print('Error while performing backup of {}'.format(options.section))
-            sys.exit(dump_name)
+        sys.exit(result)
 
 
 if __name__ == "__main__":
