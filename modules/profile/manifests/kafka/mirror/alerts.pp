@@ -65,8 +65,13 @@ define profile::kafka::mirror::alerts(
         description => "Kafka MirrorMaker ${mirror_name} dropped message count in last ${monitoring_period}",
         query       => "scalar(sum(increase(kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
         method      => 'gt',
-        # This really should not happen, so alert early.
-        warning     => 0,
-        critical    => 10,
+        # numDroppedMessages here doesn't really mean that messages were lost.
+        # abort.on.send.failure defaults to true, so any MirrorMaker process that encounters
+        # this will die before committing the offset for any dropped messages.  This will
+        # cause these messages to be reconsumed and produced again by another MirrorMaker process.
+        # https://github.com/apache/kafka/blob/trunk/core/src/main/scala/kafka/tools/MirrorMaker.scala#L741-L747
+        # We alert on this, but are lenient about them.
+        warning     => 100,
+        critical    => 1000,
     }
 }
