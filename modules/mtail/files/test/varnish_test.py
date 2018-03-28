@@ -14,7 +14,7 @@ class VarnishXcacheTest(unittest.TestCase):
     def testCacheStatus(self):
         s = self.store.get_samples('varnish_x_cache')
         self.assertIn(('x_cache=int-front', 2), s)
-        self.assertIn(('x_cache=hit-front', 8), s)
+        self.assertIn(('x_cache=hit-front', 9), s)
 
 
 class VarnishRlsTest(unittest.TestCase):
@@ -26,6 +26,12 @@ class VarnishRlsTest(unittest.TestCase):
     def testIfNoneMatch(self):
         s = self.store.get_samples('varnish_resourceloader_inm')
         self.assertIn(('', 1), s)
+
+    def testResp(self):
+        s = self.store.get_samples('varnish_resourceloader_resp')
+        self.assertIn(('status=200,cache_control=long', 2), s)
+        self.assertIn(('status=304,cache_control=short', 1), s)
+        self.assertIn(('status=304,cache_control=no', 1), s)
 
 
 class VarnishMediaTest(unittest.TestCase):
