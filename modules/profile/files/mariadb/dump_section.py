@@ -11,7 +11,7 @@ from multiprocessing.pool import ThreadPool
 import yaml
 
 DEFAULT_CONFIG_FILE = '/etc/mysql/backups.cnf'
-DEFAULT_THREADS = 16
+DEFAULT_THREADS = 18
 CONCURRENT_BACKUPS = 2
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 3306
@@ -77,7 +77,7 @@ def get_mydumper_cmd(name, config):
     return (cmd, dump_name, log_file)
 
 
-def logical_dump(name, config):
+def logical_dump(name, config, rotate):
     """
     Perform the logical backup of the given instance,
     with the given settings. Once finished sucesfully, consolidate the
@@ -120,6 +120,12 @@ def logical_dump(name, config):
     # Backups seems ok, start consolidating it to fewer files
     if 'archive' in config and config['archive']:
         archive_databases(output_dir, config['threads'])
+
+    if rotate:
+        # This is not a manual backup, peform rotations
+        # move the old latest one to the archive, and the current as the latest
+        move_dumps(name, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
+        os.rename(output_dir, os.path.join(FINAL_BACKUP_DIR, dump_name))
 
     return dump_name
 
@@ -320,7 +326,7 @@ def main():
         dump_name = dict()
         backup_pool = ThreadPool(CONCURRENT_BACKUPS)
         for section, section_config in config.items():
-            dump_name[section] = backup_pool.apply_async(logical_dump, (section, section_config))
+            dump_name[section] = backup_pool.apply_async(logical_dump, (section, section_config, True))
 
         backup_pool.close()
         backup_pool.join()
@@ -330,18 +336,14 @@ def main():
             if not isinstance(result, str):
                 exit_code = result
                 print('Error while performing backup of {}'.format(section))
-            # This is not a manual backup, peform rotations
-            # move the old latest one to the archive, and the current as the latest
-            move_dumps(section, FINAL_BACKUP_DIR, ARCHIVE_BACKUP_DIR)
-            os.rename(os.path.join(ONGOING_BACKUP_DIR, result),
-                      os.path.join(FINAL_BACKUP_DIR, result))
+
         purge_dumps(ARCHIVE_BACKUP_DIR, RETENTION_DAYS)
         sys.exit(exit_code)
 
     else:
         # a section name was given, only dump that one,
         # but perform no rotation
-        dump_name = logical_dump(options.section, options.__dict__)
+        dump_name = logical_dump(options.section, options.__dict__, False)
         if isinstance(dump_name, str):
             print('Backup generated correctly: {}'.format(dump_name))
             sys.exit(0)
