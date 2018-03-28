@@ -330,22 +330,6 @@ dumps_nfs_clients:
   other:
     - stat1005.eqiad.wmnet
     - stat1006.eqiad.wmnet
-dumps_web_rsync_server_clients:
-  ipv4:
-    internal:
-      - dataset1001.wikimedia.org
-      - mwlog1001.eqiad.wmnet
-      - mwlog2001.codfw.wmnet
-      - phab1001.eqiad.wmnet
-      - ms1001.wikimedia.org
-      - dumpsdata1001.eqiad.wmnet
-      - dumpsdata1002.eqiad.wmnet
-      - labstore1006.wikimedia.org
-      - labstore1007.wikimedia.org
-      - stat1005.eqiad.wmnet
-      - stat1006.eqiad.wmnet
-  ipv6:
-    internal: []
 dumps_datadir_mount_type: nfs
 dumps_nfs_server: dumpsdata1001.eqiad.wmnet
 dumps_managed_subdirs: []
