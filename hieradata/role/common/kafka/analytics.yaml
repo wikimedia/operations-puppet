@@ -19,8 +19,7 @@ profile::kafka::mirror::properties:
   whitelist: '^(?!__|.*\.change-prop\.).+$'
   num_streams: 2
   offset_commit_interval_ms: 5000
-  # TODO: remove this one we use a newer version of MirrorMaker
+  # TODO: remove this once we use a newer version of MirrorMaker
   # and it is not longer an option.
   new_consumer: true
-  # Seen OutOfMemoryError in this mirror maker instance, increase heap size.
-  heap_opts: '-Xmx512M -Xms512M'
+  heap_opts: '-Xmx2G -Xms2G'
