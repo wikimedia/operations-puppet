@@ -1,0 +1,1 @@
+ntp::use_chrony: true
