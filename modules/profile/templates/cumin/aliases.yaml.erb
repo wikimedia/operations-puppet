@@ -63,7 +63,7 @@ ganeti-canary: P{ganeti2001.codfw.wmnet}
 ganeti-codfw: A:ganeti and A:codfw
 ganeti-eqiad: A:ganeti and A:eqiad
 gerrit: P{O:gerrit}
-graphite: P{O:graphite::production or O:labs::graphite}
+graphite: P{O:graphite::production}
 hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
 hadoop-master: P{O:analytics_cluster::hadoop::master}
 hadoop-standby: P{O:analytics_cluster::hadoop::standby}
@@ -169,7 +169,7 @@ puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{O:puppetmaster::backend}
 puppetmaster-frontend: P{O:puppetmaster::frontend}
 relforge: P{O:elasticsearch::relforge}
-restbase: P{O:restbase::production or O:restbase::production_ng}
+restbase: P{O:restbase::production} or A:restbase-ng or A:restbase-dev
 restbase-ng: P{O:restbase::production_ng}
 restbase-canary: P{restbase1007.eqiad.wmnet}
 restbase-codfw: A:restbase and A:codfw
@@ -209,5 +209,5 @@ misc-devel: P{O:webperf or O:ve or O:archiva or O:docker::registry} or A:debugpr
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:authdns::testns or O:cache::canary}
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:backup::offsite or O:backup or O:mirrors} or A:netmon or A:puppetboard
 misc-others: P{O:mw_rc_irc or O:etherpad or O:tor_relay or O:lists or O:netinsights}
-misc-releng: P{O:labs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
-misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs
+misc-releng: P{O:wmcs::openstack::main::nodepool or O:phabricator} or A:contint or A:gerrit or A:mw-maintenance
+misc-wmcs: A:labnet or A:labcontrol or A:labservices or A:labweb or A:osm or A:db-wmcs or P{O:labs::monitoring}
