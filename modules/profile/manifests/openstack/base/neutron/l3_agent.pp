@@ -3,6 +3,8 @@ class profile::openstack::base::neutron::l3_agent(
     $network_flat_interface = hiera('profile::openstack::base::neutron::network_flat_interface'),
     $network_flat_tagged_base_interface = hiera('profile::openstack::base::neutron::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::base::neutron::network_flat_interface_vlan'),
+    $dmz_cidr = hiera('profile::openstack::base::neutron::dmz_cidr'),
+    $network_public_ip = hiera('profile::openstack::base::neutron::network_public_ip'),
     ) {
 
     interface::tagged { $network_flat_interface:
@@ -14,7 +16,9 @@ class profile::openstack::base::neutron::l3_agent(
     }
 
     class {'::openstack::neutron::l3_agent':
-        version => $version,
+        version           => $version,
+        dmz_cidr          => $dmz_cidr,
+        network_public_ip => $network_public_ip,
     }
     contain '::openstack::neutron::l3_agent'
 }
