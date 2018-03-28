@@ -14,7 +14,9 @@ profile::kafka::mirror::source_cluster_name: main-eqiad
 profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
 profile::kafka::mirror::monitoring_enabled: true
 profile::kafka::mirror::properties:
-  whitelist: '^(?!__).+\.(error|resource_change|mediawiki\.(page|recentchange|revision|user).+)$'
+  # Replicate everything except for change-prop and internal (__.*)
+  # topics from main to jumbo.
+  whitelist: '^(?!__|.*\.change-prop\.).+$'
   num_streams: 2
   offset_commit_interval_ms: 5000
   # TODO: remove this one we use a newer version of MirrorMaker
