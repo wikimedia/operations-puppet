@@ -1,11 +1,21 @@
 counter varnish_resourceloader_inm
+counter varnish_resourceloader_resp by status, cache_control
 
 /\thttp_method PURGE\t/ {
     # noop
 } else {
-    /^url \/w\/load.php.*\tinm (?P<inm>.*)$/ {
+    /^url \/w\/load.php.*\thttp_status (?P<status>[0-9]{3}).*\tcache_control (-|.*max-age=(?P<maxage>[0-9]+)).*\tinm (?P<inm>.*)$/ {
         $inm != "-" {
             varnish_resourceloader_inm++
+        }
+        len($maxage) > 0 {
+            $maxage == "300" {
+                varnish_resourceloader_resp[$status]["short"]++
+            } else {
+                varnish_resourceloader_resp[$status]["long"]++
+            }
+        } else {
+            varnish_resourceloader_resp[$status]["no"]++
         }
     }
 }
