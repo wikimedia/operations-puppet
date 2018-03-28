@@ -12,4 +12,4 @@ mediawiki::hhvm::extra_fcgi:
       connection_timeout_seconds: 86400
       thread_count: 15
   max_execution_time: 86400
-profile::mediawiki::jobrunner::load_factor: 0.7
+profile::mediawiki::jobrunner::load_factor: 0.5
