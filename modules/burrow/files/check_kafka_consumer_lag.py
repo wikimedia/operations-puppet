@@ -116,13 +116,20 @@ if __name__ == "__main__":
     elif json_output["status"]["status"] == "WARN":
         status_result.updateStatus(NAGIOS_WARNING, "Group or partition is in a warning state.")
     elif json_output["status"]["status"] == "ERR":
-        # If we get ERR, but maxlag == None, it probably means that
-        # There have been no events in this particular topic, and no
-        # offsets have been committed, but there is no lag.
-        if json_output["status"]["maxlag"] is None:
-            status = NAGIOS_WARNING
-        else:
+        # If maxlag is set, then choose critical.
+        if json_output["status"]["maxlag"] is not None:
             status = NAGIOS_CRITICAL
+        # else if there are any partition statuses present other than STOP,
+        # then choose warning.
+        elif [p['status'] for p in json_output['status']['partitions']].count("STOP") != \
+            len(json_output['status']['partitions']):
+            status = NAGIOS_WARNING
+        # Else we are in an 'error' state, but everything is really fine.
+        # Stopped partitions with no lag just means there haven't been
+        # recent messages in these partitions.
+        else:
+            status = NAGIOS_OK
+
         status_result.updateStatus(status, "Group is in an error state.")
     elif json_output["status"]["status"] == "STOP":
         status_result.updateStatus(NAGIOS_WARNING, "A partition has stopped.")
