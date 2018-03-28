@@ -4,6 +4,16 @@
 # hour
 class graphite::labs::archiver {
 
+    # FIXME: no logrotate config?
+
+    # logging file used by the script
+    file { '/var/log/graphite/instance-archiver.log':
+        ensure => present,
+        owner  => '_graphite',
+        group  => '_graphite',
+        mode   => '0644',
+    }
+
     # prevent some cronspam if the delete cronjob is run before the script
     file { '/srv/carbon/whisper/archived_metrics':
         ensure => directory,
