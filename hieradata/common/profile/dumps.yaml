@@ -1,3 +1,17 @@
 profile::dumps::stats_hosts: 'stat1005.eqiad.wmnet stat1006.eqiad.wmnet'
 profile::dumps::peer_hosts: 'dataset1001.wikimedia.org ms1001.wikimedia.org dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet labstore1006.wikimedia.org labstore1007.wikimedia.org'
 profile::dumps::phab_hosts: 'phab1001.eqiad.wmnet'
+profile::dumps::rsync_internal_clients:
+  ipv4:
+    - dataset1001.wikimedia.org
+    - mwlog1001.eqiad.wmnet
+    - mwlog2001.codfw.wmnet
+    - phab1001.eqiad.wmnet
+    - ms1001.wikimedia.org
+    - dumpsdata1001.eqiad.wmnet
+    - dumpsdata1002.eqiad.wmnet
+    - labstore1006.wikimedia.org
+    - labstore1007.wikimedia.org
+    - stat1005.eqiad.wmnet
+    - stat1006.eqiad.wmnet
+  ipv6: []
