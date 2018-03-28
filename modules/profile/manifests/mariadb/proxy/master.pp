@@ -5,12 +5,9 @@ class profile::mariadb::proxy::master (
     $secondary_name = hiera('profile::mariadb::proxy::master::secondary_name'),
     $secondary_addr = hiera('profile::mariadb::proxy::master::seconady_addr'),
     ) {
-    # patch until all haproxies have been upgraded to 1.7
-    if os_version('debian >= stretch') {
-        $master_template = 'db-master-stretch.cfg.erb'
-    } else {
-        $master_template = 'db-master.cfg.erb'
-    }
+
+    # this template is for stretch/HA1.7, may not work on earlier/later versions
+    $master_template = 'db-master.cfg.erb'
 
     file { '/etc/haproxy/conf.d/db-master.cfg':
         owner   => 'haproxy',

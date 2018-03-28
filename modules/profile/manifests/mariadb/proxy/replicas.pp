@@ -3,12 +3,9 @@ class profile::mariadb::proxy::replicas(
     $servers = hiera('profile::mariadb::proxy::replicas::servers'),
     ) {
 
-    # patch until all haproxies have been upgraded to 1.7
-    if os_version('debian >= stretch') {
-        $replicas_template = 'db-replicas-stretch.cfg.erb'
-    } else {
-        $replicas_template = 'db-replicas.cfg.erb'
-    }
+    # This template is for stretch/HA1.7, may not work on earlier/later versions
+    $replicas_template = 'db-replicas.cfg.erb'
+
     file { '/etc/haproxy/conf.d/db-replicas.cfg':
         owner   => 'root',
         group   => 'root',

@@ -1,9 +1,0 @@
-listen mariadb
-    bind 0.0.0.0:3306
-    mode tcp
-    balance roundrobin
-    option tcpka
-    option mysql-check user haproxy
-    <% @servers.each_pair do |name, addr| -%>
-    server <%= name %> <%= addr %> check inter 3s fall 3 rise 1000
-    <% end -%>
