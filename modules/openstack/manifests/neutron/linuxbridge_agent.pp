@@ -15,6 +15,10 @@ class openstack::neutron::linuxbridge_agent(
         ensure => 'present',
     }
 
+    openstack::neutron::bridge{'br-internal':
+        brname    => 'br-internal',
+    }
+
     file { '/etc/neutron/plugins/ml2/linuxbridge_agent.ini':
         owner   => 'root',
         group   => 'root',
