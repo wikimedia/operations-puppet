@@ -5,7 +5,8 @@ profile::kafka::monitoring::config:
     to_emails: []
     # Install a nrpe (nagios/icinga) check for lag.
     # Use default burrow::check_consumer_lag parameters.
-    nagios_check: {}
+    nagios_check:
+      contact_group: analytics
     consumer_groups:
       - kafka-mirror-main-eqiad_to_jumbo-eqiad
   main-codfw:

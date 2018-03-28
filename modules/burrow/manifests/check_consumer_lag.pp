@@ -37,9 +37,12 @@ define burrow::check_consumer_lag(
     }
 
     nrpe::monitor_service { "${kafka_cluster_name}_${consumer_group}_consumer_lag":
-        description   => "Kafka ${kafka_cluster_name} consumer group lag for ${consumer_group}",
-        nrpe_command  => "/usr/local/lib/nagios/plugins/check_kafka_consumer_lag --base-url ${burrow_uri} --kafka-cluster ${kafka_cluster_name} --consumer-group ${consumer_group} --critical-lag ${lag_threshold}",
-        contact_group => $contact_group,
-        critical      => $critical,
+        description    => "Kafka ${kafka_cluster_name} consumer group lag for ${consumer_group}",
+        nrpe_command   => "/usr/local/lib/nagios/plugins/check_kafka_consumer_lag --base-url ${burrow_uri} --kafka-cluster ${kafka_cluster_name} --consumer-group ${consumer_group} --critical-lag ${lag_threshold}",
+        contact_group  => $contact_group,
+        critical       => $critical,
+        # Only alert if lag remains present for 3 checks in 10 minute intervals, i.e. 30 minutes.
+        retries        => 3,
+        retry_interval => 10,
     }
 }
