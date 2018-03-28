@@ -25,5 +25,52 @@ neutron ext-list
 # agents and status
 neutron agent-list
 
-neutron net-create flat-<%= @network_flat_name %> --provider:network_type=flat --provider:physical_network=<%= @network_flat_name %> --shared
+# Initial setup of a flat network with a LAN nework with subnet
+# a WAN network with 2 subnets (provider and floating)
 
+# provider:physical_network=<physical_network> has to match the
+# configuration in the ml2 plugin (linux bridge)
+neutron net-create <provider_flat_network_name> --router:external=true \
+    --provider:network_type=flat --provider:physical_network=<physical_network> --shared
+
+neutron net-list
+
+# This is the provider network VLAN where the gateway is the actual
+# VLAN gateway.
+# <WAN_provider_subnet_remote_gateway> is an IP
+neutron subnet-create --gateway <WAN_provider_subnet_remote_gateway> --name <WAN_provider_transport_subnet_name> \
+    --ip-version 4 --disable-dhcp <provider_flat_network_name> <WAN_provider_network_cidr>
+
+# This is the floating IP allocation pool (no gateway and disable dhcp)
+neutron subnet-create --name <WAN_floating_ip_subnet_name>  --no-gateway \
+    --ip-version 4 --disable-dhcp \
+    --allocation-pool start=<WAN_floating_ip_network_start>,end=<WAN_floating_ip_network_stop> \
+    <provider_flat_network_name> <WAN_floating_ip_network_cidr>
+
+neutron subnet-list
+
+# Now the network and subnet exist.  We must create a router to transport
+# traffic between the LAN and WAN subnet(s).
+
+neutron router-create <router_name>
+openstack router list
+
+# we have to use the router-gateway-set mechanism rather just adding
+# a port in the external network/subet and doing router-interface-add here
+neutron router-gateway-set \
+   --fixed-ip subnet_id=<WAN_provider_subnet_id>,ip_address=<WAN_provider_subnet_l3_router_IP> \
+   <router_id> <WAN_external_network_id>
+
+# Add the LAN interface
+neutron router-interface-add <router_id> <LAN_subnet_id>
+neutron port-list
+neutron port-show <port_id>
+
+# Adding a floating IP to an instance from the CLI
+neutron floatingip-create --subnet <WAN_floating_subnet_external_id> <WAN_external_network_id> 
+
+# Get the port id from the port attached to the instance
+neutron port-list | grep <fixed-ip of instance>
+
+#Associate the floating IP with the port
+neutron floatingip-associate <floating_ip_id> <port_id>
