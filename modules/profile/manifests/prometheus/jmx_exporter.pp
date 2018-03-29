@@ -15,6 +15,7 @@ define profile::prometheus::jmx_exporter (
     $port,
     $prometheus_nodes,
     $config_file,
+    $config_dir = undef,
     $content = undef,
     $source  = undef,
 ) {
@@ -27,6 +28,16 @@ define profile::prometheus::jmx_exporter (
     }
 
     require_package('prometheus-jmx-exporter')
+
+    if $config_dir and ! defined(File[$config_dir]) {
+        # Create the Prometheus JMX Exporter configuration's parent dir
+        file { $config_dir:
+            ensure => 'directory',
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
 
     # Create the Prometheus JMX Exporter configuration
     file { $config_file:

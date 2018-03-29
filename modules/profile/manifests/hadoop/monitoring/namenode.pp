@@ -7,16 +7,14 @@
 class profile::hadoop::monitoring::namenode(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
-    include ::profile::hadoop::common
-    Class['cdh::hadoop'] -> Class['profile::hadoop::monitoring::namenode']
-
-    $jmx_exporter_config_file = '/etc/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml'
+    $jmx_exporter_config_file = '/etc/prometheus/hdfs_namenode_jmx_exporter.yaml'
     $prometheus_jmx_exporter_namenode_port = 10080
     profile::prometheus::jmx_exporter { "hdfs_namenode_${::hostname}":
         hostname         => $::hostname,
         port             => $prometheus_jmx_exporter_namenode_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $jmx_exporter_config_file,
+        config_dir       => '/etc/prometheus',
         source           => 'puppet:///modules/profile/hadoop/prometheus_hdfs_namenode_jmx_exporter.yaml',
     }
 }
