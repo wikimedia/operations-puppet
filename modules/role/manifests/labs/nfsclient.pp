@@ -123,6 +123,8 @@ class role::labs::nfsclient(
     }
 
     labstore::nfs_mount { 'dumps-on-labstore1003':
+        # Absent mount from labstore1003 for T188643
+        ensure      => 'absent',
         mount_name  => 'dumps',
         project     => $::labsproject,
         options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
