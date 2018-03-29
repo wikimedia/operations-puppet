@@ -59,15 +59,8 @@ class profile::hadoop::master::standby(
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
         # Prometheus exporters
-        include ::profile::hadoop::monitoring::namenode
-        include ::profile::hadoop::monitoring::resourcemanager
-
-        # The prometheus exporters can technically be deployed stand-alone
-        # only requiring the hadoop commons configuration. The Hadoop daemons
-        # though use the jmx exporter as -javaagent, so it needs to be deployed
-        # before them to avoid any race conditions during the daemon first startup.
-        Class['profile::hadoop::monitoring::resourcemanager'] -> Class['cdh::hadoop::resourcemanager']
-        Class['profile::hadoop::monitoring::namenode'] -> Class['cdh::hadoop::namenode::standby']
+        require ::profile::hadoop::monitoring::namenode
+        require ::profile::hadoop::monitoring::resourcemanager
 
         # Java heap space used alerts.
         # The goal is to get alarms for long running memory leaks like T153951.
