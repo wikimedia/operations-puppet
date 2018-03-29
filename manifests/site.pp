@@ -150,6 +150,8 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
 # coming soon, see T166081
 node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # conf200x are etcd/zookeeper service nodes in codfw
