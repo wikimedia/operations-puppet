@@ -1,10 +1,12 @@
 # == Class profile::statistics::private
 #
 class profile::statistics::private(
-    $statistics_servers = hiera('statistics_servers'),
-    $statsd_host        = hiera('statsd'),
-    $graphite_host      = hiera('profile::statistics::private::graphite_host'),
-    $wmde_secrets       = hiera('wmde_secrets')
+    $statistics_servers  = hiera('statistics_servers'),
+    $statsd_host         = hiera('statsd'),
+    $graphite_host       = hiera('profile::statistics::private::graphite_host'),
+    $wmde_secrets        = hiera('wmde_secrets'),
+    $dumps_servers       = hiera('dumps_dist_nfs_servers'),
+    $dumps_active_server = hiera('dumps_dist_active_web'),
 ) {
     include ::standard
     include ::deployment::umask_wikidev
@@ -18,7 +20,11 @@ class profile::statistics::private(
 
     # include stuff common to statistics compute nodes
     include ::statistics::compute
-    include ::statistics::dataset_mount
+
+    class { '::statistics::dataset_mount':
+        dumps_servers       => $dumps_servers,
+        dumps_active_server => $dumps_active_server,
+    }
 
     # This file will render at
     # /etc/mysql/conf.d/statistics-private-client.cnf.
