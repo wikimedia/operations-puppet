@@ -78,4 +78,9 @@ class profile::dumps::distribution::nfs {
         port   => '38466',
         srange => '$ANALYTICS_NETWORKS',
     }
+
+    monitoring::service { 'nfs':
+        description   => 'NFS',
+        check_command => 'check_tcp!2049',
+    }
 }
