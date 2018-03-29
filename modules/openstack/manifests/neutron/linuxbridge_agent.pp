@@ -1,7 +1,8 @@
 class openstack::neutron::linuxbridge_agent(
     $version,
     $network_flat_interface,
-    $network_flat_name,
+    $bridge,
+    $bridge_mappings,
     ) {
 
     include openstack::nova::compute::kmod
@@ -15,8 +16,8 @@ class openstack::neutron::linuxbridge_agent(
         ensure => 'present',
     }
 
-    openstack::neutron::bridge{'br-internal':
-        brname    => 'br-internal',
+    openstack::neutron::bridge{ $bridge:
+        addif => $network_flat_interface,
     }
 
     file { '/etc/neutron/plugins/ml2/linuxbridge_agent.ini':
@@ -24,6 +25,7 @@ class openstack::neutron::linuxbridge_agent(
         group   => 'root',
         mode    => '0744',
         content => template("openstack/${version}/neutron/plugins/ml2/linuxbridge_agent.ini.erb"),
+        notify  => Service['neutron-linuxbridge-agent'],
         require => Package['neutron-linuxbridge-agent'],
     }
 
