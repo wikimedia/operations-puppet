@@ -51,6 +51,9 @@ keep=<%= @config[@configtype]['global']['keep'] %>
 <% if @config[@configtype]['global'].has_key?('chunksEnabled') -%>
 chunksEnabled=<%= @config[@configtype]['global']['chunksEnabled'] %>
 <% end -%>
+<% if @config[@configtype]['global'].has_key?('recombineMetaCurrent') -%>
+recombineHistory=<%= @config[@configtype]['recombineMetaCurrent'] %>
+<% end -%>
 <% if @config[@configtype]['global'].has_key?('recombineHistory') -%>
 recombineHistory=<%= @config[@configtype]['recombineHistory'] %>
 <% end -%>
