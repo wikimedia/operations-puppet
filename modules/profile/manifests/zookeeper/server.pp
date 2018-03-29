@@ -5,16 +5,24 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-analytics
 class profile::zookeeper::server (
-    $clusters               = hiera('zookeeper_clusters'),
-    $cluster_name           = hiera('profile::zookeeper::cluster_name'),
-    $is_critical            = hiera('profile::zookeeper::is_critical'),
-    $max_client_connections = hiera('profile::zookeeper::max_client_connections'),
-    $version                = hiera('profile::zookeeper::zookeeper_version'),
-    $sync_limit             = hiera('profile::zookeeper::sync_limit'),
-    $statsd_host            = hiera('statsd'),
+    $clusters                      = hiera('zookeeper_clusters'),
+    $cluster_name                  = hiera('profile::zookeeper::cluster_name'),
+    $max_client_connections        = hiera('profile::zookeeper::max_client_connections'),
+    $version                       = hiera('profile::zookeeper::zookeeper_version'),
+    $sync_limit                    = hiera('profile::zookeeper::sync_limit'),
+    $statsd_host                   = hiera('statsd'),
+    $prometheus_monitoring_enabled = hiera('profile::zookeeper::prometheus_monitoring_enabled', false),
+    $is_critical                   = hiera('profile::zookeeper::is_critical', false),
 ) {
 
     require_package('default-jdk')
+
+    if prometheus_monitoring_enabled {
+        include ::profile::zookeeper::monitoring::server
+        $extra_java_opts = $::profile::zookeeper::monitoring::coordinator::java_opts
+    } else {
+        $extra_java_opts = ''
+    }
 
     class { '::zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
@@ -33,17 +41,18 @@ class profile::zookeeper::server (
         # so until somebody finds a better way we redirect stdout to /dev/null
         # and we filter out JAVA_TOOL_OPTIONS messages from stderr.
         cleanup_script_args => '-n 10 2>&1 > /dev/null | grep -v JAVA_TOOL_OPTIONS',
-        java_opts           => '-Xms1g -Xmx1g',
-    }
-
-    $group_prefix = "zookeeper.cluster.${cluster_name}."
-    # Use jmxtrans for sending metrics to statsd/graphite
-    class { 'zookeeper::jmxtrans':
-        group_prefix => $group_prefix,
-        statsd       => $statsd_host,
+        java_opts           => "-Xms1g -Xmx1g ${extra_java_opts}",
     }
 
     if $is_critical {
+
+        $group_prefix = "zookeeper.cluster.${cluster_name}."
+        # Use jmxtrans for sending metrics to statsd/graphite
+        class { 'zookeeper::jmxtrans':
+            group_prefix => $group_prefix,
+            statsd       => $statsd_host,
+        }
+
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
             description  => 'Zookeeper Server',
