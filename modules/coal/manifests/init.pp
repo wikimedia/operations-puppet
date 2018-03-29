@@ -24,7 +24,7 @@
 #
 class coal(
     $kafka_brokers,
-    $kafka_consumer_group = 'coal',
+    $kafka_consumer_group = "coal_${::site}",
     $el_schemas = ['NavigationTiming', 'SaveTiming'],
     $whisper_dir = '/var/lib/coal',
     $log_dir = '/var/log/coal',
