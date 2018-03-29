@@ -2673,7 +2673,7 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV/vIMvgqEGnLjLdjKf0oX1tnwHWYtWgludaHE1O3bzKhfPZtQ8J1EcCQd76k08276IVc1qgkO7TQeU86Z7c5a1XnNU/eqfatBOVD9511Mz4v8PwifqSqgyJCkp07p/z464zaS1FNOZPth7FvmWqU0EsherNvauqnADkKhZJGzRszjNDhTMXKGu5LyxXNk463oSHiIS3dIUiPSsiaFPW9Mge2sjGTDCTKJaOnjHMWig+XgRopU7L/OY8ZRbgbD/tojClaUeq5ITexaDTwgv1e1G7RW4th0Ed4Bh/i5zc1FY+J1or5GdGUpAUDEC9mSpdxiwsW5bmtagxlbypm0fb1K3GUD1Sg9ShO5FEDXlmx+acOTmPUmZXwU0iNufiY29EqDRNwkL1XMmrQge+pkbKInV1ReanmD03PJr/RLo2pntczcPrw+SBCAoUjNkSUyTUBx5DO4G3e0AZ520Pyxt0tWFEI42eLDKLUTLEjVLM2ZZHrgeIMN9wKPNIHFWTrdShh+qVVMpXAIXbqi0WfTqu61srGPQMDibM9vMsbBHSGBvyTBwRoMEQX2LpCwGXH4Cr6UGmsPF7OBnsW0RTernuTCZi50Z8JygBuQHQ09A4otukbjvor+P/nOlUcZtYMDtWqErn7rzErkS1InPrDBUAAV1w6MjZCG2CX0cSuCqDFeWQ== vinithacse@gmail.com
     uid: 18102
     email: vinithacse@gmail.com
-    expiry_date: 2018-03-31
+    expiry_date: 2018-05-31
     expiry_contact: nuria@wikimedia.org
   imarlier:
     ensure: present
