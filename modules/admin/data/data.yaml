@@ -1624,7 +1624,7 @@ users:
     gid: 500
     name: dduvall
     realname: Dan Duvall
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwuECslbMWNQVKxjwtLI8BGouDmP/OcfTwVwNpXHFBKz9VEwXJC1x2sJVuDJJ55dZGhPBwhxJuuxL/kn8Lsr3mQus2402QBuG4YwCYNjnElhkmQcsCQIZ4P1dJRlPBetN7cv+2/ROx4Ophkl9hpRxdpvGQQ2k3DXpgMzPqUrH62Dv5/ln96FdtbHdXNYAB0r3sCw6iGxS+8PjaVpVg6qjyQ5+cAxYOi+qaiK/WkF/Sxt7vEq7GTFZPZwx7pKl/ZnTj05yYx2kVNecJRX6FozszsmMX96cn8LUEURicEnxlzIJ+hYGGGyIqmWigzupvxaJAZ+c7pZJTznb4DTDa3Gfd dduvall@shawarma.corp.wikimedia.org]
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/lY1HGhYEaSsjbwgBapI8Y4eSjqnVt07Hts99eazHv dduvall@wikimedia.org]
     uid: 5117
     email: dduvall@wikimedia.org
   nettrom:
