@@ -16,7 +16,7 @@ profile::kafka::mirror::monitoring_enabled: true
 profile::kafka::mirror::properties:
   # Replicate everything except for change-prop and internal (__.*)
   # topics from main to jumbo.
-  whitelist: '^(?!__|.*\.change-prop\.).+$'
+  whitelist: '^(?!__|.*\.change-prop\.|.*\.job\.).+$'
   num_streams: 12
   offset_commit_interval_ms: 5000
   # TODO: remove this once we use a newer version of MirrorMaker
