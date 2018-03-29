@@ -7,13 +7,14 @@
 class profile::hive::monitoring::server(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
-    $jmx_exporter_config_file = '/etc/hive/prometheus_hive_server_jmx_exporter.yaml'
+    $jmx_exporter_config_file = '/etc/prometheus/hive_server_jmx_exporter.yaml'
     $prometheus_jmx_exporter_hive_server_port = 10100
     profile::prometheus::jmx_exporter { "hive_server_${::hostname}":
         hostname         => $::hostname,
         port             => $prometheus_jmx_exporter_hive_server_port,
         prometheus_nodes => $prometheus_nodes,
         config_file      => $jmx_exporter_config_file,
+        config_dir       => '/etc/prometheus',
         source           => 'puppet:///modules/profile/hive/prometheus_hive_server_jmx_exporter.yaml',
     }
 }

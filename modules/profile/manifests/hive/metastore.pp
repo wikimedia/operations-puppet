@@ -20,7 +20,7 @@ class profile::hive::metastore(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        include ::profile::hive::monitoring::metastore
+        require ::profile::hive::monitoring::metastore
 
         nrpe::monitor_service { 'hive-metasore':
             description   => 'Hive Metastore',

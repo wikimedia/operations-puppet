@@ -10,11 +10,44 @@
 # machine, for use cases like Cassandra (multiple JVM instances with different
 # domains on the same host) or Kafka (Kafka/MirrorMaker JVMs on the same host).
 #
+# Parameters:
+#
+#  [*hostname*]
+#    Hostname used by the exporter for the listen socket.
+#
+#  [*port*]
+#    Port used by the exporter for the listen socket.
+#
+#  [*prometheus_nodes*]
+#    List of Prometheus master nodes.
+#
+#  [*config_file*]
+#    The full path of the configuration file to create. Check 'config_dir' for
+#    more info about how its parent directory is handled.
+#
+# [*config_dir*]
+#   The parent directory of the jmx exporter (usually /etc/prometheus). If not
+#   undef or already defined, it will be created by this profile. This is only
+#   a handy way to avoid code repetition while using this profile, but special
+#   care must be taken since: 1) this parameter assumes a string like
+#   '/etc/$name', arbitrary nesting is not currently supported 2) the $config_file
+#   value needs to be set accordingly.
+#   Default: undef
+#
+#  [*content*]
+#    Content of the exporter's configuration file. One between content or source
+#    must be specified.
+#
+#  [*source*]
+#    Source content of the exporter's configuration file. One between content or
+#    source must be specified.
+#
 define profile::prometheus::jmx_exporter (
     $hostname,
     $port,
     $prometheus_nodes,
     $config_file,
+    $config_dir = undef,
     $content = undef,
     $source  = undef,
 ) {
@@ -27,6 +60,16 @@ define profile::prometheus::jmx_exporter (
     }
 
     require_package('prometheus-jmx-exporter')
+
+    if $config_dir and ! defined(File[$config_dir]) {
+        # Create the Prometheus JMX Exporter configuration's parent dir
+        file { $config_dir:
+            ensure => 'directory',
+            mode   => '0444',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
 
     # Create the Prometheus JMX Exporter configuration
     file { $config_file:
