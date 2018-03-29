@@ -1,22 +1,21 @@
 define openstack::neutron::bridge(
-    $brname,
-    $interface='',
     $ensure='present',
+    $addif=undef,
     ) {
 
     if ($ensure == 'present') {
 
-        exec {"create-${brname}-bridge":
-            command => "/sbin/brctl addbr ${brname}",
-            unless  => "/sbin/brctl show | /bin/grep ${brname}",
-            notify  => Exec["create-${brname}-bridge-${interface}"],
+        exec {"create-${name}-bridge":
+            command => "/sbin/brctl addbr ${name}",
+            unless  => "/sbin/brctl show | /bin/grep ${name}",
         }
 
         # this is hokey but solves the simple case for neutron at the moment
-        if ($interface) {
-            exec {"create-${brname}-bridge-${interface}":
-                command     => "/sbin/brctl addif ${brname} ${interface}",
-                unless      => "/sbin/brctl show ${brname} | /bin/grep ${interface}",
+        if ($addif) {
+            exec {"create-${name}-bridge-${addif}":
+                command     => "/sbin/brctl addif ${name} ${addif}",
+                unless      => "/sbin/brctl show ${name} | /bin/grep ${addif}",
+                subscribe   => Exec["create-${name}-bridge"],
                 refreshonly => true,
             }
         }
