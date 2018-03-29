@@ -1,0 +1,5 @@
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: false
+whitelistObjectNames:
+  - 'org.apache.ZooKeeperService:name0=ReplicatedServer*'

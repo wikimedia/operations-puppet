@@ -12,8 +12,6 @@ profile::cdh::apt::pin_release: false
 # from the production ones.
 # Configure the zookeeper profile.
 profile::zookeeper::cluster_name: druid-analytics-eqiad
-# Don't page if a zookeeper server in this cluster goes down.
-profile::zookeeper::is_critical: false
 # Max number of connections per IP for Zookeeper
 profile::zookeeper::max_client_connections: 1024
 # Default tick_time is 2000ms, this should allow a max
