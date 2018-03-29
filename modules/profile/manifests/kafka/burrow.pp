@@ -44,7 +44,7 @@ define profile::kafka::burrow(
     # If nagios_check is set for this burrow instance monitoring_config,
     # declare burrow::check_consumer_lag for each configured consumer group.
     # This will set up an icinga alert if any of the configure groups
-    # start laggign.
+    # start lagging.
     if has_key($monitoring_config[$title], 'nagios_check') {
         # We might want to only use icinga to monitor specific consumer groups.
         # If these are given in the nagios_check config, then use them instead

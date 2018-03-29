@@ -3,12 +3,7 @@ profile::kafka::monitoring::config:
     burrow_port: 8100
     burrow_exporter_port: 9500
     to_emails: []
-    # Install a nrpe (nagios/icinga) check for lag.
-    # Use default burrow::check_consumer_lag parameters.
-    nagios_check:
-      contact_group: analytics
-    consumer_groups:
-      - kafka-mirror-main-eqiad_to_jumbo-eqiad
+    consumer_groups: []
   main-codfw:
     burrow_port: 8100
     burrow_exporter_port: 9500
