@@ -104,6 +104,9 @@ class statistics::packages {
     if os_version('debian >= stretch') {
         require_package([
             'python3-protobuf',
+            # WMF maintains python-google-api at
+            # https://gerrit.wikimedia.org/r/#/admin/projects/operations/debs/python-google-api
+            'python-google-api', 'python3-google-api', # T190767
         ])
     }
 
