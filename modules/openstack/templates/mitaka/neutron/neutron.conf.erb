@@ -19,6 +19,19 @@ rpc_backend = rabbit
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 
+# run 2 dhcp agents per for HA
+dhcp_agents_per_network = 2
+
+# https://docs.openstack.org/mitaka/networking-guide/config-az.html#l3-high-availability
+# make routers HA "by default"
+l3_ha = True
+# maximum number of network nodes to use for the HA router
+max_l3_agents_per_router = 2
+# Minimum number of network nodes to use for the HA
+# router. A new router can be created only if this number
+# of network nodes are available.
+min_l3_agents_per_router = 2
+
 [agent]
 root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
 
