@@ -18,6 +18,15 @@
 #
 # [*critical_throughput*]
 #   Alert critical if average consume or produce throughput (msgs/sec) drops below this.
+#   Default: 0
+#
+# [*warning_lag*]
+#   Alert warning if max consumer lag in the last 10 minutes is above this.
+#   Default: 10000
+#
+# [*critical_lag*]
+#   Alert critical if max consumer lag in the last 10 minutes is above this.
+#   Default: 100000
 #
 # [*contact_group*]
 #   Default: admins
@@ -33,6 +42,8 @@ define profile::kafka::mirror::alerts(
     $monitoring_period   = '30m',
     $warning_throughput  = 100,
     $critical_throughput = 0,
+    $warning_lag         = 10000,
+    $critical_lag        = 100000,
     $contact_group       = 'admins',
     $nagios_critical     = false,
     $prometheus_url      = "http://prometheus.svc.${::site}.wmnet/ops",
@@ -73,5 +84,16 @@ define profile::kafka::mirror::alerts(
         # We alert on this, but are lenient about them.
         warning     => 100,
         critical    => 1000,
+    }
+
+    # Alert on max consumer lag in last $lag_check_period minutes.
+    $lag_check_period = '10'
+    monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
+        description => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
+        # This metric does not have the mirror_name label, so we target it in the group instead.
+        query       => "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m]))",
+        method      => 'gt',
+        warning     => $warning_lag,
+        critical    => $critical_lag,
     }
 }
