@@ -2,6 +2,8 @@
 #
 class profile::statistics::cruncher(
     $statistics_servers = hiera('statistics_servers'),
+    $dumps_servers       = hiera('dumps_dist_nfs_servers'),
+    $dumps_active_server = hiera('dumps_dist_active_web'),
 ) {
     include ::standard
     include ::base::firewall
@@ -17,7 +19,11 @@ class profile::statistics::cruncher(
 
     # include stuff common to statistics compute nodes
     include ::statistics::compute
-    include ::statistics::dataset_mount
+
+    class { '::statistics::dataset_mount':
+        dumps_servers       => $dumps_servers,
+        dumps_active_server => $dumps_active_server,
+    }
 
     # This file will render at
     # /etc/mysql/conf.d/researchers-client.cnf.
