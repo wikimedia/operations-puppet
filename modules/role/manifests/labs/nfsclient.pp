@@ -155,4 +155,42 @@ class role::labs::nfsclient(
             lookupcache => $lookupcache,
         }
     }
+
+    if mount_nfs_volume($::labsproject, 'dumps') {
+
+        file { '/public/dumps':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+
+        $dumps_active_server = hiera('dumps_dist_active_vps')
+        $dumps_share_root = "/mnt/nfs/dumps-${dumps_active_server}/xmldatadumps"
+
+        $defaults = {
+            ensure => 'link',
+            require => Labstore::Nfs_mount[$dumps_active_server]
+        }
+
+        $symlinks = {
+            '/public/dumps/public' => {
+                target  => "${dumps_share_root}/public",
+            },
+            '/public/dumps/incr' => {
+                target  => "${dumps_share_root}/incr",
+            },
+            '/public/dumps/pagecounts-all-sites' => {
+                target  => "${dumps_share_root}/public/other/pagecounts-all-sites",
+            },
+            '/public/dumps/pagecounts-raw' => {
+                target  => "${dumps_share_root}/public/other/pagecounts-raw",
+            },
+            '/public/dumps/pageviews' => {
+                target  => "${dumps_share_root}/public/other/pageviews",
+            },
+        }
+
+        create_resources(file, $symlinks, $defaults)
+    }
 }
