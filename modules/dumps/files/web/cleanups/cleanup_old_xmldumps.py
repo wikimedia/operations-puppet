@@ -127,8 +127,29 @@ def get_keeps(keeps_conffile):
 
 class DumpsCleaner(object):
     """
-    methods for finding and cleaning up old wiki dump dirs
+    methods for finding and cleaning up old wiki dump dirs and 'latest' links
     """
+    @staticmethod
+    def get_dates_from_filenames(filenames):
+        '''
+        given a list of filenames with date string -YYYYMMDD- somewhere
+        in them, return a list of these date strings, sorted, with
+        dups filtered out. if such a string occurs more than once in
+        a filename, we take the first one.
+        return also a dict of the filenames by their datestrings.
+        filenames with no such string will be silently skipped.
+        '''
+        files_by_date = {}
+        dates = []
+        for fname in filenames:
+            fields = fname.split('-')
+            for field in fields:
+                if len(field) == 8 and field.isdigit():
+                    files_by_date[field] = fname
+                    dates.append(field)
+                    break
+        return files_by_date, sorted(list(set(dates)))
+
     def __init__(self, keeps_conffile, wikilists_dir, dumpsdir, wikipattern, dryrun):
         self.keeps_per_list = get_keeps(keeps_conffile)
         self.wikilists = get_wikilists(wikilists_dir, self.keeps_per_list.keys())
@@ -146,6 +167,16 @@ class DumpsCleaner(object):
             return []
         dirs = os.listdir(path)
         return sorted([dirname for dirname in dirs if dirname.isdigit() and len(dirname) == 8])
+
+    def get_latestlinks(self, wiki):
+        """
+        get list of 'latest' links from dumpsdir/wiki/latest
+        """
+        path = os.path.join(self.dumpsdir, wiki, 'latest')
+        if not os.path.exists(path):
+            return []
+        links = os.listdir(path)
+        return sorted(links)
 
     def get_keep_for_wiki(self, wiki):
         """
@@ -173,6 +204,27 @@ class DumpsCleaner(object):
             else:
                 shutil.rmtree("%s" % to_remove)
 
+    def cleanup_wiki_latestfiles(self, wiki):
+        """
+        remove links to 'latest' files for the wiki that are older
+        than two runs ago. these can't be cleaned up by rsync so we
+        do it here.
+        """
+        latestlinks = self.get_latestlinks(wiki)
+        links_by_date, dates = self.get_dates_from_filenames(latestlinks)
+        if len(dates) <= 2:
+            # nothing to do
+            return
+
+        cutoff = dates[-2]
+        path = os.path.join(self.dumpsdir, wiki, 'latest')
+        for (filename, filedate) in links_by_date:
+            if filedate < cutoff:
+                if self.dryrun:
+                    print "would remove link", os.path.join(path, filename)
+                else:
+                    os.unlink(os.path.join(filename))
+
     def cleanup_wiki(self, keeps, wiki):
         """
         remove oldest dumps if we have more than the number to keep
@@ -183,12 +235,15 @@ class DumpsCleaner(object):
 
     def clean(self):
         """
-        remove oldest dumps from each wiki directory in dumpsdir
+        remove links to 'latest' files for wiki that are older than
+        two runs ago
+        also remove oldest dumps from each wiki directory in dumpsdir
         if we are keeping too many, as determined by the conffile
         describing how many we keep for wikis in each list in the
         wikilists_dir, with optional default keep value.
         """
         for wiki in self.wikistoclean:
+            self.cleanup_wiki_latestfiles(wiki)
             tokeep = self.get_keep_for_wiki(wiki)
             if tokeep is None:
                 continue
