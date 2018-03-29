@@ -14,11 +14,11 @@ class statistics::dataset_mount (
     require_package('nfs-common')
 
     file { '/mnt/data':
-        ensure => 'directory',
+        ensure => 'absent',
     }
 
     mount { '/mnt/data':
-        ensure  => 'mounted',
+        ensure  => 'absent',
         device  => '208.80.154.11:/data',
         fstype  => 'nfs',
         options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11',
