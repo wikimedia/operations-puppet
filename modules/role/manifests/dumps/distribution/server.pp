@@ -4,6 +4,7 @@ class role::dumps::distribution::server {
     include ::standard
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
+    include ::labstore::monitoring::interfaces
 
     include ::profile::dumps::distribution::server
     include ::profile::dumps::distribution::nfs
