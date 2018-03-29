@@ -4,6 +4,7 @@ class profile::openstack::labtestn::nova::compute::service(
     $network_flat_tagged_base_interface = hiera('profile::openstack::labtestn::nova::network_flat_tagged_base_interface'),
     $network_flat_interface_vlan = hiera('profile::openstack::labtestn::nova::network_flat_interface_vlan'),
     $network_flat_name = hiera('profile::openstack::labtestn::neutron::network_flat_name'),
+    $internal_bridge =  hiera('profile::openstack::labtestn::neutron::internal_bridge'),
     ) {
 
     $certname = "labvirt-star.${::site}.wmnet"
@@ -12,7 +13,8 @@ class profile::openstack::labtestn::nova::compute::service(
     class {'::profile::openstack::base::neutron::linuxbridge_agent':
         version                => $version,
         network_flat_interface => $network_flat_interface,
-        network_flat_name      => $network_flat_name,
+        internal_bridge        => $internal_bridge,
+        bridge_mappings        => "${internal_bridge}:${internal_bridge}",
     }
     contain '::profile::openstack::base::neutron::linuxbridge_agent'
 

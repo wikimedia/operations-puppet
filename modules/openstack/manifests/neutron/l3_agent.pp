@@ -1,6 +1,8 @@
 class openstack::neutron::l3_agent(
     $version,
     $dmz_cidr,
+    $bridge,
+    $bridge_addif,
     $network_public_ip,
     $enabled=true,
     ) {
@@ -27,9 +29,8 @@ class openstack::neutron::l3_agent(
         require => Package['neutron-l3-agent'],
     }
 
-    openstack::neutron::bridge{'br-external':
-        brname    => 'br-external',
-        interface => 'eth1.2120',
+    openstack::neutron::bridge{ $bridge:
+        addif => $bridge_addif,
     }
 
     sysctl::parameters { 'openstack':
