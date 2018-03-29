@@ -1,0 +1,8 @@
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: false
+whitelistObjectNames:
+  - 'org.apache.ZooKeeperService:*'
+rules:
+  - pattern: org.apache.ZooKeeperService<name0=.*><>(\w+)
+    name: org_apache_ZooKeeperService_$1
