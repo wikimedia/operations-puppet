@@ -7,7 +7,7 @@
 class profile::hadoop::monitoring::history(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
-    $jmx_exporter_config_file = '/etc/hadoop/prometheus_mapreduce_history_jmx_exporter.yaml'
+    $jmx_exporter_config_file = '/etc/prometheus/mapreduce_history_jmx_exporter.yaml'
     $prometheus_jmx_exporter_history_port = 10086
     profile::prometheus::jmx_exporter { "mapreduce_history_${::hostname}":
         hostname         => $::hostname,
