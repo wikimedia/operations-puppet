@@ -13,19 +13,6 @@ class statistics::dataset_mount (
     # need this for NFS mounts.
     require_package('nfs-common')
 
-    file { '/mnt/data':
-        ensure => 'absent',
-    }
-
-    mount { '/mnt/data':
-        ensure  => 'absent',
-        device  => '208.80.154.11:/data',
-        fstype  => 'nfs',
-        options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11',
-        atboot  => true,
-        require => File['/mnt/data'],
-    }
-
     file {'/mnt/nfs':
         ensure => 'directory',
     }
@@ -53,5 +40,11 @@ class statistics::dataset_mount (
             atboot  => true,
             require => File["/mnt/nfs/dumps-${server}"],
         }
+    }
+
+    file { '/mnt/data/':
+        ensure  => 'link',
+        target  => "/mnt/nfs/dumps-${dumps_active_server}",
+        require => Mount["/mnt/nfs/dumps-${dumps_active_server}"],
     }
 }
