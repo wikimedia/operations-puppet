@@ -91,7 +91,7 @@ define profile::kafka::mirror::alerts(
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
         description => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
         # This metric does not have the mirror_name label, so we target it in the group instead.
-        query       => "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m]))",
+        query       => "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))",
         method      => 'gt',
         warning     => $warning_lag,
         critical    => $critical_lag,
