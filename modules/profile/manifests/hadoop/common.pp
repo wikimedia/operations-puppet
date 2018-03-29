@@ -170,6 +170,9 @@ class profile::hadoop::common (
     # Need Java before Hadoop is installed.
     require ::profile::java::analytics
 
+    # ores::base for ORES packages.
+    require ::ores::base
+
     # Force apt-get update to run before we try to install packages.
     # CDH Packages are in the thirdparty/cloudera apt component,
     # and are made available by profile::cdh::apt.
@@ -272,7 +275,6 @@ class profile::hadoop::common (
         java_home                                   => $java_home,
     }
 
-    class { '::ores::base': }
 
     if $::realm == 'labs' {
         # Hadoop directories in labs should be created by puppet.

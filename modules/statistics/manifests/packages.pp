@@ -4,6 +4,9 @@ class statistics::packages {
     include ::geoip
     include ::imagemagick::install
 
+    # ORES dependency packages.
+    include ::ores::base
+
     require_package([
         'openjdk-8-jdk',
         'time',
