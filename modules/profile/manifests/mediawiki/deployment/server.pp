@@ -2,7 +2,7 @@
 class profile::mediawiki::deployment::server(
     $apache_fqdn = hiera('apache_fqdn', $::fqdn),
     $deployment_group = hiera('deployment_group', 'wikidev'),
-    $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet'),
+    $deployment_server = hiera('deployment_server', 'deploy1001.eqiad.wmnet'),
     $main_deployment_server = hiera('scap::deployment_server'),
     $base_path = hiera('base_path', '/srv/deployment'),
 ) {
