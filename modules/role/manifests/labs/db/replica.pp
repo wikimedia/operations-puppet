@@ -41,7 +41,7 @@ class role::labs::db::replica {
     include ::passwords::misc::scripts
 
     include ::role::labs::db::common
-    include ::role::labs::db::views
+    include ::profile::labs::db::views
     include ::role::labs::db::check_private_data
 
     class { 'profile::mariadb::monitor::prometheus':
