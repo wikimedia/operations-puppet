@@ -15,7 +15,6 @@ scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
   - "naos.codfw.wmnet"
 
-
 scap::dsh::groups:
   jobrunner-canaries:
     hosts:
