@@ -26,6 +26,7 @@ profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
 # This should be solved in https://github.com/druid-io/tranquility/issues/251
 # for Druid >= 0.11
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
+profile::zookeeper::prometheus_monitoring_enabled: true
 
 # -- Druid common configuration
 
