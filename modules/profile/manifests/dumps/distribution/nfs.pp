@@ -1,7 +1,9 @@
 # Set up NFS Server for the public dumps servers
 # Firewall rules are managed separately through profile::wmcs::nfs::ferm
 
-class profile::dumps::distribution::nfs {
+class profile::dumps::distribution::nfs (
+    $nfs_clients = hiera('profile::dumps::distribution::nfs_clients')
+  ) {
 
     require_package('nfs-kernel-server', 'nfs-common', 'rpcbind')
 
@@ -33,7 +35,7 @@ class profile::dumps::distribution::nfs {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/profile/dumps/distribution/nfs-exports',
+        content => template('profile/dumps/distribution/nfs-exports.erb'),
         require => Package['nfs-kernel-server'],
     }
 

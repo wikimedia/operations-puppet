@@ -11,6 +11,11 @@ profile::dumps::distribution::rsync_config:
   dumps_deploygroup: 'wikidev'
   dumps_mntpoint: '/srv/dumps'
 
+profile::dumps::distribution::nfs_clients:
+  - 10.68.0.0/16
+  - stat1005.eqiad.wmnet
+  - stat1006.eqiad.wmnet
+
 profile::dumps::distribution::mirrors:
   - url: 'http://wikipedia.c3sl.ufpr.br'
     hostname: 'sagres.c3sl.ufpr.br'
