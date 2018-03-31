@@ -21,20 +21,4 @@ class role::bastionhost::general {
         proto => 'tcp',
         port  => 'ssh',
     }
-
-    rsync::quickdatacopy { 'bastion-home':
-      ensure      => present,
-      auto_sync   => false,
-      source_host => 'bast1001.wikimedia.org',
-      dest_host   => 'bast1002.wikimedia.org',
-      module_path => '/home',
-    }
-
-    if $::fqdn == 'bast1001.wikimedia.org' {
-        motd::script { 'inactive_warning':
-            ensure   => 'present',
-            priority => 1,
-            content  => template('role/bastionhost/inactive.motd.erb'),
-        }
-    }
 }
