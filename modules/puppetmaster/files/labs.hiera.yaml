@@ -14,14 +14,11 @@
 :httpyaml:
   :url_prefix: http://labs-puppetmaster.wikimedia.org:8100/v1/
 :hierarchy:
-  - "labs/hosts/%{::hostname}"
   - "labs/%{::labsproject}/host/%{::hostname}"
   - "labs/%{::labsproject}/common"
   - "labs"
   - "secret/%{::labsproject}"
-  - "private/labs/%{::labsproject}/common"
   - "private/%{::labsproject}"
-  - "private/labs"
   - "common"
   - "secret/common"
   - "private/common"
