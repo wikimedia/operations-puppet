@@ -436,13 +436,6 @@ host baham {
     filename "lpxelinux.0";
 }
 
-host bast1001 {
-    hardware ethernet 78:2b:cb:09:11:ba;
-    fixed-address bast1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host bast1002 {
     hardware ethernet 14:18:77:58:86:BC;
     fixed-address bast1002.wikimedia.org;
