@@ -33,7 +33,7 @@ class profile::prometheus::alerts {
     monitoring::check_prometheus { 'eventlogging_EventError_throughput':
         description     => 'Throughput of EventLogging EventError events',
         query           => 'scalar(quantile(0.50,rate(kafka_server_BrokerTopicMetrics_MessagesIn_total{cluster="kafka_jumbo",topic="eventlogging_EventError"}[15m])))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
         warning         => 20,
         critical        => 30,
         method          => 'ge',
@@ -47,7 +47,7 @@ class profile::prometheus::alerts {
     monitoring::check_prometheus { 'eventlogging_NavigationTiming_throughput':
         description     => 'Throughput of EventLogging NavigationTiming events',
         query           => 'scalar(quantile(0.50,rate(kafka_server_BrokerTopicMetrics_MessagesIn_total{cluster="kafka_jumbo",topic="eventlogging_NavigationTiming"}[15m])))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
         warning         => 1,
         critical        => 0,
         method          => 'le',
@@ -61,7 +61,7 @@ class profile::prometheus::alerts {
     monitoring::check_prometheus { 'eventlogging_throughput':
         description     => 'Throughput of EventLogging events',
         query           => 'scalar(quantile(0.50, rate(kafka_server_BrokerTopicMetrics_MessagesIn_total{cluster="kafka_jumbo",topic="eventlogging-client-side"}[15m])))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
+        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/ops',
         warning         => 1500,
         critical        => 5000,
         method          => 'ge',
