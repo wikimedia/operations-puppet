@@ -30,8 +30,6 @@ class network::constants {
     $special_hosts = {
         'production' => {
             'bastion_hosts' => [
-                    '208.80.154.149',                   # bast1001.wikimedia.org
-                    '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
                     '208.80.154.86',                    # bast1002.wikimedia.org
                     '2620:0:861:3:208:80:154:86',       # bast1002.wikimedia.org
                     '208.80.153.5',                     # bast2001.wikimedia.org
