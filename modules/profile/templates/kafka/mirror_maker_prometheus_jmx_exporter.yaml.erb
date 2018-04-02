@@ -23,7 +23,7 @@ rules:
     topic: $3
     partition: $4
     mirror_name: <%= @mirror_instance_name %>
-    process_number: <%= @process %>
+    process_number: "<%= @process %>"
     host: <%= @hostname %>
 
 # Capture all-topic level fetch metrics into their own metric name, so they don't
@@ -33,7 +33,7 @@ rules:
   labels:
     client_id: $2
     mirror_name: <%= @mirror_instance_name %>
-    process_number: <%= @process %>
+    process_number: "<%= @process %>"
     host: <%= @hostname %>
 
 # kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages
@@ -41,7 +41,7 @@ rules:
   name: kafka_tools_$1_$2
   labels:
     mirror_name: <%= @mirror_instance_name %>
-    process_number: <%= @process %>
+    process_number: "<%= @process %>"
     host: <%= @hostname %>
 
 # For everything else, the scraper does a good job.
