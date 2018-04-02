@@ -26,6 +26,15 @@ class profile::statistics::private(
         dumps_active_server => $dumps_active_server,
     }
 
+    # Directory to host datasets that are generated locally and synced over
+    # via rsync fetch jobs running on the dumps distribution servers
+    file {'/srv/dumps':
+        ensure => 'directory',
+        mode   => '0775',
+        owner  => 'stats',
+        group  => 'wikidev',
+    }
+
     # This file will render at
     # /etc/mysql/conf.d/statistics-private-client.cnf.
     # This is so that users in the statistics-privatedata-users
