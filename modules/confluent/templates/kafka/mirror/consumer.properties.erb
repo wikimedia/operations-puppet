@@ -7,7 +7,7 @@
 ############################# Consumer Basics #############################
 
 # Kafka Consumer group id
-group.id=kafka-mirror-<%= @mirror_name %>
+group.id=<%= @group_id %>
 
 <% if @source_zookeeper_url -%>
 # Zookeeper connection string

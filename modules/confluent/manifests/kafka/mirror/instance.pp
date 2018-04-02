@@ -23,6 +23,9 @@
 # [*jmx_port*]
 #   Port on which to expose MirrorMaker JMX metrics.
 #
+# [*group_id*]
+#   Consumer group.id.  Default: kafka-mirror-$title.
+#
 # [*consumer_properties*]
 #   Other Consumer related properties to set in this MirrorMaker
 #   instance's consumer.properties file.
@@ -107,6 +110,7 @@ define confluent::kafka::mirror::instance(
     $source_brokers               = undef,
     $source_zookeeper_url         = undef,
 
+    $group_id                     = "kafka-mirror-${title}",
     $consumer_properties          = {},
     $new_consumer                 = false,
 
@@ -149,6 +153,14 @@ define confluent::kafka::mirror::instance(
         fail('Must specify $source_brokers instead of $source_zookeeper_url when using $new_consumer.')
     }
 
+    # Install a catch-all systemd service to ease stopping and starting
+    # of all MirrorMaker processes on this host.
+    if !defined(Systemd::Service['kafka-mirror']) {
+        systemd::service { 'kafka-mirror':
+            content => systemd_template('kafka-mirror'),
+        }
+    }
+
     $mirror_name = $title
 
     # Local variable for rendering in templates.
@@ -186,7 +198,7 @@ define confluent::kafka::mirror::instance(
     # We don't want to subscribe to the config files here.
     systemd::service { "kafka-mirror-${mirror_name}":
         ensure  => $service_ensure,
-        content => systemd_template('kafka-mirror'),
+        content => systemd_template('kafka-mirror-instance'),
         require => [
             File["/etc/kafka/mirror/${mirror_name}/log4j.properties"],
             File["/etc/kafka/mirror/${mirror_name}/consumer.properties"],
