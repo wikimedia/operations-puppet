@@ -55,19 +55,19 @@ class profile::kafka::mirror(
 
     # This is the name of the logical MirrorMaker instance.  It will be used
     # for the consumer group.id.  Each individual process belonging to this will
-    # be named $mirror_instance@$process_num.
-    $mirror_instance = "${source_config['name']}_to_${destination_config['name']}"
+    # be named $mirror_instance_name@$process_num.
+    $mirror_instance_name = "${source_config['name']}_to_${destination_config['name']}"
 
     # Iterate and instantiate $num_processes MirrorMaker processes using these configs.
     range(0, $num_processes - 1).each |$process| {
 
         # Use the names from the config hashes, rather than as passed in, since names passed in
         # might not be fully suffixed with datacenter name.
-        $mirror_name = "${mirror_instance}@${process}"
+        $mirror_process_name = "${mirror_instance_name}@${process}"
 
         if $monitoring_enabled {
             $prometheus_jmx_exporter_port = $jmx_exporter_base_port + $process
-            $jmx_exporter_config_file = "/etc/kafka/mirror/${mirror_name}/prometheus_jmx_exporter.yaml"
+            $jmx_exporter_config_file = "/etc/kafka/mirror/${mirror_process_name}/prometheus_jmx_exporter.yaml"
 
             # Use this in your JAVA_OPTS you pass to the Kafka MirrorMaker process
             $java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
@@ -75,7 +75,7 @@ class profile::kafka::mirror(
             # Declare a prometheus jmx_exporter instance.
             # This will render the config file, declare the jmx_exporter_instance,
             # and configure ferm.
-            profile::prometheus::jmx_exporter { "kafka_mirror_${$mirror_name}_${::hostname}":
+            profile::prometheus::jmx_exporter { "kafka_mirror_${$mirror_process_name}_${::hostname}":
                 hostname         => $::hostname,
                 port             => $prometheus_jmx_exporter_port,
                 prometheus_nodes => $prometheus_nodes,
@@ -84,14 +84,14 @@ class profile::kafka::mirror(
             }
 
             # Generate icinga alert if Kafka Server is not running.
-            nrpe::monitor_service { "kafka-mirror-${mirror_name}":
-                description  => "Kafka MirrorMaker ${mirror_name}",
-                nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_name}/producer\\.properties'",
-                require      => Confluent::Kafka::Mirror::Instance[$mirror_name],
+            nrpe::monitor_service { "kafka-mirror-${mirror_process_name}":
+                description  => "Kafka MirrorMaker ${mirror_process_name}",
+                nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_process_name}/producer\\.properties'",
+                require      => Confluent::Kafka::Mirror::Instance[$mirror_process_name],
             }
 
             # More alerts can be added by declaring
-            # profile::kafka::mirror::alerts { $mirror_name: }
+            # profile::kafka::mirror::alerts { $mirror_process_name: }
             # elsewhere, usually in profile::prometheus::alerts.
         }
         else {
@@ -126,7 +126,7 @@ class profile::kafka::mirror(
             # confluent::kafka::mirror::instance
             'monitoring_enabled'  => false,
             'jmx_port'            => $jmx_base_port + $process,
-            'group_id'            => "kafka-mirror-${mirror_instance}",
+            'group_id'            => "kafka-mirror-${mirror_instance_name}",
         }
 
         # This hash will be passed to confluent::kafka::mirror::instance.
@@ -144,7 +144,7 @@ class profile::kafka::mirror(
         # now, and possibly more as needed later.
         create_resources(
             'confluent::kafka::mirror::instance',
-            { "${mirror_name}" => $mirror_parameters }
+            { "${mirror_process_name}" => $mirror_parameters }
         )
     }
 }

@@ -22,7 +22,8 @@ rules:
     client_id: $2
     topic: $3
     partition: $4
-    mirror_name: <%= @mirror_maker_instance_name %>
+    mirror_name: <%= @mirror_instance_name %>
+    process_number: <%= @process %>
     host: <%= @hostname %>
 
 # Capture all-topic level fetch metrics into their own metric name, so they don't
@@ -31,19 +32,21 @@ rules:
   name: kafka_consumer_$1_all_topics_$3
   labels:
     client_id: $2
-    mirror_name: <%= @mirror_maker_instance_name %>
+    mirror_name: <%= @mirror_instance_name %>
+    process_number: <%= @process %>
     host: <%= @hostname %>
 
 # kafka_tools_MirrorMaker_MirrorMaker_numDroppedMessages
 - pattern: kafka.tools<type=(MirrorMaker), name=(.+)><>Value
   name: kafka_tools_$1_$2
   labels:
-    mirror_name: <%= @mirror_maker_instance_name %>
+    mirror_name: <%= @mirror_instance_name %>
+    process_number: <%= @process %>
     host: <%= @hostname %>
 
 # For everything else, the scraper does a good job.
 # Unfortunetly, we can't use labels for this, since we can't
 # match a name for everything, and labels can't be used without name being set.
 # Most of these come with a default client_id label though, and that should
-# contain the MirrorMaker instance name in it.
+# contain the MirrorMaker process name in it.
 - pattern: .*
