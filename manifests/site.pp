@@ -547,12 +547,6 @@ node 'db1051.eqiad.wmnet' {
     }
 }
 
-# To be decommissioned T189773
-node 'db1020.eqiad.wmnet' {
-    role(spare::system)
-}
-
-
 node 'db2044.codfw.wmnet' {
     class { '::role::mariadb::misc':
         shard => 'm2',
