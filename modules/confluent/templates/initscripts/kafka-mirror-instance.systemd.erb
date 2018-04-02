@@ -35,4 +35,4 @@ ExecStart=/usr/bin/kafka-mirror-maker \
 --producer.config /etc/kafka/mirror/<%= @mirror_name %>/producer.properties
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=kafka-mirror.service multi-user.target

@@ -13,10 +13,17 @@ nagios_group: analytics_eqiad
 profile::kafka::mirror::source_cluster_name: main-eqiad
 profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
 profile::kafka::mirror::monitoring_enabled: true
+# This many individual MirrorMaker processes with these settings will be started.
+# This allows us to spawn multiple processes of the same MirrorMaker on the same
+# hosts, allowing us to more easily scale up the number of producer clients.
+# (MirrorMaker uses one producer per process).
+profile::kafka::mirror::num_processes:  1
 profile::kafka::mirror::properties:
   # Replicate everything except for change-prop and internal (__.*)
   # topics from main to jumbo.
   whitelist: '^(?!__|.*\.change-prop\.|.*\.job\.).+$'
+  # This is the number of consumer threads per process for this mirror maker.
+  # The total number of consumer threads per host will be num_processes * num_streams.
   num_streams: 12
   offset_commit_interval_ms: 5000
   # TODO: remove this once we use a newer version of MirrorMaker
