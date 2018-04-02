@@ -163,7 +163,7 @@ define confluent::kafka::mirror::instance(
 
     $mirror_name = $title
     # client.id used in metric names.
-    $client_id   = "kafka-mirror-$::{hostname}:${mirror_name}"
+    $client_id   = "kafka-mirror-${::hostname}:${mirror_name}"
 
     # Local variable for rendering in templates.
     $java_home = $::confluent::kafka::common::java_home
