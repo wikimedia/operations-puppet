@@ -13,11 +13,19 @@ class profile::dumps::distribution::datasets::fetcher(
         xmldumpsdir     => $xmldumpsdir,
         miscdatasetsdir => $miscdatasetsdir,
     }
+
     class {'dumps::web::fetches::stats':
         src             => 'stat1005.eqiad.wmnet::hdfs-archive',
         miscdatasetsdir => $miscdatasetsdir,
         user            => $user,
     }
+
+    class {'dumps::web::fetches::stat_dumps':
+        src             => 'stat1005.eqiad.wmnet::dumps',
+        miscdatasetsdir => $miscdatasetsdir,
+        user            => $user,
+    }
+
     class {'dumps::web::fetches::wikitech_dumps':
         url             => 'https://wikitech.wikimedia.org/dumps/',
         miscdatasetsdir => $miscdatasetsdir,
