@@ -20,7 +20,7 @@ class profile::labs::db::views (
         content => template('profile/labs/db/views/maintain-views.yaml'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0400',
     }
 
     file { '/usr/local/sbin/maintain-views':
@@ -28,7 +28,7 @@ class profile::labs::db::views (
         source  => 'puppet:///modules/profile/labs/db/views/maintain-views.py',
         owner   => 'root',
         group   => 'root',
-        mode    => '0655',
+        mode    => '0755',
         require => [Package['python3-yaml', 'python3-pymysql'],
                     Git::Clone['operations/mediawiki-config'],
         ],
@@ -39,7 +39,7 @@ class profile::labs::db::views (
         content => template('profile/labs/db/views/index-conf.yaml'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0400',
     }
 
     file { '/usr/local/sbin/maintain_replica_indexes.py':
@@ -47,7 +47,7 @@ class profile::labs::db::views (
         source  => 'puppet:///modules/profile/labs/db/views/maintain_replica_indexes.py',
         owner   => 'root',
         group   => 'root',
-        mode    => '0655',
+        mode    => '0755',
         require => [Package['python3-yaml', 'python3-pymysql', 'python3-psutil'],
                     Git::Clone['operations/mediawiki-config'],
         ],
@@ -58,7 +58,7 @@ class profile::labs::db::views (
         source  => 'puppet:///modules/profile/labs/db/views/maintain-meta_p.py',
         owner   => 'root',
         group   => 'root',
-        mode    => '0655',
+        mode    => '0755',
         require => [Package['python-simplejson', 'python-pymysql']],
     }
 
