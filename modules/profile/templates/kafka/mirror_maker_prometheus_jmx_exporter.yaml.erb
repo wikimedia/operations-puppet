@@ -16,7 +16,7 @@ rules:
 # value names  with the "<topic>-<partition>.<metric>" in them.  E.g. test1-0.records-lag-avg
 # This pattern extracts out the topic, partition and metric to provide e.g.
 # kafka_consumer_consumer_fetch_manager_metrics_records_lag_avg{client_id="kafka-mirror-k1_to_k2-0",topic="test1", partition="0"} 0.0
-- pattern: kafka.consumer<type=(consumer-fetch-manager-metrics), client-id=([\w\-_\.]+)><>([\w\-_]+)\-(\d+)\.(records\-lag[\w\-_]*)
+- pattern: kafka.consumer<type=(consumer-fetch-manager-metrics), client-id=([\w\-_\.@]+)><>([\w\-_]+)\-(\d+)\.(records\-lag[\w\-_]*)
   name: kafka_consumer_$1_$5
   labels:
     client_id: $2
@@ -27,7 +27,7 @@ rules:
 
 # Capture all-topic level fetch metrics into their own metric name, so they don't
 # get mixed up with per topic level metrics.
-- pattern: kafka.consumer<type=(consumer-fetch-manager-metrics), client-id=([\w\-_\.]+)><>([\w\-_]+)
+- pattern: kafka.consumer<type=(consumer-fetch-manager-metrics), client-id=([\w\-_\.@]+)><>([\w\-_]+)
   name: kafka_consumer_$1_all_topics_$3
   labels:
     client_id: $2
