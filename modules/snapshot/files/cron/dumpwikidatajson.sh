@@ -93,6 +93,7 @@ done
 echo -e '\n]' | gzip -f >> $tempDir/wikidataJson.gz
 
 mv $tempDir/wikidataJson.gz $targetFileGzip
+putDumpChecksums $targetFileGzip
 
 # Legacy directory (with legacy naming scheme)
 legacyDirectory=${cronsdir}/wikidata
@@ -106,6 +107,7 @@ ln -fs "$today/$filename.json.gz" "$targetDirBase/latest-all.json.gz"
 gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataJson.bz2
 mv $tempDir/wikidataJson.bz2 $targetFileBzip2
 ln -fs "$today/$filename.json.bz2" "$targetDirBase/latest-all.json.bz2"
+putDumpChecksums $targetFileBzip2
 
 pruneOldLogs
 runDcat

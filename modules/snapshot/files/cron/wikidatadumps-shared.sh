@@ -40,3 +40,11 @@ function pruneOldLogs {
 function runDcat {
 	$php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
 }
+
+function putDumpChecksums {
+	md5=`md5sum "$1" | awk '{print $1}'`
+	echo "$md5  `basename $1`" >> $targetDir/wikidata-$today-md5sums.txt
+
+	sha1=`sha1sum "$1" | awk '{print $1}'`
+	echo "$sha1  `basename $1`" >> $targetDir/wikidata-$today-sha1sums.txt
+}
