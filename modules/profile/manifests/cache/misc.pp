@@ -72,4 +72,11 @@ class profile::cache::misc(
         cluster_nodes    => $nodes,
         cache_route      => $cache_route,
     }
+
+    file  { '/usr/local/bin/apache-fast-test':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/cache/misc/apache-fast-test',
+    }
 }
