@@ -17,7 +17,8 @@ Environment="WINDOW_HEIGHT=<%= @height %>"
 Environment="WINDOW_WIDTH=<%= @width %>"
 Environment="CONCURRENCY=<%= @no_browsers %>"
 Environment="TIMEOUT=<%= @timeout %>"
-SyslogIdentifier=pdfrender
+StandardOutput=file:<%= @log_file %>
+StandardError=inherit
 Restart=always
 RestartSec=2s
 # wait 60 seconds for a graceful restart before killing the master

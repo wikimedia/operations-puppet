@@ -1,0 +1,12 @@
+# logrotate(8) config for pdfrender
+
+<%= @log_dir %>/*.log {
+    daily
+    copytruncate
+    missingok
+    compress
+    delaycompress
+    notifempty
+    rotate 15
+    size 256M
+}

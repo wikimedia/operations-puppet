@@ -40,6 +40,7 @@ class pdfrender(
 
     $access_key = $::service::configuration::pdfrender_key
     $log_dir = "${::service::configuration::log_dir}/pdfrender"
+    $log_file = "${log_dir}/syslog.log"
     $home_dir = '/home/pdfrender'
 
     require_package('xvfb', 'xauth', 'firejail', 'nodejs', 'nodejs-legacy',
@@ -71,7 +72,7 @@ class pdfrender(
         managehome => true,
         shell      => '/bin/bash',
         system     => true,
-        before     => Systemd::Service['pdfrender'],
+        before     => File[$log_dir],
     }
 
     file { $log_dir:
@@ -79,7 +80,7 @@ class pdfrender(
         owner  => 'pdfrender',
         group  => 'pdfrender',
         mode   => '0755',
-        before => Systemd::Service['pdfrender'],
+        before => File[$log_file],
     }
 
     file { '/etc/firejail/pdfrender.profile':
@@ -127,11 +128,26 @@ class pdfrender(
     }
     # end font hinting
 
-    systemd::syslog { 'pdfrender':
-        readable_by => 'all',
-        base_dir    => $::service::configuration::log_dir,
-        group       => 'root',
-        before      => Systemd::Service['pdfrender'],
+    file { $log_file:
+        ensure  => present,
+        replace => false,
+        content => '',
+        owner   => 'pdfrender',
+        group   => 'root',
+        mode    => '0644',
+        before  => Systemd::Service['pdfrender'],
+    }
+
+    logrotate::conf { 'pdfrender':
+        ensure  => present,
+        content => template('pdfrender/logrotate.erb'),
+        before  => Systemd::Service['pdfrender'],
+    }
+
+    # TODO: temp only, can be removed after the first Puppet run
+    file { '/etc/rsyslog.d/20-pdfrender.conf':
+        ensure => absent,
+        before => Systemd::Service['pdfrender'],
     }
 
     $params = {
