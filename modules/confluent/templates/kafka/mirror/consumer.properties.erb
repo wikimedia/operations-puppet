@@ -9,6 +9,9 @@
 # Kafka Consumer group id
 group.id=<%= @group_id %>
 
+# Logically identifies the application making the request.
+client.id=<%= @client_id %>
+
 <% if @source_zookeeper_url -%>
 # Zookeeper connection string
 # comma separated host:port pairs, each corresponding to a zk
