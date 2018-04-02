@@ -1240,7 +1240,7 @@ users:
     gid: 500
     name: arlolra
     realname: Arlo Breault
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAuTCgnQmqjHCcpm+JRaeY0wnCMhfHLCzEKNu70nVKpA7dJPnWHvTvWKcS/cd3e2Hz3DgtsFEu1YIbPpQflj9UOTTAD5BrT3GZym9h72l4Omgj2XjiIWYQgFPu+aS3RKcTxWw5nIrrYUPIawEezNlRU+dYhpkjY0u8E6N27DBLhdvGvjQUYCwy1qddcLIQhAQ0ev1K3aol5EeEmH0kMPUXF6XikyRFuNMwwBnLxNJFPTD4LGX72rkzhMSo110uEXAeIoEurb5spbUDWwVNxlpjZBSLf6KhkA/rN69gXetkvgQ2LvlW0gIqLmJ9KlD10PZMOag7FSH9djUG0kdZhwdZPQ== arlolra@gmail.com]
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIImYlnKtaCrYcjzkfqJKrTgtXz8JO1Es0EvzSdA0pTPr]
     uid: 3381
     email: abreault@wikimedia.org
   cscott:
