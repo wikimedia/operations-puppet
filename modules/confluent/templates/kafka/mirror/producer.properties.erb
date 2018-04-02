@@ -12,7 +12,7 @@
 bootstrap.servers=<%= Array(@destination_brokers).join(',') %>
 
 # Logically identifies the application making the request.
-client.id=kafka-mirror-<%= @mirror_name %>-<%= @hostname %>-producer
+client.id=<%= @client_id %>
 
 # Required number of acks
 acks=<%= @acks %>
