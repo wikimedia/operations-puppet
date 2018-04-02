@@ -18,6 +18,16 @@ class profile::analytics::cluster::rsyncd(
         require     => Class['cdh::hadoop::mount'],
     }
 
+    # Allows $hosts_allow to read locally generated datasets
+    # that are served as part of Wikimedia dumps
+    rsync::server::module { 'dumps':
+        path        => '/srv/dumps',
+        read_only   => 'yes',
+        list        => 'yes',
+        hosts_allow => $hosts_allow,
+        require     => File['/srv/dumps'],
+    }
+
     $hosts_allow_ferm = join($hosts_allow, ' ')
     ferm::service {'analytics_rsyncd_hdfs_archive':
         port   => '873',
