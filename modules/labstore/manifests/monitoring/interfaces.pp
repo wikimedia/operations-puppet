@@ -11,10 +11,10 @@
 class labstore::monitoring::interfaces(
     $monitor_iface = 'eth0',
     $contact_groups='wmcs-team,admins',
+    $int_throughput_warn = '93750000',  # 750Mbps
+    $int_throughput_crit = '106250000', # 850Mbps
 ) {
 
-    $int_throughput_warn = '93750000'  # 750Mbps
-    $int_throughput_crit = '106250000' # 850Mbps
     $interval = '10min' # see T188624
 
     monitoring::graphite_threshold { 'network_out_saturated':
