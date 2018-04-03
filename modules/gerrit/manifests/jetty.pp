@@ -231,7 +231,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2/review_site/etc'],
+        require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/logs':
