@@ -1,0 +1,20 @@
+- name: default
+  also_notifies: []
+  attributes: {}
+  description: Pool built from configuration on labtestservices2001
+  id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
+  nameservers:
+  - host: 208.80.153.48
+    port: 53
+  ns_records:
+  - hostname: labtest-ns0.wikimedia.org.
+    priority: 10
+  targets:
+  - masters:
+    - host: 208.80.153.48
+      port: 5354
+    options:
+      connection: mysql://pdns:ltrhukadafcydvar5@208.80.153.48/pdns
+      host: 208.80.153.48
+      port: '53'
+    type: powerdns
