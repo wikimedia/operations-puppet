@@ -122,18 +122,6 @@ class role::labs::nfsclient(
         lookupcache => $lookupcache,
     }
 
-    labstore::nfs_mount { 'dumps-on-labstore1003':
-        # Absent mount from labstore1003 for T188643
-        ensure      => 'absent',
-        mount_name  => 'dumps',
-        project     => $::labsproject,
-        options     => ['ro', 'soft', 'timeo=300', 'retrans=3'],
-        mount_path  => '/public/dumps',
-        share_path  => '/dumps',
-        server      => 'labstore1003.eqiad.wmnet',
-        lookupcache => $lookupcache,
-    }
-
     if mount_nfs_volume($::labsproject, 'scratch') {
         file { '/data/scratch':
             ensure  => 'link',
