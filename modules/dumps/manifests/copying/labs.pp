@@ -4,13 +4,13 @@ class dumps::copying::labs(
     $miscdatasetsdir = undef,
 ) {
     file{ '/usr/local/sbin/labs-rsync-cron.sh':
-        ensure  => 'present',
+        ensure  => 'absent',
         mode    => '0755',
         content => template('dumps/copying/labs-rsync-cron.sh.erb'),
     }
 
     cron { 'dumps_labs_rsync':
-        ensure      => 'present',
+        ensure      => 'absent',
         user        => 'root',
         minute      => '50',
         hour        => '3',
