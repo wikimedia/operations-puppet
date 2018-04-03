@@ -6,4 +6,6 @@ class role::parsoid::rt_client {
         instance_name => 'parsoid-rt-client',
         parsoid_port  => hiera('parsoid::testing::parsoid_port'),
     }
+
+    base::service_auto_restart { 'parsoid-rt-client': }
 }

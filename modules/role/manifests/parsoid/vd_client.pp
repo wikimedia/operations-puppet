@@ -7,4 +7,6 @@ class role::parsoid::vd_client {
         instance_name => 'parsoid-vd-client',
         parsoid_port  => hiera('parsoid::testing::parsoid_port'),
     }
+
+    base::service_auto_restart { 'parsoid-vd-client': }
 }
