@@ -9,4 +9,6 @@ class role::parsoid::diffserver {
         instance_name => 'diffserver',
         webapp_port   => 8012,
     }
+
+    base::service_auto_restart { 'diffserver': }
 }
