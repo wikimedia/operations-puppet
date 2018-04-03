@@ -47,7 +47,7 @@ class profile::labs::monitoring (
         ferm::service { 'wmcs_monitoring_rsync_ferm':
             proto  => 'tcp',
             port   => '22',
-            srange => '@resolve($monitoring_standby)',
+            srange => '@resolve(${monitoring_standby})',
         }
     } else {
         $cron_ensure = 'present'
