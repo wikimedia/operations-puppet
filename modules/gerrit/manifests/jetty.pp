@@ -125,12 +125,6 @@ class gerrit::jetty(
         group   => 'gerrit2',
     }
 
-    file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
-      ensure  => 'link',
-      target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
-      require => [File['/var/lib/gerrit2/review_site'], Scap::Target['gerrit/gerrit']],
-    }
-
     file { '/var/lib/gerrit2/.gitconfig':
         ensure  => directory,
         mode    => '0644',
@@ -316,7 +310,7 @@ class gerrit::jetty(
     nrpe::monitor_service { 'gerrit':
         ensure       => $ensure_monitor_process,
         description  => 'gerrit process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /srv/deployment/gerrit/gerrit/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
     }
 
     cron { 'clear_gerrit_logs':
