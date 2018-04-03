@@ -597,6 +597,13 @@ class role::prometheus::ops {
           { 'files' => [ "${targets_path}/jmx_wdqs_updater_*.yaml" ]}
         ],
       },
+      {
+        'job_name'        => 'jmx_zookeeper',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_zookeeper_*.yaml" ]}
+        ],
+      },
     ]
 
     prometheus::jmx_exporter_config{ "kafka_broker_jumbo_${::site}":
@@ -624,6 +631,12 @@ class role::prometheus::ops {
     prometheus::jmx_exporter_config{ "wdqs_updater_${::site}":
         dest       => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
         class_name => 'profile::wdqs',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "zookeeper_${::site}":
+        dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
+        class_name => 'profile::zookeeper::server',
         site       => $::site,
     }
 
