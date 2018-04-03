@@ -5,19 +5,19 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-analytics
 class profile::zookeeper::server (
-    $clusters                      = hiera('zookeeper_clusters'),
-    $cluster_name                  = hiera('profile::zookeeper::cluster_name'),
-    $max_client_connections        = hiera('profile::zookeeper::max_client_connections'),
-    $version                       = hiera('profile::zookeeper::zookeeper_version'),
-    $sync_limit                    = hiera('profile::zookeeper::sync_limit'),
-    $statsd_host                   = hiera('statsd'),
-    $prometheus_monitoring_enabled = hiera('profile::zookeeper::prometheus_monitoring_enabled', false),
-    $is_critical                   = hiera('profile::zookeeper::is_critical', false),
+    $clusters               = hiera('zookeeper_clusters'),
+    $cluster_name           = hiera('profile::zookeeper::cluster_name'),
+    $max_client_connections = hiera('profile::zookeeper::max_client_connections'),
+    $version                = hiera('profile::zookeeper::zookeeper_version'),
+    $sync_limit             = hiera('profile::zookeeper::sync_limit'),
+    $statsd_host            = hiera('statsd'),
+    $monitoring_enabled     = hiera('profile::zookeeper::monitoring_enabled', false),
+    $is_critical            = hiera('profile::zookeeper::is_critical', false),
 ) {
 
     require_package('default-jdk')
 
-    if $prometheus_monitoring_enabled {
+    if $monitoring_enabled {
         require ::profile::zookeeper::monitoring::server
         $extra_java_opts = $::profile::zookeeper::monitoring::server::java_opts
     } else {
@@ -51,8 +51,7 @@ class profile::zookeeper::server (
         statsd       => $statsd_host,
     }
 
-    if $is_critical {
-
+    if $monitoring_enabled {
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
             description  => 'Zookeeper Server',

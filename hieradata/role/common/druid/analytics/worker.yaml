@@ -27,8 +27,7 @@ profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
 # for Druid >= 0.11
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 
-# Enable prometheus monitoring (eventually it will be the default/only one)
-profile::zookeeper::prometheus_monitoring_enabled: true
+profile::zookeeper::monitoring_enabled: true
 
 # -- Druid common configuration
 

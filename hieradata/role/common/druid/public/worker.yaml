@@ -23,8 +23,7 @@ profile::zookeeper::sync_limit: 8
 profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
 profile::zookeeper::firewall::srange: '$DRUID_PUBLIC_HOSTS'
 
-# Enable prometheus monitoring (eventually it will be the default/only one)
-profile::zookeeper::prometheus_monitoring_enabled: true
+profile::zookeeper::monitoring_enabled: true
 
 # -- Druid common configuration
 
