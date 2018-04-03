@@ -38,6 +38,20 @@
 #    shutting down.
 #    Default: undef
 #
+#  [*hdfs_trash_checkpoint_interval*]
+#    Number of minutes to wait before creating a trash checkpoint directory
+#    in each home directory.
+#    Default: undef
+#
+#  [*hdfs_trash_interval*]
+#    Number of minutes to wait before considering a trash checkpoint stale/old
+#    and hence eligible for deletion. This parameter enables the HDFS trash
+#    functionality even without setting hdfs_trash_checkpoint_interval, but
+#    keep in mind that its default value for hadoop will be 0 (every time the
+#    checkpointer runs it creates a new checkpoint out of current and removes
+#    checkpoints created more than hdfs_trash_interval minutes ago).
+#    Default: undef
+#
 #  [*mapreduce_reduce_shuffle_parallelcopies*]
 #    Map-reduce specific setting.
 #    Default: undef
@@ -138,6 +152,8 @@ class profile::hadoop::common (
     $journalnode_hosts                        = hiera('profile::hadoop::common::journalnode_hosts'),
     $datanode_mounts                          = hiera('profile::hadoop::common::datanode_mounts', undef),
     $datanode_volumes_failed_tolerated        = hiera('profile::hadoop::common::datanode_volumes_failed_tolerated', undef),
+    $hdfs_trash_checkpoint_interval           = hiera('profile::hadoop:common::hdfs_trash_checkpoint_interval', undef),
+    $hdfs_trash_interval                      = hiera('profile::hadoop::common::hdfs_trash_interval', undef),
     $mapreduce_reduce_shuffle_parallelcopies  = hiera('profile::hadoop::common::mapreduce_reduce_shuffle_parallelcopies', undef),
     $mapreduce_task_io_sort_mb                = hiera('profile::hadoop::common::mapreduce_task_io_sort_mb', undef),
     $mapreduce_task_io_sort_factor            = hiera('profile::hadoop::common::mapreduce_task_io_sort_factor', undef),
@@ -159,7 +175,6 @@ class profile::hadoop::common (
     $yarn_nodemanager_resource_memory_mb      = hiera('profile::hadoop::common::yarn_nodemanager_resource_memory_mb', undef),
     $yarn_scheduler_minimum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_minimum_allocation_mb', undef),
     $yarn_scheduler_maximum_allocation_mb     = hiera('profile::hadoop::common::yarn_scheduler_maximum_allocation_mb', undef),
-
     $java_home                                = hiera('profile::hadoop::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64/jre'),
 ) {
     # Include Wikimedia's thirdparty/cloudera apt component
@@ -193,6 +208,8 @@ class profile::hadoop::common (
         dfs_name_dir                                => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
         dfs_datanode_failed_volumes_tolerated       => $datanode_volumes_failed_tolerated,
+        fs_trash_checkpoint_interval                => $hdfs_trash_checkpoint_interval,
+        fs_trash_interval                           => $hdfs_trash_interval,
 
         cluster_name                                => $cluster_name,
         namenode_hosts                              => $namenode_hosts,
