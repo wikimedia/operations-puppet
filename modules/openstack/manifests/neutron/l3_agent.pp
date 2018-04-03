@@ -27,11 +27,6 @@ class openstack::neutron::l3_agent(
         require => Package['neutron-l3-agent'],
     }
 
-    openstack::neutron::bridge{'br-external':
-        brname    => 'br-external',
-        interface => 'eth1.2120',
-    }
-
     sysctl::parameters { 'openstack':
         values   => {
             # Turn off IP filter
