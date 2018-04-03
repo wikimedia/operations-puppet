@@ -234,7 +234,7 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
-    file { '/var/lib/gerrit2/review_site/logs':
+    file { '/var/log/gerrit':
         ensure => directory,
         owner  => 'gerrit2',
         group  => 'gerrit2',
