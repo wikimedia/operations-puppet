@@ -119,15 +119,24 @@ nscd -i hosts
 # set mailname
 echo $fqdn > /etc/mailname
 
-apt-get update
+# apt-get update will hang on labtest, so don't bother
+if [[ $domain != *"labtest"* ]]; then
+    apt-get update
+fi
+
+# Make sure nothing has leaked in certwise
+rm -rf /var/lib/puppet/ssl/*
 
 puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
 #  updated sources.list
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
-apt-get update
-puppet agent -t
+
+if [[ $domain != *"labtest"* ]]; then
+    apt-get update
+    puppet agent -t
+fi
 
 # Ensure all NFS mounts are mounted
 mount_attempts=1
