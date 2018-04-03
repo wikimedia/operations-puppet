@@ -21,4 +21,6 @@ class osm {
     }
 
     require_package('osmosis')
+    require_package('osmium-tool')
+    require_package('osmborder')
 }
