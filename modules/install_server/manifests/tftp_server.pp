@@ -48,4 +48,9 @@ class install_server::tftp_server {
         hasstatus => false,
         require   => Package['atftpd'],
     }
+
+    nrpe::monitor_service { 'atftpd':
+        description  => 'TFTP service',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody --ereg-argument-array=\'.*/usr/sbin/atftpd .*\'',
+    }
 }
