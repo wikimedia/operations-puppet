@@ -117,34 +117,49 @@ class gerrit::jetty(
         require => File['/srv/gerrit/plugins'],
     }
 
-    file { '/var/lib/gerrit2':
+    file { '/var/lib/gerrit2/':
         ensure  => directory,
-        recurse => 'remote',
         mode    => '0755',
+        require => Scap::Target['gerrit/gerrit'],
         owner   => 'gerrit2',
         group   => 'gerrit2',
-        source  => 'puppet:///modules/gerrit/homedir',
     }
 
-    file { '/var/lib/gerrit2/review_site/bin':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0775',
-        require => File['/var/lib/gerrit'],
-    }
-
-    file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
+    file { '/var/lib/gerrit2/gerrit.war':
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
       require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit']],
+    }
+    file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
+      ensure  => 'link',
+      target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
+      require => [File['/var/lib/gerrit2/review_site'], Scap::Target['gerrit/gerrit']],
+    }
+
+    file { '/var/lib/gerrit2/.gitconfig':
+        ensure  => directory,
+        mode    => '0644',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        require => File['/var/lib/gerrit2'],
+        source  => 'puppet:///modules/gerrit/.gitconfig',
+    }
+
+    file { '/var/lib/gerrit2/.ssh':
+        ensure  => directory,
+        recurse => remote,
+        mode    => '0644',
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        require => File['/var/lib/gerrit2'],
+        source  => 'puppet:///modules/gerrit/.ssh',
     }
 
     file { '/var/lib/gerrit2/.ssh/id_rsa':
         owner     => 'gerrit2',
         group     => 'gerrit2',
         mode      => '0400',
-        require   => File['/var/lib/gerrit2'],
+        require   => File['/var/lib/gerrit2/.ssh'],
         content   => secret('gerrit/id_rsa'),
         show_diff => false,
     }
@@ -156,12 +171,20 @@ class gerrit::jetty(
         content => secret('keyholder/gerrit.pub'),
     }
 
+    file { '/var/lib/gerrit2/review_site':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0644',
+        require => File['/var/lib/gerrit2'],
+    }
+
     file { '/var/lib/gerrit2/review_site/lib':
         ensure  => directory,
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0555',
-        require => File['/var/lib/gerrit2'],
+        require => File['/var/lib/gerrit2/review_site'],
     }
 
     file { '/var/lib/gerrit2/review_site/lib/mysql-connector-java.jar':
@@ -170,12 +193,22 @@ class gerrit::jetty(
         require => [File['/var/lib/gerrit2/review_site/lib'], Package['libmysql-java']],
     }
 
+    file { '/var/lib/gerrit2/review_site/etc':
+        ensure  => directory,
+        recurse => remote,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        source  => 'puppet:///modules/gerrit/etc',
+        require => File['/var/lib/gerrit2/review_site'],
+    }
+
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
         content => template("gerrit/${config}"),
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2'],
+        require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/gitiles.config':
@@ -183,7 +216,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2'],
+        require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/lfs.config':
@@ -191,7 +224,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2'],
+        require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/secure.config':
@@ -199,7 +232,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0440',
-        require => File['/var/lib/gerrit2'],
+        require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
@@ -207,7 +240,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0444',
-        require => File['/var/lib/gerrit2'],
+        require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     if $ssh_host_key != undef {
@@ -216,7 +249,7 @@ class gerrit::jetty(
             owner     => 'gerrit2',
             group     => 'gerrit2',
             mode      => '0440',
-            require   => File['/var/lib/gerrit2'],
+            require   => File['/var/lib/gerrit2/review_site/etc'],
             show_diff => false,
         }
     }
@@ -241,10 +274,20 @@ class gerrit::jetty(
         mode   => '0755',
     }
 
+    file { '/var/lib/gerrit2/review_site/static':
+        ensure  => directory,
+        recurse => remote,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        source  => 'puppet:///modules/gerrit/static',
+        require => File['/var/lib/gerrit2/review_site'],
+    }
+
     file { '/var/lib/gerrit2/review_site/plugins':
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/plugins',
-      require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit']],
+      require => [File['/var/lib/gerrit2/review_site'], Scap::Target['gerrit/gerrit']],
     }
 
     systemd::service { 'gerrit':
@@ -279,5 +322,13 @@ class gerrit::jetty(
         ensure       => $ensure_monitor_process,
         description  => 'gerrit process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
+    }
+
+    cron { 'clear_gerrit_logs':
+    # Gerrit rotates their own logs, but doesn't clean them out
+    # Delete logs older than a week
+        command => 'find /var/lib/gerrit2/review_site/logs/ -name "*.gz" -mtime +7 -delete',
+        user    => 'root',
+        hour    => 1,
     }
 }
