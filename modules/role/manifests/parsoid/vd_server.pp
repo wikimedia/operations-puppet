@@ -15,4 +15,5 @@ class role::parsoid::vd_server {
         coord_port    => 8011,
     }
 
+    base::service_auto_restart { 'parsoid-vd': }
 }
