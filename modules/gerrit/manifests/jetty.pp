@@ -15,6 +15,7 @@ class gerrit::jetty(
     $heap_limit = '20g',
     $slave = false,
     $java_home = '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+    $gerrit_war = '/srv/deployment/gerrit/gerrit/gerrit.war',
     $log_host = undef,
     $log_port = '4560',
     $config = 'gerrit.config.erb',
@@ -292,6 +293,6 @@ class gerrit::jetty(
     nrpe::monitor_service { 'gerrit':
         ensure       => $ensure_monitor_process,
         description  => 'gerrit process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar /var/lib/gerrit2/review_site/bin/gerrit.war daemon -d /var/lib/gerrit2/review_site'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar ${gerrit_war} daemon -d /var/lib/gerrit2/review_site'",
     }
 }
