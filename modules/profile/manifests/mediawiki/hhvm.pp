@@ -98,6 +98,15 @@ class profile::mediawiki::hhvm(
         mode   => '0555',
     }
 
+    if os_version('debian == jessie') {
+        apt::repository { 'hhvm-icu57':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'jessie-wikimedia',
+            components => 'component/icu57',
+            before     => Class['::hhvm'],
+        }
+    }
+
     if os_version('ubuntu >= trusty') {
         # Provision an Upstart task (a short-running process) that runs
         # when HHVM is started and that warms up the JIT by repeatedly
