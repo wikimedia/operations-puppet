@@ -19,7 +19,7 @@ class profile::labs::monitoring (
     #
     # hourly cron to rsync whisper files
     #
-    ssh::userkey { '_graphite-sshkey':
+    ssh::userkey { '_graphite':
         ensure  => 'present',
         content => secret('ssh/wmcs/monitoring/wmcs_monitoring_rsync.pub'),
     }
