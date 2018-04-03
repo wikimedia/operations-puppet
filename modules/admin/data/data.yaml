@@ -623,7 +623,8 @@ groups:
     gid: 793
     members: [bd808]
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-views',
-                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p']
+                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
+                 'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
   recommendation-admin:
     description: Group of recommendation-api admins
     gid: 794

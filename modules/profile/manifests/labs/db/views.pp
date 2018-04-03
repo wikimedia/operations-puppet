@@ -42,7 +42,7 @@ class profile::labs::db::views (
         mode    => '0400',
     }
 
-    file { '/usr/local/sbin/maintain_replica_indexes.py':
+    file { '/usr/local/sbin/maintain-replica-indexes':
         ensure  => file,
         source  => 'puppet:///modules/profile/labs/db/views/maintain_replica_indexes.py',
         owner   => 'root',
