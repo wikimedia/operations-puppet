@@ -10,6 +10,9 @@ profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::active: false
 profile::etcd::tlsproxy::read_only: true
 profile::zookeeper::cluster_name: main-codfw
+# Enable prometheus monitoring (eventually it will be the default/only one)
+profile::zookeeper::prometheus_monitoring_enabled: true
+
 # Raise election timeout to account for disk latencies during raid resyncs
 # see T162013
 profile::etcd::election_timeout: 3000
