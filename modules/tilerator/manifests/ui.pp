@@ -70,7 +70,6 @@ class tilerator::ui(
     $redis_pass,
     $style,
     $port           = 6535,
-    $conf_sources   = 'sources.prod.yaml',
     $contact_groups = 'admins',
     $statefile_dir  = '/var/run/tileratorui',
     $from_zoom      = 10,
@@ -94,7 +93,6 @@ class tilerator::ui(
         deployment        => 'scap3',
         deployment_vars   => {
             entrypoint         => '""',
-            conf_sources       => $conf_sources,
             cassandra_user     => $cassandra_user,
             cassandra_password => $cassandra_pass,
             cassandra_servers  => $cassandra_servers,

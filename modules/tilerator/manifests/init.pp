@@ -31,7 +31,6 @@ class tilerator(
     $cassandra_servers,
     $style,
     $storage_id,
-    $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
 ) {
 
@@ -52,7 +51,6 @@ class tilerator(
         deployment        => 'scap3',
         deployment_vars   => {
             entrypoint         => '""',
-            conf_sources       => $conf_sources,
             cassandra_user     => $cassandra_user,
             cassandra_password => $cassandra_pass,
             cassandra_servers  => $cassandra_servers,

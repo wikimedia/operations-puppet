@@ -16,28 +16,8 @@ class profile::maps::apps(
     $tilerator_storage_id = hiera('profile::maps::apps::tilerator_storage_id'),
 ) {
 
-    $conf_sources = 'sources.prod2.yaml'
 
     $contact_groups = 'admins,team-interactive'
-
-    profile::maps::sources_config { 'kartotherian':
-        ensure     => absent,
-        mode       => 'kartotherian',
-        storage_id => $kartotherian_storage_id,
-        style      => $kartotherian_style,
-    }
-    profile::maps::sources_config { 'tilerator':
-        ensure     => absent,
-        mode       => 'tilerator',
-        storage_id => $tilerator_storage_id,
-        style      => $tilerator_style,
-    }
-    profile::maps::sources_config { 'tileratorui':
-        ensure     => absent,
-        mode       => 'tilerator',
-        storage_id => $tilerator_storage_id,
-        style      => $tilerator_style,
-    }
 
     class { '::tilerator':
         cassandra_servers => $cassandra_hosts,
@@ -45,7 +25,6 @@ class profile::maps::apps(
         pgsql_pass        => $pgsql_tilerator_pass,
         redis_server      => $redis_server,
         redis_pass        => $redis_pass,
-        conf_sources      => '/etc/tilerator/sources.yaml',
         contact_groups    => $contact_groups,
         style             => $tilerator_style,
         storage_id        => $tilerator_storage_id,
@@ -57,7 +36,6 @@ class profile::maps::apps(
         pgsql_pass        => $pgsql_tileratorui_pass,
         redis_server      => $redis_server,
         redis_pass        => $redis_pass,
-        conf_sources      => '/etc/tileratorui/sources.yaml',
         contact_groups    => $contact_groups,
         style             => $tilerator_style,
         storage_id        => $tilerator_storage_id,
@@ -67,7 +45,6 @@ class profile::maps::apps(
         cassandra_servers => $cassandra_hosts,
         cassandra_pass    => $cassandra_kartotherian_pass,
         pgsql_pass        => $pgsql_kartotherian_pass,
-        conf_sources      => '/etc/kartotherian/sources.yaml',
         contact_groups    => $contact_groups,
         style             => $kartotherian_style,
         storage_id        => $kartotherian_storage_id,
