@@ -6,4 +6,5 @@ class role::parsoid::testing {
     }
 
     include ::profile::parsoid::testing
+    base::service_auto_restart { 'parsoid': }
 }

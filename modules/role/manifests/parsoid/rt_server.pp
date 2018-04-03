@@ -13,4 +13,5 @@ class role::parsoid::rt_server {
         db_pass       => $passwords::testreduce::mysql::db_pass,
     }
 
+    base::service_auto_restart { 'parsoid-rt': }
 }
