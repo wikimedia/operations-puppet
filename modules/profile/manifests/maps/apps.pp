@@ -21,16 +21,19 @@ class profile::maps::apps(
     $contact_groups = 'admins,team-interactive'
 
     profile::maps::sources_config { 'kartotherian':
+        ensure     => absent,
         mode       => 'kartotherian',
         storage_id => $kartotherian_storage_id,
         style      => $kartotherian_style,
     }
     profile::maps::sources_config { 'tilerator':
+        ensure     => absent,
         mode       => 'tilerator',
         storage_id => $tilerator_storage_id,
         style      => $tilerator_style,
     }
     profile::maps::sources_config { 'tileratorui':
+        ensure     => absent,
         mode       => 'tilerator',
         storage_id => $tilerator_storage_id,
         style      => $tilerator_style,
