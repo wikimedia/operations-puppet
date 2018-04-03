@@ -96,7 +96,7 @@ def main():
         description='Creates and maintains indexes on a set of databases')
     parser.add_argument('-c', dest='config', metavar='<configuration_file>', type=str,
                         help='location of the configuration file (YAML)',
-                        required=True)
+                        default='/etc/index-config.yaml')
     parser.add_argument(
         "--mysql-socket",
         help="Path to MySQL socket file",
