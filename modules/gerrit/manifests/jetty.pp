@@ -202,6 +202,12 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
+    file { '/var/lib/gerrit2/review_site/etc/motd.config':
+        ensure  => 'link',
+        target  => '/srv/deployment/gerrit/gerrit/etc/motd.config',
+        require => File['/var/lib/gerrit2/review_site/etc'],
+    }
+
     file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
         content => template('gerrit/log4j.xml.erb'),
         owner   => 'gerrit2',
