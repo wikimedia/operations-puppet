@@ -14,3 +14,8 @@ profile::openstack::labtestn::nova::zone: 'codfw'
 profile::openstack::labtestn::nova::scheduler_pool: ['labtestvirt2003.codfw.wmnet']
 profile::openstack::labtestn::nova::db_host: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova::live_migration_uri: 'test'
+profile::openstack::labtestn::nova::compute_agent_bridges:
+  br-internal:
+    addif: 'eth1.2105'
+profile::openstack::labtestn::nova::compute_bridge_mappings:
+  cloudinstances2b: 'br-internal'
