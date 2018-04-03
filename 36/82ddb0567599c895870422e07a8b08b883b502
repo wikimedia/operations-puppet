@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Ottomata <aotto@wikimedia.org>
+Submitted-by: Ottomata <aotto@wikimedia.org>
+Submitted-at: Tue, 03 Apr 2018 13:41:19 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/423685
+Project: operations/puppet
+Branch: refs/heads/production
