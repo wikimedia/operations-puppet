@@ -56,7 +56,7 @@ class gerrit::jetty(
         "-Xmx${heap_limit} -Xms${heap_limit}",
         '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.xml',
         # These settings apart from the bottom control logging for gc
-        # '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
+        # '-Xloggc:/var/log/gerrit/jvm_gc.%p.log',
         # '-XX:+PrintGCApplicationStoppedTime',
         # '-XX:+PrintGCDetails',
         # '-XX:+PrintGCDateStamps',
@@ -83,14 +83,6 @@ class gerrit::jetty(
         owner  => 'gerrit2',
         group  => 'gerrit2',
         mode   => '0664',
-    }
-
-    file { '/srv/gerrit/jvmlogs':
-        ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
-        mode    => '0664',
-        require => File['/srv/gerrit'],
     }
 
     file { '/srv/gerrit/git':
@@ -267,13 +259,6 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
-    file { '/var/lib/gerrit2/review_site/logs':
-        ensure => directory,
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0755',
-    }
-
     file { '/var/lib/gerrit2/review_site/static':
         ensure  => directory,
         recurse => remote,
@@ -297,6 +282,13 @@ class gerrit::jetty(
             ensure   => 'running',
             provider => $::initsystem,
         },
+    }
+
+    file { '/var/log/gerrit':
+        ensure => directory,
+        owner  => 'gerrit2',
+        group  => 'gerrit2',
+        mode   => '0755',
     }
 
     file { '/etc/default/gerrit':
@@ -327,7 +319,7 @@ class gerrit::jetty(
     cron { 'clear_gerrit_logs':
     # Gerrit rotates their own logs, but doesn't clean them out
     # Delete logs older than a week
-        command => 'find /var/lib/gerrit2/review_site/logs/ -name "*.gz" -mtime +7 -delete',
+        command => 'find /var/log/gerrit/ -name "*.gz" -mtime +7 -delete',
         user    => 'root',
         hour    => 1,
     }
