@@ -59,7 +59,7 @@ class profile::labs::monitoring (
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => 'allowrsync',
+            content => 'allowrsync\nuser=_graphite:011:100000:\n',
         }
 
         user { '_graphite':
