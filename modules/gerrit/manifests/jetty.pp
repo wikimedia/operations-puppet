@@ -125,11 +125,6 @@ class gerrit::jetty(
         group   => 'gerrit2',
     }
 
-    file { '/var/lib/gerrit2/gerrit.war':
-      ensure  => 'link',
-      target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
-      require => [File['/var/lib/gerrit2'], Scap::Target['gerrit/gerrit']],
-    }
     file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
       ensure  => 'link',
       target  => '/srv/deployment/gerrit/gerrit/gerrit.war',
