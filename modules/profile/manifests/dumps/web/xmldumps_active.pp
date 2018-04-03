@@ -12,9 +12,4 @@ class profile::dumps::web::xmldumps_active {
     class {'::dumps::copying::peers':
         desthost => 'ms1001.wikimedia.org',
     }
-    class {'::dumps::copying::labs':
-        labhost         => 'labstore1003.eqiad.wmnet',
-        xmldumpsdir     => $profile::dumps::web::xmldumps_common::xmldumpsdir,
-        miscdatasetsdir => $profile::dumps::web::xmldumps_common::miscdatasetsdir,
-    }
 }
