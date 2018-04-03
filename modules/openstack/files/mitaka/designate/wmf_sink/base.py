@@ -36,16 +36,16 @@ class BaseAddressWMFHandler(BaseAddressHandler):
     def _delete(self, extra, managed=True, resource_id=None,
                 resource_type='instance', criterion={}):
         """
-        Handle a generic delete of a fixed ip within a domain
+        Handle a generic delete of a fixed ip within a zone
 
         :param criterion: Criterion to search and destroy records
         """
 
-        domain = self.get_domain(cfg.CONF[self.name].domain_id)
+        zone = self.get_zone(cfg.CONF[self.name].domain_id)
 
         data = extra.copy()
         LOG.debug('Event data: %s' % data)
-        data['domain'] = domain['name']
+        data['zone'] = zone['name']
 
         data['project_name'] = data['tenant_id']
 
@@ -71,7 +71,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         crit = criterion.copy()
 
         # Make sure we only look at forward records
-        crit['domain_id'] = cfg.CONF[self.name].domain_id
+        crit['zone_id'] = cfg.CONF[self.name].domain_id
 
         if managed:
             crit.update({
@@ -127,42 +127,42 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             elif proxy['backends'][0].split(":")[1].strip('/') == ip:
                 # found match, deleting.
                 LOG.debug("Cleaning up proxy record %s" % proxy)
-                domain = proxy['domain']
+                zone = proxy['domain']
                 endpoint = self._get_proxy_endpoint()
                 requrl = endpoint.replace("$(tenant_id)s", project)
-                req = requests.delete(requrl + '/mapping/' + domain)
+                req = requests.delete(requrl + '/mapping/' + zone)
                 req.raise_for_status()
 
                 LOG.warning("We also need to delete the dns entry for %s" % proxy)
                 self._delete_proxy_dns_record(proxy['domain'])
 
-    def _delete_proxy_dns_record(self, proxydomain):
-        if not proxydomain.endswith('.'):
-            proxydomain += '.'
+    def _delete_proxy_dns_record(self, proxyzone):
+        if not proxyzone.endswith('.'):
+            proxyzone += '.'
         context = DesignateContext().elevated()
         context.all_tenants = True
         context.edit_managed_records = True
 
-        parentdomain = '.'.join(proxydomain.split('.')[1:])
-        crit = {'name': parentdomain}
+        parentzone = '.'.join(proxyzone.split('.')[1:])
+        crit = {'name': parentzone}
 
-        domainrecords = central_api.find_domains(context, crit)
-        if len(domainrecords) != 1:
+        zonerecords = central_api.find_zones(context, crit)
+        if len(zonerecords) != 1:
             LOG.warning("Unable to clean up this DNS proxy record. "
-                        "Looked for domain %s and found %s" % (parentdomain,
-                                                               domainrecords))
+                        "Looked for zone %s and found %s" % (parentzone,
+                                                             zonerecords))
             return
 
-        crit = {'domain_id': domainrecords[0].id, 'name': proxydomain}
+        crit = {'zone_id': zonerecords[0].id, 'name': proxyzone}
         recordsets = central_api.find_recordsets(context, crit)
         if len(recordsets) != 1:
             LOG.warning("Unable to clean up this DNS proxy record. "
-                        "Looked for recordsets for %s and found %s" (proxydomain,
+                        "Looked for recordsets for %s and found %s" (proxyzone,
                                                                      recordsets))
             return
 
         LOG.warning("Deleting DNS entry for proxy: %s" % recordsets[0])
-        central_api.delete_recordset(context, domainrecords[0].id, recordsets[0].id)
+        central_api.delete_recordset(context, zonerecords[0].id, recordsets[0].id)
 
     def _get_proxy_list_for_project(self, project):
         endpoint = self._get_proxy_endpoint()

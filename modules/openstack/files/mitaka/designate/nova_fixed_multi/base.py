@@ -58,12 +58,12 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         :param resource_id: The managed resource ID
         """
         LOG.debug('Using DomainID: %s' % cfg.CONF[self.name].domain_id)
-        domain = self.get_domain(cfg.CONF[self.name].domain_id)
-        LOG.debug('Domain: %r' % domain)
+        zone = self.get_zone(cfg.CONF[self.name].domain_id)
+        LOG.debug('Domain: %r' % zone)
 
         data = extra.copy()
         LOG.debug('Event data: %s' % data)
-        data['domain'] = domain['name']
+        data['zone'] = zone['name']
 
         context = DesignateContext.get_admin_context(all_tenants=True)
 
@@ -77,17 +77,17 @@ class BaseAddressMultiHandler(BaseAddressHandler):
 
             if addr['version'] == 4:
                 reverse_format = cfg.CONF[self.name].get('reverse_format')
-                reverse_domain_id = cfg.CONF[self.name].get('reverse_domain_id')
-                if reverse_format and reverse_domain_id:
-                    reverse_domain = self.get_domain(reverse_domain_id)
-                    LOG.debug('Reverse domain: %r' % reverse_domain)
+                reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
+                if reverse_format and reverse_zone_id:
+                    reverse_zone = self.get_zone(reverse_zone_id)
+                    LOG.debug('Reverse zone: %r' % reverse_zone)
 
                     ip_digits = addr['address'].split('.')
                     ip_digits.reverse()
                     name = "%s.in-addr.arpa." % '.'.join(ip_digits)
 
                     recordset_values = {
-                        'domain_id': reverse_domain['id'],
+                        'zone_id': reverse_zone['id'],
                         'name': name,
                         'type': 'PTR',
                     }
@@ -104,17 +104,17 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                             'managed_resource_type': resource_type,
                             'managed_resource_id': resource_id})
 
-                    LOG.warn('Creating record in %s / %s with values %r',
-                             reverse_domain['id'],
+                    LOG.warn('Creating reverse record in %s / %s with values %r',
+                             reverse_zone['id'],
                              recordset['id'], record_values)
                     central_api.create_record(context,
-                                              reverse_domain['id'],
+                                              reverse_zone['id'],
                                               recordset['id'],
                                               Record(**record_values))
 
             for fmt in cfg.CONF[self.name].get('format'):
                 recordset_values = {
-                    'domain_id': domain['id'],
+                    'zone_id': zone['id'],
                     'name': fmt % event_data,
                     'type': 'A' if addr['version'] == 4 else 'AAAA'}
 
@@ -133,16 +133,16 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                         'managed_resource_id': resource_id})
 
                 LOG.warn('Creating record in %s / %s with values %r',
-                         domain['id'], recordset['id'], record_values)
+                         zone['id'], recordset['id'], record_values)
                 central_api.create_record(context,
-                                          domain['id'],
+                                          zone['id'],
                                           recordset['id'],
                                           Record(**record_values))
 
     def _delete(self, managed=True, resource_id=None, resource_type='instance',
                 criterion={}):
         """
-        Handle a generic delete of a fixed ip within a domain
+        Handle a generic delete of a fixed ip within a zone
 
         :param criterion: Criterion to search and destroy records
         """
@@ -151,7 +151,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         context.edit_managed_records = True
 
         forward_crit = criterion.copy()
-        forward_crit['domain_id'] = cfg.CONF[self.name].domain_id
+        forward_crit['zone_id'] = cfg.CONF[self.name].domain_id
 
         if managed:
             forward_crit.update({
@@ -171,10 +171,10 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             central_api.delete_record(context, cfg.CONF[self.name].domain_id,
                                       record['recordset_id'], record['id'])
 
-        reverse_domain_id = cfg.CONF[self.name].get('reverse_domain_id')
-        if reverse_domain_id:
+        reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
+        if reverse_zone_id:
             reverse_crit = criterion.copy()
-            reverse_crit.update({'domain_id': reverse_domain_id})
+            reverse_crit.update({'zone_id': reverse_zone_id})
 
             if managed:
                 reverse_crit.update({
@@ -192,5 +192,5 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                                                          record['recordset_id']))
 
                 central_api.delete_record(context,
-                                          reverse_domain_id,
+                                          reverse_zone_id,
                                           record['recordset_id'], record['id'])
