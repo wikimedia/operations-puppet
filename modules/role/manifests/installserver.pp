@@ -5,7 +5,7 @@ class role::installserver {
     include ::profile::base::firewall
     include ::profile::backup::host
 
-    include ::role::installserver::tftp
+    include ::profile::installserver::tftp
     include ::role::installserver::dhcp
     include ::role::installserver::http
     include ::role::installserver::proxy
