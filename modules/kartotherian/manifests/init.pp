@@ -29,7 +29,6 @@ class kartotherian(
     $pgsql_pass,
     $style,
     $storage_id,
-    $conf_sources      = 'sources.prod.yaml',
     $contact_groups    = 'admins',
     $port              = 6533,
     $num_workers       = 'ncpu',
@@ -48,7 +47,6 @@ class kartotherian(
         deployment_vars   => {
             geoshapes_user     => $pgsql_user,
             geoshapes_password => $pgsql_pass,
-            conf_sources       => $conf_sources,
             cassandra_user     => $cassandra_user,
             cassandra_password => $cassandra_pass,
             cassandra_servers  => $cassandra_servers,
