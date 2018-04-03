@@ -1,6 +1,6 @@
 class role::installserver {
     system::role { 'installserver': }
-    include ::role::installserver::tftp
+    include ::profile::installserver::tftp
     include ::role::installserver::dhcp
     include ::role::installserver::http
     include ::role::installserver::proxy
