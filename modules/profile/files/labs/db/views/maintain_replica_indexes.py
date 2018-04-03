@@ -96,13 +96,13 @@ def main():
         description='Creates and maintains indexes on a set of databases')
     parser.add_argument('-c', dest='config', metavar='<configuration_file>', type=str,
                         help='location of the configuration file (YAML)',
-                        default='/etc/index-config.yaml')
+                        default='/etc/index-conf.yaml')
     parser.add_argument(
         "--mysql-socket",
         help="Path to MySQL socket file",
         default="/run/mysqld/mysqld.sock"
     )
-    parser.add_argument('--dryrun', dest='dryrun', action='store_true',
+    parser.add_argument('--dry-run', dest='dryrun', action='store_true',
                         default=False, help='Print out SQL only')
     parser.add_argument('--debug', dest='debug', action='store_true',
                         default=False)
