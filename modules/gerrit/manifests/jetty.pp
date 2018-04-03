@@ -131,7 +131,7 @@ class gerrit::jetty(
         owner   => 'gerrit2',
         group   => 'gerrit2',
         mode    => '0775',
-        require => File['/var/lib/gerrit'],
+        require => File['/var/lib/gerrit2'],
     }
 
     file { '/var/lib/gerrit2/review_site/bin/gerrit.war':
