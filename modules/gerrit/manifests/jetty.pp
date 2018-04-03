@@ -80,9 +80,6 @@ class gerrit::jetty(
 
     file { '/srv/gerrit':
         ensure => directory,
-        owner  => 'gerrit2',
-        group  => 'gerrit2',
-        mode   => '0664',
     }
 
     file { '/srv/gerrit/git':
@@ -129,10 +126,7 @@ class gerrit::jetty(
     }
 
     file { '/var/lib/gerrit2/.gitconfig':
-        ensure  => directory,
-        mode    => '0644',
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
+        mode    => '0444',
         require => File['/var/lib/gerrit2'],
         source  => 'puppet:///modules/gerrit/.gitconfig',
     }
@@ -173,8 +167,6 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/lib':
         ensure  => directory,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0555',
         require => File['/var/lib/gerrit2/review_site'],
     }
@@ -188,8 +180,6 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/review_site/etc':
         ensure  => directory,
         recurse => remote,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/etc',
         require => File['/var/lib/gerrit2/review_site'],
@@ -197,24 +187,18 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/etc/gerrit.config':
         content => template("gerrit/${config}"),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/gitiles.config':
         content => template('gerrit/gitiles.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
 
     file { '/var/lib/gerrit2/review_site/etc/lfs.config':
         content => template('gerrit/lfs.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
@@ -229,8 +213,6 @@ class gerrit::jetty(
 
     file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
         content => template('gerrit/log4j.xml.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
@@ -238,8 +220,6 @@ class gerrit::jetty(
     if $ssh_host_key != undef {
         file { '/var/lib/gerrit2/review_site/etc/ssh_host_key':
             content   => secret("gerrit/${ssh_host_key}"),
-            owner     => 'gerrit2',
-            group     => 'gerrit2',
             mode      => '0440',
             require   => File['/var/lib/gerrit2/review_site/etc'],
             show_diff => false,
@@ -253,8 +233,6 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/review_site/etc/replication.config':
         ensure  => $ensure_replication,
         content => template('gerrit/replication.config.erb'),
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         require => File['/var/lib/gerrit2/review_site/etc'],
     }
@@ -262,8 +240,6 @@ class gerrit::jetty(
     file { '/var/lib/gerrit2/review_site/static':
         ensure  => directory,
         recurse => remote,
-        owner   => 'gerrit2',
-        group   => 'gerrit2',
         mode    => '0444',
         source  => 'puppet:///modules/gerrit/static',
         require => File['/var/lib/gerrit2/review_site'],
@@ -293,8 +269,6 @@ class gerrit::jetty(
 
     file { '/etc/default/gerrit':
         content => template('gerrit/gerrit.default.erb'),
-        owner   => 'root',
-        group   => 'root',
         mode    => '0444',
     }
 
