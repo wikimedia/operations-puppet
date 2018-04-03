@@ -49,15 +49,38 @@ class profile::labs::monitoring (
             port   => '22',
             srange => "@resolve(${monitoring_standby})",
         }
+
+        package { 'rssh':
+            ensure => present,
+        }
+
+        file { '/etc/rssh.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => 'allowrsync',
+        }
+
+        user { '_graphite':
+            ensure => present,
+            shell  => '/usr/bin/rssh',
+        }
     } else {
         $cron_ensure = 'present'
+
+        user { '_graphite':
+            ensure => present,
+            shell  => '/bin/false',
+        }
     }
 
     $whisper_dir = '/srv/carbon/whisper/'
     cron { 'wmcs_monitoring_rsync_cronjob':
         ensure  => $cron_ensure,
-        command => "/usr/bin/rsync --delete --delete-after -aSO ${whisper_dir} ${monitoring_master}:${whisper_dir}/",
+        command => "/usr/bin/rsync --delete --delete-after -aSO ${monitoring_master}:${whisper_dir} ${whisper_dir}",
         minute  => 00,
+        hour    => '*/2',
         user    => '_graphite',
         require => Package['rsync'],
     }
