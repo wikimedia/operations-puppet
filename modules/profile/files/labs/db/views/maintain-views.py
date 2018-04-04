@@ -275,7 +275,8 @@ class SchemaOperations():
         if "join" in view_details:
             for join in view_details["join"]:
                 for join_table, cond in join.items():
-                    query += " LEFT JOIN {} {}".format(
+                    query += " LEFT JOIN `{}`.`{}` {}".format(
+                        self.db,
                         join_table,
                         cond
                     )
@@ -286,7 +287,7 @@ class SchemaOperations():
             if '$INSERTED_EXPR$' in query:
                 query = query.replace(
                     '$INSERTED_EXPR$',
-                    ("log_type IN ('" +
+                    (" log_type IN ('" +
                      "', '".join(view_details["logging_where"]) +
                      "')\n")
                 )

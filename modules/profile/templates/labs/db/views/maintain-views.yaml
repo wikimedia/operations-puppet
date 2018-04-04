@@ -364,6 +364,8 @@ customviews:
       else comment_text end as log_comment,
       if(log_deleted,null,log_params) as log_params, log_deleted, if(log_deleted&4,null,log_user_text)
       as log_user_text, if(log_deleted&1,null,log_page) as log_page
+    where:
+      $INSERTED_EXPR$
     logging_where:
       *allowed_logtypes
     join:
