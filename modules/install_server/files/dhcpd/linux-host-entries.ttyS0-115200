@@ -335,13 +335,6 @@ host mx2001 {
     filename "lpxelinux.0";
 }
 
-host nihal {
-     hardware ethernet aa:00:00:27:56:f0;
-     fixed-address nihal.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
 host neon {
     hardware ethernet aa:00:00:7d:1a:57;
     fixed-address neon.eqiad.wmnet;
@@ -350,13 +343,6 @@ host neon {
 host netmon1003 {
     hardware ethernet aa:00:00:79:17:b5;
     fixed-address netmon1003.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
-}
-
-host nitrogen {
-    hardware ethernet aa:00:00:e8:68:1f;
-    fixed-address nitrogen.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
     filename "lpxelinux.0";
 }
