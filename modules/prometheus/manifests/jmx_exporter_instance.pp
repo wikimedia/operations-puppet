@@ -8,6 +8,7 @@
 #
 define prometheus::jmx_exporter_instance (
     $hostname,
-    $port
+    $port,
+    $labels = {},
 ) {
 }

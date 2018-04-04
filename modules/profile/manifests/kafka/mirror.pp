@@ -81,9 +81,10 @@ class profile::kafka::mirror(
                 prometheus_nodes => $prometheus_nodes,
                 config_file      => $jmx_exporter_config_file,
                 content          => template('profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml.erb'),
+                labels           => { 'mirror_name' => $mirror_instance_name, 'process_number' => $process },
             }
 
-            # Generate icinga alert if Kafka Server is not running.
+            # Generate icinga alert if MirrorMaker process is not running.
             nrpe::monitor_service { "kafka-mirror-${mirror_process_name}":
                 description  => "Kafka MirrorMaker ${mirror_process_name}",
                 nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_process_name}/producer\\.properties'",
