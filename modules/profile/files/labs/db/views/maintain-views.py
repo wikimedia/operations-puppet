@@ -43,6 +43,7 @@ class SchemaOperations():
         self.db_size = db_size
         self.cursor = cursor
         self.definer = 'viewmaster'
+        self.views_missing_tables = []
 
     def write_execute(self, query):
         """ Do operation or simulate
@@ -131,6 +132,7 @@ class SchemaOperations():
                 ("Skipping full view %s on database %s as the table does not"
                  " seem to exist."), view, self.db
             )
+            self.views_missing_tables.append(view)
 
     def check_customview_source(self, view_name, source):
         """ Check whether a custom view's particular source exists
@@ -222,6 +224,7 @@ class SchemaOperations():
                     str(view_details["join"]),
                     str(joins_checked)
                 )
+                self.views_missing_tables.append(view_name)
                 return
 
         if len(sources) == len(sources_checked):
@@ -247,6 +250,7 @@ class SchemaOperations():
                 str(view_details["source"]),
                 str(sources_checked)
             )
+            self.views_missing_tables.append(view_name)
 
     def create_customview(self, view_name, view_details, sources):
         """ Creates or replaces a custom view from its sources.
@@ -325,6 +329,7 @@ class SchemaOperations():
         :param fullviews: list
         :param customviews: dict
         """
+        self.views_missing_tables = []
 
         if not self.database_exists(self.db):
             logging.warning('DB %s does not exist to create views', self.db)
@@ -537,9 +542,15 @@ def main():
             if args.clean:
                 logging.info('cleanup is enabled')
                 live_tables = ops.tables(ops.db_p)
-                dead_tables = [t for t in live_tables if t not in all_tables]
-                logging.info('cleaning %s tables', len(dead_tables))
-                for dt in dead_tables:
+                clean_tables = set([
+                    t for t in live_tables
+                    if t not in all_tables
+                ] + [
+                    t for t in ops.views_missing_tables
+                    if t in live_tables
+                ])
+                logging.info('cleaning %s tables', len(clean_tables))
+                for dt in clean_tables:
                     logging.info("Dropping view %s", dt)
                     ops.drop_view(dt)
 
