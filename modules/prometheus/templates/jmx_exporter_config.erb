@@ -1,29 +1,62 @@
 <%-
 # All labels / targets list
-all = []
-
+static_configs = []
 
 # Find all hosts in the current site, grouped by cluster
-@site_clusters.each do |cluster, val|
-  cluster_hosts = val[@site].select { |host| @resources.include?(host) }
-  if cluster_hosts.length > 0
-    # For each host found, accumulate the resources we found for it into
-    # targets in the title:port form.
-    targets = []
-    cluster_hosts.each{ |host|
-      @resources[host].each{ |instance|
-        targets.push("#{instance['parameters']['hostname']}:#{instance['parameters']['port']}")
+@site_clusters.each { |cluster, hosts_by_site|
+
+  hosts_in_site_cluster = hosts_by_site[@site]
+  hosts_with_jmx_exporters = hosts_in_site_cluster.select { |host| @resources.include?(host) }
+  
+  hosts_with_jmx_exporters.each { |host|
+    # Group every jmx_exporter_instance by labels.  This allows us to declare
+    # fewer static_config sections, grouping all jmx_exporter_targets by common labels.
+    #
+    # Labels are applied at several levels here:
+    # - @labels from the declared prometheus::jmx_exporter_config (on the prometheus server).
+    # - Add a 'cluster' label for this 'cluster' name.  This usually comes from role hiera config.
+    # - Finally any jmx exporter instance specific labels declared on the
+    #   prometheus::jmx_exporter_instance class.
+
+
+    # Get a hash of common { labels => [targets] }, e.g.
+    #   {
+    #     {l1: A, l2: B} => [h1:8000, h2:8001],
+    #     {'l1': C'}      => [h3:8000],
+    #     ...
+    #   }
+
+    static_configs_by_labels = @resources.values
+      # group the jmx_exporter_instances by common labels
+      .group_by { |host, instance| instance['parameters']['labels'] }
+      # Collect the grouped instances into a hostname:port jmx exporter target
+      .map { |labels, instances| 
+        # map expects we return tuples of key, val.
+        [lables, instances.map { |instance| "#{instance['parameters']['hostname']}:#{instance['parameters']['port']}" }]
       }
+      # Convert the list of tuples back to a hash.
+      .to_h
+
+    # Append common label targets to the static_configs
+    targets_by_common_labels.each { |labels, targets|
+      static_configs.push({
+        'targets' => targets
+        'labels'  => labels
+      })
     }
 
-    all.push(
-      {
-        'labels' => @labels.merge({'cluster' => cluster}),
-        'targets' => targets,
-      }
-    )
-  end
-end
+    # @resources[host].each { |instance|
+    #   labels = @labels.merge({'cluster' => cluster})
+    #   if instance['parameters'].key?('labels')
+    #     labels = labels.merge(instance['parameters']['labels'])
+    #   end
+    #   all.push({
+    #     'targets' => ["#{instance['parameters']['hostname']}:#{instance['parameters']['port']}"],
+    #     'labels'  => labels,
+    #   })
+    # }
+  }
+}
 -%>
 # This file is managed by puppet
-<%= scope.function_ordered_yaml([all]) %>
+<%= scope.function_ordered_yaml([static_configs]) %>
