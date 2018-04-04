@@ -6894,27 +6894,6 @@ host notebook1004 {
     fixed-address notebook1004.eqiad.wmnet;
 }
 
-host ocg1001{
-    hardware ethernet F0:1F:AF:E8:AE:EA;
-    fixed-address ocg1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host ocg1002{
-    hardware ethernet F0:1F:AF:E8:BD:1F;
-    fixed-address ocg1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
-host ocg1003{
-    hardware ethernet F0:1F:AF:E6:81:60;
-    fixed-address ocg1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host ores1001 {
     hardware ethernet 18:66:DA:A7:41:91;
     fixed-address ores1001.eqiad.wmnet;

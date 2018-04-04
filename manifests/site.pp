@@ -1763,11 +1763,6 @@ node /^(nihal\.codfw|nitrogen\.eqiad)\.wmnet$/ {
     role(puppetmaster::puppetdb)
 }
 
-# Offline Content Generator - decommissioned, see T177931
-node /^ocg100[123]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^ores[12]00[1-9]\.(eqiad|codfw)\.wmnet$/ {
     role(ores)
 }
