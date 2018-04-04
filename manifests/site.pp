@@ -1768,10 +1768,8 @@ node 'pc2006.codfw.wmnet' {
         shard  => 'pc3',
     }
 }
-
-# Test for T190090
 node 'ping1001.eqiad.wmnet' {
-    role(test)
+    role(ping_offload)
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
