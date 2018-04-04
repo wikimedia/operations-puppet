@@ -22,9 +22,6 @@ class role::installserver::tftp {
         description => 'WMF TFTP server',
     }
 
-    include ::standard
-    include ::profile::base::firewall
-    include ::profile::backup::host
     include install_server::tftp_server
 
     ferm::rule { 'tftp':
