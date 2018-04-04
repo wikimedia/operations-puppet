@@ -638,9 +638,6 @@ class role::prometheus::ops {
         dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
         class_name => 'role::configcluster',
         site       => $::site,
-        labels     => {
-            'cluster' => "main-${::site}",
-        },
     }
 
     $etherpad_jobs = [
