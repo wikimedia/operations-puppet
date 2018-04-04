@@ -1,0 +1,6 @@
+
+profile::ping_offload::target_ips:
+  text-lb-eqiad-vip:
+    address: 208.80.154.224
+  test-eqiad-vip:
+    address: 208.80.154.225
