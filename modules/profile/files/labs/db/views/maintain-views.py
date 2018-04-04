@@ -286,7 +286,7 @@ class SchemaOperations():
             # This will only allow single sources for each SELECT in such complex
             # WHEREs, and if you have multiple source SELECTs in one, it is perhaps
             # time to re-evaluate our strategy overall.
-            if re.match(r'select.+from', view_details["where"]):
+            if re.match(r'^.*\bselect\b.+\bfrom', view_details["where"], flags=re.I | re.M):
                 view_details["where"] = re.sub(r'from\s+(\w+)\b',
                                                r'from `{}`.`\1` '.format(self.db),
                                                view_details["where"],
