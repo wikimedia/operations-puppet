@@ -4,26 +4,27 @@ all = []
 
 
 # Find all hosts in the current site, grouped by cluster
-@site_clusters.each do |cluster, val|
-  cluster_hosts = val[@site].select { |host| @resources.include?(host) }
-  if cluster_hosts.length > 0
-    # For each host found, accumulate the resources we found for it into
-    # targets in the title:port form.
-    targets = []
-    cluster_hosts.each{ |host|
-      @resources[host].each{ |instance|
-        targets.push("#{instance['parameters']['hostname']}:#{instance['parameters']['port']}")
-      }
-    }
+@site_clusters.each { |cluster, hosts_by_site|
 
-    all.push(
-      {
-        'labels' => @labels.merge({'cluster' => cluster}),
-        'targets' => targets,
-      }
-    )
-  end
-end
+  hosts_in_site_cluster = hosts_by_site[@site]
+  hosts_with_jmx_exporters = hosts_in_site_cluster.select { |host| @resources.include?(host) }
+  
+  hosts_with_jmx_exporters.each { |host|
+    # For each jmx exporter instance on this host, 
+    # add a target with any custom labels applied.
+    # Labels are applied at several levels here:
+    # - @labels from the declared prometheus::jmx_exporter_config (on the prometheus server).
+    # - Add a 'cluster' label for this 'cluster' name.  This usually comes from role hiera config.
+    # - Finally any jmx exporter instance specific labels declared on the
+    #   prometheus::jmx_exporter_instance class.
+    @resources[host].each { |instance|
+      all.push({
+        'targets' => ["#{instance['parameters']['hostname']}:#{instance['parameters']['port']}"],
+        'labels' => @labels.merge({'cluster' => cluster}).merge(instance['parameters']['labels']),
+      })
+    }
+  }
+}
 -%>
 # This file is managed by puppet
 <%= scope.function_ordered_yaml([all]) %>

@@ -42,6 +42,10 @@
 #    Source content of the exporter's configuration file. One between content or
 #    source must be specified.
 #
+#  [*labels*]
+#    Hash of any common labels to be added to all metrics exported
+#    from this jmx exporter instance.  Default: {}
+#
 define profile::prometheus::jmx_exporter (
     $hostname,
     $port,
@@ -50,6 +54,7 @@ define profile::prometheus::jmx_exporter (
     $config_dir = undef,
     $content = undef,
     $source  = undef,
+    $labels = {},
 ) {
     if $source == undef and $content == undef {
         fail('you must provide either "source" or "content"')
@@ -87,6 +92,7 @@ define profile::prometheus::jmx_exporter (
     prometheus::jmx_exporter_instance { $title:
         hostname => $hostname,
         port     => $port,
+        labels   => $labels,
     }
 
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
