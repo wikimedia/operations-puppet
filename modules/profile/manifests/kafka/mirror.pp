@@ -81,6 +81,7 @@ class profile::kafka::mirror(
                 prometheus_nodes => $prometheus_nodes,
                 config_file      => $jmx_exporter_config_file,
                 content          => template('profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml.erb'),
+                labels           => { 'mirror_name' => $mirror_instance_name, 'process_number' => $process }
             }
 
             # Generate icinga alert if Kafka Server is not running.
