@@ -23,12 +23,6 @@ define varnish::logging::xcps {
         content => '',
     }
 
-    nrpe::monitor_service { 'varnishxcps':
-        ensure       => absent,
-        description  => 'Varnish traffic logger - varnishxcps',
-        nrpe_command => '/bin/true',
-    }
-
     mtail::program { 'varnishxcps':
         source => 'puppet:///modules/mtail/programs/varnishxcps.mtail',
         notify => Service['varnishmtail'],
