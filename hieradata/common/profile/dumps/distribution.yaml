@@ -46,7 +46,7 @@ profile::dumps::distribution::mirrors:
     institution: 'Faculty of Informatics, Masaryk University'
     addedby: 'atg'
     addeddate: 'May 11, 2012'
-    active: 'yes'
+    active: 'no'
   - url: 'http://ftp.acc.umu.se/mirror/wikimedia.org/dumps/'
     hostname: 'poincare.acc.umu.se'
     ipv4: ['poincare.acc.umu.se']
