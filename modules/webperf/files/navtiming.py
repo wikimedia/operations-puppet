@@ -342,6 +342,49 @@ def is_sanev2(value):
     return isinstance(value, int) and value >= 0
 
 
+#
+# Verify that the values in a NavTiming event are in order.
+#
+# Metrics may be missing or 0 if they're not implemented by the browser, or are
+# not relevant to the current page
+#
+# return {boolean}
+#
+def is_compliant(event):
+    sequences = [
+        [
+            'navigationStart',
+            'fetchStart',
+            'domainLookupStart',
+            'domainLookupEnd',
+            'connectStart',
+            'connectEnd',
+            'requestStart',
+            'responseStart',
+            'responseEnd',
+            'domInteractive',
+            'domComplete',
+            'loadEventStart',
+            'loadEventEnd'
+        ], [
+            'secureConnectionStart',
+            'requestStart'
+        ]
+    ]
+
+    for sequence in sequences:
+        previous = 0
+        for metric in sequence:
+            if metric in event and event[metric] > 0:
+                if event[metric] < previous:
+                    logging.info('Discarding event because {} is out of order'.format(
+                        metric))
+                    return False
+                previous = event[metric]
+
+    return True
+
+
 @handles('SaveTiming')
 def handle_save_timing(meta):
     event = meta['event']
@@ -359,6 +402,10 @@ def handle_save_timing(meta):
 @handles('NavigationTiming')
 def handle_navigation_timing(meta):
     event = meta['event']
+
+    if not is_compliant(event):
+        return
+
     metrics = {}
 
     for metric in (
