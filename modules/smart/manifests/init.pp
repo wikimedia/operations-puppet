@@ -12,7 +12,7 @@ class smart (
     # Prefer smartmontools version from backports (on Debian, if any) because of newer smart
     # drivedb.
     if os_version('debian >= jessie') {
-        apt::pin { 'smartmontools_backports':
+        apt::pin { 'smartmontools':
             pin      => "release a=${::lsbdistcodename}-backports",
             priority => '1001',
             before   => Package['smartmontools'],
