@@ -37,16 +37,6 @@ profile::dumps::distribution::mirrors:
     addedby: 'reedy'
     addeddate: 'March 1 2017'
     active: 'yes'
-  - url: 'http://ftp.fi.muni.cz/pub/wikimedia/'
-    hostname: 'odysseus.fi.muni.cz'
-    ipv4: ['odysseus.fi.muni.cz', 'odysseus.linux.cz']
-    ipv6: ['odysseus.ip6.fi.muni.cz']
-    contactname: 'Jan Kasprzak'
-    contactaddy: 'ftp-admin@fi.muni.cz'
-    institution: 'Faculty of Informatics, Masaryk University'
-    addedby: 'atg'
-    addeddate: 'May 11, 2012'
-    active: 'yes'
   - url: 'http://ftp.acc.umu.se/mirror/wikimedia.org/dumps/'
     hostname: 'poincare.acc.umu.se'
     ipv4: ['poincare.acc.umu.se']
