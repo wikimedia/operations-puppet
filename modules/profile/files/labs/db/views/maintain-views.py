@@ -291,6 +291,10 @@ class SchemaOperations():
                                                r'from `{}`.`\1` '.format(self.db),
                                                view_details["where"],
                                                flags=re.I | re.M)
+                view_details["where"] = re.sub(r'join\s+(\w+)\b',
+                                               r'join `{}`.`\1` '.format(self.db),
+                                               view_details["where"],
+                                               flags=re.I | re.M)
 
             query += " WHERE {}\n".format(view_details["where"])
 
