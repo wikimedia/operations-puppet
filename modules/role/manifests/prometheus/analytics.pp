@@ -32,6 +32,13 @@ class role::prometheus::analytics {
         ],
       },
       {
+        'job_name'        => 'jmx_zookeeper',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_zookeeper_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'jmx_hadoop',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -85,15 +92,37 @@ class role::prometheus::analytics {
     }
 
     prometheus::jmx_exporter_config{ "druid_public_${::site}":
-        dest       => "${targets_path}/jmx_druid_public_${::site}.yaml",
-        class_name => 'role::druid::public::worker',
-        site       => $::site,
+        dest            => "${targets_path}/jmx_druid_public_${::site}.yaml",
+        class_name      => 'role::druid::public::worker',
+        site            => $::site,
+        instance_prefix => 'druid_',
+    }
+
+    prometheus::jmx_exporter_config{ "zookeeper_druid_public_${::site}":
+        dest            => "${targets_path}/jmx_zookeeper_druid_public_${::site}.yaml",
+        class_name      => 'role::druid::public::worker',
+        site            => $::site,
+        instance_prefix => 'zookeeper_',
+        labels          => {
+            'zookeeper_cluster' => 'druid-public',
+        }
     }
 
     prometheus::jmx_exporter_config{ "druid_analytics_${::site}":
-        dest       => "${targets_path}/jmx_druid_analytics_${::site}.yaml",
-        class_name => 'role::druid::analytics::worker',
-        site       => $::site,
+        dest            => "${targets_path}/jmx_druid_analytics_${::site}.yaml",
+        class_name      => 'role::druid::analytics::worker',
+        site            => $::site,
+        instance_prefix => 'druid_',
+    }
+
+    prometheus::jmx_exporter_config{ "zookeeper_druid_analytics_${::site}":
+        dest            => "${targets_path}/jmx_zookeeper_druid_analytics_${::site}.yaml",
+        class_name      => 'role::druid::analytics::worker',
+        site            => $::site,
+        instance_prefix => 'zookeeper_',
+        labels          => {
+            'zookeeper_cluster' => 'druid-analytics',
+        }
     }
 
     prometheus::jmx_exporter_config{ "hive_analytics_${::site}":
