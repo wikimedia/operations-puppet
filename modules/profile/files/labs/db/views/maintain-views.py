@@ -281,6 +281,12 @@ class SchemaOperations():
                         cond
                     )
         if "where" in view_details:
+            if re.match(r'select.+from', view_details["where"]):
+                view_details["where"] = re.sub(r'from\s+(\w+)\b',
+                                               r'from `{}`.`\1` '.format(self.db),
+                                               view_details["where"],
+                                               flags=re.I|re.M)
+
             query += " WHERE {}\n".format(view_details["where"])
 
         if "logging_where" in view_details:
