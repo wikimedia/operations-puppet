@@ -49,8 +49,8 @@ cache::app_directors:
     be_opts:
       max_connections: 20
     backends:
-      # eqiad: 'hassium.eqiad.wmnet'
-      codfw: 'hassaleh.codfw.wmnet'
+      eqiad: 'hassium.eqiad.wmnet'
+      # codfw: 'hassaleh.codfw.wmnet'
   restbase_backend:
     be_opts:
       port: 7231
