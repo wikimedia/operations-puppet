@@ -24,6 +24,7 @@ define prometheus::jmx_exporter_config(
                   "Class[\"${class_name}\"]",
                   'Prometheus::Jmx_exporter_instance[~".*"]',
                   true)
+    notify { "resources:\n" + inline_template("<%- require 'json' -%> <%= JSON.pretty_generate(@resources) %>": }
     $site_clusters = get_clusters({'site' => $site})
 
     file { $dest:
