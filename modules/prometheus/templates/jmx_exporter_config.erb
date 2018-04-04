@@ -1,29 +1,47 @@
 <%-
 # All labels / targets list
-all = []
+static_configs = []
 
+# Iterate over each cluster and list of hosts by site in that cluster.
+@site_clusters.each { |cluster, hosts_by_site|
+  # Get a hash of hostname -> jmx_exporter_instances declared for each host
+  # in the current site in this cluster.
+  site_resources = @resources.select { |host| hosts_by_site[@site].include?(host) }.to_h
 
-# Find all hosts in the current site, grouped by cluster
-@site_clusters.each do |cluster, val|
-  cluster_hosts = val[@site].select { |host| @resources.include?(host) }
-  if cluster_hosts.length > 0
-    # For each host found, accumulate the resources we found for it into
-    # targets in the title:port form.
-    targets = []
-    cluster_hosts.each{ |host|
-      @resources[host].each{ |instance|
-        targets.push("#{instance['parameters']['hostname']}:#{instance['parameters']['port']}")
-      }
+  # Build a hash of labels => jmx_exporter_instance parameters.
+  # Each instance parameters contains the jmx exporter hostname, port and hash
+  # of jmx exporter instance custom labels.  We will build prometheus static_config
+  # entries for each grouping of labels.
+  #
+  # Labels are applied at several levels here:
+  # - @labels from the declared prometheus::jmx_exporter_config (on the prometheus server).
+  # - Add a 'cluster' label for this 'cluster' name.  This usually comes from role hiera config.
+  # - Finally any jmx exporter instance specific labels declared on the
+  #   prometheus::jmx_exporter_instance class.
+  exporter_parameter_lists_by_labels = site_resources
+    .values
+    .flatten
+    .map { |jmx_exporter_instance| 
+      parameters = jmx_exporter_instance['parameters']
+      # Add cluster label to passed in @labels, and then merge in instance specific labels.
+      parameters['labels'] = @labels.merge({'cluster' => cluster}).merge(parameters.fetch('labels', {}))
+      # return jmx_exporter_instance parameters with merged labels.
+      parameters
     }
+    .group_by { |parameters| parameters['labels'] }
 
-    all.push(
-      {
-        'labels' => @labels.merge({'cluster' => cluster}),
-        'targets' => targets,
-      }
-    )
-  end
-end
+  # Append common label targets to the static_configs
+  exporter_parameter_lists_by_labels.each { |labels, parameter_list|
+    # List of targets for this set of labels
+    targets = parameter_list.map { |parameters| "#{parameters['hostname']}:#{parameters['port']}" } 
+
+    static_configs.push({
+      'targets' => targets,
+      'labels'  => labels
+    })
+  }
+}
+}
 -%>
 # This file is managed by puppet
-<%= scope.function_ordered_yaml([all]) %>
+<%= scope.function_ordered_yaml([static_configs]) %>
