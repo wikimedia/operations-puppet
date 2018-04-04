@@ -150,10 +150,14 @@ class _WMFRewriteContext(WSGIContext):
             # upcopy = opener.open(encodedurl)
             upcopy = thumbor_opener.open(thumbor_encodedurl)
         except urllib2.HTTPError as error:
-            # wrap the urllib2 HTTPError into a swob HTTPException
-            return swob.HTTPException(status=error.code, body=error.msg, headers=error.hdrs.items())
+            # Wrap the urllib2 HTTPError into a swob HTTPException
+            status = error.code
+            if status not in swob.RESPONSE_REASONS:
+                # Generic status description in case of unknown status reasons.
+                status = "%s Error" % status
+            return swob.HTTPException(status=status, body=error.msg, headers=error.hdrs.items())
         except urllib2.URLError as error:
-            msg = 'There was a problem while contacting the image scaler: %s' % \
+            msg = 'There was a problem while contacting the thumbnailing service: %s' % \
                   error.reason
             return swob.HTTPServiceUnavailable(msg)
 
