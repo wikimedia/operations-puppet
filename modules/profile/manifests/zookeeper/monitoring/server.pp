@@ -3,6 +3,7 @@
 # Sets up Prometheus based monitoring (only jvm) for the zookeeperd server.
 #
 class profile::zookeeper::monitoring::server(
+    $cluster_name            = hiera('profile::zookeeper::cluster_name'),
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
     $jmx_exporter_config_file = '/etc/prometheus/jvm_zookeeper_jmx_exporter.yaml'

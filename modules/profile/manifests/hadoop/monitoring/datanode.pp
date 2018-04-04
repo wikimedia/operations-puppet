@@ -18,3 +18,5 @@ class profile::hadoop::monitoring::datanode(
         source           => 'puppet:///modules/profile/hadoop/prometheus_hdfs_datanode_jmx_exporter.yaml',
     }
 }
+
+

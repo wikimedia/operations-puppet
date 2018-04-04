@@ -639,7 +639,7 @@ class role::prometheus::ops {
         class_name => 'role::configcluster',
         site       => $::site,
         labels     => {
-            'cluster' => "main-${::site}",
+            'cluster' => "main-${site}",
         },
     }
 
