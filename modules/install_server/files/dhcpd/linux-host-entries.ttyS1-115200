@@ -2239,8 +2239,6 @@ host dbproxy1011 {
 host dbstore1001 {
     hardware ethernet C8:1F:66:B8:2A:04;
     fixed-address dbstore1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host dbstore1002 {
