@@ -16,5 +16,10 @@ class profile::hadoop::monitoring::datanode(
         config_file      => $jmx_exporter_config_file,
         config_dir       => '/etc/prometheus',
         source           => 'puppet:///modules/profile/hadoop/prometheus_hdfs_datanode_jmx_exporter.yaml',
+        labels           => {
+            'hadoop_cluster' => 'analytics-hadoop',
+        },
     }
 }
+
+
