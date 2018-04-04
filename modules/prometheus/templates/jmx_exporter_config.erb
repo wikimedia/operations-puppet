@@ -4,26 +4,23 @@ all = []
 
 
 # Find all hosts in the current site, grouped by cluster
-@site_clusters.each do |cluster, val|
+@site_clusters.each { |cluster, val|
   cluster_hosts = val[@site].select { |host| @resources.include?(host) }
   if cluster_hosts.length > 0
-    # For each host found, accumulate the resources we found for it into
-    # targets in the title:port form.
-    targets = []
-    cluster_hosts.each{ |host|
-      @resources[host].each{ |instance|
-        targets.push("#{instance['parameters']['hostname']}:#{instance['parameters']['port']}")
-      }
+    # For each host found add a target with any custom labels applied.
+    # labels are applied at several levels here:
+    # - @labels from the declared prometheus::jmx_exporter_config.
+    # - we add a 'cluster' label for this 'cluster' name.
+    # - And finally any host/instance specific labels declared on the
+    #   prometheus::jmx_exporter_instance class.
+    @resources[host].each { |instance|
+      all.push({
+        'targets' => ["#{instance['parameters']['hostname']}:#{instance['parameters']['port']}"],
+        'labels' => @labels.merge({'cluster' => cluster}).merge(instance['parameters']['labels']),
+      })
     }
-
-    all.push(
-      {
-        'labels' => @labels.merge({'cluster' => cluster}),
-        'targets' => targets,
-      }
-    )
   end
-end
+}
 -%>
 # This file is managed by puppet
 <%= scope.function_ordered_yaml([all]) %>
