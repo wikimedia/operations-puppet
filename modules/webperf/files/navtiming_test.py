@@ -67,6 +67,35 @@ class TestNavTiming(unittest.TestCase):
                     key
                 )
 
+    def test_is_compliant(self):
+        event = {
+            'navigationStart': 1,
+            'fetchStart': 2,
+            'domainLookupStart': 3,
+            'domainLookupEnd': 4,
+            'connectStart': 5,
+            'secureConnectionStart': 6,
+            'connectEnd': 7,
+            'requestStart': 8,
+            'responseStart': 9,
+            'responseEnd': 10,
+            'domInteractive': 11,
+            'domComplete': 12,
+            'loadEventStart': 13,
+            'loadEventEnd': 14
+        }
+
+        self.assertTrue(navtiming.is_compliant(event, None))
+
+        del event['secureConnectionStart']
+        del event['domComplete']
+
+        self.assertTrue(navtiming.is_compliant(event, None))
+
+        event['navigationStart'] = 7
+
+        self.assertFalse(navtiming.is_compliant(event, None))
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
