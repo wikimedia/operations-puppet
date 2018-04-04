@@ -1700,7 +1700,7 @@ users:
     gid: 500
     name: smalyshev
     realname: Stas Malyshev
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpDNpAh83SAftCCJtjnvyTkN8uag0OmMk/Wpn+iAtZz5THTocU7MLdggW5scut+lMfog6Mf7aECC5vPo2eGtGkCXbmsGMhHsuA4mxo4vhnI5PduLY6F9PU4YCRe477NTEFfffy/HxDQR9gHNnuLyoHGqEgCQmmEtQoD1ChEiVHbwM35m6OVZjraMyy5Hfcnr7txHjOnVBGFW3Nn+bT3S42YdJDy3l9SIOg7NGi1WHo+cZaKIpO+wTelDSem1o7m+ERk10XaDOakCpznjnxmzfoy0WKeJWAkG0uGiE7vVAKzOhNw4/v6vaSSXWNRMD7MBea6iDaFduA1ghnq8i6Xf7f smalyshev@wikimedia.org]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhcNceq0HNQ70kv7VOi15N7KXkvAosYVUp+LfcyK4QMxZqL4vdzQKZx/7/TI+rT53jKFG05dTAlDCYt3oGK8r8KgHyl0hZLNBrz0CUj2benFwOFz5RGlQ9YRnBg6VTHPositftJF+eLuV86ezw5K/GPd4HqLRy75IvfRapOB/Pf0XIQ4fdhcEwPE132tUGYhcrpWOwI+TCUJ56nYFWJGM4gKwBQIK6bo/f1oyEtDu0QXbCyyC1/eWOLVQhr5v4xDPEGg2uelULxc5D3OVrDA4/4cia5+t2xnDfx/FeLyQh5UEo6W7oBXWI1G1yrDba6CcyRyNsVjeteRVv5XQVPM3j smalyshev@Stas-Pro-2021.local]
     uid: 10977
     email: smalyshev@wikimedia.org
   jdouglas:
