@@ -4,11 +4,11 @@
 
 # unit test is in test_rewrite.py. Tests are referenced by numbered comments.
 
-import webob
-import webob.exc
 import re
-from eventlet.green import urllib2
 import urlparse
+
+from eventlet.green import urllib2
+from swift.common import swob
 from swift.common.utils import get_logger
 from swift.common.wsgi import WSGIContext
 
@@ -47,7 +47,7 @@ class _WMFRewriteContext(WSGIContext):
 
     def handle404(self, reqorig, url, container, obj):
         """
-        Return a webob.Response which fetches the thumbnail from the thumb
+        Return a swob.Response which fetches the thumbnail from the thumb
         host and returns it. Note also that the thumb host might write it out
         to Swift so it won't 404 next time.
         """
@@ -87,7 +87,7 @@ class _WMFRewriteContext(WSGIContext):
 
             # Thumbor never needs URL mangling and it needs a different host
             if self.thumborhost:
-                thumbor_reqorig = reqorig.copy()
+                thumbor_reqorig = swob.Request(reqorig.environ.copy())
                 thumbor_reqorig.host = self.thumborhost
                 thumbor_urlobj = list(urlparse.urlsplit(thumbor_reqorig.url))
                 thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
@@ -128,7 +128,7 @@ class _WMFRewriteContext(WSGIContext):
                     # ASSERT this code should never be hit since only thumbs
                     # should call the 404 handler
                     self.logger.warn("non-thumb in 404 handler! encodedurl = %s" % encodedurl)
-                    resp = webob.exc.HTTPNotFound('Unexpected error')
+                    resp = swob.HTTPNotFound('Unexpected error')
                     return resp
             else:
                 # log the result of the match here to test and make sure it's
@@ -149,32 +149,19 @@ class _WMFRewriteContext(WSGIContext):
             # replace the line below with this one:
             # upcopy = opener.open(encodedurl)
             upcopy = thumbor_opener.open(thumbor_encodedurl)
-        except urllib2.HTTPError, error:
-            # copy the urllib2 HTTPError into a webob HTTPError class as-is
-
-            class CopiedHTTPError(webob.exc.HTTPError):
-                code = error.code
-                title = error.msg
-
-                def html_body(self, environ):
-                    return self.detail
-
-                def __init__(self):
-                    super(CopiedHTTPError, self).__init__(
-                        detail="".join(error.readlines()),
-                        headers=error.hdrs.items())
-
-            return CopiedHTTPError()
-        except urllib2.URLError, error:
+        except urllib2.HTTPError as error:
+            # wrap the urllib2 HTTPError into a swob HTTPException
+            return swob.HTTPException(status=error.code, body=error.msg, headers=error.hdrs.items())
+        except urllib2.URLError as error:
             msg = 'There was a problem while contacting the image scaler: %s' % \
                   error.reason
-            return webob.exc.HTTPServiceUnavailable(msg)
+            return swob.HTTPServiceUnavailable(msg)
 
         # get the Content-Type.
         uinfo = upcopy.info()
         c_t = uinfo.gettype()
 
-        resp = webob.Response(app_iter=upcopy, content_type=c_t)
+        resp = swob.Response(app_iter=upcopy, content_type=c_t)
 
         headers_whitelist = [
             'Content-Length',
@@ -194,11 +181,11 @@ class _WMFRewriteContext(WSGIContext):
 
         # add in the headers if we've got them
         for header in headers_whitelist:
-            if(uinfo.getheader(header)):
-                resp.headers.add(header, uinfo.getheader(header))
+            if(uinfo.getheader(header) != ''):
+                resp.headers[header] = uinfo.getheader(header)
 
         # also add CORS; see also our CORS middleware
-        resp.headers.add('Access-Control-Allow-Origin', '*')
+        resp.headers['Access-Control-Allow-Origin'] = '*'
 
         return resp
 
@@ -207,18 +194,18 @@ class _WMFRewriteContext(WSGIContext):
             return self._handle_request(env, start_response)
         except UnicodeDecodeError:
             self.logger.exception('Failed to decode request %r', env)
-            resp = webob.exc.HTTPBadRequest('Failed to decode request')
+            resp = swob.HTTPBadRequest('Failed to decode request')
             return resp(env, start_response)
 
     def _handle_request(self, env, start_response):
-        req = webob.Request(env)
+        req = swob.Request(env)
 
         # Double (or triple, etc.) slashes in the URL should be ignored;
         # collapse them. fixes T34864
         req.path_info = re.sub(r'/{2,}', '/', req.path_info)
 
         # Keep a copy of the original request so we can ask the scalers for it
-        reqorig = req.copy()
+        reqorig = swob.Request(req.environ.copy())
 
         # Containers have 5 components: project, language, repo, zone, and shard.
         # If there's no zone in the URL, the zone is assumed to be 'public' (for b/c).
@@ -324,7 +311,7 @@ class _WMFRewriteContext(WSGIContext):
                 what = match.group('what')
                 if what == 'frontend':
                     headers = {'Content-Type': 'application/octet-stream'}
-                    resp = webob.Response(headers=headers, body="OK\n")
+                    resp = swob.Response(headers=headers, body="OK\n")
                 elif what == 'backend':
                     req.host = '127.0.0.1:%s' % self.bind_port
                     req.path_info = "/v1/%s/monitoring/backend" % self.account
@@ -333,9 +320,9 @@ class _WMFRewriteContext(WSGIContext):
                     status = self._get_status_int()
                     headers = self._response_headers
 
-                    resp = webob.Response(status=status, headers=headers, app_iter=app_iter)
+                    resp = swob.Response(status=status, headers=headers, app_iter=app_iter)
                 else:
-                    resp = webob.exc.HTTPNotFound('Monitoring type not found "%s"' % (req.path))
+                    resp = swob.HTTPNotFound('Monitoring type not found "%s"' % (req.path))
                 return resp(env, start_response)
 
         if match is None:
@@ -354,7 +341,7 @@ class _WMFRewriteContext(WSGIContext):
                 status = self._get_status_int()
                 headers = self._response_headers
 
-                resp = webob.Response(status=status, headers=headers, app_iter=app_iter)
+                resp = swob.Response(status=status, headers=headers, app_iter=app_iter)
                 return resp(env, start_response)
 
         # Internally rewrite the URL based on the regex it matched...
@@ -381,28 +368,20 @@ class _WMFRewriteContext(WSGIContext):
             status = self._get_status_int()
             headers = self._response_headers
 
-            if 200 <= status < 300 or status == 304:
-                # We have it! Just return it as usual.
-                # headers['X-Swift-Proxy']= `headers`
-                return webob.Response(status=status, headers=headers,
-                                      app_iter=app_iter)(env, start_response)
-            elif status == 404:
+            if status == 404:
                 # only send thumbs to the 404 handler; just return a 404 for everything else.
                 if repo == 'local' and zone == 'thumb':
                     resp = self.handle404(reqorig, url, container, obj)
                     return resp(env, start_response)
                 else:
-                    resp = webob.exc.HTTPNotFound('File not found: %s' % req.path)
+                    resp = swob.HTTPNotFound('File not found: %s' % req.path)
                     return resp(env, start_response)
-            elif status == 401:
-                # if the Storage URL is invalid or has expired we'll get this error.
-                resp = webob.exc.HTTPUnauthorized('Token may have timed out')
-                return resp(env, start_response)
             else:
-                resp = webob.exc.HTTPNotImplemented('Unknown Status: %s' % (status))
-                return resp(env, start_response)
+                # Return the response verbatim
+                return swob.Response(status=status, headers=headers,
+                                     app_iter=app_iter)(env, start_response)
         else:
-            resp = webob.exc.HTTPNotFound('Regexp failed to match URI: "%s"' % (req.path))
+            resp = swob.HTTPNotFound('Regexp failed to match URI: "%s"' % (req.path))
             return resp(env, start_response)
 
 
