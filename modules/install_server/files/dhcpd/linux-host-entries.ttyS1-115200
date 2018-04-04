@@ -3825,7 +3825,7 @@ host labvirt1021 {
 }
 
 host labvirt1022 {
-    hardware ethernet D0:94:66:07:8F:0E;
+    hardware ethernet D0:94:66:07:8F:0A;
     fixed-address labvirt1022.eqiad.wmnet;
     option pxelinux.pathprefix "trusty-installer/";
     filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
