@@ -13,22 +13,6 @@
 define varnish::logging::xcps {
     include ::varnish::common
 
-    file { '/usr/local/bin/varnishxcps':
-        ensure => absent,
-        notify => Service['varnishxcps'],
-    }
-
-    systemd::service { 'varnishxcps':
-        ensure  => absent,
-        content => '',
-    }
-
-    nrpe::monitor_service { 'varnishxcps':
-        ensure       => absent,
-        description  => 'Varnish traffic logger - varnishxcps',
-        nrpe_command => '/bin/true',
-    }
-
     mtail::program { 'varnishxcps':
         source => 'puppet:///modules/mtail/programs/varnishxcps.mtail',
         notify => Service['varnishmtail'],
