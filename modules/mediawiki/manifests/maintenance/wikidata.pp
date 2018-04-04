@@ -63,14 +63,4 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
 
-    # rebuildTermSqlIndex is temporarilly stopped
-    cron { 'wikibase-rebuildTermSqlIndex':
-        ensure  => absent,
-        command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/rebuildTermSqlIndex.php --wiki wikidatawiki --entity-type=item --deduplicate-terms --batch-size 500 --sleep 10 --from-id $(/bin/ls -t /var/log/wikidata/rebuildTermSqlIndex.log /var/log/wikidata/rebuildTermSqlIndex.log*[0-9] | /usr/bin/xargs -d "\n" /usr/bin/tac 2> /dev/null | /usr/bin/awk \'/Processed up to page (\d+?)/ { print $5 }\' | head -n1) >> /var/log/wikidata/rebuildTermSqlIndex.log 2>&1',
-        user    => $::mediawiki::users::web,
-        minute  => 30,
-        hour    => '*',
-        weekday => '*',
-        require => File['/var/log/wikidata'],
-    }
 }
