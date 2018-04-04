@@ -17,8 +17,8 @@ set -e
 CREATE_DB=false
 
 BASE_DIR="/srv/osm_replication"
-CLEARTABLES="/srv/deployment/tilerator/deploy/ClearTables"
-MEDDO="/srv/deployment/tilerator/deploy/meddo"
+CLEARTABLES="/srv/deployment/tilerator/deploy/node_modules/@kartotherian/ClearTables"
+MEDDO="/srv/deployment/tilerator/deploy/node_modules/@kartotherian/meddo"
 
 DATABASE="ct"
 
@@ -28,7 +28,7 @@ DATABASE_REPLICATION_BASE="$PLANET_DIR/database-replication"
 
 # -E 3857 is not required on newer versions of osm2pgsql
 osm2pgsql_common_opts="-E 3857  --flat-nodes $PLANET_DIR/nodes.bin"
-osm2pgsql_import_opts="--cache 40000 --number-processes 2"
+osm2pgsql_import_opts="--cache 40000 --number-processes 1"
 osm2pgsql_update_opts="--cache 1000 --number-processes 1"
 
 function show_setup_help() {
@@ -76,8 +76,8 @@ maxInterval = 259200
 EOF
 
   echo "Downloading files"
-  curl --retry 5 -o "$PLANET_DIR/osm-data.osm.pbf" "$PLANET_URL"
-  curl --retry 5 -o "$PLANET_REPLICATION_BASE/state.txt" "$STATE_URL"
+  curl -f --retry 5 -o "$PLANET_DIR/osm-data.osm.pbf" "$PLANET_URL"
+  curl -f --retry 5 -o "$PLANET_REPLICATION_BASE/state.txt" "$STATE_URL"
 
   # Call a function here to update the planet later
 }
@@ -89,7 +89,6 @@ function onplanetupdateexit {
 function load_borders() {
   echo "Loading borders"
   psql -d ct -v ON_ERROR_STOP=1 -Xq <<EOF
-CREATE SCHEMA IF NOT EXISTS loading;
 DROP TABLE IF EXISTS loading.osmborder_lines;
 CREATE TABLE loading.osmborder_lines (
   osm_id bigint,
@@ -162,9 +161,8 @@ function import_data() {
 
 function static_update() {
   # Quite a simple function thanks to Meddo's scripts
-  pushd "$MEDDO"
-  "$MEDDO/get-external-data.py"
-  popd
+  # TODO: Specify the data where data is downloaded
+  "$MEDDO/get-external-data.py" --config "$MEDDO/external-data.yml"
 }
 function onupdateexit {
     [ -f "$DATABASE_REPLICATION_BASE/state-prev.txt" ] && mv "$DATABASE_REPLICATION_BASE/state-prev.txt" "$DATABASE_REPLICATION_BASE/state.txt"
@@ -196,10 +194,13 @@ function database_update() {
 
     # https://github.com/openstreetmap/osm2pgsql/issues/321 requires switching directories
     pushd "$CLEARTABLES"
-    make
+
+    # Build the ClearTables files
+    cat cleartables.yaml wikidata.yaml | ./yaml2json.py > "${BASE_DIR}/cleartables.json"
+
     osm2pgsql $osm2pgsql_common_opts $osm2pgsql_update_opts --append --slim \
-      -d $DATABASE --output multi --style cleartables.json \
-      -G ${file}
+      -d $DATABASE --output multi --style cleartables.json "${BASE_DIR}/cleartables.json" \
+      -G "${file}"
 
     # Something should be done to create expire lists and process them
     popd
