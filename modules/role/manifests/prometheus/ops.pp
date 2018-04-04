@@ -635,12 +635,13 @@ class role::prometheus::ops {
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_${::site}":
-        dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
-        class_name => 'role::configcluster',
-        site       => $::site,
-        labels     => {
-            'cluster' => "main-${::site}",
-        },
+        dest                => "${targets_path}/jmx_zookeeper_${::site}.yaml",
+        class_name          => 'role::configcluster',
+        site                => $::site,
+        jmx_instance_prefix => 'zookeeper_',
+        labels              => {
+            'zookeeper_cluster' => "main-${::site}",
+        }
     }
 
     $etherpad_jobs = [
