@@ -41,8 +41,8 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
-        # Start on the second day of every month.
-        monthday => '2',
+        # Start on the fifth day of every month.
+        monthday => '5',
     }
 
     cron { 'refinery-sqoop-mediawiki-private':
