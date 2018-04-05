@@ -13,7 +13,8 @@
         "name": "Wikimedia Foundation",
         "homepage": "http://wikimediafoundation.org/",
         "email": "info@wikimedia.org",
-        "publisherType": "NonProfitOrganisation"
+        "publisherType": "NonProfitOrganisation",
+        "uri": "http://www.wikidata.org/entity/Q180"
     },
     "contactPoint": {
         "vcardType" : "Organization",
