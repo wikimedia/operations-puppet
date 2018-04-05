@@ -268,7 +268,6 @@ nfs_mounts:
   scratch: false
   dumps: false
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
-mediawiki::web::sites::portal_dir: "portal-master"
 
 
 # NOTE: The production scap::server $keyholder_agents and $sources used by
