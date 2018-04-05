@@ -19,6 +19,7 @@ import os
 import time
 import logging
 import sys
+import yaml
 
 from keystoneclient.session import Session as KeystoneSession
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
