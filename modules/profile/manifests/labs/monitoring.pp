@@ -78,7 +78,7 @@ class profile::labs::monitoring (
     $whisper_dir = '/srv/carbon/whisper/'
     cron { 'wmcs_monitoring_rsync_cronjob':
         ensure  => $cron_ensure,
-        command => "/usr/bin/rsync --delete --delete-after -aSO ${monitoring_master}:${whisper_dir} ${whisper_dir}",
+        command => "/usr/bin/rsync --delete --delete-after -aSOr ${monitoring_master}:${whisper_dir} ${whisper_dir}",
         minute  => 00,
         hour    => '*/8',
         user    => '_graphite',
