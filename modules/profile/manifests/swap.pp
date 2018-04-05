@@ -21,20 +21,25 @@
 #       to rsync between home directories.
 #
 class profile::swap(
-    $ldap_groups       = hiera('profile::swap::allowed_ldap_groups', [
+    $ldap_groups         = hiera('profile::swap::allowed_ldap_groups', [
         'cn=nda,ou=groups,dc=wikimedia,dc=org',
         'cn=wmf,ou=groups,dc=wikimedia,dc=org',
     ]),
-    $ldap_server       = hiera('labsldapconfig')['hostname'],
-    $posix_groups      = hiera('admin::groups', undef),
-    $rsync_hosts_allow = hiera('profile::swap::rsync_hosts_allow', undef)
+    $ldap_server         = hiera('labsldapconfig')['hostname'],
+    $posix_groups        = hiera('admin::groups', undef),
+    $rsync_hosts_allow   = hiera('profile::swap::rsync_hosts_allow', undef),
+    $dumps_servers       = hiera('dumps_dist_nfs_servers'),
+    $dumps_active_server = hiera('dumps_dist_active_web'),
 
 ) {
     # Lots of handy packages for analysis.
     class { '::statistics::packages': }
 
     # Mount mediawiki dataset dumps. T176091
-    class { '::statistics::dataset_mount': }
+    class { '::statistics::dataset_mount':
+        dumps_servers       => $dumps_servers,
+        dumps_active_server => $dumps_active_server,
+    }
 
     # If posix groups are not given, then use labsproject in labs, or wikidev in production.
     $default_posix_groups = $::realm ? {
