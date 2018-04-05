@@ -85,6 +85,7 @@ class vagrant::lxc {
             'ALL=(root) NOPASSWD: /usr/bin/env exportfs -ar',
             # Container config customizations and pruning
             'ALL=(root) NOPASSWD: /usr/bin/env cp -f /tmp/lxc-config* /var/lib/lxc/*/config',
+            'ALL=(root) NOPASSWD: /usr/bin/env cp -f /srv/mediawiki-vagrant/lxc-config* /var/lib/lxc/*/config',
             'ALL=(root) NOPASSWD: /usr/bin/env chown root\:root /var/lib/lxc/*/config*',
             # Template import
             "ALL=(root) NOPASSWD: /usr/bin/env cp ${::vagrant::vagrant_home}/gems/gems/vagrant-lxc*/scripts/lxc-template /usr/share/lxc/templates/*",
@@ -122,6 +123,8 @@ class vagrant::lxc {
             # NFS
             'ALL=(root) NOPASSWD: /bin/chown 0\:0 /tmp/vagrant*',
             'ALL=(root) NOPASSWD: /bin/mv -f /tmp/vagrant* /etc/exports',
+            'ALL=(root) NOPASSWD: /bin/chown 0\:0 /srv/mediawiki-vagrant/vagrant*',
+            'ALL=(root) NOPASSWD: /bin/mv -f /srv/mediawiki-vagrant/vagrant* /etc/exports',
         ],
     }
 }
