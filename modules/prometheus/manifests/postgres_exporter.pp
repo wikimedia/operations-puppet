@@ -21,4 +21,6 @@ class prometheus::postgres_exporter(
         ensure => running,
         enable => true,
     }
+
+    base::service_auto_restart { 'prometheus-postgres-exporter': }
 }
