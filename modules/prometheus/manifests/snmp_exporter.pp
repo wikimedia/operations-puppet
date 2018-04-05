@@ -24,6 +24,8 @@ class prometheus::snmp_exporter {
         subscribe => Exec['prometheus-snmp-exporter-config'],
     }
 
+    base::service_auto_restart { 'prometheus-snmp-exporter': }
+
     file { '/etc/prometheus/snmp.yml.d':
         ensure => directory,
         mode   => '0500',
