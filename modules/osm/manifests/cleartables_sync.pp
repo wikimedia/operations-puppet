@@ -1,10 +1,11 @@
 define osm::cleartables_sync (
-    $pg_password,
-    $ensure                = 'present',
-    $hour                  = '*',
-    $minute                = '*/30',
-    $postreplicate_command = undef,
-    $proxy                 = 'webproxy.eqiad.wmnet:8080',
+    String $pg_password,
+    Wmflib::Ensure $ensure        = 'present',
+    String $hour                  = '*',
+    String $minute                = '*/30',
+    String $postreplicate_command = undef,
+    String $proxy_host            = 'webproxy.eqiad.wmnet',
+    Wmflib::IpPort $proxy_port    = 8080,
 ) {
 
     $log_dir = '/var/log/osm_replication/'
@@ -53,7 +54,8 @@ define osm::cleartables_sync (
         minute      => $minute,
         environment => [
             "PGPASSWORD=${pg_password}",
-            "https_proxy=https://${proxy}",
+            "https_proxy=https://${proxy_host}:${proxy_port}",
+            "JAVACMD_OPTIONS=\"-Dhttp.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyHost=${proxy_host} -Dhttps.proxyPort=${proxy_port}\""
         ],
     }
 
