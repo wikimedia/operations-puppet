@@ -38,7 +38,7 @@ profile::dumps::distribution::mirrors:
     institution: 'Bytemark'
     addedby: 'reedy'
     addeddate: 'March 1 2017'
-    active: 'yes'
+    active: 'notyet'
   - url: 'http://ftp.fi.muni.cz/pub/wikimedia/'
     hostname: 'odysseus.fi.muni.cz'
     ipv4: ['odysseus.fi.muni.cz', 'odysseus.linux.cz']
@@ -68,7 +68,7 @@ profile::dumps::distribution::mirrors:
     institution: 'WickedWay Web Hosting'
     addedby: 'atg'
     addeddate: 'June 8 2012'
-    active: 'yes'
+    active: 'no'
   - url: 'http://wikimedia.wansec.com/'
     hostname: ''
     ipv4: ['199.47.196.26', 'wikimedia.wansec.com']
@@ -78,7 +78,7 @@ profile::dumps::distribution::mirrors:
     institution: 'WANSecurity'
     addedby: 'atg'
     addeddate: ''
-    active: ''
+    active: 'notrightnow'
   - url: 'http://dumps.wikimedia.your.org/'
     hostname: 'your.org'
     ipv4: ['ftpmirror.your.org', 'ftpmirror-ae0-4.us.your.org']
@@ -98,7 +98,7 @@ profile::dumps::distribution::mirrors:
     institution: 'Iconic Industry'
     addedby: 'atg'
     addeddate: 'Apr 28 2016'
-    active: 'yes'
+    active: 'no'
   - url: 'http://wikimedia.crc.nd.edu/other/'
     hostname: 'crcdtn01.crc.nd.edu'
     ipv4: ['crcdtn01.crc.nd.edu', 'wmrsync.crc.nd.edu']
@@ -118,4 +118,4 @@ profile::dumps::distribution::mirrors:
     institution: 'Amazon AWS'
     addedby: 'atg'
     addeddate: 'Oct 31 2012'
-    active: 'yes'
+    active: 'no'
