@@ -26,18 +26,15 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikipedia.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
-    RewriteRule ^/<%= @portal_dir %>/.*$ - [L]
+    RewriteRule ^/$ /portal/wikipedia.org/index.html [L]
+    RewriteRule ^/portal/.*$ - [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
@@ -111,17 +108,14 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wiktionary.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
+    RewriteRule ^/$ /portal/wiktionary.org/index.html [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
@@ -150,17 +144,14 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikinews.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
+    RewriteRule ^/$ /portal/wikinews.org/index.html [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
@@ -189,17 +180,14 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikiquote.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
+    RewriteRule ^/$ /portal/wikiquote.org/index.html [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
@@ -228,17 +216,14 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikiversity.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
+    RewriteRule ^/$ /portal/wikiversity.org/index.html [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
@@ -267,17 +252,14 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikibooks.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
+    RewriteRule ^/$ /portal/wikibooks.org/index.html [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
@@ -306,17 +288,14 @@
     RewriteRule . - [E=RW_PROTO:http]
 
     # Front page...
-    RewriteRule ^/$ /<%= @portal_dir %>/wikivoyage.org/index.html [L]
-    <%- if @rewrite_portal -%>
-        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
-    <%- end -%>
+    RewriteRule ^/$ /portal/wikivoyage.org/index.html [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
         Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
     </Location>
     # All other resources can be cached for a reasonably long time
-    <Location ~ "^/<%= @portal_dir %>/">
+    <Location ~ "^/portal/">
         Header set Cache-Control "s-maxage=86400, max-age=86400"
     </Location>
 
