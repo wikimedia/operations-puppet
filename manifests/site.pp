@@ -970,8 +970,15 @@ node 'labtestservices2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /labtestservices200[23]\.wikimedia\.org/ {
+node 'labtestservices2002.wikimedia.org' {
     role(wmcs::openstack::labtestn::services)
+    interface::add_ip6_mapped { 'main': }
+}
+
+
+# Temporary nodepool testing here:
+node 'labtestservices2003.wikimedia.org' {
+    role(wmcs::openstack::labtest::nodepool)
     interface::add_ip6_mapped { 'main': }
 }
 
