@@ -619,7 +619,7 @@ node 'db2093.codfw.wmnet' {
 }
 
 node 'dbstore1001.eqiad.wmnet' {
-    role(mariadb::temporary_storage)
+    role(mariadb::backups)
 }
 
 node 'dbstore1002.eqiad.wmnet' {
