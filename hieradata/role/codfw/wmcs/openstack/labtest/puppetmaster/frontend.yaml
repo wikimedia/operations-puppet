@@ -12,3 +12,5 @@ profile::puppetmaster::frontend::prevent_cherrypicks: false
 # Remaining module embedded hiera lookup
 # modules/base/manifests/puppet.pp:    $ca_server = hiera('puppetmaster::ca_server', '')
 puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
+
+profile::openstack::labtest::version: 'liberty'
