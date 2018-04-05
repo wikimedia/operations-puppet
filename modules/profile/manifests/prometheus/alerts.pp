@@ -25,6 +25,10 @@ class profile::prometheus::alerts {
         contact_group   => 'analytics',
         topic_blacklist => '.*(change-prop|\.job\.).*',
     }
+    profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
+        contact_group => 'analytics',
+    }
+
     # Eventlogging
 
     # Warn if p50 of overall error event throughput goes above 20 events/s
