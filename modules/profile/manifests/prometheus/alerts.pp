@@ -24,6 +24,10 @@ class profile::prometheus::alerts {
         #  For now, alert analytics admins, until alerts are more stable.
         contact_group => 'analytics',
     }
+    profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
+        contact_group => 'analytics',
+    }
+
     # Eventlogging
 
     # Warn if p50 of overall error event throughput goes above 20 events/s
