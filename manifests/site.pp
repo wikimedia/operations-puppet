@@ -2119,13 +2119,13 @@ node /^wdqs100[3-5]\.eqiad\.wmnet$/ {
     role(wdqs)
 }
 
-# Wikidata query service, new systems per T188432
-node /^wdqs100[6-8]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^wdqs200[1-3]\.codfw\.wmnet$/ {
     role(wdqs)
+}
+
+# Wikidata query service internal
+node /^wdqs100[6-8]\.eqiad\.wmnet$/ {
+    role(wdqs_internal)
 }
 
 node /^wdqs200[4-6]\.codfw\.wmnet$/ {
