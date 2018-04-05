@@ -30,3 +30,9 @@ profile::hadoop::common::mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -java
 
 profile::hadoop::firewall::master::analytics_srange: '$ANALYTICS_NETWORKS'
 profile::hadoop::firewall::master::analytics_druid_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+
+# The HDFS Trash is configured in this way:
+# 1) Once every day a checkpoint is made (that contains all the trash for a day).
+# 2) After a month a checkpoint is deleted.
+profile::hadoop:common::hdfs_trash_checkpoint_interval: 86400
+profile::hadoop::common::hdfs_trash_interval: 2592000
