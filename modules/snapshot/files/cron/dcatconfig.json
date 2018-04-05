@@ -25,6 +25,7 @@
         "mediatype": {
             "json": "application/json",
             "n3": "application/n-triples",
+            "nt": "application/n-triples",
             "rdf": "application/rdf+xml",
             "ttl": "text/turtle",
             "html": "text/html"
@@ -42,8 +43,17 @@
     "dump-info": {
         "accessURL": "https://dumps.wikimedia.org/wikidatawiki/entities/$1",
         "mediatype": {
-            "json": "application/json",
-            "ttl": "text/turtle"
+            "json": {
+                "contentType": "application/json"
+            },
+            "ttl":  {
+                "contentType": "text/turtle",
+                "prefix": "all-BETA"
+            },
+            "nt":  {
+                "contentType": "application/n-triples",
+                "prefix": "truthy-BETA"
+            }
         },
         "compression": {
             "gzip": "gz",
