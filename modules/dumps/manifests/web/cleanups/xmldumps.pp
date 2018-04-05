@@ -92,7 +92,7 @@ class dumps::web::cleanups::xmldumps(
     } else {
         # the temp dir only exists on the generating hosts (nfs servers),
         # so only clean up temp files there
-        $tempclean = "/usr/bin/find ${dumpstempdir} -type f -mtime +40 -exec rm {} \\;"
+        $tempclean = "/usr/bin/find ${dumpstempdir} -type f -mtime +20 -exec rm {} \\;"
 
         $cron_commands = "${xmlclean} ${args} ; ${tempclean}"
     }
