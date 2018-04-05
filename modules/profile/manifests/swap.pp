@@ -34,7 +34,7 @@ class profile::swap(
     class { '::statistics::packages': }
 
     # Mount mediawiki dataset dumps. T176091
-    class { '::statisics::dataset_mount': }
+    class { '::statistics::dataset_mount': }
 
     # If posix groups are not given, then use labsproject in labs, or wikidev in production.
     $default_posix_groups = $::realm ? {
