@@ -20,6 +20,8 @@
 # up a new MirrorMaker consumer that will be auto balanced
 # by Kafka.
 #
+# NOTE: This class is being deprecated and will be deleted as
+# part of https://phabricator.wikimedia.org/T190940
 class role::kafka::main::mirror {
     if $::realm == 'labs' {
         fail('role::kafka::main::mirror cannot be used in labs.')

@@ -25,6 +25,9 @@ class profile::prometheus::alerts {
         contact_group   => 'analytics',
         topic_blacklist => '.*(change-prop|\.job\.).*',
     }
+    # TODO: add main <-> main MirrorMaker alerts: https://phabricator.wikimedia.org/T190940
+
+
     # Eventlogging
 
     # Warn if p50 of overall error event throughput goes above 20 events/s
