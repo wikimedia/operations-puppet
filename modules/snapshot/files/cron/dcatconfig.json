@@ -42,8 +42,13 @@
     "dump-info": {
         "accessURL": "https://dumps.wikimedia.org/wikidatawiki/entities/$1",
         "mediatype": {
-            "json": "application/json",
-            "ttl": "text/turtle"
+            "json": {
+                    "contentType": "application/json"
+            },
+            "ttl":  {
+                    "contentType": "text/turtle",
+                    "prefix": "-BETA"
+            }
         },
         "compression": {
             "gzip": "gz",
