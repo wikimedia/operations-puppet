@@ -17,7 +17,7 @@
 #       Default: admin::groups in production, project-$labsproject in Cloud VPS.
 #
 #   [*rsync_hosts_allow*]
-#       If given, an rysnc server module will be set up to allow these hosts
+#       If given, an rsync server module will be set up to allow these hosts
 #       to rsync between home directories.
 #
 class profile::swap(
@@ -32,6 +32,9 @@ class profile::swap(
 ) {
     # Lots of handy packages for analysis.
     class { '::statistics::packages': }
+
+    # Mount mediawiki dataset dumps. T176091
+    class { '::statisics::dataset_mount': }
 
     # If posix groups are not given, then use labsproject in labs, or wikidev in production.
     $default_posix_groups = $::realm ? {
