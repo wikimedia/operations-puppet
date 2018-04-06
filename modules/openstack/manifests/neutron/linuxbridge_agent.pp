@@ -1,10 +1,12 @@
 class openstack::neutron::linuxbridge_agent(
     $version,
-    $bridges,
-    $bridge_mappings,
+    $bridges={},
+    $bridge_mappings={},
+    $physical_interface_mappings={},
     ) {
 
     include openstack::nova::compute::kmod
+
     create_resources(openstack::neutron::bridge, $bridges)
 
     $packages = [
