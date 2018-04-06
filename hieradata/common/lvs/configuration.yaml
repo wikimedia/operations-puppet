@@ -34,9 +34,6 @@ lvs::configuration::lvs_service_ips:
   apaches: &ip_block007
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
-  rendering: &ip_block008
-    eqiad: 10.2.2.21
-    codfw: 10.2.1.21
   api: &ip_block009
     eqiad: 10.2.2.22
     codfw: 10.2.1.22
@@ -415,62 +412,6 @@ lvs::configuration::lvs_services:
           hostname: appservers.svc.eqiad.wmnet
         codfw:
           hostname: appservers.svc.codfw.wmnet
-  rendering:
-    description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *ip_block008
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - http://en.wikipedia.org/favicon.ico
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-      RunCommand:
-        command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
-        interval: 60
-        timeout: 10
-    conftool:
-      cluster: imagescaler
-      service: apache2
-    icinga:
-      uri: en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        eqiad:
-          hostname: rendering.svc.eqiad.wmnet
-        codfw:
-          hostname: rendering.svc.codfw.wmnet
-  rendering-https:
-    description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet (https)"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *ip_block008
-    port: 443
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - https://en.wikipedia.org/favicon.ico
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: imagescaler
-      service: nginx
-    icinga:
-      uri: en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        eqiad:
-          hostname: rendering.svc.eqiad.wmnet
-        codfw:
-          hostname: rendering.svc.codfw.wmnet
   api:
     description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
     class: low-traffic
