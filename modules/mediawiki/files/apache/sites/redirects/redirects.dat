@@ -178,7 +178,25 @@ rewrite	*wikimedia.ee	//ee.wikimedia.org
 
 rewrite	*wikipedia.ee	//et.wikipedia.org
 
+# www.wikimedia.org aliases
 rewrite	*wikimedia.jp.net	//www.wikimedia.org
+rewrite	benefactors.wikimedia.org	//www.wikimedia.org
+rewrite	cache.wikimedia.org	//www.wikimedia.org
+rewrite	comcom.wikimedia.org	//www.wikimedia.org
+rewrite	donate-lb.codfw.wikimedia.org	//www.wikimedia.org
+rewrite	donate-lb.eqiad.wikimedia.org	//www.wikimedia.org
+rewrite	donate-lb.eqsin.wikimedia.org	//www.wikimedia.org
+rewrite	donate-lb.esams.wikimedia.org	//www.wikimedia.org
+rewrite	donate-lb.ulsfo.wikimedia.org	//www.wikimedia.org
+rewrite	langcom.wikimedia.org	//www.wikimedia.org
+rewrite	text-lb.wikimedia.org	//www.wikimedia.org
+rewrite	text-lb.codfw.wikimedia.org	//www.wikimedia.org
+rewrite	text-lb.eqiad.wikimedia.org	//www.wikimedia.org
+rewrite	text-lb.eqsin.wikimedia.org	//www.wikimedia.org
+rewrite	text-lb.esams.wikimedia.org	//www.wikimedia.org
+rewrite	text-lb.ulsfo.wikimedia.org	//www.wikimedia.org
+rewrite	wikimania2019.wikimedia.org	//www.wikimedia.org
+rewrite	wikimania2019.m.wikimedia.org	//www.wikimedia.org
 
 rewrite	*wikimedia.lt	//wikimediafoundation.org
 rewrite	*wikipedia.lt	//lt.wikipedia.org
