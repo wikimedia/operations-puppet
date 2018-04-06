@@ -2962,13 +2962,6 @@ host es2019 {
     fixed-address es2019.codfw.wmnet;
 }
 
-host eventlog1001 {
-    hardware ethernet 90:B1:1C:2D:80:E4;
-    fixed-address eventlog1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
-}
-
 host eventlog1002 {
     hardware ethernet 14:18:77:5B:0D:42;
     fixed-address eventlog1002.eqiad.wmnet;
