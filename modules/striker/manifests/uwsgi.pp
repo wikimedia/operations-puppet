@@ -53,6 +53,13 @@ class striker::uwsgi(
         )
     }
 
+    # Striker is controlled via a custom systemd unit (uwsgi-striker),
+    #  so avoid the generic uwsgi sysvinit script
+    exec { 'mask_default_uwsgi':
+        command => '/bin/systemctl mask uwsgi.service',
+        creates => '/etc/systemd/system/uwsgi.service',
+    }
+
     $log_dir = "${service::configuration::log_dir}/striker"
     $logstash_host = $config['logging']['LOGSTASH_HOST']
     $logstash_port = $config['logging']['LOGSTASH_PORT']
