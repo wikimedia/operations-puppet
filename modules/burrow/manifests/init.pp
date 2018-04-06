@@ -4,23 +4,65 @@
 # This module helps set up a burrow service that provides a
 # http endpoint to query, and will email notifications on
 # consumer groups statuses.
+# This module supports only Burrow >= 1.0, since older versions are based
+# on completely different configurations.
 #
 # == Parameters
 #
-# $client_id          - The client ID string to provide to Kafka when consuming
-# $httpserver_port    - Port at which to make the burrow http endpoint available
-# $lagcheck_intervals - Length of window of offsets used to monitor lag
-#                       See: https://github.com/linkedin/Burrow/wiki/Configuration#lagcheck
-# $zookeeper_hosts    - Array of zookeeper host urls
-# $zookeeper_path     - The full path to the znode that is the root for the Kafka cluster
-# $kafka_cluster_name - Name of the Kafka cluster
-# $kafka_brokers      - Array of kafka broker urls
-# $consumer_groups    - Consumer groups to be monitored to get email notifications
-# $smtp_server        - SMTP server to send emails from
-# $from_email         - From email address for notification
-# $to_email           - Comma separated email addresses to send email notification to
-# $email_template     - The name of the email template to use for Burrow's alerts
-
+# [*client_id*]
+#   The client ID string to provide to Kafka when consuming
+#
+# [*httpserver_port*]
+#   Port at which to make the burrow http endpoint available
+#
+# [*lagcheck_intervals*]
+#   Length of window of offsets used to monitor lag
+#   See: https://github.com/linkedin/Burrow/wiki/Configuration#lagcheck
+#
+# [*zookeeper_hosts*]
+#   Array of zookeeper host and their ports.
+#
+# [*zookeeper_path*]
+#   The full path to the znode that is the root for the Kafka cluster.
+#
+# [*kafka_cluster_name*]
+#   Name of the Kafka cluster to monitor.
+#
+# [*kafka_brokers*]
+#   Array of kafka brokers in the Kafka cluster.
+#
+# [*kafka_api_version*]
+#   Kafka api version to use with the cluster.
+#   Current maximum supported one is 0.11.0
+#   Default: '0.11.0'
+#
+# [*consumer_groups*]
+#   Consumer groups to be monitored to get email notifications
+#
+# [*smtp_server*]
+#   SMTP server to send emails from
+#
+# [*from_email*]
+#   From email address for notification
+#
+# [*to_email*]
+#   Email address to send email notification to
+#
+# [*email_template*]
+#   The name of the email template to use for Burrow's alerts
+#
+# [*consumer_groups_blacklist*]
+#   Regex used to filter out temporary/not-relevant consumer groups.
+#   Default: '^(console-consumer-|python-kafka-consumer-|test_).*$'
+#
+# [*kafka_brokers_port*]
+#   Port used by Kafka brokers.
+#   Default: 9092
+#
+# [*zookeeper_port*]
+#   Port used by zookeeper.
+#   Default: 2181
+#
 define burrow (
     $zookeeper_hosts,
     $zookeeper_path,
@@ -29,31 +71,44 @@ define burrow (
     $consumer_groups,
     $smtp_server,
     $from_email,
-    $to_emails,
-    $ensure = 'present',
+    $to_email,
+    $kafka_brokers_port = 9092,
+    $zookeeper_port = 2181,
+    $kafka_api_version='0.11.0',
     $client_id = 'burrow-client',
     $httpserver_port = 8000,
     $lagcheck_intervals = 10,
-    $email_template = 'burrow/email.tmpl.erb'
+    $email_template = 'burrow/email.tmpl.erb',
+    $consumer_groups_blacklist = '^(console-consumer-|python-kafka-consumer-|test_).*$',
 )
 {
     require_package('burrow')
 
-    file { "/etc/burrow/burrow-${title}.cfg":
-        ensure  => $ensure,
-        content => template('burrow/burrow.cfg.erb'),
+    # Burrow 1.0 accepts one parameter named '--config-dir' that
+    # expects a directory containing a file named 'burrow.toml'.
+    # Since multiple instances of Burrow can run on the same hosts,
+    # it is necessary to create the appropriate etc hierarchy.
+    $config_dir = "/etc/burrow/${title}"
+    file { $config_dir:
+        ensure  => 'directory',
     }
 
-    file { "/etc/burrow/email-${title}.tmpl":
-        ensure  => $ensure,
-        content => template($email_template),
+    file { "${config_dir}/burrow.toml":
+        content => template('burrow/burrow.toml.erb'),
+    }
+
+    if $to_email {
+        $email_template_path = "${config_dir}/email.tmpl"
+        file { $email_template_path:
+            content => template($email_template),
+        }
     }
 
     systemd::service { "burrow-${title}":
         ensure    => present,
         content   => systemd_template('burrow'),
         restart   => true,
-        subscribe => File["/etc/burrow/burrow-${title}.cfg"],
+        subscribe => File["${config_dir}/burrow.toml"],
         require   => Package['burrow'],
     }
 
