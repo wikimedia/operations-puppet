@@ -1,3 +1,6 @@
 profile::openstack::base::neutron::network_flat_tagged_base_interface: 'eth1'
 profile::openstack::base::neutron::db_user: 'neutron'
 profile::openstack::base::neutron::rabbit_user: 'neutron'
+profile::openstack::base::neutron::bridges: {}
+profile::openstack::base::neutron::bridge_mappings: {}
+profile::openstack::base::neutron::physical_interface_mappings: {}
