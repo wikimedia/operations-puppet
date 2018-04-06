@@ -37,9 +37,6 @@ cache::app_directors:
   api:
     backends:
       eqiad: 'api.svc.eqiad.wmnet'
-  rendering:
-    backends:
-      eqiad: 'rendering.svc.eqiad.wmnet'
   security_audit:
     backends:
       eqiad: 'appservers.svc.eqiad.wmnet'
