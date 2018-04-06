@@ -3,6 +3,7 @@
 # This class sets up Wikidata Query Service
 class role::wdqs_internal {
     include ::standard
+    include ::role::lvs::realserver
     include ::profile::base::firewall
     include ::profile::wdqs
 
