@@ -2,8 +2,22 @@
 # This file is managed by Puppet.
 <%- @settings.sort.each do |section, items| -%>
 [<%= section %>]
+
+# we need the 'plugins' setting to be at the top.  T191648
+    <%- if items.key?('plugins') then -%>
+        <% plugins=items['plugins'] %>
+        <%- if plugins.is_a?(Array) then -%>
+            <%- plugins.each do |value_item| -%>
+plugins=<%= value_item %>
+            <%- end -%>
+        <%- else -%>
+plugins=<%= plugins %>
+        <%- end -%>
+    <%- end -%>
+
     <%- items.sort.each do |key, value| -%>
-        <%- if value.is_a?(Array) then -%>
+        <%- if key == 'plugins' -%>
+        <%- elsif value.is_a?(Array) then -%>
             <%- value.each do |value_item| -%>
 <%= key %>=<%= value_item %>
             <%- end -%>
