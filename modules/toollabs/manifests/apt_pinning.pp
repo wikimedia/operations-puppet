@@ -213,6 +213,17 @@ class toollabs::apt_pinning {
     }
 
     #
+    # apache stuff
+    #
+    if os_version('debian == jessie') {
+        apt::pin { 'toolforge-apache2-pinning':
+            package  => 'apache2',
+            pin      => 'version 2.4.10-10+deb8u12+wmf1',
+            priority => '1001',
+        }
+    }
+
+    #
     # NFS libs and related packages
     #
     # nfs-common
