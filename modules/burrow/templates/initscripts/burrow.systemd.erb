@@ -9,7 +9,7 @@ User=burrow
 # conflicts with Burrow's.
 PIDFile=/var/log/burrow-<%= @title %>.pid
 
-ExecStart=/usr/bin/Burrow --config /etc/burrow/burrow-<%= @title %>.cfg
+ExecStart=/usr/bin/Burrow --config-dir <%= @config_dir %>
 
 [Install]
 WantedBy=multi-user.target
