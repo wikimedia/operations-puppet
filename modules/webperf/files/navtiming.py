@@ -430,8 +430,6 @@ def handle_navigation_timing(meta):
         ('waiting', 'responseStart', 'requestStart'),
         ('connecting', 'connectEnd', 'connectStart'),
         ('receiving', 'responseEnd', 'responseStart'),
-        ('rendering', 'loadEnd', 'responseEnd'),
-        ('pageSpeed', 'loadEnd', 'domInteractive'),
         ('sslNegotiation', 'connectEnd', 'secureConnectionStart'),
     ):
         if minuend in event and subtrahend in event:
