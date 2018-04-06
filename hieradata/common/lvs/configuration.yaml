@@ -149,6 +149,9 @@ lvs::configuration::lvs_service_ips:
     eqiad: 10.2.2.38
   labweb: &ip_block041
     eqiad: 10.2.2.40
+  wdqs-internal: &ip_block042
+    eqiad: 10.2.2.41
+    codfw: 10.2.1.41
 
 lvs::configuration::lvs_services:
   text:
@@ -1393,3 +1396,29 @@ lvs::configuration::lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 30
+  wdqs-internal:
+    description: Wikidata Query Service - internal
+    class: low-traffic
+    sites:
+    - eqiad
+    - codfw
+    ip: *ip_block042
+    port: 80
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://localhost/
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: wdqs-internal
+      service: wdqs
+    icinga:
+      check_command: "check_http_lvs_on_port!wdqs-internal.svc.%{::site}.wmnet!80!/readiness-probe"
+      sites:
+        eqiad:
+          hostname: wdqs-internal.svc.eqiad.wmnet
+        codfw:
+          hostname: wdqs-internal.svc.codfw.wmnet
