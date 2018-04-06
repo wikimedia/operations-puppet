@@ -48,4 +48,6 @@ class install_server::tftp_server {
         hasstatus => false,
         require   => Package['atftpd'],
     }
+
+    base::service_auto_restart { 'atftpd': }
 }
