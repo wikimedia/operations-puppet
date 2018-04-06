@@ -70,5 +70,5 @@ set -x
 # -shareliblist shows $spark2_sharelib in the output.
 oozie admin –sharelibupdate
 oozie admin -shareliblist | grep -q $spark2_sharelib || \
-    echo "${spark2_sharelib} was built but flaky \`oozie admin –sharelibupdate\' did not not work as expected. This will require some manual intervention!"
+    echo "${spark2_sharelib} was built but flaky \`oozie admin –sharelibupdate\` did not not work as expected. This will require some manual intervention!"
 
