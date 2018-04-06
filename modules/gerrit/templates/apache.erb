@@ -100,6 +100,8 @@ MaxClients 50
     AllowEncodedSlashes On
     RewriteEngine On
 
+    RewriteRule ^/?avatars/(\d+)\.(png)$ /avatars/$1.$2 [L]
+
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
     # trying to reproduce this behavior. But people run into this all the time.
