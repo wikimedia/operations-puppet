@@ -126,6 +126,14 @@ class gerrit::jetty(
         source  => 'puppet:///modules/gerrit/homedir',
     }
 
+    file { '/var/lib/gerrit2/review_site':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => File['/var/lib/gerrit2'],
+    }
+
     file { '/var/lib/gerrit2/review_site/bin':
         ensure  => directory,
         owner   => 'gerrit2',
