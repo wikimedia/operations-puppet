@@ -12,16 +12,22 @@
 # [*$port*]
 #  The port to listen on.
 #
+# [*api_version*]
+#  Burrow API version to use.
+#  Default: 3
+#
 define profile::prometheus::burrow_exporter(
     $prometheus_nodes,
     $burrow_addr = 'localhost:8000',
     $hostname = '0.0.0.0',
     $port = '9000',
+    $api_version = 3,
 ) {
     prometheus::burrow_exporter { $title:
         burrow_addr  => $burrow_addr,
         metrics_addr => "${hostname}:${port}",
         interval     => 30,
+        api_version  => 3,
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
