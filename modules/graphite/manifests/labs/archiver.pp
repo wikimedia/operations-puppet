@@ -37,10 +37,10 @@ class graphite::labs::archiver {
         require => File['/usr/local/bin/archive-instances'],
     }
 
-    # Clean up archives more than a year old
+    # Clean up archives more than a 90 days old
     cron { 'delete-old-instance-archives':
         ensure  => present,
-        command => 'find /srv/carbon/whisper/archived_metrics -mtime +366 -type f -delete',
+        command => 'find /srv/carbon/whisper/archived_metrics -mtime +90 -type f -delete',
         user    => '_graphite',
         minute  => 0,
         hour    => 12,
