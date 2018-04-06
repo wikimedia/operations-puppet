@@ -15,4 +15,6 @@ class profile::prometheus::ircd_exporter (
         port   => '9197',
         srange => $ferm_srange,
     }
+
+    base::service_auto_restart { 'prometheus-ircd-exporter': }
 }
