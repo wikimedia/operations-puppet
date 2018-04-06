@@ -16,15 +16,20 @@
 #   How often the Burrow daemon is scraped in seconds.
 #   Default: 30
 #
+# [*api_version*]
+#  Burrow API version to use.
+#  Default: 3
+#
 define prometheus::burrow_exporter(
     $burrow_addr = 'localhost:8000',
     $metrics_addr = '0.0.0.0:9000',
     $interval = 30,
+    $api_version = 3,
 ){
     require_package('prometheus-burrow-exporter')
     $service_name = "prometheus-burrow-exporter@${title}"
 
-    $arguments = "--burrow-addr http://${burrow_addr} --metrics-addr ${metrics_addr} --interval ${interval}"
+    $arguments = "--burrow-addr http://${burrow_addr} --metrics-addr ${metrics_addr} --interval ${interval} --api-version ${api_version}"
 
     # We're going with multiple prometheus-burrow-exporter, mask and stop the default one.
     exec { "mask_default_burrow_exporter_${title}":

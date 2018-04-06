@@ -1,0 +1,46 @@
+[general]
+pidfile=burrow-<%= @title %>.pid
+client-id="burrow-client"
+#stdout-logfile="/var/log/burrow/burrow.out"
+
+[logging]
+filenamame="/var/log/burrow/<%= @title %>.log"
+level="info"
+
+[zookeeper]
+servers=["<%= @zookeeper_hosts.join('","') -%>"]
+timeout=6
+root-path="/burrow"
+
+[client-profile.<%= @title %>]
+kafka-version="<%= @kafka_api_version %>"
+
+[cluster.<%= @title %>]
+class-name="kafka"
+client-profile=client-profile.<%= @title %>
+servers=["<%= @kafka_brokers.join('","') %>"]
+
+[consumer.<%= @title %>]
+class-name="kafka"
+cluster="<%= @title %>"
+servers=["<%= @kafka_brokers.join('","') %>"]
+<% if @consumer_groups_blacklist -%>
+group-blacklist="<%= @consumer_groups_blacklist -%>"
+<% end -%>
+
+[httpserver.mylistener]
+address=":<%= @httpserver_port -%>"
+timeout=60
+
+<% if @to_email -%>
+[notifier.<%= @title %>]
+class-name="email"
+interval=30
+threshold=3
+group-whitelist="<%= consumer_groups -%>"
+template-open="<%= @email_template_path -%>
+from="<%= from_email %>"
+to="<%= to_email %>"
+server="<%= to_email %>"
+port="<%= to_email %>"
+<% end -%>
