@@ -1,6 +1,5 @@
 class swift::proxy (
     $proxy_service_host,
-    $rewrite_thumb_server,
     $shard_container_list,
     $accounts = $swift::params::accounts,
     $credentials = $swift::params::account_keys,
@@ -10,10 +9,8 @@ class swift::proxy (
     $statsd_sample_rate_factor = '1',
     $bind_port                 = '80',
     $num_workers               = $::processorcount,
-    $backend_url_format        = 'sitelang',
     $rewrite_account           = undef,
     $dispersion_account        = undef,
-    $tld                       = 'org',
     $thumborhost               = '',
 ) {
     package {[
