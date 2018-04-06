@@ -1403,16 +1403,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Hosts to decommission (if any)
 
-# mw1201-1208 are api apaches
-node /^mw120[1-8]\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-# mw1209-1216, 1218-1220 are apaches
-node /^mw12(09|1[012345689]|20)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
 # former video scalers, to be decommissioned (T187466)
 node /^mw12(59|60)\.eqiad\.wmnet/ {
     role(spare::system)
