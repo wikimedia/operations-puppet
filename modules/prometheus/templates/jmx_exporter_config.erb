@@ -36,8 +36,8 @@ static_configs = []
     targets = parameter_list.map { |parameters| "#{parameters['hostname']}:#{parameters['port']}" }
 
     static_configs.push({
-      'targets' => targets,
-      'labels'  => labels
+      'targets' => targets.sort,
+      'labels'  => labels.sort.to_h
     })
   }
 }
