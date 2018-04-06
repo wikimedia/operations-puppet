@@ -33,17 +33,11 @@ class _WMFRewriteContext(WSGIContext):
         self.logger = rewrite.logger
 
         self.account = conf['account'].strip()
-        self.thumbhost = conf['thumbhost'].strip()
         self.thumborhost = conf['thumborhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
         self.shard_container_list = [
             item.strip() for item in conf['shard_container_list'].split(',')]
-        # this parameter controls whether URLs sent to the thumbhost are sent
-        # as is (eg. upload/proj/lang/) or with the site/lang converted  and
-        # only the path sent back (eg en.wikipedia/thumb).
-        self.backend_url_format = conf['backend_url_format'].strip()  # asis, sitelang
-        self.tld = conf['tld'].strip()
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -51,103 +45,32 @@ class _WMFRewriteContext(WSGIContext):
         host and returns it. Note also that the thumb host might write it out
         to Swift so it won't 404 next time.
         """
-        # go to the thumb media store for unknown files
-        reqorig.host = self.thumbhost
         # upload doesn't like our User-agent, otherwise we could call it
         # using urllib2.url()
-        proxy_handler = urllib2.ProxyHandler({'http': self.thumbhost})
-        redirect_handler = DumbRedirectHandler()
-        opener = urllib2.build_opener(redirect_handler, proxy_handler)
-        # Thumbor doesn't need (and doesn't like) the proxy
-        thumbor_opener = urllib2.build_opener(redirect_handler)
+        thumbor_opener = urllib2.build_opener(DumbRedirectHandler())
 
-        # Pass on certain headers from the caller squid to the scalers
-        opener.addheaders = []
+        # Pass on certain headers from Varnish to Thumbor
+        thumbor_opener.addheaders = []
         if reqorig.headers.get('User-Agent') is not None:
-            opener.addheaders.append(('User-Agent', reqorig.headers.get('User-Agent')))
+            thumbor_opener.addheaders.append(('User-Agent', reqorig.headers.get('User-Agent')))
         else:
-            opener.addheaders.append(('User-Agent', self.user_agent))
+            thumbor_opener.addheaders.append(('User-Agent', self.user_agent))
         for header_to_pass in ['X-Forwarded-For', 'X-Forwarded-Proto',
                                'Accept', 'Accept-Encoding', 'X-Original-URI']:
             if reqorig.headers.get(header_to_pass) is not None:
-                opener.addheaders.append((header_to_pass, reqorig.headers.get(header_to_pass)))
-
-        thumbor_opener.addheaders = opener.addheaders
+                header = (header_to_pass, reqorig.headers.get(header_to_pass))
+                thumbor_opener.addheaders.append(header)
 
         # At least in theory, we shouldn't be handing out links to originals
         # that we don't have (or in the case of thumbs, can't generate).
         # However, someone may have a formerly valid link to a file, so we
         # should do them the favor of giving them a 404.
         try:
-            # break apach the url, url-encode it, and put it back together
-            urlobj = list(urlparse.urlsplit(reqorig.url))
-            # encode the URL but don't encode %s and /s
-            urlobj[2] = urllib2.quote(urlobj[2], '%/')
-            encodedurl = urlparse.urlunsplit(urlobj)
+            reqorig.host = self.thumborhost
+            thumbor_urlobj = list(urlparse.urlsplit(reqorig.url))
+            thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
+            thumbor_encodedurl = urlparse.urlunsplit(thumbor_urlobj)
 
-            # Thumbor never needs URL mangling and it needs a different host
-            if self.thumborhost:
-                thumbor_reqorig = swob.Request(reqorig.environ.copy())
-                thumbor_reqorig.host = self.thumborhost
-                thumbor_urlobj = list(urlparse.urlsplit(thumbor_reqorig.url))
-                thumbor_urlobj[2] = urllib2.quote(thumbor_urlobj[2], '%/')
-                thumbor_encodedurl = urlparse.urlunsplit(thumbor_urlobj)
-
-            # if sitelang, we're supposed to mangle the URL so that
-            # http://upload.wm.o/wikipedia/commons/thumb/a/a2/Foo_.jpg/330px-Foo_.jpg
-            # changes to
-            # http://commons.wp.o/w/thumb_handler.php/a/a2/Foo_.jpg/330px-Foo_.jpg
-            if self.backend_url_format == 'sitelang':
-                match = re.match(
-                    r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)',
-                    encodedurl)
-                if match:
-                    proj = match.group('proj')
-                    lang = match.group('lang')
-                    # and here are all the legacy special cases, imported from thumb_handler.php
-                    if(proj == 'wikipedia'):
-                        if(lang in ['meta', 'commons', 'internal', 'grants']):
-                            proj = 'wikimedia'
-                        if(lang in ['mediawiki']):
-                            lang = 'www'
-                            proj = 'mediawiki'
-                    hostname = '%s.%s.%s' % (lang, proj, self.tld)
-                    if(proj == 'wikipedia' and lang == 'sources'):
-                        # yay special case
-                        hostname = 'wikisource.%s' % self.tld
-                    # ok, replace the URL with just the part starting with thumb/
-                    # take off the first two parts of the path
-                    # (eg /wikipedia/commons/); make sure the string starts
-                    # with a /
-                    encodedurl = 'http://%s/w/thumb_handler.php/%s' % (
-                        hostname, match.group('path'))
-                    # add in the X-Original-URI with the swift got (minus the hostname)
-                    opener.addheaders.append(
-                        ('X-Original-URI', list(urlparse.urlsplit(reqorig.url))[2]))
-                else:
-                    # ASSERT this code should never be hit since only thumbs
-                    # should call the 404 handler
-                    self.logger.warn("non-thumb in 404 handler! encodedurl = %s" % encodedurl)
-                    resp = swob.HTTPNotFound('Unexpected error')
-                    return resp
-            else:
-                # log the result of the match here to test and make sure it's
-                # sane before enabling the config
-                match = re.match(
-                    r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)',
-                    encodedurl)
-                if match:
-                    proj = match.group('proj')
-                    lang = match.group('lang')
-                    self.logger.warn(
-                        "sitelang match has proj %s lang %s encodedurl %s" % (
-                            proj, lang, encodedurl))
-                else:
-                    self.logger.warn("no sitelang match on encodedurl: %s" % encodedurl)
-
-            # To turn thumbor off and have thumbnail traffic served by image scalers,
-            # replace the line below with this one:
-            # upcopy = opener.open(encodedurl)
             upcopy = thumbor_opener.open(thumbor_encodedurl)
         except urllib2.HTTPError as error:
             # Wrap the urllib2 HTTPError into a swob HTTPException

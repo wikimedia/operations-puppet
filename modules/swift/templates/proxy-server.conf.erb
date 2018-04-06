@@ -66,18 +66,10 @@ set access_log_facility = LOG_LOCAL1
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
 account = <%= @accounts[@rewrite_account]['account_name'] %>
-# the name of the scaler cluster.
-thumbhost = <%= @rewrite_thumb_server %>
 # upload doesn't like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
 user_agent = Mozilla/5.0
 # this list is the containers that should be sharded
 shard_container_list = <%= @shard_container_list.join(',') %>
-# backend_url_format controls whether we pass the URL through to the thumbhost unmolested
-# or mangle it to be consumed by mediawiki.  ms5 takes URLs unmolested, mediawiki wants them
-# transformed to something more palatable (specifically, turning http://upload/proj/lang/ into http://lang.proj/
-# valid options are 'asis' (leave it alone) and 'sitelang' (change upload to lang.site.org)
-backend_url_format = <%= @backend_url_format %>
-tld = <%= @tld %>
 
 # sending thumbnail requests to thumbor
 thumborhost = <%= @thumborhost %>

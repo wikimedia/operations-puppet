@@ -90,8 +90,6 @@ varnish::dynamic_backend_caches: false
 # value in puppet.
 max_core_rtt: 60
 
-swift::proxy::tld: 'beta.wmflabs.org'
-
 zookeeper_clusters:
   "%{::labsproject}":
     hosts:
