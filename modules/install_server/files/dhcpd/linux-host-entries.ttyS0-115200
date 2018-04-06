@@ -61,8 +61,6 @@ host boron {
 host bromine {
     hardware ethernet aa:00:00:f1:36:3a;
     fixed-address bromine.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host chlorine {
