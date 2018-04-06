@@ -334,4 +334,43 @@
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikivoyage.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
+<VirtualHost *:80>
+    ServerName www.wikimedia.<%= @domain_suffix %>
+    ServerAlias m.wikimedia.<%= @domain_suffix %>
+
+    DocumentRoot /srv/mediawiki/docroot/wwwportal
+    <IfModule mod_php5.c>
+        php_admin_flag engine on
+    </IfModule>
+
+    RewriteEngine On
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    # Front page...
+    RewriteRule ^/$ /<%= @portal_dir %>/wikimedia.org/index.html [L]
+    <%- if @rewrite_portal -%>
+        RewriteRule ^/portal/(.*)$ /<%= @portal_dir %>/$1 [L]
+    <%- end -%>
+
+    # We need to be able to update HTML on short notice
+    <Location ~ "^/$">
+        Header set Cache-Control "s-maxage=86400, must-revalidate, max-age=3600"
+    </Location>
+    # All other resources can be cached for a reasonably long time
+    <Location ~ "^/<%= @portal_dir %>/">
+        Header set Cache-Control "s-maxage=86400, max-age=86400"
+    </Location>
+
+    # Redirects for country portals from the old URLs
+    RewriteRule ^/ch-portal/?$ http://wikipedia.ch/ [R=301,L]
+    RewriteRule ^/be-portal/?$ http://wikipedia.be/ [R=301,L]
+    RewriteRule ^/nl-portal/?$ http://wikipedia.nl/ [R=301,L]
+
+    # Everything else
+    # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
+    RewriteCond %{REQUEST_URI} !=/w/404.php
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://wikimediafoundation.<%= @domain_suffix %>$1 [R=301,L]
+</VirtualHost>
 # vim: sts=4 sw=4 syn=apache autoindent
