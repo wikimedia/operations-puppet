@@ -1,6 +1,7 @@
 # == define profile::kafka::burrow
 #
-# Consumer offset lag monitoring tool template for a generic Kafka cluster
+# Consumer offset lag monitoring tool template for a generic Kafka cluster.
+# Compatible only with burrow >= 1.0.
 #
 define profile::kafka::burrow(
     $prometheus_nodes,
@@ -10,22 +11,24 @@ define profile::kafka::burrow(
     $smtp_server = 'mx1001.wikimedia.org'
     $kafka_cluster_name = $config['name']
 
-    $consumer_groups = $monitoring_config[$title]['consumer_groups']
+    $alert_whitelist = $monitoring_config[$title]['alert_whitelist']
     $burrow_http_port = $monitoring_config[$title]['burrow_port']
     $prometheus_burrow_http_port = $monitoring_config[$title]['burrow_exporter_port']
-    $to_emails = $monitoring_config[$title]['to_emails']
+    $to_email = $monitoring_config[$title]['to_email']
+    $kafka_api_version = $monitoring_config[$title]['api_version']
 
     burrow { $title:
         zookeeper_hosts    => $config['zookeeper']['hosts'],
         zookeeper_path     => $config['zookeeper']['chroot'],
         kafka_cluster_name => $kafka_cluster_name,
         kafka_brokers      => $config['brokers']['array'],
+        kafka_api_version  => $kafka_api_version,
         smtp_server        => $smtp_server,
         from_email         => "burrow@${::fqdn}",
-        to_emails          => $to_emails,
+        to_email           => $to_email,
         lagcheck_intervals => 100,
         httpserver_port    => $burrow_http_port,
-        consumer_groups    => $consumer_groups,
+        alert_whitelist    => $alert_whitelist,
     }
 
     profile::prometheus::burrow_exporter { $title:
@@ -49,9 +52,8 @@ define profile::kafka::burrow(
         # We might want to only use icinga to monitor specific consumer groups.
         # If these are given in the nagios_check config, then use them instead
         # of the consumer_groups that burrow itself is monitoring.
-        $check_consumer_groups = $monitoring_config[$title]['consumer_groups'] ? {
-            undef   => $consumer_groups,
-            default => $monitoring_config[$title]['consumer_groups'],
+        $check_consumer_groups = $monitoring_config[$title]['nagios_check']['consumer_groups'] ? {
+            default => $monitoring_config[$title]['nagios_check']['consumer_groups'],
         }
         $lag_threshold = $monitoring_config[$title]['nagios_check']['lag_threshold'] ? {
             undef   => 1000,
