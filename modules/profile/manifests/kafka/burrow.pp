@@ -1,6 +1,7 @@
 # == define profile::kafka::burrow
 #
-# Consumer offset lag monitoring tool template for a generic Kafka cluster
+# Consumer offset lag monitoring tool template for a generic Kafka cluster.
+# Compatible only with burrow >= 1.0.
 #
 define profile::kafka::burrow(
     $prometheus_nodes,
@@ -13,16 +14,18 @@ define profile::kafka::burrow(
     $consumer_groups = $monitoring_config[$title]['consumer_groups']
     $burrow_http_port = $monitoring_config[$title]['burrow_port']
     $prometheus_burrow_http_port = $monitoring_config[$title]['burrow_exporter_port']
-    $to_emails = $monitoring_config[$title]['to_emails']
+    $to_email = $monitoring_config[$title]['to_emails']
+    $kafka_api_version = $monitoring_config[$title]['api_version']
 
     burrow { $title:
         zookeeper_hosts    => $config['zookeeper']['hosts'],
         zookeeper_path     => $config['zookeeper']['chroot'],
         kafka_cluster_name => $kafka_cluster_name,
         kafka_brokers      => $config['brokers']['array'],
+        kafka_api_version  => $kafka_api_version,
         smtp_server        => $smtp_server,
         from_email         => "burrow@${::fqdn}",
-        to_emails          => $to_emails,
+        to_email           => $to_email,
         lagcheck_intervals => 100,
         httpserver_port    => $burrow_http_port,
         consumer_groups    => $consumer_groups,
