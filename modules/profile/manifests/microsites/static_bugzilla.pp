@@ -15,8 +15,8 @@ class profile::microsites::static_bugzilla {
     rsync::quickdatacopy { 'srv-org-wikimedia-static-bugzilla':
       ensure      => present,
       auto_sync   => false,
-      source_host => 'bromine.eqiad.wmnet',
-      dest_host   => 'vega.codfw.wmnet',
+      source_host => 'vega.codfw.wmnet',
+      dest_host   => 'bromine.eqiad.wmnet',
       module_path => '/srv/org/wikimedia/static-bugzilla',
     }
 }
