@@ -82,7 +82,7 @@ profile::dumps::distribution::mirrors:
   - url: 'http://dumps.wikimedia.your.org/'
     hostname: 'your.org'
     ipv4: ['ftpmirror.your.org', 'ftpmirror-ae0-4.us.your.org']
-    ipv6: []
+    ipv6: ['ftpmirror.your.org']
     contactname: 'Kevin Day'
     contactaddy: 'kevin@your.org'
     institution: 'Your.org'
