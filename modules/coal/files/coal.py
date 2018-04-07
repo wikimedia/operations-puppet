@@ -439,8 +439,11 @@ class WhisperLogger(object):
                             continue
 
                         # If this is an oversample, then skip it
-                        if 'event' in value and 'is_oversample' in value['event'] and \
-                                                value['event']['is_oversample']:
+                        #
+                        # The object uses the Javascript naming statndard (camelCase),
+                        # not the python standard (with_underscores)
+                        if 'event' in value and 'isOversample' in value['event'] and \
+                                                value['event']['isOversample']:
                             continue
 
                         # Get the incoming event on to the pile, and if necessary,
