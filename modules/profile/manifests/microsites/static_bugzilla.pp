@@ -13,7 +13,7 @@ class profile::microsites::static_bugzilla {
     }
 
     rsync::quickdatacopy { 'srv-org-wikimedia-static-bugzilla':
-      ensure      => present,
+      ensure      => absent,
       auto_sync   => false,
       source_host => 'vega.codfw.wmnet',
       dest_host   => 'bromine.eqiad.wmnet',
