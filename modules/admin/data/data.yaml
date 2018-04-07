@@ -2586,7 +2586,7 @@ users:
     name: sharvaniharan
     realname: Sharvani Haran
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpJeP2DCd3LgKRDfMze3kthHjiXnFQldQyvJ1LVbkqzgzzcYR8E7fSF0PFygX5OkUMU9Lii2w+7L4uHR9nsBIHDtSHlPWlEmQ35VRGGtJ/eaRjuOjQO/qI20Hwq4eYsMFpGFc20D6OWOYii/dFQjFYqqAfeWG9LMn1zScedSiZ9SRIZkTLcWx/otoHCQGG6UQ3zEbvp4NPGPqjNPyDsCI1+RXgPjaack0E+hrsagncAg03SC9rPAdeQ80X/d49+8WJt/n5R0skKjFSZkqbAUDNOJENXbwWoRK8YlNgTGLpdkEModlcBTuDqwz+FAzKAA45MIOgXV2xoviV/DaFH8DV sharan@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNylzEzK5E1+261DvF/4JNgmFcBGYhOtn6w8jXoHVI8 sharan@wmf2050.local
     uid: 17744
     email: sharan@wikimedia.org
   dbarratt:
