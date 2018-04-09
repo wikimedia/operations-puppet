@@ -281,7 +281,14 @@ class profile::mediawiki::php(
             ensure => present,
         }
     }
+    # Set the default interpreter to php7
+    $cli_path = "/usr/bin/php${php_version}"
+    $pkg = "php${php_version}-cli"
 
+    alternatives::select { 'php':
+        path    => $cli_path,
+        require => Package[$pkg],
+    }
     ## Install wmerrors, on fpm only.
     if $php_version != '7.0' and $enable_fpm {
         php::extension { 'wmerrors':

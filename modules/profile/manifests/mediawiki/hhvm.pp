@@ -102,17 +102,6 @@ class profile::mediawiki::hhvm(
         before  => Service['hhvm'],
     }
 
-
-    # Use Debian's Alternatives system to mark HHVM as the default PHP
-    # implementation for this system. This makes /usr/bin/php a symlink
-    # to /usr/bin/hhvm.
-
-    alternatives::select { 'php':
-        path    => '/usr/bin/hhvm',
-        require => Package['hhvm'],
-        before  => Service['hhvm'],
-    }
-
     # This command is useful prune the hhvm bytecode cache from old tables that
     # are just left around
 

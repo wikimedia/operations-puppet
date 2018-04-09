@@ -31,3 +31,4 @@ fixtures:
         systemd: "../../../../systemd"
         tlsproxy: "../../../../tlsproxy"
         wmflib: "../../../../wmflib"
+        alternatives: "../../../../alternatives"

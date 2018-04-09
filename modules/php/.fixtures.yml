@@ -3,3 +3,4 @@ fixtures:
         php: "#{source_dir}"
         stdlib: "../../../../stdlib"
         wmflib: "../../../../wmflib"
+        alternatives: "../../../../alternatives"
