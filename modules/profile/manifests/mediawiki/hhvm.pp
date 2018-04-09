@@ -134,14 +134,19 @@ class profile::mediawiki::hhvm(
     # Note: the warmup process should be revisited and is thus not implemented on
     # Debian/systemd at the moment.
 
-    # Use Debian's Alternatives system to mark HHVM as the default PHP
-    # implementation for this system. This makes /usr/bin/php a symlink
-    # to /usr/bin/hhvm.
-
+    # The default php interpreter should be hhvm on jessie and below, and php 7.0
+    # on stretch and above. HHVM gives no advantage over php5, but it has the correct
+    # ICU version installed.
+    if os_version('Debian >= stretch') {
+        $cli_path = '/usr/bin/php7.0'
+        $pkg = 'php-cli'
+    } else {
+        $cli_path = '/usr/bin/hhvm'
+        $pkg = 'hhvm'
+    }
     alternatives::select { 'php':
-        path    => '/usr/bin/hhvm',
-        require => Package['hhvm'],
-        before  => Service['hhvm'],
+        path    => $cli_path,
+        require => Package[$pkg],
     }
 
     # This command is useful prune the hhvm bytecode cache from old tables that
