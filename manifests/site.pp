@@ -306,7 +306,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db20(55|62|69|70|71|72)\.codfw\.wmnet/ {
+node /^db20(55|62|69|70|71|72|92)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -482,11 +482,6 @@ node /^db1(096|097|098|099|101|103|105|113)\.eqiad\.wmnet/ {
 }
 node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
     role(mariadb::core_multiinstance)
-}
-
-# pending to be provisioned T170662
-node 'db2092.codfw.wmnet' {
-    role(spare::system)
 }
 
 ## x1 shard
