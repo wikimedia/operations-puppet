@@ -54,7 +54,7 @@ class profile::zookeeper::server (
 
         monitoring::check_prometheus { 'zookeeper_client_conns':
             description     => 'Zookeeper Alive Client Connections too high',
-            query           => "scalar(org_apache_ZooKeeperService_NumAliveConnections{instance=\"${::hostname}:12181, zookeeper_cluster=\"${cluster_name}\"})",
+            query           => "scalar(org_apache_ZooKeeperService_NumAliveConnections{instance=\"${::hostname}:12181\", zookeeper_cluster=\"${cluster_name}\"})",
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/${prometheus_instance}",
             warning         => $max_client_connections / 2,
             critical        => $max_client_connections,
