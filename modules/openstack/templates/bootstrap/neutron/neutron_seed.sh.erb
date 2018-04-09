@@ -66,6 +66,11 @@ neutron router-interface-add <router_id> <LAN_subnet_id>
 neutron port-list
 neutron port-show <port_id>
 
+# should show HA states
+# Also seen on the l3-agent itself at
+#   /var/lib/neutron/ha_confs/<router-id>/state
+neutron l3-agent-list-hosting-router <router-id>
+
 # Adding a floating IP to an instance from the CLI
 neutron floatingip-create --subnet <WAN_floating_subnet_external_id> <WAN_external_network_id> 
 
