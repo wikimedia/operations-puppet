@@ -1,6 +1,6 @@
 # == Class cacheproxy::cron_restart
 #
-# Add a periodic restart every 3.5 days via cron, staggering the time across a
+# Add a periodic restart every 7 days via cron, staggering the time across a
 # cluster
 #
 # === Parameters
@@ -11,8 +11,8 @@ class cacheproxy::cron_restart ($nodes, $cache_cluster) {
     #TODO: maybe use the list of datacenters to do this?
     $all_nodes = array_concat($nodes['eqiad'], $nodes['esams'], $nodes['ulsfo'], $nodes['codfw'], $nodes['eqsin'])
 
-    # Semiweekly cron entries for restarts every 3.5 days
-    $times = cron_splay($all_nodes, 'semiweekly', "${cache_cluster}-backend-restarts")
+    # Weekly cron entries
+    $times = cron_splay($all_nodes, 'weekly', "${cache_cluster}-backend-restarts")
     $be_restart_a_h = $times['hour-a']
     $be_restart_a_m = $times['minute-a']
     $be_restart_a_d = $times['weekday-a']
