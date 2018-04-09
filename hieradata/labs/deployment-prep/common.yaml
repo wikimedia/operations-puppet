@@ -215,7 +215,8 @@ scap::dsh::groups:
           - deployment-restbase02.deployment-prep.eqiad.wmflabs
 
 "profile::etcd::tlsproxy::read_only": false
-
+profile::etcd::tlsproxy::listen_port: 2379
+profile::etcd::tlsproxy::upstream_port: 2378
 # NOTE: these elasticsearch settings will need to be overloaded on a per-host
 # basis for the Logstash Elasticsearch cluster.
 "profile::elasticsearch::expected_nodes": 3
