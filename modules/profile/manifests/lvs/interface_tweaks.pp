@@ -1,7 +1,7 @@
 # This gathers up various ethernet settings for functional
 #  fixups and optimizations specific to LVS in a single location
 
-define lvs::interface_tweaks(
+define profile::lvs::interface_tweaks(
   $interface=$name,
   $txqlen=false,
   $rss_pattern='',
