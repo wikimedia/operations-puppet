@@ -16,3 +16,13 @@ profile::base::nameservers:
   - '208.80.153.12' # acamar
   - '208.80.153.42' # achenar
   - '208.80.154.254' # eqiad lvs
+
+profile::lvs::interface_tweaks:
+  eth0:
+    txqlen: 10000
+  eth1:
+    txqlen: 10000
+  eth2:
+    txqlen: 10000
+  eth3:
+    txqlen: 10000

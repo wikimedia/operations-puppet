@@ -6,3 +6,7 @@ profile::base::nameservers:
   - '103.102.166.8' # dns5001
   - '103.102.166.9' # dns5002
   - '208.80.153.254' # codfw lvs
+
+profile::lvs::interface_tweaks:
+  eth0:
+    txqlen: 10000
