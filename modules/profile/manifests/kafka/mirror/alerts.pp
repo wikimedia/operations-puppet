@@ -94,8 +94,9 @@ define profile::kafka::mirror::alerts(
     # group were not deleted from Kafka. They still end up in the Burrow's metrics
     # for the mirror maker consumer group, showing a constant lag that triggers the alarm.
     $lag_check_period = '10'
+
     if topic_blacklist {
-        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
+        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic\\!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
     } else {
         $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))"
     }
