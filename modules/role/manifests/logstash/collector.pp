@@ -123,11 +123,6 @@ class role::logstash::collector (
         priority => 20,
     }
 
-    logstash::conf { 'filter_syslog_network':
-        source   => 'puppet:///modules/role/logstash/filter-syslog-network.conf',
-        priority => 20,
-    }
-
     logstash::conf { 'filter_udp2log':
         source   => 'puppet:///modules/role/logstash/filter-udp2log.conf',
         priority => 20,
