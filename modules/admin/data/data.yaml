@@ -1104,8 +1104,8 @@ users:
     gid: 500
     name: mlitn
     realname: Matthias Mullie
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEq/VIh0GiXv6PIUq45Lbk9jgOmkH9FRN53VGMJmaxyJV8fRpUpdB1rmdqqe9gs5heSyObP9Ci5fEL+8PbXsEygK7g+ZhoRP+XDJDMe1yjMOMgjNaN4pM5FJnqkFgXFPmhOvRizrT3SWenUDlGBhxufekTUVsl/zOF0R2g5jTWbFWPoa4P0c2aXeJgJH3s65Zd+NoWolVrPG8Q1LT2l7xwJdRaS3t4Mt8iusPx1e+Fvdvd5LuO56/zDPQl37ocMeax0lVMbKPbKymhezxotD29sez3sljrHiB8W4Q/oNC9d5jEyCegMYV5Wh+eUkqMIAZ21knjGmWrkB5xGRhsrOVl
-        matthias@mullie.eu]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwxvtLV3SzlsX0y4NrWL1/4ADse6o3u9Rr2g4suLGzLKqPSPFzIPkFesf0O90VJCqm5130+lqWXCdvjeusaEafiMUUjuqvm7kEWGTGQFpYffwYHPjncQGlU9+U1rHm6X3571UJBF7pAbTN3eA9hreEgoaogHrzjH8iIq11+q7nCg5i9w4QsS5tV4WEx3bJBSl7NwUKiTX+qjv7tzd0+jgfbZFB47KUuMbfOZs82lca/qgxnDYZcYmJMMLV4cu2tCz6vD+VyHehRmKMBCNvLFVjoTD5uyYRNSs+U/lR67Idiau4xPqkx2M3BrUgBzYADrqAAY/aKgQIIszgMMP/rXohVoeUmRS3YrwZLcwHxnczPdOeYfMTqOAE221pocNHKWFj/71t60BjMjzPEyX4gpNlK++vRJ3RyMGEsxebeOPaxhmP5pThRZ9TxjpdzodgCEC50di+zyrlc0aiUGBfvic82/++WRTV5S7C8HD2qoitxWY7LjfE6i0olLkAxBeWhwMPvuIV9TzuBkfTS6JTM/Jyw7e7yniK3PD419Ei691EWLV3kynDvGNYcYid7zfLXqzT2II8oEW17BjC1UEiNPB/ZcRUuBsFDUjjPnay7ikUyE46O2Mb2BxDUwj+XULb4qcFgRZXl++aswglUT2jiTUD/z6kFJOayxytWEWonFQjWQ==
+        mmullie@wikimedia.org]
     uid: 2269
     email: mmullie@wikimedia.org
   mwalker:
