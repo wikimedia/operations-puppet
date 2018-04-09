@@ -4,7 +4,7 @@ class role::bastionhost::pop {
         description => 'Bastion host for all shell users in a caching Pop',
     }
     require ::role::bastionhost::general
-    require ::role::installserver::tftp
+    require ::profile::installserver::tftp
     require ::role::prometheus::ops
     require ::profile::ipmi::mgmt
 
