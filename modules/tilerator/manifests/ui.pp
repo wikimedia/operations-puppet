@@ -109,6 +109,13 @@ class tilerator::ui(
         contact_groups    => $contact_groups,
     }
 
+    # HACK: service::node should add this sudo rule, but doesn't, because it deduplicates by repo name,
+    # and tilerator uses the same repo name
+    sudo::user { "scap_deploy-service_tileratorui":
+        user => 'deploy-service',
+        privileges => ["ALL=(root) NOPASSWD: /usr/sbin/service tileratorui *" ]
+    }
+
     file { $statefile_dir:
         ensure => directory,
         owner  => 'tileratorui',
