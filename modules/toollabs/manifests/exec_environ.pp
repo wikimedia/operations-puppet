@@ -123,8 +123,9 @@ class toollabs::exec_environ {
         'language-pack-he',
         'language-pack-hi',
         'language-pack-ja',
-        'language-pack-nl',
         'language-pack-ko',            # T130532
+        'language-pack-mr',            # T191727
+        'language-pack-nl',
         'language-pack-pa',
         'language-pack-pt',
         'language-pack-ru',
@@ -413,6 +414,7 @@ class toollabs::exec_environ {
         'fakechroot',                  # T138138
         ]:
         ensure => latest,
+        before => Class['::profile::locales::extended'],
     }
 
     file { '/etc/mysql/conf.d/override.my.cnf':
