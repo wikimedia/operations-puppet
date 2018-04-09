@@ -179,7 +179,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: [hashar]
+    members: [hashar, thcipriani]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
