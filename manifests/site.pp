@@ -1389,13 +1389,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-# Hosts to decommission (if any)
-
-# former video scalers, to be decommissioned (T187466)
-node /^mw12(59|60)\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 # Appservers (serving normal website traffic)
 
 # Row A
