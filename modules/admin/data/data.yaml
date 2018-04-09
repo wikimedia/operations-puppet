@@ -2003,7 +2003,7 @@ users:
     gid: 500
     name: etonkovidova
     realname: Elena Tonkovidova
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqxPSqR8la7MAqz7BC6+1xM4tSKrZObfbh3unfyu4cuPtaj1v6oJ+wm7USqVR8sSVFoqpyq8kVLL6mGgLt+HzCWT5c3fyDrPdRJ89o0EXlkZ02EGkmTDdYzs7VLkvSyKLIqxg1wOdX8s0oYaiCaJ6OiFi/lIjfyOVcnIQ0yB4h3qcpzMXlzjiAsyWBTA/wNCY2pCEjKR3JdW8aYV8tw/ol0eV3F5Q9hZumrd7GwAD6AJMnHlNgUAHTd+g5RllhBsniXOu1ejZWyTka3dWjSyK3JFAyDUmVNZwC+l6XC1bSyOoFEMyWDctmXpKqKbe24IfQ/vVeh9PzYr5sbasVX5gV etonkovidova@Administrators-MacBook-Air.local]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCl3i/0QY3As6en/7JFxP+IkriwwMu6l4ILjcHEc0pGkFoFJDUIZUgEKk0hgOehGjiEXioNDHbnkCUy7pfBNYvLh8KU3KnYO3gEXEc2NlyCgwP2Q2hXsVDFO5y8vq9pR99O9s/5X7tw8YdH9XRYwPOumJX8RxXDS2Cn6hvod439YkwzDMKSOhUZq3/Y1zhMi/E3KsyUv7XJp9b6PbZqcNKsYMFsoh4OlYQKl16sVdyBIO1cREMSDIdGXdFOaVYLxfs4pa5oEV08Xb1QxIn6vepToGqU/jrBb5BK05E40WYT7CQLmDDtlD14DL5HKWDMFRD7Snj82wZ3dzgCF1FZOeu1 etonkovidova@AdministorsAir2.corp.wikimedia.org]
     uid: 11400
     email: etonkovidova@wikimedia.org
   sbisson:
