@@ -61,6 +61,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
+                 Approval from Release Engineering team is required before modifying this group.
     members: [dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, daniel, demon, ebernhardson, esanders, gilles,
               gjg, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle,
@@ -118,6 +119,7 @@ groups:
     description: Access statistics number crunching hosts (like
                  statistics-users) and also provides access to research mysql
                  credentials on stat1006 (currently the only such host)
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [awight, bmansurov, catrope, dartar, deskana, mneisler,
               dduvall, esanders, ezachte, gilles, halfak,
               jforrester, jkatz, jmorgan, kaldari,
@@ -189,6 +191,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [ezachte, joal, milimetric, fdans]
   statistics-privatedata-users:
     gid: 725
@@ -200,6 +203,7 @@ groups:
                  group.  If they want Hadoop access without rights to private data,
                  add them instead to the analytics-users group.  statistics-* groups
                  DO NOT EQUAL Hadoop/Hive cluster access.
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
               madhuvishy, tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
@@ -208,6 +212,7 @@ groups:
   statistics-users:
     gid: 726
     description: Access statistics number crunching hosts. NO PRIVS.
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [dartar, halfak, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, awight, jforrester,
               marktraceur, nuria, leila, gilles,
@@ -219,6 +224,7 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [ezachte, milimetric, joal, mforns, bearloga, nuria, fdans, tbayer]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
@@ -235,8 +241,8 @@ groups:
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
-        This will grant shell access on Hadoop client nodes and on
-        Hadoop NameNodes.
+                 This will grant shell access on Hadoop client nodes and on Hadoop NameNodes.
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [debt, goransm, jdittrich]
   analytics-privatedata-users:
     gid: 731
@@ -244,6 +250,7 @@ groups:
                  This will grant shell access on Hadoop client nodes and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     members: [dartar, milimetric, dfoy, aude, jforrester, nithum, imarlier,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, bawolff, mneisler,
               nuria, otto, deskana, arnad, jgreen, katie,
@@ -577,6 +584,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/lsof *']
   analytics-wmde-users:
     description: Group of WMDE analytics users
+                 Approval from Nuria/Analytics is strongly recommended before modifying this group.
     gid: 784
     members: [addshore, goransm]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
