@@ -12,27 +12,27 @@ class profile::maps::apps(
     # once this is fixed in application code, the 2 parameters below should be merged.
     $kartotherian_style = hiera('profile::maps::apps::kartotherian_style'),
     $tilerator_style = hiera('profile::maps::apps::tilerator_style'),
+    $kartotherian_storage_id = hiera('profile::maps::apps::kartotherian_storage_id'),
+    $tilerator_storage_id = hiera('profile::maps::apps::tilerator_storage_id'),
 ) {
 
     $conf_sources = 'sources.prod2.yaml'
-    $storage_id = 'v3'
-
 
     $contact_groups = 'admins,team-interactive'
 
     profile::maps::sources_config { 'kartotherian':
         mode       => 'kartotherian',
-        storage_id => $storage_id,
+        storage_id => $kartotherian_storage_id,
         style      => $kartotherian_style,
     }
     profile::maps::sources_config { 'tilerator':
         mode       => 'tilerator',
-        storage_id => $storage_id,
+        storage_id => $tilerator_storage_id,
         style      => $tilerator_style,
     }
     profile::maps::sources_config { 'tileratorui':
         mode       => 'tilerator',
-        storage_id => $storage_id,
+        storage_id => $tilerator_storage_id,
         style      => $tilerator_style,
     }
 
@@ -45,7 +45,7 @@ class profile::maps::apps(
         conf_sources      => '/etc/tilerator/sources.yaml',
         contact_groups    => $contact_groups,
         style             => $tilerator_style,
-        storage_id        => $storage_id,
+        storage_id        => $tilerator_storage_id,
     }
 
     class { '::tilerator::ui':
@@ -57,7 +57,7 @@ class profile::maps::apps(
         conf_sources      => '/etc/tileratorui/sources.yaml',
         contact_groups    => $contact_groups,
         style             => $tilerator_style,
-        storage_id        => $storage_id,
+        storage_id        => $tilerator_storage_id,
     }
 
     class { 'kartotherian':
@@ -67,7 +67,7 @@ class profile::maps::apps(
         conf_sources      => '/etc/kartotherian/sources.yaml',
         contact_groups    => $contact_groups,
         style             => $kartotherian_style,
-        storage_id        => $storage_id,
+        storage_id        => $kartotherian_storage_id,
     }
 
 }
