@@ -1369,8 +1369,7 @@ users:
     gid: 500
     name: santhosh
     realname: Santhosh Thottingal
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArK3LPgIbkKgXNG0l5g6vRND236f3Bm6h9kiweycy4l+J14B1hY0o1baG8FNxgSpRxhZ1xeqdZceSii5fDfNEx4SnUEImCruH3PedumYb5pn5FIlZHEHvMOmjVobkSqES+ZZ5JrYLk8Xc4+elDULF80ERAx/8k6hwMHPJiYJwv26652GyE1nqmBj5KRMxmrpnGenirjLl8fnfRgFX3EqTliGTKqZ0B7vBVLNC3kM++EwFhLpwfQaB6/Jt6fdgksyIx6vB2f3mPQOWKetHw8Iu4VeAYNgt/KzXzvWNnS9Z9Uw8Ushn21BX2Oe7h4iICly8RDsQbVoT2PKmqLpNVAcOZQ==
-        santhosh@thottingal]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDI7RdJojh4fvDiTvmuG8wAdT4j891nN7wtudhby/VXqm2JUTzHtsa5BYj3g1OZoaCB4K5HPClVlfdmvbN7aNmTimOryW1vgr0LaThapL6Rp5UKonLdsTmt5hxGv9Yv70cgabz1KRpRnFQp+XOmnQr3+/Z861FryBxg6s1TRCh5uhrD+ex2kjPs2iPO1v/c6KfPfxixPirkFyY8rX1SgWF+f2HwPhRlYU1T3TcsjTBOFrM6heZAcxnLA9zE9y7OfO+v2Lh64Wc18VYHhLk0/qt6W5bBH6QhcMS/t40ksJ+MELfKZLGLa6Kz53m/5trbg96+GfHE9OQVrMEpngb7yOumdoEKP1Q1MYIMMfzPXDlHA+F1Xzv1g0ydenaCDVR30B96TooRGtUWb66y1KRKQEWhfKN9kl+G2v6vW3dQhy1EAtuKPqo97D0STjr2Mp/vecez4JD+ZMclviPKE6edfVUqAYzEJ8iE2nCzzYBhrI4k9yK2CdXHk7sBCMe3KlRvLXte90UAtEvSCfw+CqY5moLT0DfGgQOF3Wztl/+hhJlAdVTr13IkpAWlJtrPfgMFG+A/aAd0HwNvY6YU0oVSv2t/Nz3rM1Ja0OevfNtsps61F54UVSEsqaFk4zNkHopRpMXD2z3Ly9frYwBBZuCj0iSBHaCxORvqcpg+1tjkSlL5EQ== sthottingal@wikimedia.org]
     uid: 2024
     email: sthottingal@wikimedia.org
   amire80:
