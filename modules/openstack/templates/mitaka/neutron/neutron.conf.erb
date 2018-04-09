@@ -13,6 +13,12 @@ core_plugin = neutron.plugins.ml2.plugin.Ml2Plugin
 service_plugins = router
 allow_overlapping_ips = True
 
+# Do not reschedule the dataplane components
+# just because a control plane l3-agent is maint
+# or restarted. This also means it will not get changes
+# so we need to monitor l3-agent state administratively.
+allow_automatic_l3agent_failover = false
+
 # allow vxlan use for VRRP without
 # enabling tenant created networks
 l3_ha_network_type = vxlan
