@@ -5,6 +5,7 @@
 class profile::lvs(
     $tagged_subnets = hiera('profile::lvs::tagged_subnets'),
     $vlan_data = hiera('lvs::interfaces::vlan_data'),
+    $interface_tweaks = hiera('profile::lvs::interface_tweaks')
 ){
     require ::lvs::configuration
 
@@ -44,5 +45,9 @@ class profile::lvs(
     profile::lvs::tagged_interface {$tagged_subnets:
         interfaces => $vlan_data
     }
+
+    # Apply needed interface tweaks
+
+    create_resources(profile::lvs::interface_tweaks, $interface_tweaks)
 
 }
