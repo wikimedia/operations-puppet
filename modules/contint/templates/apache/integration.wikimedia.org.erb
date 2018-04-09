@@ -19,6 +19,10 @@
     Redirect 301 /monitoring/ https://tools.wmflabs.org/nagf/?project=integration
     Redirect 301 /cover/ https://doc.wikimedia.org/cover/
 
+    # Host packaged helm charts at integration.wikimedia.org/charts
+    # NOTE contents of /srv/deployment-charts is managed by profile::kubernetes::deployment_server
+    Alias /charts /srv/deployment-charts/charts
+
     Include *_proxy
 
     <Directory />
@@ -27,6 +31,13 @@
 
     <Directory /srv/org/wikimedia/integration>
         Options FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    <Directory /srv/deployment-charts/charts>
+        Options +Indexes
         AllowOverride None
         Order allow,deny
         allow from all
