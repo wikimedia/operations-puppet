@@ -113,7 +113,7 @@ class SchemaOperations():
         """
         if self.table_exists(view, self.db):
             # If it does, create or replace the view for it.
-            logging.info("[%s] ", view)
+            logging.info("[%s.%s] ", self.db_p, view)
             if (
                     not self.table_exists(view, self.db_p) or
                     self._confirm('View already exists. Replace?')
@@ -232,7 +232,7 @@ class SchemaOperations():
                     not self.table_exists(view_name, self.db_p) or
                     self._confirm('View already exists. Replace?')
             ):
-                logging.info("[%s] ", view_name)
+                logging.info("[%s.%s] ", self.db_p, view_name)
                 self.create_customview(
                     view_name,
                     view_details,
@@ -551,7 +551,7 @@ def main():
                 ])
                 logging.info('cleaning %s tables', len(clean_tables))
                 for dt in clean_tables:
-                    logging.info("Dropping view %s", dt)
+                    logging.info("Dropping view %s.%s", ops.db_p, dt)
                     ops.drop_view(dt)
 
 
