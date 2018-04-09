@@ -1215,13 +1215,6 @@ node /^logstash100[8-9]\.eqiad\.wmnet$/ {
 
 node /lvs100[1-6]\.wikimedia\.org/ {
     role(lvs::balancer)
-
-    lvs::interface_tweaks {
-        'eth0':;
-        'eth1':;
-        'eth2':;
-        'eth3':;
-    }
 }
 
 node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
@@ -1231,20 +1224,11 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
 # codfw lvs
 node /lvs200[1-6]\.codfw\.wmnet/ {
     role(lvs::balancer)
-    lvs::interface_tweaks {
-        'eth0': txqlen => 10000;
-        'eth1': txqlen => 10000;
-        'eth2': txqlen => 10000;
-        'eth3': txqlen => 10000;
-    }
 }
 
 # ESAMS lvs servers
 node /^lvs300[1-4]\.esams\.wmnet$/ {
     role(lvs::balancer)
-    lvs::interface_tweaks {
-        'eth0': txqlen => 20000;
-    }
 }
 
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
@@ -1254,17 +1238,11 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 # ULSFO lvs servers
 node /^lvs400[567]\.ulsfo\.wmnet$/ {
     role(lvs::balancer)
-    lvs::interface_tweaks {
-        'eth0': txqlen => 10000;
-    }
 }
 
 # EQSIN lvs servers
 node /^lvs500[123]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
-    lvs::interface_tweaks {
-        'eth0': txqlen => 10000;
-    }
 }
 
 node 'maerlant.wikimedia.org' {

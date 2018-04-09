@@ -9,3 +9,7 @@ profile::base::nameservers:
   - '91.198.174.106' # nescio
   - '91.198.174.122' # maerlant
   - '208.80.154.254' # eqiad lvs
+
+profile::lvs::interface_tweaks:
+  eth0:
+    txqlen: 20000
