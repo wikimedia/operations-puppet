@@ -47,6 +47,7 @@ define profile::kafka::mirror::alerts(
     $contact_group       = 'admins',
     $nagios_critical     = false,
     $prometheus_url      = "http://prometheus.svc.${::site}.wmnet/ops",
+    $topic_blacklist     = undef,
 ) {
     $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=eqiad%20prometheus%2Fops&var-mirror_name=${mirror_name}"
 
@@ -87,11 +88,21 @@ define profile::kafka::mirror::alerts(
     }
 
     # Alert on max consumer lag in last $lag_check_period minutes.
+    #
+    # The change-prop topics are currently not replicated but due to previous tests,
+    # the commits/offsets registered for those within the mirror maker consumer
+    # group were not deleted from Kafka. They still end up in the Burrow's metrics
+    # for the mirror maker consumer group, showing a constant lag that triggers the alarm.
     $lag_check_period = '10'
+    if topic_blacklist {
+        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\",topic!~\"${topic_blacklist}\"} [${lag_check_period}m])))"
+    } else {
+        $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))"
+    }
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
         description => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
         # This metric does not have the mirror_name label, so we target it in the group instead.
-        query       => "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))",
+        query       => $cgroup_lag_query,
         method      => 'gt',
         warning     => $warning_lag,
         critical    => $critical_lag,
