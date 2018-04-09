@@ -2,13 +2,12 @@ cluster: jobrunner
 admin::groups:
   - deployment
   - perf-roots
-profile::mediawiki::jobrunner::load_factor: 1.1
+profile::mediawiki::jobrunner::load_factor: 0.7
 profile::mediawiki::jobrunner::runners:
   basic: 10
   gwt: 1
   translate: 1
   upload: 7
-  html: 8
 # TODO: obtain these as profile parameters
 nutcracker::verbosity: "4"
 mediawiki::hhvm::extra_fcgi:
