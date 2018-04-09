@@ -7,12 +7,12 @@
 class profile::zookeeper::server (
     $clusters               = hiera('zookeeper_clusters'),
     $cluster_name           = hiera('profile::zookeeper::cluster_name'),
-    $max_client_connections = hiera('profile::zookeeper::max_client_connections'),
     $version                = hiera('profile::zookeeper::zookeeper_version'),
-    $sync_limit             = hiera('profile::zookeeper::sync_limit'),
-    $statsd_host            = hiera('statsd'),
+    $max_client_connections = hiera('profile::zookeeper::max_client_connections', 1024),
+    $sync_limit             = hiera('profile::zookeeper::sync_limit', 8),
     $monitoring_enabled     = hiera('profile::zookeeper::monitoring_enabled', false),
     $is_critical            = hiera('profile::zookeeper::is_critical', false),
+    $prometheus_instance    = hiera('profile::zookeeper::prometheus_instance', 'ops'),
 ) {
 
     require_package('default-jdk')
@@ -44,13 +44,6 @@ class profile::zookeeper::server (
         java_opts           => "-Xms1g -Xmx1g ${extra_java_opts}",
     }
 
-    $group_prefix = "zookeeper.cluster.${cluster_name}."
-    # Use jmxtrans for sending metrics to statsd/graphite
-    class { 'zookeeper::jmxtrans':
-        group_prefix => $group_prefix,
-        statsd       => $statsd_host,
-    }
-
     if $monitoring_enabled {
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
@@ -59,38 +52,27 @@ class profile::zookeeper::server (
             critical     => $is_critical,
         }
 
-        # More info about port allocation for JMX:
-        # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Ports#JMX
-        $jmxtrans_port = 9998
-
-        # jmxtrans statsd writer emits fqdns in keys
-        # by substituting '.' with '_' and suffixing the jmx port.
-        $graphite_broker_key = regsubst("${::fqdn}_${jmxtrans_port}", '\.', '_', 'G')
-
-        # Alert if NumAliveConnections approaches max client connections
-        # Alert if any Kafka Broker replica lag is too high
-        monitoring::graphite_threshold { 'zookeeper-client-connections':
+        monitoring::check_prometheus { 'zookeeper_client_conns':
             description     => 'Zookeeper Alive Client Connections too high',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/zookeeper?orgId=1&panelId=6&fullscreen&var-cluster=${cluster_name}&var-zookeeper_hosts=All"],
-            metric          => "${group_prefix}zookeeper.${graphite_broker_key}.zookeeper.NumAliveConnections",
-            # Warn if we go over 50% of max
-            warning         => $max_client_connections * 0.5,
-            # Critical if we go over 90% of max
-            critical        => $max_client_connections * 0.9,
+            query           => "scalar(org_apache_ZooKeeperService_NumAliveConnections{instance=\"${::hostname}:12181, zookeeper_cluster=\"${cluster_name}\"})",
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/${prometheus_instance}",
+            warning         => $max_client_connections / 2,
+            critical        => $max_client_connections,
+            method          => 'ge',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zookeeper?refresh=5m&orgId=1&panelId=6&fullscreen'],
         }
 
         # Experimental Analytics alarms on JVM usage
         # These alarms are not really generic and the thresholds are based
         # on a fixed Max Heap size of 1G.
-        monitoring::graphite_threshold { 'zookeeper-server-heap-usage':
+        monitoring::check_prometheus { 'zookeeper-server-heap-usage':
             description     => 'Zookeeper node JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/zookeeper?panelId=40&fullscreen&orgId=1&var-cluster=${cluster_name}&var-zookeeper_hosts=All"],
-            metric          => "${group_prefix}jvm_memory.${::hostname}_${::site}_wmnet_${jmxtrans_port}.memory.HeapMemoryUsage_used.upper",
-            from            => '60min',
+            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zookeeper?refresh=5m&orgId=1&panelId=40&fullscreen'],
+            query           => "scalar(quantile_over_time(0.5,jvm_memory_bytes_used{instance=\"${::hostname}:12181\",area=\"heap\"}[120m]))",
             warning         => '921000000',  # 90% of the Heap used
             critical        => '972000000',  # 95% of the Heap used
-            percentage      => '60',
             contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/${prometheus_instance}",
         }
     }
 }

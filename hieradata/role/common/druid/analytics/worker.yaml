@@ -12,12 +12,6 @@ profile::cdh::apt::pin_release: false
 # from the production ones.
 # Configure the zookeeper profile.
 profile::zookeeper::cluster_name: druid-analytics-eqiad
-# Max number of connections per IP for Zookeeper
-profile::zookeeper::max_client_connections: 1024
-# Default tick_time is 2000ms, this should allow a max
-# of 16 seconds of latency for Zookeeper client sessions.
-# See comments in role::kafka::analytics::broker for more info.
-profile::zookeeper::sync_limit: 8
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
 profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
@@ -26,7 +20,7 @@ profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
 # This should be solved in https://github.com/druid-io/tranquility/issues/251
 # for Druid >= 0.11
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
-
+profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 
 # -- Druid common configuration

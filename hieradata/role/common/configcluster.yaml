@@ -19,12 +19,6 @@ profile::etcd::tlsproxy::read_only: false
 profile::etcd::tlsproxy::listen_port: 2379
 profile::etcd::tlsproxy::upstream_port: 2378
 profile::etcd::tlsproxy::tls_upstream: false
-# Max number of connections per IP for Zookeeper
-profile::zookeeper::max_client_connections: 1024
-# Default tick_time is 2000ms, this should allow a max
-# of 16 seconds of latency for Zookeeper client sessions.
-# See comments in role::kafka::analytics::broker for more info.
-profile::zookeeper::sync_limit: 8
 # To avoid version conflics with Cloudera zookeeper package, this
 # class manually specifies which debian package version should be installed.
 profile::zookeeper::zookeeper_version: '3.4.5+dfsg-2+deb8u2'
