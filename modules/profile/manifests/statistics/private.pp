@@ -73,4 +73,10 @@ class profile::statistics::private(
 
     # Discovery team statistics scripts and cron jobs
     include ::statistics::discovery
+
+    # Class to save old versions of the geoip MaxMind database, which are useful
+    # for historical geocoding.
+    class { '::geoip::data::archive':
+        working_dir => '/srv/geoip',
+    }
 }
