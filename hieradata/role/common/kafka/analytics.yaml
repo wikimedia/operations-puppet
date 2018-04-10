@@ -21,7 +21,7 @@ profile::kafka::mirror::num_processes:  4
 profile::kafka::mirror::properties:
   # Replicate everything except for change-prop and internal (__.*)
   # topics from main to jumbo.
-  whitelist: '^(?!__|.*\.change-prop\.).+$'
+  whitelist: '^(?!__|.*\.change-prop\.|.*\.job\.).+$'
   # This is the number of consumer threads per process for this mirror maker.
   # The total number of consumer threads per host will be num_processes * num_streams.
   num_streams: 8
