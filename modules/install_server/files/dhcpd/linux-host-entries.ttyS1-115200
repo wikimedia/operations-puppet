@@ -5082,8 +5082,6 @@ host mw1264 {
 host mw1265 {
     hardware ethernet 14:18:77:61:38:14;
     fixed-address mw1265.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1266 {
