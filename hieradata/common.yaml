@@ -370,9 +370,9 @@ labs_metal:
 zookeeper_clusters:
   main-eqiad:
     hosts:
-      conf1001.eqiad.wmnet: '1101'
       conf1002.eqiad.wmnet: '1102'
       conf1003.eqiad.wmnet: '1103'
+      conf1004.eqiad.wmnet: '1104'
 
   main-codfw:
     hosts:
