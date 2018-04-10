@@ -6,7 +6,7 @@ groups:
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman,
-              laner, declerambaul, srijan, junikowski, krenair, springle, jhobs, vbaranetsky,
+              laner, declerambaul, srijan, junikowski, krenair, jhobs, vbaranetsky,
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
@@ -297,7 +297,7 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service xvfb *']
   snapshot-admins:
     gid: 743
-    description: People who can sudo into the datasets user on snapshot hosts.
+    description: People who can sudo into the dumpsgen user on snapshot hosts.
     members: [hoo]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
   restbase-roots:
@@ -664,6 +664,11 @@ groups:
     members: [imarlier]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  snapshot-users:
+    gid: 801
+    description: People who have shell access to snapshot hosts and bastions only.
+    members: [springle]
+
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
@@ -716,12 +721,14 @@ users:
     uid: 2186
     email: fliambotis@wikimedia.org
   springle:
-    ensure: absent
+    ensure: present
     gid: 500
     name: springle
     realname: Sean Pringle
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCZwhGWhhv+9QdjhhShbLdSZSV349oFxPH73CfvI0jRsQFXsQIlPQaSeKcFqw+kjhUoxvfgCw3YWoExHTT6jxHUxrOswI6ZVPeicHNBQ4kiRRY4uKE0xpqbdnkbLRSNWyru8zG1aB/uxpkhsQhwnUZ9fpGtDkXzX1In8NZ7X9jMQB6yrHFxqK/549WELGnpscL79lX7uKM2Ri/+v61th7kuDyn6VjsIMSLdt46dKoW9WgQ2UgkjEh67HOZd1FYt4V+OaQcNr2JtHj7nSI6YsXx9TQnBrQVqWQXk63AFNxw4uD7xFVByc4FIqefIYjHqHANRWpRmaNOcj6LaBTqXZUBSmtYRiLkXUhqhr1Tf1NiE75UjGKhknucpywXTYI02HaTdEcdxfN4C9guI+ojxwUKrIMEk9Wz3qcYzyN0QZmCL/6EcRxjEUzYDpEt0tMBRsRqE5Qp0TLPuDsK5trY1rtdzy/HckqmSik9N1p2WQ941SWs2EEiFji1jiCM4N8gwy1r6mf9xo5LWRVY/LtNYbCf/2EfW3mjreP9MaOGI+vedcS8I4sd6O3VP8WPpXZtoBU1+EKLhEHvfp/E9qYYr6iWIltCFySi67fWlv83cUNezJ6uMrDR++g8ANkFJKEWSHJzdVyrtf2fiwNNyIPrkEawHAcKHsZsVGdzkP9Xr8eBb7Q== sean@laptop
     uid: 3391
+    email: sean.pringle@gmail.com
   robh:
     ensure: present
     gid: 500
