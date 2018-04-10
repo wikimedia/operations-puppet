@@ -1,5 +1,1 @@
 profile::pybal::primary: false
-profile::lvs::interface_tweaks:
-  enp5s0f0:
-    txqlen: 10000
-profile::pybal::bgp: "no"
