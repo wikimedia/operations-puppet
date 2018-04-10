@@ -83,6 +83,8 @@ class statistics::compute {
         mode  => '0440',
     }
 
+    include ::geoip::data::archive
+
     # Clean up R temporary files which have not been accessed in a week.
     tidy { '/tmp':
         matches => 'Rtmp*',
