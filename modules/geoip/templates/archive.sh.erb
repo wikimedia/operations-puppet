@@ -1,0 +1,47 @@
+#!/bin/bash
+set -e
+
+/bin/echo -e \"\$(/bin/date): archiving out of date MaxMind data to git repository in <%= @archive_dir %> \"
+
+MAXMIND_DB_SOURCE_DIR="<%= @maxmind_dir %>"
+
+cd <%= @archive_dir %>
+
+error () {
+    echo "Error:" "$@" >&2
+    exit 1
+}
+
+MAXMIND_DB_ARCHIVE_DIR="<%= @repo_dir %>"
+
+if [ ! -d "$MAXMIND_DB_ARCHIVE_DIR/.git" ]
+then
+    cd "$MAXMIND_DB_ARCHIVE_DIR"
+    git init
+    git commit --allow-empty -m "Initial commit"
+    cd ..
+fi
+
+cd "$MAXMIND_DB_ARCHIVE_DIR"
+
+if [ "$(git symbolic-ref --short HEAD)" != "master" ]
+then
+    error "Not on master branch"
+fi
+
+if [ ! -z "$(git status --porcelain)" ]
+then
+    error "Directory '<%= @repo_dir %>' is not clean. Aborting."
+fi
+
+TARGET_DIR_ABS="$MAXMIND_DB_ARCHIVE_DIR/$(basename "$MAXMIND_DB_SOURCE_DIR")"
+
+rm -rf "$TARGET_DIR_ABS"
+
+cp -a "$MAXMIND_DB_SOURCE_DIR" "$TARGET_DIR_ABS"
+
+if [ ! -z "$(git status --porcelain)" ]
+then
+    git add "$TARGET_DIR_ABS"
+    git commit -m "Adding database files from $(date +'%Y-%m-%d')" "$TARGET_DIR_ABS"
+fi
