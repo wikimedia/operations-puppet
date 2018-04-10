@@ -8,7 +8,6 @@ class role::dumps::web::xmldumps_active {
     include ::profile::dumps::web::xmldumps_active
     include ::profile::dumps::distribution::rsync
     include ::profile::dumps::distribution::datasets::rsync_config
-    include ::profile::dumps::distribution::mirrors::rsync_config
     include ::profile::dumps::distribution::datasets::fetcher
     include ::profile::dumps::distribution::datasets::dumpstatusfiles_sync
 
