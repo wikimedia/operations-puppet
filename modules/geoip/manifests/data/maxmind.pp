@@ -32,6 +32,7 @@ class geoip::data::maxmind(
   $license_key    = '000000000000',
   $product_ids    = [506],
   $proxy          = undef
+
 ) {
   package { 'geoipupdate':
     ensure => present,
@@ -86,6 +87,24 @@ class geoip::data::maxmind(
         File[$config_file],
         File[$data_directory]
     ],
+  }
+
+  $archive_repo = '/srv/geoip/'
+  $archive_log_command = "/bin/echo -e \"\$(/bin/date): archiving out of date MaxMind data to git repository in ${archive_repo}\""
+  $archive_command = '/srv/geoip/update_data_files.sh'
+
+  $backup_host = 'stat1006.eqiad.wmnet'
+  $backup_command = "/usr/bin/rsync -az /srv/geoip/ ${backup_host}::srv/geoip" # the remote address should probably be in a config somewhere else
+
+  # Set up a cron to archive every version of the MaxMind database in a local git repository,
+  # then backup that repo in a different stat machine.
+  cron { 'archivemaxmind':
+    ensure  => present,
+    command => "${archive_log_command} && ${archive_command} && ${backup_command}",
+    user    => root,
+    weekday => 0,
+    hour    => 4,
+    minute  => 0
   }
 
   # logrotate for geoipupdate.log

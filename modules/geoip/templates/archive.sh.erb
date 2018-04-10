@@ -1,0 +1,47 @@
+#!/bin/bash
+set -e
+
+SOURCE_DIR_ABS="<%= @maxmind_dir %>"
+echo "Error:"
+exit 1
+
+cd "$(dirname "$0")"
+
+error () {
+        echo "Error:" "$@" >&2
+        exit 1
+}
+
+DATABASE_BASE_DIR_ABS="<%= @repo_dir %>"
+
+if [ ! -d "$DATABASE_BASE_DIR_ABS/.git" ]
+then
+	cd "$DATABASE_BASE_DIR_ABS"
+	git init
+	git commit --allow-empty -m "Initial commit"
+	cd ..
+fi
+
+cd "$DATABASE_BASE_DIR_ABS"
+
+if [ "$(git branch --list | grep '^*' | cut -c 3-)" != "master" ]
+then
+	error "Not on master branch"
+fi
+
+if [ ! -z "$(git status --porcelain)" ]
+then
+	error "Directory '<%= @repo_dir %>' is not clean. Aborting."
+fi
+
+TARGET_DIR_ABS="$DATABASE_BASE_DIR_ABS/$(basename "$SOURCE_DIR_ABS")"
+
+rm -rf "$TARGET_DIR_ABS"
+
+cp -a "$SOURCE_DIR_ABS" "$TARGET_DIR_ABS"
+
+if [ ! -z "$(git status --porcelain)" ]
+then
+	git add "$TARGET_DIR_ABS"
+	git commit -m "Adding database files from $(date +'%Y-%m-%d')" "$TARGET_DIR_ABS"
+fi

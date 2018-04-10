@@ -73,4 +73,6 @@ class profile::statistics::private(
 
     # Discovery team statistics scripts and cron jobs
     include ::statistics::discovery
+
+    class { '::geoip::data::archive': }
 }
