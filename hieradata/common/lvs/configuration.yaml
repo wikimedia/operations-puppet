@@ -1197,9 +1197,9 @@ lvs::configuration::lvs_services:
     port: 11514
     depool-threshold: '.5'
     monitors:
-      IdleConnection:  # Monitors the TCP session as it's the same process listening on TCP and UDP
-        timeout-clean-reconnect: 3
-        max-delay: 300
+      UDP:
+        interval: 10
+        icmp-timeout: 20
     conftool:
       cluster: logstash
       service: logstash-json
@@ -1234,9 +1234,9 @@ lvs::configuration::lvs_services:
     port: 10514
     depool-threshold: '.5'
     monitors:
-      IdleConnection:  # Monitors the TCP session, same process listening on UDP
-        timeout-clean-reconnect: 3
-        max-delay: 300
+      UDP:
+        interval: 10
+        icmp-timeout: 20
     conftool:
       cluster: logstash
       service: logstash-syslog
