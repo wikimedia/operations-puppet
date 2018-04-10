@@ -18,15 +18,4 @@ class profile::dumps::web::xmldumps_common(
     require profile::dumps::distribution::datasets::cleanup_miscdatasets
 
     class { '::dumpsuser': }
-
-    class {'::dumps::web::xmldumps':
-        do_acme          => $do_acme,
-        datadir          => $datadir,
-        xmldumpsdir      => $xmldumpsdir,
-        miscdatasetsdir  => $miscdatasetsdir,
-        htmldumps_server => 'francium.eqiad.wmnet',
-        xmldumps_server  => 'dumps.wikimedia.org',
-        webuser          => 'dumpsgen',
-        webgroup         => 'dumpsgen',
-    }
 }
