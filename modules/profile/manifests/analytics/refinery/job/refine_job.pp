@@ -74,7 +74,7 @@ define profile::analytics::refinery::job::refine_job (
     # The command here can end up being pretty long, especially if the table whitelist
     # or blacklist is long.  Crontabs have a line length limit, so we render this
     # command into a script and then install that as the cron job.
-    $refine_command = "PYTHONPATH=${refinery_path}/python ${refinery_path}/bin/is-yarn-app-running ${job_name} || /usr/bin/spark-submit --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} --files /etc/hive/conf/hive-site.xml --class org.wikimedia.analytics.refinery.job.refine.Refine --name ${job_name} ${_refinery_job_jar} --parallelism ${parallelism} --since ${since} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database} ${$transform_functions_opt}"
+    $refine_command = "PYTHONPATH=${refinery_path}/python ${refinery_path}/bin/is-yarn-app-running ${job_name} || /usr/bin/spark2-submit --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} --files /etc/hive/conf/hive-site.xml --class org.wikimedia.analytics.refinery.job.refine.Refine --name ${job_name} ${_refinery_job_jar} --parallelism ${parallelism} --since ${since} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database} ${$transform_functions_opt}"
     $refine_script = "/usr/local/bin/${job_name}"
     file { $refine_script:
         ensure  => $ensure,
@@ -110,7 +110,8 @@ define profile::analytics::refinery::job::refine_job (
     $monitor_log_file = "${profile::analytics::refinery::log_dir}/${monitor_job_name}.log"
     $monitor_since    = 28
     $monitor_until    = 4
-    $monitor_command  = "/usr/bin/spark-submit --master yarn --deploy-mode cluster --queue ${queue} --class org.wikimedia.analytics.refinery.job.refine.RefineMonitor --name ${monitor_job_name} ${_refinery_job_jar} --since ${monitor_since} --until ${monitor_until} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database}"
+    # NOTE: RefineMonitor should not be run in YARN.  Local mode is fine.
+    $monitor_command  = "/usr/bin/spark2-submit --class org.wikimedia.analytics.refinery.job.refine.RefineMonitor --name ${monitor_job_name} ${_refinery_job_jar} --since ${monitor_since} --until ${monitor_until} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database}"
     $monitor_script   = "/usr/local/bin/${monitor_job_name}"
 
     file { $monitor_script:

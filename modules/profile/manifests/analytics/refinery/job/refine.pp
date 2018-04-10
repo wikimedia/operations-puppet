@@ -8,11 +8,14 @@ class profile::analytics::refinery::job::refine {
 
     # update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.59'
+    $refinery_version = '0.0.60'
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
         # Use this value as default refinery_job_jar.
-        refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
+        # refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
+        # TEMPORARILY use prebuilt jar while we fix some spark2 issues and build a new release:
+        # https://phabricator.wikimedia.org/T159962
+        refinery_job_jar => '/home/otto/refinery-job-0.0.61-SNAPSHOT.jar',
     }
 
     # Refine EventLogging Analytics (capsule based) data.
