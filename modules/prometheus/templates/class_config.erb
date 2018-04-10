@@ -10,7 +10,7 @@ all = []
     all.push(
       {
         'labels' => @labels.merge({'cluster' => cluster, 'site' => @site}),
-        'targets' => targets.map{|t| "#{t.split('.')[0]}:#{@port}" },
+        'targets' => targets.sort.map{|t| "#{t.split('.')[0]}:#{@port}" },
       }
     )
   end
