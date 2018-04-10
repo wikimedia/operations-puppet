@@ -695,9 +695,10 @@ class RouterInfo(object):
         gw_port = self._router.get('gw_port')
         self._handle_router_snat_rules(gw_port, interface_name)
 
-    def external_gateway_nat_fip_rules(self, ex_gw_ip, interface_name, dmz_cidr):
-        # -A nova-network-POSTROUTING -s 10.68.16.0/21 -d 10.0.0.0/8 -j ACCEPT
+    def external_gateway_nat_fip_rules(self, ex_gw_ip, interface_name, dmz_cidr, src_ip):
         rules = []
+        # Avoid behavior where NAT applies to the actual router IP
+        rules.append(('POSTROUTING', '-s %s -j ACCEPT' % (ex_gw_ip)))
         if dmz_cidr:
             for nat_exclusion in dmz_cidr.split(','):
                 src_range, dst_range = nat_exclusion.split(':')
@@ -716,15 +717,16 @@ class RouterInfo(object):
             'snat', '-m mark ! --mark %s/%s '
                     '-m conntrack --ctstate DNAT '
                     '-j SNAT --to-source %s'
-                    % (ext_in_mark, l3_constants.ROUTER_MARK_MASK, ex_gw_ip))
+                    % (ext_in_mark, l3_constants.ROUTER_MARK_MASK, src_ip))
         rules.append(snat_internal_traffic_to_floating_ip)
 
         return rules
 
-    def external_gateway_nat_snat_rules(self, ex_gw_ip, interface_name):
+    def external_gateway_nat_snat_rules(self, ex_ip, interface_name):
+        # source nat everything left to our chosen external ip
         snat_normal_external_traffic = (
             'snat', '-o %s -j SNAT --to-source %s' %
-                    (interface_name, ex_gw_ip))
+                    (interface_name, ex_ip))
         return [snat_normal_external_traffic]
 
     def external_gateway_mangle_rules(self, interface_name):
@@ -746,9 +748,17 @@ class RouterInfo(object):
         self.process_external_port_address_scope_routing(iptables_manager)
 
         if ex_gw_port:
+            for ip_addr in ex_gw_port['fixed_ips']:
+                ex_gw_ip = ip_addr['ip_address']
+                if netaddr.IPAddress(ex_gw_ip).version != 4:
+                    msg = 'WMF: only ipv4 is supported'
+                    raise n_exc.FloatingIpSetupException(msg)
+                break
+
             # ex_gw_port should not be None in this case
             # NAT rules are added only if ex_gw_port has an IPv4 address
             if self._snat_enabled and self.agent_conf.routing_source_ip:
+                LOG.debug('external_gateway_ip: %s', ex_gw_ip)
                 LOG.debug('routing_source_ip: %s', self.agent_conf.routing_source_ip)
                 self.routing_source_ip = self.agent_conf.routing_source_ip
                 self.dmz_cidr = self.agent_conf.dmz_cidr
@@ -763,7 +773,7 @@ class RouterInfo(object):
                     iptables_manager.ipv4['nat'].add_rule(*rule)
 
                 rules = self.external_gateway_nat_fip_rules(
-                        self.routing_source_ip, interface_name, self.dmz_cidr)
+                        ex_gw_ip, interface_name, self.dmz_cidr, self.routing_source_ip)
                 for rule in rules:
                     LOG.debug('foo self.external_gateway_nat_fip_rules rule: %s', str(rule))
                     iptables_manager.ipv4['nat'].add_rule(*rule)
