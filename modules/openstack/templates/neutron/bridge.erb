@@ -1,0 +1,5 @@
+auto <%= @name -%>
+iface <%= @name -%> inet manual
+    up ifconfig <%= @name -%> up
+    bridge_ports <%= @addiff -%>
+    down ifconfig <%= @name -%> down
