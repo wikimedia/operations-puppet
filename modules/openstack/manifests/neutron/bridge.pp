@@ -20,4 +20,13 @@ define openstack::neutron::bridge(
             }
         }
     }
+
+    file { "/etc/network/interfaces.d/${name}":
+        ensure    => $ensure,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0644',
+        content   => template("openstack/neutron/bridge.erb"),
+        subscribe => Exec["create-${name}-bridge"],
+    }
 }
