@@ -50,6 +50,10 @@ class role::logstash::collector (
         notrack => true,
         srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
     }
+    nrpe::monitor_service { 'logstash_syslog_tcp':
+        description  => 'logstash syslog TCP port',
+        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 10514',
+    }
 
     ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
@@ -82,6 +86,10 @@ class role::logstash::collector (
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
     }
+    nrpe::monitor_service { 'logstash_log4j_tcp':
+        description  => 'logstash log4j TCP port',
+        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4560',
+    }
 
     logstash::input::udp { 'logback':
         port  => 11514,
@@ -105,6 +113,10 @@ class role::logstash::collector (
         port    => '11514',
         notrack => true,
         srange  => '$DOMAIN_NETWORKS',
+    }
+    nrpe::monitor_service { 'logstash_json_lines_tcp':
+        description  => 'logstash JSON linesTCP port',
+        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11514',
     }
 
     ## Global pre-processing (15)
