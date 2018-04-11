@@ -510,8 +510,9 @@ node 'db2034.codfw.wmnet' {
     role(mariadb::core)
 }
 
-# x1 codfw slave - BBU is broken - T184888
-node 'db2033.codfw.wmnet' {
+# x1 codfw slaves
+# db2033 BBU is broken - T184888
+node /^db20(33|69)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
