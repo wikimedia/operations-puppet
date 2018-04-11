@@ -79,3 +79,19 @@ neutron port-list | grep <fixed-ip of instance>
 
 #Associate the floating IP with the port
 neutron floatingip-associate <floating_ip_id> <port_id>
+
+# Adding a provider created VXLAN net to existing router
+# id must be allowed in vxlan range and free
+neutron net-create --provider:network_type=vxlan --provider:segmentation_id=2 project-name
+
+neutron subnet-create --name project-name-v4 --ip-version 4 --allocation-pool start=172.16.130.10,end=172.16.130.250 --gateway 172.16.130.1 --dns-nameserver 208.80.153.51 project-name 172.16.130/24
+openstack router list
+# the router will automatically assign itself the "gateway" IP indicated
+# when creating the subnet above
+router-interface-add <id> <subnet>
+
+neutron net-list
+openstack server create --flavor 2 --image <image> <instance> --nic net-id=<net uuid>
+
+# optional mass turning off of port-security mode for a network
+neutron net-update --port-security-enabled=false <net uuid>
