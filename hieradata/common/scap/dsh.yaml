@@ -35,7 +35,6 @@ scap::dsh::groups:
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - tin.eqiad.wmnet
-      - deploy1001.eqiad.wmnet
       - naos.codfw.wmnet
       - terbium.eqiad.wmnet
       - wasat.codfw.wmnet
