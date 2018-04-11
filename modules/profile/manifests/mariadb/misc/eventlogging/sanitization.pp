@@ -34,7 +34,10 @@ class profile::mariadb::misc::eventlogging::sanitization(
         require    => Group['eventlog'],
     }
 
-    require_package('python3-pymysql')
+    require_package([
+        'python3-pymysql',
+        'python3-yaml'
+    ])
 
     file { '/usr/local/bin/eventlogging_cleaner':
         ensure  => present,
