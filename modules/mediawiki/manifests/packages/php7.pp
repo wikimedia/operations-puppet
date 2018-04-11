@@ -11,7 +11,6 @@
 # curl - HTTP requests
 # geoip - fundraising
 # intl, mbstring, xml - MediaWiki dependencies
-# memcached, mysql, redis - obvious from the name
 #
 class mediawiki::packages::php7 {
     if os_version('debian == stretch') {
@@ -23,10 +22,6 @@ class mediawiki::packages::php7 {
         }
     }
 
-    # Run-time
-    require_package('php-cli', 'php-common', 'php-curl', 'php-intl',
-        'php-mysql', 'php-redis')
-
     # Wikimedia PHP extensions
     require_package('php-luasandbox')
     # because of pin, require_package won't work here
@@ -36,5 +31,5 @@ class mediawiki::packages::php7 {
 
     # Third-party PHP extensions
     require_package('php-apcu', 'php-bz2', 'php-geoip', 'php-mbstring',
-        'php-memcached', 'php-xml')
+        'php-xml')
 }

@@ -1,7 +1,15 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance {
+    # on jessie, we need the packages and the php class in this case
+    # These are automagically included by mediawiki::php everywhere else
+    if os_version('debian == jessie') {
+        class { '::php':
+            ensure     => present,
+            cli_config => { 'include_path' => '.:/usr/share/php:/srv/mediawiki/php'}
+        }
+        class { 'mediawiki::packages::php5': }
+    }
 
-    include ::mediawiki::packages::php5
 
     # Deployment
     include ::scap::scripts
