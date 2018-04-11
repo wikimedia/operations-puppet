@@ -23,7 +23,7 @@ class profile::prometheus::alerts {
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         contact_group   => 'analytics',
-        topic_blacklist => '.*change-prop.*',
+        topic_blacklist => '.*(change-prop|\.job\.).*',
     }
     # Eventlogging
 
