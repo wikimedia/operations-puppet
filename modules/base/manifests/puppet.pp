@@ -147,6 +147,12 @@ class base::puppet(
         rotate       => 7,
     }
 
+    rsyslog::conf { 'puppet-agent':
+        source   => 'puppet:///modules/base/rsyslog.d/puppet-agent.conf',
+        priority => 10,
+        require  => File['/etc/logrotate.d/puppet'],
+    }
+
     include ::base::puppet::common
 
     file { '/usr/local/bin/puppet-enabled':
