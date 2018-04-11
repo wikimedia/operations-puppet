@@ -22,7 +22,6 @@ class role::kafka::analytics {
         include ::profile::kafka::mirror
     }
 
-    include ::role::ipsec
     include ::standard
     include ::base::firewall
 }
