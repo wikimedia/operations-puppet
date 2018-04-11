@@ -155,6 +155,9 @@ class profile::maps::osm_master (
           minute                => $planet_sync_minute,
           postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
         }
+        osm::populate_admin { $db_name:
+            ensure => present,
+        }
     }
 
     class { 'osm::prometheus':
