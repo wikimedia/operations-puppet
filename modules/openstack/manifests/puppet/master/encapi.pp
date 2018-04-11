@@ -35,8 +35,10 @@ class openstack::puppet::master::encapi(
     $labweb_ips_v6 = $labweb_hosts.map |$host| { ipresolve($host, 6) }
     $allowed_writers = join(flatten([$labweb_ips, $labweb_ips_v6]),',')
 
+    # We override service_settings because the default includes autoload
+    #  which insists on using python2
     uwsgi::app { 'labspuppetbackend':
-        settings  => {
+        settings         => {
             uwsgi => {
                 plugins     => 'python3',
                 'wsgi-file' => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
@@ -54,8 +56,8 @@ class openstack::puppet::master::encapi(
                 ],
             },
         },
-
-        subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
+        service_settings => '--die-on-term',
+        subscribe        => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
     }
 
     # This is a GET-only front end that sits on port 8100.  We can
