@@ -3,11 +3,6 @@
 # Bail out early if any of these first commands exit abnormally
 set -e
 
-# We pass show-diff, show the log may be sensitive,
-# so make sure it's sufficiently protected
-touch /var/log/puppet.log
-chmod 600 /var/log/puppet.log
-
 # Check this before apt-get update, so that our update doesn't screw up
 # package installs in a running (manual and/or initial install) puppet run
 PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
@@ -24,7 +19,7 @@ set +e
 # until after the sleep, which creates a wide race window against tools trying
 # to avoid puppet agent concurrency with the "disable and then poll lockfile".
 SLEEPVAL=$(($RANDOM % 60))
-echo "Sleeping $SLEEPVAL for random splay" >> /var/log/puppet.log
+echo "Sleeping $SLEEPVAL for random splay" | logger -t puppet-agent-cronjob
 sleep $SLEEPVAL
 
 if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
@@ -33,11 +28,11 @@ if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
     if [ -f $CMDLINE_FILE ]; then
         grep -q puppet $CMDLINE_FILE
         if [ $? -eq 0 ]; then
-            echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK` >>/var/log/puppet.log
+            echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK`  | logger -t puppet-agent-cronjob
             exit 0
         fi
     fi
-    echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
+    echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` | logger -t puppet-agent-cronjob
 fi
 
 <%- if @auto_puppetmaster_switching -%>
@@ -50,19 +45,20 @@ curl --cacert /var/lib/puppet/ssl/certs/ca.pem https://<%= @puppetmaster %>:8140
 # the puppet run at the bottom of this script generates a new one and sends it to
 # the new puppetmaster for signing
 if [[ $? -eq 60 ]]; then
-    echo "Removing current puppet certs" >> /var/log/puppet.log
+    echo "Removing current puppet certs" | logger -t puppet-agent-cronjob
     rm -r /var/lib/puppet/ssl || exit 1
 fi
 
 set -e
 <%- end -%>
 
-timeout -k 60 300 apt-get update -qq >> /var/log/puppet.log 2>&1
+timeout -k 60 300 apt-get update -qq | logger -t puppet-agent-cronjob 2>&1
 
+# puppet run logged via syslog
 timeout -k 60 1800 puppet agent \
   --onetime \
   --no-daemonize \
   --verbose \
   --show_diff \
   --no-splay \
-  >> /var/log/puppet.log 2>&1
+  > /dev/null 2>&1
