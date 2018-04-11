@@ -1,2 +1,3 @@
 mariadb::shard: 'x1'
+profile::base::notifications_enabled: '0'
 mariadb::binlog_format: 'ROW'
