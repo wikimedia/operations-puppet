@@ -5,19 +5,6 @@
 # configured for HHVM, but a few are still using PHP5 (T86081).
 #
 class mediawiki::packages::php5 {
-    # We don't need php-apc on php > 5.3
-    package { 'php-apc':
-        ensure => absent,
-    }
-
-    # Run-time
-    package { [
-        'php5-cli',
-        'php5-common',
-        'php5-dbg',
-    ]:
-        ensure => present,
-    }
 
     # Wikimedia PHP extensions
     package { [
@@ -29,12 +16,7 @@ class mediawiki::packages::php5 {
 
     # Third-party PHP extensions
     package { [
-        'php5-curl',
         'php5-geoip',
-        'php5-intl',
-        'php5-memcached',
-        'php5-mysql',
-        'php5-redis',
         'php5-xmlrpc',
     ]:
         ensure => present,

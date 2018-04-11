@@ -5,6 +5,14 @@ class contint::packages::php {
       include ::mediawiki::packages::php5
 
       require_package( [
+          'php5-cli',
+          'php5-common',
+          'php5-curl',
+          'php5-redis',
+          'php5-memcached',
+          'php5-dbg',
+          'php5-mysql',
+          'php5-intl',
           'php5-dev',  # phpize
           'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
           'php5-gd',
