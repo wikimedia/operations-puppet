@@ -138,6 +138,12 @@ class network::constants {
                     '2620:0:861:103:d6ae:52ff:fe7c:c9ec', # conf1002.eqiad.wmnet
                     '10.64.48.111',                       # conf1003.eqiad.wmnet
                     '2620:0:861:107:d6ae:52ff:fe7c:b5ed', # conf1003.eqiad.wmnet
+                    '10.64.0.23',                         # conf1004.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:23',          # conf1004.eqiad.wmnet
+                    '10.64.16.29',                        # conf1005.eqiad.wmnet
+                    '2620:0:861:102:10:64:16:29',         # conf1005.eqiad.wmnet
+                    '10.64.48.167',                       # conf1006.eqiad.wmnet
+                    '2620:0:861:107:10:64:48:167',        # conf1006.eqiad.wmnet
                     '10.192.0.143',                       # conf2001.codfw.wmnet
                     '2620:0:860:101:1618:77ff:fe5e:a72c', # conf2001.codfw.wmnet
                     '10.192.32.141',                      # conf2002.codfw.wmnet
