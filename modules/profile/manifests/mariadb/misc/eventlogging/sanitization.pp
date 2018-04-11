@@ -62,6 +62,15 @@ class profile::mariadb::misc::eventlogging::sanitization(
         mode   => '0775',
     }
 
+    file { "${etc_directory_path}/whitelist.yaml":
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_purging_whitelist.yaml',
+        require => File[$etc_directory_path],
+    }
+
     file { "${etc_directory_path}/whitelist.tsv":
         ensure  => 'present',
         owner   => 'root',
