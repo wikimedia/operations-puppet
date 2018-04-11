@@ -3,12 +3,6 @@
 # we can do ipsec for cache<->kafka the same way we do for cache<->cache.
 cache::ipsec::kafka::nodes:
   eqiad:
-    - 'kafka1012.eqiad.wmnet'
-    - 'kafka1013.eqiad.wmnet'
-    - 'kafka1014.eqiad.wmnet'
-    - 'kafka1020.eqiad.wmnet'
-    - 'kafka1022.eqiad.wmnet'
-    - 'kafka1023.eqiad.wmnet'
     - 'kafka-jumbo1001.eqiad.wmnet'
     - 'kafka-jumbo1002.eqiad.wmnet'
     - 'kafka-jumbo1003.eqiad.wmnet'
