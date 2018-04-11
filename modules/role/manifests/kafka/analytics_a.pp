@@ -16,7 +16,6 @@ class role::kafka::analytics_a {
     # TODO: use profile::kafka::broker as part of https://phabricator.wikimedia.org/T192387
     include ::role::kafka::analytics::mirror
 
-    include ::role::ipsec
     include ::standard
     include ::base::firewall
 }

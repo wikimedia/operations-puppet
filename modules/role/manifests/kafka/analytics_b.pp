@@ -15,7 +15,6 @@ class role::kafka::analytics_b {
     include ::role::kafka::analytics::broker
     include ::profile::kafka::mirror
 
-    include ::role::ipsec
     include ::standard
     include ::base::firewall
 }
