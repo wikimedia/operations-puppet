@@ -10,8 +10,13 @@
 #   hardcoded ones. This can be useful in environments like labs in which we can
 #   use new/different parameters for testing.
 #
+# [*whitelist_format*]
+#   Switch to a different whitelist format to test the new yaml file format.
+#   Default: 'tsv'
+#
 class profile::mariadb::misc::eventlogging::sanitization(
-    $extra_parameters = hiera('profile::mariadb::misc::eventlogging::sanitization::extra_parameters', '')
+    $extra_parameters = hiera('profile::mariadb::misc::eventlogging::sanitization::extra_parameters', ''),
+    $whitelist_format = hiera('profile::mariadb::misc::eventlogging::sanitization::whitelist_format', 'tsv')
 ) {
 
     if !defined(Group['eventlog']) {
@@ -62,6 +67,15 @@ class profile::mariadb::misc::eventlogging::sanitization(
         mode   => '0775',
     }
 
+    file { "${etc_directory_path}/whitelist.yaml":
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/profile/mariadb/misc/eventlogging/eventlogging_purging_whitelist.yaml',
+        require => File[$etc_directory_path],
+    }
+
     file { "${etc_directory_path}/whitelist.tsv":
         ensure  => 'present',
         owner   => 'root',
@@ -89,7 +103,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
     # %Y%m%d%H%M%S. If the file is not existent, the script will fail gracefully
     # without doing any action to the db. This is useful to avoid gaps in
     # records sanitized if the script fails and does not commit a new timestamp.
-    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${etc_directory_path}/whitelist.tsv --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
+    $eventlogging_cleaner_command = "/usr/local/bin/eventlogging_cleaner --whitelist ${etc_directory_path}/whitelist.${whitelist_format} --older-than 90 --start-ts-file /var/run/eventlogging_cleaner --batch-size 10000 --sleep-between-batches 2 ${extra_parameters}"
     $command = "/usr/bin/flock --verbose -n /var/lock/eventlogging_cleaner ${eventlogging_cleaner_command} >> ${log_directory_path}/eventlogging_cleaner.log"
     cron { 'eventlogging_cleaner daily sanitization':
         ensure      => present,
@@ -100,7 +114,7 @@ class profile::mariadb::misc::eventlogging::sanitization(
         environment => 'MAILTO=analytics-alerts@wikimedia.org',
         require     => [
             File['/usr/local/bin/eventlogging_cleaner'],
-            File["${etc_directory_path}/whitelist.tsv"],
+            File["${etc_directory_path}/whitelist.${whitelist_format}"],
             File[$log_directory_path],
             User['eventlogcleaner'],
         ]
