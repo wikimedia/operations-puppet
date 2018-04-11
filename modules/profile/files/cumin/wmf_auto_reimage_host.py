@@ -181,6 +181,7 @@ def run(args, user, log_path):
 def main():
     """Run the automated reimaging of a single host."""
     # Setup
+    phab_client = None
     args = parse_args()
     lib.ensure_shell_mode()
     user = lib.get_running_user()
@@ -227,7 +228,7 @@ def main():
         lib.print_line('REIMAGE END | retcode={ret}'.format(ret=retcode), host=args.host)
 
     # Comment on the Phabricator task
-    if args.phab_task_id is not None:
+    if args.phab_task_id is not None and phab_client is not None:
         phabricator_message = lib.get_phabricator_post_message({retcode: [args.host]})
         lib.phabricator_task_update(phab_client, args.phab_task_id, phabricator_message)
 
