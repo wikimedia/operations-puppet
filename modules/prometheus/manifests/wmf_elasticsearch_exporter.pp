@@ -15,4 +15,6 @@ class prometheus::wmf_elasticsearch_exporter {
         content => systemd_template('prometheus-wmf-elasticsearch-exporter'),
         require => File['/usr/local/bin/prometheus-wmf-elasticsearch-exporter'],
     }
+
+    base::service_auto_restart { 'prometheus-wmf-elasticsearch-exporter': }
 }
