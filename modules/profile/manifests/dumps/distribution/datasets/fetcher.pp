@@ -21,7 +21,7 @@ class profile::dumps::distribution::datasets::fetcher(
     }
 
     class {'dumps::web::fetches::stat_dumps':
-        src             => 'stat1005.eqiad.wmnet::/srv/dumps',
+        src             => 'stat1005.eqiad.wmnet::srv/dumps',
         miscdatasetsdir => $miscdatasetsdir,
         user            => $user,
     }
