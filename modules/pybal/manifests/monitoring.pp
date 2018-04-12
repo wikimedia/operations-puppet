@@ -5,6 +5,7 @@ class pybal::monitoring($config_host, $lvs_services, $lvs_class_hosts) {
 
     require_package([
         'libmonitoring-plugin-perl',
+        'libwww-perl',
         'python-prometheus-client',
         'python-requests',
     ])
