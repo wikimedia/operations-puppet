@@ -80,6 +80,17 @@ class releases (
         source => 'puppet:///modules/releases/releases-header-mw.html',
     }
 
+    git::clone { 'operations/deployment-charts':
+        ensure    => 'latest',
+        directory => '/srv/deployment-charts',
+    }
+
+    file { '/srv/org/wikimedia/releases/charts':
+        ensure  => 'link',
+        target  => '/srv/deployment-charts/charts',
+        require =>  Git::Clone['operations/deployment-charts'],
+    }
+
     # T94486
     package { 'phpunit':
         ensure => present,
