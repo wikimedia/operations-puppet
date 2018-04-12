@@ -7,9 +7,4 @@ class profile::dumps::web::xmldumps_active {
     class {'::dumps::web::rsync::nginxlogs':
         dest => 'stat1005.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/',
     }
-
-    # copy dumps and other datasets to fallback host(s) and to labs
-    class {'::dumps::copying::peers':
-        desthost => 'ms1001.wikimedia.org',
-    }
 }
