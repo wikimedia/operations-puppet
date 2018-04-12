@@ -291,16 +291,18 @@ class SchemaOperations():
             # WHEREs, and if you have multiple source SELECTs in one, it is perhaps
             # time to re-evaluate our strategy overall.
             if re.match(r'^.*\bselect\b.+\bfrom', view_details["where"], flags=re.I | re.M):
-                view_details["where"] = re.sub(r'from\s+(\w+)\b',
-                                               r'from `{}`.`\1` '.format(self.db),
-                                               view_details["where"],
-                                               flags=re.I | re.M)
-                view_details["where"] = re.sub(r'join\s+(\w+)\b',
-                                               r'join `{}`.`\1` '.format(self.db),
-                                               view_details["where"],
-                                               flags=re.I | re.M)
+                where_str = re.sub(r'from\s+(\w+)\b',
+                                   r'from `{}`.`\1` '.format(self.db),
+                                   view_details["where"],
+                                   flags=re.I | re.M)
+                where_str = re.sub(r'join\s+(\w+)\b',
+                                   r'join `{}`.`\1` '.format(self.db),
+                                   where_str,
+                                   flags=re.I | re.M)
 
-            query += " WHERE {}\n".format(view_details["where"])
+                query += " WHERE {}\n".format(where_str)
+            else:
+                query += " WHERE {}\n".format(view_details["where"])
 
         if "logging_where" in view_details:
             if '$INSERTED_EXPR$' in query:
