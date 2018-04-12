@@ -4,5 +4,3 @@ profile::mariadb::misc::eventlogging::database::master: false
 profile::mariadb::misc::eventlogging::replication::master_host: m4-master.eqiad.wmnet
 profile::mariadb::misc::eventlogging::replication::cutoff_days: 90
 profile::mariadb::misc::eventlogging::replication::batch_size: 1000
-profile::mariadb::misc::eventlogging::sanitization::whitelist_format: 'yaml'
-profile::mariadb::misc::eventlogging::sanitization::extra_parameters: '--yaml'
