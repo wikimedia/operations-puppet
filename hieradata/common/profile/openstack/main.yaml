@@ -1,4 +1,4 @@
-profile::openstack::main::version: 'liberty'
+profile::openstack::main::version: 'mitaka'
 # WARNING:  Glance base images are rsynced from the primary host to the spare with
 #  --delete.  Make sure to back-up or otherwise keep track
 #  of your base images before creating a new empty, primary host here or
