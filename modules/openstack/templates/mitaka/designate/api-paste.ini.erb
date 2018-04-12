@@ -36,4 +36,4 @@ paste.filter_factory = designate.api.middleware:KeystoneContextMiddleware.factor
 paste.filter_factory = designate.api.middleware:FaultWrapperMiddleware.factory
 
 [filter:authtoken]
-paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
