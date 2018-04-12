@@ -13,6 +13,7 @@ configfile="${confsdir}/wikidump.conf.dumps"
 
 today=`date +'%Y%m%d'`
 daysToKeep=70
+pagesPerBatch=400000
 
 args="output:temp;tools:php"
 results=`python "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
@@ -47,4 +48,15 @@ function putDumpChecksums {
 
 	sha1=`sha1sum "$1" | awk '{print $1}'`
 	echo "$sha1  `basename $1`" >> $targetDir/wikidata-$today-sha1sums.txt
+}
+
+function getNumberOfBatchesNeeded {
+	maxPageId=`$php $multiversionscript maintenance/sql.php --wiki wikidatawiki --json --query 'SELECT MAX(page_id) AS max_page_id FROM page' | grep max_page_id | grep -oP '\d+'`
+	if [[ $maxPageId -lt 1 ]]; then
+		echo "Couldn't get MAX(page_id) from db."
+		exit 1
+	fi
+
+	# This should be roughly enough to dump all pages. The last batch is run without specifying a last page id, so it's ok if this is slightly off.
+	numberOfBatchesNeeded=$(($maxPageId / $pagesPerBatch))
 }
