@@ -3,8 +3,8 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   eno2:
     txqlen: 10000
-  enp4s0f0:
+  ens1f0:
     txqlen: 10000
-  enp4s0f1:
+  ens1f1:
     txqlen: 10000
 profile::pybal::bgp: "no"
