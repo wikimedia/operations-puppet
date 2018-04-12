@@ -54,13 +54,18 @@ class role::kafka::main::mirror {
         # 'max.partition.fetch.bytes' => $producer_request_max_size
     }
 
+    # All topics that start with $source_site\. will be mirrored, excluding
+    # those that match this blacklist regex.
+    # JobQueue topics are blacklisted from cross DC mirroring until we
+    # Set up TLS for MirrorMaker. See: https://phabricator.wikimedia.org/T192005
+    $blacklist_topic_regex = '.*mediawiki\\.job|.*change-prop'
 
     ::confluent::kafka::mirror::instance { "main-${source_site}_to_main-${::site}":
         source_zookeeper_url      => $source_config['zookeeper']['url'],
         destination_brokers       => split($destination_config['brokers']['string'], ','),
         # Only mirror topics from the source that are prefixed with
         # $source_site[\._].
-        whitelist                 => "^${source_site}[\\._].+",
+        whitelist                 => "^${source_site}\\.(?!${blacklist_topic_regex}).+",
         jmx_port                  => 9997,
         num_streams               => 2,
         offset_commit_interval_ms => 5000,
