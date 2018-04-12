@@ -21,7 +21,7 @@ Usage: $0 --desthost <hostname>
 
   --desthost   fqdn of host to which to rsync
 
-Example: $0 --desthost ms1001.wikimedia.org
+Example: $0 --desthost labstore1006.wikimedia.org
 EOF
     exit 1
 }
@@ -55,6 +55,6 @@ fi
 # sample command:
 # /usr/bin/rsync --bwlimit=40000 -aq --delete --exclude='**bad/' --exclude='**save/' --exclude='**not/' \
 #       --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog' \
-#       /data/xmldatadumps/public/other/ ms1001.wikimedia.org::data/xmldatadumps/public/other/
+#       /data/xmldatadumps/public/other/ labstore1006.wikimedia.org::data/xmldatadumps/public/other/
 /usr/bin/rsync $args -aq $excludes --exclude=/other/ /data/xmldatadumps/public/  ${desthost}::data/xmldatadumps/public/
 /usr/bin/rsync $args -aq $excludes /data/xmldatadumps/public/other/ ${desthost}::data/xmldatadumps/public/other/
