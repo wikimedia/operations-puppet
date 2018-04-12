@@ -45,7 +45,7 @@ class dumps::web::fetches::stat_dumps(
     dumps::web::fetches::job { 'media-contestwinners-WLA':
         source      => "${src}/media/contest_winners/WLA",
         destination => "${miscdatasetsdir}/media/contest_winners/WLA",
-        minute      => '61',
+        minute      => '59',
         user        => $user,
     }
 
