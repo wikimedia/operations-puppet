@@ -4,7 +4,7 @@
 # for parameterization are completed in modules/openstack
 
 class openstack::cloudrepo(
-    $version='liberty',
+    $version='mitaka',
 ) {
 
     # As of 26/10/2015 we support kilo on trusty (lsb_release -c)
