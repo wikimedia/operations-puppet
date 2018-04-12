@@ -1683,8 +1683,9 @@ node 'mx2001.wikimedia.org' {
 
 # Experimental Jupyter notebook servers
 # To be deprecated as part of T183935.
+# Decom ticket: https://phabricator.wikimedia.org/T192103
 node 'notebook1001.eqiad.wmnet' {
-    role(paws_internal)
+    role(spare::system)
 }
 
 # SWAP (Jupyter Notebook) Servers with Analytics Cluster Access
