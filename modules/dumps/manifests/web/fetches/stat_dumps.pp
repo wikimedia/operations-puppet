@@ -44,7 +44,7 @@ class dumps::web::fetches::stat_dumps(
     # Wiki Loves Africa
     dumps::web::fetches::job { 'media-contestwinners-WLA':
         source      => "${src}/media/contest_winners/WLA",
-        destination => "${miscdatasetsdir}/media/contest_winners/WLM",
+        destination => "${miscdatasetsdir}/media/contest_winners/WLA",
         minute      => '61',
         user        => $user,
     }
@@ -52,7 +52,7 @@ class dumps::web::fetches::stat_dumps(
     # Wiki Loves Earth
     dumps::web::fetches::job { 'media-contestwinners-WLE':
         source      => "${src}/media/contest_winners/WLE",
-        destination => "${miscdatasetsdir}/media/contest_winners/WLA",
+        destination => "${miscdatasetsdir}/media/contest_winners/WLE",
         minute      => '1',
         user        => $user,
     }
