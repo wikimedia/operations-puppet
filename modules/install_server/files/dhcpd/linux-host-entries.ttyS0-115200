@@ -433,8 +433,6 @@ host pybal-test2001 {
 host pybal-test2002 {
     hardware ethernet aa:00:00:f8:8d:e1;
     fixed-address pybal-test2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host pybal-test2003 {
