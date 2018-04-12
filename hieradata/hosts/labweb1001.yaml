@@ -2,3 +2,5 @@ profile::openstack::main::horizon::webserver_hostname: horizon.wikimedia.org
 striker::apache::server_name: toolsadmin.wikimedia.org
 
 profile::openstack::main::version: ocata
+
+profile::openstack::labtest::horizon::maintenance_mode: true
