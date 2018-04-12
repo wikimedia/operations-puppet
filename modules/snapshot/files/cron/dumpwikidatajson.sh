@@ -18,52 +18,83 @@ mainLogFile=/var/log/wikidatadump/dumpwikidatajson-$filename-main.log
 
 shards=6
 
-# Try to create the dump (up to three times).
-retries=0
+i=0
+rm -f $failureFile
 
-while true; do
-	i=0
-	rm -f $failureFile
+getNumberOfBatchesNeeded
+numberOfBatchesNeeded=$(($numberOfBatchesNeeded / $shards))
 
-	while [ $i -lt $shards ]; do
-		(
-			set -o pipefail
-			errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
+while [ $i -lt $shards ]; do
+	(
+		set -o pipefail
+		errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
+
+		batch=0
+		retries=0
+		while [ $batch -lt $numberOfBatchesNeeded ]; do
+			firstPageIdParam="--first-page-id "$(( $batch * $pagesPerBatch * $shards + 1))
+			lastPageIdParam="--last-page-id "$(( ( $batch + 1 ) * $pagesPerBatch * $shards))
+
+			lastRun=0
+			if [ $(($batch + 1)) -eq $numberOfBatchesNeeded ]; then
+				# Don't limit the last run
+				lastPageIdParam=""
+				lastRun=1
+			fi
+
+			echo "Starting batch $batch" >> $errorLog
 			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
-			$php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $shards \* 250` --snippet 2 --no-cache 2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
+
+			# This separates the run-parts by ,\n. For this we assume the last run to not be empty, which should
+			# always be the case for Wikidata (given the number of runs needed is rounded down and new pages are
+			# added all the time).
+			( $php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php \
+				--wiki wikidatawiki \
+				--shard $i \
+				--sharding-factor $shards \
+				--batch-size $(($shards * 250)) \
+				--snippet 2 \
+				--no-cache \
+				$firstPageIdParam \
+				$lastPageIdParam; \
+				[ $lastRun -eq 0 ] && echo ',' || true ) \
+				2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i-batch$batch.gz
+
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
-				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
-				echo 1 > $failureFile
+				echo -e "\n\n(`date --iso-8601=minutes`) Process for batch $batch of shard $i failed with exit code $exitCode" >> $errorLog
 
-				#  Kill all remaining dumpers and start over.
-				kill -- -$$
+				let retries++
+
+				if [ $retries -gt 5 ]; then
+					# Give up with this shard. The sanity checking logic below will catch this.
+					echo -e "\n\n(`date --iso-8601=minutes`) Giving up after $(($retries - 1)) retries." >> $errorLog
+					rm -f $tempDir/wikidataJson.$i.gz
+					break
+				fi
+
+				# Increase the sleep time for every retry
+				sleep $((900 * $retries))
+				continue
 			fi
-		) &
-		let i++
-	done
 
-	wait
+			# Make sure the last concat has finished before starting a new one
+			wait
+			rm -f $tempDir/wikidataJson.$i-batch$(($batch - 1)).gz
+			cat $tempDir/wikidataJson.$i-batch$batch.gz >> $tempDir/wikidataJson.$i.gz &
 
-	if [ -f $failureFile ]; then
-		# Something went wrong, let's clean up and maybe retry. Leave logs in place.
-		rm -f $failureFile
-		rm -f $tempDir/wikidataJson.*.gz
-		let retries++
-		echo "(`date --iso-8601=minutes`) Dumping one or more shards failed. Retrying." >> $mainLogFile
+			retries=0
+			let batch++
+		done
 
-		if [ $retries -eq 3 ]; then
-			exit 1
-		fi
-
-		# Wait 10 minutes (in case of database problems or other instabilities), then try again
-		sleep 600
-		continue
-	fi
-
-	break
-
+		# Final wait and delete
+		wait
+		rm -f $tempDir/wikidataJson.$i-batch$(($batch - 1)).gz
+	) &
+	let i++
 done
+
+wait
 
 # Open the json list
 echo '[' | gzip -f > $tempDir/wikidataJson.gz
