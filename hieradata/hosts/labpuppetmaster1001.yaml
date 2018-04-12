@@ -3,4 +3,4 @@
 puppetmaster::ca_server: labpuppetmaster1001.wikimedia.org
 puppet_major_version: 4
 
-profile::openstack::labtest::version: 'liberty'
+profile::openstack::main::version: 'liberty'
