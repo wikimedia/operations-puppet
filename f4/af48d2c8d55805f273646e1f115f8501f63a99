@@ -1,0 +1,9 @@
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Code-Review+1: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Jcrespo <jcrespo@wikimedia.org>
+Submitted-by: Jcrespo <jcrespo@wikimedia.org>
+Submitted-at: Thu, 12 Apr 2018 16:30:36 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/398399
+Project: operations/puppet
+Branch: refs/heads/production
