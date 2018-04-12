@@ -18,70 +18,97 @@ mainLogFile=/var/log/wikidatadump/dumpwikidatajson-$filename-main.log
 
 shards=6
 
-# Try to create the dump (up to three times).
-retries=0
+i=0
+rm -f $failureFile
 
-while true; do
-	i=0
-	rm -f $failureFile
+getNumberOfBatchesNeeded
+numberOfBatchesNeeded=$(($numberOfBatchesNeeded / $shards))
 
-	while [ $i -lt $shards ]; do
-		(
-			set -o pipefail
-			errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
+while [ $i -lt $shards ]; do
+	(
+		set -o pipefail
+		errorLog=/var/log/wikidatadump/dumpwikidatajson-$filename-$i.log
+
+		batch=0
+		retries=0
+		while [ $batch -lt $numberOfBatchesNeeded ] && [ ! -f $failureFile ]; do
+			firstPageIdParam="--first-page-id "$(( $batch * $pagesPerBatch * $shards + 1))
+			lastPageIdParam="--last-page-id "$(( ( $batch + 1 ) * $pagesPerBatch * $shards))
+
+			lastRun=0
+			if [ $(($batch + 1)) -eq $numberOfBatchesNeeded ]; then
+				# Do not limit the last run
+				lastPageIdParam=""
+				lastRun=1
+			fi
+
+			echo "Starting batch $batch" >> $errorLog
 			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
-			$php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --batch-size `expr $shards \* 250` --snippet 2 --no-cache 2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i.gz
+
+			# This separates the run-parts by ,\n. For this we assume the last run to not be empty, which should
+			# always be the case for Wikidata (given the number of runs needed is rounded down and new pages are
+			# added all the time).
+			( $php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php \
+				--wiki wikidatawiki \
+				--shard $i \
+				--sharding-factor $shards \
+				--batch-size $(($shards * 250)) \
+				--snippet 2 \
+				--no-cache \
+				$firstPageIdParam \
+				$lastPageIdParam; \
+				[ $lastRun -eq 0 ] && echo ',' || true ) \
+				2>> $errorLog | gzip -9 > $tempDir/wikidataJson.$i-batch$batch.gz
+
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
-				echo -e "\n\n(`date --iso-8601=minutes`) Process for shard $i failed with exit code $exitCode" >> $errorLog
-				echo 1 > $failureFile
+				echo -e "\n\n(`date --iso-8601=minutes`) Process for batch $batch of shard $i failed with exit code $exitCode" >> $errorLog
 
-				#  Kill all remaining dumpers and start over.
-				kill -- -$$
+				let retries++
+
+				if [ $retries -gt 5 ]; then
+					# Give up with this shard.
+					echo -e "\n\n(`date --iso-8601=minutes`) Giving up after $(($retries - 1)) retries." >> $errorLog
+					echo 1 > $failureFile
+					break
+				fi
+
+				# Increase the sleep time for every retry
+				sleep $((900 * $retries))
+				continue
 			fi
-		) &
-		let i++
-	done
 
-	wait
-
-	if [ -f $failureFile ]; then
-		# Something went wrong, let's clean up and maybe retry. Leave logs in place.
-		rm -f $failureFile
-		rm -f $tempDir/wikidataJson.*.gz
-		let retries++
-		echo "(`date --iso-8601=minutes`) Dumping one or more shards failed. Retrying." >> $mainLogFile
-
-		if [ $retries -eq 3 ]; then
-			exit 1
-		fi
-
-		# Wait 10 minutes (in case of database problems or other instabilities), then try again
-		sleep 600
-		continue
-	fi
-
-	break
-
+			retries=0
+			let batch++
+		done
+	) &
+	let i++
 done
+
+wait
+
+if [ -f $failureFile ]; then
+	echo -e "\n\n(`date --iso-8601=minutes`) Giving up after a shard failed." >> $mainLogFile
+	rm -f $tempDir/wikidataJson.*-batch*.gz
+	rm -f $failureFile
+
+	exit 1
+fi
 
 # Open the json list
 echo '[' | gzip -f > $tempDir/wikidataJson.gz
 
 i=0
 while [ $i -lt $shards ]; do
-	tempFile=$tempDir/wikidataJson.$i.gz
-	if [ ! -f $tempFile ]; then
-		echo "$tempFile does not exist. Aborting." >> $mainLogFile
-		exit 1
-	fi
-	fileSize=`stat --printf="%s" $tempFile`
+	# Need to use sort -V here as batches need to be concated in order
+	tempFiles=`ls -1 $tempDir/wikidataJson.$i-batch*.gz | sort -V | paste -s -d ' '`
+	fileSize=`du -b -c $tempFiles | awk '/total$/ { print $1 }'`
 	if [ $fileSize -lt `expr 20000000000 / $shards` ]; then
-		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
+		echo "File size for shard $i is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
-	cat $tempFile >> $tempDir/wikidataJson.gz
-	rm $tempFile
+	cat $tempFiles >> $tempDir/wikidataJson.gz
+	rm -f $tempFiles
 	let i++
 	if [ $i -lt $shards ]; then
 		# Shards don't end with commas so add commas to separate them
