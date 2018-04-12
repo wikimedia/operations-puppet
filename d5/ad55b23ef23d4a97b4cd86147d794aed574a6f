@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Bstorm <bstorm@wikimedia.org>
+Submitted-by: Bstorm <bstorm@wikimedia.org>
+Submitted-at: Thu, 12 Apr 2018 02:57:25 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/425741
+Project: operations/puppet
+Branch: refs/heads/production
