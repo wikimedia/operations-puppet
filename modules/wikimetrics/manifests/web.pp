@@ -7,7 +7,8 @@ class wikimetrics::web(
     require wikimetrics::base
 
     uwsgi::app { 'wikimetrics-web':
-        settings => {
+        service_settings => '--die-on-term --autoload',
+        settings         => {
             uwsgi => {
                 plugins     => 'python, router_redirect',
                 'wsgi-file' => "${wikimetrics::base::source_path}/wikimetrics/api.wsgi",
@@ -25,6 +26,6 @@ class wikimetrics::web(
                 route-if    => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
                 # lint:endignore
             }
-        }
+        },
     }
 }

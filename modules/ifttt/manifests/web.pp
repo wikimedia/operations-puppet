@@ -6,7 +6,8 @@ class ifttt::web(
     require ifttt::base
 
     uwsgi::app { 'ifttt':
-        settings => {
+        service_settings => '--die-on-term --autoload',
+        settings         => {
             uwsgi => {
                 plugins     => 'python',
                 'wsgi-file' => "${ifttt::base::source_path}/app.py",

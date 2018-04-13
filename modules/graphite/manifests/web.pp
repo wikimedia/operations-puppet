@@ -106,7 +106,8 @@ class graphite::web(
     }
 
     uwsgi::app { 'graphite-web':
-        settings => {
+        service_settings => '--die-on-term --autoload',
+        settings         => {
             uwsgi => {
                 'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/graphite-web.sock',
@@ -116,7 +117,7 @@ class graphite::web(
                 'processes' => $uwsgi_processes,
             },
         },
-        require  => File['/var/log/graphite-web'],
+        require          => File['/var/log/graphite-web'],
     }
 
     file { '/usr/local/sbin/graphite-index':
