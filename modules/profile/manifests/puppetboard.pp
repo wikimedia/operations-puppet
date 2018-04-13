@@ -32,6 +32,7 @@ class profile::puppetboard (
         mode    => '0440',
         content => template('profile/puppetboard/settings.py.erb'),
         before  => Uwsgi::App['puppetboard'],
+        notify  => Service['uwsgi-puppetboard'],
     }
 
     service::uwsgi { 'puppetboard':
