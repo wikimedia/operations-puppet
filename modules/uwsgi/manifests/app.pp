@@ -27,7 +27,7 @@
 #
 define uwsgi::app(
     $settings,
-    $service_settings = '--die-on-term --autoload',
+    $service_settings = '--die-on-term',
     $ensure   = present,
     $enabled  = true,
 ) {
