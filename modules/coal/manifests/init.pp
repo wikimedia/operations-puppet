@@ -48,6 +48,11 @@ class coal(
         managehome => false,
     }
 
+    scap::target { 'performance/coal':
+        service_name => 'coal',
+        deploy_user  => 'deploy-service',
+    }
+
     uwsgi::app { 'coal':
         service_settings => '--die-on-term',
         settings         => {
