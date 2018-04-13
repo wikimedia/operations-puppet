@@ -64,6 +64,7 @@ class package_builder(
         'scons',
         'apache2-dev',
         'ivy-debian-helper',
+        'maven-debian-helper',
         $php_dev,
         $dh_php,
     ])
