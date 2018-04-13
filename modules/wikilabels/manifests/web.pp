@@ -41,8 +41,7 @@ class wikilabels::web (
     }
 
     uwsgi::app { 'wikilabels-web':
-        service_settings => '--die-on-term --autoload',
-        settings         => {
+        settings => {
             uwsgi => {
                 plugins     => 'python3',
                 'wsgi-file' => "${config_path}/labels_web.py",
