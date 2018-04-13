@@ -45,7 +45,7 @@ class openstack::puppet::master::encapi(
     # We override service_settings because the default includes autoload
     #  which insists on using python2
     uwsgi::app { 'labspuppetbackend':
-        settings         => {
+        settings  => {
             uwsgi => {
                 plugins     => 'python3',
                 'wsgi-file' => '/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py',
@@ -63,8 +63,7 @@ class openstack::puppet::master::encapi(
                 ],
             },
         },
-        service_settings => '--die-on-term',
-        subscribe        => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
+        subscribe => File['/usr/local/lib/python3.4/dist-packages/labspuppetbackend.py'],
     }
 
     $labs_instance_ranges = $network::constants::labs_networks
