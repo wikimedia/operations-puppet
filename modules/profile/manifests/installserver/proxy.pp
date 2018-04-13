@@ -1,5 +1,6 @@
 # Installs a proxy server for the install server
-class role::installserver::proxy {
+class profile::installserver::proxy {
+
     class { 'squid3':
         config_content => template('role/caching-proxy/squid.conf.erb'),
     }
