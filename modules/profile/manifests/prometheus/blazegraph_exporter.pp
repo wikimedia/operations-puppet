@@ -15,4 +15,6 @@ class profile::prometheus::blazegraph_exporter (
         port   => '9193',
         srange => $ferm_srange,
     }
+
+    base::service_auto_restart { 'prometheus-blazegraph-exporter': }
 }
