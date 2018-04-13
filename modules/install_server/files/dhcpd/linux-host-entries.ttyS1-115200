@@ -6708,8 +6708,6 @@ host neodymium {
 host nescio {
     hardware ethernet a4:ba:db:30:d0:df;
     fixed-address nescio.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host netmon1002 {
