@@ -94,6 +94,8 @@ class zuul::merger (
         ],
     }
 
+    base::service_auto_restart { 'zuul-merger': }
+
     cron { 'zuul_repack':
         user        => 'zuul',
         hour        => '4',
