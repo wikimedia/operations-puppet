@@ -1,0 +1,89 @@
+upstream debmonitor {
+    server 127.0.0.1:<%= @port -%> max_fails=0;
+}
+
+server {
+    listen 80 default_server;
+    server_name <%= @public_server_name -%>;
+
+    error_log /var/log/nginx/<%= @public_server_name -%>.error.log;
+    access_log /var/log/nginx/<%= @public_server_name -%>.access.log;
+
+    location /static {
+        root <%= @base_path -%>;
+        try_files $uri =404;
+    }
+
+    location / {
+        proxy_pass http://debmonitor;
+        proxy_http_version 1.1;
+        proxy_read_timeout 30s;
+
+        proxy_set_header Host $host;
+        proxy_set_header Connection close; # should be default
+
+        # Unset eventual SSL Credential headers
+        proxy_set_header X-Client-Cert-Subject-Dn "";
+        proxy_set_header X-Client-Cert-Verify "";
+
+        # Don't clobber the Server header from the backend.
+        proxy_pass_header Server;
+
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_request_buffering on;
+        proxy_buffer_size 8k;
+    }
+}
+
+server {
+    # Internal-only HTTPS listener for debmonitor clients to POST their package lists.
+    # Clients will be authenticating with the Puppet certificate to ensure that each
+    # host can update only its own packages.
+
+    listen [::]:443 default_server deferred backlog=16384 reuseport ipv6only=on fastopen=150 ssl http2;
+    listen 443 default_server deferred backlog=16384 reuseport fastopen=150 ssl http2;
+    server_name <%= @internal_server_name -%>;
+    ssl on;
+
+    error_log /var/log/nginx/<%= @internal_server_name -%>.error.log;
+    access_log /var/log/nginx/<%= @internal_server_name -%>.access.log;
+
+    ssl_certificate /etc/ssl/localcerts/<%= @internal_server_name %>.chained.crt;
+    ssl_certificate_key /etc/ssl/private/<%= @internal_server_name %>.key;
+    ssl_client_certificate /etc/ssl/certs/Puppet_Internal_CA.pem;
+    ssl_verify_client on;
+
+    <%= @ssl_config.join("\n    ") %>
+
+    keepalive_timeout 10;
+
+    location /static {
+        root <%= @base_path -%>;
+        try_files $uri =404;
+    }
+
+    location / {
+        proxy_pass http://debmonitor;
+        proxy_http_version 1.1;
+        proxy_read_timeout 30s;
+
+        proxy_set_header Host $host;
+        proxy_set_header Connection close; # should be default
+        proxy_set_header X-Client-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+
+        # Set SSL Credentials headers
+        proxy_set_header X-Client-Cert-Subject-Dn $ssl_client_s_dn;
+        proxy_set_header X-Client-Cert-Verify $ssl_client_verify;
+
+        # Don't clobber the Server header from the backend.
+        proxy_pass_header Server;
+
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_request_buffering on;
+        proxy_buffer_size 8k;
+    }
+}
