@@ -1,5 +1,5 @@
 # sets up preseeding dir and config on an install server
-class role::installserver::preseed {
+class profile::installserver::preseed {
 
     include install_server::preseed_server
 

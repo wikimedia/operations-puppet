@@ -1,9 +1,5 @@
 # Installs a DHCP server and configures it for WMF
-class role::installserver::dhcp {
-
-    system::role { 'installserver::dhcp':
-        description => 'WMF DHCP server',
-    }
+class profile::installserver::dhcp {
 
     include install_server::dhcp_server
 
