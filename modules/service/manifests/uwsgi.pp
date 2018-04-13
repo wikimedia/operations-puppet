@@ -182,7 +182,8 @@ define service::uwsgi(
     require_package('firejail')
 
     uwsgi::app { $title:
-        settings => {
+        service_settings => '--die-on-term --autoload',
+        settings         => {
             uwsgi => $complete_config,
         }
     }
