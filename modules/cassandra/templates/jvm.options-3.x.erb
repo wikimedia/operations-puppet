@@ -120,8 +120,7 @@
 -XX:+ResizeTLAB
 
 # http://www.evanjones.ca/jvm-mmap-pause.html
-# XXX: This will break cassandra-metrics-collector
-#-XX:+PerfDisableSharedMem
+-XX:+PerfDisableSharedMem
 
 # Prefer binding to IPv4 network intefaces (when net.ipv6.bindv6only=1). See
 # http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6342561 (short version:
@@ -207,12 +206,12 @@
 
 # Have the JVM do less remembered set work during STW, instead
 # preferring concurrent GC. Reduces p99.9 latency.
--XX:G1RSetUpdatingPauseTimePercent=5
+#-XX:G1RSetUpdatingPauseTimePercent=5
 
 # Main G1GC tunable: lowering the pause target will lower throughput and vise versa.
 # 200ms is the JVM default and lowest viable setting
 # 1000ms increases throughput. Keep it smaller than the timeouts in cassandra.yaml.
--XX:MaxGCPauseMillis=300
+#-XX:MaxGCPauseMillis=300
 
 -XX:G1HeapRegionSize=8M
 
@@ -220,7 +219,7 @@
 
 # Save CPU time on large (>= 16GB) heaps by delaying region scanning
 # until the heap is 70% full. The default in Hotspot 8u40 is 40%.
--XX:InitiatingHeapOccupancyPercent=35
+#-XX:InitiatingHeapOccupancyPercent=35
 
 # For systems with > 8 cores, the default ParallelGCThreads is 5/8 the number of logical cores.
 # Otherwise equal to the number of cores when 8 or less.
