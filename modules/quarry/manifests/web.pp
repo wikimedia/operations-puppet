@@ -11,9 +11,8 @@ class quarry::web {
     $clone_path = $::quarry::base::clone_path
 
     uwsgi::app { 'quarry-web':
-        require          => Git::Clone['analytics/quarry/web'],
-        service_settings => '--die-on-term --autoload',
-        settings         => {
+        require  => Git::Clone['analytics/quarry/web'],
+        settings => {
             uwsgi => {
                 'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/quarry-web.sock',
