@@ -1,5 +1,5 @@
 # Installs a web server for the install server
-class role::installserver::http {
+class profile::installserver::http {
 
     system::role { 'installserver::http':
         description => 'WMF install HTTP server',
