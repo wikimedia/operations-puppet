@@ -32,23 +32,6 @@ api_appserver:
     datacenters:
       - eqiad
       - codfw
-imagescaler:
-  apache2:
-    port: 80
-    default_values:
-      "pooled": "no"
-      "weight": 10
-    datacenters:
-      - eqiad
-      - codfw
-  nginx:
-    port: 443
-    default_values:
-      "pooled": "no"
-      "weight": 10
-    datacenters:
-      - eqiad
-      - codfw
 videoscaler:
   apache2:
     port: 80
