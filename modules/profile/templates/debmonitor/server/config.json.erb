@@ -1,0 +1,37 @@
+{
+    "ALLOWED_HOSTS": ["<%= @public_server_name -%>", "<%= @internal_server_name -%>"],
+    "SECRET_KEY": "<%= @django_secret_key %>",
+    "STATIC_ROOT": "<%= @static_path %>",
+    "MYSQL": {
+        "DB_NAME": "debmonitor",
+        "DB_USER": "debmonitor",
+        "DB_PASSWORD": "<%= @django_mysql_db_password %>",
+        "DB_HOST": "<%= @django_mysql_db_host %>",
+        "DB_PORT": 3306
+    },
+    "LOG_DB_QUERIES": false,
+    "REQUIRE_LOGIN": true,
+    "LDAP": {
+        "SERVER_URI": "ldaps://ldap-labs.eqiad.wikimedia.org ldaps://ldap-labs.codfw.wikimedia.org",
+        "BIND_DN": "cn=proxyagent,ou=profile,dc=wikimedia,dc=org",
+        "BIND_PASSWORD": "<%= @ldap_password %>",
+        "USER_SEARCH": {
+            "USER_FIELD": "cn",
+            "SEARCH": "ou=people,dc=wikimedia,dc=org"
+        },
+        "GROUP_SEARCH": "dc=wikimedia,dc=org",
+        "REQUIRE_GROUP": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+        "CACHE_GROUPS": true,
+        "GROUP_CACHE_TIMEOUT": 900,
+        "FIND_GROUP_PERMS": true,
+        "USER_ATTR_MAP": {
+            "username": "cn",
+            "email": "mail"
+        },
+        "USER_FLAGS_BY_GROUP": {
+            "is_active": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+            "is_staff": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+            "is_superuser": "cn=ops,ou=groups,dc=wikimedia,dc=org"
+        }
+    }
+}
