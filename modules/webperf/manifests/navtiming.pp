@@ -25,6 +25,11 @@ class webperf::navtiming(
     require_package('python-kafka')
     require_package('python-yaml')
 
+    scap::target { 'performance/navtiming':
+        service_name => 'navtiming',
+        deploy_user  => 'deploy-service',
+    }
+
     file { '/srv/webperf/navtiming.py':
         source => 'puppet:///modules/webperf/navtiming.py',
         owner  => 'www-data',
