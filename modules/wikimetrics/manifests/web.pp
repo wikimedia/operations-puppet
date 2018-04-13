@@ -7,8 +7,7 @@ class wikimetrics::web(
     require wikimetrics::base
 
     uwsgi::app { 'wikimetrics-web':
-        service_settings => '--die-on-term --autoload',
-        settings         => {
+        settings => {
             uwsgi => {
                 plugins     => 'python, router_redirect',
                 'wsgi-file' => "${wikimetrics::base::source_path}/wikimetrics/api.wsgi",
