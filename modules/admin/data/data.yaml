@@ -1741,7 +1741,9 @@ users:
     gid: 500
     name: mobrovac
     realname: Marko Obrovac
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr04C1g3grQJRwhOyrAic/xzW+2lxlxwjdTIY12HJs6aBvKTeUhwMLTxSMQ0nsFacnCcdTU1YcDYn0ypXxpd/v62uX4nbnw3goYSgKysmYlrHiQ+87GbQnBSe/j/0SvAF+oV9bB4EKGpGDK0hokfNKVzTpI2+0IbEAHK+Ag7+yIGYwWshLeoj1rTSzQCyFb1ELaXPt1OyAq37EYa+D9INA2aP4qHWHNSrAeG1FtJ3M4QDOIB/vB1UYE5i+XYeuugXlZzHXEkL5M1KbI5utPcBjpfncAmPGDLuiUKuBnDo85V75xpTmHQb485M4K1ZnqJ9XKnZT3NWDW2Fo+lvKU7VTw== doorman@istria-wifi.irisa.fr]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr04C1g3grQJRwhOyrAic/xzW+2lxlxwjdTIY12HJs6aBvKTeUhwMLTxSMQ0nsFacnCcdTU1YcDYn0ypXxpd/v62uX4nbnw3goYSgKysmYlrHiQ+87GbQnBSe/j/0SvAF+oV9bB4EKGpGDK0hokfNKVzTpI2+0IbEAHK+Ag7+yIGYwWshLeoj1rTSzQCyFb1ELaXPt1OyAq37EYa+D9INA2aP4qHWHNSrAeG1FtJ3M4QDOIB/vB1UYE5i+XYeuugXlZzHXEkL5M1KbI5utPcBjpfncAmPGDLuiUKuBnDo85V75xpTmHQb485M4K1ZnqJ9XKnZT3NWDW2Fo+lvKU7VTw== doorman@istria-wifi.irisa.fr
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICts788Fo6r7CdOjtb6uT5YXKtai632piGE5I3t339UF doorman@istria
     uid: 11187
     email: mobrovac@wikimedia.org
   zfilipin:
