@@ -11,7 +11,8 @@ class dynamicproxy::api(
     require_package('python3-flask', 'python3-redis', 'python3-flask-sqlalchemy')
 
     uwsgi::app { 'invisible-unicorn':
-        settings  => {
+        service_settings => '--die-on-term --autoload',
+        settings         => {
             uwsgi => {
                 plugins            => 'python3',
                 master             => true,
@@ -22,7 +23,7 @@ class dynamicproxy::api(
                 workers            => 4,
             },
         },
-        subscribe => File['/usr/local/bin/invisible-unicorn.py'],
+        subscribe        => File['/usr/local/bin/invisible-unicorn.py'],
     }
 
     file { '/etc/dynamicproxy-api':
