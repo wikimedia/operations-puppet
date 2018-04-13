@@ -201,6 +201,40 @@ def write_project_exports(mounts_config, exports_d_path, observer_pass):
     return project_paths
 
 
+def check_exports(no_exports_is_ok, project_paths, public_paths):
+    """ check sanity of exports in this daemon iteration
+    :param no_exports_is_ok: boolean, whether we expect to have no exports
+    :param project_paths: list of project paths
+    :param public_paths: list of public paths
+    """
+    if no_exports_is_ok:
+        return True
+
+    msg = "This could be an error somewhere, so doing nothing. Override with `--no-exports-is-ok'"
+
+    if len(project_paths) == 0:
+        logging.warning("no projects with NFS exports. {}".format(msg))
+        return False
+
+    if len(public_paths) == 0:
+        logging.warning("no public NFS exports. {}".format(msg))
+        return False
+
+
+def do_fix_and_export(existing_wo_all):
+    """ do the actual export and fix (delete) stale export files
+    :param existing_wo_all: a list of paths with export files
+    """
+
+    if existing_wo_all:
+        for unmanaged_export in existing_wo_all:
+            with open(unmanaged_export) as f:
+                logging.warning('deleting %s with contents: %s', unmanaged_export, f.read())
+            os.remove(unmanaged_export)
+
+    exportfs()
+
+
 def main():
     argparser = argparse.ArgumentParser()
 
@@ -232,6 +266,12 @@ def main():
     argparser.add_argument(
         '--debug',
         help='Turn on debug logging',
+        action='store_true'
+    )
+
+    argparser.add_argument(
+        '--no-exports-is-ok',
+        help='Having no NFS exports is OK. Otherwise, refuse to do anything if that happens',
         action='store_true'
     )
 
@@ -267,18 +307,14 @@ def main():
         existing_wo_public = list(set(existing_exports) - set(public_paths))
         existing_wo_all = list(set(existing_wo_public) - set(project_paths))
 
-        if existing_wo_all:
-            for unmanaged_export in existing_wo_all:
-                with open(unmanaged_export) as f:
-                    logging.warning('deleting %s with contents: %s', unmanaged_export, f.read())
-                os.remove(unmanaged_export)
-
-        exportfs()
+        if check_exports(args.no_exports_is_ok, project_paths, public_paths):
+            do_fix_and_export(existing_wo_all)
 
         if args.interval > 0:
             time.sleep(args.interval)
         else:
             break
+
 
 if __name__ == "__main__":
     try:
