@@ -852,6 +852,7 @@ lvs::configuration::lvs_services:
       cluster: scb
       service: mobileapps
     icinga:
+      contact_group: 'admins,mobileapps'
       check_command: "check_http_lvs_on_port!mobileapps.svc.%{::site}.wmnet!8888!/_info"
       sites:
         eqiad:
