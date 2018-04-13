@@ -4080,8 +4080,6 @@ host lvs5003 {
 host maerlant {
     hardware ethernet a4:ba:db:30:d1:12;
     fixed-address maerlant.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host maps1001 {
