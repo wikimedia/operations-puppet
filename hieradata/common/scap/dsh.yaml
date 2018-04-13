@@ -29,7 +29,6 @@ scap::dsh::groups:
     conftool:
       - {'cluster': 'appserver', 'service': 'apache2'}
       - {'cluster': 'api_appserver', 'service': 'apache2'}
-      - {'cluster': 'imagescaler', 'service': 'apache2'}
       - {'cluster': 'videoscaler', 'service': 'apache2'}
       - {'cluster': 'jobrunner', 'service': 'apache2'}
       - {'cluster': 'testserver', 'service': 'apache2'}
