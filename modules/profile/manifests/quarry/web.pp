@@ -10,9 +10,8 @@ class profile::quarry::web(
     require ::profile::quarry::base
 
     uwsgi::app { 'quarry-web':
-        require          => Git::Clone['analytics/quarry/web'],
-        service_settings => '--die-on-term --autoload',
-        settings         => {
+        require  => Git::Clone['analytics/quarry/web'],
+        settings => {
             uwsgi => {
                 'plugins'   => 'python3',
                 'socket'    => '/run/uwsgi/quarry-web.sock',
