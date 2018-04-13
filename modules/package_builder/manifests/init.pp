@@ -63,6 +63,7 @@ class package_builder(
         'sphinx-common',
         'scons',
         'apache2-dev',
+        'ivy-debian-helper',
         $php_dev,
         $dh_php,
     ])
