@@ -56,7 +56,7 @@ class TimeLog(object):
         file_path = os.path.join(self.path, base_name)
         if not os.path.isfile(file_path):
             self.prune_files(tag)
-        with open(file_path, 'a') as f:
+        with open(file_path, 'a', 1) as f:
             print(message, file=f)
 
     def prune_files(self, tag):
