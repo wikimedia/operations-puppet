@@ -78,7 +78,7 @@ class mediawiki::web::beta_sites {
     }
 
     apache::site { 'remnant':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/remnant.conf',
+        ensure   => absent,
         priority => 20,
     }
 
