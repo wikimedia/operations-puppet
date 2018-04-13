@@ -49,7 +49,6 @@ class coal(
     }
 
     uwsgi::app { 'coal':
-        service_settings => '--die-on-term',
         settings         => {
             uwsgi => {
                 'plugins'   => 'python',
