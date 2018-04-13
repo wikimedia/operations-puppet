@@ -9,6 +9,9 @@ datacenters:
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
 
+# Debmonitor instance
+debmonitor: debmonitor.discovery.wmnet
+
 # NOTE: Do *not* add new clusters *per site* anymore,
 # the site name will automatically be appended now,
 # and a different IP prefix will be used.
