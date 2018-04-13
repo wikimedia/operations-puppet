@@ -27,7 +27,6 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::update_flaggedrev_stats': ensure => $ensure }
     class { 'mediawiki::maintenance::refreshlinks': ensure => $ensure }
     class { 'mediawiki::maintenance::update_special_pages': ensure => $ensure }
-    class { 'mediawiki::maintenance::update_article_count': ensure => 'absent' } # T192139
     class { 'mediawiki::maintenance::purge_abusefilter': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_checkuser': ensure => $ensure }
     class { 'mediawiki::maintenance::purge_expired_userrights': ensure => $ensure }
