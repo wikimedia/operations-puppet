@@ -660,8 +660,8 @@ node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
 }
 
-node /^debmonitor[12]001\.(eqiad|codfw)\.wmnet$/ {
-    role(spare::system)
+node /^debmonitor[12]001\.(codfw|eqiad)\.wmnet$/ {
+    role(debmonitor::server)
 }
 
 node /^dns400[12]\.wikimedia\.org$/ {
