@@ -10,7 +10,7 @@ class role::installserver {
     include ::profile::installserver::http
     include ::profile::installserver::proxy
     include ::profile::installserver::preseed
-    include ::role::aptrepo::wikimedia
+    include ::profile::aptrepo::wikimedia
 
     interface::add_ip6_mapped { 'main': }
 

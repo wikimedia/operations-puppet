@@ -1,5 +1,5 @@
 # http://apt.wikimedia.org/wikimedia/
-class role::aptrepo::wikimedia (
+class profile::aptrepo::wikimedia (
     $primary_server = hiera('install_server'),
     $secondary_server = hiera('install_server_failover'),
 ){
