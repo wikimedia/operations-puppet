@@ -106,6 +106,12 @@ class profile::netbox (
             use_ssl          => true,
         }
         $on_master = false
+
+        class { '::postgresql::slave::monitoring':
+            pg_master   => $master,
+            pg_user     => 'replication',
+            pg_password => $replication_pass,
+        }
     }
 
     class { '::netbox':
