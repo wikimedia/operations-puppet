@@ -82,7 +82,7 @@ CONF.register_opts(wmfkeystone_opts, group='wmfhooks')
 
 
 @dependency.requires('assignment_api', 'resource_api', 'role_api')
-class KeystoneHooks(notifier._Driver):
+class KeystoneHooks(notifier.Driver):
     """Notifier class which handles extra project creation/deletion bits
     """
     def __init__(self, conf, topics, transport, version=1.0):
