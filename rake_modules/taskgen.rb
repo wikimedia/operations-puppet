@@ -162,7 +162,7 @@ class TaskGen < ::Rake::TaskLib
       when 1
         puts "No typo found."
       else
-        fail "Some error occured"
+        fail "Some error occurred"
       end
     end
     [:typos]
