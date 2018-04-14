@@ -55,3 +55,7 @@ indexes:
     columns:
       - imgcomment_description_id
       - imgcomment_name
+  - table: slots
+    name: slot_content_id
+    columns:
+      - slot_content_id

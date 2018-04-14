@@ -51,6 +51,7 @@ fullviews:
   - cn_template_log
   - cn_template_mixins
   - cn_templates
+  - content_models
   - ep_articles
   - ep_cas
   - ep_events
@@ -110,6 +111,7 @@ fullviews:
   - site_identifiers
   - sites
   - site_stats
+  - slot_roles
   - tag_summary
   - templatelinks
   - transcode
@@ -246,6 +248,16 @@ customviews:
       OR exists( select 1 from logging where log_comment_id = comment_id AND log_deleted&2 = 0 AND $INSERTED_EXPR$ )
     logging_where:
       *allowed_logtypes
+  content:
+    source: content
+    view: >
+      select content_id, content_size, content_sha1, content_model, content_address
+    where: >
+      exists( select 1 from slots
+      LEFT JOIN archive ON(ar_rev_id = slot_revision_id)
+      LEFT JOIN revision ON(rev_id = slot_revision_id)
+      WHERE content_id = slot_content_id
+      AND (ar_deleted&1=0 OR rev_deleted&1=0))
   ep_courses:
     source: ep_courses
     view: >
@@ -487,6 +499,15 @@ customviews:
     join:
      - revision_comment_temp: on revcomment_rev = rev_id
      - comment: on comment_id = revcomment_comment_id
+  slots:
+    source: slots
+    view: >
+      select slot_revision_id, slot_role_id,
+      if(rev_deleted&1 OR ar_deleted&1,null,slot_content_id) as slot_content_id,
+      slot_origin
+    join:
+      - revision: on rev_id = slot_revision_id
+      - archive: on ar_rev_id = slot_revision_id
   user:
     source: user
     view: >
