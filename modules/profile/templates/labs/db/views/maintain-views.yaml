@@ -154,6 +154,7 @@ allowed_logtypes: &allowed_logtypes
   - campus
   - close
   - contentmodel
+  - content_models
   - course
   - delete
   - eparticle
@@ -188,6 +189,7 @@ allowed_logtypes: &allowed_logtypes
   - renameuser
   - review
   - rights
+  - slot_roles
   - spamblacklist
   - stable
   - student
@@ -246,6 +248,16 @@ customviews:
       OR exists( select 1 from logging where log_comment_id = comment_id AND log_deleted&2 = 0 AND $INSERTED_EXPR$ )
     logging_where:
       *allowed_logtypes
+  content:
+    source: content
+    view: >
+      select content_id, content_size, content_sha1, content_model, content_address
+    where: >
+      exists( select 1 from slots
+      JOIN archive ON(ar_rev_id = slot_revision_id)
+      JOIN revision ON(rev_id = slot_revision_id)
+      WHERE content_id = slot_content_id
+      AND (ar_deleted&1=0 OR rev_deleted&1=0))
   ep_courses:
     source: ep_courses
     view: >
@@ -487,6 +499,15 @@ customviews:
     join:
      - revision_comment_temp: on revcomment_rev = rev_id
      - comment: on comment_id = revcomment_comment_id
+  slots:
+    source: slots
+    view: >
+      select slot_revision_id, slot_role_id,
+      if(rev_deleted&1 OR ar_deleted&1,null,slot_content_id) as slot_content_id,
+      slot_inherited
+    join:
+      - revision: on rev_id = slot_revision_id
+      - archive: on ar_rev_id = slot_revision_id
   user:
     source: user
     view: >
