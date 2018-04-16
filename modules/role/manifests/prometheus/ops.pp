@@ -611,6 +611,11 @@ class role::prometheus::ops {
         class_name => 'role::kafka::jumbo::broker',
         site       => $::site,
     }
+    prometheus::jmx_exporter_config{ "kafka_main_${::site}":
+        dest       => "${targets_path}/jmx_kafka_main_${::site}.yaml",
+        class_name => 'role::kafka::main',
+        site       => $::site,
+    }
 
     # This config is to be removed once the Kafka analytics cluster
     # has been totally replaced by the Kafka jumbo cluster.
