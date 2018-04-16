@@ -28,7 +28,7 @@ class profile::prometheus::alerts {
     }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
-    profile::kafka::mirror::alerts { 'main-eqiad_to_codfw-eqiad':
+    profile::kafka::mirror::alerts { 'main-eqiad_to_main-codfw':
         #  For now, alert analytics admins, until alerts are more stable.
         contact_group   => 'analytics',
     }
