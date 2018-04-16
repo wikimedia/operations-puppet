@@ -5,55 +5,25 @@ class dumps::web::fetches::stat_dumps(
     $miscdatasetsdir = undef,
     $user = undef,
 ) {
-    dumps::web::fetches::job { 'wikistats_1.0':
-        source      => "${src}/wikistats_1.0",
-        destination => "${miscdatasetsdir}/wikistats_1.0",
+    dumps::web::fetches::job { 'wikistats_1':
+        source      => "${src}/wikistats_1/",
+        destination => "${miscdatasetsdir}/wikistats_1/",
         minute      => '11',
         user        => $user,
     }
 
-    dumps::web::fetches::job { 'pagecounts-ez-merged':
-        source      => "${src}/pagecounts-ez/merged",
-        destination => "${miscdatasetsdir}/pagecounts-ez/merged",
+    dumps::web::fetches::job { 'pagecounts-ez':
+        source      => "${src}/pagecounts-ez/",
+        destination => "${miscdatasetsdir}/pagecounts-ez/",
         minute      => '21',
         user        => $user,
     }
 
-    dumps::web::fetches::job { 'pagecounts-ez-projectcounts':
-        source      => "${src}/pagecounts-ez/projectcounts",
-        destination => "${miscdatasetsdir}/pagecounts-ez/projectcounts",
+    # Wiki Loves * (Monuments, Africa, Earth, etc.)
+    dumps::web::fetches::job { 'media-contestwinners':
+        source      => "${src}/media/contest_winners/",
+        destination => "${miscdatasetsdir}/media/contest_winners/",
         minute      => '31',
-        user        => $user,
-    }
-
-    dumps::web::fetches::job { 'pagecounts-ez-projectviews':
-        source      => "${src}/pagecounts-ez/projectviews",
-        destination => "${miscdatasetsdir}/pagecounts-ez/projectviews",
-        minute      => '41',
-        user        => $user,
-    }
-
-    # Wiki Loves Monuments
-    dumps::web::fetches::job { 'media-contestwinners-WLM':
-        source      => "${src}/media/contest_winners/WLM",
-        destination => "${miscdatasetsdir}/media/contest_winners/WLM",
-        minute      => '51',
-        user        => $user,
-    }
-
-    # Wiki Loves Africa
-    dumps::web::fetches::job { 'media-contestwinners-WLA':
-        source      => "${src}/media/contest_winners/WLA",
-        destination => "${miscdatasetsdir}/media/contest_winners/WLA",
-        minute      => '59',
-        user        => $user,
-    }
-
-    # Wiki Loves Earth
-    dumps::web::fetches::job { 'media-contestwinners-WLE':
-        source      => "${src}/media/contest_winners/WLE",
-        destination => "${miscdatasetsdir}/media/contest_winners/WLE",
-        minute      => '1',
         user        => $user,
     }
 

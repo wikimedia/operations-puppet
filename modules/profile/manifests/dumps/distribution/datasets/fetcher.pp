@@ -20,12 +20,11 @@ class profile::dumps::distribution::datasets::fetcher(
         user            => $user,
     }
 
-# remove until there is data available for rsync
-#   class {'dumps::web::fetches::stat_dumps':
-#        src             => 'stat1005.eqiad.wmnet::srv/dumps',
-#        miscdatasetsdir => $miscdatasetsdir,
-#        user            => $user,
-#    }
+    class {'dumps::web::fetches::stat_dumps':
+        src             => 'stat1005.eqiad.wmnet::srv/dumps',
+        miscdatasetsdir => $miscdatasetsdir,
+        user            => $user,
+    }
 
     class {'dumps::web::fetches::wikitech_dumps':
         url             => 'https://wikitech.wikimedia.org/dumps/',
