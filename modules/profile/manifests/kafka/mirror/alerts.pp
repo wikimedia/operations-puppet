@@ -49,7 +49,7 @@ define profile::kafka::mirror::alerts(
     $prometheus_url      = "http://prometheus.svc.${::site}.wmnet/ops",
     $topic_blacklist     = undef,
 ) {
-    $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=eqiad%20prometheus%2Fops&var-mirror_name=${mirror_name}"
+    $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=${::site}%20prometheus%2Fops&var-mirror_name=${mirror_name}"
 
     # Set check_prometheus defaults.
     Monitoring::Check_prometheus {

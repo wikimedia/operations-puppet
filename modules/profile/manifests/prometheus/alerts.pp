@@ -20,12 +20,22 @@ class profile::prometheus::alerts {
     }
 
     # Monitor throughput and dropped messages on MirrorMaker instances.
+    # main-eqiad -> jumbo MirrorMaker
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         contact_group   => 'analytics',
         topic_blacklist => '.*(change-prop|\.job\.).*',
     }
-    # TODO: add main <-> main MirrorMaker alerts: https://phabricator.wikimedia.org/T190940
+
+    # Cross DC main-eqiad <-> main-codfw MirrorMakers.
+    profile::kafka::mirror::alerts { 'main-eqiad_to_codfw-eqiad':
+        #  For now, alert analytics admins, until alerts are more stable.
+        contact_group   => 'analytics',
+    }
+    profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
+        #  For now, alert analytics admins, until alerts are more stable.
+        contact_group   => 'analytics',
+    }
 
 
     # Eventlogging
