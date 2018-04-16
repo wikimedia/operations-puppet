@@ -6,16 +6,7 @@ class role::kafka::main {
 
     # Mirror eqiad.* topics from main-eqiad into main-codfw,
     # or mirror codfw.* topics from main-codfw into main-eqiad.
-
-    # Temporarily only use the new mirror maker profile when mirroring from eqiad -> codfw
-    # to make sure this works before we enable everywhere.
-    # T190940
-    if $::site == 'codfw' {
-        include ::profile::kafka::mirror
-    }
-    else {
-        include ::role::kafka::main::mirror
-    }
+    include ::profile::kafka::mirror
 
     include ::standard
 }
