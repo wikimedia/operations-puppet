@@ -6,23 +6,23 @@ class dumps::web::fetches::stat_dumps(
     $user = undef,
 ) {
     dumps::web::fetches::job { 'wikistats_1':
-        source      => "${src}/wikistats_1/",
-        destination => "${miscdatasetsdir}/wikistats_1/",
+        source      => "${src}/wikistats_1",
+        destination => "${miscdatasetsdir}/wikistats_1",
         minute      => '11',
         user        => $user,
     }
 
     dumps::web::fetches::job { 'pagecounts-ez':
-        source      => "${src}/pagecounts-ez/",
-        destination => "${miscdatasetsdir}/pagecounts-ez/",
+        source      => "${src}/pagecounts-ez",
+        destination => "${miscdatasetsdir}/pagecounts-ez",
         minute      => '21',
         user        => $user,
     }
 
     # Wiki Loves * (Monuments, Africa, Earth, etc.)
     dumps::web::fetches::job { 'media-contestwinners':
-        source      => "${src}/media/contest_winners/",
-        destination => "${miscdatasetsdir}/media/contest_winners/",
+        source      => "${src}/media/contest_winners",
+        destination => "${miscdatasetsdir}/media/contest_winners",
         minute      => '31',
         user        => $user,
     }
