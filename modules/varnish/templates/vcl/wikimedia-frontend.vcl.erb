@@ -150,7 +150,7 @@ sub recv_fe_ip_processing {
 		set req.http.via-nginx = 1;
 	}
 
-	set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
+	set req.http.X-Trusted-Proxy = netmapper.map("trusted_proxies", req.http.X-Client-IP);
 	// normalize to boolean post-netmapper (varnish-3.0.4...)
 	if (req.http.X-Trusted-Proxy == "") {
 		unset req.http.X-Trusted-Proxy;
@@ -232,7 +232,7 @@ sub vcl_init {
 	call wm_common_directors_init;
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	netmapper.init("proxies", "<%= @netmapper_dir %>/proxies.json", 89);
+	netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
 	netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
 	/* Function vcl_init in <%= @vcl %>.inc.vcl will be appended here */
 }

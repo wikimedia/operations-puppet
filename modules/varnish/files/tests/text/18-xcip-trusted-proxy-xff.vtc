@@ -1,0 +1,21 @@
+varnishtest "Set XCIP by parsing XFF for trusted proxies"
+
+server s1 {
+    rxreq
+    txresp
+    expect req.http.X-Trusted-Proxy == "OperaMini"
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -hdr "X-Forwarded-For: 93.184.216.34, 93.184.216.35, 127.0.0.1" -hdr "X-Client-IP: 93.184.216.34"
+    rxresp
+    expect resp.http.X-Client-IP == "93.184.216.35"
+} -run
