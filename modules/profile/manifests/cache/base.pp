@@ -94,6 +94,8 @@ class profile::cache::base(
         site         => $zero_site,
     }
 
+    class { 'varnish::trusted_proxies': }
+
     # Varnish probes normally take 2xRTT, so for WAN cases give them
     # an outer max of 3xRTT, + 100ms for local hiccups
     $core_probe_timeout_ms = ($max_core_rtt * 3) + 100
