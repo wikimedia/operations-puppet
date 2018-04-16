@@ -197,7 +197,7 @@ scap::dsh::scap_masters:
 scap::dsh::groups:
     mediawiki-installation:
         hosts:
-            - deployment-jobrunner02.deployment-prep.eqiad.wmflabs
+            - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki06.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
