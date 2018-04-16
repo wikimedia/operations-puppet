@@ -54,6 +54,7 @@ class profile::kubernetes::deployment_server(
                 token       => $data['token'],
                 group       => $data['group'],
                 mode        => $data['mode'],
+                namespace   => $data['namespace'],
             }
             # lint:endignore
         }
