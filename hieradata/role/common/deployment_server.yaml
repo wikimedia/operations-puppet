@@ -197,6 +197,7 @@ profile::kubernetes::deployment_server::services:
     username: mathoid
     group: wikidev
     mode: '0640'
+    namespace: mathoid
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:

@@ -2,6 +2,7 @@ define k8s::kubeconfig(
     $master_host,
     $username,
     $token,
+    $namespace=undef,
     $mode='0400',
     $owner='root',
     $group='root',
