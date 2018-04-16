@@ -26,6 +26,6 @@ class openstack::cloudrepo(
         }
 
     } elsif os_version('debian jessie') and ($version != 'liberty') {
-        fail("T169099: There is no plan for ${version} on Jessie")
+        include ::openstack::jessie_mitaka_pinning
     }
 }
