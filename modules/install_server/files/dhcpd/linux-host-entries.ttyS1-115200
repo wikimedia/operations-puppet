@@ -13,8 +13,6 @@ host acamar {
 host achernar {
     hardware ethernet D4:AE:52:AD:56:10;
     fixed-address achernar.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host analytics1001 {
