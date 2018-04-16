@@ -18,6 +18,14 @@ class kibana (
 ) {
     require_package('kibana')
 
+    # ugly hack to solve https://phabricator.wikimedia.org/T192279 / https://github.com/elastic/kibana/issues/12915
+    file { '/usr/share/kibana/optimize/bundles/stateSessionStorageRedirect.style.css':
+        ensure => present,
+        owner  => 'kibana',
+        group  => 'kibana',
+        mode   => '0664',
+    }
+
     file { '/etc/kibana/kibana.yml':
         ensure  => file,
         owner   => 'root',
