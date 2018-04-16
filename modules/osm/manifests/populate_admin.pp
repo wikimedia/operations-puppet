@@ -14,7 +14,7 @@ define osm::populate_admin (
     }
     cron { "populate_admin-${title}":
         ensure  => $ensure,
-        command => "/usr/bin/psql -1Xq -d ${title} -c 'SELECT populate_admin(); >> ${log_dir}/populate_admin.log 2>&1",
+        command => "/usr/bin/psql -1Xq -d ${title} -c 'SELECT populate_admin();' >> ${log_dir}/populate_admin.log 2>&1",
         user    => 'postgres',
         weekday => $weekday,
         hour    => $hour,
