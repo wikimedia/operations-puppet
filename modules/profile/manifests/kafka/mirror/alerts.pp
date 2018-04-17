@@ -37,17 +37,27 @@
 # [*prometheus_url*]
 #   Default: "http://prometheus.svc.${::site}.wmnet/ops"
 #
+# [*prometheus_url_lag_check*]
+#   The Burrow lag metrics are collected by Prometheus in each DC,
+#   depending on where the Kafka clusters is. Due to how mirror maker is
+#   currently configured, it consumes metrics from another cluster
+#   and then it produces to the local one.
+#   This means that the Kafka consumer group lag metrics may not be in the same
+#   DC as the ones for the other alerts.
+#   Default: "http://prometheus.svc.${::site}.wmnet/ops"
+#
 define profile::kafka::mirror::alerts(
-    $mirror_name         = $title,
-    $monitoring_period   = '30m',
-    $warning_throughput  = 100,
-    $critical_throughput = 0,
-    $warning_lag         = 10000,
-    $critical_lag        = 100000,
-    $contact_group       = 'admins',
-    $nagios_critical     = false,
-    $prometheus_url      = "http://prometheus.svc.${::site}.wmnet/ops",
-    $topic_blacklist     = undef,
+    $mirror_name              = $title,
+    $monitoring_period        = '30m',
+    $warning_throughput       = 100,
+    $critical_throughput      = 0,
+    $warning_lag              = 10000,
+    $critical_lag             = 100000,
+    $contact_group            = 'admins',
+    $nagios_critical          = false,
+    $prometheus_url           = "http://prometheus.svc.${::site}.wmnet/ops",
+    $prometheus_url_lag_check = "http://prometheus.svc.${::site}.wmnet/ops",
+    $topic_blacklist          = undef,
 ) {
     $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=${::site}%20prometheus%2Fops&var-mirror_name=${mirror_name}"
 
@@ -101,11 +111,12 @@ define profile::kafka::mirror::alerts(
         $cgroup_lag_query = "scalar(max(max_over_time(kafka_burrow_partition_lag{group=\"kafka-mirror-${mirror_name}\"} [${lag_check_period}m])))"
     }
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-consumer_max_lag":
-        description => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
+        description    => "Kafka MirrorMaker ${mirror_name} max lag in last ${lag_check_period} minutes",
         # This metric does not have the mirror_name label, so we target it in the group instead.
-        query       => $cgroup_lag_query,
-        method      => 'gt',
-        warning     => $warning_lag,
-        critical    => $critical_lag,
+        query          => $cgroup_lag_query,
+        method         => 'gt',
+        warning        => $warning_lag,
+        critical       => $critical_lag,
+        prometheus_url => $prometheus_url_lag_check,
     }
 }
