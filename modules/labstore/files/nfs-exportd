@@ -220,6 +220,8 @@ def check_exports(no_exports_is_ok, project_paths, public_paths):
         logging.warning("no public NFS exports. {}".format(msg))
         return False
 
+    return True
+
 
 def do_fix_and_export(existing_wo_all):
     """ do the actual export and fix (delete) stale export files
@@ -228,9 +230,14 @@ def do_fix_and_export(existing_wo_all):
 
     if existing_wo_all:
         for unmanaged_export in existing_wo_all:
-            with open(unmanaged_export) as f:
-                logging.warning('deleting %s with contents: %s', unmanaged_export, f.read())
-            os.remove(unmanaged_export)
+            # Catch potential exceptions here so we don't fail every export just
+            #  because of one bad one
+            try:
+                with open(unmanaged_export) as f:
+                    logging.warning('deleting %s with contents: %s', unmanaged_export, f.read())
+                os.remove(unmanaged_export)
+            except OSError:
+                logging.exception("failed to delete export")
 
     exportfs()
 
