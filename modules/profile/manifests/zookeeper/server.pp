@@ -24,6 +24,24 @@ class profile::zookeeper::server (
         $extra_java_opts = ''
     }
 
+    # The zookeeper349 component for jessie-wikimedia has been created to
+    # support a more flexible transition to Debian Stretch.
+    if $version == '3.4.9-3~jessie' {
+        if os.version('debian == jessie') {
+            apt::repository { 'wikimedia-zookeeper349':
+                uri        => 'http://apt.wikimedia.org/wikimedia',
+                dist       => "jessie-wikimedia",
+                components => 'component/zookeeper349',
+                before     => [
+                    Package['zookeeperd'],
+                    Package['zookeeper'],
+                ],
+            }
+        } else {
+            fail('Zookeeper 3.4.9-3~jessie should be installed only on Debian Jessie.')
+        }
+    }
+
     class { '::zookeeper':
         hosts                  => $clusters[$cluster_name]['hosts'],
         version                => $version,
