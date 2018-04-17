@@ -204,6 +204,8 @@ def _parse_smart_attributes(output, disk, attributes):
             continue
 
         metric_name = name.lower()
+        # Normalize metric name from smartctl output to Prometheus-accepted names
+        metric_name = metric_name.replace('-', '_')
         if metric_name not in attributes:
             if metric_name not in IGNORE_ATTRIBUTES:
                 log.info('Unreported attribute %r: %r', metric_name, line)
