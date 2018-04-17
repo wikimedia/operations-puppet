@@ -14,3 +14,5 @@ profile::zookeeper::cluster_name: main-codfw
 # Raise election timeout to account for disk latencies during raid resyncs
 # see T162013
 profile::etcd::election_timeout: 3000
+
+profile::zookeeper::zookeeper_version: '3.4.9-3~jessie'
