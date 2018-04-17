@@ -29,7 +29,7 @@ class helm(
         ensure  => directory,
         owner   => 'helm',
         group   => 'wikidev',
-        mode    => '0555',
+        mode    => '0755',
         recurse => true,
     }
 
