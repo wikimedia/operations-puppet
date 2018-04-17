@@ -38,7 +38,7 @@ class helm(
         environment => "HELM_HOME=${helm_home}",
         creates     => "${helm_home}/repository",
         user        => 'helm',
-        require     => User['helm'],
+        require     => [User['helm'], File[$helm_home],]
     }
 
     cron { 'helm-repo-update':
