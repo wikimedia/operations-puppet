@@ -154,7 +154,7 @@ lvs::interfaces::vlan_data:
       lvs3001: 'eth0:91.198.174.11'
       lvs3002: 'eth0:91.198.174.12'
       lvs3003: 'eth0:91.198.174.13'
-      lvs3004: 'eth0:91.198.174.14'
+      lvs3004: 'eno1:91.198.174.14'
   public1-ulsfo:
     id: "1201"
     netmask: '255.255.255.240'
