@@ -146,8 +146,6 @@ monitoring::groups:
     description: eqiad application servers
   api_appserver_eqiad:
     description: eqiad API application servers
-  imagescaler_eqiad:
-    description: eqiad image scalers
   jobrunner_eqiad:
     description: eqiad jobrunner application servers
   videoscaler_eqiad:
@@ -157,8 +155,6 @@ monitoring::groups:
     description: codfw application servers
   api_appserver_codfw:
     description: codfw API application servers
-  imagescaler_codfw:
-    description: codfw image scalers
   jobrunner_codfw:
     description: codfw jobrunner application servers
   videoscaler_codfw:
