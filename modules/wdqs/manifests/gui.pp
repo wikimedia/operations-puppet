@@ -23,6 +23,7 @@ class wdqs::gui(
     Wmflib::IpPort $additional_port = 8888,
     Boolean $use_git_deploy = true,
     Boolean $enable_ldf = true,
+    Integer $max_query_time_millis = 60000,
 ) {
 
     $alias_map = "${data_dir}/aliases.map"
