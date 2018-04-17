@@ -1,0 +1,4 @@
+profile::lvs::interface_tweaks:
+  eno1:
+    txqlen: 20000
+profile::pybal::bgp: "no"
