@@ -23,6 +23,13 @@ class mediawiki::users(
         managehome => true,
     }
 
+    file { '/var/lib/mwdeploy':
+        ensure => directory,
+        owner  => 'mwdeploy',
+        group  => 'mwdeploy',
+        mode   => '0775',
+    }
+
     ssh::userkey { 'mwdeploy':
         content => secret('keyholder/mwdeploy.pub'),
     }
