@@ -35,7 +35,8 @@ class profile::prometheus::alerts {
     }
     profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
-        contact_group   => 'analytics',
+        contact_group            => 'analytics',
+        prometheus_url_lag_check => 'http://prometheus.svc.codfw.wmnet/ops',
     }
 
 
