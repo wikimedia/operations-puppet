@@ -1,6 +1,11 @@
 - labels:
+    shard: s1
+    role: slave
+  targets:
+  - dbstore1001:13311
+
+- labels:
     role: slave
     shard: multi
   targets:
-#  - dbstore1001:9104 # broken T186596
   - dbstore1002:9104
