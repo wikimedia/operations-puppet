@@ -15,4 +15,10 @@ class profile::openstack::labtest::wikitech::web(
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
     }
+
+    ferm::service { 'mysql_deployment_terbium':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => '($DEPLOYMENT_HOSTS $MAINTENANCE_HOSTS)',
+    }
 }
