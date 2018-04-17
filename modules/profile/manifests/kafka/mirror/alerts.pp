@@ -9,6 +9,9 @@
 #   This must match a the title of a declared confluent::kafka::mirror::instance.
 #   Default: $title
 #
+# [*topic_blacklist*]
+#   Regex of topics to exclude from lag monitoring.  Default: undef
+#
 # [*monitoring_period*]
 #   Prometheus range period to monitor.  Default: 30m.
 #
@@ -35,34 +38,34 @@
 #   Default: false
 #
 # [*prometheus_url*]
+#   Prometheus URL endpoint containing metrics for MirrorMaker.
 #   Default: "http://prometheus.svc.${::site}.wmnet/ops"
 #
-# [*prometheus_url_lag_check*]
-#   The Burrow lag metrics are collected by Prometheus in each DC,
-#   depending on where the Kafka clusters is. Due to how mirror maker is
-#   currently configured, it consumes metrics from another cluster
-#   and then it produces to the local one.
-#   This means that the Kafka consumer group lag metrics may not be in the same
-#   DC as the ones for the other alerts.
+# [*source_prometheus_url*]
+#   Prometheus URL endpoint containing metrics for the source Kafka cluster,
+#   including lag metrics from burrow, etc.
 #   Default: "http://prometheus.svc.${::site}.wmnet/ops"
 #
 define profile::kafka::mirror::alerts(
-    $mirror_name              = $title,
-    $monitoring_period        = '30m',
-    $warning_throughput       = 100,
-    $critical_throughput      = 0,
-    $warning_lag              = 10000,
-    $critical_lag             = 100000,
-    $contact_group            = 'admins',
-    $nagios_critical          = false,
-    $prometheus_url           = "http://prometheus.svc.${::site}.wmnet/ops",
-    $prometheus_url_lag_check = "http://prometheus.svc.${::site}.wmnet/ops",
-    $topic_blacklist          = undef,
+    $mirror_name           = $title,
+    $topic_blacklist       = undef,
+    $monitoring_period     = '30m',
+    $warning_throughput    = 100,
+    $critical_throughput   = 0,
+    $warning_lag           = 10000,
+    $critical_lag          = 100000,
+    $contact_group         = 'admins',
+    $nagios_critical       = false,
+    $prometheus_url        = "http://prometheus.svc.${::site}.wmnet/ops",
+    $source_prometheus_url = "http://prometheus.svc.${::site}.wmnet/ops",
 ) {
-    $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=${::site}%20prometheus%2Fops&var-mirror_name=${mirror_name}"
+    # Extract a grafana datasource from $prometheus_url for the dashboard url.
+    $grafana_datasource = regsubst($prometheus_url, 'prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1%20prometheus%2F/\2')
+    $dashboard_url     = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=${grafana_datasource}&var-mirror_name=${mirror_name}"
 
     # Set check_prometheus defaults.
     Monitoring::Check_prometheus {
+        # Most metrics are for MirrorMaker, so default to its $prometheus_url.
         prometheus_url  => $prometheus_url,
         method          => 'le',
         warning         => $warning_throughput,
@@ -117,6 +120,6 @@ define profile::kafka::mirror::alerts(
         method         => 'gt',
         warning        => $warning_lag,
         critical       => $critical_lag,
-        prometheus_url => $prometheus_url_lag_check,
+        prometheus_url => $source_prometheus_url,
     }
 }

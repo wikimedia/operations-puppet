@@ -30,15 +30,15 @@ class profile::prometheus::alerts {
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
     profile::kafka::mirror::alerts { 'main-eqiad_to_main-codfw':
         #  For now, alert analytics admins, until alerts are more stable.
-        contact_group            => 'analytics',
-        prometheus_url           => 'http://prometheus.svc.codfw.wmnet/ops',
-        prometheus_url_lag_check => 'http://prometheus.svc.eqiad.wmnet/ops',
+        contact_group         => 'analytics',
+        prometheus_url        => 'http://prometheus.svc.codfw.wmnet/ops',
+        source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',
     }
     profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
-        contact_group            => 'analytics',
-        prometheus_url           => 'http://prometheus.svc.eqiad.wmnet/ops',
-        prometheus_url_lag_check => 'http://prometheus.svc.codfw.wmnet/ops',
+        contact_group         => 'analytics',
+        prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
+        source_prometheus_url => 'http://prometheus.svc.codfw.wmnet/ops',
     }
 
 
