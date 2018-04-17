@@ -15,6 +15,4 @@ class profile::openstack::labtest::wikitech::web(
         wikitech_nova_ldap_proxyagent_pass => $wikitech_nova_ldap_proxyagent_pass,
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
     }
-
-    class {'::openstack::wikitech::wikitech_static_sync': }
 }
