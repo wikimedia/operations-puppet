@@ -29,6 +29,7 @@ import argparse
 import logging
 import math
 import operator
+import re
 import sys
 
 import requests
@@ -40,19 +41,19 @@ EX_CRITICAL = 2
 EX_UNKNOWN = 3
 
 PREDICATE = {
-    'le': operator.le,
+    'eq': operator.eq,
     'ge': operator.ge,
     'gt': operator.gt,
+    'le': operator.le,
     'lt': operator.lt,
-    'eq': operator.eq,
 }
 
 PREDICATE_TO_STR = {
+    operator.eq: '==',
     operator.ge: '>=',
+    operator.gt: '>',
     operator.le: '<=',
     operator.lt: '<',
-    operator.gt: '>',
-    operator.eq: '==',
 }
 
 log = logging.getLogger(__name__)
@@ -72,10 +73,10 @@ class PrometheusCheck(object):
             response = self.session.get(self.query_url, params={'query': query},
                                         timeout=self.timeout)
             return (EX_OK, response.json())
-        except requests.exceptions.RequestException as e:
-            return (EX_CRITICAL, '{} error while fetching: {}'.format(self.query_url, e))
         except requests.exceptions.Timeout as e:
             return (EX_CRITICAL, '{} timeout while fetching: {}'.format(self.query_url, e))
+        except requests.exceptions.RequestException as e:
+            return (EX_CRITICAL, '{} error while fetching: {}'.format(self.query_url, e))
         except ValueError as e:
             return (EX_CRITICAL, '{} error while decoding json: {}'.format(self.query_url, e))
 
@@ -142,7 +143,7 @@ class PrometheusCheck(object):
         try:
             value = float(result[1])
         except ValueError:
-            return EX_CRITICAL
+            return (EX_CRITICAL, 'Cannot convert {!r} to float'.format(result[1]))
 
         if math.isnan(value):
             if nan_ok:
@@ -151,10 +152,10 @@ class PrometheusCheck(object):
                 return (EX_UNKNOWN, 'NaN')
 
         if predicate(value, critical):
-            text = '{} {} {}'.format(value, PREDICATE_TO_STR.get(predicate), critical)
+            text = '{:.4G} {} {:.4G}'.format(value, PREDICATE_TO_STR.get(predicate), critical)
             return (EX_CRITICAL, text)
         elif predicate(value, warning):
-            text = '{} {} {}'.format(value, PREDICATE_TO_STR.get(predicate), warning)
+            text = '{:.4G} {} {:.4G}'.format(value, PREDICATE_TO_STR.get(predicate), warning)
             return (EX_WARNING, text)
         else:
             return (EX_OK, '')
@@ -221,21 +222,29 @@ def main():
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
     logging.getLogger('requests.packages.urllib3').setLevel(logging.WARNING)
+    logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
 
     check = PrometheusCheck(options.url, options.timeout)
     query = options.query[0]
     status, text = check.check_query(query, options.warning, options.critical,
                                      PREDICATE.get(options.method), options.nan_ok)
 
-    if status == EX_OK:
-        text = 'OK - {!r} within thresholds {}'.format(query, text)
-    elif status == EX_WARNING:
-        text = 'WARNING - {!r}: {}'.format(query, text)
-    elif status == EX_CRITICAL:
-        text = 'CRITICAL - {!r}: {}'.format(query, text)
-    else:
-        text = 'UNKNOWN - {!r}: {}'.format(query, text)
+    query_text = query
+    query_text = re.sub(' +', ' ', query_text)
+    if len(query_text) > 80:
+        query_text = query_text[:80] + ' [...] '
 
+    if status == EX_OK:
+        text = '{!r} within thresholds {}'.format(query_text, text)
+    elif status == EX_WARNING:
+        text = '{!r}: {}'.format(query_text, text)
+    elif status == EX_CRITICAL:
+        text = '{!r}: {}'.format(query_text, text)
+    else:
+        text = '{!r}: {}'.format(query_text, text)
+
+    # Certain characters will be stripped according to illegal_macro_output_chars setting
+    # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/configmain.html
     print(text)
     return status
 
