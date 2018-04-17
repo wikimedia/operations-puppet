@@ -329,16 +329,6 @@ class role::prometheus::ops {
             'cluster' => 'api_appserver'
         }
     }
-    prometheus::cluster_config{ "hhvm_imagescaler_${::site}":
-        dest    => "${targets_path}/hhvm_imagescaler_${::site}.yaml",
-        site    => $::site,
-        cluster => 'imagescaler',
-        port    => '9192',
-        labels  => {
-            'cluster' => 'imagescaler'
-        }
-    }
-
     prometheus::cluster_config{ "hhvm_videoscaler_${::site}":
         dest    => "${targets_path}/hhvm_videoscaler_${::site}.yaml",
         site    => $::site,
@@ -386,15 +376,6 @@ class role::prometheus::ops {
         port    => '9117',
         labels  => {
             'cluster' => 'api_appserver'
-        }
-    }
-    prometheus::cluster_config{ "apache_imagescaler_${::site}":
-        dest    => "${targets_path}/apache_imagescaler_${::site}.yaml",
-        site    => $::site,
-        cluster => 'imagescaler',
-        port    => '9117',
-        labels  => {
-            'cluster' => 'imagescaler'
         }
     }
     prometheus::cluster_config{ "apache_videoscaler_${::site}":
