@@ -5,8 +5,6 @@ restrict default ignore
 
 ### Servers and Peers: #########################################
 
-<% if scope.function_os_version(['debian >= stretch']) -%>
-
 restrict source notrap nomodify noquery
 
 <% @peers.each do |val| -%>
@@ -19,17 +17,6 @@ server <%= val %> iburst
 
 <% @pools.each do |val| -%>
 pool <%= val %> iburst
-<% end -%>
-
-<% else -%>
-<% @peers.each do |val| -%>
-peer <%= val %> xleave
-restrict <%= val %> notrap nomodify noquery
-<% end -%>
-<% @servers.each do |val| -%>
-server <%= val %> iburst
-restrict <%= val %> notrap nomodify noquery
-<% end -%>
 <% end -%>
 
 ### Non-Peer Access Control: ###################################
