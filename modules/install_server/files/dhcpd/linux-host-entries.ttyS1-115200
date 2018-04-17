@@ -5065,22 +5065,16 @@ host mw1265 {
 host mw1266 {
     hardware ethernet 14:18:77:61:39:8E;
     fixed-address mw1266.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1267 {
     hardware ethernet 14:18:77:61:48:1F;
     fixed-address mw1267.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1268 {
     hardware ethernet 14:18:77:61:33:99;
     fixed-address mw1268.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1269 {
@@ -5155,22 +5149,16 @@ host mw1279 {
 host mw1280 {
     hardware ethernet 14:18:77:61:34:0F;
     fixed-address mw1280.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1281 {
     hardware ethernet 14:18:77:61:36:DA;
     fixed-address mw1281.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1282 {
     hardware ethernet 14:18:77:61:34:F3;
     fixed-address mw1282.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mw1283 {
