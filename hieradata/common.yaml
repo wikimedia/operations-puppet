@@ -71,12 +71,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  imagescaler:
-    description: "Image scalers"
-    id: 12
-    sites:
-      eqiad: []
-      codfw: []
   api_appserver:
     description: "API application servers"
     id: 13
