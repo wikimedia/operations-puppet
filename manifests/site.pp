@@ -1439,11 +1439,11 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 }
 
 
-# Imagescalers (mostly obsolete functionality, replaced by thumbor)
+# Former imagescalers (replaced by thumbor)
 
 # Row B (B6)
 node /^mw129[7-8]\.eqiad\.wmnet$/ {
-    role(mediawiki::imagescaler)
+    role(spare::system)
 }
 
 # Jobrunners (now mostly used via changepropagation as a LVS endpoint)
@@ -1584,16 +1584,16 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# Imagescalers
+# Former imagescalers
 
 # Row C (C3)
 node /^mw215[01]\.codfw\.wmnet$/ {
-    role(mediawiki::imagescaler)
+    role(spare::system)
 }
 
 # Row A (A4)
 node /^mw224[45]\.codfw\.wmnet$/ {
-    role(mediawiki::imagescaler)
+    role(spare::system)
 }
 
 # Jobrunners
