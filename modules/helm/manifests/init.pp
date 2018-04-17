@@ -34,7 +34,7 @@ class helm(
     }
 
     exec { 'helm-init':
-        command     => "/usr/bin/helm --init --client-only --stable-repo-url ${stable_repo}",
+        command     => "/usr/bin/helm init --client-only --stable-repo-url ${stable_repo}",
         environment => "HELM_HOME=${helm_home}",
         creates     => "${helm_home}/repository",
         user        => 'helm',
