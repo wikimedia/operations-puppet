@@ -11,3 +11,5 @@ profile::wdqs::blazegraph_heap_size: '8g'
 profile::wdqs::enable_ldf: true
 profile::wdqs::cluster_names: []
 profile::wdqs::use_kafka_for_updates: false
+profile::wdqs::max_query_time_millis: 60000
+profile::wdqs::high_query_time_port: true

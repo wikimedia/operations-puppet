@@ -13,6 +13,8 @@ class profile::wdqs (
     Array[String] $cluster_names = hiera('profile::wdqs::cluster_names'),
     String $rc_options = hiera('profile::wdqs::rc_updater_options'),
     Boolean $enable_ldf = hiera('profile::wdqs::enable_ldf'),
+    Integer $max_query_time_millis = hiera('profile::wdqs::max_query_time_millis'),
+    Boolean $high_query_time_port = hiera('profile::wdqs::high_query_time_port'),
     Array[String] $prometheus_nodes = hiera('prometheus_nodes'),
     String $contact_groups = hiera('contactgroups', 'admins'),
 ) {
@@ -67,11 +69,12 @@ class profile::wdqs (
 
     # Service Web proxy
     class { '::wdqs::gui':
-        logstash_host  => $logstash_host,
-        package_dir    => $package_dir,
-        data_dir       => $data_dir,
-        use_git_deploy => $use_git_deploy,
-        enable_ldf     => $enable_ldf,
+        logstash_host         => $logstash_host,
+        package_dir           => $package_dir,
+        data_dir              => $data_dir,
+        use_git_deploy        => $use_git_deploy,
+        enable_ldf            => $enable_ldf,
+        max_query_time_millis => $max_query_time_millis,
     }
 
     # Firewall
@@ -82,15 +85,20 @@ class profile::wdqs (
         'wdqs_https':
             proto => 'tcp',
             port  => '443';
-        'wdqs_internal_http':
-            proto  => 'tcp',
-            port   => '8888',
-            srange => '$DOMAIN_NETWORKS';
         # temporary port to transfer data file between wdqs nodes via netcat
         'wdqs_file_transfer':
             proto  => 'tcp',
             port   => '9876',
             srange => inline_template("@resolve((<%= @nodes.join(' ') %>))");
+    }
+
+    if $high_query_time_port {
+        # port 8888 accepts queries and runs them with a higher time limit.
+        ferm::service { 'wdqs_internal_http':
+            proto  => 'tcp',
+            port   => '8888',
+            srange => '$DOMAIN_NETWORKS';
+        }
     }
 
     # Monitoring

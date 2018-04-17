@@ -100,7 +100,7 @@ server {
         proxy_set_header Cookie "";
 
         # Default 60 second max query time
-        set $xmaxqueryheader "60000";
+        set $xmaxqueryheader "<%= @max_query_time_millis %>";
 
         # 5 minute max query time for internal requests on port <%= @additional_port %>
         if ( $server_port = <%= @additional_port %> ) {
