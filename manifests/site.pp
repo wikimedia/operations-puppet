@@ -1153,6 +1153,7 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
+    role(spare::system)
     # soon to be recommissioned in T158196
     include ::standard
     # Do not enable yet
@@ -1176,6 +1177,7 @@ node /labstore100[67]\.wikimedia\.org/ {
 }
 
 node /labstore200[1-2]\.codfw\.wmnet/ {
+    role(spare::system)
     include ::standard
     # Do not enable yet
     # include ::base::firewall
