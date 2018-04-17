@@ -27,49 +27,6 @@ class profile::ntp {
     }
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
 
-    # Legacy manual peer lists, for pre- stretch systems that lack ntpd with
-    # "restrict source" functionality and proper "pool" behavior
-    # Last Updated Apr 2017 (correcting only disfunctional ones)
-    $peer_upstreams = {
-        'chromium.wikimedia.org' => [
-            'ac-ntp1.net.cmu.edu',
-            'tock.teljet.net',
-            'e.time.steadfast.net',
-            'ntp-3.vt.edu',
-        ],
-        'hydrogen.wikimedia.org' => [
-            'ac-ntp2.net.cmu.edu',
-            'tick.teljet.net',
-            'f.time.steadfast.net',
-            'ntp3.servman.ca',
-        ],
-        'acamar.wikimedia.org' => [
-            'tick.binary.net',
-            'ntp8.smatwebdesign.com',
-            'tick.ellipse.net',
-            'jarvis.arlen.io',
-        ],
-        'achernar.wikimedia.org' => [
-            'tock.binary.net',
-            'ntp9.smatwebdesign.com',
-            'tock.ellipse.net',
-            '72.14.183.239',
-        ],
-        'nescio.wikimedia.org' => [
-            'ntp2.proserve.nl',
-            'ntp.systemtid.se',
-            'ntp.terwan.nl',
-            'ntp1.linocomm.net',
-        ],
-        'maerlant.wikimedia.org' => [
-            'ntp1.proserve.nl',
-            'ntp-de.stygium.net',
-            'ntp.syari.net',
-            'time1.bokke.rs',
-        ],
-    }
-
-    # Pooling configuration for stretch+ ntp versions:
     $pool_zone = $::site ? {
         esams   => 'nl',
         eqsin   => 'sg',
@@ -89,13 +46,8 @@ class profile::ntp {
       '2001:df2:e500:: mask ffff:ffff:ffff::',
     ]
 
-    if os_version('debian >= stretch') {
-        $wmf_server_upstream_pools = ["0.${pool_zone}.pool.ntp.org"]
-        $wmf_server_upstreams = []
-    } else {
-        $wmf_server_upstream_pools = []
-        $wmf_server_upstreams = $peer_upstreams[$::fqdn]
-    }
+    $wmf_server_upstream_pools = ["0.${pool_zone}.pool.ntp.org"]
+    $wmf_server_upstreams = []
 
     # Extra config only for our servers (not clients):
     # minsane 2 requires 2 (default: 1) sane upstreams/peers present to be in sync
