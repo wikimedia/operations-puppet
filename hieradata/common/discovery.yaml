@@ -23,12 +23,6 @@ discovery::services:
   jobrunner:
     lvs: jobrunner
     active_active: false
-  imagescaler-rw:
-    lvs: rendering
-    active_active: false
-  imagescaler-ro:
-    lvs: rendering
-    active_active: true
   swift-rw:
     lvs: swift
     active_active: false
