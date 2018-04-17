@@ -617,7 +617,7 @@ node 'db2093.codfw.wmnet' {
 }
 
 node 'dbstore1001.eqiad.wmnet' {
-    role(mariadb::backups)
+    role(mariadb::backups_and_dbstore_multiinstance)
 }
 
 node 'dbstore1002.eqiad.wmnet' {
