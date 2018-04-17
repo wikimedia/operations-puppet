@@ -186,7 +186,7 @@ class base::monitoring::host(
             check_interval => 240,
             retry_interval => 10,
             description    => 'Long running screen/tmux',
-            nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 96 -c 480',
+            nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 240 -c 480',
         }
     }
 }
