@@ -5,13 +5,10 @@ class profile::kubernetes::deployment_server(
     $git_owner=hiera('profile::kubernetes::deployment_server::git_owner'),
     $git_group=hiera('profile::kubernetes::deployment_server::git_group'),
 ){
-    package { [
-        'helm',
-        'kubernetes-client',
-        ]:
-        ensure => installed,
-    }
+    class { '::helm': }
 
+    # DEPRECATED: Keep this around a bit longer but since we have a repo now we
+    # can remove it
     git::clone { 'operations/deployment-charts':
         ensure    => 'present', # Should be only updated by users
         directory => '/srv/deployment-charts',
@@ -59,5 +56,4 @@ class profile::kubernetes::deployment_server(
             # lint:endignore
         }
     }
-
 }
