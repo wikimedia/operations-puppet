@@ -5,8 +5,8 @@ all: P{*}
 <% end -%>
 
 # Server group definitions
-all-mw-codfw: (A:mw-videoscaler or A:mw-imagescaler or A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
-all-mw-eqiad: (A:mw-videoscaler or A:mw-imagescaler or A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
+all-mw-codfw: (A:mw-videoscaler or A:mw-api or A:mw or A:mw-jobrunner) and A:codfw
+all-mw-eqiad: (A:mw-videoscaler or A:mw-api or A:mw or A:mw-jobrunner) and A:eqiad
 aqs: P{O:aqs}
 aqs-canary: P{aqs1004.eqiad.wmnet}
 bastion: P{O:bastionhost::general or O:bastionhost::twofa}
@@ -123,10 +123,6 @@ mw-api-eqiad: A:mw-api and A:eqiad
 mw-canary: P{O:mediawiki::canary_appserver}
 mw-codfw: A:mw and A:codfw
 mw-eqiad: A:mw and A:eqiad
-mw-imagescaler: P{O:mediawiki::imagescaler}
-mw-imagescaler-canary: P{mw1297.eqiad.wmnet}
-mw-imagescaler-codfw: A:mw-imagescaler and A:codfw
-mw-imagescaler-eqiad: A:mw-imagescaler and A:eqiad
 mw-jobrunner: P{O:mediawiki::jobrunner}
 mw-jobrunner-canary: P{mw1311.eqiad.wmnet}
 mw-jobrunner-codfw: A:mw-jobrunner and A:codfw
