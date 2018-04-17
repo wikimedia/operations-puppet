@@ -17,6 +17,11 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 #  hosts.  Note that 1019 and 1020 are reserved for
 #  internal infrastructure use so should never be part of
 #  the default pool.
+#
+# Labvirt1015 is temporarily removed from this list
+#  because it hosts almost 100 mostly-idle VMs
+#  and needs a break while things rebalance a bit.
+#  T192422
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
   - labvirt1002
@@ -32,5 +37,4 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1012
   - labvirt1013
   - labvirt1014
-  - labvirt1015
   - labvirt1017
