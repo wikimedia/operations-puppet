@@ -3,8 +3,8 @@ Description=navtiming
 After=network-online.target
 
 [Service]
-WorkingDirectory=/srv/webperf
-ExecStart=/usr/bin/python /srv/webperf/navtiming.py \
+WorkingDirectory=/srv/deployment/performance/navtiming
+ExecStart=/usr/bin/python /srv/deployment/performance/navtiming/run_navtiming.py \
     --brokers <%= @kafka_brokers %> \
     --consumer-group navtiming \
     --statsd-host <%= @statsd_host %> \
