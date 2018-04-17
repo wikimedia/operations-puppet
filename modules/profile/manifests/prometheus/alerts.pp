@@ -34,7 +34,7 @@ class profile::prometheus::alerts {
         prometheus_url        => 'http://prometheus.svc.codfw.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',
         # Less data (resource_change) from main eqiad -> codfw.
-        warning_threshold     => 25,
+        warning_throughput    => 25,
     }
     profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
