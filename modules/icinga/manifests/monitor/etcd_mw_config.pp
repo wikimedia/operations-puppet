@@ -12,9 +12,9 @@ class icinga::monitor::etcd_mw_config {
     }
 
     systemd::service { 'update-etcd-mw-config-lastindex':
-        ensure  => present,
-        restart => true,
-        content => systemd_template('update-etcd-mw-config-lastindex'),
+        ensure         => present,
+        content        => systemd_template('update-etcd-mw-config-lastindex'),
+        service_params => { 'ensure' => undef },
     }
 
     systemd::service { 'update-etcd-mw-config-lastindex.timer':
