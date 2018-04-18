@@ -61,13 +61,14 @@ class profile::maps::apps(
     }
 
     class { 'kartotherian':
-        cassandra_servers => $cassandra_hosts,
-        cassandra_pass    => $cassandra_kartotherian_pass,
-        pgsql_pass        => $pgsql_kartotherian_pass,
-        conf_sources      => '/etc/kartotherian/sources.yaml',
-        contact_groups    => $contact_groups,
-        style             => $kartotherian_style,
-        storage_id        => $kartotherian_storage_id,
+        cassandra_servers    => $cassandra_hosts,
+        cassandra_pass       => $cassandra_kartotherian_pass,
+        pgsql_pass           => $pgsql_kartotherian_pass,
+        conf_sources         => '/etc/kartotherian/sources.yaml',
+        contact_groups       => $contact_groups,
+        style                => $kartotherian_style,
+        storage_id           => $kartotherian_storage_id,
+        tilerator_storage_id => $tilerator_storage_id,
     }
 
 }
