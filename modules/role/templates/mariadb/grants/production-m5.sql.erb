@@ -168,6 +168,28 @@ IDENTIFIED BY '<%= @wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.155.109'
 IDENTIFIED BY '<%= @wikiuser_pass %>';
 
+-- wikiadmin user for labtestwikitech aka 'labtestwiki' --
+-- Will connect from labtestweb2001, terbiam/wasat, deployment --
+
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.14'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.48.45'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.32.13'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.32.22'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.0.196'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
+-- wikiuser for labtestwikitech aka 'labtestwiki' --
+-- Will connect from latestweb2001 --
+
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO 'wikiuser'@'208.80.153.14'
+IDENTIFIED BY '<%= @wikiuser_pass %>';
+
 -- labspuppetbackend user, will run on the labs puppetmaster host --
 
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
