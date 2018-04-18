@@ -1441,7 +1441,7 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 }
 
 
-# Former imagescalers (replaced by thumbor)
+# Former imagescalers (replaced by thumbor) T192457
 
 # Row B (B6)
 node /^mw129[7-8]\.eqiad\.wmnet$/ {
@@ -1586,7 +1586,7 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# Former imagescalers
+# Former imagescalers (T192457)
 
 # Row C (C3)
 node /^mw215[01]\.codfw\.wmnet$/ {
