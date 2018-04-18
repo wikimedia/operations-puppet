@@ -1,0 +1,9 @@
+Code-Review+1: MaxSem <maxsem.wiki@gmail.com>
+Code-Review+1: Gehel <guillaume.lederrey@wikimedia.org>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 18 Apr 2018 16:56:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/427271
+Project: operations/puppet
+Branch: refs/heads/production
