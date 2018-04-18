@@ -13,8 +13,8 @@ class VarnishXcacheTest(unittest.TestCase):
 
     def testCacheStatus(self):
         s = self.store.get_samples('varnish_x_cache')
-        self.assertIn(('x_cache=int-front', 2), s)
-        self.assertIn(('x_cache=hit-front', 9), s)
+        self.assertIn(('x_cache=int-front,status=301', 2), s)
+        self.assertIn(('x_cache=hit-front,status=200', 6), s)
 
 
 class VarnishRlsTest(unittest.TestCase):
