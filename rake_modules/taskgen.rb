@@ -298,6 +298,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:mtail'
         end
+        nagios_common_files = filter_files_by("modules/nagios_common/files/check_commands/**")
+        unless nagios_common_files.empty?
+          desc 'Run tox for nagios_common'
+          task :nagios_common do
+            res = system("tox -e nagios_common")
+            raise 'Tests for nagios_common failed!' unless res
+          end
+          tasks << 'tox:nagios_common'
+        end
         tox_files = filter_files_by("*.py")
         unless tox_files.empty?
           desc 'Run flake8 on python files via tox'
