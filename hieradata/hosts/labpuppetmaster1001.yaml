@@ -2,5 +2,3 @@
 # modules/base/manifests/puppet.pp:    $ca_server = hiera('puppetmaster::ca_server', '')
 puppetmaster::ca_server: labpuppetmaster1001.wikimedia.org
 puppet_major_version: 4
-
-profile::openstack::main::version: 'liberty'
