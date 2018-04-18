@@ -27,5 +27,6 @@ fi
 
 for CLUSTER in "${CLUSTERS[@]}"
 do
+	echo "### cluster ${CLUSTER}"
 	KUBECONFIG="/etc/kubernetes/${SERVICE}-${CLUSTER}.config" helm --tiller-namespace=${NAMESPACE} "$@" $REUSE_VALUES
 done
