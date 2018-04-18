@@ -27,6 +27,8 @@ class openstack::cloudrepo(
 
     } elsif os_version('debian jessie') and ($version == 'mitaka') {
         include ::openstack::jessie_mitaka_pinning
+    } elsif os_version('debian stretch') and ($version == 'ocata') {
+        notify {'On stretch this will probably install Ocata-versioned packages, but nothing is explicitly pinned':}
     } else {
         fail('This is an unknown combination of OpenStack and OS version')
     }
