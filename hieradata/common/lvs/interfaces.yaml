@@ -153,7 +153,7 @@ lvs::interfaces::vlan_data:
     iface:
       lvs3001: 'eth0:91.198.174.11'
       lvs3002: 'eth0:91.198.174.12'
-      lvs3003: 'eth0:91.198.174.13'
+      lvs3003: 'eno1:91.198.174.13'
       lvs3004: 'eno1:91.198.174.14'
   public1-ulsfo:
     id: "1201"

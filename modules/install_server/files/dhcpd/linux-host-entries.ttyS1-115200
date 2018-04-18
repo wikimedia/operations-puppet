@@ -3992,8 +3992,6 @@ host lvs3002 {
 host lvs3003 {
     hardware ethernet 90:b1:1c:57:53:93;
     fixed-address lvs3003.esams.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host lvs3004 {
