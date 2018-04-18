@@ -27,7 +27,7 @@ function is_installed() {
 which decommission && decommission
 
 # Let's first stop and mask the web servers
-for service in apache2 nginx;
+for service in apache2 nginx prometheus-apache-exporter prometheus-hhvm-exporter prometheus-nutcracker-exporter;
 do
   stop_and_mask "${service}"
 done
