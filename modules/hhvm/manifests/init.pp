@@ -73,8 +73,11 @@ class hhvm(
 
 
     ## Packages
-    $ext_pkgs = [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]
-
+    if os_version('ubuntu == trusty') {
+        $ext_pkgs = []
+    } else {
+        $ext_pkgs = [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]
+    }
     package { 'hhvm':
         ensure => present,
     }
