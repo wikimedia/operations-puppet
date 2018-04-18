@@ -106,14 +106,21 @@ class hhvm(
     $a_frozen_size = 0.33 * $base_jit_size
 
 
+    # HHVM specific
+    if os_version('ubuntu == trusty') {
+        # only for dumps hosts, they don't need these extensions
+        $dynamic_extensions = []
+    } else {
+        $dynamic_extensions = [ 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ]
+    }
+
     $common_defaults = {
         date         => { timezone => 'UTC' },
         include_path => '.:/usr/share/php',
 
-        # HHVM specific
         hhvm         => {
             dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/20150212',
-            dynamic_extensions       => [ 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ],
+            dynamic_extensions       => $dynamic_extensions,
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
