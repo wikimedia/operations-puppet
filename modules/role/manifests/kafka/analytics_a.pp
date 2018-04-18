@@ -13,8 +13,7 @@ class role::kafka::analytics_a {
     interface::add_ip6_mapped { 'main': }
 
     include ::role::kafka::analytics::broker
-    # TODO: use profile::kafka::broker as part of https://phabricator.wikimedia.org/T192387
-    include ::role::kafka::analytics::mirror
+    include ::profile::kafka::mirror
 
     include ::role::ipsec
     include ::standard
