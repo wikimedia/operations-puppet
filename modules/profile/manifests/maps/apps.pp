@@ -21,9 +21,10 @@ class profile::maps::apps(
     $contact_groups = 'admins,team-interactive'
 
     profile::maps::sources_config { 'kartotherian':
-        mode       => 'kartotherian',
-        storage_id => $kartotherian_storage_id,
-        style      => $kartotherian_style,
+        mode                 => 'kartotherian',
+        storage_id           => $kartotherian_storage_id,
+        tilerator_storage_id => $tilerator_storage_id,
+        style                => $kartotherian_style,
     }
     profile::maps::sources_config { 'tilerator':
         mode       => 'tilerator',
