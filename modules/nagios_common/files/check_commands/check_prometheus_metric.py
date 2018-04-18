@@ -47,13 +47,10 @@ PREDICATE = {
     'lt': operator.lt,
 }
 
-PREDICATE_TO_STR = {
-    operator.eq: '==',
-    operator.ge: '>=',
-    operator.gt: '>',
-    operator.le: '<=',
-    operator.lt: '<',
-}
+# Using > and < won't work because they are stripped from output by default
+# See also illegal_macro_output_chars setting
+# https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/configmain.html
+PREDICATE_TO_STR = {v: k for (k, v) in PREDICATE.items()}
 
 log = logging.getLogger(__name__)
 
@@ -230,8 +227,6 @@ def main():
     status, text = check.check_query(options.query[0], options.warning, options.critical,
                                      PREDICATE.get(options.method), options.nan_ok)
 
-    # Certain characters will be stripped according to illegal_macro_output_chars setting
-    # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/configmain.html
     print(text)
     return status
 
