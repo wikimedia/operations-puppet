@@ -1,4 +1,4 @@
-groups:
+fgroups:
   absent:
     description: meta group for absented users with previous cluster shell access
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
@@ -109,6 +109,10 @@ groups:
     gid: 712
     description: people who upload mobile app releases
     members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski, cooltey, sharvaniharan]
+  releasers-parsoid:
+    gid: 801
+    description: people who upload parsoid releases (T150672)
+    members: []
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
