@@ -969,7 +969,7 @@ node 'labtestservices2002.wikimedia.org' {
 
 # Temporary nodepool testing here:
 node 'labtestservices2003.wikimedia.org' {
-    role(wmcs::openstack::labtest::nodepool)
+    role(spare::system)
     interface::add_ip6_mapped { 'main': }
 }
 
