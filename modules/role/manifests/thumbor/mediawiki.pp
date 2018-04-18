@@ -12,6 +12,7 @@ class role::thumbor::mediawiki {
     include ::profile::prometheus::nutcracker_exporter
     include ::profile::thumbor
     include ::lvs::realserver
+    include ::threedtopng::deploy # lint:ignore:wmf_styleguide
 
     class { '::memcached':
         size => 100,
@@ -24,9 +25,5 @@ class role::thumbor::mediawiki {
         proto  => 'tcp',
         port   => '11211',
         srange => "(@resolve((${thumbor_memcached_servers_ferm})))",
-    }
-
-    class { 'threedtopng::deploy':
-        manage_user => true,
     }
 }
