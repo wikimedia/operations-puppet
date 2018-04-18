@@ -142,7 +142,7 @@ class TaskGen < ::Rake::TaskLib
         puts "Resolved violations:"
         print_wmf_style_violations(old_problems, new_problems)
         puts '---> end wmf_style lint'
-        abort if delta > 0
+        abort if delta.positive?
       end
     end
   end
@@ -297,6 +297,15 @@ class TaskGen < ::Rake::TaskLib
             raise 'Tests for mtail failed!' unless res
           end
           tasks << 'tox:mtail'
+        end
+        nagios_common_files = filter_files_by("modules/nagios_common/files/check_commands/**")
+        unless nagios_common_files.empty?
+          desc 'Run tox for nagios_common'
+          task :nagios_common do
+            res = system("tox -e nagios_common")
+            raise 'Tests for nagios_common failed!' unless res
+          end
+          tasks << 'tox:nagios_common'
         end
         tox_files = filter_files_by("*.py")
         unless tox_files.empty?
