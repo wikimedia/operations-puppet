@@ -131,7 +131,7 @@ class contint::packages::php {
     package { [
         'libthai-dev',      # wikidiff2
         'luajit',           # luasandbox
-        'liblua5.1.0-dev',  # luasandbox
+        'liblua5.1-0-dev',  # luasandbox
     ]:
         ensure => present
     }
