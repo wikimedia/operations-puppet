@@ -54,6 +54,7 @@ class puppetdb::app(
 
         service { 'puppetdb':,
             ensure => running,
+            enable => true,
         }
 
     }
