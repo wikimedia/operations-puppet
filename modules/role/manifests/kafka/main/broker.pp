@@ -11,7 +11,12 @@ class role::kafka::main::broker {
     # kafkacat is handy!
     require_package('kafkacat')
 
-    $config         = kafka_config('main')
+    # Temporary use of hiera() in role to ease testing in labs as we move
+    # this to profile::kafka::broker and Kafka 1.x.
+    # I need to use a different cluster name than 'main' for testing
+    # upgrades of a 'main' cluster in labs.  This entire role class will
+    # be removed soon.
+    $config         = kafka_config(hiera('_kafka_cluster_name', 'main'))
     $cluster_name   = $config['name']
     $zookeeper_url  = $config['zookeeper']['url']
     $brokers_string = $config['brokers']['string']
