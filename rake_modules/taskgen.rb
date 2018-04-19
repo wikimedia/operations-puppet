@@ -142,7 +142,7 @@ class TaskGen < ::Rake::TaskLib
         puts "Resolved violations:"
         print_wmf_style_violations(old_problems, new_problems)
         puts '---> end wmf_style lint'
-        abort if delta.positive?
+        abort if delta > 0 # rubocop:disable Style/NumericPredicate
       end
     end
   end
