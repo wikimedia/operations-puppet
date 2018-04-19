@@ -14,5 +14,5 @@ class role::releases {
     include ::profile::releases::mediawiki
     include ::profile::releases::mediawiki::security
     include ::profile::releases::reprepro
-    include ::profile::releases::parsoid
+
 }
