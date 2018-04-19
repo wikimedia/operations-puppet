@@ -8,6 +8,7 @@ class profile::mariadb::ferm_wmcs(
     $designate_host = hiera('profile::openstack::main::designate_host'),
     $designate_host_standby = hiera('profile::openstack::main::designate_host_standby'),
     $labweb_hosts = hiera('profile::openstack::main::labweb_hosts'),
+    $labtestweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $osm_host = hiera('profile::openstack::main::osm_host'),
     ) {
 
@@ -46,5 +47,12 @@ class profile::mariadb::ferm_wmcs(
         port    => '3306',
         notrack => true,
         srange  => $labweb_ips,
+    }
+    $labtestweb_ips = inline_template("@resolve((<%= @labtestweb_hosts.join(' ') %>))")
+    ferm::service{ 'labtestweb':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => $labtestweb_ips,
     }
 }
