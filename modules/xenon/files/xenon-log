@@ -91,6 +91,10 @@ def get_tag(raw_stack):
 
 
 for message in pubsub.listen():
+    # T169249 skip the subscription confirmation message
+    if message['type'] != 'message':
+        continue
+
     data = message['data']
     time = datetime.datetime.utcnow()
     tag = get_tag(str(data))
