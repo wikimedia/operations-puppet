@@ -23,7 +23,20 @@ class mtail (
     validate_re($port, '^[0-9]+$')
     validate_re($ensure, '^(running|stopped)$')
 
-    require_package('mtail')
+    if os_version('debian == stretch') {
+        apt::pin { 'mtail':
+            pin      => 'release a=stretch-backports',
+            package  => 'mtail',
+            priority => '1001',
+            before   => Package['mtail'],
+        }
+    }
+
+    # Not using require_package so apt::pin may be
+    # applied before attempting to install mtail.
+    package { 'mtail':
+        ensure => present,
+    }
 
     file { '/etc/default/mtail':
         ensure  => present,
