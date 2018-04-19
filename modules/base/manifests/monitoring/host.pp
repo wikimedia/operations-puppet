@@ -189,4 +189,15 @@ class base::monitoring::host(
             nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 96 -c 480',
         }
     }
+
+    if $facts['is_virtual'] == false {
+        monitoring::check_prometheus { 'smart_healthy':
+            description    => 'Device not healthy (SMART)'
+            query          => 'device_smart_healthy{instance=\"${::hostname}:9100"\"}',
+            method         => 'le',
+            warning        => 0,
+            critical       => 0,
+            prometheus_url => "http://prometheus.svc.${::site}.wmnet/ops",
+        }
+    }
 }
