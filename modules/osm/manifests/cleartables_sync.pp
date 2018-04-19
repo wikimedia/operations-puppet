@@ -1,11 +1,12 @@
 define osm::cleartables_sync (
     String $pg_password,
-    Wmflib::Ensure $ensure        = 'present',
-    String $hour                  = '*',
-    String $minute                = '*/30',
-    String $postreplicate_command = undef,
-    String $proxy_host            = "webproxy.${::site}.wmnet",
-    Wmflib::IpPort $proxy_port    = 8080,
+    Wmflib::Ensure $ensure            = 'present',
+    String $hour                      = '*',
+    String $minute                    = '*/30',
+    String $postreplicate_command     = undef,
+    String $proxy_host                = "webproxy.${::site}.wmnet",
+    Wmflib::IpPort $proxy_port        = 8080,
+    Boolean $disable_replication_cron = false,
 ) {
 
     $log_dir = '/var/log/osm_replication/'

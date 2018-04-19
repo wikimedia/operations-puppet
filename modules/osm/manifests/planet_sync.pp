@@ -36,6 +36,8 @@
 #      osm2pgsql == 0.90 is used on jessie only at this point.
 #   $postreplicate_command
 #      command to run after replication of OSM data
+#   $disable_replication_cron
+#      usefull to disable replication, for example during a full tile regeneration
 #
 # Actions:
 #   sync with planet.osm
@@ -46,24 +48,25 @@
 #
 # Sample Usage:
 #  osm::planet_sync { 'mydb': }
-define osm::planet_sync(
-                $pg_password,
-                $ensure=present,
-                $osmosis_dir='/srv/osmosis',
-                $expire_dir='/srv/osm_expire',
-                $period='minute',
-                $hour='*',
-                $minute='*/30',
-                $proxy='webproxy.eqiad.wmnet:8080',
-                $flat_nodes=false,
-                $expire_levels='15',
-                $memory_limit=floor($::memorysize_mb)/12,
-                $num_threads=$::processorcount,
-                $input_reader_format = os_version('debian >= jessie')? {
-                    true    => 'xml',
-                    default => 'libxml2',
-                },
-                $postreplicate_command = undef,
+define osm::planet_sync (
+    String $pg_password,
+    Wmflib::Ensure $ensure            = present,
+    String $osmosis_dir               = '/srv/osmosis',
+    String $expire_dir                = '/srv/osm_expire',
+    String $period                    = 'minute',
+    String $hour                      = '*',
+    String $minute                    = '*/30',
+    String $proxy                     = 'webproxy.eqiad.wmnet:8080',
+    Boolean $flat_nodes               = false,
+    String $expire_levels             = '15',
+    Integer $memory_limit             = floor($::memorysize_mb) / 12,
+    Integer $num_threads              = $::processorcount,
+    String $input_reader_format       = os_version('debian >= jessie') ? {
+        true    => 'xml',
+        default => 'libxml2',
+    },
+    String $postreplicate_command     = undef,
+    Boolean $disable_replication_cron = false,
 ) {
     include ::osm::users
 
@@ -118,8 +121,12 @@ define osm::planet_sync(
         content => template('osm/planetsync-logrotate.conf.erb'),
     }
 
+    $ensure_cron = $disable_replication_cron ? {
+        true    => absent,
+        default => present,
+    }
     cron { "planet_sync-${name}":
-        ensure      => $ensure,
+        ensure      => $ensure_cron,
         command     => "/usr/local/bin/replicate-osm >> ${osm_log_dir}/osm2pgsql.log 2>&1",
         user        => 'osmupdater',
         hour        => $hour,

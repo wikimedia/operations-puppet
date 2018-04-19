@@ -1,16 +1,17 @@
 class profile::maps::osm_master (
-    $planet_sync_period = hiera('profile::maps::osm_master::planet_sync_period', 'day'),
-    $planet_sync_hour   = hiera('profile::maps::osm_master::planet_sync_hour', '1'),
-    $planet_sync_minute = hiera('profile::maps::osm_master::planet_sync_minute', '27'),
-    $maps_hosts         = hiera('profile::maps::hosts'),
-    $kartotherian_pass  = hiera('profile::maps::osm_master::kartotherian_pass'),
-    $tilerator_pass     = hiera('profile::maps::osm_master::tilerator_pass'),
-    $tileratorui_pass   = hiera('profile::maps::osm_master::tileratorui_pass'),
-    $osmimporter_pass   = hiera('profile::maps::osm_master::osmimporter_pass'),
-    $osmupdater_pass    = hiera('profile::maps::osm_master::osmupdater_pass'),
-    $replication_pass   = hiera('profile::maps::osm_master::replication_pass'),
-    $postgres_slaves    = hiera('profile::maps::osm_master::slaves', undef),
-    $cleartables        = hiera('profile::maps::osm_master::cleartables', false),
+    $planet_sync_period       = hiera('profile::maps::osm_master::planet_sync_period', 'day'),
+    $planet_sync_hour         = hiera('profile::maps::osm_master::planet_sync_hour', '1'),
+    $planet_sync_minute       = hiera('profile::maps::osm_master::planet_sync_minute', '27'),
+    $maps_hosts               = hiera('profile::maps::hosts'),
+    $kartotherian_pass        = hiera('profile::maps::osm_master::kartotherian_pass'),
+    $tilerator_pass           = hiera('profile::maps::osm_master::tilerator_pass'),
+    $tileratorui_pass         = hiera('profile::maps::osm_master::tileratorui_pass'),
+    $osmimporter_pass         = hiera('profile::maps::osm_master::osmimporter_pass'),
+    $osmupdater_pass          = hiera('profile::maps::osm_master::osmupdater_pass'),
+    $replication_pass         = hiera('profile::maps::osm_master::replication_pass'),
+    $postgres_slaves          = hiera('profile::maps::osm_master::slaves', undef),
+    $cleartables              = hiera('profile::maps::osm_master::cleartables', false),
+    $disable_replication_cron = hiera('profile::maps::osm_master::disable_replication_cron', false),
 ) {
 
     require ::profile::maps::postgresql_common
@@ -137,23 +138,25 @@ class profile::maps::osm_master (
 
     if $cleartables {
         osm::cleartables_sync { $db_name:
-            ensure                => present,
-            pg_password           => $osmupdater_pass,
-            hour                  => $planet_sync_hour,
-            minute                => $planet_sync_minute,
-            postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+            ensure                   => present,
+            pg_password              => $osmupdater_pass,
+            hour                     => $planet_sync_hour,
+            minute                   => $planet_sync_minute,
+            postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+            disable_replication_cron => $disable_replication_cron,
         }
     } else {
         osm::planet_sync { $db_name:
-          ensure                => present,
-          flat_nodes            => true,
-          expire_levels         => '15',
-          num_threads           => 4,
-          pg_password           => $osmupdater_pass,
-          period                => $planet_sync_period,
-          hour                  => $planet_sync_hour,
-          minute                => $planet_sync_minute,
-          postreplicate_command => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+            ensure                   => present,
+            flat_nodes               => true,
+            expire_levels            => '15',
+            num_threads              => 4,
+            pg_password              => $osmupdater_pass,
+            period                   => $planet_sync_period,
+            hour                     => $planet_sync_hour,
+            minute                   => $planet_sync_minute,
+            postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
+            disable_replication_cron => $disable_replication_cron,
         }
         osm::populate_admin { $db_name:
             ensure => present,
