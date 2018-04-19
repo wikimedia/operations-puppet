@@ -2,6 +2,7 @@ class profile::dumps::generation::worker::common(
     $nfs_server = hiera('dumps_nfs_server'),
     $managed_subdirs = hiera('dumps_managed_subdirs'),
     $datadir_mount_type = hiera('dumps_datadir_mount_type'),
+    $extra_mountopts = hiera('snapshot::dumps::nfs_extra_mountopts'),
     $php = hiera('snapshot::dumps::php'),
 ) {
     # mw packages and dependencies
