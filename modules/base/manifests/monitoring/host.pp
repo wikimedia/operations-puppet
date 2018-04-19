@@ -189,4 +189,16 @@ class base::monitoring::host(
             nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 240 -c 480',
         }
     }
+
+    if ! $facts['is_virtual'] {
+        monitoring::check_prometheus { 'smart_healthy':
+            description     => 'Device not healthy (SMART)',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
+            query           => "device_smart_healthy{instance=\"${::hostname}:9100\"}",
+            method          => 'le',
+            warning         => 0,
+            critical        => 0,
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        }
+    }
 }
