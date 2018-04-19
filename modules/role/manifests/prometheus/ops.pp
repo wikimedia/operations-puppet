@@ -558,10 +558,17 @@ class role::prometheus::ops {
 
     $jmx_exporter_jobs = [
       {
-        'job_name'        => 'jmx_kafka',
+        'job_name'        => 'jmx_kafka_broker',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/jmx_kafka_*.yaml" ]}
+          { 'files' => [ "${targets_path}/jmx_kafka_broker_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'jmx_kafka_mirrormaker_',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_kafka_mirrormaker_*.yaml" ]}
         ],
       },
       {
@@ -587,26 +594,21 @@ class role::prometheus::ops {
       },
     ]
 
-    prometheus::jmx_exporter_config{ "kafka_broker_jumbo_${::site}":
-        dest       => "${targets_path}/jmx_kafka_broker_jumbo_${::site}.yaml",
-        class_name => 'role::kafka::jumbo::broker',
+    # Collect all declared Kafka Broker jmx_exporter_instances
+    # from any uses of profile::kafka::broker::monitoring.
+    prometheus::jmx_exporter_config{ "kafka_broker_${::site}":
+        dest       => "${targets_path}/jmx_kafka_broker_${::site}.yaml",
+        class_name => 'profile::kafka::broker::monitoring',
         site       => $::site,
     }
-    prometheus::jmx_exporter_config{ "kafka_main_${::site}":
-        dest       => "${targets_path}/jmx_kafka_main_${::site}.yaml",
-        class_name => 'role::kafka::main',
+    # Collect all declared Kafka MirrorMaker jmx_exporter_instances
+    # from any uses of profile::kafka::mirror.
+    prometheus::jmx_exporter_config{ "kafka_mirrormaker_${::site}":
+        dest       => "${targets_path}/jmx_kafka_mirrormaker_${::site}.yaml",
+        class_name => 'profile::kafka::mirror',
         site       => $::site,
     }
 
-    # This config is to be removed once the Kafka analytics cluster
-    # has been totally replaced by the Kafka jumbo cluster.
-    # We include this now so that we can pick up MirrorMaker
-    # prometheus metrics.
-    prometheus::jmx_exporter_config{ "kafka_analytics_${::site}_b":
-        dest       => "${targets_path}/jmx_kafka_analytics_${::site}_b.yaml",
-        class_name => 'role::kafka::analytics_b',
-        site       => $::site,
-    }
 
     prometheus::jmx_exporter_config{ "puppetdb_${::site}":
         dest       => "${targets_path}/jmx_puppetdb_${::site}.yaml",
