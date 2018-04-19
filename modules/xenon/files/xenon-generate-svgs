@@ -2,6 +2,16 @@
 set +C  # OK to clobber out-of-date SVGs
 shopt -s globstar nullglob
 for log in /srv/xenon/**/*.log; do
+    lastmodified=$(stat $log | grep Modify | awk '{print $2, $3, $4}')
+    lastmodifiedts=$(date -d "$lastmodified" +%s)
+    currentts=$(date '+%s')
+    delta=$((currentts-lastmodifiedts))
+    # Don't process log files that have been recently modifed, they are likely to
+    # still being written to
+    if [ $delta -lt 600 ]; then
+        continue
+    fi
+
     dir="$(dirname "$log")"
     period="$(basename "$dir")"
     time="$(basename "$log" ".log")"
