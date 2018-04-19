@@ -6,6 +6,7 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   StyleGuideCopsOnly: true
+  DisplayCopNames: true
   Exclude:
     # not a Ruby script
     - 'modules/smokeping/files/smokeping.fcgi'
