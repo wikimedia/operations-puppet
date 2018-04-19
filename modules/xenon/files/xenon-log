@@ -93,6 +93,11 @@ def get_tag(raw_stack):
 
 for message in pubsub.listen():
     data = message['data']
+
+    # T169249 xenon pushes invalid records on rare occasions, filter them out
+    if not re.match(r'^(.*)\s+?(\d+(?:\.\d*)?)$', data):
+        continue
+
     time = datetime.datetime.utcnow()
     tag = get_tag(str(data))
     for log in logs:
