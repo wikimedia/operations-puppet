@@ -52,6 +52,8 @@ class clamav($proxy=undef) {
         require => Package['clamav-freshclam'],
     }
 
+    base::service_auto_restart { 'clamav-freshclam': }
+
     service { 'clamav-daemon':
         ensure    => running,
         require   => File['/etc/clamav/clamd.conf'],
