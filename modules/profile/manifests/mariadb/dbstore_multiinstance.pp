@@ -18,6 +18,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     $basedir = '/opt/wmf-mariadb101'
     class { 'mariadb::config':
+        datadir       => false,
         basedir       => $basedir,
         config        => 'role/mariadb/mysqld_config/dbstore_multiinstance.my.cnf.erb',
         p_s           => 'on',
