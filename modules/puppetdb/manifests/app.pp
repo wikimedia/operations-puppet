@@ -5,9 +5,6 @@
 #
 # === Parameters
 #
-# [*puppetdb_major_version*]
-#   Major version of puppetdb to configure.
-#   values: 4 or undef (default)
 
 class puppetdb::app(
     Optional[String] $db_rw_host,
@@ -21,7 +18,6 @@ class puppetdb::app(
     Optional[String] $bind_ip=undef,
     Optional[String] $db_ro_host=undef,
     Optional[String] $db_password=undef,
-    Optional[Integer[4]] $puppetdb_major_version=undef,
 ) {
     requires_os('debian >= jessie')
 
@@ -29,35 +25,31 @@ class puppetdb::app(
 
     require_package('puppetdb')
 
-    # Temporary conditional to support puppetlabs puppetdb 4 package
-    # clean up after puppetdb upgrade
-    if $puppetdb_major_version == 4 {
 
-        # Symlink /etc/puppetdb to /etc/puppetlabs/puppetdb
-        file { '/etc/puppetdb':
-            ensure => link,
-            target => '/etc/puppetlabs/puppetdb',
-        }
-
-        file { '/var/lib/puppetdb':
-            ensure => directory,
-            owner  => 'puppetdb',
-            group  => 'puppetdb',
-        }
-
-        file { '/etc/default/puppetdb':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            content => template('puppetdb/etc/default/puppetdb.erb'),
-        }
-
-        service { 'puppetdb':,
-            ensure => running,
-            enable => true,
-        }
-
+    # Symlink /etc/puppetdb to /etc/puppetlabs/puppetdb
+    file { '/etc/puppetdb':
+        ensure => link,
+        target => '/etc/puppetlabs/puppetdb',
     }
+
+    file { '/var/lib/puppetdb':
+        ensure => directory,
+        owner  => 'puppetdb',
+        group  => 'puppetdb',
+    }
+
+    file { '/etc/default/puppetdb':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        content => template('puppetdb/etc/default/puppetdb.erb'),
+    }
+
+    service { 'puppetdb':,
+        ensure => running,
+        enable => true,
+    }
+
 
     ## Configuration
 
@@ -75,13 +67,8 @@ class puppetdb::app(
         ensure => absent,
     }
 
-    if $puppetdb_major_version == 4 {
-        $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
-        $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
-    } else {
-        $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?ssl=true"
-        $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
-    }
+    $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
+    $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
 
     if $db_driver == 'postgres' {
         $default_db_settings = {
@@ -161,19 +148,6 @@ class puppetdb::app(
     puppetdb::config { 'jetty':
         settings => $actual_jetty_settings,
         require  => Base::Expose_puppet_certs['/etc/puppetdb'],
-    }
-
-    # Temporary conditional to support puppetlabs puppetdb 4 package
-    # clean up after puppetdb upgrade
-    unless $puppetdb_major_version == 4 {
-
-        # Systemd unit and service declaration
-        systemd::service { 'puppetdb':
-            ensure  => present,
-            content => template('puppetdb/puppetdb.service.erb'),
-            restart => true,
-        }
-
     }
 
     puppetdb::config { 'command-processing':

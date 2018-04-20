@@ -3,24 +3,15 @@
 class puppetmaster::puppetdb::client(
     $host,
     $port=443,
-    $puppetdb_major_version=undef,
 ) {
     # Only 3.5+ puppetmasters can work with our version of puppetdb
     requires_os('debian >= jessie')
 
-    if $puppetdb_major_version == 4 {
-        $puppetdb_terminus_package = 'puppetdb-termini'
-        $puppetdb_conf_template    = 'puppetmaster/puppetdb4.conf.erb'
-    } else {
-        $puppetdb_terminus_package = 'puppetdb-terminus'
-        $puppetdb_conf_template    = 'puppetmaster/puppetdb.conf.erb'
-    }
-
-    require_package($puppetdb_terminus_package)
+    require_package('puppetdb-termini')
 
     file { '/etc/puppet/puppetdb.conf':
         ensure  => present,
-        content => template($puppetdb_conf_template),
+        content => template('puppetmaster/puppetdb.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
