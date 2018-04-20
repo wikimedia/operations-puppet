@@ -70,11 +70,8 @@ class mariadb::config(
     # class' reponsability to handle it (otherwise this could have side
     # efects, like changing / or /tmp permissions
     if $socket == '/run/mysqld/mysqld.sock' {
-        file { '/run/mysqld':
-            ensure => directory,
-            mode   => '0775',
-            owner  => 'root',
-            group  => 'mysql',
+        systemd::tmpfile { 'mysqld':
+            content => 'd /run/mysqld root mysql',
         }
     }
 
