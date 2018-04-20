@@ -15,4 +15,8 @@ class profile::prometheus::nutcracker_exporter (
         port   => '9191',
         srange => $ferm_srange,
     }
+
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'prometheus-nutcracker-exporter': }
+    }
 }
