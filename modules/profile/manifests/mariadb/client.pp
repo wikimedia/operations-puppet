@@ -5,6 +5,7 @@ class profile::mariadb::client {
 
     class { 'mariadb::config':
         config   => 'profile/mariadb/mysqld_config/client.my.cnf.erb',
+        socket   => '/run/mysqld/client.sock', # use a non-default one
         ssl      => 'puppet-cert',
         ssl_ca   => '/etc/ssl/certs/Puppet_Internal_CA.pem',
         ssl_cert => '/etc/mysql/ssl/cert.pem',
