@@ -9,5 +9,6 @@ class profile::mariadb::client {
         ssl_ca   => '/etc/ssl/certs/Puppet_Internal_CA.pem',
         ssl_cert => '/etc/mysql/ssl/cert.pem',
         ssl_key  => '/etc/mysql/ssl/client.key',
+        datadir  => false,
     }
 }

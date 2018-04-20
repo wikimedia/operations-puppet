@@ -17,6 +17,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     $basedir = '/opt/wmf-mariadb101'
     class { 'mariadb::config':
+        datadir       => false,
         basedir       => $basedir,
         config        => 'profile/mariadb/mysqld_config/sanitarium_multiinstance.my.cnf.erb',
         p_s           => 'on',

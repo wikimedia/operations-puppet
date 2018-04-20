@@ -20,6 +20,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     $basedir = '/opt/wmf-mariadb101'
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
+        datadir       => false,
         basedir       => $basedir,
         config        => 'profile/mariadb/mysqld_config/core_multiinstance.my.cnf.erb',
         p_s           => 'on',

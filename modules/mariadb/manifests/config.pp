@@ -2,6 +2,9 @@
 # Keep this independent and modular. It should be includable
 # without the mariadb class.
 
+# Accepted values for the $datadir parameter are:
+# path_string | false
+
 # Accepted values for the $semi_sync parameter are:
 # 'off' | 'slave' | 'master' | 'both'
 
@@ -80,9 +83,6 @@ class mariadb::config(
     file { '/usr/local/etc/my.cnf':
         ensure => absent,
     }
-    file { "${datadir}/my.cnf":
-        ensure => absent,
-    }
     file { "${basedir}/my.cnf":
         ensure => absent,
     }
@@ -110,20 +110,24 @@ class mariadb::config(
         managehome => false,
     }
 
-    file { $datadir:
-        ensure => directory,
-        owner  => 'mysql',
-        group  => 'mysql',
-        mode   => '0755',
-    }
+    if $datadir {
+        file { "${datadir}/my.cnf":
+            ensure => absent,
+        }
+        file { $datadir:
+            ensure => directory,
+            owner  => 'mysql',
+            group  => 'mysql',
+            mode   => '0755',
+        }
 
-    file { $tmpdir:
-        ensure => directory,
-        owner  => 'mysql',
-        group  => 'mysql',
-        mode   => '0755',
+        file { $tmpdir:
+            ensure => directory,
+            owner  => 'mysql',
+            group  => 'mysql',
+            mode   => '0755',
+        }
     }
-
     file { '/usr/lib/nagios/plugins/check_mariadb.pl':
         owner  => 'root',
         group  => 'root',
