@@ -63,6 +63,12 @@ class openstack::nova::compute::monitor(
 
     if ($active) and ($verify_instances) {
 
+        if os_version('ubuntu trusty') {
+            $kvmbinary = '/usr/bin/kvm'
+        } else {
+            $kvmbinary = 'qemu-system-x86_64'
+        }
+
         # Where a stopped nova-compute processes means we are no longer processing
         # control plane messaging above, this check makes sure that at least one (even
         # if it is a token administrative) instance is running.  If a hypervisor
@@ -76,7 +82,7 @@ class openstack::nova::compute::monitor(
         nrpe::monitor_service { 'ensure_running_kvm_instances':
             ensure        => $ensure,
             description   => 'ensure kvm processes are running',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:95 --ereg-argument-array /usr/bin/kvm',
+            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:95 --ereg-argument-array ${kvmbinary}",
             retries       => 2,
             contact_group => $contact_groups,
         }
