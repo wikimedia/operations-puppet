@@ -1,10 +1,10 @@
-# Cannonical commit name mappings
+# Canonical commit name mappings
 #
 # Mappings use one of two forms. The first maps an email address to the
-# cannonical proper name:
+# canonical proper name:
 #   Proper Name <commit@email.xx>
 #
-# The second maps any Proper Name <email> value to a cannonical Proper Name
+# The second maps any Proper Name <email> value to a canonical Proper Name
 # <email> value based on the email used by the commit:
 #   Proper Name <proper@email.xx> <commit@email.xx>
 #

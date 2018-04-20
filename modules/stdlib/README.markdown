@@ -668,7 +668,7 @@ Returns 'true' if the client has the requested IP address on some interface. Thi
 
 #### `has_ip_network`
 
-Returns 'true' if the client has an IP address within the requested network. This function iterates through the `interfaces` fact and checks the `network_IFACE` facts, performing a simple string comparision. *Type*: rvalue.
+Returns 'true' if the client has an IP address within the requested network. This function iterates through the `interfaces` fact and checks the `network_IFACE` facts, performing a simple string comparison. *Type*: rvalue.
 
 #### `has_key`
 
@@ -1526,7 +1526,7 @@ The deprecation messages you get can vary, depending on the modules and data tha
 
 The `validate_legacy` function helps you move from Puppet 3 style validation to Puppet 4 validation without breaking functionality your module's users depend on.
 
-Moving to Puppet 4 type validation allows much better defined type checking using [data types](https://docs.puppet.com/puppet/latest/reference/lang_data.html). Many of Puppet 3's `validate_*` functions have surprising holes in their validation. For example, [validate_numeric](#validate_numeric) allows not only numbers, but also arrays of numbers or strings that look like numbers, without giving you any control over the specifics. 
+Moving to Puppet 4 type validation allows much better defined type checking using [data types](https://docs.puppet.com/puppet/latest/reference/lang_data.html). Many of Puppet 3's `validate_*` functions have surprising holes in their validation. For example, [validate_numeric](#validate_numeric) allows not only numbers, but also arrays of numbers or strings that look like numbers, without giving you any control over the specifics.
 
 For each parameter of your classes and defined types, choose a new Puppet 4 data type to use. In most cases, the new data type allows a different set of values than the original `validate_*` function. The situation then looks like this:
 
