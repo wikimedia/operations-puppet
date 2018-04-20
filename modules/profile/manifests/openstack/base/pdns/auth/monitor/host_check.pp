@@ -11,10 +11,14 @@ class profile::openstack::base::pdns::auth::monitor::host_check(
     monitoring::service { "${target_host} Auth DNS UDP":
         description   => 'Check for gridmaster host resolution UDP',
         check_command => "check_dig!${target_host}!${target_fqdn}",
+        critical      => true,
+        contact_group => 'wmcs-team',
     }
 
     monitoring::service { "${target_host} Auth DNS TCP":
         description   => 'Check for gridmaster host resolution TCP',
         check_command => "check_dig_tcp!${target_host}!${target_fqdn}",
+        critical      => true,
+        contact_group => 'wmcs-team',
     }
 }
