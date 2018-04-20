@@ -112,7 +112,7 @@ groups:
   releasers-parsoid:
     gid: 802
     description: people who upload parsoid releases (T150672)
-    members: [ssastry]
+    members: [ssastry, arlolra, cscott]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
