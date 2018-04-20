@@ -137,6 +137,7 @@ profile::diffscan::groupname: Labs-to-public-v4
 
 # User for jenkins master-slave connections
 jenkins_agent_username: 'jenkins-deploy'
+jenkins_agent_home: '/srv/home/jenkins-deploy'
 
 role::logging::mediawiki::udp2log::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
 
