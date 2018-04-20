@@ -30,14 +30,13 @@ class profile::puppetmaster::backend(
     }
 
     class { '::puppetmaster':
-        server_type            => 'backend',
-        config                 => $::profile::puppetmaster::common::config,
-        secure_private         => $secure_private,
-        prevent_cherrypicks    => $prevent_cherrypicks,
-        allow_from             => $allow_from,
-        extra_auth_rules       => $extra_auth_rules,
-        puppet_major_version   => $puppet_major_version,
-        puppetdb_major_version => $puppetdb_major_version,
+        server_type          => 'backend',
+        config               => $::profile::puppetmaster::common::config,
+        secure_private       => $secure_private,
+        prevent_cherrypicks  => $prevent_cherrypicks,
+        allow_from           => $allow_from,
+        extra_auth_rules     => $extra_auth_rules,
+        puppet_major_version => $puppet_major_version,
     }
 
     $puppetmaster_frontend_ferm = join(keys($puppetmasters), ' ')
