@@ -16,11 +16,10 @@ class profile::puppetdb(
 
     # The JVM heap size has been raised to 6G for T170740
     class { '::puppetmaster::puppetdb':
-        master                 => $master,
-        jvm_opts               => "${jvm_opts} ${prometheus_java_opts}",
-        puppetdb_major_version => $puppetdb_major_version,
-        ssldir                 => $ssldir,
-        ca_path                => $ca_path,
+        master   => $master,
+        jvm_opts => "${jvm_opts} ${prometheus_java_opts}",
+        ssldir   => $ssldir,
+        ca_path  => $ca_path,
     }
 
     # Export JMX metrics to prometheus

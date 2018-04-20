@@ -80,14 +80,13 @@ class role::puppetmaster::standalone(
     $config = merge($base_config, $env_config)
 
     class { '::puppetmaster':
-        server_name            => $server_name,
-        allow_from             => $allow_from,
-        secure_private         => false,
-        prevent_cherrypicks    => $prevent_cherrypicks,
-        extra_auth_rules       => $extra_auth_rules,
-        config                 => $config,
-        puppet_major_version   => $puppet_major_version,
-        puppetdb_major_version => $puppetdb_major_version,
+        server_name          => $server_name,
+        allow_from           => $allow_from,
+        secure_private       => false,
+        prevent_cherrypicks  => $prevent_cherrypicks,
+        extra_auth_rules     => $extra_auth_rules,
+        config               => $config,
+        puppet_major_version => $puppet_major_version,
     }
 
     # Update git checkout
