@@ -18,6 +18,7 @@ class profile::mariadb::wmf_root_client {
         ssl_ca   => '/etc/ssl/certs/Puppet_Internal_CA.pem',
         ssl_cert => '/etc/mysql/ssl/cert.pem',
         ssl_key  => '/etc/mysql/ssl/server.key',
+        datadir  => false,
     }
 
     $password = $passwords::misc::scripts::mysql_root_pass
