@@ -63,7 +63,6 @@ class puppetmaster(
     $git_user='gitpuppet',
     $git_group='gitpuppet',
     $puppet_major_version=undef,
-    $puppetdb_major_version=undef,
 ){
 
     $gitdir = '/var/lib/git'
@@ -76,18 +75,11 @@ class puppetmaster(
         server_type => $server_type,
     }
 
-    # this seems redundant because the puppetdb "termius" package is required in
+    # this seems redundant because the puppetdb-termini package is required in
     # puppetmaster::puppetdb::client, but I don't want to break something -herron
-    if $puppetdb_major_version == 4 {
-        $puppetdb_terminus_package = 'puppetdb-termini'
-    } else {
-        $puppetdb_terminus_package = 'puppetdb-terminus'
-    }
-
-    # Let's use puppet 3.8 on the masters at least
     if os_version('debian >= jessie') {
-        # Install the puppetdb-terminus package, needed for puppetdbquery
-        require_package($puppetdb_terminus_package)
+        # Install the puppetdb-termini package, needed for puppetdbquery
+        require_package('puppetdb-termini')
     }
 
     # puppetmaster package name changed to puppet-master with version 4

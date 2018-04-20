@@ -60,7 +60,6 @@ class profile::puppetmaster::common (
         $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
         class { 'puppetmaster::puppetdb::client':
             host                   => $puppetdb_host,
-            puppetdb_major_version => $puppetdb_major_version,
         }
         $config = merge($base_config, $puppetdb_config, $active_record_db, $env_config)
     } elsif $storeconfigs == 'activerecord' {

@@ -87,7 +87,6 @@ class role::puppetmaster::standalone(
         extra_auth_rules       => $extra_auth_rules,
         config                 => $config,
         puppet_major_version   => $puppet_major_version,
-        puppetdb_major_version => $puppetdb_major_version,
     }
 
     # Update git checkout

@@ -112,7 +112,6 @@ class puppet_compiler(
     class { 'puppetmaster::puppetdb::client':
         host                   => $::fqdn,
         port                   => $puppetdb_port,
-        puppetdb_major_version => $puppetdb_major_version,
     }
     # puppetdb configuration
     file { "${vardir}/puppetdb.conf":

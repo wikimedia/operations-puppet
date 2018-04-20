@@ -37,7 +37,6 @@ class profile::puppetmaster::backend(
         allow_from             => $allow_from,
         extra_auth_rules       => $extra_auth_rules,
         puppet_major_version   => $puppet_major_version,
-        puppetdb_major_version => $puppetdb_major_version,
     }
 
     $puppetmaster_frontend_ferm = join(keys($puppetmasters), ' ')
