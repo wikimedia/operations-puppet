@@ -2,7 +2,7 @@ admin::groups:
   - labtest-roots
 
 puppetmaster::hiera_config: labtest
-labs_puppet_master: labtestpuppetmaster2001.wikimedia.org
+labs_puppet_master: labtest-puppetmaster.wikimedia.org
 profile::puppetmaster::common::storeconfigs: none
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::discovery::path: "/srv/config-master/discovery"
@@ -11,4 +11,4 @@ profile::puppetmaster::frontend::prevent_cherrypicks: false
 
 # Remaining module embedded hiera lookup
 # modules/base/manifests/puppet.pp:    $ca_server = hiera('puppetmaster::ca_server', '')
-puppetmaster::ca_server: labtestpuppetmaster2001.wikimedia.org
+puppetmaster::ca_server: labtest-puppetmaster.wikimedia.org
