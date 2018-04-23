@@ -50,23 +50,23 @@
 #  osm::planet_sync { 'mydb': }
 define osm::planet_sync (
     String $pg_password,
-    Wmflib::Ensure $ensure            = present,
-    String $osmosis_dir               = '/srv/osmosis',
-    String $expire_dir                = '/srv/osm_expire',
-    String $period                    = 'minute',
-    String $hour                      = '*',
-    String $minute                    = '*/30',
-    String $proxy                     = 'webproxy.eqiad.wmnet:8080',
-    Boolean $flat_nodes               = false,
-    String $expire_levels             = '15',
-    Integer $memory_limit             = floor($::memorysize_mb) / 12,
-    Integer $num_threads              = $::processorcount,
-    String $input_reader_format       = os_version('debian >= jessie') ? {
+    Wmflib::Ensure $ensure                  = present,
+    String $osmosis_dir                     = '/srv/osmosis',
+    String $expire_dir                      = '/srv/osm_expire',
+    String $period                          = 'minute',
+    String $hour                            = '*',
+    String $minute                          = '*/30',
+    String $proxy                           = 'webproxy.eqiad.wmnet:8080',
+    Boolean $flat_nodes                     = false,
+    String $expire_levels                   = '15',
+    Integer $memory_limit                   = floor($::memorysize_mb) / 12,
+    Integer $num_threads                    = $::processorcount,
+    String $input_reader_format             = os_version('debian >= jessie') ? {
         true    => 'xml',
         default => 'libxml2',
     },
-    String $postreplicate_command     = undef,
-    Boolean $disable_replication_cron = false,
+    Optional[String] $postreplicate_command = undef,
+    Boolean $disable_replication_cron       = false,
 ) {
     include ::osm::users
 
