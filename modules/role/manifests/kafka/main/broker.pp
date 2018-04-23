@@ -6,110 +6,115 @@
 #
 # filtertags: labs-project-deployment-prep labs-project-analytics
 class role::kafka::main::broker {
-
-    require_package('openjdk-7-jdk')
-    # kafkacat is handy!
-    require_package('kafkacat')
-
-    # Temporary use of hiera() in role to ease testing in labs as we move
-    # this to profile::kafka::broker and Kafka 1.x.
-    # I need to use a different cluster name than 'main' for testing
-    # upgrades of a 'main' cluster in labs.  This entire role class will
-    # be removed soon.
-    $config         = kafka_config(hiera('_kafka_cluster_name', 'main'))
-    $cluster_name   = $config['name']
-    $zookeeper_url  = $config['zookeeper']['url']
-    $brokers_string = $config['brokers']['string']
-
-    system::role { 'kafka::main::broker':
-        description => "Kafka Broker Server in the ${cluster_name} cluster",
+    if $::realm != 'production' {
+        # Test in labs, update deployment-prep there.
+        include ::profile::kafka::mirror
     }
+    else {
+        require_package('openjdk-7-jdk')
+        # kafkacat is handy!
+        require_package('kafkacat')
 
-    $nofiles_ulimit = $::realm ? {
-        # Use default ulimit for labs kafka
-        'labs'       => 8192,
-        # Increase ulimit for production kafka.
-        'production' => 65536,
-    }
+        # Temporary use of hiera() in role to ease testing in labs as we move
+        # this to profile::kafka::broker and Kafka 1.x.
+        # I need to use a different cluster name than 'main' for testing
+        # upgrades of a 'main' cluster in labs.  This entire role class will
+        # be removed soon.
+        $config         = kafka_config(hiera('_kafka_cluster_name', 'main'))
+        $cluster_name   = $config['name']
+        $zookeeper_url  = $config['zookeeper']['url']
+        $brokers_string = $config['brokers']['string']
 
-    # If we've got at least 3 brokers, set default replication factor to 3.
-    $replication_factor  = min(3, $config['brokers']['size'])
+        system::role { 'kafka::main::broker':
+            description => "Kafka Broker Server in the ${cluster_name} cluster",
+        }
 
-    file { '/srv/kafka':
-        ensure => 'directory',
-        mode   => '0755',
-    }
+        $nofiles_ulimit = $::realm ? {
+            # Use default ulimit for labs kafka
+            'labs'       => 8192,
+            # Increase ulimit for production kafka.
+            'production' => 65536,
+        }
 
-    class { '::confluent::kafka::broker':
-        log_dirs                        => ['/srv/kafka/data'],
-        brokers                         => $config['brokers']['hash'],
-        zookeeper_connect               => $config['zookeeper']['url'],
-        nofiles_ulimit                  => $nofiles_ulimit,
-        jmx_port                        => $config['jmx_port'],
+        # If we've got at least 3 brokers, set default replication factor to 3.
+        $replication_factor  = min(3, $config['brokers']['size'])
 
-        # I don't trust auto.leader.rebalance :)
-        auto_leader_rebalance_enable    => false,
+        file { '/srv/kafka':
+            ensure => 'directory',
+            mode   => '0755',
+        }
 
-        default_replication_factor      => $replication_factor,
+        class { '::confluent::kafka::broker':
+            log_dirs                        => ['/srv/kafka/data'],
+            brokers                         => $config['brokers']['hash'],
+            zookeeper_connect               => $config['zookeeper']['url'],
+            nofiles_ulimit                  => $nofiles_ulimit,
+            jmx_port                        => $config['jmx_port'],
 
-        # Should be changed if brokers are upgraded.
-        inter_broker_protocol_version   => '0.9.0.X',
+            # I don't trust auto.leader.rebalance :)
+            auto_leader_rebalance_enable    => false,
 
-        # Start with a low number of (auto created) partitions per
-        # topic.  This can be increased manually for high volume
-        # topics if necessary.
-        num_partitions                  => 1,
+            default_replication_factor      => $replication_factor,
 
-        # Use LinkedIn recommended settings with G1 garbage collector.
-        jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+            # Should be changed if brokers are upgraded.
+            inter_broker_protocol_version   => '0.9.0.X',
 
-        # These defaults are set to keep no-ops from changes
-        # made in confluent module for T166162.
-        # They should be removed (since they are the kafka or module defaults)
-        # when this role gets converted to a profile.
-        replica_fetch_max_bytes         => 1048576,
-        log_flush_interval_messages     => 10000,
-        log_flush_interval_ms           => 1000,
-        log_cleanup_policy              => 'delete',
-        zookeeper_connection_timeout_ms => 6000,
-        zookeeper_session_timeout_ms    => 6000,
+            # Start with a low number of (auto created) partitions per
+            # topic.  This can be increased manually for high volume
+            # topics if necessary.
+            num_partitions                  => 1,
 
-        # JobQueues-Eventbus needs a bigger msg size
-        # FIXME: this needs to be refactored when the role
-        # is moved to profiles.
-        message_max_bytes               => hiera('kafka_message_max_bytes', 1048576),
-    }
+            # Use LinkedIn recommended settings with G1 garbage collector.
+            jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
 
-    # Include Kafka Broker Jmxtrans class to
-    # send broker metrics to statsd.
-    $group_prefix = "kafka.cluster.${cluster_name}."
-    class { '::confluent::kafka::broker::jmxtrans':
-        group_prefix => $group_prefix,
-        statsd       => hiera('statsd', undef),
-    }
+            # These defaults are set to keep no-ops from changes
+            # made in confluent module for T166162.
+            # They should be removed (since they are the kafka or module defaults)
+            # when this role gets converted to a profile.
+            replica_fetch_max_bytes         => 1048576,
+            log_flush_interval_messages     => 10000,
+            log_flush_interval_ms           => 1000,
+            log_cleanup_policy              => 'delete',
+            zookeeper_connection_timeout_ms => 6000,
+            zookeeper_session_timeout_ms    => 6000,
 
-    # Monitor kafka in production.
-    if $::realm == 'production' {
-        class { '::confluent::kafka::broker::alerts': }
-    }
+            # JobQueues-Eventbus needs a bigger msg size
+            # FIXME: this needs to be refactored when the role
+            # is moved to profiles.
+            message_max_bytes               => hiera('kafka_message_max_bytes', 1048576),
+        }
 
-    # firewall Kafka Broker.
-    ferm::service { 'kafka-broker':
-        proto  => 'tcp',
-        # TODO: $::confluent::kafka::broker::port doesn't
-        # seem to work as expected.  Hardcoding this for now.
-        port   => 9092,
-        srange => '$PRODUCTION_NETWORKS',
-    }
+        # Include Kafka Broker Jmxtrans class to
+        # send broker metrics to statsd.
+        $group_prefix = "kafka.cluster.${cluster_name}."
+        class { '::confluent::kafka::broker::jmxtrans':
+            group_prefix => $group_prefix,
+            statsd       => hiera('statsd', undef),
+        }
+
+        # Monitor kafka in production.
+        if $::realm == 'production' {
+            class { '::confluent::kafka::broker::alerts': }
+        }
+
+        # firewall Kafka Broker.
+        ferm::service { 'kafka-broker':
+            proto  => 'tcp',
+            # TODO: $::confluent::kafka::broker::port doesn't
+            # seem to work as expected.  Hardcoding this for now.
+            port   => 9092,
+            srange => '$PRODUCTION_NETWORKS',
+        }
 
 
-    # Monitor TCP Connection States
-    diamond::collector { 'TcpConnStates':
-        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
-    }
+        # Monitor TCP Connection States
+        diamond::collector { 'TcpConnStates':
+            source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+        }
 
-    # Monitor Ferm/Netfilter Connection Flows
-    diamond::collector { 'NfConntrackCount':
-        source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
+        # Monitor Ferm/Netfilter Connection Flows
+        diamond::collector { 'NfConntrackCount':
+            source => 'puppet:///modules/diamond/collector/nf_conntrack_counter.py',
+        }
     }
 }
