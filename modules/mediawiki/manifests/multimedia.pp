@@ -7,5 +7,4 @@ class mediawiki::multimedia {
     include ::mediawiki::packages::multimedia
     include ::mediawiki::packages::fonts
     include ::mediawiki::users
-    include ::mediawiki::firejail
 }
