@@ -10,7 +10,6 @@ class contint::packages::labs {
     include ::contint::packages::base
 
     include ::mediawiki::packages
-    include ::mediawiki::packages::multimedia  # T76661
     # We're no longer installing PHP on app servers starting with
     # jessie, but we still need it for CI
     if os_version('debian == jessie') {
@@ -50,6 +49,22 @@ class contint::packages::labs {
 
         'python-sphinx',  # python documentation
         ]:
+        ensure => present,
+    }
+
+    # For image and video extension tests
+    package { [
+        'ffmpeg',
+        'fontconfig-config',
+        'ghostscript',
+        'libimage-exiftool-perl',
+        'libjpeg-turbo-progs',
+        'libogg0',
+        'libvips-tools',
+        'libvorbisenc2',
+        'netpbm',
+        'oggvideotools',
+    ]:
         ensure => present,
     }
 
