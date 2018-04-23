@@ -8,11 +8,23 @@ class profile::openstack::base::wikitech::web(
     ) {
 
     class {'::mediawiki': }
-    class {'::mediawiki::multimedia':}
+    class {'::mediawiki::packages::fonts': }
     class {'::profile::backup::host':}
 
     class { '::scap::scripts': }
 
+    # Packages (potentially) used for local image scaling, this can be removed once
+    # Thumbor has been setup for labweb:
+    package { [
+        'fontconfig-config',
+        'ghostscript',
+        'libimage-exiftool-perl',
+        'libjpeg-turbo-progs',
+        'libvips-tools',
+        'netpbm',
+    ]:
+        ensure => present,
+    }
 
     httpd::conf { 'server_header':
         content  => template('mediawiki/apache/server-header.conf.erb'),
