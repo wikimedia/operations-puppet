@@ -7,7 +7,6 @@ class mediawiki::multimedia {
     include ::mediawiki::packages::multimedia
     include ::mediawiki::packages::fonts
     include ::mediawiki::users
-    include ::mediawiki::firejail
 
     file { '/etc/fonts/conf.d/70-no-bitmaps.conf':
         source  => 'puppet:///modules/mediawiki/fontconfig-no-bitmaps.conf',
