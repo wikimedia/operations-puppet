@@ -60,8 +60,8 @@ define profile::kafka::mirror::alerts(
     $source_prometheus_url = "http://prometheus.svc.${::site}.wmnet/ops",
 ) {
     # Extract grafana datasources from $prometheus_urls for the dashboard url.
-    $grafana_datasource     = regsubst($prometheus_url,        '^.+prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1%20prometheus%2F\2')
-    $grafana_lag_datasource = regsubst($source_prometheus_url, '^.+prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1%20prometheus%2F\2')
+    $grafana_datasource     = regsubst($prometheus_url,        '^.+prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1 prometheus/\2')
+    $grafana_lag_datasource = regsubst($source_prometheus_url, '^.+prometheus\.svc\.(.+)\.wmnet/(.+)$', '\1 prometheus/\2')
     $dashboard_url          = "https://grafana.wikimedia.org/dashboard/db/kafka-mirrormaker?var-datasource=${grafana_datasource}&var-lag_datasource=${grafana_lag_datasource}&var-mirror_name=${mirror_name}"
 
     # Set check_prometheus defaults.
