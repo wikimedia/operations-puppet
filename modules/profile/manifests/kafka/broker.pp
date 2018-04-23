@@ -253,6 +253,7 @@ class profile::kafka::broker(
         # certiifcate sigalgs.  See: https://phabricator.wikimedia.org/T182993
         file { '/etc/java-8-openjdk/security/java.security':
             source => 'puppet:///modules/profile/kafka/java.security',
+            before => Class['::confluent::kafka::broker'],
         }
     }
     else {
@@ -340,7 +341,6 @@ class profile::kafka::broker(
         message_max_bytes                => $message_max_bytes,
         authorizer_class_name            => $authorizer_class_name,
         super_users                      => $super_users,
-        require                          => File['/etc/java-8-openjdk/security/java.security'],
     }
 
     # If both auth ACLs AND plaintext is enabled, we need to allow some basic ANONYMOUS
