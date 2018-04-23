@@ -46,10 +46,6 @@
 #   Scap repository.
 #   Default: 'analytics/pivot/deploy'
 #
-# [*contact_group*]
-#   Contact group for alerts.
-#   Default: 'admins'
-#
 class pivot(
     $port              = 9090,
     $druid_broker      = undef,
@@ -58,7 +54,6 @@ class pivot(
     $schema_refresh_ms = 120000,
     $deployment_user   = 'analytics_deploy',
     $scap_repo         = 'analytics/pivot/deploy',
-    $contact_group     = 'admins',
 ) {
 
     requires_os('debian >= jessie')
@@ -125,12 +120,5 @@ class pivot(
             User['pivot'],
             Systemd::Syslog['pivot'],
         ],
-    }
-
-    monitoring::service { 'pivot':
-        description   => 'pivot',
-        check_command => "check_tcp!${port}",
-        contact_group => $contact_group,
-        require       => Systemd::Service['pivot'],
     }
 }
