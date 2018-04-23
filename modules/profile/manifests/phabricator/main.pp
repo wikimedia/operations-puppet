@@ -21,6 +21,7 @@ class profile::phabricator::main (
     $passive_server = hiera('phabricator_server_failover', undef),
     $logmail = hiera('phabricator_logmail', false),
     $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
+    $dumps_server = hiera('dumps_dist_active_web'),
 ){
 
     mailalias { 'root':
@@ -223,7 +224,7 @@ class profile::phabricator::main (
 
     cron { 'phab_dump':
         ensure  => $dump_rsync_ensure,
-        command => 'rsync -zpt --bwlimit=40000 -4 /srv/dumps/phabricator_public.dump dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1',
+        command => "rsync -zpt --bwlimit=40000 -4 /srv/dumps/phabricator_public.dump ${dumps_server}::other_misc/ >/dev/null 2>&1",
         user    => 'root',
         minute  => '10',
         hour    => '4',
