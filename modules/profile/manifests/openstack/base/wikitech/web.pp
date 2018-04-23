@@ -8,7 +8,7 @@ class profile::openstack::base::wikitech::web(
     ) {
 
     class {'::mediawiki': }
-    class {'::mediawiki::multimedia':}
+    class {'::mediawiki::packages::fonts': }
     class {'::profile::backup::host':}
 
     class { '::scap::scripts': }
