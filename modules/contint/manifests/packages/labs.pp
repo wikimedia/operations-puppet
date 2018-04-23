@@ -10,7 +10,6 @@ class contint::packages::labs {
     include ::contint::packages::base
 
     include ::mediawiki::packages
-    include ::mediawiki::packages::multimedia  # T76661
     # We're no longer installing PHP on app servers starting with
     # jessie, but we still need it for CI
     if os_version('debian == jessie') {
@@ -52,6 +51,9 @@ class contint::packages::labs {
         ]:
         ensure => present,
     }
+
+    # To provide pnmtojpeg (for ddjvu)
+    require_package('netpbm')
 
     # For Sphinx based documentation contain blockdiag diagrams
     require_package('libjpeg-dev')
