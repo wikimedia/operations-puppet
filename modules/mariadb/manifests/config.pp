@@ -69,9 +69,13 @@ class mariadb::config(
     # if the socket location is different from the default, it is the role
     # class' reponsability to handle it (otherwise this could have side
     # efects, like changing / or /tmp permissions
-    if $socket == '/run/mysqld/mysqld.sock' {
+    # Starting with buster, creation of /run/mysqld is done by setting:
+    #   RuntimeDirectory=mysqld
+    #   RuntimeDirectoryPreserve=yes
+    # directly on the systemd unit
+    if $socket == '/run/mysqld/mysqld.sock' and !os_version('debian >= buster'){
         systemd::tmpfile { 'mysqld':
-            content => 'd /run/mysqld root mysql',
+            content => 'd /run/mysqld 0775 root mysql -',
         }
     }
 
