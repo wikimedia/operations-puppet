@@ -100,6 +100,12 @@
 #   Hiera: profile::kafka::broker::nofiles_ulimit
 #   Default: 8192
 #
+# [*inter_broker_protocol_version*]
+#   Default: undef
+#
+# [*log_message_format_version*]
+#   Default: undef
+#
 # [*message_max_bytes*]
 #   The largest record batch size allowed by Kafka.
 #   If this is increased and there are consumers older
@@ -110,6 +116,12 @@
 # [*auth_acls_enabled*]
 #   Enables the kafka.security.auth.SimpleAclAuthorizer bundled with Kafka.
 #   Default: false
+#
+# [*scala_version*]
+#   Used to install proper confluent kafka package.  Default: 2.11
+#
+# [*kafka_version*]
+#   Used to install proper confluent kafka package.  Default: undef
 #
 # [*monitoring_enabled*]
 #   Enable monitoring and alerts for this broker.  Default: false
@@ -132,22 +144,29 @@ class profile::kafka::broker(
     $num_io_threads                    = hiera('profile::kafka::broker::num_io_threads', 1),
     $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers', undef),
     $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit', 8192),
+    $inter_broker_protocol_version     = hiera('profile::kafka::broker::inter_broker_protocol_version', undef),
+    $log_message_format_version        = hiera('profile::kafka::broker::log_message_format_version', undef),
+
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
     $message_max_bytes                 = hiera('kafka_message_max_bytes', 1048576),
     $auth_acls_enabled                 = hiera('profile::kafka::broker::auth_acls_enabled', false),
     $monitoring_enabled                = hiera('profile::kafka::broker::monitoring_enabled', false),
+
+    $scala_version                     = hiera('profile::kafka::broker::scala_version', '2.11'),
+    $kafka_version                     = hiera('profile::kafka::broker::kafka_version', undef),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
     $zookeeper_url  = $config['zookeeper']['url']
     $brokers_string = $config['brokers']['string']
 
-    require_package('openjdk-8-jdk')
-
-    # Use a custom java.security on this host, so that we can restrict the allowed
-    # certiifcate sigalgs.  See: https://phabricator.wikimedia.org/T182993
-    file { '/etc/java-8-openjdk/security/java.security':
-        source => 'puppet:///modules/profile/kafka/java.security',
+    if os_version('debian >= stretch') {
+        require_package('openjdk-8-jdk')
+        $java_home = '/usr/lib/jvm/java-8-openjdk-amd64'
+    }
+    else {
+        require_package('openjdk-7-jdk')
+        $java_home = '/usr/lib/jvm/java-7-openjdk-amd64'
     }
 
     # WMF's librdkafka is overriding that in Debian stretch. Require the Stretch version.
@@ -229,6 +248,12 @@ class profile::kafka::broker(
             require => Class['::confluent::kafka::common'],
             before  => Class['::confluent::kafka::broker'],
         }
+
+        # Use a custom java.security on this host, so that we can restrict the allowed
+        # certiifcate sigalgs.  See: https://phabricator.wikimedia.org/T182993
+        file { '/etc/java-8-openjdk/security/java.security':
+            source => 'puppet:///modules/profile/kafka/java.security',
+        }
     }
     else {
         $security_inter_broker_protocol = undef
@@ -250,9 +275,9 @@ class profile::kafka::broker(
     class { '::confluent::kafka::common':
         # TODO: These should be removed once they are
         # the default in ::confluent::kafka module
-        scala_version => '2.11',
-        kafka_version => '1.0.0-1',
-        java_home     => '/usr/lib/jvm/java-8-openjdk-amd64',
+        scala_version => $scala_version,
+        kafka_version => $kafka_version,
+        java_home     => $java_home,
     }
 
     # If monitoring is enabled, then include the monitoring profile and set $java_opts
@@ -287,10 +312,9 @@ class profile::kafka::broker(
         zookeeper_connect                => $config['zookeeper']['url'],
         nofiles_ulimit                   => $nofiles_ulimit,
         default_replication_factor       => min(3, $config['brokers']['size']),
-        offsets_topic_replication_factor => min(3,  $config['brokers']['size']),
-        # TODO: This can be removed once it is a default
-        # in ::confluent::kafka module
-        inter_broker_protocol_version    => '1.0',
+        offsets_topic_replication_factor => min(3, $config['brokers']['size']),
+        inter_broker_protocol_version    => $inter_broker_protocol_version,
+        log_message_format_version       => $log_message_format_version,
         # Use Kafka/LinkedIn recommended settings with G1 garbage collector.
         # https://kafka.apache.org/documentation/#java
         # Note that MetaspaceSize is a Java 8 setting.
