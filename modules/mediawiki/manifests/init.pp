@@ -32,8 +32,6 @@ class mediawiki (
     include ::profile::mediawiki::hhvm
 
     # This profile is used to contain the convert command of imagemagick using
-    # firejail Profiles specific to the image/video scalers are handled via
-    # mediawiki::firejail
     file { '/etc/firejail/mediawiki-imagemagick.profile':
         source  => 'puppet:///modules/mediawiki/mediawiki-imagemagick.profile',
         owner   => 'root',
