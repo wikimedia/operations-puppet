@@ -8,7 +8,7 @@
 class role::kafka::main::broker {
     if $::realm != 'production' {
         # Test in labs, update deployment-prep there.
-        include ::profile::kafka::mirror
+        include ::profile::kafka::broker
     }
     else {
         require_package('openjdk-7-jdk')
