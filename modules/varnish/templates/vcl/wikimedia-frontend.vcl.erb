@@ -41,6 +41,15 @@ sub https_recv_redirect {
 				set req.http.Location = "https://" + req.http.Host + req.url;
 				return (synth(301, "TLS Redirect"));
 			}
+
+			// We do receive a few requests for *.wikipedia.com. That
+			// domain is not among our unified cert wildcards, so we cannot
+			// return a TLS redirect. However, mediawiki does redirect
+			// those appropriately to their *.wikipedia.org equivalent.
+			// Send a 400 for any other Host header value.
+			if (req.http.Host !~ "wikipedia.com$") {
+				return (synth(400, "Bad Request"));
+			}
 		}
 		else {
 			return (synth(403, "Insecure Request Forbidden - use HTTPS - https://lists.wikimedia.org/pipermail/mediawiki-api-announce/2016-May/000110.html"));
