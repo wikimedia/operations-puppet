@@ -73,15 +73,18 @@ define eventlogging::service::service(
 
     # Additional packages needed for eventlogging-service that are not
     # provided by the eventlogging::dependencies class.
-
-    # Can't use require_package here because we need to specify version
-    # from jessie-backports:
-    # https://packages.debian.org/jessie-backports/python-tornado
-    if !defined(Package['python-tornado']) {
+    if os_version('debian >= stretch') {
+        require_package('python-tornado')
+    }
+    elsif !defined(Package['python-tornado']) {
+        # Can't use require_package here because we need to specify version
+        # from jessie-backports:
+        # https://packages.debian.org/jessie-backports/python-tornado
         package { 'python-tornado':
             ensure => '4.4.2-1~bpo8+1',
         }
     }
+
     # This allows tornado to automatically send stats to statsd.
     require_package('python-sprockets-mixins-statsd')
 
