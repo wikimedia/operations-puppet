@@ -1,6 +1,12 @@
 # Compound role for the Kafka "main" cluster
 class role::kafka::main {
-    include ::role::kafka::main::broker
+    if $::site == 'eqiad' {
+        include ::role::kafka::main::broker
+    }
+    else {
+        include ::profile::kafka::broker
+    }
+
     include ::role::eventbus::eventbus
 
     if $::realm == 'production' {
