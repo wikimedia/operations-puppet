@@ -18,10 +18,10 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 #  internal infrastructure use so should never be part of
 #  the default pool.
 #
-# Labvirt1015 is temporarily removed from this list
-#  because it hosts almost 100 mostly-idle VMs
-#  and needs a break while things rebalance a bit.
-#  T192422
+# 1018, 1020 and 1021 are running but held back as spares
+#  in case a different labvirt fails (and as transitional
+#  capacity during the upcoming Neutron migration)
+#
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
   - labvirt1002
@@ -37,5 +37,6 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1012
   - labvirt1013
   - labvirt1014
+  - labvirt1015
   - labvirt1016
   - labvirt1017
