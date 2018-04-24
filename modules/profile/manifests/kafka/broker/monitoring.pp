@@ -13,8 +13,8 @@
 class profile::kafka::broker::monitoring (
     $prometheus_nodes        = hiera('prometheus_nodes'),
     $cluster                 = hiera('cluster', 'kafka'),
-    $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning'),
-    $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical'),
+    $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning', 10000),
+    $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical', 100000),
 ) {
     $prometheus_jmx_exporter_port = 7800
     $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
