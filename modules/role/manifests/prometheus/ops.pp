@@ -594,19 +594,21 @@ class role::prometheus::ops {
       },
     ]
 
-    # Collect all declared Kafka Broker jmx_exporter_instances
+    # Collect all declared kafka_broker_.* jmx_exporter_instances
     # from any uses of profile::kafka::broker::monitoring.
     prometheus::jmx_exporter_config{ "kafka_broker_${::site}":
-        dest       => "${targets_path}/jmx_kafka_broker_${::site}.yaml",
-        class_name => 'profile::kafka::broker::monitoring',
-        site       => $::site,
+        dest                   => "${targets_path}/jmx_kafka_broker_${::site}.yaml",
+        class_name             => 'profile::kafka::broker::monitoring',
+        instance_title_pattern => 'kafka_broker_.*',
+        site                   => $::site,
     }
-    # Collect all declared Kafka MirrorMaker jmx_exporter_instances
+    # Collect all declared kafka_mirror_.* jmx_exporter_instances
     # from any uses of profile::kafka::mirror.
     prometheus::jmx_exporter_config{ "kafka_mirrormaker_${::site}":
-        dest       => "${targets_path}/jmx_kafka_mirrormaker_${::site}.yaml",
-        class_name => 'profile::kafka::mirror',
-        site       => $::site,
+        dest                   => "${targets_path}/jmx_kafka_mirrormaker_${::site}.yaml",
+        class_name             => 'profile::kafka::mirror',
+        instance_title_pattern => 'kafka_mirror_.*',
+        site                   => $::site,
     }
 
 
