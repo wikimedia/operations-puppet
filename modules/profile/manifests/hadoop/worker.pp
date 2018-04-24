@@ -29,6 +29,9 @@ class profile::hadoop::worker(
     # The HDFS journalnodes are co-located for convenience,
     # but it is not a strict requirement.
     if $::fqdn in $::cdh::hadoop::journalnode_hosts {
+        if $monitoring_enabled {
+            require profile::hadoop::monitoring::journalnode
+        }
         class { 'cdh::hadoop::journalnode': }
     }
 
