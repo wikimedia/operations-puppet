@@ -28,12 +28,16 @@ class coal(
     $el_schemas = ['NavigationTiming', 'SaveTiming'],
     $whisper_dir = '/var/lib/coal',
     $log_dir = '/var/log/coal',
+    $graphite_host = 'graphite-in.eqiad.wmnet',
+    $graphite_port = 2003,
+    $graphite_prefix = 'coal'
 ) {
     require_package('python-flask')
     require_package('python-numpy')
     require_package('python-whisper')
     require_package('python-kafka')
     require_package('python-dateutil')
+    require_package('python-etcd')
 
     group { 'coal':
         ensure => present,
@@ -51,6 +55,13 @@ class coal(
     scap::target { 'performance/coal':
         service_name => 'coal',
         deploy_user  => 'deploy-service',
+        sudo_rules   => [
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-coal start',
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-coal stop',
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-coal restart',
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-coal reload',
+            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-coal status'
+        ]
     }
 
     uwsgi::app { 'coal':
@@ -59,7 +70,7 @@ class coal(
             uwsgi => {
                 'plugins'   => 'python',
                 'socket'    => '/run/uwsgi/coal.sock',
-                'wsgi-file' => '/usr/local/bin/coal-web',
+                'wsgi-file' => '/srv/deployment/performance/coal/coal/coal_web.py',
                 'callable'  => 'app',
                 'master'    => true,
                 'processes' => 8,
@@ -67,27 +78,20 @@ class coal(
         },
     }
 
-    file { '/usr/local/bin/coal-web':
-        source => 'puppet:///modules/coal/coal-web',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        notify => Service['uwsgi-coal'],
+    file { '/usr/local/bin/coal':
+        ensure => absent,
     }
 
-    file { '/usr/local/bin/coal':
-        source => 'puppet:///modules/coal/coal.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        notify => Systemd::Service['coal'],
+    file { '/usr/local/bin/coal-web':
+        ensure => absent,
     }
 
     file { $whisper_dir:
-        ensure => directory,
-        owner  => 'coal',
-        group  => 'coal',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => '_graphite',
+        group   => '_graphite',
+        mode    => '0755',
+        recurse => true,
     }
 
     file { $log_dir:
@@ -119,9 +123,7 @@ class coal(
         restart => true,
         require => [
             User['coal'],
-            File[$whisper_dir],
-            File[$log_dir],
-            File['/usr/local/bin/coal'],
+            File[$log_dir]
         ],
     }
 }
