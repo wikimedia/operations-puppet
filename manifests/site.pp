@@ -846,6 +846,7 @@ node 'etherpad1001.eqiad.wmnet' {
 # to Kafka Schema based topics.
 node 'eventlog1002.eqiad.wmnet' {
     role(eventlogging::analytics)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # virtual machine for mailman list server
@@ -1033,11 +1034,13 @@ node /kafka10(12|13|14)\.eqiad\.wmnet/ {
     # analytics_a role includes profile::kafka::mirror
     # that mirrors from main-eqiad -> analytics Kafka.
     role(kafka::analytics_a)
+    interface::add_ip6_mapped { 'main': }
 }
 node /kafka10(20|22|23)\.eqiad\.wmnet/ {
     # analytics_b role includes profile::kafka::mirror
     # that mirrors from main-eqiad -> jumbo-eqiad Kafka.
     role(kafka::analytics_b)
+    interface::add_ip6_mapped { 'main': }
 }
 
 # Kafka Brokers - main-eqiad and main-codfw Kafka clusters.
@@ -1052,6 +1055,7 @@ node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
 # mirroring all data from the main Kafka clusters in both main datacenters.
 node /^kafka-jumbo100[1-6]\.eqiad\.wmnet$/ {
     role(kafka::jumbo::broker)
+    interface::add_ip6_mapped { 'main': }
 }
 
 

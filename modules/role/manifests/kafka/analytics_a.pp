@@ -7,10 +7,6 @@
 #
 class role::kafka::analytics_a {
     system::role { 'kafka_analytics': }
-    # Kafka brokers are routed via IPv6 so that
-    # other DCs can address without public IPv4
-    # addresses.
-    interface::add_ip6_mapped { 'main': }
 
     include ::role::kafka::analytics::broker
     include ::profile::kafka::mirror
