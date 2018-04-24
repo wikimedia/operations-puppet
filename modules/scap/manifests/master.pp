@@ -15,7 +15,10 @@ class scap::master(
     include network::constants
     include mediawiki::scap
 
-    package { 'dsh':
+    package { [
+        'dsh',
+        'python-service-checker',
+    ]:
         ensure => present,
     }
 
