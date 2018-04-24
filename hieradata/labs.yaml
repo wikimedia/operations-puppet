@@ -19,6 +19,7 @@ labsdnsconfig:
 profile::base::overlayfs: true
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
+profile::openstack::main::version: 'mitaka'
 profile::openstack::base::region: "%{::site}"
 profile::openstack::main::nova_controller: 'labcontrol1001.wikimedia.org'
 profile::openstack::base::observer_user: 'novaobserver'
