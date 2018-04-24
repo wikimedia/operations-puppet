@@ -128,7 +128,7 @@ fi
 apt-get update
 
 # Make sure nothing has leaked in certwise
-rm -rf /var/lib/puppet/ssl/*
+rm -rf /var/lib/puppet/ssl
 
 puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
