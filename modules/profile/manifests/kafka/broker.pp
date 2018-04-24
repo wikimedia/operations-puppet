@@ -163,10 +163,18 @@ class profile::kafka::broker(
     if os_version('debian >= stretch') {
         require_package('openjdk-8-jdk')
         $java_home = '/usr/lib/jvm/java-8-openjdk-amd64'
+        # Use Java 8 GC features
+        # Use Kafka/LinkedIn recommended settings with G1 garbage collector.
+        # https://kafka.apache.org/documentation/#java
+        # Note that MetaspaceSize is a Java 8 setting.
+        $jvm_performance_opts = '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80'
     }
     else {
         require_package('openjdk-7-jdk')
         $java_home = '/usr/lib/jvm/java-7-openjdk-amd64'
+        # Use Java 7 GC features
+        $jvm_performance_opts = '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35'
+
     }
 
     # WMF's librdkafka is overriding that in Debian stretch. Require the Stretch version.
@@ -316,10 +324,8 @@ class profile::kafka::broker(
         offsets_topic_replication_factor => min(3, $config['brokers']['size']),
         inter_broker_protocol_version    => $inter_broker_protocol_version,
         log_message_format_version       => $log_message_format_version,
-        # Use Kafka/LinkedIn recommended settings with G1 garbage collector.
-        # https://kafka.apache.org/documentation/#java
-        # Note that MetaspaceSize is a Java 8 setting.
-        jvm_performance_opts             => '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80',
+
+        jvm_performance_opts             => $jvm_performance_opts,
         java_opts                        => $java_opts,
         listeners                        => $listeners,
 
