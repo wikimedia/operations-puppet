@@ -1674,14 +1674,14 @@ host db1115 {
     fixed-address db1115.eqiad.wmnet;
 }
 
-host db1016 {
+host db1116 {
     hardware ethernet 80:18:44:EB:78:68;
-    fixed-address db1016.eqiad.wmnet;
+    fixed-address db1116.eqiad.wmnet;
 }
 
-host db1017 {
+host db1117 {
     hardware ethernet 80:18:44:EB:99:74;
-    fixed-address db1017.eqiad.wmnet;
+    fixed-address db1117.eqiad.wmnet;
 }
 
 host db1018 {
