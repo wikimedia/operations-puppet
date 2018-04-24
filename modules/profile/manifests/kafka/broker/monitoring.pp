@@ -12,13 +12,13 @@
 #
 class profile::kafka::broker::monitoring (
     $prometheus_nodes        = hiera('prometheus_nodes'),
-    $cluster                 = hiera('cluster', 'kafka'),
     $kafka_cluster_name      = hiera('profile::kafka::broker::kafka_cluster_name'),
     $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning', 10000),
     $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical', 100000),
 ) {
     # Get fully qualified Kafka cluster name
     $config = kafka_config($kafka_cluster_name)
+    $kafka_cluster = $config['name']
 
     $prometheus_jmx_exporter_port = 7800
     $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
@@ -33,7 +33,7 @@ class profile::kafka::broker::monitoring (
         hostname         => $::hostname,
         port             => $prometheus_jmx_exporter_port,
         prometheus_nodes => $prometheus_nodes,
-        labels           => {'kafka_cluster' => $config['name'] },
+        labels           => {'kafka_cluster' => $kafka_cluster},
         config_file      => $jmx_exporter_config_file,
         source           => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
     }
@@ -47,12 +47,12 @@ class profile::kafka::broker::monitoring (
     }
 
     # Prometheus labels for this Kafka Broker instance
-    $prometheus_labels = "cluster=\"${cluster}\",instance=\"${::hostname}:${prometheus_jmx_exporter_port}\",job=\"jmx_kafka\""
+    $prometheus_labels = "kafka_cluster=\"${kafka_cluster}\",instance=\"${::hostname}:${prometheus_jmx_exporter_port}\""
 
     # Alert on the average number of under replicated partitions over the last 30 minutes.
     monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
         description     => 'Kafka Broker Under Replicated Partitions',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-cluster=${cluster}&var-kafka_brokers=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_brokers=${::hostname}"],
         query           => "scalar(avg_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[30m]))",
         warning         => 5,
         critical        => 10,
@@ -62,7 +62,7 @@ class profile::kafka::broker::monitoring (
     # Alert on the average max replica lag over the last 30 minutes.
     monitoring::check_prometheus { 'kafka_broker_replica_max_lag':
         description     => 'Kafka Broker Replica Max Lag',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-cluster=${cluster}&var-kafka_brokers=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/prometheus-kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_brokers=${::hostname}"],
         query           => "scalar(avg_over_time(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[30m]))",
         warning         => $replica_maxlag_warning,
         critical        => $replica_maxlag_critical,
