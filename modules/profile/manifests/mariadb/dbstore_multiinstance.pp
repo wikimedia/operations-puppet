@@ -117,6 +117,4 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         is_critical   => false,
         contact_group => 'admins',
     }
-
-    class { '::base::disable_atop': }
 }
