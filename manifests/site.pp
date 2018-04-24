@@ -496,14 +496,6 @@ node 'db1056.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-# To be decommissioned T184054
-node 'db1029.eqiad.wmnet' {
-    role(spare::system)
-}
-node 'db1031.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # codfw
 # x1 codfw master
 node 'db2034.codfw.wmnet' {
