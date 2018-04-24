@@ -1,0 +1,6 @@
+---
+lowercaseOutputLabelNames: true
+lowercaseOutputName: false
+whitelistObjectNames:
+  - 'Hadoop:service=JournalNode,name=Journal*'
+  - 'Hadoop:service=JournalNode,name=RpcActivityForPort8485'
