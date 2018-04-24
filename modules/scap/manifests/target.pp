@@ -129,7 +129,11 @@ define scap::target(
 
     if $service_name {
         $privileges = array_concat([
-            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} *",
+            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} start",
+            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} stop",
+            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} restart",
+            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} reload",
+            "ALL=(root) NOPASSWD: /usr/sbin/service ${service_name} status"
         ], $sudo_rules)
         $rule_name = "scap_${deploy_user}_${service_name}"
     } else {
