@@ -7,6 +7,8 @@ role::lvs::realserver::pools:
 
 profile::kafka::broker::kafka_cluster_name: main
 
+profile::kafka::broker::plaintext: true
+
 # Enable SSL/TLS for Kafka.  This requires
 # that keystore and truststore files, and
 # profile::kafka::broker::ssl_password, are committed in
@@ -20,10 +22,10 @@ profile::kafka::broker::auth_acls_enabled: false
 # Enable Monitoring (via Prometheus) and icinga alerts
 profile::kafka::broker::monitoring_enabled: true
 
-profile::kafka::broker::log_dirs: [/srv/kafka/data]
-profile::kafka::broker::plaintext: true
 
-profile::kafka::broker::auto_leader_rebalance_enable: true
+# TODO: Auto rebalance is better in 1.x.  Disable until we upgrade.
+profile::kafka::broker::auto_leader_rebalance_enable: false
+
 profile::kafka::broker::nofiles_ulimit: 65536
 
 # Bump this up to get a little more parallelism between replicas.
@@ -41,8 +43,6 @@ profile::kafka::broker::log_message_format_version: 0.9.0.1
 profile::kafka::broker::scala_version: 2.11.7
 profile::kafka::broker::kafka_version: 0.9.0.1-1
 
-# Auto rebalance is better in 1.x.  Disable until we upgrade.
-profile::kafka::broker::auto_leader_rebalance_enable: false
 
 profile::kafka::broker::monitoring::replica_maxlag_warning: 100000
 profile::kafka::broker::monitoring::replica_maxlag_critical: 500000
