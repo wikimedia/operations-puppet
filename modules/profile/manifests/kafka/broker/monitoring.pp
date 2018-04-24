@@ -11,8 +11,8 @@
 #   Hiera: profile::kafka::broker::replica_maxlag_critical
 #
 class profile::kafka::broker::monitoring (
-    $cluster                 = hiera('cluster'),
     $prometheus_nodes        = hiera('prometheus_nodes'),
+    $cluster                 = hiera('cluster', 'kafka'),
     $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning'),
     $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical'),
 ) {

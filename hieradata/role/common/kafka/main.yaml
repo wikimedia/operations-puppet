@@ -26,8 +26,6 @@ profile::kafka::broker::plaintext: true
 profile::kafka::broker::auto_leader_rebalance_enable: true
 profile::kafka::broker::nofiles_ulimit: 65536
 
-profile::kafka::broker::log_retention_hours: 168  # 1 week
-
 # Bump this up to get a little more parallelism between replicas.
 profile::kafka::broker::num_replica_fetchers: 4
 
