@@ -1,0 +1,53 @@
+varnishtest "Bad Request if Host is unparseable/missing"
+
+server s1 {
+    loop 6 {
+        rxreq
+        txresp
+    }
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    # OK: decent Host header
+    txreq -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
+    # OK: decent Host header
+    txreq -hdr "Host: en.m.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
+    # OK: Host header starting with a digit
+    txreq -hdr "Host: 15.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+
+    # OK: varnishcheck
+    txreq -hdr "Host: varnishcheck"
+    rxresp
+    expect resp.status == 200
+
+    # KO: Missing Host header
+    txreq -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 400
+
+    # KO: Empty Host header
+    txreq -hdr "Host: " -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 400
+
+    # KO: Host header with underscore
+    txreq -hdr "Host: en.wiki_pedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 400
+} -run
