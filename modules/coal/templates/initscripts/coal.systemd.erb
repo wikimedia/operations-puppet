@@ -5,11 +5,15 @@ Description=Navigation Timing Whisper logger
 User=coal
 Group=coal
 Restart=always
-ExecStart=/usr/local/bin/coal --brokers "<%= @kafka_brokers %>" --consumer-group "<%= @kafka_consumer_group %>" \
+ExecStart=/usr/bin/python /srv/deployment/performance/coal/run_coal.py \
+	--brokers "<%= @kafka_brokers %>" \
+	--consumer-group "<%= @kafka_consumer_group %>" \
   <% @el_schemas.each do | schema | -%>
 	--schema "<%= schema %>" \
   <% end -%>
-	--whisper-dir "<%= @whisper_dir %>"
+	--graphite-host "<%= @graphite_host %>" \
+	--graphite-port <%= @graphite_port %> \
+	--graphite-prefix "<%= @graphite_prefix %>"
 
 [Install]
 WantedBy=multi-user.target
