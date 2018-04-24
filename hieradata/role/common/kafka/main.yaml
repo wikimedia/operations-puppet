@@ -18,7 +18,7 @@ profile::kafka::broker::ssl_enabled: false
 profile::kafka::broker::auth_acls_enabled: false
 
 # Enable Monitoring (via Prometheus) and icinga alerts
-profile::kafka::broker::monitoring_enabled: false
+profile::kafka::broker::monitoring_enabled: true
 
 profile::kafka::broker::log_dirs: [/srv/kafka/data]
 profile::kafka::broker::plaintext: true
