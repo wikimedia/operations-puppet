@@ -8,7 +8,7 @@ class profile::hadoop::monitoring::journalnode(
     $prometheus_nodes        = hiera('prometheus_nodes'),
 ) {
     $jmx_exporter_config_file = '/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml'
-    $prometheus_jmx_exporter_journalnode_port = 9485
+    $prometheus_jmx_exporter_journalnode_port = 10485
     profile::prometheus::jmx_exporter { "hdfs_journalnode_${::hostname}":
         hostname         => $::hostname,
         port             => $prometheus_jmx_exporter_journalnode_port,
