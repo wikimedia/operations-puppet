@@ -70,11 +70,11 @@ class PrometheusCheck(object):
                                         timeout=self.timeout)
             return (EX_OK, response.json())
         except requests.exceptions.Timeout as e:
-            return (EX_CRITICAL, '{} timeout while fetching: {}'.format(self.query_url, e))
+            return (EX_UNKNOWN, '{} timeout while fetching: {}'.format(self.query_url, e))
         except requests.exceptions.RequestException as e:
-            return (EX_CRITICAL, '{} error while fetching: {}'.format(self.query_url, e))
+            return (EX_UNKNOWN, '{} error while fetching: {}'.format(self.query_url, e))
         except ValueError as e:
-            return (EX_CRITICAL, '{} error while decoding json: {}'.format(self.query_url, e))
+            return (EX_UNKNOWN, '{} error while decoding json: {}'.format(self.query_url, e))
 
     @staticmethod
     def _group_all_labels(metrics):
