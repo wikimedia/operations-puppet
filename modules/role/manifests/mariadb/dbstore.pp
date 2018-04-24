@@ -51,4 +51,6 @@ class role::mariadb::dbstore(
         socket        => $socket,
         multisource   => true,
     }
+
+    class { '::base::disable_atop': }
 }
