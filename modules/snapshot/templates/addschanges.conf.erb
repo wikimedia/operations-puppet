@@ -29,7 +29,7 @@ lockstale=30
 max_allowed_packet=32M
 
 [tools]
-php=/usr/bin/php5
+php=<%= scope.lookupvar('snapshot::dumps::configs::php') %>
 mysql=/usr/bin/mysql
 gzip=/bin/gzip
 bzip2=/bin/bzip2
