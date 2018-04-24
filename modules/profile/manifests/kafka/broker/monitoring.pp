@@ -13,9 +13,13 @@
 class profile::kafka::broker::monitoring (
     $prometheus_nodes        = hiera('prometheus_nodes'),
     $cluster                 = hiera('cluster', 'kafka'),
+    $kafka_cluster_name      = hiera('profile::kafka::broker::kafka_cluster_name'),
     $replica_maxlag_warning  = hiera('profile::kafka::broker::monitoring::replica_maxlag_warning', 10000),
     $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical', 100000),
 ) {
+    # Get fully qualified Kafka cluster name
+    $config = kafka_config($kafka_cluster_name)
+
     $prometheus_jmx_exporter_port = 7800
     $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
 
@@ -29,6 +33,7 @@ class profile::kafka::broker::monitoring (
         hostname         => $::hostname,
         port             => $prometheus_jmx_exporter_port,
         prometheus_nodes => $prometheus_nodes,
+        labels           => {'kafka_cluster' => $config['name'] },
         config_file      => $jmx_exporter_config_file,
         source           => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
     }
