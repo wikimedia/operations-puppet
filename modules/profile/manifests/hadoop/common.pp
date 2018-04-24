@@ -100,6 +100,10 @@
 #    HDFS datanode JVM opts.
 #    Default: undef
 #
+#  [*hadoop_journalnode_opts*]
+#    HDFS journalnode JVM opts.
+#    Default: undef
+#
 #  [*hadoop_namenode_opts*]
 #    JVM opts to pass to the HDFS Namenode daemon.
 #    If you change these values please check profile::hadoop::*::namenode_heapsize
@@ -166,6 +170,7 @@ class profile::hadoop::common (
     $yarn_resourcemanager_opts                = hiera('profile::hadoop::common::yarn_resourcemanager_opts', undef),
     $hadoop_heapsize                          = hiera('profile::hadoop::common::hadoop_heapsize', undef),
     $hadoop_datanode_opts                     = hiera('profile::hadoop::common::hadoop_datanode_opts', undef),
+    $hadoop_journalnode_opts                  = hiera('profile::hadoop::common::hadoop_journalnode_opts', undef),
     $hadoop_namenode_opts                     = hiera('profile::hadoop::common::hadoop_namenode_opts', undef),
     $yarn_app_mapreduce_am_resource_mb        = hiera('profile::hadoop::common::yarn_app_mapreduce_am_resource_mb', undef),
     $yarn_app_mapreduce_am_command_opts       = hiera('profile::hadoop::common::yarn_app_mapreduce_am_command_opts', undef),
@@ -224,6 +229,7 @@ class profile::hadoop::common (
         yarn_resourcemanager_opts                   => $yarn_resourcemanager_opts,
         hadoop_namenode_opts                        => $hadoop_namenode_opts,
         hadoop_datanode_opts                        => $hadoop_datanode_opts,
+        hadoop_journalnode_opts                     => $hadoop_journalnode_opts,
         mapreduce_history_java_opts                 => $mapreduce_history_java_opts,
 
         yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
