@@ -6860,29 +6860,21 @@ host silver {
 host snapshot1001 {
     hardware ethernet d0:67:e5:f9:17:a3;
     fixed-address snapshot1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host snapshot1005 {
     hardware ethernet 14:02:EC:3E:F6:04;
     fixed-address snapshot1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host snapshot1006 {
     hardware ethernet 14:02:EC:3E:F6:0C;
     fixed-address snapshot1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host snapshot1007 {
     hardware ethernet 14:02:EC:3E:07:70;
     fixed-address snapshot1007.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/trusty-installer/";
-    filename "lpxelinux.0";
 }
 
 host stat1004 {
