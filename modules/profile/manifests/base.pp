@@ -24,6 +24,7 @@ class profile::base(
     $check_smart = hiera('profile::base::check_smart', true),
     $puppet_major_version = hiera('puppet_major_version', undef),
     $overlayfs = hiera('profile::base::overlayfs', false),
+    $atop_enabled = hiera('profile::base::atop_enabled', false),
 ) {
     require ::profile::base::certificates
     class { '::apt':
@@ -145,5 +146,9 @@ class profile::base(
 
     if $check_smart and $facts['is_virtual'] == false {
         class { '::smart': }
+    }
+
+    if !$atop_enabled {
+        class { '::base::disable_atop': }
     }
 }
