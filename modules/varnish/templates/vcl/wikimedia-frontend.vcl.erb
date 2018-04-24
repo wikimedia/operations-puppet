@@ -82,8 +82,15 @@ sub normalize_request {
 	// Strip :port from req.http.host and normalize to lowercase
 	set req.http.Host = std.tolower(regsub(req.http.Host, ":.*$", ""));
 
-	// Strip away characters that don't belong in hostnames
-	set req.http.Host = regsuball(req.http.Host, "[^-.a-z0-9]+", "");
+	// Check that host header looks reasonably-legitimate/parseable now
+	if (req.http.Host ~ "^[a-z][-a-z0-9]*(\.[a-z][-a-z0-9]*)*\.?$") {
+		// Strip optional trailing terminal dot if present
+		set req.http.Host = regsub(req.http.Host, "\.$", "");
+	} else {
+		set req.http.Host = "invalid";
+		// Unparseable / empty Host header
+		return (synth(400, ""));
+	}
 }
 
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
