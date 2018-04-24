@@ -5,16 +5,28 @@
 # Data is gathered using the puppetdb querying functions
 
 # == Parameters
-# $dest:       The output file where to write the result.
-# $class_name: Class name to search.
-# $site:       The site to use.
-# $labels:     Labels to attach to every host. 'Cluster' will be added automagically as well
-
+# [*dest*]
+#   Path to jmx exporter config file to render.
+#
+# [*class_name*]
+#   Class name to search.  All nodes with this class declared will be searched
+#   for jmx_exporter_instance titles that match $instance_selector.
+#
+# [*site*]
+#   The site to use.
+#
+# [*instance_selector*]
+#   Regex to select jmx_exporter_instances by title.  Default: .*
+#
+# [*labels*]
+#   Hash of labels to attach to every host. 'cluster' will be added automatically as well.
+#
 define prometheus::jmx_exporter_config(
     $dest,
     $class_name,
     $site,
-    $labels = {},
+    $instance_selector = '.*',
+    $labels            = {},
 ) {
     validate_string($dest)
     validate_string($site)
@@ -22,7 +34,7 @@ define prometheus::jmx_exporter_config(
 
     $resources = query_resources(
                   "Class[\"${class_name}\"]",
-                  'Prometheus::Jmx_exporter_instance[~".*"]',
+                  "Prometheus::Jmx_exporter_instance[~\"${instance_selector}\"]",
                   true)
     $site_clusters = get_clusters({'site' => $site})
 
