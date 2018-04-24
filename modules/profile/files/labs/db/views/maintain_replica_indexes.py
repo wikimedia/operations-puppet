@@ -14,13 +14,17 @@ import pymysql
 import yaml
 
 
-def dbs_with_table(cursor, table_name):
+def dbs_with_table(cursor, table_name, database='all'):
     """Return the names of the databases that include the table in question"""
+    db_pattern = '%wik%'
+    if database != 'all':
+        db_pattern = database
+
     query = '''
     SELECT table_schema FROM information_schema.tables
     WHERE table_name='{table}' and table_schema
-    like '%wik%' and table_type='BASE TABLE'
-    '''.format(table=table_name)
+    like '{db_pat}' and table_type='BASE TABLE'
+    '''.format(table=table_name, db_pat=db_pattern)
     logging.debug(cursor.mogrify(query))
     cursor.execute(query)
     return [db[0] for db in cursor.fetchall()]
@@ -102,6 +106,8 @@ def main():
         help="Path to MySQL socket file",
         default="/run/mysqld/mysqld.sock"
     )
+    parser.add_argument('--database', dest='database', default='all',
+                        help='database to operate on (defaults to all %wik%)')
     parser.add_argument('--dry-run', dest='dryrun', action='store_true',
                         default=False, help='Print out SQL only')
     parser.add_argument('--debug', dest='debug', action='store_true',
@@ -136,7 +142,11 @@ def main():
             cursor.execute("SET NAMES 'utf8';")
             cursor.execute("SET SESSION innodb_lock_wait_timeout=1;")
             cursor.execute("SET SESSION lock_wait_timeout=60;")
-            dbs = dbs_with_table(cursor, index['table'])
+            if args.database != 'all':
+                dbs = dbs_with_table(cursor, index['table'], database=args.database)
+            else:
+                dbs = dbs_with_table(cursor, index['table'])
+
             for db_name in dbs:
                 with conn.cursor() as change_cursor:
                     existing_index = current_index_columns(change_cursor, db_name, index)
