@@ -40,6 +40,8 @@ class profile::hive::client(
         hive_metastore_opts       => $hive_metastore_opts,
         metastore_host            => $metastore_host,
         java_home                 => $java_home,
+        # Precaution for CVE-2018-1284
+        hive_server_udf_blacklist => 'hive.server2.enable.doAs'
     }
 
     # Set up a wrapper script for beeline, the command line
