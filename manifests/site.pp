@@ -594,6 +594,10 @@ node 'db1102.eqiad.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
 
+node 'db1116.eqiad.wmnet' {
+    role(mariadb::sanitarium_multiinstance)
+}
+
 # tendril db
 node 'db1115.eqiad.wmnet' {
     role(mariadb::misc::tendril)
