@@ -14,6 +14,7 @@
 
 class cassandra::sysctl(
     $vm_dirty_background_bytes = 0,
+    $vm_max_map_count = 65530,
 ){
     if (!is_integer($vm_dirty_background_bytes)) {
         fail('vm_dirty_background_bytes must be a number')
@@ -23,6 +24,7 @@ class cassandra::sysctl(
     sysctl::parameters { 'cassandra':
         values   => {
             'vm.dirty_background_bytes' => $vm_dirty_background_bytes,
+            'vm.max_map_count'          => $vm_max_map_count,
         },
         priority => 5,
     }
