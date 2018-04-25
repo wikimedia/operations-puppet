@@ -1048,6 +1048,10 @@ node /kafka10(20|22|23)\.eqiad\.wmnet/ {
 # on these brokers.
 node /kafka[12]00[123]\.(eqiad|codfw)\.wmnet/ {
     role(kafka::main)
+    # TODO: add to both eqiad and codfw.
+    if $::site == 'codfw' {
+        interface::add_ip6_mapped { 'main': }
+    }
 }
 
 # kafka-jumbo is a large general purpose Kafka cluster.
