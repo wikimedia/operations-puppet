@@ -3,6 +3,9 @@ admin::groups:
 
 cluster: 'druid_analytics'
 
+prometheus::node_exporter::collectors_extra:
+  - meminfo_numa
+
 # Avoid an explicit pin to the cloudera apt component that can
 # force packages shared between the cdh and debian upstream distribution
 # to prefer the cdh version (we do it only for Hadoop nodes).

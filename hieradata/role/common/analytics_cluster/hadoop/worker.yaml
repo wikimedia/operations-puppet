@@ -23,3 +23,6 @@ profile::hadoop::common::hadoop_journalnode_opts: "-javaagent:/usr/share/java/pr
 profile::hadoop::common::yarn_nodemanager_opts: "-Xms4096m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=%{::ipaddress}:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
 
 profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
+
+prometheus::node_exporter::collectors_extra:
+  - meminfo_numa
