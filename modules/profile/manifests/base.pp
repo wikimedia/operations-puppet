@@ -144,7 +144,7 @@ class profile::base(
         }
     }
 
-    if $check_smart and $facts['is_virtual'] == false {
+    if $check_smart and $facts['is_virtual'] == false and $facts['raid'] {
         class { '::smart': }
     }
 
