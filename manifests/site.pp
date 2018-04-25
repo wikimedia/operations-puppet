@@ -1766,7 +1766,8 @@ node 'pc2006.codfw.wmnet' {
         shard  => 'pc3',
     }
 }
-node 'ping1001.eqiad.wmnet' {
+# virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
+node /^ping[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(ping_offload)
 }
 
