@@ -40,6 +40,8 @@ class profile::cassandra(
     class { '::cassandra::sysctl':
         # Queue page flushes at 24MB intervals
         vm_dirty_background_bytes => 25165824,
+        # Maximum number of memory map areas Cassandra may have
+        vm_max_map_count          => 1048575,
     }
 
     if $cassandra_settings['tls_cluster_name'] {
