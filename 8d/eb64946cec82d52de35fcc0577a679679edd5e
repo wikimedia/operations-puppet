@@ -1,0 +1,8 @@
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+2: Elukey <ltoscano@wikimedia.org>
+Submitted-by: Elukey <ltoscano@wikimedia.org>
+Submitted-at: Wed, 25 Apr 2018 11:04:58 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/425967
+Project: operations/puppet
+Branch: refs/heads/production
