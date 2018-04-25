@@ -395,6 +395,26 @@ host poolcounter2002 {
     filename "lpxelinux.0";
 }
 
+host proton1001 {
+    hardware ethernet aa:00:00:ec:82:4e;
+    fixed-address proton1001.eqiad.wmnet;
+}
+
+host proton1002 {
+    hardware ethernet aa:00:00:b0:88:fc;
+    fixed-address proton1002.eqiad.wmnet;
+}
+
+host proton2001 {
+    hardware ethernet 
+    fixed-address proton2001.codfw.wmnet;
+}
+
+host proton2001 {
+    hardware ethernet 
+    fixed-address proton2002.codfw.wmnet;
+}
+
 host puppetboard1001 {
     hardware ethernet aa:00:00:51:0e:81;
     fixed-address puppetboard1001.eqiad.wmnet;

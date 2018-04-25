@@ -1797,6 +1797,10 @@ node /^prometheus100[34]\.eqiad\.wmnet$/ {
     role(prometheus)
 }
 
+node /^proton[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+    include ::standard
+}
+
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::frontend)
 }
