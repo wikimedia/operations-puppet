@@ -40,6 +40,8 @@ class profile::hive::client(
         hive_metastore_opts       => $hive_metastore_opts,
         metastore_host            => $metastore_host,
         java_home                 => $java_home,
+        # Precaution for CVE-2018-1284
+        hive_server_udf_blacklist => 'xpath,xpath_string,xpath_boolean,xpath_number,xpath_double,xpath_float,xpath_long,xpath_int,xpath_short'
     }
 
     # Set up a wrapper script for beeline, the command line
