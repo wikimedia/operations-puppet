@@ -31,6 +31,7 @@ class profile::prometheus::alerts {
     profile::kafka::mirror::alerts { 'main-eqiad_to_eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         contact_group   => 'analytics',
+        topic_blacklist => '.*(change-prop|\.job\.).*',
     }
 
     # Cross DC main-eqiad <-> main-codfw MirrorMakers.
@@ -47,7 +48,6 @@ class profile::prometheus::alerts {
         contact_group         => 'analytics',
         prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.codfw.wmnet/ops',
-        topic_blacklist       => '.*(change-prop|\.job\.).*',
     }
 
 
