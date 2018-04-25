@@ -1,0 +1,9 @@
+Code-Review+1: Gilles <gdubuc@wikimedia.org>
+Code-Review+1: Brion VIBBER <bvibber@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-by: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-at: Wed, 25 Apr 2018 07:16:41 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/428300
+Project: operations/puppet
+Branch: refs/heads/production
