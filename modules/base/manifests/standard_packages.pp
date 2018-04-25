@@ -10,7 +10,6 @@ class base::standard_packages {
         'acct',
         'ack-grep',
         'apt-transport-https',
-        'atop',
         'debian-goodies',
         'dnsutils',
         'dstat',
@@ -55,6 +54,7 @@ class base::standard_packages {
     package { [
             'apport',
             'apt-listchanges',
+            'atop', # atop causes severe performance degradation T192551 debian:896767
             'command-not-found',
             'command-not-found-data',
             'ecryptfs-utils',
