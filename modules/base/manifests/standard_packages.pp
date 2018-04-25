@@ -10,7 +10,6 @@ class base::standard_packages {
         'acct',
         'ack-grep',
         'apt-transport-https',
-        'atop',
         'debian-goodies',
         'dnsutils',
         'dstat',
@@ -64,6 +63,13 @@ class base::standard_packages {
             'wpasupplicant',
         ]:
         ensure => absent,
+    }
+
+    # purge these packages
+    package { [
+            'atop', # atop causes severe performance degradation T192551 debian:896767
+        ]:
+        ensure => purged,
     }
 
     # Installed by default on Ubuntu, but not used (and it's setuid root, so
