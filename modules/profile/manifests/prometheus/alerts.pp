@@ -47,6 +47,7 @@ class profile::prometheus::alerts {
         contact_group         => 'analytics',
         prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.codfw.wmnet/ops',
+        topic_blacklist       => '.*(change-prop|\.job\.).*',
     }
 
 
