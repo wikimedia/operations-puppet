@@ -20,6 +20,8 @@ class phabricator::tools (
     $phabtools_user        = '',
     $gerritbot_token       = '',
     $dump                  = false,
+    $rsync                 = false,
+    $rsync_client          = '',
 ) {
 
     package { 'python-mysqldb': ensure => present }
@@ -58,6 +60,27 @@ class phabricator::tools (
         minute  => '0',
         require => Package[$deploy_target],
     }
+
+    if $rsync {
+        include rsync::server
+        $rsync_client = $rsync_client
+        rsync::server::module { 'srvdumps':
+            path        => '/srv/dumps',
+            read_only   => 'yes',
+            hosts_allow => $rsync_client,
+        }
+        ferm::service {'phabdumps_rsyncd_ipv4':
+            port   => '873',
+            proto  => 'tcp',
+            srange => "@resolve((${rsync_client}))",
+        }
+        ferm::service {'phabdumps_rsyncd_ipv6':
+            port   => '873',
+            proto  => 'tcp',
+            srange => "@resolve((${rsync_client}),AAAA)",
+        }
+    }
+
 
     # These bz_*_update jobs require the bugzilla_migration DB
     # The equivalent rt_*_update crons which are not present
