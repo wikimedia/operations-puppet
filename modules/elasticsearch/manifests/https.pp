@@ -32,7 +32,7 @@ class elasticsearch::https (
     }
 
     diamond::collector::nginx { 'elasticsearch':
-        ensure => $ensure,
+        ensure => absent,
     }
 
     ::base::expose_puppet_certs { '/etc/nginx':
