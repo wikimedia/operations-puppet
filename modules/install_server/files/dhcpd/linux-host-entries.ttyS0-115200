@@ -342,8 +342,6 @@ host mwdebug2002 {
 host mx1001 {
     hardware ethernet aa:00:00:b2:f5:b7;
     fixed-address mx1001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host mx2001 {
