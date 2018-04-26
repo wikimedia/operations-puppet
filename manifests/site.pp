@@ -432,6 +432,7 @@ node 'db1062.eqiad.wmnet' {
     role(mariadb::core)
 }
 
+# See also db1090, db1098 and db1101 bellow
 node /^db10(69|79|86|94)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
