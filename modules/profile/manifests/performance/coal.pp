@@ -4,22 +4,17 @@
 #
 #   Contact: performance-team@wikimedia.org
 #
-# Parameters:
+# This profile gets included from modules/profile/manifests/performance/site.pp,
+# which is included from modules/role/manifests/graphite/primary.pp
 #
-#  [*coal_whisper_dir*]
-#    Where coal whisper files are located.
-#    Default: /var/lib/coal
-#
-class profile::performance::coal(
-    $coal_whisper_dir = hiera('profile::performance::coal::coal_whisper_dir', '/var/lib/coal')
-) {
-    # Consumes from eventlogging, on the analytics kafka cluster
+class profile::performance::coal() {
+    # Consumes from eventlogging, on the jumbo-eqiad kafka cluster
     $kafka_config  = kafka_config('jumbo-eqiad')
     $kafka_brokers = $kafka_config['brokers']['string']
 
-    # Additional vars have defaults set in modules/coal/init.pp
-    class { '::coal':
-        kafka_brokers => $kafka_brokers,
-        whisper_dir   => $coal_whisper_dir
+    class { '::coal': }
+    # Additional vars have defaults set in modules/coal/web.pp
+    class { '::coal::web':
+        kafka_brokers => $kafka_brokers
     }
 }
