@@ -5,7 +5,6 @@
 class mediawiki::packages::multimedia {
     package { [
         'ffmpeg',
-        'oggvideotools',
     ]:
         ensure => present,
     }
