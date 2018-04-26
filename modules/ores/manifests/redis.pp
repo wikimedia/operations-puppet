@@ -69,6 +69,7 @@ class ores::redis(
 
     $uris = apply_format("localhost:%s/${password}", $instances)
     diamond::collector { 'Redis':
+        ensure   => absent,
         settings => { instances => join($uris, ', ') },
     }
 }
