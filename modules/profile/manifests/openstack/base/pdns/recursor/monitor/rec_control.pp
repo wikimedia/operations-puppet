@@ -12,6 +12,7 @@ class profile::openstack::base::pdns::recursor::monitor::rec_control {
 
     # For the recursor
     diamond::collector { 'PowerDNSRecursor':
+        ensure   => absent,
         source   => 'puppet:///modules/diamond/collector/powerdns_recursor.py',
         settings => {
             # lint:ignore:quoted_booleans

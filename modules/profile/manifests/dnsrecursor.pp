@@ -21,7 +21,7 @@ class profile::dnsrecursor (
     ::dnsrecursor::monitor { [ $facts['ipaddress'], $facts['ipaddress6'] ]: }
 
     ::diamond::collector { 'PowerDNSRecursor':
-        ensure   => present,
+        ensure   => absent,
         source   => 'puppet:///modules/diamond/collector/powerdns_recursor.py',
         settings => {
             # lint:ignore:quoted_booleans

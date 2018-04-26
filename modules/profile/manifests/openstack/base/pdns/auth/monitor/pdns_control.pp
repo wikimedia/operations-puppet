@@ -12,7 +12,7 @@ class profile::openstack::base::pdns::auth::monitor::pdns_control {
 
     # For the authoritative servers
     diamond::collector { 'PowerDNS':
-        ensure   => present,
+        ensure   => absent,
         settings => {
             # lint:ignore:quoted_booleans
             # This is jammed straight into a config file, needs quoting.
