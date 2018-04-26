@@ -10,7 +10,7 @@ groups:
               yurik, bsimmers, bcohn, hjiang, tomasz, csteipp, zareen, jgirault, ellery,
               psinger, midom, tparscal, dworley, moushira, lpintscher, gpaumier,
               nschaaf, zhousquared, gwicke, dpatrick, samwalton9, samtar, akrausetud, jgonsior,
-              yuvipanda, shrlak, joewalsh]
+              yuvipanda, shrlak, joewalsh, madhuvishy]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past
     members: [adavenport, siddharth11]
@@ -28,7 +28,7 @@ groups:
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, rush, oblivian,
               dzahn, akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, jmm, jynus, aaron, ema, elukey, gehel, volans, madhuvishy, marostegui,
+              ori, jmm, jynus, aaron, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
@@ -128,7 +128,7 @@ groups:
               leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, cooltey,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-              daisy, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
+              daisy, mholloway-shell, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, dbrant, maxsem,
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, mpany, jsamra, katie,
@@ -206,7 +206,7 @@ groups:
                  DO NOT EQUAL Hadoop/Hive cluster access.
     members: [ezachte, milimetric, dartar, halfak, awight, dr0ptp4kt, nuria,
               leila, nettrom, mforns, bmansurov, tbayer, joal, imarlier,
-              madhuvishy, tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
+              tjones, legoktm, dcausse, bearloga, atgomez, dstrine,
               marktraceur, mtizzoni, panisson, paolotti, ciro, melodykramer,
               fdans, shiladsen, esanders, risler]
   statistics-users:
@@ -253,7 +253,7 @@ groups:
               nuria, otto, deskana, arnad, jgreen, katie,
               bsitzmann, dbrant, nettrom, leila, cwdent,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, jamesur, akosiaris, jkatz, madhuvishy,
+              joal, jamesur, akosiaris, jkatz,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -1854,13 +1854,12 @@ users:
     uid: 11963
     email: mholloway@wikimedia.org
   madhuvishy:
-    ensure: present
+    ensure: absent
     gid: 500
     name: madhuvishy
     realname: Madhu Viswanathan
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdyvoQsiHzWPlPfDR4KgonyRDTNORh74Yt0KUuXaME7j58FfURe82oFLa40W/lIwEUB2lDYX1297kQUkiL1DvsrWcFnV0phk55s/Lh4KB5mCvQyGy/1oXumzGN3osI6hSQoi+hwTzJNCZFmg2XRc2FiyLoYgPQxy77OjxBtnwavvSwJ79Fu+nM9o5ZVfYQnO72Jk9uAOYIfLiqlB+2V5Al+16WTayRDULZW/YORA9haHntVjJYo0ioQ7+fmczVPtY5HbN13PQJoy9n/8eoVsn31OcJ+HqN62NtV7YlpA2qgDz5gWq31vptDXGvSP74w0ncWSt/XlRC3uQXjFwye7CrmBHzx8lTVUdafEGHUszycYOpG0mnqcVGsU+44B3D+FEfSIwJOy5DQhCDn0a+BcpAnnn0Qy2NS6DvRVECnx08rK8RUMFUFHpFV/4hxDm/YmBl1XXkgUhTXPFY7PC91F3vpdNA0bja/N6ADMuJp5Jhoj/rs9SfkuI6rhAlM2J8RAKhW9Eq1jf6HXHmV9xKRxxwziTradWc9z2Pidv+kWNuOAk+NN25enN0IUeQzOr/Zn0UMH1fMaJ60HPtOXero1MNi7gOnzBdBOKEH2cPDdDMbb1wZwi0HECuQTNlh4NzZ4JLKK6yuD3X8yZxNHbKmAOzarpdo5gF3AbOfdDgd78n9w== mviswanathan@wikimedia.org]
+    ssh_keys: []
     uid: 11511
-    email: mviswanathan@wikimedia.org
   gpaumier:
     ensure: absent
     gid: 500
@@ -1868,7 +1867,6 @@ users:
     realname: Guillaume Paumier
     ssh_keys: []
     uid: 2047
-    email: gpaumier@wikimedia.org
   niedzielski:
     ensure: present
     gid: 500
