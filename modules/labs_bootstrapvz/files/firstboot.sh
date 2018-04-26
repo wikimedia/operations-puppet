@@ -134,9 +134,6 @@ puppet agent --enable
 #  updated sources.list
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
 
-apt-get update
-puppet agent -t
-
 # Puppet may have changed our ldap servers; now is a good time to
 #  refresh everything
 systemctl restart nslcd.service
@@ -144,6 +141,9 @@ systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
 nscd -i hosts
+
+apt-get update
+puppet agent -t
 
 # Ensure all NFS mounts are mounted
 mount_attempts=1
