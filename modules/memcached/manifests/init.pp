@@ -91,6 +91,7 @@ class memcached(
     include ::standard
 
     diamond::collector { 'Memcached':
+        ensure => absent,
         settings => {
             hosts =>  "${ip}:${port}",
         },
