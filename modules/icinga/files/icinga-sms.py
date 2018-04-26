@@ -17,7 +17,7 @@ CONTACTS_FILE = '/etc/icinga/contacts.cfg'
 
 # mail sent from einsteinium.wikimedia.org (icinga server) uses these
 MAIL_FROM = 'icinga@wikimedia.org'
-MAIL_SERVER = 'mx1001.wikimedia.org'
+MAIL_SERVER = 'localhost'
 
 # get address for a user from an Icinga contacts file
 #

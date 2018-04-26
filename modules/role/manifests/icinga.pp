@@ -108,4 +108,16 @@ class role::icinga {
         minute  => '33',
         command => '/usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state >/dev/null 2>&1',
     }
+
+    # listen for mail on port 25 so alert scripts may send via smtp to localhost
+    # taking advantage MTA failover and queueing
+    class { '::exim4':
+        queuerunner => 'combined',
+        config      => template("standard/mail/exim4.minimal.${::realm}.erb"),
+    }
+
+    if os_version('debian >= jessie') {
+        base::service_auto_restart { 'exim4': }
+    }
+
 }
