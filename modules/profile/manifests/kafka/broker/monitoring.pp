@@ -17,11 +17,12 @@ class profile::kafka::broker::monitoring (
     $replica_maxlag_critical = hiera('profile::kafka::broker::monitoring::replica_maxlag_critical', 100000),
 ) {
     # Get fully qualified Kafka cluster name
-    $config = kafka_config($kafka_cluster_name)
+    $config        = kafka_config($kafka_cluster_name)
     $kafka_cluster = $config['name']
 
     $prometheus_jmx_exporter_port = 7800
-    $jmx_exporter_config_file = '/etc/kafka/broker_prometheus_jmx_exporter.yaml'
+    $config_dir                   = '/etc/prometheus'
+    $jmx_exporter_config_file     = "${config_dir}/kafka_broker_prometheus_jmx_exporter.yaml"
 
     # Use this in your JAVA_OPTS you pass to the Kafka  broker process
     $java_opts = "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=${::ipaddress}:${prometheus_jmx_exporter_port}:${jmx_exporter_config_file}"
@@ -35,6 +36,7 @@ class profile::kafka::broker::monitoring (
         prometheus_nodes => $prometheus_nodes,
         labels           => {'kafka_cluster' => $kafka_cluster},
         config_file      => $jmx_exporter_config_file,
+        config_dir       => $config_dir,
         source           => 'puppet:///modules/profile/kafka/broker_prometheus_jmx_exporter.yaml',
     }
 
