@@ -14,14 +14,13 @@ class dumps::web::dirs(
     }
 
     $analyticsdir             = "${miscdatasetsdir}/analytics"
-    $othermiscdir             = "${miscdatasetsdir}/misc"
     $othertestfilesdir        = "${miscdatasetsdir}/testfiles"
     $miscdatasetsdir_wikidata_legacy = "${miscdatasetsdir}/wikidata"
     $miscdatasetsdir_wikibase        = "${miscdatasetsdir}/wikibase/"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
 
     # subdirs for misc datasets that aren't dumps
-    file { [ $analyticsdir, $othermiscdir, $othertestfilesdir ]:
+    file { [ $analyticsdir, $othertestfilesdir ]:
         ensure => 'directory',
         mode   => '0755',
         owner  => $user,
