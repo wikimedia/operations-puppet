@@ -33,13 +33,13 @@ class profile::phabricator::main (
     # dumps are only enabled on the active server set in Hiera
     $phabricator_active_server = hiera('phabricator_active_server')
     if $::hostname == $phabricator_active_server {
-        $dump_rsync_ensure = 'present'
         $dump_enabled = true
+        $dump_rsynccfg_enabled = true
         $ferm_ensure = 'present'
         $aphlict_ensure = 'present'
     } else {
-        $dump_rsync_ensure ='absent'
         $dump_enabled = false
+        $dump_rsynccfg_enabled = false
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
     }
@@ -221,12 +221,24 @@ class profile::phabricator::main (
         require         => Package[$deploy_target]
     }
 
-    cron { 'phab_dump':
-        ensure  => $dump_rsync_ensure,
-        command => 'rsync -zpt --bwlimit=40000 -4 /srv/dumps/phabricator_public.dump dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1',
-        user    => 'root',
-        minute  => '10',
-        hour    => '4',
+    if $dump_rsynccfg_enabled {
+        include rsync::server
+        $rsync_clients = 'dumps.wikimedia.org'
+        rsync::server::module { 'srvdumps':
+            path        => '/srv/dumps',
+            read_only   => 'yes',
+            hosts_allow => $rsync_clients,
+        }
+        ferm::service {'phabdumps_rsyncd_ipv4':
+            port   => '873',
+            proto  => 'tcp',
+            srange => "@resolve((${rsync_clients}))",
+        }
+        ferm::service {'phabdumps_rsyncd_ipv6':
+            port   => '873',
+            proto  => 'tcp',
+            srange => "@resolve((${rsync_clients}),AAAA)",
+        }
     }
 
     # restart apache periodically to free up deadlocked workers. See T187790
