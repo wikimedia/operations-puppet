@@ -30,4 +30,10 @@ class profile::dumps::distribution::datasets::fetcher(
         url             => 'https://wikitech.wikimedia.org/dumps/',
         miscdatasetsdir => $miscdatasetsdir,
     }
+
+    class {'dumps::web::fetches::phab':
+        src             => 'phab1001.eqiad.wmnet::srvdumps',
+        miscdatasetsdir => $miscdatasetsdir,
+        user            => root,
+    }
 }
