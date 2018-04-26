@@ -100,6 +100,13 @@ class openstack::keystone::service(
             group   => 'www-data',
             mode    => '0775',
             require => Package['keystone'];
+        '/etc/logrotate.d/keystone':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            source  => "puppet:///modules/openstack/${version}/keystone/keystone_logrotate",
+            require => Package['keystone'];
         '/etc/keystone':
             ensure  => 'directory',
             owner   => 'keystone',
