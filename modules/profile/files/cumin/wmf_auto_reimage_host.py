@@ -120,9 +120,7 @@ def run(args, user, log_path):
         lib.puppet_remove_host(args.host)  # Cleanup Puppet
 
         # Reboot into PXE mode to start the reimage
-        lib.print_line(
-            lib.ipmitool_command(args.mgmt, ['chassis', 'bootdev', 'pxe']).rstrip('\n'),
-            host=args.host)
+        lib.set_pxe_boot(args.host, args.mgmt)
         status = lib.ipmitool_command(args.mgmt, ['chassis', 'power', 'status'])
         if status.startswith('Chassis Power is off'):
             lib.print_line('Current power status is off, powering on', host=args.host)
@@ -156,6 +154,8 @@ def run(args, user, log_path):
         # Ensure the host is in Icinga
         lib.run_puppet([lib.resolve_dns(lib.ICINGA_DOMAIN, 'CNAME')], no_raise=True)
         lib.icinga_downtime(args.host, user, args.phab_task_id)
+
+    lib.check_bios_bootparams(args.host, args.mgmt)
 
     # Issue a reboot and wait for it and also for Puppet to complete
     if not args.no_reboot:

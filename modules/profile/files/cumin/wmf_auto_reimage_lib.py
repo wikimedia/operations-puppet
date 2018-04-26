@@ -715,6 +715,65 @@ def ipmitool_command(mgmt, ipmi_command):
     return subprocess.check_output(command)
 
 
+def set_pxe_boot(host, mgmt, retries=0):
+    """Force PXE for the next boot and verify that the setting was applied, retry on failure.
+
+    This function recursively calls itself on failure, for a maximum of 3 retries..
+
+    Arguments:
+    host    -- the host to set to boot from PXE
+    mgmt    -- the management interface of the host
+    retries -- a integer to keep track of nested retries. It should not be set by the caller but
+               only internally for the recursive calls. [optional, default: 0]
+    """
+    set_pxe = ipmitool_command(mgmt, ['chassis', 'bootdev', 'pxe']).rstrip('\n')
+    print_line(set_pxe, host=host)
+    bootparams = ipmitool_command(mgmt, ['chassis', 'bootparam', 'get', '5'])
+
+    for line in bootparams.splitlines():
+        if 'Boot Device Selector' not in line:
+            continue
+
+        boot = line.split(':')[1].strip()
+        if boot == 'Force PXE':
+            break  # Command succeeded
+        else:
+            print_line('({retries}) Wrong boot device, expected Force PXE, got: {line}'.format(
+                retries=retries, line=line), host=host)
+
+            if retries < 2:
+                time.sleep(WATCHER_LOG_LOOPS)
+                set_pxe_boot(host, mgmt, retries=retries+1)
+
+    else:
+        if retries == 0:
+            # We're on the first call of the function, after all the eventual recursive calls
+            print_line(('WARNING: unable to verify that PXE was set, the host might reboot in the '
+                        'current OS'), host=host)
+
+
+def check_bios_bootparams(host, mgmt):
+    """Check if the BIOS boot parameters are back to normal values, print a warning otherwise.
+
+    Arguments:
+    host -- the host to check
+    mgmt -- the management interface of the host
+    """
+    bootparams = ipmitool_command(mgmt, ['chassis', 'bootparam', 'get', '5'])
+
+    for line in bootparams.splitlines():
+        if 'Boot parameter data' not in line:
+            continue
+
+        bitmask = line.split(':')[1].strip()
+        if bitmask == '0000000000':
+            break
+
+    else:
+        print_line(('WARNING: unable to verify that BIOS boot parameters are back to normal, got:\n'
+                    '{params}').format(params=bootparams), host=host)
+
+
 def wait_puppet_run(host, start=None):
     """Wait that a Puppet run is completed on the given host.
 
