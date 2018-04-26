@@ -68,6 +68,12 @@ def parse_args():
                 'The MGMT parameter {} does not follow the *.mgmt.* format'.format(mgmt)
             )
 
+    # Convert it into a list
+    if args.mask is not None:
+        args.mask = args.mask.split(',')
+    else:
+        args.mask = []
+
     return args
 
 
@@ -150,6 +156,9 @@ def run(args, user, log_path):
 
     # Sign the new Puppet certificate
     if lib.puppet_wait_cert_and_sign(args.host):
+        if args.mask:  # Mask systemd services
+            lib.mask_systemd_services(args.host, args.mask)
+
         lib.puppet_first_run(args.host)
         # Ensure the host is in Icinga
         lib.run_puppet([lib.resolve_dns(lib.ICINGA_DOMAIN, 'CNAME')], no_raise=True)
@@ -170,6 +179,10 @@ def run(args, user, log_path):
     # Run Apache fast test
     if args.apache:
         lib.run_apache_fast_test(args.host)
+
+    # The unmask is *not* done automatically, the commands to unmask are printed and logged
+    if args.mask:
+        lib.print_unmask_message(args.host, args.mask)
 
     # The repool is *not* done automatically, the command to repool is printed and logged
     if args.conftool:

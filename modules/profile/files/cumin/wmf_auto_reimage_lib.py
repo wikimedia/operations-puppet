@@ -103,6 +103,8 @@ class Confctl(object):
 def get_base_parser(description):
     """Return an ArgumentParser with the common base options.
 
+    If new options are added, they must be handled also in get_reimage_host_command().
+
     Arguments:
     description -- the description to use for the ArgumentParser
     """
@@ -138,6 +140,11 @@ def get_base_parser(description):
         '--conftool-value', default='inactive',
         help=("Value to pass to the 'set/pooled' command in conftool to depool the host(s), if "
               "the -c/--conftool option is set. [default: inactive]"))
+    parser.add_argument(
+        '--mask',
+        help=('Comma separated list of names of systemd services to mask before the first Puppet '
+              'run, without the .service suffix. Useful when the first Puppet run already '
+              'start/enable some production services before the host is ready.'))
     parser.add_argument(
         '-a', '--apache', action='store_true',
         help='run apache-fast-test on the hosts after the reimage')
@@ -412,7 +419,7 @@ def get_reimage_host_command(host, mgmt, args):
     # Add command line arguments with values
     # The --phab-task-id options is skipped because the main script already takes care
     # of upgrading Phabricator
-    for key in ('conftool_value',):
+    for key in ('conftool_value', 'mask'):
         if args_dict[key] is not None:
             command_args.append(get_option_from_name(key))
             command_args.append(args_dict[key])
@@ -974,3 +981,29 @@ def get_phabricator_post_message(retcodes):
         common=PHAB_COMMENT_POST.format(hosts=hosts), result=result)
 
     return message
+
+
+def mask_systemd_services(host, services):
+    """Mask the provided services on the host.
+
+    Arguments:
+    host     -- the host on which to mask the services
+    services -- a list with the names of the services, without the .service suffix
+    """
+    for service in services:
+        run_cumin('mask_systemd_service', host,
+                  ['systemctl mask {service}.service'.format(service=service)], installer=True)
+
+
+def print_unmask_message(host, services):
+    """Print and log the commands to execute to unmask the masked systemd services.
+
+    Arguments:
+    services -- a list with the names of the services, without the .service suffix
+    """
+    commands = []
+    for service in services:
+        commands.append('systemctl unmask {service}.service'.format(service=service))
+
+    print_line('To unmask the masked services run:\n{cmds}'.format(cmds='\n'.join(commands)),
+               host=host)
