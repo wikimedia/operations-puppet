@@ -2092,7 +2092,7 @@ node /^wdqs200[4-6]\.codfw\.wmnet$/ {
 
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
-    role(test)
+    role(webperf)
 }
 
 node 'wezen.codfw.wmnet' {
