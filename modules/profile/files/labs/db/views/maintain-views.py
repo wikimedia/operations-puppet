@@ -342,6 +342,9 @@ class SchemaOperations():
             self.write_execute(
                 "CREATE DATABASE `{}`;".format(self.db_p)
             )
+            self.write_execute(
+                "GRANT SELECT, SHOW VIEW ON `{}`.* TO 'labsdbuser';".format(self.db_p)
+            )
 
         logging.info("Full views for %s:", self.db)
         for view in fullviews:
