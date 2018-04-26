@@ -33,4 +33,10 @@ class profile::webperf(
         statsd_host   => $statsd_host,
         statsd_port   => $statsd_port,
     }
+
+    # Make a valid target for coal, and set up what's needed for the consumer
+    # Consumes from the jumbo-eqiad cluster, just like navtiming
+    class { '::coal::processor':
+        kafka_brokers => $kafka_brokers
+    }
 }

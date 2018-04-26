@@ -31,11 +31,7 @@ class webperf::navtiming(
     }
 
     file { '/srv/webperf/navtiming.py':
-        source => 'puppet:///modules/webperf/navtiming.py',
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0755',
-        notify => Service['navtiming'],
+        ensure => absent
     }
 
     file { '/lib/systemd/system/navtiming.service':

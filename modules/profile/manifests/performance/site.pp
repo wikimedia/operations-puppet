@@ -7,8 +7,6 @@ class profile::performance::site {
 
     require ::profile::performance::coal
 
-    $coal_whisper_dir = $::profile::performance::coal::coal_whisper_dir
-
     file { '/srv/org':
         ensure => directory,
         owner  => 'root',
@@ -33,11 +31,5 @@ class profile::performance::site {
     httpd::site { 'performance.wikimedia.org':
         content => template('profile/performance/site/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
-    }
-
-    # Make Coal's whisper files accessible to Graphite front-ends.
-    file { '/var/lib/carbon/whisper/coal':
-        ensure => link,
-        target => $coal_whisper_dir,
     }
 }
