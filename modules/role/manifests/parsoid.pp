@@ -17,6 +17,7 @@ class role::parsoid {
     include ::parsoid
     # Monitor TCP Connection States
     diamond::collector { 'TcpConnStates':
+        ensure => absent,
         source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
     }
 
