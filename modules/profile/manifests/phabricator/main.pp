@@ -33,13 +33,13 @@ class profile::phabricator::main (
     # dumps are only enabled on the active server set in Hiera
     $phabricator_active_server = hiera('phabricator_active_server')
     if $::hostname == $phabricator_active_server {
-        $dump_rsync_ensure = 'present'
         $dump_enabled = true
+        $rsync_cfg_enabled = true
         $ferm_ensure = 'present'
         $aphlict_ensure = 'present'
     } else {
-        $dump_rsync_ensure ='absent'
         $dump_enabled = false
+        $rsync_cfg_enabled = false
         $ferm_ensure = 'absent'
         $aphlict_ensure = 'absent'
     }
@@ -218,15 +218,8 @@ class profile::phabricator::main (
         phabtools_user  => $passwords::phabricator::phabtools_user,
         gerritbot_token => $passwords::phabricator::gerritbot_token,
         dump            => $dump_enabled,
+        rsync           =. $rsync_cfg_enabled,
         require         => Package[$deploy_target]
-    }
-
-    cron { 'phab_dump':
-        ensure  => $dump_rsync_ensure,
-        command => 'rsync -zpt --bwlimit=40000 -4 /srv/dumps/phabricator_public.dump dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1',
-        user    => 'root',
-        minute  => '10',
-        hour    => '4',
     }
 
     # restart apache periodically to free up deadlocked workers. See T187790
