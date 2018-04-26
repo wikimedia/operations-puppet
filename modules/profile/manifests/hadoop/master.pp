@@ -75,7 +75,6 @@ class profile::hadoop::master(
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::master'],
-            critical      => true,
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
@@ -88,7 +87,6 @@ class profile::hadoop::master(
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
             contact_group => 'admins,analytics',
             require       => Class['cdh::hadoop::master'],
-            critical      => true,
         }
         nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
             description   => 'Hadoop HistoryServer',
