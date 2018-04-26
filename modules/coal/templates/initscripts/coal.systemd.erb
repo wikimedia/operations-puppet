@@ -2,8 +2,8 @@
 Description=Navigation Timing Whisper logger
 
 [Service]
-User=coal
-Group=coal
+User=nobody
+Group=nogroup
 Restart=always
 ExecStart=/usr/bin/python /srv/deployment/performance/coal/run_coal.py \
 	--brokers "<%= @kafka_brokers %>" \
