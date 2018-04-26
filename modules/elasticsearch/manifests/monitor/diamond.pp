@@ -3,7 +3,8 @@
 
 class elasticsearch::monitor::diamond {
     diamond::collector { 'WMFElastic':
-        source   => 'puppet:///modules/elasticsearch/monitor/wmfelastic.py',
+        ensure => absent,
+        source => 'puppet:///modules/elasticsearch/monitor/wmfelastic.py',
     }
 }
 
