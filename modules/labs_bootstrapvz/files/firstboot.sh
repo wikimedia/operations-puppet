@@ -114,6 +114,11 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 # it isn't perfect
 mkdir /var/lib/puppet/client
 
+systemctl restart nscd.service
+dpkg-reconfigure -fnoninteractive -pcritical openssh-server
+systemctl restart ssh.service
+nscd -i hosts
+
 # set mailname
 echo $fqdn > /etc/mailname
 
@@ -134,13 +139,8 @@ puppet agent --enable
 #  updated sources.list
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
 
-# Puppet may have changed our ldap servers; now is a good time to
-#  refresh everything
+# Refresh ldap now that puppet has updated our ldap.conf
 systemctl restart nslcd.service
-systemctl restart nscd.service
-dpkg-reconfigure -fnoninteractive -pcritical openssh-server
-systemctl restart ssh.service
-nscd -i hosts
 
 apt-get update
 puppet agent -t
