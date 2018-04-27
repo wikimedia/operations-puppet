@@ -180,4 +180,9 @@
     role: master
   targets:
   - db1111:9104
+- labels:
+    shard: test-s1
+    role: slave
+  targets:
+  - db1118:9104
 
