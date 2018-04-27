@@ -27,6 +27,7 @@ class wdqs(
     String $blazegraph_options = '',
     String $blazegraph_heap_size = '32g',
     String $blazegraph_config_file = 'RWStore.properties',
+    Array[String] $extra_jvm_opts = [],
 ) {
 
     $deploy_user = 'deploy-service'

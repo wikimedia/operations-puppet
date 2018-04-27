@@ -579,6 +579,13 @@ class role::prometheus::ops {
         ],
       },
       {
+        'job_name'        => 'jmx_wdqs_blazegraph',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_wdqs_blazegraph_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'jmx_wdqs_updater',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -618,10 +625,17 @@ class role::prometheus::ops {
         site       => $::site,
     }
 
-    prometheus::jmx_exporter_config{ "wdqs_updater_${::site}":
-        dest       => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
-        class_name => 'profile::wdqs',
-        site       => $::site,
+    prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
+        dest              => "${targets_path}/jmx_wdqs_blazegraph_${::site}.yaml",
+        class_name        => 'profile::wdqs',
+        instance_selector => 'wdqs_blazegraph',
+        site              => $::site,
+    }
+    prometheus::jmx_exporter_config { "wdqs_updater_${::site}":
+        dest              => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
+        class_name        => 'profile::wdqs',
+        instance_selector => 'wdqs_updater',
+        site              => $::site,
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_${::site}":
