@@ -2794,6 +2794,10 @@ ldap_only_users:
     ensure: present
     realname: Victoria Coleman
     email: vcoleman@wikimedia.org
+  bitpogo:
+    ensure: present
+    realname: Matthias Geisler
+    email: matthias.geisler@wikimedia.de
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
@@ -2921,6 +2925,10 @@ ldap_only_users:
     ensure: present
     realname: Wes Moran
     email: westonnh@gmail.com
+  tieu:
+    ensure: present
+    realname: Tim Fabian Eulitz
+    email: tim.eulitz@wikimedia.de
   tnegrin:
     ensure: present
     realname: Toby Negrin
