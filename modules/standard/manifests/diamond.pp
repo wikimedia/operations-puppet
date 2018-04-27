@@ -19,22 +19,39 @@ class standard::diamond {
         }
     }
 
-    class { '::diamond':
-        path_prefix   => $path_prefix,
-        keep_logs_for => $keep_logs_for,
-        service       => $service,
-        settings      => {
-            # lint:ignore:quoted_booleans
-            # Diamond needs its bools in string-literals.
-            enabled => 'true',
-            # lint:endignore
-            host    => $host,
-            port    => $port,
-            batch   => '20',
-        },
-    }
+    if hiera('diamond::remove', false) { # lint:ignore:wmf_styleguide
+        package { ['diamond', 'python-diamond']:
+            ensure => purged,
+        }
 
-    if os_version('debian >= jessie') {
-        base::service_auto_restart { 'diamond': }
+        file { '/etc/diamond/diamond.conf':
+            ensure => absent,
+        }
+
+        if os_version('debian >= jessie') {
+            base::service_auto_restart { 'diamond':
+                ensure => absent,
+            }
+        }
+    }
+    else {
+        class { '::diamond':
+            path_prefix   => $path_prefix,
+            keep_logs_for => $keep_logs_for,
+            service       => $service,
+            settings      => {
+                # lint:ignore:quoted_booleans
+                # Diamond needs its bools in string-literals.
+                enabled => 'true',
+                # lint:endignore
+                host    => $host,
+                port    => $port,
+                batch   => '20',
+            },
+        }
+
+        if os_version('debian >= jessie') {
+            base::service_auto_restart { 'diamond': }
+        }
     }
 }
