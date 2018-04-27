@@ -319,7 +319,7 @@ module DomainRedirects
           dest.puts <<-eos.gsub(/^ {12}/, "\t")
             # #{@lines[rule[:line_num] - 1]}
             RewriteCond %{HTTP_HOST} #{rule[:domain_regex]}
-            RewriteRule #{rule[:path_regex]} #{rule[:dest]} [R=301,L,NE]
+            RewriteRule #{rule[:path_regex]} #{rule[:dest]} [R=301,L,NE,QSA]
           eos
         end
       end
