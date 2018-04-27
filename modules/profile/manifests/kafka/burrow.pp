@@ -8,7 +8,7 @@ define profile::kafka::burrow(
     $monitoring_config,
 ) {
     $config = kafka_config($title)
-    $smtp_server = 'mx1001.wikimedia.org'
+    $smtp_server = 'localhost'
     $kafka_cluster_name = $config['name']
 
     $alert_whitelist = $monitoring_config[$title]['alert_whitelist']
