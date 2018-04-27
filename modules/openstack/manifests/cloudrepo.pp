@@ -26,7 +26,19 @@ class openstack::cloudrepo(
         }
 
     } elsif os_version('debian jessie') and ($version == 'mitaka') {
-        include ::openstack::jessie_mitaka_pinning
+        file{'/etc/apt/preferences.d/openstack.pref':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/openstack/backports/openstack.pref',
+        }
+
+        apt::conf{'backports-default-release':
+            key      => 'APT::Default-Release',
+            value    => 'jessie-backports',
+            priority => '00',
+            require  => File['/etc/apt/preferences.d/openstack.pref'],
+        }
     } elsif os_version('debian stretch') and ($version == 'ocata') {
         notify {'On stretch this will probably install Ocata-versioned packages, but nothing is explicitly pinned':}
     } else {
