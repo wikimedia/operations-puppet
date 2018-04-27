@@ -13,6 +13,7 @@ class profile::openstack::labtest::puppetmaster::frontend(
     $encapi_statsd_prefix = hiera('profile::openstack::labtest::puppetmaster::encapi::statsd_prefix'),
     $statsd_host = hiera('profile::openstack::labtest::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
+    $cert_secret_path = hiera('profile::openstack::labtest::puppetmaster::cert_secret_path'),
     ) {
 
     require ::profile::openstack::labtest::clientlib
@@ -31,5 +32,6 @@ class profile::openstack::labtest::puppetmaster::frontend(
         encapi_statsd_prefix     => $encapi_statsd_prefix,
         statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
+        cert_secret_path         => $cert_secret_path,
     }
 }

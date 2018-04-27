@@ -2,4 +2,4 @@ profile::openstack::labtest::puppetmaster::encapi::db_host: 'labtestcontrol2001.
 profile::openstack::labtest::puppetmaster::encapi::db_name: 'labspuppet'
 profile::openstack::labtest::puppetmaster::encapi::db_user: 'labspuppet'
 profile::openstack::labtest::puppetmaster::encapi::statsd_prefix: 'labtest.puppetbackend'
-
+profile::openstack::labtest::puppetmaster::cert_secret_path: 'labtestpuppetmaster'
