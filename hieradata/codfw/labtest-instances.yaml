@@ -3,7 +3,7 @@
 # and the lookup logic is different than everywhere else.
 # Because we love clarity and consistency.
 
-puppetmaster: "labtest-puppetmaster.wikimedia.org"
+puppetmaster: "puppet"
 labs_puppet_master: "labtest-puppetmaster.wikimedia.org"
 
 labsdnsconfig:
