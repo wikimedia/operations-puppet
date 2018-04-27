@@ -13,6 +13,7 @@ class profile::openstack::base::puppetmaster::frontend(
     $encapi_statsd_prefix = hiera('profile::openstack::base::puppetmaster::encapi::statsd_prefix'),
     $statsd_host = hiera('profile::openstack::base::statsd_host'),
     $labweb_hosts = hiera('profile::openstack::base::labweb_hosts'),
+    $cert_secret_path = hiera('profile::openstack::base::puppetmaster::cert_secret_path'),
     ) {
 
     include ::network::constants
@@ -88,7 +89,7 @@ class profile::openstack::base::puppetmaster::frontend(
         workers          => $puppetmasters[$::fqdn],
         bind_address     => $::puppetmaster::bind_address,
         priority         => 40,
-        cert_secret_path => 'wmcspuppetmaster',
+        cert_secret_path => $cert_secret_path,
     }
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
