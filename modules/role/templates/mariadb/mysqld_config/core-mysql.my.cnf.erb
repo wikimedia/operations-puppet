@@ -9,7 +9,7 @@ socket = <%= @socket %>
 ssl-ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 ssl-cert=/etc/mysql/ssl/cert.pem
 ssl-key=/etc/mysql/ssl/server.key
-ssl-verify-server-cert
+ssl-mode=VERIFY_IDENTITY
 <% end %>
 
 [mysqld]
