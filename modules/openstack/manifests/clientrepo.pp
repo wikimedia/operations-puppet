@@ -1,12 +1,11 @@
-# sets upt APT repository for labs openstack
+# sets up APT repository and/or pinning for openstack client packages
 
-# class default kept here until components not yet moved to profiles
-# for parameterization are completed in modules/openstack
+# The aim here is to specify package versions for client libs but
+#  not necessarily pull other packages from those repos.
 
-class openstack::cloudrepo(
+class openstack::clientrepo(
     $version='mitaka',
 ) {
-
     if ($::lsbdistcodename == 'trusty') {
 
         if ($version != 'mitaka' and $version != 'liberty') {
@@ -30,20 +29,9 @@ class openstack::cloudrepo(
                 logoutput   => true,
             }
         }
-    } elsif os_version('debian jessie') and ($version == 'mitaka') {
-        file{'/etc/apt/preferences.d/openstack.pref':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/openstack/backports/openstack.pref',
-        }
 
-        apt::conf{'backports-default-release':
-            key      => 'APT::Default-Release',
-            value    => 'jessie-backports',
-            priority => '00',
-            require  => File['/etc/apt/preferences.d/openstack.pref'],
-        }
+    } elsif os_version('debian jessie') and ($version == 'mitaka') {
+        include ::openstack::jessie_mitaka_client_pinning
     } elsif os_version('debian stretch') and ($version == 'ocata') {
         notify {'On stretch this will probably install Ocata-versioned packages, but nothing is explicitly pinned':}
     } else {
