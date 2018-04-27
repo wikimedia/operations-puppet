@@ -52,9 +52,14 @@ class role::mariadb::core_test {
         # override => "[Service]\nLimitNOFILE=200000",
     }
 
+    if vendor == 'mariadb' {
+        $config_template = 'production.my.cnf.erb'
+    } else {
+        $config_template = 'core-mysql.my.cnf.erb'
+    }
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
-        config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
+        config           => "role/mariadb/mysqld_config/{$config_template}",
         basedir          => $basedir,
         datadir          => $datadir,
         tmpdir           => $tmpdir,
