@@ -448,16 +448,8 @@ rewrite	old-bugzilla.wikimedia.org	//static-bugzilla.wikimedia.org
 rewrite	bug-attachment.wikimedia.org	//static-bugzilla.wikimedia.org
 
 # svn.wikimedia.org decomissioning
-override	svn.wikimedia.org/doc	https://doc.wikimedia.org/mediawiki-core/master/php/
-override	svn.wikimedia.org/viewvc/mediawiki	https://phabricator.wikimedia.org/diffusion/SVN/
-override	svn.wikimedia.org/viewvc/mysql	https://phabricator.wikimedia.org/diffusion/SVNM/
-override	svn.wikimedia.org/viewvc/pywikipedia	https://phabricator.wikimedia.org/diffusion/SVNP/
-funnel	svn.wikimedia.org	https://phabricator.wikimedia.org/diffusion/
-override	svn.mediawiki.org/doc	https://doc.wikimedia.org/mediawiki-core/master/php/
-override	svn.mediawiki.org/viewvc/mediawiki	https://phabricator.wikimedia.org/diffusion/SVN/
-override	svn.mediawiki.org/viewvc/mysql	https://phabricator.wikimedia.org/diffusion/SVNM/
-override	svn.mediawiki.org/viewvc/pywikipedia	https://phabricator.wikimedia.org/diffusion/SVNP/
-funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
+funnel	svn.wikimedia.org	https://phabricator.wikimedia.org/u/subversion
+funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/u/subversion
 
 # rewrite download.wiki(m|p)edia to dumps.wikimedia - T107575
 rewrite	download.wikimedia.org	https://dumps.wikimedia.org
