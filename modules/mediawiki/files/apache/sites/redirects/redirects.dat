@@ -347,10 +347,10 @@ funnel	cz.wikimedia.org	http://www.wikimedia.cz
 ###############
 ## projects
 ###############
-#wikipedia is in wwwportals.conf
 rewrite	mediawiki.org	//www.mediawiki.org
 rewrite	wikimedia.org	//www.wikimedia.org
 rewrite	wikinews.org	//www.wikinews.org
+rewrite	wikipedia.org	//www.wikipedia.org
 rewrite	wikiquote.org	//www.wikiquote.org
 rewrite	wikiversity.org	//www.wikiversity.org
 rewrite	wikivoyage.org	//www.wikivoyage.org

@@ -1,22 +1,4 @@
 <VirtualHost *:80>
-    ServerName wikipedia.<%= @domain_suffix %>
-
-    # Redirecting from subdirectories of wikipedia.org to subdomains
-    RewriteEngine On
-    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
-    RewriteCond %{ENV:RW_PROTO} !=https
-    RewriteRule . - [E=RW_PROTO:http]
-
-    RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R=301,L,NE]
-
-    # Prevent the catch-all redirect below from breaking the apple-app-site-association alias
-    RewriteRule /apple-app-site-association - [L]
-    Alias /apple-app-site-association /srv/mediawiki/docroot/wikipedia.org/apple-app-site-association
-
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://www.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
-</VirtualHost>
-
-<VirtualHost *:80>
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     ServerName www.wikipedia.<%= @domain_suffix %>
 
@@ -44,6 +26,8 @@
     # Language-specific links
     RewriteRule ^/wiki/(aa|ab|af|am|as|ay|az|ba|be|bh|bi|bn|bo|ca|co|dz|et|eu|fa|fi|fj|fo|fy|ga|gl|gn|gu|ha|hy|ia|id|ik|is|it|iu|jv|ka|kk|kl|km|kn|ks|ku|ky|la|lo|lv|mg|mi|mk|mn|mo|mr|my|na|ne|no|oc|om|or|pa|ps|pt|qu|rm|rn|rw|sa|sd|sg|si|sk|sm|sn|so|sq|ss|st|su|sw|ta|te|tg|th|ti|tk|tl|tn|to|ts|tt|tw|ug|uk|ur|uz|vi|vo|wo|xh|yi|yo|za|zu):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R,L]
     RewriteRule ^/wiki/(ar|bs|cs|cy|da|de|dk|el|en|eo|es|fr|gd|gv|he|hi|hr|hu|ja|ko|ml|ms|nl|pl|ro|ru|sh|sl|sr|sv|tr|zh|zh-cn|zh-tw|nds):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R,L]
+
+    RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R=301,L,NE]
 
     # English Wikipedia pages
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
