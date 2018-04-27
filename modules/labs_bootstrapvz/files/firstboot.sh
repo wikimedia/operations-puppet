@@ -109,6 +109,9 @@ sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 
+echo "$ip       $fqdn $hostname" >> /etc/hosts
+echo $hostname > /etc/hostname
+
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
 # it isn't perfect
