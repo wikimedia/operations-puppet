@@ -2925,6 +2925,10 @@ ldap_only_users:
     ensure: present
     realname: Toby Negrin
     email: tnegrin@wikimedia.org
+  tschumann:
+    ensure: present
+    realname: Tobias Schumann
+    email: tobias.schumann@wikimedia.de
   valhallasw:
     ensure: present
     realname: Merlijn van Deen
