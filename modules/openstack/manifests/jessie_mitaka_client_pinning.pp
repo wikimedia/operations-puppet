@@ -134,40 +134,4 @@ class openstack::jessie_mitaka_pinning {
         pin      => 'version 2:13.1.0-2~bpo8+1',
         priority => '1002',
     }
-
-    apt::pin { 'jessie_mitaka_pinning_nova_compute':
-        package  => 'nova-compute',
-        pin      => 'version 2:13.1.0-2~bpo8+1',
-        priority => '1002',
-    }
-
-    apt::pin { 'jessie_mitaka_pinning_nova_compute_kvm':
-        package  => 'nova-compute-kvm',
-        pin      => 'version 2:13.1.0-2~bpo8+1',
-        priority => '1002',
-    }
-
-    apt::pin { 'jessie_mitaka_pinning_qemu_system':
-        package  => 'qemu-system',
-        pin      => '1:2.8+dfsg-3~bpo8+1',
-        priority => '1002',
-    }
-
-    apt::pin { 'jessie_mitaka_pinning_libvirt_bin':
-        package  => 'libvirt-bin',
-        pin      => '1.2.9-9+deb8u5',
-        priority => '1002',
-    }
-
-    apt::pin { 'jessie_mitaka_pinning_libvirt0':
-        package  => 'libvirt-bin',
-        pin      => '3.0.0-4+deb9u2~bpo8+1',
-        priority => '1002',
-    }
-
-    apt::pin { 'jessie_mitaka_pinning_python-libvirt':
-        package  => 'python-libvirt',
-        pin      => '1.2.9-1',
-        priority => '1002',
-    }
 }
