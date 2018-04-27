@@ -43,18 +43,23 @@ class role::mariadb::core_test {
         socket      => $socket,
     }
 
-    class {'mariadb::packages_wmf':
+    class { 'mariadb::packages_wmf':
         package => $package,
     }
-    class {'mariadb::service':
+    class { 'mariadb::service':
         package  => $package,
         # override not needed, default configuration changed on package
         # override => "[Service]\nLimitNOFILE=200000",
     }
 
+    if $package in ['wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101', 'wmf-mariadb102'] {
+        $config_template = 'production.my.cnf.erb'
+    } else {
+        $config_template = 'core-mysql.my.cnf.erb'
+    }
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
-        config           => 'role/mariadb/mysqld_config/production.my.cnf.erb',
+        config           => "role/mariadb/mysqld_config/${config_template}",
         basedir          => $basedir,
         datadir          => $datadir,
         tmpdir           => $tmpdir,
