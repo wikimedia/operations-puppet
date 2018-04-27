@@ -44,7 +44,10 @@ interactive-timeout            = 28800
 wait-timeout                   = 3600
 transaction-isolation          = REPEATABLE-READ
 #use-stat-tables not on MySQL
+# enable socket-based authentication, and fail
+# if it doesn't load
 plugin-load-add                = auth_socket.so
+auth_socket                    = FORCE_PLUS_PERMANENT
 
 # binary log an replication options
 log-bin
@@ -71,23 +74,16 @@ open-files-limit               = 200000
 
 <% if @semi_sync != 'off' -%>
 # Semi-sync replication
-# TODO: use plugin_load_add once T133780 is fixed
 # In case MySQL doesn't start due to this plugin failing, comment the next
-# 'plugin_load' line and all the 'rpl_semi_sync_*' lines.
-<% end -%>
-<% if @semi_sync == 'both' -%>
-plugin_load                        = rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so
-<% elsif @semi_sync == 'master' -%>
-plugin_load                        = rpl_semi_sync_master=semisync_master.so
-<% elsif @semi_sync == 'slave' -%>
-plugin_load                        = rpl_semi_sync_slave=semisync_slave.so
+# 'plugin-load-add' line and all the 'rpl_semi_sync_*' lines.
 <% end -%>
 <% if @semi_sync == 'master' or @semi_sync == 'both' -%>
+plugin-load-add                    = rpl_semi_sync_master=semisync_master.so
 rpl_semi_sync_master_enabled       = 1
 rpl_semi_sync_master_timeout       = 100
 rpl_semi_sync_master_wait_no_slave = 0
-<% end -%>
 <% if @semi_sync == 'slave' or @semi_sync == 'both' -%>
+plugin-load-add                    = rpl_semi_sync_slave=semisync_slave.so
 rpl_semi_sync_slave_enabled        = 1
 <% end -%>
 
