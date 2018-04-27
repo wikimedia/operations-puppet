@@ -101,11 +101,7 @@ class profile::kubernetes::node(
     # thresholds
     monitoring::check_prometheus { 'kubelet_operational_latencies':
         description     => 'kubelet operational latencies',
-        query           => "scalar(\
-            sum(rate(kubelet_runtime_operations_latency_microseconds_sum{\
-            job=\"k8s-node\", instance=\"${::fqdn}\"}[5m]))/ \
-            sum(rate(kubelet_runtime_operations_latency_microseconds_count{\
-            job=\"k8s-node\", instance=\"${::fqdn}\"}[5m])))",
+        query           => "instance_operation_type:kubelet_runtime_operations_latency_microseconds:avg5m{instance=\"${::fqdn}\"}",
         prometheus_url  => $prometheus_url,
         warning         => 10000,
         critical        => 15000,

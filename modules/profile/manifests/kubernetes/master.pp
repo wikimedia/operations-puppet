@@ -83,11 +83,7 @@ class profile::kubernetes::master(
     # thresholds
     monitoring::check_prometheus { 'apiserver_request_latencies':
         description     => 'Request latencies',
-        query           => "scalar(\
-            sum(rate(apiserver_request_latencies_summary_sum{\
-            job=\"k8s-api\",verb\\!=\"WATCH\",verb\\!=\"WATCHLIST\",instance=\"${::ipaddress}:6443\"}[5m]))/\
-            sum(rate(apiserver_request_latencies_summary_count{\
-            job=\"k8s-api\",verb\\!=\"WATCH\",verb\\!=\"WATCHLIST\",instance=\"${::ipaddress}:6443\"}[5m])))",
+        query           => "instance_verb:apiserver_request_latencies_summary:avg5m{verb~=\"WATCH(LIST)?\",instance=\"${::ipaddress}:6443\"}",
         prometheus_url  => $prometheus_url,
         warning         => 50000,
         critical        => 100000,
@@ -97,11 +93,7 @@ class profile::kubernetes::master(
     # thresholds
     monitoring::check_prometheus { 'etcd_request_latencies':
         description     => 'etcd request latencies',
-        query           => "scalar(\
-            sum(rate(etcd_request_latencies_summary_sum{\
-            job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m]))/\
-            sum(rate(etcd_request_latencies_summary_count{\
-            job=\"k8s-api\",instance=\"${::ipaddress}:6443\"}[5m])))",
+        query           => "instance_operation:etcd_request_latencies_summary:avg5m{instance=\"${::ipaddress}:6443\"}",
         prometheus_url  => $prometheus_url,
         warning         => 30000,
         critical        => 50000,
