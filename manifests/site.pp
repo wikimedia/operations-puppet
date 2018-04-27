@@ -540,11 +540,6 @@ node 'db2044.codfw.wmnet' {
     }
 }
 
-# Pending to be decommissioned: T187886
-node 'db2011.codfw.wmnet' {
-    role(spare::system)
-}
-
 ## m3 shard
 node 'db1059.eqiad.wmnet' {
     class { '::role::mariadb::misc::phabricator':
