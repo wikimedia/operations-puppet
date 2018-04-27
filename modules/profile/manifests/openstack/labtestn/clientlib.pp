@@ -2,7 +2,8 @@ class profile::openstack::labtestn::clientlib(
     $version = hiera('profile::openstack::labtestn::version'),
     ) {
 
-    require ::profile::openstack::base::backports
+    require ::profile::openstack::labtestn::clientrepo
+
     class {'profile::openstack::base::clientlib':
         version => $version
     }
