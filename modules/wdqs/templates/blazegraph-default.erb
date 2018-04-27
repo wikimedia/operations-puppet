@@ -2,6 +2,9 @@ HEAP_SIZE="<%= @blazegraph_heap_size %>"
 BLAZEGRAPH_OPTS="<%= @blazegraph_options %>"
 LOG_CONFIG=/etc/wdqs/logback-wdqs-blazegraph.xml
 LOG_DIR="<%= @log_dir %>"
-EXTRA_JVM_OPTS="-XX:+UnlockExperimentalVMOptions \
-                -XX:G1NewSizePercent=20 \
-                -XX:+ParallelRefProcEnabled"
+<%- if @extra_jvm_opts -%>
+EXTRA_JVM_OPTS="
+<%- @extra_jvm_opts.each do |extra_jvm_opt| -%>
+    <%= extra_jvm_opt %> \
+<%- end -%>"
+<%- end -%>

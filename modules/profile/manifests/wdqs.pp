@@ -22,6 +22,12 @@ class profile::wdqs (
 
     $nagios_contact_group = 'admins,wdqs-admins'
 
+    $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
+    $prometheus_blazegraph_agent_port = '9102'
+    $prometheus_updater_agent_port = '9101'
+    $prometheus_blazegraph_agent_config = '/etc/wdqs/wdqs-blazegraph-prometheus-jmx.yaml'
+    $prometheus_updater_agent_config = '/etc/wdqs/wdqs-updater-prometheus-jmx.yaml'
+
     # Install services - both blazegraph and the updater
     class { '::wdqs':
         use_git_deploy         => $use_git_deploy,
@@ -32,18 +38,26 @@ class profile::wdqs (
         blazegraph_heap_size   => $blazegraph_heap_size,
         blazegraph_config_file => $blazegraph_config_file,
         logstash_host          => $logstash_host,
+        extra_jvm_opts         => [
+            '-XX:+UnlockExperimentalVMOptions',
+            '-XX:G1NewSizePercent=20',
+            '-XX:+ParallelRefProcEnabled',
+            "-javaagent:${prometheus_agent_path}=${prometheus_blazegraph_agent_port}:${prometheus_blazegraph_agent_config}"
+        ],
     }
 
-    $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
-    $prometheus_agent_port = '9101'
-    $prometheus_agent_config = '/etc/wdqs/wdqs-updater-prometheus-jmx.yaml'
-
-    # WDQS Updater service
+    profile::prometheus::jmx_exporter { 'wdqs_blazegraph':
+        hostname         => $::hostname,
+        port             => $prometheus_blazegraph_agent_port,
+        prometheus_nodes => $prometheus_nodes,
+        config_file      => $prometheus_blazegraph_agent_config,
+        source           => 'puppet:///modules/profile/wdqs/wdqs-blazegraph-prometheus-jmx.yaml',
+    }
     profile::prometheus::jmx_exporter { 'wdqs_updater':
         hostname         => $::hostname,
-        port             => $prometheus_agent_port,
+        port             => $prometheus_updater_agent_port,
         prometheus_nodes => $prometheus_nodes,
-        config_file      => $prometheus_agent_config,
+        config_file      => $prometheus_updater_agent_config,
         source           => 'puppet:///modules/profile/wdqs/wdqs-updater-prometheus-jmx.yaml',
     }
 
@@ -63,7 +77,7 @@ class profile::wdqs (
     class { 'wdqs::updater':
         options        => "${updater_options} -- ${extra_updater_options}",
         logstash_host  => $logstash_host,
-        extra_jvm_opts => "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
+        extra_jvm_opts => "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",
         require        => Profile::Prometheus::Jmx_exporter['wdqs_updater'],
     }
 
