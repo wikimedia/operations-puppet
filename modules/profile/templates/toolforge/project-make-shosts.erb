@@ -1,0 +1,12 @@
+#! /bin/bash
+
+#
+# This script is managed by puppet
+#
+
+cd <%= @sysdir %>/.system/store
+(for host in submithost-*; do
+  if [ -s $host ]; then
+    echo $host
+  fi
+done) | sed -e 's/^submithost-//'
