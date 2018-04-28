@@ -39,6 +39,7 @@ class profile::wdqs (
         blazegraph_config_file => $blazegraph_config_file,
         logstash_host          => $logstash_host,
         extra_jvm_opts         => [
+            '-XX:+UseNUMA',
             '-XX:+UnlockExperimentalVMOptions',
             '-XX:G1NewSizePercent=20',
             '-XX:+ParallelRefProcEnabled',
@@ -77,7 +78,10 @@ class profile::wdqs (
     class { 'wdqs::updater':
         options        => "${updater_options} -- ${extra_updater_options}",
         logstash_host  => $logstash_host,
-        extra_jvm_opts => [ "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}" ],
+        extra_jvm_opts => [
+            '-XX:+UseNUMA',
+            "-javaagent:${prometheus_agent_path}=${prometheus_updater_agent_port}:${prometheus_updater_agent_config}",
+        ],
         require        => Profile::Prometheus::Jmx_exporter['wdqs_updater'],
     }
 
