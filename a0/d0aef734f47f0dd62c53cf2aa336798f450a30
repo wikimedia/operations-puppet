@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Jcrespo <jcrespo@wikimedia.org>
+Submitted-by: Jcrespo <jcrespo@wikimedia.org>
+Submitted-at: Sat, 28 Apr 2018 15:53:00 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/429575
+Project: operations/puppet
+Branch: refs/heads/production
