@@ -5,7 +5,7 @@ class dumps::web::fetches::phab(
 ) {
     # Copies over the phabricator dumps from an rsyncable location.
     dumps::web::fetches::job { 'phabdumps':
-        source      => "${src}/phabricator_public.dump",
+        source      => "${src}",
         destination => "${miscdatasetsdir}/misc",
         delete      => false,
         minute      => '14',
