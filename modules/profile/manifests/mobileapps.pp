@@ -14,5 +14,6 @@ class profile::mobileapps {
         healthcheck_url   => '',
         deployment        => 'scap3',
         deployment_config => true,
+        contact_groups    => 'admins,mobileapps',
     }
 }
