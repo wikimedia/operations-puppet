@@ -1,7 +1,7 @@
 class profile::ganeti (
     # Interpolate the ganeti_cluster fact to get the list of nodes in a
     # cluster
-    $ganeti_nodes = hiera("profile::ganeti::${::ganeti_cluster}::nodes"),
+    $ganeti_nodes = hiera("profile::ganeti::${::ganeti_cluster}::nodes", []),
 ) {
 
     class { '::ganeti': }
