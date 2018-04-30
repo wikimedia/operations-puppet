@@ -1,5 +1,6 @@
 class snapshot::cron::cirrussearch(
-    $user = undef,
+    $user      = undef,
+    $filesonly = false,
 ) {
     $confsdir = $snapshot::dumps::dirs::confsdir
 
@@ -17,15 +18,16 @@ class snapshot::cron::cirrussearch(
         source => 'puppet:///modules/snapshot/cron/dumpcirrussearch.sh',
     }
 
-    cron { 'cirrussearch-dump':
-        ensure      => 'present',
-        command     => "${scriptpath} --config ${confsdir}/wikidump.conf.dumps",
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        minute      => '15',
-        hour        => '16',
-        weekday     => '1',
-        require     => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
+    if !$filesonly {
+        cron { 'cirrussearch-dump':
+            ensure      => 'present',
+            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.dumps",
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            minute      => '15',
+            hour        => '16',
+            weekday     => '1',
+            require     => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
+        }
     }
 }
-
