@@ -285,8 +285,9 @@ node 'darmstadtium.eqiad.wmnet' {
     role(docker::registry)
 }
 
+# decomm coming soon
 node 'dataset1001.wikimedia.org' {
-    role(dumps::web::xmldumps_active)
+    role(spare::system)
 }
 
 # MariaDB 10
@@ -1302,9 +1303,9 @@ node 'multatuli.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-# also see dataset1001
+# decomm coming soon
 node 'ms1001.wikimedia.org' {
-    role(dumps::web::xmldumps_fallback)
+    role(spare::system)
 }
 
 node 'ms1002.eqiad.wmnet' {
