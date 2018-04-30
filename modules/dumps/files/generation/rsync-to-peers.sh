@@ -114,7 +114,7 @@ while [ 1 ]; do
 
     # rsync of xml/sql dumps for public wikis
     for dest in $xmlremotedirs_list; do
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/*wik* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=40000 --exclude='**bad/' --exclude='**save/' --exclude='**not/' --exclude='**temp/' --exclude='**tmp/' --exclude='*.inprog'  --exclude='*.html' --exclude='*.txt' --exclude='*.json' ${xmldumpsdir}/*wik* "$dest" > /dev/null 2>&1
 
 	# send statusfiles tarball over last, remote can unpack it when it notices the arrival
 	# this way, content of status and html files always reflects dump output already
@@ -127,7 +127,7 @@ while [ 1 ]; do
 
     # rsync of misc dumps, not necessarily to/from the same tree as the public wikis
     for dest in $miscremotedirs_list; do
-        /usr/bin/rsync -a  --contimeout=600 --timeout=600 ${miscdumpsdir}/* "$dest" > /dev/null 2>&1
+        /usr/bin/rsync -a  --contimeout=600 --timeout=600 --bwlimit=40000 ${miscdumpsdir}/* "$dest" > /dev/null 2>&1
     done
 
     # when dumps aren't being generated, no reason to try over and over again to push new files.
