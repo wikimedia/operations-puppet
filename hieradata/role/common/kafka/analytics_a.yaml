@@ -19,8 +19,9 @@ profile::kafka::mirror::monitoring_enabled: true
 # (MirrorMaker uses one producer per process).
 profile::kafka::mirror::num_processes:  1
 profile::kafka::mirror::properties:
-  # Mirror everything except for internal __ prefixed topics.
-  whitelist: '^(?!__).+$'
+  # Replicate everything except for job queue, change-prop, and internal (__.*)
+  # topics from main to jumbo.
+  whitelist: '^(?!__|.*\.change-prop\.|.*\.job\.).+$'
   # This is the number of consumer threads per process for this mirror maker.
   # The total number of consumer threads per host will be num_processes * num_streams.
   num_streams: 4
