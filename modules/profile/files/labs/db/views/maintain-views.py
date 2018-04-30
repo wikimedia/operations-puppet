@@ -279,11 +279,26 @@ class SchemaOperations():
         if "join" in view_details:
             for join in view_details["join"]:
                 for join_table, cond in join.items():
-                    query += " LEFT JOIN `{}`.`{}` {}".format(
-                        self.db,
-                        join_table,
-                        cond
-                    )
+                    if re.match(r'^.*\bselect\b.+\bfrom', cond, flags=re.I | re.M):
+                        cond_str = re.sub(r'from\s+(\w+)\b',
+                                          r'from `{}`.`\1` '.format(self.db),
+                                          cond,
+                                          flags=re.I | re.M)
+                        cond_str = re.sub(r'join\s+(\w+)\b',
+                                          r'join `{}`.`\1` '.format(self.db),
+                                          cond_str,
+                                          flags=re.I | re.M)
+                        query += " LEFT JOIN `{}`.`{}` {}".format(
+                            self.db,
+                            join_table,
+                            cond_str
+                        )
+                    else:
+                        query += " LEFT JOIN `{}`.`{}` {}".format(
+                            self.db,
+                            join_table,
+                            cond
+                        )
         if "where" in view_details:
             # The comment table (and perhaps others in the future) needs the
             # database name interpolated in after FROM clauses in the WHERE.
