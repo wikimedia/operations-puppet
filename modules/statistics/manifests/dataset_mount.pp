@@ -1,5 +1,5 @@
 # == Class statistics::dataset_mount
-# Mounts /data from dataset1001 server.
+# Mounts /data from dumps/datasets nfs server.
 # xmldumps and other misc files needed
 # for generating statistics are here.
 #
