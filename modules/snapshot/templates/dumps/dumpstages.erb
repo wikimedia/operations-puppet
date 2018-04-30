@@ -54,10 +54,10 @@
 <% end -%>
 
 <% if @stagestype == 'full_enwiki' or @stagestype == 'partial_enwiki' %>
-# stubs, stubs recombine
-27 1 continue none <%= @stages['enwiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
-# tables next so inconsistencies between stubs and tables aren't too huge
+# tables first, so we don't do all stubs on all wikis at once
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job tables
+# stubs, stubs recombine next so inconsistencies between stubs and tables aren't too huge
+27 1 continue none <%= @stages['enwiki']['rest'] -%> --job xmlstubsdump,xmlstubsdumprecombine
 
 # regular articles, recombine, multistream
 27 1 continue none <%= @stages['enwiki']['rest'] -%> --job articlesdump,articlesdumprecombine,articlesmultistreamdump
