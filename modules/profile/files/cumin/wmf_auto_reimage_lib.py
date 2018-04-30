@@ -652,7 +652,7 @@ def puppet_generate_cert(host):
     host -- the FQDN of the host to run puppet on
     """
     run_cumin('puppet_generate_certs', host, ['puppet agent --test'], installer=True,
-              ignore_exit=True)
+              ignore_exit=True, timeout=300)
     print_line('Run Puppet to generate the certificate', host=host)
 
 
