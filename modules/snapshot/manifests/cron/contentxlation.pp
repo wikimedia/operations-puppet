@@ -1,5 +1,6 @@
 class snapshot::cron::contentxlation(
-    $user=undef,
+    $user      = undef,
+    $filesonly = false,
 ) {
     $scriptpath = '/usr/local/bin/dumpcontentxlation.sh'
     file { $scriptpath:
@@ -9,14 +10,16 @@ class snapshot::cron::contentxlation(
         source => 'puppet:///modules/snapshot/cron/dumpcontentxlation.sh',
     }
 
-    cron { 'xlation-dumps':
-        ensure      => 'present',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        command     => '/usr/local/bin/dumpcontentxlation.sh',
-        minute      => '10',
-        hour        => '9',
-        weekday     => '5',
-        require     => File[$scriptpath],
+    if !$filesonly {
+        cron { 'xlation-dumps':
+            ensure      => 'present',
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            command     => '/usr/local/bin/dumpcontentxlation.sh',
+            minute      => '10',
+            hour        => '9',
+            weekday     => '5',
+            require     => File[$scriptpath],
+        }
     }
 }

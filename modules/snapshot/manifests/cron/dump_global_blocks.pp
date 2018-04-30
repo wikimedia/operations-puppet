@@ -1,5 +1,6 @@
 class snapshot::cron::dump_global_blocks(
-    $user   = undef,
+    $user      = undef,
+    $filesonly = false,
 ) {
     $confsdir = $snapshot::dumps::dirs::confsdir
 
@@ -10,13 +11,15 @@ class snapshot::cron::dump_global_blocks(
         source => 'puppet:///modules/snapshot/cron/dump-global-blocks.sh',
     }
 
-    cron { 'global_blocks_dump':
-        ensure      => 'present',
-        command     => "/usr/local/bin/dump-global-blocks.sh --config ${confsdir}/wikidump.conf.dumps",
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        minute      => '15',
-        hour        => '8',
-        weekday     => '6',
+    if !$filesonly {
+        cron { 'global_blocks_dump':
+            ensure      => 'present',
+            command     => "/usr/local/bin/dump-global-blocks.sh --config ${confsdir}/wikidump.conf.dumps",
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            minute      => '15',
+            hour        => '8',
+            weekday     => '6',
+        }
     }
 }
