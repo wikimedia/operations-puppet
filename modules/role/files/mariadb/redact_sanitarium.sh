@@ -9,12 +9,12 @@ if [ -z "$db" ]; then
     exit 1
 fi
 
-if [[ ! "$host" =~ ^(db1(069|095|102)(\..+)?|localhost)$ ]]; then
+if [[ ! "$host" =~ ^(db1(095|102)(\..+)?|localhost)$ ]]; then
     echo "unexpected sanitarium host! $host" 2>&1
     exit 1
 fi
 
-if [[ ! "$port" =~ ^33(06|1[1234567])$ ]]; then
+if [[ ! "$port" =~ ^33(06|1[12345678])$ ]]; then
     echo "unexpected sanitarium port! $port" 2>&1
     exit 1
 fi
