@@ -25,6 +25,6 @@ class role::eventlogging::analytics::zeromq {
         proto   => 'tcp',
         notrack => true,
         port    => '8600',
-        srange  => '@resolve((hafnium.eqiad.wmnet graphite1001.eqiad.wmnet graphite2001.codfw.wmnet))',
+        srange  => '@resolve((graphite1001.eqiad.wmnet graphite2001.codfw.wmnet))',
     }
 }
