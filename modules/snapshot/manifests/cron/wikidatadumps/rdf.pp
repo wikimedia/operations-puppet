@@ -1,5 +1,6 @@
 class snapshot::cron::wikidatadumps::rdf(
-    $user   = undef,
+    $user      = undef,
+    $filesonly = false,
 ) {
     $scriptpath = '/usr/local/bin/dumpwikidatardf.sh'
     file { $scriptpath:
@@ -10,16 +11,17 @@ class snapshot::cron::wikidatadumps::rdf(
         require => Class['snapshot::cron::wikidatadumps::common'],
     }
 
-    cron { 'wikidatardf-dumps':
-        ensure      => 'present',
-        command     => "${scriptpath} all ttl; ${scriptpath} truthy nt",
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        minute      => '0',
-        hour        => '23',
-        weekday     => '1',
-        require     => File[$scriptpath],
+    if !$filesonly {
+        cron { 'wikidatardf-dumps':
+            ensure      => 'present',
+            command     => "${scriptpath} all ttl; ${scriptpath} truthy nt",
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            minute      => '0',
+            hour        => '23',
+            weekday     => '1',
+            require     => File[$scriptpath],
+        }
     }
-
 }
 
