@@ -93,7 +93,6 @@ fullviews:
   - namespaces
   - ores_classification
   - ores_model
-  - page
   - page_broken
   - pagelinks
   - page_assessments
@@ -219,19 +218,55 @@ customviews:
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment, NULL as ar_comment_id,
       if(ar_deleted&4,null,ar_user) as ar_user, if(ar_deleted&4,null,ar_user_text) as
-      ar_user_text, ar_timestamp, ar_minor_edit, ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
-      as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1, if(ar_deleted&1,null,ar_content_model) as ar_content_model,
-      if(ar_deleted&1,null,ar_content_format) as ar_content_format
+      ar_user_text, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
+      case when ar_deleted&1 != 0 then null when content_id is NULL then ar_text_id
+      else content_id end as ar_text_id,
+      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
+      ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1,
+      case when ar_deleted&1 != 0 then null when model_name is NULL then ar_content_model
+      else model_name end as ar_content_model,
+      case when ar_deleted&1 != 0 then null when model_name IS NULL then ar_content_format
+      else NULL end as ar_content_format
+    join:
+      - table:
+        - table: slots
+        - type: JOIN
+          table: slot_roles
+          condition: on (slot_role_id = role_id AND role_name = 'main')
+        - type: JOIN
+          table: content
+          condition: on (slot_content_id = content_id)
+        - type: JOIN
+          table: content_models
+          condition: on (content_model = model_id)
+        condition: on slot_revision_id = ar_rev_id
   archive_userindex:
     source: archive
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment, ar_user,
-      ar_user_text, ar_timestamp, ar_minor_edit, ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
-      as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1, if(ar_deleted&1,null,ar_content_model) as ar_content_model,
-      if(ar_deleted&1,null,ar_content_format) as ar_content_format
+      ar_user_text, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
+      case when ar_deleted&1 != 0 then null when content_id is NULL then ar_text_id
+      else content_id end as ar_text_id,
+      ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
+      if(ar_deleted&1,null,ar_sha1) as ar_sha1,
+      case when ar_deleted&1 != 0 then null when model_name is NULL then ar_content_model
+      else model_name end as ar_content_model,
+      case when ar_deleted&1 != 0 then null when model_name IS NULL then ar_content_format
+      else NULL end as ar_content_format
     where: (ar_deleted&4)=0
+    join:
+      - table:
+        - table: slots
+        - type: JOIN
+          table: slot_roles
+          condition: on (slot_role_id = role_id AND role_name = 'main')
+        - type: JOIN
+          table: content
+          condition: on (slot_content_id = content_id)
+        - type: JOIN
+          table: content_models
+          condition: on (content_model = model_id)
+        condition: on slot_revision_id = ar_rev_id
   comment:
     source: comment
     view: >
@@ -285,8 +320,10 @@ customviews:
       if(fa_deleted&4,null,fa_user_text) as fa_user_text, fa_timestamp, fa_deleted,
       if(fa_deleted&1,null,fa_sha1) as fa_sha1
     join:
-      - comment: as comment_a on comment_a.comment_id = filearchive.fa_description_id
-      - comment: as comment_b on comment_b.comment_id = filearchive.fa_deleted_reason_id
+      - table: comment
+        condition: as comment_a on comment_a.comment_id = filearchive.fa_description_id
+      - table: comment
+        condition: as comment_b on comment_b.comment_id = filearchive.fa_deleted_reason_id
   filearchive_userindex:
     source: filearchive
     view: >
@@ -305,8 +342,10 @@ customviews:
       fa_user, fa_user_text, fa_timestamp, fa_deleted, if(fa_deleted&1,null,fa_sha1) as fa_sha1
     where: (fa_deleted&4)=0
     join:
-      - comment: as comment_a on comment_a.comment_id = filearchive.fa_description_id
-      - comment: as comment_b on comment_b.comment_id = filearchive.fa_deleted_reason_id
+      - table: comment
+        condition: as comment_a on comment_a.comment_id = filearchive.fa_description_id
+      - table: comment
+        condition: as comment_b on comment_b.comment_id = filearchive.fa_deleted_reason_id
   global_preferences:
     source: global_preferences
     view: select gp_user, gp_property, gp_value
@@ -337,8 +376,10 @@ customviews:
       then img_description else comment_text end as img_description,
       img_user, img_user_text, img_timestamp, img_sha1
     join:
-      - image_comment_temp: on imgcomment_name = img_name
-      - comment: on comment_id = imgcomment_description_id
+      - table: image_comment_temp
+        condition: on imgcomment_name = img_name
+      - table: comment
+        condition: on comment_id = imgcomment_description_id
   ipblocks:
     source: ipblocks
     view: >
@@ -350,7 +391,8 @@ customviews:
       ipb_deleted, ipb_block_email, ipb_by_text, ipb_allow_usertalk, ipb_parent_block_id
     where: ipb_deleted=0
     join:
-      - comment: on comment.comment_id = ipblocks.ipb_reason_id
+      - table: comment
+        condition: on comment.comment_id = ipblocks.ipb_reason_id
   ipblocks_ipindex:
     source: ipblocks
     view: >
@@ -362,7 +404,8 @@ customviews:
       ipb_block_email, ipb_by_text, ipb_allow_usertalk, ipb_parent_block_id
     where: ipb_deleted=0 and ipb_auto=0
     join:
-      - comment: on comment.comment_id = ipblocks.ipb_reason_id
+      - table: comment
+        condition: on comment.comment_id = ipblocks.ipb_reason_id
   logging:
     source: logging
     view: >
@@ -379,7 +422,8 @@ customviews:
     logging_where:
       *allowed_logtypes
     join:
-      - comment: on comment_id = log_comment_id
+      - table: comment
+        condition: on comment_id = log_comment_id
   logging_logindex:
     source: logging
     view: >
@@ -394,7 +438,8 @@ customviews:
     logging_where:
       *allowed_logtypes
     join:
-      - comment: on comment_id = log_comment_id
+      - table: comment
+        condition: on comment_id = log_comment_id
   logging_userindex:
     source: logging
     view: >
@@ -409,7 +454,8 @@ customviews:
     logging_where:
       *allowed_logtypes
     join:
-      - comment: on comment_id = log_comment_id
+      - table: comment
+        condition: on comment_id = log_comment_id
   mark_as_helpful:
     source: mark_as_helpful
     view: >
@@ -426,7 +472,8 @@ customviews:
       if(oi_deleted&4,null,oi_user_text) as oi_user_text, oi_timestamp, oi_metadata, oi_media_type,
       oi_major_mime, oi_minor_mime, oi_deleted, oi_sha1
     join:
-      - comment: on comment_id = oi_description_id
+      - table: comment
+        condition: on comment_id = oi_description_id
   oldimage_userindex:
     source: oldimage
     view: >
@@ -438,7 +485,30 @@ customviews:
       oi_minor_mime, oi_deleted, oi_sha1
     where: (oi_deleted&4)=0
     join:
-      - comment: on comment_id = oi_description_id
+      - table: comment
+        condition: on comment_id = oi_description_id
+  page:
+    source: page
+    view: >
+      select page_id, page_namespace, page_title, page_restrictions, page_is_redirect,
+      page_is_new, page_random, page_touched, page_links_updated, page_latest, page_len,
+      if(content_models.model_name, content_models.model_name, page_content_model) as page_content_model,
+      page_lang
+    join:
+      - table: revision
+        condition: on rev_id = page_latest
+      - table:
+        - table: slots
+        - type: JOIN
+          table: slot_roles
+          condition: on (slot_role_id = role_id AND role_name = 'main')
+        - type: JOIN
+          table: content
+          condition: on (slot_content_id = content_id)
+        - type: JOIN
+          table: content_models
+          condition: on (content_model = model_id)
+        condition: on slot_revision_id = rev_id
   protected_titles:
     source: protected_titles
     view: >
@@ -447,7 +517,8 @@ customviews:
       then pt_reason else comment.comment_text end as pt_reason,
       pt_timestamp, pt_expiry, pt_create_perm
     join:
-      - comment: on comment_id = pt_reason_id
+      - table: comment
+        condition: on comment_id = pt_reason_id
   recentchanges:
     source: recentchanges
     view: >
@@ -459,7 +530,8 @@ customviews:
       rc_minor, rc_bot, rc_new, rc_cur_id, rc_this_oldid, rc_last_oldid, rc_type, rc_source, rc_patrolled,
       null as rc_ip, rc_old_len, rc_new_len, rc_deleted, rc_logid, rc_log_type, rc_log_action, rc_params
     join:
-      - comment: on comment_id = rc_comment_id
+      - table: comment
+        condition: on comment_id = rc_comment_id
   recentchanges_userindex:
     source: recentchanges
     view: >
@@ -471,34 +543,70 @@ customviews:
       rc_patrolled, null as rc_ip, rc_old_len, rc_new_len, rc_deleted, rc_logid, rc_log_type, rc_log_action, rc_params
     where: (rc_deleted&4)=0
     join:
-      - comment: on comment_id = rc_comment_id
+      - table: comment
+        condition: on comment_id = rc_comment_id
   revision:
     source: revision
     view: >
-      select rev_id, rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
+      select rev_id, rev_page,
+      case when rev_deleted&1 != 0 then null when content_id is NULL
+      then rev_text_id else content_id end as rev_text_id,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       case when rev_deleted&2 != 0 then null when revcomment_comment_id is null OR revcomment_comment_id = 0
       then rev_comment else comment_text end as rev_comment,
       if(rev_deleted&4,null,rev_user) as rev_user, if(rev_deleted&4,null,rev_user_text) as rev_user_text,
       rev_timestamp, rev_minor_edit, rev_deleted, if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id,
-      if(rev_deleted&1,null,rev_sha1) as rev_sha1, rev_content_model, rev_content_format
+      if(rev_deleted&1,null,rev_sha1) as rev_sha1, if(model_name, model_name,
+      rev_content_model) as rev_content_model, if(model_name,NULL,rev_content_format)
+      as rev_content_format
     join:
-     - revision_comment_temp: on revcomment_rev = rev_id
-     - comment: on comment_id = revcomment_comment_id
+      - table: revision_comment_temp
+        condition: on revcomment_rev = rev_id
+      - table: comment
+        condition: on comment_id = revcomment_comment_id
+      - table:
+        - table: slots
+        - type: JOIN
+          table: slot_roles
+          condition: on (slot_role_id = role_id AND role_name = 'main')
+        - type: JOIN
+          table: content
+          condition: on (slot_content_id = content_id)
+        - type: JOIN
+          table: content_models
+          condition: on (content_model = model_id)
+        condition: on slot_revision_id = rev_id
   revision_userindex:
     source: revision
     view: >
-      select rev_id, rev_page, if(rev_deleted&1,null,rev_text_id) as rev_text_id,
+      select rev_id, rev_page,
+      case when rev_deleted&1 != 0 then null when content_id is NULL
+      then rev_text_id else content_id end as rev_text_id,
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       case when rev_deleted&2 != 0 then null when revcomment_comment_id is null OR revcomment_comment_id = 0
       then rev_comment else comment_text end as rev_comment,
       rev_user, rev_user_text, rev_timestamp, rev_minor_edit, rev_deleted,
       if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
-      rev_content_model, rev_content_format
+      if(model_name, model_name, rev_content_model) as rev_content_model,
+      if(model_name,NULL,rev_content_format) asrev_content_format
     where: (rev_deleted&4)=0
     join:
-     - revision_comment_temp: on revcomment_rev = rev_id
-     - comment: on comment_id = revcomment_comment_id
+      - table: revision_comment_temp
+        condition: on revcomment_rev = rev_id
+      - table: comment
+        condition: on comment_id = revcomment_comment_id
+      - table:
+        - table: slots
+        - type: JOIN
+          table: slot_roles
+          condition: on (slot_role_id = role_id AND role_name = 'main')
+        - type: JOIN
+          table: content
+          condition: on (slot_content_id = content_id)
+        - type: JOIN
+          table: content_models
+          condition: on (content_model = model_id)
+        condition: on slot_revision_id = rev_id
   slots:
     source: slots
     view: >
@@ -506,8 +614,10 @@ customviews:
       if(rev_deleted&1 OR ar_deleted&1,null,slot_content_id) as slot_content_id,
       slot_origin
     join:
-      - revision: on rev_id = slot_revision_id
-      - archive: on ar_rev_id = slot_revision_id
+      - table: revision
+        condition: on rev_id = slot_revision_id
+      - table: archive
+        condition: on ar_rev_id = slot_revision_id
   user:
     source: user
     view: >

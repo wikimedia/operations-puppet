@@ -202,7 +202,11 @@ class SchemaOperations():
         # Check that joined table exists if used
         if 'join' in view_details:
             joins_checked = []
-            joined_tables = set().union(*(x.keys() for x in view_details['join']))
+            joined_table_list = []
+            for join_def in view_details['join']:
+                joined_table_list.extend(extract_tables(join_def))
+
+            joined_tables = set(joined_table_list)
             for joined_table in joined_tables:
                 result = self.check_customview_source(view_name, joined_table)
                 if not result:
@@ -278,12 +282,26 @@ class SchemaOperations():
         # Combining the two won't work right now.
         if "join" in view_details:
             for join in view_details["join"]:
-                for join_table, cond in join.items():
-                    query += " LEFT JOIN `{}`.`{}` {}".format(
-                        self.db,
-                        join_table,
-                        cond
-                    )
+                if isinstance(join['table'], list):
+                    join_table = "("
+                    for subjoin in join['table']:
+                        s_table = "`{}`.`{}`".format(self.db, subjoin['table'])
+                        if "type" not in subjoin:
+                            join_table += "{}".format(s_table)
+                        else:
+                            join_table += " {} {} {}".format(subjoin['type'],
+                                                             s_table,
+                                                             subjoin['condition'])
+                    join_table += ")"
+
+                else:
+                    join_table = "`{}`.`{}`".format(self.db, join['table'])
+
+                query += " LEFT JOIN {} {}".format(
+                    join_table,
+                    join['condition']
+                )
+
         if "where" in view_details:
             # The comment table (and perhaps others in the future) needs the
             # database name interpolated in after FROM clauses in the WHERE.
@@ -366,6 +384,15 @@ class SchemaOperations():
             input("{} [y/N] ".format(msg)).lower() in ['y', 'yes']
         )
 
+def extract_tables(join_def):
+    """Get the list of tables we are interacting with in a join field
+    :param join_dev: dict
+    :return: list
+    """
+    if isinstance(join_def['table'], str):
+        return [join_def['table']]
+
+    return [x['table'] for x in join_def['table']]
 
 def main():
     argparser = argparse.ArgumentParser(
