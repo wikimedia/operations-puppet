@@ -107,6 +107,5 @@ class profile::cache::upload(
 
     # Media browser cache hit rate and request volume stats.
     ::varnish::logging::media { 'media':
-        statsd_server => $statsd_server,
     }
 }
