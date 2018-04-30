@@ -89,6 +89,23 @@ class varnish::logging(
     ::varnish::logging::xcache { 'xcache':
     }
 
+    if os_version('debian == jessie') {
+        $python_version = '3.4'
+    }
+    elsif os_version('debian == stretch') {
+        $python_version = '3.5'
+    }
+    elsif os_version('debian > jessie') {
+        $python_version = '3.6'
+    }
+
+    file { "/usr/local/lib/python${python_version}/dist-packages/wikimedia_varnishlogconsumer.py":
+        source => 'puppet:///modules/varnish/wikimedia_varnishlogconsumer.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+
     file { '/usr/local/bin/varnishslowlog':
         source => 'puppet:///modules/varnish/varnishslowlog.py',
         owner  => 'root',
