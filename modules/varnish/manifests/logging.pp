@@ -89,6 +89,13 @@ class varnish::logging(
     ::varnish::logging::xcache { 'xcache':
     }
 
+    file { '/usr/local/bin/varnishconsumer.py':
+        source => 'puppet:///modules/varnish/varnishconsumer.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     file { '/usr/local/bin/varnishslowlog':
         source => 'puppet:///modules/varnish/varnishslowlog.py',
         owner  => 'root',
