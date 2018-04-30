@@ -856,10 +856,9 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role(ganeti)
 }
 
-# Hosts visualization / monitoring of EventLogging event streams
-# and MediaWiki errors.
+# Replaced by WebperfX001, but not yet powered off
 node 'hafnium.eqiad.wmnet' {
-    role(webperf)
+    role(spare::system)
 }
 
 # debug_proxy hosts; Varnish backend for X-Wikimedia-Debug reqs
