@@ -23,74 +23,20 @@
 
 """
 
-import argparse
-import logging
-import logstash
-import os
 import sys
-import urlparse
 
-from subprocess import PIPE, Popen
-
-
-def parse_logstash_server_string(server_string):
-    """Convert logstash server string into (hostname, port) tuple."""
-    parsed = urlparse.urlparse('//' + server_string)
-    return parsed.hostname, parsed.port or 12202
+from varnishlogconsumer import VarnishLogConsumer
 
 
-class VarnishHospital(object):
+class VarnishHospital(VarnishLogConsumer):
     description = 'Varnish backend health logstash logger'
 
-    def __init__(self, argument_list):
-        """Parse CLI arguments.
-
-        argument_list is a list such as ['--foo', 'FOO', '--bar', 'BAR']"""
-        ap = argparse.ArgumentParser(
-            description=self.description,
-            epilog='If no logstash server is specified, '
-                   'prints log entries to stdout instead.')
-
-        ap.add_argument('--logstash-server', help='logstash server',
-                        type=parse_logstash_server_string, default=None)
-
-        ap.add_argument('--varnishd-instance-name', help='varnishd instance name',
-                        default=None)
-
-        ap.add_argument('--varnishlog-path', help='varnishlog full path',
-                        default='/usr/bin/varnishlog')
-
-        self.args = ap.parse_args(argument_list)
-
-        self.cmd = [
-            self.args.varnishlog_path,
+    def varnishlog_args(self):
+        return [
             '-g', 'raw',
             # Query for "Back healthy" and "Went sick" events
             '-q', 'Backend_health ~ "Back healthy|Went sick"',
         ]
-
-        self.layer = 'backend'
-
-        if self.args.varnishd_instance_name:
-            self.cmd.extend(['-n', self.args.varnishd_instance_name])
-            self.layer = self.args.varnishd_instance_name
-
-        if self.args.logstash_server:
-            handler = logstash.LogstashHandler(
-                self.args.logstash_server[0],
-                port=self.args.logstash_server[1],
-                version=1,
-                message_type='logback',
-                tags=['varnishospital']
-            )
-        else:
-            handler = logging.StreamHandler(sys.stdout)
-
-        handler.setLevel(logging.DEBUG)
-
-        self.logger = logging.getLogger('varnishospital')
-        self.logger.setLevel(logging.DEBUG)
-        self.logger.addHandler(handler)
 
     def handle_line(self, line):
         """
@@ -135,18 +81,6 @@ class VarnishHospital(object):
         }
 
         self.logger.info("{} {}".format(log['origin_server'], log['transition']), extra=log)
-
-    def main(self):
-        """Execute the command specified in self.cmd and call handle_record for
-        each output line produced by the command"""
-        p = Popen(self.cmd, stdout=PIPE, bufsize=-1)
-
-        try:
-            while True:
-                line = p.stdout.readline().rstrip('\n')
-                self.handle_line(line)
-        except KeyboardInterrupt:
-            os.waitpid(p.pid, 0)
 
 
 if __name__ == "__main__":
