@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
   VarnishSlowLog
@@ -6,8 +6,8 @@
   VarnishSlowLog is responsible for gathering slow requests from varnishlog
   and sending them to logstash.
 
-  Copyright 2016-2017 Emanuele Rocca <ema@wikimedia.org>
-  Copyright 2017 Gilles Dubuc <gilles@wikimedia.org>
+  Copyright 2016-2018 Emanuele Rocca <ema@wikimedia.org>
+  Copyright 2017-2018 Gilles Dubuc <gilles@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -24,50 +24,25 @@
 """
 
 import argparse
-import logging
-import logstash
-import os
 import sys
-import urlparse
 
-from subprocess import PIPE, Popen
-
-
-def parse_logstash_server_string(server_string):
-    """Convert logstash server string into (hostname, port) tuple."""
-    parsed = urlparse.urlparse('//' + server_string)
-    return parsed.hostname, parsed.port or 12202
+from wikimedia_varnishlogconsumer import BaseVarnishLogConsumer
 
 
-class VarnishSlowLog(object):
+class VarnishSlowLog(BaseVarnishLogConsumer):
     description = 'Varnish slow log logstash logger'
 
-    def __init__(self, argument_list):
-        """Parse CLI arguments.
+    def get_argument_parser(self):
+        ap = argparse.ArgumentParser(description=self.description)
+        ap.add_argument(
+          '--slow-threshold',
+          help='varnish slow timing threshold',
+          type=float,
+          default=10.0
+        )
+        return ap
 
-        argument_list is a list such as ['--foo', 'FOO', '--bar', 'BAR']"""
-        ap = argparse.ArgumentParser(
-            description=self.description,
-            epilog='If no logstash server is specified, '
-                   'prints log entries to stdout instead.')
-
-        ap.add_argument('--logstash-server', help='logstash server',
-                        type=parse_logstash_server_string, default=None)
-
-        ap.add_argument('--slow-threshold', help='varnish slow timing threshold',
-                        type=float, default=10.0)
-
-        ap.add_argument('--transaction-timeout', help='varnish transaction timeout',
-                        type=int, default=600)
-
-        ap.add_argument('--varnishd-instance-name', help='varnishd instance name',
-                        default=None)
-
-        ap.add_argument('--varnishlog-path', help='varnishlog full path',
-                        default='/usr/bin/varnishlog')
-
-        self.args = ap.parse_args(argument_list)
-
+    def varnishlog_args(self):
         # Note slow 'Resp' is not included in the filter, as normal requests
         # with slow true-client-side reception can raise this value throughout
         # the stack, even in backends the request is passing through, as the
@@ -78,129 +53,22 @@ class VarnishSlowLog(object):
         tstypes = ('Start', 'Req', 'ReqBody', 'Waitinglist',
                    'Fetch', 'Process', 'Restart')
 
-        # Build VSL query to find non-PURGEs with any timestamp > slow_threshold
-        timestamps = ['Timestamp:%s[3] > %f' % (timestamp, self.args.slow_threshold)
-                      for timestamp in tstypes]
+        # Build VSL query to find non-PURGEs with any
+        # timestamp > slow_threshold
+        timestamps = [
+            'Timestamp:%s[3] > %f' % (timestamp, self.args.slow_threshold)
+            for timestamp in tstypes
+        ]
 
         query = 'ReqMethod ne "PURGE" and (%s)' % " or ".join(timestamps)
 
-        self.cmd = [
-            self.args.varnishlog_path,
-            '-q', query,
-            # Set maximum Varnish transaction duration to track
-            '-T', '%d' % self.args.transaction_timeout
-        ]
+        return ['-q', query, '-T', '%d' % self.args.transaction_timeout]
 
-        self.layer = 'backend'
-
-        if self.args.varnishd_instance_name:
-            self.cmd.extend(['-n', self.args.varnishd_instance_name])
-            self.layer = self.args.varnishd_instance_name
-
-        if self.args.logstash_server:
-            handler = logstash.LogstashHandler(
-                self.args.logstash_server[0],
-                port=self.args.logstash_server[1],
-                version=1,
-                message_type='logback',
-                tags=['varnishslowlog']
+    def handle_end(self):
+        if 'request-Host' in self.tx and 'http-url' in self.tx:
+            self.logger.info(
+                self.tx['request-Host'] + self.tx['http-url'], extra=self.tx
             )
-        else:
-            handler = logging.StreamHandler(sys.stdout)
-
-        handler.setLevel(logging.DEBUG)
-
-        self.logger = logging.getLogger('varnishslowlog')
-        self.logger.setLevel(logging.DEBUG)
-        self.logger.addHandler(handler)
-
-        self.tx = {}
-
-    def handle_line(self, line):
-        splitline = line.split(None, 2)
-
-        # Ignore any line that doesn't have at least the 2 parts expected
-        # for a transacation data field
-        if len(splitline) < 2:
-            return
-
-        # Ignore any line that doesn't contain transaction data
-        if splitline[0] != '-':
-            return
-
-        tag = splitline[1]
-
-        if len(splitline) > 2:  # The End tag has no 3rd part
-            value = splitline[2]
-
-        if tag == 'Begin':
-            splitagain = value.split()
-            self.tx = {'id': splitagain[1], 'layer': self.layer}
-        elif tag == 'End':
-            if 'request-Host' in self.tx and 'http-url' in self.tx:
-                self.logger.info(self.tx['request-Host'] + self.tx['http-url'], extra=self.tx)
-            self.tx = {}
-        elif tag == 'ReqMethod':
-            self.tx['http-method'] = value
-        elif tag == 'ReqURL':
-            self.tx['http-url'] = value
-        elif tag == 'ReqProtocol':
-            self.tx['http-protocol'] = value
-        elif tag == 'RespStatus':
-            self.tx['http-status'] = value
-        elif tag == 'Timestamp':
-            splitagain = value.split()
-            ts_name = splitagain[0][:-1].lower()
-            self.tx['time-' + ts_name] = float(splitagain[3])
-        elif tag == 'ReqHeader':
-            splitagain = value.split(None, 1)
-            header_name = splitagain[0][:-1]
-
-            if len(splitagain) == 2:
-                header_value = splitagain[1]
-            else:
-                # ReqHeader can occasionaly have no associated value. Set value
-                # to empty string if that is the case.
-                header_value = ''
-
-            self.tx['request-' + header_name] = header_value
-        elif tag == 'RespHeader':
-            splitagain = value.split(None, 1)
-            header_name = splitagain[0][:-1]
-
-            if len(splitagain) == 2:
-                header_value = splitagain[1]
-            else:
-                # Similarly to ReqHeader above, RespHeader can also occasionaly
-                # have no associated value.
-                header_value = ''
-
-            self.tx['response-' + header_name] = header_value
-
-            # Log Backend-Timing's D= value as floating seconds for easy
-            # filtering and comparison.  This is set from WMF custom Apache
-            # configurations, and technically only shows the delay from
-            # request reception at Apache until response headers can be sent
-            # by Apache.
-            if header_name == 'Backend-Timing':
-                try:
-                    bt_us_str = header_value.split()[0].replace('D=', '')
-                    bt_s = float(bt_us_str) / 1000000.0
-                    self.tx['time-apache-delay'] = bt_s
-                except ValueError:
-                    pass
-
-    def main(self):
-        """Execute the command specified in self.cmd and call handle_record for
-        each output line produced by the command"""
-        p = Popen(self.cmd, stdout=PIPE, bufsize=-1)
-
-        try:
-            while True:
-                line = p.stdout.readline().rstrip('\n')
-                self.handle_line(line)
-        except KeyboardInterrupt:
-            os.waitpid(p.pid, 0)
 
 
 if __name__ == "__main__":
