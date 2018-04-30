@@ -44,6 +44,12 @@
 #   Path to ERb template to reconfigure logging.  You probably don't need to
 #   change this.  Default: eventlogging/log.cfg.erb
 #
+# [*logstash_host*]
+#   If given, process logs will also be sent to logstash at this hostname.
+#
+# [*logstash_port*]
+#   Default: 11514
+#
 # [*reload_on]
 #   Reload eventlogging-service if any of the provided Puppet
 #   resources have changed.  This should be an array of alreday
@@ -60,6 +66,8 @@ define eventlogging::service::service(
     $log_file            = undef,
     $access_log_level    = 'WARNING',
     $log_config_template = 'eventlogging/log.cfg.erb',
+    $logstash_host       = undef,
+    $logstash_port       = 11514,
     $statsd              = 'localhost:8125',
     $statsd_prefix       = "eventlogging.service.${title}",
     $statsd_use_hostname = false,
@@ -116,11 +124,8 @@ define eventlogging::service::service(
     # output with $programname prefix so that rsyslog
     # can properly route logs.
     file { $log_config_file:
-        # FIXME - top-scope var without namespace, will break in puppet 2.8
-        # lint:ignore:variable_scope
-        ensure  => $ensure,
-        # lint:endignore
-        content => template('eventlogging/log.cfg.erb'),
+        ensure  => 'present',
+        content => template($log_config_template),
         mode    => '0444',
     }
     # Python argparse config file for eventlogging-service
