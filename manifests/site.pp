@@ -308,7 +308,7 @@ node 'db2048.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db20(55|62|69|70|71|72|92)\.codfw\.wmnet/ {
+node /^db20(55|62|70|71|72|92)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -490,6 +490,9 @@ node 'db1055.eqiad.wmnet' {
 }
 
 node 'db1056.eqiad.wmnet' {
+    role(mariadb::core)
+}
+node 'db1069.eqiad.wmnet' {
     role(mariadb::core)
 }
 
