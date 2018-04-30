@@ -981,11 +981,6 @@ node 'graphite1001.eqiad.wmnet' {
     include ::role::elasticsearch::alerts
 }
 
-# graphite test machine, currently with SSD caching + spinning disks
-node 'graphite1002.eqiad.wmnet' {
-    role(spare::system)
-}
-
 # graphite additional machine, for additional space
 node 'graphite1003.eqiad.wmnet' {
     role(graphite::production)
