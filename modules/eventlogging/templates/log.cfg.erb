@@ -2,7 +2,7 @@
 keys=root, kafka, pykafka, kazoo, tornado_access, tornado_application, tornado_general
 
 [handlers]
-keys=syslog
+keys=syslog<%= ', logstash' if @logstash_host %>
 
 [formatters]
 keys=syslog
@@ -59,3 +59,10 @@ class=logging.handlers.SysLogHandler
 level=INFO
 formatter=syslog
 args=('/dev/log',)
+
+<% if @logstash_host -%>
+[handler_logstash]
+class=logstash.TCPLogstashHandler
+level=INFO
+args=('<%= @logstash_host %>', <%= @logstash_port %>)
+<% end -%>

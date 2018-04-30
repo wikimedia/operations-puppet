@@ -94,6 +94,8 @@ class role::eventbus::eventbus {
         error_output     => 'file:///srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log',
         statsd           => hiera('statsd'),
         statsd_prefix    => 'eventbus',
+        logstash_host    => hiera('logstash_host'),
+        logstash_port    => hiera('logstash_json_lines_port', 11514),
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
