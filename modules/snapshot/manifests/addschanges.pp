@@ -1,5 +1,6 @@
 class snapshot::addschanges(
-    $user=undef,
+    $user      = undef,
+    $filesonly = false,
 ) {
     $repodir = $snapshot::dumps::dirs::repodir
     $confsdir = $snapshot::dumps::dirs::confsdir
@@ -25,12 +26,14 @@ class snapshot::addschanges(
         source => 'puppet:///modules/snapshot/addschanges/incrs-index.html',
     }
 
-    cron { 'adds-changes':
-        ensure      => 'present',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        command     => "python ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps",
-        minute      => '50',
-        hour        => '20',
+    if !$filesonly {
+        cron { 'adds-changes':
+            ensure      => 'present',
+            environment => 'MAILTO=ops-dumps@wikimedia.org',
+            user        => $user,
+            command     => "python ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps",
+            minute      => '50',
+            hour        => '20',
+        }
     }
 }
