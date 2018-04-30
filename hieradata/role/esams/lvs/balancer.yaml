@@ -11,5 +11,5 @@ profile::base::nameservers:
   - '208.80.154.254' # eqiad lvs
 
 profile::lvs::interface_tweaks:
-  eth0:
+  eno1:
     txqlen: 20000

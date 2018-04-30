@@ -1,3 +1,0 @@
-profile::lvs::interface_tweaks:
-  eno1:
-    txqlen: 20000
