@@ -12,7 +12,7 @@ keys=syslog
 
 [logger_root]
 level=INFO
-handlers=syslog
+handlers=syslog<%= ', logstash' if @logstash_host %>
 
 [logger_kafka]
 level=INFO
@@ -62,7 +62,7 @@ args=('/dev/log',)
 
 <% if @logstash_host -%>
 [handler_logstash]
-class=logstash.TCPLogstashHandler
+class=logstash.LogstashHandler
 level=INFO
 args=('<%= @logstash_host %>', <%= @logstash_port %>)
 <% end -%>
