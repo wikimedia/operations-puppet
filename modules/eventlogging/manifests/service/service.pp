@@ -79,6 +79,17 @@ define eventlogging::service::service(
     include ::rsyslog
     include ::service::monitoring
 
+    # eventlogging will run out of the path configured in the
+    # eventlogging::server class.
+    $eventlogging_path = $eventlogging::server::eventlogging_path
+    $basename          = regsubst($title, '\W', '-', 'G')
+    # $service_name is used in log.cfg.erb and in rsyslog.conf.erb
+    $service_name      = "eventlogging-service-${basename}"
+    $config_file       = "/etc/eventlogging.d/services/${basename}"
+    $log_config_file   = "/etc/eventlogging.d/services/${basename}.log.cfg"
+    # Only used if $logstash_host is set.
+    $logstash_tags     = [$service_name]
+
     # Additional packages needed for eventlogging-service that are not
     # provided by the eventlogging::dependencies class.
     if os_version('debian >= stretch') {
@@ -102,15 +113,6 @@ define eventlogging::service::service(
     # This allows tornado to automatically send stats to statsd.
     require_package('python-sprockets-mixins-statsd')
 
-    # eventlogging will run out of the path configured in the
-    # eventlogging::server class.
-    $eventlogging_path = $eventlogging::server::eventlogging_path
-
-    $basename = regsubst($title, '\W', '-', 'G')
-    # $service_name is used in log.cfg.erb and in rsyslog.conf.erb
-    $service_name = "eventlogging-service-${basename}"
-    $config_file = "/etc/eventlogging.d/services/${basename}"
-    $log_config_file = "/etc/eventlogging.d/services/${basename}.log.cfg"
 
     # Default log file is $service_name.log.
     # This will be written to by rsyslog matching
