@@ -23,10 +23,11 @@ class geoip::data::archive(
         ensure  => file,
         owner   => 'root',
         group   => 'wikidev',
+        mode    => '0744',
         content => file('geoip/archive.sh')
     }
 
-    $archive_command = "/bin/sh ${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir} > /dev/null"
+    $archive_command = "${archive_script} ${maxmind_db_source_dir} ${archive_dir} ${hdfs_archive_dir} > /dev/null"
 
     cron { 'archive-maxmind-geoip-database':
         ensure      => present,
