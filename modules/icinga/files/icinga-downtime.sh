@@ -49,6 +49,12 @@ if [ -z "$hostname" ] || [ -z "$reason" ]; then
     exit 1
 fi
 
+# If $hostname is not in icinga/puppet_hosts.cfg, then icinga won't know about it.  Fail now.
+if ! grep -qE "host_name\s+$hostname$" /etc/icinga/puppet_hosts.cfg; then
+    echo "Unknown <hostname> '$hostname'. <hostname> must exist in /etc/icinga/puppet_hosts.cfg. (Did you accidentally use FQDN instead of short hostname?)"
+    exit 1
+fi
+
 if [ -z "$duration" ]; then
     duration=7200
 fi
