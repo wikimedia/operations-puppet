@@ -64,7 +64,7 @@ args=('/dev/log',)
 [handler_logstash]
 class=logstash.LogstashHandler
 level=INFO
-# Args to pass to LogstashHander constructor: (host, port, message_type, tags), see:
-# https://github.com/vklochan/python-logstash/blob/master/logstash/handler_tcp.py
-args=('<%= @logstash_host %>', <%= @logstash_port %>, 'logstash', <%= Array(@logstash_tags).sort.to_s if @logstash_tags %>)
+# Args to pass to LogstashHander constructor: (host, port, message_type, tags, use fqdn?, formatter version)
+# See: https://github.com/vklochan/python-logstash/blob/master/logstash/handler_tcp.py
+args=('<%= @logstash_host %>', <%= @logstash_port %>, 'logstash', <%= Array(@logstash_tags).sort.to_s %>, False, 1)
 <% end -%>
