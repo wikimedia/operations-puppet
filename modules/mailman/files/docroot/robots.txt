@@ -10,3 +10,6 @@
 
 User-agent: *
 Disallow: /pipermail/
+# T193572
+Allow: /pipermail/mediawiki-l/
+Allow: /pipermail/mediawiki-announce/
