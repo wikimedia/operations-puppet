@@ -15,14 +15,6 @@ class openstack::nova::fullstack::service(
     $keyfile = '/var/lib/osstackcanary/osstackcanary_id',
     ) {
 
-    # base::service_unit does not take a bool
-    if $active {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-
     group { 'osstackcanary':
         ensure => 'present',
         name   => 'osstackcanary',
@@ -55,8 +47,16 @@ class openstack::nova::fullstack::service(
         show_diff => false,
     }
 
-    base::service_unit { 'nova-fullstack':
-        ensure  => $ensure,
-        upstart => upstart_template('nova-fullstack'),
+    file { '/etc/init/nova-fullstack.conf':
+        ensure  => 'present',
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
+        content => template('openstack/initscripts/nova-fullstack.upstart.erb'),
+    }
+
+    service { 'nova-fullstack':
+        ensure  => $active,
+        require => File['/etc/init/nova-fullstack.conf'],
     }
 }
