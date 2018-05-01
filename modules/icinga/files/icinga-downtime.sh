@@ -49,6 +49,12 @@ if [ -z "$hostname" ] || [ -z "$reason" ]; then
     exit 1
 fi
 
+# If any '.' in $hostname, assume this is a FQDN and fail.
+if [[ "$hostname" = *"."* ]]; then
+    echo "Do not use FQDN '$hostname' for hostname, icinga uses short hostnames only."
+    exit 1
+fi
+
 if [ -z "$duration" ]; then
     duration=7200
 fi
