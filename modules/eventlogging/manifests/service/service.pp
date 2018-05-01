@@ -93,6 +93,12 @@ define eventlogging::service::service(
         }
     }
 
+    # If we will be configuring logstash logging,
+    # ensure python-logstash is installed.
+    if $logstash_host {
+        require_package('python-logstash')
+    }
+
     # This allows tornado to automatically send stats to statsd.
     require_package('python-sprockets-mixins-statsd')
 
