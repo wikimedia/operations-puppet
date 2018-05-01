@@ -22,8 +22,6 @@ class profile::openstack::labtest::nova::network::service(
     }
     contain '::profile::openstack::base::nova::network::service'
 
-    class {'::openstack::nova::network::monitor':
-        active => ($::fqdn == $nova_network_host),
-    }
+    class {'::openstack::nova::network::monitor':}
     contain '::openstack::nova::network::monitor'
 }

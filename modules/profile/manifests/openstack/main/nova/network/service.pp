@@ -25,9 +25,10 @@ class profile::openstack::main::nova::network::service(
         network_public_ip                  => $network_public_ip,
     }
 
-    class {'::openstack::nova::network::monitor':
-        active         => ($::fqdn == $nova_network_host),
-        critical       => true,
-        contact_groups => 'wmcs-team',
+    if ($::fqdn == $nova_network_host) {
+        class {'::openstack::nova::network::monitor':
+            critical       => true,
+            contact_groups => 'wmcs-team',
+        }
     }
 }
