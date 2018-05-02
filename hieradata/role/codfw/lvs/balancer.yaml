@@ -18,11 +18,11 @@ profile::base::nameservers:
   - '208.80.154.254' # eqiad lvs
 
 profile::lvs::interface_tweaks:
-  eth0:
+  eno1:
     txqlen: 10000
-  eth1:
+  eno2:
     txqlen: 10000
-  eth2:
+  ens1f0:
     txqlen: 10000
-  eth3:
+  ens1f1:
     txqlen: 10000
