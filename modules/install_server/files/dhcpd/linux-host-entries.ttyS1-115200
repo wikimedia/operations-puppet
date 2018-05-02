@@ -3831,8 +3831,6 @@ host lvs2001 {
 host lvs2002 {
     hardware ethernet fc:15:b4:21:3e:38;
     fixed-address lvs2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host lvs2003 {
