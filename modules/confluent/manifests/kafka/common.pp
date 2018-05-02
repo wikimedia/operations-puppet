@@ -20,47 +20,33 @@
 #   Default: undef
 #
 # [*scala_version*]
-#   confluent-kafka-$scala_version will be installed.
-#   Default: 2.11.7
+#   Package confluent-kafka-$scala_version will be installed.
+#   Default: 2.11
 #
 class confluent::kafka::common(
     $java_home     = undef,
     $kafka_version = undef,
-    $scala_version = '2.11.7'
+    $scala_version = '2.11'
 ) {
     $package = "confluent-kafka-${scala_version}"
 
+    apt::repository { 'thirdparty-confluent':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'thirdparty/confluent',
+    }
+
     # If $kafka_version was given,
     # make sure that a specific debian package version was installed.
-
-    if os_version('debian >= stretch') {
-        apt::repository { 'thirdparty-confluent':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'thirdparty/confluent',
+    if !$kafka_version {
+        package { $package:
+            require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
         }
-
-        if !$kafka_version {
-            package { $package:
-                require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
-            }
-        }
-        else {
-            package { $package:
-                ensure  => $kafka_version,
-                require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
-            }
-        }
-    } else {
-        if !$kafka_version {
-            require_package($package)
-        }
-        else {
-            if !defined(Package[$package]) {
-                package { $package:
-                    ensure => $kafka_version,
-                }
-            }
+    }
+    else {
+        package { $package:
+            ensure  => $kafka_version,
+            require => [ Apt::Repository['thirdparty-confluent'], Exec['apt-get update']],
         }
     }
 
