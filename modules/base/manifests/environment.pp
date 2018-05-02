@@ -148,4 +148,12 @@ class base::environment(
         recurse => 1,
         matches => 'core.*',
     }
+
+    # Global vim defaults
+    file { '/etc/vim/vimrc.local':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/environment/vimrc.local',
+    }
 }
