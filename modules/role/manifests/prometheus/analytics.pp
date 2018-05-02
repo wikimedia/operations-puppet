@@ -62,6 +62,18 @@ class role::prometheus::analytics {
             'regex'  => 'meta',
             'action' => 'drop',
           },
+          # rename columnfamily to table, in metric names and labels.
+          # T193017
+          { 'source_labels' => ['columnfamily'],
+            'regex'  => '(.*)',
+            'target_label' => 'table',
+            'replacement' => '$1',
+          },
+          { 'source_labels' => ['__name__'],
+            'regex'  => 'cassandra_columnfamily_(.*)',
+            'target_label' => '__name__',
+            'replacement' => 'cassandra_table_$1',
+          },
         ],
       },
     ]
