@@ -15,5 +15,5 @@ client c1 {
     rxresp
 
     expect resp.status == 301
-    expect resp.msg == "TLS Redirect"
+    expect resp.reason == "TLS Redirect"
 } -run

@@ -15,7 +15,7 @@ varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -
 } -start
 
 client c1 {
-    txreq -hdr "X-Forwarded-For: 93.184.216.34, 93.184.216.35, 127.0.0.1" -hdr "X-Client-IP: 93.184.216.34"
+    txreq -hdr "X-Forwarded-For: 93.184.216.34, 93.184.216.35, 127.0.0.1" -hdr "X-Client-IP: 93.184.216.34" -hdr "Host: en.wikipedia.org"
     rxresp
     expect resp.http.X-Client-IP == "93.184.216.35"
 } -run

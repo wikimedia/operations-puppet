@@ -14,7 +14,7 @@ varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -
 } -start
 
 client c1 {
-    txreq
+    txreq -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 404
     expect resp.bodylen > 0
