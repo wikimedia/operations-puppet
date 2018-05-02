@@ -32,10 +32,10 @@ profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
 profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
 
 # Typically bumped after all brokers were upgraded to a new version.
-profile::kafka::broker::inter_broker_protocol_version: 1.0
+profile::kafka::broker::inter_broker_protocol_version: 1.1.0
 
 # Used for ensuring the proper package version is installed
-profile::kafka::broker::kafka_version: 1.0.0-1
+profile::kafka::broker::kafka_version: 1.1.0-1
 
 
 # Mirror all topics from main-eqiad to jumbo-eqiad.
