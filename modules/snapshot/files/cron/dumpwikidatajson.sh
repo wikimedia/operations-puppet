@@ -32,17 +32,9 @@ while [ $i -lt $shards ]; do
 		batch=0
 		retries=0
 		while [ $batch -lt $numberOfBatchesNeeded ] && [ ! -f $failureFile ]; do
-			firstPageIdParam="--first-page-id "$(( $batch * $pagesPerBatch * $shards + 1))
-			lastPageIdParam="--last-page-id "$(( ( $batch + 1 ) * $pagesPerBatch * $shards))
+			setPerBatchVars
 
-			lastRun=0
-			if [ $(($batch + 1)) -eq $numberOfBatchesNeeded ]; then
-				# Do not limit the last run
-				lastPageIdParam=""
-				lastRun=1
-			fi
-
-			echo "Starting batch $batch" >> $errorLog
+			echo "(`date --iso-8601=minutes`) Starting batch $batch" >> $errorLog
 			# Remove --no-cache once this runs on hhvm (or everything is back on Zend), see T180048.
 
 			# This separates the run-parts by ,\n. For this we assume the last run to not be empty, which should
@@ -62,19 +54,9 @@ while [ $i -lt $shards ]; do
 
 			exitCode=$?
 			if [ $exitCode -gt 0 ]; then
-				echo -e "\n\n(`date --iso-8601=minutes`) Process for batch $batch of shard $i failed with exit code $exitCode" >> $errorLog
-
-				let retries++
-
-				if [ $retries -gt 5 ]; then
-					# Give up with this shard.
-					echo -e "\n\n(`date --iso-8601=minutes`) Giving up after $(($retries - 1)) retries." >> $errorLog
-					echo 1 > $failureFile
+				if ! handleBatchFailure; then
 					break
 				fi
-
-				# Increase the sleep time for every retry
-				sleep $((900 * $retries))
 				continue
 			fi
 
@@ -100,9 +82,8 @@ echo '[' | gzip -f > $tempDir/wikidataJson.gz
 
 i=0
 while [ $i -lt $shards ]; do
-	# Need to use sort -V here as batches need to be concated in order
-	tempFiles=`ls -1 $tempDir/wikidataJson.$i-batch*.gz | sort -V | paste -s -d ' '`
-	fileSize=`du -b -c $tempFiles | awk '/total$/ { print $1 }'`
+	getTempFiles "$tempDir/wikidataJson.$i-batch*.gz"
+	getFileSize $tempFiles
 	if [ $fileSize -lt `expr 20000000000 / $shards` ]; then
 		echo "File size for shard $i is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
