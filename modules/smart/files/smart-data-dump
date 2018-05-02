@@ -140,7 +140,7 @@ def noraid_list_pd():
         name, disk_type = line.split(' ', 1)
         if disk_type != 'disk':
             continue
-        if name.startswith('drbd'):
+        if name.startswith('drbd') or name.startswith('nbd'):
             continue
         yield PD(driver='noraid', smart_args=['-d', 'auto', '/dev/%s' % name],
                  disk_id=name)
