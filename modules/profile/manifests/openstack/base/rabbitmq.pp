@@ -38,15 +38,12 @@ class profile::openstack::base::rabbitmq(
     }
     contain '::rabbitmq::monitor'
 
-    # Need to package this for Jessie (T188392)
-    if os_version('ubuntu == trusty') {
-        class { '::profile::prometheus::rabbitmq_exporter':
-            prometheus_nodes        => $monitoring_host,
-            rabbit_monitor_username => $monitor_user,
-            rabbit_monitor_password => $monitor_password,
-        }
-        contain '::profile::prometheus::rabbitmq_exporter'
+    class { '::profile::prometheus::rabbitmq_exporter':
+        prometheus_nodes        => $monitoring_host,
+        rabbit_monitor_username => $monitor_user,
+        rabbit_monitor_password => $monitor_password,
     }
+    contain '::profile::prometheus::rabbitmq_exporter'
 
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',
