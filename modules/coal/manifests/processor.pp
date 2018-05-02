@@ -44,6 +44,7 @@ class coal::processor(
     require_package('python-kafka')
     require_package('python-dateutil')
     require_package('python-etcd')
+    require_package('python-tz')
 
     file { $log_dir:
         ensure => directory,
