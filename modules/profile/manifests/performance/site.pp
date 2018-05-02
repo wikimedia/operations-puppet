@@ -7,6 +7,8 @@ class profile::performance::site {
 
     require ::profile::performance::coal
 
+    class { 'apache2': }
+
     file { '/srv/org':
         ensure => directory,
         owner  => 'root',
@@ -25,7 +27,8 @@ class profile::performance::site {
         owner     => 'www-data',
         group     => 'www-data',
         directory => '/srv/org/wikimedia/performance',
-        notify    => Service['apache2']
+        notify    => Service['apache2'],
+        require   => Package['apache2']
     }
 
     httpd::site { 'performance.wikimedia.org':
