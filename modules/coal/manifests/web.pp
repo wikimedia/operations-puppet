@@ -7,10 +7,11 @@ class coal::web() {
 
     # Include common things for coal
     include ::coal::common
+    include ::apache
 
     require_package('python-flask')
     require_package('python-numpy')
-    require_package('python-whisper')
+    require_package('python-requests')
 
     uwsgi::app { 'coal':
         service_settings => '--die-on-term',
