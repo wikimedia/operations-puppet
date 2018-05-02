@@ -432,10 +432,13 @@ kafka_clusters:
     brokers:
       kafka1001.eqiad.wmnet:
         id: 1001
+        rack: A
       kafka1002.eqiad.wmnet:
         id: 1002
+        rack: B
       kafka1003.eqiad.wmnet:
         id: 1003
+        rack: C
 
   main-codfw:
     api_version: 0.9
@@ -443,10 +446,13 @@ kafka_clusters:
     brokers:
       kafka2001.codfw.wmnet:
         id: 2001
+        rack: A
       kafka2002.codfw.wmnet:
         id: 2002
+        rack: B
       kafka2003.codfw.wmnet:
         id: 2003
+        rack: C
 
   # NOTE:  The 'rack' here is used by the confluent kafka module
   # to assign broker.rack for Kafka rack awareness.  We are actually setting
