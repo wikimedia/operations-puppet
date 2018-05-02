@@ -42,6 +42,7 @@ function runDcat {
 	$php /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
 }
 
+# Add the checksums for $1 to today's checksum files
 function putDumpChecksums {
 	md5=`md5sum "$1" | awk '{print $1}'`
 	echo "$md5  `basename $1`" >> $targetDir/wikidata-$today-md5sums.txt
@@ -50,6 +51,7 @@ function putDumpChecksums {
 	echo "$sha1  `basename $1`" >> $targetDir/wikidata-$today-sha1sums.txt
 }
 
+# Get the number of batches needed to dump all of Wikidata, stored in $numberOfBatchesNeeded.
 function getNumberOfBatchesNeeded {
 	maxPageId=`$php $multiversionscript maintenance/sql.php --wiki wikidatawiki --json --query 'SELECT MAX(page_id) AS max_page_id FROM page' | grep max_page_id | grep -oP '\d+'`
 	if [[ $maxPageId -lt 1 ]]; then
@@ -59,4 +61,45 @@ function getNumberOfBatchesNeeded {
 
 	# This should be roughly enough to dump all pages. The last batch is run without specifying a last page id, so it's ok if this is slightly off.
 	numberOfBatchesNeeded=$(($maxPageId / $pagesPerBatch))
+}
+
+# Set batch-dependent variables needed for a call to the PHP dump scripts
+function setPerBatchVars {
+	firstPageIdParam="--first-page-id "$(( $batch * $pagesPerBatch * $shards + 1))
+	lastPageIdParam="--last-page-id "$(( ( $batch + 1 ) * $pagesPerBatch * $shards))
+
+	lastRun=0
+	if [ $(($batch + 1)) -eq $numberOfBatchesNeeded ]; then
+		# Do not limit the last run
+		lastPageIdParam=""
+		lastRun=1
+	fi
+}
+
+# Get temporary files selected by the given pattern $1, sorted.
+function getTempFiles {
+	# Need to use sort -V here as batches need to be concated in order
+	tempFiles=`ls -1 $1 | sort -V | paste -s -d ' '`
+}
+
+# Get the total file size of all files in $1
+function getFileSize {
+	fileSize=`du -b -c $1 | awk '/total$/ { print $1 }'`
+}
+
+# Handle the failure of a batch run.
+function handleBatchFailure {
+	echo -e "\n\n(`date --iso-8601=minutes`) Process for batch $batch of shard $i failed with exit code $exitCode" >> $errorLog
+
+	let retries++
+
+	if [ $retries -gt 5 ]; then
+		# Give up with this shard.
+		echo -e "\n\n(`date --iso-8601=minutes`) Giving up after $(($retries - 1)) retries." >> $errorLog
+		echo 1 > $failureFile
+		return 1
+	fi
+
+	# Increase the sleep time for every retry
+	sleep $((900 * $retries))
 }
