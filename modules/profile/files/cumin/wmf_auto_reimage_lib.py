@@ -689,7 +689,7 @@ def puppet_first_run(host):
          '--ignorecache --no-usecacheonfailure')]
 
     print_line('Started first puppet run (sit back, relax, and enjoy the wait)', host=host)
-    run_cumin('puppet_first_run', host, commands, timeout=7200, installer=True)
+    run_cumin('puppet_first_run', host, commands, timeout=10800, installer=True)
     print_line('First Puppet run completed', host=host)
 
 
