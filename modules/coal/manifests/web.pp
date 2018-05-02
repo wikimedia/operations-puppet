@@ -10,7 +10,7 @@ class coal::web() {
 
     require_package('python-flask')
     require_package('python-numpy')
-    require_package('python-whisper')
+    require_package('python-requests')
 
     uwsgi::app { 'coal':
         service_settings => '--die-on-term',

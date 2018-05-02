@@ -8,4 +8,11 @@ class role::webperf {
     include ::standard
     include ::profile::base::firewall
     include ::profile::webperf
+
+    # Based on graphite
+    class { '::httpd':
+        modules => ['uwsgi']
+    }
+    include ::profile::performance::coal
+    include ::profile::performance::site
 }
