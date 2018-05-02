@@ -1,0 +1,6 @@
+" Load defaults first, otherwise they will clobber
+" any attempt to have local settings here
+let skip_defaults_vim = 1
+
+" Avoid cross-hairs mouse control
+set mouse-=a
