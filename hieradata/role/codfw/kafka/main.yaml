@@ -32,17 +32,9 @@ profile::kafka::mirror::properties:
     "request.timeout.ms": 120000
     "batch.size": 65536
 
-
-# To be changed during Kafka broker version upgrades
-profile::kafka::broker::log_message_format_version: 0.9.0.1
-
-
 # 
-# ---- TODO: Remove all of the below after upgrading to 1.x ----
+# ---- TODO: Remove the below while enabling SSL: T193778 ----
 #
-# The settings in role/common/kafka/main.yaml should be used.
-# TODO: Auto rebalance is better in 1.x.  Disable until we upgrade.
-profile::kafka::broker::auto_leader_rebalance_enable: false
 # Enable SSL/TLS for Kafka.  This requires
 # that keystore and truststore files, and
 # profile::kafka::broker::ssl_password, are committed in
