@@ -39,4 +39,6 @@ class profile::webperf(
     class { '::coal::processor':
         kafka_brokers => $kafka_brokers
     }
+
+    class { '::coal::web': }
 }
