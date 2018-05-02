@@ -1,0 +1,6 @@
+" Don't let defaults.vim clobber our settings here
+" which is, oddly, the default behavior
+let skip_defaults_vim = 1
+
+" Avoid cross-hairs mouse control
+set mouse=
