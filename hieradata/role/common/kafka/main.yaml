@@ -27,16 +27,3 @@ profile::kafka::broker::monitoring::replica_maxlag_critical: 500000
 profile::kafka::broker::num_replica_fetchers: 4
 profile::kafka::broker::num_recovery_threads_per_data_dir: 4
 profile::kafka::broker::num_io_threads: 4
-
-
-# To be changed during Kafka broker version upgrades
-profile::kafka::broker::inter_broker_protocol_version: 0.9.0.1
-profile::kafka::broker::log_message_format_version: 0.9.0.1
-
-# Used for ensuring the proper package version is installed
-profile::kafka::broker::scala_version: 2.11.7
-profile::kafka::broker::kafka_version: 0.9.0.1-1
-
-
-# TODO: Auto rebalance is better in 1.x.  Disable until we upgrade.
-profile::kafka::broker::auto_leader_rebalance_enable: false
