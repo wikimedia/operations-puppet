@@ -1,4 +1,10 @@
 cluster: kafka_jumbo
+
+
+
+
+
+
 profile::kafka::broker::kafka_cluster_name: jumbo
 
 # Enable SSL/TLS for Kafka.  This requires
@@ -13,26 +19,19 @@ profile::kafka::broker::auth_acls_enabled: true
 
 # Enable Monitoring (via Prometheus) and icinga alerts
 profile::kafka::broker::monitoring_enabled: true
-
-profile::kafka::broker::log_dirs: [/srv/kafka/data]
-profile::kafka::broker::plaintext: true
-
-profile::kafka::broker::auto_leader_rebalance_enable: true
-profile::kafka::broker::nofiles_ulimit: 65536
-
-profile::kafka::broker::log_retention_hours: 168  # 1 week
-
-# Bump this up to get a little more parallelism between replicas.
-profile::kafka::broker::num_replica_fetchers: 12
-# 12 disks in the broker HW RAID array
-profile::kafka::broker::num_recovery_threads_per_data_dir: 12
-profile::kafka::broker::num_io_threads: 12
-
 profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
 profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
 
-# Typically bumped after all brokers were upgraded to a new version.
+# (12 disks in the broker HW RAID array)
+# Bump this up to get a little more parallelism between replicas.
+profile::kafka::broker::num_replica_fetchers: 12
+profile::kafka::broker::num_recovery_threads_per_data_dir: 12
+profile::kafka::broker::num_io_threads: 12
+
+
+# To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
+
 
 # Used for ensuring the proper package version is installed
 profile::kafka::broker::kafka_version: 1.1.0-1
