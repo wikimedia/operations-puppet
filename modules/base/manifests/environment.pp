@@ -148,4 +148,16 @@ class base::environment(
         recurse => 1,
         matches => 'core.*',
     }
+
+    # Stretch changes the vim mouse defaults
+    # and the new settings make me crazy.  Change them
+    # back to jessie/trusty-style  (AGB)
+    if os_version('debian >= stretch') {
+        file { '/etc/vim/vimrc.local':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/base/environment/vimrc.local',
+        }
+    }
 }
