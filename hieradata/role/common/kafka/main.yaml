@@ -27,3 +27,6 @@ profile::kafka::broker::monitoring::replica_maxlag_critical: 500000
 profile::kafka::broker::num_replica_fetchers: 4
 profile::kafka::broker::num_recovery_threads_per_data_dir: 4
 profile::kafka::broker::num_io_threads: 4
+
+# To be changed during Kafka broker version upgrades
+profile::kafka::broker::inter_broker_protocol_version: 1.1.0
