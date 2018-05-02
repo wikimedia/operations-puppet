@@ -67,6 +67,13 @@
 #   that all keystore, truststores, and keys use the same password.
 #   Default: undef
 #
+# [*inter_broker_ssl_enabled*]
+#   Vary security.inter.broker.protocol based on this and $ssl_enabled.
+#   If this is undef (default) and $ssl_enabled, we'll pick SSL.
+#   Else if this is false, we'll use PLAINTEXT, or true, SSL.
+#   This only is used if ssl_enabled is true.
+#   Default: undef
+#
 # [*log_dirs*]
 #   Array of Kafka log data directories.  The confluent::kafka::broker class
 #   manages these directories but not anything above them.  Unless the prefix
@@ -134,6 +141,7 @@ class profile::kafka::broker(
 
     $ssl_enabled                       = hiera('profile::kafka::broker::ssl_enabled', false),
     $ssl_password                      = hiera('profile::kafka::broker::ssl_password', undef),
+    $inter_broker_ssl_enabled          = hiera('profile::kafka::broker::inter_broker_ssl_enabled', undef),
 
     $log_dirs                          = hiera('profile::kafka::broker::log_dirs', ['/srv/kafka/data']),
     $auto_leader_rebalance_enable      = hiera('profile::kafka::broker::auto_leader_rebalance_enable', true),
@@ -206,8 +214,13 @@ class profile::kafka::broker(
     }
 
     if $ssl_enabled {
-        # Use SSL for inter broker communication.
-        $security_inter_broker_protocol = 'SSL'
+        # If $inter_broker_ssl_enabled has not been overridden, then use SSL.
+        # Else if it has, use SSL or PLAINTEXT.
+        $security_inter_broker_protocol = $inter_broker_ssl_enabled ? {
+            undef => 'SSL'
+            true  => 'SSL',
+            false => 'PLAINTEXT',
+        }
 
         # Distribute Java keystore and truststore for this broker.
         $ssl_location                   = '/etc/kafka/ssl'
