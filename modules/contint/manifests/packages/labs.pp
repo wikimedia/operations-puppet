@@ -56,7 +56,6 @@ class contint::packages::labs {
     package { [
         'ffmpeg',
         'fontconfig-config',
-        'ghostscript',
         'libimage-exiftool-perl',
         'libjpeg-turbo-progs',
         'libogg0',
