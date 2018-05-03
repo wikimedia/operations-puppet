@@ -27,6 +27,12 @@ class profile::cache::kafka::statsv(
 
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
+    # TODO: Remove this once all Kafka clusters are >= 0.10
+    $force_protocol_version = $kafka_config['api_version'] ? {
+        '0.9'   => '0.9.0.1',
+        default => $kafka_config['api_version']
+    }
+
     varnishkafka::instance { 'statsv':
         brokers                     => $kafka_brokers,
         format                      => $format,
@@ -38,9 +44,7 @@ class profile::cache::kafka::statsv(
         varnish_opts                => { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' },
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
-        # Force more exact protocol version.
-        # TODO: can we change this in common.yaml kafka_clusters hash?
-        force_protocol_version      => '0.9.0.1',
+        force_protocol_version      => $force_protocol_version,
     }
 
     # Make sure varnishes are configured and started for the first time
