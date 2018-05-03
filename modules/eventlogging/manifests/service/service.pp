@@ -48,7 +48,8 @@
 #   If given, process logs will also be sent to logstash at this hostname.
 #
 # [*logstash_port*]
-#   Default: 11514
+#   This should be a logstash GELF input port.
+#   Default: 12201
 #
 # [*reload_on]
 #   Reload eventlogging-service if any of the provided Puppet
@@ -65,9 +66,9 @@ define eventlogging::service::service(
     $num_processes       = undef, # default 1
     $log_file            = undef,
     $access_log_level    = 'WARNING',
-    $log_config_template = 'eventlogging/log.cfg.erb',
+    $log_config_template = 'eventlogging/log.cfg.yaml.erb',
     $logstash_host       = undef,
-    $logstash_port       = 11514,
+    $logstash_port       = 12201,
     $statsd              = 'localhost:8125',
     $statsd_prefix       = "eventlogging.service.${title}",
     $statsd_use_hostname = false,
@@ -86,7 +87,7 @@ define eventlogging::service::service(
     # $service_name is used in log.cfg.erb and in rsyslog.conf.erb
     $service_name      = "eventlogging-service-${basename}"
     $config_file       = "/etc/eventlogging.d/services/${basename}"
-    $log_config_file   = "/etc/eventlogging.d/services/${basename}.log.cfg"
+    $log_config_file   = "/etc/eventlogging.d/services/${basename}.log.cfg.yaml"
     # Only used if $logstash_host is set.
     $logstash_tags     = [$service_name]
 
@@ -104,10 +105,10 @@ define eventlogging::service::service(
         }
     }
 
-    # If we will be configuring logstash logging,
-    # ensure python-logstash is installed.
+    # If we will be configuring logstash logging via gelf,
+    # ensure python-graypy is installed.
     if $logstash_host {
-        require_package('python-logstash')
+        require_package('python-graypy')
     }
 
     # This allows tornado to automatically send stats to statsd.
