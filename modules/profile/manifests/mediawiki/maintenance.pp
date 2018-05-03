@@ -1,7 +1,10 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance {
 
-    include ::mediawiki::packages::php5
+    # FIXME - remove this after terbium/wasat have been replace by mwmaint*
+    if  os_version('debian == jessie')
+        include ::mediawiki::packages::php5 # lint:ignore:wmf_styleguide
+    }
 
     # Deployment
     include ::scap::scripts
@@ -54,7 +57,11 @@ class profile::mediawiki::maintenance {
     class { 'mediawiki::maintenance::updatequerypages': ensure => $ensure }
 
     # Readline support for PHP maintenance scripts (T126262)
-    require_package('php5-readline')
+    if  os_version('debian >= stretch') {
+        require_package('php-readline')
+    } else {
+        require_package('php5-readline')
+    }
 
     # T112660 - kafka support
     # The eventlogging code is useful for scripting
