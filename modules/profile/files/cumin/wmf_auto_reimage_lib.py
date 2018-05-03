@@ -994,6 +994,8 @@ def mask_systemd_services(host, services):
         run_cumin('mask_systemd_service', host,
                   ['systemctl mask {service}.service'.format(service=service)], installer=True)
 
+    print_line('Masked systemd units: {units}'.format(units=', '.join(services)), host=host)
+
 
 def print_unmask_message(host, services):
     """Print and log the commands to execute to unmask the masked systemd services.
