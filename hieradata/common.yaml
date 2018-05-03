@@ -438,7 +438,6 @@ kafka_clusters:
         id: 1003
 
   main-codfw:
-    api_version: 0.9
     zookeeper_cluster_name: main-codfw
     brokers:
       kafka2001.codfw.wmnet:
