@@ -181,7 +181,7 @@ class BaseVarnishLogConsumer(object):
     def main(self):
         """Execute the command specified in self.cmd and handle
         each line output by the command"""
-        p = Popen(self.cmd, stdout=PIPE, bufsize=-1)
+        p = Popen(self.cmd, stdout=PIPE, bufsize=-1, universal_newlines=True)
 
         try:
             while True:
