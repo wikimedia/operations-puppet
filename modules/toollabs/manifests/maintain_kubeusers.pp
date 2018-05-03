@@ -13,9 +13,7 @@ class toollabs::maintain_kubeusers(
         before   => Package['python3-ldap3'],
     }
 
-    package { 'python3-ldap3':
-        ensure => present,
-    }
+    require_package('python3-ldap3', 'python3-yaml')
 
     file { '/usr/local/bin/maintain-kubeusers':
         source => 'puppet:///modules/toollabs/maintain-kubeusers',
