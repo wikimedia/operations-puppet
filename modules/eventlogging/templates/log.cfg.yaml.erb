@@ -1,0 +1,50 @@
+---
+version: 1
+
+root:
+    level: INFO
+    handlers: [syslog<%= ', graypy' if @logstash_host %>]
+
+loggers:
+    kafka:
+        level: INFO
+    tornado.access:
+        level: <%= @access_log_level ? @access_log_level : 'WARNING' %>
+    tornado.application:
+        level: INFO
+    tornado.general:
+        level: INFO
+    kazoo:
+        level: INFO
+
+formatters:
+    syslog:
+        format: "<%= @service_name %>[%(process)d]: (%(threadName)-10s) %(message)s"
+
+handlers:
+    syslog:
+        level: INFO
+        class: logging.handlers.SysLogHandler
+        formatter: syslog
+        address: /dev/log
+
+<% if @logstash_host -%>
+    graypy:
+        level: INFO
+<% if @logstash_tags -%>
+        # Add static information to LogRecord extra, so it is logged
+        # in the GELF formatted log message.
+        filters: [extra]
+<% end # if @logstash_tags -%>
+        class: graypy.GELFHandler
+        host: <%= @logstash_host %>
+        port: <%= @logstash_port %>
+<% end # if @logstash_host -%>
+
+<% if @logstash_tags -%>
+filters:
+    extra:
+        '()': eventlogging.utils.ExtraFilter
+        extra:
+            tags: [<%= Array(@logstash_tags).sort.join(',') %>]
+<% end # if @logstash_tags -%>
