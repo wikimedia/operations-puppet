@@ -5076,9 +5076,9 @@ host mw1296 {
     fixed-address mw1296.eqiad.wmnet;
 }
 
-host mw1297 {
+host mwmaint1001 {
     hardware ethernet 14:18:77:61:37:50;
-    fixed-address mw1297.eqiad.wmnet;
+    fixed-address mwmaint1001.eqiad.wmnet;
 }
 
 host mw1298 {
