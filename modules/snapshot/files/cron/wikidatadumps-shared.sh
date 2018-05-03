@@ -79,7 +79,7 @@ function setPerBatchVars {
 # Get temporary files selected by the given pattern $1, sorted.
 function getTempFiles {
 	# Need to use sort -V here as batches need to be concated in order
-	tempFiles=`ls -1 $1 | sort -V | paste -s -d ' '`
+	tempFiles=`ls -1 $1 2>/dev/null | sort -V | paste -s -d ' '`
 }
 
 # Get the total file size of all files in $1
@@ -102,4 +102,12 @@ function handleBatchFailure {
 
 	# Increase the sleep time for every retry
 	sleep $((900 * $retries))
+}
+
+# Set the last batch number into $batch, based on the given temporary files $1.
+function getContinueBatchNumber {
+	getTempFiles "$1"
+	if [ -n "$tempFiles" ]; then
+		batch=`echo $tempFiles | awk '{ print $(NF) }' | sed -r 's/.*batch([0-9]+).gz/\1/'`
+	fi
 }

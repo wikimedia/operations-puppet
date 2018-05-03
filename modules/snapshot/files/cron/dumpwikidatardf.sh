@@ -8,6 +8,24 @@
 #
 # Marius Hoch < hoo@online.de >
 
+if [[ "$1" == '--help' ]]; then
+	echo -e "Usage: $0 [--continue] all|truthy ttl|nt\n"
+	echo -e "\t--continue\tAttempt to continue a previous dump run."
+	echo -e "\tall|truthy\tType of dump to produce."
+	echo -e "\tttl|nt\t\tOutput format."
+
+	exit
+fi
+
+continue=0
+if [[ "$1" == '--continue' ]]; then
+	shift
+	continue=1
+else
+	# Remove old leftovers, as we start from scratch.
+	rm -f $tempDir/wikidata$dumpFormat-$dumpName.*-batch*.gz
+fi
+
 . /usr/local/bin/wikidatadumps-shared.sh
 
 declare -A dumpNameToFlavor
@@ -57,6 +75,11 @@ while [ $i -lt $shards ]; do
 		errorLog=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-$i.log
 
 		batch=0
+
+		if [ $continue -gt 0 ]; then
+			getContinueBatchNumber "$tempDir/wikidata$dumpFormat-$dumpName.$i-batch*.gz"
+		fi
+
 		retries=0
 		while [ $batch -lt $numberOfBatchesNeeded ] && [ ! -f $failureFile ]; do
 			setPerBatchVars
@@ -92,7 +115,6 @@ wait
 
 if [ -f $failureFile ]; then
 	echo -e "\n\n(`date --iso-8601=minutes`) Giving up after a shard failed." >> $mainLogFile
-	rm -f $tempDir/wikidata$dumpFormat-$dumpName.*-batch*.gz
 	rm -f $failureFile
 
 	exit 1
