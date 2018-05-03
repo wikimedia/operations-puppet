@@ -19,6 +19,8 @@ class profile::tcpircbot(
             '2620:0:860:103:10:192:32:22/128',  # deployment codfw v6: naos
             '::ffff:10.64.32.13/128',           # maintenance eqiad v4: terbium
             '2620:0:861:103:10:64:32:13/64',    # maintenance eqiad v6: terbium
+            '::ffff:10.64.16.62/128',           # maintenance eqiad v4: mwmaint1001
+            '2620:0:861:102:10:64:16:62/64',    # maintenance eqiad v6: mwmaint1001
             '::ffff:10.192.48.45/128',          # maintenance codfw v4: wasat
             '2620:0:860:104:10:192:48:45/64',   # maintenance codfw v6: wasat
             '::ffff:10.64.16.73/128',           # puppetmaster1001.eqiad.wmnet
