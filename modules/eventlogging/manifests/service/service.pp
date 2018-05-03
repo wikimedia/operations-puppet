@@ -65,7 +65,7 @@ define eventlogging::service::service(
     $num_processes       = undef, # default 1
     $log_file            = undef,
     $access_log_level    = 'WARNING',
-    $log_config_template = 'eventlogging/log.cfg.erb',
+    $log_config_template = 'eventlogging/log.cfg.yaml.erb',
     $logstash_host       = undef,
     $logstash_port       = 11514,
     $statsd              = 'localhost:8125',
@@ -86,7 +86,7 @@ define eventlogging::service::service(
     # $service_name is used in log.cfg.erb and in rsyslog.conf.erb
     $service_name      = "eventlogging-service-${basename}"
     $config_file       = "/etc/eventlogging.d/services/${basename}"
-    $log_config_file   = "/etc/eventlogging.d/services/${basename}.log.cfg"
+    $log_config_file   = "/etc/eventlogging.d/services/${basename}.log.cfg.yaml"
     # Only used if $logstash_host is set.
     $logstash_tags     = [$service_name]
 
