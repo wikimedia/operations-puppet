@@ -1432,12 +1432,12 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 
 
 # Former imagescaler temp. used as terbium stand-in (T192185)
-node 'mwmaint1001.eqiad.wmnet' {
-    role(mediawiki_maintenance)
-    # lint:ignore:wmf_styleguide
-    interface::add_ip6_mapped { 'main': }
-    # lint:endignore
-}
+#node 'mwmaint1001.eqiad.wmnet' {
+#    role(mediawiki_maintenance)
+#    # lint:ignore:wmf_styleguide
+#    interface::add_ip6_mapped { 'main': }
+#    # lint:endignore
+#}
 
 # Former imagescalers (replaced by thumbor) T192457
 
