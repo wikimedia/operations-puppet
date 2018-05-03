@@ -1,7 +1,17 @@
 # mediawiki maintenance server
 class profile::mediawiki::maintenance {
 
-    include ::mediawiki::packages::php5
+    # lint:ignore:wmf_styleguide (profile includes non-profile)
+    if  os_version('debian >= stretch') {
+        include ::mediawiki::packages::php7
+        # Readline support for PHP maintenance scripts (T126262)
+        require_package('php-readline')
+    } else {
+        include ::mediawiki::packages::php5
+        # Readline support for PHP maintenance scripts (T126262)
+        require_package('php5-readline')
+    }
+    # lint:endingnore
 
     # Deployment
     include ::scap::scripts
@@ -53,8 +63,6 @@ class profile::mediawiki::maintenance {
     # (T17434) Periodical run of currently disabled special pages
     class { 'mediawiki::maintenance::updatequerypages': ensure => $ensure }
 
-    # Readline support for PHP maintenance scripts (T126262)
-    require_package('php5-readline')
 
     # T112660 - kafka support
     # The eventlogging code is useful for scripting
