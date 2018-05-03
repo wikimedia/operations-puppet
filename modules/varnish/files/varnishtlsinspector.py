@@ -30,7 +30,7 @@ import sys
 from wikimedia_varnishlogconsumer import BaseVarnishLogConsumer
 
 
-class VarnishTLSInpector(BaseVarnishLogConsumer):
+class VarnishTLSInspector(BaseVarnishLogConsumer):
     description = 'Varnish TLS ciphersuites logstash logger'
 
     def varnishlog_args(self):
@@ -70,4 +70,4 @@ class VarnishTLSInpector(BaseVarnishLogConsumer):
 
 
 if __name__ == "__main__":
-    VarnishTLSInpector(sys.argv[1:]).main()
+    VarnishTLSInspector(sys.argv[1:]).main()
