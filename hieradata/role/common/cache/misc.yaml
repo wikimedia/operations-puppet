@@ -99,7 +99,7 @@ cache::app_directors:
       eqiad: 'netmon2001.wikimedia.org'
   noc:
     backends:
-      eqiad: 'terbium.eqiad.wmnet'
+      eqiad: 'mwmaint1001.eqiad.wmnet'
       codfw: 'wasat.codfw.wmnet'
   performance:
     backends:
