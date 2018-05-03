@@ -3045,3 +3045,7 @@ ldap_only_users:
     ensure: present
     realname: Pam Drouin
     email: pdrouin@wikimedia.org
+  johnben:
+    ensure: present
+    realname: John Bennett
+    email: jbennett@wikimedia.org
