@@ -121,4 +121,22 @@ class varnish::logging(
         group  => 'root',
         mode   => '0555',
     }
+
+    file { '/usr/local/bin/varnishtlsinspector':
+        source => 'puppet:///modules/varnish/varnishtlsinspector.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    systemd::service { 'varnish-frontend-tlsinspector':
+        ensure         => present,
+        content        => systemd_template('varnishtlsinspector'),
+        restart        => true,
+        service_params => {
+            require => Service['varnish-frontend'],
+            enable  => true,
+        },
+        subscribe      => File['/usr/local/bin/varnishtlsinspector'],
+    }
 }
