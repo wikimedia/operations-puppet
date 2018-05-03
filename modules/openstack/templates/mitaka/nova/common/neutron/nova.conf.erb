@@ -1,46 +1,101 @@
 [DEFAULT]
-# https://docs.openstack.org/mitaka/install-guide-ubuntu/nova-controller-install.html
-auth_strategy = keystone
-use_neutron = True
-
-my_ip = <%= @ipaddress %>
+# nova general settings
+my_ip=<%= @ipaddress %>
+verbose=True
+state_path=/var/lib/nova
+#root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
+#log_dir=/var/log/nova
 pybasedir = /usr/lib/python2.7/dist-packages
-state_path = /var/lib/nova
+
+# keystone
+auth_strategy=keystone
+
+# compute
+#compute_driver=nova.virt.libvirt.LibvirtDriver
+#notification_topics=notifications
+#connection_type=libvirt
+#instance_name_template=i-%08x
+#daemonize=1
+#enabled_apis=osapi_compute, metadata
+#osapi_compute_unique_server_name_scope='global'
+#rpc_response_timeout=180
+#instance_usage_audit = False
+#compute_monitors=virt_driver
+
+# glance
+#image_service=nova.image.glance.GlanceImageService
+#remove_unused_base_images=True
+#glance_api_servers=<%= @nova_controller %>:9292
+
+# APIs
+#s3_host=<%= @nova_controller %>
+#cc_host=<%= @nova_controller %>
+#ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
+#ec2_dmz_host=<%= @nova_api_host_ip %>
+#api_paste_config=/etc/nova/api-paste.ini
 enabled_apis = osapi_compute,metadata
 
-# By default, Compute uses an internal firewall driver.
-# Since the Networking service includes a firewall driver
-# disable the Compute firewall driver by using the
-# nova.virt.firewall.NoopFirewallDriver firewall driver.
+# quotas
+#quota_cores = 8
+#quota_instances = 8
+#quota_ram = 16384
+#quota_floating_ips=<%= @quota_floating_ips %>
+#quota_fixed_ips=200
+#max_age = 30
+
+# nova-scheduler
+#scheduler_driver=filter_scheduler
+#wmf_scheduler_hosts_pool=<%= @scheduler_pool.join(",") %>
+#scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
+#scheduler_weight_classes=nova.scheduler.weights.metrics.MetricsWeigher
+#scheduler_host_subset_size = 2
+#ram_allocation_ratio=1.0
+#disk_allocation_ratio=1.5
+#default_schedule_zone = nova
+
+# networking
+#dmz_cidr=<%= @dmz_cidr %>
+#dhcpbridge_flagfile=/etc/nova/nova.conf
+#dhcpbridge=/usr/bin/nova-dhcpbridge
+#dhcp_domain=<%= @dhcp_domain %>
+#allow_same_net_traffic=False
+#force_dhcp_release=True
+#dhcp_lease_time=43200
+#fixed_ip_disassociate_timeout=180
+#network_api_class=nova.network.api.API
+#flat_network_dhcp_start=<%= @dhcp_start %>
+#network_manager=nova.network.manager.FlatDHCPManager
+#flat_interface=<%= @network_flat_interface %>
+#flat_injected=False
+#flat_network_bridge=<%= @flat_network_bridge %>
+#fixed_range=<%= @fixed_range %>
+#public_interface=<%= @network_public_interface %>
+#routing_source_ip=<%= @network_public_ip %>
+#multi_host=False
+#dnsmasq_config_file=/etc/dnsmasq-nova.conf
+use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 network_api_class = nova.network.neutronv2.api.API
 default_floating_pool = ext-nat
 linuxnet_interface_driver = nova.network.linux_net.LinuxBridgeInterfaceDriver
 security_group_api = neutron
 
+# others
+#iscsi_helper=tgtadm
+#notification_driver = messagingv2
+
 [api_database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova_api
 
-[barbican]
-[cells]
-[cinder]
-[conductor]
-[cors]
-[cors.subdomain]
-
 [database]
 connection = mysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/nova
-
-[ephemeral_storage_encryption]
+#max_overflow = 25
+#max_pool_size = 10
+#pool_timeout = 60
 
 [glance]
+#host=<%= @glance_host %>
 api_servers = http://<%= @glance_host %>:9292
-
-[guestfs]
-[hyperv]
-[image_file_url]
-[ironic]
-[keymgr]
 
 [keystone_authtoken]
 auth_host = <%= @nova_controller %>
@@ -49,8 +104,6 @@ admin_user = novaadmin
 admin_tenant_name = admin
 auth_uri = http://<%= @nova_controller %>:5000
 auth_url = http://<%= @nova_controller %>:35357
-# is this needed?
-#memcached_servers = controller:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -58,13 +111,38 @@ project_name = admin
 username = novaadmin
 password = <%= @ldap_user_pass %>
 
-[matchmaker_redis]
-[metrics]
+[oslo_messaging_rabbit]
+rabbit_host=<%= @rabbit_host %>
+rabbit_port = 5672
+rabbit_use_ssl = False
+rabbit_userid = <%= @rabbit_user %>
+rabbit_password = <%= @rabbit_pass %>
+
+[oslo_concurrency]
+lock_path = /var/lock/nova
+
+[vnc]
+enabled=False
+
+[spice]
+#html5proxy_host=<%= @nova_controller %>
+#html5proxy_port=6082
+#html5proxy_base_url=https://<%= @spice_hostname %>/spice_sec_auto.html
+server_listen=0.0.0.0
+server_proxyclient_address=<%= @ipaddress %>
+enabled=True
+#agent_enabled=True
+#keymap=en-us
+
+[conductor]
+workers = 8
+
+[METRICS]
+weight_setting = cpu.percent=-1.0
 
 [neutron]
 service_metadata_proxy = true
 metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
-
 url = http://<%= @nova_controller %>:9696
 auth_url = http://<%= @nova_controller %>:5000/v3
 # set this?
@@ -77,41 +155,3 @@ tenant_name = admin
 user_domain_id = default
 user_domain_name = default
 username = novaadmin
-
-[osapi_v21]
-
-[oslo_concurrency]
-lock_path = /var/lock/nova
-# docs suggest but ^ is the debian default
-#lock_path = /var/lib/nova/tmp
-
-[oslo_messaging_amqp]
-[oslo_messaging_notifications]
-
-[oslo_messaging_rabbit]
-rabbit_host=<%= @rabbit_host %>
-rabbit_port = 5672
-rabbit_use_ssl = False
-rabbit_userid = <%= @rabbit_user %>
-rabbit_password = <%= @rabbit_pass %>
-
-[oslo_middleware]
-[oslo_policy]
-[rdp]
-[serial_console]
-
-[spice]
-server_listen = 0.0.0.0
-server_proxyclient_address = $my_ip
-enabled = true
-
-[ssl]
-[trusted_computing]
-[upgrade_levels]
-[vmware]
-[vnc]
-# not set yet
-#vncserver_listen = $my_ip
-#vncserver_proxyclient_address = $my_ip
-[workarounds]
-[xenserver]
