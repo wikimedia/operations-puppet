@@ -36,7 +36,7 @@ class role::mariadb::labtestwikitech {
     }
 
     # mysql from deployment master servers and maintenance hosts (T98682, T109736)
-    ferm::service { 'mysql_deployment_terbium':
+    ferm::service { 'mysql_deployment_mwmaint':
         proto  => 'tcp',
         port   => '3306',
         srange => '($DEPLOYMENT_HOSTS $MAINTENANCE_HOSTS)',
