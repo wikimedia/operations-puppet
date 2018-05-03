@@ -16,6 +16,8 @@ class profile::releases::mediawiki (
         umask      => '0002',
     }
 
+    base::service_auto_restart { 'jenkins': }
+
     class { '::releases':
         sitename         => $sitename,
         sitename_jenkins => $sitename_jenkins,
