@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Vgutierrez <vgutierrez@wikimedia.org>
+Submitted-by: Vgutierrez <vgutierrez@wikimedia.org>
+Submitted-at: Thu, 03 May 2018 14:42:37 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/430593
+Project: operations/puppet
+Branch: refs/heads/production
