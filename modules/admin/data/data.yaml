@@ -79,7 +79,7 @@ groups:
                  'ALL = NOPASSWD: /usr/bin/renice']
   restricted:
     gid: 706
-    description: access to terbium, mwlog hosts (private data) and bastion hosts
+    description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [dartar, bearloga, tjones, cparle,
               ezachte, jamesur, jdlrobson, smalyshev,
