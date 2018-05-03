@@ -100,6 +100,9 @@ class BaseVarnishLogConsumer(object):
     def handle_end(self):
         pass
 
+    def handle_tag(self, tag, value):
+        pass
+
     def handle_line(self, line):
         splitline = line.split(None, 2)
 
@@ -172,6 +175,8 @@ class BaseVarnishLogConsumer(object):
                     self.tx['time-apache-delay'] = bt_s
                 except ValueError:
                     pass
+        else:
+            self.handle_tag(tag, value)
 
     def main(self):
         """Execute the command specified in self.cmd and handle
