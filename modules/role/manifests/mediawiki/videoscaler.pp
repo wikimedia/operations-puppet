@@ -2,17 +2,12 @@
 class role::mediawiki::videoscaler {
     system::role { 'mediawiki::videoscaler': }
 
-    include ::base::firewall
-
-    # Parent role
-    include ::role::mediawiki::scaler
+    include ::role::mediawiki::common
 
     # Profiles
     include ::profile::prometheus::apache_exporter
     include ::profile::prometheus::hhvm_exporter
-
     include ::profile::mediawiki::jobrunner
-
 
     # Change the apache2.conf Timeout setting
     augeas { 'apache timeout':
@@ -23,4 +18,6 @@ class role::mediawiki::videoscaler {
         ],
         notify  => Service['apache2'],
     }
+    include ::profile::mediawiki::videoscaler
+    include ::base::firewall
 }
