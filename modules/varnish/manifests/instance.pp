@@ -164,8 +164,6 @@ define varnish::instance(
         },
     }
 
-    require_package('python-logstash')
-
     systemd::service { "varnish${instancesuffix}-slowlog":
         ensure         => present,
         content        => systemd_template('varnishslowlog'),
