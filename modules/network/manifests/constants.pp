@@ -64,8 +64,6 @@ class network::constants {
                     '2620:0:860:103:10:192:32:22',      # naos.codfw.wmnet
                 ],
             'maintenance_hosts' => [
-                    '10.64.32.13',                      # terbium.eqiad.wmnet
-                    '2620:0:861:103:10:64:32:13',       # terbium.eqiad.wmnet
                     '10.192.48.45',                     # wasat.codfw.wmnet
                     '2620:0:860:104:10:192:48:45',      # wasat.codfw.wmnet
                 ],
