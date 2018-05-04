@@ -27,5 +27,6 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias ll='ls -l'
+alias sudo='sudo '
 
 . .liquidprompt/liquidprompt
