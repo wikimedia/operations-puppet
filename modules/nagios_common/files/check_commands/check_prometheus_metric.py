@@ -128,7 +128,8 @@ class PrometheusCheck(object):
         elif warning_metrics:
             return (EX_WARNING, ' '.join(PrometheusCheck._group_all_labels(warning_metrics)))
         elif not warning_metrics and not critical_metrics:
-            return (EX_OK, '')
+            text = 'All metrics within thresholds.'
+            return (EX_OK, text)
         else:
             return (EX_UNKNOWN, 'Unable to determine status from {!r}'.format(result))
 
