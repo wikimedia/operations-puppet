@@ -69,7 +69,7 @@ class ParamikoExecution(RemoteExecution):
 
     def kill_job(self, host, job):
         if job['process'].is_alive():
-            job.terminate()
+            job['process'].terminate()
 
     def wait_job(self, host, job):
         while job['process'].is_alive():
