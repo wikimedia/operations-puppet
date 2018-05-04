@@ -1,5 +1,7 @@
 # mediawiki maintenance server
-class profile::mediawiki::maintenance {
+class profile::mediawiki::maintenance(
+    $maintenance_server = hiera('maintenance_server'),
+) {
 
     # FIXME - remove this after terbium/wasat have been replace by mwmaint*
     if  os_version('debian == jessie') {
@@ -13,8 +15,9 @@ class profile::mediawiki::maintenance {
         ensure => link,
         target => '/srv/mediawiki'
     }
-    $ensure = $::mw_primary ? {
-        $::site => 'present',
+    $ensure = $maintenance_server ? {
+        $::fqdn => 'present',
+        undef   => 'absent',
         default => 'absent',
     }
 
