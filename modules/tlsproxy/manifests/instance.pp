@@ -1,5 +1,5 @@
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
-class tlsproxy::instance {
+class tlsproxy::instance($numa_networking='off') {
     # Enable client/server TCP Fast Open (TFO)
     #
     # The values (bitmap) are:
@@ -27,7 +27,7 @@ class tlsproxy::instance {
     # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
     # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
     # in turn consumed by the systemd unit and config templates.
-    if $::numa_networking != 'off' {
+    if size($facts['numa']['nodes']) > 1 and $numa_networking != 'off' {
         $numa_iface = $facts['interface_primary']
     } else {
         $numa_iface = 'lo'
