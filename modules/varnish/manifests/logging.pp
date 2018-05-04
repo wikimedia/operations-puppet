@@ -120,12 +120,12 @@ class varnish::logging(
     }
 
     systemd::service { 'varnish-frontend-tlsinspector':
-        ensure         => present,
+        ensure         => absent,
         content        => systemd_template('varnishtlsinspector'),
         restart        => true,
         service_params => {
             require => Service['varnish-frontend'],
-            enable  => true,
+            enable  => false,
         },
         subscribe      => [
             File['/usr/local/bin/varnishtlsinspector'],
