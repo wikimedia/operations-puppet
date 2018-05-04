@@ -3,7 +3,7 @@
 # This class contains production-specific performance hacks
 # These should have zero functional effect, they are merely system-level
 # tweaks to support heavy load/traffic.
-class cacheproxy::performance {
+class cacheproxy::performance($numa_networking) {
 
     $iface_primary = $facts['interface_primary']
 
@@ -54,10 +54,21 @@ class cacheproxy::performance {
 
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
+
+    # We should not declare a class from another module, but being modparams
+    # ancillary to cacheproxy::performance we make an exception for code
+    # clarity
+    # lint:ignore:wmf_styleguide
+    class { 'interface::rps::modparams':
+        numa_networking => $numa_networking,
+    }
+    # lint:endignore
+
     interface::rps { 'primary':
-        interface => $iface_primary,
-        qdisc     => 'fq flow_limit 300 buckets 8192 maxrate 1gbit',
-        before    => Sysctl::Parameters['cache proxy network tuning'],
+        interface       => $iface_primary,
+        qdisc           => 'fq flow_limit 300 buckets 8192 maxrate 1gbit',
+        before          => Sysctl::Parameters['cache proxy network tuning'],
+        numa_networking => $numa_networking,
     }
 
     # Network tuning for high-load HTTP caches

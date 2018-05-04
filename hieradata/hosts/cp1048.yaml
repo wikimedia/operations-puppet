@@ -1,1 +1,1 @@
-numa_networking: on
+tlsproxy::instance::numa_networking: on
