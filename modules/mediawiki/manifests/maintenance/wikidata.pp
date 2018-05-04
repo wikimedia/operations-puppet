@@ -10,7 +10,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
-        command => "echo \"\$\$: Starting dispatcher\" >> ${dispatch_log_file}; PHP='hhvm -vEval.Jit=1' /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 600 --batch-size 420 --dispatch-interval 25 --randomness 15 >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
+        command => "echo \"\$\$: Starting dispatcher\" >> ${dispatch_log_file}; PHP='hhvm -vEval.Jit=1' /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
         user    => $::mediawiki::users::web,
         minute  => '*/3',
         require => File['/var/log/wikidata'],
@@ -18,7 +18,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure_testwiki,
-        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 >/dev/null 2>&1',
+        command => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >/dev/null 2>&1',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
     }
