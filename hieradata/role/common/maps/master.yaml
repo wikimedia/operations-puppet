@@ -34,7 +34,3 @@ profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
 
 profile::maps::apps::kartotherian_storage_id: v3
 profile::maps::apps::tilerator_storage_id: v4
-
-# temporary disabling OSM replication while we regenerate all tiles
-# see https://phabricator.wikimedia.org/T191655
-profile::maps::osm_master::disable_replication_cron: true
