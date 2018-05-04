@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from LocalExecution import LocalExecution as RemoteExecution
+from CuminExecution import CuminExecution as RemoteExecution
 import argparse
 import os
 import os.path
@@ -29,7 +29,7 @@ def option_parse():
 
 
 def is_dir(host, path):
-    command = ['/bin/bash', '-c', '[ -d "{}" ]'.format(path)]
+    command = ['/bin/bash', '-c', r'"[ -d "{}" ]"'.format(path)]
     result = RemoteExecution().run(host, command)
     return not result.returncode
 
@@ -39,7 +39,7 @@ def file_exists(host, path):
     Returns true if there is a file or a directory with such path on the remote
     host given
     """
-    command = ['/bin/bash', '-c', '[ -a "{}" ]'.format(path)]
+    command = ['/bin/bash', '-c', r'"[ -a "{}" ]"'.format(path)]
     result = RemoteExecution().run(host, command)
     return not result.returncode
 
@@ -51,11 +51,11 @@ def calculate_checksum(host, path, is_dir):
     basename = os.path.basename(os.path.normpath(path))
     if is_dir:
         command = ['/bin/bash', '-c',
-                   'cd {} && /usr/bin/find {} -type f -exec {} {}'
+                   r'"cd {} && /usr/bin/find {} -type f -exec {} {}"'
                    .format(parent_dir, basename, hash_executable, '\{\} \;')]
         result = RemoteExecution().run(host, command)
     else:
-        command = ['/bin/bash', '-c', 'cd {} && {} {}'
+        command = ['/bin/bash', '-c', r'"cd {} && {} {}"'
                    .format(parent_dir, hash_executable, basename)]
         result = RemoteExecution().run(host, command)
     if result.returncode != 0:
@@ -64,8 +64,8 @@ def calculate_checksum(host, path, is_dir):
 
 
 def has_available_disk_space(host, path, size):
-    command = ['/bin/bash', '-c', ('df --block-size=1 --output=avail {} '
-                                   '| /usr/bin/tail -n 1').format(path)]
+    command = ['/bin/bash', '-c',
+               r'"df --block-size=1 --output=avail {} | /usr/bin/tail -n 1"'.format(path)]
     result = RemoteExecution().run(host, command)
     if result.returncode != 0:
         raise Exception('df execution failed')
@@ -105,7 +105,7 @@ def copy_file(source_host, source_path, target_host, target_path, port=4444,
         if password is None:
             password = base64.b64encode(os.urandom(24)).decode('utf-8')
         buffer_size = 8
-        cipher = 'rc4'
+        cipher = 'chacha20'
         encrypt_command = ('| /usr/bin/openssl enc -{}'
                            ' -pass pass:{} -bufsize {}').format(cipher,
                                                                 password,
@@ -118,10 +118,10 @@ def copy_file(source_host, source_path, target_host, target_path, port=4444,
         encrypt_command = ''
         decrypt_command = ''
     e = RemoteExecution()
-    command = ['/bin/bash', '-c', '/bin/nc -l {} {} {} > {}'
+    command = ['/bin/bash', '-c', r'"/bin/nc -l -p {} {} {} > {}"'
                .format(port, decrypt_command, decompress_command, final_file)]
     job = e.start_job(target_host, command)
-    command = ['/bin/bash', '-c', '{} < {} {} | /bin/nc {} {}'
+    command = ['/bin/bash', '-c', r'"{} < {} {} | /bin/nc -q 0 {} {}"'
                .format(compress_command, source_path, encrypt_command,
                        target_host, port)]
     result = RemoteExecution().run(source_host, command)
@@ -153,7 +153,7 @@ def copy_dir(source_host, source_path, target_host, target_path, port=4444,
         if password is None:
             password = base64.b64encode(os.urandom(24)).decode('utf-8')
         buffer_size = 8
-        cipher = 'rc4'
+        cipher = 'chacha20'
         encrypt_command = ('/usr/bin/openssl enc -{} -pass pass:{}'
                            ' -bufsize {} |'
                            ).format(cipher, password, buffer_size)
@@ -165,16 +165,12 @@ def copy_dir(source_host, source_path, target_host, target_path, port=4444,
         decrypt_command = ''
 
     e = RemoteExecution()
-    command = ['/bin/bash', '-c', ('cd {} && /bin/nc -l {}'
-                                   ' | {} {} /bin/tar xf -'
-                                   ).format(target_path, port, decrypt_command,
-                                            decompress_command)]
+    command = ['/bin/bash', '-c', r'"cd {} && /bin/nc -l -p {} | {} {} /bin/tar xf -"'
+               .format(target_path, port, decrypt_command, decompress_command)]
     job = e.start_job(target_host, command)
-    command = ['/bin/bash', '-c', ('cd {} && /bin/tar cf - {}'
-                                   ' | {} {} /bin/nc {} {}'
-                                   ).format(source_parent_dir, source_basename,
-                                            compress_command, encrypt_command,
-                                            target_host, port)]
+    command = ['/bin/bash', '-c', r'"cd {} && /bin/tar cf - {} | {} {} /bin/nc -q 0 {} {}"'
+               .format(source_parent_dir, source_basename, compress_command, encrypt_command,
+                       target_host, port)]
     result = RemoteExecution().run(source_host, command)
     if result.returncode != 0:
         e.kill_job(target_host, job)
