@@ -26,6 +26,7 @@ class profile::cache::base(
     $log_slow_request_threshold = hiera('profile::cache::base::log_slow_request_threshold', '60.0'),
     $allow_iptables = hiera('profile::cache::base::allow_iptables', false),
     $max_core_rtt = hiera('max_core_rtt'),
+    $numa_networking = hiera('tlsproxy::instance::numa_networking', 'off'),
 ) {
     # There is no better way to do this, so it can't be a class parameter. In fact,
     # I consider our requirement to make hiera calls parameters
@@ -62,7 +63,23 @@ class profile::cache::base(
     if $::realm == 'production' {
         # Only production needs system perf tweaks
         class { '::cpufrequtils': }
-        class { 'cacheproxy::performance': }
+
+        # Configure various classes for NUMA-aware networking
+        # 2 possible values:
+        # --
+        # off: default, no NUMA awareness
+        # on: try confine network stuff to the NUMA node of the adapter
+        # --
+        # If facter detects no true NUMA (single-node), the hiera-configured setting
+        # will be forced to "off" here in the global
+        if size($facts['numa']['nodes']) > 1 {
+            $enable_numa_networking = $numa_networking
+        } else {
+            $enable_numa_networking = 'off'
+        }
+        class { 'cacheproxy::performance':
+            numa_networking => $enable_numa_networking,
+        }
         # Periodic cron restarts, we need this to mitigate T145661
         class { 'cacheproxy::cron_restart':
             nodes         => $nodes,
