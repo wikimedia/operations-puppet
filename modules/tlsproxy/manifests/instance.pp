@@ -23,11 +23,25 @@ class tlsproxy::instance {
     $nginx_tune_for_media = hiera('cache::tune_for_media', false)
     $nginx_client_max_body_size = hiera('tlsproxy::nginx_client_max_body_size', '100m')
 
+    # Configure various classes for NUMA-aware networking
+    # 2 possible values:
+    # --
+    # off: default, no NUMA awareness
+    # on: try confine network stuff to the NUMA node of the adapter
+    # --
+    # If facter detects no true NUMA (single-node), the hiera-configured setting
+    # will be forced to "off" here in the global
+    if size($facts['numa']['nodes']) > 1 {
+        $numa_networking = hiera('numa_networking', 'off')
+    } else {
+        $numa_networking = 'off'
+    }
+
     # If numa_networking is turned on, use interface_primary for NUMA hinting,
     # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
     # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
     # in turn consumed by the systemd unit and config templates.
-    if $::numa_networking != 'off' {
+    if $numa_networking != 'off' {
         $numa_iface = $facts['interface_primary']
     } else {
         $numa_iface = 'lo'

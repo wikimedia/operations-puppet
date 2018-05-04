@@ -10,7 +10,7 @@
 # - $qdisc
 #   Options qdisc string to populate mq subqueues, e.g.:
 #   "fq flow_limit 422"
-define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
+define interface::rps($interface=$name, $rss_pattern='', $qdisc='', $numa_networking='off') {
     require interface::rpstools
     require interface::rps::modparams
 

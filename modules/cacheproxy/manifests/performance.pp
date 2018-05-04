@@ -55,9 +55,10 @@ class cacheproxy::performance {
     # RPS/RSS to spread network i/o evenly.  Note this enables FQ as well,
     # which must be enabled before turning on BBR congestion control below
     interface::rps { 'primary':
-        interface => $iface_primary,
-        qdisc     => 'fq flow_limit 300 buckets 8192 maxrate 1gbit',
-        before    => Sysctl::Parameters['cache proxy network tuning'],
+        interface       => $iface_primary,
+        qdisc           => 'fq flow_limit 300 buckets 8192 maxrate 1gbit',
+        before          => Sysctl::Parameters['cache proxy network tuning'],
+        numa_networking => $::tlsproxy::instance::numa_networking,
     }
 
     # Network tuning for high-load HTTP caches
