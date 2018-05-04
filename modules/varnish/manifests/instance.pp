@@ -175,7 +175,10 @@ define varnish::instance(
             enable  => true,
         },
         require        => File['/usr/local/bin/varnishslowlog'],
-        subscribe      => File['/usr/local/bin/varnishslowlog'],
+        subscribe      => [
+            File['/usr/local/bin/varnishslowlog'],
+            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
+        ]
     }
 
     systemd::service { "varnish${instancesuffix}-hospital":
@@ -186,7 +189,10 @@ define varnish::instance(
             require => Service["varnish${instancesuffix}"],
             enable  => true,
         },
-        subscribe      => File['/usr/local/bin/varnishospital'],
+        subscribe      => [
+            File['/usr/local/bin/varnishospital'],
+            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
+        ]
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs

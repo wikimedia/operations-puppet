@@ -91,17 +91,7 @@ class varnish::logging(
     ::varnish::logging::xcache { 'xcache':
     }
 
-    if os_version('debian == jessie') {
-        $python_version = '3.4'
-    }
-    elsif os_version('debian == stretch') {
-        $python_version = '3.5'
-    }
-    elsif os_version('debian > jessie') {
-        $python_version = '3.6'
-    }
-
-    file { "/usr/local/lib/python${python_version}/dist-packages/wikimedia_varnishlogconsumer.py":
+    file { "/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py":
         source => 'puppet:///modules/varnish/wikimedia_varnishlogconsumer.py',
         owner  => 'root',
         group  => 'root',
@@ -137,6 +127,9 @@ class varnish::logging(
             require => Service['varnish-frontend'],
             enable  => true,
         },
-        subscribe      => File['/usr/local/bin/varnishtlsinspector'],
+        subscribe      => [
+            File['/usr/local/bin/varnishtlsinspector'],
+            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
+        ]
     }
 }
