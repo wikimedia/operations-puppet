@@ -33,7 +33,7 @@ class lvs::configuration {
         },
         'low-traffic' => $::realm ? {
             'production' => $::site ? {
-                'eqiad' => [ 'lvs1003', 'lvs1006' ],
+                'eqiad' => [ 'lvs1003', 'lvs1006', 'lvs1016' ],
                 'codfw' => [ 'lvs2003', 'lvs2006' ],
                 'esams' => [ ],
                 'ulsfo' => [ ],
@@ -50,18 +50,18 @@ class lvs::configuration {
     # This is technically redundant information from $lvs_class_hosts, but
     # transforming one into the other in puppet is a huge PITA.
     $lvs_class = $::hostname ? {
-        /^lvs[12]00[14]$/  => 'high-traffic1',
-        /^lvs[12]00[25]$/  => 'high-traffic2',
-        /^lvs[12]00[36]$/  => 'low-traffic',
-        /^lvs300[13]$/     => 'high-traffic1',
-        /^lvs300[24]$/     => 'high-traffic2',
-        'lvs4005'          => 'high-traffic1',
-        'lvs4006'          => 'high-traffic2',
-        'lvs4007'          => 'secondary',
-        'lvs5001'          => 'high-traffic1',
-        'lvs5002'          => 'high-traffic2',
-        'lvs5003'          => 'secondary',
-        default            => 'unknown',
+        /^lvs[12]00[14]$/     => 'high-traffic1',
+        /^lvs[12]00[25]$/     => 'high-traffic2',
+        /^lvs[12]0[01][36]$/  => 'low-traffic',
+        /^lvs300[13]$/        => 'high-traffic1',
+        /^lvs300[24]$/        => 'high-traffic2',
+        'lvs4005'             => 'high-traffic1',
+        'lvs4006'             => 'high-traffic2',
+        'lvs4007'             => 'secondary',
+        'lvs5001'             => 'high-traffic1',
+        'lvs5002'             => 'high-traffic2',
+        'lvs5003'             => 'secondary',
+        default               => 'unknown',
     }
 
     # NOTE! This hash is referenced in many other manifests
