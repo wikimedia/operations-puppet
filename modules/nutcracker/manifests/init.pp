@@ -82,7 +82,15 @@ class nutcracker(
         notify  => Service['nutcracker'],
     }
 
+    file { '/var/run/nutcracker':
+        ensure => 'directory',
+        owner  => 'nutcracker',
+        group  => 'nutcracker',
+        mode   => '0755',
+    }
+
     service { 'nutcracker':
-        ensure => ensure_service($ensure),
+        ensure  => ensure_service($ensure),
+        require => File['/var/run/nutcracker'],
     }
 }
