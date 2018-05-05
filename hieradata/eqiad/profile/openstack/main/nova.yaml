@@ -22,6 +22,8 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 #  in case a different labvirt fails (and as transitional
 #  capacity during the upcoming Neutron migration)
 #
+# 1015 is in the penalty box because it's running way too many VMs.
+#
 profile::openstack::main::nova::scheduler_pool:
   - labvirt1001
   - labvirt1002
@@ -37,6 +39,5 @@ profile::openstack::main::nova::scheduler_pool:
   - labvirt1012
   - labvirt1013
   - labvirt1014
-  - labvirt1015
   - labvirt1016
   - labvirt1017
