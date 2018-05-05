@@ -224,10 +224,10 @@ menu = fasw-c-codfw
 title = fasw-c-codfw.mgmt.codfw.wmnet
 host = fasw-c-codfw.mgmt.codfw.wmnet
 
-+++ rigel
-menu = rigel
-title = rigel.wikimedia.org
-host = rigel.wikimedia.org
+#+++ rigel
+#menu = rigel
+#title = rigel.wikimedia.org
+#host = rigel.wikimedia.org
 
 +++ saiph
 menu = saiph
