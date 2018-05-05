@@ -12,6 +12,7 @@ User=root
 Group=root
 ExecStart=/usr/local/bin/maintain-kubeusers \
           --infrastructure-users /etc/kubernetes/infrastructure-users \
+          --project <%= @labsproject %>
           https://<%= @k8s_master %>:6443 /etc/kubernetes/tokenauth /etc/kubernetes/abac
 ReadWriteDirectories=/data/project /etc/kubernetes
 ReadOnlyDirectories=/
