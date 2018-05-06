@@ -34,6 +34,7 @@ class role::toollabs::k8s::master(
         '/data/project/',
         '/public/dumps/',
         '/data/scratch/',
+        '/etc/wmcs-project',
     ]
     $host_automounts_string = join($host_automounts, ',')
     $host_path_prefixes_allowed_string = join($host_path_prefixes_allowed, ',')
