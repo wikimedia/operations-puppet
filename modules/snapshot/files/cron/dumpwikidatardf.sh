@@ -8,6 +8,8 @@
 #
 # Marius Hoch < hoo@online.de >
 
+. /usr/local/bin/wikidatadumps-shared.sh
+
 if [[ "$1" == '--help' ]]; then
 	echo -e "Usage: $0 [--continue] all|truthy ttl|nt\n"
 	echo -e "\t--continue\tAttempt to continue a previous dump run."
@@ -25,8 +27,6 @@ else
 	# Remove old leftovers, as we start from scratch.
 	rm -f $tempDir/wikidata$dumpFormat-$dumpName.*-batch*.gz
 fi
-
-. /usr/local/bin/wikidatadumps-shared.sh
 
 declare -A dumpNameToFlavor
 dumpNameToFlavor=(["all"]="full-dump" ["truthy"]="truthy-dump")
