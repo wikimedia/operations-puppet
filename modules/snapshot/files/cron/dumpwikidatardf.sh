@@ -123,7 +123,7 @@ fi
 i=0
 while [ $i -lt $shards ]; do
 	getTempFiles "$tempDir/wikidata$dumpFormat-$dumpName.$i-batch*.gz"
-	getFileSize $tempFiles
+	getFileSize "$tempFiles"
 	if [ $fileSize -lt ${dumpNameToMinSize[$dumpName]} ]; then
 		echo "File size of $tempFile is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
