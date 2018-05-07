@@ -13,7 +13,13 @@ class toollabs::maintain_kubeusers(
         before   => Package['python3-ldap3'],
     }
 
-    require_package('python3-ldap3', 'python3-yaml')
+    # Not using require_package because of dependency cycle, see
+    # https://gerrit.wikimedia.org/r/#/c/430539/
+    package { 'python3-ldap3':
+        ensure => present,
+    }
+
+    require_package('python3-yaml')
 
     file { '/usr/local/bin/maintain-kubeusers':
         source => 'puppet:///modules/toollabs/maintain-kubeusers',
