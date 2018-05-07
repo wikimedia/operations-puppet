@@ -19,6 +19,8 @@ class role::thumbor::mediawiki {
         port => 11211,
     }
 
+    include ::profile::prometheus::memcached_exporter
+
     $thumbor_memcached_servers_ferm = join(hiera('thumbor_memcached_servers'), ' ')
 
     ferm::service { 'memcached_memcached_role':
