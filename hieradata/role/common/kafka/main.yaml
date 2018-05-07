@@ -30,3 +30,8 @@ profile::kafka::broker::num_io_threads: 4
 
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
+
+
+# TEMPORARILY STOP ALL Kafka main MirrorMaker during
+# Kafka upgrade in T167039.
+profile::kafka::mirror::enabled: false
