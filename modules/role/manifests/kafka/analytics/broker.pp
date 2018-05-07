@@ -56,6 +56,13 @@ class role::kafka::analytics::broker {
         $group_prefix = "kafka.cluster.${cluster_name}."
     }
 
+    class { '::confluent::kafka::common':
+        # TODO: These should be removed once they are
+        # the default in ::confluent::kafka module
+        scala_version => '2.11.7',
+        kafka_version => '0.9.0.1-1',
+    }
+
     class { '::confluent::kafka::broker':
         log_dirs                        => $log_dirs,
         brokers                         => $config['brokers']['hash'],
