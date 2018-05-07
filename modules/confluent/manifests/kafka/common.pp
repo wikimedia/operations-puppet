@@ -50,6 +50,21 @@ class confluent::kafka::common(
         }
     }
 
+    # TODO: Remove this conditional after Kafka has been upgraded everywhere in T167039.
+    # Once we are on a confluent package with $scala_version == 2.11, we know that
+    # we will be using a package that installs systemd units.
+    if $scala_version == '2.11' {
+        # Ensure that the confluent systemd units are disabled.  The confluent-kafka
+        # package installs these, and we don't want to remove their .service files
+        # in case it would cause package conflicts during future upgrades, so we just
+        # ensure they are not running and masked in systemd.
+        service { ['confluent-kafka', 'confluent-kafka-connect', 'confluent-zookeeper']:
+            ensure  => 'stopped',
+            enable  => 'mask',
+            require => Package[$package],
+        }
+    }
+
     group { 'kafka':
         ensure  => 'present',
         system  => true,
