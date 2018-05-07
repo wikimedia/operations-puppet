@@ -39,4 +39,7 @@ class role::tendril {
             port  => '(http https)',
         }
     }
+
+    # Run cron jobs needed for maintenance (but only on a single host/dc)
+    include ::profile::tendril::maintenance
 }
