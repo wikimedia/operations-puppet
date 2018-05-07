@@ -86,6 +86,15 @@
     database = <%= @db_name %>
     username = <%= @db_user %>
     url = jdbc:mysql://<%= @db_host %>/<%= @db_name %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+[elasticsearch]
+    connectionTimeout = 1 m
+    prefix = gerrit_
+<%- if @es_host %>
+[elasticsearch "<%= @es_host %>"]
+    hostname = <%= @es_host %>
+    port = <%= @es_port %>
+    protocol = <%= @es_protocol %>
+<%- end -%>
 [gc]
     aggressive = true
     interval = 1 week
@@ -104,7 +113,7 @@
     maxThreads = 60
     maxWait = 5 min
 [index]
-    type = LUCENE
+    type = <%= @index_type %>
     batchThreads = 1
     autoReindexIfStale = false
 # User gerritbot

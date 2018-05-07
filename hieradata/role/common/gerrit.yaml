@@ -33,6 +33,8 @@ gerrit::jetty::replication:
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
+gerrit::jetty::es_protocol: https
+gerrit::jetty::es_port: 9243
 
 # Allow use of supplemental key for scap deployment
 profile::base::ssh_server_settings:
