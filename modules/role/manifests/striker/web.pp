@@ -16,6 +16,7 @@ class role::striker::web {
     }
 
     include ::memcached
+    include ::profile::prometheus::memcached_exporter
     include ::striker::apache
     include ::striker::uwsgi
     require ::passwords::striker
