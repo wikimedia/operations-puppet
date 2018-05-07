@@ -4,12 +4,13 @@ class profile::cassandra(
     $all_instances = hiera('profile::cassandra::instances'),
     $rack = hiera('profile::cassandra::rack'),
     $cassandra_settings = hiera('profile::cassandra::settings'),
-    $metrics_blacklist = hiera('profile::cassandra::metrics_blacklist'),
-    $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist'),
+    $metrics_blacklist = hiera('profile::cassandra::metrics_blacklist', undef),
+    $metrics_whitelist = hiera('profile::cassandra::metrics_whitelist', undef),
     $graphite_host = hiera('graphite_host'),
     $prometheus_nodes = hiera('prometheus_nodes'),
     $allow_analytics = hiera('profile::cassandra::allow_analytics'),
     $monitor_enabled = hiera('profile::cassandra::monitor_enabled', true),
+    $disable_graphite_metrics = hiera('profile::cassandra::disable_graphite_metrics', false),
 ) {
     include ::passwords::cassandra
     $instances = $all_instances[$::fqdn]
@@ -28,12 +29,15 @@ class profile::cassandra(
 
     create_resources('class', {'::cassandra' => $cassandra_real_settings})
 
-
-    class { '::cassandra::metrics':
-        graphite_host => $graphite_host,
-        whitelist     => $metrics_whitelist,
-        blacklist     => $metrics_blacklist,
+    # Selectively disable the cassandra metrics collector - T186567
+    if ! $disable_graphite_metrics {
+        class { '::cassandra::metrics':
+            graphite_host => $graphite_host,
+            whitelist     => $metrics_whitelist,
+            blacklist     => $metrics_blacklist,
+        }
     }
+
     class { '::cassandra::logging': }
     class { '::cassandra::twcs': }
 
