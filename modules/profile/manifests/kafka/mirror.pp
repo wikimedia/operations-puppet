@@ -9,6 +9,10 @@
 # - TLS configuration
 #
 # == Parameters
+#
+# [*enabled*]
+#   If false, kafka mirror-maker service will not be started.  Default: true.
+#
 # [*source_cluster_name*]
 #   This will be passed to the kafka_config function to find the source cluster brokers.
 #
@@ -40,6 +44,7 @@
 #   Prometheus nodes that should be allowed to query the JMX exporter.
 #
 class profile::kafka::mirror(
+    $enabled                  = hiera('profile::kafka::mirror::enabled', true)
     $source_cluster_name      = hiera('profile::kafka::mirror::source_cluster_name'),
     $destination_cluster_name = hiera('profile::kafka::mirror::destination_cluster_name'),
     $properties               = hiera('profile::kafka::mirror::properties', {}),
@@ -119,6 +124,7 @@ class profile::kafka::mirror(
 
         # Minimum defaults for configuring a MirrorMaker instance.
         $default_parameters = {
+            'enabled'             => $enabled,
             'source_brokers'      => split($source_config['brokers']['string'], ','),
             'destination_brokers' => split($destination_config['brokers']['string'], ','),
             'producer_properties' => $producer_properties,
