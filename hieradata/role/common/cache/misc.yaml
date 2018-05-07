@@ -95,6 +95,10 @@ cache::app_directors:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
       codfw: 'wasat.codfw.wmnet'
+  performance:
+    backends:
+      eqiad: 'webperf1001.eqiad.wmnet'
+      codfw: 'webperf2001.eqiad.wmnet'
   dbtree:
     backends:
       eqiad: 'terbium.eqiad.wmnet'
@@ -242,7 +246,7 @@ cache::req_handling:
     director: 'rutherfordium'
     caching: 'pass'
   performance.wikimedia.org:
-    director: 'graphite'
+    director: 'performance'
   phabricator.wikimedia.org:
     director: 'phabricator'
     subpaths:
