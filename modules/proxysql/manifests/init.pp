@@ -12,6 +12,9 @@ class proxysql (
     $mysql_socket    = '/tmp/proxysql.sock',
     ) {
 
+    # Install package
+    require_package ('proxysql')
+
     # We need to manualy setup users, as the package doesn't do it for us
     group { 'proxysql':
         ensure => present,
