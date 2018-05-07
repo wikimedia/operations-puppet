@@ -48,6 +48,8 @@ class role::swift::proxy (
         port => 11211,
     }
 
+    include ::profile::prometheus::memcached_exporter
+
     include role::statsite
 
     ferm::service { 'swift-proxy':
