@@ -31,6 +31,7 @@ class cassandra::metrics(
     $graphite_port   = '2003',
     $blacklist       = undef,
     $whitelist       = undef,
+    $ensure          = present,
 ) {
     validate_string($graphite_prefix)
     validate_string($graphite_host)
@@ -63,15 +64,25 @@ class cassandra::metrics(
         service_name => 'cassandra-metrics-collector',
     }
 
+    $ensure_directory = $ensure ? {
+        absent  => $ensure,
+        default => 'directory',
+    }
+
+    $ensure_link = $ensure ? {
+        absent  => $ensure,
+        default => 'link',
+    }
+
     file { '/etc/cassandra-metrics-collector':
-        ensure => 'directory',
+        ensure => $ensure_directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
 
     file { $filter_file:
-        ensure  => 'present',
+        ensure  => $ensure,
         content => template("${module_name}/metrics-filter.yaml.erb"),
         owner   => 'root',
         group   => 'root',
@@ -79,14 +90,14 @@ class cassandra::metrics(
     }
 
     file { '/usr/local/lib/cassandra-metrics-collector':
-        ensure => 'directory',
+        ensure => $ensure_directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
 
     file { $collector_jar:
-        ensure  => 'link',
+        ensure  => $ensure_link,
         target  => "/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-${collector_version}-jar-with-dependencies.jar",
         require => Scap::Target['cassandra/metrics-collector'],
     }
@@ -97,7 +108,7 @@ class cassandra::metrics(
     }
 
     systemd::service { 'cassandra-metrics-collector':
-        ensure  => present,
+        ensure  => $ensure,
         content => systemd_template('cassandra-metrics-collector'),
         restart => true,
         require => [

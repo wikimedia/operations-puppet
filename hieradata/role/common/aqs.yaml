@@ -15,10 +15,7 @@ admin::groups:
 graphite_host: 'graphite-in.eqiad.wmnet'
 profile::cassandra::allow_analytics: true
 
-# We use false to make all if statements fail in cassandra::metrics
-profile::cassandra::metrics_whitelist: false
-profile::cassandra::metrics_blacklist:
-    - .*\.metrics\.Table\..*$
+profile::cassandra::disable_graphite_metrics: true
 
 # Instances
 profile::cassandra::instances:
