@@ -20,6 +20,7 @@ class profile::openstack::eqiad1::designate::service(
     $labweb_hosts = hiera('profile::openstack::eqiad1::labweb_hosts'),
     $region = hiera('profile::openstack::eqiad1::region'),
     $coordination_host = hiera('profile::openstack::eqiad1::designate_host'),
+    $prometheus_nodes = hiera('profile::openstack::eqiad1::prometheus_nodes'),
     ) {
 
     require ::profile::openstack::eqiad1::clientlib
@@ -56,6 +57,10 @@ class profile::openstack::eqiad1::designate::service(
 
     # Memcached for coordination between pool managers
     class { '::memcached':
+    }
+
+    class { '::profile::prometheus::memcached_exporter':
+        prometheus_nodes => $prometheus_nodes,
     }
 
     ferm::service { 'designate_memcached':
