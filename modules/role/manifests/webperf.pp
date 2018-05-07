@@ -11,7 +11,7 @@ class role::webperf {
 
     # Based on graphite
     class { '::httpd':
-        modules => ['uwsgi', 'proxy']
+        modules => ['uwsgi', 'proxy', 'proxy_http']
     }
     include ::profile::performance::coal
     include ::profile::performance::site
