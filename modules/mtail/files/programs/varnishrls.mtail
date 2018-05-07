@@ -4,6 +4,7 @@ counter varnish_resourceloader_resp by status, cache_control
 /\thttp_method PURGE\t/ {
     # noop
 } else {
+    # FIXME
     /^url \/w\/load.php.*\thttp_status (?P<status>[0-9]{3}).*\tcache_control (-|.*max-age=(?P<maxage>[0-9]+)).*\tinm (?P<inm>.*)$/ {
         $inm != "-" {
             varnish_resourceloader_inm++

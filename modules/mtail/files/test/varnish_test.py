@@ -53,7 +53,7 @@ class VarnishXcpsTest(unittest.TestCase):
 
     def testH2(self):
         s = self.store.get_samples('xcps_h2')
-        self.assertIn(('', 1), s)
+        self.assertIn(('', 2), s)
 
     def testReusedSessions(self):
         s = self.store.get_samples('xcps_tls_sess_reused')
