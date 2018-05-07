@@ -5,6 +5,10 @@
 # [*kafka_brokers*]
 #   string of comma separated Kafka bootstrap brokers
 #
+# [*kafka_api_version*]
+#   Only set this if you need to specify the api version.  This should not be needed
+#   Beyond kafka 0.9.
+#
 # [*topics*]
 #   Comma separated list of topics from which statsv should consume. Default: statsv
 #
@@ -13,8 +17,9 @@
 #
 class webperf::statsv(
     $kafka_brokers,
-    $topics = 'statsv',
-    $statsd = 'localhost:8125',
+    $kafka_api_version = undef,
+    $topics            = 'statsv',
+    $statsd            = 'localhost:8125',
 ) {
     include ::webperf
 
