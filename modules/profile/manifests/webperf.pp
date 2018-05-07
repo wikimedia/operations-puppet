@@ -17,8 +17,9 @@ class profile::webperf(
     $kafka_main_brokers = $kafka_main_config['brokers']['string']
     # Consume statsd metrics from Kafka and emit them to statsd.
     class { '::webperf::statsv':
-        kafka_brokers => $kafka_main_brokers,
-        statsd        => $statsd,
+        kafka_brokers     => $kafka_main_brokers,
+        kafka_api_version => $kafka_main_config['api_verision'],
+        statsd            => $statsd,
     }
 
     # Use brokers from this Kafka cluster to consume metrics.
