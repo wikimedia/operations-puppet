@@ -32,5 +32,5 @@ profile::redis::master::settings:
 profile::maps::apps::kartotherian_style: '''@kartotherian/osm-bright-style'''
 profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
 
-profile::maps::apps::kartotherian_storage_id: v3
+profile::maps::apps::kartotherian_storage_id: v4
 profile::maps::apps::tilerator_storage_id: v4
