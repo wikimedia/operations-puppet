@@ -8,5 +8,4 @@ class role::webperf {
     include ::standard
     include ::profile::base::firewall
     include ::profile::webperf
-    include ::profile::performance::site
 }
