@@ -39,4 +39,10 @@ class role::tendril {
             port  => '(http https)',
         }
     }
+
+    # Make cron jobs only happen on the active host. Again a hack until things
+    # are handled better
+    if hiera('do_acme', true) {
+        include ::profile::tendril::maintenance
+    }
 }

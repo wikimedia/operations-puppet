@@ -6,16 +6,13 @@ class role::mediawiki_maintenance {
     include ::role::mediawiki::common
     include ::profile::mediawiki::maintenance
 
-    # MariaDB (Tendril)
+    # MariaDB
     include ::profile::mariadb::maintenance
+    include ::profile::mariadb::client
 
     # NOC - https://noc.wikimedia.org/
     include ::role::noc::site
 
     # LDAP
     include ::profile::openldap::management
-
-    # ProxySQL test T175672
-    include ::profile::proxysql
-    include ::profile::mariadb::client
 }

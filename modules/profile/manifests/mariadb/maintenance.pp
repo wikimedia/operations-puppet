@@ -4,13 +4,8 @@ class profile::mariadb::maintenance(
     ) {
     # The role should install profile::mariadb::client
 
-    # place from which tendril-related cron jobs are run
-    include passwords::tendril
-
-    class { 'tendril::maintenance':
-        ensure           => $ensure,
-        tendril_host     => 'db1115.eqiad.wmnet',
-        tendril_user     => 'watchdog',
-        tendril_password => $passwords::tendril::db_pass,
-    }
+    # TODO: MySQL maintenance will go here (e.g. statistics
+    # gathering, schema consistencing checking, etc.). Those
+    # will happen but they are still in development (it should
+    # be mostly cron jobs running scripts).
 }
