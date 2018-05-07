@@ -546,5 +546,15 @@ PUPPETMASTER_API  = "https://<%= scope.call_function(:hiera, ['labs_puppet_maste
 PUPPET_CONFIG_BACKEND  = "http://<%= scope.call_function(:hiera, ['labs_puppet_master']) %>:8101/v1"
 
 LDAP_USER = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+ADMIN_USER = "novaadmin"
+ADMIN_PROJECT = "admin"
 LDAP_PROJECTS_BASE = "ou=projects,dc=wikimedia,dc=org"
 LDAP_USER_PASSWORD = "<%= @ldap_user_pass %>"
+
+# A few things for role management:
+MEMBER_ROLE_NAME = "user"
+PROJECTADMIN_ROLE_NAME = "projectadmin"
+
+# 'Special' users are excluded from normal UI interfaces.
+#  For example, we don't want to set up sudo policies for 'novaobserver'.
+SPECIAL_USERS = ['novaadmin', 'novaobserver']
