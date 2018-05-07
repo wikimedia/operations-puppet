@@ -33,4 +33,7 @@ class profile::performance::site {
         content => template('profile/performance/site/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
     }
+
+    require_package('libapache2-mod-uwsgi')
+
 }
