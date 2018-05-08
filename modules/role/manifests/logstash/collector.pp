@@ -214,6 +214,15 @@ class role::logstash::collector (
     }
     # lint:endignore
 
+    logstash::output::elasticsearch { 'logstash-syslog':
+        host            => '127.0.0.1',
+        guard_condition => '[type] == "syslog" and "es" in [tags]',
+        manage_indices  => true,
+        priority        => 80,
+        template        => '/etc/logstash/elasticsearch-template.json',
+        require         => File['/etc/logstash/elasticsearch-template.json'],
+    }
+
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
         guard_condition => '"es" in [tags]',
