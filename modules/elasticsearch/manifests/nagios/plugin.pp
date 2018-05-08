@@ -13,11 +13,19 @@ class elasticsearch::nagios::plugin {
 
     # new version, can do more fine-grained checks
     @file { '/usr/lib/nagios/plugins/check_elasticsearch.py':
-      source => 'puppet:///modules/elasticsearch/nagios/check_elasticsearch.py',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-      tag    => 'nagiosplugin',
+        source => 'puppet:///modules/elasticsearch/nagios/check_elasticsearch.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        tag    => 'nagiosplugin',
+    }
+
+    @file { '/usr/lib/nagios/plugins/check_cirrus_frozen_writes.py':
+        source => 'puppet:///modules/elasticsearch/nagios/check_cirrus_frozen_writes.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        tag    => 'nagiosplugin',
     }
 
     package { 'python-requests':

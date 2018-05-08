@@ -19,4 +19,21 @@ class icinga::monitor::elasticsearch {
         contact_group => 'admins,team-discovery',
     }
 
+    monitoring::service { 'elasticsearch / cirrus frozen writes - eqiad':
+        host          => 'search.svc.eqiad.wmnet',
+        check_command => 'check_cirrus_frozen_writes',
+        description   => 'ElasticSearch health check for frozen writes',
+        critical      => true,
+        contact_group => 'admins,team-discovery',
+    }
+
+    monitoring::service { 'elasticsearch / cirrus frozen writes - codfw':
+        host          => 'search.svc.codfw.wmnet',
+        check_command => 'check_cirrus_frozen_writes',
+        description   => 'ElasticSearch health check for frozen writes',
+        critical      => true,
+        contact_group => 'admins,team-discovery',
+    }
+
+
 }
