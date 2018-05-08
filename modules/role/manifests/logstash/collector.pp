@@ -119,6 +119,26 @@ class role::logstash::collector (
         nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 11514',
     }
 
+    logstash::input::tcp { 'syslog_tls':
+        type       => 'syslog',
+        port       => 16514,
+        ssl_enable => true,
+        ssl_cert   => "/etc/logstash/ssl/cert.pem",
+        ssl_key    => "/etc/logstash/ssl/server.key",
+    }
+
+    ferm::service { 'logstash_syslog_tls':
+        proto   => 'tcp',
+        port    => '16514',
+        notrack => true,
+        srange  => '$DOMAIN_NETWORKS',
+    }
+
+    nrpe::monitor_service { 'logstash_syslog_tls_tcp':
+        description  => 'logstash syslog tls port',
+        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 16514',
+    }
+
     ## Global pre-processing (15)
 
     # move files into module?
