@@ -14,6 +14,8 @@ class tendril::maintenance (
     $ensure = present,
 ){
 
+    require_package('libdbi-perl', 'libdbd-mysql-perl')
+
     # We want to control if cron is running, not if the scripts are installed.
     Cron {
         ensure => $ensure
