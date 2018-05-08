@@ -264,3 +264,8 @@ rhodium_puppetdb4:
 puppetmaster_puppetdb4:
   __regex: !ruby/regexp /^puppetmaster[12]00[12].(codfw|eqiad).wmnet$/
   puppetdb_major_version: 4
+
+mw_codfw_22:
+  __regex: !ruby/regexp /^mw22[0-9][0-9].codfw.wmnet$/
+  profile::base::notifications_enabled: '0'
+
