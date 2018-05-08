@@ -7,6 +7,7 @@ class profile::ganeti (
     class { '::ganeti': }
 
     # Ganeti needs intracluster SSH root access
+    # DSA+RSA keys in here, but note that DSA is deprecated
     ssh::userkey { 'root-ganeti':
         ensure => present,
         user   => 'root',
@@ -14,7 +15,7 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/id_dsa.pub',
     }
 
-    # And the private key
+    # The DSA private key
     file { '/root/.ssh/id_dsa':
         ensure    => present,
         owner     => 'root',
@@ -30,6 +31,24 @@ class profile::ganeti (
         group  => 'root',
         mode   => '0400',
         source => 'puppet:///modules/profile/ganeti/id_dsa.pub',
+    }
+
+    # The RSA private key
+    file { '/root/.ssh/id_rsa':
+        ensure    => present,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => secret('ganeti/id_rsa'),
+        show_diff => false,
+    }
+    # This is here for completeness
+    file { '/root/.ssh/id_rsa.pub':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0400',
+        source => 'puppet:///modules/profile/ganeti/id_rsa.pub',
     }
 
     # If ganeti_cluster fact is not defined, the node has not been added to a
