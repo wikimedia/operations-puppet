@@ -205,7 +205,7 @@ class base::monitoring::host(
     monitoring::check_prometheus { 'edac_correctable_errors':
         description     => 'Memory correctable errors (EDAC)',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site}%20prometheus%2Fops"],
-        query           => "scalar(node_edac_correctable_errors_total{instance=\"${::hostname}:9100\"})",
+        query           => "sum(node_edac_correctable_errors_total{instance=\"${::hostname}:9100\"})",
         warning         => 1,
         critical        => 3,
         method          => 'ge',
