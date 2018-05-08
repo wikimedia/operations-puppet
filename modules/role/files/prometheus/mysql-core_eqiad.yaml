@@ -131,7 +131,6 @@
     shard: x1
     role: slave
   targets:
-  - db1055:9104
   - db1064:9104
 - labels:
     shard: x1
