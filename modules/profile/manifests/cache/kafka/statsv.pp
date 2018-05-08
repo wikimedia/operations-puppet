@@ -38,8 +38,6 @@ class profile::cache::kafka::statsv(
         varnish_opts                => { 'q' => 'ReqURL ~ "^/beacon/statsv\?"' },
         # -1 means all brokers in the ISR must ACK this request.
         topic_request_required_acks => '-1',
-        # TODO: Remove this once all Kafka clusters are >= 0.10
-        force_protocol_version      => '0.9.0.1',
     }
 
     # Make sure varnishes are configured and started for the first time
