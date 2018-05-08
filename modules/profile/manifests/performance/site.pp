@@ -29,6 +29,13 @@ class profile::performance::site {
         require   => Package['apache2']
     }
 
+    # Allow traffic to port 80 from internal networks
+    ferm::service { 'performance-website-global':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$DOMAIN_NETWORKS',
+    }
+
     httpd::site { 'performance.wikimedia.org':
         content => template('profile/performance/site/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
