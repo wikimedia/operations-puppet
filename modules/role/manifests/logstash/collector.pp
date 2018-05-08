@@ -203,6 +203,11 @@ class role::logstash::collector (
         priority => 70,
     }
 
+    logstash::conf { 'filter_es_index_suffix':
+        source   => 'puppet:///modules/role/logstash/filter-es-index-suffix.conf',
+        priority => 70,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
@@ -217,6 +222,7 @@ class role::logstash::collector (
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
         guard_condition => '"es" in [tags]',
+        index           => "${title}%{[@metadata][index_suffix]}-%{+YYYY.MM.dd}",
         manage_indices  => true,
         priority        => 90,
         template        => '/etc/logstash/elasticsearch-template.json',
