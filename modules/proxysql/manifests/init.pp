@@ -15,20 +15,7 @@ class proxysql (
     # Install package
     require_package ('proxysql')
 
-    # We need to manualy setup users, as the package doesn't do it for us
-    group { 'proxysql':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'proxysql':
-        ensure     => present,
-        gid        => 'proxysql',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
-    }
+    # Users are setup by the package
 
     # Minimal basic config, with the right owner
     file { '/etc/proxysql.cnf':
@@ -37,14 +24,16 @@ class proxysql (
         group   => 'proxysql',
         mode    => '0440',
         content => template('proxysql/proxysql.cnf.erb'),
+        require => Package['proxysql'],
     }
 
     # mostly sqlite internal config cache, let's make sure it has
     # the right owner
-    file {'/var/lib/proxysql':
-        ensure => directory,
-        owner  => 'proxysql',
-        group  => 'proxysql',
-        mode   => '0750',
-    }
+    # It should be handled automatically by the package
+    #file {'/var/lib/proxysql':
+    #    ensure => directory,
+    #    owner  => 'proxysql',
+    #    group  => 'proxysql',
+    #    mode   => '0750',
+    #}
 }
