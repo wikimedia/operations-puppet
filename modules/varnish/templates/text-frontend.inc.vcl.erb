@@ -1,5 +1,14 @@
 // Varnish VCL include file for text frontends
 
+acl abuse_nets {
+	"95.85.68.0"/22;
+	"185.223.160.0"/23;
+	"185.250.42.0"/23;
+	"185.251.14.0"/23;
+	"185.251.70.0"/23;
+	"185.252.186.0"/23;
+}
+
 include "text-common.inc.vcl";
 include "zero.inc.vcl";
 include "geoip.inc.vcl";
@@ -45,6 +54,10 @@ sub mobile_redirect {
 }
 
 sub cluster_fe_recv_pre_purge {
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ abuse_nets) {
+		return (synth(403, "Abuse"));
+	}
+
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
 		return (synth(403, "Noise"));
