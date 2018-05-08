@@ -27,6 +27,10 @@
 # [*cross_cluster_timeout_ms*]
 #   Timeout, in milliseconds, when performing cross-cluster memcached operations
 #
+# [*ssl_options*]
+#  If not undef, this is a hash incliding the port to listen to for ssl and
+#  the public cert, private key, and CA cert paths on the filesystem.
+#
 # === Examples
 #
 #  class { '::mcrouter':
@@ -53,25 +57,21 @@ class mcrouter(
     Integer $port,
     Integer $cross_region_timeout_ms,
     Integer $cross_cluster_timeout_ms,
-    $ensure    = present
+    Wmflib::Ensure $ensure = present,
+    Mcrouter::Ssl $ssl_options = undef,
 ) {
     require_package('mcrouter')
 
     $config = { 'pools' => $pools, 'routes' => $routes }
 
     file { '/etc/mcrouter/config.json':
-        ensure  => $ensure,
-        content => ordered_json($config),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['mcrouter'],
-    }
-
-    if ( $ensure == 'present' and versioncmp($::serverversion, '3.5') >= 0 ) {
-        File['/etc/mcrouter/config.json'] {
-          validate_cmd => "/usr/bin/mcrouter --validate-config --port ${port} --route-prefix ${region}/${cluster} --config file:%",
-        }
+        ensure       => $ensure,
+        content      => ordered_json($config),
+        owner        => 'root',
+        group        => 'root',
+        mode         => '0444',
+        require      => Package['mcrouter'],
+        validate_cmd => "/usr/bin/mcrouter --validate-config --port ${port} --route-prefix ${region}/${cluster} --config file:%",
     }
 
     file { '/etc/default/mcrouter':
@@ -88,15 +88,5 @@ class mcrouter(
         content  => "[Service]\nLimitNOFILE=64000\n",
         override => true,
         restart  => true,
-    }
-
-    $enable = $ensure ? {
-        'present' => true,
-        default   => false
-    }
-
-    service { 'mcrouter':
-        ensure => ensure_service($ensure),
-        enable => $enable
     }
 }
