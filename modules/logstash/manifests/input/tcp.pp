@@ -18,10 +18,14 @@
 #   }
 #
 define logstash::input::tcp(
-    $ensure   = present,
-    $port     = 5229,
-    $codec    = 'plain',
-    $priority = 10,
+    $ensure     = present,
+    $type       = 'tcp',
+    $port       = 5229,
+    $codec      = 'plain',
+    $priority   = 10,
+    $ssl_enable = false,
+    $ssl_cert   = undef,
+    $ssl_key    = undef,
 ) {
     logstash::conf { "input-tcp-${title}":
         ensure   => $ensure,
