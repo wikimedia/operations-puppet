@@ -321,10 +321,14 @@ node 'db1054.eqiad.wmnet' {
 
 # eqiad replicas
 # see also db1090, db1103, db1105 bellow
-node /^db1(060|074|076|122)\.eqiad\.wmnet/ {
+node /^db1(074|076|122)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# To be decommissioned: T193732
+node 'db1060.eqiad.wmnet' {
+    role(spare::system)
+}
 
 # s2 (large wikis) core production dbs on codfw
 # codfw master
