@@ -117,7 +117,9 @@ class cassandra::metrics(
         ],
     }
 
-    base::service_auto_restart { 'cassandra-metrics-collector': }
+    base::service_auto_restart { 'cassandra-metrics-collector':
+        ensure => $ensure,
+    }
 
     # built-in cassandra metrics reporter, T104208
     file { '/usr/share/cassandra/lib/metrics-graphite.jar':
