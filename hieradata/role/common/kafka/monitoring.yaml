@@ -2,7 +2,6 @@ profile::kafka::monitoring::config:
   main-eqiad:
     burrow_port: 8100
     burrow_exporter_port: 9500
-    api_version: '0.9.0.1'
   main-codfw:
     burrow_port: 8100
     burrow_exporter_port: 9500

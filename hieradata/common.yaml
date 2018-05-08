@@ -427,7 +427,6 @@ kafka_clusters:
         id: 22  # Row C
 
   main-eqiad:
-    api_version: 0.9
     zookeeper_cluster_name: main-eqiad
     brokers:
       kafka1001.eqiad.wmnet:
