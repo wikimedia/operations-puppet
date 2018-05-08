@@ -1,7 +1,12 @@
 input {
   tcp {
-    type => "tcp"
+    type => "<%= @type %>"
     port => <%= @port %>
     codec => "<%= @codec %>"
+    <% if @ssl_enable == true -%>
+    ssl_enable => true
+    ssl_cert => "<%= @ssl_cert %>"
+    ssl_key  => "<%= @ssl_key %>"
+    <% end -%>
   }
 }
