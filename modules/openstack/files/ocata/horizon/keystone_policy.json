@@ -2,6 +2,8 @@
     "admin_required": "role:admin or is_admin:1",
     "service_role": "role:service",
     "service_or_admin": "rule:admin_required or rule:service_role",
+    "projectadmin_role": "role:projectadmin",
+    "projectadmin_or_admin": "rule:admin_required or rule:projectadmin_role",
     "owner" : "user_id:%(user_id)s",
     "admin_or_owner": "rule:admin_required or rule:owner",
     "token_subject": "user_id:%(target.token.user_id)s",
@@ -80,6 +82,10 @@
     "identity:list_grants": "rule:admin_required",
     "identity:create_grant": "rule:admin_required",
     "identity:revoke_grant": "rule:admin_required",
+
+    "members:grant_membership": "rule:projectadmin_or_admin",
+    "members:revoke_membership": "rule:projectadmin_or_admin",
+    "members:toggle_projectadmin": "rule:projectadmin_or_admin",
  
     "identity:list_role_assignments": "rule:admin_required",
  
