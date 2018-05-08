@@ -7,4 +7,8 @@ ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
 --cross-cluster-timeout-ms=<%= @cross_cluster_timeout_ms %> \
 --send-invalid-route-to-default \
 --file-observer-poll-period-ms=1000 \
---file-observer-sleep-before-update-ms=100"
+--file-observer-sleep-before-update-ms=100<%- if @ssl_options -%> \
+--ssl-port <%= @ssl_options['port'] %> \
+--pem-cert-path=<%= @ssl_options['cert'] %> \
+--pem-key-path=<%= @ssl_options['key'] %> \
+--pem-ca-path=<%= @ssl_options['ca_cert'] %><%- end %>"
