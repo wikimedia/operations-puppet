@@ -104,4 +104,9 @@ class logstash(
         ensure  => absent,
         require => Package['logstash'],
     }
+
+    ::base::expose_puppet_certs { '/etc/logstash':
+        provide_private => true,
+    }
+
 }
