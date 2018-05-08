@@ -176,19 +176,8 @@ class profile::kafka::broker(
     # Note that MetaspaceSize is a Java 8 setting.
     $jvm_performance_opts = '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80'
 
-    # WMF's librdkafka is overriding that in Debian stretch. Require the Stretch version.
-    # https://packages.debian.org/stretch/librdkafka1
-    if !defined(Package['librdkafka1']) and os_version('debian == stretch') {
-        package { 'librdkafka1':
-            ensure => '0.9.3-1',
-            before => Package['kafkacat'],
-        }
-    }
     # kafkacat is handy!
-    if !defined(Package['kafkacat']) {
-        # not using require_package to allow dependency on librdkafka1 in stretch
-        package { 'kafkacat': }
-    }
+    require_package('kafkacat')
 
     $plaintext_port     = 9092
     $plaintext_listener = "PLAINTEXT://:${plaintext_port}"
