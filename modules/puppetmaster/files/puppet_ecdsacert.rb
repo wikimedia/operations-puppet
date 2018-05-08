@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-# Copyright (c) 2016 Giuseppe Lavagetto, Wikimedia Foundation
+# Copyright (c) 2016-present Giuseppe Lavagetto, Wikimedia Foundation
 # Loosely based on https://github.com/ripienaar/mcollective-choria/blob/master/lib/mcollective/util/choria.rb
+require 'ipaddr'
 require 'json'
 require 'logger'
 require 'net/http'
@@ -52,11 +53,20 @@ class PuppetECDSAGen
     parse_config args[:configfile] if args[:configfile]
 
     @common_name = args[:common_name]
-    @dns_alt_names = args[:altnames].map { |domain| "DNS:#{domain}" }
+    @all_alt_names = args[:altnames].map do |name|
+      begin
+        _ = IPAddr.new name
+        "IP:#{name}"
+      rescue IPAddr::InvalidAddressError
+        "DNS:#{name}"
+      end
+    end
+
     # We need the CN in the SAN if we want to validate against it
-    @dns_alt_names << "DNS:#{@common_name}"
+    @all_alt_names << "DNS:#{@common_name}"
+
     Log.info "Creating and signing ECDSA certificate for #{@common_name}"
-    Log.debug "DNS subjectAltNames: #{@dns_alt_names}"
+    Log.debug "subjectAltNames: #{@all_alt_names}"
     Log.debug "Using NIST curve #{@config[:asn1_oid]}"
   end
 
@@ -112,7 +122,7 @@ class PuppetECDSAGen
   def csr_alt_names(csr)
     extensions = [
       OpenSSL::X509::ExtensionFactory.new.create_extension(
-        'subjectAltName', @dns_alt_names.join(',')
+        'subjectAltName', @all_alt_names.join(',')
       )
     ]
     # add SAN extension to the CSR
@@ -167,6 +177,11 @@ module Puppet
       rescue Puppet::SSL::CertificateAuthority::CertificateSigningError => e
         if e.message.start_with?("CSR '#{csr.name}' subjectAltName contains a wildcard")
           true
+        elsif e.message.start_with?("CSR '#{csr.name}' contains a subjectAltname outside the DNS")
+          unless csr.subject_alt_names.all? { |x| x =~ /^(DNS|IP):/ }
+            raise
+          end
+          true
         else
           raise
         end
@@ -184,7 +199,7 @@ OptionParser.new do |opts|
   opts.on('-c', '--configfile CONF', 'Location of the config file') do |conf|
     args[:configfile] = conf
   end
-  opts.on('-a', '--alt-names ALT1,ALT2', 'Subjective alt names') do |altnames|
+  opts.on('-a', '--alt-names ALT1,ALT2', 'Subject alternative names') do |altnames|
     args[:altnames] = altnames.split(/,\s*/).map
   end
   opts.on('-d', '--debug', 'Show debug information') do
