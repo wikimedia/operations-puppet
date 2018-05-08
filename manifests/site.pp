@@ -368,7 +368,7 @@ node 'db1068.eqiad.wmnet' {
 }
 
 # see also db1097 and db1103 below
-node /^db1(064|081|084|091|121)\.eqiad\.wmnet/ {
+node /^db1(081|084|091|121)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -490,11 +490,15 @@ node /^db20(84|85|86|87|88|89|91)\.codfw\.wmnet/ {
 
 ## x1 shard
 # eqiad
-node 'db1055.eqiad.wmnet' {
+# x1 eqiad master
+node 'db1069.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node 'db1069.eqiad.wmnet' {
+node 'db1055.eqiad.wmnet' {
+    role(mariadb::core)
+}
+node 'db1064.eqiad.wmnet' {
     role(mariadb::core)
 }
 
