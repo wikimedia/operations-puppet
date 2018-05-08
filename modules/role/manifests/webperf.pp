@@ -13,6 +13,12 @@ class role::webperf {
     class { '::httpd':
         modules => ['uwsgi', 'proxy', 'proxy_http']
     }
+    # Allow traffic to port 80 from internal networks
+    ferm::service { 'performance-website-global':
+        proto  => 'tcp',
+        port   => '80',
+        srange => '$DOMAIN_NETWORKS',
+    }
     include ::profile::performance::coal
     include ::profile::performance::site
 }
