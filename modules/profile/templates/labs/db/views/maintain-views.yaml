@@ -217,21 +217,39 @@ customviews:
       afl_title, afl_wiki, afl_deleted, afl_patrolled_by, afl_rev_id, afl_log_id
     where:
       afl_deleted=0
+  actor:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from user where user_id = actor_user )
+      OR exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
+      OR exists( select 1 from ipblocks where ipb_by_actor = actor_id AND ipb_deleted=0 )
+      OR exists( select 1 from image where img_actor = actor_id )
+      OR exists( select 1 from oldimage where oi_actor = actor_id AND oi_deleted&4 = 0 )
+      OR exists( select 1 from filearchive where fa_actor = actor_id AND fa_deleted&4 = 0 )
+      OR exists( select 1 from recentchanges where rc_actor = actor_id AND rc_deleted&4 = 0 )
+      OR exists( select 1 from logging where log_actor = actor_id AND log_deleted&4 = 0 )
+      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id)
+      where rev_deleted&4 = 0 )
   archive:
     source: archive
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment, NULL as ar_comment_id,
       if(ar_deleted&4,null,ar_user) as ar_user, if(ar_deleted&4,null,ar_user_text) as
-      ar_user_text, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
-      as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
-      if(ar_deleted&1,null,ar_sha1) as ar_sha1, if(ar_deleted&1,null,ar_content_model) as ar_content_model,
+      ar_user_text, if(ar_deleted&4,0,ar_actor) as ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
+      if(ar_deleted&1,null,ar_text_id) as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
+      ar_page_id, ar_parent_id, if(ar_deleted&1,null,ar_sha1) as ar_sha1,
+      if(ar_deleted&1,null,ar_content_model) as ar_content_model,
       if(ar_deleted&1,null,ar_content_format) as ar_content_format
   archive_compat:
     source: archive
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment, NULL as ar_comment_id,
-      if(ar_deleted&4,null,ar_user) as ar_user, if(ar_deleted&4,null,ar_user_text) as
-      ar_user_text, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
+      case when ar_deleted&4 != 0 then null when ar_actor = 0
+      then ar_user else COALESCE( actor_user, 0 ) END AS ar_user,
+      case when ar_deleted&4 != 0 then null when ar_actor = 0
+      then ar_user_text else actor_name END AS ar_user_text,
+      if(ar_deleted&4,0,ar_actor) as ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id,
       case when ar_deleted&1 != 0 then null when content_id is NULL then ar_text_id
       else content_id end as ar_text_id,
       ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len,
@@ -253,11 +271,13 @@ customviews:
           table: content_models
           condition: on (content_model = model_id)
         condition: on slot_revision_id = ar_rev_id
+      - table: actor
+        condition: on ar_actor = actor_id
   archive_userindex:
     source: archive
     view: >
       select ar_id, ar_namespace, ar_title, NULL as ar_text, NULL as ar_comment, ar_user,
-      ar_user_text, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
+      ar_user_text, ar_actor, ar_timestamp, ar_minor_edit, NULL as ar_flags, ar_rev_id, if(ar_deleted&1,null,ar_text_id)
       as ar_text_id, ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
       if(ar_deleted&1,null,ar_sha1) as ar_sha1, if(ar_deleted&1,null,ar_content_model) as ar_content_model,
       if(ar_deleted&1,null,ar_content_format) as ar_content_format
@@ -312,13 +332,44 @@ customviews:
       case when fa_deleted&2 != 0 then null when fa_description_id = 0 then fa_description
       else comment_b.comment_text end as fa_description,
       if(fa_deleted&4,null,fa_user)as fa_user,
-      if(fa_deleted&4,null,fa_user_text) as fa_user_text, fa_timestamp, fa_deleted,
+      if(fa_deleted&4,null,fa_user_text) as fa_user_text,
+      if(fa_deleted&4,null,fa_actor) as fa_actor,
+      fa_timestamp, fa_deleted,
       if(fa_deleted&1,null,fa_sha1) as fa_sha1
     join:
       - table: comment
         condition: as comment_a on comment_a.comment_id = filearchive.fa_description_id
       - table: comment
         condition: as comment_b on comment_b.comment_id = filearchive.fa_deleted_reason_id
+  filearchive_compat:
+    source: filearchive
+    view: >
+      select fa_id, fa_name, fa_archive_name, fa_storage_group, NULL as fa_storage_key,
+      fa_deleted_user, fa_deleted_timestamp,
+      fa_deleted_reason_id,
+      case when fa_deleted_reason_id = 0 then fa_deleted_reason else comment_a.comment_text end as fa_deleted_reason,
+      if(fa_deleted&1,null,fa_size)
+      as fa_size, if(fa_deleted&1,null,fa_width) as fa_width, if(fa_deleted&1,null,fa_height)
+      as fa_height, if(fa_deleted&1,null,fa_metadata) as fa_metadata, if(fa_deleted&1,null,fa_bits)
+      as fa_bits, if(fa_deleted&1,null,fa_media_type) as fa_media_type, if(fa_deleted&1,null,fa_major_mime)
+      as fa_major_mime, if(fa_deleted&1,null,fa_minor_mime) as fa_minor_mime,
+      if(fa_deleted&2,0,fa_description_id) as fa_description_id,
+      case when fa_deleted&2 != 0 then null when fa_description_id = 0 then fa_description
+      else comment_b.comment_text end as fa_description,
+      case when fa_deleted&4 != 0 then null when fa_actor = 0
+      then fa_user else COALESCE( actor_user, 0 ) END AS fa_user,
+      case when fa_deleted&4 != 0 then null when fa_actor = 0
+      then fa_user_text else actor_name END AS fa_user_text,
+      if(fa_deleted&4,null,fa_actor) as fa_actor,
+      fa_timestamp, fa_deleted,
+      if(fa_deleted&1,null,fa_sha1) as fa_sha1
+    join:
+      - table: comment
+        condition: as comment_a on comment_a.comment_id = filearchive.fa_description_id
+      - table: comment
+        condition: as comment_b on comment_b.comment_id = filearchive.fa_deleted_reason_id
+      - table: actor
+        condition: on fa_actor = actor_id
   filearchive_userindex:
     source: filearchive
     view: >
@@ -334,7 +385,7 @@ customviews:
       if(fa_deleted&2,0,fa_description_id) as fa_description_id,
       case when fa_deleted&2 != 0 then null when fa_description_id = 0 then fa_description
       else comment_b.comment_text end as fa_description,
-      fa_user, fa_user_text, fa_timestamp, fa_deleted, if(fa_deleted&1,null,fa_sha1) as fa_sha1
+      fa_user, fa_user_text, fa_actor, fa_timestamp, fa_deleted, if(fa_deleted&1,null,fa_sha1) as fa_sha1
     where: (fa_deleted&4)=0
     join:
       - table: comment
@@ -369,12 +420,30 @@ customviews:
       coalesce(imgcomment_description_id,0) as img_description_id,
       case when imgcomment_description_id is null OR imgcomment_description_id = 0
       then img_description else comment_text end as img_description,
-      img_user, img_user_text, img_timestamp, img_sha1
+      img_user, img_user_text, img_actor, img_timestamp, img_sha1
     join:
       - table: image_comment_temp
         condition: on imgcomment_name = img_name
       - table: comment
         condition: on comment_id = imgcomment_description_id
+  image_compat:
+    source: image
+    view: >
+      select img_name, img_size, img_width, img_height, img_metadata, img_bits,
+      img_media_type, img_major_mime, img_minor_mime,
+      coalesce(imgcomment_description_id,0) as img_description_id,
+      case when imgcomment_description_id is null OR imgcomment_description_id = 0
+      then img_description else comment_text end as img_description,
+      if(img_actor, coalesce(actor_user, 0), img_user) as img_user,
+      if(img_actor, actor_name, img_user_text) as img_user_text,
+      img_actor, img_timestamp, img_sha1
+    join:
+      - table: image_comment_temp
+        condition: on imgcomment_name = img_name
+      - table: comment
+        condition: on comment_id = imgcomment_description_id
+      - table: actor
+        condition: on img_actor = actor_id
   ipblocks:
     source: ipblocks
     view: >
@@ -383,11 +452,30 @@ customviews:
       ipb_timestamp, ipb_auto, ipb_anon_only,
       ipb_create_account, ipb_expiry, if(ipb_auto<>0,null,ipb_range_start)
       as ipb_range_start, if(ipb_auto<>0,null,ipb_range_end) as ipb_range_end, ipb_enable_autoblock,
-      ipb_deleted, ipb_block_email, ipb_by_text, ipb_allow_usertalk, ipb_parent_block_id
+      ipb_deleted, ipb_block_email, ipb_by_text,
+      ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id
     where: ipb_deleted=0
     join:
       - table: comment
         condition: on comment.comment_id = ipblocks.ipb_reason_id
+  ipblocks_compat:
+    source: ipblocks
+    view: >
+      select ipb_id, if(ipb_auto<>0,null,ipb_address) as ipb_address, ipb_user,
+      if(ipb_by_actor, coalesce(actor_user, 0), ipb_by) as ipb_by,
+      ipb_reason_id, case when ipb_reason_id = 0 then ipb_reason else comment_text end as ipb_reason,
+      ipb_timestamp, ipb_auto, ipb_anon_only,
+      ipb_create_account, ipb_expiry, if(ipb_auto<>0,null,ipb_range_start)
+      as ipb_range_start, if(ipb_auto<>0,null,ipb_range_end) as ipb_range_end, ipb_enable_autoblock,
+      ipb_deleted, ipb_block_email,
+      if(ipb_by_actor, actor_name, ipb_by_text) as ipb_by_text,
+      ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id
+    where: ipb_deleted=0
+    join:
+      - table: comment
+        condition: on comment.comment_id = ipblocks.ipb_reason_id
+      - table: actor
+        condition: on ipb_by_actor = actor_id
   ipblocks_ipindex:
     source: ipblocks
     view: >
@@ -396,7 +484,7 @@ customviews:
       then ipb_reason else comment_text end as ipb_reason,
       ipb_timestamp, ipb_auto, ipb_anon_only,
       ipb_create_account, ipb_expiry, ipb_range_start, ipb_range_end, ipb_enable_autoblock, ipb_deleted,
-      ipb_block_email, ipb_by_text, ipb_allow_usertalk, ipb_parent_block_id
+      ipb_block_email, ipb_by_text, ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id
     where: ipb_deleted=0 and ipb_auto=0
     join:
       - table: comment
@@ -405,7 +493,8 @@ customviews:
     source: logging
     view: >
       select log_id, log_type, if(log_deleted&1,null,log_action) as log_action, log_timestamp,
-      if(log_deleted&4,null,log_user) as log_user, if(log_deleted&1,null,log_namespace) as log_namespace,
+      if(log_deleted&4,null,log_user) as log_user, if(log_deleted&4,0,log_actor) as log_actor,
+      if(log_deleted&1,null,log_namespace) as log_namespace,
       if(log_deleted&1,null,log_title) as log_title,
       if(log_deleted&2,0,log_comment_id) as log_comment_id,
       case when log_deleted&2 != 0 then null when log_comment_id = 0 then log_comment
@@ -419,16 +508,42 @@ customviews:
     join:
       - table: comment
         condition: on comment_id = log_comment_id
+  logging_compat:
+    source: logging
+    view: >
+      select log_id, log_type, if(log_deleted&1,null,log_action) as log_action, log_timestamp,
+      case when log_deleted&4 != 0 then null when log_actor = 0
+      then log_user else COALESCE( actor_user, 0 ) END AS log_user,
+      if(log_deleted&4,0,log_actor) as log_actor,
+      if(log_deleted&1,null,log_namespace) as log_namespace,
+      if(log_deleted&1,null,log_title) as log_title,
+      case when log_deleted&2 != 0 then null when log_comment_id = 0 then log_comment
+      else comment_text end as log_comment,
+      if(log_deleted&2,0,log_comment_id) as log_comment_id,
+      if(log_deleted,null,log_params) as log_params, log_deleted,
+      case when log_deleted&4 != 0 then null when log_actor = 0
+      then log_user_text else actor_name END AS log_user_text, if(log_deleted&1,null,log_page) as log_page
+    where:
+      $INSERTED_EXPR$
+    logging_where:
+      *allowed_logtypes
+    join:
+      - table: comment
+        condition: on comment_id = log_comment_id
+      - table: actor
+        condition: on actor_id = log_actor
   logging_logindex:
     source: logging
     view: >
-      select log_id, log_type, log_action, log_timestamp, if(log_deleted&4,null,log_user) as log_user,
+      select log_id, log_type, log_action, log_timestamp,
+      if(log_deleted&4,null,log_user) as log_user,
+      if(log_deleted&4,0,log_actor) as log_actor,
       log_namespace, log_title,
-      if(log_deleted&2,0,log_comment_id) as log_comment_id,
       case when log_deleted&2 != 0 then null when log_comment_id = 0 then log_comment
       else comment_text end as log_comment,
-      if(log_deleted,null,log_params)
-      as log_params, log_deleted, if(log_deleted&4,null,log_user_text) as log_user_text, log_page
+      if(log_deleted&2,0,log_comment_id) as log_comment_id,
+      if(log_deleted,null,log_params) as log_params, log_deleted,
+      if(log_deleted&4,null,log_user_text) as log_user_text, log_page
     where: (log_deleted&1)=0 and
     logging_where:
       *allowed_logtypes
@@ -438,13 +553,13 @@ customviews:
   logging_userindex:
     source: logging
     view: >
-      select log_id, log_type, if(log_deleted&1,null,log_action) as log_action, log_timestamp, log_user,
+      select log_id, log_type, if(log_deleted&1,null,log_action) as log_action, log_timestamp, log_user, log_actor,
       if(log_deleted&1,null,log_namespace) as log_namespace, if(log_deleted&1,null,log_title) as log_title,
       if(log_deleted&2,0,log_comment_id) as log_comment_id,
       case when log_deleted&2 != 0 then null when log_comment_id = 0 then log_comment
       else comment_text end as log_comment,
       if(log_deleted,null,log_params) as log_params,
-      log_deleted, log_user_text as log_user_text, if(log_deleted&1,null,log_page) as log_page
+      log_deleted, log_user_text, if(log_deleted&1,null,log_page) as log_page
     where: (log_deleted&4)=0 and
     logging_where:
       *allowed_logtypes
@@ -464,19 +579,40 @@ customviews:
       case when oi_deleted&2 != 0 then null when oi_description_id = 0 then oi_description
       else comment_text end as oi_description,
       if(oi_deleted&4,null,oi_user) as oi_user,
-      if(oi_deleted&4,null,oi_user_text) as oi_user_text, oi_timestamp, oi_metadata, oi_media_type,
+      if(oi_deleted&4,null,oi_user_text) as oi_user_text,
+      if(oi_deleted&4,null,oi_actor) as oi_actor,
+      oi_timestamp, oi_metadata, oi_media_type,
       oi_major_mime, oi_minor_mime, oi_deleted, oi_sha1
     join:
       - table: comment
         condition: on comment_id = oi_description_id
-  oldimage_userindex:
+  oldimage_compat:
     source: oldimage
     view: >
       select oi_name, oi_archive_name, oi_size, oi_width, oi_height, oi_bits,
       if(oi_deleted&2,0,oi_description_id) as oi_description_id,
       case when oi_deleted&2 != 0 then null when oi_description_id = 0 then oi_description
       else comment_text end as oi_description,
-      oi_user, oi_user_text, oi_timestamp, oi_metadata, oi_media_type, oi_major_mime,
+      case when oi_deleted&4 != 0 then null when oi_actor = 0
+      then oi_user else COALESCE( actor_user, 0 ) END AS oi_user,
+      case when oi_deleted&4 != 0 then null when oi_actor = 0
+      then oi_user_text else actor_name END AS oi_user_text,
+      if(oi_deleted&4,null,oi_actor) as oi_actor,
+      oi_timestamp, oi_metadata, oi_media_type,
+      oi_major_mime, oi_minor_mime, oi_deleted, oi_sha1
+    join:
+      - table: comment
+        condition: on comment_id = oi_description_id
+      - table: actor
+        condition: on oi_actor = actor_id
+  oldimage_userindex:
+    source: oldimage
+    view: >
+      select oi_name, oi_archive_name, oi_size, oi_width, oi_height, oi_bits,
+      if(oi_deleted&2,0,oi_description_id) as oi_description_id,
+      case when oi_deleted&2 != 0 then null when oi_description_id = 0 then oi_description
+      else comment_text end as oi_description, oi_user, oi_user_text,
+      oi_actor, oi_timestamp, oi_metadata, oi_media_type, oi_major_mime,
       oi_minor_mime, oi_deleted, oi_sha1
     where: (oi_deleted&4)=0
     join:
@@ -517,8 +653,9 @@ customviews:
   recentchanges:
     source: recentchanges
     view: >
-      select rc_id, rc_timestamp, if(rc_deleted&4,null,rc_user) as rc_user, if(rc_deleted&4,null,rc_user_text)
-      as rc_user_text, rc_namespace, rc_title,
+      select rc_id, rc_timestamp, if(rc_deleted&4,null,rc_user) as rc_user,
+      if(rc_deleted&4,null,rc_user_text) as rc_user_text,
+      if(rc_deleted&4, 0, rc_actor) as rc_actor, rc_namespace, rc_title,
       if(rc_deleted&2,0,rc_comment_id) as rc_comment_id,
       case when rc_deleted&2 != 0 then null when rc_comment_id = 0 then rc_comment
       else comment_text end as rc_comment,
@@ -527,10 +664,28 @@ customviews:
     join:
       - table: comment
         condition: on comment_id = rc_comment_id
+  recentchanges_compat:
+    source: recentchanges
+    view: >
+      select rc_id, rc_timestamp, case when rc_deleted&4 != 0 then null when rc_actor = 0
+      then rc_user else COALESCE( actor_user, 0 ) END AS rc_user,
+      case when rc_deleted&4 != 0 then null when rc_actor = 0
+      then rc_user_text else actor_name END AS rc_user_text,
+      if(rc_deleted&4, 0, rc_actor) as rc_actor, rc_namespace, rc_title,
+      if(rc_deleted&2,0,rc_comment_id) as rc_comment_id,
+      case when rc_deleted&2 != 0 then null when rc_comment_id = 0 then rc_comment
+      else comment_text end as rc_comment,
+      rc_minor, rc_bot, rc_new, rc_cur_id, rc_this_oldid, rc_last_oldid, rc_type, rc_source, rc_patrolled,
+      null as rc_ip, rc_old_len, rc_new_len, rc_deleted, rc_logid, rc_log_type, rc_log_action, rc_params
+    join:
+      - table: comment
+        condition: on comment_id = rc_comment_id
+      - table: actor
+        condition: on rc_actor = actor_id
   recentchanges_userindex:
     source: recentchanges
     view: >
-      select rc_id, rc_timestamp, rc_user, rc_user_text, rc_namespace, rc_title,
+      select rc_id, rc_timestamp, rc_user, rc_user_text, rc_actor, rc_namespace, rc_title,
       if(rc_deleted&2,0,rc_comment_id) as rc_comment_id,
       case when rc_deleted&2 != 0 then null when rc_comment_id = 0 then rc_comment
       else comment_text end as rc_comment,
@@ -548,11 +703,14 @@ customviews:
       case when rev_deleted&2 != 0 then null when revcomment_comment_id is null OR revcomment_comment_id = 0
       then rev_comment else comment_text end as rev_comment,
       if(rev_deleted&4,null,rev_user) as rev_user, if(rev_deleted&4,null,rev_user_text) as rev_user_text,
+      if(rev_deleted&4,0,coalesce(revactor_actor,0)) as rev_actor,
       rev_timestamp, rev_minor_edit, rev_deleted, if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id,
       if(rev_deleted&1,null,rev_sha1) as rev_sha1, rev_content_model, rev_content_format
     join:
       - table: revision_comment_temp
         condition: on revcomment_rev = rev_id
+      - table: revision_actor_temp
+        condition: on revactor_rev = rev_id
       - table: comment
         condition: on comment_id = revcomment_comment_id
   revision_compat:
@@ -564,7 +722,11 @@ customviews:
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       case when rev_deleted&2 != 0 then null when revcomment_comment_id is null OR revcomment_comment_id = 0
       then rev_comment else comment_text end as rev_comment,
-      if(rev_deleted&4,null,rev_user) as rev_user, if(rev_deleted&4,null,rev_user_text) as rev_user_text,
+      case when rev_deleted&4 != 0 then null when revactor_actor is null
+      then rev_user else COALESCE( actor_user, 0 ) END AS rev_user,
+      case when rev_deleted&4 != 0 then null when revactor_actor is null
+      then rev_user_text else actor_name END AS rev_user_text,
+      if(rev_deleted&4,0,coalesce(revactor_actor,0)) as rev_actor,
       rev_timestamp, rev_minor_edit, rev_deleted, if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id,
       if(rev_deleted&1,null,rev_sha1) as rev_sha1, if(model_name, model_name,
       rev_content_model) as rev_content_model, if(model_name,NULL,rev_content_format)
@@ -586,6 +748,10 @@ customviews:
           table: content_models
           condition: on (content_model = model_id)
         condition: on slot_revision_id = rev_id
+      - table: revision_actor_temp
+        condition: on revactor_rev = rev_id
+      - table: actor
+        condition: on actor_id = revactor_actor
   revision_userindex:
     source: revision
     view: >
@@ -593,7 +759,9 @@ customviews:
       if(rev_deleted&2,0,coalesce(revcomment_comment_id,0)) as rev_comment_id,
       case when rev_deleted&2 != 0 then null when revcomment_comment_id is null OR revcomment_comment_id = 0
       then rev_comment else comment_text end as rev_comment,
-      rev_user, rev_user_text, rev_timestamp, rev_minor_edit, rev_deleted,
+      rev_user, rev_user_text,
+      coalesce(revactor_actor,0) as rev_actor,
+      rev_timestamp, rev_minor_edit, rev_deleted,
       if(rev_deleted&1,null,rev_len) as rev_len, rev_parent_id, if(rev_deleted&1,null,rev_sha1) as rev_sha1,
       rev_content_model, rev_content_format
     where: (rev_deleted&4)=0
@@ -602,6 +770,13 @@ customviews:
         condition: on revcomment_rev = rev_id
       - table: comment
         condition: on comment_id = revcomment_comment_id
+      - table: revision_actor_temp
+        condition: on revactor_rev = rev_id
+  revision_actor_temp:
+    source: revision_actor_temp, revision
+    view: >
+      select revactor_rev, revactor_actor, revactor_timestamp, revactor_page
+    where: revactor_rev = rev_id AND (rev_deleted & 4) = 0
   slots:
     source: slots
     view: >

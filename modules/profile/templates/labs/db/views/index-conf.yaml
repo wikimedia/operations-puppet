@@ -59,3 +59,33 @@ indexes:
     name: slot_content_id
     columns:
       - slot_content_id
+  - table: archive
+    name: ar_actor_deleted
+    columns:
+        - ar_actor
+        - ar_deleted
+  - table: ipblocks
+    name: ipb_actor_deleted
+    columns:
+        - ipb_by_actor
+        - ipb_deleted
+  - table: oldimage
+    name: oi_actor_deleted
+    columns:
+        - oi_actor
+        - oi_deleted
+  - table: filearchive
+    name: fa_actor_deleted
+    columns:
+        - fa_actor
+        - fa_deleted
+  - table: recentchanges
+    name: rc_actor_deleted
+    columns:
+       - rc_actor
+       - rc_deleted
+  - table: logging
+    name: log_actor_deleted
+    columns:
+       - log_actor
+       - log_deleted
