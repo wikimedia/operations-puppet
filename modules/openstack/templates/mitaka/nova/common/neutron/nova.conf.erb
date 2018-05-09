@@ -1,47 +1,48 @@
 [DEFAULT]
 # nova general settings
 my_ip = <%= @ipaddress %>
-#verbose=True
+#verbose=True ### FIXME deprecated?
 state_path = /var/lib/nova
-#root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
-#log_dir=/var/log/nova
+rootwrap_config = /etc/nova/rootwrap.conf
+log_dir=/var/log/nova
 pybasedir = /usr/lib/python2.7/dist-packages
+#use_rootwrap_daemon = True ### FIXME may be used only in compute nodes?
 
 # keystone
 auth_strategy = keystone
 
 # compute
-#compute_driver=nova.virt.libvirt.LibvirtDriver
-#notification_topics=notifications
-#connection_type=libvirt
-#instance_name_template=i-%08x
-#daemonize=1
-#enabled_apis=osapi_compute, metadata
-#osapi_compute_unique_server_name_scope='global'
-#rpc_response_timeout=180
-#instance_usage_audit = False
-#compute_monitors=virt_driver
+compute_driver=libvirt.LibvirtDriver
+#notification_topics=notifications ### FIXME unknown yet
+connection_type=libvirt
+instance_name_template=i-%08x
+#daemonize=1 ### FIXME unknown yet, it seems like 'daemon' in some configs
+enabled_apis=osapi_compute, metadata
+osapi_compute_unique_server_name_scope='global'
+rpc_response_timeout=180
+instance_usage_audit = False
+compute_monitors=virt_driver
 
 # glance
-#image_service=nova.image.glance.GlanceImageService
-#remove_unused_base_images=True
-#glance_api_servers=<%= @nova_controller %>:9292
+image_service=nova.image.glance.GlanceImageService
+remove_unused_base_images=True
+glance_api_servers=<%= @nova_controller %>:9292
 
 # APIs
-#s3_host=<%= @nova_controller %>
-#cc_host=<%= @nova_controller %>
-#ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
-#ec2_dmz_host=<%= @nova_api_host_ip %>
-#api_paste_config=/etc/nova/api-paste.ini
+s3_host=<%= @nova_controller %>
+cc_host=<%= @nova_controller %>
+ec2_url=http://<%= @nova_api_host %>:8773/services/Cloud
+ec2_dmz_host=<%= @nova_api_host_ip %>
+api_paste_config=/etc/nova/api-paste.ini
 enabled_apis = osapi_compute,metadata
 
 # quotas
-#quota_cores = 8
-#quota_instances = 8
-#quota_ram = 16384
-#quota_floating_ips=<%= @quota_floating_ips %>
-#quota_fixed_ips=200
-#max_age = 30
+quota_cores = 8
+quota_instances = 8
+quota_ram = 16384
+quota_floating_ips=<%= @quota_floating_ips %>
+quota_fixed_ips=200
+max_age = 30
 
 # nova-scheduler
 #scheduler_driver=filter_scheduler
