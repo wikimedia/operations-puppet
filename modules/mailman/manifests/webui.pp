@@ -44,4 +44,34 @@ class mailman::webui {
         mode    => '0444',
         recurse => 'remote',
     }
+
+    # Mod security used to reject HTTP requests from known spam sources
+    # Pin jessie hosts to jessie-backports for version 2.9
+    if os_version('debian == jessie') {
+        apt::pin { 'libapache2-mod-security2':
+            pin      => 'release a=jessie-backports',
+            package  => 'libapache2-mod-security2',
+            priority => '1001',
+            before   => Package['libapache2-mod-security2'],
+        }
+    }
+
+    # Not using require_package so apt::pin may be applied
+    # before attempting to install package.
+    package { 'libapache2-mod-security2':
+        ensure => present,
+    }
+
+    # Ensure that the CRS modsecurity ruleset is not used. it has not
+    # yet been tested for compatibility with our mailman instance and may
+    # cause breakage.
+    file { '/etc/apache2/mods-available/security2.conf':
+        ensure  => present,
+        source  => 'puppet:///modules/mailman/modsecurity/security2.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['libapache2-mod-security2'],
+  }
+
 }
