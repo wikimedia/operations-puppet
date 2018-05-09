@@ -9,6 +9,8 @@ class profile::analytics::refinery::job::data_purge {
     $eventlogging_log_file      = "${profile::analytics::refinery::log_dir}/drop-eventlogging-partitions.log"
     $wdqs_extract_log_file      = "${profile::analytics::refinery::log_dir}/drop-wdqs-extract-partitions.log"
     $mediawiki_log_file         = "${profile::analytics::refinery::log_dir}/drop-mediawiki-log-partitions.log"
+    $mediawiki_private_log_file = "${profile::analytics::refinery::log_dir}/drop-mediawiki-private-partitions.log"
+    $geoeditors_log_file        = "${profile::analytics::refinery::log_dir}/drop-geoeditor-daily-partitions.log"
     $druid_webrequest_log_file  = "${profile::analytics::refinery::log_dir}/drop-druid-webrequest.log"
     $mediawiki_history_log_file = "${profile::analytics::refinery::log_dir}/drop-mediawiki-history.log"
     $banner_activity_log_file   = "${profile::analytics::refinery::log_dir}/drop-banner-activity.log"
@@ -115,5 +117,28 @@ class profile::analytics::refinery::job::data_purge {
         command => "${env} && ${refinery_path}/bin/is-yarn-app-running EventLoggingSanitization || /usr/bin/spark2-submit --master yarn --deploy-mode cluster --queue production --driver-memory 8G --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=32 --files /etc/hive/conf/hive-site.xml --class org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization ${refinery_path}/artifacts/refinery-job.jar --parallelism 8 --send-email-report >> ${$el_sanitization_log_file} 2>&1",
         user    => 'hdfs',
         minute  => '0',
+    }
+
+    # drop data older than 2 months from cu_changes table, which is sqooped in
+    # cron runs once a month
+    $geoeditors_private_retention_days = 80
+    cron {'mediawiki-raw-cu-changes-drop-month':
+        command     => "${env} && ${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf_raw -t mediawiki_private_cu_changes -l 1 >> ${mediawiki_private_log_file} 2>&1",
+        environment => "MAILTO=${mail_to}",
+        user        => 'hdfs',
+        minute      => '0',
+        hour        => '5',
+        monthday    => '16'
+    }
+
+    # drop data older than 2 months from geoeditors_daily table
+    # cron runs once a month
+    cron {'mediawiki-geoeditors-drop-month':
+        command     => "${env} && ${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf -t geoeditors_daily -l 1 >> ${geoeditors_log_file} 2>&1",
+        environment => "MAILTO=${mail_to}",
+        user        => 'hdfs',
+        minute      => '0',
+        hour        => '6',
+        monthday    => '16'
     }
 }
