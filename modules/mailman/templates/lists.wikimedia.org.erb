@@ -20,6 +20,55 @@
     SSLCertificateKeyFile /etc/acme/key/lists.key
     <%= @ssl_settings.join("\n    ") %>
 
+    <IfModule security2_module>
+        SecRuleEngine On
+        SecRequestBodyAccess Off
+
+        # Set up the IP collection
+        SecAction "id:1000,phase:1,initcol:IP=%{REMOTE_ADDR},pass,nolog"
+
+        # Increment subscribe counter and set expiration to 30 minutes
+        SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:IP.subscribecount=+1,expirevar:IP.subscribecount=1800"
+
+        # Throw a 429 if more than 5 POST requests to subscription URL within 30 minutes
+        SecRule IP:subscribecount "@gt 5" "id:1101,chain,deny,status:429,log,msg:'%{REMOTE_ADDR} rate limited'"
+        SecRule REQUEST_METHOD "POST" chain
+        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+
+        # Give a friendly-ish error message when rate limiting
+        ErrorDocument 429 "You are doing that too often. Please try again later.\n"
+
+        # Deny subscription requests from IPs found on blocklist within 24 hours (cached hits)
+        SecRule IP:spam "@gt 0" "id:1200,phase:1,chain,deny,status:430,msg:'Cached blocklist hit for %{REMOTE_ADDR}'"
+        SecRule REQUEST_METHOD "POST" chain
+        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+
+        # Deny subscription requests from IPs listed on b.barracudacentral.org blocklist
+        SecRule REQUEST_METHOD "POST" "id:1201,chain,deny,status:430,log,msg:'%{REMOTE_ADDR} listed on b.barracudacentral.org blocklist'"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        SecRule REMOTE_ADDR "@rbl b.barracudacentral.org" "setvar:IP.spam=1,expirevar:IP.spam=86400"
+
+        # Deny subscription requests from IPs listed on xbl.spamhaus.org blocklist
+        SecRule REQUEST_METHOD "POST" "id:1202,chain,deny,status:430,log,msg:'%{REMOTE_ADDR} listed on xbl.spamhaus.org blocklist'"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        SecRule REMOTE_ADDR "@rbl xbl.spamhaus.org" "setvar:IP.spam=1,expirevar:IP.spam=86400"
+
+        # Deny subscription requests from IPs listed on z.mailspike.net blocklist
+        SecRule REQUEST_METHOD "POST" "id:1203,chain,deny,status:430,log,msg:'%{REMOTE_ADDR} listed on z.mailspike.net blocklist'"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        SecRule REMOTE_ADDR "@rbl z.mailspike.net" "setvar:IP.spam=1,expirevar:IP.spam=86400"
+
+        # Deny subscription requests from IPs listed on problems.dnsbl.sorbs.net blocklist
+        SecRule REQUEST_METHOD "POST" "id:1204,chain,deny,status:430,log,msg:'%{REMOTE_ADDR} listed on problems.dnsbl.sorbs.net blocklist'"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        SecRule REMOTE_ADDR "@rbl problems.dnsbl.sorbs.net" "setvar:IP.spam=1,expirevar:IP.spam=86400"
+
+        # Give an error message when denying hosts listed on a blocklist
+        ErrorDocument 430 "Subscription Error: Your IP address is present on one or more DNS blocklists. Please coordinate removal of the IP or try again from another location. Please see https://en.wikipedia.org/wiki/DNSBL for more information.\n"
+
+    </IfModule>
+
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
     <Location />
