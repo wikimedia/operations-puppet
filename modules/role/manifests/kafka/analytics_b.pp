@@ -9,7 +9,6 @@ class role::kafka::analytics_b {
     system::role { 'kafka_analytics': }
 
     include ::role::kafka::analytics::broker
-    include ::profile::kafka::mirror
 
     include ::standard
     include ::base::firewall
