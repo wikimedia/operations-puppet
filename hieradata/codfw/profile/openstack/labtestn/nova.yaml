@@ -11,8 +11,13 @@ profile::openstack::labtestn::nova::fixed_range: '172.16.128.0/21'
 # profile::openstack::labtestn::nova::network_public_interface: 'eth0'
 # profile::openstack::labtestn::nova::network_public_ip: '172.16.129.254'
 profile::openstack::labtestn::nova::zone: 'codfw'
-profile::openstack::labtestn::nova::scheduler_pool: ['labtestvirt2003.codfw.wmnet']
 profile::openstack::labtestn::nova::db_host: 'labtestcontrol2003.wikimedia.org'
 profile::openstack::labtestn::nova::live_migration_uri: 'test'
 profile::openstack::labtestn::nova::physical_interface_mappings:
   cloudinstances2b: 'eth1.2105'
+
+profile::openstack::labtestn::nova::scheduler_pool:
+  - labtestvirt2003
+  - labtestmetal2001
+
+profile::openstack::labtestn::nova::default_schedule_zone: 'nova'
