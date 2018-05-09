@@ -95,7 +95,7 @@ class role::eventbus::eventbus {
         statsd           => hiera('statsd'),
         statsd_prefix    => 'eventbus',
         logstash_host    => hiera('logstash_host'),
-        logstash_port    => hiera('logstash_json_lines_port', 11514),
+        logstash_port    => hiera('logstash_gelf_port', 12201),
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
