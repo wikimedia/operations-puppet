@@ -20,6 +20,27 @@
     SSLCertificateKeyFile /etc/acme/key/lists.key
     <%= @ssl_settings.join("\n    ") %>
 
+    <IfModule security2_module>
+        SecRuleEngine On
+        SecRequestBodyAccess Off
+
+        # Set up the IP collection
+        SecAction "id:1000,phase:1,initcol:IP=%{REMOTE_ADDR},pass,nolog"
+
+        # Increment subscribe counter and set expiration to 30 minutes
+        SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:IP.subscribecount=+1,expirevar:IP.subscribecount=1800"
+
+        # Throw a 429 if more than 5 POST requests to subscription URL within 30 minutes
+        SecRule IP:subscribecount "@gt 5" "id:1101,chain,deny,status:429,log,msg:'%{REMOTE_ADDR} rate limited'"
+        SecRule REQUEST_METHOD "POST" chain
+        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+
+        # Give a friendly-ish error message when rate limiting
+        ErrorDocument 429 "You are doing that too often. Please try again later.\n"
+
+    </IfModule>
+
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
     <Location />
