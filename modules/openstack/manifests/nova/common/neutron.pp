@@ -5,6 +5,7 @@ class openstack::nova::common::neutron(
     $db_host,
     $db_name,
     $nova_controller,
+    $scheduler_pool,
     $ldap_user_pass,
     $rabbit_user,
     $rabbit_host,
