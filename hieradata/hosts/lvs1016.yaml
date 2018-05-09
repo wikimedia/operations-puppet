@@ -8,4 +8,4 @@ profile::lvs::interface_tweaks:
   enp5s0f1:
     txqlen: 10000
 profile::pybal::bgp: "no"
-profile::pybal::primary: false
+
