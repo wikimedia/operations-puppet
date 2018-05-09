@@ -44,7 +44,3 @@ profile::kafka::broker::ssl_enabled: false
 # Enable basic ACL handling via Zookeeper stored rules
 # More info https://phabricator.wikimedia.org/T167304#3478277
 profile::kafka::broker::auth_acls_enabled: false
-
-# TEMPORARILY STOP ALL Kafka main MirrorMaker during
-# Kafka upgrade in T167039.
-profile::kafka::mirror::enabled: false
