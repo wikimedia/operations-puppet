@@ -28,7 +28,7 @@ class profile::pybal(
     $global_options = {
         'bgp' => $bgp,
         'bgp-peer-address' => $::hostname ? {
-            /^lvs100[1-3]$/ => '208.80.154.196', # cr1-eqiad
+            /^lvs100[1-2]$/ => '208.80.154.196', # cr1-eqiad
             /^lvs100[4-6]$/ => '208.80.154.197', # cr2-eqiad
             'lvs1016'       => '208.80.154.196', # cr1-eqiad
             /^lvs200[1-3]$/ => '208.80.153.192', # cr1-codfw

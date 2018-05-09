@@ -1226,7 +1226,15 @@ node /^logstash100[8-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /lvs100[1-6]\.wikimedia\.org/ {
+node /lvs100[1-2]\.wikimedia\.org/ {
+    role(lvs::balancer)
+}
+
+node 'lvs1003.wikimedia.org' {
+    role(spare::system)
+}
+
+node /lvs100[4-6]\.wikimedia\.org/ {
     role(lvs::balancer)
 }
 
