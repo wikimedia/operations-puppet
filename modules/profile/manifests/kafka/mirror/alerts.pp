@@ -83,8 +83,7 @@ define profile::kafka::mirror::alerts(
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-produce_rate":
         description => "Kafka MirrorMaker ${mirror_name} average message produce rate in last ${monitoring_period}",
-        # This metric does not have the mirror_name label, so we target it in the client_id instead.
-        query       => "scalar(sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{client_id=~\"kafka-mirror-.+-${mirror_name}@[0-9]+\"} [${monitoring_period}])))",
+        query       => "scalar(sum(avg_over_time(kafka_producer_producer_metrics_record_send_rate{mirror_name=\"${mirror_name}\"} [${monitoring_period}])))",
     }
 
     monitoring::check_prometheus { "kafka-mirror-${mirror_name}-dropped_messages":
