@@ -4,6 +4,8 @@ db lists, and a file with settings for how many dumps of a
 wiki from each list we keep,
 check each wiki dump directory to see if there are dumps than
  are desired, and remove the oldest one(s) if needed.
+If some files are to be saved for some number of dumps,
+remove all but files that mach specified regexes from older dumps.
 """
 
 
@@ -25,7 +27,7 @@ def usage(message=None):
         sys.stderr.write("\n")
     usage_message = """
 Usage: cleanup_old_xmldumps.py --keeps_conffile path --wikilists dir
-           [--subdirs] [--dryrun] [--help]
+           [--preserve_list path] [--subdirs] [--dryrun] [--help]
 
 Given a directory with files with lists of wikis,
 settings in a file describing how many dumps to keep
@@ -38,37 +40,54 @@ ignored.
 If there are more dump directories than specified, the
 oldest ones will be removed.  Age is determined by
 looking at the name of the directory, not atime/mtime/ctime.
+If some files should be kept for some number of dumps,
+rather than removing the dumps entirely, all files that do not
+match the patterns in the file given to the --preserve-list
+argument will be removed, for the specified number of
+dumps older than the dump runs kept.
 
 Options:
 
-  --dumpsdir   (-d):  path to root of dumps directory tree
-  --keep       (-k):  path to config file describing how many
-                      dumps per wiki we keep, for each file
-                      containing a list of wikis
-  --wikilists  (-w):  directory of files with lists of wikis
-                      for which to do cleanup
-  --subdirs    (-s):  directories in treepath must
-                      match this expression in order to
-                      be examined and cleaned up.
-                      default: '*wik*'
-  --dryrun     (-D):  don't remove anything, display what
-                      would be removed
-  --help       (-h):  display this usage message
+  --dumpsdir      (-d): path to root of dumps directory tree
+  --keep          (-k): path to config file describing how many
+                        dumps per wiki we keep, for each file
+                        containing a list of wikis
+  --wikilists     (-w): directory of files with lists of wikis
+                        for which to do cleanup
+  --preserve_list (-p): list of regexes of filenames which
+                        will be kept, in the case that some dumps
+                        are only to be partially removed
+  --subdirs       (-s): directories in treepath must
+                        match this expression in order to
+                        be examined and cleaned up.
+                        default: '*wik*'
+  --dryrun        (-D): don't remove anything, display what
+                        would be removed
+  --help          (-h): display this usage message
 
 File formats:
    Wiki lists should have one wiki name per line, and this name
    should be the name of the wikis' dump directory in the dump
    tree.
    The keep config file should have one entry per line
-   with the name of the wiki list file, a colon, and the number of
-   dumps to keep.  Example: enwiki:3
+   with the name of the wiki list file, a colon, the number of
+   dumps to keep, an optional colon, and the number of dumps for
+   which to keep only the files that patch patterns in the preserve
+   list.
+
+   Examples:
+      enwiki:3    -- for enwiki, keep only 3 full dumps
+      frwiki:3:2  -- for frwiki, keep only 3 full dumps, but for
+                     the next 2 older dumps, keep the files
+                     that match patterns in the preserve_list
+
    Note that blank lines or lines starting with '#' in both types
    of files will be skipped.
    An entry 'default:number' will be the value used for any wikis
    not in one of the specified lists.
 Example:
   cleanup_old_xmldumps.py -k /etc/dumps/xml_keeps.conf \
-           -d /mnt/dumpsdata/xmldatadumps/public -w /etc/dumps/dblists
+           -d /mnt/dumpsdata/xmldatadumps/public -w /etc/dumps/dblists \
 """
     sys.stderr.write(usage_message)
     sys.exit(1)
@@ -103,12 +122,14 @@ def get_allwikis(dumpsdir, match):
 
 def get_keeps(keeps_conffile):
     """
-    read a config file with one entry per line of format wikilist:numtokeep
-    and return a dict.
-    blank and comment lines are skipped, error messages will be diaplyed about
+    read a config file with one entry per line of format
+       wikilist:numtokeep[:partialkeeps]
+    and return two dicts, one of keep values and one of partial keep values
+    blank and comment lines are skipped, error messages will be displayed about
     badly formatted lines and they will be skipped but processing will continue.
     """
     keeps = {}
+    partialkeeps = {}
     with open(keeps_conffile, "r") as fhandle:
         lines = fhandle.readlines()
     for line in lines:
@@ -118,21 +139,78 @@ def get_keeps(keeps_conffile):
             sys.stderr.write("Bad entry in keeps config file: " + line)
             continue
         listname, keepvalue = line.split(':', 1)
+        if ':' in keepvalue:
+            keepvalue, partialsvalue = keepvalue.split(':', 1)
+        else:
+            partialsvalue = '0'
         keepvalue = keepvalue.strip()
-        if not keepvalue.isdigit():
+        partialkeepvalue = partialsvalue.strip()
+        if not keepvalue.isdigit() or not partialkeepvalue.isdigit():
             sys.stderr.write("Bad entry in keeps config file, bad keeps value: " + line)
             continue
         keeps[listname] = keepvalue
-    return keeps
+        partialkeeps[listname] = partialkeepvalue
+    return keeps, partialkeeps
+
+
+# *-pages-articles[0-9]+.xml*(bz2|7z)
+# *-pages-meta-current[0-9]+.xml*(bz2|7z)
+# *-pages-meta-history[0-9]+.xml*(bz2|7z)
+# *-flowhistory.xml.gz
+# dumpruninfo.txt
+def is_keeper(filename, patterns):
+    """
+    return true if filename matches one of the patterns,
+    false otherwise
+    """
+    if patterns is None:
+        return True
+
+    for pattern in patterns:
+        result = pattern.search(filename)
+        if result:
+            return True
+    return False
+
+
+def file_is_redundant(filename, files):
+    """
+    if we have the 7z output file, then the corresponding bz2 file
+    is redundant. We'll keep the small 7z file and not also the
+    huge bz2 file.
+    """
+    if not filename.endswith('bz2'):
+        return False
+    better_file = filename[0:-4] + '.7z'
+    if better_file in files:
+        return True
+    return False
+
+
+def get_preserve_patterns(path):
+    """
+    read list of regexes one per line from the
+    specified file, and return the list, or
+    None on error
+    """
+    if path is None:
+        return None
+    with open(path, "r") as fhandle:
+        lines = fhandle.readlines()
+        lines = [line.strip() for line in lines
+                 if line and not line.startswith('#')]
+    return lines
 
 
 class DumpsCleaner(object):
     """
     methods for finding and cleaning up old wiki dump dirs and 'latest' links
     """
-    def __init__(self, keeps_conffile, wikilists_dir, dumpsdir, wikipattern, dryrun):
-        self.keeps_per_list = get_keeps(keeps_conffile)
+    def __init__(self, keeps_conffile, preservelist_path, wikilists_dir,
+                 dumpsdir, wikipattern, dryrun):
+        self.keeps_per_list, self.partials_per_list = get_keeps(keeps_conffile)
         self.wikilists = get_wikilists(wikilists_dir, self.keeps_per_list.keys())
+        self.preserve_patterns = get_preserve_patterns(preservelist_path)
         self.dumpsdir = dumpsdir
         self.wikistoclean = get_allwikis(self.dumpsdir, wikipattern)
         self.dryrun = dryrun
@@ -198,17 +276,54 @@ class DumpsCleaner(object):
             return self.keeps_per_list['default']
         return None
 
-    def cleanup_dirs(self, wiki, dirs):
+    def get_partials_for_wiki(self, wiki):
         """
-        remove dumpsdir/wiki/dirname and all its contents
-        for all the dirnames in the dirs list
+        find the number of runs for which we will clean up only
+        some files for the specified wiki,
+        by checking through the various partials conf settings,
+        falling back to the default setting, if there is one
+        if no setting is found, return None
         """
-        for dirname in dirs:
-            to_remove = os.path.join(self.dumpsdir, wiki, dirname)
+        for wikilist in self.wikilists:
+            if wiki in self.wikilists[wikilist]:
+                return self.partials_per_list[wikilist]
+        if 'default' in self.partials_per_list:
+            return self.partials_per_list['default']
+        return None
+
+    def cleanup_partial(self, wiki, dirname):
+        """
+        remove eveything but files that match list of
+        regexes, from specified dump directory for the given wiki
+        """
+        dirpath = os.path.join(self.dumpsdir, wiki, dirname)
+        files = os.listdir(dirpath)
+        files = [filename for filename in files
+                 if not is_keeper(filename, self.preserve_patterns) and
+                 not file_is_redundant(filename, files)]
+        for filename in files:
+            to_remove = os.path.join(dirpath, filename)
             if self.dryrun:
                 print "would remove ", to_remove
             else:
-                shutil.rmtree("%s" % to_remove)
+                os.unlink(to_remove)
+
+    def cleanup_dirs(self, wiki, dirs, partial=False):
+        """
+        remove dumpsdir/wiki/dirname and all its contents
+        for all the dirnames in the dirs list, except for
+        those for which we are expected to keep some files
+        (if partial is True)
+        """
+        for dirname in dirs:
+            if partial:
+                self.cleanup_partial(wiki, dirname)
+            else:
+                to_remove = os.path.join(self.dumpsdir, wiki, dirname)
+                if self.dryrun:
+                    print "would remove ", to_remove
+                else:
+                    shutil.rmtree("%s" % to_remove)
 
     def cleanup_wiki_latestfiles(self, wiki):
         """
@@ -239,13 +354,25 @@ class DumpsCleaner(object):
                         print "failed to remove", filepath, filepath + '-rss.xml'
                         continue
 
-    def cleanup_wiki(self, keeps, wiki):
+    def cleanup_wiki(self, keeps, partials, wiki):
         """
-        remove oldest dumps if we have more than the number to keep
+        remove oldest dumps if we have more than the number to keep;
+        keep some files around for the specified number of most
+        recent dumps of the ones we would otherwise remove completely
         """
         dumps = self.get_dumps(wiki)
-        if len(dumps) > int(keeps):
-            self.cleanup_dirs(wiki, dumps[0:len(dumps) - int(keeps)])
+        to_remove = len(dumps) - int(keeps)
+        if to_remove <= 0:
+            return
+        if partials:
+            remove_completely = to_remove - int(partials)
+        if remove_completely > 0:
+            self.cleanup_dirs(wiki, dumps[0:remove_completely])
+        else:
+            remove_completely = 0
+        self.cleanup_dirs(wiki,
+                          dumps[remove_completely, remove_completely + int(partials)],
+                          partial=True)
 
     def clean(self):
         """
@@ -261,7 +388,10 @@ class DumpsCleaner(object):
             tokeep = self.get_keep_for_wiki(wiki)
             if tokeep is None:
                 continue
-            self.cleanup_wiki(tokeep, wiki)
+            partials = self.get_partials_for_wiki(wiki)
+            if partials is None:
+                partials = 0  # no setting available
+            self.cleanup_wiki(tokeep, partials, wiki)
 
 
 def check_args(args, remainder):
@@ -281,14 +411,15 @@ def main():
 
     keeps_conffile = None
     dumpsdir = None
+    preservelist_file = None
     subdirs = '[a-z0-9]*wik[a-z0-9]*'
     wikilists_dir = None
     dryrun = False
 
     try:
         (options, remainder) = getopt.gnu_getopt(
-            sys.argv[1:], "d:k:s:w:Dh",
-            ["dumpsdir=", "keep=", "subdirs=", "wikilists=", "dryrun", "help"])
+            sys.argv[1:], "d:k:p:s:w:Dh",
+            ["dumpsdir=", "keep=", "preservelist=", "subdirs=", "wikilists=", "dryrun", "help"])
 
     except getopt.GetoptError as err:
         usage("Unknown option specified: " + str(err))
@@ -298,6 +429,8 @@ def main():
             dumpsdir = val
         elif opt in ["-k", "--keep"]:
             keeps_conffile = val
+        elif opt in ["-p", "--preservelist"]:
+            preservelist_file = val
         elif opt in ["-s", "--subdirs"]:
             subdirs = val
         elif opt in ["-w", "--wikilists"]:
@@ -315,7 +448,8 @@ def main():
     if not os.path.exists(keeps_conffile):
         usage("no such file found: " + keeps_conffile)
 
-    cleaner = DumpsCleaner(keeps_conffile, wikilists_dir, dumpsdir, subdirs, dryrun)
+    cleaner = DumpsCleaner(keeps_conffile, preservelist_file, wikilists_dir,
+                           dumpsdir, subdirs, dryrun)
     cleaner.clean()
 
 
