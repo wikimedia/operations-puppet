@@ -3,6 +3,16 @@ admin::groups:
 cluster: analytics_kafka
 nagios_group: analytics_eqiad
 
+
+
+# TODO: remove these MirrorMaker configs as part of T189464
+
+
+# DISABLE 0.9 MirrorMaker.  This is being taken over by the 1.1.0 instances running
+# on jumbo.
+profile::kafka::mirror::enabled: false
+
+
 # Mirror all topics from main-eqiad to jumbo-eqiad.
 # We explictliy include the datacenter name in the Kafka cluster
 # Name here as we don't intend to ever mirror from main-codfw to jumbo.
@@ -35,3 +45,4 @@ profile::kafka::mirror::properties:
     # These may not be necessary after upgrading Kafka MirrorMaker to 1.x
     "request.timeout.ms": 120000
     "batch.size": 65536
+

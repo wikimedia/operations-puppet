@@ -17,12 +17,6 @@ class role::kafka::jumbo::broker {
     include ::role::ipsec
     class { '::ferm::ipsec_allow': }
 
-    # Mirror from other Kafka cluster to jumbo.
-    # TODO:  The new 0.11 Kafka MirrorMaker doesn't work with Kafka Brokers < 0.9.
-    # Kafka main clusters are still on 0.9, so we can't colocate MirrorMaker alongside
-    # of the newer 0.11 brokers in the jumbo cluster.  We want to do this, but we have
-    # to wait until the main Kafka clusters are upgraded, which might be a while.
-    # For now, we mirror main cluster topics to jumbo by including
-    # profile::kafka::jumbo::mirror elsewhere on nodes with older Kafka client versions.
-    # include profile::kafka::mirror
+    # Mirror main-eqiad -> jumbo-eqiad
+    include profile::kafka::mirror
 }
