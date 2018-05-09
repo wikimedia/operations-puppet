@@ -108,21 +108,23 @@ define prometheus::server (
     }
 
     file { "${rules_path}/alerts_default.conf":
-        ensure  => file,
-        mode    => '0444',
-        owner   => 'root',
-        source  => 'puppet:///modules/prometheus/rules/alerts_default.conf',
-        notify  => Exec["${service_name}-reload"],
-        require => File[$rules_path],
+        ensure       => file,
+        mode         => '0444',
+        owner        => 'root',
+        source       => 'puppet:///modules/prometheus/rules/alerts_default.conf',
+        notify       => Exec["${service_name}-reload"],
+        require      => File[$rules_path],
+        validate_cmd => '/usr/bin/promtool check-rules %',
     }
 
     file { "${base_path}/prometheus.yml":
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        notify  => Exec["${service_name}-reload"],
-        content => ordered_yaml($prometheus_config),
+        ensure       => present,
+        mode         => '0444',
+        owner        => 'root',
+        group        => 'root',
+        notify       => Exec["${service_name}-reload"],
+        content      => ordered_yaml($prometheus_config),
+        validate_cmd => '/usr/bin/promtool check-config %',
     }
 
     file { [$base_path, $metrics_path, $targets_path, $rules_path]:
@@ -134,7 +136,6 @@ define prometheus::server (
 
     exec { "${service_name}-reload":
         command     => "/bin/systemctl reload ${service_name}",
-        onlyif      => "/usr/bin/promtool check-config ${base_path}/prometheus.yml",
         refreshonly => true,
     }
 

@@ -26,17 +26,17 @@ define prometheus::rule (
     $file_path = "${instance_path}/rules/${title}"
 
     file { $file_path:
-        ensure  => file,
-        mode    => '0444',
-        owner   => 'root',
-        source  => $source,
-        content => $content,
-        notify  => Exec["${service_name}-rules-reload"],
+        ensure       => file,
+        mode         => '0444',
+        owner        => 'root',
+        source       => $source,
+        content      => $content,
+        notify       => Exec["${service_name}-rules-reload"],
+        validate_cmd => '/usr/bin/promtool check-rules %',
     }
 
     exec { "${service_name}-rules-reload":
         command     => "/bin/systemctl reload ${service_name}",
-        onlyif      => "/usr/bin/promtool check-rules ${file_path}",
         refreshonly => true,
     }
 }
