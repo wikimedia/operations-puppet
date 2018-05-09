@@ -10,12 +10,13 @@ counter varnish_resourceloader_resp by status, cache_control
         }
         len($maxage) > 0 {
             $maxage == "300" {
-                varnish_resourceloader_resp[$status]["short"]++
+                $cache_control = "short"
             } else {
-                varnish_resourceloader_resp[$status]["long"]++
+                $cache_control = "long"
             }
         } else {
-            varnish_resourceloader_resp[$status]["no"]++
+            $cache_control = "no"
         }
+        varnish_resourceloader_resp[$status][$cache_control]++
     }
 }
