@@ -20,6 +20,24 @@
     SSLCertificateKeyFile /etc/acme/key/lists.key
     <%= @ssl_settings.join("\n    ") %>
 
+    <IfModule security2_module>
+        SecRuleEngine On
+        SecRequestBodyAccess Off
+
+        # Set up the IP collection
+        SecAction "id:1000,phase:1,initcol:IP=%{REMOTE_ADDR},pass,nolog"
+
+        # Deny subscription requests from IPs found on blocklist within 24 hours (cached hits)
+        SecRule IP:spam "@gt 0" "id:1001,phase:1,chain,deny,msg:'Cached blocklist hit for %{REMOTE_ADDR}'"
+        SecRule REQUEST_METHOD "POST" chain
+        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+
+        # Deny subscription requests from IPs listed on zen.spamhaus.org blocklist
+        SecRule REQUEST_METHOD "POST" "id:1002,chain,deny,log,msg:'%{REMOTE_ADDR} listed on zen.spamhaus.org blocklist'"
+        SecRule REQUEST_URI "\/mailman\/subscribe.*" chain
+        SecRule REMOTE_ADDR "@rbl zen.spamhaus.org" "setvar:IP.spam=1,expirevar:IP.spam=86400"
+    </IfModule>
+
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
     <Location />
