@@ -33,7 +33,7 @@ class lvs::configuration {
         },
         'low-traffic' => $::realm ? {
             'production' => $::site ? {
-                'eqiad' => [ 'lvs1003', 'lvs1006', 'lvs1016' ],
+                'eqiad' => [ 'lvs1016', 'lvs1006' ],
                 'codfw' => [ 'lvs2003', 'lvs2006' ],
                 'esams' => [ ],
                 'ulsfo' => [ ],
