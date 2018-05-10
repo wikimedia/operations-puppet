@@ -347,7 +347,7 @@ node 'db1075.eqiad.wmnet' {
     role(mariadb::core)
 }
 
-node /^db1(072|077|078|123)\.eqiad\.wmnet/ {
+node /^db1(077|078|123)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -563,6 +563,9 @@ node 'db1059.eqiad.wmnet' {
 }
 
 node 'db1053.eqiad.wmnet' {
+    role(mariadb::misc::phabricator)
+}
+node 'db1072.eqiad.wmnet' {
     role(mariadb::misc::phabricator)
 }
 
