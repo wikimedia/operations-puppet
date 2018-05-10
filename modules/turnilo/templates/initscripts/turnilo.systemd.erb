@@ -1,0 +1,20 @@
+# NOTE: This file is managed by Puppet
+# Systemd unit for Turnilo UI
+[Unit]
+Description="turnilo service"
+After=network.target
+
+[Service]
+User=turnilo
+Group=turnilo
+Environment="NODE_PATH=<%= @turnilo_deployment_dir %>/node_modules"
+Restart=always
+RestartSec=2s
+# wait 60 seconds for a graceful restart before killing the master
+TimeoutStopSec=60
+WorkingDirectory=<%= @turnilo_deployment_dir %>
+ExecStart=/usr/bin/firejail --profile=/etc/firejail/turnilo.profile -- /usr/bin/nodejs <%= @turnilo_deployment_dir %>/node_modules/.bin/turnilo --config /etc/turnilo/config.yaml
+SyslogIdentifier=turnilo
+
+[Install]
+WantedBy=multi-user.target
