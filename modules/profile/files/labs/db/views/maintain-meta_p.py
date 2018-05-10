@@ -30,18 +30,21 @@ import yaml
 
 
 class SchemaOperations():
-    def __init__(self, dry_run, db, cursor):
-        self.dry_run = dry_run
+    def __init__(self, db, cursor):
         self.db = db
         self.cursor = cursor
 
     def write_execute(self, query):
-        """ Do operation or simulate
+        """ Log and run a query
         :param query: str
         """
         logging.debug("SQL: {}".format(query.encode('utf-8')))
-        if not self.dry_run:
-            self.cursor.execute(query)
+        self.cursor.execute(query)
+
+
+class DrySchemaOperations():
+    def write_execute(self, query):
+        logging.debug("(dry-run) SQL: {}".format(query.encode('utf-8')))
 
 
 def force_to_unicode(text):
@@ -134,7 +137,7 @@ def main():
     argparser.add_argument(
         "--dry-run",
         help=("Give this parameter if you don't want the script to actually"
-              " make changes."),
+              " make changes. Implies --debug."),
         action="store_true"
     )
 
@@ -168,7 +171,7 @@ def main():
 
     logging.basicConfig(
         format='%(asctime)s %(levelname)s %(message)s',
-        level=logging.DEBUG if args.debug else logging.INFO,
+        level=logging.DEBUG if (args.debug or args.dry_run) else logging.INFO,
     )
 
     logging.debug(args)
@@ -180,16 +183,17 @@ def main():
             logging.critical(exc)
             sys.exit(1)
 
-    dbh = pymysql.connect(
-        user=config["mysql_user"],
-        passwd=config["mysql_password"],
-        unix_socket=args.mysql_socket,
-        charset="utf8"
-    )
+    if args.dry_run:
+        ops = DrySchemaOperations()
+    else:
+        dbh = pymysql.connect(
+            user=config["mysql_user"],
+            passwd=config["mysql_password"],
+            unix_socket=args.mysql_socket,
+            charset="utf8"
+        )
 
-    ops = SchemaOperations(args.dry_run,
-                           dbh,
-                           dbh.cursor())
+        ops = SchemaOperations(dbh, dbh.cursor())
 
     seed_schema(ops)
     ops.write_execute("START TRANSACTION;")
