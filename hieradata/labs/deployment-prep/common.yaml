@@ -343,6 +343,10 @@ scap::sources:
   jobrunner/jobrunner:
     repository: mediawiki/services/jobrunner
 
+  # Proton / chromium-render
+  proton/deploy:
+    repository: mediawiki/services/chromium-render/deploy
+
   # RESTBase
   restbase/deploy: {}
 
