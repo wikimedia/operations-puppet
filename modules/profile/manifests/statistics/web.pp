@@ -24,6 +24,8 @@ class profile::statistics::web(
     class { '::statistics::sites::yarn': }
     # Proxy to securely access Pivot (authentication via LDAP)
     class { '::statistics::sites::pivot': }
+        # Proxy to securely access Turnilo (authentication via LDAP)
+    class { '::statistics::sites::turnilo': }
     # Proxy to Hue (not authenticated via LDAP, delegated to app)
     class { '::statistics::sites::hue': }
 

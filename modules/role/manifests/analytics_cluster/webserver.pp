@@ -11,6 +11,8 @@ class role::analytics_cluster::webserver {
 
     include ::profile::hue
     include ::profile::druid::pivot
+    # Turnilo will likely replace pivot.
+    include ::profile::druid::turnilo
 
     include ::profile::base::firewall
     include standard
