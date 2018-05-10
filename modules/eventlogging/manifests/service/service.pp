@@ -36,8 +36,8 @@
 #   Output log file for this service.
 #   Default: $eventlogging::log_dir/eventlogging-service-${basename}.log
 #
-# [*access_log_level*]
-#   Log level for access request logging.  Default: WARNING, which will
+# [*noisy_log_level*]
+#   Log level for access request and kafka logging.  Default: WARNING, which will
 #   not log 2xx requests.  If you want 2xx requests, set this to INFO.
 #
 # [*log_config_template*]
@@ -65,7 +65,7 @@ define eventlogging::service::service(
     $port                = 8085,
     $num_processes       = undef, # default 1
     $log_file            = undef,
-    $access_log_level    = 'WARNING',
+    $noisy_log_level     = 'WARNING',
     $log_config_template = 'eventlogging/log.cfg.yaml.erb',
     $logstash_host       = undef,
     $logstash_port       = 12201,
