@@ -1,5 +1,4 @@
 profile::dumps::distribution::datasets::cleanup::isreplica: false
-profile::dumps::distribution::datasets::cleanup::labscopy: true
 profile::dumps::distribution::xmldumpspublicdir: '/srv/dumps/public'
 profile::dumps::distribution::miscdumpsdir: '/srv/dumps'
 profile::dumps::distribution::dumpstempdir: '/srv/dumps/temp'
