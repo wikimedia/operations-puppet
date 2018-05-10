@@ -2030,6 +2030,14 @@ node /^snapshot1007\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc)
 }
 
+node /^snapshot1008\.eqiad\.wmnet/ {
+    # NOTE: New snapshot hosts must also be manually added
+    # to hiera/common.yaml:dataset_clients_snapshots,
+    # hieradata/hosts/ with a file named after the host,
+    # and modules/scap/files/dsh/group/mediawiki-installation
+    role(dumps::generation::worker::dumper_misc_crons_only)
+}
+
 # mediawiki maintenance servers (https://wikitech.wikimedia.org/wiki/Terbium)
 node 'terbium.eqiad.wmnet', 'wasat.codfw.wmnet' {
     role(mediawiki_maintenance)
