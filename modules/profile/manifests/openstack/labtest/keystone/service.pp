@@ -28,6 +28,8 @@ class profile::openstack::labtest::keystone::service(
     $puppetmaster_hostname = hiera('profile::openstack::labtest::puppetmaster_hostname'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
+    $labtestn_nova_controller = hiera('profile::openstack::labtestn::nova_controller'),
+    $labtestn_nova_controller_standby = hiera('profile::openstack::labtestn::nova_controller_standby'),
     ) {
 
     class{'::profile::openstack::base::keystone::db':
@@ -86,5 +88,13 @@ class profile::openstack::labtest::keystone::service(
         active => $::fqdn == $nova_controller,
     }
     contain '::openstack::keystone::monitor::projects_and_users'
+
+    # Since the DB for keystone is local and we want keystone
+    # in the other codfw deployment to access we add this rule
+    ferm::rule{'keystone_for_cross_region':
+        ensure => 'present',
+        rule   => "saddr (${labtestn_nova_controller} ${labtestn_nova_controller_standby}
+                             ) proto tcp dport (3306) ACCEPT;",
+    }
 }
 
