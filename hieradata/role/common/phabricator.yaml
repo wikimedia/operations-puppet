@@ -37,3 +37,6 @@ phabricator_cluster_search:
         roles:
           read: true
           write: true
+
+phabricator_swift_secret: 'phabricator/swift_key'
+phabricator_swift_endpoint: 'http://ms-fe.svc.eqiad.wmnet'

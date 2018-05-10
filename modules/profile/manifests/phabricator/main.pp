@@ -21,6 +21,8 @@ class profile::phabricator::main (
     $passive_server = hiera('phabricator_server_failover', undef),
     $logmail = hiera('phabricator_logmail', false),
     $aphlict_enabled = hiera('phabricator_aphlict_enabled', false),
+    $swift_secret = hiera('phabricator_swift_secret', undef),
+    $swift_endpoint = hiera('phabricator_swift_endpoint', undef),
 ){
 
     mailalias { 'root':
@@ -149,6 +151,10 @@ class profile::phabricator::main (
         $mysql_admin_pass = $phab_mysql_admin_pass
     }
 
+    if ($swift_secret) {
+        $swift_key = secret($swift_secret)
+    }
+
     # lint:ignore:arrow_alignment
     class { '::phabricator':
         deploy_target    => $deploy_target,
@@ -181,6 +187,10 @@ class profile::phabricator::main (
             'diffusion.ssh-host'                     => $phab_diffusion_ssh_host,
             'gitblit.hostname'                       => 'git.wikimedia.org',
             'notification.servers'                   => $notification_servers,
+            'storage.swift.key'                      => $swift_key,
+            'storage.swift.account'                  => 'AUTH_phab',
+            'storage.swift.container'                => 'phabfiles',
+            'storage.swift.endpoint'                 => $swift_endpoint,
         },
         conf_files     => $conf_files,
     }
