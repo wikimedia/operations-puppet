@@ -7,9 +7,9 @@ root:
 
 loggers:
     kafka:
-        level: INFO
+        level: <%= @noisy_log_level ? @noisy_log_level : 'WARNING' %>
     tornado.access:
-        level: <%= @access_log_level ? @access_log_level : 'WARNING' %>
+        level: <%= @noisy_log_level ? @noisy_log_level : 'WARNING' %>
     tornado.application:
         level: INFO
     tornado.general:
