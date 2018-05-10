@@ -57,7 +57,7 @@ targetFileBzip2=$targetDir/$filename.$dumpFormat.bz2
 failureFile=/tmp/dumpwikidata$dumpFormat-$dumpName-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidata$dumpFormat-$filename-main.log
 
-shards=6
+shards=8
 
 i=0
 rm -f $failureFile
