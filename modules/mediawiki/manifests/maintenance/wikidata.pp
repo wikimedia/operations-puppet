@@ -63,7 +63,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     # delete 99.1% of logging table ^_^
     cron { 'wikidata-deleteAutoPatrolLogs':
-        ensure  => $ensure,
+        ensure  => absent,
         command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript deleteAutoPatrolLogs.php --wiki wikidatawiki --sleep 3 --check-old --before 20180223210426 >> /var/log/wikidata/deleteAutoPatrolLogs.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
