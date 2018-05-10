@@ -66,7 +66,7 @@ class role::eventbus::eventbus {
     $kafka_output_uri = "${kafka_base_uri}?async=True&retries=3&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}&compression_type=snappy"
     $outputs = [$kafka_output_uri]
 
-    $access_log_level = $::realm ? {
+    $noisy_log_level = $::realm ? {
         'production' => 'WARNING',
         default      => 'INFO',
     }
@@ -88,21 +88,21 @@ class role::eventbus::eventbus {
     }
 
     eventlogging::service::service { 'eventbus':
-        schemas_path     => "${::eventschemas::path}/jsonschema",
-        topic_config     => "${::eventschemas::path}/config/eventbus-topics.yaml",
-        outputs          => $outputs,
-        error_output     => 'file:///srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log',
-        statsd           => hiera('statsd'),
-        statsd_prefix    => 'eventbus',
-        logstash_host    => hiera('logstash_host'),
-        logstash_port    => hiera('logstash_gelf_port', 12201),
+        schemas_path    => "${::eventschemas::path}/jsonschema",
+        topic_config    => "${::eventschemas::path}/config/eventbus-topics.yaml",
+        outputs         => $outputs,
+        error_output    => 'file:///srv/log/eventlogging/eventlogging-service-eventbus.failed_events.log',
+        statsd          => hiera('statsd'),
+        statsd_prefix   => 'eventbus',
+        logstash_host   => hiera('logstash_host'),
+        logstash_port   => hiera('logstash_gelf_port', 12201),
         # The service will be reloaded (SIGHUPed, not restarted)
         # if any of these resources change.
         # Reload if mediawiki/event-schemas has a change.
-        reload_on        =>  Class['::eventschemas'],
-        num_processes    => 16,
-        access_log_level => $access_log_level,
-        require          => [
+        reload_on       =>  Class['::eventschemas'],
+        num_processes   => 16,
+        noisy_log_level => $noisy_log_level,
+        require         => [
             File['/srv/log/eventlogging'],
             Logrotate::Conf['eventlogging-service-eventbus.failed_events'],
         ],
