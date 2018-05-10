@@ -32,7 +32,7 @@ targetFileBzip2=$targetDir/$filename.json.bz2
 failureFile=/tmp/dumpwikidatajson-failure
 mainLogFile=/var/log/wikidatadump/dumpwikidatajson-$filename-main.log
 
-shards=6
+shards=8
 
 i=0
 rm -f $failureFile
