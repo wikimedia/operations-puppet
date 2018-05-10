@@ -66,7 +66,7 @@ class role::eventbus::eventbus {
     $kafka_output_uri = "${kafka_base_uri}?async=True&retries=3&topic=${::site}.{meta[topic]}${kafka_api_version_param}&max_request_size=${producer_request_max_size}&compression_type=snappy"
     $outputs = [$kafka_output_uri]
 
-    $access_log_level = $::realm ? {
+    $noisy_log_level = $::realm ? {
         'production' => 'WARNING',
         default      => 'INFO',
     }
@@ -101,7 +101,7 @@ class role::eventbus::eventbus {
         # Reload if mediawiki/event-schemas has a change.
         reload_on        =>  Class['::eventschemas'],
         num_processes    => 16,
-        access_log_level => $access_log_level,
+        noisy_log_level  => $noisy_log_level,
         require          => [
             File['/srv/log/eventlogging'],
             Logrotate::Conf['eventlogging-service-eventbus.failed_events'],
