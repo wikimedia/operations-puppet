@@ -656,9 +656,12 @@ node 'dbproxy1011.eqiad.wmnet' {
     role(mariadb::proxy::master)
 }
 
-
 node /^dbmonitor[12]001\.wikimedia\.org$/ {
     role(tendril)
+}
+
+node /^debmonitor[12]001\.(eqiad|codfw)\.wmnet$/ {
+    role(spare::system)
 }
 
 node /^dns400[12]\.wikimedia\.org$/ {
