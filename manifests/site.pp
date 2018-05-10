@@ -2005,6 +2005,8 @@ node 'thorium.eqiad.wmnet' {
     # - https://datasets.wikimedia.org (deprecated, redirects to analytics.wm.org/datasets/archive)
     # - https://metrics.wikimedia.org (https://metrics.wmflabs.org/ (Wikimetrics))
     # - https://pivot.wikimedia.org (Imply's Pivot UI for Druid data)
+    # - https://turnilo.wikimedia.org (UI for Druid data, will replace Pivot)
+
     # - https://hue.wikimedia.org (Hadoop User Experience GUI)
     #
     # For a complete and up to date list please check the
