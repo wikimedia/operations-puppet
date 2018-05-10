@@ -45,6 +45,8 @@ class ores::base(
 
     if os_version('debian >= stretch') {
         require_package('hunspell-en-us')
+        # This git-lfs package is only available for stretch.  We need it for deployments in labs.
+        require_package('git-lfs')
     }
     else {
         require_package('myspell-en-us')
