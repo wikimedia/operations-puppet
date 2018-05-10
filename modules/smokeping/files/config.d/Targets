@@ -101,10 +101,10 @@ menu = pfw3-eqiad
 title = pfw3-eqiad.wikimedia.org
 host = pfw3-eqiad.wikimedia.org
 
-+++ tellurium
-menu = tellurium
-title = tellurium.wikimedia.org
-host = tellurium.wikimedia.org
++++ frbast1001
+menu = frbast1001
+title = frbast1001.wikimedia.org
+host = frbast1001.wikimedia.org
 
 +++ thulium
 menu = thulium
