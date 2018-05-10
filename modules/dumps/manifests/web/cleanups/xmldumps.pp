@@ -46,12 +46,14 @@ class dumps::web::cleanups::xmldumps(
     # copied over to the web server, space is available for that new
     # run BEFORE it is copied.
 
-    # on generator hosts we must keep a minimum of 3 so that at any time
+    # on generator nfs hosts we must keep a minimum of 3 so that at any time
     # we have at least one old full dump around, with all revision content
     # which can be stolen from for the next dump run.  This is due to
     # the way we run dumps: one full run, then one run without full
     # revision content, etc.
-    $keep_generator = ['hugewikis.dblist:3', 'bigwikis.dblist:3', 'default:3']
+    # we also need to keep partials of 2 dumps, for prefetch purposes,
+    # just in case there's an issue with the last full run.
+    $keep_generator = ['hugewikis.dblist:3:2', 'bigwikis.dblist:3:2', 'default:3:2']
     $keep_replicas = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
 
     if ($isreplica == true) {
@@ -69,6 +71,27 @@ class dumps::web::cleanups::xmldumps(
         content => "${content}\n",
     }
 
+    # set up the file containing expressions to match dump output
+    # files we need to keep around, for those dumps we don't remove
+    # completely, on the dumps generator nfs hosts.
+    if ($isreplica == true) {
+        $patternslist = ['.*-pages-articles[0-9]+.xml.*(bz2|7z)',
+                         '.*-pages-meta-current[0-9]+.xml.*(bz2|7z)',
+                         '.*-pages-meta-history[0-9]+.xml.*(bz2|7z)',
+                         '.*-flowhistory.xml.gz',
+                         '.*dumpruninfo.txt']
+        $patterns= join($patternslist, "\n")
+        $patternsfile = '/etc/dumps/xml_keep_patterns.conf'
+        file { $patternsfile:
+            ensure  => 'present',
+            path    => $patternsfile,
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            content => "${patterns}\n",
+        }
+    }
+
     file { '/usr/local/bin/cleanup_old_xmldumps.py':
         ensure => 'present',
         path   => '/usr/local/bin/cleanup_old_xmldumps.py',
@@ -82,7 +105,9 @@ class dumps::web::cleanups::xmldumps(
     $args = "-d ${xmldumpsdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
 
     if ($isreplica == true) {
-        $cron_commands = "${xmlclean} ${args}"
+        # patternsfile has patterns that match dump output files we want to keep,
+        # for dump runs we don't want to remove completely, on the dumps generator nfs hosts
+        $cron_commands = "${xmlclean} ${args} -p ${patternsfile}"
     } else {
         # the temp dir only exists on the generating hosts (nfs servers),
         # so only clean up temp files there
