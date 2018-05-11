@@ -9,10 +9,3 @@ $wgLDAPProxyAgentPassword =  array( 'labs' => "<%= @wikitech_nova_ldap_proxyagen
 
 $wgLDAPWriterDN       = array( 'labs' => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org' );
 $wgLDAPWriterPassword = array( 'labs' => "<%= @wikitech_nova_ldap_user_pass %>" );
-
-$wgOpenStackManagerLDAPUser         = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
-$wgOpenStackManagerLDAPUsername     = 'novaadmin';
-$wgOpenStackManagerLDAPUserPassword = "<%= @wikitech_nova_ldap_user_pass %>";
-$wgOpenStackManagerProject          = "admin";
-# This is the ID for the project named above:
-$wgOpenStackManagerProjectId        = "admin";
