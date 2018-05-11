@@ -21,23 +21,23 @@ class profile::prometheus::alerts {
 
     # Monitor Druid segments reported as unavailable by the Coordinator
     monitoring::check_prometheus { 'druid_coordinator_segments_unavailable_analytics':
-        description     => 'Number of segments reported as unavailable by the Druid Coordinators (Analytics cluster)',
+        description     => 'Number of segments reported as unavailable by the Druid Coordinators of the Analytics cluster',
         query           => 'scalar(sum(sum_over_time(druid_coordinator_segment_unavailable_count{cluster="druid_analytics", instance=~"druid.*:8000", datasource=~".*"}[30m])))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
         method          => 'gt',
-        warning         => 5,
-        critical        => 10,
+        warning         => 180,
+        critical        => 200,
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_analytics&var-druid_datasource=All']
     }
 
     monitoring::check_prometheus { 'druid_coordinator_segments_unavailable_public':
-        description     => 'Number of segments reported as unavailable by the Druid Coordinators (Public cluster)',
-        query           => 'scalar(sum(sum_over_time(druid_coordinator_segment_unavailable_count{cluster="druid_public", instance=~"druid.*:8000", datasource=~".*"}[30m])))',
+        description     => 'Number of segments reported as unavailable by the Druid Coordinators of the Public cluster',
+        query           => 'scalar(sum(sum_over_time(druid_coordinator_segment_unavailable_count{cluster="druid_analytics", instance=~"druid.*:8000", datasource=~".*"}[30m])))',
         prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
         method          => 'gt',
-        warning         => 5,
-        critical        => 10,
+        warning         => 180,
+        critical        => 200,
         contact_group   => 'analytics',
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_public&var-druid_datasource=All']
     }
