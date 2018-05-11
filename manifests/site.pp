@@ -298,7 +298,7 @@ node 'db1052.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
-node /^db1(066|067|080|083|089|106|114|119)\.eqiad\.wmnet/ {
+node /^db1(067|080|083|089|106|114|119)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -321,7 +321,7 @@ node 'db1054.eqiad.wmnet' {
 
 # eqiad replicas
 # see also db1090, db1103, db1105 bellow
-node /^db1(074|076|122)\.eqiad\.wmnet/ {
+node /^db1(066|074|076|122)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
