@@ -145,9 +145,6 @@ class profile::backup::director(
     bacula::director::fileset { 'mysql-srv-backups-latest':
         includes => [ '/srv/backups/latest' ]
     }
-    bacula::director::fileset { 'var-lib-carbon-whisper':
-        includes => [ '/var/lib/carbon/whisper' ]
-    }
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]
     }
