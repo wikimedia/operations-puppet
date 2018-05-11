@@ -61,17 +61,6 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
 
-    # delete 99.1% of logging table ^_^
-    cron { 'wikidata-deleteAutoPatrolLogs':
-        ensure  => absent,
-        command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript deleteAutoPatrolLogs.php --wiki wikidatawiki --sleep 3 --check-old --before 20180223210426 >> /var/log/wikidata/deleteAutoPatrolLogs.log 2>&1',
-        user    => $::mediawiki::users::web,
-        minute  => 30,
-        hour    => '*',
-        weekday => '*',
-        require => File['/var/log/wikidata'],
-    }
-
     # clear term_search_key field in wb_terms table
     cron { 'wikidata-clearTermSqlIndexSearchFields':
         ensure  => $ensure,
