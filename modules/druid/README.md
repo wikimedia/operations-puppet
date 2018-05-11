@@ -34,12 +34,15 @@ If you are using HDFS for deep storage, you must also declare a HDFS deep storag
 directory.  You should do this on one of your NameNodes with the
 `druid::cdh::hadoop::deep_storage` define.
 
-Druid must then be configured to use the CDH provided Hadoop Client
+Druid <= 0.10.0 must then be configured to use the CDH provided Hadoop Client
 dependencies. This is done by setting $use_cdh = true on the main druid class.
 This will include the `druid::cdh::hadoop::depdendencies`
 class and create a new hadoop-dependency version of `cdh` and a new
 `druid-hdfs-storage-cdh` extension.  Your Druid jobs must be configured with
 `"hadoopDependencyCoordinates": ["org.apache.hadoop:hadoop-client:cdh"]`.
+
+From Druid 0.10.1 onwards the hadoop-client version is 2.7.3 and the above change
+is not needed anymore.
 
 One more thing!  Snappy + Druid indexing does not seem to work properly!
 Make sure you set

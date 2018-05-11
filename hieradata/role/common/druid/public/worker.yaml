@@ -29,9 +29,6 @@ profile::druid::common::druid_cluster_name: public-eqiad
 # The logical name of the zookeeper cluster that druid should use
 profile::druid::common::zookeeper_cluster_name: druid-public-eqiad
 
-# Make druid build an extension composed of CDH jars.
-profile::druid::common::use_cdh: true
-
 # Use this as the metadata storage database name in MySQL.
 profile::druid::common::metadata_storage_database_name: 'druid_public_eqiad'
 
