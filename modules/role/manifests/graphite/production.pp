@@ -9,6 +9,7 @@ class role::graphite::production {
 
     include ::standard
     include ::profile::base::firewall
+    include ::profile::backup::host
     include ::profile::statsd # all graphite hosts also include statsd
 
     class { '::httpd':
@@ -127,4 +128,6 @@ class role::graphite::production {
         port   => '2004',
         srange => '$PRODUCTION_NETWORKS',
     }
+
+    backup::set { 'var-lib-carbon-whisper-coal': }
 }
