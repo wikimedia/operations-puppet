@@ -118,6 +118,9 @@ class profile::backup::director(
     bacula::director::fileset { 'srv-gerrit-git':
         includes => [ '/srv/gerrit/git' ]
     }
+    bacula::director::fileset { 'var-lib-carbon-whisper-coal':
+        includes => [ '/var/lib/carbon/whisper/coal' ]
+    }
     bacula::director::fileset { 'var-lib-jenkins-backups':
         includes => [ '/var/lib/jenkins/backups' ]
     }
