@@ -31,3 +31,5 @@ profile::kafka::broker::num_io_threads: 4
 
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
+
+profile::kafka::broker::group_initial_rebalance_delay: 10000

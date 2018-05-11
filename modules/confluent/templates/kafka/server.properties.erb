@@ -24,6 +24,13 @@ listeners=PLAINTEXT://:9092
 inter.broker.protocol.version=<%= @inter_broker_protocol_version %>
 
 <% end -%>
+
+<% if @group_initial_rebalance_delay -%>
+# The time, in milliseconds, that the `GroupCoordinator` will delay the initial consumer rebalance.
+# The rebalance will be further delayed by the value of group.initial.rebalance.delay.ms
+# as new members join the group.
+group.initial.rebalance.delay.ms=<%= @group_initial_rebalance_delay %>
+<% end -%>
 <% if @log_message_format_version -%>
 # Specify the message format version the broker will use to append messages to the logs.
 # By setting a particular message format version, the user is certifying that all the
