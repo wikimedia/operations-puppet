@@ -179,6 +179,9 @@
 #   Specify which version of the inter-broker protocol will be used. This is
 #   typically bumped after all brokers were upgraded to a new version. Default: undef
 #
+# [* group_initial_rebalance_delay*]
+#   The time, in milliseconds, that the `GroupCoordinator` will delay the initial consumer rebalance.
+#
 # [*log_message_format_version*]
 #   Specify the message format version the broker will use to append messages to the logs.
 #   By setting a particular message format version, the user is certifying that all the
@@ -299,6 +302,7 @@ class confluent::kafka::broker(
     $offsets_retention_minutes           = 10080,   # 1 week
 
     $inter_broker_protocol_version       = undef,
+    $group_initial_rebalance_delay       = undef,
     $log_message_format_version          = undef,
     $nofiles_ulimit                      = 8192,
     $java_opts                           = undef,

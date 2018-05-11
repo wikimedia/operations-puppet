@@ -110,6 +110,10 @@
 # [*inter_broker_protocol_version*]
 #   Default: undef
 #
+# [* group_initial_rebalance_delay*]
+#   The time, in milliseconds, that the `GroupCoordinator` will delay the initial consumer rebalance.
+#   Default: undef
+#
 # [*log_message_format_version*]
 #   Default: undef
 #
@@ -153,6 +157,7 @@ class profile::kafka::broker(
     $num_replica_fetchers              = hiera('profile::kafka::broker::num_replica_fetchers', undef),
     $nofiles_ulimit                    = hiera('profile::kafka::broker::nofiles_ulimit', 65536),
     $inter_broker_protocol_version     = hiera('profile::kafka::broker::inter_broker_protocol_version', undef),
+    $group_initial_rebalance_delay     = hiera('profile::kafka::broker::group_initial_rebalance_delay', undef),
     $log_message_format_version        = hiera('profile::kafka::broker::log_message_format_version', undef),
 
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
@@ -316,6 +321,7 @@ class profile::kafka::broker(
         default_replication_factor       => min(3, $config['brokers']['size']),
         offsets_topic_replication_factor => min(3, $config['brokers']['size']),
         inter_broker_protocol_version    => $inter_broker_protocol_version,
+        group_initial_rebalance_delay    => $group_initial_rebalance_delay,
         log_message_format_version       => $log_message_format_version,
 
         jvm_performance_opts             => $jvm_performance_opts,
