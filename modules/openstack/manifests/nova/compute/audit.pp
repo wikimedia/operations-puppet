@@ -9,7 +9,7 @@
 # 4.4.0-109-generic = Trusty known good post Meltdown
 # 4.9.0-0.bpo.6-amd64 = Jessie (known good?) post Meltdown
 class openstack::nova::compute::audit(
-    $whitelist_kernels=['4.4.0-109-generic', '4.9.0-0.bpo.6-amd64'],
+    $whitelist_kernels=['4.4.0-109-generic', '4.9.0-0.bpo.6-amd64', '4.4.0-124-generic'],
     ) {
 
     if os_version('ubuntu >= trusty') {
