@@ -20,3 +20,4 @@ wikimedia-search-private: discovery-private
 labs-admin:           cloud-admin
 labs-announce:        cloud-announce
 labs-l:               cloud
+tool-labs-standards-committee: toolforge-standards-committee 
