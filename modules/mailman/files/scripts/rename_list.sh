@@ -63,7 +63,7 @@ echo "acceptable_aliases = '${oldlist}@lists.wikimedia.org'"  | ${mailman_dir}/b
 sleep 1
 
 # output suggested apache redirect and exim alias lines
-echo -e "\nPlease add the following code to './files/exim/listserver_aliases':\n--------\n"
+echo -e "\nPlease add the following code to './modules/profile/files/exim/listserver_aliases':\n--------\n"
 echo -e "${oldlist}: ${newlist} \n--------\n"
 sleep 1
 
