@@ -29,9 +29,9 @@ class VarnishRlsTest(unittest.TestCase):
 
     def testResp(self):
         s = self.store.get_samples('varnish_resourceloader_resp')
-        self.assertIn(('status=200,cache_control=long', 2), s)
-        self.assertIn(('status=304,cache_control=short', 1), s)
-        self.assertIn(('status=304,cache_control=no', 1), s)
+        self.assertIn(('status=200,cache_control=long,x_cache=hit-front', 2), s)
+        self.assertIn(('status=304,cache_control=short,x_cache=hit-front', 1), s)
+        self.assertIn(('status=304,cache_control=no,x_cache=hit-front', 1), s)
 
 
 class VarnishMediaTest(unittest.TestCase):
