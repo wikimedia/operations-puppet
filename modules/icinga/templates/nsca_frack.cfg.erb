@@ -1053,6 +1053,13 @@ define service {
     hostgroup_name           fundraising-civicrm
 }
 
+define service {
+    use                      passive-service
+    service_description      check_ipsec
+    hostgroup_name           fundraising-civicrm
+}
+
+
 # fundraising-listener hostgroup
 
 define hostgroup {
@@ -1386,5 +1393,11 @@ define service {
 define service {
     use                      passive-service
     service_description      check_raid
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ipsec
     hostgroup_name           fundraising-banner-logger
 }
