@@ -36,6 +36,7 @@ class dynamicproxy (
     $banned_description   = 'You have been banned from accessing this service.',
     $web_domain           = undef,
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
+    $https_upgrade        = false,
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_name set but ssl_settings not set')
