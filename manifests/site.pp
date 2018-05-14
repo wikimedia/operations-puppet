@@ -615,6 +615,10 @@ node 'db1116.eqiad.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
 
+node 'db1120.eqiad.wmnet' {
+    role(mariadb::sanitarium_multiinstance)
+}
+
 node 'db2092.codfw.wmnet' {
     role(mariadb::sanitarium_multiinstance)
 }
