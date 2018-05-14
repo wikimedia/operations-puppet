@@ -261,7 +261,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               ironholds, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk, cy534,
-              ayounsi, mepps, mmiller]
+              ayounsi, mepps, mmiller, seddon]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2775,6 +2775,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDNPlFL254lviLfkoOv+E8qTftETMs2dDt5VJQwlHeDKmadd46U2Yd71UUR+GviN5zs6RBnb5NGTABhIOZ+XgRTq+Rjzz0hC1O0YrbTBofN3vp4/rxiYxOoE3sfJRDHVG2daKePMAA12vX/W1slqWF1BWeV5/r61gvcVBHq98GbqQ4cl1h+A2Y/xJTwZy6toarj+uN75T8XlmRxyiLd4UEmAvaS3W6cL02VJL2cooSt352ah3Jn1Nafti9nUReXl7+b0N3FnTSX8SDFrmfnRoxuvjx+/xI5ALCUbODFqosjJCJ0IqzVFvuOJ++eJAsNX/oh3E99D0HkKbFsb3bCN5bYZPFYWI2hVP5K9BFURLpmWFCCzO+kE2bub/ekyo/jLRHfRK2eDCvxSaYRU1XM7OMXCGZ3FjuvY0nLVEDr022rs4YolQeiinstVEdNIOCPSxAbTqYvmQdWs4pnh8riJoGLca85YobfUzm3IX8qDlOXfQZewERJSSkKY4z++b7Np3+goQ6wEo57cp5K7i81/18jawId58ESEQ3TnoTUuY6ibobTRBxfSUdW+JAOQlapJldemw1QtS3yK17CLP5PO9LMJCqVgGROO/YRUTwaL8pA7fcq3xoubUXDhLBeNlsFuddteQUbpsCsG5ymh4gxEhASmHCvSULYEbHFoHnanfSJnQ== mmiller@wikimedia.org
     uid: 19062
     email: mmiller@wikimedia.org
+  seddon:
+    ensure: present
+    realname: Joseph Seddon
+    name: seddon
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8dbGveSAbYpf9dfFbSbNcIlxnQwhBOZJ+y8MIIX650ujHRofwZEcnUFDIGqEHCMO6clYuFFxN8GUcBzSQI+R9IoIH+GSmx3SIdMVtjMmgwkqPdSjmmrhfUsnSO/2g1jM+Kj33CC4iuW7rEhZdkOaFiRoJDn71kHf2JPwHUnFPVAVYuzrxugXtyErcbEGTNFc08NA3CEr/hIckBSTqnfFJ3+j1BgQaehT+Af3Kl04zgdaEWqpWzoCtrtBH4B0SqMUkUUe5yyVibqXbkmoJwXj6BmdO0FXIyclz4Or7N+/meqLtF9X+iKHB1IReCeNslcNFo0wIs9e9ykznvi/of4+vYk2oW+0uz6L2HsgHcyLx1txiaEEHIVd9BPsUU9bc7xgxzRTpmJe1gRmnrdQ/8N9R2zsVfjI4G7FBi0hbuumxhPn40jijjswCwL7GthE7uH2j8XoH57V7HP8UPFyCafLTKPXX0BIxMATY6w7BiDRjqcnznfhp4Zu9irDqAzSfjaFc0mbEDT2L3xU1ePLzA0zm6x2YZ0WUjWkPobxjc2RkoDijhVU33h2UOJYv5lrJrZG/eNkOIjM5D0pG/CAK9KM98L4UtPNhwhv7G3o7fvw9DCshqDu1+3vRfe0iYzz0Xc5qcophoOBgVnf1bcKnu5QbMFoqN+T/Skwtev+nIwTuAQ== josephseddpm@DESKTOP-5C4F4VN
+    uid: 16261
+    email: jseddon@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -2915,10 +2924,6 @@ ldap_only_users:
     ensure: present
     realname: Robin Schoenbaechler
     email: rschoenbaechler@wikimedia.org
-  seddon:
-    ensure: present
-    realname: Joseph Seddon
-    email: jseddon@wikimedia.org
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
