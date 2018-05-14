@@ -36,11 +36,8 @@ profile::kafka::mirror::source_cluster_name: main-eqiad
 profile::kafka::mirror::destination_cluster_name: jumbo-eqiad
 profile::kafka::mirror::monitoring_enabled: true
 profile::kafka::mirror::properties:
-  # Until https://phabricator.wikimedia.org/T167039 is finished,
-  # blacklist mediawiki.job and change-prop topics.
-  # NOTE: mediawiki.job topics need to remain blacklisted until
-  # we enable cross DC MirrorMaker TLS.  See also https://phabricator.wikimedia.org/T191464.
-  whitelist: '^(?!.*change-prop\.|.*changeprop\.|.*cpjobqueue\.|.*job\.).+$'
+  # Blacklist change-prop topics.  We don't need them in jumbo.
+  whitelist: '^(?!.*change-prop\.|.*changeprop\.|.*cpjobqueue\.).+$'
   num_streams: 12
   offset_commit_interval_ms: 5000
   heap_opts: '-Xmx2G -Xms2G'
