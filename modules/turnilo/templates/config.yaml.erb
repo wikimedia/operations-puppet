@@ -5,6 +5,17 @@
 port:  <%= @port %>
 
 clusters:
+[
+<% @druid_clusters.each do |cluster| -%>
+-
+<% cluster.keys.sort.each do |key| -%>
+  <%= key %>: <%= cluster[key] %>
+<% end # cluster.keys.each -%>
+
+<% end # @druid_clusters.each -%>
+]
+
+
   <%= scope.function_ordered_yaml([@druid_clusters]) %>
 
 dataCubes:
