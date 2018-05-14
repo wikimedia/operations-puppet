@@ -5,8 +5,14 @@
 port:  <%= @port %>
 
 clusters:
-  <%= scope.function_ordered_yaml([@druid_clusters]) %>
+<% @druid_clusters.each do |cluster| -%>
+-
+<% cluster.keys.sort.each do |key| -%>
+  <%= key %>: <%= cluster[key] %>
+<% end # cluster.keys.each -%>
 
+<% end # @druid_clusters.each -%>
+ 
 dataCubes:
   - name: mediawiki_geoeditors_monthly
     title: mediawiki_geoeditors_monthly
