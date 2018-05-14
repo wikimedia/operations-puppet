@@ -133,8 +133,8 @@ groups:
               jminor, etonkovidova, sbisson, addshore, matmarex, elukey,
               nikerabbit, dstrine, mpany, jsamra, katie,
               jdittrich, chelsyx, ovasileva, mtizzoni, panisson, paolotti, ciro, debt,
-              fdans, mlitn, niharika29, goransm,
-              pmiazga, dsaez, shiladsen, cicalese, mirrys, sharvaniharan, groovier]
+              fdans, mlitn, niharika29, goransm, pmiazga, dsaez, shiladsen, cicalese,
+              mirrys, sharvaniharan, groovier, mmiller]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -261,7 +261,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, flemmerich, mkroetzsch, filippo, pmiazga, faidon,
               ironholds, piccardi, fdans, eevans, anomie, demon, ladsgroup, musikanimal,
               kaldari, goransm, ema, dsaez, shiladsen, rho, mirrys, slaporte, jk, cy534,
-              ayounsi, mepps]
+              ayounsi, mepps, mmiller]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -2766,6 +2766,15 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMquf0ywthSAksqXIMATkeQt8ui6B2JxWES4zEMQVYtPlVUNnFGQyAbYN/Fe5kn1pEERkmMFJb+hin0d4V09r6al1LtJmFzyDBw9dfsmbPjUDwY+1T8ADNzBXgtySQ3W5U1KLd2YeQRXmirD26/uhaGwXEcq8GLN/BlFdqvpjeM5/9ESGvE0gP1gfmM+uxb4PyYMMAUpK8SxAGN5cBbSO45kdPOSKt1jd6kF2ZjLGCATzwC0a1USAz5ivVyaPnzVzFY3jjLaACRitwWWEycNdqXha5Vk7Y7xyOr64jaPQSzZq5XWWxrTWsNC7Qzy398a5cFbXL6k7/CgpDGYRbdB3M+ibGJllZcDznzNM6u4XGewHwjzIwlcxFHwBX6pG1n3GXOayGlPSj0VGelw363klpi7FKxw2g4Q2cp3SvYuEet+psU5qI8MexOQjoH7uK0M5axiTVN2muSTuulpUwcyxzunLMxr5PkoHmHVz7Ap+4L4PNencMiZ77PHm7gz3dBVrB70UTnvSxaYDwPZvj/OcPhvlMPLe70KZs5OAyjqCADNNF8m11mG7a4MJUb8a0uT3jamX7zAwgj/kVibGN0tBrZID+scpuNXRN6gfbOactUJ9glXvxKFtFerXVTDQXqpZxSUbp45+sNvHvQwxdU/PFzFzR46+bOXlIz1HZanX7Ow== mepps@saturn
     uid: 16947
     email: mepps@wikimedia.org
+  mmiller:
+    ensure: present
+    realname: Marshall Miller
+    name: mmiller
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDNPlFL254lviLfkoOv+E8qTftETMs2dDt5VJQwlHeDKmadd46U2Yd71UUR+GviN5zs6RBnb5NGTABhIOZ+XgRTq+Rjzz0hC1O0YrbTBofN3vp4/rxiYxOoE3sfJRDHVG2daKePMAA12vX/W1slqWF1BWeV5/r61gvcVBHq98GbqQ4cl1h+A2Y/xJTwZy6toarj+uN75T8XlmRxyiLd4UEmAvaS3W6cL02VJL2cooSt352ah3Jn1Nafti9nUReXl7+b0N3FnTSX8SDFrmfnRoxuvjx+/xI5ALCUbODFqosjJCJ0IqzVFvuOJ++eJAsNX/oh3E99D0HkKbFsb3bCN5bYZPFYWI2hVP5K9BFURLpmWFCCzO+kE2bub/ekyo/jLRHfRK2eDCvxSaYRU1XM7OMXCGZ3FjuvY0nLVEDr022rs4YolQeiinstVEdNIOCPSxAbTqYvmQdWs4pnh8riJoGLca85YobfUzm3IX8qDlOXfQZewERJSSkKY4z++b7Np3+goQ6wEo57cp5K7i81/18jawId58ESEQ3TnoTUuY6ibobTRBxfSUdW+JAOQlapJldemw1QtS3yK17CLP5PO9LMJCqVgGROO/YRUTwaL8pA7fcq3xoubUXDhLBeNlsFuddteQUbpsCsG5ymh4gxEhASmHCvSULYEbHFoHnanfSJnQ== mmiller@wikimedia.org
+    uid: 19062
+    email: mmiller@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
@@ -3041,10 +3050,6 @@ ldap_only_users:
     ensure: present
     realname: Charlotte Gauthier
     email: cgauthier@wikimedia.org
-  mmiller:
-    ensure: present
-    realname: Marshall Miller
-    email: mmiller@wikimedia.org
   pdrouin:
     ensure: present
     realname: Pam Drouin
