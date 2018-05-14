@@ -108,9 +108,9 @@ class profile::kafka::mirror(
 
         # The requests not only contain the message but also a small metadata overhead.
         # So if we want to produce a kafka_message_max_bytes payload the max request size should be
-        # a bit higher. The 48564 value isn't arbitrary - it's the difference between default
-        # message.max.size and default max.request.size
-        $producer_request_max_size = $message_max_bytes + 48564
+        # a bit higher.  In Kafka 0.11+, there is a bit more metadata, and I've seen a request
+        # of size 5191699 even though max.message.bytes is 4Mb.  Increase request size + 1 MB.
+        $producer_request_max_size = $message_max_bytes + 1048576
         $producer_properties = {
             'max.request.size' => $producer_request_max_size,
         }
