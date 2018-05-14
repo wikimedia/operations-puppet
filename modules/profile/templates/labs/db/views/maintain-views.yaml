@@ -93,6 +93,7 @@ fullviews:
   - namespaces
   - ores_classification
   - ores_model
+  - page
   - page_broken
   - pagelinks
   - page_assessments
@@ -487,28 +488,6 @@ customviews:
     join:
       - table: comment
         condition: on comment_id = oi_description_id
-  page:
-    source: page
-    view: >
-      select page_id, page_namespace, page_title, page_restrictions, page_is_redirect,
-      page_is_new, page_random, page_touched, page_links_updated, page_latest, page_len,
-      if(content_models.model_name, content_models.model_name, page_content_model) as page_content_model,
-      page_lang
-    join:
-      - table: revision
-        condition: on rev_id = page_latest
-      - table:
-        - table: slots
-        - type: JOIN
-          table: slot_roles
-          condition: on (slot_role_id = role_id AND role_name = 'main')
-        - type: JOIN
-          table: content
-          condition: on (slot_content_id = content_id)
-        - type: JOIN
-          table: content_models
-          condition: on (content_model = model_id)
-        condition: on slot_revision_id = rev_id
   protected_titles:
     source: protected_titles
     view: >
