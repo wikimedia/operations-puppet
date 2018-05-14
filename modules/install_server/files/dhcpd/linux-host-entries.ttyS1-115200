@@ -1881,15 +1881,11 @@ host db2059 {
 host db2060 {
     hardware ethernet 40:a8:f0:35:06:f8;
     fixed-address db2060.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2061 {
     hardware ethernet 40:a8:f0:35:56:14;
     fixed-address db2061.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2062 {
@@ -1900,43 +1896,31 @@ host db2062 {
 host db2063 {
     hardware ethernet 40:a8:f0:35:0d:b0;
     fixed-address db2063.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2064 {
     hardware ethernet 40:a8:f0:35:0a:9c;
     fixed-address db2064.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2065 {
     hardware ethernet 40:a8:f0:35:1e:2c;
     fixed-address db2065.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2066 {
     hardware ethernet 40:a8:f0:35:05:a4;
     fixed-address db2066.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2067 {
     hardware ethernet 40:a8:f0:35:5b:f0;
     fixed-address db2067.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2068 {
     hardware ethernet 40:a8:f0:35:30:d0;
     fixed-address db2068.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host db2069 {
