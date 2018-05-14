@@ -10,6 +10,7 @@ class standard(
 
     if $::realm == 'production' {
         include ::profile::cumin::target
+        include ::profile::debmonitor::client  # lint:ignore:wmf_styleguide
     }
 
     unless $::fqdn in $::standard::ntp::wmf_peers[$::site] {

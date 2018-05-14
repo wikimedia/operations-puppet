@@ -147,11 +147,13 @@ define service::uwsgi(
         }
     }
 
-    file { "/etc/${title}":
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    if !defined(File["/etc/${title}"]) {
+        file { "/etc/${title}":
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
     }
 
     $base_config = {
