@@ -51,6 +51,9 @@
 #   Dictionary containing all the datasource names configured in Druid for
 #   any given AQS one. Rendered only if druid_properties is configured.
 #
+# [*druid_uri_pattern*]
+#   druid broker uri pattern for hyperswitch acceptance. Default: undef
+#
 class aqs(
     $cassandra_user                = 'cassandra',
     $cassandra_password            = 'cassandra',
@@ -68,6 +71,7 @@ class aqs(
     $statsd_port                   = 8125,
     $druid_properties              = undef,
     $druid_datasources             = undef,
+    $druid_uri_pattern             = undef,
 ) {
 
     service::node { 'aqs':

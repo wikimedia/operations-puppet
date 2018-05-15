@@ -89,12 +89,15 @@ profile::aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 profile::aqs::monitoring_enabled: true
 
 profile::aqs::druid_properties:
+  scheme: http
+  port: 8082
   host: druid-public-broker.svc.eqiad.wmnet
   query_path: '/druid/v2/'
-  uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
 
 profile::aqs::druid_datasources:
   mediawiki_history: mediawiki_history_reduced
+
+profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
 
 
 profile::aqs::seeds:
