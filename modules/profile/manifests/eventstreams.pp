@@ -1,7 +1,7 @@
 # == Class profile::eventstreams
 #
 # Profile that installs EventStreams HTTP service.
-# This class includes the ::eventstreams role, and configures
+# This class includes the eventstreams nodejs service, and configures
 # it to consume only specific topics from a specific Kafka cluster.
 #
 # NOTE: eventstreams is configured to use the 'analytics-eqiad' Kafka cluster
@@ -31,11 +31,18 @@
 # [*rdkafka_config*]
 #   Additional configuration for the kafka library
 #
+# [*monitoring_enabled*]
+#   If true, an active Eventstreams endpoint (/v2/recentchange) will be periodically
+#   checked for new messages.  If none are found, an alert will be triggered.
+#   Default: false
+#
 # filtertags: labs-project-deployment-prep
+#
 class profile::eventstreams(
     $kafka_cluster_name = hiera('profile::eventstreams::kafka_cluster_name'),
     $streams            = hiera('profile::eventstreams::streams'),
-    $rdkafka_config     = hiera('profile::eventstreams::rdkafka_config', {})
+    $rdkafka_config     = hiera('profile::eventstreams::rdkafka_config', {}),
+    $monitoring_enabled = hiera('profile::eventstreams::monitoring_enabled', false),
 ) {
     $kafka_config = kafka_config($kafka_cluster_name)
     $broker_list = $kafka_config['brokers']['string']
@@ -43,9 +50,10 @@ class profile::eventstreams(
         pkgs     => ['librdkafka++1', 'librdkafka1'],
     }
 
+    $port = 8092
     service::node { 'eventstreams':
         enable            => true,
-        port              => 8092,
+        port              => $port
         has_spec          => false, # TODO: figure out how to monitor stream with spec x-amples
         deployment        => 'scap3',
         deployment_config => true,
@@ -62,5 +70,23 @@ class profile::eventstreams(
             'UV_THREADPOOL_SIZE' => 128,
         },
         require           => Service::Packages['eventstreams'],
+    }
+
+    if $monitoring_enabled {
+        file { '/usr/local/lib/nagios/plugins/check_eventstreams':
+            ensure => 'present',
+            source => 'puppet:///modules/profile/eventstreams/check_eventsreams.sh',
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
+        nrpe::monitor_service { 'check_eventstreams_endpoint':
+            description    => 'Check if active EventStreams endpoint is delivering messages.',
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_eventstreams http://localhost:${port}/v2/recentchange",
+            check_interval => 30,
+            retries        => 2,
+            contact_group  => 'analytics',
+            require        => File['/usr/local/lib/nagios/plugins/check_eventstreams'],
+        }
     }
 }
