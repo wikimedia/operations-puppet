@@ -57,6 +57,7 @@ profile::citoid::zotero_host: "zotero.svc.%{::site}.wmnet"
 
 ### BEGIN EVENTSTREAMS ###
 profile::eventstreams::kafka_cluster_name: analytics
+profile::eventstreams::monitoring_enabled: true
 # Stream configuration for Public EventStreams service
 # Maps stream route names to composite Kafka topics.
 profile::eventstreams::streams:
