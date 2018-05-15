@@ -89,9 +89,9 @@ class phabricator::vcs (
             notify  => Service['ssh-phab'],
         }
 
-        base::service_unit { 'ssh-phab':
+        systemd::service { 'ssh-phab':
             ensure  => 'present',
-            systemd => systemd_template('ssh-phab'),
+            content => systemd_template('ssh-phab'),
             require => Package['openssh-server'],
         }
     }

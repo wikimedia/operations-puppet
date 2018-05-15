@@ -81,13 +81,11 @@ class phabricator::aphlict(
         require => Group[$group],
     }
 
-    base::service_unit { 'aphlict':
+    systemd::service { 'aphlict':
         ensure         => $ensure,
-        systemd        => systemd_template('aphlict'),
+        content        => systemd_template('aphlict'),
         require        => User[$user],
         service_params => {
-            ensure     => $service_ensure,
-            provider   => $::initsystem,
             hasrestart => false,
         },
     }
