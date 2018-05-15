@@ -2144,6 +2144,9 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(webperf)
+    # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': }
+    # lint:endignore
 }
 
 # VMs for performance team profiling tools (T194390)
