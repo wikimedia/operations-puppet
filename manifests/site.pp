@@ -2142,6 +2142,12 @@ node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(webperf)
 }
 
+# VMs for performance team profiling tools (T194390)
+node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
+    role(spare::system)
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'wezen.codfw.wmnet' {
     role(syslog::centralserver)
 }
