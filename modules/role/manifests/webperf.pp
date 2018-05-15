@@ -5,6 +5,10 @@
 #
 class role::webperf {
 
+    # lint:ignore:wmf_styleguide
+    interface::add_ip6_mapped { 'main': }
+    # lint:endignore
+
     include ::standard
     include ::profile::base::firewall
     include ::profile::webperf
