@@ -39,4 +39,14 @@ class profile::tor::relay {
         proto => 'tcp',
         port  => '(80 9032)',
     }
+
+    monitoring::service { 'tor_orport':
+        description   => 'Tor ORPort',
+        check_command => 'check_tcp!9002',
+    }
+
+    monitoring::service { 'tor_dirport':
+        description   => 'Tor DirPort',
+        check_command => 'check_tcp!9032',
+    }
 }
