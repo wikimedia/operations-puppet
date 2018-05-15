@@ -55,8 +55,8 @@ class profile::kafka::broker::monitoring (
     monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
         description     => 'Kafka Broker Under Replicated Partitions',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
-        query           => "scalar(avg_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[30m]))",
-        warning         => 5,
+        query           => "scalar(min_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[5m]))",
+        warning         => 1,
         critical        => 10,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
