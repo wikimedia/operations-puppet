@@ -51,6 +51,15 @@ class profile::ganeti (
         source => 'puppet:///modules/profile/ganeti/id_rsa.pub',
     }
 
+    # Interactive script to create instances
+    file { '/usr/local/bin/makevm':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/ganeti/makevm.sh',
+    }
+
     # If ganeti_cluster fact is not defined, the node has not been added to a
     # cluster yet, so don't monitor and don't setup a firewall.
     if $facts['ganeti_cluster'] {
