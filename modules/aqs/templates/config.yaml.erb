@@ -18,12 +18,17 @@ aqs_project: &aqs_project
             - name: default.group.local
               domains: /./
 
-        <%- if @druid_host -%>
+        <%- if @druid_properties -%>
         druid:
-            scheme: <%= @druid_scheme %>
-            host: <%= @druid_host %>
-            port: <%= @druid_port %>
-            query_path: <%= @druid_query_path %>
+          <% @druid_properties.keys.sort.each do |key| -%>
+          <%= key %>: <%= @druid_properties[key] %>
+          <% end -%>
+          <%- if @druid_datasources -%>
+          datasources:
+          <% @druid_datasources.keys.sort.each do |key| -%>
+          <%= key %>: <%= @druid_datasources[key] %>
+          <% end -%>
+          <% end -%>
         <%- end -%>
 
 # Swagger spec root.
