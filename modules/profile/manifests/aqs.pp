@@ -2,25 +2,23 @@
 # Analytics Query Service Restbase Service configuration
 #
 class profile::aqs (
-        $monitoring_enabled            = hiera('profile::aqs::monitoring_enabled'),
-        $druid_host                    = hiera('profile::aqs::druid_host'),
-        $druid_query_path              = hiera('profile::aqs::druid_query_path'),
-        $druid_uri_pattern             = hiera('profile::aqs::druid_uri_pattern'),
+        $monitoring_enabled            = hiera('profile::aqs::monitoring_enabled', false),
+        $druid_properties              = hiera('profile::aqs::druid_properties', undef),
+        $druid_datasources             = hiera('profile::aqs::druid_datasources', undef),
         $cassandra_user                = hiera('profile::aqs::cassandra_user'),
         $cassandra_password            = hiera('profile::aqs::cassandra_password'),
         $cassandra_seeds               = hiera('profile::aqs::seeds'),
-        $logstash_host                 = hiera('logstash_host'),
+        $logstash_host                 = hiera('logstash_host', undef),
         $cassandra_default_consistency = hiera('profile::aqs::cassandra_default_consistency'),
         $cassandra_local_dc            = hiera('profile::aqs::cassandra_local_dc'),
-        $statsd_host                   = hiera('profile::aqs::statsd_host'),
+        $statsd_host                   = hiera('profile::aqs::statsd_host', undef),
 ){
 
     class { '::aqs':
         cassandra_user                => $cassandra_user,
         cassandra_password            => $cassandra_password,
-        druid_host                    => $druid_host,
-        druid_query_path              => $druid_query_path,
-        druid_uri_pattern             => $druid_uri_pattern,
+        druid_datasources             => $druid_datasources,
+        druid_properties              => $druid_properties,
         seeds                         => $cassandra_seeds,
         cassandra_default_consistency => $cassandra_default_consistency,
         cassandra_local_dc            => $cassandra_local_dc,
