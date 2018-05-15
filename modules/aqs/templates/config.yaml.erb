@@ -18,24 +18,29 @@ aqs_project: &aqs_project
             - name: default.group.local
               domains: /./
 
-        <%- if @druid_host -%>
+        <%- if @druid_properties -%>
         druid:
-            scheme: <%= @druid_scheme %>
-            host: <%= @druid_host %>
-            port: <%= @druid_port %>
-            query_path: <%= @druid_query_path %>
+          <% @druid_properties.keys.sort.each do |key| -%>
+          <%= key %>: <%= @druid_properties[key] %>
+          <% end -%>
+          <%- if @druid_datasources -%>
+          datasources:
+          <% @druid_datasources.keys.sort.each do |key| -%>
+          <%= key %>: <%= @druid_datasources[key] %>
+          <% end -%>
+          <% end -%>
         <%- end -%>
 
 # Swagger spec root.
 spec: &spec
   title: "The Analytics RESTBase root"
-  <%- if @druid_uri_pattern -%>
+  <%- if @druid_properties -%>
   x-sub-request-filters:
     - type: default
       name: http
       options:
         allow:
-          - pattern: /<%= @druid_uri_pattern %>//
+          - pattern: /<%= @druid_properties['druid_uri_pattern'] %>//
             forward_headers: true
   <%- end -%>
   paths:
