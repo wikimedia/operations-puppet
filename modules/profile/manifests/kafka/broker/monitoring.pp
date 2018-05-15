@@ -51,12 +51,12 @@ class profile::kafka::broker::monitoring (
     # Prometheus labels for this Kafka Broker instance
     $prometheus_labels = "kafka_cluster=\"${kafka_cluster}\",instance=\"${::hostname}:${prometheus_jmx_exporter_port}\""
 
-    # Alert on the average number of under replicated partitions over the last 30 minutes.
+    # Alert if there are consistent under replicated partitions in the last 10 minutes.
     monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
         description     => 'Kafka Broker Under Replicated Partitions',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
-        query           => "scalar(avg_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[30m]))",
-        warning         => 5,
+        query           => "scalar(min_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[10m]))",
+        warning         => 1,
         critical        => 10,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
