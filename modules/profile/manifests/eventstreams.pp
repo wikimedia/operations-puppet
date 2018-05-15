@@ -75,7 +75,7 @@ class profile::eventstreams(
     if $monitoring_enabled {
         file { '/usr/local/lib/nagios/plugins/check_eventstreams':
             ensure => 'present',
-            source => 'puppet:///modules/profile/eventstreams/check_eventsreams.sh',
+            source => 'puppet:///modules/profile/eventstreams/check_eventstreams.sh',
             mode   => '0555',
             owner  => 'root',
             group  => 'root',
