@@ -638,9 +638,18 @@ class role::prometheus::ops {
         site              => $::site,
     }
 
+    prometheus::jmx_exporter_config{ "zookeeper_${::site}_old":
+        dest       => "${targets_path}/jmx_zookeeper_${::site}_old.yaml",
+        class_name => 'role::configcluster',
+        site       => $::site,
+        labels     => {
+            'cluster' => "main-${::site}",
+        },
+    }
+
     prometheus::jmx_exporter_config{ "zookeeper_${::site}":
         dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
-        class_name => 'role::configcluster',
+        class_name => 'role::configcluster_stretch',
         site       => $::site,
         labels     => {
             'cluster' => "main-${::site}",
