@@ -686,6 +686,20 @@ jdk.tls.legacyAlgorithms= \
         RC4_128, RC4_40, DES_CBC, DES40_CBC, \
         3DES_EDE_CBC
 
+
+# WMF restricts EC curve to secp256r1 only.  See also:
+# https://phabricator.wikimedia.org/T182993#4208208
+#
+# The System Property, jdk.tls.namedGroups, defines a list of enabled named
+# curves for EC cipher suites in order of preference. If an application needs
+# to customize the default enabled EC curves or the curves preference,
+# please update the System Property accordingly. For example:
+#
+#    jdk.tls.namedGroups="secp256r1, secp384r1, secp521r1"
+#
+jdk.tls.namedGroups=secp256r1
+
+
 # The pre-defined default finite field Diffie-Hellman ephemeral (DHE)
 # parameters for Transport Layer Security (SSL/TLS/DTLS) processing.
 #
