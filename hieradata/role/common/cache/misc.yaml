@@ -307,6 +307,8 @@ cache::req_handling:
     director: 'webserver_misc_static'
   transparency-private.wikimedia.org:
     director: 'webserver_misc_static'
+  turnilo.wikimedia.org:
+    director: 'thorium'
   yarn.wikimedia.org:
     director: 'thorium'
 # Profile::cache::base
