@@ -20,7 +20,7 @@ exitval=$?
 
 if [ $exitval -ne 0 ]; then
     echo "CRITICAL: No EventStreams message was consumed from $url within $timeout seconds."
-    exit 1
+    exit 2
 else
     echo "OK: An EventStreams message was consumed from $url within $timeout seconds."
     exit 0
