@@ -228,6 +228,9 @@ class profile::kafka::broker(
         $ssl_enabled_protocols          = 'TLSv1.2'
         $ssl_cipher_suites              = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
 
+        # https://phabricator.wikimedia.org/T182993#4208208
+        $ssl_java_opts                  = '-Djdk.tls.namedGroups="secp256r1"'
+
         file { $ssl_location:
             ensure => 'directory',
             owner  => 'kafka',
@@ -268,6 +271,7 @@ class profile::kafka::broker(
         $ssl_truststore_location        = undef
         $ssl_enabled_protocols          = undef
         $ssl_cipher_suites              = undef
+        $ssl_java_opts                  = undef
     }
 
     # Be nice, and manage /srv/kafka if it is the prefix for kafka data directories.
@@ -291,10 +295,10 @@ class profile::kafka::broker(
     # for exposing the Prometheus JMX Exporter in the Kafka Broker process.
     if $monitoring_enabled {
         include ::profile::kafka::broker::monitoring
-        $java_opts = $::profile::kafka::broker::monitoring::java_opts
+        $monitoring_java_opts = $::profile::kafka::broker::monitoring::java_opts
     }
     else {
-        $java_opts = undef
+        $monitoring_java_opts = undef
     }
 
     if $auth_acls_enabled {
@@ -312,6 +316,8 @@ class profile::kafka::broker(
     else {
         $super_users = undef
     }
+
+    $java_opts = "${monitoring_java_opts} ${ssl_java_opts}"
 
     class { '::confluent::kafka::broker':
         log_dirs                         => $log_dirs,
