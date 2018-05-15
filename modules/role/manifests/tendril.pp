@@ -5,6 +5,8 @@ class role::tendril {
     include ::base::firewall
     include ::standard
 
+    interface::add_ip6_mapped { 'main': }
+
     system::role { 'tendril': description => 'tendril server' }
 
     # T62183 | TODO/FIXME: remove hiera condition once T150771 is resolved
