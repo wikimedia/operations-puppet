@@ -88,10 +88,14 @@ profile::aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
 profile::aqs::monitoring_enabled: true
 
-# Temporary, waiting for T176223
-profile::aqs::druid_host: druid-public-broker.svc.eqiad.wmnet
-profile::aqs::druid_query_path: '/druid/v2/'
-profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
+profile::aqs::druid_properties:
+  druid_host: druid-public-broker.svc.eqiad.wmnet
+  druid_query_path: '/druid/v2/'
+  druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
+
+profile::aqs::druid_datasources:
+  mediawiki_history: mediawiki_history_reduced
+
 
 profile::aqs::seeds:
     - aqs1004-a.eqiad.wmnet
