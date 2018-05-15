@@ -5,6 +5,8 @@
 #
 class role::webperf {
 
+    interface::add_ip6_mapped { 'main': }
+
     include ::standard
     include ::profile::base::firewall
     include ::profile::webperf
