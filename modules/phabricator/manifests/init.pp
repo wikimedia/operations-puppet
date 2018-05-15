@@ -343,13 +343,12 @@ class phabricator (
         $phd_service_ensure = 'stopped'
     }
 
-    base::service_unit { 'phd':
+    systemd::service { 'phd':
         ensure         => 'present',
-        systemd        => systemd_template('phd'),
+        content        => systemd_template('phd'),
         require        => $base_requirements,
         service_params => {
             ensure     => $phd_service_ensure,
-            provider   => $::initsystem,
             hasrestart => true,
         },
     }
