@@ -92,4 +92,9 @@ class base::kernel(
             },
         }
     }
+
+    $enable_microcode = hiera('base::microcode', false)
+    if $enable_microcode and $facts['is_virtual'] == false and $::processor0 !~ /AMD/ {
+        require_package('intel-microcode')
+    }
 }
