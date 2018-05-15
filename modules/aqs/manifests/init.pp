@@ -43,23 +43,13 @@
 # [*statsd_port*]
 #   statsd port. Default: 8125
 #
-# [*druid_host*]
-#   Target endpoint to query an already configured Druid backend.
-#   If set, it adds the related AQS configuration.
-#   Default: undef
+# [*druid_properties*]
+#   Dictionary containing configuration variables that will end
+#   up in the aqs config yaml file.
 #
-# [*druid_scheme*]
-#   Protocol scheme to use (only http supported).
-#   Default: http
-#
-# [*druid_port*]
-#   druid endpoint port. Default: 8082 (Druid broker port)
-#
-# [*druid_query_path*]
-#   druid broker query path. Default: undef
-#
-# [*druid_uri_pattern*]
-#   druid broker uri pattern for hyperswitch acceptance. Default: undef
+# [*druid_datasources*]
+#   Dictionary containing all the datasource names configured in Druid for
+#   any given AQS one. Rendered only if druid_properties is configured.
 #
 class aqs(
     $cassandra_user                = 'cassandra',
@@ -76,11 +66,8 @@ class aqs(
     $logging_level                 = 'warn',
     $statsd_host                   = 'localhost',
     $statsd_port                   = 8125,
-    $druid_host                    = undef,
-    $druid_scheme                  = 'http',
-    $druid_port                    = 8082,
-    $druid_query_path              = undef,
-    $druid_uri_pattern             = undef,
+    $druid_properties              = undef,
+    $druid_datasources             = undef,
 ) {
 
     service::node { 'aqs':
