@@ -3,12 +3,12 @@ class profile::docker::flannel(
     # to the version in use.
     $docker_version = hiera('profile::flannel::docker_version'),
 ) {
-    # TODO: convert to systemd::service
-    base::service_unit { 'docker':
-        ensure           => present,
-        systemd_override => init_template("docker/flannel/docker_${docker_version}", 'systemd_override'),
+    systemd::service { 'docker':
+        ensure   => present,
+        override => true,
+        content  => init_template("docker/flannel/docker_${docker_version}", 'systemd_override'),
         # Restarts must always be manual, since restart
         # destroy all running containers. Fuck you, Docker.
-        refresh          => false,
+        restart  => false,
     }
 }
