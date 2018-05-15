@@ -82,7 +82,7 @@ class profile::eventstreams(
         }
         nrpe::monitor_service { 'eventstreams_endpoint':
             description    => 'Check if active EventStreams endpoint is delivering messages.',
-            nrpe_command   => "/usr/local/lib/nagios/plugins/check_eventstreams http://localhost:${port}/v2/recentchange",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_eventstreams http://${::fqdn}:${port}/v2/recentchange",
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',
