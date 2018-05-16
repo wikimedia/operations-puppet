@@ -3,6 +3,7 @@ class role::toollabs::proxy {
 
     include ::toollabs::base
     include ::toollabs::proxy
+    include ::profile::toolforge::toolviews
     include ::role::toollabs::k8s::webproxy
     include ::profile::base::firewall
     include ::toollabs::ferm_handlers
@@ -26,5 +27,7 @@ class role::toollabs::proxy {
         desc  => 'HTTPS webserver for the entire world',
     }
 
-    system::role { 'toollabs::proxy': description => 'Tool labs generic web proxy' }
+    system::role { 'toollabs::proxy':
+        description => 'Tool labs generic web proxy'
+    }
 }

@@ -14,6 +14,11 @@
 		fi; \
 	endscript
 	postrotate
-		[ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
+		if [ -f /var/run/nginx.pid ]; then \
+			kill -USR1 `cat /var/run/nginx.pid`; \
+		fi; \
+		if [ -d /etc/logrotate.d/nginx-postrotate ]; then \
+			run-parts /etc/logrotate.d/nginx-postrotate; \
+		fi; \
 	endscript
 }
