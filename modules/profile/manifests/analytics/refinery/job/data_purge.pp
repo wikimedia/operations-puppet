@@ -37,9 +37,6 @@ class profile::analytics::refinery::job::data_purge {
     # Keep this many days of refined webrequest data.
     $refined_retention_days = 90
     cron { 'refinery-drop-webrequest-refined-partitions':
-        # Temporarily disable webrequest deletion while lawyers do some research (Otto, Dan, Nuria)
-        # This should only be disabled for a week or so.
-        ensure  => 'absent',
         command => "${env} && ${refinery_path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${webrequest_log_file} 2>&1",
         user    => 'hdfs',
         minute  => '45',
