@@ -148,9 +148,8 @@ define varnish::instance(
         $capabilities = 'CAP_SETUID CAP_SETGID CAP_CHOWN CAP_NET_BIND_SERVICE'
     }
 
-    base::service_unit { "varnish${instancesuffix}":
-        systemd        => systemd_template('varnish'),
-        refresh        => false,
+    systemd::service { "varnish${instancesuffix}":
+        content        => systemd_template('varnish'),
         service_params => {
             tag     => 'varnish_instance',
             enable  => true,
