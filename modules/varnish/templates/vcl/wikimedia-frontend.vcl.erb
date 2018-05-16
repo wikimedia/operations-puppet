@@ -390,8 +390,7 @@ sub vcl_purge {
 sub vcl_hit {
 	call wm_common_hit;
 	call cluster_fe_hit;
-	// no default VCL.
-	return (deliver);
+	// default vcl_hit invokes here - T192368
 }
 
 sub vcl_miss {
