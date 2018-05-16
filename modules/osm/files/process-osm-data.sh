@@ -115,16 +115,15 @@ function planet_update() {
   set -e
   cp state.txt state-prev.txt
   # Clean up from any previous runs
-  rm -f "$PLANET_DIR/changes.osc"
+  rm -f "$PLANET_DIR/changes.osc" "$PLANET_DIR/osm-data-new.osm.pbf" "$PLANET_DIR/osm-filtered.osm.pbf" "$PLANET_DIR/osmborder_lines.csv"
   osmosis --read-replication-interval --write-xml-change file="$PLANET_DIR/changes.osc"
   osmium apply-changes -v --fsync "$PLANET_DIR/osm-data.osm.pbf" "$PLANET_DIR/changes.osc" -o "$PLANET_DIR/osm-data-new.osm.pbf"
   mv "$PLANET_DIR/osm-data-new.osm.pbf" "$PLANET_DIR/osm-data.osm.pbf"
-  # File is updated, clean up derived files
-  rm -f "$PLANET_DIR/changes.osc" "$PLANET_DIR/osm-filtered.osm.pbf" "$PLANET_DIR/osmborder_lines.csv"
   osmborder_filter -o "$PLANET_DIR/osm-filtered.osm.pbf" "$PLANET_DIR/osm-data.osm.pbf"
   osmborder -o "$PLANET_DIR/osmborder_lines.csv" "$PLANET_DIR/osm-filtered.osm.pbf"
   load_borders
   rm state-prev.txt
+  popd
 }
 
 function create_database() {
@@ -162,7 +161,7 @@ function import_data() {
 function static_update() {
   # Quite a simple function thanks to Meddo's scripts
   # TODO: Specify the data where data is downloaded
-  "$MEDDO/get-external-data.py" --config "$MEDDO/external-data.yml"
+  "$MEDDO/get-external-data.py" --data "${BASE_DIR}/data" --config "$MEDDO/external-data.yml"
 }
 function onupdateexit {
     [ -f "$DATABASE_REPLICATION_BASE/state-prev.txt" ] && mv "$DATABASE_REPLICATION_BASE/state-prev.txt" "$DATABASE_REPLICATION_BASE/state.txt"
