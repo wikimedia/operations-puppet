@@ -132,17 +132,12 @@ class otrs(
         source => 'puppet:///modules/otrs/loginlogo_wmf.png',
     }
 
-    # lint:ignore:arrow_alignment
-    # TODO: convert to systemd::service
-    base::service_unit { 'otrs-daemon':
-        ensure  => present,
-        systemd => systemd_template('otrs-daemon'),
-        refresh => true,
+    systemd::service { 'otrs-daemon':
+        ensure         => present,
+        content        => systemd_template('otrs-daemon'),
         service_params => {
-            enable     => true,
             hasstatus  => true,
             hasrestart => false,
         },
     }
-    # lint:endignore
 }
