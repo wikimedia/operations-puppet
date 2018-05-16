@@ -123,7 +123,7 @@ class profile::analytics::refinery::job::data_purge {
     # cron runs once a month
     $geoeditors_private_retention_days = 80
     cron {'mediawiki-raw-cu-changes-drop-month':
-        command     => "${env} && ${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf_raw -t mediawiki_private_cu_changes -l 1 >> ${mediawiki_private_log_file}",
+        command     => "${env} && ${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf_raw -t mediawiki_private_cu_changes -l 1 -f ${mediawiki_private_log_file}",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
         minute      => '0',
@@ -134,7 +134,7 @@ class profile::analytics::refinery::job::data_purge {
     # drop data older than 2 months from geoeditors_daily table
     # cron runs once a month
     cron {'mediawiki-geoeditors-drop-month':
-        command     => "${env} && ${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf -t geoeditors_daily -l 1 >> ${geoeditors_log_file}",
+        command     => "${env} && ${refinery_path}/bin/refinery-drop-hive-partitions -d ${geoeditors_private_retention_days} -D wmf -t geoeditors_daily -l 1 -f ${geoeditors_log_file}",
         environment => "MAILTO=${mail_to}",
         user        => 'hdfs',
         minute      => '0',
