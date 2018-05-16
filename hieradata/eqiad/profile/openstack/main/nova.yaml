@@ -18,7 +18,7 @@ profile::openstack::main::nova::live_migration_uri: 'qemu://%s.eqiad.wmnet/syste
 #  internal infrastructure use so should never be part of
 #  the default pool.
 #
-# 1018, 1020 and 1021 are running but held back as spares
+# 1018, 1021 and 1022 are running but held back as spares
 #  in case a different labvirt fails (and as transitional
 #  capacity during the upcoming Neutron migration)
 #
