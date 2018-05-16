@@ -47,7 +47,7 @@ class profile::prometheus::alerts {
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         contact_group   => 'analytics',
-        topic_blacklist => '.*(change-prop|\.job\.).*',
+        topic_blacklist => '.*(change-prop|\.job\.|changeprop).*',
     }
     # main-eqiad -> analytics-eqiad (called 'eqiad' for history reasons).
     # This will be removed once the analytics Kafka cluster is decommed.
