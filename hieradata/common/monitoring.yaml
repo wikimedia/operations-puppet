@@ -235,6 +235,8 @@ monitoring::groups:
     description: Wikidata Query Service - Internal cluster (eqiad)
   wdqs-internal_codfw:
     description: Wikidata Query Service - Internal cluster (codfw)
+  wdqs-test_eqiad:
+    description: Wikidata Query Service - Test cluster (eqiad)
 
 # Zotero
   zotero_eqiad:

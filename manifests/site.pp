@@ -2134,11 +2134,16 @@ node /^wdqs200[1-3]\.codfw\.wmnet$/ {
 
 # Wikidata query service internal
 node /^wdqs100[6-8]\.eqiad\.wmnet$/ {
-    role(wdqs_internal)
+    role(wdqs::internal)
 }
 
 node /^wdqs200[4-6]\.codfw\.wmnet$/ {
-    role(wdqs_internal)
+    role(wdqs::internal)
+}
+
+# Wikidata query service test
+node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
+    role(wdqs::test)
 }
 
 # VMs for performance team replacing hafnium (T179036)

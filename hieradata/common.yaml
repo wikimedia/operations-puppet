@@ -305,6 +305,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  wdqs-test:
+    description: "Wikidata Query Service - Test cluster"
+    id: 67
+    sites:
+      eqiad: []
 
 puppetmaster: "puppet"
 statistics_servers:
