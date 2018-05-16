@@ -153,7 +153,7 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
     role(configcluster)
 }
 
-# coming soon, see T166081
+# Migration of Zookeeper from conf100[1-3] in progress: T182924
 node /^conf100[456]\.eqiad\.wmnet$/ {
     role(configcluster_stretch)
 
