@@ -37,7 +37,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     $orm_jar_file               = "${::profile::analytics::refinery::path}/artifacts/mediawiki-tables-sqoop-orm.jar"
 
     cron { 'refinery-sqoop-mediawiki':
-        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --labsdb --jdbc-host ${labs_db_host} --output-dir ${$output_directory_labs} --wiki-file  ${wiki_file_labs} --tables archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups --jar-file ${orm_jar_file} --user ${labs_db_user} --password-file ${db_password_labs} --from-timestamp 20010101000000 --to-timestamp \$(/bin/date '+\\%Y\\%m01000000') --partition-name snapshot --partition-value \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --mappers ${num_mappers} --output-format avrodata --processors ${num_processors} --log-file ${labs_log_file}",
+        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -l -H ${labs_db_host} -d ${$output_directory_labs} -w ${wiki_file_labs} -t archive,ipblocks,logging,page,pagelinks,redirect,revision,user,user_groups -r ${orm_jar_file} -u ${labs_db_user} -p ${db_password_labs} -F 20010101000000 -T \$(/bin/date '+\\%Y\\%m01000000') -s snapshot -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${labs_log_file}",
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
@@ -46,7 +46,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki {
     }
 
     cron { 'refinery-sqoop-mediawiki-private':
-        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables --job-name sqoop-mediawiki-monthly-private-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --jdbc-host ${private_db_host} --output-dir ${$output_directory_private} --wiki-file  ${wiki_file_private} --tables cu_changes --jar-file ${orm_jar_file} --user ${private_db_user} --password-file ${db_password_private} --from-timestamp \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y\\%m01000000') --to-timestamp \$(/bin/date '+\\%Y\\%m01000000') --partition-name month --partition-value \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') --mappers ${num_mappers} --output-format avrodata --processors ${num_processors} --log-file ${private_log_file}",
+        command  => "${env} && /usr/bin/python3 ${profile::analytics::refinery::path}/bin/sqoop-mediawiki-tables -j sqoop-mediawiki-monthly-private-$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -H ${private_db_host} -d ${$output_directory_private} -w ${wiki_file_private} -t cu_changes -r ${orm_jar_file} -u ${private_db_user} -p ${db_password_private} -F \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y\\%m01000000') -T \$(/bin/date '+\\%Y\\%m01000000') -s month -x \$(/bin/date --date=\"$(/bin/date +\\%Y-\\%m-15) -1 month\" +'\\%Y-\\%m') -m ${num_mappers} -a avrodata -k ${num_processors} -o ${private_log_file}",
         user     => 'hdfs',
         minute   => '0',
         hour     => '0',
