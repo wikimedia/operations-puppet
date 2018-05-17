@@ -69,7 +69,7 @@ define osm::cleartables_sync (
             minute  => 02;
         "database_update-${name}":
             command => "/usr/local/bin/process-osm-data database-update >> ${log_dir}/database-update.log 2>&1",
-            minute  => '0/5';
+            minute  => '*/5';
         "static_update-${name}":
             command => "/usr/local/bin/process-osm-data static-update >> ${log_dir}/static-update.log 2>&1",
             minute  => '*';
