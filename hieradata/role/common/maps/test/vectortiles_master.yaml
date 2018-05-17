@@ -35,3 +35,6 @@ profile::maps::apps::tilerator_style: '''@kartotherian/osm-bright-style'''
 
 profile::maps::apps::kartotherian_storage_id: v3
 profile::maps::apps::tilerator_storage_id: v3
+
+# Disable crons while we are testing, see T194857
+profile::maps::osm_master::disable_replication_cron: true
