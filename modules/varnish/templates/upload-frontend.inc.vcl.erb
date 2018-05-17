@@ -159,6 +159,13 @@ sub cluster_fe_deliver {
 	unset resp.http.Set-Cookie;
 	unset resp.http.X-MediaWiki-Original;
 
+	// Strip away unnecessary response headers set by Thumbor: T194814
+	unset resp.http.Thumbor-Request-Id;
+	unset resp.http.Thumbor-Request-Date;
+	unset resp.http.Thumbor-Processing-Utime;
+	unset resp.http.Thumbor-Engine;
+	unset resp.http.Thumbor-Processing-Time;
+
 	if (req.http.X-Content-Disposition == "attachment") {
 		set resp.http.Content-Disposition = "attachment";
 	}

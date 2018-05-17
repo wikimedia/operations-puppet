@@ -1,0 +1,29 @@
+varnishtest "Remove unnecessary headers set by Thumbor"
+
+server s1 {
+    rxreq
+
+    txresp -hdr "Thumbor-Request-Id: 3ab8abfe8a7099eb3190e9c021a3c6da" -hdr "Thumbor-Request-Date: Thu, 17 May 2018 13:41:03 GMT" -hdr "Thumbor-Processing-Utime: 624" -hdr "Thumbor-Engine: wikimedia_thumbor.engine.imagemagick" -hdr "Thumbor-Processing-Time: 703" -hdr "Content-Type: image/jpeg"
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false -p vcc_allow_inline_c=true" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/1" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+    expect resp.http.Content-Type == "image/jpeg"
+
+    expect resp.http.Thumbor-Request-Id == <undef>
+    expect resp.http.Thumbor-Request-Date == <undef>
+    expect resp.http.Thumbor-Processing-Utime == <undef>
+    expect resp.http.Thumbor-Engine == <undef>
+    expect resp.http.Thumbor-Processing-Time == <undef>
+} -run
