@@ -8,7 +8,7 @@ class scap::master(
     $rsync_host         = "deployment.${::site}.wmnet",
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
-    $deployment_group   = 'wikidev',
+    $deployment_group   = 'mwdeploy',
 ) {
     include scap::scripts
     include rsync::server

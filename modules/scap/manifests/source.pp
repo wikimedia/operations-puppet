@@ -35,11 +35,11 @@
 #
 # [*owner*]
 #   Owner of cloned repository,
-#   Default: trebuchet
+#   Default: mwdeploy
 #
 # [*group*]
 #   Group owner of cloned repository.
-#   Default: wikidev
+#   Default: mwdeploy
 #
 # [*base_path*]
 #   Base path for deployments.
@@ -92,8 +92,8 @@ define scap::source(
     $scap_repository      = false,
     # TODO: change scap repo owner when scap figures out
     # how to bootstrap itself properly without trebuchet.
-    $owner                = 'trebuchet',
-    $group                = 'wikidev',
+    $owner                = 'mwdeploy',
+    $group                = 'mwdeploy',
     $base_path            = '/srv/deployment',
     $origin               = 'gerrit',
     $canaries             = undef,

@@ -4,13 +4,13 @@
 #
 # == Parameters:
 # [*deployment_group*]
-#   User group that will be allowed to read log files. (default: wikidev)
+#   User group that will be allowed to read log files. (default: mwdeploy)
 #
 # [*run_l10nupdate*]
 #   Should l10nupdate be run automatically from cron? (default: false)
 #
 class scap::l10nupdate(
-    $deployment_group = 'wikidev',
+    $deployment_group = 'mwdeploy',
     $run_l10nupdate   = false,
 ) {
     require ::mediawiki::users

@@ -1,7 +1,7 @@
 # filtertags: labs-project-deployment-prep labs-project-phabricator labs-project-striker
 class profile::mediawiki::deployment::server(
     $apache_fqdn = hiera('apache_fqdn', $::fqdn),
-    $deployment_group = hiera('deployment_group', 'wikidev'),
+    $deployment_group = hiera('deployment_group', 'mwdeploy'),
     $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet'),
     $main_deployment_server = hiera('scap::deployment_server'),
     $base_path = hiera('base_path', '/srv/deployment'),
@@ -74,7 +74,7 @@ class profile::mediawiki::deployment::server(
 
     file { '/srv/deployment':
         ensure => directory,
-        owner  => 'trebuchet',
+        owner  => 'mwdeploy',
         group  => $deployment_group,
     }
 

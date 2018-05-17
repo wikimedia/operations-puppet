@@ -3,7 +3,7 @@
 # Provision a deployment server.
 #
 # == Parameters:
-# - $deployment_group: Default value for group ownership of any trebuchet-
+# - $deployment_group: Default value for group ownership of any scap-
 #                      deployed repositories
 #
 class deployment::deployment_server(
@@ -42,12 +42,13 @@ class deployment::deployment_server(
     if $::realm != 'labs' {
 
       group { 'trebuchet':
-          ensure => present,
+          ensure => 'absent',
           name   => 'trebuchet',
           system => true,
       }
 
       user { 'trebuchet':
+          ensure     => 'absent',
           shell      => '/bin/false',
           home       => '/nonexistent',
           managehome => false,
