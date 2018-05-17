@@ -140,8 +140,6 @@ class profile::maps::osm_master (
         osm::cleartables_sync { $db_name:
             ensure                   => present,
             pg_password              => $osmupdater_pass,
-            hour                     => $planet_sync_hour,
-            minute                   => $planet_sync_minute,
             postreplicate_command    => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
             disable_replication_cron => $disable_replication_cron,
         }

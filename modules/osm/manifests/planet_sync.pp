@@ -123,7 +123,7 @@ define osm::planet_sync (
 
     $ensure_cron = $disable_replication_cron ? {
         true    => absent,
-        default => present,
+        default => $ensure,
     }
     cron { "planet_sync-${name}":
         ensure      => $ensure_cron,
