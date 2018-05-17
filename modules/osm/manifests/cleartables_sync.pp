@@ -54,7 +54,7 @@ define osm::cleartables_sync (
 
     cron {
         default:
-            ensure      => $ensure,
+            ensure      => $ensure_cron,
             user        => 'osmupdater',
             environment => [
                 "PGPASSWORD=${pg_password}",
