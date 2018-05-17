@@ -128,7 +128,7 @@ class profile::backup::director(
         includes => [ '/var/lib/mailman' ]
     }
     bacula::director::fileset { 'var-lib-puppet-ssl':
-        includes => [ '/var/lib/puppet/ssl' ]
+        includes => [ '/var/lib/puppet/ssl', '/var/lib/puppet/server/ssl' ]
     }
     bacula::director::fileset { 'var-lib-puppet-volatile':
         includes => [ '/var/lib/puppet/volatile' ]
