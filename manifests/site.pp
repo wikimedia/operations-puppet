@@ -2107,17 +2107,12 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 #  key: profile::openstack::main::nova::scheduler_pool
 # We try to keep a few empty as emergency fail-overs
 #  or transition hosts for maintenance to come
-node /^labvirt101[0-8].eqiad.wmnet/ {
+node /^labvirt101[0-9].eqiad.wmnet/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
 
-#labvirt10[19-20] are to run labdb instances, set to spare for now T172538
-node /^labvirt10(19|20)\.eqiad\.wmnet$/ {
-    role(spare::system)
-}
-
-node /^labvirt102[12]\.eqiad\.wmnet$/ {
+node /^labvirt102[0-2]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::main::virt)
     include ::standard
 }
