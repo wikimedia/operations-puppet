@@ -2153,10 +2153,7 @@ node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
 
 # VMs for performance team profiling tools (T194390)
 node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
-    role(spare::system)
-    # lint:ignore:wmf_styleguide
-    interface::add_ip6_mapped { 'main': }
-    # lint:endignore
+    role(webperf::profiling_tools)
 }
 
 node 'wezen.codfw.wmnet' {
