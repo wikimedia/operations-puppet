@@ -13,7 +13,7 @@ scap::dsh::scap_proxies:
 
 scap::dsh::scap_masters:
   - "tin.eqiad.wmnet"
-  - "naos.codfw.wmnet"
+  - "deploy2001.codfw.wmnet"
 
 
 scap::dsh::groups:
@@ -34,7 +34,7 @@ scap::dsh::groups:
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - tin.eqiad.wmnet
-      - naos.codfw.wmnet
+      - deploy2001.codfw.wmnet
       - terbium.eqiad.wmnet
       - mwmaint1001.eqiad.wmnet
       - wasat.codfw.wmnet
