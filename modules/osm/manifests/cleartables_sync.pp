@@ -65,7 +65,7 @@ define osm::cleartables_sync (
             ensure => absent;
         "planet_update-${name}":
             command => $planet_update_cron_command,
-            hour    => [0, 6, 12, 24],
+            hour    => [0, 6, 12, 18],
             minute  => 02;
         "database_update-${name}":
             command => "/usr/local/bin/process-osm-data database-update >> ${log_dir}/database-update.log 2>&1",
