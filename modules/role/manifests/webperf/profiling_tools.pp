@@ -9,9 +9,6 @@ class role::webperf::profiling_tools {
         description => 'profiling tools for the performance team'
     }
 
-    include ::standard
-    include ::profile::base::firewall
-
     include ::profile::webperf::xhgui
 
     require_package('libapache2-mod-php7.0')
