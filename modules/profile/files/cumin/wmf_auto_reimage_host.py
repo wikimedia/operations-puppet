@@ -101,6 +101,7 @@ def run(args, user, log_path):
     """
     previous = None  # Previous state in conftool
     rename_from = None  # In case of host rename, hold the previous hostname
+    cert_fingerprint = None
 
     # Validate hosts have a signed Puppet certificate
     if not args.new:
@@ -118,10 +119,16 @@ def run(args, user, log_path):
 
     if args.no_pxe:
         lib.print_line('Skipping PXE reboot', host=args.host)
-        if (not lib.validate_hosts([args.host], no_raise=True) and
-                lib.puppet_check_cert_to_sign(args.host) == 1):
-            # There is no signed or pending signing certificate for the host
-            lib.puppet_generate_cert(args.host)
+        if not lib.validate_hosts([args.host], no_raise=True):
+            # There is no valid cert for the host, remove local cert and re-generate it
+            lib.puppet_remove_local_cert(args.host, installer=True)
+            ret = lib.puppet_check_cert_to_sign(args.host, lib.CERT_DESTROY)
+            if ret != 1:
+                raise RuntimeError(
+                    ('There was an error checking the certificate. puppet_check_cert_to_sign() '
+                     'should have returned 1, got {ret} instead').format(ret=ret))
+
+            cert_fingerprint = lib.puppet_generate_cert(args.host)
     else:
         lib.puppet_remove_host(args.host)  # Cleanup Puppet
 
@@ -152,10 +159,10 @@ def run(args, user, log_path):
 
         # Generate the Puppet certificate and signing request
         if lib.detect_init_system(args.host) == 'systemd':
-            lib.puppet_generate_cert(args.host)
+            cert_fingerprint = lib.puppet_generate_cert(args.host)
 
     # Sign the new Puppet certificate
-    if lib.puppet_wait_cert_and_sign(args.host):
+    if lib.puppet_wait_cert_and_sign(args.host, cert_fingerprint):
         if args.mask:  # Mask systemd services
             lib.mask_systemd_services(args.host, args.mask)
 

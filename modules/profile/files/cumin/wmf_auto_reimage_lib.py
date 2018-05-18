@@ -31,6 +31,7 @@ ICINGA_DOMAIN = 'icinga.wikimedia.org'
 DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
+CERT_DESTROY = 'destroy'
 
 LOG_PATTERN = '/var/log/wmf-auto-reimage/{start}_{user}_{pid}.log'
 # TODO: move it to a dedicated ops-orchestration-bot
@@ -572,44 +573,68 @@ def run_puppet(hosts, no_raise=False):
         print_line('{message} on hosts: {hosts}'.format(message=message, hosts=hosts))
 
 
-def puppet_check_cert_to_sign(host):
+def puppet_check_cert_to_sign(host, fingerprint):
     """Check if on the puppetmaster there is a new certificate to sign for the given host.
 
     Return 0 if there is a pending certificate to be signed, 1 if there isn't and 2 if the
     certificate is already signed.
 
     Arguments:
-    host  -- the host to check for a certificate pending signing.
+    host        -- the host to check for a certificate pending signing.
+    fingerprint -- the fingerprint of the certificate to validate. If set to CERT_DESTROY, destroy
+                   a pending CSR.
     """
-    command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
+    list_command = "puppet cert list '{host}' 2> /dev/null".format(host=host)
     puppetmaster_host = get_puppet_ca_master()
 
     try:
-        exit_code, worker = run_cumin(
-            'puppet_check_cert_to_sign', puppetmaster_host, [command])
+        _, worker = run_cumin(
+            'puppet_check_cert_to_sign', puppetmaster_host, [list_command])
     except RuntimeError:
+        return 1
+
+    if fingerprint == CERT_DESTROY:  # Remove a pending CSR
+        remove_command = 'puppet ca destroy {host}'.format(host=host)
+        run_cumin('puppet_check_cert_to_sign', puppetmaster_host, [remove_command])
         return 1
 
     for _, output in worker.get_results():
         if host in output.message():
+            cert_line = output.message()
             break
+    else:
+        cert_line = ''
 
-    if output.message().startswith('  "{host}"'.format(host=host)):
+    if (cert_line.startswith('  "{host}"'.format(host=host)) and
+            (fingerprint is None or fingerprint in cert_line)):
         return 0
-    elif output.message().startswith('+ "{host}"'.format(host=host)):
+    elif (cert_line.startswith('+ "{host}"'.format(host=host)) and
+            (fingerprint is None or fingerprint in cert_line)):
         print_line('Puppet cert already signed', host=host)
         return 2
     else:
-        raise RuntimeError('Unable to find cert to sign')
+        raise RuntimeError('Unable to find cert to sign in: {line}'.format(line=cert_line))
 
 
-def puppet_wait_cert_and_sign(host):
+def puppet_remove_local_cert(host, installer=False):
+    """Delete the local Puppet certificate.
+
+    Arguments:
+    host      -- the host where to delete the local certificate.
+    installer -- whether to run the command with the installer key or standard Cumin
+                 key. [optional, default: False]
+    """
+    run_cumin('puppet_remove_local_cert', host, ['rm -rf /var/lib/puppet/ssl'], installer=installer)
+
+
+def puppet_wait_cert_and_sign(host, fingerprint):
     """Poll the puppetmaster looking for a new key to sign for the given host.
 
     Arguments:
-    host  -- the host to monitor for a complete Puppet run
+    host        -- the host to monitor for a complete Puppet run
+    fingerprint -- the certificate fingerprint to validate
     """
-    sign_command = "puppet cert -s '{host}'".format(host=host)
+    sign_command = "puppet cert sign '{host}'".format(host=host)
     puppetmaster_host = get_puppet_ca_master()
     start = datetime.utcnow()
     timeout = 7200  # 2 hours
@@ -623,7 +648,7 @@ def puppet_wait_cert_and_sign(host):
             print_line('Still waiting for Puppet cert to sign after {min} minutes'.format(
                 min=(retries * WATCHER_LONG_SLEEP) // 60.0), host=host)
 
-        check_cert = puppet_check_cert_to_sign(host)
+        check_cert = puppet_check_cert_to_sign(host, fingerprint)
         if check_cert == 0:  # Found Puppet cert to sign
             break
         elif check_cert == 1:  # Puppet cert to sign still missing
@@ -638,7 +663,17 @@ def puppet_wait_cert_and_sign(host):
         else:  # Should never happen
             raise RuntimeError('Unable to check Puppet certificate status on puppetmaster')
 
-    run_cumin('puppet_wait_cert_and_sign', puppetmaster_host, [sign_command])
+    _, worker = run_cumin('puppet_wait_cert_and_sign', puppetmaster_host, [sign_command])
+    for _, output in worker.get_results():
+        if fingerprint in output.message():
+            break
+    else:
+        print_line('Expected fingerprint {fingerprint} not found in signing message:\n{msg}'.format(
+            fingerprint=fingerprint, msg=output.message()), host=host)
+        puppet_remove_host(host)
+        print_line('Restart Puppetmasters ASAP!!!')
+        raise RuntimeError('Aborting due to puppet cert fingerprint mismatch')
+
     print_line('Signed Puppet cert', host=host)
     validate_hosts([host])
 
@@ -646,14 +681,24 @@ def puppet_wait_cert_and_sign(host):
 
 
 def puppet_generate_cert(host):
-    """Run the Puppet agent once to generate the cert and the signing request.
+    """Run the Puppet agent once to generate the cert and the CSR, return its fingerprint.
 
     Arguments:
     host -- the FQDN of the host to run puppet on
     """
-    run_cumin('puppet_generate_certs', host, ['puppet agent --test'], installer=True,
-              ignore_exit=True, timeout=300)
-    print_line('Run Puppet to generate the certificate', host=host)
+    _, worker = run_cumin('puppet_generate_certs', host, ['puppet agent --test --color=false'],
+                          installer=True, ignore_exit=True, timeout=300)
+
+    for _, output in worker.get_results():
+        for line in output.message().splitlines():
+            if 'Certificate Request fingerprint' in line:
+                fingerprint = line.split()[-1]
+                print_line(
+                    'Puppet CSR generated, fingerprint is: {f}'.format(f=fingerprint), host=host)
+                return fingerprint
+
+    raise RuntimeError(
+        'Unable to find certificate fingerprint in:\n{msg}'.format(msg=output.message()))
 
 
 def detect_init_system(host):
