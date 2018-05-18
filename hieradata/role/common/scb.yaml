@@ -127,6 +127,7 @@ profile::changeprop::purge_port: 4827
 profile::changeprop::ores_uris:
   - http://ores.svc.eqiad.wmnet:8081
   - http://ores.svc.codfw.wmnet:8081
+profile::changeprop::eventbus_uri: http://eventbus.discovery.wmnet:8085
 ### END CHANGEPROP ###
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp
