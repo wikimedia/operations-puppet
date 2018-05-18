@@ -87,10 +87,9 @@ class xenon(
         notify => Service['xenon-log'],
     }
 
-    base::service_unit { 'xenon-log':
+    systemd::service { 'xenon-log':
         ensure  => $ensure,
-        systemd => systemd_template('xenon-log'),
-        upstart => upstart_template('xenon-log'),
+        content => systemd_template('xenon-log'),
     }
 
     # This is the Perl script that generates flame graphs.
