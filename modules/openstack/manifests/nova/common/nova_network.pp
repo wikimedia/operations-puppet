@@ -1,6 +1,7 @@
 class openstack::nova::common::nova_network(
     $version,
     $nova_controller,
+    $keystone_host,
     $nova_api_host,
     $nova_api_host_ip,
     $dmz_cidr,
@@ -31,6 +32,7 @@ class openstack::nova::common::nova_network(
     ) {
 
     $nova_controller_ip = ipresolve($nova_controller,4)
+    $keystone_host_ip = ipresolve($keystone_host,4)
 
     class {'openstack::nova::common::base':
         version => $version,

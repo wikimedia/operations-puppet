@@ -21,6 +21,7 @@ class profile::openstack::labtestn::designate::service(
     class{'::profile::openstack::base::designate::service':
         version                    => $version,
         designate_host             => $designate_host,
+        keytone_host               => $nova_controller,
         db_pass                    => $db_pass,
         db_host                    => $db_host,
         domain_id_internal_forward => $domain_id_internal_forward,
