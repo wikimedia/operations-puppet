@@ -5,12 +5,11 @@
 #
 class role::webperf::profiling_tools {
 
+    include webperf::base
+
     system::role { 'webperf::profiling_tools':
         description => 'profiling tools for the performance team'
     }
-
-    include ::standard
-    include ::profile::base::firewall
 
     include ::profile::webperf::xhgui
 
