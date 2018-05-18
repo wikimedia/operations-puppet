@@ -1,4 +1,4 @@
-class profile::webperf(
+class profile::webperf::processors_and_site(
     $statsd = hiera('statsd')
 ){
     $statsd_parts = split($statsd, ':')
