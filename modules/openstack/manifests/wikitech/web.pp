@@ -12,6 +12,8 @@ class openstack::wikitech::web(
         wikitech_nova_ldap_user_pass       => $wikitech_nova_ldap_user_pass,
     }
 
+    class { 'mediawiki::maintenance::tor_exit_node': ensure => true, wiki => 'labswiki' }
+
     require_package([
         'python-mysqldb',
         'python-keystone',
