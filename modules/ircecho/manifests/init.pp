@@ -33,10 +33,9 @@ class ircecho (
         notify  => Service['ircecho'],
     }
 
-    base::service_unit { 'ircecho':
+    systemd::service { 'ircecho':
         ensure         => $ensure,
-        systemd        => systemd_template('ircecho'),
-        sysvinit       => sysvinit_template('ircecho'),
+        content        => systemd_template('ircecho'),
         require        => File['/usr/local/bin/ircecho'],
         service_params => {
             hasrestart => true,
