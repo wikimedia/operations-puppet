@@ -59,13 +59,13 @@ class profile::mediawiki::mcrouter_wancache(
         desc  => 'Skip outgoing connection tracking for mcrouter',
         table => 'raw',
         chain => 'OUTPUT',
-        rule  => 'proto tcp sport (6378:6382 11212) NOTRACK;',
+        rule  => "proto tcp sport (${port}) NOTRACK;",
     }
 
     ferm::rule { 'skip_mcrouter_wancache_conntrack_in':
         desc  => 'Skip incoming connection tracking for mcrouter',
         table => 'raw',
         chain => 'PREROUTING',
-        rule  => 'proto tcp dport (6378:6382 11212) NOTRACK;',
+        rule  => "proto tcp dport (${port}) NOTRACK;",
     }
 }

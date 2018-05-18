@@ -156,11 +156,13 @@ mediawiki_memcached_servers:
     eqiad:
       shard01:
         host: 10.68.23.25  # deployment-memc04
-        port: 11211
+        port: 11213
       shard02:
         host: 10.68.23.49  # deployment-memc05
-        port: 11211
+        port: 11213
 profile::mediawiki::mcrouter_wancache::port: 11213
+profile::mcrouter_backend::listen_port: 11213
+profile::mcrouter_backend::store_port: 11211
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: '1.05'
 profile::memcached::size: '3000'
