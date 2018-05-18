@@ -36,9 +36,9 @@ function show_setup_help() {
 Usage: ${0##*/} setup data_url state_url replication_url
 
 Examples:
-  ${0##*/} setup http://download.geofabrik.de/north-america/canada/british-columbia-170101.osm.pbf \\
-    http://download.geofabrik.de/north-america/canada/british-columbia-updates/000/001/384.state.txt \\
-    http://download.geofabrik.de/north-america/canada/british-columbia-updates
+  ${0##*/} setup https://download.geofabrik.de/north-america/canada/british-columbia-180515.osm.pbf \\
+    https://download.geofabrik.de/north-america/canada/british-columbia-updates/000/001/884.state.txt \\
+    https://download.geofabrik.de/north-america/canada/british-columbia-updates
 
 EOF
 exit 1
