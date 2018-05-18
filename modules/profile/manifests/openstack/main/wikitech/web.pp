@@ -18,5 +18,5 @@ class profile::openstack::main::wikitech::web(
 
     class {'::openstack::wikitech::wikitech_static_sync': }
 
-    class {'::mediawiki::maintenance::tor_exit_node': ensure => true, wiki => 'labswiki' }
+    class {'::mediawiki::maintenance::tor_exit_node': ensure => 'present', wiki => 'labswiki' }
 }
