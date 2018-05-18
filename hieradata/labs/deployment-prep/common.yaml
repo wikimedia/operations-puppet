@@ -388,6 +388,8 @@ profile::eventstreams::streams:
     topics: ["%{::site}.mediawiki.page-properties-change"]
   revision-create:
     topics: ["%{::site}.mediawiki.revision-create"]
+  revision-score:
+    topics: ["%{::site}.mediawiki.revision-score"]
   recentchange:
     topics: ["%{::site}.mediawiki.recentchange"]
   test:
