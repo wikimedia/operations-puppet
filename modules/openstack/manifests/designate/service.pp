@@ -5,6 +5,7 @@ class openstack::designate::service(
     $active,
     $version,
     $designate_host,
+    $keystone_host,
     $db_user,
     $db_pass,
     $db_host,
@@ -29,10 +30,10 @@ class openstack::designate::service(
     $keystone_auth_port,
     ) {
 
-    $keystone_host_ip   = ipresolve($nova_controller,4)
+    $keystone_host_ip   = ipresolve($keystone_host,4)
     $nova_controller_ip = ipresolve($nova_controller)
-    $keystone_public_uri = "http://${nova_controller}:${keystone_public_port}"
-    $keystone_admin_uri = "http://${nova_controller}:${keystone_auth_port}"
+    $keystone_public_uri = "http://${keystone_host}:${keystone_public_port}"
+    $keystone_admin_uri = "http://${keystone_host}:${keystone_auth_port}"
     $designate_host_ip = ipresolve($designate_host,4)
     $puppetmaster_hostname_ip = ipresolve($puppetmaster_hostname,4)
 
