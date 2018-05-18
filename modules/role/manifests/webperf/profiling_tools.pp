@@ -12,6 +12,7 @@ class role::webperf::profiling_tools {
     include ::standard
     include ::profile::base::firewall
 
+    include ::profile::webperf::base
     include ::profile::webperf::xhgui
 
     require_package('libapache2-mod-php7.0')

@@ -2143,7 +2143,7 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
 
 # VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
-    role(webperf)
+    role(webperf::processors_and_site)
 }
 
 # VMs for performance team profiling tools (T194390)
