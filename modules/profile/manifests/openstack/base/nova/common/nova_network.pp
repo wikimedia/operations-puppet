@@ -1,6 +1,7 @@
 class profile::openstack::base::nova::common::nova_network(
     $version = hiera('profile::openstack::base::version'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
+    $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $nova_api_host = hiera('profile::openstack::base::nova_api_host'),
     $dmz_cidr = hiera('profile::openstack::base::nova::dmz_cidr'),
     $dhcp_domain = hiera('profile::openstack::base::nova::dhcp_domain'),
@@ -27,13 +28,14 @@ class profile::openstack::base::nova::common::nova_network(
     $spice_hostname = hiera('profile::openstack::base::spice_hostname'),
     ) {
 
-    $keystone_admin_uri = "http://${nova_controller}:${auth_port}"
-    $keystone_auth_uri = "http://${nova_controller}:${public_port}"
+    $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
+    $keystone_auth_uri = "http://${keystone_host}:${public_port}"
     $nova_api_host_ip = ipresolve($nova_api_host,4)
 
     class {'::openstack::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,
+        keystone_host            => $keystone_host,
         nova_api_host            => $nova_api_host,
         nova_api_host_ip         => $nova_api_host_ip,
         dmz_cidr                 => $dmz_cidr,

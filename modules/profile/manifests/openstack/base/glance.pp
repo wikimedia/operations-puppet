@@ -2,6 +2,7 @@ class profile::openstack::base::glance(
     $version = hiera('profile::openstack::base::version'),
     $nova_controller = hiera('profile::openstack::base::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::base::nova_controller_stanbdy'),
+    $keystone_host = hiera('profile::openstack::base::keystone_host'),
     $auth_port = hiera('profile::openstack::base::keystone::auth_port'),
     $public_port = hiera('profile::openstack::base::keystone::public_port'),
     $db_user = hiera('profile::openstack::base::glance::db_user'),
@@ -14,8 +15,8 @@ class profile::openstack::base::glance(
     $labs_hosts_range = hiera('profile::openstack::base::labs_hosts_range'),
     ) {
 
-    $keystone_admin_uri = "http://${nova_controller}:${auth_port}"
-    $keystone_public_uri = "http://${nova_controller}:${public_port}"
+    $keystone_admin_uri = "http://${keystone_host}:${auth_port}"
+    $keystone_public_uri = "http://${keystone_host}:${public_port}"
 
     class { '::openstack::glance::service':
         version                 => $version,

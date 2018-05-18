@@ -1,6 +1,7 @@
 class profile::openstack::labtest::nova::common(
     $version = hiera('profile::openstack::labtest::version'),
     $nova_controller = hiera('profile::openstack::labtest::nova_controller'),
+    $keystone_host = hiera('profile::openstack::labtestn::nova_controller'),
     $nova_api_host = hiera('profile::openstack::labtest::nova_api_host'),
     $dmz_cidr = hiera('profile::openstack::labtest::nova::dmz_cidr'),
     $dhcp_domain = hiera('profile::openstack::labtest::nova::dhcp_domain'),
@@ -25,6 +26,7 @@ class profile::openstack::labtest::nova::common(
     class {'::profile::openstack::base::nova::common::nova_network':
         version                  => $version,
         nova_controller          => $nova_controller,
+        keystone_host            => $keystone_host,
         nova_api_host            => $nova_api_host,
         dmz_cidr                 => $dmz_cidr,
         dhcp_domain              => $dhcp_domain,

@@ -14,6 +14,7 @@ class profile::openstack::main::glance(
         version                 => $version,
         nova_controller         => $nova_controller,
         nova_controller_standby => $nova_controller_standby,
+        keystone_host           => $nova_controller,
         db_pass                 => $db_pass,
         db_host                 => $db_host,
         ldap_user_pass          => $ldap_user_pass,
