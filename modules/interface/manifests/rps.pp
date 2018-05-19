@@ -46,7 +46,7 @@ define interface::rps($interface=$name, $rss_pattern='', $qdisc='') {
     # blip the interface.  This shouldn't be an issue for first-run scenarios,
     # but might require a depool when changing $numa_networking on live
     # production hosts that can't handle short network blips.
-    if $facts['net_driver'][$interface] == 'bnx2x' {
+    if $facts['net_driver'][$interface]['driver'] == 'bnx2x' {
         # Limit to bnx2x, as is this is the only case we've tested well and
         # where we know "Combined" is the right thing to set here
         $num_queues = $::interface::rps::modparams::num_queues
