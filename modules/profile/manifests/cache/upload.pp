@@ -1,5 +1,6 @@
 class profile::cache::upload(
     $upload_domain = hiera('profile::cache::upload::upload_domain', 'upload.wikimedia.org'),
+    $upload_webp_hits_threshold = hiera('profile::cache::upload::upload_webp_hits_threshold', 10000),
     $maps_domain = hiera('profile::cache::upload::maps_domain', 'maps.wikimedia.org'),
     $req_handling = hiera('cache::req_handling'),
     $app_directors = hiera('cache::app_directors'),
@@ -39,11 +40,12 @@ class profile::cache::upload(
     }
 
     $common_vcl_config = {
-        'purge_host_regex' => $::profile::cache::base::purge_host_only_upload_re,
-        'upload_domain'    => $upload_domain,
-        'maps_domain'      => $maps_domain,
-        'allowed_methods'  => '^(GET|HEAD|OPTIONS|PURGE)$',
-        'req_handling'     => $req_handling,
+        'purge_host_regex'           => $::profile::cache::base::purge_host_only_upload_re,
+        'upload_domain'              => $upload_domain,
+        'upload_webp_hits_threshold' => $upload_webp_hits_threshold,
+        'maps_domain'                => $maps_domain,
+        'allowed_methods'            => '^(GET|HEAD|OPTIONS|PURGE)$',
+        'req_handling'               => $req_handling,
     }
 
     # Note pass_random true in BE, false in FE below.

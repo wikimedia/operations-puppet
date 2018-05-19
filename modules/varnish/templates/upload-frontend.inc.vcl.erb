@@ -218,6 +218,20 @@ sub cluster_fe_deliver {
 			set resp.http.Cache-control = "public, max-age=3600, s-maxage=3600";
 			set resp.http.Age = "0";
 	}
+
+	# If the client supports WebP and the thumbnail is popular enough, attempt to serve a WebP thumbnail instead of JPG/PNG
+	if (obj.hits > <%= @vcl_config.fetch('upload_webp_hits_threshold') %> && req.url ~ "(?i)\.(jpg|jpeg|jpe|png)$" && req.url ~ "(?i)/thumb/" && req.http.Accept ~ "(?i)image/webp" && req.restarts == 0) {
+		# Append .webp to the request URL
+		set req.url = req.url + ".webp";
+		return(restart);
+	}
+
+	# The WebP thumbnail failed, fall back to the JPG/PNG one
+	if (resp.status >= 400 && req.restarts >= 1 && req.url ~ "(?i)\.webp$" && req.url ~ "(?i)/thumb/") {
+		# Remove .webp from the request URL
+		set req.url = regsub(req.url, "(?i)\.webp$", "");
+		return(restart);
+	}
 }
 
 sub cluster_fe_err_synth {
