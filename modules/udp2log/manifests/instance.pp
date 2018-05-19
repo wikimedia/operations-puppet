@@ -7,9 +7,6 @@
 # $log_directory       - Main location for log files.Default: /var/log/udp2log
 # $logrotate           - If true, sets up a logrotate file for files in
 #                        $log_directory. Default: true
-# $multicast           - If true, the udp2log instance will be started with the
-#                        --multicast 233.58.59.1. If you give a string,
-#                        --mulitcast will be set to this string. Default: false
 # $ensure              - Either 'present' or 'absent'. Default: 'present'
 # $monitor_processes   - bool. Default: true
 # $monitor_log_age     - bool. Default: true
@@ -29,7 +26,6 @@ define udp2log::instance(
     $port                = '8420',
     $log_directory       = '/var/log/udp2log',
     $logrotate           = true,
-    $multicast           = false,
     $monitor_processes   = true,
     $monitor_log_age     = true,
     $template_variables  = undef,
@@ -55,7 +51,6 @@ define udp2log::instance(
 
     base::service_unit { "udp2log-${name}":
         ensure    => $ensure,
-        sysvinit  => sysvinit_template('udp2log'),
         systemd   => systemd_template('udp2log'),
         subscribe => File["/etc/udp2log/${name}"],
         require   => File["/etc/udp2log/${name}"],
