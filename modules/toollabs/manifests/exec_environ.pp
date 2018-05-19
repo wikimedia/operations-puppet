@@ -10,6 +10,7 @@ class toollabs::exec_environ {
     include ::profile::locales::extended
     include ::identd
     include ::redis::client::python
+    include toollabs::mono_external_repo
 
     require_package(
         'fonts-arabeyes',
