@@ -37,7 +37,7 @@ define profile::lvs::interface_tweaks(
     }
 
     # bnx2x-specific stuff
-    if $facts['net_driver'][$interface] == 'bnx2x' {
+    if $facts['net_driver'][$interface]['driver'] == 'bnx2x' {
         # Max for bnx2x/BCM57800, seems to eliminate the spurious rx drops under heavy traffic
         interface::ring { "${name} rxring":
             interface => $interface,
@@ -48,7 +48,7 @@ define profile::lvs::interface_tweaks(
         # Disable ethernet PAUSE behavior, dropping is better than buffering (in reasonable cases!)
         interface::noflow { $interface: }
     }
-    else {
+    elsif $facts['net_driver'][$interface]['driver'] == 'bnx2' {
         # lvs1001-6 have bnx2 1G cards, different maximum but still useful!
         interface::ring { "${name} rxring":
             interface => $interface,
