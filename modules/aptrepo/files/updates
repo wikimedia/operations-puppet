@@ -186,3 +186,27 @@ Suite: stretch
 Architectures: amd64 source
 VerifyRelease: AC0E47584A7A714D
 ListShellHook: grep-dctrl -X -S php7.2 || [ $? -eq 1 ]
+
+Name: mono-project-trusty
+Method: https://download.mono-project.com/repo/ubuntu
+Components: main>thirdparty/mono-project-trusty
+Suite: stable-trusty
+Architectures: amd64 source
+VerifyRelease: A6A19B38D3D831EF
+ListShellHook: grep-dctrl -X -S cecil cli-common core-setup fsharp gtk-sharp2 libgdiplus mod-mono mono mono-basic mono-llvm mono-tools monodevelop msbuild nuget nunit referenceassemblies-pcl xamarin-gtk-theme xsp || [ $? -eq 1 ]
+
+Name: mono-project-jessie
+Method: https://download.mono-project.com/repo/debian
+Components: main>thirdparty/mono-project-jessie
+Suite: stable-jessie
+Architectures: amd64 source
+VerifyRelease: A6A19B38D3D831EF
+ListShellHook: grep-dctrl -X -S cecil cli-common core-setup fsharp gtk-sharp2 libgdiplus mod-mono mono mono-basic mono-llvm mono-tools monodevelop msbuild nuget nunit referenceassemblies-pcl xamarin-gtk-theme xsp || [ $? -eq 1 ]
+
+Name: mono-project-stretch
+Method: https://download.mono-project.com/repo/debian
+Components: main>thirdparty/mono-project-stretch
+Suite: stable-stretch
+Architectures: amd64 source
+VerifyRelease: A6A19B38D3D831EF
+ListShellHook: grep-dctrl -X -S cecil cli-common core-setup fsharp gtk-sharp2 libgdiplus mod-mono mono mono-basic mono-llvm mono-tools monodevelop msbuild nuget nunit referenceassemblies-pcl xamarin-gtk-theme xsp || [ $? -eq 1 ]

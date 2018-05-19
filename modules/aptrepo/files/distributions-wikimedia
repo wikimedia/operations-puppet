@@ -4,9 +4,9 @@ Suite: trusty-wikimedia
 Codename: trusty-wikimedia
 Version: 14.04
 Architectures: source amd64 i386
-Components: main universe non-free thirdparty thirdparty/cloudera
+Components: main universe non-free thirdparty thirdparty/cloudera thirdparty/mono-project-trusty
 UDebComponents: main
-Update: hwraid cloudera-trusty elastic hp-mcp-trusty confluent
+Update: hwraid cloudera-trusty elastic hp-mcp-trusty confluent mono-project-trusty
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -20,9 +20,9 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22 component/zookeeper349
+Components: main backports thirdparty experimental thirdparty/cloudera component/ci thirdparty/ci component/elastic55 thirdparty/elastic55 component/icu57 component/git component/cassandra22 component/zookeeper349 thirdparty/mono-project-jessie
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55
+Update: hwraid cassandra cloudera-jessie grafana tor hp-mcp-jessie confluent elastic elasticsearch-curator docker jenkins elastic55 mono-project-jessie
 Description: Wikimedia packages for Debian Jessie
 SignWith: 09DBD9F93F6CD44A
 DebOverride: deb-override
@@ -36,9 +36,9 @@ Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports
 Version: 9
 Architectures: source amd64 i386
-Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra22 component/cassandra311 component/puppetdb4 thirdparty/tor thirdparty/php72 component/ci
+Components: main thirdparty/cloudera thirdparty/ci thirdparty/confluent thirdparty/hwraid thirdparty/k8s component/elastic55 thirdparty/elastic55 component/cassandra22 component/cassandra311 component/puppetdb4 thirdparty/tor thirdparty/php72 component/ci thirdparty/mono-project-stretch
 UDebComponents: main
-Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 tor-stretch php72-stretch
+Update: hwraid-stretch hp-mcp-stretch jenkins-stretch confluent-stretch elastic55 tor-stretch php72-stretch mono-project-stretch
 # NOTE:  Cloudera does not (yet) provide Stretch packages.  We use the Jessie ones,
 # along with a fake equivs to satisfy hadoop-mapreduce's (unnecessary) dependency on libssl1.0.0
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
