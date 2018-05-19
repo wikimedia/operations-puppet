@@ -55,7 +55,6 @@ define udp2log::instance(
 
     base::service_unit { "udp2log-${name}":
         ensure    => $ensure,
-        sysvinit  => sysvinit_template('udp2log'),
         systemd   => systemd_template('udp2log'),
         subscribe => File["/etc/udp2log/${name}"],
         require   => File["/etc/udp2log/${name}"],
