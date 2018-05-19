@@ -188,11 +188,11 @@ node 'centrallog1001.eqiad.wmnet' {
 
 # Ganeti VMs for certcentral service
 node 'certcentral1001.eqiad.wmnet' {
-    role(spare::system)
+    role(certcentral)
 }
 
 node 'certcentral2001.codfw.wmnet' {
-    role(spare::system)
+    role(certcentral)
 }
 
 # two new cloudvirt systems, need to be pushed into production T199125

@@ -1,0 +1,46 @@
+# Certcentral server
+# For clients you'll want some resources like this:
+#     certcentral::cert { 'testing':
+#        puppet_svc => 'nginx'
+#    }
+
+# and if you want to support http-01 challenges, some nginx config like this:
+# server {
+#        listen [::]:443 default_server deferred backlog=16384 reuseport ssl http2;
+#        listen 443 default_server deferred backlog=16384 reuseport ssl http2;
+#        server_name certcentraltest.beta.wmflabs.org;
+#        error_log   /var/log/nginx/certcentral.client.error.log;
+#        access_log   off;
+#        ssl_certificate /etc/centralcerts/testing.rsa-2048.fullchain.pem;
+#        ssl_certificate_key /etc/centralcerts/testing.rsa-2048.private.pem;
+#        keepalive_timeout 60;
+#        location /.well-known/acme-challenge/ {
+#                proxy_pass http://certcentral_hostname_here;
+#        }
+#}
+#server {
+#        listen [::]:80 deferred backlog=16384 reuseport ipv6only=on;
+#        listen 80 deferred backlog=16384 reuseport;
+#        server_name certcentraltest.beta.wmflabs.org;
+#        error_log   /var/log/nginx/certcentral.client.error.log;
+#        access_log   off;
+#        keepalive_timeout 60;
+#        location /.well-known/acme-challenge/ {
+#                proxy_pass http://certcentral_hostname_here;
+#        }
+#}
+# and mark your nginx::site with require => Certcentral::Cert['testing']
+
+class profile::certcentral (
+    Hash[String, Hash[String, String]] $accounts = hiera('profile::certcentral::accounts'),
+    Hash[String, Hash[String, Any]] $certificates = hiera('profile::certcentral::certificates'),
+    Hash[String, Hash[String, Any]] $challenges = hiera('profile::certcentral::challenges'),
+) {
+    File <<| tag == 'certcentral-authorisedhosts' |>> ~> Base::Service_unit['uwsgi-certcentral']
+
+    class { '::certcentral::server':
+        accounts     => $accounts,
+        certificates => $certificates,
+        challenges   => $challenges,
+    }
+}

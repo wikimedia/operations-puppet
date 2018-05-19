@@ -258,3 +258,5 @@ $mail_smarthost = $realm ? {
     # FIXME: find some SMTP servers for labs
     'labs'       => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
 }
+
+$certcentral_host = hiera('certcentral_host')
