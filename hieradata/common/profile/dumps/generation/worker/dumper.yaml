@@ -1,0 +1,2 @@
+profile::dumps::generation::worker::dumper::runtype: regular
+profile::dumps::generation::worker::dumper::maxjobs: 28
