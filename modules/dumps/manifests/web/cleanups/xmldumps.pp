@@ -74,7 +74,7 @@ class dumps::web::cleanups::xmldumps(
     # set up the file containing expressions to match dump output
     # files we need to keep around, for those dumps we don't remove
     # completely, on the dumps generator nfs hosts.
-    if ($isreplica == true) {
+    if ($isreplica == false) {
         $patternslist = ['.*-pages-articles[0-9]+.xml.*(bz2|7z)',
                         '.*-pages-meta-current[0-9]+.xml.*(bz2|7z)',
                         '.*-pages-meta-history[0-9]+.xml.*(bz2|7z)',
@@ -104,16 +104,15 @@ class dumps::web::cleanups::xmldumps(
     $xmlclean = '/usr/bin/python /usr/local/bin/cleanup_old_xmldumps.py'
     $args = "-d ${xmldumpsdir} -w ${wikilist_dir} -k /etc/dumps/xml_keeps.conf"
 
-    if ($isreplica == true) {
-        # patternsfile has patterns that match dump output files we want to keep,
-        # for dump runs we don't want to remove completely, on the dumps generator nfs hosts
-        $cron_commands = "${xmlclean} ${args} -p ${patternsfile}"
-    } else {
+    if ($isreplica == false) {
         # the temp dir only exists on the generating hosts (nfs servers),
         # so only clean up temp files there
         $tempclean = "/usr/bin/find ${dumpstempdir} -type f -mtime +20 -exec rm {} \\;"
-
-        $cron_commands = "${xmlclean} ${args} ; ${tempclean}"
+        # patternsfile has patterns that match dump output files we want to keep,
+        # for dump runs we don't want to remove completely, on the dumps generator nfs hosts
+        $cron_commands = "${xmlclean} ${args} -p ${patternsfile} ; ${tempclean}"
+    } else {
+        $cron_commands = "${xmlclean} ${args}"
     }
     cron { 'cleanup_xmldumps':
         ensure      => 'present',
