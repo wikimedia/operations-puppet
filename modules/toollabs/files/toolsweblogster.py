@@ -33,8 +33,10 @@ class UrlFirstSegmentLogster(LogsterParser):
         # Regular expression for matching lines we are interested in, and capturing
         # fields from the line (in this case, http_status_code, size and squid_code).
         self.reg = re.compile(r"""
-        ^(?P<ip>(\d{1,3}\.?){4})
-        \s-\s-\s
+        ^(?P<vhost>[^ ]+)\s
+        (?P<ip>(\d{1,3}\.?){4})\s
+        (?P<ident>[^ ]+)\s
+        (?P<userid>[^ ]+)\s
         \[(?P<timestamp>.*)\]\s
         "(?P<method>\w+)\s
         /(?P<firstsegment>[^/?]+)(?P<url>/.*?) HTTP/(?P<httpversion>\d.\d)"\s
