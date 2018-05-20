@@ -1,3 +1,1 @@
 snapshot::dumps::runtype: enwiki
-snapshot::dumps::php: /usr/bin/php7.0
-snapshot::dumps::nfs_extra_mountopts: actimeo=0
