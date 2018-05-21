@@ -1876,7 +1876,9 @@ node /^prometheus100[34]\.eqiad\.wmnet$/ {
 }
 
 node /^proton[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
-    include ::standard
+    role(proton)
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\.wmnet$/ {

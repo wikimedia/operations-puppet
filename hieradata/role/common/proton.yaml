@@ -1,0 +1,4 @@
+cluster: proton
+
+admin::groups:
+  - sc-admins
