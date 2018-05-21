@@ -17,13 +17,14 @@ class profile::druid::common(
     $zookeeper_clusters             = hiera('zookeeper_clusters'),
     $metadata_storage_database_name = hiera('profile::druid::common:metadata_storage_database_name', 'druid'),
     $java_home                      = hiera('profile::druid::common::java_home', '/usr/lib/jvm/java-8-openjdk-amd64'),
+    $use_cdh_hadoop_config          = hiera('profile::druid::common::use_cdh_hadoop_config', false),
     $use_cdh                        = hiera('profile::druid::common::use_cdh', false),
 ) {
     # Need Java before Druid is installed.
     require ::profile::java::analytics
 
     # Only need a Hadoop client if we are using CDH.
-    if $use_cdh {
+    if $use_cdh_hadoop_config or $use_cdh {
         require ::profile::hadoop::common
     }
 
