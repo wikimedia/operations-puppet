@@ -200,13 +200,15 @@ class druid(
     # and is writable by druid!  Note that these can still be overridden by
     # setting them in $properties.
     if $properties['druid.storage.type'] == 'hdfs' {
+
+        $default_deep_storage_properties = {
+            # Make sure these directories exists in HDFS by declaring
+            # druid::cdh::hadoop::deep_storage on your Hadoop NameNodes.
+            'druid.storage.storageDirectory' => '/user/druid/deep-storage',
+        }
+
         # If using CDH, then use special CDH settings and dependencies.
         if $use_cdh {
-            $default_deep_storage_properties = {
-                # Make sure these directories exists in HDFS by declaring
-                # druid::cdh::hadoop::deep_storage on your Hadoop NameNodes.
-                'druid.storage.storageDirectory'       => '/user/druid/deep-storage',
-            }
             # Load the special druid-hdfs-storage-cdh extension created by
             # the druid::cdh::hadoop::dependencies class.
             $storage_extensions = ['druid-hdfs-storage-cdh']
