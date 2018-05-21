@@ -81,10 +81,9 @@ define tcpircbot::instance(
 
     $service_name = "tcpircbot-${title}"
 
-    base::service_unit { $service_name:
+    systemd::service { $service_name:
         ensure    => $ensure,
-        upstart   => upstart_template('tcpircbot'),
-        systemd   => systemd_template('tcpircbot'),
+        content   => systemd_template('tcpircbot'),
         subscribe => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
     }
 }
