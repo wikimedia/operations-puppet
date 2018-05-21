@@ -51,11 +51,6 @@ class role::eventlogging::analytics::files {
         ],
     }
 
-    $kafka_consumer_group = hiera(
-        'eventlogging_files_kafka_consumer_group',
-        'eventlogging_consumer_files_00'
-    )
-
     # These commonly used URIs are defined for DRY purposes in
     # role::eventlogging::analytics::server.
     $kafka_client_side_raw_uri = $role::eventlogging::analytics::server::kafka_client_side_raw_uri
@@ -65,7 +60,7 @@ class role::eventlogging::analytics::files {
     eventlogging::service::consumer { 'client-side-events.log':
         input  => "${kafka_client_side_raw_uri}&raw=True",
         output => "file://${out_dir}/client-side-events.log",
-        sid    => $kafka_consumer_group,
+        sid    => 'eventlogging_consumer_client_side_events_log_00',
     }
     # Processed and valid all (AKA 'mixed').
     # Note that this does not include events that were
@@ -74,7 +69,7 @@ class role::eventlogging::analytics::files {
     eventlogging::service::consumer { 'all-events.log':
         input  => $kafka_mixed_uri,
         output => "file://${out_dir}/all-events.log",
-        sid    => $kafka_consumer_group,
+        sid    => 'eventlogging_consumer_all_events_log_00',
     }
 
     $backup_destinations = $::realm ? {
