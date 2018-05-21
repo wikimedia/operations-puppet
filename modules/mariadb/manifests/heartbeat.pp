@@ -17,7 +17,7 @@ class mariadb::heartbeat (
         source => 'puppet:///modules/mariadb/pt-heartbeat-wikimedia',
     }
 
-    # TODO: This should be moved to base::service_unit
+    # TODO: This should be moved to systemd::service
     if $enabled {
         exec { 'pt-heartbeat':
             command => "/usr/bin/perl \
