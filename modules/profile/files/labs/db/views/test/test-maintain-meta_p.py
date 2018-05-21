@@ -47,12 +47,13 @@ INSERT INTO meta_p.wiki (dbname, lang, name, family, url, size, slice, is_closed
 expected_inserts = set(expected_inserts_str.strip().split("\n"))
 
 
-def test_end_to_end(caplog):
+def test_initiation(caplog):
     caplog.set_level(logging.DEBUG)
 
     logger_handler = StubHandler()
     logging.getLogger().addHandler(logger_handler)
 
+    process = mock.Mock()
     with mock.patch("sys.argv", [
         "./maintain-meta_p.py",
         "--all-databases",
@@ -61,12 +62,203 @@ def test_end_to_end(caplog):
         "--config-location=" + str(test_dir / "maintain_views.yaml"),
         "--mediawiki-config=" + str(test_dir)
     ]):
-        script.main()
+            script.main(process)
 
-        inserts = set(
-            re.sub("\s+", " ", record.message.split("SQL: ")[1])
-            for record in logger_handler.records
-            if "SQL: INSERT" in record.message.upper()
-        )
+    assert process.call_count == 1
 
-        assert inserts == expected_inserts
+    args, kwargs = process.call_args
+    assert len(args) == 0
+    assert kwargs['include_databases'] is None
+    assert Path(kwargs['mediawiki_config_dir']) == test_dir
+    assert kwargs['purge'] is False
+    assert isinstance(kwargs['ops'], script.DrySchemaOperations)
+
+
+def test_end_to_end_v2(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    logger_handler = StubHandler()
+    logging.getLogger().addHandler(logger_handler)
+
+    script.process(
+        mediawiki_config_dir=str(test_dir),
+        include_databases=None,
+        ops=script.DrySchemaOperations(),
+        purge=False,
+    )
+
+    inserts = set(
+        re.sub("\s+", " ", record.message.split("SQL: ")[1])
+        for record in logger_handler.records
+        if "SQL: INSERT" in record.message.upper()
+    )
+
+    assert inserts == expected_inserts
+
+
+def test_collect_metadata():
+    metadata = script.collect_metadata(str(test_dir), None)
+
+    assert metadata == {
+        "aawiki": {
+            "closed": True,
+            "family": "wikipedia",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "aawikibooks": {
+            "closed": True,
+            "family": "wikibooks",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "aawiktionary": {
+            "closed": True,
+            "family": "wiktionary",
+            "has_visualeditor": False,
+            "sensitive": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "acewiki": {
+            "family": "wikipedia",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s3"
+        },
+        "advisorswiki": {
+            "family": "special",
+            "has_visualeditor": True,
+            "private": True,
+            "size": 1
+        },
+        "afwikiquote": {
+            "family": "wikiquote",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "alswiki": {
+            "family": "wikipedia",
+            "has_flaggedrevs": True,
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s3"
+        },
+        "amwikimedia": {
+            "family": "wikimedia",
+            "has_visualeditor": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "angwikisource": {
+            "closed": True,
+            "family": "wikisource",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "arwiki": {
+            "family": "wikipedia",
+            "has_flaggedrevs": True,
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 3,
+            "slice": "s7"
+        },
+        "arwikinews": {
+            "family": "wikinews",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s3"
+        },
+        "arwikiversity": {
+            "family": "wikiversity",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s3"
+        },
+        "bgwiki": {
+            "family": "wikipedia",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s2"
+        },
+        "commonswiki": {
+            "family": "special",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 3,
+            "slice": "s4"
+        },
+        "dewiki": {
+            "family": "wikipedia",
+            "has_flaggedrevs": True,
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 3,
+            "slice": "s5"
+        },
+        "dewikivoyage": {
+            "family": "wikivoyage",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s3"
+        },
+        "enwiki": {
+            "family": "wikipedia",
+            "has_flaggedrevs": True,
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 3,
+            "slice": "s1"
+        },
+        "frwiki": {
+            "family": "wikipedia",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 3,
+            "slice": "s6"
+        },
+        "jbowiki": {
+            "family": "wikipedia",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "sensitive": True,
+            "size": 1,
+            "slice": "s3"
+        },
+        "testwikidatawiki": {
+            "family": "wikidata",
+            "has_visualeditor": True,
+            "has_wikidata": True,
+            "size": 2,
+            "slice": "s3"
+        },
+        "wikidatawiki": {
+            "family": "wikidata",
+            "has_visualeditor": False,
+            "has_wikidata": True,
+            "size": 3,
+            "slice": "s8"
+        },
+        "wikimania2005wiki": {
+            "closed": True,
+            "family": "wikimania",
+            "has_visualeditor": True,
+            "size": 1,
+            "slice": "s3"
+        }
+    }
