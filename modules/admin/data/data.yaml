@@ -562,6 +562,8 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
+               'ALL = NOPASSWD: /usr/sbin/service proton *',
+               'ALL = (proton) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                'ALL = (recommendation_api) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
