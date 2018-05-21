@@ -123,11 +123,10 @@ class zuul::server (
         default     => $service_ensure,
     }
 
-    base::service_unit { 'zuul':
+    systemd::service { 'zuul':
         ensure         => 'present',
-        systemd        => systemd_template('zuul'),
+        content        => systemd_template('zuul'),
         service_params => {
-            ensure     => $real_ensure,
             hasrestart => true,
         },
         require        => [
