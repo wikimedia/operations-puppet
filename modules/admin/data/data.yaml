@@ -562,6 +562,7 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service mathoid *',
                'ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                'ALL = NOPASSWD: /usr/sbin/service pdfrender *',
+               'ALL = NOPASSWD: /usr/sbin/service proton *',
                'ALL = NOPASSWD: /usr/sbin/service recommendation_api *',
                'ALL = (recommendation_api) NOPASSWD: ALL',
                'ALL = NOPASSWD: /usr/sbin/service zotero *',
@@ -672,6 +673,13 @@ groups:
     gid: 801
     description: People who have shell access to snapshot hosts and bastions only.
     members: [springle]
+
+  proton-admins:
+    gid: 802
+    description: group of proton admins
+    members: [phuedx, pmiazga, niedzielski, mobrovac]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service proton *',
+                 'ALL = (proton) NOPASSWD: ALL']
 
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
