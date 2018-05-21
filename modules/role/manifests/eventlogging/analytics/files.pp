@@ -51,11 +51,6 @@ class role::eventlogging::analytics::files {
         ],
     }
 
-    $kafka_consumer_group = hiera(
-        'eventlogging_files_kafka_consumer_group',
-        'eventlogging_consumer_files_00'
-    )
-
     # These commonly used URIs are defined for DRY purposes in
     # role::eventlogging::analytics::server.
     $kafka_client_side_raw_uri = $role::eventlogging::analytics::server::kafka_client_side_raw_uri
@@ -63,7 +58,7 @@ class role::eventlogging::analytics::files {
 
     # Raw client side events:
     eventlogging::service::consumer { 'client-side-events.log':
-        input  => "${kafka_client_side_raw_uri}&raw=True",
+        input  => "${kafka_client_side_raw_uri}&raw=True&identity=eventlogging_consumer_client_side_events_log_00",
         output => "file://${out_dir}/client-side-events.log",
         sid    => $kafka_consumer_group,
     }
@@ -72,7 +67,7 @@ class role::eventlogging::analytics::files {
     # 'blacklisted' during processing.  Events are blacklisted
     # from these logs for volume reasons.
     eventlogging::service::consumer { 'all-events.log':
-        input  => $kafka_mixed_uri,
+        input  => "${kafka_mixed_uri}&identity=eventlogging_consumer_all_events_log_00",
         output => "file://${out_dir}/all-events.log",
         sid    => $kafka_consumer_group,
     }
