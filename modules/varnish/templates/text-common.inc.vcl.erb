@@ -149,6 +149,11 @@ sub text_normalize_path {
 	} else if (req.url ~ "^/api/rest_v1/" && req.http.Accept !~ {"profile="https://www.mediawiki.org/wiki/Specs/"}) {
 		unset req.http.Accept;
 	}
+	// Normalise the Accept-Language header for REST API requests
+	// For the time being we only take the first lang variant passed in and ignore the rest
+	if (req.url ~ "^/api/rest_v1/" && req.http.Accept-Language) {
+		set req.http.Accept-Language = regsub(req.http.Accept-Language, "^[a-zA-Z]+(-[a-zA-Z]+)?", "\0");
+	}
 }
 
 // fe+be common recv code
