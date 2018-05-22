@@ -155,6 +155,15 @@ sub cluster_fe_recv_pre_purge {
 		} else if (req.url ~ "^/api/rest_v1/" && req.http.Accept !~ {"profile="https://www.mediawiki.org/wiki/Specs/"}) {
 			unset req.http.Accept;
 		}
+		// Normalise the Accept-Language header for REST API requests
+		// For the time being we only take the first lang variant passed in and ignore the rest
+		if (req.url ~ "^/api/rest_v1/" && req.http.Accept-Language) {
+			if (req.http.Accept-Language ~ "^[a-zA-Z]+(-[a-zA-Z]+)?") {
+				set req.http.Accept-Language = regsub(req.http.Accept-Language, "([a-zA-Z]+(-[a-zA-Z]+)?)(.*)$", "\1");
+			} else {
+				unset req.http.Accept-Language;
+			}
+		}
 	}
 
 	// Normalize paths before purging
