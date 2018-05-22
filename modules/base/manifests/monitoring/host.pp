@@ -198,6 +198,9 @@ class base::monitoring::host(
             method          => 'le',
             warning         => 0,
             critical        => 0,
+            check_interval  => 30,
+            retry_interval  => 5,
+            retries         => 3,
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         }
     }
@@ -210,6 +213,9 @@ class base::monitoring::host(
         query           => "sum(increase(node_edac_correctable_errors_total{instance=\"${::hostname}:9100\"}[4d]))",
         warning         => 2,
         critical        => 4,
+        check_interval  => 30,
+        retry_interval  => 5,
+        retries         => 3,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
