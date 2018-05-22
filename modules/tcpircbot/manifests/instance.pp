@@ -83,6 +83,7 @@ define tcpircbot::instance(
 
     systemd::service { $service_name:
         ensure    => $ensure,
+        restart   => true,
         content   => systemd_template('tcpircbot'),
         subscribe => File["${tcpircbot::dir}/tcpircbot-${title}.json"],
     }
