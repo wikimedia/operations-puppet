@@ -81,6 +81,8 @@ define monitoring::check_prometheus(
     $dashboard_links,
     $method          = 'ge',
     $nan_ok          = false,
+    $check_interval  = 1,
+    $retry_interval  = 1,
     $retries         = 5,
     $group           = undef,
     $ensure          = present,
@@ -114,13 +116,15 @@ define monitoring::check_prometheus(
     }
 
     monitoring::service { $title:
-        ensure        => $ensure,
-        description   => $description,
-        check_command => "${command}!${prometheus_url}!${query}!${warning}!${critical}!${title}!${method}",
-        retries       => $retries,
-        group         => $group,
-        critical      => $nagios_critical,
-        contact_group => $contact_group,
-        notes_url     => $notes_urls,
+        ensure         => $ensure,
+        description    => $description,
+        check_command  => "${command}!${prometheus_url}!${query}!${warning}!${critical}!${title}!${method}",
+        retries        => $retries,
+        check_interval => $check_interval,
+        retry_interval => $retry_interval,
+        group          => $group,
+        critical       => $nagios_critical,
+        contact_group  => $contact_group,
+        notes_url      => $notes_urls,
     }
 }
