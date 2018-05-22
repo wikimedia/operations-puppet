@@ -34,6 +34,7 @@ class statistics::sites::pivot {
     # Set up the VirtualHost
     apache::site { 'pivot.wikimedia.org':
         content => template('statistics/pivot.wikimedia.org.erb'),
+        ensure  => 'absent'
     }
 
     ferm::service { 'pivot-http':
