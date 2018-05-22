@@ -75,9 +75,9 @@ class dumps::web::cleanups::xmldumps(
     # files we need to keep around, for those dumps we don't remove
     # completely, on the dumps generator nfs hosts.
     if ($isreplica == false) {
-        $patternslist = ['.*-pages-articles[0-9]+.xml.*(bz2|7z)',
-                        '.*-pages-meta-current[0-9]+.xml.*(bz2|7z)',
-                        '.*-pages-meta-history[0-9]+.xml.*(bz2|7z)',
+        $patternslist = ['.*-pages-articles[0-9]*.xml.*(bz2|7z)',
+                        '.*-pages-meta-current[0-9]*.xml.*(bz2|7z)',
+                        '.*-pages-meta-history[0-9]*.xml.*(bz2|7z)',
                         '.*-flowhistory.xml.gz',
                         '.*dumpruninfo.txt']
         $patterns= join($patternslist, "\n")
