@@ -60,7 +60,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::refinery::job::project_namespace_map
     include ::profile::analytics::refinery::job::sqoop_mediawiki
     include ::profile::analytics::refinery::job::refine
-    include ::profile::analytics::refinery::job::streams_check
 
     include standard
     include ::profile::base::firewall
