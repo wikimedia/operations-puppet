@@ -5,7 +5,7 @@
 class profile::proton(
 ) {
 
-    require_package('chromium', 'fonts-liberation')
+    require_package('chromium', 'fonts-liberation', 'fonts-noto')
 
     service::node { 'proton':
         port              => 24766,
