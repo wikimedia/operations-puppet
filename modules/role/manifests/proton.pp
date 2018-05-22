@@ -7,6 +7,8 @@ class role::proton {
         description => 'Chromium-based PDF renderer',
     }
 
+    require ::mediawiki::packages::fonts
+
     include ::profile::proton
 }
 
