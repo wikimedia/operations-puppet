@@ -1,0 +1,45 @@
+varnishtest "REST API Accept-Language normalization"
+
+server s1 {
+    rxreq
+    expect req.http.Accept-Language == "sv-SE"
+    txresp
+
+    rxreq
+    expect req.http.Accept-Language == "it-it"
+    txresp
+
+    rxreq
+    expect req.http.Accept-Language == "pl"
+    txresp
+
+    rxreq
+    expect req.http.Accept-Language == <undef>
+    txresp
+} -start
+
+varnish v1 -arg "-p cc_command='exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb' -p vcc_allow_inline_c=true -p vcc_err_unref=false" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/api/rest_v1/x/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Accept-Language: sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7,da;q=0.6,nb;q=0.5"
+    rxresp
+    expect resp.status == 200
+
+    txreq -url "/api/rest_v1/x/2" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Accept-Language: it-it"
+    rxresp
+    expect resp.status == 200
+
+    txreq -url "/api/rest_v1/x/3" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Accept-Language: pl,en-US;q=0.7,en;q=0.3"
+    rxresp
+    expect resp.status == 200
+
+    txreq -url "/api/rest_v1/x/4" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Accept-Language: -garbage"
+    rxresp
+    expect resp.status == 200
+} -run
