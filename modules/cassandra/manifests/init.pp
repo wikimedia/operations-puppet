@@ -193,8 +193,13 @@ class cassandra (
     }
 
     package { 'cassandra':
-        ensure  => $package_version,
-        require => Package['openjdk-8-jdk'],
+      ensure  => $package_version,
+      require => Package['openjdk-8-jdk'],
+    }
+
+    package { 'cassandra-tools':
+      ensure  => $package_version,
+      require => Package['cassandra'],
     }
 
     # Make sure libjemalloc is installed if
