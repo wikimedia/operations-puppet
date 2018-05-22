@@ -62,7 +62,7 @@ profile::druid::common::properties:
   druid.storage.storageDirectory: /user/druid/deep-storage
   druid.extensions.loadList:
     - 'druid-datasketches'
-    - 'druid-hdfs-storage-cdh'
+    - 'druid-hdfs-storage'
     - 'druid-histogram'
     - 'druid-lookups-cached-global'
     - 'mysql-metadata-storage'
