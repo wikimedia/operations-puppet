@@ -1852,11 +1852,6 @@ host db2063 {
     fixed-address db2063.codfw.wmnet;
 }
 
-host db2064 {
-    hardware ethernet 40:a8:f0:35:0a:9c;
-    fixed-address db2064.codfw.wmnet;
-}
-
 host db2065 {
     hardware ethernet 40:a8:f0:35:1e:2c;
     fixed-address db2065.codfw.wmnet;
