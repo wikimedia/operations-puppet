@@ -14,6 +14,7 @@ class dumps::generation::server::rsyncer(
 
     systemd::service { 'dumps-rsyncer':
         ensure    => 'present',
+        restart   => true,
         content   => systemd_template('dumps-rsync-peers'),
         subscribe => File['/usr/local/bin/rsync-to-peers.sh'],
     }
