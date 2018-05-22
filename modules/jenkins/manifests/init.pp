@@ -145,9 +145,9 @@ class jenkins(
         default     => ensure_service($service_ensure),
     }
 
-    base::service_unit { 'jenkins':
+    systemd::service { 'jenkins':
         ensure         => 'present',
-        systemd        => systemd_template('jenkins'),
+        content        => systemd_template('jenkins'),
         refresh        => false,
         service_params => {
             enable => $service_enable,
