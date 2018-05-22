@@ -5,7 +5,8 @@
 class profile::proton(
 ) {
 
-    require_package('chromium', 'fonts-liberation', 'fonts-noto')
+    require_package('chromium')
+    require ::mediawiki::packages::fonts
 
     service::node { 'proton':
         port              => 24766,
