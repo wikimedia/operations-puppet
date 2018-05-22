@@ -86,20 +86,20 @@ class keyholder($require_encrypted_keys='yes') {
 
     # The `keyholder-agent` service is responsible for running
     # the ssh-agent instance that will hold shared key(s).
-    base::service_unit { 'keyholder-agent':
+    systemd::service { 'keyholder-agent':
         ensure  => present,
-        systemd => systemd_template('keyholder-agent'),
-        upstart => upstart_template('keyholder-agent'),
+        content => systemd_template('keyholder-agent'),
+        restart => true,
         require => File['/run/keyholder'],
     }
 
     # The `keyholder-proxy` service runs the filtering ssh-agent proxy
     # that acts as an intermediary between users in the trusted group
     # and the backend ssh-agent that holds the shared key(s).
-    base::service_unit { 'keyholder-proxy':
+    systemd::service { 'keyholder-proxy':
         ensure  => present,
-        systemd => systemd_template('keyholder-proxy'),
-        upstart => upstart_template('keyholder-proxy'),
+        content => systemd_template('keyholder-proxy'),
+        restart => true,
         require => Service['keyholder-agent'],
     }
 
