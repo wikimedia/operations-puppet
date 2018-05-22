@@ -7,6 +7,7 @@ class snapshot::dumps::monitor(
 
   systemd::service { 'dumps-monitor':
     ensure    => 'present',
+    restart   => true,
     content   => systemd_template('dumps-monitor'),
     subscribe => File["${confsdir}/wikidump.conf.dumps"],
   }
