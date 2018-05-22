@@ -190,6 +190,7 @@ ListShellHook: grep-dctrl -X -S php7.2 || [ $? -eq 1 ]
 Name: mono-project-trusty
 Method: https://download.mono-project.com/repo/ubuntu
 Components: main>thirdparty/mono-project-trusty
+UDebComponents:
 Suite: stable-trusty
 Architectures: amd64 source
 VerifyRelease: A6A19B38D3D831EF
@@ -198,6 +199,7 @@ ListShellHook: grep-dctrl -X -S cecil cli-common core-setup fsharp gtk-sharp2 li
 Name: mono-project-jessie
 Method: https://download.mono-project.com/repo/debian
 Components: main>thirdparty/mono-project-jessie
+UDebComponents:
 Suite: stable-jessie
 Architectures: amd64 source
 VerifyRelease: A6A19B38D3D831EF
@@ -206,6 +208,7 @@ ListShellHook: grep-dctrl -X -S cecil cli-common core-setup fsharp gtk-sharp2 li
 Name: mono-project-stretch
 Method: https://download.mono-project.com/repo/debian
 Components: main>thirdparty/mono-project-stretch
+UDebComponents:
 Suite: stable-stretch
 Architectures: amd64 source
 VerifyRelease: A6A19B38D3D831EF
