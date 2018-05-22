@@ -7,13 +7,11 @@ ADDITIONAL_ARGS="--route-prefix=<%= @region %>/<%= @cluster %> \
 --cross-cluster-timeout-ms=<%= @cross_cluster_timeout_ms %> \
 --send-invalid-route-to-default \
 --file-observer-poll-period-ms=1000 \
---file-observer-sleep-before-update-ms=100"
-<% if @ssl_options -%>
-SSL_OPTIONS="--ssl-port <%= @ssl_options['port'] %> \
+--file-observer-sleep-before-update-ms=100 \
+<%- if @ssl_options %>
+--ssl-port <%= @ssl_options['port'] %> \
 --pem-cert-path=<%= @ssl_options['cert'] %> \
 --pem-key-path=<%= @ssl_options['key'] %> \
---pem-ca-path=<%= @ssl_options['ca_cert'] %>"
-<%- else -%>
-SSL_OPTIONS=""
-<%- end %>
-ADDITIONAL_ARGS="$ADDITIONAL_ARGS $SSL_OPTIONS"
+--pem-ca-path=<%= @ssl_options['ca_cert'] %>
+<%- end %>"
+
