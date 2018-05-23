@@ -13,7 +13,7 @@ class profile::druid::historical(
     # If monitoring is enabled, then include the monitoring profile and set $java_opts
     # for exposing the Prometheus JMX Exporter in the Druid Broker process.
     if $monitoring_enabled {
-        include ::profile::druid::monitoring::historical
+        require ::profile::druid::monitoring::historical
         $java_opts = $::profile::druid::monitoring::historical::java_opts
 
         if $env['DRUID_EXTRA_JVM_OPTS'] {

@@ -18,7 +18,7 @@ class profile::druid::coordinator(
     # If monitoring is enabled, then include the monitoring profile and set $java_opts
     # for exposing the Prometheus JMX Exporter in the Druid Broker process.
     if $monitoring_enabled {
-        include ::profile::druid::monitoring::coordinator
+        require ::profile::druid::monitoring::coordinator
         $java_opts = $::profile::druid::monitoring::coordinator::java_opts
 
         if $env['DRUID_EXTRA_JVM_OPTS'] {
