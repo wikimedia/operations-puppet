@@ -3,6 +3,7 @@
 #  run on hosts with public IPs)
 
 class profile::mariadb::ferm_wmcs(
+    $port = '3306',
     $nova_controller = hiera('profile::openstack::main::nova_controller'),
     $nova_controller_standby = hiera('profile::openstack::main::nova_controller_standby'),
     $designate_host = hiera('profile::openstack::main::designate_host'),
@@ -14,28 +15,28 @@ class profile::mariadb::ferm_wmcs(
 
     ferm::service{ 'nova_controller':
         proto   => 'tcp',
-        port    => '3306',
+        port    => $port,
         notrack => true,
         srange  => "(@resolve(${nova_controller}) @resolve(${nova_controller_standby}))",
     }
 
     ferm::service{ 'designate':
         proto   => 'tcp',
-        port    => '3306',
+        port    => $port,
         notrack => true,
         srange  => "(@resolve(${designate_host}) @resolve(${designate_host_standby}))",
     }
 
     ferm::service{ 'wmcs_puppetmasters':
         proto   => 'tcp',
-        port    => '3306',
+        port    => $port,
         notrack => true,
         srange  => '(@resolve(labpuppetmaster1001.wikimedia.org) @resolve(labpuppetmaster1002.wikimedia.org))',
     }
 
     ferm::service{ 'wikitech':
         proto   => 'tcp',
-        port    => '3306',
+        port    => $port,
         notrack => true,
         srange  => "@resolve(${osm_host})",
     }
@@ -44,14 +45,14 @@ class profile::mariadb::ferm_wmcs(
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     ferm::service{ 'labweb':
         proto   => 'tcp',
-        port    => '3306',
+        port    => $port,
         notrack => true,
         srange  => $labweb_ips,
     }
     $labtestweb_ips = inline_template("@resolve((<%= @labtestweb_hosts.join(' ') %>))")
     ferm::service{ 'labtestweb':
         proto   => 'tcp',
-        port    => '3306',
+        port    => $port,
         notrack => true,
         srange  => $labtestweb_ips,
     }
