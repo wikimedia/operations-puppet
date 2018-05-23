@@ -15,7 +15,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     class { 'mariadb::config':
         datadir       => false,
         basedir       => $basedir,
-        config        => 'role/mariadb/mysqld_config/misc_multiinstance.my.cnf.erb',
+        config        => 'profile/mariadb/mysqld_config/misc_multiinstance.my.cnf.erb',
         p_s           => 'on',
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',
@@ -70,7 +70,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             # template                => 'profile/mariadb/mysqld_config/misc.my.cnf.erb'
         }
         profile::mariadb::ferm { 'm5': port => '3325' }
-        include profile::mariadb::ferm_wmcs_on_port_3325
+        include profile::mariadb::ferm_wmcs
         profile::prometheus::mysqld_exporter_instance { 'm5': port => 13325, }
     }
 
