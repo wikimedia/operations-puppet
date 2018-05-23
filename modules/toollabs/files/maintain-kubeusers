@@ -90,14 +90,18 @@ def get_tools_from_ldap(conn, projectname):
     """
     Builds list of all tools from LDAP
     """
+
     conn.search(
         'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
         '(cn=%s.*)' % projectname,
         ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
         attributes=['uidNumber', 'cn'],
-        time_limit=5
+        time_limit=5,
+        paged_size=1000
     )
+
     tools = {}
+
     for resp in conn.response:
         attrs = resp['attributes']
         tool = User(
@@ -106,6 +110,25 @@ def get_tools_from_ldap(conn, projectname):
             group='tool'
         )
         tools[tool.id] = tool
+
+    cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
+    while cookie:
+        conn.search('ou=people,ou=servicegroups,dc=wikimedia,dc=org',
+                    '(cn=%s.*)' % projectname,
+                    ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
+                    attributes=['uidNumber', 'cn'],
+                    time_limit=5,
+                    paged_size=1000,
+                    paged_cookie=cookie)
+        cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
+        for resp in conn.response:
+            attrs = resp['attributes']
+            tool = User(
+                attrs['cn'][0][len(projectname) + 1:],
+                attrs['uidNumber'][0],
+                group='tool'
+            )
+            tools[tool.id] = tool
 
     return tools
 
@@ -325,6 +348,7 @@ def create_namespace(user):
         }
     }
     logging.info(p.communicate(json.dumps(namespace).encode()))
+
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
