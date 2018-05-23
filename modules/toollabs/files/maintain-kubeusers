@@ -33,8 +33,8 @@ TOOL_ALLOWED_RESOURCES = [
     'replicasets',
     'configmaps',
     'jobs',
-    'cronjobs', # k8s 1.5.x
-    'scheduledjobs' # k8s 1.4.x
+    'cronjobs',  # k8s 1.5.x
+    'scheduledjobs'  # k8s 1.4.x
 ]
 
 
@@ -90,14 +90,18 @@ def get_tools_from_ldap(conn, projectname):
     """
     Builds list of all tools from LDAP
     """
+
     conn.search(
         'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
         '(cn=%s.*)' % projectname,
         ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
         attributes=['uidNumber', 'cn'],
-        time_limit=5
+        time_limit=5,
+        paged_size=1000
     )
+
     tools = {}
+
     for resp in conn.response:
         attrs = resp['attributes']
         tool = User(
@@ -106,6 +110,25 @@ def get_tools_from_ldap(conn, projectname):
             group='tool'
         )
         tools[tool.id] = tool
+        
+    cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
+    while cookie:
+        conn.search('ou=people,ou=servicegroups,dc=wikimedia,dc=org',
+                    '(cn=%s.*)' % projectname,
+                    ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
+                    attributes=['uidNumber', 'cn'],
+                    time_limit=5,
+                    paged_size=1000,
+                    paged_cookie=cookie)
+        cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
+        for resp in conn.response:
+            attrs = resp['attributes']
+            tool = User(
+                attrs['cn'][0][len(projectname) + 1:],
+                attrs['uidNumber'][0],
+                group='tool'
+            )
+            tools[tool.id] = tool
 
     return tools
 
@@ -326,7 +349,8 @@ def create_namespace(user):
     }
     logging.info(p.communicate(json.dumps(namespace).encode()))
 
-if __name__ == '__main__':
+
+def main():
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--ldapconfig', help='Path to YAML LDAP config file',
                            default='/etc/ldap.yaml')
@@ -373,7 +397,7 @@ if __name__ == '__main__':
             tools = get_tools_from_ldap(conn, args.project)
 
         new_tools = set(tools).union(set(infra_users)) - set(cur_users)
-        if len(new_tools) > 0:
+        if new_tools:
             # There are at least some new tools, so we have to:
             #  1. Regenerate the entire tokenauth file
             #  2. Regenerate entire ABAC file
@@ -386,10 +410,10 @@ if __name__ == '__main__':
                     write_kubeconfig(tools[uid], args.kube_master_url)
                     create_namespace(tools[uid])
                     cur_users[uid] = tools[uid]
-                    logging.info('Provisioned creds for tool %s' % tools[uid].name)
+                    logging.info('Provisioned creds for tool %s', tools[uid].name)
                 elif uid in infra_users:
                     cur_users[uid] = infra_users[uid]
-                    logging.info('Provisioned creds for infra user %s' % infra_users[uid].name)
+                    logging.info('Provisioned creds for infra user %s', infra_users[uid].name)
             write_tokenauth(cur_users.values(), args.tokenauth_output_path)
             write_abac(cur_users.values(), args.abac_output_path)
             subprocess.check_call([
@@ -397,9 +421,13 @@ if __name__ == '__main__':
                 'restart',
                 'kube-apiserver'
             ])
-        logging.info('finished run, wrote %s new accounts' % len(new_tools))
+        logging.info('finished run, wrote %s new accounts', len(new_tools))
 
         if args.once:
             break
 
         time.sleep(args.interval)
+
+
+if __name__ == '__main__':
+    main()
