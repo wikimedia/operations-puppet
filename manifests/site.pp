@@ -529,12 +529,6 @@ node 'db1063.eqiad.wmnet' {
     }
 }
 
-node 'db1065.eqiad.wmnet' {
-    class { '::role::mariadb::misc':
-        shard  => 'm1',
-    }
-}
-
 # TODO: convert to multiinstance
 node 'db2078.codfw.wmnet' {
     class { '::role::mariadb::misc':
@@ -547,6 +541,12 @@ node 'db1051.eqiad.wmnet' {
     class { '::role::mariadb::misc':
         shard  => 'm2',
         master => true,
+    }
+}
+
+node 'db1065.eqiad.wmnet' {
+    class { '::role::mariadb::misc':
+        shard  => 'm2',
     }
 }
 
