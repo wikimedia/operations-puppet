@@ -6,7 +6,6 @@ class role::mariadb::misc::multiinstance {
     }
 
     include ::standard
-    include ::profile::mariadb::monitor
     include ::profile::base::firewall
 
     include ::profile::mariadb::misc::multiinstance
