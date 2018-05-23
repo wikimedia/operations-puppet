@@ -74,6 +74,8 @@ define profile::analytics::refinery::job::refine_job (
     # The command here can end up being pretty long, especially if the table whitelist
     # or blacklist is long.  Crontabs have a line length limit, so we render this
     # command into a script and then install that as the cron job.
+    # (The extraClassPath here exists because in Spark 2, we needed to talk to Hive directoy
+    # to issue any DDL update commands.)
     $refine_command = "PYTHONPATH=${refinery_path}/python ${refinery_path}/bin/is-yarn-app-running ${job_name} || /usr/bin/spark2-submit --master yarn --deploy-mode cluster --queue ${queue} --driver-memory ${spark_driver_memory} --conf spark.driver.extraClassPath=/usr/lib/hive/lib/hive-jdbc.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-common.jar:/usr/lib/hive/lib/hive-service.jar --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} --files /etc/hive/conf/hive-site.xml --class org.wikimedia.analytics.refinery.job.refine.Refine --name ${job_name} ${_refinery_job_jar} --parallelism ${parallelism} --since ${since} ${whitelist_blacklist_opt} ${email_opts} --input-base-path ${input_base_path} --input-regex '${input_regex}' --input-capture '${input_capture}' --output-base-path ${output_base_path} --database ${output_database} ${$transform_functions_opt}"
     $refine_script = "/usr/local/bin/${job_name}"
     file { $refine_script:
