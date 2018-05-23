@@ -1,0 +1,1 @@
+set global ft_boolean_syntax = ' |-><()~*:""&^';
