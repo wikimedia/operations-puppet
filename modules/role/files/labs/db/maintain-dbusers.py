@@ -161,13 +161,30 @@ def find_tools(config):
             '(cn=%s.*)' % PROJECT,
             ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
             attributes=['uidNumber', 'cn'],
-            time_limit=5
+            time_limit=5,
+            paged_size=1000
         )
 
         users = []
         for resp in conn.response:
             attrs = resp['attributes']
             users.append((attrs['cn'][0], int(attrs['uidNumber'][0])))
+
+        cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
+        while cookie:
+            conn.search(
+                'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
+                '(cn=%s.*)' % PROJECT,
+                ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
+                attributes=['uidNumber', 'cn'],
+                time_limit=5,
+                paged_size=1000,
+                paged_cookie=cookie
+            )
+            cookie = conn.result['controls']['1.2.840.113556.1.4.319']['value']['cookie']
+            for resp in conn.response:
+                attrs = resp['attributes']
+                users.append((attrs['cn'][0], int(attrs['uidNumber'][0])))
 
     return users
 
