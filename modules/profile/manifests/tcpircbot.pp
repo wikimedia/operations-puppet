@@ -17,8 +17,6 @@ class profile::tcpircbot(
             '2620:0:861:103:10:64:32:16/128',   # deployment eqiad v6: deploy1001
             '::ffff:10.192.32.24/128',          # deployment codfw v4: deploy2001
             '2620:0:860:103:10:192:32:24/128',  # deployment codfw v6: deploy2001
-            '::ffff:10.192.32.22/128',          # deployment codfw v4: naos
-            '2620:0:860:103:10:192:32:22/128',  # deployment codfw v6: naos
             '::ffff:10.64.32.13/128',           # maintenance eqiad v4: terbium
             '2620:0:861:103:10:64:32:13/64',    # maintenance eqiad v6: terbium
             '::ffff:10.64.16.62/128',           # maintenance eqiad v4: mwmaint1001
@@ -46,7 +44,6 @@ class profile::tcpircbot(
         'tin.eqiad.wmnet',              # deployment eqiad
         'deploy1001.eqiad.wmnet',       # deployment eqiad
         'deploy2001.codfw.wmnet',       # deployment codfw
-        'naos.codfw.wmnet',             # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
         'puppetmaster2001.codfw.wmnet', # puppet codfw
         'terbium.eqiad.wmnet',          # maintenance eqiad

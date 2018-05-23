@@ -2084,7 +2084,7 @@ node /^thumbor200[1234]\.codfw\.wmnet/ {
 }
 
 # deployment servers
-node 'tin.eqiad.wmnet', 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet', 'naos.codfw.wmnet' {
+node 'tin.eqiad.wmnet', 'deploy1001.eqiad.wmnet', 'deploy2001.codfw.wmnet' {
     role(deployment_server)
     interface::add_ip6_mapped { 'main': }
 }
