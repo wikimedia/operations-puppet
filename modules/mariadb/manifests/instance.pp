@@ -15,6 +15,7 @@ define mariadb::instance(
     $tmpdir  = 'undefined',
     $socket  = 'undefined',
     $innodb_buffer_pool_size = false,
+    $template = 'mariadb/instance.cnf.erb',
 ) {
     if $datadir == 'undefined' {
         $datadir_instance = "/srv/sqldata.${title}"
@@ -50,7 +51,7 @@ define mariadb::instance(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('mariadb/instance.cnf.erb'),
+        content => template($template),
     }
 
     # TODO: Allow non-defaults replication monitoring, such as
