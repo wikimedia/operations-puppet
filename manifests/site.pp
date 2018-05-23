@@ -529,13 +529,6 @@ node 'db1063.eqiad.wmnet' {
     }
 }
 
-# TODO: convert to multiinstance
-node 'db2078.codfw.wmnet' {
-    class { '::role::mariadb::misc':
-        shard => 'm1',
-    }
-}
-
 ## m2 shard
 node 'db1051.eqiad.wmnet' {
     class { '::role::mariadb::misc':
@@ -605,6 +598,10 @@ node 'db2037.codfw.wmnet' {
 node 'db1117.eqiad.wmnet' {
     role(mariadb::misc::multiinstance)
 }
+node 'db2078.codfw.wmnet' {
+    role(mariadb::misc::multiinstance)
+}
+
 
 # sanitarium
 node 'db1095.eqiad.wmnet' {
