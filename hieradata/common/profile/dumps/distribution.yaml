@@ -3,6 +3,8 @@
 profile::dumps::distribution::basedatadir: '/srv/dumps/xmldatadumps'
 profile::dumps::distribution::miscdumpsdir: '/srv/dumps/xmldatadumps/public/other'
 profile::dumps::distribution::xmldumpspublicdir: '/srv/dumps/xmldatadumps/public'
+# Note that on many hosts this directory will not exist. This is a good thing.
+profile::dumps::distribution::xmldumpsprivatedir: '/srv/dumps/xmldatadumps/private'
 profile::dumps::distribution::dumpstempdir: '/srv/dumps/xmldatadumps/temp'
 
 profile::dumps::distribution::rsync_config:
