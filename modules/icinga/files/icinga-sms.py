@@ -151,6 +151,7 @@ if __name__ == "__main__":
         contact_name = sys.argv[2]
         mail_msg = sys.argv[3]
         contact_addr = get_address(contact_name)
+        dry_run = False
         print(contact_info_line.format(contact_name, contact_addr, dry_run))
         send_email(contact_addr, mail_msg, MAIL_SERVER, MAIL_FROM, dry_run)
 
