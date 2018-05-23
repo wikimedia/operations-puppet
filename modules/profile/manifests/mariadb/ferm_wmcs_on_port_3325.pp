@@ -11,7 +11,7 @@ class profile::mariadb::ferm_wmcs(
     $labtestweb_hosts = hiera('profile::openstack::labtest::labweb_hosts'),
     $osm_host = hiera('profile::openstack::main::osm_host'),
     ) {
-    $port = '3306',
+    $port = '3325',
 
     ferm::service{ 'nova_controller':
         proto   => 'tcp',
