@@ -2,25 +2,28 @@
     shard: m1
     role: slave
   targets:
-  - db2078:9104
+  - db2078:13321
 
 - labels:
     shard: m2
     role: slave
   targets:
   - db2044:9104
+  - db2078:13322
 
 - labels:
     shard: m3
     role: slave
   targets:
   - db2042:9104
+  - db2078:13323
 
 - labels:
     shard: m5
     role: slave
   targets:
   - db2037:9104
+  - db2078:13325
 
 - labels:
     shard: tendril
