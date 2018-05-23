@@ -20,7 +20,7 @@ class mediawiki::packages {
         'php-mail',
         'php-mail-mime',
     ]:
-        ensure => present,
+        ensure => absent,
     }
 
     # PDF and DjVu

@@ -59,9 +59,5 @@ class mediawiki::php {
                 require => Package['php5-cli'],
             }
         }
-        file { '/etc/php5/mods-available/mail.ini':
-            ensure  => absent,
-            require => Package['php-mail'],
-        }
     }
 }
