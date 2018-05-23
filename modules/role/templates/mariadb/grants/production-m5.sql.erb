@@ -159,6 +159,8 @@ GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.192.32.24'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.64.0.196'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
+GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.64.32.16'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 -- wikiuser for wikitech aka 'labswiki' --
 -- Will connect from labweb1001, labweb1002 --
@@ -182,6 +184,8 @@ IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.192.32.24'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.0.196'
+IDENTIFIED BY '<%= @wikiadmin_pass %>';
+GRANT ALL ON `labtestwiki`.* TO 'wikiadmin'@'10.64.32.16'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
 -- wikiuser for labtestwikitech aka 'labtestwiki' --
