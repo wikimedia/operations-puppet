@@ -9,12 +9,19 @@
     role: slave
   targets:
   - db1065:9104
+  - db1117:13321
 
 - labels:
     shard: m2
     role: master
   targets:
   - db1051:9104
+
+- labels:
+    shard: m2
+    role: slave
+  targets:
+  - db1117:13322
 
 - labels:
     shard: m3
@@ -28,6 +35,7 @@
   targets:
   - db1053:9104
   - db1072:9104
+  - db1117:13323
 
 - labels:
     shard: m4
@@ -46,6 +54,12 @@
     role: master
   targets:
   - db1073:9104
+
+- labels:
+    shard: m5
+    role: slave
+  targets:
+  - db1117:13325
 
 - labels:
     shard: tendril
