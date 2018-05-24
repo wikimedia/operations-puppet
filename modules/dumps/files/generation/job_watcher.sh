@@ -20,7 +20,7 @@ EOF
 
 locksbasedir=""
 dumpsbasedir=""
-verbose=0
+verbose=""
 
 while [ $# -gt 0 ]; do
     if [ $1 == "--locksbasedir" ]; then
@@ -88,7 +88,7 @@ for index in ${!locked_wikis[@]}; do
         if [ -z "$filename_ts" ]; then
             continue
         fi
-	if [ "$verbose" ]; then
+	if [ ! -z "$verbose" ]; then
             DIFF=$(( $lock_ts - $filename_ts ))
 	    # note this could be negative if something is weird. we don't care.
             echo "INFO: $wikiname has file ${filename} with age diff ${DIFF} from lockfile (${filename_ts} vs ${lock_ts})"
