@@ -509,7 +509,7 @@ def validate_hosts(hosts, no_raise=False):
     return True
 
 
-def icinga_downtime(host, user, phab_task):
+def icinga_downtime(host, user, phab_task, title='wmf-auto-reimage'):
     """Set downtime on Icinga for a host.
 
     Arguments:
@@ -518,8 +518,8 @@ def icinga_downtime(host, user, phab_task):
     phab_task -- the related Phabricator task ID (i.e. T12345)
     """
     command = ("icinga-downtime -h '{host}' -d 14400 -r "
-               "'wmf-auto-reimage: user={user} phab_task={phab_task}'").format(
-                    host=host.split('.')[0], user=user, phab_task=phab_task)
+               "'{title}: user={user} phab_task={phab_task}'").format(
+                    host=host.split('.')[0], title=title, user=user, phab_task=phab_task)
 
     icinga_host = resolve_dns(ICINGA_DOMAIN, 'CNAME')
     run_cumin('icinga_downtime', icinga_host, [command])
