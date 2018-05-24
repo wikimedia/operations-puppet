@@ -2009,6 +2009,16 @@ host db2093 {
     fixed-address db2093.codfw.wmnet;
 }
 
+host db2094 {
+    hardware ethernet D0:94:66:5A:04:3B;
+    fixed-address db2094.codfw.wmnet;
+}
+
+host db2095 {
+    hardware ethernet D0:94:66:59:FA:D8;
+    fixed-address db2095.codfw.wmnet;
+}
+
 host dbproxy1001 {
     hardware ethernet 84:2b:2b:fd:bd:56;
     fixed-address dbproxy1001.eqiad.wmnet;
