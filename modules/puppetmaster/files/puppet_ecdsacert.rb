@@ -178,7 +178,7 @@ module Puppet
         if e.message.start_with?("CSR '#{csr.name}' subjectAltName contains a wildcard")
           true
         elsif e.message.start_with?("CSR '#{csr.name}' contains a subjectAltName outside the DNS")
-          unless csr.subject_alt_names.all? { |x| x =~ /^(DNS|IP):/ }
+          unless csr.subject_alt_names.all? { |x| x =~ /^(DNS|IP Address):/ }
             raise
           end
           true
