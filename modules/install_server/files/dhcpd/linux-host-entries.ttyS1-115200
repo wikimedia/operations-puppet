@@ -2791,8 +2791,6 @@ host furud {
 host ganeti1001 {
     hardware ethernet f0:1f:af:e8:c5:a3;
     fixed-address ganeti1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host ganeti1002 {
@@ -2826,8 +2824,6 @@ host ganeti1005 {
 host ganeti1006 {
     hardware ethernet 18:66:da:a3:45:5d;
     fixed-address ganeti1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host ganeti1007 {
