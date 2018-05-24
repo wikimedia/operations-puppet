@@ -602,8 +602,16 @@ node 'db2078.codfw.wmnet' {
     role(mariadb::misc::multiinstance)
 }
 
+# sanitarium hosts
+node /^db1(124|125)\.eqiad\.wmnet/ {
+    role(mariadb::sanitarium_multiinstance)
+}
 
-# sanitarium
+node /^db2(094|095)\.codfw\.wmnet/ {
+    role(mariadb::sanitarium_multiinstance)
+}
+
+# old sanitarium
 node 'db1095.eqiad.wmnet' {
     role(mariadb::sanitarium_multisource)
 }
