@@ -51,4 +51,7 @@ class profile::maps::apps(
         tilerator_storage_id => $tilerator_storage_id,
     }
 
+    # those fonts are needed for the new maps style (brighmed)
+    ensure_packages(['fonts-noto', 'fonts-noto-cjk'])
+
 }
