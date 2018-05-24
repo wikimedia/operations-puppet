@@ -409,7 +409,7 @@ def get_reimage_host_command(host, mgmt, args):
     mgmt -- the FQDN of the management console for the host
     args -- the ArgumentParser instance with the options to apply
     """
-    command_args = ['wmf-auto-reimage-host']
+    command_args = ['/usr/local/sbin/wmf-auto-reimage-host']
     args_dict = vars(args)
     # Add boolean command line arguments
     for key in ('debug', 'no_reboot', 'no_verify', 'no_downtime', 'no_pxe', 'new', 'apache',
