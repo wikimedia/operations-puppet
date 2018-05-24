@@ -93,6 +93,8 @@ while [ $i -lt $shards ]; do
 				--batch-size $(($shards * 250)) \
 				--format $dumpFormat \
 				--flavor $dumpFlavor \
+				--entity-type item \
+				--entity-type property \
 				--no-cache \
 				--part-id $i-$batch \
 				$firstPageIdParam \

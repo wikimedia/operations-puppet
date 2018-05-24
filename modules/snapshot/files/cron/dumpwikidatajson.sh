@@ -67,6 +67,8 @@ while [ $i -lt $shards ]; do
 				--sharding-factor $shards \
 				--batch-size $(($shards * 250)) \
 				--snippet 2 \
+				--entity-type item \
+				--entity-type property \
 				--no-cache \
 				$firstPageIdParam \
 				$lastPageIdParam; \
