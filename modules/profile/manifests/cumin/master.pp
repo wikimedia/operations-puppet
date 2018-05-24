@@ -92,6 +92,14 @@ class profile::cumin::master (
         group  => 'root',
     }
 
+    file { '/usr/local/sbin/wmf-downtime-host':
+        ensure => present,
+        source => 'puppet:///modules/profile/cumin/wmf_downtime_host.py',
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { '/usr/local/sbin/wmf-upgrade-varnish':
         ensure => present,
         source => 'puppet:///modules/profile/cumin/wmf_upgrade_varnish.py',
