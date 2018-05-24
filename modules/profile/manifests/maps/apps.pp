@@ -1,4 +1,4 @@
-class profile::maps::apps(
+class profile::maps::dapps(
     $cassandra_hosts = hiera('profile::cassandra::single_instance::seeds'),
     $cassandra_kartotherian_pass = hiera('profile::maps::cassandra::kartotherian_pass'),
     $cassandra_tilerator_pass = hiera('profile::maps::cassandra::tilerator_pass'),
@@ -50,5 +50,8 @@ class profile::maps::apps(
         storage_id           => $kartotherian_storage_id,
         tilerator_storage_id => $tilerator_storage_id,
     }
+
+    # those fonts are needed for the new maps style (brighmed)
+    ensure_packages(['fonts-noto', 'fonts-noto-cjk'])
 
 }
