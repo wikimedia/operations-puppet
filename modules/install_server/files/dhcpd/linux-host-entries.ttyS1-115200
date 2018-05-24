@@ -2084,43 +2084,31 @@ host deploy1001 {
 host druid1001 {
     hardware ethernet 1C:98:EC:29:E2:98;
     fixed-address druid1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host druid1002 {
     hardware ethernet 14:02:EC:06:8B:EC;
     fixed-address druid1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host druid1003 {
     hardware ethernet 1C:98:EC:29:E2:78;
     fixed-address druid1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host druid1004 {
     hardware ethernet 18:66:DA:AC:87:A1;
     fixed-address druid1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host druid1005 {
     hardware ethernet 18:66:DA:AE:36:FB;
     fixed-address druid1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host druid1006 {
     hardware ethernet 18:66:da:ac:75:cd;
     fixed-address druid1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host dns4001 {
