@@ -1,0 +1,74 @@
+counter apache_backend_timing_bucket by le
+counter apache_backend_timing_sum
+counter apache_backend_timing_count
+
+/\thttp_method PURGE\t/ {
+    # noop
+} else {
+    /^.*\tbackend_timing D=(?P<time_us>\d+)\st=\d+\t/ {
+        apache_backend_timing_count++
+        apache_backend_timing_sum += $time_us * 0.0000001
+
+        # 5ms bucket
+        $time_us < 5000 {
+            apache_backend_timing_bucket["0.005"]++
+        }
+
+        # 10ms bucket.
+        $time_us <= 10000 {
+            apache_backend_timing_bucket["0.01"]++
+        }
+
+        # 25ms bucket.
+        $time_us <= 25000 {
+            apache_backend_timing_bucket["0.025"]++
+        }
+
+        # 50ms bucket.
+        $time_us <= 50000 {
+            apache_backend_timing_bucket["0.05"]++
+        }
+
+        # 100ms bucket.
+        $time_us <= 100000 {
+            apache_backend_timing_bucket["0.1"]++
+        }
+
+        # 250ms bucket.
+        $time_us <= 250000 {
+            apache_backend_timing_bucket["0.25"]++
+        }
+
+        # 500ms bucket.
+        $time_us <= 500000 {
+            apache_backend_timing_bucket["0.5"]++
+        }
+
+        # 1s bucket.
+        $time_us <= 1000000 {
+            apache_backend_timing_bucket["1"]++
+        }
+
+        # 2.5s bucket.
+        $time_us <= 2500000 {
+            apache_backend_timing_bucket["2.5"]++
+        }
+
+        # 5s bucket.
+        $time_us <= 5000000 {
+            apache_backend_timing_bucket["5"]++
+        }
+
+        # 10s bucket.
+        $time_us <= 10000000 {
+            apache_backend_timing_bucket["10"]++
+        }
+
+        # 15s bucket.
+        $time_us <= 15000000 {
+            apache_backend_timing_bucket["15"]++
+        }
+
+        apache_backend_timing_bucket["+Inf"]++
+    }
+}

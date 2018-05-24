@@ -128,3 +128,25 @@ class VarnishBackendTest(unittest.TestCase):
                       sum_samples)
         self.assertIn(('status=200,method=POST,backend=be_bohrium_eqiad_wmnet', 0.061224),
                       sum_samples)
+
+class VarnishBackendTimingTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnishbackendtiming.mtail'),
+                os.path.join(test_dir, 'logs/varnishbackendtiming.test'))
+
+    def testRespStatus(self):
+        s = self.store.get_samples('apache_backend_timing_count')
+        self.assertIn(('', 14), s)
+        s = self.store.get_samples('apache_backend_timing_sum')
+        self.assertIn(('', 0.22016230000000003), s)
+        s = self.store.get_samples('apache_backend_timing_bucket')
+        self.assertIn((u'le=0.1', 6), s)
+        self.assertIn((u'le=0.25', 12), s)
+        self.assertIn((u'le=0.5', 14), s)
+        self.assertIn((u'le=1', 14), s)
+        self.assertIn((u'le=2.5', 14), s)
+        self.assertIn((u'le=5', 14), s)
+        self.assertIn((u'le=10', 14), s)
+        self.assertIn((u'le=15', 14), s)
+        self.assertIn((u'le=+Inf', 14), s)

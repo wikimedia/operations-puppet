@@ -5,6 +5,7 @@
 PROGS="${1:-/etc/mtail}"
 
 fmt_url='url %U'
+fmt_backend_timing='backend_timing %{Backend-Timing}o'
 fmt_cache_status='cache_status %{X-Cache-Status}o'
 fmt_http_status='http_status %s'
 fmt_http_method='http_method %m'
@@ -18,6 +19,6 @@ fmt_auth='auth %{VCL_Log:CP-Auth}x'
 fmt_cipher='cipher %{VCL_Log:CP-Cipher}x'
 fmt_full_cipher='full_cipher %{VCL_Log:CP-Full-Cipher}x'
 
-FMT="${fmt_url}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t${fmt_h2}\t${fmt_tls_version}\t${fmt_session_reused}\t${fmt_key_exchange}\t${fmt_auth}\t${fmt_cipher}\t${fmt_full_cipher}\t"
+FMT="${fmt_url}\t${fmt_backend_timing}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t${fmt_h2}\t${fmt_tls_version}\t${fmt_session_reused}\t${fmt_key_exchange}\t${fmt_auth}\t${fmt_cipher}\t${fmt_full_cipher}\t"
 
 /usr/bin/varnishncsa -n frontend -F "${FMT}" | mtail -progs "${PROGS}" -logfds 0
