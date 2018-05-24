@@ -9,8 +9,9 @@ fmt_http_status='http_status %s'
 fmt_http_method='http_method %m'
 fmt_backend='backend %{VSL:BackendOpen[2]}x'
 fmt_ttfb='ttfb %{Varnish:time_firstbyte}x'
+fmt_backend_timing='backend_timing %{Backend-Timing}o'
 
-FMT="${fmt_http_status}\t${fmt_http_method}\t${fmt_backend}\t${fmt_ttfb}\t"
+FMT="${fmt_http_status}\t${fmt_http_method}\t${fmt_backend}\t${fmt_ttfb}\t${fmt_backend_timing}\t"
 
 # Exclude client requests resulting in a pipe as they do not generate a backend
 # request. Varnish blindly passes on bytes in both directions in that case, so
