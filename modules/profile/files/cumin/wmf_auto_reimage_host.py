@@ -5,6 +5,7 @@ import argparse
 import logging
 import os
 import socket
+import subprocess
 import sys
 import time
 
@@ -166,10 +167,17 @@ def run(args, user, log_path):
         if args.mask:  # Mask systemd services
             lib.mask_systemd_services(args.host, args.mask)
 
+        # Downtime the host on Icinga with delay to give time to compile the Puppet catalog
+        # and export its resources
+        downtime = subprocess.Popen(
+            ['wmf-downtime-host', '-s', '60', '-p', str(args.phab_task_id), args.host])
+
         lib.puppet_first_run(args.host)
-        # Ensure the host is in Icinga
-        lib.run_puppet([lib.resolve_dns(lib.ICINGA_DOMAIN, 'CNAME')], no_raise=True)
-        lib.icinga_downtime(args.host, user, args.phab_task_id)
+
+        downtime_ret = downtime.poll()
+        if downtime_ret != 0:
+            lib.print_line(('WARNING: failed to downtime host on Icinga, wmf-downtime-host '
+                            'returned {ret}').format(ret=downtime_ret))
 
     lib.check_bios_bootparams(args.host, args.mgmt)
 
