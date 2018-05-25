@@ -38,7 +38,6 @@ class ircecho (
         systemd        => systemd_template('ircecho'),
         sysvinit       => sysvinit_template('ircecho'),
         require        => File['/usr/local/bin/ircecho'],
-        restart        => true,
         service_params => {
             hasrestart => true,
         },
