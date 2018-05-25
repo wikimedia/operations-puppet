@@ -105,6 +105,13 @@ class profile::apertium {
         'lttoolbox',
     ]
 
+    # Use python3-tornado 4.4.3-1 since newer verions of apertium-apy require it
+    apt::pin { 'python3-tornado':
+        pin      => 'release a=jessie-backports',
+        priority => '1001',
+        before   => Package['apertium-apy'],
+    }
+
     package { $packages:
         ensure => present,
         notify => Service['apertium-apy'],
