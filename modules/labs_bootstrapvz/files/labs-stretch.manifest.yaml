@@ -37,7 +37,6 @@ packages:
     - apt-listchanges
     - apt-show-versions
     - apt-transport-https
-    - atop
     - ca-certificates
     - cloud-utils
     - command-not-found

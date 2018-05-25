@@ -82,7 +82,6 @@ packages:
     - ntp
     - debian-goodies
     - python-redis
-    - atop
     - virt-what
     - pv
     - ldapvi
