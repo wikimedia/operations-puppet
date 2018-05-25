@@ -86,6 +86,9 @@ class base::standard_packages {
         package { 'ntfs-3g': ensure => absent }
     }
 
+    # Can be dropped once trusty/jessie are gone, not installed by default in stretch onwards
+    package { 'at': ensure => purged }
+
     # On Ubuntu, eject is installed via the ubuntu-minimal package
     # Uninstall in on Debian since it ships a setuid helper and we don't
     # have servers with installed optical drives
