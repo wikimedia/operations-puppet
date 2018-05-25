@@ -69,7 +69,7 @@ class mediawiki::maintenance::wikidata( $ensure = present, $ensure_testwiki = pr
 
     # clear term_search_key field in wb_terms table
     cron { 'wikidata-clearTermSqlIndexSearchFields':
-        ensure  => $ensure,
+        ensure  => absent,
         command => '/usr/bin/timeout 3500s /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/clearTermSqlIndexSearchFields.php --wiki wikidatawiki --sleep 3 --skip-term-weight --from-id $(/bin/sed -n \'/Cleared up to row \([[:digit:]]\+\)/ { s//\1/; p; }\' /var/log/wikidata/clearTermSqlIndexSearchFields.log* | /usr/bin/sort -rn | /usr/bin/head -1) >> /var/log/wikidata/clearTermSqlIndexSearchFields.log 2>&1',
         user    => $::mediawiki::users::web,
         minute  => 30,
