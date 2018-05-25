@@ -2878,8 +2878,6 @@ host ganeti2003 {
 host ganeti2004 {
     hardware ethernet 44:A8:42:12:CD:2B;
     fixed-address ganeti2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-    filename "lpxelinux.0";
 }
 
 host ganeti2005 {
