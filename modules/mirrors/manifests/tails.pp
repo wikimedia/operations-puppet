@@ -15,15 +15,17 @@
 class mirrors::tails {
     require mirrors
 
-    file { '/srv/mirrors/tails':
+    $local_dir = '/srv/mirrors/tails'
+    $remote_path = 'mirrors.rsync.tails.boum.org::amnesia-archive/tails/'
+
+    file { $local_dir:
         ensure => directory,
         owner  => 'mirror',
         group  => 'mirror',
         mode   => '0755',
     }
 
-    $rsync_cmd = '/usr/bin/rsync -rt --delete rsync.torproject.org::amnesia-archive/tails/ /srv/mirrors/tails/'
-
+    $rsync_cmd = "/usr/bin/rsync -rt --delete ${remote_path} ${local_dir}"
     cron { 'update-tails-mirror':
         ensure  => present,
         command => "${rsync_cmd} 1>/dev/null 2>/dev/null",
