@@ -1,187 +1,100 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="<%= @title %>">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css" type="text/css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><%= @title %>.planet.wikimedia.org</title>
-        <script type="text/javascript">
-            function readReadColor(){
-                for (var i = 0; i < localStorage.length; i++){
-                    if (document.getElementById(localStorage.getItem(localStorage.key(i)))){
-                        var current = document.getElementById(localStorage.getItem(localStorage.key(i))).previousElementSibling.getElementsByTagName("h4")[0];
-                        current.classList.remove('unread');
-                        current.className += " read";
-                    } else {
-                        localStorage.removeItem(i);
-                    }
-                }
-            }
 
-            function setStorage() {
-                if (typeof(Storage) !== "undefined") {
-                    localStorage['read ' + currentlyOpen] = currentlyOpen;
-                }
-            }
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!--link rel="stylesheet" href="rawdog.css" type="text/css" title="Fixed Width" /-->
+    <link rel="stylesheet" href="bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <!--link rel="alternate stylesheet" href="rawdog-variable.css" type="text/css" title="Variable Width" /-->
+    <title><%= @title %>.planet.wikimedia.org</title>
+    <link rel="alternate" type="application/rss+xml" title="Planet KDE" href="https://<%= @title %>.planet.wikimedia.org/rss20.xml" />
+</head>
 
-            var currentlyOpen = "none";
 
-            document.onkeyup = KeyCheck;
-
-            function KeyCheck(e) {
-                var KeyID = (window.event) ? event.keyCode : e.keyCode;
-
-                switch(KeyID) {
-                    case 74:
-                        nextPrev("next");
-                        break;
-                    case 75:
-                        nextPrev("previous");
-                        break;
-                }
-            }
-
-            function toggle(showHideDiv) {
-                var ele = document.getElementById(showHideDiv);
-                if (ele.style.display == "block") {
-                    ele.style.display = "none";
-                    currentlyOpen = showHideDiv;
-                    current = document.getElementById(currentlyOpen).previousElementSibling.getElementsByTagName("h4")[0];
-                    current.classList.remove('read')
-                    current.className += " unread";
-                    setStorage();
-                } else {
-                    ele.style.display = "block";
-                    currentlyOpen = showHideDiv;
-                    current = document.getElementById(currentlyOpen).previousElementSibling.getElementsByTagName("h4")[0];
-                    current.classList.remove('unread')
-                    current.className += " read";
-                    setStorage();
-                }
-            }
-            function toggleall(changeTo){
-                var list = document.getElementsByClassName("itemdescription");
-                for (var i = 0; i < list.length; i++) {
-                    var e = list[i];
-                    e.style.display = changeTo;
-                }
-            }
-
-            function nextPrev(direction){
-                var divs = document.getElementsByClassName("itemdescription");
-                var selectionDiv = document.getElementById(currentlyOpen);
-                for(var i=0; i<divs.length; i++) {
-                    if (divs[i] == selectionDiv) {
-                        var previous = divs[i+1];
-                        var next = divs[i-1];
-                        break;
-                    }
-                }
-
-                toggleall('none');
-                if (direction == "next") {
-                    if (next != undefined) {
-                        toggle(next.id);
-                        window.location = "#" + next.parentNode.id;
-                    } else {
-                        var begin = document.getElementById("beginning");
-                        if (begin && begin.style) {
-                          begin.style.display = "block";
-                          setTimeout( function() { begin.style.display="none" }, 1000);
-                        }
-                    }
-                } else {
-                    if (previous != undefined) {
-                        toggle(previous.id);
-                        window.location = "#" + previous.parentNode.id;
-                    } else {
-                        alert("end");
-                    }
-                }
-            }
-
-            function markStatus(stat){
-                var current = document.getElementById(currentlyOpen).previousElementSibling.getElementsByTagName("h4")[0];
-                if (stat == "unread") {
-                    current.classList.remove('read');
-                    current.className += " unread";
-                    localStorage.removeItem('read ' + currentlyOpen);
-                    toggle(currentlyOpen);
-                }
-            }
-
-            function markAllRead(){
-                var items = document.getElementsByClassName("itemdescription");
-                for (var i=0; i<items.length; i++) {
-                    currentId = items[i].getAttribute('id');
-                    localStorage['read ' + currentId] = currentId;
-                    readReadColor();
-                }
-            }
-        </script>
-    </head>
-    <body id="rawdog" onload="readReadColor()">
-        <div id="page">
-            <div id="header">
-                <img src="Wikimedia_Community_Logo.svg" alt="Wikimedia Community Logo" style="width: 7%; vertical-align: top; padding: 10px 10px 10px 10px;" align="left" />
-                <h1><%= @title %>.planet.wikimedia.org</h1>
-                <h3>(rawdog __version__: __num_items__ items from __num_feeds__ feeds)</h3>
-                <p><a onclick="toggleall('block')">Open all</a> <a onclick="toggleall('none')">Close all</a> <a onclick="markAllRead()">Mark All Read</a></p>
+<body>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-kdeMenuIcon"></span>
+                </button>
+                <a class="navbar-brand" href="./index.html"><img src="Wikimedia_Community_Logo.svg" alt="Wikimedia Community Logo" style="width: 7%; vertical-align: top; padding: 10px 10px 10px 10px;" align="left" /> <%= @title %>.planet.wikimedia.org</a>
             </div>
-            <div class="menu">
-              <p>
-                <h2><%= scope.lookupvar('planet::languages')[@title]['subscribe'] %></h2>
-                <ul>
-                  <li><a href="https://<%= @title %>.planet.wikimedia.org/rss20.xml">Atom</a></li>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['subscribe'] %> <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="https://<%= @title %>.planet.wikimedia.org/atom.xml">Atom</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %> <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="https://ar.planet.wikimedia.org/">ar</a></li>
+                        <li><a href="https://cs.planet.wikimedia.org/">cs</a></li>
+                        <li><a href="https://de.planet.wikimedia.org/">de</a></li>
+                        <li><a href="https://el.planet.wikimedia.org/">el</a></li>
+                        <li><a href="https://en.planet.wikimedia.org/">en</a></li>
+                        <li><a href="https://es.planet.wikimedia.org/">es</a></li>
+                        <li><a href="https://fr.planet.wikimedia.org/">fr</a></li>
+                        <li><a href="https://gmq.planet.wikimedia.org/">gmq</a></li>
+                        <li><a href="https://id.planet.wikimedia.org/">id</a></li>
+                        <li><a href="https://it.planet.wikimedia.org/">it</a></li>
+                        <li><a href="https://pl.planet.wikimedia.org/">pl</a></li>
+                        <li><a href="https://pt.planet.wikimedia.org/">pt</a></li>
+                        <li><a href="https://ro.planet.wikimedia.org/">ro</a></li>
+                        <li><a href="https://ru.planet.wikimedia.org/">ru</a></li>
+                        <li><a href="https://uk.planet.wikimedia.org/">uk</a></li>
+                        <li><a href="https://zh.planet.wikimedia.org/">zh</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= scope.lookupvar('planet::languages')[@title]['planetarium'] %> <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="http://planet.apache.org/">Planet Apache</a></li>
+                        <li><a href="http://planet.debian.net/">Planet Debian</a></li>
+                        <li><a href="https://planet.freedesktop.org/">Planet freedesktop.org</a></li>
+                        <li><a href="http://planet.gnome.org/">Planet GNOME</a></li>
+                        <li><a href="http://planet.apache.org/">more...</a></li>
+                      </ul>
+                    </li>
                 </ul>
-              </p>
-              <p>
-                <h2><%= scope.lookupvar('planet::languages')[@title]['wikimedia'] %></h2>
-                <ul>
-                  <li><a href="https://ar.planet.wikimedia.org/">ar.planet.wm</a></li>
-                  <li><a href="https://cs.planet.wikimedia.org/">cs.planet.wm</a></li>
-                  <li><a href="https://de.planet.wikimedia.org/">de.planet.wm</a></li>
-                  <li><a href="https://el.planet.wikimedia.org/">el.planet.wm</a></li>
-                  <li><a href="https://en.planet.wikimedia.org/">en.planet.wm</a></li>
-                  <li><a href="https://es.planet.wikimedia.org/">es.planet.wm</a></li>
-                  <li><a href="https://fr.planet.wikimedia.org/">fr.planet.wm</a></li>
-                  <li><a href="https://gmq.planet.wikimedia.org/">gmq.planet.wm</a></li>
-                  <li><a href="https://id.planet.wikimedia.org/">id.planet.wm</a></li>
-                  <li><a href="https://it.planet.wikimedia.org/">it.planet.wm</a></li>
-                  <li><a href="https://pl.planet.wikimedia.org/">pl.planet.wm</a></li>
-                  <li><a href="https://pt.planet.wikimedia.org/">pt.planet.wm</a></li>
-                  <li><a href="https://ro.planet.wikimedia.org/">ro.planet.wm</a></li>
-                  <li><a href="https://ru.planet.wikimedia.org/">ru.planet.wm</a></li>
-                  <li><a href="https://uk.planet.wikimedia.org/">uk.planet.wm</a></li>
-                  <li><a href="https://zh.planet.wikimedia.org/">zh.planet.wm</a></li>
-                </ul>
-              </p>
-              <p>
-                <h2><%= scope.lookupvar('planet::languages')[@title]['planetarium'] %></h2>
-                <ul>
-                  <li><a href="http://planet.apache.org/">Planet Apache</a></li>
-                  <li><a href="http://planet.debian.net/">Planet Debian</a></li>
-                  <li><a href="https://planet.freedesktop.org/">Planet freedesktop.org</a></li>
-                  <li><a href="http://planet.gnome.org/">Planet GNOME</a></li>
-                  <li><a href="http://planet.apache.org/">more...</a></li>
-                </ul>
-              </p>
             </div>
-            <div class="pages">
-                __paged_output_pages__
-            </div>
-            <div id="items">
-                __items__
-            </div>
-            <div class="pages">
-                __paged_output_pages__
-            </div>
+            <!--/.nav-collapse -->
         </div>
-        <a id="toTopButton" href="#">Top^</a>
-        <div id="floatingNav">
-            <p id="navNext" onclick="nextPrev('next')">&uarr;</p>
-            <p id="navPrev" onclick="nextPrev('previous')">&darr;</p>
-            <p id="markStatus" onclick="markStatus('unread')">+</p>
+    </nav>
+
+    <div class="container" id="twocolumncontainer">
+      <div class="row" id="twocolumn">
+        <div class="col-md-9 col-lg-9">
+
+         __items__
+
         </div>
-    </body>
+      </div> <!-- twocolumn -->
+    </div> <!--  id="twocolumncontainer" -->
+
+    <hr class="blueline" />
+        <div>
+          <p>
+            Planet Wikimedia is made from the blogs of Wikimedia contributors. The opinions it contains are those of the contributor. This site is powered by <a href="http://offog.org/code/rawdog.html">Rawdog</a>. | <a href="https://wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy</a>
+          </p>
+        </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("img").addClass("img img-responsive imcent");
+        });
+    </script>
+</body>
+
 </html>
