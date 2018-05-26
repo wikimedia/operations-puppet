@@ -48,6 +48,8 @@ class role::puppetmaster::standalone(
     $labs_puppet_master = hiera('labs_puppet_master'),
     $puppet_major_version = hiera('puppet_major_version', 3),
     $puppetdb_major_version = hiera('puppetdb_major_version', undef),
+    $storeconfigs = false,
+    $puppetdb_host = undef,
 ) {
     if ! $use_enc {
         fail('Ldap puppet node definitions are no longer supported.  The $use_enc param must be true.')
@@ -77,7 +79,31 @@ class role::puppetmaster::standalone(
         'autosign'          => $autosign,
     }
 
-    $config = merge($base_config, $env_config)
+    $puppetdb_config = {
+        storeconfigs         => true,
+        thin_storeconfigs    => true,
+        storeconfigs_backend => 'puppetdb',
+        reports              => 'servermon,puppetdb',
+    }
+
+    if $puppetdb_major_version == 4 and $storeconfigs == 'puppetdb' {
+        apt::repository { 'wikimedia-puppetdb4':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/puppetdb4',
+            before     => Class['puppetmaster::puppetdb::client'],
+        }
+    }
+
+    if $storeconfigs == 'puppetdb' {
+        class { 'puppetmaster::puppetdb::client':
+            host                   => $puppetdb_host,
+            puppetdb_major_version => $puppetdb_major_version,
+        }
+        $config = merge($base_config, $puppetdb_config, $env_config)
+    } else {
+        $config = merge($base_config, $env_config)
+    }
 
     class { '::puppetmaster':
         server_name            => $server_name,
