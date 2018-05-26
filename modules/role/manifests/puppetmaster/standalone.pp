@@ -77,7 +77,34 @@ class role::puppetmaster::standalone(
         'autosign'          => $autosign,
     }
 
-    $config = merge($base_config, $env_config)
+    $storeconfigs = hiera('profile::puppetmaster::common::storeconfigs', '')
+
+    $puppetdb_config = {
+        storeconfigs         => true,
+        thin_storeconfigs    => true,
+        storeconfigs_backend => 'puppetdb',
+        reports              => 'servermon,puppetdb',
+    }
+
+    if $puppetdb_major_version == 4 and $storeconfigs == 'puppetdb' {
+        apt::repository { 'wikimedia-puppetdb4':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/puppetdb4',
+            before     => Class['puppetmaster::puppetdb::client'],
+        }
+    }
+
+    if $storeconfigs == 'puppetdb' {
+        $puppetdb_host = hiera('profile::puppetmaster::common::puppetdb_host')
+        class { 'puppetmaster::puppetdb::client':
+            host                   => $puppetdb_host,
+            puppetdb_major_version => $puppetdb_major_version,
+        }
+        $config = merge($base_config, $puppetdb_config, $env_config)
+    } else {
+        $config = merge($base_config, $env_config)
+    }
 
     class { '::puppetmaster':
         server_name            => $server_name,
